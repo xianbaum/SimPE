@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT folders (filetable)>
+<!ELEMENT filetable (path|file)*>
+<!ELEMENT path (#PCDATA)>
+<!ATTLIST path
+	root (game | ep1 | simpe | save)	#IMPLIED
+	recursive (0 | 1) #IMPLIED
+	epversion (0 | 1) #IMPLIED
+>
+<!ELEMENT file (#PCDATA)>
+<!ATTLIST file
+	root (game | ep1 | simpe | save)	#IMPLIED
+	epversion (0 | 1) #IMPLIED
+>
