@@ -182,7 +182,9 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (SimPe.Plugin.WrapperFactory.Provider==null) return;
 
-			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredExpressionOperators) this.cboperand.Items.Add(s);
+			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredExpressionOperators)
+				this.cboperand.Items.Add(s);
+
 			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredDataNames) 
 			{
 				this.cbtype1.Items.Add(s);
@@ -195,9 +197,11 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
-		byte[] ops;
-		internal void Execute(byte[] ops) 
+
+		private Instruction inst;
+		internal void Execute(Instruction i) 
 		{
+			byte[] ops = i.Operands;
 			byte n1 = ops[0x06];
 			byte n2 = ops[0x07];
 			byte op = ops[0x05];
@@ -213,13 +217,14 @@ namespace SimPe.PackedFiles.UserInterface
 
 			if (cboperand.Items.Count>op) cboperand.SelectedIndex = op;
 
-			this.ops = ops;
+			this.inst = i;
 		}
 
-		internal byte[] Write()
+		internal Instruction Write()
 		{
 			try 
 			{
+				byte[] ops = inst.Operands;
 				ops[0x06] = (byte)cbtype1.SelectedIndex;
 				ops[0x07] = (byte)cbtype2.SelectedIndex;
 				ops[0x05] = (byte)cboperand.SelectedIndex;
@@ -236,15 +241,13 @@ namespace SimPe.PackedFiles.UserInterface
 				ops[0x02] = (byte)(val2 & 0xff);
 				ops[0x03] = (byte)((val2 >> 8) & 0xff);
 
-				return ops;
+				return inst;
 			} 
 			catch (Exception ex) 
 			{
 				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
 				return null;
 			}
-
-			
 		}
 
 		private void SelectVal1Name(object sender, System.EventArgs e)

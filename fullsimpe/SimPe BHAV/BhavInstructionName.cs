@@ -39,7 +39,6 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get { return parent; }
 		}
-
 		/// <summary>
 		/// contains the list of Opcode Names
 		/// </summary>
@@ -61,7 +60,6 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			this.parent = parent;
 		}
-
 		/// <summary>
 		/// Constructor
 		/// </summary>

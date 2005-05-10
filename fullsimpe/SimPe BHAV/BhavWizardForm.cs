@@ -115,18 +115,21 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 		#endregion
 
-		internal static bool Available(ushort opcode)
+		internal static bool Available(Instruction i)
 		{
-			return (opcode==0x0002);
+			return (i.OpCode == 0x0002);
 		}
 
-		internal byte[] Execute(ushort opcode, byte[] operands)
+		internal Instruction Execute(Instruction i)
 		{
-			if (!Available(opcode)) return null;
+			if (!Available(i)) return null;
+			byte[] operands = new byte[16];
+			i.Operands.CopyTo(operands, 0);
+			i.Reserved1.CopyTo(operands, 8);
 
 			BhavInstruction bi = new BhavInstruction();
 
-			bi.Execute(operands);
+			bi.Execute(i);
 			Panel pn = bi.pnExpression;
 			pn.Parent = this;
 			pn.Top = 0;

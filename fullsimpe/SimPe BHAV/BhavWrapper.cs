@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections;
 using SimPe.Interfaces.Plugin;
 
 namespace SimPe.PackedFiles.Wrapper
@@ -47,7 +48,11 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains all available Instruction 
 		/// </summary>		
+#if PLJ
+		private BhavInstList instructions;
+#else
 		private Instruction[] instructions;
+#endif
 		/// <summary>
 		/// Contains an Opcode Provider
 		/// </summary>
@@ -58,7 +63,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public string FileName 
+		public new string FileName 
 		{
 			get { return Helper.ToString(filename); }
 			set { filename = Helper.ToBytes(value, 0x40); }
@@ -76,12 +81,19 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns/Sets the Instructions
 		/// </summary>
+#if PLJ
+		public BhavInstList Instructions
+		{
+			get { return instructions;	}			
+			set { instructions = value; }
+		}
+#else
 		public Instruction[] Instructions
 		{
 			get { return instructions;	}			
 			set { instructions = value; }
 		}
-
+#endif
 		/// <summary>
 		/// Opcode Provider
 		/// </summary>
@@ -98,7 +110,11 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			filename = new byte[64];
 			header = new BhavHeader();
+#if PLJ
+			instructions = new BhavInstList();
+#else
 			instructions = new Instruction[0];
+#endif
 			this.opcodes = opcodes;
 
 			//Instruction.Package = package;
@@ -151,14 +167,13 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			filename = reader.ReadBytes(64);
 			header.Unserialize(reader);
-					
+#if PLJ
+			instructions = new BhavInstList(this, reader);
+#else
 			instructions = new Instruction[header.InstructionCount];
  			for (int i=0; i < instructions.Length; i++) 
-			{
-				Instruction inst = new Instruction(i, this);
-				inst.Unserialize(header.Format, reader);
-				instructions[i] = inst;
-			}
+				instructions[i] = new Instruction(this, reader);;
+#endif
 		}
 
 		/// <summary>
@@ -172,13 +187,15 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			header.InstructionCount = (uint)instructions.Length;
+			header.InstructionCount = (uint)instructions.Count; // oh please...
 			header.Serialize(writer);
-					
+
+#if PLJ
+			instructions.Serialize(writer);
+#else
 			for (int i=0; i < instructions.Length; i++) 
-			{
-				instructions[i].Serialize(header.Format, writer);
-			} 			
+				instructions[i].Serialize(writer);
+#endif
 		}
 		#endregion
 
@@ -191,7 +208,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				return "FileName="+this.FileName+", Lines="+this.Instructions.Length;
+				return "FileName="+this.FileName+", Lines="+this.header.InstructionCount;
 			}
 		}
 		/// <summary>
@@ -221,5 +238,296 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		#endregion		
+	}
+
+
+	/// <summary>
+	/// Class containing a BHAV Header
+	/// </summary>
+	public class BhavHeader
+	{
+		#region Attributes
+		ushort format;
+		uint count;
+		byte reserved_00;
+		byte type;
+		byte argc;
+		byte locals;
+		ushort flags;
+		ushort zero;
+		#endregion
+
+		#region Accessor methods
+		public ushort Format 
+		{
+			get { return format; }
+			set {format = value; }
+		}
+
+		public uint InstructionCount
+		{
+			get { return count; }
+			set {count = value; }
+		}
+
+		public byte Type 
+		{
+			get { return type; }
+			set {type = value; }
+		}
+
+		public byte ArgumentCount 
+		{
+			get { return argc; }
+			set {argc = value; }
+		}
+
+		public byte LocalVarCount 
+		{
+			get { return locals; }
+			set {locals = value; }
+		}
+
+		public ushort Flags 
+		{
+			get { return flags; }
+			set {flags = value; }
+		}
+
+		public ushort Zero 
+		{
+			get { return zero; }
+			set {zero = value; }
+		}
+		#endregion
+
+		public BhavHeader()
+		{
+			format = 0;
+			count = 0;
+			reserved_00 = 0;
+			type = 0;
+			argc = 0;
+			locals = 0;
+			flags = 0;
+			zero = 0;
+		}
+
+
+		/// <summary>
+		/// Reads the Data from a Stream
+		/// </summary>
+		/// <param name="reader"></param>
+		public void Unserialize(System.IO.BinaryReader reader) 
+		{
+			format = reader.ReadUInt16();
+			switch (format) 
+			{
+				case 0x8000:
+				case 0x8001:
+				case 0x8002:
+				case 0x8004:
+				case 0x8005:
+				case 0x8006:
+				case 0x8007: 
+				{					
+					count = (uint)reader.ReadUInt16();
+					type = reader.ReadByte();
+					argc = reader.ReadByte();
+					locals = reader.ReadByte();
+					reserved_00 = reader.ReadByte();
+					flags = reader.ReadUInt16();
+					zero = reader.ReadUInt16();
+					break;
+				}
+				case 0x8003: 				
+				{
+					type = reader.ReadByte();
+					argc = reader.ReadByte();
+					locals = reader.ReadByte();
+					zero = reader.ReadByte();
+					flags = reader.ReadUInt16();					
+					count = reader.ReadUInt32();
+					break;
+				}
+				default: 
+				{
+					throw new Exception("Unknown BHAV Format "+format.ToString("X"));
+				}
+			} //switch
+		}
+
+		/// <summary>
+		/// Writes the Data to a Stream
+		/// </summary>
+		/// <param name="writer"></param>
+		public void Serialize(System.IO.BinaryWriter writer) 
+		{
+			writer.Write(format);
+			switch (format) 
+			{
+				case 0x8000:
+				case 0x8001:
+				case 0x8002:
+				case 0x8004:
+				case 0x8005:
+				case 0x8006:
+				case 0x8007:
+				{					
+					writer.Write((ushort)count);
+					writer.Write(type);
+					writer.Write(argc);
+					writer.Write(locals);
+					writer.Write((byte)reserved_00);
+					writer.Write(flags);
+					writer.Write(zero);
+					break;
+				}
+				case 0x8003: 				
+				{
+					writer.Write((byte)type);
+					writer.Write(argc);
+					writer.Write(locals);
+					writer.Write((byte)zero);
+					writer.Write(flags);					
+					writer.Write(count);
+					break;
+				}
+				default: 
+				{
+					throw new Exception("Unknown BHAV Format "+format.ToString("X"));
+				}
+			} //switch
+		}
+	}
+
+
+	/// <summary>
+	/// Manages the list of instructions within the BHAV file
+	/// </summary>
+	public class BhavInstList : ArrayList
+	{
+		public BhavInstList() : base() { }
+
+
+		public BhavInstList(Bhav parent, System.IO.BinaryReader reader)
+			: base((int)parent.Header.InstructionCount)
+		{
+			Unserialise(parent, reader);
+		}
+
+
+		#region BhavInstList
+		private void SortSwap(int a, int b) 
+		{
+			Instruction i = (Instruction)this[a];
+			this[a] = this[b];
+			this[b] = i;
+
+			foreach (Instruction item in this)
+			{
+				if (item.Target1 == a) item.Target1 = (ushort)b;
+				else if (item.Target1 == b) item.Target1 = (ushort)a;
+
+				if (item.Target2 == a) item.Target2 = (ushort)b;
+				else if (item.Target2 == b) item.Target2 = (ushort)a;
+			}
+		}
+		public void Unserialise(Bhav parent, System.IO.BinaryReader reader)
+		{
+			for (uint i=0; i < parent.Header.InstructionCount; i++)
+				this.Add(new Instruction(parent, reader));
+		}
+		public void Serialize(System.IO.BinaryWriter writer)
+		{
+			for (int i=0; i < this.Count; i++) 
+				this[i].Serialize(writer);
+		}
+
+		public void Move(int from, int to)
+		{
+			if (from < 0 || from >= Count) return;
+			if (to < 0 || to >= Count) return;
+			while (from < to) SortSwap(from, ++from);
+			while(from > to) SortSwap(from, --from);
+		}
+
+		#endregion
+
+		#region ArrayList
+		public new Instruction this[int index]
+		{
+			get { return ((Instruction)base[index]); }
+			set { base[index] = value; }
+		}
+
+		public int Add(Instruction item)
+		{
+			return base.Add(item);
+		}
+
+		public void Insert(int index, Instruction item)
+		{
+			// this needs to relink everything
+			int newIndex = this.Add(item);
+			item.Target1 = (ushort)newIndex;
+			item.Target2 = (ushort)newIndex;
+			this.Move(newIndex, index);
+			//base.Insert(index, item);
+		}
+
+		public override void RemoveAt(int index)
+		{
+			// this needs to relink everything
+			this.Move(index, this.Count - 1);
+			foreach (Instruction i in this)
+			{
+				if (i.Target1 >= this.Count-1 && i.Target1 < 0xFFFC) i.Target1 = 0xFFFC;
+				if (i.Target2 >= this.Count-1 && i.Target2 < 0xFFFC) i.Target2 = 0xFFFC;
+			}
+			base.RemoveAt(this.Count - 1);
+		}
+
+		public void Remove(Instruction item)
+		{
+			base.Remove(item);
+		}
+
+		public bool Contains(Instruction item)
+		{
+			return base.Contains(item);
+		}		
+
+		public override void Sort()
+		{
+			ushort last = 0;
+			for (ushort i=0; i<Count-1; i++) 
+			{
+				Instruction inst = (Instruction)this[i];
+				if (inst.Target1 > i+1) 
+				{
+					if (inst.Target1 < 0xfffc) SortSwap(inst.Target1, (ushort)(i+1));
+					else 
+					{
+						if (inst.Target2 > i+1) 
+						{
+							if (inst.Target2 < 0xfffc) SortSwap(inst.Target2, (ushort)(i+1));
+						}
+					}
+					last = i;
+				}
+			}
+
+			for (ushort i=0; i<Count-1; i++) 
+			{
+				Instruction inst = (Instruction)this[i];
+				if (inst.Target2 > last) 
+				{
+					if (inst.Target2 < 0xfffc) SortSwap(inst.Target2, last);
+					last++;
+				}
+			}
+		}
+		#endregion
 	}
 }

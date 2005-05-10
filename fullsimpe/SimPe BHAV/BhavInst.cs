@@ -25,49 +25,59 @@ namespace SimPe.PackedFiles.Wrapper
 	/// <summary>
 	/// Class representing an Instruction
 	/// </summary>
-	public class Instruction : InstructionName
+	public class Instruction
+		: InstructionName
 	{
+		#region Attributes
+		private ushort opcode = 0;
+		private ushort addr1 = 0;
+		private ushort addr2 = 0;
+		private byte reserved_00 = 0;
+		private byte[] operands = new byte[8];
+		private byte[] reserved_01 = null;
+		#endregion
 
-		int index;
-		ushort opcode;
-		ushort addr1;
-		ushort addr2;
-		byte reserved_00;
-		byte[] operands;
-		byte[] reserved_01;
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Instruction (int index, Bhav parent) : base(parent)
-		{
-			operands = new byte[8];
-			reserved_01 = new byte[8];
-			this.index = index;
-		}
-
-
-		public int Index 
-		{
-			get {return index;}
-			set {index = value;}
-		}
+		#region Accessor methods
 		public virtual ushort OpCode 
 		{
 			get { return opcode; }
 			set { opcode = value; }
 		}
 
+
+		private ushort formatSpecificTarget(ushort target)
+		{
+			switch (parent.Header.Format)
+			{
+				case 0x8007:
+					return target;
+				default:
+					if (target < 0xFC) return target;
+					return (ushort)(0xFF00 + target);
+			}
+		}
+		private ushort formatSpecificAddr(ushort target)
+		{
+			switch (parent.Header.Format)
+			{
+				case 0x8007:
+					return target;
+				default:
+					return (ushort)(0xFF & target);
+			}
+		}
 		public ushort Target1
 		{
-			get {return addr1;}
-			set {addr1 = value;}
+			get { return formatSpecificTarget(addr1); }
+			set {
+				addr1 = formatSpecificAddr(value);}
 		}
 
 		public ushort Target2
 		{
-			get {return addr2;}
-			set {addr2 = value;}
+			get { return formatSpecificTarget(addr2); }
+			set {
+				addr2 = formatSpecificAddr(value);}
 		}
 
 		public byte Reserved0
@@ -87,16 +97,62 @@ namespace SimPe.PackedFiles.Wrapper
 			get {return reserved_01;}
 			set {reserved_01 = value;}
 		}
-		public byte[] Operands2
+		#endregion
+
+		private void commonConstructor(Bhav parent)
 		{
-			get {return reserved_01;}
-			set {reserved_01 = value;}
+			switch (parent.Header.Format)
+			{
+				case 0x8001:
+				case 0x8002:
+					break;
+				case 0x8003:
+				case 0x8004:
+				case 0x8005:
+				case 0x8006:
+				case 0x8007:
+					reserved_01 = new byte[8];
+					break;
+				default: 
+					throw new Exception("Unknown BHAV Format "+parent.Header.Format.ToString("X"));
+			}
 		}
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		internal Instruction (Bhav parent) : base(parent)
+		{
+			commonConstructor(parent);
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		internal Instruction (Bhav parent, System.IO.BinaryReader reader) : base(parent)
+		{
+			commonConstructor(parent);
+			Unserialize(reader);
+		}
+
 
 		public override string ToString()
 		{
 			return this.OpcodeName(this.opcode, this.operands);
 		}
+
+
+		public Instruction Clone()
+		{
+			Instruction clone = new Instruction(this.parent);
+			clone.opcode      = this.opcode;
+			clone.addr1       = this.addr1;
+			clone.addr2       = this.addr2;
+			clone.reserved_00 = this.reserved_00;
+			clone.operands    = (byte[])this.operands.Clone();
+			clone.reserved_01 = (byte[])this.reserved_01.Clone();
+			return clone;
+		}
+
 
 		/// <summary>
 		/// True if this instruction describes a Global Behavior File
@@ -128,71 +184,51 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="format"></param>
 		/// <param name="reader"></param>
-		public void Unserialize(ushort format, BinaryReader reader) 
+		private void Unserialize(BinaryReader reader) 
 		{
-			try 
+			switch (parent.Header.Format)
 			{
-				switch (format) 
+				case 0x8001: 
+				case 0x8002: 
 				{
-					case 0x8001: 
-					case 0x8002: 
-					{
-						opcode = reader.ReadUInt16();
-						addr1 = (ushort)reader.ReadByte();
-						if (addr1 >= 0x00FC) addr1 += 0xFF00;
-						addr2 = (ushort)reader.ReadByte();
-						if (addr2 >= 0x00FC) addr2 += 0xFF00;
-						reserved_00 = 0;
-						operands = reader.ReadBytes(8);
-						reserved_01 = new byte[8];
-						break;
-					}
-					case 0x8003: 
-					case 0x8004: 
-					{
-						opcode = reader.ReadUInt16();
-						addr1 = (ushort)reader.ReadByte();
-						if (addr1 >= 0x00FC) addr1 += 0xFF00;
-						addr2 = (ushort)reader.ReadByte();
-						if (addr2 >= 0x00FC) addr2 += 0xFF00;
-						reserved_00 = 0;
-						operands = reader.ReadBytes(8);
-						reserved_01 = reader.ReadBytes(8);
-						break;
-					}
-					case 0x8006: 
-					case 0x8005: 
-					{
-						opcode = reader.ReadUInt16();
-						addr1 = (ushort)reader.ReadByte();
-						if (addr1 >= 0x00FC) addr1 += 0xFF00;
-						addr2 = (ushort)reader.ReadByte();
-						if (addr2 >= 0x00FC) addr2 += 0xFF00;
-						reserved_00 = reader.ReadByte();
-						operands = reader.ReadBytes(8);
-						reserved_01 = reader.ReadBytes(8);
-						break;
-					}
-					case 0x8007: 
-					{
-						opcode = reader.ReadUInt16();
-						addr1 = reader.ReadUInt16();
-						addr2 = reader.ReadUInt16();
-						reserved_00 = reader.ReadByte();
-						operands = reader.ReadBytes(8);
-						reserved_01 = reader.ReadBytes(8);
-						break;
-					}
-					default: 
-					{
-						throw new Exception("Unknown BHAV Format "+format.ToString("X"));
-					}
-				} //switch
-			} 
-			catch (Exception) 
-			{
-				//Helper.ExceptionMessage("", ex);
-			}
+					opcode = reader.ReadUInt16();
+					addr1 = (ushort)reader.ReadByte();
+					addr2 = (ushort)reader.ReadByte();
+					operands = reader.ReadBytes(8);
+					break;
+				}
+				case 0x8003: 
+				case 0x8004: 
+				{
+					opcode = reader.ReadUInt16();
+					addr1 = (ushort)reader.ReadByte();
+					addr2 = (ushort)reader.ReadByte();
+					operands = reader.ReadBytes(8);
+					reserved_01 = reader.ReadBytes(8);
+					break;
+				}
+				case 0x8006: 
+				case 0x8005: 
+				{
+					opcode = reader.ReadUInt16();
+					addr1 = (ushort)reader.ReadByte();
+					addr2 = (ushort)reader.ReadByte();
+					reserved_00 = reader.ReadByte();
+					operands = reader.ReadBytes(8);
+					reserved_01 = reader.ReadBytes(8);
+					break;
+				}
+				case 0x8007: 
+				{
+					opcode = reader.ReadUInt16();
+					addr1 = reader.ReadUInt16();
+					addr2 = reader.ReadUInt16();
+					reserved_00 = reader.ReadByte();
+					operands = reader.ReadBytes(8);
+					reserved_01 = reader.ReadBytes(8);
+					break;
+				}
+			} //switch
 		}
 
 		/// <summary>
@@ -200,9 +236,9 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="format"></param>
 		/// <param name="writer"></param>
-		public void Serialize(ushort format, BinaryWriter writer) 
+		internal void Serialize(BinaryWriter writer) 
 		{
-			switch (format) 
+			switch (parent.Header.Format)
 			{
 				case 0x8001: 
 				case 0x8002: 
@@ -243,10 +279,6 @@ namespace SimPe.PackedFiles.Wrapper
 					writer.Write(operands);
 					writer.Write(reserved_01);
 					break;
-				}
-				default: 
-				{
-					throw new Exception("Unknown BHAV Format "+format.ToString("X"));
 				}
 			} //switch
 		}

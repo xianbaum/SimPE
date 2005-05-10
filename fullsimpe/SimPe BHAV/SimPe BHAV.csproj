@@ -219,11 +219,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "BconItem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BconWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -254,14 +249,19 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "BhavHeader.cs"
+                    RelPath = "BhavInst.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BhavInst.cs"
-                    SubType = "Code"
+                    RelPath = "BhavInstListControl.cs"
+                    SubType = "UserControl"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BhavInstListControl.resx"
+                    DependentUpon = "BhavInstListControl.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "BhavInstruction.cs"
@@ -310,11 +310,6 @@
                 <File
                     RelPath = "button_ok.png"
                     BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Connector.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "GlobForm.cs"
