@@ -27,23 +27,10 @@ namespace SimPe.PackedFiles.Wrapper
 	public class BhavBaseItem
 	{
 		/// <summary>
-		/// contains the list of Opcode Names
-		/// </summary>
-		//protected static SimPe.Interfaces.Providers.IOpcodeProvider opcodes;
-
-		/// <summary>
 		/// contains a package fiel or null
 		/// </summary>
 		protected static SimPe.Interfaces.Files.IPackageFile package;
 
-		/// <summary>
-		/// Returns /Setst the OpcodeProvider
-		/// </summary>
-		/*public static SimPe.Interfaces.Providers.IOpcodeProvider OpcodeProvider 
-		{
-			get { return opcodes; }
-			set { opcodes = value; }
-		}*/
 
 		/// <summary>
 		/// Returns / Sets the Package
@@ -53,7 +40,5 @@ namespace SimPe.PackedFiles.Wrapper
 			get { return package; }
 			set { package = value; }
 		}
-
-		
 	}
 }
