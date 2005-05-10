@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections;
 using SimPe.Interfaces.Plugin;
 
 namespace SimPe.PackedFiles.Wrapper
@@ -43,7 +44,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains all available Constants 
 		/// </summary>		
-		private BconItem[] values;
+		private ArrayList values;
 		/// <summary>
 		/// Just A Flag
 		/// </summary>
@@ -54,7 +55,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public string FileName 
+		public new string FileName 
 		{
 			get { return Helper.ToString(filename); }
 			set { filename = Helper.ToBytes(value, 0x40); }
@@ -63,9 +64,9 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns/Sets the Constants
 		/// </summary>
-		public BconItem[] Constants
+		public ArrayList Constants
 		{
-			get { return values;	}			
+			get { return values; }			
 			set { values = value; }
 		}
 
@@ -77,6 +78,7 @@ namespace SimPe.PackedFiles.Wrapper
 			get { return flag;	}			
 			set { flag = value; }
 		}
+
 		#endregion
 
 		/// <summary>
@@ -85,7 +87,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public Bcon() : base()
 		{
 			filename = new byte[64];
-			values = new BconItem[0];			
+			values = new ArrayList();
 			flag = 0x00;
 		}
 
@@ -131,12 +133,13 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
 			filename = reader.ReadBytes(64);
-			values = new BconItem[reader.ReadByte()];
+			int length = reader.ReadByte();
 			flag = reader.ReadByte();							
  
-			for (int i=0; i < values.Length; i++) 
+			values.Clear();
+			for (int i=0; i < length; i++) 
 			{
-				values[i] = new BconItem(reader.ReadInt16(), i, this);
+				values.Add((short)reader.ReadInt16());
 			}
 		}
 
@@ -151,12 +154,12 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			writer.Write((byte)values.Length);
+			writer.Write((byte)values.Count);
 			writer.Write(flag);					
  
-			for (int i=0; i < values.Length; i++) 
+			for (int i=0; i < values.Count; i++) 
 			{
-				writer.Write(values[i].Value);
+				writer.Write((short)values[i]);
 			}		
 		}
 		#endregion
