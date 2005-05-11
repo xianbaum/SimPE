@@ -1,0 +1,569 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>simpe.s2cp</name>
+    </assembly>
+    <members>
+        <member name="T:SimPe.Packages.DepSims2Community">
+            <summary>
+            Zusammenfassung für DepSims2Community.
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.DepSims2Community.components">
+            <summary>
+            Erforderliche Designervariable.
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.DepSims2Community.Dispose(System.Boolean)">
+            <summary>
+            Die verwendeten Ressourcen bereinigen.
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.DepSims2Community.InitializeComponent">
+            <summary>
+            Erforderliche Methode für die Designerunterstützung. 
+            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+            </summary>
+        </member>
+        <member name="T:SimPe.Packages.SaveSims2CommunityPack">
+            <summary>
+            Zusammenfassung für SaveSims2CommunityPack.
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.SaveSims2CommunityPack.components">
+            <summary>
+            Erforderliche Designervariable.
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.SaveSims2CommunityPack.Dispose(System.Boolean)">
+            <summary>
+            Die verwendeten Ressourcen bereinigen.
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.SaveSims2CommunityPack.InitializeComponent">
+            <summary>
+            Erforderliche Methode für die Designerunterstützung. 
+            Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.SaveSims2CommunityPack.extension">
+            <summary>
+            true if the communit Extensions should be used
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.SaveSims2CommunityPack.ok">
+            <summary>
+            true if the File should be saved
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.SaveSims2CommunityPack.Execute(SimPe.Packages.GeneratableFile[],System.Boolean@)">
+            <summary>
+            Shows the Save Dialog
+            </summary>
+            <param name="files">all packages that should be initially in the File</param>
+            <param name="extension">true if you want to add the Community Extension, otherwise 
+            a normal Sims2Pack File will be generated</param>
+            <returns>A list of all packages this File should contain</returns>
+        </member>
+        <member name="M:SimPe.Packages.SaveSims2CommunityPack.Execute(SimPe.Packages.S2CPDescriptor[],System.Windows.Forms.SelectionMode)">
+            <summary>
+            Shows the Load Dialog
+            </summary>
+            <param name="files">All Descriptors within the S2CP File</param>
+            <param name="selmode">Selection Mode for the Listbox</param>
+            <returns>All the Packages the user has selected</returns>
+        </member>
+        <member name="M:SimPe.Packages.SaveSims2CommunityPack.UpdateDepText(SimPe.Packages.S2CPDescriptor)">
+            <summary>
+            Updates the Link Text for the Dependency Window
+            </summary>
+            <param name="s2cp"></param>
+        </member>
+        <member name="M:SimPe.Packages.SaveSims2CommunityPack.Select(System.Object,System.EventArgs)">
+            <summary>
+            Select a List Item
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:SimPe.Packages.Sims2CommunityPack">
+            <summary>
+            This class contains static Methods you can use to Handle S2CP Files
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.DEFAULT_COMPRESSION_STRENGTH">
+            <summary>
+            Defines the Default Compression that is used
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.Decompress(System.IO.Stream,System.IO.Stream)">
+            <summary>
+            Decompress <paramref name="instream">input</paramref> writing 
+            decompressed data to <paramref name="outstream">output stream</paramref>
+            </summary>
+            <param name="instream">Compressed Data</param>
+            <param name="outstream">Uncompressed Data</param>
+            <remarks>Overwritten, because i needed the <paramref name="outstream">output stream</paramref> 
+            to Seek to the Beginning</remarks>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.Compress(System.IO.Stream,System.IO.Stream,SimPe.Packages.Sims2CommunityPack.CompressionStrength)">
+            <summary>
+            Compress <paramref name="instream">input stream</paramref> sending 
+            result to <paramref name="outputstream">output stream</paramref>
+            </summary>
+            <param name="outstream"></param>
+            <param name="instream"></param>
+            <param name="strength">Strngth of the Compression</param>
+            <remarks>I had to change the Origial Compression Methode in a way that it woun't close 
+            the <paramref name="instream">input stream</paramref> and that it seeks to the Beginning 
+            of it on startup</remarks>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.Create(SimPe.Packages.S2CPDescriptor,System.Boolean)">
+            <summary>
+            Create a Sims2CommunityPack File
+            </summary>
+            <param name="file">The Descriptors of the Package to inlcude</param>
+            <param name="extension">true if you want to add the Community Extension, otherwise 
+            a normal Sims2Pack File will be generated</param>
+            <returns>The MemoryStream containing the S2CP File</returns>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.Create(SimPe.Packages.S2CPDescriptor[],System.Boolean)">
+            <summary>
+            Create a Sims2CommunityPack File
+            </summary>
+            <param name="files">List of Descriptors for all Packages to include</param>
+            <param name="extension">true if you want to add the Community Extension, otherwise 
+            a normal Sims2Pack File will be generated</param>
+            <returns>The MemoryStream containing the S2CP File</returns>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.ParesDependingPackedFile(System.Xml.XmlNode)">
+            <summary>
+            Parse the Dependency Node in an XML
+            </summary>
+            <param name="dep">The Dependency Node</param>
+            <returns>The Descriptor of the DependencyPackage (the package value is NULL)</returns>
+            <remarks>The Descriptor won't contain the package Data. Yo you have to find the Matching Package 
+            by the returned GUID and Name</remarks>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.LoadPackage(System.IO.BinaryReader,System.Int32,System.Int32,SimPe.Packages.S2CPDescriptor)">
+            <summary>
+            Reads a package from the Stream
+            </summary>
+            <param name="reader">The S2CP Stream</param>
+            <param name="offset">The starting offset</param>
+            <param name="length">The Length of the Package</param>
+            <param name="desc">Package Description</param>
+            <returns>The Package</returns>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.ParesPackedFile(System.IO.BinaryReader,System.Xml.XmlNode,System.Int32)">
+            <summary>
+            Parse the packedFile Node in an XML
+            </summary>
+            <param name="reader">The source Stream of the S2CP File</param>
+            <param name="pfile">The PackedFile Node</param>
+            <param name="offset">The Ofset for the package Data</param>
+            <returns>The Descriptor of the PackedFile</returns>
+            <remarks>The GUIDs and the Names of the Descriptors are the ones stored in the
+            XML Data not the ones from the Package. So you have to <seealso cref="P:SimPe.Packages.S2CPDescriptorBase.Valid"/><see cref="P:SimPe.Packages.S2CPDescriptorBase.Valid"/> the Content with the Package.</remarks>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.Open(System.String)">
+            <summary>
+            Opens a Sim2Pack File
+            </summary>
+            <param name="filename">Filename of the S2CP File</param>
+            <returns>List of all Package descriptors</returns>
+            <remarks>The GUIDs/Names included in the S2CPDescriptor are the ones found in the Xml Description, 
+            you need to check them with the GUIDs stored in the packges itself to 
+            <see cref="P:SimPe.Packages.S2CPDescriptorBase.Valid"/>
+            <seealso cref="P:SimPe.Packages.S2CPDescriptorBase.Valid"/> the Content</remarks>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.Open(System.IO.BinaryReader)">
+            <summary>
+            Opens a Sim2Pack File
+            </summary>
+            <param name="reader">The Stream containing the File</param>
+            <returns>List of all Package descriptors</returns>
+            <remarks>The GUIDs/Names included in the S2CPDescriptor are the ones found in the Xml Description, 
+            you need to check them with the GUIDs stored in the packges itself to 
+            <see cref="P:SimPe.Packages.S2CPDescriptorBase.Valid"/>
+            <seealso cref="P:SimPe.Packages.S2CPDescriptorBase.Valid"/> the Content</remarks>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.ShowSaveDialog(System.Boolean)">
+            <summary>
+            Displays a Save Dialog for the S2CP Files
+            </summary>
+            <param name="extension">true if you want to add the Community Extension, otherwise 
+            a normal Sims2Pack File will be generated</param>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.ShowSaveDialog(SimPe.Packages.GeneratableFile,System.Boolean)">
+            <summary>
+            Displays a Save Dialog for the S2CP Files
+            </summary>
+            <param name="package">The package that should be added to the S2CP Files (the user can add more!)</param>
+            <param name="extension">true if you want to add the Community Extension, otherwise 
+            a normal Sims2Pack File will be generated</param>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.ShowSaveDialog(SimPe.Packages.GeneratableFile[],System.Boolean)">
+            <summary>
+            Displays a Save Dialog for the S2CP Files
+            </summary>
+            <param name="packages">The packages that should be added to the S2CP Files (the user can add more!)</param>
+            <param name="extension">true if you want to add the Community Extension, otherwise 
+            a normal Sims2Pack File will be generated</param>
+            <returns>true if the File was saved</returns>
+        </member>
+        <member name="M:SimPe.Packages.Sims2CommunityPack.ShowOpenDialog(System.String,System.Windows.Forms.SelectionMode)">
+            <summary>
+            Show the Package Selector Dialog for a S2CP File
+            </summary>
+            <param name="filename">The Filename of the S2CP File</param>
+            <param name="selmode">Selection Mode for the Listview</param>
+            <returns>All Packages that were selected in the Dialog by the User or null 
+            if the User Cancled the Dialog</returns>
+        </member>
+        <member name="T:SimPe.Packages.Sims2CommunityPack.CompressionStrength">
+            <summary>
+            Enumerates the Strength of the Used Compression
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.CompressionStrength.None">
+            <summary>
+            Don't use any kind of compression
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.CompressionStrength.Fastest">
+            <summary>
+            Fastest Compression (biggest Size)
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.CompressionStrength.Faster">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.CompressionStrength.Fast">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.CompressionStrength.Default">
+            <summary>
+            Default Compression Strength
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.CompressionStrength.Slow">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.CompressionStrength.Slower">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.Sims2CommunityPack.CompressionStrength.Slowest">
+            <summary>
+            Slowest compression (smallest File)
+            </summary>
+        </member>
+        <member name="T:SimPe.Packages.S2CPDescriptorBase">
+            <summary>
+            Basic Descriptor used for Dependency Files
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptorBase.#ctor(SimPe.Packages.GeneratableFile)">
+            <summary>
+            Creates a new Instance
+            </summary>
+            <param name="p">The Package this Object describes</param>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptorBase.GetGlobalGuid(SimPe.Packages.File,System.String@,System.String@,System.String@,System.String@,System.String@,System.String@)">
+            <summary>
+            Reads the Guid from the Package
+            </summary>
+            <param name="p">The Package to load the Guid From</param>
+            <param name="name">Returns the name stored in te package</param>
+            <param name="title">The Title of this package</param>
+            <param name="author">Author of this package</param>
+            <param name="contact">How to contact the Author</param>
+            <param name="description">Description of this Package</param>
+            <param name="gameguid">The List of original Game Guids</param>
+            <returns>null if no GUID Data was found, otherwise null</returns>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.optional">
+            <summary>
+            If this Dependency Optional
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.name">
+            <summary>
+            Filename of the container Package (can return null)
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.objectversion">
+            <summary>
+            Description for the File
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.guid">
+            <summary>
+            The guid for the File or (can return null)
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.package">
+            <summary>
+            The associated Package
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptorBase.ToString">
+            <summary>
+            Retursn a descriptive String for the Object
+            </summary>
+            <returns>The Description of this Object</returns>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptorBase.Valid">
+            <summary>
+            validates the package aginst the stored GUID/Name
+            </summary>
+            <remarks>If you have loaded a Package from a S2CP File, the GUID and Name Attributes of this Object
+            will contain the values stored in the Describing XML. You can validate those Values against the Data 
+            stored in the Package itself with this Method.</remarks>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptorBase.Optional">
+            <summary>
+            If this Dependency Optional
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptorBase.Name">
+            <summary>
+            Returns/Sets the Filename of the container Package (can return null)
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptorBase.ObjectVersion">
+            <summary>
+            Returns/Sets the Description for the File
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptorBase.Guid">
+            <summary>
+            Returns/Sets the The guid for the File or (can return null)
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptorBase.Package">
+            <summary>
+            Returns/Sets the The associated Package
+            </summary>
+        </member>
+        <member name="T:SimPe.Packages.S2CPDescriptorBase.ValidationState">
+            <summary>
+            Possible results of a Validation
+            </summary>
+            <remarks>CRCMismath is not used yet</remarks>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.ValidationState.OK">
+            <summary>
+            The Data is consistent
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.ValidationState.CRCMismatch">
+            <summary>
+            The CRC from the XMl and the actual CRC do not match
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.ValidationState.GlobalGUIDMismatch">
+            <summary>
+            The GlobalGUID from the Xml and the GlobalGUID stored in the package do not match
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.ValidationState.NameMismatch">
+            <summary>
+            The Name from the Xml and the one stored in the package do not match
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.ValidationState.AuthorMismatch">
+            <summary>
+            The Name of teh Author does not match
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.ValidationState.GameGuidMismatch">
+            <summary>
+            The original Guids have changed
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptorBase.ValidationState.UnableToValidate">
+            <summary>
+            The Data could not be validated
+            </summary>
+        </member>
+        <member name="T:SimPe.Packages.S2CPDescriptor">
+            <summary>
+            Descriptor for a Packed file in the the S2CP
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptor.#ctor(SimPe.Packages.GeneratableFile,System.String,System.String,System.String,System.String,SimPe.Packages.Sims2CommunityPack.CompressionStrength,SimPe.Packages.S2CPDescriptorBase[],System.Boolean)">
+            <summary>
+            Creates a new Insttance
+            </summary>
+            <param name="p">The Package this Object describes</param>
+            <param name="author">Author of this Package</param>
+            <param name="contact">How to contact the Autor</param>
+            <param name="title">Title of this Package</param>
+            <param name="description">Description for the Package</param>
+            <param name="compressed">true if this Package should be stored compressed</param>
+            <param name="extension">true, if you wnt to use the Community Extionsins (Will create a textFile in the Package if needed)</param>
+            <param name="dependency">Objects this one depends on</param>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptor.UpdateGlobalGuid(SimPe.Packages.File,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            Updates the S2CP ID File with the cuurrent settings
+            </summary>
+            <param name="p">The Package to change/read from</param>
+            <param name="guid">The packages GUID</param>
+            <param name="name">The Name for the Package (used if the File is created)</param>
+            <param name="author">Author of this package</param>
+            <param name="contact">How to contact the Author</param>
+            <param name="gameguid">The List of original Game Guids</param>
+            <returns>the stored or the new GlobalGUID</returns>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptor.UpdateGlobalGuid(SimPe.Packages.File,System.String,System.String)">
+            <summary>
+            Updates the S2CP ID File with the cuurrent settings
+            </summary>
+            <param name="p">The Package to change/read from</param>
+            <param name="title">Title of this Object</param>
+            <param name="description">Description of this Package</param>
+            <returns>the stored or the new GlobalGUID</returns>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptor.Update">
+            <summary>
+            Synchronizes the S2CP ID File with the current Settings
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptor.GetSetGlobalGuid(SimPe.Packages.File,System.String@,System.String@,System.String@,System.String@,System.String@,System.String@)">
+            <summary>
+            Adds theGlobalGUID Data to the package if it is missing and generates a new GUID for it.
+            </summary>
+            <param name="p">The Package to change/read from</param>
+            <param name="name">The Name for the Package (used if the File is created)</param>
+            <param name="title">Title of this Object</param>
+            <param name="author">Author of this package</param>
+            <param name="contact">How to contact the Author</param>
+            <param name="description">Description of this Package</param>
+            <param name="gameguid">The List of original Game Guids</param>
+            <returns>the stored or the new GlobalGUID</returns>
+            <remarks>If the GlobalGUID File does exist, the Data from this File will be returned and no new
+            GlobalGUID will be returned</remarks>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.dep">
+            <summary>
+            Returns a list of objects this one depends on
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.title">
+            <summary>
+            Title of the Package
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.type">
+            <summary>
+            Type of the Package
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.gameversion">
+            <summary>
+            Versionnumber of the Game
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.crc">
+            <summary>
+            Description for the File
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.description">
+            <summary>
+            Description for the File
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.author">
+            <summary>
+            Author of the File
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.contact">
+            <summary>
+            Author of the File
+            </summary>
+        </member>
+        <member name="F:SimPe.Packages.S2CPDescriptor.compressed">
+            <summary>
+            File is compressed
+            </summary>
+        </member>
+        <member name="M:SimPe.Packages.S2CPDescriptor.ToString">
+            <summary>
+            Retursn a descriptive String for the Object
+            </summary>
+            <returns>The Description of this Object</returns>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Valid">
+            <summary>
+            validates the package aginst the stored GUID/Name
+            </summary>
+            <remarks>If you have loaded a Package from a S2CP File, the GUID and Name Attributes of this Object
+            will contain the values stored in the Describing XML. You can validate those Values against the Data 
+            stored in the Package itself with this Method.</remarks>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Dependency">
+            <summary>
+            Returns/Sets the  list of objects this one depends on
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Title">
+            <summary>
+            Returns/Sets the Title of the Package
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Type">
+            <summary>
+            Returns/Sets the Type of the Package
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.GameVersion">
+            <summary>
+            Returns/Sets the Versionnumber of the Game
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Crc">
+            <summary>
+            Returns/Sets the Description for the File
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Description">
+            <summary>
+            Returns/Sets the Description for the File
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Author">
+            <summary>
+            Returns/Sets the Author of the File
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Contact">
+            <summary>
+            Returns/Sets the Contact Person of the File
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.GameGuid">
+            <summary>
+            Returns a Space seperated List of all Guids stored in the Package
+            </summary>
+        </member>
+        <member name="P:SimPe.Packages.S2CPDescriptor.Compressed">
+            <summary>
+            Returns /Sets wether the File sould be Compressed or Not
+            </summary>
+            <remarks>After the Description is loaded form a s2cp File, this Property 
+            Indicates if the Package was compressed or not</remarks>
+        </member>
+    </members>
+</doc>
