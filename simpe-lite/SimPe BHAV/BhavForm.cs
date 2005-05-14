@@ -128,7 +128,6 @@ namespace SimPe.PackedFiles.UserInterface
 		
 		#region BhavForm
 		private Bhav wrapper;
-		private Instruction currentInst;
 		private Instruction origInst;
 		private bool internalchg;
 
@@ -166,12 +165,91 @@ namespace SimPe.PackedFiles.UserInterface
 			tbLines.ReadOnly = state;
 		}
 
-		private void FormToWrapper()
+		private void UpdateInstPanel(Instruction inst)
 		{
-			wrapper.Instructions[this.pnflowcontainer.SelectedIndex] = currentInst.Clone();
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
-			pnflowcontainer.UpdateGUI(wrapper);
+			internalchg = true;
+			if (inst != null)
+			{
+				//load referenced Bhav
+				Bhav b = null;
+				if (inst.GlobalBhav)
+					b = Instruction.LoadGlobalBHAV(inst.OpCode);
+				llopenbhav.Enabled = (b!=null);
+
+				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
+				this.btOperandWiz.Enabled = BhavWizardForm.Available(inst);
+
+				this.tbInst_Reserved.Text = "0x"+Helper.HexString(inst.Reserved0);
+				if (inst.Target1 >= 0xFFFC)
+				{
+					this.tba1.SelectedIndex = inst.Target1 - 0xFFFC;
+				}
+				else
+				{
+					this.tba1.SelectedIndex = -1;
+					this.tba1.Text = "0x"+Helper.HexString(inst.Target1);
+				}
+				if (inst.Target2 >= 0xFFFC)
+				{
+					this.tba2.SelectedIndex = inst.Target2 - 0xFFFC;
+				}
+				else
+				{
+					this.tba2.SelectedIndex = -1;
+					this.tba2.Text = "0x"+Helper.HexString(inst.Target2);
+				}
+				this.tbInst_Op0.Text = Helper.HexString(inst.Operands[0]);
+				this.tbInst_Op1.Text = Helper.HexString(inst.Operands[1]);
+				this.tbInst_Op2.Text = Helper.HexString(inst.Operands[2]);
+				this.tbInst_Op3.Text = Helper.HexString(inst.Operands[3]);
+				this.tbInst_Op4.Text = Helper.HexString(inst.Operands[4]);
+				this.tbInst_Op5.Text = Helper.HexString(inst.Operands[5]);
+				this.tbInst_Op6.Text = Helper.HexString(inst.Operands[6]);
+				this.tbInst_Op7.Text = Helper.HexString(inst.Operands[7]);
+
+				this.tbInst_Unk0.Text = Helper.HexString(inst.Reserved1[0]);
+				this.tbInst_Unk1.Text = Helper.HexString(inst.Reserved1[1]);
+				this.tbInst_Unk2.Text = Helper.HexString(inst.Reserved1[2]);
+				this.tbInst_Unk3.Text = Helper.HexString(inst.Reserved1[3]);
+				this.tbInst_Unk4.Text = Helper.HexString(inst.Reserved1[4]);
+				this.tbInst_Unk5.Text = Helper.HexString(inst.Reserved1[5]);
+				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
+				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
+
+				this.tbInst_Instruction.Text = inst.ToString();
+				SetReadOnly(false);
+				lldel.Enabled = true;
+			}
+			else
+			{
+				llopenbhav.Enabled = false;
+				this.tbInst_OpCode.Text = "";
+				this.tbInst_Reserved.Text = "";
+				this.tba1.SelectedIndex = 0;
+				this.tba2.SelectedIndex = 0;
+				this.tbInst_Op0.Text = "";
+				this.tbInst_Op1.Text = "";
+				this.tbInst_Op2.Text = "";
+				this.tbInst_Op3.Text = "";
+				this.tbInst_Op4.Text = "";
+				this.tbInst_Op5.Text = "";
+				this.tbInst_Op6.Text = "";
+				this.tbInst_Op7.Text = "";
+				this.tbInst_Unk0.Text = "";
+				this.tbInst_Unk1.Text = "";
+				this.tbInst_Unk2.Text = "";
+				this.tbInst_Unk3.Text = "";
+				this.tbInst_Unk4.Text = "";
+				this.tbInst_Unk5.Text = "";
+				this.tbInst_Unk6.Text = "";
+				this.tbInst_Unk7.Text = "";
+
+				this.tbInst_Instruction.Text = "";
+				SetReadOnly(true);
+				lldel.Enabled = false;
+			}
+			llcancel.Enabled = false;
+			internalchg = false;
 		}
 		#endregion
 
@@ -198,7 +276,6 @@ namespace SimPe.PackedFiles.UserInterface
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Bhav) wrp;
-			currentInst = null;
 			origInst = null;
 
 			internalchg = true;
@@ -214,9 +291,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Enabled = wrapper.Changed;
 
 			this.pnflowcontainer.UpdateGUI(wrapper);
-			pnflowcontainer.AutoScrollPosition = new System.Drawing.Point(0, 0);
-			pnflowcontainer_SelectedIndexChanged(null, null);
-			this.pnflowcontainer.SelectedIndex = 0;
 		}		
 
 		#endregion
@@ -312,7 +386,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.TabIndex = ((int)(resources.GetObject("pnflowcontainer.TabIndex")));
 			this.pnflowcontainer.Visible = ((bool)(resources.GetObject("pnflowcontainer.Visible")));
 			this.pnflowcontainer.WrapperChanged += new System.EventHandler(this.pnflowcontainer_WrapperChanged);
-			this.pnflowcontainer.SelectedIndexChanged += new System.EventHandler(this.pnflowcontainer_SelectedIndexChanged);
+			this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
 			// 
 			// label1
 			// 
@@ -1831,14 +1905,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private void OpenBhavClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
-			Bhav b = Instruction.LoadGlobalBHAV(currentInst.OpCode);
+			Bhav b = Instruction.LoadGlobalBHAV(pnflowcontainer.CurrentInst.OpCode);
 			BhavForm ui = (BhavForm)b.UIHandler;
 			// but make it clear it's read only
 			ui.btnCommit.Visible = ui.btOpCode.Visible = ui.btOperandWiz.Visible =
 				ui.lladd.Visible = ui.llcancel.Visible = ui.lldel.Visible = ui.llmove.Visible =
 				ui.llopenbhav.Visible = ui.llsort.Visible = ui.tbLines.Enabled = false;
 			ui.bhavPanel.Dock = DockStyle.Fill;
-			ui.Text = "Global BHAV: " + currentInst.ToString();
+			ui.Text = "Global BHAV: " + pnflowcontainer.CurrentInst.ToString();
 			b.UpdateUI();
 			ui.Show();
 		}
@@ -1863,55 +1937,25 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llcancel_Clicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			currentInst = origInst;
-			FormToWrapper();
-			llcancel.Enabled = false;
-			pnflowcontainer_SelectedIndexChanged(null, null);
+			this.pnflowcontainer.CurrentInst = origInst;
 		}
 
 		private void AddOpcodeClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			if (currentInst == null)
-				currentInst = new Instruction(wrapper);
-			wrapper.Instructions.Insert(pnflowcontainer.SelectedIndex + 1, currentInst);
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
-			pnflowcontainer.UpdateGUI(wrapper);
-
-			pnflowcontainer.SelectedIndex++;
+			this.pnflowcontainer.Add();
 		}
 
 		private void DeleteOpcodeClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			int newIndex = pnflowcontainer.SelectedIndex - 1;
-			internalchg = true;
-			wrapper.Instructions.RemoveAt(pnflowcontainer.SelectedIndex);
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
-			pnflowcontainer.UpdateGUI(wrapper);
-
-			if (newIndex == -1 && wrapper.Instructions.Count > 0) newIndex = 0;
-			pnflowcontainer.SelectedIndex = newIndex;
-			internalchg = false;
-			pnflowcontainer_SelectedIndexChanged(null, null); // force the opcode to update
+			this.pnflowcontainer.Delete();
 		}
 
 		private void llmove_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			if (pnflowcontainer.SelectedIndex < 0) return;
-
 			int mv;
 			try { mv = Convert.ToInt32(tbLines.Text); }
 			catch (Exception ex) { return; }
-
-			int from = pnflowcontainer.SelectedIndex;
-			int to = from + mv;
-
-			wrapper.Instructions.Move(from, to);
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
-
-			this.pnflowcontainer.UpdateGUI(wrapper);
+			this.pnflowcontainer.MoveInst(mv);
 		}
 
 		private void tbmv_TextChanged(object sender, System.EventArgs e)
@@ -1930,115 +1974,22 @@ namespace SimPe.PackedFiles.UserInterface
 		private void OpenOperandWiz(object sender, System.EventArgs e)
 		{
 			BhavWizardForm bwf = new BhavWizardForm();
-			Instruction ret = bwf.Execute(currentInst);
+			Instruction ret = bwf.Execute(this.pnflowcontainer.CurrentInst);
 
-			if (ret!=null) FormToWrapper();
+			if (ret!=null) this.pnflowcontainer.CurrentInst = ret;
 		}
 		
 		private void SortInstructions(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			wrapper.Instructions.Sort();
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
-
-			pnflowcontainer.UpdateGUI(wrapper);
-			pnflowcontainer.SelectedIndex = -1;
+			this.pnflowcontainer.Sort();
 		}
 
-		private void pnflowcontainer_SelectedIndexChanged(object sender, System.EventArgs e)
+		private void pnflowcontainer_SelectedInstChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			internalchg = true;
-			if (pnflowcontainer.SelectedIndex >= 0)
-			{
-				Instruction inst = wrapper.Instructions[this.pnflowcontainer.SelectedIndex];
-				currentInst = inst.Clone();
-				origInst = inst.Clone();
-
-				//load referenced Bhav
-				Bhav b = null;
-				if (currentInst.GlobalBhav)
-					b = Instruction.LoadGlobalBHAV(currentInst.OpCode);
-				llopenbhav.Enabled = (b!=null);
-
-				this.tbInst_OpCode.Text = "0x"+Helper.HexString(currentInst.OpCode);
-				this.btOperandWiz.Enabled = BhavWizardForm.Available(currentInst);
-
-				this.tbInst_Reserved.Text = "0x"+Helper.HexString(currentInst.Reserved0);
-				if (inst.Target1 >= 0xFFFC)
-				{
-					this.tba1.SelectedIndex = currentInst.Target1 - 0xFFFC;
-				}
-				else
-				{
-					this.tba1.SelectedIndex = -1;
-					this.tba1.Text = "0x"+Helper.HexString(currentInst.Target1);
-				}
-				if (currentInst.Target2 >= 0xFFFC)
-				{
-					this.tba2.SelectedIndex = currentInst.Target2 - 0xFFFC;
-				}
-				else
-				{
-					this.tba2.SelectedIndex = -1;
-					this.tba2.Text = "0x"+Helper.HexString(currentInst.Target2);
-				}
-				this.tbInst_Op0.Text = Helper.HexString(currentInst.Operands[0]);
-				this.tbInst_Op1.Text = Helper.HexString(currentInst.Operands[1]);
-				this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
-				this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
-				this.tbInst_Op4.Text = Helper.HexString(currentInst.Operands[4]);
-				this.tbInst_Op5.Text = Helper.HexString(currentInst.Operands[5]);
-				this.tbInst_Op6.Text = Helper.HexString(currentInst.Operands[6]);
-				this.tbInst_Op7.Text = Helper.HexString(currentInst.Operands[7]);
-
-				this.tbInst_Unk0.Text = Helper.HexString(currentInst.Reserved1[0]);
-				this.tbInst_Unk1.Text = Helper.HexString(currentInst.Reserved1[1]);
-				this.tbInst_Unk2.Text = Helper.HexString(currentInst.Reserved1[2]);
-				this.tbInst_Unk3.Text = Helper.HexString(currentInst.Reserved1[3]);
-				this.tbInst_Unk4.Text = Helper.HexString(currentInst.Reserved1[4]);
-				this.tbInst_Unk5.Text = Helper.HexString(currentInst.Reserved1[5]);
-				this.tbInst_Unk6.Text = Helper.HexString(currentInst.Reserved1[6]);
-				this.tbInst_Unk7.Text = Helper.HexString(currentInst.Reserved1[7]);
-
-				this.tbInst_Instruction.Text = currentInst.ToString();
-				SetReadOnly(false);
-				lldel.Enabled = true;
-			}
-			else
-			{
-				currentInst = origInst = null;
-
-				llopenbhav.Enabled = false;
-				this.tbInst_OpCode.Text = "";
-				this.tbInst_Reserved.Text = "";
-				this.tba1.SelectedIndex = 0;
-				this.tba2.SelectedIndex = 0;
-				this.tbInst_Op0.Text = "";
-				this.tbInst_Op1.Text = "";
-				this.tbInst_Op2.Text = "";
-				this.tbInst_Op3.Text = "";
-				this.tbInst_Op4.Text = "";
-				this.tbInst_Op5.Text = "";
-				this.tbInst_Op6.Text = "";
-				this.tbInst_Op7.Text = "";
-				this.tbInst_Unk0.Text = "";
-				this.tbInst_Unk1.Text = "";
-				this.tbInst_Unk2.Text = "";
-				this.tbInst_Unk3.Text = "";
-				this.tbInst_Unk4.Text = "";
-				this.tbInst_Unk5.Text = "";
-				this.tbInst_Unk6.Text = "";
-				this.tbInst_Unk7.Text = "";
-
-				this.tbInst_Instruction.Text = "";
-				SetReadOnly(true);
-				lldel.Enabled = false;
-			}
-			internalchg = false;
-
-			llcancel.Enabled = false;
+			origInst = pnflowcontainer.CurrentInst;
+			UpdateInstPanel(pnflowcontainer.CurrentInst);
 		}
 		private void pnflowcontainer_WrapperChanged(object sender, System.EventArgs e)
 		{
@@ -2124,6 +2075,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			bool somethingChanged = false;
+			Instruction currentInst = this.pnflowcontainer.CurrentInst;
 
 			ComboBox[] cb = { tba1, tba2 };
 			ushort[] orig = { currentInst.Target1, currentInst.Target2 };
@@ -2147,7 +2099,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			if (somethingChanged) 
 			{
-				FormToWrapper();
+				this.pnflowcontainer.CurrentInst = currentInst;
 				this.llcancel.Enabled = true;
 			}
 		}
@@ -2157,6 +2109,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			bool somethingChanged = false;
+			Instruction currentInst = this.pnflowcontainer.CurrentInst;
 
 			try
 			{
@@ -2170,7 +2123,7 @@ namespace SimPe.PackedFiles.UserInterface
 			catch (Exception ex) {}
 			if (somethingChanged) 
 			{
-				FormToWrapper();
+				this.pnflowcontainer.CurrentInst = currentInst;
 				this.llcancel.Enabled = true;
 			}
 		}
@@ -2178,6 +2131,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private void Byte_TextChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
+
+			bool somethingChanged = false;
+			Instruction currentInst = this.pnflowcontainer.CurrentInst;
 
 			TextBox[] OpBytes =
 				{
@@ -2189,7 +2145,7 @@ namespace SimPe.PackedFiles.UserInterface
 					tbInst_Unk0, tbInst_Unk1, tbInst_Unk2, tbInst_Unk3,
 					tbInst_Unk4, tbInst_Unk5, tbInst_Unk6, tbInst_Unk7
 				};
-			bool somethingChanged = false;
+
 			for (int i = 0; i < 8; i++)
 			{
 				try 
@@ -2225,7 +2181,7 @@ namespace SimPe.PackedFiles.UserInterface
 			catch (Exception ex) {}
 			if (somethingChanged) 
 			{
-				FormToWrapper();
+				this.pnflowcontainer.CurrentInst = currentInst;
 				this.llcancel.Enabled = true;
 			}
 		}
