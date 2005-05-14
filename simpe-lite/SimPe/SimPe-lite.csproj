@@ -9,7 +9,7 @@
             <Settings
                 ApplicationIcon = "img\simpe.ico"
                 AssemblyKeyContainerName = ""
-                AssemblyName = "SimPe"
+                AssemblyName = "SimPe-lite"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -178,11 +178,6 @@
                     Name = "SimsGUID"
                     Project = "{8A2A1FCD-F166-4AE8-A87A-7424215C93AF}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "SourceGrid2"
-                    AssemblyName = "SourceGrid2"
-                    HintPath = "..\SourceGrid2.dll"
                 />
                 <Reference
                     Name = "SimPe RCOL"

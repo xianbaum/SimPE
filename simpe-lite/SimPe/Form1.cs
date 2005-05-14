@@ -296,6 +296,8 @@ namespace SimPe
 			this.tboffset = new System.Windows.Forms.TextBox();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
+			this.llimpraw = new Skybound.VisualStyles.VisualStyleLinkLabel();
+			this.llexportraw = new Skybound.VisualStyles.VisualStyleLinkLabel();
 			this.panel1 = new System.Windows.Forms.Panel();
 			this.tabPage5 = new System.Windows.Forms.TabPage();
 			this.label4 = new System.Windows.Forms.Label();
@@ -356,8 +358,6 @@ namespace SimPe
 			this.pnTop = new System.Windows.Forms.Panel();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.visualStyleProvider1 = new Skybound.VisualStyles.VisualStyleProvider();
-			this.llexportraw = new Skybound.VisualStyles.VisualStyleLinkLabel();
-			this.llimpraw = new Skybound.VisualStyles.VisualStyleLinkLabel();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage4.SuspendLayout();
@@ -1641,6 +1641,56 @@ namespace SimPe
 			this.tabPage2.Visible = ((bool)(resources.GetObject("tabPage2.Visible")));
 			this.visualStyleProvider1.SetVisualStyleSupport(this.tabPage2, true);
 			// 
+			// llimpraw
+			// 
+			this.llimpraw.AccessibleDescription = resources.GetString("llimpraw.AccessibleDescription");
+			this.llimpraw.AccessibleName = resources.GetString("llimpraw.AccessibleName");
+			this.llimpraw.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llimpraw.Anchor")));
+			this.llimpraw.AutoSize = ((bool)(resources.GetObject("llimpraw.AutoSize")));
+			this.llimpraw.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llimpraw.Dock")));
+			this.llimpraw.Enabled = ((bool)(resources.GetObject("llimpraw.Enabled")));
+			this.llimpraw.Font = ((System.Drawing.Font)(resources.GetObject("llimpraw.Font")));
+			this.llimpraw.Image = ((System.Drawing.Image)(resources.GetObject("llimpraw.Image")));
+			this.llimpraw.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llimpraw.ImageAlign")));
+			this.llimpraw.ImageIndex = ((int)(resources.GetObject("llimpraw.ImageIndex")));
+			this.llimpraw.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llimpraw.ImeMode")));
+			this.llimpraw.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llimpraw.LinkArea")));
+			this.llimpraw.Location = ((System.Drawing.Point)(resources.GetObject("llimpraw.Location")));
+			this.llimpraw.Name = "llimpraw";
+			this.llimpraw.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llimpraw.RightToLeft")));
+			this.llimpraw.Size = ((System.Drawing.Size)(resources.GetObject("llimpraw.Size")));
+			this.llimpraw.TabIndex = ((int)(resources.GetObject("llimpraw.TabIndex")));
+			this.llimpraw.TabStop = true;
+			this.llimpraw.Text = resources.GetString("llimpraw.Text");
+			this.llimpraw.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llimpraw.TextAlign")));
+			this.llimpraw.Visible = ((bool)(resources.GetObject("llimpraw.Visible")));
+			this.llimpraw.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llimpraw_LinkClicked);
+			// 
+			// llexportraw
+			// 
+			this.llexportraw.AccessibleDescription = resources.GetString("llexportraw.AccessibleDescription");
+			this.llexportraw.AccessibleName = resources.GetString("llexportraw.AccessibleName");
+			this.llexportraw.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llexportraw.Anchor")));
+			this.llexportraw.AutoSize = ((bool)(resources.GetObject("llexportraw.AutoSize")));
+			this.llexportraw.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llexportraw.Dock")));
+			this.llexportraw.Enabled = ((bool)(resources.GetObject("llexportraw.Enabled")));
+			this.llexportraw.Font = ((System.Drawing.Font)(resources.GetObject("llexportraw.Font")));
+			this.llexportraw.Image = ((System.Drawing.Image)(resources.GetObject("llexportraw.Image")));
+			this.llexportraw.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llexportraw.ImageAlign")));
+			this.llexportraw.ImageIndex = ((int)(resources.GetObject("llexportraw.ImageIndex")));
+			this.llexportraw.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llexportraw.ImeMode")));
+			this.llexportraw.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llexportraw.LinkArea")));
+			this.llexportraw.Location = ((System.Drawing.Point)(resources.GetObject("llexportraw.Location")));
+			this.llexportraw.Name = "llexportraw";
+			this.llexportraw.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llexportraw.RightToLeft")));
+			this.llexportraw.Size = ((System.Drawing.Size)(resources.GetObject("llexportraw.Size")));
+			this.llexportraw.TabIndex = ((int)(resources.GetObject("llexportraw.TabIndex")));
+			this.llexportraw.TabStop = true;
+			this.llexportraw.Text = resources.GetString("llexportraw.Text");
+			this.llexportraw.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llexportraw.TextAlign")));
+			this.llexportraw.Visible = ((bool)(resources.GetObject("llexportraw.Visible")));
+			this.llexportraw.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llexportraw_LinkClicked);
+			// 
 			// panel1
 			// 
 			this.panel1.AccessibleDescription = resources.GetString("panel1.AccessibleDescription");
@@ -2447,56 +2497,6 @@ namespace SimPe
 			this.splitter1.TabStop = false;
 			this.splitter1.Visible = ((bool)(resources.GetObject("splitter1.Visible")));
 			// 
-			// llexportraw
-			// 
-			this.llexportraw.AccessibleDescription = resources.GetString("llexportraw.AccessibleDescription");
-			this.llexportraw.AccessibleName = resources.GetString("llexportraw.AccessibleName");
-			this.llexportraw.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llexportraw.Anchor")));
-			this.llexportraw.AutoSize = ((bool)(resources.GetObject("llexportraw.AutoSize")));
-			this.llexportraw.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llexportraw.Dock")));
-			this.llexportraw.Enabled = ((bool)(resources.GetObject("llexportraw.Enabled")));
-			this.llexportraw.Font = ((System.Drawing.Font)(resources.GetObject("llexportraw.Font")));
-			this.llexportraw.Image = ((System.Drawing.Image)(resources.GetObject("llexportraw.Image")));
-			this.llexportraw.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llexportraw.ImageAlign")));
-			this.llexportraw.ImageIndex = ((int)(resources.GetObject("llexportraw.ImageIndex")));
-			this.llexportraw.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llexportraw.ImeMode")));
-			this.llexportraw.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llexportraw.LinkArea")));
-			this.llexportraw.Location = ((System.Drawing.Point)(resources.GetObject("llexportraw.Location")));
-			this.llexportraw.Name = "llexportraw";
-			this.llexportraw.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llexportraw.RightToLeft")));
-			this.llexportraw.Size = ((System.Drawing.Size)(resources.GetObject("llexportraw.Size")));
-			this.llexportraw.TabIndex = ((int)(resources.GetObject("llexportraw.TabIndex")));
-			this.llexportraw.TabStop = true;
-			this.llexportraw.Text = resources.GetString("llexportraw.Text");
-			this.llexportraw.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llexportraw.TextAlign")));
-			this.llexportraw.Visible = ((bool)(resources.GetObject("llexportraw.Visible")));
-			this.llexportraw.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llexportraw_LinkClicked);
-			// 
-			// llimpraw
-			// 
-			this.llimpraw.AccessibleDescription = resources.GetString("llimpraw.AccessibleDescription");
-			this.llimpraw.AccessibleName = resources.GetString("llimpraw.AccessibleName");
-			this.llimpraw.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llimpraw.Anchor")));
-			this.llimpraw.AutoSize = ((bool)(resources.GetObject("llimpraw.AutoSize")));
-			this.llimpraw.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llimpraw.Dock")));
-			this.llimpraw.Enabled = ((bool)(resources.GetObject("llimpraw.Enabled")));
-			this.llimpraw.Font = ((System.Drawing.Font)(resources.GetObject("llimpraw.Font")));
-			this.llimpraw.Image = ((System.Drawing.Image)(resources.GetObject("llimpraw.Image")));
-			this.llimpraw.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llimpraw.ImageAlign")));
-			this.llimpraw.ImageIndex = ((int)(resources.GetObject("llimpraw.ImageIndex")));
-			this.llimpraw.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llimpraw.ImeMode")));
-			this.llimpraw.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llimpraw.LinkArea")));
-			this.llimpraw.Location = ((System.Drawing.Point)(resources.GetObject("llimpraw.Location")));
-			this.llimpraw.Name = "llimpraw";
-			this.llimpraw.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llimpraw.RightToLeft")));
-			this.llimpraw.Size = ((System.Drawing.Size)(resources.GetObject("llimpraw.Size")));
-			this.llimpraw.TabIndex = ((int)(resources.GetObject("llimpraw.TabIndex")));
-			this.llimpraw.TabStop = true;
-			this.llimpraw.Text = resources.GetString("llimpraw.Text");
-			this.llimpraw.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llimpraw.TextAlign")));
-			this.llimpraw.Visible = ((bool)(resources.GetObject("llimpraw.Visible")));
-			this.llimpraw.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llimpraw_LinkClicked);
-			// 
 			// Form1
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2574,7 +2574,7 @@ namespace SimPe
 				Parameters param = new Parameters(args);
 				Helper.CommandlineParameters = param;
 
-				if (Helper.WindowsRegistry.Version<11)
+				if (Helper.WindowsRegistry.Version<1)
 				{
 					if (MessageBox.Show(Localization.Manager.GetString("disclaimer"), "Information", MessageBoxButtons.YesNo)==DialogResult.No) return; 
 				}
@@ -2592,7 +2592,7 @@ namespace SimPe
 				#endregion#
 
 				#region check for a pre EP1 folders xml
-				if (Helper.WindowsRegistry.Version<35) 
+				if (Helper.WindowsRegistry.Version<1) 
 				{
 					string xmlname = System.IO.Path.Combine(Helper.SimPeDataPath, "folders.xml");
 					if (System.IO.File.Exists(xmlname))
@@ -2870,7 +2870,6 @@ namespace SimPe
 			RemoteHandler rh = new RemoteHandler(this);
 
 			this.Text += " (Version "+Helper.SimPeVersion.ProductVersion+")";
-			this.Text += " (PLJ build)";
 			UpdateRecentFileMenu();
 
 			minometa.Checked = !reg.LoadMetaInfo;			
@@ -3264,8 +3263,7 @@ namespace SimPe
 					package.Save(sfd.FileName);
 					this.UpdateFileGroupFilter(null, null);
 
-					this.Text = "SimPe ["+package.FileName+"]";
-					this.Text += " (PLJ build)";
+					this.Text = "SimPe-lite ["+package.FileName+"]";
 					if (package!=null) package.FileName = sfd.FileName;
 					reg.AddRecentFile(sfd.FileName);
 					UpdateRecentFileMenu();				
@@ -3483,8 +3481,7 @@ namespace SimPe
 		internal void OpenPackage(string filename) 
 		{
 			RemoveCurrentPlugin();
-			this.Text = "SimPe ["+filename+"]";
-			this.Text += " (PLJ build)";
+			this.Text = "SimPe-lite ["+filename+"]";
 			try 
 			{		
 				this.Cursor = Cursors.WaitCursor;
@@ -3794,8 +3791,7 @@ namespace SimPe
 
 					package.Save(ms, package.FileName);*/
 					package.Save();
-					this.Text = "SimPe ["+package.FileName+"]";
-					this.Text += " (PLJ build)";
+					this.Text = "SimPe-lite ["+package.FileName+"]";
 #endif					
 					//this.OpenPackage(package.FileName);		
 					this.UpdateFileGroupFilter(null, null);

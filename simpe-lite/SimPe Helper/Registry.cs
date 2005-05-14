@@ -43,7 +43,7 @@ namespace SimPe
 		/// </summary>
 		public Registry()
 		{
-			rk = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("Software\\Ambertation\\SimPe");
+			rk = Microsoft.Win32.Registry.CurrentUser.CreateSubKey("Software\\PLJSoft\\SimPe-lite");
 		}
 
 		/// <summary>
