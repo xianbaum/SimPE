@@ -286,10 +286,10 @@ namespace SimPe.PackedFiles.UserInterface
 			tbLocalC.Text = wrapper.Header.LocalVarCount.ToString();
 			tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
 			tbReserved.Text = "0x"+Helper.HexString(wrapper.Header.Zero);
-			internalchg = false;
 
 			this.btnCommit.Enabled = wrapper.Changed;
 
+			internalchg = false;
 			this.pnflowcontainer.UpdateGUI(wrapper);
 		}		
 
@@ -374,6 +374,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("pnflowcontainer.AutoScrollMargin")));
 			this.pnflowcontainer.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnflowcontainer.AutoScrollMinSize")));
 			this.pnflowcontainer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnflowcontainer.BackgroundImage")));
+			this.pnflowcontainer.CurrentInst = null;
 			this.pnflowcontainer.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnflowcontainer.Dock")));
 			this.pnflowcontainer.Enabled = ((bool)(resources.GetObject("pnflowcontainer.Enabled")));
 			this.pnflowcontainer.Font = ((System.Drawing.Font)(resources.GetObject("pnflowcontainer.Font")));
@@ -385,8 +386,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.Size = ((System.Drawing.Size)(resources.GetObject("pnflowcontainer.Size")));
 			this.pnflowcontainer.TabIndex = ((int)(resources.GetObject("pnflowcontainer.TabIndex")));
 			this.pnflowcontainer.Visible = ((bool)(resources.GetObject("pnflowcontainer.Visible")));
-			this.pnflowcontainer.WrapperChanged += new System.EventHandler(this.pnflowcontainer_WrapperChanged);
 			this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
+			this.pnflowcontainer.WrapperChanged += new System.EventHandler(this.pnflowcontainer_WrapperChanged);
 			// 
 			// label1
 			// 
@@ -616,6 +617,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba2.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
 			this.tba2.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
 			this.tba2.TextChanged += new System.EventHandler(this.Target_TextChanged);
+			this.tba2.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
 			this.tba2.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba2.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
 			// 
@@ -647,6 +649,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba1.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
 			this.tba1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
 			this.tba1.TextChanged += new System.EventHandler(this.Target_TextChanged);
+			this.tba1.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
 			this.tba1.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
 			// 
@@ -1988,8 +1991,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (internalchg) return;
 
+			internalchg = true;
 			origInst = pnflowcontainer.CurrentInst;
 			UpdateInstPanel(pnflowcontainer.CurrentInst);
+			internalchg = false;
 		}
 		private void pnflowcontainer_WrapperChanged(object sender, System.EventArgs e)
 		{
@@ -2084,10 +2089,7 @@ namespace SimPe.PackedFiles.UserInterface
 				try
 				{
 					ushort val;
-					if (cb[i].SelectedIndex != -1)
-						val = (ushort)(0x0FFFC + cb[i].SelectedIndex);
-					else
-						val = Convert.ToUInt16(cb[i].Text, 16);
+					val = Convert.ToUInt16(cb[i].Text, 16);
 					if (orig[i] != val)
 					{
 						if (i == 0) currentInst.Target1 = val;
@@ -2099,7 +2101,44 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			if (somethingChanged) 
 			{
+				internalchg = true;
 				this.pnflowcontainer.CurrentInst = currentInst;
+				internalchg = false;
+				this.llcancel.Enabled = true;
+			}
+		}
+
+		private void Target_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			bool somethingChanged = false;
+			Instruction currentInst = this.pnflowcontainer.CurrentInst;
+
+			ComboBox[] cb = { tba1, tba2 };
+			ushort[] orig = { currentInst.Target1, currentInst.Target2 };
+			for (int i = 0; i < cb.Length; i++)
+			{
+				if (cb[i].SelectedIndex != -1)
+				{
+					try
+					{
+						ushort val = (ushort)(0x0FFFC + cb[i].SelectedIndex);
+						if (orig[i] != val)
+						{
+							if (i == 0) currentInst.Target1 = val;
+							else        currentInst.Target2 = val;
+							somethingChanged = true;
+						}
+					}
+					catch (Exception ex) {}
+				}
+			}
+			if (somethingChanged) 
+			{
+				internalchg = true;
+				this.pnflowcontainer.CurrentInst = currentInst;
+				internalchg = false;
 				this.llcancel.Enabled = true;
 			}
 		}
@@ -2123,7 +2162,9 @@ namespace SimPe.PackedFiles.UserInterface
 			catch (Exception ex) {}
 			if (somethingChanged) 
 			{
+				internalchg = true;
 				this.pnflowcontainer.CurrentInst = currentInst;
+				internalchg = false;
 				this.llcancel.Enabled = true;
 			}
 		}
@@ -2181,7 +2222,9 @@ namespace SimPe.PackedFiles.UserInterface
 			catch (Exception ex) {}
 			if (somethingChanged) 
 			{
+				internalchg = true;
 				this.pnflowcontainer.CurrentInst = currentInst;
+				internalchg = false;
 				this.llcancel.Enabled = true;
 			}
 		}
