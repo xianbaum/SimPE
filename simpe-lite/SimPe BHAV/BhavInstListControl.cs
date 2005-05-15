@@ -35,9 +35,6 @@ namespace SimPe.PackedFiles.UserInterface
 	/// </summary>
 	public class BhavInstListControl : System.Windows.Forms.UserControl
 	{
-		private System.Windows.Forms.MenuItem menuItem1;
-		private System.Windows.Forms.MenuItem menuItem2;
-		private System.Windows.Forms.ContextMenu cmcopy;
 		private System.Windows.Forms.PictureBox pnflow1;
 		private System.Windows.Forms.PictureBox pnflow2;
 		private System.Windows.Forms.Panel bhavInstListPanel;
@@ -194,15 +191,17 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			set 
 			{
+				if (csel < 0 && value == null) return;
 				if (csel < 0) throw new Exception("No current instruction");
-				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
 				if (value == null) throw new Exception("Invalid value");
+				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
 
 				wrapper.Instructions[csel] = ((Instruction)value).Clone();
 
 				wrapper.Changed = true;
 				WrapperChanged(this, new EventArgs());
-				myrepaint();
+				UpdatePnInstr(flowitems[csel].pnInstr, value, csel);
+				pnflow.Image = DrawConnectors();
 				SelectedInstChanged(this, new EventArgs());
 			}
 		}
@@ -253,7 +252,6 @@ namespace SimPe.PackedFiles.UserInterface
 				flowitems[ct].instruction = i;
 				Panel pn = flowitems[ct].pnInstr = new Panel();
 
-				pn.Controls.Clear();
 				pn.Parent = pnflow;
 				pn.Height = InstructionItem.Height;
 				pn.Top = ct*(pn.Height+4);
@@ -265,7 +263,6 @@ namespace SimPe.PackedFiles.UserInterface
 					pn.BackColor = System.Drawing.Color.PowderBlue;
 				else
 					pn.BackColor = System.Drawing.Color.White;
-				pn.ContextMenu = this.cmcopy;
 				pn.Tag = ct;
 				pn.Click += new EventHandler(TagItem_Click);
 
@@ -291,6 +288,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void UpdatePnInstr(Panel pn, Instruction i, int ct)
 		{
+			pn.Controls.Clear();
+
 			Label lb = new Label();
 			lb.Parent = pn;
 			lb.Width = pn.Width - 40;
@@ -302,7 +301,6 @@ namespace SimPe.PackedFiles.UserInterface
 			lb.Visible = true;
 			lb.Tag = ct;
 			lb.Click += new EventHandler(TagItem_Click);
-			lb.MouseMove += new MouseEventHandler(ItemMouseMove);
 
 			LinkLabel llt = new LinkLabel();
 			llt.Parent = pn;					
@@ -505,40 +503,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private void InitializeComponent()
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(BhavInstListControl));
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			this.cmcopy = new System.Windows.Forms.ContextMenu();
 			this.pnflow1 = new System.Windows.Forms.PictureBox();
 			this.pnflow2 = new System.Windows.Forms.PictureBox();
 			this.bhavInstListPanel = new System.Windows.Forms.Panel();
 			this.SuspendLayout();
-			// 
-			// menuItem1
-			// 
-			this.menuItem1.Enabled = ((bool)(resources.GetObject("menuItem1.Enabled")));
-			this.menuItem1.Index = 0;
-			this.menuItem1.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("menuItem1.Shortcut")));
-			this.menuItem1.ShowShortcut = ((bool)(resources.GetObject("menuItem1.ShowShortcut")));
-			this.menuItem1.Text = resources.GetString("menuItem1.Text");
-			this.menuItem1.Visible = ((bool)(resources.GetObject("menuItem1.Visible")));
-			this.menuItem1.Click += new System.EventHandler(this.CopyInstruction);
-			// 
-			// menuItem2
-			// 
-			this.menuItem2.Enabled = ((bool)(resources.GetObject("menuItem2.Enabled")));
-			this.menuItem2.Index = 1;
-			this.menuItem2.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("menuItem2.Shortcut")));
-			this.menuItem2.ShowShortcut = ((bool)(resources.GetObject("menuItem2.ShowShortcut")));
-			this.menuItem2.Text = resources.GetString("menuItem2.Text");
-			this.menuItem2.Visible = ((bool)(resources.GetObject("menuItem2.Visible")));
-			this.menuItem2.Click += new System.EventHandler(this.InsertInstruction);
-			// 
-			// cmcopy
-			// 
-			this.cmcopy.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																				   this.menuItem1,
-																				   this.menuItem2});
-			this.cmcopy.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cmcopy.RightToLeft")));
 			// 
 			// pnflow1
 			// 
@@ -659,36 +627,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			SelectedIndex = (int)((LinkLabel)sender).Tag;
 			MoveInst(+1);
-		}
-
-		private void CopyInstruction(object sender, System.EventArgs e)
-		{
-			if (csel<0) return;
-			DataObject m_data = new DataObject("Instruction", this.flowitems[csel]);
-			Clipboard.SetDataObject(m_data);
-		}
-
-		private void InsertInstruction(object sender, System.EventArgs e)
-		{
-			try 
-			{
-				InstructionItem i = (InstructionItem)Clipboard.GetDataObject().GetData("Instruction") ;
-				if (i==null) return;
-				wrapper.Instructions.Add(i.instruction);
-				wrapper.Changed = true;
-				WrapperChanged(this, new EventArgs());
-				myrepaint();
-			} 
-			catch (Exception) {}
-			
-		}
-
-		private void ItemMouseMove(object sender, MouseEventArgs e)
-		{
-			if (e.Button == MouseButtons.Left) 
-			{
-				((Label)sender).DoDragDrop(((Label)sender).Tag, DragDropEffects.Link);
-			}
 		}
 
 		#endregion
