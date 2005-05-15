@@ -159,7 +159,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk6.ReadOnly = state;
 			this.tbInst_Unk7.ReadOnly = state;
 
-			btOperandWiz.Enabled = !state;
+			//btOperandWiz.Enabled = !state;
 
 			llmove.Enabled = !state;
 			tbLines.ReadOnly = state;
@@ -177,7 +177,6 @@ namespace SimPe.PackedFiles.UserInterface
 				llopenbhav.Enabled = (b!=null);
 
 				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
-				this.btOperandWiz.Enabled = BhavWizardForm.Available(inst);
 
 				this.tbInst_Reserved.Text = "0x"+Helper.HexString(inst.Reserved0);
 				if (inst.Target1 >= 0xFFFC)
@@ -207,6 +206,8 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Op6.Text = Helper.HexString(inst.Operands[6]);
 				this.tbInst_Op7.Text = Helper.HexString(inst.Operands[7]);
 
+				this.btOperandWiz.Enabled = BhavWizardForm.Available(inst);
+
 				this.tbInst_Unk0.Text = Helper.HexString(inst.Reserved1[0]);
 				this.tbInst_Unk1.Text = Helper.HexString(inst.Reserved1[1]);
 				this.tbInst_Unk2.Text = Helper.HexString(inst.Reserved1[2]);
@@ -235,6 +236,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Op5.Text = "";
 				this.tbInst_Op6.Text = "";
 				this.tbInst_Op7.Text = "";
+				this.btOperandWiz.Enabled = false;
 				this.tbInst_Unk0.Text = "";
 				this.tbInst_Unk1.Text = "";
 				this.tbInst_Unk2.Text = "";
@@ -250,6 +252,15 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			llcancel.Enabled = false;
 			internalchg = false;
+		}
+
+		private void SendInst(Instruction currentInst)
+		{
+			internalchg = true;
+			this.tbInst_Instruction.Text = currentInst.ToString();
+			this.pnflowcontainer.CurrentInst = currentInst;
+			internalchg = false;
+			this.llcancel.Enabled = true;
 		}
 		#endregion
 
@@ -1957,7 +1968,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			int mv;
 			try { mv = Convert.ToInt32(tbLines.Text); }
-			catch (Exception ex) { return; }
+			catch (Exception) { return; }
 			this.pnflowcontainer.MoveInst(mv);
 		}
 
@@ -2097,15 +2108,14 @@ namespace SimPe.PackedFiles.UserInterface
 						somethingChanged = true;
 					}
 				}
-				catch (Exception ex) {}
+				catch (Exception) 
+				{
+					if (i == 0) currentInst.Target1 = 0;
+					else        currentInst.Target2 = 0;
+					somethingChanged = true;
+				}
 			}
-			if (somethingChanged) 
-			{
-				internalchg = true;
-				this.pnflowcontainer.CurrentInst = currentInst;
-				internalchg = false;
-				this.llcancel.Enabled = true;
-			}
+			if (somethingChanged) SendInst(currentInst);
 		}
 
 		private void Target_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -2121,26 +2131,16 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (cb[i].SelectedIndex != -1)
 				{
-					try
+					ushort val = (ushort)(0x0FFFC + cb[i].SelectedIndex);
+					if (orig[i] != val)
 					{
-						ushort val = (ushort)(0x0FFFC + cb[i].SelectedIndex);
-						if (orig[i] != val)
-						{
-							if (i == 0) currentInst.Target1 = val;
-							else        currentInst.Target2 = val;
-							somethingChanged = true;
-						}
+						if (i == 0) currentInst.Target1 = val;
+						else        currentInst.Target2 = val;
+						somethingChanged = true;
 					}
-					catch (Exception ex) {}
 				}
 			}
-			if (somethingChanged) 
-			{
-				internalchg = true;
-				this.pnflowcontainer.CurrentInst = currentInst;
-				internalchg = false;
-				this.llcancel.Enabled = true;
-			}
+			if (somethingChanged) SendInst(currentInst);
 		}
 
 		private void UShort_TextChanged(object sender, System.EventArgs e)
@@ -2159,14 +2159,12 @@ namespace SimPe.PackedFiles.UserInterface
 					somethingChanged = true;
 				}
 			}
-			catch (Exception ex) {}
-			if (somethingChanged) 
+			catch (Exception)
 			{
-				internalchg = true;
-				this.pnflowcontainer.CurrentInst = currentInst;
-				internalchg = false;
-				this.llcancel.Enabled = true;
+				currentInst.OpCode = 0;
+				somethingChanged = true;
 			}
+			if (somethingChanged) SendInst(currentInst);
 		}
 
 		private void Byte_TextChanged(object sender, System.EventArgs e)
@@ -2198,7 +2196,11 @@ namespace SimPe.PackedFiles.UserInterface
 						somethingChanged = true;
 					}
 				}
-				catch (Exception ex) {}
+				catch (Exception)
+				{
+					currentInst.Operands[i] = 0;
+					somethingChanged = true;
+				}
 				try 
 				{ 
 					byte val = Convert.ToByte(UnkBytes[i].Text, 16);
@@ -2208,7 +2210,11 @@ namespace SimPe.PackedFiles.UserInterface
 						somethingChanged = true;
 					}
 				}
-				catch (Exception ex) {}
+				catch (Exception)
+				{
+					currentInst.Reserved1[i] = 0;
+					somethingChanged = true;
+				}
 			}
 			try 
 			{ 
@@ -2219,14 +2225,12 @@ namespace SimPe.PackedFiles.UserInterface
 					somethingChanged = true;
 				}
 			}
-			catch (Exception ex) {}
-			if (somethingChanged) 
+			catch (Exception)
 			{
-				internalchg = true;
-				this.pnflowcontainer.CurrentInst = currentInst;
-				internalchg = false;
-				this.llcancel.Enabled = true;
+				currentInst.Reserved0 = 0;
+				somethingChanged = true;
 			}
+			if (somethingChanged) SendInst(currentInst);
 		}
 		#endregion
 	}

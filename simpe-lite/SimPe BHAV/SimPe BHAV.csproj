@@ -264,6 +264,16 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "BhavInstListItemUI.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BhavInstListItemUI.resx"
+                    DependentUpon = "BhavInstListItemUI.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "BhavInstruction.cs"
                     SubType = "Form"
                     BuildAction = "Compile"

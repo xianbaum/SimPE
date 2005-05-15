@@ -76,11 +76,14 @@ namespace SimPe.PackedFiles.UserInterface
 		/// Indicates this control updated the Bhav wrapper
 		/// </summary>
 		public event EventHandler WrapperChanged;
+
 		private int csel = -1;
 		private Bhav wrapper = null;
 		private InstructionItem[] flowitems;
 		private PictureBox pnflow = null;
 
+		protected virtual void OnSelectedInstChanged(EventArgs e) { if (SelectedInstChanged != null) { SelectedInstChanged(this, e); } }
+		protected virtual void OnWrapperChanged(EventArgs e) { if (WrapperChanged != null) { WrapperChanged(this, e); } }
 		/// <summary>
 		/// Returns or sets the currently selected BhavInstruction for editing
 		/// </summary>
@@ -92,14 +95,18 @@ namespace SimPe.PackedFiles.UserInterface
 				if (csel == value) return;
 				if (value >= flowitems.Length || value < -1) throw(new Exception("Out Of Range: " + value.ToString()));
 				if ((csel >= 0) && (csel < flowitems.Length))
-					flowitems[csel].pnInstr.BackColor = System.Drawing.Color.White;
+					flowitems[csel].MakeUnselected();
+
 				csel = value;
+				OnSelectedInstChanged(new EventArgs());
+
 				if ((csel >= 0) && (csel < flowitems.Length))
 				{
-					flowitems[csel].pnInstr.BackColor = System.Drawing.Color.PowderBlue;
-					int newY = flowitems[csel].pnInstr.Top;
+					flowitems[csel].MakeSelected();
+					flowitems[csel].Focus();
+					int newY = flowitems[csel].Top;
 					int currentYmin = -this.AutoScrollPosition.Y;
-					int currentYmax = currentYmin + this.Height - (InstructionItem.Height+4);
+					int currentYmax = currentYmin + this.Height - (BhavInstListItemUI.rowHeight+4);
 					if (newY < currentYmin)
 					{
 						this.AutoScrollPosition = new Point(this.AutoScrollPosition.X, newY);
@@ -112,10 +119,8 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 				pnflow.Image = DrawConnectors();
 				Update();
-				SelectedInstChanged(this, new EventArgs());
 			}
 		}
-
 
 		public void Add()
 		{
@@ -127,7 +132,7 @@ namespace SimPe.PackedFiles.UserInterface
 				wrapper.Instructions.Insert(csel + 1, CurrentInst);
 
 			wrapper.Changed = true;
-			WrapperChanged(this, new EventArgs());
+			OnWrapperChanged(new EventArgs());
 			myrepaint();
 		}
 
@@ -140,7 +145,7 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper.Instructions.RemoveAt(csel);
 
 			wrapper.Changed = true;
-			WrapperChanged(this, new EventArgs());
+			OnWrapperChanged(new EventArgs());
 			myrepaint();
 
 			SelectedIndex = newIndex;
@@ -159,7 +164,7 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper.Instructions.Move(csel, to);
 
 			wrapper.Changed = true;
-			WrapperChanged(this, new EventArgs());
+			OnWrapperChanged(new EventArgs());
 			myrepaint();
 
 			SelectedIndex = to;
@@ -174,7 +179,7 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper.Instructions.Sort();
 
 			wrapper.Changed = true;
-			WrapperChanged(this, new EventArgs());
+			OnWrapperChanged(new EventArgs());
 			myrepaint();
 
 			if (inst != null)
@@ -182,6 +187,7 @@ namespace SimPe.PackedFiles.UserInterface
 			else
 				SelectedIndex = 0;
 		}
+
 
 		public Instruction CurrentInst
 		{
@@ -196,15 +202,19 @@ namespace SimPe.PackedFiles.UserInterface
 				if (value == null) throw new Exception("Invalid value");
 				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
 
-				wrapper.Instructions[csel] = ((Instruction)value).Clone();
-
+				wrapper.Instructions[csel] = value.Clone();
 				wrapper.Changed = true;
-				WrapperChanged(this, new EventArgs());
-				UpdatePnInstr(flowitems[csel].pnInstr, value, csel);
+				OnWrapperChanged(new EventArgs());
+
+				pnflow.Controls.RemoveAt(csel);
+				flowitems[csel] = makeInstructionItem(csel);
+				flowitems[csel].MakeSelected();
 				pnflow.Image = DrawConnectors();
+				Update();
 				SelectedInstChanged(this, new EventArgs());
 			}
 		}
+
 
 		public void UpdateGUI(Bhav wrp)
 		{
@@ -217,14 +227,25 @@ namespace SimPe.PackedFiles.UserInterface
 			pnflow = pnflow1;
 
 			myrepaint();
-
-			if (wrapper.Instructions.Count > 0)
-				SelectedIndex = 0;
-			else
-				SelectedIndex = -1;
+			OnSelectedInstChanged(new EventArgs());
 		}
 
 
+		private InstructionItem makeInstructionItem(int ct)
+		{
+			InstructionItem i = new InstructionItem(ct, wrapper.Instructions[ct], wrapper.Instructions.Count - 1, pnflow);
+
+			i.Top = ct*(BhavInstListItemUI.rowHeight+4);
+			i.Width = bhavInstListPanel.Width - 120;
+			i.MoveUp += new EventHandler(bhavInst_MoveUp);
+			i.MoveDown += new EventHandler(bhavInst_MoveDown);
+			i.Selected += new EventHandler(bhavInst_Selected);
+			i.Unselected += new EventHandler(bhavInst_Unselected);
+			i.TargetClick += new LinkLabelLinkClickedEventHandler(bhavInst_TargetClick);
+			i.KeyDown += new KeyEventHandler(bhavInst_KeyDown);
+
+			return i;
+		}
 		private void myrepaint()
 		{
 			Point currentLoc = this.AutoScrollPosition;
@@ -238,38 +259,9 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 
 			pnflow.Controls.Clear();
+			flowitems = new InstructionItem[wrapper.Instructions.Count];
 
-			if (wrapper != null)
-				flowitems = new InstructionItem[wrapper.Instructions.Count];
-			else
-				flowitems = new InstructionItem[0];
-
-			int ct = 0;
-			foreach (Instruction i in wrapper.Instructions) 
-			{
-				flowitems[ct] = new InstructionItem();
-				flowitems[ct].index = ct;
-				flowitems[ct].instruction = i;
-				Panel pn = flowitems[ct].pnInstr = new Panel();
-
-				pn.Parent = pnflow;
-				pn.Height = InstructionItem.Height;
-				pn.Top = ct*(pn.Height+4);
-				pn.Left = 0;
-				pn.Width = bhavInstListPanel.Width - 120;
-				pn.Visible = true;
-				pn.BorderStyle = BorderStyle.FixedSingle;
-				if (ct == csel)
-					pn.BackColor = System.Drawing.Color.PowderBlue;
-				else
-					pn.BackColor = System.Drawing.Color.White;
-				pn.Tag = ct;
-				pn.Click += new EventHandler(TagItem_Click);
-
-				UpdatePnInstr(flowitems[ct].pnInstr, i, ct);
-
-				ct++;
-			}
+			for (int i = 0; i < wrapper.Instructions.Count; i++) flowitems[i] = makeInstructionItem(i);
 			pnflow.Image = DrawConnectors();
 
 			if (pnflow.Name == "pnflow1") // indicates which we just updated
@@ -286,80 +278,6 @@ namespace SimPe.PackedFiles.UserInterface
 			Update();
 		}
 
-		private void UpdatePnInstr(Panel pn, Instruction i, int ct)
-		{
-			pn.Controls.Clear();
-
-			Label lb = new Label();
-			lb.Parent = pn;
-			lb.Width = pn.Width - 40;
-			lb.Height = pn.Height / 2;
-			lb.Left = 0;
-			lb.Top = 0;
-			lb.Text = ct.ToString("X") + ": " + i.ToString();
-			lb.BackColor = System.Drawing.Color.Transparent;
-			lb.Visible = true;
-			lb.Tag = ct;
-			lb.Click += new EventHandler(TagItem_Click);
-
-			LinkLabel llt = new LinkLabel();
-			llt.Parent = pn;					
-			llt.AutoSize = true;
-			llt.Text = "true: "+i.Target1.ToString("X");
-			llt.Left = lb.Left;					
-			llt.Top = pn.Height - (llt.Height + 1);
-			llt.Visible = true;
-			llt.Tag = i.Target1;
-			if (i.Target1<flowitems.Length)
-				llt.LinkArea = new LinkArea(6, llt.Text.Length-6);
-			else
-				llt.LinkArea = new LinkArea(0, 0);
-			llt.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLink_Click);
-			llt.Click += new EventHandler(LinkLabel_Click);
-
-			LinkLabel llf = new LinkLabel();
-			llf.Parent = pn;					
-			llf.AutoSize = true;
-			llf.Text = "false: "+i.Target2.ToString("X");
-			llf.Left = llt.Left + llt.Width + 4;
-			llf.Top = pn.Height - (llf.Height + 1);
-			llf.Visible = true;
-			llf.Tag = i.Target2;
-			if (i.Target2<flowitems.Length)
-				llf.LinkArea = new LinkArea(7, llf.Text.Length-7);
-			else
-				llf.LinkArea = new LinkArea(0, 0);
-			llf.LinkClicked += new LinkLabelLinkClickedEventHandler(LinkLabelLink_Click);
-			llf.Click += new EventHandler(LinkLabel_Click);
-
-			if (ct>0) 
-			{
-				LinkLabel llup = new LinkLabel();
-				llup.Parent = pn;								
-				llup.AutoSize = true;
-				llup.Text = "up";
-				llup.Left = pn.Width - (llup.Width + 1);
-				llup.Top = 1;
-				llup.Visible = true;
-				llup.Tag = ct;
-				llup.LinkClicked += new LinkLabelLinkClickedEventHandler(MoveItemUp);
-				llup.Click += new EventHandler(TagItem_Click);
-			}
-
-			if (ct<flowitems.Length-1) 
-			{
-				LinkLabel lldn = new LinkLabel();
-				lldn.Parent = pn;					
-				lldn.AutoSize = true;
-				lldn.Text = "down";
-				lldn.Left = pn.Width - (lldn.Width + 1);					
-				lldn.Top = pn.Height - (lldn.Height + 1);
-				lldn.Visible = true;
-				lldn.Tag = ct;
-				lldn.LinkClicked += new LinkLabelLinkClickedEventHandler(MoveItemDown);
-				lldn.Click += new EventHandler(TagItem_Click);
-			}
-		}
 
 		private Bitmap DrawConnectors()
 		{			
@@ -368,7 +286,7 @@ namespace SimPe.PackedFiles.UserInterface
 				Connector[] connectors = InstructionItem.Connectors(flowitems);			
 				Connector.ResolveCollisions(connectors);
 
-				Bitmap img = new Bitmap(bhavInstListPanel.ClientRectangle.Width-24, Math.Max(10, flowitems.Length * (InstructionItem.Height + 4)));
+				Bitmap img = new Bitmap(bhavInstListPanel.ClientRectangle.Width-24, Math.Max(10, flowitems.Length * (BhavInstListItemUI.rowHeight + 4)));
 				Graphics gr = Graphics.FromImage(img);
 				gr.SmoothingMode =  System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 				gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
@@ -396,7 +314,7 @@ namespace SimPe.PackedFiles.UserInterface
 					if (c.truerule) offset+=4; 
 
 					if (c.start >= flowitems.Length) continue;
-					Control startlabel = (Control)flowitems[c.start].pnInstr;
+					Control startlabel = (Control)flowitems[c.start];
 
 					if (c.stop >= 0xFFFC) 
 					{
@@ -452,7 +370,7 @@ namespace SimPe.PackedFiles.UserInterface
 						continue;
 					}
 				
-					Control stoplabel = (Control)flowitems[c.stop].pnInstr;
+					Control stoplabel = (Control)flowitems[c.stop];
 					gr.DrawLine(	
 						pen, 
 						startlabel.Right, 
@@ -568,6 +486,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavInstListPanel.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("bhavInstListPanel.RightToLeft")));
 			this.bhavInstListPanel.Size = ((System.Drawing.Size)(resources.GetObject("bhavInstListPanel.Size")));
 			this.bhavInstListPanel.TabIndex = ((int)(resources.GetObject("bhavInstListPanel.TabIndex")));
+			this.bhavInstListPanel.TabStop = true;
 			this.bhavInstListPanel.Text = resources.GetString("bhavInstListPanel.Text");
 			this.bhavInstListPanel.Visible = ((bool)(resources.GetObject("bhavInstListPanel.Visible")));
 			this.bhavInstListPanel.Resize += new System.EventHandler(this.bhavInstListPanel_Resize);
@@ -593,6 +512,36 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ResumeLayout(false);
 
 		}
+
+
+		private void bhavInst_MoveUp(object sender, System.EventArgs e) { MoveInst(-1); }
+		private void bhavInst_MoveDown(object sender, System.EventArgs e) { MoveInst(1); }
+		private void bhavInst_Selected(object sender, System.EventArgs e) { SelectedIndex = ((InstructionItem)sender).findUI(flowitems); }
+		private void bhavInst_Unselected(object sender, System.EventArgs e) {/* SelectedIndex = -1; */}
+		private void bhavInst_TargetClick(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e) { SelectedIndex = (UInt16)e.Link.LinkData; }
+		private void bhavInst_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+		{
+			// SelectedIndex must already indicate the current selected instruction
+			switch (e.KeyCode)
+			{
+				case System.Windows.Forms.Keys.Up:
+					if (csel > 0) SelectedIndex--;
+					break;
+				case System.Windows.Forms.Keys.Down:
+					if (csel < flowitems.Length - 1) SelectedIndex++;
+					break;
+				case System.Windows.Forms.Keys.Delete:
+					Delete();
+					break;
+				case System.Windows.Forms.Keys.Home:
+					SelectedIndex = 0;
+					break;
+				case System.Windows.Forms.Keys.End:
+					SelectedIndex = flowitems.Length - 1;
+					break;
+			}
+		}
+
 
 		private void bhavInstListPanel_Resize(object sender, System.EventArgs e)
 		{
@@ -632,12 +581,8 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 	}
 
-	internal class InstructionItem 
+	internal class InstructionItem : BhavInstListItemUI
 	{
-		public int index;
-		public const int Height = 32;
-		public Instruction instruction;
-		public Panel pnInstr;
 		public Connector TrueConnect 
 		{
 			get 
@@ -676,7 +621,17 @@ namespace SimPe.PackedFiles.UserInterface
 			return cs;
 		}
 
+
+		public InstructionItem(int ct, Instruction i, int max, PictureBox parent) : base(ct, i, max, parent) {}
+
+		public int findUI(InstructionItem[] items)
+		{
+			for (int i = 0; i < items.Length; i++)
+				if (items[i] == this) return i;
+			return -1;
+		}
 	}
+
 	/// <summary>
 	/// Used for Instruction Connectors
 	/// </summary>
