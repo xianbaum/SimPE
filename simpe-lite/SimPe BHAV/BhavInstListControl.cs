@@ -146,8 +146,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 			wrapper.Changed = true;
 			OnWrapperChanged(new EventArgs());
-			myrepaint();
 
+			csel = -1;
+			myrepaint();
 			SelectedIndex = newIndex;
 		}
 
@@ -165,8 +166,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 			wrapper.Changed = true;
 			OnWrapperChanged(new EventArgs());
-			myrepaint();
 
+			csel = -1;
+			myrepaint();
 			SelectedIndex = to;
 		}
 
@@ -180,12 +182,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 			wrapper.Changed = true;
 			OnWrapperChanged(new EventArgs());
-			myrepaint();
 
+			csel = -1;
+			myrepaint();
 			if (inst != null)
 				SelectedIndex = wrapper.Instructions.IndexOf(inst);
-			else
-				SelectedIndex = 0;
 		}
 
 
@@ -262,6 +263,8 @@ namespace SimPe.PackedFiles.UserInterface
 			flowitems = new InstructionItem[wrapper.Instructions.Count];
 
 			for (int i = 0; i < wrapper.Instructions.Count; i++) flowitems[i] = makeInstructionItem(i);
+			if (csel != -1)
+				flowitems[csel].MakeSelected();
 			pnflow.Image = DrawConnectors();
 
 			if (pnflow.Name == "pnflow1") // indicates which we just updated
@@ -306,11 +309,11 @@ namespace SimPe.PackedFiles.UserInterface
 				foreach (Connector c in connectors) 
 				{
 					if (c==null) continue;
+					if (c.truerule && (c.stop - c.start == 1)) continue;
 					if (c.truerule) pen = tpen; else pen = fpen;
 					if (c.start == csel) if (c.truerule) pen = tpens; else pen = fpens;
 					if (c.stop == csel) pen = new Pen(pen.Brush, 2);
 					int offset = 4;
-					if (c.truerule && (c.stop - c.start == 1)) continue;
 					if (c.truerule) offset+=4; 
 
 					if (c.start >= flowitems.Length) continue;
@@ -318,58 +321,37 @@ namespace SimPe.PackedFiles.UserInterface
 
 					if (c.stop >= 0xFFFC) 
 					{
-						if (c.stop  == 0xFFFD)
+						Bitmap bmp = bmpcancel;
+						int sub = 16;
+						if (c.stop == 0xFFFC)
+							sub = 40;
+						if (c.stop == 0xFFFD)
+							bmp = bmpok;
+
+						gr.DrawLine(
+							pen, 
+							startlabel.Right, 
+							startlabel.Top + (startlabel.Height / 2) + offset,
+							img.Width-sub,
+							startlabel.Top + (startlabel.Height / 2) + offset
+							);
+						if (bmp!=null) 
 						{
-							gr.DrawLine(	
-								pen, 
-								startlabel.Right, 
-								startlabel.Top + (startlabel.Height / 2) + offset,
-								img.Width-16,
-								startlabel.Top + (startlabel.Height / 2) + offset
-								);
-							if (bmpok!=null) 
-							{
-								gr.DrawImageUnscaled(
-									bmpok,
-									img.Width-16,
-									startlabel.Top + (startlabel.Height / 2) + offset - 8
-									);
-							}
-							points = new Point[3];
-							points[0] = new Point(img.Width-16, startlabel.Top + (startlabel.Height / 2) + offset);
-							points[1] = new Point(points[0].X - 4, points[0].Y - 4);
-							points[2] = new Point(points[0].X - 4, points[0].Y + 4);
-							gr.FillPolygon(pen.Brush, points);
-						} 
-						else if ( (c.stop == 0xFFFC) || (c.stop == 0xFFFE) )
-						{
-							int sub = 40;
-							if ((c.stop == 0xFFFE) || (c.stop == 0x00FD)) sub = 16;
-							gr.DrawLine(	
-								pen, 
-								startlabel.Right, 
-								startlabel.Top + (startlabel.Height / 2) + offset,
+							gr.DrawImageUnscaled(
+								bmp,
 								img.Width-sub,
-								startlabel.Top + (startlabel.Height / 2) + offset
+								startlabel.Top + (startlabel.Height / 2) + offset - 8
 								);
-							if (bmpcancel!=null) 
-							{
-								gr.DrawImageUnscaled(
-									bmpcancel,
-									img.Width-sub,
-									startlabel.Top + (startlabel.Height / 2) + offset - 8
-									);
-							}
-							points = new Point[3];
-							points[0] = new Point(img.Width-sub, startlabel.Top + (startlabel.Height / 2) + offset);
-							points[1] = new Point(points[0].X - 4, points[0].Y - 4);
-							points[2] = new Point(points[0].X - 4, points[0].Y + 4);
-							gr.FillPolygon(pen.Brush, points);
-						} 
-					
+						}
+						points = new Point[3];
+						points[0] = new Point(img.Width-sub, startlabel.Top + (startlabel.Height / 2) + offset);
+						points[1] = new Point(points[0].X - 4, points[0].Y - 4);
+						points[2] = new Point(points[0].X - 4, points[0].Y + 4);
+						gr.FillPolygon(pen.Brush, points);
 						continue;
 					}
 				
+					if (c.stop >= flowitems.Length) continue;
 					Control stoplabel = (Control)flowitems[c.stop];
 					gr.DrawLine(	
 						pen, 
@@ -404,9 +386,10 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 				return img;
 			} 
-			catch (Exception) 
+			catch (Exception ex) 
 			{
-				return null;
+				throw ex;
+				//return null;
 			}
 
 		}
@@ -589,7 +572,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				Connector c = new Connector();
 				c.start = index;
-				c.stop = instruction.Target1;
+				c.stop = inst.Target1;
 				c.lane = 0;
 				c.truerule = true;
 				return c;
@@ -601,7 +584,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				Connector c = new Connector();
 				c.start = index;
-				c.stop = instruction.Target2;
+				c.stop = inst.Target2;
 				c.lane = 0;
 				c.truerule = false;
 				return c;

@@ -422,7 +422,7 @@ namespace SimPe.PackedFiles.Wrapper
 			if (from < 0 || from >= Count) return;
 			if (to < 0 || to >= Count) return;
 			while (from < to) SortSwap(from, ++from);
-			while(from > to) SortSwap(from, --from);
+			while (from > to) SortSwap(from, --from);
 		}
 
 		#endregion
@@ -453,12 +453,15 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			// this needs to relink everything
 			this.Move(index, this.Count - 1);
-			foreach (Instruction i in this)
+/*
+ * At Inge's request, broken gotos not set to RETURN ERROR.
+ * UI to display these in an obvious way.
+ 			foreach (Instruction i in this)
 			{
 				if (i.Target1 >= this.Count-1 && i.Target1 < 0xFFFC) i.Target1 = 0xFFFC;
 				if (i.Target2 >= this.Count-1 && i.Target2 < 0xFFFC) i.Target2 = 0xFFFC;
 			}
-			base.RemoveAt(this.Count - 1);
+*/			base.RemoveAt(this.Count - 1);
 		}
 
 		public void Remove(Instruction item)
@@ -473,34 +476,33 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public override void Sort()
 		{
-			ushort last = 0;
-			for (ushort i=0; i<Count-1; i++) 
-			{
-				Instruction inst = (Instruction)this[i];
-				if (inst.Target1 > i+1) 
-				{
-					if (inst.Target1 < 0xfffc) SortSwap(inst.Target1, (ushort)(i+1));
-					else 
-					{
-						if (inst.Target2 > i+1) 
-						{
-							if (inst.Target2 < 0xfffc) SortSwap(inst.Target2, (ushort)(i+1));
-						}
-					}
-					last = i;
-				}
-			}
+			int start = 0;		// where we got to on True pass
+			int startnext = 0;	// where we got to on False pass
 
-			for (ushort i=0; i<Count-1; i++) 
+			while (start < this.Count)
 			{
-				Instruction inst = (Instruction)this[i];
-				if (inst.Target2 > last) 
+				for (int i = start; i < this.Count; i++)
 				{
-					if (inst.Target2 < 0xfffc) SortSwap(inst.Target2, last);
-					last++;
+					start = i+1;
+					if (this[i].Target1 <= i || this[i].Target1 >= this.Count)
+						break;
+					if (this[i].Target1 != start)
+						Move(this[i].Target1, start);
+				}
+				if (start >= this.Count)
+					break;
+
+				for (int i = startnext; i < start-1; i++)
+				{
+					startnext = i+1;
+					if (this[i].Target2 < start || this[i].Target2 >= this.Count)
+						continue;
+					Move(this[i].Target2, start);
+					break;
 				}
 			}
 		}
+
 		#endregion
 	}
 }

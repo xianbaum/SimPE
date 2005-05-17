@@ -65,7 +65,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label label14;
 		private System.Windows.Forms.Label lbUpDown;
 		private System.Windows.Forms.TextBox tbInst_OpCode;
-		private System.Windows.Forms.Button btOpCode;
 		private System.Windows.Forms.TextBox tbInst_Reserved;
 		private System.Windows.Forms.TextBox tbInst_Op7;
 		private System.Windows.Forms.TextBox tbInst_Op6;
@@ -75,7 +74,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbInst_Op2;
 		private System.Windows.Forms.TextBox tbInst_Op1;
 		private System.Windows.Forms.TextBox tbInst_Op0;
-		private System.Windows.Forms.Button btOperandWiz;
 		private System.Windows.Forms.TextBox tbInst_Unk7;
 		private System.Windows.Forms.TextBox tbInst_Unk6;
 		private System.Windows.Forms.TextBox tbInst_Unk5;
@@ -92,6 +90,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Panel bhavPanel;
 		private System.Windows.Forms.Button btnCommit;
 		private System.Windows.Forms.LinkLabel llcancel;
+		private System.Windows.Forms.Button btnOpCode;
+		private System.Windows.Forms.Button btnOperandWiz;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -136,7 +136,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (!btnCommit.Visible) state = true;
 
 			tbInst_OpCode.ReadOnly = state;
-			btOpCode.Enabled = !state;
+			btnOpCode.Enabled = !state;
 			tbInst_Reserved.ReadOnly = state;
 			tba1.Enabled = !state;
 			tba2.Enabled = !state;
@@ -159,7 +159,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk6.ReadOnly = state;
 			this.tbInst_Unk7.ReadOnly = state;
 
-			//btOperandWiz.Enabled = !state;
+			//btnOperandWiz.Enabled = !state;
 
 			llmove.Enabled = !state;
 			tbLines.ReadOnly = state;
@@ -206,7 +206,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Op6.Text = Helper.HexString(inst.Operands[6]);
 				this.tbInst_Op7.Text = Helper.HexString(inst.Operands[7]);
 
-				this.btOperandWiz.Enabled = BhavWizardForm.Available(inst);
+				this.btnOperandWiz.Enabled = BhavWizardForm.Available(inst);
 
 				this.tbInst_Unk0.Text = Helper.HexString(inst.Reserved1[0]);
 				this.tbInst_Unk1.Text = Helper.HexString(inst.Reserved1[1]);
@@ -236,7 +236,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Op5.Text = "";
 				this.tbInst_Op6.Text = "";
 				this.tbInst_Op7.Text = "";
-				this.btOperandWiz.Enabled = false;
+				this.btnOperandWiz.Enabled = false;
 				this.tbInst_Unk0.Text = "";
 				this.tbInst_Unk1.Text = "";
 				this.tbInst_Unk2.Text = "";
@@ -320,7 +320,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbUpDown = new System.Windows.Forms.Label();
 			this.llmove = new System.Windows.Forms.LinkLabel();
 			this.tbLines = new System.Windows.Forms.TextBox();
-			this.btOperandWiz = new System.Windows.Forms.Button();
+			this.btnOperandWiz = new System.Windows.Forms.Button();
 			this.llopenbhav = new System.Windows.Forms.LinkLabel();
 			this.tba2 = new System.Windows.Forms.ComboBox();
 			this.tba1 = new System.Windows.Forms.ComboBox();
@@ -351,7 +351,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label9 = new System.Windows.Forms.Label();
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
-			this.btOpCode = new System.Windows.Forms.Button();
+			this.btnOpCode = new System.Windows.Forms.Button();
 			this.tbInst_Instruction = new System.Windows.Forms.TextBox();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.llsort = new System.Windows.Forms.LinkLabel();
@@ -432,7 +432,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.Controls.Add(this.lbUpDown);
 			this.gbInstruction.Controls.Add(this.llmove);
 			this.gbInstruction.Controls.Add(this.tbLines);
-			this.gbInstruction.Controls.Add(this.btOperandWiz);
+			this.gbInstruction.Controls.Add(this.btnOperandWiz);
 			this.gbInstruction.Controls.Add(this.llopenbhav);
 			this.gbInstruction.Controls.Add(this.tba2);
 			this.gbInstruction.Controls.Add(this.tba1);
@@ -463,7 +463,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.Controls.Add(this.label9);
 			this.gbInstruction.Controls.Add(this.label12);
 			this.gbInstruction.Controls.Add(this.label11);
-			this.gbInstruction.Controls.Add(this.btOpCode);
+			this.gbInstruction.Controls.Add(this.btnOpCode);
 			this.gbInstruction.Controls.Add(this.tbInst_Instruction);
 			this.gbInstruction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbInstruction.Dock")));
 			this.gbInstruction.Enabled = ((bool)(resources.GetObject("gbInstruction.Enabled")));
@@ -551,29 +551,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLines.WordWrap = ((bool)(resources.GetObject("tbLines.WordWrap")));
 			this.tbLines.TextChanged += new System.EventHandler(this.tbmv_TextChanged);
 			// 
-			// btOperandWiz
+			// btnOperandWiz
 			// 
-			this.btOperandWiz.AccessibleDescription = resources.GetString("btOperandWiz.AccessibleDescription");
-			this.btOperandWiz.AccessibleName = resources.GetString("btOperandWiz.AccessibleName");
-			this.btOperandWiz.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btOperandWiz.Anchor")));
-			this.btOperandWiz.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btOperandWiz.BackgroundImage")));
-			this.btOperandWiz.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btOperandWiz.Dock")));
-			this.btOperandWiz.Enabled = ((bool)(resources.GetObject("btOperandWiz.Enabled")));
-			this.btOperandWiz.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btOperandWiz.FlatStyle")));
-			this.btOperandWiz.Font = ((System.Drawing.Font)(resources.GetObject("btOperandWiz.Font")));
-			this.btOperandWiz.Image = ((System.Drawing.Image)(resources.GetObject("btOperandWiz.Image")));
-			this.btOperandWiz.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btOperandWiz.ImageAlign")));
-			this.btOperandWiz.ImageIndex = ((int)(resources.GetObject("btOperandWiz.ImageIndex")));
-			this.btOperandWiz.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btOperandWiz.ImeMode")));
-			this.btOperandWiz.Location = ((System.Drawing.Point)(resources.GetObject("btOperandWiz.Location")));
-			this.btOperandWiz.Name = "btOperandWiz";
-			this.btOperandWiz.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btOperandWiz.RightToLeft")));
-			this.btOperandWiz.Size = ((System.Drawing.Size)(resources.GetObject("btOperandWiz.Size")));
-			this.btOperandWiz.TabIndex = ((int)(resources.GetObject("btOperandWiz.TabIndex")));
-			this.btOperandWiz.Text = resources.GetString("btOperandWiz.Text");
-			this.btOperandWiz.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btOperandWiz.TextAlign")));
-			this.btOperandWiz.Visible = ((bool)(resources.GetObject("btOperandWiz.Visible")));
-			this.btOperandWiz.Click += new System.EventHandler(this.OpenOperandWiz);
+			this.btnOperandWiz.AccessibleDescription = resources.GetString("btnOperandWiz.AccessibleDescription");
+			this.btnOperandWiz.AccessibleName = resources.GetString("btnOperandWiz.AccessibleName");
+			this.btnOperandWiz.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnOperandWiz.Anchor")));
+			this.btnOperandWiz.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOperandWiz.BackgroundImage")));
+			this.btnOperandWiz.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnOperandWiz.Dock")));
+			this.btnOperandWiz.Enabled = ((bool)(resources.GetObject("btnOperandWiz.Enabled")));
+			this.btnOperandWiz.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnOperandWiz.FlatStyle")));
+			this.btnOperandWiz.Font = ((System.Drawing.Font)(resources.GetObject("btnOperandWiz.Font")));
+			this.btnOperandWiz.Image = ((System.Drawing.Image)(resources.GetObject("btnOperandWiz.Image")));
+			this.btnOperandWiz.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandWiz.ImageAlign")));
+			this.btnOperandWiz.ImageIndex = ((int)(resources.GetObject("btnOperandWiz.ImageIndex")));
+			this.btnOperandWiz.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnOperandWiz.ImeMode")));
+			this.btnOperandWiz.Location = ((System.Drawing.Point)(resources.GetObject("btnOperandWiz.Location")));
+			this.btnOperandWiz.Name = "btnOperandWiz";
+			this.btnOperandWiz.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnOperandWiz.RightToLeft")));
+			this.btnOperandWiz.Size = ((System.Drawing.Size)(resources.GetObject("btnOperandWiz.Size")));
+			this.btnOperandWiz.TabIndex = ((int)(resources.GetObject("btnOperandWiz.TabIndex")));
+			this.btnOperandWiz.Text = resources.GetString("btnOperandWiz.Text");
+			this.btnOperandWiz.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandWiz.TextAlign")));
+			this.btnOperandWiz.Visible = ((bool)(resources.GetObject("btnOperandWiz.Visible")));
+			this.btnOperandWiz.Click += new System.EventHandler(this.btnOperandWiz_Clicked);
 			// 
 			// llopenbhav
 			// 
@@ -598,7 +598,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.llopenbhav.Text = resources.GetString("llopenbhav.Text");
 			this.llopenbhav.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llopenbhav.TextAlign")));
 			this.llopenbhav.Visible = ((bool)(resources.GetObject("llopenbhav.Visible")));
-			this.llopenbhav.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OpenBhavClicked);
+			this.llopenbhav.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llopenbhav_LinkClicked);
 			// 
 			// tba2
 			// 
@@ -687,7 +687,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lldel.Text = resources.GetString("lldel.Text");
 			this.lldel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lldel.TextAlign")));
 			this.lldel.Visible = ((bool)(resources.GetObject("lldel.Visible")));
-			this.lldel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DeleteOpcodeClicked);
+			this.lldel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lldel_LinkClicked);
 			// 
 			// lladd
 			// 
@@ -712,7 +712,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lladd.Text = resources.GetString("lladd.Text");
 			this.lladd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lladd.TextAlign")));
 			this.lladd.Visible = ((bool)(resources.GetObject("lladd.Visible")));
-			this.lladd.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AddOpcodeClicked);
+			this.lladd.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lladd_LinkClicked);
 			// 
 			// llcancel
 			// 
@@ -737,7 +737,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.llcancel.Text = resources.GetString("llcancel.Text");
 			this.llcancel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llcancel.TextAlign")));
 			this.llcancel.Visible = ((bool)(resources.GetObject("llcancel.Visible")));
-			this.llcancel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llcancel_Clicked);
+			this.llcancel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llcancel_LinkClicked);
 			// 
 			// label14
 			// 
@@ -1339,29 +1339,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label11.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label11.TextAlign")));
 			this.label11.Visible = ((bool)(resources.GetObject("label11.Visible")));
 			// 
-			// btOpCode
+			// btnOpCode
 			// 
-			this.btOpCode.AccessibleDescription = resources.GetString("btOpCode.AccessibleDescription");
-			this.btOpCode.AccessibleName = resources.GetString("btOpCode.AccessibleName");
-			this.btOpCode.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btOpCode.Anchor")));
-			this.btOpCode.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btOpCode.BackgroundImage")));
-			this.btOpCode.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btOpCode.Dock")));
-			this.btOpCode.Enabled = ((bool)(resources.GetObject("btOpCode.Enabled")));
-			this.btOpCode.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btOpCode.FlatStyle")));
-			this.btOpCode.Font = ((System.Drawing.Font)(resources.GetObject("btOpCode.Font")));
-			this.btOpCode.Image = ((System.Drawing.Image)(resources.GetObject("btOpCode.Image")));
-			this.btOpCode.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btOpCode.ImageAlign")));
-			this.btOpCode.ImageIndex = ((int)(resources.GetObject("btOpCode.ImageIndex")));
-			this.btOpCode.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btOpCode.ImeMode")));
-			this.btOpCode.Location = ((System.Drawing.Point)(resources.GetObject("btOpCode.Location")));
-			this.btOpCode.Name = "btOpCode";
-			this.btOpCode.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btOpCode.RightToLeft")));
-			this.btOpCode.Size = ((System.Drawing.Size)(resources.GetObject("btOpCode.Size")));
-			this.btOpCode.TabIndex = ((int)(resources.GetObject("btOpCode.TabIndex")));
-			this.btOpCode.Text = resources.GetString("btOpCode.Text");
-			this.btOpCode.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btOpCode.TextAlign")));
-			this.btOpCode.Visible = ((bool)(resources.GetObject("btOpCode.Visible")));
-			this.btOpCode.Click += new System.EventHandler(this.GetOpcode);
+			this.btnOpCode.AccessibleDescription = resources.GetString("btnOpCode.AccessibleDescription");
+			this.btnOpCode.AccessibleName = resources.GetString("btnOpCode.AccessibleName");
+			this.btnOpCode.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnOpCode.Anchor")));
+			this.btnOpCode.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOpCode.BackgroundImage")));
+			this.btnOpCode.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnOpCode.Dock")));
+			this.btnOpCode.Enabled = ((bool)(resources.GetObject("btnOpCode.Enabled")));
+			this.btnOpCode.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnOpCode.FlatStyle")));
+			this.btnOpCode.Font = ((System.Drawing.Font)(resources.GetObject("btnOpCode.Font")));
+			this.btnOpCode.Image = ((System.Drawing.Image)(resources.GetObject("btnOpCode.Image")));
+			this.btnOpCode.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOpCode.ImageAlign")));
+			this.btnOpCode.ImageIndex = ((int)(resources.GetObject("btnOpCode.ImageIndex")));
+			this.btnOpCode.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnOpCode.ImeMode")));
+			this.btnOpCode.Location = ((System.Drawing.Point)(resources.GetObject("btnOpCode.Location")));
+			this.btnOpCode.Name = "btnOpCode";
+			this.btnOpCode.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnOpCode.RightToLeft")));
+			this.btnOpCode.Size = ((System.Drawing.Size)(resources.GetObject("btnOpCode.Size")));
+			this.btnOpCode.TabIndex = ((int)(resources.GetObject("btnOpCode.TabIndex")));
+			this.btnOpCode.Text = resources.GetString("btnOpCode.Text");
+			this.btnOpCode.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOpCode.TextAlign")));
+			this.btnOpCode.Visible = ((bool)(resources.GetObject("btnOpCode.Visible")));
+			this.btnOpCode.Click += new System.EventHandler(this.btnOpCode_Clicked);
 			// 
 			// tbInst_Instruction
 			// 
@@ -1416,7 +1416,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFilename.TextAlign")));
 			this.tbFilename.Visible = ((bool)(resources.GetObject("tbFilename.Visible")));
 			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
-			this.tbFilename.TextChanged += new System.EventHandler(this.FileName_TextChanged);
+			this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
 			// 
 			// llsort
 			// 
@@ -1441,7 +1441,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.llsort.Text = resources.GetString("llsort.Text");
 			this.llsort.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llsort.TextAlign")));
 			this.llsort.Visible = ((bool)(resources.GetObject("llsort.Visible")));
-			this.llsort.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SortInstructions);
+			this.llsort.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llsort_LinkClicked);
 			// 
 			// label2
 			// 
@@ -1838,7 +1838,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Text = resources.GetString("btnCommit.Text");
 			this.btnCommit.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.TextAlign")));
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
-			this.btnCommit.Click += new System.EventHandler(this.CommitClick);
+			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
 			// 
 			// BhavForm
 			// 
@@ -1902,7 +1902,7 @@ namespace SimPe.PackedFiles.UserInterface
 			cb.Text = "0x"+Helper.HexString((ushort)sel);
 		}
 
-		private void CommitClick(object sender, System.EventArgs e)
+		private void btnCommit_Clicked(object sender, System.EventArgs e)
 		{
 			try 
 			{
@@ -1916,13 +1916,13 @@ namespace SimPe.PackedFiles.UserInterface
 			}			
 		}
 
-		private void OpenBhavClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
 			Bhav b = Instruction.LoadGlobalBHAV(pnflowcontainer.CurrentInst.OpCode);
 			BhavForm ui = (BhavForm)b.UIHandler;
 			// but make it clear it's read only
-			ui.btnCommit.Visible = ui.btOpCode.Visible = ui.btOperandWiz.Visible =
+			ui.btnCommit.Visible = ui.btnOpCode.Visible = ui.btnOperandWiz.Visible =
 				ui.lladd.Visible = ui.llcancel.Visible = ui.lldel.Visible = ui.llmove.Visible =
 				ui.llopenbhav.Visible = ui.llsort.Visible = ui.tbLines.Enabled = false;
 			ui.bhavPanel.Dock = DockStyle.Fill;
@@ -1931,7 +1931,7 @@ namespace SimPe.PackedFiles.UserInterface
 			ui.Show();
 		}
 
-		private void GetOpcode(object sender, System.EventArgs e)
+		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
 			try 
 			{
@@ -1949,27 +1949,27 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
-		private void llcancel_Clicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
+		{
+			BhavWizardForm bwf = new BhavWizardForm();
+			Instruction ret = bwf.Execute(this.pnflowcontainer.CurrentInst);
+
+			if (ret!=null) this.pnflowcontainer.CurrentInst = ret;
+		}
+		
+		private void llcancel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			this.pnflowcontainer.CurrentInst = origInst;
 		}
 
-		private void AddOpcodeClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void lladd_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			this.pnflowcontainer.Add();
 		}
 
-		private void DeleteOpcodeClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void lldel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			this.pnflowcontainer.Delete();
-		}
-
-		private void llmove_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			int mv;
-			try { mv = Convert.ToInt32(tbLines.Text); }
-			catch (Exception) { return; }
-			this.pnflowcontainer.MoveInst(mv);
 		}
 
 		private void tbmv_TextChanged(object sender, System.EventArgs e)
@@ -1985,15 +1985,15 @@ namespace SimPe.PackedFiles.UserInterface
 			catch {}
 		}
 
-		private void OpenOperandWiz(object sender, System.EventArgs e)
+		private void llmove_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			BhavWizardForm bwf = new BhavWizardForm();
-			Instruction ret = bwf.Execute(this.pnflowcontainer.CurrentInst);
-
-			if (ret!=null) this.pnflowcontainer.CurrentInst = ret;
+			int mv;
+			try { mv = Convert.ToInt32(tbLines.Text); }
+			catch (Exception) { return; }
+			this.pnflowcontainer.MoveInst(mv);
 		}
-		
-		private void SortInstructions(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+
+		private void llsort_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			this.pnflowcontainer.Sort();
 		}
@@ -2011,7 +2011,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.btnCommit.Enabled = true;
 		}
-		private void FileName_TextChanged(object sender, System.EventArgs e)
+		private void tbFilename_TextChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 

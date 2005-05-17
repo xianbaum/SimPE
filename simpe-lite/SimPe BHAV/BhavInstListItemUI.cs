@@ -75,13 +75,16 @@ namespace SimPe.PackedFiles.UserInterface
 			trueTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target1 <= max)
 				trueTarget.Links.Add(6, trueTarget.Text.Length-6, inst.Target1);
+			if (inst.Target1 > max && inst.Target1 < 0xFFFC)
+				trueTarget.ForeColor = System.Drawing.Color.Fuchsia;
 
-			falseTarget.Text = "false: "+inst.Target2.ToString("X");
 			falseTarget.Left = trueTarget.Left + trueTarget.Width + 4;
-			falseTarget.Tag = inst.Target2;
+			falseTarget.Text = "false: "+inst.Target2.ToString("X");
 			falseTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target2 <= max)
 				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);
+			if (inst.Target2 > max && inst.Target2 < 0xFFFC)
+				falseTarget.ForeColor = System.Drawing.Color.Fuchsia;
 
 			if (index == 0)
 				moveUp.Visible = false;
@@ -129,12 +132,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 		}
 
-		private Instruction inst;
-		public Instruction instruction
-		{
-			get { if (inst != null) return inst.Clone(); else return null; }
-		}
-
+		protected Instruction inst;
 		public int index
 		{
 			get { return (int)Tag; }
