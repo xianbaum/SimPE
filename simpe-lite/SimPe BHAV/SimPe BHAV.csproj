@@ -289,23 +289,23 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BhavWizard.cs"
+                    RelPath = "BhavOpCodeWiz.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BhavWizard.resx"
-                    DependentUpon = "BhavWizard.cs"
+                    RelPath = "BhavOpCodeWiz.resx"
+                    DependentUpon = "BhavOpCodeWiz.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "BhavWizardForm.cs"
+                    RelPath = "BhavOperandWiz.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BhavWizardForm.resx"
-                    DependentUpon = "BhavWizardForm.cs"
+                    RelPath = "BhavOperandWiz.resx"
+                    DependentUpon = "BhavOperandWiz.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File

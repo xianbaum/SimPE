@@ -607,9 +607,10 @@ namespace SimPe.PackedFiles.UserInterface
 				bhav.Package = wrp.Package;
 				bhav.FileDescriptor = wrp.FileDescriptor;
 				
-				ushort opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
+				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
 
-				tbguard.Text = "0x"+Helper.HexString(opcode);
+				if (opcode != -1)
+					tbguard.Text = "0x"+Helper.HexString((ushort)opcode);
 			} 
 			catch (Exception ex) 
 			{
@@ -627,9 +628,10 @@ namespace SimPe.PackedFiles.UserInterface
 				bhav.Package = wrp.Package;
 				bhav.FileDescriptor = wrp.FileDescriptor;
 				
-				ushort opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
+				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
 
-				tbaction.Text = "0x"+Helper.HexString(opcode);
+				if (opcode != -1)
+					tbaction.Text = "0x"+Helper.HexString((ushort)opcode);
 			} 
 			catch (Exception ex) 
 			{

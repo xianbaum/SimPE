@@ -206,7 +206,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Op6.Text = Helper.HexString(inst.Operands[6]);
 				this.tbInst_Op7.Text = Helper.HexString(inst.Operands[7]);
 
-				this.btnOperandWiz.Enabled = BhavWizardForm.Available(inst);
+				this.btnOperandWiz.Enabled = BhavOperandWiz.Available(inst);
 
 				this.tbInst_Unk0.Text = Helper.HexString(inst.Reserved1[0]);
 				this.tbInst_Unk1.Text = Helper.HexString(inst.Reserved1[1]);
@@ -1933,28 +1933,33 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
-			try 
-			{
-				Bhav bhav = new Bhav(wrapper.Opcodes);
-				bhav.Package = wrapper.Package;
-				bhav.FileDescriptor = wrapper.FileDescriptor;
-				
-				ushort opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
+			Bhav bhav = new Bhav(wrapper.Opcodes);
+			bhav.Package = wrapper.Package;
+			bhav.FileDescriptor = wrapper.FileDescriptor;
 
-				tbInst_OpCode.Text = "0x"+Helper.HexString(opcode);
-			} 
-			catch (Exception ex) 
+			Instruction currentInst = this.pnflowcontainer.CurrentInst;
+			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
+
+			if (opcode != -1 && opcode != currentInst.OpCode)
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
+				internalchg = true;
+				tbInst_OpCode.Text = "0x"+Helper.HexString((ushort)opcode);
+				internalchg = false;
+				currentInst.OpCode = (ushort)opcode;
+				SendInst(currentInst);
 			}
 		}
 
 		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
 		{
-			BhavWizardForm bwf = new BhavWizardForm();
+			BhavOperandWiz bwf = new BhavOperandWiz();
 			Instruction ret = bwf.Execute(this.pnflowcontainer.CurrentInst);
 
-			if (ret!=null) this.pnflowcontainer.CurrentInst = ret;
+			if (ret != null) 
+			{
+				UpdateInstPanel(ret);
+				SendInst(ret);
+			}
 		}
 		
 		private void llcancel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
