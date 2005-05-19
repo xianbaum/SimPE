@@ -19,32 +19,31 @@
  ***************************************************************************/
 using System;
 using SimPe.Interfaces.Plugin;
-using System.Windows.Forms;
+using SimPe.PackedFiles.Wrapper;
 
-namespace SimPe.Plugin
+namespace SimPe.PackedFiles.UserInterface
 {
 	/// <summary>
-	/// This class is used to fill the UI for this FileType with Data
+	/// UI Handler for a Str Wrapper
 	/// </summary>
-	public class BhavUI : IPackedFileUI
+	public class GroupCacheUI : IPackedFileUI	
 	{
 		#region Code to Startup the UI
 
 		/// <summary>
 		/// Holds a reference to the Form containing the UI Panel
 		/// </summary>
-		internal BhavForm form;
+		static GroupCacheForm form;
 
 		/// <summary>
 		/// Constructor for the Class
 		/// </summary>
-		public BhavUI()
+		public GroupCacheUI()
 		{
-			//form = WrapperFactory.form;
-			form = new BhavForm();
+			if (form==null) form = new GroupCacheForm();
 		}
 		#endregion
-
+		
 		#region IPackedFileUI Member
 
 		/// <summary>
@@ -54,7 +53,7 @@ namespace SimPe.Plugin
 		{
 			get
 			{
-				return form.wrapperPanel;
+				return form.GropPanel;
 			}
 		}
 
@@ -66,30 +65,15 @@ namespace SimPe.Plugin
 		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
 		public void UpdateGUI(IFileWrapper wrapper)
 		{
-			form.wrapper = (IFileWrapperSaveExtension)wrapper;
+			//form.wrapper = (IFileWrapperSaveExtension)wrapper;
+			GroupCache wrp = (GroupCache) wrapper;
 
-			Bhav mywrapper = (Bhav) wrapper;
-
-			form.internalchg = true;
-			form.csel = -1;
-			form.pnflowcontainer.AutoScrollPosition = new System.Drawing.Point(0, 0);
-			form.llcommit.Enabled = false;
-			form.lldel.Enabled = false;
-			form.llopenbhav.Enabled = false;
-			form.CreateFlowPanel(mywrapper.Instructions);
-			form.btwiz.Enabled = false;
-			
-
-			form.tbopcode.Text = "0x0000";
-			form.tbargc.Text = mywrapper.Header.ArgumentCount.ToString();
-			form.tbflags.Text = "0x"+Helper.HexString(mywrapper.Header.Flags);
-			form.tbformat.Text = "0x"+Helper.HexString(mywrapper.Header.Format);
-			form.tblocals.Text = mywrapper.Header.LocalVarCount.ToString();
-			form.tbtype.Text = "0x"+Helper.HexString(mywrapper.Header.Type);
-			form.tbzero.Text = "0x"+Helper.HexString(mywrapper.Header.Zero);
-
-			form.lbbhav.Text = mywrapper.FileName;
-			form.internalchg = false;
+			form.lbgroup.BeginUpdate();
+			form.lbgroup.Items.Clear();
+			form.lbgroup.Sorted = false;
+			foreach (GroupCacheItem i in wrp.Items) form.lbgroup.Items.Add(i);
+			form.lbgroup.Sorted = true;
+			form.lbgroup.EndUpdate();
 		}		
 
 		#endregion

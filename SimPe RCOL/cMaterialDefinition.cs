@@ -66,6 +66,19 @@ namespace SimPe.Plugin
 		}
 		#endregion
 
+		
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public MaterialDefinition(Interfaces.IProviderRegistry provider, Rcol parent) : base(provider, parent)
+		{
+			properties = new MaterialDefinitionProperty[0];
+			listing = new String[0];
+			sgres = new SGResource(provider, null);
+			BlockID = 0x49596978;
+		}
+
 		/// <summary>
 		/// Returns the Property Item 
 		/// </summary>
@@ -82,25 +95,54 @@ namespace SimPe.Plugin
 			return new MaterialDefinitionProperty();
 		}
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public MaterialDefinition(Interfaces.IProviderRegistry provider, Rcol parent) : base(provider, parent)
-		{
-			properties = new MaterialDefinitionProperty[0];
-			listing = new String[0];
-			sgres = new SGResource(provider, null);
-			BlockID = 0x49596978;
-		}
-
 		public MaterialDefinitionProperty GetProperty(string name) 
 		{
-			name = name.ToLower();
+			return FindProperty(name);
+			/*name = name.ToLower();
 			foreach (MaterialDefinitionProperty mdp in properties)
 			{
 				if (name==mdp.Name.ToLower()) return mdp;
 			}
-			return new MaterialDefinitionProperty();
+			return new MaterialDefinitionProperty();*/
+		}
+
+		/// <summary>
+		/// Add a new Property
+		/// </summary>
+		/// <param name="prop">The propery to add</param>
+		/// <remarks>If the property already exists, it's value will be overwritten</remarks>
+		public void Add(MaterialDefinitionProperty prop)
+		{
+			Add(prop, false);
+		}
+
+		/// <summary>
+		/// Add a new Property
+		/// </summary>
+		/// <param name="prop">The propery to add</param>
+		/// <param name="duplicate">true, if you want to allow two occurences of the same Property</param>
+		/// <remarks>If duplicate is false, and the property already exists, it's value will be overwritten</remarks>
+		public void Add(MaterialDefinitionProperty prop, bool duplicate)
+		{
+			if (!duplicate) 
+			{
+				MaterialDefinitionProperty ex = null;
+				foreach (MaterialDefinitionProperty mdp in properties) 
+				{
+					if (mdp.Name.Trim().ToLower()==prop.Name.Trim().ToLower()) 
+					{
+						ex = mdp;
+						break;
+					}
+				}
+
+				if (ex!=null) ex.Value = prop.Value;
+				else this.properties = (MaterialDefinitionProperty[])Helper.Add(properties, prop);
+			} 
+			else 
+			{
+				this.properties = (MaterialDefinitionProperty[])Helper.Add(properties, prop);
+			}
 		}
 		
 		#region IRcolBlock Member
@@ -260,6 +302,14 @@ namespace SimPe.Plugin
 				refmap["stdMatBaseTextureName"] = list;
 			}
 
+			refname = this.GetProperty("stdMatNormalMapTextureName").Value;
+			if (refname.Trim()!="") 
+			{
+				list = new ArrayList();
+				list.Add(ScenegraphHelper.BuildPfd(refname+"_txtr", SimPe.Plugin.ScenegraphHelper.TXTR, parentgroup));
+				refmap["stdMatNormalMapTextureName"] = list;
+			}
+
 			refname = this.GetProperty("stdMatEnvCubeTextureName").Value;
 			if (refname.Trim()!="")
 			{
@@ -267,6 +317,27 @@ namespace SimPe.Plugin
 				list.Add(ScenegraphHelper.BuildPfd(refname+"_txtr", SimPe.Plugin.ScenegraphHelper.TXTR, parentgroup));
 				refmap["stdMatEnvCubeTextureName"] = list;
 			}
+
+
+			//for characters
+			int count = 0;
+			try 
+			{
+				string s = this.GetProperty("numTexturesToComposite").Value;
+				if (s!="") count = Convert.ToInt32(this.GetProperty("numTexturesToComposite").Value);
+			} 
+			catch {}
+			list = new ArrayList();	
+			refmap["baseTexture"] = list;
+			for (int i=0; i<count; i++)
+			{
+				refname = this.GetProperty("baseTexture"+i.ToString()).Value.Trim();
+				if (refname!="")
+				{
+					if (!refname.EndsWith("_txtr")) refname+="_txtr";
+					list.Add(ScenegraphHelper.BuildPfd(refname, SimPe.Plugin.ScenegraphHelper.TXTR, parentgroup));					
+				}
+			}						
 		}
 
 		#endregion

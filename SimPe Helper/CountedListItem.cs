@@ -18,64 +18,65 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using SimPe.Interfaces.Plugin;
 
-namespace SimPe.Plugin
+namespace SimPe
 {
 	/// <summary>
-	/// This class is used to fill the UI for this FileType with Data
+	/// Can be used as a Wrapper Class when adding unnamed Objects to a List
 	/// </summary>
-	public class TrcnUI : IPackedFileUI
+	public class CountedListItem
 	{
-		#region Code to Startup the UI
-
+		object obj;
 		/// <summary>
-		/// Holds a reference to the Form containing the UI Panel
+		/// Returns/Sets the stored Object
 		/// </summary>
-		private TrcnForm form;
-
-		/// <summary>
-		/// Constructor for the Class
-		/// </summary>
-		public TrcnUI()
+		public object Object
 		{
-			form = new TrcnForm();
-		}
-		#endregion
-
-		#region IPackedFileUI Member
-
-		/// <summary>
-		/// Returns the Panel that will be displayed within SimPe
-		/// </summary>
-		public System.Windows.Forms.Panel GUIHandle
-		{
-			get
-			{
-				return form.TrcnPanel;
-			}
+			get { return obj; }
+			set { obj = value; }
 		}
 
-		/// <summary>
-		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should updatet the Data displayed by the Panel with the Attributes stored in the
-		/// passed Wrapper.
-		/// </summary>
-		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
-		public void UpdateGUI(IFileWrapper wrapper)
+		int index;
+		internal CountedListItem(int index, object obj)
 		{
-			form.wrapper = (IFileWrapperSaveExtension)wrapper;
+			this.obj = obj;
+			this.index = index;
+		}
 
-			Trcn wrp = (Trcn) wrapper;
-			form.lbTrcn.Text = wrp.FileName;
+		public override string ToString()
+		{
+			return index.ToString()+": "+obj.ToString();
+		}
 
-			form.lbprop.Items.Clear();
-			form.lbprop.Sorted = false;
-			foreach (TrcnItem item in wrp.Labels) form.lbprop.Items.Add(item);
-			form.lldel.Enabled = false;
-			form.lbprop.Sorted = true;
-		}		
 
-		#endregion
+		static int offset = 0;
+		/// <summary>
+		/// Returns/Sets the lowest Number used for the Index
+		/// </summary>
+		public static int Offset 
+		{
+			get { return offset; }
+			set { offset = value; }
+		}
+
+		/// <summary>
+		/// Adds an Item to the given ComboBox
+		/// </summary>
+		/// <param name="cb">The ComboBox</param>
+		/// <param name="obj">The Item you want to add</param>
+		public static void Add(System.Windows.Forms.ComboBox cb, object obj) 
+		{
+			cb.Items.Add(new CountedListItem(cb.Items.Count+offset, obj));
+		}
+
+		/// <summary>
+		/// Adds an Item to the given ListBox
+		/// </summary>
+		/// <param name="lb">The ListBox</param>
+		/// <param name="obj">The Item you want to add</param>
+		public static void Add(System.Windows.Forms.ListBox lb, object obj) 
+		{
+			lb.Items.Add(new CountedListItem(lb.Items.Count+offset, obj));
+		}
 	}
 }

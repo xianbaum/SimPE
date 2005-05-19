@@ -26,6 +26,16 @@ using System.IO;
 
 namespace SimPe.PackedFiles.Wrapper
 {
+	/// <summary>
+	/// known Versions for SDSC Files
+	/// </summary>
+	public enum SDescVersions : int
+	{
+		Unknown = 0,
+		OriginalGame = 0x20,
+		University = 0x22
+	}
+
 	#region Ghost Flags
 	/// <summary>
 	/// Ghost Flag class
@@ -868,9 +878,9 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Teh Version of this File
 		/// </summary>
-		public int Version 
+		public SDescVersions Version 
 		{
-			get { return version; }
+			get { return (SDescVersions)version; }
 		}
 
 		/// <summary>
@@ -952,7 +962,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns University Specific Data
 		/// </summary>
-		/// <remarks>Only valid if Version == 0x22</remarks>
+		/// <remarks>Only valid if Version == SDescVersions.University</remarks>
 		public SdscUniversity University
 		{
 			get { return uni; }
@@ -1286,6 +1296,17 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		/// <summary>
+		/// Change the links to the Providers
+		/// </summary>
+		/// <param name="prov">A Provider Registry</param>
+		public void SetProviders(SimPe.Interfaces.IProviderRegistry prov) 
+		{
+			nameprovider = prov.SimNameProvider;
+			familynameprovider = prov.SimFamilynameProvider;
+			sdescprovider = prov.SimDescriptionProvider;
+		}
+
+		/// <summary>
 		/// Creates a new Instance
 		/// </summary>
 		/// <param name="names">null, or a Sim Name Provider</param>
@@ -1348,7 +1369,7 @@ namespace SimPe.PackedFiles.Wrapper
 			reader.BaseStream.Seek(startpos + 0x04, System.IO.SeekOrigin.Begin);
 			version = reader.ReadInt32();
 
-			if (version==0x22) 
+			if (version>=(int)SDescVersions.University) 
 			{
 				reader.BaseStream.Seek(startpos + 0x172, System.IO.SeekOrigin.Begin);
 				instancenumber = reader.ReadUInt16();
@@ -1439,13 +1460,24 @@ namespace SimPe.PackedFiles.Wrapper
 
 			//available Relationships
 			reader.BaseStream.Seek(startpos + 0x16A, System.IO.SeekOrigin.Begin);
-			if (version==0x22) reader.BaseStream.Seek(0x12, System.IO.SeekOrigin.Current);
+			if (version>=(int)SDescVersions.University) reader.BaseStream.Seek(0x12, System.IO.SeekOrigin.Current);
 			relations.SimInstances = new ushort[reader.ReadUInt16()];
 
+			int ct = 0;
 			for (int i=0; i<relations.SimInstances.Length; i++)
 			{
+				if (reader.BaseStream.Length - reader.BaseStream.Position < 4) continue;
 				reader.ReadUInt16();			//yet unknown
 				relations.SimInstances[i] = reader.ReadUInt16();
+				ct++;
+			}
+
+			//something went wrong while reading the SimInstances
+			if (ct != relations.SimInstances.Length) 
+			{
+				ushort[] old = relations.SimInstances;
+				relations.SimInstances = new ushort[ct];
+				for (int i=0; i<ct; i++) relations.SimInstances[i] = old[i];
 			}
 
 			//character (Genetic)
@@ -1484,7 +1516,7 @@ namespace SimPe.PackedFiles.Wrapper
 			interests.Scifi = reader.ReadUInt16();
 
 			//university only Items
-			if (version==0x22) 
+			if (version>=(int)SDescVersions.University) 
 			{				
 				uni.Serialize(reader);
 			}
@@ -1511,7 +1543,7 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.BaseStream.Seek(startpos + 0x04, System.IO.SeekOrigin.Begin);
 			writer.Write(version); //Version Number
 
-			if (version==0x22) 
+			if (version>=(int)SDescVersions.University) 
 			{
 				writer.BaseStream.Seek(startpos + 0x172, System.IO.SeekOrigin.Begin);
 				writer.Write(instancenumber);
@@ -1587,7 +1619,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 			//available Relationships
 			writer.BaseStream.Seek(startpos + 0x16A, System.IO.SeekOrigin.Begin);
-			if (version==0x22) writer.BaseStream.Seek(0x12, System.IO.SeekOrigin.Current);
+			if (version>=(int)SDescVersions.University) writer.BaseStream.Seek(0x12, System.IO.SeekOrigin.Current);
 			writer.Write((uint)relations.SimInstances.Length);
 
 			for (int i=0; i<relations.SimInstances.Length; i++)
@@ -1643,7 +1675,7 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(interests.Scifi);
 
 			//university only Items
-			if (version==0x22) 
+			if (version>=(int)SDescVersions.University) 
 			{				
 				uni.Unserialize(writer);
 			}
@@ -1657,7 +1689,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				return "GUID=0x"+Helper.HexString(this.SimId)+", Name="+this.SimName+" "+this.SimFamilyName+", Age="+this.CharacterDescription.LifeSection.ToString()+", Job="+this.CharacterDescription.Career.ToString()+", Zodiac="+this.CharacterDescription.ZodiacSign.ToString()+", Major="+this.University.Major+", Grade="+this.CharacterDescription.Grade.ToString();
+				return "GUID=0x"+Helper.HexString(this.SimId)+", Filename="+this.CharacterFileName+", Name="+this.SimName+" "+this.SimFamilyName+", Age="+this.CharacterDescription.LifeSection.ToString()+", Job="+this.CharacterDescription.Career.ToString()+", Zodiac="+this.CharacterDescription.ZodiacSign.ToString()+", Major="+this.University.Major+", Grade="+this.CharacterDescription.Grade.ToString();
 			}
 		}
 
@@ -1711,6 +1743,19 @@ namespace SimPe.PackedFiles.Wrapper
 			{
 				if (addonmajor==null) addonmajor = Data.Alias.LoadFromXml(System.IO.Path.Combine(Helper.SimPeDataPath, "additional_majors.xml"));
 				return addonmajor;
+			}
+		}
+
+		static SimPe.Interfaces.IAlias[] addonschool;
+		/// <summary>
+		/// Returns a List of Userdefined AddOnCareers
+		/// </summary>
+		public static SimPe.Interfaces.IAlias[] AddonSchools
+		{
+			get 
+			{
+				if (addonschool==null) addonschool = Data.Alias.LoadFromXml(System.IO.Path.Combine(Helper.SimPeDataPath, "additional_schools.xml"));
+				return addonschool;
 			}
 		}
 		#endregion

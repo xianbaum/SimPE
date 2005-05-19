@@ -139,6 +139,26 @@ namespace SimPe.Packages
 		}
 
 		/// <summary>
+		/// Returns the Suggested ShareMode for the passed Access Mode
+		/// </summary>
+		/// <param name="fa">The Acces Mode</param>
+		/// <returns>The Suggeste Share Mode</returns>
+		/*public static FileShare GetFileShare(FileAccess fa)
+		{
+			switch (fa) 
+			{
+				case FileAccess.Read:
+				{
+					return FileShare.Read;
+				}
+				default:
+				{
+					return FileShare.Read;
+				}
+			}
+		}*/
+
+		/// <summary>
 		/// Returns a valid stream Item for the passed Filename
 		/// </summary>
 		/// <param name="filename">The name of the FIle you want to open</param>
@@ -166,6 +186,7 @@ namespace SimPe.Packages
 		public static StreamItem GetStreamItem(string filename, bool createnew) 
 		{
 			InitTable();
+			if (filename==null) filename="";
 			filename = filename.Trim().ToLower();
 			StreamItem si = (StreamItem)streams[filename];
 			if ((si==null) && createnew)
@@ -196,26 +217,43 @@ namespace SimPe.Packages
 		/// <returns>a StreamItem (StreamState is Removed if the File did not exits!</returns>
 		public static StreamItem UseStream(string filename, FileAccess fa) 
 		{
+			return UseStream(filename, fa, false);
+		}
+
+		/// <summary>
+		/// Returns a Usable Stream for that File
+		/// </summary>
+		/// <param name="filename">The name of the File</param>
+		/// <param name="fa">The Acces Attributes</param>
+		/// <param name="create">true if the file should be created if not available</param>
+		/// <returns>a StreamItem (StreamState is Removed if the File did not exits!</returns>
+		public static StreamItem UseStream(string filename, FileAccess fa, bool create) 
+		{
 			StreamItem si = GetStreamItem(filename);
 			//File does not exists, so set State to removed
 			if (!System.IO.File.Exists(filename)) 
 			{
 				if (si.StreamState == StreamState.Opened) si.FileStream.Close();
-				si.SetFileStream(null);
+
+				if (create) 
+				{
+					si.SetFileStream(new FileStream(filename, System.IO.FileMode.OpenOrCreate, fa));
+				} else si.SetFileStream(null);
 
 				return si;
 			}
 
 			if (si.StreamState==StreamState.Removed) 
 			{
-				FileStream fs = new FileStream(filename, FileMode.OpenOrCreate, fa);
+				FileStream fs = new FileStream(filename, FileMode.Open, fa);
 				si.SetFileStream(fs);
 			} 
 			else 
 			{
-				si.SetFileAccess(fa);
+				si.SetFileAccess(fa);				
 			}
 
+			si.FileStream.Seek(0, SeekOrigin.Begin);
 			return si;
 		}
 
@@ -249,6 +287,18 @@ namespace SimPe.Packages
 				catch {}
 			}
 			return false;
+		}
+
+		/// <summary>
+		/// Closes all opened Streams
+		/// </summary>
+		public static void CloseAll()
+		{
+			InitTable();
+			foreach (StreamItem si in streams.Values) 
+			{
+				si.Close();
+			}
 		}
 	}
 }

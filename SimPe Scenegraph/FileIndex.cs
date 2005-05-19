@@ -211,6 +211,12 @@ namespace SimPe.Plugin
 		/// </summary>
 		bool duplicates;
 
+		public bool Duplicates
+		{
+			get { return duplicates; }
+			set { duplicates = value; }
+		}
+
 
 		/// <summary>
 		/// Create a new Instance
@@ -277,13 +283,26 @@ namespace SimPe.Plugin
 		/// <returns>the local Group</returns>
 		public static uint GetLocalGroup(SimPe.Interfaces.Files.IPackageFile package)
 		{
+			string flname = package.FileName;
+			return GetLocalGroup(flname);
+		}
+
+		/// <summary>
+		/// Return the suggested local Group for the passed package
+		/// </summary>
+		/// <param name="flname">The filename of the package</param>
+		/// <returns>the local Group</returns>
+		public static uint GetLocalGroup(string flname)
+		{
+			if (FileTable.GroupCache == null) WrapperFactory.LoadGroupCache();
 			if (localGroupMap==null) localGroupMap = new Hashtable();
 
-			string flname = package.FileName;
+			
 			if (flname==null) flname="memoryfile";
 			flname = flname.Trim().ToLower();
 
-			uint local = 0;
+			SimPe.Interfaces.Wrapper.IGroupCacheItem gci = FileTable.GroupCache.GetItem(flname);
+			/*uint local = 0;
 			if (localGroupMap.ContainsKey(flname)) local = (uint)localGroupMap[flname];
 			else 
 			{
@@ -291,7 +310,8 @@ namespace SimPe.Plugin
 				localGroupMap[flname] = local;
 			}
 
-			return local;
+			return local;*/
+			return gci.LocalGroup;
 		}
 
 		/// <summary>
@@ -303,7 +323,7 @@ namespace SimPe.Plugin
 		/// becuase the Files changed)
 		/// </remarks>
 		public void Load() 
-		{
+		{			
 			if (index.Count>0) return;
 			ForceReload();
 		}
@@ -318,13 +338,14 @@ namespace SimPe.Plugin
 		/// </remarks>
 		public void ForceReload()
 		{
+			WrapperFactory.LoadGroupCache();
 			addedfilenames.Clear();
 			bool wasrunning = WaitingScreen.Running;
 			WaitingScreen.Wait();
 			index.Clear();
 
-			foreach (string path in folders)
-				AddIndexFromFolder(path);
+			foreach (FileTableItem fti in folders)
+				AddIndexFromFolder(fti);
 
 			if (!wasrunning) WaitingScreen.Stop();
 		}
@@ -332,31 +353,33 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Add all Files stored in all the packages found in the passed Folder
 		/// </summary>
+		/// <param name="fti">A FileTableItem describing the Location</param>
+		public void AddIndexFromFolder(FileTableItem fti)
+		{
+			string[] files = fti.GetFiles();
+			
+			foreach (string afile in files)
+				AddIndexFromPackage(afile);
+			
+			if (fti.IsRecursive) 
+			{
+				string[] folders = System.IO.Directory.GetDirectories(fti.Name);
+				foreach (string folder in folders)
+					AddIndexFromFolder(":"+folder);
+			}
+		}
+
+		/// <summary>
+		/// Add all Files stored in all the packages found in the passed Folder
+		/// </summary>
 		/// <param name="path">The Folder you want to scan</param>
-		/// <remarks>If the first character in Path is &, the Folder will be scanned recursive</remarks>
 		public void AddIndexFromFolder(string path)
 		{
 			path = path.Trim();
 			if (path=="") return;
 
-
-			bool recursive = false;
-			if (path.StartsWith("&")) 
-			{
-				path = path.Substring(1, path.Length-1);
-				recursive = true;
-			}
-
-			string[] files = System.IO.Directory.GetFiles(path, "*.package");
-			foreach (string file in files)
-				AddIndexFromPackage(file);
-			
-			if (recursive) 
-			{
-				string[] folders = System.IO.Directory.GetDirectories(path);
-				foreach (string folder in folders)
-					AddIndexFromFolder("&"+folder);
-			}
+			FileTableItem fti = new FileTableItem(path);
+			AddIndexFromFolder(fti);
 		}
 
 		/// <summary>
@@ -468,6 +491,43 @@ namespace SimPe.Plugin
 			}
 
 			
+		}
+
+		/// <summary>
+		/// Removes an Item from the Table
+		/// </summary>
+		/// <param name="item">The item you want to remove</param>
+		public void RemoveItem(Interfaces.Scenegraph.IScenegraphFileIndexItem item)
+		{
+			Interfaces.Files.IPackedFileDescriptor pfd = item.FileDescriptor;
+			ArrayList list = new ArrayList();
+
+			if (index.ContainsKey(pfd.Type)) 
+			{
+				Hashtable groups = (Hashtable)index[pfd.Type];
+				if (groups.ContainsKey(pfd.Group)) 
+				{
+					Hashtable instances = (Hashtable)groups[pfd.Group];
+					if (instances.ContainsKey(pfd.LongInstance)) 
+					{
+						list = (ArrayList)instances[pfd.LongInstance];
+						list.Remove(item);
+					}
+				}
+
+				if (pfd.Group==Data.MetaData.LOCAL_GROUP) 
+				{
+					if (groups.ContainsKey(item.LocalGroup)) 
+					{
+						Hashtable instances = (Hashtable)groups[item.LocalGroup];
+						if (instances.ContainsKey(pfd.LongInstance)) 
+						{
+							list = (ArrayList)instances[pfd.LongInstance];
+							list.Remove(item);
+						}
+					}
+				}
+			}
 		}
 
 		/// <summary>
@@ -691,7 +751,15 @@ namespace SimPe.Plugin
 		public IScenegraphFileIndexItem FindFileByName(string filename, uint type, uint defgroup, bool betolerant)
 		{
 			Interfaces.Files.IPackedFileDescriptor pfd = SimPe.Plugin.ScenegraphHelper.BuildPfd(filename, type, defgroup);
-			return FindSingleFile(pfd, betolerant);
+			IScenegraphFileIndexItem ret = FindSingleFile(pfd, betolerant);
+
+			if ((ret==null) && betolerant)
+			{
+				pfd.SubType = 0;
+				ret = FindSingleFile(pfd, betolerant);
+			} 
+
+			return ret;
 		}
 
 		/// <summary>

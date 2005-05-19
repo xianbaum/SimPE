@@ -18,65 +18,73 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using SimPe.Interfaces.Plugin;
+using SimPe.Interfaces.Files;
+using SimPe.Cache;
 
-namespace SimPe.Plugin
+namespace SimPe.Interfaces.Plugin.Scanner
 {
-	
 	/// <summary>
-	/// This class is used to fill the UI for this FileType with Data
+	/// Determins the Type of a Plugin
 	/// </summary>
-	public class GlobUI : IPackedFileUI
+	public enum ScannerPluginType : byte
 	{
-		#region Code to Startup the UI
+		None = 0x0,
+		Scanner = 0x1,
+		Identifier = 0x2,
+		Both = 0x03,
+	}
 
+	/// <summary>
+	/// Implements the very basic Interface for a Scanner/Identifier, 
+	/// this is used to determin wether or not a Scanner/Identifier can be loaded!
+	/// </summary>
+	public interface IScannerPluginBase
+	{	
 		/// <summary>
-		/// Holds a reference to the Form containing the UI Panel
+		/// Returns the Version of the IIdentifier Interface the scanner/identifier is implementing
 		/// </summary>
-		private BhavForm form;
-
-		/// <summary>
-		/// Constructor for the Class
-		/// </summary>
-		public GlobUI()
+		/// <remarks>
+		/// The current Scan Folders Plugin will only process Scanners/identifiers 
+		/// with a Version of 1
+		/// </remarks>
+		uint Version 
 		{
-			form = WrapperFactory.form;
-
-			form.cbseminame.Items.Clear();
-			foreach (Data.SemiGlobalAlias a in Data.MetaData.SemiGlobals) if (a.Known) form.cbseminame.Items.Add(a);
-		}
-		#endregion
-
-		#region IPackedFileUI Member
-
-		/// <summary>
-		/// Returns the Panel that will be displayed within SimPe
-		/// </summary>
-		public System.Windows.Forms.Panel GUIHandle
-		{
-			get
-			{
-				return form.pnGlob;
-			}
+			get;
 		}
 
 		/// <summary>
-		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should updatet the Data displayed by the Panel with the Attributes stored in the
-		/// passed Wrapper.
+		/// Returns the Position of the Index in the ScanList
 		/// </summary>
-		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
-		public void UpdateGUI(IFileWrapper wrapper)
+		/// <remarks>
+		/// Identifiers are ordere, meaning you can determin in which order the 
+		/// scanners are called, specifiyinga low index (negative) will make a 
+		/// Identifier to be executed early, a High Index will execute it later
+		/// </remarks>
+		int Index 
 		{
-			form.wrapper = (IFileWrapperSaveExtension)wrapper;
+			get;
+		}
 
-			Glob wrp = (Glob) wrapper;
-			form.cbseminame.Tag = true;
-			form.lbglobfile.Text = wrp.FileName;
-			form.cbseminame.Text = wrp.SemiGlobalName;
-			form.cbseminame.Tag = null;
-		}		
+		/// <summary>
+		/// Returns the Interface that is implemented by the Plugin
+		/// </summary>
+		ScannerPluginType PluginType 
+		{
+			get;
+		}
+	}	
 
-		#endregion
+	/// <summary>
+	/// Identifies the Type of a Package
+	/// </summary>
+	public interface IIdentifier : IScannerPluginBase
+	{
+		/// <summary>
+		/// Retunrs the Primary Type of the passed Pacakge
+		/// </summary>
+		/// <param name="pkg">The Package too check</param>
+		/// <returns>The type</returns>
+		/// <remarks>Returns Unknown if this Identifier was unable to determin the Type</remarks>
+		PackageType GetType(IPackageFile pkg);
 	}
 }

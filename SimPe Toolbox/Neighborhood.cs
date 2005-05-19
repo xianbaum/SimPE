@@ -205,7 +205,6 @@ namespace SimPe.Plugin
 			this.MinimumSize = ((System.Drawing.Size)(resources.GetObject("$this.MinimumSize")));
 			this.Name = "NeighborhoodForm";
 			this.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("$this.RightToLeft")));
-			this.ShowInTaskbar = false;
 			this.StartPosition = ((System.Windows.Forms.FormStartPosition)(resources.GetObject("$this.StartPosition")));
 			this.Text = resources.GetString("$this.Text");
 			this.ResumeLayout(false);
@@ -305,7 +304,7 @@ namespace SimPe.Plugin
 			{				
 				AddNeighborhood(dir);
 			}
-			WaitingScreen.Stop();				
+			WaitingScreen.Stop(this);				
 		}
 
 		string sourcepath;
@@ -320,6 +319,7 @@ namespace SimPe.Plugin
 			UpdateList();
 			this.Cursor = Cursors.Default;
 
+			
 			ShowDialog();
 			if (this.package!=null) package=this.package;
 			return new Plugin.ToolResult(false, ((this.package!=null) || (changed)));
@@ -360,21 +360,34 @@ namespace SimPe.Plugin
 		{
 			if (lv.SelectedItems.Count<=0) return;
 
+			SimPe.Packages.StreamFactory.CloseAll();
 			string path = System.IO.Path.GetDirectoryName(lv.SelectedItems[0].SubItems[1].Text).Trim();
 			
 			//if a File in the current Neighborhood is opened - close it!
 			CloseIfOpened(path);
 
 			this.Cursor = Cursors.WaitCursor;
-			//create a Backup Folder
-			string name = System.IO.Path.GetFileName(path);
+			WaitingScreen.Wait();
+			try 
+			{
+				//create a Backup Folder
+				string name = System.IO.Path.GetFileName(path);
 			
-			string backuppath = System.IO.Path.Combine(NeighborhoodTool.WindowsRegistry.BackupFolder, name);
-			backuppath = System.IO.Path.Combine(backuppath, DateTime.Now.ToString().Replace("\\", "/").Replace(":", "-"));
-			if (!System.IO.Directory.Exists(backuppath)) System.IO.Directory.CreateDirectory(backuppath);
+				string backuppath = System.IO.Path.Combine(NeighborhoodTool.WindowsRegistry.BackupFolder, name);
+				backuppath = System.IO.Path.Combine(backuppath, DateTime.Now.ToString().Replace("\\", "/").Replace(":", "-"));
+				if (!System.IO.Directory.Exists(backuppath)) System.IO.Directory.CreateDirectory(backuppath);
 
-			Helper.CopyDirectory(path, backuppath, true);
-			this.Cursor = Cursors.Default;
+				Helper.CopyDirectory(path, backuppath, true);
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage("", ex);
+			}
+			finally 
+			{
+				WaitingScreen.Stop(this);
+				this.Cursor = Cursors.Default;
+			}
 		}
 
 		private void NgbRestoreBackup(object sender, System.EventArgs e)

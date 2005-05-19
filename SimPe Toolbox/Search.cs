@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using SimPe.PackedFiles.Wrapper;
 
 namespace SimPe.Plugin
 {
@@ -116,6 +117,8 @@ namespace SimPe.Plugin
 			this.tbsimname = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
+			this.tbpropval = new System.Windows.Forms.TextBox();
+			this.label7 = new System.Windows.Forms.Label();
 			this.rbcont = new System.Windows.Forms.RadioButton();
 			this.rbend = new System.Windows.Forms.RadioButton();
 			this.rbstart = new System.Windows.Forms.RadioButton();
@@ -131,8 +134,6 @@ namespace SimPe.Plugin
 			this.btopen = new System.Windows.Forms.Button();
 			this.pb = new System.Windows.Forms.ProgressBar();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-			this.tbpropval = new System.Windows.Forms.TextBox();
-			this.label7 = new System.Windows.Forms.Label();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage2.SuspendLayout();
@@ -335,6 +336,26 @@ namespace SimPe.Plugin
 			this.tabPage4.TabIndex = 3;
 			this.tabPage4.Text = "Property Set";
 			// 
+			// tbpropval
+			// 
+			this.tbpropval.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.tbpropval.Location = new System.Drawing.Point(288, 8);
+			this.tbpropval.Name = "tbpropval";
+			this.tbpropval.Size = new System.Drawing.Size(256, 21);
+			this.tbpropval.TabIndex = 16;
+			this.tbpropval.Text = "";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label7.Location = new System.Drawing.Point(240, 16);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(44, 17);
+			this.label7.TabIndex = 15;
+			this.label7.Text = "Value:";
+			// 
 			// rbcont
 			// 
 			this.rbcont.FlatStyle = System.Windows.Forms.FlatStyle.System;
@@ -475,33 +496,13 @@ namespace SimPe.Plugin
 			// 
 			// pb
 			// 
-			this.pb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.pb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.pb.Location = new System.Drawing.Point(8, 304);
 			this.pb.Maximum = 1000;
 			this.pb.Name = "pb";
 			this.pb.Size = new System.Drawing.Size(480, 16);
 			this.pb.TabIndex = 3;
-			// 
-			// tbpropval
-			// 
-			this.tbpropval.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbpropval.Location = new System.Drawing.Point(288, 8);
-			this.tbpropval.Name = "tbpropval";
-			this.tbpropval.Size = new System.Drawing.Size(256, 21);
-			this.tbpropval.TabIndex = 16;
-			this.tbpropval.Text = "";
-			// 
-			// label7
-			// 
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label7.Location = new System.Drawing.Point(240, 16);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(44, 17);
-			this.label7.TabIndex = 15;
-			this.label7.Text = "Value:";
 			// 
 			// Search
 			// 
@@ -588,10 +589,10 @@ namespace SimPe.Plugin
 				if (pfd.Group!=group) return null;
 			}
 
-			SimPe.Plugin.Bhav bhav = new Bhav(prov.OpcodeProvider);
+			Bhav bhav = new Bhav(prov.OpcodeProvider);
 			bhav.ProcessData(pfd, package);
 
-			foreach (SimPe.Plugin.Instruction i in bhav.Instructions)
+			foreach (Instruction i in bhav.Instructions)
 			{
 				if (i.OpCode == opcode) 
 				{
@@ -615,7 +616,7 @@ namespace SimPe.Plugin
 			uint inst = Hashes.InstanceHash(flname);
 			uint st = Hashes.SubTypeHash(flname);
 
-			if ( (pfd.Instance == inst) && (pfd.SubType == st) )
+			if ( (pfd.Instance == inst) && ((pfd.SubType == st) || pfd.SubType==0))
 			{
 				SimPe.Plugin.Rcol rcol = new GenericRcol(prov, false);
 				rcol.ProcessData(pfd, package);
@@ -782,7 +783,7 @@ namespace SimPe.Plugin
 			{
 				WaitingScreen.Wait();
 				SimPe.FileTable.FileIndex.Load();
-				WaitingScreen.Stop();
+				WaitingScreen.Stop(this);
 
 				lblist.Items.Clear();
 				SimPe.Packages.PackedFileDescriptor pfd = new SimPe.Packages.PackedFileDescriptor();
@@ -790,6 +791,13 @@ namespace SimPe.Plugin
 				pfd.Instance = Hashes.InstanceHash(Hashes.StripHashFromName(tbflname.Text));
 
 				SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] items = FileTable.FileIndex.FindFileByInstance(pfd.LongInstance);
+
+				//short Index
+				if (items.Length==0) 
+				{
+					pfd.SubType = 0;
+					items = FileTable.FileIndex.FindFileByInstance(pfd.LongInstance);
+				}
 
 				foreach (SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem item in items)
 				{
@@ -800,6 +808,7 @@ namespace SimPe.Plugin
 			} 
 			else 
 			{
+				
 				this.StartSearch(new SeekerFunction(this.RcolSearch), package.FindFile(Hashes.StripHashFromName(tbflname.Text)));
 			}
 		}

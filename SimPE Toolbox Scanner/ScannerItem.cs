@@ -18,67 +18,62 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using SimPe.Interfaces.Plugin;
+using SimPe.Cache;
 
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// This class is used to fill the UI for this FileType with Data
+	/// An Instance of this class represents one scanned Package
 	/// </summary>
-	public class ObjfUI : IPackedFileUI
-	{
-		#region Code to Startup the UI
-
-		/// <summary>
-		/// Holds a reference to the Form containing the UI Panel
-		/// </summary>
-		private BhavForm form;
-
-		/// <summary>
-		/// Constructor for the Class
-		/// </summary>
-		public ObjfUI()
+	public class ScannerItem 	{
+		PackageCacheItem pci;
+		public PackageCacheItem PackageCacheItem
 		{
-			form = WrapperFactory.form;
+			get { return pci; }
 		}
-		#endregion
-
-		#region IPackedFileUI Member
+		
+		string filename;
 
 		/// <summary>
-		/// Returns the Panel that will be displayed within SimPe
+		/// The FileName of the Package File
 		/// </summary>
-		public System.Windows.Forms.Panel GUIHandle
+		public string FileName 
 		{
-			get
-			{
-				return form.ObjfPanel;
+			get { return filename; }
+			set { 
+				if (filename.Trim().ToLower() != value.Trim().ToLower()) pkg = null;
+				filename = value; 
 			}
 		}
 
-		/// <summary>
-		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should updatet the Data displayed by the Panel with the Attributes stored in the
-		/// passed Wrapper.
-		/// </summary>
-		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
-		public void UpdateGUI(IFileWrapper wrapper)
+		SimPe.Cache.CacheContainer cc;
+		public SimPe.Cache.CacheContainer ParentContainer 
 		{
-			form.wrapper = (IFileWrapperSaveExtension)wrapper;
+			get { return cc; }
+		}
 
-			Objf mywrapper = (Objf) wrapper;
+		SimPe.Packages.GeneratableFile pkg = null;
+		/// <summary>
+		/// Returns the Package Instance fo the given FileNmae
+		/// </summary>
+		public SimPe.Packages.GeneratableFile Package 
+		{
+			get { 
+				if (pkg==null) 
+				{
+					pkg = new SimPe.Packages.GeneratableFile(FileName);
+				}
 
-			form.llchangeobjf.Enabled = false;
-			form.lbobjf.Items.Clear();
-			foreach (ObjfItem i in mywrapper.Items) 
-			{
-				form.lbobjf.Items.Add(i);
+				return pkg;
 			}
+			set { pkg = value; }
+		}
 
-			
-			form.lbobjffile.Text = mywrapper.FileName;
-		}		
-
-		#endregion
+		public ScannerItem(PackageCacheItem pci, SimPe.Cache.CacheContainer cc) 
+		{
+			this.pci = pci;
+			this.cc = cc;
+			filename = "";
+		}
 	}
 }

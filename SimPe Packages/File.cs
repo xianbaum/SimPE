@@ -185,12 +185,48 @@ namespace SimPe.Packages
 				OpenByStream(null);
 			}
 		}
+
+		/// <summary>
+		/// Init the Clone for this Package
+		/// </summary>
+		/// <returns>An INstance of this Class</returns>
+		protected virtual Interfaces.Files.IPackageFile NewCloneBase() 
+		{
+			File fl = new File((BinaryReader)null);
+			fl.header = this.header;
+			
+			return fl;
+		}
+
+		/// <summary>
+		/// Create a Clone of this Package File
+		/// </summary>
+		/// <returns>the new Package File</returns>
+		public Interfaces.Files.IPackageFile Clone()
+		{
+			Interfaces.Files.IPackageFile fl = NewCloneBase();
+			foreach (Interfaces.Files.IPackedFileDescriptor pfd in this.Index) 
+			{
+				Interfaces.Files.IPackedFileDescriptor npfd = (Interfaces.Files.IPackedFileDescriptor)pfd.Clone();
+				npfd.UserData = Read(pfd).UncompressedData;
+				fl.Add(npfd);
+			}
+
+			return fl;
+		}
 		
 
 		#region Lock handling
 		protected void OpenReader()
 		{			
-			if (persistent) return;
+			if (persistent) 
+			{
+				StreamItem si = StreamFactory.UseStream(flname, FileAccess.Read);
+				si.SetFileAccess(FileAccess.Read);
+				//if (si.StreamState==StreamState.Removed) throw new Exception ("The File was moved or deleted whil SimPe was running.", new Exception("Unable to find "+this.FileName));
+				if (si.StreamState!=StreamState.Removed) reader = new System.IO.BinaryReader(si.FileStream);
+				return;
+			}
 			if (type == PackageBaseType.Filename)
 			{
 				CloseReader();	
@@ -291,6 +327,23 @@ namespace SimPe.Packages
 			list.CopyTo(newindex);
 			header.index.count = newindex.Length;
 			fileindex = newindex;
+		}
+
+		/// <summary>
+		/// Removes all FileDescripotrs that are marked for Deletion
+		/// </summary>
+		public void RemoveMarked()
+		{
+			ArrayList list = new ArrayList();
+			foreach (Interfaces.Files.IPackedFileDescriptor pfd in fileindex) 
+			{
+				if (!pfd.MarkForDelete) list.Add(pfd);
+			}
+
+			Interfaces.Files.IPackedFileDescriptor[] pfds = new Interfaces.Files.IPackedFileDescriptor[list.Count];
+			list.CopyTo(pfds);
+			fileindex = pfds;
+			header.index.count = fileindex.Length;
 		}
 
 		/// <summary>
@@ -435,7 +488,7 @@ namespace SimPe.Packages
 		/// </summary>
 		/// <param name="position">
 		/// the number of the fileindex you want to load from the File (0-based). 
-		/// This Parameter will only affect the position of the Item within 
+		/// This Parameter will only effect the position of the Item within 
 		/// the File:fileindex Attribute. The data will be loaded from the current 
 		/// position of the File:reader.
 		/// </param>
@@ -570,7 +623,7 @@ namespace SimPe.Packages
 			{
 				#region Reload Stream
 				OpenReader();
-				if (reader==null) 
+				/*if (reader==null) 
 				{
 					if (this.flname!=null) if (System.IO.File.Exists(flname)) reader = new System.IO.BinaryReader(System.IO.File.OpenRead(flname));						
 				}
@@ -582,7 +635,7 @@ namespace SimPe.Packages
 				if (reader.BaseStream==null) 
 				{
 					if (this.flname!=null) if (System.IO.File.Exists(flname)) reader = new System.IO.BinaryReader(System.IO.File.OpenRead(flname));
-				}
+				}*/
 				if (reader==null) return new PackedFile(new byte[0]);
 				if (reader.BaseStream==null) 
 				{
@@ -602,25 +655,18 @@ namespace SimPe.Packages
 				{
 					reader.BaseStream.Seek(pfd.Offset, System.IO.SeekOrigin.Begin);
 					pf.size = reader.ReadInt32();
-					pf.signature = reader.ReadInt16();			
-					Byte[] dummy = new Byte[3];
-					for (int i=0; i<dummy.Length; i++) dummy[i] = reader.ReadByte();		
-					pf.uncsize = (uint)((((dummy[0]*0xff) + dummy[1] ) * 0xff ) + dummy[2]);
-					if ((pf.Size == pfd.Size) && (pf.Signature==MetaData.COMPRESS_SIGNATURE)) pf.headersize = 9;
+					pf.signature = reader.ReadUInt16();			
+					Byte[] dummy = reader.ReadBytes(3);
+					pf.uncsize = (uint)((dummy[0]<< 0x10) | (dummy[1] << 0x08) | + dummy[2]);
+					if ((pf.Size == pfd.Size) && (pf.Signature==MetaData.COMPRESS_SIGNATURE)) pf.headersize = 9;											
 
 					if ((filelistfile!=null) && (pfd.Type!=File.FILELIST_TYPE))
 					{
 						int pos = filelistfile.FindFile(pfd);
 						if (pos!=-1) 
 						{
-							SimPe.PackedFiles.Wrapper.ClstItem fi = (ClstItem)filelistfile.Items[pos];
-							
-							if (fi.UncompressedSize<=pf.size) pf.uncsize *= 0x4;
-							else pf.uncsize = fi.UncompressedSize;
-						} 
-						else 
-						{
-							pf.uncsize *= 0x4;
+							SimPe.PackedFiles.Wrapper.ClstItem fi = (ClstItem)filelistfile.Items[pos];							
+							if (header.Version==0x100000001) pf.uncsize = fi.UncompressedSize;
 						}
 					} 
 				} 
@@ -694,7 +740,9 @@ namespace SimPe.Packages
 			uint inst = Hashes.InstanceHash(filename);
 			uint st = Hashes.SubTypeHash(filename);
 
-			return FindFile(st, inst);
+			IPackedFileDescriptor[] ret = FindFile(st, inst);
+			if (ret.Length==0) ret = FindFile(0, inst);
+			return ret;
 		}
 
 		/// <summary>
@@ -708,7 +756,9 @@ namespace SimPe.Packages
 			uint inst = Hashes.InstanceHash(filename);
 			uint st = Hashes.SubTypeHash(filename);
 
-			return FindFile(type, st, inst);
+			IPackedFileDescriptor[] ret = FindFile(type, st, inst);
+			if (ret.Length==0) ret = FindFile(type, 0, inst);
+			return ret;
 		}
 
 		/// <summary>

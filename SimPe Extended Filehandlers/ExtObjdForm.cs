@@ -735,13 +735,15 @@ namespace SimPe.PackedFiles.UserInterface
 
 			try 
 			{
-				uint guid = form.GetNewGUID(reg.Username, reg.Password);
+				uint guid = form.GetNewGUID(reg.Username, reg.Password, this.wrapper.Guid);
 
 				reg.Username = form.tbusername.Text;
 				reg.Password = form.tbpassword.Text;
 				this.tbguid.Text = "0x"+Helper.HexString(guid);				
 			} 
-			catch (Exception) {}
+			catch (Exception ex) {
+				if (Helper.DebugMode) Helper.ExceptionMessage("", ex);
+			}
 		}
 
 		private void ChangeType(object sender, System.EventArgs e)
@@ -849,7 +851,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void UpdateMMAT(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			if (wrapper.Guid!=initialguid)
+			if ((wrapper.Guid!=initialguid) || (cball.Checked))
 			{
 				SimPe.Plugin.FixGuid fg = new SimPe.Plugin.FixGuid(wrapper.Package);
 				if (cball.Checked) 
@@ -875,6 +877,14 @@ namespace SimPe.PackedFiles.UserInterface
 		Ambertation.PropertyObjectBuilder pob;
 		ArrayList names;
 		bool propchanged;
+		string GetName(int i)
+		{
+			string name = "0x"+Helper.HexString((ushort)i) + ": ";
+			name += (string)names[i];
+
+			return name;
+		}
+
 		void ShowData()
 		{
 			propchanged = false;
@@ -886,9 +896,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Hashtable ht = new Hashtable();
 			for (int i=0; i<Math.Min(names.Count, wrapper.Data.Length); i++)
 			{
-				string name = "0x"+Helper.HexString((ushort)i) + ": ";
-				name += (string)names[i];
-				if (name.Trim()=="") name = "Unknwon";
+				string name = GetName(i);				
 				if (!ht.Contains(name)) ht.Add(name, wrapper.Data[i]);
 			}
 
@@ -907,8 +915,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				for (int i=0; i<Math.Min(names.Count, wrapper.Data.Length); i++)
 				{
-					string name = (string)names[i];
-					if (name.Trim()=="") name = "Unknwon 0x"+Helper.HexString(i);
+					string name = GetName(i);	
 					if (ht.Contains(name)) wrapper.Data[i] = (short)ht[name];
 				}
 

@@ -20,7 +20,7 @@
 using System;
 using SimPe.Interfaces.Plugin;
 
-namespace SimPe.Plugin
+namespace SimPe.PackedFiles.Wrapper
 {
 	/// <summary>
 	/// Names for the Ttab Motive Groups
@@ -62,7 +62,7 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public string FileName 
+		public new string FileName 
 		{
 			get { return Helper.ToString(filename); }
 		}
@@ -178,7 +178,7 @@ namespace SimPe.Plugin
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
-			return new TtabUI();
+			return new UserInterface.TtabForm();
 		}
 
 		/// <summary>

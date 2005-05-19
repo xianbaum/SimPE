@@ -78,6 +78,38 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		/// <summary>
+		/// Add a new CPF Item
+		/// </summary>
+		/// <param name="item">The item you want to add</param>
+		public void AddItem(CpfItem item) 
+		{
+			AddItem(item, true);
+		}
+
+		/// <summary>
+		/// Add a new CPF Item
+		/// </summary>
+		/// <param name="item">The item you want to add</param>
+		/// <param name="duplicate">true if you want to add the item even if a similar one already exists</param>
+		public void AddItem(CpfItem item, bool duplicate) 
+		{
+			if (item!=null) 
+			{
+				CpfItem ex = null;
+				if (!duplicate) ex = this.GetItem(item.Name);
+				if (ex!=null) 
+				{
+					ex.Datatype = item.Datatype;					
+					ex.Value = item.Value;
+				} 
+				else 
+				{
+					items = (CpfItem[])Helper.Add(items, item);
+				}
+			}
+		}
+
+		/// <summary>
 		/// returns the Item with the given Name o rnull if not found
 		/// </summary>
 		/// <param name="name"></param>
@@ -297,7 +329,9 @@ namespace SimPe.PackedFiles.Wrapper
 								   	0xEBCF3E27, //Property Set
 									0x0C560F39, //Binary Index
 									//0x4C697E5A, //MMAT
-									0xEBFEE33F
+									0xEBFEE33F,
+									0x2C1FD8A1,
+									0xCCA8E925 //Object XML
 							   };
 			
 				return types;

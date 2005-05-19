@@ -18,74 +18,34 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using SimPe.Interfaces.Plugin;
+using SimPe;
 
-namespace SimPe.Plugin
+namespace SimPe.Cache
 {
+
 	/// <summary>
-	/// This class is used to fill the UI for this FileType with Data
+	/// Contains one CacheItem
 	/// </summary>
-	public class TtabUI : IPackedFileUI
-	{
-		#region Code to Startup the UI
+	public interface ICacheItem
+	{		
+		/// <summary>
+		/// Load the Item from the Stream
+		/// </summary>
+		/// <param name="reader">the Stream Reader</param>
+		void Load(System.IO.BinaryReader reader);
 
 		/// <summary>
-		/// Holds a reference to the Form containing the UI Panel
+		/// Save the Item to the Stream
 		/// </summary>
-		private BhavForm form;
+		/// <param name="writer">the Stream Writer</param>
+		void Save(System.IO.BinaryWriter writer) ;
 
 		/// <summary>
-		/// Constructor for the Class
+		/// Returns the Version of this CacheItem
 		/// </summary>
-		public TtabUI()
+		byte Version 
 		{
-			form = WrapperFactory.form;
+			get;
 		}
-		#endregion
-
-		#region IPackedFileUI Member
-
-		/// <summary>
-		/// Returns the Panel that will be displayed within SimPe
-		/// </summary>
-		public System.Windows.Forms.Panel GUIHandle
-		{
-			get
-			{
-				return form.TtabPanel;
-			}
-		}
-
-		/// <summary>
-		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should updatet the Data displayed by the Panel with the Attributes stored in the
-		/// passed Wrapper.
-		/// </summary>
-		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
-		public void UpdateGUI(IFileWrapper wrapper)
-		{
-			form.wrapper = (IFileWrapperSaveExtension)wrapper;
-
-			Ttab mywrapper = (Ttab) wrapper;
-
-			form.internalchg = true;
-			form.llchangettab.Enabled = false;
-			form.lllistchange.Enabled = false;
-
-			form.lbttab.Items.Clear();
-			foreach (TtabItem i in mywrapper.Items) 
-			{
-				form.lbttab.Items.Add(i);
-			}
-			form.internalchg = false;
-			if (form.lbttab.Items.Count>0) form.lbttab.SelectedIndex = 0;
-
-			form.internalchg = true;
-			form.tbver.Text = "0x"+Helper.HexString(mywrapper.Format);
-			form.lbttabfile.Text = mywrapper.FileName;
-			form.internalchg = false;
-		}		
-
-		#endregion
 	}
 }

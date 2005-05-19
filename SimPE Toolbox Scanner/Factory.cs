@@ -18,70 +18,59 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using SimPe.Interfaces.Plugin;
+using SimPe.Interfaces;
 
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// This class is used to fill the UI for this FileType with Data
+	/// Lists all Plugins (=FileType Wrappers) available in this Package
 	/// </summary>
-	public class BconUI : IPackedFileUI
+	/// <remarks>
+	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
+	/// If a Plugin isn't returned, SimPe won't recognize it!
+	/// </remarks>
+	public class ToolboxFactory : SimPe.Interfaces.Plugin.AbstractWrapperFactory, SimPe.Interfaces.Plugin.IToolFactory
 	{
-		#region Code to Startup the UI
 
-		/// <summary>
-		/// Holds a reference to the Form containing the UI Panel
-		/// </summary>
-		private BhavForm form;
-
-		/// <summary>
-		/// Constructor for the Class
-		/// </summary>
-		public BconUI()
+		private static IWrapperRegistry reg;
+		public static IWrapperRegistry CurrentReg
 		{
-			form = WrapperFactory.form;
+			get{ return reg; }
 		}
+
+		#region AbstractWrapperFactory Member
+		/// <summary>
+		/// Returns a List of all available Plugins in this Package
+		/// </summary>
+		/// <returns>A List of all provided Plugins (=FileType Wrappers)</returns>
+		public override SimPe.Interfaces.IWrapper[] KnownWrappers
+		{
+			get 
+			{
+				// TODO:  You can add more Wrappers here
+				IWrapper[] wrappers = {
+										  
+									  };
+				return wrappers;
+			}
+		}
+
 		#endregion
 
-		#region IPackedFileUI Member
+		#region IToolFactory Member
 
-		/// <summary>
-		/// Returns the Panel that will be displayed within SimPe
-		/// </summary>
-		public System.Windows.Forms.Panel GUIHandle
+		public ITool[] KnownTools
 		{
 			get
 			{
-				return form.bconPanel;
+				reg = this.LinkedRegistry;
+
+				ITool[] tools = {
+									new ScanerTool()
+								};
+				return tools;
 			}
 		}
-
-		/// <summary>
-		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should updatet the Data displayed by the Panel with the Attributes stored in the
-		/// passed Wrapper.
-		/// </summary>
-		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
-		public void UpdateGUI(IFileWrapper wrapper)
-		{
-			form.wrapper = (IFileWrapperSaveExtension)wrapper;
-
-			Bcon mywrapper = (Bcon) wrapper;
-
-			form.lbcon.Tag = true;
-			form.llccommit.Enabled = false;
-			form.llcdel.Enabled = false;
-			form.constants.Items.Clear();
-			foreach (BconItem i in mywrapper.Constants) 
-			{
-				form.constants.Items.Add(i);
-			}
-
-			
-			form.tbconstflag.Text = "0x"+Helper.HexString(mywrapper.Flag);			
-			form.lbcon.Text = mywrapper.FileName;
-			form.lbcon.Tag = null;
-		}		
 
 		#endregion
 	}

@@ -69,6 +69,82 @@ namespace SimPe
 		}
 
 		/// <summary>
+		/// true, if the user wants the Pescado Mode
+		/// </summary>
+		public  bool Silent
+		{
+			get 
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				object o = rkf.GetValue("PescadoMode");
+				if (o==null) return false;
+				else return Convert.ToBoolean(o);
+			}
+			set
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				rkf.SetValue("PescadoMode", value);
+			}
+		}
+
+		/// <summary>
+		/// true, if user wants to activate the Cache
+		/// </summary>
+		public  bool UseCache
+		{
+			get 
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				object o = rkf.GetValue("UseCache");
+				if (o==null) return true;
+				else return Convert.ToBoolean(o);
+			}
+			set
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				rkf.SetValue("UseCache", value);
+			}
+		}
+
+		/// <summary>
+		/// true, if user wants to show the OBJD Filenames in OW
+		/// </summary>
+		public  bool ShowObjdNames
+		{
+			get 
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				object o = rkf.GetValue("ShowObjdNames");
+				if (o==null) return false;
+				else return Convert.ToBoolean(o);
+			}
+			set
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				rkf.SetValue("ShowObjdNames", value);
+			}
+		}
+
+		/// <summary>
+		/// true, if user wants to activate the Cache
+		/// </summary>
+		public  bool XPStyle
+		{
+			get 
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				object o = rkf.GetValue("XPStyle");
+				if (o==null) return true;
+				else return Convert.ToBoolean(o);
+			}
+			set
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				rkf.SetValue("XPStyle", value);
+			}
+		}
+
+		/// <summary>
 		/// true, if the user wanted to use the HexViewer
 		/// </summary>
 		public  bool HexViewState 
@@ -220,6 +296,32 @@ namespace SimPe
 		}
 
 		/// <summary>
+		/// Returns the Thumbnail Size for Treeview Items in OW
+		/// </summary>
+		public int OWThumbSize
+		{
+			get 
+			{
+				try 
+				{
+					RegistryKey rkf = rk.CreateSubKey("Settings");
+					object o = rkf.GetValue("OWThumbSize");
+					if (o==null) return 16;
+					else return (int)o;
+				} 
+				catch (Exception) 
+				{
+					return 16;
+				}
+			}
+			set
+			{
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				rkf.SetValue("OWThumbSize", value);
+			}
+		}
+
+		/// <summary>
 		/// Returns the Location of the Personal Folder
 		/// </summary>
 		protected string PersonalFolder 
@@ -258,17 +360,21 @@ namespace SimPe
 		{
 			get 
 			{
-				try 
+				if (this.EPInstalled>=1) 
 				{
-					RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\EA Games\\The Sims 2 University");
-					object o = rk.GetValue("Install Dir");
-					if (o==null) return "";
-					else return o.ToString();
-				} 
-				catch (Exception) 
-				{
-					return "";
+					try 
+					{
+						RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\EA Games\\The Sims 2 University");
+						object o = rk.GetValue("Install Dir");
+						if (o==null) return "";
+						else return o.ToString();
+					} 
+					catch (Exception) 
+					{
+						return "";
+					}
 				}
+				return "";
 			}
 		}
 
@@ -280,7 +386,7 @@ namespace SimPe
 			get 
 			{
 				try 
-				{
+				{					
 					RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("Software\\EA Games\\The Sims 2");
 					object o = rk.GetValue("EPsInstalled");
 					if (o==null) return 0;
@@ -379,21 +485,20 @@ namespace SimPe
 				{
 					RegistryKey rkf = rk.CreateSubKey("Settings");
 					object o = rkf.GetValue("SimsPath");
-					if (o==null) o = rkf.GetValue("SimsApplication");	//this key is obsolete!
+					//if (o==null) o = rkf.GetValue("SimsApplication");	//this key is obsolete!
 					if (o==null) return RealGamePath;
 					else 
 					{
 						string fl = o.ToString().Trim().ToLower();
-						if (fl.EndsWith(".exe")) 
-						{
-							fl = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(fl), "..");
-						}
+						if (fl.EndsWith(".exe")) fl = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(fl), "..");
+
+						if (!System.IO.Directory.Exists(fl)) return this.RealGamePath;
 						return fl;
 					}
 				} 
 				catch (Exception) 
 				{
-					return "";
+					return this.RealGamePath;;
 				}
 			}
 			set
@@ -410,7 +515,7 @@ namespace SimPe
 		{
 			get 
 			{
-				/*try 
+				try 
 				{
 					RegistryKey rkf = rk.CreateSubKey("Settings");
 					object o = rkf.GetValue("SimsEP1Path");
@@ -418,19 +523,20 @@ namespace SimPe
 					else 
 					{
 						string fl = o.ToString().Trim().ToLower();
+
+						if (!System.IO.Directory.Exists(fl)) return this.RealEP1GamePath;
 						return fl;
 					}
 				} 
 				catch (Exception) 
 				{
-					return "";
-				}*/
-				return this.RealEP1GamePath;
+					return this.RealEP1GamePath;
+				}
 			}
 			set
 			{
-				/*RegistryKey rkf = rk.CreateSubKey("Settings");
-				rkf.SetValue("SimsEP1Path", value);*/
+				RegistryKey rkf = rk.CreateSubKey("Settings");
+				rkf.SetValue("SimsEP1Path", value);
 			}
 		}
 
@@ -468,12 +574,14 @@ namespace SimPe
 					}
 					else 
 					{
-						return o.ToString();
+						string fl = o.ToString();
+						if (!System.IO.Directory.Exists(fl)) return this.RealSavegamePath;
+						return fl;
 					}
 				} 
 				catch (Exception) 
 				{
-					return "";
+					return this.RealSavegamePath;
 				}
 			}
 			set 

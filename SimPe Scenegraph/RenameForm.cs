@@ -19,6 +19,7 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.TextBox tbname;
 		private System.Windows.Forms.LinkLabel llname;
 		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.CheckBox cbv2;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -67,6 +68,7 @@ namespace SimPe.Plugin
 			this.tbname = new System.Windows.Forms.TextBox();
 			this.llname = new System.Windows.Forms.LinkLabel();
 			this.button1 = new System.Windows.Forms.Button();
+			this.cbv2 = new System.Windows.Forms.CheckBox();
 			this.SuspendLayout();
 			// 
 			// lv
@@ -146,10 +148,21 @@ namespace SimPe.Plugin
 			this.button1.Text = "OK";
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
+			// cbv2
+			// 
+			this.cbv2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.cbv2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cbv2.Location = new System.Drawing.Point(16, 304);
+			this.cbv2.Name = "cbv2";
+			this.cbv2.Size = new System.Drawing.Size(280, 24);
+			this.cbv2.TabIndex = 6;
+			this.cbv2.Text = "University Ready v2 (sug. by Numenor)";
+			// 
 			// RenameForm
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
 			this.ClientSize = new System.Drawing.Size(712, 332);
+			this.Controls.Add(this.cbv2);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.llname);
 			this.Controls.Add(this.tbname);
@@ -180,10 +193,9 @@ namespace SimPe.Plugin
 					SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
 					str.ProcessData(pfd, package);
 
-					if (str.Items.Length>1) 
-					{
-						return str.Items[1].Title;
-					}
+					SimPe.PackedFiles.Wrapper.StrItemList sil = str.LanguageItems(1);
+					if (sil.Length>1) return sil[1].Title;
+					else if (str.Items.Length>1) return str.Items[1].Title;
 				}
 			}
 
@@ -200,6 +212,36 @@ namespace SimPe.Plugin
 			return "SimPE";
 		}
 
+		/// <summary>
+		/// Replaces an old unique portion with a new Name
+		/// </summary>
+		/// <param name="name"></param>
+		/// <param name="newunique"></param>
+		/// <param name="force">if true, the unique name will be added, even if no unique item was found</param>
+		/// <returns></returns>
+		public static string ReplaceOldUnique(string name, string newunique, bool force) 
+		{
+			string[] parts = name.Split("[".ToCharArray(), 2);
+			if (parts.Length>1) 
+			{
+				string[] ends = parts[1].Split("]".ToCharArray(), 2);
+				if (ends.Length>1) return parts[0]+newunique+ends[1];
+			}
+			
+			if (force) 
+				return name+"-"+newunique;
+			else
+				return name;
+		}
+
+		/// <summary>
+		/// Creates a Name Map
+		/// </summary>
+		/// <param name="auto"></param>
+		/// <param name="package"></param>
+		/// <param name="lv"></param>
+		/// <param name="username"></param>
+		/// <returns></returns>
 		public static Hashtable GetNames(bool auto, SimPe.Interfaces.Files.IPackageFile package, ListView lv, string username) 
 		{
 			if (lv!=null) lv.Items.Clear();
@@ -216,7 +258,6 @@ namespace SimPe.Plugin
 					Rcol rcol = new GenericRcol(null, false);
 					rcol.ProcessData(pfd, package);
 					string newname = Hashes.StripHashFromName(rcol.FileName.Trim().ToLower());
-					if (newname==null) newname="";
 					if (newname=="") newname="SimPE_dummy_"+username;
 					if (old==null) old = "";
 					if (old=="") old = " ";
@@ -224,8 +265,10 @@ namespace SimPe.Plugin
 					{
 						string secname = newname.Replace(old, username);
 						if ((secname==newname) && (old!=username.Trim().ToLower())) secname = username+"__"+secname;
-						newname = secname;
+						newname = secname;						
 					}
+
+					
 
 					if (lv!=null)
 					{
@@ -261,23 +304,69 @@ namespace SimPe.Plugin
 			return ht;
 		}
 
+		/// <summary>
+		/// Creates a unique Name
+		/// </summary>
+		/// <returns>a Unique String</returns>
+		public static string GetUniqueName()
+		{
+			return GetUniqueName(false);
+		}
+
+		/// <summary>
+		/// Creates a unique Name
+		/// </summary>
+		/// <param name="retnull">Return null, if no GUID-DB-username was available</param>
+		/// <returns>a Unique String or null</returns>
+		public static string GetUniqueName(bool retnull)
+			{
+			string uname = Helper.WindowsRegistry.Username.Trim();
+			if (uname=="") 
+			{
+				if (retnull) return null;
+				uname = System.Guid.NewGuid().ToString();
+			}
+			else 
+			{
+				uname = uname.Replace(" ", "-").Replace("_", "-").Replace("~", "-").Replace("!", ".").Replace("#", ".").Replace("[", "(");
+				DateTime now = DateTime.Now;
+				string time = now.Day.ToString()+"."+now.Month.ToString()+"."+now.Year.ToString()+"-"+now.Hour.ToString("x")+now.Minute.ToString("x")+now.Second.ToString("x");
+				uname += "-"+time;				
+			}
+	
+			return "["+uname.Trim()+"]";
+		}
+
 		SimPe.Interfaces.Files.IPackageFile package;
-		public static Hashtable Execute(SimPe.Interfaces.Files.IPackageFile package, bool uniquename) 
+		static string current_unique;
+		public static Hashtable Execute(SimPe.Interfaces.Files.IPackageFile package, bool uniquename, ref FixVersion ver) 
 		{						
 			RenameForm rf = new RenameForm();
 			rf.ok = false;
 			rf.package = package;
+			rf.cbv2.Checked = (ver==FixVersion.UniversityReady2);
 
 			string old = Hashes.StripHashFromName(FindMainOldName(package).ToLower().Trim());
+			current_unique = GetUniqueName();
 			if (old.IndexOf("_cres")==old.Length-5) old = old.Substring(0, old.Length-5);
-			if (uniquename) rf.tbname.Text = old+"__"+System.Guid.NewGuid().ToString();
+			if (uniquename) 
+			{
+				string name = RenameForm.ReplaceOldUnique(old, current_unique, true);
+				if (name==old) name = old+current_unique;
+				rf.tbname.Text = name;
+			}
 			else rf.tbname.Text = old;
 
 			GetNames(uniquename, package, rf.lv, rf.tbname.Text);
 			rf.ShowDialog();
 
+
 			if (rf.ok)
+			{
+				if (rf.cbv2.Checked) ver = FixVersion.UniversityReady2;
+				else ver = FixVersion.UniversityReady;
 				return rf.GetReplacementMap();
+			}
 			else 
 				return null;
 		}

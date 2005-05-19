@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -38,55 +40,55 @@ namespace SimPe.PackedFiles.Wrapper
 	{
 		#region Attributes
 		/// <summary>
-		/// Maximum Number of Lines to load
-		/// </summary>
-		int limit;
-
-		/// <summary>
 		/// Contains the Filename
 		/// </summary>
-		byte[] filename;	
-	
-		/// <summary>
-		/// Returns the Filename
-		/// </summary>
-		public string FileName 
-		{
-			get { return Helper.ToString(filename); }
-		}
+		byte[] filename;
 
 		/// <summary>
 		/// Format Code of the FIle
 		/// </summary>
 		SimPe.Data.MetaData.FormatCode format;
 
-			/// <summary>
+		/// <summary>
+		/// Contains all StrItems by Language
+		/// </summary>
+		Hashtable lines;
+
+		/// <summary>
+		/// Maximum Number of Lines to load
+		/// </summary>
+		int limit;
+		#endregion
+
+		#region Accessor methods
+		/// <summary>
+		/// Returns the Filename
+		/// </summary>
+		public new string FileName 
+		{
+			get { return Helper.ToString(filename); }
+			set
+			{
+				if (value.Length < 64)
+				{
+					char[] cs = value.ToCharArray();
+					for (int i = 0; i < value.Length; i++)
+						filename[i] = (byte)cs[i];
+					for (int i = value.Length; i < 64; i++)
+						filename[i] = 0;
+				}
+			}
+		}
+
+		/// <summary>
 		/// Returns /Sets the Format Code
 		/// </summary>
 		public SimPe.Data.MetaData.FormatCode Format
 		{
 			get { return format; }			
-			set { format = value; }
+			set { format = value; } // should check it's valid
 		}
 		
-		/// <summary>
-		/// Returns/Sets the Constants
-		/// </summary>
-		public StrItemList Items
-		{
-			get { 
-				StrItemList items = new StrItemList();
-				StrLanguageList lngs = Languages;
-				foreach (StrLanguage k in lngs) items.AddRange((StrItemList)lines[k.Id]);
-
-				return items;
-			}			
-			set {
-				lines = new Hashtable();
-				foreach (StrItem i in value) this.Add(i);
-			}
-		}
-
 		/// <summary>
 		/// Returns/Sets all stored lines
 		/// </summary>
@@ -96,10 +98,14 @@ namespace SimPe.PackedFiles.Wrapper
 			get { return lines; }
 			set { lines = value; }
 		}
+		#endregion
+
+		#region Extended accessor methods
 
 		/// <summary>
-		/// Returns the list of Languages
+		/// Gets or Sets the list of languages in the file
 		/// </summary>
+		/// <remarks>Adds empty lists when setting for missing languages</remarks>
 		public StrLanguageList Languages 
 		{
 			get 
@@ -119,125 +125,6 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		/// <summary>
-		/// Contains all StrItems by Language
-		/// </summary>
-		Hashtable lines;
-		#endregion
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Str(int limit) : base()
-		{		
-			filename = new byte[64];
-			format = SimPe.Data.MetaData.FormatCode.normal;
-			lines = new Hashtable();
-			this.limit = limit;
-		}
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Str() : base()
-		{		
-			filename = new byte[64];
-			format = SimPe.Data.MetaData.FormatCode.normal;
-			lines = new Hashtable();
-			this.limit = 0;
-		}
-
-		/// <summary>
-		/// Returns all Langugae specific Strings
-		/// </summary>
-		/// <param name="l">the Language</param>
-		/// <returns>List of Strings</returns>
-		public StrItemList LanguageItems(StrLanguage l) 
-		{			
-			if (l==null) return new StrItemList();			
-			return LanguageItems((Data.MetaData.Languages)l.Id);
-		}
-
-		/// <summary>
-		/// Returns all Langugae specific Strings
-		/// </summary>
-		/// <param name="l">the Language</param>
-		/// <returns>List of Strings</returns>
-		public StrItemList LanguageItems(Data.MetaData.Languages l) 
-		{	
-			
-			StrItemList items = (StrItemList)lines[(byte)l];
-			if (items==null) items = new StrItemList();
-			
-			return items;
-		}
-
-		/// <summary>
-		/// Returns a Language String (if available in the passed Language)
-		/// </summary>
-		/// <param name="l">the Language</param>
-		/// <returns>List of Strings</returns>
-		public StrItem FallbackedLanguageItem(Data.MetaData.Languages l, int index)
-		{
-			StrItemList list = this.LanguageItems(l);
-			StrItem name = null;
-			if (list.Length>index) name = list[index];
-
-			if (name==null) name = new StrItem();
-			 
-			if (name.Title.Trim()=="") 
-			{
-				list = this.LanguageItems(1);
-				if (list.Length>index) name = list[index];
-			}
-			
-
-			return name;
-		}
-
-		/// <summary>
-		/// Returns all Langugae specific Strings, if the String is not included in the passed 
-		/// Language the Fallback String (use en) will be returned
-		/// </summary>
-		/// <param name="l">the Language</param>
-		/// <returns>List of Strings</returns>
-		public StrItemList FallbackedLanguageItems(Data.MetaData.Languages l)
-		{
-			if (l==Data.MetaData.Languages.English) return this.LanguageItems(l);
-
-			StrItemList real = (StrItemList)LanguageItems(l).Clone();
-			StrItemList fallback = LanguageItems(Data.MetaData.Languages.English);			
-
-			int ct = Math.Min(real.Length, fallback.Length);
-			for (int i=0; i<fallback.Length; i++) 
-			{
-				if (real.Length<=i) real.Add(null);
-	
-				if (real[i]==null)
-				{
-					StrItem item = new StrItem();
-					item.Language = new StrLanguage((byte)l);
-					item.Index = i;
-					real[i] = item;
-				}			
-
-				if (real[i].Title.Trim()=="") 
-				{
-					real[i] = fallback[i];					
-				}
-			}
-
-			return real;
-		}
-		
-
-		/// <summary>
-		/// Ensures that all String Items are Valid
-		/// </summary>
-		public void MakeValid()		
-		{
-			foreach (StrItem i in this.Items)i.MakeValid();			
-		}
 
 		/// <summary>
 		/// Adds a new String Item
@@ -265,6 +152,121 @@ namespace SimPe.PackedFiles.Wrapper
 			if (lng != null) lng.Remove(item);
 		}
 
+
+		/// <summary>
+		/// StrItemList interface to the lines hashtable
+		/// </summary>
+		public StrItemList Items
+		{
+			get 
+			{ 
+				StrItemList items = new StrItemList();
+				StrLanguageList lngs = Languages;
+				foreach (StrLanguage k in lngs) items.AddRange((StrItemList)lines[k.Id]);
+
+				return items;
+			}			
+			set 
+			{
+				lines = new Hashtable();
+				foreach (StrItem i in value) this.Add(i);
+			}
+		}
+
+		/// <summary>
+		/// Returns all Language-specific Strings
+		/// </summary>
+		/// <param name="l">the Language</param>
+		/// <returns>List of Strings</returns>
+		public StrItemList LanguageItems(StrLanguage l) 
+		{			
+			if (l==null) return new StrItemList();			
+			return LanguageItems((Data.MetaData.Languages)l.Id);
+		}
+
+		/// <summary>
+		/// Returns all Language-specific Strings
+		/// </summary>
+		/// <param name="l">the Language</param>
+		/// <returns>List of Strings</returns>
+		public StrItemList LanguageItems(Data.MetaData.Languages l) 
+		{	
+			
+			StrItemList items = (StrItemList)lines[(byte)l];
+			if (items==null) items = new StrItemList();
+			
+			return items;
+		}
+
+
+		/// <summary>
+		/// Returns a Language String (if available in the passed Language)
+		/// </summary>
+		/// <param name="l">the Language</param>
+		/// <returns>List of Strings</returns>
+		public StrItem FallbackedLanguageItem(Data.MetaData.Languages l, int index)
+		{
+			StrItemList list = this.LanguageItems(l);
+			StrItem name;
+			if (list.Length>index) name = list[index];
+			else name = new StrItem(0, 0, "", "");
+			 
+			if (name.Title.Trim()=="") 
+			{
+				list = this.LanguageItems(1);
+				if (list.Length>index) name = list[index];
+			}
+			
+
+			return name;
+		}
+
+		/// <summary>
+		/// Returns all Langugae specific Strings, if the String is not included in the passed 
+		/// Language the Fallback String (use en) will be returned
+		/// </summary>
+		/// <param name="l">the Language</param>
+		/// <returns>List of Strings</returns>
+		public StrItemList FallbackedLanguageItems(Data.MetaData.Languages l)
+		{
+			if (l==Data.MetaData.Languages.English) return this.LanguageItems(l);
+
+			StrItemList real = (StrItemList)LanguageItems(l).Clone();
+			StrItemList fallback = LanguageItems(Data.MetaData.Languages.English);			
+
+			for (int i=0; i<fallback.Length; i++) 
+				if (real.Length <= i) real.Add(fallback[i]);
+				else if ((real[i] == null) || (real[i].Title.Trim() == ""))
+					real[i] = fallback[i];
+			return real;
+		}
+		
+
+		#endregion
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public Str(int limit) : base()
+		{		
+			filename = new byte[64];
+			format = SimPe.Data.MetaData.FormatCode.normal;
+			lines = new Hashtable();
+			this.limit = limit;
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		public Str() : base()
+		{		
+			filename = new byte[64];
+			format = SimPe.Data.MetaData.FormatCode.normal;
+			lines = new Hashtable();
+			this.limit = 0;
+		}
+
+
 		#region IWrapper member
 		public override bool CheckVersion(uint version) 
 		{
@@ -275,7 +277,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
-			return new UserInterface.StrUI();
+			return new UserInterface.StrForm();
 		}
 
 		/// <summary>
@@ -301,20 +303,19 @@ namespace SimPe.PackedFiles.Wrapper
 			lines = new Hashtable();
 			if (reader.BaseStream.Length <= 0x40) return;
 			
-			filename = reader.ReadBytes(0x40);
-			format = (SimPe.Data.MetaData.FormatCode) reader.ReadUInt16();
+			byte[] fi = reader.ReadBytes(0x40);
 
-			if (format!=Data.MetaData.FormatCode.normal) return;
+			SimPe.Data.MetaData.FormatCode fo = (SimPe.Data.MetaData.FormatCode)reader.ReadUInt16();
+			if (fo != Data.MetaData.FormatCode.normal) return;
 
 			ushort count = reader.ReadUInt16();
-			for (int i=0; i<count; i++) 
-			{
-				StrItem item = new StrItem();
-				item.Unserialize(reader, lines);
-				
-				//load a limited Number
-				if (limit!=0) if (i+1>=limit) return;
-			}									
+
+			filename = fi;
+			format = fo;
+			lines = new Hashtable();
+
+			if ((limit != 0) && (count > limit)) count = (ushort)limit;	// limit number of StrItem entries loaded
+			for (int i = 0; i < count; i++) StrItem.Unserialize(reader, lines);
 		}
 
 		/// <summary>
@@ -351,7 +352,11 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				return "filename="+this.FileName+", languages="+this.Languages.Length.ToString()+", lines="+this.Items.Length.ToString();
+				string n = "filename="+this.FileName+", languages="+this.Languages.Length.ToString()+", lines="+this.Items.Length.ToString();
+				foreach (StrItem i in this.FallbackedLanguageItems(Helper.WindowsRegistry.LanguageCode))
+					if (i.Title != "")
+						return n + ", first=" + i.Title;
+				return n + " (no strings)";
 			}
 		}
 		/// <summary>
@@ -366,7 +371,7 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		/// <summary>
-		/// Returns a list of File Type this Plugin can process
+		/// Returns a list of File Types this Plugin can process
 		/// </summary>
 		public uint[] AssignableTypes
 		{
@@ -374,8 +379,8 @@ namespace SimPe.PackedFiles.Wrapper
 			{
 				uint[] types = {
 								   0x53545223,  //STR#
-								   0x54544173,  //Pie String
-								   0x43545353  //CTSS	
+								   0x54544173,  //Pie String (TTAB)
+								   0x43545353   //CTSS
 							   };
 			
 				return types;

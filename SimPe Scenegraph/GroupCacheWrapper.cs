@@ -18,112 +18,115 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections;
 using SimPe.Interfaces.Plugin;
+using SimPe.Interfaces.Files;
+using SimPe.Interfaces.Wrapper;
 
-namespace SimPe.Plugin
+namespace SimPe.PackedFiles.Wrapper
 {
 	/// <summary>
-	/// This is the actual FileWrapper
-	/// </summary>
-	/// <remarks>
-	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
-	/// a BinaryStream and translates the data into some userdefine Attributes.
-	/// </remarks>
-	public class Bhav
+	/// Used to decode the Group Cache
+	/// </summary>	
+	public class GroupCache
 		: AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
-		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
-		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
+		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File	
+		, IGroupCache
 	{
 		#region Attributes
+		uint id;
+		GroupCacheItems items;
 		/// <summary>
-		/// Contains the Filename
+		/// Returns the Items stored in the FIle
 		/// </summary>
-		byte[] filename;
-
-		/// <summary>
-		/// Returns the Filename
-		/// </summary>
-		public string FileName 
+		/// <remarks>Do not add Items based on this List! use the Add Method!!</remarks>
+		internal GroupCacheItems Items 
 		{
-			get { return Helper.ToString(filename); }
-			set { filename = Helper.ToBytes(value, 0x40); }
+			get {return items;}
 		}
 
-		/// <summary>
-		/// Stores the Header
-		/// </summary>
-		private BhavHeader header;
-
-		/// <summary>
-		/// Returns / Sets the Header
-		/// </summary>
-		public BhavHeader Header 
-		{
-			get { return header;	}			
-			set { header = value; }
-		}
-
-		/// <summary>
-		/// Contains all available Instruction 
-		/// </summary>		
-		private Instruction[] instructions;
-
-		/// <summary>
-		/// Returns/Sets the Instructions
-		/// </summary>
-		public Instruction[] Instructions
-		{
-			get { return instructions;	}			
-			set { instructions = value; }
-		}
+		Hashtable map;
+		uint maxgroup;
+		byte[] over;
 		#endregion
-
-		/// <summary>
-		/// Contains an Opcode Provider
-		/// </summary>
-		SimPe.Interfaces.Providers.IOpcodeProvider opcodes;
-
-		/// <summary>
-		/// Opcode Provider
-		/// </summary>
-		public SimPe.Interfaces.Providers.IOpcodeProvider Opcodes 
-		{
-			get { return opcodes; }
-		}
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Bhav(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
-		{
-			Instruction.OpcodeProvider = opcodes;
-			//Instruction.Package = package;
-
-			instructions = new Instruction[0];
-			header = new BhavHeader();
-			filename = new byte[64];
-			this.opcodes = opcodes;
+		public GroupCache() : base()
+		{		
+			id = 0x05;
+			items = new GroupCacheItems();
+			map = new Hashtable();
+			maxgroup = 0x6f000000;
+			over = new byte[0];
 		}
 
-		#region IWrapper member
-		public override bool CheckVersion(uint version) 
+		/// <summary>
+		/// returns an Absoluet FileName
+		/// </summary>
+		/// <param name="flname"></param>
+		/// <returns></returns>
+		string AbsoluteFileName(string flname)
 		{
-			if ( (version==0012) //0.00
-				|| (version==0013) //0.10
-				) 
+			flname = flname.Replace("%userdatadir%", Helper.WindowsRegistry.SimSavegameFolder.Trim().ToLower());
+			flname = flname.Replace("%gamedatadir1%", Helper.WindowsRegistry.SimsEP1Path.Trim().ToLower());
+			flname = flname.Replace("%gamedatadir%", Helper.WindowsRegistry.SimsPath.Trim().ToLower());
+
+			return flname;
+		}
+		
+		/// <summary>
+		/// Add a new Item
+		/// </summary>
+		/// <param name="gci">The Item to Add</param>
+		public void Add(GroupCacheItem gci) 
+		{
+			if (gci.LocalGroup>maxgroup) maxgroup = gci.LocalGroup;
+			items.Add(gci);
+			map[AbsoluteFileName(gci.FileName)] = gci;
+		}
+
+		/// <summary>
+		/// Remove a Item
+		/// </summary>
+		/// <param name="gci">The Item you want to remove</param>
+		public void Remove(GroupCacheItem gci) 
+		{
+			items.Remove(gci);
+			map.Remove(AbsoluteFileName(gci.FileName));
+		}
+
+		/// <summary>
+		/// Return an apropriate Item for the passed File
+		/// </summary>
+		/// <param name="flname"></param>
+		/// <returns></returns>
+		public IGroupCacheItem GetItem(string flname)
+		{
+			GroupCacheItem gci = (GroupCacheItem)map[flname.Trim().ToLower()];
+			if (gci==null) 
 			{
-				return true;
+				gci = new GroupCacheItem();
+				gci.FileName = flname;
+				gci.LocalGroup = maxgroup+1;
+				Add(gci);
 			}
 
-			return false;
+			return gci;
 		}
+		
+
+		
+		#region IWrapper member
+		public override bool CheckVersion(uint version) { return true; }
 		#endregion
 		
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
-			return new BhavUI();
+			return new UserInterface.GroupCacheUI();
 		}
 
 		/// <summary>
@@ -132,15 +135,12 @@ namespace SimPe.Plugin
 		/// <returns>Human Readable Description</returns>
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
-			///
-			/// TODO: Change the Description passed here
-			/// 
 			return new AbstractWrapperInfo(
-				"BHAV Wrapper",
+				"Group Cache Wrapper",
 				"Quaxi",
 				"---",
-				11
-				); 
+				1
+				);   
 		}
 
 		/// <summary>
@@ -149,29 +149,27 @@ namespace SimPe.Plugin
 		/// <param name="reader">The Stream that contains the FileData</param>
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
-			//Instruction.Package = package;
+			maxgroup = 0x6f000000;
+			items.Clear();
+			map.Clear();
+			id = reader.ReadUInt32();
+			uint ct = reader.ReadUInt32();
+			
+			for (int i=0; i<ct; i++) 
+			{
+				try 
+				{
+					GroupCacheItem gci = new GroupCacheItem();
+					gci.Unserialize(reader);
+					Add(gci);
+				} 
+				catch (Exception ex) 
+				{
+					Helper.ExceptionMessage("", ex);
+				}
+			}
 
-			long pos = reader.BaseStream.Position;
-			filename = reader.ReadBytes(64);
-			try 
-			{
-				header.Unserialize(reader);
-			} 
-			catch (Exception) 
-			{
-				filename = new byte[0];
-				reader.BaseStream.Seek(pos, System.IO.SeekOrigin.Begin);
-				header.Unserialize(reader);
-			}
-					
-			instructions = new Instruction[header.InstructionCount];
- 
-			for (int i=0; i < instructions.Length; i++) 
-			{
-				Instruction inst = new Instruction(i, this);
-				inst.Unserialize(header.Format, reader);
-				instructions[i] = inst;
-			}
+			over = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 		}
 
 		/// <summary>
@@ -183,31 +181,21 @@ namespace SimPe.Plugin
 		/// return (i.e. must point to the first Byte after your actual File)
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
-		{
-			//if (header.Format>0x8004) 
-			writer.Write(filename);
-			header.InstructionCount = (uint)instructions.Length;
-			header.Serialize(writer);
-					
-			for (int i=0; i < instructions.Length; i++) 
-			{
-				instructions[i].Serialize(header.Format, writer);
-			} 			
+		{	
+			writer.Write(id);
+		
+			writer.Write((uint)items.Length);			
+			for (int i=0; i<items.Length; i++) items[i].Serialize(writer);	
+			writer.Write(over);
 		}
 		#endregion
 
 		#region IFileWrapperSaveExtension Member		
-			//all covered by Serialize()
+		//all covered by Serialize()
 		#endregion
 
 		#region IFileWrapper Member
-		public override string Description
-		{
-			get
-			{
-				return "FileName="+this.FileName+", Lines="+this.Instructions.Length;
-			}
-		}
+
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin
 		/// </summary>
@@ -215,7 +203,10 @@ namespace SimPe.Plugin
 		{
 			get
 			{
-				return new byte[0];
+				Byte[] sig = {
+								 
+							 };
+				return sig;
 			}
 		}
 
@@ -227,9 +218,9 @@ namespace SimPe.Plugin
 			get
 			{
 				uint[] types = {
-								   0x42484156  //handles the BHAV File
-//								   ,0x54544142 //handles the TTAB File
+								  0x54535053	//grop	
 							   };
+			
 				return types;
 			}
 		}

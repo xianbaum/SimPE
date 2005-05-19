@@ -56,6 +56,7 @@ namespace SimPe.Packages
 		{
 			subtype = 0;
 			markdeleted = false;
+			markcompress = false;
 			changed = false;
 		}
 
@@ -350,7 +351,12 @@ namespace SimPe.Packages
 		}*/
 		#endregion
 
-
+		object tag;
+		public object Tag 
+		{
+			get {return tag;}
+			set {tag = value;}
+		}
 
 		#region UserData Extensions
 		/// <summary>
@@ -359,12 +365,22 @@ namespace SimPe.Packages
 		bool markdeleted;
 
 		/// <summary>
-		/// Returns/set if this file should be keept in the Index for the next Save
+		/// Returns/sets if this file should be keept in the Index for the next Save
 		/// </summary>
 		public bool MarkForDelete 
 		{
 			get { return markdeleted; }
 			set { markdeleted = value; }
+		}
+
+		bool markcompress;
+		/// <summary>
+		/// Returns/sets if this File should be Recompressed during the next Save Operation
+		/// </summary>
+		public bool MarkForReCompress
+		{
+			get { return markcompress; }
+			set { markcompress = value; }
 		}
 
 		/// <summary>
@@ -413,6 +429,11 @@ namespace SimPe.Packages
 			get {return changed; }
 			set {changed = value; }
 		}
+
+		/// <summary>
+		/// Used during saving Operations to qickly determin the umcompressed Size
+		/// </summary>
+		internal PackedFile fldata;
 		#endregion 
 	}
 }

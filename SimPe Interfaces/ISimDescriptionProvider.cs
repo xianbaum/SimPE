@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections;
 
 namespace SimPe.Interfaces.Providers
 {
@@ -53,5 +54,21 @@ namespace SimPe.Interfaces.Providers
 		/// <param name="instance">Instance Number of the Sim</param>
 		/// <returns>0xffffffff or a valid Sim ID</returns>
 		uint GetSimId(ushort instance);
+
+		/// <summary>
+		/// Returns availabl SDSC Files by SimGUID
+		/// </summary>
+		Hashtable SimGuidMap
+		{
+			get;
+		}
+
+		/// <summary>
+		/// Returns availabl SDSC Files by Instance
+		/// </summary>
+		Hashtable SimInstance
+		{
+			get;
+		}
 	}
 }

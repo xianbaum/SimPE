@@ -20,7 +20,7 @@
 using System;
 using SimPe.Interfaces.Plugin;
 
-namespace SimPe.Plugin
+namespace SimPe.PackedFiles.Wrapper
 {
 	/// <summary>
 	/// This is the actual FileWrapper
@@ -44,7 +44,7 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public string FileName 
+		public new string FileName 
 		{
 			get { return Helper.ToString(filename); }
 			set { filename = Helper.ToBytes(value, 0x40); }
@@ -97,7 +97,7 @@ namespace SimPe.Plugin
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
-			return new TrcnUI();
+			return new UserInterface.TrcnForm();
 		}
 
 		/// <summary>

@@ -82,6 +82,26 @@
                     TreatWarningsAsErrors = "false"
                     WarningLevel = "4"
                 />
+                <Config
+                    Name = "Release PLJ"
+                    AllowUnsafeBlocks = "false"
+                    BaseAddress = "285212672"
+                    CheckForOverflowUnderflow = "false"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = "TRACE"
+                    DocumentationFile = ""
+                    DebugSymbols = "false"
+                    FileAlignment = "4096"
+                    IncrementalBuild = "false"
+                    NoStdLib = "false"
+                    NoWarn = ""
+                    Optimize = "true"
+                    OutputPath = "bin\Release\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "4"
+                />
             </Settings>
             <References>
                 <Reference
@@ -164,6 +184,16 @@
                     Project = "{74517907-2236-4C45-80ED-E188D5E5CE0E}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
+                <Reference
+                    Name = "SimPe Cache"
+                    Project = "{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
+                <Reference
+                    Name = "Skybound.VisualStyles"
+                    AssemblyName = "Skybound.VisualStyles"
+                    HintPath = "..\Skybound.VisualStyles.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -199,11 +229,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Elements.af.resx"
-                    DependentUpon = "Elements.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "Elements.de.resx"
                     DependentUpon = "Elements.cs"
                     BuildAction = "EmbeddedResource"
@@ -222,11 +247,6 @@
                     RelPath = "Elements2.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Elements2.af.resx"
-                    DependentUpon = "Elements2.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "Elements2.de.resx"
@@ -314,9 +334,29 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "SdscExtendedForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SdscExtendedForm.resx"
+                    DependentUpon = "SdscExtendedForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "SimRelations.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SimRelinkForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "SimRelinkForm.resx"
+                    DependentUpon = "SimRelinkForm.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "SRel.cs"
@@ -330,6 +370,11 @@
                 />
                 <File
                     RelPath = "UIBase.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "WantNameLoader.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

@@ -48,7 +48,7 @@ namespace SimPe.Interfaces.Files
 		/// <summary>
 		/// Returns the Size of the File
 		/// </summary>
-		int Signature
+		ushort Signature
 		{
 			get;
 		}
@@ -74,7 +74,18 @@ namespace SimPe.Interfaces.Files
 		Byte[] Data
 		{
 			get;
-		}		
+		}	
+	
+		/// <summary>
+		/// Returns the Plain File Data (might be compressed)
+		/// </summary>
+		/// <remarks>
+		/// Header Informations are Included
+		/// </remarks>
+		Byte[] PlainData
+		{
+			get;
+		}	
 
 		/// <summary>
 		/// Returns the Plain File Data. If the Packed File is compress it will be decompressed

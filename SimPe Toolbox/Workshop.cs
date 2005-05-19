@@ -73,6 +73,8 @@ namespace SimPe.Plugin
 		TreeNode tvimemory;
 		TreeNode tvitemplate;
 		private System.Windows.Forms.ImageList ilist;
+		private System.Windows.Forms.CheckBox cbparent;
+		private Skybound.VisualStyles.VisualStyleProvider visualStyleProvider1;
 		TreeNode tviwindow;
 
 		public Workshop()
@@ -84,6 +86,7 @@ namespace SimPe.Plugin
 
 			
 			btclone.Enabled = false;
+			btclone.Refresh();
 			this.tabControl1.SelectedIndex = 1;
 			if (!Helper.WindowsRegistry.HiddenMode) 
 			{
@@ -167,13 +170,16 @@ namespace SimPe.Plugin
 
 		/// <summary>
 		/// Sort this Item to the Tree
-		/// </summary>
-		/// <param name="objd"></param>
+		/// </summary>		
 		/// <param name="a"></param>
-		void PutItemToTree(SimPe.PackedFiles.Wrapper.ExtObjd objd, Data.Alias a, Image img)
+		/// <param name="img"></param>
+		/// <param name="type">The Type of the Object</param>
+		/// <param name="functionsort">The function SOrt Value</param>
+		/// <param name="name">The name of the package where this Object was found in</param>
+		/// <param name="group">The group for this Object</param>
+		void PutItemToTree(Data.Alias a, Image img, SimPe.Data.ObjectTypes type, SimPe.PackedFiles.Wrapper.ObjFunctionSort functionsort, string name, uint group)
 		{
-			if (a.Name == "") a.Name = objd.FileName;
-			TreeNode node = new TreeNode(a.Name + " (0x"+Helper.HexString(objd.FileDescriptor.Group)+")");
+			TreeNode node = new TreeNode(a.Name + " (0x"+Helper.HexString(group)+")");
 			node.Tag = a;			
 			if (img!=null) 
 			{
@@ -184,60 +190,60 @@ namespace SimPe.Plugin
 			else 
 			{
 				node.ImageIndex = 1;
-				if (objd.Package.FileName!=null) 
+				if (name!=null) 
 				{
-					string name = objd.Package.FileName.Trim().ToLower();
+					name = name.Trim().ToLower();
 					if (name.StartsWith(Helper.WindowsRegistry.SimSavegameFolder.Trim().ToLower())) 
 						node.ImageIndex = 2;
 				}
 				node.SelectedImageIndex = node.ImageIndex;
 			}
 
-			if (objd.Type == Data.ObjectTypes.Stairs) 
+			if (type == Data.ObjectTypes.Stairs) 
 			{
 				this.tvistairs.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.ArchitecturalSupport)
+			else if (type == Data.ObjectTypes.ArchitecturalSupport)
 			{
 				this.tviarchsup.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.Door)
+			else if (type == Data.ObjectTypes.Door)
 			{
 				this.tvidoor.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.Memory)
+			else if (type == Data.ObjectTypes.Memory)
 			{
 				this.tvimemory.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.ModularStairs)
+			else if (type == Data.ObjectTypes.ModularStairs)
 			{
 				this.tvimodstair.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.ModularStairsPortal)
+			else if (type == Data.ObjectTypes.ModularStairsPortal)
 			{
 				this.tvimodstairport.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.Outfit)
+			else if (type == Data.ObjectTypes.Outfit)
 			{
 				this.tvioutfit.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.Person)
+			else if (type == Data.ObjectTypes.Person)
 			{
 				this.tviperson.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.SimType)
+			else if (type == Data.ObjectTypes.SimType)
 			{
 				this.tvisimtype.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.Template)
+			else if (type == Data.ObjectTypes.Template)
 			{
 				this.tvitemplate.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.Vehicle)
+			else if (type == Data.ObjectTypes.Vehicle)
 			{
 				this.tvivehicle.Nodes.Add(node);
 			} 
-			else if (objd.Type == Data.ObjectTypes.Window)
+			else if (type == Data.ObjectTypes.Window)
 			{
 				this.tviwindow.Nodes.Add(node);
 			}
@@ -245,30 +251,81 @@ namespace SimPe.Plugin
 			else 
 			{
 				bool added = false;
-				if (objd.FunctionSort.InAppliances) { this.tviapl.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InDecorative) { this.tvideco.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InElectronics) { this.tvielectro.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InGeneral) { this.tvigeneral.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InLighting) { this.tvilight.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InPlumbing) { this.tviplumb.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InSeating) { this.tviseating.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InSurfaces) { this.tvisurfaces.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InHobbies) { this.tvihobby.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InAspirationRewards) { this.tviaspiration.Nodes.Add(node); added=true; }
-				else if (objd.FunctionSort.InCareerRewards) { this.tvicareer.Nodes.Add(node); added=true; }
+				if (functionsort.InAppliances) { this.tviapl.Nodes.Add(node); added=true; }
+				else if (functionsort.InDecorative) { this.tvideco.Nodes.Add(node); added=true; }
+				else if (functionsort.InElectronics) { this.tvielectro.Nodes.Add(node); added=true; }
+				else if (functionsort.InGeneral) { this.tvigeneral.Nodes.Add(node); added=true; }
+				else if (functionsort.InLighting) { this.tvilight.Nodes.Add(node); added=true; }
+				else if (functionsort.InPlumbing) { this.tviplumb.Nodes.Add(node); added=true; }
+				else if (functionsort.InSeating) { this.tviseating.Nodes.Add(node); added=true; }
+				else if (functionsort.InSurfaces) { this.tvisurfaces.Nodes.Add(node); added=true; }
+				else if (functionsort.InHobbies) { this.tvihobby.Nodes.Add(node); added=true; }
+				else if (functionsort.InAspirationRewards) { this.tviaspiration.Nodes.Add(node); added=true; }
+				else if (functionsort.InCareerRewards) { this.tvicareer.Nodes.Add(node); added=true; }
 
 				if (!added) this.tviother.Nodes.Add(node);
 			}
 		}
 
+
+		#region Cache Handling		
+		SimPe.Cache.ObjectCacheFile cachefile;
+		bool cachechg;
+
+		/// <summary>
+		/// Get the Name of the Object Cache File
+		/// </summary>
+		string CacheFileName 
+		{
+			get {return Helper.SimPeLanguageCache;}
+		}
+
+		/// <summary>
+		/// Load the Object Cache
+		/// </summary>
+		void LoadCachIndex()
+		{
+			if (cachefile!=null) return;
+			
+			cachechg = false;
+			cachefile = new SimPe.Cache.ObjectCacheFile();
+		
+			if (!Helper.WindowsRegistry.UseCache) return;
+			WaitingScreen.UpdateMessage("Loading Cache");
+			try 
+			{
+				cachefile.Load(CacheFileName);
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage("", ex);
+			}			
+
+			cachefile.LoadObjects();
+		}
+
+		/// <summary>
+		/// Save the Cache to the Disk
+		/// </summary>
+		void SaveCacheIndex()
+		{
+			if (!Helper.WindowsRegistry.UseCache) return;
+			if (!cachechg) return;
+			WaitingScreen.UpdateMessage("Saving Cache");
+
+			cachefile.Save(CacheFileName);
+		}		
+		#endregion
+
 		void BuildListing()
 		{
 			//build Object List
 			if (lbobj.Items.Count==0) 
-			{
-			
-				DateTime start = DateTime.Now;		
+			{								
+				DateTime start = DateTime.Now;						
 				WaitingScreen.Wait();
+				this.ilist.ImageSize = new Size(Helper.WindowsRegistry.OWThumbSize,Helper.WindowsRegistry.OWThumbSize);
+				LoadCachIndex();
 				lbobj.BeginUpdate();
 				tv.BeginUpdate();
 				lbobj.Items.Clear();
@@ -286,85 +343,160 @@ namespace SimPe.Plugin
 				SimPe.Data.MetaData.Languages deflang = Helper.WindowsRegistry.LanguageCode;
 				foreach (Interfaces.Scenegraph.IScenegraphFileIndexItem nrefitem in nrefitems)
 				{
-					//if (ct==200) break;
+					//if (ct==100) break;
 					ct++;
 					if (ct%134==1) WaitingScreen.UpdateMessage(ct.ToString() + len);
 					
 
 					if (nrefitem.LocalGroup == Data.MetaData.LOCAL_GROUP) continue;
 					if (pitems.Contains(nrefitem)) continue;
-					if (groups.Contains(nrefitem.LocalGroup)) continue;
+					if (groups.Contains(nrefitem.LocalGroup)) continue;					
 
-					SimPe.PackedFiles.Wrapper.ExtObjd objd = new SimPe.PackedFiles.Wrapper.ExtObjd(null);
-					nrefitem.FileDescriptor.UserData = nrefitem.Package.Read(nrefitem.FileDescriptor).UncompressedData;
-					objd.ProcessData(nrefitem);
+					Interfaces.Scenegraph.IScenegraphFileIndexItem[] cacheitems = cachefile.FileIndex.FindFile(nrefitem.FileDescriptor);
 
-					//this is needed, so that objects get sorted into the right categories
-					if (objd.Type == Data.ObjectTypes.Normal && objd.CTSSInstance==0) continue;
+					//find the correct File
+					int cindex = -1;
+					string pname = nrefitem.Package.FileName.Trim().ToLower();
+					for (int i=0; i<cacheitems.Length; i++)
+					{
+						Interfaces.Scenegraph.IScenegraphFileIndexItem citem = cacheitems[i];
+						
+						if (citem.FileDescriptor.Filename == pname) 
+						{
+							cindex=i;
+							break;
+						}
+					}
 
-					pitems.Add(nrefitem);
-					groups.Add(nrefitem.LocalGroup);
-					
+					if (cindex!=-1) //found in the cache
+					{
+						SimPe.Cache.ObjectCacheItem oci = (SimPe.Cache.ObjectCacheItem)cacheitems[cindex].FileDescriptor.Tag;
+
+						if (!oci.Useable) continue;
+						pitems.Add(nrefitem);
+						groups.Add(nrefitem.LocalGroup);
+
 #if DEBUG
-					Data.Alias a = new Data.Alias(nrefitem.FileDescriptor.Group, "---");//, "{name} ({id}: {1}, {2}) ");
+						Data.Alias a = new Data.Alias(oci.FileDescriptor.Group, "---");//, "{name} ({id}: {1}, {2}) ");
+#else
+					Data.Alias a = new Data.Alias(oci.FileDescriptor.Group, "---");//, "{name} ({id}: {1}) ");
+#endif
+						object[] o = new object[3];
+						o[0] = nrefitem.FileDescriptor;
+						o[1] = nrefitem.LocalGroup;
+						o[2] = oci.ModelName;
+
+						a.Tag = o;
+
+						if (Helper.WindowsRegistry.ShowObjdNames) a.Name = oci.ObjectFileName;	
+						else a.Name = oci.Name;
+						a.Name +=  " (cached)";
+						Image img = oci.Thumbnail;
+						//if (img!=null) WaitingScreen.UpdateImage(img);
+
+						PutItemToTree(a, img, (SimPe.Data.ObjectTypes)oci.ObjectType, new SimPe.PackedFiles.Wrapper.ObjFunctionSort(oci.ObjectFunctionSort), cacheitems[0].FileDescriptor.Filename, cacheitems[0].FileDescriptor.Group);
+
+						if (img!=null) a.Name = "* "+a.Name;
+						lbobj.Items.Add(a);
+					} 
+					else //not found in chache 
+					{								
+		
+						SimPe.PackedFiles.Wrapper.ExtObjd objd = new SimPe.PackedFiles.Wrapper.ExtObjd(null);
+						nrefitem.FileDescriptor.UserData = nrefitem.Package.Read(nrefitem.FileDescriptor).UncompressedData;
+						objd.ProcessData(nrefitem);
+
+						SimPe.Cache.ObjectCacheItem oci = new SimPe.Cache.ObjectCacheItem();
+						oci.FileDescriptor = nrefitem.FileDescriptor;
+						oci.LocalGroup = nrefitem.LocalGroup;							
+						oci.ObjectType = objd.Type;
+						oci.ObjectFunctionSort = (short)objd.FunctionSort.Value;
+						oci.ObjectFileName = objd.FileName;
+						oci.Useable = true;
+						//this is needed, so that objects get sorted into the right categories
+						if (objd.Type == Data.ObjectTypes.Normal && objd.CTSSInstance==0) 
+						{
+							cachechg = true;
+							oci.Useable = false;
+							cachefile.AddItem(oci, nrefitem.Package.FileName);
+							continue;
+						}
+						pitems.Add(nrefitem);
+						groups.Add(nrefitem.LocalGroup);
+										
+#if DEBUG
+						Data.Alias a = new Data.Alias(nrefitem.FileDescriptor.Group, "---");//, "{name} ({id}: {1}, {2}) ");
 #else
 					Data.Alias a = new Data.Alias(nrefitem.FileDescriptor.Group, "---");//, "{name} ({id}: {1}) ");
 #endif
-					object[] o = new object[3];
-					o[0] = nrefitem.FileDescriptor;
-					o[1] = nrefitem.LocalGroup;
+						object[] o = new object[3];
+						o[0] = nrefitem.FileDescriptor;
+						o[1] = nrefitem.LocalGroup;
+						o[2] = "";											
 
-					Interfaces.Scenegraph.IScenegraphFileIndexItem[] ctssitems = FileTable.FileIndex.FindFile(Data.MetaData.CTSS_FILE, nrefitem.LocalGroup);
-					if (ctssitems.Length>0) 
-					{
-						SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
-						str.ProcessData(ctssitems[0]);
-						SimPe.PackedFiles.Wrapper.StrItemList items = str.LanguageItems(deflang);
-						if (items.Length>0) a.Name = items[0].Title;
+						Interfaces.Scenegraph.IScenegraphFileIndexItem[] ctssitems = FileTable.FileIndex.FindFile(Data.MetaData.CTSS_FILE, nrefitem.LocalGroup);
+						if (ctssitems.Length>0) 
+						{
+							SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
+							str.ProcessData(ctssitems[0]);
+							SimPe.PackedFiles.Wrapper.StrItemList items = str.LanguageItems(deflang);
+							if (items.Length>0) a.Name = items[0].Title;
+							else 
+							{
+								items = str.LanguageItems(1);
+								if (items.Length>0) a.Name = items[0].Title;
+								else a.Name = "";
+							}
+						} 
 						else 
 						{
-							items = str.LanguageItems(1);
-							if (items.Length>0) a.Name = items[0].Title;
-							else a.Name = "";
+							a.Name = "";
+						}		
+						
+
+						//now the ModeName File
+						Interfaces.Scenegraph.IScenegraphFileIndexItem[] txtitems = FileTable.FileIndex.FindFile(Data.MetaData.STRING_FILE, nrefitem.LocalGroup, 0x85);
+						if (txtitems.Length>0) 
+						{
+							SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str(2);
+							str.ProcessData(txtitems[0]);
+							SimPe.PackedFiles.Wrapper.StrItemList items = str.LanguageItems(1);
+							if (items.Length>1) o[2] = items[1].Title;
 						}
-					} 
-					else 
-					{
-						a.Name = "";
-					}				
 
-					//now the ModeName File
-					Interfaces.Scenegraph.IScenegraphFileIndexItem[] txtitems = FileTable.FileIndex.FindFile(Data.MetaData.STRING_FILE, nrefitem.LocalGroup, 0x85);
-					if (txtitems.Length>0) 
-					{
-						SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str(2);
-						str.ProcessData(txtitems[0]);
-						SimPe.PackedFiles.Wrapper.StrItemList items = str.LanguageItems(1);
-						if (items.Length>1) o[2] = items[1].Title;
-					}
+						a.Tag = o;
+						Image img = GetThumbnail(nrefitem.FileDescriptor.Group, (string)a.Tag[2], ct.ToString() + len);										
+											
+						if (a.Name.Trim()=="") a.Name = objd.FileName;												
 
-					a.Tag = o;
-					Image img = GetThumbnail(nrefitem.FileDescriptor.Group, (string)a.Tag[2], ct.ToString() + len);
-					
-					
-					PutItemToTree(objd, a, img);
+						//create a cache Item
+						cachechg = true;
+						oci.Name = a.Name;						
+						oci.ModelName = (string)o[2];
+						oci.Thumbnail = img;
 
-					if (img!=null) a.Name = "* "+a.Name;
-					lbobj.Items.Add(a);
+						cachefile.AddItem(oci, nrefitem.Package.FileName);
 
-#if FAST
-										break; //remove me
-#endif
+						if (Helper.WindowsRegistry.ShowObjdNames) a.Name = oci.ObjectFileName;																	 
+						if (img!=null) a.Name = "* "+a.Name;
+
+						PutItemToTree(a, img, objd.Type, objd.FunctionSort, objd.Package.FileName, objd.FileDescriptor.Group);
+						lbobj.Items.Add(a);
+					} // if not in cache
 				} //foreach txt
  
-				
+				this.SaveCacheIndex();
 				lbobj.Sorted = true;
 				tv.Sorted = true;
 				tv.EndUpdate();
 				lbobj.EndUpdate();				
-				WaitingScreen.Stop();
+				WaitingScreen.Stop(this);
 				TimeSpan dur = DateTime.Now.Subtract(start);
-				if ((Helper.WindowsRegistry.HiddenMode) || (Helper.DebugMode)) Text = "sek="+dur.Seconds.ToString()+", min="+dur.Minutes.ToString();
+				if ((Helper.WindowsRegistry.HiddenMode) || (Helper.DebugMode)) 
+				{
+					Text = "sek="+dur.Seconds.ToString()+", min="+dur.Minutes.ToString();
+					Text += " ("+lbobj.Items.Count.ToString()+" Objects)";
+				}
 			}
 		}
 
@@ -400,6 +532,7 @@ namespace SimPe.Plugin
 			this.rbClone = new System.Windows.Forms.RadioButton();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tClone = new System.Windows.Forms.TabPage();
+			this.cbparent = new System.Windows.Forms.CheckBox();
 			this.cbclean = new System.Windows.Forms.CheckBox();
 			this.cbfix = new System.Windows.Forms.CheckBox();
 			this.cbdefault = new System.Windows.Forms.CheckBox();
@@ -418,6 +551,7 @@ namespace SimPe.Plugin
 			this.button1 = new System.Windows.Forms.Button();
 			this.tbflname = new System.Windows.Forms.TextBox();
 			this.ofd = new System.Windows.Forms.OpenFileDialog();
+			this.visualStyleProvider1 = new Skybound.VisualStyles.VisualStyleProvider();
 			this.groupBox1.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tClone.SuspendLayout();
@@ -450,6 +584,7 @@ namespace SimPe.Plugin
 			this.btclone.Name = "btclone";
 			this.btclone.TabIndex = 1;
 			this.btclone.Text = "Start";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.btclone, true);
 			this.btclone.Click += new System.EventHandler(this.Start);
 			// 
 			// groupBox1
@@ -468,6 +603,7 @@ namespace SimPe.Plugin
 			this.groupBox1.TabIndex = 2;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Settings";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.groupBox1, true);
 			// 
 			// pb
 			// 
@@ -478,6 +614,7 @@ namespace SimPe.Plugin
 			this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
 			this.pb.TabIndex = 6;
 			this.pb.TabStop = false;
+			this.visualStyleProvider1.SetVisualStyleSupport(this.pb, true);
 			// 
 			// rbColor
 			// 
@@ -490,6 +627,7 @@ namespace SimPe.Plugin
 			this.rbColor.TabIndex = 5;
 			this.rbColor.TabStop = true;
 			this.rbColor.Text = "Color Options";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.rbColor, true);
 			this.rbColor.CheckedChanged += new System.EventHandler(this.rbColor_CheckedChanged);
 			// 
 			// rbClone
@@ -501,6 +639,7 @@ namespace SimPe.Plugin
 			this.rbClone.Size = new System.Drawing.Size(120, 24);
 			this.rbClone.TabIndex = 4;
 			this.rbClone.Text = "Clone";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.rbClone, true);
 			this.rbClone.CheckedChanged += new System.EventHandler(this.rbClone_CheckedChanged);
 			// 
 			// tabControl1
@@ -514,10 +653,12 @@ namespace SimPe.Plugin
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(328, 144);
 			this.tabControl1.TabIndex = 3;
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tabControl1, true);
 			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.TabChanged);
 			// 
 			// tClone
 			// 
+			this.tClone.Controls.Add(this.cbparent);
 			this.tClone.Controls.Add(this.cbclean);
 			this.tClone.Controls.Add(this.cbfix);
 			this.tClone.Controls.Add(this.cbdefault);
@@ -527,52 +668,73 @@ namespace SimPe.Plugin
 			this.tClone.Size = new System.Drawing.Size(320, 118);
 			this.tClone.TabIndex = 0;
 			this.tClone.Text = "Clone Settings";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tClone, true);
+			// 
+			// cbparent
+			// 
+			this.cbparent.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.cbparent.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cbparent.Location = new System.Drawing.Point(8, 88);
+			this.cbparent.Name = "cbparent";
+			this.cbparent.Size = new System.Drawing.Size(192, 24);
+			this.cbparent.TabIndex = 7;
+			this.cbparent.Text = "Create a stand-alone object";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.cbparent, true);
+			this.cbparent.CheckedChanged += new System.EventHandler(this.cbfix_CheckedChanged);
 			// 
 			// cbclean
 			// 
 			this.cbclean.Checked = true;
 			this.cbclean.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbclean.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cbclean.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.cbclean.Location = new System.Drawing.Point(24, 48);
 			this.cbclean.Name = "cbclean";
 			this.cbclean.Size = new System.Drawing.Size(272, 24);
 			this.cbclean.TabIndex = 6;
 			this.cbclean.Text = "Remove useless Files (sug. by.  Numenor)";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.cbclean, true);
 			// 
 			// cbfix
 			// 
 			this.cbfix.Checked = true;
 			this.cbfix.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbfix.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cbfix.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.cbfix.Location = new System.Drawing.Point(8, 28);
 			this.cbfix.Name = "cbfix";
 			this.cbfix.Size = new System.Drawing.Size(224, 24);
 			this.cbfix.TabIndex = 5;
 			this.cbfix.Text = "Fix Cloned Files (sug. by.  wes_h)";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.cbfix, true);
 			this.cbfix.CheckedChanged += new System.EventHandler(this.cbfix_CheckedChanged);
 			// 
 			// cbdefault
 			// 
 			this.cbdefault.Checked = true;
 			this.cbdefault.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbdefault.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cbdefault.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.cbdefault.Location = new System.Drawing.Point(8, 68);
 			this.cbdefault.Name = "cbdefault";
 			this.cbdefault.Size = new System.Drawing.Size(224, 24);
 			this.cbdefault.TabIndex = 3;
 			this.cbdefault.Text = "Pull only default Color";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.cbdefault, true);
 			this.cbdefault.CheckedChanged += new System.EventHandler(this.cbRCOLClone_CheckedChanged);
 			// 
 			// cbgid
 			// 
 			this.cbgid.Checked = true;
 			this.cbgid.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbgid.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cbgid.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.cbgid.Location = new System.Drawing.Point(8, 8);
 			this.cbgid.Name = "cbgid";
 			this.cbgid.Size = new System.Drawing.Size(248, 24);
 			this.cbgid.TabIndex = 2;
 			this.cbgid.Text = "Set Custom Group ID (0x1c050000)";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.cbgid, true);
 			// 
 			// tColor
 			// 
@@ -583,26 +745,31 @@ namespace SimPe.Plugin
 			this.tColor.Size = new System.Drawing.Size(320, 118);
 			this.tColor.TabIndex = 1;
 			this.tColor.Text = "Color Options";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tColor, true);
 			// 
 			// cbColorExt
 			// 
 			this.cbColorExt.Checked = true;
 			this.cbColorExt.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.cbColorExt.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cbColorExt.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.cbColorExt.Location = new System.Drawing.Point(8, 8);
 			this.cbColorExt.Name = "cbColorExt";
 			this.cbColorExt.Size = new System.Drawing.Size(224, 24);
 			this.cbColorExt.TabIndex = 4;
 			this.cbColorExt.Text = "Create Color Extension Package";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.cbColorExt, true);
 			// 
 			// cbColor
 			// 
+			this.cbColor.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.cbColor.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.cbColor.Location = new System.Drawing.Point(8, 28);
 			this.cbColor.Name = "cbColor";
 			this.cbColor.Size = new System.Drawing.Size(224, 24);
 			this.cbColor.TabIndex = 3;
 			this.cbColor.Text = "Enable All Color Options";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.cbColor, true);
 			// 
 			// sfd
 			// 
@@ -618,6 +785,7 @@ namespace SimPe.Plugin
 			this.tbseek.Size = new System.Drawing.Size(464, 21);
 			this.tbseek.TabIndex = 3;
 			this.tbseek.Text = "";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tbseek, true);
 			this.tbseek.TextChanged += new System.EventHandler(this.SeekItem);
 			// 
 			// tabControl2
@@ -633,6 +801,7 @@ namespace SimPe.Plugin
 			this.tabControl2.SelectedIndex = 1;
 			this.tabControl2.Size = new System.Drawing.Size(488, 248);
 			this.tabControl2.TabIndex = 4;
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tabControl2, true);
 			this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.TabChange);
 			// 
 			// tabPage1
@@ -644,6 +813,7 @@ namespace SimPe.Plugin
 			this.tabPage1.Size = new System.Drawing.Size(480, 222);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Object Listing";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tabPage1, true);
 			// 
 			// tabPage3
 			// 
@@ -653,6 +823,7 @@ namespace SimPe.Plugin
 			this.tabPage3.Size = new System.Drawing.Size(480, 222);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Grouped Objects";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tabPage3, true);
 			// 
 			// tv
 			// 
@@ -682,6 +853,7 @@ namespace SimPe.Plugin
 			this.tabPage2.Size = new System.Drawing.Size(480, 222);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Load Object";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tabPage2, true);
 			// 
 			// button1
 			// 
@@ -690,6 +862,7 @@ namespace SimPe.Plugin
 			this.button1.Name = "button1";
 			this.button1.TabIndex = 1;
 			this.button1.Text = "Browse...";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.button1, true);
 			this.button1.Click += new System.EventHandler(this.button1_Click);
 			// 
 			// tbflname
@@ -701,6 +874,7 @@ namespace SimPe.Plugin
 			this.tbflname.Size = new System.Drawing.Size(464, 21);
 			this.tbflname.TabIndex = 0;
 			this.tbflname.Text = "";
+			this.visualStyleProvider1.SetVisualStyleSupport(this.tbflname, true);
 			// 
 			// ofd
 			// 
@@ -717,7 +891,6 @@ namespace SimPe.Plugin
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MinimumSize = new System.Drawing.Size(520, 320);
 			this.Name = "Workshop";
-			this.ShowInTaskbar = false;
 			this.Text = "Object Workshop (biggest thanks to RGiles and Numenor)";
 			this.groupBox1.ResumeLayout(false);
 			this.tabControl1.ResumeLayout(false);
@@ -750,8 +923,8 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.PictureBox pb;
 		IProviderRegistry prov;
 		SimPe.Interfaces.Files.IPackageFile simpe_pkg;
-		public Interfaces.Files.IPackageFile Execute(IProviderRegistry prov, SimPe.Interfaces.Files.IPackageFile simpe_pkg) 
-		{
+		public Interfaces.Files.IPackageFile Execute(IProviderRegistry prov, SimPe.Interfaces.Files.IPackageFile simpe_pkg) 		
+		{			 
 			this.prov = prov;
 			this.simpe_pkg = simpe_pkg;
 
@@ -765,10 +938,9 @@ namespace SimPe.Plugin
 
 			if (!Helper.WindowsRegistry.LoadOWFast) BuildListing();
 			else tabControl2.SelectedIndex = 2;
-
 			this.ShowDialog();
 
-			WaitingScreen.Stop();
+			WaitingScreen.Stop(this);
 			return package;
 		}
 	
@@ -777,8 +949,10 @@ namespace SimPe.Plugin
 		{
 			if (tbseek.Tag != null) return;
 			btclone.Enabled = false;
+			btclone.Refresh();
 			if (lbobj.SelectedIndex<0) return;
 			btclone.Enabled = true;
+			btclone.Refresh();
 
 			IAlias a = (IAlias)lbobj.Items[lbobj.SelectedIndex];
 			tbseek.Tag = true;
@@ -820,13 +994,12 @@ namespace SimPe.Plugin
 					if (tabControl2.SelectedIndex<2) 
 					{
 						WaitingScreen.Wait();
-						this.RecolorClone(pfd, localgroup, this.cbdefault.Checked);
-						//else this.Clone(pfd);
-						WaitingScreen.Stop();
+						this.RecolorClone(pfd, localgroup, this.cbdefault.Checked);						
+						WaitingScreen.Stop(this);
 					} 
 					
 
-					FixObject fo = new FixObject(package);
+					FixObject fo = new FixObject(package, FixVersion.UniversityReady);
 					System.Collections.Hashtable map = null;
 					
 					if (this.cbfix.Checked) 
@@ -861,7 +1034,7 @@ namespace SimPe.Plugin
 						if (this.cbfix.Checked) package.Save();
 					}
 
-					WaitingScreen.Stop();
+					WaitingScreen.Stop(this);
 				}
 				else //if Recolor
 				{
@@ -896,7 +1069,7 @@ namespace SimPe.Plugin
 			}
 			finally 
 			{
-				WaitingScreen.Stop();			
+				WaitingScreen.Stop(this);			
 				this.Cursor = Cursors.Default;
 			}
 		}
@@ -1049,7 +1222,49 @@ namespace SimPe.Plugin
 			//Get the Base Object Data from the Objects.package File
 			string[] modelname = BaseClone(pfd, localgroup, package);
 			ObjectCloner objclone = new ObjectCloner(package);
-			objclone.RcolModelClone(modelname, onlydefault);
+			ArrayList exclude = new ArrayList();
+
+			
+
+			//allways for recolors
+			if (this.rbColor.Checked) 
+			{
+				exclude.Add("stdMatEnvCubeTextureName");
+				exclude.Add("TXTR");
+			} 
+			else 
+			{
+				exclude.Add("tsMaterialsMeshName");
+
+				//for clones only when cbparent is not checked
+				if (!this.cbparent.Checked) 
+				{					
+					exclude.Add("stdMatEnvCubeTextureName");
+					exclude.Add("TXTR");
+				} 
+			}
+
+			//do the recolor
+			objclone.RcolModelClone(modelname, onlydefault, onlydefault, true, exclude);
+
+			//for clones only when cbparent is checked
+			if ((this.cbparent.Checked) && (!this.rbColor.Checked)) 
+			{
+				string[] names = Scenegraph.LoadParentModelNames(package, true);
+				SimPe.Packages.File pkg = new SimPe.Packages.File(null);
+
+				ObjectCloner pobj = new ObjectCloner(pkg);
+				pobj.RcolModelClone(names, onlydefault, onlydefault, true, exclude);
+				pobj.AddParentFiles(modelname, package);				
+			}
+
+			//for clones only when cbparent is not checked
+			if ((!this.cbparent.Checked) && (!this.rbColor.Checked)) 
+			{
+				string[] modelnames = modelname;
+				if (!cbclean.Checked) modelnames = null;
+				objclone.RemoveSubsetReferences(Scenegraph.GetParentSubsets(package), modelnames);
+			}
 		}
 
 		protected void ReColor(Interfaces.Files.IPackedFileDescriptor pfd, uint localgroup) 
@@ -1061,22 +1276,7 @@ namespace SimPe.Plugin
 				if (MessageBox.Show(Localization.Manager.GetString("OW_Warning"), "Warning", MessageBoxButtons.YesNo)==DialogResult.No) return;
 			}
 
-			if (this.cbColorExt.Checked) if (sfd.ShowDialog()!=DialogResult.OK) return;
-
-			//Release FileHandles
-			if (simpe_pkg!=null)
-			{
-				if (simpe_pkg.FileName!=null) 
-				{
-					try 
-					{
-						//if (simpe_pkg.FileName.Trim().ToLower()==GMND_PACKAGE.Trim().ToLower()) simpe_pkg.Reader.Close();
-						//if (simpe_pkg.FileName.Trim().ToLower()==MMAT_PACKAGE.Trim().ToLower()) simpe_pkg.Reader.Close();
-						//if ((cbColorExt.Checked) && (simpe_pkg.FileName.Trim().ToLower()==sfd.FileName.Trim().ToLower())) simpe_pkg.Reader.Close();
-					} 
-					catch (Exception) {}
-				}
-			}
+			if (this.cbColorExt.Checked) if (sfd.ShowDialog()!=DialogResult.OK) return;			
 
 			//create a Cloned Object to get all needed Files for the Process
 			bool old = cbgid.Checked;
@@ -1084,7 +1284,7 @@ namespace SimPe.Plugin
 			WaitingScreen.Wait();
 			WaitingScreen.UpdateMessage("Collecting needed Files");
 			if ((package==null) && (pfd!=null)) RecolorClone(pfd, localgroup, false);
-			WaitingScreen.Stop();
+			WaitingScreen.Stop(this);
 
 			cbgid.Checked = old;
 			
@@ -1092,14 +1292,10 @@ namespace SimPe.Plugin
 			{
 				ObjectRecolor or = new ObjectRecolor(package);
 				or.EnableColorOptions();
-				or.LoadReferencedMATDs();
-
-				//or.MMATPackage.Reader.Close();
-				//or.GMNDPackage.Reader.Close();
+				or.LoadReferencedMATDs();				
 
 				//load all Pending Textures
-				ObjectCloner oc = new ObjectCloner(package);
-				//oc.GetTextureImages(package.FindFiles(0x49596978));
+				ObjectCloner oc = new ObjectCloner(package);				
 			}
 
 			SimPe.Packages.GeneratableFile dn_pkg = null;
@@ -1114,21 +1310,7 @@ namespace SimPe.Plugin
 			//Create the Templae for an additional MMAT
 			if (this.cbColorExt.Checked) 
 			{
-#if FAST
-				package = new SimPe.Packages.GeneratableFile("C:\\Dokumente und Einstellungen\\Frank\\Desktop\\Package\\table.package");
-#else
-				/*
-				//load all Pending References too
-				ObjectRecolor or = new ObjectRecolor(package);
-				or.LoadReferencedMATDs();
-
-				//load all Pending Textures
-				ObjectCloner oc = new ObjectCloner(package);
-				oc.GetTextureImages(package.FindFiles(0x49596978));
-				*/
-#endif
-
-				
+	
 				npackage.FileName = sfd.FileName;	
 
 				ColorOptions cs = new ColorOptions(package);
@@ -1136,16 +1318,9 @@ namespace SimPe.Plugin
 
 				npackage.Save();
 				package = npackage;
-			}
+			}			
 
-			try 
-			{
-				//dn_pkg.Reader.Close();
-				//gm_pkg.Reader.Close();
-			} 
-			catch (Exception) {}
-
-			WaitingScreen.Stop();
+			WaitingScreen.Stop(this);
 #if DEBUG
 #else
 			if (package!=npackage) package = null;			
@@ -1175,25 +1350,25 @@ namespace SimPe.Plugin
 			tbseek.Tag = true;
 			try 
 			{
-				string name = tbseek.Text.Trim().ToLower();
+				string name = tbseek.Text.TrimStart().ToLower();
 				if (lbobj.SelectionMode != SelectionMode.One) lbobj.ClearSelected();
 				for (int i=0; i<lbobj.Items.Count; i++)
 				{
 					IAlias a = (IAlias)lbobj.Items[i];
 					if (a.Name!=null) 
 					{
-						if (a.Name.Trim().ToLower().StartsWith(name))
+						if (a.Name.TrimStart().ToLower().StartsWith(name))
 						{
-							tbseek.Text = a.Name.Trim();
+							tbseek.Text = a.Name.TrimStart();
 							tbseek.SelectionStart = name.Length;
 							tbseek.SelectionLength = Math.Max(0, tbseek.Text.Length - name.Length);
 							lbobj.SelectedIndex = i;
 							break;
 						}
 
-						if (a.Name.Trim().ToLower().StartsWith("* "+name))
+						if (a.Name.TrimStart().ToLower().StartsWith("* "+name))
 						{
-							tbseek.Text = a.Name.Trim();
+							tbseek.Text = a.Name.TrimStart();
 							tbseek.SelectionStart = name.Length+2;
 							tbseek.SelectionLength = Math.Max(0, tbseek.Text.Length - (name.Length+2));
 							lbobj.SelectedIndex = i;
@@ -1227,25 +1402,29 @@ namespace SimPe.Plugin
 				package = new SimPe.Packages.GeneratableFile(ofd.FileName);
 				tbflname.Text = ofd.FileName;
 				this.btclone.Enabled = System.IO.File.Exists(tbflname.Text);
+				btclone.Refresh();
 			}
 		}
 
 		private void cbRCOLClone_CheckedChanged(object sender, System.EventArgs e)
 		{
-			//cbpar.Enabled = cbRCOLClone.Checked;
+			//cbparent.Enabled = cbRCOLClone.Checked;
 		}
 
 		private void cbfix_CheckedChanged(object sender, System.EventArgs e)
 		{
-			cbclean.Enabled = cbfix.Checked;
+			cbclean.Enabled = (cbfix.Checked || cbparent.Checked);
+			cbclean.Refresh();
 		}
 
 		private void SelectTv(object sender, System.Windows.Forms.TreeViewEventArgs e)
 		{
 			btclone.Enabled = false;
+			btclone.Refresh();
 			if (tv.SelectedNode==null) return;
 			if (tv.SelectedNode.Tag == null) return;
 			btclone.Enabled = true;
+			btclone.Refresh();
 
 			IAlias a = (IAlias)tv.SelectedNode.Tag;
 			
@@ -1258,6 +1437,7 @@ namespace SimPe.Plugin
 			if (tabControl2.SelectedIndex==0) {BuildListing(); this.Select(null, null);}
 			else if (tabControl2.SelectedIndex==1) {BuildListing(); this.SelectTv(null, null);}
 			else this.btclone.Enabled = System.IO.File.Exists(tbflname.Text);
+			btclone.Refresh();
 		}
 
 		
