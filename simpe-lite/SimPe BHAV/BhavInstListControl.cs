@@ -292,7 +292,8 @@ namespace SimPe.PackedFiles.UserInterface
 				foreach (Connector c in connectors) 
 				{
 					if (c==null) continue;
-					if (c.truerule && (c.stop - c.start == 1)) continue;
+					if (/*c.truerule &&*/ (c.stop - c.start == 1)) continue;
+
 					if (c.truerule) pen = tpen; else pen = fpen;
 					if (c.start == csel) if (c.truerule) pen = tpens; else pen = fpens;
 					if (c.stop == csel) pen = new Pen(pen.Brush, 2);
