@@ -139,6 +139,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			csel = -1;
 			myrepaint();
+			csel = newIndex + 1;
 			SelectedIndex = newIndex;
 		}
 
@@ -531,17 +532,6 @@ namespace SimPe.PackedFiles.UserInterface
 			TagItem_Click(((LinkLabel)sender).Parent, e);
 		}
 
-		private void MoveItemUp(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			SelectedIndex = (int)((LinkLabel)sender).Tag;
-			MoveInst(-1);
-		}
-
-		private void MoveItemDown(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			SelectedIndex = (int)((LinkLabel)sender).Tag;
-			MoveInst(+1);
-		}
 
 		#endregion
 	}
