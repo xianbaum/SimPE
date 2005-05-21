@@ -55,7 +55,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ComboBox tba1;
 		private System.Windows.Forms.ComboBox tba2;
 		private System.Windows.Forms.LinkLabel llopenbhav;
-		private System.Windows.Forms.LinkLabel llsort;
 		private System.Windows.Forms.LinkLabel llmove;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label label10;
@@ -92,6 +91,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.LinkLabel llcancel;
 		private System.Windows.Forms.Button btnOpCode;
 		private System.Windows.Forms.Button btnOperandWiz;
+		private System.Windows.Forms.Button btnSort;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -361,7 +361,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnOpCode = new System.Windows.Forms.Button();
 			this.tbInst_Instruction = new System.Windows.Forms.TextBox();
 			this.tbFilename = new System.Windows.Forms.TextBox();
-			this.llsort = new System.Windows.Forms.LinkLabel();
 			this.label2 = new System.Windows.Forms.Label();
 			this.tbReserved = new System.Windows.Forms.TextBox();
 			this.tbLocalC = new System.Windows.Forms.TextBox();
@@ -377,6 +376,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label3 = new System.Windows.Forms.Label();
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.bhavPanel = new System.Windows.Forms.Panel();
+			this.btnSort = new System.Windows.Forms.Button();
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
@@ -1424,31 +1424,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
 			this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
 			// 
-			// llsort
-			// 
-			this.llsort.AccessibleDescription = resources.GetString("llsort.AccessibleDescription");
-			this.llsort.AccessibleName = resources.GetString("llsort.AccessibleName");
-			this.llsort.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llsort.Anchor")));
-			this.llsort.AutoSize = ((bool)(resources.GetObject("llsort.AutoSize")));
-			this.llsort.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llsort.Dock")));
-			this.llsort.Enabled = ((bool)(resources.GetObject("llsort.Enabled")));
-			this.llsort.Font = ((System.Drawing.Font)(resources.GetObject("llsort.Font")));
-			this.llsort.Image = ((System.Drawing.Image)(resources.GetObject("llsort.Image")));
-			this.llsort.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llsort.ImageAlign")));
-			this.llsort.ImageIndex = ((int)(resources.GetObject("llsort.ImageIndex")));
-			this.llsort.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llsort.ImeMode")));
-			this.llsort.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llsort.LinkArea")));
-			this.llsort.Location = ((System.Drawing.Point)(resources.GetObject("llsort.Location")));
-			this.llsort.Name = "llsort";
-			this.llsort.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llsort.RightToLeft")));
-			this.llsort.Size = ((System.Drawing.Size)(resources.GetObject("llsort.Size")));
-			this.llsort.TabIndex = ((int)(resources.GetObject("llsort.TabIndex")));
-			this.llsort.TabStop = true;
-			this.llsort.Text = resources.GetString("llsort.Text");
-			this.llsort.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llsort.TextAlign")));
-			this.llsort.Visible = ((bool)(resources.GetObject("llsort.Visible")));
-			this.llsort.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llsort_LinkClicked);
-			// 
 			// label2
 			// 
 			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
@@ -1791,8 +1766,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMargin")));
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
+			this.bhavPanel.Controls.Add(this.btnSort);
 			this.bhavPanel.Controls.Add(this.btnCommit);
-			this.bhavPanel.Controls.Add(this.llsort);
 			this.bhavPanel.Controls.Add(this.label2);
 			this.bhavPanel.Controls.Add(this.tbFilename);
 			this.bhavPanel.Controls.Add(this.pnflowcontainer);
@@ -1821,6 +1796,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.TabIndex = ((int)(resources.GetObject("bhavPanel.TabIndex")));
 			this.bhavPanel.Text = resources.GetString("bhavPanel.Text");
 			this.bhavPanel.Visible = ((bool)(resources.GetObject("bhavPanel.Visible")));
+			// 
+			// btnSort
+			// 
+			this.btnSort.AccessibleDescription = resources.GetString("btnSort.AccessibleDescription");
+			this.btnSort.AccessibleName = resources.GetString("btnSort.AccessibleName");
+			this.btnSort.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnSort.Anchor")));
+			this.btnSort.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSort.BackgroundImage")));
+			this.btnSort.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnSort.Dock")));
+			this.btnSort.Enabled = ((bool)(resources.GetObject("btnSort.Enabled")));
+			this.btnSort.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnSort.FlatStyle")));
+			this.btnSort.Font = ((System.Drawing.Font)(resources.GetObject("btnSort.Font")));
+			this.btnSort.Image = ((System.Drawing.Image)(resources.GetObject("btnSort.Image")));
+			this.btnSort.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnSort.ImageAlign")));
+			this.btnSort.ImageIndex = ((int)(resources.GetObject("btnSort.ImageIndex")));
+			this.btnSort.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnSort.ImeMode")));
+			this.btnSort.Location = ((System.Drawing.Point)(resources.GetObject("btnSort.Location")));
+			this.btnSort.Name = "btnSort";
+			this.btnSort.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnSort.RightToLeft")));
+			this.btnSort.Size = ((System.Drawing.Size)(resources.GetObject("btnSort.Size")));
+			this.btnSort.TabIndex = ((int)(resources.GetObject("btnSort.TabIndex")));
+			this.btnSort.Text = resources.GetString("btnSort.Text");
+			this.btnSort.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnSort.TextAlign")));
+			this.btnSort.Visible = ((bool)(resources.GetObject("btnSort.Visible")));
+			this.btnSort.Click += new System.EventHandler(this.btnSort_Clicked);
 			// 
 			// btnCommit
 			// 
@@ -1876,11 +1875,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ResumeLayout(false);
 
 		}
-		/// <summary>
-		/// Issued when the Commit Button was clicked
-		/// </summary>
-		/// <param name="sender">The Button that sended the Event</param>
-		/// <param name="e">Event Parameters</param>
+
+
 		private void ItemQueryContinueDragTarget(object sender, QueryContinueDragEventArgs e)
 		{
 			if (e.KeyState==0) e.Action = DragAction.Drop;
@@ -1908,6 +1904,7 @@ namespace SimPe.PackedFiles.UserInterface
 			cb.Text = "0x"+Helper.HexString((ushort)sel);
 		}
 
+
 		private void btnCommit_Clicked(object sender, System.EventArgs e)
 		{
 			try 
@@ -1921,6 +1918,11 @@ namespace SimPe.PackedFiles.UserInterface
 			}			
 		}
 
+		private void btnSort_Clicked(object sender, System.EventArgs e)
+		{
+			this.pnflowcontainer.Sort();
+		}
+
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
@@ -1929,7 +1931,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// but make it clear it's read only
 			ui.btnCommit.Visible = ui.btnOpCode.Visible = ui.btnOperandWiz.Visible =
 				ui.lladd.Visible = ui.llcancel.Visible = ui.lldel.Visible = ui.llmove.Visible =
-				ui.llopenbhav.Visible = ui.llsort.Visible = ui.tbLines.Enabled = false;
+				ui.llopenbhav.Visible = ui.btnSort.Visible = ui.tbLines.Enabled = false;
 			ui.bhavPanel.Dock = DockStyle.Fill;
 			ui.Text = "Global BHAV: " + pnflowcontainer.CurrentInst.ToString();
 			b.UpdateUI();
