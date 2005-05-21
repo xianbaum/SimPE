@@ -72,10 +72,6 @@ namespace SimPe.PackedFiles.UserInterface
 		/// Indicates the value of SelectedIndex has changed
 		/// </summary>
 		public event EventHandler SelectedInstChanged;
-		/// <summary>
-		/// Indicates this control updated the Bhav wrapper
-		/// </summary>
-		public event EventHandler WrapperChanged;
 
 		private int csel = -1;
 		private Bhav wrapper = null;
@@ -83,7 +79,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private PictureBox pnflow = null;
 
 		protected virtual void OnSelectedInstChanged(EventArgs e) { if (SelectedInstChanged != null) { SelectedInstChanged(this, e); } }
-		protected virtual void OnWrapperChanged(EventArgs e) { if (WrapperChanged != null) { WrapperChanged(this, e); } }
 		/// <summary>
 		/// Returns or sets the currently selected BhavInstruction for editing
 		/// </summary>
@@ -131,8 +126,6 @@ namespace SimPe.PackedFiles.UserInterface
 			else
 				wrapper.Instructions.Insert(csel + 1, CurrentInst);
 
-			wrapper.Changed = true;
-			OnWrapperChanged(new EventArgs());
 			myrepaint();
 		}
 
@@ -143,9 +136,6 @@ namespace SimPe.PackedFiles.UserInterface
 			int newIndex = csel - 1;
 
 			wrapper.Instructions.RemoveAt(csel);
-
-			wrapper.Changed = true;
-			OnWrapperChanged(new EventArgs());
 
 			csel = -1;
 			myrepaint();
@@ -164,9 +154,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			wrapper.Instructions.Move(csel, to);
 
-			wrapper.Changed = true;
-			OnWrapperChanged(new EventArgs());
-
 			csel = -1;
 			myrepaint();
 			SelectedIndex = to;
@@ -179,9 +166,6 @@ namespace SimPe.PackedFiles.UserInterface
 				inst = wrapper.Instructions[csel];
 
 			wrapper.Instructions.Sort();
-
-			wrapper.Changed = true;
-			OnWrapperChanged(new EventArgs());
 
 			csel = -1;
 			myrepaint();
@@ -204,8 +188,6 @@ namespace SimPe.PackedFiles.UserInterface
 				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
 
 				wrapper.Instructions[csel] = value.Clone();
-				wrapper.Changed = true;
-				OnWrapperChanged(new EventArgs());
 
 				pnflow.Controls.RemoveAt(csel);
 				flowitems[csel] = makeInstructionItem(csel);

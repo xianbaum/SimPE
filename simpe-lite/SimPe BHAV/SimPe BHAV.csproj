@@ -249,11 +249,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "BhavInst.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BhavInstListControl.cs"
                     SubType = "UserControl"
                     BuildAction = "Compile"
