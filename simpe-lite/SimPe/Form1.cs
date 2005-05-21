@@ -351,6 +351,7 @@ namespace SimPe
 			this.menuItem3 = new System.Windows.Forms.MenuItem();
 			this.menuItem12 = new System.Windows.Forms.MenuItem();
 			this.menuItem10 = new System.Windows.Forms.MenuItem();
+			this.miAbout = new System.Windows.Forms.MenuItem();
 			this.fbd = new System.Windows.Forms.FolderBrowserDialog();
 			this.pb1 = new System.Windows.Forms.ProgressBar();
 			this.label14 = new System.Windows.Forms.Label();
@@ -361,7 +362,6 @@ namespace SimPe
 			this.pnTop = new System.Windows.Forms.Panel();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.visualStyleProvider1 = new Skybound.VisualStyles.VisualStyleProvider();
-			this.miAbout = new System.Windows.Forms.MenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage4.SuspendLayout();
@@ -2299,6 +2299,16 @@ namespace SimPe
 			this.menuItem10.Visible = ((bool)(resources.GetObject("menuItem10.Visible")));
 			this.menuItem10.Click += new System.EventHandler(this.CheckForOnlineUpdate);
 			// 
+			// miAbout
+			// 
+			this.miAbout.Enabled = ((bool)(resources.GetObject("miAbout.Enabled")));
+			this.miAbout.Index = 2;
+			this.miAbout.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miAbout.Shortcut")));
+			this.miAbout.ShowShortcut = ((bool)(resources.GetObject("miAbout.ShowShortcut")));
+			this.miAbout.Text = resources.GetString("miAbout.Text");
+			this.miAbout.Visible = ((bool)(resources.GetObject("miAbout.Visible")));
+			this.miAbout.Click += new System.EventHandler(this.miAbout_Click);
+			// 
 			// fbd
 			// 
 			this.fbd.Description = resources.GetString("fbd.Description");
@@ -2502,16 +2512,6 @@ namespace SimPe
 			this.splitter1.TabStop = false;
 			this.splitter1.Visible = ((bool)(resources.GetObject("splitter1.Visible")));
 			// 
-			// miAbout
-			// 
-			this.miAbout.Enabled = ((bool)(resources.GetObject("miAbout.Enabled")));
-			this.miAbout.Index = 2;
-			this.miAbout.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miAbout.Shortcut")));
-			this.miAbout.ShowShortcut = ((bool)(resources.GetObject("miAbout.ShowShortcut")));
-			this.miAbout.Text = resources.GetString("miAbout.Text");
-			this.miAbout.Visible = ((bool)(resources.GetObject("miAbout.Visible")));
-			this.miAbout.Click += new System.EventHandler(this.miAbout_Click);
-			// 
 			// Form1
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2618,7 +2618,7 @@ namespace SimPe
 						System.IO.File.Move(plugname, newname);
 					}
 				}
-				#endregion#
+				#endregion
 
 				if (Helper.WindowsRegistry.Version < Helper.SimPeVersion.FileMinorPart)
 				{
@@ -2645,8 +2645,7 @@ namespace SimPe
 				if (!Commandline.Start(args))  
 				{
 					Helper.WindowsRegistry.UpdateSimPEDirectory();
-					Form f = new Form1();
-					Application.Run(f);
+					Application.Run(new Form1());
 				}
 			} 
 			catch (Exception ex)
@@ -3603,10 +3602,11 @@ namespace SimPe
 			if (!WarnOverwriteChanges()) return;
 			try 
 			{
+				string[] names = reg.GetRecentFiles();
 				MenuItem mi = (MenuItem)sender;	
 				this.CloseFileHandleClick(null, null);
-				OpenPackage(mi.Text);			
-				this.reg.AddRecentFile(mi.Text);							
+				OpenPackage(names[mi.Index]);
+				this.reg.AddRecentFile(names[mi.Index]);
 				UpdateRecentFileMenu();		
 				this.lbtype.Focus();
 			} 
@@ -3647,12 +3647,24 @@ namespace SimPe
 			try 
 			{
 				string[] names = reg.GetRecentFiles();
+				int accel = 1;
 
 				mirecent.MenuItems.Clear();
-				foreach(string file in names) mirecent.MenuItems.Add(file);		
-				foreach (MenuItem mi in mirecent.MenuItems) mi.Click += new EventHandler(OpenRecentClick);
-				
-			} 
+				foreach(string file in names) 
+				{
+					System.Windows.Forms.MenuItem mi = new MenuItem("&" + accel.ToString() + ". " + file,
+						new EventHandler(OpenRecentClick));
+					switch (accel)
+					{
+						case 1: mi.Shortcut = System.Windows.Forms.Shortcut.Ctrl1; break;
+						case 2: mi.Shortcut = System.Windows.Forms.Shortcut.Ctrl2; break;
+						case 3: mi.Shortcut = System.Windows.Forms.Shortcut.Ctrl3; break;
+						case 4: mi.Shortcut = System.Windows.Forms.Shortcut.Ctrl4; break;
+					}
+					accel++;
+					mirecent.MenuItems.Add(mi);
+				}
+			}
 			catch (Exception ex) 
 			{
 				Helper.ExceptionMessage(Localization.Manager.GetString("errregistry"), ex);
