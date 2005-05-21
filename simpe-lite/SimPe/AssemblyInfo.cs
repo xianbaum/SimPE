@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 // gesteuert. Ändern Sie diese Attributswerte, um die Informationen zu modifizieren,
 // die mit einer Assembly verknüpft sind.
 //
-[assembly: AssemblyTitle("SimPe-lite - Simple Package Editor for Coders")]
+[assembly: AssemblyTitle("PLJones SimAntics Editor - Simple Package Editor for Coders")]
 [assembly: AssemblyDescription("Package Editor for the Sims 2")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PLJSoft + Ambertation")]
@@ -30,7 +30,7 @@ using System.Runtime.CompilerServices;
 // Sie können alle Werte oder die standardmäßige Revision und Buildnummer 
 // mit '*' angeben:
 
-[assembly: AssemblyVersion("0.1.*")]
+[assembly: AssemblyVersion("0.2.*")]
 
 //
 // Um die Assembly zu signieren, müssen Sie einen Schlüssel angeben. Weitere Informationen 

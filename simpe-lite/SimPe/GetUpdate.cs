@@ -61,15 +61,14 @@ namespace SimPe
 			this.llyes.Font = new System.Drawing.Font("Verdana", 9F, System.Drawing.FontStyle.Bold);
 			this.llyes.ForeColor = System.Drawing.Color.Gray;
 			this.llyes.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.llyes.LinkArea = new System.Windows.Forms.LinkArea(67, 26);
+			this.llyes.LinkArea = new System.Windows.Forms.LinkArea(40, 11);
 			this.llyes.LinkColor = System.Drawing.Color.Firebrick;
 			this.llyes.Location = new System.Drawing.Point(8, 8);
 			this.llyes.Name = "llyes";
 			this.llyes.Size = new System.Drawing.Size(280, 72);
 			this.llyes.TabIndex = 102;
 			this.llyes.TabStop = true;
-			this.llyes.Text = "There is a new SimPE Version available. You can download it here:\n\nhttp://sims.am" +
-				"bertation.de";
+			this.llyes.Text = "Automated update disabled.\nPlease check SourceForge.";
 			this.llyes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.llyes.VisitedLinkColor = System.Drawing.Color.DarkRed;
 			this.llyes.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel8_LinkClicked);
@@ -101,7 +100,7 @@ namespace SimPe
 			this.Name = "GetUpdate";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "New Update";
+			this.Text = "PLJones SimAntics Editor";
 			this.ResumeLayout(false);
 
 		}
@@ -111,7 +110,7 @@ namespace SimPe
 		{
 			try 
 			{
-				System.Windows.Forms.Help.ShowHelp(this, "http://sims.ambertation.de");
+				System.Windows.Forms.Help.ShowHelp(this, "http://sf.net/projects/plj-simpe");
 			} 
 			catch (Exception ex) 
 			{

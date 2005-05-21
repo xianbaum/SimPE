@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -174,6 +176,7 @@ namespace SimPe
 		private Skybound.VisualStyles.VisualStyleProvider visualStyleProvider1;
 		private Skybound.VisualStyles.VisualStyleLinkLabel llexportraw;
 		private Skybound.VisualStyles.VisualStyleLinkLabel llimpraw;
+		private System.Windows.Forms.MenuItem miAbout;
 		SimPe.Interfaces.Plugin.IFileWrapper currentwrapper = null;
 
 		public Form1()
@@ -358,6 +361,7 @@ namespace SimPe
 			this.pnTop = new System.Windows.Forms.Panel();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.visualStyleProvider1 = new Skybound.VisualStyles.VisualStyleProvider();
+			this.miAbout = new System.Windows.Forms.MenuItem();
 			this.tabControl1.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			this.tabPage4.SuspendLayout();
@@ -2268,7 +2272,8 @@ namespace SimPe
 			this.menuItem3.Index = 4;
 			this.menuItem3.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
 																					  this.menuItem12,
-																					  this.menuItem10});
+																					  this.menuItem10,
+																					  this.miAbout});
 			this.menuItem3.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("menuItem3.Shortcut")));
 			this.menuItem3.ShowShortcut = ((bool)(resources.GetObject("menuItem3.ShowShortcut")));
 			this.menuItem3.Text = resources.GetString("menuItem3.Text");
@@ -2497,6 +2502,16 @@ namespace SimPe
 			this.splitter1.TabStop = false;
 			this.splitter1.Visible = ((bool)(resources.GetObject("splitter1.Visible")));
 			// 
+			// miAbout
+			// 
+			this.miAbout.Enabled = ((bool)(resources.GetObject("miAbout.Enabled")));
+			this.miAbout.Index = 2;
+			this.miAbout.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("miAbout.Shortcut")));
+			this.miAbout.ShowShortcut = ((bool)(resources.GetObject("miAbout.ShowShortcut")));
+			this.miAbout.Text = resources.GetString("miAbout.Text");
+			this.miAbout.Visible = ((bool)(resources.GetObject("miAbout.Visible")));
+			this.miAbout.Click += new System.EventHandler(this.miAbout_Click);
+			// 
 			// Form1
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2541,6 +2556,25 @@ namespace SimPe
 		}
 		#endregion
 
+
+		static string GPL =
+			"This program is derived from SimPe, originally created by Ambertation.\n\n" +
+			"This program is free software; you can redistribute it and/or modify\n" +
+			"it under the terms of the GNU General Public License as published by\n" +
+			"the Free Software Foundation; either version 2 of the License, or\n" +
+			"(at your option) any later version.\n" +
+			"\n" +
+			"This program is distributed in the hope that it will be useful,\n" +
+			"but WITHOUT ANY WARRANTY; without even the implied warranty of\n" +
+			"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n" +
+			"GNU General Public License for more details.\n" +
+			"\n" +
+			"You should have received a copy of the GNU General Public License\n" +
+			"along with this program; if not, write to the\n" +
+			"Free Software Foundation, Inc.,\n" +
+			"59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.";
+
+
 		/// <summary>
 		/// Der Haupteinstiegspunkt für die Anwendung.
 		/// </summary>
@@ -2574,11 +2608,6 @@ namespace SimPe
 				Parameters param = new Parameters(args);
 				Helper.CommandlineParameters = param;
 
-				if (Helper.WindowsRegistry.Version<1)
-				{
-					if (MessageBox.Show(Localization.Manager.GetString("disclaimer"), "Information", MessageBoxButtons.YesNo)==DialogResult.No) return; 
-				}
-
 				#region check for Delphys Plugin
 				string plugname = System.IO.Path.Combine(Helper.SimPePluginPath, "cGraphicNode.plugin.dll");
 				if (System.IO.File.Exists(plugname))
@@ -2591,7 +2620,14 @@ namespace SimPe
 				}
 				#endregion#
 
-				#region check for a pre EP1 folders xml
+				if (Helper.WindowsRegistry.Version < Helper.SimPeVersion.FileMinorPart)
+				{
+					System.Windows.Forms.MessageBox.Show(GPL,
+						"About PLJones SimAntics Editor",
+						System.Windows.Forms.MessageBoxButtons.OK,
+						System.Windows.Forms.MessageBoxIcon.Information);
+					//if (MessageBox.Show(Localization.Manager.GetString("disclaimer"), "Information", MessageBoxButtons.YesNo)==DialogResult.No) return; 
+				}
 				if (Helper.WindowsRegistry.Version<1) 
 				{
 					string xmlname = System.IO.Path.Combine(Helper.SimPeDataPath, "folders.xml");
@@ -2604,13 +2640,13 @@ namespace SimPe
 						}
 					}
 				}
-				#endregion
 
 				Helper.WindowsRegistry.Version = Helper.SimPeVersion.FileMinorPart;
 				if (!Commandline.Start(args))  
 				{
 					Helper.WindowsRegistry.UpdateSimPEDirectory();
-					Application.Run(new Form1());
+					Form f = new Form1();
+					Application.Run(f);
 				}
 			} 
 			catch (Exception ex)
@@ -2895,7 +2931,7 @@ namespace SimPe
 			cbtypes.Sorted = true;
 
 			hex2.OnSelectionChange += new EventHandler(OnHexSelectionChanged);
-			this.tabControl1.SelectedIndex = 1;
+			this.tabControl1.SelectedIndex = 0;
 			UpdateMenuItemState();
 
 			//here is for the Resizing
@@ -3263,7 +3299,7 @@ namespace SimPe
 					package.Save(sfd.FileName);
 					this.UpdateFileGroupFilter(null, null);
 
-					this.Text = "SimPe-lite ["+package.FileName+"]";
+					this.Text = "PLJones SimAntics Editor ["+package.FileName+"]";
 					if (package!=null) package.FileName = sfd.FileName;
 					reg.AddRecentFile(sfd.FileName);
 					UpdateRecentFileMenu();				
@@ -3481,7 +3517,7 @@ namespace SimPe
 		internal void OpenPackage(string filename) 
 		{
 			RemoveCurrentPlugin();
-			this.Text = "SimPe-lite ["+filename+"]";
+			this.Text = "PLJones SimAntics Editor ["+filename+"]";
 			try 
 			{		
 				this.Cursor = Cursors.WaitCursor;
@@ -3553,6 +3589,7 @@ namespace SimPe
 						this.CloseFileHandleClick(sender, e);
 						OpenPackage(ofd.FileName);
 					}
+					this.lbtype.Focus();
 				} 
 				catch (Exception ex) 
 				{
@@ -3571,6 +3608,7 @@ namespace SimPe
 				OpenPackage(mi.Text);			
 				this.reg.AddRecentFile(mi.Text);							
 				UpdateRecentFileMenu();		
+				this.lbtype.Focus();
 			} 
 			catch (Exception ex) 
 			{
@@ -3791,7 +3829,7 @@ namespace SimPe
 
 					package.Save(ms, package.FileName);*/
 					package.Save();
-					this.Text = "SimPe-lite ["+package.FileName+"]";
+					this.Text = "PLJones SimAntics Editor ["+package.FileName+"]";
 #endif					
 					//this.OpenPackage(package.FileName);		
 					this.UpdateFileGroupFilter(null, null);
@@ -4618,10 +4656,11 @@ namespace SimPe
 
 		private void CheckForOnlineUpdate(object sender, System.EventArgs e)
 		{
-
 			GetUpdate gu = new GetUpdate();
-			gu.llno.Visible = !WebUpdate.CheckUpdate();
-			gu.llyes.Visible = !gu.llno.Visible;
+			//gu.llno.Visible = !WebUpdate.CheckUpdate();
+			//gu.llyes.Visible = !gu.llno.Visible;
+			gu.llno.Visible = false;
+			gu.llyes.Visible = true;
 			gu.ShowDialog();
 		}
 
@@ -4696,6 +4735,13 @@ namespace SimPe
 				Helper.ExceptionMessage("", ex);
 			}
 		}
-		
+
+		public void miAbout_Click(object sender, System.EventArgs e)
+		{
+			System.Windows.Forms.MessageBox.Show(GPL,
+				"About PLJones SimAntics Editor",
+				System.Windows.Forms.MessageBoxButtons.OK,
+				System.Windows.Forms.MessageBoxIcon.Information);
+		}
 	}
 }
