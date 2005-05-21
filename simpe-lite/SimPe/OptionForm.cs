@@ -86,6 +86,7 @@ namespace SimPe
 		private System.Windows.Forms.Button btup;
 		private System.Windows.Forms.Button btdn;
 		private Skybound.VisualStyles.VisualStyleLinkLabel llsetep1;
+		private System.Windows.Forms.CheckBox cbhidden;
 		private System.ComponentModel.IContainer components;
 
 		public OptionForm()
@@ -147,12 +148,12 @@ namespace SimPe
 			this.linkLabel4 = new Skybound.VisualStyles.VisualStyleLinkLabel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tbfolders = new System.Windows.Forms.TabPage();
-			this.llsetep1 = new Skybound.VisualStyles.VisualStyleLinkLabel();
 			this.lldds2 = new Skybound.VisualStyles.VisualStyleLinkLabel();
 			this.lldds = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
 			this.label6 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
+			this.llsetep1 = new Skybound.VisualStyles.VisualStyleLinkLabel();
 			this.tbsettings = new System.Windows.Forms.TabPage();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.cbow = new System.Windows.Forms.CheckBox();
@@ -161,6 +162,7 @@ namespace SimPe
 			this.tbthumb = new System.Windows.Forms.TextBox();
 			this.button6 = new System.Windows.Forms.Button();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.cbhidden = new System.Windows.Forms.CheckBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.cbautobak = new System.Windows.Forms.CheckBox();
 			this.cbcache = new System.Windows.Forms.CheckBox();
@@ -767,32 +769,6 @@ namespace SimPe
 			this.tbfolders.Visible = ((bool)(resources.GetObject("tbfolders.Visible")));
 			this.visualStyleProvider1.SetVisualStyleSupport(this.tbfolders, true);
 			// 
-			// llsetep1
-			// 
-			this.llsetep1.AccessibleDescription = resources.GetString("llsetep1.AccessibleDescription");
-			this.llsetep1.AccessibleName = resources.GetString("llsetep1.AccessibleName");
-			this.llsetep1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llsetep1.Anchor")));
-			this.llsetep1.AutoSize = ((bool)(resources.GetObject("llsetep1.AutoSize")));
-			this.llsetep1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llsetep1.Dock")));
-			this.llsetep1.Enabled = ((bool)(resources.GetObject("llsetep1.Enabled")));
-			this.llsetep1.Font = ((System.Drawing.Font)(resources.GetObject("llsetep1.Font")));
-			this.llsetep1.Image = ((System.Drawing.Image)(resources.GetObject("llsetep1.Image")));
-			this.llsetep1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llsetep1.ImageAlign")));
-			this.llsetep1.ImageIndex = ((int)(resources.GetObject("llsetep1.ImageIndex")));
-			this.llsetep1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llsetep1.ImeMode")));
-			this.llsetep1.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llsetep1.LinkArea")));
-			this.llsetep1.Location = ((System.Drawing.Point)(resources.GetObject("llsetep1.Location")));
-			this.llsetep1.Name = "llsetep1";
-			this.llsetep1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llsetep1.RightToLeft")));
-			this.llsetep1.Size = ((System.Drawing.Size)(resources.GetObject("llsetep1.Size")));
-			this.llsetep1.TabIndex = ((int)(resources.GetObject("llsetep1.TabIndex")));
-			this.llsetep1.TabStop = true;
-			this.llsetep1.Text = resources.GetString("llsetep1.Text");
-			this.llsetep1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llsetep1.TextAlign")));
-			this.toolTip1.SetToolTip(this.llsetep1, resources.GetString("llsetep1.ToolTip"));
-			this.llsetep1.Visible = ((bool)(resources.GetObject("llsetep1.Visible")));
-			this.llsetep1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.visualStyleLinkLabel1_LinkClicked);
-			// 
 			// lldds2
 			// 
 			this.lldds2.AccessibleDescription = resources.GetString("lldds2.AccessibleDescription");
@@ -919,6 +895,32 @@ namespace SimPe
 			this.toolTip1.SetToolTip(this.label3, resources.GetString("label3.ToolTip"));
 			this.label3.Visible = ((bool)(resources.GetObject("label3.Visible")));
 			this.visualStyleProvider1.SetVisualStyleSupport(this.label3, true);
+			// 
+			// llsetep1
+			// 
+			this.llsetep1.AccessibleDescription = resources.GetString("llsetep1.AccessibleDescription");
+			this.llsetep1.AccessibleName = resources.GetString("llsetep1.AccessibleName");
+			this.llsetep1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llsetep1.Anchor")));
+			this.llsetep1.AutoSize = ((bool)(resources.GetObject("llsetep1.AutoSize")));
+			this.llsetep1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llsetep1.Dock")));
+			this.llsetep1.Enabled = ((bool)(resources.GetObject("llsetep1.Enabled")));
+			this.llsetep1.Font = ((System.Drawing.Font)(resources.GetObject("llsetep1.Font")));
+			this.llsetep1.Image = ((System.Drawing.Image)(resources.GetObject("llsetep1.Image")));
+			this.llsetep1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llsetep1.ImageAlign")));
+			this.llsetep1.ImageIndex = ((int)(resources.GetObject("llsetep1.ImageIndex")));
+			this.llsetep1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llsetep1.ImeMode")));
+			this.llsetep1.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llsetep1.LinkArea")));
+			this.llsetep1.Location = ((System.Drawing.Point)(resources.GetObject("llsetep1.Location")));
+			this.llsetep1.Name = "llsetep1";
+			this.llsetep1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llsetep1.RightToLeft")));
+			this.llsetep1.Size = ((System.Drawing.Size)(resources.GetObject("llsetep1.Size")));
+			this.llsetep1.TabIndex = ((int)(resources.GetObject("llsetep1.TabIndex")));
+			this.llsetep1.TabStop = true;
+			this.llsetep1.Text = resources.GetString("llsetep1.Text");
+			this.llsetep1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llsetep1.TextAlign")));
+			this.toolTip1.SetToolTip(this.llsetep1, resources.GetString("llsetep1.ToolTip"));
+			this.llsetep1.Visible = ((bool)(resources.GetObject("llsetep1.Visible")));
+			this.llsetep1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.visualStyleLinkLabel1_LinkClicked);
 			// 
 			// tbsettings
 			// 
@@ -1111,6 +1113,7 @@ namespace SimPe
 			this.groupBox2.AccessibleName = resources.GetString("groupBox2.AccessibleName");
 			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("groupBox2.Anchor")));
 			this.groupBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("groupBox2.BackgroundImage")));
+			this.groupBox2.Controls.Add(this.cbhidden);
 			this.groupBox2.Controls.Add(this.label4);
 			this.groupBox2.Controls.Add(this.cbautobak);
 			this.groupBox2.Controls.Add(this.cbcache);
@@ -1132,6 +1135,33 @@ namespace SimPe
 			this.toolTip1.SetToolTip(this.groupBox2, resources.GetString("groupBox2.ToolTip"));
 			this.groupBox2.Visible = ((bool)(resources.GetObject("groupBox2.Visible")));
 			this.visualStyleProvider1.SetVisualStyleSupport(this.groupBox2, true);
+			// 
+			// cbhidden
+			// 
+			this.cbhidden.AccessibleDescription = resources.GetString("cbhidden.AccessibleDescription");
+			this.cbhidden.AccessibleName = resources.GetString("cbhidden.AccessibleName");
+			this.cbhidden.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbhidden.Anchor")));
+			this.cbhidden.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("cbhidden.Appearance")));
+			this.cbhidden.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbhidden.BackgroundImage")));
+			this.cbhidden.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbhidden.CheckAlign")));
+			this.cbhidden.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbhidden.Dock")));
+			this.cbhidden.Enabled = ((bool)(resources.GetObject("cbhidden.Enabled")));
+			this.cbhidden.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("cbhidden.FlatStyle")));
+			this.cbhidden.Font = ((System.Drawing.Font)(resources.GetObject("cbhidden.Font")));
+			this.cbhidden.Image = ((System.Drawing.Image)(resources.GetObject("cbhidden.Image")));
+			this.cbhidden.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbhidden.ImageAlign")));
+			this.cbhidden.ImageIndex = ((int)(resources.GetObject("cbhidden.ImageIndex")));
+			this.cbhidden.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbhidden.ImeMode")));
+			this.cbhidden.Location = ((System.Drawing.Point)(resources.GetObject("cbhidden.Location")));
+			this.cbhidden.Name = "cbhidden";
+			this.cbhidden.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbhidden.RightToLeft")));
+			this.cbhidden.Size = ((System.Drawing.Size)(resources.GetObject("cbhidden.Size")));
+			this.cbhidden.TabIndex = ((int)(resources.GetObject("cbhidden.TabIndex")));
+			this.cbhidden.Text = resources.GetString("cbhidden.Text");
+			this.cbhidden.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbhidden.TextAlign")));
+			this.toolTip1.SetToolTip(this.cbhidden, resources.GetString("cbhidden.ToolTip"));
+			this.cbhidden.Visible = ((bool)(resources.GetObject("cbhidden.Visible")));
+			this.visualStyleProvider1.SetVisualStyleSupport(this.cbhidden, true);
 			// 
 			// label4
 			// 
@@ -1638,6 +1668,7 @@ namespace SimPe
 			cbcache.Checked = Helper.WindowsRegistry.UseCache;
 			cbxp.Checked = Helper.WindowsRegistry.XPStyle;
 			cbshowobjd.Checked = Helper.WindowsRegistry.ShowObjdNames;
+			cbhidden.Checked = Helper.WindowsRegistry.HiddenMode;
 			tbthumb.Text = Helper.WindowsRegistry.OWThumbSize.ToString();
 
 			this.tbep1.ReadOnly = (Helper.WindowsRegistry.EPInstalled<1);
@@ -1680,6 +1711,7 @@ namespace SimPe
 			Helper.WindowsRegistry.UseCache = cbcache.Checked;
 			Helper.WindowsRegistry.XPStyle = cbxp.Checked;
 			Helper.WindowsRegistry.ShowObjdNames = cbshowobjd.Checked;
+			Helper.WindowsRegistry.HiddenMode = cbhidden.Checked;
 
 			StoreFoldersXml();
 			try 

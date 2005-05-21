@@ -179,6 +179,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "cAnimResourceConst_Parts.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "cBoneDataExtension.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -225,6 +230,31 @@
                 />
                 <File
                     RelPath = "cGmdcElements.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "cGmdcGroups.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "cGmdcHelper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "cGmdcLinks.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "cGmdcModel.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "cGmdcSubset.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -334,6 +364,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "ExporterLoader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "fAnimResourceConst.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "fAnimResourceConst.resx"
+                    DependentUpon = "fAnimResourceConst.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "fExtension.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -365,6 +410,16 @@
                 />
                 <File
                     RelPath = "GeneralRcolWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IGmdcExport.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "IGmdcImport.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

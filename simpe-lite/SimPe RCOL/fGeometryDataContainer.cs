@@ -69,8 +69,6 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.Label label28;
 		internal System.Windows.Forms.TabPage tGeometryDataContainer;
 		private System.Windows.Forms.GroupBox groupBox3;
-		internal System.Windows.Forms.TextBox tb_data;
-		private System.Windows.Forms.Label label12;
 		internal System.Windows.Forms.TextBox tb_uk5;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label7;
@@ -128,9 +126,6 @@ namespace SimPe.Plugin
 		internal System.Windows.Forms.ListBox lb_itemsb5;
 		internal System.Windows.Forms.TextBox tb_uk4;
 		internal System.Windows.Forms.TextBox tb_uk6;
-		internal System.Windows.Forms.TabPage tMain;
-		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.Button button2;
 		private System.Windows.Forms.SaveFileDialog sfd;
 		private System.Windows.Forms.Panel pnprev;
 		private System.Windows.Forms.Button button3;
@@ -139,6 +134,46 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.Label label20;
 		private System.Windows.Forms.Button button4;
 		private System.Windows.Forms.ColorDialog cd;
+		internal System.Windows.Forms.TabPage tMesh;
+		internal System.Windows.Forms.TabPage tDebug;
+		private System.Windows.Forms.PropertyGrid pg;
+		internal System.Windows.Forms.Label label_elements;
+		internal System.Windows.Forms.ListBox list_elements;
+		internal System.Windows.Forms.ListBox list_links;
+		internal System.Windows.Forms.Label label_links;
+		internal System.Windows.Forms.ListBox list_groups;
+		internal System.Windows.Forms.Label label_groups;
+		internal System.Windows.Forms.ListBox list_subsets;
+		internal System.Windows.Forms.Label label_subsets;
+		private System.Windows.Forms.LinkLabel linkLabel1;
+		private System.Windows.Forms.Button button5;
+		private System.Windows.Forms.ComboBox cbblock;
+		private System.Windows.Forms.ComboBox cbset;
+		private System.Windows.Forms.ComboBox cbid;
+		private System.Windows.Forms.GroupBox groupBox12;
+		internal System.Windows.Forms.ListBox lb_itemsa1;
+		internal System.Windows.Forms.TabPage tSubset;
+		private System.Windows.Forms.GroupBox groupBox13;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.GroupBox groupBox14;
+		private System.Windows.Forms.GroupBox groupBox15;
+		internal System.Windows.Forms.ListBox lb_subsets;
+		internal System.Windows.Forms.TextBox tb_sub_item;
+		internal System.Windows.Forms.ListBox lb_sub_items;
+		internal System.Windows.Forms.ListBox lb_sub_faces;
+		internal System.Windows.Forms.TabPage tModel;
+		private System.Windows.Forms.GroupBox groupBox16;
+		private System.Windows.Forms.GroupBox groupBox17;
+		private System.Windows.Forms.GroupBox groupBox18;
+		private System.Windows.Forms.GroupBox groupBox19;
+		internal System.Windows.Forms.ListBox lb_model_trans;
+		internal System.Windows.Forms.ListBox lb_model_rots;
+		internal System.Windows.Forms.ListBox lb_model_names;
+		internal System.Windows.Forms.ListBox lb_model_faces;
+		internal System.Windows.Forms.ListBox lb_model_items;
+		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.OpenFileDialog ofd;
+		private System.Windows.Forms.LinkLabel linkLabel2;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -149,12 +184,16 @@ namespace SimPe.Plugin
 			//
 			// Erforderlich für die Windows Form-Designerunterstützung
 			//
-			InitializeComponent();
+			InitializeComponent();		
 
+			Gmdc.BlockFormat[] bls = (Gmdc.BlockFormat[])System.Enum.GetValues(typeof(Gmdc.BlockFormat));
+			foreach (Gmdc.BlockFormat b in bls) this.cbblock.Items.Add(b);
 
-			button2.Visible = Helper.WindowsRegistry.HiddenMode;
+			Gmdc.SetFormat[] sets = (Gmdc.SetFormat[])System.Enum.GetValues(typeof(Gmdc.SetFormat));
+			foreach (Gmdc.SetFormat s in sets) this.cbset.Items.Add(s);
 
-			
+			Gmdc.ElementIdentity[] eis = (Gmdc.ElementIdentity[])System.Enum.GetValues(typeof(Gmdc.ElementIdentity));
+			foreach (Gmdc.ElementIdentity e in eis) this.cbid.Items.Add(e);
 		}
 
 		/// <summary>
@@ -180,24 +219,16 @@ namespace SimPe.Plugin
 		private void InitializeComponent()
 		{
 			this.tabControl1 = new System.Windows.Forms.TabControl();
-			this.tMain = new System.Windows.Forms.TabPage();
-			this.button4 = new System.Windows.Forms.Button();
-			this.lbmodel = new System.Windows.Forms.CheckedListBox();
-			this.label21 = new System.Windows.Forms.Label();
-			this.button3 = new System.Windows.Forms.Button();
-			this.pnprev = new System.Windows.Forms.Panel();
-			this.button2 = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
-			this.label20 = new System.Windows.Forms.Label();
 			this.tGeometryDataContainer = new System.Windows.Forms.TabPage();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.tb_itemsa2 = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.lb_itemsa2 = new System.Windows.Forms.ListBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
+			this.cbid = new System.Windows.Forms.ComboBox();
+			this.cbset = new System.Windows.Forms.ComboBox();
+			this.cbblock = new System.Windows.Forms.ComboBox();
 			this.lb_itemsa = new System.Windows.Forms.ListBox();
-			this.tb_data = new System.Windows.Forms.TextBox();
-			this.label12 = new System.Windows.Forms.Label();
 			this.tb_uk5 = new System.Windows.Forms.TextBox();
 			this.label10 = new System.Windows.Forms.Label();
 			this.tb_mod2 = new System.Windows.Forms.TextBox();
@@ -211,6 +242,47 @@ namespace SimPe.Plugin
 			this.groupBox10 = new System.Windows.Forms.GroupBox();
 			this.tb_ver = new System.Windows.Forms.TextBox();
 			this.label28 = new System.Windows.Forms.Label();
+			this.groupBox12 = new System.Windows.Forms.GroupBox();
+			this.lb_itemsa1 = new System.Windows.Forms.ListBox();
+			this.tDebug = new System.Windows.Forms.TabPage();
+			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+			this.list_subsets = new System.Windows.Forms.ListBox();
+			this.label_subsets = new System.Windows.Forms.Label();
+			this.list_groups = new System.Windows.Forms.ListBox();
+			this.label_groups = new System.Windows.Forms.Label();
+			this.list_links = new System.Windows.Forms.ListBox();
+			this.label_links = new System.Windows.Forms.Label();
+			this.list_elements = new System.Windows.Forms.ListBox();
+			this.label_elements = new System.Windows.Forms.Label();
+			this.pg = new System.Windows.Forms.PropertyGrid();
+			this.tMesh = new System.Windows.Forms.TabPage();
+			this.button1 = new System.Windows.Forms.Button();
+			this.button5 = new System.Windows.Forms.Button();
+			this.label20 = new System.Windows.Forms.Label();
+			this.lbmodel = new System.Windows.Forms.CheckedListBox();
+			this.label21 = new System.Windows.Forms.Label();
+			this.pnprev = new System.Windows.Forms.Panel();
+			this.button3 = new System.Windows.Forms.Button();
+			this.button4 = new System.Windows.Forms.Button();
+			this.tGeometryDataContainer3 = new System.Windows.Forms.TabPage();
+			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.tb_itemsc2 = new System.Windows.Forms.TextBox();
+			this.label4 = new System.Windows.Forms.Label();
+			this.lb_itemsc2 = new System.Windows.Forms.ListBox();
+			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.tb_opacity = new System.Windows.Forms.TextBox();
+			this.tb_uk2 = new System.Windows.Forms.TextBox();
+			this.label3 = new System.Windows.Forms.Label();
+			this.tb_uk3 = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.lb_itemsc = new System.Windows.Forms.ListBox();
+			this.tb_itemsc_name = new System.Windows.Forms.TextBox();
+			this.label11 = new System.Windows.Forms.Label();
+			this.label13 = new System.Windows.Forms.Label();
+			this.groupBox5 = new System.Windows.Forms.GroupBox();
+			this.tb_itemsc3 = new System.Windows.Forms.TextBox();
+			this.label9 = new System.Windows.Forms.Label();
+			this.lb_itemsc3 = new System.Windows.Forms.ListBox();
 			this.tGeometryDataContainer2 = new System.Windows.Forms.TabPage();
 			this.groupBox9 = new System.Windows.Forms.GroupBox();
 			this.tb_itemsb4 = new System.Windows.Forms.TextBox();
@@ -234,168 +306,72 @@ namespace SimPe.Plugin
 			this.tb_itemsb3 = new System.Windows.Forms.TextBox();
 			this.label19 = new System.Windows.Forms.Label();
 			this.lb_itemsb3 = new System.Windows.Forms.ListBox();
-			this.tGeometryDataContainer3 = new System.Windows.Forms.TabPage();
-			this.groupBox4 = new System.Windows.Forms.GroupBox();
-			this.tb_itemsc2 = new System.Windows.Forms.TextBox();
-			this.label4 = new System.Windows.Forms.Label();
-			this.lb_itemsc2 = new System.Windows.Forms.ListBox();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.tb_opacity = new System.Windows.Forms.TextBox();
-			this.tb_uk2 = new System.Windows.Forms.TextBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.tb_uk3 = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.lb_itemsc = new System.Windows.Forms.ListBox();
-			this.tb_itemsc_name = new System.Windows.Forms.TextBox();
-			this.label11 = new System.Windows.Forms.Label();
-			this.label13 = new System.Windows.Forms.Label();
-			this.groupBox5 = new System.Windows.Forms.GroupBox();
-			this.tb_itemsc3 = new System.Windows.Forms.TextBox();
-			this.label9 = new System.Windows.Forms.Label();
-			this.lb_itemsc3 = new System.Windows.Forms.ListBox();
+			this.tModel = new System.Windows.Forms.TabPage();
+			this.groupBox19 = new System.Windows.Forms.GroupBox();
+			this.lb_model_items = new System.Windows.Forms.ListBox();
+			this.groupBox18 = new System.Windows.Forms.GroupBox();
+			this.lb_model_faces = new System.Windows.Forms.ListBox();
+			this.groupBox17 = new System.Windows.Forms.GroupBox();
+			this.lb_model_names = new System.Windows.Forms.ListBox();
+			this.groupBox16 = new System.Windows.Forms.GroupBox();
+			this.lb_model_rots = new System.Windows.Forms.ListBox();
+			this.lb_model_trans = new System.Windows.Forms.ListBox();
+			this.tSubset = new System.Windows.Forms.TabPage();
+			this.groupBox13 = new System.Windows.Forms.GroupBox();
+			this.tb_sub_item = new System.Windows.Forms.TextBox();
+			this.label12 = new System.Windows.Forms.Label();
+			this.lb_sub_items = new System.Windows.Forms.ListBox();
+			this.groupBox14 = new System.Windows.Forms.GroupBox();
+			this.lb_sub_faces = new System.Windows.Forms.ListBox();
+			this.groupBox15 = new System.Windows.Forms.GroupBox();
+			this.lb_subsets = new System.Windows.Forms.ListBox();
 			this.sfd = new System.Windows.Forms.SaveFileDialog();
 			this.cd = new System.Windows.Forms.ColorDialog();
+			this.ofd = new System.Windows.Forms.OpenFileDialog();
+			this.linkLabel2 = new System.Windows.Forms.LinkLabel();
 			this.tabControl1.SuspendLayout();
-			this.tMain.SuspendLayout();
 			this.tGeometryDataContainer.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.groupBox3.SuspendLayout();
 			this.groupBox10.SuspendLayout();
+			this.groupBox12.SuspendLayout();
+			this.tDebug.SuspendLayout();
+			this.tMesh.SuspendLayout();
+			this.tGeometryDataContainer3.SuspendLayout();
+			this.groupBox4.SuspendLayout();
+			this.groupBox2.SuspendLayout();
+			this.groupBox5.SuspendLayout();
 			this.tGeometryDataContainer2.SuspendLayout();
 			this.groupBox9.SuspendLayout();
 			this.groupBox11.SuspendLayout();
 			this.groupBox6.SuspendLayout();
 			this.groupBox7.SuspendLayout();
 			this.groupBox8.SuspendLayout();
-			this.tGeometryDataContainer3.SuspendLayout();
-			this.groupBox4.SuspendLayout();
-			this.groupBox2.SuspendLayout();
-			this.groupBox5.SuspendLayout();
+			this.tModel.SuspendLayout();
+			this.groupBox19.SuspendLayout();
+			this.groupBox18.SuspendLayout();
+			this.groupBox17.SuspendLayout();
+			this.groupBox16.SuspendLayout();
+			this.tSubset.SuspendLayout();
+			this.groupBox13.SuspendLayout();
+			this.groupBox14.SuspendLayout();
+			this.groupBox15.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
 			// 
-			this.tabControl1.Controls.Add(this.tMain);
 			this.tabControl1.Controls.Add(this.tGeometryDataContainer);
-			this.tabControl1.Controls.Add(this.tGeometryDataContainer2);
+			this.tabControl1.Controls.Add(this.tDebug);
+			this.tabControl1.Controls.Add(this.tMesh);
 			this.tabControl1.Controls.Add(this.tGeometryDataContainer3);
+			this.tabControl1.Controls.Add(this.tGeometryDataContainer2);
+			this.tabControl1.Controls.Add(this.tModel);
+			this.tabControl1.Controls.Add(this.tSubset);
 			this.tabControl1.Location = new System.Drawing.Point(36, -1);
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
 			this.tabControl1.Size = new System.Drawing.Size(800, 328);
 			this.tabControl1.TabIndex = 1;
-			// 
-			// tMain
-			// 
-			this.tMain.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.tMain.Controls.Add(this.button4);
-			this.tMain.Controls.Add(this.lbmodel);
-			this.tMain.Controls.Add(this.label21);
-			this.tMain.Controls.Add(this.button3);
-			this.tMain.Controls.Add(this.pnprev);
-			this.tMain.Controls.Add(this.button2);
-			this.tMain.Controls.Add(this.button1);
-			this.tMain.Controls.Add(this.label20);
-			this.tMain.Location = new System.Drawing.Point(4, 22);
-			this.tMain.Name = "tMain";
-			this.tMain.Size = new System.Drawing.Size(792, 302);
-			this.tMain.TabIndex = 3;
-			this.tMain.Text = "3D Mesh";
-			// 
-			// button4
-			// 
-			this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button4.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.button4.Location = new System.Drawing.Point(176, 272);
-			this.button4.Name = "button4";
-			this.button4.Size = new System.Drawing.Size(32, 23);
-			this.button4.TabIndex = 26;
-			this.button4.Text = "BG";
-			this.button4.Click += new System.EventHandler(this.PickColor);
-			// 
-			// lbmodel
-			// 
-			this.lbmodel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left)));
-			this.lbmodel.CheckOnClick = true;
-			this.lbmodel.HorizontalScrollbar = true;
-			this.lbmodel.Location = new System.Drawing.Point(16, 32);
-			this.lbmodel.Name = "lbmodel";
-			this.lbmodel.Size = new System.Drawing.Size(192, 199);
-			this.lbmodel.TabIndex = 24;
-			// 
-			// label21
-			// 
-			this.label21.AutoSize = true;
-			this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label21.Location = new System.Drawing.Point(8, 16);
-			this.label21.Name = "label21";
-			this.label21.Size = new System.Drawing.Size(45, 16);
-			this.label21.TabIndex = 23;
-			this.label21.Text = "Models:";
-			// 
-			// button3
-			// 
-			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button3.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.button3.Location = new System.Drawing.Point(72, 272);
-			this.button3.Name = "button3";
-			this.button3.Size = new System.Drawing.Size(96, 23);
-			this.button3.TabIndex = 4;
-			this.button3.Text = "Preview";
-			this.button3.Click += new System.EventHandler(this.Preview);
-			// 
-			// pnprev
-			// 
-			this.pnprev.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.pnprev.Location = new System.Drawing.Point(216, 8);
-			this.pnprev.Name = "pnprev";
-			this.pnprev.Size = new System.Drawing.Size(288, 288);
-			this.pnprev.TabIndex = 3;
-			// 
-			// button2
-			// 
-			this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.button2.Location = new System.Drawing.Point(16, 272);
-			this.button2.Name = "button2";
-			this.button2.Size = new System.Drawing.Size(48, 23);
-			this.button2.TabIndex = 1;
-			this.button2.Text = "to .x";
-			this.button2.Click += new System.EventHandler(this.ExportX);
-			// 
-			// button1
-			// 
-			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.button1.Location = new System.Drawing.Point(16, 240);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(192, 23);
-			this.button1.TabIndex = 0;
-			this.button1.Text = "Export to .obj (by Delphy)";
-			this.button1.Click += new System.EventHandler(this.ExportObj);
-			// 
-			// label20
-			// 
-			this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label20.ForeColor = System.Drawing.SystemColors.ControlDark;
-			this.label20.Location = new System.Drawing.Point(512, 8);
-			this.label20.Name = "label20";
-			this.label20.Size = new System.Drawing.Size(272, 288);
-			this.label20.TabIndex = 25;
-			this.label20.Text = @"Camera Control:
-
- Translate Y: left Button + move vertical
- Translate X: left Button + move horizontal
- Translate Z: middle Button + move vertical
- Scale: middle Button + move horizontal
- Rotate X: right Button + move vertical
- Rotate Y: right Button + move horizontal";
-			this.label20.TextAlign = System.Drawing.ContentAlignment.BottomRight;
 			// 
 			// tGeometryDataContainer
 			// 
@@ -403,31 +379,33 @@ namespace SimPe.Plugin
 			this.tGeometryDataContainer.Controls.Add(this.groupBox1);
 			this.tGeometryDataContainer.Controls.Add(this.groupBox3);
 			this.tGeometryDataContainer.Controls.Add(this.groupBox10);
+			this.tGeometryDataContainer.Controls.Add(this.groupBox12);
 			this.tGeometryDataContainer.Location = new System.Drawing.Point(4, 22);
 			this.tGeometryDataContainer.Name = "tGeometryDataContainer";
 			this.tGeometryDataContainer.Size = new System.Drawing.Size(792, 302);
 			this.tGeometryDataContainer.TabIndex = 0;
-			this.tGeometryDataContainer.Text = "Items 1";
+			this.tGeometryDataContainer.Text = "Elements";
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox1.Controls.Add(this.tb_itemsa2);
 			this.groupBox1.Controls.Add(this.label1);
 			this.groupBox1.Controls.Add(this.lb_itemsa2);
 			this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.groupBox1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.groupBox1.Location = new System.Drawing.Point(8, 88);
+			this.groupBox1.Location = new System.Drawing.Point(520, 152);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(264, 208);
+			this.groupBox1.Size = new System.Drawing.Size(264, 136);
 			this.groupBox1.TabIndex = 14;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Unknown Items 1b";
+			this.groupBox1.Text = "Element Section - Items";
 			// 
 			// tb_itemsa2
 			// 
-			this.tb_itemsa2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tb_itemsa2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.tb_itemsa2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_itemsa2.Location = new System.Drawing.Point(56, 176);
+			this.tb_itemsa2.Location = new System.Drawing.Point(56, 104);
 			this.tb_itemsa2.Name = "tb_itemsa2";
 			this.tb_itemsa2.ReadOnly = true;
 			this.tb_itemsa2.Size = new System.Drawing.Size(88, 21);
@@ -436,10 +414,10 @@ namespace SimPe.Plugin
 			// 
 			// label1
 			// 
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label1.Location = new System.Drawing.Point(8, 184);
+			this.label1.Location = new System.Drawing.Point(8, 112);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(41, 17);
 			this.label1.TabIndex = 23;
@@ -455,7 +433,7 @@ namespace SimPe.Plugin
 			this.lb_itemsa2.IntegralHeight = false;
 			this.lb_itemsa2.Location = new System.Drawing.Point(8, 24);
 			this.lb_itemsa2.Name = "lb_itemsa2";
-			this.lb_itemsa2.Size = new System.Drawing.Size(248, 144);
+			this.lb_itemsa2.Size = new System.Drawing.Size(248, 72);
 			this.lb_itemsa2.TabIndex = 22;
 			this.lb_itemsa2.SelectedIndexChanged += new System.EventHandler(this.SelectItemsA2);
 			// 
@@ -464,9 +442,10 @@ namespace SimPe.Plugin
 			this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox3.Controls.Add(this.cbid);
+			this.groupBox3.Controls.Add(this.cbset);
+			this.groupBox3.Controls.Add(this.cbblock);
 			this.groupBox3.Controls.Add(this.lb_itemsa);
-			this.groupBox3.Controls.Add(this.tb_data);
-			this.groupBox3.Controls.Add(this.label12);
 			this.groupBox3.Controls.Add(this.tb_uk5);
 			this.groupBox3.Controls.Add(this.label10);
 			this.groupBox3.Controls.Add(this.tb_mod2);
@@ -479,12 +458,45 @@ namespace SimPe.Plugin
 			this.groupBox3.Controls.Add(this.label6);
 			this.groupBox3.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.groupBox3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.groupBox3.Location = new System.Drawing.Point(280, 8);
+			this.groupBox3.Location = new System.Drawing.Point(8, 88);
 			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(504, 288);
+			this.groupBox3.Size = new System.Drawing.Size(504, 200);
 			this.groupBox3.TabIndex = 13;
 			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Unknown Items 1";
+			this.groupBox3.Text = "Element Section";
+			// 
+			// cbid
+			// 
+			this.cbid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbid.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbid.Enabled = false;
+			this.cbid.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cbid.Location = new System.Drawing.Point(272, 80);
+			this.cbid.Name = "cbid";
+			this.cbid.Size = new System.Drawing.Size(224, 21);
+			this.cbid.TabIndex = 24;
+			// 
+			// cbset
+			// 
+			this.cbset.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbset.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbset.Enabled = false;
+			this.cbset.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cbset.Location = new System.Drawing.Point(272, 160);
+			this.cbset.Name = "cbset";
+			this.cbset.Size = new System.Drawing.Size(224, 21);
+			this.cbset.TabIndex = 23;
+			// 
+			// cbblock
+			// 
+			this.cbblock.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbblock.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbblock.Enabled = false;
+			this.cbblock.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cbblock.Location = new System.Drawing.Point(272, 120);
+			this.cbblock.Name = "cbblock";
+			this.cbblock.Size = new System.Drawing.Size(224, 21);
+			this.cbblock.TabIndex = 22;
 			// 
 			// lb_itemsa
 			// 
@@ -496,41 +508,15 @@ namespace SimPe.Plugin
 			this.lb_itemsa.IntegralHeight = false;
 			this.lb_itemsa.Location = new System.Drawing.Point(8, 24);
 			this.lb_itemsa.Name = "lb_itemsa";
-			this.lb_itemsa.Size = new System.Drawing.Size(152, 256);
+			this.lb_itemsa.Size = new System.Drawing.Size(152, 168);
 			this.lb_itemsa.TabIndex = 21;
 			this.lb_itemsa.SelectedIndexChanged += new System.EventHandler(this.SelectItemsA);
-			// 
-			// tb_data
-			// 
-			this.tb_data.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tb_data.Font = new System.Drawing.Font("Courier New", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_data.Location = new System.Drawing.Point(176, 160);
-			this.tb_data.Multiline = true;
-			this.tb_data.Name = "tb_data";
-			this.tb_data.ReadOnly = true;
-			this.tb_data.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.tb_data.Size = new System.Drawing.Size(312, 120);
-			this.tb_data.TabIndex = 20;
-			this.tb_data.Text = "";
-			// 
-			// label12
-			// 
-			this.label12.AccessibleDescription = "d";
-			this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label12.AutoSize = true;
-			this.label12.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label12.Location = new System.Drawing.Point(168, 144);
-			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(36, 17);
-			this.label12.TabIndex = 19;
-			this.label12.Text = "Data:";
 			// 
 			// tb_uk5
 			// 
 			this.tb_uk5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.tb_uk5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_uk5.Location = new System.Drawing.Point(400, 40);
+			this.tb_uk5.Location = new System.Drawing.Point(280, 40);
 			this.tb_uk5.Name = "tb_uk5";
 			this.tb_uk5.ReadOnly = true;
 			this.tb_uk5.Size = new System.Drawing.Size(88, 21);
@@ -542,17 +528,17 @@ namespace SimPe.Plugin
 			this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label10.AutoSize = true;
 			this.label10.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label10.Location = new System.Drawing.Point(392, 24);
+			this.label10.Location = new System.Drawing.Point(272, 24);
 			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(73, 17);
+			this.label10.Size = new System.Drawing.Size(70, 17);
 			this.label10.TabIndex = 13;
-			this.label10.Text = "Unknown 5:";
+			this.label10.Text = "Group UID:";
 			// 
 			// tb_mod2
 			// 
 			this.tb_mod2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.tb_mod2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_mod2.Location = new System.Drawing.Point(288, 80);
+			this.tb_mod2.Location = new System.Drawing.Point(176, 160);
 			this.tb_mod2.Name = "tb_mod2";
 			this.tb_mod2.ReadOnly = true;
 			this.tb_mod2.Size = new System.Drawing.Size(88, 21);
@@ -564,17 +550,17 @@ namespace SimPe.Plugin
 			this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label7.AutoSize = true;
 			this.label7.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label7.Location = new System.Drawing.Point(280, 64);
+			this.label7.Location = new System.Drawing.Point(168, 144);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(40, 17);
+			this.label7.Size = new System.Drawing.Size(73, 17);
 			this.label7.TabIndex = 11;
-			this.label7.Text = "Mod2:";
+			this.label7.Text = "Set Format:";
 			// 
 			// tb_mod1
 			// 
 			this.tb_mod1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.tb_mod1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_mod1.Location = new System.Drawing.Point(288, 40);
+			this.tb_mod1.Location = new System.Drawing.Point(176, 120);
 			this.tb_mod1.Name = "tb_mod1";
 			this.tb_mod1.ReadOnly = true;
 			this.tb_mod1.Size = new System.Drawing.Size(88, 21);
@@ -586,11 +572,11 @@ namespace SimPe.Plugin
 			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label8.AutoSize = true;
 			this.label8.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label8.Location = new System.Drawing.Point(280, 24);
+			this.label8.Location = new System.Drawing.Point(168, 104);
 			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(40, 17);
+			this.label8.Size = new System.Drawing.Size(84, 17);
 			this.label8.TabIndex = 9;
-			this.label8.Text = "Mod1:";
+			this.label8.Text = "Block Format:";
 			// 
 			// tb_id
 			// 
@@ -644,7 +630,7 @@ namespace SimPe.Plugin
 			this.groupBox10.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.groupBox10.Location = new System.Drawing.Point(8, 8);
 			this.groupBox10.Name = "groupBox10";
-			this.groupBox10.Size = new System.Drawing.Size(264, 72);
+			this.groupBox10.Size = new System.Drawing.Size(120, 72);
 			this.groupBox10.TabIndex = 12;
 			this.groupBox10.TabStop = false;
 			this.groupBox10.Text = "Settings";
@@ -669,6 +655,504 @@ namespace SimPe.Plugin
 			this.label28.TabIndex = 23;
 			this.label28.Text = "Version:";
 			// 
+			// groupBox12
+			// 
+			this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox12.Controls.Add(this.lb_itemsa1);
+			this.groupBox12.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox12.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox12.Location = new System.Drawing.Point(520, 8);
+			this.groupBox12.Name = "groupBox12";
+			this.groupBox12.Size = new System.Drawing.Size(264, 136);
+			this.groupBox12.TabIndex = 25;
+			this.groupBox12.TabStop = false;
+			this.groupBox12.Text = "Element Section - Values";
+			// 
+			// lb_itemsa1
+			// 
+			this.lb_itemsa1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_itemsa1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_itemsa1.HorizontalScrollbar = true;
+			this.lb_itemsa1.IntegralHeight = false;
+			this.lb_itemsa1.Location = new System.Drawing.Point(8, 24);
+			this.lb_itemsa1.Name = "lb_itemsa1";
+			this.lb_itemsa1.Size = new System.Drawing.Size(248, 104);
+			this.lb_itemsa1.TabIndex = 22;
+			// 
+			// tDebug
+			// 
+			this.tDebug.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.tDebug.Controls.Add(this.linkLabel1);
+			this.tDebug.Controls.Add(this.list_subsets);
+			this.tDebug.Controls.Add(this.label_subsets);
+			this.tDebug.Controls.Add(this.list_groups);
+			this.tDebug.Controls.Add(this.label_groups);
+			this.tDebug.Controls.Add(this.list_links);
+			this.tDebug.Controls.Add(this.label_links);
+			this.tDebug.Controls.Add(this.list_elements);
+			this.tDebug.Controls.Add(this.label_elements);
+			this.tDebug.Controls.Add(this.pg);
+			this.tDebug.Location = new System.Drawing.Point(4, 22);
+			this.tDebug.Name = "tDebug";
+			this.tDebug.Size = new System.Drawing.Size(792, 302);
+			this.tDebug.TabIndex = 5;
+			this.tDebug.Text = "Debug";
+			// 
+			// linkLabel1
+			// 
+			this.linkLabel1.Location = new System.Drawing.Point(296, 128);
+			this.linkLabel1.Name = "linkLabel1";
+			this.linkLabel1.Size = new System.Drawing.Size(40, 16);
+			this.linkLabel1.TabIndex = 9;
+			this.linkLabel1.TabStop = true;
+			this.linkLabel1.Text = "Model";
+			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.SeletDebugObject);
+			// 
+			// list_subsets
+			// 
+			this.list_subsets.Location = new System.Drawing.Point(296, 24);
+			this.list_subsets.Name = "list_subsets";
+			this.list_subsets.Size = new System.Drawing.Size(264, 95);
+			this.list_subsets.TabIndex = 8;
+			this.list_subsets.SelectedIndexChanged += new System.EventHandler(this.SeletDebugObject);
+			// 
+			// label_subsets
+			// 
+			this.label_subsets.AutoSize = true;
+			this.label_subsets.Location = new System.Drawing.Point(288, 8);
+			this.label_subsets.Name = "label_subsets";
+			this.label_subsets.Size = new System.Drawing.Size(48, 16);
+			this.label_subsets.TabIndex = 7;
+			this.label_subsets.Text = "Subsets:";
+			// 
+			// list_groups
+			// 
+			this.list_groups.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left)));
+			this.list_groups.Location = new System.Drawing.Point(16, 224);
+			this.list_groups.Name = "list_groups";
+			this.list_groups.Size = new System.Drawing.Size(264, 69);
+			this.list_groups.TabIndex = 6;
+			this.list_groups.SelectedIndexChanged += new System.EventHandler(this.SeletDebugObject);
+			// 
+			// label_groups
+			// 
+			this.label_groups.AutoSize = true;
+			this.label_groups.Location = new System.Drawing.Point(8, 208);
+			this.label_groups.Name = "label_groups";
+			this.label_groups.Size = new System.Drawing.Size(44, 16);
+			this.label_groups.TabIndex = 5;
+			this.label_groups.Text = "Groups:";
+			// 
+			// list_links
+			// 
+			this.list_links.Location = new System.Drawing.Point(16, 136);
+			this.list_links.Name = "list_links";
+			this.list_links.Size = new System.Drawing.Size(264, 69);
+			this.list_links.TabIndex = 4;
+			this.list_links.SelectedIndexChanged += new System.EventHandler(this.SeletDebugObject);
+			// 
+			// label_links
+			// 
+			this.label_links.AutoSize = true;
+			this.label_links.Location = new System.Drawing.Point(8, 120);
+			this.label_links.Name = "label_links";
+			this.label_links.Size = new System.Drawing.Size(34, 16);
+			this.label_links.TabIndex = 3;
+			this.label_links.Text = "Links:";
+			// 
+			// list_elements
+			// 
+			this.list_elements.Location = new System.Drawing.Point(16, 24);
+			this.list_elements.Name = "list_elements";
+			this.list_elements.Size = new System.Drawing.Size(264, 95);
+			this.list_elements.TabIndex = 2;
+			this.list_elements.SelectedIndexChanged += new System.EventHandler(this.SeletDebugObject);
+			// 
+			// label_elements
+			// 
+			this.label_elements.AutoSize = true;
+			this.label_elements.Location = new System.Drawing.Point(8, 8);
+			this.label_elements.Name = "label_elements";
+			this.label_elements.Size = new System.Drawing.Size(55, 16);
+			this.label_elements.TabIndex = 1;
+			this.label_elements.Text = "Elements:";
+			// 
+			// pg
+			// 
+			this.pg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.pg.CommandsBackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.pg.CommandsVisibleIfAvailable = true;
+			this.pg.HelpVisible = false;
+			this.pg.LargeButtons = false;
+			this.pg.LineColor = System.Drawing.SystemColors.ScrollBar;
+			this.pg.Location = new System.Drawing.Point(560, 8);
+			this.pg.Name = "pg";
+			this.pg.Size = new System.Drawing.Size(224, 288);
+			this.pg.TabIndex = 0;
+			this.pg.Text = "propertyGrid1";
+			this.pg.ToolbarVisible = false;
+			this.pg.ViewBackColor = System.Drawing.SystemColors.Window;
+			this.pg.ViewForeColor = System.Drawing.SystemColors.WindowText;
+			// 
+			// tMesh
+			// 
+			this.tMesh.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.tMesh.Controls.Add(this.button1);
+			this.tMesh.Controls.Add(this.button5);
+			this.tMesh.Controls.Add(this.label20);
+			this.tMesh.Controls.Add(this.lbmodel);
+			this.tMesh.Controls.Add(this.label21);
+			this.tMesh.Controls.Add(this.pnprev);
+			this.tMesh.Controls.Add(this.button3);
+			this.tMesh.Controls.Add(this.button4);
+			this.tMesh.Location = new System.Drawing.Point(4, 22);
+			this.tMesh.Name = "tMesh";
+			this.tMesh.Size = new System.Drawing.Size(792, 302);
+			this.tMesh.TabIndex = 4;
+			this.tMesh.Text = "3D Mesh";
+			// 
+			// button1
+			// 
+			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.button1.Location = new System.Drawing.Point(16, 232);
+			this.button1.Name = "button1";
+			this.button1.Size = new System.Drawing.Size(232, 23);
+			this.button1.TabIndex = 28;
+			this.button1.Text = "Import...";
+			this.button1.Click += new System.EventHandler(this.button1_Click);
+			// 
+			// button5
+			// 
+			this.button5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.button5.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.button5.Location = new System.Drawing.Point(16, 200);
+			this.button5.Name = "button5";
+			this.button5.Size = new System.Drawing.Size(232, 23);
+			this.button5.TabIndex = 27;
+			this.button5.Text = "Export...";
+			this.button5.Click += new System.EventHandler(this.Export);
+			// 
+			// label20
+			// 
+			this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.label20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label20.ForeColor = System.Drawing.SystemColors.ControlDark;
+			this.label20.Location = new System.Drawing.Point(552, 8);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(232, 288);
+			this.label20.TabIndex = 25;
+			this.label20.Text = @"Camera Control:
+
+ Translate Y: left Button + move vertical
+ Translate X: left Button + move horizontal
+ Translate Z: middle Button + move vertical
+ Scale: middle Button + move horizontal
+ Rotate X: right Button + move vertical
+ Rotate Y: right Button + move horizontal";
+			this.label20.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+			// 
+			// lbmodel
+			// 
+			this.lbmodel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left)));
+			this.lbmodel.CheckOnClick = true;
+			this.lbmodel.HorizontalScrollbar = true;
+			this.lbmodel.Location = new System.Drawing.Point(16, 24);
+			this.lbmodel.Name = "lbmodel";
+			this.lbmodel.Size = new System.Drawing.Size(232, 169);
+			this.lbmodel.TabIndex = 24;
+			// 
+			// label21
+			// 
+			this.label21.AutoSize = true;
+			this.label21.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label21.Location = new System.Drawing.Point(8, 8);
+			this.label21.Name = "label21";
+			this.label21.Size = new System.Drawing.Size(45, 16);
+			this.label21.TabIndex = 23;
+			this.label21.Text = "Models:";
+			// 
+			// pnprev
+			// 
+			this.pnprev.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.pnprev.Location = new System.Drawing.Point(256, 8);
+			this.pnprev.Name = "pnprev";
+			this.pnprev.Size = new System.Drawing.Size(288, 288);
+			this.pnprev.TabIndex = 3;
+			// 
+			// button3
+			// 
+			this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.button3.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.button3.Location = new System.Drawing.Point(16, 264);
+			this.button3.Name = "button3";
+			this.button3.Size = new System.Drawing.Size(192, 23);
+			this.button3.TabIndex = 4;
+			this.button3.Text = "Preview";
+			this.button3.Click += new System.EventHandler(this.Preview);
+			// 
+			// button4
+			// 
+			this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.button4.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.button4.Location = new System.Drawing.Point(216, 264);
+			this.button4.Name = "button4";
+			this.button4.Size = new System.Drawing.Size(32, 23);
+			this.button4.TabIndex = 26;
+			this.button4.Text = "BG";
+			this.button4.Click += new System.EventHandler(this.PickColor);
+			// 
+			// tGeometryDataContainer3
+			// 
+			this.tGeometryDataContainer3.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.tGeometryDataContainer3.Controls.Add(this.groupBox4);
+			this.tGeometryDataContainer3.Controls.Add(this.groupBox2);
+			this.tGeometryDataContainer3.Controls.Add(this.groupBox5);
+			this.tGeometryDataContainer3.Location = new System.Drawing.Point(4, 22);
+			this.tGeometryDataContainer3.Name = "tGeometryDataContainer3";
+			this.tGeometryDataContainer3.Size = new System.Drawing.Size(792, 302);
+			this.tGeometryDataContainer3.TabIndex = 2;
+			this.tGeometryDataContainer3.Text = "Groups";
+			// 
+			// groupBox4
+			// 
+			this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox4.Controls.Add(this.tb_itemsc2);
+			this.groupBox4.Controls.Add(this.label4);
+			this.groupBox4.Controls.Add(this.lb_itemsc2);
+			this.groupBox4.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox4.Location = new System.Drawing.Point(520, 8);
+			this.groupBox4.Name = "groupBox4";
+			this.groupBox4.Size = new System.Drawing.Size(264, 136);
+			this.groupBox4.TabIndex = 15;
+			this.groupBox4.TabStop = false;
+			this.groupBox4.Text = "Group Section - Faces";
+			// 
+			// tb_itemsc2
+			// 
+			this.tb_itemsc2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.tb_itemsc2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.tb_itemsc2.Location = new System.Drawing.Point(56, 104);
+			this.tb_itemsc2.Name = "tb_itemsc2";
+			this.tb_itemsc2.ReadOnly = true;
+			this.tb_itemsc2.Size = new System.Drawing.Size(88, 21);
+			this.tb_itemsc2.TabIndex = 24;
+			this.tb_itemsc2.Text = "0x00000000";
+			// 
+			// label4
+			// 
+			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label4.AutoSize = true;
+			this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label4.Location = new System.Drawing.Point(8, 112);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(41, 17);
+			this.label4.TabIndex = 23;
+			this.label4.Text = "Value:";
+			// 
+			// lb_itemsc2
+			// 
+			this.lb_itemsc2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_itemsc2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_itemsc2.HorizontalScrollbar = true;
+			this.lb_itemsc2.IntegralHeight = false;
+			this.lb_itemsc2.Location = new System.Drawing.Point(8, 24);
+			this.lb_itemsc2.Name = "lb_itemsc2";
+			this.lb_itemsc2.Size = new System.Drawing.Size(248, 72);
+			this.lb_itemsc2.TabIndex = 22;
+			this.lb_itemsc2.SelectedIndexChanged += new System.EventHandler(this.SelectItemsC2);
+			// 
+			// groupBox2
+			// 
+			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox2.Controls.Add(this.linkLabel2);
+			this.groupBox2.Controls.Add(this.tb_opacity);
+			this.groupBox2.Controls.Add(this.tb_uk2);
+			this.groupBox2.Controls.Add(this.label3);
+			this.groupBox2.Controls.Add(this.tb_uk3);
+			this.groupBox2.Controls.Add(this.label2);
+			this.groupBox2.Controls.Add(this.lb_itemsc);
+			this.groupBox2.Controls.Add(this.tb_itemsc_name);
+			this.groupBox2.Controls.Add(this.label11);
+			this.groupBox2.Controls.Add(this.label13);
+			this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox2.Location = new System.Drawing.Point(8, 8);
+			this.groupBox2.Name = "groupBox2";
+			this.groupBox2.Size = new System.Drawing.Size(504, 288);
+			this.groupBox2.TabIndex = 14;
+			this.groupBox2.TabStop = false;
+			this.groupBox2.Text = "Group Section";
+			// 
+			// tb_opacity
+			// 
+			this.tb_opacity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tb_opacity.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.tb_opacity.Location = new System.Drawing.Point(400, 40);
+			this.tb_opacity.Name = "tb_opacity";
+			this.tb_opacity.Size = new System.Drawing.Size(88, 21);
+			this.tb_opacity.TabIndex = 6;
+			this.tb_opacity.Text = "0x00000000";
+			this.tb_opacity.TextChanged += new System.EventHandler(this.ChangeItemsC);
+			// 
+			// tb_uk2
+			// 
+			this.tb_uk2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tb_uk2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.tb_uk2.Location = new System.Drawing.Point(176, 40);
+			this.tb_uk2.Name = "tb_uk2";
+			this.tb_uk2.Size = new System.Drawing.Size(88, 21);
+			this.tb_uk2.TabIndex = 25;
+			this.tb_uk2.Text = "0x00000000";
+			this.tb_uk2.TextChanged += new System.EventHandler(this.ChangeItemsC);
+			// 
+			// label3
+			// 
+			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label3.AutoSize = true;
+			this.label3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label3.Location = new System.Drawing.Point(392, 24);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(52, 17);
+			this.label3.TabIndex = 24;
+			this.label3.Text = "Opacity:";
+			// 
+			// tb_uk3
+			// 
+			this.tb_uk3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tb_uk3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.tb_uk3.Location = new System.Drawing.Point(288, 40);
+			this.tb_uk3.Name = "tb_uk3";
+			this.tb_uk3.Size = new System.Drawing.Size(88, 21);
+			this.tb_uk3.TabIndex = 23;
+			this.tb_uk3.Text = "0x00000000";
+			this.tb_uk3.TextChanged += new System.EventHandler(this.ChangeItemsC);
+			// 
+			// label2
+			// 
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label2.AutoSize = true;
+			this.label2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label2.Location = new System.Drawing.Point(280, 24);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(93, 17);
+			this.label2.TabIndex = 22;
+			this.label2.Text = "Link Reference:";
+			// 
+			// lb_itemsc
+			// 
+			this.lb_itemsc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_itemsc.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_itemsc.HorizontalScrollbar = true;
+			this.lb_itemsc.IntegralHeight = false;
+			this.lb_itemsc.Location = new System.Drawing.Point(8, 24);
+			this.lb_itemsc.Name = "lb_itemsc";
+			this.lb_itemsc.Size = new System.Drawing.Size(152, 256);
+			this.lb_itemsc.TabIndex = 21;
+			this.lb_itemsc.SelectedIndexChanged += new System.EventHandler(this.SelectItemsC);
+			// 
+			// tb_itemsc_name
+			// 
+			this.tb_itemsc_name.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tb_itemsc_name.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.tb_itemsc_name.Location = new System.Drawing.Point(176, 80);
+			this.tb_itemsc_name.Name = "tb_itemsc_name";
+			this.tb_itemsc_name.Size = new System.Drawing.Size(312, 21);
+			this.tb_itemsc_name.TabIndex = 8;
+			this.tb_itemsc_name.Text = "";
+			this.tb_itemsc_name.TextChanged += new System.EventHandler(this.ChangeItemsC);
+			// 
+			// label11
+			// 
+			this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label11.AutoSize = true;
+			this.label11.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label11.Location = new System.Drawing.Point(168, 64);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(42, 17);
+			this.label11.TabIndex = 7;
+			this.label11.Text = "Name:";
+			// 
+			// label13
+			// 
+			this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label13.AutoSize = true;
+			this.label13.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label13.Location = new System.Drawing.Point(168, 24);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(71, 17);
+			this.label13.TabIndex = 5;
+			this.label13.Text = "Prim. Type:";
+			// 
+			// groupBox5
+			// 
+			this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox5.Controls.Add(this.tb_itemsc3);
+			this.groupBox5.Controls.Add(this.label9);
+			this.groupBox5.Controls.Add(this.lb_itemsc3);
+			this.groupBox5.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox5.Location = new System.Drawing.Point(520, 152);
+			this.groupBox5.Name = "groupBox5";
+			this.groupBox5.Size = new System.Drawing.Size(264, 144);
+			this.groupBox5.TabIndex = 25;
+			this.groupBox5.TabStop = false;
+			this.groupBox5.Text = "Group Section - Subsets";
+			// 
+			// tb_itemsc3
+			// 
+			this.tb_itemsc3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.tb_itemsc3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.tb_itemsc3.Location = new System.Drawing.Point(56, 112);
+			this.tb_itemsc3.Name = "tb_itemsc3";
+			this.tb_itemsc3.ReadOnly = true;
+			this.tb_itemsc3.Size = new System.Drawing.Size(88, 21);
+			this.tb_itemsc3.TabIndex = 24;
+			this.tb_itemsc3.Text = "0x00000000";
+			// 
+			// label9
+			// 
+			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label9.AutoSize = true;
+			this.label9.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label9.Location = new System.Drawing.Point(8, 120);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(41, 17);
+			this.label9.TabIndex = 23;
+			this.label9.Text = "Value:";
+			// 
+			// lb_itemsc3
+			// 
+			this.lb_itemsc3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_itemsc3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_itemsc3.HorizontalScrollbar = true;
+			this.lb_itemsc3.IntegralHeight = false;
+			this.lb_itemsc3.Location = new System.Drawing.Point(8, 24);
+			this.lb_itemsc3.Name = "lb_itemsc3";
+			this.lb_itemsc3.Size = new System.Drawing.Size(248, 80);
+			this.lb_itemsc3.TabIndex = 22;
+			this.lb_itemsc3.SelectedIndexChanged += new System.EventHandler(this.SelectItemsC3);
+			// 
 			// tGeometryDataContainer2
 			// 
 			this.tGeometryDataContainer2.BackColor = System.Drawing.SystemColors.ControlLightLight;
@@ -681,7 +1165,7 @@ namespace SimPe.Plugin
 			this.tGeometryDataContainer2.Name = "tGeometryDataContainer2";
 			this.tGeometryDataContainer2.Size = new System.Drawing.Size(792, 302);
 			this.tGeometryDataContainer2.TabIndex = 1;
-			this.tGeometryDataContainer2.Text = "Items 2";
+			this.tGeometryDataContainer2.Text = "Links";
 			// 
 			// groupBox9
 			// 
@@ -696,7 +1180,7 @@ namespace SimPe.Plugin
 			this.groupBox9.Size = new System.Drawing.Size(232, 136);
 			this.groupBox9.TabIndex = 29;
 			this.groupBox9.TabStop = false;
-			this.groupBox9.Text = "Unknown Items 2d";
+			this.groupBox9.Text = "Link Section - SubNormals Ref.";
 			// 
 			// tb_itemsb4
 			// 
@@ -748,7 +1232,7 @@ namespace SimPe.Plugin
 			this.groupBox11.Size = new System.Drawing.Size(232, 144);
 			this.groupBox11.TabIndex = 30;
 			this.groupBox11.TabStop = false;
-			this.groupBox11.Text = "Unknown Items 2e";
+			this.groupBox11.Text = "Link Section - SubUVCoord Ref.";
 			// 
 			// tb_itemsb5
 			// 
@@ -799,7 +1283,7 @@ namespace SimPe.Plugin
 			this.groupBox6.Size = new System.Drawing.Size(232, 136);
 			this.groupBox6.TabIndex = 27;
 			this.groupBox6.TabStop = false;
-			this.groupBox6.Text = "Unknown Items 2b";
+			this.groupBox6.Text = "Link Section - Elements Ref.";
 			// 
 			// tb_itemsb2
 			// 
@@ -854,13 +1338,13 @@ namespace SimPe.Plugin
 			this.groupBox7.Size = new System.Drawing.Size(296, 288);
 			this.groupBox7.TabIndex = 26;
 			this.groupBox7.TabStop = false;
-			this.groupBox7.Text = "Unknown Items 2";
+			this.groupBox7.Text = "Link Section";
 			// 
 			// tb_uk4
 			// 
 			this.tb_uk4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.tb_uk4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_uk4.Location = new System.Drawing.Point(200, 40);
+			this.tb_uk4.Location = new System.Drawing.Point(184, 40);
 			this.tb_uk4.Name = "tb_uk4";
 			this.tb_uk4.ReadOnly = true;
 			this.tb_uk4.Size = new System.Drawing.Size(88, 21);
@@ -871,7 +1355,7 @@ namespace SimPe.Plugin
 			// 
 			this.tb_uk6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.tb_uk6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_uk6.Location = new System.Drawing.Point(200, 80);
+			this.tb_uk6.Location = new System.Drawing.Point(184, 80);
 			this.tb_uk6.Name = "tb_uk6";
 			this.tb_uk6.ReadOnly = true;
 			this.tb_uk6.Size = new System.Drawing.Size(88, 21);
@@ -883,11 +1367,10 @@ namespace SimPe.Plugin
 			this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label16.AutoSize = true;
 			this.label16.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label16.Location = new System.Drawing.Point(192, 64);
+			this.label16.Location = new System.Drawing.Point(176, 64);
 			this.label16.Name = "label16";
-			this.label16.Size = new System.Drawing.Size(73, 17);
 			this.label16.TabIndex = 22;
-			this.label16.Text = "Unknown 2:";
+			this.label16.Text = "Active Elements:";
 			// 
 			// lb_itemsb
 			// 
@@ -899,7 +1382,7 @@ namespace SimPe.Plugin
 			this.lb_itemsb.IntegralHeight = false;
 			this.lb_itemsb.Location = new System.Drawing.Point(8, 24);
 			this.lb_itemsb.Name = "lb_itemsb";
-			this.lb_itemsb.Size = new System.Drawing.Size(176, 256);
+			this.lb_itemsb.Size = new System.Drawing.Size(160, 256);
 			this.lb_itemsb.TabIndex = 21;
 			this.lb_itemsb.SelectedIndexChanged += new System.EventHandler(this.SelectItemsB);
 			// 
@@ -908,11 +1391,11 @@ namespace SimPe.Plugin
 			this.label18.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label18.AutoSize = true;
 			this.label18.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label18.Location = new System.Drawing.Point(192, 24);
+			this.label18.Location = new System.Drawing.Point(176, 24);
 			this.label18.Name = "label18";
-			this.label18.Size = new System.Drawing.Size(80, 17);
+			this.label18.Size = new System.Drawing.Size(101, 17);
 			this.label18.TabIndex = 5;
-			this.label18.Text = "VertexCount:";
+			this.label18.Text = "Referenced Size:";
 			// 
 			// groupBox8
 			// 
@@ -928,7 +1411,7 @@ namespace SimPe.Plugin
 			this.groupBox8.Size = new System.Drawing.Size(232, 144);
 			this.groupBox8.TabIndex = 28;
 			this.groupBox8.TabStop = false;
-			this.groupBox8.Text = "Unknown Items 2c";
+			this.groupBox8.Text = "Link Section - SubVertexl Ref.";
 			// 
 			// tb_itemsb3
 			// 
@@ -966,273 +1449,320 @@ namespace SimPe.Plugin
 			this.lb_itemsb3.TabIndex = 22;
 			this.lb_itemsb3.SelectedIndexChanged += new System.EventHandler(this.SelectItemsB3);
 			// 
-			// tGeometryDataContainer3
+			// tModel
 			// 
-			this.tGeometryDataContainer3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-			this.tGeometryDataContainer3.Controls.Add(this.groupBox4);
-			this.tGeometryDataContainer3.Controls.Add(this.groupBox2);
-			this.tGeometryDataContainer3.Controls.Add(this.groupBox5);
-			this.tGeometryDataContainer3.Location = new System.Drawing.Point(4, 22);
-			this.tGeometryDataContainer3.Name = "tGeometryDataContainer3";
-			this.tGeometryDataContainer3.Size = new System.Drawing.Size(792, 302);
-			this.tGeometryDataContainer3.TabIndex = 2;
-			this.tGeometryDataContainer3.Text = "Items 3";
+			this.tModel.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.tModel.Controls.Add(this.groupBox19);
+			this.tModel.Controls.Add(this.groupBox18);
+			this.tModel.Controls.Add(this.groupBox17);
+			this.tModel.Controls.Add(this.groupBox16);
+			this.tModel.Location = new System.Drawing.Point(4, 22);
+			this.tModel.Name = "tModel";
+			this.tModel.Size = new System.Drawing.Size(792, 302);
+			this.tModel.TabIndex = 7;
+			this.tModel.Text = "Model";
 			// 
-			// groupBox4
+			// groupBox19
 			// 
-			this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox4.Controls.Add(this.tb_itemsc2);
-			this.groupBox4.Controls.Add(this.label4);
-			this.groupBox4.Controls.Add(this.lb_itemsc2);
-			this.groupBox4.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.groupBox4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.groupBox4.Location = new System.Drawing.Point(520, 8);
-			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(264, 136);
-			this.groupBox4.TabIndex = 15;
-			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = "Unknown Items 3b";
+			this.groupBox19.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox19.Controls.Add(this.lb_model_items);
+			this.groupBox19.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox19.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox19.Location = new System.Drawing.Point(584, 160);
+			this.groupBox19.Name = "groupBox19";
+			this.groupBox19.Size = new System.Drawing.Size(200, 136);
+			this.groupBox19.TabIndex = 35;
+			this.groupBox19.TabStop = false;
+			this.groupBox19.Text = "Model Section - Items";
 			// 
-			// tb_itemsc2
+			// lb_model_items
 			// 
-			this.tb_itemsc2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.tb_itemsc2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_itemsc2.Location = new System.Drawing.Point(56, 104);
-			this.tb_itemsc2.Name = "tb_itemsc2";
-			this.tb_itemsc2.ReadOnly = true;
-			this.tb_itemsc2.Size = new System.Drawing.Size(88, 21);
-			this.tb_itemsc2.TabIndex = 24;
-			this.tb_itemsc2.Text = "0x00000000";
-			// 
-			// label4
-			// 
-			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label4.AutoSize = true;
-			this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label4.Location = new System.Drawing.Point(8, 112);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(41, 17);
-			this.label4.TabIndex = 23;
-			this.label4.Text = "Value:";
-			// 
-			// lb_itemsc2
-			// 
-			this.lb_itemsc2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.lb_model_items.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lb_itemsc2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lb_itemsc2.HorizontalScrollbar = true;
-			this.lb_itemsc2.IntegralHeight = false;
-			this.lb_itemsc2.Location = new System.Drawing.Point(8, 24);
-			this.lb_itemsc2.Name = "lb_itemsc2";
-			this.lb_itemsc2.Size = new System.Drawing.Size(248, 72);
-			this.lb_itemsc2.TabIndex = 22;
-			this.lb_itemsc2.SelectedIndexChanged += new System.EventHandler(this.SelectItemsC2);
+			this.lb_model_items.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_model_items.HorizontalScrollbar = true;
+			this.lb_model_items.IntegralHeight = false;
+			this.lb_model_items.Location = new System.Drawing.Point(8, 24);
+			this.lb_model_items.Name = "lb_model_items";
+			this.lb_model_items.Size = new System.Drawing.Size(184, 104);
+			this.lb_model_items.TabIndex = 22;
 			// 
-			// groupBox2
+			// groupBox18
 			// 
-			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.groupBox18.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox2.Controls.Add(this.tb_opacity);
-			this.groupBox2.Controls.Add(this.tb_uk2);
-			this.groupBox2.Controls.Add(this.label3);
-			this.groupBox2.Controls.Add(this.tb_uk3);
-			this.groupBox2.Controls.Add(this.label2);
-			this.groupBox2.Controls.Add(this.lb_itemsc);
-			this.groupBox2.Controls.Add(this.tb_itemsc_name);
-			this.groupBox2.Controls.Add(this.label11);
-			this.groupBox2.Controls.Add(this.label13);
-			this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.groupBox2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.groupBox2.Location = new System.Drawing.Point(8, 8);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(504, 288);
-			this.groupBox2.TabIndex = 14;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Unknown Items 3";
+			this.groupBox18.Controls.Add(this.lb_model_faces);
+			this.groupBox18.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox18.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox18.Location = new System.Drawing.Point(584, 8);
+			this.groupBox18.Name = "groupBox18";
+			this.groupBox18.Size = new System.Drawing.Size(200, 144);
+			this.groupBox18.TabIndex = 34;
+			this.groupBox18.TabStop = false;
+			this.groupBox18.Text = "Model Section - Faces";
 			// 
-			// tb_opacity
+			// lb_model_faces
 			// 
-			this.tb_opacity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tb_opacity.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_opacity.Location = new System.Drawing.Point(400, 40);
-			this.tb_opacity.Name = "tb_opacity";
-			this.tb_opacity.Size = new System.Drawing.Size(88, 21);
-			this.tb_opacity.TabIndex = 6;
-			this.tb_opacity.Text = "0x00000000";
-			this.tb_opacity.TextChanged += new System.EventHandler(this.ChangeItemsC);
-			// 
-			// tb_uk2
-			// 
-			this.tb_uk2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tb_uk2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_uk2.Location = new System.Drawing.Point(176, 40);
-			this.tb_uk2.Name = "tb_uk2";
-			this.tb_uk2.Size = new System.Drawing.Size(88, 21);
-			this.tb_uk2.TabIndex = 25;
-			this.tb_uk2.Text = "0x00000000";
-			this.tb_uk2.TextChanged += new System.EventHandler(this.ChangeItemsC);
-			// 
-			// label3
-			// 
-			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label3.Location = new System.Drawing.Point(392, 24);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(52, 17);
-			this.label3.TabIndex = 24;
-			this.label3.Text = "Opacity:";
-			// 
-			// tb_uk3
-			// 
-			this.tb_uk3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tb_uk3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_uk3.Location = new System.Drawing.Point(288, 40);
-			this.tb_uk3.Name = "tb_uk3";
-			this.tb_uk3.Size = new System.Drawing.Size(88, 21);
-			this.tb_uk3.TabIndex = 23;
-			this.tb_uk3.Text = "0x00000000";
-			this.tb_uk3.TextChanged += new System.EventHandler(this.ChangeItemsC);
-			// 
-			// label2
-			// 
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label2.Location = new System.Drawing.Point(280, 24);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(73, 17);
-			this.label2.TabIndex = 22;
-			this.label2.Text = "Unknown 2:";
-			// 
-			// lb_itemsc
-			// 
-			this.lb_itemsc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.lb_model_faces.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lb_itemsc.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lb_itemsc.HorizontalScrollbar = true;
-			this.lb_itemsc.IntegralHeight = false;
-			this.lb_itemsc.Location = new System.Drawing.Point(8, 24);
-			this.lb_itemsc.Name = "lb_itemsc";
-			this.lb_itemsc.Size = new System.Drawing.Size(152, 256);
-			this.lb_itemsc.TabIndex = 21;
-			this.lb_itemsc.SelectedIndexChanged += new System.EventHandler(this.SelectItemsC);
+			this.lb_model_faces.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_model_faces.HorizontalScrollbar = true;
+			this.lb_model_faces.IntegralHeight = false;
+			this.lb_model_faces.Location = new System.Drawing.Point(8, 24);
+			this.lb_model_faces.Name = "lb_model_faces";
+			this.lb_model_faces.Size = new System.Drawing.Size(184, 112);
+			this.lb_model_faces.TabIndex = 22;
 			// 
-			// tb_itemsc_name
+			// groupBox17
 			// 
-			this.tb_itemsc_name.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tb_itemsc_name.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_itemsc_name.Location = new System.Drawing.Point(176, 80);
-			this.tb_itemsc_name.Name = "tb_itemsc_name";
-			this.tb_itemsc_name.Size = new System.Drawing.Size(312, 21);
-			this.tb_itemsc_name.TabIndex = 8;
-			this.tb_itemsc_name.Text = "";
-			this.tb_itemsc_name.TextChanged += new System.EventHandler(this.ChangeItemsC);
-			// 
-			// label11
-			// 
-			this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label11.AutoSize = true;
-			this.label11.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label11.Location = new System.Drawing.Point(168, 64);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(42, 17);
-			this.label11.TabIndex = 7;
-			this.label11.Text = "Name:";
-			// 
-			// label13
-			// 
-			this.label13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label13.AutoSize = true;
-			this.label13.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label13.Location = new System.Drawing.Point(168, 24);
-			this.label13.Name = "label13";
-			this.label13.Size = new System.Drawing.Size(73, 17);
-			this.label13.TabIndex = 5;
-			this.label13.Text = "Unknown 1:";
-			// 
-			// groupBox5
-			// 
-			this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox5.Controls.Add(this.tb_itemsc3);
-			this.groupBox5.Controls.Add(this.label9);
-			this.groupBox5.Controls.Add(this.lb_itemsc3);
-			this.groupBox5.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.groupBox5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.groupBox5.Location = new System.Drawing.Point(520, 152);
-			this.groupBox5.Name = "groupBox5";
-			this.groupBox5.Size = new System.Drawing.Size(264, 144);
-			this.groupBox5.TabIndex = 25;
-			this.groupBox5.TabStop = false;
-			this.groupBox5.Text = "Unknown Items 3c";
-			// 
-			// tb_itemsc3
-			// 
-			this.tb_itemsc3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.tb_itemsc3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tb_itemsc3.Location = new System.Drawing.Point(56, 112);
-			this.tb_itemsc3.Name = "tb_itemsc3";
-			this.tb_itemsc3.ReadOnly = true;
-			this.tb_itemsc3.Size = new System.Drawing.Size(88, 21);
-			this.tb_itemsc3.TabIndex = 24;
-			this.tb_itemsc3.Text = "0x00000000";
-			// 
-			// label9
-			// 
-			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label9.AutoSize = true;
-			this.label9.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label9.Location = new System.Drawing.Point(8, 120);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(41, 17);
-			this.label9.TabIndex = 23;
-			this.label9.Text = "Value:";
-			// 
-			// lb_itemsc3
-			// 
-			this.lb_itemsc3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.groupBox17.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lb_itemsc3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lb_itemsc3.HorizontalScrollbar = true;
-			this.lb_itemsc3.IntegralHeight = false;
-			this.lb_itemsc3.Location = new System.Drawing.Point(8, 24);
-			this.lb_itemsc3.Name = "lb_itemsc3";
-			this.lb_itemsc3.Size = new System.Drawing.Size(248, 80);
-			this.lb_itemsc3.TabIndex = 22;
-			this.lb_itemsc3.SelectedIndexChanged += new System.EventHandler(this.SelectItemsC3);
+			this.groupBox17.Controls.Add(this.lb_model_names);
+			this.groupBox17.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox17.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox17.Location = new System.Drawing.Point(8, 160);
+			this.groupBox17.Name = "groupBox17";
+			this.groupBox17.Size = new System.Drawing.Size(568, 136);
+			this.groupBox17.TabIndex = 33;
+			this.groupBox17.TabStop = false;
+			this.groupBox17.Text = "Model Section - Names";
+			// 
+			// lb_model_names
+			// 
+			this.lb_model_names.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_model_names.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_model_names.HorizontalScrollbar = true;
+			this.lb_model_names.IntegralHeight = false;
+			this.lb_model_names.Location = new System.Drawing.Point(8, 24);
+			this.lb_model_names.Name = "lb_model_names";
+			this.lb_model_names.Size = new System.Drawing.Size(552, 104);
+			this.lb_model_names.TabIndex = 22;
+			// 
+			// groupBox16
+			// 
+			this.groupBox16.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left)));
+			this.groupBox16.Controls.Add(this.lb_model_rots);
+			this.groupBox16.Controls.Add(this.lb_model_trans);
+			this.groupBox16.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox16.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox16.Location = new System.Drawing.Point(8, 8);
+			this.groupBox16.Name = "groupBox16";
+			this.groupBox16.Size = new System.Drawing.Size(568, 144);
+			this.groupBox16.TabIndex = 32;
+			this.groupBox16.TabStop = false;
+			this.groupBox16.Text = "Model Section - Transformations";
+			// 
+			// lb_model_rots
+			// 
+			this.lb_model_rots.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_model_rots.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_model_rots.HorizontalScrollbar = true;
+			this.lb_model_rots.IntegralHeight = false;
+			this.lb_model_rots.Location = new System.Drawing.Point(256, 24);
+			this.lb_model_rots.Name = "lb_model_rots";
+			this.lb_model_rots.Size = new System.Drawing.Size(304, 112);
+			this.lb_model_rots.TabIndex = 23;
+			this.lb_model_rots.SelectedIndexChanged += new System.EventHandler(this.lb_model_rots_SelectedIndexChanged);
+			// 
+			// lb_model_trans
+			// 
+			this.lb_model_trans.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left)));
+			this.lb_model_trans.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_model_trans.HorizontalScrollbar = true;
+			this.lb_model_trans.IntegralHeight = false;
+			this.lb_model_trans.Location = new System.Drawing.Point(8, 24);
+			this.lb_model_trans.Name = "lb_model_trans";
+			this.lb_model_trans.Size = new System.Drawing.Size(240, 112);
+			this.lb_model_trans.TabIndex = 22;
+			this.lb_model_trans.SelectedIndexChanged += new System.EventHandler(this.lb_model_trans_SelectedIndexChanged);
+			// 
+			// tSubset
+			// 
+			this.tSubset.BackColor = System.Drawing.SystemColors.ControlLightLight;
+			this.tSubset.Controls.Add(this.groupBox13);
+			this.tSubset.Controls.Add(this.groupBox14);
+			this.tSubset.Controls.Add(this.groupBox15);
+			this.tSubset.Location = new System.Drawing.Point(4, 22);
+			this.tSubset.Name = "tSubset";
+			this.tSubset.Size = new System.Drawing.Size(792, 302);
+			this.tSubset.TabIndex = 6;
+			this.tSubset.Text = "Subsets";
+			// 
+			// groupBox13
+			// 
+			this.groupBox13.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox13.Controls.Add(this.tb_sub_item);
+			this.groupBox13.Controls.Add(this.label12);
+			this.groupBox13.Controls.Add(this.lb_sub_items);
+			this.groupBox13.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox13.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox13.Location = new System.Drawing.Point(512, 160);
+			this.groupBox13.Name = "groupBox13";
+			this.groupBox13.Size = new System.Drawing.Size(272, 136);
+			this.groupBox13.TabIndex = 32;
+			this.groupBox13.TabStop = false;
+			this.groupBox13.Text = "Subset Section - Items";
+			// 
+			// tb_sub_item
+			// 
+			this.tb_sub_item.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.tb_sub_item.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.tb_sub_item.Location = new System.Drawing.Point(56, 104);
+			this.tb_sub_item.Name = "tb_sub_item";
+			this.tb_sub_item.ReadOnly = true;
+			this.tb_sub_item.Size = new System.Drawing.Size(88, 21);
+			this.tb_sub_item.TabIndex = 24;
+			this.tb_sub_item.Text = "0x00000000";
+			// 
+			// label12
+			// 
+			this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.label12.AutoSize = true;
+			this.label12.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label12.Location = new System.Drawing.Point(8, 112);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(41, 17);
+			this.label12.TabIndex = 23;
+			this.label12.Text = "Value:";
+			// 
+			// lb_sub_items
+			// 
+			this.lb_sub_items.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_sub_items.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_sub_items.HorizontalScrollbar = true;
+			this.lb_sub_items.IntegralHeight = false;
+			this.lb_sub_items.Location = new System.Drawing.Point(8, 24);
+			this.lb_sub_items.Name = "lb_sub_items";
+			this.lb_sub_items.Size = new System.Drawing.Size(256, 72);
+			this.lb_sub_items.TabIndex = 22;
+			this.lb_sub_items.SelectedIndexChanged += new System.EventHandler(this.lb_sub_item_SelectedIndexChanged);
+			// 
+			// groupBox14
+			// 
+			this.groupBox14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox14.Controls.Add(this.lb_sub_faces);
+			this.groupBox14.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox14.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox14.Location = new System.Drawing.Point(512, 8);
+			this.groupBox14.Name = "groupBox14";
+			this.groupBox14.Size = new System.Drawing.Size(272, 144);
+			this.groupBox14.TabIndex = 31;
+			this.groupBox14.TabStop = false;
+			this.groupBox14.Text = "Subset Section - Faces";
+			// 
+			// lb_sub_faces
+			// 
+			this.lb_sub_faces.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_sub_faces.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_sub_faces.HorizontalScrollbar = true;
+			this.lb_sub_faces.IntegralHeight = false;
+			this.lb_sub_faces.Location = new System.Drawing.Point(8, 24);
+			this.lb_sub_faces.Name = "lb_sub_faces";
+			this.lb_sub_faces.Size = new System.Drawing.Size(256, 112);
+			this.lb_sub_faces.TabIndex = 22;
+			// 
+			// groupBox15
+			// 
+			this.groupBox15.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.groupBox15.Controls.Add(this.lb_subsets);
+			this.groupBox15.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.groupBox15.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.groupBox15.Location = new System.Drawing.Point(8, 7);
+			this.groupBox15.Name = "groupBox15";
+			this.groupBox15.Size = new System.Drawing.Size(496, 288);
+			this.groupBox15.TabIndex = 30;
+			this.groupBox15.TabStop = false;
+			this.groupBox15.Text = "Subset Section";
+			// 
+			// lb_subsets
+			// 
+			this.lb_subsets.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lb_subsets.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lb_subsets.HorizontalScrollbar = true;
+			this.lb_subsets.IntegralHeight = false;
+			this.lb_subsets.Location = new System.Drawing.Point(8, 24);
+			this.lb_subsets.Name = "lb_subsets";
+			this.lb_subsets.Size = new System.Drawing.Size(480, 256);
+			this.lb_subsets.TabIndex = 21;
+			this.lb_subsets.SelectedIndexChanged += new System.EventHandler(this.lb_subsets_SelectedIndexChanged);
+			// 
+			// sfd
+			// 
+			this.sfd.Title = "Export Mesh";
 			// 
 			// cd
 			// 
 			this.cd.Color = System.Drawing.Color.FromArgb(((System.Byte)(128)), ((System.Byte)(128)), ((System.Byte)(255)));
 			// 
+			// ofd
+			// 
+			this.ofd.Title = "Import Mesh";
+			// 
+			// linkLabel2
+			// 
+			this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.linkLabel2.Location = new System.Drawing.Point(176, 112);
+			this.linkLabel2.Name = "linkLabel2";
+			this.linkLabel2.Size = new System.Drawing.Size(48, 23);
+			this.linkLabel2.TabIndex = 26;
+			this.linkLabel2.TabStop = true;
+			this.linkLabel2.Text = "Delete";
+			this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+			// 
 			// fGeometryDataContainer
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(872, 326);
+			this.ClientSize = new System.Drawing.Size(872, 334);
 			this.Controls.Add(this.tabControl1);
 			this.Name = "fGeometryDataContainer";
 			this.Text = "fGeometryDataContainer";
 			this.tabControl1.ResumeLayout(false);
-			this.tMain.ResumeLayout(false);
 			this.tGeometryDataContainer.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox3.ResumeLayout(false);
 			this.groupBox10.ResumeLayout(false);
+			this.groupBox12.ResumeLayout(false);
+			this.tDebug.ResumeLayout(false);
+			this.tMesh.ResumeLayout(false);
+			this.tGeometryDataContainer3.ResumeLayout(false);
+			this.groupBox4.ResumeLayout(false);
+			this.groupBox2.ResumeLayout(false);
+			this.groupBox5.ResumeLayout(false);
 			this.tGeometryDataContainer2.ResumeLayout(false);
 			this.groupBox9.ResumeLayout(false);
 			this.groupBox11.ResumeLayout(false);
 			this.groupBox6.ResumeLayout(false);
 			this.groupBox7.ResumeLayout(false);
 			this.groupBox8.ResumeLayout(false);
-			this.tGeometryDataContainer3.ResumeLayout(false);
-			this.groupBox4.ResumeLayout(false);
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox5.ResumeLayout(false);
+			this.tModel.ResumeLayout(false);
+			this.groupBox19.ResumeLayout(false);
+			this.groupBox18.ResumeLayout(false);
+			this.groupBox17.ResumeLayout(false);
+			this.groupBox16.ResumeLayout(false);
+			this.tSubset.ResumeLayout(false);
+			this.groupBox13.ResumeLayout(false);
+			this.groupBox14.ResumeLayout(false);
+			this.groupBox15.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -1240,10 +1770,10 @@ namespace SimPe.Plugin
 
 		private void SettingsChange(object sender, System.EventArgs e)
 		{
-			if (tGeometryDataContainer.Tag==null) return;
+			if (tMesh.Tag==null) return;
 			try 
 			{
-				GeometryDataContainer gdc = (GeometryDataContainer)tGeometryDataContainer.Tag;
+				GeometryDataContainer gdc = (GeometryDataContainer)tMesh.Tag;
 
 				gdc.Version = Convert.ToUInt32(tb_ver.Text, 16);
 
@@ -1261,16 +1791,38 @@ namespace SimPe.Plugin
 			if (lb_itemsa.SelectedIndex<0) return;
 			try 
 			{
-				lb_itemsa.Tag = true;
-				GeometryDataContainerItem1 item = (GeometryDataContainerItem1)lb_itemsa.Items[lb_itemsa.SelectedIndex];
+				lb_itemsa.Tag = true;				
+				GmdcElement item = (GmdcElement)((CountedListItem)lb_itemsa.Items[lb_itemsa.SelectedIndex]).Object;
 
-				this.tb_id.Text = "0x"+Helper.HexString(item.Identity);
+				this.tb_id.Text = "0x"+Helper.HexString((uint)item.Identity);
 				this.tb_uk1.Text = "0x"+Helper.HexString(item.Number);
 				this.tb_mod1.Text = "0x"+Helper.HexString((uint)item.BlockFormat);
 				this.tb_mod2.Text = "0x"+Helper.HexString((uint)item.SetFormat);
-				this.tb_uk5.Text = "0x"+Helper.HexString(item.Repeat);
+				this.tb_uk5.Text = "0x"+Helper.HexString(item.GroupId);
 
-				//this.tb_data.Text = Helper.BytesToHexList(item.Data);
+				cbid.SelectedIndex=0;
+				for (int i=0; i<this.cbid.Items.Count; i++) 
+				{
+					Gmdc.ElementIdentity b = (ElementIdentity)this.cbid.Items[i];
+					if (b==item.Identity) cbid.SelectedIndex=i;
+				}
+
+				cbblock.SelectedIndex=cbblock.Items.Count-1;
+				for (int i=0; i<this.cbblock.Items.Count; i++) 
+				{
+					Gmdc.BlockFormat b = (BlockFormat)this.cbblock.Items[i];
+					if (b==item.BlockFormat) cbblock.SelectedIndex=i;
+				}
+
+				cbset.SelectedIndex=cbset.Items.Count-1;
+				for (int i=0; i<this.cbset.Items.Count; i++) 
+				{
+					Gmdc.SetFormat b = (SetFormat)this.cbset.Items[i];
+					if (b==item.SetFormat) cbset.SelectedIndex=i;
+				}
+
+				lb_itemsa1.Items.Clear();
+				foreach (GmdcElementValueBase i in item.Values) lb_itemsa1.Items.Add(i);
 
 				lb_itemsa2.Items.Clear();
 				foreach (int i in item.Items) lb_itemsa2.Items.Add(i);
@@ -1293,10 +1845,9 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsa.Tag = true;
-				GeometryDataContainerItem1 item = (GeometryDataContainerItem1)lb_itemsa.Items[lb_itemsa.SelectedIndex];
-				int[] list = item.Items;
-
-				this.tb_itemsa2.Text = "0x"+Helper.HexString(list[lb_itemsa2.SelectedIndex]);
+				GmdcElement item = (GmdcElement)((SimPe.CountedListItem)lb_itemsa.Items[lb_itemsa.SelectedIndex]).Object;
+				
+				this.tb_itemsa2.Text = "0x"+Helper.HexString(item.Items[lb_itemsa2.SelectedIndex]);
 			} 
 			catch (Exception ex) 
 			{
@@ -1315,10 +1866,10 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsb.Tag = true;
-				GeometryDataContainerItem2 item = (GeometryDataContainerItem2)lb_itemsb.Items[lb_itemsb.SelectedIndex];
+				GmdcLink item = (GmdcLink)((CountedListItem)lb_itemsb.Items[lb_itemsb.SelectedIndex]).Object;
 
-				this.tb_uk4.Text = "0x"+Helper.HexString(item.VertexCount);
-				this.tb_uk6.Text = "0x"+Helper.HexString(item.Unknown2);
+				this.tb_uk4.Text = "0x"+Helper.HexString(item.ReferencedSize);
+				this.tb_uk6.Text = "0x"+Helper.HexString(item.ActiveElements);
 
 				lb_itemsb2.Items.Clear();
 				foreach (int i in item.Items1) lb_itemsb2.Items.Add(i);
@@ -1350,10 +1901,8 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsb.Tag = true;
-				GeometryDataContainerItem2 item = (GeometryDataContainerItem2)lb_itemsb.Items[lb_itemsb.SelectedIndex];
-				int[] list = item.Items1;
-
-				this.tb_itemsb2.Text = "0x"+Helper.HexString(list[lb_itemsb2.SelectedIndex]);
+				GmdcLink item = (GmdcLink)((CountedListItem)lb_itemsb.Items[lb_itemsb.SelectedIndex]).Object;
+				this.tb_itemsb2.Text = "0x"+Helper.HexString(item.Items1[lb_itemsb2.SelectedIndex]);
 			} 
 			catch (Exception ex) 
 			{
@@ -1373,10 +1922,8 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsb.Tag = true;
-				GeometryDataContainerItem2 item = (GeometryDataContainerItem2)lb_itemsb.Items[lb_itemsb.SelectedIndex];
-				int[] list = item.Items1;
-
-				this.tb_itemsb3.Text = "0x"+Helper.HexString(list[lb_itemsb3.SelectedIndex]);
+				GmdcLink item = (GmdcLink)((CountedListItem)lb_itemsb.Items[lb_itemsb.SelectedIndex]).Object;
+				this.tb_itemsb3.Text = "0x"+Helper.HexString(item.Items2[lb_itemsb3.SelectedIndex]);
 			} 
 			catch (Exception ex) 
 			{
@@ -1396,10 +1943,8 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsb.Tag = true;
-				GeometryDataContainerItem2 item = (GeometryDataContainerItem2)lb_itemsb.Items[lb_itemsb.SelectedIndex];
-				int[] list = item.Items1;
-
-				this.tb_itemsb4.Text = "0x"+Helper.HexString(list[lb_itemsb4.SelectedIndex]);
+				GmdcLink item = (GmdcLink)((CountedListItem)lb_itemsb.Items[lb_itemsb.SelectedIndex]).Object;
+				this.tb_itemsb3.Text = "0x"+Helper.HexString(item.Items3[lb_itemsb3.SelectedIndex]);
 			} 
 			catch (Exception ex) 
 			{
@@ -1419,10 +1964,8 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsb.Tag = true;
-				GeometryDataContainerItem2 item = (GeometryDataContainerItem2)lb_itemsb.Items[lb_itemsb.SelectedIndex];
-				int[] list = item.Items1;
-
-				this.tb_itemsb5.Text = "0x"+Helper.HexString(list[lb_itemsb5.SelectedIndex]);
+				GmdcLink item = (GmdcLink)((CountedListItem)lb_itemsb.Items[lb_itemsb.SelectedIndex]).Object;
+				this.tb_itemsb3.Text = "0x"+Helper.HexString(item.Items4[lb_itemsb3.SelectedIndex]);
 			} 
 			catch (Exception ex) 
 			{
@@ -1441,18 +1984,18 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsc.Tag = true;
-				GeometryDataContainerItem3 item = (GeometryDataContainerItem3)lb_itemsc.Items[lb_itemsc.SelectedIndex];
+				GmdcGroup item = (GmdcGroup)lb_itemsc.Items[lb_itemsc.SelectedIndex];
 
-				this.tb_uk2.Text = "0x"+Helper.HexString(item.Unknown1);
-				this.tb_uk3.Text = "0x"+Helper.HexString(item.Alternate);
+				this.tb_uk2.Text = "0x"+Helper.HexString(item.PrimitiveType);
+				this.tb_uk3.Text = "0x"+Helper.HexString(item.LinkIndex);
 				this.tb_opacity.Text = "0x"+Helper.HexString(item.Opacity);
 				this.tb_itemsc_name.Text = item.Name;
 
 				lb_itemsc2.Items.Clear();
-				foreach (int i in item.Items1) lb_itemsc2.Items.Add(i);
+				foreach (int i in item.Faces) lb_itemsc2.Items.Add(i);
 
 				lb_itemsc3.Items.Clear();
-				foreach (int i in item.Items2) lb_itemsc3.Items.Add(i);
+				foreach (int i in item.Subsets) lb_itemsc3.Items.Add(i);
 			} 
 			catch (Exception ex) 
 			{
@@ -1472,10 +2015,9 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsc.Tag = true;
-				GeometryDataContainerItem3 item = (GeometryDataContainerItem3)lb_itemsc.Items[lb_itemsc.SelectedIndex];
-				int[] list = item.Items1;
+				GmdcGroup item = (GmdcGroup)lb_itemsc.Items[lb_itemsc.SelectedIndex];				
 
-				this.tb_itemsc2.Text = "0x"+Helper.HexString(list[lb_itemsc2.SelectedIndex]);
+				this.tb_itemsc2.Text = "0x"+Helper.HexString(item.Faces[lb_itemsc2.SelectedIndex]);
 			} 
 			catch (Exception ex) 
 			{
@@ -1495,10 +2037,9 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsc.Tag = true;
-				GeometryDataContainerItem3 item = (GeometryDataContainerItem3)lb_itemsc.Items[lb_itemsc.SelectedIndex];
-				int[] list = item.Items2;
+				GmdcGroup item = (GmdcGroup)lb_itemsc.Items[lb_itemsc.SelectedIndex];	
 
-				this.tb_itemsc3.Text = "0x"+Helper.HexString(list[lb_itemsc3.SelectedIndex]);
+				this.tb_itemsc3.Text = "0x"+Helper.HexString(item.Subsets[lb_itemsc3.SelectedIndex]);
 			} 
 			catch (Exception ex) 
 			{
@@ -1517,16 +2058,16 @@ namespace SimPe.Plugin
 			try 
 			{
 				lb_itemsc.Tag = true;
-				GeometryDataContainerItem3 item = (GeometryDataContainerItem3)lb_itemsc.Items[lb_itemsc.SelectedIndex];
+				GmdcGroup item = (GmdcGroup)lb_itemsc.Items[lb_itemsc.SelectedIndex];
 
-				item.Unknown1 = (int)Convert.ToUInt32(this.tb_uk2.Text, 16);
-				item.Alternate = (int)Convert.ToUInt32(this.tb_uk3.Text, 16);
+				item.PrimitiveType = (int)Convert.ToUInt32(this.tb_uk2.Text, 16);
+				item.LinkIndex = (int)Convert.ToUInt32(this.tb_uk3.Text, 16);
 				item.Opacity = (int)Convert.ToUInt32(this.tb_opacity.Text, 16);
 				item.Name = this.tb_itemsc_name.Text;
 
 				lb_itemsc.Items[lb_itemsc.SelectedIndex] = item;
 
-				GeometryDataContainer gdc = (GeometryDataContainer)tGeometryDataContainer.Tag;
+				GeometryDataContainer gdc = (GeometryDataContainer)tMesh.Tag;
 				gdc.Changed = true;
 			} 
 			catch (Exception ex) 
@@ -1539,96 +2080,24 @@ namespace SimPe.Plugin
 			}
 		}
 
-		#region x Export
-		private void ExportX(object sender, System.EventArgs e)
-		{
-			try
-			{
-				this.lb_itemsa.Tag = true;
-				if (this.tGeometryDataContainer.Tag != null)
-				{
-					sfd.Filter = "Direct X Mesh (*.x)|*.x|All Files (*.*)|*.*";		
-					sfd.AddExtension = true;
-					GeometryDataContainer ext1 = (GeometryDataContainer) this.tGeometryDataContainer.Tag;						
-					sfd.FileName = Hashes.StripHashFromName(ext1.Parent.FileName).Trim().ToLower();
-					if (!sfd.FileName.EndsWith(".x")) sfd.FileName += ".x";
-					if (sfd.ShowDialog() == DialogResult.OK) 
-					{
-						MemoryStream s = (MemoryStream)ext1.GenerateX(GetModels());		
-						StreamReader sr = new StreamReader(s);
-
-						
-						System.IO.StreamWriter meshwriter = File.CreateText(sfd.FileName);						
-						meshwriter.Write(sr.ReadToEnd());
-						meshwriter.Close();
-					}
-				}				
-			}
-			catch (Exception exception1)
-			{
-				Helper.ExceptionMessage("", exception1);
-				return;
-			}
-			finally
-			{
-				this.lb_itemsa.Tag = null;
-			}
-		}
-		#endregion
-		
-		#region obj Export
-		private void ExportObj(object sender, System.EventArgs e)
-		{
-			try
-			{
-				this.lb_itemsa.Tag = true;
-				if (this.tGeometryDataContainer.Tag != null)
-				{
-					sfd.Filter = "Maya Object File (*.obj)|*.obj|All Files (*.*)|*.*";
-					sfd.AddExtension = true;
-					GeometryDataContainer ext1 = (GeometryDataContainer) this.tGeometryDataContainer.Tag;						
-					sfd.FileName = Hashes.StripHashFromName(ext1.Parent.FileName).Trim().ToLower();
-					if (!sfd.FileName.EndsWith(".obj")) sfd.FileName += ".obj";
-					if (sfd.ShowDialog() == DialogResult.OK) 
-					{
-						MemoryStream s = (MemoryStream)ext1.GenerateObj(GetModels());		
-						StreamReader sr = new StreamReader(s);
-
-						
-						System.IO.StreamWriter meshwriter = File.CreateText(sfd.FileName);						
-						meshwriter.Write(sr.ReadToEnd());
-						meshwriter.Close();
-					}
-				}				
-			}
-			catch (Exception exception1)
-			{
-				Helper.ExceptionMessage("", exception1);
-				return;
-			}
-			finally
-			{
-				this.lb_itemsa.Tag = null;
-			}
-		}
-		#endregion
-
 		Ambertation.Panel3D curpn = null;
 		private void Preview(object sender, System.EventArgs e)
 		{
 			
-			if (this.tGeometryDataContainer.Tag != null)
+			if (this.tMesh.Tag != null)
 			{
 				WaitingScreen.Wait();
-				GeometryDataContainer ext1 = (GeometryDataContainer) this.tGeometryDataContainer.Tag;
-				Stream xfile = ext1.GenerateX(GetModels());				
+				GeometryDataContainer gmdc = (GeometryDataContainer) this.tMesh.Tag;
+				
+				
+				Stream xfile = gmdc.GenerateX(GetModelsExt());				
 				try 
 				{
 					//stop all running Previews
 					Ambertation.Panel3D.StopAll();
 
-					TextureLocator tl = new TextureLocator(ext1.Parent.Package);
-					System.Collections.Hashtable txtrs = tl.GetLargestImages(tl.FindTextures(ext1.Parent));
+					TextureLocator tl = new TextureLocator(gmdc.Parent.Package);
+					System.Collections.Hashtable txtrs = tl.GetLargestImages(tl.FindTextures(gmdc.Parent));
 
 					Ambertation.ViewportSetting vp = null;
 					if (curpn!=null) vp = curpn.ViewportSetting;
@@ -1672,12 +2141,226 @@ namespace SimPe.Plugin
 			return list;
 		}
 
+		/// <summary>
+		/// Get all Selected Models
+		/// </summary>
+		/// <returns></returns>
+		GmdcGroups GetModelsExt()
+		{
+			GmdcGroups list = new GmdcGroups();
+			for (int i=0; i<lbmodel.CheckedItems.Count; i++)
+			{
+				list.Add(lbmodel.CheckedItems[i]);
+			}
+
+			return list;
+		}
+
 		private void PickColor(object sender, System.EventArgs e)
 		{
 			if (curpn!=null) cd.Color = curpn.BackColor;
 			if (cd.ShowDialog()==DialogResult.OK)
 			{
 				if (curpn!=null) curpn.BackColor = cd.Color;
+			}
+		}
+
+		private void SeletDebugObject(object sender, System.EventArgs e)
+		{
+			ListBox lb = (ListBox)sender;
+			if (lb.SelectedIndex>=0) 
+			{
+				pg.SelectedObject = ((SimPe.CountedListItem)lb.Items[lb.SelectedIndex]).Object;
+				pg.Refresh();
+			}
+		}
+
+		private void linkLabel2_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			if (this.tMesh.Tag != null)
+			{
+				GeometryDataContainer gmdc = (GeometryDataContainer) this.tMesh.Tag;
+
+				if (lb_itemsc.SelectedIndex<0) return;
+				gmdc.RemoveGroup(lb_itemsc.SelectedIndex);
+				gmdc.Refresh();
+				gmdc.Changed = true;
+			}
+		}
+
+		private void button1_Click(object sender, System.EventArgs e)
+		{
+			try
+			{
+				if (this.tMesh.Tag != null)
+				{
+					GeometryDataContainer gmdc = (GeometryDataContainer) this.tMesh.Tag;
+					
+					//Assemble a List of available Import Modules
+					string f = "";
+					foreach (IGmdcImporter ex in ExporterLoader.Importers) 
+					{
+						if (f!="") f += "|";
+						f += ex.FileDescription+" Importer ";
+						if ((ex.Author!="") && (ex.Author!="Quaxi")) f += "by "+ex.Author+" ";
+						f += "(*"+ex.FileExtension+")|*"+ex.FileExtension;
+					}		
+	
+					if (f=="") {
+						Helper.ExceptionMessage("", new Exception("There are no Importer Plugins available!"));
+						return;
+					}
+					ofd.Filter = f;
+					//Make .obj the Default Extension
+					ofd.FilterIndex = ExporterLoader.FindFirstImporterIndexByExtension(".obj")+1;
+
+					ofd.AddExtension = true;												
+					ofd.FileName = Hashes.StripHashFromName(gmdc.Parent.FileName).Trim().ToLower();					
+					if (ofd.ShowDialog() == DialogResult.OK) 
+					{
+						//Now perpare the Import
+						IGmdcImporter importer = ExporterLoader.Importers[ofd.FilterIndex-1];						
+						System.IO.FileStream meshreader = File.OpenRead(ofd.FileName);
+
+						try 
+						{
+							importer.Process(meshreader, gmdc);	
+							gmdc.Refresh();
+							gmdc.Changed = true;
+							
+							if (importer.ErrorMessage!="") Helper.ExceptionMessage("Error while parsing the File.", new Exception(importer.ErrorMessage));
+						} 
+						finally 
+						{
+							meshreader.Close();
+						}
+					}
+				}				
+			}
+			catch (Exception exception1)
+			{
+				Helper.ExceptionMessage("", exception1);
+				return;
+			}
+		}
+
+		private void lb_model_rots_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			lb_model_trans.SelectedIndex = lb_model_rots.SelectedIndex;
+		}
+
+		private void lb_model_trans_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			lb_model_rots.SelectedIndex = lb_model_trans.SelectedIndex;
+		}
+
+
+
+		private void lb_sub_item_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (lb_sub_items.Tag != null) return;
+			if (lb_sub_items.SelectedIndex<0) return;
+			if (lb_subsets.SelectedIndex<0) return;
+			try 
+			{
+				lb_sub_items.Tag = true;
+				GmdcSubset item = (GmdcSubset)((CountedListItem)lb_subsets.Items[lb_subsets.SelectedIndex]).Object;
+				this.tb_sub_item.Text = "0x"+Helper.HexString(item.Items[lb_sub_items.SelectedIndex]);
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage("", ex);
+			} 
+			finally 
+			{
+				lb_itemsb.Tag = null;
+			}
+		}
+
+		private void lb_subsets_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (this.lb_subsets.Tag != null) return;
+			if (lb_subsets.SelectedIndex<0) return;
+			try 
+			{
+				lb_subsets.Tag = true;
+				GmdcSubset item = (GmdcSubset)((CountedListItem)lb_subsets.Items[lb_subsets.SelectedIndex]).Object;
+
+				lb_sub_faces.Items.Clear();
+				foreach (Vector3f i in item.Faces) lb_sub_faces.Items.Add(i);
+
+				lb_sub_items.Items.Clear();
+				foreach (int i in item.Items) lb_sub_items.Items.Add(i);				
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage("", ex);
+			} 
+			finally 
+			{
+				lb_subsets.Tag = null;
+			}
+		}
+
+		private void Export(object sender, System.EventArgs e)
+		{
+			try
+			{
+				if (this.tMesh.Tag != null)
+				{
+					GeometryDataContainer gmdc = (GeometryDataContainer) this.tMesh.Tag;
+					
+					//Assemble a List of available Export Modules
+					string f = "";
+					foreach (IGmdcExporter ex in ExporterLoader.Exporters) 
+					{
+						if (f!="") f += "|";
+						f += ex.FileDescription+" Exporter ";
+						if ((ex.Author!="") && (ex.Author!="Quaxi")) f += "by "+ex.Author+" ";
+						f += "(*"+ex.FileExtension+")|*"+ex.FileExtension;
+					}				
+			
+					if (f=="") 
+					{
+						Helper.ExceptionMessage("", new Exception("There are no Exporter Plugins available!"));
+						return;
+					}
+					sfd.Filter = f;
+					//Make .obj the Default Extension
+					sfd.FilterIndex = ExporterLoader.FindFirstIndexByExtension(".obj")+1;
+
+					sfd.AddExtension = true;												
+					sfd.FileName = Hashes.StripHashFromName(gmdc.Parent.FileName).Trim().ToLower();					
+					if (sfd.ShowDialog() == DialogResult.OK) 
+					{
+						//Now perfor the Export
+						IGmdcExporter exporter = ExporterLoader.Exporters[sfd.FilterIndex-1];
+						if (!sfd.FileName.Trim().ToLower().EndsWith(exporter.FileExtension.Trim().ToLower())) sfd.FileName += exporter.FileExtension;
+
+						Stream s = exporter.Process(gmdc, GetModelsExt());		
+						StreamReader sr = new StreamReader(s);
+						
+						System.IO.StreamWriter meshwriter = File.CreateText(sfd.FileName);						
+						meshwriter.Write(sr.ReadToEnd());
+						meshwriter.Close();
+					}
+				}				
+			}
+			catch (Exception exception1)
+			{
+				Helper.ExceptionMessage("", exception1);
+				return;
+			}
+		}
+
+		
+
+		private void SeletDebugObject(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			if (this.tMesh.Tag != null)
+			{
+				GeometryDataContainer ext1 = (GeometryDataContainer) this.tMesh.Tag;
+				pg.SelectedObject = ext1.Model;
 			}
 		}
 	}

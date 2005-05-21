@@ -72,7 +72,7 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Filename of the First Block (or an empty string)
 		/// </summary>
-		public string FileName 
+		public new string FileName 
 		{
 			get 
 			{

@@ -23,516 +23,63 @@ using System.Globalization;
 using SimPe.Plugin.Gmdc;
 
 namespace SimPe.Plugin
-{	
-	#region GeometryDataContainerItem2
-	public class GeometryDataContainerItem2
-	{
-		#region Attributes
-
-		int[] items1;
-		public int[] Items1 
-		{
-			get { return items1; }
-			set { items1 = value; }
-		}
-
-		int unknown1;
-		public int VertexCount 
-		{
-			get { return unknown1; }
-			set { unknown1 = value; }
-		}
-
-		int unknown2;
-		public int Unknown2 
-		{
-			get { return unknown2; }
-			set { unknown2 = value; }
-		}
-
-		int[] items2;
-		public int[] Items2 
-		{
-			get { return items2; }
-			set { items2 = value; }
-		}
-
-		int[] items3;
-		public int[] Items3 
-		{
-			get { return items3; }
-			set { items3 = value; }
-		}
-
-		int[] items4;
-		public int[] Items4 
-		{
-			get { return items4; }
-			set { items4 = value; }
-		}
-		
-
-		GeometryDataContainer parent;
-		#endregion
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public GeometryDataContainerItem2(GeometryDataContainer parent)
-		{
-			items1 = new int[0];
-			items2 = new int[0];
-			items3 = new int[0];
-			items4 = new int[0];
-
-			this.parent = parent;
-		}
-
-			
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		public  void Unserialize(System.IO.BinaryReader reader)
-		{
-			items1 = new int[reader.ReadInt32()];
-			for (int i=0; i<items1.Length; i++)
-			{
-				if (parent.Version==0x04) items1[i] = reader.ReadInt16();
-				else items1[i] = reader.ReadInt32();
-			}
-
-			unknown1 = reader.ReadInt32();
-			unknown2 = reader.ReadInt32();
-
-			items2 = new int[reader.ReadInt32()];
-			for (int i=0; i<items2.Length; i++)
-			{
-				if (parent.Version==0x04) items2[i] = reader.ReadInt16();
-				else items2[i] = reader.ReadInt32();
-			}
-
-			items3 = new int[reader.ReadInt32()];
-			for (int i=0; i<items3.Length; i++)
-			{
-				if (parent.Version==0x04) items3[i] = reader.ReadInt16();
-				else items3[i] = reader.ReadInt32();
-			}
-
-			items4 = new int[reader.ReadInt32()];
-			for (int i=0; i<items4.Length; i++)
-			{
-				if (parent.Version==0x04) items4[i] = reader.ReadInt16();
-				else items4[i] = reader.ReadInt32();
-			}
-		}
-
-		/// <summary>
-		/// Serializes a the Attributes stored in this Instance to the BinaryStream
-		/// </summary>
-		/// <param name="writer">The Stream the Data should be stored to</param>
-		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
-		/// return (i.e. must point to the first Byte after your actual File)
-		/// </remarks>
-		public  void Serialize(System.IO.BinaryWriter writer)
-		{
-			writer.Write((int)items1.Length);
-			for (int i=0; i<items1.Length; i++)
-			{
-				if (parent.Version==0x04) writer.Write((short)items1[i]);
-				else writer.Write((int)items1[i]);
-			}
-
-			writer.Write(unknown1);
-			writer.Write(unknown2);
-
-			writer.Write((int)items2.Length);
-			for (int i=0; i<items2.Length; i++)
-			{
-				if (parent.Version==0x04) writer.Write((short)items2[i]);
-				else writer.Write((int)items2[i]);
-			}
-
-			writer.Write((int)items3.Length);
-			for (int i=0; i<items3.Length; i++)
-			{
-				if (parent.Version==0x04) writer.Write((short)items3[i]);
-				else writer.Write((int)items3[i]);
-			}
-
-			writer.Write((int)items4.Length);
-			for (int i=0; i<items4.Length; i++)
-			{
-				if (parent.Version==0x04) writer.Write((short)items4[i]);
-				else writer.Write((int)items4[i]);
-			}
-		}
-
-		public override string ToString()
-		{
-			return "0x"+Helper.HexString((uint)this.unknown1) + " 0x"+Helper.HexString(this.unknown2);
-		}
-	}
-	#endregion
-
-	#region GeometryDataContainerItem3
-	public class GeometryDataContainerItem3
-	{
-		#region Attributes
-
-		int unknown1;
-		public int Unknown1 
-		{
-			get { return unknown1; }
-			set { unknown1 = value; }
-		}
-
-		int alternate;
-		public int Alternate 
-		{
-			get { return alternate; }
-			set { alternate = value; }
-		}
-
-		string name;
-		public String Name 
-		{
-			get { return name; }
-			set { name = value; }
-		}
-		
-		int[] items1;
-		public int[] Items1 
-		{
-			get { return items1; }
-			set { items1 = value; }
-		}
-
-		int opacity;
-		public int Opacity 
-		{
-			get { return opacity; }
-			set { opacity = value; }
-		}
-
-		int[] items2;
-		public int[] Items2 
-		{
-			get { return items2; }
-			set { items2 = value; }
-		}
-		
-
-		GeometryDataContainer parent;
-		#endregion
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public GeometryDataContainerItem3(GeometryDataContainer parent)
-		{
-			items1 = new int[0];
-			items2 = new int[0];
-			name = "";
-
-			this.parent = parent;
-		}
-
-			
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		public  void Unserialize(System.IO.BinaryReader reader)
-		{
-			unknown1 = reader.ReadInt32();
-			alternate = reader.ReadInt32();
-			name = reader.ReadString();
-
-			items1 = new int[reader.ReadInt32()];
-			for (int i=0; i<items1.Length; i++)
-			{
-				if (parent.Version==0x04) items1[i] = reader.ReadInt16();
-				else items1[i] = reader.ReadInt32();
-			}
-
-			if ((parent.Version==0x01) || (parent.Version==0x02) || (parent.Version==0x04)) opacity = reader.ReadInt32();
-			else opacity = 0;
-
-			if ((parent.Version==0x02) || (parent.Version==0x04)) 
-			{
-				items2 = new int[reader.ReadInt32()];
-				for (int i=0; i<items2.Length; i++)
-				{
-					if (parent.Version==0x04) items2[i] = reader.ReadInt16();
-					else items2[i] = reader.ReadInt32();
-				}
-			} 
-			else 
-			{
-				items2 = new int[0];
-			}
-		}
-
-		/// <summary>
-		/// Serializes a the Attributes stored in this Instance to the BinaryStream
-		/// </summary>
-		/// <param name="writer">The Stream the Data should be stored to</param>
-		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
-		/// return (i.e. must point to the first Byte after your actual File)
-		/// </remarks>
-		public  void Serialize(System.IO.BinaryWriter writer)
-		{
-			writer.Write(unknown1);
-			writer.Write(alternate);
-			writer.Write(name);
-
-			writer.Write((int)items1.Length);
-			for (int i=0; i<items1.Length; i++)
-			{
-				if (parent.Version==0x04) writer.Write((short)items1[i]);
-				else writer.Write((int)items1[i]);
-			}
-
-			if ((parent.Version==0x01) || (parent.Version==0x02) || (parent.Version==0x04)) writer.Write(opacity);
-
-			if ((parent.Version==0x02) || (parent.Version==0x04)) 
-			{
-				writer.Write((int)items2.Length);
-				for (int i=0; i<items2.Length; i++)
-				{
-					if (parent.Version==0x04) writer.Write((short)items2[i]);
-					else writer.Write((int)items2[i]);
-				}
-			} 
-		}
-
-		public override string ToString()
-		{
-			return name;
-		}
-	}
-	#endregion
-
-	#region GeometryDataContainerItem4
-	public class GeometryDataContainerItem4
-	{
-		#region Attributes
-		byte[] data;
-		GeometryDataContainer parent;
-		#endregion
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public GeometryDataContainerItem4(GeometryDataContainer parent)
-		{
-			data = new byte[0];
-			this.parent = parent;
-		}
-
-			
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		public  void Unserialize(System.IO.BinaryReader reader)
-		{
-			data = reader.ReadBytes(0x1c);
-		}
-
-		/// <summary>
-		/// Serializes a the Attributes stored in this Instance to the BinaryStream
-		/// </summary>
-		/// <param name="writer">The Stream the Data should be stored to</param>
-		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
-		/// return (i.e. must point to the first Byte after your actual File)
-		/// </remarks>
-		public  void Serialize(System.IO.BinaryWriter writer)
-		{
-			writer.Write(data);
-		}
-	}
-	#endregion
-
-	#region GeometryDataContainerItem5
-	public class GeometryDataContainerItem5
-	{
-		#region Attributes
-		string name1;
-		string name2;
-		GeometryDataContainer parent;
-		#endregion
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public GeometryDataContainerItem5(GeometryDataContainer parent)
-		{
-			name1 = "";
-			name2 = "";
-			this.parent = parent;
-		}
-
-			
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		public  void Unserialize(System.IO.BinaryReader reader)
-		{
-			name1 = reader.ReadString();
-			name2 = reader.ReadString();
-		}
-
-		/// <summary>
-		/// Serializes a the Attributes stored in this Instance to the BinaryStream
-		/// </summary>
-		/// <param name="writer">The Stream the Data should be stored to</param>
-		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
-		/// return (i.e. must point to the first Byte after your actual File)
-		/// </remarks>
-		public  void Serialize(System.IO.BinaryWriter writer)
-		{
-			writer.Write(name1);
-			writer.Write(name2);
-		}
-	}
-	#endregion
-
-	#region GeometryDataContainerItem6
-	public class GeometryDataContainerItem6
-	{
-		#region Attributes
-		Point3D[] points;
-		int[] items;
-		GeometryDataContainer parent;
-		#endregion
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public GeometryDataContainerItem6(GeometryDataContainer parent)
-		{
-			points = new Point3D[0];
-			items = new int[0];
-			this.parent = parent;
-		}
-
-			
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		public  void Unserialize(System.IO.BinaryReader reader)
-		{
-			points = new Point3D[reader.ReadUInt32()];
-			if (points.Length>0) 
-			{
-				items = new int[reader.ReadUInt32()];
-				for (int i=0; i<points.Length; i++)
-				{
-					points[i] = new Point3D();
-					points[i].X = reader.ReadInt32();
-					points[i].Y = reader.ReadInt32();
-					points[i].Z = reader.ReadInt32();
-				}
-
-				for (int i=0; i<items.Length; i++)
-				{
-					if (parent.Version==0x04) items[i] = reader.ReadInt16();
-					else items[i] = reader.ReadInt32();
-				}
-			}
-		}
-
-		/// <summary>
-		/// Serializes a the Attributes stored in this Instance to the BinaryStream
-		/// </summary>
-		/// <param name="writer">The Stream the Data should be stored to</param>
-		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
-		/// return (i.e. must point to the first Byte after your actual File)
-		/// </remarks>
-		public  void Serialize(System.IO.BinaryWriter writer)
-		{
-			writer.Write((uint)points.Length);
-			if (points.Length>0) 
-			{
-				writer.Write((uint)items.Length);
-				for (int i=0; i<points.Length; i++)
-				{
-					writer.Write((int)points[i].X);
-					writer.Write((int)points[i].Y);
-					writer.Write((int)points[i].Z);
-				}
-
-				for (int i=0; i<items.Length; i++)
-				{
-					if (parent.Version==0x04) writer.Write((short)items[i]);
-					else writer.Write((int)items[i]);
-				}
-			}
-		}
-	}
-	#endregion
-
+{
 	/// <summary>
-	/// Zusammenfassung für cGeometryDataContainer.
+	/// This class contains the Geometric Data of an Object
 	/// </summary>
 	public class GeometryDataContainer
 		: AbstractRcolBlock
 	{
 		#region Attributes
 
-		protected GeometryDataContainerItem1[] items1;
-		public GeometryDataContainerItem1[] P1Vetices
+		GmdcElements elements;
+		/// <summary>
+		/// Returns a List of stored Elements
+		/// </summary>
+		public GmdcElements Elements 
 		{
-			get { return items1; }
-			set { items1 = value; }
-		}
-		protected GeometryDataContainerItem2[] items2;
-		public GeometryDataContainerItem2[] P2VertexLink
-		{
-			get { return items2; }
-			set { items2 = value; }
+			get { return elements; }
+			set { elements = value; }
 		}
 
-		protected GeometryDataContainerItem3[] items3;
-		public GeometryDataContainerItem3[] P3Model
+		GmdcLinks links;
+		/// <summary>
+		/// Returns a List of stored Links
+		/// </summary>
+		public GmdcLinks Links 
 		{
-			get { return items3; }
-			set { items3 = value; }
+			get { return links; }
+			set { links = value; }
 		}
 
-		protected GeometryDataContainerItem4[] items4;
-		public GeometryDataContainerItem4[] P4a
+		GmdcGroups groups;
+		/// <summary>
+		/// Returns a List of stored Groups
+		/// </summary>
+		public GmdcGroups Groups 
 		{
-			get { return items4; }
-			set { items4 = value; }
+			get { return groups; }
+			set { groups = value; }
 		}
-		protected GeometryDataContainerItem5[] items5;
-		public GeometryDataContainerItem5[] P4b
+
+		GmdcModel model;
+		/// <summary>
+		/// Returns the stored Model
+		/// </summary>
+		public GmdcModel Model 
 		{
-			get { return items5; }
-			set { items5 = value; }
+			get { return model; }
+			set { model = value; }
 		}
-		
-		protected GeometryDataContainerItem6 item6;
-		public GeometryDataContainerItem6 P4c
+
+		GmdcSubsets subsets;
+		/// <summary>
+		/// Returns a List of stored Subsets
+		/// </summary>
+		public GmdcSubsets Subsets 
 		{
-			get { return item6; }
-			set { item6 = value; }
-		}
-		protected GeometryDataContainerItem6[] items6;
-		public GeometryDataContainerItem6[] P5
-		{
-			get { return items6; }
-			set { items6 = value; }
+			get { return subsets; }
+			set { subsets = value; }
 		}
 		#endregion
 		
@@ -542,18 +89,18 @@ namespace SimPe.Plugin
 		/// </summary>
 		public GeometryDataContainer(Interfaces.IProviderRegistry provider, Rcol parent) : base(provider, parent)
 		{
-			sgres = new SGResource(provider, null);
-
-			items1 = new GeometryDataContainerItem1[0];
-			items2 = new GeometryDataContainerItem2[0];
-			items3 = new GeometryDataContainerItem3[0];
-			items4 = new GeometryDataContainerItem4[0];
-			items5 = new GeometryDataContainerItem5[0];
-			items6 = new GeometryDataContainerItem6[0];
-			item6 = new GeometryDataContainerItem6(this);
+			sgres = new SGResource(provider, null);			
 
 			version = 0x04;
 			BlockID = 0xAC4F8687;
+
+			elements = new GmdcElements();
+			links = new GmdcLinks();
+			groups = new GmdcGroups();
+
+			model = new GmdcModel(this);
+
+			subsets = new GmdcSubsets();		
 		}
 		
 		#region IRcolBlock Member
@@ -571,49 +118,44 @@ namespace SimPe.Plugin
 			sgres.Unserialize(reader);
 			sgres.BlockID = myid;
 
-			items1 = new GeometryDataContainerItem1[reader.ReadInt32()];
-			for (int i=0; i<items1.Length; i++)
+			int count = reader.ReadInt32();
+			elements.Clear();
+			for (int i=0; i<count; i++)
 			{
-				items1[i] = new GeometryDataContainerItem1(this);
-				items1[i].Unserialize(reader);
+				GmdcElement e = new GmdcElement(this);
+				e.Unserialize(reader);
+				elements.Add(e);
 			}
 
-			items2 = new GeometryDataContainerItem2[reader.ReadInt32()];
-			for (int i=0; i<items2.Length; i++)
+			count = reader.ReadInt32();
+			links.Clear();
+			for (int i=0; i<count; i++)
 			{
-				items2[i] = new GeometryDataContainerItem2(this);
-				items2[i].Unserialize(reader);
+				GmdcLink l = new GmdcLink(this);
+				l.Unserialize(reader);
+				links.Add(l);
 			}
 
-			items3 = new GeometryDataContainerItem3[reader.ReadInt32()];
-			for (int i=0; i<items3.Length; i++)
+			count = reader.ReadInt32();
+			groups.Clear();
+			for (int i=0; i<count; i++)
 			{
-				items3[i] = new GeometryDataContainerItem3(this);
-				items3[i].Unserialize(reader);
+				GmdcGroup g = new GmdcGroup(this);
+				g.Unserialize(reader);
+				groups.Add(g);
 			}
 
-			items4 = new GeometryDataContainerItem4[reader.ReadInt32()];
-			for (int i=0; i<items4.Length; i++)
+			model.Unserialize(reader);
+			
+			count = reader.ReadInt32();
+			subsets.Clear();
+			for (int i=0; i<count; i++)
 			{
-				items4[i] = new GeometryDataContainerItem4(this);
-				items4[i].Unserialize(reader);
+				GmdcSubset s = new GmdcSubset(this);
+				s.Unserialize(reader);
+				subsets.Add(s);
 			}
 
-			items5 = new GeometryDataContainerItem5[reader.ReadInt32()];
-			for (int i=0; i<items5.Length; i++)
-			{
-				items5[i] = new GeometryDataContainerItem5(this);
-				items5[i].Unserialize(reader);
-			}
-
-			item6.Unserialize(reader);
-
-			items6 = new GeometryDataContainerItem6[reader.ReadInt32()];
-			for (int i=0; i<items6.Length; i++)
-			{
-				items6[i] = new GeometryDataContainerItem6(this);
-				items6[i].Unserialize(reader);
-			}
 		}
 
 		/// <summary>
@@ -631,38 +173,64 @@ namespace SimPe.Plugin
 			writer.Write(sgres.BlockName);
 			writer.Write(sgres.BlockID);
 			sgres.Serialize(writer);
+			
+			writer.Write((int)elements.Length);
+			for (int i=0; i<elements.Length; i++) 
+			{
+				elements[i].Parent = this;
+				elements[i].Serialize(writer);
+			}
 
-			writer.Write((int)items1.Length);
-			for (int i=0; i<items1.Length; i++) items1[i].Serialize(writer);
+			writer.Write((int)links.Length);
+			for (int i=0; i<links.Length; i++) 
+			{
+				links[i].Parent = this;
+				links[i].Serialize(writer);
+			}
+			
+			writer.Write((int)groups.Length);
+			for (int i=0; i<groups.Length; i++) 
+			{
+				groups[i].Parent = this;
+				groups[i].Serialize(writer);
+			}
 
-			writer.Write((int)items2.Length);
-			for (int i=0; i<items2.Length; i++) items2[i].Serialize(writer);
-
-			writer.Write((int)items3.Length);
-			for (int i=0; i<items3.Length; i++) items3[i].Serialize(writer);
-
-			writer.Write((int)items4.Length);
-			for (int i=0; i<items4.Length; i++) items4[i].Serialize(writer);
-
-			writer.Write((int)items5.Length);
-			for (int i=0; i<items5.Length; i++) items5[i].Serialize(writer);
-
-			item6.Serialize(writer);
-
-			writer.Write((int)items6.Length);
-			for (int i=0; i<items6.Length; i++) items6[i].Serialize(writer);
+			model.Parent = this;
+			model.Serialize(writer);
+			
+			writer.Write((int)subsets.Length);
+			for (int i=0; i<subsets.Length; i++) 
+			{
+				subsets[i].Parent = this;
+				subsets[i].Serialize(writer);			
+			}
 		}
 
 		fGeometryDataContainer form = null;
 		public override System.Windows.Forms.TabPage TabPage
 		{
 			get
-			{
-				if (form==null) form = new fGeometryDataContainer(); 
-				return form.tMain;
+			{			
+				if (form==null) form = new fGeometryDataContainer();
+				if (Helper.WindowsRegistry.HiddenMode) 
+				{				
+					return form.tDebug;
+				} 
+				else 
+				{
+					return form.tMesh;
+				}
 			}
 		}
 		#endregion
+
+		/// <summary>
+		/// Refresh the Display
+		/// </summary>
+		internal void Refresh() 
+		{
+			InitTabPage(); 
+		}
 
 		/// <summary>
 		/// You can use this to setop the Controls on a TabPage befor it is dispplayed
@@ -672,31 +240,78 @@ namespace SimPe.Plugin
 			if (form==null) form = new fGeometryDataContainer(); 
 			form.tb_ver.Text = "0x"+Helper.HexString(this.version);
 
-			form.lb_itemsa2.Items.Clear();
-			form.lb_itemsa.Items.Clear();
-			foreach (GeometryDataContainerItem1 i in this.items1) form.lb_itemsa.Items.Add(i); 
-
-			form.lb_itemsb2.Items.Clear();
-			form.lb_itemsb3.Items.Clear();
-			form.lb_itemsb4.Items.Clear();
-			form.lb_itemsb5.Items.Clear();
-			form.lb_itemsb.Items.Clear();
-			foreach (GeometryDataContainerItem2 i in this.items2) form.lb_itemsb.Items.Add(i); 
-
-			form.lb_itemsc2.Items.Clear();
-			form.lb_itemsc3.Items.Clear();
-			form.lb_itemsc.Items.Clear();
-			form.lbmodel.Items.Clear();
-			foreach (GeometryDataContainerItem3 i in this.items3) 
+			if (Helper.WindowsRegistry.HiddenMode) 
 			{
-				form.lb_itemsc.Items.Add(i); 
-				form.lbmodel.Items.Add(i, true);
+				form.label_elements.Text = "Elements: "+elements.Length.ToString();
+				form.list_elements.Items.Clear();
+				foreach(GmdcElement e in elements) SimPe.CountedListItem.Add(form.list_elements, e);
+
+				form.label_links.Text = "Links: "+links.Length.ToString();
+				form.list_links.Items.Clear();
+				foreach(GmdcLink l in links) SimPe.CountedListItem.Add(form.list_links, l);
+
+				form.label_groups.Text = "Groups: "+groups.Length.ToString();
+				form.list_groups.Items.Clear();
+				foreach(GmdcGroup g in groups) SimPe.CountedListItem.Add(form.list_groups, g);
+
+				form.label_subsets.Text = "Subsets: "+subsets.Length.ToString();
+				form.list_subsets.Items.Clear();
+				foreach(GmdcSubset s in subsets) SimPe.CountedListItem.Add(form.list_subsets, s);
 			}
 
+			try 
+			{
+				form.lb_itemsc2.Items.Clear();
+				form.lb_itemsc3.Items.Clear();
+				form.lb_itemsc.Items.Clear();
+				form.lbmodel.Items.Clear();
+				foreach (GmdcGroup g in groups) 
+				{
+					form.lbmodel.Items.Add(g, true);
+					form.lb_itemsc.Items.Add(g); 
+				}
+
+				form.lb_itemsa2.Items.Clear();
+				form.lb_itemsa.Items.Clear();
+				foreach (GmdcElement i in this.elements) SimPe.CountedListItem.Add(form.lb_itemsa, i);
+
+				form.lb_itemsb2.Items.Clear();
+				form.lb_itemsb3.Items.Clear();
+				form.lb_itemsb4.Items.Clear();
+				form.lb_itemsb5.Items.Clear();
+				form.lb_itemsb.Items.Clear();
+				foreach (GmdcLink i in this.links) SimPe.CountedListItem.Add(form.lb_itemsb, i);
+
+				form.lb_subsets.Items.Clear();
+				form.lb_sub_faces.Items.Clear();
+				form.lb_sub_items.Items.Clear();
+				foreach (GmdcSubset i in this.subsets) SimPe.CountedListItem.Add(form.lb_subsets, i);
+
+				form.lb_model_faces.Items.Clear();
+				foreach (Vector3f i in this.model.Subset.Faces) SimPe.CountedListItem.Add(form.lb_model_faces, i);
+				form.lb_model_items.Items.Clear();
+				foreach (int i in this.model.Subset.Items) SimPe.CountedListItem.Add(form.lb_model_items, i);
+				form.lb_model_names.Items.Clear();
+				foreach (GmdcNamePair i in this.model.Names) SimPe.CountedListItem.Add(form.lb_model_names, i);
+				form.lb_model_rots.Items.Clear();
+				foreach (Vector4f i in this.model.Rotations) SimPe.CountedListItem.Add(form.lb_model_rots, i);
+				form.lb_model_trans.Items.Clear();
+				foreach (Vector3f i in this.model.Transformations) SimPe.CountedListItem.Add(form.lb_model_trans, i);
+			} 
+			catch (Exception ex)
+			{
+				Helper.ExceptionMessage("", ex);
+			}
 		}
 
 		public override void ExtendTabControl(System.Windows.Forms.TabControl tc)
 		{
+			if (Helper.WindowsRegistry.HiddenMode) 
+			{
+				form.tMesh.Tag = this;
+				tc.TabPages.Add(form.tMesh);
+			}
+
 			form.tGeometryDataContainer.Tag = this;
 			tc.TabPages.Add(form.tGeometryDataContainer);
 
@@ -705,363 +320,100 @@ namespace SimPe.Plugin
 
 			form.tGeometryDataContainer3.Tag = this;
 			tc.TabPages.Add(form.tGeometryDataContainer3);
+
+			form.tModel.Tag = this;
+			tc.TabPages.Add(form.tModel);
+
+			form.tSubset.Tag = this;
+			tc.TabPages.Add(form.tSubset);
 		}
-	
-		#region obj Files
-		/// <summary>
-		/// Generates a .obj File for ONE Model
-		/// </summary>
-		/// <param name="model">The Model you want to use</param>
-		/// <param name="modelnr">Number of that Model in the GMDC (0 based)</param>
-		/// <param name="vertexoffset">number of previous Vertices</param>
-		/// <returns>The content of the obj File</returns>
-		/// <remarks>Doesn't generate any Header informations</remarks>
-		protected MemoryStream GenerateModelObj(GeometryDataContainerItem3 model, int modelnr, ref int vertexoffset)
-		{
-			System.IO.StreamWriter sw = new StreamWriter(new MemoryStream());
-						
-			modelInfo info1;
-				
-			GeometryDataContainerItem2 modelitem = (GeometryDataContainerItem2) this.P2VertexLink[model.Alternate];
-			info1 = new modelInfo();
-			info1.vertexDataList = modelitem.Items1[0];
-			info1.normalDataList = modelitem.Items1[1];
-			info1.tuDataList = modelitem.Items1[2];
-
-			sw.WriteLine("# Object number: " + modelnr);
-			sw.WriteLine("# VertexList ref: " + info1.vertexDataList);
-			sw.WriteLine("g " + model.ToString());
-
-				
-			GeometryDataContainerItem1 item3 = (GeometryDataContainerItem1) this.P1Vetices[info1.vertexDataList];			
-			int vertexcount = 0;
-			for (int i = 0; i < Math.Min(item3.Data.Length, modelitem.VertexCount*3); i+=3)
-			{
-				vertexcount++;					
-				sw.WriteLine("v " + 
-					item3.Data[i].ToString(CultureInfo.InvariantCulture) + " "+
-					item3.Data[i+1].ToString(CultureInfo.InvariantCulture) + " "+
-					item3.Data[i+2].ToString(CultureInfo.InvariantCulture) + " "+
-					"# " + (i/3 + vertexoffset));
-			}
-
-
-			item3 = (GeometryDataContainerItem1) this.P1Vetices[info1.normalDataList];				
-			for (int i = 0; i < Math.Min(item3.Data.Length, modelitem.VertexCount*3); i+=3)
-			{
-				sw.WriteLine("vn " + 
-					item3.Data[i].ToString(CultureInfo.InvariantCulture) + " "+
-					item3.Data[i+1].ToString(CultureInfo.InvariantCulture) + " "+
-					item3.Data[i+2].ToString(CultureInfo.InvariantCulture) + " "+
-					"# " + (i/3));
-			}
-
-
-			item3 = (GeometryDataContainerItem1) this.P1Vetices[info1.tuDataList];
-			for (int i = 0; i < Math.Min(item3.Data.Length, modelitem.VertexCount*2); i+=2)
-			{
-				sw.WriteLine("vt " + 
-					item3.Data[i].ToString(CultureInfo.InvariantCulture) + " "+
-					(-item3.Data[i+1]).ToString(CultureInfo.InvariantCulture) + " "+
-					"# " + (i/2));
-			}
-
-
-			int[] numArray1 = item3.Items;
-			int num12 = numArray1.Length;
-				
-			sw.WriteLine("# number of polygons: " + (model.Items1.Length / 3));
-			if (modelnr > 0) sw.WriteLine("# vertsSoFar: " + ((vertexoffset+vertexcount) - 2).ToString());
-			else sw.WriteLine("# vertsSoFar: 0");			
-			sw.WriteLine("# totalVertices: " + (vertexoffset+vertexcount));
-			sw.WriteLine("# vertGroupStart: " + vertexoffset);
-
-			for (int i = 0; i < model.Items1.Length; i++)
-			{
-				int vertexnr = model.Items1[i] + 1 + vertexoffset;
-				if (i%3 == 0)
-				{
-					sw.Write("f " +
-						vertexnr.ToString() +  "/" + 
-						vertexnr.ToString() +  "/" + 
-						vertexnr.ToString());
-				} 
-				else if (i%3 == 1)
-				{
-					sw.Write(" " + vertexnr.ToString() +  "/" + 
-						vertexnr.ToString() +  "/" + 
-						vertexnr.ToString());
-				} 
-				else 
-				{
-					sw.WriteLine(" " + vertexnr.ToString() +  "/" + 
-						vertexnr.ToString() +  "/" + 
-						vertexnr.ToString());
-				}
-			}
-
-			vertexoffset += vertexcount;
-			sw.Flush();
-			sw.BaseStream.Seek(0, SeekOrigin.Begin);
-			return (MemoryStream)sw.BaseStream;
-		}
-
-		/// <summary>
-		/// Creates a .obj File for all Models stored in the GMDC
-		/// </summary>
-		/// <returns>The content of the obj File</returns>
-		public MemoryStream GenerateObj()
-		{			
-			System.Collections.ArrayList list = new System.Collections.ArrayList();
-			for (int modelnr = 0; modelnr < this.P3Model.Length; modelnr++)
-			{				
-				GeometryDataContainerItem3 model = (GeometryDataContainerItem3) this.P3Model[modelnr];
-				list.Add(model);
-			} //for modelnr
-			
-			return GenerateObj(list);
-		}
-
-		/// <summary>
-		/// Creates a .obj File for all Models stored in the GMDC
-		/// </summary>
-		/// <returns>The content of the obj File</returns>
-		public MemoryStream GenerateObj(System.Collections.ArrayList models)
-		{			
-			System.IO.StreamWriter sw = new StreamWriter(new MemoryStream());
-			sw.WriteLine("# File based on the GMDC plugin by Delphy");
-
-			int vertexoffset = 0;
-			for (int modelnr = 0; modelnr < models.Count; modelnr++)
-			{				
-				GeometryDataContainerItem3 model = (GeometryDataContainerItem3) models[modelnr];
-				MemoryStream s = this.GenerateModelObj(model, modelnr, ref vertexoffset);
-				StreamReader sr = new StreamReader(s);
-				sw.WriteLine(sr.ReadToEnd());
-			} //for modelnr
-
-			sw.Flush();
-			sw.BaseStream.Seek(0, SeekOrigin.Begin);
-			return (MemoryStream)sw.BaseStream;
-		}
-		#endregion
 
 		#region .x-Files
-		System.Collections.ArrayList modelnames;
-		/// <summary>
-		/// Returns a unique Modelname
-		/// </summary>
-		/// <param name="name">The name of the Model</param>
-		/// <returns>the unique Name</returns>
-		string GetUniqueModelName(string name) 
-		{
-			string oname = name;
-			int i=0;
-			while (modelnames.Contains(name)) 
-			{
-				name = oname+i.ToString();
-				i++;
-			}
-
-			modelnames.Add(name);
-			return name;
-		}
-
-		/// <summary>
-		/// Generates a .x File for ONE Model
-		/// </summary>
-		/// <param name="model">The Model you want to use</param>
-		/// <param name="modelnr">Number of that Model in the GMDC (0 based)</param>
-		/// <param name="txtrname">name of the texture File</param>
-		/// <returns>The content of the x File</returns>
-		/// <remarks>Doesn't generate any Header informations</remarks>
-		protected MemoryStream GenerateModelX(GeometryDataContainerItem3 model, int modelnr, string txtrname)
-		{
-			System.IO.StreamWriter sw = new StreamWriter(new MemoryStream());
-			modelInfo info1;
-				
-			GeometryDataContainerItem2 modelitem = (GeometryDataContainerItem2) this.P2VertexLink[model.Alternate];
-			info1 = new modelInfo();
-			info1.vertexDataList = modelitem.Items1[0];
-			info1.normalDataList = modelitem.Items1[1];
-			if (modelitem.Items1.Length>2) info1.tuDataList = modelitem.Items1[2];
-
-			string umodelname = GetUniqueModelName(model.ToString());
-			sw.WriteLine("Frame " + umodelname + " {");			
-			sw.WriteLine("Mesh {");
-			sw.WriteLine();
-
-			
-				
-			
-			GeometryDataContainerItem1 item3 = null;
-
-			item3 = (GeometryDataContainerItem1) this.P1Vetices[info1.vertexDataList];			
-			int vertexcount = 0;
-			//sw.WriteLine((item3.Data.Length/3).ToString() + "; //Vertex Count");
-			sw.WriteLine(Math.Min(item3.Data.Length, modelitem.VertexCount).ToString() + "; //Vertex Count");
-			for (int i = 0; i < Math.Min(item3.Data.Length, modelitem.VertexCount*3); i+=3)
-			{
-				vertexcount++;					
-				if (i!=0) sw.WriteLine(",");
-				sw.Write(
-					item3.Data[i].ToString("N9", CultureInfo.InvariantCulture) + ";"+
-					item3.Data[i+1].ToString("N9", CultureInfo.InvariantCulture) + ";"+
-					item3.Data[i+2].ToString("N9", CultureInfo.InvariantCulture) + "; "
-					);
-			}
-			sw.WriteLine(";");
-			
-
-			//now build a Face list
-			string faces = (model.Items1.Length / 3).ToString() + "; //Face Count";
-			for (int i = 0; i < model.Items1.Length; i++)
-			{
-				int vertexnr = model.Items1[i];				
-				if (i%3 == 0)
-				{
-					if (i!=0) faces += ", ";
-					faces += Helper.lbr + "3;" +
-						vertexnr.ToString() + ",";
-				} 
-				else if (i%3 == 1)
-				{
-					faces +=  vertexnr.ToString() + ",";
-				} 
-				else 
-				{
-					faces +=  vertexnr.ToString() + ";";
-				}
-			}
-			faces += ";";
-			sw.WriteLine(faces);
-			sw.WriteLine();
-
-			//Add a MeshNormal Section
-
-			sw.WriteLine("MeshNormals {");
-				item3 = (GeometryDataContainerItem1) this.P1Vetices[info1.normalDataList];	
-				//sw.WriteLine((item3.Data.Length/3).ToString() + "; //Vertext Count");
-				sw.WriteLine(Math.Min(item3.Data.Length, modelitem.VertexCount).ToString() + "; //Vertex Count");
-				for (int i = 0; i < Math.Min(item3.Data.Length, modelitem.VertexCount)*3; i+=3)
-				{
-					if (i!=0) sw.WriteLine(",");
-					sw.Write(
-						item3.Data[i].ToString("N9", CultureInfo.InvariantCulture) + ";"+
-						item3.Data[i+1].ToString("N9", CultureInfo.InvariantCulture) + ";"+
-						item3.Data[i+2].ToString("N9", CultureInfo.InvariantCulture) + ";"
-						);
-				}
-				sw.WriteLine(";");
-				sw.WriteLine(faces);
-				sw.WriteLine("}");
-				sw.WriteLine();
-			
-
-			//now Material Definitions
-			sw.WriteLine("MeshMaterialList{");
-			sw.WriteLine("1;");
-			sw.WriteLine((model.Items1.Length / 3).ToString() + "; //Face Count");
-			for (int i = 0; i < model.Items1.Length; i+=3)
-			{
-				if (i!=0) sw.Write(",");
-				if (i%10==0) sw.WriteLine();
-				sw.Write("0");
-			}
-			sw.WriteLine(";;");
-			//add a Meterial
-			sw.WriteLine("Material {");
-			sw.WriteLine("0.300000;0.300000;0.300000;1.000000;;");
-			sw.WriteLine("0.300000;");
-			sw.WriteLine("1.000000;1.000000;1.000000;;");
-			sw.WriteLine("0.100000;0.100000;0.100000;;");
-			if (txtrname!=null) 
-			{
-				///
-				///TODO: Remove the following Line if you found a way how to texture two subsets with te same name
-				///
-				txtrname = umodelname;
-				sw.WriteLine("TextureFilename{\""+txtrname.Replace("\\", "\\\\")+"\";}");
-			}
-			sw.WriteLine("}");
-			sw.WriteLine("}");
-
-			if (modelitem.Items1.Length>2) 
-			{				
-				//now the Texture Cords
-				sw.WriteLine("MeshTextureCoords {");
-				item3 = (GeometryDataContainerItem1) this.P1Vetices[info1.tuDataList];
-				//sw.WriteLine((item3.Data.Length/2).ToString() + "; //Vertex Count");
-				sw.WriteLine(Math.Min(item3.Data.Length, modelitem.VertexCount).ToString() + "; //Vertex Count");
-				for (int i = 0; i < Math.Min(item3.Data.Length, modelitem.VertexCount)*2; i+=2)
-				{
-					//if (i!=0) ret += ",";
-					sw.WriteLine(
-						(item3.Data[i]).ToString("N9", CultureInfo.InvariantCulture) + ";"+
-						(item3.Data[i+1]).ToString("N9", CultureInfo.InvariantCulture) + ";"
-						);
-				}
-				sw.WriteLine(";");
-				sw.WriteLine("}"); 
-			}
-			
-
-			//close all opend Containers
-			sw.WriteLine("} //Mesh");
-			sw.WriteLine("} //Frame");
-
-			sw.Flush();
-			sw.BaseStream.Seek(0, SeekOrigin.Begin);
-			return (MemoryStream)sw.BaseStream;
-		}
-
-		/// <summary>
-		/// Creates a .x File for all Models stored in the GMDC
-		/// </summary>
-		/// <returns>The content of the x File</returns>
-		public MemoryStream GenerateX()
-		{
-			modelnames = new System.Collections.ArrayList();
-			System.Collections.ArrayList list = new System.Collections.ArrayList();
-			for (int modelnr = 0; modelnr < this.P3Model.Length; modelnr++)
-			{				
-				GeometryDataContainerItem3 model = (GeometryDataContainerItem3) this.P3Model[modelnr];
-				list.Add(model);
-			} //for modelnr
-			
-			return GenerateX(list);
-		}
-
 		/// <summary>
 		/// Creates a .x File for all Models stored in the GMDC
 		/// </summary>
 		/// <param name="models">List of all P3Models you want to export</param>
 		/// <returns>The content of the x File</returns>
-		public MemoryStream GenerateX(System.Collections.ArrayList models)
+		public MemoryStream GenerateX(GmdcGroups models)
 		{
-			modelnames = new System.Collections.ArrayList();
-			System.IO.StreamWriter sw = new StreamWriter(new MemoryStream());
-			
-			sw.WriteLine("xof 0303txt 0032");
-			sw.WriteLine();
-			sw.WriteLine("# This DirectX File was generated by SimPE");
-			sw.WriteLine();
-			sw.WriteLine("Frame SCENE_ROOT{");
+			IGmdcExporter exporter = ExporterLoader.FindExporterByExtension(".x");
 
-			for (int modelnr = 0; modelnr < models.Count; modelnr++)
-			{				
-				GeometryDataContainerItem3 model = (GeometryDataContainerItem3) models[modelnr];
-				MemoryStream s = (MemoryStream)this.GenerateModelX(model, modelnr, model.ToString());
-				StreamReader sr = new StreamReader(s);
-				sw.WriteLine(sr.ReadToEnd());
-				//break;
-			} //for modelnr
-			sw.WriteLine("}");
-			
-			sw.Flush();
-			sw.BaseStream.Seek(0, SeekOrigin.Begin);
-			return (MemoryStream)sw.BaseStream;
+			if (exporter==null) throw new Exception("No valid Direct X Exporter plugin was found!");
+
+			exporter.Process(this, models);
+			return (MemoryStream)exporter.FileContent.BaseStream;
 		}
 		#endregion
+
+
+		/// <summary>
+		/// Remove the Group with the given Index from the File
+		/// </summary>
+		/// <param name="index">The index of the Element</param>
+		public void RemoveGroup(int index)
+		{
+			GmdcGroup g = groups[index];
+			int n = g.LinkIndex;
+			g.LinkIndex = -1;
+			RemoveLink(n);
+
+			groups.RemoveAt(index);
+		}
+		
+		/// <summary>
+		/// Remove the Link with the given Index from the File
+		/// </summary>
+		/// <param name="index">The index of the Element</param>
+		/// <returns>true if the link was removed</returns>
+		/// <remarks>
+		/// A Link will not be removed, if it is still referenced 
+		/// in one or more Groups!
+		/// </remarks>
+		public bool RemoveLink(int index)
+		{
+			foreach(GmdcGroup g in groups) if (g.LinkIndex==index) return false;
+			
+			GmdcLink l = links[index];
+			foreach(GmdcGroup g in groups) if (g.LinkIndex>index) g.LinkIndex--;
+
+			for (int i=0; i<l.Items1.Count; i++)
+			{
+				int n = l.Items1[i];
+				l.Items1[i] = -1; //make sure the reference is removed first
+				RemoveElement(n);
+			}
+			links.RemoveAt(index);
+			return true;
+		}
+
+		/// <summary>
+		/// Remove the Element with the given Index from the File
+		/// </summary>
+		/// <param name="index">The index of the Element</param>
+		/// <returns>true if the element was removed</returns>
+		/// <remarks>
+		/// A Element will not be removed, if it is still referenced 
+		/// in one or more Links!
+		/// </remarks>
+		public bool RemoveElement(int index)
+		{
+			//Can we remove this Element?
+			foreach (GmdcLink l in links) 
+			{
+				foreach (int i in l.Items1) if (i==index) return false;
+			}
+
+			//Adjust the References
+			foreach (GmdcLink l in links) 
+			{
+				for (int i=0; i<l.Items1.Count; i++)
+				{
+					if (l.Items1[i]>index) l.Items1[i]--;
+				}
+			}
+
+			elements.RemoveAt(index);
+			return true;
+		}
 	}
 }
