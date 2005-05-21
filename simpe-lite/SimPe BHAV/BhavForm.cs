@@ -1923,6 +1923,16 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.Sort();
 		}
 
+
+		private void pnflowcontainer_SelectedInstChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			origInst = pnflowcontainer.CurrentInst;
+			UpdateInstPanel(pnflowcontainer.CurrentInst);
+		}
+
+
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
@@ -1969,6 +1979,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 		
+
 		private void llcancel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			this.pnflowcontainer.CurrentInst = origInst;
@@ -2005,18 +2016,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.MoveInst(mv);
 		}
 
-		private void llsort_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			this.pnflowcontainer.Sort();
-		}
 
-		private void pnflowcontainer_SelectedInstChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-
-			origInst = pnflowcontainer.CurrentInst;
-			UpdateInstPanel(pnflowcontainer.CurrentInst);
-		}
 		private void tbFilename_TextChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
@@ -2033,25 +2033,31 @@ namespace SimPe.PackedFiles.UserInterface
 			byte val;
 			ushort uval;
 
-			try { val = Convert.ToByte(tbType.Text, 16); }
-			catch (Exception) { val = 0; }
-			if (wrapper.Header.Type != val)
+			if (tbType.Equals(sender))
 			{
-				wrapper.Header.Type = val;
+				try { val = Convert.ToByte(tbType.Text, 16); }
+				catch (Exception) { val = 0; }
+				if (wrapper.Header.Type != val)
+				{
+					wrapper.Header.Type = val;
+				}
 			}
 
 			TextBox[] decByte   = { tbArgC, tbLocalC };
 			byte[] decVals      = { wrapper.Header.ArgumentCount, wrapper.Header.LocalVarCount };
 			for (int i = 0; i < decByte.Length; i++)
 			{
-				try { val = Convert.ToByte(decByte[i].Text, 10); }
-				catch (Exception) { val = 0; }
-				if (decVals[i] != val)
+				if (decByte[i].Equals(sender))
 				{
-					switch(i)
+					try { val = Convert.ToByte(decByte[i].Text, 10); }
+					catch (Exception) { val = 0; }
+					if (decVals[i] != val)
 					{
-						case 0: wrapper.Header.ArgumentCount = val; break;
-						case 1: wrapper.Header.LocalVarCount = val; break;
+						switch(i)
+						{
+							case 0: wrapper.Header.ArgumentCount = val; break;
+							case 1: wrapper.Header.LocalVarCount = val; break;
+						}
 					}
 				}
 			}
@@ -2060,15 +2066,18 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort[] hexVals    = { wrapper.Header.Format, wrapper.Header.Flags, wrapper.Header.Zero };
 			for (int i = 0; i < hexUShort.Length; i++)
 			{
-				try { uval = Convert.ToUInt16(hexUShort[i].Text, 16); }
-				catch (Exception) { uval = 0; }
-				if (hexVals[i] != uval)
+				if (hexUShort[i].Equals(sender))
 				{
-					switch(i)
+					try { uval = Convert.ToUInt16(hexUShort[i].Text, 16); }
+					catch (Exception) { uval = 0; }
+					if (hexVals[i] != uval)
 					{
-						case 0: wrapper.Header.Format = uval; break;
-						case 1: wrapper.Header.Flags = uval; break;
-						case 2: wrapper.Header.Zero = uval; break;
+						switch(i)
+						{
+							case 0: wrapper.Header.Format = uval; break;
+							case 1: wrapper.Header.Flags = uval; break;
+							case 2: wrapper.Header.Zero = uval; break;
+						}
 					}
 				}
 			}
@@ -2085,14 +2094,17 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort[] orig = { currentInst.Target1, currentInst.Target2 };
 			for (int i = 0; i < cb.Length; i++)
 			{
-				ushort val;
-				try { val = Convert.ToUInt16(cb[i].Text, 16); }
-				catch (Exception) { val = 0; }
-				if (orig[i] != val)
+				if (cb[i].Equals(sender))
 				{
-					if (i == 0) currentInst.Target1 = val;
-					else        currentInst.Target2 = val;
-					somethingChanged = true;
+					ushort val;
+					try { val = Convert.ToUInt16(cb[i].Text, 16); }
+					catch (Exception) { val = 0; }
+					if (orig[i] != val)
+					{
+						if (i == 0) currentInst.Target1 = val;
+						else        currentInst.Target2 = val;
+						somethingChanged = true;
+					}
 				}
 			}
 			if (somethingChanged) SendInst(currentInst);
@@ -2109,7 +2121,7 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort[] orig = { currentInst.Target1, currentInst.Target2 };
 			for (int i = 0; i < cb.Length; i++)
 			{
-				if (cb[i].SelectedIndex != -1)
+				if ((cb[i].Equals(sender)) && (cb[i].SelectedIndex != -1))
 				{
 					ushort val = (ushort)(0x0FFFC + cb[i].SelectedIndex);
 					if (orig[i] != val)
@@ -2131,12 +2143,15 @@ namespace SimPe.PackedFiles.UserInterface
 			Instruction currentInst = this.pnflowcontainer.CurrentInst;
 
 			ushort val;
-			try { val = Convert.ToUInt16(tbInst_OpCode.Text, 16); }
-			catch (Exception) { val = 0; }
-			if (currentInst.OpCode != val)
+			if (tbInst_OpCode.Equals(sender))
 			{
-				currentInst.OpCode = val;
-				somethingChanged = true;
+				try { val = Convert.ToUInt16(tbInst_OpCode.Text, 16); }
+				catch (Exception) { val = 0; }
+				if (currentInst.OpCode != val)
+				{
+					currentInst.OpCode = val;
+					somethingChanged = true;
+				}
 			}
 			if (somethingChanged) SendInst(currentInst);
 		}
@@ -2162,28 +2177,40 @@ namespace SimPe.PackedFiles.UserInterface
 			byte val;
 			for (int i = 0; i < 8; i++)
 			{
-				try { val = Convert.ToByte(OpBytes[i].Text, 16); }
-				catch (Exception) { val = 0; }
-				if (currentInst.Operands[i] != val)
+				if (OpBytes[i].Equals(sender))
 				{
-					currentInst.Operands[i] = val;
-					somethingChanged = true;
+					try { val = Convert.ToByte(OpBytes[i].Text, 16); }
+					catch (Exception) { val = 0; }
+					if (currentInst.Operands[i] != val)
+					{
+						currentInst.Operands[i] = val;
+						somethingChanged = true;
+					}
 				}
 
-				try { val = Convert.ToByte(UnkBytes[i].Text, 16); }
-				catch (Exception) { val = 0; }
-				if (currentInst.Reserved1[i] != val)
+				if (UnkBytes[i].Equals(sender))
 				{
-					currentInst.Reserved1[i] = val;
-					somethingChanged = true;
+					try { val = Convert.ToByte(UnkBytes[i].Text, 16); }
+					catch (Exception) { val = 0; }
+					if (currentInst.Reserved1[i] != val)
+					{
+						currentInst.Reserved1[i] = val;
+						somethingChanged = true;
+					}
 				}
 			}
-			try { val = Convert.ToByte(this.tbInst_Reserved.Text, 16); }
-			catch (Exception) { val = 0; }
-			if (currentInst.Reserved0 != val)
+			if (tbInst_Reserved.Equals(sender))
 			{
-				currentInst.Reserved0 = val;
-				somethingChanged = true;
+				try 
+				{
+					val = Convert.ToByte(this.tbInst_Reserved.Text, 16); 
+				}
+				catch (Exception) { val = 0; }
+				if (currentInst.Reserved0 != val)
+				{
+					currentInst.Reserved0 = val;
+					somethingChanged = true;
+				}
 			}
 			if (somethingChanged) SendInst(currentInst);
 		}
