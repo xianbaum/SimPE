@@ -589,14 +589,21 @@ namespace SimPe.PackedFiles.Wrapper
 				{
 					start = i+1;
 					if (this[i].Target1 <= i || this[i].Target1 >= this.Count)
-						break;
+					{
+						if (this[i].Target2 <= i || this[i].Target2 >= this.Count)
+							break;
+
+						Move(this[i].Target2, start);
+
+						continue;
+					}
 					if (this[i].Target1 != start)
 						Move(this[i].Target1, start);
 				}
 				if (start >= this.Count)
 					break;
 
-				for (int i = startnext; i < start-1; i++)
+				for (int i = startnext; i < start; i++)
 				{
 					startnext = i+1;
 					if (this[i].Target2 < start || this[i].Target2 >= this.Count)
