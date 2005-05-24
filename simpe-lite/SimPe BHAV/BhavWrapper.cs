@@ -843,8 +843,8 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8002: 
 				{
 					writer.Write(opcode);
-					writer.Write((byte)addr1 & 0xFF);
-					writer.Write((byte)addr2 & 0xFF);
+					writer.Write((byte)(addr1 & 0xFF));
+					writer.Write((byte)(addr2 & 0xFF));
 					writer.Write(operands);	
 					break;
 				}
@@ -852,8 +852,8 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8004: 
 				{
 					writer.Write(opcode);
-					writer.Write((byte)addr1 & 0xFF);
-					writer.Write((byte)addr2 & 0xFF);
+					writer.Write((byte)(addr1 & 0xFF));
+					writer.Write((byte)(addr2 & 0xFF));
 					writer.Write(operands);
 					writer.Write(reserved_01);
 					break;
@@ -862,8 +862,8 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8005: 
 				{
 					writer.Write(opcode);
-					writer.Write((byte)addr1 & 0xFF);
-					writer.Write((byte)addr2 & 0xFF);
+					writer.Write((byte)(addr1 & 0xFF));
+					writer.Write((byte)(addr2 & 0xFF));
 					writer.Write(reserved_00);
 					writer.Write(operands);
 					writer.Write(reserved_01);
