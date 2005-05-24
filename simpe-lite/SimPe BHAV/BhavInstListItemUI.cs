@@ -52,16 +52,20 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
-		public BhavInstListItemUI(int index, Instruction inst, int max, PictureBox parent)
+		public BhavInstListItemUI(int index, Instruction inst, int max, PictureBox parent, bool isTarget)
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
 
 			// TODO: Add any initialization after the InitializeComponent call
+			this.isTarget = isTarget;
 			this.inst = inst;
 			this.Left = 0;
 			this.Height = rowHeight;
-			this.BackColor = System.Drawing.Color.White;
+			if (isTarget)
+				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
+			else
+				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;
 			this.Tag = index;
 			this.Parent = parent;
 			parent.Controls.SetChildIndex(this, index);
@@ -124,15 +128,22 @@ namespace SimPe.PackedFiles.UserInterface
 
 		public void MakeSelected()
 		{
-			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.PowderBlue;
+			if (isTarget)
+				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.PowderBlue;
+			else
+				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.PowderBlue;
 		}
 
 		public void MakeUnselected()
 		{
-			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
+			if (isTarget)
+				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
+			else
+				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;
 		}
 
 		protected Instruction inst;
+		private bool isTarget = false;
 		public int index
 		{
 			get { return (int)Tag; }

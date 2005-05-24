@@ -217,7 +217,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private InstructionItem makeInstructionItem(int ct)
 		{
-			InstructionItem i = new InstructionItem(ct, wrapper.Instructions[ct], wrapper.Instructions.Count - 1, pnflow);
+			bool isTarget = false;
+			for (int j = 0; j < wrapper.Instructions.Count && !isTarget; j++)
+				if (ct == 0 || (wrapper.Instructions[j].Target1 == ct) || (wrapper.Instructions[j].Target2 == ct))
+					isTarget = true;
+
+			InstructionItem i = new InstructionItem(ct, wrapper.Instructions[ct], wrapper.Instructions.Count - 1, pnflow, isTarget);
 
 			i.Top = ct*(BhavInstListItemUI.rowHeight+4);
 			i.Width = bhavInstListPanel.Width - 120;
@@ -578,7 +583,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		public InstructionItem(int ct, Instruction i, int max, PictureBox parent) : base(ct, i, max, parent) {}
+		public InstructionItem(int ct, Instruction i, int max, PictureBox parent, bool isTarget) : base(ct, i, max, parent, isTarget) {}
 
 		public int findUI(InstructionItem[] items)
 		{
