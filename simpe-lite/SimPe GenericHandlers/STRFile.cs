@@ -70,10 +70,8 @@ namespace SimPe.PackedFiles.Wrapper
 		ushort count;
 		protected override void ParseHeader()
 		{
-#if DEBUG
-#else
-			return;
-#endif
+			if (!Helper.DebugMode) return;
+
 			byte [] flname = Reader.ReadBytes(0x40);
 
 			Reader.ReadUInt32();	//0xffffffff

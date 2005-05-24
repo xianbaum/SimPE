@@ -59,6 +59,7 @@ namespace SimPe.Plugin
 
 		public RefFileForm()
 		{
+			components = null;
 			//
 			// Erforderlich für die Windows Form-Designerunterstützung
 			//
