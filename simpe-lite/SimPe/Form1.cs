@@ -2633,7 +2633,17 @@ namespace SimPe
 					string xmlname = System.IO.Path.Combine(Helper.SimPeDataPath, "folders.xml");
 					if (System.IO.File.Exists(xmlname))
 					{
-						if (MessageBox.Show("SimPE has detected that an old folders.xml is used on your system. Do you want SimPE to update it?\n\nIf you say yes, SimPE will remove the File "+xmlname+" and create a new one. You should let SimPE do this, unless you want to edit that File manually! SimPE will never ask you again.\n\nDo you want to updated the folders.xml File?", "Information", MessageBoxButtons.YesNo)==DialogResult.Yes)
+						if (MessageBox.Show(
+								"The file " + xmlname + " belongs to an old version of this program.\n\n" + 
+								"If you select 'Yes' it will be removed and recreated.\n" +
+								"If you select 'No' you should edit the file yourself to update it.\n\n" +
+								"You will not be prompted again.\n\n" +
+								"Replace folders.xml?",
+								"Replace folders.xml?",
+								System.Windows.Forms.MessageBoxButtons.YesNo,
+								System.Windows.Forms.MessageBoxIcon.Information,
+								System.Windows.Forms.MessageBoxDefaultButton.Button1
+							) == DialogResult.Yes)
 						{
 							//string newname = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(xmlname),System.IO.Path.GetFileNameWithoutExtension(xmlname)+".bak");
 							System.IO.File.Delete(xmlname);
