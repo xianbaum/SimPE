@@ -1,0 +1,175 @@
+
+28 May 2005 10:34 - fix to DrawConnectors() when iconised, "CurrentInst"->"SelectedInst", reorder bits in BHAV editor source
+  SimPe BHAV\
+    BhavInstListControl.cs 1.10
+
+28 May 2005 10:32 - Rename "CurrentInst" to "SelectedInst" in BHAV editor source
+  SimPe BHAV\
+    BhavForm.cs 1.10
+
+28 May 2005 10:31 - Rebranding
+  SimPe\Form1.cs 1.5
+
+28 May 2005 10:19 - Regress 1.3 to 1.2 of Registry change
+  SimPe Helper\Registry.cs 1.4
+
+24 May 2005 22:33 - Synchronise with SimPe
+  SimPe 3IDR\PackedFileForm.cs 1.2
+  SimPe GenericBase\Generic.cs 1.2
+  SimPe GenericHandlers\STRFile.cs 1.2
+  SimPe Helper\
+    LocalizedEnums.cs 1.2
+    PropertyObjectBuilder.cs 1.2
+  SimPe Interfaces\IScenegraphFileIndex.cs 1.2
+  SimPe Packages\HeaderData.cs 1.2
+  SimPe Scenegraph\FileIndex.cs 1.2
+
+24 May 2005 22:21 - Fix writing non-8007 BHAVs
+  SimPe BHAV\
+    BhavWrapper 1.5
+
+24 May 2005 22:20 - Highlight unlinked lines
+  SimPe BHAV\
+    BhavInstListControl.cs 1.8
+    BhavInstListItemUI.cs 1.3
+
+24 May 2005 22:20 - Alt-C for Commit in BHAV editor
+  SimPe BHAV\
+    BhavForm.resx 1.5
+
+21 May 2005 21:17 - Fix sort order in BHAV editor
+  SimPe BHAV\
+    BhavWrapper 1.4
+
+21 May 2005 21:16 - Don't draw false->next connectors in BHAV editor
+  SimPe BHAV\
+    BhavInstListControl.cs 1.8
+
+21 May 2005 21:16 - Stop validation errors zeroing other fields in BHAV editor
+  SimPe BHAV\
+    BhavForm.cs 1.9
+
+21 May 2005 18:50 - Add hotkeys to open files
+  SimPe\
+    Form1.cs 1.4
+    Form1.resx 1.4
+
+21 May 2005 18:48 - Alt-S for Sort in BHAV editor
+  SimPe BHAV\
+    BhavForm.cs 1.8
+    BhavForm.resx 1.5
+
+21 May 2005 18:47 - Stop "delete" with nothing selected in BHAV editor
+  SimPe BHAV\
+    BhavInstListControl.cs 1.7
+
+21 May 2005 16:41 - Synchronise with SimPe
+  SimPe Toolbox Scanner\
+    ScannerForm.cs 1.2
+    ScannerSkins.cs 1.2
+
+21 May 2005 16:40 - Synchronise with SimPe
+  SimPe RCOL\
+    cAnimResourceConst.cs 1.2
+    cGeometryDataContainer.cs 1.2
+    cGcmdcElements.cs 1.2
+    fGeometryDataContainer.cs 1.2
+    fGeometryDataContainer.resx 1.2
+    fShapeRefNode.cs 1.3
+    fShapeRefNode.resx 1.3
+    GeneralRcolWrapper.cs 1.2
+    RcolWrapper.cs 1.2
+    SimPe RCOL.csproj 1.2
+  SimPe Scenegraph\
+    PreviewForm.cs 1.2
+    SimPe Scenegraph.csproj 1.2
+
+21 May 2005 16:39 - Synchronise with SimPe
+  SimPe Helper\
+    Registry.cs 1.3
+    SimPe Helper.csproj 1.2
+
+21 May 2005 16:38 - Synchronise with SimPe
+  SimPe\
+    .cvsignore 1.2
+    InstalledPlugins.cs 1.2
+    InstalledPlugins.resx 1.2
+    OptionForm.cs 1.2
+    OptionForm.de-DE.resx 1.2
+    OptionForm.resx 1.2
+
+21 May 2005 16:37 - Synchronise with SimPe
+  3DView\Panel 3D.cs 1.2
+
+21 May 2005 11:00 - wrapper handles "changed" in BHAV editor and merge in BhavInst.cs
+  SimPe BHAV\
+    SimPe BHAV.csproj 1.4
+
+21 May 2005 10:59 - wrapper handles "changed" in BHAV editor and merge in BhavInst.cs
+  SimPe BHAV\
+    BhavForm.cs 1.7
+    BhavInstListControl.cs 1.6
+    BhavWrapper 1.3
+
+21 May 2005 10:51 - Rebranding
+  SimPe\
+    AssemblyInfo.cs 1.3
+    Form1.cs 1.3
+    Form1.resx 1.3
+    GetUpdate.cs 1.2
+
+18 May 2005 20:46 - Operand and OpCode Wizards only update on OK/Use in BHAV editor
+  SimPe BHAV\
+    BhavForm.cs 1.6
+    ObjfForm.cs 1.2
+    SimPe BHAV.csproj 1.3
+    TtabForm.cs 1.2
+    WrapperFactory.cs 1.2
+
+17 May 2005 22:57 - Sort fixed, better highlighting, change delete handling, relabel View Global (in BHAV editor)
+  SimPe BHAV\
+    BhavForm.cs 1.5
+    BhavForm.resx 1.4
+    BhavInstListControl.cs 1.5
+    BhavInstListItemUI.cs 1.2
+    BhavWrapper 1.2
+
+17 May 2005 18:17 - Synchronise with SimPe
+  SimPe RCOL\
+    cAnimResourceConst.cs 1.2
+    fShapeRefNode.cs 1.2
+    fShapeRefNode.resx 1.2
+
+15 May 2005 23:20 - Instruction list keyboard handling in BHAV editor
+  SimPe BHAV\
+    BhavForm.cs 1.4
+    BhavForm.resx 1.3
+    BhavInstListControl.cs 1.4
+    BhavInstListControl.resx 1.4
+    SimPe BHAV.csproj 1.2
+
+15 May 2005 09:04 - Remove (non-functional) context menu
+  SimPe BHAV\
+    BhavInstListControl.cs 1.3
+    BhavInstListControl.resx 1.3
+
+15 May 2005 08:59 - restore internalchg flag in BHAV editor source
+  SimPe BHAV\
+    BhavForm.cs 1.3
+    BhavForm.resx 1.2
+
+14 May 2005 19:42 - BHAV Editor source reorganisation
+  SimPe BHAV\
+    BhavForm.cs 1.2
+    BhavInstListControl.cs 1.2
+    BhavInstListControl.resx 1.2
+
+14 May 2005 19:16 - Rebranding
+  SimPe\
+    AssemblyInfo.cs 1.2
+    Form1.cs 1.2
+    Form1.resx 1.2
+  SimPe Helper\Registry.cs 1.2
+
+14 May 2005 10:43 - Exclude simpe.s2cp.xml from CVS
+  SimPe Sims2CommunityPack\.cvsignore
