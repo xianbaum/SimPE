@@ -1,4 +1,20 @@
 
+28 May 2005 20:52 - Removed unwanted filetypes #1
+  SimPe\
+    Form1.cs 1.6
+    OpcodeProvider.cs 1.1 (moved)
+    PLJones SimAntics Editor.csproj 1.2
+    PLJones SimAntics Editor.sln 1.2
+    SimCommonPackage.cs 1.1 (moved)
+    TypeRegistry.cs 1.1 (moved)
+  SimPe CommandLine\
+    Commandline.cs 1.2
+    SimPe Commandline.csproj 1.2
+  SimPe FileHandler\
+    PictureWrapper.cs 1.2
+    SimPe FileHandlers.csproj 1.2
+    SimRelinkForm.cs 1.2
+
 28 May 2005 10:34 - fix to DrawConnectors() when iconised, "CurrentInst"->"SelectedInst", reorder bits in BHAV editor source
   SimPe BHAV\
     BhavInstListControl.cs 1.10
