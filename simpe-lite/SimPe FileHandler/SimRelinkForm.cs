@@ -176,7 +176,7 @@ namespace SimPe.PackedFiles.UserInterface
 				ListViewItem lvi = new ListViewItem(a.Name + " "+(string)a.Tag[2]);
 				lvi.Tag = a;
 
-				if (a.Tag[1]!=null) 
+/*				if (a.Tag[1]!=null) 
 				{
 					lvi.ImageIndex = srf.ilist.Images.Count;
 					Image img = SimPe.Plugin.ImageLoader.Preview((Image)a.Tag[1], srf.ilist.ImageSize);
@@ -189,7 +189,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 					srf.ilist.Images.Add(img);					
 				}
-
+*/
 				srf.lv.Items.Add(lvi);
 			}
 			srf.lv.Sort();

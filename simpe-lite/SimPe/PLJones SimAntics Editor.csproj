@@ -165,11 +165,6 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "SimPe Name Provider"
-                    Project = "{38259F2B-9C90-48BE-A519-E4EEC62C242C}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "SimPe ByteView"
                     Project = "{E319030F-251E-4D30-AC46-83D34FC3FC81}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -177,16 +172,6 @@
                 <Reference
                     Name = "SimsGUID"
                     Project = "{8A2A1FCD-F166-4AE8-A87A-7424215C93AF}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "SimPe RCOL"
-                    Project = "{74517907-2236-4C45-80ED-E188D5E5CE0E}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "SimPe 3IDR"
-                    Project = "{37D97490-DC9F-4DB7-9215-998C6BC06078}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
@@ -212,21 +197,6 @@
                 <Reference
                     Name = "SimPe Commandline"
                     Project = "{0D63B13E-F41B-456C-92D0-C0BB3FE8744F}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "3DView"
-                    Project = "{F2CCCDBC-B05F-4C9C-B57F-27A07ACEF9BE}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "SimPe Scenegraph"
-                    Project = "{1151A88B-47AF-41DA-BCDF-DEFED0CC326E}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "GraphItems"
-                    Project = "{954CB41B-161A-4F45-8166-D9BC9AA7A6CA}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
@@ -358,6 +328,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "OpcodeProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "OptionForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -383,6 +358,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "SimCommonPackage.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "SimListing.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -394,6 +374,11 @@
                 />
                 <File
                     RelPath = "ToolLoader.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TypeRegistry.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

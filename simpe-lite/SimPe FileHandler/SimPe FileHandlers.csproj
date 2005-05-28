@@ -165,11 +165,6 @@
                     HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Web.Services.dll"
                 />
                 <Reference
-                    Name = "TGA_View"
-                    Project = "{320E7C5E-60E6-4069-9852-D296DB688F5D}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "SimPe Packages"
                     Project = "{1C6C45BF-FE19-4C23-B327-01F45B0F269C}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -177,11 +172,6 @@
                 <Reference
                     Name = "SimPe Clst"
                     Project = "{5DD89FD7-1E89-49D4-B48D-CC605D767C3B}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "SimPe RCOL"
-                    Project = "{74517907-2236-4C45-80ED-E188D5E5CE0E}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference

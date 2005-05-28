@@ -195,8 +195,8 @@ namespace SimPe
 			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.ExtendedWrapperFactory());
 			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.DefaultWrapperFactory());
 			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.GenericWrapperFactory());
-			registry.Register(new SimPe.Plugin.WrapperFactory());
-			registry.Register(new SimPe.Plugin.RefFileFactory());
+//			registry.Register(new SimPe.Plugin.WrapperFactory()); // SimPe Scenegraph
+//			registry.Register(new SimPe.Plugin.RefFileFactory()); // SimPe 3IDR
 			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.ClstWrapperFactory());
 			
 			wloader = new LoadFileWrappers(registry, registry);
@@ -2688,7 +2688,7 @@ namespace SimPe
 			}
 			if (package!=null) if (package.Reader!=null) package.Reader.Close();
 
-			Ambertation.Panel3D.StopAll();
+//			Ambertation.Panel3D.StopAll();
 		}
 
 		protected void UpdateMenuItemState()
@@ -2698,12 +2698,18 @@ namespace SimPe
 			miextract.Enabled = (package!=null);
 			miadd.Enabled = (package!=null);
 			fileList.Enabled = (package!=null);
-			miintrigued.Enabled = (package!=null);
+			//miintrigued.Enabled = (package!=null);
+			miintrigued.Visible = false;
 			mifilelist.Enabled = (package != null);
-			milistsims.Enabled = ((package!=null) && (registry.SimFamilynameProvider.BasePackage!=null));
-			mimem.Enabled = (registry.OpcodeProvider != null);
-			mifix.Enabled = (package != null );
-			micopyright.Enabled = (package != null);
+			//milistsims.Enabled = ((package!=null) && (registry.SimFamilynameProvider.BasePackage!=null));
+			milistsims.Visible = false;
+			//mimem.Enabled = (registry.OpcodeProvider != null);
+			mimem.Visible = false;
+			//mifix.Enabled = (package != null );
+			mifix.Visible = false;
+			//micopyright.Enabled = (package != null);
+			micopyright.Visible = false;
+			mireload.Visible = false;
 
 			//bthexopen.Enabled = ((File.Exists(reg.HexApplication)) && (package!=null) && (fileList.SelectedItems.Count>0) );
 			
@@ -2711,12 +2717,14 @@ namespace SimPe
 			btbyteview.Refresh();
 			mirunsims.Enabled = (File.Exists(reg.SimsApplication));
 
-			if ((lbtype.SelectedIndex>0) && (package!=null) )
+/*			if ((lbtype.SelectedIndex>0) && (package!=null) )
 			{
 				TypeAlias a = (TypeAlias)lbtype.Items[lbtype.SelectedIndex];	
 				minamemap.Enabled = Data.MetaData.RcolList.Contains(a.Id);
 			} 
-			else minamemap.Enabled = false;
+			else
+				minamemap.Enabled = false;
+*/			minamemap.Visible = false;
 			
 
 			this.mis2cpid.Enabled = false;
@@ -2752,7 +2760,7 @@ namespace SimPe
 			try 
 			{
 				Interfaces.Files.IPackedFileDescriptor pfd = (Interfaces.Files.IPackedFileDescriptor)fileList.SelectedItems[0].Tag;
-				Ambertation.Panel3D.StopAll();
+//				Ambertation.Panel3D.StopAll();
 				this.SelectPackedFile(pfd);				
 			} 
 			catch (Exception ex) 
@@ -2932,7 +2940,7 @@ namespace SimPe
 			mifoldercompare.Enabled = false;
 			//miinstplug.Visible = false;
 #endif
-			micopyright.Visible = Helper.WindowsRegistry.HiddenMode;
+			micopyright.Visible = false; //Helper.WindowsRegistry.HiddenMode;
 			foreach (SimPe.Data.TypeAlias a in SimPe.Data.MetaData.FileTypes) 
 			{
 				cbtypes.Items.Add(a);
@@ -3505,7 +3513,7 @@ namespace SimPe
 			if (filename==null) filename="";
 
 			//Optain Providers
-			if (Helper.IsNeighborhoodFile(filename) && (!minometa.Checked))
+/*			if (Helper.IsNeighborhoodFile(filename) && (!minometa.Checked))
 			{
 				registry.SimNameProvider.BaseFolder = System.IO.Path.GetDirectoryName(filename)+"\\Characters";
 				registry.SimFamilynameProvider.BasePackage = package;
@@ -3517,7 +3525,7 @@ namespace SimPe
 				registry.SimFamilynameProvider.BasePackage = null;
 				registry.SimDescriptionProvider.BasePackage = null;
 			}
-
+*/
 
 			EnlistPackage();
 			wloader.EnableMenuItems(this.miPlugins, null, package);
@@ -4158,7 +4166,7 @@ namespace SimPe
 
 		private void AddCopyright(object sender, System.EventArgs e)
 		{
-			this.Cursor = Cursors.WaitCursor;
+/*			this.Cursor = Cursors.WaitCursor;
 			pb1.Maximum = fileList.Items.Count;
 			pb1.Value = 0;
 			pb1.Visible = true;
@@ -4222,7 +4230,7 @@ namespace SimPe
 				this.Cursor = Cursors.Default;
 			}
 			
-		}
+*/		}
 
 		private void ClonePackedFile(object sender, System.EventArgs e)
 		{
@@ -4622,7 +4630,7 @@ namespace SimPe
 
 		private void CreateNameMap(object sender, System.EventArgs e)
 		{
-			if (package==null) return;
+/*			if (package==null) return;
 
 			if (lbtype.SelectedIndex>0) 
 			{
@@ -4663,7 +4671,7 @@ namespace SimPe
 					if (add) package.Add(nmap.FileDescriptor);
 				}
 			}
-		}
+*/		}
 
 		private void ShowTutorials(object sender, System.EventArgs e)
 		{

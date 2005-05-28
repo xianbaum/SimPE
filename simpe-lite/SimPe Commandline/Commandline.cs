@@ -20,8 +20,8 @@ namespace SimPe
 
 			if (Help(args)) return true;
 			if (BuildPackage(args)) return true;
-			if (BuildTxtr(args)) return true;
-			if (FixPackage(args)) return true;
+//			if (BuildTxtr(args)) return true;
+//			if (FixPackage(args)) return true;
 			return false;
 		}
 
@@ -37,6 +37,8 @@ namespace SimPe
 			return true;
 		}
 
+
+/*
 		#region Fix
 		public static void FixPackage(string flname, string modelname, FixVersion ver)
 		{
@@ -109,6 +111,7 @@ namespace SimPe
 			return true;
 		}
 		#endregion
+*/
 
 		#region Build Package
 		static bool BuildPackage(string[] args) 
@@ -153,7 +156,7 @@ namespace SimPe
 		}
 		#endregion
 
-		#region Build TXTR
+/*		#region Build TXTR
 		/// <summary>
 		/// Assemble a Picture File
 		/// </summary>
@@ -447,5 +450,5 @@ namespace SimPe
 			return true;
 		}
 		#endregion
-	}
+*/	}
 }

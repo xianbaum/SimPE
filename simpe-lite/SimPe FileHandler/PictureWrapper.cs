@@ -78,14 +78,14 @@ namespace SimPe.PackedFiles.Wrapper
 
 		protected bool DoLoad(System.IO.BinaryReader reader, bool errmsg)
 		{			
-			try 
+/*			try 
 			{
 				image = Ambertation.Viewer.LoadTGAClass.LoadTGA(reader.BaseStream);
 				return true;
 			} 
 			catch (Exception)
 			{
-				try 
+*/				try 
 				{
 					image = System.Drawing.Image.FromStream(reader.BaseStream, true); 
 					//image = System.Drawing.Bitmap.FromStream(reader.BaseStream, true);
@@ -96,7 +96,7 @@ namespace SimPe.PackedFiles.Wrapper
 				{
 					if (errmsg) Helper.ExceptionMessage(Localization.Manager.GetString("errunsupportedimage"), ex);
 				}
-			}
+//			}
 
 			return false;
 		}
