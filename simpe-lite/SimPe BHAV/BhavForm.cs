@@ -260,7 +260,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.llcancel.Enabled = true;
 			bool origstate = internalchg;
 			internalchg = true;
-			this.pnflowcontainer.CurrentInst = currentInst;
+			this.pnflowcontainer.SelectedInst = currentInst;
 			internalchg = origstate;
 		}
 		#endregion
@@ -392,7 +392,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("pnflowcontainer.AutoScrollMargin")));
 			this.pnflowcontainer.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnflowcontainer.AutoScrollMinSize")));
 			this.pnflowcontainer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnflowcontainer.BackgroundImage")));
-			this.pnflowcontainer.CurrentInst = null;
+			this.pnflowcontainer.SelectedInst = null;
 			this.pnflowcontainer.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnflowcontainer.Dock")));
 			this.pnflowcontainer.Enabled = ((bool)(resources.GetObject("pnflowcontainer.Enabled")));
 			this.pnflowcontainer.Font = ((System.Drawing.Font)(resources.GetObject("pnflowcontainer.Font")));
@@ -1928,22 +1928,22 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (internalchg) return;
 
-			origInst = pnflowcontainer.CurrentInst;
-			UpdateInstPanel(pnflowcontainer.CurrentInst);
+			origInst = pnflowcontainer.SelectedInst;
+			UpdateInstPanel(pnflowcontainer.SelectedInst);
 		}
 
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
-			Bhav b = Instruction.LoadGlobalBHAV(pnflowcontainer.CurrentInst.OpCode);
+			Bhav b = Instruction.LoadGlobalBHAV(pnflowcontainer.SelectedInst.OpCode);
 			BhavForm ui = (BhavForm)b.UIHandler;
 			// but make it clear it's read only
 			ui.btnCommit.Visible = ui.btnOpCode.Visible = ui.btnOperandWiz.Visible =
 				ui.lladd.Visible = ui.llcancel.Visible = ui.lldel.Visible = ui.llmove.Visible =
 				ui.llopenbhav.Visible = ui.btnSort.Visible = ui.tbLines.Enabled = false;
 			ui.bhavPanel.Dock = DockStyle.Fill;
-			ui.Text = "Global BHAV: " + pnflowcontainer.CurrentInst.ToString();
+			ui.Text = "Global BHAV: " + pnflowcontainer.SelectedInst.ToString();
 			b.UpdateUI();
 			ui.Show();
 		}
@@ -1954,7 +1954,7 @@ namespace SimPe.PackedFiles.UserInterface
 			bhav.Package = wrapper.Package;
 			bhav.FileDescriptor = wrapper.FileDescriptor;
 
-			Instruction currentInst = this.pnflowcontainer.CurrentInst;
+			Instruction currentInst = this.pnflowcontainer.SelectedInst;
 			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
 
 			if (opcode != -1 && opcode != currentInst.OpCode)
@@ -1970,7 +1970,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
 		{
 			BhavOperandWiz bwf = new BhavOperandWiz();
-			Instruction ret = bwf.Execute(this.pnflowcontainer.CurrentInst);
+			Instruction ret = bwf.Execute(this.pnflowcontainer.SelectedInst);
 
 			if (ret != null) 
 			{
@@ -1982,7 +1982,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llcancel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			this.pnflowcontainer.CurrentInst = origInst;
+			this.pnflowcontainer.SelectedInst = origInst;
 		}
 
 		private void lladd_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
@@ -2088,7 +2088,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			bool somethingChanged = false;
-			Instruction currentInst = this.pnflowcontainer.CurrentInst;
+			Instruction currentInst = this.pnflowcontainer.SelectedInst;
 
 			ComboBox[] cb = { tba1, tba2 };
 			ushort[] orig = { currentInst.Target1, currentInst.Target2 };
@@ -2115,7 +2115,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			bool somethingChanged = false;
-			Instruction currentInst = this.pnflowcontainer.CurrentInst;
+			Instruction currentInst = this.pnflowcontainer.SelectedInst;
 
 			ComboBox[] cb = { tba1, tba2 };
 			ushort[] orig = { currentInst.Target1, currentInst.Target2 };
@@ -2140,7 +2140,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			bool somethingChanged = false;
-			Instruction currentInst = this.pnflowcontainer.CurrentInst;
+			Instruction currentInst = this.pnflowcontainer.SelectedInst;
 
 			ushort val;
 			if (tbInst_OpCode.Equals(sender))
@@ -2161,7 +2161,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			bool somethingChanged = false;
-			Instruction currentInst = this.pnflowcontainer.CurrentInst;
+			Instruction currentInst = this.pnflowcontainer.SelectedInst;
 
 			TextBox[] OpBytes =
 				{
