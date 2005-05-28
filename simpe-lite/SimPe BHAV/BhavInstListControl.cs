@@ -78,9 +78,26 @@ namespace SimPe.PackedFiles.UserInterface
 		private InstructionItem[] flowitems;
 		private PictureBox pnflow = null;
 
+		public void UpdateGUI(Bhav wrp)
+		{
+			wrapper = wrp;
+			csel = -1;
+			pnflow1.Visible = false;
+			pnflow1.Controls.Clear();
+			pnflow2.Visible = false;
+			pnflow2.Controls.Clear();
+			pnflow = pnflow1;
+
+			myrepaint();
+			OnSelectedInstChanged(new EventArgs());
+		}
+
+
 		protected virtual void OnSelectedInstChanged(EventArgs e) { if (SelectedInstChanged != null) { SelectedInstChanged(this, e); } }
+
+
 		/// <summary>
-		/// Returns or sets the currently selected BhavInstruction for editing
+		/// Returns or sets the index of the currently selected instruction
 		/// </summary>
 		public int SelectedIndex
 		{
@@ -88,12 +105,12 @@ namespace SimPe.PackedFiles.UserInterface
 			set 
 			{
 				if (csel == value) return;
-				if (value >= flowitems.Length || value < -1) throw(new Exception("Out Of Range: " + value.ToString()));
+				if (value >= flowitems.Length || value < -1) throw new Exception("Internal failure: csel out of range: " + value.ToString());
+
 				if ((csel >= 0) && (csel < flowitems.Length))
 					flowitems[csel].MakeUnselected();
 
 				csel = value;
-				OnSelectedInstChanged(new EventArgs());
 
 				if ((csel >= 0) && (csel < flowitems.Length))
 				{
@@ -114,8 +131,37 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 				pnflow.Image = DrawConnectors();
 				Update();
+				OnSelectedInstChanged(new EventArgs());
 			}
 		}
+
+		/// <summary>
+		/// Returns or sets the values of the currently selected instruction
+		/// </summary>
+		public Instruction SelectedInst
+		{
+			get 
+			{ 
+				if (csel >= 0) return ((Instruction)wrapper.Instructions[csel]).Clone(); else return null; 
+			}
+			set 
+			{
+				if (csel < 0 && value == null) return;
+				if (csel < 0) throw new Exception("No current instruction");
+				if (value == null) throw new Exception("Invalid value");
+				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range" + value.ToString());
+
+				wrapper.Instructions[csel] = value.Clone();
+
+				pnflow.Controls.RemoveAt(csel);
+				flowitems[csel] = makeInstructionItem(csel);
+				flowitems[csel].MakeSelected();
+				pnflow.Image = DrawConnectors();
+				Update();
+				SelectedInstChanged(this, new EventArgs());
+			}
+		}
+
 
 		public void Add()
 		{
@@ -124,7 +170,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (csel < 0)
 				wrapper.Instructions.Insert(0, new Instruction(wrapper));
 			else
-				wrapper.Instructions.Insert(csel + 1, CurrentInst);
+				wrapper.Instructions.Insert(csel + 1, SelectedInst);
 
 			myrepaint();
 		}
@@ -175,45 +221,40 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		public Instruction CurrentInst
+		private void myrepaint()
 		{
-			get 
-			{ 
-				if (csel >= 0) return ((Instruction)wrapper.Instructions[csel]).Clone(); else return null; 
-			}
-			set 
+			Point currentLoc = this.AutoScrollPosition;
+			if (pnflow.Name == "pnflow1") // indicates which is currently visible
 			{
-				if (csel < 0 && value == null) return;
-				if (csel < 0) throw new Exception("No current instruction");
-				if (value == null) throw new Exception("Invalid value");
-				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
-
-				wrapper.Instructions[csel] = value.Clone();
-
-				pnflow.Controls.RemoveAt(csel);
-				flowitems[csel] = makeInstructionItem(csel);
-				flowitems[csel].MakeSelected();
-				pnflow.Image = DrawConnectors();
-				Update();
-				SelectedInstChanged(this, new EventArgs());
+				pnflow = pnflow2;
+			} 
+			else 
+			{
+				pnflow = pnflow1;
 			}
+
+			pnflow.Controls.Clear();
+			flowitems = new InstructionItem[wrapper.Instructions.Count];
+
+			for (int i = 0; i < wrapper.Instructions.Count; i++)
+				flowitems[i] = makeInstructionItem(i);
+			if (csel != -1)
+				flowitems[csel].MakeSelected();
+			pnflow.Image = DrawConnectors();
+
+			if (pnflow.Name == "pnflow1") // indicates which we just updated
+			{
+				pnflow2.Visible = false;
+				pnflow1.Visible = true;
+			} 
+			else 
+			{
+				pnflow1.Visible = false;
+				pnflow2.Visible = true;
+			}
+			this.AutoScrollPosition = currentLoc;
+			Update();
 		}
-
-
-		public void UpdateGUI(Bhav wrp)
-		{
-			wrapper = wrp;
-			csel = -1;
-			pnflow1.Visible = false;
-			pnflow1.Controls.Clear();
-			pnflow2.Visible = false;
-			pnflow2.Controls.Clear();
-			pnflow = pnflow1;
-
-			myrepaint();
-			OnSelectedInstChanged(new EventArgs());
-		}
-
 
 		private InstructionItem makeInstructionItem(int ct)
 		{
@@ -235,112 +276,83 @@ namespace SimPe.PackedFiles.UserInterface
 
 			return i;
 		}
-		private void myrepaint()
-		{
-			Point currentLoc = this.AutoScrollPosition;
-			if (pnflow.Name == "pnflow1") // indicates which is currently visible
-			{
-				pnflow = pnflow2;
-			} 
-			else 
-			{
-				pnflow = pnflow1;
-			}
-
-			pnflow.Controls.Clear();
-			flowitems = new InstructionItem[wrapper.Instructions.Count];
-
-			for (int i = 0; i < wrapper.Instructions.Count; i++) flowitems[i] = makeInstructionItem(i);
-			if (csel != -1)
-				flowitems[csel].MakeSelected();
-			pnflow.Image = DrawConnectors();
-
-			if (pnflow.Name == "pnflow1") // indicates which we just updated
-			{
-				pnflow2.Visible = false;
-				pnflow1.Visible = true;
-			} 
-			else 
-			{
-				pnflow1.Visible = false;
-				pnflow2.Visible = true;
-			}
-			this.AutoScrollPosition = currentLoc;
-			Update();
-		}
-
 
 		private Bitmap DrawConnectors()
-		{			
-			try 
+		{
+			if (flowitems.Length == 0)
+				return null;
+			if (bhavInstListPanel.ClientRectangle.Width <= 24)
+				return null;
+
+			Connector[] connectors = InstructionItem.Connectors(flowitems);			
+			Connector.ResolveCollisions(connectors);
+
+			Bitmap img = new Bitmap(bhavInstListPanel.ClientRectangle.Width-24, flowitems.Length * (BhavInstListItemUI.rowHeight + 4));
+			Graphics gr = Graphics.FromImage(img);
+			gr.SmoothingMode =  System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+			gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+			Pen tpen = new Pen(Color.DarkGreen, 1);
+			Pen fpen = new Pen(Color.Maroon, 1);
+			Pen tpens = new Pen(Color.LawnGreen, 2);
+			Pen fpens = new Pen(Color.LightCoral, 2);
+			Pen pen;
+
+			string [] resNames = this.GetType().Assembly.GetManifestResourceNames();
+
+			Bitmap bmpok = new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.button_ok.png"));
+			Bitmap bmpcancel = new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.button_cancel.png"));
+			Point[] points;
+			foreach (Connector c in connectors) 
 			{
-				Connector[] connectors = InstructionItem.Connectors(flowitems);			
-				Connector.ResolveCollisions(connectors);
+				if (c==null) continue;
+				if ((c.stop - c.start == 1)) continue;
+				if (c.start >= flowitems.Length) continue;
 
-				Bitmap img = new Bitmap(bhavInstListPanel.ClientRectangle.Width-24, Math.Max(10, flowitems.Length * (BhavInstListItemUI.rowHeight + 4)));
-				Graphics gr = Graphics.FromImage(img);
-				gr.SmoothingMode =  System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-				gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-				gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+				if (c.truerule) pen = tpen; else pen = fpen;
+				if (c.start == csel) if (c.truerule) pen = tpens; else pen = fpens;
+				if (c.stop == csel) pen = new Pen(pen.Brush, 2);
+				int offset = 4;
+				if (c.truerule) offset+=4; 
 
-				Pen tpen = new Pen(Color.DarkGreen, 1);
-				Pen fpen = new Pen(Color.Maroon, 1);
-				Pen tpens = new Pen(Color.LawnGreen, 2);
-				Pen fpens = new Pen(Color.LightCoral, 2);
-				Pen pen;
+				Control startlabel = (Control)flowitems[c.start];
 
-				string [] resNames = this.GetType().Assembly.GetManifestResourceNames();
-
-				Bitmap bmpok = new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.button_ok.png"));
-				Bitmap bmpcancel = new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.button_cancel.png"));
-				Point[] points;
-				foreach (Connector c in connectors) 
+				if (c.stop >= 0xFFFC) 
 				{
-					if (c==null) continue;
-					if (/*c.truerule &&*/ (c.stop - c.start == 1)) continue;
+					Bitmap bmp = bmpcancel;
+					int sub = 16;
+					if (c.stop == 0xFFFC)
+						sub = 40;
+					if (c.stop == 0xFFFD)
+						bmp = bmpok;
 
-					if (c.truerule) pen = tpen; else pen = fpen;
-					if (c.start == csel) if (c.truerule) pen = tpens; else pen = fpens;
-					if (c.stop == csel) pen = new Pen(pen.Brush, 2);
-					int offset = 4;
-					if (c.truerule) offset+=4; 
-
-					if (c.start >= flowitems.Length) continue;
-					Control startlabel = (Control)flowitems[c.start];
-
-					if (c.stop >= 0xFFFC) 
+					gr.DrawLine(
+						pen, 
+						startlabel.Right, 
+						startlabel.Top + (startlabel.Height / 2) + offset,
+						img.Width-sub,
+						startlabel.Top + (startlabel.Height / 2) + offset
+						);
+					if (bmp!=null) 
 					{
-						Bitmap bmp = bmpcancel;
-						int sub = 16;
-						if (c.stop == 0xFFFC)
-							sub = 40;
-						if (c.stop == 0xFFFD)
-							bmp = bmpok;
-
-						gr.DrawLine(
-							pen, 
-							startlabel.Right, 
-							startlabel.Top + (startlabel.Height / 2) + offset,
+						gr.DrawImageUnscaled(
+							bmp,
 							img.Width-sub,
-							startlabel.Top + (startlabel.Height / 2) + offset
+							startlabel.Top + (startlabel.Height / 2) + offset - 8
 							);
-						if (bmp!=null) 
-						{
-							gr.DrawImageUnscaled(
-								bmp,
-								img.Width-sub,
-								startlabel.Top + (startlabel.Height / 2) + offset - 8
-								);
-						}
-						points = new Point[3];
-						points[0] = new Point(img.Width-sub, startlabel.Top + (startlabel.Height / 2) + offset);
-						points[1] = new Point(points[0].X - 4, points[0].Y - 4);
-						points[2] = new Point(points[0].X - 4, points[0].Y + 4);
-						gr.FillPolygon(pen.Brush, points);
-						continue;
 					}
-				
+					points = new Point[3];
+					points[0] = new Point(img.Width-sub, startlabel.Top + (startlabel.Height / 2) + offset);
+					points[1] = new Point(points[0].X - 4, points[0].Y - 4);
+					points[2] = new Point(points[0].X - 4, points[0].Y + 4);
+					gr.FillPolygon(pen.Brush, points);
+					continue;
+				}
+				else
 					if (c.stop >= flowitems.Length) continue;
+				else 
+				{
 					Control stoplabel = (Control)flowitems[c.stop];
 					gr.DrawLine(	
 						pen, 
@@ -365,7 +377,6 @@ namespace SimPe.PackedFiles.UserInterface
 						stoplabel.Right,
 						stoplabel.Top + (stoplabel.Height / 2) - offset
 						);
-			
 				
 					points = new Point[3];
 					points[0] = new Point(stoplabel.Right, stoplabel.Top + (stoplabel.Height / 2) - offset);
@@ -373,15 +384,9 @@ namespace SimPe.PackedFiles.UserInterface
 					points[2] = new Point(points[0].X + 4, points[0].Y + 4);
 					gr.FillPolygon(pen.Brush, points);
 				}
-				return img;
-			} 
-			catch (Exception ex) 
-			{
-				throw ex;
-				//return null;
 			}
-
-		}
+			return img;
+		} 
 
 		#endregion
 
@@ -517,7 +522,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void bhavInstListPanel_Resize(object sender, System.EventArgs e)
 		{
-			if (wrapper != null && pnflow != null)
+			if (wrapper != null && pnflow != null && ((System.Windows.Forms.Panel)sender).ClientRectangle.Width > 24)
 			{
 				myrepaint();
 			}
