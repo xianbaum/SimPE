@@ -1,4 +1,45 @@
 
+30 May 2005 16:07 - cosmetic changes to BCON/BHAV source
+  SimPe BHAV\
+    BconForm.cs 1.2
+    BconWrapper.cs 1.2
+    BhavForm.cs 1.11
+    BhavWrapper.cs 1.6
+    SimPe BHAV.csproj 1.5
+
+30 May 2005 16:04 - remove 'SimPe FileHandler' and 'SimPe GenericHandlers' but keep MMAT
+  SimPe\
+    Form1.cs 1.7
+    OpcodeProvider.cs 1.2
+    PLJones SimAntics Editor.csproj 1.3
+    PLJones SimAntics Editor.sln 1.3
+  SimPe Commandline\SimPe Commandline.csproj 1.3
+  SimPe Extended Filehanders\
+    CpfForm.cs 1.1 (moved)
+    CpfForm.de.resx 1.1 (moved)
+    CpfForm.de-DE.resx 1.1 (moved)
+    CpfForm.resx 1.1 (moved)
+    CpfItem.cs 1.1 (moved)
+    CpfWrapper.cs 1.1 (moved)
+    ExtObjdForm.cs 1.2
+    ExtObjdForm.resx 1.2
+    ExtObjdUI.cs (deleted)
+    ExtObjdWrapper.cs 1.2
+    FixGuid.cs 1.1 (moved)
+    NrefForm.cs 1.1 (moved)
+    NrefForm.de.resx 1.1 (moved)
+    NrefForm.de-DE.resx 1.1 (moved)
+    NrefForm.resx 1.1 (moved)
+    NrefWrapper.cs 1.1 (moved)
+    ObjdForm.cs 1.1 (moved)
+    ObjdForm.de.resx 1.1 (moved)
+    ObjdForm.de-DE.resx 1.1 (moved)
+    ObjdForm.resx 1.1 (moved)
+    ObjdWrapper.cs 1.1 (moved)
+    SimPe Extended Filehanders.csproj 1.2
+  SimPe Packages\SimPe Packages.csproj 1.2
+  SimPe Sims2CommunityPack\SimPe Sims2CommunityPack.csproj 1.2
+
 29 May 2005 16:27 - Stop GLOB editor causing an error
   SimPe BHAV\GlobForm.cs 1.2
 
