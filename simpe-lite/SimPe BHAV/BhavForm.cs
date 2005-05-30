@@ -1876,6 +1876,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
+		#endregion
 
 		private void ItemQueryContinueDragTarget(object sender, QueryContinueDragEventArgs e)
 		{
@@ -2214,6 +2215,5 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			if (somethingChanged) SendInst(currentInst);
 		}
-		#endregion
 	}
 }

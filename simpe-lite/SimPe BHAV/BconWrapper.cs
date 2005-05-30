@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -92,20 +94,6 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		#region IWrapper member
-		public override bool CheckVersion(uint version) 
-		{
-			if ( (version==0012) //0.00
-				|| (version==0013) //0.10
-				) 
-			{
-				return true;
-			}
-
-			return false;
-		}
-		#endregion
-		
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
@@ -164,12 +152,21 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 		#endregion
 
-		#region IFileWrapperSaveExtension Member		
-		//all covered by Serialize()
+		#region IWrapper member
+		public override bool CheckVersion(uint version) 
+		{
+			if ( (version==0012) //0.00
+				|| (version==0013) //0.10
+				) 
+			{
+				return true;
+			}
+
+			return false;
+		}
 		#endregion
 
 		#region IFileWrapper Member
-
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin
 		/// </summary>
@@ -188,11 +185,17 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				uint[] types = {0x42434F4E}; //handles the BCON File
+				uint[] types = {
+								   0x42434F4E	 // BCON
+							   };
 				return types;
 			}
 		}
 
 		#endregion		
+
+		#region IFileWrapperSaveExtension Member		
+		//all covered by Serialize()
+		#endregion
 	}
 }

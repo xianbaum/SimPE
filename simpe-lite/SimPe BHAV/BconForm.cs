@@ -35,7 +35,6 @@ namespace SimPe.PackedFiles.UserInterface
 	public class BconForm : System.Windows.Forms.Form, IPackedFileUI
 	{
 		#region Form variables
-
 		private System.Windows.Forms.TextBox tbFilename;
 		private System.Windows.Forms.LinkLabel llcadd;
 		private System.Windows.Forms.LinkLabel llcdel;
@@ -697,6 +696,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
+		#endregion
 
 		private void tbFilename_TextChanged(object sender, System.EventArgs e)
 		{
@@ -855,6 +855,5 @@ namespace SimPe.PackedFiles.UserInterface
 			}		
 		}
 
-		#endregion
 	}
 }

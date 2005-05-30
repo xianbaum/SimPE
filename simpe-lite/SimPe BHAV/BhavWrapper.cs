@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -134,20 +136,6 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		#region IWrapper member
-		public override bool CheckVersion(uint version) 
-		{
-			if ( (version==0012) //0.00
-				|| (version==0013) //0.10
-				) 
-			{
-				return true;
-			}
-
-			return false;
-		}
-		#endregion
-		
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
@@ -198,10 +186,17 @@ namespace SimPe.PackedFiles.Wrapper
 
 			instructions.Serialize(writer);
 		}
-		#endregion
+		public override bool CheckVersion(uint version) 
+		{
+			if ( (version==0012) //0.00
+				|| (version==0013) //0.10
+				) 
+			{
+				return true;
+			}
 
-		#region IFileWrapperSaveExtension Member		
-		//all covered by Serialize()
+			return false;
+		}
 		#endregion
 
 		#region IFileWrapper Member
@@ -231,14 +226,17 @@ namespace SimPe.PackedFiles.Wrapper
 			get
 			{
 				uint[] types = {
-								   0x42484156  //handles the BHAV File
-//								   ,0x54544142 //handles the TTAB File
+								   0x42484156  // BHAV
 							   };
 				return types;
 			}
 		}
 
 		#endregion		
+
+		#region IFileWrapperSaveExtension Member		
+		//all covered by Serialize()
+		#endregion
 	}
 
 
