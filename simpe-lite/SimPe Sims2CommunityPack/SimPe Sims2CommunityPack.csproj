@@ -160,8 +160,8 @@
                     HintPath = "ICSharpCode.SharpZipLib.dll"
                 />
                 <Reference
-                    Name = "SimPe FileHandlers"
-                    Project = "{97551C0A-6295-4E32-8E15-A4FF456E65A6}"
+                    Name = "SimPe Extended Filehandlers"
+                    Project = "{7EF7C30C-2968-46E8-AA74-79EDB0FE8F2A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
             </References>

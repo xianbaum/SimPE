@@ -7,10 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPe Packages", "..\SimPe 
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPe FileHandlers", "..\SimPe FileHandler\SimPe FileHandlers.csproj", "{97551C0A-6295-4E32-8E15-A4FF456E65A6}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPe Interfaces", "..\SimPe Interfaces\SimPe Interfaces.csproj", "{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
@@ -24,10 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPe HandlerCommon", "..\S
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPe GenericBase", "..\SimPe GenericBase\SimPe GenericBase.csproj", "{1DD372F9-D6F9-4724-8E7F-12BDE0FFAC74}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPe GenericFileHandlers", "..\SimPe GenericHandlers\SimPe GenericFileHandlers.csproj", "{CE6B173A-B19F-40B6-94A3-D8FB8A3FB74B}"
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
@@ -94,12 +86,6 @@ Global
 		{1C6C45BF-FE19-4C23-B327-01F45B0F269C}.Debug Txtr.Build.0 = Debug Txtr|.NET
 		{1C6C45BF-FE19-4C23-B327-01F45B0F269C}.Release.ActiveCfg = Release|.NET
 		{1C6C45BF-FE19-4C23-B327-01F45B0F269C}.Release.Build.0 = Release|.NET
-		{97551C0A-6295-4E32-8E15-A4FF456E65A6}.Debug.ActiveCfg = Debug|.NET
-		{97551C0A-6295-4E32-8E15-A4FF456E65A6}.Debug.Build.0 = Debug|.NET
-		{97551C0A-6295-4E32-8E15-A4FF456E65A6}.Debug Txtr.ActiveCfg = Debug Txtr|.NET
-		{97551C0A-6295-4E32-8E15-A4FF456E65A6}.Debug Txtr.Build.0 = Debug Txtr|.NET
-		{97551C0A-6295-4E32-8E15-A4FF456E65A6}.Release.ActiveCfg = Release|.NET
-		{97551C0A-6295-4E32-8E15-A4FF456E65A6}.Release.Build.0 = Release|.NET
 		{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}.Debug.ActiveCfg = Debug|.NET
 		{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}.Debug.Build.0 = Debug|.NET
 		{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}.Debug Txtr.ActiveCfg = Debug Txtr|.NET
@@ -124,12 +110,6 @@ Global
 		{1DD372F9-D6F9-4724-8E7F-12BDE0FFAC74}.Debug Txtr.Build.0 = Debug Txtr|.NET
 		{1DD372F9-D6F9-4724-8E7F-12BDE0FFAC74}.Release.ActiveCfg = Release|.NET
 		{1DD372F9-D6F9-4724-8E7F-12BDE0FFAC74}.Release.Build.0 = Release|.NET
-		{CE6B173A-B19F-40B6-94A3-D8FB8A3FB74B}.Debug.ActiveCfg = Debug|.NET
-		{CE6B173A-B19F-40B6-94A3-D8FB8A3FB74B}.Debug.Build.0 = Debug|.NET
-		{CE6B173A-B19F-40B6-94A3-D8FB8A3FB74B}.Debug Txtr.ActiveCfg = Debug Txtr|.NET
-		{CE6B173A-B19F-40B6-94A3-D8FB8A3FB74B}.Debug Txtr.Build.0 = Debug Txtr|.NET
-		{CE6B173A-B19F-40B6-94A3-D8FB8A3FB74B}.Release.ActiveCfg = Release|.NET
-		{CE6B173A-B19F-40B6-94A3-D8FB8A3FB74B}.Release.Build.0 = Release|.NET
 		{E319030F-251E-4D30-AC46-83D34FC3FC81}.Debug.ActiveCfg = Debug|.NET
 		{E319030F-251E-4D30-AC46-83D34FC3FC81}.Debug.Build.0 = Debug|.NET
 		{E319030F-251E-4D30-AC46-83D34FC3FC81}.Debug Txtr.ActiveCfg = Debug Txtr|.NET

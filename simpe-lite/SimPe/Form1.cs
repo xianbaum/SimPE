@@ -193,8 +193,8 @@ namespace SimPe
 			registry = new SimPe.PackedFiles.TypeRegistry();	
 			//register builtin Wrappers
 			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.ExtendedWrapperFactory());
-			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.DefaultWrapperFactory());
-			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.GenericWrapperFactory());
+//			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.DefaultWrapperFactory()); // SimPe FileHandler
+//			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.GenericWrapperFactory()); // SimPe GenericHandlers
 //			registry.Register(new SimPe.Plugin.WrapperFactory()); // SimPe Scenegraph
 //			registry.Register(new SimPe.Plugin.RefFileFactory()); // SimPe 3IDR
 			registry.Register(new SimPe.PackedFiles.Wrapper.Factory.ClstWrapperFactory());
@@ -3926,7 +3926,7 @@ namespace SimPe
 
 		private void MakeIntriguedNeighborhhodClick(object sender, System.EventArgs e)
 		{
-			if (package==null) return;
+/*			if (package==null) return;
 			try 
 			{
 				this.Cursor = Cursors.WaitCursor;
@@ -3970,7 +3970,7 @@ namespace SimPe
 			}
 
 			ProcessPackedFile(null, null);
-		}
+*/		}
 
 		private void RunSims2Clicked(object sender, System.EventArgs e)
 		{

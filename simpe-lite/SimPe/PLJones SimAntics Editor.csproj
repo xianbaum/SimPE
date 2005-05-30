@@ -135,11 +135,6 @@
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
-                    Name = "SimPe GenericFileHandlers"
-                    Project = "{CE6B173A-B19F-40B6-94A3-D8FB8A3FB74B}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "SimPe HandlerCommon"
                     Project = "{A4CC48FD-9574-4F0B-B721-9E8C1B1E6A8A}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -157,11 +152,6 @@
                 <Reference
                     Name = "SimPe Packages"
                     Project = "{1C6C45BF-FE19-4C23-B327-01F45B0F269C}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "SimPe FileHandlers"
-                    Project = "{97551C0A-6295-4E32-8E15-A4FF456E65A6}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference

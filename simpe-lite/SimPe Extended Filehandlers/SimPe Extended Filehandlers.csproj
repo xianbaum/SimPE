@@ -125,11 +125,6 @@
                     HintPath = "..\..\..\..\..\..\..\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
                 />
                 <Reference
-                    Name = "SimPe FileHandlers"
-                    Project = "{97551C0A-6295-4E32-8E15-A4FF456E65A6}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "SimsGUID"
                     Project = "{8A2A1FCD-F166-4AE8-A87A-7424215C93AF}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
@@ -140,6 +135,36 @@
             <Include>
                 <File
                     RelPath = "AssemblyInfo.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CpfForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CpfForm.de.resx"
+                    DependentUpon = "CpfForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "CpfForm.de-DE.resx"
+                    DependentUpon = "CpfForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "CpfForm.resx"
+                    DependentUpon = "CpfForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "CpfItem.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "CpfWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -159,12 +184,62 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "ExtObjdUI.cs"
+                    RelPath = "ExtObjdWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ExtObjdWrapper.cs"
+                    RelPath = "FixGuid.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NrefForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NrefForm.de.resx"
+                    DependentUpon = "NrefForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "NrefForm.de-DE.resx"
+                    DependentUpon = "NrefForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "NrefForm.resx"
+                    DependentUpon = "NrefForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "NrefWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ObjdForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ObjdForm.de.resx"
+                    DependentUpon = "ObjdForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ObjdForm.de-DE.resx"
+                    DependentUpon = "ObjdForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ObjdForm.resx"
+                    DependentUpon = "ObjdForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ObjdWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

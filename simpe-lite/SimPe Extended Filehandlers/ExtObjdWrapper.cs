@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -23,158 +25,34 @@ using SimPe.Interfaces.Plugin;
 
 namespace SimPe.PackedFiles.Wrapper
 {
-	#region Room Sort
-	public class ObjRoomSort : FlagBase 
-	{
-		public ObjRoomSort(short flags) : base((ushort)flags) {}
-
-		public bool InBathroom
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.Bathroom); }
-			set { SetBit((byte)Data.ObjRoomSortBits.Bathroom, value); }
-		}
-
-		public bool InBedroom
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.Bedroom); }
-			set { SetBit((byte)Data.ObjRoomSortBits.Bedroom, value); }
-		}
-
-		public bool InDiningRoom
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.DiningRoom); }
-			set { SetBit((byte)Data.ObjRoomSortBits.DiningRoom, value); }
-		}
-
-		public bool InKitchen
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.Kitchen); }
-			set { SetBit((byte)Data.ObjRoomSortBits.Kitchen, value); }
-		}
-
-		public bool InLivingRoom
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.LivingRoom); }
-			set { SetBit((byte)Data.ObjRoomSortBits.LivingRoom, value); }
-		}
-
-		public bool InMisc
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.Misc); }
-			set { SetBit((byte)Data.ObjRoomSortBits.Misc, value); }
-		}
-
-		public bool InOutside
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.Outside); }
-			set { SetBit((byte)Data.ObjRoomSortBits.Outside, value); }
-		}
-
-		public bool InStudy
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.Study); }
-			set { SetBit((byte)Data.ObjRoomSortBits.Study, value); }
-		}
-
-		public bool InKids
-		{
-			get { return GetBit((byte)Data.ObjRoomSortBits.Kids); }
-			set { SetBit((byte)Data.ObjRoomSortBits.Kids, value); }
-		}
-	}
-	#endregion
-
-	#region Function Sort
-	public class ObjFunctionSort : FlagBase 
-	{
-		public ObjFunctionSort(short flags) : base((ushort)flags) {}
-
-		public bool InAppliances
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.Appliances); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.Appliances, value); }
-		}
-
-		public bool InDecorative
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.Decorative); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.Decorative, value); }
-		}
-
-		public bool InElectronics
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.Electronics); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.Electronics, value); }
-		}
-
-		public bool InGeneral
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.General); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.General, value); }
-		}
-
-		public bool InLighting
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.Lighting); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.Lighting, value); }
-		}
-
-		public bool InPlumbing
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.Plumbing); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.Plumbing, value); }
-		}
-
-		public bool InSeating
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.Seating); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.Seating, value); }
-		}
-
-		public bool InSurfaces
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.Surfaces); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.Surfaces, value); }
-		}
-
-		public bool InHobbies
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.Hobbies); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.Hobbies, value); }
-		}
-
-		public bool InAspirationRewards
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.AspirationRewards); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.AspirationRewards, value); }
-		}
-
-		public bool InCareerRewards
-		{
-			get { return GetBit((byte)Data.ObjFunctionSortBits.CareerRewards); }
-			set { SetBit((byte)Data.ObjFunctionSortBits.CareerRewards, value); }
-		}
-	}
-	#endregion
-
 	/// <summary>
-	/// Represents a PackedFile in SDsc Format
+	/// This is the actual FileWrapper
 	/// </summary>
-	public class ExtObjd : AbstractWrapper, SimPe.Interfaces.Plugin.IFileWrapper, SimPe.Interfaces.Plugin.IFileWrapperSaveExtension
+	/// <remarks>
+	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
+	/// a BinaryStream and translates the data into some userdefine Attributes.
+	/// </remarks>
+	public class ExtObjd
+		: AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+		, IFileWrapper					//This Interface is used when loading a File
+		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
+		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
 	{
 		#region Attributes
 		/// <summary>
 		///the stored Filename		
 		/// </summary>
         private byte[] filename;
-
 		/// <summary>
 		/// The Type of this File
 		/// </summary>
 		private short[] data; 
+		uint guid, proxyguid, originalguid;
+		ObjRoomSort rsort;
+		ObjFunctionSort fsort;
+		#endregion
 
-		
-
+		#region Accessor Methods
 		/// <summary>
 		/// Returns/Sets the Name of a Sim
 		/// </summary>
@@ -199,7 +77,6 @@ namespace SimPe.PackedFiles.Wrapper
 			set { data = value; }
 		}
 
-		uint guid, proxyguid, originalguid;
 
 		/// <summary>
 		/// Returns the GUID of the Object
@@ -259,7 +136,6 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		ObjRoomSort rsort;
 		/// <summary>
 		/// Returns the Room Sort Flags
 		/// </summary>
@@ -269,7 +145,6 @@ namespace SimPe.PackedFiles.Wrapper
 			set { rsort = value; }
 		}
 
-		ObjFunctionSort fsort;
 		/// <summary>
 		/// Returns the Function Sort Flags
 		/// </summary>
@@ -278,7 +153,6 @@ namespace SimPe.PackedFiles.Wrapper
 			get { return fsort; }
 			set { fsort = value; }
 		}
-		#endregion
 
 		/// <summary>
 		/// Returns the Length of the File
@@ -288,23 +162,14 @@ namespace SimPe.PackedFiles.Wrapper
 			get { return (int)(data.Length*2 + 0x40); }
 		}
 
-
-		#region IWrapper Member
-		protected override IWrapperInfo CreateWrapperInfo()
-		{
-			return new AbstractWrapperInfo(
-				"Extended OBJD Wrapper",
-				"Quaxi",
-				"---",
-				2
-				); 
-		}
 		#endregion
+
+		// No constructor
 
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
-			return new SimPe.PackedFiles.UserInterface.ExtObjdUI();
+			return new UserInterface.ExtObjdForm();
 		}
 
 		Interfaces.Providers.IOpcodeProvider opcodes;
@@ -389,9 +254,18 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write(originalguid);
 			}
 		}
+		protected override IWrapperInfo CreateWrapperInfo()
+		{
+			return new AbstractWrapperInfo(
+				"Extended OBJD Wrapper",
+				"Quaxi",
+				"---",
+				2
+				); 
+		}
 		#endregion
 
-		#region IPackedFileWrapper Member
+		#region IFileWrapper Member
 		public override string Description
 		{
 			get
@@ -400,30 +274,165 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		/// <summary>
+		/// Returns the Signature that can be used to identify Files processable with this Plugin
+		/// </summary>
+		public Byte[] FileSignature
+		{
+			get 
+			{
+				return new byte[0];
+			}
+		}
+
+		/// <summary>
+		/// Returns a list of File Type this Plugin can process
+		/// </summary>
 		public uint[] AssignableTypes
 		{
 			get 
 			{
 				uint[] Types = {
-								   0x4F424A44
+								   0x4F424A44	// OBJD
 							   };
 				return Types;
 			}
 		}
 
-
-		public Byte[] FileSignature
-		{
-			get 
-			{
-				Byte[] sig = {					 
-							 };
-				return sig;
-			}
-		}		
-
-		
-
 		#endregion
+
+		#region IFileWrapperSaveExtension Member		
+		//all covered by Serialize()
+		#endregion
+	}
+
+
+	public class ObjRoomSort : FlagBase 
+	{
+		public ObjRoomSort(short flags) : base((ushort)flags) {}
+
+		public bool InBathroom
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.Bathroom); }
+			set { SetBit((byte)Data.ObjRoomSortBits.Bathroom, value); }
+		}
+
+		public bool InBedroom
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.Bedroom); }
+			set { SetBit((byte)Data.ObjRoomSortBits.Bedroom, value); }
+		}
+
+		public bool InDiningRoom
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.DiningRoom); }
+			set { SetBit((byte)Data.ObjRoomSortBits.DiningRoom, value); }
+		}
+
+		public bool InKitchen
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.Kitchen); }
+			set { SetBit((byte)Data.ObjRoomSortBits.Kitchen, value); }
+		}
+
+		public bool InLivingRoom
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.LivingRoom); }
+			set { SetBit((byte)Data.ObjRoomSortBits.LivingRoom, value); }
+		}
+
+		public bool InMisc
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.Misc); }
+			set { SetBit((byte)Data.ObjRoomSortBits.Misc, value); }
+		}
+
+		public bool InOutside
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.Outside); }
+			set { SetBit((byte)Data.ObjRoomSortBits.Outside, value); }
+		}
+
+		public bool InStudy
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.Study); }
+			set { SetBit((byte)Data.ObjRoomSortBits.Study, value); }
+		}
+
+		public bool InKids
+		{
+			get { return GetBit((byte)Data.ObjRoomSortBits.Kids); }
+			set { SetBit((byte)Data.ObjRoomSortBits.Kids, value); }
+		}
+	}
+	public class ObjFunctionSort : FlagBase 
+	{
+		public ObjFunctionSort(short flags) : base((ushort)flags) {}
+
+		public bool InAppliances
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.Appliances); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.Appliances, value); }
+		}
+
+		public bool InDecorative
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.Decorative); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.Decorative, value); }
+		}
+
+		public bool InElectronics
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.Electronics); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.Electronics, value); }
+		}
+
+		public bool InGeneral
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.General); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.General, value); }
+		}
+
+		public bool InLighting
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.Lighting); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.Lighting, value); }
+		}
+
+		public bool InPlumbing
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.Plumbing); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.Plumbing, value); }
+		}
+
+		public bool InSeating
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.Seating); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.Seating, value); }
+		}
+
+		public bool InSurfaces
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.Surfaces); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.Surfaces, value); }
+		}
+
+		public bool InHobbies
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.Hobbies); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.Hobbies, value); }
+		}
+
+		public bool InAspirationRewards
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.AspirationRewards); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.AspirationRewards, value); }
+		}
+
+		public bool InCareerRewards
+		{
+			get { return GetBit((byte)Data.ObjFunctionSortBits.CareerRewards); }
+			set { SetBit((byte)Data.ObjFunctionSortBits.CareerRewards, value); }
+		}
 	}
 }

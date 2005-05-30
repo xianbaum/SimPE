@@ -152,7 +152,7 @@ namespace SimPe.Providers
 					o[0] = pfd;
 					o[1] = (Data.ObjectTypes)objd.Type;
 					o[2] = null;
-					SimPe.PackedFiles.Wrapper.Picture pic = new SimPe.PackedFiles.Wrapper.Picture();
+/*					SimPe.PackedFiles.Wrapper.Picture pic = new SimPe.PackedFiles.Wrapper.Picture();
 					Interfaces.Scenegraph.IScenegraphFileIndexItem[] iitems = FileTable.FileIndex.FindFile(Data.MetaData.SIM_IMAGE_FILE, pfd.Group, 1);	
 					if (iitems.Length>0) 
 					{
@@ -162,7 +162,7 @@ namespace SimPe.Providers
 
 						WaitingScreen.Update(img, ct.ToString()+max);
 					}
-					a.Tag = o;
+*/					a.Tag = o;
 					if (!memories.Contains(objd.Guid)) memories.Add(objd.Guid, a);
 		
 				} //foreach item								
