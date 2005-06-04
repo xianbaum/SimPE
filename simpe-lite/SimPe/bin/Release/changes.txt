@@ -1,4 +1,15 @@
 
+4 June 2005 20:35 - Eliminate InstructionItem; draw lines true/false to next; eliminate BMPs
+  SimPe BHAV\
+    BhavInstListControl.cs 1.11
+    BhavInstListItemUI.cs 1.5
+    BhavInstListItemUI.resx 1.3
+
+4 June 2005 20:25 - Change "move ... lines up/down" to "Up / Down ... lines" with separate links
+  SimPe BHAV\
+    BhavForm.cs 1.12
+    BhavForm.resx 1.7
+
 4 June 2005 16:00 - move true/false over near the link lines
   SimPe BHAV\
     BhavInstListItemUI.cs 1.4
