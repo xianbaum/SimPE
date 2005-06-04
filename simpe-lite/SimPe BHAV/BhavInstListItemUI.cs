@@ -82,7 +82,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (inst.Target1 > max && inst.Target1 < 0xFFFC)
 				trueTarget.ForeColor = System.Drawing.Color.Fuchsia;
 
-			falseTarget.Left = trueTarget.Left + trueTarget.Width + 4;
+//			falseTarget.Left = trueTarget.Left + trueTarget.Width + 4;
 			falseTarget.Text = "false: "+inst.Target2.ToString("X");
 			falseTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target2 <= max)
@@ -174,6 +174,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.instrText.AccessibleName = resources.GetString("instrText.AccessibleName");
 			this.instrText.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("instrText.Anchor")));
 			this.instrText.AutoSize = ((bool)(resources.GetObject("instrText.AutoSize")));
+			this.instrText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.instrText.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("instrText.Dock")));
 			this.instrText.Enabled = ((bool)(resources.GetObject("instrText.Enabled")));
 			this.instrText.Font = ((System.Drawing.Font)(resources.GetObject("instrText.Font")));
@@ -210,7 +211,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trueTarget.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("trueTarget.RightToLeft")));
 			this.trueTarget.Size = ((System.Drawing.Size)(resources.GetObject("trueTarget.Size")));
 			this.trueTarget.TabIndex = ((int)(resources.GetObject("trueTarget.TabIndex")));
-			this.trueTarget.TabStop = true;
 			this.trueTarget.Text = resources.GetString("trueTarget.Text");
 			this.trueTarget.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("trueTarget.TextAlign")));
 			this.trueTarget.Visible = ((bool)(resources.GetObject("trueTarget.Visible")));
@@ -236,7 +236,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.falseTarget.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("falseTarget.RightToLeft")));
 			this.falseTarget.Size = ((System.Drawing.Size)(resources.GetObject("falseTarget.Size")));
 			this.falseTarget.TabIndex = ((int)(resources.GetObject("falseTarget.TabIndex")));
-			this.falseTarget.TabStop = true;
 			this.falseTarget.Text = resources.GetString("falseTarget.Text");
 			this.falseTarget.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("falseTarget.TextAlign")));
 			this.falseTarget.Visible = ((bool)(resources.GetObject("falseTarget.Visible")));
@@ -303,7 +302,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavInstListItem.AutoSize = ((bool)(resources.GetObject("bhavInstListItem.AutoSize")));
 			this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 			this.bhavInstListItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavInstListItem.BackgroundImage")));
-			this.bhavInstListItem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.bhavInstListItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.bhavInstListItem.Controls.Add(this.moveUp);
 			this.bhavInstListItem.Controls.Add(this.moveDown);
 			this.bhavInstListItem.Controls.Add(this.falseTarget);
