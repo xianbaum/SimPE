@@ -75,7 +75,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private int csel = -1;
 		private Bhav wrapper = null;
-		private InstructionItem[] flowitems;
+		private BhavInstListItemUI[] flowitems;
 		private PictureBox pnflow = null;
 
 		public void UpdateGUI(Bhav wrp)
@@ -154,7 +154,7 @@ namespace SimPe.PackedFiles.UserInterface
 				wrapper.Instructions[csel] = value.Clone();
 
 				pnflow.Controls.RemoveAt(csel);
-				flowitems[csel] = makeInstructionItem(csel);
+				flowitems[csel] = makeBhavInstListItemUI(csel);
 				flowitems[csel].MakeSelected();
 				pnflow.Image = DrawConnectors();
 				Update();
@@ -234,12 +234,13 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 
 			pnflow.Controls.Clear();
-			flowitems = new InstructionItem[wrapper.Instructions.Count];
+			flowitems = new BhavInstListItemUI[wrapper.Instructions.Count];
 
 			for (int i = 0; i < wrapper.Instructions.Count; i++)
-				flowitems[i] = makeInstructionItem(i);
+				flowitems[i] = makeBhavInstListItemUI(i);
 			if (csel != -1)
 				flowitems[csel].MakeSelected();
+
 			pnflow.Image = DrawConnectors();
 
 			if (pnflow.Name == "pnflow1") // indicates which we just updated
@@ -256,14 +257,14 @@ namespace SimPe.PackedFiles.UserInterface
 			Update();
 		}
 
-		private InstructionItem makeInstructionItem(int ct)
+		private BhavInstListItemUI makeBhavInstListItemUI(int ct)
 		{
 			bool isTarget = false;
 			for (int j = 0; j < wrapper.Instructions.Count && !isTarget; j++)
 				if (ct == 0 || (wrapper.Instructions[j].Target1 == ct) || (wrapper.Instructions[j].Target2 == ct))
 					isTarget = true;
 
-			InstructionItem i = new InstructionItem(ct, wrapper.Instructions[ct], wrapper.Instructions.Count - 1, pnflow, isTarget);
+			BhavInstListItemUI i = new BhavInstListItemUI(ct, wrapper.Instructions[ct], wrapper.Instructions.Count - 1, pnflow, isTarget);
 
 			i.Top = ct*(BhavInstListItemUI.rowHeight+4);
 			i.Width = bhavInstListPanel.Width - 120;
@@ -284,9 +285,10 @@ namespace SimPe.PackedFiles.UserInterface
 			if (bhavInstListPanel.ClientRectangle.Width <= 24)
 				return null;
 
-			Connector[] connectors = InstructionItem.Connectors(flowitems);			
+			Connector[] connectors = Connector.Connectors(wrapper.Instructions);
 			Connector.ResolveCollisions(connectors);
 
+			string s = "Müû"; // WingDings for Error, False, True.
 			Bitmap img = new Bitmap(bhavInstListPanel.ClientRectangle.Width-24, flowitems.Length * (BhavInstListItemUI.rowHeight + 4));
 			Graphics gr = Graphics.FromImage(img);
 			gr.SmoothingMode =  System.Drawing.Drawing2D.SmoothingMode.HighQuality;
@@ -299,15 +301,11 @@ namespace SimPe.PackedFiles.UserInterface
 			Pen fpens = new Pen(Color.LightCoral, 2);
 			Pen pen;
 
-			string [] resNames = this.GetType().Assembly.GetManifestResourceNames();
-
-			Bitmap bmpok = new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.button_ok.png"));
-			Bitmap bmpcancel = new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.button_cancel.png"));
 			Point[] points;
+
 			foreach (Connector c in connectors) 
 			{
 				if (c==null) continue;
-				if ((c.stop - c.start == 1)) continue;
 				if (c.start >= flowitems.Length) continue;
 
 				if (c.truerule) pen = tpen; else pen = fpen;
@@ -318,71 +316,88 @@ namespace SimPe.PackedFiles.UserInterface
 
 				Control startlabel = (Control)flowitems[c.start];
 
-				if (c.stop >= 0xFFFC) 
+				if (c.stop >= flowitems.Length)
 				{
-					Bitmap bmp = bmpcancel;
-					int sub = 16;
-					if (c.stop == 0xFFFC)
-						sub = 40;
-					if (c.stop == 0xFFFD)
-						bmp = bmpok;
+					int sub1 = 36, sub2 = 36;
+					if (!c.truerule) { sub1 -= 14; sub2 -= 14; }
+					if (c.stop == 0xFFFC) { sub1 -= 4; }
 
 					gr.DrawLine(
 						pen, 
 						startlabel.Right, 
 						startlabel.Top + (startlabel.Height / 2) + offset,
-						img.Width-sub,
+						img.Width-sub1,
 						startlabel.Top + (startlabel.Height / 2) + offset
 						);
-					if (bmp!=null) 
+					if (c.stop >= 0xFFFC) 
 					{
-						gr.DrawImageUnscaled(
-							bmp,
-							img.Width-sub,
+						gr.DrawString(s.Substring(c.stop - 0xFFFC, 1), new System.Drawing.Font("WingDings", 16),
+							pen.Brush,
+							img.Width-sub2,
 							startlabel.Top + (startlabel.Height / 2) + offset - 8
 							);
 					}
-					points = new Point[3];
-					points[0] = new Point(img.Width-sub, startlabel.Top + (startlabel.Height / 2) + offset);
-					points[1] = new Point(points[0].X - 4, points[0].Y - 4);
-					points[2] = new Point(points[0].X - 4, points[0].Y + 4);
-					gr.FillPolygon(pen.Brush, points);
-					continue;
+					else 
+					{
+						gr.DrawString("!!", new System.Drawing.Font("Arial", 16),
+							pen.Brush,
+							img.Width-sub2,
+							startlabel.Top + (startlabel.Height / 2) + offset - 8
+							);
+					}
 				}
+
 				else
-					if (c.stop >= flowitems.Length) continue;
-				else 
 				{
-					Control stoplabel = (Control)flowitems[c.stop];
-					gr.DrawLine(	
-						pen, 
-						startlabel.Right, 
-						startlabel.Top + (startlabel.Height / 2) + offset,
-						startlabel.Right + (c.lane * 4) + offset,
-						startlabel.Top + (startlabel.Height / 2) + offset
-						);
+					if (c.stop - c.start == 1)
+					{
+						const int trueoffset = 8;
+						const int falseoffset = 72;
+						int sub;
+						if (c.truerule) sub = trueoffset;
+						else sub = falseoffset;
 
-					gr.DrawLine(	
-						pen, 
-						startlabel.Right + (c.lane * 4) + offset, 
-						startlabel.Top + (startlabel.Height / 2) + offset,
-						stoplabel.Right + (c.lane * 4) + offset,
-						stoplabel.Top + (stoplabel.Height / 2) - offset 
-						);
+						gr.DrawLine(	
+							pen, 
+							startlabel.Width - 144 + sub,
+							startlabel.Bottom,
+							startlabel.Width - 144 + sub,
+							startlabel.Bottom + 5
+							);
+					}
+					else 
+					{
+						Control stoplabel = (Control)flowitems[c.stop];
+						gr.DrawLine(	
+							pen, 
+							startlabel.Right, 
+							startlabel.Top + (startlabel.Height / 2) + offset,
+							startlabel.Right + (c.lane * 4) + offset,
+							startlabel.Top + (startlabel.Height / 2) + offset
+							);
 
-					gr.DrawLine(	
-						pen, 
-						stoplabel.Right + (c.lane * 4) + offset, 
-						stoplabel.Top + (stoplabel.Height / 2) - offset,
-						stoplabel.Right,
-						stoplabel.Top + (stoplabel.Height / 2) - offset
-						);
+						gr.DrawLine(	
+							pen, 
+							startlabel.Right + (c.lane * 4) + offset, 
+							startlabel.Top + (startlabel.Height / 2) + offset,
+							stoplabel.Right + (c.lane * 4) + offset,
+							stoplabel.Top + (stoplabel.Height / 2) - offset 
+							);
+
+						gr.DrawLine(	
+							pen, 
+							stoplabel.Right + (c.lane * 4) + offset, 
+							stoplabel.Top + (stoplabel.Height / 2) - offset,
+							stoplabel.Right,
+							stoplabel.Top + (stoplabel.Height / 2) - offset
+							);
 				
-					points = new Point[3];
-					points[0] = new Point(stoplabel.Right, stoplabel.Top + (stoplabel.Height / 2) - offset);
-					points[1] = new Point(points[0].X + 4, points[0].Y - 4);
-					points[2] = new Point(points[0].X + 4, points[0].Y + 4);
-					gr.FillPolygon(pen.Brush, points);
+						points = new Point[3];
+						points[0] = new Point(stoplabel.Right, stoplabel.Top + (stoplabel.Height / 2) - offset);
+						points[1] = new Point(points[0].X + 4, points[0].Y - 4);
+						points[2] = new Point(points[0].X + 4, points[0].Y + 4);
+						gr.FillPolygon(pen.Brush, points);
+					}
 				}
 			}
 			return img;
@@ -490,10 +505,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
+		#endregion
 
 		private void bhavInst_MoveUp(object sender, System.EventArgs e) { MoveInst(-1); }
 		private void bhavInst_MoveDown(object sender, System.EventArgs e) { MoveInst(1); }
-		private void bhavInst_Selected(object sender, System.EventArgs e) { SelectedIndex = ((InstructionItem)sender).findUI(flowitems); }
+		private void bhavInst_Selected(object sender, System.EventArgs e) { SelectedIndex = ((BhavInstListItemUI)sender).findUI(flowitems); }
 		private void bhavInst_Unselected(object sender, System.EventArgs e) {/* SelectedIndex = -1; */}
 		private void bhavInst_TargetClick(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e) { SelectedIndex = (UInt16)e.Link.LinkData; }
 		private void bhavInst_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
@@ -544,72 +560,38 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		#endregion
 	}
 
-	internal class InstructionItem : BhavInstListItemUI
-	{
-		public Connector TrueConnect 
-		{
-			get 
-			{
-				Connector c = new Connector();
-				c.start = index;
-				c.stop = inst.Target1;
-				c.lane = 0;
-				c.truerule = true;
-				return c;
-			}
-		}
-		public Connector FalseConnect
-		{
-			get 
-			{
-				Connector c = new Connector();
-				c.start = index;
-				c.stop = inst.Target2;
-				c.lane = 0;
-				c.truerule = false;
-				return c;
-			}
-		}
-
-		public static Connector[] Connectors(InstructionItem[] items)
-		{
-			if (items==null) return new Connector[0];
-			Connector[] cs = new Connector[items.Length*2];
-			for (int i=0; i<items.Length; i++)
-			{
-				cs[i*2] = items[i].TrueConnect;
-				cs[i*2+1] = items[i].FalseConnect;
-			}
-
-			return cs;
-		}
-
-
-		public InstructionItem(int ct, Instruction i, int max, PictureBox parent, bool isTarget) : base(ct, i, max, parent, isTarget) {}
-
-		public int findUI(InstructionItem[] items)
-		{
-			for (int i = 0; i < items.Length; i++)
-				if (items[i] == this) return i;
-			return -1;
-		}
-	}
 
 	/// <summary>
 	/// Used for Instruction Connectors
 	/// </summary>
 	internal class Connector 
 	{
+		/// <summary>
+		/// Instruction number for start of connector
+		/// </summary>
 		public int start;
+		/// <summary>
+		/// Instruction number for end of connector
+		/// </summary>
 		public int stop;
 		public int lane;
+		/// <summary>
+		/// True if this is connection from a True link
+		/// </summary>
 		public bool truerule;
 
+		public Connector(int start, int stop, int lane, bool truerule)
+		{
+			this.start = start;
+			this.stop = stop;
+			this.lane = lane;
+			this.truerule = truerule;
+		}
+
 		/// <summary>
-		/// Returns the Distance of start and stop
+		/// Returns the number of instructions between 'start' and 'stop'
 		/// </summary>
 		public int Distance 
 		{
@@ -617,7 +599,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 		/// <summary>
-		/// Returns the Upper EdgePOint (smaler number)
+		/// Which of 'start' and 'stop' is the earlier instruction
 		/// </summary>
 		public int Top 
 		{
@@ -625,7 +607,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 		/// <summary>
-		/// Returns the Lower EdgePOint (bigger number)
+		/// Which of 'start' and 'stop' is the later instruction
 		/// </summary>
 		public int Bottom
 		{
@@ -640,6 +622,24 @@ namespace SimPe.PackedFiles.UserInterface
 		public bool HasCollisionWith(Connector c)
 		{
 			return !((Bottom <= c.Top ) || (Top >= c.Bottom));
+		}
+
+		/// <summary>
+		/// Returns an array of pairs of Connector()s for the true and false targets of each instruction
+		/// </summary>
+		/// <param name="items">BhavInstList from wrapper</param>
+		/// <returns></returns>
+		public static Connector[] Connectors(BhavInstList items)
+		{
+			if (items==null) return new Connector[0];
+			Connector[] cs = new Connector[items.Count*2];
+			for (int i=0; i<items.Count; i++)
+			{
+				cs[i*2] = new Connector(i, items[i].Target1, 0, true);
+				cs[i*2+1] = new Connector(i, items[i].Target2, 0, false);
+			}
+
+			return cs;
 		}
 
 		/// <summary>
@@ -660,5 +660,6 @@ namespace SimPe.PackedFiles.UserInterface
 				c1.lane += countsub - 1;
 			}
 		}
+
 	}
 }

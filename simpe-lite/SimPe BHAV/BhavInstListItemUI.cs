@@ -35,8 +35,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label instrText;
 		private System.Windows.Forms.LinkLabel trueTarget;
 		private System.Windows.Forms.LinkLabel falseTarget;
-		private System.Windows.Forms.LinkLabel moveDown;
-		private System.Windows.Forms.LinkLabel moveUp;
 		private System.Windows.Forms.TextBox bhavInstListItem;
 		/// <summary> 
 		/// Required designer variable.
@@ -59,7 +57,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			// TODO: Add any initialization after the InitializeComponent call
 			this.isTarget = isTarget;
-			this.inst = inst;
+//			this.inst = inst;
 			this.Left = 0;
 			this.Height = rowHeight;
 			if (isTarget)
@@ -82,7 +80,6 @@ namespace SimPe.PackedFiles.UserInterface
 			if (inst.Target1 > max && inst.Target1 < 0xFFFC)
 				trueTarget.ForeColor = System.Drawing.Color.Fuchsia;
 
-//			falseTarget.Left = trueTarget.Left + trueTarget.Width + 4;
 			falseTarget.Text = "false: "+inst.Target2.ToString("X");
 			falseTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target2 <= max)
@@ -90,10 +87,6 @@ namespace SimPe.PackedFiles.UserInterface
 			if (inst.Target2 > max && inst.Target2 < 0xFFFC)
 				falseTarget.ForeColor = System.Drawing.Color.Fuchsia;
 
-			if (index == 0)
-				moveUp.Visible = false;
-			if (index == max)
-				moveDown.Visible = false;
 		}
 
 		/// <summary> 
@@ -126,6 +119,14 @@ namespace SimPe.PackedFiles.UserInterface
 		protected virtual void OnMoveDown(EventArgs e) { if (MoveDown != null) { MoveDown(this, e); } }
 
 
+//		protected Instruction inst;
+		private bool isTarget = false;
+		public int index
+		{
+			get { return (int)Tag; }
+			set { Tag = value; }
+		}
+
 		public void MakeSelected()
 		{
 			if (isTarget)
@@ -142,13 +143,13 @@ namespace SimPe.PackedFiles.UserInterface
 				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;
 		}
 
-		protected Instruction inst;
-		private bool isTarget = false;
-		public int index
+		public int findUI(BhavInstListItemUI[] items)
 		{
-			get { return (int)Tag; }
-			set { Tag = value; }
+			for (int i = 0; i < items.Length; i++)
+				if (this == items[i]) return i;
+			return -1;
 		}
+
 		#endregion
 
 		#region Component Designer generated code
@@ -162,8 +163,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.instrText = new System.Windows.Forms.Label();
 			this.trueTarget = new System.Windows.Forms.LinkLabel();
 			this.falseTarget = new System.Windows.Forms.LinkLabel();
-			this.moveDown = new System.Windows.Forms.LinkLabel();
-			this.moveUp = new System.Windows.Forms.LinkLabel();
 			this.bhavInstListItem = new System.Windows.Forms.TextBox();
 			this.bhavInstListItem.SuspendLayout();
 			this.SuspendLayout();
@@ -242,58 +241,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.falseTarget.Click += new System.EventHandler(this.Control_Click);
 			this.falseTarget.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Target_LinkClicked);
 			// 
-			// moveDown
-			// 
-			this.moveDown.AccessibleDescription = resources.GetString("moveDown.AccessibleDescription");
-			this.moveDown.AccessibleName = resources.GetString("moveDown.AccessibleName");
-			this.moveDown.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("moveDown.Anchor")));
-			this.moveDown.AutoSize = ((bool)(resources.GetObject("moveDown.AutoSize")));
-			this.moveDown.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("moveDown.Dock")));
-			this.moveDown.Enabled = ((bool)(resources.GetObject("moveDown.Enabled")));
-			this.moveDown.Font = ((System.Drawing.Font)(resources.GetObject("moveDown.Font")));
-			this.moveDown.Image = ((System.Drawing.Image)(resources.GetObject("moveDown.Image")));
-			this.moveDown.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("moveDown.ImageAlign")));
-			this.moveDown.ImageIndex = ((int)(resources.GetObject("moveDown.ImageIndex")));
-			this.moveDown.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("moveDown.ImeMode")));
-			this.moveDown.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("moveDown.LinkArea")));
-			this.moveDown.Location = ((System.Drawing.Point)(resources.GetObject("moveDown.Location")));
-			this.moveDown.Name = "moveDown";
-			this.moveDown.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("moveDown.RightToLeft")));
-			this.moveDown.Size = ((System.Drawing.Size)(resources.GetObject("moveDown.Size")));
-			this.moveDown.TabIndex = ((int)(resources.GetObject("moveDown.TabIndex")));
-			this.moveDown.TabStop = true;
-			this.moveDown.Text = resources.GetString("moveDown.Text");
-			this.moveDown.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("moveDown.TextAlign")));
-			this.moveDown.Visible = ((bool)(resources.GetObject("moveDown.Visible")));
-			this.moveDown.Click += new System.EventHandler(this.Control_Click);
-			this.moveDown.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.moveDown_LinkClicked);
-			// 
-			// moveUp
-			// 
-			this.moveUp.AccessibleDescription = resources.GetString("moveUp.AccessibleDescription");
-			this.moveUp.AccessibleName = resources.GetString("moveUp.AccessibleName");
-			this.moveUp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("moveUp.Anchor")));
-			this.moveUp.AutoSize = ((bool)(resources.GetObject("moveUp.AutoSize")));
-			this.moveUp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("moveUp.Dock")));
-			this.moveUp.Enabled = ((bool)(resources.GetObject("moveUp.Enabled")));
-			this.moveUp.Font = ((System.Drawing.Font)(resources.GetObject("moveUp.Font")));
-			this.moveUp.Image = ((System.Drawing.Image)(resources.GetObject("moveUp.Image")));
-			this.moveUp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("moveUp.ImageAlign")));
-			this.moveUp.ImageIndex = ((int)(resources.GetObject("moveUp.ImageIndex")));
-			this.moveUp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("moveUp.ImeMode")));
-			this.moveUp.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("moveUp.LinkArea")));
-			this.moveUp.Location = ((System.Drawing.Point)(resources.GetObject("moveUp.Location")));
-			this.moveUp.Name = "moveUp";
-			this.moveUp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("moveUp.RightToLeft")));
-			this.moveUp.Size = ((System.Drawing.Size)(resources.GetObject("moveUp.Size")));
-			this.moveUp.TabIndex = ((int)(resources.GetObject("moveUp.TabIndex")));
-			this.moveUp.TabStop = true;
-			this.moveUp.Text = resources.GetString("moveUp.Text");
-			this.moveUp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("moveUp.TextAlign")));
-			this.moveUp.Visible = ((bool)(resources.GetObject("moveUp.Visible")));
-			this.moveUp.Click += new System.EventHandler(this.Control_Click);
-			this.moveUp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.moveUp_LinkClicked);
-			// 
 			// bhavInstListItem
 			// 
 			this.bhavInstListItem.AccessibleDescription = resources.GetString("bhavInstListItem.AccessibleDescription");
@@ -303,8 +250,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 			this.bhavInstListItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavInstListItem.BackgroundImage")));
 			this.bhavInstListItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.bhavInstListItem.Controls.Add(this.moveUp);
-			this.bhavInstListItem.Controls.Add(this.moveDown);
 			this.bhavInstListItem.Controls.Add(this.falseTarget);
 			this.bhavInstListItem.Controls.Add(this.trueTarget);
 			this.bhavInstListItem.Controls.Add(this.instrText);
