@@ -55,7 +55,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ComboBox tba1;
 		private System.Windows.Forms.ComboBox tba2;
 		private System.Windows.Forms.LinkLabel llopenbhav;
-		private System.Windows.Forms.LinkLabel llmove;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label11;
@@ -92,6 +91,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnOpCode;
 		private System.Windows.Forms.Button btnOperandWiz;
 		private System.Windows.Forms.Button btnSort;
+		private System.Windows.Forms.LinkLabel llmvDown;
+		private System.Windows.Forms.LinkLabel llmvUp;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -161,7 +162,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 			//btnOperandWiz.Enabled = !state;
 
-			llmove.Enabled = !state;
+			llmvUp.Enabled = !state;
+			llmvDown.Enabled = !state;
 			tbLines.ReadOnly = state;
 		}
 
@@ -219,6 +221,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.tbInst_Instruction.Text = inst.ToString();
 				SetReadOnly(false);
+				llmvUp.Enabled = pnflowcontainer.SelectedIndex > 0;
+				llmvDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Instructions.Count - 1;
 				lldel.Enabled = true;
 			}
 			else
@@ -325,7 +329,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label1 = new System.Windows.Forms.Label();
 			this.gbInstruction = new System.Windows.Forms.GroupBox();
 			this.lbUpDown = new System.Windows.Forms.Label();
-			this.llmove = new System.Windows.Forms.LinkLabel();
+			this.llmvDown = new System.Windows.Forms.LinkLabel();
 			this.tbLines = new System.Windows.Forms.TextBox();
 			this.btnOperandWiz = new System.Windows.Forms.Button();
 			this.llopenbhav = new System.Windows.Forms.LinkLabel();
@@ -378,6 +382,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel = new System.Windows.Forms.Panel();
 			this.btnSort = new System.Windows.Forms.Button();
 			this.btnCommit = new System.Windows.Forms.Button();
+			this.llmvUp = new System.Windows.Forms.LinkLabel();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -392,7 +397,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("pnflowcontainer.AutoScrollMargin")));
 			this.pnflowcontainer.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnflowcontainer.AutoScrollMinSize")));
 			this.pnflowcontainer.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnflowcontainer.BackgroundImage")));
-			this.pnflowcontainer.SelectedInst = null;
 			this.pnflowcontainer.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnflowcontainer.Dock")));
 			this.pnflowcontainer.Enabled = ((bool)(resources.GetObject("pnflowcontainer.Enabled")));
 			this.pnflowcontainer.Font = ((System.Drawing.Font)(resources.GetObject("pnflowcontainer.Font")));
@@ -401,6 +405,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.Name = "pnflowcontainer";
 			this.pnflowcontainer.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnflowcontainer.RightToLeft")));
 			this.pnflowcontainer.SelectedIndex = -1;
+			this.pnflowcontainer.SelectedInst = null;
 			this.pnflowcontainer.Size = ((System.Drawing.Size)(resources.GetObject("pnflowcontainer.Size")));
 			this.pnflowcontainer.TabIndex = ((int)(resources.GetObject("pnflowcontainer.TabIndex")));
 			this.pnflowcontainer.Visible = ((bool)(resources.GetObject("pnflowcontainer.Visible")));
@@ -435,8 +440,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.AccessibleName = resources.GetString("gbInstruction.AccessibleName");
 			this.gbInstruction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbInstruction.Anchor")));
 			this.gbInstruction.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbInstruction.BackgroundImage")));
+			this.gbInstruction.Controls.Add(this.llmvUp);
 			this.gbInstruction.Controls.Add(this.lbUpDown);
-			this.gbInstruction.Controls.Add(this.llmove);
+			this.gbInstruction.Controls.Add(this.llmvDown);
 			this.gbInstruction.Controls.Add(this.tbLines);
 			this.gbInstruction.Controls.Add(this.btnOperandWiz);
 			this.gbInstruction.Controls.Add(this.llopenbhav);
@@ -506,30 +512,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbUpDown.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbUpDown.TextAlign")));
 			this.lbUpDown.Visible = ((bool)(resources.GetObject("lbUpDown.Visible")));
 			// 
-			// llmove
+			// llmvDown
 			// 
-			this.llmove.AccessibleDescription = resources.GetString("llmove.AccessibleDescription");
-			this.llmove.AccessibleName = resources.GetString("llmove.AccessibleName");
-			this.llmove.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llmove.Anchor")));
-			this.llmove.AutoSize = ((bool)(resources.GetObject("llmove.AutoSize")));
-			this.llmove.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llmove.Dock")));
-			this.llmove.Enabled = ((bool)(resources.GetObject("llmove.Enabled")));
-			this.llmove.Font = ((System.Drawing.Font)(resources.GetObject("llmove.Font")));
-			this.llmove.Image = ((System.Drawing.Image)(resources.GetObject("llmove.Image")));
-			this.llmove.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llmove.ImageAlign")));
-			this.llmove.ImageIndex = ((int)(resources.GetObject("llmove.ImageIndex")));
-			this.llmove.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llmove.ImeMode")));
-			this.llmove.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llmove.LinkArea")));
-			this.llmove.Location = ((System.Drawing.Point)(resources.GetObject("llmove.Location")));
-			this.llmove.Name = "llmove";
-			this.llmove.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llmove.RightToLeft")));
-			this.llmove.Size = ((System.Drawing.Size)(resources.GetObject("llmove.Size")));
-			this.llmove.TabIndex = ((int)(resources.GetObject("llmove.TabIndex")));
-			this.llmove.TabStop = true;
-			this.llmove.Text = resources.GetString("llmove.Text");
-			this.llmove.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llmove.TextAlign")));
-			this.llmove.Visible = ((bool)(resources.GetObject("llmove.Visible")));
-			this.llmove.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llmove_LinkClicked);
+			this.llmvDown.AccessibleDescription = resources.GetString("llmvDown.AccessibleDescription");
+			this.llmvDown.AccessibleName = resources.GetString("llmvDown.AccessibleName");
+			this.llmvDown.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llmvDown.Anchor")));
+			this.llmvDown.AutoSize = ((bool)(resources.GetObject("llmvDown.AutoSize")));
+			this.llmvDown.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llmvDown.Dock")));
+			this.llmvDown.Enabled = ((bool)(resources.GetObject("llmvDown.Enabled")));
+			this.llmvDown.Font = ((System.Drawing.Font)(resources.GetObject("llmvDown.Font")));
+			this.llmvDown.Image = ((System.Drawing.Image)(resources.GetObject("llmvDown.Image")));
+			this.llmvDown.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llmvDown.ImageAlign")));
+			this.llmvDown.ImageIndex = ((int)(resources.GetObject("llmvDown.ImageIndex")));
+			this.llmvDown.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llmvDown.ImeMode")));
+			this.llmvDown.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llmvDown.LinkArea")));
+			this.llmvDown.Location = ((System.Drawing.Point)(resources.GetObject("llmvDown.Location")));
+			this.llmvDown.Name = "llmvDown";
+			this.llmvDown.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llmvDown.RightToLeft")));
+			this.llmvDown.Size = ((System.Drawing.Size)(resources.GetObject("llmvDown.Size")));
+			this.llmvDown.TabIndex = ((int)(resources.GetObject("llmvDown.TabIndex")));
+			this.llmvDown.TabStop = true;
+			this.llmvDown.Text = resources.GetString("llmvDown.Text");
+			this.llmvDown.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llmvDown.TextAlign")));
+			this.llmvDown.Visible = ((bool)(resources.GetObject("llmvDown.Visible")));
+			this.llmvDown.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llmove_LinkClicked);
 			// 
 			// tbLines
 			// 
@@ -1845,6 +1851,31 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
 			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
 			// 
+			// llmvUp
+			// 
+			this.llmvUp.AccessibleDescription = resources.GetString("llmvUp.AccessibleDescription");
+			this.llmvUp.AccessibleName = resources.GetString("llmvUp.AccessibleName");
+			this.llmvUp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llmvUp.Anchor")));
+			this.llmvUp.AutoSize = ((bool)(resources.GetObject("llmvUp.AutoSize")));
+			this.llmvUp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llmvUp.Dock")));
+			this.llmvUp.Enabled = ((bool)(resources.GetObject("llmvUp.Enabled")));
+			this.llmvUp.Font = ((System.Drawing.Font)(resources.GetObject("llmvUp.Font")));
+			this.llmvUp.Image = ((System.Drawing.Image)(resources.GetObject("llmvUp.Image")));
+			this.llmvUp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llmvUp.ImageAlign")));
+			this.llmvUp.ImageIndex = ((int)(resources.GetObject("llmvUp.ImageIndex")));
+			this.llmvUp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llmvUp.ImeMode")));
+			this.llmvUp.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llmvUp.LinkArea")));
+			this.llmvUp.Location = ((System.Drawing.Point)(resources.GetObject("llmvUp.Location")));
+			this.llmvUp.Name = "llmvUp";
+			this.llmvUp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llmvUp.RightToLeft")));
+			this.llmvUp.Size = ((System.Drawing.Size)(resources.GetObject("llmvUp.Size")));
+			this.llmvUp.TabIndex = ((int)(resources.GetObject("llmvUp.TabIndex")));
+			this.llmvUp.TabStop = true;
+			this.llmvUp.Text = resources.GetString("llmvUp.Text");
+			this.llmvUp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llmvUp.TextAlign")));
+			this.llmvUp.Visible = ((bool)(resources.GetObject("llmvUp.Visible")));
+			this.llmvUp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llmove_LinkClicked);
+			// 
 			// BhavForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -1940,9 +1971,10 @@ namespace SimPe.PackedFiles.UserInterface
 			Bhav b = Instruction.LoadGlobalBHAV(pnflowcontainer.SelectedInst.OpCode);
 			BhavForm ui = (BhavForm)b.UIHandler;
 			// but make it clear it's read only
-			ui.btnCommit.Visible = ui.btnOpCode.Visible = ui.btnOperandWiz.Visible =
-				ui.lladd.Visible = ui.llcancel.Visible = ui.lldel.Visible = ui.llmove.Visible =
-				ui.llopenbhav.Visible = ui.btnSort.Visible = ui.tbLines.Enabled = false;
+			ui.btnSort.Visible = ui.btnCommit.Visible = ui.btnOpCode.Visible = 
+				ui.llmvUp.Visible = ui.llmvDown.Visible = ui.tbLines.Enabled = 
+				ui.lladd.Visible = ui.llcancel.Visible = ui.lldel.Visible =
+				ui.btnOperandWiz.Visible = ui.llopenbhav.Visible = false;
 			ui.bhavPanel.Dock = DockStyle.Fill;
 			ui.Text = "Global BHAV: " + pnflowcontainer.SelectedInst.ToString();
 			b.UpdateUI();
@@ -1981,6 +2013,29 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 		
 
+		private void llmove_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			int mv;
+			try { mv = Convert.ToInt32(tbLines.Text); }
+			catch (Exception) { return; }
+			if (sender == this.llmvUp)
+				this.pnflowcontainer.MoveInst(mv * -1);
+			else
+				this.pnflowcontainer.MoveInst(mv);
+		}
+
+		private void tbmv_TextChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			try 
+			{
+				Convert.ToInt32(tbLines.Text);
+			} 
+			catch {}
+		}
+
+
 		private void llcancel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			this.pnflowcontainer.SelectedInst = origInst;
@@ -1994,27 +2049,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private void lldel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			this.pnflowcontainer.Delete();
-		}
-
-		private void tbmv_TextChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-
-			try 
-			{
-				int mv = Convert.ToInt32(tbLines.Text);
-				if (mv<0) lbUpDown.Text = "lines up";
-				else lbUpDown.Text = "lines down";
-			} 
-			catch {}
-		}
-
-		private void llmove_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			int mv;
-			try { mv = Convert.ToInt32(tbLines.Text); }
-			catch (Exception) { return; }
-			this.pnflowcontainer.MoveInst(mv);
 		}
 
 
