@@ -1,4 +1,9 @@
 
+4 June 2005 16:00 - move true/false over near the link lines
+  SimPe BHAV\
+    BhavInstListItemUI.cs 1.4
+    BhavInstListItemUI.resx 1.4
+
 30 May 2005 16:07 - cosmetic changes to BCON/BHAV source
   SimPe BHAV\
     BconForm.cs 1.2
