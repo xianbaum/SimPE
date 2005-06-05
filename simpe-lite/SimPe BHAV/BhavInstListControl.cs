@@ -179,13 +179,16 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (csel < 0) throw new Exception("No current instruction");
 			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
-			int newIndex = csel - 1;
+			int newIndex = csel;
 
 			wrapper.Instructions.RemoveAt(csel);
 
 			csel = -1;
 			myrepaint();
-			csel = newIndex + 1;
+
+			csel = wrapper.Instructions.Count;
+			if (newIndex >= csel)
+				newIndex = csel - 1;
 			SelectedIndex = newIndex;
 		}
 
@@ -285,119 +288,114 @@ namespace SimPe.PackedFiles.UserInterface
 			if (bhavInstListPanel.ClientRectangle.Width <= 24)
 				return null;
 
-			Connector[] connectors = Connector.Connectors(wrapper.Instructions);
-			Connector.ResolveCollisions(connectors);
-
-			string s = "Müû"; // WingDings for Error, False, True.
 			Bitmap img = new Bitmap(bhavInstListPanel.ClientRectangle.Width-24, flowitems.Length * (BhavInstListItemUI.rowHeight + 4));
 			Graphics gr = Graphics.FromImage(img);
 			gr.SmoothingMode =  System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 			gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
 			gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
-			Pen tpen = new Pen(Color.DarkGreen, 1);
-			Pen fpen = new Pen(Color.Maroon, 1);
-			Pen tpens = new Pen(Color.LawnGreen, 2);
-			Pen fpens = new Pen(Color.LightCoral, 2);
+			Pen tpen = new Pen(Color.LightGreen, 1);
+			Pen fpen = new Pen(Color.Pink, 1);
+			Pen tpeno = new Pen(Color.DarkGreen, 2);
+			Pen fpeno = new Pen(Color.DarkRed, 2);
+			Pen tpeni = new Pen(Color.Green, 1);
+			Pen fpeni = new Pen(Color.Red, 1);
 			Pen pen;
 
 			Point[] points;
 
-			foreach (Connector c in connectors) 
+			int yUnit = BhavInstListItemUI.rowHeight / 8;
+
+			foreach (Connector c in Connector.Connectors(wrapper.Instructions)) 
 			{
 				if (c==null) continue;
 				if (c.start >= flowitems.Length) continue;
 
 				if (c.truerule) pen = tpen; else pen = fpen;
-				if (c.start == csel) if (c.truerule) pen = tpens; else pen = fpens;
-				if (c.stop == csel) pen = new Pen(pen.Brush, 2);
-				int offset = 4;
-				if (c.truerule) offset+=4; 
+				if (c.stop == csel)  if (c.truerule) pen = tpeni; else pen = fpeni;
+				if (c.start == csel) if (c.truerule) pen = tpeno; else pen = fpeno;
 
 				Control startlabel = (Control)flowitems[c.start];
 
-				if (c.stop >= flowitems.Length)
-				{
-					int sub1 = 36, sub2 = 36;
-					if (!c.truerule) { sub1 -= 14; sub2 -= 14; }
-					if (c.stop == 0xFFFC) { sub1 -= 4; }
+				int yPosStart = startlabel.Top + (yUnit * 4) + (yUnit * (c.truerule ? 3 : 1));
+				int xPosLeft = startlabel.Right;
+				int xPosRight;
 
-					gr.DrawLine(
-						pen, 
-						startlabel.Right, 
-						startlabel.Top + (startlabel.Height / 2) + offset,
-						img.Width-sub1,
-						startlabel.Top + (startlabel.Height / 2) + offset
-						);
-					if (c.stop >= 0xFFFC) 
-					{
-						gr.DrawString(s.Substring(c.stop - 0xFFFC, 1), new System.Drawing.Font("WingDings", 16),
-							pen.Brush,
-							img.Width-sub2,
-							startlabel.Top + (startlabel.Height / 2) + offset - 8
-							);
-					}
-					else 
-					{
-						gr.DrawString("!!", new System.Drawing.Font("Arial", 16),
-							pen.Brush,
-							img.Width-sub2,
-							startlabel.Top + (startlabel.Height / 2) + offset - 8
-							);
-					}
-				}
-
-				else
+				if (c.stop < flowitems.Length)
 				{
 					if (c.stop - c.start == 1)
 					{
-						const int trueoffset = 8;
-						const int falseoffset = 72;
-						int sub;
-						if (c.truerule) sub = trueoffset;
-						else sub = falseoffset;
+						int xPos = startlabel.Right - 144 + (c.truerule ? 8 : 72);
 
 						gr.DrawLine(	
-							pen, 
-							startlabel.Width - 144 + sub,
-							startlabel.Bottom,
-							startlabel.Width - 144 + sub,
-							startlabel.Bottom + 5
+							new Pen(pen.Brush, (c.start == csel) ? 8 : 4),
+							xPos, startlabel.Bottom,
+							xPos, startlabel.Bottom + 5
 							);
 					}
 					else 
 					{
+						const int laneWidth = 5;
+						xPosRight = startlabel.Right + 7 + (c.lane * laneWidth);
+
 						Control stoplabel = (Control)flowitems[c.stop];
+						int yPosStop = stoplabel.Top + (yUnit * (c.truerule ? 1 : 3));
+
 						gr.DrawLine(	
 							pen, 
-							startlabel.Right, 
-							startlabel.Top + (startlabel.Height / 2) + offset,
-							startlabel.Right + (c.lane * 4) + offset,
-							startlabel.Top + (startlabel.Height / 2) + offset
+							xPosLeft, yPosStart,
+							xPosRight, yPosStart
 							);
 
 						gr.DrawLine(	
 							pen, 
-							startlabel.Right + (c.lane * 4) + offset, 
-							startlabel.Top + (startlabel.Height / 2) + offset,
-							stoplabel.Right + (c.lane * 4) + offset,
-							stoplabel.Top + (stoplabel.Height / 2) - offset 
+							xPosRight, yPosStart,
+							xPosRight, yPosStop
 							);
 
 						gr.DrawLine(	
 							pen, 
-							stoplabel.Right + (c.lane * 4) + offset, 
-							stoplabel.Top + (stoplabel.Height / 2) - offset,
-							stoplabel.Right,
-							stoplabel.Top + (stoplabel.Height / 2) - offset
+							xPosRight, yPosStop,
+							xPosLeft, yPosStop
 							);
 				
 						points = new Point[3];
-						points[0] = new Point(stoplabel.Right, stoplabel.Top + (stoplabel.Height / 2) - offset);
+						points[0] = new Point(xPosLeft, yPosStop);
 						points[1] = new Point(points[0].X + 4, points[0].Y - 4);
 						points[2] = new Point(points[0].X + 4, points[0].Y + 4);
 						gr.FillPolygon(pen.Brush, points);
 					}
+				}
+				else
+				{
+					xPosRight = img.Width - 36;
+					string glyph;
+					string font;
+
+					if (!c.truerule) { xPosRight += 14; }
+					switch (c.stop)
+					{
+						case 0xFFFC: // Error
+							glyph = "E"; font = "Arial"; break;
+						case 0xFFFD: // False
+							glyph = "ü"; font = "WingDings"; break;
+						case 0xFFFE: // True
+							glyph = "û"; font = "WingDings"; break;
+						default: // Off the end
+							glyph = "??"; font = "Arial"; xPosRight -= 6; break;
+					}
+
+					gr.DrawLine(
+						pen, 
+						xPosLeft, yPosStart,
+						xPosRight, yPosStart
+						);
+					gr.DrawString(
+						glyph,
+						new System.Drawing.Font(font, 16),
+						pen.Brush,
+						xPosRight, yPosStart - 8
+						);
 				}
 			}
 			return img;
@@ -563,6 +561,7 @@ namespace SimPe.PackedFiles.UserInterface
 	}
 
 
+	#region Connector
 	/// <summary>
 	/// Used for Instruction Connectors
 	/// </summary>
@@ -576,13 +575,16 @@ namespace SimPe.PackedFiles.UserInterface
 		/// Instruction number for end of connector
 		/// </summary>
 		public int stop;
-		public int lane;
+		/// <summary>
+		/// avoid collisions by keeping to lane
+		/// </summary>
+		public int lane = -1;
 		/// <summary>
 		/// True if this is connection from a True link
 		/// </summary>
 		public bool truerule;
 
-		public Connector(int start, int stop, int lane, bool truerule)
+		protected Connector(int start, int stop, bool truerule)
 		{
 			this.start = start;
 			this.stop = stop;
@@ -590,39 +592,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.truerule = truerule;
 		}
 
-		/// <summary>
-		/// Returns the number of instructions between 'start' and 'stop'
-		/// </summary>
-		public int Distance 
-		{
-			get { return Math.Abs(stop - start); }
-		}
-
-		/// <summary>
-		/// Which of 'start' and 'stop' is the earlier instruction
-		/// </summary>
-		public int Top 
-		{
-			get { return Math.Min(start, stop); }
-		}
-
-		/// <summary>
-		/// Which of 'start' and 'stop' is the later instruction
-		/// </summary>
-		public int Bottom
-		{
-			get { return Math.Max(start, stop); }
-		}
-
-		/// <summary>
-		/// True if the passed Connector has a collision with this one
-		/// </summary>
-		/// <param name="c">The Connector to check against</param>
-		/// <returns>true on Collision</returns>
-		public bool HasCollisionWith(Connector c)
-		{
-			return !((Bottom <= c.Top ) || (Top >= c.Bottom));
-		}
 
 		/// <summary>
 		/// Returns an array of pairs of Connector()s for the true and false targets of each instruction
@@ -632,34 +601,90 @@ namespace SimPe.PackedFiles.UserInterface
 		public static Connector[] Connectors(BhavInstList items)
 		{
 			if (items==null) return new Connector[0];
+
 			Connector[] cs = new Connector[items.Count*2];
 			for (int i=0; i<items.Count; i++)
 			{
-				cs[i*2] = new Connector(i, items[i].Target1, 0, true);
-				cs[i*2+1] = new Connector(i, items[i].Target2, 0, false);
+				cs[i*2] = new Connector(i, items[i].Target1, true);
+				cs[i*2+1] = new Connector(i, items[i].Target2, false);
 			}
 
+			Connector.ResolveCollisions(cs);
 			return cs;
+		}
+
+
+		#region ResolveCollisions
+		/// <summary>
+		/// Returns "connector number" for inwards connector (to stop)
+		/// </summary>
+		private int InOffset
+		{
+			get
+			{
+				return 0 + (truerule ? 0 : 1);
+			}
+		}
+
+		/// <summary>
+		/// Returns "connector number" for outwards connector (from start)
+		/// </summary>
+		private int OutOffset
+		{
+			get
+			{
+				return 2 + (truerule ? 1 : 0);
+			}
+		}
+
+		/// <summary>
+		/// Which of 'start' and 'stop' is the earlier instruction
+		/// </summary>
+		private int Top 
+		{
+			get { return Math.Min(start * 4 + OutOffset, stop * 4 + InOffset); }
+		}
+
+		/// <summary>
+		/// Which of 'start' and 'stop' is the later instruction
+		/// </summary>
+		private int Bottom
+		{
+			get { return Math.Max(start * 4 + OutOffset, stop * 4 + InOffset); }
 		}
 
 		/// <summary>
 		/// Resolves all lane Collisions
 		/// </summary>
 		/// <param name="connectors">List of connectors</param>
-		public static void ResolveCollisions(Connector[] connectors) 
+		private static void ResolveCollisions(Connector[] connectors) 
 		{
-			foreach (Connector c in connectors) c.lane = 3;
-
 			foreach (Connector c1 in connectors) 
 			{
-				int countsub = 0;
-				foreach (Connector c2 in connectors) 
+				c1.lane = -1;
+				if (c1.stop * 2 > connectors.Length) continue; // off end, doesn't use a lane
+				if (c1.stop == c1.start + 1) continue; // next line, doesn't use a lane
+
+				ArrayList used = new ArrayList();
+				foreach (Connector c2 in connectors)
 				{
-					if ((c2.Top>=c1.Top) && (c2.Bottom<=c1.Bottom)) countsub ++;					
+					if (c2.lane == -1) continue; // it's not using a lane
+
+					if (c2.Top > c1.Bottom) continue; // c1 completely before c2 - skip
+					if (c2.Bottom < c1.Top) continue; // c1 completely after c2 - skip
+					if (c2.stop == c1.stop) continue; // same target - skip
+
+					// At this point c2 could be using a lane c1 wants to use
+					used.Add((Int16) c2.lane);
 				}
-				c1.lane += countsub - 1;
+				used.Sort();
+				c1.lane = 0;
+				foreach (Int16 i in used)
+					if (c1.lane == i) c1.lane++;
 			}
 		}
 
+		#endregion
 	}
+	#endregion
 }
