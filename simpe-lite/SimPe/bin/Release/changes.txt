@@ -1,4 +1,10 @@
 
+5 June 2005 18:19 - Fix DEL and redo how connectors get drawn
+  SimPe BHAV\BhavInstListControl.cs 1.12
+
+5 June 2005 18:17 - Don't colour broken links Fuschia
+  SimPe BHAV\BhavInstListItemUI.cs 1.6
+
 4 June 2005 20:35 - Eliminate InstructionItem; draw lines true/false to next; eliminate BMPs
   SimPe BHAV\
     BhavInstListControl.cs 1.11
