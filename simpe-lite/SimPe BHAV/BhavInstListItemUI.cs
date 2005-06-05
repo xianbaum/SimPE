@@ -57,7 +57,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			// TODO: Add any initialization after the InitializeComponent call
 			this.isTarget = isTarget;
-//			this.inst = inst;
 			this.Left = 0;
 			this.Height = rowHeight;
 			if (isTarget)
@@ -77,15 +76,11 @@ namespace SimPe.PackedFiles.UserInterface
 			trueTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target1 <= max)
 				trueTarget.Links.Add(6, trueTarget.Text.Length-6, inst.Target1);
-			if (inst.Target1 > max && inst.Target1 < 0xFFFC)
-				trueTarget.ForeColor = System.Drawing.Color.Fuchsia;
 
 			falseTarget.Text = "false: "+inst.Target2.ToString("X");
 			falseTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target2 <= max)
 				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);
-			if (inst.Target2 > max && inst.Target2 < 0xFFFC)
-				falseTarget.ForeColor = System.Drawing.Color.Fuchsia;
 
 		}
 
@@ -119,7 +114,6 @@ namespace SimPe.PackedFiles.UserInterface
 		protected virtual void OnMoveDown(EventArgs e) { if (MoveDown != null) { MoveDown(this, e); } }
 
 
-//		protected Instruction inst;
 		private bool isTarget = false;
 		public int index
 		{
