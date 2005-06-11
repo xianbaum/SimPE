@@ -151,14 +151,21 @@ namespace SimPe.PackedFiles.UserInterface
 				if (value == null) throw new Exception("Invalid value");
 				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range" + value.ToString());
 
+				bool onlyText =
+					(value.Target1 == wrapper.Instructions[csel].Target1) &&
+					(value.Target1 == wrapper.Instructions[csel].Target1);
 				wrapper.Instructions[csel] = value.Clone();
 
-				pnflow.Controls.RemoveAt(csel);
-				flowitems[csel] = makeBhavInstListItemUI(csel);
-				flowitems[csel].MakeSelected();
-				pnflow.Image = DrawConnectors();
-				Update();
-				SelectedInstChanged(this, new EventArgs());
+				if (onlyText)
+				{
+					pnflow.Controls.RemoveAt(csel);
+					flowitems[csel] = makeBhavInstListItemUI(csel);
+					flowitems[csel].MakeSelected();
+					pnflow.Image = DrawConnectors();
+					Update();
+				}
+				else myrepaint();
+				OnSelectedInstChanged(new EventArgs());
 			}
 		}
 
@@ -264,7 +271,11 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			bool isTarget = false;
 			for (int j = 0; j < wrapper.Instructions.Count && !isTarget; j++)
-				if (ct == 0 || (wrapper.Instructions[j].Target1 == ct) || (wrapper.Instructions[j].Target2 == ct))
+				if (
+					ct == 0 ||
+					(wrapper.Instructions[j].Target1 == ct && (flowitems[j] == null || flowitems[j].IsTarget)) ||
+					(wrapper.Instructions[j].Target2 == ct && (flowitems[j] == null || flowitems[j].IsTarget))
+					)
 					isTarget = true;
 
 			BhavInstListItemUI i = new BhavInstListItemUI(ct, wrapper.Instructions[ct], wrapper.Instructions.Count - 1, pnflow, isTarget);
@@ -372,18 +383,19 @@ namespace SimPe.PackedFiles.UserInterface
 					xPosRight = img.Width - 36;
 					string glyph;
 					string font;
+					int pts;
 
 					if (!c.truerule) { xPosRight += 14; }
 					switch (c.stop)
 					{
 						case 0xFFFC: // Error
-							glyph = "E"; font = "Arial"; break;
-						case 0xFFFD: // False
-							glyph = "ü"; font = "WingDings"; break;
-						case 0xFFFE: // True
-							glyph = "û"; font = "WingDings"; break;
+							glyph = "E"; font = "Arial"; pts = 14; break;
+						case 0xFFFD: // True
+							glyph = "ü"; font = "WingDings"; pts = 14; break;
+						case 0xFFFE: // False
+							glyph = "û"; font = "WingDings"; pts = 18; break;
 						default: // Off the end
-							glyph = "?"; font = "Arial"; break;
+							glyph = "?"; font = "Arial"; pts = 14; break;
 					}
 
 					gr.DrawLine(
@@ -393,7 +405,7 @@ namespace SimPe.PackedFiles.UserInterface
 						);
 					gr.DrawString(
 						glyph,
-						new System.Drawing.Font(font, 16),
+						new System.Drawing.Font(font, pts),
 						pen.Brush,
 						xPosRight, yPosStart - 8
 						);

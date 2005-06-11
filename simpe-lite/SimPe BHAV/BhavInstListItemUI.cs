@@ -115,6 +115,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		private bool isTarget = false;
+		public bool IsTarget { get { return isTarget; } }
+
 		public int index
 		{
 			get { return (int)Tag; }
