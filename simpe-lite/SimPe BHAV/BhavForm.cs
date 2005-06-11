@@ -40,7 +40,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbFilename;
 		private System.Windows.Forms.Label lbFormat;
 		private System.Windows.Forms.Label lbType;
-		private System.Windows.Forms.Label lbArgc;
 		private System.Windows.Forms.Label lbLocalC;
 		private System.Windows.Forms.Label lbFlags;
 		private System.Windows.Forms.Label lbReserved;
@@ -93,6 +92,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnCancel;
 		private SimPe.PackedFiles.UserInterface.BhavInstListControl pnflowcontainer;
 		private System.Windows.Forms.GroupBox gbMove;
+		private System.Windows.Forms.TextBox tbInst_Op01_dec;
+		private System.Windows.Forms.TextBox tbInst_Op23_dec;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label lbArgC;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -109,14 +112,14 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-			this.lbFilename.Left = this.tbFilename.Left - (this.lbFilename.Width + 4);
-			this.lbFormat.Left = this.tbFormat.Left - (this.lbFormat.Width + 4);
-			this.lbType.Left = this.tbType.Left - (this.lbType.Width + 4);
-			this.lbArgc.Left = this.tbArgC.Left - (this.lbArgc.Width + 4);
-			this.lbLocalC.Left = this.tbLocalC.Left - (this.lbLocalC.Width + 4);
-			this.lbLocalC.Left = this.tbLocalC.Left - (this.lbLocalC.Width + 4);
-			this.lbFlags.Left = this.tbFlags.Left - (this.lbFlags.Width + 4);
-			this.lbReserved.Left = this.tbReserved.Left - (this.lbReserved.Width + 4);
+			Control[] cs = {
+				tbLocalC, lbLocalC, tbArgC, lbArgC, tbReserved, lbReserved,
+				tbFlags, lbFlags, tbType, lbType, tbFormat, lbFormat };
+			int left = this.bhavPanel.Width;
+			for (int i = 0; i < cs.Length; i++)
+				left = cs[i].Left = left - (cs[i].Width + 4);
+			this.lbFilename.Left = 4;
+			this.tbFilename.Left = this.lbFilename.Right + 4;
 		}
 
 		/// <summary>
@@ -150,6 +153,9 @@ namespace SimPe.PackedFiles.UserInterface
 			tbInst_Reserved.ReadOnly = state;
 			tba1.Enabled = !state;
 			tba2.Enabled = !state;
+
+			this.tbInst_Op01_dec.ReadOnly = state;
+			this.tbInst_Op23_dec.ReadOnly = state;
 
 			this.tbInst_Op0.ReadOnly = state;
 			this.tbInst_Op1.ReadOnly = state;
@@ -212,6 +218,10 @@ namespace SimPe.PackedFiles.UserInterface
 					this.tba2.SelectedIndex = -1;
 					this.tba2.Text = "0x"+Helper.HexString(inst.Target2);
 				}
+
+				this.tbInst_Op01_dec.Text = (inst.Operands[0] + (inst.Operands[1] << 8)).ToString();
+				this.tbInst_Op23_dec.Text = (inst.Operands[2] + (inst.Operands[3] << 8)).ToString();
+
 				this.tbInst_Op0.Text = Helper.HexString(inst.Operands[0]);
 				this.tbInst_Op1.Text = Helper.HexString(inst.Operands[1]);
 				this.tbInst_Op2.Text = Helper.HexString(inst.Operands[2]);
@@ -244,6 +254,8 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Reserved.Text = "";
 				this.tba1.SelectedIndex = 0;
 				this.tba2.SelectedIndex = 0;
+				this.tbInst_Op01_dec.Text = "";
+				this.tbInst_Op23_dec.Text = "";
 				this.tbInst_Op0.Text = "";
 				this.tbInst_Op1.Text = "";
 				this.tbInst_Op2.Text = "";
@@ -275,6 +287,13 @@ namespace SimPe.PackedFiles.UserInterface
 			bool origstate = internalchg;
 			internalchg = true;
 			this.pnflowcontainer.SelectedInst = currentInst;
+			this.tbInst_Op01_dec.Text = (currentInst.Operands[0] + (currentInst.Operands[1] << 8)).ToString();
+			this.tbInst_Op23_dec.Text = (currentInst.Operands[2] + (currentInst.Operands[3] << 8)).ToString();
+
+			this.tbInst_Op0.Text = Helper.HexString(currentInst.Operands[0]);
+			this.tbInst_Op1.Text = Helper.HexString(currentInst.Operands[1]);
+			this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
+			this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
 			internalchg = origstate;
 		}
 		#endregion
@@ -337,6 +356,7 @@ namespace SimPe.PackedFiles.UserInterface
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(BhavForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.gbInstruction = new System.Windows.Forms.GroupBox();
+			this.tbInst_Op01_dec = new System.Windows.Forms.TextBox();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOperandWiz = new System.Windows.Forms.Button();
 			this.llopenbhav = new System.Windows.Forms.LinkLabel();
@@ -367,6 +387,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnOpCode = new System.Windows.Forms.Button();
 			this.tbInst_Instruction = new System.Windows.Forms.TextBox();
+			this.tbInst_Op23_dec = new System.Windows.Forms.TextBox();
+			this.label2 = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.tbReserved = new System.Windows.Forms.TextBox();
@@ -379,7 +401,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFlags = new System.Windows.Forms.Label();
 			this.lbType = new System.Windows.Forms.Label();
 			this.lbLocalC = new System.Windows.Forms.Label();
-			this.lbArgc = new System.Windows.Forms.Label();
+			this.lbArgC = new System.Windows.Forms.Label();
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.bhavPanel = new System.Windows.Forms.Panel();
@@ -428,6 +450,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.AccessibleName = resources.GetString("gbInstruction.AccessibleName");
 			this.gbInstruction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbInstruction.Anchor")));
 			this.gbInstruction.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbInstruction.BackgroundImage")));
+			this.gbInstruction.Controls.Add(this.tbInst_Op01_dec);
 			this.gbInstruction.Controls.Add(this.btnCancel);
 			this.gbInstruction.Controls.Add(this.btnOperandWiz);
 			this.gbInstruction.Controls.Add(this.llopenbhav);
@@ -458,6 +481,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.Controls.Add(this.label11);
 			this.gbInstruction.Controls.Add(this.btnOpCode);
 			this.gbInstruction.Controls.Add(this.tbInst_Instruction);
+			this.gbInstruction.Controls.Add(this.tbInst_Op23_dec);
+			this.gbInstruction.Controls.Add(this.label2);
 			this.gbInstruction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbInstruction.Dock")));
 			this.gbInstruction.Enabled = ((bool)(resources.GetObject("gbInstruction.Enabled")));
 			this.gbInstruction.Font = ((System.Drawing.Font)(resources.GetObject("gbInstruction.Font")));
@@ -470,6 +495,32 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.TabStop = false;
 			this.gbInstruction.Text = resources.GetString("gbInstruction.Text");
 			this.gbInstruction.Visible = ((bool)(resources.GetObject("gbInstruction.Visible")));
+			// 
+			// tbInst_Op01_dec
+			// 
+			this.tbInst_Op01_dec.AccessibleDescription = resources.GetString("tbInst_Op01_dec.AccessibleDescription");
+			this.tbInst_Op01_dec.AccessibleName = resources.GetString("tbInst_Op01_dec.AccessibleName");
+			this.tbInst_Op01_dec.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_Op01_dec.Anchor")));
+			this.tbInst_Op01_dec.AutoSize = ((bool)(resources.GetObject("tbInst_Op01_dec.AutoSize")));
+			this.tbInst_Op01_dec.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_Op01_dec.BackgroundImage")));
+			this.tbInst_Op01_dec.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_Op01_dec.Dock")));
+			this.tbInst_Op01_dec.Enabled = ((bool)(resources.GetObject("tbInst_Op01_dec.Enabled")));
+			this.tbInst_Op01_dec.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_Op01_dec.Font")));
+			this.tbInst_Op01_dec.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_Op01_dec.ImeMode")));
+			this.tbInst_Op01_dec.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_Op01_dec.Location")));
+			this.tbInst_Op01_dec.MaxLength = ((int)(resources.GetObject("tbInst_Op01_dec.MaxLength")));
+			this.tbInst_Op01_dec.Multiline = ((bool)(resources.GetObject("tbInst_Op01_dec.Multiline")));
+			this.tbInst_Op01_dec.Name = "tbInst_Op01_dec";
+			this.tbInst_Op01_dec.PasswordChar = ((char)(resources.GetObject("tbInst_Op01_dec.PasswordChar")));
+			this.tbInst_Op01_dec.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_Op01_dec.RightToLeft")));
+			this.tbInst_Op01_dec.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_Op01_dec.ScrollBars")));
+			this.tbInst_Op01_dec.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_Op01_dec.Size")));
+			this.tbInst_Op01_dec.TabIndex = ((int)(resources.GetObject("tbInst_Op01_dec.TabIndex")));
+			this.tbInst_Op01_dec.Text = resources.GetString("tbInst_Op01_dec.Text");
+			this.tbInst_Op01_dec.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op01_dec.TextAlign")));
+			this.tbInst_Op01_dec.Visible = ((bool)(resources.GetObject("tbInst_Op01_dec.Visible")));
+			this.tbInst_Op01_dec.WordWrap = ((bool)(resources.GetObject("tbInst_Op01_dec.WordWrap")));
+			this.tbInst_Op01_dec.TextChanged += new System.EventHandler(this.tbInst_Op_dec_TextChanged);
 			// 
 			// btnCancel
 			// 
@@ -1239,6 +1290,54 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Instruction.Visible = ((bool)(resources.GetObject("tbInst_Instruction.Visible")));
 			this.tbInst_Instruction.WordWrap = ((bool)(resources.GetObject("tbInst_Instruction.WordWrap")));
 			// 
+			// tbInst_Op23_dec
+			// 
+			this.tbInst_Op23_dec.AccessibleDescription = resources.GetString("tbInst_Op23_dec.AccessibleDescription");
+			this.tbInst_Op23_dec.AccessibleName = resources.GetString("tbInst_Op23_dec.AccessibleName");
+			this.tbInst_Op23_dec.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_Op23_dec.Anchor")));
+			this.tbInst_Op23_dec.AutoSize = ((bool)(resources.GetObject("tbInst_Op23_dec.AutoSize")));
+			this.tbInst_Op23_dec.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_Op23_dec.BackgroundImage")));
+			this.tbInst_Op23_dec.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_Op23_dec.Dock")));
+			this.tbInst_Op23_dec.Enabled = ((bool)(resources.GetObject("tbInst_Op23_dec.Enabled")));
+			this.tbInst_Op23_dec.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_Op23_dec.Font")));
+			this.tbInst_Op23_dec.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_Op23_dec.ImeMode")));
+			this.tbInst_Op23_dec.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_Op23_dec.Location")));
+			this.tbInst_Op23_dec.MaxLength = ((int)(resources.GetObject("tbInst_Op23_dec.MaxLength")));
+			this.tbInst_Op23_dec.Multiline = ((bool)(resources.GetObject("tbInst_Op23_dec.Multiline")));
+			this.tbInst_Op23_dec.Name = "tbInst_Op23_dec";
+			this.tbInst_Op23_dec.PasswordChar = ((char)(resources.GetObject("tbInst_Op23_dec.PasswordChar")));
+			this.tbInst_Op23_dec.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_Op23_dec.RightToLeft")));
+			this.tbInst_Op23_dec.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_Op23_dec.ScrollBars")));
+			this.tbInst_Op23_dec.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_Op23_dec.Size")));
+			this.tbInst_Op23_dec.TabIndex = ((int)(resources.GetObject("tbInst_Op23_dec.TabIndex")));
+			this.tbInst_Op23_dec.Text = resources.GetString("tbInst_Op23_dec.Text");
+			this.tbInst_Op23_dec.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op23_dec.TextAlign")));
+			this.tbInst_Op23_dec.Visible = ((bool)(resources.GetObject("tbInst_Op23_dec.Visible")));
+			this.tbInst_Op23_dec.WordWrap = ((bool)(resources.GetObject("tbInst_Op23_dec.WordWrap")));
+			this.tbInst_Op23_dec.TextChanged += new System.EventHandler(this.tbInst_Op_dec_TextChanged);
+			// 
+			// label2
+			// 
+			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
+			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
+			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
+			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
+			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
+			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
+			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
+			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
+			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
+			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
+			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
+			this.label2.Name = "label2";
+			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
+			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
+			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
+			this.label2.Text = resources.GetString("label2.Text");
+			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
+			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
+			// 
 			// tbFilename
 			// 
 			this.tbFilename.AccessibleDescription = resources.GetString("tbFilename.AccessibleDescription");
@@ -1531,27 +1630,27 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLocalC.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLocalC.TextAlign")));
 			this.lbLocalC.Visible = ((bool)(resources.GetObject("lbLocalC.Visible")));
 			// 
-			// lbArgc
+			// lbArgC
 			// 
-			this.lbArgc.AccessibleDescription = resources.GetString("lbArgc.AccessibleDescription");
-			this.lbArgc.AccessibleName = resources.GetString("lbArgc.AccessibleName");
-			this.lbArgc.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbArgc.Anchor")));
-			this.lbArgc.AutoSize = ((bool)(resources.GetObject("lbArgc.AutoSize")));
-			this.lbArgc.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbArgc.Dock")));
-			this.lbArgc.Enabled = ((bool)(resources.GetObject("lbArgc.Enabled")));
-			this.lbArgc.Font = ((System.Drawing.Font)(resources.GetObject("lbArgc.Font")));
-			this.lbArgc.Image = ((System.Drawing.Image)(resources.GetObject("lbArgc.Image")));
-			this.lbArgc.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbArgc.ImageAlign")));
-			this.lbArgc.ImageIndex = ((int)(resources.GetObject("lbArgc.ImageIndex")));
-			this.lbArgc.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbArgc.ImeMode")));
-			this.lbArgc.Location = ((System.Drawing.Point)(resources.GetObject("lbArgc.Location")));
-			this.lbArgc.Name = "lbArgc";
-			this.lbArgc.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbArgc.RightToLeft")));
-			this.lbArgc.Size = ((System.Drawing.Size)(resources.GetObject("lbArgc.Size")));
-			this.lbArgc.TabIndex = ((int)(resources.GetObject("lbArgc.TabIndex")));
-			this.lbArgc.Text = resources.GetString("lbArgc.Text");
-			this.lbArgc.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbArgc.TextAlign")));
-			this.lbArgc.Visible = ((bool)(resources.GetObject("lbArgc.Visible")));
+			this.lbArgC.AccessibleDescription = resources.GetString("lbArgC.AccessibleDescription");
+			this.lbArgC.AccessibleName = resources.GetString("lbArgC.AccessibleName");
+			this.lbArgC.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbArgC.Anchor")));
+			this.lbArgC.AutoSize = ((bool)(resources.GetObject("lbArgC.AutoSize")));
+			this.lbArgC.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbArgC.Dock")));
+			this.lbArgC.Enabled = ((bool)(resources.GetObject("lbArgC.Enabled")));
+			this.lbArgC.Font = ((System.Drawing.Font)(resources.GetObject("lbArgC.Font")));
+			this.lbArgC.Image = ((System.Drawing.Image)(resources.GetObject("lbArgC.Image")));
+			this.lbArgC.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbArgC.ImageAlign")));
+			this.lbArgC.ImageIndex = ((int)(resources.GetObject("lbArgC.ImageIndex")));
+			this.lbArgC.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbArgC.ImeMode")));
+			this.lbArgC.Location = ((System.Drawing.Point)(resources.GetObject("lbArgC.Location")));
+			this.lbArgC.Name = "lbArgC";
+			this.lbArgC.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbArgC.RightToLeft")));
+			this.lbArgC.Size = ((System.Drawing.Size)(resources.GetObject("lbArgC.Size")));
+			this.lbArgC.TabIndex = ((int)(resources.GetObject("lbArgC.TabIndex")));
+			this.lbArgC.Text = resources.GetString("lbArgC.Text");
+			this.lbArgC.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbArgC.TextAlign")));
+			this.lbArgC.Visible = ((bool)(resources.GetObject("lbArgC.Visible")));
 			// 
 			// lbFormat
 			// 
@@ -1625,7 +1724,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Controls.Add(this.lbFlags);
 			this.bhavPanel.Controls.Add(this.lbType);
 			this.bhavPanel.Controls.Add(this.lbLocalC);
-			this.bhavPanel.Controls.Add(this.lbArgc);
+			this.bhavPanel.Controls.Add(this.lbArgC);
 			this.bhavPanel.Controls.Add(this.lbFormat);
 			this.bhavPanel.Controls.Add(this.pnHeading);
 			this.bhavPanel.Controls.Add(this.btnAdd);
@@ -1640,6 +1739,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.TabIndex = ((int)(resources.GetObject("bhavPanel.TabIndex")));
 			this.bhavPanel.Text = resources.GetString("bhavPanel.Text");
 			this.bhavPanel.Visible = ((bool)(resources.GetObject("bhavPanel.Visible")));
+			this.bhavPanel.Resize += new System.EventHandler(this.bhavPanel_Resize);
 			// 
 			// pnflowcontainer
 			// 
@@ -1912,6 +2012,12 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 		#endregion
+
+		private void bhavPanel_Resize(object sender, System.EventArgs e)
+		{
+			this.tbFilename.Width = this.lbFormat.Left - (this.tbFilename.Left + 4);
+		}
+
 
 		private void ItemQueryContinueDragTarget(object sender, QueryContinueDragEventArgs e)
 		{
@@ -2261,6 +2367,32 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			if (somethingChanged) SendInst(currentInst);
+		}
+
+		private void tbInst_Op_dec_TextChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			ushort val;
+			try { val = Convert.ToUInt16(((TextBox)sender).Text); }
+			catch (Exception) { val = 0; }
+
+
+			TextBox[] OpWords = 
+				{
+					tbInst_Op01_dec, tbInst_Op23_dec
+				};
+			int i = (new ArrayList(OpWords)).IndexOf(sender) * 2;
+
+			Instruction currentInst = this.pnflowcontainer.SelectedInst;
+			ushort oldval = (ushort)(currentInst.Operands[i] + (currentInst.Operands[i+1] << 8));
+
+			if (oldval != val)
+			{
+				currentInst.Operands[i] = (byte)(val & 0xFF);
+				currentInst.Operands[i+1] = (byte)((val >> 8) & 0xFF);
+				SendInst(currentInst);
+			}
 		}
 	}
 }
