@@ -182,6 +182,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.instrText.TabIndex = ((int)(resources.GetObject("instrText.TabIndex")));
 			this.instrText.Text = resources.GetString("instrText.Text");
 			this.instrText.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("instrText.TextAlign")));
+			this.instrText.UseMnemonic = false;
 			this.instrText.Visible = ((bool)(resources.GetObject("instrText.Visible")));
 			this.instrText.Click += new System.EventHandler(this.Control_Click);
 			// 
