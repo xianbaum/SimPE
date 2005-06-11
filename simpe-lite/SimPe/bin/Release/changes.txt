@@ -1,4 +1,17 @@
 
+11 June 2005 17:22 Add 16bit decimals for Op0/1, Op2/3, dynamic form layout for "header" fields, rename tbArgc
+  SimPe BHAV\
+    BhavForm.cs 1.14
+    BhavForm.resx 1.9
+
+11 June 2005 17:17 Update indication of unlinked lines when Targets changed and resize off-BHAV target glyphs
+  SimPe BHAV\
+    BhavInstListControl.cs 1.14
+    BhavInstListItemUI.cs 1.8
+
+11 June 2005 17:13 Remove unused "internalchg" variable
+  SimPe BHAV\BhavWrapper.cs 1.7
+
 11 June 2005 13:47 - Remove GraphItems, SimPe Cache and 3DView from pjse
   SimPe\PLJones SimAntics Editor.sln 1.4
 
@@ -7,7 +20,6 @@
     BhavForm.cs 1.13
     BhavForm.resx 1.8
     BhavInstListItemUI.cs 1.6
-    
 
 11 June 2005 09:10 - (From late on 5 June) Minor connector tweaks and colour changes
   SimPe BHAV\BhavInstListControl.cs 1.13
