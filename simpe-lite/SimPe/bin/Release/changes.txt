@@ -1,4 +1,11 @@
 
+11 June 2005 11:50 - Reorganise BHAV Editor UI
+  SimPe BHAV\
+    BhavForm.cs 1.13
+    BhavForm.resx 1.8
+    BhavInstListItemUI.cs 1.6
+    
+
 11 June 2005 09:10 - (From late on 5 June) Minor connector tweaks and colour changes
   SimPe BHAV\BhavInstListControl.cs 1.13
 
