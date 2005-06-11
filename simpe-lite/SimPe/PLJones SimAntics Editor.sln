@@ -55,18 +55,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPe Commandline", "..\Sim
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphItems", "..\GraphItems\GraphItems.csproj", "{954CB41B-161A-4F45-8166-D9BC9AA7A6CA}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimPe Cache", "..\SimPe Cache\SimPe Cache.csproj", "{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3DView", "..\3DView\3DView.csproj", "{F2CCCDBC-B05F-4C9C-B57F-27A07ACEF9BE}"
-	ProjectSection(ProjectDependencies) = postProject
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -158,24 +146,6 @@ Global
 		{0D63B13E-F41B-456C-92D0-C0BB3FE8744F}.Debug Txtr.Build.0 = Debug|.NET
 		{0D63B13E-F41B-456C-92D0-C0BB3FE8744F}.Release.ActiveCfg = Release|.NET
 		{0D63B13E-F41B-456C-92D0-C0BB3FE8744F}.Release.Build.0 = Release|.NET
-		{954CB41B-161A-4F45-8166-D9BC9AA7A6CA}.Debug.ActiveCfg = Debug|.NET
-		{954CB41B-161A-4F45-8166-D9BC9AA7A6CA}.Debug.Build.0 = Debug|.NET
-		{954CB41B-161A-4F45-8166-D9BC9AA7A6CA}.Debug Txtr.ActiveCfg = Debug|.NET
-		{954CB41B-161A-4F45-8166-D9BC9AA7A6CA}.Debug Txtr.Build.0 = Debug|.NET
-		{954CB41B-161A-4F45-8166-D9BC9AA7A6CA}.Release.ActiveCfg = Release|.NET
-		{954CB41B-161A-4F45-8166-D9BC9AA7A6CA}.Release.Build.0 = Release|.NET
-		{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}.Debug.ActiveCfg = Debug|.NET
-		{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}.Debug.Build.0 = Debug|.NET
-		{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}.Debug Txtr.ActiveCfg = Debug|.NET
-		{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}.Debug Txtr.Build.0 = Debug|.NET
-		{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}.Release.ActiveCfg = Release|.NET
-		{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}.Release.Build.0 = Release|.NET
-		{F2CCCDBC-B05F-4C9C-B57F-27A07ACEF9BE}.Debug.ActiveCfg = Debug|.NET
-		{F2CCCDBC-B05F-4C9C-B57F-27A07ACEF9BE}.Debug.Build.0 = Debug|.NET
-		{F2CCCDBC-B05F-4C9C-B57F-27A07ACEF9BE}.Debug Txtr.ActiveCfg = Debug|.NET
-		{F2CCCDBC-B05F-4C9C-B57F-27A07ACEF9BE}.Debug Txtr.Build.0 = Debug|.NET
-		{F2CCCDBC-B05F-4C9C-B57F-27A07ACEF9BE}.Release.ActiveCfg = Release|.NET
-		{F2CCCDBC-B05F-4C9C-B57F-27A07ACEF9BE}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
