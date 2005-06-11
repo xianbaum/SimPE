@@ -1,15 +1,20 @@
 
-11 June 2005 17:22 Add 16bit decimals for Op0/1, Op2/3, dynamic form layout for "header" fields, rename tbArgc
+11 June 2005 18:27 - Don't redraw so much (unlinked lines) (plus cosmetic fix)
+  SimPe BHAV\
+    BhavInstListControl.cs 1.15
+    BhavInstListControl.resx 1.5
+
+11 June 2005 17:22 - Add 16bit decimals for Op0/1, Op2/3, dynamic form layout for "header" fields, rename tbArgc
   SimPe BHAV\
     BhavForm.cs 1.14
     BhavForm.resx 1.9
 
-11 June 2005 17:17 Update indication of unlinked lines when Targets changed and resize off-BHAV target glyphs
+11 June 2005 17:17 - Update indication of unlinked lines when Targets changed and resize off-BHAV target glyphs
   SimPe BHAV\
     BhavInstListControl.cs 1.14
     BhavInstListItemUI.cs 1.8
 
-11 June 2005 17:13 Remove unused "internalchg" variable
+11 June 2005 17:13 - Remove unused "internalchg" variable
   SimPe BHAV\BhavWrapper.cs 1.7
 
 11 June 2005 13:47 - Remove GraphItems, SimPe Cache and 3DView from pjse
