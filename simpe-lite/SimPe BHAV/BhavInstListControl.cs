@@ -294,12 +294,12 @@ namespace SimPe.PackedFiles.UserInterface
 			gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
 			gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
-			Pen tpen = new Pen(Color.LightGreen, 1);
-			Pen fpen = new Pen(Color.Pink, 1);
-			Pen tpeno = new Pen(Color.DarkGreen, 2);
-			Pen fpeno = new Pen(Color.DarkRed, 2);
-			Pen tpeni = new Pen(Color.Green, 1);
-			Pen fpeni = new Pen(Color.Red, 1);
+			Pen tpen = new Pen(Color.FromArgb(0, 128, 0), 1);
+			Pen fpen = new Pen(Color.FromArgb(128, 0, 0), 1);
+			Pen tpeno = new Pen(Color.FromArgb(0, 220, 0), 3);
+			Pen fpeno = new Pen(Color.FromArgb(220, 0, 0), 3);
+			Pen tpeni = tpen;
+			Pen fpeni = fpen;
 			Pen pen;
 
 			Point[] points;
@@ -309,6 +309,7 @@ namespace SimPe.PackedFiles.UserInterface
 			foreach (Connector c in Connector.Connectors(wrapper.Instructions)) 
 			{
 				if (c==null) continue;
+				if (c.start == c.stop) continue; // skip go to self
 				if (c.start >= flowitems.Length) continue;
 
 				if (c.truerule) pen = tpen; else pen = fpen;
@@ -328,7 +329,7 @@ namespace SimPe.PackedFiles.UserInterface
 						int xPos = startlabel.Right - 144 + (c.truerule ? 8 : 72);
 
 						gr.DrawLine(	
-							new Pen(pen.Brush, (c.start == csel) ? 8 : 4),
+							new Pen(pen.Brush, (c.start == csel) ? 4 : 2),
 							xPos, startlabel.Bottom,
 							xPos, startlabel.Bottom + 5
 							);
@@ -382,7 +383,7 @@ namespace SimPe.PackedFiles.UserInterface
 						case 0xFFFE: // True
 							glyph = "û"; font = "WingDings"; break;
 						default: // Off the end
-							glyph = "??"; font = "Arial"; xPosRight -= 6; break;
+							glyph = "?"; font = "Arial"; break;
 					}
 
 					gr.DrawLine(
@@ -664,6 +665,7 @@ namespace SimPe.PackedFiles.UserInterface
 				c1.lane = -1;
 				if (c1.stop * 2 > connectors.Length) continue; // off end, doesn't use a lane
 				if (c1.stop == c1.start + 1) continue; // next line, doesn't use a lane
+				if (c1.stop == c1.start) continue; // same line, doesn't use a lane
 
 				ArrayList used = new ArrayList();
 				foreach (Connector c2 in connectors)
