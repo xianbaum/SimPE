@@ -1,14 +1,7 @@
 de
 de-DE
-div
-*.dll
-*.pdb
-*.rar
-*.sql
-*.xml
-*.xls
-*.simpe
-af
-*.iss
 en
 en-GB
+*.exe
+*.dll
+*.xml
