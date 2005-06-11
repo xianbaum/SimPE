@@ -632,7 +632,6 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte reserved_00 = 0;
 		private byte[] operands = new byte[8];
 		private byte[] reserved_01 = null;
-		private bool internalchg = false;
 		#endregion
 
 		#region Accessor methods
