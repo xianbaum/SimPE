@@ -151,20 +151,24 @@ namespace SimPe.PackedFiles.UserInterface
 				if (value == null) throw new Exception("Invalid value");
 				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range" + value.ToString());
 
-				bool onlyText =
-					(value.Target1 == wrapper.Instructions[csel].Target1) &&
-					(value.Target1 == wrapper.Instructions[csel].Target1);
+				Instruction oldInst = wrapper.Instructions[csel].Clone();
 				wrapper.Instructions[csel] = value.Clone();
 
-				if (onlyText)
+				pnflow.Controls.RemoveAt(csel);
+				flowitems[csel] = makeBhavInstListItemUI(csel);
+				if ((value.Target1 != oldInst.Target1) && value.Target1 < wrapper.Instructions.Count)
 				{
-					pnflow.Controls.RemoveAt(csel);
-					flowitems[csel] = makeBhavInstListItemUI(csel);
-					flowitems[csel].MakeSelected();
-					pnflow.Image = DrawConnectors();
-					Update();
+					pnflow.Controls.RemoveAt(value.Target1);
+					flowitems[value.Target1] = makeBhavInstListItemUI(value.Target1);
 				}
-				else myrepaint();
+				if ((value.Target2 == oldInst.Target2) && value.Target2 < wrapper.Instructions.Count)
+				{
+					pnflow.Controls.RemoveAt(value.Target2);
+					flowitems[value.Target2] = makeBhavInstListItemUI(value.Target2);
+				}
+				flowitems[csel].MakeSelected();
+				pnflow.Image = DrawConnectors();
+				Update();
 				OnSelectedInstChanged(new EventArgs());
 			}
 		}
@@ -380,22 +384,21 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 				else
 				{
-					xPosRight = img.Width - 36;
+					xPosRight = img.Width - (c.truerule ? 20 : 10);
 					string glyph;
 					string font;
-					int pts;
+					float pts;
 
-					if (!c.truerule) { xPosRight += 14; }
 					switch (c.stop)
 					{
 						case 0xFFFC: // Error
-							glyph = "E"; font = "Arial"; pts = 14; break;
+							glyph = "E"; font = "Verdana"; pts = 8.25F; break;
 						case 0xFFFD: // True
-							glyph = "ü"; font = "WingDings"; pts = 14; break;
+							glyph = "T"; font = "Verdana"; pts = 8.25F; break;
 						case 0xFFFE: // False
-							glyph = "û"; font = "WingDings"; pts = 18; break;
+							glyph = "F"; font = "Verdana"; pts = 8.25F; break;
 						default: // Off the end
-							glyph = "?"; font = "Arial"; pts = 14; break;
+							glyph = "?"; font = "Verdana"; pts = 8.25F; break;
 					}
 
 					gr.DrawLine(
