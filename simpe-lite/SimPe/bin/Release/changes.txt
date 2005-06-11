@@ -1,4 +1,7 @@
 
+11 June 2005 13:47 - Remove GraphItems, SimPe Cache and 3DView from pjse
+  SimPe\PLJones SimAntics Editor.sln 1.4
+
 11 June 2005 11:50 - Reorganise BHAV Editor UI
   SimPe BHAV\
     BhavForm.cs 1.13
