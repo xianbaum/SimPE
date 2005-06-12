@@ -2252,7 +2252,7 @@ namespace SimPe.PackedFiles.UserInterface
 				{
 					ushort val;
 					try { val = Convert.ToUInt16(cb[i].Text, 16); }
-					catch (Exception) { val = 0; }
+					catch (Exception) { val = (ushort)0xFFFF; }
 					if (orig[i] != val)
 					{
 						if (i == 0) currentInst.Target1 = val;

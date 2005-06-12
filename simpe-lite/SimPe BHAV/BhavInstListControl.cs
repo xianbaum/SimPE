@@ -156,15 +156,31 @@ namespace SimPe.PackedFiles.UserInterface
 
 				pnflow.Controls.RemoveAt(csel);
 				flowitems[csel] = makeBhavInstListItemUI(csel);
-				if ((value.Target1 != oldInst.Target1) && value.Target1 < wrapper.Instructions.Count)
+				if (value.Target1 != oldInst.Target1)
 				{
-					pnflow.Controls.RemoveAt(value.Target1);
-					flowitems[value.Target1] = makeBhavInstListItemUI(value.Target1);
+					if (oldInst.Target1 < wrapper.Instructions.Count)
+					{
+						pnflow.Controls.RemoveAt(oldInst.Target1);
+						flowitems[oldInst.Target1] = makeBhavInstListItemUI(oldInst.Target1);
+					}
+					if (value.Target1 < wrapper.Instructions.Count)
+					{
+						pnflow.Controls.RemoveAt(value.Target1);
+						flowitems[value.Target1] = makeBhavInstListItemUI(value.Target1);
+					}
 				}
-				if ((value.Target2 == oldInst.Target2) && value.Target2 < wrapper.Instructions.Count)
+				if (value.Target2 != oldInst.Target2)
 				{
-					pnflow.Controls.RemoveAt(value.Target2);
-					flowitems[value.Target2] = makeBhavInstListItemUI(value.Target2);
+					if (oldInst.Target2 < wrapper.Instructions.Count)
+					{
+						pnflow.Controls.RemoveAt(oldInst.Target2);
+						flowitems[oldInst.Target2] = makeBhavInstListItemUI(oldInst.Target2);
+					}
+					if (value.Target2 < wrapper.Instructions.Count)
+					{
+						pnflow.Controls.RemoveAt(value.Target2);
+						flowitems[value.Target2] = makeBhavInstListItemUI(value.Target2);
+					}
 				}
 				flowitems[csel].MakeSelected();
 				pnflow.Image = DrawConnectors();
@@ -277,8 +293,8 @@ namespace SimPe.PackedFiles.UserInterface
 			for (int j = 0; j < wrapper.Instructions.Count && !isTarget; j++)
 				if (
 					ct == 0 ||
-					(wrapper.Instructions[j].Target1 == ct && (flowitems[j] == null || flowitems[j].IsTarget)) ||
-					(wrapper.Instructions[j].Target2 == ct && (flowitems[j] == null || flowitems[j].IsTarget))
+					(wrapper.Instructions[j].Target1 == ct) ||
+					(wrapper.Instructions[j].Target2 == ct)
 					)
 					isTarget = true;
 
@@ -294,6 +310,35 @@ namespace SimPe.PackedFiles.UserInterface
 			i.KeyDown += new KeyEventHandler(bhavInst_KeyDown);
 
 			return i;
+		}
+
+		private void AddUnlinked(Bitmap img)
+		{
+			Graphics gr = Graphics.FromImage(img);
+			gr.SmoothingMode =  System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+			gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+			gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+
+			Pen pen = new Pen(Color.FromArgb(64, 64, 64), 1);
+			for (int ct = 1; ct < flowitems.Length; ct++)
+			{
+				if (flowitems[ct].IsTarget) continue;
+
+				int xPosLeft = flowitems[ct].Width;
+				int xPosRight = img.Width - 1;
+				int yPos = (BhavInstListItemUI.rowHeight + 4) * ct + (BhavInstListItemUI.rowHeight / 4);
+
+				gr.DrawLine(
+					pen, 
+					xPosLeft, yPos,
+					xPosRight, yPos
+					);
+				Point[] points = new Point[3];
+				points[0] = new Point(xPosLeft, yPos);
+				points[1] = new Point(points[0].X + 4, points[0].Y - 4);
+				points[2] = new Point(points[0].X + 4, points[0].Y + 4);
+				gr.FillPolygon(pen.Brush, points);
+			}
 		}
 
 		private Bitmap DrawConnectors()
@@ -414,6 +459,7 @@ namespace SimPe.PackedFiles.UserInterface
 						);
 				}
 			}
+			AddUnlinked(img);
 			return img;
 		} 
 
