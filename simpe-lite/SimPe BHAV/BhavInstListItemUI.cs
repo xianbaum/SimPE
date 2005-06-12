@@ -50,7 +50,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
-		public BhavInstListItemUI(int index, Instruction inst, int max, PictureBox parent, bool isTarget)
+		public BhavInstListItemUI(int index, Instruction inst, int max, Control parent, bool isTarget)
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
@@ -59,6 +59,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.isTarget = isTarget;
 			this.Left = 0;
 			this.Height = rowHeight;
+			this.Top = index*(rowHeight+4);
+			this.Width = parent.Width - 120;
 			if (isTarget)
 				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 			else
@@ -67,7 +69,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Parent = parent;
 			parent.Controls.SetChildIndex(this, index);
 
-
+			this.TabIndex = index + 1;
 
 			bhavInstListItem.Text = "";
 			instrText.Text = index.ToString("X") + ": " + inst.ToString();
@@ -136,16 +138,16 @@ namespace SimPe.PackedFiles.UserInterface
 			if (isTarget)
 				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 			else
-				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;
+				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White /*LightGray*/;
 		}
 
-		public int findUI(BhavInstListItemUI[] items)
+		/*public int findUI(ArrayList items)
 		{
-			for (int i = 0; i < items.Length; i++)
+			for (int i = 0; i < items.Count; i++)
 				if (this == items[i]) return i;
 			return -1;
 		}
-
+*/
 		#endregion
 
 		#region Component Designer generated code
