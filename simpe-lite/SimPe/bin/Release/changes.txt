@@ -1,4 +1,10 @@
 
+12 June 2005 11:28 - New way of displaying lines not targeted within BHAV
+  SimPe BHAV\
+    BhavForm.cs 1.15
+    BhavInstListControl.cs 1.16
+    BhavInstListItemUI.cs 1.9
+
 11 June 2005 18:27 - Don't redraw so much (unlinked lines) (plus cosmetic fix)
   SimPe BHAV\
     BhavInstListControl.cs 1.15
