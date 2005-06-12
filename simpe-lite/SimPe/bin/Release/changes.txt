@@ -1,4 +1,7 @@
 
+12 June 2005 15:33 - Prevent deletion of line zero.
+  SimPe BHAV\BhavForm.cs 1.16
+
 12 June 2005 11:28 - New way of displaying lines not targeted within BHAV
   SimPe BHAV\
     BhavForm.cs 1.15
