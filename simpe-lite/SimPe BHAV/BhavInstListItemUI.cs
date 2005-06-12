@@ -136,7 +136,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (isTarget)
 				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 			else
-				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;
+				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White /*LightGray*/;
 		}
 
 		public int findUI(BhavInstListItemUI[] items)

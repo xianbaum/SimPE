@@ -291,11 +291,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			bool isTarget = false;
 			for (int j = 0; j < wrapper.Instructions.Count && !isTarget; j++)
-				if (
-					ct == 0 ||
+				if (ct == 0 || (j != ct && (
 					(wrapper.Instructions[j].Target1 == ct) ||
 					(wrapper.Instructions[j].Target2 == ct)
-					)
+					)))
 					isTarget = true;
 
 			BhavInstListItemUI i = new BhavInstListItemUI(ct, wrapper.Instructions[ct], wrapper.Instructions.Count - 1, pnflow, isTarget);
@@ -584,7 +583,8 @@ namespace SimPe.PackedFiles.UserInterface
 					if (csel < flowitems.Length - 1) SelectedIndex++;
 					break;
 				case System.Windows.Forms.Keys.Delete:
-					Delete();
+					if (wrapper.Instructions.Count > 1)
+						Delete();
 					break;
 				case System.Windows.Forms.Keys.Home:
 					SelectedIndex = 0;
