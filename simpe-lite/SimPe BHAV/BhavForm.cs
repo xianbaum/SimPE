@@ -197,6 +197,8 @@ namespace SimPe.PackedFiles.UserInterface
 					b = Instruction.LoadGlobalBHAV(inst.OpCode);
 				llopenbhav.Enabled = (b!=null);
 
+				btnDel.Enabled = wrapper.Instructions.Count > 1;
+
 				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 
 				this.tbInst_Reserved.Text = "0x"+Helper.HexString(inst.Reserved0);
@@ -249,6 +251,7 @@ namespace SimPe.PackedFiles.UserInterface
 			else
 			{
 				SetReadOnly(true);
+				btnAdd.Enabled = true;
 
 				this.tbInst_OpCode.Text = "";
 				this.tbInst_Reserved.Text = "";
@@ -274,7 +277,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk7.Text = "";
 
 				this.tbInst_Instruction.Text = "";
-				btnAdd.Enabled = true;
 			}
 			btnCancel.Enabled = false;
 			internalchg = false;
@@ -2163,11 +2165,13 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnAdd_Clicked(object sender, System.EventArgs e)
 		{
 			this.pnflowcontainer.Add();
+			btnDel.Enabled = wrapper.Instructions.Count > 1;
 		}
 
 		private void btnDel_Clicked(object sender, System.EventArgs e)
 		{
 			this.pnflowcontainer.Delete();
+			btnDel.Enabled = wrapper.Instructions.Count > 1;
 		}
 
 
