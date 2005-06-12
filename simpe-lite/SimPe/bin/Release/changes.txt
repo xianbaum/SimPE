@@ -1,4 +1,9 @@
 
+12 June 2005 21:35 - Prevent deletion of line zero using DEL key (plus missed non-greying of lines)
+  SimPe BHAV\
+    BhavInstListControl.cs 1.17
+    BhavInstListItemUI.cs 1.10
+
 12 June 2005 15:33 - Prevent deletion of line zero.
   SimPe BHAV\BhavForm.cs 1.16
 
