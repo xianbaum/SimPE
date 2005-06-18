@@ -1,4 +1,10 @@
 
+18 June 2005 12:48 - Make add on last line leave highlight alone
+  SimPe BHAV\
+    BhavForm.cs 1.17
+    BhavInstListControl.cs 1.18
+    BhavWrapper.cs 1.7
+
 12 June 2005 21:35 - Prevent deletion of line zero using DEL key (plus missed non-greying of lines)
   SimPe BHAV\
     BhavInstListControl.cs 1.17
