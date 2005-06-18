@@ -1,4 +1,10 @@
 
+18 June 2005 15:56 - Suppress some minor warnings
+  SimPe Extended Filehandlers\
+    ExtObjdWrapper.cs 1.3
+    NrefWrapper.cs 1.2
+  SimPe Sims2CommunityPack\Sims2CommunityPack.cs 1.2
+
 18 June 2005 13:42 - Remove unused filesystem entries
   SimPe BHAV\SimPe BHAV.csproj 1.6
 
