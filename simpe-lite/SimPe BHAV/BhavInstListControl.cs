@@ -81,7 +81,7 @@ namespace SimPe.PackedFiles.UserInterface
 		public void UpdateGUI(Bhav wrp)
 		{
 			wrapper = wrp;
-			csel = -1;
+			csel = (wrapper.Instructions.Count > 0) ? 0 : -1;
 			pnflow1.Visible = false;
 			pnflow1.Controls.Clear();
 			pnflow2.Visible = false;
