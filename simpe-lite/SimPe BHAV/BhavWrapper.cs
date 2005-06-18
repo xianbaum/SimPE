@@ -124,6 +124,7 @@ namespace SimPe.PackedFiles.Wrapper
 			Instruction.OpcodeProvider = opcodes;
 		}
 
+
 		internal virtual void OnWrapperChanged(EventArgs e)
 		{
 			if (internalchg) return;
@@ -471,8 +472,10 @@ namespace SimPe.PackedFiles.Wrapper
 		#region BhavInstList
 		private void Unserialise(Bhav parent, System.IO.BinaryReader reader)
 		{
+			internalchg = true;
 			for (uint i=0; i < parent.Header.InstructionCount; i++)
 				this.Add(new Instruction(parent, reader));
+			internalchg = false;
 		}
 
 		public void Serialize(System.IO.BinaryWriter writer)
@@ -529,7 +532,10 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public int Add(Instruction item)
 		{
-			return base.Add(item);
+			int retVal = base.Add(item);
+			if (!internalchg)
+				parent.OnWrapperChanged(new EventArgs());
+			return retVal;
 		}
 
 		public void Insert(int index, Instruction item)
@@ -538,8 +544,11 @@ namespace SimPe.PackedFiles.Wrapper
 			bool savedstate = internalchg;
 			internalchg = true;
 			int newIndex = this.Add(item);
+			/*
+			 * At Inge's request, don't overwrite targets
 			item.Target1 = (ushort)newIndex;
 			item.Target2 = (ushort)newIndex;
+			 */
 			this.Move(newIndex, index);
 			internalchg = savedstate;
 			if (!internalchg)

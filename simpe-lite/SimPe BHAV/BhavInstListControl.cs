@@ -194,20 +194,27 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
 
+			int newIndex = csel;
 			if (csel < 0)
 				wrapper.Instructions.Insert(0, new Instruction(wrapper));
 			else
 				wrapper.Instructions.Insert(csel + 1, SelectedInst);
 
+			csel = -1;
 			myrepaint();
+
+			csel = wrapper.Instructions.Count;
+			if (newIndex >= csel)
+				newIndex = csel - 1;
+			SelectedIndex = newIndex;
 		}
 
 		public void Delete()
 		{
 			if (csel < 0) throw new Exception("No current instruction");
 			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
-			int newIndex = csel;
 
+			int newIndex = csel;
 			wrapper.Instructions.RemoveAt(csel);
 
 			csel = -1;
@@ -283,11 +290,8 @@ namespace SimPe.PackedFiles.UserInterface
 				pnflow1.Visible = false;
 				pnflow2.Visible = true;
 			}
-			if (oldCsel != csel)
-				SelectedIndex = oldCsel;
-			else
-				if (csel != -1)
-					flowitems[csel].MakeSelected();
+			if (csel != -1)
+				flowitems[csel].MakeSelected();
 
 			this.AutoScrollPosition = currentLoc;
 			Update();
