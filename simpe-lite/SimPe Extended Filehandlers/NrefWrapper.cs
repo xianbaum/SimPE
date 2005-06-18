@@ -35,7 +35,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// The Filename stored in the NREF File
 		/// </summary>
-		public string FileName 
+		public new string FileName 
 		{
 			get { return Helper.ToString(data); }
 			set { data = Helper.ToBytes(value); }

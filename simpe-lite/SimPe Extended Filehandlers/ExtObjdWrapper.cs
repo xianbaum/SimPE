@@ -56,7 +56,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns/Sets the Name of a Sim
 		/// </summary>
-		public string FileName
+		public new string FileName
 		{
 			get 
 			{
