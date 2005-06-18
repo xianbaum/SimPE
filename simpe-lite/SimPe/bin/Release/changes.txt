@@ -1,4 +1,8 @@
 
+18 June 2005 13:09 - Always select line zero
+  SimPe BHAV\BhavInstListControl.cs 1.19
+
+
 18 June 2005 12:48 - Make add on last line leave highlight alone
   SimPe BHAV\
     BhavForm.cs 1.17
