@@ -540,8 +540,10 @@ namespace SimPe.PackedFiles.Wrapper
 			int newIndex = this.Add(item);
 			item.Target1 = (ushort)newIndex;
 			item.Target2 = (ushort)newIndex;
-			internalchg = savedstate;
 			this.Move(newIndex, index);
+			internalchg = savedstate;
+			if (!internalchg)
+				parent.OnWrapperChanged(new EventArgs());
 		}
 
 		public override void RemoveAt(int index)

@@ -2165,13 +2165,11 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnAdd_Clicked(object sender, System.EventArgs e)
 		{
 			this.pnflowcontainer.Add();
-			btnDel.Enabled = wrapper.Instructions.Count > 1;
 		}
 
 		private void btnDel_Clicked(object sender, System.EventArgs e)
 		{
 			this.pnflowcontainer.Delete();
-			btnDel.Enabled = wrapper.Instructions.Count > 1;
 		}
 
 

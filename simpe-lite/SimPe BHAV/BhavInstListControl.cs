@@ -254,6 +254,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void myrepaint()
 		{
 			Point currentLoc = this.AutoScrollPosition;
+			int oldCsel = csel;
+
 			if (pnflow.Name == "pnflow1") // indicates which is currently visible
 			{
 				pnflow = pnflow2;
@@ -268,8 +270,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			for (int i = 0; i < wrapper.Instructions.Count; i++)
 				flowitems[i] = makeBhavInstListItemUI(i);
-			if (csel != -1)
-				flowitems[csel].MakeSelected();
 
 			pnflow.Image = DrawConnectors();
 
@@ -283,6 +283,12 @@ namespace SimPe.PackedFiles.UserInterface
 				pnflow1.Visible = false;
 				pnflow2.Visible = true;
 			}
+			if (oldCsel != csel)
+				SelectedIndex = oldCsel;
+			else
+				if (csel != -1)
+					flowitems[csel].MakeSelected();
+
 			this.AutoScrollPosition = currentLoc;
 			Update();
 		}
@@ -583,7 +589,7 @@ namespace SimPe.PackedFiles.UserInterface
 					if (csel < flowitems.Length - 1) SelectedIndex++;
 					break;
 				case System.Windows.Forms.Keys.Delete:
-					if (wrapper.Instructions.Count > 1)
+					if (csel > -1 && flowitems.Length > 1)
 						Delete();
 					break;
 				case System.Windows.Forms.Keys.Home:
