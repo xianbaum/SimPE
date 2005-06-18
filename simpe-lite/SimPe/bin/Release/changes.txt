@@ -1,4 +1,7 @@
 
+18 June 2005 13:42 - Remove unused filesystem entries
+  SimPe BHAV\SimPe BHAV.csproj 1.6
+
 18 June 2005 13:09 - Always select line zero
   SimPe BHAV\BhavInstListControl.cs 1.19
 
