@@ -299,14 +299,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "button_cancel.png"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "button_ok.png"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "GlobForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
