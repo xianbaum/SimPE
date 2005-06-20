@@ -127,9 +127,9 @@ namespace SimPe.PackedFiles.Wrapper
 
 		internal virtual void OnWrapperChanged(EventArgs e)
 		{
-			if (internalchg) return;
-
 			this.Changed = true;
+
+			if (internalchg) return;
 			if (WrapperChanged != null) 
 			{
 				WrapperChanged(this, e);

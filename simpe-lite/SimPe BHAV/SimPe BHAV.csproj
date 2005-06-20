@@ -409,9 +409,34 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TtabItem.cs"
-                    SubType = "Code"
+                    RelPath = "TtabItemMotiveTableUI.cs"
+                    SubType = "UserControl"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TtabItemMotiveTableUI.resx"
+                    DependentUpon = "TtabItemMotiveTableUI.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TtabMotiveGroupUI.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TtabMotiveGroupUI.resx"
+                    DependentUpon = "TtabMotiveGroupUI.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TtabSingleMotiveUI.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TtabSingleMotiveUI.resx"
+                    DependentUpon = "TtabSingleMotiveUI.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "TtabWrapper.cs"
