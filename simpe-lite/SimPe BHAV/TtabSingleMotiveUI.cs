@@ -46,8 +46,9 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 
 			// TODO: Add any initialization after the InitializeComponent call
-			Min.Top = Delta.Top = Type.Top = Min.Left = 0;
-			TtabSingleMotiveUI_Resize(null, null);
+			Min.Tag = (Int32) 0;
+			Delta.Tag = (Int32) 1;
+			Type.Tag = (Int32) 2;
 		}
 
 		/// <summary> 
@@ -66,6 +67,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		#region TtabSingleMotiveUI
 		private bool internalchg = false;
 		private TtabItem item = null;
 		private int mgNr;
@@ -73,6 +75,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 		public void SetData(TtabItem i, int j, int k)
 		{
+			this.Visible = true;
+
 			item = i;
 			mgNr = j;
 			motive = k;
@@ -84,6 +88,29 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
+		public void SetData(TtabItem i, int j) { this.SetData(i, j, motive); }
+
+		public void SetData(TtabItem i) { this.SetData(i, mgNr, motive); }
+
+		public void SetData() { this.SetData(item, mgNr, motive); }
+
+
+		/// <summary>
+		/// Which of the sixteen motives the control is editing (0-15)
+		/// </summary>
+		public int Motive
+		{
+			get { return motive; }
+			set
+			{
+				if (value < 0 || value > 15)
+					throw new Exception("Motive must be in range 0 to 15");
+
+				motive = value;
+			}
+		}
+
+		#endregion
 
 		#region Component Designer generated code
 		/// <summary> 
@@ -100,29 +127,35 @@ namespace SimPe.PackedFiles.UserInterface
 			// Min
 			// 
 			this.Min.Location = new System.Drawing.Point(0, 0);
+			this.Min.MaxLength = 2;
 			this.Min.Name = "Min";
 			this.Min.Size = new System.Drawing.Size(24, 20);
 			this.Min.TabIndex = 1;
 			this.Min.Text = "DD";
-			this.Min.TextChanged += new System.EventHandler(this.tbTextChanged);
+			this.Min.Validating += new System.ComponentModel.CancelEventHandler(this.tbValidating);
+			this.Min.Validated += new System.EventHandler(this.tbValidated);
 			// 
 			// Delta
 			// 
 			this.Delta.Location = new System.Drawing.Point(24, 0);
+			this.Delta.MaxLength = 2;
 			this.Delta.Name = "Delta";
 			this.Delta.Size = new System.Drawing.Size(24, 20);
 			this.Delta.TabIndex = 2;
 			this.Delta.Text = "DD";
-			this.Delta.TextChanged += new System.EventHandler(this.tbTextChanged);
+			this.Delta.Validating += new System.ComponentModel.CancelEventHandler(this.tbValidating);
+			this.Delta.Validated += new System.EventHandler(this.tbValidated);
 			// 
 			// Type
 			// 
 			this.Type.Location = new System.Drawing.Point(48, 0);
+			this.Type.MaxLength = 2;
 			this.Type.Name = "Type";
 			this.Type.Size = new System.Drawing.Size(24, 20);
 			this.Type.TabIndex = 3;
 			this.Type.Text = "DD";
-			this.Type.TextChanged += new System.EventHandler(this.tbTextChanged);
+			this.Type.Validating += new System.ComponentModel.CancelEventHandler(this.tbValidating);
+			this.Type.Validated += new System.EventHandler(this.tbValidated);
 			// 
 			// TtabSingleMotiveUI
 			// 
@@ -131,39 +164,23 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Controls.Add(this.Type);
 			this.Name = "TtabSingleMotiveUI";
 			this.Size = new System.Drawing.Size(72, 24);
-			this.Resize += new System.EventHandler(this.TtabSingleMotiveUI_Resize);
 			this.ResumeLayout(false);
 
 		}
 		#endregion
 
-		private void TtabSingleMotiveUI_Resize(object sender, System.EventArgs e)
+		private void tbValidated(object sender, System.EventArgs e)
 		{
-			Min.Height = Delta.Height = Type.Height = this.Height - 1;
-			Min.Width = Delta.Width = Type.Width = (this.Width - 1 - 3) / 3;
-			Delta.Left = Min.Right + 1;
-			Type.Left = Delta.Right + 1;
+			TextBox tb = (TextBox)sender;
+			short val = Convert.ToInt16(tb.Text, 16);
+			item[mgNr, motive, (Int32)tb.Tag] = val;
 		}
 
-		private void tbTextChanged(object sender, System.EventArgs e)
+		private void tbValidating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (!(sender is TextBox)) return;
-			if (internalchg) return;
-
-			short val = 0;
-			TextBox tb = (TextBox)sender;
-
-			if (tb.Text != "")
-			{
-				try
-				{ val = Convert.ToInt16(tb.Text, 10); }
-				catch { return; }
-			}
-
-			TextBox[] poss = { Min, Delta, Type };
-			for (int i = 0; i < poss.Length; i++)
-				if (poss[i] == tb)
-					item[mgNr, motive, i] = val; 
+			try { TextBox tb = (TextBox)sender; if (tb.Text != "") Convert.ToInt16(tb.Text, 16); }
+			catch { e.Cancel = true; }
+			return;
 		}
 	}
 }

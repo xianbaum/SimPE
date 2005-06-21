@@ -63,7 +63,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Items stored in the File
 		/// </summary>
-		private TtabItemList items = null;
+		private TtabItem[] items = null;
 		/// <summary>
 		/// Unknown Data following the TTAB
 		/// </summary>
@@ -101,24 +101,30 @@ namespace SimPe.PackedFiles.Wrapper
 		public uint Format 
 		{
 			get { return header[1]; }
-			set { header[1] = value; }
+			set
+			{
+				if (header[1] != value )
+				{
+					header[1] = value;
+					OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		/// <summary>
 		/// Returns the number of Ttab Items in the file
 		/// </summary>
-		public ushort ItemCount
+		public int ItemCount
 		{
 			get { return itemCount; }
 		}
 		/// <summary>
-		/// Returns / Sets the Items
+		/// Returns the Item
 		/// </summary>
-		public TtabItemList Items 
+		public TtabItem this[int index]
 		{
-			get { return (items == null) ? new TtabItemList(this) : items; }			
-			set { items = value; }
-		}		
+			get { return items[index]; }
+		}
 
 		/// <summary>
 		/// Returns the used Opcode Provider
@@ -169,7 +175,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Ttab(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
 		{
-			this.items = new TtabItemList(this);
 			this.opcodes = opcodes;
 		}
 
@@ -232,7 +237,9 @@ namespace SimPe.PackedFiles.Wrapper
 
 			itemCount = reader.ReadUInt16();
 
-			items = new TtabItemList(this, reader);
+			items = new TtabItem[itemCount];
+			for (int i = 0; i < itemCount; i++)
+				items[i] = new TtabItem(this, reader);
 
 			footer = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 		}
@@ -251,9 +258,10 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(header[0]);
 			writer.Write(header[1]);
 			writer.Write(header[2]);
-			writer.Write(itemCount);
 
-			items.Serialize(writer);
+			writer.Write((ushort)items.Length);
+			for (int i = 0; i < items.Length; i++)
+				items[i].Serialize(writer);
 
 			writer.Write(footer);
 		}
@@ -307,135 +315,6 @@ namespace SimPe.PackedFiles.Wrapper
 
 
 	/// <summary>
-	/// Manages the list of TtabItems within the TTAB file
-	/// </summary>
-	public class TtabItemList : ArrayList
-	{
-		#region Attributes
-		private Ttab parent = null;
-		private bool internalchg = false;
-		#endregion
-
-		public TtabItemList(Ttab parent) : base() { this.parent = parent; }
-
-
-		public TtabItemList(Ttab parent, System.IO.BinaryReader reader)
-			: base((int)parent.ItemCount)
-		{
-			this.parent = parent;
-			Unserialise(reader);
-		}
-
-
-		#region TtabItemList
-		private void Unserialise(System.IO.BinaryReader reader)
-		{
-			internalchg = true;
-			for (uint i=0; i < parent.ItemCount; i++)
-				this.Add(new TtabItem(parent, reader));
-			internalchg = false;
-		}
-
-		public void Serialize(System.IO.BinaryWriter writer)
-		{
-			for (int i=0; i < this.Count; i++) 
-				this[i].Serialize(writer);
-		}
-		/// <summary>
-		/// Move entry from from to to
-		/// </summary>
-		/// <param name="from">Start position</param>
-		/// <param name="to">End position</param>
-		/// <remarks>Caller should issue OnWrapperChanged</remarks>
-		private void Move(int from, int to)
-		{
-			if (from == to) return;
-			if (from < 0 || from >= Count) return;
-			if (to < 0 || to >= Count) return;
-
-			while (from < to) { TtabItem i = this[from]; this[from] = this[from+1]; this[from+1] = i; from++; }
-			while (from > to) { TtabItem i = this[from]; this[from] = this[from-1]; this[from-1] = i; from--; }
-		}
-
-		#endregion
-
-		#region ArrayList
-		public new TtabItem this[int index]
-		{
-			get { return ((TtabItem)base[index]); }
-			set 
-			{ 
-				base[index] = value;
-				if (!internalchg)
-					parent.OnWrapperChanged(new EventArgs());
-			}
-		}
-
-		public int Add(TtabItem item)
-		{
-			int retVal = base.Add(item);
-			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
-			return retVal;
-		}
-        
-		public void Insert(int index, Instruction item)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-			int newIndex = this.Add(item);
-			this.Move(newIndex, index);
-			internalchg = savedstate;
-			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
-		}
-
-		public override void RemoveAt(int index)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-			this.Move(index, this.Count - 1);
-			base.RemoveAt(this.Count - 1);
-			internalchg = savedstate;
-			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
-		}
-
-		public void Remove(Instruction item)
-		{
-			base.Remove(item);
-		}
-
-		public bool Contains(Instruction item)
-		{
-			return base.Contains(item);
-		}		
-
-		public override void Sort()
-		{
-			base.Sort();
-			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
-		}
-
-		public override void Sort(int index, int count, IComparer comparer)
-		{
-			base.Sort(index, count, comparer);
-			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
-		}
-
-		public override void Sort(IComparer comparer)
-		{
-			base.Sort(comparer);
-			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
-		}
-
-		#endregion
-	}
-
-	/// <summary>
 	/// An Item stored in an TTAB
 	/// </summary>
 	public class TtabItem : BhavBaseItem
@@ -443,7 +322,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region Attributes
 		private ushort action = 0;
 		private ushort guard = 0;
-		private int[] counts = null;
+		//private int[] counts = null;
 		private TtabFlags flags = null;
 		private ushort flags2 = 0;
 		private uint strindex = 0;
@@ -464,95 +343,186 @@ namespace SimPe.PackedFiles.Wrapper
 		public ushort Action
 		{
 			get {return action; }
-			set {action = value;}
+			set {
+				if (action != value)
+				{
+					action = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
-		public string ActionName 
-		{
-			get { return this.OpcodeName(this.action); }
-		}
+		public string ActionName { get { return this.OpcodeName(this.action); } }
 
 		public ushort Guardian
 		{
 			get {return guard; }
-			set {guard = value;}
+			set
+			{
+				if (guard != value)
+				{
+					guard = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}		
 
-		public string GuardianName 
-		{
-			get { return this.OpcodeName(this.guard); }
-		}
+		public string GuardianName { get { return this.OpcodeName(this.guard); } }
 
 		public TtabFlags Flags
 		{
 			get {return flags; }
-			set {flags = value;}
+			set
+			{
+				if (flags != value)
+				{
+					flags = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public ushort Flags2
 		{
 			get {return flags2; }
-			set {flags2 = value;}
+			set
+			{
+				if (flags2 != value)
+				{
+					flags2 = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public uint StringIndex
 		{
 			get {return strindex; }
-			set {strindex = value;}
+			set
+			{
+				if (strindex != value)
+				{
+					strindex = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public uint AttenuationCode
 		{
 			get {return attenuationcode; }
-			set {attenuationcode = value;}
+			set
+			{
+				if (attenuationcode != value)
+				{
+					attenuationcode = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public uint AttenuationValue
 		{
 			get {return attenuationvalue; }
-			set {attenuationvalue = value;}
+			set
+			{
+				if (attenuationvalue != value)
+				{
+					attenuationvalue = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}		
 
 		public uint Autonomy
 		{
 			get {return autonomy; }
-			set {autonomy = value;}
+			set
+			{
+				if (autonomy != value)
+				{
+					autonomy = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public uint JoinIndex
 		{
 			get {return joinindex; }
-			set {joinindex = value;}
+			set
+			{
+				if (joinindex != value)
+				{
+					joinindex = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public uint Res5
 		{
 			get {return res5; }
-			set {res5 = value;}
+			set
+			{
+				if (res5 != value)
+				{
+					res5 = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public uint Res6
 		{
 			get {return res6; }
-			set {res6 = value;}
+			set
+			{
+				if (res6 != value)
+				{
+					res6 = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public float Res7
 		{
 			get {return res7; }
-			set {res7 = value;}
+			set
+			{
+				if (res7.Equals(value))
+				{
+					res7 = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public uint Res8
 		{
 			get {return res8; }
-			set {res8 = value;}
+			set
+			{
+				if (res8 != value)
+				{
+					res8 = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public ushort Res9
 		{
 			get {return res9; }
-			set {res9 = value;}
+			set
+			{
+				if (res9 != value)
+				{
+					res9 = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public int nrGroups { get { return groups.Count; } }
@@ -580,8 +550,11 @@ namespace SimPe.PackedFiles.Wrapper
 			{
 				ArrayList gg = (ArrayList)groups[j];
 				short[] hh = (short[])gg[k];
-				hh[l] = value;
-				parent.OnWrapperChanged(new EventArgs());
+				if (hh[l] != value)
+				{
+					hh[l] = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
 			}
 		}
 		public SimPe.Interfaces.Providers.IOpcodeProvider Opcodes { get { return parent.Opcodes; } }
@@ -632,12 +605,14 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		private void commonConstructor(Ttab parent)
+		public TtabItem(Ttab parent)
 		{
 			this.parent = parent;
+			flags = new TtabFlags(parent, 0);
+
+			int[] counts;
 			if (parent.Format<0x44) counts = new int[1];
 			else counts = new int[7];
-			flags = new TtabFlags(0);
 
 			groups = new ArrayList(counts.Length);
 			for (int j=0; j < counts.Length; j++)
@@ -650,22 +625,14 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-		public TtabItem(Ttab parent)
-		{
-			commonConstructor(parent);
-		}
 
 		public TtabItem(Ttab parent, System.IO.BinaryReader reader)
 		{
-			commonConstructor(parent);
+			this.parent = parent;
 			Unserialize(reader);
 		}
 
 
-		/// <summary>
-		/// Creates a Human Readable String from the Objects Contents
-		/// </summary>
-		/// <returns></returns>
 		public override string ToString()
 		{
 			return "0x"+StringIndex.ToString("X")+": "+Name;// + " ("+this.ActionName+")";
@@ -676,17 +643,18 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Reads Data from the Stream
 		/// </summary>
 		/// <param name="reader"></param>
-		public void Unserialize(System.IO.BinaryReader reader)
+		internal void Unserialize(System.IO.BinaryReader reader)
 		{
 			action = reader.ReadUInt16();
 			guard = reader.ReadUInt16();
 
+			int[] counts;
 			if (parent.Format<0x44) counts = new int[1];
 			else counts = new int[7];
 			for (int i=0; i<counts.Length; i++)
 				counts[i] = reader.ReadInt32();
 
-			flags = new TtabFlags(reader.ReadUInt16());
+			flags = new TtabFlags(parent, reader.ReadUInt16());
 			flags2 = reader.ReadUInt16();
 
 			strindex = reader.ReadUInt32();
@@ -721,10 +689,10 @@ namespace SimPe.PackedFiles.Wrapper
 				for (int i=0; i < counts[k]; i++) 
 				{
 					int h = gg.Add(new short[3]);
-					short[] hh = (short[])gg[h];
-					for (int j = 0; j < hh.Length; j++)
+					short[] item = (short[])gg[h];
+					for (int j = 0; j < item.Length; j++)
 					{
-						hh[j] = reader.ReadInt16();
+						item[j] = reader.ReadInt16();
 					}
 				}
 			}
@@ -734,18 +702,16 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Writes Data to the Stream
 		/// </summary>
 		/// <param name="reader"></param>
-		public void Serialize(System.IO.BinaryWriter writer)
+		internal void Serialize(System.IO.BinaryWriter writer)
 		{
-			int[] c;
-			if (parent.Format<0x44) c = new int[1];
-			else c = new int[7];
-			for (int i = 0; i < c.Length; i++) c[i] = ((ArrayList)groups[i]).Count;
-			counts = c;
+			int nrGroups;
+			if (parent.Format<0x44) nrGroups = 1;
+			else nrGroups = 7;
 
 			writer.Write(action);
 			writer.Write(guard);
 
-			for (int i=0; i < counts.Length; i++) writer.Write(counts[i]);
+			for (int i=0; i < nrGroups; i++) writer.Write(((ArrayList)groups[i]).Count);
 
 			writer.Write(flags.Value);
 			writer.Write(flags2);
@@ -773,9 +739,9 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write(res9);
 			}
 
-			for (int k=0; k < counts.Length; k++) 
+			for (int k=0; k < nrGroups; k++) 
 			{
-				for (int i=0; i < counts[k]; i++) 
+				for (int i=0; i < ((ArrayList)groups[k]).Count; i++) 
 				{
 					short[] item = (short[])((ArrayList)groups[k])[i];
 					for (int j = 0; j < item.Length; j++)
@@ -788,102 +754,116 @@ namespace SimPe.PackedFiles.Wrapper
 
 	public class TtabFlags : FlagBase
 	{
-		public TtabFlags(ushort flags) : base(flags) {}
+		private Ttab parent;
+		public TtabFlags(Ttab parent, ushort flags) : base(flags) { this.parent = parent; }
+
+		public new ushort Value
+		{
+			get { return base.Value; }
+			set
+			{
+				if (base.Value != value)
+				{
+					base.Value = value;
+					parent.OnWrapperChanged(new EventArgs());
+				}
+			}
+		}
 
 		public bool ByVisitors
 		{
 			get { return GetBit(0); }
-			set { SetBit(0, value); }
+			set { SetBit(0, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool Joinable
 		{
 			get { return GetBit(1); }
-			set { SetBit(1, value); }
+			set { SetBit(1, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool RunImmediately
 		{
 			get { return GetBit(2); }
-			set { SetBit(2, value); }
+			set { SetBit(2, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool AvailConsecutive
 		{
 			get { return GetBit(3); }
-			set { SetBit(3, value); }
+			set { SetBit(3, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool ByChildren
 		{
 			get { return !GetBit(4); }
-			set { SetBit(4, !value); }
+			set { SetBit(4, !value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool ByDemoChild
 		{
 			get { return !GetBit(5); }
-			set { SetBit(5, !value); }
+			set { SetBit(5, !value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool ByAdults
 		{
 			get { return !GetBit(6); }
-			set { SetBit(6, !value); }
+			set { SetBit(6, !value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool DebugMenu
 		{
 			get { return GetBit(7); }
-			set { SetBit(7, value); }
+			set { SetBit(7, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool AutoFirstSelect
 		{
 			get { return GetBit(8); }
-			set { SetBit(8, value); }
+			set { SetBit(8, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool ByToddlers
 		{
 			get { return GetBit(9); }
-			set { SetBit(9, value); }
+			set { SetBit(9, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool ByElders
 		{
 			get { return GetBit(10); }
-			set { SetBit(10, value); }
+			set { SetBit(10, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool ByTeens
 		{
 			get { return GetBit(11); }
-			set { SetBit(11, value); }
+			set { SetBit(11, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool Unknown1
 		{
 			get { return GetBit(12); }
-			set { SetBit(12, value); }
+			set { SetBit(12, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool Unknown2
 		{
 			get { return GetBit(13); }
-			set { SetBit(13, value); }
+			set { SetBit(13, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool Unknown3
 		{
 			get { return GetBit(14); }
-			set { SetBit(14, value); }
+			set { SetBit(14, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 
 		public bool Unknown4
 		{
 			get { return GetBit(15); }
-			set { SetBit(15, value); }
+			set { SetBit(15, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
 	}
 
