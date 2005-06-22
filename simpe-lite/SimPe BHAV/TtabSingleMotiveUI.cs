@@ -68,7 +68,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region TtabSingleMotiveUI
-		private bool internalchg = false;
 		private TtabItem item = null;
 		private int mgNr;
 		private int motive;
@@ -81,11 +80,9 @@ namespace SimPe.PackedFiles.UserInterface
 			mgNr = j;
 			motive = k;
 
-			internalchg = true;
 			Min.Text   = i[j, k, 0].ToString("X");
 			Delta.Text = i[j, k, 1].ToString("X");
 			Type.Text  = i[j, k, 2].ToString("X");
-			internalchg = false;
 		}
 
 		public void SetData(TtabItem i, int j) { this.SetData(i, j, motive); }
