@@ -42,7 +42,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbttabfile;
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.Label label26;
-		private System.Windows.Forms.ContextMenu cmcopy;
 		private System.Windows.Forms.MenuItem menuItem1;
 		private System.Windows.Forms.MenuItem menuItem2;
 		private System.Windows.Forms.Panel ttabPanel;
@@ -99,10 +98,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbRes6;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.TextBox tbRes5;
-		private System.Windows.Forms.LinkLabel lldelttab;
 		private System.Windows.Forms.Button btnGuardian;
 		private System.Windows.Forms.Button btnAction;
-		private System.Windows.Forms.LinkLabel llAdd;
+		private System.Windows.Forms.Button btnAdd;
+		private System.Windows.Forms.Button btnDelete;
 		private SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI ttabItemMotiveTableUI1;
 		/// <summary>
 		/// Required designer variable.
@@ -159,47 +158,8 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <summary>
 		/// Stores the currently active Wrapper
 		/// </summary>
-		internal Ttab wrapper = null;
+		private Ttab wrapper = null;
 		private bool internalchg;
-		private void TtabItemChange()
-		{
-			//if (lbttab.SelectedIndex <0) return;
-
-			try 
-			{
-				TtabItem item = null;
-				if (lbttab.SelectedIndex>=0) item = (TtabItem)lbttab.Items[lbttab.SelectedIndex];
-				else item = new TtabItem(wrapper);
-
-				item.StringIndex = Convert.ToUInt32(tbStringIndex.Text, 16);
-				item.AttenuationCode = Convert.ToUInt32(tbAttenuationCode.Text, 16);
-				item.AttenuationValue = Convert.ToUInt32(tbAttenuationValue.Text, 16);
-				item.Autonomy = Convert.ToUInt32(tbAutonomy.Text, 16);
-				item.Res5 = Convert.ToUInt32(tbRes5.Text, 16);
-				item.Res6 = Convert.ToUInt32(tbRes6.Text, 16);
-				item.Res8 = Convert.ToUInt32(tbRes8.Text, 16);
-
-				item.Res7 = Convert.ToSingle(tbRes7.Text);
-				this.internalchg = true;
-				if (lbttab.SelectedIndex>=0) 
-				{
-					lbttab.Items[lbttab.SelectedIndex] = item;
-				} 
-				else 
-				{
-					lbttab.Items.Add(item);
-				}
-			} 
-			catch (Exception) 
-			{
-				//Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
-			} 
-			finally 
-			{
-				this.internalchg = false;
-			}
-		}
-		
 		private ArrayList alUshorts;
 		private ArrayList alUints;
 		private ArrayList alFloats;
@@ -296,8 +256,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TtabForm));
 			this.ttabPanel = new System.Windows.Forms.Panel();
-			this.lldelttab = new System.Windows.Forms.LinkLabel();
-			this.llAdd = new System.Windows.Forms.LinkLabel();
+			this.btnAdd = new System.Windows.Forms.Button();
 			this.tbFormat = new System.Windows.Forms.TextBox();
 			this.label41 = new System.Windows.Forms.Label();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -359,7 +318,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbttabfile = new System.Windows.Forms.Label();
 			this.label25 = new System.Windows.Forms.Label();
 			this.label26 = new System.Windows.Forms.Label();
-			this.cmcopy = new System.Windows.Forms.ContextMenu();
+			this.btnDelete = new System.Windows.Forms.Button();
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
 			this.ttabPanel.SuspendLayout();
@@ -379,8 +338,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("ttabPanel.AutoScrollMargin")));
 			this.ttabPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("ttabPanel.AutoScrollMinSize")));
 			this.ttabPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ttabPanel.BackgroundImage")));
-			this.ttabPanel.Controls.Add(this.lldelttab);
-			this.ttabPanel.Controls.Add(this.llAdd);
+			this.ttabPanel.Controls.Add(this.btnAdd);
 			this.ttabPanel.Controls.Add(this.tbFormat);
 			this.ttabPanel.Controls.Add(this.label41);
 			this.ttabPanel.Controls.Add(this.tabControl1);
@@ -388,6 +346,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.Controls.Add(this.btnCommit);
 			this.ttabPanel.Controls.Add(this.panel5);
 			this.ttabPanel.Controls.Add(this.label26);
+			this.ttabPanel.Controls.Add(this.btnDelete);
 			this.ttabPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("ttabPanel.Dock")));
 			this.ttabPanel.Enabled = ((bool)(resources.GetObject("ttabPanel.Enabled")));
 			this.ttabPanel.Font = ((System.Drawing.Font)(resources.GetObject("ttabPanel.Font")));
@@ -400,55 +359,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.Text = resources.GetString("ttabPanel.Text");
 			this.ttabPanel.Visible = ((bool)(resources.GetObject("ttabPanel.Visible")));
 			// 
-			// lldelttab
+			// btnAdd
 			// 
-			this.lldelttab.AccessibleDescription = resources.GetString("lldelttab.AccessibleDescription");
-			this.lldelttab.AccessibleName = resources.GetString("lldelttab.AccessibleName");
-			this.lldelttab.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lldelttab.Anchor")));
-			this.lldelttab.AutoSize = ((bool)(resources.GetObject("lldelttab.AutoSize")));
-			this.lldelttab.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lldelttab.Dock")));
-			this.lldelttab.Enabled = ((bool)(resources.GetObject("lldelttab.Enabled")));
-			this.lldelttab.Font = ((System.Drawing.Font)(resources.GetObject("lldelttab.Font")));
-			this.lldelttab.Image = ((System.Drawing.Image)(resources.GetObject("lldelttab.Image")));
-			this.lldelttab.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lldelttab.ImageAlign")));
-			this.lldelttab.ImageIndex = ((int)(resources.GetObject("lldelttab.ImageIndex")));
-			this.lldelttab.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lldelttab.ImeMode")));
-			this.lldelttab.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("lldelttab.LinkArea")));
-			this.lldelttab.Location = ((System.Drawing.Point)(resources.GetObject("lldelttab.Location")));
-			this.lldelttab.Name = "lldelttab";
-			this.lldelttab.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lldelttab.RightToLeft")));
-			this.lldelttab.Size = ((System.Drawing.Size)(resources.GetObject("lldelttab.Size")));
-			this.lldelttab.TabIndex = ((int)(resources.GetObject("lldelttab.TabIndex")));
-			this.lldelttab.TabStop = true;
-			this.lldelttab.Text = resources.GetString("lldelttab.Text");
-			this.lldelttab.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lldelttab.TextAlign")));
-			this.lldelttab.Visible = ((bool)(resources.GetObject("lldelttab.Visible")));
-			this.lldelttab.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.TtabItemDelete);
-			// 
-			// llAdd
-			// 
-			this.llAdd.AccessibleDescription = resources.GetString("llAdd.AccessibleDescription");
-			this.llAdd.AccessibleName = resources.GetString("llAdd.AccessibleName");
-			this.llAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llAdd.Anchor")));
-			this.llAdd.AutoSize = ((bool)(resources.GetObject("llAdd.AutoSize")));
-			this.llAdd.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llAdd.Dock")));
-			this.llAdd.Enabled = ((bool)(resources.GetObject("llAdd.Enabled")));
-			this.llAdd.Font = ((System.Drawing.Font)(resources.GetObject("llAdd.Font")));
-			this.llAdd.Image = ((System.Drawing.Image)(resources.GetObject("llAdd.Image")));
-			this.llAdd.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llAdd.ImageAlign")));
-			this.llAdd.ImageIndex = ((int)(resources.GetObject("llAdd.ImageIndex")));
-			this.llAdd.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llAdd.ImeMode")));
-			this.llAdd.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llAdd.LinkArea")));
-			this.llAdd.Location = ((System.Drawing.Point)(resources.GetObject("llAdd.Location")));
-			this.llAdd.Name = "llAdd";
-			this.llAdd.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llAdd.RightToLeft")));
-			this.llAdd.Size = ((System.Drawing.Size)(resources.GetObject("llAdd.Size")));
-			this.llAdd.TabIndex = ((int)(resources.GetObject("llAdd.TabIndex")));
-			this.llAdd.TabStop = true;
-			this.llAdd.Text = resources.GetString("llAdd.Text");
-			this.llAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llAdd.TextAlign")));
-			this.llAdd.Visible = ((bool)(resources.GetObject("llAdd.Visible")));
-			this.llAdd.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AddTtab);
+			this.btnAdd.AccessibleDescription = resources.GetString("btnAdd.AccessibleDescription");
+			this.btnAdd.AccessibleName = resources.GetString("btnAdd.AccessibleName");
+			this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAdd.Anchor")));
+			this.btnAdd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAdd.BackgroundImage")));
+			this.btnAdd.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAdd.Dock")));
+			this.btnAdd.Enabled = ((bool)(resources.GetObject("btnAdd.Enabled")));
+			this.btnAdd.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAdd.FlatStyle")));
+			this.btnAdd.Font = ((System.Drawing.Font)(resources.GetObject("btnAdd.Font")));
+			this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
+			this.btnAdd.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.ImageAlign")));
+			this.btnAdd.ImageIndex = ((int)(resources.GetObject("btnAdd.ImageIndex")));
+			this.btnAdd.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAdd.ImeMode")));
+			this.btnAdd.Location = ((System.Drawing.Point)(resources.GetObject("btnAdd.Location")));
+			this.btnAdd.Name = "btnAdd";
+			this.btnAdd.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAdd.RightToLeft")));
+			this.btnAdd.Size = ((System.Drawing.Size)(resources.GetObject("btnAdd.Size")));
+			this.btnAdd.TabIndex = ((int)(resources.GetObject("btnAdd.TabIndex")));
+			this.btnAdd.Text = resources.GetString("btnAdd.Text");
+			this.btnAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.TextAlign")));
+			this.btnAdd.Visible = ((bool)(resources.GetObject("btnAdd.Visible")));
+			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
 			// 
 			// tbFormat
 			// 
@@ -1901,6 +1834,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Text = resources.GetString("btnCommit.Text");
 			this.btnCommit.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.TextAlign")));
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
+			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
 			// 
 			// panel5
 			// 
@@ -1993,9 +1927,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label26.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label26.TextAlign")));
 			this.label26.Visible = ((bool)(resources.GetObject("label26.Visible")));
 			// 
-			// cmcopy
+			// btnDelete
 			// 
-			this.cmcopy.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cmcopy.RightToLeft")));
+			this.btnDelete.AccessibleDescription = resources.GetString("btnDelete.AccessibleDescription");
+			this.btnDelete.AccessibleName = resources.GetString("btnDelete.AccessibleName");
+			this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDelete.Anchor")));
+			this.btnDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelete.BackgroundImage")));
+			this.btnDelete.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDelete.Dock")));
+			this.btnDelete.Enabled = ((bool)(resources.GetObject("btnDelete.Enabled")));
+			this.btnDelete.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDelete.FlatStyle")));
+			this.btnDelete.Font = ((System.Drawing.Font)(resources.GetObject("btnDelete.Font")));
+			this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+			this.btnDelete.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelete.ImageAlign")));
+			this.btnDelete.ImageIndex = ((int)(resources.GetObject("btnDelete.ImageIndex")));
+			this.btnDelete.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDelete.ImeMode")));
+			this.btnDelete.Location = ((System.Drawing.Point)(resources.GetObject("btnDelete.Location")));
+			this.btnDelete.Name = "btnDelete";
+			this.btnDelete.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDelete.RightToLeft")));
+			this.btnDelete.Size = ((System.Drawing.Size)(resources.GetObject("btnDelete.Size")));
+			this.btnDelete.TabIndex = ((int)(resources.GetObject("btnDelete.TabIndex")));
+			this.btnDelete.Text = resources.GetString("btnDelete.Text");
+			this.btnDelete.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelete.TextAlign")));
+			this.btnDelete.Visible = ((bool)(resources.GetObject("btnDelete.Visible")));
+			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
 			// 
 			// menuItem1
 			// 
@@ -2055,13 +2009,14 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (this.internalchg) return;
 
-			this.lldelttab.Enabled = false;
+			this.btnDelete.Enabled = false;
 			if (lbttab.SelectedIndex < 0) return;
-			TtabItem item = (TtabItem)lbttab.Items[lbttab.SelectedIndex];
+
+			TtabItem item = wrapper[lbttab.SelectedIndex];
 
 			internalchg = true;
 
-			lldelttab.Enabled = true;
+			btnDelete.Enabled = true;
 
 			this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);				
 			this.tbAction.Text = "0x"+Helper.HexString(item.Action);
@@ -2087,6 +2042,70 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabItemMotiveTableUI1.SetData(wrapper[lbttab.SelectedIndex]);
 			internalchg = false;
 		}		
+
+
+		private void btnCommit_Click(object sender, System.EventArgs e)
+		{
+			try 
+			{
+				wrapper.SynchronizeUserData();
+				btnCommit.Enabled = false;
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+			}			
+		}
+
+
+		private void btnAdd_Click(object sender, System.EventArgs e)
+		{
+			int i = wrapper.AddItem();
+
+			if (lbttab.SelectedIndex != -1)
+			{
+				TtabItem ci = wrapper[lbttab.SelectedIndex];
+				TtabItem ni = wrapper[i];
+				ni.Action = ci.Action;
+				ni.AttenuationCode = ci.AttenuationCode;
+				ni.AttenuationValue = ci.AttenuationValue;
+				ni.Autonomy = ci.Autonomy;
+				ni.Flags.Value = ci.Flags.Value;
+				ni.Flags2 = ci.Flags2;
+				ni.Guardian = ci.Guardian;
+				ni.JoinIndex = ni.JoinIndex;
+				ni.Res5 = ci.Res5;
+				ni.Res6 = ci.Res6;
+				ni.Res7 = ci.Res7;
+				ni.Res8 = ci.Res8;
+				ni.Res9 = ci.Res9;
+				ni.StringIndex = (uint)i;
+				for (int mg = 0; mg < ci.nrGroups; mg++)
+					for (int m = 0; m < ci.nrMotives[mg]; m++)
+					{
+						ni[mg, m, 0] = ci[mg, m, 0];
+						ni[mg, m, 1] = ci[mg, m, 1];
+						ni[mg, m, 2] = ci[mg, m, 2];
+					}
+			}
+			lbttab.Items.Add(wrapper[i]);
+			lbttab.SelectedIndex = i;
+		}
+
+		private void btnDelete_Click(object sender, System.EventArgs e)
+		{
+			if (lbttab.SelectedIndex < 0) return;
+
+			int i = lbttab.SelectedIndex;
+
+			lbttab.Items.RemoveAt(i);
+			wrapper.RemoveAt(i);
+
+			if (i >= lbttab.Items.Count)
+				i = lbttab.Items.Count - 1;
+			lbttab.SelectedIndex = -1;
+			lbttab.SelectedIndex = i;
+		}
 
 
 		private void GetTTABGuard(object sender, System.EventArgs e)
@@ -2137,21 +2156,6 @@ namespace SimPe.PackedFiles.UserInterface
 				
 				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
 			}
-		}
-
-		private void TtabItemDelete(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			if (lbttab.SelectedIndex>=0) 
-			{
-				lbttab.Items.Remove(lbttab.Items[lbttab.SelectedIndex]);
-			}
-		}
-
-		private void AddTtab(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			lbttab.SelectedIndex = -1;
-			TtabItemChange();
-			lbttab.SelectedIndex = lbttab.Items.Count -1;
 		}
 
 
@@ -2226,7 +2230,10 @@ namespace SimPe.PackedFiles.UserInterface
 			switch(i)
 			{
 				case 0: wrapper.Format = val; break;
-				case 1: wrapper[this.lbttab.SelectedIndex].StringIndex = val; break;
+				case 1:
+					wrapper[this.lbttab.SelectedIndex].StringIndex = val;
+					lbttab.Items[lbttab.SelectedIndex] = wrapper[lbttab.SelectedIndex];
+					break;
 				case 2: wrapper[this.lbttab.SelectedIndex].AttenuationCode = val; break;
 				case 3: wrapper[this.lbttab.SelectedIndex].AttenuationValue = val; break;
 				case 4: wrapper[this.lbttab.SelectedIndex].Autonomy = val; break;

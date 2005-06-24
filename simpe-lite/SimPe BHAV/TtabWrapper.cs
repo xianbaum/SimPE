@@ -63,7 +63,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Items stored in the File
 		/// </summary>
-		private TtabItem[] items = null;
+		private ArrayList items = null;
 		/// <summary>
 		/// Unknown Data following the TTAB
 		/// </summary>
@@ -116,14 +116,14 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public int ItemCount
 		{
-			get { return itemCount; }
+			get { return items.Count; }
 		}
 		/// <summary>
 		/// Returns the Item
 		/// </summary>
 		public TtabItem this[int index]
 		{
-			get { return items[index]; }
+			get { return (TtabItem)items[index]; }
 		}
 
 		/// <summary>
@@ -190,6 +190,19 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		public int AddItem()
+		{
+			int val = items.Add(new TtabItem(this));
+			OnWrapperChanged(new EventArgs());
+			return val;
+		}
+
+		public void RemoveAt(int index)
+		{
+			items.RemoveAt(index);
+			OnWrapperChanged(new EventArgs());
+		}
+
 		
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
@@ -237,7 +250,8 @@ namespace SimPe.PackedFiles.Wrapper
 
 			itemCount = reader.ReadUInt16();
 
-			items = new TtabItem[itemCount];
+			TtabItem[] ti = new TtabItem[itemCount];
+			items = new ArrayList(ti);
 			for (int i = 0; i < itemCount; i++)
 				items[i] = new TtabItem(this, reader);
 
@@ -259,9 +273,10 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(header[1]);
 			writer.Write(header[2]);
 
-			writer.Write((ushort)items.Length);
-			for (int i = 0; i < items.Length; i++)
-				items[i].Serialize(writer);
+			writer.Write((ushort)items.Count);
+
+			for (int i = 0; i < items.Count; i++)
+				if (items[i] != null) ((TtabItem)items[i]).Serialize(writer);
 
 			writer.Write(footer);
 		}
