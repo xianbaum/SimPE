@@ -1,4 +1,10 @@
 
+24 June 2005 20:24 - Move Add and Delete buttons (and make buttons work)
+  SimPe BHAV\
+    TtabForm.cs 1.2.4.3
+    TtabForm.resx 1.1.4.4
+    TtabWrapper.cs 1.1.4.4
+
 24 June 2005 17:40 - Put the copy buttons in the right place, add Clear, add row highlights
   SimPe BHAV\
     TtabItemMotiveTableUI.cs 1.1.2.4
