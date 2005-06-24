@@ -1,4 +1,15 @@
 
+24 June 2005 17:40 - Put the copy buttons in the right place, add Clear, add row highlights
+  SimPe BHAV\
+    TtabItemMotiveTableUI.cs 1.1.2.4
+    TtabItemMotiveTableUI.resx 1.1.2.4
+    TtabMotiveGroupUI.cs 1.1.2.4
+    TtabMotiveGroupUI.resx 1.1.2.4
+    TtabSingleMotiveUI.cs 1.1.2.4
+
+24 June 2005 17:35 - Rename TtabItem indices to remind me of the order.
+  SimPe BHAV\TtabWrapper.cs 1.1.4.3
+
 22 June 2005 19:19 - More TTAB Grid Changes
   SimPe BHAV\
     TtabForm.resx 1.1.4.3
