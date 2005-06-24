@@ -538,21 +538,21 @@ namespace SimPe.PackedFiles.Wrapper
 				return count;
 			}
 		}
-		public short this[int j, int k, int l]
+		public short this[int mg, int m, int i]
 		{
 			get
 			{
-				ArrayList gg = (ArrayList)groups[j];
-				short[] hh = (short[])gg[k];
-				return hh[l];
+				ArrayList gg = (ArrayList)groups[mg];
+				short[] hh = (short[])gg[m];
+				return hh[i];
 			}
 			set
 			{
-				ArrayList gg = (ArrayList)groups[j];
-				short[] hh = (short[])gg[k];
-				if (hh[l] != value)
+				ArrayList gg = (ArrayList)groups[mg];
+				short[] hh = (short[])gg[m];
+				if (hh[i] != value)
 				{
-					hh[l] = value;
+					hh[i] = value;
 					parent.OnWrapperChanged(new EventArgs());
 				}
 			}
