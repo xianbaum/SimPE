@@ -53,24 +53,15 @@ namespace SimPe.PackedFiles.UserInterface
 		private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI14;
 		private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI15;
 		private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI16;
-		private System.Windows.Forms.Panel pnCopyButtons;
-		private System.Windows.Forms.Button btnCopy0;
-		private System.Windows.Forms.Button btnCopy1;
-		private System.Windows.Forms.Button btnCopy2;
-		private System.Windows.Forms.Button btnCopy3;
-		private System.Windows.Forms.Button btnCopy4;
-		private System.Windows.Forms.Button btnCopy5;
-		private System.Windows.Forms.Button btnCopy6;
-		private System.Windows.Forms.Button btnCopy7;
-		private System.Windows.Forms.Button btnCopy8;
-		private System.Windows.Forms.Button btnCopy9;
-		private System.Windows.Forms.Button btnCopy10;
-		private System.Windows.Forms.Button btnCopy11;
-		private System.Windows.Forms.Button btnCopy12;
-		private System.Windows.Forms.Button btnCopy13;
-		private System.Windows.Forms.Button btnCopy14;
-		private System.Windows.Forms.Button btnCopy15;
-		private System.Windows.Forms.Button btnCopyAll;
+		private System.Windows.Forms.Button btnClear;
+		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel panel2;
+		private System.Windows.Forms.Panel panel3;
+		private System.Windows.Forms.Panel panel4;
+		private System.Windows.Forms.Panel panel5;
+		private System.Windows.Forms.Panel panel6;
+		private System.Windows.Forms.Panel panel7;
+		private System.Windows.Forms.Panel panel8;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -84,19 +75,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 			// TODO: Add any initialization after the InitializeComponent call
 			TtabSingleMotiveUI[] ts = {
-										   ttabSingleMotiveUI1  ,ttabSingleMotiveUI2  ,ttabSingleMotiveUI3  ,ttabSingleMotiveUI4
+										  ttabSingleMotiveUI1  ,ttabSingleMotiveUI2  ,ttabSingleMotiveUI3  ,ttabSingleMotiveUI4
 										  ,ttabSingleMotiveUI5  ,ttabSingleMotiveUI6  ,ttabSingleMotiveUI7  ,ttabSingleMotiveUI8
 										  ,ttabSingleMotiveUI9  ,ttabSingleMotiveUI10 ,ttabSingleMotiveUI11 ,ttabSingleMotiveUI12
 										  ,ttabSingleMotiveUI13 ,ttabSingleMotiveUI14 ,ttabSingleMotiveUI15 ,ttabSingleMotiveUI16
 									  };
 			aTtabSingleMotiveUI = ts;
-			Button[] b = {
-							  btnCopy0  ,btnCopy1  ,btnCopy2  ,btnCopy3
-							 ,btnCopy4  ,btnCopy5  ,btnCopy6  ,btnCopy7
-							 ,btnCopy8  ,btnCopy9  ,btnCopy10 ,btnCopy11
-							 ,btnCopy12 ,btnCopy13 ,btnCopy14 ,btnCopy15
-						 };
-			alBtnCopy = new ArrayList(b);
 		}
 
 		/// <summary> 
@@ -119,18 +103,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private TtabItem item = null;
 		private int mgnr;
 		private TtabSingleMotiveUI[] aTtabSingleMotiveUI;
-		private ArrayList alBtnCopy;
-
-		public event MotiveClickEventHandler MotiveClick;
-
-		public virtual void OnMotiveClick(MotiveClickEventArgs e)
-		{
-			if (MotiveClick != null) 
-			{
-				MotiveClick(this, e);
-			}
-		}
-
 		public void SetData(TtabItem i, int j)
 		{
 			this.Visible = true;
@@ -141,16 +113,14 @@ namespace SimPe.PackedFiles.UserInterface
 			if (j == -1) j = 0;
 			for (int k = 0; k < aTtabSingleMotiveUI.Length; k++)
 			{
+				aTtabSingleMotiveUI[k].Visible = true;
 				if (aTtabSingleMotiveUI[k].Motive < item.nrMotives[j])
 				{
 					aTtabSingleMotiveUI[k].SetData(item, j);
-					aTtabSingleMotiveUI[k].Visible = true;
-					((Button)alBtnCopy[k]).Visible = true;
 				}
 				else
 				{
 					aTtabSingleMotiveUI[k].Visible = false;
-					((Button)alBtnCopy[k]).Visible = false;
 				}
 			}
 		}
@@ -164,32 +134,12 @@ namespace SimPe.PackedFiles.UserInterface
 			get { return mgnr; }
 			set
 			{
-				if (value < -1 || value > 6)
-					throw new Exception("Motive group must be in range 0 to 6 -- or -1.");
+				if (value < 0 || value > 6)
+					throw new Exception("Motive group must be in range 0 to 6.");
 				mgnr = value;
 
-				if (mgnr >= 0)
-				{
-					//gbMotiveGroup.Text = Localization.Manager.GetString(((TtabMotives)mgnr).ToString());
-					gbMotiveGroup.Text = ((TtabMotives)mgnr).ToString();
-					// show individual buttons
-					this.pnCopyButtons.Visible = true;
-					//this.Width = this.pnCopyButtons.Left + 4;
-					// hide Copy All button
-					this.btnCopyAll.Visible = false;
-					//this.Height = this.ttabSingleMotiveUI16.Bottom + 4;
-				}
-				else
-				{
-					//gbMotiveGroup.Text = Localization.Manager.GetString("Generic");
-					gbMotiveGroup.Text = "Generic";
-					// hide individual buttons
-					this.pnCopyButtons.Visible = false;
-					//this.Width = this.ttabSingleMotiveUI16.Left + 4;
-					// show Copy All button
-					this.btnCopyAll.Visible = true;
-					//this.Height = this.btnCopyAll.Bottom + 4;
-				}
+				//gbMotiveGroup.Text = Localization.Manager.GetString(((TtabMotives)mgnr).ToString());
+				gbMotiveGroup.Text = ((TtabMotives)mgnr).ToString();
 			}
 		}
 
@@ -204,6 +154,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TtabMotiveGroupUI));
 			this.gbMotiveGroup = new System.Windows.Forms.GroupBox();
+			this.btnClear = new System.Windows.Forms.Button();
 			this.ttabSingleMotiveUI1 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
 			this.Min = new System.Windows.Forms.Label();
 			this.Delta = new System.Windows.Forms.Label();
@@ -223,26 +174,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabSingleMotiveUI9 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
 			this.ttabSingleMotiveUI10 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
 			this.ttabSingleMotiveUI12 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
-			this.pnCopyButtons = new System.Windows.Forms.Panel();
-			this.btnCopy0 = new System.Windows.Forms.Button();
-			this.btnCopy1 = new System.Windows.Forms.Button();
-			this.btnCopy2 = new System.Windows.Forms.Button();
-			this.btnCopy3 = new System.Windows.Forms.Button();
-			this.btnCopy4 = new System.Windows.Forms.Button();
-			this.btnCopy5 = new System.Windows.Forms.Button();
-			this.btnCopy6 = new System.Windows.Forms.Button();
-			this.btnCopy7 = new System.Windows.Forms.Button();
-			this.btnCopy8 = new System.Windows.Forms.Button();
-			this.btnCopy9 = new System.Windows.Forms.Button();
-			this.btnCopy10 = new System.Windows.Forms.Button();
-			this.btnCopy11 = new System.Windows.Forms.Button();
-			this.btnCopy12 = new System.Windows.Forms.Button();
-			this.btnCopy13 = new System.Windows.Forms.Button();
-			this.btnCopy14 = new System.Windows.Forms.Button();
-			this.btnCopy15 = new System.Windows.Forms.Button();
-			this.btnCopyAll = new System.Windows.Forms.Button();
+			this.panel1 = new System.Windows.Forms.Panel();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.panel3 = new System.Windows.Forms.Panel();
+			this.panel4 = new System.Windows.Forms.Panel();
+			this.panel5 = new System.Windows.Forms.Panel();
+			this.panel6 = new System.Windows.Forms.Panel();
+			this.panel7 = new System.Windows.Forms.Panel();
+			this.panel8 = new System.Windows.Forms.Panel();
 			this.gbMotiveGroup.SuspendLayout();
-			this.pnCopyButtons.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gbMotiveGroup
@@ -251,8 +191,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbMotiveGroup.AccessibleName = resources.GetString("gbMotiveGroup.AccessibleName");
 			this.gbMotiveGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbMotiveGroup.Anchor")));
 			this.gbMotiveGroup.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbMotiveGroup.BackgroundImage")));
-			this.gbMotiveGroup.Controls.Add(this.btnCopyAll);
-			this.gbMotiveGroup.Controls.Add(this.pnCopyButtons);
+			this.gbMotiveGroup.Controls.Add(this.btnClear);
 			this.gbMotiveGroup.Controls.Add(this.ttabSingleMotiveUI1);
 			this.gbMotiveGroup.Controls.Add(this.Min);
 			this.gbMotiveGroup.Controls.Add(this.Delta);
@@ -272,6 +211,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbMotiveGroup.Controls.Add(this.ttabSingleMotiveUI9);
 			this.gbMotiveGroup.Controls.Add(this.ttabSingleMotiveUI10);
 			this.gbMotiveGroup.Controls.Add(this.ttabSingleMotiveUI12);
+			this.gbMotiveGroup.Controls.Add(this.panel1);
+			this.gbMotiveGroup.Controls.Add(this.panel2);
+			this.gbMotiveGroup.Controls.Add(this.panel3);
+			this.gbMotiveGroup.Controls.Add(this.panel4);
+			this.gbMotiveGroup.Controls.Add(this.panel5);
+			this.gbMotiveGroup.Controls.Add(this.panel6);
+			this.gbMotiveGroup.Controls.Add(this.panel7);
+			this.gbMotiveGroup.Controls.Add(this.panel8);
 			this.gbMotiveGroup.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbMotiveGroup.Dock")));
 			this.gbMotiveGroup.Enabled = ((bool)(resources.GetObject("gbMotiveGroup.Enabled")));
 			this.gbMotiveGroup.Font = ((System.Drawing.Font)(resources.GetObject("gbMotiveGroup.Font")));
@@ -284,6 +231,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbMotiveGroup.TabStop = false;
 			this.gbMotiveGroup.Text = resources.GetString("gbMotiveGroup.Text");
 			this.gbMotiveGroup.Visible = ((bool)(resources.GetObject("gbMotiveGroup.Visible")));
+			// 
+			// btnClear
+			// 
+			this.btnClear.AccessibleDescription = resources.GetString("btnClear.AccessibleDescription");
+			this.btnClear.AccessibleName = resources.GetString("btnClear.AccessibleName");
+			this.btnClear.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnClear.Anchor")));
+			this.btnClear.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClear.BackgroundImage")));
+			this.btnClear.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnClear.Dock")));
+			this.btnClear.Enabled = ((bool)(resources.GetObject("btnClear.Enabled")));
+			this.btnClear.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnClear.FlatStyle")));
+			this.btnClear.Font = ((System.Drawing.Font)(resources.GetObject("btnClear.Font")));
+			this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
+			this.btnClear.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClear.ImageAlign")));
+			this.btnClear.ImageIndex = ((int)(resources.GetObject("btnClear.ImageIndex")));
+			this.btnClear.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnClear.ImeMode")));
+			this.btnClear.Location = ((System.Drawing.Point)(resources.GetObject("btnClear.Location")));
+			this.btnClear.Name = "btnClear";
+			this.btnClear.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnClear.RightToLeft")));
+			this.btnClear.Size = ((System.Drawing.Size)(resources.GetObject("btnClear.Size")));
+			this.btnClear.TabIndex = ((int)(resources.GetObject("btnClear.TabIndex")));
+			this.btnClear.Text = resources.GetString("btnClear.Text");
+			this.btnClear.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClear.TextAlign")));
+			this.btnClear.Visible = ((bool)(resources.GetObject("btnClear.Visible")));
+			this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
 			// 
 			// ttabSingleMotiveUI1
 			// 
@@ -687,450 +658,181 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabSingleMotiveUI12.TabIndex = ((int)(resources.GetObject("ttabSingleMotiveUI12.TabIndex")));
 			this.ttabSingleMotiveUI12.Visible = ((bool)(resources.GetObject("ttabSingleMotiveUI12.Visible")));
 			// 
-			// pnCopyButtons
+			// panel1
 			// 
-			this.pnCopyButtons.AccessibleDescription = resources.GetString("pnCopyButtons.AccessibleDescription");
-			this.pnCopyButtons.AccessibleName = resources.GetString("pnCopyButtons.AccessibleName");
-			this.pnCopyButtons.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnCopyButtons.Anchor")));
-			this.pnCopyButtons.AutoScroll = ((bool)(resources.GetObject("pnCopyButtons.AutoScroll")));
-			this.pnCopyButtons.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("pnCopyButtons.AutoScrollMargin")));
-			this.pnCopyButtons.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnCopyButtons.AutoScrollMinSize")));
-			this.pnCopyButtons.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnCopyButtons.BackgroundImage")));
-			this.pnCopyButtons.Controls.Add(this.btnCopy3);
-			this.pnCopyButtons.Controls.Add(this.btnCopy2);
-			this.pnCopyButtons.Controls.Add(this.btnCopy1);
-			this.pnCopyButtons.Controls.Add(this.btnCopy0);
-			this.pnCopyButtons.Controls.Add(this.btnCopy4);
-			this.pnCopyButtons.Controls.Add(this.btnCopy5);
-			this.pnCopyButtons.Controls.Add(this.btnCopy6);
-			this.pnCopyButtons.Controls.Add(this.btnCopy7);
-			this.pnCopyButtons.Controls.Add(this.btnCopy8);
-			this.pnCopyButtons.Controls.Add(this.btnCopy9);
-			this.pnCopyButtons.Controls.Add(this.btnCopy10);
-			this.pnCopyButtons.Controls.Add(this.btnCopy11);
-			this.pnCopyButtons.Controls.Add(this.btnCopy12);
-			this.pnCopyButtons.Controls.Add(this.btnCopy13);
-			this.pnCopyButtons.Controls.Add(this.btnCopy14);
-			this.pnCopyButtons.Controls.Add(this.btnCopy15);
-			this.pnCopyButtons.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnCopyButtons.Dock")));
-			this.pnCopyButtons.Enabled = ((bool)(resources.GetObject("pnCopyButtons.Enabled")));
-			this.pnCopyButtons.Font = ((System.Drawing.Font)(resources.GetObject("pnCopyButtons.Font")));
-			this.pnCopyButtons.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("pnCopyButtons.ImeMode")));
-			this.pnCopyButtons.Location = ((System.Drawing.Point)(resources.GetObject("pnCopyButtons.Location")));
-			this.pnCopyButtons.Name = "pnCopyButtons";
-			this.pnCopyButtons.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnCopyButtons.RightToLeft")));
-			this.pnCopyButtons.Size = ((System.Drawing.Size)(resources.GetObject("pnCopyButtons.Size")));
-			this.pnCopyButtons.TabIndex = ((int)(resources.GetObject("pnCopyButtons.TabIndex")));
-			this.pnCopyButtons.Text = resources.GetString("pnCopyButtons.Text");
-			this.pnCopyButtons.Visible = ((bool)(resources.GetObject("pnCopyButtons.Visible")));
+			this.panel1.AccessibleDescription = resources.GetString("panel1.AccessibleDescription");
+			this.panel1.AccessibleName = resources.GetString("panel1.AccessibleName");
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel1.Anchor")));
+			this.panel1.AutoScroll = ((bool)(resources.GetObject("panel1.AutoScroll")));
+			this.panel1.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel1.AutoScrollMargin")));
+			this.panel1.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel1.AutoScrollMinSize")));
+			this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
+			this.panel1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel1.Dock")));
+			this.panel1.Enabled = ((bool)(resources.GetObject("panel1.Enabled")));
+			this.panel1.Font = ((System.Drawing.Font)(resources.GetObject("panel1.Font")));
+			this.panel1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel1.ImeMode")));
+			this.panel1.Location = ((System.Drawing.Point)(resources.GetObject("panel1.Location")));
+			this.panel1.Name = "panel1";
+			this.panel1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel1.RightToLeft")));
+			this.panel1.Size = ((System.Drawing.Size)(resources.GetObject("panel1.Size")));
+			this.panel1.TabIndex = ((int)(resources.GetObject("panel1.TabIndex")));
+			this.panel1.Text = resources.GetString("panel1.Text");
+			this.panel1.Visible = ((bool)(resources.GetObject("panel1.Visible")));
 			// 
-			// btnCopy0
+			// panel2
 			// 
-			this.btnCopy0.AccessibleDescription = resources.GetString("btnCopy0.AccessibleDescription");
-			this.btnCopy0.AccessibleName = resources.GetString("btnCopy0.AccessibleName");
-			this.btnCopy0.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy0.Anchor")));
-			this.btnCopy0.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy0.BackgroundImage")));
-			this.btnCopy0.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy0.Dock")));
-			this.btnCopy0.Enabled = ((bool)(resources.GetObject("btnCopy0.Enabled")));
-			this.btnCopy0.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy0.FlatStyle")));
-			this.btnCopy0.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy0.Font")));
-			this.btnCopy0.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy0.Image")));
-			this.btnCopy0.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy0.ImageAlign")));
-			this.btnCopy0.ImageIndex = ((int)(resources.GetObject("btnCopy0.ImageIndex")));
-			this.btnCopy0.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy0.ImeMode")));
-			this.btnCopy0.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy0.Location")));
-			this.btnCopy0.Name = "btnCopy0";
-			this.btnCopy0.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy0.RightToLeft")));
-			this.btnCopy0.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy0.Size")));
-			this.btnCopy0.TabIndex = ((int)(resources.GetObject("btnCopy0.TabIndex")));
-			this.btnCopy0.Text = resources.GetString("btnCopy0.Text");
-			this.btnCopy0.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy0.TextAlign")));
-			this.btnCopy0.Visible = ((bool)(resources.GetObject("btnCopy0.Visible")));
-			this.btnCopy0.Click += new System.EventHandler(this.btnCopy_Click);
+			this.panel2.AccessibleDescription = resources.GetString("panel2.AccessibleDescription");
+			this.panel2.AccessibleName = resources.GetString("panel2.AccessibleName");
+			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel2.Anchor")));
+			this.panel2.AutoScroll = ((bool)(resources.GetObject("panel2.AutoScroll")));
+			this.panel2.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel2.AutoScrollMargin")));
+			this.panel2.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel2.AutoScrollMinSize")));
+			this.panel2.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
+			this.panel2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel2.Dock")));
+			this.panel2.Enabled = ((bool)(resources.GetObject("panel2.Enabled")));
+			this.panel2.Font = ((System.Drawing.Font)(resources.GetObject("panel2.Font")));
+			this.panel2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel2.ImeMode")));
+			this.panel2.Location = ((System.Drawing.Point)(resources.GetObject("panel2.Location")));
+			this.panel2.Name = "panel2";
+			this.panel2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel2.RightToLeft")));
+			this.panel2.Size = ((System.Drawing.Size)(resources.GetObject("panel2.Size")));
+			this.panel2.TabIndex = ((int)(resources.GetObject("panel2.TabIndex")));
+			this.panel2.Text = resources.GetString("panel2.Text");
+			this.panel2.Visible = ((bool)(resources.GetObject("panel2.Visible")));
 			// 
-			// btnCopy1
+			// panel3
 			// 
-			this.btnCopy1.AccessibleDescription = resources.GetString("btnCopy1.AccessibleDescription");
-			this.btnCopy1.AccessibleName = resources.GetString("btnCopy1.AccessibleName");
-			this.btnCopy1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy1.Anchor")));
-			this.btnCopy1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy1.BackgroundImage")));
-			this.btnCopy1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy1.Dock")));
-			this.btnCopy1.Enabled = ((bool)(resources.GetObject("btnCopy1.Enabled")));
-			this.btnCopy1.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy1.FlatStyle")));
-			this.btnCopy1.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy1.Font")));
-			this.btnCopy1.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy1.Image")));
-			this.btnCopy1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy1.ImageAlign")));
-			this.btnCopy1.ImageIndex = ((int)(resources.GetObject("btnCopy1.ImageIndex")));
-			this.btnCopy1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy1.ImeMode")));
-			this.btnCopy1.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy1.Location")));
-			this.btnCopy1.Name = "btnCopy1";
-			this.btnCopy1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy1.RightToLeft")));
-			this.btnCopy1.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy1.Size")));
-			this.btnCopy1.TabIndex = ((int)(resources.GetObject("btnCopy1.TabIndex")));
-			this.btnCopy1.Text = resources.GetString("btnCopy1.Text");
-			this.btnCopy1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy1.TextAlign")));
-			this.btnCopy1.Visible = ((bool)(resources.GetObject("btnCopy1.Visible")));
-			this.btnCopy1.Click += new System.EventHandler(this.btnCopy_Click);
+			this.panel3.AccessibleDescription = resources.GetString("panel3.AccessibleDescription");
+			this.panel3.AccessibleName = resources.GetString("panel3.AccessibleName");
+			this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel3.Anchor")));
+			this.panel3.AutoScroll = ((bool)(resources.GetObject("panel3.AutoScroll")));
+			this.panel3.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel3.AutoScrollMargin")));
+			this.panel3.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel3.AutoScrollMinSize")));
+			this.panel3.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
+			this.panel3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel3.Dock")));
+			this.panel3.Enabled = ((bool)(resources.GetObject("panel3.Enabled")));
+			this.panel3.Font = ((System.Drawing.Font)(resources.GetObject("panel3.Font")));
+			this.panel3.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel3.ImeMode")));
+			this.panel3.Location = ((System.Drawing.Point)(resources.GetObject("panel3.Location")));
+			this.panel3.Name = "panel3";
+			this.panel3.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel3.RightToLeft")));
+			this.panel3.Size = ((System.Drawing.Size)(resources.GetObject("panel3.Size")));
+			this.panel3.TabIndex = ((int)(resources.GetObject("panel3.TabIndex")));
+			this.panel3.Text = resources.GetString("panel3.Text");
+			this.panel3.Visible = ((bool)(resources.GetObject("panel3.Visible")));
 			// 
-			// btnCopy2
+			// panel4
 			// 
-			this.btnCopy2.AccessibleDescription = resources.GetString("btnCopy2.AccessibleDescription");
-			this.btnCopy2.AccessibleName = resources.GetString("btnCopy2.AccessibleName");
-			this.btnCopy2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy2.Anchor")));
-			this.btnCopy2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy2.BackgroundImage")));
-			this.btnCopy2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy2.Dock")));
-			this.btnCopy2.Enabled = ((bool)(resources.GetObject("btnCopy2.Enabled")));
-			this.btnCopy2.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy2.FlatStyle")));
-			this.btnCopy2.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy2.Font")));
-			this.btnCopy2.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy2.Image")));
-			this.btnCopy2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy2.ImageAlign")));
-			this.btnCopy2.ImageIndex = ((int)(resources.GetObject("btnCopy2.ImageIndex")));
-			this.btnCopy2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy2.ImeMode")));
-			this.btnCopy2.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy2.Location")));
-			this.btnCopy2.Name = "btnCopy2";
-			this.btnCopy2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy2.RightToLeft")));
-			this.btnCopy2.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy2.Size")));
-			this.btnCopy2.TabIndex = ((int)(resources.GetObject("btnCopy2.TabIndex")));
-			this.btnCopy2.Text = resources.GetString("btnCopy2.Text");
-			this.btnCopy2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy2.TextAlign")));
-			this.btnCopy2.Visible = ((bool)(resources.GetObject("btnCopy2.Visible")));
-			this.btnCopy2.Click += new System.EventHandler(this.btnCopy_Click);
+			this.panel4.AccessibleDescription = resources.GetString("panel4.AccessibleDescription");
+			this.panel4.AccessibleName = resources.GetString("panel4.AccessibleName");
+			this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel4.Anchor")));
+			this.panel4.AutoScroll = ((bool)(resources.GetObject("panel4.AutoScroll")));
+			this.panel4.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel4.AutoScrollMargin")));
+			this.panel4.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel4.AutoScrollMinSize")));
+			this.panel4.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.panel4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel4.BackgroundImage")));
+			this.panel4.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel4.Dock")));
+			this.panel4.Enabled = ((bool)(resources.GetObject("panel4.Enabled")));
+			this.panel4.Font = ((System.Drawing.Font)(resources.GetObject("panel4.Font")));
+			this.panel4.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel4.ImeMode")));
+			this.panel4.Location = ((System.Drawing.Point)(resources.GetObject("panel4.Location")));
+			this.panel4.Name = "panel4";
+			this.panel4.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel4.RightToLeft")));
+			this.panel4.Size = ((System.Drawing.Size)(resources.GetObject("panel4.Size")));
+			this.panel4.TabIndex = ((int)(resources.GetObject("panel4.TabIndex")));
+			this.panel4.Text = resources.GetString("panel4.Text");
+			this.panel4.Visible = ((bool)(resources.GetObject("panel4.Visible")));
 			// 
-			// btnCopy3
+			// panel5
 			// 
-			this.btnCopy3.AccessibleDescription = resources.GetString("btnCopy3.AccessibleDescription");
-			this.btnCopy3.AccessibleName = resources.GetString("btnCopy3.AccessibleName");
-			this.btnCopy3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy3.Anchor")));
-			this.btnCopy3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy3.BackgroundImage")));
-			this.btnCopy3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy3.Dock")));
-			this.btnCopy3.Enabled = ((bool)(resources.GetObject("btnCopy3.Enabled")));
-			this.btnCopy3.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy3.FlatStyle")));
-			this.btnCopy3.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy3.Font")));
-			this.btnCopy3.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy3.Image")));
-			this.btnCopy3.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy3.ImageAlign")));
-			this.btnCopy3.ImageIndex = ((int)(resources.GetObject("btnCopy3.ImageIndex")));
-			this.btnCopy3.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy3.ImeMode")));
-			this.btnCopy3.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy3.Location")));
-			this.btnCopy3.Name = "btnCopy3";
-			this.btnCopy3.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy3.RightToLeft")));
-			this.btnCopy3.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy3.Size")));
-			this.btnCopy3.TabIndex = ((int)(resources.GetObject("btnCopy3.TabIndex")));
-			this.btnCopy3.Text = resources.GetString("btnCopy3.Text");
-			this.btnCopy3.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy3.TextAlign")));
-			this.btnCopy3.Visible = ((bool)(resources.GetObject("btnCopy3.Visible")));
-			this.btnCopy3.Click += new System.EventHandler(this.btnCopy_Click);
+			this.panel5.AccessibleDescription = resources.GetString("panel5.AccessibleDescription");
+			this.panel5.AccessibleName = resources.GetString("panel5.AccessibleName");
+			this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel5.Anchor")));
+			this.panel5.AutoScroll = ((bool)(resources.GetObject("panel5.AutoScroll")));
+			this.panel5.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel5.AutoScrollMargin")));
+			this.panel5.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel5.AutoScrollMinSize")));
+			this.panel5.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.panel5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel5.BackgroundImage")));
+			this.panel5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel5.Dock")));
+			this.panel5.Enabled = ((bool)(resources.GetObject("panel5.Enabled")));
+			this.panel5.Font = ((System.Drawing.Font)(resources.GetObject("panel5.Font")));
+			this.panel5.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel5.ImeMode")));
+			this.panel5.Location = ((System.Drawing.Point)(resources.GetObject("panel5.Location")));
+			this.panel5.Name = "panel5";
+			this.panel5.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel5.RightToLeft")));
+			this.panel5.Size = ((System.Drawing.Size)(resources.GetObject("panel5.Size")));
+			this.panel5.TabIndex = ((int)(resources.GetObject("panel5.TabIndex")));
+			this.panel5.Text = resources.GetString("panel5.Text");
+			this.panel5.Visible = ((bool)(resources.GetObject("panel5.Visible")));
 			// 
-			// btnCopy4
+			// panel6
 			// 
-			this.btnCopy4.AccessibleDescription = resources.GetString("btnCopy4.AccessibleDescription");
-			this.btnCopy4.AccessibleName = resources.GetString("btnCopy4.AccessibleName");
-			this.btnCopy4.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy4.Anchor")));
-			this.btnCopy4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy4.BackgroundImage")));
-			this.btnCopy4.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy4.Dock")));
-			this.btnCopy4.Enabled = ((bool)(resources.GetObject("btnCopy4.Enabled")));
-			this.btnCopy4.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy4.FlatStyle")));
-			this.btnCopy4.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy4.Font")));
-			this.btnCopy4.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy4.Image")));
-			this.btnCopy4.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy4.ImageAlign")));
-			this.btnCopy4.ImageIndex = ((int)(resources.GetObject("btnCopy4.ImageIndex")));
-			this.btnCopy4.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy4.ImeMode")));
-			this.btnCopy4.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy4.Location")));
-			this.btnCopy4.Name = "btnCopy4";
-			this.btnCopy4.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy4.RightToLeft")));
-			this.btnCopy4.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy4.Size")));
-			this.btnCopy4.TabIndex = ((int)(resources.GetObject("btnCopy4.TabIndex")));
-			this.btnCopy4.Text = resources.GetString("btnCopy4.Text");
-			this.btnCopy4.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy4.TextAlign")));
-			this.btnCopy4.Visible = ((bool)(resources.GetObject("btnCopy4.Visible")));
-			this.btnCopy4.Click += new System.EventHandler(this.btnCopy_Click);
+			this.panel6.AccessibleDescription = resources.GetString("panel6.AccessibleDescription");
+			this.panel6.AccessibleName = resources.GetString("panel6.AccessibleName");
+			this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel6.Anchor")));
+			this.panel6.AutoScroll = ((bool)(resources.GetObject("panel6.AutoScroll")));
+			this.panel6.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel6.AutoScrollMargin")));
+			this.panel6.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel6.AutoScrollMinSize")));
+			this.panel6.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.panel6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel6.BackgroundImage")));
+			this.panel6.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel6.Dock")));
+			this.panel6.Enabled = ((bool)(resources.GetObject("panel6.Enabled")));
+			this.panel6.Font = ((System.Drawing.Font)(resources.GetObject("panel6.Font")));
+			this.panel6.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel6.ImeMode")));
+			this.panel6.Location = ((System.Drawing.Point)(resources.GetObject("panel6.Location")));
+			this.panel6.Name = "panel6";
+			this.panel6.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel6.RightToLeft")));
+			this.panel6.Size = ((System.Drawing.Size)(resources.GetObject("panel6.Size")));
+			this.panel6.TabIndex = ((int)(resources.GetObject("panel6.TabIndex")));
+			this.panel6.Text = resources.GetString("panel6.Text");
+			this.panel6.Visible = ((bool)(resources.GetObject("panel6.Visible")));
 			// 
-			// btnCopy5
+			// panel7
 			// 
-			this.btnCopy5.AccessibleDescription = resources.GetString("btnCopy5.AccessibleDescription");
-			this.btnCopy5.AccessibleName = resources.GetString("btnCopy5.AccessibleName");
-			this.btnCopy5.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy5.Anchor")));
-			this.btnCopy5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy5.BackgroundImage")));
-			this.btnCopy5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy5.Dock")));
-			this.btnCopy5.Enabled = ((bool)(resources.GetObject("btnCopy5.Enabled")));
-			this.btnCopy5.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy5.FlatStyle")));
-			this.btnCopy5.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy5.Font")));
-			this.btnCopy5.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy5.Image")));
-			this.btnCopy5.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy5.ImageAlign")));
-			this.btnCopy5.ImageIndex = ((int)(resources.GetObject("btnCopy5.ImageIndex")));
-			this.btnCopy5.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy5.ImeMode")));
-			this.btnCopy5.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy5.Location")));
-			this.btnCopy5.Name = "btnCopy5";
-			this.btnCopy5.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy5.RightToLeft")));
-			this.btnCopy5.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy5.Size")));
-			this.btnCopy5.TabIndex = ((int)(resources.GetObject("btnCopy5.TabIndex")));
-			this.btnCopy5.Text = resources.GetString("btnCopy5.Text");
-			this.btnCopy5.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy5.TextAlign")));
-			this.btnCopy5.Visible = ((bool)(resources.GetObject("btnCopy5.Visible")));
-			this.btnCopy5.Click += new System.EventHandler(this.btnCopy_Click);
+			this.panel7.AccessibleDescription = resources.GetString("panel7.AccessibleDescription");
+			this.panel7.AccessibleName = resources.GetString("panel7.AccessibleName");
+			this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel7.Anchor")));
+			this.panel7.AutoScroll = ((bool)(resources.GetObject("panel7.AutoScroll")));
+			this.panel7.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel7.AutoScrollMargin")));
+			this.panel7.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel7.AutoScrollMinSize")));
+			this.panel7.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.panel7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel7.BackgroundImage")));
+			this.panel7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel7.Dock")));
+			this.panel7.Enabled = ((bool)(resources.GetObject("panel7.Enabled")));
+			this.panel7.Font = ((System.Drawing.Font)(resources.GetObject("panel7.Font")));
+			this.panel7.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel7.ImeMode")));
+			this.panel7.Location = ((System.Drawing.Point)(resources.GetObject("panel7.Location")));
+			this.panel7.Name = "panel7";
+			this.panel7.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel7.RightToLeft")));
+			this.panel7.Size = ((System.Drawing.Size)(resources.GetObject("panel7.Size")));
+			this.panel7.TabIndex = ((int)(resources.GetObject("panel7.TabIndex")));
+			this.panel7.Text = resources.GetString("panel7.Text");
+			this.panel7.Visible = ((bool)(resources.GetObject("panel7.Visible")));
 			// 
-			// btnCopy6
+			// panel8
 			// 
-			this.btnCopy6.AccessibleDescription = resources.GetString("btnCopy6.AccessibleDescription");
-			this.btnCopy6.AccessibleName = resources.GetString("btnCopy6.AccessibleName");
-			this.btnCopy6.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy6.Anchor")));
-			this.btnCopy6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy6.BackgroundImage")));
-			this.btnCopy6.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy6.Dock")));
-			this.btnCopy6.Enabled = ((bool)(resources.GetObject("btnCopy6.Enabled")));
-			this.btnCopy6.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy6.FlatStyle")));
-			this.btnCopy6.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy6.Font")));
-			this.btnCopy6.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy6.Image")));
-			this.btnCopy6.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy6.ImageAlign")));
-			this.btnCopy6.ImageIndex = ((int)(resources.GetObject("btnCopy6.ImageIndex")));
-			this.btnCopy6.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy6.ImeMode")));
-			this.btnCopy6.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy6.Location")));
-			this.btnCopy6.Name = "btnCopy6";
-			this.btnCopy6.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy6.RightToLeft")));
-			this.btnCopy6.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy6.Size")));
-			this.btnCopy6.TabIndex = ((int)(resources.GetObject("btnCopy6.TabIndex")));
-			this.btnCopy6.Text = resources.GetString("btnCopy6.Text");
-			this.btnCopy6.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy6.TextAlign")));
-			this.btnCopy6.Visible = ((bool)(resources.GetObject("btnCopy6.Visible")));
-			this.btnCopy6.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy7
-			// 
-			this.btnCopy7.AccessibleDescription = resources.GetString("btnCopy7.AccessibleDescription");
-			this.btnCopy7.AccessibleName = resources.GetString("btnCopy7.AccessibleName");
-			this.btnCopy7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy7.Anchor")));
-			this.btnCopy7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy7.BackgroundImage")));
-			this.btnCopy7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy7.Dock")));
-			this.btnCopy7.Enabled = ((bool)(resources.GetObject("btnCopy7.Enabled")));
-			this.btnCopy7.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy7.FlatStyle")));
-			this.btnCopy7.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy7.Font")));
-			this.btnCopy7.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy7.Image")));
-			this.btnCopy7.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy7.ImageAlign")));
-			this.btnCopy7.ImageIndex = ((int)(resources.GetObject("btnCopy7.ImageIndex")));
-			this.btnCopy7.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy7.ImeMode")));
-			this.btnCopy7.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy7.Location")));
-			this.btnCopy7.Name = "btnCopy7";
-			this.btnCopy7.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy7.RightToLeft")));
-			this.btnCopy7.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy7.Size")));
-			this.btnCopy7.TabIndex = ((int)(resources.GetObject("btnCopy7.TabIndex")));
-			this.btnCopy7.Text = resources.GetString("btnCopy7.Text");
-			this.btnCopy7.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy7.TextAlign")));
-			this.btnCopy7.Visible = ((bool)(resources.GetObject("btnCopy7.Visible")));
-			this.btnCopy7.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy8
-			// 
-			this.btnCopy8.AccessibleDescription = resources.GetString("btnCopy8.AccessibleDescription");
-			this.btnCopy8.AccessibleName = resources.GetString("btnCopy8.AccessibleName");
-			this.btnCopy8.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy8.Anchor")));
-			this.btnCopy8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy8.BackgroundImage")));
-			this.btnCopy8.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy8.Dock")));
-			this.btnCopy8.Enabled = ((bool)(resources.GetObject("btnCopy8.Enabled")));
-			this.btnCopy8.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy8.FlatStyle")));
-			this.btnCopy8.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy8.Font")));
-			this.btnCopy8.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy8.Image")));
-			this.btnCopy8.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy8.ImageAlign")));
-			this.btnCopy8.ImageIndex = ((int)(resources.GetObject("btnCopy8.ImageIndex")));
-			this.btnCopy8.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy8.ImeMode")));
-			this.btnCopy8.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy8.Location")));
-			this.btnCopy8.Name = "btnCopy8";
-			this.btnCopy8.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy8.RightToLeft")));
-			this.btnCopy8.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy8.Size")));
-			this.btnCopy8.TabIndex = ((int)(resources.GetObject("btnCopy8.TabIndex")));
-			this.btnCopy8.Text = resources.GetString("btnCopy8.Text");
-			this.btnCopy8.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy8.TextAlign")));
-			this.btnCopy8.Visible = ((bool)(resources.GetObject("btnCopy8.Visible")));
-			this.btnCopy8.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy9
-			// 
-			this.btnCopy9.AccessibleDescription = resources.GetString("btnCopy9.AccessibleDescription");
-			this.btnCopy9.AccessibleName = resources.GetString("btnCopy9.AccessibleName");
-			this.btnCopy9.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy9.Anchor")));
-			this.btnCopy9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy9.BackgroundImage")));
-			this.btnCopy9.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy9.Dock")));
-			this.btnCopy9.Enabled = ((bool)(resources.GetObject("btnCopy9.Enabled")));
-			this.btnCopy9.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy9.FlatStyle")));
-			this.btnCopy9.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy9.Font")));
-			this.btnCopy9.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy9.Image")));
-			this.btnCopy9.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy9.ImageAlign")));
-			this.btnCopy9.ImageIndex = ((int)(resources.GetObject("btnCopy9.ImageIndex")));
-			this.btnCopy9.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy9.ImeMode")));
-			this.btnCopy9.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy9.Location")));
-			this.btnCopy9.Name = "btnCopy9";
-			this.btnCopy9.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy9.RightToLeft")));
-			this.btnCopy9.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy9.Size")));
-			this.btnCopy9.TabIndex = ((int)(resources.GetObject("btnCopy9.TabIndex")));
-			this.btnCopy9.Text = resources.GetString("btnCopy9.Text");
-			this.btnCopy9.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy9.TextAlign")));
-			this.btnCopy9.Visible = ((bool)(resources.GetObject("btnCopy9.Visible")));
-			this.btnCopy9.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy10
-			// 
-			this.btnCopy10.AccessibleDescription = resources.GetString("btnCopy10.AccessibleDescription");
-			this.btnCopy10.AccessibleName = resources.GetString("btnCopy10.AccessibleName");
-			this.btnCopy10.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy10.Anchor")));
-			this.btnCopy10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy10.BackgroundImage")));
-			this.btnCopy10.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy10.Dock")));
-			this.btnCopy10.Enabled = ((bool)(resources.GetObject("btnCopy10.Enabled")));
-			this.btnCopy10.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy10.FlatStyle")));
-			this.btnCopy10.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy10.Font")));
-			this.btnCopy10.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy10.Image")));
-			this.btnCopy10.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy10.ImageAlign")));
-			this.btnCopy10.ImageIndex = ((int)(resources.GetObject("btnCopy10.ImageIndex")));
-			this.btnCopy10.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy10.ImeMode")));
-			this.btnCopy10.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy10.Location")));
-			this.btnCopy10.Name = "btnCopy10";
-			this.btnCopy10.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy10.RightToLeft")));
-			this.btnCopy10.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy10.Size")));
-			this.btnCopy10.TabIndex = ((int)(resources.GetObject("btnCopy10.TabIndex")));
-			this.btnCopy10.Text = resources.GetString("btnCopy10.Text");
-			this.btnCopy10.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy10.TextAlign")));
-			this.btnCopy10.Visible = ((bool)(resources.GetObject("btnCopy10.Visible")));
-			this.btnCopy10.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy11
-			// 
-			this.btnCopy11.AccessibleDescription = resources.GetString("btnCopy11.AccessibleDescription");
-			this.btnCopy11.AccessibleName = resources.GetString("btnCopy11.AccessibleName");
-			this.btnCopy11.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy11.Anchor")));
-			this.btnCopy11.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy11.BackgroundImage")));
-			this.btnCopy11.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy11.Dock")));
-			this.btnCopy11.Enabled = ((bool)(resources.GetObject("btnCopy11.Enabled")));
-			this.btnCopy11.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy11.FlatStyle")));
-			this.btnCopy11.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy11.Font")));
-			this.btnCopy11.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy11.Image")));
-			this.btnCopy11.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy11.ImageAlign")));
-			this.btnCopy11.ImageIndex = ((int)(resources.GetObject("btnCopy11.ImageIndex")));
-			this.btnCopy11.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy11.ImeMode")));
-			this.btnCopy11.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy11.Location")));
-			this.btnCopy11.Name = "btnCopy11";
-			this.btnCopy11.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy11.RightToLeft")));
-			this.btnCopy11.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy11.Size")));
-			this.btnCopy11.TabIndex = ((int)(resources.GetObject("btnCopy11.TabIndex")));
-			this.btnCopy11.Text = resources.GetString("btnCopy11.Text");
-			this.btnCopy11.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy11.TextAlign")));
-			this.btnCopy11.Visible = ((bool)(resources.GetObject("btnCopy11.Visible")));
-			this.btnCopy11.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy12
-			// 
-			this.btnCopy12.AccessibleDescription = resources.GetString("btnCopy12.AccessibleDescription");
-			this.btnCopy12.AccessibleName = resources.GetString("btnCopy12.AccessibleName");
-			this.btnCopy12.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy12.Anchor")));
-			this.btnCopy12.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy12.BackgroundImage")));
-			this.btnCopy12.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy12.Dock")));
-			this.btnCopy12.Enabled = ((bool)(resources.GetObject("btnCopy12.Enabled")));
-			this.btnCopy12.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy12.FlatStyle")));
-			this.btnCopy12.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy12.Font")));
-			this.btnCopy12.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy12.Image")));
-			this.btnCopy12.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy12.ImageAlign")));
-			this.btnCopy12.ImageIndex = ((int)(resources.GetObject("btnCopy12.ImageIndex")));
-			this.btnCopy12.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy12.ImeMode")));
-			this.btnCopy12.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy12.Location")));
-			this.btnCopy12.Name = "btnCopy12";
-			this.btnCopy12.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy12.RightToLeft")));
-			this.btnCopy12.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy12.Size")));
-			this.btnCopy12.TabIndex = ((int)(resources.GetObject("btnCopy12.TabIndex")));
-			this.btnCopy12.Text = resources.GetString("btnCopy12.Text");
-			this.btnCopy12.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy12.TextAlign")));
-			this.btnCopy12.Visible = ((bool)(resources.GetObject("btnCopy12.Visible")));
-			this.btnCopy12.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy13
-			// 
-			this.btnCopy13.AccessibleDescription = resources.GetString("btnCopy13.AccessibleDescription");
-			this.btnCopy13.AccessibleName = resources.GetString("btnCopy13.AccessibleName");
-			this.btnCopy13.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy13.Anchor")));
-			this.btnCopy13.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy13.BackgroundImage")));
-			this.btnCopy13.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy13.Dock")));
-			this.btnCopy13.Enabled = ((bool)(resources.GetObject("btnCopy13.Enabled")));
-			this.btnCopy13.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy13.FlatStyle")));
-			this.btnCopy13.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy13.Font")));
-			this.btnCopy13.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy13.Image")));
-			this.btnCopy13.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy13.ImageAlign")));
-			this.btnCopy13.ImageIndex = ((int)(resources.GetObject("btnCopy13.ImageIndex")));
-			this.btnCopy13.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy13.ImeMode")));
-			this.btnCopy13.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy13.Location")));
-			this.btnCopy13.Name = "btnCopy13";
-			this.btnCopy13.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy13.RightToLeft")));
-			this.btnCopy13.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy13.Size")));
-			this.btnCopy13.TabIndex = ((int)(resources.GetObject("btnCopy13.TabIndex")));
-			this.btnCopy13.Text = resources.GetString("btnCopy13.Text");
-			this.btnCopy13.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy13.TextAlign")));
-			this.btnCopy13.Visible = ((bool)(resources.GetObject("btnCopy13.Visible")));
-			this.btnCopy13.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy14
-			// 
-			this.btnCopy14.AccessibleDescription = resources.GetString("btnCopy14.AccessibleDescription");
-			this.btnCopy14.AccessibleName = resources.GetString("btnCopy14.AccessibleName");
-			this.btnCopy14.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy14.Anchor")));
-			this.btnCopy14.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy14.BackgroundImage")));
-			this.btnCopy14.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy14.Dock")));
-			this.btnCopy14.Enabled = ((bool)(resources.GetObject("btnCopy14.Enabled")));
-			this.btnCopy14.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy14.FlatStyle")));
-			this.btnCopy14.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy14.Font")));
-			this.btnCopy14.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy14.Image")));
-			this.btnCopy14.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy14.ImageAlign")));
-			this.btnCopy14.ImageIndex = ((int)(resources.GetObject("btnCopy14.ImageIndex")));
-			this.btnCopy14.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy14.ImeMode")));
-			this.btnCopy14.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy14.Location")));
-			this.btnCopy14.Name = "btnCopy14";
-			this.btnCopy14.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy14.RightToLeft")));
-			this.btnCopy14.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy14.Size")));
-			this.btnCopy14.TabIndex = ((int)(resources.GetObject("btnCopy14.TabIndex")));
-			this.btnCopy14.Text = resources.GetString("btnCopy14.Text");
-			this.btnCopy14.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy14.TextAlign")));
-			this.btnCopy14.Visible = ((bool)(resources.GetObject("btnCopy14.Visible")));
-			this.btnCopy14.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopy15
-			// 
-			this.btnCopy15.AccessibleDescription = resources.GetString("btnCopy15.AccessibleDescription");
-			this.btnCopy15.AccessibleName = resources.GetString("btnCopy15.AccessibleName");
-			this.btnCopy15.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopy15.Anchor")));
-			this.btnCopy15.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopy15.BackgroundImage")));
-			this.btnCopy15.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopy15.Dock")));
-			this.btnCopy15.Enabled = ((bool)(resources.GetObject("btnCopy15.Enabled")));
-			this.btnCopy15.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopy15.FlatStyle")));
-			this.btnCopy15.Font = ((System.Drawing.Font)(resources.GetObject("btnCopy15.Font")));
-			this.btnCopy15.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy15.Image")));
-			this.btnCopy15.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy15.ImageAlign")));
-			this.btnCopy15.ImageIndex = ((int)(resources.GetObject("btnCopy15.ImageIndex")));
-			this.btnCopy15.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopy15.ImeMode")));
-			this.btnCopy15.Location = ((System.Drawing.Point)(resources.GetObject("btnCopy15.Location")));
-			this.btnCopy15.Name = "btnCopy15";
-			this.btnCopy15.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopy15.RightToLeft")));
-			this.btnCopy15.Size = ((System.Drawing.Size)(resources.GetObject("btnCopy15.Size")));
-			this.btnCopy15.TabIndex = ((int)(resources.GetObject("btnCopy15.TabIndex")));
-			this.btnCopy15.Text = resources.GetString("btnCopy15.Text");
-			this.btnCopy15.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopy15.TextAlign")));
-			this.btnCopy15.Visible = ((bool)(resources.GetObject("btnCopy15.Visible")));
-			this.btnCopy15.Click += new System.EventHandler(this.btnCopy_Click);
-			// 
-			// btnCopyAll
-			// 
-			this.btnCopyAll.AccessibleDescription = resources.GetString("btnCopyAll.AccessibleDescription");
-			this.btnCopyAll.AccessibleName = resources.GetString("btnCopyAll.AccessibleName");
-			this.btnCopyAll.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCopyAll.Anchor")));
-			this.btnCopyAll.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCopyAll.BackgroundImage")));
-			this.btnCopyAll.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCopyAll.Dock")));
-			this.btnCopyAll.Enabled = ((bool)(resources.GetObject("btnCopyAll.Enabled")));
-			this.btnCopyAll.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCopyAll.FlatStyle")));
-			this.btnCopyAll.Font = ((System.Drawing.Font)(resources.GetObject("btnCopyAll.Font")));
-			this.btnCopyAll.Image = ((System.Drawing.Image)(resources.GetObject("btnCopyAll.Image")));
-			this.btnCopyAll.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopyAll.ImageAlign")));
-			this.btnCopyAll.ImageIndex = ((int)(resources.GetObject("btnCopyAll.ImageIndex")));
-			this.btnCopyAll.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCopyAll.ImeMode")));
-			this.btnCopyAll.Location = ((System.Drawing.Point)(resources.GetObject("btnCopyAll.Location")));
-			this.btnCopyAll.Name = "btnCopyAll";
-			this.btnCopyAll.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCopyAll.RightToLeft")));
-			this.btnCopyAll.Size = ((System.Drawing.Size)(resources.GetObject("btnCopyAll.Size")));
-			this.btnCopyAll.TabIndex = ((int)(resources.GetObject("btnCopyAll.TabIndex")));
-			this.btnCopyAll.Text = resources.GetString("btnCopyAll.Text");
-			this.btnCopyAll.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopyAll.TextAlign")));
-			this.btnCopyAll.Visible = ((bool)(resources.GetObject("btnCopyAll.Visible")));
-			this.btnCopyAll.Click += new System.EventHandler(this.btnCopy_Click);
+			this.panel8.AccessibleDescription = resources.GetString("panel8.AccessibleDescription");
+			this.panel8.AccessibleName = resources.GetString("panel8.AccessibleName");
+			this.panel8.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel8.Anchor")));
+			this.panel8.AutoScroll = ((bool)(resources.GetObject("panel8.AutoScroll")));
+			this.panel8.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel8.AutoScrollMargin")));
+			this.panel8.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel8.AutoScrollMinSize")));
+			this.panel8.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.panel8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel8.BackgroundImage")));
+			this.panel8.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel8.Dock")));
+			this.panel8.Enabled = ((bool)(resources.GetObject("panel8.Enabled")));
+			this.panel8.Font = ((System.Drawing.Font)(resources.GetObject("panel8.Font")));
+			this.panel8.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel8.ImeMode")));
+			this.panel8.Location = ((System.Drawing.Point)(resources.GetObject("panel8.Location")));
+			this.panel8.Name = "panel8";
+			this.panel8.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel8.RightToLeft")));
+			this.panel8.Size = ((System.Drawing.Size)(resources.GetObject("panel8.Size")));
+			this.panel8.TabIndex = ((int)(resources.GetObject("panel8.TabIndex")));
+			this.panel8.Text = resources.GetString("panel8.Text");
+			this.panel8.Visible = ((bool)(resources.GetObject("panel8.Visible")));
 			// 
 			// TtabMotiveGroupUI
 			// 
@@ -1149,15 +851,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("$this.RightToLeft")));
 			this.Size = ((System.Drawing.Size)(resources.GetObject("$this.Size")));
 			this.gbMotiveGroup.ResumeLayout(false);
-			this.pnCopyButtons.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 		#endregion
 
-		private void btnCopy_Click(object sender, EventArgs e)
+		private void btnClear_Click(object sender, System.EventArgs e)
 		{
-			this.OnMotiveClick(new MotiveClickEventArgs(alBtnCopy.IndexOf(sender)));
+			for (int i = 0; i < aTtabSingleMotiveUI.Length; i++)
+				aTtabSingleMotiveUI[i].Clear();
 		}
 
 	}

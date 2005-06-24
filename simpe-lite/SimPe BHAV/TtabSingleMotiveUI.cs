@@ -78,7 +78,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			item = i;
 			mgNr = j;
-			motive = k;
+			Motive = k;
 
 			Min.Text   = i[j, k, 0].ToString("X");
 			Delta.Text = i[j, k, 1].ToString("X");
@@ -91,6 +91,14 @@ namespace SimPe.PackedFiles.UserInterface
 
 		public void SetData() { this.SetData(item, mgNr, motive); }
 
+
+		public void Clear()
+		{
+			item[mgNr, motive, 0] = 0;
+			item[mgNr, motive, 1] = 0;
+			item[mgNr, motive, 2] = 0;
+			SetData();
+		}
 
 		/// <summary>
 		/// Which of the sixteen motives the control is editing (0-15)
