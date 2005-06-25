@@ -34,7 +34,7 @@ namespace SimPe.PackedFiles.Wrapper
 		: AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
-		, IPackedFileProperties			//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
+		//, IPackedFileProperties			//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
 	{
 		#region Attributes
 		/// <summary>
@@ -51,7 +51,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public new string FileName
+		public string FileName
 		{
 			get { return Helper.ToString(filename); }
 		}
@@ -86,7 +86,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Glob() : base()
 		{
-			items = new IPackedFileProperties[0];
+			//items = new IPackedFileProperties[0];
 			attributes = new Hashtable();
 			semiglobal = new byte[0];
 			filename = new byte[64];
@@ -197,7 +197,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion		
 
 		#region IPackedFileProperties Member
-		IPackedFileProperties[] items;
+		//IPackedFileProperties[] items;
 		Hashtable attributes;
 
 		/// <summary>
@@ -212,7 +212,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		/// <summary>
+		/*/// <summary>
 		/// Returns all Items stored in the File (can be null)
 		/// </summary>
 		/// <remarks>
@@ -227,7 +227,7 @@ namespace SimPe.PackedFiles.Wrapper
 			{
 				return items;
 			}
-		}
+		}*/
 		#endregion
 	}
 

@@ -44,7 +44,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public new string FileName 
+		public string FileName 
 		{
 			get { return Helper.ToString(filename); }
 			set { filename = Helper.ToBytes(value, 0x40); }

@@ -17,8 +17,8 @@
                 DelaySign = "false"
                 OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = 'copy "$(TargetPath)" "$(ProjectDir)\..\SimPe\$(OutDir)Plugins\$(TargetFileName)"&#xd;&#xa;copy "$(TargetDir)\de\*.dll" "$(ProjectDir)\..\SimPe\$(OutDir)\de\"&#xd;&#xa;copy "$(TargetDir)\de-DE\*.dll" "$(ProjectDir)\..\SimPe\$(OutDir)\de-DE\"'
-                RootNamespace = "SimPe.Plugin"
+                PostBuildEvent = ""
+                RootNamespace = "pjse"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -140,21 +140,6 @@
                     HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "SimPe HandlerCommon"
-                    Project = "{A4CC48FD-9574-4F0B-B721-9E8C1B1E6A8A}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "SimPe Helper"
-                    Project = "{59E3C353-1350-42D8-A045-CBBAD232F228}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "SimPe Interfaces"
-                    Project = "{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
                     Name = "System.Drawing"
                     AssemblyName = "System.Drawing"
                     HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
@@ -165,19 +150,130 @@
                     HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
                 />
                 <Reference
-                    Name = "SimPe GenericBase"
-                    Project = "{1DD372F9-D6F9-4724-8E7F-12BDE0FFAC74}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                    Name = "XPCommonControls"
+                    AssemblyName = "XPCommonControls"
+                    HintPath = "..\..\SimPe_041i_qa\XPCommonControls.dll"
+                    Private = "False"
                 />
                 <Reference
-                    Name = "SimPe Packages"
-                    Project = "{1C6C45BF-FE19-4C23-B327-01F45B0F269C}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                    Name = "HexEdit"
+                    AssemblyName = "HexEdit"
+                    HintPath = "..\..\SimPe_041i_qa\HexEdit.dll"
+                    Private = "False"
                 />
                 <Reference
-                    Name = "SimPe Clst"
-                    Project = "{5DD89FD7-1E89-49D4-B48D-CC605D767C3B}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                    Name = "ICSharpCode.SharpZipLib"
+                    AssemblyName = "ICSharpCode.SharpZipLib"
+                    HintPath = "..\..\SimPe_041i_qa\ICSharpCode.SharpZipLib.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.byteview"
+                    AssemblyName = "simpe.byteview"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.byteview.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.clst"
+                    AssemblyName = "simpe.clst"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.clst.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.commandline"
+                    AssemblyName = "simpe.commandline"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.commandline.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.commonhandler"
+                    AssemblyName = "simpe.commonhandler"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.commonhandler.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.extfilehandler"
+                    AssemblyName = "simpe.extfilehandler"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.extfilehandler.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.filehandler"
+                    AssemblyName = "simpe.filehandler"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.filehandler.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.genericbase"
+                    AssemblyName = "simpe.genericbase"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.genericbase.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.generichandler"
+                    AssemblyName = "simpe.generichandler"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.generichandler.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.helper"
+                    AssemblyName = "simpe.helper"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.helper.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.interfaces"
+                    AssemblyName = "simpe.interfaces"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.interfaces.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.names"
+                    AssemblyName = "simpe.names"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.names.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.package"
+                    AssemblyName = "simpe.package"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.package.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.s2cp"
+                    AssemblyName = "simpe.s2cp"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.s2cp.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.workspace"
+                    AssemblyName = "simpe.workspace"
+                    HintPath = "..\..\SimPe_041i_qa\simpe.workspace.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "sims.guid"
+                    AssemblyName = "sims.guid"
+                    HintPath = "..\..\SimPe_041i_qa\sims.guid.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "skybound.visualstyles"
+                    AssemblyName = "Skybound.VisualStyles"
+                    HintPath = "..\..\SimPe_041i_qa\skybound.visualstyles.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "SourceGrid2"
+                    AssemblyName = "SourceGrid2"
+                    HintPath = "..\..\SimPe_041i_qa\SourceGrid2.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "SourceLibrary"
+                    AssemblyName = "SourceLibrary"
+                    HintPath = "..\..\SimPe_041i_qa\SourceLibrary.dll"
+                    Private = "False"
                 />
             </References>
         </Build>

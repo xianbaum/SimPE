@@ -2093,7 +2093,7 @@ namespace SimPe.PackedFiles.UserInterface
 				ui.btnCancel.Visible = false;
 			ui.bhavPanel.Dock = DockStyle.Fill;
 			ui.Text = "Global BHAV: " + pnflowcontainer.SelectedInst.ToString();
-			b.UpdateUI();
+			b.RefreshUI();
 			ui.Show();
 		}
 

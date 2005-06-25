@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse coder plugin", "pjse coder plugin.csproj", "{6AA664E9-B45F-4D61-9B9F-E68341C16473}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Debug.ActiveCfg = Debug|.NET
+		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Debug.Build.0 = Debug|.NET
+		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Release.ActiveCfg = Release|.NET
+		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
