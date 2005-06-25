@@ -1,4 +1,9 @@
 
+25 June 2005 15:55 - Add to add exact, unrenumbered copy of current ttabitem
+  SimPe BHAV\
+    TtabForm.cs 1.2.4.4
+    TtabForm.resx 1.1.4.5
+
 24 June 2005 20:24 - Move Add and Delete buttons (and make buttons work)
   SimPe BHAV\
     TtabForm.cs 1.2.4.3
