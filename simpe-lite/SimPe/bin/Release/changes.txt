@@ -1,4 +1,8 @@
 
+25 June 2005 17:00 - (TTAB Landing) Flag BHAV wrapper changed even on internal changes
+  SimPe BHAV\
+    BhavWrapper.cs 1.11
+
 25 June 2005 16:36 - Change identity of BHAV plugin dll
   SimPe BHAV\
     BconWrapper.cs 1.3
@@ -8,6 +12,64 @@
     SimPe BHAV.csproj 1.7
     TrcnWrapper.cs 1.2
     TtabWrapper.cs 1.2
+
+25 June 2005 15:55 - Add to add exact, unrenumbered copy of current ttabitem
+  SimPe BHAV\
+    TtabForm.cs 1.2.4.4
+    TtabForm.resx 1.1.4.5
+
+24 June 2005 20:24 - Move Add and Delete buttons (and make buttons work)
+  SimPe BHAV\
+    TtabForm.cs 1.2.4.3
+    TtabForm.resx 1.1.4.4
+    TtabWrapper.cs 1.1.4.4
+
+24 June 2005 17:40 - Put the copy buttons in the right place, add Clear, add row highlights
+  SimPe BHAV\
+    TtabItemMotiveTableUI.cs 1.1.2.4
+    TtabItemMotiveTableUI.resx 1.1.2.4
+    TtabMotiveGroupUI.cs 1.1.2.4
+    TtabMotiveGroupUI.resx 1.1.2.4
+    TtabSingleMotiveUI.cs 1.1.2.4
+
+24 June 2005 17:35 - Rename TtabItem indices to remind me of the order.
+  SimPe BHAV\TtabWrapper.cs 1.1.4.3
+
+22 June 2005 19:19 - More TTAB Grid Changes
+  SimPe BHAV\
+    TtabForm.resx 1.1.4.3
+    TtabItemMotiveTableUI.cs 1.1.2.3
+    TtabItemMotiveTableUI.resx 1.1.2.3
+    TtabMotiveGroupUI.cs 1.1.2.3
+    TtabMotiveGroupUI.resx 1.1.2.3
+
+21 June 2005 19:38 - TTAB Grid Changes again
+  SimPe BHAV\
+    ImportSemi.cs 1.1.2.1
+    TtabForm.cs 1.2.4.2
+    TtabForm.resx 1.1.4.2
+    TtabItemMotiveTableUI.cs 1.1.2.2
+    TtabItemMotiveTableUI.resx 1.1.2.2
+    TtabMotiveGroupUI.cs 1.1.2.2
+    TtabMotiveGroupUI.resx 1.1.2.2
+    TtabSingleMotiveUI.cs 1.1.2.2
+    TtabSingleMotiveUI.resx 1.1.2.2
+    TtabWrapper.cs 1.1.4.2
+
+20 June 2005 17:31 - Branched for TTAB Grid Changes
+  SimPe BHAV\
+    BhavWrapper.cs 1.9.2.1
+    SimPe BHAV.csproj 1.6.2.1
+    TtabForm.cs 1.2.4.1
+    TtabForm.resx 1.1.4.1
+    TtabItem.cs (deleted)
+    TtabItemMotiveTableUI.cs 1.1.2.1
+    TtabItemMotiveTableUI.resx 1.1.2.1
+    TtabMotiveGroupUI.cs 1.1.2.1
+    TtabMotiveGroupUI.resx 1.1.2.1
+    TtabSingleMotiveUI.cs 1.1.2.1
+    TtabSingleMotiveUI.resx 1.1.2.1
+    TtabWrapper.cs 1.1.4.1
 
 18 June 2005 17:15 - BHAV Add fixes
   SimPe BHAV\
