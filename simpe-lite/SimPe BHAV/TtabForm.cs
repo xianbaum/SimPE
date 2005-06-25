@@ -2073,7 +2073,7 @@ namespace SimPe.PackedFiles.UserInterface
 				ni.Flags.Value = ci.Flags.Value;
 				ni.Flags2 = ci.Flags2;
 				ni.Guardian = ci.Guardian;
-				ni.JoinIndex = ni.JoinIndex;
+				ni.JoinIndex = ci.JoinIndex;
 				ni.Res5 = ci.Res5;
 				ni.Res6 = ci.Res6;
 				ni.Res7 = ci.Res7;
