@@ -2079,7 +2079,7 @@ namespace SimPe.PackedFiles.UserInterface
 				ni.Res7 = ci.Res7;
 				ni.Res8 = ci.Res8;
 				ni.Res9 = ci.Res9;
-				ni.StringIndex = (uint)i;
+				ni.StringIndex = ci.StringIndex;
 				for (int mg = 0; mg < ci.nrGroups; mg++)
 					for (int m = 0; m < ci.nrMotives[mg]; m++)
 					{
