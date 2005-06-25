@@ -398,8 +398,9 @@ namespace SimPe.PackedFiles.UserInterface
 			//Relink all TTAbs
 			foreach (Ttab ttab in ttabs) 
 			{
-				foreach (TtabItem item in ttab.Items)
+				for (int i = 0; i < ttab.ItemCount; i++)
 				{
+					TtabItem item = ttab[i];
 					if (bhavalias.Contains(item.Guardian)) item.Guardian = (ushort)bhavalias[item.Guardian];
 					if (bhavalias.Contains(item.Action)) item.Action = (ushort)bhavalias[item.Action];
 				}
