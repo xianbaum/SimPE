@@ -107,10 +107,10 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"BCON Wrapper",
-				"Quaxi",
+				"PJSE BCON Wrapper",
+				"Peter L Jones",
 				"---",
-				7
+				1
 				); 
 		}
 

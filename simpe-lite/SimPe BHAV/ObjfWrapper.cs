@@ -127,10 +127,10 @@ namespace SimPe.PackedFiles.Wrapper
 			/// TODO: Change the Description passed here
 			/// 
 			return new AbstractWrapperInfo(
-				"OBJf Wrapper",
-				"Quaxi",
+				"PJSE OBJf Wrapper",
+				"Peter L Jones",
 				"---",
-				4
+				1
 				); 
 		}
 

@@ -120,10 +120,10 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"Global Data Wrapper",
-				"Quaxi",
+				"PJSE GLOB Wrapper",
+				"Peter L Jones",
 				"---",
-				3
+				1
 				); 
 		}
 

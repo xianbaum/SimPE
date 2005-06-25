@@ -153,10 +153,10 @@ namespace SimPe.PackedFiles.Wrapper
 			/// TODO: Change the Description passed here
 			/// 
 			return new AbstractWrapperInfo(
-				"BHAV Wrapper",
-				"Quaxi",
+				"PJSE BHAV Wrapper",
+				"Peter L Jones",
 				"---",
-				11
+				1
 				); 
 		}
 

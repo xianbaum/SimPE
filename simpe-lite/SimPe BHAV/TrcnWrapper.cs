@@ -110,10 +110,10 @@ namespace SimPe.PackedFiles.Wrapper
 			/// TODO: Change the Description passed here
 			/// 
 			return new AbstractWrapperInfo(
-				"TRCN Wrapper",
-				"Quaxi",
+				"PJSE TRCN Wrapper",
+				"Peter L Jones",
 				"---",
-				3
+				1
 				); 
 		}
 

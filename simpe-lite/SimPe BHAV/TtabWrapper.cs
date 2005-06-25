@@ -188,10 +188,10 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"Experimental TTAB Wrapper",
-				"Quaxi",
+				"PJSE TTAB Wrapper",
+				"Peter L Jones",
 				"---",
-				6
+				1
 				); 
 		}
 
