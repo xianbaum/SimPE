@@ -1,4 +1,7 @@
 
+25 June 2005 17:38 - Typo stopping JoinIndex being copied on add
+  SimPe BHAV\TtabForm.cs 1.4
+
 25 June 2005 17:05 - Main TTAB Landing
   SimPe BHAV\
     ImportSemi.cs 1.2
