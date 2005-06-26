@@ -120,6 +120,7 @@ namespace SimPe.PackedFiles.UserInterface
 				left = cs[i].Left = left - (cs[i].Width + 4);
 			this.lbFilename.Left = 4;
 			this.tbFilename.Left = this.lbFilename.Right + 4;
+			this.Tag = "Normal"; // Used by SetReadOnly
 		}
 
 		/// <summary>
@@ -145,7 +146,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SetReadOnly(bool state) 
 		{
-			if (!btnCommit.Visible) state = true;
+			if (((string)this.Tag).Equals("Popup")) state = true;
 
 			llopenbhav.Enabled = !state;
 			tbInst_OpCode.ReadOnly = state;
@@ -2082,7 +2083,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
 			Bhav b = Instruction.LoadGlobalBHAV(pnflowcontainer.SelectedInst.OpCode);
 			BhavForm ui = (BhavForm)b.UIHandler;
-			ui.gbInstruction.Location = new Point(ui.gbInstruction.Location.X, ui.gbMove.Location.Y);
+			//ui.gbInstruction.Location = new Point(ui.gbInstruction.Location.X, ui.gbMove.Location.Y);
 			ui.tbInst_Instruction.Width = ui.gbInstruction.Width - (2 * ui.tbInst_Instruction.Location.X);
 			// but make it clear it's read only
 			ui.tbFilename.Enabled = ui.tbFormat.Enabled = ui.tbType.Enabled = ui.tbArgC.Enabled = 
@@ -2091,7 +2092,8 @@ namespace SimPe.PackedFiles.UserInterface
 				ui.btnDel.Visible = ui.btnAdd.Visible = 
 				ui.llopenbhav.Visible = ui.btnOpCode.Visible = ui.btnOperandWiz.Visible = 
 				ui.btnCancel.Visible = false;
-			ui.bhavPanel.Dock = DockStyle.Fill;
+			// Tell the SetReadOnly function it's in a popup
+			ui.Tag = "Popup";
 			ui.Text = "Global BHAV: " + pnflowcontainer.SelectedInst.ToString();
 			b.RefreshUI();
 			ui.Show();
