@@ -121,6 +121,28 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFilename.Left = 4;
 			this.tbFilename.Left = this.lbFilename.Right + 4;
 			this.Tag = "Normal"; // Used by SetReadOnly
+
+			TextBox[] iow = { tbInst_Op01_dec, tbInst_Op23_dec };
+			alDec16 = new ArrayList(iow);
+			TextBox[] iob = {
+								 tbInst_Op0  ,tbInst_Op1  ,tbInst_Op2  ,tbInst_Op3
+								,tbInst_Op4  ,tbInst_Op5  ,tbInst_Op6  ,tbInst_Op7
+								,tbInst_Unk0 ,tbInst_Unk1 ,tbInst_Unk2 ,tbInst_Unk3
+								,tbInst_Unk4 ,tbInst_Unk5 ,tbInst_Unk6 ,tbInst_Unk7
+								,tbInst_Reserved
+								,tbType
+							};
+			alHex8 = new ArrayList(iob);
+
+			TextBox[] w = { tbFormat ,tbFlags ,tbReserved ,tbInst_OpCode };
+			alHex16 = new ArrayList(w);
+
+			TextBox[] db = { tbArgC, tbLocalC };
+			alDec8 = new ArrayList(db);
+
+			ComboBox[] cb = { tba1, tba2 };
+			alTarget = new ArrayList(cb);
+
 		}
 
 		/// <summary>
@@ -143,6 +165,11 @@ namespace SimPe.PackedFiles.UserInterface
 		private Bhav wrapper;
 		private Instruction origInst;
 		private bool internalchg;
+		private ArrayList alDec16;
+		private ArrayList alHex8;
+		private ArrayList alHex16;
+		private ArrayList alDec8;
+		private ArrayList alTarget;
 
 		private void SetReadOnly(bool state) 
 		{
@@ -523,7 +550,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op01_dec.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op01_dec.TextAlign")));
 			this.tbInst_Op01_dec.Visible = ((bool)(resources.GetObject("tbInst_Op01_dec.Visible")));
 			this.tbInst_Op01_dec.WordWrap = ((bool)(resources.GetObject("tbInst_Op01_dec.WordWrap")));
-			this.tbInst_Op01_dec.TextChanged += new System.EventHandler(this.tbInst_Op_dec_TextChanged);
+			this.tbInst_Op01_dec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
+			this.tbInst_Op01_dec.Validated += new System.EventHandler(this.dec16_Validated);
 			// 
 			// btnCancel
 			// 
@@ -623,9 +651,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba2.TabIndex = ((int)(resources.GetObject("tba2.TabIndex")));
 			this.tba2.Text = resources.GetString("tba2.Text");
 			this.tba2.Visible = ((bool)(resources.GetObject("tba2.Visible")));
+			this.tba2.Validating += new System.ComponentModel.CancelEventHandler(this.Target_Validating);
 			this.tba2.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
+			this.tba2.Validated += new System.EventHandler(this.Target_Validated);
 			this.tba2.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-			this.tba2.TextChanged += new System.EventHandler(this.Target_TextChanged);
 			this.tba2.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
 			this.tba2.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba2.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
@@ -655,9 +684,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba1.TabIndex = ((int)(resources.GetObject("tba1.TabIndex")));
 			this.tba1.Text = resources.GetString("tba1.Text");
 			this.tba1.Visible = ((bool)(resources.GetObject("tba1.Visible")));
+			this.tba1.Validating += new System.ComponentModel.CancelEventHandler(this.Target_Validating);
 			this.tba1.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
+			this.tba1.Validated += new System.EventHandler(this.Target_Validated);
 			this.tba1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-			this.tba1.TextChanged += new System.EventHandler(this.Target_TextChanged);
 			this.tba1.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
 			this.tba1.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
@@ -708,7 +738,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk7.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Unk7.TextAlign")));
 			this.tbInst_Unk7.Visible = ((bool)(resources.GetObject("tbInst_Unk7.Visible")));
 			this.tbInst_Unk7.WordWrap = ((bool)(resources.GetObject("tbInst_Unk7.WordWrap")));
-			this.tbInst_Unk7.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Unk7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Unk7.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Unk6
 			// 
@@ -734,7 +765,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk6.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Unk6.TextAlign")));
 			this.tbInst_Unk6.Visible = ((bool)(resources.GetObject("tbInst_Unk6.Visible")));
 			this.tbInst_Unk6.WordWrap = ((bool)(resources.GetObject("tbInst_Unk6.WordWrap")));
-			this.tbInst_Unk6.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Unk6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Unk6.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Unk5
 			// 
@@ -760,7 +792,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk5.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Unk5.TextAlign")));
 			this.tbInst_Unk5.Visible = ((bool)(resources.GetObject("tbInst_Unk5.Visible")));
 			this.tbInst_Unk5.WordWrap = ((bool)(resources.GetObject("tbInst_Unk5.WordWrap")));
-			this.tbInst_Unk5.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Unk5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Unk5.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Unk4
 			// 
@@ -786,7 +819,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk4.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Unk4.TextAlign")));
 			this.tbInst_Unk4.Visible = ((bool)(resources.GetObject("tbInst_Unk4.Visible")));
 			this.tbInst_Unk4.WordWrap = ((bool)(resources.GetObject("tbInst_Unk4.WordWrap")));
-			this.tbInst_Unk4.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Unk4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Unk4.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Unk3
 			// 
@@ -812,7 +846,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk3.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Unk3.TextAlign")));
 			this.tbInst_Unk3.Visible = ((bool)(resources.GetObject("tbInst_Unk3.Visible")));
 			this.tbInst_Unk3.WordWrap = ((bool)(resources.GetObject("tbInst_Unk3.WordWrap")));
-			this.tbInst_Unk3.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Unk3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Unk3.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Unk2
 			// 
@@ -838,7 +873,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk2.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Unk2.TextAlign")));
 			this.tbInst_Unk2.Visible = ((bool)(resources.GetObject("tbInst_Unk2.Visible")));
 			this.tbInst_Unk2.WordWrap = ((bool)(resources.GetObject("tbInst_Unk2.WordWrap")));
-			this.tbInst_Unk2.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Unk2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Unk2.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Unk1
 			// 
@@ -864,7 +900,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk1.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Unk1.TextAlign")));
 			this.tbInst_Unk1.Visible = ((bool)(resources.GetObject("tbInst_Unk1.Visible")));
 			this.tbInst_Unk1.WordWrap = ((bool)(resources.GetObject("tbInst_Unk1.WordWrap")));
-			this.tbInst_Unk1.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Unk1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Unk1.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Unk0
 			// 
@@ -890,7 +927,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk0.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Unk0.TextAlign")));
 			this.tbInst_Unk0.Visible = ((bool)(resources.GetObject("tbInst_Unk0.Visible")));
 			this.tbInst_Unk0.WordWrap = ((bool)(resources.GetObject("tbInst_Unk0.WordWrap")));
-			this.tbInst_Unk0.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Unk0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Unk0.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Op7
 			// 
@@ -916,7 +954,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op7.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op7.TextAlign")));
 			this.tbInst_Op7.Visible = ((bool)(resources.GetObject("tbInst_Op7.Visible")));
 			this.tbInst_Op7.WordWrap = ((bool)(resources.GetObject("tbInst_Op7.WordWrap")));
-			this.tbInst_Op7.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Op7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Op7.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Op6
 			// 
@@ -942,7 +981,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op6.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op6.TextAlign")));
 			this.tbInst_Op6.Visible = ((bool)(resources.GetObject("tbInst_Op6.Visible")));
 			this.tbInst_Op6.WordWrap = ((bool)(resources.GetObject("tbInst_Op6.WordWrap")));
-			this.tbInst_Op6.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Op6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Op6.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Op5
 			// 
@@ -968,7 +1008,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op5.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op5.TextAlign")));
 			this.tbInst_Op5.Visible = ((bool)(resources.GetObject("tbInst_Op5.Visible")));
 			this.tbInst_Op5.WordWrap = ((bool)(resources.GetObject("tbInst_Op5.WordWrap")));
-			this.tbInst_Op5.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Op5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Op5.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Op4
 			// 
@@ -994,7 +1035,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op4.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op4.TextAlign")));
 			this.tbInst_Op4.Visible = ((bool)(resources.GetObject("tbInst_Op4.Visible")));
 			this.tbInst_Op4.WordWrap = ((bool)(resources.GetObject("tbInst_Op4.WordWrap")));
-			this.tbInst_Op4.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Op4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Op4.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Op3
 			// 
@@ -1020,7 +1062,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op3.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op3.TextAlign")));
 			this.tbInst_Op3.Visible = ((bool)(resources.GetObject("tbInst_Op3.Visible")));
 			this.tbInst_Op3.WordWrap = ((bool)(resources.GetObject("tbInst_Op3.WordWrap")));
-			this.tbInst_Op3.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Op3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Op3.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Op2
 			// 
@@ -1046,7 +1089,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op2.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op2.TextAlign")));
 			this.tbInst_Op2.Visible = ((bool)(resources.GetObject("tbInst_Op2.Visible")));
 			this.tbInst_Op2.WordWrap = ((bool)(resources.GetObject("tbInst_Op2.WordWrap")));
-			this.tbInst_Op2.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Op2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Op2.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Op1
 			// 
@@ -1072,7 +1116,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op1.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op1.TextAlign")));
 			this.tbInst_Op1.Visible = ((bool)(resources.GetObject("tbInst_Op1.Visible")));
 			this.tbInst_Op1.WordWrap = ((bool)(resources.GetObject("tbInst_Op1.WordWrap")));
-			this.tbInst_Op1.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Op1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Op1.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Op0
 			// 
@@ -1098,7 +1143,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op0.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op0.TextAlign")));
 			this.tbInst_Op0.Visible = ((bool)(resources.GetObject("tbInst_Op0.Visible")));
 			this.tbInst_Op0.WordWrap = ((bool)(resources.GetObject("tbInst_Op0.WordWrap")));
-			this.tbInst_Op0.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Op0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Op0.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_Reserved
 			// 
@@ -1124,7 +1170,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Reserved.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Reserved.TextAlign")));
 			this.tbInst_Reserved.Visible = ((bool)(resources.GetObject("tbInst_Reserved.Visible")));
 			this.tbInst_Reserved.WordWrap = ((bool)(resources.GetObject("tbInst_Reserved.WordWrap")));
-			this.tbInst_Reserved.TextChanged += new System.EventHandler(this.Byte_TextChanged);
+			this.tbInst_Reserved.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_Reserved.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbInst_OpCode
 			// 
@@ -1150,7 +1197,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_OpCode.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_OpCode.TextAlign")));
 			this.tbInst_OpCode.Visible = ((bool)(resources.GetObject("tbInst_OpCode.Visible")));
 			this.tbInst_OpCode.WordWrap = ((bool)(resources.GetObject("tbInst_OpCode.WordWrap")));
-			this.tbInst_OpCode.TextChanged += new System.EventHandler(this.UShort_TextChanged);
+			this.tbInst_OpCode.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbInst_OpCode.Validated += new System.EventHandler(this.hex16_Validated);
 			// 
 			// label10
 			// 
@@ -1317,7 +1365,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op23_dec.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op23_dec.TextAlign")));
 			this.tbInst_Op23_dec.Visible = ((bool)(resources.GetObject("tbInst_Op23_dec.Visible")));
 			this.tbInst_Op23_dec.WordWrap = ((bool)(resources.GetObject("tbInst_Op23_dec.WordWrap")));
-			this.tbInst_Op23_dec.TextChanged += new System.EventHandler(this.tbInst_Op_dec_TextChanged);
+			this.tbInst_Op23_dec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
+			this.tbInst_Op23_dec.Validated += new System.EventHandler(this.dec16_Validated);
 			// 
 			// label2
 			// 
@@ -1365,7 +1414,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFilename.TextAlign")));
 			this.tbFilename.Visible = ((bool)(resources.GetObject("tbFilename.Visible")));
 			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
-			this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
+			this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
 			// 
 			// lbFilename
 			// 
@@ -1413,7 +1462,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbReserved.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbReserved.TextAlign")));
 			this.tbReserved.Visible = ((bool)(resources.GetObject("tbReserved.Visible")));
 			this.tbReserved.WordWrap = ((bool)(resources.GetObject("tbReserved.WordWrap")));
-			this.tbReserved.TextChanged += new System.EventHandler(this.BhavHeader_TextChanged);
+			this.tbReserved.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbReserved.Validated += new System.EventHandler(this.hex16_Validated);
 			// 
 			// tbLocalC
 			// 
@@ -1439,7 +1489,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLocalC.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbLocalC.TextAlign")));
 			this.tbLocalC.Visible = ((bool)(resources.GetObject("tbLocalC.Visible")));
 			this.tbLocalC.WordWrap = ((bool)(resources.GetObject("tbLocalC.WordWrap")));
-			this.tbLocalC.TextChanged += new System.EventHandler(this.BhavHeader_TextChanged);
+			this.tbLocalC.Validating += new System.ComponentModel.CancelEventHandler(this.dec8_Validating);
+			this.tbLocalC.Validated += new System.EventHandler(this.dec8_Validated);
 			// 
 			// tbFlags
 			// 
@@ -1465,7 +1516,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFlags.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlags.TextAlign")));
 			this.tbFlags.Visible = ((bool)(resources.GetObject("tbFlags.Visible")));
 			this.tbFlags.WordWrap = ((bool)(resources.GetObject("tbFlags.WordWrap")));
-			this.tbFlags.TextChanged += new System.EventHandler(this.BhavHeader_TextChanged);
+			this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbFlags.Validated += new System.EventHandler(this.hex16_Validated);
 			// 
 			// tbArgC
 			// 
@@ -1491,7 +1543,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbArgC.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbArgC.TextAlign")));
 			this.tbArgC.Visible = ((bool)(resources.GetObject("tbArgC.Visible")));
 			this.tbArgC.WordWrap = ((bool)(resources.GetObject("tbArgC.WordWrap")));
-			this.tbArgC.TextChanged += new System.EventHandler(this.BhavHeader_TextChanged);
+			this.tbArgC.Validating += new System.ComponentModel.CancelEventHandler(this.dec8_Validating);
+			this.tbArgC.Validated += new System.EventHandler(this.dec8_Validated);
 			// 
 			// tbType
 			// 
@@ -1517,7 +1570,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbType.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbType.TextAlign")));
 			this.tbType.Visible = ((bool)(resources.GetObject("tbType.Visible")));
 			this.tbType.WordWrap = ((bool)(resources.GetObject("tbType.WordWrap")));
-			this.tbType.TextChanged += new System.EventHandler(this.BhavHeader_TextChanged);
+			this.tbType.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbType.Validated += new System.EventHandler(this.hex8_Validated);
 			// 
 			// tbFormat
 			// 
@@ -1543,7 +1597,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFormat.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFormat.TextAlign")));
 			this.tbFormat.Visible = ((bool)(resources.GetObject("tbFormat.Visible")));
 			this.tbFormat.WordWrap = ((bool)(resources.GetObject("tbFormat.WordWrap")));
-			this.tbFormat.TextChanged += new System.EventHandler(this.BhavHeader_TextChanged);
+			this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
 			// 
 			// lbReserved
 			// 
@@ -1908,7 +1963,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLines.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbLines.TextAlign")));
 			this.tbLines.Visible = ((bool)(resources.GetObject("tbLines.Visible")));
 			this.tbLines.WordWrap = ((bool)(resources.GetObject("tbLines.WordWrap")));
-			this.tbLines.TextChanged += new System.EventHandler(this.tbmv_TextChanged);
+			this.tbLines.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
 			// 
 			// btnSort
 			// 
@@ -2142,17 +2197,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.pnflowcontainer.MoveInst(mv);
 		}
 
-		private void tbmv_TextChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-
-			try 
-			{
-				Convert.ToInt32(tbLines.Text);
-			} 
-			catch {}
-		}
-
 
 		private void llcancel_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
@@ -2175,97 +2219,50 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void tbFilename_TextChanged(object sender, System.EventArgs e)
+		private void tbFilename_Validated(object sender, System.EventArgs e)
 		{
-			if (internalchg) return;
-
-			if (!this.tbFilename.Text.Equals(wrapper.FileName))
-			{
-				wrapper.FileName = tbFilename.Text;
-			}
-		}
-		private void BhavHeader_TextChanged(object sender, System.EventArgs e)
-		{
-			if (this.internalchg) return;
-
-			byte val;
-			ushort uval;
-
-			if (tbType.Equals(sender))
-			{
-				try { val = Convert.ToByte(tbType.Text, 16); }
-				catch (Exception) { val = 0; }
-				if (wrapper.Header.Type != val)
-				{
-					wrapper.Header.Type = val;
-				}
-			}
-
-			TextBox[] decByte   = { tbArgC, tbLocalC };
-			byte[] decVals      = { wrapper.Header.ArgumentCount, wrapper.Header.LocalVarCount };
-			for (int i = 0; i < decByte.Length; i++)
-			{
-				if (decByte[i].Equals(sender))
-				{
-					try { val = Convert.ToByte(decByte[i].Text, 10); }
-					catch (Exception) { val = 0; }
-					if (decVals[i] != val)
-					{
-						switch(i)
-						{
-							case 0: wrapper.Header.ArgumentCount = val; break;
-							case 1: wrapper.Header.LocalVarCount = val; break;
-						}
-					}
-				}
-			}
-
-			TextBox[] hexUShort = { tbFormat, tbFlags, tbReserved };
-			ushort[] hexVals    = { wrapper.Header.Format, wrapper.Header.Flags, wrapper.Header.Zero };
-			for (int i = 0; i < hexUShort.Length; i++)
-			{
-				if (hexUShort[i].Equals(sender))
-				{
-					try { uval = Convert.ToUInt16(hexUShort[i].Text, 16); }
-					catch (Exception) { uval = 0; }
-					if (hexVals[i] != uval)
-					{
-						switch(i)
-						{
-							case 0: wrapper.Header.Format = uval; break;
-							case 1: wrapper.Header.Flags = uval; break;
-							case 2: wrapper.Header.Zero = uval; break;
-						}
-					}
-				}
-			}
+			wrapper.FileName = tbFilename.Text;
 		}
 
-		private void Target_TextChanged(object sender, System.EventArgs e)
+
+		private void Target_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (internalchg) return;
+			if (alTarget.IndexOf(sender) < 0)
+				throw new Exception("Target_Validating not applicable to control " + sender.ToString());
 
-			bool somethingChanged = false;
-			Instruction currentInst = this.pnflowcontainer.SelectedInst;
+			if (((ComboBox)sender).SelectedIndex == -1)
+				try { Convert.ToUInt16(((ComboBox)sender).Text, 16); }
+				catch (Exception) { e.Cancel = true; }
+		}
 
-			ComboBox[] cb = { tba1, tba2 };
-			ushort[] orig = { currentInst.Target1, currentInst.Target2 };
-			for (int i = 0; i < cb.Length; i++)
+		private void Target_Validated(object sender, System.EventArgs e)
+		{
+			int i = alTarget.IndexOf(sender);
+			if (i < 0)
+				throw new Exception("Target_Validated not applicable to control " + sender.ToString());
+
+			if (((ComboBox)sender).SelectedIndex == -1)
 			{
-				if (cb[i].Equals(sender))
+				ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
+				Instruction currentInst = this.pnflowcontainer.SelectedInst;
+
+				if (i == 0)
 				{
-					ushort val;
-					try { val = Convert.ToUInt16(cb[i].Text, 16); }
-					catch (Exception) { val = (ushort)0xFFFF; }
-					if (orig[i] != val)
+					if (currentInst.Target1 != val)
 					{
-						if (i == 0) currentInst.Target1 = val;
-						else        currentInst.Target2 = val;
-						somethingChanged = true;
+						currentInst.Target1 = val;
+						SendInst(currentInst);
+					}
+				}
+				else
+				{
+					if (currentInst.Target2 != val)
+					{
+						currentInst.Target2 = val;
+						SendInst(currentInst);
 					}
 				}
 			}
-			if (somethingChanged) SendInst(currentInst);
 		}
 
 		private void Target_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -2293,110 +2290,144 @@ namespace SimPe.PackedFiles.UserInterface
 			if (somethingChanged) SendInst(currentInst);
 		}
 
-		private void UShort_TextChanged(object sender, System.EventArgs e)
+
+		private void dec8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (internalchg) return;
-
-			bool somethingChanged = false;
-			Instruction currentInst = this.pnflowcontainer.SelectedInst;
-
-			ushort val;
-			if (tbInst_OpCode.Equals(sender))
-			{
-				try { val = Convert.ToUInt16(tbInst_OpCode.Text, 16); }
-				catch (Exception) { val = 0; }
-				if (currentInst.OpCode != val)
-				{
-					currentInst.OpCode = val;
-					somethingChanged = true;
-				}
-			}
-			if (somethingChanged) SendInst(currentInst);
+			try { Convert.ToByte(((TextBox)sender).Text); }
+			catch (Exception) { e.Cancel = true; }
 		}
 
-		private void Byte_TextChanged(object sender, System.EventArgs e)
+		private void dec16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (internalchg) return;
-
-			bool somethingChanged = false;
-			Instruction currentInst = this.pnflowcontainer.SelectedInst;
-
-			TextBox[] OpBytes =
-				{
-					tbInst_Op0, tbInst_Op1, tbInst_Op2, tbInst_Op3,
-					tbInst_Op4, tbInst_Op5, tbInst_Op6, tbInst_Op7
-				};
-			TextBox[] UnkBytes =
-				{
-					tbInst_Unk0, tbInst_Unk1, tbInst_Unk2, tbInst_Unk3,
-					tbInst_Unk4, tbInst_Unk5, tbInst_Unk6, tbInst_Unk7
-				};
-
-			byte val;
-			for (int i = 0; i < 8; i++)
-			{
-				if (OpBytes[i].Equals(sender))
-				{
-					try { val = Convert.ToByte(OpBytes[i].Text, 16); }
-					catch (Exception) { val = 0; }
-					if (currentInst.Operands[i] != val)
-					{
-						currentInst.Operands[i] = val;
-						somethingChanged = true;
-					}
-				}
-
-				if (UnkBytes[i].Equals(sender))
-				{
-					try { val = Convert.ToByte(UnkBytes[i].Text, 16); }
-					catch (Exception) { val = 0; }
-					if (currentInst.Reserved1[i] != val)
-					{
-						currentInst.Reserved1[i] = val;
-						somethingChanged = true;
-					}
-				}
-			}
-			if (tbInst_Reserved.Equals(sender))
-			{
-				try 
-				{
-					val = Convert.ToByte(this.tbInst_Reserved.Text, 16); 
-				}
-				catch (Exception) { val = 0; }
-				if (currentInst.Reserved0 != val)
-				{
-					currentInst.Reserved0 = val;
-					somethingChanged = true;
-				}
-			}
-			if (somethingChanged) SendInst(currentInst);
+			try { Convert.ToUInt16(((TextBox)sender).Text); }
+			catch (Exception) { e.Cancel = true; }
 		}
 
-		private void tbInst_Op_dec_TextChanged(object sender, System.EventArgs e)
+		private void dec32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (internalchg) return;
+			try { Convert.ToUInt32(((TextBox)sender).Text); }
+			catch (Exception) { e.Cancel = true; }
+		}
 
-			ushort val;
-			try { val = Convert.ToUInt16(((TextBox)sender).Text); }
-			catch (Exception) { val = 0; }
+		private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			try { Convert.ToByte(((TextBox)sender).Text, 16); }
+			catch (Exception) { e.Cancel = true; }
+		}
+
+		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			catch (Exception) { e.Cancel = true; }
+		}
+
+		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
+			catch (Exception) { e.Cancel = true; }
+		}
 
 
-			TextBox[] OpWords = 
-				{
-					tbInst_Op01_dec, tbInst_Op23_dec
-				};
-			int i = (new ArrayList(OpWords)).IndexOf(sender) * 2;
+		private void dec8_Validated(object sender, System.EventArgs e)
+		{
+			byte val = Convert.ToByte(((TextBox)sender).Text);
+
+			int i = alDec8.IndexOf(sender);
+
+			switch (i)
+			{
+				case 0: wrapper.Header.ArgumentCount = val; break;
+				case 1: wrapper.Header.LocalVarCount = val; break;
+				default:
+					throw new Exception("dec8_Validated not applicable to control " + sender.ToString());
+			}
+		}
+
+		private void dec16_Validated(object sender, System.EventArgs e)
+		{
+			ushort val = Convert.ToUInt16(((TextBox)sender).Text);
+
+			int i = alDec16.IndexOf(sender) * 2;
+
+			if (i > 2)
+				throw new Exception("dec16_Validated not applicable to control " + sender.ToString());
 
 			Instruction currentInst = this.pnflowcontainer.SelectedInst;
-			ushort oldval = (ushort)(currentInst.Operands[i] + (currentInst.Operands[i+1] << 8));
-
-			if (oldval != val)
+			byte v0 = currentInst.Operands[i];
+			byte v1 = currentInst.Operands[i+1];
+			ushort cv = (ushort)(v0 + (v1 * 256));
+			if (cv != val)
 			{
 				currentInst.Operands[i] = (byte)(val & 0xFF);
 				currentInst.Operands[i+1] = (byte)((val >> 8) & 0xFF);
 				SendInst(currentInst);
 			}
 		}
+
+		private void hex8_Validated(object sender, System.EventArgs e)
+		{
+			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
+
+			int i = alHex8.IndexOf(sender);
+
+			Instruction currentInst = this.pnflowcontainer.SelectedInst;
+			if (i < 8)
+			{
+				if (currentInst.Operands[i] != val)
+				{
+					currentInst.Operands[i] = val;
+					SendInst(currentInst);
+				}
+			}
+			else
+			{
+				if (i < 16)
+				{
+					if (currentInst.Reserved1[i-8] != val)
+					{
+						currentInst.Reserved1[i-8] = val;
+						SendInst(currentInst);
+					}
+				}
+				else switch(i)
+					 {
+						 case 16:
+							 if (currentInst.Reserved0 != val)
+							 {
+								 currentInst.Reserved0 = val;
+								 SendInst(currentInst);
+							 }
+							 break;
+						 case 17: wrapper.Header.Type = val; break;
+						 default:
+							 throw new Exception("hex8_Validated not applicable to control " + sender.ToString());
+					 }
+			}
+		}
+
+		private void hex16_Validated(object sender, System.EventArgs e)
+		{
+			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
+			Instruction currentInst = this.pnflowcontainer.SelectedInst;
+
+			int i = alHex16.IndexOf(sender);
+
+			switch (i)
+			{
+				case 0: wrapper.Header.Format = val; break;
+				case 1: wrapper.Header.Flags = val; break;
+				case 2: wrapper.Header.Zero = val; break;
+				case 3:
+					if (currentInst.OpCode != val)
+					{
+						currentInst.OpCode = val;
+						SendInst(currentInst);
+					}
+					break;
+				default:
+					throw new Exception("hex16_Validated not applicable to control " + sender.ToString());
+			}
+		}
+
 	}
 }

@@ -301,7 +301,14 @@ namespace SimPe.PackedFiles.Wrapper
 		public byte ArgumentCount 
 		{
 			get { return argc; }
-			set {argc = value; }
+			set 
+			{
+				if (argc != value)
+				{
+					argc = value;
+					wrapper.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public byte LocalVarCount 
@@ -524,9 +531,12 @@ namespace SimPe.PackedFiles.Wrapper
 			get { return ((Instruction)base[index]); }
 			set 
 			{ 
-				base[index] = value;
-				if (!internalchg)
-					parent.OnWrapperChanged(new EventArgs());
+				if (base[index] != value)
+				{
+					base[index] = value;
+					if (!internalchg)
+						parent.OnWrapperChanged(new EventArgs());
+				}
 			}
 		}
 
