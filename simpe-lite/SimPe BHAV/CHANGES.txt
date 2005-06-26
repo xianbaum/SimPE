@@ -1,4 +1,10 @@
 
+27 June 2005 00:12 - Amend BhavForm to use Validating/Validated rather than TextChanged
+  SimPe BHAV\
+    BhavForm.cs 1.20
+    BhavForm.resx 1.11
+    BhavWrapper.cs 1.14
+
 26 June 2005 17:24 - Add "Inge" configuration; Inge & Debug enable all wrappers
   SimPe BHAV\
     pjse coder plugin.csproj 1.4
