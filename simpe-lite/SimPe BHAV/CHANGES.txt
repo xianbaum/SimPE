@@ -1,4 +1,9 @@
 
+26 June 2005 14:33 - BugFix: Instruction group readonly/add disabled incorrectly
+  SimPe BHAV\
+    BhavForm.cs 1.19
+    BhavForm.resx 1.10
+
 26 June 2005 13:34 - Changes since Initial_Plugin
   Add tar.bz2 to .cvsignore
   Add in BHAV editor leaves added line selected
@@ -16,7 +21,7 @@
     BhavInstListControl.cs 1.21
     BhavWrapper.cs 1.13
     CHANGES.txt 1.1
-    pjse coder plugin.csproj 1.2
+    pjse coder plugin.csproj 1.2, 1.3
     WrapperFactory.cs 1.4
 
 
