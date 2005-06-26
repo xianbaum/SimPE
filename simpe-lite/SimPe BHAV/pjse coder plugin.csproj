@@ -17,7 +17,7 @@
                 DelaySign = "false"
                 OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = ""
+                PostBuildEvent = 'echo on&#xd;&#xa;cd "$(ProjectDir)"&#xd;&#xa;if exist Plugins rmdir /s/q Plugins&#xd;&#xa;mkdir Plugins&#xd;&#xa;mkdir "Plugins\$(TargetName)"&#xd;&#xa;(cd "$(TargetDir)"&#xd;&#xa;tar c --exclude "*.bat" . ) | tar x -C "Plugins"&#xd;&#xa;copy ..\LICENSE.txt "Plugins\$(TargetName)"&#xd;&#xa;copy CHANGES.txt "Plugins\$(TargetName)"&#xd;&#xa;echo off&#xd;&#xa;&#xd;&#xa;set base=$(TargetName)-$(ConfigurationName)&#xd;&#xa;set mydate=%date%&#xd;&#xa;set dd=%mydate:~0,2%&#xd;&#xa;set mm=%mydate:~3,2%&#xd;&#xa;set yy=%mydate:~6,4%&#xd;&#xa;set mytime=%time%&#xd;&#xa;set h=%mytime:~0,2%&#xd;&#xa;set m=%mytime:~3,2%&#xd;&#xa;set s=%mytime:~6,2%&#xd;&#xa;set suffix=%yy%%mm%%dd%-%h%%m%&#xd;&#xa;&#xd;&#xa;del ..\"%base%*"&#xd;&#xa;zip -r9 "%base%-%suffix%.zip" Plugins&#xd;&#xa;move "%base%-%suffix%.zip" ..&#xd;&#xa;tar cv Plugins | bzip2 > "%base%-%suffix%.tar.bz2"&#xd;&#xa;move "%base%-%suffix%.tar.bz2" ..&#xd;&#xa;&#xd;&#xa;cd ..\..\SimPe&#xd;&#xa;xcopy /m /e /y "$(ProjectDir)Plugins" Plugins'
                 RootNamespace = "pjse"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
@@ -152,127 +152,127 @@
                 <Reference
                     Name = "XPCommonControls"
                     AssemblyName = "XPCommonControls"
-                    HintPath = "..\..\SimPe_041i_qa\XPCommonControls.dll"
+                    HintPath = "..\..\SimPe\XPCommonControls.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "HexEdit"
                     AssemblyName = "HexEdit"
-                    HintPath = "..\..\SimPe_041i_qa\HexEdit.dll"
+                    HintPath = "..\..\SimPe\HexEdit.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "ICSharpCode.SharpZipLib"
                     AssemblyName = "ICSharpCode.SharpZipLib"
-                    HintPath = "..\..\SimPe_041i_qa\ICSharpCode.SharpZipLib.dll"
+                    HintPath = "..\..\SimPe\ICSharpCode.SharpZipLib.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.byteview"
                     AssemblyName = "simpe.byteview"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.byteview.dll"
+                    HintPath = "..\..\SimPe\simpe.byteview.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.clst"
                     AssemblyName = "simpe.clst"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.clst.dll"
+                    HintPath = "..\..\SimPe\simpe.clst.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.commandline"
                     AssemblyName = "simpe.commandline"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.commandline.dll"
+                    HintPath = "..\..\SimPe\simpe.commandline.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.commonhandler"
                     AssemblyName = "simpe.commonhandler"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.commonhandler.dll"
+                    HintPath = "..\..\SimPe\simpe.commonhandler.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.extfilehandler"
                     AssemblyName = "simpe.extfilehandler"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.extfilehandler.dll"
+                    HintPath = "..\..\SimPe\simpe.extfilehandler.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.filehandler"
                     AssemblyName = "simpe.filehandler"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.filehandler.dll"
+                    HintPath = "..\..\SimPe\simpe.filehandler.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.genericbase"
                     AssemblyName = "simpe.genericbase"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.genericbase.dll"
+                    HintPath = "..\..\SimPe\simpe.genericbase.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.generichandler"
                     AssemblyName = "simpe.generichandler"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.generichandler.dll"
+                    HintPath = "..\..\SimPe\simpe.generichandler.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.helper"
                     AssemblyName = "simpe.helper"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.helper.dll"
+                    HintPath = "..\..\SimPe\simpe.helper.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.interfaces"
                     AssemblyName = "simpe.interfaces"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.interfaces.dll"
+                    HintPath = "..\..\SimPe\simpe.interfaces.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.names"
                     AssemblyName = "simpe.names"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.names.dll"
+                    HintPath = "..\..\SimPe\simpe.names.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.package"
                     AssemblyName = "simpe.package"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.package.dll"
+                    HintPath = "..\..\SimPe\simpe.package.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.s2cp"
                     AssemblyName = "simpe.s2cp"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.s2cp.dll"
+                    HintPath = "..\..\SimPe\simpe.s2cp.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "simpe.workspace"
                     AssemblyName = "simpe.workspace"
-                    HintPath = "..\..\SimPe_041i_qa\simpe.workspace.dll"
+                    HintPath = "..\..\SimPe\simpe.workspace.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "sims.guid"
                     AssemblyName = "sims.guid"
-                    HintPath = "..\..\SimPe_041i_qa\sims.guid.dll"
+                    HintPath = "..\..\SimPe\sims.guid.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "skybound.visualstyles"
                     AssemblyName = "Skybound.VisualStyles"
-                    HintPath = "..\..\SimPe_041i_qa\skybound.visualstyles.dll"
+                    HintPath = "..\..\SimPe\skybound.visualstyles.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "SourceGrid2"
                     AssemblyName = "SourceGrid2"
-                    HintPath = "..\..\SimPe_041i_qa\SourceGrid2.dll"
+                    HintPath = "..\..\SimPe\SourceGrid2.dll"
                     Private = "False"
                 />
                 <Reference
                     Name = "SourceLibrary"
                     AssemblyName = "SourceLibrary"
-                    HintPath = "..\..\SimPe_041i_qa\SourceLibrary.dll"
+                    HintPath = "..\..\SimPe\SourceLibrary.dll"
                     Private = "False"
                 />
             </References>

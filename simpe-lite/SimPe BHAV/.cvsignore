@@ -4,3 +4,4 @@ Plugins
 *.suo
 *.csproj.user
 *.zip
+*.tar.bz2

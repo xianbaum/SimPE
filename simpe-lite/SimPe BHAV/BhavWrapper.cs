@@ -660,8 +660,13 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8007:
 					return target;
 				default:
-					if (target < 0xFC) return target;
-					return (ushort)(0xFF00 + target);
+					switch (target)
+					{
+						case 0xFD: return (ushort)0xFFFE;
+						case 0xFE: return (ushort)0xFFFC;
+						case 0xFF: return (ushort)0xFFFD;
+						default: return target;
+					}
 			}
 		}
 		private ushort formatSpecificAddr(ushort target)
@@ -671,7 +676,13 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8007:
 					return target;
 				default:
-					return (ushort)(0xFF & target);
+					switch (target)
+					{
+						case 0xFFFE: return (ushort)0x00FD;
+						case 0xFFFC: return (ushort)0x00FE;
+						case 0xFFFD: return (ushort)0x00FF;
+						default: return (ushort)(target & 0x00FF);
+					}
 			}
 		}
 		public ushort Target1

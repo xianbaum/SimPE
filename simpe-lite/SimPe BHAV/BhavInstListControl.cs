@@ -194,7 +194,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
 
-			int newIndex = csel;
+			int newIndex = csel + 1;
 			if (csel < 0)
 				wrapper.Instructions.Insert(0, new Instruction(wrapper));
 			else
@@ -378,7 +378,7 @@ namespace SimPe.PackedFiles.UserInterface
 			foreach (Connector c in Connector.Connectors(wrapper.Instructions)) 
 			{
 				if (c==null) continue;
-				if (c.start == c.stop) continue; // skip go to self
+				//if (c.start == c.stop) continue; // skip go to self
 				if (c.start >= flowitems.Length) continue;
 
 				if (c.truerule) pen = tpen; else pen = fpen;
@@ -393,7 +393,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				if (c.stop < flowitems.Length)
 				{
-					if (c.stop - c.start == 1)
+					if (false)//(c.stop - c.start == 1)
 					{
 						int xPos = startlabel.Right - 144 + (c.truerule ? 8 : 72);
 
@@ -637,7 +637,7 @@ namespace SimPe.PackedFiles.UserInterface
 	/// <summary>
 	/// Used for Instruction Connectors
 	/// </summary>
-	internal class Connector 
+	internal class Connector : IComparable
 	{
 		/// <summary>
 		/// Instruction number for start of connector
@@ -731,12 +731,14 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <param name="connectors">List of connectors</param>
 		private static void ResolveCollisions(Connector[] connectors) 
 		{
-			foreach (Connector c1 in connectors) 
+			ArrayList ac = new ArrayList(connectors);
+			ac.Sort();
+			foreach (Connector c1 in ac) 
 			{
 				c1.lane = -1;
 				if (c1.stop * 2 > connectors.Length) continue; // off end, doesn't use a lane
-				if (c1.stop == c1.start + 1) continue; // next line, doesn't use a lane
-				if (c1.stop == c1.start) continue; // same line, doesn't use a lane
+				//if (c1.stop == c1.start + 1) continue; // next line, doesn't use a lane
+				//if (c1.stop == c1.start) continue; // same line, doesn't use a lane
 
 				ArrayList used = new ArrayList();
 				foreach (Connector c2 in connectors)
@@ -745,7 +747,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 					if (c2.Top > c1.Bottom) continue; // c1 completely before c2 - skip
 					if (c2.Bottom < c1.Top) continue; // c1 completely after c2 - skip
-					if (c2.stop == c1.stop) continue; // same target - skip
+					//if (c2.truerule == c1.truerule && c2.stop == c1.stop) continue; // same target - skip
 
 					// At this point c2 could be using a lane c1 wants to use
 					used.Add((Int16) c2.lane);
@@ -756,8 +758,20 @@ namespace SimPe.PackedFiles.UserInterface
 					if (c1.lane == i) c1.lane++;
 			}
 		}
+		#endregion
+
+		#region IComparable Members
+
+		public int CompareTo(object obj)
+		{
+			Connector c = (Connector)obj;
+			int i = c.Bottom - c.Top;
+			int j = this.Bottom - this.Top;
+			return j.CompareTo(i);
+		}
 
 		#endregion
 	}
+
 	#endregion
 }
