@@ -80,11 +80,14 @@ namespace SimPe.Plugin
 			{
 				IWrapper[] wrappers = {
 										   new Bhav(LinkedProvider.OpcodeProvider)
-										  //,new Bcon()
-										  //,new Ttab(LinkedProvider.OpcodeProvider)
-										  //,new Objf(LinkedProvider.OpcodeProvider)
-										  //,new Glob()
-										  //,new Trcn()
+#if INGE || DEBUG
+										  ,new Bcon()
+										  ,new Ttab(LinkedProvider.OpcodeProvider)
+										  ,new Objf(LinkedProvider.OpcodeProvider)
+										  ,new Glob()
+										  ,new Trcn()
+#else
+#endif
 									  };
 				return wrappers;
 			}
