@@ -1,4 +1,10 @@
 
+26 June 2005 17:24 - Add "Inge" configuration; Inge & Debug enable all wrappers
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.4
+    pjse coder plugins.sln 1.2
+    WrapperFactory.cs 1.5
+
 26 June 2005 14:33 - BugFix: Instruction group readonly/add disabled incorrectly
   SimPe BHAV\
     BhavForm.cs 1.19
