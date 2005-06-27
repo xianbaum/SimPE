@@ -6,14 +6,14 @@ EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
-		Inge = Inge
+		InProgress = InProgress
 		Release = Release
 	EndGlobalSection
 	GlobalSection(ProjectConfiguration) = postSolution
 		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Debug.ActiveCfg = Debug|.NET
 		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Debug.Build.0 = Debug|.NET
-		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Inge.ActiveCfg = Inge|.NET
-		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Inge.Build.0 = Inge|.NET
+		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.InProgress.ActiveCfg = InProgress|.NET
+		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.InProgress.Build.0 = InProgress|.NET
 		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Release.ActiveCfg = Release|.NET
 		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Release.Build.0 = Release|.NET
 	EndGlobalSection
