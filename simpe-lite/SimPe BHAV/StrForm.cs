@@ -38,7 +38,7 @@ namespace SimPe.PackedFiles.UserInterface
 	public class OldStrForm : System.Windows.Forms.Form, IPackedFileUI
 	{
 		#region Form elements
-		private System.Windows.Forms.Button button1;
+
 		private System.Windows.Forms.ComboBox cblanguage;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.GroupBox groupBox1;
@@ -63,11 +63,23 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.LinkLabel llcreate;
 		private System.Windows.Forms.Panel strPanel;
 		private System.Windows.Forms.Button btnCommit;
-		private System.Windows.Forms.LinkLabel llEnableAll;
 		private System.Windows.Forms.Button btnCopyAll;
 		private System.Windows.Forms.Button btnUp;
 		private System.Windows.Forms.Button btnDown;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.Label label9;
+		private System.Windows.Forms.Button btnEnglish;
+		private System.Windows.Forms.Label label10;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Button btnClearStr;
+		private System.Windows.Forms.Button btnSetLike;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.ComboBox cbLangFrom;
+		private System.Windows.Forms.Button btnAllLangs;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Button btnDelLang;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -85,6 +97,12 @@ namespace SimPe.PackedFiles.UserInterface
 			this.llcreate.Visible = true;
 #else
 			this.llcreate.Visible = false;
+#endif
+#if DEBUG || INPROGRESS
+#else
+			ArrayList ac = { btnDelLang ,label12 ,label5 ,btnUp ,btnDown ,lldelete ,lladd };
+			foreach (Control c in ac)
+				c.Visible = false;
 #endif
 		}
 
@@ -115,12 +133,15 @@ namespace SimPe.PackedFiles.UserInterface
 		private void doLanguages()
 		{
 			cblanguage.Items.Clear();
-			cblanguage.Sorted = false;
+			cbLangFrom.Items.Clear();
+			cbLangFrom.Sorted = cblanguage.Sorted = false;
 			foreach (byte l in wrapper.Languages)
 			{
 				cblanguage.Items.Add(new Language(l));
+				if (wrapper.nrStrItems(l) > 0)
+					cbLangFrom.Items.Add(new Language(l));
 			}
-			cblanguage.Sorted = true;
+			cbLangFrom.Sorted = cblanguage.Sorted = true;
 		}
 
 		#endregion
@@ -189,8 +210,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(OldStrForm));
 			this.strPanel = new System.Windows.Forms.Panel();
+			this.cbLangFrom = new System.Windows.Forms.ComboBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.btnAllLangs = new System.Windows.Forms.Button();
 			this.btnCopyAll = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.cblanguage = new System.Windows.Forms.ComboBox();
 			this.label4 = new System.Windows.Forms.Label();
@@ -217,7 +240,16 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbstr = new System.Windows.Forms.Label();
 			this.banner = new System.Windows.Forms.Label();
 			this.llcreate = new System.Windows.Forms.LinkLabel();
-			this.llEnableAll = new System.Windows.Forms.LinkLabel();
+			this.btnEnglish = new System.Windows.Forms.Button();
+			this.label8 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.btnClearStr = new System.Windows.Forms.Button();
+			this.btnSetLike = new System.Windows.Forms.Button();
+			this.label7 = new System.Windows.Forms.Label();
+			this.label12 = new System.Windows.Forms.Label();
+			this.btnDelLang = new System.Windows.Forms.Button();
 			this.strPanel.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.gbstr.SuspendLayout();
@@ -234,8 +266,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMargin")));
 			this.strPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMinSize")));
 			this.strPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("strPanel.BackgroundImage")));
+			this.strPanel.Controls.Add(this.cbLangFrom);
+			this.strPanel.Controls.Add(this.label6);
+			this.strPanel.Controls.Add(this.btnAllLangs);
 			this.strPanel.Controls.Add(this.btnCopyAll);
-			this.strPanel.Controls.Add(this.button1);
 			this.strPanel.Controls.Add(this.btnCommit);
 			this.strPanel.Controls.Add(this.cblanguage);
 			this.strPanel.Controls.Add(this.label4);
@@ -244,7 +278,16 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Controls.Add(this.label1);
 			this.strPanel.Controls.Add(this.panel2);
 			this.strPanel.Controls.Add(this.llcreate);
-			this.strPanel.Controls.Add(this.llEnableAll);
+			this.strPanel.Controls.Add(this.btnEnglish);
+			this.strPanel.Controls.Add(this.label8);
+			this.strPanel.Controls.Add(this.label9);
+			this.strPanel.Controls.Add(this.label10);
+			this.strPanel.Controls.Add(this.label11);
+			this.strPanel.Controls.Add(this.btnClearStr);
+			this.strPanel.Controls.Add(this.btnSetLike);
+			this.strPanel.Controls.Add(this.label7);
+			this.strPanel.Controls.Add(this.label12);
+			this.strPanel.Controls.Add(this.btnDelLang);
 			this.strPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("strPanel.Dock")));
 			this.strPanel.Enabled = ((bool)(resources.GetObject("strPanel.Enabled")));
 			this.strPanel.Font = ((System.Drawing.Font)(resources.GetObject("strPanel.Font")));
@@ -256,6 +299,75 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.TabIndex = ((int)(resources.GetObject("strPanel.TabIndex")));
 			this.strPanel.Text = resources.GetString("strPanel.Text");
 			this.strPanel.Visible = ((bool)(resources.GetObject("strPanel.Visible")));
+			// 
+			// cbLangFrom
+			// 
+			this.cbLangFrom.AccessibleDescription = resources.GetString("cbLangFrom.AccessibleDescription");
+			this.cbLangFrom.AccessibleName = resources.GetString("cbLangFrom.AccessibleName");
+			this.cbLangFrom.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbLangFrom.Anchor")));
+			this.cbLangFrom.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbLangFrom.BackgroundImage")));
+			this.cbLangFrom.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbLangFrom.Dock")));
+			this.cbLangFrom.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbLangFrom.Enabled = ((bool)(resources.GetObject("cbLangFrom.Enabled")));
+			this.cbLangFrom.Font = ((System.Drawing.Font)(resources.GetObject("cbLangFrom.Font")));
+			this.cbLangFrom.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbLangFrom.ImeMode")));
+			this.cbLangFrom.IntegralHeight = ((bool)(resources.GetObject("cbLangFrom.IntegralHeight")));
+			this.cbLangFrom.ItemHeight = ((int)(resources.GetObject("cbLangFrom.ItemHeight")));
+			this.cbLangFrom.Location = ((System.Drawing.Point)(resources.GetObject("cbLangFrom.Location")));
+			this.cbLangFrom.MaxDropDownItems = ((int)(resources.GetObject("cbLangFrom.MaxDropDownItems")));
+			this.cbLangFrom.MaxLength = ((int)(resources.GetObject("cbLangFrom.MaxLength")));
+			this.cbLangFrom.Name = "cbLangFrom";
+			this.cbLangFrom.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbLangFrom.RightToLeft")));
+			this.cbLangFrom.Size = ((System.Drawing.Size)(resources.GetObject("cbLangFrom.Size")));
+			this.cbLangFrom.TabIndex = ((int)(resources.GetObject("cbLangFrom.TabIndex")));
+			this.cbLangFrom.Text = resources.GetString("cbLangFrom.Text");
+			this.cbLangFrom.Visible = ((bool)(resources.GetObject("cbLangFrom.Visible")));
+			// 
+			// label6
+			// 
+			this.label6.AccessibleDescription = resources.GetString("label6.AccessibleDescription");
+			this.label6.AccessibleName = resources.GetString("label6.AccessibleName");
+			this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label6.Anchor")));
+			this.label6.AutoSize = ((bool)(resources.GetObject("label6.AutoSize")));
+			this.label6.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label6.Dock")));
+			this.label6.Enabled = ((bool)(resources.GetObject("label6.Enabled")));
+			this.label6.Font = ((System.Drawing.Font)(resources.GetObject("label6.Font")));
+			this.label6.Image = ((System.Drawing.Image)(resources.GetObject("label6.Image")));
+			this.label6.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label6.ImageAlign")));
+			this.label6.ImageIndex = ((int)(resources.GetObject("label6.ImageIndex")));
+			this.label6.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label6.ImeMode")));
+			this.label6.Location = ((System.Drawing.Point)(resources.GetObject("label6.Location")));
+			this.label6.Name = "label6";
+			this.label6.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label6.RightToLeft")));
+			this.label6.Size = ((System.Drawing.Size)(resources.GetObject("label6.Size")));
+			this.label6.TabIndex = ((int)(resources.GetObject("label6.TabIndex")));
+			this.label6.Text = resources.GetString("label6.Text");
+			this.label6.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label6.TextAlign")));
+			this.label6.Visible = ((bool)(resources.GetObject("label6.Visible")));
+			// 
+			// btnAllLangs
+			// 
+			this.btnAllLangs.AccessibleDescription = resources.GetString("btnAllLangs.AccessibleDescription");
+			this.btnAllLangs.AccessibleName = resources.GetString("btnAllLangs.AccessibleName");
+			this.btnAllLangs.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAllLangs.Anchor")));
+			this.btnAllLangs.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAllLangs.BackgroundImage")));
+			this.btnAllLangs.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAllLangs.Dock")));
+			this.btnAllLangs.Enabled = ((bool)(resources.GetObject("btnAllLangs.Enabled")));
+			this.btnAllLangs.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAllLangs.FlatStyle")));
+			this.btnAllLangs.Font = ((System.Drawing.Font)(resources.GetObject("btnAllLangs.Font")));
+			this.btnAllLangs.Image = ((System.Drawing.Image)(resources.GetObject("btnAllLangs.Image")));
+			this.btnAllLangs.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAllLangs.ImageAlign")));
+			this.btnAllLangs.ImageIndex = ((int)(resources.GetObject("btnAllLangs.ImageIndex")));
+			this.btnAllLangs.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAllLangs.ImeMode")));
+			this.btnAllLangs.Location = ((System.Drawing.Point)(resources.GetObject("btnAllLangs.Location")));
+			this.btnAllLangs.Name = "btnAllLangs";
+			this.btnAllLangs.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAllLangs.RightToLeft")));
+			this.btnAllLangs.Size = ((System.Drawing.Size)(resources.GetObject("btnAllLangs.Size")));
+			this.btnAllLangs.TabIndex = ((int)(resources.GetObject("btnAllLangs.TabIndex")));
+			this.btnAllLangs.Text = resources.GetString("btnAllLangs.Text");
+			this.btnAllLangs.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAllLangs.TextAlign")));
+			this.btnAllLangs.Visible = ((bool)(resources.GetObject("btnAllLangs.Visible")));
+			this.btnAllLangs.Click += new System.EventHandler(this.btnAllLangs_Click);
 			// 
 			// btnCopyAll
 			// 
@@ -280,30 +392,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCopyAll.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCopyAll.TextAlign")));
 			this.btnCopyAll.Visible = ((bool)(resources.GetObject("btnCopyAll.Visible")));
 			this.btnCopyAll.Click += new System.EventHandler(this.btnCopyAll_Click);
-			// 
-			// button1
-			// 
-			this.button1.AccessibleDescription = resources.GetString("button1.AccessibleDescription");
-			this.button1.AccessibleName = resources.GetString("button1.AccessibleName");
-			this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("button1.Anchor")));
-			this.button1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button1.BackgroundImage")));
-			this.button1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("button1.Dock")));
-			this.button1.Enabled = ((bool)(resources.GetObject("button1.Enabled")));
-			this.button1.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("button1.FlatStyle")));
-			this.button1.Font = ((System.Drawing.Font)(resources.GetObject("button1.Font")));
-			this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
-			this.button1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("button1.ImageAlign")));
-			this.button1.ImageIndex = ((int)(resources.GetObject("button1.ImageIndex")));
-			this.button1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("button1.ImeMode")));
-			this.button1.Location = ((System.Drawing.Point)(resources.GetObject("button1.Location")));
-			this.button1.Name = "button1";
-			this.button1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("button1.RightToLeft")));
-			this.button1.Size = ((System.Drawing.Size)(resources.GetObject("button1.Size")));
-			this.button1.TabIndex = ((int)(resources.GetObject("button1.TabIndex")));
-			this.button1.Text = resources.GetString("button1.Text");
-			this.button1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("button1.TextAlign")));
-			this.button1.Visible = ((bool)(resources.GetObject("button1.Visible")));
-			this.button1.Click += new System.EventHandler(this.ClearStr);
 			// 
 			// btnCommit
 			// 
@@ -811,6 +899,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbformat.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbformat.ScrollBars")));
 			this.tbformat.Size = ((System.Drawing.Size)(resources.GetObject("tbformat.Size")));
 			this.tbformat.TabIndex = ((int)(resources.GetObject("tbformat.TabIndex")));
+			this.tbformat.TabStop = false;
 			this.tbformat.Text = resources.GetString("tbformat.Text");
 			this.tbformat.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbformat.TextAlign")));
 			this.tbformat.Visible = ((bool)(resources.GetObject("tbformat.Visible")));
@@ -932,30 +1021,233 @@ namespace SimPe.PackedFiles.UserInterface
 			this.llcreate.Visible = ((bool)(resources.GetObject("llcreate.Visible")));
 			this.llcreate.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.CreateTextFile);
 			// 
-			// llEnableAll
+			// btnEnglish
 			// 
-			this.llEnableAll.AccessibleDescription = resources.GetString("llEnableAll.AccessibleDescription");
-			this.llEnableAll.AccessibleName = resources.GetString("llEnableAll.AccessibleName");
-			this.llEnableAll.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llEnableAll.Anchor")));
-			this.llEnableAll.AutoSize = ((bool)(resources.GetObject("llEnableAll.AutoSize")));
-			this.llEnableAll.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llEnableAll.Dock")));
-			this.llEnableAll.Enabled = ((bool)(resources.GetObject("llEnableAll.Enabled")));
-			this.llEnableAll.Font = ((System.Drawing.Font)(resources.GetObject("llEnableAll.Font")));
-			this.llEnableAll.Image = ((System.Drawing.Image)(resources.GetObject("llEnableAll.Image")));
-			this.llEnableAll.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llEnableAll.ImageAlign")));
-			this.llEnableAll.ImageIndex = ((int)(resources.GetObject("llEnableAll.ImageIndex")));
-			this.llEnableAll.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llEnableAll.ImeMode")));
-			this.llEnableAll.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llEnableAll.LinkArea")));
-			this.llEnableAll.Location = ((System.Drawing.Point)(resources.GetObject("llEnableAll.Location")));
-			this.llEnableAll.Name = "llEnableAll";
-			this.llEnableAll.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llEnableAll.RightToLeft")));
-			this.llEnableAll.Size = ((System.Drawing.Size)(resources.GetObject("llEnableAll.Size")));
-			this.llEnableAll.TabIndex = ((int)(resources.GetObject("llEnableAll.TabIndex")));
-			this.llEnableAll.TabStop = true;
-			this.llEnableAll.Text = resources.GetString("llEnableAll.Text");
-			this.llEnableAll.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llEnableAll.TextAlign")));
-			this.llEnableAll.Visible = ((bool)(resources.GetObject("llEnableAll.Visible")));
-			this.llEnableAll.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llEnableAll_LinkClicked);
+			this.btnEnglish.AccessibleDescription = resources.GetString("btnEnglish.AccessibleDescription");
+			this.btnEnglish.AccessibleName = resources.GetString("btnEnglish.AccessibleName");
+			this.btnEnglish.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnEnglish.Anchor")));
+			this.btnEnglish.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEnglish.BackgroundImage")));
+			this.btnEnglish.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnEnglish.Dock")));
+			this.btnEnglish.Enabled = ((bool)(resources.GetObject("btnEnglish.Enabled")));
+			this.btnEnglish.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnEnglish.FlatStyle")));
+			this.btnEnglish.Font = ((System.Drawing.Font)(resources.GetObject("btnEnglish.Font")));
+			this.btnEnglish.Image = ((System.Drawing.Image)(resources.GetObject("btnEnglish.Image")));
+			this.btnEnglish.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnEnglish.ImageAlign")));
+			this.btnEnglish.ImageIndex = ((int)(resources.GetObject("btnEnglish.ImageIndex")));
+			this.btnEnglish.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnEnglish.ImeMode")));
+			this.btnEnglish.Location = ((System.Drawing.Point)(resources.GetObject("btnEnglish.Location")));
+			this.btnEnglish.Name = "btnEnglish";
+			this.btnEnglish.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnEnglish.RightToLeft")));
+			this.btnEnglish.Size = ((System.Drawing.Size)(resources.GetObject("btnEnglish.Size")));
+			this.btnEnglish.TabIndex = ((int)(resources.GetObject("btnEnglish.TabIndex")));
+			this.btnEnglish.Text = resources.GetString("btnEnglish.Text");
+			this.btnEnglish.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnEnglish.TextAlign")));
+			this.btnEnglish.Visible = ((bool)(resources.GetObject("btnEnglish.Visible")));
+			this.btnEnglish.Click += new System.EventHandler(this.btnEnglish_Click);
+			// 
+			// label8
+			// 
+			this.label8.AccessibleDescription = resources.GetString("label8.AccessibleDescription");
+			this.label8.AccessibleName = resources.GetString("label8.AccessibleName");
+			this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label8.Anchor")));
+			this.label8.AutoSize = ((bool)(resources.GetObject("label8.AutoSize")));
+			this.label8.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label8.Dock")));
+			this.label8.Enabled = ((bool)(resources.GetObject("label8.Enabled")));
+			this.label8.Font = ((System.Drawing.Font)(resources.GetObject("label8.Font")));
+			this.label8.Image = ((System.Drawing.Image)(resources.GetObject("label8.Image")));
+			this.label8.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label8.ImageAlign")));
+			this.label8.ImageIndex = ((int)(resources.GetObject("label8.ImageIndex")));
+			this.label8.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label8.ImeMode")));
+			this.label8.Location = ((System.Drawing.Point)(resources.GetObject("label8.Location")));
+			this.label8.Name = "label8";
+			this.label8.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label8.RightToLeft")));
+			this.label8.Size = ((System.Drawing.Size)(resources.GetObject("label8.Size")));
+			this.label8.TabIndex = ((int)(resources.GetObject("label8.TabIndex")));
+			this.label8.Text = resources.GetString("label8.Text");
+			this.label8.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label8.TextAlign")));
+			this.label8.Visible = ((bool)(resources.GetObject("label8.Visible")));
+			// 
+			// label9
+			// 
+			this.label9.AccessibleDescription = resources.GetString("label9.AccessibleDescription");
+			this.label9.AccessibleName = resources.GetString("label9.AccessibleName");
+			this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label9.Anchor")));
+			this.label9.AutoSize = ((bool)(resources.GetObject("label9.AutoSize")));
+			this.label9.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label9.Dock")));
+			this.label9.Enabled = ((bool)(resources.GetObject("label9.Enabled")));
+			this.label9.Font = ((System.Drawing.Font)(resources.GetObject("label9.Font")));
+			this.label9.Image = ((System.Drawing.Image)(resources.GetObject("label9.Image")));
+			this.label9.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label9.ImageAlign")));
+			this.label9.ImageIndex = ((int)(resources.GetObject("label9.ImageIndex")));
+			this.label9.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label9.ImeMode")));
+			this.label9.Location = ((System.Drawing.Point)(resources.GetObject("label9.Location")));
+			this.label9.Name = "label9";
+			this.label9.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label9.RightToLeft")));
+			this.label9.Size = ((System.Drawing.Size)(resources.GetObject("label9.Size")));
+			this.label9.TabIndex = ((int)(resources.GetObject("label9.TabIndex")));
+			this.label9.Text = resources.GetString("label9.Text");
+			this.label9.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label9.TextAlign")));
+			this.label9.Visible = ((bool)(resources.GetObject("label9.Visible")));
+			// 
+			// label10
+			// 
+			this.label10.AccessibleDescription = resources.GetString("label10.AccessibleDescription");
+			this.label10.AccessibleName = resources.GetString("label10.AccessibleName");
+			this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label10.Anchor")));
+			this.label10.AutoSize = ((bool)(resources.GetObject("label10.AutoSize")));
+			this.label10.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label10.Dock")));
+			this.label10.Enabled = ((bool)(resources.GetObject("label10.Enabled")));
+			this.label10.Font = ((System.Drawing.Font)(resources.GetObject("label10.Font")));
+			this.label10.Image = ((System.Drawing.Image)(resources.GetObject("label10.Image")));
+			this.label10.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label10.ImageAlign")));
+			this.label10.ImageIndex = ((int)(resources.GetObject("label10.ImageIndex")));
+			this.label10.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label10.ImeMode")));
+			this.label10.Location = ((System.Drawing.Point)(resources.GetObject("label10.Location")));
+			this.label10.Name = "label10";
+			this.label10.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label10.RightToLeft")));
+			this.label10.Size = ((System.Drawing.Size)(resources.GetObject("label10.Size")));
+			this.label10.TabIndex = ((int)(resources.GetObject("label10.TabIndex")));
+			this.label10.Text = resources.GetString("label10.Text");
+			this.label10.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label10.TextAlign")));
+			this.label10.Visible = ((bool)(resources.GetObject("label10.Visible")));
+			// 
+			// label11
+			// 
+			this.label11.AccessibleDescription = resources.GetString("label11.AccessibleDescription");
+			this.label11.AccessibleName = resources.GetString("label11.AccessibleName");
+			this.label11.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label11.Anchor")));
+			this.label11.AutoSize = ((bool)(resources.GetObject("label11.AutoSize")));
+			this.label11.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label11.Dock")));
+			this.label11.Enabled = ((bool)(resources.GetObject("label11.Enabled")));
+			this.label11.Font = ((System.Drawing.Font)(resources.GetObject("label11.Font")));
+			this.label11.Image = ((System.Drawing.Image)(resources.GetObject("label11.Image")));
+			this.label11.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label11.ImageAlign")));
+			this.label11.ImageIndex = ((int)(resources.GetObject("label11.ImageIndex")));
+			this.label11.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label11.ImeMode")));
+			this.label11.Location = ((System.Drawing.Point)(resources.GetObject("label11.Location")));
+			this.label11.Name = "label11";
+			this.label11.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label11.RightToLeft")));
+			this.label11.Size = ((System.Drawing.Size)(resources.GetObject("label11.Size")));
+			this.label11.TabIndex = ((int)(resources.GetObject("label11.TabIndex")));
+			this.label11.Text = resources.GetString("label11.Text");
+			this.label11.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label11.TextAlign")));
+			this.label11.Visible = ((bool)(resources.GetObject("label11.Visible")));
+			// 
+			// btnClearStr
+			// 
+			this.btnClearStr.AccessibleDescription = resources.GetString("btnClearStr.AccessibleDescription");
+			this.btnClearStr.AccessibleName = resources.GetString("btnClearStr.AccessibleName");
+			this.btnClearStr.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnClearStr.Anchor")));
+			this.btnClearStr.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClearStr.BackgroundImage")));
+			this.btnClearStr.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnClearStr.Dock")));
+			this.btnClearStr.Enabled = ((bool)(resources.GetObject("btnClearStr.Enabled")));
+			this.btnClearStr.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnClearStr.FlatStyle")));
+			this.btnClearStr.Font = ((System.Drawing.Font)(resources.GetObject("btnClearStr.Font")));
+			this.btnClearStr.Image = ((System.Drawing.Image)(resources.GetObject("btnClearStr.Image")));
+			this.btnClearStr.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClearStr.ImageAlign")));
+			this.btnClearStr.ImageIndex = ((int)(resources.GetObject("btnClearStr.ImageIndex")));
+			this.btnClearStr.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnClearStr.ImeMode")));
+			this.btnClearStr.Location = ((System.Drawing.Point)(resources.GetObject("btnClearStr.Location")));
+			this.btnClearStr.Name = "btnClearStr";
+			this.btnClearStr.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnClearStr.RightToLeft")));
+			this.btnClearStr.Size = ((System.Drawing.Size)(resources.GetObject("btnClearStr.Size")));
+			this.btnClearStr.TabIndex = ((int)(resources.GetObject("btnClearStr.TabIndex")));
+			this.btnClearStr.Text = resources.GetString("btnClearStr.Text");
+			this.btnClearStr.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClearStr.TextAlign")));
+			this.btnClearStr.Visible = ((bool)(resources.GetObject("btnClearStr.Visible")));
+			this.btnClearStr.Click += new System.EventHandler(this.btnClearStr_Click);
+			// 
+			// btnSetLike
+			// 
+			this.btnSetLike.AccessibleDescription = resources.GetString("btnSetLike.AccessibleDescription");
+			this.btnSetLike.AccessibleName = resources.GetString("btnSetLike.AccessibleName");
+			this.btnSetLike.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnSetLike.Anchor")));
+			this.btnSetLike.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnSetLike.BackgroundImage")));
+			this.btnSetLike.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnSetLike.Dock")));
+			this.btnSetLike.Enabled = ((bool)(resources.GetObject("btnSetLike.Enabled")));
+			this.btnSetLike.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnSetLike.FlatStyle")));
+			this.btnSetLike.Font = ((System.Drawing.Font)(resources.GetObject("btnSetLike.Font")));
+			this.btnSetLike.Image = ((System.Drawing.Image)(resources.GetObject("btnSetLike.Image")));
+			this.btnSetLike.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnSetLike.ImageAlign")));
+			this.btnSetLike.ImageIndex = ((int)(resources.GetObject("btnSetLike.ImageIndex")));
+			this.btnSetLike.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnSetLike.ImeMode")));
+			this.btnSetLike.Location = ((System.Drawing.Point)(resources.GetObject("btnSetLike.Location")));
+			this.btnSetLike.Name = "btnSetLike";
+			this.btnSetLike.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnSetLike.RightToLeft")));
+			this.btnSetLike.Size = ((System.Drawing.Size)(resources.GetObject("btnSetLike.Size")));
+			this.btnSetLike.TabIndex = ((int)(resources.GetObject("btnSetLike.TabIndex")));
+			this.btnSetLike.Text = resources.GetString("btnSetLike.Text");
+			this.btnSetLike.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnSetLike.TextAlign")));
+			this.btnSetLike.Visible = ((bool)(resources.GetObject("btnSetLike.Visible")));
+			this.btnSetLike.Click += new System.EventHandler(this.btnSetLike_Click);
+			// 
+			// label7
+			// 
+			this.label7.AccessibleDescription = resources.GetString("label7.AccessibleDescription");
+			this.label7.AccessibleName = resources.GetString("label7.AccessibleName");
+			this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label7.Anchor")));
+			this.label7.AutoSize = ((bool)(resources.GetObject("label7.AutoSize")));
+			this.label7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label7.Dock")));
+			this.label7.Enabled = ((bool)(resources.GetObject("label7.Enabled")));
+			this.label7.Font = ((System.Drawing.Font)(resources.GetObject("label7.Font")));
+			this.label7.Image = ((System.Drawing.Image)(resources.GetObject("label7.Image")));
+			this.label7.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label7.ImageAlign")));
+			this.label7.ImageIndex = ((int)(resources.GetObject("label7.ImageIndex")));
+			this.label7.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label7.ImeMode")));
+			this.label7.Location = ((System.Drawing.Point)(resources.GetObject("label7.Location")));
+			this.label7.Name = "label7";
+			this.label7.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label7.RightToLeft")));
+			this.label7.Size = ((System.Drawing.Size)(resources.GetObject("label7.Size")));
+			this.label7.TabIndex = ((int)(resources.GetObject("label7.TabIndex")));
+			this.label7.Text = resources.GetString("label7.Text");
+			this.label7.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label7.TextAlign")));
+			this.label7.Visible = ((bool)(resources.GetObject("label7.Visible")));
+			// 
+			// label12
+			// 
+			this.label12.AccessibleDescription = resources.GetString("label12.AccessibleDescription");
+			this.label12.AccessibleName = resources.GetString("label12.AccessibleName");
+			this.label12.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label12.Anchor")));
+			this.label12.AutoSize = ((bool)(resources.GetObject("label12.AutoSize")));
+			this.label12.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label12.Dock")));
+			this.label12.Enabled = ((bool)(resources.GetObject("label12.Enabled")));
+			this.label12.Font = ((System.Drawing.Font)(resources.GetObject("label12.Font")));
+			this.label12.Image = ((System.Drawing.Image)(resources.GetObject("label12.Image")));
+			this.label12.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label12.ImageAlign")));
+			this.label12.ImageIndex = ((int)(resources.GetObject("label12.ImageIndex")));
+			this.label12.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label12.ImeMode")));
+			this.label12.Location = ((System.Drawing.Point)(resources.GetObject("label12.Location")));
+			this.label12.Name = "label12";
+			this.label12.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label12.RightToLeft")));
+			this.label12.Size = ((System.Drawing.Size)(resources.GetObject("label12.Size")));
+			this.label12.TabIndex = ((int)(resources.GetObject("label12.TabIndex")));
+			this.label12.Text = resources.GetString("label12.Text");
+			this.label12.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label12.TextAlign")));
+			this.label12.Visible = ((bool)(resources.GetObject("label12.Visible")));
+			// 
+			// btnDelLang
+			// 
+			this.btnDelLang.AccessibleDescription = resources.GetString("btnDelLang.AccessibleDescription");
+			this.btnDelLang.AccessibleName = resources.GetString("btnDelLang.AccessibleName");
+			this.btnDelLang.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDelLang.Anchor")));
+			this.btnDelLang.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelLang.BackgroundImage")));
+			this.btnDelLang.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDelLang.Dock")));
+			this.btnDelLang.Enabled = ((bool)(resources.GetObject("btnDelLang.Enabled")));
+			this.btnDelLang.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDelLang.FlatStyle")));
+			this.btnDelLang.Font = ((System.Drawing.Font)(resources.GetObject("btnDelLang.Font")));
+			this.btnDelLang.Image = ((System.Drawing.Image)(resources.GetObject("btnDelLang.Image")));
+			this.btnDelLang.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelLang.ImageAlign")));
+			this.btnDelLang.ImageIndex = ((int)(resources.GetObject("btnDelLang.ImageIndex")));
+			this.btnDelLang.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDelLang.ImeMode")));
+			this.btnDelLang.Location = ((System.Drawing.Point)(resources.GetObject("btnDelLang.Location")));
+			this.btnDelLang.Name = "btnDelLang";
+			this.btnDelLang.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDelLang.RightToLeft")));
+			this.btnDelLang.Size = ((System.Drawing.Size)(resources.GetObject("btnDelLang.Size")));
+			this.btnDelLang.TabIndex = ((int)(resources.GetObject("btnDelLang.TabIndex")));
+			this.btnDelLang.Text = resources.GetString("btnDelLang.Text");
+			this.btnDelLang.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelLang.TextAlign")));
+			this.btnDelLang.Visible = ((bool)(resources.GetObject("btnDelLang.Visible")));
+			this.btnDelLang.Click += new System.EventHandler(this.btnDelLang_Click);
 			// 
 			// OldStrForm
 			// 
@@ -990,80 +1282,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#endregion
 
-		private void btnCommit_Click(object sender, System.EventArgs e)
-		{
-			try 
-			{
-				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = wrapper.Changed;
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
-			}			
-		}
-
-
-		private void StrDelete(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			if (cblanguage.SelectedIndex < 0) return;
-			int index = lbtexts.SelectedIndex;
-			if (index < 0) return;
-
-			wrapper.RemoveAt(((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid, index);
-
-			lbtexts.Items.RemoveAt(index);
-			if (index >= lbtexts.Items.Count)
-				index = lbtexts.Items.Count - 1;
-			lbtexts.SelectedIndex = index;
-		}
-
-		private void DelInAll(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			int index = lbtexts.SelectedIndex;
-
-			if (index < 0) return;
-
-			foreach (byte b in wrapper.Languages)
-				wrapper.RemoveAt(b, index);
-
-			lbtexts.Items.RemoveAt(index);
-			if (index >= lbtexts.Items.Count)
-				index = lbtexts.Items.Count - 1;
-			lbtexts.SelectedIndex = index;
-		}
-
-
-		private void CreateTextFile(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			try 
-			{
-				string list = "";
-				for (int i=0; i < lbtexts.Items.Count; i++)
-				{
-					StrItem item = (StrItem)this.lbtexts.Items[i];
-					list += "0x" + i.ToString("X") +": " + item.Title + " ("+item.Description+")"+Helper.lbr;
-				}
-
-				Clipboard.SetDataObject(list, true);
-			} 
-			catch (Exception) { }
-		}
-
-
-		private void ClearStr(object sender, System.EventArgs e)
-		{
-			foreach (byte lid in wrapper.Languages)
-				wrapper.RemoveLanguage(lid);
-			for (byte lid = 0; lid < 45; lid++)
-				wrapper.AddLanguage(lid);
-
-			int index = cblanguage.SelectedIndex;
-			doLanguages();
-			cblanguage.SelectedIndex = index;
-			LanguageChanged(null, null);
-		}
-
 		private void LanguageChanged(object sender, System.EventArgs e)
 		{
 			int i = lbtexts.SelectedIndex;
@@ -1074,7 +1292,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			int nrStrItems = wrapper.nrStrItems(lid);
 			for (int index = 0; index < nrStrItems; index++)
-				lbtexts.Items.Add(wrapper[lid, index].Title);
+				lbtexts.Items.Add("0x" + Helper.HexString((ushort)(index+1)) + " - " + wrapper[lid, index].Title);
 			lbtexts.SelectedIndex = -1;
 			if (i < 0)
 				i = 0;
@@ -1096,7 +1314,7 @@ namespace SimPe.PackedFiles.UserInterface
 			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
 
 			if (lbtexts.SelectedIndex < 0) return;
-			gbstr.Text = "0x"+Helper.HexString((ushort)lbtexts.SelectedIndex);
+			gbstr.Text = "0x"+Helper.HexString((ushort)(lbtexts.SelectedIndex+1));
 
 			rtbvalue.Text = wrapper[lid, lbtexts.SelectedIndex].Title;
 			rtbdesc.Text = wrapper[lid, lbtexts.SelectedIndex].Description;
@@ -1106,29 +1324,155 @@ namespace SimPe.PackedFiles.UserInterface
 			lldelall.Enabled = true;
 		}
 
-		private void StrAdd(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+
+		private void btnCommit_Click(object sender, System.EventArgs e)
+		{
+			try 
+			{
+				wrapper.SynchronizeUserData();
+				btnCommit.Enabled = wrapper.Changed;
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+			}			
+		}
+
+
+		private void btnClearStr_Click(object sender, System.EventArgs e)
+		{
+			foreach (byte lid in wrapper.Languages)
+				wrapper.RemoveLanguage(lid);
+			wrapper.AddLanguage(0x01);
+
+			int index = cblanguage.SelectedIndex;
+			doLanguages();
+			cblanguage.SelectedIndex = index;
+			LanguageChanged(null, null);
+		}
+
+		private void btnAllLangs_Click(object sender, System.EventArgs e)
+		{
+			byte lid;
+			if (cblanguage.SelectedIndex < 0)
+				lid = 0x01;
+			else
+				lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
+
+			for (byte b = 1; b < 45; b++) wrapper.AddLanguage(b);
+			doLanguages();
+
+			cblanguage.SelectedIndex = lid - 1;
+		}
+
+		private void btnCopyAll_Click(object sender, System.EventArgs e)
 		{
 			if (cblanguage.SelectedIndex < 0) return;
+			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
+
+			foreach (byte b in wrapper.Languages)
+			{
+				if (b == lid) continue;
+				wrapper.RemoveLanguage(b);
+				wrapper.AddLanguage(b);
+				int nrStrItems = wrapper.nrStrItems(lid);
+				for (int index = 0; index < nrStrItems; index++)
+					wrapper.Add(b, wrapper[lid, index]);
+			}
+		}
+
+		private void btnEnglish_Click(object sender, System.EventArgs e)
+		{
+			int index = lbtexts.SelectedIndex;
+			for (byte lid = 2; lid < 45; lid++)
+				wrapper.RemoveLanguage(lid);
+			if (wrapper.Languages.Length == 0)
+				wrapper.AddLanguage(0x01);
+			doLanguages();
+			if (cblanguage.Items.Count > 0)
+				cblanguage.SelectedIndex = 0;
+			if (index >= lbtexts.Items.Count)
+				index = lbtexts.Items.Count - 1;
+			lbtexts.SelectedIndex = index;
+		}
+
+		private void btnSetLike_Click(object sender, System.EventArgs e)
+		{
+			if (cblanguage.SelectedIndex < 0) return;
+			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
+			if (cbLangFrom.SelectedIndex < 0) return;
+			byte lidFrom = ((Language)cbLangFrom.Items[cbLangFrom.SelectedIndex]).Lid;
+			if (lid == lidFrom) return;
+
+			int index;
+			int nrStrItems = wrapper.nrStrItems(lidFrom);
+			for (index = 0; index < nrStrItems; index++)
+			{
+				StrItem ni = new StrItem(wrapper);
+				ni.Title = wrapper[lidFrom, index].Title;
+				ni.Description = wrapper[lidFrom, index].Description;
+				wrapper[lid, index] = ni;
+			}
+			while(index < wrapper.nrStrItems(lid)) wrapper.RemoveAt(lid, index);
+			LanguageChanged(null, null);
+		}
+
+		private void btnDelLang_Click(object sender, System.EventArgs e)
+		{
+			if (cblanguage.SelectedIndex < 0) return;
+			int index = cblanguage.SelectedIndex;
+			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
+			if (lid == 0x01) return;
+
+			wrapper.RemoveLanguage(lid);
+			this.doLanguages();
+
+			if (index >= cblanguage.Items.Count)
+				index = cblanguage.Items.Count - 1;
+			cblanguage.SelectedIndex = index;
+		}
+
+
+		private void AddToAll(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			if (cblanguage.SelectedIndex < 0)
+			{
+				if (wrapper.Languages.Length == 0)
+				{
+					btnAllLangs_Click(null, null);
+				}
+				cblanguage.SelectedIndex = 0;
+			}
+			StrAdd(null, null);
 
 			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
-			StrItem ni = wrapper.Add(lid);
-			if (ni == null) return;
+			int sid = lbtexts.SelectedIndex;
+			StrItem ci = wrapper[lid, sid];
 
-			if (lbtexts.SelectedIndex != -1)
+			foreach (byte b in wrapper.Languages)
 			{
-				StrItem ci = wrapper[lid, lbtexts.SelectedIndex];
-				if (ci != null)
+				wrapper[b, sid] = new StrItem(wrapper);
+				if (wrapper[b, sid] != null)
 				{
-					ni.Title = ci.Title;
-					ni.Description = ci.Description;
+					wrapper[b, sid].Title = ci.Title;
+					wrapper[b, sid].Description = ci.Description;
 				}
 			}
-			else
-			{
-				ni.Title = rtbvalue.Text;
-				ni.Description = rtbdesc.Text;
-			}
-			int index = lbtexts.Items.Add(ni);
+			LanguageChanged(null, null);
+		}
+
+		private void DelInAll(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			int index = lbtexts.SelectedIndex;
+
+			if (index < 0) return;
+
+			foreach (byte b in wrapper.Languages)
+				wrapper.RemoveAt(b, index);
+
+			lbtexts.Items.RemoveAt(index);
+			if (index >= lbtexts.Items.Count)
+				index = lbtexts.Items.Count - 1;
 			lbtexts.SelectedIndex = index;
 		}
 
@@ -1152,74 +1496,6 @@ namespace SimPe.PackedFiles.UserInterface
 				 }
 		}
 
-		private void AddToAll(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			if (cblanguage.SelectedIndex < 0)
-			{
-				if (wrapper.Languages.Length == 0)
-				{
-					llEnableAll_LinkClicked(null, null);
-				}
-				cblanguage.SelectedIndex = 0;
-			}
-			StrAdd(null, null);
-
-			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
-			int sid = lbtexts.SelectedIndex;
-			StrItem ci = wrapper[lid, sid];
-
-			foreach (byte b in wrapper.Languages)
-			{
-				wrapper[b, sid] = new StrItem(wrapper);
-				if (wrapper[b, sid] != null)
-				{
-					wrapper[b, sid].Title = ci.Title;
-					wrapper[b, sid].Description = ci.Description;
-				}
-			}
-			LanguageChanged(null, null);
-		}
-
-		private void llEnableAll_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			for (byte b = 0; b < 45; b++) if (wrapper[b, 0] == null) wrapper.AddLanguage(b);
-			int index = cblanguage.SelectedIndex;
-			doLanguages();
-			cblanguage.SelectedIndex = index;
-		}
-
-		private void text_Validated(object sender, System.EventArgs e)
-		{
-			if (cblanguage.SelectedIndex < 0) return;
-			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
-			if (lbtexts.SelectedIndex < 0) return;
-			int index = lbtexts.SelectedIndex;
-			if (sender == rtbvalue)
-			{
-				wrapper[lid, index].Title = rtbvalue.Text;
-				lbtexts.Items[index] = wrapper[lid, index].Title;
-			}
-			else
-			{
-				wrapper[lid, index].Description = rtbdesc.Text;
-			}
-		}
-
-		private void btnCopyAll_Click(object sender, System.EventArgs e)
-		{
-			if (cblanguage.SelectedIndex < 0) return;
-			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
-
-			foreach (byte b in wrapper.Languages)
-			{
-				if (b == lid) continue;
-				wrapper.RemoveLanguage(b);
-				wrapper.AddLanguage(b);
-				int nrStrItems = wrapper.nrStrItems(lid);
-				for (int index = 0; index < nrStrItems; index++)
-					wrapper.Add(b, wrapper[lid, index]);
-			}
-		}
 
 		private void btnUpDown_Click(object sender, System.EventArgs e)
 		{
@@ -1249,6 +1525,86 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			LanguageChanged(null, null);
 			lbtexts.SelectedIndex = newindex;
+		}
+
+		private void StrAdd(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			if (cblanguage.SelectedIndex < 0) return;
+
+			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
+			StrItem ni = wrapper.Add(lid);
+			if (ni == null) return;
+
+			if (lbtexts.SelectedIndex != -1)
+			{
+				StrItem ci = wrapper[lid, lbtexts.SelectedIndex];
+				if (ci != null)
+				{
+					ni.Title = ci.Title;
+					ni.Description = ci.Description;
+				}
+			}
+			else
+			{
+				ni.Title = rtbvalue.Text;
+				ni.Description = rtbdesc.Text;
+			}
+			lbtexts.Items.Add("0x" + Helper.HexString((ushort)(lbtexts.Items.Count)) + " - " + ni.Title);
+			lbtexts.SelectedIndex = lbtexts.Items.Count - 1;
+		}
+
+		private void StrDelete(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			if (cblanguage.SelectedIndex < 0) return;
+			int index = lbtexts.SelectedIndex;
+			if (index < 0) return;
+
+			wrapper.RemoveAt(((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid, index);
+
+			lbtexts.Items.RemoveAt(index);
+			if (index >= lbtexts.Items.Count)
+				index = lbtexts.Items.Count - 1;
+			lbtexts.SelectedIndex = index;
+		}
+
+
+		private void CreateTextFile(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			if (cblanguage.SelectedIndex < 0) return;
+
+			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
+			try 
+			{
+				string list = "";
+				int nrStrItems = wrapper.nrStrItems(lid);
+				for (int i=0; i < nrStrItems; i++)
+				{
+					StrItem ni = wrapper[lid, i];
+					list += "0x" + Helper.HexString((ushort)(i+1)) + " - " + ni.Title + " (" + ni.Description + ")" + Helper.lbr;
+				}
+
+				Clipboard.SetDataObject(list, true);
+			} 
+			catch (Exception) { }
+		}
+
+
+		private void text_Validated(object sender, System.EventArgs e)
+		{
+			if (cblanguage.SelectedIndex < 0) return;
+			byte lid = ((Language)cblanguage.Items[cblanguage.SelectedIndex]).Lid;
+			if (lbtexts.SelectedIndex < 0) return;
+			int index = lbtexts.SelectedIndex;
+
+			if (sender == rtbvalue)
+			{
+				wrapper[lid, index].Title = rtbvalue.Text;
+				lbtexts.Items[index] = "0x" + Helper.HexString((ushort)(index+1)) + " - " + wrapper[lid, index].Title;
+			}
+			else
+			{
+				wrapper[lid, index].Description = rtbdesc.Text;
+			}
 		}
 
 	}
