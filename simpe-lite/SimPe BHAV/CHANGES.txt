@@ -1,4 +1,23 @@
 
+28 June 2005 13:37 - STR#/TTAs and OBJD integration
+  SimPe BHAV\
+    BhavInstListControl.cs 1.21.2.1
+    BhavWrapper.cs 1.14.2.1
+    NewStrForm.cs 1.1.2.1
+    NewStrForm.resx 1.1.2.1
+    pjse coder plugin.csproj 1.5.2.1
+    PjseObjdForm.cs 1.1.2.1
+    PjseObjdForm.resx 1.1.2.1
+    PjseObjdWrapper.cs 1.1.2.1
+    StrForm.cs 1.1.2.1
+    StrForm.de.resx 1.1.2.1
+    StrForm.de-DE.resx 1.1.2.1
+    StrForm.resx 1.1.2.1
+    StrWrapper.cs 1.1.2.1
+    TtabForm.cs 1.4.2.1
+    TtabWrapper.cs 1.4.2.1
+    WrapperFactory.cs 1.6.2.1
+
 27 June 2005 10:00 - Rename "Inge" configuration to "InProgress"
   SimPe BHAV\
     pjse coder plugin.csproj 1.5
