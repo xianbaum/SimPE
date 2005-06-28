@@ -134,12 +134,6 @@
                     Private = "False"
                 />
                 <Reference
-                    Name = "simpe.clst"
-                    AssemblyName = "simpe.clst"
-                    HintPath = "..\..\SimPe\simpe.clst.dll"
-                    Private = "False"
-                />
-                <Reference
                     Name = "simpe.commandline"
                     AssemblyName = "simpe.commandline"
                     HintPath = "..\..\SimPe\simpe.commandline.dll"
@@ -149,18 +143,6 @@
                     Name = "simpe.commonhandler"
                     AssemblyName = "simpe.commonhandler"
                     HintPath = "..\..\SimPe\simpe.commonhandler.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.extfilehandler"
-                    AssemblyName = "simpe.extfilehandler"
-                    HintPath = "..\..\SimPe\simpe.extfilehandler.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.filehandler"
-                    AssemblyName = "simpe.filehandler"
-                    HintPath = "..\..\SimPe\simpe.filehandler.dll"
                     Private = "False"
                 />
                 <Reference
@@ -233,6 +215,12 @@
                     Name = "SourceLibrary"
                     AssemblyName = "SourceLibrary"
                     HintPath = "..\..\SimPe\SourceLibrary.dll"
+                    Private = "False"
+                />
+                <Reference
+                    Name = "simpe.filehandler"
+                    AssemblyName = "simpe.filehandler"
+                    HintPath = "..\..\SimPe\simpe.filehandler.dll"
                     Private = "False"
                 />
             </References>
@@ -395,6 +383,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "NewStrForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "NewStrForm.resx"
+                    DependentUpon = "NewStrForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "ObjfForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -421,6 +419,56 @@
                 />
                 <File
                     RelPath = "ObjfWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PjseObjdForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "PjseObjdForm.resx"
+                    DependentUpon = "PjseObjdForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "PjseObjdWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "StrForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "StrForm.de.resx"
+                    DependentUpon = "StrForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "StrForm.de-DE.resx"
+                    DependentUpon = "StrForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "StrForm.resx"
+                    DependentUpon = "StrForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "StrListViewer.cs"
+                    SubType = "UserControl"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "StrListViewer.resx"
+                    DependentUpon = "StrListViewer.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "StrWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

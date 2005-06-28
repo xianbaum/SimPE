@@ -20,7 +20,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using System.IO;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 
@@ -812,7 +811,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="format"></param>
 		/// <param name="reader"></param>
-		private void Unserialize(BinaryReader reader) 
+		private void Unserialize(System.IO.BinaryReader reader) 
 		{
 			switch (parent.Header.Format)
 			{
@@ -864,7 +863,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="format"></param>
 		/// <param name="writer"></param>
-		internal void Serialize(BinaryWriter writer) 
+		internal void Serialize(System.IO.BinaryWriter writer) 
 		{
 			switch (parent.Header.Format)
 			{
@@ -912,4 +911,5 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 	}
+
 }

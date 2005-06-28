@@ -395,13 +395,13 @@ namespace SimPe.PackedFiles.UserInterface
 				{
 					if (false)//(c.stop - c.start == 1)
 					{
-						int xPos = startlabel.Right - 144 + (c.truerule ? 8 : 72);
+						/*int xPos = startlabel.Right - 144 + (c.truerule ? 8 : 72);
 
 						gr.DrawLine(	
 							new Pen(pen.Brush, (c.start == csel) ? 4 : 2),
 							xPos, startlabel.Bottom,
 							xPos, startlabel.Bottom + 5
-							);
+							);*/
 					}
 					else 
 					{
@@ -764,6 +764,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		public int CompareTo(object obj)
 		{
+			if (obj.GetType() != typeof(Connector))
+				return this.GetHashCode().CompareTo(base.GetHashCode());
+
 			Connector c = (Connector)obj;
 			int i = c.Bottom - c.Top;
 			int j = this.Bottom - this.Top;

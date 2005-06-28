@@ -20,7 +20,6 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using System.IO;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 
@@ -75,7 +74,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains a valid String Resource that describes the Function Entries
 		/// </summary>
-		private PackedFiles.Wrapper.Str strres = null;
+		private Str strres = null;
 		#endregion
 
 		#region Accessor methods
@@ -586,11 +585,7 @@ namespace SimPe.PackedFiles.Wrapper
 					if (parent==null) return Localization.Manager.GetString("unknown");
 					if (parent.StringResource == null) return Localization.Manager.GetString("unknown");
 
-					PackedFiles.Wrapper.StrItemList items = parent.StringResource.LanguageItems(0x1);
-					if (items == null) return Localization.Manager.GetString("unknown");
-					if ((StringIndex>=items.Length) || (StringIndex<0)) return Localization.Manager.GetString("unknown");
-				
-					PackedFiles.Wrapper.StrItem item = items[StringIndex];
+					PackedFiles.Wrapper.StrItem item = parent.StringResource[0x1, (int)StringIndex];
 					if (item==null) return Localization.Manager.GetString("unknown");
 					return item.Title;
 				} 
