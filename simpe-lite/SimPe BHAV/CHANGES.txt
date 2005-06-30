@@ -1,4 +1,19 @@
 
+30 June 2005 09:39 - Don't know whether the German strings are right, so removed them
+  SimPe BHAV\
+    BconForm.de.resx (deleted)
+    BconForm.de-DE.resx (deleted)
+    BhavForm.de.resx (deleted)
+    BhavForm.de-DE.resx (deleted)
+    GlobForm.de.resx (deleted)
+    GlobForm.de-DE.resx (deleted)
+    ObjfForm.de.resx (deleted)
+    ObjfForm.de-DE.resx (deleted)
+    StrForm.de.resx (deleted)
+    StrForm.de-DE.resx (deleted)
+    TtabForm.de.resx (deleted)
+    TtabForm.de-DE.resx (deleted)
+
 30 June 2005 09:39 - Make Release build build (oops)
   SimPe BHAV\
     StrForm.cs 1.1.2.3
