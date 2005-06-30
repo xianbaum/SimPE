@@ -1,4 +1,50 @@
 
+30 June 2005 13:51 - STR#/OBJD Landing
+  (refer to changes below since 27 June 2005 10:00)
+
+30 June 2005 09:39 - Don't know whether the German strings are right, so removed them
+  SimPe BHAV\
+    BconForm.de.resx (deleted)
+    BconForm.de-DE.resx (deleted)
+    BhavForm.de.resx (deleted)
+    BhavForm.de-DE.resx (deleted)
+    GlobForm.de.resx (deleted)
+    GlobForm.de-DE.resx (deleted)
+    ObjfForm.de.resx (deleted)
+    ObjfForm.de-DE.resx (deleted)
+    StrForm.de.resx (deleted)
+    StrForm.de-DE.resx (deleted)
+    TtabForm.de.resx (deleted)
+    TtabForm.de-DE.resx (deleted)
+
+30 June 2005 09:39 - Make Release build build (oops)
+  SimPe BHAV\
+    StrForm.cs 1.1.2.3
+
+28 June 2005 17:45 - Implement Inge's requests
+  SimPe BHAV\
+    StrForm.cs 1.1.2.2
+    StrForm.resx 1.1.2.2
+
+28 June 2005 13:37 - STR#/TTAs and OBJD integration
+  SimPe BHAV\
+    BhavInstListControl.cs 1.21.2.1
+    BhavWrapper.cs 1.14.2.1
+    NewStrForm.cs 1.1.2.1
+    NewStrForm.resx 1.1.2.1
+    pjse coder plugin.csproj 1.5.2.1
+    PjseObjdForm.cs 1.1.2.1
+    PjseObjdForm.resx 1.1.2.1
+    PjseObjdWrapper.cs 1.1.2.1
+    StrForm.cs 1.1.2.1
+    StrForm.de.resx 1.1.2.1
+    StrForm.de-DE.resx 1.1.2.1
+    StrForm.resx 1.1.2.1
+    StrWrapper.cs 1.1.2.1
+    TtabForm.cs 1.4.2.1
+    TtabWrapper.cs 1.4.2.1
+    WrapperFactory.cs 1.6.2.1
+
 27 June 2005 10:00 - Rename "Inge" configuration to "InProgress"
   SimPe BHAV\
     pjse coder plugin.csproj 1.5
