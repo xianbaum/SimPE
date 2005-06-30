@@ -165,6 +165,12 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alFloats;
 		private ArrayList alFlags;
 
+		private void WrapperChanged(object sender, System.EventArgs e)
+		{
+			this.btnCommit.Enabled = true;
+		}
+
+
 		private void doFlags()
 		{
 			internalchg = true;
@@ -220,13 +226,14 @@ namespace SimPe.PackedFiles.UserInterface
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Ttab) wrp;
+
 			wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+			this.btnCommit.Enabled = wrapper.Changed;
 
 			internalchg = true;
 
 			lbttabfile.Text = wrapper.FileName;
 			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
-			this.btnCommit.Enabled = false;
 
 			lbttab.Items.Clear();
 			for(int i = 0; i < wrapper.ItemCount; i++)
@@ -238,12 +245,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			if (lbttab.Items.Count>0) lbttab.SelectedIndex = 0;
 		}		
-
-
-		private void WrapperChanged(object sender, System.EventArgs e)
-		{
-			this.btnCommit.Enabled = true;
-		}
 
 		#endregion
 
@@ -2049,7 +2050,7 @@ namespace SimPe.PackedFiles.UserInterface
 			try 
 			{
 				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = false;
+				btnCommit.Enabled = wrapper.Changed;
 			} 
 			catch (Exception ex) 
 			{

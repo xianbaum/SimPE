@@ -84,7 +84,9 @@ namespace SimPe.Plugin
 										  ,new Bcon()
 										  ,new Ttab(LinkedProvider.OpcodeProvider)
 										  ,new Objf(LinkedProvider.OpcodeProvider)
+										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()
+										  ,new Str()
 										  ,new Trcn()
 #else
 #endif
