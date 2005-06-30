@@ -238,16 +238,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BconForm.de.resx"
-                    DependentUpon = "BconForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BconForm.de-DE.resx"
-                    DependentUpon = "BconForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "BconForm.resx"
                     DependentUpon = "BconForm.cs"
                     BuildAction = "EmbeddedResource"
@@ -266,16 +256,6 @@
                     RelPath = "BhavForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavForm.de.resx"
-                    DependentUpon = "BhavForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavForm.de-DE.resx"
-                    DependentUpon = "BhavForm.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "BhavForm.resx"
@@ -348,16 +328,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "GlobForm.de.resx"
-                    DependentUpon = "GlobForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "GlobForm.de-DE.resx"
-                    DependentUpon = "GlobForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "GlobForm.resx"
                     DependentUpon = "GlobForm.cs"
                     BuildAction = "EmbeddedResource"
@@ -398,16 +368,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ObjfForm.de.resx"
-                    DependentUpon = "ObjfForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "ObjfForm.de-DE.resx"
-                    DependentUpon = "ObjfForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "ObjfForm.resx"
                     DependentUpon = "ObjfForm.cs"
                     BuildAction = "EmbeddedResource"
@@ -441,16 +401,6 @@
                     RelPath = "StrForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StrForm.de.resx"
-                    DependentUpon = "StrForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "StrForm.de-DE.resx"
-                    DependentUpon = "StrForm.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "StrForm.resx"
@@ -496,16 +446,6 @@
                     RelPath = "TtabForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TtabForm.de.resx"
-                    DependentUpon = "TtabForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TtabForm.de-DE.resx"
-                    DependentUpon = "TtabForm.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "TtabForm.resx"
