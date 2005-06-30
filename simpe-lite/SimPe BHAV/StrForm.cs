@@ -98,9 +98,9 @@ namespace SimPe.PackedFiles.UserInterface
 #else
 			this.llcreate.Visible = false;
 #endif
-#if DEBUG || INPROGRESS
+#if DEBUG
 #else
-			ArrayList ac = { btnDelLang ,label12 ,label5 ,btnUp ,btnDown ,lldelete ,lladd };
+			Control[] ac = { btnDelLang ,label12 ,label5 ,btnUp ,btnDown ,lldelete ,lladd };
 			foreach (Control c in ac)
 				c.Visible = false;
 #endif
@@ -122,7 +122,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		#region StrForm
+		#region OldStrForm
 		private Str wrapper;
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
