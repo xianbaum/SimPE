@@ -175,6 +175,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.globPanel.AutoScroll = ((bool)(resources.GetObject("globPanel.AutoScroll")));
 			this.globPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("globPanel.AutoScrollMargin")));
 			this.globPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("globPanel.AutoScrollMinSize")));
+			this.globPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.globPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("globPanel.BackgroundImage")));
 			this.globPanel.Controls.Add(this.tbgroup);
 			this.globPanel.Controls.Add(this.label43);

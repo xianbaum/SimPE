@@ -172,9 +172,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbTrcn = new System.Windows.Forms.Label();
 			this.label27 = new System.Windows.Forms.Label();
 			this.trcnPanel = new System.Windows.Forms.Panel();
-			this.trcnPanel.SuspendLayout();
 			this.gbprop.SuspendLayout();
 			this.panel2.SuspendLayout();
+			this.trcnPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btcommit
@@ -474,6 +474,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trcnPanel.AutoScroll = ((bool)(resources.GetObject("trcnPanel.AutoScroll")));
 			this.trcnPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("trcnPanel.AutoScrollMargin")));
 			this.trcnPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("trcnPanel.AutoScrollMinSize")));
+			this.trcnPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.trcnPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("trcnPanel.BackgroundImage")));
 			this.trcnPanel.Controls.Add(this.btcommit);
 			this.trcnPanel.Controls.Add(this.gbprop);
@@ -513,9 +514,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("$this.RightToLeft")));
 			this.StartPosition = ((System.Windows.Forms.FormStartPosition)(resources.GetObject("$this.StartPosition")));
 			this.Text = resources.GetString("$this.Text");
-			this.trcnPanel.ResumeLayout(false);
 			this.gbprop.ResumeLayout(false);
 			this.panel2.ResumeLayout(false);
+			this.trcnPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}

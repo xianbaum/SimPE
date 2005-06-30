@@ -338,6 +338,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.AutoScroll = ((bool)(resources.GetObject("ttabPanel.AutoScroll")));
 			this.ttabPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("ttabPanel.AutoScrollMargin")));
 			this.ttabPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("ttabPanel.AutoScrollMinSize")));
+			this.ttabPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.ttabPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ttabPanel.BackgroundImage")));
 			this.ttabPanel.Controls.Add(this.btnAdd);
 			this.ttabPanel.Controls.Add(this.tbFormat);

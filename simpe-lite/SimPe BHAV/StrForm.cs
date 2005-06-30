@@ -265,6 +265,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.AutoScroll = ((bool)(resources.GetObject("strPanel.AutoScroll")));
 			this.strPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMargin")));
 			this.strPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMinSize")));
+			this.strPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.strPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("strPanel.BackgroundImage")));
 			this.strPanel.Controls.Add(this.cbLangFrom);
 			this.strPanel.Controls.Add(this.label6);

@@ -172,6 +172,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.objfPanel.AutoScroll = ((bool)(resources.GetObject("objfPanel.AutoScroll")));
 			this.objfPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("objfPanel.AutoScrollMargin")));
 			this.objfPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("objfPanel.AutoScrollMinSize")));
+			this.objfPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.objfPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("objfPanel.BackgroundImage")));
 			this.objfPanel.Controls.Add(this.groupBox2);
 			this.objfPanel.Controls.Add(this.lbobjf);

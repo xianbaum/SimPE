@@ -578,6 +578,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bconPanel.AutoScroll = ((bool)(resources.GetObject("bconPanel.AutoScroll")));
 			this.bconPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("bconPanel.AutoScrollMargin")));
 			this.bconPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bconPanel.AutoScrollMinSize")));
+			this.bconPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bconPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bconPanel.BackgroundImage")));
 			this.bconPanel.Controls.Add(this.lvConstants);
 			this.bconPanel.Controls.Add(this.btnCommit);
