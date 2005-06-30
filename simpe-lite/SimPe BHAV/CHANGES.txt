@@ -1,4 +1,13 @@
 
+30 June 2005 23:45 - Make sure BackColor = System.Drawing.SystemColors.Control
+  SimPe BHAV\
+    BconForm.cs 1.3
+    GlobForm.cs 1.3
+    ObjfForm.cs 1.3
+    StrForm.cs 1.3
+    TrcnForm.cs 1.2
+    TtabForm.cs 1.5
+
 30 June 2005 13:51 - STR#/OBJD Landing
   (refer to changes below since 27 June 2005 10:00)
 
