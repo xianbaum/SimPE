@@ -367,7 +367,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader"></param>
 		public void Unserialize(System.IO.BinaryReader reader) 
 		{
-			format = reader.ReadUInt16();
+			format = reader.ReadUInt16();				//0x0040 - format
 			switch (format) 
 			{
 				case 0x8000:
@@ -378,13 +378,13 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8006:
 				case 0x8007: 
 				{					
-					count = (uint)reader.ReadUInt16();
-					type = reader.ReadByte();
-					argc = reader.ReadByte();
-					locals = reader.ReadByte();
-					reserved_00 = reader.ReadByte();
-					flags = reader.ReadUInt16();
-					zero = reader.ReadUInt16();
+					count = (uint)reader.ReadUInt16();	//0x0042 - # of opcodes
+					type = reader.ReadByte();			//0x0044 - tree type
+					argc = reader.ReadByte();			//0x0045 - # of args
+					locals = reader.ReadByte();			//0x0046 - # of locals
+					reserved_00 = reader.ReadByte();	//0x0047 - header flag
+					flags = reader.ReadUInt16();		//0x0048 - Tree version (4 bytes)
+					zero = reader.ReadUInt16();			//       - Tree version (4 bytes)
 					break;
 				}
 				case 0x8003: 				
@@ -647,7 +647,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private ushort addr2 = 0;
 		private byte reserved_00 = 0;
 		private byte[] operands = new byte[8];
-		private byte[] reserved_01 = null;
+		private byte[] reserved_01 = new byte[8];
 		private Bhav parent;
 		#endregion
 
@@ -668,9 +668,9 @@ namespace SimPe.PackedFiles.Wrapper
 				default:
 					switch (target)
 					{
-						case 0xFD: return (ushort)0xFFFE;
-						case 0xFE: return (ushort)0xFFFC;
-						case 0xFF: return (ushort)0xFFFD;
+						case 0xFD: return (ushort)0xFFFC;	// error
+						case 0xFE: return (ushort)0xFFFD;	// true
+						case 0xFF: return (ushort)0xFFFE;	// false
 						default: return target;
 					}
 			}
@@ -684,9 +684,9 @@ namespace SimPe.PackedFiles.Wrapper
 				default:
 					switch (target)
 					{
-						case 0xFFFE: return (ushort)0x00FD;
-						case 0xFFFC: return (ushort)0x00FE;
-						case 0xFFFD: return (ushort)0x00FF;
+						case 0xFFFC: return (ushort)0x00FD;	// error
+						case 0xFFFD: return (ushort)0x00FE;	// true
+						case 0xFFFE: return (ushort)0x00FF;	// false
 						default: return (ushort)(target & 0x00FF);
 					}
 			}
@@ -723,31 +723,12 @@ namespace SimPe.PackedFiles.Wrapper
 		public Bhav Parent { get { return parent; } }
 		#endregion
 
-		private void commonConstructor(Bhav parent)
-		{
-			this.parent = parent;
-			switch (parent.Header.Format)
-			{
-				case 0x8001:
-				case 0x8002:
-					break;
-				case 0x8003:
-				case 0x8004:
-				case 0x8005:
-				case 0x8006:
-				case 0x8007:
-					reserved_01 = new byte[8];
-					break;
-				default: 
-					throw new Exception("Unknown BHAV Format "+parent.Header.Format.ToString("X"));
-			}
-		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		internal Instruction (Bhav parent)
 		{
-			commonConstructor(parent);
+			this.parent = parent;
 		}
 
 		/// <summary>
@@ -755,7 +736,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		internal Instruction (Bhav parent, System.IO.BinaryReader reader)
 		{
-			commonConstructor(parent);
+			this.parent = parent;
 			Unserialize(reader);
 		}
 
@@ -781,43 +762,37 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader"></param>
 		private void Unserialize(System.IO.BinaryReader reader) 
 		{
+			opcode = reader.ReadUInt16();
+			if (parent.Header.Format < 0x8007)
+			{
+				addr1 = (ushort)reader.ReadByte();
+				addr2 = (ushort)reader.ReadByte();
+			}
+			else
+			{
+				addr1 = reader.ReadUInt16();
+				addr2 = reader.ReadUInt16();
+			}
+
 			switch (parent.Header.Format)
 			{
 				case 0x8001: 
 				case 0x8002: 
 				{
-					opcode = reader.ReadUInt16();
-					addr1 = (ushort)reader.ReadByte();
-					addr2 = (ushort)reader.ReadByte();
 					operands = reader.ReadBytes(8);
 					break;
 				}
 				case 0x8003: 
 				case 0x8004: 
 				{
-					opcode = reader.ReadUInt16();
-					addr1 = (ushort)reader.ReadByte();
-					addr2 = (ushort)reader.ReadByte();
 					operands = reader.ReadBytes(8);
 					reserved_01 = reader.ReadBytes(8);
 					break;
 				}
 				case 0x8006: 
 				case 0x8005: 
-				{
-					opcode = reader.ReadUInt16();
-					addr1 = (ushort)reader.ReadByte();
-					addr2 = (ushort)reader.ReadByte();
-					reserved_00 = reader.ReadByte();
-					operands = reader.ReadBytes(8);
-					reserved_01 = reader.ReadBytes(8);
-					break;
-				}
 				case 0x8007: 
 				{
-					opcode = reader.ReadUInt16();
-					addr1 = reader.ReadUInt16();
-					addr2 = reader.ReadUInt16();
 					reserved_00 = reader.ReadByte();
 					operands = reader.ReadBytes(8);
 					reserved_01 = reader.ReadBytes(8);

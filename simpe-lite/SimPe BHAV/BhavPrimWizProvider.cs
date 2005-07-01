@@ -32,8 +32,16 @@ namespace pjse
 		{
 			switch(i.Opcode)
 			{
+				case 0x0001:
+					return new BhavPrimWiz0x0001(i);
 				case 0x0002:
 					return new BhavPrimWiz0x0002(i);
+				case 0x0008:
+				case 0x000B:
+				case 0x000C:
+				case 0x0016:
+				case 0x001E:
+					break;
 				default:
 					break;
 			}
@@ -42,5 +50,32 @@ namespace pjse
 
 		public static ABhavPrimWiz Default() { return new BhavPrimWizDefault(); }
 
+		public static string[] gPrims = {
+											"Sleep","Generic Sims Call","","Find Best Interaction",
+											"~(old)Grab","~(old)Drop","~(old)Change Suit","Refresh",
+											"Random Number","~(old)Burn","Tutorial","Get Distance To",
+											"Get Direction To","Push Interaction","Find Best Object for Function","Break Point",
+											"Find Location For","Idle for Input","Remove Object Instance","Make New Character",
+											"Run Functional Tree","~Show String ( UNUSED )","Turn Body Towards","Play / Stop Sound Event",
+											"~UNUSED (was old relationship)","Alter Budget","Relationship","Go To Relative Position",
+											"Run Tree by Name","Set Motive Change","Gosub Found Action","Set to Next",
+											"Test Object Type","Find 5 Worst Motives","UI Effect","Camera Control",
+											"Dialog","Test Sim Interacting With","~unused","~unused",
+											"~unused","~(old)Set Balloon/Headline","Create New Object Instance","~(old)Drop Onto",
+											"~(old)Animate Sim [old]","Go To Routing Slot","Snap","~(old)Reach",
+											"Stop ALL Sounds","Notify the Stack Object out of Idle","Add/Change the Action String","Manage Inventory",
+											"~unused (TSO)","~unused (TSO)","~unused (TSO)","~unused (TSO)",
+											"~unused (TSO)","~unused","~unused","~unused","~unused","~unused","~unused","~unused",
+											"~unused","~unused","~unused","~unused","~unused","~unused","~unused","~unused",
+											"~unused","~unused","~unused","~unused","~unused","~unused","~unused","~unused",
+											"~unused","~unused","~unused","~unused","~unused","~unused","~unused","~unused",
+											"~unused","~unused","~unused","~unused","~unused","~unused","~unused","~unused",
+											"~unused","~unused","~unused","~unused","~reserved","~unused","~unused","~unused",
+											"~unused","Animate Object","Animate Sim","Animate Overlay",
+											"Animate Stop","Change Material","Look At","Change Light",
+											"Effect Stop/Start","Snap Into","Assign Locomotion Animations","Debug",
+											"Reach/Put","Age","Array Operation","Message",
+											"RayTrace","Change Outfit","On Timer","Cinematic","Want Satisfy","Influence"
+										};
 	}
 }

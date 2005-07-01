@@ -277,7 +277,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Instruction.Text = BhavOperandWiz.OpcodeName(inst);
 
 				pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(inst);
-				this.btnOperandWiz.Enabled = !(wiz is typeof(pjse.BhavPrimWizProvider.Default()));
+				this.btnOperandWiz.Enabled = !(wiz is BhavPrimWizDefault);
 				btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
 				btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Instructions.Count - 1;
 			}
@@ -317,6 +317,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SendInst(Instruction currentInst)
 		{
+			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(currentInst);
+			this.btnOperandWiz.Enabled = !(wiz is BhavPrimWizDefault);
+
 			this.tbInst_Instruction.Text = BhavOperandWiz.OpcodeName(currentInst);
 			this.btnCancel.Enabled = true;
 			bool origstate = internalchg;
