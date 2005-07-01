@@ -1,4 +1,8 @@
 
+01 July 2005 10:21 - Write languages in numerical order
+  SimPe BHAV\
+    StrWrapper.cs 1.3
+
 01 July 2005 09:20 - Make sure BackColor = System.Drawing.SystemColors.Control
   SimPe BHAV\
     BhavForm.cs 1.21
