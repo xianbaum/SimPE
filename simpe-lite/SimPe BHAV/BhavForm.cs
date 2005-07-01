@@ -1763,6 +1763,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScroll = ((bool)(resources.GetObject("bhavPanel.AutoScroll")));
 			this.bhavPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMargin")));
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
+			this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
 			this.bhavPanel.Controls.Add(this.pnflowcontainer);
 			this.bhavPanel.Controls.Add(this.btnDel);
