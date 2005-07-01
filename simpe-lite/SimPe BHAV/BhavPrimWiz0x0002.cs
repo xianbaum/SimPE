@@ -34,6 +34,7 @@ namespace SimPe.PackedFiles.UserInterface
 	/// </summary>
 	internal class MyForm : System.Windows.Forms.Form
 	{
+		#region Form variables
 		private System.Windows.Forms.ComboBox cbtype1;
 		private System.Windows.Forms.ComboBox cbtype2;
 		private System.Windows.Forms.ComboBox cboperand;
@@ -46,6 +47,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// Erforderliche Designervariable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
+		#endregion
 
 		public MyForm()
 		{
@@ -72,115 +74,8 @@ namespace SimPe.PackedFiles.UserInterface
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
-		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
-		/// </summary>
-		private void InitializeComponent()
-		{
-			this.pnWiz0x0002 = new System.Windows.Forms.Panel();
-			this.cbmotiv2 = new System.Windows.Forms.ComboBox();
-			this.cbmotiv1 = new System.Windows.Forms.ComboBox();
-			this.cboperand = new System.Windows.Forms.ComboBox();
-			this.tbval2 = new System.Windows.Forms.TextBox();
-			this.cbtype2 = new System.Windows.Forms.ComboBox();
-			this.tbval1 = new System.Windows.Forms.TextBox();
-			this.cbtype1 = new System.Windows.Forms.ComboBox();
-			this.pnWiz0x0002.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// pnWiz0x0002
-			// 
-			this.pnWiz0x0002.Controls.Add(this.cbmotiv2);
-			this.pnWiz0x0002.Controls.Add(this.cbmotiv1);
-			this.pnWiz0x0002.Controls.Add(this.cboperand);
-			this.pnWiz0x0002.Controls.Add(this.tbval2);
-			this.pnWiz0x0002.Controls.Add(this.cbtype2);
-			this.pnWiz0x0002.Controls.Add(this.tbval1);
-			this.pnWiz0x0002.Controls.Add(this.cbtype1);
-			this.pnWiz0x0002.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.pnWiz0x0002.Location = new System.Drawing.Point(8, 8);
-			this.pnWiz0x0002.Name = "pnWiz0x0002";
-			this.pnWiz0x0002.Size = new System.Drawing.Size(328, 120);
-			this.pnWiz0x0002.TabIndex = 0;
-			// 
-			// cbmotiv2
-			// 
-			this.cbmotiv2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmotiv2.Location = new System.Drawing.Point(192, 80);
-			this.cbmotiv2.Name = "cbmotiv2";
-			this.cbmotiv2.Size = new System.Drawing.Size(120, 21);
-			this.cbmotiv2.TabIndex = 6;
-			this.cbmotiv2.Visible = false;
-			this.cbmotiv2.SelectedIndexChanged += new System.EventHandler(this.Motive2Changed);
-			// 
-			// cbmotiv1
-			// 
-			this.cbmotiv1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmotiv1.Location = new System.Drawing.Point(192, 16);
-			this.cbmotiv1.Name = "cbmotiv1";
-			this.cbmotiv1.Size = new System.Drawing.Size(120, 21);
-			this.cbmotiv1.TabIndex = 5;
-			this.cbmotiv1.Visible = false;
-			this.cbmotiv1.SelectedIndexChanged += new System.EventHandler(this.Motive1Changed);
-			// 
-			// cboperand
-			// 
-			this.cboperand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cboperand.Location = new System.Drawing.Point(24, 48);
-			this.cboperand.Name = "cboperand";
-			this.cboperand.Size = new System.Drawing.Size(288, 21);
-			this.cboperand.TabIndex = 4;
-			// 
-			// tbval2
-			// 
-			this.tbval2.Location = new System.Drawing.Point(192, 80);
-			this.tbval2.Name = "tbval2";
-			this.tbval2.Size = new System.Drawing.Size(120, 21);
-			this.tbval2.TabIndex = 3;
-			this.tbval2.Text = "";
-			// 
-			// cbtype2
-			// 
-			this.cbtype2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbtype2.Location = new System.Drawing.Point(16, 80);
-			this.cbtype2.Name = "cbtype2";
-			this.cbtype2.Size = new System.Drawing.Size(168, 21);
-			this.cbtype2.TabIndex = 2;
-			this.cbtype2.SelectedIndexChanged += new System.EventHandler(this.SelectVal2Name);
-			// 
-			// tbval1
-			// 
-			this.tbval1.Location = new System.Drawing.Point(192, 16);
-			this.tbval1.Name = "tbval1";
-			this.tbval1.Size = new System.Drawing.Size(120, 21);
-			this.tbval1.TabIndex = 1;
-			this.tbval1.Text = "";
-			// 
-			// cbtype1
-			// 
-			this.cbtype1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbtype1.Location = new System.Drawing.Point(16, 16);
-			this.cbtype1.Name = "cbtype1";
-			this.cbtype1.Size = new System.Drawing.Size(168, 21);
-			this.cbtype1.TabIndex = 0;
-			this.cbtype1.SelectedIndexChanged += new System.EventHandler(this.SelectVal1Name);
-			// 
-			// BhavPrimWiz0x0002
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(640, 366);
-			this.Controls.Add(this.pnWiz0x0002);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "BhavPrimWiz0x0002";
-			this.Text = "Instruction Container";
-			this.pnWiz0x0002.ResumeLayout(false);
-			this.ResumeLayout(false);
-
-		}
-		#endregion
-
+		
+		#region MyForm
 		public Instruction Write(Instruction inst)
 		{
 			try 
@@ -249,6 +144,116 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
+		#endregion
+
+		#region Vom Windows Form-Designer generierter Code
+		/// <summary>
+		/// Erforderliche Methode für die Designerunterstützung. 
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// </summary>
+		private void InitializeComponent()
+		{
+			this.pnWiz0x0002 = new System.Windows.Forms.Panel();
+			this.cbmotiv2 = new System.Windows.Forms.ComboBox();
+			this.cbmotiv1 = new System.Windows.Forms.ComboBox();
+			this.cboperand = new System.Windows.Forms.ComboBox();
+			this.tbval2 = new System.Windows.Forms.TextBox();
+			this.cbtype2 = new System.Windows.Forms.ComboBox();
+			this.tbval1 = new System.Windows.Forms.TextBox();
+			this.cbtype1 = new System.Windows.Forms.ComboBox();
+			this.pnWiz0x0002.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// pnWiz0x0002
+			// 
+			this.pnWiz0x0002.Controls.Add(this.cbmotiv2);
+			this.pnWiz0x0002.Controls.Add(this.cbmotiv1);
+			this.pnWiz0x0002.Controls.Add(this.cboperand);
+			this.pnWiz0x0002.Controls.Add(this.tbval2);
+			this.pnWiz0x0002.Controls.Add(this.cbtype2);
+			this.pnWiz0x0002.Controls.Add(this.tbval1);
+			this.pnWiz0x0002.Controls.Add(this.cbtype1);
+			this.pnWiz0x0002.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.pnWiz0x0002.Location = new System.Drawing.Point(8, 8);
+			this.pnWiz0x0002.Name = "pnWiz0x0002";
+			this.pnWiz0x0002.Size = new System.Drawing.Size(264, 72);
+			this.pnWiz0x0002.TabIndex = 0;
+			// 
+			// cbmotiv2
+			// 
+			this.cbmotiv2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbmotiv2.Location = new System.Drawing.Point(152, 50);
+			this.cbmotiv2.Name = "cbmotiv2";
+			this.cbmotiv2.Size = new System.Drawing.Size(112, 21);
+			this.cbmotiv2.TabIndex = 6;
+			this.cbmotiv2.Visible = false;
+			this.cbmotiv2.SelectedIndexChanged += new System.EventHandler(this.Motive2Changed);
+			// 
+			// cbmotiv1
+			// 
+			this.cbmotiv1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbmotiv1.Location = new System.Drawing.Point(152, 0);
+			this.cbmotiv1.Name = "cbmotiv1";
+			this.cbmotiv1.Size = new System.Drawing.Size(112, 21);
+			this.cbmotiv1.TabIndex = 5;
+			this.cbmotiv1.Visible = false;
+			this.cbmotiv1.SelectedIndexChanged += new System.EventHandler(this.Motive1Changed);
+			// 
+			// cboperand
+			// 
+			this.cboperand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cboperand.Location = new System.Drawing.Point(0, 26);
+			this.cboperand.Name = "cboperand";
+			this.cboperand.Size = new System.Drawing.Size(264, 21);
+			this.cboperand.TabIndex = 4;
+			// 
+			// tbval2
+			// 
+			this.tbval2.Location = new System.Drawing.Point(152, 50);
+			this.tbval2.Name = "tbval2";
+			this.tbval2.Size = new System.Drawing.Size(112, 21);
+			this.tbval2.TabIndex = 3;
+			this.tbval2.Text = "";
+			// 
+			// cbtype2
+			// 
+			this.cbtype2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbtype2.Location = new System.Drawing.Point(0, 50);
+			this.cbtype2.Name = "cbtype2";
+			this.cbtype2.Size = new System.Drawing.Size(152, 21);
+			this.cbtype2.TabIndex = 2;
+			this.cbtype2.SelectedIndexChanged += new System.EventHandler(this.SelectVal2Name);
+			// 
+			// tbval1
+			// 
+			this.tbval1.Location = new System.Drawing.Point(152, 0);
+			this.tbval1.Name = "tbval1";
+			this.tbval1.Size = new System.Drawing.Size(112, 21);
+			this.tbval1.TabIndex = 1;
+			this.tbval1.Text = "";
+			// 
+			// cbtype1
+			// 
+			this.cbtype1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbtype1.Location = new System.Drawing.Point(0, 0);
+			this.cbtype1.Name = "cbtype1";
+			this.cbtype1.Size = new System.Drawing.Size(152, 21);
+			this.cbtype1.TabIndex = 0;
+			this.cbtype1.SelectedIndexChanged += new System.EventHandler(this.SelectVal1Name);
+			// 
+			// MyForm
+			// 
+			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
+			this.ClientSize = new System.Drawing.Size(640, 366);
+			this.Controls.Add(this.pnWiz0x0002);
+			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.Name = "MyForm";
+			this.Text = "Instruction Container";
+			this.pnWiz0x0002.ResumeLayout(false);
+			this.ResumeLayout(false);
+
+		}
+		#endregion
 
 		private void SelectVal1Name(object sender, System.EventArgs e)
 		{
@@ -358,22 +363,32 @@ namespace SimPe.PackedFiles.UserInterface
 
 	public class BhavPrimWiz0x0002 : pjse.ABhavPrimWiz
 	{
-		private MyForm myForm = null;
-		private Instruction inst;
 		public BhavPrimWiz0x0002() : base() { }
+
+		public BhavPrimWiz0x0002(Instruction i) : base() { instruction = i; }
+
+
+		private MyForm myForm = null;
+		public override Panel bhavPrimWizPanel
+		{
+			get
+			{
+				myForm = new MyForm();
+				return myForm.pnWiz0x0002;
+			}
+		}
+
 
 
 		#region pjse.ABhavPrimWiz
-		public override System.Windows.Forms.Panel bhavPrimWizPanel() { myForm = new MyForm(); return myForm.pnWiz0x0002; }
-		public override void Execute(Instruction i)
+		public override void Execute()
 		{
-			inst = i;
-			if (i != null) myForm.Execute(i);
+			if (instruction != null) myForm.Execute(instruction);
 		}
 
 		public override Instruction Write()
 		{
-			return (inst == null) ? null : myForm.Write(inst);
+			return (instruction == null) ? null : myForm.Write(instruction);
 		}
 
 		public override string OpcodeName(Bhav parent, ushort opcode, byte[] operands)
@@ -440,7 +455,6 @@ namespace SimPe.PackedFiles.UserInterface
 			
 			return ret;
 		}
-
 
 
 		private ushort ToShort(byte lower, byte higher)

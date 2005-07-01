@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using SimPe.PackedFiles.UserInterface;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse
@@ -27,23 +28,19 @@ namespace pjse
 	/// </summary>
 	public class BhavPrimWizProvider
 	{
-		public BhavPrimWizProvider()
+		public static ABhavPrimWiz ForInstruction(Instruction i)
 		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
-
-		public static ABhavPrimWiz ForOpCode(ushort oc)
-		{
-			switch(oc)
+			switch(i.Opcode)
 			{
 				case 0x0002:
-					return new SimPe.PackedFiles.UserInterface.BhavPrimWiz0x0002();
+					return new BhavPrimWiz0x0002(i);
 				default:
 					break;
 			}
-			return null;
+			return new BhavPrimWizDefault(i);
 		}
+
+		public static ABhavPrimWiz Default() { return new BhavPrimWizDefault(); }
+
 	}
 }

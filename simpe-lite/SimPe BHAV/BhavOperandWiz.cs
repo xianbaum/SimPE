@@ -33,12 +33,14 @@ namespace SimPe.PackedFiles.UserInterface
 	/// </summary>
 	public class BhavOperandWiz : System.Windows.Forms.Form
 	{
+		#region Form variables
 		private System.Windows.Forms.LinkLabel linkLabel1;
 		private System.Windows.Forms.Panel panel1;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
+		#endregion
 
 		public BhavOperandWiz()
 		{
@@ -47,9 +49,6 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-			//
-			// TODO: Fügen Sie den Konstruktorcode nach dem Aufruf von InitializeComponent hinzu
-			//
 		}
 
 		/// <summary>
@@ -66,6 +65,57 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			base.Dispose( disposing );
 		}
+
+
+		#region BhavOperandWiz
+		public static bool Available(Instruction i)
+		{
+			return (pjse.BhavPrimWizProvider.ForInstruction(i) != null);
+		}
+
+		public static string OpcodeName(Bhav parent, ushort opcode)
+		{
+			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.Default();
+			if (wiz != null) return wiz.OpcodeName(parent, opcode, new byte[16]);
+			//return Localization.Manager.GetString("Unknown")+" (0x"+Helper.HexString(opcode)+")";
+			return "Unknown (0x" + Helper.HexString(opcode) + ")";
+		}
+
+		public static string OpcodeName(Instruction i)
+		{
+			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(i);
+			if (wiz != null) return wiz.ToString();
+			//return Localization.Manager.GetString("Unknown")+" (0x"+Helper.HexString(opcode)+")";
+			return "Unknown (0x" + Helper.HexString(i.Opcode) + ")";
+		}
+
+		
+		public Instruction Execute(Instruction i)
+		{
+			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(i);
+			if (wiz == null) return null;
+
+			Panel pn = wiz.bhavPrimWizPanel;
+			pn.Parent = this;
+			pn.Top = 0;
+			pn.Left = 0;
+			int footHeight = this.Height - this.panel1.Top + 8;
+			this.Width = pn.Width + 8;
+			this.Height = pn.Height + footHeight;
+			wiz.Execute();
+
+			this.DialogResult = DialogResult.Cancel;
+			switch (ShowDialog())
+			{
+				case DialogResult.Yes:
+				case DialogResult.OK:
+					return wiz.Write();
+				default:
+					return null;
+			}
+		}
+
+		#endregion
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
@@ -116,78 +166,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 		#endregion
-
-		public static bool Available(Instruction i)
-		{
-			return (pjse.BhavPrimWizProvider.ForOpCode(i.Opcode) != null);
-		}
-
-		public static string OpcodeName(Bhav parent, ushort opcode, byte[] operands)
-		{
-			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForOpCode(opcode);
-			if (wiz != null) return wiz.OpcodeName(parent, opcode, operands);
-
-			string add="";
-			if (parent==null) 
-			{
-				if (add.Trim()!="") return "0x"+Helper.HexString(opcode)+ " ("+add+")";
-				else return "0x"+Helper.HexString(opcode);
-			} 
-			else 
-			{				
-				string name = "";
-
-				if (((opcode>=0x1000) && (opcode<0x2000))) 
-				{
-					name = "[private] "+(new OpCode(parent, opcode)).LoadBHAV().FileName;
-				}
-				else if (opcode>=0x2000) 
-				{
-					Bhav b = (new OpCode(parent, opcode)).LoadBHAV();
-					name = "[semiglobal] ";
-					if (b!=null) name += b.FileName;
-					else name += Localization.Manager.GetString("Unknown");
-				}
-				else 
-				{
-					name = parent.Opcodes.FindName((ushort)(opcode));
-				}
-				if (add.Trim()!="")	return name+" (0x"+Helper.HexString(opcode)+", "+add+")";
-				else return name+" (0x"+Helper.HexString(opcode)+")";
-			}
-		}
-
-		public static string OpcodeName(Instruction i) { return OpcodeName(i.Parent, i.Opcode, i.Operands); }
-
-		
-		public Instruction Execute(Instruction i)
-		{
-			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForOpCode(i.Opcode);
-			if (wiz == null) return null;
-
-			byte[] operands = new byte[16];
-			i.Operands.CopyTo(operands, 0);
-			i.Reserved1.CopyTo(operands, 8);
-
-			Panel pn = wiz.bhavPrimWizPanel();
-			pn.Parent = this;
-			pn.Top = 0;
-			pn.Left = 0;
-			int headHeight = this.Height - this.DisplayRectangle.Height;
-			this.Width = pn.Width + 8;
-			this.Height = pn.Height + headHeight + 24;
-			wiz.Execute(i);
-
-			this.DialogResult = DialogResult.Cancel;
-			switch (ShowDialog())
-			{
-				case DialogResult.Yes:
-				case DialogResult.OK:
-					return wiz.Write();
-				default:
-					return null;
-			}
-		}
 
 		private void OK(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{

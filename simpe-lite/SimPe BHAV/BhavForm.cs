@@ -109,9 +109,6 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
 			Control[] cs = {
 				tbLocalC, lbLocalC, tbArgC, lbArgC, tbReserved, lbReserved,
 				tbFlags, lbFlags, tbType, lbType, tbFormat, lbFormat };
@@ -173,7 +170,17 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SetReadOnly(bool state) 
 		{
-			if (((string)this.Tag).Equals("Popup")) state = true;
+			if (((string)this.Tag).Equals("Popup"))
+			{
+				// make it very clear it's read only
+				tbFilename.Enabled = tbFormat.Enabled = tbType.Enabled = tbArgC.Enabled = 
+					tbLocalC.Enabled = tbFlags.Enabled = tbReserved.Enabled =
+					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
+					btnDel.Visible = btnAdd.Visible = 
+					llopenbhav.Visible = btnOpCode.Visible = btnOperandWiz.Visible = 
+					btnCancel.Visible = false;
+				state = true;
+			}
 
 			llopenbhav.Enabled = !state;
 			tbInst_OpCode.ReadOnly = state;
@@ -220,8 +227,7 @@ namespace SimPe.PackedFiles.UserInterface
 				SetReadOnly(false);
 
 				//load referenced Bhav
-				OpCode oc = new OpCode(inst);
-				llopenbhav.Enabled = (oc.GlobalBhav && (oc.LoadBHAV() != null));
+				llopenbhav.Enabled = ((new OpCode(inst)).LoadBHAV() != null);
 
 				btnDel.Enabled = wrapper.Instructions.Count > 1;
 
@@ -270,7 +276,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.tbInst_Instruction.Text = BhavOperandWiz.OpcodeName(inst);
 
-				this.btnOperandWiz.Enabled = BhavOperandWiz.Available(inst);
+				pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(inst);
+				this.btnOperandWiz.Enabled = !(wiz is typeof(pjse.BhavPrimWizProvider.Default()));
 				btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
 				btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Instructions.Count - 1;
 			}
@@ -2134,22 +2141,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
-			
 			Bhav b = (new OpCode(pnflowcontainer.SelectedInst)).LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;
-			//ui.gbInstruction.Location = new Point(ui.gbInstruction.Location.X, ui.gbMove.Location.Y);
 			ui.tbInst_Instruction.Width = ui.gbInstruction.Width - (2 * ui.tbInst_Instruction.Location.X);
-			// but make it clear it's read only
-			ui.tbFilename.Enabled = ui.tbFormat.Enabled = ui.tbType.Enabled = ui.tbArgC.Enabled = 
-				ui.tbLocalC.Enabled = ui.tbFlags.Enabled = ui.tbReserved.Enabled =
-				ui.btnSort.Visible = ui.btnCommit.Visible = ui.gbMove.Visible = 
-				ui.btnDel.Visible = ui.btnAdd.Visible = 
-				ui.llopenbhav.Visible = ui.btnOpCode.Visible = ui.btnOperandWiz.Visible = 
-				ui.btnCancel.Visible = false;
-			// Tell the SetReadOnly function it's in a popup
-			ui.Tag = "Popup";
-			ui.Text = "Global BHAV: " + BhavOperandWiz.OpcodeName(pnflowcontainer.SelectedInst);
+			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+			ui.Text = "View BHAV: " + BhavOperandWiz.OpcodeName(pnflowcontainer.SelectedInst);
 			b.RefreshUI();
 			ui.Show();
 		}

@@ -1,4 +1,5 @@
 using System;
+using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse
@@ -8,13 +9,32 @@ namespace pjse
 	/// </summary>
 	public abstract class ABhavPrimWiz
 	{
-		public abstract System.Windows.Forms.Panel bhavPrimWizPanel();
-		public abstract void Execute(Instruction instruction);
+		protected Instruction instruction = null;
+		protected ABhavPrimWiz() {}
+
+		protected ABhavPrimWiz(Instruction instruction) { this.instruction = instruction; }
+
+
+		public abstract Panel bhavPrimWizPanel { get; }
+
+		public abstract void Execute();
 		public abstract Instruction Write();
 		public abstract string OpcodeName(Bhav parent, ushort opcode, byte[] operands);
-		public string OpcodeName(Bhav parent, Instruction instruction)
+		public string OpcodeName(Bhav parent, ushort opcode)
 		{
-			return OpcodeName(parent, instruction.Opcode, instruction.Operands);
+			return OpcodeName(parent, opcode, new byte[16]);
+		}
+
+		public string OpcodeName(Instruction instruction)
+		{
+			return OpcodeName(instruction.Parent, instruction.Opcode, instruction.Operands);
+		}
+
+
+		public override string ToString()
+		{
+			if (instruction != null) return OpcodeName(instruction);
+			return null;
 		}
 	}
 
