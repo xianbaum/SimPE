@@ -1,4 +1,19 @@
 
+01 July 2005 15:47 - Further changes building towards integrating the DisASim2 parser
+  SimPe BHAV\
+    ABhavPrimWiz.cs 1.1.2.2
+    BhavForm.cs 1.20.4.2
+    BhavForm.resx 1.11.4.1
+    BhavOperandWiz.cs 1.1.8.2
+    BhavPrimWiz0x0002.cs 1.1.2.2
+    BhavPrimWiz0x0002.resx 1.1.2.2
+    BhavPrimWizDefault.cs 1.1.2.1
+    BhavPrimWizDefault.resx 1.1.2.1
+    ObjfItem.cs 1.1.8.2
+    pjse coder plugin.csproj 1.6.2.2
+    StrWrapper.cs 1.2.2.2
+    TtabWrapper.cs 1.5.2.2
+
 01 July 2005 10:27 - Write languages in numerical order (from HEAD)
   SimPe BHAV\
     StrWrapper.cs 1.2.2.1
