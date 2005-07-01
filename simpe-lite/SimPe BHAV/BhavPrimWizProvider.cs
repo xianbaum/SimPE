@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Ambertation                                     *
- *   quaxi@ambertation.de                                                  *
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -18,27 +18,32 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using SimPe.PackedFiles.Wrapper;
 
-namespace SimPe.PackedFiles.Wrapper
+namespace pjse
 {
 	/// <summary>
-	/// Class Providing a Package and an Ocode Provider
+	/// Summary description for BhavPrimWizProvider.
 	/// </summary>
-	public class BhavBaseItem
+	public class BhavPrimWizProvider
 	{
-		/// <summary>
-		/// contains a package fiel or null
-		/// </summary>
-		protected static SimPe.Interfaces.Files.IPackageFile package;
-
-
-		/// <summary>
-		/// Returns / Sets the Package
-		/// </summary>
-		public static SimPe.Interfaces.Files.IPackageFile Package 
+		public BhavPrimWizProvider()
 		{
-			get { return package; }
-			set { package = value; }
+			//
+			// TODO: Add constructor logic here
+			//
+		}
+
+		public static ABhavPrimWiz ForOpCode(ushort oc)
+		{
+			switch(oc)
+			{
+				case 0x0002:
+					return new SimPe.PackedFiles.UserInterface.BhavPrimWiz0x0002();
+				default:
+					break;
+			}
+			return null;
 		}
 	}
 }

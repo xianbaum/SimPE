@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -26,12 +28,12 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace SimPe.PackedFiles.UserInterface
 {
+	#region internal form
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
-	public class BhavInstruction : System.Windows.Forms.Form
+	internal class MyForm : System.Windows.Forms.Form
 	{
-		internal System.Windows.Forms.Panel pnExpression;
 		private System.Windows.Forms.ComboBox cbtype1;
 		private System.Windows.Forms.ComboBox cbtype2;
 		private System.Windows.Forms.ComboBox cboperand;
@@ -39,12 +41,13 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbval2;
 		private System.Windows.Forms.ComboBox cbmotiv1;
 		private System.Windows.Forms.ComboBox cbmotiv2;
+		internal System.Windows.Forms.Panel pnWiz0x0002;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
-		public BhavInstruction()
+		public MyForm()
 		{
 			//
 			// Erforderlich für die Windows Form-Designerunterstützung
@@ -76,31 +79,51 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pnExpression = new System.Windows.Forms.Panel();
+			this.pnWiz0x0002 = new System.Windows.Forms.Panel();
+			this.cbmotiv2 = new System.Windows.Forms.ComboBox();
+			this.cbmotiv1 = new System.Windows.Forms.ComboBox();
 			this.cboperand = new System.Windows.Forms.ComboBox();
 			this.tbval2 = new System.Windows.Forms.TextBox();
 			this.cbtype2 = new System.Windows.Forms.ComboBox();
 			this.tbval1 = new System.Windows.Forms.TextBox();
 			this.cbtype1 = new System.Windows.Forms.ComboBox();
-			this.cbmotiv1 = new System.Windows.Forms.ComboBox();
-			this.cbmotiv2 = new System.Windows.Forms.ComboBox();
-			this.pnExpression.SuspendLayout();
+			this.pnWiz0x0002.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// pnExpression
+			// pnWiz0x0002
 			// 
-			this.pnExpression.Controls.Add(this.cbmotiv2);
-			this.pnExpression.Controls.Add(this.cbmotiv1);
-			this.pnExpression.Controls.Add(this.cboperand);
-			this.pnExpression.Controls.Add(this.tbval2);
-			this.pnExpression.Controls.Add(this.cbtype2);
-			this.pnExpression.Controls.Add(this.tbval1);
-			this.pnExpression.Controls.Add(this.cbtype1);
-			this.pnExpression.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.pnExpression.Location = new System.Drawing.Point(8, 8);
-			this.pnExpression.Name = "pnExpression";
-			this.pnExpression.Size = new System.Drawing.Size(328, 120);
-			this.pnExpression.TabIndex = 0;
+			this.pnWiz0x0002.Controls.Add(this.cbmotiv2);
+			this.pnWiz0x0002.Controls.Add(this.cbmotiv1);
+			this.pnWiz0x0002.Controls.Add(this.cboperand);
+			this.pnWiz0x0002.Controls.Add(this.tbval2);
+			this.pnWiz0x0002.Controls.Add(this.cbtype2);
+			this.pnWiz0x0002.Controls.Add(this.tbval1);
+			this.pnWiz0x0002.Controls.Add(this.cbtype1);
+			this.pnWiz0x0002.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.pnWiz0x0002.Location = new System.Drawing.Point(8, 8);
+			this.pnWiz0x0002.Name = "pnWiz0x0002";
+			this.pnWiz0x0002.Size = new System.Drawing.Size(328, 120);
+			this.pnWiz0x0002.TabIndex = 0;
+			// 
+			// cbmotiv2
+			// 
+			this.cbmotiv2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbmotiv2.Location = new System.Drawing.Point(192, 80);
+			this.cbmotiv2.Name = "cbmotiv2";
+			this.cbmotiv2.Size = new System.Drawing.Size(120, 21);
+			this.cbmotiv2.TabIndex = 6;
+			this.cbmotiv2.Visible = false;
+			this.cbmotiv2.SelectedIndexChanged += new System.EventHandler(this.Motive2Changed);
+			// 
+			// cbmotiv1
+			// 
+			this.cbmotiv1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbmotiv1.Location = new System.Drawing.Point(192, 16);
+			this.cbmotiv1.Name = "cbmotiv1";
+			this.cbmotiv1.Size = new System.Drawing.Size(120, 21);
+			this.cbmotiv1.TabIndex = 5;
+			this.cbmotiv1.Visible = false;
+			this.cbmotiv1.SelectedIndexChanged += new System.EventHandler(this.Motive1Changed);
 			// 
 			// cboperand
 			// 
@@ -144,83 +167,21 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbtype1.TabIndex = 0;
 			this.cbtype1.SelectedIndexChanged += new System.EventHandler(this.SelectVal1Name);
 			// 
-			// cbmotiv1
-			// 
-			this.cbmotiv1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmotiv1.Location = new System.Drawing.Point(192, 16);
-			this.cbmotiv1.Name = "cbmotiv1";
-			this.cbmotiv1.Size = new System.Drawing.Size(120, 21);
-			this.cbmotiv1.TabIndex = 5;
-			this.cbmotiv1.Visible = false;
-			this.cbmotiv1.SelectedIndexChanged += new System.EventHandler(this.Motive1Changed);
-			// 
-			// cbmotiv2
-			// 
-			this.cbmotiv2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmotiv2.Location = new System.Drawing.Point(192, 80);
-			this.cbmotiv2.Name = "cbmotiv2";
-			this.cbmotiv2.Size = new System.Drawing.Size(120, 21);
-			this.cbmotiv2.TabIndex = 6;
-			this.cbmotiv2.Visible = false;
-			this.cbmotiv2.SelectedIndexChanged += new System.EventHandler(this.Motive2Changed);
-			// 
-			// BhavInstruction
+			// BhavPrimWiz0x0002
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
 			this.ClientSize = new System.Drawing.Size(640, 366);
-			this.Controls.Add(this.pnExpression);
+			this.Controls.Add(this.pnWiz0x0002);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "BhavInstruction";
+			this.Name = "BhavPrimWiz0x0002";
 			this.Text = "Instruction Container";
-			this.pnExpression.ResumeLayout(false);
+			this.pnWiz0x0002.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 		#endregion
 
-		private void FormLoad()
-		{
-			if (SimPe.Plugin.WrapperFactory.Provider==null) return;
-
-			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredExpressionOperators)
-				this.cboperand.Items.Add(s);
-
-			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredDataNames) 
-			{
-				this.cbtype1.Items.Add(s);
-				this.cbtype2.Items.Add(s);
-			}
-
-			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredMotives) 
-			{
-				this.cbmotiv1.Items.Add(s);
-			}
-		}
-
-
-		private Instruction inst;
-		internal void Execute(Instruction i) 
-		{
-			byte[] ops = i.Operands;
-			byte n1 = ops[0x06];
-			byte n2 = ops[0x07];
-			byte op = ops[0x05];
-
-			int val1 = (ops[0x01] << 8) | ops[0x00];
-			int val2 = (ops[0x03] << 8) | ops[0x02];
-
-			tbval1.Text = "0x"+Helper.HexString((ushort)val1);
-			tbval2.Text = "0x"+Helper.HexString((ushort)val2);
-
-			if (cbtype1.Items.Count>n1) cbtype1.SelectedIndex = n1;
-			if (cbtype2.Items.Count>n2) cbtype2.SelectedIndex = n2;
-
-			if (cboperand.Items.Count>op) cboperand.SelectedIndex = op;
-
-			this.inst = i;
-		}
-
-		internal Instruction Write()
+		public Instruction Write(Instruction inst)
 		{
 			try 
 			{
@@ -250,6 +211,45 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
+		public void Execute(Instruction inst)
+		{
+			byte[] ops = inst.Operands;
+			byte n1 = ops[0x06];
+			byte n2 = ops[0x07];
+			byte op = ops[0x05];
+
+			int val1 = (ops[0x01] << 8) | ops[0x00];
+			int val2 = (ops[0x03] << 8) | ops[0x02];
+
+			tbval1.Text = "0x"+Helper.HexString((ushort)val1);
+			tbval2.Text = "0x"+Helper.HexString((ushort)val2);
+
+			if (cbtype1.Items.Count>n1) cbtype1.SelectedIndex = n1;
+			if (cbtype2.Items.Count>n2) cbtype2.SelectedIndex = n2;
+
+			if (cboperand.Items.Count>op) cboperand.SelectedIndex = op;
+		}
+
+		private void FormLoad()
+		{
+			if (SimPe.Plugin.WrapperFactory.Provider==null) return;
+
+			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredExpressionOperators)
+				this.cboperand.Items.Add(s);
+
+			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredDataNames) 
+			{
+				this.cbtype1.Items.Add(s);
+				this.cbtype2.Items.Add(s);
+			}
+
+			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredMotives) 
+			{
+				this.cbmotiv1.Items.Add(s);
+			}
+		}
+
+
 		private void SelectVal1Name(object sender, System.EventArgs e)
 		{
 			this.cbmotiv1.Visible = (cbtype1.SelectedIndex==0x0E);
@@ -263,7 +263,7 @@ namespace SimPe.PackedFiles.UserInterface
 					try 
 					{
 						ushort val = Convert.ToUInt16(tbval1.Text, 16);
-						tbval1.Text = "0x"+Helper.HexString(InstructionName.ConstantValueParser(val)[0])+":0x"+Helper.HexString((byte)InstructionName.ConstantValueParser(val)[1]);
+						tbval1.Text = "0x"+Helper.HexString(BhavPrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+Helper.HexString((byte)BhavPrimWiz0x0002.ConstantValueParser(val)[1]);
 					} 
 					catch (Exception) {}
 				}
@@ -288,7 +288,7 @@ namespace SimPe.PackedFiles.UserInterface
 						ushort[] b = new ushort[2];
 						b[0] = Convert.ToUInt16(s[0], 16);
 						b[1] = Convert.ToUInt16(s[1], 16);
-						tbval1.Text = "0x"+Helper.HexString(InstructionName.ConstantValueParser(b));
+						tbval1.Text = "0x"+Helper.HexString(BhavPrimWiz0x0002.ConstantValueParser(b));
 
 					} 
 					catch (Exception) {}
@@ -308,7 +308,7 @@ namespace SimPe.PackedFiles.UserInterface
 					try 
 					{
 						ushort val = Convert.ToUInt16(tbval2.Text, 16);
-						tbval2.Text = "0x"+Helper.HexString(InstructionName.ConstantValueParser(val)[0])+":0x"+Helper.HexString((byte)InstructionName.ConstantValueParser(val)[1]);
+						tbval2.Text = "0x"+Helper.HexString(BhavPrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+Helper.HexString((byte)BhavPrimWiz0x0002.ConstantValueParser(val)[1]);
 					} 
 					catch (Exception) {}
 				}
@@ -333,7 +333,7 @@ namespace SimPe.PackedFiles.UserInterface
 						ushort[] b = new ushort[2];
 						b[0] = Convert.ToUInt16(s[0], 16);
 						b[1] = Convert.ToUInt16(s[1], 16);
-						tbval2.Text = "0x"+Helper.HexString(InstructionName.ConstantValueParser(b));
+						tbval2.Text = "0x"+Helper.HexString(BhavPrimWiz0x0002.ConstantValueParser(b));
 
 					} 
 					catch (Exception) {}
@@ -350,5 +350,103 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			tbval2.Text = "0x"+Helper.HexString((ushort)this.cbmotiv2.SelectedIndex);
 		}
+
+
+	}
+
+	#endregion
+
+	public class BhavPrimWiz0x0002 : pjse.ABhavPrimWiz
+	{
+		private MyForm myForm = null;
+		private Instruction inst;
+		public BhavPrimWiz0x0002() : base() { }
+
+
+		#region pjse.ABhavPrimWiz
+		public override System.Windows.Forms.Panel bhavPrimWizPanel() { myForm = new MyForm(); return myForm.pnWiz0x0002; }
+		public override void Execute(Instruction i)
+		{
+			inst = i;
+			if (i != null) myForm.Execute(i);
+		}
+
+		public override Instruction Write()
+		{
+			return (inst == null) ? null : myForm.Write(inst);
+		}
+
+		public override string OpcodeName(Bhav parent, ushort opcode, byte[] operands)
+		{			
+			if (parent==null || operands==null) return Localization.Manager.GetString("Unknown");
+
+			string obj1 = parent.Opcodes.FindExpressionDataOwners(operands[6]);
+			ushort op1 = ToShort(operands[0], operands[1]);
+			string val1 = " 0x" + Helper.HexString(op1);
+			string obj2 = parent.Opcodes.FindExpressionDataOwners(operands[7]); 
+			ushort op2 = ToShort(operands[2], operands[3]);
+			string val2 = " 0x" + Helper.HexString(op2);
+			string name = parent.Opcodes.FindExpressionOperator(operands[5]);
+
+			if (obj1.ToLower()=="my motives") val1 = " "+parent.Opcodes.FindMotives(op1)+ " ("+val1.Trim()+")";
+			if (obj2.ToLower()=="my motives") val2 = " "+parent.Opcodes.FindMotives(op2)+ " ("+val2.Trim()+")";
+
+			if (obj1.ToLower()=="constant value") val1 = " 0x"+Helper.HexString(ConstantValueParser(op1)[0])+":0x"+Helper.HexString((byte)ConstantValueParser(op1)[1]);
+			if (obj2.ToLower()=="constant value") val2 = " 0x"+Helper.HexString(ConstantValueParser(op2)[0])+":0x"+Helper.HexString((byte)ConstantValueParser(op2)[1]);
+				
+
+			return obj1+val1+" "+name+" "+obj2+val2;
+		}
+
+		#endregion
+
+		internal static ushort[] ConstantValueParser(ushort val) 
+		{
+			ushort[] ret = new ushort[2];
+
+			ret[0] = (ushort)((val >> 7) & 0x3f);
+			ret[1] = (ushort)(val & 0x7F);
+			int t = (val >> 13) & 0x7;
+
+			if (t==0) ret[0] += 0x1000;
+			else if (t==1) ret[0] += 0x2000;
+			else ret[0] += 0x0100;
+
+			return ret;
+		}
+
+		internal static ushort ConstantValueParser(ushort[] values) 
+		{
+			int t = 2;
+			if ((values[0]>=0x1000) && (values[0]<0x2000)) 
+			{
+				values[0] = (ushort)(values[0]-0x1000);
+				t = 0;
+			} 
+			else if (values[0]>0x2000) 
+			{
+				values[0] = (ushort)(values[0]-0x2000);
+				t = 1;
+			} 
+			else 
+			{
+				values[0] = (ushort)(values[0]-0x100);
+			}
+			ushort ret = 0;
+
+			ret = (ushort)(t << 13);
+			ret += (ushort)((values[0] & 0x3f)  << 7);
+			ret += (ushort)(values[1] & 0x7F);
+			
+			return ret;
+		}
+
+
+
+		private ushort ToShort(byte lower, byte higher)
+		{
+			return (ushort)((higher << 8) + lower);
+		}
+
 	}
 }

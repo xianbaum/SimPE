@@ -24,7 +24,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// <summary>
 	/// An Item stored in an OBJf
 	/// </summary>
-	public class ObjfItem : InstructionName
+	public class ObjfItem
 	{
 		int nr;
 		public int LineNumber 
@@ -37,8 +37,8 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get 
 			{
-				if (opcodes==null) return Localization.Manager.GetString("Unknown");
-				else return opcodes.StoredObjfLines[nr].ToString();
+				if (parent.Opcodes==null) return Localization.Manager.GetString("Unknown");
+				else return parent.Opcodes.StoredObjfLines[nr].ToString();
 			}
 		}
 
@@ -56,9 +56,11 @@ namespace SimPe.PackedFiles.Wrapper
 			set {action = value;}
 		}
 
+		private Objf parent;
 
-		public ObjfItem(Objf parent) : base(parent)
+		public ObjfItem(Objf parent)
 		{
+			this.parent = parent;
 			guard = action = 0;
 		}
 
@@ -66,20 +68,31 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			string add = "";
 			if ((guard==0) && (action==0)) add="            ";
-			if (opcodes==null) 
+			if (parent.Opcodes==null) 
 			{
 				return add+Name+": 0x"+Helper.HexString(guard)+" -> 0x"+Helper.HexString(action);
 			} 
 			else 
 			{
-				string guardname = OpcodeName(this.guard, null);
-				string actionname = OpcodeName(this.action, null);	
+				string guardname = OpcodeName(this.guard);
+				string actionname = OpcodeName(this.action);
 				
 				if (guard==0) guardname = "null";
 				if (action==0) actionname = "null";
 
 				return add+Name+": "+guardname+" -> "+actionname;				
 			}
+		}
+
+		private string OpcodeName(ushort opcode) 
+		{
+			Bhav bhav = new Bhav(parent.Opcodes);
+			bhav.Package = parent.Package;
+			SimPe.Packages.PackedFileDescriptor pfd = new SimPe.Packages.PackedFileDescriptor();
+			pfd.Group = parent.FileDescriptor.Group;
+			bhav.FileDescriptor = pfd;
+
+			return UserInterface.BhavOperandWiz.OpcodeName(bhav, opcode, null);
 		}
 
 	}

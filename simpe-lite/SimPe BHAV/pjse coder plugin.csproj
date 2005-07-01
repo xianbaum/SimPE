@@ -228,6 +228,11 @@
         <Files>
             <Include>
                 <File
+                    RelPath = "ABhavPrimWiz.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "AssemblyInfo.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -244,11 +249,6 @@
                 />
                 <File
                     RelPath = "BconWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavBaseItem.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
@@ -283,21 +283,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "BhavInstruction.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavInstruction.resx"
-                    DependentUpon = "BhavInstruction.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavInstructionName.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BhavOpCodeWiz.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -316,6 +301,21 @@
                     RelPath = "BhavOperandWiz.resx"
                     DependentUpon = "BhavOperandWiz.cs"
                     BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "BhavPrimWiz0x0002.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BhavPrimWiz0x0002.resx"
+                    DependentUpon = "BhavPrimWiz0x0002.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "BhavPrimWizProvider.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "BhavWrapper.cs"

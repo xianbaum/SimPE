@@ -118,9 +118,6 @@ namespace SimPe.PackedFiles.Wrapper
 			header = new BhavHeader(this);
 			instructions = new BhavInstList(this);
 			this.opcodes = opcodes;
-
-			//Instruction.Package = package;
-			Instruction.OpcodeProvider = opcodes;
 		}
 
 
@@ -643,7 +640,6 @@ namespace SimPe.PackedFiles.Wrapper
 	/// Class representing an Instruction
 	/// </summary>
 	public class Instruction
-		: InstructionName
 	{
 		#region Attributes
 		private ushort opcode = 0;
@@ -652,10 +648,11 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte reserved_00 = 0;
 		private byte[] operands = new byte[8];
 		private byte[] reserved_01 = null;
+		private Bhav parent;
 		#endregion
 
 		#region Accessor methods
-		public virtual ushort OpCode 
+		public ushort Opcode 
 		{
 			get { return opcode; }
 			set  { opcode = value; }
@@ -723,6 +720,7 @@ namespace SimPe.PackedFiles.Wrapper
 			get {return reserved_01;}
 			set { reserved_01 = value; }
 		}
+		public Bhav Parent { get { return parent; } }
 		#endregion
 
 		private void commonConstructor(Bhav parent)
@@ -747,7 +745,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent) : base(parent)
+		internal Instruction (Bhav parent)
 		{
 			commonConstructor(parent);
 		}
@@ -755,16 +753,10 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent, System.IO.BinaryReader reader) : base(parent)
+		internal Instruction (Bhav parent, System.IO.BinaryReader reader)
 		{
 			commonConstructor(parent);
 			Unserialize(reader);
-		}
-
-
-		public override string ToString()
-		{
-			return this.OpcodeName(this.opcode, this.operands);
 		}
 
 
@@ -780,30 +772,6 @@ namespace SimPe.PackedFiles.Wrapper
 			return clone;
 		}
 
-
-		/// <summary>
-		/// True if this instruction describes a Global Behavior File
-		/// </summary>
-		public bool GlobalBhav
-		{
-			get { return IsGlobalBhav(this.opcode); }
-		}
-
-		/// <summary>
-		/// True if this instruction describes a Local Behavior File
-		/// </summary>
-		public bool LocalBhav
-		{
-			get { return IsLocalBhav(this.opcode); }
-		}
-
-		/// <summary>
-		/// True if this instruction describes a Semi Global Bhav
-		/// </summary>
-		public bool SemiGlobalBhav
-		{
-			get { return IsSemiGlobalBhav(this.opcode); }
-		}
 
 
 		/// <summary>
@@ -912,4 +880,105 @@ namespace SimPe.PackedFiles.Wrapper
 
 	}
 
+
+	public class OpCode
+	{
+		private Bhav parent;
+		private ushort opcode;
+
+		public OpCode(Bhav parent, ushort opcode)
+		{
+			this.parent = parent;
+			this.opcode = opcode;
+		}
+
+		public OpCode(Instruction i)
+		{
+			this.parent = i.Parent;
+			this.opcode = i.Opcode;
+		}
+
+		/// <summary>
+		/// True if this OpCode calls a Global Behavior File
+		/// </summary>
+		public bool GlobalBhav { get { return ((opcode>=0x0100) && (opcode<0x1000)); } }
+
+		/// <summary>
+		/// True if this OpCode calls a Semi Global Bhav
+		/// </summary>
+		public bool SemiGlobalBhav { get { return (opcode>=0x2000); } }
+
+		/// <summary>
+		/// True if this OpCode calls a Local Behavior File
+		/// </summary>
+		public bool LocalBhav { get { return ((opcode>=0x1000) && (opcode<0x2000)); } }
+
+
+		public Bhav LoadBHAV()
+		{
+			if (this.GlobalBhav) return LoadGlobalBHAV();
+			if (this.SemiGlobalBhav) return LoadSemiGlobalBHAV();
+			if (this.LocalBhav) return LoadLocalBHAV();
+			return null;
+		}
+
+
+		private Bhav LoadGlobalBHAV()
+		{
+			Interfaces.Files.IPackedFileDescriptor pfd =  parent.Opcodes.LoadGlobalBHAV(opcode);
+			if (pfd==null) return null;
+
+			Bhav b = new Bhav(parent.Opcodes);
+			b.ProcessData(pfd, parent.Opcodes.BasePackage);
+			return b;
+		}
+
+		private Bhav LoadSemiGlobalBHAV()
+		{
+			Interfaces.Files.IPackedFileDescriptor pfd = parent.Package.FindFile(Data.MetaData.BHAV_FILE, 0, parent.FileDescriptor.Group, opcode);
+			if (pfd==null)  
+			{
+				pfd = parent.Package.FindFile(Data.MetaData.GLOB_FILE, 0, parent.FileDescriptor.Group, 0x01);
+				if (pfd==null) 
+				{
+					Interfaces.Files.IPackedFileDescriptor[] pfds = parent.Package.FindFiles(Data.MetaData.GLOB_FILE);
+					if (pfds.Length>0) pfd=pfds[0];
+
+					foreach (Interfaces.Files.IPackedFileDescriptor p in pfds) 
+					{
+						if (p.Group == parent.FileDescriptor.Group) pfd = p;
+					}
+				}
+				if (pfd==null) return null;
+
+				Glob g = new Glob();
+				g.ProcessData(pfd, parent.Package);
+				pfd = parent.Opcodes.LoadSemiGlobalBHAV(opcode, g.SemiGlobalGroup);
+			
+				if (pfd==null) return null;
+				Bhav b = new Bhav(parent.Opcodes);
+				b.ProcessData(pfd, parent.Opcodes.BasePackage);
+				return b;
+			} 
+			else 
+			{
+				Bhav b = new Bhav(parent.Opcodes);
+				b.ProcessData(pfd, parent.Package);
+				return b;
+			}
+			
+		}
+
+		private Bhav LoadLocalBHAV()
+		{
+			if (parent.Package==null) return new Bhav(parent.Opcodes);
+			Interfaces.Files.IPackedFileDescriptor pfd =  parent.Package.FindFile(Data.MetaData.BHAV_FILE, 0, parent.FileDescriptor.Group, opcode);
+			if (pfd==null) return new Bhav(parent.Opcodes);
+
+			Bhav b = new Bhav(parent.Opcodes);
+			b.ProcessData(pfd, parent.Package);
+			return b;
+		}
+
+	}
 }

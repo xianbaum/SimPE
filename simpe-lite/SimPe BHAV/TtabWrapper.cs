@@ -331,7 +331,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// <summary>
 	/// An Item stored in an TTAB
 	/// </summary>
-	public class TtabItem : BhavBaseItem
+	public class TtabItem //: BhavBaseItem
 	{
 		#region Attributes
 		private ushort action = 0;
@@ -609,8 +609,7 @@ namespace SimPe.PackedFiles.Wrapper
 			pfd.Group = parent.FileDescriptor.Group;
 			bhav.FileDescriptor = pfd;
 
-			InstructionName name = new InstructionName(bhav);
-			return name.OpcodeName(opcode, null);
+			return UserInterface.BhavOperandWiz.OpcodeName(bhav, opcode, null);
 		}
 
 		#endregion

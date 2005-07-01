@@ -390,7 +390,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				foreach (Instruction i in bhav.Instructions)
 				{
-					if (bhavalias.Contains(i.OpCode)) i.OpCode = (ushort)bhavalias[i.OpCode];
+					if (bhavalias.Contains(i.Opcode)) i.Opcode = (ushort)bhavalias[i.Opcode];
 				}
 				bhav.SynchronizeUserData();
 			}

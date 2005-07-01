@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -81,7 +83,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.linkLabel1.AutoSize = true;
 			this.linkLabel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel1.Location = new System.Drawing.Point(296, 128);
+			this.linkLabel1.Location = new System.Drawing.Point(272, 128);
 			this.linkLabel1.Name = "linkLabel1";
 			this.linkLabel1.Size = new System.Drawing.Size(23, 17);
 			this.linkLabel1.TabIndex = 0;
@@ -93,16 +95,16 @@ namespace SimPe.PackedFiles.UserInterface
 			// 
 			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-			this.panel1.Location = new System.Drawing.Point(-8, 120);
+			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel1.Location = new System.Drawing.Point(0, 120);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(368, 1);
+			this.panel1.Size = new System.Drawing.Size(320, 1);
 			this.panel1.TabIndex = 1;
 			// 
 			// BhavOperandWiz
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(330, 152);
+			this.ClientSize = new System.Drawing.Size(314, 151);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.linkLabel1);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
@@ -115,34 +117,73 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 		#endregion
 
-		internal static bool Available(Instruction i)
+		public static bool Available(Instruction i)
 		{
-			return (i.OpCode == 0x0002);
+			return (pjse.BhavPrimWizProvider.ForOpCode(i.Opcode) != null);
 		}
 
-		internal Instruction Execute(Instruction i)
+		public static string OpcodeName(Bhav parent, ushort opcode, byte[] operands)
 		{
-			if (!Available(i)) return null;
+			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForOpCode(opcode);
+			if (wiz != null) return wiz.OpcodeName(parent, opcode, operands);
+
+			string add="";
+			if (parent==null) 
+			{
+				if (add.Trim()!="") return "0x"+Helper.HexString(opcode)+ " ("+add+")";
+				else return "0x"+Helper.HexString(opcode);
+			} 
+			else 
+			{				
+				string name = "";
+
+				if (((opcode>=0x1000) && (opcode<0x2000))) 
+				{
+					name = "[private] "+(new OpCode(parent, opcode)).LoadBHAV().FileName;
+				}
+				else if (opcode>=0x2000) 
+				{
+					Bhav b = (new OpCode(parent, opcode)).LoadBHAV();
+					name = "[semiglobal] ";
+					if (b!=null) name += b.FileName;
+					else name += Localization.Manager.GetString("Unknown");
+				}
+				else 
+				{
+					name = parent.Opcodes.FindName((ushort)(opcode));
+				}
+				if (add.Trim()!="")	return name+" (0x"+Helper.HexString(opcode)+", "+add+")";
+				else return name+" (0x"+Helper.HexString(opcode)+")";
+			}
+		}
+
+		public static string OpcodeName(Instruction i) { return OpcodeName(i.Parent, i.Opcode, i.Operands); }
+
+		
+		public Instruction Execute(Instruction i)
+		{
+			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForOpCode(i.Opcode);
+			if (wiz == null) return null;
+
 			byte[] operands = new byte[16];
 			i.Operands.CopyTo(operands, 0);
 			i.Reserved1.CopyTo(operands, 8);
 
-			BhavInstruction bi = new BhavInstruction();
-
-			bi.Execute(i);
-			Panel pn = bi.pnExpression;
+			Panel pn = wiz.bhavPrimWizPanel();
 			pn.Parent = this;
 			pn.Top = 0;
 			pn.Left = 0;
-			bi.Width = pn.Width + 8;
-			pn.Height = pn.Height + 24;
+			int headHeight = this.Height - this.DisplayRectangle.Height;
+			this.Width = pn.Width + 8;
+			this.Height = pn.Height + headHeight + 24;
+			wiz.Execute(i);
 
 			this.DialogResult = DialogResult.Cancel;
 			switch (ShowDialog())
 			{
 				case DialogResult.Yes:
 				case DialogResult.OK:
-					return bi.Write();
+					return wiz.Write();
 				default:
 					return null;
 			}

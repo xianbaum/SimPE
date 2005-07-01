@@ -220,14 +220,12 @@ namespace SimPe.PackedFiles.UserInterface
 				SetReadOnly(false);
 
 				//load referenced Bhav
-				Bhav b = null;
-				if (inst.GlobalBhav)
-					b = Instruction.LoadGlobalBHAV(inst.OpCode);
-				llopenbhav.Enabled = (b!=null);
+				OpCode oc = new OpCode(inst);
+				llopenbhav.Enabled = (oc.GlobalBhav && (oc.LoadBHAV() != null));
 
 				btnDel.Enabled = wrapper.Instructions.Count > 1;
 
-				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
+				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.Opcode);
 
 				this.tbInst_Reserved.Text = "0x"+Helper.HexString(inst.Reserved0);
 				if (inst.Target1 >= 0xFFFC)
@@ -270,7 +268,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
 
-				this.tbInst_Instruction.Text = inst.ToString();
+				this.tbInst_Instruction.Text = BhavOperandWiz.OpcodeName(inst);
 
 				this.btnOperandWiz.Enabled = BhavOperandWiz.Available(inst);
 				btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
@@ -312,7 +310,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SendInst(Instruction currentInst)
 		{
-			this.tbInst_Instruction.Text = currentInst.ToString();
+			this.tbInst_Instruction.Text = BhavOperandWiz.OpcodeName(currentInst);
 			this.btnCancel.Enabled = true;
 			bool origstate = internalchg;
 			internalchg = true;
@@ -1763,6 +1761,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScroll = ((bool)(resources.GetObject("bhavPanel.AutoScroll")));
 			this.bhavPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMargin")));
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
+			this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
 			this.bhavPanel.Controls.Add(this.pnflowcontainer);
 			this.bhavPanel.Controls.Add(this.btnDel);
@@ -2136,7 +2135,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
-			Bhav b = Instruction.LoadGlobalBHAV(pnflowcontainer.SelectedInst.OpCode);
+			
+			Bhav b = (new OpCode(pnflowcontainer.SelectedInst)).LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;
 			//ui.gbInstruction.Location = new Point(ui.gbInstruction.Location.X, ui.gbMove.Location.Y);
 			ui.tbInst_Instruction.Width = ui.gbInstruction.Width - (2 * ui.tbInst_Instruction.Location.X);
@@ -2149,7 +2149,7 @@ namespace SimPe.PackedFiles.UserInterface
 				ui.btnCancel.Visible = false;
 			// Tell the SetReadOnly function it's in a popup
 			ui.Tag = "Popup";
-			ui.Text = "Global BHAV: " + pnflowcontainer.SelectedInst.ToString();
+			ui.Text = "Global BHAV: " + BhavOperandWiz.OpcodeName(pnflowcontainer.SelectedInst);
 			b.RefreshUI();
 			ui.Show();
 		}
@@ -2163,12 +2163,12 @@ namespace SimPe.PackedFiles.UserInterface
 			Instruction currentInst = this.pnflowcontainer.SelectedInst;
 			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
 
-			if (opcode != -1 && opcode != currentInst.OpCode)
+			if (opcode != -1 && opcode != currentInst.Opcode)
 			{
 				internalchg = true;
 				tbInst_OpCode.Text = "0x"+Helper.HexString((ushort)opcode);
 				internalchg = false;
-				currentInst.OpCode = (ushort)opcode;
+				currentInst.Opcode = (ushort)opcode;
 				SendInst(currentInst);
 			}
 		}
@@ -2418,9 +2418,9 @@ namespace SimPe.PackedFiles.UserInterface
 				case 1: wrapper.Header.Flags = val; break;
 				case 2: wrapper.Header.Zero = val; break;
 				case 3:
-					if (currentInst.OpCode != val)
+					if (currentInst.Opcode != val)
 					{
-						currentInst.OpCode = val;
+						currentInst.Opcode = val;
 						SendInst(currentInst);
 					}
 					break;

@@ -341,6 +341,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.extObjdPanel.AutoScroll = ((bool)(resources.GetObject("extObjdPanel.AutoScroll")));
 			this.extObjdPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("extObjdPanel.AutoScrollMargin")));
 			this.extObjdPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("extObjdPanel.AutoScrollMinSize")));
+			this.extObjdPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.extObjdPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("extObjdPanel.BackgroundImage")));
 			this.extObjdPanel.Controls.Add(this.cball);
 			this.extObjdPanel.Controls.Add(this.tc);
