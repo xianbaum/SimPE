@@ -336,13 +336,14 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write((ushort)count);
 
 			int c = 0;
-			foreach (byte lid in languages.Keys)
-				foreach (StrItem i in ((ArrayList)languages[lid]))
-				{
-					writer.Write(lid);
-					i.Serialize(writer);
-					c++;
-				}
+			for (byte lid = 1; lid < 45; lid++)
+				if (languages[lid] != null)
+					foreach (StrItem i in ((ArrayList)languages[lid]))
+					{
+						writer.Write(lid);
+						i.Serialize(writer);
+						c++;
+					}
 			if (c != count)
 				throw new Exception("Oops!  count was " + count.ToString() + " but wrote " + c.ToString() + " StrItems!");
 		}
