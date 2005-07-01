@@ -1,4 +1,8 @@
 
+01 July 2005 09:20 - Make sure BackColor = System.Drawing.SystemColors.Control
+  SimPe BHAV\
+    BhavForm.cs 1.21
+
 30 June 2005 23:45 - Make sure BackColor = System.Drawing.SystemColors.Control
   SimPe BHAV\
     BconForm.cs 1.3
