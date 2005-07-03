@@ -29,13 +29,15 @@ using SimPe.PackedFiles.Wrapper;
 namespace SimPe.PackedFiles.UserInterface
 {
 	/// <summary>
-	/// Zusammenfassung für BhavWizardForm.
+	/// Container for bhavPrimWizPanel from BhavOperandWizProvider
 	/// </summary>
 	public class BhavOperandWiz : System.Windows.Forms.Form
 	{
 		#region Form variables
-		private System.Windows.Forms.LinkLabel linkLabel1;
+
 		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Button OK;
+		private System.Windows.Forms.Button Cancel;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -67,39 +69,16 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		#region BhavOperandWiz
-		public static bool Available(Instruction i)
-		{
-			return (pjse.BhavPrimWizProvider.ForInstruction(i) != null);
-		}
-
-		public static string OpcodeName(Bhav parent, ushort opcode)
-		{
-			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.Default();
-			if (wiz != null) return wiz.OpcodeName(parent, opcode, new byte[16]);
-			//return Localization.Manager.GetString("Unknown")+" (0x"+Helper.HexString(opcode)+")";
-			return "Unknown (0x" + Helper.HexString(opcode) + ")";
-		}
-
-		public static string OpcodeName(Instruction i)
-		{
-			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(i);
-			if (wiz != null) return wiz.ToString();
-			//return Localization.Manager.GetString("Unknown")+" (0x"+Helper.HexString(opcode)+")";
-			return "Unknown (0x" + Helper.HexString(i.Opcode) + ")";
-		}
-
-		
 		public Instruction Execute(Instruction i)
 		{
-			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(i);
+			pjse.ABhavOperandWiz wiz = pjse.BhavOperandWizProvider.For(i);
 			if (wiz == null) return null;
 
 			Panel pn = wiz.bhavPrimWizPanel;
 			pn.Parent = this;
 			pn.Top = 0;
 			pn.Left = 0;
-			int footHeight = this.Height - this.panel1.Top + 8;
+			int footHeight = this.Height - this.panel1.Bottom + 8;
 			this.Width = pn.Width + 8;
 			this.Height = pn.Height + footHeight;
 			wiz.Execute();
@@ -115,7 +94,6 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
-		#endregion
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
@@ -124,39 +102,49 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.OK = new System.Windows.Forms.Button();
+			this.Cancel = new System.Windows.Forms.Button();
 			this.SuspendLayout();
-			// 
-			// linkLabel1
-			// 
-			this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.linkLabel1.AutoSize = true;
-			this.linkLabel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel1.Location = new System.Drawing.Point(272, 128);
-			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(23, 17);
-			this.linkLabel1.TabIndex = 0;
-			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "OK";
-			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OK);
 			// 
 			// panel1
 			// 
 			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel1.Location = new System.Drawing.Point(0, 120);
+			this.panel1.Location = new System.Drawing.Point(0, 112);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(320, 1);
 			this.panel1.TabIndex = 1;
 			// 
+			// OK
+			// 
+			this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.OK.Location = new System.Drawing.Point(232, 120);
+			this.OK.Name = "OK";
+			this.OK.TabIndex = 2;
+			this.OK.Text = "Okay";
+			this.OK.Click += new System.EventHandler(this.OK_Click);
+			// 
+			// Cancel
+			// 
+			this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.Cancel.Location = new System.Drawing.Point(144, 120);
+			this.Cancel.Name = "Cancel";
+			this.Cancel.TabIndex = 2;
+			this.Cancel.Text = "Cancel";
+			this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
+			// 
 			// BhavOperandWiz
 			// 
+			this.AcceptButton = this.OK;
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
+			this.CancelButton = this.Cancel;
 			this.ClientSize = new System.Drawing.Size(314, 151);
+			this.Controls.Add(this.OK);
 			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.linkLabel1);
+			this.Controls.Add(this.Cancel);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "BhavOperandWiz";
@@ -167,9 +155,15 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 		#endregion
 
-		private void OK(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void OK_Click(object sender, System.EventArgs e)
 		{
 			this.DialogResult = DialogResult.OK;
+			Close();
+		}
+
+		private void Cancel_Click(object sender, System.EventArgs e)
+		{
+			this.DialogResult = DialogResult.Cancel;
 			Close();
 		}
 	}

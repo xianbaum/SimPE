@@ -25,14 +25,17 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
+using SimPe.PackedFiles.UserInterface;
+using pjse.BhavNameWizards;
+using pjse.BhavOperandWizards;
 
-namespace SimPe.PackedFiles.UserInterface
+namespace pjse.BhavOperandWizards.Wiz0x0002
 {
 	#region internal form
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
-	internal class MyForm : System.Windows.Forms.Form
+	internal class UI : System.Windows.Forms.Form
 	{
 		#region Form variables
 		private System.Windows.Forms.ComboBox cbtype1;
@@ -49,7 +52,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.ComponentModel.Container components = null;
 		#endregion
 
-		public MyForm()
+		public UI()
 		{
 			//
 			// Erforderlich für die Windows Form-Designerunterstützung
@@ -80,7 +83,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			try 
 			{
-				byte[] ops = inst.Operands;
+				wrappedByteArray ops = inst.Operands;
 				ops[0x06] = (byte)cbtype1.SelectedIndex;
 				ops[0x07] = (byte)cbtype2.SelectedIndex;
 				ops[0x05] = (byte)cboperand.SelectedIndex;
@@ -101,14 +104,14 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
+				SimPe.Helper.ExceptionMessage(SimPe.Localization.Manager.GetString("errconvert"), ex);
 				return null;
 			}
 		}
 
 		public void Execute(Instruction inst)
 		{
-			byte[] ops = inst.Operands;
+			wrappedByteArray ops = inst.Operands;
 			byte n1 = ops[0x06];
 			byte n2 = ops[0x07];
 			byte op = ops[0x05];
@@ -116,8 +119,8 @@ namespace SimPe.PackedFiles.UserInterface
 			int val1 = (ops[0x01] << 8) | ops[0x00];
 			int val2 = (ops[0x03] << 8) | ops[0x02];
 
-			tbval1.Text = "0x"+Helper.HexString((ushort)val1);
-			tbval2.Text = "0x"+Helper.HexString((ushort)val2);
+			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)val1);
+			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)val2);
 
 			if (cbtype1.Items.Count>n1) cbtype1.SelectedIndex = n1;
 			if (cbtype2.Items.Count>n2) cbtype2.SelectedIndex = n2;
@@ -241,14 +244,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbtype1.TabIndex = 0;
 			this.cbtype1.SelectedIndexChanged += new System.EventHandler(this.SelectVal1Name);
 			// 
-			// MyForm
+			// UI
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
 			this.ClientSize = new System.Drawing.Size(640, 366);
 			this.Controls.Add(this.pnWiz0x0002);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "MyForm";
-			this.Text = "Instruction Container";
+			this.Name = "UI";
+			this.Text = "UI";
 			this.pnWiz0x0002.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -268,7 +271,7 @@ namespace SimPe.PackedFiles.UserInterface
 					try 
 					{
 						ushort val = Convert.ToUInt16(tbval1.Text, 16);
-						tbval1.Text = "0x"+Helper.HexString(BhavPrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+Helper.HexString((byte)BhavPrimWiz0x0002.ConstantValueParser(val)[1]);
+						tbval1.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)PrimWiz0x0002.ConstantValueParser(val)[1]);
 					} 
 					catch (Exception) {}
 				}
@@ -293,7 +296,7 @@ namespace SimPe.PackedFiles.UserInterface
 						ushort[] b = new ushort[2];
 						b[0] = Convert.ToUInt16(s[0], 16);
 						b[1] = Convert.ToUInt16(s[1], 16);
-						tbval1.Text = "0x"+Helper.HexString(BhavPrimWiz0x0002.ConstantValueParser(b));
+						tbval1.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(b));
 
 					} 
 					catch (Exception) {}
@@ -313,7 +316,7 @@ namespace SimPe.PackedFiles.UserInterface
 					try 
 					{
 						ushort val = Convert.ToUInt16(tbval2.Text, 16);
-						tbval2.Text = "0x"+Helper.HexString(BhavPrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+Helper.HexString((byte)BhavPrimWiz0x0002.ConstantValueParser(val)[1]);
+						tbval2.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)PrimWiz0x0002.ConstantValueParser(val)[1]);
 					} 
 					catch (Exception) {}
 				}
@@ -338,7 +341,7 @@ namespace SimPe.PackedFiles.UserInterface
 						ushort[] b = new ushort[2];
 						b[0] = Convert.ToUInt16(s[0], 16);
 						b[1] = Convert.ToUInt16(s[1], 16);
-						tbval2.Text = "0x"+Helper.HexString(BhavPrimWiz0x0002.ConstantValueParser(b));
+						tbval2.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(b));
 
 					} 
 					catch (Exception) {}
@@ -348,39 +351,40 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void Motive1Changed(object sender, System.EventArgs e)
 		{
-			tbval1.Text = "0x"+Helper.HexString((ushort)this.cbmotiv1.SelectedIndex);
+			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbmotiv1.SelectedIndex);
 		}
 
 		private void Motive2Changed(object sender, System.EventArgs e)
 		{
-			tbval2.Text = "0x"+Helper.HexString((ushort)this.cbmotiv2.SelectedIndex);
+			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbmotiv2.SelectedIndex);
 		}
 
 
 	}
 
 	#endregion
+}
 
-	public class BhavPrimWiz0x0002 : pjse.ABhavPrimWiz
+namespace pjse.BhavOperandWizards
+{
+	public class BhavOperandWiz0x0002 : pjse.ABhavOperandWiz
 	{
-		public BhavPrimWiz0x0002() : base() { }
+		public BhavOperandWiz0x0002() : base() { }
 
-		public BhavPrimWiz0x0002(Instruction i) : base() { instruction = i; }
+		public BhavOperandWiz0x0002(Instruction i) : base() { instruction = i; }
 
 
-		private MyForm myForm = null;
+		#region pjse.ABhavOperandWiz
+		private Wiz0x0002.UI myForm = null;
 		public override Panel bhavPrimWizPanel
 		{
 			get
 			{
-				myForm = new MyForm();
+				if (myForm == null) myForm = new Wiz0x0002.UI();
 				return myForm.pnWiz0x0002;
 			}
 		}
 
-
-
-		#region pjse.ABhavPrimWiz
 		public override void Execute()
 		{
 			if (instruction != null) myForm.Execute(instruction);
@@ -391,29 +395,75 @@ namespace SimPe.PackedFiles.UserInterface
 			return (instruction == null) ? null : myForm.Write(instruction);
 		}
 
-		public override string OpcodeName(Bhav parent, ushort opcode, byte[] operands)
+		#endregion
+	}
+}
+
+
+namespace pjse.BhavNameWizards
+{
+	public class PrimWiz0x0002 : ANamePrimitiveWiz
+	{
+		public PrimWiz0x0002(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
+		public PrimWiz0x0002(Bhav parent, byte[] operands) : base(parent, operands) { instruction.Opcode = 0x0002; }
+		public PrimWiz0x0002(Instruction i) : base(i) {}
+		/*public string VeryShortName
+		{
+			get
+			{
+				if (this.instruction == null && this.operands == null) return "";
+				if (op0 >= parms.Length) return "Unknown operand 0: 0x" + SimPe.Helper.HexString(op0);
+				return op0names[op0];
+			}
+		}*/
+
+		public override string ShortName
+		{
+			get
+			{
+				if (instruction != null)
+					return OpcodeName(instruction.Parent, instruction.Opcode, instruction.Operands);
+				return OpcodeName(instruction.Parent, instruction.Opcode, instruction.Operands);
+				/*
+				string s = base.ShortName;
+				if (this.instruction == null && this.operands == null) return s;
+				if (op0 >= parms.Length) return s + " Unknown operand 0: 0x" + SimPe.Helper.HexString(op0);
+				return s + " " + op0names[op0];*/
+			}
+		}
+
+		public override string LongName
+		{
+			get
+			{
+				return ShortName;
+				/*if ((this.instruction == null && this.operands == null) || (op0 >= parms.Length)) return ShortName;
+				return ShortName + " (" + parms[op0] + ")";*/
+			}
+		}
+
+
+		private string OpcodeName(Bhav parent, ushort opcode, wrappedByteArray operands)
 		{			
-			if (parent==null || operands==null) return Localization.Manager.GetString("Unknown");
+			if (parent==null || operands==null) return SimPe.Localization.Manager.GetString("Unknown");
 
 			string obj1 = parent.Opcodes.FindExpressionDataOwners(operands[6]);
 			ushort op1 = ToShort(operands[0], operands[1]);
-			string val1 = " 0x" + Helper.HexString(op1);
+			string val1 = " 0x" + SimPe.Helper.HexString(op1);
 			string obj2 = parent.Opcodes.FindExpressionDataOwners(operands[7]); 
 			ushort op2 = ToShort(operands[2], operands[3]);
-			string val2 = " 0x" + Helper.HexString(op2);
+			string val2 = " 0x" + SimPe.Helper.HexString(op2);
 			string name = parent.Opcodes.FindExpressionOperator(operands[5]);
 
 			if (obj1.ToLower()=="my motives") val1 = " "+parent.Opcodes.FindMotives(op1)+ " ("+val1.Trim()+")";
 			if (obj2.ToLower()=="my motives") val2 = " "+parent.Opcodes.FindMotives(op2)+ " ("+val2.Trim()+")";
 
-			if (obj1.ToLower()=="constant value") val1 = " 0x"+Helper.HexString(ConstantValueParser(op1)[0])+":0x"+Helper.HexString((byte)ConstantValueParser(op1)[1]);
-			if (obj2.ToLower()=="constant value") val2 = " 0x"+Helper.HexString(ConstantValueParser(op2)[0])+":0x"+Helper.HexString((byte)ConstantValueParser(op2)[1]);
+			if (obj1.ToLower()=="constant value") val1 = " 0x"+SimPe.Helper.HexString(ConstantValueParser(op1)[0])+":0x"+SimPe.Helper.HexString((byte)ConstantValueParser(op1)[1]);
+			if (obj2.ToLower()=="constant value") val2 = " 0x"+SimPe.Helper.HexString(ConstantValueParser(op2)[0])+":0x"+SimPe.Helper.HexString((byte)ConstantValueParser(op2)[1]);
 				
 
 			return obj1+val1+" "+name+" "+obj2+val2;
 		}
-
-		#endregion
 
 		internal static ushort[] ConstantValueParser(ushort val) 
 		{
@@ -463,4 +513,6 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 	}
+
+
 }

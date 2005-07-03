@@ -70,7 +70,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 			bhavInstListItem.Text = "";
-			instrText.Text = index.ToString("X") + ": " + BhavOperandWiz.OpcodeName(inst);
+			instrText.Text = index.ToString("X") + ": " + pjse.BhavNameWizProvider.For(inst).ShortName;
 
 			trueTarget.Text = "true: "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);

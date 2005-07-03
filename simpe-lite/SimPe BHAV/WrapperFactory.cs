@@ -37,16 +37,16 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Bhav Wizard
 		/// </summary>
-		static BhavOpCodeWiz bw = null;
+		static BhavOpCodeWizUI bw = null;
 
 		/// <summary>
 		/// Returns a handle to the Bhav Wizard Window
 		/// </summary>
-		internal static BhavOpCodeWiz BhavWizardForm 
+		internal static BhavOpCodeWizUI BhavWizardForm
 		{
 			get 
 			{
-				if (bw==null) bw = new BhavOpCodeWiz();
+				if (bw==null) bw = new BhavOpCodeWizUI();
 				return bw;
 			}
 		}

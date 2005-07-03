@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
+using pjse;
 
 namespace SimPe.PackedFiles.UserInterface
 {
@@ -177,7 +178,7 @@ namespace SimPe.PackedFiles.UserInterface
 					tbLocalC.Enabled = tbFlags.Enabled = tbReserved.Enabled =
 					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
-					llopenbhav.Visible = btnOpCode.Visible = btnOperandWiz.Visible = 
+					btnOpCode.Visible = btnOperandWiz.Visible = 
 					btnCancel.Visible = false;
 				state = true;
 			}
@@ -227,9 +228,9 @@ namespace SimPe.PackedFiles.UserInterface
 				SetReadOnly(false);
 
 				//load referenced Bhav
-				llopenbhav.Enabled = ((new OpCode(inst)).LoadBHAV() != null);
+				this.llopenbhav.Enabled = (BhavNameWizProvider.For(inst).LoadBHAV() != null);
 
-				btnDel.Enabled = wrapper.Instructions.Count > 1;
+				this.btnDel.Enabled = wrapper.Instructions.Count > 1;
 
 				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.Opcode);
 
@@ -274,10 +275,9 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
 
-				this.tbInst_Instruction.Text = BhavOperandWiz.OpcodeName(inst);
+				this.tbInst_Instruction.Text = BhavNameWizProvider.For(inst).LongName;
 
-				pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(inst);
-				this.btnOperandWiz.Enabled = !(wiz is BhavPrimWizDefault);
+				this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(inst) != null);
 				btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
 				btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Instructions.Count - 1;
 			}
@@ -317,11 +317,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SendInst(Instruction currentInst)
 		{
-			pjse.ABhavPrimWiz wiz = pjse.BhavPrimWizProvider.ForInstruction(currentInst);
-			this.btnOperandWiz.Enabled = !(wiz is BhavPrimWizDefault);
-
-			this.tbInst_Instruction.Text = BhavOperandWiz.OpcodeName(currentInst);
 			this.btnCancel.Enabled = true;
+
 			bool origstate = internalchg;
 			internalchg = true;
 			this.pnflowcontainer.SelectedInst = currentInst;
@@ -333,6 +330,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
 			this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
 			internalchg = origstate;
+
+			this.tbInst_Instruction.Text = BhavNameWizProvider.For(currentInst).LongName;
 		}
 		#endregion
 
@@ -2144,23 +2143,22 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			Bhav b = (new OpCode(pnflowcontainer.SelectedInst)).LoadBHAV();
+			ABhavNameWiz nameWiz = pjse.BhavNameWizProvider.For(pnflowcontainer.SelectedInst);
+
+			Bhav b = nameWiz.LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;
 			ui.tbInst_Instruction.Width = ui.gbInstruction.Width - (2 * ui.tbInst_Instruction.Location.X);
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "View BHAV: " + BhavOperandWiz.OpcodeName(pnflowcontainer.SelectedInst);
+			ui.Text = "View BHAV: " + nameWiz.ShortName;
 			b.RefreshUI();
 			ui.Show();
 		}
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
-			Bhav bhav = new Bhav(wrapper.Opcodes);
-			bhav.Package = wrapper.Package;
-			bhav.FileDescriptor = wrapper.FileDescriptor;
-
 			Instruction currentInst = this.pnflowcontainer.SelectedInst;
-			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
+
+			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent);
 
 			if (opcode != -1 && opcode != currentInst.Opcode)
 			{
@@ -2421,6 +2419,8 @@ namespace SimPe.PackedFiles.UserInterface
 					{
 						currentInst.Opcode = val;
 						SendInst(currentInst);
+						this.llopenbhav.Enabled = (BhavNameWizProvider.For(currentInst).LoadBHAV() != null);
+						this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(currentInst) != null);
 					}
 					break;
 				default:

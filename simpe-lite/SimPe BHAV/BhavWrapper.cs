@@ -72,7 +72,8 @@ namespace SimPe.PackedFiles.Wrapper
 		public string FileName 
 		{
 			get { return Helper.ToString(filename); }
-			set {
+			set 
+			{
 				if (!Helper.ToString(filename).Equals(value))
 				{
 					filename = Helper.ToBytes(value, 0x40);
@@ -90,7 +91,7 @@ namespace SimPe.PackedFiles.Wrapper
 #if UNUSED
 			set { header = value; }
 #endif
-	}
+		}
 
 		/// <summary>
 		/// Returns/Sets the Instructions
@@ -567,15 +568,15 @@ namespace SimPe.PackedFiles.Wrapper
 			bool savedstate = internalchg;
 			internalchg = true;
 			this.Move(index, this.Count - 1);
-/*
- * At Inge's request, broken gotos not set to RETURN ERROR.
- * UI to display these in an obvious way.
- 			foreach (Instruction i in this)
-			{
-				if (i.Target1 >= this.Count-1 && i.Target1 < 0xFFFC) i.Target1 = 0xFFFC;
-				if (i.Target2 >= this.Count-1 && i.Target2 < 0xFFFC) i.Target2 = 0xFFFC;
-			}
-*/			base.RemoveAt(this.Count - 1);
+			/*
+			 * At Inge's request, broken gotos not set to RETURN ERROR.
+			 * UI to display these in an obvious way.
+						foreach (Instruction i in this)
+						{
+							if (i.Target1 >= this.Count-1 && i.Target1 < 0xFFFC) i.Target1 = 0xFFFC;
+							if (i.Target2 >= this.Count-1 && i.Target2 < 0xFFFC) i.Target2 = 0xFFFC;
+						}
+			*/			base.RemoveAt(this.Count - 1);
 			internalchg = savedstate;
 			if (!internalchg)
 				parent.OnWrapperChanged(new EventArgs());
@@ -646,8 +647,8 @@ namespace SimPe.PackedFiles.Wrapper
 		private ushort addr1 = 0;
 		private ushort addr2 = 0;
 		private byte reserved_00 = 0;
-		private byte[] operands = new byte[8];
-		private byte[] reserved_01 = new byte[8];
+		private wrappedByteArray operands = null;
+		private wrappedByteArray reserved_01 = null;
 		private Bhav parent;
 		#endregion
 
@@ -655,7 +656,14 @@ namespace SimPe.PackedFiles.Wrapper
 		public ushort Opcode 
 		{
 			get { return opcode; }
-			set  { opcode = value; }
+			set
+			{
+				if (opcode != value)
+				{
+					opcode = value;
+					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 
@@ -666,13 +674,13 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8007:
 					return target;
 				default:
-					switch (target)
-					{
-						case 0xFD: return (ushort)0xFFFC;	// error
-						case 0xFE: return (ushort)0xFFFD;	// true
-						case 0xFF: return (ushort)0xFFFE;	// false
-						default: return target;
-					}
+				switch (target)
+				{
+					case 0xFD: return (ushort)0xFFFC;	// error
+					case 0xFE: return (ushort)0xFFFD;	// true
+					case 0xFF: return (ushort)0xFFFE;	// false
+					default: return target;
+				}
 			}
 		}
 		private ushort formatSpecificAddr(ushort target)
@@ -682,45 +690,90 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8007:
 					return target;
 				default:
-					switch (target)
-					{
-						case 0xFFFC: return (ushort)0x00FD;	// error
-						case 0xFFFD: return (ushort)0x00FE;	// true
-						case 0xFFFE: return (ushort)0x00FF;	// false
-						default: return (ushort)(target & 0x00FF);
-					}
+				switch (target)
+				{
+					case 0xFFFC: return (ushort)0x00FD;	// error
+					case 0xFFFD: return (ushort)0x00FE;	// true
+					case 0xFFFE: return (ushort)0x00FF;	// false
+					default: return (ushort)(target & 0x00FF);
+				}
 			}
 		}
 		public ushort Target1
 		{
 			get { return formatSpecificTarget(addr1); }
-			set { addr1 = formatSpecificAddr(value); }
+			set
+			{
+				if (addr1 != formatSpecificAddr(value))
+				{
+					addr1 = formatSpecificAddr(value);
+					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public ushort Target2
 		{
 			get { return formatSpecificTarget(addr2); }
-			set { addr2 = formatSpecificAddr(value); }
+			set
+			{
+				if (addr2 != formatSpecificAddr(value))
+				{
+					addr2 = formatSpecificAddr(value);
+					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
 		public byte Reserved0
 		{
 			get {return reserved_00;}
-			set { reserved_00 = value; }
+			set
+			{
+				if (reserved_00 != value)
+				{
+					reserved_00 = value;
+					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
-		public byte[] Operands
+		public wrappedByteArray  Operands
 		{
 			get {return operands;}
-			set { operands = value; }
+			set
+			{
+				if (operands != value)
+				{
+					operands = value;
+					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
 
-		public byte[] Reserved1
+		public wrappedByteArray  Reserved1
 		{
 			get {return reserved_01;}
-			set { reserved_01 = value; }
+			set
+			{
+				if (reserved_01 != value)
+				{
+					reserved_01 = value;
+					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+				}
+			}
 		}
-		public Bhav Parent { get { return parent; } }
+		public Bhav Parent
+		{
+			get { return parent; }
+			set
+			{
+				parent = value;
+				operands.Parent = value;
+				reserved_01.Parent = value;
+				if (parent != null) parent.OnWrapperChanged(new EventArgs());
+			}
+		}
 		#endregion
 
 		/// <summary>
@@ -729,6 +782,8 @@ namespace SimPe.PackedFiles.Wrapper
 		internal Instruction (Bhav parent)
 		{
 			this.parent = parent;
+			this.operands = new wrappedByteArray(parent, new byte[8]);
+			this.reserved_01 = new wrappedByteArray(parent, new byte[8]);
 		}
 
 		/// <summary>
@@ -748,11 +803,10 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.addr1       = this.addr1;
 			clone.addr2       = this.addr2;
 			clone.reserved_00 = this.reserved_00;
-			clone.operands    = (byte[])this.operands.Clone();
-			clone.reserved_01 = (byte[])this.reserved_01.Clone();
+			clone.operands    = operands.Clone();
+			clone.reserved_01 = reserved_01.Clone();
 			return clone;
 		}
-
 
 
 		/// <summary>
@@ -779,14 +833,15 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8001: 
 				case 0x8002: 
 				{
-					operands = reader.ReadBytes(8);
+					operands = new wrappedByteArray(parent, reader);
+					reserved_01 = new wrappedByteArray(parent, new byte[8]);
 					break;
 				}
 				case 0x8003: 
 				case 0x8004: 
 				{
-					operands = reader.ReadBytes(8);
-					reserved_01 = reader.ReadBytes(8);
+					operands = new wrappedByteArray(parent, reader);
+					reserved_01 = new wrappedByteArray(parent, reader);
 					break;
 				}
 				case 0x8006: 
@@ -794,8 +849,8 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8007: 
 				{
 					reserved_00 = reader.ReadByte();
-					operands = reader.ReadBytes(8);
-					reserved_01 = reader.ReadBytes(8);
+					operands = new wrappedByteArray(parent, reader);
+					reserved_01 = new wrappedByteArray(parent, reader);
 					break;
 				}
 			} //switch
@@ -808,46 +863,45 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="writer"></param>
 		internal void Serialize(System.IO.BinaryWriter writer) 
 		{
+			writer.Write(opcode);
+			if (parent.Header.Format < 0x8007)
+			{
+				writer.Write((byte)formatSpecificAddr(addr1));
+				writer.Write((byte)formatSpecificAddr(addr2));
+			}
+			else
+			{
+				writer.Write(addr1);
+				writer.Write(addr1);
+			}
 			switch (parent.Header.Format)
 			{
 				case 0x8001: 
 				case 0x8002: 
 				{
-					writer.Write(opcode);
-					writer.Write((byte)(addr1 & 0xFF));
-					writer.Write((byte)(addr2 & 0xFF));
-					writer.Write(operands);	
+					operands.Serialize(writer);;
 					break;
 				}
 				case 0x8003: 
 				case 0x8004: 
 				{
-					writer.Write(opcode);
-					writer.Write((byte)(addr1 & 0xFF));
-					writer.Write((byte)(addr2 & 0xFF));
-					writer.Write(operands);
-					writer.Write(reserved_01);
+					operands.Serialize(writer);;
+					reserved_01.Serialize(writer);
 					break;
 				}
 				case 0x8006: 
 				case 0x8005: 
 				{
-					writer.Write(opcode);
-					writer.Write((byte)(addr1 & 0xFF));
-					writer.Write((byte)(addr2 & 0xFF));
 					writer.Write(reserved_00);
-					writer.Write(operands);
-					writer.Write(reserved_01);
+					operands.Serialize(writer);
+					reserved_01.Serialize(writer);
 					break;
 				}
 				case 0x8007: 
 				{
-					writer.Write(opcode);
-					writer.Write(addr1);
-					writer.Write(addr2);
 					writer.Write(reserved_00);
-					writer.Write(operands);
-					writer.Write(reserved_01);
+					operands.Serialize(writer);;
+					reserved_01.Serialize(writer);
 					break;
 				}
 			} //switch
@@ -855,105 +909,41 @@ namespace SimPe.PackedFiles.Wrapper
 
 	}
 
-
-	public class OpCode
+	public class wrappedByteArray
 	{
+		private byte[] array;
 		private Bhav parent;
-		private ushort opcode;
-
-		public OpCode(Bhav parent, ushort opcode)
+		public wrappedByteArray(Bhav parent, byte[] array) { this.parent = parent; this.array = array; }
+		public wrappedByteArray(Bhav parent, System.IO.BinaryReader reader)
 		{
 			this.parent = parent;
-			this.opcode = opcode;
+			this.array = new byte[8];
+			Unserialize(reader);
 		}
 
-		public OpCode(Instruction i)
+		internal Bhav Parent { set { parent = value; } }
+		public byte this[int index]
 		{
-			this.parent = i.Parent;
-			this.opcode = i.Opcode;
-		}
-
-		/// <summary>
-		/// True if this OpCode calls a Global Behavior File
-		/// </summary>
-		public bool GlobalBhav { get { return ((opcode>=0x0100) && (opcode<0x1000)); } }
-
-		/// <summary>
-		/// True if this OpCode calls a Semi Global Bhav
-		/// </summary>
-		public bool SemiGlobalBhav { get { return (opcode>=0x2000); } }
-
-		/// <summary>
-		/// True if this OpCode calls a Local Behavior File
-		/// </summary>
-		public bool LocalBhav { get { return ((opcode>=0x1000) && (opcode<0x2000)); } }
-
-
-		public Bhav LoadBHAV()
-		{
-			if (this.GlobalBhav) return LoadGlobalBHAV();
-			if (this.SemiGlobalBhav) return LoadSemiGlobalBHAV();
-			if (this.LocalBhav) return LoadLocalBHAV();
-			return null;
-		}
-
-
-		private Bhav LoadGlobalBHAV()
-		{
-			Interfaces.Files.IPackedFileDescriptor pfd =  parent.Opcodes.LoadGlobalBHAV(opcode);
-			if (pfd==null) return null;
-
-			Bhav b = new Bhav(parent.Opcodes);
-			b.ProcessData(pfd, parent.Opcodes.BasePackage);
-			return b;
-		}
-
-		private Bhav LoadSemiGlobalBHAV()
-		{
-			Interfaces.Files.IPackedFileDescriptor pfd = parent.Package.FindFile(Data.MetaData.BHAV_FILE, 0, parent.FileDescriptor.Group, opcode);
-			if (pfd==null)  
+			get { return array[index]; }
+			set
 			{
-				pfd = parent.Package.FindFile(Data.MetaData.GLOB_FILE, 0, parent.FileDescriptor.Group, 0x01);
-				if (pfd==null) 
+				if (array[index] != value)
 				{
-					Interfaces.Files.IPackedFileDescriptor[] pfds = parent.Package.FindFiles(Data.MetaData.GLOB_FILE);
-					if (pfds.Length>0) pfd=pfds[0];
-
-					foreach (Interfaces.Files.IPackedFileDescriptor p in pfds) 
-					{
-						if (p.Group == parent.FileDescriptor.Group) pfd = p;
-					}
+					array[index] = value;
+					if (parent != null) parent.OnWrapperChanged(new EventArgs());
 				}
-				if (pfd==null) return null;
-
-				Glob g = new Glob();
-				g.ProcessData(pfd, parent.Package);
-				pfd = parent.Opcodes.LoadSemiGlobalBHAV(opcode, g.SemiGlobalGroup);
-			
-				if (pfd==null) return null;
-				Bhav b = new Bhav(parent.Opcodes);
-				b.ProcessData(pfd, parent.Opcodes.BasePackage);
-				return b;
-			} 
-			else 
-			{
-				Bhav b = new Bhav(parent.Opcodes);
-				b.ProcessData(pfd, parent.Package);
-				return b;
 			}
-			
 		}
 
-		private Bhav LoadLocalBHAV()
+		internal wrappedByteArray Clone() { return new wrappedByteArray(parent, (byte[])array.Clone()); }
+		private void Unserialize(System.IO.BinaryReader reader)
 		{
-			if (parent.Package==null) return new Bhav(parent.Opcodes);
-			Interfaces.Files.IPackedFileDescriptor pfd =  parent.Package.FindFile(Data.MetaData.BHAV_FILE, 0, parent.FileDescriptor.Group, opcode);
-			if (pfd==null) return new Bhav(parent.Opcodes);
-
-			Bhav b = new Bhav(parent.Opcodes);
-			b.ProcessData(pfd, parent.Package);
-			return b;
+			array = reader.ReadBytes(8);
 		}
-
+		internal void Serialize(System.IO.BinaryWriter writer)
+		{
+			writer.Write(array);
+		}
 	}
+
 }

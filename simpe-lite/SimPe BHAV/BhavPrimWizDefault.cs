@@ -100,7 +100,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		#region defaultForm
+		#region BhavPrimWizDefaultUI
 		private Instruction inst;
 		private ArrayList alHex8;
 		private ArrayList alDec16;
@@ -129,11 +129,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Unk5.Text = Helper.HexString(inst.Reserved1[5]);
 			this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 			this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
-		}
-
-		internal Instruction Write()
-		{
-			return this.inst;
 		}
 
 		#endregion
@@ -440,7 +435,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ClientSize = new System.Drawing.Size(292, 273);
 			this.Controls.Add(this.panel1);
 			this.Name = "BhavPrimWizDefaultUI";
-			this.Text = "BhavPrimWizDefault";
+			this.Text = "BhavPrimWizDefaultUI";
 			this.panel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -513,69 +508,36 @@ namespace SimPe.PackedFiles.UserInterface
 	}
 	#endregion
 
-	public class BhavPrimWizDefault : pjse.ABhavPrimWiz
+	public class BhavOperandWizDefault : pjse.ABhavOperandWiz
 	{
 		private BhavPrimWizDefaultUI myForm = null;
 
-		public BhavPrimWizDefault() : base() { }
-		public BhavPrimWizDefault(Instruction i) : base(i) { }
+		public BhavOperandWizDefault(Instruction i) : base(i) { }
 
 
-		#region pjse.ABhavPrimWiz
+		#region pjse.ABhavOperandWiz
 		public override Panel bhavPrimWizPanel
 		{
 			get
 			{
-				if (instruction == null) return null;
-				myForm = new BhavPrimWizDefaultUI();
+				if (myForm == null) myForm = new BhavPrimWizDefaultUI();
 				return myForm.panel1;
 			}
 		}
 
 		public override void Execute()
 		{
-			if (instruction != null) myForm.Execute(instruction);
+			if (myForm == null) myForm = new BhavPrimWizDefaultUI();
+			myForm.Execute(instruction);
 		}
 
 		public override Instruction Write()
 		{
-			//return instruction;
-			return (instruction == null) ? null : myForm.Write();
-		}
-
-		public override string OpcodeName(Bhav parent, ushort opcode, byte[] operands)
-		{
-			string add="";
-			if (parent==null) 
-			{
-				if (add.Trim()!="") return "0x"+Helper.HexString(opcode)+ " ("+add+")";
-				else return "0x"+Helper.HexString(opcode);
-			} 
-			else 
-			{				
-				string name = "";
-
-				if (((opcode>=0x1000) && (opcode<0x2000))) 
-				{
-					name = "[private] "+(new OpCode(parent, opcode)).LoadBHAV().FileName;
-				}
-				else if (opcode>=0x2000) 
-				{
-					Bhav b = (new OpCode(parent, opcode)).LoadBHAV();
-					name = "[semiglobal] ";
-					if (b!=null) name += b.FileName;
-					else name += Localization.Manager.GetString("Unknown");
-				}
-				else 
-				{
-					name = parent.Opcodes.FindName((ushort)(opcode));
-				}
-				if (add.Trim()!="")	return name+" (0x"+Helper.HexString(opcode)+", "+add+")";
-				else return name+" (0x"+Helper.HexString(opcode)+")";
-			}
+			return instruction;
 		}
 
 		#endregion
-
 	}
+
+
 }

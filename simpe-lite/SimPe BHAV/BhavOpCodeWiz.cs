@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -27,39 +29,39 @@ using SimPe.PackedFiles.Wrapper;
 namespace SimPe.PackedFiles.UserInterface
 {
 	/// <summary>
-	/// Zusammenfassung für BhavWizard.
+	/// Summary description for BhavOpCodeWizUI.
 	/// </summary>
-	public class BhavOpCodeWiz : System.Windows.Forms.Form
+	public class BhavOpCodeWizUI : System.Windows.Forms.Form
 	{
-		private System.Windows.Forms.ListBox lbprimitives;
+		#region Form variables
+		internal System.Windows.Forms.Panel pnOpCode;
 		private System.Windows.Forms.TabControl tcopcodes;
 		private System.Windows.Forms.TabPage tbprimitive;
-		private System.Windows.Forms.TabPage tbprivate;
-		private System.Windows.Forms.TabPage tbsemi;
+		private System.Windows.Forms.ListBox lbprimitives;
 		private System.Windows.Forms.TabPage tbglobal;
-		private System.Windows.Forms.ListBox lbprivate;
-		private System.Windows.Forms.ListBox lbsemi;
 		private System.Windows.Forms.ListBox lbglobal;
-		private System.Windows.Forms.Button btuse;
+		private System.Windows.Forms.TabPage tbsemi;
+		private System.Windows.Forms.ListBox lbsemi;
+		private System.Windows.Forms.TabPage tbprivate;
+		private System.Windows.Forms.ListBox lbprivate;
+		private System.Windows.Forms.Button OK;
+		private System.Windows.Forms.Button Cancel;
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
+		#endregion
 
-		public BhavOpCodeWiz()
+		public BhavOpCodeWizUI()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-
-			//
-			// TODO: Fügen Sie den Konstruktorcode nach dem Aufruf von InitializeComponent hinzu
-			//
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -73,176 +75,70 @@ namespace SimPe.PackedFiles.UserInterface
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
-		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
-		/// </summary>
-		private void InitializeComponent()
-		{
-			this.lbprimitives = new System.Windows.Forms.ListBox();
-			this.tcopcodes = new System.Windows.Forms.TabControl();
-			this.tbprimitive = new System.Windows.Forms.TabPage();
-			this.tbglobal = new System.Windows.Forms.TabPage();
-			this.lbglobal = new System.Windows.Forms.ListBox();
-			this.tbsemi = new System.Windows.Forms.TabPage();
-			this.lbsemi = new System.Windows.Forms.ListBox();
-			this.tbprivate = new System.Windows.Forms.TabPage();
-			this.lbprivate = new System.Windows.Forms.ListBox();
-			this.btuse = new System.Windows.Forms.Button();
-			this.tcopcodes.SuspendLayout();
-			this.tbprimitive.SuspendLayout();
-			this.tbglobal.SuspendLayout();
-			this.tbsemi.SuspendLayout();
-			this.tbprivate.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// lbprimitives
-			// 
-			this.lbprimitives.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lbprimitives.IntegralHeight = false;
-			this.lbprimitives.Location = new System.Drawing.Point(8, 8);
-			this.lbprimitives.Name = "lbprimitives";
-			this.lbprimitives.Size = new System.Drawing.Size(432, 288);
-			this.lbprimitives.Sorted = true;
-			this.lbprimitives.TabIndex = 0;
-			// 
-			// tcopcodes
-			// 
-			this.tcopcodes.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tcopcodes.Controls.Add(this.tbprimitive);
-			this.tcopcodes.Controls.Add(this.tbglobal);
-			this.tcopcodes.Controls.Add(this.tbsemi);
-			this.tcopcodes.Controls.Add(this.tbprivate);
-			this.tcopcodes.Location = new System.Drawing.Point(8, 8);
-			this.tcopcodes.Name = "tcopcodes";
-			this.tcopcodes.SelectedIndex = 0;
-			this.tcopcodes.Size = new System.Drawing.Size(456, 328);
-			this.tcopcodes.TabIndex = 1;
-			// 
-			// tbprimitive
-			// 
-			this.tbprimitive.Controls.Add(this.lbprimitives);
-			this.tbprimitive.Location = new System.Drawing.Point(4, 22);
-			this.tbprimitive.Name = "tbprimitive";
-			this.tbprimitive.Size = new System.Drawing.Size(448, 302);
-			this.tbprimitive.TabIndex = 0;
-			this.tbprimitive.Text = "Primitives";
-			// 
-			// tbglobal
-			// 
-			this.tbglobal.Controls.Add(this.lbglobal);
-			this.tbglobal.Location = new System.Drawing.Point(4, 22);
-			this.tbglobal.Name = "tbglobal";
-			this.tbglobal.Size = new System.Drawing.Size(448, 302);
-			this.tbglobal.TabIndex = 3;
-			this.tbglobal.Text = "Global";
-			// 
-			// lbglobal
-			// 
-			this.lbglobal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lbglobal.IntegralHeight = false;
-			this.lbglobal.Location = new System.Drawing.Point(8, 7);
-			this.lbglobal.Name = "lbglobal";
-			this.lbglobal.Size = new System.Drawing.Size(432, 288);
-			this.lbglobal.Sorted = true;
-			this.lbglobal.TabIndex = 1;
-			// 
-			// tbsemi
-			// 
-			this.tbsemi.Controls.Add(this.lbsemi);
-			this.tbsemi.Location = new System.Drawing.Point(4, 22);
-			this.tbsemi.Name = "tbsemi";
-			this.tbsemi.Size = new System.Drawing.Size(448, 302);
-			this.tbsemi.TabIndex = 2;
-			this.tbsemi.Text = "SemiGlobal";
-			// 
-			// lbsemi
-			// 
-			this.lbsemi.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lbsemi.IntegralHeight = false;
-			this.lbsemi.Location = new System.Drawing.Point(8, 7);
-			this.lbsemi.Name = "lbsemi";
-			this.lbsemi.Size = new System.Drawing.Size(432, 288);
-			this.lbsemi.Sorted = true;
-			this.lbsemi.TabIndex = 1;
-			// 
-			// tbprivate
-			// 
-			this.tbprivate.Controls.Add(this.lbprivate);
-			this.tbprivate.Location = new System.Drawing.Point(4, 22);
-			this.tbprivate.Name = "tbprivate";
-			this.tbprivate.Size = new System.Drawing.Size(448, 302);
-			this.tbprivate.TabIndex = 1;
-			this.tbprivate.Text = "Private";
-			// 
-			// lbprivate
-			// 
-			this.lbprivate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lbprivate.IntegralHeight = false;
-			this.lbprivate.Location = new System.Drawing.Point(8, 7);
-			this.lbprivate.Name = "lbprivate";
-			this.lbprivate.Size = new System.Drawing.Size(432, 288);
-			this.lbprivate.Sorted = true;
-			this.lbprivate.TabIndex = 1;
-			// 
-			// btuse
-			// 
-			this.btuse.Location = new System.Drawing.Point(389, 344);
-			this.btuse.Name = "btuse";
-			this.btuse.TabIndex = 2;
-			this.btuse.Text = "Use";
-			this.btuse.Click += new System.EventHandler(this.UseOpcode);
-			// 
-			// BhavOpCodeWiz
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(474, 376);
-			this.Controls.Add(this.btuse);
-			this.Controls.Add(this.tcopcodes);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.Name = "BhavOpCodeWiz";
-			this.ShowInTaskbar = false;
-			this.Text = "Bhav Opcodes";
-			this.tcopcodes.ResumeLayout(false);
-			this.tbprimitive.ResumeLayout(false);
-			this.tbglobal.ResumeLayout(false);
-			this.tbsemi.ResumeLayout(false);
-			this.tbprivate.ResumeLayout(false);
-			this.ResumeLayout(false);
 
-		}
-		#endregion
-
+		#region BhavOpCodeWizUI
 		//the current SemiGroup
-		uint semigroup = 0;
+		private uint lastSemiGroup = 0;
+		Interfaces.Files.IPackedFileDescriptor gpfd = null;
 
-		//the returned Opcode
-		UInt16 opcode = 0;
-
-		public void Init(Bhav bhav)
+		public int Execute(Bhav bhav, Control form)
 		{
-			this.lbprimitives.Items.Clear();
-			this.lbglobal.Items.Clear();
-			this.lbsemi.Items.Clear();
+			if (bhav == null) return -1;
+			if (bhav.Package == null) return -1;
+			if (bhav.Opcodes == null) return -1;
 
-			if (bhav.Package == null) return;
+			form.Cursor = Cursors.WaitCursor;
+			this.Cursor = Cursors.WaitCursor;
+
+			Primitives(bhav);
+			Globals(bhav);
+			Locals(bhav);
+			SemiGlobals(bhav);
+			
+			form.Cursor = Cursors.Default;
+			this.Cursor = Cursors.Default;
+
+			if (lbprimitives.Items.Count>0) lbprimitives.SelectedIndex = 0;
+			if (lbglobal.Items.Count>0) lbglobal.SelectedIndex = 0;
+			if (lbprivate.Items.Count>0) lbprivate.SelectedIndex = 0;
+			if (lbsemi.Items.Count>0) lbsemi.SelectedIndex = 0;
+
+			int opcode = -1;
+			this.DialogResult = DialogResult.Cancel;
+			switch(ShowDialog())
+			{
+				case System.Windows.Forms.DialogResult.OK:
+				case System.Windows.Forms.DialogResult.Yes:
+				switch (this.tcopcodes.SelectedIndex)
+				{
+					case 0:
+						if (lbprimitives.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprimitives.Items[lbprimitives.SelectedIndex]).Id;
+						break;
+					case 1:
+						if (lbglobal.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbglobal.Items[lbglobal.SelectedIndex]).Id;
+						break;
+					case 2:
+						if (lbsemi.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbsemi.Items[lbsemi.SelectedIndex]).Id;
+						break;
+					case 3:
+						if (lbprivate.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprivate.Items[lbprivate.SelectedIndex]).Id;
+						break;
+					default:
+						//opcode = -1;
+						break;
+				}
+					return opcode;
+				default:
+					return -1;
+			}
+		}
+
+		private void Primitives(Bhav bhav)
+		{
+			if (this.lbprimitives.Items.Count != 0) return;
+
 			if (bhav.Opcodes == null) return;
 
-			Interfaces.Files.IPackedFileDescriptor[] pfds = null;
-
-			//Primitives
 			ArrayList opcodes = bhav.Opcodes.StoredPrimitives;
 			for (int i=0; i<opcodes.Count; i++)
 			{
@@ -253,119 +149,274 @@ namespace SimPe.PackedFiles.UserInterface
 					this.lbprimitives.Items.Add(a);
 				}
 			}
+		}
 
-			
+		private void Globals(Bhav wrapper)
+		{
+			Bhav bhav = new Bhav(wrapper.Opcodes);
+			bhav.Package = wrapper.Package;
+			bhav.FileDescriptor = wrapper.FileDescriptor;
 
-			//Semi Global Group
-			Glob glob = new Glob();
-			Interfaces.Files.IPackedFileDescriptor gpfd = bhav.Package.FindFile(Data.MetaData.GLOB_FILE, 0, bhav.FileDescriptor.Group, 0x01);
-			if (gpfd!=null) glob.ProcessData(gpfd, bhav.Package);
-			uint semigroup = glob.SemiGlobalGroup;
-			this.tbsemi.Text = glob.SemiGlobalName;
+			if (this.lbglobal.Items.Count != 0) return;
 
-			//(Semi) Global BHAV
-			pfds = bhav.Opcodes.BasePackage.FindFiles(Data.MetaData.BHAV_FILE);
+			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(Data.MetaData.BHAV_FILE);
 			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if ((pfd.Instance>=0x0100) && (pfd.Instance<0x1000) && (pfd.Group==0x7FD46CD0)) 
+				if ((pfd.Instance>=0x0100) && (pfd.Instance<0x1000) && (pfd.Group==0x7FD46CD0)) // Global BHAVs
 				{
 					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
 					SimPe.Data.Alias a = new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName);
 					lbglobal.Items.Add(a);
 				} 
 			}
-
-			if (lbglobal.Items.Count>0) lbglobal.SelectedIndex = 0;
-			if (lbprimitives.Items.Count>0) lbprimitives.SelectedIndex = 0;
-			if (lbprivate.Items.Count>0) lbprivate.SelectedIndex = 0;
 		}
 
-		public int Execute(Bhav bhav, Form form)
+		private void Locals(Bhav wrapper)
 		{
-			if (bhav.Package == null) return 0;
-			if (bhav.Opcodes == null) return 0;
+			Bhav bhav = new Bhav(wrapper.Opcodes);
+			bhav.Package = wrapper.Package;
+			bhav.FileDescriptor = wrapper.FileDescriptor;
 
-			form.Cursor = Cursors.WaitCursor;
-			this.Cursor = Cursors.WaitCursor;
-			Interfaces.Files.IPackedFileDescriptor[] pfds = null;
-
-			//Local BHAV
 			this.lbprivate.Items.Clear();
-			pfds = bhav.Package.FindFiles(Data.MetaData.BHAV_FILE);
+			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Package.FindFiles(Data.MetaData.BHAV_FILE);
 			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if (bhav.FileDescriptor.Group != pfd.Group) continue;
-				bhav.ProcessData(pfd, bhav.Package);
-				SimPe.Data.Alias a = new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName);
-				lbprivate.Items.Add(a);
+				if ((pfd.Instance>=0x1000) && (pfd.Instance<0x2000) && (pfd.Group==bhav.FileDescriptor.Group)) 
+				{
+					bhav.ProcessData(pfd, bhav.Package);
+					SimPe.Data.Alias a = new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName);
+					lbprivate.Items.Add(a);
+				}
 			}
+		}
 
-			//Semi Global Group
+		private void SemiGlobals(Bhav wrapper)
+		{
+			Bhav bhav = new Bhav(wrapper.Opcodes);
+			bhav.Package = wrapper.Package;
+			bhav.FileDescriptor = wrapper.FileDescriptor;
+
 			Glob glob = new Glob();
-			Interfaces.Files.IPackedFileDescriptor gpfd = bhav.Package.FindFile(Data.MetaData.GLOB_FILE, 0, bhav.FileDescriptor.Group, 0x01);
+			if (gpfd==null) gpfd = bhav.Package.FindFile(Data.MetaData.GLOB_FILE, 0, bhav.FileDescriptor.Group, 0x01);
 			if (gpfd!=null) glob.ProcessData(gpfd, bhav.Package);
 
-			if (semigroup != glob.SemiGlobalGroup) 
-			{
-				if (lbprimitives.Items.Count==0) Init(bhav);
-				this.lbsemi.Items.Clear();
-				semigroup = glob.SemiGlobalGroup;
-				this.tbsemi.Text = glob.SemiGlobalName;
+			if (this.lbsemi.Items.Count != 0 && lastSemiGroup == glob.SemiGlobalGroup) return;
 
-				//Semi Global BHAV
-				pfds = bhav.Opcodes.BasePackage.FindFiles(Data.MetaData.BHAV_FILE);
-				foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
+			this.lbsemi.Items.Clear();
+			lastSemiGroup = glob.SemiGlobalGroup;
+			this.tbsemi.Text = glob.SemiGlobalName;
+
+			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(Data.MetaData.BHAV_FILE);
+			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
+			{
+				if ((pfd.Instance>=0x2000) && (pfd.Group == lastSemiGroup))
 				{
-					if ((pfd.Instance>=0x2000) && (pfd.Group == semigroup))
-					{
-						bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
-						SimPe.Data.Alias a = new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName);
-						lbsemi.Items.Add(a);
-					}
+					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
+					SimPe.Data.Alias a = new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName);
+					lbsemi.Items.Add(a);
 				}
-
-				if (lbsemi.Items.Count>0) lbsemi.SelectedIndex = 0;
-			}
-			
-			form.Cursor = Cursors.Default;
-			this.Cursor = Cursors.Default;
-
-			this.DialogResult = DialogResult.Cancel;
-			switch(ShowDialog())
-			{
-				case System.Windows.Forms.DialogResult.OK:
-				case System.Windows.Forms.DialogResult.Yes:
-					return opcode;
-				default:
-					return -1;
 			}
 		}
 
-		private void UseOpcode(object sender, System.EventArgs e)
+
+		#endregion
+
+		#region Vom Windows Form-Designer generierter Code
+		/// <summary>
+		/// Erforderliche Methode für die Designerunterstützung. 
+		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// </summary>
+		private void InitializeComponent()
 		{
-			if  (this.tcopcodes.SelectedIndex == 0)  
-			{
-				if (lbprimitives.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprimitives.Items[lbprimitives.SelectedIndex]).Id;
-			} 
-			else if  (this.tcopcodes.SelectedIndex == 1)
-			{
-				if (lbglobal.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbglobal.Items[lbglobal.SelectedIndex]).Id;
-			} 
-			else if  (this.tcopcodes.SelectedIndex == 2)
-			{
-				if (lbsemi.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbsemi.Items[lbsemi.SelectedIndex]).Id;
-			}
-			else if  (this.tcopcodes.SelectedIndex == 3) 
-			{
-				if (lbprivate.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprivate.Items[lbprivate.SelectedIndex]).Id;
-			} 
-			else 
-			{
-				opcode = 0;
-			}
+			this.pnOpCode = new System.Windows.Forms.Panel();
+			this.tcopcodes = new System.Windows.Forms.TabControl();
+			this.tbprimitive = new System.Windows.Forms.TabPage();
+			this.lbprimitives = new System.Windows.Forms.ListBox();
+			this.tbglobal = new System.Windows.Forms.TabPage();
+			this.lbglobal = new System.Windows.Forms.ListBox();
+			this.tbsemi = new System.Windows.Forms.TabPage();
+			this.lbsemi = new System.Windows.Forms.ListBox();
+			this.tbprivate = new System.Windows.Forms.TabPage();
+			this.lbprivate = new System.Windows.Forms.ListBox();
+			this.OK = new System.Windows.Forms.Button();
+			this.Cancel = new System.Windows.Forms.Button();
+			this.pnOpCode.SuspendLayout();
+			this.tcopcodes.SuspendLayout();
+			this.tbprimitive.SuspendLayout();
+			this.tbglobal.SuspendLayout();
+			this.tbsemi.SuspendLayout();
+			this.tbprivate.SuspendLayout();
+			this.SuspendLayout();
+			// 
+			// pnOpCode
+			// 
+			this.pnOpCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.pnOpCode.Controls.Add(this.tcopcodes);
+			this.pnOpCode.Location = new System.Drawing.Point(8, 8);
+			this.pnOpCode.Name = "pnOpCode";
+			this.pnOpCode.Size = new System.Drawing.Size(392, 424);
+			this.pnOpCode.TabIndex = 2;
+			// 
+			// tcopcodes
+			// 
+			this.tcopcodes.Controls.Add(this.tbprimitive);
+			this.tcopcodes.Controls.Add(this.tbglobal);
+			this.tcopcodes.Controls.Add(this.tbsemi);
+			this.tcopcodes.Controls.Add(this.tbprivate);
+			this.tcopcodes.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tcopcodes.Location = new System.Drawing.Point(0, 0);
+			this.tcopcodes.Name = "tcopcodes";
+			this.tcopcodes.SelectedIndex = 0;
+			this.tcopcodes.Size = new System.Drawing.Size(392, 424);
+			this.tcopcodes.TabIndex = 2;
+			// 
+			// tbprimitive
+			// 
+			this.tbprimitive.Controls.Add(this.lbprimitives);
+			this.tbprimitive.Location = new System.Drawing.Point(4, 22);
+			this.tbprimitive.Name = "tbprimitive";
+			this.tbprimitive.Size = new System.Drawing.Size(384, 398);
+			this.tbprimitive.TabIndex = 0;
+			this.tbprimitive.Text = "Primitives";
+			// 
+			// lbprimitives
+			// 
+			this.lbprimitives.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lbprimitives.IntegralHeight = false;
+			this.lbprimitives.Location = new System.Drawing.Point(8, 8);
+			this.lbprimitives.Name = "lbprimitives";
+			this.lbprimitives.Size = new System.Drawing.Size(368, 384);
+			this.lbprimitives.Sorted = true;
+			this.lbprimitives.TabIndex = 0;
+			this.lbprimitives.DoubleClick += new System.EventHandler(this.OK_Click);
+			// 
+			// tbglobal
+			// 
+			this.tbglobal.Controls.Add(this.lbglobal);
+			this.tbglobal.Location = new System.Drawing.Point(4, 22);
+			this.tbglobal.Name = "tbglobal";
+			this.tbglobal.Size = new System.Drawing.Size(384, 398);
+			this.tbglobal.TabIndex = 3;
+			this.tbglobal.Text = "Global";
+			this.tbglobal.Visible = false;
+			// 
+			// lbglobal
+			// 
+			this.lbglobal.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lbglobal.IntegralHeight = false;
+			this.lbglobal.Location = new System.Drawing.Point(8, 7);
+			this.lbglobal.Name = "lbglobal";
+			this.lbglobal.Size = new System.Drawing.Size(368, 384);
+			this.lbglobal.Sorted = true;
+			this.lbglobal.TabIndex = 1;
+			this.lbglobal.DoubleClick += new System.EventHandler(this.OK_Click);
+			// 
+			// tbsemi
+			// 
+			this.tbsemi.Controls.Add(this.lbsemi);
+			this.tbsemi.Location = new System.Drawing.Point(4, 22);
+			this.tbsemi.Name = "tbsemi";
+			this.tbsemi.Size = new System.Drawing.Size(384, 398);
+			this.tbsemi.TabIndex = 2;
+			this.tbsemi.Text = "SemiGlobal";
+			this.tbsemi.Visible = false;
+			// 
+			// lbsemi
+			// 
+			this.lbsemi.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lbsemi.IntegralHeight = false;
+			this.lbsemi.Location = new System.Drawing.Point(8, 7);
+			this.lbsemi.Name = "lbsemi";
+			this.lbsemi.Size = new System.Drawing.Size(368, 384);
+			this.lbsemi.Sorted = true;
+			this.lbsemi.TabIndex = 1;
+			this.lbsemi.DoubleClick += new System.EventHandler(this.OK_Click);
+			// 
+			// tbprivate
+			// 
+			this.tbprivate.Controls.Add(this.lbprivate);
+			this.tbprivate.Location = new System.Drawing.Point(4, 22);
+			this.tbprivate.Name = "tbprivate";
+			this.tbprivate.Size = new System.Drawing.Size(384, 398);
+			this.tbprivate.TabIndex = 1;
+			this.tbprivate.Text = "Private";
+			this.tbprivate.Visible = false;
+			// 
+			// lbprivate
+			// 
+			this.lbprivate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+				| System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lbprivate.IntegralHeight = false;
+			this.lbprivate.Location = new System.Drawing.Point(8, 7);
+			this.lbprivate.Name = "lbprivate";
+			this.lbprivate.Size = new System.Drawing.Size(368, 384);
+			this.lbprivate.Sorted = true;
+			this.lbprivate.TabIndex = 1;
+			this.lbprivate.DoubleClick += new System.EventHandler(this.OK_Click);
+			// 
+			// OK
+			// 
+			this.OK.Location = new System.Drawing.Point(320, 440);
+			this.OK.Name = "OK";
+			this.OK.Size = new System.Drawing.Size(80, 24);
+			this.OK.TabIndex = 3;
+			this.OK.Text = "Okay";
+			this.OK.Click += new System.EventHandler(this.OK_Click);
+			// 
+			// Cancel
+			// 
+			this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.Cancel.Location = new System.Drawing.Point(240, 440);
+			this.Cancel.Name = "Cancel";
+			this.Cancel.TabIndex = 4;
+			this.Cancel.Text = "Cancel";
+			this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
+			// 
+			// BhavOpCodeWizUI
+			// 
+			this.AcceptButton = this.OK;
+			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
+			this.CancelButton = this.Cancel;
+			this.ClientSize = new System.Drawing.Size(410, 471);
+			this.Controls.Add(this.Cancel);
+			this.Controls.Add(this.OK);
+			this.Controls.Add(this.pnOpCode);
+			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+			this.Name = "BhavOpCodeWizUI";
+			this.ShowInTaskbar = false;
+			this.Text = "BhavOpCodeWizUI";
+			this.pnOpCode.ResumeLayout(false);
+			this.tcopcodes.ResumeLayout(false);
+			this.tbprimitive.ResumeLayout(false);
+			this.tbglobal.ResumeLayout(false);
+			this.tbsemi.ResumeLayout(false);
+			this.tbprivate.ResumeLayout(false);
+			this.ResumeLayout(false);
 
-			this.DialogResult = DialogResult.OK;
-			Close();
 		}
+		#endregion
+
+		private void OK_Click(object sender, System.EventArgs e)
+		{
+			this.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.Close();
+		}
+
+		private void Cancel_Click(object sender, System.EventArgs e)
+		{
+			this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.Close();
+		}
+
 	}
+
 }

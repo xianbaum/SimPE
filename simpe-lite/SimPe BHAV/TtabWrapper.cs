@@ -609,7 +609,7 @@ namespace SimPe.PackedFiles.Wrapper
 			pfd.Group = parent.FileDescriptor.Group;
 			bhav.FileDescriptor = pfd;
 
-			return UserInterface.BhavOperandWiz.OpcodeName(bhav, opcode);
+			return pjse.BhavNameWizProvider.For(bhav, opcode, null).ShortName;
 		}
 
 		#endregion

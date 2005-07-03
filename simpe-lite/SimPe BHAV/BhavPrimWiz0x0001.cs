@@ -1,8 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
  *   peter@drealm.info                                                     *
- *   Copyright (C) 2005 by Ambertation                                     *
- *   quaxi@ambertation.de                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -25,14 +23,17 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
+using SimPe.PackedFiles.UserInterface;
+using pjse.BhavNameWizards;
+using pjse.BhavOperandWizards;
 
-namespace SimPe.PackedFiles.UserInterface
+namespace pjse.BhavOperandWizards.Wiz0x0001
 {
 	#region internal form
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
-	internal class MyForm0x0001 : System.Windows.Forms.Form
+	internal class UI : System.Windows.Forms.Form
 	{
 		#region Form variables
 
@@ -45,7 +46,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.ComponentModel.Container components = null;
 		#endregion
 
-		public MyForm0x0001()
+		public UI()
 		{
 			//
 			// Erforderlich für die Windows Form-Designerunterstützung
@@ -70,30 +71,26 @@ namespace SimPe.PackedFiles.UserInterface
 
 		
 		#region MyForm0x0001
-		private string[] parms;
-		private byte operand0;
+		public void Execute(Instruction inst)
+		{
+			byte operand0 = inst.Operands[0];
+
+			this.cbGenericSimsCall.Items.Clear();
+			for (byte i = 0; i < PrimWiz0x0001.Length; i++)
+				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + (new PrimWiz0x0001(i)).VeryShortName);
+			this.lbGenericSimsCallparms.Text = "Should never see this";
+
+			if (operand0 < PrimWiz0x0001.Length)
+				this.cbGenericSimsCall.SelectedIndex = operand0;
+			else
+				this.cbGenericSimsCall.SelectedIndex = -1;
+		}
 
 		public Instruction Write(Instruction inst)
 		{
 			if (this.cbGenericSimsCall.SelectedIndex >= 0)
 				inst.Operands[0] = (byte)this.cbGenericSimsCall.SelectedIndex;
 			return inst;
-		}
-
-		public void Execute(Instruction inst, string[] genericSimsCall, string[] parms)
-		{
-			this.operand0 = inst.Operands[0];
-			this.parms = parms;
-
-			this.cbGenericSimsCall.Items.Clear();
-			for (byte i = 0; i < genericSimsCall.Length; i++)
-				this.cbGenericSimsCall.Items.Add("0x" + Helper.HexString(i) + ": " + genericSimsCall[i]);
-			this.lbGenericSimsCallparms.Text = "Unknown operand 0x" + Helper.HexString(operand0);
-
-			if (operand0 < genericSimsCall.Length)
-				this.cbGenericSimsCall.SelectedIndex = operand0;
-			else
-				this.cbGenericSimsCall.SelectedIndex = -1;
 		}
 
 		#endregion
@@ -106,8 +103,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void InitializeComponent()
 		{
 			this.pnWiz0x0001 = new System.Windows.Forms.Panel();
-			this.cbGenericSimsCall = new System.Windows.Forms.ComboBox();
 			this.lbGenericSimsCallparms = new System.Windows.Forms.Label();
+			this.cbGenericSimsCall = new System.Windows.Forms.ComboBox();
 			this.pnWiz0x0001.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -121,6 +118,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnWiz0x0001.Size = new System.Drawing.Size(264, 72);
 			this.pnWiz0x0001.TabIndex = 0;
 			// 
+			// lbGenericSimsCallparms
+			// 
+			this.lbGenericSimsCallparms.Location = new System.Drawing.Point(0, 24);
+			this.lbGenericSimsCallparms.Name = "lbGenericSimsCallparms";
+			this.lbGenericSimsCallparms.Size = new System.Drawing.Size(264, 48);
+			this.lbGenericSimsCallparms.TabIndex = 1;
+			this.lbGenericSimsCallparms.Text = "label1";
+			// 
 			// cbGenericSimsCall
 			// 
 			this.cbGenericSimsCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -130,22 +135,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbGenericSimsCall.TabIndex = 0;
 			this.cbGenericSimsCall.SelectedIndexChanged += new System.EventHandler(this.cbGenericSimsCall_Changed);
 			// 
-			// lbGenericSimsCallparms
-			// 
-			this.lbGenericSimsCallparms.Location = new System.Drawing.Point(0, 24);
-			this.lbGenericSimsCallparms.Name = "lbGenericSimsCallparms";
-			this.lbGenericSimsCallparms.Size = new System.Drawing.Size(264, 48);
-			this.lbGenericSimsCallparms.TabIndex = 1;
-			this.lbGenericSimsCallparms.Text = "label1";
-			// 
-			// MyForm0x0001
+			// UI
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
 			this.ClientSize = new System.Drawing.Size(640, 366);
 			this.Controls.Add(this.pnWiz0x0001);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "MyForm0x0001";
-			this.Text = "Instruction Container";
+			this.Name = "UI";
+			this.Text = "UI";
 			this.pnWiz0x0001.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -154,38 +151,43 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void cbGenericSimsCall_Changed(object sender, System.EventArgs e)
 		{
+
 			if (cbGenericSimsCall.SelectedIndex < 0)
-				lbGenericSimsCallparms.Text = "Unknown operand 0x" + Helper.HexString(operand0);
+				lbGenericSimsCallparms.Text = "Unknown operand 0 value 0x" + SimPe.Helper.HexString(cbGenericSimsCall.SelectedIndex);
 			else
-				lbGenericSimsCallparms.Text = parms[cbGenericSimsCall.SelectedIndex];
+			{
+				lbGenericSimsCallparms.Text = (new PrimWiz0x0001((byte)cbGenericSimsCall.SelectedIndex)).LongName;
+			}
 		}
 
 	}
 
 	#endregion
+}
 
-	public class BhavPrimWiz0x0001 : pjse.ABhavPrimWiz
+namespace pjse.BhavOperandWizards
+{
+	 public class BhavOperandWiz0x0001 : pjse.ABhavOperandWiz
 	{
-		public BhavPrimWiz0x0001() : base() { }
+		public BhavOperandWiz0x0001() : base() { }
 
-		public BhavPrimWiz0x0001(Instruction i) : base() { instruction = i; }
+		public BhavOperandWiz0x0001(Instruction i) : base(i) { }
 
 
-		#region pjse.ABhavPrimWiz
-		private MyForm0x0001 myForm = null;
-
+		#region pjse.ABhavOperandWiz
+		private Wiz0x0001.UI myForm = null;
 		public override Panel bhavPrimWizPanel
 		{
 			get
 			{
-				myForm = new MyForm0x0001();
+				if (myForm == null) myForm = new Wiz0x0001.UI();
 				return myForm.pnWiz0x0001;
 			}
 		}
 
 		public override void Execute()
 		{
-			if (instruction != null) myForm.Execute(instruction, genericSimsCall, parms);
+			if (instruction != null) myForm.Execute(instruction);
 		}
 
 		public override Instruction Write()
@@ -193,28 +195,63 @@ namespace SimPe.PackedFiles.UserInterface
 			return (instruction == null) ? null : myForm.Write(instruction);
 		}
 
-		public override string OpcodeName(Bhav parent, ushort opcode, byte[] operands)
+		#endregion
+	}
+
+}
+
+
+namespace pjse.BhavNameWizards
+{
+	public class PrimWiz0x0001 : ANamePrimitiveWiz
+	{
+		public PrimWiz0x0001(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
+		public PrimWiz0x0001(Bhav parent, byte[] operands) : base(parent, operands) { instruction.Opcode = 0x0001; }
+		public PrimWiz0x0001(byte operand0) : base(null, null)
 		{
-			byte operand0 = operands[0];
-			string s = "0x" + Helper.HexString(operand0) + ": ";
-			if (operand0 < genericSimsCall.Length)
+			instruction = new Instruction(null);
+			instruction.Opcode = 0x0001;
+			instruction.Operands[0] = operand0;
+		}
+		public PrimWiz0x0001(Instruction i) : base(i) {}
+		public string VeryShortName
+		{
+			get
 			{
-				s += genericSimsCall[operand0];
-				if (!parms[operand0].Equals(""))
-					s += " (" + parms[operand0] + ")";
-				return s;
+				if (this.instruction == null && instruction.Operands == null) return "";
+				if (instruction.Operands[0] >= parms.Length) return "Unknown operand 0: 0x" + SimPe.Helper.HexString(instruction.Operands[0]);
+				return op0names[instruction.Operands[0]];
 			}
-			else
-				return s + "Unknown";
-			//return Localization.Manager.GetString("Unknown");
 		}
 
-		#endregion
+		public override string ShortName
+		{
+			get
+			{
+				string s = base.ShortName;
+				if (this.instruction == null && instruction.Operands == null) return s;
+				if (instruction.Operands[0] >= parms.Length) return s + " Unknown operand 0: 0x" + SimPe.Helper.HexString(instruction.Operands[0]);
+				return s + " " + op0names[instruction.Operands[0]];
+			}
+		}
+
+		public override string LongName
+		{
+			get
+			{
+				if ((this.instruction == null && instruction.Operands == null) || (instruction.Operands[0] >= parms.Length)) return ShortName;
+				return ShortName + " (" + parms[instruction.Operands[0]] + ")";
+			}
+		}
+
+
+		internal static int Length { get { return op0names.Length; } }
 
 		#region genericSimsCall strings
-		private string[] genericSimsCall =
+		// taken from DisASim2 by Shy - public domain
+		private static string[] op0names =
 			{
-				 "Exit Lot" // 0x00
+				"Exit Lot" // 0x00
 				,"center view on stack object"
 				,"set action icon to stack object"
 				,"uncenter view"
@@ -270,9 +307,9 @@ namespace SimPe.PackedFiles.UserInterface
 				,"Set Facial Overlay State"
 			};
 		#endregion
-
 		#region genericSimsCall param descriptions
-		private string[] parms =
+		// taken from DisASim2 by Shy - public domain
+		private static string[] parms =
 			{
 				"Temp 0:neighborhood, Temp 1:evict, Temp 2:save lot, Temp 3:reset tutorial" // 0x00
 				,"" // 0x01
@@ -331,5 +368,6 @@ namespace SimPe.PackedFiles.UserInterface
 			};
 		#endregion
 	}
+
 
 }
