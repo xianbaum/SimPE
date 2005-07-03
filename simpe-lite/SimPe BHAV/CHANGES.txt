@@ -1,4 +1,35 @@
 
+03 July 2005 14:20 - Split Name and Operand wizards, namespace changes, wrappedByteArray
+  * Still not sure the interface/abstract classes are right.
+  * What's "LoadBHAV" doing in a class called BhavNameWizard?
+  * OpCode and Operand Wizards have Okay and Cancel buttons that respond to Enter and Escape!!
+  * OpCode Wizard puts the hourglass up correctly and gets semiglobals reliably
+  * BhavWrapper takes even more care to flag WrapperChanged when something changes
+  SimPe BHAV\
+    ABhavPrimWiz.cs (split, renamed then deleted!)
+    BhavForm.cs 1.20.4.4
+    BhavInstListItemUI.cs 1.10.6.2
+    BhavNameWizProvider.cs 1.1.2.1
+    BhavNameWizProviders.cs 1.1.2.1
+    BhavOpCodeWiz.cs 1.1.2.1
+    BhavOpCodeWiz.resx 1.1.2.1
+    BhavOperandWiz.cs 1.1.8.3
+    BhavOperandWiz.resx 1.1.8.2
+    BhavOperandWizProvider.cs 1.1.2.1
+    BhavPrimWiz0x0001.cs 1.1.2.2
+    BhavPrimWiz0x0001.resx 1.1.2.2
+    BhavPrimWiz0x0002.cs 1.1.2.3
+    BhavPrimWiz0x0002.resx 1.1.2.3
+    BhavPrimWizDefault.cs 1.1.2.2
+    BhavPrimWizDefault.resx 1.1.2.2
+    BhavWrapper.cs 1.15.2.3
+    ObjfForm.cs 1.3.2.1
+    ObjfItem.cs 1.1.8.3
+    pjse coder plugin.csproj 1.6.2.4
+    TtabForm.cs 1.6.2.1
+    TtabWrapper.cs 1.5.2.3
+    WrapperFactory.cs 1.7.2.1
+
 01 July 2005 18:13 - Primitive 0x0001 Generic Sims Call initial implementation
   SimPe BHAV\
     BhavForm.cs 1.20.4.3
