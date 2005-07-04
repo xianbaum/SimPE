@@ -872,7 +872,7 @@ namespace SimPe.PackedFiles.Wrapper
 			else
 			{
 				writer.Write(addr1);
-				writer.Write(addr1);
+				writer.Write(addr2);
 			}
 			switch (parent.Header.Format)
 			{
