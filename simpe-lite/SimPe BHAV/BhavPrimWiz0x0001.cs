@@ -228,7 +228,7 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				string s = base.ShortName;
+				string s = "[generic]";
 				if (this.instruction == null && instruction.Operands == null) return s;
 				if (instruction.Operands[0] >= parms.Length) return s + " Unknown operand 0: 0x" + SimPe.Helper.HexString(instruction.Operands[0]);
 				return s + " " + op0names[instruction.Operands[0]];
@@ -240,12 +240,14 @@ namespace pjse.BhavNameWizards
 			get
 			{
 				if ((this.instruction == null && instruction.Operands == null) || (instruction.Operands[0] >= parms.Length)) return ShortName;
-				return ShortName + " (" + parms[instruction.Operands[0]] + ")";
+				string s = parms[instruction.Operands[0]].Trim();
+				if (s.Equals("")) s = "no args";
+				return ShortName + " (" + s + ")";
 			}
 		}
 
 
-		internal static int Length { get { return op0names.Length; } }
+		internal static new int Length { get { return op0names.Length; } }
 
 		#region genericSimsCall strings
 		// taken from DisASim2 by Shy - public domain

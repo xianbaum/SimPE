@@ -142,12 +142,14 @@ namespace pjse.BhavNameWizards
 				return ((instruction.Opcode < gPrims.Length) ? gPrims[instruction.Opcode] : "Unknown opcode") + " (0x" + SimPe.Helper.HexString(instruction.Opcode) +")";
 			}
 		}
+		public static int Length { get { return gPrims.Length; } }
+		public static string Name(int index) { return (index < 0 || index >= gPrims.Length) ? null : gPrims[index]; }
 		#region Primitive names
 		protected static string[] gPrims =
 			{
 				"Sleep" // 0x00
 				,"Generic Sims Call"
-				,""
+				,"Expression"
 				,"Find Best Interaction"
 				,"~(old)Grab" // 0x04
 				,"~(old)Drop"
@@ -275,18 +277,18 @@ namespace pjse.BhavNameWizards
 		#endregion
 		protected string dataOwner(byte doid, ushort instance)
 		{
+			string s = null;
 			switch(doid)
 			{
 				case 0:
 				case 1:
-					string s = null;
 					if (instruction.Parent != null && instruction.Parent.FileDescriptor != null)
 						s = readStr(instruction.Parent.FileDescriptor.Group, 0x0100, instance);
 					if (s != null && !s.Trim().Equals("")) s = " [Group: " + s + "]";
-					else s = "";
-					return dataOwners[doid] + "0x" + SimPe.Helper.HexString(instance) + s;
+					else s = " [Unknown Group]";
+					break;
 			}
-			return null;
+			return dataOwners[doid] + " 0x" + SimPe.Helper.HexString(instance) + s;
 		}
 		#region data owner names
 		private string[] dataOwners =
@@ -298,9 +300,9 @@ namespace pjse.BhavNameWizards
 				,"Stack Object's" // 0x04
 				,"Stack Object's Semi Attribute"
 				,"Global"
-				,"Literal Value"
+				,"(Literal Value)"
 				,"Temp" // 0x08
-				,"Param"
+				,"parameter number"
 				,"Stack Object"
 				,"Temp"
 				,"check tree ad range" // 0x0c
@@ -382,7 +384,7 @@ namespace pjse.BhavNameWizards
 				return b.FileName + " (Args: " + b.Header.ArgumentCount.ToString() + ")";
 			}
 		}
-		//public abstract new Bhav LoadBHAV();
+
 	}
 
 }

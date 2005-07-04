@@ -421,8 +421,6 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				if (instruction != null)
-					return OpcodeName(instruction.Parent, instruction.Opcode, instruction.Operands);
 				return OpcodeName(instruction.Parent, instruction.Opcode, instruction.Operands);
 				/*
 				string s = base.ShortName;

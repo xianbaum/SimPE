@@ -78,8 +78,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#region BhavOpCodeWizUI
 		//the current SemiGroup
-		private uint lastSemiGroup = 0;
-		Interfaces.Files.IPackedFileDescriptor gpfd = null;
 
 		public int Execute(Bhav bhav, Control form)
 		{
@@ -90,7 +88,7 @@ namespace SimPe.PackedFiles.UserInterface
 			form.Cursor = Cursors.WaitCursor;
 			this.Cursor = Cursors.WaitCursor;
 
-			Primitives(bhav);
+			Primitives();
 			Globals(bhav);
 			Locals(bhav);
 			SemiGlobals(bhav);
@@ -109,40 +107,36 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case System.Windows.Forms.DialogResult.OK:
 				case System.Windows.Forms.DialogResult.Yes:
-				switch (this.tcopcodes.SelectedIndex)
-				{
-					case 0:
-						if (lbprimitives.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprimitives.Items[lbprimitives.SelectedIndex]).Id;
-						break;
-					case 1:
-						if (lbglobal.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbglobal.Items[lbglobal.SelectedIndex]).Id;
-						break;
-					case 2:
-						if (lbsemi.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbsemi.Items[lbsemi.SelectedIndex]).Id;
-						break;
-					case 3:
-						if (lbprivate.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprivate.Items[lbprivate.SelectedIndex]).Id;
-						break;
-					default:
-						//opcode = -1;
-						break;
-				}
+					switch (this.tcopcodes.SelectedIndex)
+					{
+						case 0:
+							if (lbprimitives.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprimitives.Items[lbprimitives.SelectedIndex]).Id;
+							break;
+						case 1:
+							if (lbglobal.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbglobal.Items[lbglobal.SelectedIndex]).Id;
+							break;
+						case 2:
+							if (lbsemi.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbsemi.Items[lbsemi.SelectedIndex]).Id;
+							break;
+						case 3:
+							if (lbprivate.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprivate.Items[lbprivate.SelectedIndex]).Id;
+							break;
+						default:
+							break;
+					}
 					return opcode;
 				default:
 					return -1;
 			}
 		}
 
-		private void Primitives(Bhav bhav)
+		private void Primitives()
 		{
 			if (this.lbprimitives.Items.Count != 0) return;
 
-			if (bhav.Opcodes == null) return;
-
-			ArrayList opcodes = bhav.Opcodes.StoredPrimitives;
-			for (int i=0; i<opcodes.Count; i++)
+			for (int i=0; i<pjse.BhavNameWizards.ANamePrimitiveWiz.Length; i++)
 			{
-				string name = opcodes[i].ToString();
+				string name = pjse.BhavNameWizards.ANamePrimitiveWiz.Name(i);
 				if (!name.StartsWith("~"))
 				{
 					SimPe.Data.Alias a = new SimPe.Data.Alias((uint)i, name);
@@ -153,69 +147,40 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void Globals(Bhav wrapper)
 		{
-			Bhav bhav = new Bhav(wrapper.Opcodes);
-			bhav.Package = wrapper.Package;
-			bhav.FileDescriptor = wrapper.FileDescriptor;
-
 			if (this.lbglobal.Items.Count != 0) return;
 
-			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(Data.MetaData.BHAV_FILE);
-			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
+			SimPe.Data.Alias a = pjse.BhavNameWizards.GlobalWiz.First(wrapper);
+			while (a != null)
 			{
-				if ((pfd.Instance>=0x0100) && (pfd.Instance<0x1000) && (pfd.Group==0x7FD46CD0)) // Global BHAVs
-				{
-					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
-					SimPe.Data.Alias a = new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName);
-					lbglobal.Items.Add(a);
-				} 
+				lbglobal.Items.Add(a);
+				a = pjse.BhavNameWizards.GlobalWiz.Next();
 			}
 		}
 
 		private void Locals(Bhav wrapper)
 		{
-			Bhav bhav = new Bhav(wrapper.Opcodes);
-			bhav.Package = wrapper.Package;
-			bhav.FileDescriptor = wrapper.FileDescriptor;
-
 			this.lbprivate.Items.Clear();
-			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Package.FindFiles(Data.MetaData.BHAV_FILE);
-			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
+
+			SimPe.Data.Alias a = pjse.BhavNameWizards.LocalWiz.First(wrapper);
+			while (a != null)
 			{
-				if ((pfd.Instance>=0x1000) && (pfd.Instance<0x2000) && (pfd.Group==bhav.FileDescriptor.Group)) 
-				{
-					bhav.ProcessData(pfd, bhav.Package);
-					SimPe.Data.Alias a = new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName);
-					lbprivate.Items.Add(a);
-				}
+				lbprivate.Items.Add(a);
+				a = pjse.BhavNameWizards.LocalWiz.Next();
 			}
 		}
 
 		private void SemiGlobals(Bhav wrapper)
 		{
-			Bhav bhav = new Bhav(wrapper.Opcodes);
-			bhav.Package = wrapper.Package;
-			bhav.FileDescriptor = wrapper.FileDescriptor;
-
-			Glob glob = new Glob();
-			if (gpfd==null) gpfd = bhav.Package.FindFile(Data.MetaData.GLOB_FILE, 0, bhav.FileDescriptor.Group, 0x01);
-			if (gpfd!=null) glob.ProcessData(gpfd, bhav.Package);
-
-			if (this.lbsemi.Items.Count != 0 && lastSemiGroup == glob.SemiGlobalGroup) return;
-
+			if (this.lbsemi.Items.Count != 0 && pjse.BhavNameWizards.SemiGlobalWiz.SameGroup(wrapper)) return;
 			this.lbsemi.Items.Clear();
-			lastSemiGroup = glob.SemiGlobalGroup;
-			this.tbsemi.Text = glob.SemiGlobalName;
 
-			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(Data.MetaData.BHAV_FILE);
-			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
+			SimPe.Data.Alias a = pjse.BhavNameWizards.SemiGlobalWiz.First(wrapper);
+			while (a != null)
 			{
-				if ((pfd.Instance>=0x2000) && (pfd.Group == lastSemiGroup))
-				{
-					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
-					SimPe.Data.Alias a = new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName);
-					lbsemi.Items.Add(a);
-				}
+				lbsemi.Items.Add(a);
+				a = pjse.BhavNameWizards.SemiGlobalWiz.Next();
 			}
+			this.tbsemi.Text = pjse.BhavNameWizards.SemiGlobalWiz.SemiGroupName;
 		}
 
 
