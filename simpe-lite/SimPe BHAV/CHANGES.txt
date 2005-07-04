@@ -1,4 +1,8 @@
 
+04 July 2005 20:59 - Fix writing addr1 into addr2 (oops!)
+  SimPe BHAV\
+    BhavWrapper.cs 1.15.2.4
+
 04 July 2005 20:20 - Fixes (data owner, Wiz0x0001), move OpCodeWiz generics into NameWizProviders
   SimPe BHAV\
     BhavNameWizProvider.cs 1.1.2.2
