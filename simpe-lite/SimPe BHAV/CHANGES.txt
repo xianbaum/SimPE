@@ -1,4 +1,8 @@
 
+05 July 2005 22:45 - Add Shy's parsing info
+  SimPe BHAV\
+    BhavPrimWiz0x0002.cs 1.1.2.5
+
 04 July 2005 20:59 - Fix writing addr1 into addr2 (oops!)
   SimPe BHAV\
     BhavWrapper.cs 1.15.2.4
