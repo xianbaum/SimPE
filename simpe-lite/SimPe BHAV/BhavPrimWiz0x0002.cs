@@ -421,12 +421,8 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				return OpcodeName(instruction.Parent, instruction.Opcode, instruction.Operands);
-				/*
-				string s = base.ShortName;
-				if (this.instruction == null && this.operands == null) return s;
-				if (op0 >= parms.Length) return s + " Unknown operand 0: 0x" + SimPe.Helper.HexString(op0);
-				return s + " " + op0names[op0];*/
+				string s = OpcodeName(instruction.Parent, instruction.Opcode, instruction.Operands);
+				return parser(instruction.Operands);
 			}
 		}
 
@@ -510,7 +506,387 @@ namespace pjse.BhavNameWizards
 			return (ushort)((higher << 8) + lower);
 		}
 
+
+		#region gOperators
+		static string[] gOperators =
+	{
+		">" // 0x00
+		,"<"
+		,"=="
+		,"+="
+		,"-=" // 0x04
+		,":="
+		,"*="
+		,"/="
+		,"Test Flag" // 0x08
+		,"Set Flag"
+		,"Clear Flag"
+		,"++ and <"
+		,"mod=" // 0x0c
+		,"and="
+		,">="
+		,"<="
+		,"!=" // 0x10
+		,"-- and >"
+		,"or="
+		,"xor="
+		,":= abs()" // 0x14
+		,":= (UInt32)"
+	};
+		#endregion
+		#region gAllowedHeightFlags
+		static string[] gAllowedHeightFlags =
+		{
+			"Unknown"
+			,"undefined"
+			,"ground"
+			,"low table"
+			,"table"
+			,"on counter"
+			,"non-standard"
+			,"hand"
+			,"sitting"
+			,"end table"
+			,"in counter"
+			,"under counter"
+			,"decorative"
+		};
+		#endregion
+		#region gWallAdjFlags
+		static string[] gWallAdjFlags =
+		{
+			"Unknown"
+			,"wall on left = 1"
+			,"wall on right = 2"
+			,"wall in front = 3"
+			,"wall behind = 4"
+			,"wall above left = 5"
+			,"wall above right = 6"
+		};
+		#endregion
+		#region gFlags1
+		static string[] gFlags1 =
+		{
+			"Unknown"
+			,"can be stepped over"
+			,"allow object intersection"
+			,"allow object and person intersection"
+			,"can walk"
+			,"allow person intersection"
+			,"in use"
+			,"notified by idle for input"
+			,"Do NOT Use Maya Model Footprint"
+			,"chair facing"
+			,"burning"
+			,"hide for cutaway"
+			,"unused - was fireproof"
+			,"Remove Floor"
+			,"Add Floor if Required"
+			,"Hide Floor"
+			,"Lightning Strikeable"
+		};
+		#endregion
+		#region gWallFlags
+		static string[] gWallFlags =
+		{
+			"Unknown"
+			,"wall required in front"
+			,"wall required on right"
+			,"wall required behind"
+			,"wall required on left"
+			,"front-right facing wall required"
+			,"front-right facing wall allowed"
+			,"front-left facing wall required"
+			,"front-left facing wall allowed"
+			,"wall not allowed in front"
+			,"wall not allowed on right"
+			,"wall not allowed behind"
+			,"wall not allowed on left"
+			,"fence required"
+			,"fence arch prohibited"
+		};
+		#endregion
+		#region gHiddenFlags
+		static string[] gHiddenFlags =
+		{
+			"Unknown"
+			,"Hide Model(s)"
+			,"Hide Sounds"
+			,"Hide Effects"
+			,"Hide Attached Lights"
+			,"Hide Vox"
+		};
+		#endregion
+		#region gFlags2
+		static string[] gFlags2 =
+		{
+			"Unknown"
+			,"(unused)Can Break"
+			,"(unused)Can Die"
+			,"Can Be Repossessed"
+			,"Obstructs View"
+			,"(unused)Floats"
+			,"Burns"
+			,"(unused)Fixable"
+			,"Cannot Be Stolen"
+			,"(unused)Generates Heat"
+			,"Cine Cam Visible"
+			,"(unused)Generates Light"
+			,"(unused)Can Get Dirty"
+			,"(unused)Contributes To Asthetic"
+			,"Cannot be Billed"
+			,"Low Small Object (sim can idle close to it)"
+			,"Architectural Door"
+		};
+		#endregion
+		#region gHeightFlags
+		static string[] gHeightFlags =
+		{
+			"Unknown"
+			,"allow on floor"
+			,"allow on terrain"
+			,"allow under water"
+			,"forced to slot orientation"
+			,"allow door intersection (unused)"
+			,"allow window intersection (unused)"
+			,"allow on locked tile"
+			,"detached from floor"
+			,"allow on slope"
+			,"allow in air"
+			,"allow wall intersection"
+			,"allow in pool"
+			,"attached to ceiling"
+			,"allow on fence post"
+			,"allow on water surface"
+			,"allow roof intersection"
+		};
+		#endregion
+		#region gMoveFlags
+		static string[] gMoveFlags =
+		{
+			"Unknown"
+			,"sims can move it"
+			,"players can move it"
+			,"self propelled"
+			,"players can delete it"
+			,"stays after evict"
+			,"hand tool cannot move it"
+			,"hand tool cannot delete it"
+		};
+		#endregion
+		#region gPlacementFlags
+		static string[] gPlacementFlags =
+		{
+			"Unknown"
+			,"floor"
+			,"wall"
+			,"no other object of same type"
+			,"ceiling"
+		};
+		#endregion
+		#region gWallCutoutFlags
+		static string[] gWallCutoutFlags =
+		{
+			"Unknown"
+			,"front"
+			,"right"
+			,"behind"
+			,"left"
+			,"diagonal facing front left"
+			,"diagonal facing back right"
+			,"diagonal facing back left"
+			,"diagonal facing front right"
+		};
+		#endregion
+		#region gCensorFlags
+		static string[] gCensorFlags =
+		{
+			"Unknown"
+			,"pelvis"
+			,"spine if female"
+			,"head"
+			,"left hand"
+			,"right hand"
+			,"left foot"
+			,"right foot"
+			,"Full Body"
+		};
+		#endregion
+		#region gGhostFlags
+		static string[] gGhostFlags =
+		{
+			"Unknown"
+			,"IsGhost"
+			,"CanPassThroughObjects"
+			,"CanPassThroughWalls"
+			,"CanPassThroughPeople"
+			,"IgnoreTraversalCosts"
+		};
+		#endregion
+		#region gBodyFlags
+		static string[] gBodyFlags =
+		{
+			"Unknown"
+			,"Fat"
+			,"Pregnant - Full Show"
+			,"Pregnant - Half Way"
+			,"Pregnant - Not Showing"
+			,"Fit"
+			,"6 unused"
+			,"7 unused"
+			,"8 unused"
+			,"9 unused"
+			,"10 unused"
+			,"11 unused"
+			,"12 unused"
+			,"13 unused"
+			,"14 unused"
+			,"15 unused"
+			,"16 unused"
+		};
+		#endregion
+		#region gSelectionFlags
+		static string[] gSelectionFlags =
+		{
+			"Unknown"
+			,"Selectable(Shown in Skewer)"
+			,"Not Selectable"
+			,"Hide Relationships"
+		};
+		#endregion
+		#region gPersonFlags
+		static string[] gPersonFlags =
+		{
+			"Unknown"
+			,"ContinueSimulatingWhilePresent"
+			,"CarryIdle_OkToMove"
+		};
+		#endregion
+		#region gRoomSortFlags
+		static string[] gRoomSortFlags =
+		{
+			"Unknown"
+			,"kitchen"
+			,"bedroom"
+			,"bathroom"
+			,"family room"
+			,"outside"
+			,"dining room"
+			,"miscellaneous"
+			,"study"
+		};
+		#endregion
+		#region gFunctionSortFlags
+		static string[] gFunctionSortFlags =
+		{
+			"Unknown"
+			,"Comfort"
+			,"Surfaces"
+			,"Appliances"
+			,"Electronics"
+			,"Plumbing"
+			,"Decorative"
+			,"General (Misc)"
+			,"Lighting"
+			,"Hobbies"
+			,"Aspiration Rewards"
+			,"Career Rewards"
+		};
+		#endregion
+
+
+		private string parser(wrappedByteArray operands)
+		{
+			byte lhs_data_owner = operands[6]; // c2
+			byte rhs_data_owner = operands[7]; // b[x+7]
+			ushort lhs_value_word = (ushort)(operands[0] + (256 * operands[1])); // w1
+			ushort rhs_value_word = (ushort)(operands[2] + (256 * operands[3])); // w2
+			byte _operator = operands[5]; // c1
+
+			string s = "";
+			switch(_operator)
+			{
+				case 0x00:
+				case 0x01:
+				case 0x02:
+				case 0x08:
+				case 0x0e:
+				case 0x0f:
+				case 0x10:
+					s += "[test] "; break;
+				case 0x03:
+				case 0x04:
+				case 0x05:
+				case 0x06:
+				case 0x07:
+				case 0x09:
+				case 0x0a:
+				case 0x0c:
+				case 0x0d:
+				case 0x12:
+				case 0x13:
+				case 0x14:
+				case 0x15:
+					s += "[assign] "; break;
+				case 0x0b:
+				case 0x11:
+					s += "[assign & test] "; break;
+				default: s += "[unk expr] "; break;
+			}
+			s += dataOwner(lhs_data_owner, lhs_value_word);
+			s += " " + gOperators[_operator] + " ";
+
+			if (_operator >= 8 && _operator <= 10) // Flag operation
+			{
+				if (rhs_data_owner == 7) // literal
+				{
+					switch(lhs_data_owner)
+					{
+						case 0x03: // 0x03 "My"
+						case 0x04: // 0x04 "Stack Object's"
+						switch(lhs_value_word)
+						{
+							case 0x04: s += gAllowedHeightFlags[rhs_value_word]; break;
+							case 0x05: s += gWallAdjFlags[rhs_value_word]; break;
+							case 0x08: s += gFlags1[rhs_value_word]; break;
+							case 0x0d: s += gWallFlags[rhs_value_word]; break;
+							case 0x22: s += gHiddenFlags[rhs_value_word]; break;
+							case 0x28: s += gFlags2[rhs_value_word]; break;
+							case 0x2a: s += gHeightFlags[rhs_value_word]; break;
+							case 0x2b: s += gMoveFlags[rhs_value_word]; break;
+							case 0x3f: s += gPlacementFlags[rhs_value_word]; break;
+							case 0x45: s += gWallCutoutFlags[rhs_value_word]; break;
+						}
+							break;
+						case 0x12: // 0x12 "My Person Data"
+						case 0x13: // 0x13 "Stack Object's Person Data"
+						case 0x20: // 0x20 "Neighbour's Person Data"
+						switch(lhs_value_word)
+						{
+							case 0x1e: s += gCensorFlags[rhs_value_word]; break;
+							case 0x44: s += gGhostFlags[rhs_value_word]; break;
+							case 0x51: s += gBodyFlags[rhs_value_word]; break;
+							case 0x9e: s += gSelectionFlags[rhs_value_word]; break;
+							case 0x9f: s += gPersonFlags[rhs_value_word]; break;
+						}
+							break;
+						case 0x15: // 0x15 "stack object's definition"
+						case 0x26: // 0x26 "Neighbor's Object Definition"
+						case 0x33: // 0x33 "Stack Object's Master Definition"
+						switch(lhs_value_word)
+						{
+							case 0x27: s += gRoomSortFlags[rhs_value_word]; break;
+							case 0x28: s += gFunctionSortFlags[rhs_value_word]; break;
+						}
+							break;
+					}
+				}
+				s+= " (# " + dataOwner(rhs_data_owner, rhs_value_word) +")";
+			}
+			else
+				s+= dataOwner(rhs_data_owner, rhs_value_word);
+			return s;
+		}
+
 	}
-
-
 }
