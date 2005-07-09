@@ -1,4 +1,17 @@
 
+09 July 2005 23:20 - This should really have been done on head
+  * Pull instruction panel out of BhavForm into BhavInstPanel
+  * Break the Cancel button !!!
+  SimPe BHAV\
+    BhavForm.cs 1.20.4.5
+    BhavForm.resx 1.11.4.2
+    BhavInstListControl.cs 1.22.2.2
+    BhavInstPanel.cs 1.1.2.1
+    BhavInstPanel.resx 1.1.2.1
+    BhavNameWizProvider.cs 1.1.2.2
+    BhavWrapper.cs 1.15.2.5
+    pjse coder plugin.csproj 1.6.2.5
+
 05 July 2005 22:45 - Add Shy's parsing info
   SimPe BHAV\
     BhavPrimWiz0x0002.cs 1.1.2.5
