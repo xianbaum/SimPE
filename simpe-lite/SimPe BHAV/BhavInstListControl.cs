@@ -77,23 +77,62 @@ namespace SimPe.PackedFiles.UserInterface
 		private Bhav wrapper = null;
 		private BhavInstListItemUI[] flowitems;
 		private PictureBox pnflow = null;
+		private BhavInstPanel bhavInstPanel1 = null;
+		private Instruction origInst = null;
+		private bool setHandler = false;
 
-		public void UpdateGUI(Bhav wrp)
+		public void UpdateGUI(Bhav wrp, BhavInstPanel pn)
 		{
 			wrapper = wrp;
-			csel = (wrapper.Instructions.Count > 0) ? 0 : -1;
+			bhavInstPanel1 = pn;
+			if (!setHandler)
+			{
+				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+				setHandler = true;
+			}
+
 			pnflow1.Visible = false;
 			pnflow1.Controls.Clear();
 			pnflow2.Visible = false;
 			pnflow2.Controls.Clear();
 			pnflow = pnflow1;
 
+			csel = -1;
+			this.bhavInstPanel1.CurrentInst = null;
+			if (wrapper.Instructions.Count > 0)
+			{
+				csel = 0;
+				origInst = wrapper.Instructions[csel].Clone();
+				this.bhavInstPanel1.CurrentInst = wrapper.Instructions[csel];
+			}
 			myrepaint();
-			OnSelectedInstChanged(new EventArgs());
+		}
+
+		private void WrapperChanged(object sender, System.EventArgs e)
+		{
+			if (csel < 0) return;
+			foreach (Instruction i in wrapper.Instructions)
+			{
+				if (sender == i)
+				{
+					Update();
+				}
+			}
+			if (sender == (Instruction)wrapper.Instructions[csel])
+			{
+				bhavInstPanel1.EnableCancel();
+				flowitems[csel] = makeBhavInstListItemUI(csel);
+				flowitems[csel].MakeSelected();
+				pnflow.Image = DrawConnectors();
+				Update();
+			}
 		}
 
 
-		protected virtual void OnSelectedInstChanged(EventArgs e) { if (SelectedInstChanged != null) { SelectedInstChanged(this, e); } }
+		protected virtual void OnSelectedInstChanged(EventArgs e)
+		{
+			if (SelectedInstChanged != null) { SelectedInstChanged(this, e); }
+		}
 
 
 		/// <summary>
@@ -108,12 +147,18 @@ namespace SimPe.PackedFiles.UserInterface
 				if (value >= flowitems.Length || value < -1) throw new Exception("Internal failure: csel out of range: " + value.ToString());
 
 				if ((csel >= 0) && (csel < flowitems.Length))
+				{
 					flowitems[csel].MakeUnselected();
+				}
 
 				csel = value;
+				this.bhavInstPanel1.CurrentInst = null;
 
 				if ((csel >= 0) && (csel < flowitems.Length))
 				{
+					origInst = wrapper.Instructions[csel].Clone();
+					this.bhavInstPanel1.CurrentInst = wrapper.Instructions[csel];
+
 					flowitems[csel].MakeSelected();
 					flowitems[csel].Focus();
 					int newY = flowitems[csel].Top;
@@ -129,66 +174,12 @@ namespace SimPe.PackedFiles.UserInterface
 						this.AutoScrollPosition = new Point(this.AutoScrollPosition.X, newY);
 					}
 				}
+
 				pnflow.Image = DrawConnectors();
 				Update();
 				OnSelectedInstChanged(new EventArgs());
 			}
 		}
-
-		/// <summary>
-		/// Returns or sets the values of the currently selected instruction
-		/// </summary>
-		public Instruction SelectedInst
-		{
-			get 
-			{ 
-				if (csel >= 0) return ((Instruction)wrapper.Instructions[csel]).Clone(); else return null; 
-			}
-			set 
-			{
-				if (csel < 0 && value == null) return;
-				if (csel < 0) throw new Exception("No current instruction");
-				if (value == null) throw new Exception("Invalid value");
-				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
-
-				Instruction oldInst = wrapper.Instructions[csel].Clone();
-				wrapper.Instructions[csel] = value.Clone();
-
-				pnflow.Controls.RemoveAt(csel);
-				flowitems[csel] = makeBhavInstListItemUI(csel);
-				if (value.Target1 != oldInst.Target1)
-				{
-					if (oldInst.Target1 < wrapper.Instructions.Count)
-					{
-						pnflow.Controls.RemoveAt(oldInst.Target1);
-						flowitems[oldInst.Target1] = makeBhavInstListItemUI(oldInst.Target1);
-					}
-					if (value.Target1 < wrapper.Instructions.Count)
-					{
-						pnflow.Controls.RemoveAt(value.Target1);
-						flowitems[value.Target1] = makeBhavInstListItemUI(value.Target1);
-					}
-				}
-				if (value.Target2 != oldInst.Target2)
-				{
-					if (oldInst.Target2 < wrapper.Instructions.Count)
-					{
-						pnflow.Controls.RemoveAt(oldInst.Target2);
-						flowitems[oldInst.Target2] = makeBhavInstListItemUI(oldInst.Target2);
-					}
-					if (value.Target2 < wrapper.Instructions.Count)
-					{
-						pnflow.Controls.RemoveAt(value.Target2);
-						flowitems[value.Target2] = makeBhavInstListItemUI(value.Target2);
-					}
-				}
-				flowitems[csel].MakeSelected();
-				pnflow.Image = DrawConnectors();
-				Update();
-				OnSelectedInstChanged(new EventArgs());
-			}
-		}
-
 
 		public void Add()
 		{
@@ -198,7 +189,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (csel < 0)
 				wrapper.Instructions.Insert(0, new Instruction(wrapper));
 			else
-				wrapper.Instructions.Insert(csel + 1, SelectedInst);
+				wrapper.Instructions.Insert(csel + 1, ((Instruction)wrapper.Instructions[csel]).Clone());
 
 			csel = -1;
 			myrepaint();
@@ -257,6 +248,15 @@ namespace SimPe.PackedFiles.UserInterface
 				SelectedIndex = wrapper.Instructions.IndexOf(inst);
 		}
 
+
+		public void Cancel()
+		{
+			if (csel < 0 || csel > wrapper.Instructions.Count) return;
+			int oldcsel = csel;
+			csel = -1;
+			wrapper.Instructions[oldcsel] = origInst.Clone();
+			SelectedIndex = oldcsel;
+		}
 
 		private void myrepaint()
 		{
@@ -612,21 +612,6 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				myrepaint();
 			}
-		}
-
-		private void TagItem_Click(object sender, System.EventArgs e)
-		{
-			SelectedIndex = (int)((Control)sender).Tag;
-		}
-
-		private void LinkLabelLink_Click(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			SelectedIndex = (UInt16)((LinkLabel)sender).Tag;
-		}
-
-		private void LinkLabel_Click(object sender, System.EventArgs e)
-		{
-			TagItem_Click(((LinkLabel)sender).Parent, e);
 		}
 
 
