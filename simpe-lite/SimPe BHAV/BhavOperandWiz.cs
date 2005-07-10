@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -31,12 +33,16 @@ namespace SimPe.PackedFiles.UserInterface
 	/// </summary>
 	public class BhavOperandWiz : System.Windows.Forms.Form
 	{
-		private System.Windows.Forms.LinkLabel linkLabel1;
+		#region Form variables
+
 		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Button OK;
+		private System.Windows.Forms.Button Cancel;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
+		#endregion
 
 		public BhavOperandWiz()
 		{
@@ -45,9 +51,6 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-			//
-			// TODO: Fügen Sie den Konstruktorcode nach dem Aufruf von InitializeComponent hinzu
-			//
 		}
 
 		/// <summary>
@@ -65,6 +68,42 @@ namespace SimPe.PackedFiles.UserInterface
 			base.Dispose( disposing );
 		}
 
+
+		internal static bool Available(Instruction i)
+		{
+			return (i.OpCode == 0x0002);
+		}
+
+		public Instruction Execute(Instruction i)
+		{
+			BhavInstruction bi = new BhavInstruction();
+			//pjse.ABhavOperandWiz wiz = pjse.BhavOperandWizProvider.For(i);
+			//if (wiz == null) return null;
+
+			Panel pn = bi.pnExpression;
+			//Panel pn = wiz.bhavPrimWizPanel;
+			pn.Parent = this;
+			pn.Top = 0;
+			pn.Left = 0;
+			int footHeight = this.Height - this.panel1.Bottom + 8;
+			this.Width = pn.Width + 8;
+			this.Height = pn.Height + footHeight;
+			bi.Execute(i);
+			//wiz.Execute();
+
+			this.DialogResult = DialogResult.Cancel;
+			switch (ShowDialog())
+			{
+				case DialogResult.Yes:
+				case DialogResult.OK:
+					return bi.Write();
+					//return wiz.Write();
+				default:
+					return null;
+			}
+		}
+
+
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
 		/// Erforderliche Methode für die Designerunterstützung. 
@@ -72,39 +111,49 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
 			this.panel1 = new System.Windows.Forms.Panel();
+			this.OK = new System.Windows.Forms.Button();
+			this.Cancel = new System.Windows.Forms.Button();
 			this.SuspendLayout();
-			// 
-			// linkLabel1
-			// 
-			this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.linkLabel1.AutoSize = true;
-			this.linkLabel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel1.Location = new System.Drawing.Point(296, 128);
-			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(23, 17);
-			this.linkLabel1.TabIndex = 0;
-			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "OK";
-			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OK);
 			// 
 			// panel1
 			// 
 			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-			this.panel1.Location = new System.Drawing.Point(-8, 120);
+			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel1.Location = new System.Drawing.Point(0, 112);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(368, 1);
+			this.panel1.Size = new System.Drawing.Size(320, 1);
 			this.panel1.TabIndex = 1;
+			// 
+			// OK
+			// 
+			this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.OK.Location = new System.Drawing.Point(232, 120);
+			this.OK.Name = "OK";
+			this.OK.TabIndex = 2;
+			this.OK.Text = "Okay";
+			this.OK.Click += new System.EventHandler(this.OK_Click);
+			// 
+			// Cancel
+			// 
+			this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.Cancel.Location = new System.Drawing.Point(144, 120);
+			this.Cancel.Name = "Cancel";
+			this.Cancel.TabIndex = 2;
+			this.Cancel.Text = "Cancel";
+			this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
 			// 
 			// BhavOperandWiz
 			// 
+			this.AcceptButton = this.OK;
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(330, 152);
+			this.CancelButton = this.Cancel;
+			this.ClientSize = new System.Drawing.Size(314, 151);
+			this.Controls.Add(this.OK);
 			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.linkLabel1);
+			this.Controls.Add(this.Cancel);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "BhavOperandWiz";
@@ -115,39 +164,15 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 		#endregion
 
-		internal static bool Available(Instruction i)
-		{
-			return (i.OpCode == 0x0002);
-		}
-
-		internal Instruction Execute(Instruction i)
-		{
-			if (!Available(i)) return null;
-
-			BhavInstruction bi = new BhavInstruction();
-
-			bi.Execute(i);
-			Panel pn = bi.pnExpression;
-			pn.Parent = this;
-			pn.Top = 0;
-			pn.Left = 0;
-			bi.Width = pn.Width + 8;
-			pn.Height = pn.Height + 24;
-
-			this.DialogResult = DialogResult.Cancel;
-			switch (ShowDialog())
-			{
-				case DialogResult.Yes:
-				case DialogResult.OK:
-					return bi.Write();
-				default:
-					return null;
-			}
-		}
-
-		private void OK(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void OK_Click(object sender, System.EventArgs e)
 		{
 			this.DialogResult = DialogResult.OK;
+			Close();
+		}
+
+		private void Cancel_Click(object sender, System.EventArgs e)
+		{
+			this.DialogResult = DialogResult.Cancel;
 			Close();
 		}
 	}

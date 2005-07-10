@@ -42,7 +42,7 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Returns a handle to the Bhav Wizard Window
 		/// </summary>
-		internal static BhavOpCodeWiz BhavWizardForm 
+		internal static BhavOpCodeWiz BhavWizardForm
 		{
 			get 
 			{
