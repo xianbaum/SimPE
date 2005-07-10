@@ -1,4 +1,8 @@
 
+10 July 2005 14:35 - Manual merge with HEAD (partial) - Commit disables Cancel
+  SimPe BHAV\
+    BhavForm.cs 1.20.4.8
+
 10 July 2005 14:25 - Manual merge with HEAD (partial)
   SimPe BHAV\
     BhavForm.cs 1.20.4.7
