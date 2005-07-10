@@ -149,7 +149,7 @@ namespace SimPe.PackedFiles.UserInterface
 				if (csel < 0 && value == null) return;
 				if (csel < 0) throw new Exception("No current instruction");
 				if (value == null) throw new Exception("Invalid value");
-				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range" + value.ToString());
+				if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
 
 				Instruction oldInst = wrapper.Instructions[csel].Clone();
 				wrapper.Instructions[csel] = value.Clone();
