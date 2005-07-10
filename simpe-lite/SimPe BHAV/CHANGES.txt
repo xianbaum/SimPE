@@ -1,4 +1,11 @@
 
+10 July 2005 11:35 - Ensure WrapperChanged raised in yet more places (all done?)
+  SimPe BHAV\
+    BhavForm.cs 1.22
+    BhavInstruction.cs 1.2
+    BhavOperandWiz.cs 1.2
+    BhavWrapper.cs 1.17
+
 10 July 2005 10:33 - Ensure WrapperChanged raised in more places (still some missing)
   SimPe BHAV\
     BhavHeader.cs (deleted)
