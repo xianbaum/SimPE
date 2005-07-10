@@ -1,4 +1,10 @@
 
+10 July 2005 14:53 - Apply OpcodeDecoder-branch fixes to HEAD (5 of n)
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.3
+    BhavOperandWiz.resx 1.2
+    WrapperFactory.cs 1.8
+
 10 July 2005 13:55 - Apply OpcodeDecoder-branch fixes to HEAD (4 of n)
   SimPe BHAV\
     ObjfForm.cs 1.4
