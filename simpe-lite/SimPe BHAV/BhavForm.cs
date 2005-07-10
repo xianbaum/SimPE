@@ -109,9 +109,6 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-			//
-			// TODO: Add any constructor code after InitializeComponent call
-			//
 			Control[] cs = {
 				tbLocalC, lbLocalC, tbArgC, lbArgC, tbReserved, lbReserved,
 				tbFlags, lbFlags, tbType, lbType, tbFormat, lbFormat };
@@ -173,9 +170,19 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SetReadOnly(bool state) 
 		{
-			if (((string)this.Tag).Equals("Popup")) state = true;
+			if (((string)this.Tag).Equals("Popup"))
+			{
+				// make it very clear it's read only
+				tbFilename.Enabled = tbFormat.Enabled = tbType.Enabled = tbArgC.Enabled = 
+					tbLocalC.Enabled = tbFlags.Enabled = tbReserved.Enabled =
+					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
+					btnDel.Visible = btnAdd.Visible = 
+					btnOpCode.Visible = btnOperandWiz.Visible = 
+					btnCancel.Visible = false;
+				state = true;
+			}
 
-			llopenbhav.Enabled = !state;
+			//llopenbhav.Enabled = !state;
 			tbInst_OpCode.ReadOnly = state;
 			btnOpCode.Enabled = !state;
 			tbInst_Reserved.ReadOnly = state;
@@ -225,7 +232,7 @@ namespace SimPe.PackedFiles.UserInterface
 					b = Instruction.LoadGlobalBHAV(inst.OpCode);
 				llopenbhav.Enabled = (b!=null);
 
-				btnDel.Enabled = wrapper.Instructions.Count > 1;
+				this.btnDel.Enabled = wrapper.Instructions.Count > 1;
 
 				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 
@@ -312,8 +319,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SendInst(Instruction currentInst)
 		{
-			this.tbInst_Instruction.Text = currentInst.ToString();
 			this.btnCancel.Enabled = true;
+
 			bool origstate = internalchg;
 			internalchg = true;
 			this.pnflowcontainer.SelectedInst = currentInst;
@@ -325,6 +332,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
 			this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
 			internalchg = origstate;
+
+			this.tbInst_Instruction.Text = currentInst.ToString();
 		}
 		#endregion
 
@@ -2140,17 +2149,8 @@ namespace SimPe.PackedFiles.UserInterface
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
 			Bhav b = Instruction.LoadGlobalBHAV(pnflowcontainer.SelectedInst.OpCode);
 			BhavForm ui = (BhavForm)b.UIHandler;
-			//ui.gbInstruction.Location = new Point(ui.gbInstruction.Location.X, ui.gbMove.Location.Y);
 			ui.tbInst_Instruction.Width = ui.gbInstruction.Width - (2 * ui.tbInst_Instruction.Location.X);
-			// but make it clear it's read only
-			ui.tbFilename.Enabled = ui.tbFormat.Enabled = ui.tbType.Enabled = ui.tbArgC.Enabled = 
-				ui.tbLocalC.Enabled = ui.tbFlags.Enabled = ui.tbReserved.Enabled =
-				ui.btnSort.Visible = ui.btnCommit.Visible = ui.gbMove.Visible = 
-				ui.btnDel.Visible = ui.btnAdd.Visible = 
-				ui.llopenbhav.Visible = ui.btnOpCode.Visible = ui.btnOperandWiz.Visible = 
-				ui.btnCancel.Visible = false;
-			// Tell the SetReadOnly function it's in a popup
-			ui.Tag = "Popup";
+			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
 			ui.Text = "Global BHAV: " + pnflowcontainer.SelectedInst.ToString();
 			b.RefreshUI();
 			ui.Show();
@@ -2158,12 +2158,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
-			Bhav bhav = new Bhav(wrapper.Opcodes);
-			bhav.Package = wrapper.Package;
-			bhav.FileDescriptor = wrapper.FileDescriptor;
-
 			Instruction currentInst = this.pnflowcontainer.SelectedInst;
-			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
+
+			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent);
 
 			if (opcode != -1 && opcode != currentInst.OpCode)
 			{
