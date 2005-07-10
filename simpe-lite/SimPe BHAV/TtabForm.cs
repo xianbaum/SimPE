@@ -2118,7 +2118,7 @@ namespace SimPe.PackedFiles.UserInterface
 				bhav.Package = wrapper.Package;
 				bhav.FileDescriptor = wrapper.FileDescriptor;
 				
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
+				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, ttabPanel.Parent);
 
 				if (opcode != -1)
 				{
@@ -2143,7 +2143,7 @@ namespace SimPe.PackedFiles.UserInterface
 				bhav.Package = wrapper.Package;
 				bhav.FileDescriptor = wrapper.FileDescriptor;
 				
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, this);
+				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, ttabPanel.Parent);
 
 				if (opcode != -1)
 				{

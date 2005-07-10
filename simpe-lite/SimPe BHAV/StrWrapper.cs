@@ -391,7 +391,7 @@ namespace SimPe.PackedFiles.Wrapper
 				uint[] types = {
 								    0x53545223  // STR#
 								   ,0x54544173  // TTAs
-								   //,0x43545353   //CTSS
+								   ,0x43545353  // CTSS
 							   };
 			
 				return types;
