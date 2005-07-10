@@ -2116,6 +2116,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			try 
 			{
+				this.pnflowcontainer.SelectedInst = this.pnflowcontainer.SelectedInst;
 				wrapper.SynchronizeUserData();
 				btnCommit.Enabled = wrapper.Changed;
 			} 
