@@ -371,7 +371,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			this.btnCommit.Enabled = true;
+			this.btnCommit.Enabled = wrapper.Changed;
 		}
 
 		#endregion
@@ -2110,8 +2110,9 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			try 
 			{
+				this.pnflowcontainer.SelectedInst = this.pnflowcontainer.SelectedInst;
 				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = false;
+				btnCommit.Enabled = wrapper.Changed;
 			} 
 			catch (Exception ex) 
 			{

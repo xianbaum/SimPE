@@ -88,6 +88,9 @@ namespace SimPe.PackedFiles.Wrapper
 		public BhavHeader Header 
 		{
 			get { return header;	}			
+#if UNUSED
+			set { header = value; }
+#endif
 		}
 
 		/// <summary>
@@ -571,13 +574,12 @@ namespace SimPe.PackedFiles.Wrapper
 			/*
 			 * At Inge's request, broken gotos not set to RETURN ERROR.
 			 * UI to display these in an obvious way.
-			foreach (Instruction i in this)
-			{
-				if (i.Target1 >= this.Count-1 && i.Target1 < 0xFFFC) i.Target1 = 0xFFFC;
-				if (i.Target2 >= this.Count-1 && i.Target2 < 0xFFFC) i.Target2 = 0xFFFC;
-			}
-			*/
-			base.RemoveAt(this.Count - 1);
+						foreach (Instruction i in this)
+						{
+							if (i.Target1 >= this.Count-1 && i.Target1 < 0xFFFC) i.Target1 = 0xFFFC;
+							if (i.Target2 >= this.Count-1 && i.Target2 < 0xFFFC) i.Target2 = 0xFFFC;
+						}
+			*/			base.RemoveAt(this.Count - 1);
 			internalchg = savedstate;
 			if (!internalchg)
 				parent.OnWrapperChanged(new EventArgs());
@@ -649,12 +651,12 @@ namespace SimPe.PackedFiles.Wrapper
 		private ushort addr1 = 0;
 		private ushort addr2 = 0;
 		private byte reserved_00 = 0;
-		private byte[] operands = new byte[8];
-		private byte[] reserved_01 = null;
+		private wrappedByteArray operands = null;
+		private wrappedByteArray reserved_01 = null;
 		#endregion
 
 		#region Accessor methods
-		public virtual ushort OpCode 
+		public ushort OpCode 
 		{
 			get { return opcode; }
 			set
@@ -739,7 +741,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public byte[] Operands
+		public wrappedByteArray  Operands
 		{
 			get {return operands;}
 			set
@@ -752,7 +754,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public byte[] Reserved1
+		public wrappedByteArray  Reserved1
 		{
 			get {return reserved_01;}
 			set
@@ -779,31 +781,14 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		private void commonConstructor(Bhav parent)
-		{
-			this.parent = parent;
-			switch (parent.Header.Format)
-			{
-				case 0x8001:
-				case 0x8002:
-					break;
-				case 0x8003:
-				case 0x8004:
-				case 0x8005:
-				case 0x8006:
-				case 0x8007:
-					reserved_01 = new byte[8];
-					break;
-				default: 
-					throw new Exception("Unknown BHAV Format "+parent.Header.Format.ToString("X"));
-			}
-		}
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		internal Instruction (Bhav parent) : base(parent)
 		{
-			commonConstructor(parent);
+			this.parent = parent;
+			this.operands = new wrappedByteArray(parent, new byte[8]);
+			this.reserved_01 = new wrappedByteArray(parent, new byte[8]);
 		}
 
 		/// <summary>
@@ -811,14 +796,14 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		internal Instruction (Bhav parent, System.IO.BinaryReader reader) : base(parent)
 		{
-			commonConstructor(parent);
+			this.parent = parent;
 			Unserialize(reader);
 		}
 
 
 		public override string ToString()
 		{
-			return this.OpcodeName(this.opcode, this.operands);
+			return this.OpcodeName(this.opcode, this.operands.ToArray());
 		}
 
 
@@ -829,8 +814,8 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.addr1       = this.addr1;
 			clone.addr2       = this.addr2;
 			clone.reserved_00 = this.reserved_00;
-			clone.operands    = (byte[])this.operands.Clone();
-			clone.reserved_01 = (byte[])this.reserved_01.Clone();
+			clone.operands    = operands.Clone();
+			clone.reserved_01 = reserved_01.Clone();
 			return clone;
 		}
 
@@ -867,46 +852,41 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader"></param>
 		private void Unserialize(System.IO.BinaryReader reader) 
 		{
+			opcode = reader.ReadUInt16();
+			if (parent.Header.Format < 0x8007)
+			{
+				addr1 = (ushort)reader.ReadByte();
+				addr2 = (ushort)reader.ReadByte();
+			}
+			else
+			{
+				addr1 = reader.ReadUInt16();
+				addr2 = reader.ReadUInt16();
+			}
+
 			switch (parent.Header.Format)
 			{
 				case 0x8001: 
 				case 0x8002: 
 				{
-					opcode = reader.ReadUInt16();
-					addr1 = (ushort)reader.ReadByte();
-					addr2 = (ushort)reader.ReadByte();
-					operands = reader.ReadBytes(8);
+					operands = new wrappedByteArray(parent, reader);
+					reserved_01 = new wrappedByteArray(parent, new byte[8]);
 					break;
 				}
 				case 0x8003: 
 				case 0x8004: 
 				{
-					opcode = reader.ReadUInt16();
-					addr1 = (ushort)reader.ReadByte();
-					addr2 = (ushort)reader.ReadByte();
-					operands = reader.ReadBytes(8);
-					reserved_01 = reader.ReadBytes(8);
+					operands = new wrappedByteArray(parent, reader);
+					reserved_01 = new wrappedByteArray(parent, reader);
 					break;
 				}
 				case 0x8006: 
 				case 0x8005: 
-				{
-					opcode = reader.ReadUInt16();
-					addr1 = (ushort)reader.ReadByte();
-					addr2 = (ushort)reader.ReadByte();
-					reserved_00 = reader.ReadByte();
-					operands = reader.ReadBytes(8);
-					reserved_01 = reader.ReadBytes(8);
-					break;
-				}
 				case 0x8007: 
 				{
-					opcode = reader.ReadUInt16();
-					addr1 = reader.ReadUInt16();
-					addr2 = reader.ReadUInt16();
 					reserved_00 = reader.ReadByte();
-					operands = reader.ReadBytes(8);
-					reserved_01 = reader.ReadBytes(8);
+					operands = new wrappedByteArray(parent, reader);
+					reserved_01 = new wrappedByteArray(parent, reader);
 					break;
 				}
 			} //switch
@@ -919,51 +899,92 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="writer"></param>
 		internal void Serialize(System.IO.BinaryWriter writer) 
 		{
+			writer.Write(opcode);
+			if (parent.Header.Format < 0x8007)
+			{
+				writer.Write((byte)formatSpecificAddr(addr1));
+				writer.Write((byte)formatSpecificAddr(addr2));
+			}
+			else
+			{
+				writer.Write(addr1);
+				writer.Write(addr2);
+			}
 			switch (parent.Header.Format)
 			{
 				case 0x8001: 
 				case 0x8002: 
 				{
-					writer.Write(opcode);
-					writer.Write((byte)(addr1 & 0xFF));
-					writer.Write((byte)(addr2 & 0xFF));
-					writer.Write(operands);	
+					operands.Serialize(writer);;
 					break;
 				}
 				case 0x8003: 
 				case 0x8004: 
 				{
-					writer.Write(opcode);
-					writer.Write((byte)(addr1 & 0xFF));
-					writer.Write((byte)(addr2 & 0xFF));
-					writer.Write(operands);
-					writer.Write(reserved_01);
+					operands.Serialize(writer);;
+					reserved_01.Serialize(writer);
 					break;
 				}
 				case 0x8006: 
 				case 0x8005: 
 				{
-					writer.Write(opcode);
-					writer.Write((byte)(addr1 & 0xFF));
-					writer.Write((byte)(addr2 & 0xFF));
 					writer.Write(reserved_00);
-					writer.Write(operands);
-					writer.Write(reserved_01);
+					operands.Serialize(writer);
+					reserved_01.Serialize(writer);
 					break;
 				}
 				case 0x8007: 
 				{
-					writer.Write(opcode);
-					writer.Write(addr1);
-					writer.Write(addr2);
 					writer.Write(reserved_00);
-					writer.Write(operands);
-					writer.Write(reserved_01);
+					operands.Serialize(writer);;
+					reserved_01.Serialize(writer);
 					break;
 				}
 			} //switch
 		}
 
+	}
+
+	public class wrappedByteArray
+	{
+		private byte[] array;
+		private Bhav parent;
+		public wrappedByteArray(Bhav parent, byte[] array) { this.parent = parent; this.array = array; }
+		public wrappedByteArray(Bhav parent, System.IO.BinaryReader reader)
+		{
+			this.parent = parent;
+			this.array = new byte[8];
+			Unserialize(reader);
+		}
+
+		internal Bhav Parent { set { parent = value; } }
+		public byte this[int index]
+		{
+			get { return array[index]; }
+			set
+			{
+				if (array[index] != value)
+				{
+					array[index] = value;
+					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+				}
+			}
+		}
+
+		internal wrappedByteArray Clone() { return new wrappedByteArray(parent, (byte[])array.Clone()); }
+		private void Unserialize(System.IO.BinaryReader reader)
+		{
+			array = reader.ReadBytes(8);
+		}
+		internal void Serialize(System.IO.BinaryWriter writer)
+		{
+			writer.Write(array);
+		}
+
+		public byte[] ToArray()
+		{
+			return (byte[])array.Clone();
+		}
 	}
 
 }

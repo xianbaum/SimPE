@@ -123,9 +123,6 @@ namespace SimPe.PackedFiles.UserInterface
 		internal Instruction Execute(Instruction i)
 		{
 			if (!Available(i)) return null;
-			byte[] operands = new byte[16];
-			i.Operands.CopyTo(operands, 0);
-			i.Reserved1.CopyTo(operands, 8);
 
 			BhavInstruction bi = new BhavInstruction();
 

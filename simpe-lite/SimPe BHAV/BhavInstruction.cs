@@ -201,7 +201,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private Instruction inst;
 		internal void Execute(Instruction i) 
 		{
-			byte[] ops = i.Operands;
+			wrappedByteArray ops = i.Operands;
 			byte n1 = ops[0x06];
 			byte n2 = ops[0x07];
 			byte op = ops[0x05];
@@ -224,7 +224,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			try 
 			{
-				byte[] ops = inst.Operands;
+				wrappedByteArray ops = inst.Operands;
 				ops[0x06] = (byte)cbtype1.SelectedIndex;
 				ops[0x07] = (byte)cbtype2.SelectedIndex;
 				ops[0x05] = (byte)cboperand.SelectedIndex;
