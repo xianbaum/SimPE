@@ -1,4 +1,17 @@
 
+10 July 2005 14:25 - Manual merge with HEAD (partial)
+  SimPe BHAV\
+    BhavForm.cs 1.20.4.7
+    BhavNameWizProvider.cs 1.1.2.5
+    BhavNameWizProviders.cs 1.1.2.3
+    BhavOpCodeWiz.cs 1.1.8.3
+    BhavOperandWizProvider.cs 1.1.2.2
+    BhavPrimWiz0x0001.cs 1.1.2.4
+    BhavPrimWiz0x0002.cs 1.1.2.6
+    ImportSemi.cs 1.2.4.2
+    WrapperFactory.cs 1.7.2.2
+    
+
 10 July 2005 10:15 - Back out last night's changes
   SimPe BHAV\
     BhavForm.cs 1.20.4.6
