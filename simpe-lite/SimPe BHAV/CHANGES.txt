@@ -1,4 +1,10 @@
 
+10 July 2005 10:33 - Ensure WrapperChanged raised in more places (still some missing)
+  SimPe BHAV\
+    BhavHeader.cs (deleted)
+    BhavWrapper.cs 1.16
+    Instruction.cs (deleted)
+
 01 July 2005 10:21 - Write languages in numerical order
   SimPe BHAV\
     StrWrapper.cs 1.3
