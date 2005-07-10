@@ -278,16 +278,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "BhavInstPanel.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavInstPanel.resx"
-                    DependentUpon = "BhavInstPanel.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "BhavNameWizProvider.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

@@ -98,7 +98,7 @@ namespace pjse
 		{
 			this.instruction = new Instruction(parent);
 			instruction.Opcode = opcode;
-			instruction.Operands = new wrappedByteArray(instruction, operands);
+			instruction.Operands = new wrappedByteArray(parent, operands);
 		}
 
 		public bool isPrimitive { get { return false; } }
