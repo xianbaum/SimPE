@@ -653,7 +653,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region Accessor methods
-		public ushort Opcode 
+		public ushort OpCode 
 		{
 			get { return opcode; }
 			set

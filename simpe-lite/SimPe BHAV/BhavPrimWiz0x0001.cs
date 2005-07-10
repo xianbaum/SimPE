@@ -206,11 +206,11 @@ namespace pjse.BhavNameWizards
 	public class PrimWiz0x0001 : ANamePrimitiveWiz
 	{
 		public PrimWiz0x0001(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
-		public PrimWiz0x0001(Bhav parent, byte[] operands) : base(parent, operands) { instruction.Opcode = 0x0001; }
+		public PrimWiz0x0001(Bhav parent, byte[] operands) : base(parent, operands) { instruction.OpCode = 0x0001; }
 		public PrimWiz0x0001(byte operand0) : base(null, null)
 		{
 			instruction = new Instruction(null);
-			instruction.Opcode = 0x0001;
+			instruction.OpCode = 0x0001;
 			instruction.Operands[0] = operand0;
 		}
 		public PrimWiz0x0001(Instruction i) : base(i) {}

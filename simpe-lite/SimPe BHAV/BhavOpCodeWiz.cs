@@ -29,9 +29,9 @@ using SimPe.PackedFiles.Wrapper;
 namespace SimPe.PackedFiles.UserInterface
 {
 	/// <summary>
-	/// Summary description for BhavOpCodeWizUI.
+	/// Summary description for BhavOpCodeWiz.
 	/// </summary>
-	public class BhavOpCodeWizUI : System.Windows.Forms.Form
+	public class BhavOpCodeWiz : System.Windows.Forms.Form
 	{
 		#region Form variables
 		internal System.Windows.Forms.Panel pnOpCode;
@@ -52,7 +52,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.ComponentModel.Container components = null;
 		#endregion
 
-		public BhavOpCodeWizUI()
+		public BhavOpCodeWiz()
 		{
 			//
 			// Required for Windows Form Designer support

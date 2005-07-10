@@ -36,7 +36,7 @@ namespace pjse.BhavNameWizards
 		{
 			if (instruction.Parent == null || instruction.Parent.Opcodes == null) return null;
 
-			IPackedFileDescriptor pfd = instruction.Parent.Opcodes.LoadGlobalBHAV(instruction.Opcode);
+			IPackedFileDescriptor pfd = instruction.Parent.Opcodes.LoadGlobalBHAV(instruction.OpCode);
 			if (pfd==null) return null;
 
 			Bhav b = new Bhav(instruction.Parent.Opcodes);
@@ -108,7 +108,7 @@ namespace pjse.BhavNameWizards
 		{
 			if (instruction.Parent == null) return null;
 			if (instruction.Parent.Package==null) return new Bhav(instruction.Parent.Opcodes);
-			IPackedFileDescriptor pfd =  instruction.Parent.Package.FindFile(SimPe.Data.MetaData.BHAV_FILE, 0, instruction.Parent.FileDescriptor.Group, instruction.Opcode);
+			IPackedFileDescriptor pfd =  instruction.Parent.Package.FindFile(SimPe.Data.MetaData.BHAV_FILE, 0, instruction.Parent.FileDescriptor.Group, instruction.OpCode);
 			if (pfd==null) return new Bhav(instruction.Parent.Opcodes);
 
 			Bhav b = new Bhav(instruction.Parent.Opcodes);
@@ -181,7 +181,7 @@ namespace pjse.BhavNameWizards
 		public override Bhav LoadBHAV()
 		{
 			if (instruction.Parent == null) return null;
-			IPackedFileDescriptor pfd = instruction.Parent.Package.FindFile(SimPe.Data.MetaData.BHAV_FILE, 0, instruction.Parent.FileDescriptor.Group, instruction.Opcode);
+			IPackedFileDescriptor pfd = instruction.Parent.Package.FindFile(SimPe.Data.MetaData.BHAV_FILE, 0, instruction.Parent.FileDescriptor.Group, instruction.OpCode);
 			if (pfd==null)  
 			{
 				pfd = instruction.Parent.Package.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, instruction.Parent.FileDescriptor.Group, 0x01);
@@ -199,7 +199,7 @@ namespace pjse.BhavNameWizards
 
 				Glob g = new Glob();
 				g.ProcessData(pfd, instruction.Parent.Package);
-				pfd = instruction.Parent.Opcodes.LoadSemiGlobalBHAV(instruction.Opcode, g.SemiGlobalGroup);
+				pfd = instruction.Parent.Opcodes.LoadSemiGlobalBHAV(instruction.OpCode, g.SemiGlobalGroup);
 			
 				if (pfd==null) return null;
 				Bhav b = new Bhav(instruction.Parent.Opcodes);

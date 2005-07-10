@@ -183,7 +183,6 @@ namespace SimPe.PackedFiles.UserInterface
 				state = true;
 			}
 
-			llopenbhav.Enabled = !state;
 			tbInst_OpCode.ReadOnly = state;
 			btnOpCode.Enabled = !state;
 			tbInst_Reserved.ReadOnly = state;
@@ -232,7 +231,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.btnDel.Enabled = wrapper.Instructions.Count > 1;
 
-				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.Opcode);
+				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 
 				this.tbInst_Reserved.Text = "0x"+Helper.HexString(inst.Reserved0);
 				if (inst.Target1 >= 0xFFFC)
@@ -378,7 +377,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			this.btnCommit.Enabled = true;
+			this.btnCommit.Enabled = wrapper.Changed;
 		}
 
 		#endregion
@@ -2118,7 +2117,7 @@ namespace SimPe.PackedFiles.UserInterface
 			try 
 			{
 				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = false;
+				btnCommit.Enabled = wrapper.Changed;
 			} 
 			catch (Exception ex) 
 			{
@@ -2160,12 +2159,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent);
 
-			if (opcode != -1 && opcode != currentInst.Opcode)
+			if (opcode != -1 && opcode != currentInst.OpCode)
 			{
 				internalchg = true;
 				tbInst_OpCode.Text = "0x"+Helper.HexString((ushort)opcode);
 				internalchg = false;
-				currentInst.Opcode = (ushort)opcode;
+				currentInst.OpCode = (ushort)opcode;
 				SendInst(currentInst);
 			}
 		}
@@ -2415,9 +2414,9 @@ namespace SimPe.PackedFiles.UserInterface
 				case 1: wrapper.Header.Flags = val; break;
 				case 2: wrapper.Header.Zero = val; break;
 				case 3:
-					if (currentInst.Opcode != val)
+					if (currentInst.OpCode != val)
 					{
-						currentInst.Opcode = val;
+						currentInst.OpCode = val;
 						SendInst(currentInst);
 						this.llopenbhav.Enabled = (BhavNameWizProvider.For(currentInst).LoadBHAV() != null);
 						this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(currentInst) != null);

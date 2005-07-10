@@ -31,8 +31,8 @@ namespace pjse
 	{
 		public static ABhavOperandWiz For(SimPe.PackedFiles.Wrapper.Instruction i)
 		{
-			if (i.Opcode < 0x0100)
-				switch(i.Opcode)
+			if (i.OpCode < 0x0100)
+				switch(i.OpCode)
 				{
 					case 0x0000:
 						//return new BhavOperandWiz0x0000(i);

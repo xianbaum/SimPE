@@ -405,7 +405,7 @@ namespace pjse.BhavNameWizards
 	public class PrimWiz0x0002 : ANamePrimitiveWiz
 	{
 		public PrimWiz0x0002(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
-		public PrimWiz0x0002(Bhav parent, byte[] operands) : base(parent, operands) { instruction.Opcode = 0x0002; }
+		public PrimWiz0x0002(Bhav parent, byte[] operands) : base(parent, operands) { instruction.OpCode = 0x0002; }
 		public PrimWiz0x0002(Instruction i) : base(i) {}
 		/*public string VeryShortName
 		{
@@ -421,7 +421,7 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				string s = OpcodeName(instruction.Parent, instruction.Opcode, instruction.Operands);
+				string s = OpcodeName(instruction.Parent, instruction.OpCode, instruction.Operands);
 				return parser(instruction.Operands);
 			}
 		}

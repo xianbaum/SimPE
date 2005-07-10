@@ -57,9 +57,9 @@ namespace pjse
 
 		public static ABhavNameWiz For(Instruction i)
 		{
-			if (i.Opcode < 0x0100)
+			if (i.OpCode < 0x0100)
 			{
-				switch(i.Opcode)
+				switch(i.OpCode)
 				{
 					case 0x0000:
 						return new PrimWiz0x0000(i);
@@ -77,8 +77,8 @@ namespace pjse
 				}
 				return new PrimWizDefault(i);
 			}
-			if (i.Opcode < 0x1000) return new BhavNameWizards.GlobalWiz(i);
-			if (i.Opcode < 0x2000) return new BhavNameWizards.LocalWiz(i);
+			if (i.OpCode < 0x1000) return new BhavNameWizards.GlobalWiz(i);
+			if (i.OpCode < 0x2000) return new BhavNameWizards.LocalWiz(i);
 			return new BhavNameWizards.SemiGlobalWiz(i);
 		}
 
@@ -97,7 +97,7 @@ namespace pjse
 		public ABhavNameWiz(Bhav parent, ushort opcode, byte[] operands)
 		{
 			this.instruction = new Instruction(parent);
-			instruction.Opcode = opcode;
+			instruction.OpCode = opcode;
 			instruction.Operands = new wrappedByteArray(parent, operands);
 		}
 
@@ -139,7 +139,7 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				return ((instruction.Opcode < gPrims.Length) ? gPrims[instruction.Opcode] : "Unknown opcode") + " (0x" + SimPe.Helper.HexString(instruction.Opcode) +")";
+				return ((instruction.OpCode < gPrims.Length) ? gPrims[instruction.OpCode] : "Unknown opcode") + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
 			}
 		}
 		public static int Length { get { return gPrims.Length; } }
@@ -372,7 +372,7 @@ namespace pjse.BhavNameWizards
 		{
 			get {
 				Bhav b = LoadBHAV();
-				return ((b != null) ? b.FileName : "(BHAV not found)") + " (0x" + SimPe.Helper.HexString(instruction.Opcode) +")";
+				return ((b != null) ? b.FileName : "(BHAV not found)") + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
 			}
 		}
 		public override string LongName
