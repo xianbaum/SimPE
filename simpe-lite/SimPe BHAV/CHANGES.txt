@@ -1,4 +1,15 @@
 
+17 July 2005 12:25 - Bug fix: Strange behaviour with Validated()
+  * Completely changes the way changes are tracked across the wrapper/GUI
+  * BhavForm: cosmetic work (e.g. UpdateInstPanel, order of methods), currentInst returns
+  * BhavInstListControl: large scale changes, plus some cosmetics (wait cursors), lose findUI
+  * BhavWrapper: specific sender in WrapperChanged events, wrappedByteArray has Instruction parent
+  SimPe BHAV\
+    BhavForm.cs 1.24
+    BhavInstListControl.cs 1.24
+    BhavInstListItemUI.cs 1.11
+    BhavWrapper.cs 1.18
+
 10 July 2005 14:53 - Apply OpcodeDecoder-branch fixes to HEAD (5 of n)
   SimPe BHAV\
     BhavOperandWiz.cs 1.3
