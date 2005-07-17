@@ -96,9 +96,7 @@ namespace pjse
 
 		public ABhavNameWiz(Bhav parent, ushort opcode, byte[] operands)
 		{
-			this.instruction = new Instruction(parent);
-			instruction.OpCode = opcode;
-			instruction.Operands = new wrappedByteArray(parent, operands);
+			this.instruction = new Instruction(parent, opcode, 0, 0, 0, operands, new byte[8]);
 		}
 
 		public bool isPrimitive { get { return false; } }

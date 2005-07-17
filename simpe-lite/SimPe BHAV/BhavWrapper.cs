@@ -77,7 +77,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (!Helper.ToString(filename).Equals(value))
 				{
 					filename = Helper.ToBytes(value, 0x40);
-					OnWrapperChanged(new EventArgs());
+					OnWrapperChanged(null, new EventArgs());
 				}
 			}
 		}
@@ -88,9 +88,6 @@ namespace SimPe.PackedFiles.Wrapper
 		public BhavHeader Header 
 		{
 			get { return header;	}			
-#if UNUSED
-			set { header = value; }
-#endif
 		}
 
 		/// <summary>
@@ -98,9 +95,9 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public BhavInstList Instructions
 		{
-			get { return instructions;	}			
-			set { instructions = value; }
+			get { return instructions; }
 		}
+		
 		/// <summary>
 		/// Opcode Provider
 		/// </summary>
@@ -122,14 +119,14 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		internal virtual void OnWrapperChanged(EventArgs e)
+		internal virtual void OnWrapperChanged(object sender, EventArgs e)
 		{
 			this.Changed = true;
 
 			if (internalchg) return;
 			if (WrapperChanged != null) 
 			{
-				WrapperChanged(this, e);
+				WrapperChanged((sender == null) ? this : sender, e);
 			}
 		}
 
@@ -264,7 +261,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (format != value)
 				{
 					format = value;
-					wrapper.OnWrapperChanged(new EventArgs());
+					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
@@ -277,7 +274,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (count != value)
 				{
 					count = value;
-					wrapper.OnWrapperChanged(new EventArgs());
+					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
@@ -290,7 +287,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (type != value)
 				{
 					type = value;
-					wrapper.OnWrapperChanged(new EventArgs());
+					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
@@ -303,7 +300,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (argc != value)
 				{
 					argc = value;
-					wrapper.OnWrapperChanged(new EventArgs());
+					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
@@ -316,7 +313,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (locals != value)
 				{
 					locals = value;
-					wrapper.OnWrapperChanged(new EventArgs());
+					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
@@ -329,7 +326,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (flags != value)
 				{
 					flags = value;
-					wrapper.OnWrapperChanged(new EventArgs());
+					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
@@ -342,7 +339,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (zero != value)
 				{
 					zero = value;
-					wrapper.OnWrapperChanged(new EventArgs());
+					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
@@ -490,7 +487,10 @@ namespace SimPe.PackedFiles.Wrapper
 
 		private void SortSwap(int a, int b) 
 		{
-			Instruction i = (Instruction)this[a];
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			Instruction i = this[a];
 			this[a] = this[b];
 			this[b] = i;
 
@@ -502,9 +502,11 @@ namespace SimPe.PackedFiles.Wrapper
 				if (item.Target2 == a) item.Target2 = (ushort)b;
 				else if (item.Target2 == b) item.Target2 = (ushort)a;
 			}
+			internalchg = savedstate;
 			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
+				parent.OnWrapperChanged(this, new EventArgs());
 		}
+
 		public void Move(int from, int to)
 		{
 			if (from == to) return;
@@ -517,7 +519,7 @@ namespace SimPe.PackedFiles.Wrapper
 			while (from > to) SortSwap(from, --from);
 			internalchg = savedstate;
 			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
+				parent.OnWrapperChanged(this, new EventArgs());
 		}
 
 		#endregion
@@ -525,23 +527,26 @@ namespace SimPe.PackedFiles.Wrapper
 		#region ArrayList
 		public new Instruction this[int index]
 		{
-			get { return ((Instruction)base[index]); }
+			get { return (Instruction)base[index]; }
 			set 
 			{ 
 				if (base[index] != value)
 				{
-					base[index] = value;
+					Instruction i = value;
+					base[index] = i;
+					i.Parent = this.parent;
 					if (!internalchg)
-						parent.OnWrapperChanged(new EventArgs());
+						parent.OnWrapperChanged(base[index], new EventArgs());
 				}
 			}
 		}
+
 
 		public int Add(Instruction item)
 		{
 			int retVal = base.Add(item);
 			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
+				parent.OnWrapperChanged(this, new EventArgs());
 			return retVal;
 		}
 
@@ -559,7 +564,7 @@ namespace SimPe.PackedFiles.Wrapper
 			this.Move(newIndex, index);
 			internalchg = savedstate;
 			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
+				parent.OnWrapperChanged(this, new EventArgs());
 		}
 
 		public override void RemoveAt(int index)
@@ -571,26 +576,17 @@ namespace SimPe.PackedFiles.Wrapper
 			/*
 			 * At Inge's request, broken gotos not set to RETURN ERROR.
 			 * UI to display these in an obvious way.
-						foreach (Instruction i in this)
-						{
-							if (i.Target1 >= this.Count-1 && i.Target1 < 0xFFFC) i.Target1 = 0xFFFC;
-							if (i.Target2 >= this.Count-1 && i.Target2 < 0xFFFC) i.Target2 = 0xFFFC;
-						}
-			*/			base.RemoveAt(this.Count - 1);
+			foreach (Instruction i in this)
+			{
+				if (i.Target1 >= this.Count-1 && i.Target1 < 0xFFFC) i.Target1 = 0xFFFC;
+				if (i.Target2 >= this.Count-1 && i.Target2 < 0xFFFC) i.Target2 = 0xFFFC;
+			}
+			*/
+			base.RemoveAt(this.Count - 1);
 			internalchg = savedstate;
 			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
+				parent.OnWrapperChanged(this, new EventArgs());
 		}
-
-		public void Remove(Instruction item)
-		{
-			base.Remove(item);
-		}
-
-		public bool Contains(Instruction item)
-		{
-			return base.Contains(item);
-		}		
 
 		public override void Sort()
 		{
@@ -630,7 +626,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 			internalchg = savedstate;
 			if (!internalchg)
-				parent.OnWrapperChanged(new EventArgs());
+				parent.OnWrapperChanged(this, new EventArgs());
 		}
 
 		#endregion
@@ -661,7 +657,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (opcode != value)
 				{
 					opcode = value;
-					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -707,7 +703,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (addr1 != formatSpecificAddr(value))
 				{
 					addr1 = formatSpecificAddr(value);
-					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -720,7 +716,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (addr2 != formatSpecificAddr(value))
 				{
 					addr2 = formatSpecificAddr(value);
-					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -733,47 +729,28 @@ namespace SimPe.PackedFiles.Wrapper
 				if (reserved_00 != value)
 				{
 					reserved_00 = value;
-					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
 
-		public wrappedByteArray  Operands
-		{
-			get {return operands;}
-			set
-			{
-				if (operands != value)
-				{
-					operands = value;
-					if (parent != null) parent.OnWrapperChanged(new EventArgs());
-				}
-			}
-		}
+		public wrappedByteArray Operands { get { return operands; } }
 
-		public wrappedByteArray  Reserved1
-		{
-			get {return reserved_01;}
-			set
-			{
-				if (reserved_01 != value)
-				{
-					reserved_01 = value;
-					if (parent != null) parent.OnWrapperChanged(new EventArgs());
-				}
-			}
-		}
+		public wrappedByteArray Reserved1 { get { return reserved_01; } }
+
 		public Bhav Parent
 		{
 			get { return parent; }
 			set
 			{
-				parent = value;
-				operands.Parent = value;
-				reserved_01.Parent = value;
-				if (parent != null) parent.OnWrapperChanged(new EventArgs());
+				if (parent != value)
+				{
+					parent = value;
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
+				}
 			}
 		}
+
 		#endregion
 
 		/// <summary>
@@ -782,8 +759,8 @@ namespace SimPe.PackedFiles.Wrapper
 		internal Instruction (Bhav parent)
 		{
 			this.parent = parent;
-			this.operands = new wrappedByteArray(parent, new byte[8]);
-			this.reserved_01 = new wrappedByteArray(parent, new byte[8]);
+			this.operands = new wrappedByteArray(this, new byte[8]);
+			this.reserved_01 = new wrappedByteArray(this, new byte[8]);
 		}
 
 		/// <summary>
@@ -796,6 +773,17 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
+		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte reserved_00, byte[] operands, byte[] reserved_01)
+		{
+			this.opcode = opcode;
+			this.Target1 = addr1;
+			this.Target2 = addr2;
+			this.reserved_00 = reserved_00;
+			this.operands = new wrappedByteArray(this, operands);
+			this.reserved_01 = new wrappedByteArray(this, reserved_01);
+			this.parent = parent;
+		}
+
 		public Instruction Clone()
 		{
 			Instruction clone = new Instruction(this.parent);
@@ -804,7 +792,9 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.addr2       = this.addr2;
 			clone.reserved_00 = this.reserved_00;
 			clone.operands    = operands.Clone();
+			clone.operands.Parent = clone;
 			clone.reserved_01 = reserved_01.Clone();
+			clone.reserved_01.Parent = clone;
 			return clone;
 		}
 
@@ -833,15 +823,15 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8001: 
 				case 0x8002: 
 				{
-					operands = new wrappedByteArray(parent, reader);
-					reserved_01 = new wrappedByteArray(parent, new byte[8]);
+					operands = new wrappedByteArray(this, reader);
+					reserved_01 = new wrappedByteArray(this, new byte[8]);
 					break;
 				}
 				case 0x8003: 
 				case 0x8004: 
 				{
-					operands = new wrappedByteArray(parent, reader);
-					reserved_01 = new wrappedByteArray(parent, reader);
+					operands = new wrappedByteArray(this, reader);
+					reserved_01 = new wrappedByteArray(this, reader);
 					break;
 				}
 				case 0x8006: 
@@ -849,8 +839,8 @@ namespace SimPe.PackedFiles.Wrapper
 				case 0x8007: 
 				{
 					reserved_00 = reader.ReadByte();
-					operands = new wrappedByteArray(parent, reader);
-					reserved_01 = new wrappedByteArray(parent, reader);
+					operands = new wrappedByteArray(this, reader);
+					reserved_01 = new wrappedByteArray(this, reader);
 					break;
 				}
 			} //switch
@@ -909,19 +899,22 @@ namespace SimPe.PackedFiles.Wrapper
 
 	}
 
+
+
 	public class wrappedByteArray
 	{
 		private byte[] array;
-		private Bhav parent;
-		public wrappedByteArray(Bhav parent, byte[] array) { this.parent = parent; this.array = array; }
-		public wrappedByteArray(Bhav parent, System.IO.BinaryReader reader)
+		private Instruction parent;
+
+		public wrappedByteArray(Instruction parent, byte[] array) { this.parent = parent; this.array = array; }
+		public wrappedByteArray(Instruction parent, System.IO.BinaryReader reader)
 		{
 			this.parent = parent;
 			this.array = new byte[8];
 			Unserialize(reader);
 		}
 
-		internal Bhav Parent { set { parent = value; } }
+
 		public byte this[int index]
 		{
 			get { return array[index]; }
@@ -930,12 +923,21 @@ namespace SimPe.PackedFiles.Wrapper
 				if (array[index] != value)
 				{
 					array[index] = value;
-					if (parent != null) parent.OnWrapperChanged(new EventArgs());
+					if (parent != null) parent.Parent.OnWrapperChanged(parent, new EventArgs());
 				}
 			}
 		}
 
 		internal wrappedByteArray Clone() { return new wrappedByteArray(parent, (byte[])array.Clone()); }
+		public static implicit operator byte[] (wrappedByteArray a)
+		{
+			return (byte[])a.array.Clone();
+		}
+
+
+		internal Instruction Parent { set { parent = value; } }
+
+
 		private void Unserialize(System.IO.BinaryReader reader)
 		{
 			array = reader.ReadBytes(8);
@@ -944,6 +946,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			writer.Write(array);
 		}
+
 	}
 
 }

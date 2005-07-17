@@ -50,38 +50,24 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
-		public BhavInstListItemUI(int index, Instruction inst, int max, PictureBox parent, bool isTarget)
+		public BhavInstListItemUI(Bhav wrapper, int index, PictureBox parent)
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
 
 			// TODO: Add any initialization after the InitializeComponent call
-			this.isTarget = isTarget;
-			this.Left = 0;
-			this.Height = rowHeight;
-			if (isTarget)
-				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
-			else
-				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White /*LightGray*/;
-			this.Tag = index;
+			this.wrapper = wrapper;
+			this.index = index;
 			this.Parent = parent;
+
+			wrapper.WrapperChanged += new EventHandler(WrapperChanged);
 			parent.Controls.SetChildIndex(this, index);
 
+			this.Left = 0;
+			this.Height = rowHeight;
+			MakeUnselected();
 
-
-			bhavInstListItem.Text = "";
-			instrText.Text = index.ToString("X") + ": " + pjse.BhavNameWizProvider.For(inst).ShortName;
-
-			trueTarget.Text = "true: "+inst.Target1.ToString("X");
-			trueTarget.LinkArea = new LinkArea(0, 0);
-			if (inst.Target1 <= max)
-				trueTarget.Links.Add(6, trueTarget.Text.Length-6, inst.Target1);
-
-			falseTarget.Text = "false: "+inst.Target2.ToString("X");
-			falseTarget.LinkArea = new LinkArea(0, 0);
-			if (inst.Target2 <= max)
-				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);
-
+			this.WrapperChanged(wrapper.Instructions[index], null);
 		}
 
 		/// <summary> 
@@ -114,36 +100,37 @@ namespace SimPe.PackedFiles.UserInterface
 		protected virtual void OnMoveDown(EventArgs e) { if (MoveDown != null) { MoveDown(this, e); } }
 
 
-		private bool isTarget = false;
-		public bool IsTarget { get { return isTarget; } }
 
-		public int index
+		private Bhav wrapper;
+		private int index;
+		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			get { return (int)Tag; }
-			set { Tag = value; }
+			if (wrapper.Instructions.IndexOf(sender) != index) return;
+			Instruction inst = (Instruction)sender;
+
+			bhavInstListItem.Text = "";
+			instrText.Text = index.ToString("X") + ": " + pjse.BhavNameWizProvider.For(inst).ShortName;
+
+			trueTarget.Text = "true: "+inst.Target1.ToString("X");
+			trueTarget.LinkArea = new LinkArea(0, 0);
+			if (inst.Target1 < wrapper.Instructions.Count)
+				trueTarget.Links.Add(6, trueTarget.Text.Length-6, inst.Target1);
+
+			falseTarget.Text = "false: "+inst.Target2.ToString("X");
+			falseTarget.LinkArea = new LinkArea(0, 0);
+			if (inst.Target2 < wrapper.Instructions.Count)
+				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);
 		}
+
 
 		public void MakeSelected()
 		{
-			if (isTarget)
-				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.PowderBlue;
-			else
-				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.PowderBlue;
+			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.PowderBlue;
 		}
 
 		public void MakeUnselected()
 		{
-			if (isTarget)
-				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
-			else
-				this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White /*LightGray*/;
-		}
-
-		public int findUI(BhavInstListItemUI[] items)
-		{
-			for (int i = 0; i < items.Length; i++)
-				if (this == items[i]) return i;
-			return -1;
+			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 		}
 
 		#endregion
@@ -297,6 +284,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void bhavInstListItemUI_Enter(object sender, System.EventArgs e)
 		{
+			MakeSelected();
 			OnSelected(e);
 		}
 
