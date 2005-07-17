@@ -1,4 +1,8 @@
 
+17 July 2005 14:32 - Manual merge with HEAD (partial) - User-interface tweaks
+  SimPe BHAV\
+    BhavForm.cs 1.20.4.10
+
 17 July 2005 14:00 - Manual merge with HEAD (partial) - Bugfix: strange Validated behaviour
   SimPe BHAV\
     BhavForm.cs 1.20.4.9
