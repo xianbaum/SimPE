@@ -2170,6 +2170,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				wrapper.SynchronizeUserData();
 				btnCommit.Enabled = wrapper.Changed;
+				pnflowcontainer_SelectedInstChanged(null, null);
 			} 
 			catch (Exception ex) 
 			{
@@ -2267,7 +2268,7 @@ namespace SimPe.PackedFiles.UserInterface
 			int i = alTarget.IndexOf(sender);
 			if (i < 0)
 				throw new Exception("Target_Validated not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).SelectedIndex != -1) return;
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
 
 			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
 			internalchg = true;
@@ -2280,26 +2281,25 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alTarget.IndexOf(sender) < 0)
 				throw new Exception("Target_Validating not applicable to control " + sender.ToString());
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
 
-			if (((ComboBox)sender).SelectedIndex == -1)
-				try { Convert.ToUInt16(((ComboBox)sender).Text, 16); }
-				catch (Exception) { e.Cancel = true; }
+			try { Convert.ToUInt16(((ComboBox)sender).Text, 16); }
+			catch (Exception) { e.Cancel = true; }
 		}
 
 		private void Target_Validated(object sender, System.EventArgs e)
 		{
-			if (((ComboBox)sender).SelectedIndex != -1) return;
-
-			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
-			if (val >= 0xfffc && val <= 0xfffe)
-			{
-				((ComboBox)sender).SelectedIndex = val - 0xfffc;
-				return;
-			}
+			if (alTarget.IndexOf(sender) < 0)
+				throw new Exception("Target_Validated not applicable to control " + sender.ToString());
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
 
 			bool origstate = internalchg;
 			internalchg = true;
-			((ComboBox)sender).Text = "0x" + Helper.HexString(val);
+			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
+			if (val >= 0xfffc && val <= 0xfffe)
+				((ComboBox)sender).SelectedIndex = val - 0xfffc;
+			else
+				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
 			((ComboBox)sender).SelectAll();
 			internalchg = origstate;
 		}
@@ -2315,12 +2315,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 			ushort val = (ushort)(0x0FFFC + ((ComboBox)alTarget[i]).SelectedIndex);
 
-			bool origstate = internalchg;
 			internalchg = true;
 			if (i == 0) currentInst.Target1 = val;
 			else        currentInst.Target2 = val;
 			((ComboBox)sender).SelectAll();
-			internalchg = origstate;
+			internalchg = false;
 		}
 
 
