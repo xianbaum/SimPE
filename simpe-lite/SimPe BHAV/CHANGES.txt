@@ -1,4 +1,12 @@
 
+17 July 2005 14:00 - Manual merge with HEAD (partial) - Bugfix: strange Validated behaviour
+  SimPe BHAV\
+    BhavForm.cs 1.20.4.9
+    BhavInstListControl.cs 1.22.2.4
+    BhavInstListItemUI.cs 1.10.6.3
+    BhavNameWizProvider.cs 1.1.2.6
+    BhavWrapper.cs 1.15.2.8
+
 10 July 2005 14:35 - Manual merge with HEAD (partial) - Commit disables Cancel
   SimPe BHAV\
     BhavForm.cs 1.20.4.8
