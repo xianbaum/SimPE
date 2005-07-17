@@ -2219,6 +2219,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void tbFilename_Validated(object sender, System.EventArgs e)
 		{
 			wrapper.FileName = tbFilename.Text;
+			tbFilename.SelectAll();
 		}
 
 
@@ -2240,11 +2241,18 @@ namespace SimPe.PackedFiles.UserInterface
 			if (((ComboBox)sender).SelectedIndex != -1) return;
 
 			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
+			if (val >= 0xfffc && val <= 0xfffe)
+			{
+				((ComboBox)sender).SelectedIndex = val - 0xfffc;
+				return;
+			}
 
 			bool origstate = internalchg;
 			internalchg = true;
 			if (i == 0) currentInst.Target1 = val;
 			else        currentInst.Target2 = val;
+			((ComboBox)sender).Text = "0x" + Helper.HexString(val);
+			((ComboBox)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -2263,6 +2271,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			if (i == 0) currentInst.Target1 = val;
 			else        currentInst.Target2 = val;
+			((ComboBox)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -2319,6 +2328,7 @@ namespace SimPe.PackedFiles.UserInterface
 				default:
 					throw new Exception("dec8_Validated not applicable to control " + sender.ToString());
 			}
+			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -2344,6 +2354,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
 				this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
 			}
+			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -2375,6 +2386,8 @@ namespace SimPe.PackedFiles.UserInterface
 							 throw new Exception("hex8_Validated not applicable to control " + sender.ToString());
 					 }
 			}
+			((TextBox)sender).Text = ((i >= 16) ? "0x" : "") + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -2395,6 +2408,8 @@ namespace SimPe.PackedFiles.UserInterface
 				default:
 					throw new Exception("hex16_Validated not applicable to control " + sender.ToString());
 			}
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
 
