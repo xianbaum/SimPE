@@ -1,4 +1,9 @@
 
+10 July 2005 14:24 - User-interface tweaks (format and select field on validated)
+  SimPe BHAV\
+    BhavForm.cs 1.25
+    BhavWrapper.cs 1.19
+
 17 July 2005 12:25 - Bug fix: Strange behaviour with Validated()
   * Completely changes the way changes are tracked across the wrapper/GUI
   * BhavForm: cosmetic work (e.g. UpdateInstPanel, order of methods), currentInst returns
