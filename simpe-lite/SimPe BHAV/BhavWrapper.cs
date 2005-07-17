@@ -509,6 +509,7 @@ namespace SimPe.PackedFiles.Wrapper
 			if (!internalchg)
 				parent.OnWrapperChanged(this, new EventArgs());
 		}
+
 		public void Move(int from, int to)
 		{
 			if (from == to) return;
@@ -779,7 +780,6 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			return this.OpcodeName(this.opcode, this.operands);
 		}
-
 
 		public Instruction Clone()
 		{
