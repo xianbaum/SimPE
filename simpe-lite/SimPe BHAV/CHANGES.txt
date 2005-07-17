@@ -1,4 +1,8 @@
 
+10 July 2005 15:14 - Revert to updating wrapper on TextChanged
+  SimPe BHAV\
+    BhavForm.cs 1.26
+
 10 July 2005 14:24 - User-interface tweaks (format and select field on validated)
   SimPe BHAV\
     BhavForm.cs 1.25
