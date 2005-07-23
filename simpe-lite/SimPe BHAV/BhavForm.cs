@@ -119,7 +119,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.Left = this.lbFilename.Right + 4;
 			this.Tag = "Normal"; // Used by SetReadOnly
 
-			TextBox[] iow = { tbInst_Op01_dec, tbInst_Op23_dec };
+			TextBox[] iow = { tbInst_Op01_dec, tbInst_Op23_dec, tbLines };
 			alDec16 = new ArrayList(iow);
 			TextBox[] iob = {
 								 tbInst_Op0  ,tbInst_Op1  ,tbInst_Op2  ,tbInst_Op3
@@ -288,8 +288,8 @@ namespace SimPe.PackedFiles.UserInterface
 					this.tba2.Text = "0x"+Helper.HexString(inst.Target2);
 				}
 
-				this.tbInst_Op01_dec.Text = (inst.Operands[0] + (inst.Operands[1] << 8)).ToString();
-				this.tbInst_Op23_dec.Text = (inst.Operands[2] + (inst.Operands[3] << 8)).ToString();
+				this.tbInst_Op01_dec.Text = OpsToShort(inst.Operands[0], inst.Operands[1]).ToString();
+				this.tbInst_Op23_dec.Text = OpsToShort(inst.Operands[2], inst.Operands[3]).ToString();
 
 				this.tbInst_Op0.Text = Helper.HexString(inst.Operands[0]);
 				this.tbInst_Op1.Text = Helper.HexString(inst.Operands[1]);
@@ -316,6 +316,74 @@ namespace SimPe.PackedFiles.UserInterface
 				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Instructions.Count - 1;
 			}
 			internalchg = false;
+		}
+
+
+		private short OpsToShort(byte lo, byte hi)
+		{
+			ushort uval = (ushort)(lo + (hi << 8));
+			if (uval > 32767) return (short)(uval - 65536);
+			else return (short)uval;
+		}
+
+		private byte[] ShortToOps(short val)
+		{
+			byte[] ops = new byte[2];
+			ushort uval;
+			if (val < 0)
+				uval = (ushort)(65536 + val);
+			else
+				uval = (ushort)val;
+			ops[0] = (byte)(uval & 0xFF);
+			ops[1] = (byte)((uval >> 8) & 0xFF);
+			return ops;
+		}
+
+		private bool Target_IsValid(object sender)
+		{
+			if (alTarget.IndexOf(sender) < 0)
+				throw new Exception("Target_IsValid not applicable to control " + sender.ToString());
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return true;
+
+			try { Convert.ToUInt16(((ComboBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool dec8_IsValid(object sender)
+		{
+			if (alDec8.IndexOf(sender) < 0)
+				throw new Exception("dec8_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToByte(((TextBox)sender).Text); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool dec16_IsValid(object sender)
+		{
+			if (alDec16.IndexOf(sender) < 0)
+				throw new Exception("dec16_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToInt16(((TextBox)sender).Text); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool hex8_IsValid(object sender)
+		{
+			if (alHex8.IndexOf(sender) < 0)
+				throw new Exception("hex8_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToByte(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool hex16_IsValid(object sender)
+		{
+			if (alHex16.IndexOf(sender) < 0)
+				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
 		}
 
 		#endregion
@@ -2261,30 +2329,44 @@ namespace SimPe.PackedFiles.UserInterface
 		private void Target_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			System.ComponentModel.CancelEventArgs e = new CancelEventArgs();
-			Target_Validating(sender, e);
-			if (e.Cancel) return;
-
-			int i = alTarget.IndexOf(sender);
-			if (i < 0)
-				throw new Exception("Target_Validated not applicable to control " + sender.ToString());
+			if (!Target_IsValid(sender)) return;
 			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
 
 			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
 			internalchg = true;
-			if (i == 0) currentInst.Target1 = val;
-			else        currentInst.Target2 = val;
+			switch (alTarget.IndexOf(sender))
+			{
+				case 0: currentInst.Target1 = val; break;
+				case 1: currentInst.Target2 = val; break;
+			}
 			internalchg = false;
 		}
 
 		private void Target_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (alTarget.IndexOf(sender) < 0)
-				throw new Exception("Target_Validating not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+			if (Target_IsValid(sender)) return;
 
-			try { Convert.ToUInt16(((ComboBox)sender).Text, 16); }
-			catch (Exception) { e.Cancel = true; }
+			e.Cancel = true;
+
+			internalchg = true;
+			ushort val = 0;
+			switch (alTarget.IndexOf(sender))
+			{
+				case 0: val = origInst.Target1; currentInst.Target1 = val; break;
+				case 1: val = origInst.Target2; currentInst.Target2 = val; break;
+			}
+
+			if (val >= 0xFFFC)
+			{
+				((ComboBox)sender).SelectedIndex = val - 0xFFFC;
+			}
+			else
+			{
+				((ComboBox)sender).SelectedIndex = -1;
+				((ComboBox)sender).Text = "0x"+Helper.HexString(val);
+			}
+			((ComboBox)sender).SelectAll();
+			internalchg = false;
 		}
 
 		private void Target_Validated(object sender, System.EventArgs e)
@@ -2326,21 +2408,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private void dec8_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			System.ComponentModel.CancelEventArgs e = new CancelEventArgs();
-			dec8_Validating(sender, e);
-			if (e.Cancel) return;
-
-			int i = alDec8.IndexOf(sender);
+			if (!dec8_IsValid(sender)) return;
 
 			byte val = Convert.ToByte(((TextBox)sender).Text);
-
 			internalchg = true;
-			switch (i)
+			switch (alDec8.IndexOf(sender))
 			{
 				case 0: wrapper.Header.ArgumentCount = val; break;
 				case 1: wrapper.Header.LocalVarCount = val; break;
-				default:
-					throw new Exception("dec8_Validated not applicable to control " + sender.ToString());
 			}
 			internalchg = false;
 		}
@@ -2348,28 +2423,24 @@ namespace SimPe.PackedFiles.UserInterface
 		private void dec16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			System.ComponentModel.CancelEventArgs e = new CancelEventArgs();
-			dec16_Validating(sender, e);
-			if (e.Cancel) return;
+			if (!dec16_IsValid(sender)) return;
 
-			int i = alDec16.IndexOf(sender) * 2;
-			if (i > 2)
-				throw new Exception("dec16_Validated not applicable to control " + sender.ToString());
-
-			ushort val = Convert.ToUInt16(((TextBox)sender).Text);
-
+			byte[] ops = ShortToOps(Convert.ToInt16(((TextBox)sender).Text));
 			internalchg = true;
-			currentInst.Operands[i] = (byte)(val & 0xFF);
-			currentInst.Operands[i+1] = (byte)((val >> 8) & 0xFF);
-			if (i == 0)
+			switch (alDec16.IndexOf(sender))
 			{
-				this.tbInst_Op0.Text = Helper.HexString(currentInst.Operands[0]);
-				this.tbInst_Op1.Text = Helper.HexString(currentInst.Operands[1]);
-			}
-			else
-			{
-				this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
-				this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
+				case 0:
+					currentInst.Operands[0] = ops[0];
+					currentInst.Operands[1] = ops[1];
+					this.tbInst_Op0.Text = Helper.HexString(currentInst.Operands[0]);
+					this.tbInst_Op1.Text = Helper.HexString(currentInst.Operands[1]);
+					break;
+				case 1:
+					currentInst.Operands[2] = ops[0];
+					currentInst.Operands[3] = ops[1];
+					this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
+					this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
+					break;
 			}
 			internalchg = false;
 		}
@@ -2377,22 +2448,20 @@ namespace SimPe.PackedFiles.UserInterface
 		private void hex8_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			System.ComponentModel.CancelEventArgs e = new CancelEventArgs();
-			hex8_Validating(sender, e);
-			if (e.Cancel) return;
+			if (!hex8_IsValid(sender)) return;
 
-			int i = alHex8.IndexOf(sender);
 
 			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
 
 			internalchg = true;
+			int i = alHex8.IndexOf(sender);
 			if (i < 8)
 			{
 				currentInst.Operands[i] = val;
 				if (i < 2)
-					this.tbInst_Op01_dec.Text = (currentInst.Operands[0] + (currentInst.Operands[1] << 8)).ToString();
+					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
 				else if (i < 4)
-					this.tbInst_Op23_dec.Text = (currentInst.Operands[2] + (currentInst.Operands[3] << 8)).ToString();
+					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();
 			}
 			else
 			{
@@ -2402,8 +2471,6 @@ namespace SimPe.PackedFiles.UserInterface
 					 {
 						 case 16: currentInst.Reserved0 = val; break;
 						 case 17: wrapper.Header.Type = val; break;
-						 default:
-							 throw new Exception("hex8_Validated not applicable to control " + sender.ToString());
 					 }
 			}
 			internalchg = false;
@@ -2412,23 +2479,16 @@ namespace SimPe.PackedFiles.UserInterface
 		private void hex16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			System.ComponentModel.CancelEventArgs e = new CancelEventArgs();
-			hex16_Validating(sender, e);
-			if (e.Cancel) return;
-
-			int i = alHex16.IndexOf(sender);
+			if (!hex16_IsValid(sender)) return;
 
 			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
-
 			internalchg = true;
-			switch (i)
+			switch (alHex16.IndexOf(sender))
 			{
 				case 0: wrapper.Header.Format = val; break;
 				case 1: wrapper.Header.Flags = val; break;
 				case 2: wrapper.Header.Zero = val; break;
 				case 3: currentInst.OpCode = val; break;
-				default:
-					throw new Exception("hex16_Validated not applicable to control " + sender.ToString());
 			}
 			internalchg = false;
 		}
@@ -2436,38 +2496,111 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void dec8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			try { Convert.ToByte(((TextBox)sender).Text); }
-			catch (Exception) { e.Cancel = true; }
+			if (dec8_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			byte val = 0;
+			switch (alDec8.IndexOf(sender))
+			{
+				case 0: val = wrapper.Header.ArgumentCount; break;
+				case 1: val = wrapper.Header.LocalVarCount; break;
+			}
+
+			((TextBox)sender).Text = val.ToString();
+			((TextBox)sender).SelectAll();
+			internalchg = false;
 		}
 
 		private void dec16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			try { Convert.ToUInt16(((TextBox)sender).Text); }
-			catch (Exception) { e.Cancel = true; }
-		}
+			if (dec16_IsValid(sender)) return;
 
-		private void dec32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			try { Convert.ToUInt32(((TextBox)sender).Text); }
-			catch (Exception) { e.Cancel = true; }
+			e.Cancel = true;
+
+			internalchg = true;
+			short val = 0;
+			switch (alDec16.IndexOf(sender))
+			{
+				case 0:
+					currentInst.Operands[0] = origInst.Operands[0];
+					currentInst.Operands[1] = origInst.Operands[1];
+					this.tbInst_Op0.Text = Helper.HexString(currentInst.Operands[0]);
+					this.tbInst_Op1.Text = Helper.HexString(currentInst.Operands[1]);
+					val = OpsToShort(origInst.Operands[0], origInst.Operands[1]);
+					break;
+				case 1:
+					currentInst.Operands[2] = origInst.Operands[2];
+					currentInst.Operands[3] = origInst.Operands[3];
+					this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
+					this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
+					val = OpsToShort(origInst.Operands[2], origInst.Operands[3]);
+					break;
+				case 2: // Move
+					val = 1;
+					break;
+			}
+
+			((TextBox)sender).Text = val.ToString();
+			((TextBox)sender).SelectAll();
+			internalchg = false;
 		}
 
 		private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			try { Convert.ToByte(((TextBox)sender).Text, 16); }
-			catch (Exception) { e.Cancel = true; }
+			if (hex8_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			byte val = 0;
+			int i = alHex8.IndexOf(sender);
+			if (i < 8)
+			{
+				currentInst.Operands[i] = val = origInst.Operands[i];
+				if (i < 2)
+					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
+				else if (i < 4)
+					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();
+			}
+			else
+			{
+				if (i < 16)
+				{
+					currentInst.Reserved1[i-8] = val = origInst.Reserved1[i-8];
+				}
+				else switch(i)
+					{
+						case 16: val = origInst.Reserved0; currentInst.Reserved0 = val; break;
+						case 17: val = wrapper.Header.Type; break;
+					}
+			}
+
+			internalchg = true;
+			((TextBox)sender).Text = ((i >= 16) ? "0x" : "") + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
+			internalchg = false;
 		}
 
 		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
-			catch (Exception) { e.Cancel = true; }
-		}
+			if (hex16_IsValid(sender)) return;
 
-		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
-			catch (Exception) { e.Cancel = true; }
+			e.Cancel = true;
+
+			internalchg = true;
+			ushort val = 0;
+			switch (alHex16.IndexOf(sender))
+			{
+				case 0: val = wrapper.Header.Format; break;
+				case 1: val = wrapper.Header.Flags; break;
+				case 2: val = wrapper.Header.Zero; break;
+				case 3: currentInst.OpCode = val = origInst.OpCode; break;
+			}
+
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
+			internalchg = false;
 		}
 
 
