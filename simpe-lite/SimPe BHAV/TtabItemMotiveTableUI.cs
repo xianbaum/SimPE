@@ -313,7 +313,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive1.AccessibleName = resources.GetString("lbMotive1.AccessibleName");
 			this.lbMotive1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive1.Anchor")));
 			this.lbMotive1.AutoSize = ((bool)(resources.GetObject("lbMotive1.AutoSize")));
-			this.lbMotive1.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive1.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive1.Dock")));
 			this.lbMotive1.Enabled = ((bool)(resources.GetObject("lbMotive1.Enabled")));
 			this.lbMotive1.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive1.Font")));
@@ -358,7 +358,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive3.AccessibleName = resources.GetString("lbMotive3.AccessibleName");
 			this.lbMotive3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive3.Anchor")));
 			this.lbMotive3.AutoSize = ((bool)(resources.GetObject("lbMotive3.AutoSize")));
-			this.lbMotive3.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive3.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive3.Dock")));
 			this.lbMotive3.Enabled = ((bool)(resources.GetObject("lbMotive3.Enabled")));
 			this.lbMotive3.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive3.Font")));
@@ -403,7 +403,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive5.AccessibleName = resources.GetString("lbMotive5.AccessibleName");
 			this.lbMotive5.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive5.Anchor")));
 			this.lbMotive5.AutoSize = ((bool)(resources.GetObject("lbMotive5.AutoSize")));
-			this.lbMotive5.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive5.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive5.Dock")));
 			this.lbMotive5.Enabled = ((bool)(resources.GetObject("lbMotive5.Enabled")));
 			this.lbMotive5.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive5.Font")));
@@ -448,7 +448,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive7.AccessibleName = resources.GetString("lbMotive7.AccessibleName");
 			this.lbMotive7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive7.Anchor")));
 			this.lbMotive7.AutoSize = ((bool)(resources.GetObject("lbMotive7.AutoSize")));
-			this.lbMotive7.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive7.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive7.Dock")));
 			this.lbMotive7.Enabled = ((bool)(resources.GetObject("lbMotive7.Enabled")));
 			this.lbMotive7.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive7.Font")));
@@ -471,7 +471,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive9.AccessibleName = resources.GetString("lbMotive9.AccessibleName");
 			this.lbMotive9.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive9.Anchor")));
 			this.lbMotive9.AutoSize = ((bool)(resources.GetObject("lbMotive9.AutoSize")));
-			this.lbMotive9.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive9.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive9.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive9.Dock")));
 			this.lbMotive9.Enabled = ((bool)(resources.GetObject("lbMotive9.Enabled")));
 			this.lbMotive9.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive9.Font")));
@@ -494,7 +494,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive11.AccessibleName = resources.GetString("lbMotive11.AccessibleName");
 			this.lbMotive11.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive11.Anchor")));
 			this.lbMotive11.AutoSize = ((bool)(resources.GetObject("lbMotive11.AutoSize")));
-			this.lbMotive11.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive11.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive11.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive11.Dock")));
 			this.lbMotive11.Enabled = ((bool)(resources.GetObject("lbMotive11.Enabled")));
 			this.lbMotive11.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive11.Font")));
@@ -583,7 +583,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive15.AccessibleName = resources.GetString("lbMotive15.AccessibleName");
 			this.lbMotive15.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive15.Anchor")));
 			this.lbMotive15.AutoSize = ((bool)(resources.GetObject("lbMotive15.AutoSize")));
-			this.lbMotive15.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive15.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive15.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive15.Dock")));
 			this.lbMotive15.Enabled = ((bool)(resources.GetObject("lbMotive15.Enabled")));
 			this.lbMotive15.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive15.Font")));
@@ -606,7 +606,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive13.AccessibleName = resources.GetString("lbMotive13.AccessibleName");
 			this.lbMotive13.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive13.Anchor")));
 			this.lbMotive13.AutoSize = ((bool)(resources.GetObject("lbMotive13.AutoSize")));
-			this.lbMotive13.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive13.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive13.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive13.Dock")));
 			this.lbMotive13.Enabled = ((bool)(resources.GetObject("lbMotive13.Enabled")));
 			this.lbMotive13.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive13.Font")));
@@ -1344,7 +1344,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM1.AccessibleName = resources.GetString("lbCBM1.AccessibleName");
 			this.lbCBM1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM1.Anchor")));
 			this.lbCBM1.AutoSize = ((bool)(resources.GetObject("lbCBM1.AutoSize")));
-			this.lbCBM1.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM1.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM1.Dock")));
 			this.lbCBM1.Enabled = ((bool)(resources.GetObject("lbCBM1.Enabled")));
 			this.lbCBM1.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM1.Font")));
@@ -1389,7 +1389,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM3.AccessibleName = resources.GetString("lbCBM3.AccessibleName");
 			this.lbCBM3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM3.Anchor")));
 			this.lbCBM3.AutoSize = ((bool)(resources.GetObject("lbCBM3.AutoSize")));
-			this.lbCBM3.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM3.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM3.Dock")));
 			this.lbCBM3.Enabled = ((bool)(resources.GetObject("lbCBM3.Enabled")));
 			this.lbCBM3.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM3.Font")));
@@ -1434,7 +1434,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM5.AccessibleName = resources.GetString("lbCBM5.AccessibleName");
 			this.lbCBM5.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM5.Anchor")));
 			this.lbCBM5.AutoSize = ((bool)(resources.GetObject("lbCBM5.AutoSize")));
-			this.lbCBM5.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM5.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM5.Dock")));
 			this.lbCBM5.Enabled = ((bool)(resources.GetObject("lbCBM5.Enabled")));
 			this.lbCBM5.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM5.Font")));
@@ -1479,7 +1479,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM7.AccessibleName = resources.GetString("lbCBM7.AccessibleName");
 			this.lbCBM7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM7.Anchor")));
 			this.lbCBM7.AutoSize = ((bool)(resources.GetObject("lbCBM7.AutoSize")));
-			this.lbCBM7.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM7.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM7.Dock")));
 			this.lbCBM7.Enabled = ((bool)(resources.GetObject("lbCBM7.Enabled")));
 			this.lbCBM7.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM7.Font")));
@@ -1502,7 +1502,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM15.AccessibleName = resources.GetString("lbCBM15.AccessibleName");
 			this.lbCBM15.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM15.Anchor")));
 			this.lbCBM15.AutoSize = ((bool)(resources.GetObject("lbCBM15.AutoSize")));
-			this.lbCBM15.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM15.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM15.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM15.Dock")));
 			this.lbCBM15.Enabled = ((bool)(resources.GetObject("lbCBM15.Enabled")));
 			this.lbCBM15.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM15.Font")));
@@ -1525,7 +1525,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM11.AccessibleName = resources.GetString("lbCBM11.AccessibleName");
 			this.lbCBM11.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM11.Anchor")));
 			this.lbCBM11.AutoSize = ((bool)(resources.GetObject("lbCBM11.AutoSize")));
-			this.lbCBM11.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM11.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM11.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM11.Dock")));
 			this.lbCBM11.Enabled = ((bool)(resources.GetObject("lbCBM11.Enabled")));
 			this.lbCBM11.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM11.Font")));
@@ -1592,7 +1592,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM9.AccessibleName = resources.GetString("lbCBM9.AccessibleName");
 			this.lbCBM9.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM9.Anchor")));
 			this.lbCBM9.AutoSize = ((bool)(resources.GetObject("lbCBM9.AutoSize")));
-			this.lbCBM9.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM9.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM9.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM9.Dock")));
 			this.lbCBM9.Enabled = ((bool)(resources.GetObject("lbCBM9.Enabled")));
 			this.lbCBM9.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM9.Font")));
@@ -1615,7 +1615,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM13.AccessibleName = resources.GetString("lbCBM13.AccessibleName");
 			this.lbCBM13.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM13.Anchor")));
 			this.lbCBM13.AutoSize = ((bool)(resources.GetObject("lbCBM13.AutoSize")));
-			this.lbCBM13.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM13.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM13.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM13.Dock")));
 			this.lbCBM13.Enabled = ((bool)(resources.GetObject("lbCBM13.Enabled")));
 			this.lbCBM13.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM13.Font")));
