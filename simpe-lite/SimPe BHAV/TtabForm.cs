@@ -103,6 +103,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnAdd;
 		private System.Windows.Forms.Button btnDelete;
 		private SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI ttabItemMotiveTableUI1;
+		private System.Windows.Forms.Label lbFilename;
+		private System.Windows.Forms.TextBox tbFilename;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -160,6 +162,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private Ttab wrapper = null;
 		private bool internalchg;
+		private bool setHandler = false;
 		private ArrayList alUshorts;
 		private ArrayList alUints;
 		private ArrayList alFloats;
@@ -167,7 +170,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			this.btnCommit.Enabled = true;
+			this.btnCommit.Enabled = wrapper.Changed;
+
+			if (internalchg) return;
+			internalchg = true;
+			tbFilename.Text = lbttabfile.Text = wrapper.FileName;
+			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
+			internalchg = false;
 		}
 
 
@@ -226,24 +235,21 @@ namespace SimPe.PackedFiles.UserInterface
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Ttab) wrp;
-
-			wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
-			this.btnCommit.Enabled = wrapper.Changed;
+			WrapperChanged(wrapper, null);
 
 			internalchg = true;
-
-			lbttabfile.Text = wrapper.FileName;
-			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
-
 			lbttab.Items.Clear();
 			for(int i = 0; i < wrapper.ItemCount; i++)
-			{
 				lbttab.Items.Add(wrapper[i]);
-			}
-
 			internalchg = false;
 
 			if (lbttab.Items.Count>0) lbttab.SelectedIndex = 0;
+
+			if (!setHandler)
+			{
+				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+				setHandler = true;
+			}
 		}		
 
 		#endregion
@@ -257,6 +263,8 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TtabForm));
 			this.ttabPanel = new System.Windows.Forms.Panel();
+			this.lbFilename = new System.Windows.Forms.Label();
+			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.tbFormat = new System.Windows.Forms.TextBox();
 			this.label41 = new System.Windows.Forms.Label();
@@ -340,6 +348,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("ttabPanel.AutoScrollMinSize")));
 			this.ttabPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.ttabPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ttabPanel.BackgroundImage")));
+			this.ttabPanel.Controls.Add(this.lbFilename);
+			this.ttabPanel.Controls.Add(this.tbFilename);
 			this.ttabPanel.Controls.Add(this.btnAdd);
 			this.ttabPanel.Controls.Add(this.tbFormat);
 			this.ttabPanel.Controls.Add(this.label41);
@@ -360,6 +370,55 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.TabIndex = ((int)(resources.GetObject("ttabPanel.TabIndex")));
 			this.ttabPanel.Text = resources.GetString("ttabPanel.Text");
 			this.ttabPanel.Visible = ((bool)(resources.GetObject("ttabPanel.Visible")));
+			// 
+			// lbFilename
+			// 
+			this.lbFilename.AccessibleDescription = resources.GetString("lbFilename.AccessibleDescription");
+			this.lbFilename.AccessibleName = resources.GetString("lbFilename.AccessibleName");
+			this.lbFilename.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbFilename.Anchor")));
+			this.lbFilename.AutoSize = ((bool)(resources.GetObject("lbFilename.AutoSize")));
+			this.lbFilename.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbFilename.Dock")));
+			this.lbFilename.Enabled = ((bool)(resources.GetObject("lbFilename.Enabled")));
+			this.lbFilename.Font = ((System.Drawing.Font)(resources.GetObject("lbFilename.Font")));
+			this.lbFilename.Image = ((System.Drawing.Image)(resources.GetObject("lbFilename.Image")));
+			this.lbFilename.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.ImageAlign")));
+			this.lbFilename.ImageIndex = ((int)(resources.GetObject("lbFilename.ImageIndex")));
+			this.lbFilename.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbFilename.ImeMode")));
+			this.lbFilename.Location = ((System.Drawing.Point)(resources.GetObject("lbFilename.Location")));
+			this.lbFilename.Name = "lbFilename";
+			this.lbFilename.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbFilename.RightToLeft")));
+			this.lbFilename.Size = ((System.Drawing.Size)(resources.GetObject("lbFilename.Size")));
+			this.lbFilename.TabIndex = ((int)(resources.GetObject("lbFilename.TabIndex")));
+			this.lbFilename.Text = resources.GetString("lbFilename.Text");
+			this.lbFilename.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.TextAlign")));
+			this.lbFilename.Visible = ((bool)(resources.GetObject("lbFilename.Visible")));
+			// 
+			// tbFilename
+			// 
+			this.tbFilename.AccessibleDescription = resources.GetString("tbFilename.AccessibleDescription");
+			this.tbFilename.AccessibleName = resources.GetString("tbFilename.AccessibleName");
+			this.tbFilename.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFilename.Anchor")));
+			this.tbFilename.AutoSize = ((bool)(resources.GetObject("tbFilename.AutoSize")));
+			this.tbFilename.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFilename.BackgroundImage")));
+			this.tbFilename.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFilename.Dock")));
+			this.tbFilename.Enabled = ((bool)(resources.GetObject("tbFilename.Enabled")));
+			this.tbFilename.Font = ((System.Drawing.Font)(resources.GetObject("tbFilename.Font")));
+			this.tbFilename.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFilename.ImeMode")));
+			this.tbFilename.Location = ((System.Drawing.Point)(resources.GetObject("tbFilename.Location")));
+			this.tbFilename.MaxLength = ((int)(resources.GetObject("tbFilename.MaxLength")));
+			this.tbFilename.Multiline = ((bool)(resources.GetObject("tbFilename.Multiline")));
+			this.tbFilename.Name = "tbFilename";
+			this.tbFilename.PasswordChar = ((char)(resources.GetObject("tbFilename.PasswordChar")));
+			this.tbFilename.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFilename.RightToLeft")));
+			this.tbFilename.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFilename.ScrollBars")));
+			this.tbFilename.Size = ((System.Drawing.Size)(resources.GetObject("tbFilename.Size")));
+			this.tbFilename.TabIndex = ((int)(resources.GetObject("tbFilename.TabIndex")));
+			this.tbFilename.Text = resources.GetString("tbFilename.Text");
+			this.tbFilename.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFilename.TextAlign")));
+			this.tbFilename.Visible = ((bool)(resources.GetObject("tbFilename.Visible")));
+			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
+			this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
+			this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
 			// 
 			// btnAdd
 			// 
@@ -2158,6 +2217,17 @@ namespace SimPe.PackedFiles.UserInterface
 				
 				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
 			}
+		}
+
+
+		private void tbFilename_TextChanged(object sender, System.EventArgs e)
+		{
+			wrapper.FileName = tbFilename.Text;
+		}
+
+		private void tbFilename_Validated(object sender, System.EventArgs e)
+		{
+			tbFilename.SelectAll();
 		}
 
 
