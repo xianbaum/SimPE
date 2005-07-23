@@ -1,4 +1,9 @@
 
+23 July 2005 11:42 - Nicer validation; change a couple of labels
+  SimPe BHAV\
+    BhavForm.cs 1.28
+    BhavForm.resx 1.12
+
 10 July 2005 16:26 - Disable Cancel on Commit; fix Target TextChanged handling
   SimPe BHAV\
     BhavForm.cs 1.27
