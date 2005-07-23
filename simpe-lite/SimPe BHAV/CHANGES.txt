@@ -1,4 +1,12 @@
 
+23 July 2005 14:02 - Remove "highlights"; validation to match BHAV editor
+  SimPe BHAV\
+    TtabItemMotveTableUI.cs 1.3
+    TtabMotiveGroupUI.cs 1.3
+    TtabMotiveGroupUI.resx 1.3
+    TtabSingleMotiveUI.cs 1.3
+    TtabSingleMotiveUI.resx 1.3
+
 23 July 2005 12:23 - Tidy up display, swap Adult and Toddler motives
   SimPe BHAV\
     TtabForm.cs 1.8
