@@ -1,4 +1,10 @@
 
+23 July 2005 18:12 - Update field handling and naming - second attempt
+  SimPe BHAV\
+    TtabForm.cs 1.10
+    TtabForm.resx 1.6
+    TtabWrapper.cs 1.8
+
 23 July 2005 17:44 - Update field handling and naming
   SimPe BHAV\
     TtabForm.cs 1.9
