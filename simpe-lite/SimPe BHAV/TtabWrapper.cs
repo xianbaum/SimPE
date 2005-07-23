@@ -882,10 +882,10 @@ namespace SimPe.PackedFiles.Wrapper
 	/// </summary>
 	public enum TtabMotives : int
 	{
-		Toddler = 0x00,
+		Adult = 0x00,
 		Child = 0x01,
 		Teen = 0x02,
-		Adult = 0x03,
+		Toddler = 0x03,
 		Elder = 0x04,
 		Unknown = 0x05,
 		Animals = 0x06
