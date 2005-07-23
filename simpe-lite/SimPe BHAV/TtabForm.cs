@@ -121,11 +121,11 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-			TextBox[] tbua = {tbAction, tbGuardian, tbFlags, tbFlags2, tbRes9};
+			TextBox[] tbua = {tbAction, tbGuardian, tbFlags, tbFlags2, tbRes5};
 			alUshorts = new ArrayList(tbua);
 
 			TextBox[] tbia = {tbFormat, tbStringIndex, tbAttenuationCode, tbAttenuationValue,
-							  tbAutonomy, tbRes5, tbRes6, tbRes8, tbJoinIndex};
+							  tbAutonomy, tbRes6, tbRes8, tbRes9, tbJoinIndex};
 			alUints = new ArrayList(tbia);
 
 			TextBox[] tbfa = {tbRes7};
@@ -2089,7 +2089,7 @@ namespace SimPe.PackedFiles.UserInterface
 			tbStringIndex.Text = "0x"+Helper.HexString(item.StringIndex);
 
 			tbAttenuationCode.Text = "0x"+Helper.HexString(item.AttenuationCode);
-			tbAttenuationValue.Text = "0x"+Helper.HexString(item.AttenuationValue);
+			tbAttenuationValue.Text = item.AttenuationValue.ToString("N9");
 			tbAutonomy.Text = "0x"+Helper.HexString(item.Autonomy);
 			tbJoinIndex.Text = "0x"+Helper.HexString(item.JoinIndex);
 			tbRes5.Text = "0x"+Helper.HexString(item.Res5);
@@ -2242,11 +2242,11 @@ namespace SimPe.PackedFiles.UserInterface
 		 * attenuationvalue - uint   - 8 hex digits
 		 * autonomy         - uint   - 8 hex digits
 		 * joinindex        - uint   - 8 hex digits
-		 * res5             - uint   - 8 hex digits
+		 * res5             - ushort - 4 hex digits
 		 * res6             - uint   - 8 hex digits
 		 * res7             - float  - decimal digits and "."
 		 * res8             - uint   - 8 hex digits
-		 * res9             - ushort - 4 hex digits
+		 * res9             - uint   - 8 hex digits
 		 */
 
 		private void ushortHex_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -2288,7 +2288,7 @@ namespace SimPe.PackedFiles.UserInterface
 					doFlags();
 					break;
 				case 3: wrapper[this.lbttab.SelectedIndex].Flags2 = val; break;
-				case 4: wrapper[this.lbttab.SelectedIndex].Res9 = val; break;
+				case 4: wrapper[this.lbttab.SelectedIndex].Res5 = val; break;
 				default:
 					throw new Exception("ushortHex_Validated not applicable to control " + sender.ToString());
 			}
@@ -2309,9 +2309,9 @@ namespace SimPe.PackedFiles.UserInterface
 				case 2: wrapper[this.lbttab.SelectedIndex].AttenuationCode = val; break;
 				case 3: wrapper[this.lbttab.SelectedIndex].AttenuationValue = val; break;
 				case 4: wrapper[this.lbttab.SelectedIndex].Autonomy = val; break;
-				case 5: wrapper[this.lbttab.SelectedIndex].Res5 = val; break;
-				case 6: wrapper[this.lbttab.SelectedIndex].Res6 = val; break;
-				case 7: wrapper[this.lbttab.SelectedIndex].Res8 = val; break;
+				case 5: wrapper[this.lbttab.SelectedIndex].Res6 = val; break;
+				case 6: wrapper[this.lbttab.SelectedIndex].Res8 = val; break;
+				case 7: wrapper[this.lbttab.SelectedIndex].Res9 = val; break;
 				case 8: wrapper[this.lbttab.SelectedIndex].JoinIndex = val; break;
 				default:
 					throw new Exception("uintHex_Validated not applicable to control " + sender.ToString());
