@@ -1,4 +1,10 @@
 
+23 July 2005 17:44 - Update field handling and naming
+  SimPe BHAV\
+    TtabForm.cs 1.9
+    TtabForm.resx 1.5
+    TtabWrapper.cs 1.7
+
 23 July 2005 15:22 - Editable FileName (and some more Bhav-like bits internally)
   SimPe BHAV\
     TtabForm.cs 1.8
