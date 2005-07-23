@@ -505,7 +505,7 @@ namespace SimPe.PackedFiles.Wrapper
 			get {return res7; }
 			set
 			{
-				if (res7.Equals(value))
+				if (!res7.Equals(value))
 				{
 					res7 = value;
 					parent.OnWrapperChanged(new EventArgs());
@@ -892,7 +892,7 @@ namespace SimPe.PackedFiles.Wrapper
 		Teen = 0x02,
 		Toddler = 0x03,
 		Elder = 0x04,
-		Cats = 0x05,
-		Dogs = 0x06
+		Cat = 0x05,
+		Dog = 0x06
 	}
 }

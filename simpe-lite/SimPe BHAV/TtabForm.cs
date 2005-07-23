@@ -124,11 +124,11 @@ namespace SimPe.PackedFiles.UserInterface
 			TextBox[] tbua = {tbAction, tbGuardian, tbFlags, tbFlags2, tbRes5};
 			alUshorts = new ArrayList(tbua);
 
-			TextBox[] tbia = {tbFormat, tbStringIndex, tbAttenuationCode, tbAttenuationValue,
+			TextBox[] tbia = {tbFormat, tbStringIndex, tbAttenuationCode,
 							  tbAutonomy, tbRes6, tbRes8, tbRes9, tbJoinIndex};
 			alUints = new ArrayList(tbia);
 
-			TextBox[] tbfa = {tbRes7};
+			TextBox[] tbfa = { tbAttenuationValue, tbRes7 };
 			alFloats = new ArrayList(tbfa);
 
 			CheckBox[] cba = {
@@ -738,8 +738,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbRes9.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes9.TextAlign")));
 			this.tbRes9.Visible = ((bool)(resources.GetObject("tbRes9.Visible")));
 			this.tbRes9.WordWrap = ((bool)(resources.GetObject("tbRes9.WordWrap")));
-			this.tbRes9.Validating += new System.ComponentModel.CancelEventHandler(this.ushortHex_Validating);
-			this.tbRes9.Validated += new System.EventHandler(this.ushortHex_Validated);
+			this.tbRes9.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
+			this.tbRes9.Validated += new System.EventHandler(this.uintHex_Validated);
 			// 
 			// label33
 			// 
@@ -836,8 +836,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbRes5.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes5.TextAlign")));
 			this.tbRes5.Visible = ((bool)(resources.GetObject("tbRes5.Visible")));
 			this.tbRes5.WordWrap = ((bool)(resources.GetObject("tbRes5.WordWrap")));
-			this.tbRes5.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbRes5.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbRes5.Validating += new System.ComponentModel.CancelEventHandler(this.ushortHex_Validating);
+			this.tbRes5.Validated += new System.EventHandler(this.ushortHex_Validated);
 			// 
 			// label35
 			// 
@@ -1010,8 +1010,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbAttenuationValue.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbAttenuationValue.TextAlign")));
 			this.tbAttenuationValue.Visible = ((bool)(resources.GetObject("tbAttenuationValue.Visible")));
 			this.tbAttenuationValue.WordWrap = ((bool)(resources.GetObject("tbAttenuationValue.WordWrap")));
-			this.tbAttenuationValue.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbAttenuationValue.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbAttenuationValue.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+			this.tbAttenuationValue.Validated += new System.EventHandler(this.float_Validated);
 			// 
 			// label31
 			// 
@@ -2089,12 +2089,12 @@ namespace SimPe.PackedFiles.UserInterface
 			tbStringIndex.Text = "0x"+Helper.HexString(item.StringIndex);
 
 			tbAttenuationCode.Text = "0x"+Helper.HexString(item.AttenuationCode);
-			tbAttenuationValue.Text = item.AttenuationValue.ToString("N9");
+			tbAttenuationValue.Text = item.AttenuationValue.ToString("N8");
 			tbAutonomy.Text = "0x"+Helper.HexString(item.Autonomy);
 			tbJoinIndex.Text = "0x"+Helper.HexString(item.JoinIndex);
 			tbRes5.Text = "0x"+Helper.HexString(item.Res5);
 			tbRes6.Text = "0x"+Helper.HexString(item.Res6);
-			tbRes7.Text = item.Res7.ToString("N9");
+			tbRes7.Text = item.Res7.ToString("N8");
 			tbRes8.Text = "0x"+Helper.HexString(item.Res8);
 			tbRes9.Text = "0x"+Helper.HexString(item.Res9);
 
@@ -2307,12 +2307,11 @@ namespace SimPe.PackedFiles.UserInterface
 					lbttab.Items[lbttab.SelectedIndex] = wrapper[lbttab.SelectedIndex];
 					break;
 				case 2: wrapper[this.lbttab.SelectedIndex].AttenuationCode = val; break;
-				case 3: wrapper[this.lbttab.SelectedIndex].AttenuationValue = val; break;
-				case 4: wrapper[this.lbttab.SelectedIndex].Autonomy = val; break;
-				case 5: wrapper[this.lbttab.SelectedIndex].Res6 = val; break;
-				case 6: wrapper[this.lbttab.SelectedIndex].Res8 = val; break;
-				case 7: wrapper[this.lbttab.SelectedIndex].Res9 = val; break;
-				case 8: wrapper[this.lbttab.SelectedIndex].JoinIndex = val; break;
+				case 3: wrapper[this.lbttab.SelectedIndex].Autonomy = val; break;
+				case 4: wrapper[this.lbttab.SelectedIndex].Res6 = val; break;
+				case 5: wrapper[this.lbttab.SelectedIndex].Res8 = val; break;
+				case 6: wrapper[this.lbttab.SelectedIndex].Res9 = val; break;
+				case 7: wrapper[this.lbttab.SelectedIndex].JoinIndex = val; break;
 				default:
 					throw new Exception("uintHex_Validated not applicable to control " + sender.ToString());
 			}
@@ -2325,7 +2324,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 			switch(i)
 			{
-				case 0: wrapper[this.lbttab.SelectedIndex].Res7 = val; break;
+				case 0: wrapper[this.lbttab.SelectedIndex].AttenuationValue = val; break;
+				case 1: wrapper[this.lbttab.SelectedIndex].Res7 = val; break;
 				default:
 					throw new Exception("float_Validated not applicable to control " + sender.ToString());
 			}
