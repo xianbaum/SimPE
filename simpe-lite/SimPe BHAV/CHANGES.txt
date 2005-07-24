@@ -1,4 +1,10 @@
 
+24 July 2005 19:35 - Update field validation handling
+  SimPe BHAV\
+    TtabForm.cs 1.10
+    TtabForm.resx 1.6
+    TtabWrapper.cs 1.8
+
 24 July 2005 19:33 - Add Help to TTAB editor
   SimPe BHAV\
     HelpContainer.cs 1.1
