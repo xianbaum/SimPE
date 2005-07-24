@@ -338,6 +338,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "HelpContainer.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "HelpContainer.resx"
+                    DependentUpon = "HelpContainer.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "ImportSemi.cs"
                     SubType = "Form"
                     BuildAction = "Compile"

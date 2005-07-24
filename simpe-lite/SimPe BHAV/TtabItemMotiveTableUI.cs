@@ -93,6 +93,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbCBM10;
 		private System.Windows.Forms.Label lbCBM12;
 		private System.Windows.Forms.Button btnCopyAll;
+		private System.Windows.Forms.Button btnHelp;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -127,6 +128,7 @@ namespace SimPe.PackedFiles.UserInterface
 			pnCopyButtons.Visible = false;
 			pnCopyButtons.Left = pnAllGroups.Left;
 			pnCopyButtons.Width = pnAllGroups.Width;
+			this.Width = this.pnAllGroups.Right + 8;
 		}
 
 		/// <summary> 
@@ -260,6 +262,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM13 = new System.Windows.Forms.Label();
 			this.lbCBM10 = new System.Windows.Forms.Label();
 			this.lbCBM12 = new System.Windows.Forms.Label();
+			this.btnHelp = new System.Windows.Forms.Button();
 			this.pnAllGroups.SuspendLayout();
 			this.pnCopyButtons.SuspendLayout();
 			this.SuspendLayout();
@@ -1676,6 +1679,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM12.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCBM12.TextAlign")));
 			this.lbCBM12.Visible = ((bool)(resources.GetObject("lbCBM12.Visible")));
 			// 
+			// btnHelp
+			// 
+			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
+			this.btnHelp.AccessibleName = resources.GetString("btnHelp.AccessibleName");
+			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnHelp.Anchor")));
+			this.btnHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHelp.BackgroundImage")));
+			this.btnHelp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnHelp.Dock")));
+			this.btnHelp.Enabled = ((bool)(resources.GetObject("btnHelp.Enabled")));
+			this.btnHelp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnHelp.FlatStyle")));
+			this.btnHelp.Font = ((System.Drawing.Font)(resources.GetObject("btnHelp.Font")));
+			this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+			this.btnHelp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.ImageAlign")));
+			this.btnHelp.ImageIndex = ((int)(resources.GetObject("btnHelp.ImageIndex")));
+			this.btnHelp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnHelp.ImeMode")));
+			this.btnHelp.Location = ((System.Drawing.Point)(resources.GetObject("btnHelp.Location")));
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnHelp.RightToLeft")));
+			this.btnHelp.Size = ((System.Drawing.Size)(resources.GetObject("btnHelp.Size")));
+			this.btnHelp.TabIndex = ((int)(resources.GetObject("btnHelp.TabIndex")));
+			this.btnHelp.Text = resources.GetString("btnHelp.Text");
+			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
+			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+			// 
 			// TtabItemMotiveTableUI
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -1684,6 +1711,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMargin")));
 			this.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMinSize")));
 			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+			this.Controls.Add(this.btnHelp);
 			this.Controls.Add(this.pnCopyButtons);
 			this.Controls.Add(this.cbShowAll);
 			this.Controls.Add(this.pnAllGroups);
@@ -1736,12 +1764,19 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				pnCopyButtons.Visible = false;
 				pnAllGroups.Visible = true;
+				this.Width = this.pnAllGroups.Right + 8;
 			}
 			else
 			{
 				pnAllGroups.Visible = false;
 				pnCopyButtons.Visible = true;
+				this.Width = this.pnCopyButtons.Right + 8;
 			}
+		}
+
+		private void btnHelp_Click(object sender, System.EventArgs e)
+		{
+			(new pjse.HelpContainer(pjse.HelpContainer.HelpPage.TtabMotives)).ShowDialog();
 		}
 
 	}
