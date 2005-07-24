@@ -649,6 +649,28 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
+
+		public TtabItem Clone()
+		{
+			TtabItem clone = new TtabItem(this.parent);
+			clone.action = this.action;
+			clone.guard = this.guard;
+			clone.flags = this.flags.Clone();
+			clone.flags2 = this.flags2;
+			clone.strindex = this.strindex;
+			clone.attenuationcode = this.attenuationcode;
+			clone.attenuationvalue = this.attenuationvalue;
+			clone.autonomy = this.autonomy;
+			clone.joinindex = this.joinindex;
+			clone.res5 = this.res5;
+			clone.res6 = this.res6;
+			clone.res7 = this.res7;
+			clone.res8 = this.res8;
+			clone.res9 = this.res9;
+			clone.groups = (ArrayList)this.groups.Clone();
+			return clone;
+		}
+
 		/// <summary>
 		/// Reads Data from the Stream
 		/// </summary>
@@ -673,25 +695,25 @@ namespace SimPe.PackedFiles.Wrapper
 			autonomy = reader.ReadUInt32();
 			joinindex = reader.ReadUInt32();
 
+			res5 = 0;
+			res6 = 0;
+			res7 = 0f;
+			res8 = 0;
+			res9 = 0;
 			if (parent.Format >0x44) 
 			{
-				// xxxx
 				res5 = reader.ReadUInt16();
 				if (parent.Format >= 0x46)
 				{
 					if (parent.Format >= 0x4a) 
 					{
-						// xxxxxxxx
 						res6 = reader.ReadUInt32();
 						if (parent.Format >= 0x4c)
 						{
-							// xxxxxxxx
 							res7 = reader.ReadSingle(); //float
-							// xxxxxxxx
 							res8 = reader.ReadUInt32();
 						}
 					}
-					// xxxxxxxx
 					res9 = reader.ReadUInt32();
 				}
 			}
@@ -879,6 +901,10 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get { return GetBit(15); }
 			set { SetBit(15, value); parent.OnWrapperChanged(new EventArgs()); }
+		}
+		public TtabFlags Clone()
+		{
+			return new TtabFlags(parent, Value);
 		}
 	}
 

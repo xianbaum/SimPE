@@ -37,11 +37,9 @@ namespace SimPe.PackedFiles.UserInterface
 	{
 		#region Form variables
 
-		private System.Windows.Forms.ListBox lbttab;
 		private System.Windows.Forms.Panel panel5;
 		private System.Windows.Forms.Label lbttabfile;
 		private System.Windows.Forms.Label label25;
-		private System.Windows.Forms.Label label26;
 		private System.Windows.Forms.MenuItem menuItem1;
 		private System.Windows.Forms.MenuItem menuItem2;
 		private System.Windows.Forms.Panel ttabPanel;
@@ -78,16 +76,12 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.CheckBox cbjoinable;
 		private System.Windows.Forms.TabPage tpMotives;
 		private System.Windows.Forms.CheckBox cbvisitor;
-		private System.Windows.Forms.Button btnCommit;
-		private System.Windows.Forms.Label label41;
 		private System.Windows.Forms.Label label24;
 		private System.Windows.Forms.TextBox tbAction;
 		private System.Windows.Forms.TextBox tbFlags2;
 		private System.Windows.Forms.TextBox tbStringIndex;
-		private System.Windows.Forms.TextBox tbFormat;
 		private System.Windows.Forms.GroupBox gbFlags;
 		private System.Windows.Forms.TextBox tbFlags;
-		private System.Windows.Forms.TextBox tbAttenuationCode;
 		private System.Windows.Forms.TextBox tbAttenuationValue;
 		private System.Windows.Forms.TextBox tbAutonomy;
 		private System.Windows.Forms.Label label1;
@@ -100,11 +94,17 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbRes5;
 		private System.Windows.Forms.Button btnGuardian;
 		private System.Windows.Forms.Button btnAction;
-		private System.Windows.Forms.Button btnAdd;
-		private System.Windows.Forms.Button btnDelete;
 		private SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI ttabItemMotiveTableUI1;
+		private System.Windows.Forms.ComboBox cbAttenuationCode;
+		private System.Windows.Forms.ListBox lbttab;
+		private System.Windows.Forms.Button btnAdd;
+		private System.Windows.Forms.Label label26;
+		private System.Windows.Forms.Button btnDelete;
 		private System.Windows.Forms.Label lbFilename;
 		private System.Windows.Forms.TextBox tbFilename;
+		private System.Windows.Forms.TextBox tbFormat;
+		private System.Windows.Forms.Label label41;
+		private System.Windows.Forms.Button btnCommit;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -121,12 +121,11 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-			TextBox[] tbua = {tbAction, tbGuardian, tbFlags, tbFlags2, tbRes5};
-			alUshorts = new ArrayList(tbua);
+			TextBox[] tbua = { tbAction, tbGuardian, tbFlags, tbFlags2, tbRes5 };
+			alHex16 = new ArrayList(tbua);
 
-			TextBox[] tbia = {tbFormat, tbStringIndex, tbAttenuationCode,
-							  tbAutonomy, tbRes6, tbRes8, tbRes9, tbJoinIndex};
-			alUints = new ArrayList(tbia);
+			TextBox[] tbia = { tbFormat, tbStringIndex, tbAutonomy, tbRes6, tbRes8, tbRes9, tbJoinIndex };
+			alHex32 = new ArrayList(tbia);
 
 			TextBox[] tbfa = { tbAttenuationValue, tbRes7 };
 			alFloats = new ArrayList(tbfa);
@@ -138,6 +137,9 @@ namespace SimPe.PackedFiles.UserInterface
 							   ,cbunk1      ,cbunk2      ,cbunk3        ,cbunk4
 						   };
 			alFlags = new ArrayList(cba);
+
+			ComboBox[] cbb = { cbAttenuationCode };
+			alComboBox = new ArrayList(cbb);
 		}
 
 		/// <summary>
@@ -163,10 +165,13 @@ namespace SimPe.PackedFiles.UserInterface
 		private Ttab wrapper = null;
 		private bool internalchg;
 		private bool setHandler = false;
-		private ArrayList alUshorts;
-		private ArrayList alUints;
+		private ArrayList alHex16;
+		private ArrayList alHex32;
 		private ArrayList alFloats;
 		private ArrayList alFlags;
+		private ArrayList alComboBox;
+		private TtabItem origItem;
+		private TtabItem currentItem;
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
@@ -188,28 +193,66 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				switch(i)
 				{
-					case  0: val = wrapper[this.lbttab.SelectedIndex].Flags.ByVisitors; break;
-					case  1: val = wrapper[this.lbttab.SelectedIndex].Flags.Joinable; break;
-					case  2: val = wrapper[this.lbttab.SelectedIndex].Flags.RunImmediately; break;
-					case  3: val = wrapper[this.lbttab.SelectedIndex].Flags.AvailConsecutive; break;
-					case  4: val = wrapper[this.lbttab.SelectedIndex].Flags.ByChildren; break;
-					case  5: val = wrapper[this.lbttab.SelectedIndex].Flags.ByDemoChild; break;
-					case  6: val = wrapper[this.lbttab.SelectedIndex].Flags.ByAdults; break;
-					case  7: val = wrapper[this.lbttab.SelectedIndex].Flags.DebugMenu; break;
-					case  8: val = wrapper[this.lbttab.SelectedIndex].Flags.AutoFirstSelect; break;
-					case  9: val = wrapper[this.lbttab.SelectedIndex].Flags.ByToddlers; break;
-					case 10: val = wrapper[this.lbttab.SelectedIndex].Flags.ByElders; break;
-					case 11: val = wrapper[this.lbttab.SelectedIndex].Flags.ByTeens; break;
-					case 12: val = wrapper[this.lbttab.SelectedIndex].Flags.Unknown1; break;
-					case 13: val = wrapper[this.lbttab.SelectedIndex].Flags.Unknown2; break;
-					case 14: val = wrapper[this.lbttab.SelectedIndex].Flags.Unknown3; break;
-					case 15: val = wrapper[this.lbttab.SelectedIndex].Flags.Unknown4; break;
+					case  0: val = currentItem.Flags.ByVisitors; break;
+					case  1: val = currentItem.Flags.Joinable; break;
+					case  2: val = currentItem.Flags.RunImmediately; break;
+					case  3: val = currentItem.Flags.AvailConsecutive; break;
+					case  4: val = currentItem.Flags.ByChildren; break;
+					case  5: val = currentItem.Flags.ByDemoChild; break;
+					case  6: val = currentItem.Flags.ByAdults; break;
+					case  7: val = currentItem.Flags.DebugMenu; break;
+					case  8: val = currentItem.Flags.AutoFirstSelect; break;
+					case  9: val = currentItem.Flags.ByToddlers; break;
+					case 10: val = currentItem.Flags.ByElders; break;
+					case 11: val = currentItem.Flags.ByTeens; break;
+					case 12: val = currentItem.Flags.Unknown1; break;
+					case 13: val = currentItem.Flags.Unknown2; break;
+					case 14: val = currentItem.Flags.Unknown3; break;
+					case 15: val = currentItem.Flags.Unknown4; break;
 					default: val = false; break;
 				}
 				((CheckBox)alFlags[i]).Checked = val;
 			}
 			internalchg = false;
 		}
+		private bool ComboBox_IsValid(object sender)
+		{
+			if (alComboBox.IndexOf(sender) < 0)
+				throw new Exception("ComboBox_IsValid not applicable to control " + sender.ToString());
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return true;
+
+			try { Convert.ToUInt32(((ComboBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool hex16_IsValid(object sender)
+		{
+			if (alHex16.IndexOf(sender) < 0)
+				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool hex32_IsValid(object sender)
+		{
+			if (alHex32.IndexOf(sender) < 0)
+				throw new Exception("hex32_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool float_IsValid(object sender)
+		{
+			if (alFloats.IndexOf(sender) < 0)
+				throw new Exception("float_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToSingle(((TextBox)sender).Text); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
 		#endregion
 
 		#region IPackedFileUI Member
@@ -265,11 +308,16 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel = new System.Windows.Forms.Panel();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
-			this.btnAdd = new System.Windows.Forms.Button();
 			this.tbFormat = new System.Windows.Forms.TextBox();
 			this.label41 = new System.Windows.Forms.Label();
+			this.btnCommit = new System.Windows.Forms.Button();
+			this.btnAdd = new System.Windows.Forms.Button();
+			this.label26 = new System.Windows.Forms.Label();
+			this.btnDelete = new System.Windows.Forms.Button();
+			this.lbttab = new System.Windows.Forms.ListBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpSettings = new System.Windows.Forms.TabPage();
+			this.cbAttenuationCode = new System.Windows.Forms.ComboBox();
 			this.btnAction = new System.Windows.Forms.Button();
 			this.btnGuardian = new System.Windows.Forms.Button();
 			this.lbaction = new System.Windows.Forms.Label();
@@ -289,7 +337,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label30 = new System.Windows.Forms.Label();
 			this.tbAttenuationValue = new System.Windows.Forms.TextBox();
 			this.label31 = new System.Windows.Forms.Label();
-			this.tbAttenuationCode = new System.Windows.Forms.TextBox();
 			this.label32 = new System.Windows.Forms.Label();
 			this.tbFlags2 = new System.Windows.Forms.TextBox();
 			this.label20 = new System.Windows.Forms.Label();
@@ -321,13 +368,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label2 = new System.Windows.Forms.Label();
 			this.tpMotives = new System.Windows.Forms.TabPage();
 			this.ttabItemMotiveTableUI1 = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
-			this.lbttab = new System.Windows.Forms.ListBox();
-			this.btnCommit = new System.Windows.Forms.Button();
 			this.panel5 = new System.Windows.Forms.Panel();
 			this.lbttabfile = new System.Windows.Forms.Label();
 			this.label25 = new System.Windows.Forms.Label();
-			this.label26 = new System.Windows.Forms.Label();
-			this.btnDelete = new System.Windows.Forms.Button();
 			this.menuItem1 = new System.Windows.Forms.MenuItem();
 			this.menuItem2 = new System.Windows.Forms.MenuItem();
 			this.ttabPanel.SuspendLayout();
@@ -350,15 +393,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ttabPanel.BackgroundImage")));
 			this.ttabPanel.Controls.Add(this.lbFilename);
 			this.ttabPanel.Controls.Add(this.tbFilename);
-			this.ttabPanel.Controls.Add(this.btnAdd);
 			this.ttabPanel.Controls.Add(this.tbFormat);
 			this.ttabPanel.Controls.Add(this.label41);
-			this.ttabPanel.Controls.Add(this.tabControl1);
-			this.ttabPanel.Controls.Add(this.lbttab);
 			this.ttabPanel.Controls.Add(this.btnCommit);
-			this.ttabPanel.Controls.Add(this.panel5);
+			this.ttabPanel.Controls.Add(this.btnAdd);
 			this.ttabPanel.Controls.Add(this.label26);
 			this.ttabPanel.Controls.Add(this.btnDelete);
+			this.ttabPanel.Controls.Add(this.lbttab);
+			this.ttabPanel.Controls.Add(this.tabControl1);
+			this.ttabPanel.Controls.Add(this.panel5);
 			this.ttabPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("ttabPanel.Dock")));
 			this.ttabPanel.Enabled = ((bool)(resources.GetObject("ttabPanel.Enabled")));
 			this.ttabPanel.Font = ((System.Drawing.Font)(resources.GetObject("ttabPanel.Font")));
@@ -420,30 +463,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
 			this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
 			// 
-			// btnAdd
-			// 
-			this.btnAdd.AccessibleDescription = resources.GetString("btnAdd.AccessibleDescription");
-			this.btnAdd.AccessibleName = resources.GetString("btnAdd.AccessibleName");
-			this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAdd.Anchor")));
-			this.btnAdd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAdd.BackgroundImage")));
-			this.btnAdd.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAdd.Dock")));
-			this.btnAdd.Enabled = ((bool)(resources.GetObject("btnAdd.Enabled")));
-			this.btnAdd.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAdd.FlatStyle")));
-			this.btnAdd.Font = ((System.Drawing.Font)(resources.GetObject("btnAdd.Font")));
-			this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
-			this.btnAdd.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.ImageAlign")));
-			this.btnAdd.ImageIndex = ((int)(resources.GetObject("btnAdd.ImageIndex")));
-			this.btnAdd.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAdd.ImeMode")));
-			this.btnAdd.Location = ((System.Drawing.Point)(resources.GetObject("btnAdd.Location")));
-			this.btnAdd.Name = "btnAdd";
-			this.btnAdd.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAdd.RightToLeft")));
-			this.btnAdd.Size = ((System.Drawing.Size)(resources.GetObject("btnAdd.Size")));
-			this.btnAdd.TabIndex = ((int)(resources.GetObject("btnAdd.TabIndex")));
-			this.btnAdd.Text = resources.GetString("btnAdd.Text");
-			this.btnAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.TextAlign")));
-			this.btnAdd.Visible = ((bool)(resources.GetObject("btnAdd.Visible")));
-			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-			// 
 			// tbFormat
 			// 
 			this.tbFormat.AccessibleDescription = resources.GetString("tbFormat.AccessibleDescription");
@@ -468,8 +487,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFormat.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFormat.TextAlign")));
 			this.tbFormat.Visible = ((bool)(resources.GetObject("tbFormat.Visible")));
 			this.tbFormat.WordWrap = ((bool)(resources.GetObject("tbFormat.WordWrap")));
-			this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbFormat.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbFormat.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label41
 			// 
@@ -492,6 +512,124 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label41.Text = resources.GetString("label41.Text");
 			this.label41.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label41.TextAlign")));
 			this.label41.Visible = ((bool)(resources.GetObject("label41.Visible")));
+			// 
+			// btnCommit
+			// 
+			this.btnCommit.AccessibleDescription = resources.GetString("btnCommit.AccessibleDescription");
+			this.btnCommit.AccessibleName = resources.GetString("btnCommit.AccessibleName");
+			this.btnCommit.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCommit.Anchor")));
+			this.btnCommit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCommit.BackgroundImage")));
+			this.btnCommit.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCommit.Dock")));
+			this.btnCommit.Enabled = ((bool)(resources.GetObject("btnCommit.Enabled")));
+			this.btnCommit.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCommit.FlatStyle")));
+			this.btnCommit.Font = ((System.Drawing.Font)(resources.GetObject("btnCommit.Font")));
+			this.btnCommit.Image = ((System.Drawing.Image)(resources.GetObject("btnCommit.Image")));
+			this.btnCommit.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.ImageAlign")));
+			this.btnCommit.ImageIndex = ((int)(resources.GetObject("btnCommit.ImageIndex")));
+			this.btnCommit.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCommit.ImeMode")));
+			this.btnCommit.Location = ((System.Drawing.Point)(resources.GetObject("btnCommit.Location")));
+			this.btnCommit.Name = "btnCommit";
+			this.btnCommit.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCommit.RightToLeft")));
+			this.btnCommit.Size = ((System.Drawing.Size)(resources.GetObject("btnCommit.Size")));
+			this.btnCommit.TabIndex = ((int)(resources.GetObject("btnCommit.TabIndex")));
+			this.btnCommit.Text = resources.GetString("btnCommit.Text");
+			this.btnCommit.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.TextAlign")));
+			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
+			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
+			// 
+			// btnAdd
+			// 
+			this.btnAdd.AccessibleDescription = resources.GetString("btnAdd.AccessibleDescription");
+			this.btnAdd.AccessibleName = resources.GetString("btnAdd.AccessibleName");
+			this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAdd.Anchor")));
+			this.btnAdd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAdd.BackgroundImage")));
+			this.btnAdd.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAdd.Dock")));
+			this.btnAdd.Enabled = ((bool)(resources.GetObject("btnAdd.Enabled")));
+			this.btnAdd.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAdd.FlatStyle")));
+			this.btnAdd.Font = ((System.Drawing.Font)(resources.GetObject("btnAdd.Font")));
+			this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
+			this.btnAdd.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.ImageAlign")));
+			this.btnAdd.ImageIndex = ((int)(resources.GetObject("btnAdd.ImageIndex")));
+			this.btnAdd.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAdd.ImeMode")));
+			this.btnAdd.Location = ((System.Drawing.Point)(resources.GetObject("btnAdd.Location")));
+			this.btnAdd.Name = "btnAdd";
+			this.btnAdd.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAdd.RightToLeft")));
+			this.btnAdd.Size = ((System.Drawing.Size)(resources.GetObject("btnAdd.Size")));
+			this.btnAdd.TabIndex = ((int)(resources.GetObject("btnAdd.TabIndex")));
+			this.btnAdd.Text = resources.GetString("btnAdd.Text");
+			this.btnAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.TextAlign")));
+			this.btnAdd.Visible = ((bool)(resources.GetObject("btnAdd.Visible")));
+			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+			// 
+			// label26
+			// 
+			this.label26.AccessibleDescription = resources.GetString("label26.AccessibleDescription");
+			this.label26.AccessibleName = resources.GetString("label26.AccessibleName");
+			this.label26.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label26.Anchor")));
+			this.label26.AutoSize = ((bool)(resources.GetObject("label26.AutoSize")));
+			this.label26.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label26.Dock")));
+			this.label26.Enabled = ((bool)(resources.GetObject("label26.Enabled")));
+			this.label26.Font = ((System.Drawing.Font)(resources.GetObject("label26.Font")));
+			this.label26.Image = ((System.Drawing.Image)(resources.GetObject("label26.Image")));
+			this.label26.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label26.ImageAlign")));
+			this.label26.ImageIndex = ((int)(resources.GetObject("label26.ImageIndex")));
+			this.label26.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label26.ImeMode")));
+			this.label26.Location = ((System.Drawing.Point)(resources.GetObject("label26.Location")));
+			this.label26.Name = "label26";
+			this.label26.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label26.RightToLeft")));
+			this.label26.Size = ((System.Drawing.Size)(resources.GetObject("label26.Size")));
+			this.label26.TabIndex = ((int)(resources.GetObject("label26.TabIndex")));
+			this.label26.Text = resources.GetString("label26.Text");
+			this.label26.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label26.TextAlign")));
+			this.label26.Visible = ((bool)(resources.GetObject("label26.Visible")));
+			// 
+			// btnDelete
+			// 
+			this.btnDelete.AccessibleDescription = resources.GetString("btnDelete.AccessibleDescription");
+			this.btnDelete.AccessibleName = resources.GetString("btnDelete.AccessibleName");
+			this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDelete.Anchor")));
+			this.btnDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelete.BackgroundImage")));
+			this.btnDelete.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDelete.Dock")));
+			this.btnDelete.Enabled = ((bool)(resources.GetObject("btnDelete.Enabled")));
+			this.btnDelete.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDelete.FlatStyle")));
+			this.btnDelete.Font = ((System.Drawing.Font)(resources.GetObject("btnDelete.Font")));
+			this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+			this.btnDelete.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelete.ImageAlign")));
+			this.btnDelete.ImageIndex = ((int)(resources.GetObject("btnDelete.ImageIndex")));
+			this.btnDelete.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDelete.ImeMode")));
+			this.btnDelete.Location = ((System.Drawing.Point)(resources.GetObject("btnDelete.Location")));
+			this.btnDelete.Name = "btnDelete";
+			this.btnDelete.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDelete.RightToLeft")));
+			this.btnDelete.Size = ((System.Drawing.Size)(resources.GetObject("btnDelete.Size")));
+			this.btnDelete.TabIndex = ((int)(resources.GetObject("btnDelete.TabIndex")));
+			this.btnDelete.Text = resources.GetString("btnDelete.Text");
+			this.btnDelete.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelete.TextAlign")));
+			this.btnDelete.Visible = ((bool)(resources.GetObject("btnDelete.Visible")));
+			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+			// 
+			// lbttab
+			// 
+			this.lbttab.AccessibleDescription = resources.GetString("lbttab.AccessibleDescription");
+			this.lbttab.AccessibleName = resources.GetString("lbttab.AccessibleName");
+			this.lbttab.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbttab.Anchor")));
+			this.lbttab.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lbttab.BackgroundImage")));
+			this.lbttab.ColumnWidth = ((int)(resources.GetObject("lbttab.ColumnWidth")));
+			this.lbttab.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbttab.Dock")));
+			this.lbttab.Enabled = ((bool)(resources.GetObject("lbttab.Enabled")));
+			this.lbttab.Font = ((System.Drawing.Font)(resources.GetObject("lbttab.Font")));
+			this.lbttab.HorizontalExtent = ((int)(resources.GetObject("lbttab.HorizontalExtent")));
+			this.lbttab.HorizontalScrollbar = ((bool)(resources.GetObject("lbttab.HorizontalScrollbar")));
+			this.lbttab.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbttab.ImeMode")));
+			this.lbttab.IntegralHeight = ((bool)(resources.GetObject("lbttab.IntegralHeight")));
+			this.lbttab.ItemHeight = ((int)(resources.GetObject("lbttab.ItemHeight")));
+			this.lbttab.Location = ((System.Drawing.Point)(resources.GetObject("lbttab.Location")));
+			this.lbttab.Name = "lbttab";
+			this.lbttab.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbttab.RightToLeft")));
+			this.lbttab.ScrollAlwaysVisible = ((bool)(resources.GetObject("lbttab.ScrollAlwaysVisible")));
+			this.lbttab.Size = ((System.Drawing.Size)(resources.GetObject("lbttab.Size")));
+			this.lbttab.TabIndex = ((int)(resources.GetObject("lbttab.TabIndex")));
+			this.lbttab.Visible = ((bool)(resources.GetObject("lbttab.Visible")));
+			this.lbttab.SelectedIndexChanged += new System.EventHandler(this.TtabSelect);
 			// 
 			// tabControl1
 			// 
@@ -528,6 +666,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("tpSettings.AutoScrollMargin")));
 			this.tpSettings.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("tpSettings.AutoScrollMinSize")));
 			this.tpSettings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tpSettings.BackgroundImage")));
+			this.tpSettings.Controls.Add(this.cbAttenuationCode);
 			this.tpSettings.Controls.Add(this.btnAction);
 			this.tpSettings.Controls.Add(this.btnGuardian);
 			this.tpSettings.Controls.Add(this.lbaction);
@@ -547,7 +686,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.Controls.Add(this.label30);
 			this.tpSettings.Controls.Add(this.tbAttenuationValue);
 			this.tpSettings.Controls.Add(this.label31);
-			this.tpSettings.Controls.Add(this.tbAttenuationCode);
 			this.tpSettings.Controls.Add(this.label32);
 			this.tpSettings.Controls.Add(this.tbFlags2);
 			this.tpSettings.Controls.Add(this.label20);
@@ -572,6 +710,38 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.Text = resources.GetString("tpSettings.Text");
 			this.tpSettings.ToolTipText = resources.GetString("tpSettings.ToolTipText");
 			this.tpSettings.Visible = ((bool)(resources.GetObject("tpSettings.Visible")));
+			// 
+			// cbAttenuationCode
+			// 
+			this.cbAttenuationCode.AccessibleDescription = resources.GetString("cbAttenuationCode.AccessibleDescription");
+			this.cbAttenuationCode.AccessibleName = resources.GetString("cbAttenuationCode.AccessibleName");
+			this.cbAttenuationCode.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbAttenuationCode.Anchor")));
+			this.cbAttenuationCode.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbAttenuationCode.BackgroundImage")));
+			this.cbAttenuationCode.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbAttenuationCode.Dock")));
+			this.cbAttenuationCode.Enabled = ((bool)(resources.GetObject("cbAttenuationCode.Enabled")));
+			this.cbAttenuationCode.Font = ((System.Drawing.Font)(resources.GetObject("cbAttenuationCode.Font")));
+			this.cbAttenuationCode.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbAttenuationCode.ImeMode")));
+			this.cbAttenuationCode.IntegralHeight = ((bool)(resources.GetObject("cbAttenuationCode.IntegralHeight")));
+			this.cbAttenuationCode.ItemHeight = ((int)(resources.GetObject("cbAttenuationCode.ItemHeight")));
+			this.cbAttenuationCode.Items.AddRange(new object[] {
+																   resources.GetString("cbAttenuationCode.Items"),
+																   resources.GetString("cbAttenuationCode.Items1"),
+																   resources.GetString("cbAttenuationCode.Items2"),
+																   resources.GetString("cbAttenuationCode.Items3"),
+																   resources.GetString("cbAttenuationCode.Items4")});
+			this.cbAttenuationCode.Location = ((System.Drawing.Point)(resources.GetObject("cbAttenuationCode.Location")));
+			this.cbAttenuationCode.MaxDropDownItems = ((int)(resources.GetObject("cbAttenuationCode.MaxDropDownItems")));
+			this.cbAttenuationCode.MaxLength = ((int)(resources.GetObject("cbAttenuationCode.MaxLength")));
+			this.cbAttenuationCode.Name = "cbAttenuationCode";
+			this.cbAttenuationCode.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbAttenuationCode.RightToLeft")));
+			this.cbAttenuationCode.Size = ((System.Drawing.Size)(resources.GetObject("cbAttenuationCode.Size")));
+			this.cbAttenuationCode.TabIndex = ((int)(resources.GetObject("cbAttenuationCode.TabIndex")));
+			this.cbAttenuationCode.Text = resources.GetString("cbAttenuationCode.Text");
+			this.cbAttenuationCode.Visible = ((bool)(resources.GetObject("cbAttenuationCode.Visible")));
+			this.cbAttenuationCode.Validating += new System.ComponentModel.CancelEventHandler(this.ComboBox_Validating);
+			this.cbAttenuationCode.Validated += new System.EventHandler(this.ComboBox_Validated);
+			this.cbAttenuationCode.TextChanged += new System.EventHandler(this.ComboBox_TextChanged);
+			this.cbAttenuationCode.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
 			// 
 			// btnAction
 			// 
@@ -689,8 +859,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbStringIndex.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbStringIndex.TextAlign")));
 			this.tbStringIndex.Visible = ((bool)(resources.GetObject("tbStringIndex.Visible")));
 			this.tbStringIndex.WordWrap = ((bool)(resources.GetObject("tbStringIndex.WordWrap")));
-			this.tbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbStringIndex.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbStringIndex.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbStringIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label40
 			// 
@@ -738,8 +909,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbRes9.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes9.TextAlign")));
 			this.tbRes9.Visible = ((bool)(resources.GetObject("tbRes9.Visible")));
 			this.tbRes9.WordWrap = ((bool)(resources.GetObject("tbRes9.WordWrap")));
-			this.tbRes9.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbRes9.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbRes9.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbRes9.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbRes9.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label33
 			// 
@@ -787,8 +959,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbRes8.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes8.TextAlign")));
 			this.tbRes8.Visible = ((bool)(resources.GetObject("tbRes8.Visible")));
 			this.tbRes8.WordWrap = ((bool)(resources.GetObject("tbRes8.WordWrap")));
-			this.tbRes8.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbRes8.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbRes8.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbRes8.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbRes8.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label34
 			// 
@@ -836,8 +1009,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbRes5.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes5.TextAlign")));
 			this.tbRes5.Visible = ((bool)(resources.GetObject("tbRes5.Visible")));
 			this.tbRes5.WordWrap = ((bool)(resources.GetObject("tbRes5.WordWrap")));
-			this.tbRes5.Validating += new System.ComponentModel.CancelEventHandler(this.ushortHex_Validating);
-			this.tbRes5.Validated += new System.EventHandler(this.ushortHex_Validated);
+			this.tbRes5.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbRes5.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbRes5.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// label35
 			// 
@@ -885,8 +1059,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbAutonomy.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbAutonomy.TextAlign")));
 			this.tbAutonomy.Visible = ((bool)(resources.GetObject("tbAutonomy.Visible")));
 			this.tbAutonomy.WordWrap = ((bool)(resources.GetObject("tbAutonomy.WordWrap")));
-			this.tbAutonomy.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbAutonomy.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbAutonomy.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbAutonomy.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbAutonomy.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// tbRes7
 			// 
@@ -914,6 +1089,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbRes7.WordWrap = ((bool)(resources.GetObject("tbRes7.WordWrap")));
 			this.tbRes7.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
 			this.tbRes7.Validated += new System.EventHandler(this.float_Validated);
+			this.tbRes7.TextChanged += new System.EventHandler(this.float_TextChanged);
 			// 
 			// label29
 			// 
@@ -961,8 +1137,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbRes6.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes6.TextAlign")));
 			this.tbRes6.Visible = ((bool)(resources.GetObject("tbRes6.Visible")));
 			this.tbRes6.WordWrap = ((bool)(resources.GetObject("tbRes6.WordWrap")));
-			this.tbRes6.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbRes6.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbRes6.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbRes6.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbRes6.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label30
 			// 
@@ -1012,6 +1189,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbAttenuationValue.WordWrap = ((bool)(resources.GetObject("tbAttenuationValue.WordWrap")));
 			this.tbAttenuationValue.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
 			this.tbAttenuationValue.Validated += new System.EventHandler(this.float_Validated);
+			this.tbAttenuationValue.TextChanged += new System.EventHandler(this.float_TextChanged);
 			// 
 			// label31
 			// 
@@ -1034,33 +1212,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label31.Text = resources.GetString("label31.Text");
 			this.label31.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label31.TextAlign")));
 			this.label31.Visible = ((bool)(resources.GetObject("label31.Visible")));
-			// 
-			// tbAttenuationCode
-			// 
-			this.tbAttenuationCode.AccessibleDescription = resources.GetString("tbAttenuationCode.AccessibleDescription");
-			this.tbAttenuationCode.AccessibleName = resources.GetString("tbAttenuationCode.AccessibleName");
-			this.tbAttenuationCode.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbAttenuationCode.Anchor")));
-			this.tbAttenuationCode.AutoSize = ((bool)(resources.GetObject("tbAttenuationCode.AutoSize")));
-			this.tbAttenuationCode.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbAttenuationCode.BackgroundImage")));
-			this.tbAttenuationCode.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbAttenuationCode.Dock")));
-			this.tbAttenuationCode.Enabled = ((bool)(resources.GetObject("tbAttenuationCode.Enabled")));
-			this.tbAttenuationCode.Font = ((System.Drawing.Font)(resources.GetObject("tbAttenuationCode.Font")));
-			this.tbAttenuationCode.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbAttenuationCode.ImeMode")));
-			this.tbAttenuationCode.Location = ((System.Drawing.Point)(resources.GetObject("tbAttenuationCode.Location")));
-			this.tbAttenuationCode.MaxLength = ((int)(resources.GetObject("tbAttenuationCode.MaxLength")));
-			this.tbAttenuationCode.Multiline = ((bool)(resources.GetObject("tbAttenuationCode.Multiline")));
-			this.tbAttenuationCode.Name = "tbAttenuationCode";
-			this.tbAttenuationCode.PasswordChar = ((char)(resources.GetObject("tbAttenuationCode.PasswordChar")));
-			this.tbAttenuationCode.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbAttenuationCode.RightToLeft")));
-			this.tbAttenuationCode.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbAttenuationCode.ScrollBars")));
-			this.tbAttenuationCode.Size = ((System.Drawing.Size)(resources.GetObject("tbAttenuationCode.Size")));
-			this.tbAttenuationCode.TabIndex = ((int)(resources.GetObject("tbAttenuationCode.TabIndex")));
-			this.tbAttenuationCode.Text = resources.GetString("tbAttenuationCode.Text");
-			this.tbAttenuationCode.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbAttenuationCode.TextAlign")));
-			this.tbAttenuationCode.Visible = ((bool)(resources.GetObject("tbAttenuationCode.Visible")));
-			this.tbAttenuationCode.WordWrap = ((bool)(resources.GetObject("tbAttenuationCode.WordWrap")));
-			this.tbAttenuationCode.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbAttenuationCode.Validated += new System.EventHandler(this.uintHex_Validated);
 			// 
 			// label32
 			// 
@@ -1108,8 +1259,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFlags2.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlags2.TextAlign")));
 			this.tbFlags2.Visible = ((bool)(resources.GetObject("tbFlags2.Visible")));
 			this.tbFlags2.WordWrap = ((bool)(resources.GetObject("tbFlags2.WordWrap")));
-			this.tbFlags2.Validating += new System.ComponentModel.CancelEventHandler(this.ushortHex_Validating);
-			this.tbFlags2.Validated += new System.EventHandler(this.ushortHex_Validated);
+			this.tbFlags2.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbFlags2.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbFlags2.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// label20
 			// 
@@ -1179,8 +1331,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbGuardian.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbGuardian.TextAlign")));
 			this.tbGuardian.Visible = ((bool)(resources.GetObject("tbGuardian.Visible")));
 			this.tbGuardian.WordWrap = ((bool)(resources.GetObject("tbGuardian.WordWrap")));
-			this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.ushortHex_Validating);
-			this.tbGuardian.Validated += new System.EventHandler(this.ushortHex_Validated);
+			this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbGuardian.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// label23
 			// 
@@ -1266,8 +1419,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFlags.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlags.TextAlign")));
 			this.tbFlags.Visible = ((bool)(resources.GetObject("tbFlags.Visible")));
 			this.tbFlags.WordWrap = ((bool)(resources.GetObject("tbFlags.WordWrap")));
-			this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.ushortHex_Validating);
-			this.tbFlags.Validated += new System.EventHandler(this.ushortHex_Validated);
+			this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbFlags.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbFlags.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// label24
 			// 
@@ -1731,8 +1885,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbAction.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbAction.TextAlign")));
 			this.tbAction.Visible = ((bool)(resources.GetObject("tbAction.Visible")));
 			this.tbAction.WordWrap = ((bool)(resources.GetObject("tbAction.WordWrap")));
-			this.tbAction.Validating += new System.ComponentModel.CancelEventHandler(this.ushortHex_Validating);
-			this.tbAction.Validated += new System.EventHandler(this.ushortHex_Validated);
+			this.tbAction.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbAction.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// label1
 			// 
@@ -1780,8 +1935,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbJoinIndex.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbJoinIndex.TextAlign")));
 			this.tbJoinIndex.Visible = ((bool)(resources.GetObject("tbJoinIndex.Visible")));
 			this.tbJoinIndex.WordWrap = ((bool)(resources.GetObject("tbJoinIndex.WordWrap")));
-			this.tbJoinIndex.Validating += new System.ComponentModel.CancelEventHandler(this.uintHex_Validating);
-			this.tbJoinIndex.Validated += new System.EventHandler(this.uintHex_Validated);
+			this.tbJoinIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbJoinIndex.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbJoinIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label2
 			// 
@@ -1848,54 +2004,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabItemMotiveTableUI1.Size = ((System.Drawing.Size)(resources.GetObject("ttabItemMotiveTableUI1.Size")));
 			this.ttabItemMotiveTableUI1.TabIndex = ((int)(resources.GetObject("ttabItemMotiveTableUI1.TabIndex")));
 			this.ttabItemMotiveTableUI1.Visible = ((bool)(resources.GetObject("ttabItemMotiveTableUI1.Visible")));
-			// 
-			// lbttab
-			// 
-			this.lbttab.AccessibleDescription = resources.GetString("lbttab.AccessibleDescription");
-			this.lbttab.AccessibleName = resources.GetString("lbttab.AccessibleName");
-			this.lbttab.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbttab.Anchor")));
-			this.lbttab.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lbttab.BackgroundImage")));
-			this.lbttab.ColumnWidth = ((int)(resources.GetObject("lbttab.ColumnWidth")));
-			this.lbttab.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbttab.Dock")));
-			this.lbttab.Enabled = ((bool)(resources.GetObject("lbttab.Enabled")));
-			this.lbttab.Font = ((System.Drawing.Font)(resources.GetObject("lbttab.Font")));
-			this.lbttab.HorizontalExtent = ((int)(resources.GetObject("lbttab.HorizontalExtent")));
-			this.lbttab.HorizontalScrollbar = ((bool)(resources.GetObject("lbttab.HorizontalScrollbar")));
-			this.lbttab.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbttab.ImeMode")));
-			this.lbttab.IntegralHeight = ((bool)(resources.GetObject("lbttab.IntegralHeight")));
-			this.lbttab.ItemHeight = ((int)(resources.GetObject("lbttab.ItemHeight")));
-			this.lbttab.Location = ((System.Drawing.Point)(resources.GetObject("lbttab.Location")));
-			this.lbttab.Name = "lbttab";
-			this.lbttab.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbttab.RightToLeft")));
-			this.lbttab.ScrollAlwaysVisible = ((bool)(resources.GetObject("lbttab.ScrollAlwaysVisible")));
-			this.lbttab.Size = ((System.Drawing.Size)(resources.GetObject("lbttab.Size")));
-			this.lbttab.TabIndex = ((int)(resources.GetObject("lbttab.TabIndex")));
-			this.lbttab.Visible = ((bool)(resources.GetObject("lbttab.Visible")));
-			this.lbttab.SelectedIndexChanged += new System.EventHandler(this.TtabSelect);
-			// 
-			// btnCommit
-			// 
-			this.btnCommit.AccessibleDescription = resources.GetString("btnCommit.AccessibleDescription");
-			this.btnCommit.AccessibleName = resources.GetString("btnCommit.AccessibleName");
-			this.btnCommit.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCommit.Anchor")));
-			this.btnCommit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCommit.BackgroundImage")));
-			this.btnCommit.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCommit.Dock")));
-			this.btnCommit.Enabled = ((bool)(resources.GetObject("btnCommit.Enabled")));
-			this.btnCommit.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCommit.FlatStyle")));
-			this.btnCommit.Font = ((System.Drawing.Font)(resources.GetObject("btnCommit.Font")));
-			this.btnCommit.Image = ((System.Drawing.Image)(resources.GetObject("btnCommit.Image")));
-			this.btnCommit.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.ImageAlign")));
-			this.btnCommit.ImageIndex = ((int)(resources.GetObject("btnCommit.ImageIndex")));
-			this.btnCommit.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCommit.ImeMode")));
-			this.btnCommit.Location = ((System.Drawing.Point)(resources.GetObject("btnCommit.Location")));
-			this.btnCommit.Name = "btnCommit";
-			this.btnCommit.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCommit.RightToLeft")));
-			this.btnCommit.Size = ((System.Drawing.Size)(resources.GetObject("btnCommit.Size")));
-			this.btnCommit.TabIndex = ((int)(resources.GetObject("btnCommit.TabIndex")));
-			this.btnCommit.Text = resources.GetString("btnCommit.Text");
-			this.btnCommit.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.TextAlign")));
-			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
-			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
 			// 
 			// panel5
 			// 
@@ -1966,52 +2074,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label25.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.TextAlign")));
 			this.label25.Visible = ((bool)(resources.GetObject("label25.Visible")));
 			// 
-			// label26
-			// 
-			this.label26.AccessibleDescription = resources.GetString("label26.AccessibleDescription");
-			this.label26.AccessibleName = resources.GetString("label26.AccessibleName");
-			this.label26.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label26.Anchor")));
-			this.label26.AutoSize = ((bool)(resources.GetObject("label26.AutoSize")));
-			this.label26.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label26.Dock")));
-			this.label26.Enabled = ((bool)(resources.GetObject("label26.Enabled")));
-			this.label26.Font = ((System.Drawing.Font)(resources.GetObject("label26.Font")));
-			this.label26.Image = ((System.Drawing.Image)(resources.GetObject("label26.Image")));
-			this.label26.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label26.ImageAlign")));
-			this.label26.ImageIndex = ((int)(resources.GetObject("label26.ImageIndex")));
-			this.label26.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label26.ImeMode")));
-			this.label26.Location = ((System.Drawing.Point)(resources.GetObject("label26.Location")));
-			this.label26.Name = "label26";
-			this.label26.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label26.RightToLeft")));
-			this.label26.Size = ((System.Drawing.Size)(resources.GetObject("label26.Size")));
-			this.label26.TabIndex = ((int)(resources.GetObject("label26.TabIndex")));
-			this.label26.Text = resources.GetString("label26.Text");
-			this.label26.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label26.TextAlign")));
-			this.label26.Visible = ((bool)(resources.GetObject("label26.Visible")));
-			// 
-			// btnDelete
-			// 
-			this.btnDelete.AccessibleDescription = resources.GetString("btnDelete.AccessibleDescription");
-			this.btnDelete.AccessibleName = resources.GetString("btnDelete.AccessibleName");
-			this.btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDelete.Anchor")));
-			this.btnDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelete.BackgroundImage")));
-			this.btnDelete.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDelete.Dock")));
-			this.btnDelete.Enabled = ((bool)(resources.GetObject("btnDelete.Enabled")));
-			this.btnDelete.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDelete.FlatStyle")));
-			this.btnDelete.Font = ((System.Drawing.Font)(resources.GetObject("btnDelete.Font")));
-			this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-			this.btnDelete.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelete.ImageAlign")));
-			this.btnDelete.ImageIndex = ((int)(resources.GetObject("btnDelete.ImageIndex")));
-			this.btnDelete.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDelete.ImeMode")));
-			this.btnDelete.Location = ((System.Drawing.Point)(resources.GetObject("btnDelete.Location")));
-			this.btnDelete.Name = "btnDelete";
-			this.btnDelete.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDelete.RightToLeft")));
-			this.btnDelete.Size = ((System.Drawing.Size)(resources.GetObject("btnDelete.Size")));
-			this.btnDelete.TabIndex = ((int)(resources.GetObject("btnDelete.TabIndex")));
-			this.btnDelete.Text = resources.GetString("btnDelete.Text");
-			this.btnDelete.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelete.TextAlign")));
-			this.btnDelete.Visible = ((bool)(resources.GetObject("btnDelete.Visible")));
-			this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-			// 
 			// menuItem1
 			// 
 			this.menuItem1.Enabled = ((bool)(resources.GetObject("menuItem1.Enabled")));
@@ -2073,7 +2135,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnDelete.Enabled = false;
 			if (lbttab.SelectedIndex < 0) return;
 
-			TtabItem item = wrapper[lbttab.SelectedIndex];
+			TtabItem item = currentItem = wrapper[lbttab.SelectedIndex];
+			origItem = currentItem.Clone();
 
 			internalchg = true;
 
@@ -2088,7 +2151,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFlags2.Text = "0x"+Helper.HexString(item.Flags2);
 			tbStringIndex.Text = "0x"+Helper.HexString(item.StringIndex);
 
-			tbAttenuationCode.Text = "0x"+Helper.HexString(item.AttenuationCode);
+			if (item.AttenuationCode < this.cbAttenuationCode.Items.Count)
+			{
+				cbAttenuationCode.SelectedIndex = (int)item.AttenuationCode;
+			}
+			else
+			{
+				cbAttenuationCode.SelectedIndex = -1;
+				cbAttenuationCode.Text = "0x"+Helper.HexString(item.AttenuationCode);
+			}
 			tbAttenuationValue.Text = item.AttenuationValue.ToString("N8");
 			tbAutonomy.Text = "0x"+Helper.HexString(item.Autonomy);
 			tbJoinIndex.Text = "0x"+Helper.HexString(item.JoinIndex);
@@ -2111,6 +2182,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				wrapper.SynchronizeUserData();
 				btnCommit.Enabled = wrapper.Changed;
+				TtabSelect(null, null);
 			} 
 			catch (Exception ex) 
 			{
@@ -2181,7 +2253,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				if (opcode != -1)
 				{
-					TtabItem item = wrapper[this.lbttab.SelectedIndex];
+					TtabItem item = currentItem;
 					item.Guardian = (ushort)opcode;
 					this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);
 					lbguard.Text = item.GuardianName;
@@ -2206,7 +2278,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				if (opcode != -1)
 				{
-					TtabItem item = wrapper[this.lbttab.SelectedIndex];
+					TtabItem item = currentItem;
 					item.Action = (ushort)opcode;
 					this.tbAction.Text = "0x"+Helper.HexString(item.Action);
 					lbaction.Text = item.ActionName;
@@ -2231,6 +2303,84 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void ComboBox_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!ComboBox_IsValid(sender)) return;
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+
+			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
+			internalchg = true;
+			switch (alComboBox.IndexOf(sender))
+			{
+				case 0: currentItem.AttenuationCode = val; break;
+			}
+			internalchg = false;
+		}
+
+		private void ComboBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (ComboBox_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			uint val = 0;
+			switch (alComboBox.IndexOf(sender))
+			{
+				case 0: val = origItem.AttenuationCode; currentItem.AttenuationCode = val; break;
+			}
+
+			if (val < ((ComboBox)sender).Items.Count)
+			{
+				((ComboBox)sender).SelectedIndex = (int)val;
+			}
+			else
+			{
+				((ComboBox)sender).SelectedIndex = -1;
+				((ComboBox)sender).Text = "0x"+Helper.HexString(val);
+			}
+			((ComboBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void ComboBox_Validated(object sender, System.EventArgs e)
+		{
+			if (alComboBox.IndexOf(sender) < 0)
+				throw new Exception("ComboBox_Validated not applicable to control " + sender.ToString());
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+
+			bool origstate = internalchg;
+			internalchg = true;
+			if (currentItem.AttenuationCode < ((ComboBox)sender).Items.Count)
+			{
+				((ComboBox)sender).SelectedIndex = (int)currentItem.AttenuationCode;
+			}
+			else
+			{
+				((ComboBox)sender).SelectedIndex = -1;
+				((ComboBox)sender).Text = "0x"+Helper.HexString(currentItem.AttenuationCode);
+			}
+			((ComboBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+		private void ComboBox_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			int i = alComboBox.IndexOf(sender);
+			if (i < 0)
+				throw new Exception("ComboBox_SelectedIndexChanged not applicable to control " + sender.ToString());
+			if (((ComboBox)sender).SelectedIndex == -1) return;
+
+			internalchg = true;
+			if (i == 0) currentItem.AttenuationCode = (uint)(((ComboBox)alComboBox[i]).SelectedIndex);
+			((ComboBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+
 		/*
 		 * By way of reminder:
 		 * action           - ushort - 4 hex digits (BHAV number)
@@ -2249,86 +2399,176 @@ namespace SimPe.PackedFiles.UserInterface
 		 * res9             - uint   - 8 hex digits
 		 */
 
-		private void ushortHex_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+
+
+		private void hex16_TextChanged(object sender, System.EventArgs ev)
 		{
-			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
-			catch { e.Cancel = true; }
+			if (internalchg) return;
+			if (!hex16_IsValid(sender)) return;
+
+			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
+			internalchg = true;
+			switch (alHex16.IndexOf(sender))
+			{
+				case 0:
+					currentItem.Action = val;
+					lbaction.Text = currentItem.ActionName;
+					break;
+				case 1:
+					currentItem.Guardian = val;
+					lbguard.Text = currentItem.GuardianName;
+					break;
+				case 2:
+					currentItem.Flags.Value = val;
+					doFlags();
+					break;
+				case 3: currentItem.Flags2 = val; break;
+				case 4: currentItem.Res5 = val; break;
+			}
+			internalchg = false;
 		}
 
-		private void uintHex_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		private void hex32_TextChanged(object sender, System.EventArgs ev)
 		{
-			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
-			catch { e.Cancel = true; }
+			if (internalchg) return;
+			if (!hex32_IsValid(sender)) return;
+
+			uint val = Convert.ToUInt32(((TextBox)sender).Text, 16);
+			internalchg = true;
+			switch (alHex32.IndexOf(sender))
+			{
+				case 0: wrapper.Format = val; break;
+				case 1:
+					currentItem.StringIndex = val;
+					lbttab.Items[lbttab.SelectedIndex] = currentItem;
+					break;
+				case 2: currentItem.Autonomy = val; break;
+				case 3: currentItem.Res6 = val; break;
+				case 4: currentItem.Res8 = val; break;
+				case 5: currentItem.Res9 = val; break;
+				case 6: currentItem.JoinIndex = val; break;
+			}
+			internalchg = false;
+		}
+
+		private void float_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!float_IsValid(sender)) return;
+
+			float val = Convert.ToSingle(((TextBox)sender).Text);
+			internalchg = true;
+			switch (alFloats.IndexOf(sender))
+			{
+				case 0: currentItem.AttenuationValue = val; break;
+				case 1: currentItem.Res7 = val; break;
+			}
+			internalchg = false;
+		}
+
+
+		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex16_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			ushort val = 0;
+			switch (alHex16.IndexOf(sender))
+			{
+				case 0:
+					currentItem.Action = val = origItem.Action;
+					lbaction.Text = currentItem.ActionName;
+					break;
+				case 1:
+					currentItem.Guardian = val = origItem.Guardian;
+					lbguard.Text = currentItem.GuardianName;
+					break;
+				case 2:
+					currentItem.Flags.Value = val = origItem.Flags.Value;
+					doFlags();
+					break;
+				case 3: currentItem.Flags2 = val = origItem.Flags2; break;
+				case 4: currentItem.Res5 = val = origItem.Res5; break;
+			}
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex32_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			uint val = 0;
+			switch (alHex32.IndexOf(sender))
+			{
+				case 0: val = wrapper.Format; break;
+				case 1:
+					currentItem.StringIndex = val = origItem.StringIndex;
+					lbttab.Items[lbttab.SelectedIndex] = currentItem;
+					break;
+				case 2: currentItem.Autonomy = val = origItem.Autonomy; break;
+				case 3: currentItem.Res6 = val = origItem.Res6; break;
+				case 4: currentItem.Res8 = val = origItem.Res8; break;
+				case 5: currentItem.Res9 = val = origItem.Res9; break;
+				case 6: currentItem.JoinIndex = val = origItem.JoinIndex; break;
+			}
+
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
+			internalchg = false;
 		}
 
 		private void float_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			try { Convert.ToSingle(((TextBox)sender).Text); }
-			catch { e.Cancel = true; }
+			if (float_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			float val = 0.0f;
+			switch (alFloats.IndexOf(sender))
+			{
+				case 0: currentItem.AttenuationValue = val = origItem.AttenuationValue; break;
+				case 1: currentItem.Res7 = val = origItem.Res7; break;
+			}
+
+			((TextBox)sender).Text = val.ToString("N8");
+			((TextBox)sender).SelectAll();
+			internalchg = false;
 		}
 
 
-		private void ushortHex_Validated(object sender, System.EventArgs e)
+		private void hex16_Validated(object sender, System.EventArgs e)
 		{
-			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
-			int i = alUshorts.IndexOf(sender);
-
-			switch(i)
-			{
-				case 0:
-					wrapper[this.lbttab.SelectedIndex].Action = val;
-					lbaction.Text = wrapper[this.lbttab.SelectedIndex].ActionName;
-					break;
-				case 1:
-					wrapper[this.lbttab.SelectedIndex].Guardian = val;
-					lbguard.Text = wrapper[this.lbttab.SelectedIndex].GuardianName;
-					break;
-				case 2:
-					wrapper[this.lbttab.SelectedIndex].Flags.Value = val;
-					doFlags();
-					break;
-				case 3: wrapper[this.lbttab.SelectedIndex].Flags2 = val; break;
-				case 4: wrapper[this.lbttab.SelectedIndex].Res5 = val; break;
-				default:
-					throw new Exception("ushortHex_Validated not applicable to control " + sender.ToString());
-			}
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
-		private void uintHex_Validated(object sender, System.EventArgs e)
+		private void hex32_Validated(object sender, System.EventArgs e)
 		{
-			uint val = Convert.ToUInt32(((TextBox)sender).Text, 16);
-			int i = alUints.IndexOf(sender);
-
-			switch(i)
-			{
-				case 0: wrapper.Format = val; break;
-				case 1:
-					wrapper[this.lbttab.SelectedIndex].StringIndex = val;
-					lbttab.Items[lbttab.SelectedIndex] = wrapper[lbttab.SelectedIndex];
-					break;
-				case 2: wrapper[this.lbttab.SelectedIndex].AttenuationCode = val; break;
-				case 3: wrapper[this.lbttab.SelectedIndex].Autonomy = val; break;
-				case 4: wrapper[this.lbttab.SelectedIndex].Res6 = val; break;
-				case 5: wrapper[this.lbttab.SelectedIndex].Res8 = val; break;
-				case 6: wrapper[this.lbttab.SelectedIndex].Res9 = val; break;
-				case 7: wrapper[this.lbttab.SelectedIndex].JoinIndex = val; break;
-				default:
-					throw new Exception("uintHex_Validated not applicable to control " + sender.ToString());
-			}
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
 		private void float_Validated(object sender, System.EventArgs e)
 		{
-			float val = Convert.ToSingle(((TextBox)sender).Text);
-			int i = alFloats.IndexOf(sender);
-
-			switch(i)
-			{
-				case 0: wrapper[this.lbttab.SelectedIndex].AttenuationValue = val; break;
-				case 1: wrapper[this.lbttab.SelectedIndex].Res7 = val; break;
-				default:
-					throw new Exception("float_Validated not applicable to control " + sender.ToString());
-			}
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = Convert.ToSingle(((TextBox)sender).Text).ToString("N8");
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
 
@@ -2342,27 +2582,27 @@ namespace SimPe.PackedFiles.UserInterface
 			int i = alFlags.IndexOf(sender);
 			switch(i)
 			{
-				case  0: wrapper[this.lbttab.SelectedIndex].Flags.ByVisitors = val; break;
-				case  1: wrapper[this.lbttab.SelectedIndex].Flags.Joinable = val; break;
-				case  2: wrapper[this.lbttab.SelectedIndex].Flags.RunImmediately = val; break;
-				case  3: wrapper[this.lbttab.SelectedIndex].Flags.AvailConsecutive = val; break;
-				case  4: wrapper[this.lbttab.SelectedIndex].Flags.ByChildren = val; break;
-				case  5: wrapper[this.lbttab.SelectedIndex].Flags.ByDemoChild = val; break;
-				case  6: wrapper[this.lbttab.SelectedIndex].Flags.ByAdults = val; break;
-				case  7: wrapper[this.lbttab.SelectedIndex].Flags.DebugMenu = val; break;
-				case  8: wrapper[this.lbttab.SelectedIndex].Flags.AutoFirstSelect = val; break;
-				case  9: wrapper[this.lbttab.SelectedIndex].Flags.ByToddlers = val; break;
-				case 10: wrapper[this.lbttab.SelectedIndex].Flags.ByElders = val; break;
-				case 11: wrapper[this.lbttab.SelectedIndex].Flags.ByTeens = val; break;
-				case 12: wrapper[this.lbttab.SelectedIndex].Flags.Unknown1 = val; break;
-				case 13: wrapper[this.lbttab.SelectedIndex].Flags.Unknown2 = val; break;
-				case 14: wrapper[this.lbttab.SelectedIndex].Flags.Unknown3 = val; break;
-				case 15: wrapper[this.lbttab.SelectedIndex].Flags.Unknown4 = val; break;
+				case  0: currentItem.Flags.ByVisitors = val; break;
+				case  1: currentItem.Flags.Joinable = val; break;
+				case  2: currentItem.Flags.RunImmediately = val; break;
+				case  3: currentItem.Flags.AvailConsecutive = val; break;
+				case  4: currentItem.Flags.ByChildren = val; break;
+				case  5: currentItem.Flags.ByDemoChild = val; break;
+				case  6: currentItem.Flags.ByAdults = val; break;
+				case  7: currentItem.Flags.DebugMenu = val; break;
+				case  8: currentItem.Flags.AutoFirstSelect = val; break;
+				case  9: currentItem.Flags.ByToddlers = val; break;
+				case 10: currentItem.Flags.ByElders = val; break;
+				case 11: currentItem.Flags.ByTeens = val; break;
+				case 12: currentItem.Flags.Unknown1 = val; break;
+				case 13: currentItem.Flags.Unknown2 = val; break;
+				case 14: currentItem.Flags.Unknown3 = val; break;
+				case 15: currentItem.Flags.Unknown4 = val; break;
 				default:
 					throw new Exception("checkbox_CheckedChanged not applicable to control " + sender.ToString());
 			}
 			internalchg = true;
-			this.tbFlags.Text = "0x"+Helper.HexString(wrapper[this.lbttab.SelectedIndex].Flags.Value);
+			this.tbFlags.Text = "0x"+Helper.HexString(currentItem.Flags.Value);
 			internalchg = false;
 		}
 
