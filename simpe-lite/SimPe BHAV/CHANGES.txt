@@ -1,4 +1,12 @@
 
+24 July 2005 19:33 - Add Help to TTAB editor
+  SimPe BHAV\
+    HelpContainer.cs 1.1
+    HelpContainer.resx 1.1
+    pjse coder plugin.csproj 1.7
+    TtabItemMotiveTableUI.cs 1.4
+    TtabItemMotiveTableUI.resx 1.3
+
 23 July 2005 18:12 - Update field handling and naming - second attempt
   SimPe BHAV\
     TtabForm.cs 1.10
