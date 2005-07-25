@@ -23,6 +23,11 @@ namespace pjse
 
 		public HelpContainer()
 		{
+			if (existing != null)
+			{
+				existing.Close();
+			}
+			existing = this;
 			//
 			// Required for Windows Form Designer support
 			//
@@ -35,6 +40,11 @@ namespace pjse
 
 		public HelpContainer(HelpPage p)
 		{
+			if (existing != null)
+			{
+				existing.Close();
+			}
+			existing = this;
 			//
 			// Required for Windows Form Designer support
 			//
@@ -45,6 +55,9 @@ namespace pjse
 			//
 			tabControl1.SelectedIndex = (int)p;
 		}
+
+
+		static Form existing = null;
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -107,11 +120,11 @@ namespace pjse
 			this.richTextBox1.ReadOnly = true;
 			this.richTextBox1.Size = new System.Drawing.Size(485, 525);
 			this.richTextBox1.TabIndex = 0;
-			this.richTextBox1.Text = @"Minimum is the least level of that is advertised to all Sims for this motive.
+			this.richTextBox1.Text = @"""Min."" is the least level of that is advertised to all Sims for this motive.
 
-Delta is the amount extra that would be advertised to Sims with a particular attribute, on a sliding scale according to how much of that attribute they have.
+""Delta"" is the amount extra that would be advertised to Sims with a particular attribute, on a sliding scale according to how much of that attribute they have.
 
-Type is the Sim’s attribute that matters when deciding whether to advertise the extra.
+""Type"" is the Sim’s attribute that matters when deciding whether to advertise the extra.
 
 Values for the Type field:
 00	None – all sims get the same advert.
@@ -147,6 +160,7 @@ Values for the Type field:
 			this.Name = "HelpContainer";
 			this.ShowInTaskbar = false;
 			this.Text = "PJSE Help";
+			this.TopMost = true;
 			this.tabControl1.ResumeLayout(false);
 			this.TTABHelp.ResumeLayout(false);
 			this.ResumeLayout(false);
