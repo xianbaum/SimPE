@@ -1,4 +1,18 @@
 
+24 July 2005 20:58 - Four-digit motive fields, relabel Unks, scrollbar and help fixes
+  SimPe BHAV\
+    TtabForm.resx 1.8
+    TtabItemMotiveTableUI.cs 1.5
+    TtabItemMotiveTableUI.resx 1.4
+    TtabMotiveGroupUI.resx 1.4
+    TtabSingleMotiveUI.cs 1.4
+    TtabSingleMotiveUI.resx 1.3
+
+24 July 2005 20:52 - Enable non-modal usage
+  SimPe BHAV\
+    HelpContainer.cs 1.2
+    HelpContainer.resx 1.2
+
 24 July 2005 19:35 - Update field validation handling
   SimPe BHAV\
     TtabForm.cs 1.10
