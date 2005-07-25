@@ -83,9 +83,9 @@ namespace SimPe.PackedFiles.UserInterface
 			mgNr = j;
 			Motive = k;
 
-			Min.Text   = (mv[0] = i[j, k, 0]).ToString("X");
-			Delta.Text = (mv[1] = i[j, k, 1]).ToString("X");
-			Type.Text  = (mv[2] = i[j, k, 2]).ToString("X");
+			Min.Text   = Helper.HexString(mv[0] = i[j, k, 0]);
+			Delta.Text = Helper.HexString(mv[1] = i[j, k, 1]);
+			Type.Text  = Helper.HexString(mv[2] = i[j, k, 2]);
 		}
 
 		public void SetData(TtabItem i, int j) { this.SetData(i, j, motive); }
@@ -144,35 +144,35 @@ namespace SimPe.PackedFiles.UserInterface
 			// Min
 			// 
 			this.Min.Location = new System.Drawing.Point(0, 0);
-			this.Min.MaxLength = 2;
+			this.Min.MaxLength = 4;
 			this.Min.Name = "Min";
-			this.Min.Size = new System.Drawing.Size(24, 20);
+			this.Min.Size = new System.Drawing.Size(40, 20);
 			this.Min.TabIndex = 1;
-			this.Min.Text = "DD";
+			this.Min.Text = "DDDD";
 			this.Min.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
 			this.Min.Validated += new System.EventHandler(this.hex16_Validated);
 			this.Min.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// Delta
 			// 
-			this.Delta.Location = new System.Drawing.Point(24, 0);
-			this.Delta.MaxLength = 2;
+			this.Delta.Location = new System.Drawing.Point(44, 0);
+			this.Delta.MaxLength = 4;
 			this.Delta.Name = "Delta";
-			this.Delta.Size = new System.Drawing.Size(24, 20);
+			this.Delta.Size = new System.Drawing.Size(40, 20);
 			this.Delta.TabIndex = 2;
-			this.Delta.Text = "DD";
+			this.Delta.Text = "DDDD";
 			this.Delta.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
 			this.Delta.Validated += new System.EventHandler(this.hex16_Validated);
 			this.Delta.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// Type
 			// 
-			this.Type.Location = new System.Drawing.Point(48, 0);
-			this.Type.MaxLength = 2;
+			this.Type.Location = new System.Drawing.Point(88, 0);
+			this.Type.MaxLength = 4;
 			this.Type.Name = "Type";
-			this.Type.Size = new System.Drawing.Size(24, 20);
+			this.Type.Size = new System.Drawing.Size(40, 20);
 			this.Type.TabIndex = 3;
-			this.Type.Text = "DD";
+			this.Type.Text = "DDDD";
 			this.Type.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
 			this.Type.Validated += new System.EventHandler(this.hex16_Validated);
 			this.Type.TextChanged += new System.EventHandler(this.hex16_TextChanged);
@@ -183,7 +183,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Controls.Add(this.Delta);
 			this.Controls.Add(this.Type);
 			this.Name = "TtabSingleMotiveUI";
-			this.Size = new System.Drawing.Size(72, 24);
+			this.Size = new System.Drawing.Size(128, 24);
 			this.ResumeLayout(false);
 
 		}

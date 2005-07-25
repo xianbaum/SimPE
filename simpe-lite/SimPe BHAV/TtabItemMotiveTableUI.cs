@@ -50,7 +50,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbMotive15;
 		private System.Windows.Forms.Label lbMotive13;
 		private System.Windows.Forms.Label lbMotive12;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Panel pnAllGroups;
 		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI2;
 		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI3;
@@ -126,9 +125,19 @@ namespace SimPe.PackedFiles.UserInterface
 			aButtons = b;
 			pnAllGroups.Visible = true;
 			pnCopyButtons.Visible = false;
-			pnCopyButtons.Left = pnAllGroups.Left;
+
+			pnCopyButtons.Anchor = pnAllGroups.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+			pnCopyButtons.Left = pnAllGroups.Left = ttabMotiveGroupUI1.Right + 1;
+			int i = this.Width - (pnAllGroups.Left + 8);
+			if (i > ttabMotiveGroupUI2.Width)
+				pnAllGroups.Width = i;
+			else
+				pnAllGroups.Width = ttabMotiveGroupUI2.Width;
+			int j = pnAllGroups.Right;
+			int k = this.Right;
 			pnCopyButtons.Width = pnAllGroups.Width;
-			this.Width = this.pnAllGroups.Right + 8;
+			pnCopyButtons.Anchor = pnAllGroups.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+			pnCopyButtons.AutoScroll = pnAllGroups.AutoScroll = true;
 		}
 
 		/// <summary> 
@@ -219,7 +228,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive15 = new System.Windows.Forms.Label();
 			this.lbMotive13 = new System.Windows.Forms.Label();
 			this.lbMotive12 = new System.Windows.Forms.Label();
-			this.label1 = new System.Windows.Forms.Label();
 			this.pnAllGroups = new System.Windows.Forms.Panel();
 			this.ttabMotiveGroupUI2 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
 			this.ttabMotiveGroupUI3 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
@@ -648,28 +656,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive12.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbMotive12.TextAlign")));
 			this.lbMotive12.Visible = ((bool)(resources.GetObject("lbMotive12.Visible")));
 			// 
-			// label1
-			// 
-			this.label1.AccessibleDescription = resources.GetString("label1.AccessibleDescription");
-			this.label1.AccessibleName = resources.GetString("label1.AccessibleName");
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label1.Anchor")));
-			this.label1.AutoSize = ((bool)(resources.GetObject("label1.AutoSize")));
-			this.label1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label1.Dock")));
-			this.label1.Enabled = ((bool)(resources.GetObject("label1.Enabled")));
-			this.label1.Font = ((System.Drawing.Font)(resources.GetObject("label1.Font")));
-			this.label1.Image = ((System.Drawing.Image)(resources.GetObject("label1.Image")));
-			this.label1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.ImageAlign")));
-			this.label1.ImageIndex = ((int)(resources.GetObject("label1.ImageIndex")));
-			this.label1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label1.ImeMode")));
-			this.label1.Location = ((System.Drawing.Point)(resources.GetObject("label1.Location")));
-			this.label1.Name = "label1";
-			this.label1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label1.RightToLeft")));
-			this.label1.Size = ((System.Drawing.Size)(resources.GetObject("label1.Size")));
-			this.label1.TabIndex = ((int)(resources.GetObject("label1.TabIndex")));
-			this.label1.Text = resources.GetString("label1.Text");
-			this.label1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.TextAlign")));
-			this.label1.Visible = ((bool)(resources.GetObject("label1.Visible")));
-			// 
 			// pnAllGroups
 			// 
 			this.pnAllGroups.AccessibleDescription = resources.GetString("pnAllGroups.AccessibleDescription");
@@ -696,6 +682,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnAllGroups.TabIndex = ((int)(resources.GetObject("pnAllGroups.TabIndex")));
 			this.pnAllGroups.Text = resources.GetString("pnAllGroups.Text");
 			this.pnAllGroups.Visible = ((bool)(resources.GetObject("pnAllGroups.Visible")));
+			this.pnAllGroups.Resize += new System.EventHandler(this.pnAllGroups_Resize);
 			// 
 			// ttabMotiveGroupUI2
 			// 
@@ -1715,7 +1702,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Controls.Add(this.pnCopyButtons);
 			this.Controls.Add(this.cbShowAll);
 			this.Controls.Add(this.pnAllGroups);
-			this.Controls.Add(this.label1);
 			this.Controls.Add(this.lbMotive0);
 			this.Controls.Add(this.ttabMotiveGroupUI1);
 			this.Controls.Add(this.lbMotive1);
@@ -1776,7 +1762,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			(new pjse.HelpContainer(pjse.HelpContainer.HelpPage.TtabMotives)).ShowDialog();
+			(new pjse.HelpContainer(pjse.HelpContainer.HelpPage.TtabMotives)).Show();
+		}
+
+		private void pnAllGroups_Resize(object sender, System.EventArgs e)
+		{
+			pnCopyButtons.Width = pnAllGroups.Width;
+			pnCopyButtons.AutoScroll = pnAllGroups.AutoScroll = true;
 		}
 
 	}
