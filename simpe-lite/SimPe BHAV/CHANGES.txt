@@ -1,4 +1,10 @@
 
+27 July 2005 18:43 - Scrollbar on item names, fix motive formatting, promote TTAB to Release
+  SimPe BHAV\
+    TtabForm.resx 1.9
+    TtabSingleMotiveUI.cs 1.5
+    WrapperFactory.cs 1.9
+
 24 July 2005 20:58 - Four-digit motive fields, relabel Unks, scrollbar and help fixes
   SimPe BHAV\
     TtabForm.resx 1.8
