@@ -211,13 +211,14 @@ namespace SimPe.PackedFiles.UserInterface
 			item[mgNr, motive, i] = val = mv[i];
 
 			internalchg = true;
-			((TextBox)sender).Text = val.ToString("X");
+			((TextBox)sender).Text = Helper.HexString(val);
 			((TextBox)sender).SelectAll();
 			internalchg = false;
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs ev)
 		{
+			((TextBox)sender).Text = Helper.HexString(item[mgNr, motive, alHex16.IndexOf(sender)]);
 			((TextBox)sender).SelectAll();
 		}
 

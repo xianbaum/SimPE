@@ -80,9 +80,9 @@ namespace SimPe.Plugin
 			{
 				IWrapper[] wrappers = {
 										   new Bhav(LinkedProvider.OpcodeProvider)
+										  ,new Ttab(LinkedProvider.OpcodeProvider)
 #if INPROGRESS || DEBUG
 										  ,new Bcon()
-										  ,new Ttab(LinkedProvider.OpcodeProvider)
 										  ,new Objf(LinkedProvider.OpcodeProvider)
 										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()
