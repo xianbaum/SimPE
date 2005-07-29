@@ -1,4 +1,16 @@
 
+30 July 2005 00:28 - Update for Simpe_043g_qa release
+  SimPe BHAV\
+    BconForm.cs 1.4
+    BhavForm.cs 1.29
+    GlobForm.cs 1.4
+    NewStrForm.cs 1.3
+    ObjfFrom.cs 1.5
+    PjseObjdForm.cs 1.4
+    StrForm.cs 1.4
+    TrcnForm.cs 1.3
+    TtabForm.cs 1.12
+
 27 July 2005 18:43 - Scrollbar on item names, fix motive formatting, promote TTAB to Release
   SimPe BHAV\
     TtabForm.resx 1.9
