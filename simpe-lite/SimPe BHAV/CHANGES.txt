@@ -1,4 +1,8 @@
 
+31 July 2005 17:47 - Allow any value for "format"
+  SimPe BHAV\
+    BhavWrapper.cs 1.20
+
 30 July 2005 00:28 - Update for Simpe_043g_qa release
   SimPe BHAV\
     BconForm.cs 1.4
