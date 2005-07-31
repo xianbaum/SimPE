@@ -369,40 +369,25 @@ namespace SimPe.PackedFiles.Wrapper
 		public void Unserialize(System.IO.BinaryReader reader) 
 		{
 			format = reader.ReadUInt16();				//0x0040 - format
-			switch (format) 
+			if (format == 0x8003)
 			{
-				case 0x8000:
-				case 0x8001:
-				case 0x8002:
-				case 0x8004:
-				case 0x8005:
-				case 0x8006:
-				case 0x8007: 
-				{					
-					count = (uint)reader.ReadUInt16();	//0x0042 - # of opcodes
-					type = reader.ReadByte();			//0x0044 - tree type
-					argc = reader.ReadByte();			//0x0045 - # of args
-					locals = reader.ReadByte();			//0x0046 - # of locals
-					reserved_00 = reader.ReadByte();	//0x0047 - header flag
-					flags = reader.ReadUInt16();		//0x0048 - Tree version (4 bytes)
-					zero = reader.ReadUInt16();			//       - Tree version (4 bytes)
-					break;
-				}
-				case 0x8003: 				
-				{
-					type = reader.ReadByte();
-					argc = reader.ReadByte();
-					locals = reader.ReadByte();
-					zero = reader.ReadByte();
-					flags = reader.ReadUInt16();					
-					count = reader.ReadUInt32();
-					break;
-				}
-				default: 
-				{
-					throw new Exception("Unknown BHAV Format "+format.ToString("X"));
-				}
-			} //switch
+				type = reader.ReadByte();
+				argc = reader.ReadByte();
+				locals = reader.ReadByte();
+				zero = reader.ReadByte();
+				flags = reader.ReadUInt16();					
+				count = reader.ReadUInt32();
+			}
+			else
+			{
+				count = (uint)reader.ReadUInt16();	//0x0042 - # of opcodes
+				type = reader.ReadByte();			//0x0044 - tree type
+				argc = reader.ReadByte();			//0x0045 - # of args
+				locals = reader.ReadByte();			//0x0046 - # of locals
+				reserved_00 = reader.ReadByte();	//0x0047 - header flag
+				flags = reader.ReadUInt16();		//0x0048 - Tree version (4 bytes)
+				zero = reader.ReadUInt16();			//       - Tree version (4 bytes)
+			}
 		}
 
 		/// <summary>
@@ -412,40 +397,25 @@ namespace SimPe.PackedFiles.Wrapper
 		public void Serialize(System.IO.BinaryWriter writer) 
 		{
 			writer.Write(format);
-			switch (format) 
+			if (format == 0x8003)
 			{
-				case 0x8000:
-				case 0x8001:
-				case 0x8002:
-				case 0x8004:
-				case 0x8005:
-				case 0x8006:
-				case 0x8007:
-				{					
-					writer.Write((ushort)count);
-					writer.Write(type);
-					writer.Write(argc);
-					writer.Write(locals);
-					writer.Write((byte)reserved_00);
-					writer.Write(flags);
-					writer.Write(zero);
-					break;
-				}
-				case 0x8003: 				
-				{
-					writer.Write((byte)type);
-					writer.Write(argc);
-					writer.Write(locals);
-					writer.Write((byte)zero);
-					writer.Write(flags);					
-					writer.Write(count);
-					break;
-				}
-				default: 
-				{
-					throw new Exception("Unknown BHAV Format "+format.ToString("X"));
-				}
-			} //switch
+				writer.Write((byte)type);
+				writer.Write(argc);
+				writer.Write(locals);
+				writer.Write((byte)zero);
+				writer.Write(flags);					
+				writer.Write(count);
+			}
+			else
+			{
+				writer.Write((ushort)count);
+				writer.Write(type);
+				writer.Write(argc);
+				writer.Write(locals);
+				writer.Write((byte)reserved_00);
+				writer.Write(flags);
+				writer.Write(zero);
+			}
 		}
 	}
 
