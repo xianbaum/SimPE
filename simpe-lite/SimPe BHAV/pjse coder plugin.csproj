@@ -363,16 +363,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "NewStrForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NewStrForm.resx"
-                    DependentUpon = "NewStrForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "ObjfForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -415,16 +405,6 @@
                 <File
                     RelPath = "StrForm.resx"
                     DependentUpon = "StrForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "StrListViewer.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StrListViewer.resx"
-                    DependentUpon = "StrListViewer.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
