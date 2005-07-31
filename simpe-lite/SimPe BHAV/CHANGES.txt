@@ -1,4 +1,8 @@
 
+31 July 2005 18:24 - Allow any value for "format" properly but default to 0x8007
+  SimPe BHAV\
+    BhavWrapper.cs 1.21
+
 31 July 2005 17:50 - Replace the Str plugin
   SimPe BHAV\
     NewStrForm.cs (deleted)
