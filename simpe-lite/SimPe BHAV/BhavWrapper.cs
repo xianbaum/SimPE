@@ -351,7 +351,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public BhavHeader(Bhav wrapper)
 		{
 			this.wrapper = wrapper;
-			format = 0;
+			format = 0x8007;
 			count = 0;
 			reserved_00 = 0;
 			type = 0;
@@ -814,27 +814,22 @@ namespace SimPe.PackedFiles.Wrapper
 			{
 				case 0x8001: 
 				case 0x8002: 
-				{
 					operands = new wrappedByteArray(this, reader);
 					reserved_01 = new wrappedByteArray(this, new byte[8]);
 					break;
-				}
 				case 0x8003: 
 				case 0x8004: 
-				{
 					operands = new wrappedByteArray(this, reader);
 					reserved_01 = new wrappedByteArray(this, reader);
 					break;
-				}
 				case 0x8006: 
 				case 0x8005: 
 				case 0x8007: 
-				{
+				default:
 					reserved_00 = reader.ReadByte();
 					operands = new wrappedByteArray(this, reader);
 					reserved_01 = new wrappedByteArray(this, reader);
 					break;
-				}
 			} //switch
 		}
 
@@ -860,32 +855,21 @@ namespace SimPe.PackedFiles.Wrapper
 			{
 				case 0x8001: 
 				case 0x8002: 
-				{
-					operands.Serialize(writer);;
+					operands.Serialize(writer);
 					break;
-				}
 				case 0x8003: 
 				case 0x8004: 
-				{
 					operands.Serialize(writer);;
 					reserved_01.Serialize(writer);
 					break;
-				}
 				case 0x8006: 
 				case 0x8005: 
-				{
+				case 0x8007: 
+				default:
 					writer.Write(reserved_00);
 					operands.Serialize(writer);
 					reserved_01.Serialize(writer);
 					break;
-				}
-				case 0x8007: 
-				{
-					writer.Write(reserved_00);
-					operands.Serialize(writer);;
-					reserved_01.Serialize(writer);
-					break;
-				}
 			} //switch
 		}
 
