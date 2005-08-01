@@ -287,6 +287,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 
 			if (lbttab.Items.Count>0) lbttab.SelectedIndex = 0;
+			else TtabSelect(null, null);
 
 			if (!setHandler)
 			{
@@ -2133,46 +2134,60 @@ namespace SimPe.PackedFiles.UserInterface
 			if (this.internalchg) return;
 
 			this.btnDelete.Enabled = false;
-			if (lbttab.SelectedIndex < 0) return;
-
-			TtabItem item = currentItem = wrapper[lbttab.SelectedIndex];
-			origItem = currentItem.Clone();
-
-			internalchg = true;
-
-			btnDelete.Enabled = true;
-
-			this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);				
-			this.tbAction.Text = "0x"+Helper.HexString(item.Action);
-			lbguard.Text = item.GuardianName;
-			lbaction.Text = item.ActionName;
-
-			this.tbFlags.Text = "0x"+Helper.HexString(item.Flags.Value);
-			this.tbFlags2.Text = "0x"+Helper.HexString(item.Flags2);
-			tbStringIndex.Text = "0x"+Helper.HexString(item.StringIndex);
-
-			if (item.AttenuationCode < this.cbAttenuationCode.Items.Count)
+			if (lbttab.SelectedIndex >= 0)
 			{
-				cbAttenuationCode.SelectedIndex = (int)item.AttenuationCode;
+				TtabItem item = currentItem = wrapper[lbttab.SelectedIndex];
+				origItem = currentItem.Clone();
+
+				internalchg = true;
+
+				btnDelete.Enabled = true;
+
+				this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);				
+				this.tbAction.Text = "0x"+Helper.HexString(item.Action);
+				lbguard.Text = item.GuardianName;
+				lbaction.Text = item.ActionName;
+
+				this.tbFlags.Text = "0x"+Helper.HexString(item.Flags.Value);
+				this.tbFlags2.Text = "0x"+Helper.HexString(item.Flags2);
+				tbStringIndex.Text = "0x"+Helper.HexString(item.StringIndex);
+
+				if (item.AttenuationCode < this.cbAttenuationCode.Items.Count)
+				{
+					cbAttenuationCode.SelectedIndex = (int)item.AttenuationCode;
+				}
+				else
+				{
+					cbAttenuationCode.SelectedIndex = -1;
+					cbAttenuationCode.Text = "0x"+Helper.HexString(item.AttenuationCode);
+				}
+				tbAttenuationValue.Text = item.AttenuationValue.ToString("N8");
+				tbAutonomy.Text = "0x"+Helper.HexString(item.Autonomy);
+				tbJoinIndex.Text = "0x"+Helper.HexString(item.JoinIndex);
+				tbRes5.Text = "0x"+Helper.HexString(item.Res5);
+				tbRes6.Text = "0x"+Helper.HexString(item.Res6);
+				tbRes7.Text = item.Res7.ToString("N8");
+				tbRes8.Text = "0x"+Helper.HexString(item.Res8);
+				tbRes9.Text = "0x"+Helper.HexString(item.Res9);
+
+				doFlags();
+
+				this.ttabItemMotiveTableUI1.SetData(wrapper[lbttab.SelectedIndex]);
+				this.tabControl1.Enabled = true;
+				internalchg = false;
 			}
 			else
 			{
+				internalchg = true;
 				cbAttenuationCode.SelectedIndex = -1;
-				cbAttenuationCode.Text = "0x"+Helper.HexString(item.AttenuationCode);
+				tbGuardian.Text = tbAction.Text = lbguard.Text = lbaction.Text = tbFlags.Text = tbFlags2.Text =
+					tbStringIndex.Text = tbAttenuationValue.Text = tbAutonomy.Text = tbJoinIndex.Text =
+					tbRes5.Text = tbRes6.Text = tbRes7.Text = tbRes8.Text = tbRes9.Text = 
+					"";
+				for (int i = 0; i < alFlags.Count; i++) ((CheckBox)alFlags[i]).Checked = false;
+				this.tabControl1.Enabled = false;
+				internalchg = false;
 			}
-			tbAttenuationValue.Text = item.AttenuationValue.ToString("N8");
-			tbAutonomy.Text = "0x"+Helper.HexString(item.Autonomy);
-			tbJoinIndex.Text = "0x"+Helper.HexString(item.JoinIndex);
-			tbRes5.Text = "0x"+Helper.HexString(item.Res5);
-			tbRes6.Text = "0x"+Helper.HexString(item.Res6);
-			tbRes7.Text = item.Res7.ToString("N8");
-			tbRes8.Text = "0x"+Helper.HexString(item.Res8);
-			tbRes9.Text = "0x"+Helper.HexString(item.Res9);
-
-			doFlags();
-
-			this.ttabItemMotiveTableUI1.SetData(wrapper[lbttab.SelectedIndex]);
-			internalchg = false;
 		}		
 
 

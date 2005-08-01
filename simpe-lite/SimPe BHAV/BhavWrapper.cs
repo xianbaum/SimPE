@@ -50,7 +50,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains the Filename
 		/// </summary>
-		private byte[] filename;
+		private byte[] filename = new byte[64];
 		/// <summary>
 		/// Stores the Header
 		/// </summary>
@@ -112,7 +112,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Bhav(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
 		{
-			filename = new byte[64];
 			header = new BhavHeader(this);
 			instructions = new BhavInstList(this);
 			this.opcodes = opcodes;
@@ -179,7 +178,7 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			header.InstructionCount = (uint)instructions.Count; // oh please...
+			header.InstructionCount = (uint)instructions.Count; // oh please... because header doesn't have a parent (yet!)
 			header.Serialize(writer);
 
 			instructions.Serialize(writer);
@@ -245,14 +244,14 @@ namespace SimPe.PackedFiles.Wrapper
 	{
 		#region Attributes
 		private Bhav wrapper;
-		private ushort format;
-		private uint count;
-		private byte reserved_00;
-		private byte type;
-		private byte argc;
-		private byte locals;
-		private ushort flags;
-		private ushort zero;
+		private ushort format = 0x8007;
+		private uint count = 0;
+		private byte type = 0;
+		private byte argc = 0;
+		private byte locals = 0;
+		private byte reserved_00 = 0;	// header flag
+		private ushort flags = 0;		// int treeVersion
+		private ushort zero = 0;		// ...
 		#endregion
 
 		#region Accessor methods
@@ -351,14 +350,6 @@ namespace SimPe.PackedFiles.Wrapper
 		public BhavHeader(Bhav wrapper)
 		{
 			this.wrapper = wrapper;
-			format = 0x8007;
-			count = 0;
-			reserved_00 = 0;
-			type = 0;
-			argc = 0;
-			locals = 0;
-			flags = 0;
-			zero = 0;
 		}
 
 
