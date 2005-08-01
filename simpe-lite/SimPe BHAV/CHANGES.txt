@@ -1,4 +1,8 @@
 
+1 August 2005 22:40 - Ooops... four byte header fields for TTAB
+  SimPe BHAV\
+    TtabWrapper.cs 1.11
+
 1 August 2005 22:23 - BHAV and TTAB - improve Create Resource support
   SimPe BHAV\
     BhavWrapper.cs 1.22
