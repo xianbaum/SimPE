@@ -1,4 +1,10 @@
 
+1 August 2005 22:23 - BHAV and TTAB - improve Create Resource support
+  SimPe BHAV\
+    BhavWrapper.cs 1.22
+    TtabForm.cs 1.13
+    TtabWrapper.cs 1.10
+
 31 July 2005 18:24 - Allow any value for "format" properly but default to 0x8007
   SimPe BHAV\
     BhavWrapper.cs 1.21
