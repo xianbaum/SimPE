@@ -174,9 +174,9 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Ttab(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
 		{
-			this.header[0] = 0xffff;
-			this.header[1] = 0x004e;
-			this.header[2] = 0x0000;
+			this.header[0] = 0xffffffff;
+			this.header[1] = 0x0000004e;
+			this.header[2] = 0x00000000;
 			this.opcodes = opcodes;
 			this.items = new ArrayList();
 		}
