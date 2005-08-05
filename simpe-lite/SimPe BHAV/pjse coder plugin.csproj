@@ -348,21 +348,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "ImportSemi.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ImportSemi.resx"
-                    DependentUpon = "ImportSemi.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "ImportSemiTool.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ObjfForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
