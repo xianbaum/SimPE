@@ -1,4 +1,13 @@
 
+5 August 2005 19:25 - Fix null pointer on creating new Str resource
+  SimPe BHAV\
+    StrWrapper.cs 1.6
+
+5 August 2005 19:24 - Drop ImportSemi from build
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.9
+    WrapperFactory.cs 1.10
+
 1 August 2005 22:40 - Ooops... four byte header fields for TTAB
   SimPe BHAV\
     TtabWrapper.cs 1.11
