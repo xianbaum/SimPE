@@ -54,7 +54,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Holds all the StrItems
 		/// </summary>
-		private StrItemArrayList items = null;
+		private StrItemArrayList items = new StrItemArrayList();
 
 		/// <summary>
 		/// Maximum Number of Lines to load
