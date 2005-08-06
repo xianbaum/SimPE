@@ -1,4 +1,9 @@
 
+6 August 2005 20:23 - Cosmetic fix (field stays highlighted); better unknown format handling
+  SimPe BHAV\
+    BhavForm.cs 1.30
+    BhavWrapper.cs 1.23
+
 6 August 2005 18:25 - Updates to the Str plugin (lots and lots of fixes)
   SimPe BHAV\
     StrForm.cs 1.6
