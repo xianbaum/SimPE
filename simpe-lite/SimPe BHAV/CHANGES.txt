@@ -1,4 +1,9 @@
 
+6 August 2005 23:45 - Promote StrWrapper to Release
+  SimPe BHAV\
+    StrWrapper.cs 1.8
+    WrapperFactory.cs 1.11
+
 6 August 2005 20:23 - Cosmetic fix (field stays highlighted); better unknown format handling
   SimPe BHAV\
     BhavForm.cs 1.30
