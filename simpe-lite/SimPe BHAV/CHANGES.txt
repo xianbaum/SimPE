@@ -1,4 +1,10 @@
 
+6 August 2005 18:25 - Updates to the Str plugin (lots and lots of fixes)
+  SimPe BHAV\
+    StrForm.cs 1.6
+    StrForm.resx 1.4
+    StrWrapper.cs 1.7
+
 5 August 2005 19:25 - Fix null pointer on creating new Str resource
   SimPe BHAV\
     StrWrapper.cs 1.6
