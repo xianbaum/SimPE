@@ -1,7 +1,34 @@
 
-17 July 2005 14:32 - Manual merge with HEAD (partial) - User-interface tweaks
+17 July 2005 21:23 - Manual merge with HEAD (partial) - Bhav, Ttab, Str, SimPe updates
   SimPe BHAV\
-    BhavForm.cs 1.20.4.10
+    BconForm.cs 1.3.2.1
+    BhavForm.cs 1.20.4.11
+    BhavForm.resx 1.11.4.4
+    BhavWrapper.cs 1.15.2.9
+    GlobForm.cs 1.3.2.1
+    HelpContainer.cs 1.1.2.1
+    HelpContainer.cs 1.1.2.1
+    NewStrForm.cs (deleted)
+    NewStrForm.resx (deleted)
+    ObjfForm.cs 1.3.2.2
+    pjse coder plugin.csproj 1.6.2.7
+    PjseObjdForm.cs 1.2.2.2
+    StrForm.cs 1.3.2.1
+    StrForm.resx 1.2.2.1
+    StrListViewer.cs (deleted)
+    StrListViewer.resx (deleted)
+    StrWrapper.cs 1.2.2.3
+    TrcnForm.cs 1.2.2.1
+    TtabForm.cs 1.6.2.2
+    TtabForm.resx 1.2.2.1
+    TtabItemMotiveTableUI.cs 1.2.2.1
+    TtabItemMotiveTableUI.resx 1.2.2.1
+    TtabMotiveGroupUI.cs 1.2.2.1
+    TtabMotiveGroupUI.resx 1.2.2.1
+    TtabSingleMotiveUI.cs 1.2.2.1
+    TtabSingleMotiveUI.resx 1.2.2.1
+    TtabWrapper.cs 1.5.2.4
+    WrapperFactory.cs 1.7.2.3
 
 17 July 2005 14:00 - Manual merge with HEAD (partial) - Bugfix: strange Validated behaviour
   SimPe BHAV\
