@@ -259,7 +259,7 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"PJSE STR# Wrapper",
+				"PJSE STR#/TTAs/CTSS Wrapper",
 				"Peter L Jones",
 				"---",
 				1
