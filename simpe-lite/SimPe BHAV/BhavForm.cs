@@ -740,6 +740,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba2.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
 			this.tba2.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba2.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
+			this.tba2.Enter += new System.EventHandler(this.Target_Enter);
 			// 
 			// tba1
 			// 
@@ -774,6 +775,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba1.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
 			this.tba1.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
+			this.tba1.Enter += new System.EventHandler(this.Target_Enter);
 			// 
 			// label13
 			// 
@@ -2326,6 +2328,11 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void Target_Enter(object sender, System.EventArgs e)
+		{
+			((ComboBox)sender).SelectAll();
+		}
+
 		private void Target_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
@@ -2382,7 +2389,7 @@ namespace SimPe.PackedFiles.UserInterface
 				((ComboBox)sender).SelectedIndex = val - 0xfffc;
 			else
 				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
-			((ComboBox)sender).SelectAll();
+			((ComboBox)sender).Select(0, 0);
 			internalchg = origstate;
 		}
 

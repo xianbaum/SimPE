@@ -627,22 +627,23 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		private ushort formatSpecificTarget(ushort target)
+		private ushort formatSpecificTarget(ushort addr)
 		{
 			switch (parent.Header.Format)
 			{
 				case 0x8007:
-					return target;
+					return addr;
 				default:
-				switch (target)
+				switch (addr)
 				{
 					case 0xFD: return (ushort)0xFFFC;	// error
 					case 0xFE: return (ushort)0xFFFD;	// true
 					case 0xFF: return (ushort)0xFFFE;	// false
-					default: return target;
+					default: return addr;
 				}
 			}
 		}
+
 		private ushort formatSpecificAddr(ushort target)
 		{
 			switch (parent.Header.Format)
@@ -659,6 +660,7 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
+
 		public ushort Target1
 		{
 			get { return formatSpecificTarget(addr1); }
@@ -801,27 +803,23 @@ namespace SimPe.PackedFiles.Wrapper
 				addr2 = reader.ReadUInt16();
 			}
 
-			switch (parent.Header.Format)
+			if (parent.Header.Format < 0x8003)
 			{
-				case 0x8001: 
-				case 0x8002: 
-					operands = new wrappedByteArray(this, reader);
-					reserved_01 = new wrappedByteArray(this, new byte[8]);
-					break;
-				case 0x8003: 
-				case 0x8004: 
-					operands = new wrappedByteArray(this, reader);
-					reserved_01 = new wrappedByteArray(this, reader);
-					break;
-				case 0x8006: 
-				case 0x8005: 
-				case 0x8007: 
-				default:
-					reserved_00 = reader.ReadByte();
-					operands = new wrappedByteArray(this, reader);
-					reserved_01 = new wrappedByteArray(this, reader);
-					break;
-			} //switch
+				operands = new wrappedByteArray(this, reader);
+				reserved_01 = new wrappedByteArray(this, new byte[8]);
+			}
+			else if (parent.Header.Format < 0x8006)
+			{
+				operands = new wrappedByteArray(this, reader);
+				reserved_01 = new wrappedByteArray(this, reader);
+			}
+			else
+			{
+				reserved_00 = reader.ReadByte();
+				operands = new wrappedByteArray(this, reader);
+				reserved_01 = new wrappedByteArray(this, reader);
+			}
+
 		}
 
 		/// <summary>
@@ -842,26 +840,22 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write(addr1);
 				writer.Write(addr2);
 			}
-			switch (parent.Header.Format)
+
+			if (parent.Header.Format < 0x8003)
 			{
-				case 0x8001: 
-				case 0x8002: 
-					operands.Serialize(writer);
-					break;
-				case 0x8003: 
-				case 0x8004: 
-					operands.Serialize(writer);;
-					reserved_01.Serialize(writer);
-					break;
-				case 0x8006: 
-				case 0x8005: 
-				case 0x8007: 
-				default:
-					writer.Write(reserved_00);
-					operands.Serialize(writer);
-					reserved_01.Serialize(writer);
-					break;
-			} //switch
+				operands.Serialize(writer);
+			}
+			else if (parent.Header.Format < 0x8005)
+			{
+				operands.Serialize(writer);;
+				reserved_01.Serialize(writer);
+			}
+			else
+			{
+				writer.Write(reserved_00);
+				operands.Serialize(writer);
+				reserved_01.Serialize(writer);
+			}
 		}
 
 	}
