@@ -45,7 +45,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Panel pnLists;
 		private System.Windows.Forms.Label lbPlugin;
 		private System.Windows.Forms.Button btnStrDelete;
-		private System.Windows.Forms.Button btnStrCopy;
 		private System.Windows.Forms.Button btnStrAdd;
 		private System.Windows.Forms.ListBox lbxLngDefault;
 		private System.Windows.Forms.ListBox lbxLngCurrent;
@@ -112,7 +111,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alRichTextBox = null;
 
 		private byte lid = 1;
-		private int index = 0;
+		private int index = -1;
 		private int count = 0;
 
 		private bool hex16_IsValid(object sender)
@@ -126,58 +125,58 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void displayStrItem()
 		{
+			if (internalchg) return;
+
 			internalchg = true;
-			this.lbxLngCurrent.SelectedIndex = this.lbxLngDefault.SelectedIndex = index;
-			this.lbStringNum.Text = "Lang " + ((SimPe.Data.MetaData.Languages)lid).ToString() + ", String 0x" + Helper.HexString((ushort)index);
-			this.rtbTitle.Text = wrapper[lid, index].Title;
-			this.rtbDescription.Text = wrapper[lid, index].Description;
+			this.lbStringNum.Text = this.rtbDescription.Text = this.rtbTitle.Text = "";
+			this.btnStrDelete.Enabled = this.rtbDescription.Enabled = this.rtbTitle.Enabled = false;
+
+			StrItem s = wrapper[lid, index];
+			if (s != null)
+			{
+				this.lbStringNum.Text = "Lang " + ((SimPe.Data.MetaData.Languages)lid).ToString() + ", String 0x" + Helper.HexString((ushort)index);
+				this.rtbTitle.Text = s.Title;
+				this.rtbDescription.Text = s.Description;
+				this.btnStrDelete.Enabled = this.rtbDescription.Enabled = this.rtbTitle.Enabled = true;
+				this.rtbTitle.SelectAll();
+				this.rtbDescription.SelectAll();
+			}
 			internalchg = false;
-			this.rtbDescription.Enabled = this.rtbTitle.Enabled = true;
-			this.rtbTitle.SelectAll();
-			this.rtbDescription.SelectAll();
+		}
+
+		private void populateLbx(ListBox lbx, byte l)
+		{
+			lbx.SelectedIndex = -1;
+			lbx.Items.Clear();
+			if (l != 0)
+			{
+				while(count > 0 && wrapper[l, count-1] == null) wrapper.Add(l, "", "");
+				StrItem[] s = wrapper[l];
+				for (ushort i = 0; i < count; i++)
+					lbx.Items.Add("0x" + Helper.HexString(i) + ": " + s[i]);
+			}
 		}
 
 		private void updateLists()
 		{
-			internalchg = true;
-			this.lbStringNum.Text = this.rtbDescription.Text = this.rtbTitle.Text = "";
-			this.rtbDescription.Enabled = this.rtbTitle.Enabled = false;
-
 			wrapper.CleanUp();
-			count = 0;
-			this.lbxLngDefault.Items.Clear();
-			for (int i = 0; i < wrapper.Count; i++)
-				if (wrapper[i].LanguageID == 1)
-				{
-					this.lbxLngDefault.Items.Add(wrapper[i]);
-					count++;
-				}
 
+			this.cbLngSelect.SelectedIndex = -1;
 			this.cbLngSelect.Items.Clear();
-			for (byte i = 1; i < 44; i++)
+			bool onlyDefault = true;
+			for (byte i = 2; i < 44; i++)
 			{
-				bool empty = true;
-				for (int j = count - 1; j >= 0; j--)
-				{
-					if (wrapper[i, j] == null || (wrapper[i, j].Title.Trim().Equals("") && wrapper[i, j].Description.Trim().Equals("")))
-						continue;
-					empty = false;
-					break;
-				}
+				bool empty = wrapper[i].Length == 0;
 				this.cbLngSelect.Items.Add(((SimPe.Data.MetaData.Languages)i).ToString() + (empty ? " (empty)" : ""));
+				if (!empty) onlyDefault = false;
 			}
-			internalchg = false;
+			this.btnClearAll.Enabled = !onlyDefault;
 
-			this.cbLngSelect.SelectedIndex = lid - 1;
+			count = 0;
+			for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Length);
 
-			if (count > 0)
-			{
-				if (index >= count)
-					index = count - 1;
-				this.lbxLngDefault.SelectedIndex = index;
-			}
-			else
-				this.lbxLngDefault.SelectedIndex = -1;
+			populateLbx(this.lbxLngDefault, 1);
+			populateLbx(this.lbxLngCurrent, (byte)((this.cbLngSelect.SelectedIndex != -1) ? this.cbLngSelect.SelectedIndex + 2 : 0));
 		}
 
 		#endregion
@@ -198,10 +197,18 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			wrapper = (Str) wrp;
 			this.WrapperChanged(wrapper, null);
-			index = 0;
-			lid = 1;
 
+			internalchg = true;
 			updateLists();
+			internalchg = false;
+
+			displayStrItem();
+			this.btnLngClear.Enabled = false;
+
+			if (index < 0) index = 0;
+			if (index >= count) index = count - 1;
+			this.cbLngSelect.SelectedIndex = 0;
+			this.lbxLngDefault.SelectedIndex = index;
 
 			if (!setHandler)
 			{
@@ -253,7 +260,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnImport = new System.Windows.Forms.Button();
 			this.btnExport = new System.Windows.Forms.Button();
 			this.btnStrDelete = new System.Windows.Forms.Button();
-			this.btnStrCopy = new System.Windows.Forms.Button();
 			this.btnStrAdd = new System.Windows.Forms.Button();
 			this.strPanel.SuspendLayout();
 			this.pnLists.SuspendLayout();
@@ -287,7 +293,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Controls.Add(this.btnImport);
 			this.strPanel.Controls.Add(this.btnExport);
 			this.strPanel.Controls.Add(this.btnStrDelete);
-			this.strPanel.Controls.Add(this.btnStrCopy);
 			this.strPanel.Controls.Add(this.btnStrAdd);
 			this.strPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("strPanel.Dock")));
 			this.strPanel.Enabled = ((bool)(resources.GetObject("strPanel.Enabled")));
@@ -810,30 +815,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrDelete.Visible = ((bool)(resources.GetObject("btnStrDelete.Visible")));
 			this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
 			// 
-			// btnStrCopy
-			// 
-			this.btnStrCopy.AccessibleDescription = resources.GetString("btnStrCopy.AccessibleDescription");
-			this.btnStrCopy.AccessibleName = resources.GetString("btnStrCopy.AccessibleName");
-			this.btnStrCopy.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrCopy.Anchor")));
-			this.btnStrCopy.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrCopy.BackgroundImage")));
-			this.btnStrCopy.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrCopy.Dock")));
-			this.btnStrCopy.Enabled = ((bool)(resources.GetObject("btnStrCopy.Enabled")));
-			this.btnStrCopy.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrCopy.FlatStyle")));
-			this.btnStrCopy.Font = ((System.Drawing.Font)(resources.GetObject("btnStrCopy.Font")));
-			this.btnStrCopy.Image = ((System.Drawing.Image)(resources.GetObject("btnStrCopy.Image")));
-			this.btnStrCopy.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrCopy.ImageAlign")));
-			this.btnStrCopy.ImageIndex = ((int)(resources.GetObject("btnStrCopy.ImageIndex")));
-			this.btnStrCopy.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrCopy.ImeMode")));
-			this.btnStrCopy.Location = ((System.Drawing.Point)(resources.GetObject("btnStrCopy.Location")));
-			this.btnStrCopy.Name = "btnStrCopy";
-			this.btnStrCopy.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrCopy.RightToLeft")));
-			this.btnStrCopy.Size = ((System.Drawing.Size)(resources.GetObject("btnStrCopy.Size")));
-			this.btnStrCopy.TabIndex = ((int)(resources.GetObject("btnStrCopy.TabIndex")));
-			this.btnStrCopy.Text = resources.GetString("btnStrCopy.Text");
-			this.btnStrCopy.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrCopy.TextAlign")));
-			this.btnStrCopy.Visible = ((bool)(resources.GetObject("btnStrCopy.Visible")));
-			this.btnStrCopy.Click += new System.EventHandler(this.btnStrCopy_Click);
-			// 
 			// btnStrAdd
 			// 
 			this.btnStrAdd.AccessibleDescription = resources.GetString("btnStrAdd.AccessibleDescription");
@@ -894,10 +875,10 @@ namespace SimPe.PackedFiles.UserInterface
 				(this.pnLists.Width / 2) - 4 - 8;
 			this.lbxLngCurrent.Left = this.lbxLngDefault.Right + 4;
 
-			this.btnLngPrev.Left = this.lbLngSelect.Left = this.lbxLngCurrent.Left + this.pnLists.Left;
-			this.cbLngSelect.Left = this.lbLngSelect.Right + 4;
-			this.btnLngClear.Left = this.btnLngPrev.Right;
-			this.btnLngNext.Left = this.btnLngClear.Right;
+			this.btnLngPrev.Left = this.lbxLngCurrent.Left + this.pnLists.Left;
+			this.cbLngSelect.Left = this.lbLngSelect.Left = this.btnLngPrev.Right;
+			this.btnLngNext.Left = this.cbLngSelect.Right;
+			this.btnLngClear.Left = this.btnClearAll.Left = this.btnLngNext.Right + 32;
 
 			int minH = (this.lbxLngDefault.Items.Count * this.lbxLngDefault.ItemHeight) + 4 + 20;
 			int h = this.pnLists.Height - this.lbxLngDefault.Top;
@@ -926,6 +907,23 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
 			}			
+
+			int l = this.cbLngSelect.SelectedIndex;
+			bool defsel = this.lbxLngDefault.SelectedIndex != -1;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+			updateLists();
+			internalchg = savedstate;
+
+			displayStrItem();
+			this.btnLngClear.Enabled = false;
+
+			if (index < 0) index = 0;
+			if (index >= count) index = count - 1;
+			this.cbLngSelect.SelectedIndex = l;
+			if (defsel) this.lbxLngDefault.SelectedIndex = index;
+			else this.lbxLngCurrent.SelectedIndex = index;
 		}
 
 
@@ -950,29 +948,34 @@ namespace SimPe.PackedFiles.UserInterface
 		private void richTextBox_TextChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
+			if (index < 0) return;
 
 			internalchg = true;
 			switch(alRichTextBox.IndexOf(sender))
 			{
 				case 0:
 					wrapper[lid, index].Title = ((RichTextBox)sender).Text;
-					if (lid == 1)
-						this.lbxLngDefault.Items[index] = wrapper[lid, index];
-					if ((this.cbLngSelect.SelectedIndex >= 0) && (lid == this.cbLngSelect.SelectedIndex + 1))
-						this.lbxLngCurrent.Items[index] = wrapper[lid, index];
+					if (this.lbxLngDefault.SelectedIndex >= 0)
+						this.lbxLngDefault.Items[index] = "0x" + Helper.HexString((ushort)index) + ": " + wrapper[lid, index];
+					if (this.lbxLngCurrent.SelectedIndex >= 0)
+						this.lbxLngCurrent.Items[index] = "0x" + Helper.HexString((ushort)index) + ": " + wrapper[lid, index];
 					break;
 				case 1: wrapper[lid, index].Description = ((RichTextBox)sender).Text; break;
 			}
-			bool empty = true;
-			for (int j = count - 1; j >= 0; j--)
+			if (this.lbxLngCurrent.SelectedIndex >= 0)
 			{
-				if (wrapper[lid, j] == null ||
-					(wrapper[lid, j].Title.Trim().Equals("") && wrapper[lid, j].Description.Trim().Equals("")))
-					continue;
-				empty = false;
-				break;
+				bool empty = true;
+				StrItem[] s = wrapper[lid];
+				for (int j = count - 1; j >= 0 && empty; j--)
+					if (s[j] != null && (s[j].Title.Trim().Length + s[j].Description.Trim().Length > 0))
+						empty = false;
+				this.cbLngSelect.Items[lid - 2] = ((SimPe.Data.MetaData.Languages)lid).ToString() + (empty ? " (empty)" : "");
+				this.btnLngClear.Enabled = !empty;
+				for (int i = 0; i < wrapper.Count && empty; i++)
+					if ((wrapper[i].LanguageID != 1) && (wrapper[i].Title.Trim().Length + wrapper[i].Description.Trim().Length > 0))
+						empty = false;
+				this.btnClearAll.Enabled = !empty;
 			}
-			this.cbLngSelect.Items[lid - 1] = ((SimPe.Data.MetaData.Languages)lid).ToString() + (empty ? " (empty)" : "");
 			internalchg = false;
 		}
 
@@ -1027,26 +1030,25 @@ namespace SimPe.PackedFiles.UserInterface
 		private void cbLngSelect_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-
-			lid = (byte)(this.cbLngSelect.SelectedIndex + 1);
-
 			internalchg = true;
-			while (count > 0 && wrapper[lid, count-1] == null)
-				wrapper.Add(lid, "", "");
 
-			this.lbxLngCurrent.SelectedIndex = -1;
+			int l = this.lbxLngCurrent.SelectedIndex;
 			this.lbxLngCurrent.Items.Clear();
-			for (int i = 0; i < wrapper.Count && this.lbxLngCurrent.Items.Count < count; i++)
-				if (wrapper[i].LanguageID == lid)
-					this.lbxLngCurrent.Items.Add(wrapper[i]);
-			internalchg = false;
+
+			if (this.cbLngSelect.SelectedIndex >= 0)
+			{
+				lid = (byte)(this.cbLngSelect.SelectedIndex + 2);
+				while (count > 0 && wrapper[lid, count-1] == null) wrapper.Add(lid, "", "");
+				StrItem[] s = wrapper[lid];
+				for (ushort i = 0; i < count; i++)
+					this.lbxLngCurrent.Items.Add("0x" + Helper.HexString(i) + ": " + s[i]);
+			}
 
 			this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
-			this.btnLngClear.Enabled = (lid != 1);
-			this.btnLngNext.Enabled = (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
+			this.btnLngNext.Enabled = (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
-			if (count > 0)
-				this.lbxLngCurrent.SelectedIndex = index;
+			internalchg = false;
+			if (l != -1) this.lbxLngCurrent.SelectedIndex = l;
 		}
 
 		private void btnLngPrev_Click(object sender, System.EventArgs e)
@@ -1055,40 +1057,61 @@ namespace SimPe.PackedFiles.UserInterface
 				this.cbLngSelect.SelectedIndex --;
 		}
 
-		private void btnLngClear_Click(object sender, System.EventArgs e)
-		{
-			bool savedstate = internalchg;
-
-			internalchg = true;
-			for (int i = 0; i < wrapper.Count; i++)
-				if (wrapper[i].LanguageID == lid)
-					wrapper[i].Title = wrapper[i].Description = "";
-			internalchg = savedstate;
-			updateLists();
-		}
-
 		private void btnLngNext_Click(object sender, System.EventArgs e)
 		{
 			if (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1)
 				this.cbLngSelect.SelectedIndex ++;
 		}
 
+		private void btnLngClear_Click(object sender, System.EventArgs e)
+		{
+			if (this.cbLngSelect.SelectedIndex < 0) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			int l = this.cbLngSelect.SelectedIndex + 2;
+			for (int i = 0; i < wrapper.Count; i++)
+				if (wrapper[i].LanguageID == l)
+					wrapper[i].Title = wrapper[i].Description = "";
+
+			updateLists();
+
+			internalchg = savedstate;
+
+			displayStrItem();
+			this.btnLngClear.Enabled = false;
+
+			if (index < 0) index = 0;
+			if (index >= count) index = count - 1;
+			this.cbLngSelect.SelectedIndex = l - 2;
+			this.lbxLngDefault.SelectedIndex = index;
+		}
+
 
 		private void lbxLngDefault_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
+			internalchg = true;
+			this.lbxLngCurrent.SelectedIndex = -1;
+			internalchg = false;
 
 			lid = 1;
 			index = this.lbxLngDefault.SelectedIndex;
+			this.btnLngClear.Enabled = false;
 			displayStrItem();
 		}
 
 		private void lbxLngCurrent_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
+			internalchg = true;
+			this.lbxLngDefault.SelectedIndex = -1;
+			internalchg = false;
 
-			lid = (byte)(this.cbLngSelect.SelectedIndex + 1);
+			lid = (byte)(this.cbLngSelect.SelectedIndex + 2);
 			index = this.lbxLngCurrent.SelectedIndex;
+			this.btnLngClear.Enabled = !((string)(this.cbLngSelect.Items[lid - 2])).EndsWith(" (empty)");
 			displayStrItem();
 		}
 
@@ -1096,18 +1119,24 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnClearAll_Click(object sender, System.EventArgs e)
 		{
 			bool savedstate = internalchg;
-
 			internalchg = true;
-			this.cbLngSelect.SelectedIndex = -1;
+
 			for (int i = 0; i < wrapper.Count; i++)
 				if (wrapper[i].LanguageID != 1)
-				{
-					wrapper[i].Title = "";
-					wrapper[i].Description = "";
-				}
-			internalchg = savedstate;
-			this.cbLngSelect.SelectedIndex = lid - 1;
+					wrapper[i].Title = wrapper[i].Description = "";
+
+			int l = this.cbLngSelect.SelectedIndex;
 			updateLists();
+
+			internalchg = savedstate;
+
+			displayStrItem();
+			this.btnLngClear.Enabled = false;
+
+			if (index < 0) index = 0;
+			if (index >= count) index = count - 1;
+			this.cbLngSelect.SelectedIndex = l;
+			this.lbxLngDefault.SelectedIndex = index;
 		}
 
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
@@ -1115,70 +1144,65 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 
 			internalchg = true;
-			wrapper.CleanUp();
-			if (wrapper[1, index] != null)
-				wrapper.Add(1, wrapper[1, index].Title, wrapper[1, index].Description);
-			else
-				wrapper.Add(1, "Title", "Description");
-
-			for (byte i = 2; i <= this.cbLngSelect.Items.Count; i++)
-			{
-				if (wrapper[i, 0] == null) continue;
-				while (wrapper[i, count] == null)
-					wrapper.Add(i, "", "");
-				wrapper[i, count].Title       = wrapper[true, i, index].Title;
-				wrapper[i, count].Description = wrapper[true, i, index].Description;
-			}
-			index = count;
 			count++;
+			wrapper.Add(1, "", "");
+			this.lbxLngDefault.Items.Add("0x" + Helper.HexString((ushort)(count-1)) + ": " + wrapper[1, count-1]);
+			if (this.cbLngSelect.SelectedIndex >= 0)
+			{
+				byte l = (byte)(this.cbLngSelect.SelectedIndex + 2);
+				wrapper.Add(l, "", "");
+				this.lbxLngCurrent.Items.Add("0x" + Helper.HexString((ushort)(count-1)) + ": " + wrapper[l, count-1]);
+			}
 			internalchg = savedstate;
-			updateLists();
+
+			if (this.lbxLngCurrent.SelectedIndex >= 0)
+				this.lbxLngCurrent.SelectedIndex = count - 1;
+			else
+				this.lbxLngDefault.SelectedIndex = count - 1;
 		}
 
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
-			bool savedstate = internalchg;
+			if (index < 0) return;
 
+			bool savedstate = internalchg;
 			internalchg = true;
-			for (byte j = 1; j <= this.cbLngSelect.Items.Count; j++)
+
+			for (byte j = 1; j < 44; j++)
 			{
 				for (int i = index; i < count - 1; i++)
 				{
-					if (wrapper[j, i] != null)
+					StrItem s1 = wrapper[j, i];
+					if (s1 != null)
 					{
-						if (wrapper[j, i+1] != null)
+						StrItem s2 = wrapper[j, i+1];
+						if (s2 != null)
 						{
-							wrapper[j, i].Title       = wrapper[j, i+1].Title;
-							wrapper[j, i].Description = wrapper[j, i+1].Description;
+							s1.Title       = s2.Title;
+							s1.Description = s2.Description;
 						}
 						else
-							wrapper[j, i].Title = wrapper[j, i].Description = "";
+							s1.Title = s1.Description = "";
 					}
 				}
 				wrapper.Remove(wrapper[j, count-1]);
 			}
-			count--;
-			internalchg = savedstate;
+
+			int l = this.cbLngSelect.SelectedIndex;
+			bool defsel = this.lbxLngDefault.SelectedIndex != -1;
 			updateLists();
-		}
 
-		private void btnStrCopy_Click(object sender, System.EventArgs e)
-		{
-			bool savedstate = internalchg;
-
-			internalchg = true;
-			for (byte i = 1; i <= this.cbLngSelect.Items.Count; i++)
-			{
-				if (i != lid && wrapper[i, 0] != null)
-				{
-					wrapper[i, index].Title       = wrapper[lid, index].Title;
-					wrapper[i, index].Description = wrapper[lid, index].Description;
-				}
-			}
 			internalchg = savedstate;
-			updateLists();
-		}
 
+			displayStrItem();
+			this.btnLngClear.Enabled = false;
+
+			if (index < 0) index = 0;
+			if (index >= count) index = count - 1;
+			this.cbLngSelect.SelectedIndex = l;
+			if (defsel) this.lbxLngDefault.SelectedIndex = index;
+			else this.lbxLngCurrent.SelectedIndex = index;
+		}
 
 	}
 

@@ -155,8 +155,22 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		public StrItem[] this[byte lid]
+		{
+			get
+			{
+				ArrayList s = new ArrayList();
+				foreach (StrItem i in items)
+				{
+					if (i.LanguageID == lid)
+						s.Add(i);
+				}
+				return (StrItem[])s.ToArray(typeof(StrItem));
+			}
+		}
 		public int Add(StrItem item)
 		{
+			item.Parent = this;
 			int result = items.Add(item);
 			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))
 				OnWrapperChanged();
@@ -391,7 +405,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (lid != value)
 				{
 					lid = value;
-					parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged();
 				}
 			}
 		}
@@ -404,7 +418,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (title != value)
 				{
 					title = value;
-					parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged();
 				}
 			}
 		}
@@ -417,11 +431,16 @@ namespace SimPe.PackedFiles.Wrapper
 				if (desc != value)
 				{
 					desc = value;
-					parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged();
 				}
 			}
 		}
 
+		public Str Parent
+		{
+			get { return parent; }
+			set { parent = value; } // parent not part of wrapper
+		}
 		#endregion
 
 		public StrItem(Str parent)
