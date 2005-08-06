@@ -363,28 +363,13 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ImportSemi.cs"
+                    RelPath = "HelpContainer.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "ImportSemi.resx"
-                    DependentUpon = "ImportSemi.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "ImportSemiTool.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NewStrForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "NewStrForm.resx"
-                    DependentUpon = "NewStrForm.cs"
+                    RelPath = "HelpContainer.resx"
+                    DependentUpon = "HelpContainer.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File
@@ -430,16 +415,6 @@
                 <File
                     RelPath = "StrForm.resx"
                     DependentUpon = "StrForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "StrListViewer.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StrListViewer.resx"
-                    DependentUpon = "StrListViewer.cs"
                     BuildAction = "EmbeddedResource"
                 />
                 <File

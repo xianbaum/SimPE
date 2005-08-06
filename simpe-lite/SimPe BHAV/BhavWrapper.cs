@@ -50,7 +50,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains the Filename
 		/// </summary>
-		private byte[] filename;
+		private byte[] filename = new byte[64];
 		/// <summary>
 		/// Stores the Header
 		/// </summary>
@@ -112,7 +112,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Bhav(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
 		{
-			filename = new byte[64];
 			header = new BhavHeader(this);
 			instructions = new BhavInstList(this);
 			this.opcodes = opcodes;
@@ -176,7 +175,7 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			header.InstructionCount = (uint)instructions.Count; // oh please...
+			header.InstructionCount = (uint)instructions.Count; // oh please... because header doesn't have a parent (yet!)
 			header.Serialize(writer);
 
 			instructions.Serialize(writer);
@@ -242,14 +241,14 @@ namespace SimPe.PackedFiles.Wrapper
 	{
 		#region Attributes
 		private Bhav wrapper;
-		private ushort format;
-		private uint count;
-		private byte reserved_00;
-		private byte type;
-		private byte argc;
-		private byte locals;
-		private ushort flags;
-		private ushort zero;
+		private ushort format = 0x8007;
+		private uint count = 0;
+		private byte type = 0;
+		private byte argc = 0;
+		private byte locals = 0;
+		private byte reserved_00 = 0;	// header flag
+		private ushort flags = 0;		// int treeVersion
+		private ushort zero = 0;		// ...
 		#endregion
 
 		#region Accessor methods
@@ -348,14 +347,6 @@ namespace SimPe.PackedFiles.Wrapper
 		public BhavHeader(Bhav wrapper)
 		{
 			this.wrapper = wrapper;
-			format = 0;
-			count = 0;
-			reserved_00 = 0;
-			type = 0;
-			argc = 0;
-			locals = 0;
-			flags = 0;
-			zero = 0;
 		}
 
 
@@ -366,40 +357,25 @@ namespace SimPe.PackedFiles.Wrapper
 		public void Unserialize(System.IO.BinaryReader reader) 
 		{
 			format = reader.ReadUInt16();				//0x0040 - format
-			switch (format) 
+			if (format == 0x8003)
 			{
-				case 0x8000:
-				case 0x8001:
-				case 0x8002:
-				case 0x8004:
-				case 0x8005:
-				case 0x8006:
-				case 0x8007: 
-				{					
-					count = (uint)reader.ReadUInt16();	//0x0042 - # of opcodes
-					type = reader.ReadByte();			//0x0044 - tree type
-					argc = reader.ReadByte();			//0x0045 - # of args
-					locals = reader.ReadByte();			//0x0046 - # of locals
-					reserved_00 = reader.ReadByte();	//0x0047 - header flag
-					flags = reader.ReadUInt16();		//0x0048 - Tree version (4 bytes)
-					zero = reader.ReadUInt16();			//       - Tree version (4 bytes)
-					break;
-				}
-				case 0x8003: 				
-				{
-					type = reader.ReadByte();
-					argc = reader.ReadByte();
-					locals = reader.ReadByte();
-					zero = reader.ReadByte();
-					flags = reader.ReadUInt16();					
-					count = reader.ReadUInt32();
-					break;
-				}
-				default: 
-				{
-					throw new Exception("Unknown BHAV Format "+format.ToString("X"));
-				}
-			} //switch
+				type = reader.ReadByte();
+				argc = reader.ReadByte();
+				locals = reader.ReadByte();
+				zero = reader.ReadByte();
+				flags = reader.ReadUInt16();					
+				count = reader.ReadUInt32();
+			}
+			else
+			{
+				count = (uint)reader.ReadUInt16();	//0x0042 - # of opcodes
+				type = reader.ReadByte();			//0x0044 - tree type
+				argc = reader.ReadByte();			//0x0045 - # of args
+				locals = reader.ReadByte();			//0x0046 - # of locals
+				reserved_00 = reader.ReadByte();	//0x0047 - header flag
+				flags = reader.ReadUInt16();		//0x0048 - Tree version (4 bytes)
+				zero = reader.ReadUInt16();			//       - Tree version (4 bytes)
+			}
 		}
 
 		/// <summary>
@@ -409,40 +385,25 @@ namespace SimPe.PackedFiles.Wrapper
 		public void Serialize(System.IO.BinaryWriter writer) 
 		{
 			writer.Write(format);
-			switch (format) 
+			if (format == 0x8003)
 			{
-				case 0x8000:
-				case 0x8001:
-				case 0x8002:
-				case 0x8004:
-				case 0x8005:
-				case 0x8006:
-				case 0x8007:
-				{					
-					writer.Write((ushort)count);
-					writer.Write(type);
-					writer.Write(argc);
-					writer.Write(locals);
-					writer.Write((byte)reserved_00);
-					writer.Write(flags);
-					writer.Write(zero);
-					break;
-				}
-				case 0x8003: 				
-				{
-					writer.Write((byte)type);
-					writer.Write(argc);
-					writer.Write(locals);
-					writer.Write((byte)zero);
-					writer.Write(flags);					
-					writer.Write(count);
-					break;
-				}
-				default: 
-				{
-					throw new Exception("Unknown BHAV Format "+format.ToString("X"));
-				}
-			} //switch
+				writer.Write((byte)type);
+				writer.Write(argc);
+				writer.Write(locals);
+				writer.Write((byte)zero);
+				writer.Write(flags);					
+				writer.Write(count);
+			}
+			else
+			{
+				writer.Write((ushort)count);
+				writer.Write(type);
+				writer.Write(argc);
+				writer.Write(locals);
+				writer.Write((byte)reserved_00);
+				writer.Write(flags);
+				writer.Write(zero);
+			}
 		}
 	}
 
@@ -663,22 +624,23 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		private ushort formatSpecificTarget(ushort target)
+		private ushort formatSpecificTarget(ushort addr)
 		{
 			switch (parent.Header.Format)
 			{
 				case 0x8007:
-					return target;
+					return addr;
 				default:
-				switch (target)
+				switch (addr)
 				{
 					case 0xFD: return (ushort)0xFFFC;	// error
 					case 0xFE: return (ushort)0xFFFD;	// true
 					case 0xFF: return (ushort)0xFFFE;	// false
-					default: return target;
+					default: return addr;
 				}
 			}
 		}
+
 		private ushort formatSpecificAddr(ushort target)
 		{
 			switch (parent.Header.Format)
@@ -695,6 +657,7 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
+
 		public ushort Target1
 		{
 			get { return formatSpecificTarget(addr1); }
@@ -818,32 +781,23 @@ namespace SimPe.PackedFiles.Wrapper
 				addr2 = reader.ReadUInt16();
 			}
 
-			switch (parent.Header.Format)
+			if (parent.Header.Format < 0x8003)
 			{
-				case 0x8001: 
-				case 0x8002: 
-				{
-					operands = new wrappedByteArray(this, reader);
-					reserved_01 = new wrappedByteArray(this, new byte[8]);
-					break;
-				}
-				case 0x8003: 
-				case 0x8004: 
-				{
-					operands = new wrappedByteArray(this, reader);
-					reserved_01 = new wrappedByteArray(this, reader);
-					break;
-				}
-				case 0x8006: 
-				case 0x8005: 
-				case 0x8007: 
-				{
-					reserved_00 = reader.ReadByte();
-					operands = new wrappedByteArray(this, reader);
-					reserved_01 = new wrappedByteArray(this, reader);
-					break;
-				}
-			} //switch
+				operands = new wrappedByteArray(this, reader);
+				reserved_01 = new wrappedByteArray(this, new byte[8]);
+			}
+			else if (parent.Header.Format < 0x8006)
+			{
+				operands = new wrappedByteArray(this, reader);
+				reserved_01 = new wrappedByteArray(this, reader);
+			}
+			else
+			{
+				reserved_00 = reader.ReadByte();
+				operands = new wrappedByteArray(this, reader);
+				reserved_01 = new wrappedByteArray(this, reader);
+			}
+
 		}
 
 		/// <summary>
@@ -864,37 +818,22 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write(addr1);
 				writer.Write(addr2);
 			}
-			switch (parent.Header.Format)
+
+			if (parent.Header.Format < 0x8003)
 			{
-				case 0x8001: 
-				case 0x8002: 
-				{
-					operands.Serialize(writer);;
-					break;
-				}
-				case 0x8003: 
-				case 0x8004: 
-				{
-					operands.Serialize(writer);;
-					reserved_01.Serialize(writer);
-					break;
-				}
-				case 0x8006: 
-				case 0x8005: 
-				{
-					writer.Write(reserved_00);
-					operands.Serialize(writer);
-					reserved_01.Serialize(writer);
-					break;
-				}
-				case 0x8007: 
-				{
-					writer.Write(reserved_00);
-					operands.Serialize(writer);;
-					reserved_01.Serialize(writer);
-					break;
-				}
-			} //switch
+				operands.Serialize(writer);
+			}
+			else if (parent.Header.Format < 0x8005)
+			{
+				operands.Serialize(writer);;
+				reserved_01.Serialize(writer);
+			}
+			else
+			{
+				writer.Write(reserved_00);
+				operands.Serialize(writer);
+				reserved_01.Serialize(writer);
+			}
 		}
 
 	}

@@ -40,38 +40,39 @@ namespace SimPe.PackedFiles.Wrapper
 	{
 		#region Attributes
 		/// <summary>
-		/// Indicates the data content of the wrapper (packed file) has changed
-		/// </summary>
-		public event EventHandler WrapperChanged;
-		/// <summary>
-		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
-		/// </summary>
-		private bool internalchg = false;
-		/// <summary>
 		/// Contains the Filename
 		/// </summary>
 		private byte[] filename = new byte[64];
 		/// <summary>
 		/// Format Code of the FIle
 		/// </summary>
-		private SimPe.Data.MetaData.FormatCode format;
+		private ushort format;
 		/// <summary>
 		/// Somewhere to keep track of how many StrItems we have
 		/// </summary>
-		private ushort count;
+		//private ushort count;
 		/// <summary>
-		/// Contains all StrItems by Language
+		/// Holds all the StrItems
 		/// </summary>
-		private Hashtable languages = null;
+		private StrItemArrayList items = new StrItemArrayList();
+
 		/// <summary>
 		/// Maximum Number of Lines to load
 		/// </summary>
 		private int limit = 0;
+		/// <summary>
+		/// Indicates the data content of the wrapper (packed file) has changed
+		/// </summary>
+		public event EventHandler WrapperChanged;
+		/// <summary>
+		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event when it's ready
+		/// </summary>
+		private bool internalchg = false;
 		#endregion
 
 		#region Accessor methods
 		/// <summary>
-		/// Returns the Filename
+		/// Returns / Sets the Filename
 		/// </summary>
 		public string FileName 
 		{
@@ -81,15 +82,15 @@ namespace SimPe.PackedFiles.Wrapper
 				if (!Helper.ToString(filename).Equals(value))
 				{
 					filename = Helper.ToBytes(value, 0x40);
-					OnWrapperChanged(new EventArgs());
+					OnWrapperChanged();
 				}
 			}
 		}
 
 		/// <summary>
-		/// Returns /Sets the Format Code
+		/// Returns / Sets the Format Code
 		/// </summary>
-		public SimPe.Data.MetaData.FormatCode Format
+		public ushort Format
 		{
 			get { return format; }			
 			set 
@@ -97,21 +98,33 @@ namespace SimPe.PackedFiles.Wrapper
 				if (format != value)
 				{
 					format = value;
-					OnWrapperChanged(new EventArgs());
+					OnWrapperChanged();
 				}
 			}
 		}
 
+		/// <summary>
+		/// Returns number of strings
+		/// </summary>
+		public ushort Count { get { return (ushort)items.Count; } }
 
-		public byte[] Languages
+
+		/// <summary>
+		/// Returns / Sets a specific StrItem
+		/// </summary>
+		public StrItem this[int index]
 		{
 			get
 			{
-				ArrayList ab = new ArrayList(languages.Keys);
-				ab.Sort();
-				byte[] b = new byte[ab.Count];
-				ab.CopyTo(b);
-				return b;
+				return items[index];
+			}
+			set
+			{
+				if (items[index] == null || !items[index].Equals(value))
+				{
+					items[index] = value;
+					OnWrapperChanged();
+				}
 			}
 		}
 
@@ -119,44 +132,17 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				ArrayList al = (ArrayList)languages[lid];
-				if (al == null) return null;
-				if (index >= al.Count) return null;
-				return (StrItem)al[index];
-			}
-			set
-			{
-				if (limit > 0 && count >= limit) return;
-
-				if ((ArrayList)languages[lid] == null) AddLanguage(lid);
-				ArrayList al = (ArrayList)languages[lid];
-
-				if (value != null)
+				int count = 0;
+				foreach (StrItem i in items)
 				{
-					while ((limit == 0 || count < limit) && al.Count <= index)
+					if (i.LanguageID == lid)
 					{
-						StrItem z = Add(lid);
-						z.Title = "";
-					}
-					if (index < al.Count && !((StrItem)al[index]).Equals(value))
-					{
-						al[index] = value;
-						OnWrapperChanged(new EventArgs());
+						if (count == index)
+							return i;
+						count++;
 					}
 				}
-				else
-				{
-					if (index < al.Count)
-					{
-						StrItem i = (StrItem)al[index];
-						if (!(i.Title.Equals("") && i.Description.Equals("")))
-						{
-							i.Title = "";
-							i.Description = "";
-							OnWrapperChanged(new EventArgs());
-						}
-					}
-				}
+				return null;
 			}
 		}
 
@@ -165,10 +151,69 @@ namespace SimPe.PackedFiles.Wrapper
 			get
 			{
 				StrItem i = this[lid, index];
-				return (!fallback || (i != null && i.Title.Trim() != "")) ? i : this[0x1, index];
+				return (fallback && (i == null || i.Title.Trim().Equals(""))) ? this[0x01, index] : i;
 			}
 		}
 
+		public StrItem[] this[byte lid]
+		{
+			get
+			{
+				ArrayList s = new ArrayList();
+				foreach (StrItem i in items)
+				{
+					if (i.LanguageID == lid)
+						s.Add(i);
+				}
+				return (StrItem[])s.ToArray(typeof(StrItem));
+			}
+		}
+		public int Add(StrItem item)
+		{
+			item.Parent = this;
+			int result = items.Add(item);
+			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))
+				OnWrapperChanged();
+			return result;
+		}
+
+		public int Add(byte lid, string title, string desc) { return this.Add(new StrItem(this, lid, title, desc)); }
+
+		public void Remove(StrItem item) { this.RemoveAt(items.IndexOf(item)); }
+
+		public void RemoveAt(int index)
+		{
+			if (index < 0 || index >= items.Count) return;
+
+			bool changed = false;
+			for (int i = index; !changed && i < items.Count; i++)
+				changed = changed || (
+					(items[i].LanguageID == items[index].LanguageID)
+					&&
+					(!items[i].Title.Trim().Equals("") || !items[i].Description.Trim().Equals(""))
+					);
+
+			items.RemoveAt(index);
+			if (changed) OnWrapperChanged();
+		}
+
+		public void CleanUp()
+		{
+			Hashtable lngs = new Hashtable();
+			foreach (StrItem i in items)
+			{
+				if (lngs[i.LanguageID] == null)
+					lngs[i.LanguageID] = new ArrayList();
+				((ArrayList)lngs[i.LanguageID]).Add(i);
+			}
+			foreach (ArrayList l in lngs.Values)
+				for (int i = l.Count - 1; i >= 0; i--)
+				{
+					if ( ((StrItem)l[i]).Title.Trim().Equals("") && ((StrItem)l[i]).Description.Trim().Equals("") )
+						items.Remove((StrItem)l[i]);
+					else break;
+				}
+		}
 		#endregion
 
 		/// <summary>
@@ -176,7 +221,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Str() : base()
 		{
-			format = SimPe.Data.MetaData.FormatCode.normal;
+			format = (ushort)SimPe.Data.MetaData.FormatCode.normal;
 		}
 
 		/// <summary>
@@ -184,105 +229,27 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Str(int limit) : base()
 		{
-			format = SimPe.Data.MetaData.FormatCode.normal;
+			format = (ushort)SimPe.Data.MetaData.FormatCode.normal;
 			this.limit = limit;
 		}
 
 
-		internal virtual void OnWrapperChanged(EventArgs e)
+		internal virtual void OnWrapperChanged()
 		{
 			this.Changed = true;
 
 			if (internalchg) return;
 			if (WrapperChanged != null) 
 			{
-				WrapperChanged(this, e);
+				WrapperChanged(this, new EventArgs());
 			}
-		}
-
-		public void AddLanguage(byte lid)
-		{
-			if (languages[lid] == null)
-			{
-				languages[lid] = new ArrayList();
-				//OnWrapperChanged(new EventArgs()); //???? no... not until a line gets added
-			}
-		}
-
-		public void RemoveLanguage(byte lid)
-		{
-			ArrayList al = (ArrayList)languages[lid];
-			if (al != null)
-			{
-				languages.Remove(lid);
-				if (al.Count != 0)
-				{
-					OnWrapperChanged(new EventArgs());
-					count -= (ushort)al.Count;
-				}
-			}
-		}
-
-		public StrItem Add(byte lid)
-		{
-			if (limit > 0 && count >= limit) return null;
-
-			internalchg = true;
-			if (languages[lid] == null)
-				AddLanguage(lid);
-			ArrayList al = (ArrayList)languages[lid];
-			StrItem i = new StrItem(this);
-			al.Add(i);
-			count++;
-			internalchg = false;
-			OnWrapperChanged(new EventArgs());
-			return i;
-		}
-
-		public int Add(byte lid, StrItem item)
-		{
-			StrItem ni = Add(lid);
-			if (ni == null) return -1;
-
-			ni.Title = item.Title;
-			ni.Description = item.Description;
-			return ((ArrayList)languages[lid]).Count - 1;
-		}
-
-		public void RemoveAt(byte lid, int index)
-		{
-			ArrayList al = (ArrayList)languages[lid];
-			if (al != null && index < al.Count)
-			{
-				al.RemoveAt(index);
-				count--;
-				OnWrapperChanged(new EventArgs());
-			}
-		}
-
-		public void Remove(byte lid, StrItem i)
-		{
-			ArrayList al = (ArrayList)languages[lid];
-			if (al != null)
-				RemoveAt(lid, al.IndexOf(i));
-		}
-
-		/*public void Remove(StrItem i)
-		{
-			foreach(byte lid in languages.Keys) Remove(lid, i);
-		}*/
-
-		public int nrStrItems(byte lid)
-		{
-			ArrayList al = (ArrayList)languages[lid];
-			return (al == null) ? 0 : al.Count;
 		}
 
 
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
-			return new UserInterface.OldStrForm();
+			return new UserInterface.StrForm();
 		}
 
 		/// <summary>
@@ -306,19 +273,14 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
 			filename = reader.ReadBytes(0x40);
-			format = (SimPe.Data.MetaData.FormatCode)reader.ReadUInt16();
+			format = reader.ReadUInt16();
+			ushort count = reader.ReadUInt16();
+			items = new StrItemArrayList(count);
 
-			count = reader.ReadUInt16();
-
-			languages = new Hashtable();
 			for (int i = 0; i < count && (limit == 0 || i < limit); i++)
-			{
-				byte lid = reader.ReadByte();
-				if (languages[lid] == null)
-					languages[lid] = new ArrayList();
+				items.Add(new StrItem(this, reader));
 
-				((ArrayList)languages[lid]).Add(new StrItem(this, reader));
-			}
+			CleanUp();
 		}
 
 		/// <summary>
@@ -331,21 +293,13 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{			
-			writer.Write(filename);
-			writer.Write((ushort)format);
-			writer.Write((ushort)count);
+			CleanUp();
 
-			int c = 0;
-			for (byte lid = 1; lid < 45; lid++)
-				if (languages[lid] != null)
-					foreach (StrItem i in ((ArrayList)languages[lid]))
-					{
-						writer.Write(lid);
-						i.Serialize(writer);
-						c++;
-					}
-			if (c != count)
-				throw new Exception("Oops!  count was " + count.ToString() + " but wrote " + c.ToString() + " StrItems!");
+			writer.Write(filename);
+			writer.Write(format);
+			writer.Write((ushort)items.Count);
+			foreach (StrItem i in items)
+				i.Serialize(writer);
 		}
 		#endregion
 
@@ -365,9 +319,10 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				return "filename=" + this.FileName +
-					", lines=" + count.ToString() +
-					", first=" + this[0x1, 0];
+				return "filename=" + this.FileName
+					+ ", lines=" + Count.ToString()
+					+ ", first=" + this[0x1, 0]
+					;
 			}
 		}
 		/// <summary>
@@ -399,6 +354,33 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		#endregion		
+
+		#region StrItemArrayList
+		private class StrItemArrayList : ArrayList
+		{
+			public StrItemArrayList() : base() { }
+
+			public StrItemArrayList(StrItem[] c) : base(c) { }
+
+			public StrItemArrayList(int capacity) : base(capacity) { }
+
+			public int Add(StrItem item) { return base.Add(item); }
+
+			public void AddRange(StrItem[] c) { base.AddRange(c); }
+
+			public void Insert(int index, StrItem item) { base.Insert(index, item); }
+
+			public void SetRange(int index, StrItem[] c) { base.SetRange(index, c); }
+
+			public new StrItem this[int index]
+			{
+				get { return (StrItem)base[index]; }
+				set { base[index] = value; }
+			}
+
+		}
+
+		#endregion		
 	}
 
 
@@ -409,11 +391,25 @@ namespace SimPe.PackedFiles.Wrapper
 	{
 		#region Attributes
 		private Str parent = null;
+		private byte lid = 0;
 		private string title = null;
 		private string desc = null;
 		#endregion
 
 		#region Accessor methods
+		public byte LanguageID
+		{
+			get { return lid; }
+			set 
+			{
+				if (lid != value)
+				{
+					lid = value;
+					if (parent != null) parent.OnWrapperChanged();
+				}
+			}
+		}
+
 		public string Title 
 		{
 			get { return title; }
@@ -422,7 +418,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (title != value)
 				{
 					title = value;
-					parent.OnWrapperChanged(new EventArgs());
+					if (parent != null) parent.OnWrapperChanged();
 				}
 			}
 		}
@@ -435,34 +431,47 @@ namespace SimPe.PackedFiles.Wrapper
 				if (desc != value)
 				{
 					desc = value;
-					parent.OnWrapperChanged(new EventArgs());
+					if (parent != null) parent.OnWrapperChanged();
 				}
 			}
 		}
 
+		public Str Parent
+		{
+			get { return parent; }
+			set { parent = value; } // parent not part of wrapper
+		}
 		#endregion
 
-		public StrItem(Str parent) : base()
+		public StrItem(Str parent)
 		{
 			this.parent = parent;
-			parent.OnWrapperChanged(new System.EventArgs());
 		}
 
-		public StrItem(Str parent, System.IO.BinaryReader reader) : base()
+		public StrItem(Str parent, System.IO.BinaryReader reader)
 		{
 			this.parent = parent;
 			this.Unserialize(reader);
 		}
 
+		public StrItem(Str parent, byte lid, string title, string desc)
+		{
+			this.parent = parent;
+			this.lid = lid;
+			this.title = title;
+			this.desc = desc;
+		}
 
 		public void Unserialize(System.IO.BinaryReader reader)
 		{
+			lid = reader.ReadByte();
 			title = UnserializeStringZero(reader);
 			desc = UnserializeStringZero(reader);
 		}
 
 		public void Serialize(System.IO.BinaryWriter writer)
 		{
+			writer.Write(lid);
 			SerializeStringZero(writer, title);
 			SerializeStringZero(writer, desc);
 		}

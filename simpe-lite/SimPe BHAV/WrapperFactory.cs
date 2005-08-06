@@ -80,9 +80,9 @@ namespace SimPe.Plugin
 			{
 				IWrapper[] wrappers = {
 										   new Bhav(LinkedProvider.OpcodeProvider)
+										  ,new Ttab(LinkedProvider.OpcodeProvider)
 #if INPROGRESS || DEBUG
 										  ,new Bcon()
-										  ,new Ttab(LinkedProvider.OpcodeProvider)
 										  ,new Objf(LinkedProvider.OpcodeProvider)
 										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()
@@ -104,7 +104,7 @@ namespace SimPe.Plugin
 			get
 			{
 				IToolPlugin[] tools = {
-									new ImportSemiTool(this.LinkedRegistry, this.LinkedProvider)
+									//new ImportSemiTool(this.LinkedRegistry, this.LinkedProvider)
 								};
 				return tools;
 			}

@@ -50,7 +50,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbMotive15;
 		private System.Windows.Forms.Label lbMotive13;
 		private System.Windows.Forms.Label lbMotive12;
-		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Panel pnAllGroups;
 		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI2;
 		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI3;
@@ -93,6 +92,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbCBM10;
 		private System.Windows.Forms.Label lbCBM12;
 		private System.Windows.Forms.Button btnCopyAll;
+		private System.Windows.Forms.Button btnHelp;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -125,8 +125,19 @@ namespace SimPe.PackedFiles.UserInterface
 			aButtons = b;
 			pnAllGroups.Visible = true;
 			pnCopyButtons.Visible = false;
-			pnCopyButtons.Left = pnAllGroups.Left;
+
+			pnCopyButtons.Anchor = pnAllGroups.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+			pnCopyButtons.Left = pnAllGroups.Left = ttabMotiveGroupUI1.Right + 1;
+			int i = this.Width - (pnAllGroups.Left + 8);
+			if (i > ttabMotiveGroupUI2.Width)
+				pnAllGroups.Width = i;
+			else
+				pnAllGroups.Width = ttabMotiveGroupUI2.Width;
+			int j = pnAllGroups.Right;
+			int k = this.Right;
 			pnCopyButtons.Width = pnAllGroups.Width;
+			pnCopyButtons.Anchor = pnAllGroups.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+			pnCopyButtons.AutoScroll = pnAllGroups.AutoScroll = true;
 		}
 
 		/// <summary> 
@@ -217,7 +228,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive15 = new System.Windows.Forms.Label();
 			this.lbMotive13 = new System.Windows.Forms.Label();
 			this.lbMotive12 = new System.Windows.Forms.Label();
-			this.label1 = new System.Windows.Forms.Label();
 			this.pnAllGroups = new System.Windows.Forms.Panel();
 			this.ttabMotiveGroupUI2 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
 			this.ttabMotiveGroupUI3 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
@@ -260,6 +270,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM13 = new System.Windows.Forms.Label();
 			this.lbCBM10 = new System.Windows.Forms.Label();
 			this.lbCBM12 = new System.Windows.Forms.Label();
+			this.btnHelp = new System.Windows.Forms.Button();
 			this.pnAllGroups.SuspendLayout();
 			this.pnCopyButtons.SuspendLayout();
 			this.SuspendLayout();
@@ -313,7 +324,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive1.AccessibleName = resources.GetString("lbMotive1.AccessibleName");
 			this.lbMotive1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive1.Anchor")));
 			this.lbMotive1.AutoSize = ((bool)(resources.GetObject("lbMotive1.AutoSize")));
-			this.lbMotive1.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive1.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive1.Dock")));
 			this.lbMotive1.Enabled = ((bool)(resources.GetObject("lbMotive1.Enabled")));
 			this.lbMotive1.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive1.Font")));
@@ -358,7 +369,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive3.AccessibleName = resources.GetString("lbMotive3.AccessibleName");
 			this.lbMotive3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive3.Anchor")));
 			this.lbMotive3.AutoSize = ((bool)(resources.GetObject("lbMotive3.AutoSize")));
-			this.lbMotive3.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive3.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive3.Dock")));
 			this.lbMotive3.Enabled = ((bool)(resources.GetObject("lbMotive3.Enabled")));
 			this.lbMotive3.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive3.Font")));
@@ -403,7 +414,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive5.AccessibleName = resources.GetString("lbMotive5.AccessibleName");
 			this.lbMotive5.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive5.Anchor")));
 			this.lbMotive5.AutoSize = ((bool)(resources.GetObject("lbMotive5.AutoSize")));
-			this.lbMotive5.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive5.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive5.Dock")));
 			this.lbMotive5.Enabled = ((bool)(resources.GetObject("lbMotive5.Enabled")));
 			this.lbMotive5.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive5.Font")));
@@ -448,7 +459,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive7.AccessibleName = resources.GetString("lbMotive7.AccessibleName");
 			this.lbMotive7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive7.Anchor")));
 			this.lbMotive7.AutoSize = ((bool)(resources.GetObject("lbMotive7.AutoSize")));
-			this.lbMotive7.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive7.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive7.Dock")));
 			this.lbMotive7.Enabled = ((bool)(resources.GetObject("lbMotive7.Enabled")));
 			this.lbMotive7.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive7.Font")));
@@ -471,7 +482,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive9.AccessibleName = resources.GetString("lbMotive9.AccessibleName");
 			this.lbMotive9.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive9.Anchor")));
 			this.lbMotive9.AutoSize = ((bool)(resources.GetObject("lbMotive9.AutoSize")));
-			this.lbMotive9.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive9.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive9.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive9.Dock")));
 			this.lbMotive9.Enabled = ((bool)(resources.GetObject("lbMotive9.Enabled")));
 			this.lbMotive9.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive9.Font")));
@@ -494,7 +505,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive11.AccessibleName = resources.GetString("lbMotive11.AccessibleName");
 			this.lbMotive11.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive11.Anchor")));
 			this.lbMotive11.AutoSize = ((bool)(resources.GetObject("lbMotive11.AutoSize")));
-			this.lbMotive11.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive11.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive11.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive11.Dock")));
 			this.lbMotive11.Enabled = ((bool)(resources.GetObject("lbMotive11.Enabled")));
 			this.lbMotive11.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive11.Font")));
@@ -583,7 +594,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive15.AccessibleName = resources.GetString("lbMotive15.AccessibleName");
 			this.lbMotive15.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive15.Anchor")));
 			this.lbMotive15.AutoSize = ((bool)(resources.GetObject("lbMotive15.AutoSize")));
-			this.lbMotive15.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive15.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive15.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive15.Dock")));
 			this.lbMotive15.Enabled = ((bool)(resources.GetObject("lbMotive15.Enabled")));
 			this.lbMotive15.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive15.Font")));
@@ -606,7 +617,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive13.AccessibleName = resources.GetString("lbMotive13.AccessibleName");
 			this.lbMotive13.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbMotive13.Anchor")));
 			this.lbMotive13.AutoSize = ((bool)(resources.GetObject("lbMotive13.AutoSize")));
-			this.lbMotive13.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbMotive13.BackColor = System.Drawing.SystemColors.Control;
 			this.lbMotive13.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbMotive13.Dock")));
 			this.lbMotive13.Enabled = ((bool)(resources.GetObject("lbMotive13.Enabled")));
 			this.lbMotive13.Font = ((System.Drawing.Font)(resources.GetObject("lbMotive13.Font")));
@@ -645,28 +656,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbMotive12.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbMotive12.TextAlign")));
 			this.lbMotive12.Visible = ((bool)(resources.GetObject("lbMotive12.Visible")));
 			// 
-			// label1
-			// 
-			this.label1.AccessibleDescription = resources.GetString("label1.AccessibleDescription");
-			this.label1.AccessibleName = resources.GetString("label1.AccessibleName");
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label1.Anchor")));
-			this.label1.AutoSize = ((bool)(resources.GetObject("label1.AutoSize")));
-			this.label1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label1.Dock")));
-			this.label1.Enabled = ((bool)(resources.GetObject("label1.Enabled")));
-			this.label1.Font = ((System.Drawing.Font)(resources.GetObject("label1.Font")));
-			this.label1.Image = ((System.Drawing.Image)(resources.GetObject("label1.Image")));
-			this.label1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.ImageAlign")));
-			this.label1.ImageIndex = ((int)(resources.GetObject("label1.ImageIndex")));
-			this.label1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label1.ImeMode")));
-			this.label1.Location = ((System.Drawing.Point)(resources.GetObject("label1.Location")));
-			this.label1.Name = "label1";
-			this.label1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label1.RightToLeft")));
-			this.label1.Size = ((System.Drawing.Size)(resources.GetObject("label1.Size")));
-			this.label1.TabIndex = ((int)(resources.GetObject("label1.TabIndex")));
-			this.label1.Text = resources.GetString("label1.Text");
-			this.label1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.TextAlign")));
-			this.label1.Visible = ((bool)(resources.GetObject("label1.Visible")));
-			// 
 			// pnAllGroups
 			// 
 			this.pnAllGroups.AccessibleDescription = resources.GetString("pnAllGroups.AccessibleDescription");
@@ -693,6 +682,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnAllGroups.TabIndex = ((int)(resources.GetObject("pnAllGroups.TabIndex")));
 			this.pnAllGroups.Text = resources.GetString("pnAllGroups.Text");
 			this.pnAllGroups.Visible = ((bool)(resources.GetObject("pnAllGroups.Visible")));
+			this.pnAllGroups.Resize += new System.EventHandler(this.pnAllGroups_Resize);
 			// 
 			// ttabMotiveGroupUI2
 			// 
@@ -1344,7 +1334,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM1.AccessibleName = resources.GetString("lbCBM1.AccessibleName");
 			this.lbCBM1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM1.Anchor")));
 			this.lbCBM1.AutoSize = ((bool)(resources.GetObject("lbCBM1.AutoSize")));
-			this.lbCBM1.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM1.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM1.Dock")));
 			this.lbCBM1.Enabled = ((bool)(resources.GetObject("lbCBM1.Enabled")));
 			this.lbCBM1.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM1.Font")));
@@ -1389,7 +1379,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM3.AccessibleName = resources.GetString("lbCBM3.AccessibleName");
 			this.lbCBM3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM3.Anchor")));
 			this.lbCBM3.AutoSize = ((bool)(resources.GetObject("lbCBM3.AutoSize")));
-			this.lbCBM3.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM3.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM3.Dock")));
 			this.lbCBM3.Enabled = ((bool)(resources.GetObject("lbCBM3.Enabled")));
 			this.lbCBM3.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM3.Font")));
@@ -1434,7 +1424,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM5.AccessibleName = resources.GetString("lbCBM5.AccessibleName");
 			this.lbCBM5.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM5.Anchor")));
 			this.lbCBM5.AutoSize = ((bool)(resources.GetObject("lbCBM5.AutoSize")));
-			this.lbCBM5.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM5.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM5.Dock")));
 			this.lbCBM5.Enabled = ((bool)(resources.GetObject("lbCBM5.Enabled")));
 			this.lbCBM5.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM5.Font")));
@@ -1479,7 +1469,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM7.AccessibleName = resources.GetString("lbCBM7.AccessibleName");
 			this.lbCBM7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM7.Anchor")));
 			this.lbCBM7.AutoSize = ((bool)(resources.GetObject("lbCBM7.AutoSize")));
-			this.lbCBM7.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM7.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM7.Dock")));
 			this.lbCBM7.Enabled = ((bool)(resources.GetObject("lbCBM7.Enabled")));
 			this.lbCBM7.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM7.Font")));
@@ -1502,7 +1492,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM15.AccessibleName = resources.GetString("lbCBM15.AccessibleName");
 			this.lbCBM15.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM15.Anchor")));
 			this.lbCBM15.AutoSize = ((bool)(resources.GetObject("lbCBM15.AutoSize")));
-			this.lbCBM15.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM15.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM15.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM15.Dock")));
 			this.lbCBM15.Enabled = ((bool)(resources.GetObject("lbCBM15.Enabled")));
 			this.lbCBM15.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM15.Font")));
@@ -1525,7 +1515,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM11.AccessibleName = resources.GetString("lbCBM11.AccessibleName");
 			this.lbCBM11.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM11.Anchor")));
 			this.lbCBM11.AutoSize = ((bool)(resources.GetObject("lbCBM11.AutoSize")));
-			this.lbCBM11.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM11.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM11.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM11.Dock")));
 			this.lbCBM11.Enabled = ((bool)(resources.GetObject("lbCBM11.Enabled")));
 			this.lbCBM11.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM11.Font")));
@@ -1592,7 +1582,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM9.AccessibleName = resources.GetString("lbCBM9.AccessibleName");
 			this.lbCBM9.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM9.Anchor")));
 			this.lbCBM9.AutoSize = ((bool)(resources.GetObject("lbCBM9.AutoSize")));
-			this.lbCBM9.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM9.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM9.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM9.Dock")));
 			this.lbCBM9.Enabled = ((bool)(resources.GetObject("lbCBM9.Enabled")));
 			this.lbCBM9.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM9.Font")));
@@ -1615,7 +1605,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM13.AccessibleName = resources.GetString("lbCBM13.AccessibleName");
 			this.lbCBM13.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCBM13.Anchor")));
 			this.lbCBM13.AutoSize = ((bool)(resources.GetObject("lbCBM13.AutoSize")));
-			this.lbCBM13.BackColor = System.Drawing.SystemColors.ControlLight;
+			this.lbCBM13.BackColor = System.Drawing.SystemColors.Control;
 			this.lbCBM13.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCBM13.Dock")));
 			this.lbCBM13.Enabled = ((bool)(resources.GetObject("lbCBM13.Enabled")));
 			this.lbCBM13.Font = ((System.Drawing.Font)(resources.GetObject("lbCBM13.Font")));
@@ -1676,6 +1666,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCBM12.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCBM12.TextAlign")));
 			this.lbCBM12.Visible = ((bool)(resources.GetObject("lbCBM12.Visible")));
 			// 
+			// btnHelp
+			// 
+			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
+			this.btnHelp.AccessibleName = resources.GetString("btnHelp.AccessibleName");
+			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnHelp.Anchor")));
+			this.btnHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHelp.BackgroundImage")));
+			this.btnHelp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnHelp.Dock")));
+			this.btnHelp.Enabled = ((bool)(resources.GetObject("btnHelp.Enabled")));
+			this.btnHelp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnHelp.FlatStyle")));
+			this.btnHelp.Font = ((System.Drawing.Font)(resources.GetObject("btnHelp.Font")));
+			this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+			this.btnHelp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.ImageAlign")));
+			this.btnHelp.ImageIndex = ((int)(resources.GetObject("btnHelp.ImageIndex")));
+			this.btnHelp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnHelp.ImeMode")));
+			this.btnHelp.Location = ((System.Drawing.Point)(resources.GetObject("btnHelp.Location")));
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnHelp.RightToLeft")));
+			this.btnHelp.Size = ((System.Drawing.Size)(resources.GetObject("btnHelp.Size")));
+			this.btnHelp.TabIndex = ((int)(resources.GetObject("btnHelp.TabIndex")));
+			this.btnHelp.Text = resources.GetString("btnHelp.Text");
+			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
+			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+			// 
 			// TtabItemMotiveTableUI
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -1684,10 +1698,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMargin")));
 			this.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMinSize")));
 			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+			this.Controls.Add(this.btnHelp);
 			this.Controls.Add(this.pnCopyButtons);
 			this.Controls.Add(this.cbShowAll);
 			this.Controls.Add(this.pnAllGroups);
-			this.Controls.Add(this.label1);
 			this.Controls.Add(this.lbMotive0);
 			this.Controls.Add(this.ttabMotiveGroupUI1);
 			this.Controls.Add(this.lbMotive1);
@@ -1736,12 +1750,25 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				pnCopyButtons.Visible = false;
 				pnAllGroups.Visible = true;
+				this.Width = this.pnAllGroups.Right + 8;
 			}
 			else
 			{
 				pnAllGroups.Visible = false;
 				pnCopyButtons.Visible = true;
+				this.Width = this.pnCopyButtons.Right + 8;
 			}
+		}
+
+		private void btnHelp_Click(object sender, System.EventArgs e)
+		{
+			(new pjse.HelpContainer(pjse.HelpContainer.HelpPage.TtabMotives)).Show();
+		}
+
+		private void pnAllGroups_Resize(object sender, System.EventArgs e)
+		{
+			pnCopyButtons.Width = pnAllGroups.Width;
+			pnCopyButtons.AutoScroll = pnAllGroups.AutoScroll = true;
 		}
 
 	}

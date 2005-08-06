@@ -174,7 +174,11 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Ttab(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
 		{
+			this.header[0] = 0xffffffff;
+			this.header[1] = 0x0000004e;
+			this.header[2] = 0x00000000;
 			this.opcodes = opcodes;
+			this.items = new ArrayList();
 		}
 
 
@@ -341,14 +345,14 @@ namespace SimPe.PackedFiles.Wrapper
 		private ushort flags2 = 0;
 		private uint strindex = 0;
 		private uint attenuationcode = 0;
-		private uint attenuationvalue = 0;
+		private float attenuationvalue = 0f;
 		private uint autonomy = 0;
 		private uint joinindex = 0;
-		private uint res5 = 0;
+		private ushort res5 = 0;
 		private uint res6 = 0;
 		private float res7 = 0f;
 		private uint res8 = 0;
-		private ushort res9 = 0;
+		private uint res9 = 0;
 		private ArrayList groups = null;
 		private Ttab parent = null;
 		#endregion
@@ -435,7 +439,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public uint AttenuationValue
+		public float AttenuationValue
 		{
 			get {return attenuationvalue; }
 			set
@@ -474,7 +478,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public uint Res5
+		public ushort Res5
 		{
 			get {return res5; }
 			set
@@ -505,7 +509,7 @@ namespace SimPe.PackedFiles.Wrapper
 			get {return res7; }
 			set
 			{
-				if (res7.Equals(value))
+				if (!res7.Equals(value))
 				{
 					res7 = value;
 					parent.OnWrapperChanged(new EventArgs());
@@ -526,7 +530,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public ushort Res9
+		public uint Res9
 		{
 			get {return res9; }
 			set
@@ -648,6 +652,28 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
+
+		public TtabItem Clone()
+		{
+			TtabItem clone = new TtabItem(this.parent);
+			clone.action = this.action;
+			clone.guard = this.guard;
+			clone.flags = this.flags.Clone();
+			clone.flags2 = this.flags2;
+			clone.strindex = this.strindex;
+			clone.attenuationcode = this.attenuationcode;
+			clone.attenuationvalue = this.attenuationvalue;
+			clone.autonomy = this.autonomy;
+			clone.joinindex = this.joinindex;
+			clone.res5 = this.res5;
+			clone.res6 = this.res6;
+			clone.res7 = this.res7;
+			clone.res8 = this.res8;
+			clone.res9 = this.res9;
+			clone.groups = (ArrayList)this.groups.Clone();
+			return clone;
+		}
+
 		/// <summary>
 		/// Reads Data from the Stream
 		/// </summary>
@@ -668,15 +694,20 @@ namespace SimPe.PackedFiles.Wrapper
 
 			strindex = reader.ReadUInt32();
 			attenuationcode = reader.ReadUInt32();
-			attenuationvalue = reader.ReadUInt32();
+			attenuationvalue = reader.ReadSingle(); //float
 			autonomy = reader.ReadUInt32();
 			joinindex = reader.ReadUInt32();
 
+			res5 = 0;
+			res6 = 0;
+			res7 = 0f;
+			res8 = 0;
+			res9 = 0;
 			if (parent.Format >0x44) 
 			{
+				res5 = reader.ReadUInt16();
 				if (parent.Format >= 0x46)
 				{
-					res5 = reader.ReadUInt32();
 					if (parent.Format >= 0x4a) 
 					{
 						res6 = reader.ReadUInt32();
@@ -686,8 +717,8 @@ namespace SimPe.PackedFiles.Wrapper
 							res8 = reader.ReadUInt32();
 						}
 					}
+					res9 = reader.ReadUInt32();
 				}
-				res9 = reader.ReadUInt16();
 			}
 
 			groups = new ArrayList(counts.Length);
@@ -732,9 +763,9 @@ namespace SimPe.PackedFiles.Wrapper
 
 			if (parent.Format >0x44) 
 			{
+				writer.Write(res5);
 				if (parent.Format >= 0x46)
 				{
-					writer.Write(res5);
 					if (parent.Format >= 0x4a) 
 					{
 						writer.Write(res6);
@@ -744,8 +775,8 @@ namespace SimPe.PackedFiles.Wrapper
 							writer.Write(res8);
 						}
 					}
+					writer.Write(res9);
 				}
-				writer.Write(res9);
 			}
 
 			for (int k=0; k < nrGroups; k++) 
@@ -874,6 +905,10 @@ namespace SimPe.PackedFiles.Wrapper
 			get { return GetBit(15); }
 			set { SetBit(15, value); parent.OnWrapperChanged(new EventArgs()); }
 		}
+		public TtabFlags Clone()
+		{
+			return new TtabFlags(parent, Value);
+		}
 	}
 
 	/// <summary>
@@ -881,12 +916,12 @@ namespace SimPe.PackedFiles.Wrapper
 	/// </summary>
 	public enum TtabMotives : int
 	{
-		Toddler = 0x00,
+		Adult = 0x00,
 		Child = 0x01,
 		Teen = 0x02,
-		Adult = 0x03,
+		Toddler = 0x03,
 		Elder = 0x04,
-		Unknown = 0x05,
-		Animals = 0x06
+		Cat = 0x05,
+		Dog = 0x06
 	}
 }

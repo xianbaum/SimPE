@@ -54,14 +54,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI15;
 		private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI16;
 		private System.Windows.Forms.Button btnClear;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Panel panel3;
-		private System.Windows.Forms.Panel panel4;
-		private System.Windows.Forms.Panel panel5;
-		private System.Windows.Forms.Panel panel6;
-		private System.Windows.Forms.Panel panel7;
-		private System.Windows.Forms.Panel panel8;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -174,14 +166,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabSingleMotiveUI9 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
 			this.ttabSingleMotiveUI10 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
 			this.ttabSingleMotiveUI12 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.panel3 = new System.Windows.Forms.Panel();
-			this.panel4 = new System.Windows.Forms.Panel();
-			this.panel5 = new System.Windows.Forms.Panel();
-			this.panel6 = new System.Windows.Forms.Panel();
-			this.panel7 = new System.Windows.Forms.Panel();
-			this.panel8 = new System.Windows.Forms.Panel();
 			this.gbMotiveGroup.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -211,14 +195,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbMotiveGroup.Controls.Add(this.ttabSingleMotiveUI9);
 			this.gbMotiveGroup.Controls.Add(this.ttabSingleMotiveUI10);
 			this.gbMotiveGroup.Controls.Add(this.ttabSingleMotiveUI12);
-			this.gbMotiveGroup.Controls.Add(this.panel1);
-			this.gbMotiveGroup.Controls.Add(this.panel2);
-			this.gbMotiveGroup.Controls.Add(this.panel3);
-			this.gbMotiveGroup.Controls.Add(this.panel4);
-			this.gbMotiveGroup.Controls.Add(this.panel5);
-			this.gbMotiveGroup.Controls.Add(this.panel6);
-			this.gbMotiveGroup.Controls.Add(this.panel7);
-			this.gbMotiveGroup.Controls.Add(this.panel8);
 			this.gbMotiveGroup.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbMotiveGroup.Dock")));
 			this.gbMotiveGroup.Enabled = ((bool)(resources.GetObject("gbMotiveGroup.Enabled")));
 			this.gbMotiveGroup.Font = ((System.Drawing.Font)(resources.GetObject("gbMotiveGroup.Font")));
@@ -657,182 +633,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabSingleMotiveUI12.Size = ((System.Drawing.Size)(resources.GetObject("ttabSingleMotiveUI12.Size")));
 			this.ttabSingleMotiveUI12.TabIndex = ((int)(resources.GetObject("ttabSingleMotiveUI12.TabIndex")));
 			this.ttabSingleMotiveUI12.Visible = ((bool)(resources.GetObject("ttabSingleMotiveUI12.Visible")));
-			// 
-			// panel1
-			// 
-			this.panel1.AccessibleDescription = resources.GetString("panel1.AccessibleDescription");
-			this.panel1.AccessibleName = resources.GetString("panel1.AccessibleName");
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel1.Anchor")));
-			this.panel1.AutoScroll = ((bool)(resources.GetObject("panel1.AutoScroll")));
-			this.panel1.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel1.AutoScrollMargin")));
-			this.panel1.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel1.AutoScrollMinSize")));
-			this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.panel1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel1.BackgroundImage")));
-			this.panel1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel1.Dock")));
-			this.panel1.Enabled = ((bool)(resources.GetObject("panel1.Enabled")));
-			this.panel1.Font = ((System.Drawing.Font)(resources.GetObject("panel1.Font")));
-			this.panel1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel1.ImeMode")));
-			this.panel1.Location = ((System.Drawing.Point)(resources.GetObject("panel1.Location")));
-			this.panel1.Name = "panel1";
-			this.panel1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel1.RightToLeft")));
-			this.panel1.Size = ((System.Drawing.Size)(resources.GetObject("panel1.Size")));
-			this.panel1.TabIndex = ((int)(resources.GetObject("panel1.TabIndex")));
-			this.panel1.Text = resources.GetString("panel1.Text");
-			this.panel1.Visible = ((bool)(resources.GetObject("panel1.Visible")));
-			// 
-			// panel2
-			// 
-			this.panel2.AccessibleDescription = resources.GetString("panel2.AccessibleDescription");
-			this.panel2.AccessibleName = resources.GetString("panel2.AccessibleName");
-			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel2.Anchor")));
-			this.panel2.AutoScroll = ((bool)(resources.GetObject("panel2.AutoScroll")));
-			this.panel2.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel2.AutoScrollMargin")));
-			this.panel2.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel2.AutoScrollMinSize")));
-			this.panel2.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
-			this.panel2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel2.Dock")));
-			this.panel2.Enabled = ((bool)(resources.GetObject("panel2.Enabled")));
-			this.panel2.Font = ((System.Drawing.Font)(resources.GetObject("panel2.Font")));
-			this.panel2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel2.ImeMode")));
-			this.panel2.Location = ((System.Drawing.Point)(resources.GetObject("panel2.Location")));
-			this.panel2.Name = "panel2";
-			this.panel2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel2.RightToLeft")));
-			this.panel2.Size = ((System.Drawing.Size)(resources.GetObject("panel2.Size")));
-			this.panel2.TabIndex = ((int)(resources.GetObject("panel2.TabIndex")));
-			this.panel2.Text = resources.GetString("panel2.Text");
-			this.panel2.Visible = ((bool)(resources.GetObject("panel2.Visible")));
-			// 
-			// panel3
-			// 
-			this.panel3.AccessibleDescription = resources.GetString("panel3.AccessibleDescription");
-			this.panel3.AccessibleName = resources.GetString("panel3.AccessibleName");
-			this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel3.Anchor")));
-			this.panel3.AutoScroll = ((bool)(resources.GetObject("panel3.AutoScroll")));
-			this.panel3.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel3.AutoScrollMargin")));
-			this.panel3.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel3.AutoScrollMinSize")));
-			this.panel3.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.panel3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel3.BackgroundImage")));
-			this.panel3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel3.Dock")));
-			this.panel3.Enabled = ((bool)(resources.GetObject("panel3.Enabled")));
-			this.panel3.Font = ((System.Drawing.Font)(resources.GetObject("panel3.Font")));
-			this.panel3.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel3.ImeMode")));
-			this.panel3.Location = ((System.Drawing.Point)(resources.GetObject("panel3.Location")));
-			this.panel3.Name = "panel3";
-			this.panel3.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel3.RightToLeft")));
-			this.panel3.Size = ((System.Drawing.Size)(resources.GetObject("panel3.Size")));
-			this.panel3.TabIndex = ((int)(resources.GetObject("panel3.TabIndex")));
-			this.panel3.Text = resources.GetString("panel3.Text");
-			this.panel3.Visible = ((bool)(resources.GetObject("panel3.Visible")));
-			// 
-			// panel4
-			// 
-			this.panel4.AccessibleDescription = resources.GetString("panel4.AccessibleDescription");
-			this.panel4.AccessibleName = resources.GetString("panel4.AccessibleName");
-			this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel4.Anchor")));
-			this.panel4.AutoScroll = ((bool)(resources.GetObject("panel4.AutoScroll")));
-			this.panel4.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel4.AutoScrollMargin")));
-			this.panel4.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel4.AutoScrollMinSize")));
-			this.panel4.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.panel4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel4.BackgroundImage")));
-			this.panel4.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel4.Dock")));
-			this.panel4.Enabled = ((bool)(resources.GetObject("panel4.Enabled")));
-			this.panel4.Font = ((System.Drawing.Font)(resources.GetObject("panel4.Font")));
-			this.panel4.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel4.ImeMode")));
-			this.panel4.Location = ((System.Drawing.Point)(resources.GetObject("panel4.Location")));
-			this.panel4.Name = "panel4";
-			this.panel4.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel4.RightToLeft")));
-			this.panel4.Size = ((System.Drawing.Size)(resources.GetObject("panel4.Size")));
-			this.panel4.TabIndex = ((int)(resources.GetObject("panel4.TabIndex")));
-			this.panel4.Text = resources.GetString("panel4.Text");
-			this.panel4.Visible = ((bool)(resources.GetObject("panel4.Visible")));
-			// 
-			// panel5
-			// 
-			this.panel5.AccessibleDescription = resources.GetString("panel5.AccessibleDescription");
-			this.panel5.AccessibleName = resources.GetString("panel5.AccessibleName");
-			this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel5.Anchor")));
-			this.panel5.AutoScroll = ((bool)(resources.GetObject("panel5.AutoScroll")));
-			this.panel5.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel5.AutoScrollMargin")));
-			this.panel5.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel5.AutoScrollMinSize")));
-			this.panel5.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.panel5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel5.BackgroundImage")));
-			this.panel5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel5.Dock")));
-			this.panel5.Enabled = ((bool)(resources.GetObject("panel5.Enabled")));
-			this.panel5.Font = ((System.Drawing.Font)(resources.GetObject("panel5.Font")));
-			this.panel5.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel5.ImeMode")));
-			this.panel5.Location = ((System.Drawing.Point)(resources.GetObject("panel5.Location")));
-			this.panel5.Name = "panel5";
-			this.panel5.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel5.RightToLeft")));
-			this.panel5.Size = ((System.Drawing.Size)(resources.GetObject("panel5.Size")));
-			this.panel5.TabIndex = ((int)(resources.GetObject("panel5.TabIndex")));
-			this.panel5.Text = resources.GetString("panel5.Text");
-			this.panel5.Visible = ((bool)(resources.GetObject("panel5.Visible")));
-			// 
-			// panel6
-			// 
-			this.panel6.AccessibleDescription = resources.GetString("panel6.AccessibleDescription");
-			this.panel6.AccessibleName = resources.GetString("panel6.AccessibleName");
-			this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel6.Anchor")));
-			this.panel6.AutoScroll = ((bool)(resources.GetObject("panel6.AutoScroll")));
-			this.panel6.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel6.AutoScrollMargin")));
-			this.panel6.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel6.AutoScrollMinSize")));
-			this.panel6.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.panel6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel6.BackgroundImage")));
-			this.panel6.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel6.Dock")));
-			this.panel6.Enabled = ((bool)(resources.GetObject("panel6.Enabled")));
-			this.panel6.Font = ((System.Drawing.Font)(resources.GetObject("panel6.Font")));
-			this.panel6.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel6.ImeMode")));
-			this.panel6.Location = ((System.Drawing.Point)(resources.GetObject("panel6.Location")));
-			this.panel6.Name = "panel6";
-			this.panel6.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel6.RightToLeft")));
-			this.panel6.Size = ((System.Drawing.Size)(resources.GetObject("panel6.Size")));
-			this.panel6.TabIndex = ((int)(resources.GetObject("panel6.TabIndex")));
-			this.panel6.Text = resources.GetString("panel6.Text");
-			this.panel6.Visible = ((bool)(resources.GetObject("panel6.Visible")));
-			// 
-			// panel7
-			// 
-			this.panel7.AccessibleDescription = resources.GetString("panel7.AccessibleDescription");
-			this.panel7.AccessibleName = resources.GetString("panel7.AccessibleName");
-			this.panel7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel7.Anchor")));
-			this.panel7.AutoScroll = ((bool)(resources.GetObject("panel7.AutoScroll")));
-			this.panel7.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel7.AutoScrollMargin")));
-			this.panel7.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel7.AutoScrollMinSize")));
-			this.panel7.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.panel7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel7.BackgroundImage")));
-			this.panel7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel7.Dock")));
-			this.panel7.Enabled = ((bool)(resources.GetObject("panel7.Enabled")));
-			this.panel7.Font = ((System.Drawing.Font)(resources.GetObject("panel7.Font")));
-			this.panel7.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel7.ImeMode")));
-			this.panel7.Location = ((System.Drawing.Point)(resources.GetObject("panel7.Location")));
-			this.panel7.Name = "panel7";
-			this.panel7.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel7.RightToLeft")));
-			this.panel7.Size = ((System.Drawing.Size)(resources.GetObject("panel7.Size")));
-			this.panel7.TabIndex = ((int)(resources.GetObject("panel7.TabIndex")));
-			this.panel7.Text = resources.GetString("panel7.Text");
-			this.panel7.Visible = ((bool)(resources.GetObject("panel7.Visible")));
-			// 
-			// panel8
-			// 
-			this.panel8.AccessibleDescription = resources.GetString("panel8.AccessibleDescription");
-			this.panel8.AccessibleName = resources.GetString("panel8.AccessibleName");
-			this.panel8.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel8.Anchor")));
-			this.panel8.AutoScroll = ((bool)(resources.GetObject("panel8.AutoScroll")));
-			this.panel8.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel8.AutoScrollMargin")));
-			this.panel8.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel8.AutoScrollMinSize")));
-			this.panel8.BackColor = System.Drawing.SystemColors.ControlLight;
-			this.panel8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel8.BackgroundImage")));
-			this.panel8.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel8.Dock")));
-			this.panel8.Enabled = ((bool)(resources.GetObject("panel8.Enabled")));
-			this.panel8.Font = ((System.Drawing.Font)(resources.GetObject("panel8.Font")));
-			this.panel8.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel8.ImeMode")));
-			this.panel8.Location = ((System.Drawing.Point)(resources.GetObject("panel8.Location")));
-			this.panel8.Name = "panel8";
-			this.panel8.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel8.RightToLeft")));
-			this.panel8.Size = ((System.Drawing.Size)(resources.GetObject("panel8.Size")));
-			this.panel8.TabIndex = ((int)(resources.GetObject("panel8.TabIndex")));
-			this.panel8.Text = resources.GetString("panel8.Text");
-			this.panel8.Visible = ((bool)(resources.GetObject("panel8.Visible")));
 			// 
 			// TtabMotiveGroupUI
 			// 
