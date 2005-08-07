@@ -204,6 +204,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			displayStrItem();
 			this.btnLngClear.Enabled = false;
+			this.btnLngClear.Text = "Clear Lang";
 
 			if (index < 0) index = 0;
 			if (index >= count) index = count - 1;
@@ -918,6 +919,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			displayStrItem();
 			this.btnLngClear.Enabled = false;
+			this.btnLngClear.Text = "Clear Lang";
 
 			if (index < 0) index = 0;
 			if (index >= count) index = count - 1;
@@ -971,10 +973,16 @@ namespace SimPe.PackedFiles.UserInterface
 						empty = false;
 				this.cbLngSelect.Items[lid - 2] = ((SimPe.Data.MetaData.Languages)lid).ToString() + (empty ? " (empty)" : "");
 				this.btnLngClear.Enabled = !empty;
+				this.btnLngClear.Text = "Clear " + this.cbLngSelect.Items[lid - 2].ToString();
 				for (int i = 0; i < wrapper.Count && empty; i++)
 					if ((wrapper[i].LanguageID != 1) && (wrapper[i].Title.Trim().Length + wrapper[i].Description.Trim().Length > 0))
 						empty = false;
 				this.btnClearAll.Enabled = !empty;
+			}
+			else
+			{
+				this.btnLngClear.Enabled = false;
+				this.btnLngClear.Text = "Clear Lang";
 			}
 			internalchg = false;
 		}
@@ -1042,6 +1050,13 @@ namespace SimPe.PackedFiles.UserInterface
 				StrItem[] s = wrapper[lid];
 				for (ushort i = 0; i < count; i++)
 					this.lbxLngCurrent.Items.Add("0x" + Helper.HexString(i) + ": " + s[i]);
+				this.btnLngClear.Enabled = !((string)(this.cbLngSelect.Items[lid - 2])).EndsWith(" (empty)");
+				this.btnLngClear.Text = "Clear " + this.cbLngSelect.SelectedItem.ToString();
+			}
+			else
+			{
+				this.btnLngClear.Enabled = false;
+				this.btnLngClear.Text = "Clear Lang";
 			}
 
 			this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
@@ -1081,6 +1096,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			displayStrItem();
 			this.btnLngClear.Enabled = false;
+			this.btnLngClear.Text = "Clear Lang";
 
 			if (index < 0) index = 0;
 			if (index >= count) index = count - 1;
@@ -1098,7 +1114,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			lid = 1;
 			index = this.lbxLngDefault.SelectedIndex;
-			this.btnLngClear.Enabled = false;
+			//this.btnLngClear.Enabled = false;
 			displayStrItem();
 		}
 
@@ -1111,7 +1127,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			lid = (byte)(this.cbLngSelect.SelectedIndex + 2);
 			index = this.lbxLngCurrent.SelectedIndex;
-			this.btnLngClear.Enabled = !((string)(this.cbLngSelect.Items[lid - 2])).EndsWith(" (empty)");
+			//this.btnLngClear.Enabled = !((string)(this.cbLngSelect.Items[lid - 2])).EndsWith(" (empty)");
 			displayStrItem();
 		}
 
@@ -1132,6 +1148,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			displayStrItem();
 			this.btnLngClear.Enabled = false;
+			this.btnLngClear.Text = "Clear Lang";
 
 			if (index < 0) index = 0;
 			if (index >= count) index = count - 1;
@@ -1196,6 +1213,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			displayStrItem();
 			this.btnLngClear.Enabled = false;
+			this.btnLngClear.Text = "Clear Lang";
 
 			if (index < 0) index = 0;
 			if (index >= count) index = count - 1;
