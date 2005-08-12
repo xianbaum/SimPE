@@ -1,4 +1,20 @@
 
+12 August 2005 21:15 - BHAV Editor version 2
+  * New special actions panel:
+  * - Append BHAVs - allows an existing local BHAV to be appended to this one
+  * - Insert via True/False; Pescado's Delete; Inge's InitLinker
+  * OpCodeWiz flags for selecting pages (used also in ObjfForm, TtabForm)
+  * switch connector highlights
+  * unselected line highlights in grey
+  SimPe BHAV\
+    BhavForm.cs 1.31
+    BhavForm.resx 1.13
+    BhavInstListControl.cs 1.25
+    BhavInstListItemUI.cs 1.12
+    BhavWrapper.cs 1.24
+    ObjfForm.cs 1.6
+    TtabForm.cs 1.14
+
 12 August 2005 16:50 - Add big edit box to Str
   SimPe BHAV\
     pjse coder plugin.csproj 1.10
