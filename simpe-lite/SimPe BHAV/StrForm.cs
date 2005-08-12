@@ -59,6 +59,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbLngDefault;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Button btnBigString;
+		private System.Windows.Forms.Button btnBigDesc;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -86,6 +88,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 			Control[] ar = { rtbTitle, rtbDescription };
 			alRichTextBox = new ArrayList(ar);
+
+			Control[] ab = { btnBigString, btnBigDesc };
+			alBigBtn = new ArrayList(ab);
 		}
 
 		/// <summary>
@@ -112,6 +117,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alHex16 = null;
 		private ArrayList alTextBox = null;
 		private ArrayList alRichTextBox = null;
+		private ArrayList alBigBtn = null;
 
 		private byte lid = 1;
 		private int index = -1;
@@ -243,6 +249,8 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
 			this.strPanel = new System.Windows.Forms.Panel();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
 			this.lbLngDefault = new System.Windows.Forms.Label();
 			this.rtbDescription = new System.Windows.Forms.RichTextBox();
 			this.rtbTitle = new System.Windows.Forms.RichTextBox();
@@ -266,8 +274,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnExport = new System.Windows.Forms.Button();
 			this.btnStrDelete = new System.Windows.Forms.Button();
 			this.btnStrAdd = new System.Windows.Forms.Button();
-			this.label1 = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
+			this.btnBigString = new System.Windows.Forms.Button();
+			this.btnBigDesc = new System.Windows.Forms.Button();
 			this.strPanel.SuspendLayout();
 			this.pnLists.SuspendLayout();
 			this.SuspendLayout();
@@ -281,6 +289,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMargin")));
 			this.strPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMinSize")));
 			this.strPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("strPanel.BackgroundImage")));
+			this.strPanel.Controls.Add(this.btnBigDesc);
+			this.strPanel.Controls.Add(this.btnBigString);
 			this.strPanel.Controls.Add(this.label2);
 			this.strPanel.Controls.Add(this.label1);
 			this.strPanel.Controls.Add(this.lbLngDefault);
@@ -315,6 +325,50 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.TabIndex = ((int)(resources.GetObject("strPanel.TabIndex")));
 			this.strPanel.Text = resources.GetString("strPanel.Text");
 			this.strPanel.Visible = ((bool)(resources.GetObject("strPanel.Visible")));
+			// 
+			// label2
+			// 
+			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
+			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
+			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
+			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
+			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
+			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
+			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
+			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
+			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
+			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
+			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
+			this.label2.Name = "label2";
+			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
+			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
+			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
+			this.label2.Text = resources.GetString("label2.Text");
+			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
+			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
+			// 
+			// label1
+			// 
+			this.label1.AccessibleDescription = resources.GetString("label1.AccessibleDescription");
+			this.label1.AccessibleName = resources.GetString("label1.AccessibleName");
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label1.Anchor")));
+			this.label1.AutoSize = ((bool)(resources.GetObject("label1.AutoSize")));
+			this.label1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label1.Dock")));
+			this.label1.Enabled = ((bool)(resources.GetObject("label1.Enabled")));
+			this.label1.Font = ((System.Drawing.Font)(resources.GetObject("label1.Font")));
+			this.label1.Image = ((System.Drawing.Image)(resources.GetObject("label1.Image")));
+			this.label1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.ImageAlign")));
+			this.label1.ImageIndex = ((int)(resources.GetObject("label1.ImageIndex")));
+			this.label1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label1.ImeMode")));
+			this.label1.Location = ((System.Drawing.Point)(resources.GetObject("label1.Location")));
+			this.label1.Name = "label1";
+			this.label1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label1.RightToLeft")));
+			this.label1.Size = ((System.Drawing.Size)(resources.GetObject("label1.Size")));
+			this.label1.TabIndex = ((int)(resources.GetObject("label1.TabIndex")));
+			this.label1.Text = resources.GetString("label1.Text");
+			this.label1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.TextAlign")));
+			this.label1.Visible = ((bool)(resources.GetObject("label1.Visible")));
 			// 
 			// lbLngDefault
 			// 
@@ -871,49 +925,53 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrAdd.Visible = ((bool)(resources.GetObject("btnStrAdd.Visible")));
 			this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
 			// 
-			// label1
+			// btnBigString
 			// 
-			this.label1.AccessibleDescription = resources.GetString("label1.AccessibleDescription");
-			this.label1.AccessibleName = resources.GetString("label1.AccessibleName");
-			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label1.Anchor")));
-			this.label1.AutoSize = ((bool)(resources.GetObject("label1.AutoSize")));
-			this.label1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label1.Dock")));
-			this.label1.Enabled = ((bool)(resources.GetObject("label1.Enabled")));
-			this.label1.Font = ((System.Drawing.Font)(resources.GetObject("label1.Font")));
-			this.label1.Image = ((System.Drawing.Image)(resources.GetObject("label1.Image")));
-			this.label1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.ImageAlign")));
-			this.label1.ImageIndex = ((int)(resources.GetObject("label1.ImageIndex")));
-			this.label1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label1.ImeMode")));
-			this.label1.Location = ((System.Drawing.Point)(resources.GetObject("label1.Location")));
-			this.label1.Name = "label1";
-			this.label1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label1.RightToLeft")));
-			this.label1.Size = ((System.Drawing.Size)(resources.GetObject("label1.Size")));
-			this.label1.TabIndex = ((int)(resources.GetObject("label1.TabIndex")));
-			this.label1.Text = resources.GetString("label1.Text");
-			this.label1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.TextAlign")));
-			this.label1.Visible = ((bool)(resources.GetObject("label1.Visible")));
+			this.btnBigString.AccessibleDescription = resources.GetString("btnBigString.AccessibleDescription");
+			this.btnBigString.AccessibleName = resources.GetString("btnBigString.AccessibleName");
+			this.btnBigString.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnBigString.Anchor")));
+			this.btnBigString.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBigString.BackgroundImage")));
+			this.btnBigString.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnBigString.Dock")));
+			this.btnBigString.Enabled = ((bool)(resources.GetObject("btnBigString.Enabled")));
+			this.btnBigString.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnBigString.FlatStyle")));
+			this.btnBigString.Font = ((System.Drawing.Font)(resources.GetObject("btnBigString.Font")));
+			this.btnBigString.Image = ((System.Drawing.Image)(resources.GetObject("btnBigString.Image")));
+			this.btnBigString.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigString.ImageAlign")));
+			this.btnBigString.ImageIndex = ((int)(resources.GetObject("btnBigString.ImageIndex")));
+			this.btnBigString.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnBigString.ImeMode")));
+			this.btnBigString.Location = ((System.Drawing.Point)(resources.GetObject("btnBigString.Location")));
+			this.btnBigString.Name = "btnBigString";
+			this.btnBigString.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnBigString.RightToLeft")));
+			this.btnBigString.Size = ((System.Drawing.Size)(resources.GetObject("btnBigString.Size")));
+			this.btnBigString.TabIndex = ((int)(resources.GetObject("btnBigString.TabIndex")));
+			this.btnBigString.Text = resources.GetString("btnBigString.Text");
+			this.btnBigString.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigString.TextAlign")));
+			this.btnBigString.Visible = ((bool)(resources.GetObject("btnBigString.Visible")));
+			this.btnBigString.Click += new System.EventHandler(this.btnBigString_Click);
 			// 
-			// label2
+			// btnBigDesc
 			// 
-			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
-			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
-			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
-			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
-			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
-			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
-			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
-			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
-			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
-			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
-			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
-			this.label2.Name = "label2";
-			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
-			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
-			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
-			this.label2.Text = resources.GetString("label2.Text");
-			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
-			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
+			this.btnBigDesc.AccessibleDescription = resources.GetString("btnBigDesc.AccessibleDescription");
+			this.btnBigDesc.AccessibleName = resources.GetString("btnBigDesc.AccessibleName");
+			this.btnBigDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnBigDesc.Anchor")));
+			this.btnBigDesc.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBigDesc.BackgroundImage")));
+			this.btnBigDesc.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnBigDesc.Dock")));
+			this.btnBigDesc.Enabled = ((bool)(resources.GetObject("btnBigDesc.Enabled")));
+			this.btnBigDesc.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnBigDesc.FlatStyle")));
+			this.btnBigDesc.Font = ((System.Drawing.Font)(resources.GetObject("btnBigDesc.Font")));
+			this.btnBigDesc.Image = ((System.Drawing.Image)(resources.GetObject("btnBigDesc.Image")));
+			this.btnBigDesc.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigDesc.ImageAlign")));
+			this.btnBigDesc.ImageIndex = ((int)(resources.GetObject("btnBigDesc.ImageIndex")));
+			this.btnBigDesc.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnBigDesc.ImeMode")));
+			this.btnBigDesc.Location = ((System.Drawing.Point)(resources.GetObject("btnBigDesc.Location")));
+			this.btnBigDesc.Name = "btnBigDesc";
+			this.btnBigDesc.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnBigDesc.RightToLeft")));
+			this.btnBigDesc.Size = ((System.Drawing.Size)(resources.GetObject("btnBigDesc.Size")));
+			this.btnBigDesc.TabIndex = ((int)(resources.GetObject("btnBigDesc.TabIndex")));
+			this.btnBigDesc.Text = resources.GetString("btnBigDesc.Text");
+			this.btnBigDesc.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigDesc.TextAlign")));
+			this.btnBigDesc.Visible = ((bool)(resources.GetObject("btnBigDesc.Visible")));
+			this.btnBigDesc.Click += new System.EventHandler(this.btnBigString_Click);
 			// 
 			// StrForm
 			// 
@@ -961,6 +1019,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbxLngCurrent.Height = this.lbxLngDefault.Height = (h < minH) ? minH : h;
 
 			this.rtbDescription.Width = this.rtbTitle.Width = this.pnLists.Left + this.lbxLngDefault.Width - this.rtbTitle.Left;
+			this.btnBigDesc.Left = this.btnBigString.Left = this.rtbTitle.Right;
 
 			Control[] cs = { tbFormat, lbFormat };
 			int left = this.strPanel.Width;
@@ -1295,6 +1354,18 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbLngSelect.SelectedIndex = l;
 			if (defsel) this.lbxLngDefault.SelectedIndex = index;
 			else this.lbxLngCurrent.SelectedIndex = index;
+		}
+
+
+		private void btnBigString_Click(object sender, System.EventArgs e)
+		{
+			int index = alBigBtn.IndexOf(sender);
+			if (index < 0)
+				throw new Exception("btnBigString_Click not applicable to control " + sender.ToString());
+
+			RichTextBox[] rtb = { rtbTitle, rtbDescription };
+			string result = (new pjse.StrBig()).doBig(rtb[index].Text);
+			if (result != null) rtb[index].Text = result;
 		}
 
 	}

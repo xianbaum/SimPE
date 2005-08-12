@@ -383,6 +383,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "StrBig.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "StrBig.resx"
+                    DependentUpon = "StrBig.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "StrForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
