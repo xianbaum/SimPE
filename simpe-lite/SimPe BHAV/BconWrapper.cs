@@ -51,6 +51,11 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Just A Flag
 		/// </summary>
 		private byte flag;
+
+		/// <summary>
+		/// Contains a valid TRCN that describes the BCON entries
+		/// </summary>
+		private Trcn trcnres = null;
 		#endregion
 
 		#region Accessor methods
@@ -79,6 +84,36 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get { return flag;	}			
 			set { flag = value; }
+		}
+
+		/// <summary>
+		/// Returns the describing String Resource
+		/// </summary>
+		internal Trcn LabelResource
+		{
+			get 
+			{
+				if (trcnres==null) 
+				{
+					if ((Package!=null) && (FileDescriptor!=null)) 
+					{
+						Interfaces.Files.IPackedFileDescriptor pfd = Package.FindFile(
+							0x5452434e, // Behaviour Constant Labels - TRCN
+							0, 
+							FileDescriptor.Group,
+							FileDescriptor.Instance
+							);
+
+						if (pfd!=null) 
+						{
+							trcnres = new Trcn();
+							trcnres.ProcessData(pfd, Package);
+						}
+					} 
+				}
+
+				return trcnres;
+			}
 		}
 
 		#endregion

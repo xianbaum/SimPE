@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -18,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections;
 using SimPe.Interfaces.Plugin;
 
 namespace SimPe.PackedFiles.Wrapper
@@ -39,34 +42,106 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains the Filename
 		/// </summary>
-		byte[] filename;	
+		private byte[] filename = new byte[64];
+		/// <summary>
+		/// Header of the File
+		/// </summary>
+		private uint[] header = { 0x5452434e, 0x0000004e, 0x00000000 };
+		/// <summary>
+		/// Items stored in the File
+		/// </summary>
+		private TrcnItemArrayList items = new TrcnItemArrayList();
+
+		/// <summary>
+		/// Indicates the data content of the wrapper (packed file) has changed
+		/// </summary>
+		public event EventHandler WrapperChanged;
+		/// <summary>
+		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
+		/// </summary>
+		private bool internalchg = false;
+		#endregion
 	
+		#region Accessor methods
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
 		public string FileName 
 		{
 			get { return Helper.ToString(filename); }
-			set { filename = Helper.ToBytes(value, 0x40); }
+			set 
+			{
+				if (!Helper.ToString(filename).Equals(value))
+				{
+					filename = Helper.ToBytes(value, 0x40);
+					OnWrapperChanged();
+				}
+			}
 		}
 
-		uint header;
-		uint unknown_0;
-		uint unknown_1;
-
 		/// <summary>
-		/// Contains all available Constants 
-		/// </summary>		
-		private TrcnItem[] labels;
-
-		/// <summary>
-		/// Returns/Sets the Constants
+		/// Returns / Sets the Format this File is in
 		/// </summary>
-		public TrcnItem[] Labels
+		public uint Format 
 		{
-			get { return labels; }			
-			set { labels = value; }
+			get { return header[1]; }
+			set
+			{
+				if (header[1] != value )
+				{
+					header[1] = value;
+					OnWrapperChanged();
+				}
+			}
 		}
+
+		/// <summary>
+		/// Returns the number of Trcn Items in the file
+		/// </summary>
+		public int Count
+		{
+			get { return items.Count; }
+		}
+		/// <summary>
+		/// Returns the Item
+		/// </summary>
+		public TrcnItem this[int index]
+		{
+			get { return (TrcnItem)items[index]; }
+		}
+
+		public string this[uint bcon]
+		{
+			get
+			{
+				foreach (TrcnItem i in items)
+					if (i.Constant == bcon)
+						return i.Label;
+				return null;
+			}
+		}
+
+		public int Add(TrcnItem item)
+		{
+			item.Parent = this;
+			int result = items.Add(item);
+			OnWrapperChanged();
+			return result;
+		}
+
+		public int Add(uint bcon, string label) { return this.Add(new TrcnItem(this, bcon, label)); }
+
+
+		public void Remove(TrcnItem item) { this.RemoveAt(items.IndexOf(item)); }
+
+		public void RemoveAt(int index)
+		{
+			if (index < 0 || index >= items.Count) return;
+
+			items.RemoveAt(index);
+			OnWrapperChanged();
+		}
+
 		#endregion
 
 		/// <summary>
@@ -74,25 +149,20 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Trcn() : base()
 		{
-			labels = new TrcnItem[0];			
-			filename = new byte[0x40];
-			header = 0x5452434E;
-			unknown_0 = 0x4E;
 		}
 
-		#region IWrapper member
-		public override bool CheckVersion(uint version) 
+
+		internal virtual void OnWrapperChanged()
 		{
-			if ( (version==0012) //0.00
-				|| (version==0013) //0.10
-				) 
-			{
-				return true;
-			}
+			this.Changed = true;
 
-			return false;
+			if (internalchg) return;
+			if (WrapperChanged != null) 
+			{
+				WrapperChanged(this, new EventArgs());
+			}
 		}
-		#endregion
+
 		
 		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
@@ -123,17 +193,15 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader">The Stream that contains the FileData</param>
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
-			filename = reader.ReadBytes(64);
-			header = reader.ReadUInt32();
-			unknown_0 = reader.ReadUInt32();
-			unknown_1 = reader.ReadUInt32();
-			labels = new TrcnItem[reader.ReadUInt32()];				
- 
-			for (int i=0; i < labels.Length; i++) 
-			{
-				labels[i] = new TrcnItem(this);
-				labels[i].Unserialize(reader);
-			}
+			filename = reader.ReadBytes(0x40);
+			this.header[0] = reader.ReadUInt32();
+			this.header[1] = reader.ReadUInt32();
+			this.header[2] = reader.ReadUInt32();
+			int count = reader.ReadInt32();
+			items = new TrcnItemArrayList(count);
+
+			for (int i=0; i < count; i++) 
+				items.Add(new TrcnItem(this, reader));
 		}
 
 		/// <summary>
@@ -147,13 +215,26 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			writer.Write(header);
-			writer.Write(unknown_0);
-			writer.Write(unknown_1);
-			writer.Write((uint)labels.Length);
+			writer.Write(this.header[0]);
+			writer.Write(this.header[1]);
+			writer.Write(this.header[2]);
+			writer.Write((uint)items.Count);
  
-			for (int i=0; i < labels.Length; i++) labels[i].Serialize(writer);
-			
+			for (int i=0; i < items.Count; i++) ((TrcnItem)items[i]).Serialize(writer);
+		}
+		#endregion
+
+		#region IWrapper member
+		public override bool CheckVersion(uint version) 
+		{
+			if ( (version==0012) //0.00
+				|| (version==0013) //0.10
+				) 
+			{
+				return true;
+			}
+
+			return false;
 		}
 		#endregion
 
@@ -187,5 +268,125 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		#endregion		
+
+		#region TrcnItemArrayList
+		private class TrcnItemArrayList : ArrayList
+		{
+			public TrcnItemArrayList() : base() { }
+
+			public TrcnItemArrayList(TrcnItem[] c) : base(c) { }
+
+			public TrcnItemArrayList(int capacity) : base(capacity) { }
+
+			public int Add(TrcnItem item) { return base.Add(item); }
+
+			public void AddRange(TrcnItem[] c) { base.AddRange(c); }
+
+			public void Insert(int index, TrcnItem item) { base.Insert(index, item); }
+
+			public void SetRange(int index, TrcnItem[] c) { base.SetRange(index, c); }
+
+			public new TrcnItem this[int index]
+			{
+				get { return (TrcnItem)base[index]; }
+				set { base[index] = value; }
+			}
+
+		}
+
+		#endregion
+	}
+
+
+	/// <summary>
+	/// An Item stored in an TRCN
+	/// </summary>
+	public class TrcnItem
+	{
+		#region Attributes
+		private uint used = 0x00000000;
+		private uint bcon = 0x00000000;
+		private string label = "";
+		private ushort def = 0x0000;
+		private ushort min = 0x0000;
+		private ushort max = 0x0000;
+
+		private Trcn parent;
+		#endregion
+
+		#region Accessor methods
+		public uint Constant
+		{
+			get { return bcon; }
+			set 
+			{
+				if (bcon != value)
+				{
+					bcon = value;
+					parent.OnWrapperChanged();
+				}
+			}
+		}
+		public string Label 
+		{
+			get { return label; }
+			set 
+			{
+				if (label != value)
+				{
+					label = value;
+					parent.OnWrapperChanged();
+				}
+			}
+		}
+
+		public Trcn Parent
+		{
+			get { return parent; }
+			set { parent = value; } // parent not part of wrapper
+		}
+		#endregion
+
+		public TrcnItem(Trcn parent)
+		{
+			this.parent = parent;
+		}
+
+		public TrcnItem(Trcn parent, System.IO.BinaryReader reader)
+		{
+			this.parent = parent;
+			this.Unserialize(reader);
+		}
+
+		public TrcnItem(Trcn parent, uint bcon, string label)
+		{
+			this.parent = parent;
+			this.bcon = bcon;
+			this.label = label;
+		}
+
+		public void Unserialize(System.IO.BinaryReader reader)
+		{
+			used = reader.ReadUInt32();
+			bcon = reader.ReadUInt32();
+			label = Helper.ToString(reader.ReadBytes(reader.ReadByte()));
+			def = reader.ReadUInt16();
+			min = reader.ReadUInt16();
+			max = reader.ReadUInt16();
+		}
+
+		public void Serialize(System.IO.BinaryWriter writer)
+		{
+			writer.Write(used);
+			writer.Write(bcon);
+			writer.Write((byte)label.Length);
+			writer.Write(Helper.ToBytes(label, (byte)label.Length));
+			writer.Write(def);
+			writer.Write(min);
+			writer.Write(max);
+		}
+
+
+		public override string ToString() { return this.label; }
 	}
 }

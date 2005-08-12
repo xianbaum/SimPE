@@ -380,7 +380,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		}
 
-		#endregion		
+		#endregion
 	}
 
 

@@ -40,21 +40,13 @@ namespace SimPe.PackedFiles.Wrapper
 	{
 		#region Attributes
 		/// <summary>
-		/// Indicates the data content of the wrapper (packed file) has changed
-		/// </summary>
-		public event EventHandler WrapperChanged;
-		/// <summary>
-		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
-		/// </summary>
-		private bool internalchg = false;
-		/// <summary>
 		/// Contains the Filename
 		/// </summary>
 		private byte[] filename = new byte[64];
 		/// <summary>
 		/// Header of the File
 		/// </summary>
-		private uint[] header = new uint[3];
+		private uint[] header = { 0xffffffff, 0x0000004e, 0x00000000 };
 		/// <summary>
 		/// Number of Ttab Items in file
 		/// </summary>
@@ -62,11 +54,20 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Items stored in the File
 		/// </summary>
-		private ArrayList items = null;
+		private ArrayList items = new ArrayList();
 		/// <summary>
 		/// Unknown Data following the TTAB
 		/// </summary>
 		private byte[] footer = new byte[0];
+
+		/// <summary>
+		/// Indicates the data content of the wrapper (packed file) has changed
+		/// </summary>
+		public event EventHandler WrapperChanged;
+		/// <summary>
+		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
+		/// </summary>
+		private bool internalchg = false;
 		/// <summary>
 		/// Contains an Opcode Provider
 		/// </summary>
@@ -174,11 +175,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public Ttab(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
 		{
-			this.header[0] = 0xffffffff;
-			this.header[1] = 0x0000004e;
-			this.header[2] = 0x00000000;
 			this.opcodes = opcodes;
-			this.items = new ArrayList();
 		}
 
 
@@ -617,6 +614,11 @@ namespace SimPe.PackedFiles.Wrapper
 			return name.OpcodeName(opcode, null);
 		}
 
+		public override string ToString()
+		{
+			return "0x"+StringIndex.ToString("X")+": "+Name;// + " ("+this.ActionName+")";
+		}
+
 		#endregion
 
 		public TtabItem(Ttab parent)
@@ -645,13 +647,6 @@ namespace SimPe.PackedFiles.Wrapper
 			this.parent = parent;
 			Unserialize(reader);
 		}
-
-
-		public override string ToString()
-		{
-			return "0x"+StringIndex.ToString("X")+": "+Name;// + " ("+this.ActionName+")";
-		}
-
 
 
 		public TtabItem Clone()
