@@ -56,6 +56,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnLngClear;
 		private System.Windows.Forms.RichTextBox rtbTitle;
 		private System.Windows.Forms.RichTextBox rtbDescription;
+		private System.Windows.Forms.Label lbLngDefault;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -74,6 +75,7 @@ namespace SimPe.PackedFiles.UserInterface
 			for (int i = 0; i < cs.Length; i++)
 				left = cs[i].Left = left - (cs[i].Width + 4);
 			btnImport.Visible = btnExport.Visible = false;
+			lbLngDefault.Text = ((SimPe.Data.MetaData.Languages)1).ToString() + " (Default)";
 
 			Control[] af = { tbFormat };
 			alHex16 = new ArrayList(af);
@@ -262,6 +264,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnExport = new System.Windows.Forms.Button();
 			this.btnStrDelete = new System.Windows.Forms.Button();
 			this.btnStrAdd = new System.Windows.Forms.Button();
+			this.lbLngDefault = new System.Windows.Forms.Label();
 			this.strPanel.SuspendLayout();
 			this.pnLists.SuspendLayout();
 			this.SuspendLayout();
@@ -275,6 +278,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMargin")));
 			this.strPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMinSize")));
 			this.strPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("strPanel.BackgroundImage")));
+			this.strPanel.Controls.Add(this.lbLngDefault);
 			this.strPanel.Controls.Add(this.rtbDescription);
 			this.strPanel.Controls.Add(this.rtbTitle);
 			this.strPanel.Controls.Add(this.btnLngNext);
@@ -839,6 +843,28 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrAdd.TextAlign")));
 			this.btnStrAdd.Visible = ((bool)(resources.GetObject("btnStrAdd.Visible")));
 			this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
+			// 
+			// lbLngDefault
+			// 
+			this.lbLngDefault.AccessibleDescription = resources.GetString("lbLngDefault.AccessibleDescription");
+			this.lbLngDefault.AccessibleName = resources.GetString("lbLngDefault.AccessibleName");
+			this.lbLngDefault.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbLngDefault.Anchor")));
+			this.lbLngDefault.AutoSize = ((bool)(resources.GetObject("lbLngDefault.AutoSize")));
+			this.lbLngDefault.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbLngDefault.Dock")));
+			this.lbLngDefault.Enabled = ((bool)(resources.GetObject("lbLngDefault.Enabled")));
+			this.lbLngDefault.Font = ((System.Drawing.Font)(resources.GetObject("lbLngDefault.Font")));
+			this.lbLngDefault.Image = ((System.Drawing.Image)(resources.GetObject("lbLngDefault.Image")));
+			this.lbLngDefault.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLngDefault.ImageAlign")));
+			this.lbLngDefault.ImageIndex = ((int)(resources.GetObject("lbLngDefault.ImageIndex")));
+			this.lbLngDefault.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbLngDefault.ImeMode")));
+			this.lbLngDefault.Location = ((System.Drawing.Point)(resources.GetObject("lbLngDefault.Location")));
+			this.lbLngDefault.Name = "lbLngDefault";
+			this.lbLngDefault.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbLngDefault.RightToLeft")));
+			this.lbLngDefault.Size = ((System.Drawing.Size)(resources.GetObject("lbLngDefault.Size")));
+			this.lbLngDefault.TabIndex = ((int)(resources.GetObject("lbLngDefault.TabIndex")));
+			this.lbLngDefault.Text = resources.GetString("lbLngDefault.Text");
+			this.lbLngDefault.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLngDefault.TextAlign")));
+			this.lbLngDefault.Visible = ((bool)(resources.GetObject("lbLngDefault.Visible")));
 			// 
 			// StrForm
 			// 
