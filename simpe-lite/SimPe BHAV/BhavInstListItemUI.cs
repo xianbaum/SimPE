@@ -125,7 +125,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		public void MakeSelected()
 		{
-			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.PowderBlue;
+			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;// .PowderBlue;
 		}
 
 		public void MakeUnselected()
@@ -284,12 +284,14 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void bhavInstListItemUI_Enter(object sender, System.EventArgs e)
 		{
-			MakeSelected();
+			//MakeSelected();
+			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.PowderBlue;
 			OnSelected(e);
 		}
 
 		private void bhavInstListItemUI_Leave(object sender, System.EventArgs e)
 		{
+			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;
 			OnUnselected(e);
 		}
 

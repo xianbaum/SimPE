@@ -151,8 +151,8 @@ namespace SimPe.PackedFiles.Wrapper
 			return new AbstractWrapperInfo(
 				"PJSE BHAV Wrapper",
 				"Peter L Jones",
-				"---",
-				1
+				"Advanced SimAntics Editor",
+				2
 				); 
 		}
 
@@ -508,6 +508,9 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public int Add(Instruction item)
 		{
+			if (this.Count >= ((parent.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
+				return -1;
+
 			int retVal = base.Add(item);
 			if (!internalchg)
 				parent.OnWrapperChanged(this, new EventArgs());
@@ -520,6 +523,8 @@ namespace SimPe.PackedFiles.Wrapper
 			bool savedstate = internalchg;
 			internalchg = true;
 			int newIndex = this.Add(item);
+			if (newIndex < 0)
+				throw new Exception("BhavWrapper.Add(item) returned -1 - too many lines?");
 			/*
 			 * At Inge's request, don't overwrite targets
 			item.Target1 = (ushort)newIndex;

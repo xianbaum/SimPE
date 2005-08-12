@@ -147,26 +147,53 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 
-		public void Add()
+		public void Add(BhavUIAddType type)
 		{
 			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
-
 			bool savedstate = internalchg;
 			internalchg = true;
-			wrapper.Instructions.Insert(csel + 1, (csel >= 0) ? wrapper.Instructions[csel].Clone() : new Instruction(wrapper));
+
+			Instruction i = (csel >= 0) ? wrapper.Instructions[csel].Clone() : new Instruction(wrapper);
+			int newLine = (type == BhavUIAddType.Default) ? wrapper.Instructions.Count : csel + 1;
+			int index = wrapper.Instructions.Add(i);
+
+			if (index >= 0)
+			{
+				if (index != newLine)
+					wrapper.Instructions.Move(index, newLine);
+				if (csel >= 0)
+					switch (type)
+					{
+						case BhavUIAddType.Default: break;
+						case BhavUIAddType.ViaTrue: ((Instruction)wrapper.Instructions[csel]).Target1 = (ushort)newLine; break;
+						case BhavUIAddType.ViaFalse: ((Instruction)wrapper.Instructions[csel]).Target2 = (ushort)newLine; break;
+					}
+			}
+			else
+				newLine = csel;
+
 			internalchg = savedstate;
 
 			myrepaint();
-			flowitems[csel + 1].Focus();
+			flowitems[newLine].Focus();
 		}
 
-		public void Delete()
+		public void Delete(BhavUIDeleteType type)
 		{
 			if (csel < 0) throw new Exception("No current instruction");
 			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
 
 			bool savedstate = internalchg;
 			internalchg = true;
+			if (type == BhavUIDeleteType.Pescado && csel < wrapper.Instructions.Count - 1)
+			{
+				foreach (Instruction i in wrapper.Instructions)
+				{
+					ushort t = (ushort)(csel + 1);
+					if (i.Target1 == csel) i.Target1 = t;
+					if (i.Target2 == csel) i.Target2 = t;
+				}
+			}
 			wrapper.Instructions.RemoveAt(csel);
 			internalchg = savedstate;
 
@@ -216,6 +243,64 @@ namespace SimPe.PackedFiles.UserInterface
 			int index = -1;
 			if (inst != null) index = wrapper.Instructions.IndexOf(inst);
 			if (index >= 0) flowitems[index].Focus();
+		}
+
+		public void Relink()
+		{
+			if (wrapper.Instructions.Count == 0) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+			this.Parent.Cursor = Cursors.WaitCursor;
+			for (ushort i = 0; i < wrapper.Instructions.Count - 1; i++)
+			{
+				wrapper.Instructions[i].Target1 = (ushort)(i+1);
+				wrapper.Instructions[i].Target2 = 0xFFFC;
+			}
+			wrapper.Instructions[wrapper.Instructions.Count - 1].Target1 = 0xFFFD;
+			wrapper.Instructions[wrapper.Instructions.Count - 1].Target2 = 0xFFFC;
+			this.Parent.Cursor = Cursors.Default;
+			internalchg = savedstate;
+			myrepaint();
+			if (csel >= 0)
+				flowitems[csel].Focus();
+		}
+
+		public void Append(uint opcode)
+		{
+			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
+				Data.MetaData.BHAV_FILE,
+				0, 
+				wrapper.FileDescriptor.Group,
+				opcode
+				);
+
+			if (pfd == null) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			this.Parent.Cursor = Cursors.WaitCursor;
+			Bhav b = new Bhav(wrapper.Opcodes);
+			b.Package = wrapper.Package;
+			b.FileDescriptor = wrapper.FileDescriptor;
+			b.ProcessData(pfd, b.Package);
+			ushort offset = (ushort)wrapper.Instructions.Count;
+			foreach (Instruction bi in b.Instructions)
+			{
+				int i = wrapper.Instructions.Add(bi);
+				if (i < 0) break;
+				if (wrapper.Instructions[i].Target1 < 0xFFFC)
+					wrapper.Instructions[i].Target1 += offset;
+				if (wrapper.Instructions[i].Target2 < 0xFFFC)
+					wrapper.Instructions[i].Target2 += offset;
+			}
+			this.Parent.Cursor = Cursors.Default;
+
+			internalchg = savedstate;
+			myrepaint();
+			if (csel >= 0)
+				flowitems[csel].Focus();
 		}
 
 
@@ -300,10 +385,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 			Pen tpen = new Pen(Color.FromArgb(0, 128, 0), 1);
 			Pen fpen = new Pen(Color.FromArgb(128, 0, 0), 1);
-			Pen tpeno = new Pen(Color.FromArgb(0, 220, 0), 3);
-			Pen fpeno = new Pen(Color.FromArgb(220, 0, 0), 3);
-			Pen tpeni = tpen;
-			Pen fpeni = fpen;
+			Pen tpeni = new Pen(Color.FromArgb(0, 220, 0), 3);
+			Pen fpeni = new Pen(Color.FromArgb(220, 0, 0), 3);
+			Pen tpeno = tpen;
+			Pen fpeno = fpen;
 			Pen pen;
 
 			Point[] points;
@@ -415,6 +500,7 @@ namespace SimPe.PackedFiles.UserInterface
 			gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
 			Pen pen = new Pen(Color.FromArgb(64, 64, 64), 1);
+			Pen penc = new Pen(pen.Color, 3);
 			for (int ct = 1; ct < flowitems.Length; ct++)
 			{
 				if (isTarget(ct)) continue;
@@ -424,7 +510,7 @@ namespace SimPe.PackedFiles.UserInterface
 				int yPos = (BhavInstListItemUI.rowHeight + 4) * ct + (BhavInstListItemUI.rowHeight / 4);
 
 				gr.DrawLine(
-					pen, 
+					(ct == csel) ? penc : pen, 
 					xPosLeft, yPos,
 					xPosRight, yPos
 					);
@@ -572,7 +658,7 @@ namespace SimPe.PackedFiles.UserInterface
 					if (csel < flowitems.Length - 1) flowitems[csel + 1].Focus();
 					break;
 				case System.Windows.Forms.Keys.Delete:
-					if (csel > -1 && flowitems.Length > 1) Delete();
+					if (csel > -1 && flowitems.Length > 1) Delete(BhavUIDeleteType.Default);
 					break;
 				case System.Windows.Forms.Keys.Home:
 					flowitems[0].Focus();
@@ -739,5 +825,20 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 	}
 
+	#endregion
+
+	#region Enums for readability
+	public enum BhavUIAddType : int
+	{
+		 Default = 0
+		,ViaTrue = 1
+		,ViaFalse = 2
+	}
+
+	public enum BhavUIDeleteType : int
+	{
+		 Default = 0
+		,Pescado = 1
+	}
 	#endregion
 }

@@ -81,7 +81,16 @@ namespace SimPe.PackedFiles.UserInterface
 		private uint lastSemiGroup = 0;
 		private uint lastGroup = 0;
 
-		public int Execute(Bhav bhav, Control form)
+		public enum Flags : ushort
+		{
+			All = 0xFFFF,		None = 0x0000,
+			Prims = 0x0001,		NoPrims = 0xFFFE,
+			Globals = 0x0002,	NoGlobals = 0xFFFD,
+			Locals = 0x0004,	NoLocals = 0xFFFB,
+			Semis = 0x0008,		NoSemis = 0xFFF7,
+		}
+
+		public int Execute(Bhav bhav, Control form, Flags flags)
 		{
 			if (bhav == null) return -1;
 			if (bhav.Package == null) return -1;
@@ -90,10 +99,27 @@ namespace SimPe.PackedFiles.UserInterface
 			form.Cursor = Cursors.WaitCursor;
 			this.Cursor = Cursors.WaitCursor;
 
-			Primitives(bhav);
-			Globals(bhav);
-			Locals(bhav);
-			SemiGlobals(bhav);
+			this.tcopcodes.TabPages.Clear();
+			if ((flags & Flags.Prims) != 0)
+			{
+				this.tcopcodes.TabPages.Add(this.tbprimitive);
+				Primitives(bhav);
+			}
+			if ((flags & Flags.Globals) != 0)
+			{
+				this.tcopcodes.TabPages.Add(this.tbglobal);
+				Globals(bhav);
+			}
+			if ((flags & Flags.Locals) != 0)
+			{
+				this.tcopcodes.TabPages.Add(this.tbprivate);
+				Locals(bhav);
+			}
+			if ((flags & Flags.Semis) != 0)
+			{
+				this.tcopcodes.TabPages.Add(this.tbsemi);
+				SemiGlobals(bhav);
+			}
 			
 			form.Cursor = Cursors.Default;
 			this.Cursor = Cursors.Default;
@@ -109,22 +135,21 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case System.Windows.Forms.DialogResult.OK:
 				case System.Windows.Forms.DialogResult.Yes:
-					switch (this.tcopcodes.SelectedIndex)
+					if (this.tcopcodes.SelectedTab == this.tbprimitive)
 					{
-						case 0:
-							if (lbprimitives.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprimitives.Items[lbprimitives.SelectedIndex]).Id;
-							break;
-						case 1:
-							if (lbglobal.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbglobal.Items[lbglobal.SelectedIndex]).Id;
-							break;
-						case 2:
-							if (lbsemi.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbsemi.Items[lbsemi.SelectedIndex]).Id;
-							break;
-						case 3:
-							if (lbprivate.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprivate.Items[lbprivate.SelectedIndex]).Id;
-							break;
-						default:
-							break;
+						if (lbprimitives.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprimitives.Items[lbprimitives.SelectedIndex]).Id;
+					}
+					else if (this.tcopcodes.SelectedTab == this.tbglobal)
+					{
+						if (lbglobal.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbglobal.Items[lbglobal.SelectedIndex]).Id;
+					}
+					else if (this.tcopcodes.SelectedTab == this.tbprivate)
+					{
+						if (lbprivate.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprivate.Items[lbprivate.SelectedIndex]).Id;
+					}
+					else if (this.tcopcodes.SelectedTab == this.tbsemi)
+					{
+						if (lbsemi.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbsemi.Items[lbsemi.SelectedIndex]).Id;
 					}
 					return opcode;
 				default:
@@ -424,6 +449,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.Close();
 		}
+
 
 	}
 
