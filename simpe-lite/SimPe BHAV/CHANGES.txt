@@ -1,8 +1,8 @@
 
-12 August 2005 10:02 - Label default language in Str (plus minor TtabWrapper reorgs)
+12 August 2005 10:13 - Label default language in Str (plus minor TtabWrapper reorgs)
   SimPe BHAV\
-    StrForm.cs 1.8
-    StrForm.resx 1.6
+    StrForm.cs 1.8, 1.9
+    StrForm.resx 1.6, 1.7
     StrWrapper.cs 1.9
     TtabWrapper.cs 1.12
 
