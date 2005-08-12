@@ -1,4 +1,12 @@
 
+12 August 2005 16:50 - Add big edit box to Str
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.10
+    StrBig.cs 1.1
+    StrBig.resx 1.1
+    StrForm.cs 1.11
+    StrForm.resx 1.9
+
 12 August 2005 10:43 - Label the input boxes in Str (oops!)
   SimPe BHAV\
     StrForm.cs 1.10
