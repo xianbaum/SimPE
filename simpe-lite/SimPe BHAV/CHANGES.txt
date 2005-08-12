@@ -1,4 +1,9 @@
 
+12 August 2005 10:43 - Label the input boxes in Str (oops!)
+  SimPe BHAV\
+    StrForm.cs 1.10
+    StrForm.resx 1.8
+
 12 August 2005 10:13 - Label default language in Str (plus minor TtabWrapper reorgs)
   SimPe BHAV\
     StrForm.cs 1.8, 1.9
