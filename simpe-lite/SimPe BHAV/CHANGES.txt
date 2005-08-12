@@ -1,4 +1,11 @@
 
+12 August 2005 10:02 - Label default language in Str (plus minor TtabWrapper reorgs)
+  SimPe BHAV\
+    StrForm.cs 1.8
+    StrForm.resx 1.6
+    StrWrapper.cs 1.9
+    TtabWrapper.cs 1.12
+
 7 August 2005 19:42 - Make "Clear Lang" display language name
   SimPe BHAV\
     StrForm.cs 1.7
