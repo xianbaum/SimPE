@@ -1,4 +1,13 @@
 
+13 August 2005 14:04 - Add Append function to StrForm and TtabForm (TtabWrapper rewritten a bit)
+  SimPe BHAV\
+    StrForm.cs 1.12
+    StrForm.resx 1.10
+    StrWrapper.cs 1.10
+    TtabForm.cs 1.15
+    TtabForm.resx 1.10
+    TtabWrapper.cs 1.13
+
 13 August 2005 14:00 - Remove unneeded resize handlers
   SimPe BHAV\
     TtabItemMotiveTableUI.cs 1.6
