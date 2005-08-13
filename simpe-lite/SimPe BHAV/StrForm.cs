@@ -186,6 +186,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 			populateLbx(this.lbxLngDefault, 1);
 			populateLbx(this.lbxLngCurrent, (byte)((this.cbLngSelect.SelectedIndex != -1) ? this.cbLngSelect.SelectedIndex + 2 : 0));
+
+			int minH = (count + 2) * this.lbxLngDefault.ItemHeight;
+			int h = this.pnLists.Height - this.lbxLngDefault.Top;
+			this.lbxLngCurrent.Height = this.lbxLngDefault.Height = (h < minH) ? minH : h;
 		}
 
 
@@ -1058,10 +1062,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnLngNext.Left = this.cbLngSelect.Right;
 			this.btnLngClear.Left = this.btnClearAll.Left = this.btnLngNext.Right + 32;
 
-			int minH = (this.lbxLngDefault.Items.Count * this.lbxLngDefault.ItemHeight) + 4 + 20;
-			int h = this.pnLists.Height - this.lbxLngDefault.Top;
-			this.lbxLngCurrent.Height = this.lbxLngDefault.Height = (h < minH) ? minH : h;
-
 			this.rtbDescription.Width = this.rtbTitle.Width = this.pnLists.Left + this.lbxLngDefault.Width - this.rtbTitle.Left;
 			this.btnBigDesc.Left = this.btnBigString.Left = this.rtbTitle.Right;
 
@@ -1292,8 +1292,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 			lid = 1;
 			index = this.lbxLngDefault.SelectedIndex;
-			//this.btnLngClear.Enabled = false;
 			displayStrItem();
+
 		}
 
 		private void lbxLngCurrent_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -1339,15 +1339,22 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 
 			internalchg = true;
-			count++;
-			wrapper.Add(1, "", "");
-			this.lbxLngDefault.Items.Add("0x" + Helper.HexString((ushort)(count-1)) + ": " + wrapper[1, count-1]);
-			if (this.cbLngSelect.SelectedIndex >= 0)
+			if (wrapper.Add(1, "", "") >= 0)
 			{
-				byte l = (byte)(this.cbLngSelect.SelectedIndex + 2);
-				wrapper.Add(l, "", "");
-				this.lbxLngCurrent.Items.Add("0x" + Helper.HexString((ushort)(count-1)) + ": " + wrapper[l, count-1]);
+				count++;
+				this.lbxLngDefault.Items.Add("0x" + Helper.HexString((ushort)(count-1)) + ": " + wrapper[1, count-1]);
+				if (this.cbLngSelect.SelectedIndex >= 0)
+				{
+					byte l = (byte)(this.cbLngSelect.SelectedIndex + 2);
+					wrapper.Add(l, "", "");
+					this.lbxLngCurrent.Items.Add("0x" + Helper.HexString((ushort)(count-1)) + ": " + wrapper[l, count-1]);
+				}
+
+				int minH = (count + 2) * this.lbxLngDefault.ItemHeight;
+				int h = this.pnLists.Height - this.lbxLngDefault.Top;
+				this.lbxLngCurrent.Height = this.lbxLngDefault.Height = (h < minH) ? minH : h;
 			}
+
 			internalchg = savedstate;
 
 			if (this.lbxLngCurrent.SelectedIndex >= 0)
