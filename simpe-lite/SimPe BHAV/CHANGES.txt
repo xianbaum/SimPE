@@ -1,4 +1,8 @@
 
+13 August 2005 14:07 - Fix Unserialize Instruction for 0x8005 format BHAV file
+  SimPe BHAV\
+    BhavWrapper.cs 1.25
+
 13 August 2005 14:04 - Add Append function to StrForm and TtabForm (TtabWrapper rewritten a bit)
   SimPe BHAV\
     StrForm.cs 1.12
