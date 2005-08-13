@@ -1,4 +1,23 @@
 
+13 August 2005 14:00 - Remove unneeded resize handlers
+  SimPe BHAV\
+    TtabItemMotiveTableUI.cs 1.6
+    TtabItemMotiveTableUI.resx 1.5
+
+13 August 2005 13:56 - Add Local file chooser (for Append)
+  SimPe BHAV\
+    Chooser.cs 1.1
+    Chooser.resx 1.1
+    pjse coder plugin.csproj 1.11
+
+13 August 2005 13:55 - Minor tweaks to popup forms
+  SimPe BHAV\
+    BhavOpCodeWiz.cs 1.4
+    BhavOpCodeWiz.resx 1.3
+    BhavOperandWiz.cs 1.4
+    BhavOperandWiz.resx 1.3
+    StrBig.cs 1.2
+
 12 August 2005 21:15 - BHAV Editor version 2
   * New special actions panel:
   * - Append BHAVs - allows an existing local BHAV to be appended to this one
