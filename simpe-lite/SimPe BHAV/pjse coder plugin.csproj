@@ -323,6 +323,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Chooser.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Chooser.resx"
+                    DependentUpon = "Chooser.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "GlobForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
