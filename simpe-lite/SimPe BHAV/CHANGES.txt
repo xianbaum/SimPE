@@ -1,4 +1,12 @@
 
+13 August 2005 21:23 - Better Str string list resizing
+  SimPe BHAV\
+
+13 August 2005 21:21 - Dropdown list of known BHAV File format codes
+  SimPe BHAV\
+    BhavForm.cs 1.32
+    BhavForm.resx 1.14
+
 13 August 2005 14:07 - Fix Unserialize Instruction for 0x8005 format BHAV file
   SimPe BHAV\
     BhavWrapper.cs 1.25
