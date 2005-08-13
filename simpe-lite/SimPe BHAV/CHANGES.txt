@@ -1,4 +1,8 @@
 
+13 August 2005 14:14 - Fix Unserialize Instruction for 0x8005 format BHAV file
+  SimPe BHAV\
+    BhavWrapper.cs 1.23.4.1
+
 12 August 2005 10:43 - Label the input boxes in Str (oops!)
   SimPe BHAV\
     StrForm.cs 1.10
