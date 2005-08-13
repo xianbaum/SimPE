@@ -813,7 +813,7 @@ namespace SimPe.PackedFiles.Wrapper
 				operands = new wrappedByteArray(this, reader);
 				reserved_01 = new wrappedByteArray(this, new byte[8]);
 			}
-			else if (parent.Header.Format < 0x8006)
+			else if (parent.Header.Format < 0x8005)
 			{
 				operands = new wrappedByteArray(this, reader);
 				reserved_01 = new wrappedByteArray(this, reader);
