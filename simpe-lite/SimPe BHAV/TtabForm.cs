@@ -40,8 +40,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Panel panel5;
 		private System.Windows.Forms.Label lbttabfile;
 		private System.Windows.Forms.Label label25;
-		private System.Windows.Forms.MenuItem menuItem1;
-		private System.Windows.Forms.MenuItem menuItem2;
 		private System.Windows.Forms.Panel ttabPanel;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tpSettings;
@@ -105,6 +103,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbFormat;
 		private System.Windows.Forms.Label label41;
 		private System.Windows.Forms.Button btnCommit;
+		private System.Windows.Forms.Button btnAppend;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -253,6 +252,40 @@ namespace SimPe.PackedFiles.UserInterface
 			return true;
 		}
 
+
+		public void Append(uint instance)
+		{
+			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
+				wrapper.FileDescriptor.Type,
+				0, 
+				wrapper.FileDescriptor.Group,
+				instance
+				);
+
+			if (pfd == null) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			ttabPanel.Parent.Cursor = Cursors.WaitCursor;
+			Ttab b = new Ttab(wrapper.Opcodes);
+			b.Package = wrapper.Package;
+			b.FileDescriptor = wrapper.FileDescriptor;
+			b.ProcessData(pfd, b.Package);
+			ushort offset = (ushort)wrapper.Count;
+			for (int bi = 0; bi < b.Count; bi++)
+			{
+				int i = wrapper.Add(b[bi]);
+				if (i < 0) break;
+				wrapper[i].StringIndex += offset;
+				lbttab.Items.Add(wrapper[i]);
+			}
+			ttabPanel.Parent.Cursor = Cursors.Default;
+
+			internalchg = savedstate;
+		}
+
+
 		#endregion
 
 		#region IPackedFileUI Member
@@ -282,7 +315,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			internalchg = true;
 			lbttab.Items.Clear();
-			for(int i = 0; i < wrapper.ItemCount; i++)
+			for(int i = 0; i < wrapper.Count; i++)
 				lbttab.Items.Add(wrapper[i]);
 			internalchg = false;
 
@@ -372,8 +405,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.panel5 = new System.Windows.Forms.Panel();
 			this.lbttabfile = new System.Windows.Forms.Label();
 			this.label25 = new System.Windows.Forms.Label();
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
+			this.btnAppend = new System.Windows.Forms.Button();
 			this.ttabPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tpSettings.SuspendLayout();
@@ -392,6 +424,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("ttabPanel.AutoScrollMinSize")));
 			this.ttabPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.ttabPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ttabPanel.BackgroundImage")));
+			this.ttabPanel.Controls.Add(this.btnAppend);
 			this.ttabPanel.Controls.Add(this.lbFilename);
 			this.ttabPanel.Controls.Add(this.tbFilename);
 			this.ttabPanel.Controls.Add(this.tbFormat);
@@ -2075,23 +2108,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label25.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.TextAlign")));
 			this.label25.Visible = ((bool)(resources.GetObject("label25.Visible")));
 			// 
-			// menuItem1
+			// btnAppend
 			// 
-			this.menuItem1.Enabled = ((bool)(resources.GetObject("menuItem1.Enabled")));
-			this.menuItem1.Index = -1;
-			this.menuItem1.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("menuItem1.Shortcut")));
-			this.menuItem1.ShowShortcut = ((bool)(resources.GetObject("menuItem1.ShowShortcut")));
-			this.menuItem1.Text = resources.GetString("menuItem1.Text");
-			this.menuItem1.Visible = ((bool)(resources.GetObject("menuItem1.Visible")));
-			// 
-			// menuItem2
-			// 
-			this.menuItem2.Enabled = ((bool)(resources.GetObject("menuItem2.Enabled")));
-			this.menuItem2.Index = -1;
-			this.menuItem2.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("menuItem2.Shortcut")));
-			this.menuItem2.ShowShortcut = ((bool)(resources.GetObject("menuItem2.ShowShortcut")));
-			this.menuItem2.Text = resources.GetString("menuItem2.Text");
-			this.menuItem2.Visible = ((bool)(resources.GetObject("menuItem2.Visible")));
+			this.btnAppend.AccessibleDescription = resources.GetString("btnAppend.AccessibleDescription");
+			this.btnAppend.AccessibleName = resources.GetString("btnAppend.AccessibleName");
+			this.btnAppend.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAppend.Anchor")));
+			this.btnAppend.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAppend.BackgroundImage")));
+			this.btnAppend.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAppend.Dock")));
+			this.btnAppend.Enabled = ((bool)(resources.GetObject("btnAppend.Enabled")));
+			this.btnAppend.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAppend.FlatStyle")));
+			this.btnAppend.Font = ((System.Drawing.Font)(resources.GetObject("btnAppend.Font")));
+			this.btnAppend.Image = ((System.Drawing.Image)(resources.GetObject("btnAppend.Image")));
+			this.btnAppend.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.ImageAlign")));
+			this.btnAppend.ImageIndex = ((int)(resources.GetObject("btnAppend.ImageIndex")));
+			this.btnAppend.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAppend.ImeMode")));
+			this.btnAppend.Location = ((System.Drawing.Point)(resources.GetObject("btnAppend.Location")));
+			this.btnAppend.Name = "btnAppend";
+			this.btnAppend.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAppend.RightToLeft")));
+			this.btnAppend.Size = ((System.Drawing.Size)(resources.GetObject("btnAppend.Size")));
+			this.btnAppend.TabIndex = ((int)(resources.GetObject("btnAppend.TabIndex")));
+			this.btnAppend.Text = resources.GetString("btnAppend.Text");
+			this.btnAppend.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.TextAlign")));
+			this.btnAppend.Visible = ((bool)(resources.GetObject("btnAppend.Visible")));
+			this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
 			// 
 			// TtabForm
 			// 
@@ -2208,34 +2247,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnAdd_Click(object sender, System.EventArgs e)
 		{
-			int i = wrapper.AddItem();
+			int i = wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
+			if (i < 0) return;
 
-			if (lbttab.SelectedIndex != -1)
-			{
-				TtabItem ci = wrapper[lbttab.SelectedIndex];
-				TtabItem ni = wrapper[i];
-				ni.Action = ci.Action;
-				ni.AttenuationCode = ci.AttenuationCode;
-				ni.AttenuationValue = ci.AttenuationValue;
-				ni.Autonomy = ci.Autonomy;
-				ni.Flags.Value = ci.Flags.Value;
-				ni.Flags2 = ci.Flags2;
-				ni.Guardian = ci.Guardian;
-				ni.JoinIndex = ci.JoinIndex;
-				ni.Res5 = ci.Res5;
-				ni.Res6 = ci.Res6;
-				ni.Res7 = ci.Res7;
-				ni.Res8 = ci.Res8;
-				ni.Res9 = ci.Res9;
-				ni.StringIndex = ci.StringIndex;
-				for (int mg = 0; mg < ci.nrGroups; mg++)
-					for (int m = 0; m < ci.nrMotives[mg]; m++)
-					{
-						ni[mg, m, 0] = ci[mg, m, 0];
-						ni[mg, m, 1] = ci[mg, m, 1];
-						ni[mg, m, 2] = ci[mg, m, 2];
-					}
-			}
 			lbttab.Items.Add(wrapper[i]);
 			lbttab.SelectedIndex = i;
 		}
@@ -2253,6 +2267,11 @@ namespace SimPe.PackedFiles.UserInterface
 				i = lbttab.Items.Count - 1;
 			lbttab.SelectedIndex = -1;
 			lbttab.SelectedIndex = i;
+		}
+
+		private void btnAppend_Click(object sender, System.EventArgs e)
+		{
+			this.Append((new pjse.Chooser()).Instance(wrapper));
 		}
 
 

@@ -39,7 +39,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbFilename;
 		private System.Windows.Forms.Label lbFormat;
 		private System.Windows.Forms.TextBox tbFormat;
-		private System.Windows.Forms.Button btnImport;
 		private System.Windows.Forms.Button btnExport;
 		private System.Windows.Forms.Label lbStringNum;
 		private System.Windows.Forms.Panel pnLists;
@@ -61,6 +60,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button btnBigString;
 		private System.Windows.Forms.Button btnBigDesc;
+		private System.Windows.Forms.Button btnAppend;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -74,11 +74,11 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-			Control[] cs = { btnCommit, btnImport, btnExport };
+			Control[] cs = { btnCommit, btnAppend, btnExport };
 			int left = this.strPanel.Width;
 			for (int i = 0; i < cs.Length; i++)
 				left = cs[i].Left = left - (cs[i].Width + 4);
-			btnImport.Visible = btnExport.Visible = false;
+			btnExport.Visible = false;
 
 			Control[] af = { tbFormat };
 			alHex16 = new ArrayList(af);
@@ -188,6 +188,49 @@ namespace SimPe.PackedFiles.UserInterface
 			populateLbx(this.lbxLngCurrent, (byte)((this.cbLngSelect.SelectedIndex != -1) ? this.cbLngSelect.SelectedIndex + 2 : 0));
 		}
 
+
+		public void Append(uint instance)
+		{
+			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
+				wrapper.FileDescriptor.Type,
+				0, 
+				wrapper.FileDescriptor.Group,
+				instance
+				);
+
+			if (pfd == null) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			strPanel.Parent.Cursor = Cursors.WaitCursor;
+			Str b = new Str();
+			b.Package = wrapper.Package;
+			b.FileDescriptor = wrapper.FileDescriptor;
+			b.ProcessData(pfd, b.Package);
+			for (byte lid = 1; lid < 44; lid++)
+				while (wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
+			for (int bi = 0; bi < b.Count && wrapper.Add(b[bi]) >= 0; bi++);
+
+			int l = this.cbLngSelect.SelectedIndex;
+			bool defsel = this.lbxLngDefault.SelectedIndex != -1;
+			updateLists();
+			strPanel.Parent.Cursor = Cursors.Default;
+
+			internalchg = savedstate;
+
+			displayStrItem();
+			this.btnLngClear.Enabled = false;
+			this.btnLngClear.Text = "Clear Lang";
+
+			if (index < 0) index = 0;
+			if (index >= count) index = count - 1;
+			this.cbLngSelect.SelectedIndex = l;
+			if (defsel) this.lbxLngDefault.SelectedIndex = index;
+			else this.lbxLngCurrent.SelectedIndex = index;
+		}
+
+
 		#endregion
 
 		#region IPackedFileUI Member
@@ -249,6 +292,8 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
 			this.strPanel = new System.Windows.Forms.Panel();
+			this.btnBigDesc = new System.Windows.Forms.Button();
+			this.btnBigString = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.lbLngDefault = new System.Windows.Forms.Label();
@@ -270,12 +315,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.tbFormat = new System.Windows.Forms.TextBox();
-			this.btnImport = new System.Windows.Forms.Button();
+			this.btnAppend = new System.Windows.Forms.Button();
 			this.btnExport = new System.Windows.Forms.Button();
 			this.btnStrDelete = new System.Windows.Forms.Button();
 			this.btnStrAdd = new System.Windows.Forms.Button();
-			this.btnBigString = new System.Windows.Forms.Button();
-			this.btnBigDesc = new System.Windows.Forms.Button();
 			this.strPanel.SuspendLayout();
 			this.pnLists.SuspendLayout();
 			this.SuspendLayout();
@@ -310,7 +353,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Controls.Add(this.btnCommit);
 			this.strPanel.Controls.Add(this.lbFormat);
 			this.strPanel.Controls.Add(this.tbFormat);
-			this.strPanel.Controls.Add(this.btnImport);
+			this.strPanel.Controls.Add(this.btnAppend);
 			this.strPanel.Controls.Add(this.btnExport);
 			this.strPanel.Controls.Add(this.btnStrDelete);
 			this.strPanel.Controls.Add(this.btnStrAdd);
@@ -325,6 +368,54 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.TabIndex = ((int)(resources.GetObject("strPanel.TabIndex")));
 			this.strPanel.Text = resources.GetString("strPanel.Text");
 			this.strPanel.Visible = ((bool)(resources.GetObject("strPanel.Visible")));
+			// 
+			// btnBigDesc
+			// 
+			this.btnBigDesc.AccessibleDescription = resources.GetString("btnBigDesc.AccessibleDescription");
+			this.btnBigDesc.AccessibleName = resources.GetString("btnBigDesc.AccessibleName");
+			this.btnBigDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnBigDesc.Anchor")));
+			this.btnBigDesc.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBigDesc.BackgroundImage")));
+			this.btnBigDesc.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnBigDesc.Dock")));
+			this.btnBigDesc.Enabled = ((bool)(resources.GetObject("btnBigDesc.Enabled")));
+			this.btnBigDesc.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnBigDesc.FlatStyle")));
+			this.btnBigDesc.Font = ((System.Drawing.Font)(resources.GetObject("btnBigDesc.Font")));
+			this.btnBigDesc.Image = ((System.Drawing.Image)(resources.GetObject("btnBigDesc.Image")));
+			this.btnBigDesc.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigDesc.ImageAlign")));
+			this.btnBigDesc.ImageIndex = ((int)(resources.GetObject("btnBigDesc.ImageIndex")));
+			this.btnBigDesc.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnBigDesc.ImeMode")));
+			this.btnBigDesc.Location = ((System.Drawing.Point)(resources.GetObject("btnBigDesc.Location")));
+			this.btnBigDesc.Name = "btnBigDesc";
+			this.btnBigDesc.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnBigDesc.RightToLeft")));
+			this.btnBigDesc.Size = ((System.Drawing.Size)(resources.GetObject("btnBigDesc.Size")));
+			this.btnBigDesc.TabIndex = ((int)(resources.GetObject("btnBigDesc.TabIndex")));
+			this.btnBigDesc.Text = resources.GetString("btnBigDesc.Text");
+			this.btnBigDesc.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigDesc.TextAlign")));
+			this.btnBigDesc.Visible = ((bool)(resources.GetObject("btnBigDesc.Visible")));
+			this.btnBigDesc.Click += new System.EventHandler(this.btnBigString_Click);
+			// 
+			// btnBigString
+			// 
+			this.btnBigString.AccessibleDescription = resources.GetString("btnBigString.AccessibleDescription");
+			this.btnBigString.AccessibleName = resources.GetString("btnBigString.AccessibleName");
+			this.btnBigString.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnBigString.Anchor")));
+			this.btnBigString.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBigString.BackgroundImage")));
+			this.btnBigString.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnBigString.Dock")));
+			this.btnBigString.Enabled = ((bool)(resources.GetObject("btnBigString.Enabled")));
+			this.btnBigString.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnBigString.FlatStyle")));
+			this.btnBigString.Font = ((System.Drawing.Font)(resources.GetObject("btnBigString.Font")));
+			this.btnBigString.Image = ((System.Drawing.Image)(resources.GetObject("btnBigString.Image")));
+			this.btnBigString.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigString.ImageAlign")));
+			this.btnBigString.ImageIndex = ((int)(resources.GetObject("btnBigString.ImageIndex")));
+			this.btnBigString.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnBigString.ImeMode")));
+			this.btnBigString.Location = ((System.Drawing.Point)(resources.GetObject("btnBigString.Location")));
+			this.btnBigString.Name = "btnBigString";
+			this.btnBigString.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnBigString.RightToLeft")));
+			this.btnBigString.Size = ((System.Drawing.Size)(resources.GetObject("btnBigString.Size")));
+			this.btnBigString.TabIndex = ((int)(resources.GetObject("btnBigString.TabIndex")));
+			this.btnBigString.Text = resources.GetString("btnBigString.Text");
+			this.btnBigString.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigString.TextAlign")));
+			this.btnBigString.Visible = ((bool)(resources.GetObject("btnBigString.Visible")));
+			this.btnBigString.Click += new System.EventHandler(this.btnBigString_Click);
 			// 
 			// label2
 			// 
@@ -831,28 +922,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
 			this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
-			// btnImport
+			// btnAppend
 			// 
-			this.btnImport.AccessibleDescription = resources.GetString("btnImport.AccessibleDescription");
-			this.btnImport.AccessibleName = resources.GetString("btnImport.AccessibleName");
-			this.btnImport.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnImport.Anchor")));
-			this.btnImport.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnImport.BackgroundImage")));
-			this.btnImport.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnImport.Dock")));
-			this.btnImport.Enabled = ((bool)(resources.GetObject("btnImport.Enabled")));
-			this.btnImport.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnImport.FlatStyle")));
-			this.btnImport.Font = ((System.Drawing.Font)(resources.GetObject("btnImport.Font")));
-			this.btnImport.Image = ((System.Drawing.Image)(resources.GetObject("btnImport.Image")));
-			this.btnImport.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnImport.ImageAlign")));
-			this.btnImport.ImageIndex = ((int)(resources.GetObject("btnImport.ImageIndex")));
-			this.btnImport.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnImport.ImeMode")));
-			this.btnImport.Location = ((System.Drawing.Point)(resources.GetObject("btnImport.Location")));
-			this.btnImport.Name = "btnImport";
-			this.btnImport.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnImport.RightToLeft")));
-			this.btnImport.Size = ((System.Drawing.Size)(resources.GetObject("btnImport.Size")));
-			this.btnImport.TabIndex = ((int)(resources.GetObject("btnImport.TabIndex")));
-			this.btnImport.Text = resources.GetString("btnImport.Text");
-			this.btnImport.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnImport.TextAlign")));
-			this.btnImport.Visible = ((bool)(resources.GetObject("btnImport.Visible")));
+			this.btnAppend.AccessibleDescription = resources.GetString("btnAppend.AccessibleDescription");
+			this.btnAppend.AccessibleName = resources.GetString("btnAppend.AccessibleName");
+			this.btnAppend.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAppend.Anchor")));
+			this.btnAppend.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAppend.BackgroundImage")));
+			this.btnAppend.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAppend.Dock")));
+			this.btnAppend.Enabled = ((bool)(resources.GetObject("btnAppend.Enabled")));
+			this.btnAppend.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAppend.FlatStyle")));
+			this.btnAppend.Font = ((System.Drawing.Font)(resources.GetObject("btnAppend.Font")));
+			this.btnAppend.Image = ((System.Drawing.Image)(resources.GetObject("btnAppend.Image")));
+			this.btnAppend.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.ImageAlign")));
+			this.btnAppend.ImageIndex = ((int)(resources.GetObject("btnAppend.ImageIndex")));
+			this.btnAppend.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAppend.ImeMode")));
+			this.btnAppend.Location = ((System.Drawing.Point)(resources.GetObject("btnAppend.Location")));
+			this.btnAppend.Name = "btnAppend";
+			this.btnAppend.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAppend.RightToLeft")));
+			this.btnAppend.Size = ((System.Drawing.Size)(resources.GetObject("btnAppend.Size")));
+			this.btnAppend.TabIndex = ((int)(resources.GetObject("btnAppend.TabIndex")));
+			this.btnAppend.Text = resources.GetString("btnAppend.Text");
+			this.btnAppend.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.TextAlign")));
+			this.btnAppend.Visible = ((bool)(resources.GetObject("btnAppend.Visible")));
+			this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
 			// 
 			// btnExport
 			// 
@@ -924,54 +1016,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrAdd.TextAlign")));
 			this.btnStrAdd.Visible = ((bool)(resources.GetObject("btnStrAdd.Visible")));
 			this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
-			// 
-			// btnBigString
-			// 
-			this.btnBigString.AccessibleDescription = resources.GetString("btnBigString.AccessibleDescription");
-			this.btnBigString.AccessibleName = resources.GetString("btnBigString.AccessibleName");
-			this.btnBigString.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnBigString.Anchor")));
-			this.btnBigString.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBigString.BackgroundImage")));
-			this.btnBigString.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnBigString.Dock")));
-			this.btnBigString.Enabled = ((bool)(resources.GetObject("btnBigString.Enabled")));
-			this.btnBigString.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnBigString.FlatStyle")));
-			this.btnBigString.Font = ((System.Drawing.Font)(resources.GetObject("btnBigString.Font")));
-			this.btnBigString.Image = ((System.Drawing.Image)(resources.GetObject("btnBigString.Image")));
-			this.btnBigString.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigString.ImageAlign")));
-			this.btnBigString.ImageIndex = ((int)(resources.GetObject("btnBigString.ImageIndex")));
-			this.btnBigString.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnBigString.ImeMode")));
-			this.btnBigString.Location = ((System.Drawing.Point)(resources.GetObject("btnBigString.Location")));
-			this.btnBigString.Name = "btnBigString";
-			this.btnBigString.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnBigString.RightToLeft")));
-			this.btnBigString.Size = ((System.Drawing.Size)(resources.GetObject("btnBigString.Size")));
-			this.btnBigString.TabIndex = ((int)(resources.GetObject("btnBigString.TabIndex")));
-			this.btnBigString.Text = resources.GetString("btnBigString.Text");
-			this.btnBigString.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigString.TextAlign")));
-			this.btnBigString.Visible = ((bool)(resources.GetObject("btnBigString.Visible")));
-			this.btnBigString.Click += new System.EventHandler(this.btnBigString_Click);
-			// 
-			// btnBigDesc
-			// 
-			this.btnBigDesc.AccessibleDescription = resources.GetString("btnBigDesc.AccessibleDescription");
-			this.btnBigDesc.AccessibleName = resources.GetString("btnBigDesc.AccessibleName");
-			this.btnBigDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnBigDesc.Anchor")));
-			this.btnBigDesc.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBigDesc.BackgroundImage")));
-			this.btnBigDesc.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnBigDesc.Dock")));
-			this.btnBigDesc.Enabled = ((bool)(resources.GetObject("btnBigDesc.Enabled")));
-			this.btnBigDesc.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnBigDesc.FlatStyle")));
-			this.btnBigDesc.Font = ((System.Drawing.Font)(resources.GetObject("btnBigDesc.Font")));
-			this.btnBigDesc.Image = ((System.Drawing.Image)(resources.GetObject("btnBigDesc.Image")));
-			this.btnBigDesc.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigDesc.ImageAlign")));
-			this.btnBigDesc.ImageIndex = ((int)(resources.GetObject("btnBigDesc.ImageIndex")));
-			this.btnBigDesc.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnBigDesc.ImeMode")));
-			this.btnBigDesc.Location = ((System.Drawing.Point)(resources.GetObject("btnBigDesc.Location")));
-			this.btnBigDesc.Name = "btnBigDesc";
-			this.btnBigDesc.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnBigDesc.RightToLeft")));
-			this.btnBigDesc.Size = ((System.Drawing.Size)(resources.GetObject("btnBigDesc.Size")));
-			this.btnBigDesc.TabIndex = ((int)(resources.GetObject("btnBigDesc.TabIndex")));
-			this.btnBigDesc.Text = resources.GetString("btnBigDesc.Text");
-			this.btnBigDesc.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigDesc.TextAlign")));
-			this.btnBigDesc.Visible = ((bool)(resources.GetObject("btnBigDesc.Visible")));
-			this.btnBigDesc.Click += new System.EventHandler(this.btnBigString_Click);
 			// 
 			// StrForm
 			// 
@@ -1180,7 +1224,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (this.cbLngSelect.SelectedIndex >= 0)
 			{
 				lid = (byte)(this.cbLngSelect.SelectedIndex + 2);
-				while (count > 0 && wrapper[lid, count-1] == null) wrapper.Add(lid, "", "");
+				while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
 				StrItem[] s = wrapper[lid];
 				for (ushort i = 0; i < count; i++)
 					this.lbxLngCurrent.Items.Add("0x" + Helper.HexString(i) + ": " + s[i]);
@@ -1366,6 +1410,11 @@ namespace SimPe.PackedFiles.UserInterface
 			RichTextBox[] rtb = { rtbTitle, rtbDescription };
 			string result = (new pjse.StrBig()).doBig(rtb[index].Text);
 			if (result != null) rtb[index].Text = result;
+		}
+
+		private void btnAppend_Click(object sender, System.EventArgs e)
+		{
+			this.Append((new pjse.Chooser()).Instance(wrapper));
 		}
 
 	}

@@ -170,6 +170,7 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 		public int Add(StrItem item)
 		{
+			if (this.limit > 0 && items.Count >= this.limit) return -1;
 			item.Parent = this;
 			int result = items.Add(item);
 			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))
