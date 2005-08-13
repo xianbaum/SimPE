@@ -44,11 +44,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbFlags;
 		private System.Windows.Forms.Label lbReserved;
 		private System.Windows.Forms.TextBox tbFilename;
-		private System.Windows.Forms.TextBox tbFormat;
 		private System.Windows.Forms.TextBox tbType;
 		private System.Windows.Forms.TextBox tbArgC;
 		private System.Windows.Forms.TextBox tbLocalC;
-		private System.Windows.Forms.TextBox tbFlags;
 		private System.Windows.Forms.TextBox tbReserved;
 		private System.Windows.Forms.ComboBox tba1;
 		private System.Windows.Forms.ComboBox tba2;
@@ -102,6 +100,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnLinkInge;
 		private System.Windows.Forms.Button btnDelPescado;
 		private System.Windows.Forms.Button btnAppend;
+		private System.Windows.Forms.TextBox tbFlags;
+		private System.Windows.Forms.ComboBox cbFormat;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -117,7 +117,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			Control[] cs = {
 				tbLocalC, lbLocalC, tbArgC, lbArgC, tbReserved, lbReserved,
-				tbFlags, lbFlags, tbType, lbType, tbFormat, lbFormat };
+				tbFlags, lbFlags, tbType, lbType, cbFormat, lbFormat };
 			int left = this.bhavPanel.Width;
 			for (int i = 0; i < cs.Length; i++)
 				left = cs[i].Left = left - (cs[i].Width + 4);
@@ -137,14 +137,14 @@ namespace SimPe.PackedFiles.UserInterface
 							};
 			alHex8 = new ArrayList(iob);
 
-			TextBox[] w = { tbFormat ,tbFlags ,tbReserved ,tbInst_OpCode };
+			TextBox[] w = { tbFlags ,tbReserved ,tbInst_OpCode ,};
 			alHex16 = new ArrayList(w);
 
-			TextBox[] db = { tbArgC, tbLocalC };
+			TextBox[] db = { tbArgC ,tbLocalC ,};
 			alDec8 = new ArrayList(db);
 
-			ComboBox[] cb = { tba1, tba2 };
-			alTarget = new ArrayList(cb);
+			ComboBox[] cb = { tba1 ,tba2 ,cbFormat ,};
+			alHex16cb = new ArrayList(cb);
 
 		}
 
@@ -174,14 +174,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alHex8;
 		private ArrayList alHex16;
 		private ArrayList alDec8;
-		private ArrayList alTarget;
+		private ArrayList alHex16cb;
 
 		private void SetReadOnly(bool state) 
 		{
 			if (((string)this.Tag).Equals("Popup"))
 			{
 				// make it very clear it's read only
-				tbFilename.Enabled = tbFormat.Enabled = tbType.Enabled = tbArgC.Enabled = 
+				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled = tbArgC.Enabled = 
 					tbLocalC.Enabled = tbFlags.Enabled = tbReserved.Enabled =
 					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
@@ -345,10 +345,10 @@ namespace SimPe.PackedFiles.UserInterface
 			return ops;
 		}
 
-		private bool Target_IsValid(object sender)
+		private bool cbHex16_IsValid(object sender)
 		{
-			if (alTarget.IndexOf(sender) < 0)
-				throw new Exception("Target_IsValid not applicable to control " + sender.ToString());
+			if (alHex16cb.IndexOf(sender) < 0)
+				throw new Exception("cbHex16_IsValid not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return true;
 
 			try { Convert.ToUInt16(((ComboBox)sender).Text, 16); }
@@ -440,7 +440,7 @@ namespace SimPe.PackedFiles.UserInterface
 				tbFilename.Text = wrapper.FileName;
 				tbArgC.Text = wrapper.Header.ArgumentCount.ToString();
 				tbFlags.Text = "0x"+Helper.HexString(wrapper.Header.Flags);
-				tbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
+				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
 				tbLocalC.Text = wrapper.Header.LocalVarCount.ToString();
 				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
 				tbReserved.Text = "0x"+Helper.HexString(wrapper.Header.Zero);
@@ -509,10 +509,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.tbReserved = new System.Windows.Forms.TextBox();
 			this.tbLocalC = new System.Windows.Forms.TextBox();
-			this.tbFlags = new System.Windows.Forms.TextBox();
 			this.tbArgC = new System.Windows.Forms.TextBox();
 			this.tbType = new System.Windows.Forms.TextBox();
-			this.tbFormat = new System.Windows.Forms.TextBox();
 			this.lbReserved = new System.Windows.Forms.Label();
 			this.lbFlags = new System.Windows.Forms.Label();
 			this.lbType = new System.Windows.Forms.Label();
@@ -521,6 +519,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.bhavPanel = new System.Windows.Forms.Panel();
+			this.cbFormat = new System.Windows.Forms.ComboBox();
 			this.gbSpecial = new System.Windows.Forms.GroupBox();
 			this.btnAppend = new System.Windows.Forms.Button();
 			this.btnInsTrue = new System.Windows.Forms.Button();
@@ -536,6 +535,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLines = new System.Windows.Forms.TextBox();
 			this.btnSort = new System.Windows.Forms.Button();
 			this.btnCommit = new System.Windows.Forms.Button();
+			this.tbFlags = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
@@ -745,15 +745,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba2.TabIndex = ((int)(resources.GetObject("tba2.TabIndex")));
 			this.tba2.Text = resources.GetString("tba2.Text");
 			this.tba2.Visible = ((bool)(resources.GetObject("tba2.Visible")));
-			this.tba2.Validating += new System.ComponentModel.CancelEventHandler(this.Target_Validating);
+			this.tba2.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
 			this.tba2.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-			this.tba2.Validated += new System.EventHandler(this.Target_Validated);
+			this.tba2.Validated += new System.EventHandler(this.cbHex16_Validated);
 			this.tba2.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-			this.tba2.TextChanged += new System.EventHandler(this.Target_TextChanged);
-			this.tba2.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
+			this.tba2.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+			this.tba2.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
 			this.tba2.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba2.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-			this.tba2.Enter += new System.EventHandler(this.Target_Enter);
+			this.tba2.Enter += new System.EventHandler(this.cbHex16_Enter);
 			// 
 			// tba1
 			// 
@@ -780,15 +780,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba1.TabIndex = ((int)(resources.GetObject("tba1.TabIndex")));
 			this.tba1.Text = resources.GetString("tba1.Text");
 			this.tba1.Visible = ((bool)(resources.GetObject("tba1.Visible")));
-			this.tba1.Validating += new System.ComponentModel.CancelEventHandler(this.Target_Validating);
+			this.tba1.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
 			this.tba1.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-			this.tba1.Validated += new System.EventHandler(this.Target_Validated);
+			this.tba1.Validated += new System.EventHandler(this.cbHex16_Validated);
 			this.tba1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-			this.tba1.TextChanged += new System.EventHandler(this.Target_TextChanged);
-			this.tba1.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
+			this.tba1.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+			this.tba1.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
 			this.tba1.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-			this.tba1.Enter += new System.EventHandler(this.Target_Enter);
+			this.tba1.Enter += new System.EventHandler(this.cbHex16_Enter);
 			// 
 			// label13
 			// 
@@ -1612,34 +1612,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLocalC.Validated += new System.EventHandler(this.dec8_Validated);
 			this.tbLocalC.TextChanged += new System.EventHandler(this.dec8_TextChanged);
 			// 
-			// tbFlags
-			// 
-			this.tbFlags.AccessibleDescription = resources.GetString("tbFlags.AccessibleDescription");
-			this.tbFlags.AccessibleName = resources.GetString("tbFlags.AccessibleName");
-			this.tbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFlags.Anchor")));
-			this.tbFlags.AutoSize = ((bool)(resources.GetObject("tbFlags.AutoSize")));
-			this.tbFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFlags.BackgroundImage")));
-			this.tbFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFlags.Dock")));
-			this.tbFlags.Enabled = ((bool)(resources.GetObject("tbFlags.Enabled")));
-			this.tbFlags.Font = ((System.Drawing.Font)(resources.GetObject("tbFlags.Font")));
-			this.tbFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFlags.ImeMode")));
-			this.tbFlags.Location = ((System.Drawing.Point)(resources.GetObject("tbFlags.Location")));
-			this.tbFlags.MaxLength = ((int)(resources.GetObject("tbFlags.MaxLength")));
-			this.tbFlags.Multiline = ((bool)(resources.GetObject("tbFlags.Multiline")));
-			this.tbFlags.Name = "tbFlags";
-			this.tbFlags.PasswordChar = ((char)(resources.GetObject("tbFlags.PasswordChar")));
-			this.tbFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFlags.RightToLeft")));
-			this.tbFlags.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFlags.ScrollBars")));
-			this.tbFlags.Size = ((System.Drawing.Size)(resources.GetObject("tbFlags.Size")));
-			this.tbFlags.TabIndex = ((int)(resources.GetObject("tbFlags.TabIndex")));
-			this.tbFlags.Text = resources.GetString("tbFlags.Text");
-			this.tbFlags.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlags.TextAlign")));
-			this.tbFlags.Visible = ((bool)(resources.GetObject("tbFlags.Visible")));
-			this.tbFlags.WordWrap = ((bool)(resources.GetObject("tbFlags.WordWrap")));
-			this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.tbFlags.Validated += new System.EventHandler(this.hex16_Validated);
-			this.tbFlags.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-			// 
 			// tbArgC
 			// 
 			this.tbArgC.AccessibleDescription = resources.GetString("tbArgC.AccessibleDescription");
@@ -1695,34 +1667,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbType.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
 			this.tbType.Validated += new System.EventHandler(this.hex8_Validated);
 			this.tbType.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-			// 
-			// tbFormat
-			// 
-			this.tbFormat.AccessibleDescription = resources.GetString("tbFormat.AccessibleDescription");
-			this.tbFormat.AccessibleName = resources.GetString("tbFormat.AccessibleName");
-			this.tbFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFormat.Anchor")));
-			this.tbFormat.AutoSize = ((bool)(resources.GetObject("tbFormat.AutoSize")));
-			this.tbFormat.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFormat.BackgroundImage")));
-			this.tbFormat.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFormat.Dock")));
-			this.tbFormat.Enabled = ((bool)(resources.GetObject("tbFormat.Enabled")));
-			this.tbFormat.Font = ((System.Drawing.Font)(resources.GetObject("tbFormat.Font")));
-			this.tbFormat.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFormat.ImeMode")));
-			this.tbFormat.Location = ((System.Drawing.Point)(resources.GetObject("tbFormat.Location")));
-			this.tbFormat.MaxLength = ((int)(resources.GetObject("tbFormat.MaxLength")));
-			this.tbFormat.Multiline = ((bool)(resources.GetObject("tbFormat.Multiline")));
-			this.tbFormat.Name = "tbFormat";
-			this.tbFormat.PasswordChar = ((char)(resources.GetObject("tbFormat.PasswordChar")));
-			this.tbFormat.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFormat.RightToLeft")));
-			this.tbFormat.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFormat.ScrollBars")));
-			this.tbFormat.Size = ((System.Drawing.Size)(resources.GetObject("tbFormat.Size")));
-			this.tbFormat.TabIndex = ((int)(resources.GetObject("tbFormat.TabIndex")));
-			this.tbFormat.Text = resources.GetString("tbFormat.Text");
-			this.tbFormat.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFormat.TextAlign")));
-			this.tbFormat.Visible = ((bool)(resources.GetObject("tbFormat.Visible")));
-			this.tbFormat.WordWrap = ((bool)(resources.GetObject("tbFormat.WordWrap")));
-			this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
-			this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// lbReserved
 			// 
@@ -1889,6 +1833,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
 			this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
+			this.bhavPanel.Controls.Add(this.cbFormat);
 			this.bhavPanel.Controls.Add(this.gbSpecial);
 			this.bhavPanel.Controls.Add(this.pnflowcontainer);
 			this.bhavPanel.Controls.Add(this.btnDel);
@@ -1903,7 +1848,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Controls.Add(this.tbFlags);
 			this.bhavPanel.Controls.Add(this.tbArgC);
 			this.bhavPanel.Controls.Add(this.tbType);
-			this.bhavPanel.Controls.Add(this.tbFormat);
 			this.bhavPanel.Controls.Add(this.lbReserved);
 			this.bhavPanel.Controls.Add(this.lbFlags);
 			this.bhavPanel.Controls.Add(this.lbType);
@@ -1924,6 +1868,42 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Text = resources.GetString("bhavPanel.Text");
 			this.bhavPanel.Visible = ((bool)(resources.GetObject("bhavPanel.Visible")));
 			this.bhavPanel.Resize += new System.EventHandler(this.bhavPanel_Resize);
+			// 
+			// cbFormat
+			// 
+			this.cbFormat.AccessibleDescription = resources.GetString("cbFormat.AccessibleDescription");
+			this.cbFormat.AccessibleName = resources.GetString("cbFormat.AccessibleName");
+			this.cbFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbFormat.Anchor")));
+			this.cbFormat.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbFormat.BackgroundImage")));
+			this.cbFormat.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbFormat.Dock")));
+			this.cbFormat.Enabled = ((bool)(resources.GetObject("cbFormat.Enabled")));
+			this.cbFormat.Font = ((System.Drawing.Font)(resources.GetObject("cbFormat.Font")));
+			this.cbFormat.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbFormat.ImeMode")));
+			this.cbFormat.IntegralHeight = ((bool)(resources.GetObject("cbFormat.IntegralHeight")));
+			this.cbFormat.ItemHeight = ((int)(resources.GetObject("cbFormat.ItemHeight")));
+			this.cbFormat.Items.AddRange(new object[] {
+														  resources.GetString("cbFormat.Items"),
+														  resources.GetString("cbFormat.Items1"),
+														  resources.GetString("cbFormat.Items2"),
+														  resources.GetString("cbFormat.Items3"),
+														  resources.GetString("cbFormat.Items4"),
+														  resources.GetString("cbFormat.Items5"),
+														  resources.GetString("cbFormat.Items6"),
+														  resources.GetString("cbFormat.Items7")});
+			this.cbFormat.Location = ((System.Drawing.Point)(resources.GetObject("cbFormat.Location")));
+			this.cbFormat.MaxDropDownItems = ((int)(resources.GetObject("cbFormat.MaxDropDownItems")));
+			this.cbFormat.MaxLength = ((int)(resources.GetObject("cbFormat.MaxLength")));
+			this.cbFormat.Name = "cbFormat";
+			this.cbFormat.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbFormat.RightToLeft")));
+			this.cbFormat.Size = ((System.Drawing.Size)(resources.GetObject("cbFormat.Size")));
+			this.cbFormat.TabIndex = ((int)(resources.GetObject("cbFormat.TabIndex")));
+			this.cbFormat.Text = resources.GetString("cbFormat.Text");
+			this.cbFormat.Visible = ((bool)(resources.GetObject("cbFormat.Visible")));
+			this.cbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
+			this.cbFormat.Validated += new System.EventHandler(this.cbHex16_Validated);
+			this.cbFormat.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+			this.cbFormat.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
+			this.cbFormat.Enter += new System.EventHandler(this.cbHex16_Enter);
 			// 
 			// gbSpecial
 			// 
@@ -2282,6 +2262,34 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
 			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
 			// 
+			// tbFlags
+			// 
+			this.tbFlags.AccessibleDescription = resources.GetString("tbFlags.AccessibleDescription");
+			this.tbFlags.AccessibleName = resources.GetString("tbFlags.AccessibleName");
+			this.tbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFlags.Anchor")));
+			this.tbFlags.AutoSize = ((bool)(resources.GetObject("tbFlags.AutoSize")));
+			this.tbFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFlags.BackgroundImage")));
+			this.tbFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFlags.Dock")));
+			this.tbFlags.Enabled = ((bool)(resources.GetObject("tbFlags.Enabled")));
+			this.tbFlags.Font = ((System.Drawing.Font)(resources.GetObject("tbFlags.Font")));
+			this.tbFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFlags.ImeMode")));
+			this.tbFlags.Location = ((System.Drawing.Point)(resources.GetObject("tbFlags.Location")));
+			this.tbFlags.MaxLength = ((int)(resources.GetObject("tbFlags.MaxLength")));
+			this.tbFlags.Multiline = ((bool)(resources.GetObject("tbFlags.Multiline")));
+			this.tbFlags.Name = "tbFlags";
+			this.tbFlags.PasswordChar = ((char)(resources.GetObject("tbFlags.PasswordChar")));
+			this.tbFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFlags.RightToLeft")));
+			this.tbFlags.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFlags.ScrollBars")));
+			this.tbFlags.Size = ((System.Drawing.Size)(resources.GetObject("tbFlags.Size")));
+			this.tbFlags.TabIndex = ((int)(resources.GetObject("tbFlags.TabIndex")));
+			this.tbFlags.Text = resources.GetString("tbFlags.Text");
+			this.tbFlags.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlags.TextAlign")));
+			this.tbFlags.Visible = ((bool)(resources.GetObject("tbFlags.Visible")));
+			this.tbFlags.WordWrap = ((bool)(resources.GetObject("tbFlags.WordWrap")));
+			this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbFlags.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbFlags.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			// 
 			// btnAdd
 			// 
 			this.btnAdd.AccessibleDescription = resources.GetString("btnAdd.AccessibleDescription");
@@ -2460,86 +2468,117 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void Target_Enter(object sender, System.EventArgs e)
+		private void cbHex16_Enter(object sender, System.EventArgs e)
 		{
 			((ComboBox)sender).SelectAll();
 		}
 
-		private void Target_TextChanged(object sender, System.EventArgs ev)
+		private void cbHex16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			if (!Target_IsValid(sender)) return;
+			if (!cbHex16_IsValid(sender)) return;
 			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
 
 			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
 			internalchg = true;
-			switch (alTarget.IndexOf(sender))
+			switch (alHex16cb.IndexOf(sender))
 			{
 				case 0: currentInst.Target1 = val; break;
 				case 1: currentInst.Target2 = val; break;
+				case 2: wrapper.Header.Format = val; break;
 			}
 			internalchg = false;
 		}
 
-		private void Target_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		private void cbHex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (Target_IsValid(sender)) return;
+			if (cbHex16_IsValid(sender)) return;
 
 			e.Cancel = true;
 
-			internalchg = true;
+			int i = alHex16cb.IndexOf(sender);
+			if (i < 0)
+				throw new Exception("cbHex16_Validating not applicable to control " + sender.ToString());
+
 			ushort val = 0;
-			switch (alTarget.IndexOf(sender))
+			switch (i)
 			{
 				case 0: val = origInst.Target1; currentInst.Target1 = val; break;
 				case 1: val = origInst.Target2; currentInst.Target2 = val; break;
+				case 2: val = wrapper.Header.Format; break;
 			}
 
-			if (val >= 0xFFFC)
+			bool origstate = internalchg;
+			internalchg = true;
+			if (i < 2 && val >= 0xfffc && val <= 0xfffe)
 			{
-				((ComboBox)sender).SelectedIndex = val - 0xFFFC;
+				((ComboBox)sender).SelectedIndex = val - 0xfffc;
+			}
+			else if (i == 2 && val >= 0x8000 && val <= 0x8007)
+			{
+				((ComboBox)sender).SelectedIndex = val - 0x8000;
 			}
 			else
 			{
 				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x"+Helper.HexString(val);
+				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
 			}
+			internalchg = origstate;
 			((ComboBox)sender).SelectAll();
-			internalchg = false;
 		}
 
-		private void Target_Validated(object sender, System.EventArgs e)
+		private void cbHex16_Validated(object sender, System.EventArgs e)
 		{
-			if (alTarget.IndexOf(sender) < 0)
-				throw new Exception("Target_Validated not applicable to control " + sender.ToString());
+			int i = alHex16cb.IndexOf(sender);
+			if (i < 0)
+				throw new Exception("cbHex16_Validated not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+
+			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
 
 			bool origstate = internalchg;
 			internalchg = true;
-			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
-			if (val >= 0xfffc && val <= 0xfffe)
+			if (i < 2 && val >= 0xfffc && val <= 0xfffe)
+			{
 				((ComboBox)sender).SelectedIndex = val - 0xfffc;
+			}
+			else if (i == 2 && val >= 0x8000 && val <= 0x8007)
+			{
+				((ComboBox)sender).SelectedIndex = val - 0x8000;
+			}
 			else
+			{
+				((ComboBox)sender).SelectedIndex = -1;
 				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
-			((ComboBox)sender).Select(0, 0);
+			}
 			internalchg = origstate;
+			((ComboBox)sender).Select(0, 0);
 		}
 
-		private void Target_SelectedIndexChanged(object sender, System.EventArgs e)
+		private void cbHex16_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			int i = alTarget.IndexOf(sender);
+			int i = alHex16cb.IndexOf(sender);
 			if (i < 0)
-				throw new Exception("Target_SelectedIndexChanged not applicable to control " + sender.ToString());
+				throw new Exception("cbHex16_SelectedIndexChanged not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).SelectedIndex == -1) return;
 
-			ushort val = (ushort)(0x0FFFC + ((ComboBox)alTarget[i]).SelectedIndex);
+			ushort val = (ushort)((ComboBox)alHex16cb[i]).SelectedIndex;
+			((ComboBox)sender).SelectAll();
 
 			internalchg = true;
-			if (i == 0) currentInst.Target1 = val;
-			else        currentInst.Target2 = val;
-			((ComboBox)sender).SelectAll();
+			if (i < 2)
+			{
+				val += 0xFFFC;
+				if (i == 0) currentInst.Target1 = val;
+				else        currentInst.Target2 = val;
+			}
+			else
+			{
+				val += 0x8000;
+				wrapper.Header.Format = val;
+			}
 			internalchg = false;
 		}
 
@@ -2558,6 +2597,31 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			internalchg = false;
 		}
+
+		private void dec8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (dec8_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			byte val = 0;
+			switch (alDec8.IndexOf(sender))
+			{
+				case 0: val = wrapper.Header.ArgumentCount; break;
+				case 1: val = wrapper.Header.LocalVarCount; break;
+			}
+
+			((TextBox)sender).Text = val.ToString();
+			((TextBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void dec8_Validated(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
+		}
+
 
 		private void dec16_TextChanged(object sender, System.EventArgs ev)
 		{
@@ -2581,77 +2645,6 @@ namespace SimPe.PackedFiles.UserInterface
 					this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
 					break;
 			}
-			internalchg = false;
-		}
-
-		private void hex8_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!hex8_IsValid(sender)) return;
-
-
-			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
-
-			internalchg = true;
-			int i = alHex8.IndexOf(sender);
-			if (i < 8)
-			{
-				currentInst.Operands[i] = val;
-				if (i < 2)
-					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
-				else if (i < 4)
-					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();
-			}
-			else
-			{
-				if (i < 16)
-					currentInst.Reserved1[i-8] = val;
-				else switch(i)
-					 {
-						 case 16: currentInst.Reserved0 = val; break;
-						 case 17: wrapper.Header.Type = val; break;
-					 }
-			}
-			internalchg = false;
-		}
-
-		private void hex16_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!hex16_IsValid(sender)) return;
-
-			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
-			internalchg = true;
-			switch (alHex16.IndexOf(sender))
-			{
-				case 0: wrapper.Header.Format = val; break;
-				case 1: wrapper.Header.Flags = val; break;
-				case 2: wrapper.Header.Zero = val; break;
-				case 3:
-					currentInst.OpCode = val;
-					this.btnOperandWiz.Enabled = BhavOperandWiz.Available(currentInst);
-					break;
-			}
-			internalchg = false;
-		}
-
-
-		private void dec8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (dec8_IsValid(sender)) return;
-
-			e.Cancel = true;
-
-			internalchg = true;
-			byte val = 0;
-			switch (alDec8.IndexOf(sender))
-			{
-				case 0: val = wrapper.Header.ArgumentCount; break;
-				case 1: val = wrapper.Header.LocalVarCount; break;
-			}
-
-			((TextBox)sender).Text = val.ToString();
-			((TextBox)sender).SelectAll();
 			internalchg = false;
 		}
 
@@ -2686,6 +2679,43 @@ namespace SimPe.PackedFiles.UserInterface
 
 			((TextBox)sender).Text = val.ToString();
 			((TextBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void dec16_Validated(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
+		}
+
+
+		private void hex8_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!hex8_IsValid(sender)) return;
+
+
+			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
+
+			internalchg = true;
+			int i = alHex8.IndexOf(sender);
+			if (i < 8)
+			{
+				currentInst.Operands[i] = val;
+				if (i < 2)
+					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
+				else if (i < 4)
+					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();
+			}
+			else
+			{
+				if (i < 16)
+					currentInst.Reserved1[i-8] = val;
+				else switch(i)
+					 {
+						 case 16: currentInst.Reserved0 = val; break;
+						 case 17: wrapper.Header.Type = val; break;
+					 }
+			}
 			internalchg = false;
 		}
 
@@ -2724,6 +2754,35 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
+		private void hex8_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = ((alHex8.IndexOf(sender) >= 16) ? "0x" : "") + Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+
+		private void hex16_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!hex16_IsValid(sender)) return;
+
+			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
+			internalchg = true;
+			switch (alHex16.IndexOf(sender))
+			{
+				case 0: wrapper.Header.Flags = val; break;
+				case 1: wrapper.Header.Zero = val; break;
+				case 2:
+					currentInst.OpCode = val;
+					this.btnOperandWiz.Enabled = BhavOperandWiz.Available(currentInst);
+					break;
+			}
+			internalchg = false;
+		}
+
 		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex16_IsValid(sender)) return;
@@ -2734,35 +2793,14 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort val = 0;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: val = wrapper.Header.Format; break;
-				case 1: val = wrapper.Header.Flags; break;
-				case 2: val = wrapper.Header.Zero; break;
-				case 3: currentInst.OpCode = val = origInst.OpCode; break;
+				case 0: val = wrapper.Header.Flags; break;
+				case 1: val = wrapper.Header.Zero; break;
+				case 2: currentInst.OpCode = val = origInst.OpCode; break;
 			}
 
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
 			internalchg = false;
-		}
-
-
-		private void dec8_Validated(object sender, System.EventArgs e)
-		{
-			((TextBox)sender).SelectAll();
-		}
-
-		private void dec16_Validated(object sender, System.EventArgs e)
-		{
-			((TextBox)sender).SelectAll();
-		}
-
-		private void hex8_Validated(object sender, System.EventArgs e)
-		{
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = ((alHex8.IndexOf(sender) >= 16) ? "0x" : "") + Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
-			internalchg = origstate;
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs e)
