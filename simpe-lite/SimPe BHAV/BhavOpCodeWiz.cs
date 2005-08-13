@@ -129,9 +129,11 @@ namespace SimPe.PackedFiles.UserInterface
 			if (lbprivate.Items.Count>0) lbprivate.SelectedIndex = 0;
 			if (lbsemi.Items.Count>0) lbsemi.SelectedIndex = 0;
 
+			DialogResult dr = ShowDialog();
+			Close();
+
 			int opcode = -1;
-			this.DialogResult = DialogResult.Cancel;
-			switch(ShowDialog())
+			switch(dr)
 			{
 				case System.Windows.Forms.DialogResult.OK:
 				case System.Windows.Forms.DialogResult.Yes:
@@ -397,12 +399,12 @@ namespace SimPe.PackedFiles.UserInterface
 			// 
 			// OK
 			// 
+			this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.OK.Location = new System.Drawing.Point(320, 440);
 			this.OK.Name = "OK";
 			this.OK.Size = new System.Drawing.Size(80, 24);
 			this.OK.TabIndex = 3;
 			this.OK.Text = "Okay";
-			this.OK.Click += new System.EventHandler(this.OK_Click);
 			// 
 			// Cancel
 			// 
@@ -411,9 +413,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Cancel.Name = "Cancel";
 			this.Cancel.TabIndex = 4;
 			this.Cancel.Text = "Cancel";
-			this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
 			// 
-			// BhavOpCodeWizUI
+			// BhavOpCodeWiz
 			// 
 			this.AcceptButton = this.OK;
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
@@ -424,7 +425,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Controls.Add(this.pnOpCode);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.Name = "BhavOpCodeWizUI";
+			this.Name = "BhavOpCodeWiz";
 			this.ShowInTaskbar = false;
 			this.Text = "BhavOpCodeWizUI";
 			this.pnOpCode.ResumeLayout(false);

@@ -1,3 +1,22 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 using System;
 using System.Drawing;
 using System.Collections;
@@ -11,6 +30,7 @@ namespace pjse
 	/// </summary>
 	public class StrBig : System.Windows.Forms.Form
 	{
+		#region Form variables
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.RichTextBox richTextBox1;
 		private System.Windows.Forms.Panel panel2;
@@ -20,6 +40,7 @@ namespace pjse
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
+		#endregion
 
 		public StrBig()
 		{
@@ -28,23 +49,6 @@ namespace pjse
 			//
 			InitializeComponent();
 
-		}
-
-		public string doBig(string init)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			richTextBox1.Text = init;
-
-			DialogResult dr = ShowDialog();
-			Close();
-
-			switch (dr)
-			{
-				case DialogResult.Ignore:
-					return null;
-				default:
-					return richTextBox1.Text;
-			}
 		}
 
 		/// <summary>
@@ -62,6 +66,26 @@ namespace pjse
 			base.Dispose( disposing );
 		}
 
+
+		#region StrBig
+		public string doBig(string init)
+		{
+			this.DialogResult = DialogResult.Cancel;
+			richTextBox1.Text = init;
+
+			DialogResult dr = ShowDialog();
+			Close();
+
+			switch (dr)
+			{
+				case DialogResult.Ignore:
+					return null;
+				default:
+					return richTextBox1.Text;
+			}
+		}
+
+		#endregion
 
 		#region Windows Form Designer generated code
 		/// <summary>
