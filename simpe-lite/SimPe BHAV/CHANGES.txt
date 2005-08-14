@@ -1,6 +1,14 @@
 
+14 August 2005 10:48 - Replace TTAB "Unk" labels - with thanks to the DatGen team
+  SimPe BHAV\
+    TtabForm.cs 1.16
+    TtabForm.resx 1.11
+    TtabWrapper.cs 1.14
+
 13 August 2005 21:23 - Better Str string list resizing
   SimPe BHAV\
+    StrForm.cs 1.13
+    StrForm.resx 1.11
 
 13 August 2005 21:21 - Dropdown list of known BHAV File format codes
   SimPe BHAV\
