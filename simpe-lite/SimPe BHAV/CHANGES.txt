@@ -1,4 +1,9 @@
 
+14 August 2005 12:05 - Only show the Append button in Str and Ttab in Debug/InProgress builds
+  SimPe BHAV\
+    StrForm.cs 1.14
+    TtabForm.cs 1.17
+
 14 August 2005 10:48 - Replace TTAB "Unk" labels - with thanks to the DatGen team
   SimPe BHAV\
     TtabForm.cs 1.16
