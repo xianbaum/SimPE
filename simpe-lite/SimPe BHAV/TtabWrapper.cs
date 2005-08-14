@@ -391,11 +391,11 @@ namespace SimPe.PackedFiles.Wrapper
 		private float attenuationvalue = 0f;
 		private uint autonomy = 0;
 		private uint joinindex = 0;
-		private ushort res5 = 0;
-		private uint res6 = 0;
-		private float res7 = 0f;
-		private uint res8 = 0;
-		private uint res9 = 0;
+		private ushort uidisplaytype = 0;
+		private uint facialanimation = 0;
+		private float memoryitermult = 0f;
+		private uint objecttype = 0;
+		private uint modeltableid = 0;
 		private ArrayList groups = null;
 		private Ttab parent = null;
 		#endregion
@@ -403,7 +403,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region Accessor Methods
 		public ushort Action
 		{
-			get {return action; }
+			get { return action; }
 			set {
 				if (action != value)
 				{
@@ -417,7 +417,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public ushort Guardian
 		{
-			get {return guard; }
+			get { return guard; }
 			set
 			{
 				if (guard != value)
@@ -432,7 +432,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public TtabFlags Flags
 		{
-			get {return flags; }
+			get { return flags; }
 			set
 			{
 				if (flags != value)
@@ -445,7 +445,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public ushort Flags2
 		{
-			get {return flags2; }
+			get { return flags2; }
 			set
 			{
 				if (flags2 != value)
@@ -458,7 +458,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public uint StringIndex
 		{
-			get {return strindex; }
+			get { return strindex; }
 			set
 			{
 				if (strindex != value)
@@ -471,7 +471,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public uint AttenuationCode
 		{
-			get {return attenuationcode; }
+			get { return attenuationcode; }
 			set
 			{
 				if (attenuationcode != value)
@@ -484,7 +484,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public float AttenuationValue
 		{
-			get {return attenuationvalue; }
+			get { return attenuationvalue; }
 			set
 			{
 				if (attenuationvalue != value)
@@ -497,7 +497,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public uint Autonomy
 		{
-			get {return autonomy; }
+			get { return autonomy; }
 			set
 			{
 				if (autonomy != value)
@@ -510,7 +510,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public uint JoinIndex
 		{
-			get {return joinindex; }
+			get { return joinindex; }
 			set
 			{
 				if (joinindex != value)
@@ -521,66 +521,66 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public ushort Res5
+		public ushort UIDisplayType
 		{
-			get {return res5; }
+			get { return uidisplaytype; }
 			set
 			{
-				if (res5 != value)
+				if (uidisplaytype != value)
 				{
-					res5 = value;
+					uidisplaytype = value;
 					parent.OnWrapperChanged();
 				}
 			}
 		}
 
-		public uint Res6
+		public uint FacialAnimationID
 		{
-			get {return res6; }
+			get { return facialanimation; }
 			set
 			{
-				if (res6 != value)
+				if (facialanimation != value)
 				{
-					res6 = value;
+					facialanimation = value;
 					parent.OnWrapperChanged();
 				}
 			}
 		}
 
-		public float Res7
+		public float MemoryIterativeMultiplier
 		{
-			get {return res7; }
+			get { return memoryitermult; }
 			set
 			{
-				if (!res7.Equals(value))
+				if (!memoryitermult.Equals(value))
 				{
-					res7 = value;
+					memoryitermult = value;
 					parent.OnWrapperChanged();
 				}
 			}
 		}
 
-		public uint Res8
+		public uint ObjectType
 		{
-			get {return res8; }
+			get { return objecttype; }
 			set
 			{
-				if (res8 != value)
+				if (objecttype != value)
 				{
-					res8 = value;
+					objecttype = value;
 					parent.OnWrapperChanged();
 				}
 			}
 		}
 
-		public uint Res9
+		public uint ModelTableID
 		{
-			get {return res9; }
+			get { return modeltableid; }
 			set
 			{
-				if (res9 != value)
+				if (modeltableid != value)
 				{
-					res9 = value;
+					modeltableid = value;
 					parent.OnWrapperChanged();
 				}
 			}
@@ -712,11 +712,11 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.attenuationvalue = this.attenuationvalue;
 			clone.autonomy = this.autonomy;
 			clone.joinindex = this.joinindex;
-			clone.res5 = this.res5;
-			clone.res6 = this.res6;
-			clone.res7 = this.res7;
-			clone.res8 = this.res8;
-			clone.res9 = this.res9;
+			clone.uidisplaytype = this.uidisplaytype;
+			clone.facialanimation = this.facialanimation;
+			clone.memoryitermult = this.memoryitermult;
+			clone.objecttype = this.objecttype;
+			clone.modeltableid = this.modeltableid;
 			clone.groups = (ArrayList)this.groups.Clone();
 			return clone;
 		}
@@ -745,26 +745,26 @@ namespace SimPe.PackedFiles.Wrapper
 			autonomy = reader.ReadUInt32();
 			joinindex = reader.ReadUInt32();
 
-			res5 = 0;
-			res6 = 0;
-			res7 = 0f;
-			res8 = 0;
-			res9 = 0;
+			uidisplaytype = 0;
+			facialanimation = 0;
+			memoryitermult = 0f;
+			objecttype = 0;
+			modeltableid = 0;
 			if (parent.Format >0x44) 
 			{
-				res5 = reader.ReadUInt16();
+				uidisplaytype = reader.ReadUInt16();
 				if (parent.Format >= 0x46)
 				{
 					if (parent.Format >= 0x4a) 
 					{
-						res6 = reader.ReadUInt32();
+						facialanimation = reader.ReadUInt32();
 						if (parent.Format >= 0x4c)
 						{
-							res7 = reader.ReadSingle(); //float
-							res8 = reader.ReadUInt32();
+							memoryitermult = reader.ReadSingle(); //float
+							objecttype = reader.ReadUInt32();
 						}
 					}
-					res9 = reader.ReadUInt32();
+					modeltableid = reader.ReadUInt32();
 				}
 			}
 
@@ -810,19 +810,19 @@ namespace SimPe.PackedFiles.Wrapper
 
 			if (parent.Format >0x44) 
 			{
-				writer.Write(res5);
+				writer.Write(uidisplaytype);
 				if (parent.Format >= 0x46)
 				{
 					if (parent.Format >= 0x4a) 
 					{
-						writer.Write(res6);
+						writer.Write(facialanimation);
 						if (parent.Format >= 0x4c)
 						{
-							writer.Write(res7);
-							writer.Write(res8);
+							writer.Write(memoryitermult);
+							writer.Write(objecttype);
 						}
 					}
-					writer.Write(res9);
+					writer.Write(modeltableid);
 				}
 			}
 

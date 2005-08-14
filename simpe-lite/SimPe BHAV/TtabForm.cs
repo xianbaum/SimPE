@@ -83,13 +83,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbAttenuationValue;
 		private System.Windows.Forms.TextBox tbAutonomy;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox tbRes9;
 		private System.Windows.Forms.TextBox tbJoinIndex;
-		private System.Windows.Forms.TextBox tbRes8;
-		private System.Windows.Forms.TextBox tbRes7;
-		private System.Windows.Forms.TextBox tbRes6;
 		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.TextBox tbRes5;
 		private System.Windows.Forms.Button btnGuardian;
 		private System.Windows.Forms.Button btnAction;
 		private SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI ttabItemMotiveTableUI1;
@@ -104,6 +99,11 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label label41;
 		private System.Windows.Forms.Button btnCommit;
 		private System.Windows.Forms.Button btnAppend;
+		private System.Windows.Forms.TextBox tbUIDispType;
+		private System.Windows.Forms.TextBox tbFaceAnimID;
+		private System.Windows.Forms.TextBox tbMemIterMult;
+		private System.Windows.Forms.TextBox tbObjType;
+		private System.Windows.Forms.TextBox tbModelTabID;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -120,13 +120,13 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-			TextBox[] tbua = { tbAction, tbGuardian, tbFlags, tbFlags2, tbRes5 };
+			TextBox[] tbua = { tbAction, tbGuardian, tbFlags, tbFlags2, tbUIDispType };
 			alHex16 = new ArrayList(tbua);
 
-			TextBox[] tbia = { tbFormat, tbStringIndex, tbAutonomy, tbRes6, tbRes8, tbRes9, tbJoinIndex };
+			TextBox[] tbia = { tbFormat, tbStringIndex, tbAutonomy, tbFaceAnimID, tbObjType, tbModelTabID, tbJoinIndex };
 			alHex32 = new ArrayList(tbia);
 
-			TextBox[] tbfa = { tbAttenuationValue, tbRes7 };
+			TextBox[] tbfa = { tbAttenuationValue, tbMemIterMult };
 			alFloats = new ArrayList(tbfa);
 
 			CheckBox[] cba = {
@@ -272,7 +272,7 @@ namespace SimPe.PackedFiles.UserInterface
 			b.Package = wrapper.Package;
 			b.FileDescriptor = wrapper.FileDescriptor;
 			b.ProcessData(pfd, b.Package);
-			ushort offset = (ushort)wrapper.Count;
+			uint offset = getTTAsCount();
 			for (int bi = 0; bi < b.Count; bi++)
 			{
 				int i = wrapper.Add(b[bi]);
@@ -283,6 +283,15 @@ namespace SimPe.PackedFiles.UserInterface
 			ttabPanel.Parent.Cursor = Cursors.Default;
 
 			internalchg = savedstate;
+		}
+
+		private uint getTTAsCount()
+		{
+			if (wrapper.StringResource == null) return 0;
+
+			int max = 0;
+			for (byte lid = 1; lid < 44; lid++) max = Math.Max(max, wrapper.StringResource[lid].Length);
+			return (uint)max;
 		}
 
 
@@ -340,6 +349,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TtabForm));
 			this.ttabPanel = new System.Windows.Forms.Panel();
+			this.btnAppend = new System.Windows.Forms.Button();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.tbFormat = new System.Windows.Forms.TextBox();
@@ -358,16 +368,16 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbguard = new System.Windows.Forms.Label();
 			this.tbStringIndex = new System.Windows.Forms.TextBox();
 			this.label40 = new System.Windows.Forms.Label();
-			this.tbRes9 = new System.Windows.Forms.TextBox();
+			this.tbModelTabID = new System.Windows.Forms.TextBox();
 			this.label33 = new System.Windows.Forms.Label();
-			this.tbRes8 = new System.Windows.Forms.TextBox();
+			this.tbObjType = new System.Windows.Forms.TextBox();
 			this.label34 = new System.Windows.Forms.Label();
-			this.tbRes5 = new System.Windows.Forms.TextBox();
+			this.tbUIDispType = new System.Windows.Forms.TextBox();
 			this.label35 = new System.Windows.Forms.Label();
 			this.tbAutonomy = new System.Windows.Forms.TextBox();
-			this.tbRes7 = new System.Windows.Forms.TextBox();
+			this.tbMemIterMult = new System.Windows.Forms.TextBox();
 			this.label29 = new System.Windows.Forms.Label();
-			this.tbRes6 = new System.Windows.Forms.TextBox();
+			this.tbFaceAnimID = new System.Windows.Forms.TextBox();
 			this.label30 = new System.Windows.Forms.Label();
 			this.tbAttenuationValue = new System.Windows.Forms.TextBox();
 			this.label31 = new System.Windows.Forms.Label();
@@ -405,7 +415,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.panel5 = new System.Windows.Forms.Panel();
 			this.lbttabfile = new System.Windows.Forms.Label();
 			this.label25 = new System.Windows.Forms.Label();
-			this.btnAppend = new System.Windows.Forms.Button();
 			this.ttabPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tpSettings.SuspendLayout();
@@ -447,6 +456,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ttabPanel.TabIndex = ((int)(resources.GetObject("ttabPanel.TabIndex")));
 			this.ttabPanel.Text = resources.GetString("ttabPanel.Text");
 			this.ttabPanel.Visible = ((bool)(resources.GetObject("ttabPanel.Visible")));
+			// 
+			// btnAppend
+			// 
+			this.btnAppend.AccessibleDescription = resources.GetString("btnAppend.AccessibleDescription");
+			this.btnAppend.AccessibleName = resources.GetString("btnAppend.AccessibleName");
+			this.btnAppend.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAppend.Anchor")));
+			this.btnAppend.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAppend.BackgroundImage")));
+			this.btnAppend.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAppend.Dock")));
+			this.btnAppend.Enabled = ((bool)(resources.GetObject("btnAppend.Enabled")));
+			this.btnAppend.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAppend.FlatStyle")));
+			this.btnAppend.Font = ((System.Drawing.Font)(resources.GetObject("btnAppend.Font")));
+			this.btnAppend.Image = ((System.Drawing.Image)(resources.GetObject("btnAppend.Image")));
+			this.btnAppend.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.ImageAlign")));
+			this.btnAppend.ImageIndex = ((int)(resources.GetObject("btnAppend.ImageIndex")));
+			this.btnAppend.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAppend.ImeMode")));
+			this.btnAppend.Location = ((System.Drawing.Point)(resources.GetObject("btnAppend.Location")));
+			this.btnAppend.Name = "btnAppend";
+			this.btnAppend.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAppend.RightToLeft")));
+			this.btnAppend.Size = ((System.Drawing.Size)(resources.GetObject("btnAppend.Size")));
+			this.btnAppend.TabIndex = ((int)(resources.GetObject("btnAppend.TabIndex")));
+			this.btnAppend.Text = resources.GetString("btnAppend.Text");
+			this.btnAppend.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.TextAlign")));
+			this.btnAppend.Visible = ((bool)(resources.GetObject("btnAppend.Visible")));
+			this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
 			// 
 			// lbFilename
 			// 
@@ -707,16 +740,16 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.Controls.Add(this.lbguard);
 			this.tpSettings.Controls.Add(this.tbStringIndex);
 			this.tpSettings.Controls.Add(this.label40);
-			this.tpSettings.Controls.Add(this.tbRes9);
+			this.tpSettings.Controls.Add(this.tbModelTabID);
 			this.tpSettings.Controls.Add(this.label33);
-			this.tpSettings.Controls.Add(this.tbRes8);
+			this.tpSettings.Controls.Add(this.tbObjType);
 			this.tpSettings.Controls.Add(this.label34);
-			this.tpSettings.Controls.Add(this.tbRes5);
+			this.tpSettings.Controls.Add(this.tbUIDispType);
 			this.tpSettings.Controls.Add(this.label35);
 			this.tpSettings.Controls.Add(this.tbAutonomy);
-			this.tpSettings.Controls.Add(this.tbRes7);
+			this.tpSettings.Controls.Add(this.tbMemIterMult);
 			this.tpSettings.Controls.Add(this.label29);
-			this.tpSettings.Controls.Add(this.tbRes6);
+			this.tpSettings.Controls.Add(this.tbFaceAnimID);
 			this.tpSettings.Controls.Add(this.label30);
 			this.tpSettings.Controls.Add(this.tbAttenuationValue);
 			this.tpSettings.Controls.Add(this.label31);
@@ -919,33 +952,33 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label40.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label40.TextAlign")));
 			this.label40.Visible = ((bool)(resources.GetObject("label40.Visible")));
 			// 
-			// tbRes9
+			// tbModelTabID
 			// 
-			this.tbRes9.AccessibleDescription = resources.GetString("tbRes9.AccessibleDescription");
-			this.tbRes9.AccessibleName = resources.GetString("tbRes9.AccessibleName");
-			this.tbRes9.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbRes9.Anchor")));
-			this.tbRes9.AutoSize = ((bool)(resources.GetObject("tbRes9.AutoSize")));
-			this.tbRes9.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbRes9.BackgroundImage")));
-			this.tbRes9.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbRes9.Dock")));
-			this.tbRes9.Enabled = ((bool)(resources.GetObject("tbRes9.Enabled")));
-			this.tbRes9.Font = ((System.Drawing.Font)(resources.GetObject("tbRes9.Font")));
-			this.tbRes9.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbRes9.ImeMode")));
-			this.tbRes9.Location = ((System.Drawing.Point)(resources.GetObject("tbRes9.Location")));
-			this.tbRes9.MaxLength = ((int)(resources.GetObject("tbRes9.MaxLength")));
-			this.tbRes9.Multiline = ((bool)(resources.GetObject("tbRes9.Multiline")));
-			this.tbRes9.Name = "tbRes9";
-			this.tbRes9.PasswordChar = ((char)(resources.GetObject("tbRes9.PasswordChar")));
-			this.tbRes9.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbRes9.RightToLeft")));
-			this.tbRes9.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbRes9.ScrollBars")));
-			this.tbRes9.Size = ((System.Drawing.Size)(resources.GetObject("tbRes9.Size")));
-			this.tbRes9.TabIndex = ((int)(resources.GetObject("tbRes9.TabIndex")));
-			this.tbRes9.Text = resources.GetString("tbRes9.Text");
-			this.tbRes9.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes9.TextAlign")));
-			this.tbRes9.Visible = ((bool)(resources.GetObject("tbRes9.Visible")));
-			this.tbRes9.WordWrap = ((bool)(resources.GetObject("tbRes9.WordWrap")));
-			this.tbRes9.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-			this.tbRes9.Validated += new System.EventHandler(this.hex32_Validated);
-			this.tbRes9.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+			this.tbModelTabID.AccessibleDescription = resources.GetString("tbModelTabID.AccessibleDescription");
+			this.tbModelTabID.AccessibleName = resources.GetString("tbModelTabID.AccessibleName");
+			this.tbModelTabID.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbModelTabID.Anchor")));
+			this.tbModelTabID.AutoSize = ((bool)(resources.GetObject("tbModelTabID.AutoSize")));
+			this.tbModelTabID.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbModelTabID.BackgroundImage")));
+			this.tbModelTabID.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbModelTabID.Dock")));
+			this.tbModelTabID.Enabled = ((bool)(resources.GetObject("tbModelTabID.Enabled")));
+			this.tbModelTabID.Font = ((System.Drawing.Font)(resources.GetObject("tbModelTabID.Font")));
+			this.tbModelTabID.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbModelTabID.ImeMode")));
+			this.tbModelTabID.Location = ((System.Drawing.Point)(resources.GetObject("tbModelTabID.Location")));
+			this.tbModelTabID.MaxLength = ((int)(resources.GetObject("tbModelTabID.MaxLength")));
+			this.tbModelTabID.Multiline = ((bool)(resources.GetObject("tbModelTabID.Multiline")));
+			this.tbModelTabID.Name = "tbModelTabID";
+			this.tbModelTabID.PasswordChar = ((char)(resources.GetObject("tbModelTabID.PasswordChar")));
+			this.tbModelTabID.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbModelTabID.RightToLeft")));
+			this.tbModelTabID.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbModelTabID.ScrollBars")));
+			this.tbModelTabID.Size = ((System.Drawing.Size)(resources.GetObject("tbModelTabID.Size")));
+			this.tbModelTabID.TabIndex = ((int)(resources.GetObject("tbModelTabID.TabIndex")));
+			this.tbModelTabID.Text = resources.GetString("tbModelTabID.Text");
+			this.tbModelTabID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbModelTabID.TextAlign")));
+			this.tbModelTabID.Visible = ((bool)(resources.GetObject("tbModelTabID.Visible")));
+			this.tbModelTabID.WordWrap = ((bool)(resources.GetObject("tbModelTabID.WordWrap")));
+			this.tbModelTabID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbModelTabID.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbModelTabID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label33
 			// 
@@ -969,33 +1002,33 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label33.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label33.TextAlign")));
 			this.label33.Visible = ((bool)(resources.GetObject("label33.Visible")));
 			// 
-			// tbRes8
+			// tbObjType
 			// 
-			this.tbRes8.AccessibleDescription = resources.GetString("tbRes8.AccessibleDescription");
-			this.tbRes8.AccessibleName = resources.GetString("tbRes8.AccessibleName");
-			this.tbRes8.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbRes8.Anchor")));
-			this.tbRes8.AutoSize = ((bool)(resources.GetObject("tbRes8.AutoSize")));
-			this.tbRes8.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbRes8.BackgroundImage")));
-			this.tbRes8.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbRes8.Dock")));
-			this.tbRes8.Enabled = ((bool)(resources.GetObject("tbRes8.Enabled")));
-			this.tbRes8.Font = ((System.Drawing.Font)(resources.GetObject("tbRes8.Font")));
-			this.tbRes8.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbRes8.ImeMode")));
-			this.tbRes8.Location = ((System.Drawing.Point)(resources.GetObject("tbRes8.Location")));
-			this.tbRes8.MaxLength = ((int)(resources.GetObject("tbRes8.MaxLength")));
-			this.tbRes8.Multiline = ((bool)(resources.GetObject("tbRes8.Multiline")));
-			this.tbRes8.Name = "tbRes8";
-			this.tbRes8.PasswordChar = ((char)(resources.GetObject("tbRes8.PasswordChar")));
-			this.tbRes8.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbRes8.RightToLeft")));
-			this.tbRes8.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbRes8.ScrollBars")));
-			this.tbRes8.Size = ((System.Drawing.Size)(resources.GetObject("tbRes8.Size")));
-			this.tbRes8.TabIndex = ((int)(resources.GetObject("tbRes8.TabIndex")));
-			this.tbRes8.Text = resources.GetString("tbRes8.Text");
-			this.tbRes8.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes8.TextAlign")));
-			this.tbRes8.Visible = ((bool)(resources.GetObject("tbRes8.Visible")));
-			this.tbRes8.WordWrap = ((bool)(resources.GetObject("tbRes8.WordWrap")));
-			this.tbRes8.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-			this.tbRes8.Validated += new System.EventHandler(this.hex32_Validated);
-			this.tbRes8.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+			this.tbObjType.AccessibleDescription = resources.GetString("tbObjType.AccessibleDescription");
+			this.tbObjType.AccessibleName = resources.GetString("tbObjType.AccessibleName");
+			this.tbObjType.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbObjType.Anchor")));
+			this.tbObjType.AutoSize = ((bool)(resources.GetObject("tbObjType.AutoSize")));
+			this.tbObjType.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbObjType.BackgroundImage")));
+			this.tbObjType.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbObjType.Dock")));
+			this.tbObjType.Enabled = ((bool)(resources.GetObject("tbObjType.Enabled")));
+			this.tbObjType.Font = ((System.Drawing.Font)(resources.GetObject("tbObjType.Font")));
+			this.tbObjType.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbObjType.ImeMode")));
+			this.tbObjType.Location = ((System.Drawing.Point)(resources.GetObject("tbObjType.Location")));
+			this.tbObjType.MaxLength = ((int)(resources.GetObject("tbObjType.MaxLength")));
+			this.tbObjType.Multiline = ((bool)(resources.GetObject("tbObjType.Multiline")));
+			this.tbObjType.Name = "tbObjType";
+			this.tbObjType.PasswordChar = ((char)(resources.GetObject("tbObjType.PasswordChar")));
+			this.tbObjType.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbObjType.RightToLeft")));
+			this.tbObjType.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbObjType.ScrollBars")));
+			this.tbObjType.Size = ((System.Drawing.Size)(resources.GetObject("tbObjType.Size")));
+			this.tbObjType.TabIndex = ((int)(resources.GetObject("tbObjType.TabIndex")));
+			this.tbObjType.Text = resources.GetString("tbObjType.Text");
+			this.tbObjType.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbObjType.TextAlign")));
+			this.tbObjType.Visible = ((bool)(resources.GetObject("tbObjType.Visible")));
+			this.tbObjType.WordWrap = ((bool)(resources.GetObject("tbObjType.WordWrap")));
+			this.tbObjType.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbObjType.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbObjType.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label34
 			// 
@@ -1019,33 +1052,33 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label34.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label34.TextAlign")));
 			this.label34.Visible = ((bool)(resources.GetObject("label34.Visible")));
 			// 
-			// tbRes5
+			// tbUIDispType
 			// 
-			this.tbRes5.AccessibleDescription = resources.GetString("tbRes5.AccessibleDescription");
-			this.tbRes5.AccessibleName = resources.GetString("tbRes5.AccessibleName");
-			this.tbRes5.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbRes5.Anchor")));
-			this.tbRes5.AutoSize = ((bool)(resources.GetObject("tbRes5.AutoSize")));
-			this.tbRes5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbRes5.BackgroundImage")));
-			this.tbRes5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbRes5.Dock")));
-			this.tbRes5.Enabled = ((bool)(resources.GetObject("tbRes5.Enabled")));
-			this.tbRes5.Font = ((System.Drawing.Font)(resources.GetObject("tbRes5.Font")));
-			this.tbRes5.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbRes5.ImeMode")));
-			this.tbRes5.Location = ((System.Drawing.Point)(resources.GetObject("tbRes5.Location")));
-			this.tbRes5.MaxLength = ((int)(resources.GetObject("tbRes5.MaxLength")));
-			this.tbRes5.Multiline = ((bool)(resources.GetObject("tbRes5.Multiline")));
-			this.tbRes5.Name = "tbRes5";
-			this.tbRes5.PasswordChar = ((char)(resources.GetObject("tbRes5.PasswordChar")));
-			this.tbRes5.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbRes5.RightToLeft")));
-			this.tbRes5.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbRes5.ScrollBars")));
-			this.tbRes5.Size = ((System.Drawing.Size)(resources.GetObject("tbRes5.Size")));
-			this.tbRes5.TabIndex = ((int)(resources.GetObject("tbRes5.TabIndex")));
-			this.tbRes5.Text = resources.GetString("tbRes5.Text");
-			this.tbRes5.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes5.TextAlign")));
-			this.tbRes5.Visible = ((bool)(resources.GetObject("tbRes5.Visible")));
-			this.tbRes5.WordWrap = ((bool)(resources.GetObject("tbRes5.WordWrap")));
-			this.tbRes5.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.tbRes5.Validated += new System.EventHandler(this.hex16_Validated);
-			this.tbRes5.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			this.tbUIDispType.AccessibleDescription = resources.GetString("tbUIDispType.AccessibleDescription");
+			this.tbUIDispType.AccessibleName = resources.GetString("tbUIDispType.AccessibleName");
+			this.tbUIDispType.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbUIDispType.Anchor")));
+			this.tbUIDispType.AutoSize = ((bool)(resources.GetObject("tbUIDispType.AutoSize")));
+			this.tbUIDispType.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbUIDispType.BackgroundImage")));
+			this.tbUIDispType.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbUIDispType.Dock")));
+			this.tbUIDispType.Enabled = ((bool)(resources.GetObject("tbUIDispType.Enabled")));
+			this.tbUIDispType.Font = ((System.Drawing.Font)(resources.GetObject("tbUIDispType.Font")));
+			this.tbUIDispType.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbUIDispType.ImeMode")));
+			this.tbUIDispType.Location = ((System.Drawing.Point)(resources.GetObject("tbUIDispType.Location")));
+			this.tbUIDispType.MaxLength = ((int)(resources.GetObject("tbUIDispType.MaxLength")));
+			this.tbUIDispType.Multiline = ((bool)(resources.GetObject("tbUIDispType.Multiline")));
+			this.tbUIDispType.Name = "tbUIDispType";
+			this.tbUIDispType.PasswordChar = ((char)(resources.GetObject("tbUIDispType.PasswordChar")));
+			this.tbUIDispType.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbUIDispType.RightToLeft")));
+			this.tbUIDispType.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbUIDispType.ScrollBars")));
+			this.tbUIDispType.Size = ((System.Drawing.Size)(resources.GetObject("tbUIDispType.Size")));
+			this.tbUIDispType.TabIndex = ((int)(resources.GetObject("tbUIDispType.TabIndex")));
+			this.tbUIDispType.Text = resources.GetString("tbUIDispType.Text");
+			this.tbUIDispType.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbUIDispType.TextAlign")));
+			this.tbUIDispType.Visible = ((bool)(resources.GetObject("tbUIDispType.Visible")));
+			this.tbUIDispType.WordWrap = ((bool)(resources.GetObject("tbUIDispType.WordWrap")));
+			this.tbUIDispType.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbUIDispType.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbUIDispType.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// label35
 			// 
@@ -1097,33 +1130,33 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbAutonomy.Validated += new System.EventHandler(this.hex32_Validated);
 			this.tbAutonomy.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
-			// tbRes7
+			// tbMemIterMult
 			// 
-			this.tbRes7.AccessibleDescription = resources.GetString("tbRes7.AccessibleDescription");
-			this.tbRes7.AccessibleName = resources.GetString("tbRes7.AccessibleName");
-			this.tbRes7.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbRes7.Anchor")));
-			this.tbRes7.AutoSize = ((bool)(resources.GetObject("tbRes7.AutoSize")));
-			this.tbRes7.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbRes7.BackgroundImage")));
-			this.tbRes7.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbRes7.Dock")));
-			this.tbRes7.Enabled = ((bool)(resources.GetObject("tbRes7.Enabled")));
-			this.tbRes7.Font = ((System.Drawing.Font)(resources.GetObject("tbRes7.Font")));
-			this.tbRes7.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbRes7.ImeMode")));
-			this.tbRes7.Location = ((System.Drawing.Point)(resources.GetObject("tbRes7.Location")));
-			this.tbRes7.MaxLength = ((int)(resources.GetObject("tbRes7.MaxLength")));
-			this.tbRes7.Multiline = ((bool)(resources.GetObject("tbRes7.Multiline")));
-			this.tbRes7.Name = "tbRes7";
-			this.tbRes7.PasswordChar = ((char)(resources.GetObject("tbRes7.PasswordChar")));
-			this.tbRes7.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbRes7.RightToLeft")));
-			this.tbRes7.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbRes7.ScrollBars")));
-			this.tbRes7.Size = ((System.Drawing.Size)(resources.GetObject("tbRes7.Size")));
-			this.tbRes7.TabIndex = ((int)(resources.GetObject("tbRes7.TabIndex")));
-			this.tbRes7.Text = resources.GetString("tbRes7.Text");
-			this.tbRes7.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes7.TextAlign")));
-			this.tbRes7.Visible = ((bool)(resources.GetObject("tbRes7.Visible")));
-			this.tbRes7.WordWrap = ((bool)(resources.GetObject("tbRes7.WordWrap")));
-			this.tbRes7.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-			this.tbRes7.Validated += new System.EventHandler(this.float_Validated);
-			this.tbRes7.TextChanged += new System.EventHandler(this.float_TextChanged);
+			this.tbMemIterMult.AccessibleDescription = resources.GetString("tbMemIterMult.AccessibleDescription");
+			this.tbMemIterMult.AccessibleName = resources.GetString("tbMemIterMult.AccessibleName");
+			this.tbMemIterMult.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbMemIterMult.Anchor")));
+			this.tbMemIterMult.AutoSize = ((bool)(resources.GetObject("tbMemIterMult.AutoSize")));
+			this.tbMemIterMult.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbMemIterMult.BackgroundImage")));
+			this.tbMemIterMult.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbMemIterMult.Dock")));
+			this.tbMemIterMult.Enabled = ((bool)(resources.GetObject("tbMemIterMult.Enabled")));
+			this.tbMemIterMult.Font = ((System.Drawing.Font)(resources.GetObject("tbMemIterMult.Font")));
+			this.tbMemIterMult.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbMemIterMult.ImeMode")));
+			this.tbMemIterMult.Location = ((System.Drawing.Point)(resources.GetObject("tbMemIterMult.Location")));
+			this.tbMemIterMult.MaxLength = ((int)(resources.GetObject("tbMemIterMult.MaxLength")));
+			this.tbMemIterMult.Multiline = ((bool)(resources.GetObject("tbMemIterMult.Multiline")));
+			this.tbMemIterMult.Name = "tbMemIterMult";
+			this.tbMemIterMult.PasswordChar = ((char)(resources.GetObject("tbMemIterMult.PasswordChar")));
+			this.tbMemIterMult.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbMemIterMult.RightToLeft")));
+			this.tbMemIterMult.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbMemIterMult.ScrollBars")));
+			this.tbMemIterMult.Size = ((System.Drawing.Size)(resources.GetObject("tbMemIterMult.Size")));
+			this.tbMemIterMult.TabIndex = ((int)(resources.GetObject("tbMemIterMult.TabIndex")));
+			this.tbMemIterMult.Text = resources.GetString("tbMemIterMult.Text");
+			this.tbMemIterMult.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbMemIterMult.TextAlign")));
+			this.tbMemIterMult.Visible = ((bool)(resources.GetObject("tbMemIterMult.Visible")));
+			this.tbMemIterMult.WordWrap = ((bool)(resources.GetObject("tbMemIterMult.WordWrap")));
+			this.tbMemIterMult.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
+			this.tbMemIterMult.Validated += new System.EventHandler(this.float_Validated);
+			this.tbMemIterMult.TextChanged += new System.EventHandler(this.float_TextChanged);
 			// 
 			// label29
 			// 
@@ -1147,33 +1180,33 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label29.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label29.TextAlign")));
 			this.label29.Visible = ((bool)(resources.GetObject("label29.Visible")));
 			// 
-			// tbRes6
+			// tbFaceAnimID
 			// 
-			this.tbRes6.AccessibleDescription = resources.GetString("tbRes6.AccessibleDescription");
-			this.tbRes6.AccessibleName = resources.GetString("tbRes6.AccessibleName");
-			this.tbRes6.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbRes6.Anchor")));
-			this.tbRes6.AutoSize = ((bool)(resources.GetObject("tbRes6.AutoSize")));
-			this.tbRes6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbRes6.BackgroundImage")));
-			this.tbRes6.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbRes6.Dock")));
-			this.tbRes6.Enabled = ((bool)(resources.GetObject("tbRes6.Enabled")));
-			this.tbRes6.Font = ((System.Drawing.Font)(resources.GetObject("tbRes6.Font")));
-			this.tbRes6.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbRes6.ImeMode")));
-			this.tbRes6.Location = ((System.Drawing.Point)(resources.GetObject("tbRes6.Location")));
-			this.tbRes6.MaxLength = ((int)(resources.GetObject("tbRes6.MaxLength")));
-			this.tbRes6.Multiline = ((bool)(resources.GetObject("tbRes6.Multiline")));
-			this.tbRes6.Name = "tbRes6";
-			this.tbRes6.PasswordChar = ((char)(resources.GetObject("tbRes6.PasswordChar")));
-			this.tbRes6.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbRes6.RightToLeft")));
-			this.tbRes6.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbRes6.ScrollBars")));
-			this.tbRes6.Size = ((System.Drawing.Size)(resources.GetObject("tbRes6.Size")));
-			this.tbRes6.TabIndex = ((int)(resources.GetObject("tbRes6.TabIndex")));
-			this.tbRes6.Text = resources.GetString("tbRes6.Text");
-			this.tbRes6.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbRes6.TextAlign")));
-			this.tbRes6.Visible = ((bool)(resources.GetObject("tbRes6.Visible")));
-			this.tbRes6.WordWrap = ((bool)(resources.GetObject("tbRes6.WordWrap")));
-			this.tbRes6.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-			this.tbRes6.Validated += new System.EventHandler(this.hex32_Validated);
-			this.tbRes6.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+			this.tbFaceAnimID.AccessibleDescription = resources.GetString("tbFaceAnimID.AccessibleDescription");
+			this.tbFaceAnimID.AccessibleName = resources.GetString("tbFaceAnimID.AccessibleName");
+			this.tbFaceAnimID.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFaceAnimID.Anchor")));
+			this.tbFaceAnimID.AutoSize = ((bool)(resources.GetObject("tbFaceAnimID.AutoSize")));
+			this.tbFaceAnimID.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFaceAnimID.BackgroundImage")));
+			this.tbFaceAnimID.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFaceAnimID.Dock")));
+			this.tbFaceAnimID.Enabled = ((bool)(resources.GetObject("tbFaceAnimID.Enabled")));
+			this.tbFaceAnimID.Font = ((System.Drawing.Font)(resources.GetObject("tbFaceAnimID.Font")));
+			this.tbFaceAnimID.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFaceAnimID.ImeMode")));
+			this.tbFaceAnimID.Location = ((System.Drawing.Point)(resources.GetObject("tbFaceAnimID.Location")));
+			this.tbFaceAnimID.MaxLength = ((int)(resources.GetObject("tbFaceAnimID.MaxLength")));
+			this.tbFaceAnimID.Multiline = ((bool)(resources.GetObject("tbFaceAnimID.Multiline")));
+			this.tbFaceAnimID.Name = "tbFaceAnimID";
+			this.tbFaceAnimID.PasswordChar = ((char)(resources.GetObject("tbFaceAnimID.PasswordChar")));
+			this.tbFaceAnimID.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFaceAnimID.RightToLeft")));
+			this.tbFaceAnimID.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFaceAnimID.ScrollBars")));
+			this.tbFaceAnimID.Size = ((System.Drawing.Size)(resources.GetObject("tbFaceAnimID.Size")));
+			this.tbFaceAnimID.TabIndex = ((int)(resources.GetObject("tbFaceAnimID.TabIndex")));
+			this.tbFaceAnimID.Text = resources.GetString("tbFaceAnimID.Text");
+			this.tbFaceAnimID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFaceAnimID.TextAlign")));
+			this.tbFaceAnimID.Visible = ((bool)(resources.GetObject("tbFaceAnimID.Visible")));
+			this.tbFaceAnimID.WordWrap = ((bool)(resources.GetObject("tbFaceAnimID.WordWrap")));
+			this.tbFaceAnimID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbFaceAnimID.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbFaceAnimID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label30
 			// 
@@ -2108,30 +2141,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label25.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.TextAlign")));
 			this.label25.Visible = ((bool)(resources.GetObject("label25.Visible")));
 			// 
-			// btnAppend
-			// 
-			this.btnAppend.AccessibleDescription = resources.GetString("btnAppend.AccessibleDescription");
-			this.btnAppend.AccessibleName = resources.GetString("btnAppend.AccessibleName");
-			this.btnAppend.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAppend.Anchor")));
-			this.btnAppend.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAppend.BackgroundImage")));
-			this.btnAppend.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAppend.Dock")));
-			this.btnAppend.Enabled = ((bool)(resources.GetObject("btnAppend.Enabled")));
-			this.btnAppend.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAppend.FlatStyle")));
-			this.btnAppend.Font = ((System.Drawing.Font)(resources.GetObject("btnAppend.Font")));
-			this.btnAppend.Image = ((System.Drawing.Image)(resources.GetObject("btnAppend.Image")));
-			this.btnAppend.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.ImageAlign")));
-			this.btnAppend.ImageIndex = ((int)(resources.GetObject("btnAppend.ImageIndex")));
-			this.btnAppend.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAppend.ImeMode")));
-			this.btnAppend.Location = ((System.Drawing.Point)(resources.GetObject("btnAppend.Location")));
-			this.btnAppend.Name = "btnAppend";
-			this.btnAppend.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAppend.RightToLeft")));
-			this.btnAppend.Size = ((System.Drawing.Size)(resources.GetObject("btnAppend.Size")));
-			this.btnAppend.TabIndex = ((int)(resources.GetObject("btnAppend.TabIndex")));
-			this.btnAppend.Text = resources.GetString("btnAppend.Text");
-			this.btnAppend.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.TextAlign")));
-			this.btnAppend.Visible = ((bool)(resources.GetObject("btnAppend.Visible")));
-			this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
-			// 
 			// TtabForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2203,11 +2212,11 @@ namespace SimPe.PackedFiles.UserInterface
 				tbAttenuationValue.Text = item.AttenuationValue.ToString("N8");
 				tbAutonomy.Text = "0x"+Helper.HexString(item.Autonomy);
 				tbJoinIndex.Text = "0x"+Helper.HexString(item.JoinIndex);
-				tbRes5.Text = "0x"+Helper.HexString(item.Res5);
-				tbRes6.Text = "0x"+Helper.HexString(item.Res6);
-				tbRes7.Text = item.Res7.ToString("N8");
-				tbRes8.Text = "0x"+Helper.HexString(item.Res8);
-				tbRes9.Text = "0x"+Helper.HexString(item.Res9);
+				tbUIDispType.Text = "0x"+Helper.HexString(item.UIDisplayType);
+				tbFaceAnimID.Text = "0x"+Helper.HexString(item.FacialAnimationID);
+				tbMemIterMult.Text = item.MemoryIterativeMultiplier.ToString("N8");
+				tbObjType.Text = "0x"+Helper.HexString(item.ObjectType);
+				tbModelTabID.Text = "0x"+Helper.HexString(item.ModelTableID);
 
 				doFlags();
 
@@ -2221,7 +2230,7 @@ namespace SimPe.PackedFiles.UserInterface
 				cbAttenuationCode.SelectedIndex = -1;
 				tbGuardian.Text = tbAction.Text = lbguard.Text = lbaction.Text = tbFlags.Text = tbFlags2.Text =
 					tbStringIndex.Text = tbAttenuationValue.Text = tbAutonomy.Text = tbJoinIndex.Text =
-					tbRes5.Text = tbRes6.Text = tbRes7.Text = tbRes8.Text = tbRes9.Text = 
+					tbUIDispType.Text = tbFaceAnimID.Text = tbMemIterMult.Text = tbObjType.Text = tbModelTabID.Text = 
 					"";
 				for (int i = 0; i < alFlags.Count; i++) ((CheckBox)alFlags[i]).Checked = false;
 				this.tabControl1.Enabled = false;
@@ -2426,11 +2435,11 @@ namespace SimPe.PackedFiles.UserInterface
 		 * attenuationvalue - uint   - 8 hex digits
 		 * autonomy         - uint   - 8 hex digits
 		 * joinindex        - uint   - 8 hex digits
-		 * res5             - ushort - 4 hex digits
-		 * res6             - uint   - 8 hex digits
-		 * res7             - float  - decimal digits and "."
-		 * res8             - uint   - 8 hex digits
-		 * res9             - uint   - 8 hex digits
+		 * uidisplaytype    - ushort - 4 hex digits
+		 * facialanimation  - uint   - 8 hex digits
+		 * memoryitermult   - float  - decimal digits and "."
+		 * objecttype       - uint   - 8 hex digits
+		 * modeltableid     - uint   - 8 hex digits
 		 */
 
 
@@ -2457,7 +2466,7 @@ namespace SimPe.PackedFiles.UserInterface
 					doFlags();
 					break;
 				case 3: currentItem.Flags2 = val; break;
-				case 4: currentItem.Res5 = val; break;
+				case 4: currentItem.UIDisplayType = val; break;
 			}
 			internalchg = false;
 		}
@@ -2477,9 +2486,9 @@ namespace SimPe.PackedFiles.UserInterface
 					lbttab.Items[lbttab.SelectedIndex] = currentItem;
 					break;
 				case 2: currentItem.Autonomy = val; break;
-				case 3: currentItem.Res6 = val; break;
-				case 4: currentItem.Res8 = val; break;
-				case 5: currentItem.Res9 = val; break;
+				case 3: currentItem.FacialAnimationID = val; break;
+				case 4: currentItem.ObjectType = val; break;
+				case 5: currentItem.ModelTableID = val; break;
 				case 6: currentItem.JoinIndex = val; break;
 			}
 			internalchg = false;
@@ -2495,7 +2504,7 @@ namespace SimPe.PackedFiles.UserInterface
 			switch (alFloats.IndexOf(sender))
 			{
 				case 0: currentItem.AttenuationValue = val; break;
-				case 1: currentItem.Res7 = val; break;
+				case 1: currentItem.MemoryIterativeMultiplier = val; break;
 			}
 			internalchg = false;
 		}
@@ -2524,7 +2533,7 @@ namespace SimPe.PackedFiles.UserInterface
 					doFlags();
 					break;
 				case 3: currentItem.Flags2 = val = origItem.Flags2; break;
-				case 4: currentItem.Res5 = val = origItem.Res5; break;
+				case 4: currentItem.UIDisplayType = val = origItem.UIDisplayType; break;
 			}
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
@@ -2547,9 +2556,9 @@ namespace SimPe.PackedFiles.UserInterface
 					lbttab.Items[lbttab.SelectedIndex] = currentItem;
 					break;
 				case 2: currentItem.Autonomy = val = origItem.Autonomy; break;
-				case 3: currentItem.Res6 = val = origItem.Res6; break;
-				case 4: currentItem.Res8 = val = origItem.Res8; break;
-				case 5: currentItem.Res9 = val = origItem.Res9; break;
+				case 3: currentItem.FacialAnimationID = val = origItem.FacialAnimationID; break;
+				case 4: currentItem.ObjectType = val = origItem.ObjectType; break;
+				case 5: currentItem.ModelTableID = val = origItem.ModelTableID; break;
 				case 6: currentItem.JoinIndex = val = origItem.JoinIndex; break;
 			}
 
@@ -2569,7 +2578,7 @@ namespace SimPe.PackedFiles.UserInterface
 			switch (alFloats.IndexOf(sender))
 			{
 				case 0: currentItem.AttenuationValue = val = origItem.AttenuationValue; break;
-				case 1: currentItem.Res7 = val = origItem.Res7; break;
+				case 1: currentItem.MemoryIterativeMultiplier = val = origItem.MemoryIterativeMultiplier; break;
 			}
 
 			((TextBox)sender).Text = val.ToString("N8");
