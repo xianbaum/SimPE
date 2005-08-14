@@ -139,6 +139,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 			ComboBox[] cbb = { cbAttenuationCode };
 			alComboBox = new ArrayList(cbb);
+
+#if !(INPROGRESS || DEBUG)
+			this.btnAppend.Visible = false;
+#endif
 		}
 
 		/// <summary>

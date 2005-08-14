@@ -91,6 +91,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 			Control[] ab = { btnBigString, btnBigDesc };
 			alBigBtn = new ArrayList(ab);
+
+#if !(INPROGRESS || DEBUG)
+			this.btnAppend.Visible = false;
+#endif
 		}
 
 		/// <summary>
