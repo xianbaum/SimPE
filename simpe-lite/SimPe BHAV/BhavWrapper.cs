@@ -632,7 +632,7 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		private ushort formatSpecificTarget(ushort addr)
+		private ushort formatSpecificSetAddr(ushort addr)
 		{
 			switch (parent.Header.Format)
 			{
@@ -649,7 +649,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		private ushort formatSpecificAddr(ushort target)
+		private ushort formatSpecificGetAddr(ushort target)
 		{
 			switch (parent.Header.Format)
 			{
@@ -668,12 +668,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public ushort Target1
 		{
-			get { return formatSpecificTarget(addr1); }
+			get { return addr1; }
 			set
 			{
-				if (addr1 != formatSpecificAddr(value))
+				if (addr1 != value)
 				{
-					addr1 = formatSpecificAddr(value);
+					addr1 = value;
 					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
@@ -681,12 +681,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public ushort Target2
 		{
-			get { return formatSpecificTarget(addr2); }
+			get { return addr2; }
 			set
 			{
-				if (addr2 != formatSpecificAddr(value))
+				if (addr2 != value)
 				{
-					addr2 = formatSpecificAddr(value);
+					addr2 = value;
 					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
@@ -799,13 +799,13 @@ namespace SimPe.PackedFiles.Wrapper
 			opcode = reader.ReadUInt16();
 			if (parent.Header.Format < 0x8007)
 			{
-				addr1 = (ushort)reader.ReadByte();
-				addr2 = (ushort)reader.ReadByte();
+				addr1 = formatSpecificSetAddr((ushort)reader.ReadByte());
+				addr2 = formatSpecificSetAddr((ushort)reader.ReadByte());
 			}
 			else
 			{
-				addr1 = reader.ReadUInt16();
-				addr2 = reader.ReadUInt16();
+				addr1 = formatSpecificSetAddr(reader.ReadUInt16());
+				addr2 = formatSpecificSetAddr(reader.ReadUInt16());
 			}
 
 			if (parent.Header.Format < 0x8003)
@@ -837,13 +837,13 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(opcode);
 			if (parent.Header.Format < 0x8007)
 			{
-				writer.Write((byte)formatSpecificAddr(addr1));
-				writer.Write((byte)formatSpecificAddr(addr2));
+				writer.Write((byte)formatSpecificGetAddr(addr1));
+				writer.Write((byte)formatSpecificGetAddr(addr2));
 			}
 			else
 			{
-				writer.Write(addr1);
-				writer.Write(addr2);
+				writer.Write(formatSpecificGetAddr(addr1));
+				writer.Write(formatSpecificGetAddr(addr2));
 			}
 
 			if (parent.Header.Format < 0x8003)

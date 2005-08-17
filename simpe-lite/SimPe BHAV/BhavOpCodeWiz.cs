@@ -79,7 +79,6 @@ namespace SimPe.PackedFiles.UserInterface
 		#region BhavOpCodeWizUI
 		//the current SemiGroup
 		private uint lastSemiGroup = 0;
-		private uint lastGroup = 0;
 
 		public enum Flags : ushort
 		{
@@ -201,10 +200,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void Locals(Bhav wrapper)
 		{
 			if (wrapper == null || wrapper.Opcodes == null || wrapper.Package == null || wrapper.FileDescriptor == null) return;
-			if (lastGroup == wrapper.FileDescriptor.Group) return;
 
 			this.lbprivate.Items.Clear();
-			lastGroup = wrapper.FileDescriptor.Group;
 
 			Bhav bhav = new Bhav(wrapper.Opcodes);
 			bhav.Package = wrapper.Package;
