@@ -1,4 +1,13 @@
 
+17 August 2005 19:08 - Refresh view of local BHAVs every time; fix Target/Addr per format handling
+  SimPe BHAV\
+    BhavOpCodeWiz.cs 1.5
+    BhavWrapper.cs 1.26
+
+17 August 2005 19:05 - Only show the Append button in Bhav in Debug/InProgress builds
+  SimPe BHAV\
+    BhavForm.cs 1.33
+
 14 August 2005 12:05 - Only show the Append button in Str and Ttab in Debug/InProgress builds
   SimPe BHAV\
     StrForm.cs 1.14
