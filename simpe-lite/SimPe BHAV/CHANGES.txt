@@ -1,4 +1,9 @@
 
+21 August 2005 14:00 - Str: Fix off-by-one bug, focus Title on row selection
+  SimPe BHAV\
+    StrForm.cs 1.17
+    StrForm.resx 1.13
+
 21 August 2005 12:31 - Str: StrForm tidy up, Str wrapper made enumerable
   SimPe BHAV\
     StrForm.cs 1.16
