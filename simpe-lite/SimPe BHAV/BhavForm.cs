@@ -146,9 +146,6 @@ namespace SimPe.PackedFiles.UserInterface
 			ComboBox[] cb = { tba1 ,tba2 ,cbFormat ,};
 			alHex16cb = new ArrayList(cb);
 
-#if !(INPROGRESS || DEBUG)
-			this.btnAppend.Visible = false;
-#endif
 		}
 
 		/// <summary>
