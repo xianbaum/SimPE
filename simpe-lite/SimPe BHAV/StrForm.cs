@@ -199,6 +199,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnLngClear.Text = "Clear " + ((SimPe.Data.MetaData.Languages)lid).ToString();
 			this.btnLngClear.Enabled = (lid > 1) && !this.cbLngSelect.SelectedItem.ToString().EndsWith(" (empty)");
 
+			while (count > 0 && wrapper[1, count-1] == null && wrapper.Add(1, "", "") >= 0);
 			while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
 			this.lvStrItems.Columns[2].Text = this.cbLngSelect.SelectedItem.ToString();
 			for (int i = 0; i < count; i++)
@@ -261,7 +262,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			setLid(l);
-			setIndex((i > count) ? count - 1 : i);
+			setIndex((i >= count) ? count - 1 : i);
 		}
 
 		private void LngClearAll()
@@ -280,7 +281,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			setLid(l);
-			setIndex((i > count) ? count - 1 : i);
+			setIndex((i >= count) ? count - 1 : i);
 		}
 		private void StrAdd()
 		{
@@ -331,7 +332,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			setLid(l);
-			setIndex((i > count) ? count - 1 : i);
+			setIndex((i >= count) ? count - 1 : i);
 		}
 
 		private void StrClear()
@@ -352,7 +353,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			setLid(l);
-			setIndex((i > count) ? count - 1 : i);
+			setIndex((i >= count) ? count - 1 : i);
 		}
 
 		public void Append(uint instance)
@@ -388,7 +389,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			setLid(l);
-			setIndex((i > count) ? count - 1 : i);
+			setIndex((i >= count) ? count - 1 : i);
 		}
 
 		private void Commit()
@@ -414,7 +415,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			setLid(l);
-			setIndex((i > count) ? count - 1 : i);
+			setIndex((i >= count) ? count - 1 : i);
 		}
 
 
@@ -579,6 +580,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// 
 			this.lvStrItems.AccessibleDescription = resources.GetString("lvStrItems.AccessibleDescription");
 			this.lvStrItems.AccessibleName = resources.GetString("lvStrItems.AccessibleName");
+			this.lvStrItems.Activation = System.Windows.Forms.ItemActivation.OneClick;
 			this.lvStrItems.Alignment = ((System.Windows.Forms.ListViewAlignment)(resources.GetObject("lvStrItems.Alignment")));
 			this.lvStrItems.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvStrItems.Anchor")));
 			this.lvStrItems.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvStrItems.BackgroundImage")));
@@ -606,6 +608,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvStrItems.Text = resources.GetString("lvStrItems.Text");
 			this.lvStrItems.View = System.Windows.Forms.View.Details;
 			this.lvStrItems.Visible = ((bool)(resources.GetObject("lvStrItems.Visible")));
+			this.lvStrItems.ItemActivate += new System.EventHandler(this.lvStrItems_ItemActivate);
 			this.lvStrItems.SelectedIndexChanged += new System.EventHandler(this.lvStrItems_SelectedIndexChanged);
 			// 
 			// chString
@@ -1304,6 +1307,11 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (internalchg) return;
 			setIndex((this.lvStrItems.SelectedIndices.Count > 0) ? this.lvStrItems.SelectedIndices[0] : -1);
+		}
+
+		private void lvStrItems_ItemActivate(object sender, System.EventArgs e)
+		{
+			this.rtbTitle.Focus();
 		}
 
 
