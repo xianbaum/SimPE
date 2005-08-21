@@ -37,6 +37,7 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
+		, IEnumerable
 	{
 		#region Attributes
 		/// <summary>
@@ -215,6 +216,7 @@ namespace SimPe.PackedFiles.Wrapper
 					else break;
 				}
 		}
+
 		#endregion
 
 		/// <summary>
@@ -355,6 +357,11 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		#endregion		
+
+		#region IEnumerable Members
+		public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+
+		#endregion
 
 		#region StrItemArrayList
 		private class StrItemArrayList : ArrayList
