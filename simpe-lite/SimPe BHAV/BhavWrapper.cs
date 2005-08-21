@@ -511,6 +511,7 @@ namespace SimPe.PackedFiles.Wrapper
 			if (this.Count >= ((parent.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
 				return -1;
 
+			item.Parent = this.parent;
 			int retVal = base.Add(item);
 			if (!internalchg)
 				parent.OnWrapperChanged(this, new EventArgs());
