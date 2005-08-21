@@ -1,4 +1,9 @@
 
+21 August 2005 10:57 - Str: New Str form
+  SimPe BHAV\
+    StrForm.cs 1.15
+    StrForm.resx 1.12
+
 21 August 2005 08:20 - Bhav: Re-parent instructions on Add
   SimPe BHAV\
     BhavWrapper.cs 1.27
