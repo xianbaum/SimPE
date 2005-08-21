@@ -1,4 +1,8 @@
 
+21 August 2005 14:46 - Show the Append button in Bhav in all builds
+  SimPe BHAV\
+    BhavForm.cs 1.34
+
 21 August 2005 14:00 - Str: Fix off-by-one bug, focus Title on row selection
   SimPe BHAV\
     StrForm.cs 1.17
