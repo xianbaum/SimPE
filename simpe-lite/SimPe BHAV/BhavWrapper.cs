@@ -164,7 +164,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			filename = reader.ReadBytes(64);
 			header.Unserialize(reader);
-			instructions = new BhavInstList(this, reader);
+			instructions.Unserialize(reader);
 		}
 
 		/// <summary>
@@ -424,20 +424,11 @@ namespace SimPe.PackedFiles.Wrapper
 		public BhavInstList(Bhav parent) : base() { this.parent = parent; }
 
 
-		public BhavInstList(Bhav parent, System.IO.BinaryReader reader)
-			: base((int)parent.Header.InstructionCount)
-		{
-			this.parent = parent;
-			internalchg = true;
-			Unserialise(parent, reader);
-			internalchg = false;
-		}
-
-
 		#region BhavInstList
-		private void Unserialise(Bhav parent, System.IO.BinaryReader reader)
+		public void Unserialize(System.IO.BinaryReader reader)
 		{
 			internalchg = true;
+			this.Clear();
 			for (uint i=0; i < parent.Header.InstructionCount; i++)
 				this.Add(new Instruction(parent, reader));
 			internalchg = false;
@@ -511,6 +502,7 @@ namespace SimPe.PackedFiles.Wrapper
 			if (this.Count >= ((parent.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
 				return -1;
 
+			item.Parent = this.parent;
 			int retVal = base.Add(item);
 			if (!internalchg)
 				parent.OnWrapperChanged(this, new EventArgs());
