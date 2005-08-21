@@ -608,7 +608,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvStrItems.Text = resources.GetString("lvStrItems.Text");
 			this.lvStrItems.View = System.Windows.Forms.View.Details;
 			this.lvStrItems.Visible = ((bool)(resources.GetObject("lvStrItems.Visible")));
-			this.lvStrItems.ItemActivate += new System.EventHandler(this.lvStrItems_ItemActivate);
 			this.lvStrItems.SelectedIndexChanged += new System.EventHandler(this.lvStrItems_SelectedIndexChanged);
 			// 
 			// chString
