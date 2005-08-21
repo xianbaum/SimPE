@@ -1,4 +1,9 @@
 
+21 August 2005 14:55 - Str: don't focus Title on row selection after all
+  SimPe BHAV\
+    StrForm.cs 1.18
+    StrForm.resx 1.14
+
 21 August 2005 14:46 - Show the Append button in Bhav in all builds
   SimPe BHAV\
     BhavForm.cs 1.34
