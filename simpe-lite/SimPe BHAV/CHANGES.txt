@@ -1,4 +1,9 @@
 
+21 August 2005 12:31 - Str: StrForm tidy up, Str wrapper made enumerable
+  SimPe BHAV\
+    StrForm.cs 1.16
+    StrWrapper 1.11
+
 21 August 2005 10:57 - Str: New Str form
   SimPe BHAV\
     StrForm.cs 1.15
