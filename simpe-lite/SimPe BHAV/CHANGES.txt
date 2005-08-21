@@ -1,4 +1,8 @@
 
+21 August 2005 08:20 - Bhav: Re-parent instructions on Add
+  SimPe BHAV\
+    BhavWrapper.cs 1.27
+
 17 August 2005 19:08 - Refresh view of local BHAVs every time; fix Target/Addr per format handling
   SimPe BHAV\
     BhavOpCodeWiz.cs 1.5
