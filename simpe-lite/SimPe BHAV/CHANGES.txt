@@ -1,12 +1,12 @@
 
 21 August 2005 08:12 - New Str form, clear string button, random (untested) code changes
   SimPe BHAV\
-    StrForm.cs 1.15
-    StrForm.resx 1.12
+    StrForm.cs 1.14.2.1
+    StrForm.resx 1.11.2.1
 
 21 August 2005 08:09 - Bhav: Re-parent instructions on Add, changes to unserialize
   SimPe BHAV\
-    BhavWrapper.cs 1.27
+    BhavWrapper.cs 1.26.2.1
 
 17 August 2005 19:08 - Refresh view of local BHAVs every time; fix Target/Addr per format handling
   SimPe BHAV\
