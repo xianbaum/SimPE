@@ -1,4 +1,13 @@
 
+27 August 2005 12:44 - Make "done" pjse wrappers into ICollections
+  SimPe BHAV\
+    BhavForm.cs 1.35
+    BhavInstListControl.cs 1.26
+    BhavInstListItem.cs 1.13
+    BhavWrapper.cs 1.28
+    StrWrapper.cs 1.12
+    TtabWrapper.cs 1.15
+
 21 August 2005 14:55 - Str: don't focus Title on row selection after all
   SimPe BHAV\
     StrForm.cs 1.18
