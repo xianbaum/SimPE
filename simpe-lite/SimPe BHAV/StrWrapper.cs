@@ -37,7 +37,7 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
-		, IEnumerable
+		, ICollection
 	{
 		#region Attributes
 		/// <summary>
@@ -83,7 +83,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (!Helper.ToString(filename).Equals(value))
 				{
 					filename = Helper.ToBytes(value, 0x40);
-					OnWrapperChanged();
+					OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -99,15 +99,10 @@ namespace SimPe.PackedFiles.Wrapper
 				if (format != value)
 				{
 					format = value;
-					OnWrapperChanged();
+					OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
-
-		/// <summary>
-		/// Returns number of strings
-		/// </summary>
-		public ushort Count { get { return (ushort)items.Count; } }
 
 
 		/// <summary>
@@ -124,7 +119,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (items[index] == null || !items[index].Equals(value))
 				{
 					items[index] = value;
-					OnWrapperChanged();
+					OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -175,7 +170,7 @@ namespace SimPe.PackedFiles.Wrapper
 			item.Parent = this;
 			int result = items.Add(item);
 			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))
-				OnWrapperChanged();
+				OnWrapperChanged(this, new EventArgs());
 			return result;
 		}
 
@@ -196,7 +191,7 @@ namespace SimPe.PackedFiles.Wrapper
 					);
 
 			items.RemoveAt(index);
-			if (changed) OnWrapperChanged();
+			if (changed) OnWrapperChanged(this, new EventArgs());
 		}
 
 		public void CleanUp()
@@ -237,19 +232,24 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		internal virtual void OnWrapperChanged()
+		internal virtual void OnWrapperChanged(object sender, EventArgs e)
 		{
 			this.Changed = true;
 
 			if (internalchg) return;
 			if (WrapperChanged != null) 
 			{
-				WrapperChanged(this, new EventArgs());
+				WrapperChanged(sender, e);
 			}
 		}
 
 
 		#region AbstractWrapper Member
+		public override bool CheckVersion(uint version) 
+		{
+			return true;
+		}
+
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
 			return new UserInterface.StrForm();
@@ -270,23 +270,6 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		protected override void Unserialize(System.IO.BinaryReader reader)
-		{
-			filename = reader.ReadBytes(0x40);
-			format = reader.ReadUInt16();
-			ushort count = reader.ReadUInt16();
-			items = new StrItemArrayList(count);
-
-			for (int i = 0; i < count && (limit == 0 || i < limit); i++)
-				items.Add(new StrItem(this, reader));
-
-			CleanUp();
-		}
-
-		/// <summary>
 		/// Serializes a the Attributes stored in this Instance to the BinaryStream
 		/// </summary>
 		/// <param name="writer">The Stream the Data should be stored to</param>
@@ -304,30 +287,43 @@ namespace SimPe.PackedFiles.Wrapper
 			foreach (StrItem i in items)
 				i.Serialize(writer);
 		}
-		#endregion
-
-		#region IWrapper member
-		public override bool CheckVersion(uint version) 
+		/// <summary>
+		/// Unserializes a BinaryStream into the Attributes of this Instance
+		/// </summary>
+		/// <param name="reader">The Stream that contains the FileData</param>
+		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
-			return true;
-		}
-		#endregion
+			filename = reader.ReadBytes(0x40);
+			format = reader.ReadUInt16();
+			ushort count = reader.ReadUInt16();
+			items = new StrItemArrayList(count);
 
-		#region IFileWrapperSaveExtension Member		
-		//all covered by Serialize()
+			for (int i = 0; i < count && (limit == 0 || i < limit); i++)
+				items.Add(new StrItem(this, reader));
+
+			CleanUp();
+		}
+
 		#endregion
 
 		#region IFileWrapper Member
-		public override string Description
+		/// <summary>
+		/// Returns a list of File Types this Plugin can process
+		/// </summary>
+		public uint[] AssignableTypes
 		{
 			get
 			{
-				return "filename=" + this.FileName
-					+ ", lines=" + Count.ToString()
-					+ ", first=" + this[0x1, 0]
-					;
+				uint[] types = {
+									 0x53545223  // STR#
+									,0x54544173  // TTAs
+									,0x43545353  // CTSS
+							   };
+			
+				return types;
 			}
 		}
+
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin
 		/// </summary>
@@ -339,28 +335,20 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		/// <summary>
-		/// Returns a list of File Types this Plugin can process
-		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {
-								    0x53545223  // STR#
-								   ,0x54544173  // TTAs
-								   ,0x43545353  // CTSS
-							   };
-			
-				return types;
-			}
-		}
-
 		#endregion		
 
+		#region IFileWrapperSaveExtension Member		
+		//all covered by AbstractWrapper
+		#endregion
+
+		#region ICollection Members
+		public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+		public int Count { get { return items.Count; } }
+		public bool IsSynchronized { get { return items.IsSynchronized; } }
+		public object SyncRoot { get { return items.SyncRoot; } }
 		#region IEnumerable Members
 		public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
-
+		#endregion
 		#endregion
 
 		#region StrItemArrayList
@@ -413,7 +401,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (lid != value)
 				{
 					lid = value;
-					if (parent != null) parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -426,7 +414,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (title != value)
 				{
 					title = value;
-					if (parent != null) parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -439,7 +427,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (desc != value)
 				{
 					desc = value;
-					if (parent != null) parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}

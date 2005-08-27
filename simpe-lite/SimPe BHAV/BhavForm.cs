@@ -229,7 +229,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void UpdateInstPanel()
 		{
 			internalchg = true;
-			if (wrapper.Instructions.IndexOf(currentInst) < 0)
+			if (wrapper.IndexOf(currentInst) < 0)
 			{
 				SetReadOnly(true);
 				this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = true;
@@ -270,7 +270,7 @@ namespace SimPe.PackedFiles.UserInterface
 					b = Instruction.LoadGlobalBHAV(inst.OpCode);
 				this.llopenbhav.Enabled = (b!=null);
 
-				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Instructions.Count > 1;
+				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
 				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 
@@ -319,7 +319,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.btnOperandWiz.Enabled = BhavOperandWiz.Available(inst);
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
-				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Instructions.Count - 1;
+				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Count - 1;
 			}
 			internalchg = false;
 		}
@@ -2358,14 +2358,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private void pnflowcontainer_SelectedInstChanged(object sender, System.EventArgs e)
 		{
 			int index = pnflowcontainer.SelectedIndex;
-			if (index < 0 || index >= wrapper.Instructions.Count)
+			if (index < 0 || index >= wrapper.Count)
 			{
 				currentInst = null;
 				origInst = null;
 			}
 			else
 			{
-				currentInst = wrapper.Instructions[pnflowcontainer.SelectedIndex];
+				currentInst = wrapper[pnflowcontainer.SelectedIndex];
 				origInst = currentInst.Clone();
 			}
 			UpdateInstPanel();
@@ -2418,7 +2418,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnCancel_Clicked(object sender, System.EventArgs e)
 		{
-			wrapper.Instructions[pnflowcontainer.SelectedIndex] = origInst.Clone();
+			wrapper[pnflowcontainer.SelectedIndex] = origInst.Clone();
 			pnflowcontainer_SelectedInstChanged(null, null);
 		}
 

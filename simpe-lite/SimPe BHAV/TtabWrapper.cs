@@ -37,6 +37,7 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
+		, ICollection
 	{
 		#region Attributes
 		/// <summary>
@@ -107,11 +108,6 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-
-		/// <summary>
-		/// Returns the number of Ttab Items in the file
-		/// </summary>
-		public int Count { get { return items.Count; } }
 
 
 		/// <summary>
@@ -216,15 +212,19 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public int xAddItem()
-		{
-			int val = items.Add(new TtabItem(this));
-			OnWrapperChanged();
-			return val;
-		}
-
 		
 		#region AbstractWrapper Member
+		public override bool CheckVersion(uint version) 
+		{
+			if ( (version==0012) //0.00
+				|| (version==0013) //0.10
+				) 
+			{
+				return true;
+			}
+
+			return false;
+		}
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
 			return new UserInterface.TtabForm();
@@ -247,6 +247,28 @@ namespace SimPe.PackedFiles.Wrapper
 				); 
 		}
 
+		/// <summary>
+		/// Serializes a the Attributes stored in this Instance to the BinaryStream
+		/// </summary>
+		/// <param name="writer">The Stream the Data should be stored to</param>
+		/// <remarks>
+		/// Be sure that the Position of the stream is Proper on 
+		/// return (i.e. must point to the first Byte after your actual File)
+		/// </remarks>
+		protected override void Serialize(System.IO.BinaryWriter writer)
+		{
+			writer.Write(filename);
+			writer.Write(header[0]);
+			writer.Write(header[1]);
+			writer.Write(header[2]);
+
+			writer.Write((ushort)items.Count);
+
+			for (int i = 0; i < items.Count; i++)
+				if (items[i] != null) ((TtabItem)items[i]).Serialize(writer);
+
+			writer.Write(footer);
+		}
 		/// <summary>
 		/// Unserializes a BinaryStream into the Attributes of this Instance
 		/// </summary>
@@ -277,61 +299,9 @@ namespace SimPe.PackedFiles.Wrapper
 			footer = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 		}
 
-		/// <summary>
-		/// Serializes a the Attributes stored in this Instance to the BinaryStream
-		/// </summary>
-		/// <param name="writer">The Stream the Data should be stored to</param>
-		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
-		/// return (i.e. must point to the first Byte after your actual File)
-		/// </remarks>
-		protected override void Serialize(System.IO.BinaryWriter writer)
-		{
-			writer.Write(filename);
-			writer.Write(header[0]);
-			writer.Write(header[1]);
-			writer.Write(header[2]);
-
-			writer.Write((ushort)items.Count);
-
-			for (int i = 0; i < items.Count; i++)
-				if (items[i] != null) ((TtabItem)items[i]).Serialize(writer);
-
-			writer.Write(footer);
-		}
-		#endregion
-
-		#region IWrapper member
-		public override bool CheckVersion(uint version) 
-		{
-			if ( (version==0012) //0.00
-				|| (version==0013) //0.10
-				) 
-			{
-				return true;
-			}
-
-			return false;
-		}
-		#endregion
-
-		#region IFileWrapperSaveExtension Member		
-		//all covered by Serialize()
 		#endregion
 
 		#region IFileWrapper Member
-
-		/// <summary>
-		/// Returns the Signature that can be used to identify Files processable with this Plugin
-		/// </summary>
-		public byte[] FileSignature
-		{
-			get
-			{
-				return new byte[0];
-			}
-		}
-
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process
 		/// </summary>
@@ -344,7 +314,32 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		/// <summary>
+		/// Returns the Signature that can be used to identify Files processable with this Plugin
+		/// </summary>
+		public byte[] FileSignature
+		{
+			get
+			{
+				return new byte[0];
+			}
+		}
+
 		#endregion		
+
+		#region IFileWrapperSaveExtension Member		
+		//all covered by AbstractWrapper
+		#endregion
+
+		#region ICollection Members
+		public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+		public int Count { get { return items.Count; } }
+		public bool IsSynchronized { get { return items.IsSynchronized; } }
+		public object SyncRoot { get { return items.SyncRoot; } }
+		#region IEnumerable Members
+		public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+		#endregion
+		#endregion
 
 		#region TtabItemArrayList
 		private class TtabItemArrayList : ArrayList

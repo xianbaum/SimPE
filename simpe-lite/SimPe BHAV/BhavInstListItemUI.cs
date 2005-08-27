@@ -67,7 +67,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Height = rowHeight;
 			MakeUnselected();
 
-			this.WrapperChanged(wrapper.Instructions[index], null);
+			this.WrapperChanged(wrapper[index], null);
 		}
 
 		/// <summary> 
@@ -105,7 +105,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private int index;
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			if (wrapper.Instructions.IndexOf(sender) != index) return;
+			if (wrapper.IndexOf(sender) != index) return;
 			Instruction inst = (Instruction)sender;
 
 			bhavInstListItem.Text = "";
@@ -113,12 +113,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 			trueTarget.Text = "true: "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);
-			if (inst.Target1 < wrapper.Instructions.Count)
+			if (inst.Target1 < wrapper.Count)
 				trueTarget.Links.Add(6, trueTarget.Text.Length-6, inst.Target1);
 
 			falseTarget.Text = "false: "+inst.Target2.ToString("X");
 			falseTarget.LinkArea = new LinkArea(0, 0);
-			if (inst.Target2 < wrapper.Instructions.Count)
+			if (inst.Target2 < wrapper.Count)
 				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);
 		}
 
