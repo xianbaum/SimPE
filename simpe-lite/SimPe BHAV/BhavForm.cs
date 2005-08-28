@@ -527,6 +527,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnInsFalse = new System.Windows.Forms.Button();
 			this.btnDelPescado = new System.Windows.Forms.Button();
 			this.btnLinkInge = new System.Windows.Forms.Button();
+			this.btnDelMerola = new System.Windows.Forms.Button();
 			this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
 			this.btnDel = new System.Windows.Forms.Button();
 			this.gbMove = new System.Windows.Forms.GroupBox();
@@ -538,7 +539,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.tbFlags = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
-			this.btnDelMerola = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -2052,6 +2052,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnLinkInge.Visible = ((bool)(resources.GetObject("btnLinkInge.Visible")));
 			this.btnLinkInge.Click += new System.EventHandler(this.btnLinkInge_Click);
 			// 
+			// btnDelMerola
+			// 
+			this.btnDelMerola.AccessibleDescription = resources.GetString("btnDelMerola.AccessibleDescription");
+			this.btnDelMerola.AccessibleName = resources.GetString("btnDelMerola.AccessibleName");
+			this.btnDelMerola.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDelMerola.Anchor")));
+			this.btnDelMerola.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelMerola.BackgroundImage")));
+			this.btnDelMerola.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDelMerola.Dock")));
+			this.btnDelMerola.Enabled = ((bool)(resources.GetObject("btnDelMerola.Enabled")));
+			this.btnDelMerola.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDelMerola.FlatStyle")));
+			this.btnDelMerola.Font = ((System.Drawing.Font)(resources.GetObject("btnDelMerola.Font")));
+			this.btnDelMerola.Image = ((System.Drawing.Image)(resources.GetObject("btnDelMerola.Image")));
+			this.btnDelMerola.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelMerola.ImageAlign")));
+			this.btnDelMerola.ImageIndex = ((int)(resources.GetObject("btnDelMerola.ImageIndex")));
+			this.btnDelMerola.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDelMerola.ImeMode")));
+			this.btnDelMerola.Location = ((System.Drawing.Point)(resources.GetObject("btnDelMerola.Location")));
+			this.btnDelMerola.Name = "btnDelMerola";
+			this.btnDelMerola.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDelMerola.RightToLeft")));
+			this.btnDelMerola.Size = ((System.Drawing.Size)(resources.GetObject("btnDelMerola.Size")));
+			this.btnDelMerola.TabIndex = ((int)(resources.GetObject("btnDelMerola.TabIndex")));
+			this.btnDelMerola.Text = resources.GetString("btnDelMerola.Text");
+			this.btnDelMerola.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelMerola.TextAlign")));
+			this.btnDelMerola.Visible = ((bool)(resources.GetObject("btnDelMerola.Visible")));
+			this.btnDelMerola.Click += new System.EventHandler(this.btnDelMerola_Click);
+			// 
 			// pnflowcontainer
 			// 
 			this.pnflowcontainer.AccessibleDescription = resources.GetString("pnflowcontainer.AccessibleDescription");
@@ -2316,30 +2340,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.TextAlign")));
 			this.btnAdd.Visible = ((bool)(resources.GetObject("btnAdd.Visible")));
 			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Clicked);
-			// 
-			// btnDelMerola
-			// 
-			this.btnDelMerola.AccessibleDescription = resources.GetString("btnDelMerola.AccessibleDescription");
-			this.btnDelMerola.AccessibleName = resources.GetString("btnDelMerola.AccessibleName");
-			this.btnDelMerola.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDelMerola.Anchor")));
-			this.btnDelMerola.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelMerola.BackgroundImage")));
-			this.btnDelMerola.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDelMerola.Dock")));
-			this.btnDelMerola.Enabled = ((bool)(resources.GetObject("btnDelMerola.Enabled")));
-			this.btnDelMerola.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDelMerola.FlatStyle")));
-			this.btnDelMerola.Font = ((System.Drawing.Font)(resources.GetObject("btnDelMerola.Font")));
-			this.btnDelMerola.Image = ((System.Drawing.Image)(resources.GetObject("btnDelMerola.Image")));
-			this.btnDelMerola.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelMerola.ImageAlign")));
-			this.btnDelMerola.ImageIndex = ((int)(resources.GetObject("btnDelMerola.ImageIndex")));
-			this.btnDelMerola.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDelMerola.ImeMode")));
-			this.btnDelMerola.Location = ((System.Drawing.Point)(resources.GetObject("btnDelMerola.Location")));
-			this.btnDelMerola.Name = "btnDelMerola";
-			this.btnDelMerola.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDelMerola.RightToLeft")));
-			this.btnDelMerola.Size = ((System.Drawing.Size)(resources.GetObject("btnDelMerola.Size")));
-			this.btnDelMerola.TabIndex = ((int)(resources.GetObject("btnDelMerola.TabIndex")));
-			this.btnDelMerola.Text = resources.GetString("btnDelMerola.Text");
-			this.btnDelMerola.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelMerola.TextAlign")));
-			this.btnDelMerola.Visible = ((bool)(resources.GetObject("btnDelMerola.Visible")));
-			this.btnDelMerola.Click += new System.EventHandler(this.btnDelMerola_Click);
 			// 
 			// BhavForm
 			// 
