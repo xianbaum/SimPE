@@ -1,4 +1,8 @@
 
+28 August 2005 17:24 - Typo in BHAV Wrapper
+  SimPe BHAV\
+    BhavWrapper.cs 1.29
+
 28 August 2005 15:22 - Labelling adjustments
   SimPe BHAV\
     BhavForm.cs 1.37
