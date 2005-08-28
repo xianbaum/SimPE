@@ -303,6 +303,26 @@ namespace SimPe.PackedFiles.UserInterface
 				flowitems[csel].Focus();
 		}
 
+		public void DeleteUnlinked()
+		{
+			if (csel < 0) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+			this.Parent.Cursor = Cursors.WaitCursor;
+
+			while(csel < wrapper.Count && wrapper.Count > 1)
+				wrapper.RemoveAt(wrapper.Count-1);
+
+			this.Parent.Cursor = Cursors.Default;
+			internalchg = savedstate;
+
+			csel = -1;
+			myrepaint();
+			int index = wrapper.Count - 1;
+			if (index >= 0) flowitems[index].Focus();
+		}
+
 
 		private void myrepaint()
 		{
