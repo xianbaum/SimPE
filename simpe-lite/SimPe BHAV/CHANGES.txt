@@ -1,15 +1,20 @@
 
-28 August 2005 14.30 - Reorganise StrForm (new layout, up/down buttons, enable default lang)
+28 August 2005 14:59 - Further StrForm tweaks (including some pedantry)
+  SimPe BHAV\
+    StrForm.cs 1.20
+    StrForm.resx 1.16
+
+28 August 2005 14:30 - Reorganise StrForm (new layout, up/down buttons, enable default lang)
   SimPe BHAV\
     StrForm.cs 1.19
     StrForm.resx 1.15
 
-28 August 2005 14.28 - Wrap StrBig textbox
+28 August 2005 14:28 - Wrap StrBig textbox
   SimPe BHAV\
     StrBig.cs 1.3
     StrBig.resx 1.2
 
-28 August 2005 14.26 - Merola's Delete to End of Bhav
+28 August 2005 14:26 - Merola's Delete to End of Bhav
   SimPe BHAV\
     BhavForm.cs 1.36
     BhavForm.resx 1.15
