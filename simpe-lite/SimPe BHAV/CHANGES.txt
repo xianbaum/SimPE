@@ -1,4 +1,11 @@
 
+28 August 2005 15:22 - Labelling adjustments
+  SimPe BHAV\
+    BhavForm.cs 1.37
+    BhavForm.resx 1.16
+    StrForm.resx 1.17
+    
+
 28 August 2005 14:59 - Further StrForm tweaks (including some pedantry)
   SimPe BHAV\
     StrForm.cs 1.20
