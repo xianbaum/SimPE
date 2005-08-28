@@ -284,7 +284,7 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(filename);
 			header.InstructionCount = (uint)items.Count; // oh please... because header doesn't have a parent (yet!)
 			header.Serialize(writer);
-			foreach (StrItem i in items)
+			foreach (Instruction i in items)
 				i.Serialize(writer);
 		}
 		/// <summary>
