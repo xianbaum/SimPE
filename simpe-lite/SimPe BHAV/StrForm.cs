@@ -62,8 +62,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnStrClear;
 		private System.Windows.Forms.Label lbDesc;
 		private System.Windows.Forms.CheckBox ckbDefault;
-		private System.Windows.Forms.Button btnDown;
-		private System.Windows.Forms.Button btnUp;
+		private System.Windows.Forms.Button btnStrPrev;
+		private System.Windows.Forms.Button btnStrNext;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -214,16 +214,17 @@ namespace SimPe.PackedFiles.UserInterface
 			if (i >= 0) this.lvStrItems.Items[i].Selected = true;
 			else if (index >= 0) this.lvStrItems.Items[index].Selected = false;
 			internalchg = false;
-			if (this.lvStrItems.SelectedItems.Count > 0) this.lvStrItems.SelectedItems[0].EnsureVisible();
+
+			if (this.lvStrItems.SelectedItems.Count > 0)
+			{
+				if (this.lvStrItems.Focused) this.lvStrItems.SelectedItems[0].Focused = true;
+				this.lvStrItems.SelectedItems[0].EnsureVisible();
+			}
 
 			if (index == i) return;
 			index = i;
 			displayStrItem();
 		}
-
-		private void setIndexUp() { setIndex(index+1); }
-
-		private void setIndexDown() { setIndex(index-1); }
 
 
 		private void displayStrItem()
@@ -246,8 +247,8 @@ namespace SimPe.PackedFiles.UserInterface
 				this.rtbDescription.Text = this.rtbTitle.Text = "";
 				this.rtbDescription.Enabled = this.rtbTitle.Enabled = false;
 			}
-			this.btnDown.Enabled = (index > 0);
-			this.btnUp.Enabled = (index < count - 1);
+			this.btnStrPrev.Enabled = (index > 0);
+			this.btnStrNext.Enabled = (index < count - 1);
 			internalchg = false;
 
 			this.btnStrClear.Enabled = this.btnStrDelete.Enabled = index >= 0;
@@ -455,7 +456,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (this.ckbDefault.Checked)
 				this.ckbDefault.Checked = false;
 			else
-				cbDefault_CheckedChanged(null, null);
+				ckbDefault_CheckedChanged(null, null);
 
 			if (!setHandler)
 			{
@@ -486,8 +487,8 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
 			this.strPanel = new System.Windows.Forms.Panel();
-			this.btnDown = new System.Windows.Forms.Button();
-			this.btnUp = new System.Windows.Forms.Button();
+			this.btnStrPrev = new System.Windows.Forms.Button();
+			this.btnStrNext = new System.Windows.Forms.Button();
 			this.ckbDefault = new System.Windows.Forms.CheckBox();
 			this.btnStrClear = new System.Windows.Forms.Button();
 			this.lvStrItems = new System.Windows.Forms.ListView();
@@ -528,8 +529,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMargin")));
 			this.strPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMinSize")));
 			this.strPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("strPanel.BackgroundImage")));
-			this.strPanel.Controls.Add(this.btnDown);
-			this.strPanel.Controls.Add(this.btnUp);
+			this.strPanel.Controls.Add(this.btnStrPrev);
+			this.strPanel.Controls.Add(this.btnStrNext);
 			this.strPanel.Controls.Add(this.ckbDefault);
 			this.strPanel.Controls.Add(this.btnStrClear);
 			this.strPanel.Controls.Add(this.lvStrItems);
@@ -568,53 +569,53 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Visible = ((bool)(resources.GetObject("strPanel.Visible")));
 			this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
 			// 
-			// btnDown
+			// btnStrPrev
 			// 
-			this.btnDown.AccessibleDescription = resources.GetString("btnDown.AccessibleDescription");
-			this.btnDown.AccessibleName = resources.GetString("btnDown.AccessibleName");
-			this.btnDown.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDown.Anchor")));
-			this.btnDown.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDown.BackgroundImage")));
-			this.btnDown.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDown.Dock")));
-			this.btnDown.Enabled = ((bool)(resources.GetObject("btnDown.Enabled")));
-			this.btnDown.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDown.FlatStyle")));
-			this.btnDown.Font = ((System.Drawing.Font)(resources.GetObject("btnDown.Font")));
-			this.btnDown.Image = ((System.Drawing.Image)(resources.GetObject("btnDown.Image")));
-			this.btnDown.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDown.ImageAlign")));
-			this.btnDown.ImageIndex = ((int)(resources.GetObject("btnDown.ImageIndex")));
-			this.btnDown.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDown.ImeMode")));
-			this.btnDown.Location = ((System.Drawing.Point)(resources.GetObject("btnDown.Location")));
-			this.btnDown.Name = "btnDown";
-			this.btnDown.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDown.RightToLeft")));
-			this.btnDown.Size = ((System.Drawing.Size)(resources.GetObject("btnDown.Size")));
-			this.btnDown.TabIndex = ((int)(resources.GetObject("btnDown.TabIndex")));
-			this.btnDown.Text = resources.GetString("btnDown.Text");
-			this.btnDown.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDown.TextAlign")));
-			this.btnDown.Visible = ((bool)(resources.GetObject("btnDown.Visible")));
-			this.btnDown.Click += new System.EventHandler(this.btnDown_Click);
+			this.btnStrPrev.AccessibleDescription = resources.GetString("btnStrPrev.AccessibleDescription");
+			this.btnStrPrev.AccessibleName = resources.GetString("btnStrPrev.AccessibleName");
+			this.btnStrPrev.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrPrev.Anchor")));
+			this.btnStrPrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.BackgroundImage")));
+			this.btnStrPrev.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrPrev.Dock")));
+			this.btnStrPrev.Enabled = ((bool)(resources.GetObject("btnStrPrev.Enabled")));
+			this.btnStrPrev.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrPrev.FlatStyle")));
+			this.btnStrPrev.Font = ((System.Drawing.Font)(resources.GetObject("btnStrPrev.Font")));
+			this.btnStrPrev.Image = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.Image")));
+			this.btnStrPrev.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.ImageAlign")));
+			this.btnStrPrev.ImageIndex = ((int)(resources.GetObject("btnStrPrev.ImageIndex")));
+			this.btnStrPrev.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrPrev.ImeMode")));
+			this.btnStrPrev.Location = ((System.Drawing.Point)(resources.GetObject("btnStrPrev.Location")));
+			this.btnStrPrev.Name = "btnStrPrev";
+			this.btnStrPrev.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrPrev.RightToLeft")));
+			this.btnStrPrev.Size = ((System.Drawing.Size)(resources.GetObject("btnStrPrev.Size")));
+			this.btnStrPrev.TabIndex = ((int)(resources.GetObject("btnStrPrev.TabIndex")));
+			this.btnStrPrev.Text = resources.GetString("btnStrPrev.Text");
+			this.btnStrPrev.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.TextAlign")));
+			this.btnStrPrev.Visible = ((bool)(resources.GetObject("btnStrPrev.Visible")));
+			this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
 			// 
-			// btnUp
+			// btnStrNext
 			// 
-			this.btnUp.AccessibleDescription = resources.GetString("btnUp.AccessibleDescription");
-			this.btnUp.AccessibleName = resources.GetString("btnUp.AccessibleName");
-			this.btnUp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnUp.Anchor")));
-			this.btnUp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnUp.BackgroundImage")));
-			this.btnUp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnUp.Dock")));
-			this.btnUp.Enabled = ((bool)(resources.GetObject("btnUp.Enabled")));
-			this.btnUp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnUp.FlatStyle")));
-			this.btnUp.Font = ((System.Drawing.Font)(resources.GetObject("btnUp.Font")));
-			this.btnUp.Image = ((System.Drawing.Image)(resources.GetObject("btnUp.Image")));
-			this.btnUp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnUp.ImageAlign")));
-			this.btnUp.ImageIndex = ((int)(resources.GetObject("btnUp.ImageIndex")));
-			this.btnUp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnUp.ImeMode")));
-			this.btnUp.Location = ((System.Drawing.Point)(resources.GetObject("btnUp.Location")));
-			this.btnUp.Name = "btnUp";
-			this.btnUp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnUp.RightToLeft")));
-			this.btnUp.Size = ((System.Drawing.Size)(resources.GetObject("btnUp.Size")));
-			this.btnUp.TabIndex = ((int)(resources.GetObject("btnUp.TabIndex")));
-			this.btnUp.Text = resources.GetString("btnUp.Text");
-			this.btnUp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnUp.TextAlign")));
-			this.btnUp.Visible = ((bool)(resources.GetObject("btnUp.Visible")));
-			this.btnUp.Click += new System.EventHandler(this.btnUp_Click);
+			this.btnStrNext.AccessibleDescription = resources.GetString("btnStrNext.AccessibleDescription");
+			this.btnStrNext.AccessibleName = resources.GetString("btnStrNext.AccessibleName");
+			this.btnStrNext.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrNext.Anchor")));
+			this.btnStrNext.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrNext.BackgroundImage")));
+			this.btnStrNext.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrNext.Dock")));
+			this.btnStrNext.Enabled = ((bool)(resources.GetObject("btnStrNext.Enabled")));
+			this.btnStrNext.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrNext.FlatStyle")));
+			this.btnStrNext.Font = ((System.Drawing.Font)(resources.GetObject("btnStrNext.Font")));
+			this.btnStrNext.Image = ((System.Drawing.Image)(resources.GetObject("btnStrNext.Image")));
+			this.btnStrNext.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.ImageAlign")));
+			this.btnStrNext.ImageIndex = ((int)(resources.GetObject("btnStrNext.ImageIndex")));
+			this.btnStrNext.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrNext.ImeMode")));
+			this.btnStrNext.Location = ((System.Drawing.Point)(resources.GetObject("btnStrNext.Location")));
+			this.btnStrNext.Name = "btnStrNext";
+			this.btnStrNext.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrNext.RightToLeft")));
+			this.btnStrNext.Size = ((System.Drawing.Size)(resources.GetObject("btnStrNext.Size")));
+			this.btnStrNext.TabIndex = ((int)(resources.GetObject("btnStrNext.TabIndex")));
+			this.btnStrNext.Text = resources.GetString("btnStrNext.Text");
+			this.btnStrNext.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.TextAlign")));
+			this.btnStrNext.Visible = ((bool)(resources.GetObject("btnStrNext.Visible")));
+			this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
 			// 
 			// ckbDefault
 			// 
@@ -640,7 +641,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.ckbDefault.Text = resources.GetString("ckbDefault.Text");
 			this.ckbDefault.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("ckbDefault.TextAlign")));
 			this.ckbDefault.Visible = ((bool)(resources.GetObject("ckbDefault.Visible")));
-			this.ckbDefault.CheckedChanged += new System.EventHandler(this.cbDefault_CheckedChanged);
+			this.ckbDefault.CheckedChanged += new System.EventHandler(this.ckbDefault_CheckedChanged);
 			// 
 			// btnStrClear
 			// 
@@ -1371,6 +1372,47 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void ckbDefault_CheckedChanged(object sender, System.EventArgs e)
+		{
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
+			this.chString.Width = ((int)(resources.GetObject("chString.Width")));
+			while (this.lvStrItems.Columns.Count > 2)
+				this.lvStrItems.Columns.RemoveAt(2);
+			if (this.ckbDefault.Checked)
+			{
+				this.chDefault.Width = this.chLang.Width = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18) / 2;
+				this.lvStrItems.Columns.Add(this.chDefault);
+			}
+			else
+			{
+				this.chLang.Width = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18);
+			}
+		}
+
+
+		private void btnBigString_Click(object sender, System.EventArgs e)
+		{
+			int index = alBigBtn.IndexOf(sender);
+			if (index < 0)
+				throw new Exception("btnBigString_Click not applicable to control " + sender.ToString());
+
+			RichTextBox[] rtb = { rtbTitle, rtbDescription };
+			string result = (new pjse.StrBig()).doBig(rtb[index].Text);
+			if (result != null) rtb[index].Text = result;
+		}
+
+
+		private void btnStrPrev_Click(object sender, System.EventArgs e)
+		{
+			setIndex(index - 1);
+		}
+
+		private void btnStrNext_Click(object sender, System.EventArgs e)
+		{
+			setIndex(index + 1);
+		}
+
+
 		private void btnLngPrev_Click(object sender, System.EventArgs e)
 		{
 			setLid((byte)(lid - 1));
@@ -1413,42 +1455,9 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void btnBigString_Click(object sender, System.EventArgs e)
-		{
-			int index = alBigBtn.IndexOf(sender);
-			if (index < 0)
-				throw new Exception("btnBigString_Click not applicable to control " + sender.ToString());
-
-			RichTextBox[] rtb = { rtbTitle, rtbDescription };
-			string result = (new pjse.StrBig()).doBig(rtb[index].Text);
-			if (result != null) rtb[index].Text = result;
-		}
-
-
-		private void btnUp_Click(object sender, System.EventArgs e) { setIndexUp(); }
-
-		private void btnDown_Click(object sender, System.EventArgs e) { setIndexDown(); }
-
 		private void btnCommit_Click(object sender, System.EventArgs e)
 		{
 			this.Commit();
-		}
-
-		private void cbDefault_CheckedChanged(object sender, System.EventArgs e)
-		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
-			this.chString.Width = ((int)(resources.GetObject("chString.Width")));
-			while (this.lvStrItems.Columns.Count > 2)
-				this.lvStrItems.Columns.RemoveAt(2);
-			if (this.ckbDefault.Checked)
-			{
-				this.chDefault.Width = this.chLang.Width = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18) / 2;
-				this.lvStrItems.Columns.Add(this.chDefault);
-			}
-			else
-			{
-				this.chLang.Width = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18);
-			}
 		}
 
 
