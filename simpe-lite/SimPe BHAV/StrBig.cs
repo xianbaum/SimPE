@@ -96,10 +96,10 @@ namespace pjse
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrBig));
 			this.panel1 = new System.Windows.Forms.Panel();
-			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-			this.panel2 = new System.Windows.Forms.Panel();
 			this.OK = new System.Windows.Forms.Button();
 			this.Cancel = new System.Windows.Forms.Button();
+			this.panel2 = new System.Windows.Forms.Panel();
+			this.richTextBox1 = new System.Windows.Forms.RichTextBox();
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -126,56 +126,6 @@ namespace pjse
 			this.panel1.TabIndex = ((int)(resources.GetObject("panel1.TabIndex")));
 			this.panel1.Text = resources.GetString("panel1.Text");
 			this.panel1.Visible = ((bool)(resources.GetObject("panel1.Visible")));
-			// 
-			// richTextBox1
-			// 
-			this.richTextBox1.AcceptsTab = true;
-			this.richTextBox1.AccessibleDescription = resources.GetString("richTextBox1.AccessibleDescription");
-			this.richTextBox1.AccessibleName = resources.GetString("richTextBox1.AccessibleName");
-			this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("richTextBox1.Anchor")));
-			this.richTextBox1.AutoSize = ((bool)(resources.GetObject("richTextBox1.AutoSize")));
-			this.richTextBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("richTextBox1.BackgroundImage")));
-			this.richTextBox1.BulletIndent = ((int)(resources.GetObject("richTextBox1.BulletIndent")));
-			this.richTextBox1.DetectUrls = false;
-			this.richTextBox1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("richTextBox1.Dock")));
-			this.richTextBox1.Enabled = ((bool)(resources.GetObject("richTextBox1.Enabled")));
-			this.richTextBox1.Font = ((System.Drawing.Font)(resources.GetObject("richTextBox1.Font")));
-			this.richTextBox1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("richTextBox1.ImeMode")));
-			this.richTextBox1.Location = ((System.Drawing.Point)(resources.GetObject("richTextBox1.Location")));
-			this.richTextBox1.MaxLength = ((int)(resources.GetObject("richTextBox1.MaxLength")));
-			this.richTextBox1.Multiline = ((bool)(resources.GetObject("richTextBox1.Multiline")));
-			this.richTextBox1.Name = "richTextBox1";
-			this.richTextBox1.RightMargin = ((int)(resources.GetObject("richTextBox1.RightMargin")));
-			this.richTextBox1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("richTextBox1.RightToLeft")));
-			this.richTextBox1.ScrollBars = ((System.Windows.Forms.RichTextBoxScrollBars)(resources.GetObject("richTextBox1.ScrollBars")));
-			this.richTextBox1.Size = ((System.Drawing.Size)(resources.GetObject("richTextBox1.Size")));
-			this.richTextBox1.TabIndex = ((int)(resources.GetObject("richTextBox1.TabIndex")));
-			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
-			this.richTextBox1.Visible = ((bool)(resources.GetObject("richTextBox1.Visible")));
-			this.richTextBox1.WordWrap = ((bool)(resources.GetObject("richTextBox1.WordWrap")));
-			this.richTextBox1.ZoomFactor = ((System.Single)(resources.GetObject("richTextBox1.ZoomFactor")));
-			// 
-			// panel2
-			// 
-			this.panel2.AccessibleDescription = resources.GetString("panel2.AccessibleDescription");
-			this.panel2.AccessibleName = resources.GetString("panel2.AccessibleName");
-			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel2.Anchor")));
-			this.panel2.AutoScroll = ((bool)(resources.GetObject("panel2.AutoScroll")));
-			this.panel2.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel2.AutoScrollMargin")));
-			this.panel2.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel2.AutoScrollMinSize")));
-			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
-			this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel2.Dock")));
-			this.panel2.Enabled = ((bool)(resources.GetObject("panel2.Enabled")));
-			this.panel2.Font = ((System.Drawing.Font)(resources.GetObject("panel2.Font")));
-			this.panel2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel2.ImeMode")));
-			this.panel2.Location = ((System.Drawing.Point)(resources.GetObject("panel2.Location")));
-			this.panel2.Name = "panel2";
-			this.panel2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel2.RightToLeft")));
-			this.panel2.Size = ((System.Drawing.Size)(resources.GetObject("panel2.Size")));
-			this.panel2.TabIndex = ((int)(resources.GetObject("panel2.TabIndex")));
-			this.panel2.Text = resources.GetString("panel2.Text");
-			this.panel2.Visible = ((bool)(resources.GetObject("panel2.Visible")));
 			// 
 			// OK
 			// 
@@ -224,6 +174,56 @@ namespace pjse
 			this.Cancel.Text = resources.GetString("Cancel.Text");
 			this.Cancel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("Cancel.TextAlign")));
 			this.Cancel.Visible = ((bool)(resources.GetObject("Cancel.Visible")));
+			// 
+			// panel2
+			// 
+			this.panel2.AccessibleDescription = resources.GetString("panel2.AccessibleDescription");
+			this.panel2.AccessibleName = resources.GetString("panel2.AccessibleName");
+			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("panel2.Anchor")));
+			this.panel2.AutoScroll = ((bool)(resources.GetObject("panel2.AutoScroll")));
+			this.panel2.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("panel2.AutoScrollMargin")));
+			this.panel2.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel2.AutoScrollMinSize")));
+			this.panel2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel2.BackgroundImage")));
+			this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panel2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel2.Dock")));
+			this.panel2.Enabled = ((bool)(resources.GetObject("panel2.Enabled")));
+			this.panel2.Font = ((System.Drawing.Font)(resources.GetObject("panel2.Font")));
+			this.panel2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("panel2.ImeMode")));
+			this.panel2.Location = ((System.Drawing.Point)(resources.GetObject("panel2.Location")));
+			this.panel2.Name = "panel2";
+			this.panel2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("panel2.RightToLeft")));
+			this.panel2.Size = ((System.Drawing.Size)(resources.GetObject("panel2.Size")));
+			this.panel2.TabIndex = ((int)(resources.GetObject("panel2.TabIndex")));
+			this.panel2.Text = resources.GetString("panel2.Text");
+			this.panel2.Visible = ((bool)(resources.GetObject("panel2.Visible")));
+			// 
+			// richTextBox1
+			// 
+			this.richTextBox1.AcceptsTab = true;
+			this.richTextBox1.AccessibleDescription = resources.GetString("richTextBox1.AccessibleDescription");
+			this.richTextBox1.AccessibleName = resources.GetString("richTextBox1.AccessibleName");
+			this.richTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("richTextBox1.Anchor")));
+			this.richTextBox1.AutoSize = ((bool)(resources.GetObject("richTextBox1.AutoSize")));
+			this.richTextBox1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("richTextBox1.BackgroundImage")));
+			this.richTextBox1.BulletIndent = ((int)(resources.GetObject("richTextBox1.BulletIndent")));
+			this.richTextBox1.DetectUrls = false;
+			this.richTextBox1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("richTextBox1.Dock")));
+			this.richTextBox1.Enabled = ((bool)(resources.GetObject("richTextBox1.Enabled")));
+			this.richTextBox1.Font = ((System.Drawing.Font)(resources.GetObject("richTextBox1.Font")));
+			this.richTextBox1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("richTextBox1.ImeMode")));
+			this.richTextBox1.Location = ((System.Drawing.Point)(resources.GetObject("richTextBox1.Location")));
+			this.richTextBox1.MaxLength = ((int)(resources.GetObject("richTextBox1.MaxLength")));
+			this.richTextBox1.Multiline = ((bool)(resources.GetObject("richTextBox1.Multiline")));
+			this.richTextBox1.Name = "richTextBox1";
+			this.richTextBox1.RightMargin = ((int)(resources.GetObject("richTextBox1.RightMargin")));
+			this.richTextBox1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("richTextBox1.RightToLeft")));
+			this.richTextBox1.ScrollBars = ((System.Windows.Forms.RichTextBoxScrollBars)(resources.GetObject("richTextBox1.ScrollBars")));
+			this.richTextBox1.Size = ((System.Drawing.Size)(resources.GetObject("richTextBox1.Size")));
+			this.richTextBox1.TabIndex = ((int)(resources.GetObject("richTextBox1.TabIndex")));
+			this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+			this.richTextBox1.Visible = ((bool)(resources.GetObject("richTextBox1.Visible")));
+			this.richTextBox1.WordWrap = ((bool)(resources.GetObject("richTextBox1.WordWrap")));
+			this.richTextBox1.ZoomFactor = ((System.Single)(resources.GetObject("richTextBox1.ZoomFactor")));
 			// 
 			// StrBig
 			// 
