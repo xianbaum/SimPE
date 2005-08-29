@@ -1,4 +1,9 @@
 
+29 August 2005 13:38 - TTAB: Dropdown list to pick TTAs string
+  SimPe BHAV\
+    TtabForm.cs 1.18
+    TtabForm.resx 1.12
+
 28 August 2005 17:24 - Typo in BHAV Wrapper
   SimPe BHAV\
     BhavWrapper.cs 1.29
