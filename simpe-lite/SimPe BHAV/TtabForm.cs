@@ -104,6 +104,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbMemIterMult;
 		private System.Windows.Forms.TextBox tbObjType;
 		private System.Windows.Forms.TextBox tbModelTabID;
+		private System.Windows.Forms.ComboBox cbStringIndex;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -137,8 +138,8 @@ namespace SimPe.PackedFiles.UserInterface
 						   };
 			alFlags = new ArrayList(cba);
 
-			ComboBox[] cbb = { cbAttenuationCode };
-			alComboBox = new ArrayList(cbb);
+			ComboBox[] cbb = { cbStringIndex ,cbAttenuationCode };
+			alHex32cb = new ArrayList(cbb);
 
 #if !(INPROGRESS || DEBUG)
 			this.btnAppend.Visible = false;
@@ -172,9 +173,19 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alHex32;
 		private ArrayList alFloats;
 		private ArrayList alFlags;
-		private ArrayList alComboBox;
+		private ArrayList alHex32cb;
 		private TtabItem origItem;
 		private TtabItem currentItem;
+
+		private ArrayList alPieStrings = new ArrayList();
+		private class PieString
+		{
+			private Str wrapper;
+			private int index;
+			public PieString(Str wrapper, int index) { this.wrapper = wrapper; this.index = index; }
+			public uint Value { get { return (uint)index; } }
+			public string Display { get { return wrapper[(byte)1, index].Title; } }
+		}
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
@@ -218,11 +229,11 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			internalchg = false;
 		}
-		private bool ComboBox_IsValid(object sender)
+		private bool cbHex32_IsValid(object sender)
 		{
-			if (alComboBox.IndexOf(sender) < 0)
-				throw new Exception("ComboBox_IsValid not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return true;
+			if (alHex32cb.IndexOf(sender) < 0)
+				throw new Exception("cbHex32_IsValid not applicable to control " + sender.ToString());
+			if (((ComboBox)sender).FindStringExact(((ComboBox)sender).Text) >= 0) return true;
 
 			try { Convert.ToUInt32(((ComboBox)sender).Text, 16); }
 			catch (Exception) { return false; }
@@ -299,6 +310,22 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void setStringIndex(uint si, bool doText, bool doCB)
+		{
+			if (doText) tbStringIndex.Text = "0x"+Helper.HexString(si);
+			if (doCB)
+			{
+				if (wrapper.StringResource[1, (int)si] != null)
+					this.cbStringIndex.SelectedIndex = (int)si;
+				//this.cbStringIndex.SelectedValue = tbStringIndex.Text;
+				else
+				{
+					this.cbStringIndex.SelectedIndex = -1;
+					this.cbStringIndex.Text = tbStringIndex.Text;
+				}
+			}
+		}
+
 		#endregion
 
 		#region IPackedFileUI Member
@@ -327,9 +354,20 @@ namespace SimPe.PackedFiles.UserInterface
 			WrapperChanged(wrapper, null);
 
 			internalchg = true;
+
 			lbttab.Items.Clear();
 			for(int i = 0; i < wrapper.Count; i++)
 				lbttab.Items.Add(wrapper[i]);
+
+			this.cbStringIndex.DataSource = null;
+			alPieStrings = new ArrayList();
+			int c = (int)getTTAsCount();
+			for (int i = 0; i < c; i++) alPieStrings.Add(new PieString(wrapper.StringResource, i));
+			this.cbStringIndex.DataSource = alPieStrings;
+			this.cbStringIndex.ValueMember = "Value";
+			this.cbStringIndex.DisplayMember = "Display";
+			this.cbStringIndex.SelectedIndex = -1;
+
 			internalchg = false;
 
 			if (lbttab.Items.Count>0) lbttab.SelectedIndex = 0;
@@ -365,6 +403,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbttab = new System.Windows.Forms.ListBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpSettings = new System.Windows.Forms.TabPage();
+			this.cbStringIndex = new System.Windows.Forms.ComboBox();
 			this.cbAttenuationCode = new System.Windows.Forms.ComboBox();
 			this.btnAction = new System.Windows.Forms.Button();
 			this.btnGuardian = new System.Windows.Forms.Button();
@@ -737,6 +776,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("tpSettings.AutoScrollMargin")));
 			this.tpSettings.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("tpSettings.AutoScrollMinSize")));
 			this.tpSettings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tpSettings.BackgroundImage")));
+			this.tpSettings.Controls.Add(this.cbStringIndex);
 			this.tpSettings.Controls.Add(this.cbAttenuationCode);
 			this.tpSettings.Controls.Add(this.btnAction);
 			this.tpSettings.Controls.Add(this.btnGuardian);
@@ -782,6 +822,40 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.ToolTipText = resources.GetString("tpSettings.ToolTipText");
 			this.tpSettings.Visible = ((bool)(resources.GetObject("tpSettings.Visible")));
 			// 
+			// cbStringIndex
+			// 
+			this.cbStringIndex.AccessibleDescription = resources.GetString("cbStringIndex.AccessibleDescription");
+			this.cbStringIndex.AccessibleName = resources.GetString("cbStringIndex.AccessibleName");
+			this.cbStringIndex.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbStringIndex.Anchor")));
+			this.cbStringIndex.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbStringIndex.BackgroundImage")));
+			this.cbStringIndex.DisplayMember = "Display";
+			this.cbStringIndex.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbStringIndex.Dock")));
+			this.cbStringIndex.DropDownWidth = 240;
+			this.cbStringIndex.Enabled = ((bool)(resources.GetObject("cbStringIndex.Enabled")));
+			this.cbStringIndex.Font = ((System.Drawing.Font)(resources.GetObject("cbStringIndex.Font")));
+			this.cbStringIndex.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbStringIndex.ImeMode")));
+			this.cbStringIndex.IntegralHeight = ((bool)(resources.GetObject("cbStringIndex.IntegralHeight")));
+			this.cbStringIndex.ItemHeight = ((int)(resources.GetObject("cbStringIndex.ItemHeight")));
+			this.cbStringIndex.Items.AddRange(new object[] {
+															   resources.GetString("cbStringIndex.Items"),
+															   resources.GetString("cbStringIndex.Items1"),
+															   resources.GetString("cbStringIndex.Items2")});
+			this.cbStringIndex.Location = ((System.Drawing.Point)(resources.GetObject("cbStringIndex.Location")));
+			this.cbStringIndex.MaxDropDownItems = ((int)(resources.GetObject("cbStringIndex.MaxDropDownItems")));
+			this.cbStringIndex.MaxLength = ((int)(resources.GetObject("cbStringIndex.MaxLength")));
+			this.cbStringIndex.Name = "cbStringIndex";
+			this.cbStringIndex.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbStringIndex.RightToLeft")));
+			this.cbStringIndex.Size = ((System.Drawing.Size)(resources.GetObject("cbStringIndex.Size")));
+			this.cbStringIndex.TabIndex = ((int)(resources.GetObject("cbStringIndex.TabIndex")));
+			this.cbStringIndex.Text = resources.GetString("cbStringIndex.Text");
+			this.cbStringIndex.ValueMember = "Value";
+			this.cbStringIndex.Visible = ((bool)(resources.GetObject("cbStringIndex.Visible")));
+			this.cbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex32_Validating);
+			this.cbStringIndex.Validated += new System.EventHandler(this.cbHex32_Validated);
+			this.cbStringIndex.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
+			this.cbStringIndex.SelectedIndexChanged += new System.EventHandler(this.cbHex32_SelectedIndexChanged);
+			this.cbStringIndex.Enter += new System.EventHandler(this.cbHex32_Enter);
+			// 
 			// cbAttenuationCode
 			// 
 			this.cbAttenuationCode.AccessibleDescription = resources.GetString("cbAttenuationCode.AccessibleDescription");
@@ -809,10 +883,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbAttenuationCode.TabIndex = ((int)(resources.GetObject("cbAttenuationCode.TabIndex")));
 			this.cbAttenuationCode.Text = resources.GetString("cbAttenuationCode.Text");
 			this.cbAttenuationCode.Visible = ((bool)(resources.GetObject("cbAttenuationCode.Visible")));
-			this.cbAttenuationCode.Validating += new System.ComponentModel.CancelEventHandler(this.ComboBox_Validating);
-			this.cbAttenuationCode.Validated += new System.EventHandler(this.ComboBox_Validated);
-			this.cbAttenuationCode.TextChanged += new System.EventHandler(this.ComboBox_TextChanged);
-			this.cbAttenuationCode.SelectedIndexChanged += new System.EventHandler(this.ComboBox_SelectedIndexChanged);
+			this.cbAttenuationCode.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex32_Validating);
+			this.cbAttenuationCode.Validated += new System.EventHandler(this.cbHex32_Validated);
+			this.cbAttenuationCode.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
+			this.cbAttenuationCode.SelectedIndexChanged += new System.EventHandler(this.cbHex32_SelectedIndexChanged);
+			this.cbAttenuationCode.Enter += new System.EventHandler(this.cbHex32_Enter);
 			// 
 			// btnAction
 			// 
@@ -2195,6 +2270,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 				btnDelete.Enabled = true;
 
+				setStringIndex(item.StringIndex, true, true);
+
 				this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);				
 				this.tbAction.Text = "0x"+Helper.HexString(item.Action);
 				lbguard.Text = item.GuardianName;
@@ -2202,8 +2279,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.tbFlags.Text = "0x"+Helper.HexString(item.Flags.Value);
 				this.tbFlags2.Text = "0x"+Helper.HexString(item.Flags2);
-				tbStringIndex.Text = "0x"+Helper.HexString(item.StringIndex);
-
 				if (item.AttenuationCode < this.cbAttenuationCode.Items.Count)
 				{
 					cbAttenuationCode.SelectedIndex = (int)item.AttenuationCode;
@@ -2350,80 +2425,124 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void ComboBox_TextChanged(object sender, System.EventArgs ev)
+		private void cbHex32_Enter(object sender, System.EventArgs e)
+		{
+			((ComboBox)sender).SelectAll();
+		}
+
+		private void cbHex32_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			if (!ComboBox_IsValid(sender)) return;
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+			if (!cbHex32_IsValid(sender)) return;
+			if (((ComboBox)sender).FindStringExact(((ComboBox)sender).Text) >= 0) return;
 
 			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
 			internalchg = true;
-			switch (alComboBox.IndexOf(sender))
+			switch (alHex32cb.IndexOf(sender))
 			{
-				case 0: currentItem.AttenuationCode = val; break;
+				case 0:
+					currentItem.StringIndex = val;
+					setStringIndex(val, true, false);
+					lbttab.Items[lbttab.SelectedIndex] = currentItem;
+					break;
+				case 1: currentItem.AttenuationCode = val; break;
 			}
 			internalchg = false;
 		}
 
-		private void ComboBox_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		private void cbHex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (ComboBox_IsValid(sender)) return;
+			if (cbHex32_IsValid(sender)) return;
 
 			e.Cancel = true;
 
-			internalchg = true;
+			int i = alHex32cb.IndexOf(sender);
+			if (i < 0)
+				throw new Exception("cbHex32_Validating not applicable to control " + sender.ToString());
+
 			uint val = 0;
-			switch (alComboBox.IndexOf(sender))
+			switch (i)
 			{
-				case 0: val = origItem.AttenuationCode; currentItem.AttenuationCode = val; break;
+				case 0: val = origItem.StringIndex; currentItem.StringIndex = val; break;
+				case 1: val = origItem.AttenuationCode; currentItem.AttenuationCode = val; break;
 			}
-
-			if (val < ((ComboBox)sender).Items.Count)
-			{
-				((ComboBox)sender).SelectedIndex = (int)val;
-			}
-			else
-			{
-				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x"+Helper.HexString(val);
-			}
-			((ComboBox)sender).SelectAll();
-			internalchg = false;
-		}
-
-		private void ComboBox_Validated(object sender, System.EventArgs e)
-		{
-			if (alComboBox.IndexOf(sender) < 0)
-				throw new Exception("ComboBox_Validated not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
 
 			bool origstate = internalchg;
 			internalchg = true;
-			if (currentItem.AttenuationCode < ((ComboBox)sender).Items.Count)
+			if (i == 0)
 			{
-				((ComboBox)sender).SelectedIndex = (int)currentItem.AttenuationCode;
+				setStringIndex(val, true, true);
+				lbttab.Items[lbttab.SelectedIndex] = currentItem;
 			}
-			else
+			else if (i == 1)
 			{
-				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x"+Helper.HexString(currentItem.AttenuationCode);
+				if (val < ((ComboBox)sender).Items.Count)
+				{
+					((ComboBox)sender).SelectedIndex = (int)val;
+				}
+				else
+				{
+					((ComboBox)sender).SelectedIndex = -1;
+					((ComboBox)sender).Text = "0x"+Helper.HexString(val);
+				}
 			}
-			((ComboBox)sender).SelectAll();
 			internalchg = origstate;
+			((ComboBox)sender).SelectAll();
 		}
 
-		private void ComboBox_SelectedIndexChanged(object sender, System.EventArgs e)
+		private void cbHex32_Validated(object sender, System.EventArgs e)
+		{
+			int i = alHex32cb.IndexOf(sender);
+			if (i < 0)
+				throw new Exception("cbHex32_Validated not applicable to control " + sender.ToString());
+			if (((ComboBox)sender).FindStringExact(((ComboBox)sender).Text) >= 0) return;
+
+			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
+
+			bool origstate = internalchg;
+			internalchg = true;
+			if (i == 0)
+			{
+				setStringIndex(val, true, true);
+			}
+			else if (i == 1)
+			{
+				if (val < ((ComboBox)sender).Items.Count)
+				{
+					((ComboBox)sender).SelectedIndex = (int)val;
+				}
+				else
+				{
+					((ComboBox)sender).SelectedIndex = -1;
+					((ComboBox)sender).Text = "0x"+Helper.HexString(val);
+				}
+			}
+			internalchg = origstate;
+			((ComboBox)sender).Select(0, 0);
+		}
+
+		private void cbHex32_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			int i = alComboBox.IndexOf(sender);
+			int i = alHex32cb.IndexOf(sender);
 			if (i < 0)
-				throw new Exception("ComboBox_SelectedIndexChanged not applicable to control " + sender.ToString());
+				throw new Exception("cbHex32_SelectedIndexChanged not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).SelectedIndex == -1) return;
 
-			internalchg = true;
-			if (i == 0) currentItem.AttenuationCode = (uint)(((ComboBox)alComboBox[i]).SelectedIndex);
 			((ComboBox)sender).SelectAll();
+
+			internalchg = true;
+			if (i == 0)
+			{
+				currentItem.StringIndex = (uint)((ComboBox)alHex32cb[i]).SelectedValue;
+				setStringIndex(currentItem.StringIndex, true, false);
+				lbttab.Items[lbttab.SelectedIndex] = currentItem;
+			}
+			else if (i == 1)
+			{
+				currentItem.AttenuationCode = (uint)(((ComboBox)alHex32cb[i]).SelectedIndex);
+			}
 			internalchg = false;
 		}
 
@@ -2487,6 +2606,7 @@ namespace SimPe.PackedFiles.UserInterface
 				case 0: wrapper.Format = val; break;
 				case 1:
 					currentItem.StringIndex = val;
+					setStringIndex(val, false, true);
 					lbttab.Items[lbttab.SelectedIndex] = currentItem;
 					break;
 				case 2: currentItem.Autonomy = val; break;
