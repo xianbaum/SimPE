@@ -1,4 +1,8 @@
 
+3 September 2005 14:07 - Bhav: stop repainting the list unless it's changed length (hacky)
+  SimPe BHAV\
+    BhavInstListControl.cs 1.28
+
 3 September 2005 13:48 - Str: Oops - Add String Appending to Release
   SimPe BHAV\
     StrForm.cs 1.23
