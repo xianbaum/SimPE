@@ -1,4 +1,9 @@
 
+3 September 2005 13:00 - Str: Handle 0xFE data type
+  SimPe BHAV\
+    StrForm.cs 1.22
+    StrWrapper.cs 1.14
+
 3 September 2005 11:37 - TTAB: Hack the UI to give just one pie string field
   SimPe BHAV\
     TtabForm.cs 1.19
