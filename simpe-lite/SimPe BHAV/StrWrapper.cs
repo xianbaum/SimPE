@@ -167,8 +167,15 @@ namespace SimPe.PackedFiles.Wrapper
 		public int Add(StrItem item)
 		{
 			if (this.limit > 0 && items.Count >= this.limit) return -1;
-			if (this.format == 0x0000 && items.Count >= 0xFF) return -1;
+			if ((this.format == 0x0000 || this.format == 0xFFFE) && items.Count >= 0xFF) return -1;
+
+			if (this.format == 0x0000)
+			{
+				item.Parent = null; // prevent anyone getting told about the change...
+				item.LanguageID = 1;
+			}
 			item.Parent = this;
+
 			int result = items.Add(item);
 			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))
 				OnWrapperChanged(this, new EventArgs());
@@ -283,15 +290,20 @@ namespace SimPe.PackedFiles.Wrapper
 			CleanUp();
 
 			writer.Write(filename);
-			if (format != 0x0000)
-			{
-				writer.Write(format);
-				writer.Write((ushort)items.Count);
-			}
-			else
+			if (format == 0x0000)
 			{
 				writer.Write((byte)0);
 				writer.Write((byte)items.Count);
+			}
+			else if (format == 0xFFFE)
+			{
+				writer.Write(format);
+				writer.Write((byte)items.Count);
+			}
+			else
+			{
+				writer.Write(format);
+				writer.Write((ushort)items.Count);
 			}
 			foreach (StrItem i in items)
 				i.Serialize(writer);
@@ -304,8 +316,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			filename = reader.ReadBytes(0x40);
 
-			//format = reader.ReadUInt16();
-			ushort count; // = reader.ReadUInt16();
+			ushort count;
 			byte type = reader.ReadByte();
 			byte c = reader.ReadByte();
 			if (type == 0x00)
@@ -313,9 +324,14 @@ namespace SimPe.PackedFiles.Wrapper
 				format = type;
 				count = c;
 			}
+			else if (type == 0xFE)
+			{
+				format = (ushort)((c << 8) | type);
+				count = reader.ReadByte();
+			}
 			else
 			{
-				format = (ushort)(c << 8 + type);
+				format = (ushort)((c << 8) | type);
 				count = reader.ReadUInt16();
 			}
 
@@ -484,35 +500,42 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public void Unserialize(System.IO.BinaryReader reader)
 		{
-			if (parent.Format != 0x0000)
+			if (parent.Format == 0x0000)
+			{
+				lid = 1;
+				title = reader.ReadString();
+				desc = "";
+			}
+			else if (parent.Format == 0xFFFE)
+			{
+				lid = (byte)(reader.ReadByte() + 1);
+				title = UnserializeStringZero(reader);
+				desc = "";
+			}
+			else
 			{
 				lid = reader.ReadByte();
 				title = UnserializeStringZero(reader);
 				desc = UnserializeStringZero(reader);
 			}
-			else
-			{
-				lid = 1;
-				byte len = reader.ReadByte();
-				string s = "";
-				while(len > 0) { s += reader.ReadChar(); len--; }
-				title = s;
-				desc = "";
-			}
 		}
 
 		public void Serialize(System.IO.BinaryWriter writer)
 		{
-			if (parent.Format != 0x0000)
+			if (parent.Format == 0x0000)
+			{
+				writer.Write(title);
+			}
+			else if (parent.Format == 0xFFFE)
+			{
+				writer.Write((byte)(lid - 1));
+				SerializeStringZero(writer, title);
+			}
+			else
 			{
 				writer.Write(lid);
 				SerializeStringZero(writer, title);
 				SerializeStringZero(writer, desc);
-			}
-			else
-			{
-				writer.Write((byte)title.Length);
-				writer.Write(title);
 			}
 		}
 

@@ -236,16 +236,17 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				this.lbStringNum.Text = "String 0x" + Helper.HexString((ushort)index) + " (" + ((SimPe.Data.MetaData.Languages)lid).ToString() + ")";
 				this.rtbTitle.Text = s.Title;
-				this.rtbDescription.Text = s.Description;
 				this.rtbTitle.SelectAll();
+				this.btnBigString.Enabled = this.rtbTitle.Enabled = true;
+				this.rtbDescription.Text = s.Description;
 				this.rtbDescription.SelectAll();
-				this.rtbDescription.Enabled = this.rtbTitle.Enabled = true;
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = (wrapper.Format != 0x0000 && wrapper.Format != 0xFFFE);
 			}
 			else
 			{
 				this.lbStringNum.Text = "";
 				this.rtbDescription.Text = this.rtbTitle.Text = "";
-				this.rtbDescription.Enabled = this.rtbTitle.Enabled = false;
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.btnBigString.Enabled = this.rtbTitle.Enabled = false;
 			}
 			this.btnStrPrev.Enabled = (index > 0);
 			this.btnStrNext.Enabled = (index < count - 1);
@@ -366,7 +367,7 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex((i >= count) ? count - 1 : i);
 		}
 
-		public void Append(uint instance)
+		private void Append(uint instance)
 		{
 			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
 				wrapper.FileDescriptor.Type,
@@ -386,9 +387,14 @@ namespace SimPe.PackedFiles.UserInterface
 			b.Package = wrapper.Package;
 			b.FileDescriptor = wrapper.FileDescriptor;
 			b.ProcessData(pfd, b.Package);
-			for (byte m = 1; m < 44; m++)
-				while (wrapper[m, count-1] == null && wrapper.Add(m, "", "") >= 0);
-			for (int bi = 0; bi < b.Count && wrapper.Add(b[bi]) >= 0; bi++);
+			if (wrapper.Format != 0x0000)
+				for (byte m = 1; m < 44; m++)
+					while (wrapper[m, count-1] == null && wrapper.Add(m, "", "") >= 0);
+			for (int bi = 0; bi < b.Count; bi++)
+			{
+				if (wrapper.Format == 0x0000 && b[bi].LanguageID != 1) continue;
+				if (wrapper.Add(b[bi]) < 0) break;
+			}
 
 			strPanel.Parent.Cursor = Cursors.Default;
 
@@ -474,9 +480,22 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			this.tbFilename.Text = wrapper.FileName;
 			this.tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
+			if (wrapper.Format == 0x0000)
+			{
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = false;
+			}
+			else if (wrapper.Format == 0xFFFE)
+			{
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = false;
+				this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
+			}
+			else
+			{
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
+			}
 			internalchg = false;
 
-			this.btnAppend.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = (wrapper.Format != 0x0000);
+			this.ckbDefault.Enabled = this.cbLngSelect.Enabled = (wrapper.Format != 0x0000);
 		}
 
 		#endregion
