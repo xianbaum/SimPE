@@ -1,4 +1,8 @@
 
+3 September 2005 13:48 - Str: Oops - Add String Appending to Release
+  SimPe BHAV\
+    StrForm.cs 1.23
+
 3 September 2005 13:00 - Str: Handle 0xFE data type
   SimPe BHAV\
     StrForm.cs 1.22
