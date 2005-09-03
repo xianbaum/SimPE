@@ -177,16 +177,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private TtabItem origItem;
 		private TtabItem currentItem;
 
-		private ArrayList alPieStrings = new ArrayList();
-		private class PieString
-		{
-			private Str wrapper;
-			private int index;
-			public PieString(Str wrapper, int index) { this.wrapper = wrapper; this.index = index; }
-			public uint Value { get { return (uint)index; } }
-			public string Display { get { return wrapper[(byte)1, index].Title; } }
-		}
-
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
 			this.btnCommit.Enabled = wrapper.Changed;
@@ -317,7 +307,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (wrapper.StringResource[1, (int)si] != null)
 					this.cbStringIndex.SelectedIndex = (int)si;
-				//this.cbStringIndex.SelectedValue = tbStringIndex.Text;
+					//this.cbStringIndex.SelectedValue = tbStringIndex.Text;
 				else
 				{
 					this.cbStringIndex.SelectedIndex = -1;
@@ -359,13 +349,10 @@ namespace SimPe.PackedFiles.UserInterface
 			for(int i = 0; i < wrapper.Count; i++)
 				lbttab.Items.Add(wrapper[i]);
 
-			this.cbStringIndex.DataSource = null;
-			alPieStrings = new ArrayList();
+			this.cbStringIndex.Items.Clear();
 			int c = (int)getTTAsCount();
-			for (int i = 0; i < c; i++) alPieStrings.Add(new PieString(wrapper.StringResource, i));
-			this.cbStringIndex.DataSource = alPieStrings;
-			this.cbStringIndex.ValueMember = "Value";
-			this.cbStringIndex.DisplayMember = "Display";
+			for (int i = 0; i < c; i++)
+				this.cbStringIndex.Items.Add("0x" + i.ToString("X") + ": " + wrapper.StringResource[(byte)1, i].Title);
 			this.cbStringIndex.SelectedIndex = -1;
 
 			internalchg = false;
@@ -847,6 +834,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbStringIndex.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbStringIndex.RightToLeft")));
 			this.cbStringIndex.Size = ((System.Drawing.Size)(resources.GetObject("cbStringIndex.Size")));
 			this.cbStringIndex.TabIndex = ((int)(resources.GetObject("cbStringIndex.TabIndex")));
+			this.cbStringIndex.TabStop = false;
 			this.cbStringIndex.Text = resources.GetString("cbStringIndex.Text");
 			this.cbStringIndex.ValueMember = "Value";
 			this.cbStringIndex.Visible = ((bool)(resources.GetObject("cbStringIndex.Visible")));
@@ -2530,20 +2518,21 @@ namespace SimPe.PackedFiles.UserInterface
 				throw new Exception("cbHex32_SelectedIndexChanged not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).SelectedIndex == -1) return;
 
-			((ComboBox)sender).SelectAll();
-
 			internalchg = true;
 			if (i == 0)
 			{
-				currentItem.StringIndex = (uint)((ComboBox)alHex32cb[i]).SelectedValue;
+				currentItem.StringIndex = (uint)((ComboBox)sender).SelectedIndex;
 				setStringIndex(currentItem.StringIndex, true, false);
 				lbttab.Items[lbttab.SelectedIndex] = currentItem;
+				tbStringIndex.Focus();
 			}
 			else if (i == 1)
 			{
-				currentItem.AttenuationCode = (uint)(((ComboBox)alHex32cb[i]).SelectedIndex);
+				currentItem.AttenuationCode = (uint)((ComboBox)sender).SelectedIndex;
 			}
 			internalchg = false;
+
+			((ComboBox)sender).SelectAll();
 		}
 
 
