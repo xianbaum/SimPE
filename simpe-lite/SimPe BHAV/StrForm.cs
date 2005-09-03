@@ -194,7 +194,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (lid > 0) this.cbLngSelect.SelectedIndex = l - 1;
 			internalchg = false;
 			this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
-			this.btnLngNext.Enabled = (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
+			this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
 			this.btnLngClear.Text = "Clear " + ((SimPe.Data.MetaData.Languages)lid).ToString();
 			this.btnLngClear.Enabled = (lid > 1) && !this.cbLngSelect.SelectedItem.ToString().EndsWith(" (empty)");
@@ -251,7 +251,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrNext.Enabled = (index < count - 1);
 			internalchg = false;
 
-			this.btnStrClear.Enabled = this.btnStrDelete.Enabled = index >= 0;
+			this.btnStrDelete.Enabled = index >= 0;
+			this.btnStrClear.Enabled = (wrapper.Format != 0x000 && index >= 0);
 		}
 
 
@@ -474,6 +475,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.Text = wrapper.FileName;
 			this.tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
 			internalchg = false;
+
+			this.btnAppend.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = (wrapper.Format != 0x0000);
 		}
 
 		#endregion
