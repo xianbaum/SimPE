@@ -1,4 +1,9 @@
 
+3 September 2005 09:22 - Str: Handle 0x012C instance STR# file in group 0x7FBD8997
+  SimPe BHAV\
+    StrForm.cs 1.21
+    StrWrapper.cs 1.13
+
 29 August 2005 13:38 - TTAB: Dropdown list to pick TTAs string
   SimPe BHAV\
     TtabForm.cs 1.18
