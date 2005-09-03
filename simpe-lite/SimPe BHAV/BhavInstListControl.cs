@@ -107,7 +107,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			// Handler for instructions list
-			if (sender == wrapper)
+			if (sender == wrapper && (flowitems == null || wrapper.Count != flowitems.Length))
 			{
 				if (csel >= wrapper.Count) csel = wrapper.Count - 1;
 				myrepaint();
