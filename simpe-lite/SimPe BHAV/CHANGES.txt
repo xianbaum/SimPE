@@ -1,4 +1,8 @@
 
+3 September 2005 19:47 - Bhav: repaint the list when we change Bhav (hackity, hackity, hack)
+  SimPe BHAV\
+    BhavInstListControl.cs 1.29
+
 3 September 2005 14:07 - Bhav: stop repainting the list unless it's changed length (hacky)
   SimPe BHAV\
     BhavInstListControl.cs 1.28
