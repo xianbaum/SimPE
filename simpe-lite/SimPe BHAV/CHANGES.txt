@@ -1,4 +1,9 @@
 
+3 September 2005 11:37 - TTAB: Hack the UI to give just one pie string field
+  SimPe BHAV\
+    TtabForm.cs 1.19
+    TtabForm.resx 1.13
+
 3 September 2005 09:22 - Str: Handle 0x012C instance STR# file in group 0x7FBD8997
   SimPe BHAV\
     StrForm.cs 1.21
