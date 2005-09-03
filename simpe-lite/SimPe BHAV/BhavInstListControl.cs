@@ -47,13 +47,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
-
-			pnflow1.Visible = false;
-			pnflow1.Controls.Clear();
-			pnflow2.Visible = false;
-			pnflow2.Controls.Clear();
-			pnflow = pnflow1;
-			pnflow.Visible = true;
 		}
 
 		/// <summary> 
@@ -89,6 +82,16 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			wrapper = wrp;
 			csel = -1;
+			flowitems = null;
+			internalchg = false;
+
+			pnflow1.Visible = false;
+			pnflow1.Controls.Clear();
+			pnflow2.Visible = false;
+			pnflow2.Controls.Clear();
+			pnflow = pnflow1;
+			pnflow.Visible = true;
+
 			if (!setHandler)
 			{
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
