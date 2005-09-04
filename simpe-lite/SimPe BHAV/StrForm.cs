@@ -167,13 +167,15 @@ namespace SimPe.PackedFiles.UserInterface
 
 			count = 0;
 			for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Length);
+			while (count > 0 && wrapper[1, count-1] == null && wrapper.Add(1, "", "") >= 0);
 
 			this.lvStrItems.Columns[1].Text = "";
 			this.lvStrItems.Items.Clear();
 			for (int i = 0; i < count; i++)
 			{
+				StrItem si = wrapper[1, i];
 				this.lvStrItems.Items.Add( new ListViewItem(
-					new string[] { "0x" + Helper.HexString((ushort)i), "", wrapper[1, i].Title }
+					new string[] { "0x" + Helper.HexString((ushort)i), "", ((si == null) ? "" : si.Title) }
 					) );
 				this.lvStrItems.Items[i].UseItemStyleForSubItems = false;
 				this.lvStrItems.Items[i].SubItems[2].ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -195,7 +197,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnLngClear.Text = "Clear " + ((SimPe.Data.MetaData.Languages)lid).ToString();
 			this.btnLngClear.Enabled = (lid > 1) && !this.cbLngSelect.SelectedItem.ToString().EndsWith(" (empty)");
 
-			while (count > 0 && wrapper[1, count-1] == null && wrapper.Add(1, "", "") >= 0);
 			while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
 			this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
 			for (int i = 0; i < count; i++)

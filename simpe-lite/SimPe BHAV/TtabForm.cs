@@ -352,7 +352,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbStringIndex.Items.Clear();
 			int c = (int)getTTAsCount();
 			for (int i = 0; i < c; i++)
-				this.cbStringIndex.Items.Add("0x" + i.ToString("X") + ": " + wrapper.StringResource[(byte)1, i].Title);
+			{
+				StrItem si = wrapper.StringResource[(byte)1, i];
+				this.cbStringIndex.Items.Add("0x" + i.ToString("X") + ": " + ((si == null) ? "*!no default string!*" : si.Title));
+			}
 			this.cbStringIndex.SelectedIndex = -1;
 
 			internalchg = false;
