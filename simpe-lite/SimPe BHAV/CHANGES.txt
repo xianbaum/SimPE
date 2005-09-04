@@ -1,4 +1,9 @@
 
+4 September 2005 11:03 - Slightly more forgiving handling of missing default TTAs entries
+  SimPe BHAV\
+    StrForm.cs 1.24
+    TtabForm.cs 1.20
+
 3 September 2005 19:47 - Bhav: repaint the list when we change Bhav (hackity, hackity, hack)
   SimPe BHAV\
     BhavInstListControl.cs 1.29
