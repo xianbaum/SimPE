@@ -1,4 +1,8 @@
 
+5 September 2005 21:04 - Bhav: Send WrapperChanged only once for Sort() and only if it changed
+  SimPe BHAV\
+    BhavWrapper.cs 1.30
+
 4 September 2005 11:03 - Slightly more forgiving handling of missing default TTAs entries
   SimPe BHAV\
     StrForm.cs 1.24
