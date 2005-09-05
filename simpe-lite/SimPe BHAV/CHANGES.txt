@@ -1,4 +1,9 @@
 
+5 September 2005 22:02 - Bhav: items arraylist WrapperChanged tidy-up
+  SimPe BHAV\
+    BhavInstListControl.cs 1.30
+    BhavWrapper.cs 1.31
+
 5 September 2005 21:04 - Bhav: Send WrapperChanged only once for Sort() and only if it changed
   SimPe BHAV\
     BhavWrapper.cs 1.30
