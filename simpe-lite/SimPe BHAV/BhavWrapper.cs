@@ -174,6 +174,9 @@ namespace SimPe.PackedFiles.Wrapper
 			int start = 0;		// where we got to on True pass
 			int startnext = 0;	// where we got to on False pass
 
+			bool savedstate = internalchg;
+			bool somethingchanged = false;
+			internalchg = true;
 			while (start < items.Count)
 			{
 				for (int i = start; i < items.Count; i++)
@@ -185,11 +188,15 @@ namespace SimPe.PackedFiles.Wrapper
 							break;
 
 						items.Move(items[i].Target2, start);
+						somethingchanged = true;
 
 						continue;
 					}
 					if (items[i].Target1 != start)
+					{
 						items.Move(items[i].Target1, start);
+						somethingchanged = true;
+					}
 				}
 				if (start >= items.Count)
 					break;
@@ -200,10 +207,12 @@ namespace SimPe.PackedFiles.Wrapper
 					if (items[i].Target2 < start || items[i].Target2 >= items.Count)
 						continue;
 					items.Move(items[i].Target2, start);
+					somethingchanged = true;
 					break;
 				}
 			}
-			OnWrapperChanged(this, new EventArgs());
+			internalchg = savedstate;
+			if (somethingchanged) OnWrapperChanged(this, new EventArgs());
 		}
 
 		#endregion
