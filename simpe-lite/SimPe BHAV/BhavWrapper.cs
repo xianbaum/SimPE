@@ -109,14 +109,14 @@ namespace SimPe.PackedFiles.Wrapper
 
 			item.Parent = this;
 			int result = items.Add(item);
-			OnWrapperChanged(this, new EventArgs());
+			OnWrapperChanged(items, new EventArgs());
 			return result;
 		}
 
 		public void Clear()
 		{
 			items.Clear();
-			OnWrapperChanged(this, new EventArgs());
+			OnWrapperChanged(items, new EventArgs());
 		}
 
 		public bool Contains(Instruction item) { return items.Contains(item); }
@@ -129,20 +129,29 @@ namespace SimPe.PackedFiles.Wrapper
 				throw(new NotSupportedException("Too many items"));
 
 			item.Parent = this;
+			bool savedstate = internalchg;
+			internalchg = true;
 			items.Move(items.Add(item), index);
-			OnWrapperChanged(this, new EventArgs());
+			internalchg = savedstate;
+			OnWrapperChanged(items, new EventArgs());
 		}
 
 		public void Remove(Instruction item)
 		{
+			bool savedstate = internalchg;
+			internalchg = true;
 			items.RemoveAt(items.IndexOf(item));
-			OnWrapperChanged(this, new EventArgs());
+			internalchg = savedstate;
+			OnWrapperChanged(items, new EventArgs());
 		}
 
 		public void RemoveAt(int i)
 		{
+			bool savedstate = internalchg;
+			internalchg = true;
 			items.RemoveAt(i);
-			OnWrapperChanged(this, new EventArgs());
+			internalchg = savedstate;
+			OnWrapperChanged(items, new EventArgs());
 		}
 
 		public Instruction this[int index]
@@ -157,7 +166,7 @@ namespace SimPe.PackedFiles.Wrapper
 				{
 					value.Parent = this;
 					items[index] = value;
-					OnWrapperChanged(this, new EventArgs());
+					OnWrapperChanged(items, new EventArgs());
 				}
 			}
 		}
@@ -165,8 +174,11 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public void Move(int from, int to)
 		{
+			bool savedstate = internalchg;
+			internalchg = true;
 			items.Move(from, to);
-			OnWrapperChanged(this, new EventArgs());
+			internalchg = savedstate;
+			OnWrapperChanged(items, new EventArgs());
 		}
 
 		public void Sort()
@@ -212,7 +224,7 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 			internalchg = savedstate;
-			if (somethingchanged) OnWrapperChanged(this, new EventArgs());
+			if (somethingchanged) OnWrapperChanged(items, new EventArgs());
 		}
 
 		#endregion

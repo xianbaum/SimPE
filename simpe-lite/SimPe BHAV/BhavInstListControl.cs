@@ -97,7 +97,7 @@ namespace SimPe.PackedFiles.UserInterface
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
 				setHandler = true;
 			}
-			this.WrapperChanged(wrapper, null);
+			this.WrapperChanged(new ArrayList(), null);
 			if (flowitems.Length > 0)
 			{
 				flowitems[0].MakeSelected(); // but don't focus!
@@ -110,7 +110,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			// Handler for instructions list
-			if (sender == wrapper && (flowitems == null || wrapper.Count != flowitems.Length))
+			if (sender is ArrayList)
 			{
 				if (csel >= wrapper.Count) csel = wrapper.Count - 1;
 				myrepaint();
@@ -330,7 +330,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void myrepaint()
 		{
 			Point currentLoc = this.AutoScrollPosition;
-			this.Cursor = Cursors.WaitCursor;
+			Cursor c = this.Parent.Cursor;
+			this.Parent.Cursor = Cursors.WaitCursor;
 
 			if (pnflow.Name.Equals("pnflow1")) // indicates which is currently visible (update the other one)
 			{
@@ -366,7 +367,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			this.AutoScrollPosition = currentLoc;
-			this.Cursor = Cursors.Default;
+			this.Parent.Cursor = c;
 		}
 
 		private BhavInstListItemUI makeBhavInstListItemUI(int ct)
