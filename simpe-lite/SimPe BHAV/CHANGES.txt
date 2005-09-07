@@ -1,5 +1,9 @@
 
-5 September 2005 22:02 - Bhav: items arraylist WrapperChanged tidy-up
+7 September 2005 17:57 - Bhav: Change hourglass behaviour
+  SimPe BHAV\
+    BhavInstListControl.cs 1.31
+
+5 September 2005 22:02 - Bhav: items arraylist WrapperChanged tidy-up (undo that hacking)
   SimPe BHAV\
     BhavInstListControl.cs 1.30
     BhavWrapper.cs 1.31
