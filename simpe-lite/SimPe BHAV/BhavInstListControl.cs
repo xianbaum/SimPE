@@ -330,7 +330,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void myrepaint()
 		{
 			Point currentLoc = this.AutoScrollPosition;
-			Cursor c = this.Parent.Cursor;
+			//Cursor c = this.Parent.Cursor;
 			this.Parent.Cursor = Cursors.WaitCursor;
 
 			if (pnflow.Name.Equals("pnflow1")) // indicates which is currently visible (update the other one)
@@ -367,7 +367,8 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			this.AutoScrollPosition = currentLoc;
-			this.Parent.Cursor = c;
+			//this.Parent.Cursor = c;
+			this.Parent.Cursor = Cursors.Default;
 		}
 
 		private BhavInstListItemUI makeBhavInstListItemUI(int ct)
