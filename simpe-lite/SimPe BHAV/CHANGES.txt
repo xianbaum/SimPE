@@ -1,4 +1,10 @@
 
+15 September 2005 21:54 - Bhav: Night Life compatibility
+  SimPe BHAV\
+    BhavForm.cs 1.38
+    BhavForm.resx 1.17
+    BhavWrapper.cs 1.32
+
 7 September 2005 17:57 - Bhav: Change hourglass behaviour
   SimPe BHAV\
     BhavInstListControl.cs 1.31
