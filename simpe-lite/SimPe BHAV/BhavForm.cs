@@ -41,13 +41,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbFormat;
 		private System.Windows.Forms.Label lbType;
 		private System.Windows.Forms.Label lbLocalC;
-		private System.Windows.Forms.Label lbFlags;
-		private System.Windows.Forms.Label lbReserved;
 		private System.Windows.Forms.TextBox tbFilename;
 		private System.Windows.Forms.TextBox tbType;
 		private System.Windows.Forms.TextBox tbArgC;
 		private System.Windows.Forms.TextBox tbLocalC;
-		private System.Windows.Forms.TextBox tbReserved;
 		private System.Windows.Forms.ComboBox tba1;
 		private System.Windows.Forms.ComboBox tba2;
 		private System.Windows.Forms.LinkLabel llopenbhav;
@@ -100,9 +97,12 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnLinkInge;
 		private System.Windows.Forms.Button btnDelPescado;
 		private System.Windows.Forms.Button btnAppend;
-		private System.Windows.Forms.TextBox tbFlags;
 		private System.Windows.Forms.ComboBox cbFormat;
 		private System.Windows.Forms.Button btnDelMerola;
+		private System.Windows.Forms.Label lbCacheFlags;
+		private System.Windows.Forms.TextBox tbCacheFlags;
+		private System.Windows.Forms.Label lbTreeVersion;
+		private System.Windows.Forms.TextBox tbTreeVersion;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -117,8 +117,13 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 
 			Control[] cs = {
-				tbLocalC, lbLocalC, tbArgC, lbArgC, tbReserved, lbReserved,
-				tbFlags, lbFlags, tbType, lbType, cbFormat, lbFormat };
+							   tbCacheFlags, lbCacheFlags,
+							   tbTreeVersion, lbTreeVersion,
+							   tbLocalC, lbLocalC,
+							   tbArgC, lbArgC,
+							   tbType, lbType,
+							   cbFormat, lbFormat
+						   };
 			int left = this.bhavPanel.Width;
 			for (int i = 0; i < cs.Length; i++)
 				left = cs[i].Left = left - (cs[i].Width + 4);
@@ -135,11 +140,15 @@ namespace SimPe.PackedFiles.UserInterface
 								,tbInst_Unk4 ,tbInst_Unk5 ,tbInst_Unk6 ,tbInst_Unk7
 								,tbInst_Reserved
 								,tbType
+								,tbCacheFlags
 							};
 			alHex8 = new ArrayList(iob);
 
-			TextBox[] w = { tbFlags ,tbReserved ,tbInst_OpCode ,};
+			TextBox[] w = { tbInst_OpCode ,};
 			alHex16 = new ArrayList(w);
+
+			TextBox[] dw = { tbTreeVersion ,};
+			alHex32 = new ArrayList(dw);
 
 			TextBox[] db = { tbArgC ,tbLocalC ,};
 			alDec8 = new ArrayList(db);
@@ -174,6 +183,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alDec16;
 		private ArrayList alHex8;
 		private ArrayList alHex16;
+		private ArrayList alHex32;
 		private ArrayList alDec8;
 		private ArrayList alHex16cb;
 
@@ -183,7 +193,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				// make it very clear it's read only
 				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled = tbArgC.Enabled = 
-					tbLocalC.Enabled = tbFlags.Enabled = tbReserved.Enabled =
+					tbLocalC.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
 					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
 					btnOpCode.Visible = btnOperandWiz.Visible = 
@@ -393,6 +403,15 @@ namespace SimPe.PackedFiles.UserInterface
 			return true;
 		}
 
+		private bool hex32_IsValid(object sender)
+		{
+			if (alHex32.IndexOf(sender) < 0)
+				throw new Exception("hex32_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
 		#endregion
 
 		#region IPackedFileUI Member
@@ -439,12 +458,13 @@ namespace SimPe.PackedFiles.UserInterface
 				if (internalchg) return;
 				internalchg = true;
 				tbFilename.Text = wrapper.FileName;
-				tbArgC.Text = wrapper.Header.ArgumentCount.ToString();
-				tbFlags.Text = "0x"+Helper.HexString(wrapper.Header.Flags);
 				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
-				tbLocalC.Text = wrapper.Header.LocalVarCount.ToString();
 				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
-				tbReserved.Text = "0x"+Helper.HexString(wrapper.Header.Zero);
+				tbArgC.Text = wrapper.Header.ArgumentCount.ToString();
+				tbLocalC.Text = wrapper.Header.LocalVarCount.ToString();
+				tbTreeVersion.Text = "0x"+Helper.HexString(wrapper.Header.TreeVersion);
+				tbCacheFlags.Text = "0x"+Helper.HexString(wrapper.Header.CacheFlags);
+				tbCacheFlags.Enabled = (wrapper.Header.Format >= 0x8009);
 				internalchg = false;
 			}
 
@@ -508,18 +528,17 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label2 = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
-			this.tbReserved = new System.Windows.Forms.TextBox();
 			this.tbLocalC = new System.Windows.Forms.TextBox();
 			this.tbArgC = new System.Windows.Forms.TextBox();
 			this.tbType = new System.Windows.Forms.TextBox();
-			this.lbReserved = new System.Windows.Forms.Label();
-			this.lbFlags = new System.Windows.Forms.Label();
+			this.lbTreeVersion = new System.Windows.Forms.Label();
 			this.lbType = new System.Windows.Forms.Label();
 			this.lbLocalC = new System.Windows.Forms.Label();
 			this.lbArgC = new System.Windows.Forms.Label();
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.bhavPanel = new System.Windows.Forms.Panel();
+			this.tbCacheFlags = new System.Windows.Forms.TextBox();
 			this.cbFormat = new System.Windows.Forms.ComboBox();
 			this.gbSpecial = new System.Windows.Forms.GroupBox();
 			this.btnAppend = new System.Windows.Forms.Button();
@@ -537,8 +556,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLines = new System.Windows.Forms.TextBox();
 			this.btnSort = new System.Windows.Forms.Button();
 			this.btnCommit = new System.Windows.Forms.Button();
-			this.tbFlags = new System.Windows.Forms.TextBox();
+			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
+			this.lbCacheFlags = new System.Windows.Forms.Label();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -1558,34 +1578,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFilename.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.TextAlign")));
 			this.lbFilename.Visible = ((bool)(resources.GetObject("lbFilename.Visible")));
 			// 
-			// tbReserved
-			// 
-			this.tbReserved.AccessibleDescription = resources.GetString("tbReserved.AccessibleDescription");
-			this.tbReserved.AccessibleName = resources.GetString("tbReserved.AccessibleName");
-			this.tbReserved.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbReserved.Anchor")));
-			this.tbReserved.AutoSize = ((bool)(resources.GetObject("tbReserved.AutoSize")));
-			this.tbReserved.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbReserved.BackgroundImage")));
-			this.tbReserved.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbReserved.Dock")));
-			this.tbReserved.Enabled = ((bool)(resources.GetObject("tbReserved.Enabled")));
-			this.tbReserved.Font = ((System.Drawing.Font)(resources.GetObject("tbReserved.Font")));
-			this.tbReserved.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbReserved.ImeMode")));
-			this.tbReserved.Location = ((System.Drawing.Point)(resources.GetObject("tbReserved.Location")));
-			this.tbReserved.MaxLength = ((int)(resources.GetObject("tbReserved.MaxLength")));
-			this.tbReserved.Multiline = ((bool)(resources.GetObject("tbReserved.Multiline")));
-			this.tbReserved.Name = "tbReserved";
-			this.tbReserved.PasswordChar = ((char)(resources.GetObject("tbReserved.PasswordChar")));
-			this.tbReserved.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbReserved.RightToLeft")));
-			this.tbReserved.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbReserved.ScrollBars")));
-			this.tbReserved.Size = ((System.Drawing.Size)(resources.GetObject("tbReserved.Size")));
-			this.tbReserved.TabIndex = ((int)(resources.GetObject("tbReserved.TabIndex")));
-			this.tbReserved.Text = resources.GetString("tbReserved.Text");
-			this.tbReserved.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbReserved.TextAlign")));
-			this.tbReserved.Visible = ((bool)(resources.GetObject("tbReserved.Visible")));
-			this.tbReserved.WordWrap = ((bool)(resources.GetObject("tbReserved.WordWrap")));
-			this.tbReserved.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.tbReserved.Validated += new System.EventHandler(this.hex16_Validated);
-			this.tbReserved.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-			// 
 			// tbLocalC
 			// 
 			this.tbLocalC.AccessibleDescription = resources.GetString("tbLocalC.AccessibleDescription");
@@ -1670,49 +1662,27 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbType.Validated += new System.EventHandler(this.hex8_Validated);
 			this.tbType.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
-			// lbReserved
+			// lbTreeVersion
 			// 
-			this.lbReserved.AccessibleDescription = resources.GetString("lbReserved.AccessibleDescription");
-			this.lbReserved.AccessibleName = resources.GetString("lbReserved.AccessibleName");
-			this.lbReserved.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbReserved.Anchor")));
-			this.lbReserved.AutoSize = ((bool)(resources.GetObject("lbReserved.AutoSize")));
-			this.lbReserved.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbReserved.Dock")));
-			this.lbReserved.Enabled = ((bool)(resources.GetObject("lbReserved.Enabled")));
-			this.lbReserved.Font = ((System.Drawing.Font)(resources.GetObject("lbReserved.Font")));
-			this.lbReserved.Image = ((System.Drawing.Image)(resources.GetObject("lbReserved.Image")));
-			this.lbReserved.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbReserved.ImageAlign")));
-			this.lbReserved.ImageIndex = ((int)(resources.GetObject("lbReserved.ImageIndex")));
-			this.lbReserved.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbReserved.ImeMode")));
-			this.lbReserved.Location = ((System.Drawing.Point)(resources.GetObject("lbReserved.Location")));
-			this.lbReserved.Name = "lbReserved";
-			this.lbReserved.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbReserved.RightToLeft")));
-			this.lbReserved.Size = ((System.Drawing.Size)(resources.GetObject("lbReserved.Size")));
-			this.lbReserved.TabIndex = ((int)(resources.GetObject("lbReserved.TabIndex")));
-			this.lbReserved.Text = resources.GetString("lbReserved.Text");
-			this.lbReserved.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbReserved.TextAlign")));
-			this.lbReserved.Visible = ((bool)(resources.GetObject("lbReserved.Visible")));
-			// 
-			// lbFlags
-			// 
-			this.lbFlags.AccessibleDescription = resources.GetString("lbFlags.AccessibleDescription");
-			this.lbFlags.AccessibleName = resources.GetString("lbFlags.AccessibleName");
-			this.lbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbFlags.Anchor")));
-			this.lbFlags.AutoSize = ((bool)(resources.GetObject("lbFlags.AutoSize")));
-			this.lbFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbFlags.Dock")));
-			this.lbFlags.Enabled = ((bool)(resources.GetObject("lbFlags.Enabled")));
-			this.lbFlags.Font = ((System.Drawing.Font)(resources.GetObject("lbFlags.Font")));
-			this.lbFlags.Image = ((System.Drawing.Image)(resources.GetObject("lbFlags.Image")));
-			this.lbFlags.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFlags.ImageAlign")));
-			this.lbFlags.ImageIndex = ((int)(resources.GetObject("lbFlags.ImageIndex")));
-			this.lbFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbFlags.ImeMode")));
-			this.lbFlags.Location = ((System.Drawing.Point)(resources.GetObject("lbFlags.Location")));
-			this.lbFlags.Name = "lbFlags";
-			this.lbFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbFlags.RightToLeft")));
-			this.lbFlags.Size = ((System.Drawing.Size)(resources.GetObject("lbFlags.Size")));
-			this.lbFlags.TabIndex = ((int)(resources.GetObject("lbFlags.TabIndex")));
-			this.lbFlags.Text = resources.GetString("lbFlags.Text");
-			this.lbFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFlags.TextAlign")));
-			this.lbFlags.Visible = ((bool)(resources.GetObject("lbFlags.Visible")));
+			this.lbTreeVersion.AccessibleDescription = resources.GetString("lbTreeVersion.AccessibleDescription");
+			this.lbTreeVersion.AccessibleName = resources.GetString("lbTreeVersion.AccessibleName");
+			this.lbTreeVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbTreeVersion.Anchor")));
+			this.lbTreeVersion.AutoSize = ((bool)(resources.GetObject("lbTreeVersion.AutoSize")));
+			this.lbTreeVersion.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbTreeVersion.Dock")));
+			this.lbTreeVersion.Enabled = ((bool)(resources.GetObject("lbTreeVersion.Enabled")));
+			this.lbTreeVersion.Font = ((System.Drawing.Font)(resources.GetObject("lbTreeVersion.Font")));
+			this.lbTreeVersion.Image = ((System.Drawing.Image)(resources.GetObject("lbTreeVersion.Image")));
+			this.lbTreeVersion.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbTreeVersion.ImageAlign")));
+			this.lbTreeVersion.ImageIndex = ((int)(resources.GetObject("lbTreeVersion.ImageIndex")));
+			this.lbTreeVersion.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbTreeVersion.ImeMode")));
+			this.lbTreeVersion.Location = ((System.Drawing.Point)(resources.GetObject("lbTreeVersion.Location")));
+			this.lbTreeVersion.Name = "lbTreeVersion";
+			this.lbTreeVersion.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbTreeVersion.RightToLeft")));
+			this.lbTreeVersion.Size = ((System.Drawing.Size)(resources.GetObject("lbTreeVersion.Size")));
+			this.lbTreeVersion.TabIndex = ((int)(resources.GetObject("lbTreeVersion.TabIndex")));
+			this.lbTreeVersion.Text = resources.GetString("lbTreeVersion.Text");
+			this.lbTreeVersion.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbTreeVersion.TextAlign")));
+			this.lbTreeVersion.Visible = ((bool)(resources.GetObject("lbTreeVersion.Visible")));
 			// 
 			// lbType
 			// 
@@ -1835,6 +1805,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
 			this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
+			this.bhavPanel.Controls.Add(this.tbCacheFlags);
 			this.bhavPanel.Controls.Add(this.cbFormat);
 			this.bhavPanel.Controls.Add(this.gbSpecial);
 			this.bhavPanel.Controls.Add(this.pnflowcontainer);
@@ -1845,19 +1816,18 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Controls.Add(this.lbFilename);
 			this.bhavPanel.Controls.Add(this.tbFilename);
 			this.bhavPanel.Controls.Add(this.gbInstruction);
-			this.bhavPanel.Controls.Add(this.tbReserved);
 			this.bhavPanel.Controls.Add(this.tbLocalC);
-			this.bhavPanel.Controls.Add(this.tbFlags);
+			this.bhavPanel.Controls.Add(this.tbTreeVersion);
 			this.bhavPanel.Controls.Add(this.tbArgC);
 			this.bhavPanel.Controls.Add(this.tbType);
-			this.bhavPanel.Controls.Add(this.lbReserved);
-			this.bhavPanel.Controls.Add(this.lbFlags);
+			this.bhavPanel.Controls.Add(this.lbTreeVersion);
 			this.bhavPanel.Controls.Add(this.lbType);
 			this.bhavPanel.Controls.Add(this.lbLocalC);
 			this.bhavPanel.Controls.Add(this.lbArgC);
 			this.bhavPanel.Controls.Add(this.lbFormat);
 			this.bhavPanel.Controls.Add(this.pnHeading);
 			this.bhavPanel.Controls.Add(this.btnAdd);
+			this.bhavPanel.Controls.Add(this.lbCacheFlags);
 			this.bhavPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("bhavPanel.Dock")));
 			this.bhavPanel.Enabled = ((bool)(resources.GetObject("bhavPanel.Enabled")));
 			this.bhavPanel.Font = ((System.Drawing.Font)(resources.GetObject("bhavPanel.Font")));
@@ -1870,6 +1840,34 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Text = resources.GetString("bhavPanel.Text");
 			this.bhavPanel.Visible = ((bool)(resources.GetObject("bhavPanel.Visible")));
 			this.bhavPanel.Resize += new System.EventHandler(this.bhavPanel_Resize);
+			// 
+			// tbCacheFlags
+			// 
+			this.tbCacheFlags.AccessibleDescription = resources.GetString("tbCacheFlags.AccessibleDescription");
+			this.tbCacheFlags.AccessibleName = resources.GetString("tbCacheFlags.AccessibleName");
+			this.tbCacheFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbCacheFlags.Anchor")));
+			this.tbCacheFlags.AutoSize = ((bool)(resources.GetObject("tbCacheFlags.AutoSize")));
+			this.tbCacheFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbCacheFlags.BackgroundImage")));
+			this.tbCacheFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbCacheFlags.Dock")));
+			this.tbCacheFlags.Enabled = ((bool)(resources.GetObject("tbCacheFlags.Enabled")));
+			this.tbCacheFlags.Font = ((System.Drawing.Font)(resources.GetObject("tbCacheFlags.Font")));
+			this.tbCacheFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbCacheFlags.ImeMode")));
+			this.tbCacheFlags.Location = ((System.Drawing.Point)(resources.GetObject("tbCacheFlags.Location")));
+			this.tbCacheFlags.MaxLength = ((int)(resources.GetObject("tbCacheFlags.MaxLength")));
+			this.tbCacheFlags.Multiline = ((bool)(resources.GetObject("tbCacheFlags.Multiline")));
+			this.tbCacheFlags.Name = "tbCacheFlags";
+			this.tbCacheFlags.PasswordChar = ((char)(resources.GetObject("tbCacheFlags.PasswordChar")));
+			this.tbCacheFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbCacheFlags.RightToLeft")));
+			this.tbCacheFlags.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbCacheFlags.ScrollBars")));
+			this.tbCacheFlags.Size = ((System.Drawing.Size)(resources.GetObject("tbCacheFlags.Size")));
+			this.tbCacheFlags.TabIndex = ((int)(resources.GetObject("tbCacheFlags.TabIndex")));
+			this.tbCacheFlags.Text = resources.GetString("tbCacheFlags.Text");
+			this.tbCacheFlags.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbCacheFlags.TextAlign")));
+			this.tbCacheFlags.Visible = ((bool)(resources.GetObject("tbCacheFlags.Visible")));
+			this.tbCacheFlags.WordWrap = ((bool)(resources.GetObject("tbCacheFlags.WordWrap")));
+			this.tbCacheFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbCacheFlags.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbCacheFlags.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// cbFormat
 			// 
@@ -2289,33 +2287,33 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
 			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
 			// 
-			// tbFlags
+			// tbTreeVersion
 			// 
-			this.tbFlags.AccessibleDescription = resources.GetString("tbFlags.AccessibleDescription");
-			this.tbFlags.AccessibleName = resources.GetString("tbFlags.AccessibleName");
-			this.tbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFlags.Anchor")));
-			this.tbFlags.AutoSize = ((bool)(resources.GetObject("tbFlags.AutoSize")));
-			this.tbFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFlags.BackgroundImage")));
-			this.tbFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFlags.Dock")));
-			this.tbFlags.Enabled = ((bool)(resources.GetObject("tbFlags.Enabled")));
-			this.tbFlags.Font = ((System.Drawing.Font)(resources.GetObject("tbFlags.Font")));
-			this.tbFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFlags.ImeMode")));
-			this.tbFlags.Location = ((System.Drawing.Point)(resources.GetObject("tbFlags.Location")));
-			this.tbFlags.MaxLength = ((int)(resources.GetObject("tbFlags.MaxLength")));
-			this.tbFlags.Multiline = ((bool)(resources.GetObject("tbFlags.Multiline")));
-			this.tbFlags.Name = "tbFlags";
-			this.tbFlags.PasswordChar = ((char)(resources.GetObject("tbFlags.PasswordChar")));
-			this.tbFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFlags.RightToLeft")));
-			this.tbFlags.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFlags.ScrollBars")));
-			this.tbFlags.Size = ((System.Drawing.Size)(resources.GetObject("tbFlags.Size")));
-			this.tbFlags.TabIndex = ((int)(resources.GetObject("tbFlags.TabIndex")));
-			this.tbFlags.Text = resources.GetString("tbFlags.Text");
-			this.tbFlags.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlags.TextAlign")));
-			this.tbFlags.Visible = ((bool)(resources.GetObject("tbFlags.Visible")));
-			this.tbFlags.WordWrap = ((bool)(resources.GetObject("tbFlags.WordWrap")));
-			this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.tbFlags.Validated += new System.EventHandler(this.hex16_Validated);
-			this.tbFlags.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			this.tbTreeVersion.AccessibleDescription = resources.GetString("tbTreeVersion.AccessibleDescription");
+			this.tbTreeVersion.AccessibleName = resources.GetString("tbTreeVersion.AccessibleName");
+			this.tbTreeVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbTreeVersion.Anchor")));
+			this.tbTreeVersion.AutoSize = ((bool)(resources.GetObject("tbTreeVersion.AutoSize")));
+			this.tbTreeVersion.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbTreeVersion.BackgroundImage")));
+			this.tbTreeVersion.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbTreeVersion.Dock")));
+			this.tbTreeVersion.Enabled = ((bool)(resources.GetObject("tbTreeVersion.Enabled")));
+			this.tbTreeVersion.Font = ((System.Drawing.Font)(resources.GetObject("tbTreeVersion.Font")));
+			this.tbTreeVersion.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbTreeVersion.ImeMode")));
+			this.tbTreeVersion.Location = ((System.Drawing.Point)(resources.GetObject("tbTreeVersion.Location")));
+			this.tbTreeVersion.MaxLength = ((int)(resources.GetObject("tbTreeVersion.MaxLength")));
+			this.tbTreeVersion.Multiline = ((bool)(resources.GetObject("tbTreeVersion.Multiline")));
+			this.tbTreeVersion.Name = "tbTreeVersion";
+			this.tbTreeVersion.PasswordChar = ((char)(resources.GetObject("tbTreeVersion.PasswordChar")));
+			this.tbTreeVersion.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbTreeVersion.RightToLeft")));
+			this.tbTreeVersion.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbTreeVersion.ScrollBars")));
+			this.tbTreeVersion.Size = ((System.Drawing.Size)(resources.GetObject("tbTreeVersion.Size")));
+			this.tbTreeVersion.TabIndex = ((int)(resources.GetObject("tbTreeVersion.TabIndex")));
+			this.tbTreeVersion.Text = resources.GetString("tbTreeVersion.Text");
+			this.tbTreeVersion.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbTreeVersion.TextAlign")));
+			this.tbTreeVersion.Visible = ((bool)(resources.GetObject("tbTreeVersion.Visible")));
+			this.tbTreeVersion.WordWrap = ((bool)(resources.GetObject("tbTreeVersion.WordWrap")));
+			this.tbTreeVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbTreeVersion.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbTreeVersion.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// btnAdd
 			// 
@@ -2340,6 +2338,28 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.TextAlign")));
 			this.btnAdd.Visible = ((bool)(resources.GetObject("btnAdd.Visible")));
 			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Clicked);
+			// 
+			// lbCacheFlags
+			// 
+			this.lbCacheFlags.AccessibleDescription = resources.GetString("lbCacheFlags.AccessibleDescription");
+			this.lbCacheFlags.AccessibleName = resources.GetString("lbCacheFlags.AccessibleName");
+			this.lbCacheFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCacheFlags.Anchor")));
+			this.lbCacheFlags.AutoSize = ((bool)(resources.GetObject("lbCacheFlags.AutoSize")));
+			this.lbCacheFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCacheFlags.Dock")));
+			this.lbCacheFlags.Enabled = ((bool)(resources.GetObject("lbCacheFlags.Enabled")));
+			this.lbCacheFlags.Font = ((System.Drawing.Font)(resources.GetObject("lbCacheFlags.Font")));
+			this.lbCacheFlags.Image = ((System.Drawing.Image)(resources.GetObject("lbCacheFlags.Image")));
+			this.lbCacheFlags.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.ImageAlign")));
+			this.lbCacheFlags.ImageIndex = ((int)(resources.GetObject("lbCacheFlags.ImageIndex")));
+			this.lbCacheFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbCacheFlags.ImeMode")));
+			this.lbCacheFlags.Location = ((System.Drawing.Point)(resources.GetObject("lbCacheFlags.Location")));
+			this.lbCacheFlags.Name = "lbCacheFlags";
+			this.lbCacheFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbCacheFlags.RightToLeft")));
+			this.lbCacheFlags.Size = ((System.Drawing.Size)(resources.GetObject("lbCacheFlags.Size")));
+			this.lbCacheFlags.TabIndex = ((int)(resources.GetObject("lbCacheFlags.TabIndex")));
+			this.lbCacheFlags.Text = resources.GetString("lbCacheFlags.Text");
+			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
+			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
 			// BhavForm
 			// 
@@ -2741,6 +2761,7 @@ namespace SimPe.PackedFiles.UserInterface
 					 {
 						 case 16: currentInst.Reserved0 = val; break;
 						 case 17: wrapper.Header.Type = val; break;
+						 case 18: wrapper.Header.CacheFlags = val; break;
 					 }
 			}
 			internalchg = false;
@@ -2772,6 +2793,7 @@ namespace SimPe.PackedFiles.UserInterface
 					{
 						case 16: val = origInst.Reserved0; currentInst.Reserved0 = val; break;
 						case 17: val = wrapper.Header.Type; break;
+						case 18: val = wrapper.Header.CacheFlags; break;
 					}
 			}
 
@@ -2800,9 +2822,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: wrapper.Header.Flags = val; break;
-				case 1: wrapper.Header.Zero = val; break;
-				case 2:
+				case 0:
 					currentInst.OpCode = val;
 					this.btnOperandWiz.Enabled = BhavOperandWiz.Available(currentInst);
 					break;
@@ -2820,9 +2840,7 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort val = 0;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: val = wrapper.Header.Flags; break;
-				case 1: val = wrapper.Header.Zero; break;
-				case 2: currentInst.OpCode = val = origInst.OpCode; break;
+				case 0: currentInst.OpCode = val = origInst.OpCode; break;
 			}
 
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
@@ -2835,6 +2853,48 @@ namespace SimPe.PackedFiles.UserInterface
 			bool origstate = internalchg;
 			internalchg = true;
 			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+
+		private void hex32_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!hex32_IsValid(sender)) return;
+
+			uint val = Convert.ToUInt32(((TextBox)sender).Text, 16);
+			internalchg = true;
+			switch (alHex32.IndexOf(sender))
+			{
+				case 0: wrapper.Header.TreeVersion = val; break;
+			}
+			internalchg = false;
+		}
+
+		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex32_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			uint val = 0;
+			switch (alHex32.IndexOf(sender))
+			{
+				case 0: val = wrapper.Header.TreeVersion; break;
+			}
+
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void hex32_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}

@@ -452,8 +452,8 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte argc = 0;
 		private byte locals = 0;
 		private byte reserved_00 = 0;	// header flag
-		private ushort flags = 0;		// int treeVersion
-		private ushort zero = 0;		// ...
+		private uint treeversion = 0;		// int treeVersion
+		private byte cacheflags = 0;
 		#endregion
 
 		#region Accessor methods
@@ -522,31 +522,32 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public ushort Flags 
+		public uint TreeVersion 
 		{
-			get { return flags; }
+			get { return treeversion; }
 			set 
 			{
-				if (flags != value)
+				if (treeversion != value)
 				{
-					flags = value;
+					treeversion = value;
 					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
 
-		public ushort Zero 
+		public byte CacheFlags 
 		{
-			get { return zero; }
+			get { return cacheflags; }
 			set 
 			{
-				if (zero != value)
+				if (cacheflags != value)
 				{
-					zero = value;
+					cacheflags = value;
 					wrapper.OnWrapperChanged(wrapper, new EventArgs());
 				}
 			}
 		}
+
 		#endregion
 
 		public BhavHeader(Bhav wrapper)
@@ -567,8 +568,8 @@ namespace SimPe.PackedFiles.Wrapper
 				type = reader.ReadByte();
 				argc = reader.ReadByte();
 				locals = reader.ReadByte();
-				zero = reader.ReadByte();
-				flags = reader.ReadUInt16();					
+				reserved_00 = reader.ReadByte();
+				treeversion = reader.ReadUInt16();					
 				count = reader.ReadUInt32();
 			}
 			else
@@ -578,9 +579,12 @@ namespace SimPe.PackedFiles.Wrapper
 				argc = reader.ReadByte();			//0x0045 - # of args
 				locals = reader.ReadByte();			//0x0046 - # of locals
 				reserved_00 = reader.ReadByte();	//0x0047 - header flag
-				flags = reader.ReadUInt16();		//0x0048 - Tree version (4 bytes)
-				zero = reader.ReadUInt16();			//       - Tree version (4 bytes)
+				treeversion = reader.ReadUInt32();		//0x0048 - Tree version (4 bytes)
 			}
+			if (format == 0x8009)
+				cacheflags = reader.ReadByte();
+			else
+				cacheflags = 0;
 		}
 
 		/// <summary>
@@ -595,8 +599,8 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write((byte)type);
 				writer.Write(argc);
 				writer.Write(locals);
-				writer.Write((byte)zero);
-				writer.Write(flags);					
+				writer.Write(reserved_00);
+				writer.Write((ushort)treeversion);
 				writer.Write(count);
 			}
 			else
@@ -605,10 +609,11 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write(type);
 				writer.Write(argc);
 				writer.Write(locals);
-				writer.Write((byte)reserved_00);
-				writer.Write(flags);
-				writer.Write(zero);
+				writer.Write(reserved_00);
+				writer.Write(treeversion);
 			}
+			if (format == 0x8009)
+				writer.Write(cacheflags);
 		}
 	}
 
