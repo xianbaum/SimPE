@@ -103,6 +103,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbCacheFlags;
 		private System.Windows.Forms.Label lbTreeVersion;
 		private System.Windows.Forms.TextBox tbTreeVersion;
+		private System.Windows.Forms.TextBox tbHeaderFlag;
+		private System.Windows.Forms.Label lbHeaderFlag;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -119,6 +121,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Control[] cs = {
 							   tbCacheFlags, lbCacheFlags,
 							   tbTreeVersion, lbTreeVersion,
+							   tbHeaderFlag, lbHeaderFlag,
 							   tbLocalC, lbLocalC,
 							   tbArgC, lbArgC,
 							   tbType, lbType,
@@ -139,6 +142,7 @@ namespace SimPe.PackedFiles.UserInterface
 								,tbInst_Unk0 ,tbInst_Unk1 ,tbInst_Unk2 ,tbInst_Unk3
 								,tbInst_Unk4 ,tbInst_Unk5 ,tbInst_Unk6 ,tbInst_Unk7
 								,tbInst_Reserved
+								,tbHeaderFlag
 								,tbType
 								,tbCacheFlags
 							};
@@ -462,6 +466,7 @@ namespace SimPe.PackedFiles.UserInterface
 				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
 				tbArgC.Text = wrapper.Header.ArgumentCount.ToString();
 				tbLocalC.Text = wrapper.Header.LocalVarCount.ToString();
+				tbHeaderFlag.Text = "0x"+Helper.HexString(wrapper.Header.HeaderFlag);
 				tbTreeVersion.Text = "0x"+Helper.HexString(wrapper.Header.TreeVersion);
 				tbCacheFlags.Text = "0x"+Helper.HexString(wrapper.Header.CacheFlags);
 				tbCacheFlags.Enabled = (wrapper.Header.Format >= 0x8009);
@@ -559,6 +564,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
+			this.tbHeaderFlag = new System.Windows.Forms.TextBox();
+			this.lbHeaderFlag = new System.Windows.Forms.Label();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -1805,6 +1812,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
 			this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
+			this.bhavPanel.Controls.Add(this.tbHeaderFlag);
+			this.bhavPanel.Controls.Add(this.lbHeaderFlag);
 			this.bhavPanel.Controls.Add(this.tbCacheFlags);
 			this.bhavPanel.Controls.Add(this.cbFormat);
 			this.bhavPanel.Controls.Add(this.gbSpecial);
@@ -2361,6 +2370,56 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
 			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
+			// tbHeaderFlag
+			// 
+			this.tbHeaderFlag.AccessibleDescription = resources.GetString("tbHeaderFlag.AccessibleDescription");
+			this.tbHeaderFlag.AccessibleName = resources.GetString("tbHeaderFlag.AccessibleName");
+			this.tbHeaderFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbHeaderFlag.Anchor")));
+			this.tbHeaderFlag.AutoSize = ((bool)(resources.GetObject("tbHeaderFlag.AutoSize")));
+			this.tbHeaderFlag.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbHeaderFlag.BackgroundImage")));
+			this.tbHeaderFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbHeaderFlag.Dock")));
+			this.tbHeaderFlag.Enabled = ((bool)(resources.GetObject("tbHeaderFlag.Enabled")));
+			this.tbHeaderFlag.Font = ((System.Drawing.Font)(resources.GetObject("tbHeaderFlag.Font")));
+			this.tbHeaderFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbHeaderFlag.ImeMode")));
+			this.tbHeaderFlag.Location = ((System.Drawing.Point)(resources.GetObject("tbHeaderFlag.Location")));
+			this.tbHeaderFlag.MaxLength = ((int)(resources.GetObject("tbHeaderFlag.MaxLength")));
+			this.tbHeaderFlag.Multiline = ((bool)(resources.GetObject("tbHeaderFlag.Multiline")));
+			this.tbHeaderFlag.Name = "tbHeaderFlag";
+			this.tbHeaderFlag.PasswordChar = ((char)(resources.GetObject("tbHeaderFlag.PasswordChar")));
+			this.tbHeaderFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbHeaderFlag.RightToLeft")));
+			this.tbHeaderFlag.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbHeaderFlag.ScrollBars")));
+			this.tbHeaderFlag.Size = ((System.Drawing.Size)(resources.GetObject("tbHeaderFlag.Size")));
+			this.tbHeaderFlag.TabIndex = ((int)(resources.GetObject("tbHeaderFlag.TabIndex")));
+			this.tbHeaderFlag.Text = resources.GetString("tbHeaderFlag.Text");
+			this.tbHeaderFlag.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbHeaderFlag.TextAlign")));
+			this.tbHeaderFlag.Visible = ((bool)(resources.GetObject("tbHeaderFlag.Visible")));
+			this.tbHeaderFlag.WordWrap = ((bool)(resources.GetObject("tbHeaderFlag.WordWrap")));
+			this.tbHeaderFlag.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbHeaderFlag.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbHeaderFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+			// 
+			// lbHeaderFlag
+			// 
+			this.lbHeaderFlag.AccessibleDescription = resources.GetString("lbHeaderFlag.AccessibleDescription");
+			this.lbHeaderFlag.AccessibleName = resources.GetString("lbHeaderFlag.AccessibleName");
+			this.lbHeaderFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbHeaderFlag.Anchor")));
+			this.lbHeaderFlag.AutoSize = ((bool)(resources.GetObject("lbHeaderFlag.AutoSize")));
+			this.lbHeaderFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbHeaderFlag.Dock")));
+			this.lbHeaderFlag.Enabled = ((bool)(resources.GetObject("lbHeaderFlag.Enabled")));
+			this.lbHeaderFlag.Font = ((System.Drawing.Font)(resources.GetObject("lbHeaderFlag.Font")));
+			this.lbHeaderFlag.Image = ((System.Drawing.Image)(resources.GetObject("lbHeaderFlag.Image")));
+			this.lbHeaderFlag.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbHeaderFlag.ImageAlign")));
+			this.lbHeaderFlag.ImageIndex = ((int)(resources.GetObject("lbHeaderFlag.ImageIndex")));
+			this.lbHeaderFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbHeaderFlag.ImeMode")));
+			this.lbHeaderFlag.Location = ((System.Drawing.Point)(resources.GetObject("lbHeaderFlag.Location")));
+			this.lbHeaderFlag.Name = "lbHeaderFlag";
+			this.lbHeaderFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbHeaderFlag.RightToLeft")));
+			this.lbHeaderFlag.Size = ((System.Drawing.Size)(resources.GetObject("lbHeaderFlag.Size")));
+			this.lbHeaderFlag.TabIndex = ((int)(resources.GetObject("lbHeaderFlag.TabIndex")));
+			this.lbHeaderFlag.Text = resources.GetString("lbHeaderFlag.Text");
+			this.lbHeaderFlag.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbHeaderFlag.TextAlign")));
+			this.lbHeaderFlag.Visible = ((bool)(resources.GetObject("lbHeaderFlag.Visible")));
+			// 
 			// BhavForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2760,8 +2819,9 @@ namespace SimPe.PackedFiles.UserInterface
 				else switch(i)
 					 {
 						 case 16: currentInst.Reserved0 = val; break;
-						 case 17: wrapper.Header.Type = val; break;
-						 case 18: wrapper.Header.CacheFlags = val; break;
+						 case 17: wrapper.Header.HeaderFlag = val; break;
+						 case 18: wrapper.Header.Type = val; break;
+						 case 19: wrapper.Header.CacheFlags = val; break;
 					 }
 			}
 			internalchg = false;
@@ -2790,11 +2850,12 @@ namespace SimPe.PackedFiles.UserInterface
 					currentInst.Reserved1[i-8] = val = origInst.Reserved1[i-8];
 				}
 				else switch(i)
-					{
-						case 16: val = origInst.Reserved0; currentInst.Reserved0 = val; break;
-						case 17: val = wrapper.Header.Type; break;
-						case 18: val = wrapper.Header.CacheFlags; break;
-					}
+					 {
+						 case 16: val = origInst.Reserved0; currentInst.Reserved0 = val; break;
+						 case 17: val = wrapper.Header.HeaderFlag; break;
+						 case 18: val = wrapper.Header.Type; break;
+						 case 19: val = wrapper.Header.CacheFlags; break;
+					 }
 			}
 
 			internalchg = true;

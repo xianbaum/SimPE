@@ -451,8 +451,8 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte type = 0;
 		private byte argc = 0;
 		private byte locals = 0;
-		private byte reserved_00 = 0;	// header flag
-		private uint treeversion = 0;		// int treeVersion
+		private byte headerflag = 0;
+		private uint treeversion = 0;
 		private byte cacheflags = 0;
 		#endregion
 
@@ -522,6 +522,19 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		public byte HeaderFlag 
+		{
+			get { return headerflag; }
+			set 
+			{
+				if (headerflag != value)
+				{
+					headerflag = value;
+					wrapper.OnWrapperChanged(wrapper, new EventArgs());
+				}
+			}
+		}
+
 		public uint TreeVersion 
 		{
 			get { return treeversion; }
@@ -568,7 +581,7 @@ namespace SimPe.PackedFiles.Wrapper
 				type = reader.ReadByte();
 				argc = reader.ReadByte();
 				locals = reader.ReadByte();
-				reserved_00 = reader.ReadByte();
+				headerflag = reader.ReadByte();
 				treeversion = reader.ReadUInt16();					
 				count = reader.ReadUInt32();
 			}
@@ -578,7 +591,7 @@ namespace SimPe.PackedFiles.Wrapper
 				type = reader.ReadByte();			//0x0044 - tree type
 				argc = reader.ReadByte();			//0x0045 - # of args
 				locals = reader.ReadByte();			//0x0046 - # of locals
-				reserved_00 = reader.ReadByte();	//0x0047 - header flag
+				headerflag = reader.ReadByte();	//0x0047 - header flag
 				treeversion = reader.ReadUInt32();		//0x0048 - Tree version (4 bytes)
 			}
 			if (format == 0x8009)
@@ -599,7 +612,7 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write((byte)type);
 				writer.Write(argc);
 				writer.Write(locals);
-				writer.Write(reserved_00);
+				writer.Write(headerflag);
 				writer.Write((ushort)treeversion);
 				writer.Write(count);
 			}
@@ -609,7 +622,7 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write(type);
 				writer.Write(argc);
 				writer.Write(locals);
-				writer.Write(reserved_00);
+				writer.Write(headerflag);
 				writer.Write(treeversion);
 			}
 			if (format == 0x8009)
@@ -628,7 +641,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private ushort opcode = 0;
 		private ushort addr1 = 0;
 		private ushort addr2 = 0;
-		private byte reserved_00 = 0;
+		private byte headerflag = 0;
 		private wrappedByteArray operands = null;
 		private wrappedByteArray reserved_01 = null;
 		#endregion
@@ -710,12 +723,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public byte Reserved0
 		{
-			get {return reserved_00;}
+			get {return headerflag;}
 			set
 			{
-				if (reserved_00 != value)
+				if (headerflag != value)
 				{
-					reserved_00 = value;
+					headerflag = value;
 					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
@@ -771,7 +784,7 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.opcode      = this.opcode;
 			clone.addr1       = this.addr1;
 			clone.addr2       = this.addr2;
-			clone.reserved_00 = this.reserved_00;
+			clone.headerflag = this.headerflag;
 			clone.operands    = operands.Clone();
 			clone.operands.Parent = clone;
 			clone.reserved_01 = reserved_01.Clone();
@@ -836,7 +849,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 			else
 			{
-				reserved_00 = reader.ReadByte();
+				headerflag = reader.ReadByte();
 				operands = new wrappedByteArray(this, reader);
 				reserved_01 = new wrappedByteArray(this, reader);
 			}
@@ -873,7 +886,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 			else
 			{
-				writer.Write(reserved_00);
+				writer.Write(headerflag);
 				operands.Serialize(writer);
 				reserved_01.Serialize(writer);
 			}
