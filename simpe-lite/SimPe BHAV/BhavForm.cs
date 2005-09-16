@@ -71,7 +71,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbInst_Unk2;
 		private System.Windows.Forms.TextBox tbInst_Unk1;
 		private System.Windows.Forms.TextBox tbInst_Unk0;
-		private System.Windows.Forms.TextBox tbInst_Instruction;
 		private System.Windows.Forms.GroupBox gbInstruction;
 		private System.Windows.Forms.Panel bhavPanel;
 		private System.Windows.Forms.Button btnCommit;
@@ -122,12 +121,12 @@ namespace SimPe.PackedFiles.UserInterface
 							   tbCacheFlags, lbCacheFlags,
 							   tbTreeVersion, lbTreeVersion,
 							   tbHeaderFlag, lbHeaderFlag,
-							   tbLocalC, lbLocalC,
-							   tbArgC, lbArgC,
+							   //tbLocalC, lbLocalC,
+							   //tbArgC, lbArgC,
 							   tbType, lbType,
 							   cbFormat, lbFormat
 						   };
-			int left = this.bhavPanel.Width;
+			int left = this.bhavPanel.Width - 4;
 			for (int i = 0; i < cs.Length; i++)
 				left = cs[i].Left = left - (cs[i].Width + 4);
 			this.lbFilename.Left = 4;
@@ -271,8 +270,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk5.Text = "";
 				this.tbInst_Unk6.Text = "";
 				this.tbInst_Unk7.Text = "";
-
-				this.tbInst_Instruction.Text = "";
 			}
 			else
 			{
@@ -329,8 +326,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk5.Text = Helper.HexString(inst.Reserved1[5]);
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
-
-				this.tbInst_Instruction.Text = inst.ToString();
 
 				this.btnOperandWiz.Enabled = BhavOperandWiz.Available(inst);
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
@@ -478,7 +473,6 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (internalchg)
 				{
-					this.tbInst_Instruction.Text = currentInst.ToString();
 					this.btnCancel.Enabled = true;
 				}
 				else
@@ -528,7 +522,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnOpCode = new System.Windows.Forms.Button();
-			this.tbInst_Instruction = new System.Windows.Forms.TextBox();
 			this.tbInst_Op23_dec = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
@@ -543,6 +536,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.bhavPanel = new System.Windows.Forms.Panel();
+			this.tbHeaderFlag = new System.Windows.Forms.TextBox();
+			this.lbHeaderFlag = new System.Windows.Forms.Label();
 			this.tbCacheFlags = new System.Windows.Forms.TextBox();
 			this.cbFormat = new System.Windows.Forms.ComboBox();
 			this.gbSpecial = new System.Windows.Forms.GroupBox();
@@ -564,8 +559,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
-			this.tbHeaderFlag = new System.Windows.Forms.TextBox();
-			this.lbHeaderFlag = new System.Windows.Forms.Label();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -632,7 +625,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.Controls.Add(this.label12);
 			this.gbInstruction.Controls.Add(this.label11);
 			this.gbInstruction.Controls.Add(this.btnOpCode);
-			this.gbInstruction.Controls.Add(this.tbInst_Instruction);
 			this.gbInstruction.Controls.Add(this.tbInst_Op23_dec);
 			this.gbInstruction.Controls.Add(this.label2);
 			this.gbInstruction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbInstruction.Dock")));
@@ -1457,35 +1449,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnOpCode.Visible = ((bool)(resources.GetObject("btnOpCode.Visible")));
 			this.btnOpCode.Click += new System.EventHandler(this.btnOpCode_Clicked);
 			// 
-			// tbInst_Instruction
-			// 
-			this.tbInst_Instruction.AccessibleDescription = resources.GetString("tbInst_Instruction.AccessibleDescription");
-			this.tbInst_Instruction.AccessibleName = resources.GetString("tbInst_Instruction.AccessibleName");
-			this.tbInst_Instruction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_Instruction.Anchor")));
-			this.tbInst_Instruction.AutoSize = ((bool)(resources.GetObject("tbInst_Instruction.AutoSize")));
-			this.tbInst_Instruction.BackColor = System.Drawing.SystemColors.Control;
-			this.tbInst_Instruction.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_Instruction.BackgroundImage")));
-			this.tbInst_Instruction.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.tbInst_Instruction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_Instruction.Dock")));
-			this.tbInst_Instruction.Enabled = ((bool)(resources.GetObject("tbInst_Instruction.Enabled")));
-			this.tbInst_Instruction.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_Instruction.Font")));
-			this.tbInst_Instruction.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_Instruction.ImeMode")));
-			this.tbInst_Instruction.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_Instruction.Location")));
-			this.tbInst_Instruction.MaxLength = ((int)(resources.GetObject("tbInst_Instruction.MaxLength")));
-			this.tbInst_Instruction.Multiline = ((bool)(resources.GetObject("tbInst_Instruction.Multiline")));
-			this.tbInst_Instruction.Name = "tbInst_Instruction";
-			this.tbInst_Instruction.PasswordChar = ((char)(resources.GetObject("tbInst_Instruction.PasswordChar")));
-			this.tbInst_Instruction.ReadOnly = true;
-			this.tbInst_Instruction.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_Instruction.RightToLeft")));
-			this.tbInst_Instruction.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_Instruction.ScrollBars")));
-			this.tbInst_Instruction.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_Instruction.Size")));
-			this.tbInst_Instruction.TabIndex = ((int)(resources.GetObject("tbInst_Instruction.TabIndex")));
-			this.tbInst_Instruction.TabStop = false;
-			this.tbInst_Instruction.Text = resources.GetString("tbInst_Instruction.Text");
-			this.tbInst_Instruction.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Instruction.TextAlign")));
-			this.tbInst_Instruction.Visible = ((bool)(resources.GetObject("tbInst_Instruction.Visible")));
-			this.tbInst_Instruction.WordWrap = ((bool)(resources.GetObject("tbInst_Instruction.WordWrap")));
-			// 
 			// tbInst_Op23_dec
 			// 
 			this.tbInst_Op23_dec.AccessibleDescription = resources.GetString("tbInst_Op23_dec.AccessibleDescription");
@@ -1849,6 +1812,56 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Text = resources.GetString("bhavPanel.Text");
 			this.bhavPanel.Visible = ((bool)(resources.GetObject("bhavPanel.Visible")));
 			this.bhavPanel.Resize += new System.EventHandler(this.bhavPanel_Resize);
+			// 
+			// tbHeaderFlag
+			// 
+			this.tbHeaderFlag.AccessibleDescription = resources.GetString("tbHeaderFlag.AccessibleDescription");
+			this.tbHeaderFlag.AccessibleName = resources.GetString("tbHeaderFlag.AccessibleName");
+			this.tbHeaderFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbHeaderFlag.Anchor")));
+			this.tbHeaderFlag.AutoSize = ((bool)(resources.GetObject("tbHeaderFlag.AutoSize")));
+			this.tbHeaderFlag.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbHeaderFlag.BackgroundImage")));
+			this.tbHeaderFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbHeaderFlag.Dock")));
+			this.tbHeaderFlag.Enabled = ((bool)(resources.GetObject("tbHeaderFlag.Enabled")));
+			this.tbHeaderFlag.Font = ((System.Drawing.Font)(resources.GetObject("tbHeaderFlag.Font")));
+			this.tbHeaderFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbHeaderFlag.ImeMode")));
+			this.tbHeaderFlag.Location = ((System.Drawing.Point)(resources.GetObject("tbHeaderFlag.Location")));
+			this.tbHeaderFlag.MaxLength = ((int)(resources.GetObject("tbHeaderFlag.MaxLength")));
+			this.tbHeaderFlag.Multiline = ((bool)(resources.GetObject("tbHeaderFlag.Multiline")));
+			this.tbHeaderFlag.Name = "tbHeaderFlag";
+			this.tbHeaderFlag.PasswordChar = ((char)(resources.GetObject("tbHeaderFlag.PasswordChar")));
+			this.tbHeaderFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbHeaderFlag.RightToLeft")));
+			this.tbHeaderFlag.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbHeaderFlag.ScrollBars")));
+			this.tbHeaderFlag.Size = ((System.Drawing.Size)(resources.GetObject("tbHeaderFlag.Size")));
+			this.tbHeaderFlag.TabIndex = ((int)(resources.GetObject("tbHeaderFlag.TabIndex")));
+			this.tbHeaderFlag.Text = resources.GetString("tbHeaderFlag.Text");
+			this.tbHeaderFlag.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbHeaderFlag.TextAlign")));
+			this.tbHeaderFlag.Visible = ((bool)(resources.GetObject("tbHeaderFlag.Visible")));
+			this.tbHeaderFlag.WordWrap = ((bool)(resources.GetObject("tbHeaderFlag.WordWrap")));
+			this.tbHeaderFlag.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbHeaderFlag.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbHeaderFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+			// 
+			// lbHeaderFlag
+			// 
+			this.lbHeaderFlag.AccessibleDescription = resources.GetString("lbHeaderFlag.AccessibleDescription");
+			this.lbHeaderFlag.AccessibleName = resources.GetString("lbHeaderFlag.AccessibleName");
+			this.lbHeaderFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbHeaderFlag.Anchor")));
+			this.lbHeaderFlag.AutoSize = ((bool)(resources.GetObject("lbHeaderFlag.AutoSize")));
+			this.lbHeaderFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbHeaderFlag.Dock")));
+			this.lbHeaderFlag.Enabled = ((bool)(resources.GetObject("lbHeaderFlag.Enabled")));
+			this.lbHeaderFlag.Font = ((System.Drawing.Font)(resources.GetObject("lbHeaderFlag.Font")));
+			this.lbHeaderFlag.Image = ((System.Drawing.Image)(resources.GetObject("lbHeaderFlag.Image")));
+			this.lbHeaderFlag.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbHeaderFlag.ImageAlign")));
+			this.lbHeaderFlag.ImageIndex = ((int)(resources.GetObject("lbHeaderFlag.ImageIndex")));
+			this.lbHeaderFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbHeaderFlag.ImeMode")));
+			this.lbHeaderFlag.Location = ((System.Drawing.Point)(resources.GetObject("lbHeaderFlag.Location")));
+			this.lbHeaderFlag.Name = "lbHeaderFlag";
+			this.lbHeaderFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbHeaderFlag.RightToLeft")));
+			this.lbHeaderFlag.Size = ((System.Drawing.Size)(resources.GetObject("lbHeaderFlag.Size")));
+			this.lbHeaderFlag.TabIndex = ((int)(resources.GetObject("lbHeaderFlag.TabIndex")));
+			this.lbHeaderFlag.Text = resources.GetString("lbHeaderFlag.Text");
+			this.lbHeaderFlag.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbHeaderFlag.TextAlign")));
+			this.lbHeaderFlag.Visible = ((bool)(resources.GetObject("lbHeaderFlag.Visible")));
 			// 
 			// tbCacheFlags
 			// 
@@ -2370,56 +2383,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
 			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
-			// tbHeaderFlag
-			// 
-			this.tbHeaderFlag.AccessibleDescription = resources.GetString("tbHeaderFlag.AccessibleDescription");
-			this.tbHeaderFlag.AccessibleName = resources.GetString("tbHeaderFlag.AccessibleName");
-			this.tbHeaderFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbHeaderFlag.Anchor")));
-			this.tbHeaderFlag.AutoSize = ((bool)(resources.GetObject("tbHeaderFlag.AutoSize")));
-			this.tbHeaderFlag.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbHeaderFlag.BackgroundImage")));
-			this.tbHeaderFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbHeaderFlag.Dock")));
-			this.tbHeaderFlag.Enabled = ((bool)(resources.GetObject("tbHeaderFlag.Enabled")));
-			this.tbHeaderFlag.Font = ((System.Drawing.Font)(resources.GetObject("tbHeaderFlag.Font")));
-			this.tbHeaderFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbHeaderFlag.ImeMode")));
-			this.tbHeaderFlag.Location = ((System.Drawing.Point)(resources.GetObject("tbHeaderFlag.Location")));
-			this.tbHeaderFlag.MaxLength = ((int)(resources.GetObject("tbHeaderFlag.MaxLength")));
-			this.tbHeaderFlag.Multiline = ((bool)(resources.GetObject("tbHeaderFlag.Multiline")));
-			this.tbHeaderFlag.Name = "tbHeaderFlag";
-			this.tbHeaderFlag.PasswordChar = ((char)(resources.GetObject("tbHeaderFlag.PasswordChar")));
-			this.tbHeaderFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbHeaderFlag.RightToLeft")));
-			this.tbHeaderFlag.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbHeaderFlag.ScrollBars")));
-			this.tbHeaderFlag.Size = ((System.Drawing.Size)(resources.GetObject("tbHeaderFlag.Size")));
-			this.tbHeaderFlag.TabIndex = ((int)(resources.GetObject("tbHeaderFlag.TabIndex")));
-			this.tbHeaderFlag.Text = resources.GetString("tbHeaderFlag.Text");
-			this.tbHeaderFlag.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbHeaderFlag.TextAlign")));
-			this.tbHeaderFlag.Visible = ((bool)(resources.GetObject("tbHeaderFlag.Visible")));
-			this.tbHeaderFlag.WordWrap = ((bool)(resources.GetObject("tbHeaderFlag.WordWrap")));
-			this.tbHeaderFlag.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbHeaderFlag.Validated += new System.EventHandler(this.hex8_Validated);
-			this.tbHeaderFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-			// 
-			// lbHeaderFlag
-			// 
-			this.lbHeaderFlag.AccessibleDescription = resources.GetString("lbHeaderFlag.AccessibleDescription");
-			this.lbHeaderFlag.AccessibleName = resources.GetString("lbHeaderFlag.AccessibleName");
-			this.lbHeaderFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbHeaderFlag.Anchor")));
-			this.lbHeaderFlag.AutoSize = ((bool)(resources.GetObject("lbHeaderFlag.AutoSize")));
-			this.lbHeaderFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbHeaderFlag.Dock")));
-			this.lbHeaderFlag.Enabled = ((bool)(resources.GetObject("lbHeaderFlag.Enabled")));
-			this.lbHeaderFlag.Font = ((System.Drawing.Font)(resources.GetObject("lbHeaderFlag.Font")));
-			this.lbHeaderFlag.Image = ((System.Drawing.Image)(resources.GetObject("lbHeaderFlag.Image")));
-			this.lbHeaderFlag.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbHeaderFlag.ImageAlign")));
-			this.lbHeaderFlag.ImageIndex = ((int)(resources.GetObject("lbHeaderFlag.ImageIndex")));
-			this.lbHeaderFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbHeaderFlag.ImeMode")));
-			this.lbHeaderFlag.Location = ((System.Drawing.Point)(resources.GetObject("lbHeaderFlag.Location")));
-			this.lbHeaderFlag.Name = "lbHeaderFlag";
-			this.lbHeaderFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbHeaderFlag.RightToLeft")));
-			this.lbHeaderFlag.Size = ((System.Drawing.Size)(resources.GetObject("lbHeaderFlag.Size")));
-			this.lbHeaderFlag.TabIndex = ((int)(resources.GetObject("lbHeaderFlag.TabIndex")));
-			this.lbHeaderFlag.Text = resources.GetString("lbHeaderFlag.Text");
-			this.lbHeaderFlag.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbHeaderFlag.TextAlign")));
-			this.lbHeaderFlag.Visible = ((bool)(resources.GetObject("lbHeaderFlag.Visible")));
-			// 
 			// BhavForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2534,7 +2497,6 @@ namespace SimPe.PackedFiles.UserInterface
 			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
 			Bhav b = Instruction.LoadGlobalBHAV(currentInst.OpCode);
 			BhavForm ui = (BhavForm)b.UIHandler;
-			ui.tbInst_Instruction.Width = ui.gbInstruction.Width - (2 * ui.tbInst_Instruction.Location.X);
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
 			ui.Text = "Global BHAV: " + currentInst.ToString();
 			b.RefreshUI();
