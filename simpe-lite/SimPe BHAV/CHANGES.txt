@@ -1,4 +1,8 @@
 
+16 September 2005 23:15 - Bhav: Urf, get instructions right too!
+  SimPe BHAV\
+    BhavWrapper.cs 1.35
+
 16 September 2005 19:22 - Bhav: ...and tidy up the display so it fits Inge's screen
   SimPe BHAV\
     BhavForm.cs 1.39
