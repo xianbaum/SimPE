@@ -661,40 +661,6 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		private ushort formatSpecificSetAddr(ushort addr)
-		{
-			switch (parent.Header.Format)
-			{
-				case 0x8007:
-					return addr;
-				default:
-				switch (addr)
-				{
-					case 0xFD: return (ushort)0xFFFC;	// error
-					case 0xFE: return (ushort)0xFFFD;	// true
-					case 0xFF: return (ushort)0xFFFE;	// false
-					default: return addr;
-				}
-			}
-		}
-
-		private ushort formatSpecificGetAddr(ushort target)
-		{
-			switch (parent.Header.Format)
-			{
-				case 0x8007:
-					return target;
-				default:
-				switch (target)
-				{
-					case 0xFFFC: return (ushort)0x00FD;	// error
-					case 0xFFFD: return (ushort)0x00FE;	// true
-					case 0xFFFE: return (ushort)0x00FF;	// false
-					default: return (ushort)(target & 0x00FF);
-				}
-			}
-		}
-
 		public ushort Target1
 		{
 			get { return addr1; }
@@ -818,6 +784,19 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
+		private ushort formatSpecificSetAddr(ushort addr)
+		{
+			if (parent.Header.Format < 0x8007)
+				switch (addr)
+				{
+					case 0x00FD: return 0xFFFC;	// error
+					case 0x00FE: return 0xFFFD;	// true
+					case 0x00FF: return 0xFFFE;	// false
+					default: return addr;
+				}
+			return addr;
+		}
+
 		/// <summary>
 		/// Reads the Data from a Stream
 		/// </summary>
@@ -854,6 +833,19 @@ namespace SimPe.PackedFiles.Wrapper
 				reserved_01 = new wrappedByteArray(this, reader);
 			}
 
+		}
+
+		private ushort formatSpecificGetAddr(ushort target)
+		{
+			if (parent.Header.Format < 0x8007)
+				switch (target)
+				{
+					case 0xFFFC: return 0x00FD;	// error
+					case 0xFFFD: return 0x00FE;	// true
+					case 0xFFFE: return 0x00FF;	// false
+					default: return (ushort)(target & 0x00FF);
+				}
+			return target;
 		}
 
 		/// <summary>
