@@ -1,8 +1,13 @@
 
+16 September 2005 19:22 - Bhav: ...and tidy up the display so it fits Inge's screen
+  SimPe BHAV\
+    BhavForm.cs 1.39
+    BhavForm.resx 1.19
+
 16 September 2005 17:59 - Bhav: Oh yes - display "Header Flag"
   SimPe BHAV\
     BhavForm.cs 1.38
-    BhavForm.resx 1.19
+    BhavForm.resx 1.18
     BhavWrapper.cs 1.33
 
 15 September 2005 21:54 - Bhav: Night Life compatibility
