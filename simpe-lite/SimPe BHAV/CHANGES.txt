@@ -1,4 +1,10 @@
 
+16 September 2005 17:59 - Bhav: Oh yes - display "Header Flag"
+  SimPe BHAV\
+    BhavForm.cs 1.38
+    BhavForm.resx 1.19
+    BhavWrapper.cs 1.33
+
 15 September 2005 21:54 - Bhav: Night Life compatibility
   SimPe BHAV\
     BhavForm.cs 1.38
