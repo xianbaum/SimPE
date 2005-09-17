@@ -179,13 +179,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.pnWiz0x0002.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.pnWiz0x0002.Location = new System.Drawing.Point(8, 8);
 			this.pnWiz0x0002.Name = "pnWiz0x0002";
-			this.pnWiz0x0002.Size = new System.Drawing.Size(264, 72);
+			this.pnWiz0x0002.Size = new System.Drawing.Size(464, 72);
 			this.pnWiz0x0002.TabIndex = 0;
 			// 
 			// cbmotiv2
 			// 
+			this.cbmotiv2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbmotiv2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmotiv2.Location = new System.Drawing.Point(152, 50);
+			this.cbmotiv2.Location = new System.Drawing.Point(352, 50);
 			this.cbmotiv2.Name = "cbmotiv2";
 			this.cbmotiv2.Size = new System.Drawing.Size(112, 21);
 			this.cbmotiv2.TabIndex = 6;
@@ -194,8 +195,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			// 
 			// cbmotiv1
 			// 
+			this.cbmotiv1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbmotiv1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmotiv1.Location = new System.Drawing.Point(152, 0);
+			this.cbmotiv1.Location = new System.Drawing.Point(352, 0);
 			this.cbmotiv1.Name = "cbmotiv1";
 			this.cbmotiv1.Size = new System.Drawing.Size(112, 21);
 			this.cbmotiv1.TabIndex = 5;
@@ -204,15 +206,18 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			// 
 			// cboperand
 			// 
+			this.cboperand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
 			this.cboperand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cboperand.Location = new System.Drawing.Point(0, 26);
 			this.cboperand.Name = "cboperand";
-			this.cboperand.Size = new System.Drawing.Size(264, 21);
+			this.cboperand.Size = new System.Drawing.Size(464, 21);
 			this.cboperand.TabIndex = 4;
 			// 
 			// tbval2
 			// 
-			this.tbval2.Location = new System.Drawing.Point(152, 50);
+			this.tbval2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tbval2.Location = new System.Drawing.Point(352, 50);
 			this.tbval2.Name = "tbval2";
 			this.tbval2.Size = new System.Drawing.Size(112, 21);
 			this.tbval2.TabIndex = 3;
@@ -220,16 +225,19 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			// 
 			// cbtype2
 			// 
+			this.cbtype2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbtype2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbtype2.Location = new System.Drawing.Point(0, 50);
 			this.cbtype2.Name = "cbtype2";
-			this.cbtype2.Size = new System.Drawing.Size(152, 21);
+			this.cbtype2.Size = new System.Drawing.Size(352, 21);
 			this.cbtype2.TabIndex = 2;
 			this.cbtype2.SelectedIndexChanged += new System.EventHandler(this.SelectVal2Name);
 			// 
 			// tbval1
 			// 
-			this.tbval1.Location = new System.Drawing.Point(152, 0);
+			this.tbval1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tbval1.Location = new System.Drawing.Point(352, 0);
 			this.tbval1.Name = "tbval1";
 			this.tbval1.Size = new System.Drawing.Size(112, 21);
 			this.tbval1.TabIndex = 1;
@@ -237,10 +245,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			// 
 			// cbtype1
 			// 
+			this.cbtype1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbtype1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbtype1.Location = new System.Drawing.Point(0, 0);
 			this.cbtype1.Name = "cbtype1";
-			this.cbtype1.Size = new System.Drawing.Size(152, 21);
+			this.cbtype1.Size = new System.Drawing.Size(352, 21);
 			this.cbtype1.TabIndex = 0;
 			this.cbtype1.SelectedIndexChanged += new System.EventHandler(this.SelectVal1Name);
 			// 
