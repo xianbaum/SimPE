@@ -25,32 +25,33 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
+using SimPe.PackedFiles.UserInterface;
+//using pjse.BhavNameWizards;
+using pjse.BhavOperandWizards;
 
-namespace SimPe.PackedFiles.UserInterface
+namespace pjse.BhavOperandWizards.WizRaw
 {
+	#region internal form
 	/// <summary>
-	/// Container for bhavPrimWizPanel from BhavOperandWizProvider
+	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
-	public class BhavOperandWiz : System.Windows.Forms.Form
+	internal class UI : System.Windows.Forms.Form
 	{
 		#region Form variables
-
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Button OK;
-		private System.Windows.Forms.Button Cancel;
+		internal System.Windows.Forms.Panel pnWizRaw;
+		private System.Windows.Forms.TextBox tbRaw;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		#endregion
 
-		public BhavOperandWiz()
+		public UI()
 		{
 			//
 			// Erforderlich für die Windows Form-Designerunterstützung
 			//
 			InitializeComponent();
-
 		}
 
 		/// <summary>
@@ -68,33 +69,37 @@ namespace SimPe.PackedFiles.UserInterface
 			base.Dispose( disposing );
 		}
 
-
-		public Instruction Execute(Instruction i, bool raw)
+		
+		#region MyForm
+		public Instruction Write(Instruction inst)
 		{
-			pjse.ABhavOperandWiz wiz = raw ? pjse.BhavOperandWizProvider.Raw(i) : pjse.BhavOperandWizProvider.For(i);
-			if (wiz == null) return null;
-
-			Panel pn = wiz.bhavPrimWizPanel;
-			pn.Parent = this;
-			pn.Top = 0;
-			pn.Left = 0;
-			int footHeight = this.Height - this.panel1.Bottom + 8;
-			this.Width = pn.Width + 8;
-			this.Height = pn.Height + footHeight;
-			wiz.Execute();
-
-			DialogResult dr = ShowDialog();
-			Close();
-
-			switch (dr)
+			try 
 			{
-				case DialogResult.OK:
-					return wiz.Write();
-				default:
-					return null;
+				for (int i = 0; i < 8; i++)
+					inst.Operands[i] = Convert.ToByte(tbRaw.Text.Substring(i * 2, 2), 16);
+				for (int i = 0; i < 8; i++)
+					inst.Reserved1[i] = Convert.ToByte(tbRaw.Text.Substring((i+8) * 2, 2), 16);
+
+				return inst;
+			} 
+			catch (Exception ex) 
+			{
+				SimPe.Helper.ExceptionMessage(SimPe.Localization.Manager.GetString("errconvert"), ex);
+				return null;
 			}
 		}
 
+		public void Execute(Instruction inst)
+		{
+			string s = "";
+			for (int i = 0; i < 8; i++)
+				s += SimPe.Helper.HexString(inst.Operands[i]);
+			for (int i = 0; i < 8; i++)
+				s += SimPe.Helper.HexString(inst.Reserved1[i]);
+			tbRaw.Text = s;
+		}
+
+		#endregion
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
@@ -103,57 +108,88 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.OK = new System.Windows.Forms.Button();
-			this.Cancel = new System.Windows.Forms.Button();
+			this.pnWizRaw = new System.Windows.Forms.Panel();
+			this.tbRaw = new System.Windows.Forms.TextBox();
+			this.pnWizRaw.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// panel1
+			// pnWizRaw
 			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel1.Location = new System.Drawing.Point(0, 112);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(320, 1);
-			this.panel1.TabIndex = 1;
+			this.pnWizRaw.Controls.Add(this.tbRaw);
+			this.pnWizRaw.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.pnWizRaw.Location = new System.Drawing.Point(8, 8);
+			this.pnWizRaw.Name = "pnWizRaw";
+			this.pnWizRaw.Size = new System.Drawing.Size(264, 24);
+			this.pnWizRaw.TabIndex = 0;
 			// 
-			// OK
+			// tbRaw
 			// 
-			this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OK.Location = new System.Drawing.Point(232, 120);
-			this.OK.Name = "OK";
-			this.OK.TabIndex = 2;
-			this.OK.Text = "Okay";
+			this.tbRaw.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tbRaw.Location = new System.Drawing.Point(0, 0);
+			this.tbRaw.MaxLength = 32;
+			this.tbRaw.Name = "tbRaw";
+			this.tbRaw.Size = new System.Drawing.Size(264, 21);
+			this.tbRaw.TabIndex = 0;
+			this.tbRaw.Text = "textBox1";
 			// 
-			// Cancel
+			// UI
 			// 
-			this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.Cancel.Location = new System.Drawing.Point(144, 120);
-			this.Cancel.Name = "Cancel";
-			this.Cancel.TabIndex = 2;
-			this.Cancel.Text = "Cancel";
-			// 
-			// BhavOperandWiz
-			// 
-			this.AcceptButton = this.OK;
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.CancelButton = this.Cancel;
-			this.ClientSize = new System.Drawing.Size(314, 151);
-			this.Controls.Add(this.OK);
-			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.Cancel);
+			this.ClientSize = new System.Drawing.Size(640, 366);
+			this.Controls.Add(this.pnWizRaw);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.Name = "BhavOperandWiz";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Instruction Wizard";
+			this.Name = "UI";
+			this.Text = "UI";
+			this.pnWizRaw.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 		#endregion
 
 	}
+
+	#endregion
 }
+
+namespace pjse.BhavOperandWizards
+{
+	public class BhavOperandWizRaw : pjse.ABhavOperandWiz
+	{
+		public BhavOperandWizRaw() : base() { }
+
+		public BhavOperandWizRaw(Instruction i) : base(i) { }
+
+
+		#region pjse.ABhavOperandWiz
+		private WizRaw.UI myForm = null;
+		public override Panel bhavPrimWizPanel
+		{
+			get
+			{
+				if (myForm == null) myForm = new WizRaw.UI();
+				return myForm.pnWizRaw;
+			}
+		}
+
+		public override void Execute()
+		{
+			if (instruction != null) myForm.Execute(instruction);
+		}
+
+		public override Instruction Write()
+		{
+			return (instruction == null) ? null : myForm.Write(instruction);
+		}
+
+
+		#region IDisposable Members
+		public override void Dispose()
+		{
+			if (myForm != null) myForm.Dispose();
+		}
+		#endregion
+
+		#endregion
+	}
+}
+

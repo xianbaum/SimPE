@@ -104,6 +104,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbTreeVersion;
 		private System.Windows.Forms.TextBox tbHeaderFlag;
 		private System.Windows.Forms.Label lbHeaderFlag;
+		private System.Windows.Forms.Button btnOperandRaw;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -327,7 +328,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
 
-				this.btnOperandWiz.Enabled = BhavOperandWiz.Available(inst);
+				this.btnOperandWiz.Enabled = (pjse.BhavOperandWizProvider.For(inst) != null);
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
 				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Count - 1;
 			}
@@ -559,6 +560,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
+			this.btnOperandRaw = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -595,6 +597,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.AccessibleName = resources.GetString("gbInstruction.AccessibleName");
 			this.gbInstruction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbInstruction.Anchor")));
 			this.gbInstruction.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbInstruction.BackgroundImage")));
+			this.gbInstruction.Controls.Add(this.btnOperandRaw);
 			this.gbInstruction.Controls.Add(this.tbInst_Op01_dec);
 			this.gbInstruction.Controls.Add(this.btnCancel);
 			this.gbInstruction.Controls.Add(this.btnOperandWiz);
@@ -2383,6 +2386,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
 			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
+			// btnOperandRaw
+			// 
+			this.btnOperandRaw.AccessibleDescription = resources.GetString("btnOperandRaw.AccessibleDescription");
+			this.btnOperandRaw.AccessibleName = resources.GetString("btnOperandRaw.AccessibleName");
+			this.btnOperandRaw.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnOperandRaw.Anchor")));
+			this.btnOperandRaw.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOperandRaw.BackgroundImage")));
+			this.btnOperandRaw.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnOperandRaw.Dock")));
+			this.btnOperandRaw.Enabled = ((bool)(resources.GetObject("btnOperandRaw.Enabled")));
+			this.btnOperandRaw.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnOperandRaw.FlatStyle")));
+			this.btnOperandRaw.Font = ((System.Drawing.Font)(resources.GetObject("btnOperandRaw.Font")));
+			this.btnOperandRaw.Image = ((System.Drawing.Image)(resources.GetObject("btnOperandRaw.Image")));
+			this.btnOperandRaw.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandRaw.ImageAlign")));
+			this.btnOperandRaw.ImageIndex = ((int)(resources.GetObject("btnOperandRaw.ImageIndex")));
+			this.btnOperandRaw.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnOperandRaw.ImeMode")));
+			this.btnOperandRaw.Location = ((System.Drawing.Point)(resources.GetObject("btnOperandRaw.Location")));
+			this.btnOperandRaw.Name = "btnOperandRaw";
+			this.btnOperandRaw.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnOperandRaw.RightToLeft")));
+			this.btnOperandRaw.Size = ((System.Drawing.Size)(resources.GetObject("btnOperandRaw.Size")));
+			this.btnOperandRaw.TabIndex = ((int)(resources.GetObject("btnOperandRaw.TabIndex")));
+			this.btnOperandRaw.Text = resources.GetString("btnOperandRaw.Text");
+			this.btnOperandRaw.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandRaw.TextAlign")));
+			this.btnOperandRaw.Visible = ((bool)(resources.GetObject("btnOperandRaw.Visible")));
+			this.btnOperandRaw.Click += new System.EventHandler(this.btnOperandRaw_Click);
+			// 
 			// BhavForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2519,11 +2546,19 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
 		{
 			internalchg = true;
-			if ((new BhavOperandWiz()).Execute(currentInst) != null)
+			if ((new BhavOperandWiz()).Execute(currentInst, false) != null)
 				UpdateInstPanel();
 			internalchg = false;
 		}
 		
+		private void btnOperandRaw_Click(object sender, System.EventArgs e)
+		{
+			internalchg = true;
+			if ((new BhavOperandWiz()).Execute(currentInst, true) != null)
+				UpdateInstPanel();
+			internalchg = false;
+		}
+
 
 		private void tbFilename_TextChanged(object sender, System.EventArgs e)
 		{
@@ -2847,7 +2882,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case 0:
 					currentInst.OpCode = val;
-					this.btnOperandWiz.Enabled = BhavOperandWiz.Available(currentInst);
+					this.btnOperandWiz.Enabled = (pjse.BhavOperandWizProvider.For(currentInst) != null);
 					break;
 			}
 			internalchg = false;
