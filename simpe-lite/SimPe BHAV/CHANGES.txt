@@ -1,4 +1,8 @@
 
+17 September 2005 18:25 - Bhav: up the wrapper version number to 3
+  SimPe BHAV\
+    BhavWrapper.cs 1.37
+
 17 September 2005 18:23 - Bhav: Use BhavNameWizProvider to load BHAV for appending
   SimPe BHAV\
     BhavInstListControl.cs 1.32
