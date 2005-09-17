@@ -271,23 +271,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 		public void Append(uint opcode)
 		{
-			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
-				Data.MetaData.BHAV_FILE,
-				0, 
-				wrapper.FileDescriptor.Group,
-				opcode
-				);
-
-			if (pfd == null) return;
+			Bhav b = pjse.BhavNameWizProvider.For(new Instruction(wrapper, (ushort)opcode, 0, 0, 0, null, null)).LoadBHAV();
+			if (b == null) return;
 
 			bool savedstate = internalchg;
 			internalchg = true;
 
 			this.Parent.Cursor = Cursors.WaitCursor;
-			Bhav b = new Bhav(wrapper.Opcodes);
-			b.Package = wrapper.Package;
-			b.FileDescriptor = wrapper.FileDescriptor;
-			b.ProcessData(pfd, b.Package);
 			ushort offset = (ushort)wrapper.Count;
 			foreach (Instruction bi in b)
 			{
