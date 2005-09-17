@@ -637,7 +637,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private ushort opcode = 0;
 		private ushort addr1 = 0;
 		private ushort addr2 = 0;
-		private byte headerflag = 0;
+		private byte nodeversion = 0;
 		private wrappedByteArray operands = null;
 		private wrappedByteArray reserved_01 = null;
 		private Bhav parent;
@@ -656,7 +656,6 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-
 
 		public ushort Target1
 		{
@@ -684,14 +683,14 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public byte Reserved0
+		public byte NodeVersion
 		{
-			get {return headerflag;}
+			get { return nodeversion; }
 			set
 			{
-				if (headerflag != value)
+				if (nodeversion != value)
 				{
-					headerflag = value;
+					nodeversion = value;
 					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
@@ -736,12 +735,12 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte headerflag, byte[] operands, byte[] reserved_01)
+		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte nodeversion, byte[] operands, byte[] reserved_01)
 		{
 			this.opcode = opcode;
 			this.Target1 = addr1;
 			this.Target2 = addr2;
-			this.headerflag = headerflag;
+			this.nodeversion = nodeversion;
 			this.operands = new wrappedByteArray(this, operands);
 			this.reserved_01 = new wrappedByteArray(this, reserved_01);
 			this.parent = parent;
@@ -753,7 +752,7 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.opcode      = this.opcode;
 			clone.addr1       = this.addr1;
 			clone.addr2       = this.addr2;
-			clone.headerflag = this.headerflag;
+			clone.nodeversion = this.nodeversion;
 			clone.operands    = operands.Clone();
 			clone.operands.Parent = clone;
 			clone.reserved_01 = reserved_01.Clone();
@@ -796,17 +795,19 @@ namespace SimPe.PackedFiles.Wrapper
 
 			if (parent.Header.Format < 0x8003)
 			{
+				nodeversion = 0;
 				operands = new wrappedByteArray(this, reader);
 				reserved_01 = new wrappedByteArray(this, new byte[8]);
 			}
 			else if (parent.Header.Format < 0x8005)
 			{
+				nodeversion = 0;
 				operands = new wrappedByteArray(this, reader);
 				reserved_01 = new wrappedByteArray(this, reader);
 			}
 			else
 			{
-				headerflag = reader.ReadByte();
+				nodeversion = reader.ReadByte();
 				operands = new wrappedByteArray(this, reader);
 				reserved_01 = new wrappedByteArray(this, reader);
 			}
@@ -856,7 +857,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 			else
 			{
-				writer.Write(headerflag);
+				writer.Write(nodeversion);
 				operands.Serialize(writer);
 				reserved_01.Serialize(writer);
 			}

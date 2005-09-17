@@ -55,7 +55,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.TextBox tbInst_OpCode;
-		private System.Windows.Forms.TextBox tbInst_Reserved;
 		private System.Windows.Forms.TextBox tbInst_Op7;
 		private System.Windows.Forms.TextBox tbInst_Op6;
 		private System.Windows.Forms.TextBox tbInst_Op5;
@@ -106,6 +105,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbHeaderFlag;
 		private System.Windows.Forms.Label lbHeaderFlag;
 		private System.Windows.Forms.Button btnOperandRaw;
+		private System.Windows.Forms.TextBox tbInst_NodeVersion;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -123,8 +123,6 @@ namespace SimPe.PackedFiles.UserInterface
 							   tbCacheFlags, lbCacheFlags,
 							   tbTreeVersion, lbTreeVersion,
 							   tbHeaderFlag, lbHeaderFlag,
-							   //tbLocalC, lbLocalC,
-							   //tbArgC, lbArgC,
 							   tbType, lbType,
 							   cbFormat, lbFormat
 						   };
@@ -142,7 +140,7 @@ namespace SimPe.PackedFiles.UserInterface
 								,tbInst_Op4  ,tbInst_Op5  ,tbInst_Op6  ,tbInst_Op7
 								,tbInst_Unk0 ,tbInst_Unk1 ,tbInst_Unk2 ,tbInst_Unk3
 								,tbInst_Unk4 ,tbInst_Unk5 ,tbInst_Unk6 ,tbInst_Unk7
-								,tbInst_Reserved
+								,tbInst_NodeVersion
 								,tbHeaderFlag
 								,tbType
 								,tbCacheFlags
@@ -197,8 +195,9 @@ namespace SimPe.PackedFiles.UserInterface
 			if (((string)this.Tag).Equals("Popup"))
 			{
 				// make it very clear it's read only
-				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled = tbArgC.Enabled = 
-					tbLocalC.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
+				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =
+					tbHeaderFlag.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
+					tbArgC.Enabled = tbLocalC.Enabled =
 					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
 					btnOpCode.Visible = btnOperandWiz.Visible = btnOperandRaw.Visible =
@@ -209,7 +208,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.tbInst_OpCode.ReadOnly = state;
 			this.btnOpCode.Enabled = !state;
-			this.tbInst_Reserved.ReadOnly = state;
+			this.tbInst_NodeVersion.ReadOnly = state;
 			this.tba1.Enabled = !state;
 			this.tba2.Enabled = !state;
 
@@ -253,7 +252,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = true;
 
 				this.tbInst_OpCode.Text = "";
-				this.tbInst_Reserved.Text = "";
+				this.tbInst_NodeVersion.Text = "";
 				this.tba1.SelectedIndex = 0;
 				this.tba2.SelectedIndex = 0;
 				this.tbInst_Op01_dec.Text = "";
@@ -287,7 +286,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 
-				this.tbInst_Reserved.Text = "0x"+Helper.HexString(inst.Reserved0);
+				this.tbInst_NodeVersion.Text = "0x"+Helper.HexString(inst.NodeVersion);
 				if (inst.Target1 >= 0xFFFC)
 				{
 					this.tba1.SelectedIndex = inst.Target1 - 0xFFFC;
@@ -493,6 +492,7 @@ namespace SimPe.PackedFiles.UserInterface
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(BhavForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.gbInstruction = new System.Windows.Forms.GroupBox();
+			this.btnOperandRaw = new System.Windows.Forms.Button();
 			this.tbInst_Op01_dec = new System.Windows.Forms.TextBox();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOperandWiz = new System.Windows.Forms.Button();
@@ -516,7 +516,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op2 = new System.Windows.Forms.TextBox();
 			this.tbInst_Op1 = new System.Windows.Forms.TextBox();
 			this.tbInst_Op0 = new System.Windows.Forms.TextBox();
-			this.tbInst_Reserved = new System.Windows.Forms.TextBox();
+			this.tbInst_NodeVersion = new System.Windows.Forms.TextBox();
 			this.tbInst_OpCode = new System.Windows.Forms.TextBox();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label9 = new System.Windows.Forms.Label();
@@ -560,7 +560,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
-			this.btnOperandRaw = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -621,7 +620,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.Controls.Add(this.tbInst_Op2);
 			this.gbInstruction.Controls.Add(this.tbInst_Op1);
 			this.gbInstruction.Controls.Add(this.tbInst_Op0);
-			this.gbInstruction.Controls.Add(this.tbInst_Reserved);
+			this.gbInstruction.Controls.Add(this.tbInst_NodeVersion);
 			this.gbInstruction.Controls.Add(this.tbInst_OpCode);
 			this.gbInstruction.Controls.Add(this.label10);
 			this.gbInstruction.Controls.Add(this.label9);
@@ -642,6 +641,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.TabStop = false;
 			this.gbInstruction.Text = resources.GetString("gbInstruction.Text");
 			this.gbInstruction.Visible = ((bool)(resources.GetObject("gbInstruction.Visible")));
+			// 
+			// btnOperandRaw
+			// 
+			this.btnOperandRaw.AccessibleDescription = resources.GetString("btnOperandRaw.AccessibleDescription");
+			this.btnOperandRaw.AccessibleName = resources.GetString("btnOperandRaw.AccessibleName");
+			this.btnOperandRaw.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnOperandRaw.Anchor")));
+			this.btnOperandRaw.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOperandRaw.BackgroundImage")));
+			this.btnOperandRaw.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnOperandRaw.Dock")));
+			this.btnOperandRaw.Enabled = ((bool)(resources.GetObject("btnOperandRaw.Enabled")));
+			this.btnOperandRaw.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnOperandRaw.FlatStyle")));
+			this.btnOperandRaw.Font = ((System.Drawing.Font)(resources.GetObject("btnOperandRaw.Font")));
+			this.btnOperandRaw.Image = ((System.Drawing.Image)(resources.GetObject("btnOperandRaw.Image")));
+			this.btnOperandRaw.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandRaw.ImageAlign")));
+			this.btnOperandRaw.ImageIndex = ((int)(resources.GetObject("btnOperandRaw.ImageIndex")));
+			this.btnOperandRaw.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnOperandRaw.ImeMode")));
+			this.btnOperandRaw.Location = ((System.Drawing.Point)(resources.GetObject("btnOperandRaw.Location")));
+			this.btnOperandRaw.Name = "btnOperandRaw";
+			this.btnOperandRaw.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnOperandRaw.RightToLeft")));
+			this.btnOperandRaw.Size = ((System.Drawing.Size)(resources.GetObject("btnOperandRaw.Size")));
+			this.btnOperandRaw.TabIndex = ((int)(resources.GetObject("btnOperandRaw.TabIndex")));
+			this.btnOperandRaw.Text = resources.GetString("btnOperandRaw.Text");
+			this.btnOperandRaw.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandRaw.TextAlign")));
+			this.btnOperandRaw.Visible = ((bool)(resources.GetObject("btnOperandRaw.Visible")));
+			this.btnOperandRaw.Click += new System.EventHandler(this.btnOperandRaw_Click);
 			// 
 			// tbInst_Op01_dec
 			// 
@@ -1284,33 +1307,33 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op0.Validated += new System.EventHandler(this.hex8_Validated);
 			this.tbInst_Op0.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
-			// tbInst_Reserved
+			// tbInst_NodeVersion
 			// 
-			this.tbInst_Reserved.AccessibleDescription = resources.GetString("tbInst_Reserved.AccessibleDescription");
-			this.tbInst_Reserved.AccessibleName = resources.GetString("tbInst_Reserved.AccessibleName");
-			this.tbInst_Reserved.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_Reserved.Anchor")));
-			this.tbInst_Reserved.AutoSize = ((bool)(resources.GetObject("tbInst_Reserved.AutoSize")));
-			this.tbInst_Reserved.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_Reserved.BackgroundImage")));
-			this.tbInst_Reserved.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_Reserved.Dock")));
-			this.tbInst_Reserved.Enabled = ((bool)(resources.GetObject("tbInst_Reserved.Enabled")));
-			this.tbInst_Reserved.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_Reserved.Font")));
-			this.tbInst_Reserved.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_Reserved.ImeMode")));
-			this.tbInst_Reserved.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_Reserved.Location")));
-			this.tbInst_Reserved.MaxLength = ((int)(resources.GetObject("tbInst_Reserved.MaxLength")));
-			this.tbInst_Reserved.Multiline = ((bool)(resources.GetObject("tbInst_Reserved.Multiline")));
-			this.tbInst_Reserved.Name = "tbInst_Reserved";
-			this.tbInst_Reserved.PasswordChar = ((char)(resources.GetObject("tbInst_Reserved.PasswordChar")));
-			this.tbInst_Reserved.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_Reserved.RightToLeft")));
-			this.tbInst_Reserved.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_Reserved.ScrollBars")));
-			this.tbInst_Reserved.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_Reserved.Size")));
-			this.tbInst_Reserved.TabIndex = ((int)(resources.GetObject("tbInst_Reserved.TabIndex")));
-			this.tbInst_Reserved.Text = resources.GetString("tbInst_Reserved.Text");
-			this.tbInst_Reserved.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Reserved.TextAlign")));
-			this.tbInst_Reserved.Visible = ((bool)(resources.GetObject("tbInst_Reserved.Visible")));
-			this.tbInst_Reserved.WordWrap = ((bool)(resources.GetObject("tbInst_Reserved.WordWrap")));
-			this.tbInst_Reserved.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Reserved.Validated += new System.EventHandler(this.hex8_Validated);
-			this.tbInst_Reserved.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+			this.tbInst_NodeVersion.AccessibleDescription = resources.GetString("tbInst_NodeVersion.AccessibleDescription");
+			this.tbInst_NodeVersion.AccessibleName = resources.GetString("tbInst_NodeVersion.AccessibleName");
+			this.tbInst_NodeVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_NodeVersion.Anchor")));
+			this.tbInst_NodeVersion.AutoSize = ((bool)(resources.GetObject("tbInst_NodeVersion.AutoSize")));
+			this.tbInst_NodeVersion.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_NodeVersion.BackgroundImage")));
+			this.tbInst_NodeVersion.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_NodeVersion.Dock")));
+			this.tbInst_NodeVersion.Enabled = ((bool)(resources.GetObject("tbInst_NodeVersion.Enabled")));
+			this.tbInst_NodeVersion.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_NodeVersion.Font")));
+			this.tbInst_NodeVersion.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_NodeVersion.ImeMode")));
+			this.tbInst_NodeVersion.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_NodeVersion.Location")));
+			this.tbInst_NodeVersion.MaxLength = ((int)(resources.GetObject("tbInst_NodeVersion.MaxLength")));
+			this.tbInst_NodeVersion.Multiline = ((bool)(resources.GetObject("tbInst_NodeVersion.Multiline")));
+			this.tbInst_NodeVersion.Name = "tbInst_NodeVersion";
+			this.tbInst_NodeVersion.PasswordChar = ((char)(resources.GetObject("tbInst_NodeVersion.PasswordChar")));
+			this.tbInst_NodeVersion.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_NodeVersion.RightToLeft")));
+			this.tbInst_NodeVersion.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_NodeVersion.ScrollBars")));
+			this.tbInst_NodeVersion.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_NodeVersion.Size")));
+			this.tbInst_NodeVersion.TabIndex = ((int)(resources.GetObject("tbInst_NodeVersion.TabIndex")));
+			this.tbInst_NodeVersion.Text = resources.GetString("tbInst_NodeVersion.Text");
+			this.tbInst_NodeVersion.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_NodeVersion.TextAlign")));
+			this.tbInst_NodeVersion.Visible = ((bool)(resources.GetObject("tbInst_NodeVersion.Visible")));
+			this.tbInst_NodeVersion.WordWrap = ((bool)(resources.GetObject("tbInst_NodeVersion.WordWrap")));
+			this.tbInst_NodeVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbInst_NodeVersion.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbInst_NodeVersion.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// tbInst_OpCode
 			// 
@@ -2386,30 +2409,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
 			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
-			// btnOperandRaw
-			// 
-			this.btnOperandRaw.AccessibleDescription = resources.GetString("btnOperandRaw.AccessibleDescription");
-			this.btnOperandRaw.AccessibleName = resources.GetString("btnOperandRaw.AccessibleName");
-			this.btnOperandRaw.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnOperandRaw.Anchor")));
-			this.btnOperandRaw.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnOperandRaw.BackgroundImage")));
-			this.btnOperandRaw.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnOperandRaw.Dock")));
-			this.btnOperandRaw.Enabled = ((bool)(resources.GetObject("btnOperandRaw.Enabled")));
-			this.btnOperandRaw.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnOperandRaw.FlatStyle")));
-			this.btnOperandRaw.Font = ((System.Drawing.Font)(resources.GetObject("btnOperandRaw.Font")));
-			this.btnOperandRaw.Image = ((System.Drawing.Image)(resources.GetObject("btnOperandRaw.Image")));
-			this.btnOperandRaw.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandRaw.ImageAlign")));
-			this.btnOperandRaw.ImageIndex = ((int)(resources.GetObject("btnOperandRaw.ImageIndex")));
-			this.btnOperandRaw.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnOperandRaw.ImeMode")));
-			this.btnOperandRaw.Location = ((System.Drawing.Point)(resources.GetObject("btnOperandRaw.Location")));
-			this.btnOperandRaw.Name = "btnOperandRaw";
-			this.btnOperandRaw.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnOperandRaw.RightToLeft")));
-			this.btnOperandRaw.Size = ((System.Drawing.Size)(resources.GetObject("btnOperandRaw.Size")));
-			this.btnOperandRaw.TabIndex = ((int)(resources.GetObject("btnOperandRaw.TabIndex")));
-			this.btnOperandRaw.Text = resources.GetString("btnOperandRaw.Text");
-			this.btnOperandRaw.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandRaw.TextAlign")));
-			this.btnOperandRaw.Visible = ((bool)(resources.GetObject("btnOperandRaw.Visible")));
-			this.btnOperandRaw.Click += new System.EventHandler(this.btnOperandRaw_Click);
-			// 
 			// BhavForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2816,7 +2815,7 @@ namespace SimPe.PackedFiles.UserInterface
 					currentInst.Reserved1[i-8] = val;
 				else switch(i)
 					 {
-						 case 16: currentInst.Reserved0 = val; break;
+						 case 16: currentInst.NodeVersion = val; break;
 						 case 17: wrapper.Header.HeaderFlag = val; break;
 						 case 18: wrapper.Header.Type = val; break;
 						 case 19: wrapper.Header.CacheFlags = val; break;
@@ -2849,7 +2848,7 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 				else switch(i)
 					 {
-						 case 16: val = origInst.Reserved0; currentInst.Reserved0 = val; break;
+						 case 16: val = origInst.NodeVersion; currentInst.NodeVersion = val; break;
 						 case 17: val = wrapper.Header.HeaderFlag; break;
 						 case 18: val = wrapper.Header.Type; break;
 						 case 19: val = wrapper.Header.CacheFlags; break;
