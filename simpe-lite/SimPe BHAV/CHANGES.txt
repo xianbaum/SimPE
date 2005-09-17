@@ -1,4 +1,15 @@
 
+17 September 2005 18:08 - Bhav: Make Wiz0x0002 boxes wide enough
+  SimPe BHAV\
+    BhavPrimWiz0x0002.cs 1.4
+    BhavPrimWiz0x0002.resx 1.3
+
+17 September 2005 18:07 - Bhav: Use "Node version" name
+  SimPe BHAV\
+    BhavForm.cs 1.43
+    BhavForm.resx 1.22
+    BhavWrapper.cs 1.36
+
 17 September 2005 17:18 - Land OpcodeDecoder branch at long last (not that it's finished)
   SimPe BHAV\
     BhavForm.cs 1.42
