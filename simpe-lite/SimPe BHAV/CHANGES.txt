@@ -1,4 +1,8 @@
 
+17 September 2005 19:00 - Bhav: Ignore Instance in OpCodeWiz *BRANCH* *FIX*
+  SimPe BHAV\
+    BhavOpCodeWiz.cs 1.5.4.1
+
 16 September 2005 23:15 - Bhav: Urf, get instructions right too!
   SimPe BHAV\
     BhavWrapper.cs 1.35
