@@ -189,7 +189,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(Data.MetaData.BHAV_FILE);
 			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if ((pfd.Instance>=0x0100) && (pfd.Instance<0x1000) && (pfd.Group==0x7FD46CD0)) // Global BHAVs
+				if (/*(pfd.Instance>=0x0100) && (pfd.Instance<0x1000) &&*/ (pfd.Group==0x7FD46CD0)) // Global BHAVs
 				{
 					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
 					lbglobal.Items.Add(new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName));
@@ -210,7 +210,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Package.FindFiles(Data.MetaData.BHAV_FILE);
 			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if ((pfd.Instance>=0x1000) && (pfd.Instance<0x2000) && (pfd.Group==bhav.FileDescriptor.Group)) 
+				if (/*(pfd.Instance>=0x1000) && (pfd.Instance<0x2000) &&*/ (pfd.Group==bhav.FileDescriptor.Group)) 
 				{
 					bhav.ProcessData(pfd, bhav.Package);
 					lbprivate.Items.Add(new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName));
@@ -242,7 +242,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(Data.MetaData.BHAV_FILE);
 			foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if ((pfd.Instance>=0x2000) && (pfd.Group == lastSemiGroup))
+				if (/*(pfd.Instance>=0x2000) &&*/ (pfd.Group == lastSemiGroup))
 				{
 					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
 					lbsemi.Items.Add(new SimPe.Data.Alias(bhav.FileDescriptor.Instance, bhav.FileName));
