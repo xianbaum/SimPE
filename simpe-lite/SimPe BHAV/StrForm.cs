@@ -39,15 +39,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbFilename;
 		private System.Windows.Forms.Label lbFormat;
 		private System.Windows.Forms.TextBox tbFormat;
-		private System.Windows.Forms.Button btnImport;
-		private System.Windows.Forms.Button btnExport;
 		private System.Windows.Forms.Label lbStringNum;
-		private System.Windows.Forms.Panel pnLists;
 		private System.Windows.Forms.Label lbPlugin;
 		private System.Windows.Forms.Button btnStrDelete;
 		private System.Windows.Forms.Button btnStrAdd;
-		private System.Windows.Forms.ListBox lbxLngDefault;
-		private System.Windows.Forms.ListBox lbxLngCurrent;
 		private System.Windows.Forms.Button btnClearAll;
 		private System.Windows.Forms.Label lbLngSelect;
 		private System.Windows.Forms.ComboBox cbLngSelect;
@@ -56,6 +51,19 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnLngClear;
 		private System.Windows.Forms.RichTextBox rtbTitle;
 		private System.Windows.Forms.RichTextBox rtbDescription;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Button btnBigString;
+		private System.Windows.Forms.Button btnBigDesc;
+		private System.Windows.Forms.Button btnAppend;
+		private System.Windows.Forms.ColumnHeader chString;
+		private System.Windows.Forms.ColumnHeader chDefault;
+		private System.Windows.Forms.ColumnHeader chLang;
+		private System.Windows.Forms.ListView lvStrItems;
+		private System.Windows.Forms.Button btnStrClear;
+		private System.Windows.Forms.Label lbDesc;
+		private System.Windows.Forms.CheckBox ckbDefault;
+		private System.Windows.Forms.Button btnStrPrev;
+		private System.Windows.Forms.Button btnStrNext;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -69,20 +77,14 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-			Control[] cs = { btnCommit, btnImport, btnExport };
-			int left = this.strPanel.Width;
-			for (int i = 0; i < cs.Length; i++)
-				left = cs[i].Left = left - (cs[i].Width + 4);
-			btnImport.Visible = btnExport.Visible = false;
-
 			Control[] af = { tbFormat };
 			alHex16 = new ArrayList(af);
 
-			Control[] at = { tbFilename };
-			alTextBox = new ArrayList(at);
+			Control[] at = { tbFilename, rtbTitle, rtbDescription };
+			alTextBoxBase = new ArrayList(at);
 
-			Control[] ar = { rtbTitle, rtbDescription };
-			alRichTextBox = new ArrayList(ar);
+			Control[] ab = { btnBigString, btnBigDesc };
+			alBigBtn = new ArrayList(ab);
 		}
 
 		/// <summary>
@@ -102,13 +104,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region StrForm
-		private Str wrapper;
+		private Str wrapper = null;
 		private bool setHandler = false;
-		private bool internalchg;
+		private bool internalchg = false;
 
 		private ArrayList alHex16 = null;
-		private ArrayList alTextBox = null;
-		private ArrayList alRichTextBox = null;
+		private ArrayList alTextBoxBase = null;
+		private ArrayList alBigBtn = null;
 
 		private byte lid = 1;
 		private int index = -1;
@@ -123,61 +125,312 @@ namespace SimPe.PackedFiles.UserInterface
 			return true;
 		}
 
-		private void displayStrItem()
+
+		private void updateSelectedItem()
 		{
-			if (internalchg) return;
+			if (lid == 1)
+				this.lvStrItems.Items[index].SubItems[2].Text = wrapper[lid, index].Title;
+			this.lvStrItems.Items[index].SubItems[1].Text = wrapper[lid, index].Title;
 
-			internalchg = true;
-			this.lbStringNum.Text = this.rtbDescription.Text = this.rtbTitle.Text = "";
-			this.btnStrDelete.Enabled = this.rtbDescription.Enabled = this.rtbTitle.Enabled = false;
+			bool empty = true;
+			StrItem[] sa = wrapper[lid];
+			for (int j = count - 1; j >= 0 && empty; j--)
+				if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
+					empty = false;
+			this.btnLngClear.Enabled = (lid == 1) ? false : !empty;
+			this.cbLngSelect.Items[lid - 1] = ((SimPe.Data.MetaData.Languages)lid).ToString() + (empty ? " (empty)" : "");
 
-			StrItem s = wrapper[lid, index];
-			if (s != null)
-			{
-				this.lbStringNum.Text = "Lang " + ((SimPe.Data.MetaData.Languages)lid).ToString() + ", String 0x" + Helper.HexString((ushort)index);
-				this.rtbTitle.Text = s.Title;
-				this.rtbDescription.Text = s.Description;
-				this.btnStrDelete.Enabled = this.rtbDescription.Enabled = this.rtbTitle.Enabled = true;
-				this.rtbTitle.SelectAll();
-				this.rtbDescription.SelectAll();
-			}
-			internalchg = false;
-		}
-
-		private void populateLbx(ListBox lbx, byte l)
-		{
-			lbx.SelectedIndex = -1;
-			lbx.Items.Clear();
-			if (l != 0)
-			{
-				while(count > 0 && wrapper[l, count-1] == null) wrapper.Add(l, "", "");
-				StrItem[] s = wrapper[l];
-				for (ushort i = 0; i < count; i++)
-					lbx.Items.Add("0x" + Helper.HexString(i) + ": " + s[i]);
-			}
+			empty = true;
+			foreach (StrItem s in wrapper)
+				if ((s.LanguageID != 1) && (s.Title.Trim().Length + s.Description.Trim().Length > 0))
+					empty = false;
+			this.btnClearAll.Enabled = !empty;
 		}
 
 		private void updateLists()
 		{
 			wrapper.CleanUp();
 
-			this.cbLngSelect.SelectedIndex = -1;
+			lid = 0;
+			index = -1;
+
 			this.cbLngSelect.Items.Clear();
+
 			bool onlyDefault = true;
-			for (byte i = 2; i < 44; i++)
+			for (byte i = 1; i < 44; i++)
 			{
 				bool empty = wrapper[i].Length == 0;
 				this.cbLngSelect.Items.Add(((SimPe.Data.MetaData.Languages)i).ToString() + (empty ? " (empty)" : ""));
-				if (!empty) onlyDefault = false;
+				if (!empty && i > 1) onlyDefault = false;
 			}
 			this.btnClearAll.Enabled = !onlyDefault;
 
 			count = 0;
 			for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Length);
+			while (count > 0 && wrapper[1, count-1] == null && wrapper.Add(1, "", "") >= 0);
 
-			populateLbx(this.lbxLngDefault, 1);
-			populateLbx(this.lbxLngCurrent, (byte)((this.cbLngSelect.SelectedIndex != -1) ? this.cbLngSelect.SelectedIndex + 2 : 0));
+			this.lvStrItems.Columns[1].Text = "";
+			this.lvStrItems.Items.Clear();
+			for (int i = 0; i < count; i++)
+			{
+				StrItem si = wrapper[1, i];
+				this.lvStrItems.Items.Add( new ListViewItem(
+					new string[] { "0x" + Helper.HexString((ushort)i), "", ((si == null) ? "" : si.Title) }
+					) );
+				this.lvStrItems.Items[i].UseItemStyleForSubItems = false;
+				this.lvStrItems.Items[i].SubItems[2].ForeColor = System.Drawing.SystemColors.ControlDark;
+			}
 		}
+
+
+		private void setLid(byte l)
+		{
+			if (lid == l) return;
+			lid = l;
+
+			internalchg = true;
+			if (lid > 0) this.cbLngSelect.SelectedIndex = l - 1;
+			internalchg = false;
+			this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
+			this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
+
+			this.btnLngClear.Text = "Clear " + ((SimPe.Data.MetaData.Languages)lid).ToString();
+			this.btnLngClear.Enabled = (lid > 1) && !this.cbLngSelect.SelectedItem.ToString().EndsWith(" (empty)");
+
+			while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
+			this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
+			for (int i = 0; i < count; i++)
+				this.lvStrItems.Items[i].SubItems[1].Text = wrapper[lid, i].Title;
+
+			displayStrItem();
+		}
+
+		private void setIndex(int i)
+		{
+			internalchg = true;
+			if (i >= 0) this.lvStrItems.Items[i].Selected = true;
+			else if (index >= 0) this.lvStrItems.Items[index].Selected = false;
+			internalchg = false;
+
+			if (this.lvStrItems.SelectedItems.Count > 0)
+			{
+				if (this.lvStrItems.Focused) this.lvStrItems.SelectedItems[0].Focused = true;
+				this.lvStrItems.SelectedItems[0].EnsureVisible();
+			}
+
+			if (index == i) return;
+			index = i;
+			displayStrItem();
+		}
+
+
+		private void displayStrItem()
+		{
+			StrItem s = (index < 0) ? null : wrapper[lid, index];
+
+			internalchg = true;
+			if (s != null)
+			{
+				this.lbStringNum.Text = "String 0x" + Helper.HexString((ushort)index) + " (" + ((SimPe.Data.MetaData.Languages)lid).ToString() + ")";
+				this.rtbTitle.Text = s.Title;
+				this.rtbTitle.SelectAll();
+				this.btnBigString.Enabled = this.rtbTitle.Enabled = true;
+				this.rtbDescription.Text = s.Description;
+				this.rtbDescription.SelectAll();
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = (wrapper.Format != 0x0000 && wrapper.Format != 0xFFFE);
+			}
+			else
+			{
+				this.lbStringNum.Text = "";
+				this.rtbDescription.Text = this.rtbTitle.Text = "";
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.btnBigString.Enabled = this.rtbTitle.Enabled = false;
+			}
+			this.btnStrPrev.Enabled = (index > 0);
+			this.btnStrNext.Enabled = (index < count - 1);
+			internalchg = false;
+
+			this.btnStrDelete.Enabled = index >= 0;
+			this.btnStrClear.Enabled = (wrapper.Format != 0x000 && index >= 0);
+		}
+
+
+		private void LngClear()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			foreach (StrItem s in wrapper)
+				if (s.LanguageID == lid)
+					s.Title = s.Description = "";
+
+			byte l = lid;
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setLid(l);
+			setIndex((i >= count) ? count - 1 : i);
+		}
+
+		private void LngClearAll()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			foreach (StrItem s in wrapper)
+				if (s.LanguageID != 1)
+					s.Title = s.Description = "";
+
+			byte l = lid;
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setLid(l);
+			setIndex((i >= count) ? count - 1 : i);
+		}
+		private void StrAdd()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			if (wrapper.Add(1, "", "") >= 0)
+			{
+				count++;
+				this.lvStrItems.Items.Add(new ListViewItem(new string[] { "0x" + Helper.HexString((ushort)(count - 1)), "", "" }));
+			}
+
+			internalchg = savedstate;
+
+			setLid(1);
+			setIndex(count - 1);
+		}
+
+		private void StrDelete()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			for (byte j = 1; j < 44; j++)
+			{
+				for (int ix = index; ix < count - 1; ix++)
+				{
+					StrItem s1 = wrapper[j, ix];
+					if (s1 != null)
+					{
+						StrItem s2 = wrapper[j, ix+1];
+						if (s2 != null)
+						{
+							s1.Title       = s2.Title;
+							s1.Description = s2.Description;
+						}
+						else
+							s1.Title = s1.Description = "";
+					}
+				}
+				wrapper.Remove(wrapper[j, count-1]);
+			}
+
+			byte l = lid;
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setLid(l);
+			setIndex((i >= count) ? count - 1 : i);
+		}
+
+		private void StrClear()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			for (byte m = 2; m < 44; m++)
+			{
+				StrItem s = wrapper[m, index];
+				if (s != null) s.Description = s.Title = "";
+			}
+
+			byte l = lid;
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setLid(l);
+			setIndex((i >= count) ? count - 1 : i);
+		}
+
+		private void Append(uint instance)
+		{
+			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
+				wrapper.FileDescriptor.Type,
+				0, 
+				wrapper.FileDescriptor.Group,
+				instance
+				);
+
+			if (pfd == null) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			strPanel.Parent.Cursor = Cursors.WaitCursor;
+
+			Str b = new Str();
+			b.Package = wrapper.Package;
+			b.FileDescriptor = wrapper.FileDescriptor;
+			b.ProcessData(pfd, b.Package);
+			if (wrapper.Format != 0x0000)
+				for (byte m = 1; m < 44; m++)
+					while (wrapper[m, count-1] == null && wrapper.Add(m, "", "") >= 0);
+			for (int bi = 0; bi < b.Count; bi++)
+			{
+				if (wrapper.Format == 0x0000 && b[bi].LanguageID != 1) continue;
+				if (wrapper.Add(b[bi]) < 0) break;
+			}
+
+			strPanel.Parent.Cursor = Cursors.Default;
+
+			byte l = lid;
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setLid(l);
+			setIndex((i >= count) ? count - 1 : i);
+		}
+
+		private void Commit()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			try 
+			{
+				wrapper.SynchronizeUserData();
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+			}			
+
+			btnCommit.Enabled = wrapper.Changed;
+
+			byte l = lid;
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setLid(l);
+			setIndex((i >= count) ? count - 1 : i);
+		}
+
 
 		#endregion
 
@@ -202,13 +455,12 @@ namespace SimPe.PackedFiles.UserInterface
 			updateLists();
 			internalchg = false;
 
-			displayStrItem();
-			this.btnLngClear.Enabled = false;
-
-			if (index < 0) index = 0;
-			if (index >= count) index = count - 1;
-			this.cbLngSelect.SelectedIndex = 0;
-			this.lbxLngDefault.SelectedIndex = index;
+			setLid(1);
+			setIndex(count > 0 ? 0 : -1);
+			if (this.ckbDefault.Checked)
+				this.ckbDefault.Checked = false;
+			else
+				ckbDefault_CheckedChanged(null, null);
 
 			if (!setHandler)
 			{
@@ -225,7 +477,22 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			this.tbFilename.Text = wrapper.FileName;
 			this.tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
+			if (wrapper.Format == 0x0000)
+			{
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = false;
+			}
+			else if (wrapper.Format == 0xFFFE)
+			{
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = false;
+				this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
+			}
+			else
+			{
+				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
+			}
 			internalchg = false;
+
+			this.ckbDefault.Enabled = this.cbLngSelect.Enabled = (wrapper.Format != 0x0000);
 		}
 
 		#endregion
@@ -239,6 +506,18 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
 			this.strPanel = new System.Windows.Forms.Panel();
+			this.btnStrPrev = new System.Windows.Forms.Button();
+			this.btnStrNext = new System.Windows.Forms.Button();
+			this.ckbDefault = new System.Windows.Forms.CheckBox();
+			this.btnStrClear = new System.Windows.Forms.Button();
+			this.lvStrItems = new System.Windows.Forms.ListView();
+			this.chString = new System.Windows.Forms.ColumnHeader();
+			this.chLang = new System.Windows.Forms.ColumnHeader();
+			this.chDefault = new System.Windows.Forms.ColumnHeader();
+			this.btnBigDesc = new System.Windows.Forms.Button();
+			this.btnBigString = new System.Windows.Forms.Button();
+			this.lbDesc = new System.Windows.Forms.Label();
+			this.label1 = new System.Windows.Forms.Label();
 			this.rtbDescription = new System.Windows.Forms.RichTextBox();
 			this.rtbTitle = new System.Windows.Forms.RichTextBox();
 			this.btnLngNext = new System.Windows.Forms.Button();
@@ -247,9 +526,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbLngSelect = new System.Windows.Forms.ComboBox();
 			this.lbLngSelect = new System.Windows.Forms.Label();
 			this.btnClearAll = new System.Windows.Forms.Button();
-			this.pnLists = new System.Windows.Forms.Panel();
-			this.lbxLngDefault = new System.Windows.Forms.ListBox();
-			this.lbxLngCurrent = new System.Windows.Forms.ListBox();
 			this.lbStringNum = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
@@ -257,12 +533,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.tbFormat = new System.Windows.Forms.TextBox();
-			this.btnImport = new System.Windows.Forms.Button();
-			this.btnExport = new System.Windows.Forms.Button();
+			this.btnAppend = new System.Windows.Forms.Button();
 			this.btnStrDelete = new System.Windows.Forms.Button();
 			this.btnStrAdd = new System.Windows.Forms.Button();
 			this.strPanel.SuspendLayout();
-			this.pnLists.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// strPanel
@@ -274,6 +548,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMargin")));
 			this.strPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMinSize")));
 			this.strPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("strPanel.BackgroundImage")));
+			this.strPanel.Controls.Add(this.btnStrPrev);
+			this.strPanel.Controls.Add(this.btnStrNext);
+			this.strPanel.Controls.Add(this.ckbDefault);
+			this.strPanel.Controls.Add(this.btnStrClear);
+			this.strPanel.Controls.Add(this.lvStrItems);
+			this.strPanel.Controls.Add(this.btnBigDesc);
+			this.strPanel.Controls.Add(this.btnBigString);
+			this.strPanel.Controls.Add(this.lbDesc);
+			this.strPanel.Controls.Add(this.label1);
 			this.strPanel.Controls.Add(this.rtbDescription);
 			this.strPanel.Controls.Add(this.rtbTitle);
 			this.strPanel.Controls.Add(this.btnLngNext);
@@ -282,7 +565,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Controls.Add(this.cbLngSelect);
 			this.strPanel.Controls.Add(this.lbLngSelect);
 			this.strPanel.Controls.Add(this.btnClearAll);
-			this.strPanel.Controls.Add(this.pnLists);
 			this.strPanel.Controls.Add(this.lbStringNum);
 			this.strPanel.Controls.Add(this.tbFilename);
 			this.strPanel.Controls.Add(this.lbFilename);
@@ -290,8 +572,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Controls.Add(this.btnCommit);
 			this.strPanel.Controls.Add(this.lbFormat);
 			this.strPanel.Controls.Add(this.tbFormat);
-			this.strPanel.Controls.Add(this.btnImport);
-			this.strPanel.Controls.Add(this.btnExport);
+			this.strPanel.Controls.Add(this.btnAppend);
 			this.strPanel.Controls.Add(this.btnStrDelete);
 			this.strPanel.Controls.Add(this.btnStrAdd);
 			this.strPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("strPanel.Dock")));
@@ -305,6 +586,249 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.TabIndex = ((int)(resources.GetObject("strPanel.TabIndex")));
 			this.strPanel.Text = resources.GetString("strPanel.Text");
 			this.strPanel.Visible = ((bool)(resources.GetObject("strPanel.Visible")));
+			this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
+			// 
+			// btnStrPrev
+			// 
+			this.btnStrPrev.AccessibleDescription = resources.GetString("btnStrPrev.AccessibleDescription");
+			this.btnStrPrev.AccessibleName = resources.GetString("btnStrPrev.AccessibleName");
+			this.btnStrPrev.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrPrev.Anchor")));
+			this.btnStrPrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.BackgroundImage")));
+			this.btnStrPrev.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrPrev.Dock")));
+			this.btnStrPrev.Enabled = ((bool)(resources.GetObject("btnStrPrev.Enabled")));
+			this.btnStrPrev.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrPrev.FlatStyle")));
+			this.btnStrPrev.Font = ((System.Drawing.Font)(resources.GetObject("btnStrPrev.Font")));
+			this.btnStrPrev.Image = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.Image")));
+			this.btnStrPrev.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.ImageAlign")));
+			this.btnStrPrev.ImageIndex = ((int)(resources.GetObject("btnStrPrev.ImageIndex")));
+			this.btnStrPrev.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrPrev.ImeMode")));
+			this.btnStrPrev.Location = ((System.Drawing.Point)(resources.GetObject("btnStrPrev.Location")));
+			this.btnStrPrev.Name = "btnStrPrev";
+			this.btnStrPrev.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrPrev.RightToLeft")));
+			this.btnStrPrev.Size = ((System.Drawing.Size)(resources.GetObject("btnStrPrev.Size")));
+			this.btnStrPrev.TabIndex = ((int)(resources.GetObject("btnStrPrev.TabIndex")));
+			this.btnStrPrev.Text = resources.GetString("btnStrPrev.Text");
+			this.btnStrPrev.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.TextAlign")));
+			this.btnStrPrev.Visible = ((bool)(resources.GetObject("btnStrPrev.Visible")));
+			this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
+			// 
+			// btnStrNext
+			// 
+			this.btnStrNext.AccessibleDescription = resources.GetString("btnStrNext.AccessibleDescription");
+			this.btnStrNext.AccessibleName = resources.GetString("btnStrNext.AccessibleName");
+			this.btnStrNext.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrNext.Anchor")));
+			this.btnStrNext.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrNext.BackgroundImage")));
+			this.btnStrNext.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrNext.Dock")));
+			this.btnStrNext.Enabled = ((bool)(resources.GetObject("btnStrNext.Enabled")));
+			this.btnStrNext.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrNext.FlatStyle")));
+			this.btnStrNext.Font = ((System.Drawing.Font)(resources.GetObject("btnStrNext.Font")));
+			this.btnStrNext.Image = ((System.Drawing.Image)(resources.GetObject("btnStrNext.Image")));
+			this.btnStrNext.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.ImageAlign")));
+			this.btnStrNext.ImageIndex = ((int)(resources.GetObject("btnStrNext.ImageIndex")));
+			this.btnStrNext.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrNext.ImeMode")));
+			this.btnStrNext.Location = ((System.Drawing.Point)(resources.GetObject("btnStrNext.Location")));
+			this.btnStrNext.Name = "btnStrNext";
+			this.btnStrNext.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrNext.RightToLeft")));
+			this.btnStrNext.Size = ((System.Drawing.Size)(resources.GetObject("btnStrNext.Size")));
+			this.btnStrNext.TabIndex = ((int)(resources.GetObject("btnStrNext.TabIndex")));
+			this.btnStrNext.Text = resources.GetString("btnStrNext.Text");
+			this.btnStrNext.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.TextAlign")));
+			this.btnStrNext.Visible = ((bool)(resources.GetObject("btnStrNext.Visible")));
+			this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
+			// 
+			// ckbDefault
+			// 
+			this.ckbDefault.AccessibleDescription = resources.GetString("ckbDefault.AccessibleDescription");
+			this.ckbDefault.AccessibleName = resources.GetString("ckbDefault.AccessibleName");
+			this.ckbDefault.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("ckbDefault.Anchor")));
+			this.ckbDefault.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("ckbDefault.Appearance")));
+			this.ckbDefault.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("ckbDefault.BackgroundImage")));
+			this.ckbDefault.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("ckbDefault.CheckAlign")));
+			this.ckbDefault.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("ckbDefault.Dock")));
+			this.ckbDefault.Enabled = ((bool)(resources.GetObject("ckbDefault.Enabled")));
+			this.ckbDefault.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("ckbDefault.FlatStyle")));
+			this.ckbDefault.Font = ((System.Drawing.Font)(resources.GetObject("ckbDefault.Font")));
+			this.ckbDefault.Image = ((System.Drawing.Image)(resources.GetObject("ckbDefault.Image")));
+			this.ckbDefault.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("ckbDefault.ImageAlign")));
+			this.ckbDefault.ImageIndex = ((int)(resources.GetObject("ckbDefault.ImageIndex")));
+			this.ckbDefault.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("ckbDefault.ImeMode")));
+			this.ckbDefault.Location = ((System.Drawing.Point)(resources.GetObject("ckbDefault.Location")));
+			this.ckbDefault.Name = "ckbDefault";
+			this.ckbDefault.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("ckbDefault.RightToLeft")));
+			this.ckbDefault.Size = ((System.Drawing.Size)(resources.GetObject("ckbDefault.Size")));
+			this.ckbDefault.TabIndex = ((int)(resources.GetObject("ckbDefault.TabIndex")));
+			this.ckbDefault.Text = resources.GetString("ckbDefault.Text");
+			this.ckbDefault.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("ckbDefault.TextAlign")));
+			this.ckbDefault.Visible = ((bool)(resources.GetObject("ckbDefault.Visible")));
+			this.ckbDefault.CheckedChanged += new System.EventHandler(this.ckbDefault_CheckedChanged);
+			// 
+			// btnStrClear
+			// 
+			this.btnStrClear.AccessibleDescription = resources.GetString("btnStrClear.AccessibleDescription");
+			this.btnStrClear.AccessibleName = resources.GetString("btnStrClear.AccessibleName");
+			this.btnStrClear.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrClear.Anchor")));
+			this.btnStrClear.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrClear.BackgroundImage")));
+			this.btnStrClear.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrClear.Dock")));
+			this.btnStrClear.Enabled = ((bool)(resources.GetObject("btnStrClear.Enabled")));
+			this.btnStrClear.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrClear.FlatStyle")));
+			this.btnStrClear.Font = ((System.Drawing.Font)(resources.GetObject("btnStrClear.Font")));
+			this.btnStrClear.Image = ((System.Drawing.Image)(resources.GetObject("btnStrClear.Image")));
+			this.btnStrClear.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrClear.ImageAlign")));
+			this.btnStrClear.ImageIndex = ((int)(resources.GetObject("btnStrClear.ImageIndex")));
+			this.btnStrClear.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrClear.ImeMode")));
+			this.btnStrClear.Location = ((System.Drawing.Point)(resources.GetObject("btnStrClear.Location")));
+			this.btnStrClear.Name = "btnStrClear";
+			this.btnStrClear.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrClear.RightToLeft")));
+			this.btnStrClear.Size = ((System.Drawing.Size)(resources.GetObject("btnStrClear.Size")));
+			this.btnStrClear.TabIndex = ((int)(resources.GetObject("btnStrClear.TabIndex")));
+			this.btnStrClear.Text = resources.GetString("btnStrClear.Text");
+			this.btnStrClear.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrClear.TextAlign")));
+			this.btnStrClear.Visible = ((bool)(resources.GetObject("btnStrClear.Visible")));
+			this.btnStrClear.Click += new System.EventHandler(this.btnStrClear_Click);
+			// 
+			// lvStrItems
+			// 
+			this.lvStrItems.AccessibleDescription = resources.GetString("lvStrItems.AccessibleDescription");
+			this.lvStrItems.AccessibleName = resources.GetString("lvStrItems.AccessibleName");
+			this.lvStrItems.Activation = System.Windows.Forms.ItemActivation.OneClick;
+			this.lvStrItems.Alignment = ((System.Windows.Forms.ListViewAlignment)(resources.GetObject("lvStrItems.Alignment")));
+			this.lvStrItems.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvStrItems.Anchor")));
+			this.lvStrItems.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvStrItems.BackgroundImage")));
+			this.lvStrItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																						 this.chString,
+																						 this.chLang,
+																						 this.chDefault});
+			this.lvStrItems.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lvStrItems.Dock")));
+			this.lvStrItems.Enabled = ((bool)(resources.GetObject("lvStrItems.Enabled")));
+			this.lvStrItems.Font = ((System.Drawing.Font)(resources.GetObject("lvStrItems.Font")));
+			this.lvStrItems.FullRowSelect = true;
+			this.lvStrItems.GridLines = true;
+			this.lvStrItems.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvStrItems.HideSelection = false;
+			this.lvStrItems.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvStrItems.ImeMode")));
+			this.lvStrItems.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+																					   ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvStrItems.Items")))});
+			this.lvStrItems.LabelWrap = ((bool)(resources.GetObject("lvStrItems.LabelWrap")));
+			this.lvStrItems.Location = ((System.Drawing.Point)(resources.GetObject("lvStrItems.Location")));
+			this.lvStrItems.MultiSelect = false;
+			this.lvStrItems.Name = "lvStrItems";
+			this.lvStrItems.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lvStrItems.RightToLeft")));
+			this.lvStrItems.Size = ((System.Drawing.Size)(resources.GetObject("lvStrItems.Size")));
+			this.lvStrItems.TabIndex = ((int)(resources.GetObject("lvStrItems.TabIndex")));
+			this.lvStrItems.Text = resources.GetString("lvStrItems.Text");
+			this.lvStrItems.View = System.Windows.Forms.View.Details;
+			this.lvStrItems.Visible = ((bool)(resources.GetObject("lvStrItems.Visible")));
+			this.lvStrItems.SelectedIndexChanged += new System.EventHandler(this.lvStrItems_SelectedIndexChanged);
+			// 
+			// chString
+			// 
+			this.chString.Text = resources.GetString("chString.Text");
+			this.chString.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chString.TextAlign")));
+			this.chString.Width = ((int)(resources.GetObject("chString.Width")));
+			// 
+			// chLang
+			// 
+			this.chLang.Text = resources.GetString("chLang.Text");
+			this.chLang.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chLang.TextAlign")));
+			this.chLang.Width = ((int)(resources.GetObject("chLang.Width")));
+			// 
+			// chDefault
+			// 
+			this.chDefault.Text = resources.GetString("chDefault.Text");
+			this.chDefault.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chDefault.TextAlign")));
+			this.chDefault.Width = ((int)(resources.GetObject("chDefault.Width")));
+			// 
+			// btnBigDesc
+			// 
+			this.btnBigDesc.AccessibleDescription = resources.GetString("btnBigDesc.AccessibleDescription");
+			this.btnBigDesc.AccessibleName = resources.GetString("btnBigDesc.AccessibleName");
+			this.btnBigDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnBigDesc.Anchor")));
+			this.btnBigDesc.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBigDesc.BackgroundImage")));
+			this.btnBigDesc.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnBigDesc.Dock")));
+			this.btnBigDesc.Enabled = ((bool)(resources.GetObject("btnBigDesc.Enabled")));
+			this.btnBigDesc.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnBigDesc.FlatStyle")));
+			this.btnBigDesc.Font = ((System.Drawing.Font)(resources.GetObject("btnBigDesc.Font")));
+			this.btnBigDesc.Image = ((System.Drawing.Image)(resources.GetObject("btnBigDesc.Image")));
+			this.btnBigDesc.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigDesc.ImageAlign")));
+			this.btnBigDesc.ImageIndex = ((int)(resources.GetObject("btnBigDesc.ImageIndex")));
+			this.btnBigDesc.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnBigDesc.ImeMode")));
+			this.btnBigDesc.Location = ((System.Drawing.Point)(resources.GetObject("btnBigDesc.Location")));
+			this.btnBigDesc.Name = "btnBigDesc";
+			this.btnBigDesc.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnBigDesc.RightToLeft")));
+			this.btnBigDesc.Size = ((System.Drawing.Size)(resources.GetObject("btnBigDesc.Size")));
+			this.btnBigDesc.TabIndex = ((int)(resources.GetObject("btnBigDesc.TabIndex")));
+			this.btnBigDesc.Text = resources.GetString("btnBigDesc.Text");
+			this.btnBigDesc.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigDesc.TextAlign")));
+			this.btnBigDesc.Visible = ((bool)(resources.GetObject("btnBigDesc.Visible")));
+			this.btnBigDesc.Click += new System.EventHandler(this.btnBigString_Click);
+			// 
+			// btnBigString
+			// 
+			this.btnBigString.AccessibleDescription = resources.GetString("btnBigString.AccessibleDescription");
+			this.btnBigString.AccessibleName = resources.GetString("btnBigString.AccessibleName");
+			this.btnBigString.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnBigString.Anchor")));
+			this.btnBigString.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnBigString.BackgroundImage")));
+			this.btnBigString.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnBigString.Dock")));
+			this.btnBigString.Enabled = ((bool)(resources.GetObject("btnBigString.Enabled")));
+			this.btnBigString.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnBigString.FlatStyle")));
+			this.btnBigString.Font = ((System.Drawing.Font)(resources.GetObject("btnBigString.Font")));
+			this.btnBigString.Image = ((System.Drawing.Image)(resources.GetObject("btnBigString.Image")));
+			this.btnBigString.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigString.ImageAlign")));
+			this.btnBigString.ImageIndex = ((int)(resources.GetObject("btnBigString.ImageIndex")));
+			this.btnBigString.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnBigString.ImeMode")));
+			this.btnBigString.Location = ((System.Drawing.Point)(resources.GetObject("btnBigString.Location")));
+			this.btnBigString.Name = "btnBigString";
+			this.btnBigString.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnBigString.RightToLeft")));
+			this.btnBigString.Size = ((System.Drawing.Size)(resources.GetObject("btnBigString.Size")));
+			this.btnBigString.TabIndex = ((int)(resources.GetObject("btnBigString.TabIndex")));
+			this.btnBigString.Text = resources.GetString("btnBigString.Text");
+			this.btnBigString.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnBigString.TextAlign")));
+			this.btnBigString.Visible = ((bool)(resources.GetObject("btnBigString.Visible")));
+			this.btnBigString.Click += new System.EventHandler(this.btnBigString_Click);
+			// 
+			// lbDesc
+			// 
+			this.lbDesc.AccessibleDescription = resources.GetString("lbDesc.AccessibleDescription");
+			this.lbDesc.AccessibleName = resources.GetString("lbDesc.AccessibleName");
+			this.lbDesc.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbDesc.Anchor")));
+			this.lbDesc.AutoSize = ((bool)(resources.GetObject("lbDesc.AutoSize")));
+			this.lbDesc.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbDesc.Dock")));
+			this.lbDesc.Enabled = ((bool)(resources.GetObject("lbDesc.Enabled")));
+			this.lbDesc.Font = ((System.Drawing.Font)(resources.GetObject("lbDesc.Font")));
+			this.lbDesc.Image = ((System.Drawing.Image)(resources.GetObject("lbDesc.Image")));
+			this.lbDesc.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbDesc.ImageAlign")));
+			this.lbDesc.ImageIndex = ((int)(resources.GetObject("lbDesc.ImageIndex")));
+			this.lbDesc.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbDesc.ImeMode")));
+			this.lbDesc.Location = ((System.Drawing.Point)(resources.GetObject("lbDesc.Location")));
+			this.lbDesc.Name = "lbDesc";
+			this.lbDesc.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbDesc.RightToLeft")));
+			this.lbDesc.Size = ((System.Drawing.Size)(resources.GetObject("lbDesc.Size")));
+			this.lbDesc.TabIndex = ((int)(resources.GetObject("lbDesc.TabIndex")));
+			this.lbDesc.Text = resources.GetString("lbDesc.Text");
+			this.lbDesc.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbDesc.TextAlign")));
+			this.lbDesc.Visible = ((bool)(resources.GetObject("lbDesc.Visible")));
+			// 
+			// label1
+			// 
+			this.label1.AccessibleDescription = resources.GetString("label1.AccessibleDescription");
+			this.label1.AccessibleName = resources.GetString("label1.AccessibleName");
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label1.Anchor")));
+			this.label1.AutoSize = ((bool)(resources.GetObject("label1.AutoSize")));
+			this.label1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label1.Dock")));
+			this.label1.Enabled = ((bool)(resources.GetObject("label1.Enabled")));
+			this.label1.Font = ((System.Drawing.Font)(resources.GetObject("label1.Font")));
+			this.label1.Image = ((System.Drawing.Image)(resources.GetObject("label1.Image")));
+			this.label1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.ImageAlign")));
+			this.label1.ImageIndex = ((int)(resources.GetObject("label1.ImageIndex")));
+			this.label1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label1.ImeMode")));
+			this.label1.Location = ((System.Drawing.Point)(resources.GetObject("label1.Location")));
+			this.label1.Name = "label1";
+			this.label1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label1.RightToLeft")));
+			this.label1.Size = ((System.Drawing.Size)(resources.GetObject("label1.Size")));
+			this.label1.TabIndex = ((int)(resources.GetObject("label1.TabIndex")));
+			this.label1.Text = resources.GetString("label1.Text");
+			this.label1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.TextAlign")));
+			this.label1.Visible = ((bool)(resources.GetObject("label1.Visible")));
 			// 
 			// rtbDescription
 			// 
@@ -331,8 +855,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.rtbDescription.Visible = ((bool)(resources.GetObject("rtbDescription.Visible")));
 			this.rtbDescription.WordWrap = ((bool)(resources.GetObject("rtbDescription.WordWrap")));
 			this.rtbDescription.ZoomFactor = ((System.Single)(resources.GetObject("rtbDescription.ZoomFactor")));
-			this.rtbDescription.Validated += new System.EventHandler(this.richTextBox_Validated);
-			this.rtbDescription.TextChanged += new System.EventHandler(this.richTextBox_TextChanged);
+			this.rtbDescription.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
+			this.rtbDescription.Enter += new System.EventHandler(this.textBoxBase_Enter);
 			// 
 			// rtbTitle
 			// 
@@ -359,8 +883,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.rtbTitle.Visible = ((bool)(resources.GetObject("rtbTitle.Visible")));
 			this.rtbTitle.WordWrap = ((bool)(resources.GetObject("rtbTitle.WordWrap")));
 			this.rtbTitle.ZoomFactor = ((System.Single)(resources.GetObject("rtbTitle.ZoomFactor")));
-			this.rtbTitle.Validated += new System.EventHandler(this.richTextBox_Validated);
-			this.rtbTitle.TextChanged += new System.EventHandler(this.richTextBox_TextChanged);
+			this.rtbTitle.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
+			this.rtbTitle.Enter += new System.EventHandler(this.textBoxBase_Enter);
 			// 
 			// btnLngNext
 			// 
@@ -504,78 +1028,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnClearAll.Visible = ((bool)(resources.GetObject("btnClearAll.Visible")));
 			this.btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
 			// 
-			// pnLists
-			// 
-			this.pnLists.AccessibleDescription = resources.GetString("pnLists.AccessibleDescription");
-			this.pnLists.AccessibleName = resources.GetString("pnLists.AccessibleName");
-			this.pnLists.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnLists.Anchor")));
-			this.pnLists.AutoScroll = ((bool)(resources.GetObject("pnLists.AutoScroll")));
-			this.pnLists.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("pnLists.AutoScrollMargin")));
-			this.pnLists.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnLists.AutoScrollMinSize")));
-			this.pnLists.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnLists.BackgroundImage")));
-			this.pnLists.Controls.Add(this.lbxLngDefault);
-			this.pnLists.Controls.Add(this.lbxLngCurrent);
-			this.pnLists.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnLists.Dock")));
-			this.pnLists.Enabled = ((bool)(resources.GetObject("pnLists.Enabled")));
-			this.pnLists.Font = ((System.Drawing.Font)(resources.GetObject("pnLists.Font")));
-			this.pnLists.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("pnLists.ImeMode")));
-			this.pnLists.Location = ((System.Drawing.Point)(resources.GetObject("pnLists.Location")));
-			this.pnLists.Name = "pnLists";
-			this.pnLists.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnLists.RightToLeft")));
-			this.pnLists.Size = ((System.Drawing.Size)(resources.GetObject("pnLists.Size")));
-			this.pnLists.TabIndex = ((int)(resources.GetObject("pnLists.TabIndex")));
-			this.pnLists.Text = resources.GetString("pnLists.Text");
-			this.pnLists.Visible = ((bool)(resources.GetObject("pnLists.Visible")));
-			this.pnLists.Resize += new System.EventHandler(this.pnLists_Resize);
-			// 
-			// lbxLngDefault
-			// 
-			this.lbxLngDefault.AccessibleDescription = resources.GetString("lbxLngDefault.AccessibleDescription");
-			this.lbxLngDefault.AccessibleName = resources.GetString("lbxLngDefault.AccessibleName");
-			this.lbxLngDefault.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbxLngDefault.Anchor")));
-			this.lbxLngDefault.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lbxLngDefault.BackgroundImage")));
-			this.lbxLngDefault.ColumnWidth = ((int)(resources.GetObject("lbxLngDefault.ColumnWidth")));
-			this.lbxLngDefault.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbxLngDefault.Dock")));
-			this.lbxLngDefault.Enabled = ((bool)(resources.GetObject("lbxLngDefault.Enabled")));
-			this.lbxLngDefault.Font = ((System.Drawing.Font)(resources.GetObject("lbxLngDefault.Font")));
-			this.lbxLngDefault.HorizontalExtent = ((int)(resources.GetObject("lbxLngDefault.HorizontalExtent")));
-			this.lbxLngDefault.HorizontalScrollbar = ((bool)(resources.GetObject("lbxLngDefault.HorizontalScrollbar")));
-			this.lbxLngDefault.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbxLngDefault.ImeMode")));
-			this.lbxLngDefault.IntegralHeight = ((bool)(resources.GetObject("lbxLngDefault.IntegralHeight")));
-			this.lbxLngDefault.ItemHeight = ((int)(resources.GetObject("lbxLngDefault.ItemHeight")));
-			this.lbxLngDefault.Location = ((System.Drawing.Point)(resources.GetObject("lbxLngDefault.Location")));
-			this.lbxLngDefault.Name = "lbxLngDefault";
-			this.lbxLngDefault.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbxLngDefault.RightToLeft")));
-			this.lbxLngDefault.ScrollAlwaysVisible = ((bool)(resources.GetObject("lbxLngDefault.ScrollAlwaysVisible")));
-			this.lbxLngDefault.Size = ((System.Drawing.Size)(resources.GetObject("lbxLngDefault.Size")));
-			this.lbxLngDefault.TabIndex = ((int)(resources.GetObject("lbxLngDefault.TabIndex")));
-			this.lbxLngDefault.Visible = ((bool)(resources.GetObject("lbxLngDefault.Visible")));
-			this.lbxLngDefault.SelectedIndexChanged += new System.EventHandler(this.lbxLngDefault_SelectedIndexChanged);
-			// 
-			// lbxLngCurrent
-			// 
-			this.lbxLngCurrent.AccessibleDescription = resources.GetString("lbxLngCurrent.AccessibleDescription");
-			this.lbxLngCurrent.AccessibleName = resources.GetString("lbxLngCurrent.AccessibleName");
-			this.lbxLngCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbxLngCurrent.Anchor")));
-			this.lbxLngCurrent.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lbxLngCurrent.BackgroundImage")));
-			this.lbxLngCurrent.ColumnWidth = ((int)(resources.GetObject("lbxLngCurrent.ColumnWidth")));
-			this.lbxLngCurrent.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbxLngCurrent.Dock")));
-			this.lbxLngCurrent.Enabled = ((bool)(resources.GetObject("lbxLngCurrent.Enabled")));
-			this.lbxLngCurrent.Font = ((System.Drawing.Font)(resources.GetObject("lbxLngCurrent.Font")));
-			this.lbxLngCurrent.HorizontalExtent = ((int)(resources.GetObject("lbxLngCurrent.HorizontalExtent")));
-			this.lbxLngCurrent.HorizontalScrollbar = ((bool)(resources.GetObject("lbxLngCurrent.HorizontalScrollbar")));
-			this.lbxLngCurrent.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbxLngCurrent.ImeMode")));
-			this.lbxLngCurrent.IntegralHeight = ((bool)(resources.GetObject("lbxLngCurrent.IntegralHeight")));
-			this.lbxLngCurrent.ItemHeight = ((int)(resources.GetObject("lbxLngCurrent.ItemHeight")));
-			this.lbxLngCurrent.Location = ((System.Drawing.Point)(resources.GetObject("lbxLngCurrent.Location")));
-			this.lbxLngCurrent.Name = "lbxLngCurrent";
-			this.lbxLngCurrent.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbxLngCurrent.RightToLeft")));
-			this.lbxLngCurrent.ScrollAlwaysVisible = ((bool)(resources.GetObject("lbxLngCurrent.ScrollAlwaysVisible")));
-			this.lbxLngCurrent.Size = ((System.Drawing.Size)(resources.GetObject("lbxLngCurrent.Size")));
-			this.lbxLngCurrent.TabIndex = ((int)(resources.GetObject("lbxLngCurrent.TabIndex")));
-			this.lbxLngCurrent.Visible = ((bool)(resources.GetObject("lbxLngCurrent.Visible")));
-			this.lbxLngCurrent.SelectedIndexChanged += new System.EventHandler(this.lbxLngCurrent_SelectedIndexChanged);
-			// 
 			// lbStringNum
 			// 
 			this.lbStringNum.AccessibleDescription = resources.GetString("lbStringNum.AccessibleDescription");
@@ -622,8 +1074,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFilename.TextAlign")));
 			this.tbFilename.Visible = ((bool)(resources.GetObject("tbFilename.Visible")));
 			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
-			this.tbFilename.Validated += new System.EventHandler(this.textBox_Validated);
-			this.tbFilename.TextChanged += new System.EventHandler(this.textBox_TextChanged);
+			this.tbFilename.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
+			this.tbFilename.Enter += new System.EventHandler(this.textBoxBase_Enter);
 			// 
 			// lbFilename
 			// 
@@ -745,51 +1197,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
 			this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
-			// btnImport
+			// btnAppend
 			// 
-			this.btnImport.AccessibleDescription = resources.GetString("btnImport.AccessibleDescription");
-			this.btnImport.AccessibleName = resources.GetString("btnImport.AccessibleName");
-			this.btnImport.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnImport.Anchor")));
-			this.btnImport.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnImport.BackgroundImage")));
-			this.btnImport.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnImport.Dock")));
-			this.btnImport.Enabled = ((bool)(resources.GetObject("btnImport.Enabled")));
-			this.btnImport.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnImport.FlatStyle")));
-			this.btnImport.Font = ((System.Drawing.Font)(resources.GetObject("btnImport.Font")));
-			this.btnImport.Image = ((System.Drawing.Image)(resources.GetObject("btnImport.Image")));
-			this.btnImport.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnImport.ImageAlign")));
-			this.btnImport.ImageIndex = ((int)(resources.GetObject("btnImport.ImageIndex")));
-			this.btnImport.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnImport.ImeMode")));
-			this.btnImport.Location = ((System.Drawing.Point)(resources.GetObject("btnImport.Location")));
-			this.btnImport.Name = "btnImport";
-			this.btnImport.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnImport.RightToLeft")));
-			this.btnImport.Size = ((System.Drawing.Size)(resources.GetObject("btnImport.Size")));
-			this.btnImport.TabIndex = ((int)(resources.GetObject("btnImport.TabIndex")));
-			this.btnImport.Text = resources.GetString("btnImport.Text");
-			this.btnImport.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnImport.TextAlign")));
-			this.btnImport.Visible = ((bool)(resources.GetObject("btnImport.Visible")));
-			// 
-			// btnExport
-			// 
-			this.btnExport.AccessibleDescription = resources.GetString("btnExport.AccessibleDescription");
-			this.btnExport.AccessibleName = resources.GetString("btnExport.AccessibleName");
-			this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnExport.Anchor")));
-			this.btnExport.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnExport.BackgroundImage")));
-			this.btnExport.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnExport.Dock")));
-			this.btnExport.Enabled = ((bool)(resources.GetObject("btnExport.Enabled")));
-			this.btnExport.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnExport.FlatStyle")));
-			this.btnExport.Font = ((System.Drawing.Font)(resources.GetObject("btnExport.Font")));
-			this.btnExport.Image = ((System.Drawing.Image)(resources.GetObject("btnExport.Image")));
-			this.btnExport.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnExport.ImageAlign")));
-			this.btnExport.ImageIndex = ((int)(resources.GetObject("btnExport.ImageIndex")));
-			this.btnExport.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnExport.ImeMode")));
-			this.btnExport.Location = ((System.Drawing.Point)(resources.GetObject("btnExport.Location")));
-			this.btnExport.Name = "btnExport";
-			this.btnExport.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnExport.RightToLeft")));
-			this.btnExport.Size = ((System.Drawing.Size)(resources.GetObject("btnExport.Size")));
-			this.btnExport.TabIndex = ((int)(resources.GetObject("btnExport.TabIndex")));
-			this.btnExport.Text = resources.GetString("btnExport.Text");
-			this.btnExport.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnExport.TextAlign")));
-			this.btnExport.Visible = ((bool)(resources.GetObject("btnExport.Visible")));
+			this.btnAppend.AccessibleDescription = resources.GetString("btnAppend.AccessibleDescription");
+			this.btnAppend.AccessibleName = resources.GetString("btnAppend.AccessibleName");
+			this.btnAppend.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAppend.Anchor")));
+			this.btnAppend.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAppend.BackgroundImage")));
+			this.btnAppend.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAppend.Dock")));
+			this.btnAppend.Enabled = ((bool)(resources.GetObject("btnAppend.Enabled")));
+			this.btnAppend.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAppend.FlatStyle")));
+			this.btnAppend.Font = ((System.Drawing.Font)(resources.GetObject("btnAppend.Font")));
+			this.btnAppend.Image = ((System.Drawing.Image)(resources.GetObject("btnAppend.Image")));
+			this.btnAppend.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.ImageAlign")));
+			this.btnAppend.ImageIndex = ((int)(resources.GetObject("btnAppend.ImageIndex")));
+			this.btnAppend.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAppend.ImeMode")));
+			this.btnAppend.Location = ((System.Drawing.Point)(resources.GetObject("btnAppend.Location")));
+			this.btnAppend.Name = "btnAppend";
+			this.btnAppend.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAppend.RightToLeft")));
+			this.btnAppend.Size = ((System.Drawing.Size)(resources.GetObject("btnAppend.Size")));
+			this.btnAppend.TabIndex = ((int)(resources.GetObject("btnAppend.TabIndex")));
+			this.btnAppend.Text = resources.GetString("btnAppend.Text");
+			this.btnAppend.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.TextAlign")));
+			this.btnAppend.Visible = ((bool)(resources.GetObject("btnAppend.Visible")));
+			this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
 			// 
 			// btnStrDelete
 			// 
@@ -862,126 +1292,41 @@ namespace SimPe.PackedFiles.UserInterface
 			this.StartPosition = ((System.Windows.Forms.FormStartPosition)(resources.GetObject("$this.StartPosition")));
 			this.Text = resources.GetString("$this.Text");
 			this.strPanel.ResumeLayout(false);
-			this.pnLists.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 		#endregion
 
-		private void pnLists_Resize(object sender, System.EventArgs e)
+		private void strPanel_Resize(object sender, System.EventArgs e)
 		{
-			this.lbxLngDefault.Left = 0;
-			this.lbxLngCurrent.Width = this.lbxLngDefault.Width =
-				(this.pnLists.Width / 2) - 4 - 8;
-			this.lbxLngCurrent.Left = this.lbxLngDefault.Right + 4;
+			this.btnBigDesc.Left = this.btnCommit.Right - this.btnBigDesc.Width;
 
-			this.btnLngPrev.Left = this.lbxLngCurrent.Left + this.pnLists.Left;
-			this.cbLngSelect.Left = this.lbLngSelect.Left = this.btnLngPrev.Right;
-			this.btnLngNext.Left = this.cbLngSelect.Right;
-			this.btnLngClear.Left = this.btnClearAll.Left = this.btnLngNext.Right + 32;
+			int width = this.btnBigDesc.Left - this.rtbTitle.Left - this.lbDesc.Width - 8;
 
-			int minH = (this.lbxLngDefault.Items.Count * this.lbxLngDefault.ItemHeight) + 4 + 20;
-			int h = this.pnLists.Height - this.lbxLngDefault.Top;
-			this.lbxLngCurrent.Height = this.lbxLngDefault.Height = (h < minH) ? minH : h;
-
-			this.rtbDescription.Width = this.rtbTitle.Width = this.pnLists.Left + this.lbxLngDefault.Width;
-
-			Control[] cs = { tbFormat, lbFormat };
-			int left = this.strPanel.Width;
-			for (int i = 0; i < cs.Length; i++)
-				left = cs[i].Left = left - (cs[i].Width + 4);
-			this.lbFilename.Left = this.rtbTitle.Right + 4;
-			this.tbFilename.Left = this.lbFilename.Right + 4;
-			this.tbFilename.Width = left - (this.tbFilename.Left + 4);
+			this.rtbDescription.Width = this.rtbTitle.Width = width / 2;
+			this.btnBigString.Left = this.rtbTitle.Right;
+			this.lbDesc.Left = this.rtbTitle.Right + 4;
+			this.rtbDescription.Left = this.lbDesc.Right + 4;
 		}
 
 
-		private void btnCommit_Click(object sender, System.EventArgs e)
+		private void textBoxBase_Enter(object sender, System.EventArgs e)
 		{
-			try 
-			{
-				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = wrapper.Changed;
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
-			}			
-
-			int l = this.cbLngSelect.SelectedIndex;
-			bool defsel = this.lbxLngDefault.SelectedIndex != -1;
-
-			bool savedstate = internalchg;
-			internalchg = true;
-			updateLists();
-			internalchg = savedstate;
-
-			displayStrItem();
-			this.btnLngClear.Enabled = false;
-
-			if (index < 0) index = 0;
-			if (index >= count) index = count - 1;
-			this.cbLngSelect.SelectedIndex = l;
-			if (defsel) this.lbxLngDefault.SelectedIndex = index;
-			else this.lbxLngCurrent.SelectedIndex = index;
+			((TextBoxBase)sender).SelectAll();
 		}
 
-
-		private void textBox_TextChanged(object sender, System.EventArgs e)
+		private void textBoxBase_TextChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
 			internalchg = true;
-			switch(alTextBox.IndexOf(sender))
+			switch(alTextBoxBase.IndexOf(sender))
 			{
-				case 0: wrapper.FileName = ((TextBox)sender).Text; break;
+				case 0: wrapper.FileName = ((TextBoxBase)sender).Text; break;
+				case 1: wrapper[lid, index].Title = ((TextBoxBase)sender).Text; updateSelectedItem(); break;
+				case 2: wrapper[lid, index].Description = ((TextBoxBase)sender).Text; updateSelectedItem(); break;
 			}
 			internalchg = false;
-		}
-
-		private void textBox_Validated(object sender, System.EventArgs e)
-		{
-			((TextBox)sender).SelectAll();
-		}
-
-
-		private void richTextBox_TextChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-			if (index < 0) return;
-
-			internalchg = true;
-			switch(alRichTextBox.IndexOf(sender))
-			{
-				case 0:
-					wrapper[lid, index].Title = ((RichTextBox)sender).Text;
-					if (this.lbxLngDefault.SelectedIndex >= 0)
-						this.lbxLngDefault.Items[index] = "0x" + Helper.HexString((ushort)index) + ": " + wrapper[lid, index];
-					if (this.lbxLngCurrent.SelectedIndex >= 0)
-						this.lbxLngCurrent.Items[index] = "0x" + Helper.HexString((ushort)index) + ": " + wrapper[lid, index];
-					break;
-				case 1: wrapper[lid, index].Description = ((RichTextBox)sender).Text; break;
-			}
-			if (this.lbxLngCurrent.SelectedIndex >= 0)
-			{
-				bool empty = true;
-				StrItem[] s = wrapper[lid];
-				for (int j = count - 1; j >= 0 && empty; j--)
-					if (s[j] != null && (s[j].Title.Trim().Length + s[j].Description.Trim().Length > 0))
-						empty = false;
-				this.cbLngSelect.Items[lid - 2] = ((SimPe.Data.MetaData.Languages)lid).ToString() + (empty ? " (empty)" : "");
-				this.btnLngClear.Enabled = !empty;
-				for (int i = 0; i < wrapper.Count && empty; i++)
-					if ((wrapper[i].LanguageID != 1) && (wrapper[i].Title.Trim().Length + wrapper[i].Description.Trim().Length > 0))
-						empty = false;
-				this.btnClearAll.Enabled = !empty;
-			}
-			internalchg = false;
-		}
-
-		private void richTextBox_Validated(object sender, System.EventArgs e)
-		{
-			((RichTextBox)sender).SelectAll();
 		}
 
 
@@ -1030,179 +1375,110 @@ namespace SimPe.PackedFiles.UserInterface
 		private void cbLngSelect_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-			internalchg = true;
-
-			int l = this.lbxLngCurrent.SelectedIndex;
-			this.lbxLngCurrent.Items.Clear();
-
 			if (this.cbLngSelect.SelectedIndex >= 0)
-			{
-				lid = (byte)(this.cbLngSelect.SelectedIndex + 2);
-				while (count > 0 && wrapper[lid, count-1] == null) wrapper.Add(lid, "", "");
-				StrItem[] s = wrapper[lid];
-				for (ushort i = 0; i < count; i++)
-					this.lbxLngCurrent.Items.Add("0x" + Helper.HexString(i) + ": " + s[i]);
-			}
-
-			this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
-			this.btnLngNext.Enabled = (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
-
-			internalchg = false;
-			if (l != -1) this.lbxLngCurrent.SelectedIndex = l;
+				setLid((byte)(this.cbLngSelect.SelectedIndex + 1));
 		}
+
+		private void lvStrItems_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+			setIndex((this.lvStrItems.SelectedIndices.Count > 0) ? this.lvStrItems.SelectedIndices[0] : -1);
+		}
+
+		private void lvStrItems_ItemActivate(object sender, System.EventArgs e)
+		{
+			this.rtbTitle.Focus();
+		}
+
+
+		private void ckbDefault_CheckedChanged(object sender, System.EventArgs e)
+		{
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
+			this.chString.Width = ((int)(resources.GetObject("chString.Width")));
+			while (this.lvStrItems.Columns.Count > 2)
+				this.lvStrItems.Columns.RemoveAt(2);
+			if (this.ckbDefault.Checked)
+			{
+				this.chDefault.Width = this.chLang.Width = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18) / 2;
+				this.lvStrItems.Columns.Add(this.chDefault);
+			}
+			else
+			{
+				this.chLang.Width = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18);
+			}
+		}
+
+
+		private void btnBigString_Click(object sender, System.EventArgs e)
+		{
+			int index = alBigBtn.IndexOf(sender);
+			if (index < 0)
+				throw new Exception("btnBigString_Click not applicable to control " + sender.ToString());
+
+			RichTextBox[] rtb = { rtbTitle, rtbDescription };
+			string result = (new pjse.StrBig()).doBig(rtb[index].Text);
+			if (result != null) rtb[index].Text = result;
+		}
+
+
+		private void btnStrPrev_Click(object sender, System.EventArgs e)
+		{
+			setIndex(index - 1);
+		}
+
+		private void btnStrNext_Click(object sender, System.EventArgs e)
+		{
+			setIndex(index + 1);
+		}
+
 
 		private void btnLngPrev_Click(object sender, System.EventArgs e)
 		{
-			if (this.cbLngSelect.SelectedIndex > 0)
-				this.cbLngSelect.SelectedIndex --;
+			setLid((byte)(lid - 1));
 		}
 
 		private void btnLngNext_Click(object sender, System.EventArgs e)
 		{
-			if (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1)
-				this.cbLngSelect.SelectedIndex ++;
+			setLid((byte)(lid + 1));
 		}
+
 
 		private void btnLngClear_Click(object sender, System.EventArgs e)
 		{
-			if (this.cbLngSelect.SelectedIndex < 0) return;
-
-			bool savedstate = internalchg;
-			internalchg = true;
-
-			int l = this.cbLngSelect.SelectedIndex + 2;
-			for (int i = 0; i < wrapper.Count; i++)
-				if (wrapper[i].LanguageID == l)
-					wrapper[i].Title = wrapper[i].Description = "";
-
-			updateLists();
-
-			internalchg = savedstate;
-
-			displayStrItem();
-			this.btnLngClear.Enabled = false;
-
-			if (index < 0) index = 0;
-			if (index >= count) index = count - 1;
-			this.cbLngSelect.SelectedIndex = l - 2;
-			this.lbxLngDefault.SelectedIndex = index;
+			this.LngClear();
 		}
-
-
-		private void lbxLngDefault_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-			internalchg = true;
-			this.lbxLngCurrent.SelectedIndex = -1;
-			internalchg = false;
-
-			lid = 1;
-			index = this.lbxLngDefault.SelectedIndex;
-			this.btnLngClear.Enabled = false;
-			displayStrItem();
-		}
-
-		private void lbxLngCurrent_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-			internalchg = true;
-			this.lbxLngDefault.SelectedIndex = -1;
-			internalchg = false;
-
-			lid = (byte)(this.cbLngSelect.SelectedIndex + 2);
-			index = this.lbxLngCurrent.SelectedIndex;
-			this.btnLngClear.Enabled = !((string)(this.cbLngSelect.Items[lid - 2])).EndsWith(" (empty)");
-			displayStrItem();
-		}
-
 
 		private void btnClearAll_Click(object sender, System.EventArgs e)
 		{
-			bool savedstate = internalchg;
-			internalchg = true;
-
-			for (int i = 0; i < wrapper.Count; i++)
-				if (wrapper[i].LanguageID != 1)
-					wrapper[i].Title = wrapper[i].Description = "";
-
-			int l = this.cbLngSelect.SelectedIndex;
-			updateLists();
-
-			internalchg = savedstate;
-
-			displayStrItem();
-			this.btnLngClear.Enabled = false;
-
-			if (index < 0) index = 0;
-			if (index >= count) index = count - 1;
-			this.cbLngSelect.SelectedIndex = l;
-			this.lbxLngDefault.SelectedIndex = index;
+			this.LngClearAll();
 		}
 
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
-			bool savedstate = internalchg;
-
-			internalchg = true;
-			count++;
-			wrapper.Add(1, "", "");
-			this.lbxLngDefault.Items.Add("0x" + Helper.HexString((ushort)(count-1)) + ": " + wrapper[1, count-1]);
-			if (this.cbLngSelect.SelectedIndex >= 0)
-			{
-				byte l = (byte)(this.cbLngSelect.SelectedIndex + 2);
-				wrapper.Add(l, "", "");
-				this.lbxLngCurrent.Items.Add("0x" + Helper.HexString((ushort)(count-1)) + ": " + wrapper[l, count-1]);
-			}
-			internalchg = savedstate;
-
-			if (this.lbxLngCurrent.SelectedIndex >= 0)
-				this.lbxLngCurrent.SelectedIndex = count - 1;
-			else
-				this.lbxLngDefault.SelectedIndex = count - 1;
+			this.StrAdd();
 		}
 
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
-			if (index < 0) return;
-
-			bool savedstate = internalchg;
-			internalchg = true;
-
-			for (byte j = 1; j < 44; j++)
-			{
-				for (int i = index; i < count - 1; i++)
-				{
-					StrItem s1 = wrapper[j, i];
-					if (s1 != null)
-					{
-						StrItem s2 = wrapper[j, i+1];
-						if (s2 != null)
-						{
-							s1.Title       = s2.Title;
-							s1.Description = s2.Description;
-						}
-						else
-							s1.Title = s1.Description = "";
-					}
-				}
-				wrapper.Remove(wrapper[j, count-1]);
-			}
-
-			int l = this.cbLngSelect.SelectedIndex;
-			bool defsel = this.lbxLngDefault.SelectedIndex != -1;
-			updateLists();
-
-			internalchg = savedstate;
-
-			displayStrItem();
-			this.btnLngClear.Enabled = false;
-
-			if (index < 0) index = 0;
-			if (index >= count) index = count - 1;
-			this.cbLngSelect.SelectedIndex = l;
-			if (defsel) this.lbxLngDefault.SelectedIndex = index;
-			else this.lbxLngCurrent.SelectedIndex = index;
+			this.StrDelete();
 		}
+
+		private void btnStrClear_Click(object sender, System.EventArgs e)
+		{
+			this.StrClear();
+		}
+
+		private void btnAppend_Click(object sender, System.EventArgs e)
+		{
+			this.Append((new pjse.Chooser()).Instance(wrapper));
+		}
+
+
+		private void btnCommit_Click(object sender, System.EventArgs e)
+		{
+			this.Commit();
+		}
+
 
 	}
 

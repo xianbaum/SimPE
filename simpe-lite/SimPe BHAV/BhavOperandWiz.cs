@@ -83,10 +83,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Height = pn.Height + footHeight;
 			wiz.Execute();
 
-			this.DialogResult = DialogResult.Cancel;
-			switch (ShowDialog())
+			DialogResult dr = ShowDialog();
+			Close();
+
+			switch (dr)
 			{
-				case DialogResult.Yes:
 				case DialogResult.OK:
 					return wiz.Write();
 				default:
@@ -120,11 +121,11 @@ namespace SimPe.PackedFiles.UserInterface
 			// OK
 			// 
 			this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.OK.Location = new System.Drawing.Point(232, 120);
 			this.OK.Name = "OK";
 			this.OK.TabIndex = 2;
 			this.OK.Text = "Okay";
-			this.OK.Click += new System.EventHandler(this.OK_Click);
 			// 
 			// Cancel
 			// 
@@ -134,7 +135,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Cancel.Name = "Cancel";
 			this.Cancel.TabIndex = 2;
 			this.Cancel.Text = "Cancel";
-			this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
 			// 
 			// BhavOperandWiz
 			// 
@@ -155,16 +155,5 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 		#endregion
 
-		private void OK_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = DialogResult.OK;
-			Close();
-		}
-
-		private void Cancel_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			Close();
-		}
 	}
 }

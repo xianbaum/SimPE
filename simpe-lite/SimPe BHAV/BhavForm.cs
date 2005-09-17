@@ -42,15 +42,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbFormat;
 		private System.Windows.Forms.Label lbType;
 		private System.Windows.Forms.Label lbLocalC;
-		private System.Windows.Forms.Label lbFlags;
-		private System.Windows.Forms.Label lbReserved;
 		private System.Windows.Forms.TextBox tbFilename;
-		private System.Windows.Forms.TextBox tbFormat;
 		private System.Windows.Forms.TextBox tbType;
 		private System.Windows.Forms.TextBox tbArgC;
 		private System.Windows.Forms.TextBox tbLocalC;
-		private System.Windows.Forms.TextBox tbFlags;
-		private System.Windows.Forms.TextBox tbReserved;
 		private System.Windows.Forms.ComboBox tba1;
 		private System.Windows.Forms.ComboBox tba2;
 		private System.Windows.Forms.LinkLabel llopenbhav;
@@ -77,7 +72,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbInst_Unk2;
 		private System.Windows.Forms.TextBox tbInst_Unk1;
 		private System.Windows.Forms.TextBox tbInst_Unk0;
-		private System.Windows.Forms.TextBox tbInst_Instruction;
 		private System.Windows.Forms.GroupBox gbInstruction;
 		private System.Windows.Forms.Panel bhavPanel;
 		private System.Windows.Forms.Button btnCommit;
@@ -97,6 +91,20 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbInst_Op23_dec;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label lbArgC;
+		private System.Windows.Forms.GroupBox gbSpecial;
+		private System.Windows.Forms.Button btnInsTrue;
+		private System.Windows.Forms.Button btnInsFalse;
+		private System.Windows.Forms.Button btnLinkInge;
+		private System.Windows.Forms.Button btnDelPescado;
+		private System.Windows.Forms.Button btnAppend;
+		private System.Windows.Forms.ComboBox cbFormat;
+		private System.Windows.Forms.Button btnDelMerola;
+		private System.Windows.Forms.Label lbCacheFlags;
+		private System.Windows.Forms.TextBox tbCacheFlags;
+		private System.Windows.Forms.Label lbTreeVersion;
+		private System.Windows.Forms.TextBox tbTreeVersion;
+		private System.Windows.Forms.TextBox tbHeaderFlag;
+		private System.Windows.Forms.Label lbHeaderFlag;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -111,9 +119,15 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 
 			Control[] cs = {
-				tbLocalC, lbLocalC, tbArgC, lbArgC, tbReserved, lbReserved,
-				tbFlags, lbFlags, tbType, lbType, tbFormat, lbFormat };
-			int left = this.bhavPanel.Width;
+							   tbCacheFlags, lbCacheFlags,
+							   tbTreeVersion, lbTreeVersion,
+							   tbHeaderFlag, lbHeaderFlag,
+							   //tbLocalC, lbLocalC,
+							   //tbArgC, lbArgC,
+							   tbType, lbType,
+							   cbFormat, lbFormat
+						   };
+			int left = this.bhavPanel.Width - 4;
 			for (int i = 0; i < cs.Length; i++)
 				left = cs[i].Left = left - (cs[i].Width + 4);
 			this.lbFilename.Left = 4;
@@ -128,18 +142,23 @@ namespace SimPe.PackedFiles.UserInterface
 								,tbInst_Unk0 ,tbInst_Unk1 ,tbInst_Unk2 ,tbInst_Unk3
 								,tbInst_Unk4 ,tbInst_Unk5 ,tbInst_Unk6 ,tbInst_Unk7
 								,tbInst_Reserved
+								,tbHeaderFlag
 								,tbType
+								,tbCacheFlags
 							};
 			alHex8 = new ArrayList(iob);
 
-			TextBox[] w = { tbFormat ,tbFlags ,tbReserved ,tbInst_OpCode };
+			TextBox[] w = { tbInst_OpCode ,};
 			alHex16 = new ArrayList(w);
 
-			TextBox[] db = { tbArgC, tbLocalC };
+			TextBox[] dw = { tbTreeVersion ,};
+			alHex32 = new ArrayList(dw);
+
+			TextBox[] db = { tbArgC ,tbLocalC ,};
 			alDec8 = new ArrayList(db);
 
-			ComboBox[] cb = { tba1, tba2 };
-			alTarget = new ArrayList(cb);
+			ComboBox[] cb = { tba1 ,tba2 ,cbFormat ,};
+			alHex16cb = new ArrayList(cb);
 
 		}
 
@@ -168,16 +187,17 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alDec16;
 		private ArrayList alHex8;
 		private ArrayList alHex16;
+		private ArrayList alHex32;
 		private ArrayList alDec8;
-		private ArrayList alTarget;
+		private ArrayList alHex16cb;
 
 		private void SetReadOnly(bool state) 
 		{
 			if (((string)this.Tag).Equals("Popup"))
 			{
 				// make it very clear it's read only
-				tbFilename.Enabled = tbFormat.Enabled = tbType.Enabled = tbArgC.Enabled = 
-					tbLocalC.Enabled = tbFlags.Enabled = tbReserved.Enabled =
+				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled = tbArgC.Enabled = 
+					tbLocalC.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
 					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
 					btnOpCode.Visible = btnOperandWiz.Visible = 
@@ -217,17 +237,17 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnUp.Enabled = !state;
 			this.btnDown.Enabled = !state;
 			this.tbLines.ReadOnly = state;
-			this.btnDel.Enabled = !state;
-			this.btnAdd.Enabled = !state;
+			this.btnDelPescado.Enabled = this.btnDel.Enabled = !state;
+			this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = !state;
 		}
 
 		private void UpdateInstPanel()
 		{
 			internalchg = true;
-			if (wrapper.Instructions.IndexOf(currentInst) < 0)
+			if (wrapper.IndexOf(currentInst) < 0)
 			{
 				SetReadOnly(true);
-				this.btnAdd.Enabled = true;
+				this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = true;
 
 				this.tbInst_OpCode.Text = "";
 				this.tbInst_Reserved.Text = "";
@@ -251,8 +271,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk5.Text = "";
 				this.tbInst_Unk6.Text = "";
 				this.tbInst_Unk7.Text = "";
-
-				this.tbInst_Instruction.Text = "";
 			}
 			else
 			{
@@ -262,7 +280,7 @@ namespace SimPe.PackedFiles.UserInterface
 				Instruction inst = currentInst;
 				this.llopenbhav.Enabled = (BhavNameWizProvider.For(inst).LoadBHAV() != null);
 
-				this.btnDel.Enabled = wrapper.Instructions.Count > 1;
+				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
 				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 
@@ -307,11 +325,9 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
 
-				this.tbInst_Instruction.Text = BhavNameWizProvider.For(inst).LongName;
-
 				this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(inst) != null);
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
-				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Instructions.Count - 1;
+				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Count - 1;
 			}
 			internalchg = false;
 		}
@@ -337,10 +353,10 @@ namespace SimPe.PackedFiles.UserInterface
 			return ops;
 		}
 
-		private bool Target_IsValid(object sender)
+		private bool cbHex16_IsValid(object sender)
 		{
-			if (alTarget.IndexOf(sender) < 0)
-				throw new Exception("Target_IsValid not applicable to control " + sender.ToString());
+			if (alHex16cb.IndexOf(sender) < 0)
+				throw new Exception("cbHex16_IsValid not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return true;
 
 			try { Convert.ToUInt16(((ComboBox)sender).Text, 16); }
@@ -380,6 +396,15 @@ namespace SimPe.PackedFiles.UserInterface
 			if (alHex16.IndexOf(sender) < 0)
 				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
 			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool hex32_IsValid(object sender)
+		{
+			if (alHex32.IndexOf(sender) < 0)
+				throw new Exception("hex32_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -430,12 +455,14 @@ namespace SimPe.PackedFiles.UserInterface
 				if (internalchg) return;
 				internalchg = true;
 				tbFilename.Text = wrapper.FileName;
-				tbArgC.Text = wrapper.Header.ArgumentCount.ToString();
-				tbFlags.Text = "0x"+Helper.HexString(wrapper.Header.Flags);
-				tbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
-				tbLocalC.Text = wrapper.Header.LocalVarCount.ToString();
+				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
 				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
-				tbReserved.Text = "0x"+Helper.HexString(wrapper.Header.Zero);
+				tbArgC.Text = wrapper.Header.ArgumentCount.ToString();
+				tbLocalC.Text = wrapper.Header.LocalVarCount.ToString();
+				tbHeaderFlag.Text = "0x"+Helper.HexString(wrapper.Header.HeaderFlag);
+				tbTreeVersion.Text = "0x"+Helper.HexString(wrapper.Header.TreeVersion);
+				tbCacheFlags.Text = "0x"+Helper.HexString(wrapper.Header.CacheFlags);
+				tbCacheFlags.Enabled = (wrapper.Header.Format >= 0x8009);
 				internalchg = false;
 			}
 
@@ -444,7 +471,6 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (internalchg)
 				{
-					this.tbInst_Instruction.Text = currentInst.ToString();
 					this.btnCancel.Enabled = true;
 				}
 				else
@@ -494,25 +520,31 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnOpCode = new System.Windows.Forms.Button();
-			this.tbInst_Instruction = new System.Windows.Forms.TextBox();
 			this.tbInst_Op23_dec = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
-			this.tbReserved = new System.Windows.Forms.TextBox();
 			this.tbLocalC = new System.Windows.Forms.TextBox();
-			this.tbFlags = new System.Windows.Forms.TextBox();
 			this.tbArgC = new System.Windows.Forms.TextBox();
 			this.tbType = new System.Windows.Forms.TextBox();
-			this.tbFormat = new System.Windows.Forms.TextBox();
-			this.lbReserved = new System.Windows.Forms.Label();
-			this.lbFlags = new System.Windows.Forms.Label();
+			this.lbTreeVersion = new System.Windows.Forms.Label();
 			this.lbType = new System.Windows.Forms.Label();
 			this.lbLocalC = new System.Windows.Forms.Label();
 			this.lbArgC = new System.Windows.Forms.Label();
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.bhavPanel = new System.Windows.Forms.Panel();
+			this.tbHeaderFlag = new System.Windows.Forms.TextBox();
+			this.lbHeaderFlag = new System.Windows.Forms.Label();
+			this.tbCacheFlags = new System.Windows.Forms.TextBox();
+			this.cbFormat = new System.Windows.Forms.ComboBox();
+			this.gbSpecial = new System.Windows.Forms.GroupBox();
+			this.btnAppend = new System.Windows.Forms.Button();
+			this.btnInsTrue = new System.Windows.Forms.Button();
+			this.btnInsFalse = new System.Windows.Forms.Button();
+			this.btnDelPescado = new System.Windows.Forms.Button();
+			this.btnLinkInge = new System.Windows.Forms.Button();
+			this.btnDelMerola = new System.Windows.Forms.Button();
 			this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
 			this.btnDel = new System.Windows.Forms.Button();
 			this.gbMove = new System.Windows.Forms.GroupBox();
@@ -522,10 +554,13 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLines = new System.Windows.Forms.TextBox();
 			this.btnSort = new System.Windows.Forms.Button();
 			this.btnCommit = new System.Windows.Forms.Button();
+			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
+			this.lbCacheFlags = new System.Windows.Forms.Label();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
+			this.gbSpecial.SuspendLayout();
 			this.gbMove.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -588,7 +623,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.Controls.Add(this.label12);
 			this.gbInstruction.Controls.Add(this.label11);
 			this.gbInstruction.Controls.Add(this.btnOpCode);
-			this.gbInstruction.Controls.Add(this.tbInst_Instruction);
 			this.gbInstruction.Controls.Add(this.tbInst_Op23_dec);
 			this.gbInstruction.Controls.Add(this.label2);
 			this.gbInstruction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbInstruction.Dock")));
@@ -730,15 +764,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba2.TabIndex = ((int)(resources.GetObject("tba2.TabIndex")));
 			this.tba2.Text = resources.GetString("tba2.Text");
 			this.tba2.Visible = ((bool)(resources.GetObject("tba2.Visible")));
-			this.tba2.Validating += new System.ComponentModel.CancelEventHandler(this.Target_Validating);
+			this.tba2.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
 			this.tba2.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-			this.tba2.Validated += new System.EventHandler(this.Target_Validated);
+			this.tba2.Validated += new System.EventHandler(this.cbHex16_Validated);
 			this.tba2.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-			this.tba2.TextChanged += new System.EventHandler(this.Target_TextChanged);
-			this.tba2.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
+			this.tba2.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+			this.tba2.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
 			this.tba2.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba2.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-			this.tba2.Enter += new System.EventHandler(this.Target_Enter);
+			this.tba2.Enter += new System.EventHandler(this.cbHex16_Enter);
 			// 
 			// tba1
 			// 
@@ -765,15 +799,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba1.TabIndex = ((int)(resources.GetObject("tba1.TabIndex")));
 			this.tba1.Text = resources.GetString("tba1.Text");
 			this.tba1.Visible = ((bool)(resources.GetObject("tba1.Visible")));
-			this.tba1.Validating += new System.ComponentModel.CancelEventHandler(this.Target_Validating);
+			this.tba1.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
 			this.tba1.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-			this.tba1.Validated += new System.EventHandler(this.Target_Validated);
+			this.tba1.Validated += new System.EventHandler(this.cbHex16_Validated);
 			this.tba1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-			this.tba1.TextChanged += new System.EventHandler(this.Target_TextChanged);
-			this.tba1.SelectedIndexChanged += new System.EventHandler(this.Target_SelectedIndexChanged);
+			this.tba1.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+			this.tba1.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
 			this.tba1.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
 			this.tba1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-			this.tba1.Enter += new System.EventHandler(this.Target_Enter);
+			this.tba1.Enter += new System.EventHandler(this.cbHex16_Enter);
 			// 
 			// label13
 			// 
@@ -1413,35 +1447,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnOpCode.Visible = ((bool)(resources.GetObject("btnOpCode.Visible")));
 			this.btnOpCode.Click += new System.EventHandler(this.btnOpCode_Clicked);
 			// 
-			// tbInst_Instruction
-			// 
-			this.tbInst_Instruction.AccessibleDescription = resources.GetString("tbInst_Instruction.AccessibleDescription");
-			this.tbInst_Instruction.AccessibleName = resources.GetString("tbInst_Instruction.AccessibleName");
-			this.tbInst_Instruction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_Instruction.Anchor")));
-			this.tbInst_Instruction.AutoSize = ((bool)(resources.GetObject("tbInst_Instruction.AutoSize")));
-			this.tbInst_Instruction.BackColor = System.Drawing.SystemColors.Control;
-			this.tbInst_Instruction.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_Instruction.BackgroundImage")));
-			this.tbInst_Instruction.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.tbInst_Instruction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_Instruction.Dock")));
-			this.tbInst_Instruction.Enabled = ((bool)(resources.GetObject("tbInst_Instruction.Enabled")));
-			this.tbInst_Instruction.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_Instruction.Font")));
-			this.tbInst_Instruction.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_Instruction.ImeMode")));
-			this.tbInst_Instruction.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_Instruction.Location")));
-			this.tbInst_Instruction.MaxLength = ((int)(resources.GetObject("tbInst_Instruction.MaxLength")));
-			this.tbInst_Instruction.Multiline = ((bool)(resources.GetObject("tbInst_Instruction.Multiline")));
-			this.tbInst_Instruction.Name = "tbInst_Instruction";
-			this.tbInst_Instruction.PasswordChar = ((char)(resources.GetObject("tbInst_Instruction.PasswordChar")));
-			this.tbInst_Instruction.ReadOnly = true;
-			this.tbInst_Instruction.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_Instruction.RightToLeft")));
-			this.tbInst_Instruction.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_Instruction.ScrollBars")));
-			this.tbInst_Instruction.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_Instruction.Size")));
-			this.tbInst_Instruction.TabIndex = ((int)(resources.GetObject("tbInst_Instruction.TabIndex")));
-			this.tbInst_Instruction.TabStop = false;
-			this.tbInst_Instruction.Text = resources.GetString("tbInst_Instruction.Text");
-			this.tbInst_Instruction.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Instruction.TextAlign")));
-			this.tbInst_Instruction.Visible = ((bool)(resources.GetObject("tbInst_Instruction.Visible")));
-			this.tbInst_Instruction.WordWrap = ((bool)(resources.GetObject("tbInst_Instruction.WordWrap")));
-			// 
 			// tbInst_Op23_dec
 			// 
 			this.tbInst_Op23_dec.AccessibleDescription = resources.GetString("tbInst_Op23_dec.AccessibleDescription");
@@ -1541,34 +1546,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFilename.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.TextAlign")));
 			this.lbFilename.Visible = ((bool)(resources.GetObject("lbFilename.Visible")));
 			// 
-			// tbReserved
-			// 
-			this.tbReserved.AccessibleDescription = resources.GetString("tbReserved.AccessibleDescription");
-			this.tbReserved.AccessibleName = resources.GetString("tbReserved.AccessibleName");
-			this.tbReserved.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbReserved.Anchor")));
-			this.tbReserved.AutoSize = ((bool)(resources.GetObject("tbReserved.AutoSize")));
-			this.tbReserved.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbReserved.BackgroundImage")));
-			this.tbReserved.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbReserved.Dock")));
-			this.tbReserved.Enabled = ((bool)(resources.GetObject("tbReserved.Enabled")));
-			this.tbReserved.Font = ((System.Drawing.Font)(resources.GetObject("tbReserved.Font")));
-			this.tbReserved.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbReserved.ImeMode")));
-			this.tbReserved.Location = ((System.Drawing.Point)(resources.GetObject("tbReserved.Location")));
-			this.tbReserved.MaxLength = ((int)(resources.GetObject("tbReserved.MaxLength")));
-			this.tbReserved.Multiline = ((bool)(resources.GetObject("tbReserved.Multiline")));
-			this.tbReserved.Name = "tbReserved";
-			this.tbReserved.PasswordChar = ((char)(resources.GetObject("tbReserved.PasswordChar")));
-			this.tbReserved.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbReserved.RightToLeft")));
-			this.tbReserved.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbReserved.ScrollBars")));
-			this.tbReserved.Size = ((System.Drawing.Size)(resources.GetObject("tbReserved.Size")));
-			this.tbReserved.TabIndex = ((int)(resources.GetObject("tbReserved.TabIndex")));
-			this.tbReserved.Text = resources.GetString("tbReserved.Text");
-			this.tbReserved.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbReserved.TextAlign")));
-			this.tbReserved.Visible = ((bool)(resources.GetObject("tbReserved.Visible")));
-			this.tbReserved.WordWrap = ((bool)(resources.GetObject("tbReserved.WordWrap")));
-			this.tbReserved.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.tbReserved.Validated += new System.EventHandler(this.hex16_Validated);
-			this.tbReserved.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-			// 
 			// tbLocalC
 			// 
 			this.tbLocalC.AccessibleDescription = resources.GetString("tbLocalC.AccessibleDescription");
@@ -1596,34 +1573,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLocalC.Validating += new System.ComponentModel.CancelEventHandler(this.dec8_Validating);
 			this.tbLocalC.Validated += new System.EventHandler(this.dec8_Validated);
 			this.tbLocalC.TextChanged += new System.EventHandler(this.dec8_TextChanged);
-			// 
-			// tbFlags
-			// 
-			this.tbFlags.AccessibleDescription = resources.GetString("tbFlags.AccessibleDescription");
-			this.tbFlags.AccessibleName = resources.GetString("tbFlags.AccessibleName");
-			this.tbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFlags.Anchor")));
-			this.tbFlags.AutoSize = ((bool)(resources.GetObject("tbFlags.AutoSize")));
-			this.tbFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFlags.BackgroundImage")));
-			this.tbFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFlags.Dock")));
-			this.tbFlags.Enabled = ((bool)(resources.GetObject("tbFlags.Enabled")));
-			this.tbFlags.Font = ((System.Drawing.Font)(resources.GetObject("tbFlags.Font")));
-			this.tbFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFlags.ImeMode")));
-			this.tbFlags.Location = ((System.Drawing.Point)(resources.GetObject("tbFlags.Location")));
-			this.tbFlags.MaxLength = ((int)(resources.GetObject("tbFlags.MaxLength")));
-			this.tbFlags.Multiline = ((bool)(resources.GetObject("tbFlags.Multiline")));
-			this.tbFlags.Name = "tbFlags";
-			this.tbFlags.PasswordChar = ((char)(resources.GetObject("tbFlags.PasswordChar")));
-			this.tbFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFlags.RightToLeft")));
-			this.tbFlags.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFlags.ScrollBars")));
-			this.tbFlags.Size = ((System.Drawing.Size)(resources.GetObject("tbFlags.Size")));
-			this.tbFlags.TabIndex = ((int)(resources.GetObject("tbFlags.TabIndex")));
-			this.tbFlags.Text = resources.GetString("tbFlags.Text");
-			this.tbFlags.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlags.TextAlign")));
-			this.tbFlags.Visible = ((bool)(resources.GetObject("tbFlags.Visible")));
-			this.tbFlags.WordWrap = ((bool)(resources.GetObject("tbFlags.WordWrap")));
-			this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.tbFlags.Validated += new System.EventHandler(this.hex16_Validated);
-			this.tbFlags.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// tbArgC
 			// 
@@ -1681,77 +1630,27 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbType.Validated += new System.EventHandler(this.hex8_Validated);
 			this.tbType.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
-			// tbFormat
+			// lbTreeVersion
 			// 
-			this.tbFormat.AccessibleDescription = resources.GetString("tbFormat.AccessibleDescription");
-			this.tbFormat.AccessibleName = resources.GetString("tbFormat.AccessibleName");
-			this.tbFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFormat.Anchor")));
-			this.tbFormat.AutoSize = ((bool)(resources.GetObject("tbFormat.AutoSize")));
-			this.tbFormat.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFormat.BackgroundImage")));
-			this.tbFormat.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFormat.Dock")));
-			this.tbFormat.Enabled = ((bool)(resources.GetObject("tbFormat.Enabled")));
-			this.tbFormat.Font = ((System.Drawing.Font)(resources.GetObject("tbFormat.Font")));
-			this.tbFormat.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFormat.ImeMode")));
-			this.tbFormat.Location = ((System.Drawing.Point)(resources.GetObject("tbFormat.Location")));
-			this.tbFormat.MaxLength = ((int)(resources.GetObject("tbFormat.MaxLength")));
-			this.tbFormat.Multiline = ((bool)(resources.GetObject("tbFormat.Multiline")));
-			this.tbFormat.Name = "tbFormat";
-			this.tbFormat.PasswordChar = ((char)(resources.GetObject("tbFormat.PasswordChar")));
-			this.tbFormat.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFormat.RightToLeft")));
-			this.tbFormat.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFormat.ScrollBars")));
-			this.tbFormat.Size = ((System.Drawing.Size)(resources.GetObject("tbFormat.Size")));
-			this.tbFormat.TabIndex = ((int)(resources.GetObject("tbFormat.TabIndex")));
-			this.tbFormat.Text = resources.GetString("tbFormat.Text");
-			this.tbFormat.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFormat.TextAlign")));
-			this.tbFormat.Visible = ((bool)(resources.GetObject("tbFormat.Visible")));
-			this.tbFormat.WordWrap = ((bool)(resources.GetObject("tbFormat.WordWrap")));
-			this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
-			this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-			// 
-			// lbReserved
-			// 
-			this.lbReserved.AccessibleDescription = resources.GetString("lbReserved.AccessibleDescription");
-			this.lbReserved.AccessibleName = resources.GetString("lbReserved.AccessibleName");
-			this.lbReserved.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbReserved.Anchor")));
-			this.lbReserved.AutoSize = ((bool)(resources.GetObject("lbReserved.AutoSize")));
-			this.lbReserved.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbReserved.Dock")));
-			this.lbReserved.Enabled = ((bool)(resources.GetObject("lbReserved.Enabled")));
-			this.lbReserved.Font = ((System.Drawing.Font)(resources.GetObject("lbReserved.Font")));
-			this.lbReserved.Image = ((System.Drawing.Image)(resources.GetObject("lbReserved.Image")));
-			this.lbReserved.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbReserved.ImageAlign")));
-			this.lbReserved.ImageIndex = ((int)(resources.GetObject("lbReserved.ImageIndex")));
-			this.lbReserved.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbReserved.ImeMode")));
-			this.lbReserved.Location = ((System.Drawing.Point)(resources.GetObject("lbReserved.Location")));
-			this.lbReserved.Name = "lbReserved";
-			this.lbReserved.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbReserved.RightToLeft")));
-			this.lbReserved.Size = ((System.Drawing.Size)(resources.GetObject("lbReserved.Size")));
-			this.lbReserved.TabIndex = ((int)(resources.GetObject("lbReserved.TabIndex")));
-			this.lbReserved.Text = resources.GetString("lbReserved.Text");
-			this.lbReserved.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbReserved.TextAlign")));
-			this.lbReserved.Visible = ((bool)(resources.GetObject("lbReserved.Visible")));
-			// 
-			// lbFlags
-			// 
-			this.lbFlags.AccessibleDescription = resources.GetString("lbFlags.AccessibleDescription");
-			this.lbFlags.AccessibleName = resources.GetString("lbFlags.AccessibleName");
-			this.lbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbFlags.Anchor")));
-			this.lbFlags.AutoSize = ((bool)(resources.GetObject("lbFlags.AutoSize")));
-			this.lbFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbFlags.Dock")));
-			this.lbFlags.Enabled = ((bool)(resources.GetObject("lbFlags.Enabled")));
-			this.lbFlags.Font = ((System.Drawing.Font)(resources.GetObject("lbFlags.Font")));
-			this.lbFlags.Image = ((System.Drawing.Image)(resources.GetObject("lbFlags.Image")));
-			this.lbFlags.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFlags.ImageAlign")));
-			this.lbFlags.ImageIndex = ((int)(resources.GetObject("lbFlags.ImageIndex")));
-			this.lbFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbFlags.ImeMode")));
-			this.lbFlags.Location = ((System.Drawing.Point)(resources.GetObject("lbFlags.Location")));
-			this.lbFlags.Name = "lbFlags";
-			this.lbFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbFlags.RightToLeft")));
-			this.lbFlags.Size = ((System.Drawing.Size)(resources.GetObject("lbFlags.Size")));
-			this.lbFlags.TabIndex = ((int)(resources.GetObject("lbFlags.TabIndex")));
-			this.lbFlags.Text = resources.GetString("lbFlags.Text");
-			this.lbFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFlags.TextAlign")));
-			this.lbFlags.Visible = ((bool)(resources.GetObject("lbFlags.Visible")));
+			this.lbTreeVersion.AccessibleDescription = resources.GetString("lbTreeVersion.AccessibleDescription");
+			this.lbTreeVersion.AccessibleName = resources.GetString("lbTreeVersion.AccessibleName");
+			this.lbTreeVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbTreeVersion.Anchor")));
+			this.lbTreeVersion.AutoSize = ((bool)(resources.GetObject("lbTreeVersion.AutoSize")));
+			this.lbTreeVersion.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbTreeVersion.Dock")));
+			this.lbTreeVersion.Enabled = ((bool)(resources.GetObject("lbTreeVersion.Enabled")));
+			this.lbTreeVersion.Font = ((System.Drawing.Font)(resources.GetObject("lbTreeVersion.Font")));
+			this.lbTreeVersion.Image = ((System.Drawing.Image)(resources.GetObject("lbTreeVersion.Image")));
+			this.lbTreeVersion.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbTreeVersion.ImageAlign")));
+			this.lbTreeVersion.ImageIndex = ((int)(resources.GetObject("lbTreeVersion.ImageIndex")));
+			this.lbTreeVersion.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbTreeVersion.ImeMode")));
+			this.lbTreeVersion.Location = ((System.Drawing.Point)(resources.GetObject("lbTreeVersion.Location")));
+			this.lbTreeVersion.Name = "lbTreeVersion";
+			this.lbTreeVersion.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbTreeVersion.RightToLeft")));
+			this.lbTreeVersion.Size = ((System.Drawing.Size)(resources.GetObject("lbTreeVersion.Size")));
+			this.lbTreeVersion.TabIndex = ((int)(resources.GetObject("lbTreeVersion.TabIndex")));
+			this.lbTreeVersion.Text = resources.GetString("lbTreeVersion.Text");
+			this.lbTreeVersion.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbTreeVersion.TextAlign")));
+			this.lbTreeVersion.Visible = ((bool)(resources.GetObject("lbTreeVersion.Visible")));
 			// 
 			// lbType
 			// 
@@ -1874,6 +1773,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
 			this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
+			this.bhavPanel.Controls.Add(this.tbHeaderFlag);
+			this.bhavPanel.Controls.Add(this.lbHeaderFlag);
+			this.bhavPanel.Controls.Add(this.tbCacheFlags);
+			this.bhavPanel.Controls.Add(this.cbFormat);
+			this.bhavPanel.Controls.Add(this.gbSpecial);
 			this.bhavPanel.Controls.Add(this.pnflowcontainer);
 			this.bhavPanel.Controls.Add(this.btnDel);
 			this.bhavPanel.Controls.Add(this.gbMove);
@@ -1882,20 +1786,18 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Controls.Add(this.lbFilename);
 			this.bhavPanel.Controls.Add(this.tbFilename);
 			this.bhavPanel.Controls.Add(this.gbInstruction);
-			this.bhavPanel.Controls.Add(this.tbReserved);
 			this.bhavPanel.Controls.Add(this.tbLocalC);
-			this.bhavPanel.Controls.Add(this.tbFlags);
+			this.bhavPanel.Controls.Add(this.tbTreeVersion);
 			this.bhavPanel.Controls.Add(this.tbArgC);
 			this.bhavPanel.Controls.Add(this.tbType);
-			this.bhavPanel.Controls.Add(this.tbFormat);
-			this.bhavPanel.Controls.Add(this.lbReserved);
-			this.bhavPanel.Controls.Add(this.lbFlags);
+			this.bhavPanel.Controls.Add(this.lbTreeVersion);
 			this.bhavPanel.Controls.Add(this.lbType);
 			this.bhavPanel.Controls.Add(this.lbLocalC);
 			this.bhavPanel.Controls.Add(this.lbArgC);
 			this.bhavPanel.Controls.Add(this.lbFormat);
 			this.bhavPanel.Controls.Add(this.pnHeading);
 			this.bhavPanel.Controls.Add(this.btnAdd);
+			this.bhavPanel.Controls.Add(this.lbCacheFlags);
 			this.bhavPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("bhavPanel.Dock")));
 			this.bhavPanel.Enabled = ((bool)(resources.GetObject("bhavPanel.Enabled")));
 			this.bhavPanel.Font = ((System.Drawing.Font)(resources.GetObject("bhavPanel.Font")));
@@ -1908,6 +1810,289 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Text = resources.GetString("bhavPanel.Text");
 			this.bhavPanel.Visible = ((bool)(resources.GetObject("bhavPanel.Visible")));
 			this.bhavPanel.Resize += new System.EventHandler(this.bhavPanel_Resize);
+			// 
+			// tbHeaderFlag
+			// 
+			this.tbHeaderFlag.AccessibleDescription = resources.GetString("tbHeaderFlag.AccessibleDescription");
+			this.tbHeaderFlag.AccessibleName = resources.GetString("tbHeaderFlag.AccessibleName");
+			this.tbHeaderFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbHeaderFlag.Anchor")));
+			this.tbHeaderFlag.AutoSize = ((bool)(resources.GetObject("tbHeaderFlag.AutoSize")));
+			this.tbHeaderFlag.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbHeaderFlag.BackgroundImage")));
+			this.tbHeaderFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbHeaderFlag.Dock")));
+			this.tbHeaderFlag.Enabled = ((bool)(resources.GetObject("tbHeaderFlag.Enabled")));
+			this.tbHeaderFlag.Font = ((System.Drawing.Font)(resources.GetObject("tbHeaderFlag.Font")));
+			this.tbHeaderFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbHeaderFlag.ImeMode")));
+			this.tbHeaderFlag.Location = ((System.Drawing.Point)(resources.GetObject("tbHeaderFlag.Location")));
+			this.tbHeaderFlag.MaxLength = ((int)(resources.GetObject("tbHeaderFlag.MaxLength")));
+			this.tbHeaderFlag.Multiline = ((bool)(resources.GetObject("tbHeaderFlag.Multiline")));
+			this.tbHeaderFlag.Name = "tbHeaderFlag";
+			this.tbHeaderFlag.PasswordChar = ((char)(resources.GetObject("tbHeaderFlag.PasswordChar")));
+			this.tbHeaderFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbHeaderFlag.RightToLeft")));
+			this.tbHeaderFlag.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbHeaderFlag.ScrollBars")));
+			this.tbHeaderFlag.Size = ((System.Drawing.Size)(resources.GetObject("tbHeaderFlag.Size")));
+			this.tbHeaderFlag.TabIndex = ((int)(resources.GetObject("tbHeaderFlag.TabIndex")));
+			this.tbHeaderFlag.Text = resources.GetString("tbHeaderFlag.Text");
+			this.tbHeaderFlag.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbHeaderFlag.TextAlign")));
+			this.tbHeaderFlag.Visible = ((bool)(resources.GetObject("tbHeaderFlag.Visible")));
+			this.tbHeaderFlag.WordWrap = ((bool)(resources.GetObject("tbHeaderFlag.WordWrap")));
+			this.tbHeaderFlag.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbHeaderFlag.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbHeaderFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+			// 
+			// lbHeaderFlag
+			// 
+			this.lbHeaderFlag.AccessibleDescription = resources.GetString("lbHeaderFlag.AccessibleDescription");
+			this.lbHeaderFlag.AccessibleName = resources.GetString("lbHeaderFlag.AccessibleName");
+			this.lbHeaderFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbHeaderFlag.Anchor")));
+			this.lbHeaderFlag.AutoSize = ((bool)(resources.GetObject("lbHeaderFlag.AutoSize")));
+			this.lbHeaderFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbHeaderFlag.Dock")));
+			this.lbHeaderFlag.Enabled = ((bool)(resources.GetObject("lbHeaderFlag.Enabled")));
+			this.lbHeaderFlag.Font = ((System.Drawing.Font)(resources.GetObject("lbHeaderFlag.Font")));
+			this.lbHeaderFlag.Image = ((System.Drawing.Image)(resources.GetObject("lbHeaderFlag.Image")));
+			this.lbHeaderFlag.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbHeaderFlag.ImageAlign")));
+			this.lbHeaderFlag.ImageIndex = ((int)(resources.GetObject("lbHeaderFlag.ImageIndex")));
+			this.lbHeaderFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbHeaderFlag.ImeMode")));
+			this.lbHeaderFlag.Location = ((System.Drawing.Point)(resources.GetObject("lbHeaderFlag.Location")));
+			this.lbHeaderFlag.Name = "lbHeaderFlag";
+			this.lbHeaderFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbHeaderFlag.RightToLeft")));
+			this.lbHeaderFlag.Size = ((System.Drawing.Size)(resources.GetObject("lbHeaderFlag.Size")));
+			this.lbHeaderFlag.TabIndex = ((int)(resources.GetObject("lbHeaderFlag.TabIndex")));
+			this.lbHeaderFlag.Text = resources.GetString("lbHeaderFlag.Text");
+			this.lbHeaderFlag.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbHeaderFlag.TextAlign")));
+			this.lbHeaderFlag.Visible = ((bool)(resources.GetObject("lbHeaderFlag.Visible")));
+			// 
+			// tbCacheFlags
+			// 
+			this.tbCacheFlags.AccessibleDescription = resources.GetString("tbCacheFlags.AccessibleDescription");
+			this.tbCacheFlags.AccessibleName = resources.GetString("tbCacheFlags.AccessibleName");
+			this.tbCacheFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbCacheFlags.Anchor")));
+			this.tbCacheFlags.AutoSize = ((bool)(resources.GetObject("tbCacheFlags.AutoSize")));
+			this.tbCacheFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbCacheFlags.BackgroundImage")));
+			this.tbCacheFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbCacheFlags.Dock")));
+			this.tbCacheFlags.Enabled = ((bool)(resources.GetObject("tbCacheFlags.Enabled")));
+			this.tbCacheFlags.Font = ((System.Drawing.Font)(resources.GetObject("tbCacheFlags.Font")));
+			this.tbCacheFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbCacheFlags.ImeMode")));
+			this.tbCacheFlags.Location = ((System.Drawing.Point)(resources.GetObject("tbCacheFlags.Location")));
+			this.tbCacheFlags.MaxLength = ((int)(resources.GetObject("tbCacheFlags.MaxLength")));
+			this.tbCacheFlags.Multiline = ((bool)(resources.GetObject("tbCacheFlags.Multiline")));
+			this.tbCacheFlags.Name = "tbCacheFlags";
+			this.tbCacheFlags.PasswordChar = ((char)(resources.GetObject("tbCacheFlags.PasswordChar")));
+			this.tbCacheFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbCacheFlags.RightToLeft")));
+			this.tbCacheFlags.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbCacheFlags.ScrollBars")));
+			this.tbCacheFlags.Size = ((System.Drawing.Size)(resources.GetObject("tbCacheFlags.Size")));
+			this.tbCacheFlags.TabIndex = ((int)(resources.GetObject("tbCacheFlags.TabIndex")));
+			this.tbCacheFlags.Text = resources.GetString("tbCacheFlags.Text");
+			this.tbCacheFlags.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbCacheFlags.TextAlign")));
+			this.tbCacheFlags.Visible = ((bool)(resources.GetObject("tbCacheFlags.Visible")));
+			this.tbCacheFlags.WordWrap = ((bool)(resources.GetObject("tbCacheFlags.WordWrap")));
+			this.tbCacheFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbCacheFlags.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbCacheFlags.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+			// 
+			// cbFormat
+			// 
+			this.cbFormat.AccessibleDescription = resources.GetString("cbFormat.AccessibleDescription");
+			this.cbFormat.AccessibleName = resources.GetString("cbFormat.AccessibleName");
+			this.cbFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbFormat.Anchor")));
+			this.cbFormat.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbFormat.BackgroundImage")));
+			this.cbFormat.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbFormat.Dock")));
+			this.cbFormat.Enabled = ((bool)(resources.GetObject("cbFormat.Enabled")));
+			this.cbFormat.Font = ((System.Drawing.Font)(resources.GetObject("cbFormat.Font")));
+			this.cbFormat.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbFormat.ImeMode")));
+			this.cbFormat.IntegralHeight = ((bool)(resources.GetObject("cbFormat.IntegralHeight")));
+			this.cbFormat.ItemHeight = ((int)(resources.GetObject("cbFormat.ItemHeight")));
+			this.cbFormat.Items.AddRange(new object[] {
+														  resources.GetString("cbFormat.Items"),
+														  resources.GetString("cbFormat.Items1"),
+														  resources.GetString("cbFormat.Items2"),
+														  resources.GetString("cbFormat.Items3"),
+														  resources.GetString("cbFormat.Items4"),
+														  resources.GetString("cbFormat.Items5"),
+														  resources.GetString("cbFormat.Items6"),
+														  resources.GetString("cbFormat.Items7")});
+			this.cbFormat.Location = ((System.Drawing.Point)(resources.GetObject("cbFormat.Location")));
+			this.cbFormat.MaxDropDownItems = ((int)(resources.GetObject("cbFormat.MaxDropDownItems")));
+			this.cbFormat.MaxLength = ((int)(resources.GetObject("cbFormat.MaxLength")));
+			this.cbFormat.Name = "cbFormat";
+			this.cbFormat.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbFormat.RightToLeft")));
+			this.cbFormat.Size = ((System.Drawing.Size)(resources.GetObject("cbFormat.Size")));
+			this.cbFormat.TabIndex = ((int)(resources.GetObject("cbFormat.TabIndex")));
+			this.cbFormat.Text = resources.GetString("cbFormat.Text");
+			this.cbFormat.Visible = ((bool)(resources.GetObject("cbFormat.Visible")));
+			this.cbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
+			this.cbFormat.Validated += new System.EventHandler(this.cbHex16_Validated);
+			this.cbFormat.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
+			this.cbFormat.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
+			this.cbFormat.Enter += new System.EventHandler(this.cbHex16_Enter);
+			// 
+			// gbSpecial
+			// 
+			this.gbSpecial.AccessibleDescription = resources.GetString("gbSpecial.AccessibleDescription");
+			this.gbSpecial.AccessibleName = resources.GetString("gbSpecial.AccessibleName");
+			this.gbSpecial.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbSpecial.Anchor")));
+			this.gbSpecial.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbSpecial.BackgroundImage")));
+			this.gbSpecial.Controls.Add(this.btnAppend);
+			this.gbSpecial.Controls.Add(this.btnInsTrue);
+			this.gbSpecial.Controls.Add(this.btnInsFalse);
+			this.gbSpecial.Controls.Add(this.btnDelPescado);
+			this.gbSpecial.Controls.Add(this.btnLinkInge);
+			this.gbSpecial.Controls.Add(this.btnDelMerola);
+			this.gbSpecial.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbSpecial.Dock")));
+			this.gbSpecial.Enabled = ((bool)(resources.GetObject("gbSpecial.Enabled")));
+			this.gbSpecial.Font = ((System.Drawing.Font)(resources.GetObject("gbSpecial.Font")));
+			this.gbSpecial.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("gbSpecial.ImeMode")));
+			this.gbSpecial.Location = ((System.Drawing.Point)(resources.GetObject("gbSpecial.Location")));
+			this.gbSpecial.Name = "gbSpecial";
+			this.gbSpecial.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("gbSpecial.RightToLeft")));
+			this.gbSpecial.Size = ((System.Drawing.Size)(resources.GetObject("gbSpecial.Size")));
+			this.gbSpecial.TabIndex = ((int)(resources.GetObject("gbSpecial.TabIndex")));
+			this.gbSpecial.TabStop = false;
+			this.gbSpecial.Text = resources.GetString("gbSpecial.Text");
+			this.gbSpecial.Visible = ((bool)(resources.GetObject("gbSpecial.Visible")));
+			// 
+			// btnAppend
+			// 
+			this.btnAppend.AccessibleDescription = resources.GetString("btnAppend.AccessibleDescription");
+			this.btnAppend.AccessibleName = resources.GetString("btnAppend.AccessibleName");
+			this.btnAppend.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnAppend.Anchor")));
+			this.btnAppend.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnAppend.BackgroundImage")));
+			this.btnAppend.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnAppend.Dock")));
+			this.btnAppend.Enabled = ((bool)(resources.GetObject("btnAppend.Enabled")));
+			this.btnAppend.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnAppend.FlatStyle")));
+			this.btnAppend.Font = ((System.Drawing.Font)(resources.GetObject("btnAppend.Font")));
+			this.btnAppend.Image = ((System.Drawing.Image)(resources.GetObject("btnAppend.Image")));
+			this.btnAppend.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.ImageAlign")));
+			this.btnAppend.ImageIndex = ((int)(resources.GetObject("btnAppend.ImageIndex")));
+			this.btnAppend.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnAppend.ImeMode")));
+			this.btnAppend.Location = ((System.Drawing.Point)(resources.GetObject("btnAppend.Location")));
+			this.btnAppend.Name = "btnAppend";
+			this.btnAppend.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnAppend.RightToLeft")));
+			this.btnAppend.Size = ((System.Drawing.Size)(resources.GetObject("btnAppend.Size")));
+			this.btnAppend.TabIndex = ((int)(resources.GetObject("btnAppend.TabIndex")));
+			this.btnAppend.Text = resources.GetString("btnAppend.Text");
+			this.btnAppend.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAppend.TextAlign")));
+			this.btnAppend.Visible = ((bool)(resources.GetObject("btnAppend.Visible")));
+			this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
+			// 
+			// btnInsTrue
+			// 
+			this.btnInsTrue.AccessibleDescription = resources.GetString("btnInsTrue.AccessibleDescription");
+			this.btnInsTrue.AccessibleName = resources.GetString("btnInsTrue.AccessibleName");
+			this.btnInsTrue.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnInsTrue.Anchor")));
+			this.btnInsTrue.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInsTrue.BackgroundImage")));
+			this.btnInsTrue.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnInsTrue.Dock")));
+			this.btnInsTrue.Enabled = ((bool)(resources.GetObject("btnInsTrue.Enabled")));
+			this.btnInsTrue.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnInsTrue.FlatStyle")));
+			this.btnInsTrue.Font = ((System.Drawing.Font)(resources.GetObject("btnInsTrue.Font")));
+			this.btnInsTrue.Image = ((System.Drawing.Image)(resources.GetObject("btnInsTrue.Image")));
+			this.btnInsTrue.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnInsTrue.ImageAlign")));
+			this.btnInsTrue.ImageIndex = ((int)(resources.GetObject("btnInsTrue.ImageIndex")));
+			this.btnInsTrue.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnInsTrue.ImeMode")));
+			this.btnInsTrue.Location = ((System.Drawing.Point)(resources.GetObject("btnInsTrue.Location")));
+			this.btnInsTrue.Name = "btnInsTrue";
+			this.btnInsTrue.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnInsTrue.RightToLeft")));
+			this.btnInsTrue.Size = ((System.Drawing.Size)(resources.GetObject("btnInsTrue.Size")));
+			this.btnInsTrue.TabIndex = ((int)(resources.GetObject("btnInsTrue.TabIndex")));
+			this.btnInsTrue.Text = resources.GetString("btnInsTrue.Text");
+			this.btnInsTrue.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnInsTrue.TextAlign")));
+			this.btnInsTrue.Visible = ((bool)(resources.GetObject("btnInsTrue.Visible")));
+			this.btnInsTrue.Click += new System.EventHandler(this.btnInsVia_Click);
+			// 
+			// btnInsFalse
+			// 
+			this.btnInsFalse.AccessibleDescription = resources.GetString("btnInsFalse.AccessibleDescription");
+			this.btnInsFalse.AccessibleName = resources.GetString("btnInsFalse.AccessibleName");
+			this.btnInsFalse.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnInsFalse.Anchor")));
+			this.btnInsFalse.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnInsFalse.BackgroundImage")));
+			this.btnInsFalse.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnInsFalse.Dock")));
+			this.btnInsFalse.Enabled = ((bool)(resources.GetObject("btnInsFalse.Enabled")));
+			this.btnInsFalse.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnInsFalse.FlatStyle")));
+			this.btnInsFalse.Font = ((System.Drawing.Font)(resources.GetObject("btnInsFalse.Font")));
+			this.btnInsFalse.Image = ((System.Drawing.Image)(resources.GetObject("btnInsFalse.Image")));
+			this.btnInsFalse.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnInsFalse.ImageAlign")));
+			this.btnInsFalse.ImageIndex = ((int)(resources.GetObject("btnInsFalse.ImageIndex")));
+			this.btnInsFalse.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnInsFalse.ImeMode")));
+			this.btnInsFalse.Location = ((System.Drawing.Point)(resources.GetObject("btnInsFalse.Location")));
+			this.btnInsFalse.Name = "btnInsFalse";
+			this.btnInsFalse.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnInsFalse.RightToLeft")));
+			this.btnInsFalse.Size = ((System.Drawing.Size)(resources.GetObject("btnInsFalse.Size")));
+			this.btnInsFalse.TabIndex = ((int)(resources.GetObject("btnInsFalse.TabIndex")));
+			this.btnInsFalse.Text = resources.GetString("btnInsFalse.Text");
+			this.btnInsFalse.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnInsFalse.TextAlign")));
+			this.btnInsFalse.Visible = ((bool)(resources.GetObject("btnInsFalse.Visible")));
+			this.btnInsFalse.Click += new System.EventHandler(this.btnInsVia_Click);
+			// 
+			// btnDelPescado
+			// 
+			this.btnDelPescado.AccessibleDescription = resources.GetString("btnDelPescado.AccessibleDescription");
+			this.btnDelPescado.AccessibleName = resources.GetString("btnDelPescado.AccessibleName");
+			this.btnDelPescado.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDelPescado.Anchor")));
+			this.btnDelPescado.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelPescado.BackgroundImage")));
+			this.btnDelPescado.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDelPescado.Dock")));
+			this.btnDelPescado.Enabled = ((bool)(resources.GetObject("btnDelPescado.Enabled")));
+			this.btnDelPescado.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDelPescado.FlatStyle")));
+			this.btnDelPescado.Font = ((System.Drawing.Font)(resources.GetObject("btnDelPescado.Font")));
+			this.btnDelPescado.Image = ((System.Drawing.Image)(resources.GetObject("btnDelPescado.Image")));
+			this.btnDelPescado.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelPescado.ImageAlign")));
+			this.btnDelPescado.ImageIndex = ((int)(resources.GetObject("btnDelPescado.ImageIndex")));
+			this.btnDelPescado.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDelPescado.ImeMode")));
+			this.btnDelPescado.Location = ((System.Drawing.Point)(resources.GetObject("btnDelPescado.Location")));
+			this.btnDelPescado.Name = "btnDelPescado";
+			this.btnDelPescado.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDelPescado.RightToLeft")));
+			this.btnDelPescado.Size = ((System.Drawing.Size)(resources.GetObject("btnDelPescado.Size")));
+			this.btnDelPescado.TabIndex = ((int)(resources.GetObject("btnDelPescado.TabIndex")));
+			this.btnDelPescado.Text = resources.GetString("btnDelPescado.Text");
+			this.btnDelPescado.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelPescado.TextAlign")));
+			this.btnDelPescado.Visible = ((bool)(resources.GetObject("btnDelPescado.Visible")));
+			this.btnDelPescado.Click += new System.EventHandler(this.btnDelPescado_Click);
+			// 
+			// btnLinkInge
+			// 
+			this.btnLinkInge.AccessibleDescription = resources.GetString("btnLinkInge.AccessibleDescription");
+			this.btnLinkInge.AccessibleName = resources.GetString("btnLinkInge.AccessibleName");
+			this.btnLinkInge.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnLinkInge.Anchor")));
+			this.btnLinkInge.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLinkInge.BackgroundImage")));
+			this.btnLinkInge.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnLinkInge.Dock")));
+			this.btnLinkInge.Enabled = ((bool)(resources.GetObject("btnLinkInge.Enabled")));
+			this.btnLinkInge.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnLinkInge.FlatStyle")));
+			this.btnLinkInge.Font = ((System.Drawing.Font)(resources.GetObject("btnLinkInge.Font")));
+			this.btnLinkInge.Image = ((System.Drawing.Image)(resources.GetObject("btnLinkInge.Image")));
+			this.btnLinkInge.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnLinkInge.ImageAlign")));
+			this.btnLinkInge.ImageIndex = ((int)(resources.GetObject("btnLinkInge.ImageIndex")));
+			this.btnLinkInge.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnLinkInge.ImeMode")));
+			this.btnLinkInge.Location = ((System.Drawing.Point)(resources.GetObject("btnLinkInge.Location")));
+			this.btnLinkInge.Name = "btnLinkInge";
+			this.btnLinkInge.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnLinkInge.RightToLeft")));
+			this.btnLinkInge.Size = ((System.Drawing.Size)(resources.GetObject("btnLinkInge.Size")));
+			this.btnLinkInge.TabIndex = ((int)(resources.GetObject("btnLinkInge.TabIndex")));
+			this.btnLinkInge.Text = resources.GetString("btnLinkInge.Text");
+			this.btnLinkInge.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnLinkInge.TextAlign")));
+			this.btnLinkInge.Visible = ((bool)(resources.GetObject("btnLinkInge.Visible")));
+			this.btnLinkInge.Click += new System.EventHandler(this.btnLinkInge_Click);
+			// 
+			// btnDelMerola
+			// 
+			this.btnDelMerola.AccessibleDescription = resources.GetString("btnDelMerola.AccessibleDescription");
+			this.btnDelMerola.AccessibleName = resources.GetString("btnDelMerola.AccessibleName");
+			this.btnDelMerola.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnDelMerola.Anchor")));
+			this.btnDelMerola.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnDelMerola.BackgroundImage")));
+			this.btnDelMerola.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnDelMerola.Dock")));
+			this.btnDelMerola.Enabled = ((bool)(resources.GetObject("btnDelMerola.Enabled")));
+			this.btnDelMerola.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnDelMerola.FlatStyle")));
+			this.btnDelMerola.Font = ((System.Drawing.Font)(resources.GetObject("btnDelMerola.Font")));
+			this.btnDelMerola.Image = ((System.Drawing.Image)(resources.GetObject("btnDelMerola.Image")));
+			this.btnDelMerola.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelMerola.ImageAlign")));
+			this.btnDelMerola.ImageIndex = ((int)(resources.GetObject("btnDelMerola.ImageIndex")));
+			this.btnDelMerola.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnDelMerola.ImeMode")));
+			this.btnDelMerola.Location = ((System.Drawing.Point)(resources.GetObject("btnDelMerola.Location")));
+			this.btnDelMerola.Name = "btnDelMerola";
+			this.btnDelMerola.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnDelMerola.RightToLeft")));
+			this.btnDelMerola.Size = ((System.Drawing.Size)(resources.GetObject("btnDelMerola.Size")));
+			this.btnDelMerola.TabIndex = ((int)(resources.GetObject("btnDelMerola.TabIndex")));
+			this.btnDelMerola.Text = resources.GetString("btnDelMerola.Text");
+			this.btnDelMerola.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnDelMerola.TextAlign")));
+			this.btnDelMerola.Visible = ((bool)(resources.GetObject("btnDelMerola.Visible")));
+			this.btnDelMerola.Click += new System.EventHandler(this.btnDelMerola_Click);
 			// 
 			// pnflowcontainer
 			// 
@@ -2122,6 +2307,34 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
 			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
 			// 
+			// tbTreeVersion
+			// 
+			this.tbTreeVersion.AccessibleDescription = resources.GetString("tbTreeVersion.AccessibleDescription");
+			this.tbTreeVersion.AccessibleName = resources.GetString("tbTreeVersion.AccessibleName");
+			this.tbTreeVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbTreeVersion.Anchor")));
+			this.tbTreeVersion.AutoSize = ((bool)(resources.GetObject("tbTreeVersion.AutoSize")));
+			this.tbTreeVersion.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbTreeVersion.BackgroundImage")));
+			this.tbTreeVersion.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbTreeVersion.Dock")));
+			this.tbTreeVersion.Enabled = ((bool)(resources.GetObject("tbTreeVersion.Enabled")));
+			this.tbTreeVersion.Font = ((System.Drawing.Font)(resources.GetObject("tbTreeVersion.Font")));
+			this.tbTreeVersion.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbTreeVersion.ImeMode")));
+			this.tbTreeVersion.Location = ((System.Drawing.Point)(resources.GetObject("tbTreeVersion.Location")));
+			this.tbTreeVersion.MaxLength = ((int)(resources.GetObject("tbTreeVersion.MaxLength")));
+			this.tbTreeVersion.Multiline = ((bool)(resources.GetObject("tbTreeVersion.Multiline")));
+			this.tbTreeVersion.Name = "tbTreeVersion";
+			this.tbTreeVersion.PasswordChar = ((char)(resources.GetObject("tbTreeVersion.PasswordChar")));
+			this.tbTreeVersion.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbTreeVersion.RightToLeft")));
+			this.tbTreeVersion.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbTreeVersion.ScrollBars")));
+			this.tbTreeVersion.Size = ((System.Drawing.Size)(resources.GetObject("tbTreeVersion.Size")));
+			this.tbTreeVersion.TabIndex = ((int)(resources.GetObject("tbTreeVersion.TabIndex")));
+			this.tbTreeVersion.Text = resources.GetString("tbTreeVersion.Text");
+			this.tbTreeVersion.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbTreeVersion.TextAlign")));
+			this.tbTreeVersion.Visible = ((bool)(resources.GetObject("tbTreeVersion.Visible")));
+			this.tbTreeVersion.WordWrap = ((bool)(resources.GetObject("tbTreeVersion.WordWrap")));
+			this.tbTreeVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbTreeVersion.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbTreeVersion.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+			// 
 			// btnAdd
 			// 
 			this.btnAdd.AccessibleDescription = resources.GetString("btnAdd.AccessibleDescription");
@@ -2145,6 +2358,28 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnAdd.TextAlign")));
 			this.btnAdd.Visible = ((bool)(resources.GetObject("btnAdd.Visible")));
 			this.btnAdd.Click += new System.EventHandler(this.btnAdd_Clicked);
+			// 
+			// lbCacheFlags
+			// 
+			this.lbCacheFlags.AccessibleDescription = resources.GetString("lbCacheFlags.AccessibleDescription");
+			this.lbCacheFlags.AccessibleName = resources.GetString("lbCacheFlags.AccessibleName");
+			this.lbCacheFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbCacheFlags.Anchor")));
+			this.lbCacheFlags.AutoSize = ((bool)(resources.GetObject("lbCacheFlags.AutoSize")));
+			this.lbCacheFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbCacheFlags.Dock")));
+			this.lbCacheFlags.Enabled = ((bool)(resources.GetObject("lbCacheFlags.Enabled")));
+			this.lbCacheFlags.Font = ((System.Drawing.Font)(resources.GetObject("lbCacheFlags.Font")));
+			this.lbCacheFlags.Image = ((System.Drawing.Image)(resources.GetObject("lbCacheFlags.Image")));
+			this.lbCacheFlags.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.ImageAlign")));
+			this.lbCacheFlags.ImageIndex = ((int)(resources.GetObject("lbCacheFlags.ImageIndex")));
+			this.lbCacheFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbCacheFlags.ImeMode")));
+			this.lbCacheFlags.Location = ((System.Drawing.Point)(resources.GetObject("lbCacheFlags.Location")));
+			this.lbCacheFlags.Name = "lbCacheFlags";
+			this.lbCacheFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbCacheFlags.RightToLeft")));
+			this.lbCacheFlags.Size = ((System.Drawing.Size)(resources.GetObject("lbCacheFlags.Size")));
+			this.lbCacheFlags.TabIndex = ((int)(resources.GetObject("lbCacheFlags.TabIndex")));
+			this.lbCacheFlags.Text = resources.GetString("lbCacheFlags.Text");
+			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
+			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
 			// BhavForm
 			// 
@@ -2173,6 +2408,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.ResumeLayout(false);
 			this.pnHeading.ResumeLayout(false);
 			this.bhavPanel.ResumeLayout(false);
+			this.gbSpecial.ResumeLayout(false);
 			this.gbMove.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -2189,14 +2425,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private void pnflowcontainer_SelectedInstChanged(object sender, System.EventArgs e)
 		{
 			int index = pnflowcontainer.SelectedIndex;
-			if (index < 0 || index >= wrapper.Instructions.Count)
+			if (index < 0 || index >= wrapper.Count)
 			{
 				currentInst = null;
 				origInst = null;
 			}
 			else
 			{
-				currentInst = wrapper.Instructions[pnflowcontainer.SelectedIndex];
+				currentInst = wrapper[pnflowcontainer.SelectedIndex];
 				origInst = currentInst.Clone();
 			}
 			UpdateInstPanel();
@@ -2238,6 +2474,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				wrapper.SynchronizeUserData();
 				btnCommit.Enabled = wrapper.Changed;
+				pnflowcontainer_SelectedInstChanged(null, null);
 			} 
 			catch (Exception ex) 
 			{
@@ -2246,36 +2483,9 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void btnSort_Clicked(object sender, System.EventArgs e)
-		{
-			this.pnflowcontainer.Sort();
-		}
-
-		private void btnMove_Clicked(object sender, System.EventArgs e)
-		{
-			int mv;
-			try { mv = Convert.ToInt32(tbLines.Text); }
-			catch (Exception) { return; }
-			if (sender == this.btnUp)
-				this.pnflowcontainer.MoveInst(mv * -1);
-			else
-				this.pnflowcontainer.MoveInst(mv);
-		}
-
-		private void btnAdd_Clicked(object sender, System.EventArgs e)
-		{
-			this.pnflowcontainer.Add();
-		}
-
-		private void btnDel_Clicked(object sender, System.EventArgs e)
-		{
-			this.pnflowcontainer.Delete();
-		}
-
-
 		private void btnCancel_Clicked(object sender, System.EventArgs e)
 		{
-			wrapper.Instructions[pnflowcontainer.SelectedIndex] = origInst.Clone();
+			wrapper[pnflowcontainer.SelectedIndex] = origInst.Clone();
 			pnflowcontainer_SelectedInstChanged(null, null);
 		}
 
@@ -2286,7 +2496,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			Bhav b = nameWiz.LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;
-			ui.tbInst_Instruction.Width = ui.gbInstruction.Width - (2 * ui.tbInst_Instruction.Location.X);
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
 			ui.Text = "View BHAV: " + nameWiz.ShortName;
 			b.RefreshUI();
@@ -2295,7 +2504,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
-			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent);
+			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent, BhavOpCodeWiz.Flags.All);
 
 			if (opcode != -1 && opcode != currentInst.OpCode)
 			{
@@ -2326,86 +2535,117 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void Target_Enter(object sender, System.EventArgs e)
+		private void cbHex16_Enter(object sender, System.EventArgs e)
 		{
 			((ComboBox)sender).SelectAll();
 		}
 
-		private void Target_TextChanged(object sender, System.EventArgs ev)
+		private void cbHex16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-			if (!Target_IsValid(sender)) return;
+			if (!cbHex16_IsValid(sender)) return;
 			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
 
 			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
 			internalchg = true;
-			switch (alTarget.IndexOf(sender))
+			switch (alHex16cb.IndexOf(sender))
 			{
 				case 0: currentInst.Target1 = val; break;
 				case 1: currentInst.Target2 = val; break;
+				case 2: wrapper.Header.Format = val; break;
 			}
 			internalchg = false;
 		}
 
-		private void Target_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		private void cbHex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (Target_IsValid(sender)) return;
+			if (cbHex16_IsValid(sender)) return;
 
 			e.Cancel = true;
 
-			internalchg = true;
+			int i = alHex16cb.IndexOf(sender);
+			if (i < 0)
+				throw new Exception("cbHex16_Validating not applicable to control " + sender.ToString());
+
 			ushort val = 0;
-			switch (alTarget.IndexOf(sender))
+			switch (i)
 			{
 				case 0: val = origInst.Target1; currentInst.Target1 = val; break;
 				case 1: val = origInst.Target2; currentInst.Target2 = val; break;
+				case 2: val = wrapper.Header.Format; break;
 			}
 
-			if (val >= 0xFFFC)
+			bool origstate = internalchg;
+			internalchg = true;
+			if (i < 2 && val >= 0xfffc && val <= 0xfffe)
 			{
-				((ComboBox)sender).SelectedIndex = val - 0xFFFC;
+				((ComboBox)sender).SelectedIndex = val - 0xfffc;
+			}
+			else if (i == 2 && val >= 0x8000 && val <= 0x8007)
+			{
+				((ComboBox)sender).SelectedIndex = val - 0x8000;
 			}
 			else
 			{
 				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x"+Helper.HexString(val);
+				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
 			}
+			internalchg = origstate;
 			((ComboBox)sender).SelectAll();
-			internalchg = false;
 		}
 
-		private void Target_Validated(object sender, System.EventArgs e)
+		private void cbHex16_Validated(object sender, System.EventArgs e)
 		{
-			if (alTarget.IndexOf(sender) < 0)
-				throw new Exception("Target_Validated not applicable to control " + sender.ToString());
+			int i = alHex16cb.IndexOf(sender);
+			if (i < 0)
+				throw new Exception("cbHex16_Validated not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+
+			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
 
 			bool origstate = internalchg;
 			internalchg = true;
-			ushort val = Convert.ToUInt16(((ComboBox)sender).Text, 16);
-			if (val >= 0xfffc && val <= 0xfffe)
+			if (i < 2 && val >= 0xfffc && val <= 0xfffe)
+			{
 				((ComboBox)sender).SelectedIndex = val - 0xfffc;
+			}
+			else if (i == 2 && val >= 0x8000 && val <= 0x8007)
+			{
+				((ComboBox)sender).SelectedIndex = val - 0x8000;
+			}
 			else
+			{
+				((ComboBox)sender).SelectedIndex = -1;
 				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
-			((ComboBox)sender).Select(0, 0);
+			}
 			internalchg = origstate;
+			((ComboBox)sender).Select(0, 0);
 		}
 
-		private void Target_SelectedIndexChanged(object sender, System.EventArgs e)
+		private void cbHex16_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
-			int i = alTarget.IndexOf(sender);
+			int i = alHex16cb.IndexOf(sender);
 			if (i < 0)
-				throw new Exception("Target_SelectedIndexChanged not applicable to control " + sender.ToString());
+				throw new Exception("cbHex16_SelectedIndexChanged not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).SelectedIndex == -1) return;
 
-			ushort val = (ushort)(0x0FFFC + ((ComboBox)alTarget[i]).SelectedIndex);
+			ushort val = (ushort)((ComboBox)alHex16cb[i]).SelectedIndex;
+			((ComboBox)sender).SelectAll();
 
 			internalchg = true;
-			if (i == 0) currentInst.Target1 = val;
-			else        currentInst.Target2 = val;
-			((ComboBox)sender).SelectAll();
+			if (i < 2)
+			{
+				val += 0xFFFC;
+				if (i == 0) currentInst.Target1 = val;
+				else        currentInst.Target2 = val;
+			}
+			else
+			{
+				val += 0x8000;
+				wrapper.Header.Format = val;
+			}
 			internalchg = false;
 		}
 
@@ -2424,6 +2664,31 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			internalchg = false;
 		}
+
+		private void dec8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (dec8_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			byte val = 0;
+			switch (alDec8.IndexOf(sender))
+			{
+				case 0: val = wrapper.Header.ArgumentCount; break;
+				case 1: val = wrapper.Header.LocalVarCount; break;
+			}
+
+			((TextBox)sender).Text = val.ToString();
+			((TextBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void dec8_Validated(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
+		}
+
 
 		private void dec16_TextChanged(object sender, System.EventArgs ev)
 		{
@@ -2447,74 +2712,6 @@ namespace SimPe.PackedFiles.UserInterface
 					this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
 					break;
 			}
-			internalchg = false;
-		}
-
-		private void hex8_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!hex8_IsValid(sender)) return;
-
-
-			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
-
-			internalchg = true;
-			int i = alHex8.IndexOf(sender);
-			if (i < 8)
-			{
-				currentInst.Operands[i] = val;
-				if (i < 2)
-					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
-				else if (i < 4)
-					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();
-			}
-			else
-			{
-				if (i < 16)
-					currentInst.Reserved1[i-8] = val;
-				else switch(i)
-					 {
-						 case 16: currentInst.Reserved0 = val; break;
-						 case 17: wrapper.Header.Type = val; break;
-					 }
-			}
-			internalchg = false;
-		}
-
-		private void hex16_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!hex16_IsValid(sender)) return;
-
-			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
-			internalchg = true;
-			switch (alHex16.IndexOf(sender))
-			{
-				case 0: wrapper.Header.Format = val; break;
-				case 1: wrapper.Header.Flags = val; break;
-				case 2: wrapper.Header.Zero = val; break;
-				case 3: currentInst.OpCode = val; break;
-			}
-			internalchg = false;
-		}
-
-
-		private void dec8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (dec8_IsValid(sender)) return;
-
-			e.Cancel = true;
-
-			internalchg = true;
-			byte val = 0;
-			switch (alDec8.IndexOf(sender))
-			{
-				case 0: val = wrapper.Header.ArgumentCount; break;
-				case 1: val = wrapper.Header.LocalVarCount; break;
-			}
-
-			((TextBox)sender).Text = val.ToString();
-			((TextBox)sender).SelectAll();
 			internalchg = false;
 		}
 
@@ -2552,6 +2749,45 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
+		private void dec16_Validated(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
+		}
+
+
+		private void hex8_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!hex8_IsValid(sender)) return;
+
+
+			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
+
+			internalchg = true;
+			int i = alHex8.IndexOf(sender);
+			if (i < 8)
+			{
+				currentInst.Operands[i] = val;
+				if (i < 2)
+					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
+				else if (i < 4)
+					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();
+			}
+			else
+			{
+				if (i < 16)
+					currentInst.Reserved1[i-8] = val;
+				else switch(i)
+					 {
+						 case 16: currentInst.Reserved0 = val; break;
+						 case 17: wrapper.Header.HeaderFlag = val; break;
+						 case 18: wrapper.Header.Type = val; break;
+						 case 19: wrapper.Header.CacheFlags = val; break;
+					 }
+			}
+			internalchg = false;
+		}
+
 		private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex8_IsValid(sender)) return;
@@ -2575,15 +2811,44 @@ namespace SimPe.PackedFiles.UserInterface
 					currentInst.Reserved1[i-8] = val = origInst.Reserved1[i-8];
 				}
 				else switch(i)
-					{
-						case 16: val = origInst.Reserved0; currentInst.Reserved0 = val; break;
-						case 17: val = wrapper.Header.Type; break;
-					}
+					 {
+						 case 16: val = origInst.Reserved0; currentInst.Reserved0 = val; break;
+						 case 17: val = wrapper.Header.HeaderFlag; break;
+						 case 18: val = wrapper.Header.Type; break;
+						 case 19: val = wrapper.Header.CacheFlags; break;
+					 }
 			}
 
 			internalchg = true;
 			((TextBox)sender).Text = ((i >= 16) ? "0x" : "") + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void hex8_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = ((alHex8.IndexOf(sender) >= 16) ? "0x" : "") + Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+
+		private void hex16_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!hex16_IsValid(sender)) return;
+
+			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
+			internalchg = true;
+			switch (alHex16.IndexOf(sender))
+			{
+				case 0:
+					currentInst.OpCode = val;
+					this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(currentInst) != null);
+					break;
+			}
 			internalchg = false;
 		}
 
@@ -2597,35 +2862,12 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort val = 0;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: val = wrapper.Header.Format; break;
-				case 1: val = wrapper.Header.Flags; break;
-				case 2: val = wrapper.Header.Zero; break;
-				case 3: currentInst.OpCode = val = origInst.OpCode; break;
+				case 0: currentInst.OpCode = val = origInst.OpCode; break;
 			}
 
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
 			internalchg = false;
-		}
-
-
-		private void dec8_Validated(object sender, System.EventArgs e)
-		{
-			((TextBox)sender).SelectAll();
-		}
-
-		private void dec16_Validated(object sender, System.EventArgs e)
-		{
-			((TextBox)sender).SelectAll();
-		}
-
-		private void hex8_Validated(object sender, System.EventArgs e)
-		{
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = ((alHex8.IndexOf(sender) >= 16) ? "0x" : "") + Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
-			internalchg = origstate;
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs e)
@@ -2635,6 +2877,104 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
+		}
+
+
+		private void hex32_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!hex32_IsValid(sender)) return;
+
+			uint val = Convert.ToUInt32(((TextBox)sender).Text, 16);
+			internalchg = true;
+			switch (alHex32.IndexOf(sender))
+			{
+				case 0: wrapper.Header.TreeVersion = val; break;
+			}
+			internalchg = false;
+		}
+
+		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex32_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			uint val = 0;
+			switch (alHex32.IndexOf(sender))
+			{
+				case 0: val = wrapper.Header.TreeVersion; break;
+			}
+
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void hex32_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+
+		private void btnSort_Clicked(object sender, System.EventArgs e)
+		{
+			this.pnflowcontainer.Sort();
+		}
+
+		private void btnMove_Clicked(object sender, System.EventArgs e)
+		{
+			int mv;
+			try { mv = Convert.ToInt32(tbLines.Text); }
+			catch (Exception) { return; }
+			if (sender == this.btnUp)
+				this.pnflowcontainer.MoveInst(mv * -1);
+			else
+				this.pnflowcontainer.MoveInst(mv);
+		}
+
+		private void btnAdd_Clicked(object sender, System.EventArgs e)
+		{
+			this.pnflowcontainer.Add(BhavUIAddType.Default);
+		}
+
+		private void btnDel_Clicked(object sender, System.EventArgs e)
+		{
+			this.pnflowcontainer.Delete(BhavUIDeleteType.Default);
+		}
+
+
+		private void btnInsVia_Click(object sender, System.EventArgs e)
+		{
+			this.pnflowcontainer.Add( (sender == this.btnInsTrue) ? BhavUIAddType.ViaTrue : BhavUIAddType.ViaFalse );
+		}
+
+		private void btnDelPescado_Click(object sender, System.EventArgs e)
+		{
+			this.pnflowcontainer.Delete(BhavUIDeleteType.Pescado);
+		}
+
+		private void btnLinkInge_Click(object sender, System.EventArgs e)
+		{
+			this.pnflowcontainer.Relink();
+		}
+
+		private void btnAppend_Click(object sender, System.EventArgs e)
+		{
+			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent, BhavOpCodeWiz.Flags.Locals);
+
+			if (opcode == -1) return;
+			this.pnflowcontainer.Append((uint)opcode);
+		}
+
+		private void btnDelMerola_Click(object sender, System.EventArgs e)
+		{
+			this.pnflowcontainer.DeleteUnlinked();
 		}
 
 	}

@@ -47,13 +47,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
-
-			pnflow1.Visible = false;
-			pnflow1.Controls.Clear();
-			pnflow2.Visible = false;
-			pnflow2.Controls.Clear();
-			pnflow = pnflow1;
-			pnflow.Visible = true;
 		}
 
 		/// <summary> 
@@ -89,12 +82,22 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			wrapper = wrp;
 			csel = -1;
+			flowitems = null;
+			internalchg = false;
+
+			pnflow1.Visible = false;
+			pnflow1.Controls.Clear();
+			pnflow2.Visible = false;
+			pnflow2.Controls.Clear();
+			pnflow = pnflow1;
+			pnflow.Visible = true;
+
 			if (!setHandler)
 			{
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
 				setHandler = true;
 			}
-			this.WrapperChanged(wrapper.Instructions, null);
+			this.WrapperChanged(new ArrayList(), null);
 			if (flowitems.Length > 0)
 			{
 				flowitems[0].MakeSelected(); // but don't focus!
@@ -107,15 +110,15 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			// Handler for instructions list
-			if (sender == wrapper.Instructions)
+			if (sender is ArrayList)
 			{
-				if (csel >= wrapper.Instructions.Count) csel = wrapper.Instructions.Count - 1;
+				if (csel >= wrapper.Count) csel = wrapper.Count - 1;
 				myrepaint();
 				OnSelectedInstChanged(new EventArgs());
 			}
 
 			// if any instruction updated, redraw the connectors
-			if (wrapper.Instructions.IndexOf(sender) >= 0)
+			if (wrapper.IndexOf(sender) >= 0)
 			{
 				pnflow.Image = DrawConnectors();
 			}
@@ -147,50 +150,77 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 
-		public void Add()
+		public void Add(BhavUIAddType type)
 		{
-			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
-
+			if (csel >= wrapper.Count) throw new Exception("Internal failure: csel out of range");
 			bool savedstate = internalchg;
 			internalchg = true;
-			wrapper.Instructions.Insert(csel + 1, (csel >= 0) ? wrapper.Instructions[csel].Clone() : new Instruction(wrapper));
+
+			Instruction i = (csel >= 0) ? wrapper[csel].Clone() : new Instruction(wrapper);
+			int newLine = (type == BhavUIAddType.Default) ? wrapper.Count : csel + 1;
+			int index = wrapper.Add(i);
+
+			if (index >= 0)
+			{
+				if (index != newLine)
+					wrapper.Move(index, newLine);
+				if (csel >= 0)
+					switch (type)
+					{
+						case BhavUIAddType.Default: break;
+						case BhavUIAddType.ViaTrue: ((Instruction)wrapper[csel]).Target1 = (ushort)newLine; break;
+						case BhavUIAddType.ViaFalse: ((Instruction)wrapper[csel]).Target2 = (ushort)newLine; break;
+					}
+			}
+			else
+				newLine = csel;
+
 			internalchg = savedstate;
 
 			myrepaint();
-			flowitems[csel + 1].Focus();
+			flowitems[newLine].Focus();
 		}
 
-		public void Delete()
+		public void Delete(BhavUIDeleteType type)
 		{
 			if (csel < 0) throw new Exception("No current instruction");
-			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
+			if (csel >= wrapper.Count) throw new Exception("Internal failure: csel out of range");
 
 			bool savedstate = internalchg;
 			internalchg = true;
-			wrapper.Instructions.RemoveAt(csel);
+			if (type == BhavUIDeleteType.Pescado && csel < wrapper.Count - 1)
+			{
+				foreach (Instruction i in wrapper)
+				{
+					ushort t = (ushort)(csel + 1);
+					if (i.Target1 == csel) i.Target1 = t;
+					if (i.Target2 == csel) i.Target2 = t;
+				}
+			}
+			wrapper.RemoveAt(csel);
 			internalchg = savedstate;
 
 			int oldCsel = csel;
 			csel = -1;
 			myrepaint();
-			if (oldCsel >= wrapper.Instructions.Count)
-				flowitems[wrapper.Instructions.Count - 1].Focus();
+			if (oldCsel >= wrapper.Count)
+				flowitems[wrapper.Count - 1].Focus();
 			else if (oldCsel >= 0) flowitems[oldCsel].Focus();
 		}
 
 		public void MoveInst(int delta)
 		{
 			if (csel < 0) throw new Exception("No current instruction");
-			if (csel >= wrapper.Instructions.Count) throw new Exception("Internal failure: csel out of range");
+			if (csel >= wrapper.Count) throw new Exception("Internal failure: csel out of range");
 
 			int to = csel + delta;
 			if (to < 0) to = 0;
-			if (to >= wrapper.Instructions.Count) to = wrapper.Instructions.Count - 1;
+			if (to >= wrapper.Count) to = wrapper.Count - 1;
 			if (csel == to) return;
 
 			bool savedstate = internalchg;
 			internalchg = true;
-			wrapper.Instructions.Move(csel, to);
+			wrapper.Move(csel, to);
 			internalchg = savedstate;
 
 			csel = -1;
@@ -202,19 +232,97 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			Instruction inst = null;
 			if (csel > -1)
-				inst = wrapper.Instructions[csel];
+				inst = wrapper[csel];
 
 			bool savedstate = internalchg;
 			internalchg = true;
 			this.Parent.Cursor = Cursors.WaitCursor;
-			wrapper.Instructions.Sort();
+			wrapper.Sort();
 			this.Parent.Cursor = Cursors.Default;
 			internalchg = savedstate;
 
 			csel = -1;
 			myrepaint();
 			int index = -1;
-			if (inst != null) index = wrapper.Instructions.IndexOf(inst);
+			if (inst != null) index = wrapper.IndexOf(inst);
+			if (index >= 0) flowitems[index].Focus();
+		}
+
+		public void Relink()
+		{
+			if (wrapper.Count == 0) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+			this.Parent.Cursor = Cursors.WaitCursor;
+			for (ushort i = 0; i < wrapper.Count - 1; i++)
+			{
+				wrapper[i].Target1 = (ushort)(i+1);
+				wrapper[i].Target2 = 0xFFFC;
+			}
+			wrapper[wrapper.Count - 1].Target1 = 0xFFFD;
+			wrapper[wrapper.Count - 1].Target2 = 0xFFFC;
+			this.Parent.Cursor = Cursors.Default;
+			internalchg = savedstate;
+			myrepaint();
+			if (csel >= 0)
+				flowitems[csel].Focus();
+		}
+
+		public void Append(uint opcode)
+		{
+			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
+				Data.MetaData.BHAV_FILE,
+				0, 
+				wrapper.FileDescriptor.Group,
+				opcode
+				);
+
+			if (pfd == null) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			this.Parent.Cursor = Cursors.WaitCursor;
+			Bhav b = new Bhav(wrapper.Opcodes);
+			b.Package = wrapper.Package;
+			b.FileDescriptor = wrapper.FileDescriptor;
+			b.ProcessData(pfd, b.Package);
+			ushort offset = (ushort)wrapper.Count;
+			foreach (Instruction bi in b)
+			{
+				int i = wrapper.Add(bi);
+				if (i < 0) break;
+				if (wrapper[i].Target1 < 0xFFFC)
+					wrapper[i].Target1 += offset;
+				if (wrapper[i].Target2 < 0xFFFC)
+					wrapper[i].Target2 += offset;
+			}
+			this.Parent.Cursor = Cursors.Default;
+
+			internalchg = savedstate;
+			myrepaint();
+			if (csel >= 0)
+				flowitems[csel].Focus();
+		}
+
+		public void DeleteUnlinked()
+		{
+			if (csel < 0) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+			this.Parent.Cursor = Cursors.WaitCursor;
+
+			while(csel < wrapper.Count && wrapper.Count > 1)
+				wrapper.RemoveAt(wrapper.Count-1);
+
+			this.Parent.Cursor = Cursors.Default;
+			internalchg = savedstate;
+
+			csel = -1;
+			myrepaint();
+			int index = wrapper.Count - 1;
 			if (index >= 0) flowitems[index].Focus();
 		}
 
@@ -222,7 +330,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void myrepaint()
 		{
 			Point currentLoc = this.AutoScrollPosition;
-			this.Cursor = Cursors.WaitCursor;
+			//Cursor c = this.Parent.Cursor;
+			this.Parent.Cursor = Cursors.WaitCursor;
 
 			if (pnflow.Name.Equals("pnflow1")) // indicates which is currently visible (update the other one)
 			{
@@ -234,9 +343,9 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 
 			pnflow.Controls.Clear();
-			flowitems = new BhavInstListItemUI[wrapper.Instructions.Count];
+			flowitems = new BhavInstListItemUI[wrapper.Count];
 
-			for (int i = 0; i < wrapper.Instructions.Count; i++)
+			for (int i = 0; i < wrapper.Count; i++)
 				flowitems[i] = makeBhavInstListItemUI(i);
 			if (csel >= 0) flowitems[csel].MakeSelected();
 
@@ -258,16 +367,17 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 
 			this.AutoScrollPosition = currentLoc;
-			this.Cursor = Cursors.Default;
+			//this.Parent.Cursor = c;
+			this.Parent.Cursor = Cursors.Default;
 		}
 
 		private BhavInstListItemUI makeBhavInstListItemUI(int ct)
 		{
 			bool isTarget = false;
-			for (int j = 0; j < wrapper.Instructions.Count && !isTarget; j++)
+			for (int j = 0; j < wrapper.Count && !isTarget; j++)
 				if (ct == 0 || (j != ct && (
-					(wrapper.Instructions[j].Target1 == ct) ||
-					(wrapper.Instructions[j].Target2 == ct)
+					(wrapper[j].Target1 == ct) ||
+					(wrapper[j].Target2 == ct)
 					)))
 					isTarget = true;
 
@@ -300,17 +410,17 @@ namespace SimPe.PackedFiles.UserInterface
 
 			Pen tpen = new Pen(Color.FromArgb(0, 128, 0), 1);
 			Pen fpen = new Pen(Color.FromArgb(128, 0, 0), 1);
-			Pen tpeno = new Pen(Color.FromArgb(0, 220, 0), 3);
-			Pen fpeno = new Pen(Color.FromArgb(220, 0, 0), 3);
-			Pen tpeni = tpen;
-			Pen fpeni = fpen;
+			Pen tpeni = new Pen(Color.FromArgb(0, 220, 0), 3);
+			Pen fpeni = new Pen(Color.FromArgb(220, 0, 0), 3);
+			Pen tpeno = tpen;
+			Pen fpeno = fpen;
 			Pen pen;
 
 			Point[] points;
 
 			int yUnit = BhavInstListItemUI.rowHeight / 8;
 
-			foreach (Connector c in Connector.Connectors(wrapper.Instructions)) 
+			foreach (Connector c in Connector.Connectors(wrapper)) 
 			{
 				if (c==null) continue;
 				//if (c.start == c.stop) continue; // skip go to self
@@ -415,6 +525,7 @@ namespace SimPe.PackedFiles.UserInterface
 			gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
 
 			Pen pen = new Pen(Color.FromArgb(64, 64, 64), 1);
+			Pen penc = new Pen(pen.Color, 3);
 			for (int ct = 1; ct < flowitems.Length; ct++)
 			{
 				if (isTarget(ct)) continue;
@@ -424,7 +535,7 @@ namespace SimPe.PackedFiles.UserInterface
 				int yPos = (BhavInstListItemUI.rowHeight + 4) * ct + (BhavInstListItemUI.rowHeight / 4);
 
 				gr.DrawLine(
-					pen, 
+					(ct == csel) ? penc : pen, 
 					xPosLeft, yPos,
 					xPosRight, yPos
 					);
@@ -438,8 +549,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private bool isTarget(int ct)
 		{
-			for (int i = 0; i < wrapper.Instructions.Count; i++)
-				if (wrapper.Instructions[i].Target1 == ct || wrapper.Instructions[i].Target2 == ct)
+			for (int i = 0; i < wrapper.Count; i++)
+				if (wrapper[i].Target1 == ct || wrapper[i].Target2 == ct)
 					return true;
 			return false;
 		}
@@ -572,7 +683,7 @@ namespace SimPe.PackedFiles.UserInterface
 					if (csel < flowitems.Length - 1) flowitems[csel + 1].Focus();
 					break;
 				case System.Windows.Forms.Keys.Delete:
-					if (csel > -1 && flowitems.Length > 1) Delete();
+					if (csel > -1 && flowitems.Length > 1) Delete(BhavUIDeleteType.Default);
 					break;
 				case System.Windows.Forms.Keys.Home:
 					flowitems[0].Focus();
@@ -633,15 +744,15 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		/// <param name="items">BhavInstList from wrapper</param>
 		/// <returns></returns>
-		public static Connector[] Connectors(BhavInstList items)
+		public static Connector[] Connectors(Bhav bhav)
 		{
-			if (items==null) return new Connector[0];
+			if (bhav == null || bhav == null) return new Connector[0];
 
-			Connector[] cs = new Connector[items.Count*2];
-			for (int i=0; i<items.Count; i++)
+			Connector[] cs = new Connector[bhav.Count*2];
+			for (int i=0; i<bhav.Count; i++)
 			{
-				cs[i*2] = new Connector(i, items[i].Target1, true);
-				cs[i*2+1] = new Connector(i, items[i].Target2, false);
+				cs[i*2] = new Connector(i, bhav[i].Target1, true);
+				cs[i*2+1] = new Connector(i, bhav[i].Target2, false);
 			}
 
 			Connector.ResolveCollisions(cs);
@@ -739,5 +850,20 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 	}
 
+	#endregion
+
+	#region Enums for readability
+	public enum BhavUIAddType : int
+	{
+		 Default = 0
+		,ViaTrue = 1
+		,ViaFalse = 2
+	}
+
+	public enum BhavUIDeleteType : int
+	{
+		 Default = 0
+		,Pescado = 1
+	}
 	#endregion
 }

@@ -682,7 +682,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnAllGroups.TabIndex = ((int)(resources.GetObject("pnAllGroups.TabIndex")));
 			this.pnAllGroups.Text = resources.GetString("pnAllGroups.Text");
 			this.pnAllGroups.Visible = ((bool)(resources.GetObject("pnAllGroups.Visible")));
-			this.pnAllGroups.Resize += new System.EventHandler(this.pnAllGroups_Resize);
 			// 
 			// ttabMotiveGroupUI2
 			// 
@@ -1750,25 +1749,17 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				pnCopyButtons.Visible = false;
 				pnAllGroups.Visible = true;
-				this.Width = this.pnAllGroups.Right + 8;
 			}
 			else
 			{
 				pnAllGroups.Visible = false;
 				pnCopyButtons.Visible = true;
-				this.Width = this.pnCopyButtons.Right + 8;
 			}
 		}
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
 			(new pjse.HelpContainer(pjse.HelpContainer.HelpPage.TtabMotives)).Show();
-		}
-
-		private void pnAllGroups_Resize(object sender, System.EventArgs e)
-		{
-			pnCopyButtons.Width = pnAllGroups.Width;
-			pnCopyButtons.AutoScroll = pnAllGroups.AutoScroll = true;
 		}
 
 	}

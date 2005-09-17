@@ -348,6 +348,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "Chooser.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Chooser.resx"
+                    DependentUpon = "Chooser.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "GlobForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -406,6 +416,16 @@
                     RelPath = "PjseObjdWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "StrBig.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "StrBig.resx"
+                    DependentUpon = "StrBig.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "StrForm.cs"

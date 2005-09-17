@@ -37,6 +37,7 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
+		, ICollection
 	{
 		#region Attributes
 		/// <summary>
@@ -82,7 +83,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (!Helper.ToString(filename).Equals(value))
 				{
 					filename = Helper.ToBytes(value, 0x40);
-					OnWrapperChanged();
+					OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -98,15 +99,10 @@ namespace SimPe.PackedFiles.Wrapper
 				if (format != value)
 				{
 					format = value;
-					OnWrapperChanged();
+					OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
-
-		/// <summary>
-		/// Returns number of strings
-		/// </summary>
-		public ushort Count { get { return (ushort)items.Count; } }
 
 
 		/// <summary>
@@ -123,7 +119,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (items[index] == null || !items[index].Equals(value))
 				{
 					items[index] = value;
-					OnWrapperChanged();
+					OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -170,10 +166,19 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 		public int Add(StrItem item)
 		{
+			if (this.limit > 0 && items.Count >= this.limit) return -1;
+			if ((this.format == 0x0000 || this.format == 0xFFFE) && items.Count >= 0xFF) return -1;
+
+			if (this.format == 0x0000)
+			{
+				item.Parent = null; // prevent anyone getting told about the change...
+				item.LanguageID = 1;
+			}
 			item.Parent = this;
+
 			int result = items.Add(item);
 			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))
-				OnWrapperChanged();
+				OnWrapperChanged(this, new EventArgs());
 			return result;
 		}
 
@@ -194,7 +199,7 @@ namespace SimPe.PackedFiles.Wrapper
 					);
 
 			items.RemoveAt(index);
-			if (changed) OnWrapperChanged();
+			if (changed) OnWrapperChanged(this, new EventArgs());
 		}
 
 		public void CleanUp()
@@ -214,6 +219,7 @@ namespace SimPe.PackedFiles.Wrapper
 					else break;
 				}
 		}
+
 		#endregion
 
 		/// <summary>
@@ -234,19 +240,24 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		internal virtual void OnWrapperChanged()
+		internal virtual void OnWrapperChanged(object sender, EventArgs e)
 		{
 			this.Changed = true;
 
 			if (internalchg) return;
 			if (WrapperChanged != null) 
 			{
-				WrapperChanged(this, new EventArgs());
+				WrapperChanged(sender, e);
 			}
 		}
 
 
 		#region AbstractWrapper Member
+		public override bool CheckVersion(uint version) 
+		{
+			return true;
+		}
+
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
 			return new UserInterface.StrForm();
@@ -259,28 +270,11 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"PJSE STR# Wrapper",
+				"PJSE STR#/TTAs/CTSS Wrapper",
 				"Peter L Jones",
 				"---",
 				1
 				);  
-		}
-
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		protected override void Unserialize(System.IO.BinaryReader reader)
-		{
-			filename = reader.ReadBytes(0x40);
-			format = reader.ReadUInt16();
-			ushort count = reader.ReadUInt16();
-			items = new StrItemArrayList(count);
-
-			for (int i = 0; i < count && (limit == 0 || i < limit); i++)
-				items.Add(new StrItem(this, reader));
-
-			CleanUp();
 		}
 
 		/// <summary>
@@ -296,35 +290,80 @@ namespace SimPe.PackedFiles.Wrapper
 			CleanUp();
 
 			writer.Write(filename);
-			writer.Write(format);
-			writer.Write((ushort)items.Count);
+			if (format == 0x0000)
+			{
+				writer.Write((byte)0);
+				writer.Write((byte)items.Count);
+			}
+			else if (format == 0xFFFE)
+			{
+				writer.Write(format);
+				writer.Write((byte)items.Count);
+			}
+			else
+			{
+				writer.Write(format);
+				writer.Write((ushort)items.Count);
+			}
 			foreach (StrItem i in items)
 				i.Serialize(writer);
 		}
-		#endregion
-
-		#region IWrapper member
-		public override bool CheckVersion(uint version) 
+		/// <summary>
+		/// Unserializes a BinaryStream into the Attributes of this Instance
+		/// </summary>
+		/// <param name="reader">The Stream that contains the FileData</param>
+		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
-			return true;
-		}
-		#endregion
+			filename = reader.ReadBytes(0x40);
 
-		#region IFileWrapperSaveExtension Member		
-		//all covered by Serialize()
+			ushort count;
+			byte type = reader.ReadByte();
+			byte c = reader.ReadByte();
+			if (type == 0x00)
+			{
+				format = type;
+				count = c;
+			}
+			else if (type == 0xFE)
+			{
+				format = (ushort)((c << 8) | type);
+				count = reader.ReadByte();
+			}
+			else
+			{
+				format = (ushort)((c << 8) | type);
+				count = reader.ReadUInt16();
+			}
+
+
+			items = new StrItemArrayList(count);
+
+			for (int i = 0; i < count && (limit == 0 || i < limit); i++)
+				items.Add(new StrItem(this, reader));
+
+			CleanUp();
+		}
+
 		#endregion
 
 		#region IFileWrapper Member
-		public override string Description
+		/// <summary>
+		/// Returns a list of File Types this Plugin can process
+		/// </summary>
+		public uint[] AssignableTypes
 		{
 			get
 			{
-				return "filename=" + this.FileName
-					+ ", lines=" + Count.ToString()
-					+ ", first=" + this[0x1, 0]
-					;
+				uint[] types = {
+									 0x53545223  // STR#
+									,0x54544173  // TTAs
+									,0x43545353  // CTSS
+							   };
+			
+				return types;
 			}
 		}
+
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin
 		/// </summary>
@@ -336,24 +375,21 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		/// <summary>
-		/// Returns a list of File Types this Plugin can process
-		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {
-								    0x53545223  // STR#
-								   ,0x54544173  // TTAs
-								   ,0x43545353  // CTSS
-							   };
-			
-				return types;
-			}
-		}
-
 		#endregion		
+
+		#region IFileWrapperSaveExtension Member		
+		//all covered by AbstractWrapper
+		#endregion
+
+		#region ICollection Members
+		public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+		public int Count { get { return items.Count; } }
+		public bool IsSynchronized { get { return items.IsSynchronized; } }
+		public object SyncRoot { get { return items.SyncRoot; } }
+		#region IEnumerable Members
+		public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+		#endregion
+		#endregion
 
 		#region StrItemArrayList
 		private class StrItemArrayList : ArrayList
@@ -380,7 +416,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		}
 
-		#endregion		
+		#endregion
 	}
 
 
@@ -405,7 +441,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (lid != value)
 				{
 					lid = value;
-					if (parent != null) parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -418,7 +454,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (title != value)
 				{
 					title = value;
-					if (parent != null) parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -431,7 +467,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (desc != value)
 				{
 					desc = value;
-					if (parent != null) parent.OnWrapperChanged();
+					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -464,26 +500,53 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public void Unserialize(System.IO.BinaryReader reader)
 		{
-			lid = reader.ReadByte();
-			title = UnserializeStringZero(reader);
-			desc = UnserializeStringZero(reader);
+			if (parent.Format == 0x0000)
+			{
+				lid = 1;
+				title = reader.ReadString();
+				desc = "";
+			}
+			else if (parent.Format == 0xFFFE)
+			{
+				lid = (byte)(reader.ReadByte() + 1);
+				title = UnserializeStringZero(reader);
+				desc = "";
+			}
+			else
+			{
+				lid = reader.ReadByte();
+				title = UnserializeStringZero(reader);
+				desc = UnserializeStringZero(reader);
+			}
 		}
 
 		public void Serialize(System.IO.BinaryWriter writer)
 		{
-			writer.Write(lid);
-			SerializeStringZero(writer, title);
-			SerializeStringZero(writer, desc);
+			if (parent.Format == 0x0000)
+			{
+				writer.Write(title);
+			}
+			else if (parent.Format == 0xFFFE)
+			{
+				writer.Write((byte)(lid - 1));
+				SerializeStringZero(writer, title);
+			}
+			else
+			{
+				writer.Write(lid);
+				SerializeStringZero(writer, title);
+				SerializeStringZero(writer, desc);
+			}
 		}
 
 		private string UnserializeStringZero(System.IO.BinaryReader r)
 		{
-			char b = r.ReadChar();
 			string s = "";
-			while (b != 0 && r.BaseStream.Position <= r.BaseStream.Length)
+			while (r.BaseStream.Position < r.BaseStream.Length)
 			{
+				char b = r.ReadChar();
+				if (b == 0) break;
 				s += b;
-				b = r.ReadChar();
 			}
 			return s;
 		}
