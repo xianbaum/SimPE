@@ -1,4 +1,18 @@
 
+17 September 2005 14:08 - Bhav: Partially merge in OperandWiz and add WizRaw
+  SimPe BHAV\
+    BhavForm.cs 1.41
+    BhavForm.resx 1.20
+    BhavInstruction.cs (renamed BhavPrimWiz0x0002.cs)
+    BhavInstruction.resx (renamed BhavPrimWiz0x0002.resx)
+    BhavOperandWiz.cs 1.5
+    BhavOperandWizProvider.cs 1.2
+    BhavPrimWiz0x0002.cs 1.2
+    BhavPrimWiz0x0002.resx 1.2
+    BhavPrimWizRaw.cs 1.1
+    BhavPrimWizRaw.resx 1.1
+    pjse coder plugin.csproj 1.12
+
 16 September 2005 23:15 - Bhav: Urf, get instructions right too!
   SimPe BHAV\
     BhavWrapper.cs 1.35
