@@ -285,7 +285,7 @@ namespace SimPe.PackedFiles.Wrapper
 				"PJSE BHAV Wrapper",
 				"Peter L Jones",
 				"Advanced SimAntics Editor",
-				2
+				3
 				); 
 		}
 
