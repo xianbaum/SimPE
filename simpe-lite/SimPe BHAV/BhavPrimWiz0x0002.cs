@@ -26,9 +26,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
 using SimPe.PackedFiles.UserInterface;
-#if PARSER
 using pjse.BhavNameWizards;
-#endif
 using pjse.BhavOperandWizards;
 
 namespace pjse.BhavOperandWizards.Wiz0x0002
@@ -273,11 +271,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 					try 
 					{
 						ushort val = Convert.ToUInt16(tbval1.Text, 16);
-#if PARSER
 						tbval1.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)PrimWiz0x0002.ConstantValueParser(val)[1]);
-#else
-						tbval1.Text = "0x"+SimPe.Helper.HexString(InstructionName.ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)InstructionName.ConstantValueParser(val)[1]);
-#endif
 					} 
 					catch (Exception) {}
 				}
@@ -302,11 +296,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 						ushort[] b = new ushort[2];
 						b[0] = Convert.ToUInt16(s[0], 16);
 						b[1] = Convert.ToUInt16(s[1], 16);
-#if PARSER
 						tbval1.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(b));
-#else
-						tbval1.Text = "0x"+SimPe.Helper.HexString(InstructionName.ConstantValueParser(b));
-#endif
 					} 
 					catch (Exception) {}
 				}
@@ -325,11 +315,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 					try 
 					{
 						ushort val = Convert.ToUInt16(tbval2.Text, 16);
-#if PARSER
 						tbval2.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)PrimWiz0x0002.ConstantValueParser(val)[1]);
-#else
-						tbval2.Text = "0x"+SimPe.Helper.HexString(InstructionName.ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)InstructionName.ConstantValueParser(val)[1]);
-#endif
 					} 
 					catch (Exception) {}
 				}
@@ -354,11 +340,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 						ushort[] b = new ushort[2];
 						b[0] = Convert.ToUInt16(s[0], 16);
 						b[1] = Convert.ToUInt16(s[1], 16);
-#if PARSER
 						tbval2.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(b));
-#else
-						tbval2.Text = "0x"+SimPe.Helper.HexString(InstructionName.ConstantValueParser(b));
-#endif
 					} 
 					catch (Exception) {}
 				}
@@ -423,7 +405,6 @@ namespace pjse.BhavOperandWizards
 	}
 }
 
-#if PARSER
 namespace pjse.BhavNameWizards
 {
 	public class PrimWiz0x0002 : ANamePrimitiveWiz
@@ -914,4 +895,3 @@ namespace pjse.BhavNameWizards
 
 	}
 }
-#endif

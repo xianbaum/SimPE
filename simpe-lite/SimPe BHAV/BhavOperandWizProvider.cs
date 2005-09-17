@@ -37,7 +37,7 @@ namespace pjse
 					case 0x0000:
 						return null; //new BhavOperandWiz0x0000(i);
 					case 0x0001:
-						return null; //new BhavOperandWiz0x0001(i);
+						return new BhavOperandWiz0x0001(i);
 					case 0x0002:
 						return new BhavOperandWiz0x0002(i);
 					case 0x0008:

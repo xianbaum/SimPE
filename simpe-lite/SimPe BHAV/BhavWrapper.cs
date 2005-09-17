@@ -239,9 +239,6 @@ namespace SimPe.PackedFiles.Wrapper
 			header = new BhavHeader(this);
 			items = new BhavItemArrayList();
 			this.opcodes = opcodes;
-
-			//Instruction.Package = package;
-			Instruction.OpcodeProvider = opcodes;
 		}
 
 
@@ -635,7 +632,6 @@ namespace SimPe.PackedFiles.Wrapper
 	/// Class representing an Instruction
 	/// </summary>
 	public class Instruction
-		: InstructionName
 	{
 		#region Attributes
 		private ushort opcode = 0;
@@ -644,6 +640,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte headerflag = 0;
 		private wrappedByteArray operands = null;
 		private wrappedByteArray reserved_01 = null;
+		private Bhav parent;
 		#endregion
 
 		#region Accessor methods
@@ -704,7 +701,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public wrappedByteArray Reserved1 { get { return reserved_01; } }
 
-		public new Bhav Parent
+		public Bhav Parent
 		{
 			get { return parent; }
 			set
@@ -722,7 +719,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent) : base(parent)
+		internal Instruction (Bhav parent)
 		{
 			this.parent = parent;
 			this.operands = new wrappedByteArray(this, new byte[8]);
@@ -732,16 +729,22 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent, System.IO.BinaryReader reader) : base(parent)
+		internal Instruction (Bhav parent, System.IO.BinaryReader reader)
 		{
 			this.parent = parent;
 			Unserialize(reader);
 		}
 
 
-		public override string ToString()
+		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte headerflag, byte[] operands, byte[] reserved_01)
 		{
-			return this.OpcodeName(this.opcode, this.operands);
+			this.opcode = opcode;
+			this.Target1 = addr1;
+			this.Target2 = addr2;
+			this.headerflag = headerflag;
+			this.operands = new wrappedByteArray(this, operands);
+			this.reserved_01 = new wrappedByteArray(this, reserved_01);
+			this.parent = parent;
 		}
 
 		public Instruction Clone()
@@ -756,31 +759,6 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.reserved_01 = reserved_01.Clone();
 			clone.reserved_01.Parent = clone;
 			return clone;
-		}
-
-
-		/// <summary>
-		/// True if this instruction describes a Global Behavior File
-		/// </summary>
-		public bool GlobalBhav
-		{
-			get { return IsGlobalBhav(this.opcode); }
-		}
-
-		/// <summary>
-		/// True if this instruction describes a Local Behavior File
-		/// </summary>
-		public bool LocalBhav
-		{
-			get { return IsLocalBhav(this.opcode); }
-		}
-
-		/// <summary>
-		/// True if this instruction describes a Semi Global Bhav
-		/// </summary>
-		public bool SemiGlobalBhav
-		{
-			get { return IsSemiGlobalBhav(this.opcode); }
 		}
 
 
@@ -910,7 +888,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (array[index] != value)
 				{
 					array[index] = value;
-					if (parent != null) parent.Parent.OnWrapperChanged(parent, new EventArgs());
+					if (parent != null && parent.Parent != null) parent.Parent.OnWrapperChanged(parent, new EventArgs());
 				}
 			}
 		}

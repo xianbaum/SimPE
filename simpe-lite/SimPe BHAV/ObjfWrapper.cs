@@ -92,7 +92,6 @@ namespace SimPe.PackedFiles.Wrapper
 		public Objf(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
 		{
 			this.opcodes = opcodes;
-			ObjfItem.OpcodeProvider = opcodes;
 			items = new ObjfItem[0];			
 			filename = new byte[64];
 		}
@@ -140,8 +139,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader">The Stream that contains the FileData</param>
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
-			ObjfItem.Package = Package;
-
 			filename = reader.ReadBytes(64);
 			header = reader.ReadBytes(12);
 			items = new ObjfItem[reader.ReadUInt32()];

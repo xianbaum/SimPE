@@ -26,6 +26,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
+using pjse;
 
 namespace SimPe.PackedFiles.UserInterface
 {
@@ -200,7 +201,8 @@ namespace SimPe.PackedFiles.UserInterface
 					tbLocalC.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
 					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
-					btnOpCode.Visible = btnOperandWiz.Visible = 
+					btnOpCode.Visible = btnOperandWiz.Visible = btnOperandRaw.Visible =
+					gbSpecial.Visible =
 					btnCancel.Visible = false;
 				state = true;
 			}
@@ -224,6 +226,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op7.ReadOnly = state;
 
 			this.btnOperandWiz.Enabled = !state;
+			this.btnOperandRaw.Enabled = !state;
 			
 			this.tbInst_Unk0.ReadOnly = state;
 			this.tbInst_Unk1.ReadOnly = state;
@@ -278,10 +281,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				//load referenced Bhav
 				Instruction inst = currentInst;
-				Bhav b = null;
-				if (inst.GlobalBhav)
-					b = Instruction.LoadGlobalBHAV(inst.OpCode);
-				this.llopenbhav.Enabled = (b!=null);
+				this.llopenbhav.Enabled = (BhavNameWizProvider.For(inst).LoadBHAV() != null);
 
 				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
@@ -328,7 +328,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
 
-				this.btnOperandWiz.Enabled = (pjse.BhavOperandWizProvider.For(inst) != null);
+				this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(inst) != null);
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
 				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Count - 1;
 			}
@@ -2521,11 +2521,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			// We want to instantiate the current UI but with the Global BHAV linked from the current instruction
-			Bhav b = Instruction.LoadGlobalBHAV(currentInst.OpCode);
+			ABhavNameWiz nameWiz = pjse.BhavNameWizProvider.For(currentInst);
+
+			Bhav b = nameWiz.LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "Global BHAV: " + currentInst.ToString();
+			ui.Text = "View BHAV: " + nameWiz.ShortName;
 			b.RefreshUI();
 			ui.Show();
 		}
@@ -2882,7 +2883,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case 0:
 					currentInst.OpCode = val;
-					this.btnOperandWiz.Enabled = (pjse.BhavOperandWizProvider.For(currentInst) != null);
+					this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(currentInst) != null);
 					break;
 			}
 			internalchg = false;
