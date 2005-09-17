@@ -1,4 +1,8 @@
 
+17 September 2005 18:23 - Bhav: Use BhavNameWizProvider to load BHAV for appending
+  SimPe BHAV\
+    BhavInstListControl.cs 1.32
+
 17 September 2005 18:08 - Bhav: Make Wiz0x0002 boxes wide enough
   SimPe BHAV\
     BhavPrimWiz0x0002.cs 1.4
