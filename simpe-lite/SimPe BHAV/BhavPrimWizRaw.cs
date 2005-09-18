@@ -185,7 +185,7 @@ namespace pjse.BhavOperandWizards
 		#region IDisposable Members
 		public override void Dispose()
 		{
-			if (myForm != null) myForm.Dispose();
+			if (myForm != null) myForm = null;
 		}
 		#endregion
 

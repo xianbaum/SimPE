@@ -407,7 +407,7 @@ namespace pjse.BhavOperandWizards
 		#region IDisposable Members
 		public override void Dispose()
 		{
-			if (myForm != null) myForm.Dispose();
+			if (myForm != null) myForm = null;
 		}
 		#endregion
 
@@ -819,6 +819,7 @@ namespace pjse.BhavNameWizards
 			byte _operator = operands[5]; // c1
 
 			string s = "";
+#if INGE_LIKED_IT
 			switch(_operator)
 			{
 				case 0x00:
@@ -848,6 +849,7 @@ namespace pjse.BhavNameWizards
 					s += "[assign & test] "; break;
 				default: s += "[unk expr] "; break;
 			}
+#endif
 			s += dataOwner(lhs_data_owner, lhs_value_word);
 			s += " " + gOperators[_operator] + " ";
 

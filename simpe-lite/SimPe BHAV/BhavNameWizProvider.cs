@@ -99,13 +99,13 @@ namespace pjse
 			this.instruction = new Instruction(parent, opcode, 0, 0, 0, operands, new byte[8]);
 		}
 
-		public bool isPrimitive { get { return false; } }
-		public bool isBhav { get { return false; } }
-		public bool isGlobalBhav { get { return false; } }
-		public bool isSemiGlobalBhav { get { return false; } }
-		public bool isLocalBhav { get { return false; } }
+		public virtual bool isPrimitive { get { return false; } }
+		public virtual bool isBhav { get { return false; } }
+		public virtual bool isGlobalBhav { get { return false; } }
+		public virtual bool isSemiGlobalBhav { get { return false; } }
+		public virtual bool isLocalBhav { get { return false; } }
 
-		public abstract Bhav LoadBHAV() ;//{ return null; }
+		public abstract Bhav LoadBHAV();
 
 		public abstract string ShortName { get; }
 		public abstract string LongName { get; }
@@ -115,6 +115,239 @@ namespace pjse
 			if (instruction == null) return ShortName;
 			return LongName;
 		}
+		protected string dataOwner(byte doid, ushort instance)
+		{
+			string doidName = instruction.Parent.Opcodes.FindExpressionDataOwners(doid);
+			if (doidName == null) doidName = "[Unknown data owner: 0x" + SimPe.Helper.HexString(doid) + "] ";
+
+			string s = null;
+			switch (doid)
+			{
+				case 0x03:
+				case 0x04:
+					s = gStr(0x8d, instance);
+					break;
+				case 0x06:
+					s = gStr(0x81, instance);
+					break;
+				case 0x07:
+					doidName = instance.ToString() + " [0x" + SimPe.Helper.HexString(instance) + "]";
+					s = "";
+					break;
+				case 0x0a:
+					if (instance == 0)
+						s = "";
+					break;
+				case 0x0b:
+				case 0x11:
+				case 0x1e:
+				case 0x1f:
+				case 0x30:
+				case 0x31:
+					doidName = doidName.Replace("[temp]", "[Temp " + instance.ToString() + "]");
+					s = "";
+					break;
+				case 0x0c:
+				case 0x0e:
+				case 0x0f:
+				case 0x1c:
+				case 0x1d:
+					s = "(" + instruction.Parent.Opcodes.FindMotives(instance) + ")";
+					break;
+				case 0x12:
+				case 0x13:
+				case 0x20:
+					s = "- " + gStr(0xc8, instance);
+					break;
+				case 0x15:
+				case 0x26:
+				case 0x33:
+					s = gStr(0xcc, instance);
+					break;
+				case 0x17:
+					s = gStr(0xdb, instance);
+					break;
+				case 0x18:
+					s = gStr(0xdd, instance);
+					break;
+				case 0x1a:
+				case 0x2f:
+					int a = instance >> 13;            // x = aaabbbbb bccccccc
+					int b = (instance >> 7) & 0x3F;
+					int c = instance & 0x7F;
+					switch (a) 
+					{
+						case 0:             // private
+							b += 0x1000;
+							break;
+						case 1:             // semi-global
+							b += 0x2000;
+							break;
+						case 2:            // global
+							b += 0x100;
+							break;
+						default:
+							b += 0x140;
+							break;
+					}
+					if (doid == 0x1a)
+					{
+						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":0x" + SimPe.Helper.HexString((byte)c)
+							+ " (" + readBcon((uint)b, c) + ")";
+					}
+					else
+					{
+						doidName = instruction.Parent.Opcodes.FindExpressionDataOwners(0x1a);
+						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":[Temp " + c.ToString() + "]";
+					}
+					break;
+				case 0x21:
+					s = gStr(0xf3, instance);
+					break;
+				case 0x22:
+					s = gStr(0xf9, instance);
+					break;
+				case 0x23:
+					s = gStr(0xf5, instance);
+					break;
+				case 0x27:
+				case 0x28:
+					s = gStr(0xfc, instance);
+					break;
+			}
+			if (s == null) s = "0x" + SimPe.Helper.HexString(instance);
+
+			return doidName + (s.Length > 0 ? " " + s : "");
+		}
+
+
+		private string readStr(uint group, uint instance, int sid)
+		{
+			if (instruction.Parent == null || instruction.Parent.Package == null) return null;
+			SimPe.Interfaces.Files.IPackedFileDescriptor pfd =
+				instruction.Parent.Package.FindFile(SimPe.Data.MetaData.STRING_FILE, 0, group, instance);
+			if (pfd == null) return null;
+
+			Str s = new Str();
+			s.ProcessData(pfd, instruction.Parent.Package);
+			return s[1, sid].Title;
+		}
+
+		private string gStr(uint instance, int sid)
+		{
+			if (instruction.Parent == null || instruction.Parent.Package == null) return null;
+			instruction.Parent.Opcodes.LoadPackage();
+			if (instruction.Parent.Opcodes.BasePackage == null) return null;
+
+			SimPe.Interfaces.Files.IPackedFileDescriptor pfd =
+				instruction.Parent.Opcodes.BasePackage.FindFile(SimPe.Data.MetaData.STRING_FILE, 0, 0x7FE59FD0, instance);
+			if (pfd == null) return null;
+
+			Str s = new Str();
+			s.ProcessData(pfd, instruction.Parent.Opcodes.BasePackage);
+			StrItem si = s[1, sid];
+			return (si == null) ? null : si.Title;
+		}
+
+		private string readBcon(uint instance, int bid)
+		{
+			SimPe.Interfaces.Files.IPackageFile pkg = null;
+			SimPe.Interfaces.Files.IPackedFileDescriptor pfd = null;
+			uint group = 0x0;
+			if (instance < 0x1000)
+			{
+				pkg = instruction.Parent.Opcodes.BasePackage;
+				group = 0x7FD46CD0;
+			}
+			else if (instance >= 0x2000 && instance < 0x3000 &&
+				instruction.Parent.FileDescriptor.Instance >= 0x1000 && instruction.Parent.FileDescriptor.Instance < 0x2000)
+			{
+				SimPe.Interfaces.Files.IPackedFileDescriptor gpfd =
+					instruction.Parent.Package.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, instruction.Parent.FileDescriptor.Group, 1);
+				if (gpfd == null)
+					return "[No GLOB file]";
+				Glob glob = new Glob();
+				glob.ProcessData(gpfd, instruction.Parent.Package);
+
+				pkg = instruction.Parent.Package;
+				group = glob.SemiGlobalGroup;
+			}
+			else
+			{
+				pkg = instruction.Parent.Package;
+				group = instruction.Parent.FileDescriptor.Group;
+			}
+			pfd = pkg.FindFile(0x42434F4E, 0, group, instance);
+			if (pfd == null)
+				return "[No BCON file]";
+
+			Bcon bcon = new Bcon();
+			bcon.ProcessData(pfd, pkg);
+			if (bid >= bcon.Constants.Count)
+				return "[BCON not set]";
+			return ((short)bcon.Constants[bid]).ToString(); //"0x" + SimPe.Helper.HexString((ushort)bcon.Constants[bid]);
+		}
+
+
+#if UNDEF
+		#region data owner names
+		private string[] dataOwners =
+			{
+				"My Attribute" // 0x00
+				,"Stack Obj's Attribute"
+				,"My Semi Attribute"
+				,"My"
+				,"Stack Object's" // 0x04
+				,"Stack Object's Semi Attribute"
+				,"Global"
+				,"(Literal Value)"
+				,"Temp" // 0x08
+				,"param no"
+				,"Stack Object"
+				,"Temp"
+				,"check tree ad range" // 0x0c
+				,"stack obj's Temp"
+				,"my motives"
+				,"stack obj's motives"
+				,"stack object's slot" // 0x10
+				,"stack obj's motive"
+				,"my person data"
+				,"stack obj's person data"
+				,"my slot" // 0x14
+				,"stack object's definition"
+				,"stack obj attr [stack param]"
+				,"room [Temp 0]"
+				,"neighbor in stack object" // 0x18
+				,"Local"
+				,"Const"
+				,"Unused - Stack Object's Dynamic Sprite Flags Of Temp (Sims1)"
+				,"check tree ad personality var" // 0x1c
+				,"check tree ad min"
+				,"my person data"
+				,"stack obj's person data"
+				,"neighbor's person data" // 0x20
+				,"job data [Temp 0,1]"
+				,"neighborhood data"
+				,"stack object's function"
+				,"my type attr" // 0x24
+				,"stack obj's type attr"
+				,"Neighbor's Object Definition"
+				,"Temporary Token"
+				,"Stack Object's Temporary Token" // 0x28
+				,"My Object Array Iterator Index"
+				,"Stack Object's Object Array Iterator Index"
+				,"My Object Array Iterator Data"
+				,"Stack Object's Object Array Iterator Data" // 0x2c
+				,"My Object Array Element At Temp"
+				,"Stack Object's Object Array Element At Temp"
+				,"Const"
+				,"My Slot" // 0x30
+				,"Stack Object's Slot"
+				,"stack obj Semi attr [stack param]"
+				,"Stack Object's Master Definition"
+			};
+		#endregion
+#endif
 	}
 
 }
@@ -130,18 +363,26 @@ namespace pjse.BhavNameWizards
 		public ANamePrimitiveWiz(Bhav parent, ushort opcode, byte[] operands) : base (parent, opcode, operands) { }
 		public ANamePrimitiveWiz(Bhav parent, byte[] operands) : base(parent, 0, operands) { }
 		public ANamePrimitiveWiz(Instruction instruction) : base (instruction) { }
-		public new bool isPrimitive { get { return true; } }
+		public override bool isPrimitive { get { return true; } }
 
 		public override Bhav LoadBHAV() { return null; }
 		public override string ShortName
 		{
 			get
 			{
-				return ((instruction.OpCode < gPrims.Length) ? gPrims[instruction.OpCode] : "Unknown opcode") + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
+				string s = null;
+				if (instruction.Parent.Opcodes.StoredPrimitives != null &&
+					instruction.OpCode < instruction.Parent.Opcodes.StoredPrimitives.Count)
+					s = (string)instruction.Parent.Opcodes.StoredPrimitives[instruction.OpCode];
+				return (s == null ? "Unknown opcode" : s) + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
 			}
 		}
+#if UNDEF
 		public static int Length { get { return gPrims.Length; } }
-		public static string Name(int index) { return (index < 0 || index >= gPrims.Length) ? null : gPrims[index]; }
+		public static string Name(int index)
+		{
+			return (index < 0 || index >= gPrims.Length) ? null : gPrims[index];
+		}
 		#region Primitive names
 		protected static string[] gPrims =
 			{
@@ -273,88 +514,7 @@ namespace pjse.BhavNameWizards
 				,"Influence"
 			};
 		#endregion
-		protected string dataOwner(byte doid, ushort instance)
-		{
-			string s = null;
-			switch(doid)
-			{
-				case 0:
-				case 1:
-					if (instruction.Parent != null && instruction.Parent.FileDescriptor != null)
-						s = readStr(instruction.Parent.FileDescriptor.Group, 0x0100, instance);
-					if (s != null && !s.Trim().Equals("")) s = " [Group: " + s + "]";
-					else s = " [Unknown Group]";
-					break;
-			}
-			return dataOwners[doid] + " 0x" + SimPe.Helper.HexString(instance) + s;
-		}
-		#region data owner names
-		private string[] dataOwners =
-			{
-				 "My Attribute" // 0x00
-				,"Stack Obj's Attribute"
-				,"My Semi Attribute"
-				,"My"
-				,"Stack Object's" // 0x04
-				,"Stack Object's Semi Attribute"
-				,"Global"
-				,"(Literal Value)"
-				,"Temp" // 0x08
-				,"parameter number"
-				,"Stack Object"
-				,"Temp"
-				,"check tree ad range" // 0x0c
-				,"stack obj's Temp"
-				,"my motives"
-				,"stack obj's motives"
-				,"stack object's slot" // 0x10
-				,"stack obj's motive"
-				,"my person data"
-				,"stack obj's person data"
-				,"my slot" // 0x14
-				,"stack object's definition"
-				,"stack obj attr [stack param]"
-				,"room [Temp 0]"
-				,"neighbor in stack object" // 0x18
-				,"Local"
-				,"Const"
-				,"Unused - Stack Object's Dynamic Sprite Flags Of Temp (Sims1)"
-				,"check tree ad personality var" // 0x1c
-				,"check tree ad min"
-				,"my person data"
-				,"stack obj's person data"
-				,"neighbor's person data" // 0x20
-				,"job data [Temp 0,1]"
-				,"neighborhood data"
-				,"stack object's function"
-				,"my type attr" // 0x24
-				,"stack obj's type attr"
-				,"Neighbor's Object Definition"
-				,"Temporary Token"
-				,"Stack Object's Temporary Token" // 0x28
-				,"My Object Array Iterator Index"
-				,"Stack Object's Object Array Iterator Index"
-				,"My Object Array Iterator Data"
-				,"Stack Object's Object Array Iterator Data" // 0x2c
-				,"My Object Array Element At Temp"
-				,"Stack Object's Object Array Element At Temp"
-				,"Const"
-				,"My Slot" // 0x30
-				,"Stack Object's Slot"
-				,"stack obj Semi attr [stack param]"
-				,"Stack Object's Master Definition"
-			};
-		#endregion
-		private string readStr(uint group, uint instance, int sid)
-		{
-			if (instruction.Parent == null || instruction.Parent.Package == null) return null;
-			SimPe.Interfaces.Files.IPackedFileDescriptor pfd =
-				instruction.Parent.Package.FindFile(SimPe.Data.MetaData.STRING_FILE, 0, group, instance);
-			if (pfd == null) return null;
-			Str s = new Str();
-			s.ProcessData(pfd, instruction.Parent.Package);
-			return s[0x01, sid].Title;
-		}
+#endif
 	}
 
 
@@ -365,7 +525,7 @@ namespace pjse.BhavNameWizards
 	{
 		public ANameBHAVWiz(Bhav parent, ushort opcode, byte[] operands) : base (parent, opcode, operands) { }
 		public ANameBHAVWiz(Instruction instruction) : base (instruction) { }
-		public new bool isBhav { get { return true; } }
+		public override bool isBhav { get { return true; } }
 		public override string ShortName
 		{
 			get {
@@ -379,7 +539,41 @@ namespace pjse.BhavNameWizards
 			{
 				Bhav b = LoadBHAV();
 				if (b == null) return ShortName;
-				return b.FileName + " (Args: " + b.Header.ArgumentCount.ToString() + ")";
+
+				string s = "";
+
+				bool noParms = true;
+				for (int i = 0; i < 8 && noParms; i++)
+					noParms = instruction.Operands[i] == 0xFF;
+				if (!noParms)
+				{
+					byte[] parms = new byte[16];
+					((byte[])instruction.Operands).CopyTo(parms, 0);
+					((byte[])instruction.Reserved1).CopyTo(parms, 8);
+					if ((parms[12] & 0x01) != 0)
+					{
+						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
+						{
+							byte doid = parms[i*3];
+							ushort instance = (ushort)(parms[(i*3) + 1] + 256 * parms[(i*3) + 2]);
+							s += (i>0 ? ", " : "") + dataOwner(doid, instance);
+						}
+					}
+					else if ((parms[12] & 0x02) != 0)
+					{
+						s = "caller's first " + b.Header.ArgumentCount.ToString() + " params";
+					}
+					else
+					{
+						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
+						{
+							ushort val = (ushort)(parms[(i*2)] + 256 * parms[(i*2) + 1]);
+							s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(val);
+						}
+					}
+				}
+
+				return b.FileName + " (" + b.Header.ArgumentCount.ToString() + " args" + ((s.Length > 0) ? ": " + s : "") + ")";
 			}
 		}
 

@@ -58,10 +58,8 @@ namespace pjse.BhavNameWizards
 
 			if (next < 0x0100)
 				next = 0x0100;
-			if (next >= 0x1000)
-				return null;
 
-			while (!bhavs.ContainsKey((uint)next) && next < 0x1000) next++;
+			while (next < 0x1000 && !bhavs.ContainsKey((uint)next)) next++;
 			if (next >= 0x1000)
 				return null;
 
@@ -86,7 +84,7 @@ namespace pjse.BhavNameWizards
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(SimPe.Data.MetaData.BHAV_FILE);
 			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if ((pfd.Instance>=0x0100) && (pfd.Instance<0x1000) && (pfd.Group==0x7FD46CD0)) // Global BHAVs
+				if (/*(pfd.Instance>=0x0100) && (pfd.Instance<0x1000) &&*/ (pfd.Group==0x7FD46CD0)) // Global BHAVs
 				{
 					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
 					bhavs.Add(bhav.FileDescriptor.Instance, bhav.FileName);
@@ -131,10 +129,8 @@ namespace pjse.BhavNameWizards
 
 			if (next < 0x1000)
 				next = 0x1000;
-			if (next >= 0x2000)
-				return null;
 
-			while (!bhavs.ContainsKey((uint)next) && next < 0x2000) next++;
+			while (next < 0x2000 && !bhavs.ContainsKey((uint)next)) next++;
 			if (next >= 0x2000)
 				return null;
 
@@ -161,7 +157,7 @@ namespace pjse.BhavNameWizards
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Package.FindFiles(SimPe.Data.MetaData.BHAV_FILE);
 			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if ((pfd.Instance>=0x1000) && (pfd.Instance<0x2000) && (pfd.Group==parent.FileDescriptor.Group)) 
+				if (/*(pfd.Instance>=0x1000) && (pfd.Instance<0x2000) &&*/ (pfd.Group==parent.FileDescriptor.Group)) 
 				{
 					bhav.ProcessData(pfd, bhav.Package);
 					bhavs.Add(bhav.FileDescriptor.Instance, bhav.FileName);
@@ -246,10 +242,8 @@ namespace pjse.BhavNameWizards
 
 			if (next < 0x2000)
 				next = 0x2000;
-			if (next >= 0xffff)
-				return null;
 
-			while (!bhavs.ContainsKey((uint)next) && next < 0xffff) next++;
+			while (next < 0xffff && !bhavs.ContainsKey((uint)next)) next++;
 			if (next >= 0xffff)
 				return null;
 
@@ -287,7 +281,7 @@ namespace pjse.BhavNameWizards
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(SimPe.Data.MetaData.BHAV_FILE);
 			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if ((pfd.Instance>=0x2000) && (pfd.Group == lastSemiGroup))
+				if (/*(pfd.Instance>=0x2000) &&*/ (pfd.Group == lastSemiGroup))
 				{
 					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
 					bhavs.Add(bhav.FileDescriptor.Instance, bhav.FileName);

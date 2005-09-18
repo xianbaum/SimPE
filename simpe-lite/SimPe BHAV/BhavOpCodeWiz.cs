@@ -100,22 +100,30 @@ namespace SimPe.PackedFiles.UserInterface
 			if ((flags & Flags.Prims) != 0)
 			{
 				this.tcopcodes.TabPages.Add(this.tbprimitive);
-				Primitives();
+				Primitives(bhav);
+				if (this.lbprimitives.Items.Count == 0)
+					this.tcopcodes.TabPages.Remove(this.tbprimitive);
 			}
 			if ((flags & Flags.Globals) != 0)
 			{
 				this.tcopcodes.TabPages.Add(this.tbglobal);
 				Globals(bhav);
+				if (this.lbglobal.Items.Count == 0)
+					this.tcopcodes.TabPages.Remove(this.tbglobal);
 			}
 			if ((flags & Flags.Locals) != 0)
 			{
 				this.tcopcodes.TabPages.Add(this.tbprivate);
 				Locals(bhav);
+				if (this.lbprivate.Items.Count == 0)
+					this.tcopcodes.TabPages.Remove(this.tbprivate);
 			}
 			if ((flags & Flags.Semis) != 0)
 			{
 				this.tcopcodes.TabPages.Add(this.tbsemi);
 				SemiGlobals(bhav);
+				if (this.lbsemi.Items.Count == 0)
+					this.tcopcodes.TabPages.Remove(this.tbsemi);
 			}
 			
 			form.Cursor = Cursors.Default;
@@ -156,13 +164,13 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
-		private void Primitives()
+		private void Primitives(Bhav wrapper)
 		{
 			if (this.lbprimitives.Items.Count != 0) return;
 
-			for (int i=0; i<pjse.BhavNameWizards.ANamePrimitiveWiz.Length; i++)
+			for (int i=0; i<wrapper.Opcodes.StoredPrimitives.Count; i++)
 			{
-				string name = pjse.BhavNameWizards.ANamePrimitiveWiz.Name(i);
+				string name = (string)wrapper.Opcodes.StoredPrimitives[i];
 				if (!name.StartsWith("~"))
 				{
 					SimPe.Data.Alias a = new SimPe.Data.Alias((uint)i, name);

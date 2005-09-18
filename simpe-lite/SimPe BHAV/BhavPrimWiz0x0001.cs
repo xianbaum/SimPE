@@ -199,7 +199,7 @@ namespace pjse.BhavOperandWizards
 		 #region IDisposable Members
 		 public override void Dispose()
 		 {
-			 if (myForm != null) myForm.Dispose();
+			 if (myForm != null) myForm = null;
 		 }
 		 #endregion
 
@@ -255,7 +255,7 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		internal static new int Length { get { return op0names.Length; } }
+		internal static int Length { get { return op0names.Length; } }
 
 		#region genericSimsCall strings
 		// taken from DisASim2 by Shy - public domain
