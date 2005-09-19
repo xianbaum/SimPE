@@ -1,4 +1,12 @@
 
+19 September 2005 16:25 - Bhav: more parsing: snarf strings into their own .package and use that
+  SimPe BHAV\
+    BhavNameWizProvider.cs 1.4
+    GlobalStr.cs 1.1
+    pjse coder plugin.csproj 1.15
+    TtabItemMotiveTableUI.cs 1.7
+  GlobalStrings.package 1.1
+
 18 September 2005 19:34 - Bhav: more parsing, mostly data owners - work in progress
   SimPe BHAV\
     BhavNameWizProvider.cs 1.3
