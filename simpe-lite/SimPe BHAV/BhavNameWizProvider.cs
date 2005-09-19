@@ -116,23 +116,21 @@ namespace pjse
 			if (instruction == null) return ShortName;
 			return LongName;
 		}
+
+
 		protected string dataOwner(byte doid, ushort instance)
 		{
-			string doidName = GlobalStr.DataOwnerName(doid);
+			string doidName = GS.DataOwnerName(doid);
 
 			string s = null;
 			switch (doid)
 			{
 				case 0x03:
 				case 0x04:
-					s = gStr(0x8d, instance);
+					s = GS.GStr(0x8d, instance);
 					break;
 				case 0x06:
-					s = gStr(0x81, instance);
-					break;
-				case 0x07:
-					doidName = instance.ToString() + " [0x" + SimPe.Helper.HexString(instance) + "]";
-					s = "";
+					s = GS.GStr(0x81, instance);
 					break;
 				case 0x0a:
 					if (instance == 0)
@@ -152,23 +150,23 @@ namespace pjse
 				case 0x0f:
 				case 0x1c:
 				case 0x1d:
-					s = "(0x" + SimPe.Helper.HexString((byte)instance) + " " + GlobalStr.MotiveName(instance) + ")";
+					s = "(0x" + SimPe.Helper.HexString((byte)instance) + " " + GS.MotiveName(instance) + ")";
 					break;
 				case 0x12:
 				case 0x13:
 				case 0x20:
-					s = "- " + gStr(0xc8, instance);
+					s = "- " + GS.GStr(0xc8, instance);
 					break;
 				case 0x15:
 				case 0x26:
 				case 0x33:
-					s = gStr(0xcc, instance);
+					s = GS.GStr(0xcc, instance);
 					break;
 				case 0x17:
-					s = gStr(0xdb, instance);
+					s = GS.GStr(0xdb, instance);
 					break;
 				case 0x18:
-					s = gStr(0xdd, instance);
+					s = GS.GStr(0xdd, instance);
 					break;
 				case 0x1a:
 				case 0x2f:
@@ -197,34 +195,27 @@ namespace pjse
 					}
 					else
 					{
-						doidName = GlobalStr.DataOwnerName(0x1a);
+						doidName = GS.DataOwnerName(0x1a);
 						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":[Temp " + c.ToString() + "]";
 					}
 					break;
 				case 0x21:
-					s = gStr(0xf3, instance);
+					s = GS.GStr(0xf3, instance);
 					break;
 				case 0x22:
-					s = gStr(0xf9, instance);
+					s = GS.GStr(0xf9, instance);
 					break;
 				case 0x23:
-					s = gStr(0xf5, instance);
+					s = GS.GStr(0xf5, instance);
 					break;
 				case 0x27:
 				case 0x28:
-					s = gStr(0xfc, instance);
+					s = GS.GStr(0xfc, instance);
 					break;
 			}
 			if (s == null) s = "0x" + SimPe.Helper.HexString(instance);
 
 			return doidName + (s.Length > 0 ? " " + s : "");
-		}
-
-
-		private string gStr(uint instance, int sid)
-		{
-			ArrayList al = GlobalStr.gStr(instance);
-			return (al == null) ? null : (string)al[sid];
 		}
 
 		private string readBcon(uint instance, int bid)
@@ -284,7 +275,7 @@ namespace pjse.BhavNameWizards
 		public override bool isPrimitive { get { return true; } }
 
 		public override Bhav LoadBHAV() { return null; }
-		public override string ShortName { get { return GlobalStr.PrimitiveName(instruction.OpCode); } }
+		public override string ShortName { get { return GS.PrimitiveName(instruction.OpCode); } }
 	}
 
 
@@ -298,7 +289,8 @@ namespace pjse.BhavNameWizards
 		public override bool isBhav { get { return true; } }
 		public override string ShortName
 		{
-			get {
+			get 
+			{
 				Bhav b = LoadBHAV();
 				return ((b != null) ? b.FileName : "(BHAV not found)") + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
 			}
@@ -348,5 +340,4 @@ namespace pjse.BhavNameWizards
 		}
 
 	}
-
 }

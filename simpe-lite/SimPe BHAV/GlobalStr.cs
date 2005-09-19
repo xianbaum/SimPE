@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Ambertation                                     *
- *   quaxi@ambertation.de                                                  *
+ *   peter@drealm.info                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -32,12 +32,12 @@ namespace pjse
 	/// <summary>
 	/// Provides an Alias Matching a SimID with it's Name
 	/// </summary>
-	public class GlobalStr
+	public class GS
 	{
 		/// <summary>
 		/// Creates the List for the specific Folder
 		/// </summary>
-		public GlobalStr() { }
+		public GS() { }
 
 
 		public static ArrayList gStr(uint instance)
@@ -46,6 +46,18 @@ namespace pjse
 			if (gString[instance] == null) LoadData(instance);
 			return (ArrayList)gString[instance];
 		}
+
+		public static ArrayList gStr(SF instance) { return gStr((uint)instance); }
+
+		public static string GStr(uint instance, ushort sid)
+		{
+			if (gStr(instance) != null && sid < gStr(instance).Count)
+				return (string)gStr(instance)[sid];
+			else
+				return "[" + SimPe.Localization.Manager.GetString("unk") + ": 0x" + SimPe.Helper.HexString(sid) + "]";
+		}
+
+		public static string GStr(SF instance, ushort sid) { return GStr((uint)instance, sid); }
 
 
 		private static SimPe.Interfaces.Files.IPackageFile gStrPackage = null;
@@ -93,88 +105,39 @@ namespace pjse
 		}
 
 
-		/// <summary>
-		/// Returns the names of the Data in an Expression Primitive
-		/// </summary>
-		public static ArrayList StoredDataNames { get { return gStr(0x84); } }
+		public static string DataOwnerName(byte owner) { return GStr(SF.DataOwners, owner); }
 
-		/// <summary>
-		/// Returns the the name of a Data Owner
-		/// </summary>
-		/// <param name="owner">Numerical Value of the Owner</param>
-		/// <returns>The Name</returns>
-		public static string DataOwnerName(byte owner)
+		public static string MotiveName(ushort nr) { return GStr(SF.Motives, nr); }
+
+		public static string OperatorName(byte op) { return GStr(SF.Operators, op); }
+
+		public static string PrimitiveName(ushort opcode) { return GStr(SF.Primitives, opcode); }
+
+
+		public enum SF : uint
 		{
-			if (StoredDataNames != null && owner < StoredDataNames.Count)
-				return (string)StoredDataNames[owner];
-			else
-				return "[" + SimPe.Localization.Manager.GetString("unk") + ": 0x" + SimPe.Helper.HexString(owner) + "]";
+			DataOwners = 0x84,
+			Motives = 0x86,
+			Operators = 0x88,
+			Primitives = 0x8b,
+			Generics = 0xdc,
+			OBJDDescs = 0xcc,
+			OBJFDescs = 0xf5,
+			gWallAdjFlags = 0xd0,
+			gFlags1 = 0x8e,
+			gHiddenFlags = 0x200,
+			gFlags2 = 0xd6,
+			gPlacementFlags = 0xca,
+			gMoveFlags = 0xcb,
+			gExclPlacementFlags = 0xfb,
+			gWallCutoutFlags = 0xfd,
+			gCensorFlags = 0xb2,
+			gGhostFlags = 0x201,
+			gBodyFlags = 0x8f,
+			gSelectionFlags = 0x202,
+			gPersonFlags = 0x204,
+			gRoomSortFlags = 0xcd,
+			gFunctionSortFlags = 0xce,
 		}
-
-
-		/// <summary>
-		/// Returns the List of known Primitives
-		/// </summary>
-		public static ArrayList StoredMotives { get { return gStr(0x86); } }
-
-		/// <summary>
-		/// Returns the the name of a Motive
-		/// </summary>
-		/// <param name="owner">Numerical Value</param>
-		/// <returns>The Name</returns>
-		public static string MotiveName(ushort nr)
-		{
-			if (StoredMotives != null && nr < StoredMotives.Count)
-				return (string)StoredMotives[nr];
-			else
-				return "[" + SimPe.Localization.Manager.GetString("unk") + ": 0x" + SimPe.Helper.HexString(nr) + "]";
-		}
-
-
-		/// <summary>
-		/// Returns the names Operatores in Expression Primitives
-		/// </summary>
-		public static ArrayList StoredExpressionOperators { get { return gStr(0x88); } }
-
-		/// <summary>
-		/// Returns the the name of the Expression Operator
-		/// </summary>
-		/// <param name="op">Numerical Value of the Operator</param>
-		/// <returns>The Name of The Operator</returns>
-		public static string FindExpressionOperator(byte op)
-		{
-			if (StoredExpressionOperators != null && op < StoredExpressionOperators.Count)
-				return (string)StoredExpressionOperators[op];
-			else
-				return "[" + SimPe.Localization.Manager.GetString("unk") + ": 0x" + SimPe.Helper.HexString(op) + "]";
-		}		
-
-
-		/// <summary>
-		/// Returns the List of known Primitives
-		/// </summary>
-		public static ArrayList StoredPrimitives { get { return gStr(0x8B); } }
-
-
-		public static string PrimitiveName(ushort opcode)
-		{
-			if (StoredPrimitives != null && opcode < StoredPrimitives.Count)
-				return (string)StoredPrimitives[opcode];
-			else
-				return "[" + SimPe.Localization.Manager.GetString("unk") + ": 0x" + SimPe.Helper.HexString(opcode) + "]";
-		}
-
-		/// <summary>
-		/// Returns the the name of all Fileds in an Objd File
-		/// </summary>
-		/// <param name="type">Language ID -- ignored</param>
-		public static ArrayList OBJDDescription(ushort type) { return gStr(0xCC); }
-
-
-		/// <summary>
-		/// Returns a list of all known Objf Lines
-		/// </summary>
-		public static ArrayList StoredObjfLines { get { return gStr(0xF5); } }
-	
 	}
 }

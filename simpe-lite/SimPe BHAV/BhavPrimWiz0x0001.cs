@@ -76,11 +76,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 			byte operand0 = inst.Operands[0];
 
 			this.cbGenericSimsCall.Items.Clear();
-			for (byte i = 0; i < PrimWiz0x0001.Length; i++)
+			for (byte i = 0; i < GS.gStr(GS.SF.Generics).Count; i++)
 				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + (new PrimWiz0x0001(i)).VeryShortName);
 			this.lbGenericSimsCallparms.Text = "Should never see this";
 
-			if (operand0 < PrimWiz0x0001.Length)
+			if (operand0 < this.cbGenericSimsCall.Items.Count)
 				this.cbGenericSimsCall.SelectedIndex = operand0;
 			else
 				this.cbGenericSimsCall.SelectedIndex = -1;
@@ -227,8 +227,7 @@ namespace pjse.BhavNameWizards
 			get
 			{
 				if (this.instruction == null && instruction.Operands == null) return "";
-				if (instruction.Operands[0] >= parms.Length) return "Unknown operand 0: 0x" + SimPe.Helper.HexString(instruction.Operands[0]);
-				return op0names[instruction.Operands[0]];
+				return GS.GStr(GS.SF.Generics, instruction.Operands[0]);
 			}
 		}
 
@@ -238,8 +237,7 @@ namespace pjse.BhavNameWizards
 			{
 				string s = "[generic]";
 				if (this.instruction == null && instruction.Operands == null) return s;
-				if (instruction.Operands[0] >= parms.Length) return s + " Unknown operand 0: 0x" + SimPe.Helper.HexString(instruction.Operands[0]);
-				return s + " " + op0names[instruction.Operands[0]];
+				return s + " " + GS.GStr(GS.SF.Generics, instruction.Operands[0]);
 			}
 		}
 
@@ -247,7 +245,8 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				if ((this.instruction == null && instruction.Operands == null) || (instruction.Operands[0] >= parms.Length)) return ShortName;
+				if (instruction.Operands[0] >= parms.Length) return ShortName;
+
 				string s = parms[instruction.Operands[0]].Trim();
 				if (s.Equals("")) s = "no args";
 				return ShortName + " (" + s + ")";
@@ -255,68 +254,6 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		internal static int Length { get { return op0names.Length; } }
-
-		#region genericSimsCall strings
-		// taken from DisASim2 by Shy - public domain
-		private static string[] op0names =
-			{
-				"Exit Lot" // 0x00
-				,"center view on stack object"
-				,"set action icon to stack object"
-				,"uncenter view"
-				,"add to family" // 0x04
-				,"combine assets"
-				,"remove from family"
-				,"depracated - make new neighbor"
-				,"family tutorial complete" // 0x08
-				,"architecture tutorial complete"
-				,"disable build and buy"
-				,"enable build and buy"
-				,"get distance to camera" // 0x0c
-				,"abort interactions"
-				,"get house radio station"
-				,"get my routing footprint"
-				,"change normal outfit" // 0x10
-				,"Swap Lot"
-				,"Set Simulator Speed"
-				,"Swap to neighbor's lot"
-				,"Swap to family's lot" // 0x14
-				,"Add Child to Family Relationship Array"
-				,"Add Spouse to Family Relationship Array"
-				,"Remove From Family Relationship Array"
-				,"Preload New Sim Age" //0x18
-				,"Set Selected Sim"
-				,"Start Lot Transition"
-				,"Get Number of community lots"
-				,"Perform Money Effect" // 0x1c
-				,"Preload Visitor"
-				,"Preload Clothing"
-				,"Preload Object"
-				,"Get Outfits Information" // 0x20
-				,"Update Footprint"
-				,"Get Distance Between Lots"
-				,"Get Zoning Type"
-				,"GetID of Family In Lot" // 0x24
-				,"Lot Transition Done"
-				,"Unlink Character"
-				,"Force Recalc of Wants"
-				,"Game State Transition Control" // 0x28
-				,"Facial Overlay Zits Toggle"
-				,"Sim Fitness Update"
-				,"Is It Ok to Idle Here"
-				,"Hide / Unhide Puck" // 0x2c
-				,"Copy Last Name"
-				,"Set Sim Hair Override"
-				,"Clear Sim Hair Override"
-				,"Get Remapped Neighbor Id" // 0x30
-				,"Can Change Footprint?"
-				,"Extract Money From other Lot"
-				,"Show Info On Lot Loading Screen"
-				,"Wall in Front?" // 0x34
-				,"Set Facial Overlay State"
-			};
-		#endregion
 		#region genericSimsCall param descriptions
 		// taken from DisASim2 by Shy - public domain
 		private static string[] parms =

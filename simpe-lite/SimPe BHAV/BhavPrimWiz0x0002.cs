@@ -43,9 +43,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		private System.Windows.Forms.ComboBox cboperand;
 		private System.Windows.Forms.TextBox tbval1;
 		private System.Windows.Forms.TextBox tbval2;
-		private System.Windows.Forms.ComboBox cbmotiv1;
-		private System.Windows.Forms.ComboBox cbmotiv2;
 		internal System.Windows.Forms.Panel pnWiz0x0002;
+		private System.Windows.Forms.ComboBox cbPicker1;
+		private System.Windows.Forms.ComboBox cbPicker2;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -130,21 +130,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void FormLoad()
 		{
-			if (SimPe.Plugin.WrapperFactory.Provider==null) return;
+			this.cboperand.Items.Clear();
+			this.cboperand.Items.AddRange(GS.gStr(GS.SF.Operators).ToArray());
 
-			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredExpressionOperators)
-				this.cboperand.Items.Add(s);
-
-			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredDataNames) 
-			{
-				this.cbtype1.Items.Add(s);
-				this.cbtype2.Items.Add(s);
-			}
-
-			foreach (string s in SimPe.Plugin.WrapperFactory.Provider.OpcodeProvider.StoredMotives) 
-			{
-				this.cbmotiv1.Items.Add(s);
-			}
+			this.cbtype1.Items.Clear();
+			this.cbtype1.Items.AddRange(GS.gStr(GS.SF.DataOwners).ToArray());
+			this.cbtype2.Items.Clear();
+			this.cbtype2.Items.AddRange(GS.gStr(GS.SF.DataOwners).ToArray());
 		}
 
 		#endregion
@@ -157,8 +149,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		private void InitializeComponent()
 		{
 			this.pnWiz0x0002 = new System.Windows.Forms.Panel();
-			this.cbmotiv2 = new System.Windows.Forms.ComboBox();
-			this.cbmotiv1 = new System.Windows.Forms.ComboBox();
+			this.cbPicker2 = new System.Windows.Forms.ComboBox();
+			this.cbPicker1 = new System.Windows.Forms.ComboBox();
 			this.cboperand = new System.Windows.Forms.ComboBox();
 			this.tbval2 = new System.Windows.Forms.TextBox();
 			this.cbtype2 = new System.Windows.Forms.ComboBox();
@@ -169,8 +161,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			// 
 			// pnWiz0x0002
 			// 
-			this.pnWiz0x0002.Controls.Add(this.cbmotiv2);
-			this.pnWiz0x0002.Controls.Add(this.cbmotiv1);
+			this.pnWiz0x0002.Controls.Add(this.cbPicker2);
+			this.pnWiz0x0002.Controls.Add(this.cbPicker1);
 			this.pnWiz0x0002.Controls.Add(this.cboperand);
 			this.pnWiz0x0002.Controls.Add(this.tbval2);
 			this.pnWiz0x0002.Controls.Add(this.cbtype2);
@@ -182,27 +174,27 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.pnWiz0x0002.Size = new System.Drawing.Size(464, 72);
 			this.pnWiz0x0002.TabIndex = 0;
 			// 
-			// cbmotiv2
+			// cbPicker2
 			// 
-			this.cbmotiv2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbmotiv2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmotiv2.Location = new System.Drawing.Point(352, 50);
-			this.cbmotiv2.Name = "cbmotiv2";
-			this.cbmotiv2.Size = new System.Drawing.Size(112, 21);
-			this.cbmotiv2.TabIndex = 6;
-			this.cbmotiv2.Visible = false;
-			this.cbmotiv2.SelectedIndexChanged += new System.EventHandler(this.Motive2Changed);
+			this.cbPicker2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbPicker2.Location = new System.Drawing.Point(352, 50);
+			this.cbPicker2.Name = "cbPicker2";
+			this.cbPicker2.Size = new System.Drawing.Size(112, 21);
+			this.cbPicker2.TabIndex = 5;
+			this.cbPicker2.Visible = false;
+			this.cbPicker2.SelectedIndexChanged += new System.EventHandler(this.Motive2Changed);
 			// 
-			// cbmotiv1
+			// cbPicker1
 			// 
-			this.cbmotiv1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbmotiv1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmotiv1.Location = new System.Drawing.Point(352, 0);
-			this.cbmotiv1.Name = "cbmotiv1";
-			this.cbmotiv1.Size = new System.Drawing.Size(112, 21);
-			this.cbmotiv1.TabIndex = 5;
-			this.cbmotiv1.Visible = false;
-			this.cbmotiv1.SelectedIndexChanged += new System.EventHandler(this.Motive1Changed);
+			this.cbPicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbPicker1.Location = new System.Drawing.Point(352, 0);
+			this.cbPicker1.Name = "cbPicker1";
+			this.cbPicker1.Size = new System.Drawing.Size(112, 21);
+			this.cbPicker1.TabIndex = 2;
+			this.cbPicker1.Visible = false;
+			this.cbPicker1.SelectedIndexChanged += new System.EventHandler(this.Motive1Changed);
 			// 
 			// cboperand
 			// 
@@ -212,7 +204,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cboperand.Location = new System.Drawing.Point(0, 26);
 			this.cboperand.Name = "cboperand";
 			this.cboperand.Size = new System.Drawing.Size(464, 21);
-			this.cboperand.TabIndex = 4;
+			this.cboperand.TabIndex = 3;
 			// 
 			// tbval2
 			// 
@@ -220,7 +212,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.tbval2.Location = new System.Drawing.Point(352, 50);
 			this.tbval2.Name = "tbval2";
 			this.tbval2.Size = new System.Drawing.Size(112, 21);
-			this.tbval2.TabIndex = 3;
+			this.tbval2.TabIndex = 5;
 			this.tbval2.Text = "";
 			// 
 			// cbtype2
@@ -231,7 +223,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbtype2.Location = new System.Drawing.Point(0, 50);
 			this.cbtype2.Name = "cbtype2";
 			this.cbtype2.Size = new System.Drawing.Size(352, 21);
-			this.cbtype2.TabIndex = 2;
+			this.cbtype2.TabIndex = 4;
 			this.cbtype2.SelectedIndexChanged += new System.EventHandler(this.SelectVal2Name);
 			// 
 			// tbval1
@@ -240,7 +232,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.tbval1.Location = new System.Drawing.Point(352, 0);
 			this.tbval1.Name = "tbval1";
 			this.tbval1.Size = new System.Drawing.Size(112, 21);
-			this.tbval1.TabIndex = 1;
+			this.tbval1.TabIndex = 2;
 			this.tbval1.Text = "";
 			// 
 			// cbtype1
@@ -251,7 +243,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbtype1.Location = new System.Drawing.Point(0, 0);
 			this.cbtype1.Name = "cbtype1";
 			this.cbtype1.Size = new System.Drawing.Size(352, 21);
-			this.cbtype1.TabIndex = 0;
+			this.cbtype1.TabIndex = 1;
 			this.cbtype1.SelectedIndexChanged += new System.EventHandler(this.SelectVal1Name);
 			// 
 			// UI
@@ -270,8 +262,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void SelectVal1Name(object sender, System.EventArgs e)
 		{
-			this.cbmotiv1.Visible = (cbtype1.SelectedIndex==0x0E);
-			this.tbval1.Visible = !cbmotiv1.Visible;
+			this.cbPicker1.Visible = (cbtype1.SelectedIndex==0x0E);
+			this.tbval1.Visible = !cbPicker1.Visible;
 
 			//constant
 			if (cbtype1.SelectedIndex==0x1a) 
@@ -290,8 +282,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			{
 				try 
 				{
+					this.cbPicker1.Items.Clear();
+					this.cbPicker1.Items.AddRange(GS.gStr(GS.SF.Motives).ToArray());
 					ushort val = Convert.ToUInt16(tbval1.Text, 16);
-					this.cbmotiv1.SelectedIndex = val;
+					this.cbPicker1.SelectedIndex = val;
 				} 
 				catch (Exception) {}
 			}
@@ -315,8 +309,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void SelectVal2Name(object sender, System.EventArgs e)
 		{
-			this.cbmotiv2.Visible = (cbtype2.SelectedIndex==0x0E);
-			this.tbval2.Visible = !cbmotiv2.Visible;
+			this.cbPicker2.Visible = (cbtype2.SelectedIndex==0x0E);
+			this.tbval2.Visible = !cbPicker2.Visible;
 			//constant
 			if (cbtype2.SelectedIndex==0x1a) 
 			{
@@ -334,8 +328,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			{
 				try 
 				{
+					this.cbPicker2.Items.Clear();
+					this.cbPicker2.Items.AddRange(GS.gStr(GS.SF.Motives).ToArray());
 					ushort val = Convert.ToUInt16(tbval2.Text, 16);
-					this.cbmotiv2.SelectedIndex = val;
+					this.cbPicker2.SelectedIndex = val;
 				} 
 				catch (Exception) {}
 			}
@@ -359,12 +355,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void Motive1Changed(object sender, System.EventArgs e)
 		{
-			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbmotiv1.SelectedIndex);
+			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker1.SelectedIndex);
 		}
 
 		private void Motive2Changed(object sender, System.EventArgs e)
 		{
-			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbmotiv2.SelectedIndex);
+			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker2.SelectedIndex);
 		}
 
 
@@ -436,8 +432,7 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				string s = OpcodeName(instruction.Parent, instruction.OpCode, instruction.Operands);
-				return parser(instruction.Operands);
+				return parser(instruction);
 			}
 		}
 
@@ -451,28 +446,6 @@ namespace pjse.BhavNameWizards
 			}
 		}
 
-
-		private string OpcodeName(Bhav parent, ushort opcode, wrappedByteArray operands)
-		{			
-			if (parent==null || operands==null) return SimPe.Localization.Manager.GetString("Unknown");
-
-			string obj1 = parent.Opcodes.FindExpressionDataOwners(operands[6]);
-			ushort op1 = ToShort(operands[0], operands[1]);
-			string val1 = " 0x" + SimPe.Helper.HexString(op1);
-			string obj2 = parent.Opcodes.FindExpressionDataOwners(operands[7]); 
-			ushort op2 = ToShort(operands[2], operands[3]);
-			string val2 = " 0x" + SimPe.Helper.HexString(op2);
-			string name = parent.Opcodes.FindExpressionOperator(operands[5]);
-
-			if (obj1.ToLower()=="my motives") val1 = " "+parent.Opcodes.FindMotives(op1)+ " ("+val1.Trim()+")";
-			if (obj2.ToLower()=="my motives") val2 = " "+parent.Opcodes.FindMotives(op2)+ " ("+val2.Trim()+")";
-
-			if (obj1.ToLower()=="constant value") val1 = " 0x"+SimPe.Helper.HexString(ConstantValueParser(op1)[0])+":0x"+SimPe.Helper.HexString((byte)ConstantValueParser(op1)[1]);
-			if (obj2.ToLower()=="constant value") val2 = " 0x"+SimPe.Helper.HexString(ConstantValueParser(op2)[0])+":0x"+SimPe.Helper.HexString((byte)ConstantValueParser(op2)[1]);
-				
-
-			return obj1+val1+" "+name+" "+obj2+val2;
-		}
 
 		internal static ushort[] ConstantValueParser(ushort val) 
 		{
@@ -522,296 +495,12 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		#region gOperators
-		static string[] gOperators =
-	{
-		">" // 0x00
-		,"<"
-		,"=="
-		,"+="
-		,"-=" // 0x04
-		,":="
-		,"*="
-		,"/="
-		,"Test Flag" // 0x08
-		,"Set Flag"
-		,"Clear Flag"
-		,"++ and <"
-		,"mod=" // 0x0c
-		,"and="
-		,">="
-		,"<="
-		,"!=" // 0x10
-		,"-- and >"
-		,"or="
-		,"xor="
-		,":= abs()" // 0x14
-		,":= (UInt32)"
-	};
-		#endregion
-		#region gAllowedHeightFlags
-		static string[] gAllowedHeightFlags =
+		private string parser(Instruction i)
 		{
-			"Unknown"
-			,"undefined"
-			,"ground"
-			,"low table"
-			,"table"
-			,"on counter"
-			,"non-standard"
-			,"hand"
-			,"sitting"
-			,"end table"
-			,"in counter"
-			,"under counter"
-			,"decorative"
-		};
-		#endregion
-		#region gWallAdjFlags
-		static string[] gWallAdjFlags =
-		{
-			"Unknown"
-			,"wall on left = 1"
-			,"wall on right = 2"
-			,"wall in front = 3"
-			,"wall behind = 4"
-			,"wall above left = 5"
-			,"wall above right = 6"
-		};
-		#endregion
-		#region gFlags1
-		static string[] gFlags1 =
-		{
-			"Unknown"
-			,"can be stepped over"
-			,"allow object intersection"
-			,"allow object and person intersection"
-			,"can walk"
-			,"allow person intersection"
-			,"in use"
-			,"notified by idle for input"
-			,"Do NOT Use Maya Model Footprint"
-			,"chair facing"
-			,"burning"
-			,"hide for cutaway"
-			,"unused - was fireproof"
-			,"Remove Floor"
-			,"Add Floor if Required"
-			,"Hide Floor"
-			,"Lightning Strikeable"
-		};
-		#endregion
-		#region gWallFlags
-		static string[] gWallFlags =
-		{
-			"Unknown"
-			,"wall required in front"
-			,"wall required on right"
-			,"wall required behind"
-			,"wall required on left"
-			,"front-right facing wall required"
-			,"front-right facing wall allowed"
-			,"front-left facing wall required"
-			,"front-left facing wall allowed"
-			,"wall not allowed in front"
-			,"wall not allowed on right"
-			,"wall not allowed behind"
-			,"wall not allowed on left"
-			,"fence required"
-			,"fence arch prohibited"
-		};
-		#endregion
-		#region gHiddenFlags
-		static string[] gHiddenFlags =
-		{
-			"Unknown"
-			,"Hide Model(s)"
-			,"Hide Sounds"
-			,"Hide Effects"
-			,"Hide Attached Lights"
-			,"Hide Vox"
-		};
-		#endregion
-		#region gFlags2
-		static string[] gFlags2 =
-		{
-			"Unknown"
-			,"(unused)Can Break"
-			,"(unused)Can Die"
-			,"Can Be Repossessed"
-			,"Obstructs View"
-			,"(unused)Floats"
-			,"Burns"
-			,"(unused)Fixable"
-			,"Cannot Be Stolen"
-			,"(unused)Generates Heat"
-			,"Cine Cam Visible"
-			,"(unused)Generates Light"
-			,"(unused)Can Get Dirty"
-			,"(unused)Contributes To Asthetic"
-			,"Cannot be Billed"
-			,"Low Small Object (sim can idle close to it)"
-			,"Architectural Door"
-		};
-		#endregion
-		#region gHeightFlags
-		static string[] gHeightFlags =
-		{
-			"Unknown"
-			,"allow on floor"
-			,"allow on terrain"
-			,"allow under water"
-			,"forced to slot orientation"
-			,"allow door intersection (unused)"
-			,"allow window intersection (unused)"
-			,"allow on locked tile"
-			,"detached from floor"
-			,"allow on slope"
-			,"allow in air"
-			,"allow wall intersection"
-			,"allow in pool"
-			,"attached to ceiling"
-			,"allow on fence post"
-			,"allow on water surface"
-			,"allow roof intersection"
-		};
-		#endregion
-		#region gMoveFlags
-		static string[] gMoveFlags =
-		{
-			"Unknown"
-			,"sims can move it"
-			,"players can move it"
-			,"self propelled"
-			,"players can delete it"
-			,"stays after evict"
-			,"hand tool cannot move it"
-			,"hand tool cannot delete it"
-		};
-		#endregion
-		#region gPlacementFlags
-		static string[] gPlacementFlags =
-		{
-			"Unknown"
-			,"floor"
-			,"wall"
-			,"no other object of same type"
-			,"ceiling"
-		};
-		#endregion
-		#region gWallCutoutFlags
-		static string[] gWallCutoutFlags =
-		{
-			"Unknown"
-			,"front"
-			,"right"
-			,"behind"
-			,"left"
-			,"diagonal facing front left"
-			,"diagonal facing back right"
-			,"diagonal facing back left"
-			,"diagonal facing front right"
-		};
-		#endregion
-		#region gCensorFlags
-		static string[] gCensorFlags =
-		{
-			"Unknown"
-			,"pelvis"
-			,"spine if female"
-			,"head"
-			,"left hand"
-			,"right hand"
-			,"left foot"
-			,"right foot"
-			,"Full Body"
-		};
-		#endregion
-		#region gGhostFlags
-		static string[] gGhostFlags =
-		{
-			"Unknown"
-			,"IsGhost"
-			,"CanPassThroughObjects"
-			,"CanPassThroughWalls"
-			,"CanPassThroughPeople"
-			,"IgnoreTraversalCosts"
-		};
-		#endregion
-		#region gBodyFlags
-		static string[] gBodyFlags =
-		{
-			"Unknown"
-			,"Fat"
-			,"Pregnant - Full Show"
-			,"Pregnant - Half Way"
-			,"Pregnant - Not Showing"
-			,"Fit"
-			,"6 unused"
-			,"7 unused"
-			,"8 unused"
-			,"9 unused"
-			,"10 unused"
-			,"11 unused"
-			,"12 unused"
-			,"13 unused"
-			,"14 unused"
-			,"15 unused"
-			,"16 unused"
-		};
-		#endregion
-		#region gSelectionFlags
-		static string[] gSelectionFlags =
-		{
-			"Unknown"
-			,"Selectable(Shown in Skewer)"
-			,"Not Selectable"
-			,"Hide Relationships"
-		};
-		#endregion
-		#region gPersonFlags
-		static string[] gPersonFlags =
-		{
-			"Unknown"
-			,"ContinueSimulatingWhilePresent"
-			,"CarryIdle_OkToMove"
-		};
-		#endregion
-		#region gRoomSortFlags
-		static string[] gRoomSortFlags =
-		{
-			"Unknown"
-			,"kitchen"
-			,"bedroom"
-			,"bathroom"
-			,"family room"
-			,"outside"
-			,"dining room"
-			,"miscellaneous"
-			,"study"
-		};
-		#endregion
-		#region gFunctionSortFlags
-		static string[] gFunctionSortFlags =
-		{
-			"Unknown"
-			,"Comfort"
-			,"Surfaces"
-			,"Appliances"
-			,"Electronics"
-			,"Plumbing"
-			,"Decorative"
-			,"General (Misc)"
-			,"Lighting"
-			,"Hobbies"
-			,"Aspiration Rewards"
-			,"Career Rewards"
-		};
-		#endregion
+			byte[] operands = new byte[16];
+			((byte[])i.Operands).CopyTo(operands, 0);
+			((byte[])i.Reserved1).CopyTo(operands, 8);
 
-
-		private string parser(wrappedByteArray operands)
-		{
 			byte lhs_data_owner = operands[6]; // c2
 			byte rhs_data_owner = operands[7]; // b[x+7]
 			ushort lhs_value_word = (ushort)(operands[0] + (256 * operands[1])); // w1
@@ -851,7 +540,7 @@ namespace pjse.BhavNameWizards
 			}
 #endif
 			s += dataOwner(lhs_data_owner, lhs_value_word);
-			s += " " + gOperators[_operator] + " ";
+			s += " " + GS.OperatorName(_operator) + " ";
 
 			if (_operator >= 8 && _operator <= 10) // Flag operation
 			{
@@ -863,16 +552,14 @@ namespace pjse.BhavNameWizards
 						case 0x04: // 0x04 "Stack Object's"
 						switch(lhs_value_word)
 						{
-							case 0x04: s += gAllowedHeightFlags[rhs_value_word]; break;
-							case 0x05: s += gWallAdjFlags[rhs_value_word]; break;
-							case 0x08: s += gFlags1[rhs_value_word]; break;
-							case 0x0d: s += gWallFlags[rhs_value_word]; break;
-							case 0x22: s += gHiddenFlags[rhs_value_word]; break;
-							case 0x28: s += gFlags2[rhs_value_word]; break;
-							case 0x2a: s += gHeightFlags[rhs_value_word]; break;
-							case 0x2b: s += gMoveFlags[rhs_value_word]; break;
-							case 0x3f: s += gPlacementFlags[rhs_value_word]; break;
-							case 0x45: s += gWallCutoutFlags[rhs_value_word]; break;
+							case 0x05: s += GS.GStr(GS.SF.gWallAdjFlags, rhs_value_word); break;
+							case 0x08: s += GS.GStr(GS.SF.gFlags1, rhs_value_word); break;
+							case 0x22: s += GS.GStr(GS.SF.gHiddenFlags, rhs_value_word); break;
+							case 0x28: s += GS.GStr(GS.SF.gFlags2, rhs_value_word); break;
+							case 0x2a: s += GS.GStr(GS.SF.gPlacementFlags, rhs_value_word); break;
+							case 0x2b: s += GS.GStr(GS.SF.gMoveFlags, rhs_value_word); break;
+							case 0x3f: s += GS.GStr(GS.SF.gExclPlacementFlags, rhs_value_word); break;
+							case 0x45: s += GS.GStr(GS.SF.gWallCutoutFlags, rhs_value_word); break;
 						}
 							break;
 						case 0x12: // 0x12 "My Person Data"
@@ -880,11 +567,11 @@ namespace pjse.BhavNameWizards
 						case 0x20: // 0x20 "Neighbour's Person Data"
 						switch(lhs_value_word)
 						{
-							case 0x1e: s += gCensorFlags[rhs_value_word]; break;
-							case 0x44: s += gGhostFlags[rhs_value_word]; break;
-							case 0x51: s += gBodyFlags[rhs_value_word]; break;
-							case 0x9e: s += gSelectionFlags[rhs_value_word]; break;
-							case 0x9f: s += gPersonFlags[rhs_value_word]; break;
+							case 0x1e: s += GS.GStr(GS.SF.gCensorFlags, rhs_value_word); break;
+							case 0x44: s += GS.GStr(GS.SF.gGhostFlags, rhs_value_word); break;
+							case 0x51: s += GS.GStr(GS.SF.gBodyFlags, rhs_value_word); break;
+							case 0x9e: s += GS.GStr(GS.SF.gSelectionFlags, rhs_value_word); break;
+							case 0x9f: s += GS.GStr(GS.SF.gPersonFlags, rhs_value_word); break;
 						}
 							break;
 						case 0x15: // 0x15 "stack object's definition"
@@ -892,8 +579,8 @@ namespace pjse.BhavNameWizards
 						case 0x33: // 0x33 "Stack Object's Master Definition"
 						switch(lhs_value_word)
 						{
-							case 0x27: s += gRoomSortFlags[rhs_value_word]; break;
-							case 0x28: s += gFunctionSortFlags[rhs_value_word]; break;
+							case 0x27: s += GS.GStr(GS.SF.gRoomSortFlags, rhs_value_word); break;
+							case 0x28: s += GS.GStr(GS.SF.gFunctionSortFlags, rhs_value_word); break;
 						}
 							break;
 					}

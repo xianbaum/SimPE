@@ -25,6 +25,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
+using pjse.BhavNameWizards;
 
 namespace SimPe.PackedFiles.UserInterface
 {
@@ -91,7 +92,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (bhav == null) return -1;
 			if (bhav.Package == null) return -1;
-			if (bhav.Opcodes == null) return -1;
 
 			form.Cursor = Cursors.WaitCursor;
 			this.Cursor = Cursors.WaitCursor;
@@ -99,40 +99,44 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tcopcodes.TabPages.Clear();
 			if ((flags & Flags.Prims) != 0)
 			{
-				this.tcopcodes.TabPages.Add(this.tbprimitive);
-				Primitives(bhav);
-				if (this.lbprimitives.Items.Count == 0)
-					this.tcopcodes.TabPages.Remove(this.tbprimitive);
+				Primitives();
+				if (this.lbprimitives.Items.Count > 0)
+				{
+					this.tcopcodes.TabPages.Add(this.tbprimitive);
+					lbprimitives.SelectedIndex = 0;
+				}
 			}
 			if ((flags & Flags.Globals) != 0)
 			{
-				this.tcopcodes.TabPages.Add(this.tbglobal);
-				Globals(bhav);
-				if (this.lbglobal.Items.Count == 0)
-					this.tcopcodes.TabPages.Remove(this.tbglobal);
+				Globals(bhav, lbglobal);
+				if (this.lbglobal.Items.Count > 0)
+				{
+					this.tcopcodes.TabPages.Add(this.tbglobal);
+					lbglobal.SelectedIndex = 0;
+				}
 			}
 			if ((flags & Flags.Locals) != 0)
 			{
-				this.tcopcodes.TabPages.Add(this.tbprivate);
-				Locals(bhav);
-				if (this.lbprivate.Items.Count == 0)
-					this.tcopcodes.TabPages.Remove(this.tbprivate);
+				Locals(bhav, lbprivate);
+				if (this.lbprivate.Items.Count > 0)
+				{
+					this.tcopcodes.TabPages.Add(this.tbprivate);
+					lbprivate.SelectedIndex = 0;
+				}
 			}
 			if ((flags & Flags.Semis) != 0)
 			{
-				this.tcopcodes.TabPages.Add(this.tbsemi);
-				SemiGlobals(bhav);
-				if (this.lbsemi.Items.Count == 0)
-					this.tcopcodes.TabPages.Remove(this.tbsemi);
+				SemiGlobals(bhav, lbsemi);
+				if (this.lbsemi.Items.Count > 0)
+				{
+					this.tcopcodes.TabPages.Add(this.tbsemi);
+					lbsemi.SelectedIndex = 0;
+				}
 			}
-			
+			this.tcopcodes.SelectedIndex = this.tcopcodes.TabPages.Count - 1;
+
 			form.Cursor = Cursors.Default;
 			this.Cursor = Cursors.Default;
-
-			if (lbprimitives.Items.Count>0) lbprimitives.SelectedIndex = 0;
-			if (lbglobal.Items.Count>0) lbglobal.SelectedIndex = 0;
-			if (lbprivate.Items.Count>0) lbprivate.SelectedIndex = 0;
-			if (lbsemi.Items.Count>0) lbsemi.SelectedIndex = 0;
 
 			DialogResult dr = ShowDialog();
 			Close();
@@ -141,80 +145,72 @@ namespace SimPe.PackedFiles.UserInterface
 			switch(dr)
 			{
 				case System.Windows.Forms.DialogResult.OK:
-				case System.Windows.Forms.DialogResult.Yes:
-					if (this.tcopcodes.SelectedTab == this.tbprimitive)
-					{
-						if (lbprimitives.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprimitives.Items[lbprimitives.SelectedIndex]).Id;
-					}
-					else if (this.tcopcodes.SelectedTab == this.tbglobal)
-					{
-						if (lbglobal.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbglobal.Items[lbglobal.SelectedIndex]).Id;
-					}
-					else if (this.tcopcodes.SelectedTab == this.tbprivate)
-					{
-						if (lbprivate.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbprivate.Items[lbprivate.SelectedIndex]).Id;
-					}
-					else if (this.tcopcodes.SelectedTab == this.tbsemi)
-					{
-						if (lbsemi.SelectedIndex >= 0) opcode = (ushort)((SimPe.Data.Alias)lbsemi.Items[lbsemi.SelectedIndex]).Id;
-					}
+					if (this.tcopcodes.SelectedTab == this.tbprimitive && lbprimitives.SelectedIndex >= 0)
+						opcode = (ushort)((SimPe.Data.Alias)lbprimitives.Items[lbprimitives.SelectedIndex]).Id;
+					else if (this.tcopcodes.SelectedTab == this.tbglobal && lbglobal.SelectedIndex >= 0)
+						opcode = (ushort)((SimPe.Data.Alias)lbglobal.Items[lbglobal.SelectedIndex]).Id;
+					else if (this.tcopcodes.SelectedTab == this.tbprivate && lbprivate.SelectedIndex >= 0)
+						opcode = (ushort)((SimPe.Data.Alias)lbprivate.Items[lbprivate.SelectedIndex]).Id;
+					else if (this.tcopcodes.SelectedTab == this.tbsemi && lbsemi.SelectedIndex >= 0)
+						opcode = (ushort)((SimPe.Data.Alias)lbsemi.Items[lbsemi.SelectedIndex]).Id;
 					return opcode;
 				default:
 					return -1;
 			}
 		}
 
-		private void Primitives(Bhav wrapper)
+		private void Primitives()
 		{
 			if (this.lbprimitives.Items.Count != 0) return;
 
-			for (int i=0; i<wrapper.Opcodes.StoredPrimitives.Count; i++)
+			uint i = 0;
+			foreach (string s in pjse.GS.gStr(pjse.GS.SF.Primitives))
 			{
-				string name = (string)wrapper.Opcodes.StoredPrimitives[i];
-				if (!name.StartsWith("~"))
-				{
-					SimPe.Data.Alias a = new SimPe.Data.Alias((uint)i, name);
-					this.lbprimitives.Items.Add(a);
-				}
+				if (!s.StartsWith("~"))
+					this.lbprimitives.Items.Add(new SimPe.Data.Alias(i, s));
+				i++;
 			}
 		}
 
-		private void Globals(Bhav wrapper)
+		private void Globals(Bhav wrapper, ListBox list)
 		{
 			if (this.lbglobal.Items.Count != 0) return;
+			list.Items.Clear();
 
-			SimPe.Data.Alias a = pjse.BhavNameWizards.GlobalWiz.First(wrapper);
+			SimPe.Data.Alias a = GlobalWiz.First(wrapper);
 			while (a != null)
 			{
-				lbglobal.Items.Add(a);
-				a = pjse.BhavNameWizards.GlobalWiz.Next();
+				list.Items.Add(a);
+				a = GlobalWiz.Next();
 			}
 		}
 
-		private void Locals(Bhav wrapper)
+		private void Locals(Bhav wrapper, ListBox list)
 		{
-			this.lbprivate.Items.Clear();
+			list.Items.Clear();
 
-			SimPe.Data.Alias a = pjse.BhavNameWizards.LocalWiz.First(wrapper);
+			SimPe.Data.Alias a = LocalWiz.First(wrapper);
 			while (a != null)
 			{
-				lbprivate.Items.Add(a);
-				a = pjse.BhavNameWizards.LocalWiz.Next();
+				list.Items.Add(a);
+				a = LocalWiz.Next();
 			}
 		}
 
-		private void SemiGlobals(Bhav wrapper)
+		private void SemiGlobals(Bhav wrapper, ListBox list)
 		{
 			if (this.lbsemi.Items.Count != 0 && pjse.BhavNameWizards.SemiGlobalWiz.SameGroup(wrapper)) return;
 			this.lbsemi.Items.Clear();
 
-			SimPe.Data.Alias a = pjse.BhavNameWizards.SemiGlobalWiz.First(wrapper);
+			list.Items.Clear();
+
+			SimPe.Data.Alias a = SemiGlobalWiz.First(wrapper);
 			while (a != null)
 			{
-				lbsemi.Items.Add(a);
-				a = pjse.BhavNameWizards.SemiGlobalWiz.Next();
+				list.Items.Add(a);
+				a = SemiGlobalWiz.Next();
 			}
-			this.tbsemi.Text = pjse.BhavNameWizards.SemiGlobalWiz.SemiGroupName;
+			this.tbsemi.Text = SemiGlobalWiz.SemiGroupName;
 		}
 
 
@@ -290,7 +286,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbprimitives.Size = new System.Drawing.Size(368, 384);
 			this.lbprimitives.Sorted = true;
 			this.lbprimitives.TabIndex = 0;
-			this.lbprimitives.DoubleClick += new System.EventHandler(this.OK_Click);
 			// 
 			// tbglobal
 			// 
@@ -313,7 +308,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbglobal.Size = new System.Drawing.Size(368, 384);
 			this.lbglobal.Sorted = true;
 			this.lbglobal.TabIndex = 1;
-			this.lbglobal.DoubleClick += new System.EventHandler(this.OK_Click);
 			// 
 			// tbsemi
 			// 
@@ -336,7 +330,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbsemi.Size = new System.Drawing.Size(368, 384);
 			this.lbsemi.Sorted = true;
 			this.lbsemi.TabIndex = 1;
-			this.lbsemi.DoubleClick += new System.EventHandler(this.OK_Click);
 			// 
 			// tbprivate
 			// 
@@ -359,7 +352,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbprivate.Size = new System.Drawing.Size(368, 384);
 			this.lbprivate.Sorted = true;
 			this.lbprivate.TabIndex = 1;
-			this.lbprivate.DoubleClick += new System.EventHandler(this.OK_Click);
 			// 
 			// OK
 			// 
@@ -368,7 +360,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.OK.Size = new System.Drawing.Size(80, 24);
 			this.OK.TabIndex = 3;
 			this.OK.Text = "Okay";
-			this.OK.Click += new System.EventHandler(this.OK_Click);
 			// 
 			// Cancel
 			// 
@@ -377,9 +368,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Cancel.Name = "Cancel";
 			this.Cancel.TabIndex = 4;
 			this.Cancel.Text = "Cancel";
-			this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
 			// 
-			// BhavOpCodeWizUI
+			// BhavOpCodeWiz
 			// 
 			this.AcceptButton = this.OK;
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
@@ -390,9 +380,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Controls.Add(this.pnOpCode);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.Name = "BhavOpCodeWizUI";
+			this.Name = "BhavOpCodeWiz";
 			this.ShowInTaskbar = false;
-			this.Text = "BhavOpCodeWizUI";
+			this.Text = "Opcode Wizard";
 			this.pnOpCode.ResumeLayout(false);
 			this.tcopcodes.ResumeLayout(false);
 			this.tbprimitive.ResumeLayout(false);
@@ -403,19 +393,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 		#endregion
-
-		private void OK_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.Close();
-		}
-
-		private void Cancel_Click(object sender, System.EventArgs e)
-		{
-			this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.Close();
-		}
-
 
 	}
 

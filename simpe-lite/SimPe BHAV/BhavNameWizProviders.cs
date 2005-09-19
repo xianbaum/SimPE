@@ -49,9 +49,11 @@ namespace pjse.BhavNameWizards
 		private static ushort next = 0x0000;
 		public static SimPe.Data.Alias First(Bhav parent)
 		{
-			if (bhavs == null) Init(parent);
+			Init(parent);
+			next = 0x0000;
 			return Next();
 		}
+
 		public static SimPe.Data.Alias Next()
 		{
 			if (bhavs == null) return null;
@@ -69,9 +71,9 @@ namespace pjse.BhavNameWizards
 			return a;
 		}
 
-		private static void Init(Bhav parent)
+		public static void Init(Bhav parent)
 		{
-			next = 0x0000;
+			if (bhavs != null) return;
 
 			if (parent == null || parent.Opcodes == null || parent.FileDescriptor == null) return;
 
@@ -81,6 +83,8 @@ namespace pjse.BhavNameWizards
 			bhav.Package = parent.Package;
 			bhav.FileDescriptor = parent.FileDescriptor;
 
+			if (bhav.Opcodes.BasePackage == null)
+				bhav.Opcodes.LoadPackage();
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(SimPe.Data.MetaData.BHAV_FILE);
 			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
@@ -117,12 +121,15 @@ namespace pjse.BhavNameWizards
 
 		private static System.Collections.Hashtable bhavs = null;
 		private static ushort next = 0x0000;
+		private static SimPe.Interfaces.Files.IPackageFile lastPackage = null;
 		private static uint lastGroup = 0x00000000;
 		public static SimPe.Data.Alias First(Bhav parent)
 		{
 			Init(parent);
+			next = 0x0000;
 			return Next();
 		}
+
 		public static SimPe.Data.Alias Next()
 		{
 			if (bhavs == null) return null;
@@ -140,14 +147,21 @@ namespace pjse.BhavNameWizards
 			return a;
 		}
 
-		private static void Init(Bhav parent)
+		public static void Init(Bhav parent)
 		{
 			next = 0x0000;
 
 			if (parent == null || parent.Opcodes == null || parent.Package == null || parent.FileDescriptor == null) return;
-			if (lastGroup == parent.FileDescriptor.Group) return;
+			if (lastPackage != null && lastPackage == parent.Package && lastGroup == parent.FileDescriptor.Group && bhavs != null) return;
+
+			if (parent.FileDescriptor.Instance < 0x1000 || parent.FileDescriptor.Instance >= 0x2000) // editing a Global or SemiGlobal
+			{
+				bhavs = null;
+				return;
+			}
 
 			bhavs = new Hashtable();
+			lastPackage = parent.Package;
 			lastGroup = parent.FileDescriptor.Group;
 
 			Bhav bhav = new Bhav(parent.Opcodes);
@@ -157,7 +171,7 @@ namespace pjse.BhavNameWizards
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Package.FindFiles(SimPe.Data.MetaData.BHAV_FILE);
 			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
-				if (/*(pfd.Instance>=0x1000) && (pfd.Instance<0x2000) &&*/ (pfd.Group==parent.FileDescriptor.Group)) 
+				if (/*(pfd.Instance>=0x1000) && (pfd.Instance<0x2000) &&*/ (pfd.Group==lastGroup)) 
 				{
 					bhav.ProcessData(pfd, bhav.Package);
 					bhavs.Add(bhav.FileDescriptor.Instance, bhav.FileName);
@@ -214,6 +228,7 @@ namespace pjse.BhavNameWizards
 
 		private static System.Collections.Hashtable bhavs = null;
 		private static ushort next = 0x0000;
+		private static SimPe.Interfaces.Files.IPackageFile lastPackage = null;
 		private static uint lastSemiGroup = 0x00000000;
 		private static string semiGroupName = null;
 		public static string SemiGroupName { get { return semiGroupName; } }
@@ -222,20 +237,46 @@ namespace pjse.BhavNameWizards
 		{
 			if (parent == null || parent.Package == null || parent.FileDescriptor == null) return false;
 
-			SimPe.Interfaces.Files.IPackedFileDescriptor gpfd = 
-				parent.Package.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, parent.FileDescriptor.Group, 0x01);
-			if (gpfd == null) return false;
+			SimPe.Interfaces.Files.IPackageFile pkg = null;
+			uint group = 0x0;
 
-			Glob glob = new Glob();
-			glob.ProcessData(gpfd, parent.Package);
+			if (parent.FileDescriptor.Instance < 0x1000) // editing a Global
+			{
+				return false;
+			}
+			else if (parent.FileDescriptor.Instance >= 0x2000) // editing a Semi
+			{
+				pkg = parent.Package;
+				group = parent.FileDescriptor.Group;
+			}
+			else
+			{
+				SimPe.Interfaces.Files.IPackedFileDescriptor gpfd = 
+					parent.Package.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, parent.FileDescriptor.Group, 0x01);
+				if (gpfd == null)
+				{
+					return false;
+				}
 
-			return (lastSemiGroup == glob.SemiGlobalGroup);
+				Glob glob = new Glob();
+				glob.ProcessData(gpfd, parent.Package);
+
+				if (parent.Opcodes.BasePackage == null)
+					parent.Opcodes.LoadPackage();
+
+				pkg = parent.Opcodes.BasePackage;
+				group = glob.SemiGlobalGroup;
+			}
+
+			return (lastPackage == pkg && lastSemiGroup == group);
 		}
 		public static SimPe.Data.Alias First(Bhav parent)
 		{
-			if (bhavs == null || !SameGroup(parent)) Init(parent);
+			Init(parent);
+			next = 0x0000;
 			return Next();
 		}
+
 		public static SimPe.Data.Alias Next()
 		{
 			if (bhavs == null) return null;
@@ -253,37 +294,64 @@ namespace pjse.BhavNameWizards
 			return a;
 		}
 
-		private static void Init(Bhav parent)
+		public static void Init(Bhav parent)
 		{
-			next = 0x0000;
+			if (bhavs != null && SameGroup(parent)) return;
 
-			if (parent == null || parent.Package == null || parent.FileDescriptor == null) return;
+			if (parent == null || parent.Package == null || parent.FileDescriptor == null || parent.Opcodes == null) return;
 
-			SimPe.Interfaces.Files.IPackedFileDescriptor gpfd = 
-				parent.Package.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, parent.FileDescriptor.Group, 0x01);
-			if (gpfd == null) return;
+			SimPe.Interfaces.Files.IPackageFile pkg = null;
+			uint group = 0x0;
 
-			Glob glob = new Glob();
-			glob.ProcessData(gpfd, parent.Package);
+			if (parent.FileDescriptor.Instance < 0x1000) // editing a Global
+			{
+				bhavs = null;
+				return;
+			}
+			else if (parent.FileDescriptor.Instance >= 0x2000) // editing a Semi
+			{
+				pkg = parent.Package;
+				group = parent.FileDescriptor.Group;
+				semiGroupName = "SemiGlobals";
+			}
+			else
+			{
+				SimPe.Interfaces.Files.IPackedFileDescriptor gpfd = 
+					parent.Package.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, parent.FileDescriptor.Group, 0x01);
+				if (gpfd == null)
+				{
+					bhavs = null;
+					return;
+				}
 
-			if (lastSemiGroup == glob.SemiGlobalGroup) return;
+				Glob glob = new Glob();
+				glob.ProcessData(gpfd, parent.Package);
+
+				if (parent.Opcodes.BasePackage == null)
+					parent.Opcodes.LoadPackage();
+
+				pkg = parent.Opcodes.BasePackage;
+				group = glob.SemiGlobalGroup;
+				semiGroupName = glob.SemiGlobalName;
+			}
+
+
+			if (lastSemiGroup == group && lastPackage == pkg && bhavs != null) return;
 
 			bhavs = new Hashtable();
-			lastSemiGroup = glob.SemiGlobalGroup;
-			semiGroupName = glob.SemiGlobalName;
-
-			if (parent.Opcodes == null) return;
+			lastSemiGroup = group;
+			lastPackage = pkg;
 
 			Bhav bhav = new Bhav(parent.Opcodes);
 			bhav.Package = parent.Package;
 			bhav.FileDescriptor = parent.FileDescriptor;
 
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = bhav.Opcodes.BasePackage.FindFiles(SimPe.Data.MetaData.BHAV_FILE);
+			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(SimPe.Data.MetaData.BHAV_FILE);
 			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
 			{
 				if (/*(pfd.Instance>=0x2000) &&*/ (pfd.Group == lastSemiGroup))
 				{
-					bhav.ProcessData(pfd, bhav.Opcodes.BasePackage);
+					bhav.ProcessData(pfd, pkg);
 					bhavs.Add(bhav.FileDescriptor.Instance, bhav.FileName);
 				} 
 			}
@@ -296,7 +364,7 @@ namespace pjse.BhavNameWizards
 	{
 		public PrimWizDefault(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
 		public PrimWizDefault(Instruction i) : base(i) {}
-		public override string LongName { get { return ShortName; } }
+		public override string LongName { get { return ShortName + " (0x" + SimPe.Helper.HexString(instruction.OpCode) + ")"; } }
 
 	}
 
