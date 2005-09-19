@@ -180,7 +180,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			for (ushort m = 0; m < aMotiveLabels.Length; m++)
 			{
-				aMotiveLabels[m].Text = item.Opcodes.FindMotives(m);
+				aMotiveLabels[m].Text = pjse.GlobalStr.MotiveName(m);
 				aMotiveLabels[m].Left = ttabMotiveGroupUI1.Left - aMotiveLabels[m].Width - 4;
 			}
 

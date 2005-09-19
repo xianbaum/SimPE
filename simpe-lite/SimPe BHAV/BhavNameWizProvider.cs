@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections;
 using SimPe.PackedFiles.Wrapper;
 using pjse.BhavNameWizards;
 
@@ -117,8 +118,7 @@ namespace pjse
 		}
 		protected string dataOwner(byte doid, ushort instance)
 		{
-			string doidName = instruction.Parent.Opcodes.FindExpressionDataOwners(doid);
-			if (doidName == null) doidName = "[Unknown data owner: 0x" + SimPe.Helper.HexString(doid) + "] ";
+			string doidName = GlobalStr.DataOwnerName(doid);
 
 			string s = null;
 			switch (doid)
@@ -152,7 +152,7 @@ namespace pjse
 				case 0x0f:
 				case 0x1c:
 				case 0x1d:
-					s = "(" + instruction.Parent.Opcodes.FindMotives(instance) + ")";
+					s = "(0x" + SimPe.Helper.HexString((byte)instance) + " " + GlobalStr.MotiveName(instance) + ")";
 					break;
 				case 0x12:
 				case 0x13:
@@ -175,21 +175,21 @@ namespace pjse
 					int a = instance >> 13;            // x = aaabbbbb bccccccc
 					int b = (instance >> 7) & 0x3F;
 					int c = instance & 0x7F;
-					switch (a) 
-					{
-						case 0:             // private
-							b += 0x1000;
-							break;
-						case 1:             // semi-global
-							b += 0x2000;
-							break;
-						case 2:            // global
-							b += 0x100;
-							break;
-						default:
-							b += 0x140;
-							break;
-					}
+				switch (a) 
+				{
+					case 0:             // private
+						b += 0x1000;
+						break;
+					case 1:             // semi-global
+						b += 0x2000;
+						break;
+					case 2:            // global
+						b += 0x100;
+						break;
+					default:
+						b += 0x140;
+						break;
+				}
 					if (doid == 0x1a)
 					{
 						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":0x" + SimPe.Helper.HexString((byte)c)
@@ -197,7 +197,7 @@ namespace pjse
 					}
 					else
 					{
-						doidName = instruction.Parent.Opcodes.FindExpressionDataOwners(0x1a);
+						doidName = GlobalStr.DataOwnerName(0x1a);
 						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":[Temp " + c.ToString() + "]";
 					}
 					break;
@@ -221,32 +221,10 @@ namespace pjse
 		}
 
 
-		private string readStr(uint group, uint instance, int sid)
-		{
-			if (instruction.Parent == null || instruction.Parent.Package == null) return null;
-			SimPe.Interfaces.Files.IPackedFileDescriptor pfd =
-				instruction.Parent.Package.FindFile(SimPe.Data.MetaData.STRING_FILE, 0, group, instance);
-			if (pfd == null) return null;
-
-			Str s = new Str();
-			s.ProcessData(pfd, instruction.Parent.Package);
-			return s[1, sid].Title;
-		}
-
 		private string gStr(uint instance, int sid)
 		{
-			if (instruction.Parent == null || instruction.Parent.Package == null) return null;
-			instruction.Parent.Opcodes.LoadPackage();
-			if (instruction.Parent.Opcodes.BasePackage == null) return null;
-
-			SimPe.Interfaces.Files.IPackedFileDescriptor pfd =
-				instruction.Parent.Opcodes.BasePackage.FindFile(SimPe.Data.MetaData.STRING_FILE, 0, 0x7FE59FD0, instance);
-			if (pfd == null) return null;
-
-			Str s = new Str();
-			s.ProcessData(pfd, instruction.Parent.Opcodes.BasePackage);
-			StrItem si = s[1, sid];
-			return (si == null) ? null : si.Title;
+			ArrayList al = GlobalStr.gStr(instance);
+			return (al == null) ? null : (string)al[sid];
 		}
 
 		private string readBcon(uint instance, int bid)
@@ -288,66 +266,6 @@ namespace pjse
 			return ((short)bcon.Constants[bid]).ToString(); //"0x" + SimPe.Helper.HexString((ushort)bcon.Constants[bid]);
 		}
 
-
-#if UNDEF
-		#region data owner names
-		private string[] dataOwners =
-			{
-				"My Attribute" // 0x00
-				,"Stack Obj's Attribute"
-				,"My Semi Attribute"
-				,"My"
-				,"Stack Object's" // 0x04
-				,"Stack Object's Semi Attribute"
-				,"Global"
-				,"(Literal Value)"
-				,"Temp" // 0x08
-				,"param no"
-				,"Stack Object"
-				,"Temp"
-				,"check tree ad range" // 0x0c
-				,"stack obj's Temp"
-				,"my motives"
-				,"stack obj's motives"
-				,"stack object's slot" // 0x10
-				,"stack obj's motive"
-				,"my person data"
-				,"stack obj's person data"
-				,"my slot" // 0x14
-				,"stack object's definition"
-				,"stack obj attr [stack param]"
-				,"room [Temp 0]"
-				,"neighbor in stack object" // 0x18
-				,"Local"
-				,"Const"
-				,"Unused - Stack Object's Dynamic Sprite Flags Of Temp (Sims1)"
-				,"check tree ad personality var" // 0x1c
-				,"check tree ad min"
-				,"my person data"
-				,"stack obj's person data"
-				,"neighbor's person data" // 0x20
-				,"job data [Temp 0,1]"
-				,"neighborhood data"
-				,"stack object's function"
-				,"my type attr" // 0x24
-				,"stack obj's type attr"
-				,"Neighbor's Object Definition"
-				,"Temporary Token"
-				,"Stack Object's Temporary Token" // 0x28
-				,"My Object Array Iterator Index"
-				,"Stack Object's Object Array Iterator Index"
-				,"My Object Array Iterator Data"
-				,"Stack Object's Object Array Iterator Data" // 0x2c
-				,"My Object Array Element At Temp"
-				,"Stack Object's Object Array Element At Temp"
-				,"Const"
-				,"My Slot" // 0x30
-				,"Stack Object's Slot"
-				,"stack obj Semi attr [stack param]"
-				,"Stack Object's Master Definition"
-			};
-		#endregion
-#endif
 	}
 
 }
@@ -366,155 +284,7 @@ namespace pjse.BhavNameWizards
 		public override bool isPrimitive { get { return true; } }
 
 		public override Bhav LoadBHAV() { return null; }
-		public override string ShortName
-		{
-			get
-			{
-				string s = null;
-				if (instruction.Parent.Opcodes.StoredPrimitives != null &&
-					instruction.OpCode < instruction.Parent.Opcodes.StoredPrimitives.Count)
-					s = (string)instruction.Parent.Opcodes.StoredPrimitives[instruction.OpCode];
-				return (s == null ? "Unknown opcode" : s) + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
-			}
-		}
-#if UNDEF
-		public static int Length { get { return gPrims.Length; } }
-		public static string Name(int index)
-		{
-			return (index < 0 || index >= gPrims.Length) ? null : gPrims[index];
-		}
-		#region Primitive names
-		protected static string[] gPrims =
-			{
-				"Sleep" // 0x00
-				,"Generic Sims Call"
-				,"Expression"
-				,"Find Best Interaction"
-				,"~(old)Grab" // 0x04
-				,"~(old)Drop"
-				,"~(old)Change Suit"
-				,"Refresh"
-				,"Random Number" // 0x08
-				,"~(old)Burn"
-				,"Tutorial"
-				,"Get Distance To"
-				,"Get Direction To" // 0x0c
-				,"Push Interaction"
-				,"Find Best Object for Function"
-				,"Break Point"
-				,"Find Location For" // 0x10
-				,"Idle for Input"
-				,"Remove Object Instance"
-				,"Make New Character"
-				,"Run Functional Tree" // 0x14
-				,"~Show String ( UNUSED )"
-				,"Turn Body Towards"
-				,"Play / Stop Sound Event"
-				,"~UNUSED (was old relationship)" // 0x18
-				,"Alter Budget"
-				,"Relationship"
-				,"Go To Relative Position"
-				,"Run Tree by Name" // 0x1c
-				,"Set Motive Change"
-				,"Gosub Found Action"
-				,"Set to Next"
-				,"Test Object Type" // 0x20
-				,"Find 5 Worst Motives"
-				,"UI Effect"
-				,"Camera Control"
-				,"Dialog" // 0x24
-				,"Test Sim Interacting With"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x28
-				,"~(old)Set Balloon/Headline"
-				,"Create New Object Instance"
-				,"~(old)Drop Onto"
-				,"~(old)Animate Sim [old]" // 0x2c
-				,"Go To Routing Slot"
-				,"Snap"
-				,"~(old)Reach"
-				,"Stop ALL Sounds" // 0x30
-				,"Notify the Stack Object out of Idle"
-				,"Add/Change the Action String"
-				,"Manage Inventory"
-				,"~unused (TSO)" // 0x34
-				,"~unused (TSO)"
-				,"~unused (TSO)"
-				,"~unused (TSO)"
-				,"~unused (TSO)" // 0x38
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x3c
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x40
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x44
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x48
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x4c
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x50
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x54
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x58
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x5c
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x60
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~reserved" // 0x64
-				,"~unused"
-				,"~unused"
-				,"~unused"
-				,"~unused" // 0x68
-				,"Animate Object"
-				,"Animate Sim"
-				,"Animate Overlay"
-				,"Animate Stop" // 0x6c
-				,"Change Material"
-				,"Look At"
-				,"Change Light"
-				,"Effect Stop/Start" // 0x70
-				,"Snap Into"
-				,"Assign Locomotion Animations"
-				,"Debug"
-				,"Reach/Put" // 0x74
-				,"Age"
-				,"Array Operation"
-				,"Message"
-				,"RayTrace" // 0x78
-				,"Change Outfit"
-				,"On Timer"
-				,"Cinematic"
-				,"Want Satisfy" // 0x7c
-				,"Influence"
-			};
-		#endregion
-#endif
+		public override string ShortName { get { return GlobalStr.PrimitiveName(instruction.OpCode); } }
 	}
 
 
