@@ -1,4 +1,16 @@
 
+19 September 2005 23:04 - Bhav: more parsing: Rearrange GlobalStr and use it widely
+  SimPe BHAV\
+    BhavNameWizProvider.cs 1.5
+    BhavNameWizProviders.cs 1.4
+    BhavOpCodeWiz.cs 1.8
+    BhavOpCodeWiz.resx 1.4
+    BhavPrimWiz0x0001.cs 1.4
+    BhavPrimWiz0x0002.cs 1.6
+    BhavPrimWiz0x0002.resx 1.4
+    GlobalStr.cs 1.2
+    TtabItemMotiveTableUI.cs 1.8
+
 19 September 2005 16:25 - Bhav: more parsing: snarf strings into their own .package and use that
   SimPe BHAV\
     BhavNameWizProvider.cs 1.4
