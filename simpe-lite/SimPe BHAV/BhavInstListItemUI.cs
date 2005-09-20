@@ -59,15 +59,12 @@ namespace SimPe.PackedFiles.UserInterface
 			this.wrapper = wrapper;
 			this.index = index;
 			this.Parent = parent;
-
-			wrapper.WrapperChanged += new EventHandler(WrapperChanged);
-			parent.Controls.SetChildIndex(this, index);
-
-			this.Left = 0;
 			this.Height = rowHeight;
 			MakeUnselected();
 
 			this.WrapperChanged(wrapper[index], null);
+
+			wrapper.WrapperChanged += new EventHandler(WrapperChanged);
 		}
 
 		/// <summary> 
@@ -83,6 +80,8 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
+			wrapper = null;
+			Parent = null;
 		}
 
 
@@ -105,6 +104,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private int index;
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
+			if (wrapper == null) return;
+
 			if (wrapper.IndexOf(sender) != index) return;
 			Instruction inst = (Instruction)sender;
 

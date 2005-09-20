@@ -118,20 +118,38 @@ namespace pjse
 		}
 
 
+		private static Hashtable doidGStr = staticInitialiser();
+		private static Hashtable staticInitialiser()
+		{
+			Hashtable t = new Hashtable();
+			t.Add((byte)0x03, (uint)0x008d);
+			t.Add((byte)0x04, (uint)0x008d);
+			t.Add((byte)0x06, (uint)0x0081);
+			t.Add((byte)0x12, (uint)0x00c8);
+			t.Add((byte)0x13, (uint)0x00c8);
+			t.Add((byte)0x20, (uint)0x00c8);
+			t.Add((byte)0x15, (uint)0x00cc);
+			t.Add((byte)0x26, (uint)0x00cc);
+			t.Add((byte)0x33, (uint)0x00cc);
+			t.Add((byte)0x17, (uint)0x00db);
+			t.Add((byte)0x18, (uint)0x00dd);
+			t.Add((byte)0x21, (uint)0x00f3);
+			t.Add((byte)0x22, (uint)0x00f9);
+			t.Add((byte)0x23, (uint)0x00f5);
+			t.Add((byte)0x27, (uint)0x00fc);
+			t.Add((byte)0x28, (uint)0x00fc);
+			return t;
+		}
+
 		protected string dataOwner(byte doid, ushort instance)
 		{
 			string doidName = GS.DataOwnerName(doid);
 
 			string s = null;
+			if (doidGStr[doid] != null)
+				s = GS.GStr((uint)doidGStr[doid], instance);
 			switch (doid)
 			{
-				case 0x03:
-				case 0x04:
-					s = GS.GStr(0x8d, instance);
-					break;
-				case 0x06:
-					s = GS.GStr(0x81, instance);
-					break;
 				case 0x0a:
 					if (instance == 0)
 						s = "";
@@ -152,42 +170,26 @@ namespace pjse
 				case 0x1d:
 					s = "(0x" + SimPe.Helper.HexString((byte)instance) + " " + GS.MotiveName(instance) + ")";
 					break;
-				case 0x12:
-				case 0x13:
-				case 0x20:
-					s = "- " + GS.GStr(0xc8, instance);
-					break;
-				case 0x15:
-				case 0x26:
-				case 0x33:
-					s = GS.GStr(0xcc, instance);
-					break;
-				case 0x17:
-					s = GS.GStr(0xdb, instance);
-					break;
-				case 0x18:
-					s = GS.GStr(0xdd, instance);
-					break;
 				case 0x1a:
 				case 0x2f:
 					int a = instance >> 13;            // x = aaabbbbb bccccccc
 					int b = (instance >> 7) & 0x3F;
 					int c = instance & 0x7F;
-				switch (a) 
-				{
-					case 0:             // private
-						b += 0x1000;
-						break;
-					case 1:             // semi-global
-						b += 0x2000;
-						break;
-					case 2:            // global
-						b += 0x100;
-						break;
-					default:
-						b += 0x140;
-						break;
-				}
+					switch (a) 
+					{
+						case 0:             // private
+							b += 0x1000;
+							break;
+						case 1:             // semi-global
+							b += 0x2000;
+							break;
+						case 2:            // global
+							b += 0x100;
+							break;
+						default:
+							b += 0x140;
+							break;
+					}
 					if (doid == 0x1a)
 					{
 						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":0x" + SimPe.Helper.HexString((byte)c)
@@ -198,19 +200,6 @@ namespace pjse
 						doidName = GS.DataOwnerName(0x1a);
 						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":[Temp " + c.ToString() + "]";
 					}
-					break;
-				case 0x21:
-					s = GS.GStr(0xf3, instance);
-					break;
-				case 0x22:
-					s = GS.GStr(0xf9, instance);
-					break;
-				case 0x23:
-					s = GS.GStr(0xf5, instance);
-					break;
-				case 0x27:
-				case 0x28:
-					s = GS.GStr(0xfc, instance);
 					break;
 			}
 			if (s == null) s = "0x" + SimPe.Helper.HexString(instance);
@@ -225,6 +214,7 @@ namespace pjse
 			uint group = 0x0;
 			if (instance < 0x1000)
 			{
+				instruction.Parent.Opcodes.LoadPackage();
 				pkg = instruction.Parent.Opcodes.BasePackage;
 				group = 0x7FD46CD0;
 			}
@@ -254,7 +244,7 @@ namespace pjse
 			bcon.ProcessData(pfd, pkg);
 			if (bid >= bcon.Constants.Count)
 				return "[BCON not set]";
-			return ((short)bcon.Constants[bid]).ToString(); //"0x" + SimPe.Helper.HexString((ushort)bcon.Constants[bid]);
+			return "0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]);
 		}
 
 	}
@@ -300,7 +290,7 @@ namespace pjse.BhavNameWizards
 			get
 			{
 				Bhav b = LoadBHAV();
-				if (b == null) return ShortName;
+				if (b == null) return null;
 
 				string s = "";
 

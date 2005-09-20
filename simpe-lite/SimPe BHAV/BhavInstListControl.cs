@@ -35,9 +35,6 @@ namespace SimPe.PackedFiles.UserInterface
 	/// </summary>
 	public class BhavInstListControl : System.Windows.Forms.UserControl
 	{
-		private System.Windows.Forms.PictureBox pnflow1;
-		private System.Windows.Forms.PictureBox pnflow2;
-		private System.Windows.Forms.Panel bhavInstListPanel;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -62,6 +59,11 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
+			wrapper = null;
+			if (flowitems != null)
+				for(int i = 0; i < flowitems.Length; i++) if (flowitems[i] != null) { flowitems[i].Dispose(); flowitems[i] = null; }
+			flowitems = null;
+			pnflow = null;
 		}
 
 
@@ -75,22 +77,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private int csel = -1;
 		private bool setHandler = false;
 		private BhavInstListItemUI[] flowitems = null;
-		private PictureBox pnflow = null;
+		private System.Windows.Forms.PictureBox pnflow;
 		private bool internalchg = false;
 
 		public void UpdateGUI(Bhav wrp)
 		{
 			wrapper = wrp;
 			csel = -1;
-			flowitems = null;
 			internalchg = false;
-
-			pnflow1.Visible = false;
-			pnflow1.Controls.Clear();
-			pnflow2.Visible = false;
-			pnflow2.Controls.Clear();
-			pnflow = pnflow1;
-			pnflow.Visible = true;
 
 			if (!setHandler)
 			{
@@ -107,6 +101,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
+			if (wrapper == null) return;
+
 			if (internalchg) return;
 
 			// Handler for instructions list
@@ -121,6 +117,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (wrapper.IndexOf(sender) >= 0)
 			{
 				pnflow.Image = DrawConnectors();
+				//this.BackgroundImage = DrawConnectors();
 			}
 		}
 
@@ -141,6 +138,7 @@ namespace SimPe.PackedFiles.UserInterface
 					if (csel >= 0) flowitems[csel].MakeUnselected();
 					csel = value;
 					pnflow.Image = DrawConnectors();
+					//this.BackgroundImage = DrawConnectors();
 					OnSelectedInstChanged(new EventArgs());
 				}
 			}
@@ -319,46 +317,34 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void myrepaint()
 		{
-			Point currentLoc = this.AutoScrollPosition;
 			//Cursor c = this.Parent.Cursor;
 			this.Parent.Cursor = Cursors.WaitCursor;
+			try
+			{
+				Point currentLoc = this.AutoScrollPosition;
+				this.SuspendLayout();
 
-			if (pnflow.Name.Equals("pnflow1")) // indicates which is currently visible (update the other one)
-			{
-				pnflow = pnflow2;
-			} 
-			else 
-			{
-				pnflow = pnflow1;
+				this.Controls.Clear();
+				if (flowitems != null)
+					for(int i = 0; i < flowitems.Length; i++) if (flowitems[i] != null) { flowitems[i].Dispose(); flowitems[i] = null; }
+				flowitems = new BhavInstListItemUI[wrapper.Count];
+
+				for (int i = 0; i < wrapper.Count; i++)
+					flowitems[i] = makeBhavInstListItemUI(i);
+
+				if (csel >= 0) flowitems[csel].MakeSelected();
+
+				pnflow.Image = DrawConnectors();
+				this.Controls.Add(pnflow);
+
+				this.ResumeLayout(true);
+				this.AutoScrollPosition = currentLoc;
 			}
-
-			pnflow.Controls.Clear();
-			flowitems = new BhavInstListItemUI[wrapper.Count];
-
-			for (int i = 0; i < wrapper.Count; i++)
-				flowitems[i] = makeBhavInstListItemUI(i);
-			if (csel >= 0) flowitems[csel].MakeSelected();
-
-			pnflow.Image = DrawConnectors();
-
-
-			bool savedstate = internalchg;
-			internalchg = true;
-			if (pnflow.Name.Equals("pnflow1")) // indicates which we want to display (the one we just updated)
+			finally
 			{
-				pnflow1.Visible = true;
-				pnflow2.Visible = false;
-			} 
-			else 
-			{
-				pnflow2.Visible = true;
-				pnflow1.Visible = false;
+				//this.Parent.Cursor = c;
+				this.Parent.Cursor = Cursors.Default;
 			}
-			internalchg = savedstate;
-
-			this.AutoScrollPosition = currentLoc;
-			//this.Parent.Cursor = c;
-			this.Parent.Cursor = Cursors.Default;
 		}
 
 		private BhavInstListItemUI makeBhavInstListItemUI(int ct)
@@ -373,14 +359,19 @@ namespace SimPe.PackedFiles.UserInterface
 
 			BhavInstListItemUI i = new BhavInstListItemUI(wrapper, ct, pnflow);
 
-			i.Top = ct*(BhavInstListItemUI.rowHeight+4);
-			i.Width = bhavInstListPanel.Width - 120;
+			i.Left = 0;
+			i.Top = ct*(i.Height+4);
+			i.Width = this.ClientRectangle.Width - pnflow.Width;
+			i.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
 			i.MoveUp += new EventHandler(bhavInst_MoveUp);
 			i.MoveDown += new EventHandler(bhavInst_MoveDown);
 			i.Selected += new EventHandler(bhavInst_Selected);
 			i.Unselected += new EventHandler(bhavInst_Unselected);
 			i.TargetClick += new LinkLabelLinkClickedEventHandler(bhavInst_TargetClick);
 			i.KeyDown += new KeyEventHandler(bhavInst_KeyDown);
+
+			this.Controls.Add(i);
+			this.Controls.SetChildIndex(i, ct);
 
 			return i;
 		}
@@ -389,10 +380,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (flowitems == null || flowitems.Length == 0)
 				return null;
-			if (bhavInstListPanel.ClientRectangle.Width <= 24)
+			if (this.ClientRectangle.Width <= 24)
 				return null;
 
-			Bitmap img = new Bitmap(bhavInstListPanel.ClientRectangle.Width-24, flowitems.Length * (BhavInstListItemUI.rowHeight + 4));
+			Bitmap img = new Bitmap(pnflow.Width, flowitems.Length * (BhavInstListItemUI.rowHeight + 4));
 			Graphics gr = Graphics.FromImage(img);
 			gr.SmoothingMode =  System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 			gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
@@ -402,10 +393,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Pen fpen = new Pen(Color.FromArgb(128, 0, 0), 1);
 			Pen tpeni = new Pen(Color.FromArgb(0, 220, 0), 3);
 			Pen fpeni = new Pen(Color.FromArgb(220, 0, 0), 3);
-			Pen tpeno = tpen;
-			Pen fpeno = fpen;
-			Pen pen;
-
+			Pen tpeno = tpen, fpeno = fpen, pen;
 			Point[] points;
 
 			int yUnit = BhavInstListItemUI.rowHeight / 8;
@@ -423,84 +411,44 @@ namespace SimPe.PackedFiles.UserInterface
 				Control startlabel = (Control)flowitems[c.start];
 
 				int yPosStart = startlabel.Top + (yUnit * 4) + (yUnit * (c.truerule ? 3 : 1));
-				int xPosLeft = startlabel.Right;
+				int xPosLeft = 0;
 				int xPosRight;
 
 				if (c.stop < flowitems.Length)
 				{
-					if (false)//(c.stop - c.start == 1)
-					{
-						/*int xPos = startlabel.Right - 144 + (c.truerule ? 8 : 72);
+					const int laneWidth = 5;
+					xPosRight = 7 + (c.lane * laneWidth);
 
-						gr.DrawLine(	
-							new Pen(pen.Brush, (c.start == csel) ? 4 : 2),
-							xPos, startlabel.Bottom,
-							xPos, startlabel.Bottom + 5
-							);*/
-					}
-					else 
-					{
-						const int laneWidth = 5;
-						xPosRight = startlabel.Right + 7 + (c.lane * laneWidth);
+					Control stoplabel = (Control)flowitems[c.stop];
+					int yPosStop = stoplabel.Top + (yUnit * (c.truerule ? 1 : 3));
 
-						Control stoplabel = (Control)flowitems[c.stop];
-						int yPosStop = stoplabel.Top + (yUnit * (c.truerule ? 1 : 3));
-
-						gr.DrawLine(	
-							pen, 
-							xPosLeft, yPosStart,
-							xPosRight, yPosStart
-							);
-
-						gr.DrawLine(	
-							pen, 
-							xPosRight, yPosStart,
-							xPosRight, yPosStop
-							);
-
-						gr.DrawLine(	
-							pen, 
-							xPosRight, yPosStop,
-							xPosLeft, yPosStop
-							);
+					gr.DrawLine( pen, xPosLeft,  yPosStart, xPosRight, yPosStart );
+					gr.DrawLine( pen, xPosRight, yPosStart, xPosRight, yPosStop );
+					gr.DrawLine( pen, xPosRight, yPosStop,  xPosLeft,  yPosStop );
 				
-						points = new Point[3];
-						points[0] = new Point(xPosLeft, yPosStop);
-						points[1] = new Point(points[0].X + 4, points[0].Y - 4);
-						points[2] = new Point(points[0].X + 4, points[0].Y + 4);
-						gr.FillPolygon(pen.Brush, points);
-					}
+					points = new Point[3];
+					points[0] = new Point(xPosLeft, yPosStop);
+					points[1] = new Point(points[0].X + 4, points[0].Y - 4);
+					points[2] = new Point(points[0].X + 4, points[0].Y + 4);
+					gr.FillPolygon(pen.Brush, points);
 				}
 				else
 				{
 					xPosRight = img.Width - (c.truerule ? 20 : 10);
 					string glyph;
-					string font;
-					float pts;
+					string font = "Verdana";
+					float pts = 8.25F;
 
 					switch (c.stop)
 					{
-						case 0xFFFC: // Error
-							glyph = "E"; font = "Verdana"; pts = 8.25F; break;
-						case 0xFFFD: // True
-							glyph = "T"; font = "Verdana"; pts = 8.25F; break;
-						case 0xFFFE: // False
-							glyph = "F"; font = "Verdana"; pts = 8.25F; break;
-						default: // Off the end
-							glyph = "?"; font = "Verdana"; pts = 8.25F; break;
+						case 0xFFFC: glyph = "E"; break; // Error
+						case 0xFFFD: glyph = "T"; break; // True
+						case 0xFFFE: glyph = "F"; break; // False
+						default:     glyph = "?"; break; // Off the end
 					}
 
-					gr.DrawLine(
-						pen, 
-						xPosLeft, yPosStart,
-						xPosRight, yPosStart
-						);
-					gr.DrawString(
-						glyph,
-						new System.Drawing.Font(font, pts),
-						pen.Brush,
-						xPosRight, yPosStart - 8
-						);
+					gr.DrawLine( pen, xPosLeft, yPosStart, xPosRight, yPosStart );
+					gr.DrawString( glyph, new System.Drawing.Font(font, pts), pen.Brush, xPosRight, yPosStart - 8 );
 				}
 			}
 			AddUnlinked(img);
@@ -520,7 +468,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (isTarget(ct)) continue;
 
-				int xPosLeft = flowitems[ct].Width;
+				int xPosLeft = 0;
 				int xPosRight = img.Width - 1;
 				int yPos = (BhavInstListItemUI.rowHeight + 4) * ct + (BhavInstListItemUI.rowHeight / 4);
 
@@ -555,75 +503,29 @@ namespace SimPe.PackedFiles.UserInterface
 		private void InitializeComponent()
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(BhavInstListControl));
-			this.pnflow1 = new System.Windows.Forms.PictureBox();
-			this.pnflow2 = new System.Windows.Forms.PictureBox();
-			this.bhavInstListPanel = new System.Windows.Forms.Panel();
+			this.pnflow = new System.Windows.Forms.PictureBox();
 			this.SuspendLayout();
 			// 
-			// pnflow1
+			// pnflow
 			// 
-			this.pnflow1.AccessibleDescription = resources.GetString("pnflow1.AccessibleDescription");
-			this.pnflow1.AccessibleName = resources.GetString("pnflow1.AccessibleName");
-			this.pnflow1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnflow1.Anchor")));
-			this.pnflow1.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnflow1.BackgroundImage")));
-			this.pnflow1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnflow1.Dock")));
-			this.pnflow1.Enabled = ((bool)(resources.GetObject("pnflow1.Enabled")));
-			this.pnflow1.Font = ((System.Drawing.Font)(resources.GetObject("pnflow1.Font")));
-			this.pnflow1.Image = ((System.Drawing.Image)(resources.GetObject("pnflow1.Image")));
-			this.pnflow1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("pnflow1.ImeMode")));
-			this.pnflow1.Location = ((System.Drawing.Point)(resources.GetObject("pnflow1.Location")));
-			this.pnflow1.Name = "pnflow1";
-			this.pnflow1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnflow1.RightToLeft")));
-			this.pnflow1.Size = ((System.Drawing.Size)(resources.GetObject("pnflow1.Size")));
-			this.pnflow1.SizeMode = ((System.Windows.Forms.PictureBoxSizeMode)(resources.GetObject("pnflow1.SizeMode")));
-			this.pnflow1.TabIndex = ((int)(resources.GetObject("pnflow1.TabIndex")));
-			this.pnflow1.TabStop = false;
-			this.pnflow1.Text = resources.GetString("pnflow1.Text");
-			this.pnflow1.Visible = ((bool)(resources.GetObject("pnflow1.Visible")));
-			// 
-			// pnflow2
-			// 
-			this.pnflow2.AccessibleDescription = resources.GetString("pnflow2.AccessibleDescription");
-			this.pnflow2.AccessibleName = resources.GetString("pnflow2.AccessibleName");
-			this.pnflow2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnflow2.Anchor")));
-			this.pnflow2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnflow2.BackgroundImage")));
-			this.pnflow2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnflow2.Dock")));
-			this.pnflow2.Enabled = ((bool)(resources.GetObject("pnflow2.Enabled")));
-			this.pnflow2.Font = ((System.Drawing.Font)(resources.GetObject("pnflow2.Font")));
-			this.pnflow2.Image = ((System.Drawing.Image)(resources.GetObject("pnflow2.Image")));
-			this.pnflow2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("pnflow2.ImeMode")));
-			this.pnflow2.Location = ((System.Drawing.Point)(resources.GetObject("pnflow2.Location")));
-			this.pnflow2.Name = "pnflow2";
-			this.pnflow2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnflow2.RightToLeft")));
-			this.pnflow2.Size = ((System.Drawing.Size)(resources.GetObject("pnflow2.Size")));
-			this.pnflow2.SizeMode = ((System.Windows.Forms.PictureBoxSizeMode)(resources.GetObject("pnflow2.SizeMode")));
-			this.pnflow2.TabIndex = ((int)(resources.GetObject("pnflow2.TabIndex")));
-			this.pnflow2.TabStop = false;
-			this.pnflow2.Text = resources.GetString("pnflow2.Text");
-			this.pnflow2.Visible = ((bool)(resources.GetObject("pnflow2.Visible")));
-			// 
-			// bhavInstListPanel
-			// 
-			this.bhavInstListPanel.AccessibleDescription = resources.GetString("bhavInstListPanel.AccessibleDescription");
-			this.bhavInstListPanel.AccessibleName = resources.GetString("bhavInstListPanel.AccessibleName");
-			this.bhavInstListPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("bhavInstListPanel.Anchor")));
-			this.bhavInstListPanel.AutoScroll = ((bool)(resources.GetObject("bhavInstListPanel.AutoScroll")));
-			this.bhavInstListPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("bhavInstListPanel.AutoScrollMargin")));
-			this.bhavInstListPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavInstListPanel.AutoScrollMinSize")));
-			this.bhavInstListPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavInstListPanel.BackgroundImage")));
-			this.bhavInstListPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("bhavInstListPanel.Dock")));
-			this.bhavInstListPanel.Enabled = ((bool)(resources.GetObject("bhavInstListPanel.Enabled")));
-			this.bhavInstListPanel.Font = ((System.Drawing.Font)(resources.GetObject("bhavInstListPanel.Font")));
-			this.bhavInstListPanel.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("bhavInstListPanel.ImeMode")));
-			this.bhavInstListPanel.Location = ((System.Drawing.Point)(resources.GetObject("bhavInstListPanel.Location")));
-			this.bhavInstListPanel.Name = "bhavInstListPanel";
-			this.bhavInstListPanel.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("bhavInstListPanel.RightToLeft")));
-			this.bhavInstListPanel.Size = ((System.Drawing.Size)(resources.GetObject("bhavInstListPanel.Size")));
-			this.bhavInstListPanel.TabIndex = ((int)(resources.GetObject("bhavInstListPanel.TabIndex")));
-			this.bhavInstListPanel.TabStop = true;
-			this.bhavInstListPanel.Text = resources.GetString("bhavInstListPanel.Text");
-			this.bhavInstListPanel.Visible = ((bool)(resources.GetObject("bhavInstListPanel.Visible")));
-			this.bhavInstListPanel.Resize += new System.EventHandler(this.bhavInstListPanel_Resize);
+			this.pnflow.AccessibleDescription = resources.GetString("pnflow.AccessibleDescription");
+			this.pnflow.AccessibleName = resources.GetString("pnflow.AccessibleName");
+			this.pnflow.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnflow.Anchor")));
+			this.pnflow.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnflow.BackgroundImage")));
+			this.pnflow.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnflow.Dock")));
+			this.pnflow.Enabled = ((bool)(resources.GetObject("pnflow.Enabled")));
+			this.pnflow.Font = ((System.Drawing.Font)(resources.GetObject("pnflow.Font")));
+			this.pnflow.Image = ((System.Drawing.Image)(resources.GetObject("pnflow.Image")));
+			this.pnflow.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("pnflow.ImeMode")));
+			this.pnflow.Location = ((System.Drawing.Point)(resources.GetObject("pnflow.Location")));
+			this.pnflow.Name = "pnflow";
+			this.pnflow.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnflow.RightToLeft")));
+			this.pnflow.Size = ((System.Drawing.Size)(resources.GetObject("pnflow.Size")));
+			this.pnflow.SizeMode = ((System.Windows.Forms.PictureBoxSizeMode)(resources.GetObject("pnflow.SizeMode")));
+			this.pnflow.TabIndex = ((int)(resources.GetObject("pnflow.TabIndex")));
+			this.pnflow.TabStop = false;
+			this.pnflow.Text = resources.GetString("pnflow.Text");
+			this.pnflow.Visible = ((bool)(resources.GetObject("pnflow.Visible")));
 			// 
 			// BhavInstListControl
 			// 
@@ -633,9 +535,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMargin")));
 			this.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMinSize")));
 			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-			this.Controls.Add(this.pnflow1);
-			this.Controls.Add(this.pnflow2);
-			this.Controls.Add(this.bhavInstListPanel);
+			this.Controls.Add(this.pnflow);
 			this.Enabled = ((bool)(resources.GetObject("$this.Enabled")));
 			this.Font = ((System.Drawing.Font)(resources.GetObject("$this.Font")));
 			this.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("$this.ImeMode")));
@@ -643,6 +543,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Name = "BhavInstListControl";
 			this.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("$this.RightToLeft")));
 			this.Size = ((System.Drawing.Size)(resources.GetObject("$this.Size")));
+			this.Resize += new System.EventHandler(this.BhavInstListControl_Resize);
 			this.ResumeLayout(false);
 
 		}
@@ -685,12 +586,10 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void bhavInstListPanel_Resize(object sender, System.EventArgs e)
+		private void BhavInstListControl_Resize(object sender, System.EventArgs e)
 		{
-			if (wrapper != null && pnflow != null && ((System.Windows.Forms.Panel)sender).ClientRectangle.Width > 24)
-			{
-				if (!internalchg) myrepaint();
-			}
+			//pnflow.Image = DrawConnectors();
+			//this.BackgroundImage = DrawConnectors();
 		}
 
 

@@ -106,6 +106,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbHeaderFlag;
 		private System.Windows.Forms.Button btnOperandRaw;
 		private System.Windows.Forms.TextBox tbInst_NodeVersion;
+		private System.Windows.Forms.Button btnClose;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -131,6 +132,7 @@ namespace SimPe.PackedFiles.UserInterface
 				left = cs[i].Left = left - (cs[i].Width + 4);
 			this.lbFilename.Left = 4;
 			this.tbFilename.Left = this.lbFilename.Right + 4;
+			this.tbFilename.Width = this.lbFormat.Left - (this.tbFilename.Left + 4);
 			this.Tag = "Normal"; // Used by SetReadOnly
 
 			TextBox[] iow = { tbInst_Op01_dec, tbInst_Op23_dec, tbLines };
@@ -174,6 +176,10 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
+			wrapper = null;
+			currentInst = null;
+			origInst = null;
+			alDec16 = alHex8 = alHex16 = alHex32 = alDec8 = alHex16cb = null;
 		}
 
 		
@@ -192,7 +198,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SetReadOnly(bool state) 
 		{
-			if (((string)this.Tag).Equals("Popup"))
+			if (btnClose.Visible = ((string)this.Tag).Equals("Popup"))
 			{
 				// make it very clear it's read only
 				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =
@@ -560,6 +566,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
+			this.btnClose = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -1801,6 +1808,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
 			this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
+			this.bhavPanel.Controls.Add(this.btnClose);
 			this.bhavPanel.Controls.Add(this.tbHeaderFlag);
 			this.bhavPanel.Controls.Add(this.lbHeaderFlag);
 			this.bhavPanel.Controls.Add(this.tbCacheFlags);
@@ -1837,7 +1845,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.TabIndex = ((int)(resources.GetObject("bhavPanel.TabIndex")));
 			this.bhavPanel.Text = resources.GetString("bhavPanel.Text");
 			this.bhavPanel.Visible = ((bool)(resources.GetObject("bhavPanel.Visible")));
-			this.bhavPanel.Resize += new System.EventHandler(this.bhavPanel_Resize);
 			// 
 			// tbHeaderFlag
 			// 
@@ -2409,6 +2416,31 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
 			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
+			// btnClose
+			// 
+			this.btnClose.AccessibleDescription = resources.GetString("btnClose.AccessibleDescription");
+			this.btnClose.AccessibleName = resources.GetString("btnClose.AccessibleName");
+			this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnClose.Anchor")));
+			this.btnClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClose.BackgroundImage")));
+			this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btnClose.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnClose.Dock")));
+			this.btnClose.Enabled = ((bool)(resources.GetObject("btnClose.Enabled")));
+			this.btnClose.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnClose.FlatStyle")));
+			this.btnClose.Font = ((System.Drawing.Font)(resources.GetObject("btnClose.Font")));
+			this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
+			this.btnClose.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClose.ImageAlign")));
+			this.btnClose.ImageIndex = ((int)(resources.GetObject("btnClose.ImageIndex")));
+			this.btnClose.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnClose.ImeMode")));
+			this.btnClose.Location = ((System.Drawing.Point)(resources.GetObject("btnClose.Location")));
+			this.btnClose.Name = "btnClose";
+			this.btnClose.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnClose.RightToLeft")));
+			this.btnClose.Size = ((System.Drawing.Size)(resources.GetObject("btnClose.Size")));
+			this.btnClose.TabIndex = ((int)(resources.GetObject("btnClose.TabIndex")));
+			this.btnClose.Text = resources.GetString("btnClose.Text");
+			this.btnClose.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClose.TextAlign")));
+			this.btnClose.Visible = ((bool)(resources.GetObject("btnClose.Visible")));
+			this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+			// 
 			// BhavForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2418,6 +2450,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMargin")));
 			this.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMinSize")));
 			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+			this.CancelButton = this.btnClose;
 			this.ClientSize = ((System.Drawing.Size)(resources.GetObject("$this.ClientSize")));
 			this.Controls.Add(this.bhavPanel);
 			this.Enabled = ((bool)(resources.GetObject("$this.Enabled")));
@@ -2443,12 +2476,6 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 		#endregion
-
-		private void bhavPanel_Resize(object sender, System.EventArgs e)
-		{
-			this.tbFilename.Width = this.lbFormat.Left - (this.tbFilename.Left + 4);
-		}
-
 
 		private void pnflowcontainer_SelectedInstChanged(object sender, System.EventArgs e)
 		{
@@ -3011,6 +3038,11 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnDelMerola_Click(object sender, System.EventArgs e)
 		{
 			this.pnflowcontainer.DeleteUnlinked();
+		}
+
+		private void btnClose_Click(object sender, System.EventArgs e)
+		{
+			Close();
 		}
 
 	}

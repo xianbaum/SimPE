@@ -30,6 +30,7 @@ namespace pjse.BhavNameWizards
 		public GlobalWiz(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
 		public GlobalWiz(Instruction i) : base(i) {}
 		public new bool isGlobalBhav { get { return true; } }
+		public override string LongName { get { string s = base.LongName; return (s!=null ? s : ShortName); } }
 		//public override string ShortName { get { return "to do"; } }
 
 		public override Bhav LoadBHAV()
@@ -105,7 +106,7 @@ namespace pjse.BhavNameWizards
 		public new bool isLocalBhav { get { return true; } }
 
 		public override string ShortName { get { return "[private] " + base.ShortName; } }
-		public override string LongName { get { return "[private] " + base.LongName; } }
+		public override string LongName { get { string s = base.LongName; return (s != null ? "[private] " + s : ShortName); } }
 		public override Bhav LoadBHAV()
 		{
 			if (instruction.Parent == null) return null;
@@ -187,7 +188,7 @@ namespace pjse.BhavNameWizards
 		public SemiGlobalWiz(Instruction i) : base(i) {}
 		public new bool isSemiGlobalBhav { get { return true; } }
 		public override string ShortName { get { return "[semiglobal] " + base.ShortName; } }
-		public override string LongName { get { return "[semiglobal] " + base.LongName; } }
+		public override string LongName { get { string s = base.LongName; return (s != null ? "[semiglobal] " + s : ShortName); } }
 		public override Bhav LoadBHAV()
 		{
 			if (instruction.Parent == null) return null;
