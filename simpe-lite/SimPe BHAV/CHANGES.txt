@@ -1,4 +1,8 @@
 
+20 September 2005 09:33 - Bhav: Make 0x8003 work *BRANCH* *FIX*
+  SimPe BHAV\
+    BhavWrapper.cs 1.34.4.1
+
 17 September 2005 19:00 - Bhav: Ignore Instance in OpCodeWiz *BRANCH* *FIX*
   SimPe BHAV\
     BhavOpCodeWiz.cs 1.5.4.1
