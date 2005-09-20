@@ -1,4 +1,14 @@
 
+20 September 2005 16:34 - Bhav: bugfix: leaking Window handles like mad (plus stuff)
+  SimPe BHAV\
+    BhavForm.cs 1.44
+    BhavForm.resx 1.23
+    BhavInstListControl.cs 1.33
+    BhavInstListControl.resx 1.6
+    BhavInstListItem.UI.cs 1.15
+    BhavNameWizProvider.cs 1.6
+    BhavNameWizProviders.cs 1.5
+
 20 September 2005 09:21 - Bhav: bugfix: 0x8003 not loading
   SimPe BHAV\
     BhavWrapper.cs 1.38
