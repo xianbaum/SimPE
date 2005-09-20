@@ -1,4 +1,8 @@
 
+20 September 2005 09:21 - Bhav: bugfix: 0x8003 not loading
+  SimPe BHAV\
+    BhavWrapper.cs 1.38
+
 19 September 2005 23:04 - Bhav: more parsing: Rearrange GlobalStr and use it widely
   SimPe BHAV\
     BhavNameWizProvider.cs 1.5
