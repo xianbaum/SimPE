@@ -300,7 +300,7 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			header.InstructionCount = (uint)items.Count; // oh please... because header doesn't have a parent (yet!)
+			header.InstructionCount = (ushort)items.Count; // oh please... because header doesn't have a parent (yet!)
 			header.Serialize(writer);
 			foreach (Instruction i in items)
 				i.Serialize(writer);
@@ -444,7 +444,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region Attributes
 		private Bhav wrapper;
 		private ushort format = 0x8007;
-		private uint count = 0;
+		private ushort count = 0;
 		private byte type = 0;
 		private byte argc = 0;
 		private byte locals = 0;
@@ -467,7 +467,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public uint InstructionCount
+		public ushort InstructionCount
 		{
 			get { return count; }
 			set 
@@ -572,26 +572,14 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader"></param>
 		public void Unserialize(System.IO.BinaryReader reader) 
 		{
-			format = reader.ReadUInt16();				//0x0040 - format
-			if (format == 0x8003)
-			{
-				type = reader.ReadByte();
-				argc = reader.ReadByte();
-				locals = reader.ReadByte();
-				headerflag = reader.ReadByte();
-				treeversion = reader.ReadUInt16();					
-				count = reader.ReadUInt32();
-			}
-			else
-			{
-				count = (uint)reader.ReadUInt16();	//0x0042 - # of opcodes
-				type = reader.ReadByte();			//0x0044 - tree type
-				argc = reader.ReadByte();			//0x0045 - # of args
-				locals = reader.ReadByte();			//0x0046 - # of locals
-				headerflag = reader.ReadByte();	//0x0047 - header flag
-				treeversion = reader.ReadUInt32();		//0x0048 - Tree version (4 bytes)
-			}
-			if (format == 0x8009)
+			format      = reader.ReadUInt16();			//0x0040 - format
+			count       = reader.ReadUInt16();	//0x0042 - # of opcodes
+			type        = reader.ReadByte();			//0x0044 - tree type
+			argc        = reader.ReadByte();			//0x0045 - # of args
+			locals      = reader.ReadByte();			//0x0046 - # of locals
+			headerflag  = reader.ReadByte();			//0x0047 - header flag
+			treeversion = reader.ReadUInt32();			//0x0048 - Tree version (4 bytes)
+			if (format > 0x8008)
 				cacheflags = reader.ReadByte();
 			else
 				cacheflags = 0;
@@ -604,24 +592,12 @@ namespace SimPe.PackedFiles.Wrapper
 		public void Serialize(System.IO.BinaryWriter writer) 
 		{
 			writer.Write(format);
-			if (format == 0x8003)
-			{
-				writer.Write((byte)type);
-				writer.Write(argc);
-				writer.Write(locals);
-				writer.Write(headerflag);
-				writer.Write((ushort)treeversion);
-				writer.Write(count);
-			}
-			else
-			{
-				writer.Write((ushort)count);
-				writer.Write(type);
-				writer.Write(argc);
-				writer.Write(locals);
-				writer.Write(headerflag);
-				writer.Write(treeversion);
-			}
+			writer.Write(count);
+			writer.Write(type);
+			writer.Write(argc);
+			writer.Write(locals);
+			writer.Write(headerflag);
+			writer.Write(treeversion);
 			if (format == 0x8009)
 				writer.Write(cacheflags);
 		}
