@@ -35,10 +35,13 @@ namespace SimPe.PackedFiles.UserInterface
 	/// </summary>
 	public class BhavInstListControl : System.Windows.Forms.UserControl
 	{
+		#region Form variables
+		private System.Windows.Forms.PictureBox pnflow;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
+		#endregion
 
 		public BhavInstListControl()
 		{
@@ -77,7 +80,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private int csel = -1;
 		private bool setHandler = false;
 		private BhavInstListItemUI[] flowitems = null;
-		private System.Windows.Forms.PictureBox pnflow;
 		private bool internalchg = false;
 
 		public void UpdateGUI(Bhav wrp)
@@ -91,6 +93,7 @@ namespace SimPe.PackedFiles.UserInterface
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
 				setHandler = true;
 			}
+			this.AutoScrollPosition = new Point(0, 0);
 			this.WrapperChanged(new ArrayList(), null);
 			if (flowitems.Length > 0)
 			{
@@ -117,7 +120,6 @@ namespace SimPe.PackedFiles.UserInterface
 			if (wrapper.IndexOf(sender) >= 0)
 			{
 				pnflow.Image = DrawConnectors();
-				//this.BackgroundImage = DrawConnectors();
 			}
 		}
 
@@ -138,7 +140,6 @@ namespace SimPe.PackedFiles.UserInterface
 					if (csel >= 0) flowitems[csel].MakeUnselected();
 					csel = value;
 					pnflow.Image = DrawConnectors();
-					//this.BackgroundImage = DrawConnectors();
 					OnSelectedInstChanged(new EventArgs());
 				}
 			}
@@ -276,17 +277,23 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 
 			this.Parent.Cursor = Cursors.WaitCursor;
-			ushort offset = (ushort)wrapper.Count;
-			foreach (Instruction bi in b)
+			try
 			{
-				int i = wrapper.Add(bi);
-				if (i < 0) break;
-				if (wrapper[i].Target1 < 0xFFFC)
-					wrapper[i].Target1 += offset;
-				if (wrapper[i].Target2 < 0xFFFC)
-					wrapper[i].Target2 += offset;
+				ushort offset = (ushort)wrapper.Count;
+				foreach (Instruction bi in b)
+				{
+					int i = wrapper.Add(bi);
+					if (i < 0) break;
+					if (wrapper[i].Target1 < 0xFFFC)
+						wrapper[i].Target1 += offset;
+					if (wrapper[i].Target2 < 0xFFFC)
+						wrapper[i].Target2 += offset;
+				}
 			}
-			this.Parent.Cursor = Cursors.Default;
+			finally
+			{
+				this.Parent.Cursor = Cursors.Default;
+			}
 
 			internalchg = savedstate;
 			myrepaint();
@@ -317,11 +324,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void myrepaint()
 		{
-			//Cursor c = this.Parent.Cursor;
 			this.Parent.Cursor = Cursors.WaitCursor;
 			try
 			{
-				Point currentLoc = this.AutoScrollPosition;
 				this.SuspendLayout();
 
 				this.Controls.Clear();
@@ -338,11 +343,9 @@ namespace SimPe.PackedFiles.UserInterface
 				this.Controls.Add(pnflow);
 
 				this.ResumeLayout(true);
-				this.AutoScrollPosition = currentLoc;
 			}
 			finally
 			{
-				//this.Parent.Cursor = c;
 				this.Parent.Cursor = Cursors.Default;
 			}
 		}
@@ -359,8 +362,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 			BhavInstListItemUI i = new BhavInstListItemUI(wrapper, ct, pnflow);
 
-			i.Left = 0;
-			i.Top = ct*(i.Height+4);
+			i.Left = this.AutoScrollPosition.X;
+			i.Top = ct*(i.Height+4) + this.AutoScrollPosition.Y;
 			i.Width = this.ClientRectangle.Width - pnflow.Width;
 			i.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
 			i.MoveUp += new EventHandler(bhavInst_MoveUp);
@@ -380,7 +383,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (flowitems == null || flowitems.Length == 0)
 				return null;
-			if (this.ClientRectangle.Width <= 24)
+			if (this.ClientRectangle.Width < pnflow.Width)
 				return null;
 
 			Bitmap img = new Bitmap(pnflow.Width, flowitems.Length * (BhavInstListItemUI.rowHeight + 4));
@@ -408,9 +411,7 @@ namespace SimPe.PackedFiles.UserInterface
 				if (c.stop == csel)  if (c.truerule) pen = tpeni; else pen = fpeni;
 				if (c.start == csel) if (c.truerule) pen = tpeno; else pen = fpeno;
 
-				Control startlabel = (Control)flowitems[c.start];
-
-				int yPosStart = startlabel.Top + (yUnit * 4) + (yUnit * (c.truerule ? 3 : 1));
+				int yPosStart = (BhavInstListItemUI.rowHeight + 4) * c.start + (yUnit * 4) + (yUnit * (c.truerule ? 3 : 1));
 				int xPosLeft = 0;
 				int xPosRight;
 
@@ -419,8 +420,7 @@ namespace SimPe.PackedFiles.UserInterface
 					const int laneWidth = 5;
 					xPosRight = 7 + (c.lane * laneWidth);
 
-					Control stoplabel = (Control)flowitems[c.stop];
-					int yPosStop = stoplabel.Top + (yUnit * (c.truerule ? 1 : 3));
+					int yPosStop = (BhavInstListItemUI.rowHeight + 4) * c.stop + (yUnit * (c.truerule ? 1 : 3));
 
 					gr.DrawLine( pen, xPosLeft,  yPosStart, xPosRight, yPosStart );
 					gr.DrawLine( pen, xPosRight, yPosStart, xPosRight, yPosStop );
@@ -451,17 +451,12 @@ namespace SimPe.PackedFiles.UserInterface
 					gr.DrawString( glyph, new System.Drawing.Font(font, pts), pen.Brush, xPosRight, yPosStart - 8 );
 				}
 			}
-			AddUnlinked(img);
+			AddUnlinked(gr);
 			return img;
 		} 
 
-		private void AddUnlinked(Bitmap img)
+		private void AddUnlinked(Graphics gr)
 		{
-			Graphics gr = Graphics.FromImage(img);
-			gr.SmoothingMode =  System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-			gr.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-			gr.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-
 			Pen pen = new Pen(Color.FromArgb(64, 64, 64), 1);
 			Pen penc = new Pen(pen.Color, 3);
 			for (int ct = 1; ct < flowitems.Length; ct++)
@@ -469,7 +464,7 @@ namespace SimPe.PackedFiles.UserInterface
 				if (isTarget(ct)) continue;
 
 				int xPosLeft = 0;
-				int xPosRight = img.Width - 1;
+				int xPosRight = pnflow.Width - 1;
 				int yPos = (BhavInstListItemUI.rowHeight + 4) * ct + (BhavInstListItemUI.rowHeight / 4);
 
 				gr.DrawLine(
@@ -543,7 +538,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Name = "BhavInstListControl";
 			this.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("$this.RightToLeft")));
 			this.Size = ((System.Drawing.Size)(resources.GetObject("$this.Size")));
-			this.Resize += new System.EventHandler(this.BhavInstListControl_Resize);
 			this.ResumeLayout(false);
 
 		}
@@ -583,13 +577,6 @@ namespace SimPe.PackedFiles.UserInterface
 					flowitems[flowitems.Length - 1].Focus();
 					break;
 			}
-		}
-
-
-		private void BhavInstListControl_Resize(object sender, System.EventArgs e)
-		{
-			//pnflow.Image = DrawConnectors();
-			//this.BackgroundImage = DrawConnectors();
 		}
 
 
