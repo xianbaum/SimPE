@@ -1,4 +1,8 @@
 
+20 September 2005 18:38 - Bhav: oops, draw relative to the right thing!
+  SimPe BHAV\
+    BhavInstListControl.cs 1.34
+
 20 September 2005 16:34 - Bhav: bugfix: leaking Window handles like mad (plus stuff)
   SimPe BHAV\
     BhavForm.cs 1.44
