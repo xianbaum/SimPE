@@ -174,6 +174,8 @@ namespace pjse
 			{
 				instruction.Parent.Opcodes.LoadPackage();
 				pkg = instruction.Parent.Opcodes.BasePackage;
+				if (pkg == null)
+					return "[objects.package not found]";
 				group = 0x7FD46CD0;
 			}
 			else if (instance >= 0x2000 && instance < 0x3000 &&
@@ -194,6 +196,7 @@ namespace pjse
 				pkg = instruction.Parent.Package;
 				group = instruction.Parent.FileDescriptor.Group;
 			}
+
 			pfd = pkg.FindFile(0x42434F4E, 0, group, instance);
 			if (pfd == null)
 				return "[No BCON file]";
