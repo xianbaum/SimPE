@@ -77,7 +77,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 			this.cbGenericSimsCall.Items.Clear();
 			for (byte i = 0; i < GS.gStr(GS.SF.Generics).Count; i++)
-				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + (new PrimWiz0x0001(i)).VeryShortName);
+				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + ((PrimWiz0x0001)i).VeryShortName);
 			this.lbGenericSimsCallparms.Text = "Should never see this";
 
 			if (operand0 < this.cbGenericSimsCall.Items.Count)
@@ -156,7 +156,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 				lbGenericSimsCallparms.Text = "Unknown operand 0 value 0x" + SimPe.Helper.HexString(cbGenericSimsCall.SelectedIndex);
 			else
 			{
-				lbGenericSimsCallparms.Text = (new PrimWiz0x0001((byte)cbGenericSimsCall.SelectedIndex)).LongName;
+				lbGenericSimsCallparms.Text = ((PrimWiz0x0001)(byte)cbGenericSimsCall.SelectedIndex).LongName;
 			}
 		}
 
@@ -213,33 +213,18 @@ namespace pjse.BhavNameWizards
 {
 	public class PrimWiz0x0001 : ANamePrimitiveWiz
 	{
-		public PrimWiz0x0001(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
-		public PrimWiz0x0001(Bhav parent, byte[] operands) : base(parent, operands) { instruction.OpCode = 0x0001; }
-		public PrimWiz0x0001(byte operand0) : base(null, null)
-		{
-			instruction = new Instruction(null);
-			instruction.OpCode = 0x0001;
-			instruction.Operands[0] = operand0;
-		}
 		public PrimWiz0x0001(Instruction i) : base(i) {}
-		public string VeryShortName
+		public static implicit operator PrimWiz0x0001(byte operand0) //: base(null, null)
 		{
-			get
-			{
-				if (this.instruction == null && instruction.Operands == null) return "";
-				return GS.GStr(GS.SF.Generics, instruction.Operands[0]);
-			}
+			Instruction instruction = new Instruction(null, 0x0001);
+			instruction.Operands[0] = operand0;
+			return new PrimWiz0x0001(instruction);
 		}
 
-		public override string ShortName
-		{
-			get
-			{
-				string s = "[generic]";
-				if (this.instruction == null && instruction.Operands == null) return s;
-				return s + " " + GS.GStr(GS.SF.Generics, instruction.Operands[0]);
-			}
-		}
+
+		public string VeryShortName { get { return GS.GStr(GS.SF.Generics, instruction.Operands[0]); } }
+
+		public override string ShortName { get { return "[generic] " + VeryShortName; } }
 
 		public override string LongName
 		{

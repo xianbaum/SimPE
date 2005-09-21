@@ -27,22 +27,18 @@ namespace pjse.BhavNameWizards
 {
 	public class GlobalWiz : ANameBHAVWiz
 	{
-		public GlobalWiz(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
 		public GlobalWiz(Instruction i) : base(i) {}
-		public new bool isGlobalBhav { get { return true; } }
+
 		public override string LongName { get { string s = base.LongName; return (s!=null ? s : ShortName); } }
-		//public override string ShortName { get { return "to do"; } }
+
+
 
 		public override Bhav LoadBHAV()
 		{
-			if (instruction.Parent == null || instruction.Parent.Opcodes == null) return null;
-
-			IPackedFileDescriptor pfd = instruction.Parent.Opcodes.LoadGlobalBHAV(instruction.OpCode);
-			if (pfd==null) return null;
-
-			Bhav b = new Bhav(instruction.Parent.Opcodes);
-			b.ProcessData(pfd, instruction.Parent.Opcodes.BasePackage);
-			return b;
+			return (instruction == null || instruction.Parent == null ||
+				instruction.Parent.Opcodes == null || instruction.Parent.Package == null || instruction.Parent.FileDescriptor == null)
+				? null
+				: sLoadBHAV(instruction.Parent.Package, 0x7FD46CD0, instruction.OpCode, instruction.Parent.Opcodes);
 		}
 
 
@@ -101,24 +97,10 @@ namespace pjse.BhavNameWizards
 
 	public class LocalWiz : ANameBHAVWiz
 	{
-		public LocalWiz(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
 		public LocalWiz(Instruction i) : base(i) {}
-		public new bool isLocalBhav { get { return true; } }
 
 		public override string ShortName { get { return "[private] " + base.ShortName; } }
 		public override string LongName { get { string s = base.LongName; return (s != null ? "[private] " + s : ShortName); } }
-		public override Bhav LoadBHAV()
-		{
-			if (instruction.Parent == null) return null;
-			if (instruction.Parent.Package==null) return new Bhav(instruction.Parent.Opcodes);
-			IPackedFileDescriptor pfd =  instruction.Parent.Package.FindFile(SimPe.Data.MetaData.BHAV_FILE, 0, instruction.Parent.FileDescriptor.Group, instruction.OpCode);
-			if (pfd==null) return new Bhav(instruction.Parent.Opcodes);
-
-			Bhav b = new Bhav(instruction.Parent.Opcodes);
-			b.ProcessData(pfd, instruction.Parent.Package);
-			return b;
-		}
-
 
 		private static System.Collections.Hashtable bhavs = null;
 		private static ushort next = 0x0000;
@@ -184,46 +166,44 @@ namespace pjse.BhavNameWizards
 
 	public class SemiGlobalWiz : ANameBHAVWiz
 	{
-		public SemiGlobalWiz(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
 		public SemiGlobalWiz(Instruction i) : base(i) {}
-		public new bool isSemiGlobalBhav { get { return true; } }
+
 		public override string ShortName { get { return "[semiglobal] " + base.ShortName; } }
 		public override string LongName { get { string s = base.LongName; return (s != null ? "[semiglobal] " + s : ShortName); } }
 		public override Bhav LoadBHAV()
 		{
-			if (instruction.Parent == null) return null;
-			IPackedFileDescriptor pfd = instruction.Parent.Package.FindFile(SimPe.Data.MetaData.BHAV_FILE, 0, instruction.Parent.FileDescriptor.Group, instruction.OpCode);
-			if (pfd==null)  
-			{
-				pfd = instruction.Parent.Package.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, instruction.Parent.FileDescriptor.Group, 0x01);
-				if (pfd==null) 
-				{
-					IPackedFileDescriptor[] pfds = instruction.Parent.Package.FindFiles(SimPe.Data.MetaData.GLOB_FILE);
-					if (pfds.Length>0) pfd=pfds[0];
+			if (instruction == null || instruction.Parent == null ||
+				instruction.Parent.Opcodes == null || instruction.Parent.Package == null || instruction.Parent.FileDescriptor == null)
+				return null;
 
-					foreach (IPackedFileDescriptor p in pfds) 
-					{
-						if (p.Group == instruction.Parent.FileDescriptor.Group) pfd = p;
-					}
+			SimPe.Interfaces.Files.IPackageFile pkg = instruction.Parent.Package;
+			uint group = instruction.Parent.FileDescriptor.Group;
+
+			if (!(((ABhavNameWiz)instruction.Parent.FileDescriptor.Instance) is SemiGlobalWiz))
+			{
+				SimPe.Interfaces.Files.IPackedFileDescriptor pfd =
+					pkg.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, group, 0x01);
+
+				if (pfd == null) 
+				{
+					SimPe.Interfaces.Providers.IOpcodeProvider o = instruction.Parent.Opcodes;
+					if (o.BasePackage == null) o.LoadPackage();
+					if (o.BasePackage == null)
+						return null;
+					pkg = o.BasePackage;
+					pfd = o.BasePackage.FindFile(SimPe.Data.MetaData.GLOB_FILE, 0, group, 0x01);
 				}
-				if (pfd==null) return null;
+
+				if (pfd == null)
+					return null;
 
 				Glob g = new Glob();
-				g.ProcessData(pfd, instruction.Parent.Package);
-				pfd = instruction.Parent.Opcodes.LoadSemiGlobalBHAV(instruction.OpCode, g.SemiGlobalGroup);
-			
-				if (pfd==null) return null;
-				Bhav b = new Bhav(instruction.Parent.Opcodes);
-				b.ProcessData(pfd, instruction.Parent.Opcodes.BasePackage);
-				return b;
-			} 
-			else 
-			{
-				Bhav b = new Bhav(instruction.Parent.Opcodes);
-				b.ProcessData(pfd, instruction.Parent.Package);
-				return b;
+				g.ProcessData(pfd, pkg);
+				group = g.SemiGlobalGroup;
 			}
-			
+
+			// always look in current package first, even if GLOB was in BasePackage
+			return sLoadBHAV(instruction.Parent.Package, group, instruction.OpCode, instruction.Parent.Opcodes);
 		}
 
 
@@ -363,7 +343,6 @@ namespace pjse.BhavNameWizards
 
 	public class PrimWizDefault : ANamePrimitiveWiz
 	{
-		public PrimWizDefault(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
 		public PrimWizDefault(Instruction i) : base(i) {}
 		public override string LongName { get { return ShortName + " (0x" + SimPe.Helper.HexString(instruction.OpCode) + ")"; } }
 
@@ -371,14 +350,15 @@ namespace pjse.BhavNameWizards
 
 	public class PrimWiz0x0000 : ANamePrimitiveWiz
 	{
-		public PrimWiz0x0000(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
 		public PrimWiz0x0000(Instruction i) : base(i) {}
 		public override string LongName
 		{
 			get
 			{
-				ushort word = (ushort)(instruction.Operands[0] + 256 * instruction.Operands[1]);
-				return ShortName + " for " + dataOwner(9, word) + " ticks.";
+				return ShortName
+					+ " for " + dataOwner(9, ToShort(instruction.Operands[0], instruction.Operands[1])) + " ticks."
+					//+ " (0x" + SimPe.Helper.HexString(instruction.OpCode) + ")"
+					;
 			}
 		}
 

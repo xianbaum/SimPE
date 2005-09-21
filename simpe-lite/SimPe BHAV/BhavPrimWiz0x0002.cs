@@ -273,7 +273,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 					try 
 					{
 						ushort val = Convert.ToUInt16(tbval1.Text, 16);
-						tbval1.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)PrimWiz0x0002.ConstantValueParser(val)[1]);
+						tbval1.Text = "0x"+SimPe.Helper.HexString(ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)ConstantValueParser(val)[1]);
 					} 
 					catch (Exception) {}
 				}
@@ -300,7 +300,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 						ushort[] b = new ushort[2];
 						b[0] = Convert.ToUInt16(s[0], 16);
 						b[1] = Convert.ToUInt16(s[1], 16);
-						tbval1.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(b));
+						tbval1.Text = "0x"+SimPe.Helper.HexString(ConstantValueParser(b));
 					} 
 					catch (Exception) {}
 				}
@@ -319,7 +319,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 					try 
 					{
 						ushort val = Convert.ToUInt16(tbval2.Text, 16);
-						tbval2.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)PrimWiz0x0002.ConstantValueParser(val)[1]);
+						tbval2.Text = "0x"+SimPe.Helper.HexString(ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)ConstantValueParser(val)[1]);
 					} 
 					catch (Exception) {}
 				}
@@ -346,7 +346,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 						ushort[] b = new ushort[2];
 						b[0] = Convert.ToUInt16(s[0], 16);
 						b[1] = Convert.ToUInt16(s[1], 16);
-						tbval2.Text = "0x"+SimPe.Helper.HexString(PrimWiz0x0002.ConstantValueParser(b));
+						tbval2.Text = "0x"+SimPe.Helper.HexString(ConstantValueParser(b));
 					} 
 					catch (Exception) {}
 				}
@@ -361,6 +361,48 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		private void Motive2Changed(object sender, System.EventArgs e)
 		{
 			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker2.SelectedIndex);
+		}
+
+
+		private static ushort[] ConstantValueParser(ushort val) 
+		{
+			ushort[] ret = new ushort[2];
+
+			ret[0] = (ushort)((val >> 7) & 0x3f);
+			ret[1] = (ushort)(val & 0x7F);
+			int t = (val >> 13) & 0x7;
+
+			if (t==0) ret[0] += 0x1000;
+			else if (t==1) ret[0] += 0x2000;
+			else ret[0] += 0x0100;
+
+			return ret;
+		}
+
+		private static ushort ConstantValueParser(ushort[] values) 
+		{
+			int t = 2;
+			if ((values[0]>=0x1000) && (values[0]<0x2000)) 
+			{
+				values[0] = (ushort)(values[0]-0x1000);
+				t = 0;
+			} 
+			else if (values[0]>0x2000) 
+			{
+				values[0] = (ushort)(values[0]-0x2000);
+				t = 1;
+			} 
+			else 
+			{
+				values[0] = (ushort)(values[0]-0x100);
+			}
+			ushort ret = 0;
+
+			ret = (ushort)(t << 13);
+			ret += (ushort)((values[0] & 0x3f)  << 7);
+			ret += (ushort)(values[1] & 0x7F);
+			
+			return ret;
 		}
 
 
@@ -415,9 +457,28 @@ namespace pjse.BhavNameWizards
 {
 	public class PrimWiz0x0002 : ANamePrimitiveWiz
 	{
-		public PrimWiz0x0002(Bhav parent, ushort opcode, byte[] operands) : base(parent, opcode, operands) {}
-		public PrimWiz0x0002(Bhav parent, byte[] operands) : base(parent, operands) { instruction.OpCode = 0x0002; }
 		public PrimWiz0x0002(Instruction i) : base(i) {}
+		public static implicit operator PrimWiz0x0002(byte[] operands)
+		{
+			Instruction i = null;
+			if (operands.Length == 8)
+			{
+				i = new Instruction(null, 0x0002, 0, 0, 0, operands, new byte[8]);
+			}
+			else if (operands.Length == 16)
+			{
+				byte[] a = new byte[8], b = new byte[8];
+				operands.CopyTo(a, 0);
+				operands.CopyTo(b, 8);
+				i = new Instruction(null, 0x0002, 0, 0, 0, a, b);
+			}
+			else
+				i = new Instruction(null, 0x0002);
+
+			return new PrimWiz0x0002(i);
+		}
+
+
 		/*public string VeryShortName
 		{
 			get
@@ -428,13 +489,7 @@ namespace pjse.BhavNameWizards
 			}
 		}*/
 
-		public override string ShortName
-		{
-			get
-			{
-				return parser(instruction);
-			}
-		}
+		public override string ShortName { get { return parser(instruction); } }
 
 		public override string LongName
 		{
@@ -444,54 +499,6 @@ namespace pjse.BhavNameWizards
 				/*if ((this.instruction == null && this.operands == null) || (op0 >= parms.Length)) return ShortName;
 				return ShortName + " (" + parms[op0] + ")";*/
 			}
-		}
-
-
-		internal static ushort[] ConstantValueParser(ushort val) 
-		{
-			ushort[] ret = new ushort[2];
-
-			ret[0] = (ushort)((val >> 7) & 0x3f);
-			ret[1] = (ushort)(val & 0x7F);
-			int t = (val >> 13) & 0x7;
-
-			if (t==0) ret[0] += 0x1000;
-			else if (t==1) ret[0] += 0x2000;
-			else ret[0] += 0x0100;
-
-			return ret;
-		}
-
-		internal static ushort ConstantValueParser(ushort[] values) 
-		{
-			int t = 2;
-			if ((values[0]>=0x1000) && (values[0]<0x2000)) 
-			{
-				values[0] = (ushort)(values[0]-0x1000);
-				t = 0;
-			} 
-			else if (values[0]>0x2000) 
-			{
-				values[0] = (ushort)(values[0]-0x2000);
-				t = 1;
-			} 
-			else 
-			{
-				values[0] = (ushort)(values[0]-0x100);
-			}
-			ushort ret = 0;
-
-			ret = (ushort)(t << 13);
-			ret += (ushort)((values[0] & 0x3f)  << 7);
-			ret += (ushort)(values[1] & 0x7F);
-			
-			return ret;
-		}
-
-
-		private ushort ToShort(byte lower, byte higher)
-		{
-			return (ushort)((higher << 8) + lower);
 		}
 
 
@@ -540,49 +547,20 @@ namespace pjse.BhavNameWizards
 			}
 #endif
 			s += dataOwner(lhs_data_owner, lhs_value_word);
-			s += " " + GS.OperatorName(_operator) + " ";
+			s += " " + GS.GStr(GS.SF.Operators, _operator) + " ";
 
 			if (_operator >= 8 && _operator <= 10) // Flag operation
 			{
-				if (rhs_data_owner == 7) // literal
+				if (rhs_data_owner == 7)
 				{
-					switch(lhs_data_owner)
+					Hashtable a = (Hashtable)flag[lhs_data_owner];
+					if (a != null)
 					{
-						case 0x03: // 0x03 "My"
-						case 0x04: // 0x04 "Stack Object's"
-						switch(lhs_value_word)
+						if (a[lhs_value_word] != null)
 						{
-							case 0x05: s += GS.GStr(GS.SF.gWallAdjFlags, rhs_value_word); break;
-							case 0x08: s += GS.GStr(GS.SF.gFlags1, rhs_value_word); break;
-							case 0x22: s += GS.GStr(GS.SF.gHiddenFlags, rhs_value_word); break;
-							case 0x28: s += GS.GStr(GS.SF.gFlags2, rhs_value_word); break;
-							case 0x2a: s += GS.GStr(GS.SF.gPlacementFlags, rhs_value_word); break;
-							case 0x2b: s += GS.GStr(GS.SF.gMoveFlags, rhs_value_word); break;
-							case 0x3f: s += GS.GStr(GS.SF.gExclPlacementFlags, rhs_value_word); break;
-							case 0x45: s += GS.GStr(GS.SF.gWallCutoutFlags, rhs_value_word); break;
+							uint b = (uint)a[lhs_value_word];
+							s += GS.GStr(b, rhs_value_word);
 						}
-							break;
-						case 0x12: // 0x12 "My Person Data"
-						case 0x13: // 0x13 "Stack Object's Person Data"
-						case 0x20: // 0x20 "Neighbour's Person Data"
-						switch(lhs_value_word)
-						{
-							case 0x1e: s += GS.GStr(GS.SF.gCensorFlags, rhs_value_word); break;
-							case 0x44: s += GS.GStr(GS.SF.gGhostFlags, rhs_value_word); break;
-							case 0x51: s += GS.GStr(GS.SF.gBodyFlags, rhs_value_word); break;
-							case 0x9e: s += GS.GStr(GS.SF.gSelectionFlags, rhs_value_word); break;
-							case 0x9f: s += GS.GStr(GS.SF.gPersonFlags, rhs_value_word); break;
-						}
-							break;
-						case 0x15: // 0x15 "stack object's definition"
-						case 0x26: // 0x26 "Neighbor's Object Definition"
-						case 0x33: // 0x33 "Stack Object's Master Definition"
-						switch(lhs_value_word)
-						{
-							case 0x27: s += GS.GStr(GS.SF.gRoomSortFlags, rhs_value_word); break;
-							case 0x28: s += GS.GStr(GS.SF.gFunctionSortFlags, rhs_value_word); break;
-						}
-							break;
 					}
 				}
 				s+= " (# " + dataOwner(rhs_data_owner, rhs_value_word) +")";
@@ -590,6 +568,39 @@ namespace pjse.BhavNameWizards
 			else
 				s+= dataOwner(rhs_data_owner, rhs_value_word);
 			return s;
+		}
+
+		private static Hashtable flag = flagInitaliser();
+		private static Hashtable flagInitaliser()
+		{
+			Hashtable f = new Hashtable();
+			Hashtable o = new Hashtable();
+			o.Add((ushort)0x05, GS.SF.gWallAdjFlags);
+			o.Add((ushort)0x08, GS.SF.gFlags1);
+			o.Add((ushort)0x22, GS.SF.gHiddenFlags);
+			o.Add((ushort)0x28, GS.SF.gFlags2);
+			o.Add((ushort)0x2a, GS.SF.gPlacementFlags);
+			o.Add((ushort)0x2b, GS.SF.gMoveFlags);
+			o.Add((ushort)0x3f, GS.SF.gExclPlacementFlags);
+			o.Add((ushort)0x45, GS.SF.gWallCutoutFlags);
+			f.Add((byte)0x03, o); // 0x03 "My"
+			f.Add((byte)0x04, o); // 0x04 "Stack Object's"
+			Hashtable p = new Hashtable();
+			p.Add((ushort)0x1e, GS.SF.gCensorFlags);
+			p.Add((ushort)0x44, GS.SF.gGhostFlags);
+			p.Add((ushort)0x51, GS.SF.gBodyFlags);
+			p.Add((ushort)0x9e, GS.SF.gSelectionFlags);
+			p.Add((ushort)0x9f, GS.SF.gPersonFlags);
+			f.Add((byte)0x12, p); // 0x12 "My Person Data"
+			f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
+			f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
+			Hashtable d = new Hashtable();
+			d.Add((ushort)0x27, GS.SF.gRoomSortFlags);
+			d.Add((ushort)0x28, GS.SF.gFunctionSortFlags);
+			f.Add((byte)0x15, d); // 0x15 "stack object's definition"
+			f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
+			f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"
+			return f;
 		}
 
 	}

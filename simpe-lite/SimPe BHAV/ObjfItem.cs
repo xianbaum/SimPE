@@ -92,7 +92,7 @@ namespace SimPe.PackedFiles.Wrapper
 			pfd.Group = parent.FileDescriptor.Group;
 			bhav.FileDescriptor = pfd;
 
-			return pjse.BhavNameWizProvider.For(bhav, opcode, null).ShortName;
+			return ((pjse.ABhavNameWiz)(new Instruction(bhav, opcode))).ShortName;
 		}
 
 	}

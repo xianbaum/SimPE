@@ -255,6 +255,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (wrapper.IndexOf(currentInst) < 0)
 			{
 				SetReadOnly(true);
+				this.llopenbhav.Enabled = false;
 				this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = true;
 
 				this.tbInst_OpCode.Text = "";
@@ -286,7 +287,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				//load referenced Bhav
 				Instruction inst = currentInst;
-				this.llopenbhav.Enabled = (BhavNameWizProvider.For(inst).LoadBHAV() != null);
+				this.llopenbhav.Enabled = ((ABhavNameWiz)inst).LoadBHAV() != null;
 
 				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
@@ -2547,7 +2548,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			ABhavNameWiz nameWiz = pjse.BhavNameWizProvider.For(currentInst);
+			ABhavNameWiz nameWiz = currentInst;
 
 			Bhav b = nameWiz.LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;

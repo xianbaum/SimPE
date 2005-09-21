@@ -20,72 +20,11 @@
 using System;
 using System.Collections;
 using SimPe.PackedFiles.Wrapper;
+using SimPe.Interfaces.Files;
 using pjse.BhavNameWizards;
 
 namespace pjse
 {
-	/// <summary>
-	/// Provides the operand wizard for a given Bhav Instruction.
-	/// </summary>
-	public class BhavNameWizProvider
-	{
-		public static ABhavNameWiz For(Bhav parent, ushort opcode, byte[] operands)
-		{
-			if (opcode < 0x0100)
-			{
-				switch(opcode)
-				{
-					case 0x0000:
-						return new PrimWiz0x0000(parent, opcode, operands);
-					case 0x0001:
-						return new PrimWiz0x0001(parent, opcode, operands);
-					case 0x0002:
-						return new PrimWiz0x0002(parent, opcode, operands);
-					case 0x0008:
-					case 0x000B:
-					case 0x000C:
-					case 0x0016:
-					case 0x001E:
-					default:
-						break;
-				}
-				return new PrimWizDefault(parent, opcode, operands);
-			}
-			if (opcode < 0x1000) return new BhavNameWizards.GlobalWiz(parent, opcode, operands);
-			if (opcode < 0x2000) return new BhavNameWizards.LocalWiz(parent, opcode, operands);
-			return new BhavNameWizards.SemiGlobalWiz(parent, opcode, operands);
-		}
-
-		public static ABhavNameWiz For(Instruction i)
-		{
-			if (i.OpCode < 0x0100)
-			{
-				switch(i.OpCode)
-				{
-					case 0x0000:
-						return new PrimWiz0x0000(i);
-					case 0x0001:
-						return new PrimWiz0x0001(i);
-					case 0x0002:
-						return new PrimWiz0x0002(i);
-					case 0x0008:
-					case 0x000B:
-					case 0x000C:
-					case 0x0016:
-					case 0x001E:
-					default:
-						break;
-				}
-				return new PrimWizDefault(i);
-			}
-			if (i.OpCode < 0x1000) return new BhavNameWizards.GlobalWiz(i);
-			if (i.OpCode < 0x2000) return new BhavNameWizards.LocalWiz(i);
-			return new BhavNameWizards.SemiGlobalWiz(i);
-		}
-
-	}
-
-
 	/// <summary>
 	/// Abstract class that NameWizard providers are based
 	/// </summary>
@@ -93,28 +32,41 @@ namespace pjse
 	{
 		protected Instruction instruction = null;
 
-		public ABhavNameWiz(Instruction instruction) { this.instruction = instruction; }
+		protected ABhavNameWiz(Instruction instruction) { this.instruction = instruction; }
 
-		public ABhavNameWiz(Bhav parent, ushort opcode, byte[] operands)
+		public static implicit operator ABhavNameWiz(Instruction i)
 		{
-			this.instruction = new Instruction(parent, opcode, 0, 0, 0, operands, new byte[8]);
+			if (i.OpCode < 0x0100)
+			{
+				switch(i.OpCode)
+				{
+					case 0x0000: return new PrimWiz0x0000(i);
+					case 0x0001: return new PrimWiz0x0001(i);
+					case 0x0002: return new PrimWiz0x0002(i);
+				}
+				return new PrimWizDefault(i);
+			}
+			if (i.OpCode < 0x1000) return new GlobalWiz(i);
+			if (i.OpCode < 0x2000) return new LocalWiz(i);
+			return new SemiGlobalWiz(i);
 		}
 
-		public virtual bool isPrimitive { get { return false; } }
-		public virtual bool isBhav { get { return false; } }
-		public virtual bool isGlobalBhav { get { return false; } }
-		public virtual bool isSemiGlobalBhav { get { return false; } }
-		public virtual bool isLocalBhav { get { return false; } }
+		public static implicit operator ABhavNameWiz(ushort opcode)
+		{
+			return new Instruction(null, opcode);
+		}
 
-		public abstract Bhav LoadBHAV();
+		public virtual Bhav LoadBHAV() { return null; }
 
 		public abstract string ShortName { get; }
+
 		public abstract string LongName { get; }
 
 		public override string ToString()
 		{
-			if (instruction == null) return ShortName;
-			return LongName;
+			return (LongName != null) ? LongName
+				: (ShortName != null ? ShortName
+				: "[error: " + SimPe.Helper.HexString(instruction.OpCode));
 		}
 
 
@@ -143,7 +95,7 @@ namespace pjse
 
 		protected string dataOwner(byte doid, ushort instance)
 		{
-			string doidName = GS.DataOwnerName(doid);
+			string doidName = GS.GStr(GS.SF.DataOwners, doid);
 
 			string s = null;
 			if (doidGStr[doid] != null)
@@ -168,7 +120,7 @@ namespace pjse
 				case 0x0f:
 				case 0x1c:
 				case 0x1d:
-					s = "(0x" + SimPe.Helper.HexString((byte)instance) + " " + GS.MotiveName(instance) + ")";
+					s = "(0x" + SimPe.Helper.HexString((byte)instance) + " " + GS.GStr(GS.SF.Motives, instance) + ")";
 					break;
 				case 0x1a:
 				case 0x2f:
@@ -193,11 +145,11 @@ namespace pjse
 					if (doid == 0x1a)
 					{
 						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":0x" + SimPe.Helper.HexString((byte)c)
-							+ " (" + readBcon((uint)b, c) + ")";
+							+ " [=" + readBcon((uint)b, c) + "]";
 					}
 					else
 					{
-						doidName = GS.DataOwnerName(0x1a);
+						doidName = GS.GStr(GS.SF.DataOwners, 0x1a);
 						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":[Temp " + c.ToString() + "]";
 					}
 					break;
@@ -205,6 +157,12 @@ namespace pjse
 			if (s == null) s = "0x" + SimPe.Helper.HexString(instance);
 
 			return doidName + (s.Length > 0 ? " " + s : "");
+		}
+
+
+		protected ushort ToShort(byte lower, byte higher)
+		{
+			return (ushort)((higher << 8) + lower);
 		}
 
 		private string readBcon(uint instance, int bid)
@@ -259,13 +217,12 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public abstract class ANamePrimitiveWiz : ABhavNameWiz
 	{
-		public ANamePrimitiveWiz(Bhav parent, ushort opcode, byte[] operands) : base (parent, opcode, operands) { }
-		public ANamePrimitiveWiz(Bhav parent, byte[] operands) : base(parent, 0, operands) { }
 		public ANamePrimitiveWiz(Instruction instruction) : base (instruction) { }
-		public override bool isPrimitive { get { return true; } }
+		// Also provide
+		// public static implicit operator <Wiz>(byte[] operands);
 
 		public override Bhav LoadBHAV() { return null; }
-		public override string ShortName { get { return GS.PrimitiveName(instruction.OpCode); } }
+		public override string ShortName { get { return GS.GStr(GS.SF.Primitives, instruction.OpCode); } }
 	}
 
 
@@ -274,9 +231,7 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public abstract class ANameBHAVWiz : ABhavNameWiz
 	{
-		public ANameBHAVWiz(Bhav parent, ushort opcode, byte[] operands) : base (parent, opcode, operands) { }
 		public ANameBHAVWiz(Instruction instruction) : base (instruction) { }
-		public override bool isBhav { get { return true; } }
 		public override string ShortName
 		{
 			get 
@@ -285,6 +240,7 @@ namespace pjse.BhavNameWizards
 				return ((b != null) ? b.FileName : "(BHAV not found)") + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
 			}
 		}
+
 		public override string LongName
 		{
 			get
@@ -305,29 +261,51 @@ namespace pjse.BhavNameWizards
 					if ((parms[12] & 0x01) != 0)
 					{
 						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
-						{
-							byte doid = parms[i*3];
-							ushort instance = (ushort)(parms[(i*3) + 1] + 256 * parms[(i*3) + 2]);
-							s += (i>0 ? ", " : "") + dataOwner(doid, instance);
-						}
+							s += (i>0 ? ", " : ": ") + dataOwner(parms[i*3], ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
 					}
 					else if ((parms[12] & 0x02) != 0)
 					{
-						s = "caller's first " + b.Header.ArgumentCount.ToString() + " params";
+						s = " - caller's params";
 					}
 					else
 					{
 						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
-						{
-							ushort val = (ushort)(parms[(i*2)] + 256 * parms[(i*2) + 1]);
-							s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(val);
-						}
+							s += (i>0 ? ", " : ": ") + "0x" + SimPe.Helper.HexString(ToShort(parms[(i*2)], parms[(i*2) + 1]));
 					}
 				}
 
-				return b.FileName + " (" + b.Header.ArgumentCount.ToString() + " args" + ((s.Length > 0) ? ": " + s : "") + ")";
+				return b.FileName + " (" + b.Header.ArgumentCount.ToString() + " args" + ((s.Length > 0) ? s : "") + ")";
 			}
 		}
 
+
+		protected static Bhav sLoadBHAV(IPackageFile pkg, uint group, uint instance, SimPe.Interfaces.Providers.IOpcodeProvider o)
+		{
+			IPackedFileDescriptor pfd = null;
+
+			pfd = pkg.FindFile(SimPe.Data.MetaData.BHAV_FILE, 0x0, group, instance);
+
+			if (pfd == null)
+			{
+				if (o.BasePackage == null) o.LoadPackage();
+				pkg = o.BasePackage;
+				if (pkg == null) return null;
+				pfd = pkg.FindFile(SimPe.Data.MetaData.BHAV_FILE, 0x0, group, instance);
+			}
+
+			if (pfd == null) return null;
+
+			Bhav b = new Bhav(o);
+			b.ProcessData(pfd, pkg);
+			return b;
+		}
+
+		public override Bhav LoadBHAV()
+		{
+			return (instruction == null || instruction.Parent == null ||
+				instruction.Parent.Opcodes == null || instruction.Parent.Package == null || instruction.Parent.FileDescriptor == null)
+				? null
+				: sLoadBHAV(instruction.Parent.Package, instruction.Parent.FileDescriptor.Group, instruction.OpCode, instruction.Parent.Opcodes);
+		}
 	}
 }
