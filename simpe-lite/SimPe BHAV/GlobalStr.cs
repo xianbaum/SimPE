@@ -105,39 +105,30 @@ namespace pjse
 		}
 
 
-		public static string DataOwnerName(byte owner) { return GStr(SF.DataOwners, owner); }
-
-		public static string MotiveName(ushort nr) { return GStr(SF.Motives, nr); }
-
-		public static string OperatorName(byte op) { return GStr(SF.Operators, op); }
-
-		public static string PrimitiveName(ushort opcode) { return GStr(SF.Primitives, opcode); }
-
-
 		public enum SF : uint
 		{
 			DataOwners = 0x84,
 			Motives = 0x86,
 			Operators = 0x88,
 			Primitives = 0x8b,
-			Generics = 0xdc,
-			OBJDDescs = 0xcc,
-			OBJFDescs = 0xf5,
-			gWallAdjFlags = 0xd0,
 			gFlags1 = 0x8e,
-			gHiddenFlags = 0x200,
-			gFlags2 = 0xd6,
+			gBodyFlags = 0x8f,
+			gCensorFlags = 0xb2,
 			gPlacementFlags = 0xca,
 			gMoveFlags = 0xcb,
-			gExclPlacementFlags = 0xfb,
-			gWallCutoutFlags = 0xfd,
-			gCensorFlags = 0xb2,
-			gGhostFlags = 0x201,
-			gBodyFlags = 0x8f,
-			gSelectionFlags = 0x202,
-			gPersonFlags = 0x204,
+			OBJDDescs = 0xcc,
 			gRoomSortFlags = 0xcd,
 			gFunctionSortFlags = 0xce,
+			gWallAdjFlags = 0xd0,
+			gFlags2 = 0xd6,
+			Generics = 0xdc,
+			OBJFDescs = 0xf5,
+			gExclPlacementFlags = 0xfb,
+			gWallCutoutFlags = 0xfd,
+			gHiddenFlags = 0x200,
+			gGhostFlags = 0x201,
+			gSelectionFlags = 0x202,
+			gPersonFlags = 0x204,
 		}
 	}
 }
