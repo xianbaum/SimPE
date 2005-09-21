@@ -75,10 +75,11 @@ namespace pjse.BhavOperandWizards.WizRaw
 		{
 			try 
 			{
+				string s = tbRaw.Text + "00000000000000000000000000000000";
 				for (int i = 0; i < 8; i++)
-					inst.Operands[i] = Convert.ToByte(tbRaw.Text.Substring(i * 2, 2), 16);
+					inst.Operands[i] = Convert.ToByte(s.Substring(i * 2, 2), 16);
 				for (int i = 0; i < 8; i++)
-					inst.Reserved1[i] = Convert.ToByte(tbRaw.Text.Substring((i+8) * 2, 2), 16);
+					inst.Reserved1[i] = Convert.ToByte(s.Substring((i+8) * 2, 2), 16);
 
 				return inst;
 			} 
