@@ -704,23 +704,37 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
+		internal Instruction (Bhav parent, ushort opcode)
+		{
+			this.parent = parent;
+			this.opcode = opcode;
+			this.operands = new wrappedByteArray(this, new byte[8]);
+			this.reserved_01 = new wrappedByteArray(this, new byte[8]);
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte nodeversion, byte[] operands, byte[] reserved_01)
+		{
+			this.parent = parent;
+			this.opcode = opcode;
+			this.addr1 = formatSpecificSetAddr(addr1);
+			this.addr2 = formatSpecificSetAddr(addr2);
+			this.nodeversion = nodeversion;
+			this.operands = new wrappedByteArray(this, operands);
+			this.reserved_01 = new wrappedByteArray(this, reserved_01);
+		}
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
 		internal Instruction (Bhav parent, System.IO.BinaryReader reader)
 		{
 			this.parent = parent;
 			Unserialize(reader);
 		}
 
-
-		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte nodeversion, byte[] operands, byte[] reserved_01)
-		{
-			this.opcode = opcode;
-			this.Target1 = addr1;
-			this.Target2 = addr2;
-			this.nodeversion = nodeversion;
-			this.operands = new wrappedByteArray(this, operands);
-			this.reserved_01 = new wrappedByteArray(this, reserved_01);
-			this.parent = parent;
-		}
 
 		public Instruction Clone()
 		{
