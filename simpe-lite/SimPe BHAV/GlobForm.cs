@@ -61,8 +61,8 @@ namespace SimPe.PackedFiles.UserInterface
 			// TODO: Add any constructor code after InitializeComponent call
 			//
 			cbseminame.Items.Clear();
-			//BuildGlobList();
-			//foreach (Data.SemiGlobalAlias a in globs) if (a.Known) cbseminame.Items.Add(a);
+			BuildGlobList();
+			foreach (Data.SemiGlobalAlias a in globs) if (a.Known) cbseminame.Items.Add(a);
 		}
 
 		/// <summary>
@@ -143,6 +143,7 @@ namespace SimPe.PackedFiles.UserInterface
 			lbglobfile.Text = wrapper.FileName;
 			cbseminame.Text = wrapper.SemiGlobalName;
 			cbseminame.Tag = null;
+			SemiGlobalChanged(null, null);
 		}
 		#endregion
 
