@@ -1,4 +1,8 @@
 
+21 September 2005 18:20 - Bhav: missed a check for BasePackage not found
+  SimPe BHAV\
+    BhavNameWizProvider.cs 1.8
+
 21 September 2005 17:34 - Bhav: BhavNameWizProvider rewrite
   * Remove BhavNameWizProvider class, move code into ABhavNameWiz class
   * Allow cast from Instruction to ABhavNameWiz
