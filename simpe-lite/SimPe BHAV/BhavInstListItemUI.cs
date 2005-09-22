@@ -80,6 +80,7 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
+			if (wrapper != null) wrapper.WrapperChanged -= new System.EventHandler(WrapperChanged);
 			wrapper = null;
 			Parent = null;
 		}
@@ -104,7 +105,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private int index;
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			if (wrapper == null) return;
+			//if (wrapper == null) return; // should be fixed in dispose, now
 
 			if (wrapper.IndexOf(sender) != index) return;
 			Instruction inst = (Instruction)sender;

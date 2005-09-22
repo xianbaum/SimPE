@@ -35,7 +35,7 @@ namespace SimPe.PackedFiles.UserInterface
 	public class BhavOpCodeWiz : System.Windows.Forms.Form
 	{
 		#region Form variables
-		internal System.Windows.Forms.Panel pnOpCode;
+		private System.Windows.Forms.Panel pnOpCode;
 		private System.Windows.Forms.TabControl tcopcodes;
 		private System.Windows.Forms.TabPage tbprimitive;
 		private System.Windows.Forms.ListBox lbprimitives;
@@ -88,6 +88,9 @@ namespace SimPe.PackedFiles.UserInterface
 			Semis = 0x0008,		NoSemis = 0xFFF7,
 		}
 
+
+		private static uint lastPackage = 0;
+		private static uint lastSemiGroup = 0;
 		public int Execute(Bhav bhav, Control form, Flags flags)
 		{
 			if (bhav == null) return -1;
@@ -108,7 +111,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			if ((flags & Flags.Globals) != 0)
 			{
-				Globals(bhav, lbglobal);
+				Fill((GlobalWiz)bhav, lbglobal);
 				if (this.lbglobal.Items.Count > 0)
 				{
 					this.tcopcodes.TabPages.Add(this.tbglobal);
@@ -117,7 +120,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			if ((flags & Flags.Locals) != 0)
 			{
-				Locals(bhav, lbprivate);
+				Fill((LocalWiz)bhav, lbprivate);
 				if (this.lbprivate.Items.Count > 0)
 				{
 					this.tcopcodes.TabPages.Add(this.tbprivate);
@@ -126,9 +129,10 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			if ((flags & Flags.Semis) != 0)
 			{
-				SemiGlobals(bhav, lbsemi);
+				Fill((SemiGlobalWiz)bhav, lbsemi);
 				if (this.lbsemi.Items.Count > 0)
 				{
+					this.tbsemi.Text = SemiGlobalWiz.SemiGroupName;
 					this.tcopcodes.TabPages.Add(this.tbsemi);
 					lbsemi.SelectedIndex = 0;
 				}
@@ -172,47 +176,12 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
-		private void Globals(Bhav wrapper, ListBox list)
-		{
-			if (this.lbglobal.Items.Count != 0) return;
-			list.Items.Clear();
 
-			SimPe.Data.Alias a = GlobalWiz.First(wrapper);
-			while (a != null)
-			{
-				list.Items.Add(a);
-				a = GlobalWiz.Next();
-			}
-		}
-
-		private void Locals(Bhav wrapper, ListBox list)
+		private void Fill(ANameBHAVWiz wiz, ListBox list)
 		{
 			list.Items.Clear();
-
-			SimPe.Data.Alias a = LocalWiz.First(wrapper);
-			while (a != null)
-			{
-				list.Items.Add(a);
-				a = LocalWiz.Next();
-			}
+			foreach (SimPe.Data.Alias a in wiz) list.Items.Add(a);
 		}
-
-		private void SemiGlobals(Bhav wrapper, ListBox list)
-		{
-			if (this.lbsemi.Items.Count != 0 && pjse.BhavNameWizards.SemiGlobalWiz.SameGroup(wrapper)) return;
-			this.lbsemi.Items.Clear();
-
-			list.Items.Clear();
-
-			SimPe.Data.Alias a = SemiGlobalWiz.First(wrapper);
-			while (a != null)
-			{
-				list.Items.Add(a);
-				a = SemiGlobalWiz.Next();
-			}
-			this.tbsemi.Text = SemiGlobalWiz.SemiGroupName;
-		}
-
 
 		#endregion
 
@@ -355,6 +324,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// 
 			// OK
 			// 
+			this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.OK.Location = new System.Drawing.Point(320, 440);
 			this.OK.Name = "OK";
 			this.OK.Size = new System.Drawing.Size(80, 24);

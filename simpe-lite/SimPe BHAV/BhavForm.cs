@@ -176,6 +176,11 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
+			if (setHandler && wrapper != null)
+			{
+				wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
+				setHandler = false;
+			}
 			wrapper = null;
 			currentInst = null;
 			origInst = null;

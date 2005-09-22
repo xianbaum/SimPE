@@ -38,6 +38,7 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
+		, IMultiplePackedFileWrapper	//Allow Multiple Instances
 		, ICollection
 	{
 		#region Attributes
@@ -351,6 +352,15 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#region IFileWrapperSaveExtension Member		
 		//all covered by AbstractWrapper
+		#endregion
+
+		#region IMultiplePackedFileWrapper
+		public override object[] GetConstructorArguments()
+		{
+			object[] o = new object[1];
+			o[0] = this.opcodes;
+			return o;
+		}
 		#endregion
 
 		#region ICollection Members
