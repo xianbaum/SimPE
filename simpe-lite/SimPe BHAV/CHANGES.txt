@@ -1,4 +1,15 @@
 
+22 September 2005 23:16 - Bhav: Parked changes for FileTable use ("broken")
+  SimPe BHAV\
+    BhavForm.cs 1.45.2.1 (learn how to remove delegates)
+    BhavInstListControl.cs 1.35.2.1 (learn how to remove delegates)
+    BhavInstListItemUI.cs 1.16.2.1 (learn how to remove delegates)
+    BhavNameWizProvider.cs 1.8.2.1
+    BhavNameWizProviders.cs 1.6.2.1
+    BhavOpCodeWiz.cs 1.8.2.1
+    BhavOpCodeWiz.resx 1.4.2.1
+    BhavWrapper.cs 1.39.2.1 (multifile)
+
 21 September 2005 18:20 - Bhav: missed a check for BasePackage not found
   SimPe BHAV\
     BhavNameWizProvider.cs 1.8
