@@ -62,6 +62,11 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
+			if (setHandler && wrapper != null)
+			{
+				wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
+				setHandler = false;
+			}
 			wrapper = null;
 			if (flowitems != null)
 				for(int i = 0; i < flowitems.Length; i++) if (flowitems[i] != null) { flowitems[i].Dispose(); flowitems[i] = null; }
