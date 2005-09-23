@@ -144,7 +144,7 @@ namespace SimPe.PackedFiles.Wrapper
 			items = new ObjfItem[reader.ReadUInt32()];
 						
  
-			for (int i=0; i < items.Length; i++) 
+			for (ushort i=0; i < items.Length; i++) 
 			{
 				items[i] = new ObjfItem(this);
 				items[i].LineNumber = i;

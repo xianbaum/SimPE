@@ -408,8 +408,6 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public string ActionName { get { return this.OpcodeName(this.action); } }
-
 		public ushort Guardian
 		{
 			get { return guard; }
@@ -422,8 +420,6 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}		
-
-		public string GuardianName { get { return this.OpcodeName(this.guard); } }
 
 		public TtabFlags Flags
 		{
@@ -643,17 +639,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="opcode">The Opcode</param>
 		/// <returns>The Name</returns>
-		protected string OpcodeName(ushort opcode) 
-		{
-			Bhav bhav = new Bhav(parent.Opcodes);
-			bhav.Package = parent.Package;
-			SimPe.Packages.PackedFileDescriptor pfd = new SimPe.Packages.PackedFileDescriptor();
-			pfd.Group = parent.FileDescriptor.Group;
-			bhav.FileDescriptor = pfd;
-
-			return ((pjse.ABhavNameWiz)(new Instruction(bhav, opcode))).ShortName;
-		}
-
 		public override string ToString()
 		{
 			return "0x"+StringIndex.ToString("X")+": "+Name;// + " ("+this.ActionName+")";

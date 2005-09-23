@@ -24,7 +24,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using SimPe.PackedFiles.Wrapper;
+using SimPe.Interfaces.Plugin;
 using pjse.BhavNameWizards;
 
 namespace SimPe.PackedFiles.UserInterface
@@ -35,7 +35,7 @@ namespace SimPe.PackedFiles.UserInterface
 	public class BhavOpCodeWiz : System.Windows.Forms.Form
 	{
 		#region Form variables
-		internal System.Windows.Forms.Panel pnOpCode;
+		private System.Windows.Forms.Panel pnOpCode;
 		private System.Windows.Forms.TabControl tcopcodes;
 		private System.Windows.Forms.TabPage tbprimitive;
 		private System.Windows.Forms.ListBox lbprimitives;
@@ -88,10 +88,10 @@ namespace SimPe.PackedFiles.UserInterface
 			Semis = 0x0008,		NoSemis = 0xFFF7,
 		}
 
-		public int Execute(Bhav bhav, Control form, Flags flags)
+
+		public int Execute(AbstractWrapper wrapper, Control form, Flags flags)
 		{
-			if (bhav == null) return -1;
-			if (bhav.Package == null) return -1;
+			if (wrapper == null) return -1;
 
 			form.Cursor = Cursors.WaitCursor;
 			this.Cursor = Cursors.WaitCursor;
@@ -106,33 +106,9 @@ namespace SimPe.PackedFiles.UserInterface
 					lbprimitives.SelectedIndex = 0;
 				}
 			}
-			if ((flags & Flags.Globals) != 0)
-			{
-				Globals(bhav, lbglobal);
-				if (this.lbglobal.Items.Count > 0)
-				{
-					this.tcopcodes.TabPages.Add(this.tbglobal);
-					lbglobal.SelectedIndex = 0;
-				}
-			}
-			if ((flags & Flags.Locals) != 0)
-			{
-				Locals(bhav, lbprivate);
-				if (this.lbprivate.Items.Count > 0)
-				{
-					this.tcopcodes.TabPages.Add(this.tbprivate);
-					lbprivate.SelectedIndex = 0;
-				}
-			}
-			if ((flags & Flags.Semis) != 0)
-			{
-				SemiGlobals(bhav, lbsemi);
-				if (this.lbsemi.Items.Count > 0)
-				{
-					this.tcopcodes.TabPages.Add(this.tbsemi);
-					lbsemi.SelectedIndex = 0;
-				}
-			}
+			Fill((flags & Flags.Globals), (GlobalWiz)wrapper, lbglobal, tbglobal);
+			Fill((flags & Flags.Semis), (SemiGlobalWiz)wrapper, lbsemi, tbsemi);
+			Fill((flags & Flags.Locals), (LocalWiz)wrapper, lbprivate, tbprivate);
 			this.tcopcodes.SelectedIndex = this.tcopcodes.TabPages.Count - 1;
 
 			form.Cursor = Cursors.Default;
@@ -172,47 +148,20 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
-		private void Globals(Bhav wrapper, ListBox list)
-		{
-			if (this.lbglobal.Items.Count != 0) return;
-			list.Items.Clear();
 
-			SimPe.Data.Alias a = GlobalWiz.First(wrapper);
-			while (a != null)
+		private void Fill(Flags flag, ANameBHAVWiz wiz, ListBox list, TabPage tab)
+		{
+			if (flag == 0) return;
+			list.Items.Clear();
+			list.Items.AddRange((SimPe.Data.Alias[]) wiz.Aliases.ToArray(typeof(SimPe.Data.Alias)));
+			if (list.Items.Count > 0)
 			{
-				list.Items.Add(a);
-				a = GlobalWiz.Next();
+				this.tcopcodes.TabPages.Add(tab);
+				list.SelectedIndex = 0;
+				if (wiz is SemiGlobalWiz)
+					tab.Text = SemiGlobalWiz.SemiGroupName;
 			}
 		}
-
-		private void Locals(Bhav wrapper, ListBox list)
-		{
-			list.Items.Clear();
-
-			SimPe.Data.Alias a = LocalWiz.First(wrapper);
-			while (a != null)
-			{
-				list.Items.Add(a);
-				a = LocalWiz.Next();
-			}
-		}
-
-		private void SemiGlobals(Bhav wrapper, ListBox list)
-		{
-			if (this.lbsemi.Items.Count != 0 && pjse.BhavNameWizards.SemiGlobalWiz.SameGroup(wrapper)) return;
-			this.lbsemi.Items.Clear();
-
-			list.Items.Clear();
-
-			SimPe.Data.Alias a = SemiGlobalWiz.First(wrapper);
-			while (a != null)
-			{
-				list.Items.Add(a);
-				a = SemiGlobalWiz.Next();
-			}
-			this.tbsemi.Text = SemiGlobalWiz.SemiGroupName;
-		}
-
 
 		#endregion
 
@@ -355,6 +304,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// 
 			// OK
 			// 
+			this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.OK.Location = new System.Drawing.Point(320, 440);
 			this.OK.Name = "OK";
 			this.OK.Size = new System.Drawing.Size(80, 24);

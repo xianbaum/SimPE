@@ -26,37 +26,30 @@ namespace SimPe.PackedFiles.Wrapper
 	/// </summary>
 	public class ObjfItem
 	{
-		int nr;
-		public int LineNumber 
+		ushort nr;
+		ushort guard;
+		ushort action;
+		private Objf parent;
+		public ushort LineNumber 
 		{
 			get {return nr; }
 			set {nr = value;}
 		}
 
-		public string Name 
-		{
-			get 
-			{
-				if (parent.Opcodes==null) return Localization.Manager.GetString("Unknown");
-				else return parent.Opcodes.StoredObjfLines[nr].ToString();
-			}
-		}
+		public string Name { get { return pjse.GS.GStr(pjse.GS.SF.OBJFDescs, nr); } }
 
-		ushort guard;
 		public ushort Guardian
 		{
 			get {return guard; }
 			set {guard = value;}
 		}
 
-		ushort action;
 		public ushort Action
 		{
 			get {return action; }
 			set {action = value;}
 		}
 
-		private Objf parent;
 
 		public ObjfItem(Objf parent)
 		{
@@ -66,33 +59,16 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public override string ToString()
 		{
+			pjse.ABhavNameWiz gw = (pjse.ABhavNameWiz)new Instruction(parent, guard);
+			pjse.ABhavNameWiz aw = (pjse.ABhavNameWiz)new Instruction(parent, action);
+
 			string add = "";
-			if ((guard==0) && (action==0)) add="            ";
-			if (parent.Opcodes==null) 
-			{
-				return add+Name+": 0x"+Helper.HexString(guard)+" -> 0x"+Helper.HexString(action);
-			} 
-			else 
-			{
-				string guardname = OpcodeName(this.guard);
-				string actionname = OpcodeName(this.action);
-				
-				if (guard==0) guardname = "null";
-				if (action==0) actionname = "null";
+			if ((guard == 0 && action == 0) || (gw == null && aw == null))
+				add="            ";
 
-				return add+Name+": "+guardname+" -> "+actionname;				
-			}
-		}
-
-		private string OpcodeName(ushort opcode) 
-		{
-			Bhav bhav = new Bhav(parent.Opcodes);
-			bhav.Package = parent.Package;
-			SimPe.Packages.PackedFileDescriptor pfd = new SimPe.Packages.PackedFileDescriptor();
-			pfd.Group = parent.FileDescriptor.Group;
-			bhav.FileDescriptor = pfd;
-
-			return ((pjse.ABhavNameWiz)(new Instruction(bhav, opcode))).ShortName;
+			return add + Name +
+				": " + (gw == null ? "null" : gw.ShortName) +
+				" -> " + (aw == null ? "null" : aw.ShortName);
 		}
 
 	}

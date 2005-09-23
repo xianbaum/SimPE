@@ -598,17 +598,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
+		#endregion
 
 		private void GetObjfGuard(object sender, System.EventArgs e)
 		{
 			try 
 			{
-				Objf wrp = (Objf)wrapper;
-				Bhav bhav = new Bhav(wrp.Opcodes);
-				bhav.Package = wrp.Package;
-				bhav.FileDescriptor = wrp.FileDescriptor;
-				
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, objfPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
+				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, objfPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
 
 				if (opcode != -1)
 					tbguard.Text = "0x"+Helper.HexString((ushort)opcode);
@@ -624,12 +620,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			try 
 			{
-				Objf wrp = (Objf)wrapper;
-				Bhav bhav = new Bhav(wrp.Opcodes);
-				bhav.Package = wrp.Package;
-				bhav.FileDescriptor = wrp.FileDescriptor;
-				
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, objfPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
+				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, objfPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
 
 				if (opcode != -1)
 					tbaction.Text = "0x"+Helper.HexString((ushort)opcode);
@@ -731,7 +722,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.internalchg = true;
 				if (lbobjf.SelectedIndex <0) 
 				{
-					item.LineNumber = lbobjf.Items.Count;
+					item.LineNumber = (ushort)lbobjf.Items.Count;
 					lbobjf.Items.Add(item);
 				} 
 				else 
@@ -755,6 +746,5 @@ namespace SimPe.PackedFiles.UserInterface
 			if (lbobjf.SelectedIndex>=0) ObjfChanged(null, null);
 		}
 
-		#endregion
 	}
 }

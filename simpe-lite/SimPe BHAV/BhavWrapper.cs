@@ -38,6 +38,7 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
+		, IMultiplePackedFileWrapper	//Allow Multiple Instances
 		, ICollection
 	{
 		#region Attributes
@@ -353,6 +354,15 @@ namespace SimPe.PackedFiles.Wrapper
 		//all covered by AbstractWrapper
 		#endregion
 
+		#region IMultiplePackedFileWrapper
+		public override object[] GetConstructorArguments()
+		{
+			object[] o = new object[1];
+			o[0] = this.opcodes;
+			return o;
+		}
+		#endregion
+
 		#region ICollection Members
 		public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
 		public int Count { get { return items.Count; } }
@@ -616,7 +626,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte nodeversion = 0;
 		private wrappedByteArray operands = null;
 		private wrappedByteArray reserved_01 = null;
-		private Bhav parent;
+		private AbstractWrapper parent;
 		#endregion
 
 		#region Accessor methods
@@ -628,7 +638,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (opcode != value)
 				{
 					opcode = value;
-					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
+					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -641,7 +651,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (addr1 != value)
 				{
 					addr1 = value;
-					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
+					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -654,7 +664,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (addr2 != value)
 				{
 					addr2 = value;
-					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
+					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -667,7 +677,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (nodeversion != value)
 				{
 					nodeversion = value;
-					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
+					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -676,7 +686,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public wrappedByteArray Reserved1 { get { return reserved_01; } }
 
-		public Bhav Parent
+		public AbstractWrapper Parent
 		{
 			get { return parent; }
 			set
@@ -684,7 +694,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (parent != value)
 				{
 					parent = value;
-					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
+					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -694,7 +704,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent)
+		internal Instruction (AbstractWrapper parent)
 		{
 			this.parent = parent;
 			this.operands = new wrappedByteArray(this, new byte[8]);
@@ -704,7 +714,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent, ushort opcode)
+		internal Instruction (AbstractWrapper parent, ushort opcode)
 		{
 			this.parent = parent;
 			this.opcode = opcode;
@@ -715,7 +725,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte nodeversion, byte[] operands, byte[] reserved_01)
+		internal Instruction (AbstractWrapper parent, ushort opcode, ushort addr1, ushort addr2, byte nodeversion, byte[] operands, byte[] reserved_01)
 		{
 			this.parent = parent;
 			this.opcode = opcode;
@@ -729,7 +739,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent, System.IO.BinaryReader reader)
+		internal Instruction (AbstractWrapper parent, System.IO.BinaryReader reader)
 		{
 			this.parent = parent;
 			Unserialize(reader);
@@ -753,7 +763,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		private ushort formatSpecificSetAddr(ushort addr)
 		{
-			if (parent.Header.Format < 0x8007)
+			if (parent is Bhav && ((Bhav)parent).Header.Format < 0x8007)
 				switch (addr)
 				{
 					case 0x00FD: return 0xFFFC;	// error
@@ -771,8 +781,11 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader"></param>
 		private void Unserialize(System.IO.BinaryReader reader) 
 		{
+			if (!(parent is Bhav))
+				throw new InvalidOperationException("Can only unserialize into a BHAV file");
+
 			opcode = reader.ReadUInt16();
-			if (parent.Header.Format < 0x8007)
+			if (((Bhav)parent).Header.Format < 0x8007)
 			{
 				addr1 = formatSpecificSetAddr((ushort)reader.ReadByte());
 				addr2 = formatSpecificSetAddr((ushort)reader.ReadByte());
@@ -783,13 +796,13 @@ namespace SimPe.PackedFiles.Wrapper
 				addr2 = formatSpecificSetAddr(reader.ReadUInt16());
 			}
 
-			if (parent.Header.Format < 0x8003)
+			if (((Bhav)parent).Header.Format < 0x8003)
 			{
 				nodeversion = 0;
 				operands = new wrappedByteArray(this, reader);
 				reserved_01 = new wrappedByteArray(this, new byte[8]);
 			}
-			else if (parent.Header.Format < 0x8005)
+			else if (((Bhav)parent).Header.Format < 0x8005)
 			{
 				nodeversion = 0;
 				operands = new wrappedByteArray(this, reader);
@@ -806,7 +819,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		private ushort formatSpecificGetAddr(ushort target)
 		{
-			if (parent.Header.Format < 0x8007)
+			if (parent is Bhav && ((Bhav)parent).Header.Format < 0x8007)
 				switch (target)
 				{
 					case 0xFFFC: return 0x00FD;	// error
@@ -824,8 +837,11 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="writer"></param>
 		internal void Serialize(System.IO.BinaryWriter writer) 
 		{
+			if (!(parent is Bhav))
+				throw new InvalidOperationException("Can only serialize from a BHAV file");
+
 			writer.Write(opcode);
-			if (parent.Header.Format < 0x8007)
+			if (((Bhav)parent).Header.Format < 0x8007)
 			{
 				writer.Write((byte)formatSpecificGetAddr(addr1));
 				writer.Write((byte)formatSpecificGetAddr(addr2));
@@ -836,11 +852,11 @@ namespace SimPe.PackedFiles.Wrapper
 				writer.Write(formatSpecificGetAddr(addr2));
 			}
 
-			if (parent.Header.Format < 0x8003)
+			if (((Bhav)parent).Header.Format < 0x8003)
 			{
 				operands.Serialize(writer);
 			}
-			else if (parent.Header.Format < 0x8005)
+			else if (((Bhav)parent).Header.Format < 0x8005)
 			{
 				operands.Serialize(writer);;
 				reserved_01.Serialize(writer);
@@ -879,7 +895,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (array[index] != value)
 				{
 					array[index] = value;
-					if (parent != null && parent.Parent != null) parent.Parent.OnWrapperChanged(parent, new EventArgs());
+					if (parent != null && parent.Parent is Bhav) ((Bhav)parent.Parent).OnWrapperChanged(parent, new EventArgs());
 				}
 			}
 		}

@@ -2265,8 +2265,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);				
 				this.tbAction.Text = "0x"+Helper.HexString(item.Action);
-				lbguard.Text = item.GuardianName;
-				lbaction.Text = item.ActionName;
+				lbguard.Text = ((pjse.ABhavNameWiz)new Instruction(wrapper, item.Guardian)).ShortName;
+				lbaction.Text = ((pjse.ABhavNameWiz)new Instruction(wrapper, item.Action)).ShortName;
 
 				this.tbFlags.Text = "0x"+Helper.HexString(item.Flags.Value);
 				this.tbFlags2.Text = "0x"+Helper.HexString(item.Flags2);
@@ -2358,18 +2358,14 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			try 
 			{
-				Bhav bhav = new Bhav(wrapper.Opcodes);
-				bhav.Package = wrapper.Package;
-				bhav.FileDescriptor = wrapper.FileDescriptor;
-				
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, ttabPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
+				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, ttabPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
 
 				if (opcode != -1)
 				{
 					TtabItem item = currentItem;
 					item.Guardian = (ushort)opcode;
 					this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);
-					lbguard.Text = item.GuardianName;
+					lbguard.Text = ((pjse.ABhavNameWiz)new Instruction(wrapper, item.Guardian)).ShortName;
 				}
 			}
 			catch (Exception ex) 
@@ -2383,18 +2379,14 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			try 
 			{
-				Bhav bhav = new Bhav(wrapper.Opcodes);
-				bhav.Package = wrapper.Package;
-				bhav.FileDescriptor = wrapper.FileDescriptor;
-				
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(bhav, ttabPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
+				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, ttabPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
 
 				if (opcode != -1)
 				{
 					TtabItem item = currentItem;
 					item.Action = (ushort)opcode;
 					this.tbAction.Text = "0x"+Helper.HexString(item.Action);
-					lbaction.Text = item.ActionName;
+					lbaction.Text = ((pjse.ABhavNameWiz)new Instruction(wrapper, item.Action)).ShortName;
 				}
 			} 
 			catch (Exception ex) 
@@ -2570,11 +2562,11 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case 0:
 					currentItem.Action = val;
-					lbaction.Text = currentItem.ActionName;
+					lbaction.Text = ((pjse.ABhavNameWiz)new Instruction(wrapper, val)).ShortName;
 					break;
 				case 1:
 					currentItem.Guardian = val;
-					lbguard.Text = currentItem.GuardianName;
+					lbguard.Text = ((pjse.ABhavNameWiz)new Instruction(wrapper, val)).ShortName;
 					break;
 				case 2:
 					currentItem.Flags.Value = val;
@@ -2638,11 +2630,11 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case 0:
 					currentItem.Action = val = origItem.Action;
-					lbaction.Text = currentItem.ActionName;
+					lbaction.Text = ((pjse.ABhavNameWiz)new Instruction(wrapper, val)).ShortName;
 					break;
 				case 1:
 					currentItem.Guardian = val = origItem.Guardian;
-					lbguard.Text = currentItem.GuardianName;
+					lbguard.Text = ((pjse.ABhavNameWiz)new Instruction(wrapper, val)).ShortName;
 					break;
 				case 2:
 					currentItem.Flags.Value = val = origItem.Flags.Value;
