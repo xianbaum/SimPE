@@ -167,7 +167,7 @@ namespace pjse
 			}
 			else if (instance >= 0x2000 && instance < 0x3000)
 			{
-				bconGroup = ((ANameBHAVWiz)instruction).SemiGlobalGroup;
+				bconGroup = SemiGlobalGroup;
 			}
 			else
 			{
@@ -192,6 +192,34 @@ namespace pjse
 			get
 			{
 				return (instruction == null || instruction.Parent == null) ? null : instruction.Parent.Package;
+			}
+		}
+
+		protected uint group;
+		public uint SemiGlobalGroup
+		{
+			get
+			{
+				if (this is SemiGlobalWiz) return group;
+				Glob g = SemiGlobal;
+				if (g != null) return g.SemiGlobalGroup;
+				return 0;
+			}
+		}
+
+		public Glob SemiGlobal
+		{
+			get
+			{
+				if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+					return null;
+				IScenegraphFileIndexItem[] items =
+					SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.GLOB_FILE, instruction.Parent.FileDescriptor.Group);
+				if (items == null || items.Length == 0)
+					return null;
+				Glob glob = new Glob();
+				glob.ProcessData(items[0]);
+				return glob;
 			}
 		}
 	}
@@ -235,30 +263,6 @@ namespace pjse.BhavNameWizards
 	{
 		static Hashtable bhavFilenames = new Hashtable();
 
-		protected uint group;
-		public uint SemiGlobalGroup
-		{
-			get
-			{
-				return (this is SemiGlobalWiz) ? group : SemiGlobal.SemiGlobalGroup;
-			}
-		}
-
-		public Glob SemiGlobal
-		{
-			get
-			{
-				if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-					return null;
-				IScenegraphFileIndexItem[] items =
-					SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.GLOB_FILE, instruction.Parent.FileDescriptor.Group, 1, null);
-				if (items == null || items.Length == 0)
-					return null;
-				Glob glob = new Glob();
-				glob.ProcessData(items[0]);
-				return glob;
-			}
-		}
 		public ANameBHAVWiz(Instruction instruction) : base (instruction) 
 		{
 			SimPe.FileTable.FileIndex.Load();
@@ -279,17 +283,26 @@ namespace pjse.BhavNameWizards
 		{
 			get 
 			{
-				string s = BHAVFilename;
-				return ((s != null) ? s : "(BHAV not found)") + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
+				string s = "(BHAV not found)";
+
+				IScenegraphFileIndexItem[] items = findBHAV();
+				if (items != null)
+				{
+					// Always refresh bhavs for current package
+					if (items != null && items[0].Package == instruction.Parent.Package) loadBHAV(items[0]);
+
+					s = (string)bhavFilenames[items[0].FileDescriptor.Filename];
+				}
+				return s + " (0x" + SimPe.Helper.HexString(instruction.OpCode) +")";
 			}
 		}
+
 
 		public override string LongName
 		{
 			get
 			{
-				Bhav b = null;
-				b = LoadBHAV();
+				Bhav b = LoadBHAV();
 				if (b == null) return null;
 
 				string s = "";
@@ -323,37 +336,18 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		public string BHAVFilename
-		{
-			get
-			{
-				if (instruction == null) return null;
-
-				IScenegraphFileIndexItem[] items = findBHAV();
-				if (items == null)
-					return null;
-
-				//if (items.Length > 1)
-				//	return "(Multiple BHAVs found)";
-
-				if (items[0].Package != instruction.Parent.Package && bhavFilenames[items[0].FileDescriptor.Filename] != null)
-					return (string)bhavFilenames[items[0].FileDescriptor.Filename];
-
-				Bhav b = LoadBHAV();
-				return (b == null) ? null : b.FileName;
-			}
-		}
-
 		public override Bhav LoadBHAV()
 		{
 			IScenegraphFileIndexItem[] items = findBHAV();
-			if (items == null)
-				return null;
+			return (items == null) ? null : loadBHAV(items[0]);
+		}
 
+
+		private Bhav loadBHAV(IScenegraphFileIndexItem item)
+		{
 			Bhav b = new Bhav(null);
-			b.ProcessData(items[0]);
-			bhavFilenames[items[0].FileDescriptor.Filename] = b.FileName;
-
+			b.ProcessData(item);
+			bhavFilenames[item.FileDescriptor.Filename] = b.FileName;
 			return b;
 		}
 
@@ -364,6 +358,23 @@ namespace pjse.BhavNameWizards
 			IScenegraphFileIndexItem[] items =
 				SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, group, (ulong)instruction.OpCode, null);
 			if (items == null || items.Length == 0) return null;
+#if false
+#if DEBUG
+			if (items.Length > 1)
+			{
+				string s = "Multiple BHAVs found:";
+				for (int i = 0; i < items.Length; i++)
+				{
+					Bhav bh = new Bhav(null);
+					bh.ProcessData(items[i]);
+					s += "(" + i.ToString() + ") " + bh.FileName + " from ";
+					s += items[i].Package.SaveFileName;
+					s += ", ";
+				}
+				System.Windows.Forms.MessageBox.Show(s);
+			}
+#endif
+#endif
 			return items;
 		}
 

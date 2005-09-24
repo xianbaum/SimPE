@@ -2558,7 +2558,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Bhav b = nameWiz.LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "View BHAV: " + nameWiz.ShortName;
+			ui.Text = "View BHAV: " + nameWiz.ShortName + " [" + b.Package.SaveFileName + "]";
 			b.RefreshUI();
 			ui.Show();
 		}

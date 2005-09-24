@@ -67,8 +67,8 @@ namespace SimPe.PackedFiles.Wrapper
 				add="            ";
 
 			return add + Name +
-				": " + (gw == null ? "null" : gw.ShortName) +
-				" -> " + (aw == null ? "null" : aw.ShortName);
+				": " + ((guard == 0 || gw == null) ? "null" : gw.ShortName) +
+				" -> " + ((action == 0 || aw == null) ? "null" : aw.ShortName);
 		}
 
 	}
