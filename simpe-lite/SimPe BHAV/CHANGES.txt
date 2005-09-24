@@ -1,4 +1,11 @@
 
+24 September 2005 09:49 - Bhav: Find GLOB correctly, lose BHAVFilename (plus some minor display tweaks)
+  SimPe BHAV\
+    BhavForm.cs 1.47
+    BhavNameWizProvider.cs 1.10
+    ObjfItem.cs 1.5
+    TtabForm.cs 1.22
+
 23 September 2005 16:30 - Bhav: Use FileTable for accessing multiple .package files
   SimPe BHAV\
     BhavNameWizProvider.cs 1.9
