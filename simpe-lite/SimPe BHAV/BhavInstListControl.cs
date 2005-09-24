@@ -333,6 +333,8 @@ namespace SimPe.PackedFiles.UserInterface
 			try
 			{
 				this.SuspendLayout();
+				bool v = this.Visible;
+				this.Visible = false;
 
 				this.Controls.Clear();
 				if (flowitems != null)
@@ -347,6 +349,7 @@ namespace SimPe.PackedFiles.UserInterface
 				pnflow.Image = DrawConnectors();
 				this.Controls.Add(pnflow);
 
+				this.Visible = true;
 				this.ResumeLayout(true);
 			}
 			finally
@@ -365,7 +368,7 @@ namespace SimPe.PackedFiles.UserInterface
 					)))
 					isTarget = true;
 
-			BhavInstListItemUI i = new BhavInstListItemUI(wrapper, ct, pnflow);
+			BhavInstListItemUI i = new BhavInstListItemUI(wrapper, ct, this);
 
 			i.Left = this.AutoScrollPosition.X;
 			i.Top = ct*(i.Height+4) + this.AutoScrollPosition.Y;

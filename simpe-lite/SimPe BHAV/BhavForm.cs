@@ -107,6 +107,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnOperandRaw;
 		private System.Windows.Forms.TextBox tbInst_NodeVersion;
 		private System.Windows.Forms.Button btnClose;
+		private System.Windows.Forms.CheckBox cbSpecial;
+		private System.Windows.Forms.CheckBox cbDecimal;
+		private System.Windows.Forms.TextBox tbInst_Longname;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -212,7 +215,7 @@ namespace SimPe.PackedFiles.UserInterface
 					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
 					btnOpCode.Visible = btnOperandWiz.Visible = btnOperandRaw.Visible =
-					gbSpecial.Visible =
+					gbSpecial.Visible = cbSpecial.Visible =
 					btnCancel.Visible = false;
 				state = true;
 			}
@@ -285,6 +288,8 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk5.Text = "";
 				this.tbInst_Unk6.Text = "";
 				this.tbInst_Unk7.Text = "";
+
+				this.tbInst_Longname.Text = "";
 			}
 			else
 			{
@@ -338,6 +343,8 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk5.Text = Helper.HexString(inst.Reserved1[5]);
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
+
+				this.tbInst_Longname.Text = ((ABhavNameWiz)inst).LongName;
 
 				this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(inst) != null);
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
@@ -486,6 +493,7 @@ namespace SimPe.PackedFiles.UserInterface
 				if (internalchg)
 				{
 					this.btnCancel.Enabled = true;
+					this.tbInst_Longname.Text = ((ABhavNameWiz)currentInst).LongName;
 				}
 				else
 					pnflowcontainer_SelectedInstChanged(null, null);
@@ -504,6 +512,7 @@ namespace SimPe.PackedFiles.UserInterface
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(BhavForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.gbInstruction = new System.Windows.Forms.GroupBox();
+			this.tbInst_Longname = new System.Windows.Forms.TextBox();
 			this.btnOperandRaw = new System.Windows.Forms.Button();
 			this.tbInst_Op01_dec = new System.Windows.Forms.TextBox();
 			this.btnCancel = new System.Windows.Forms.Button();
@@ -549,6 +558,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.bhavPanel = new System.Windows.Forms.Panel();
+			this.cbSpecial = new System.Windows.Forms.CheckBox();
+			this.btnClose = new System.Windows.Forms.Button();
 			this.tbHeaderFlag = new System.Windows.Forms.TextBox();
 			this.lbHeaderFlag = new System.Windows.Forms.Label();
 			this.tbCacheFlags = new System.Windows.Forms.TextBox();
@@ -572,7 +583,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
-			this.btnClose = new System.Windows.Forms.Button();
+			this.cbDecimal = new System.Windows.Forms.CheckBox();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -609,6 +620,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.AccessibleName = resources.GetString("gbInstruction.AccessibleName");
 			this.gbInstruction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbInstruction.Anchor")));
 			this.gbInstruction.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbInstruction.BackgroundImage")));
+			this.gbInstruction.Controls.Add(this.tbInst_Longname);
 			this.gbInstruction.Controls.Add(this.btnOperandRaw);
 			this.gbInstruction.Controls.Add(this.tbInst_Op01_dec);
 			this.gbInstruction.Controls.Add(this.btnCancel);
@@ -654,6 +666,33 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.TabStop = false;
 			this.gbInstruction.Text = resources.GetString("gbInstruction.Text");
 			this.gbInstruction.Visible = ((bool)(resources.GetObject("gbInstruction.Visible")));
+			// 
+			// tbInst_Longname
+			// 
+			this.tbInst_Longname.AccessibleDescription = resources.GetString("tbInst_Longname.AccessibleDescription");
+			this.tbInst_Longname.AccessibleName = resources.GetString("tbInst_Longname.AccessibleName");
+			this.tbInst_Longname.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_Longname.Anchor")));
+			this.tbInst_Longname.AutoSize = ((bool)(resources.GetObject("tbInst_Longname.AutoSize")));
+			this.tbInst_Longname.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_Longname.BackgroundImage")));
+			this.tbInst_Longname.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.tbInst_Longname.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_Longname.Dock")));
+			this.tbInst_Longname.Enabled = ((bool)(resources.GetObject("tbInst_Longname.Enabled")));
+			this.tbInst_Longname.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_Longname.Font")));
+			this.tbInst_Longname.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_Longname.ImeMode")));
+			this.tbInst_Longname.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_Longname.Location")));
+			this.tbInst_Longname.MaxLength = ((int)(resources.GetObject("tbInst_Longname.MaxLength")));
+			this.tbInst_Longname.Multiline = ((bool)(resources.GetObject("tbInst_Longname.Multiline")));
+			this.tbInst_Longname.Name = "tbInst_Longname";
+			this.tbInst_Longname.PasswordChar = ((char)(resources.GetObject("tbInst_Longname.PasswordChar")));
+			this.tbInst_Longname.ReadOnly = true;
+			this.tbInst_Longname.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_Longname.RightToLeft")));
+			this.tbInst_Longname.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_Longname.ScrollBars")));
+			this.tbInst_Longname.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_Longname.Size")));
+			this.tbInst_Longname.TabIndex = ((int)(resources.GetObject("tbInst_Longname.TabIndex")));
+			this.tbInst_Longname.Text = resources.GetString("tbInst_Longname.Text");
+			this.tbInst_Longname.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Longname.TextAlign")));
+			this.tbInst_Longname.Visible = ((bool)(resources.GetObject("tbInst_Longname.Visible")));
+			this.tbInst_Longname.WordWrap = ((bool)(resources.GetObject("tbInst_Longname.WordWrap")));
 			// 
 			// btnOperandRaw
 			// 
@@ -1814,6 +1853,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bhavPanel.AutoScrollMinSize")));
 			this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bhavPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavPanel.BackgroundImage")));
+			this.bhavPanel.Controls.Add(this.cbSpecial);
 			this.bhavPanel.Controls.Add(this.btnClose);
 			this.bhavPanel.Controls.Add(this.tbHeaderFlag);
 			this.bhavPanel.Controls.Add(this.lbHeaderFlag);
@@ -1840,6 +1880,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Controls.Add(this.pnHeading);
 			this.bhavPanel.Controls.Add(this.btnAdd);
 			this.bhavPanel.Controls.Add(this.lbCacheFlags);
+			this.bhavPanel.Controls.Add(this.cbDecimal);
 			this.bhavPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("bhavPanel.Dock")));
 			this.bhavPanel.Enabled = ((bool)(resources.GetObject("bhavPanel.Enabled")));
 			this.bhavPanel.Font = ((System.Drawing.Font)(resources.GetObject("bhavPanel.Font")));
@@ -1851,6 +1892,57 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.TabIndex = ((int)(resources.GetObject("bhavPanel.TabIndex")));
 			this.bhavPanel.Text = resources.GetString("bhavPanel.Text");
 			this.bhavPanel.Visible = ((bool)(resources.GetObject("bhavPanel.Visible")));
+			// 
+			// cbSpecial
+			// 
+			this.cbSpecial.AccessibleDescription = resources.GetString("cbSpecial.AccessibleDescription");
+			this.cbSpecial.AccessibleName = resources.GetString("cbSpecial.AccessibleName");
+			this.cbSpecial.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbSpecial.Anchor")));
+			this.cbSpecial.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("cbSpecial.Appearance")));
+			this.cbSpecial.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbSpecial.BackgroundImage")));
+			this.cbSpecial.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbSpecial.CheckAlign")));
+			this.cbSpecial.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbSpecial.Dock")));
+			this.cbSpecial.Enabled = ((bool)(resources.GetObject("cbSpecial.Enabled")));
+			this.cbSpecial.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("cbSpecial.FlatStyle")));
+			this.cbSpecial.Font = ((System.Drawing.Font)(resources.GetObject("cbSpecial.Font")));
+			this.cbSpecial.Image = ((System.Drawing.Image)(resources.GetObject("cbSpecial.Image")));
+			this.cbSpecial.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbSpecial.ImageAlign")));
+			this.cbSpecial.ImageIndex = ((int)(resources.GetObject("cbSpecial.ImageIndex")));
+			this.cbSpecial.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbSpecial.ImeMode")));
+			this.cbSpecial.Location = ((System.Drawing.Point)(resources.GetObject("cbSpecial.Location")));
+			this.cbSpecial.Name = "cbSpecial";
+			this.cbSpecial.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbSpecial.RightToLeft")));
+			this.cbSpecial.Size = ((System.Drawing.Size)(resources.GetObject("cbSpecial.Size")));
+			this.cbSpecial.TabIndex = ((int)(resources.GetObject("cbSpecial.TabIndex")));
+			this.cbSpecial.Text = resources.GetString("cbSpecial.Text");
+			this.cbSpecial.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbSpecial.TextAlign")));
+			this.cbSpecial.Visible = ((bool)(resources.GetObject("cbSpecial.Visible")));
+			this.cbSpecial.CheckStateChanged += new System.EventHandler(this.cbSpecial_CheckStateChanged);
+			// 
+			// btnClose
+			// 
+			this.btnClose.AccessibleDescription = resources.GetString("btnClose.AccessibleDescription");
+			this.btnClose.AccessibleName = resources.GetString("btnClose.AccessibleName");
+			this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnClose.Anchor")));
+			this.btnClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClose.BackgroundImage")));
+			this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.btnClose.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnClose.Dock")));
+			this.btnClose.Enabled = ((bool)(resources.GetObject("btnClose.Enabled")));
+			this.btnClose.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnClose.FlatStyle")));
+			this.btnClose.Font = ((System.Drawing.Font)(resources.GetObject("btnClose.Font")));
+			this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
+			this.btnClose.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClose.ImageAlign")));
+			this.btnClose.ImageIndex = ((int)(resources.GetObject("btnClose.ImageIndex")));
+			this.btnClose.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnClose.ImeMode")));
+			this.btnClose.Location = ((System.Drawing.Point)(resources.GetObject("btnClose.Location")));
+			this.btnClose.Name = "btnClose";
+			this.btnClose.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnClose.RightToLeft")));
+			this.btnClose.Size = ((System.Drawing.Size)(resources.GetObject("btnClose.Size")));
+			this.btnClose.TabIndex = ((int)(resources.GetObject("btnClose.TabIndex")));
+			this.btnClose.Text = resources.GetString("btnClose.Text");
+			this.btnClose.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClose.TextAlign")));
+			this.btnClose.Visible = ((bool)(resources.GetObject("btnClose.Visible")));
+			this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
 			// 
 			// tbHeaderFlag
 			// 
@@ -2422,30 +2514,31 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
 			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
-			// btnClose
+			// cbDecimal
 			// 
-			this.btnClose.AccessibleDescription = resources.GetString("btnClose.AccessibleDescription");
-			this.btnClose.AccessibleName = resources.GetString("btnClose.AccessibleName");
-			this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnClose.Anchor")));
-			this.btnClose.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnClose.BackgroundImage")));
-			this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btnClose.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnClose.Dock")));
-			this.btnClose.Enabled = ((bool)(resources.GetObject("btnClose.Enabled")));
-			this.btnClose.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnClose.FlatStyle")));
-			this.btnClose.Font = ((System.Drawing.Font)(resources.GetObject("btnClose.Font")));
-			this.btnClose.Image = ((System.Drawing.Image)(resources.GetObject("btnClose.Image")));
-			this.btnClose.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClose.ImageAlign")));
-			this.btnClose.ImageIndex = ((int)(resources.GetObject("btnClose.ImageIndex")));
-			this.btnClose.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnClose.ImeMode")));
-			this.btnClose.Location = ((System.Drawing.Point)(resources.GetObject("btnClose.Location")));
-			this.btnClose.Name = "btnClose";
-			this.btnClose.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnClose.RightToLeft")));
-			this.btnClose.Size = ((System.Drawing.Size)(resources.GetObject("btnClose.Size")));
-			this.btnClose.TabIndex = ((int)(resources.GetObject("btnClose.TabIndex")));
-			this.btnClose.Text = resources.GetString("btnClose.Text");
-			this.btnClose.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnClose.TextAlign")));
-			this.btnClose.Visible = ((bool)(resources.GetObject("btnClose.Visible")));
-			this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+			this.cbDecimal.AccessibleDescription = resources.GetString("cbDecimal.AccessibleDescription");
+			this.cbDecimal.AccessibleName = resources.GetString("cbDecimal.AccessibleName");
+			this.cbDecimal.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbDecimal.Anchor")));
+			this.cbDecimal.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("cbDecimal.Appearance")));
+			this.cbDecimal.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbDecimal.BackgroundImage")));
+			this.cbDecimal.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbDecimal.CheckAlign")));
+			this.cbDecimal.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbDecimal.Dock")));
+			this.cbDecimal.Enabled = ((bool)(resources.GetObject("cbDecimal.Enabled")));
+			this.cbDecimal.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("cbDecimal.FlatStyle")));
+			this.cbDecimal.Font = ((System.Drawing.Font)(resources.GetObject("cbDecimal.Font")));
+			this.cbDecimal.Image = ((System.Drawing.Image)(resources.GetObject("cbDecimal.Image")));
+			this.cbDecimal.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbDecimal.ImageAlign")));
+			this.cbDecimal.ImageIndex = ((int)(resources.GetObject("cbDecimal.ImageIndex")));
+			this.cbDecimal.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbDecimal.ImeMode")));
+			this.cbDecimal.Location = ((System.Drawing.Point)(resources.GetObject("cbDecimal.Location")));
+			this.cbDecimal.Name = "cbDecimal";
+			this.cbDecimal.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbDecimal.RightToLeft")));
+			this.cbDecimal.Size = ((System.Drawing.Size)(resources.GetObject("cbDecimal.Size")));
+			this.cbDecimal.TabIndex = ((int)(resources.GetObject("cbDecimal.TabIndex")));
+			this.cbDecimal.Text = resources.GetString("cbDecimal.Text");
+			this.cbDecimal.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbDecimal.TextAlign")));
+			this.cbDecimal.Visible = ((bool)(resources.GetObject("cbDecimal.Visible")));
+			this.cbDecimal.CheckStateChanged += new System.EventHandler(this.cbDecimal_CheckStateChanged);
 			// 
 			// BhavForm
 			// 
@@ -3018,6 +3111,17 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void cbDecimal_CheckStateChanged(object sender, System.EventArgs e)
+		{
+			UpdateInstPanel();
+		}
+
+		private void cbSpecial_CheckStateChanged(object sender, System.EventArgs e)
+		{
+			gbSpecial.Visible = ((CheckBox)sender).Checked;
+		}
+
+
 		private void btnInsVia_Click(object sender, System.EventArgs e)
 		{
 			this.pnflowcontainer.Add( (sender == this.btnInsTrue) ? BhavUIAddType.ViaTrue : BhavUIAddType.ViaFalse );
@@ -3035,7 +3139,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnAppend_Click(object sender, System.EventArgs e)
 		{
-			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent, BhavOpCodeWiz.Flags.Locals);
+			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
 
 			if (opcode == -1) return;
 			this.pnflowcontainer.Append((uint)opcode);

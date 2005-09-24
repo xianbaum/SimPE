@@ -50,7 +50,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
-		public BhavInstListItemUI(Bhav wrapper, int index, PictureBox parent)
+		public BhavInstListItemUI(Bhav wrapper, int index, Control parent)
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
@@ -105,13 +105,13 @@ namespace SimPe.PackedFiles.UserInterface
 		private int index;
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			//if (wrapper == null) return; // should be fixed in dispose, now
+			if (wrapper == null) return;
 
 			if (wrapper.IndexOf(sender) != index) return;
 			Instruction inst = (Instruction)sender;
 
 			bhavInstListItem.Text = "";
-			instrText.Text = index.ToString("X") + ": " + ((pjse.ABhavNameWiz)inst).LongName;
+			instrText.Text = index.ToString("X") + ": " + ((pjse.ABhavNameWiz)inst).ShortName;//LongName;
 
 			trueTarget.Text = "true: "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);

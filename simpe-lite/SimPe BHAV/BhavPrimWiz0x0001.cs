@@ -77,13 +77,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 			this.cbGenericSimsCall.Items.Clear();
 			for (byte i = 0; i < GS.gStr(GS.SF.Generics).Count; i++)
-				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + ((PrimWiz0x0001)i).VeryShortName);
+				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + GS.GStr(GS.SF.Generics, i));
 			this.lbGenericSimsCallparms.Text = "Should never see this";
 
 			if (operand0 < this.cbGenericSimsCall.Items.Count)
 				this.cbGenericSimsCall.SelectedIndex = operand0;
 			else
+			{
 				this.cbGenericSimsCall.SelectedIndex = -1;
+				lbGenericSimsCallparms.Text = "Unknown operand 0 value 0x" + SimPe.Helper.HexString(operand0);
+			}
 		}
 
 		public Instruction Write(Instruction inst)
@@ -129,6 +132,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 			// cbGenericSimsCall
 			// 
 			this.cbGenericSimsCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbGenericSimsCall.DropDownWidth = 352;
 			this.cbGenericSimsCall.Location = new System.Drawing.Point(0, 0);
 			this.cbGenericSimsCall.Name = "cbGenericSimsCall";
 			this.cbGenericSimsCall.Size = new System.Drawing.Size(264, 21);
@@ -151,13 +155,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 		private void cbGenericSimsCall_Changed(object sender, System.EventArgs e)
 		{
-
-			if (cbGenericSimsCall.SelectedIndex < 0)
-				lbGenericSimsCallparms.Text = "Unknown operand 0 value 0x" + SimPe.Helper.HexString(cbGenericSimsCall.SelectedIndex);
-			else
-			{
+			if (cbGenericSimsCall.SelectedIndex >= 0)
 				lbGenericSimsCallparms.Text = ((PrimWiz0x0001)(byte)cbGenericSimsCall.SelectedIndex).LongName;
-			}
 		}
 
 	}
@@ -208,7 +207,6 @@ namespace pjse.BhavOperandWizards
 
 }
 
-
 namespace pjse.BhavNameWizards
 {
 	public class PrimWiz0x0001 : ANamePrimitiveWiz
@@ -222,17 +220,19 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		public string VeryShortName { get { return GS.GStr(GS.SF.Generics, instruction.Operands[0]); } }
+		protected override string Prefix { get { return "[generic]"; } }
 
-		public override string ShortName { get { return "[generic] " + VeryShortName; } }
+		protected override string primName { get { return GS.GStr(GS.SF.Generics, instruction.Operands[0]); } }
+
+		//public override string ShortName { get { return "[generic] " + GenericName(instruction.Operands[0]); } }
 
 		public override string LongName
 		{
 			get
 			{
-				if (instruction.Operands[0] >= parms.Length) return ShortName;
-
-				string s = parms[instruction.Operands[0]].Trim();
+				string s;
+				if (instruction.Operands[0] >= parms.Length) s = "[UNK args]";
+				else s = parms[instruction.Operands[0]].Trim();
 				if (s.Equals("")) s = "no args";
 				return ShortName + " (" + s + ")";
 			}

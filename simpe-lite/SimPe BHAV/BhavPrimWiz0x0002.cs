@@ -88,11 +88,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				ops[0x07] = (byte)cbtype2.SelectedIndex;
 				ops[0x05] = (byte)cboperand.SelectedIndex;
 
-				cbtype1.SelectedIndex = 0;
-				cbtype2.SelectedIndex = 0;
-
-				int val1 = Convert.ToUInt16(tbval1.Text, 16);
-				int val2 = Convert.ToUInt16(tbval2.Text, 16);
+				ushort val1 = textToUShort(tbval1.Text);
+				ushort val2 = textToUShort(tbval2.Text);
 
 				ops[0x00] = (byte)(val1 & 0xff);
 				ops[0x01] = (byte)((val1 >> 8) & 0xff);
@@ -178,6 +175,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			// 
 			this.cbPicker2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbPicker2.DropDownWidth = 352;
 			this.cbPicker2.Location = new System.Drawing.Point(352, 50);
 			this.cbPicker2.Name = "cbPicker2";
 			this.cbPicker2.Size = new System.Drawing.Size(112, 21);
@@ -189,6 +187,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			// 
 			this.cbPicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbPicker1.DropDownWidth = 352;
 			this.cbPicker1.Location = new System.Drawing.Point(352, 0);
 			this.cbPicker1.Name = "cbPicker1";
 			this.cbPicker1.Size = new System.Drawing.Size(112, 21);
@@ -262,100 +261,64 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void SelectVal1Name(object sender, System.EventArgs e)
 		{
-			this.cbPicker1.Visible = (cbtype1.SelectedIndex==0x0E);
-			this.tbval1.Visible = !cbPicker1.Visible;
-
-			//constant
-			if (cbtype1.SelectedIndex==0x1a) 
+			this.cbPicker1.Visible = false;
+			if (ABhavNameWiz.doidGStr[(byte)cbtype1.SelectedIndex] != null)
 			{
-				if (tbval1.Text.IndexOf(":")==-1) 
-				{
-					try 
-					{
-						ushort val = Convert.ToUInt16(tbval1.Text, 16);
-						tbval1.Text = "0x"+SimPe.Helper.HexString(ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)ConstantValueParser(val)[1]);
-					} 
-					catch (Exception) {}
-				}
-			} 
-			else if (cbtype1.SelectedIndex==0xe) 
-			{
+				this.cbPicker1.Visible = true;
+				this.cbPicker1.Items.Clear();
+				this.cbPicker1.Items.AddRange(GS.gStr((uint)ABhavNameWiz.doidGStr[(byte)cbtype1.SelectedIndex]).ToArray());
 				try 
 				{
-					this.cbPicker1.Items.Clear();
-					this.cbPicker1.Items.AddRange(GS.gStr(GS.SF.Motives).ToArray());
-					ushort val = Convert.ToUInt16(tbval1.Text, 16);
+					ushort val = textToUShort(tbval1.Text);
 					this.cbPicker1.SelectedIndex = val;
 				} 
-				catch (Exception) {}
+				catch (Exception) { }
 			}
-			else 
+			else if (cbtype1.SelectedIndex==0x1a)
 			{
-				if (tbval1.Text.IndexOf(":")!=-1) 
-				{
-					string[] s = tbval1.Text.Split(":".ToCharArray(), 2);
-					
-					try 
-					{
-						ushort[] b = new ushort[2];
-						b[0] = Convert.ToUInt16(s[0], 16);
-						b[1] = Convert.ToUInt16(s[1], 16);
-						tbval1.Text = "0x"+SimPe.Helper.HexString(ConstantValueParser(b));
-					} 
-					catch (Exception) {}
-				}
+				//constant
+				ushort[] vals = ConstantValueParser(textToUShort(tbval1.Text));
+				tbval1.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
+			} 
+			else
+			{
+				tbval1.Text = "0x"+SimPe.Helper.HexString(textToUShort(tbval1.Text));
 			}
+			doFlagThing();
 		}
 
 		private void SelectVal2Name(object sender, System.EventArgs e)
 		{
-			this.cbPicker2.Visible = (cbtype2.SelectedIndex==0x0E);
-			this.tbval2.Visible = !cbPicker2.Visible;
-			//constant
-			if (cbtype2.SelectedIndex==0x1a) 
+			this.cbPicker2.Visible = false;
+			if (ABhavNameWiz.doidGStr[(byte)cbtype2.SelectedIndex] != null)
 			{
-				if (tbval2.Text.IndexOf(":")==-1) 
-				{
-					try 
-					{
-						ushort val = Convert.ToUInt16(tbval2.Text, 16);
-						tbval2.Text = "0x"+SimPe.Helper.HexString(ConstantValueParser(val)[0])+":0x"+SimPe.Helper.HexString((byte)ConstantValueParser(val)[1]);
-					} 
-					catch (Exception) {}
-				}
-			}
-			else if (cbtype2.SelectedIndex==0xe) 
-			{
+				this.cbPicker2.Visible = true;
+				this.cbPicker2.Items.Clear();
+				this.cbPicker2.Items.AddRange(GS.gStr((uint)ABhavNameWiz.doidGStr[(byte)cbtype2.SelectedIndex]).ToArray());
 				try 
 				{
-					this.cbPicker2.Items.Clear();
-					this.cbPicker2.Items.AddRange(GS.gStr(GS.SF.Motives).ToArray());
-					ushort val = Convert.ToUInt16(tbval2.Text, 16);
+					ushort val = textToUShort(tbval2.Text);
 					this.cbPicker2.SelectedIndex = val;
 				} 
-				catch (Exception) {}
+				catch (Exception) { }
 			}
+			else if (cbtype2.SelectedIndex==0x1a)
+			{
+				//constant
+				ushort[] vals = ConstantValueParser(textToUShort(tbval2.Text));
+				tbval2.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
+			} 
 			else
 			{
-				if (tbval2.Text.IndexOf(":")!=-1) 
-				{
-					string[] s = tbval2.Text.Split(":".ToCharArray(), 2);
-					
-					try 
-					{
-						ushort[] b = new ushort[2];
-						b[0] = Convert.ToUInt16(s[0], 16);
-						b[1] = Convert.ToUInt16(s[1], 16);
-						tbval2.Text = "0x"+SimPe.Helper.HexString(ConstantValueParser(b));
-					} 
-					catch (Exception) {}
-				}
+				tbval2.Text = "0x"+SimPe.Helper.HexString(textToUShort(tbval2.Text));
 			}
+			doFlagThing();
 		}
 
 		private void Motive1Changed(object sender, System.EventArgs e)
 		{
 			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker1.SelectedIndex);
+			doFlagThing();
 		}
 
 		private void Motive2Changed(object sender, System.EventArgs e)
@@ -363,6 +326,53 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker2.SelectedIndex);
 		}
 
+
+		private void doFlagThing()
+		{
+			if (cbtype2.SelectedIndex == 7)
+				if (cboperand.SelectedIndex >= 8 && cboperand.SelectedIndex <= 10)
+				{
+					Hashtable f = (Hashtable)PrimWiz0x0002.flag[(byte)cbtype1.SelectedIndex];
+					if (f != null && f[(ushort)textToUShort(tbval1.Text)] != null)
+					{
+						this.cbPicker2.Visible = true;
+						this.cbPicker2.Items.Clear();
+						this.cbPicker2.Items.AddRange(GS.gStr((uint)f[(ushort)textToUShort(tbval1.Text)]).ToArray());
+						try 
+						{
+							ushort val = textToUShort(tbval2.Text);
+							this.cbPicker2.SelectedIndex = val;
+						} 
+						catch (Exception) { }
+					}
+					else
+						this.cbPicker2.Visible = false;
+				}
+			this.tbval2.Visible = !cbPicker2.Visible;
+		}
+
+
+		private static ushort textToUShort(string text)
+		{
+			ushort val = 0;
+			try 
+			{
+				if (text.IndexOf(":")==-1)
+				{
+					val = Convert.ToUInt16(text, 16);
+				}
+				else 
+				{
+					string[] s = text.Split(":".ToCharArray(), 2);
+					ushort[] b = new ushort[2];
+					b[0] = Convert.ToUInt16(s[0], 16);
+					b[1] = Convert.ToUInt16(s[1], 16);
+					val = ConstantValueParser(b);
+				}
+			}
+			catch (Exception) { }
+			return val;
+		}
 
 		private static ushort[] ConstantValueParser(ushort val) 
 		{
@@ -404,7 +414,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			
 			return ret;
 		}
-
 
 	}
 
@@ -479,45 +488,13 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		/*public string VeryShortName
+		protected override string Prefix
 		{
 			get
 			{
-				if (this.instruction == null && this.operands == null) return "";
-				if (op0 >= parms.Length) return "Unknown operand 0: 0x" + SimPe.Helper.HexString(op0);
-				return op0names[op0];
-			}
-		}*/
-
-		public override string ShortName { get { return parser(instruction); } }
-
-		public override string LongName
-		{
-			get
-			{
-				return ShortName;
-				/*if ((this.instruction == null && this.operands == null) || (op0 >= parms.Length)) return ShortName;
-				return ShortName + " (" + parms[op0] + ")";*/
-			}
-		}
-
-
-		private string parser(Instruction i)
-		{
-			byte[] operands = new byte[16];
-			((byte[])i.Operands).CopyTo(operands, 0);
-			((byte[])i.Reserved1).CopyTo(operands, 8);
-
-			byte lhs_data_owner = operands[6]; // c2
-			byte rhs_data_owner = operands[7]; // b[x+7]
-			ushort lhs_value_word = (ushort)(operands[0] + (256 * operands[1])); // w1
-			ushort rhs_value_word = (ushort)(operands[2] + (256 * operands[3])); // w2
-			byte _operator = operands[5]; // c1
-
-			string s = "";
+				switch(instruction.Operands[5])
+				{
 #if INGE_LIKED_IT
-			switch(_operator)
-			{
 				case 0x00:
 				case 0x01:
 				case 0x02:
@@ -525,7 +502,7 @@ namespace pjse.BhavNameWizards
 				case 0x0e:
 				case 0x0f:
 				case 0x10:
-					s += "[test] "; break;
+					return "[test]";
 				case 0x03:
 				case 0x04:
 				case 0x05:
@@ -539,38 +516,73 @@ namespace pjse.BhavNameWizards
 				case 0x13:
 				case 0x14:
 				case 0x15:
-					s += "[assign] "; break;
+					return "[assign]";
 				case 0x0b:
 				case 0x11:
-					s += "[assign & test] "; break;
-				default: s += "[unk expr] "; break;
-			}
+					return "[assign & test]";
 #endif
-			s += dataOwner(lhs_data_owner, lhs_value_word);
-			s += " " + GS.GStr(GS.SF.Operators, _operator) + " ";
-
-			if (_operator >= 8 && _operator <= 10) // Flag operation
-			{
-				if (rhs_data_owner == 7)
-				{
-					Hashtable a = (Hashtable)flag[lhs_data_owner];
-					if (a != null)
-					{
-						if (a[lhs_value_word] != null)
-						{
-							uint b = (uint)a[lhs_value_word];
-							s += GS.GStr(b, rhs_value_word);
-						}
-					}
+					default:
+						return "[expr]";
 				}
-				s+= " (# " + dataOwner(rhs_data_owner, rhs_value_word) +")";
 			}
-			else
-				s+= dataOwner(rhs_data_owner, rhs_value_word);
-			return s;
 		}
 
-		private static Hashtable flag = flagInitaliser();
+		protected override string primName
+		{
+			get
+			{
+				byte[] o = instruction.Operands;
+				return
+					GS.GStr(GS.SF.DataOwners, o[6]) + " 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])) + " " +
+					GS.GStr(GS.SF.Operators, o[5]) + " " +
+					GS.GStr(GS.SF.DataOwners, o[7]) + " 0x" + SimPe.Helper.HexString(ToShort(o[2], o[3]));
+			}
+		}
+
+
+		public override string LongName
+		{
+			get
+			{
+				byte[] operands = new byte[16];
+				((byte[])instruction.Operands).CopyTo(operands, 0);
+				((byte[])instruction.Reserved1).CopyTo(operands, 8);
+
+				byte lhs_data_owner = operands[6]; // c2
+				byte rhs_data_owner = operands[7]; // b[x+7]
+				ushort lhs_value_word = (ushort)(operands[0] + (256 * operands[1])); // w1
+				ushort rhs_value_word = (ushort)(operands[2] + (256 * operands[3])); // w2
+				byte _operator = operands[5]; // c1
+
+				string s = "";
+				s += dataOwner(lhs_data_owner, lhs_value_word);
+				s += " " + GS.GStr(GS.SF.Operators, _operator) + " ";
+
+				if (_operator >= 8 && _operator <= 10) // Flag operation
+				{
+					s+= "(flag# ";
+					if (rhs_data_owner == 7)
+					{
+						Hashtable a = (Hashtable)flag[lhs_data_owner];
+						if (a != null)
+						{
+							if (a[lhs_value_word] != null)
+							{
+								uint b = (uint)a[lhs_value_word];
+								s += GS.GStr(b, rhs_value_word) + ": ";
+							}
+						}
+					}
+					s+= dataOwner(rhs_data_owner, rhs_value_word) + ")";
+				}
+				else
+					s+= dataOwner(rhs_data_owner, rhs_value_word);
+				return baseName + ": " + s;
+			}
+		}
+
+
+		public static Hashtable flag = flagInitaliser();
 		private static Hashtable flagInitaliser()
 		{
 			Hashtable f = new Hashtable();

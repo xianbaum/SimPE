@@ -36,7 +36,7 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		public override string LongName { get { string s = base.LongName; return (s != null ? s : ShortName); } }
+		protected override string Prefix { get { return "[global]"; } }
 
 	}
 
@@ -46,26 +46,19 @@ namespace pjse.BhavNameWizards
 		{
 			group = 0xffffffff;
 			if (i != null && i.Parent != null && i.Parent.FileDescriptor != null)
-				if (i.Parent is Bhav)
-				{
-					ABhavNameWiz wiz = new Instruction(null, (ushort)i.Parent.FileDescriptor.Instance);
-					if (wiz is LocalWiz)
-						group = i.Parent.FileDescriptor.Group;
-				}
-				else
-				{
-					group = i.Parent.FileDescriptor.Group;
-				}
+				group = i.Parent.FileDescriptor.Group;
 		}
 
 		public static implicit operator LocalWiz(AbstractWrapper parent)
 		{
+			if ((parent is Bhav) && !(((ABhavNameWiz)(Bhav)parent) is LocalWiz))
+				throw new InvalidCastException("Can't cast non-local BHAVs to LocalWiz");
+
 			return new LocalWiz(new Instruction(parent, 0x1000));
 		}
 
 
-		public override string ShortName { get { return "[private] " + base.ShortName; } }
-		public override string LongName { get { string s = base.LongName; return (s != null ? "[private] " + s : ShortName); } }
+		protected override string Prefix { get { return "[private]"; } }
 
 	}
 
@@ -73,41 +66,21 @@ namespace pjse.BhavNameWizards
 	{
 		public SemiGlobalWiz(Instruction i) : base(i)
 		{
-			group = 0;
-			semiGroupName = "SemiGlobals";
-
-			if (i != null && i.Parent != null && i.Parent.FileDescriptor != null)
-			{
-				if (i.Parent is Bhav)
-				{
-					ABhavNameWiz wiz = new Instruction(null, (ushort)i.Parent.FileDescriptor.Instance);
-					if (wiz is SemiGlobalWiz)
-					{
-						group = i.Parent.FileDescriptor.Group;
-						return;
-					}
-				}
-				Glob g = this.SemiGlobal;
-				if (g != null)
-				{
-					group = g.SemiGlobalGroup;
-					semiGroupName = g.SemiGlobalName;
-				}
-			}
+			if ((i.Parent is Bhav) && (((ABhavNameWiz)(Bhav)i.Parent) is SemiGlobalWiz))
+				group = SemiGlobalGroup;
+			else
+				group = ((LocalWiz)i.Parent).SemiGlobalGroup;
 		}
 
 		public static implicit operator SemiGlobalWiz(AbstractWrapper parent)
 		{
+			if ((parent is Bhav) && (((ABhavNameWiz)(Bhav)parent) is GlobalWiz))
+				throw new InvalidCastException("Can't cast Global BHAVs to SemiGlobalWiz");
 			return new SemiGlobalWiz(new Instruction(parent, 0x2000));
 		}
 
 
-		public override string ShortName { get { return "[semiglobal] " + base.ShortName; } }
-		public override string LongName { get { string s = base.LongName; return (s != null ? "[semiglobal] " + s : ShortName); } }
-
-
-		private static string semiGroupName = null;
-		public static string SemiGroupName { get { return semiGroupName; } }
+		protected override string Prefix { get { return "[semi]"; } }
 
 	}
 
@@ -115,8 +88,6 @@ namespace pjse.BhavNameWizards
 	public class PrimWizDefault : ANamePrimitiveWiz
 	{
 		public PrimWizDefault(Instruction i) : base(i) {}
-		public override string LongName { get { return ShortName + " (0x" + SimPe.Helper.HexString(instruction.OpCode) + ")"; } }
-
 	}
 
 	public class PrimWiz0x0000 : ANamePrimitiveWiz

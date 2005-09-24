@@ -25,6 +25,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.Interfaces.Plugin;
+using SimPe.PackedFiles.Wrapper;
 using pjse.BhavNameWizards;
 
 namespace SimPe.PackedFiles.UserInterface
@@ -97,7 +98,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Cursor = Cursors.WaitCursor;
 
 			this.tcopcodes.TabPages.Clear();
-			if ((flags & Flags.Prims) != 0)
+			if ((flags & Flags.Prims) != 0 && (wrapper is Bhav))
 			{
 				Primitives();
 				if (this.lbprimitives.Items.Count > 0)
@@ -107,8 +108,10 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			Fill((flags & Flags.Globals), (GlobalWiz)wrapper, lbglobal, tbglobal);
-			Fill((flags & Flags.Semis), (SemiGlobalWiz)wrapper, lbsemi, tbsemi);
-			Fill((flags & Flags.Locals), (LocalWiz)wrapper, lbprivate, tbprivate);
+			if (!(wrapper is Bhav) || !(((pjse.ABhavNameWiz)(Bhav)wrapper) is GlobalWiz))
+				Fill((flags & Flags.Semis), (SemiGlobalWiz)wrapper, lbsemi, tbsemi);
+			if (!(wrapper is Bhav) || ((pjse.ABhavNameWiz)(Bhav)wrapper) is LocalWiz)
+				Fill((flags & Flags.Locals), (LocalWiz)wrapper, lbprivate, tbprivate);
 			this.tcopcodes.SelectedIndex = this.tcopcodes.TabPages.Count - 1;
 
 			form.Cursor = Cursors.Default;
@@ -159,7 +162,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tcopcodes.TabPages.Add(tab);
 				list.SelectedIndex = 0;
 				if (wiz is SemiGlobalWiz)
-					tab.Text = SemiGlobalWiz.SemiGroupName;
+					tab.Text = wiz.SemiGlobalName;
 			}
 		}
 
