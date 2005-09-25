@@ -1,4 +1,11 @@
 
+25 September 2005 18:41 - Bhav: Cosmetic changes for Inge; bug fix for SemiGlobals calling SemiGlobals
+  SimPe BHAV\
+    BhavForm.cs 1.49
+    BhavForm.resx 1.25
+    BhavNameWizProviders.cs 1.9
+    BhavOperandWiz.cs 1.6
+
 24 September 2005 22:31 - Bhav: Mostly sorting out SemiGlobals... (Parsing text moved around, too)
   SimPe BHAV\
     BhavForm.cs 1.48
