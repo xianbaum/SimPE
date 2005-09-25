@@ -86,9 +86,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnCancel;
 		private SimPe.PackedFiles.UserInterface.BhavInstListControl pnflowcontainer;
 		private System.Windows.Forms.GroupBox gbMove;
-		private System.Windows.Forms.TextBox tbInst_Op01_dec;
-		private System.Windows.Forms.TextBox tbInst_Op23_dec;
-		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label lbArgC;
 		private System.Windows.Forms.GroupBox gbSpecial;
 		private System.Windows.Forms.Button btnInsTrue;
@@ -138,7 +135,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.Width = this.lbFormat.Left - (this.tbFilename.Left + 4);
 			this.Tag = "Normal"; // Used by SetReadOnly
 
-			TextBox[] iow = { tbInst_Op01_dec, tbInst_Op23_dec, tbLines };
+			TextBox[] iow = { /*tbInst_Op01_dec, tbInst_Op23_dec, */null, null, tbLines };
 			alDec16 = new ArrayList(iow);
 			TextBox[] iob = {
 								 tbInst_Op0  ,tbInst_Op1  ,tbInst_Op2  ,tbInst_Op3
@@ -226,8 +223,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tba1.Enabled = !state;
 			this.tba2.Enabled = !state;
 
-			this.tbInst_Op01_dec.ReadOnly = state;
-			this.tbInst_Op23_dec.ReadOnly = state;
+			/*this.tbInst_Op01_dec.ReadOnly = state;
+			this.tbInst_Op23_dec.ReadOnly = state;*/
 
 			this.tbInst_Op0.ReadOnly = state;
 			this.tbInst_Op1.ReadOnly = state;
@@ -270,8 +267,8 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_NodeVersion.Text = "";
 				this.tba1.SelectedIndex = 0;
 				this.tba2.SelectedIndex = 0;
-				this.tbInst_Op01_dec.Text = "";
-				this.tbInst_Op23_dec.Text = "";
+				/*this.tbInst_Op01_dec.Text = "";
+				this.tbInst_Op23_dec.Text = "";*/
 				this.tbInst_Op0.Text = "";
 				this.tbInst_Op1.Text = "";
 				this.tbInst_Op2.Text = "";
@@ -323,8 +320,8 @@ namespace SimPe.PackedFiles.UserInterface
 					this.tba2.Text = "0x"+Helper.HexString(inst.Target2);
 				}
 
-				this.tbInst_Op01_dec.Text = OpsToShort(inst.Operands[0], inst.Operands[1]).ToString();
-				this.tbInst_Op23_dec.Text = OpsToShort(inst.Operands[2], inst.Operands[3]).ToString();
+				/*this.tbInst_Op01_dec.Text = OpsToShort(inst.Operands[0], inst.Operands[1]).ToString();
+				this.tbInst_Op23_dec.Text = OpsToShort(inst.Operands[2], inst.Operands[3]).ToString();*/
 
 				this.tbInst_Op0.Text = Helper.HexString(inst.Operands[0]);
 				this.tbInst_Op1.Text = Helper.HexString(inst.Operands[1]);
@@ -514,7 +511,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction = new System.Windows.Forms.GroupBox();
 			this.tbInst_Longname = new System.Windows.Forms.TextBox();
 			this.btnOperandRaw = new System.Windows.Forms.Button();
-			this.tbInst_Op01_dec = new System.Windows.Forms.TextBox();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnOperandWiz = new System.Windows.Forms.Button();
 			this.llopenbhav = new System.Windows.Forms.LinkLabel();
@@ -544,8 +540,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label12 = new System.Windows.Forms.Label();
 			this.label11 = new System.Windows.Forms.Label();
 			this.btnOpCode = new System.Windows.Forms.Button();
-			this.tbInst_Op23_dec = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.tbLocalC = new System.Windows.Forms.TextBox();
@@ -622,7 +616,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbInstruction.BackgroundImage")));
 			this.gbInstruction.Controls.Add(this.tbInst_Longname);
 			this.gbInstruction.Controls.Add(this.btnOperandRaw);
-			this.gbInstruction.Controls.Add(this.tbInst_Op01_dec);
 			this.gbInstruction.Controls.Add(this.btnCancel);
 			this.gbInstruction.Controls.Add(this.btnOperandWiz);
 			this.gbInstruction.Controls.Add(this.llopenbhav);
@@ -652,8 +645,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbInstruction.Controls.Add(this.label12);
 			this.gbInstruction.Controls.Add(this.label11);
 			this.gbInstruction.Controls.Add(this.btnOpCode);
-			this.gbInstruction.Controls.Add(this.tbInst_Op23_dec);
-			this.gbInstruction.Controls.Add(this.label2);
 			this.gbInstruction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbInstruction.Dock")));
 			this.gbInstruction.Enabled = ((bool)(resources.GetObject("gbInstruction.Enabled")));
 			this.gbInstruction.Font = ((System.Drawing.Font)(resources.GetObject("gbInstruction.Font")));
@@ -717,34 +708,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnOperandRaw.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOperandRaw.TextAlign")));
 			this.btnOperandRaw.Visible = ((bool)(resources.GetObject("btnOperandRaw.Visible")));
 			this.btnOperandRaw.Click += new System.EventHandler(this.btnOperandRaw_Click);
-			// 
-			// tbInst_Op01_dec
-			// 
-			this.tbInst_Op01_dec.AccessibleDescription = resources.GetString("tbInst_Op01_dec.AccessibleDescription");
-			this.tbInst_Op01_dec.AccessibleName = resources.GetString("tbInst_Op01_dec.AccessibleName");
-			this.tbInst_Op01_dec.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_Op01_dec.Anchor")));
-			this.tbInst_Op01_dec.AutoSize = ((bool)(resources.GetObject("tbInst_Op01_dec.AutoSize")));
-			this.tbInst_Op01_dec.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_Op01_dec.BackgroundImage")));
-			this.tbInst_Op01_dec.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_Op01_dec.Dock")));
-			this.tbInst_Op01_dec.Enabled = ((bool)(resources.GetObject("tbInst_Op01_dec.Enabled")));
-			this.tbInst_Op01_dec.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_Op01_dec.Font")));
-			this.tbInst_Op01_dec.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_Op01_dec.ImeMode")));
-			this.tbInst_Op01_dec.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_Op01_dec.Location")));
-			this.tbInst_Op01_dec.MaxLength = ((int)(resources.GetObject("tbInst_Op01_dec.MaxLength")));
-			this.tbInst_Op01_dec.Multiline = ((bool)(resources.GetObject("tbInst_Op01_dec.Multiline")));
-			this.tbInst_Op01_dec.Name = "tbInst_Op01_dec";
-			this.tbInst_Op01_dec.PasswordChar = ((char)(resources.GetObject("tbInst_Op01_dec.PasswordChar")));
-			this.tbInst_Op01_dec.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_Op01_dec.RightToLeft")));
-			this.tbInst_Op01_dec.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_Op01_dec.ScrollBars")));
-			this.tbInst_Op01_dec.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_Op01_dec.Size")));
-			this.tbInst_Op01_dec.TabIndex = ((int)(resources.GetObject("tbInst_Op01_dec.TabIndex")));
-			this.tbInst_Op01_dec.Text = resources.GetString("tbInst_Op01_dec.Text");
-			this.tbInst_Op01_dec.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op01_dec.TextAlign")));
-			this.tbInst_Op01_dec.Visible = ((bool)(resources.GetObject("tbInst_Op01_dec.Visible")));
-			this.tbInst_Op01_dec.WordWrap = ((bool)(resources.GetObject("tbInst_Op01_dec.WordWrap")));
-			this.tbInst_Op01_dec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
-			this.tbInst_Op01_dec.Validated += new System.EventHandler(this.dec16_Validated);
-			this.tbInst_Op01_dec.TextChanged += new System.EventHandler(this.dec16_TextChanged);
 			// 
 			// btnCancel
 			// 
@@ -1526,56 +1489,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnOpCode.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnOpCode.TextAlign")));
 			this.btnOpCode.Visible = ((bool)(resources.GetObject("btnOpCode.Visible")));
 			this.btnOpCode.Click += new System.EventHandler(this.btnOpCode_Clicked);
-			// 
-			// tbInst_Op23_dec
-			// 
-			this.tbInst_Op23_dec.AccessibleDescription = resources.GetString("tbInst_Op23_dec.AccessibleDescription");
-			this.tbInst_Op23_dec.AccessibleName = resources.GetString("tbInst_Op23_dec.AccessibleName");
-			this.tbInst_Op23_dec.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbInst_Op23_dec.Anchor")));
-			this.tbInst_Op23_dec.AutoSize = ((bool)(resources.GetObject("tbInst_Op23_dec.AutoSize")));
-			this.tbInst_Op23_dec.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbInst_Op23_dec.BackgroundImage")));
-			this.tbInst_Op23_dec.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbInst_Op23_dec.Dock")));
-			this.tbInst_Op23_dec.Enabled = ((bool)(resources.GetObject("tbInst_Op23_dec.Enabled")));
-			this.tbInst_Op23_dec.Font = ((System.Drawing.Font)(resources.GetObject("tbInst_Op23_dec.Font")));
-			this.tbInst_Op23_dec.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbInst_Op23_dec.ImeMode")));
-			this.tbInst_Op23_dec.Location = ((System.Drawing.Point)(resources.GetObject("tbInst_Op23_dec.Location")));
-			this.tbInst_Op23_dec.MaxLength = ((int)(resources.GetObject("tbInst_Op23_dec.MaxLength")));
-			this.tbInst_Op23_dec.Multiline = ((bool)(resources.GetObject("tbInst_Op23_dec.Multiline")));
-			this.tbInst_Op23_dec.Name = "tbInst_Op23_dec";
-			this.tbInst_Op23_dec.PasswordChar = ((char)(resources.GetObject("tbInst_Op23_dec.PasswordChar")));
-			this.tbInst_Op23_dec.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbInst_Op23_dec.RightToLeft")));
-			this.tbInst_Op23_dec.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbInst_Op23_dec.ScrollBars")));
-			this.tbInst_Op23_dec.Size = ((System.Drawing.Size)(resources.GetObject("tbInst_Op23_dec.Size")));
-			this.tbInst_Op23_dec.TabIndex = ((int)(resources.GetObject("tbInst_Op23_dec.TabIndex")));
-			this.tbInst_Op23_dec.Text = resources.GetString("tbInst_Op23_dec.Text");
-			this.tbInst_Op23_dec.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbInst_Op23_dec.TextAlign")));
-			this.tbInst_Op23_dec.Visible = ((bool)(resources.GetObject("tbInst_Op23_dec.Visible")));
-			this.tbInst_Op23_dec.WordWrap = ((bool)(resources.GetObject("tbInst_Op23_dec.WordWrap")));
-			this.tbInst_Op23_dec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
-			this.tbInst_Op23_dec.Validated += new System.EventHandler(this.dec16_Validated);
-			this.tbInst_Op23_dec.TextChanged += new System.EventHandler(this.dec16_TextChanged);
-			// 
-			// label2
-			// 
-			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
-			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
-			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
-			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
-			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
-			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
-			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
-			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
-			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
-			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
-			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
-			this.label2.Name = "label2";
-			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
-			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
-			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
-			this.label2.Text = resources.GetString("label2.Text");
-			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
-			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
 			// 
 			// tbFilename
 			// 
@@ -2930,10 +2843,10 @@ namespace SimPe.PackedFiles.UserInterface
 			if (i < 8)
 			{
 				currentInst.Operands[i] = val;
-				if (i < 2)
+				/*if (i < 2)
 					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
 				else if (i < 4)
-					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();
+					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();*/
 			}
 			else
 			{
@@ -2961,10 +2874,10 @@ namespace SimPe.PackedFiles.UserInterface
 			if (i < 8)
 			{
 				currentInst.Operands[i] = val = origInst.Operands[i];
-				if (i < 2)
+				/*if (i < 2)
 					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
 				else if (i < 4)
-					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();
+					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();*/
 			}
 			else
 			{

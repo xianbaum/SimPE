@@ -66,7 +66,9 @@ namespace pjse.BhavNameWizards
 	{
 		public SemiGlobalWiz(Instruction i) : base(i)
 		{
-			if ((i.Parent is Bhav) && (((ABhavNameWiz)(Bhav)i.Parent) is SemiGlobalWiz))
+			if (i.Parent == null)
+				group = 0;
+			else if ((i.Parent is Bhav) && (((ABhavNameWiz)(Bhav)i.Parent) is SemiGlobalWiz))
 				group = SemiGlobalGroup;
 			else
 				group = ((LocalWiz)i.Parent).SemiGlobalGroup;
