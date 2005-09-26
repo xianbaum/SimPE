@@ -70,7 +70,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 		}
 
 		
-		#region MyForm0x0001
+		#region UI
 		public void Execute(Instruction inst)
 		{
 			byte operand0 = inst.Operands[0];
@@ -166,7 +166,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 namespace pjse.BhavOperandWizards
 {
-	 public class BhavOperandWiz0x0001 : pjse.ABhavOperandWiz
+	public class BhavOperandWiz0x0001 : pjse.ABhavOperandWiz
 	{
 		public BhavOperandWiz0x0001() : base() { }
 
@@ -195,14 +195,14 @@ namespace pjse.BhavOperandWizards
 		}
 
 
-		 #region IDisposable Members
-		 public override void Dispose()
-		 {
-			 if (myForm != null) myForm = null;
-		 }
-		 #endregion
+		#region IDisposable Members
+		public override void Dispose()
+		{
+			if (myForm != null) myForm = null;
+		}
+		#endregion
 
-		 #endregion
+		#endregion
 	}
 
 }
@@ -220,9 +220,10 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		protected override string Prefix { get { return "[generic]"; } }
-
-		protected override string primName { get { return GS.GStr(GS.SF.Generics, instruction.Operands[0]); } }
+		public override string ShortName
+		{
+			get { return base.ShortName + " (" + GS.GStr(GS.SF.Generics, instruction.Operands[0]) + ")"; }
+		}
 
 		//public override string ShortName { get { return "[generic] " + GenericName(instruction.Operands[0]); } }
 

@@ -26,28 +26,27 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavNameWizards
 {
+	#region Global
 	public class GlobalWiz : ANameBHAVWiz
 	{
-		public GlobalWiz(Instruction i) : base(i) { group = 0x7FD46CD0; }
+		public GlobalWiz(Instruction i) : base(i) { }
 
 		public static implicit operator GlobalWiz(AbstractWrapper parent)
 		{
 			return new GlobalWiz(new Instruction(parent, 0x0100));
 		}
 
+		public override uint Group { get { return 0x7FD46CD0; } }
 
-		protected override string Prefix { get { return "[global]"; } }
+		protected override string Prefix { get { return "global"; } }
 
 	}
+	#endregion
 
+	#region Private
 	public class LocalWiz : ANameBHAVWiz
 	{
-		public LocalWiz(Instruction i) : base(i)
-		{
-			group = 0xffffffff;
-			if (i != null && i.Parent != null && i.Parent.FileDescriptor != null)
-				group = i.Parent.FileDescriptor.Group;
-		}
+		public LocalWiz(Instruction i) : base(i) { }
 
 		public static implicit operator LocalWiz(AbstractWrapper parent)
 		{
@@ -57,22 +56,25 @@ namespace pjse.BhavNameWizards
 			return new LocalWiz(new Instruction(parent, 0x1000));
 		}
 
+		public override uint Group
+		{
+			get
+			{
+				return (instruction != null && instruction.Parent != null && instruction.Parent.FileDescriptor != null)
+					? instruction.Parent.FileDescriptor.Group
+					: 0xffffffff;
+			}
+		}
 
-		protected override string Prefix { get { return "[private]"; } }
+		protected override string Prefix { get { return "private"; } }
 
 	}
+	#endregion
 
+	#region SemiGlobal
 	public class SemiGlobalWiz : ANameBHAVWiz
 	{
-		public SemiGlobalWiz(Instruction i) : base(i)
-		{
-			if (i.Parent == null)
-				group = 0;
-			else if ((i.Parent is Bhav) && (((ABhavNameWiz)(Bhav)i.Parent) is SemiGlobalWiz))
-				group = SemiGlobalGroup;
-			else
-				group = ((LocalWiz)i.Parent).SemiGlobalGroup;
-		}
+		public SemiGlobalWiz(Instruction i) : base(i) { }
 
 		public static implicit operator SemiGlobalWiz(AbstractWrapper parent)
 		{
@@ -81,32 +83,42 @@ namespace pjse.BhavNameWizards
 			return new SemiGlobalWiz(new Instruction(parent, 0x2000));
 		}
 
+		public override uint Group
+		{
+			get
+			{
+				return (instruction != null && instruction.Parent != null && instruction.Parent.FileDescriptor != null)
+					? SemiGlobalGroup
+					: 0;
+			}
+		}
 
-		protected override string Prefix { get { return "[semi]"; } }
+		protected override string Prefix { get { return "semi"; } }
 
 	}
+	#endregion
 
-
+	#region Primitives
 	public class PrimWizDefault : ANamePrimitiveWiz
 	{
-		public PrimWizDefault(Instruction i) : base(i) {}
+		public PrimWizDefault(Instruction i) : base(i) { }
+
 	}
 
 	public class PrimWiz0x0000 : ANamePrimitiveWiz
 	{
-		public PrimWiz0x0000(Instruction i) : base(i) {}
-		public override string LongName
+		public PrimWiz0x0000(Instruction i) : base(i) { }
+
+		public override string ShortName
 		{
 			get
 			{
-				return ShortName
-					+ " for " + dataOwner(9, ToShort(instruction.Operands[0], instruction.Operands[1])) + " ticks."
-					//+ " (0x" + SimPe.Helper.HexString(instruction.OpCode) + ")"
-					;
+				return base.ShortName + " (" + dataOwner(9, ToShort(instruction.Operands[0], instruction.Operands[1])) + " ticks)";
 			}
 		}
 
 	}
 
+	#endregion
 
 }

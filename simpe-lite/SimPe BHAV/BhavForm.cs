@@ -2585,7 +2585,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
 		{
 			internalchg = true;
-			if ((new BhavOperandWiz()).Execute(currentInst, false) != null)
+			if ((new BhavOperandWiz()).Execute(currentInst, 1) != null)
 				UpdateInstPanel();
 			internalchg = false;
 		}
@@ -2593,7 +2593,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnOperandRaw_Click(object sender, System.EventArgs e)
 		{
 			internalchg = true;
-			if ((new BhavOperandWiz()).Execute(currentInst, true) != null)
+			if ((new BhavOperandWiz()).Execute(currentInst, 0) != null)
 				UpdateInstPanel();
 			internalchg = false;
 		}

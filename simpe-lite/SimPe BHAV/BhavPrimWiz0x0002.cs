@@ -38,14 +38,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 	internal class UI : System.Windows.Forms.Form
 	{
 		#region Form variables
-		private System.Windows.Forms.ComboBox cbtype1;
-		private System.Windows.Forms.ComboBox cbtype2;
-		private System.Windows.Forms.ComboBox cboperand;
+
 		private System.Windows.Forms.TextBox tbval1;
 		private System.Windows.Forms.TextBox tbval2;
 		internal System.Windows.Forms.Panel pnWiz0x0002;
 		private System.Windows.Forms.ComboBox cbPicker1;
 		private System.Windows.Forms.ComboBox cbPicker2;
+		private System.Windows.Forms.ComboBox cbOperator;
+		private System.Windows.Forms.ComboBox cbDataOwner1;
+		private System.Windows.Forms.ComboBox cbDataOwner2;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -78,15 +79,34 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		}
 
 		
-		#region MyForm
+		#region UI
+		public void Execute(Instruction inst)
+		{
+			wrappedByteArray ops = inst.Operands;
+			int val1 = (ops[0x01] << 8) | ops[0x00];
+			int val2 = (ops[0x03] << 8) | ops[0x02];
+
+			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)val1);
+			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)val2);
+
+			byte op = ops[0x05];
+			if (cbOperator.Items.Count>op) cbOperator.SelectedIndex = op;
+
+			byte n1 = ops[0x06];
+			byte n2 = ops[0x07];
+			if (cbDataOwner1.Items.Count>n1) cbDataOwner1.SelectedIndex = n1;
+			if (cbDataOwner2.Items.Count>n2) cbDataOwner2.SelectedIndex = n2;
+			//doFlagThing();
+		}
+
 		public Instruction Write(Instruction inst)
 		{
 			try 
 			{
 				wrappedByteArray ops = inst.Operands;
-				ops[0x06] = (byte)cbtype1.SelectedIndex;
-				ops[0x07] = (byte)cbtype2.SelectedIndex;
-				ops[0x05] = (byte)cboperand.SelectedIndex;
+				ops[0x06] = (byte)cbDataOwner1.SelectedIndex;
+				ops[0x07] = (byte)cbDataOwner2.SelectedIndex;
+				ops[0x05] = (byte)cbOperator.SelectedIndex;
 
 				ushort val1 = textToUShort(tbval1.Text);
 				ushort val2 = textToUShort(tbval2.Text);
@@ -106,34 +126,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			}
 		}
 
-		public void Execute(Instruction inst)
-		{
-			wrappedByteArray ops = inst.Operands;
-			byte n1 = ops[0x06];
-			byte n2 = ops[0x07];
-			byte op = ops[0x05];
-
-			int val1 = (ops[0x01] << 8) | ops[0x00];
-			int val2 = (ops[0x03] << 8) | ops[0x02];
-
-			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)val1);
-			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)val2);
-
-			if (cbtype1.Items.Count>n1) cbtype1.SelectedIndex = n1;
-			if (cbtype2.Items.Count>n2) cbtype2.SelectedIndex = n2;
-
-			if (cboperand.Items.Count>op) cboperand.SelectedIndex = op;
-		}
-
 		private void FormLoad()
 		{
-			this.cboperand.Items.Clear();
-			this.cboperand.Items.AddRange(GS.gStr(GS.SF.Operators).ToArray());
-
-			this.cbtype1.Items.Clear();
-			this.cbtype1.Items.AddRange(GS.gStr(GS.SF.DataOwners).ToArray());
-			this.cbtype2.Items.Clear();
-			this.cbtype2.Items.AddRange(GS.gStr(GS.SF.DataOwners).ToArray());
+			this.cbDataOwner1.Items.Clear();
+			this.cbDataOwner1.Items.AddRange(GS.gStr(GS.SF.DataOwners).ToArray());
+			this.cbDataOwner2.Items.Clear();
+			this.cbDataOwner2.Items.AddRange(GS.gStr(GS.SF.DataOwners).ToArray());
+			this.cbOperator.Items.Clear();
+			this.cbOperator.Items.AddRange(GS.gStr(GS.SF.Operators).ToArray());
 		}
 
 		#endregion
@@ -148,11 +148,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.pnWiz0x0002 = new System.Windows.Forms.Panel();
 			this.cbPicker2 = new System.Windows.Forms.ComboBox();
 			this.cbPicker1 = new System.Windows.Forms.ComboBox();
-			this.cboperand = new System.Windows.Forms.ComboBox();
+			this.cbOperator = new System.Windows.Forms.ComboBox();
 			this.tbval2 = new System.Windows.Forms.TextBox();
-			this.cbtype2 = new System.Windows.Forms.ComboBox();
+			this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
 			this.tbval1 = new System.Windows.Forms.TextBox();
-			this.cbtype1 = new System.Windows.Forms.ComboBox();
+			this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
 			this.pnWiz0x0002.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -160,11 +160,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			// 
 			this.pnWiz0x0002.Controls.Add(this.cbPicker2);
 			this.pnWiz0x0002.Controls.Add(this.cbPicker1);
-			this.pnWiz0x0002.Controls.Add(this.cboperand);
+			this.pnWiz0x0002.Controls.Add(this.cbOperator);
 			this.pnWiz0x0002.Controls.Add(this.tbval2);
-			this.pnWiz0x0002.Controls.Add(this.cbtype2);
+			this.pnWiz0x0002.Controls.Add(this.cbDataOwner2);
 			this.pnWiz0x0002.Controls.Add(this.tbval1);
-			this.pnWiz0x0002.Controls.Add(this.cbtype1);
+			this.pnWiz0x0002.Controls.Add(this.cbDataOwner1);
 			this.pnWiz0x0002.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.pnWiz0x0002.Location = new System.Drawing.Point(8, 8);
 			this.pnWiz0x0002.Name = "pnWiz0x0002";
@@ -181,7 +181,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbPicker2.Size = new System.Drawing.Size(112, 21);
 			this.cbPicker2.TabIndex = 5;
 			this.cbPicker2.Visible = false;
-			this.cbPicker2.SelectedIndexChanged += new System.EventHandler(this.Motive2Changed);
+			this.cbPicker2.SelectedIndexChanged += new System.EventHandler(this.cbPicker2_SelectedIndexChanged);
 			// 
 			// cbPicker1
 			// 
@@ -193,17 +193,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbPicker1.Size = new System.Drawing.Size(112, 21);
 			this.cbPicker1.TabIndex = 2;
 			this.cbPicker1.Visible = false;
-			this.cbPicker1.SelectedIndexChanged += new System.EventHandler(this.Motive1Changed);
+			this.cbPicker1.SelectedIndexChanged += new System.EventHandler(this.cbPicker1_SelectedIndexChanged);
 			// 
-			// cboperand
+			// cbOperator
 			// 
-			this.cboperand.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.cbOperator.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cboperand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cboperand.Location = new System.Drawing.Point(0, 26);
-			this.cboperand.Name = "cboperand";
-			this.cboperand.Size = new System.Drawing.Size(464, 21);
-			this.cboperand.TabIndex = 3;
+			this.cbOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbOperator.Location = new System.Drawing.Point(0, 26);
+			this.cbOperator.Name = "cbOperator";
+			this.cbOperator.Size = new System.Drawing.Size(464, 21);
+			this.cbOperator.TabIndex = 3;
 			// 
 			// tbval2
 			// 
@@ -214,16 +214,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.tbval2.TabIndex = 5;
 			this.tbval2.Text = "";
 			// 
-			// cbtype2
+			// cbDataOwner2
 			// 
-			this.cbtype2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.cbDataOwner2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbtype2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbtype2.Location = new System.Drawing.Point(0, 50);
-			this.cbtype2.Name = "cbtype2";
-			this.cbtype2.Size = new System.Drawing.Size(352, 21);
-			this.cbtype2.TabIndex = 4;
-			this.cbtype2.SelectedIndexChanged += new System.EventHandler(this.SelectVal2Name);
+			this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbDataOwner2.Location = new System.Drawing.Point(0, 50);
+			this.cbDataOwner2.Name = "cbDataOwner2";
+			this.cbDataOwner2.Size = new System.Drawing.Size(352, 21);
+			this.cbDataOwner2.TabIndex = 4;
+			this.cbDataOwner2.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner2_SelectedIndexChanged);
 			// 
 			// tbval1
 			// 
@@ -234,16 +234,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.tbval1.TabIndex = 2;
 			this.tbval1.Text = "";
 			// 
-			// cbtype1
+			// cbDataOwner1
 			// 
-			this.cbtype1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.cbDataOwner1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbtype1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbtype1.Location = new System.Drawing.Point(0, 0);
-			this.cbtype1.Name = "cbtype1";
-			this.cbtype1.Size = new System.Drawing.Size(352, 21);
-			this.cbtype1.TabIndex = 1;
-			this.cbtype1.SelectedIndexChanged += new System.EventHandler(this.SelectVal1Name);
+			this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbDataOwner1.Location = new System.Drawing.Point(0, 0);
+			this.cbDataOwner1.Name = "cbDataOwner1";
+			this.cbDataOwner1.Size = new System.Drawing.Size(352, 21);
+			this.cbDataOwner1.TabIndex = 1;
+			this.cbDataOwner1.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner1_SelectedIndexChanged);
 			// 
 			// UI
 			// 
@@ -259,14 +259,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		}
 		#endregion
 
-		private void SelectVal1Name(object sender, System.EventArgs e)
+		private void cbDataOwner1_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			this.cbPicker1.Visible = false;
-			if (ABhavNameWiz.doidGStr[(byte)cbtype1.SelectedIndex] != null)
+			if (ABhavNameWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex] != null)
 			{
 				this.cbPicker1.Visible = true;
 				this.cbPicker1.Items.Clear();
-				this.cbPicker1.Items.AddRange(GS.gStr((uint)ABhavNameWiz.doidGStr[(byte)cbtype1.SelectedIndex]).ToArray());
+				this.cbPicker1.Items.AddRange(GS.gStr((uint)ABhavNameWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex]).ToArray());
 				try 
 				{
 					ushort val = textToUShort(tbval1.Text);
@@ -274,7 +274,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				} 
 				catch (Exception) { }
 			}
-			else if (cbtype1.SelectedIndex==0x1a)
+			else if (cbDataOwner1.SelectedIndex == 0x1a || cbDataOwner1.SelectedIndex == 0x2f)
 			{
 				//constant
 				ushort[] vals = ConstantValueParser(textToUShort(tbval1.Text));
@@ -287,14 +287,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			doFlagThing();
 		}
 
-		private void SelectVal2Name(object sender, System.EventArgs e)
+		private void cbDataOwner2_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			this.cbPicker2.Visible = false;
-			if (ABhavNameWiz.doidGStr[(byte)cbtype2.SelectedIndex] != null)
+			if (ABhavNameWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex] != null)
 			{
 				this.cbPicker2.Visible = true;
 				this.cbPicker2.Items.Clear();
-				this.cbPicker2.Items.AddRange(GS.gStr((uint)ABhavNameWiz.doidGStr[(byte)cbtype2.SelectedIndex]).ToArray());
+				this.cbPicker2.Items.AddRange(GS.gStr((uint)ABhavNameWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex]).ToArray());
 				try 
 				{
 					ushort val = textToUShort(tbval2.Text);
@@ -302,7 +302,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				} 
 				catch (Exception) { }
 			}
-			else if (cbtype2.SelectedIndex==0x1a)
+			else if (cbDataOwner2.SelectedIndex == 0x1a || cbDataOwner2.SelectedIndex == 0x2f)
 			{
 				//constant
 				ushort[] vals = ConstantValueParser(textToUShort(tbval2.Text));
@@ -315,13 +315,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			doFlagThing();
 		}
 
-		private void Motive1Changed(object sender, System.EventArgs e)
+		private void cbPicker1_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker1.SelectedIndex);
 			doFlagThing();
 		}
 
-		private void Motive2Changed(object sender, System.EventArgs e)
+		private void cbPicker2_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker2.SelectedIndex);
 		}
@@ -329,25 +329,22 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void doFlagThing()
 		{
-			if (cbtype2.SelectedIndex == 7)
-				if (cboperand.SelectedIndex >= 8 && cboperand.SelectedIndex <= 10)
+			if (cbDataOwner2.SelectedIndex == 7 && cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10)
+			{
+				ArrayList flagNames = PrimWiz0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text));
+				if (flagNames != null)
 				{
-					Hashtable f = (Hashtable)PrimWiz0x0002.flag[(byte)cbtype1.SelectedIndex];
-					if (f != null && f[(ushort)textToUShort(tbval1.Text)] != null)
+					this.cbPicker2.Visible = true;
+					this.cbPicker2.Items.Clear();
+					this.cbPicker2.Items.AddRange(flagNames.ToArray());
+					try 
 					{
-						this.cbPicker2.Visible = true;
-						this.cbPicker2.Items.Clear();
-						this.cbPicker2.Items.AddRange(GS.gStr((uint)f[(ushort)textToUShort(tbval1.Text)]).ToArray());
-						try 
-						{
-							ushort val = textToUShort(tbval2.Text);
-							this.cbPicker2.SelectedIndex = val;
-						} 
-						catch (Exception) { }
-					}
-					else
-						this.cbPicker2.Visible = false;
+						ushort val = textToUShort(tbval2.Text);
+						this.cbPicker2.SelectedIndex = val;
+					} 
+					catch (Exception) { }
 				}
+			}
 			this.tbval2.Visible = !cbPicker2.Visible;
 		}
 
@@ -376,17 +373,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private static ushort[] ConstantValueParser(ushort val) 
 		{
-			ushort[] ret = new ushort[2];
-
-			ret[0] = (ushort)((val >> 7) & 0x3f);
-			ret[1] = (ushort)(val & 0x7F);
-			int t = (val >> 13) & 0x7;
-
-			if (t==0) ret[0] += 0x1000;
-			else if (t==1) ret[0] += 0x2000;
-			else ret[0] += 0x0100;
-
-			return ret;
+			return pjse.ABhavNameWiz.ExpandBCON(val);
 		}
 
 		private static ushort ConstantValueParser(ushort[] values) 
@@ -402,12 +389,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				values[0] = (ushort)(values[0]-0x2000);
 				t = 1;
 			} 
-			else 
+			else if ((values[0] & 0x0140) == 0x0140)
 			{
-				values[0] = (ushort)(values[0]-0x100);
+				values[0] = (ushort)(values[0]-0x0140);
+				t = 4;
 			}
-			ushort ret = 0;
+			else
+			{
+				values[0] = (ushort)(values[0]-0x0100);
+			}
 
+			ushort ret = 0;
 			ret = (ushort)(t << 13);
 			ret += (ushort)((values[0] & 0x3f)  << 7);
 			ret += (ushort)(values[1] & 0x7F);
@@ -488,54 +480,15 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		protected override string Prefix
-		{
-			get
-			{
-				switch(instruction.Operands[5])
-				{
-#if INGE_LIKED_IT
-				case 0x00:
-				case 0x01:
-				case 0x02:
-				case 0x08:
-				case 0x0e:
-				case 0x0f:
-				case 0x10:
-					return "[test]";
-				case 0x03:
-				case 0x04:
-				case 0x05:
-				case 0x06:
-				case 0x07:
-				case 0x09:
-				case 0x0a:
-				case 0x0c:
-				case 0x0d:
-				case 0x12:
-				case 0x13:
-				case 0x14:
-				case 0x15:
-					return "[assign]";
-				case 0x0b:
-				case 0x11:
-					return "[assign & test]";
-#endif
-					default:
-						return "[expr]";
-				}
-			}
-		}
-
-		protected override string primName
+		public override string ShortName
 		{
 			get
 			{
 				byte[] o = instruction.Operands;
-				return
+				return prefix + " (" +
 					GS.GStr(GS.SF.DataOwners, o[6]) + " 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])) + " " +
 					GS.GStr(GS.SF.Operators, o[5]) + " " +
-					GS.GStr(GS.SF.DataOwners, o[7]) + " 0x" + SimPe.Helper.HexString(ToShort(o[2], o[3]));
+					GS.GStr(GS.SF.DataOwners, o[7]) + " 0x" + SimPe.Helper.HexString(ToShort(o[2], o[3])) + ")";
 			}
 		}
 
@@ -549,10 +502,10 @@ namespace pjse.BhavNameWizards
 				((byte[])instruction.Reserved1).CopyTo(operands, 8);
 
 				byte lhs_data_owner = operands[6]; // c2
-				byte rhs_data_owner = operands[7]; // b[x+7]
-				ushort lhs_value_word = (ushort)(operands[0] + (256 * operands[1])); // w1
-				ushort rhs_value_word = (ushort)(operands[2] + (256 * operands[3])); // w2
+				ushort lhs_value_word = ToShort(operands[0], operands[1]); // w1
 				byte _operator = operands[5]; // c1
+				byte rhs_data_owner = operands[7]; // b[x+7]
+				ushort rhs_value_word = ToShort(operands[2], operands[3]); // w2
 
 				string s = "";
 				s += dataOwner(lhs_data_owner, lhs_value_word);
@@ -560,29 +513,33 @@ namespace pjse.BhavNameWizards
 
 				if (_operator >= 8 && _operator <= 10) // Flag operation
 				{
-					s+= "(flag# ";
-					if (rhs_data_owner == 7)
-					{
-						Hashtable a = (Hashtable)flag[lhs_data_owner];
-						if (a != null)
-						{
-							if (a[lhs_value_word] != null)
-							{
-								uint b = (uint)a[lhs_value_word];
-								s += GS.GStr(b, rhs_value_word) + ": ";
-							}
-						}
-					}
-					s+= dataOwner(rhs_data_owner, rhs_value_word) + ")";
+					s+= "flag# " + dataOwner(rhs_data_owner, rhs_value_word);
+					if (rhs_data_owner == 7 && flagname(lhs_data_owner, lhs_value_word, rhs_value_word) != null)
+						s += " (" + flagname(lhs_data_owner, lhs_value_word, rhs_value_word) + ")";
 				}
 				else
 					s+= dataOwner(rhs_data_owner, rhs_value_word);
-				return baseName + ": " + s;
+				return prefix + " (" + s + ")";
 			}
 		}
 
+		private string prefix { get { return base.ShortName; } }
 
-		public static Hashtable flag = flagInitaliser();
+
+		public static ArrayList flagNames(byte flagOwner, ushort flagType)
+		{
+			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.gStr((uint)flagTypes[flagType]);
+		}
+
+		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
+		{
+			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((uint)flagTypes[flagType], flagValue);
+		}
+
+
+		public static Hashtable flagOwners = flagInitaliser();
 		private static Hashtable flagInitaliser()
 		{
 			Hashtable f = new Hashtable();

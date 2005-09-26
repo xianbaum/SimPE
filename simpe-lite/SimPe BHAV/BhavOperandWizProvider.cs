@@ -57,6 +57,11 @@ namespace pjse
 			return new BhavOperandWizRaw(i);
 		}
 
+		public static ABhavOperandWiz Default(SimPe.PackedFiles.Wrapper.Instruction i)
+		{
+			return new BhavOperandWizDefault(i);
+		}
+
 	}
 
 	/// <summary>

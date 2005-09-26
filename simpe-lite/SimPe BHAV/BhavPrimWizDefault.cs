@@ -26,16 +26,16 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
 
-namespace SimPe.PackedFiles.UserInterface
+namespace pjse.BhavOperandWizards.WizDefault
 {
 	#region internal form
 	/// <summary>
 	/// Summary description for BhavPrimWizDefault.
 	/// </summary>
-	internal class BhavPrimWizDefaultUI : System.Windows.Forms.Form
+	internal class UI : System.Windows.Forms.Form
 	{
 		#region Form variables
-		internal System.Windows.Forms.Panel panel1;
+
 		private System.Windows.Forms.TextBox tbInst_Op01_dec;
 		private System.Windows.Forms.Label label13;
 		private System.Windows.Forms.TextBox tbInst_Unk7;
@@ -56,13 +56,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbInst_Op0;
 		private System.Windows.Forms.TextBox tbInst_Op23_dec;
 		private System.Windows.Forms.Label label2;
+		internal System.Windows.Forms.Panel pnWizDefault;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		#endregion
 
-		public BhavPrimWizDefaultUI()
+		public UI()
 		{
 			//
 			// Required for Windows Form Designer support
@@ -100,7 +101,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		#region BhavPrimWizDefaultUI
+		#region UI
 		private Instruction inst;
 		private ArrayList alHex8;
 		private ArrayList alDec16;
@@ -112,23 +113,23 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op01_dec.Text = (inst.Operands[0] + (inst.Operands[1] << 8)).ToString();
 			this.tbInst_Op23_dec.Text = (inst.Operands[2] + (inst.Operands[3] << 8)).ToString();
 
-			this.tbInst_Op0.Text = Helper.HexString(inst.Operands[0]);
-			this.tbInst_Op1.Text = Helper.HexString(inst.Operands[1]);
-			this.tbInst_Op2.Text = Helper.HexString(inst.Operands[2]);
-			this.tbInst_Op3.Text = Helper.HexString(inst.Operands[3]);
-			this.tbInst_Op4.Text = Helper.HexString(inst.Operands[4]);
-			this.tbInst_Op5.Text = Helper.HexString(inst.Operands[5]);
-			this.tbInst_Op6.Text = Helper.HexString(inst.Operands[6]);
-			this.tbInst_Op7.Text = Helper.HexString(inst.Operands[7]);
+			this.tbInst_Op0.Text = SimPe.Helper.HexString(inst.Operands[0]);
+			this.tbInst_Op1.Text = SimPe.Helper.HexString(inst.Operands[1]);
+			this.tbInst_Op2.Text = SimPe.Helper.HexString(inst.Operands[2]);
+			this.tbInst_Op3.Text = SimPe.Helper.HexString(inst.Operands[3]);
+			this.tbInst_Op4.Text = SimPe.Helper.HexString(inst.Operands[4]);
+			this.tbInst_Op5.Text = SimPe.Helper.HexString(inst.Operands[5]);
+			this.tbInst_Op6.Text = SimPe.Helper.HexString(inst.Operands[6]);
+			this.tbInst_Op7.Text = SimPe.Helper.HexString(inst.Operands[7]);
 
-			this.tbInst_Unk0.Text = Helper.HexString(inst.Reserved1[0]);
-			this.tbInst_Unk1.Text = Helper.HexString(inst.Reserved1[1]);
-			this.tbInst_Unk2.Text = Helper.HexString(inst.Reserved1[2]);
-			this.tbInst_Unk3.Text = Helper.HexString(inst.Reserved1[3]);
-			this.tbInst_Unk4.Text = Helper.HexString(inst.Reserved1[4]);
-			this.tbInst_Unk5.Text = Helper.HexString(inst.Reserved1[5]);
-			this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
-			this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
+			this.tbInst_Unk0.Text = SimPe.Helper.HexString(inst.Reserved1[0]);
+			this.tbInst_Unk1.Text = SimPe.Helper.HexString(inst.Reserved1[1]);
+			this.tbInst_Unk2.Text = SimPe.Helper.HexString(inst.Reserved1[2]);
+			this.tbInst_Unk3.Text = SimPe.Helper.HexString(inst.Reserved1[3]);
+			this.tbInst_Unk4.Text = SimPe.Helper.HexString(inst.Reserved1[4]);
+			this.tbInst_Unk5.Text = SimPe.Helper.HexString(inst.Reserved1[5]);
+			this.tbInst_Unk6.Text = SimPe.Helper.HexString(inst.Reserved1[6]);
+			this.tbInst_Unk7.Text = SimPe.Helper.HexString(inst.Reserved1[7]);
 		}
 
 		#endregion
@@ -140,7 +141,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.panel1 = new System.Windows.Forms.Panel();
+			this.pnWizDefault = new System.Windows.Forms.Panel();
 			this.tbInst_Op01_dec = new System.Windows.Forms.TextBox();
 			this.label13 = new System.Windows.Forms.Label();
 			this.tbInst_Unk7 = new System.Windows.Forms.TextBox();
@@ -161,35 +162,35 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op0 = new System.Windows.Forms.TextBox();
 			this.tbInst_Op23_dec = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
-			this.panel1.SuspendLayout();
+			this.pnWizDefault.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// panel1
+			// pnWizDefault
 			// 
-			this.panel1.Controls.Add(this.tbInst_Op01_dec);
-			this.panel1.Controls.Add(this.label13);
-			this.panel1.Controls.Add(this.tbInst_Unk7);
-			this.panel1.Controls.Add(this.tbInst_Unk6);
-			this.panel1.Controls.Add(this.tbInst_Unk5);
-			this.panel1.Controls.Add(this.tbInst_Unk4);
-			this.panel1.Controls.Add(this.tbInst_Unk3);
-			this.panel1.Controls.Add(this.tbInst_Unk2);
-			this.panel1.Controls.Add(this.tbInst_Unk1);
-			this.panel1.Controls.Add(this.tbInst_Unk0);
-			this.panel1.Controls.Add(this.tbInst_Op7);
-			this.panel1.Controls.Add(this.tbInst_Op6);
-			this.panel1.Controls.Add(this.tbInst_Op5);
-			this.panel1.Controls.Add(this.tbInst_Op4);
-			this.panel1.Controls.Add(this.tbInst_Op3);
-			this.panel1.Controls.Add(this.tbInst_Op2);
-			this.panel1.Controls.Add(this.tbInst_Op1);
-			this.panel1.Controls.Add(this.tbInst_Op0);
-			this.panel1.Controls.Add(this.tbInst_Op23_dec);
-			this.panel1.Controls.Add(this.label2);
-			this.panel1.Location = new System.Drawing.Point(0, 0);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(264, 72);
-			this.panel1.TabIndex = 0;
+			this.pnWizDefault.Controls.Add(this.tbInst_Op01_dec);
+			this.pnWizDefault.Controls.Add(this.label13);
+			this.pnWizDefault.Controls.Add(this.tbInst_Unk7);
+			this.pnWizDefault.Controls.Add(this.tbInst_Unk6);
+			this.pnWizDefault.Controls.Add(this.tbInst_Unk5);
+			this.pnWizDefault.Controls.Add(this.tbInst_Unk4);
+			this.pnWizDefault.Controls.Add(this.tbInst_Unk3);
+			this.pnWizDefault.Controls.Add(this.tbInst_Unk2);
+			this.pnWizDefault.Controls.Add(this.tbInst_Unk1);
+			this.pnWizDefault.Controls.Add(this.tbInst_Unk0);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op7);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op6);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op5);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op4);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op3);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op2);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op1);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op0);
+			this.pnWizDefault.Controls.Add(this.tbInst_Op23_dec);
+			this.pnWizDefault.Controls.Add(this.label2);
+			this.pnWizDefault.Location = new System.Drawing.Point(0, 0);
+			this.pnWizDefault.Name = "pnWizDefault";
+			this.pnWizDefault.Size = new System.Drawing.Size(264, 72);
+			this.pnWizDefault.TabIndex = 0;
 			// 
 			// tbInst_Op01_dec
 			// 
@@ -429,14 +430,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label2.TabIndex = 24;
 			this.label2.Text = "(decimal)";
 			// 
-			// BhavPrimWizDefaultUI
+			// UI
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.ClientSize = new System.Drawing.Size(292, 273);
-			this.Controls.Add(this.panel1);
-			this.Name = "BhavPrimWizDefaultUI";
+			this.Controls.Add(this.pnWizDefault);
+			this.Name = "UI";
 			this.Text = "BhavPrimWizDefaultUI";
-			this.panel1.ResumeLayout(false);
+			this.pnWizDefault.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -499,35 +500,39 @@ namespace SimPe.PackedFiles.UserInterface
 			if (cv != val)
 			{
 				inst.Operands[i] = (byte)(val & 0xFF);
-				((TextBox)this.alHex8[i]).Text = Helper.HexString(inst.Operands[i]);
+				((TextBox)this.alHex8[i]).Text = SimPe.Helper.HexString(inst.Operands[i]);
 				inst.Operands[i+1] = (byte)((val >> 8) & 0xFF);
-				((TextBox)this.alHex8[i+1]).Text = Helper.HexString(inst.Operands[i+1]);
+				((TextBox)this.alHex8[i+1]).Text = SimPe.Helper.HexString(inst.Operands[i+1]);
 			}
 		}
 
 	}
 	#endregion
+}
 
+namespace pjse.BhavOperandWizards
+{
 	public class BhavOperandWizDefault : pjse.ABhavOperandWiz
 	{
-		private BhavPrimWizDefaultUI myForm = null;
+		public BhavOperandWizDefault() : base() { }
 
 		public BhavOperandWizDefault(Instruction i) : base(i) { }
 
 
 		#region pjse.ABhavOperandWiz
+		private WizDefault.UI myForm = null;
 		public override Panel bhavPrimWizPanel
 		{
 			get
 			{
-				if (myForm == null) myForm = new BhavPrimWizDefaultUI();
-				return myForm.panel1;
+				if (myForm == null) myForm = new WizDefault.UI();
+				return myForm.pnWizDefault;
 			}
 		}
 
 		public override void Execute()
 		{
-			if (myForm == null) myForm = new BhavPrimWizDefaultUI();
+			if (myForm == null) myForm = new WizDefault.UI();
 			myForm.Execute(instruction);
 		}
 

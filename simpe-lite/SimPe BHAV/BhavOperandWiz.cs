@@ -69,9 +69,15 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		public Instruction Execute(Instruction i, bool raw)
+		public Instruction Execute(Instruction i, int wizType)
 		{
-			pjse.ABhavOperandWiz wiz = raw ? pjse.BhavOperandWizProvider.Raw(i) : pjse.BhavOperandWizProvider.For(i);
+			pjse.ABhavOperandWiz wiz = null;
+			switch(wizType)
+			{
+				case 0: wiz = pjse.BhavOperandWizProvider.Raw(i); break;
+				case 1: wiz = pjse.BhavOperandWizProvider.For(i); break;
+				default: wiz = pjse.BhavOperandWizProvider.Default(i); break;
+			}
 			if (wiz == null) return null;
 
 			Panel pn = wiz.bhavPrimWizPanel;

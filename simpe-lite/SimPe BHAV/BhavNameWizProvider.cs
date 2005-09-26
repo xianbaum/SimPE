@@ -32,19 +32,12 @@ namespace pjse
 	public abstract class ABhavNameWiz : IDisposable
 	{
 		protected Instruction instruction = null;
-		protected IPackageFile package = null;
-
 		private Glob glob = null;
 
 		protected ABhavNameWiz(Instruction instruction) 
 		{
 			SimPe.FileTable.FileIndex.Load();
-
 			this.instruction = instruction;
-			if (instruction != null && instruction.Parent != null)
-			{
-				package = instruction.Parent.Package;
-			}
 		}
 
 		public static implicit operator ABhavNameWiz(Instruction i)
@@ -63,50 +56,45 @@ namespace pjse
 			if (wrapper == null || wrapper.FileDescriptor == null)
 				throw new InvalidCastException("Invalid BHAV");
 
-			return (ABhavNameWiz)(ushort)wrapper.FileDescriptor.Instance;
+			return (ushort)wrapper.FileDescriptor.Instance;
 		}
 
 
 		#region IDisposable Members
-
 		public void Dispose()
 		{
 			instruction = null;
-			package = null;
 			glob = null;
 		}
 
 		#endregion
 
-		public IPackageFile Package { get { return package; } }
-
-		public abstract string ShortName { get; }
-
-		public abstract string LongName { get; }
-
-		public override string ToString()
+		public virtual string ShortName
 		{
-			string s;
-			return ((s = LongName) != null) ? s
-				: ((s = ShortName) != null ? s
-				: "[error: " + SimPe.Helper.HexString(instruction.OpCode) + "]");
+			get
+			{
+				return "[" + Prefix + " 0x" + SimPe.Helper.HexString(instruction.OpCode) + "] " + OpcodeName;
+			}
 		}
+
+		public virtual string LongName { get { return ShortName; } }
+
+		public override string ToString() { return LongName; }
 
 		public virtual Bhav LoadBHAV() { return null; }
 
 
-		public static ushort ToShort(byte lower, byte higher) { return (ushort)((higher << 8) + lower); }
-
-
 		protected abstract string Prefix { get; }
 
-		protected string baseName { get { return this.Prefix + " 0x" + SimPe.Helper.HexString(instruction.OpCode); } }
+		protected abstract string OpcodeName { get; }
+
 
 		protected string dataOwner(byte doid, ushort instance)
 		{
+			ushort[] bcon;
 			string doidName = GS.GStr(GS.SF.DataOwners, doid);
 
-			string s = null;
+			string s = "0x" + SimPe.Helper.HexString(instance);
 			if (doidGStr[doid] != null)
 				s = "0x" + SimPe.Helper.HexString(instance) + " (" + GS.GStr((uint)doidGStr[doid], instance) + ")";
 			switch (doid)
@@ -119,49 +107,28 @@ namespace pjse
 				case 0x11:
 				case 0x1e:
 				case 0x1f:
-				case 0x2f: // well, I reckon it should be here
 				case 0x30:
 				case 0x31:
 					doidName = doidName.Replace("[temp]", "[Temp " + instance.ToString() + "]");
 					s = "";
 					break;
 				case 0x1a:
-				//case 0x2f:
-					int a = instance >> 13;            // x = aaabbbbb bccccccc
-					int b = (instance >> 7) & 0x3F;
-					int c = instance & 0x7F;
-					switch (a) 
-					{
-						case 0:             // private
-							b += 0x1000;
-							break;
-						case 1:             // semi-global
-							b += 0x2000;
-							break;
-						case 2:            // global
-							b += 0x100;
-							break;
-						default:
-							b += 0x140;
-							break;
-					}
-					if (doid == 0x1a)
-					{
-						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":0x" + SimPe.Helper.HexString((byte)c)
-							+ " [=" + readBcon((uint)b, c) + "]";
-					}
-					else
-					{
-						doidName = GS.GStr(GS.SF.DataOwners, 0x1a);
-						s = "0x" + SimPe.Helper.HexString((ushort)b) + ":[Temp " + c.ToString() + "]";
-					}
+					bcon = ExpandBCON(instance);
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1])
+						+ " " + readBcon((uint)bcon[0], bcon[1]);
+					break;
+				case 0x2f:
+					bcon = ExpandBCON(instance);
+					doidName = GS.GStr(GS.SF.DataOwners, 0x1a);
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
 					break;
 			}
-			if (s == null) s = "0x" + SimPe.Helper.HexString(instance);
 
 			return doidName + (s.Length > 0 ? " " + s : "");
 		}
 
+
+		// I've also changed this from DisaSim2 to be consistent on the choice of Global/Private/Semi
 		protected string readBcon(uint instance, int bid)
 		{
 			// in this context, the group has to be the group of the BHAV you are reading, I think
@@ -174,13 +141,13 @@ namespace pjse
 			{
 				bconGroup = 0x7FD46CD0;
 			}
-			else if (instance >= 0x2000 && instance < 0x3000)
+			else if (instance < 0x2000)
 			{
-				bconGroup = SemiGlobalGroup;
+				bconGroup = instruction.Parent.FileDescriptor.Group;
 			}
 			else
 			{
-				bconGroup = instruction.Parent.FileDescriptor.Group;
+				bconGroup = SemiGlobalGroup;
 			}
 
 			IScenegraphFileIndexItem[] items =
@@ -191,54 +158,24 @@ namespace pjse
 
 			Bcon bcon = new Bcon();
 			bcon.ProcessData(items[0]);
-			string f = bcon.FileName.Trim();
-			if (!bcon.FileName.Trim().Equals(""))
-			{
-				f = " (" + f + ")";
-			}
-			if (bid >= bcon.Constants.Count)
-				return "[BCON not set]";
-			return "0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]) + f;
+			return bcon.FileName.Trim() + ((bid >= bcon.Constants.Count)
+				? " [BCON not set]"
+				: ": 0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]));
 		}
 
 
 		/// <summary>
-		/// This is the semi-global group for the current instruction
+		/// Get the Glob resource for the current instruction (or null, indicating a SemiGlobal perhaps)
 		/// </summary>
-		public uint SemiGlobalGroup
-		{
-			get
-			{
-				if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-					throw new InvalidOperationException("Can't read GLOB for instruction with no parent");
-
-				if (this is SemiGlobalWiz) return instruction.Parent.FileDescriptor.Group;
-				if (SemiGlobal != null) return SemiGlobal.SemiGlobalGroup;
-				return 0;
-			}
-		}
-
-		/// <summary>
-		/// This is the semi-global group name for the current instruction
-		/// </summary>
-		public string SemiGlobalName
-		{
-			get
-			{
-				if (SemiGlobal == null) return "SemiGlobals";
-				return SemiGlobal.SemiGlobalName;
-			}
-		}
-
-		public Glob SemiGlobal
+		private Glob SemiGlobal
 		{
 			get
 			{
 				if (glob != null)
 					return glob;
-
 				if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-					return null;
+					throw new InvalidOperationException("Can't read GLOB for instruction with no parent");
+
 				IScenegraphFileIndexItem[] items =
 					SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.GLOB_FILE, instruction.Parent.FileDescriptor.Group);
 				if (items == null || items.Length == 0)
@@ -249,6 +186,40 @@ namespace pjse
 			}
 		}
 
+		public uint SemiGlobalGroup { get { return (SemiGlobal != null) ? SemiGlobal.SemiGlobalGroup : instruction.Parent.FileDescriptor.Group; } }
+
+		public string SemiGlobalName { get { return (SemiGlobal != null) ? SemiGlobal.SemiGlobalName : "SemiGlobals"; } }
+
+
+		// I've changed this from what DisaSim2 does so that the top bit just adds 0x40, whatever. -- plj
+		public static ushort[] ExpandBCON(ushort instance)
+		{
+			int a = instance >> 13;            // x = aaabbbbb bccccccc
+			int b = (instance >> 7) & 0x3F;
+			int c = instance & 0x7F;
+			switch (a & 3) 
+			{
+				case 1:				// semi-global
+					b += 0x2000;
+					break;
+				case 2:				// global
+					b += 0x100;
+					break;
+				default:			// private
+					b += 0x1000;
+					break;
+			}
+			if ((a & 4) != 0)
+			{
+				b += 0x40;
+			}
+			ushort[] result = new ushort[2];
+			result[0] = (ushort)b;
+			result[1] = (ushort)c;
+			return result;
+		}
+
+		public static ushort ToShort(byte lower, byte higher) { return (ushort)((higher << 8) + lower); }
 
 		public static Hashtable doidGStr = staticInitialiser();
 		private static Hashtable staticInitialiser()
@@ -310,13 +281,9 @@ namespace pjse.BhavNameWizards
 		// public static implicit operator <Wiz>(byte[] operands);
 
 
-		protected override string Prefix { get { return "[prim]"; } }
+		protected override string Prefix { get { return "prim"; } }
 
-		protected virtual string primName { get { return GS.GStr(GS.SF.Primitives, instruction.OpCode); } }
-
-		public override string ShortName { get { return baseName + ": " + primName; } }
-
-		public override string LongName { get { return ShortName; } }
+		protected override string OpcodeName { get { return GS.GStr(GS.SF.Primitives, instruction.OpCode); } }
 
 	}
 
@@ -340,14 +307,13 @@ namespace pjse.BhavNameWizards
 			return new SemiGlobalWiz(i);
 		}
 
-		protected override string Prefix { get { return "[BHAV]"; } }
+		protected override string Prefix { get { return "BHAV"; } }
 
-		public override string ShortName
+
+		protected override string OpcodeName
 		{
 			get 
 			{
-				string s = "[Not found]";
-
 				IScenegraphFileIndexItem[] items = findBHAV();
 				if (items != null)
 				{
@@ -355,19 +321,19 @@ namespace pjse.BhavNameWizards
 					if (items[0].Package == instruction.Parent.Package || bhavFilenames[items[0].FileDescriptor.Filename] == null)
 						loadBHAV(items[0]);
 
-					s = (string)bhavFilenames[items[0].FileDescriptor.Filename];
+					return (string)bhavFilenames[items[0].FileDescriptor.Filename];
 				}
-				return baseName + ": " + s;
+				else return "*Not found*";
 			}
 		}
 
 
-		public override string LongName
+		public override string ShortName
 		{
 			get
 			{
 				Bhav b = LoadBHAV();
-				if (b == null) return null;
+				if (b == null) return ShortName;
 
 				string s = "";
 
@@ -383,22 +349,28 @@ namespace pjse.BhavNameWizards
 					{
 						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
 							s += (i>0 ? ", " : ": ") + dataOwner(parms[i*3], ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
+						if (b.Header.ArgumentCount > 4)
+							s += "...";
 					}
 					else if ((parms[12] & 0x02) != 0)
 					{
-						s = " - caller's params";
+						s = " - pass on params";
 					}
 					else
 					{
 						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
 							s += (i>0 ? ", " : ": ") + "0x" + SimPe.Helper.HexString(ToShort(parms[(i*2)], parms[(i*2) + 1]));
+						if (b.Header.ArgumentCount > 4)
+							s += "...";
 					}
 				}
 
-				return baseName + ": " + b.FileName + " (" + b.Header.ArgumentCount.ToString() + " args" + ((s.Length > 0) ? s : "") + ")";
+				return prefix + (s.Length > 0 ? " (" + b.Header.ArgumentCount.ToString() + " args" + s + ")" : "");
 			}
 		}
 
+
+		private string prefix { get { return base.ShortName; } }
 
 		public override Bhav LoadBHAV()
 		{
@@ -414,18 +386,15 @@ namespace pjse.BhavNameWizards
 			return b;
 		}
 
-		/// <summary>
-		/// This is the group to use when searching for a BHAV that implements the instruction.
-		/// </summary>
-		protected uint group;
-		public uint Group { get { return group; } }
+
+		public abstract uint Group { get; }
 
 		private IScenegraphFileIndexItem[] findBHAV()
 		{
 			if (instruction == null) return null;
 
 			IScenegraphFileIndexItem[] items =
-				SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, group, (ulong)instruction.OpCode, null);
+				SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group, (ulong)instruction.OpCode, null);
 			if (items == null || items.Length == 0) return null;
 #if false
 #if DEBUG
@@ -453,7 +422,7 @@ namespace pjse.BhavNameWizards
 			get
 			{
 				ArrayList aliases = new ArrayList();
-				foreach (IScenegraphFileIndexItem item in SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, group))
+				foreach (IScenegraphFileIndexItem item in SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group))
 				{
 					if (this is LocalWiz || bhavFilenames[item.FileDescriptor.Filename] == null)
 					{
