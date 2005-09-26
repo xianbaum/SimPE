@@ -1,4 +1,34 @@
 
+26 September 2005 19:56 - Bhav: Rename stuff to preserve sanity (and a couple of bug fixes)
+  SimPe BHAV\
+    BhavForm.cs 1.51
+    BhavInstListControl.cs 1.38
+    BhavInstListItemUI.cs 1.19
+    BhavNameWizProvider.cs (split between BhavWiz.cs, BhavWizBhav.cs and BhavWizPrim.cs)
+    BhavNameWizProviders.cs (split into BhavWizPrim.cs and BhavWizBhav.cs)
+    BhavOpCodeWiz.cs 1.11
+    BhavOperandWizRaw.cs 1.1 (renamed from BhavPrimWizRaw.cs)
+    BhavOperandWizRaw.resx 1.1 (renamed from BhavPrimWizRaw.resx)
+    BhavPrimWiz0x0001.cs (renamed to BhavWizPrim0x0001.cs)
+    BhavPrimWiz0x0001.resx (renamed to BhavWizPrim0x0001.resx)
+    BhavPrimWiz0x0002.cs (renamed to BhavWizPrim0x0002.cs)
+    BhavPrimWiz0x0002.resx (renamed to BhavWizPrim0x0002.resx)
+    BhavPrimWizDefault.cs (merged into BhavWizPrim.cs)
+    BhavPrimWizDefault.resx (merged into BhavWizPrim.cs)
+    BhavPrimWizRaw.cs (renamed to BhavOperandWizRaw.cs)
+    BhavPrimWizRaw.resx (renamed to BhavOperandWizRaw.resx)
+    BhavWiz.cs 1.1 (renamed from BhavNameWizProvider.cs)
+    BhavWizBhav.cs 1.1 (created from BhavNameWizProvider.cs and BhavNameWizProviders.cs)
+    BhavWizPrim.cs 1.1 (created from BhavNameWizProvider.cs and BhavPrimWizDefault.cs)
+    BhavWizPrim.resx 1.1 (created from BhavPrimWizDefault.cs)
+    BhavWizPrim0x0001.cs (renamed from BhavPrimWiz0x0001.cs)
+    BhavWizPrim0x0001.resx (renamed from BhavPrimWiz0x0001.resx)
+    BhavWizPrim0x0002.cs (renamed from BhavPrimWiz0x0002.cs)
+    BhavWizPrim0x0002.resx (renamed from BhavPrimWiz0x0002.resx)
+    ObjfItem.cs 1.6
+    pjse coder plugin.csproj 1.16
+    TtabForm.cs 1.23
+
 26 September 2005 16:45 - Bhav: Reorganise format for instruction display
   SimPe BHAV\
     BhavForm.cs 1.50
