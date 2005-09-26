@@ -1,4 +1,8 @@
 
+26 September 2005 21:17 - Bhav: Shorten Bhav short forms
+  SimPe BHAV\
+    BhavWizBhav.cs 1.2
+
 26 September 2005 20:15 - Bhav: Allow Sort in popup'd form
   SimPe BHAV\
     BhavForm.cs 1.52
