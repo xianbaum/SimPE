@@ -209,7 +209,7 @@ namespace SimPe.PackedFiles.UserInterface
 				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =
 					tbHeaderFlag.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
 					tbArgC.Enabled = tbLocalC.Enabled =
-					btnSort.Visible = btnCommit.Visible = gbMove.Visible = 
+					/*btnSort.Visible =*/ btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
 					btnOpCode.Visible = btnOperandWiz.Visible = btnOperandRaw.Visible =
 					gbSpecial.Visible = cbSpecial.Visible =
@@ -465,6 +465,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
+			if (((string)this.Tag).Equals("Popup"))
+			{
+				wrapper.Changed = false;
+			}
+
 			this.btnCommit.Enabled = wrapper.Changed;
 
 			// Handler for header
