@@ -294,7 +294,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				//load referenced Bhav
 				Instruction inst = currentInst;
-				this.llopenbhav.Enabled = ((ABhavNameWiz)inst).LoadBHAV() != null;
+				this.llopenbhav.Enabled = ((BhavWiz)inst).LoadBHAV() != null;
 
 				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
@@ -341,7 +341,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
 
-				this.tbInst_Longname.Text = ((ABhavNameWiz)inst).LongName;
+				this.tbInst_Longname.Text = ((BhavWiz)inst).LongName;
 
 				this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(inst) != null);
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
@@ -490,7 +490,7 @@ namespace SimPe.PackedFiles.UserInterface
 				if (internalchg)
 				{
 					this.btnCancel.Enabled = true;
-					this.tbInst_Longname.Text = ((ABhavNameWiz)currentInst).LongName;
+					this.tbInst_Longname.Text = ((BhavWiz)currentInst).LongName;
 				}
 				else
 					pnflowcontainer_SelectedInstChanged(null, null);
@@ -2559,7 +2559,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			ABhavNameWiz nameWiz = currentInst;
+			BhavWiz nameWiz = currentInst;
 
 			Bhav b = nameWiz.LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;

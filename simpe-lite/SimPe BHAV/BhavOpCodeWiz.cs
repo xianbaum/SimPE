@@ -108,9 +108,9 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			Fill((flags & Flags.Globals), (GlobalWiz)wrapper, lbglobal, tbglobal);
-			if (!(wrapper is Bhav) || !(((pjse.ABhavNameWiz)(Bhav)wrapper) is GlobalWiz))
+			if (!(wrapper is Bhav) || !(((pjse.BhavWiz)(Bhav)wrapper) is GlobalWiz))
 				Fill((flags & Flags.Semis), (SemiGlobalWiz)wrapper, lbsemi, tbsemi);
-			if (!(wrapper is Bhav) || ((pjse.ABhavNameWiz)(Bhav)wrapper) is LocalWiz)
+			if (!(wrapper is Bhav) || ((pjse.BhavWiz)(Bhav)wrapper) is LocalWiz)
 				Fill((flags & Flags.Locals), (LocalWiz)wrapper, lbprivate, tbprivate);
 			this.tcopcodes.SelectedIndex = this.tcopcodes.TabPages.Count - 1;
 
@@ -152,7 +152,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void Fill(Flags flag, ANameBHAVWiz wiz, ListBox list, TabPage tab)
+		private void Fill(Flags flag, BhavWizBhav wiz, ListBox list, TabPage tab)
 		{
 			if (flag == 0) return;
 			list.Items.Clear();

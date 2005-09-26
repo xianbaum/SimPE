@@ -156,7 +156,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 		private void cbGenericSimsCall_Changed(object sender, System.EventArgs e)
 		{
 			if (cbGenericSimsCall.SelectedIndex >= 0)
-				lbGenericSimsCallparms.Text = ((PrimWiz0x0001)(byte)cbGenericSimsCall.SelectedIndex).LongName;
+				lbGenericSimsCallparms.Text = ((WizPrim0x0001)(byte)cbGenericSimsCall.SelectedIndex).LongName;
 		}
 
 	}
@@ -209,14 +209,14 @@ namespace pjse.BhavOperandWizards
 
 namespace pjse.BhavNameWizards
 {
-	public class PrimWiz0x0001 : ANamePrimitiveWiz
+	public class WizPrim0x0001 : BhavWizPrim
 	{
-		public PrimWiz0x0001(Instruction i) : base(i) {}
-		public static implicit operator PrimWiz0x0001(byte operand0) //: base(null, null)
+		public WizPrim0x0001(Instruction i) : base(i) {}
+		public static implicit operator WizPrim0x0001(byte operand0) //: base(null, null)
 		{
 			Instruction instruction = new Instruction(null, 0x0001);
 			instruction.Operands[0] = operand0;
-			return new PrimWiz0x0001(instruction);
+			return new WizPrim0x0001(instruction);
 		}
 
 

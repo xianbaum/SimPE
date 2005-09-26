@@ -59,8 +59,8 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public override string ToString()
 		{
-			pjse.ABhavNameWiz gw = (pjse.ABhavNameWiz)new Instruction(parent, guard);
-			pjse.ABhavNameWiz aw = (pjse.ABhavNameWiz)new Instruction(parent, action);
+			pjse.BhavWiz gw = (pjse.BhavWiz)new Instruction(parent, guard);
+			pjse.BhavWiz aw = (pjse.BhavWiz)new Instruction(parent, action);
 
 			string add = "";
 			if ((guard == 0 && action == 0) || (gw == null && aw == null))

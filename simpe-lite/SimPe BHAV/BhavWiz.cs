@@ -29,29 +29,28 @@ namespace pjse
 	/// <summary>
 	/// Abstract class that NameWizard providers are based
 	/// </summary>
-	public abstract class ABhavNameWiz : IDisposable
+	public abstract class BhavWiz : IDisposable
 	{
 		protected Instruction instruction = null;
 		private Glob glob = null;
 
-		protected ABhavNameWiz(Instruction instruction) 
+		protected BhavWiz(Instruction instruction) 
 		{
-			SimPe.FileTable.FileIndex.Load();
 			this.instruction = instruction;
 		}
 
-		public static implicit operator ABhavNameWiz(Instruction i)
+		public static implicit operator BhavWiz(Instruction i)
 		{
-			if (i.OpCode < 0x0100) return (ANamePrimitiveWiz)i;
-			return (ANameBHAVWiz)i;
+			if (i.OpCode < 0x0100) return (BhavWizPrim)i;
+			return (BhavWizBhav)i;
 		}
 
-		public static implicit operator ABhavNameWiz(ushort opcode)
+		public static implicit operator BhavWiz(ushort opcode)
 		{
 			return new Instruction(null, opcode);
 		}
 
-		public static implicit operator ABhavNameWiz(Bhav wrapper)
+		public static implicit operator BhavWiz(Bhav wrapper)
 		{
 			if (wrapper == null || wrapper.FileDescriptor == null)
 				throw new InvalidCastException("Invalid BHAV");
@@ -69,6 +68,17 @@ namespace pjse
 
 		#endregion
 
+		/// <summary>
+		/// The descriptive term for this type of opcode
+		/// </summary>
+		protected abstract string Prefix { get; }
+
+		/// <summary>
+		/// The name of this opcode
+		/// </summary>
+		protected abstract string OpcodeName { get; }
+
+
 		public virtual string ShortName
 		{
 			get
@@ -84,11 +94,7 @@ namespace pjse
 		public virtual Bhav LoadBHAV() { return null; }
 
 
-		protected abstract string Prefix { get; }
-
-		protected abstract string OpcodeName { get; }
-
-
+		#region Utilities
 		protected string dataOwner(byte doid, ushort instance)
 		{
 			ushort[] bcon;
@@ -150,6 +156,7 @@ namespace pjse
 				bconGroup = SemiGlobalGroup;
 			}
 
+			SimPe.FileTable.FileIndex.Load();
 			IScenegraphFileIndexItem[] items =
 				SimPe.FileTable.FileIndex.FindFile(0x42434F4E, bconGroup, (ulong)instance, null);
 
@@ -176,6 +183,7 @@ namespace pjse
 				if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 					throw new InvalidOperationException("Can't read GLOB for instruction with no parent");
 
+				SimPe.FileTable.FileIndex.Load();
 				IScenegraphFileIndexItem[] items =
 					SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.GLOB_FILE, instruction.Parent.FileDescriptor.Group);
 				if (items == null || items.Length == 0)
@@ -249,192 +257,8 @@ namespace pjse
 			return t;
 		}
 
-
+		#endregion
 	}
 
 }
 
-
-namespace pjse.BhavNameWizards
-{
-	/// <summary>
-	/// Abstract class for primitive name providers
-	/// </summary>
-	public abstract class ANamePrimitiveWiz : ABhavNameWiz
-	{
-		public ANamePrimitiveWiz(Instruction instruction) : base (instruction) { }
-		public static implicit operator ANamePrimitiveWiz(Instruction i)
-		{
-			if (i.OpCode >= 0x0100)
-				throw new Exception("OpCode not a primative");
-
-			switch(i.OpCode)
-			{
-				case 0x0000: return new PrimWiz0x0000(i);
-				case 0x0001: return new PrimWiz0x0001(i);
-				case 0x0002: return new PrimWiz0x0002(i);
-			}
-			return new PrimWizDefault(i);
-		}
-
-		// Also provide
-		// public static implicit operator <Wiz>(byte[] operands);
-
-
-		protected override string Prefix { get { return "prim"; } }
-
-		protected override string OpcodeName { get { return GS.GStr(GS.SF.Primitives, instruction.OpCode); } }
-
-	}
-
-
-	/// <summary>
-	/// Abstract class for BHAV name providers (global, local, semiglobal)
-	/// </summary>
-	public abstract class ANameBHAVWiz : ABhavNameWiz
-	{
-		static Hashtable bhavFilenames = new Hashtable();
-
-		public ANameBHAVWiz(Instruction instruction) : base (instruction) { }
-
-		public static implicit operator ANameBHAVWiz(Instruction i)
-		{
-			if (i.OpCode < 0x0100)
-				throw new Exception("OpCode not a BHAV");
-
-			if (i.OpCode < 0x1000) return new GlobalWiz(i);
-			if (i.OpCode < 0x2000) return new LocalWiz(i);
-			return new SemiGlobalWiz(i);
-		}
-
-		protected override string Prefix { get { return "BHAV"; } }
-
-
-		protected override string OpcodeName
-		{
-			get 
-			{
-				IScenegraphFileIndexItem[] items = findBHAV();
-				if (items != null)
-				{
-					// Always refresh bhavs for current package
-					if (items[0].Package == instruction.Parent.Package || bhavFilenames[items[0].FileDescriptor.Filename] == null)
-						loadBHAV(items[0]);
-
-					return (string)bhavFilenames[items[0].FileDescriptor.Filename];
-				}
-				else return "*Not found*";
-			}
-		}
-
-
-		public override string ShortName
-		{
-			get
-			{
-				Bhav b = LoadBHAV();
-				if (b == null) return ShortName;
-
-				string s = "";
-
-				bool noParms = true;
-				for (int i = 0; i < 8 && noParms; i++)
-					noParms = instruction.Operands[i] == 0xFF;
-				if (!noParms)
-				{
-					byte[] parms = new byte[16];
-					((byte[])instruction.Operands).CopyTo(parms, 0);
-					((byte[])instruction.Reserved1).CopyTo(parms, 8);
-					if ((parms[12] & 0x01) != 0)
-					{
-						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
-							s += (i>0 ? ", " : ": ") + dataOwner(parms[i*3], ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
-						if (b.Header.ArgumentCount > 4)
-							s += "...";
-					}
-					else if ((parms[12] & 0x02) != 0)
-					{
-						s = " - pass on params";
-					}
-					else
-					{
-						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
-							s += (i>0 ? ", " : ": ") + "0x" + SimPe.Helper.HexString(ToShort(parms[(i*2)], parms[(i*2) + 1]));
-						if (b.Header.ArgumentCount > 4)
-							s += "...";
-					}
-				}
-
-				return prefix + (s.Length > 0 ? " (" + b.Header.ArgumentCount.ToString() + " args" + s + ")" : "");
-			}
-		}
-
-
-		private string prefix { get { return base.ShortName; } }
-
-		public override Bhav LoadBHAV()
-		{
-			IScenegraphFileIndexItem[] items = findBHAV();
-			return (items == null) ? null : loadBHAV(items[0]);
-		}
-
-		private Bhav loadBHAV(IScenegraphFileIndexItem item)
-		{
-			Bhav b = new Bhav(null);
-			b.ProcessData(item);
-			bhavFilenames[item.FileDescriptor.Filename] = b.FileName;
-			return b;
-		}
-
-
-		public abstract uint Group { get; }
-
-		private IScenegraphFileIndexItem[] findBHAV()
-		{
-			if (instruction == null) return null;
-
-			IScenegraphFileIndexItem[] items =
-				SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group, (ulong)instruction.OpCode, null);
-			if (items == null || items.Length == 0) return null;
-#if false
-#if DEBUG
-			if (items.Length > 1)
-			{
-				string s = "Multiple BHAVs found:";
-				for (int i = 0; i < items.Length; i++)
-				{
-					Bhav bh = new Bhav(null);
-					bh.ProcessData(items[i]);
-					s += "(" + i.ToString() + ") " + bh.FileName + " from ";
-					s += items[i].Package.SaveFileName;
-					s += ", ";
-				}
-				System.Windows.Forms.MessageBox.Show(s);
-			}
-#endif
-#endif
-			return items;
-		}
-
-
-		public ArrayList Aliases
-		{
-			get
-			{
-				ArrayList aliases = new ArrayList();
-				foreach (IScenegraphFileIndexItem item in SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group))
-				{
-					if (this is LocalWiz || bhavFilenames[item.FileDescriptor.Filename] == null)
-					{
-						Bhav b = new Bhav(null);
-						b.ProcessData(item);
-						bhavFilenames[item.FileDescriptor.Filename] = b.FileName;
-					}
-					aliases.Add(new SimPe.Data.Alias(item.FileDescriptor.Instance, (string)bhavFilenames[item.FileDescriptor.Filename]));
-				}
-
-				return aliases;
-			}
-		}
-	}
-}

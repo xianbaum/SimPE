@@ -111,7 +111,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Instruction inst = (Instruction)sender;
 
 			bhavInstListItem.Text = "";
-			instrText.Text = index.ToString("X") + ": " + ((pjse.ABhavNameWiz)inst).ShortName;//LongName;
+			instrText.Text = index.ToString("X") + ": " + ((pjse.BhavWiz)inst).ShortName;//LongName;
 
 			trueTarget.Text = "true: "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);

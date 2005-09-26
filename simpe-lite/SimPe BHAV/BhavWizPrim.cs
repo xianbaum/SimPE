@@ -552,5 +552,59 @@ namespace pjse.BhavOperandWizards
 		#endregion
 	}
 
+}
+
+namespace pjse.BhavNameWizards
+{
+	/// <summary>
+	/// Abstract class for primitive name providers
+	/// </summary>
+	public abstract class BhavWizPrim : BhavWiz
+	{
+		public BhavWizPrim(Instruction instruction) : base (instruction) { }
+		public static implicit operator BhavWizPrim(Instruction i)
+		{
+			if (i.OpCode >= 0x0100)
+				throw new Exception("OpCode not a primative");
+
+			switch(i.OpCode)
+			{
+				case 0x0000: return new WizPrim0x0000(i);
+				case 0x0001: return new WizPrim0x0001(i);
+				case 0x0002: return new WizPrim0x0002(i);
+			}
+			return new WizPrimDefault(i);
+		}
+
+		// Also provide
+		// public static implicit operator <Wiz>(byte[] operands);
+
+
+		protected override string Prefix { get { return "prim"; } }
+
+		protected override string OpcodeName { get { return GS.GStr(GS.SF.Primitives, instruction.OpCode); } }
+
+	}
+
+
+	public class WizPrimDefault : BhavWizPrim
+	{
+		public WizPrimDefault(Instruction i) : base(i) { }
+
+	}
+
+	public class WizPrim0x0000 : BhavWizPrim
+	{
+		public WizPrim0x0000(Instruction i) : base(i) { }
+
+		public override string ShortName
+		{
+			get
+			{
+				return base.ShortName + " (" + dataOwner(9, ToShort(instruction.Operands[0], instruction.Operands[1])) + ")";
+			}
+		}
+
+	}
 
 }
