@@ -378,33 +378,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private static ushort ConstantValueParser(ushort[] values) 
 		{
-			int t = 2;
-			if ((values[0]>=0x1000) && (values[0]<0x2000)) 
-			{
-				values[0] = (ushort)(values[0]-0x1000);
-				t = 0;
-			} 
-			else if (values[0]>0x2000) 
-			{
-				values[0] = (ushort)(values[0]-0x2000);
-				t = 1;
-			} 
-			else if ((values[0] & 0x0140) == 0x0140)
-			{
-				values[0] = (ushort)(values[0]-0x0140);
-				t = 4;
-			}
-			else
-			{
-				values[0] = (ushort)(values[0]-0x0100);
-			}
-
-			ushort ret = 0;
-			ret = (ushort)(t << 13);
-			ret += (ushort)((values[0] & 0x3f)  << 7);
-			ret += (ushort)(values[1] & 0x7F);
-			
-			return ret;
+			int output = 0;
+			output |= values[1] & 0x7f;			// .... .... .xxx xxxx
+			output |= (values[0] & 0x3f) << 7;	// ...x xxxx x... ....
+			output |= (values[0] & 0x40) << 9;	// x... .... .... ....
+			if (values[0] < 0x1000)
+				output |= 0x4000;				// .x.. .... .... ....
+			if (values[0] > 0x2000)
+				output |= 0x2000;				// ..x. .... .... ....
+			return (ushort)output;
 		}
 
 	}

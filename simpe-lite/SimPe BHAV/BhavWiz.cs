@@ -121,12 +121,13 @@ namespace pjse
 				case 0x1a:
 					bcon = ExpandBCON(instance);
 					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1])
-						+ " " + readBcon((uint)bcon[0], bcon[1]);
+						+ " " + readBcon((uint)bcon[0], bcon[1], false);
 					break;
 				case 0x2f:
 					bcon = ExpandBCON(instance);
 					doidName = GS.GStr(GS.SF.DataOwners, 0x1a);
-					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]"
+						+ " " + readBcon((uint)bcon[0], bcon[1], true);
 					break;
 			}
 
@@ -135,7 +136,7 @@ namespace pjse
 
 
 		// I've also changed this from DisaSim2 to be consistent on the choice of Global/Private/Semi
-		protected string readBcon(uint instance, int bid)
+		protected string readBcon(uint instance, int bid, bool temp)
 		{
 			// in this context, the group has to be the group of the BHAV you are reading, I think
 			// which means the instruction must have a parent
@@ -165,7 +166,7 @@ namespace pjse
 
 			Bcon bcon = new Bcon();
 			bcon.ProcessData(items[0]);
-			return bcon.FileName.Trim() + ((bid >= bcon.Constants.Count)
+			return bcon.FileName.Trim() + (temp ? "" : (bid >= bcon.Constants.Count)
 				? " [BCON not set]"
 				: ": 0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]));
 		}
