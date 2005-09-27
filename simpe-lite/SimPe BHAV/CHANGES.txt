@@ -1,4 +1,8 @@
 
+27 September 2005 09:23 - Bhav: BhavWizBhav - Merge ShortName and Longname
+  SimPe BHAV\
+    BhavWizBhav.cs 1.3
+
 26 September 2005 21:17 - Bhav: Shorten Bhav short forms
   SimPe BHAV\
     BhavWizBhav.cs 1.2
