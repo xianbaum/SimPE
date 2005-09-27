@@ -1,4 +1,9 @@
 
+27 September 2005 10:01 - Bhav: BCON parsing fixups
+  SimPe BHAV\
+    BhavWiz.cs 1.2
+    BhavWizPrim0x0002.cs 1.2
+
 27 September 2005 09:23 - Bhav: BhavWizBhav - Merge ShortName and Longname
   SimPe BHAV\
     BhavWizBhav.cs 1.3
