@@ -429,83 +429,9 @@ namespace pjse.BhavNameWizards
 			}
 		}
 
-		public override string ShortName
-		{
-			get
-			{
-				Bhav b = LoadBHAV();
-				if (b == null) return base.ShortName;
+		public override string ShortName { get { return base.ShortName + " (" + Operands(false) + ")"; } }
 
-				string s = "";
-
-				bool noParms = true;
-				for (int i = 0; i < 8 && noParms; i++)
-					noParms = instruction.Operands[i] == 0xFF;
-				if (!noParms)
-				{
-					byte[] parms = new byte[16];
-					((byte[])instruction.Operands).CopyTo(parms, 0);
-					((byte[])instruction.Reserved1).CopyTo(parms, 8);
-					if ((parms[12] & 0x01) != 0)
-					{
-						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
-							s += (i>0 ? ", " : "") + GS.GStr(GS.SF.DataOwners, parms[i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
-					}
-					else if ((parms[12] & 0x02) != 0)
-					{
-						s = "Params";
-					}
-					else
-					{
-						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
-							s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(ToShort(parms[(i*2)], parms[(i*2) + 1]));
-					}
-				}
-
-				return base.ShortName + " (" + s + ")";
-			}
-		}
-
-		public override string LongName
-		{
-			get
-			{
-				Bhav b = LoadBHAV();
-				if (b == null) return base.ShortName;
-
-				string s = "";
-
-				bool noParms = true;
-				for (int i = 0; i < 8 && noParms; i++)
-					noParms = instruction.Operands[i] == 0xFF;
-				if (!noParms)
-				{
-					byte[] parms = new byte[16];
-					((byte[])instruction.Operands).CopyTo(parms, 0);
-					((byte[])instruction.Reserved1).CopyTo(parms, 8);
-					if ((parms[12] & 0x01) != 0)
-					{
-						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
-							s += (i>0 ? ", " : "") + dataOwner(parms[i*3], ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
-						if (b.Header.ArgumentCount > 4)
-							s += "...";
-					}
-					else if ((parms[12] & 0x02) != 0)
-					{
-						s = "Pass on " + b.Header.ArgumentCount.ToString() + " params";
-					}
-					else
-					{
-						for (int i = 0; i < b.Header.ArgumentCount && i < 4; i++)
-							s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(ToShort(parms[(i*2)], parms[(i*2) + 1]));
-						if (b.Header.ArgumentCount > 4)
-							s += "...";
-					}
-				}
-
-				return base.ShortName + " (" + s + ")";
-			}
-		}
+		public override string LongName { get { return base.ShortName + " (" + Operands(true) + ")"; } }
 
 		public override Bhav LoadBHAV()
 		{
@@ -514,6 +440,64 @@ namespace pjse.BhavNameWizards
 		}
 
 		#endregion
+
+		private string Operands(bool lng)
+		{
+			string s = "";
+			Bhav b = LoadBHAV();
+
+			if (b == null) 
+			{
+				s = "[" + SimPe.Localization.Manager.GetString("unk") + "]";
+			}
+			else
+			{
+				if (lng)
+				{
+					s += (b.Header.ArgumentCount == 0) ? "no" : b.Header.ArgumentCount.ToString();
+					s += " arg" + (b.Header.ArgumentCount != 1 ? "s" : "");
+				}
+				if (b.Header.ArgumentCount > 0)
+				{
+					byte[] parms = new byte[16];
+					((byte[])instruction.Operands).CopyTo(parms, 0);
+					((byte[])instruction.Reserved1).CopyTo(parms, 8);
+
+					bool noParms = true;
+					for (int i = 0; i < 8 && noParms; i++)
+						noParms = parms[i] == 0xFF;
+
+					if (lng) s += ": ";
+					if ((parms[12] & 0x02) != 0)
+					{
+						s += lng ? "caller's params" : "...";
+						if (!noParms) s += ", ";
+					}
+
+					if (!noParms)
+					{
+						if ((parms[12] & 0x01) == 0)
+						{
+							for (int i = 0; i < 4 && i < b.Header.ArgumentCount; i++)
+								s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(ToShort(parms[(i*2)], parms[(i*2) + 1]));
+
+						}
+						else
+						{
+							for (int i = 0; i < 4 && i < b.Header.ArgumentCount; i++)
+								if (lng)
+									s += (i>0 ? ", " : "") + dataOwner(parms[i*3], ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
+								else
+									s += (i>0 ? ", " : "") + GS.GStr(GS.SF.DataOwners, parms[i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
+						}
+					}
+					if ((parms[12] & 0x02) == 0 && (b.Header.ArgumentCount > 4 || noParms))
+						s += (noParms ? "" : ", ") + (lng ? "caller's params" : "...");
+				}
+			}
+			return s;
+
+		}
 
 		private Bhav loadBHAV(IScenegraphFileIndexItem item)
 		{
