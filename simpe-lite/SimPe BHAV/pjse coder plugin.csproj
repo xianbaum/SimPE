@@ -17,7 +17,7 @@
                 DelaySign = "false"
                 OutputType = "Library"
                 PreBuildEvent = ""
-                PostBuildEvent = 'cd "$(ProjectDir)"&#xd;&#xa;if exist Plugins rmdir /s/q Plugins&#xd;&#xa;mkdir Plugins&#xd;&#xa;mkdir "Plugins\$(TargetName)"&#xd;&#xa;(cd "$(TargetDir)"&#xd;&#xa;tar c --exclude "*.bat" . ) | tar x -C "Plugins"&#xd;&#xa;copy ..\LICENSE.txt "Plugins\$(TargetName)"&#xd;&#xa;copy ..\GlobalStrings.package "Plugins\$(TargetName)"&#xd;&#xa;copy CHANGES.txt "Plugins\$(TargetName)"&#xd;&#xa;&#xd;&#xa;set base=$(TargetName)-$(ConfigurationName)&#xd;&#xa;set mydate=%date%&#xd;&#xa;set dd=%mydate:~0,2%&#xd;&#xa;set mm=%mydate:~3,2%&#xd;&#xa;set yy=%mydate:~6,4%&#xd;&#xa;set mytime=%time%&#xd;&#xa;set h=%mytime:~0,2%&#xd;&#xa;set m=%mytime:~3,2%&#xd;&#xa;set s=%mytime:~6,2%&#xd;&#xa;set suffix=%yy%%mm%%dd%-%h%%m%&#xd;&#xa;&#xd;&#xa;del ..\"%base%*"&#xd;&#xa;zip -r9 "%base%-%suffix%.zip" Plugins&#xd;&#xa;move "%base%-%suffix%.zip" ..&#xd;&#xa;tar cv Plugins | bzip2 > "%base%-%suffix%.tar.bz2"&#xd;&#xa;move "%base%-%suffix%.tar.bz2" ..&#xd;&#xa;&#xd;&#xa;cd ..\..\SimPe&#xd;&#xa;xcopy /m /e /y "$(ProjectDir)Plugins" Plugins'
+                PostBuildEvent = 'cd "$(ProjectDir)"&#xd;&#xa;if exist Plugins rmdir /s/q Plugins&#xd;&#xa;mkdir Plugins&#xd;&#xa;mkdir "Plugins\$(TargetName)"&#xd;&#xa;(cd "$(TargetDir)"&#xd;&#xa;tar c --exclude "*.bat" . ) | tar x -C "Plugins"&#xd;&#xa;copy ..\LICENSE.txt "Plugins\$(TargetName)"&#xd;&#xa;copy ..\*.package "Plugins\$(TargetName)"&#xd;&#xa;copy CHANGES.txt "Plugins\$(TargetName)"&#xd;&#xa;&#xd;&#xa;set base=$(TargetName)-$(ConfigurationName)&#xd;&#xa;set mydate=%date%&#xd;&#xa;set dd=%mydate:~0,2%&#xd;&#xa;set mm=%mydate:~3,2%&#xd;&#xa;set yy=%mydate:~6,4%&#xd;&#xa;set mytime=%time%&#xd;&#xa;set h=%mytime:~0,2%&#xd;&#xa;set m=%mytime:~3,2%&#xd;&#xa;set s=%mytime:~6,2%&#xd;&#xa;set suffix=%yy%%mm%%dd%-%h%%m%&#xd;&#xa;&#xd;&#xa;del ..\"%base%*"&#xd;&#xa;zip -r9 "%base%-%suffix%.zip" Plugins&#xd;&#xa;move "%base%-%suffix%.zip" ..&#xd;&#xa;tar cv Plugins | bzip2 > "%base%-%suffix%.tar.bz2"&#xd;&#xa;move "%base%-%suffix%.tar.bz2" ..&#xd;&#xa;&#xd;&#xa;cd ..\..\SimPe&#xd;&#xa;xcopy /m /e /y "$(ProjectDir)Plugins" Plugins'
                 RootNamespace = "pjse"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
@@ -331,6 +331,11 @@
                     RelPath = "BhavWizBhav.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BhavWizBhav.resx"
+                    DependentUpon = "BhavWizBhav.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "BhavWizPrim.cs"

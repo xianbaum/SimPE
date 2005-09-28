@@ -96,7 +96,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			byte n2 = ops[0x07];
 			if (cbDataOwner1.Items.Count>n1) cbDataOwner1.SelectedIndex = n1;
 			if (cbDataOwner2.Items.Count>n2) cbDataOwner2.SelectedIndex = n2;
-			//doFlagThing();
 		}
 
 		public Instruction Write(Instruction inst)
@@ -264,15 +263,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbPicker1.Visible = false;
 			if (BhavWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex] != null)
 			{
-				this.cbPicker1.Visible = true;
-				this.cbPicker1.Items.Clear();
-				this.cbPicker1.Items.AddRange(GS.gStr((uint)BhavWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex]).ToArray());
-				try 
+				ArrayList dataOwners = GS.gStr((uint)BhavWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex]);
+				if (dataOwners != null)
 				{
+					this.cbPicker1.Visible = true;
+					this.cbPicker1.Items.Clear();
+					this.cbPicker1.Items.AddRange(dataOwners.ToArray());
 					ushort val = textToUShort(tbval1.Text);
-					this.cbPicker1.SelectedIndex = val;
-				} 
-				catch (Exception) { }
+					if (this.cbPicker1.Items.Count > val)
+						this.cbPicker1.SelectedIndex = val;
+				}
 			}
 			else if (cbDataOwner1.SelectedIndex == 0x1a || cbDataOwner1.SelectedIndex == 0x2f)
 			{
@@ -292,15 +292,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbPicker2.Visible = false;
 			if (BhavWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex] != null)
 			{
-				this.cbPicker2.Visible = true;
-				this.cbPicker2.Items.Clear();
-				this.cbPicker2.Items.AddRange(GS.gStr((uint)BhavWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex]).ToArray());
-				try 
+				ArrayList dataOwners = GS.gStr((uint)BhavWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex]);
+				if (dataOwners != null)
 				{
+					this.cbPicker2.Visible = true;
+					this.cbPicker2.Items.Clear();
+					this.cbPicker2.Items.AddRange(dataOwners.ToArray());
 					ushort val = textToUShort(tbval2.Text);
-					this.cbPicker2.SelectedIndex = val;
-				} 
-				catch (Exception) { }
+					if (this.cbPicker2.Items.Count > val)
+						this.cbPicker2.SelectedIndex = val;
+				}
 			}
 			else if (cbDataOwner2.SelectedIndex == 0x1a || cbDataOwner2.SelectedIndex == 0x2f)
 			{

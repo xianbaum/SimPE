@@ -145,17 +145,11 @@ namespace pjse
 
 			uint bconGroup = 0;
 			if (instance < 0x1000)
-			{
 				bconGroup = 0x7FD46CD0;
-			}
 			else if (instance < 0x2000)
-			{
 				bconGroup = instruction.Parent.FileDescriptor.Group;
-			}
 			else
-			{
 				bconGroup = SemiGlobalGroup;
-			}
 
 			SimPe.FileTable.FileIndex.Load();
 			IScenegraphFileIndexItem[] items =
@@ -171,6 +165,31 @@ namespace pjse
 				: ": 0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]));
 		}
 
+
+		protected string readStr(byte group, ulong instance, int sid)
+		{
+			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
+
+			uint strGroup = 0;
+			if ((group & 0x40) != 0)
+				strGroup = 0x7FD46CD0;
+			else if ((group & 0x01) == 0)
+				strGroup = instruction.Parent.FileDescriptor.Group;
+			else
+				strGroup = SemiGlobalGroup;
+
+			SimPe.FileTable.FileIndex.Load();
+			IScenegraphFileIndexItem[] items =
+				SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.STRING_FILE, strGroup, instance, null);
+
+			if (items == null || items.Length == 0)
+				return "[No STR# file]";
+
+			Str str = new Str();
+			str.ProcessData(items[0]);
+			return (instance != 0x012D ? str.FileName.Trim() + " ": "") + ((str[1, sid] == null) ? "[STR not set]" : str[1, sid].Title);
+		}
 
 		/// <summary>
 		/// Get the Glob resource for the current instruction (or null, indicating a SemiGlobal perhaps)
