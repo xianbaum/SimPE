@@ -664,7 +664,7 @@ namespace pjse.BhavNameWizards
 					break;
 				case 0x08: case 0x0a:
 					s += lng ? ", " + dialogStr(o[8], 0x02, msg)
-						: readStr(o[8], (ulong)GS.SF.gDialogPrim, msg - 1).PadRight(60).Substring(0, 30).Trim();
+						: left(readStr(o[8], (ulong)GS.SF.gDialogPrim, msg - 1), 60);
 					if (lng)
 					{
 						s += ", priority 0x" + SimPe.Helper.HexString((byte)(o[9] + 1));
@@ -680,7 +680,7 @@ namespace pjse.BhavNameWizards
 					break;
 				default:
 					s += lng ? ", " + dialogStr(o[8], 0x02, msg)
-						: readStr(o[8], (ulong)GS.SF.gDialogPrim, msg - 1).PadRight(60).Substring(0, 30).Trim();
+						: left(readStr(o[8], (ulong)GS.SF.gDialogPrim, msg - 1), 60);
 					if (lng)
 					{
 						s += ", Yes: "    + dialogStr(o[8], 0x04, o[3]);
@@ -746,6 +746,12 @@ namespace pjse.BhavNameWizards
 					s += "none";
 			}
 			return s + "]";
+		}
+
+
+		private static string left(string str, int len)
+		{
+			return str.PadRight(len).Substring(0, len).Trim();
 		}
 	}
 
