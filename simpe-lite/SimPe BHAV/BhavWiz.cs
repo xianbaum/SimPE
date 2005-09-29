@@ -47,7 +47,9 @@ namespace pjse
 
 		public static implicit operator BhavWiz(ushort opcode)
 		{
-			return new Instruction(null, opcode);
+			byte[] noops = new byte[8];
+			for(int i = 0; i < noops.Length; i++) noops[i] = 0xff;
+			return new Instruction(null, opcode, 0, 0, 0, noops, new byte[8]);
 		}
 
 		public static implicit operator BhavWiz(Bhav wrapper)

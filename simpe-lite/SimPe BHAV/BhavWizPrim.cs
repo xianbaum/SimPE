@@ -674,12 +674,6 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
 			string s = "";
-			if ((o[4] & 0x80) == 0)
-				s += lng ? dataOwner(0x0a, 0x0000) + " := next " : ""; // Stack Object
-			else
-				s += dataOwner(o[5], o[7]) + " := next ";
-			//if ((o[5] != 0xA || o[7] != 0) && (o[4] & 0x80) != 0)
-			//	s += dataOwner(o[5], o[7]) + " := next ";
 
 			s += GS.GStr(0xa4, (ushort)(o[4] & 0x7f));
 			switch(o[4] & 0x7f)
@@ -690,14 +684,23 @@ namespace pjse.BhavNameWizards
 					//readGUID(d1);
 					break;
 				case 0x09: case 0x22:
-					s += " " + dataOwner(0x19, o[6]); // local
+					s = s.Replace("[local]", (lng ? dataOwner(0x19, o[6]) // local
+						: GS.GStr(GS.SF.DataOwners, 0x19) + " " + o[6].ToString()));
 					//w1 = ToShort(o[9], o[10]);
 					//w2 = ToShort(o[11], o[12]);
 					//if (b[x+8] & 2) ht_fprintf(outFile,TYPE_NORMAL," where %s := %d", gString8D[w1], w2);
 					break;
 			}
 
-			if ((o[8] & 0x01) != 0) s += " [including disabled objects]";
+			if ((o[4] & 0x80) == 0)
+				s += lng ? ", result in " + dataOwner(0x0a, 0x0000) : ""; // Stack Object
+			else
+				s += ", result in " + (lng ? dataOwner(o[5], o[7])
+					: GS.GStr(GS.SF.DataOwners, o[5]) + " 0x" + SimPe.Helper.HexString(o[7]));
+			//if ((o[5] != 0xA || o[7] != 0) && (o[4] & 0x80) != 0)
+			//	s += dataOwner(o[5], o[7]) + " := next ";
+
+			if ((o[8] & 0x01) != 0) s += ", [including disabled objects]";
 			return s;
 		}
 	}
@@ -758,7 +761,7 @@ namespace pjse.BhavNameWizards
 					break;
 				case 0x08: case 0x0a:
 					s += lng ? ", " + dialogStr(o[8], 0x02, msg)
-						: left(readStr(o[8], (ulong)GS.SF.gDialogPrim, msg - 1), 60);
+						: "\"" + left(readStr(o[8], (ulong)GS.SF.gDialogPrim, msg - 1), 60) + "\"";
 					if (lng)
 					{
 						s += ", priority 0x" + SimPe.Helper.HexString((byte)(o[9] + 1));
@@ -774,7 +777,7 @@ namespace pjse.BhavNameWizards
 					break;
 				default:
 					s += lng ? ", " + dialogStr(o[8], 0x02, msg)
-						: left(readStr(o[8], (ulong)GS.SF.gDialogPrim, msg - 1), 60);
+						: "\"" + left(readStr(o[8], (ulong)GS.SF.gDialogPrim, msg - 1), 60) + "\"";
 					if (lng)
 					{
 						s += ", Yes: "    + dialogStr(o[8], 0x04, o[3]);
@@ -835,7 +838,7 @@ namespace pjse.BhavNameWizards
 			{
 				if (instance != 0)
 					s += "0x" + SimPe.Helper.HexString(instance) +
-						": " + readStr(flags, (ulong)GS.SF.gDialogPrim, instance - 1);
+						": \"" + readStr(flags, (ulong)GS.SF.gDialogPrim, instance - 1) + "\"";
 				else
 					s += "none";
 			}
@@ -845,7 +848,7 @@ namespace pjse.BhavNameWizards
 
 		private static string left(string str, int len)
 		{
-			return str.PadRight(len).Substring(0, len).Trim();
+			return str.PadRight(len).Substring(0, len).Trim() + (str.Length > len ? "..." : "");
 		}
 	}
 

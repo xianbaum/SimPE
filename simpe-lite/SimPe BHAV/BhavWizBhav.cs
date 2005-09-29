@@ -190,7 +190,7 @@ namespace pjse.BhavNameWizards
 				if (items != null)
 				{
 					// Always refresh bhavs for current package
-					if (items[0].Package == instruction.Parent.Package || bhavFilenames[items[0].FileDescriptor.Filename] == null)
+					if (instruction.Parent == null || items[0].Package == instruction.Parent.Package || bhavFilenames[items[0].FileDescriptor.Filename] == null)
 						loadBHAV(items[0]);
 
 					return (string)bhavFilenames[items[0].FileDescriptor.Filename];
@@ -233,7 +233,10 @@ namespace pjse.BhavNameWizards
 				((byte[])instruction.Operands).CopyTo(parms, 0);
 				((byte[])instruction.Reserved1).CopyTo(parms, 8);
 
-				if (lng) s += ": ";
+				if (!(instruction.Parent is Bhav))
+					s += (lng ? " " : "") + "[Caller not a BHAV]";
+
+				s += (lng ? ": " : "");
 
 				if (parms[12] == 0) // original format
 				{

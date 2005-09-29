@@ -111,7 +111,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Instruction inst = (Instruction)sender;
 
 			bhavInstListItem.Text = "";
-			instrText.Text = index.ToString("X") + ": " + ((pjse.BhavWiz)inst).ShortName;//LongName;
+			instrText.Text = index.ToString("X") + ": " + cleanup(((pjse.BhavWiz)inst).ShortName);//LongName;
 
 			trueTarget.Text = "true: "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);
@@ -124,6 +124,11 @@ namespace SimPe.PackedFiles.UserInterface
 				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);
 		}
 
+		private string cleanup(string str)
+		{
+			for(char c = System.Convert.ToChar(1); c < ' '; c++) str = str.Replace(c, ' ');
+			return str;
+		}
 
 		public void MakeSelected()
 		{

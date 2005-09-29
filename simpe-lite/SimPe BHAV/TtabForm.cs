@@ -54,9 +54,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label label31;
 		private System.Windows.Forms.Label label32;
 		private System.Windows.Forms.Label label20;
-		private System.Windows.Forms.Label label21;
 		private System.Windows.Forms.TextBox tbGuardian;
-		private System.Windows.Forms.Label label23;
 		private System.Windows.Forms.CheckBox cbunk3;
 		private System.Windows.Forms.CheckBox cbunk4;
 		private System.Windows.Forms.CheckBox cbunk1;
@@ -105,6 +103,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbObjType;
 		private System.Windows.Forms.TextBox tbModelTabID;
 		private System.Windows.Forms.ComboBox cbStringIndex;
+		private System.Windows.Forms.LinkLabel llAction;
+		private System.Windows.Forms.LinkLabel llGuardian;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -417,9 +417,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label32 = new System.Windows.Forms.Label();
 			this.tbFlags2 = new System.Windows.Forms.TextBox();
 			this.label20 = new System.Windows.Forms.Label();
-			this.label21 = new System.Windows.Forms.Label();
 			this.tbGuardian = new System.Windows.Forms.TextBox();
-			this.label23 = new System.Windows.Forms.Label();
 			this.gbFlags = new System.Windows.Forms.GroupBox();
 			this.tbFlags = new System.Windows.Forms.TextBox();
 			this.label24 = new System.Windows.Forms.Label();
@@ -448,6 +446,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.panel5 = new System.Windows.Forms.Panel();
 			this.lbttabfile = new System.Windows.Forms.Label();
 			this.label25 = new System.Windows.Forms.Label();
+			this.llAction = new System.Windows.Forms.LinkLabel();
+			this.llGuardian = new System.Windows.Forms.LinkLabel();
 			this.ttabPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tpSettings.SuspendLayout();
@@ -766,6 +766,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("tpSettings.AutoScrollMargin")));
 			this.tpSettings.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("tpSettings.AutoScrollMinSize")));
 			this.tpSettings.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tpSettings.BackgroundImage")));
+			this.tpSettings.Controls.Add(this.llGuardian);
+			this.tpSettings.Controls.Add(this.llAction);
 			this.tpSettings.Controls.Add(this.cbStringIndex);
 			this.tpSettings.Controls.Add(this.cbAttenuationCode);
 			this.tpSettings.Controls.Add(this.btnAction);
@@ -790,9 +792,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.Controls.Add(this.label32);
 			this.tpSettings.Controls.Add(this.tbFlags2);
 			this.tpSettings.Controls.Add(this.label20);
-			this.tpSettings.Controls.Add(this.label21);
 			this.tpSettings.Controls.Add(this.tbGuardian);
-			this.tpSettings.Controls.Add(this.label23);
 			this.tpSettings.Controls.Add(this.gbFlags);
 			this.tpSettings.Controls.Add(this.tbAction);
 			this.tpSettings.Controls.Add(this.label1);
@@ -1422,28 +1422,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label20.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label20.TextAlign")));
 			this.label20.Visible = ((bool)(resources.GetObject("label20.Visible")));
 			// 
-			// label21
-			// 
-			this.label21.AccessibleDescription = resources.GetString("label21.AccessibleDescription");
-			this.label21.AccessibleName = resources.GetString("label21.AccessibleName");
-			this.label21.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label21.Anchor")));
-			this.label21.AutoSize = ((bool)(resources.GetObject("label21.AutoSize")));
-			this.label21.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label21.Dock")));
-			this.label21.Enabled = ((bool)(resources.GetObject("label21.Enabled")));
-			this.label21.Font = ((System.Drawing.Font)(resources.GetObject("label21.Font")));
-			this.label21.Image = ((System.Drawing.Image)(resources.GetObject("label21.Image")));
-			this.label21.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label21.ImageAlign")));
-			this.label21.ImageIndex = ((int)(resources.GetObject("label21.ImageIndex")));
-			this.label21.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label21.ImeMode")));
-			this.label21.Location = ((System.Drawing.Point)(resources.GetObject("label21.Location")));
-			this.label21.Name = "label21";
-			this.label21.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label21.RightToLeft")));
-			this.label21.Size = ((System.Drawing.Size)(resources.GetObject("label21.Size")));
-			this.label21.TabIndex = ((int)(resources.GetObject("label21.TabIndex")));
-			this.label21.Text = resources.GetString("label21.Text");
-			this.label21.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label21.TextAlign")));
-			this.label21.Visible = ((bool)(resources.GetObject("label21.Visible")));
-			// 
 			// tbGuardian
 			// 
 			this.tbGuardian.AccessibleDescription = resources.GetString("tbGuardian.AccessibleDescription");
@@ -1471,28 +1449,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
 			this.tbGuardian.Validated += new System.EventHandler(this.hex16_Validated);
 			this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-			// 
-			// label23
-			// 
-			this.label23.AccessibleDescription = resources.GetString("label23.AccessibleDescription");
-			this.label23.AccessibleName = resources.GetString("label23.AccessibleName");
-			this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label23.Anchor")));
-			this.label23.AutoSize = ((bool)(resources.GetObject("label23.AutoSize")));
-			this.label23.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label23.Dock")));
-			this.label23.Enabled = ((bool)(resources.GetObject("label23.Enabled")));
-			this.label23.Font = ((System.Drawing.Font)(resources.GetObject("label23.Font")));
-			this.label23.Image = ((System.Drawing.Image)(resources.GetObject("label23.Image")));
-			this.label23.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label23.ImageAlign")));
-			this.label23.ImageIndex = ((int)(resources.GetObject("label23.ImageIndex")));
-			this.label23.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label23.ImeMode")));
-			this.label23.Location = ((System.Drawing.Point)(resources.GetObject("label23.Location")));
-			this.label23.Name = "label23";
-			this.label23.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label23.RightToLeft")));
-			this.label23.Size = ((System.Drawing.Size)(resources.GetObject("label23.Size")));
-			this.label23.TabIndex = ((int)(resources.GetObject("label23.TabIndex")));
-			this.label23.Text = resources.GetString("label23.Text");
-			this.label23.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label23.TextAlign")));
-			this.label23.Visible = ((bool)(resources.GetObject("label23.Visible")));
 			// 
 			// gbFlags
 			// 
@@ -2211,6 +2167,56 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label25.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.TextAlign")));
 			this.label25.Visible = ((bool)(resources.GetObject("label25.Visible")));
 			// 
+			// llAction
+			// 
+			this.llAction.AccessibleDescription = resources.GetString("llAction.AccessibleDescription");
+			this.llAction.AccessibleName = resources.GetString("llAction.AccessibleName");
+			this.llAction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llAction.Anchor")));
+			this.llAction.AutoSize = ((bool)(resources.GetObject("llAction.AutoSize")));
+			this.llAction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llAction.Dock")));
+			this.llAction.Enabled = ((bool)(resources.GetObject("llAction.Enabled")));
+			this.llAction.Font = ((System.Drawing.Font)(resources.GetObject("llAction.Font")));
+			this.llAction.Image = ((System.Drawing.Image)(resources.GetObject("llAction.Image")));
+			this.llAction.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llAction.ImageAlign")));
+			this.llAction.ImageIndex = ((int)(resources.GetObject("llAction.ImageIndex")));
+			this.llAction.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llAction.ImeMode")));
+			this.llAction.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llAction.LinkArea")));
+			this.llAction.Location = ((System.Drawing.Point)(resources.GetObject("llAction.Location")));
+			this.llAction.Name = "llAction";
+			this.llAction.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llAction.RightToLeft")));
+			this.llAction.Size = ((System.Drawing.Size)(resources.GetObject("llAction.Size")));
+			this.llAction.TabIndex = ((int)(resources.GetObject("llAction.TabIndex")));
+			this.llAction.TabStop = true;
+			this.llAction.Text = resources.GetString("llAction.Text");
+			this.llAction.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llAction.TextAlign")));
+			this.llAction.Visible = ((bool)(resources.GetObject("llAction.Visible")));
+			this.llAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
+			// 
+			// llGuardian
+			// 
+			this.llGuardian.AccessibleDescription = resources.GetString("llGuardian.AccessibleDescription");
+			this.llGuardian.AccessibleName = resources.GetString("llGuardian.AccessibleName");
+			this.llGuardian.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llGuardian.Anchor")));
+			this.llGuardian.AutoSize = ((bool)(resources.GetObject("llGuardian.AutoSize")));
+			this.llGuardian.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llGuardian.Dock")));
+			this.llGuardian.Enabled = ((bool)(resources.GetObject("llGuardian.Enabled")));
+			this.llGuardian.Font = ((System.Drawing.Font)(resources.GetObject("llGuardian.Font")));
+			this.llGuardian.Image = ((System.Drawing.Image)(resources.GetObject("llGuardian.Image")));
+			this.llGuardian.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llGuardian.ImageAlign")));
+			this.llGuardian.ImageIndex = ((int)(resources.GetObject("llGuardian.ImageIndex")));
+			this.llGuardian.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llGuardian.ImeMode")));
+			this.llGuardian.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llGuardian.LinkArea")));
+			this.llGuardian.Location = ((System.Drawing.Point)(resources.GetObject("llGuardian.Location")));
+			this.llGuardian.Name = "llGuardian";
+			this.llGuardian.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llGuardian.RightToLeft")));
+			this.llGuardian.Size = ((System.Drawing.Size)(resources.GetObject("llGuardian.Size")));
+			this.llGuardian.TabIndex = ((int)(resources.GetObject("llGuardian.TabIndex")));
+			this.llGuardian.TabStop = true;
+			this.llGuardian.Text = resources.GetString("llGuardian.Text");
+			this.llGuardian.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llGuardian.TextAlign")));
+			this.llGuardian.Visible = ((bool)(resources.GetObject("llGuardian.Visible")));
+			this.llGuardian.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
+			// 
 			// TtabForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2263,10 +2269,16 @@ namespace SimPe.PackedFiles.UserInterface
 
 				setStringIndex(item.StringIndex, true, true);
 
-				this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);
 				this.tbAction.Text = "0x"+Helper.HexString(item.Action);
-				lbguard.Text = (item.Guardian) == 0 ? "---" : ((pjse.BhavWiz)new Instruction(wrapper, item.Guardian)).ShortName;
-				lbaction.Text = (item.Action) == 0 ? "---" : ((pjse.BhavWiz)new Instruction(wrapper, item.Action)).ShortName;
+				this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);
+
+				pjse.BhavWiz wiz;
+				wiz = item.Guardian;
+				lbguard.Text = (item.Guardian) == 0 ? "---" : wiz.ShortName;
+				llGuardian.Enabled = (wiz is pjse.BhavNameWizards.BhavWizBhav);
+				wiz = item.Action;
+				lbaction.Text = (item.Action) == 0 ? "---" : wiz.ShortName;
+				llAction.Enabled = (wiz is pjse.BhavNameWizards.BhavWizBhav);
 
 				this.tbFlags.Text = "0x"+Helper.HexString(item.Flags.Value);
 				this.tbFlags2.Text = "0x"+Helper.HexString(item.Flags2);
@@ -2308,6 +2320,17 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}		
 
+
+		private void llBhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			pjse.BhavWiz nameWiz = (sender == llAction) ? currentItem.Action : currentItem.Guardian;
+			Bhav b = nameWiz.LoadBHAV();
+			BhavForm ui = (BhavForm)b.UIHandler;
+			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+			ui.Text = "View BHAV: " + nameWiz.ShortName + " [" + b.Package.SaveFileName + "]";
+			b.RefreshUI();
+			ui.Show();
+		}
 
 		private void btnCommit_Click(object sender, System.EventArgs e)
 		{
