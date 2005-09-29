@@ -1,4 +1,9 @@
 
+29 September 2005 09:38 - Bhav: Dialog primitive - make shortform text longer
+  SimPe BHAV\
+    BhavWizPrim.cs 1.2
+  pjseTestData.package 1.1
+
 28 September 2005 20:40 - Bhav: Dialog primitive first cut
   SimPe BHAV\
     BhavWiz.cs 1.3
