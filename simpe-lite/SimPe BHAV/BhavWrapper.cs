@@ -627,6 +627,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private wrappedByteArray operands = null;
 		private wrappedByteArray reserved_01 = null;
 		private AbstractWrapper parent;
+		private static byte[] nooperands = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, };
 		#endregion
 
 		#region Accessor methods
@@ -707,7 +708,7 @@ namespace SimPe.PackedFiles.Wrapper
 		internal Instruction (AbstractWrapper parent)
 		{
 			this.parent = parent;
-			this.operands = new wrappedByteArray(this, new byte[8]);
+			this.operands = new wrappedByteArray(this, nooperands);
 			this.reserved_01 = new wrappedByteArray(this, new byte[8]);
 		}
 
@@ -718,7 +719,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			this.parent = parent;
 			this.opcode = opcode;
-			this.operands = new wrappedByteArray(this, new byte[8]);
+			this.operands = new wrappedByteArray(this, nooperands);
 			this.reserved_01 = new wrappedByteArray(this, new byte[8]);
 		}
 

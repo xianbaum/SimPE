@@ -229,54 +229,49 @@ namespace pjse.BhavNameWizards
 
 			if (thisArgc > 0)
 			{
-				byte[] parms = new byte[16];
-				((byte[])instruction.Operands).CopyTo(parms, 0);
-				((byte[])instruction.Reserved1).CopyTo(parms, 8);
-
-				if (!(instruction.Parent is Bhav))
-					s += (lng ? " " : "") + "[Caller not a BHAV]";
+				byte[] o = new byte[16];
+				((byte[])instruction.Operands).CopyTo(o, 0);
+				((byte[])instruction.Reserved1).CopyTo(o, 8);
 
 				s += (lng ? ": " : "");
 
-				if (parms[12] == 0) // original format
+
+				bool noOperands = o[12] == 0; // original format; check for "operand killer"
+				for (int i = 0; i < 8 && noOperands; i++)
+					noOperands = o[i] == 0xFF;
+
+				int p = 0;
+				if ((o[12] & 0x02) != 0)	// Params first
 				{
-					bool noParms = true;
-					int i = 0;
-					for (i = 0; i < 8 && noParms; i++)
-						noParms = parms[i] == 0xFF;
-					for (i = 0; !noParms && thisArgc > 0 && i < 4; i++, thisArgc--)
-						s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(ToShort(parms[(i*2)], parms[(i*2) + 1]));
-					if (thisArgc > 0)
-					{
-						i = Math.Min(thisArgc, myArgc);
-						if (i > 0)
-							s += (noParms ? "" : ", ") + (lng ? "Params 0" + (i > 1 ? " to " + i.ToString() : "") : "...");
-					}
+					int i = Math.Min(thisArgc, myArgc);
+					if (i > 0)
+						s += (lng ? "Params p" + p.ToString() + (i > 1 ? " to " + i.ToString() : "") : "...");
+					thisArgc -= i;
+					myArgc -= i;
+					p += i;
+					if (i > 0 && thisArgc > 0) s += ", ";
+				}
+
+
+				if ((o[12] & 0x01) == 0) // original format; I reckon nodeversion should be >0 to get the new format
+				{
+					for (int i = 0; !noOperands && thisArgc > 0 && i < 4; i++, thisArgc--)
+						s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(ToShort(o[(i*2)], o[(i*2) + 1]));
 				}
 				else	// 16 byte format
 				{
-					if ((parms[12] & 0x02) != 0)	// Params first
-					{
-						int i = Math.Min(thisArgc, myArgc);
-						if (i > 0)
-							s += (lng ? "Params 0" + (i > 1 ? " to " + i.ToString() : "") : "...");
-						thisArgc -= i;
-						myArgc = 0;
-						if (i > 0 && thisArgc > 0) s += ", ";
-					}
-
 					for (int i = 0; thisArgc > 0 && i < 4; i++, thisArgc--)
-						if (lng)
-							s += (i>0 ? ", " : "") + dataOwner(parms[i*3], ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
-						else
-							s += (i>0 ? ", " : "") + GS.GStr(GS.SF.DataOwners, parms[i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(parms[(i*3) + 1], parms[(i*3) + 2]));
+						s += (i>0 ? ", " : "") +
+							(lng
+							? dataOwner(o[i*3], ToShort(o[(i*3) + 1], o[(i*3) + 2]))
+							: GS.GStr(GS.SF.DataOwners, o[i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(o[(i*3) + 1], o[(i*3) + 2]))
+							);
+				}
 
-					if (thisArgc > 0)
-					{
-						int i = Math.Min(thisArgc, myArgc);
-						if (i > 0)
-							s += ", " + (lng ? "Params 0" + (i > 1 ? " to " + i.ToString() : "") : "...");
-					}
+				if (thisArgc > 0)
+				{
+					s += (noOperands ? "" : ", ")
+						+ (lng ? "Params " + p.ToString() + (thisArgc > 1 ? " to " + (p + thisArgc - 1).ToString() : "") : "...");
 				}
 			}
 			return s;
