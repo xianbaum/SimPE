@@ -1,4 +1,9 @@
 
+29 September 2005 10:47 - Bhav: Random and Set to Next primitives parsed, first cut
+  SimPe BHAV\
+    BhavWizPrim.cs 1.3
+  pjseTestData.package 1.2
+
 29 September 2005 09:38 - Bhav: Dialog primitive - make shortform text longer
   SimPe BHAV\
     BhavWizPrim.cs 1.2
