@@ -1,4 +1,20 @@
 
+29 September 2005 13:35 - Bhav: Various fixups
+  * whitespace to space in bhav instruction list items
+  * suppress operands (-1) when casting ushorts to BhavWiz
+  * allow to load Bhavs when invoking instruction in a null parent
+  * amend SetToNext formatting
+  * allow viewing BHAVs from TtabForm
+  SimPe BHAV\
+    BhavInstListItemUI.cs 1.20
+    BhavWiz.cs 1.4
+    BhavWizBhav.cs 1.5
+    BhavWizPrim.cs 1.5
+    TtabForm.cs 1.24
+    TtabForm.resx 1.14
+  GlobalStrings.package 1.4
+  pjseTestData.package 1.4
+
 29 September 2005 10:47 - Bhav: Random and Set to Next primitives parsed, first cut
   SimPe BHAV\
     BhavWizPrim.cs 1.3
