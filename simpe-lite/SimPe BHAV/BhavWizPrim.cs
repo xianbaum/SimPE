@@ -572,6 +572,8 @@ namespace pjse.BhavNameWizards
 				case 0x0000: return new WizPrim0x0000(i);
 				case 0x0001: return new WizPrim0x0001(i);
 				case 0x0002: return new WizPrim0x0002(i);
+				case 0x0008: return new WizPrim0x0008(i);
+				case 0x001f: return new WizPrim0x001f(i);
 				case 0x0024: return new WizPrim0x0024(i);
 			}
 			return new WizPrimDefault(i);
@@ -606,6 +608,98 @@ namespace pjse.BhavNameWizards
 			}
 		}
 
+	}
+
+	public class WizPrim0x0008 : BhavWizPrim
+	{
+		public WizPrim0x0008(Instruction i) : base(i) { }
+
+		public override string ShortName
+		{
+			get
+			{
+				return base.ShortName + " (" + Operands(false) + ")";
+			}
+		}
+
+		public override string LongName
+		{
+			get
+			{
+				return base.ShortName + " (" + Operands(true) + ")";
+			}
+		}
+
+
+		private string Operands(bool lng)
+		{
+			if (lng)
+				return dataOwner(instruction.Operands[2], ToShort(instruction.Operands[0], instruction.Operands[1]))
+					+ " := random from 0 to < "
+					+ dataOwner(instruction.Operands[6], ToShort(instruction.Operands[4], instruction.Operands[5]));
+			else
+				return GS.GStr(GS.SF.DataOwners, instruction.Operands[2])
+					+ " 0x" + SimPe.Helper.HexString(ToShort(instruction.Operands[0], instruction.Operands[1]))
+					+ ", " + GS.GStr(GS.SF.DataOwners, instruction.Operands[6])
+					+ " 0x" + SimPe.Helper.HexString(ToShort(instruction.Operands[4], instruction.Operands[5]))
+					;
+		}
+	}
+
+	public class WizPrim0x001f : BhavWizPrim
+	{
+		public WizPrim0x001f(Instruction i) : base(i) { }
+
+		public override string ShortName
+		{
+			get
+			{
+				return base.ShortName + " (" + Operands(false) + ")";
+			}
+		}
+
+		public override string LongName
+		{
+			get
+			{
+				return base.ShortName + " (" + Operands(true) + ")";
+			}
+		}
+
+
+		private string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+			if ((o[4] & 0x80) == 0)
+				s += lng ? dataOwner(0x0a, 0x0000) + " := next " : ""; // Stack Object
+			else
+				s += dataOwner(o[5], o[7]) + " := next ";
+			//if ((o[5] != 0xA || o[7] != 0) && (o[4] & 0x80) != 0)
+			//	s += dataOwner(o[5], o[7]) + " := next ";
+
+			s += GS.GStr(0xa4, (ushort)(o[4] & 0x7f));
+			switch(o[4] & 0x7f)
+			{
+				case 0x04: case 0x07:
+					uint d1 = (uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24));
+					s += " GUID 0x" + SimPe.Helper.HexString(d1);
+					//readGUID(d1);
+					break;
+				case 0x09: case 0x22:
+					s += " " + dataOwner(0x19, o[6]); // local
+					//w1 = ToShort(o[9], o[10]);
+					//w2 = ToShort(o[11], o[12]);
+					//if (b[x+8] & 2) ht_fprintf(outFile,TYPE_NORMAL," where %s := %d", gString8D[w1], w2);
+					break;
+			}
+
+			if ((o[8] & 0x01) != 0) s += " [including disabled objects]";
+			return s;
+		}
 	}
 
 	public class WizPrim0x0024 : BhavWizPrim
@@ -757,210 +851,22 @@ namespace pjse.BhavNameWizards
 
 }
 #if DISASIM
-    if (opcode < 0x7F) {    // primitive
-        if (opcode != 2 && opcode != 8 && opcode != 0xB && opcode != 0xC && opcode != 0x16 && opcode != 0x1E)
-            ht_fprintf(outFile,TYPE_FUNCTION,"%s: ", gString8B[opcode]);    // "implied" function opcodes
-        if (*(UINT32 *) (&b[x]) != 0xFFFFFFFF) { // -1 = param killer (?)
-            switch (opcode) {
-                case 0x00:  // Sleep (false = error)
-                    ht_fprintf(outFile,TYPE_NORMAL,"for ");
-                    data2(9, b[x]);
-                    ht_fprintf(outFile,TYPE_NORMAL," ticks");
-                    break;
-                case 0x01:  // Generic Sims Call
-                    c1 = b[x];
-                    CHECK_RANGE("Generic Sims Call", gStringDC, c1);
-                    ht_fprintf(outFile,TYPE_FUNCTION,"%s", gStringDC[c1]);
-                    switch (c1) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:neighborhood, Temp 1:evict, Temp 2:save lot, Temp 3:reset tutorial");
-                            break;
-                        case 4:
-                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID, Temp 0:familyID");
-                            break;
-                        case 5:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:familyID");
-                            break;
-                        case 6:
-                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID");
-                            break;
-                        case 0x0D:
-                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj");
-                            break;
-                        case 0x11:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID");
-                            break;
-                        case 0x12:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:speed");
-                            break;
-                        case 0x15:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:child nID, Temp 1:parent nID");
-                            break;
-                        case 0x16:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:new spouse nID, Temp 1:initial spouse nID");
-                            break;
-                        case 0x17:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:remove nID, Temp 1:relative nID");
-                            break;
-                        case 0x18:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:age");
-                            break;
-                        case 0x19:
-                        case 0x28:
-                        case 0x29:
-                        case 0x2C:
-                        case 0x31:
-                        case 0x33:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0");
-                            break;
-                        case 0x1C:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:amount, Temp 2:multiplier");
-                            break;
-                        case 0x1D:
-                        case 0x26:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID");
-                            break;
-                        case 0x1E:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit");
-                            break;
-                        case 0x1F:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0,1:GUID");
-                            break;
-                        case 0x20:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit, Temp 1:result value");
-                            break;
-                        case 0x22:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Temp 1:destination, Temp 2:result value");
-                            break;
-                        case 0x23:
-                        case 0x24:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID, Temp 1:result value");
-                            break;
-                        case 0x2D:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Stack Obj:destination");
-                            break;
-                        case 0x2E:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 3:fallback");
-                            break;
-                        case 0x30:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID, Temp 1:result value");
-                            break;
-                        case 0x32:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:take, Temp 1:target nID, Temp 2:percent, Temp 3,4:amount, Temp 5:from assets");
-                            break;
-                        case 0x34:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:direction, Temp 1:result wall obj");
-                            break;
-                        case 0x35:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 2:state, Temp 3:fallback");
-                            break;
+                case 0x1F:  // Set to Next (false = next not found)
+                    w1 = *(UINT16 *) (&b[x+9]);
+                    w2 = *(UINT16 *) (&b[x+11]);
+                    if (b[x+5] != 0xA || b[x+7] != 0 && (b[x+4] & 0x80) != 0) {
+                        data2(b[x+5], b[x+7]);
+                        ht_fprintf(outFile,TYPE_NORMAL," := next ");
                     }
-                    break;
-                case 0x02:  // (Evaluate) Expression (non-comparison operators return false if error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    c1 = b[x+5];
-                    c2 = b[x+6];
-                    data2(c2, w1);            // target data
-                    if (c1 == 0x14)           // abs(rhs)
-                        ht_fprintf(outFile,TYPE_OPERATOR," := abs(");
-                    else if (c1 == 0x15)      // Assign 32bit Value (both target and source are contiguous 32-bit)
-                        ht_fprintf(outFile,TYPE_OPERATOR," := int32(");
-                    else {
-                        CHECK_RANGE("Operator", gString88, c1);
-                        ht_fprintf(outFile,TYPE_OPERATOR," %s ",gString88[c1]);
-                    }
-
-                    if (b[x+7] == 7 && c1 > 7 && c1 < 11 && w2 > 0) {   // literal (non-0), flag operator
-                        if ((c2 == 3 || c2 == 4) && (w1 == 5 || w1 == 8 ||
-                                w1 == 0x22 || w1 == 0x28 || w1 == 0x2A ||
-                                w1 == 0x2B || w1 == 0x3F || w1 == 0x45)) {
-                            switch (w1) {
-                                case 5:
-                                    CHECK_RANGE("Wall adj. flags", gStringD0, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD0[w2 - 1]);
-                                    break;
-                                case 8:
-                                    CHECK_RANGE("Flags 1", gString8E, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8E[w2 - 1]);
-                                    break;
-                                case 0x22:
-                                    CHECK_RANGE("Hidden Flags", gString200, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString200[w2 - 1]);
-                                    break;
-                                case 0x28:
-                                    CHECK_RANGE("Flags 2", gStringD6, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD6[w2 - 1]);
-                                    break;
-                                case 0x2A:
-                                    CHECK_RANGE("Placement flags", gStringCA, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCA[w2 - 1]);
-                                    break;
-                                case 0x2B:
-                                    CHECK_RANGE("Movement flags", gStringCB, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCB[w2 - 1]);
-                                    break;
-                                case 0x3F:
-                                    CHECK_RANGE("Exclusive placement flags", gStringFB, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFB[w2 - 1]);
-                                    break;
-                                case 0x45:
-                                    CHECK_RANGE("Wall cutout flags", gStringFD, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFD[w2 - 1]);
-                                    break;
-                            }
-                        } else if ((c2 == 0x12 || c2 == 0x13 || c2 == 0x20) &&
-                        (w1 == 0x1E || w1 == 0x44 || w1 == 0x51 || w1 == 0x9E || w1 == 0x9F)) {
-                            switch (w1) {
-                                case 0x1E:
-                                    CHECK_RANGE("Censorship flags", gStringB2, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringB2[w2 - 1]);
-                                    break;
-                                case 0x44:
-                                    CHECK_RANGE("Ghost flags", gString201, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString201[w2 - 1]);
-                                    break;
-                                case 0x51:
-                                    CHECK_RANGE("Body flags", gString8F, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8F[w2 - 1]);
-                                    break;
-                                case 0x9E:
-                                    CHECK_RANGE("Selection flags", gString202, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString202[w2 - 1]);
-                                    break;
-                                case 0x9F:
-                                    CHECK_RANGE("Person flags", gString204, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString204[w2 - 1]);
-                                    break;
-                            }
-                        } else if ((c2 == 0x15 || c2 == 0x26 || c2 == 0x33) &&
-                        (w1 == 0x27 || w1 == 0x28)) {
-                            switch (w1) {
-                                case 0x27:
-                                    CHECK_RANGE("Room sort flags", gStringCD, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCD[w2 - 1]);
-                                    break;
-                                case 0x28:
-                                    CHECK_RANGE("Function sort flags", gStringCE, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCE[w2 - 1]);
-                                    break;
-                            }
-                        } else {
-                            data2(b[x+7], w2);  // unknown flag
-                        }
-                    } else {
-                        data2(b[x+7], w2);      // not a literal flag
-
-                        // flag, BCON 0x101:x (Standard Heights)
-/*
-                        if (c1 > 7 && c1 < 11 && b[x+7] == 0x1A && (w2 & 0xFF80) == 0x4080 && (w2 & 0x7F)) {
-                            CHECK_RANGE("Allowed height flags", gStringAH, (w2 & 0x7F) - 1);
-                            ht_fprintf(outFile,TYPE_NORMAL," %s", gStringAH[(w2 & 0x7F) - 1]);
-                        }
-*/
-                        if (c1 == 0x14 || c1 == 0x15)    // abs(rhs) or Assign 32bit Value
-                            ht_fprintf(outFile,TYPE_OPERATOR,")");
-                    }
+                    c1 = (b[x+4] & 0x7F);
+                    CHECK_RANGE("Next object", gStringA4, c1);
+                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringA4[c1]);
+                    d1 = *(UINT32 *) (&b[x]);
+                    if (c1 == 4 || c1 == 7) ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
+                    readGUID(d1);
+                    if (c1 == 9 || c1 == 0x22) data2(0x19, b[x+6]);   // local
+//                    if (b[x+8] & 2) ht_fprintf(outFile,TYPE_NORMAL," where %s := %d", gString8D[w1], w2);
+                    if (b[x+8] & 1) ht_fprintf(outFile,TYPE_NORMAL," [including disabled objects]");
                     break;
                 case 0x03:  // Find Best Interaction
                     w1 = *(UINT16 *) (&b[x]);   // motive
@@ -1004,13 +910,6 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL,"lighting contribution");
                     else
                         ht_fprintf(outFile,TYPE_NORMAL,"room score contribution");
-                    break;
-                case 0x08:  // Random Number (false = error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+4]);
-                    data2(b[x+2], w1);
-                    ht_fprintf(outFile,TYPE_OPERATOR," := random from 0 to < ");
-                    data2(b[x+6], w2);
                     break;
                 case 0x0A:  // Tutorial (unused)
                     break;
@@ -1432,23 +1331,6 @@ namespace pjse.BhavNameWizards
                 case 0x1E:  // Gosub Found Action
                     CHECK_RANGE("Gosub Found Action", gString1FE, b[x]);
                     ht_fprintf(outFile,TYPE_FUNCTION,"%s",gString1FE[b[x]]);
-                    break;
-                case 0x1F:  // Set to Next (false = next not found)
-                    w1 = *(UINT16 *) (&b[x+9]);
-                    w2 = *(UINT16 *) (&b[x+11]);
-                    if (b[x+5] != 0xA || b[x+7] != 0 && (b[x+4] & 0x80) != 0) {
-                        data2(b[x+5], b[x+7]);
-                        ht_fprintf(outFile,TYPE_NORMAL," := next ");
-                    }
-                    c1 = (b[x+4] & 0x7F);
-                    CHECK_RANGE("Next object", gStringA4, c1);
-                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringA4[c1]);
-                    d1 = *(UINT32 *) (&b[x]);
-                    if (c1 == 4 || c1 == 7) ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
-                    readGUID(d1);
-                    if (c1 == 9 || c1 == 0x22) data2(0x19, b[x+6]);   // local
-//                    if (b[x+8] & 2) ht_fprintf(outFile,TYPE_NORMAL," where %s := %d", gString8D[w1], w2);
-                    if (b[x+8] & 1) ht_fprintf(outFile,TYPE_NORMAL," [including disabled objects]");
                     break;
                 case 0x20:  // Test Object Type
                     w1 = *(UINT16 *) (&b[x+4]);
@@ -3255,6 +3137,211 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL, ", %d", w3);
                     }
                     break;
-            }
-        }
+                case 0x00:  // Sleep (false = error)
+                    ht_fprintf(outFile,TYPE_NORMAL,"for ");
+                    data2(9, b[x]);
+                    ht_fprintf(outFile,TYPE_NORMAL," ticks");
+                    break;
+                case 0x01:  // Generic Sims Call
+                    c1 = b[x];
+                    CHECK_RANGE("Generic Sims Call", gStringDC, c1);
+                    ht_fprintf(outFile,TYPE_FUNCTION,"%s", gStringDC[c1]);
+                    switch (c1) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:neighborhood, Temp 1:evict, Temp 2:save lot, Temp 3:reset tutorial");
+                            break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID, Temp 0:familyID");
+                            break;
+                        case 5:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:familyID");
+                            break;
+                        case 6:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID");
+                            break;
+                        case 0x0D:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj");
+                            break;
+                        case 0x11:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID");
+                            break;
+                        case 0x12:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:speed");
+                            break;
+                        case 0x15:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:child nID, Temp 1:parent nID");
+                            break;
+                        case 0x16:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:new spouse nID, Temp 1:initial spouse nID");
+                            break;
+                        case 0x17:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:remove nID, Temp 1:relative nID");
+                            break;
+                        case 0x18:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:age");
+                            break;
+                        case 0x19:
+                        case 0x28:
+                        case 0x29:
+                        case 0x2C:
+                        case 0x31:
+                        case 0x33:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0");
+                            break;
+                        case 0x1C:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:amount, Temp 2:multiplier");
+                            break;
+                        case 0x1D:
+                        case 0x26:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID");
+                            break;
+                        case 0x1E:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit");
+                            break;
+                        case 0x1F:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0,1:GUID");
+                            break;
+                        case 0x20:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit, Temp 1:result value");
+                            break;
+                        case 0x22:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Temp 1:destination, Temp 2:result value");
+                            break;
+                        case 0x23:
+                        case 0x24:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID, Temp 1:result value");
+                            break;
+                        case 0x2D:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Stack Obj:destination");
+                            break;
+                        case 0x2E:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 3:fallback");
+                            break;
+                        case 0x30:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID, Temp 1:result value");
+                            break;
+                        case 0x32:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:take, Temp 1:target nID, Temp 2:percent, Temp 3,4:amount, Temp 5:from assets");
+                            break;
+                        case 0x34:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:direction, Temp 1:result wall obj");
+                            break;
+                        case 0x35:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 2:state, Temp 3:fallback");
+                            break;
+                    }
+                    break;
+                case 0x02:  // (Evaluate) Expression (non-comparison operators return false if error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    c1 = b[x+5];
+                    c2 = b[x+6];
+                    data2(c2, w1);            // target data
+                    if (c1 == 0x14)           // abs(rhs)
+                        ht_fprintf(outFile,TYPE_OPERATOR," := abs(");
+                    else if (c1 == 0x15)      // Assign 32bit Value (both target and source are contiguous 32-bit)
+                        ht_fprintf(outFile,TYPE_OPERATOR," := int32(");
+                    else {
+                        CHECK_RANGE("Operator", gString88, c1);
+                        ht_fprintf(outFile,TYPE_OPERATOR," %s ",gString88[c1]);
+                    }
+
+                    if (b[x+7] == 7 && c1 > 7 && c1 < 11 && w2 > 0) {   // literal (non-0), flag operator
+                        if ((c2 == 3 || c2 == 4) && (w1 == 5 || w1 == 8 ||
+                                w1 == 0x22 || w1 == 0x28 || w1 == 0x2A ||
+                                w1 == 0x2B || w1 == 0x3F || w1 == 0x45)) {
+                            switch (w1) {
+                                case 5:
+                                    CHECK_RANGE("Wall adj. flags", gStringD0, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD0[w2 - 1]);
+                                    break;
+                                case 8:
+                                    CHECK_RANGE("Flags 1", gString8E, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8E[w2 - 1]);
+                                    break;
+                                case 0x22:
+                                    CHECK_RANGE("Hidden Flags", gString200, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString200[w2 - 1]);
+                                    break;
+                                case 0x28:
+                                    CHECK_RANGE("Flags 2", gStringD6, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD6[w2 - 1]);
+                                    break;
+                                case 0x2A:
+                                    CHECK_RANGE("Placement flags", gStringCA, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCA[w2 - 1]);
+                                    break;
+                                case 0x2B:
+                                    CHECK_RANGE("Movement flags", gStringCB, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCB[w2 - 1]);
+                                    break;
+                                case 0x3F:
+                                    CHECK_RANGE("Exclusive placement flags", gStringFB, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFB[w2 - 1]);
+                                    break;
+                                case 0x45:
+                                    CHECK_RANGE("Wall cutout flags", gStringFD, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFD[w2 - 1]);
+                                    break;
+                            }
+                        } else if ((c2 == 0x12 || c2 == 0x13 || c2 == 0x20) &&
+                        (w1 == 0x1E || w1 == 0x44 || w1 == 0x51 || w1 == 0x9E || w1 == 0x9F)) {
+                            switch (w1) {
+                                case 0x1E:
+                                    CHECK_RANGE("Censorship flags", gStringB2, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringB2[w2 - 1]);
+                                    break;
+                                case 0x44:
+                                    CHECK_RANGE("Ghost flags", gString201, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString201[w2 - 1]);
+                                    break;
+                                case 0x51:
+                                    CHECK_RANGE("Body flags", gString8F, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8F[w2 - 1]);
+                                    break;
+                                case 0x9E:
+                                    CHECK_RANGE("Selection flags", gString202, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString202[w2 - 1]);
+                                    break;
+                                case 0x9F:
+                                    CHECK_RANGE("Person flags", gString204, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString204[w2 - 1]);
+                                    break;
+                            }
+                        } else if ((c2 == 0x15 || c2 == 0x26 || c2 == 0x33) &&
+                        (w1 == 0x27 || w1 == 0x28)) {
+                            switch (w1) {
+                                case 0x27:
+                                    CHECK_RANGE("Room sort flags", gStringCD, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCD[w2 - 1]);
+                                    break;
+                                case 0x28:
+                                    CHECK_RANGE("Function sort flags", gStringCE, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCE[w2 - 1]);
+                                    break;
+                            }
+                        } else {
+                            data2(b[x+7], w2);  // unknown flag
+                        }
+                    } else {
+                        data2(b[x+7], w2);      // not a literal flag
+
+                        // flag, BCON 0x101:x (Standard Heights)
+/*
+                        if (c1 > 7 && c1 < 11 && b[x+7] == 0x1A && (w2 & 0xFF80) == 0x4080 && (w2 & 0x7F)) {
+                            CHECK_RANGE("Allowed height flags", gStringAH, (w2 & 0x7F) - 1);
+                            ht_fprintf(outFile,TYPE_NORMAL," %s", gStringAH[(w2 & 0x7F) - 1]);
+                        }
+*/
+                        if (c1 == 0x14 || c1 == 0x15)    // abs(rhs) or Assign 32bit Value
+                            ht_fprintf(outFile,TYPE_OPERATOR,")");
+                    }
+                    break;
+                case 0x08:  // Random Number (false = error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+4]);
+                    data2(b[x+2], w1);
+                    ht_fprintf(outFile,TYPE_OPERATOR," := random from 0 to < ");
+                    data2(b[x+6], w2);
+                    break;
 #endif
