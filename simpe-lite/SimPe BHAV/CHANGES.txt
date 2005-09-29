@@ -1,4 +1,10 @@
 
+29 September 2005 15:53 - Bhav: Instruction() defaults to no operands, tweak Param display
+  SimPe BHAV\
+    BhavWiz.cs 1.5
+    BhavWizBhav.cs 1.6
+    BhavWrapper.cs 1.41
+
 29 September 2005 14:35 - Bhav: Make the TTAB form links not crash most of the time
   SimPe BHAV\
     TtabForm.cs 1.24
