@@ -300,6 +300,17 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void setBHAV(int which, ushort target, bool notxt)
+		{
+			TextBox[] tbaGA = { tbAction, tbGuardian };
+			Label[] lbaGA = { lbaction, lbguard };
+			LinkLabel[] llaGA = { llAction, llGuardian };
+
+			pjse.BhavWiz wiz = new Instruction(wrapper, target);
+			if (!notxt) tbaGA[which].Text = "0x"+Helper.HexString(target);
+			lbaGA[which].Text = (target == 0) ? "---" : wiz.ShortName;
+			llaGA[which].Enabled = (wiz.LoadBHAV() != null);
+		}
 		private void setStringIndex(uint si, bool doText, bool doCB)
 		{
 			if (doText) tbStringIndex.Text = "0x"+Helper.HexString(si);
@@ -2260,45 +2271,37 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnDelete.Enabled = false;
 			if (lbttab.SelectedIndex >= 0)
 			{
-				TtabItem item = currentItem = wrapper[lbttab.SelectedIndex];
+				currentItem = wrapper[lbttab.SelectedIndex];
 				origItem = currentItem.Clone();
 
 				internalchg = true;
 
 				btnDelete.Enabled = true;
 
-				setStringIndex(item.StringIndex, true, true);
+				setStringIndex(currentItem.StringIndex, true, true);
 
-				this.tbAction.Text = "0x"+Helper.HexString(item.Action);
-				this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);
+				setBHAV(0, currentItem.Action, false);
+				setBHAV(1, currentItem.Guardian, false);
 
-				pjse.BhavWiz wiz;
-				wiz = item.Guardian;
-				lbguard.Text = (item.Guardian) == 0 ? "---" : wiz.ShortName;
-				llGuardian.Enabled = (wiz is pjse.BhavNameWizards.BhavWizBhav);
-				wiz = item.Action;
-				lbaction.Text = (item.Action) == 0 ? "---" : wiz.ShortName;
-				llAction.Enabled = (wiz is pjse.BhavNameWizards.BhavWizBhav);
-
-				this.tbFlags.Text = "0x"+Helper.HexString(item.Flags.Value);
-				this.tbFlags2.Text = "0x"+Helper.HexString(item.Flags2);
-				if (item.AttenuationCode < this.cbAttenuationCode.Items.Count)
+				this.tbFlags.Text = "0x"+Helper.HexString(currentItem.Flags.Value);
+				this.tbFlags2.Text = "0x"+Helper.HexString(currentItem.Flags2);
+				if (currentItem.AttenuationCode < this.cbAttenuationCode.Items.Count)
 				{
-					cbAttenuationCode.SelectedIndex = (int)item.AttenuationCode;
+					cbAttenuationCode.SelectedIndex = (int)currentItem.AttenuationCode;
 				}
 				else
 				{
 					cbAttenuationCode.SelectedIndex = -1;
-					cbAttenuationCode.Text = "0x"+Helper.HexString(item.AttenuationCode);
+					cbAttenuationCode.Text = "0x"+Helper.HexString(currentItem.AttenuationCode);
 				}
-				tbAttenuationValue.Text = item.AttenuationValue.ToString("N8");
-				tbAutonomy.Text = "0x"+Helper.HexString(item.Autonomy);
-				tbJoinIndex.Text = "0x"+Helper.HexString(item.JoinIndex);
-				tbUIDispType.Text = "0x"+Helper.HexString(item.UIDisplayType);
-				tbFaceAnimID.Text = "0x"+Helper.HexString(item.FacialAnimationID);
-				tbMemIterMult.Text = item.MemoryIterativeMultiplier.ToString("N8");
-				tbObjType.Text = "0x"+Helper.HexString(item.ObjectType);
-				tbModelTabID.Text = "0x"+Helper.HexString(item.ModelTableID);
+				tbAttenuationValue.Text = currentItem.AttenuationValue.ToString("N8");
+				tbAutonomy.Text = "0x"+Helper.HexString(currentItem.Autonomy);
+				tbJoinIndex.Text = "0x"+Helper.HexString(currentItem.JoinIndex);
+				tbUIDispType.Text = "0x"+Helper.HexString(currentItem.UIDisplayType);
+				tbFaceAnimID.Text = "0x"+Helper.HexString(currentItem.FacialAnimationID);
+				tbMemIterMult.Text = currentItem.MemoryIterativeMultiplier.ToString("N8");
+				tbObjType.Text = "0x"+Helper.HexString(currentItem.ObjectType);
+				tbModelTabID.Text = "0x"+Helper.HexString(currentItem.ModelTableID);
 
 				doFlags();
 
@@ -2323,7 +2326,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llBhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			pjse.BhavWiz nameWiz = (sender == llAction) ? currentItem.Action : currentItem.Guardian;
+			pjse.BhavWiz nameWiz = new Instruction(wrapper, (sender == llAction) ? currentItem.Action : currentItem.Guardian);
 			Bhav b = nameWiz.LoadBHAV();
 			BhavForm ui = (BhavForm)b.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
@@ -2384,12 +2387,7 @@ namespace SimPe.PackedFiles.UserInterface
 				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, ttabPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
 
 				if (opcode != -1)
-				{
-					TtabItem item = currentItem;
-					item.Guardian = (ushort)opcode;
-					this.tbGuardian.Text = "0x"+Helper.HexString(item.Guardian);
-					lbguard.Text = (item.Guardian) == 0 ? "---" : ((pjse.BhavWiz)new Instruction(wrapper, item.Guardian)).ShortName;
-				}
+					setBHAV(1, (ushort)opcode, false);
 			}
 			catch (Exception ex) 
 			{
@@ -2405,12 +2403,7 @@ namespace SimPe.PackedFiles.UserInterface
 				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, ttabPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
 
 				if (opcode != -1)
-				{
-					TtabItem item = currentItem;
-					item.Action = (ushort)opcode;
-					this.tbAction.Text = "0x"+Helper.HexString(item.Action);
-					lbaction.Text = (item.Action) == 0 ? "---" : ((pjse.BhavWiz)new Instruction(wrapper, item.Action)).ShortName;
-				}
+					setBHAV(0, (ushort)opcode, false);
 			} 
 			catch (Exception ex) 
 			{
@@ -2585,11 +2578,11 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case 0:
 					currentItem.Action = val;
-					lbaction.Text = (val) == 0 ? "---" : ((pjse.BhavWiz)new Instruction(wrapper, val)).ShortName;
+					setBHAV(0, val, true);
 					break;
 				case 1:
 					currentItem.Guardian = val;
-					lbguard.Text = (val) == 0 ? "---" : ((pjse.BhavWiz)new Instruction(wrapper, val)).ShortName;
+					setBHAV(1, val, true);
 					break;
 				case 2:
 					currentItem.Flags.Value = val;
@@ -2600,6 +2593,46 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			internalchg = false;
 		}
+
+		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex16_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			internalchg = true;
+			ushort val = 0;
+			switch (alHex16.IndexOf(sender))
+			{
+				case 0:
+					currentItem.Action = val = origItem.Action;
+					setBHAV(0, val, true);
+					break;
+				case 1:
+					currentItem.Guardian = val = origItem.Guardian;
+					setBHAV(1, val, true);
+					break;
+				case 2:
+					currentItem.Flags.Value = val = origItem.Flags.Value;
+					doFlags();
+					break;
+				case 3: currentItem.Flags2 = val = origItem.Flags2; break;
+				case 4: currentItem.UIDisplayType = val = origItem.UIDisplayType; break;
+			}
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			((TextBox)sender).SelectAll();
+			internalchg = false;
+		}
+
+		private void hex16_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
 
 		private void hex32_TextChanged(object sender, System.EventArgs ev)
 		{
@@ -2622,52 +2655,6 @@ namespace SimPe.PackedFiles.UserInterface
 				case 5: currentItem.ModelTableID = val; break;
 				case 6: currentItem.JoinIndex = val; break;
 			}
-			internalchg = false;
-		}
-
-		private void float_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!float_IsValid(sender)) return;
-
-			float val = Convert.ToSingle(((TextBox)sender).Text);
-			internalchg = true;
-			switch (alFloats.IndexOf(sender))
-			{
-				case 0: currentItem.AttenuationValue = val; break;
-				case 1: currentItem.MemoryIterativeMultiplier = val; break;
-			}
-			internalchg = false;
-		}
-
-
-		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (hex16_IsValid(sender)) return;
-
-			e.Cancel = true;
-
-			internalchg = true;
-			ushort val = 0;
-			switch (alHex16.IndexOf(sender))
-			{
-				case 0:
-					currentItem.Action = val = origItem.Action;
-					lbaction.Text = (val) == 0 ? "---" : ((pjse.BhavWiz)new Instruction(wrapper, val)).ShortName;
-					break;
-				case 1:
-					currentItem.Guardian = val = origItem.Guardian;
-					lbguard.Text = (val) == 0 ? "---" : ((pjse.BhavWiz)new Instruction(wrapper, val)).ShortName;
-					break;
-				case 2:
-					currentItem.Flags.Value = val = origItem.Flags.Value;
-					doFlags();
-					break;
-				case 3: currentItem.Flags2 = val = origItem.Flags2; break;
-				case 4: currentItem.UIDisplayType = val = origItem.UIDisplayType; break;
-			}
-			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			((TextBox)sender).SelectAll();
 			internalchg = false;
 		}
 
@@ -2698,6 +2685,31 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
+		private void hex32_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+
+		private void float_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!float_IsValid(sender)) return;
+
+			float val = Convert.ToSingle(((TextBox)sender).Text);
+			internalchg = true;
+			switch (alFloats.IndexOf(sender))
+			{
+				case 0: currentItem.AttenuationValue = val; break;
+				case 1: currentItem.MemoryIterativeMultiplier = val; break;
+			}
+			internalchg = false;
+		}
+
 		private void float_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (float_IsValid(sender)) return;
@@ -2715,25 +2727,6 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).Text = val.ToString("N8");
 			((TextBox)sender).SelectAll();
 			internalchg = false;
-		}
-
-
-		private void hex16_Validated(object sender, System.EventArgs e)
-		{
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
-			internalchg = origstate;
-		}
-
-		private void hex32_Validated(object sender, System.EventArgs e)
-		{
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
-			internalchg = origstate;
 		}
 
 		private void float_Validated(object sender, System.EventArgs e)
