@@ -245,7 +245,7 @@ namespace pjse.BhavNameWizards
 				{
 					int i = Math.Min(thisArgc, myArgc);
 					if (i > 0)
-						s += (lng ? "Params p" + p.ToString() + (i > 1 ? " to " + i.ToString() : "") : "...");
+						s += (lng ? "Caller's params " + p.ToString() + (i > 1 ? " to " + i.ToString() : "") : "Caller's params");
 					thisArgc -= i;
 					myArgc -= i;
 					p += i;
@@ -271,7 +271,7 @@ namespace pjse.BhavNameWizards
 				if (thisArgc > 0)
 				{
 					s += (noOperands ? "" : ", ")
-						+ (lng ? "Params " + p.ToString() + (thisArgc > 1 ? " to " + (p + thisArgc - 1).ToString() : "") : "...");
+						+ (lng ? "Caller's params " + p.ToString() + (thisArgc > 1 ? " to " + (p + thisArgc - 1).ToString() : "") : "Caller's params");
 				}
 			}
 			return s;
