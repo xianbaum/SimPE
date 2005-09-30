@@ -663,7 +663,7 @@ namespace pjse.BhavNameWizards
 			else
 				s += dataOwner(0x09, o[1]);	// param
 
-			s += (lng ? " onto the stack object's queue, " : " onto queue, ") + GS.GStr(GS.SF.Priorities, o[2]);
+			s += (lng ? " onto the stack object's queue, " : ", ") + GS.GStr(GS.SF.Priorities, o[2]);
 
 			if (lng)
 			{
