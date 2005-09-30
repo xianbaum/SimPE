@@ -1,4 +1,14 @@
 
+30 September 2005 18:49 - Bhav: Several more primitives translated from DisaSim2 (and other odd bits)
+  SimPe BHAV\
+    BhavWiz.cs 1.6
+    BhavWizPrim.cs 1.6
+    BhavWizPrim0x0001.cs 1.2
+    BhavWizPrim0x0002.cs 1.4
+    GlobalStr.cs 1.5
+  GlobalStrings.package 1.5
+  pjseTestData.package 1.5
+
 29 September 2005 16:25 - Bhav: Add "Caller's" to "params", change "..." to "Caller's params"
   SimPe BHAV\
     BhavWizBhav.cs 1.7
