@@ -166,15 +166,15 @@ namespace pjse
 		}
 
 
-		protected string readStr(byte group, ulong instance, int sid)
+		protected string readStr(Scope s, ulong instance, int sid, int maxLen)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
 
 			uint strGroup = 0;
-			if ((group & 0x40) != 0)
+			if (s == Scope.Global)
 				strGroup = 0x7FD46CD0;
-			else if ((group & 0x01) == 0)
+			else if (s == Scope.Private)
 				strGroup = instruction.Parent.FileDescriptor.Group;
 			else
 				strGroup = SemiGlobalGroup;
@@ -184,12 +184,23 @@ namespace pjse
 				SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.STRING_FILE, strGroup, instance, null);
 
 			if (items == null || items.Length == 0)
-				return "[No STR# file]";
+				return "[No " + s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
 
 			Str str = new Str();
 			str.ProcessData(items[0]);
-			return (instance != 0x012D ? str.FileName.Trim() + " ": "") + ((str[1, sid] == null) ? "[STR not set]" : str[1, sid].Title);
+			return (s != Scope.Global ? str.FileName.Trim() + " ": "")
+				+ ((str[1, sid] != null) ? "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
+				: "[" + s.ToString() + " STR 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
+				);
 		}
+
+		protected string readStr(Scope s, ulong instance, int sid) { return readStr(s, instance, sid, -1); }
+
+		private static string myLeft(string str, int len)
+		{
+			return (len < 0) ? str : str.PadRight(len).Substring(0, len).Trim() + (str.Length > len ? "..." : "");
+		}
+
 
 		/// <summary>
 		/// Get the Glob resource for the current instruction (or null, indicating a SemiGlobal perhaps)
@@ -277,6 +288,13 @@ namespace pjse
 			return t;
 		}
 
+
+		protected enum Scope : int
+		{
+			Global = 0x00,
+			Private = 0x01,
+			SemiGlobal = 0x02,
+		}
 		#endregion
 	}
 

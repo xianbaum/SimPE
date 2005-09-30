@@ -220,23 +220,16 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		public override string ShortName
+		protected override string Operands(bool lng)
 		{
-			get { return base.ShortName + " (" + GS.GStr(GS.SF.Generics, instruction.Operands[0]) + ")"; }
-		}
-
-		//public override string ShortName { get { return "[generic] " + GenericName(instruction.Operands[0]); } }
-
-		public override string LongName
-		{
-			get
+			string s = GS.GStr(GS.SF.Generics, instruction.Operands[0]);
+			if (lng)
 			{
-				string s;
-				if (instruction.Operands[0] >= parms.Length) s = "[UNK args]";
-				else s = parms[instruction.Operands[0]].Trim();
-				if (s.Equals("")) s = "no args";
-				return ShortName + " (" + s + ")";
+				if (instruction.Operands[0] >= parms.Length) s += " ([UNK args])";
+				else if (parms[instruction.Operands[0]].Trim().Length == 0) s += " (no args)";
+				else s+= " (" + parms[instruction.Operands[0]].Trim() + ")";
 			}
+			return s;
 		}
 
 

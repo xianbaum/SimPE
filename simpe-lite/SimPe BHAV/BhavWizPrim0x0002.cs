@@ -462,37 +462,23 @@ namespace pjse.BhavNameWizards
 			return new WizPrim0x0002(i);
 		}
 
-
-		public override string ShortName
+		protected override string Operands(bool lng)
 		{
-			get
+			byte[] o = instruction.Operands;
+
+			byte lhs_data_owner = o[6]; // c2
+			ushort lhs_value_word = ToShort(o[0], o[1]); // w1
+			byte _operator = o[5]; // c1
+			byte rhs_data_owner = o[7]; // b[x+7]
+			ushort rhs_value_word = ToShort(o[2], o[3]); // w2
+
+			string s = "";
+
+			if (lng)
 			{
-				byte[] o = instruction.Operands;
-				return prefix + " (" +
-					GS.GStr(GS.SF.DataOwners, o[6]) + " 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])) + " " +
-					GS.GStr(GS.SF.Operators, o[5]) + " " +
-					GS.GStr(GS.SF.DataOwners, o[7]) + " 0x" + SimPe.Helper.HexString(ToShort(o[2], o[3])) + ")";
-			}
-		}
-
-
-		public override string LongName
-		{
-			get
-			{
-				byte[] operands = new byte[16];
-				((byte[])instruction.Operands).CopyTo(operands, 0);
-				((byte[])instruction.Reserved1).CopyTo(operands, 8);
-
-				byte lhs_data_owner = operands[6]; // c2
-				ushort lhs_value_word = ToShort(operands[0], operands[1]); // w1
-				byte _operator = operands[5]; // c1
-				byte rhs_data_owner = operands[7]; // b[x+7]
-				ushort rhs_value_word = ToShort(operands[2], operands[3]); // w2
-
-				string s = "";
-				s += dataOwner(lhs_data_owner, lhs_value_word);
-				s += " " + GS.GStr(GS.SF.Operators, _operator) + " ";
+				s += dataOwner(lhs_data_owner, lhs_value_word)
+					+ " " + GS.GStr(GS.SF.Operators, _operator)
+					+ " ";
 
 				if (_operator >= 8 && _operator <= 10) // Flag operation
 				{
@@ -502,11 +488,15 @@ namespace pjse.BhavNameWizards
 				}
 				else
 					s+= dataOwner(rhs_data_owner, rhs_value_word);
-				return prefix + " (" + s + ")";
 			}
+			else
+			{
+				s += GS.GStr(GS.SF.DataOwners, lhs_data_owner) + " 0x" + SimPe.Helper.HexString(lhs_value_word)
+					 + " " + GS.GStr(GS.SF.Operators, _operator)
+					 + " " + GS.GStr(GS.SF.DataOwners, rhs_data_owner) + " 0x" + SimPe.Helper.HexString(rhs_value_word) + ")";
+			}
+			return s;
 		}
-
-		private string prefix { get { return base.ShortName; } }
 
 
 		public static ArrayList flagNames(byte flagOwner, ushort flagType)
@@ -522,7 +512,7 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		public static Hashtable flagOwners = flagInitaliser();
+		private static Hashtable flagOwners = flagInitaliser();
 		private static Hashtable flagInitaliser()
 		{
 			Hashtable f = new Hashtable();
