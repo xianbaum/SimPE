@@ -64,6 +64,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.CheckBox ckbDefault;
 		private System.Windows.Forms.Button btnStrPrev;
 		private System.Windows.Forms.Button btnStrNext;
+		private System.Windows.Forms.Button btnImport;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -343,6 +344,64 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex((i >= count) ? count - 1 : i);
 		}
 
+		private void StrReplace()
+		{
+			uint instance = (new pjse.Chooser()).Instance(wrapper);
+			if (instance == 0xffffffff) return;
+
+			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
+				wrapper.FileDescriptor.Type,
+				0, 
+				wrapper.FileDescriptor.Group,
+				instance
+				);
+
+			if (pfd == null) return;
+
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			using(Str b = new Str())
+			{
+				b.Package = wrapper.Package;
+				b.FileDescriptor = wrapper.FileDescriptor;
+				b.ProcessData(pfd, b.Package);
+
+				int strnum = (new pjse.StrChooser()).Strnum(b);
+				if (strnum < 0) return;
+
+				if (wrapper.Format == 0x0000)
+				{
+					wrapper[1, index].Title = b[1, strnum].Title;
+					wrapper[1, index].Description = b[1, strnum].Description;
+				}
+				else
+					for (byte m = 1; m < 44; m++)
+					{
+						while (wrapper[m, index] == null && wrapper.Add(m, "", "") >= 0);
+						if (b[m, strnum] == null)
+						{
+							wrapper[m, index].Title = "";
+							wrapper[m, index].Description = "";
+						}
+						else
+						{
+							wrapper[m, index].Title = b[m, strnum].Title;
+							wrapper[m, index].Description = b[m, strnum].Description;
+						}
+					}
+			}
+
+			byte l = lid;
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setLid(l);
+			setIndex((i >= count) ? count - 1 : i);
+		}
+
 		private void StrClear()
 		{
 			bool savedstate = internalchg;
@@ -536,6 +595,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnAppend = new System.Windows.Forms.Button();
 			this.btnStrDelete = new System.Windows.Forms.Button();
 			this.btnStrAdd = new System.Windows.Forms.Button();
+			this.btnImport = new System.Windows.Forms.Button();
 			this.strPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -575,6 +635,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Controls.Add(this.btnAppend);
 			this.strPanel.Controls.Add(this.btnStrDelete);
 			this.strPanel.Controls.Add(this.btnStrAdd);
+			this.strPanel.Controls.Add(this.btnImport);
 			this.strPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("strPanel.Dock")));
 			this.strPanel.Enabled = ((bool)(resources.GetObject("strPanel.Enabled")));
 			this.strPanel.Font = ((System.Drawing.Font)(resources.GetObject("strPanel.Font")));
@@ -1269,6 +1330,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrAdd.Visible = ((bool)(resources.GetObject("btnStrAdd.Visible")));
 			this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
 			// 
+			// btnImport
+			// 
+			this.btnImport.AccessibleDescription = resources.GetString("btnImport.AccessibleDescription");
+			this.btnImport.AccessibleName = resources.GetString("btnImport.AccessibleName");
+			this.btnImport.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnImport.Anchor")));
+			this.btnImport.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnImport.BackgroundImage")));
+			this.btnImport.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnImport.Dock")));
+			this.btnImport.Enabled = ((bool)(resources.GetObject("btnImport.Enabled")));
+			this.btnImport.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnImport.FlatStyle")));
+			this.btnImport.Font = ((System.Drawing.Font)(resources.GetObject("btnImport.Font")));
+			this.btnImport.Image = ((System.Drawing.Image)(resources.GetObject("btnImport.Image")));
+			this.btnImport.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnImport.ImageAlign")));
+			this.btnImport.ImageIndex = ((int)(resources.GetObject("btnImport.ImageIndex")));
+			this.btnImport.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnImport.ImeMode")));
+			this.btnImport.Location = ((System.Drawing.Point)(resources.GetObject("btnImport.Location")));
+			this.btnImport.Name = "btnImport";
+			this.btnImport.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnImport.RightToLeft")));
+			this.btnImport.Size = ((System.Drawing.Size)(resources.GetObject("btnImport.Size")));
+			this.btnImport.TabIndex = ((int)(resources.GetObject("btnImport.TabIndex")));
+			this.btnImport.Text = resources.GetString("btnImport.Text");
+			this.btnImport.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnImport.TextAlign")));
+			this.btnImport.Visible = ((bool)(resources.GetObject("btnImport.Visible")));
+			this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+			// 
 			// StrForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -1477,6 +1562,11 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnCommit_Click(object sender, System.EventArgs e)
 		{
 			this.Commit();
+		}
+
+		private void btnImport_Click(object sender, System.EventArgs e)
+		{
+			this.StrReplace();
 		}
 
 
