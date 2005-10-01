@@ -1,4 +1,12 @@
 
+1 October 2005 10:58 - Str: Add "Replace string" dialogue (quick hack version)
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.18
+    StrChooser.cs 1.1
+    StrChooser.resx 1.1
+    StrForm.cs 1.25
+    StrForm.resx 1.18
+
 30 September 2005 19:38 - Bhav: Cosmetic change to Push Interaction
   SimPe BHAV\
     BhavWizPrim.cs 1.7
