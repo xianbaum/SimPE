@@ -165,7 +165,23 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public abstract class BhavWizBhav : BhavWiz
 	{
-		protected BhavWizBhav(Instruction i) : base (i) { }
+		private Bhav bhav = null;
+
+		protected BhavWizBhav(Instruction i) : base (i)
+		{
+			if (i != null)
+			{
+				SimPe.FileTable.FileIndex.Load();
+				IScenegraphFileIndexItem[] items =
+					SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group, (ulong)i.OpCode, null);
+				if (items != null && items.Length > 0)
+				{
+					bhav = new Bhav(null);
+					bhav.ProcessData(items[0]);
+					bhavFilenames[items[0].FileDescriptor.Filename] = bhav.FileName;
+				}
+			}
+		}
 
 		public static implicit operator BhavWizBhav(Instruction i)
 		{
@@ -182,44 +198,24 @@ namespace pjse.BhavNameWizards
 		#region BhavWiz
 		protected override string Prefix { get { return "BHAV"; } }
 
-		protected override string OpcodeName
-		{
-			get 
-			{
-				IScenegraphFileIndexItem[] items = findBHAV();
-				if (items != null)
-				{
-					// Always refresh bhavs for current package
-					if (instruction.Parent == null || items[0].Package == instruction.Parent.Package || bhavFilenames[items[0].FileDescriptor.Filename] == null)
-						loadBHAV(items[0]);
-
-					return (string)bhavFilenames[items[0].FileDescriptor.Filename];
-				}
-				else return "[" + SimPe.Localization.Manager.GetString("unk") + " BHAV]";
-			}
-		}
+		protected override string OpcodeName { get  { return (bhav != null) ? bhav.FileName : "[" + SimPe.Localization.Manager.GetString("unk") + " BHAV]"; } }
 
 		public override string ShortName { get { return base.ShortName + " (" + Operands(false) + ")"; } }
 
 		public override string LongName { get { return base.ShortName + " (" + Operands(true) + ")"; } }
 
-		public override Bhav LoadBHAV()
-		{
-			IScenegraphFileIndexItem[] items = findBHAV();
-			return (items == null) ? null : loadBHAV(items[0]);
-		}
+		public override Bhav Wrapper { get { return bhav; } }
 
 		#endregion
 
 		private string Operands(bool lng)
 		{
-			string s = "";
-			Bhav b = LoadBHAV();
-
-			if (b == null) 
+			if (bhav == null) 
 				return "[" + SimPe.Localization.Manager.GetString("unk") + "]";
+
+			string s = "";
 			int myArgc = (instruction.Parent is Bhav) ? (int)((Bhav)instruction.Parent).Header.ArgumentCount : 0;
-			int thisArgc = b.Header.ArgumentCount;
+			int thisArgc = bhav.Header.ArgumentCount;
 
 			if (lng)
 			{
@@ -278,43 +274,6 @@ namespace pjse.BhavNameWizards
 
 		}
 
-		private Bhav loadBHAV(IScenegraphFileIndexItem item)
-		{
-			Bhav b = new Bhav(null);
-			b.ProcessData(item);
-			bhavFilenames[item.FileDescriptor.Filename] = b.FileName;
-			return b;
-		}
-
-
-		private IScenegraphFileIndexItem[] findBHAV()
-		{
-			if (instruction == null) return null;
-
-			SimPe.FileTable.FileIndex.Load();
-			IScenegraphFileIndexItem[] items =
-				SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group, (ulong)instruction.OpCode, null);
-			if (items == null || items.Length == 0) return null;
-#if false
-#if DEBUG
-			if (items.Length > 1)
-			{
-				string s = "Multiple BHAVs found:";
-				for (int i = 0; i < items.Length; i++)
-				{
-					Bhav bh = new Bhav(null);
-					bh.ProcessData(items[i]);
-					s += "(" + i.ToString() + ") " + bh.FileName + " from ";
-					s += items[i].Package.SaveFileName;
-					s += ", ";
-				}
-				System.Windows.Forms.MessageBox.Show(s);
-			}
-#endif
-#endif
-			return items;
-		}
-
 
 		private static Hashtable bhavFilenames = new Hashtable();
 
@@ -323,16 +282,23 @@ namespace pjse.BhavNameWizards
 			get
 			{
 				ArrayList aliases = new ArrayList();
+				ArrayList instances = new ArrayList();
+
 				SimPe.FileTable.FileIndex.Load();
 				foreach (IScenegraphFileIndexItem item in SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group))
 				{
-					if (this is LocalWiz || bhavFilenames[item.FileDescriptor.Filename] == null)
+					if (instruction == null || instruction.Parent == null || instruction.Parent.Package == item.Package
+						|| bhavFilenames[item.FileDescriptor.Filename] == null)
 					{
 						Bhav b = new Bhav(null);
 						b.ProcessData(item);
 						bhavFilenames[item.FileDescriptor.Filename] = b.FileName;
 					}
-					aliases.Add(new SimPe.Data.Alias(item.FileDescriptor.Instance, (string)bhavFilenames[item.FileDescriptor.Filename]));
+					if (!instances.Contains(item.FileDescriptor.Instance))
+					{
+						instances.Add(item.FileDescriptor.Instance);
+						aliases.Add(new SimPe.Data.Alias(item.FileDescriptor.Instance, (string)bhavFilenames[item.FileDescriptor.Filename]));
+					}
 				}
 
 				return aliases;

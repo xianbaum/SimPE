@@ -191,7 +191,7 @@ namespace SimPe.PackedFiles.UserInterface
 		#region BhavForm
 		private Bhav wrapper;
 		private bool setHandler = false;
-		private Instruction currentInst;
+		private BhavWiz currentInst;
 		private Instruction origInst;
 		private bool internalchg;
 		private ArrayList alDec16;
@@ -257,7 +257,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void UpdateInstPanel()
 		{
 			internalchg = true;
-			if (wrapper.IndexOf(currentInst) < 0)
+			if (currentInst == null || wrapper.IndexOf(currentInst.Instruction) < 0)
 			{
 				SetReadOnly(true);
 				this.llopenbhav.Enabled = false;
@@ -292,13 +292,11 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				SetReadOnly(false);
 
-				//load referenced Bhav
+				changeOpcode(currentInst.Instruction.OpCode, true);
+
 				Instruction inst = currentInst;
-				this.llopenbhav.Enabled = ((BhavWiz)inst).LoadBHAV() != null;
 
 				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
-
-				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 
 				this.tbInst_NodeVersion.Text = "0x"+Helper.HexString(inst.NodeVersion);
 				if (inst.Target1 >= 0xFFFC)
@@ -341,13 +339,29 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk6.Text = Helper.HexString(inst.Reserved1[6]);
 				this.tbInst_Unk7.Text = Helper.HexString(inst.Reserved1[7]);
 
-				this.tbInst_Longname.Text = ((BhavWiz)inst).LongName;
-
-				this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(inst) != null);
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
 				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Count - 1;
 			}
 			internalchg = false;
+		}
+
+		private void changeOpcode(ushort opcode, bool setText)
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			if (currentInst.Instruction.OpCode != opcode)
+			{
+				Instruction i = currentInst;
+				i.OpCode = opcode;
+				currentInst = i;
+			}
+			if (setText) this.tbInst_OpCode.Text = "0x"+Helper.HexString(opcode);
+			this.llopenbhav.Enabled = currentInst.Wrapper != null;
+			this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(currentInst) != null);
+			this.tbInst_Longname.Text = currentInst.LongName;
+
+			internalchg = savedstate;
 		}
 
 
@@ -454,6 +468,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			currentInst = null;
 			origInst = null;
+			UpdateInstPanel();
 			this.pnflowcontainer.UpdateGUI(wrapper);
 			// pnflowcontainer to install its handler before us.
 			if (!setHandler)
@@ -490,13 +505,10 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 
 				// Handler for current instruction
-			else if (sender == currentInst)
+			if (currentInst != null && sender == currentInst.Instruction)
 			{
 				if (internalchg)
-				{
 					this.btnCancel.Enabled = true;
-					this.tbInst_Longname.Text = ((BhavWiz)currentInst).LongName;
-				}
 				else
 					pnflowcontainer_SelectedInstChanged(null, null);
 			}
@@ -2505,7 +2517,7 @@ namespace SimPe.PackedFiles.UserInterface
 			else
 			{
 				currentInst = wrapper[pnflowcontainer.SelectedIndex];
-				origInst = currentInst.Clone();
+				origInst = currentInst.Instruction.Clone();
 			}
 			UpdateInstPanel();
 			this.btnCancel.Enabled = false;
@@ -2564,27 +2576,25 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			BhavWiz nameWiz = currentInst;
-
-			Bhav b = nameWiz.LoadBHAV();
-			BhavForm ui = (BhavForm)b.UIHandler;
+			BhavForm ui = (BhavForm)currentInst.Wrapper.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "View BHAV: " + nameWiz.ShortName + " [" + b.Package.SaveFileName + "]";
-			b.RefreshUI();
+			ui.Text = "View BHAV: " + currentInst.ShortName + " [" + currentInst.Wrapper.Package.SaveFileName + "]";
+			currentInst.Wrapper.RefreshUI();
 			ui.Show();
 		}
+
+		private void btnClose_Click(object sender, System.EventArgs e)
+		{
+			Close();
+		}
+
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
 			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent, BhavOpCodeWiz.Flags.All);
 
-			if (opcode != -1 && opcode != currentInst.OpCode)
-			{
-				internalchg = true;
-				currentInst.OpCode = (ushort)opcode;
-				tbInst_OpCode.Text = "0x"+Helper.HexString((ushort)opcode);
-				internalchg = false;
-			}
+			if (opcode != -1 && opcode != currentInst.Instruction.OpCode)
+				changeOpcode((ushort)opcode, true);
 		}
 
 		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
@@ -2630,8 +2640,8 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			switch (alHex16cb.IndexOf(sender))
 			{
-				case 0: currentInst.Target1 = val; break;
-				case 1: currentInst.Target2 = val; break;
+				case 0: currentInst.Instruction.Target1 = val; break;
+				case 1: currentInst.Instruction.Target2 = val; break;
 				case 2: wrapper.Header.Format = val; break;
 			}
 			internalchg = false;
@@ -2650,8 +2660,8 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort val = 0;
 			switch (i)
 			{
-				case 0: val = origInst.Target1; currentInst.Target1 = val; break;
-				case 1: val = origInst.Target2; currentInst.Target2 = val; break;
+				case 0: val = origInst.Target1; currentInst.Instruction.Target1 = val; break;
+				case 1: val = origInst.Target2; currentInst.Instruction.Target2 = val; break;
 				case 2: val = wrapper.Header.Format; break;
 			}
 
@@ -2718,8 +2728,8 @@ namespace SimPe.PackedFiles.UserInterface
 			if (i < 2)
 			{
 				val += 0xFFFC;
-				if (i == 0) currentInst.Target1 = val;
-				else        currentInst.Target2 = val;
+				if (i == 0) currentInst.Instruction.Target1 = val;
+				else        currentInst.Instruction.Target2 = val;
 			}
 			else
 			{
@@ -2780,16 +2790,16 @@ namespace SimPe.PackedFiles.UserInterface
 			switch (alDec16.IndexOf(sender))
 			{
 				case 0:
-					currentInst.Operands[0] = ops[0];
-					currentInst.Operands[1] = ops[1];
-					this.tbInst_Op0.Text = Helper.HexString(currentInst.Operands[0]);
-					this.tbInst_Op1.Text = Helper.HexString(currentInst.Operands[1]);
+					currentInst.Instruction.Operands[0] = ops[0];
+					currentInst.Instruction.Operands[1] = ops[1];
+					this.tbInst_Op0.Text = Helper.HexString(currentInst.Instruction.Operands[0]);
+					this.tbInst_Op1.Text = Helper.HexString(currentInst.Instruction.Operands[1]);
 					break;
 				case 1:
-					currentInst.Operands[2] = ops[0];
-					currentInst.Operands[3] = ops[1];
-					this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
-					this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
+					currentInst.Instruction.Operands[2] = ops[0];
+					currentInst.Instruction.Operands[3] = ops[1];
+					this.tbInst_Op2.Text = Helper.HexString(currentInst.Instruction.Operands[2]);
+					this.tbInst_Op3.Text = Helper.HexString(currentInst.Instruction.Operands[3]);
 					break;
 			}
 			internalchg = false;
@@ -2806,17 +2816,17 @@ namespace SimPe.PackedFiles.UserInterface
 			switch (alDec16.IndexOf(sender))
 			{
 				case 0:
-					currentInst.Operands[0] = origInst.Operands[0];
-					currentInst.Operands[1] = origInst.Operands[1];
-					this.tbInst_Op0.Text = Helper.HexString(currentInst.Operands[0]);
-					this.tbInst_Op1.Text = Helper.HexString(currentInst.Operands[1]);
+					currentInst.Instruction.Operands[0] = origInst.Operands[0];
+					currentInst.Instruction.Operands[1] = origInst.Operands[1];
+					this.tbInst_Op0.Text = Helper.HexString(currentInst.Instruction.Operands[0]);
+					this.tbInst_Op1.Text = Helper.HexString(currentInst.Instruction.Operands[1]);
 					val = OpsToShort(origInst.Operands[0], origInst.Operands[1]);
 					break;
 				case 1:
-					currentInst.Operands[2] = origInst.Operands[2];
-					currentInst.Operands[3] = origInst.Operands[3];
-					this.tbInst_Op2.Text = Helper.HexString(currentInst.Operands[2]);
-					this.tbInst_Op3.Text = Helper.HexString(currentInst.Operands[3]);
+					currentInst.Instruction.Operands[2] = origInst.Operands[2];
+					currentInst.Instruction.Operands[3] = origInst.Operands[3];
+					this.tbInst_Op2.Text = Helper.HexString(currentInst.Instruction.Operands[2]);
+					this.tbInst_Op3.Text = Helper.HexString(currentInst.Instruction.Operands[3]);
 					val = OpsToShort(origInst.Operands[2], origInst.Operands[3]);
 					break;
 				case 2: // Move
@@ -2847,19 +2857,19 @@ namespace SimPe.PackedFiles.UserInterface
 			int i = alHex8.IndexOf(sender);
 			if (i < 8)
 			{
-				currentInst.Operands[i] = val;
+				currentInst.Instruction.Operands[i] = val;
 				/*if (i < 2)
-					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
+					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Instruction.Operands[0], currentInst.Instruction.Operands[1]).ToString();
 				else if (i < 4)
-					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();*/
+					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Instruction.Operands[2], currentInst.Instruction.Operands[3]).ToString();*/
 			}
 			else
 			{
 				if (i < 16)
-					currentInst.Reserved1[i-8] = val;
+					currentInst.Instruction.Reserved1[i-8] = val;
 				else switch(i)
 					 {
-						 case 16: currentInst.NodeVersion = val; break;
+						 case 16: currentInst.Instruction.NodeVersion = val; break;
 						 case 17: wrapper.Header.HeaderFlag = val; break;
 						 case 18: wrapper.Header.Type = val; break;
 						 case 19: wrapper.Header.CacheFlags = val; break;
@@ -2878,21 +2888,21 @@ namespace SimPe.PackedFiles.UserInterface
 			int i = alHex8.IndexOf(sender);
 			if (i < 8)
 			{
-				currentInst.Operands[i] = val = origInst.Operands[i];
+				currentInst.Instruction.Operands[i] = val = origInst.Operands[i];
 				/*if (i < 2)
-					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Operands[0], currentInst.Operands[1]).ToString();
+					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Instruction.Operands[0], currentInst.Instruction.Operands[1]).ToString();
 				else if (i < 4)
-					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Operands[2], currentInst.Operands[3]).ToString();*/
+					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Instruction.Operands[2], currentInst.Instruction.Operands[3]).ToString();*/
 			}
 			else
 			{
 				if (i < 16)
 				{
-					currentInst.Reserved1[i-8] = val = origInst.Reserved1[i-8];
+					currentInst.Instruction.Reserved1[i-8] = val = origInst.Reserved1[i-8];
 				}
 				else switch(i)
 					 {
-						 case 16: val = origInst.NodeVersion; currentInst.NodeVersion = val; break;
+						 case 16: val = origInst.NodeVersion; currentInst.Instruction.NodeVersion = val; break;
 						 case 17: val = wrapper.Header.HeaderFlag; break;
 						 case 18: val = wrapper.Header.Type; break;
 						 case 19: val = wrapper.Header.CacheFlags; break;
@@ -2924,10 +2934,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0:
-					currentInst.OpCode = val;
-					this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(currentInst) != null);
-					break;
+				case 0: changeOpcode(val, false); break;
 			}
 			internalchg = false;
 		}
@@ -2942,7 +2949,7 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort val = 0;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: currentInst.OpCode = val = origInst.OpCode; break;
+				case 0: changeOpcode(val = origInst.OpCode, true); break;
 			}
 
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
@@ -3066,11 +3073,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnDelMerola_Click(object sender, System.EventArgs e)
 		{
 			this.pnflowcontainer.DeleteUnlinked();
-		}
-
-		private void btnClose_Click(object sender, System.EventArgs e)
-		{
-			Close();
 		}
 
 	}

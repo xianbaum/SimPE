@@ -275,7 +275,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		public void Append(uint opcode)
 		{
-			Bhav b = ((pjse.BhavWiz)new Instruction(wrapper, (ushort)opcode)).LoadBHAV();
+			Bhav b = ((pjse.BhavWiz)new Instruction(wrapper, (ushort)opcode)).Wrapper;
 			if (b == null) return;
 
 			bool savedstate = internalchg;

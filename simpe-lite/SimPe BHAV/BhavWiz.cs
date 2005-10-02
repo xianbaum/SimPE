@@ -91,7 +91,11 @@ namespace pjse
 
 		public override string ToString() { return LongName; }
 
-		public virtual Bhav LoadBHAV() { return null; }
+		public virtual Bhav Wrapper { get { return null; } }
+
+		public Instruction Instruction { get { return instruction; } }
+
+		public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
 
 
 		#region Utilities

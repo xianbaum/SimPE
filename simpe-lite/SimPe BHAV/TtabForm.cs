@@ -309,7 +309,7 @@ namespace SimPe.PackedFiles.UserInterface
 			pjse.BhavWiz wiz = new Instruction(wrapper, target);
 			if (!notxt) tbaGA[which].Text = "0x"+Helper.HexString(target);
 			lbaGA[which].Text = (target == 0) ? "---" : wiz.ShortName;
-			llaGA[which].Enabled = (wiz.LoadBHAV() != null);
+			llaGA[which].Enabled = (wiz.Wrapper != null);
 		}
 		private void setStringIndex(uint si, bool doText, bool doCB)
 		{
@@ -2326,12 +2326,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llBhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			pjse.BhavWiz nameWiz = new Instruction(wrapper, (sender == llAction) ? currentItem.Action : currentItem.Guardian);
-			Bhav b = nameWiz.LoadBHAV();
-			BhavForm ui = (BhavForm)b.UIHandler;
+			pjse.BhavWiz wiz = new Instruction(wrapper, (sender == llAction) ? currentItem.Action : currentItem.Guardian);
+			BhavForm ui = (BhavForm)wiz.Wrapper.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "View BHAV: " + nameWiz.ShortName + " [" + b.Package.SaveFileName + "]";
-			b.RefreshUI();
+			ui.Text = "View BHAV: " + wiz.ShortName + " [" + wiz.Wrapper.Package.SaveFileName + "]";
+			wiz.Wrapper.RefreshUI();
 			ui.Show();
 		}
 
