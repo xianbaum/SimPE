@@ -1,0 +1,10 @@
+
+2 October 2005 17:08: Create new Tool - GUID to Group lookup
+  pjse GUID Tool\
+    .cvsignore 1.1
+    AssembleyInfo.cs 1.1
+    GUIDTool.cs 1.1
+    GUIDTool.resx 1.1
+    pjse GUID Tool.csproj 1.1
+  SimPe BHAV\
+    pjse coder plugins.sln 1.4
