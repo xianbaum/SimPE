@@ -3,6 +3,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse coder plugin", "pjse c
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse GUID Tool", "..\pjse GUID Tool\pjse GUID Tool.csproj", "{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -16,6 +20,12 @@ Global
 		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.InProgress.Build.0 = InProgress|.NET
 		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Release.ActiveCfg = Release|.NET
 		{6AA664E9-B45F-4D61-9B9F-E68341C16473}.Release.Build.0 = Release|.NET
+		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.Debug.ActiveCfg = Debug|.NET
+		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.Debug.Build.0 = Debug|.NET
+		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.InProgress.ActiveCfg = InProgress|.NET
+		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.InProgress.Build.0 = InProgress|.NET
+		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.Release.ActiveCfg = Release|.NET
+		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection
