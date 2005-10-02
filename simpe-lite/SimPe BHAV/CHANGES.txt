@@ -1,4 +1,12 @@
 
+2 October 2005 11:06 - Bhav: Make BhavWiz a better Instruction wrapper (and use as such)
+  SimPe BHAV\
+    BhavForm.cs 1.53
+    BhavInstListControl.cs 1.39
+    BhavWiz.cs 1.7
+    BhavWizBhav 1.8
+    TtabForm.cs 1.26
+
 1 October 2005 10:58 - Str: Add "Replace string" dialogue (quick hack version)
   SimPe BHAV\
     pjse coder plugin.csproj 1.18
