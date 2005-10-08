@@ -1,4 +1,17 @@
 
+8 October 2005 20:51 - FileTable branch: initial (broken) version
+  SimPe BHAV\
+    BhavForm.cs 1.54.2.1
+    BhavOpCodeWiz.cs 1.11.2.1
+    BhavWiz.cs 1.7.2.1
+    BhavWizBhav.cs 1.8.2.1
+    BhavWizPrim.cs 1.7.2.1
+    BhavWrapper.cs 1.41.2.1
+    FileTable.cs 1.1.2.1
+    GlobalStr.cs 1.5.2.1
+    pjse coder plugin.csproj 1.19.2.1
+    WrapperFactory.cs 1.11.2.1
+
 8 October 2005 11:52 - Bhav: Better updating, we hope
   SimPe BHAV\
     BhavForm.cs 1.54
