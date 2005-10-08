@@ -267,8 +267,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_NodeVersion.Text = "";
 				this.tba1.SelectedIndex = 0;
 				this.tba2.SelectedIndex = 0;
-				/*this.tbInst_Op01_dec.Text = "";
-				this.tbInst_Op23_dec.Text = "";*/
 				this.tbInst_Op0.Text = "";
 				this.tbInst_Op1.Text = "";
 				this.tbInst_Op2.Text = "";
@@ -290,16 +288,14 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			else
 			{
+				Instruction inst = currentInst.Instruction; // saves typing
+
 				SetReadOnly(false);
 
-				changeOpcode(currentInst.Instruction.OpCode, true);
-
-				Instruction inst = currentInst;
-
-				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
-
+				this.tbInst_OpCode.Text = "0x"+Helper.HexString(inst.OpCode);
 				this.tbInst_NodeVersion.Text = "0x"+Helper.HexString(inst.NodeVersion);
-				if (inst.Target1 >= 0xFFFC)
+
+				if (inst.Target1 >= 0xFFFC && inst.Target1 < 0xFFFF)
 				{
 					this.tba1.SelectedIndex = inst.Target1 - 0xFFFC;
 				}
@@ -308,7 +304,7 @@ namespace SimPe.PackedFiles.UserInterface
 					this.tba1.SelectedIndex = -1;
 					this.tba1.Text = "0x"+Helper.HexString(inst.Target1);
 				}
-				if (inst.Target2 >= 0xFFFC)
+				if (inst.Target2 >= 0xFFFC && inst.Target2 < 0xFFFF)
 				{
 					this.tba2.SelectedIndex = inst.Target2 - 0xFFFC;
 				}
@@ -317,9 +313,6 @@ namespace SimPe.PackedFiles.UserInterface
 					this.tba2.SelectedIndex = -1;
 					this.tba2.Text = "0x"+Helper.HexString(inst.Target2);
 				}
-
-				/*this.tbInst_Op01_dec.Text = OpsToShort(inst.Operands[0], inst.Operands[1]).ToString();
-				this.tbInst_Op23_dec.Text = OpsToShort(inst.Operands[2], inst.Operands[3]).ToString();*/
 
 				this.tbInst_Op0.Text = Helper.HexString(inst.Operands[0]);
 				this.tbInst_Op1.Text = Helper.HexString(inst.Operands[1]);
@@ -341,27 +334,14 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.btnUp.Enabled = pnflowcontainer.SelectedIndex > 0;
 				this.btnDown.Enabled = pnflowcontainer.SelectedIndex < wrapper.Count - 1;
+
+				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
+
+				this.llopenbhav.Enabled = currentInst.Wrapper != null;
+				this.btnOperandWiz.Enabled = pjse.BhavOperandWizProvider.For(currentInst) != null;
+				this.tbInst_Longname.Text = currentInst.LongName;
 			}
 			internalchg = false;
-		}
-
-		private void changeOpcode(ushort opcode, bool setText)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-
-			if (currentInst.Instruction.OpCode != opcode)
-			{
-				Instruction i = currentInst;
-				i.OpCode = opcode;
-				currentInst = i;
-			}
-			if (setText) this.tbInst_OpCode.Text = "0x"+Helper.HexString(opcode);
-			this.llopenbhav.Enabled = currentInst.Wrapper != null;
-			this.btnOperandWiz.Enabled = (BhavOperandWizProvider.For(currentInst) != null);
-			this.tbInst_Longname.Text = currentInst.LongName;
-
-			internalchg = savedstate;
 		}
 
 
@@ -508,7 +488,14 @@ namespace SimPe.PackedFiles.UserInterface
 			if (currentInst != null && sender == currentInst.Instruction)
 			{
 				if (internalchg)
+				{
 					this.btnCancel.Enabled = true;
+
+					this.llopenbhav.Enabled = currentInst.Wrapper != null;
+					this.currentInst = currentInst.Instruction;
+					this.btnOperandWiz.Enabled = pjse.BhavOperandWizProvider.For(currentInst) != null;
+					this.tbInst_Longname.Text = currentInst.LongName;
+				}
 				else
 					pnflowcontainer_SelectedInstChanged(null, null);
 			}
@@ -2516,8 +2503,8 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			else
 			{
-				currentInst = wrapper[pnflowcontainer.SelectedIndex];
-				origInst = currentInst.Instruction.Clone();
+				currentInst = wrapper[index];
+				origInst = wrapper[index].Clone();
 			}
 			UpdateInstPanel();
 			this.btnCancel.Enabled = false;
@@ -2594,7 +2581,7 @@ namespace SimPe.PackedFiles.UserInterface
 			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent, BhavOpCodeWiz.Flags.All);
 
 			if (opcode != -1 && opcode != currentInst.Instruction.OpCode)
-				changeOpcode((ushort)opcode, true);
+				this.tbInst_OpCode.Text = "0x" + SimPe.Helper.HexString((ushort)opcode);
 		}
 
 		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
@@ -2651,22 +2638,20 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (cbHex16_IsValid(sender)) return;
 
-			e.Cancel = true;
-
 			int i = alHex16cb.IndexOf(sender);
 			if (i < 0)
 				throw new Exception("cbHex16_Validating not applicable to control " + sender.ToString());
 
+			e.Cancel = true;
+
 			ushort val = 0;
 			switch (i)
 			{
-				case 0: val = origInst.Target1; currentInst.Instruction.Target1 = val; break;
-				case 1: val = origInst.Target2; currentInst.Instruction.Target2 = val; break;
+				case 0: val = origInst.Target1; break;
+				case 1: val = origInst.Target2; break;
 				case 2: val = wrapper.Header.Format; break;
 			}
 
-			bool origstate = internalchg;
-			internalchg = true;
 			if (i < 2 && val >= 0xfffc && val <= 0xfffe)
 			{
 				((ComboBox)sender).SelectedIndex = val - 0xfffc;
@@ -2680,7 +2665,6 @@ namespace SimPe.PackedFiles.UserInterface
 				((ComboBox)sender).SelectedIndex = -1;
 				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
 			}
-			internalchg = origstate;
 			((ComboBox)sender).SelectAll();
 		}
 
@@ -2761,7 +2745,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			e.Cancel = true;
 
-			internalchg = true;
 			byte val = 0;
 			switch (alDec8.IndexOf(sender))
 			{
@@ -2771,7 +2754,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			((TextBox)sender).Text = val.ToString();
 			((TextBox)sender).SelectAll();
-			internalchg = false;
 		}
 
 		private void dec8_Validated(object sender, System.EventArgs e)
@@ -2811,32 +2793,16 @@ namespace SimPe.PackedFiles.UserInterface
 
 			e.Cancel = true;
 
-			internalchg = true;
 			short val = 0;
 			switch (alDec16.IndexOf(sender))
 			{
-				case 0:
-					currentInst.Instruction.Operands[0] = origInst.Operands[0];
-					currentInst.Instruction.Operands[1] = origInst.Operands[1];
-					this.tbInst_Op0.Text = Helper.HexString(currentInst.Instruction.Operands[0]);
-					this.tbInst_Op1.Text = Helper.HexString(currentInst.Instruction.Operands[1]);
-					val = OpsToShort(origInst.Operands[0], origInst.Operands[1]);
-					break;
-				case 1:
-					currentInst.Instruction.Operands[2] = origInst.Operands[2];
-					currentInst.Instruction.Operands[3] = origInst.Operands[3];
-					this.tbInst_Op2.Text = Helper.HexString(currentInst.Instruction.Operands[2]);
-					this.tbInst_Op3.Text = Helper.HexString(currentInst.Instruction.Operands[3]);
-					val = OpsToShort(origInst.Operands[2], origInst.Operands[3]);
-					break;
-				case 2: // Move
-					val = 1;
-					break;
+				case 0: val = OpsToShort(origInst.Operands[0], origInst.Operands[1]); break;
+				case 1: val = OpsToShort(origInst.Operands[2], origInst.Operands[3]); break;
+				case 2: val = 1; break; // Move
 			}
 
 			((TextBox)sender).Text = val.ToString();
 			((TextBox)sender).SelectAll();
-			internalchg = false;
 		}
 
 		private void dec16_Validated(object sender, System.EventArgs e)
@@ -2850,31 +2816,21 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 			if (!hex8_IsValid(sender)) return;
 
-
 			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
+			int i = alHex8.IndexOf(sender);
 
 			internalchg = true;
-			int i = alHex8.IndexOf(sender);
-			if (i < 8)
-			{
-				currentInst.Instruction.Operands[i] = val;
-				/*if (i < 2)
-					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Instruction.Operands[0], currentInst.Instruction.Operands[1]).ToString();
-				else if (i < 4)
-					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Instruction.Operands[2], currentInst.Instruction.Operands[3]).ToString();*/
-			}
-			else
-			{
-				if (i < 16)
-					currentInst.Instruction.Reserved1[i-8] = val;
-				else switch(i)
-					 {
-						 case 16: currentInst.Instruction.NodeVersion = val; break;
-						 case 17: wrapper.Header.HeaderFlag = val; break;
-						 case 18: wrapper.Header.Type = val; break;
-						 case 19: wrapper.Header.CacheFlags = val; break;
-					 }
-			}
+
+			if (i < 8) currentInst.Instruction.Operands[i] = val;
+			else if (i < 16) currentInst.Instruction.Reserved1[i-8] = val;
+			else switch(i)
+				 {
+					 case 16: currentInst.Instruction.NodeVersion = val; break;
+					 case 17: wrapper.Header.HeaderFlag = val; break;
+					 case 18: wrapper.Header.Type = val; break;
+					 case 19: wrapper.Header.CacheFlags = val; break;
+				 }
+
 			internalchg = false;
 		}
 
@@ -2886,33 +2842,19 @@ namespace SimPe.PackedFiles.UserInterface
 
 			byte val = 0;
 			int i = alHex8.IndexOf(sender);
-			if (i < 8)
-			{
-				currentInst.Instruction.Operands[i] = val = origInst.Operands[i];
-				/*if (i < 2)
-					this.tbInst_Op01_dec.Text = OpsToShort(currentInst.Instruction.Operands[0], currentInst.Instruction.Operands[1]).ToString();
-				else if (i < 4)
-					this.tbInst_Op23_dec.Text = OpsToShort(currentInst.Instruction.Operands[2], currentInst.Instruction.Operands[3]).ToString();*/
-			}
-			else
-			{
-				if (i < 16)
-				{
-					currentInst.Instruction.Reserved1[i-8] = val = origInst.Reserved1[i-8];
-				}
-				else switch(i)
-					 {
-						 case 16: val = origInst.NodeVersion; currentInst.Instruction.NodeVersion = val; break;
-						 case 17: val = wrapper.Header.HeaderFlag; break;
-						 case 18: val = wrapper.Header.Type; break;
-						 case 19: val = wrapper.Header.CacheFlags; break;
-					 }
-			}
 
-			internalchg = true;
+			if (i < 8) val = origInst.Operands[i];
+			else if (i < 16) val = origInst.Reserved1[i-8];
+			else switch(i)
+				 {
+					 case 16: val = origInst.NodeVersion; break;
+					 case 17: val = wrapper.Header.HeaderFlag; break;
+					 case 18: val = wrapper.Header.Type; break;
+					 case 19: val = wrapper.Header.CacheFlags; break;
+				 }
+
 			((TextBox)sender).Text = ((i >= 16) ? "0x" : "") + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
-			internalchg = false;
 		}
 
 		private void hex8_Validated(object sender, System.EventArgs e)
@@ -2934,7 +2876,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: changeOpcode(val, false); break;
+				case 0: currentInst.Instruction.OpCode = val; break;
 			}
 			internalchg = false;
 		}
@@ -2945,16 +2887,14 @@ namespace SimPe.PackedFiles.UserInterface
 
 			e.Cancel = true;
 
-			internalchg = true;
 			ushort val = 0;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: changeOpcode(val = origInst.OpCode, true); break;
+				case 0: val = origInst.OpCode; break;
 			}
 
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
-			internalchg = false;
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs e)
@@ -2987,7 +2927,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			e.Cancel = true;
 
-			internalchg = true;
 			uint val = 0;
 			switch (alHex32.IndexOf(sender))
 			{
@@ -2996,7 +2935,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
-			internalchg = false;
 		}
 
 		private void hex32_Validated(object sender, System.EventArgs e)
