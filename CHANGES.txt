@@ -1,4 +1,8 @@
 
+8 October 2005 11:15: Build .7z archives, too
+  pjse GUID Tool\
+    pjse GUID Tool.csproj 1.2
+
 2 October 2005 17:08: Create new Tool - GUID to Group lookup
   pjse GUID Tool\
     .cvsignore 1.1
