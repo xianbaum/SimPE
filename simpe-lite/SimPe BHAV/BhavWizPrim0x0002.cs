@@ -493,7 +493,7 @@ namespace pjse.BhavNameWizards
 			{
 				s += GS.GStr(GS.SF.DataOwners, lhs_data_owner) + " 0x" + SimPe.Helper.HexString(lhs_value_word)
 					 + " " + GS.GStr(GS.SF.Operators, _operator)
-					 + " " + GS.GStr(GS.SF.DataOwners, rhs_data_owner) + " 0x" + SimPe.Helper.HexString(rhs_value_word) + ")";
+					 + " " + GS.GStr(GS.SF.DataOwners, rhs_data_owner) + " 0x" + SimPe.Helper.HexString(rhs_value_word);
 			}
 			return s;
 		}
