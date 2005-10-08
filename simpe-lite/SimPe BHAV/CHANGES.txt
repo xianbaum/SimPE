@@ -1,4 +1,17 @@
 
+8 October 2005 11:52 - Bhav: Better updating, we hope
+  SimPe BHAV\
+    BhavForm.cs 1.54
+
+8 October 2005 11:41 - Bhav: Extra ")" on parsed expressions
+  SimPe BHAV\
+    BhavWizPrim0x0002.cs 1.5
+
+8 October 2005 11:17 - Build .7z archives, too
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.19
+  .cvsignore 1.4
+
 2 October 2005 11:06 - Bhav: Make BhavWiz a better Instruction wrapper (and use as such)
   SimPe BHAV\
     BhavForm.cs 1.53
