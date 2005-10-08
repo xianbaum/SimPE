@@ -163,37 +163,32 @@ namespace pjse.BhavNameWizards
 	/// <summary>
 	/// Abstract class for BHAV name providers (global, local, semiglobal)
 	/// </summary>
-	public abstract class BhavWizBhav : BhavWiz
+	public class BhavWizBhav : BhavWiz
 	{
 		private Bhav bhav = null;
 
 		protected BhavWizBhav(Instruction i) : base (i)
 		{
+#if rubbish
 			if (i != null)
 			{
-				SimPe.FileTable.FileIndex.Load();
-				IScenegraphFileIndexItem[] items =
-					SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group, (ulong)i.OpCode, null);
+				pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, Group, i.OpCode];
 				if (items != null && items.Length > 0)
 				{
 					bhav = new Bhav(null);
-					bhav.ProcessData(items[0]);
-					bhavFilenames[items[0].FileDescriptor.Filename] = bhav.FileName;
+					bhav.ProcessData(items[0].PFD, items[0].Package);
+					bhavFilenames[items[0].PFD.Filename] = bhav.FileName;
 				}
 			}
+#endif
 		}
 
 		public static implicit operator BhavWizBhav(Instruction i)
 		{
 			if (i.OpCode < 0x0100)
 				throw new InvalidCastException("OpCode not a BHAV");
-			if (i.OpCode < 0x1000) return new GlobalWiz(i);
-			if (i.OpCode < 0x2000) return new LocalWiz(i);
-			return new SemiGlobalWiz(i);
+			return new BhavWizBhav(i);
 		}
-
-		protected abstract uint Group { get; }
-
 
 		#region BhavWiz
 		protected override string Prefix { get { return "BHAV"; } }
@@ -275,38 +270,9 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		private static Hashtable bhavFilenames = new Hashtable();
-
-		public ArrayList Aliases
-		{
-			get
-			{
-				ArrayList aliases = new ArrayList();
-				ArrayList instances = new ArrayList();
-
-				SimPe.FileTable.FileIndex.Load();
-				foreach (IScenegraphFileIndexItem item in SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group))
-				{
-					if (instruction == null || instruction.Parent == null || instruction.Parent.Package == item.Package
-						|| bhavFilenames[item.FileDescriptor.Filename] == null)
-					{
-						Bhav b = new Bhav(null);
-						b.ProcessData(item);
-						bhavFilenames[item.FileDescriptor.Filename] = b.FileName;
-					}
-					if (!instances.Contains(item.FileDescriptor.Instance))
-					{
-						instances.Add(item.FileDescriptor.Instance);
-						aliases.Add(new SimPe.Data.Alias(item.FileDescriptor.Instance, (string)bhavFilenames[item.FileDescriptor.Filename]));
-					}
-				}
-
-				return aliases;
-			}
-		}
 	}
 
-
+#if rubbish
 	public class GlobalWiz : BhavWizBhav
 	{
 		public GlobalWiz(Instruction i) : base(i) { }
@@ -367,6 +333,10 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
+				if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+					return 0;
+
+				Glob g = GlobByPackageGroup(instruction.Parent.Package, instruction.Parent.FileDescriptor.Group);
 				return (instruction != null && instruction.Parent != null && instruction.Parent.FileDescriptor != null)
 					? SemiGlobalGroup
 					: 0;
@@ -379,5 +349,5 @@ namespace pjse.BhavNameWizards
 
 		#endregion
 	}
-
+#endif
 }

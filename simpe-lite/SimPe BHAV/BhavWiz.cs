@@ -155,22 +155,20 @@ namespace pjse
 			else
 				bconGroup = SemiGlobalGroup;
 
-			SimPe.FileTable.FileIndex.Load();
-			IScenegraphFileIndexItem[] items =
-				SimPe.FileTable.FileIndex.FindFile(0x42434F4E, bconGroup, (ulong)instance, null);
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, bconGroup, instance];
 
 			if (items == null || items.Length == 0)
 				return "[No BCON file]";
 
 			Bcon bcon = new Bcon();
-			bcon.ProcessData(items[0]);
+			bcon.ProcessData(items[0].PFD, items[0].Package);
 			return bcon.FileName.Trim() + (temp ? "" : (bid >= bcon.Constants.Count)
 				? " [BCON not set]"
 				: ": 0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]));
 		}
 
 
-		protected string readStr(Scope s, ulong instance, int sid, int maxLen)
+		protected string readStr(Scope s, uint instance, int sid, int maxLen)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
@@ -183,22 +181,20 @@ namespace pjse
 			else
 				strGroup = SemiGlobalGroup;
 
-			SimPe.FileTable.FileIndex.Load();
-			IScenegraphFileIndexItem[] items =
-				SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.STRING_FILE, strGroup, instance, null);
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, strGroup, instance];
 
 			if (items == null || items.Length == 0)
 				return "[No " + s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
 
 			Str str = new Str();
-			str.ProcessData(items[0]);
+			str.ProcessData(items[0].PFD, items[0].Package);
 			return (s != Scope.Global ? str.FileName.Trim() + " ": "")
 				+ ((str[1, sid] != null) ? "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
 				: "[" + s.ToString() + " STR 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
 				);
 		}
 
-		protected string readStr(Scope s, ulong instance, int sid) { return readStr(s, instance, sid, -1); }
+		protected string readStr(Scope s, uint instance, int sid) { return readStr(s, instance, sid, -1); }
 
 		private static string myLeft(string str, int len)
 		{
@@ -218,15 +214,18 @@ namespace pjse
 				if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 					throw new InvalidOperationException("Can't read GLOB for instruction with no parent");
 
-				SimPe.FileTable.FileIndex.Load();
-				IScenegraphFileIndexItem[] items =
-					SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.GLOB_FILE, instruction.Parent.FileDescriptor.Group);
-				if (items == null || items.Length == 0)
-					return null;
-				glob = new Glob();
-				glob.ProcessData(items[0]);
-				return glob;
+				return (glob = GlobByGroup(instruction.Parent.FileDescriptor.Group));
 			}
+		}
+
+		public static Glob GlobByGroup(uint group)
+		{
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.GLOB_FILE, group];
+			if (items == null || items.Length == 0) return null;
+
+			Glob glob = new Glob();
+			glob.ProcessData(items[0].PFD, items[0].Package);
+			return glob;
 		}
 
 		public uint SemiGlobalGroup { get { return (SemiGlobal != null) ? SemiGlobal.SemiGlobalGroup : instruction.Parent.FileDescriptor.Group; } }

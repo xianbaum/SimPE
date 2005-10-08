@@ -383,6 +383,11 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "FileTable.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "GlobalStr.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

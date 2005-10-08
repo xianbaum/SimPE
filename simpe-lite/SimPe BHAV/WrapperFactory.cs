@@ -31,7 +31,7 @@ namespace SimPe.Plugin
 	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-	public class WrapperFactory : SimPe.Interfaces.Plugin.AbstractWrapperFactory, SimPe.Interfaces.Plugin.IToolFactory
+	public class WrapperFactory : SimPe.Interfaces.Plugin.AbstractWrapperFactory
 	{
 
 		/// <summary>
@@ -97,19 +97,5 @@ namespace SimPe.Plugin
 
 		#endregion
 
-		#region IToolFactory Member
-
-		public IToolPlugin[] KnownTools
-		{
-			get
-			{
-				IToolPlugin[] tools = {
-									//new ImportSemiTool(this.LinkedRegistry, this.LinkedProvider)
-								};
-				return tools;
-			}
-		}
-
-		#endregion
 	}
 }
