@@ -1,4 +1,10 @@
 
+9 October 2005 15:51 - FileTable branch: dynamic updating
+  SimPe BHAV\
+    BhavOpCodeWiz.cs 1.11.2.3
+    BhavWizBhav.cs 1.8.2.3
+    FileTable.cs 1.1.2.3
+
 9 October 2005 11:39 - FileTable branch: initial release
   SimPe BHAV\
     BhavOpCodeWiz.cs 1.11.2.2
