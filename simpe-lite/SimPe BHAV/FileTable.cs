@@ -20,14 +20,17 @@
 using System;
 using System.IO;
 using System.Collections;
+using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
+using SimPe.Interfaces.Plugin;
+using SimPe.Interfaces.Scenegraph;
 
 namespace pjse
 {
 	/// <summary>
 	/// Summary description for FileTable.
 	/// </summary>
-	public class FileTable
+	public class FileTable : ITool
 	{
 		public FileTable()
 		{
@@ -124,24 +127,40 @@ namespace pjse
 			{
 				Entry e = new Entry(package, i);
 
-				string packedFile = Path.Combine(package.FileName, i.Filename);
+				string packedFile = Path.Combine(package.FileName, i.ExportFileName);
+				if (packedFiles[packedFile] != null)
+					throw new Exception("How did that get there?");
 				packedFiles[packedFile] = e;
 
+				if (byPackage[packedFile] != null)
+					throw new Exception("How did that get there?");
 				byPackage[packedFile] = e;
 
-				Hashtable byType = (Hashtable)((pfByType[i.Type] == null) ? (pfByType[i.Type] = new Hashtable()) : pfByType[i.Type]);
+				Hashtable byType = (Hashtable)pfByType[i.Type];
+				if (byType == null) byType = (Hashtable)(pfByType[i.Type] = new Hashtable());
+				if (byType[packedFile] != null)
+					throw new Exception("How did that get there?");
 				byType[packedFile] = e;
 
-				Hashtable byGroup = (Hashtable)((pfByGroup[i.Group] == null) ? (pfByGroup[i.Group] = new Hashtable()) : pfByGroup[i.Group]);
+				Hashtable byGroup = (Hashtable)pfByGroup[i.Group];
+				if (byGroup == null) byGroup = (Hashtable)(pfByGroup[i.Group] = new Hashtable());
+				if (byGroup[packedFile] != null)
+					throw new Exception("How did that get there?");
 				byGroup[packedFile] = e;
 
-				Hashtable tgt = (Hashtable)((pfByTypeGroup[i.Type] == null) ? (pfByTypeGroup[i.Type] = new Hashtable()) : pfByTypeGroup[i.Type]);
+				Hashtable tgt = (Hashtable)pfByTypeGroup[i.Type];
+				if (tgt == null) tgt = (Hashtable)(pfByTypeGroup[i.Type] = new Hashtable());
 				Hashtable byTypeGroup = (Hashtable)((tgt[i.Group] == null) ? (tgt[i.Group] = new Hashtable()) : tgt[i.Group]);
+				if (byTypeGroup[packedFile] != null)
+					throw new Exception("How did that get there?");
 				byTypeGroup[packedFile] = e;
 
-				Hashtable tgit = (Hashtable)((pfByTypeGroupInstance[i.Type] == null) ? (pfByTypeGroupInstance[i.Type] = new Hashtable()) : pfByTypeGroupInstance[i.Type]);
+				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[i.Type];
+				if (tgit == null) tgit = (Hashtable)(pfByTypeGroupInstance[i.Type] = new Hashtable());
 				Hashtable tgitg = (Hashtable)((tgit[i.Group] == null) ? (tgit[i.Group] = new Hashtable()) : tgit[i.Group]);
 				Hashtable byTypeGroupInstance = (Hashtable)((tgitg[i.Instance] == null) ? (tgitg[i.Instance] = new Hashtable()) : tgitg[i.Instance]);
+				if (byTypeGroupInstance[packedFile] != null)
+					throw new Exception("How did that get there?");
 				byTypeGroupInstance[packedFile] = e;
 			}
 			if (isFixed)
@@ -150,30 +169,30 @@ namespace pjse
 
 		public void Remove(IPackageFile package)
 		{
-			Hashtable byPackage = (Hashtable)pfByPackage[package];
+			Hashtable byPackage = (Hashtable)GFT.pfByPackage[package];
 			if (byPackage == null) return;
 
 			foreach (IPackedFileDescriptor i in package.Index)
 			{
-				string packedFile = Path.Combine(package.FileName, i.Filename);
+				string packedFile = Path.Combine(package.FileName, i.ExportFileName);
 
-				packedFiles[packedFile] = null;
-				byPackage[packedFile] = null;
+				GFT.packedFiles.Remove(packedFile);
+				byPackage.Remove(packedFile);
 
-				Hashtable byType = (Hashtable)pfByType[i.Type];
+				Hashtable byType = (Hashtable)GFT.pfByType[i.Type];
 				if (byType != null) byType.Remove(packedFile);
 
-				Hashtable byGroup = (Hashtable)pfByGroup[i.Group];
+				Hashtable byGroup = (Hashtable)GFT.pfByGroup[i.Group];
 				if (byGroup != null) byGroup.Remove(packedFile);
 
-				Hashtable tgt = (Hashtable)pfByTypeGroup[i.Type];
+				Hashtable tgt = (Hashtable)GFT.pfByTypeGroup[i.Type];
 				if (tgt != null)
 				{
 					Hashtable byTypeGroup = (Hashtable)tgt[i.Group];
 					if (byTypeGroup != null) byTypeGroup.Remove(packedFile);
 				}
 
-				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[i.Type];
+				Hashtable tgit = (Hashtable)GFT.pfByTypeGroupInstance[i.Type];
 				if (tgit != null)
 				{
 					Hashtable tgitg = (Hashtable)tgit[i.Group];
@@ -185,22 +204,21 @@ namespace pjse
 				}
 			}
 
-			pfByPackage.Remove(package);
+			GFT.pfByPackage.Remove(package);
 		}
 
 
 		private IPackageFile currentPackage = null;
 		public IPackageFile CurrentPackage
 		{
-			get
-			{
-				return currentPackage;
-			}
+			get { return currentPackage; }
+
 			set
 			{
 				if (currentPackage != value)
 				{
-					if (currentPackage != null && !fixedPackages.Contains(currentPackage)) Remove(currentPackage);
+					if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+						Remove(currentPackage);
 					currentPackage = fixedPackages.Contains(value) ? null : value;
 					if (currentPackage != null) Add(value);
 				}
@@ -208,20 +226,18 @@ namespace pjse
 		}
 
 
-		private static ArrayList fixedPackages = new ArrayList();
-		public static FileTable GFT = staticInitialiser();
-		private static FileTable staticInitialiser()
+		private ArrayList fixedPackages = new ArrayList();
+		public static FileTable GFT = null;
+		static FileTable()
 		{
-			FileTable filetable = new FileTable();
+			GFT = new FileTable();
 			if (SimPe.Helper.WindowsRegistry.SimsEP2Path.Length > 0)
-				filetable.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
+				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
 			else if (SimPe.Helper.WindowsRegistry.SimsEP1Path.Length > 0)
-				filetable.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP1Path, "TSData\\Res\\Objects\\objects.package"));
+				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP1Path, "TSData\\Res\\Objects\\objects.package"));
 			else if (SimPe.Helper.WindowsRegistry.SimsPath.Length > 0)
-				filetable.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package"));
-			filetable.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
-
-			return filetable;
+				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package"));
+			GFT.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
 		}
 
 
@@ -252,31 +268,31 @@ namespace pjse
 			#endregion
 		}
 
-		public class BhavEntry : Entry
+
+		#region ITool Members
+
+		public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
 		{
-			private static Hashtable bhavFilenames = new Hashtable();
-
-			public BhavEntry(IPackageFile package, IPackedFileDescriptor pfd) : base(package, pfd) { }
-
-
-			public BhavEntry(Entry e) : base(e.Package, e.PFD) { }
-
-
-			public string Filename
-			{
-				get
-				{
-					if (bhavFilenames[this.PFD.Filename] == null)
-					{
-						SimPe.PackedFiles.Wrapper.Bhav b = new SimPe.PackedFiles.Wrapper.Bhav(null);
-						b.ProcessData(this.PFD, this.Package);
-						bhavFilenames[this.PFD.Filename] = b.FileName;
-					}
-					return (string)bhavFilenames[this.PFD.Filename];
-				}
-			}
-
+			GFT.CurrentPackage = package;
+			return false;
 		}
+
+		public IToolResult ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
+		{
+			return new SimPe.Plugin.ToolResult(false, false);
+		}
+
+		#endregion
+
+		#region IToolPlugin Members
+
+		public override string ToString()
+		{
+			// TODO:  Add FileTable.ToString implementation
+			return "";
+		}
+
+		#endregion
 	}
 
 }

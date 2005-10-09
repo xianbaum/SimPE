@@ -155,7 +155,6 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
-
 		private void Fill(Flags flag, uint group, ListBox list, TabPage tab)
 		{
 			if (flag == 0) return;
@@ -163,7 +162,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			ArrayList aliases = new ArrayList();
 			foreach (pjse.FileTable.Entry item in pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group])
-				aliases.Add(new SimPe.Data.Alias(item.PFD.Instance, (new pjse.FileTable.BhavEntry(item)).Filename));
+				aliases.Add(new SimPe.Data.Alias(item.PFD.Instance, ((BhavWizBhav)item).Filename));
 
 			list.Items.AddRange((SimPe.Data.Alias[]) aliases.ToArray(typeof(SimPe.Data.Alias)));
 			if (list.Items.Count > 0)

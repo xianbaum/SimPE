@@ -319,9 +319,6 @@ namespace SimPe.PackedFiles.Wrapper
 
 			for (uint i=0; i < this.Header.InstructionCount; i++)
 				items.Add(new Instruction(this, reader));
-
-			// hacky, hacky, hacky
-			pjse.FileTable.GFT.CurrentPackage = this.package;
 		}
 
 		#endregion

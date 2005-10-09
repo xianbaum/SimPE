@@ -19,6 +19,7 @@
  ***************************************************************************/
 using System;
 using SimPe.Interfaces;
+using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.UserInterface;
 using SimPe.PackedFiles.Wrapper;
 
@@ -31,7 +32,7 @@ namespace SimPe.Plugin
 	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-	public class WrapperFactory : SimPe.Interfaces.Plugin.AbstractWrapperFactory
+	public class WrapperFactory : AbstractWrapperFactory, IToolFactory
 	{
 
 		/// <summary>
@@ -97,5 +98,19 @@ namespace SimPe.Plugin
 
 		#endregion
 
+		#region IToolFactory Members
+
+		public SimPe.Interfaces.IToolPlugin[] KnownTools
+		{
+			get
+			{
+				IToolPlugin[] tools = {
+										  new pjse.FileTable()
+									  };
+				return tools;
+			}
+		}
+
+		#endregion
 	}
 }
