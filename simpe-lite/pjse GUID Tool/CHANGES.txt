@@ -1,4 +1,9 @@
 
+8 October 2005 11:54: Updated to use FileTable
+  pjse GUID Tool\
+    GUIDTool.cs 1.1.2.1
+    pjse GUID Tool.csproj 1.2.2.1
+
 8 October 2005 11:15: Build .7z archives, too
   pjse GUID Tool\
     pjse GUID Tool.csproj 1.2
