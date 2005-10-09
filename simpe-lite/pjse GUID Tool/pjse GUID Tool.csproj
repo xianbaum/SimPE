@@ -145,6 +145,11 @@
                     HintPath = "..\..\SimPe\simpe.names.dll"
                     Private = "False"
                 />
+                <Reference
+                    Name = "pjse coder plugin"
+                    Project = "{6AA664E9-B45F-4D61-9B9F-E68341C16473}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                />
             </References>
         </Build>
         <Files>

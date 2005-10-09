@@ -119,13 +119,12 @@ namespace pjse.guidtool
 			this.progressBar1.Value = 0;
 			this.rtbReport.Text = "Searching...";
 
-			SimPe.FileTable.FileIndex.Load();
-			IScenegraphFileIndexItem[] results = SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.OBJD_FILE, false);
+			pjse.FileTable.Entry[] results = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
 			this.progressBar1.Maximum = results.Length;
 
-			foreach (IScenegraphFileIndexItem item in results)
+			foreach (pjse.FileTable.Entry item in results)
 			{
-				wrapper.ProcessData(item);
+				wrapper.ProcessData(item.PFD, item.Package);
 				System.IO.BinaryReader reader = wrapper.StoredData;
 				if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
 				{
@@ -135,7 +134,7 @@ namespace pjse.guidtool
 					if (itemguid == guid)
 					{
 						s += "0x" + SimPe.Helper.HexString(guid) + ": "
-							+ "Group 0x" + SimPe.Helper.HexString(item.FileDescriptor.Group) + " - "
+							+ "Group 0x" + SimPe.Helper.HexString(item.PFD.Group) + " - "
 							+ wrapper.ResourceName.Remove(0, 13) + " (" + item.Package.FileName + ")\n";
 					}
 				}
