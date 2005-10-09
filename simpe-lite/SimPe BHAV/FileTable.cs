@@ -77,7 +77,7 @@ namespace pjse
 
 			ArrayList local = new ArrayList();
 			ArrayList nonlocal = new ArrayList();
-			foreach (Entry e in result.Values)
+			foreach (Entry e in result.Keys)
 				((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
 
 			Entry[] es = new Entry[local.Count + (localOnly ? 0 : nonlocal.Count)];
@@ -94,6 +94,7 @@ namespace pjse
 		private Hashtable pfByGroup = new Hashtable();
 		private Hashtable pfByTypeGroup = new Hashtable();
 		private Hashtable pfByTypeGroupInstance = new Hashtable();
+
 		public void Add(string packageFile)
 		{
 			if (!File.Exists(packageFile)) return;
@@ -125,86 +126,87 @@ namespace pjse
 
 			foreach (IPackedFileDescriptor i in package.Index)
 			{
-				Entry e = new Entry(package, i);
+				object val = true;
+				object key = new Entry(package, i);
 
-				string packedFile = Path.Combine(package.FileName, i.ExportFileName);
-				if (packedFiles[packedFile] != null)
+				if (packedFiles[key] != null)
 					throw new Exception("How did that get there?");
-				packedFiles[packedFile] = e;
+				packedFiles[key] = val;
 
-				if (byPackage[packedFile] != null)
+				if (byPackage[key] != null)
 					throw new Exception("How did that get there?");
-				byPackage[packedFile] = e;
+				byPackage[key] = val;
 
 				Hashtable byType = (Hashtable)pfByType[i.Type];
 				if (byType == null) byType = (Hashtable)(pfByType[i.Type] = new Hashtable());
-				if (byType[packedFile] != null)
+				if (byType[key] != null)
 					throw new Exception("How did that get there?");
-				byType[packedFile] = e;
+				byType[key] = val;
 
 				Hashtable byGroup = (Hashtable)pfByGroup[i.Group];
 				if (byGroup == null) byGroup = (Hashtable)(pfByGroup[i.Group] = new Hashtable());
-				if (byGroup[packedFile] != null)
+				if (byGroup[key] != null)
 					throw new Exception("How did that get there?");
-				byGroup[packedFile] = e;
+				byGroup[key] = val;
 
 				Hashtable tgt = (Hashtable)pfByTypeGroup[i.Type];
 				if (tgt == null) tgt = (Hashtable)(pfByTypeGroup[i.Type] = new Hashtable());
 				Hashtable byTypeGroup = (Hashtable)((tgt[i.Group] == null) ? (tgt[i.Group] = new Hashtable()) : tgt[i.Group]);
-				if (byTypeGroup[packedFile] != null)
+				if (byTypeGroup[key] != null)
 					throw new Exception("How did that get there?");
-				byTypeGroup[packedFile] = e;
+				byTypeGroup[key] = val;
 
 				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[i.Type];
 				if (tgit == null) tgit = (Hashtable)(pfByTypeGroupInstance[i.Type] = new Hashtable());
 				Hashtable tgitg = (Hashtable)((tgit[i.Group] == null) ? (tgit[i.Group] = new Hashtable()) : tgit[i.Group]);
 				Hashtable byTypeGroupInstance = (Hashtable)((tgitg[i.Instance] == null) ? (tgitg[i.Instance] = new Hashtable()) : tgitg[i.Instance]);
-				if (byTypeGroupInstance[packedFile] != null)
+				if (byTypeGroupInstance[key] != null)
 					throw new Exception("How did that get there?");
-				byTypeGroupInstance[packedFile] = e;
+				byTypeGroupInstance[key] = val;
 			}
 			if (isFixed)
 				fixedPackages.Add(package);
 		}
 
+
 		public void Remove(IPackageFile package)
 		{
-			Hashtable byPackage = (Hashtable)GFT.pfByPackage[package];
+			Hashtable byPackage = (Hashtable)pfByPackage[package];
 			if (byPackage == null) return;
+			pfByPackage.Remove(package);
 
-			foreach (IPackedFileDescriptor i in package.Index)
+			foreach(object key in byPackage.Keys)
 			{
-				string packedFile = Path.Combine(package.FileName, i.ExportFileName);
+				uint type = ((Entry)key).Type;
+				uint group = ((Entry)key).Group;
+				uint instance = ((Entry)key).Instance;
 
-				GFT.packedFiles.Remove(packedFile);
-				byPackage.Remove(packedFile);
+				packedFiles.Remove(key);
 
-				Hashtable byType = (Hashtable)GFT.pfByType[i.Type];
-				if (byType != null) byType.Remove(packedFile);
+				Hashtable byType = (Hashtable)pfByType[type];
+				if (byType != null) byType.Remove(key);
 
-				Hashtable byGroup = (Hashtable)GFT.pfByGroup[i.Group];
-				if (byGroup != null) byGroup.Remove(packedFile);
+				Hashtable byGroup = (Hashtable)pfByGroup[group];
+				if (byGroup != null) byGroup.Remove(key);
 
-				Hashtable tgt = (Hashtable)GFT.pfByTypeGroup[i.Type];
+				Hashtable tgt = (Hashtable)pfByTypeGroup[type];
 				if (tgt != null)
 				{
-					Hashtable byTypeGroup = (Hashtable)tgt[i.Group];
-					if (byTypeGroup != null) byTypeGroup.Remove(packedFile);
+					Hashtable byTypeGroup = (Hashtable)tgt[group];
+					if (byTypeGroup != null) byTypeGroup.Remove(key);
 				}
 
-				Hashtable tgit = (Hashtable)GFT.pfByTypeGroupInstance[i.Type];
+				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[type];
 				if (tgit != null)
 				{
-					Hashtable tgitg = (Hashtable)tgit[i.Group];
+					Hashtable tgitg = (Hashtable)tgit[group];
 					if (tgitg != null)
 					{
-						Hashtable byTypeGroupInstance = (Hashtable)tgitg[i.Instance];
-						if (byTypeGroupInstance != null) byTypeGroupInstance.Remove(packedFile);
+						Hashtable byTypeGroupInstance = (Hashtable)tgitg[instance];
+						if (byTypeGroupInstance != null) byTypeGroupInstance.Remove(key);
 					}
 				}
 			}
-
-			GFT.pfByPackage.Remove(package);
 		}
 
 
@@ -215,13 +217,22 @@ namespace pjse
 
 			set
 			{
+				if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+					Remove(currentPackage);
 				if (currentPackage != value)
-				{
-					if (currentPackage != null && !fixedPackages.Contains(currentPackage))
-						Remove(currentPackage);
 					currentPackage = fixedPackages.Contains(value) ? null : value;
-					if (currentPackage != null) Add(value);
-				}
+				if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+					Add(currentPackage);
+			}
+		}
+
+		private void RefreshCurrentPackage()
+		{
+
+			if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+			{
+				Remove(currentPackage);
+				Add(currentPackage);
 			}
 		}
 
@@ -245,16 +256,28 @@ namespace pjse
 		{
 			private IPackageFile package;
 			private IPackedFileDescriptor pfd;
+			private uint type;
+			private uint group;
+			private uint instance;
 
 			public Entry(IPackageFile package, IPackedFileDescriptor pfd)
 			{
 				this.package = package;
 				this.pfd = pfd;
+				this.type = pfd.Type;
+				this.group = pfd.Group;
+				this.instance = pfd.Instance;
 			}
 
 			public IPackageFile Package { get { return package; } }
 
 			public IPackedFileDescriptor PFD { get { return pfd; } }
+
+			public uint Type { get { return type; } }
+
+			public uint Group { get { return group; } }
+
+			public uint Instance { get { return instance; } }
 
 
 			#region IDisposable Members

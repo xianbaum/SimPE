@@ -162,7 +162,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			ArrayList aliases = new ArrayList();
 			foreach (pjse.FileTable.Entry item in pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group])
-				aliases.Add(new SimPe.Data.Alias(item.PFD.Instance, ((BhavWizBhav)item).Filename));
+				aliases.Add(new SimPe.Data.Alias(item.PFD.Instance, BhavWizBhav.Filename(item)));
 
 			list.Items.AddRange((SimPe.Data.Alias[]) aliases.ToArray(typeof(SimPe.Data.Alias)));
 			if (list.Items.Count > 0)

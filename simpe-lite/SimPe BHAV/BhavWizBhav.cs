@@ -188,16 +188,6 @@ namespace pjse.BhavNameWizards
 			return new SemiGlobalWiz(i);
 		}
 
-		public static implicit operator BhavWizBhav(pjse.FileTable.Entry e)
-		{
-			if (e.PFD.Type != SimPe.Data.MetaData.BHAV_FILE)
-				throw new InvalidCastException("Entry not a BHAV");
-			Bhav b = new Bhav(null);
-			b.Package = e.Package;
-			b.FileDescriptor = e.PFD;
-			return new Instruction(b, (ushort)e.PFD.Instance);
-		}
-
 
 		#region BhavWiz
 		private static Hashtable bhavFilenames = new Hashtable();
@@ -246,7 +236,16 @@ namespace pjse.BhavNameWizards
 
 		#endregion
 
-		public string Filename { get { return this.OpcodeName; } }
+		public static string Filename(pjse.FileTable.Entry e)
+		{
+			if (e != null && bhavFilenames[e] == null)
+			{
+				Bhav b = new Bhav(null);
+				b.ProcessData(e.PFD, e.Package);
+				bhavFilenames[e] = b.FileName;
+			}
+			return (e != null && bhavFilenames[e] != null) ? (string)bhavFilenames[e] : "[" + SimPe.Localization.Manager.GetString("unk") + " BHAV]";
+		}
 
 		private string Operands(bool lng)
 		{
