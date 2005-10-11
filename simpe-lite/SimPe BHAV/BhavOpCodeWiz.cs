@@ -107,11 +107,15 @@ namespace SimPe.PackedFiles.UserInterface
 					lbprimitives.SelectedIndex = 0;
 				}
 			}
-			Fill((flags & Flags.Globals), (GlobalWiz)wrapper, lbglobal, tbglobal);
-			if (!(wrapper is Bhav) || !(((pjse.BhavWiz)(Bhav)wrapper) is GlobalWiz))
-				Fill((flags & Flags.Semis), (SemiGlobalWiz)wrapper, lbsemi, tbsemi);
-			if (!(wrapper is Bhav) || ((pjse.BhavWiz)(Bhav)wrapper) is LocalWiz)
-				Fill((flags & Flags.Locals), (LocalWiz)wrapper, lbprivate, tbprivate);
+			Fill((flags & Flags.Globals), 0x7FD46CD0, lbglobal, tbglobal);
+			Glob g = BhavWizBhav.GlobByGroup(wrapper.FileDescriptor.Group);
+			if (g != null)
+			{
+				Fill((flags & Flags.Semis), g.SemiGlobalGroup, lbsemi, tbsemi);
+				tbsemi.Text = g.SemiGlobalName;
+			}
+			if (wrapper.FileDescriptor.Group != 0x7FD46CD0)
+				Fill((flags & Flags.Locals), wrapper.FileDescriptor.Group, lbprivate, tbprivate);
 			this.tcopcodes.SelectedIndex = this.tcopcodes.TabPages.Count - 1;
 
 			form.Cursor = Cursors.Default;
@@ -151,18 +155,20 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}
 
-
-		private void Fill(Flags flag, BhavWizBhav wiz, ListBox list, TabPage tab)
+		private void Fill(Flags flag, uint group, ListBox list, TabPage tab)
 		{
 			if (flag == 0) return;
 			list.Items.Clear();
-			list.Items.AddRange((SimPe.Data.Alias[]) wiz.Aliases.ToArray(typeof(SimPe.Data.Alias)));
+
+			ArrayList aliases = new ArrayList();
+			foreach (pjse.FileTable.Entry item in pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group])
+				aliases.Add(new SimPe.Data.Alias(item.PFD.Instance, BhavWizBhav.Filename(item)));
+
+			list.Items.AddRange((SimPe.Data.Alias[]) aliases.ToArray(typeof(SimPe.Data.Alias)));
 			if (list.Items.Count > 0)
 			{
 				this.tcopcodes.TabPages.Add(tab);
 				list.SelectedIndex = 0;
-				if (wiz is SemiGlobalWiz)
-					tab.Text = wiz.SemiGlobalName;
 			}
 		}
 

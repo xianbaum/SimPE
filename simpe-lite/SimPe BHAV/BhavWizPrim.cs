@@ -765,7 +765,7 @@ namespace pjse.BhavNameWizards
 			else if ((o[2] & 2) != 0) scope = Scope.SemiGlobal;
 			else scope = Scope.Private; 
 
-			s += scope.ToString() + ": " + readStr(scope, (ulong)GS.SF.gNamedTreePrim, o[4] - 1);
+			s += scope.ToString() + ": " + readStr(scope, (uint)GS.SF.gNamedTreePrim, o[4] - 1);
 
 			if (lng)
 			{
@@ -892,7 +892,7 @@ namespace pjse.BhavNameWizards
 					break;
 				case 0x08: case 0x0a:
 					s += lng ? ", " + dialogStr(scope, (o[8] & 0x02) != 0, msg)
-						: readStr(scope, (ulong)GS.SF.gDialogPrim, msg - 1, 60);
+						: readStr(scope, (uint)GS.SF.gDialogPrim, msg - 1, 60);
 					if (lng)
 					{
 						s += ", priority 0x" + SimPe.Helper.HexString((byte)(o[9] + 1));
@@ -908,7 +908,7 @@ namespace pjse.BhavNameWizards
 					break;
 				default:
 					s += lng ? ", " + dialogStr(scope, (o[8] & 0x02) != 0, msg)
-						: readStr(scope, (ulong)GS.SF.gDialogPrim, msg - 1, 60);
+						: readStr(scope, (uint)GS.SF.gDialogPrim, msg - 1, 60);
 					if (lng)
 					{
 						s += ", Yes: "    + dialogStr(scope, (o[8] & 0x04) != 0, o[3]);
@@ -971,7 +971,7 @@ namespace pjse.BhavNameWizards
 			{
 				if (instance != 0)
 					s += "0x" + SimPe.Helper.HexString(instance) +
-						": " + readStr(scope, (ulong)GS.SF.gDialogPrim, instance - 1, len);
+						": " + readStr(scope, (uint)GS.SF.gDialogPrim, instance - 1, len);
 				else
 					s += "none";
 			}

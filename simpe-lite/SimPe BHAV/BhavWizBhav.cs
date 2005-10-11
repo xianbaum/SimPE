@@ -163,23 +163,17 @@ namespace pjse.BhavNameWizards
 	/// <summary>
 	/// Abstract class for BHAV name providers (global, local, semiglobal)
 	/// </summary>
-	public abstract class BhavWizBhav : BhavWiz
+	public abstract class BhavWizBhav : BhavWiz, IDisposable
 	{
-		private Bhav bhav = null;
+		protected Bhav bhav = null;
+		protected pjse.FileTable.Entry ftEntry = null;
+		protected uint group = 0;
 
 		protected BhavWizBhav(Instruction i) : base (i)
 		{
-			if (i != null)
+			if (i != null && i.Parent != null && i.Parent.FileDescriptor != null)
 			{
-				SimPe.FileTable.FileIndex.Load();
-				IScenegraphFileIndexItem[] items =
-					SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group, (ulong)i.OpCode, null);
-				if (items != null && items.Length > 0)
-				{
-					bhav = new Bhav(null);
-					bhav.ProcessData(items[0]);
-					bhavFilenames[items[0].FileDescriptor.Filename] = bhav.FileName;
-				}
+				group = i.Parent.FileDescriptor.Group;
 			}
 		}
 
@@ -187,30 +181,75 @@ namespace pjse.BhavNameWizards
 		{
 			if (i.OpCode < 0x0100)
 				throw new InvalidCastException("OpCode not a BHAV");
-			if (i.OpCode < 0x1000) return new GlobalWiz(i);
-			if (i.OpCode < 0x2000) return new LocalWiz(i);
+			if (i.OpCode < 0x1000)
+				return new GlobalWiz(i);
+			if (i.OpCode < 0x2000)
+				return new LocalWiz(i);
 			return new SemiGlobalWiz(i);
 		}
 
-		protected abstract uint Group { get; }
-
 
 		#region BhavWiz
-		protected override string Prefix { get { return "BHAV"; } }
+		private static Hashtable bhavFilenames = new Hashtable();
+		protected override string OpcodeName
+		{
+			get
+			{
+				if (FTEntry != null && bhavFilenames[FTEntry] == null && Wrapper != null)
+					bhavFilenames[FTEntry] = Wrapper.FileName;
+				return (FTEntry != null && bhavFilenames[FTEntry] != null) ? (string)bhavFilenames[FTEntry] : "[" + SimPe.Localization.Manager.GetString("unk") + " BHAV]";
+			}
+		}
 
-		protected override string OpcodeName { get  { return (bhav != null) ? bhav.FileName : "[" + SimPe.Localization.Manager.GetString("unk") + " BHAV]"; } }
 
 		public override string ShortName { get { return base.ShortName + " (" + Operands(false) + ")"; } }
 
 		public override string LongName { get { return base.ShortName + " (" + Operands(true) + ")"; } }
 
-		public override Bhav Wrapper { get { return bhav; } }
+
+		private pjse.FileTable.Entry FTEntry
+		{
+			get
+			{
+				if (ftEntry == null)
+				{
+					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group, instruction.OpCode];
+					if (items != null && items.Length > 0)
+						ftEntry = items[0];
+				}
+				return ftEntry;
+			}
+		}
+
+		public override Bhav Wrapper
+		{
+			get
+			{
+				if (bhav == null && FTEntry != null)
+				{
+					bhav = new Bhav(null);
+					bhav.ProcessData(ftEntry.PFD, ftEntry.Package);
+				}
+				return bhav;
+			}
+		}
 
 		#endregion
 
+		public static string Filename(pjse.FileTable.Entry e)
+		{
+			if (e != null && bhavFilenames[e] == null)
+			{
+				Bhav b = new Bhav(null);
+				b.ProcessData(e.PFD, e.Package);
+				bhavFilenames[e] = b.FileName;
+			}
+			return (e != null && bhavFilenames[e] != null) ? (string)bhavFilenames[e] : "[" + SimPe.Localization.Manager.GetString("unk") + " BHAV]";
+		}
+
 		private string Operands(bool lng)
 		{
-			if (bhav == null) 
+			if (Wrapper == null) 
 				return "[" + SimPe.Localization.Manager.GetString("unk") + "]";
 
 			string s = "";
@@ -275,51 +314,23 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		private static Hashtable bhavFilenames = new Hashtable();
+		#region IDisposable Members
 
-		public ArrayList Aliases
+		public new void Dispose()
 		{
-			get
-			{
-				ArrayList aliases = new ArrayList();
-				ArrayList instances = new ArrayList();
-
-				SimPe.FileTable.FileIndex.Load();
-				foreach (IScenegraphFileIndexItem item in SimPe.FileTable.FileIndex.FindFile(SimPe.Data.MetaData.BHAV_FILE, Group))
-				{
-					if (instruction == null || instruction.Parent == null || instruction.Parent.Package == item.Package
-						|| bhavFilenames[item.FileDescriptor.Filename] == null)
-					{
-						Bhav b = new Bhav(null);
-						b.ProcessData(item);
-						bhavFilenames[item.FileDescriptor.Filename] = b.FileName;
-					}
-					if (!instances.Contains(item.FileDescriptor.Instance))
-					{
-						instances.Add(item.FileDescriptor.Instance);
-						aliases.Add(new SimPe.Data.Alias(item.FileDescriptor.Instance, (string)bhavFilenames[item.FileDescriptor.Filename]));
-					}
-				}
-
-				return aliases;
-			}
+			bhav = null;
+			ftEntry = null;
 		}
+
+		#endregion
+
 	}
 
 
 	public class GlobalWiz : BhavWizBhav
 	{
-		public GlobalWiz(Instruction i) : base(i) { }
+		public GlobalWiz(Instruction i) : base(i) { group = 0x7FD46CD0; }
 
-		public static implicit operator GlobalWiz(AbstractWrapper parent)
-		{
-			return new GlobalWiz(new Instruction(parent, 0x0100));
-		}
-
-		#region BhavWizBhav
-		protected override uint Group { get { return 0x7FD46CD0; } }
-
-		#endregion
 		#region BhavWiz
 		protected override string Prefix { get { return "global"; } }
 
@@ -330,23 +341,6 @@ namespace pjse.BhavNameWizards
 	{
 		public LocalWiz(Instruction i) : base(i) { }
 
-		public static implicit operator LocalWiz(AbstractWrapper parent)
-		{
-			return new LocalWiz(new Instruction(parent, 0x1000));
-		}
-
-		#region BhavWizBhav
-		protected override uint Group
-		{
-			get
-			{
-				return (instruction != null && instruction.Parent != null && instruction.Parent.FileDescriptor != null)
-					? instruction.Parent.FileDescriptor.Group
-					: 0xffffffff;
-			}
-		}
-
-		#endregion
 		#region BhavWiz
 		protected override string Prefix { get { return "private"; } }
 
@@ -355,29 +349,15 @@ namespace pjse.BhavNameWizards
 
 	public class SemiGlobalWiz : BhavWizBhav
 	{
-		public SemiGlobalWiz(Instruction i) : base(i) { }
-
-		public static implicit operator SemiGlobalWiz(AbstractWrapper parent)
+		public SemiGlobalWiz(Instruction i) : base(i)
 		{
-			return new SemiGlobalWiz(new Instruction(parent, 0x2000));
+			Glob g = SemiGlobalWiz.GlobByGroup(group);
+			if (g != null) group = g.SemiGlobalGroup;
 		}
 
-		#region BhavWizBhav
-		protected override uint Group
-		{
-			get
-			{
-				return (instruction != null && instruction.Parent != null && instruction.Parent.FileDescriptor != null)
-					? SemiGlobalGroup
-					: 0;
-			}
-		}
-
-		#endregion
 		#region BhavWiz
 		protected override string Prefix { get { return "semi"; } }
 
 		#endregion
 	}
-
 }

@@ -491,8 +491,8 @@ namespace SimPe.PackedFiles.UserInterface
 				{
 					this.btnCancel.Enabled = true;
 
-					this.llopenbhav.Enabled = currentInst.Wrapper != null;
 					this.currentInst = currentInst.Instruction;
+					this.llopenbhav.Enabled = currentInst.Wrapper != null;
 					this.btnOperandWiz.Enabled = pjse.BhavOperandWizProvider.For(currentInst) != null;
 					this.tbInst_Longname.Text = currentInst.LongName;
 				}

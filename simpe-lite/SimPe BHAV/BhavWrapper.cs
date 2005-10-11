@@ -22,6 +22,7 @@
 using System;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
+using SimPe.Interfaces.Files;
 
 namespace SimPe.PackedFiles.Wrapper
 {

@@ -29,12 +29,6 @@ namespace pjse
 	/// </summary>
 	public class GS
 	{
-		/// <summary>
-		/// Creates the List for the specific Folder
-		/// </summary>
-		public GS() { }
-
-
 		public static string GStr(uint instance, ushort sid)
 		{
 			ArrayList str = gStr(instance);
@@ -56,40 +50,26 @@ namespace pjse
 		public static ArrayList gStr(SF instance) { return gStr((uint)instance); }
 
 
-		private static SimPe.Interfaces.Files.IPackageFile gStrPackage = null;
 		private static Hashtable gString = new Hashtable();
+
 		private static void LoadData(uint instance)
 		{
-			LoadPackage();
-			if (gStrPackage == null) return;
-
 			if (gString[instance] != null) return;
 
 			ArrayList list = new ArrayList();
 
-			IPackedFileDescriptor pfd = gStrPackage.FindFile(SimPe.Data.MetaData.STRING_FILE, 0x00000000, 0x7FE59FD0, instance);
-			if (pfd == null) pfd = gStrPackage.FindFile(SimPe.Data.MetaData.STRING_FILE, 0x00000000, 0x7FD46CD0, instance);
-			if (pfd == null) return;
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, 0x7FE59FD0, instance];
+			if (items == null) items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, 0x7FD46CD0, instance];
+			if (items == null) return;
 
 			SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
-			str.ProcessData(pfd, gStrPackage);
+			str.ProcessData(items[0].PFD, items[0].Package);
 
 			SimPe.PackedFiles.Wrapper.StrItem si;
 			for(int i = 0; (si = str[1, i]) != null; i++)
 				list.Add(si.Title);
 
 			gString[instance] = list;
-		}
-
-		private static void LoadPackage() 
-		{
-			if (gStrPackage != null) return;
-
-			string file = System.IO.Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package");
-			if (!System.IO.File.Exists(file))
-				file = System.IO.Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package");
-			if (System.IO.File.Exists(file))
-				gStrPackage = SimPe.Packages.File.LoadFromFile(file);
 		}
 
 
