@@ -1,4 +1,15 @@
 
+11 October 2005 21:26 - FileTable: separate out to avoid problem dependencies
+  pjse filetable\
+    .cvsignore 1.1
+    AssemblyInfo.cs 1.1
+    FileTable.cs 1.1
+    pjse filetable.csproj 1.1
+  SimPe BHAV\
+    FileTable.cs (moved to pjse filetable\)
+    pjse coder plugin.csproj 1.21
+    pjse cover plugins.sln 1.5
+
 11 October 2005 19:33 - FileTable landing
   SimPe BHAV\
     BhavForm.cs 1.55

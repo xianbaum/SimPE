@@ -1,4 +1,8 @@
 
+11 October 2005 21:28 - FileTable: separate out to avoid problem dependencies
+  pjse GUID Tool\
+    pjse GUID Tool.csproj 1.4
+
 11 October 2005 19:34: Updated to use FileTable
   pjse GUID Tool\
     GUIDTool.cs 1.2
