@@ -134,21 +134,15 @@
                     Private = "False"
                 />
                 <Reference
+                    Name = "pjse filetable"
+                    Project = "{84085FAA-A947-492E-88BC-B941A4623811}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+                    Private = "False"
+                />
+                <Reference
                     Name = "simpe.commonhandler"
                     AssemblyName = "simpe.commonhandler"
                     HintPath = "..\..\SimPe\simpe.commonhandler.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.names"
-                    AssemblyName = "simpe.names"
-                    HintPath = "..\..\SimPe\simpe.names.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "pjse coder plugin"
-                    Project = "{6AA664E9-B45F-4D61-9B9F-E68341C16473}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                     Private = "False"
                 />
             </References>
