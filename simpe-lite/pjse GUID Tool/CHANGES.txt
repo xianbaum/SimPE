@@ -1,4 +1,10 @@
 
+11 October 2005 22:39 - Add searching by OBJd filename
+  pjse GUID Tool\
+    GUIDTool.cs 1.3
+    GUIDTool.resx 1.2
+    pjse GUID Tool.csproj 1.5
+
 11 October 2005 21:28 - FileTable: separate out to avoid problem dependencies
   pjse GUID Tool\
     pjse GUID Tool.csproj 1.4
