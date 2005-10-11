@@ -39,6 +39,8 @@ namespace pjse.guidtool
 		private System.Windows.Forms.Button btnSearch;
 		private System.Windows.Forms.Button btnClose;
 		private System.Windows.Forms.ProgressBar progressBar1;
+		private System.Windows.Forms.Label lbName;
+		private System.Windows.Forms.TextBox tbName;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -100,9 +102,9 @@ namespace pjse.guidtool
 
 		private uint guid = 0;
 		private ArrayList alHex32 = null;
-		private bool internalchg = false;
+		private Control last = null;
 
-		private void GUIDSearch()
+		private void Search(SearchType type)
 		{
 			string s = "";
 			uint itemguid = 0;
@@ -126,14 +128,22 @@ namespace pjse.guidtool
 			{
 				wrapper.ProcessData(item.PFD, item.Package);
 				System.IO.BinaryReader reader = wrapper.StoredData;
-				if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
-				{
-					reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
-					itemguid = reader.ReadUInt32();
 
-					if (itemguid == guid)
+				if (reader.BaseStream.Length >= 0x40) // filename length
+				{
+					if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
 					{
-						s += "0x" + SimPe.Helper.HexString(guid) + ": "
+						reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
+						itemguid = reader.ReadUInt32();
+					}
+					else
+						itemguid = 0;
+
+					if ((type == SearchType.GUID && itemguid == guid)
+						||
+						(type == SearchType.Name && wrapper.ResourceName.Trim().Remove(0, 13).ToLower().IndexOf(this.tbName.Text) >= 0))
+					{
+						s += "0x" + SimPe.Helper.HexString(itemguid) + ": "
 							+ "Group 0x" + SimPe.Helper.HexString(item.PFD.Group) + " - "
 							+ wrapper.ResourceName.Remove(0, 13) + " (" + item.Package.FileName + ")\n";
 					}
@@ -155,6 +165,14 @@ namespace pjse.guidtool
 		}
 
 
+		#region SearchType
+		private enum SearchType : int
+		{
+			GUID,
+			Name,
+		}
+		#endregion
+
 		#region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
@@ -168,28 +186,29 @@ namespace pjse.guidtool
 			this.btnSearch = new System.Windows.Forms.Button();
 			this.btnClose = new System.Windows.Forms.Button();
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
+			this.lbName = new System.Windows.Forms.Label();
+			this.tbName = new System.Windows.Forms.TextBox();
 			this.SuspendLayout();
 			// 
 			// tbGUID
 			// 
-			this.tbGUID.Location = new System.Drawing.Point(52, 8);
+			this.tbGUID.Location = new System.Drawing.Point(56, 8);
 			this.tbGUID.MaxLength = 10;
 			this.tbGUID.Name = "tbGUID";
 			this.tbGUID.Size = new System.Drawing.Size(88, 20);
-			this.tbGUID.TabIndex = 2;
+			this.tbGUID.TabIndex = 1;
 			this.tbGUID.Text = "0xDDDDDDDD";
 			this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-			this.tbGUID.Validated += new System.EventHandler(this.hex32_Validated);
-			this.tbGUID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
-			this.tbGUID.Enter += new System.EventHandler(this.tbGUID_Enter);
+			this.tbGUID.Validated += new System.EventHandler(this.textBox_Validated);
+			this.tbGUID.Enter += new System.EventHandler(this.textBox_Enter);
 			// 
 			// lbGUID
 			// 
 			this.lbGUID.AutoSize = true;
-			this.lbGUID.Location = new System.Drawing.Point(15, 11);
+			this.lbGUID.Location = new System.Drawing.Point(16, 8);
 			this.lbGUID.Name = "lbGUID";
 			this.lbGUID.Size = new System.Drawing.Size(32, 16);
-			this.lbGUID.TabIndex = 1;
+			this.lbGUID.TabIndex = 0;
 			this.lbGUID.Text = "GUID";
 			// 
 			// rtbReport
@@ -198,19 +217,20 @@ namespace pjse.guidtool
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.rtbReport.DetectUrls = false;
-			this.rtbReport.Location = new System.Drawing.Point(16, 40);
+			this.rtbReport.Location = new System.Drawing.Point(8, 72);
 			this.rtbReport.Name = "rtbReport";
 			this.rtbReport.ReadOnly = true;
 			this.rtbReport.ShowSelectionMargin = true;
-			this.rtbReport.Size = new System.Drawing.Size(416, 120);
+			this.rtbReport.Size = new System.Drawing.Size(432, 120);
 			this.rtbReport.TabIndex = 0;
 			this.rtbReport.TabStop = false;
-			this.rtbReport.Text = "Type in the GUID and click Search";
+			this.rtbReport.Text = "Type in the GUID or (part of) the object name and click Search";
 			this.rtbReport.WordWrap = false;
 			// 
 			// btnSearch
 			// 
-			this.btnSearch.Location = new System.Drawing.Point(152, 8);
+			this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnSearch.Location = new System.Drawing.Point(272, 8);
 			this.btnSearch.Name = "btnSearch";
 			this.btnSearch.TabIndex = 3;
 			this.btnSearch.Text = "Search";
@@ -220,7 +240,7 @@ namespace pjse.guidtool
 			// 
 			this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnClose.Location = new System.Drawing.Point(358, 8);
+			this.btnClose.Location = new System.Drawing.Point(360, 8);
 			this.btnClose.Name = "btnClose";
 			this.btnClose.TabIndex = 4;
 			this.btnClose.Text = "Close";
@@ -228,23 +248,47 @@ namespace pjse.guidtool
 			// progressBar1
 			// 
 			this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.progressBar1.Location = new System.Drawing.Point(0, 166);
+			this.progressBar1.Location = new System.Drawing.Point(0, 198);
 			this.progressBar1.Name = "progressBar1";
 			this.progressBar1.Size = new System.Drawing.Size(448, 23);
 			this.progressBar1.TabIndex = 5;
+			// 
+			// lbName
+			// 
+			this.lbName.AutoSize = true;
+			this.lbName.Location = new System.Drawing.Point(16, 40);
+			this.lbName.Name = "lbName";
+			this.lbName.Size = new System.Drawing.Size(34, 16);
+			this.lbName.TabIndex = 0;
+			this.lbName.Text = "Name";
+			// 
+			// tbName
+			// 
+			this.tbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.tbName.Location = new System.Drawing.Point(56, 40);
+			this.tbName.MaxLength = 10;
+			this.tbName.Name = "tbName";
+			this.tbName.Size = new System.Drawing.Size(376, 20);
+			this.tbName.TabIndex = 2;
+			this.tbName.Text = "";
+			this.tbName.Validated += new System.EventHandler(this.textBox_Validated);
+			this.tbName.Enter += new System.EventHandler(this.textBox_Enter);
 			// 
 			// GUIDTool
 			// 
 			this.AcceptButton = this.btnSearch;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.btnClose;
-			this.ClientSize = new System.Drawing.Size(448, 189);
+			this.ClientSize = new System.Drawing.Size(448, 221);
+			this.Controls.Add(this.tbName);
+			this.Controls.Add(this.lbName);
+			this.Controls.Add(this.lbGUID);
+			this.Controls.Add(this.tbGUID);
 			this.Controls.Add(this.progressBar1);
 			this.Controls.Add(this.btnClose);
 			this.Controls.Add(this.btnSearch);
 			this.Controls.Add(this.rtbReport);
-			this.Controls.Add(this.lbGUID);
-			this.Controls.Add(this.tbGUID);
 			this.Name = "GUIDTool";
 			this.Text = "GUID Tool";
 			this.ResumeLayout(false);
@@ -252,27 +296,12 @@ namespace pjse.guidtool
 		}
 		#endregion
 
-		private void hex32_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!hex32_IsValid(sender)) return;
-
-			uint val = Convert.ToUInt32(((TextBox)sender).Text, 16);
-			internalchg = true;
-			switch (alHex32.IndexOf(sender))
-			{
-				case 0: guid = val; break;
-			}
-			internalchg = false;
-		}
-
 		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex32_IsValid(sender)) return;
 
 			e.Cancel = true;
 
-			internalchg = true;
 			uint val = 0;
 			switch (alHex32.IndexOf(sender))
 			{
@@ -281,27 +310,31 @@ namespace pjse.guidtool
 
 			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(val);
 			((TextBox)sender).SelectAll();
-			internalchg = false;
 		}
-
-		private void hex32_Validated(object sender, System.EventArgs e)
-		{
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
-			internalchg = origstate;
-		}
-
 
 		private void btnSearch_Click(object sender, System.EventArgs e)
 		{
-			GUIDSearch();
+			if (this.last == this.tbGUID)
+			{
+				guid = Convert.ToUInt32(this.tbGUID.Text, 16);
+				this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
+				Search(SearchType.GUID);
+			}
+			else if (this.last == this.tbName)
+			{
+				this.tbName.Text = this.tbName.Text.Trim().ToLower();
+				Search(SearchType.Name);
+			}
 		}
 
-		private void tbGUID_Enter(object sender, System.EventArgs e)
+		private void textBox_Enter(object sender, System.EventArgs e)
 		{
-			this.tbGUID.SelectAll();
+			((TextBox)sender).SelectAll();
+		}
+
+		private void textBox_Validated(object sender, System.EventArgs e)
+		{
+			this.last = (TextBox)sender;
 		}
 
 	}
