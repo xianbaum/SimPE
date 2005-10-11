@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse GUID Tool", "..\pjse G
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse filetable", "..\pjse filetable\pjse filetable.csproj", "{84085FAA-A947-492E-88BC-B941A4623811}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -26,6 +30,12 @@ Global
 		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.InProgress.Build.0 = InProgress|.NET
 		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.Release.ActiveCfg = Release|.NET
 		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}.Release.Build.0 = Release|.NET
+		{84085FAA-A947-492E-88BC-B941A4623811}.Debug.ActiveCfg = Debug|.NET
+		{84085FAA-A947-492E-88BC-B941A4623811}.Debug.Build.0 = Debug|.NET
+		{84085FAA-A947-492E-88BC-B941A4623811}.InProgress.ActiveCfg = Release|.NET
+		{84085FAA-A947-492E-88BC-B941A4623811}.InProgress.Build.0 = Release|.NET
+		{84085FAA-A947-492E-88BC-B941A4623811}.Release.ActiveCfg = Release|.NET
+		{84085FAA-A947-492E-88BC-B941A4623811}.Release.Build.0 = Release|.NET
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

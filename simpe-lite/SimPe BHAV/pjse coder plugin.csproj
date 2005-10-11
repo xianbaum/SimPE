@@ -110,36 +110,6 @@
                     HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
                 />
                 <Reference
-                    Name = "XPCommonControls"
-                    AssemblyName = "XPCommonControls"
-                    HintPath = "..\..\SimPe\XPCommonControls.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "HexEdit"
-                    AssemblyName = "HexEdit"
-                    HintPath = "..\..\SimPe\HexEdit.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "ICSharpCode.SharpZipLib"
-                    AssemblyName = "ICSharpCode.SharpZipLib"
-                    HintPath = "..\..\SimPe\ICSharpCode.SharpZipLib.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.byteview"
-                    AssemblyName = "simpe.byteview"
-                    HintPath = "..\..\SimPe\simpe.byteview.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.commandline"
-                    AssemblyName = "simpe.commandline"
-                    HintPath = "..\..\SimPe\simpe.commandline.dll"
-                    Private = "False"
-                />
-                <Reference
                     Name = "simpe.commonhandler"
                     AssemblyName = "simpe.commonhandler"
                     HintPath = "..\..\SimPe\simpe.commonhandler.dll"
@@ -182,40 +152,15 @@
                     Private = "False"
                 />
                 <Reference
-                    Name = "simpe.s2cp"
-                    AssemblyName = "simpe.s2cp"
-                    HintPath = "..\..\SimPe\simpe.s2cp.dll"
-                    Private = "False"
-                />
-                <Reference
                     Name = "simpe.workspace"
                     AssemblyName = "simpe.workspace"
                     HintPath = "..\..\SimPe\simpe.workspace.dll"
                     Private = "False"
                 />
                 <Reference
-                    Name = "sims.guid"
-                    AssemblyName = "sims.guid"
-                    HintPath = "..\..\SimPe\sims.guid.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "skybound.visualstyles"
-                    AssemblyName = "Skybound.VisualStyles"
-                    HintPath = "..\..\SimPe\skybound.visualstyles.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "SourceGrid2"
-                    AssemblyName = "SourceGrid2"
-                    HintPath = "..\..\SimPe\SourceGrid2.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "SourceLibrary"
-                    AssemblyName = "SourceLibrary"
-                    HintPath = "..\..\SimPe\SourceLibrary.dll"
-                    Private = "False"
+                    Name = "pjse filetable"
+                    Project = "{84085FAA-A947-492E-88BC-B941A4623811}"
+                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
                 <Reference
                     Name = "simpe.filehandler"
@@ -381,11 +326,6 @@
                     RelPath = "Chooser.resx"
                     DependentUpon = "Chooser.cs"
                     BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "FileTable.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
                 />
                 <File
                     RelPath = "GlobalStr.cs"

@@ -23,7 +23,6 @@ using System.Collections;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
 using SimPe.Interfaces.Plugin;
-using SimPe.Interfaces.Scenegraph;
 
 namespace pjse
 {
