@@ -165,7 +165,7 @@ namespace pjse.guidtool
 		}
 
 
-		#region SearchType
+		#region SearchType enum
 		private enum SearchType : int
 		{
 			GUID,
@@ -205,7 +205,7 @@ namespace pjse.guidtool
 			// lbGUID
 			// 
 			this.lbGUID.AutoSize = true;
-			this.lbGUID.Location = new System.Drawing.Point(16, 8);
+			this.lbGUID.Location = new System.Drawing.Point(19, 11);
 			this.lbGUID.Name = "lbGUID";
 			this.lbGUID.Size = new System.Drawing.Size(32, 16);
 			this.lbGUID.TabIndex = 0;
@@ -256,7 +256,7 @@ namespace pjse.guidtool
 			// lbName
 			// 
 			this.lbName.AutoSize = true;
-			this.lbName.Location = new System.Drawing.Point(16, 40);
+			this.lbName.Location = new System.Drawing.Point(17, 43);
 			this.lbName.Name = "lbName";
 			this.lbName.Size = new System.Drawing.Size(34, 16);
 			this.lbName.TabIndex = 0;
@@ -290,7 +290,7 @@ namespace pjse.guidtool
 			this.Controls.Add(this.btnSearch);
 			this.Controls.Add(this.rtbReport);
 			this.Name = "GUIDTool";
-			this.Text = "GUID Tool";
+			this.Text = "Object Finder";
 			this.ResumeLayout(false);
 
 		}
@@ -318,10 +318,13 @@ namespace pjse.guidtool
 			{
 				guid = Convert.ToUInt32(this.tbGUID.Text, 16);
 				this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
+				this.tbName.Text = "";
 				Search(SearchType.GUID);
 			}
 			else if (this.last == this.tbName)
 			{
+				guid = 0;
+				this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
 				this.tbName.Text = this.tbName.Text.Trim().ToLower();
 				Search(SearchType.Name);
 			}
