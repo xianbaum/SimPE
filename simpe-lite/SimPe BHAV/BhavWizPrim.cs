@@ -597,7 +597,7 @@ namespace pjse.BhavNameWizards
 
 		public override string LongName { get { return base.ShortName + " (" + Operands(true) + ")"; } }
 
-		protected virtual string Operands(bool lng) { return ""; }
+		protected virtual string Operands(bool lng) { return "not yet translated"; }
 	}
 
 
