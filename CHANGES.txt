@@ -1,4 +1,9 @@
 
+15 October 2005 18:59 - Stop too many matches crashing the tool
+  pjse GUID Tool\
+    GUIDTool.cs 1.5
+    GUIDTool.resx 1.4
+
 12 October 2005 19:57 - Change of name, cosmetic tidy-ups
   pjse GUID Tool\
     GUIDTool.cs 1.4
