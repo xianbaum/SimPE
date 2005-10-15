@@ -282,7 +282,6 @@ namespace pjse.guidtool
 			this.tbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.tbName.Location = new System.Drawing.Point(56, 40);
-			this.tbName.MaxLength = 10;
 			this.tbName.Name = "tbName";
 			this.tbName.Size = new System.Drawing.Size(376, 20);
 			this.tbName.TabIndex = 2;
