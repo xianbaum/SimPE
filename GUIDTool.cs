@@ -41,6 +41,7 @@ namespace pjse.guidtool
 		private System.Windows.Forms.ProgressBar progressBar1;
 		private System.Windows.Forms.Label lbName;
 		private System.Windows.Forms.TextBox tbName;
+		private System.Windows.Forms.Label lbStatus;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -55,6 +56,7 @@ namespace pjse.guidtool
 
 			TextBox[] alHex32s = { tbGUID, };
 			alHex32 = new ArrayList(alHex32s);
+			this.progressBar1.Visible = false;
 		}
 
 		/// <summary>
@@ -112,18 +114,21 @@ namespace pjse.guidtool
 			AbstractWrapper wrapper = (AbstractWrapper)SimPe.FileTable.WrapperRegistry.FindHandler(SimPe.Data.MetaData.OBJD_FILE);
 			if (wrapper == null)
 			{
-				this.rtbReport.Text = "[Error: can't process OBJD files]";
+				this.lbStatus.Text = "[Error: can't process OBJD files]";
 				return;
 			}
 
 			this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
 
+			this.lbStatus.Visible = false;
 			this.progressBar1.Value = 0;
-			this.rtbReport.Text = "Searching...";
+			this.progressBar1.Visible = true;
 
 			pjse.FileTable.Entry[] results = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
 			this.progressBar1.Maximum = results.Length;
 
+			this.rtbReport.Text = "";
+			int i = 0;
 			foreach (pjse.FileTable.Entry item in results)
 			{
 				wrapper.ProcessData(item.PFD, item.Package);
@@ -143,16 +148,24 @@ namespace pjse.guidtool
 						||
 						(type == SearchType.Name && wrapper.ResourceName.Trim().Remove(0, 13).ToLower().IndexOf(this.tbName.Text) >= 0))
 					{
-						s += "0x" + SimPe.Helper.HexString(itemguid) + ": "
+						this.rtbReport.Text += "0x" + SimPe.Helper.HexString(itemguid) + ": "
 							+ "Group 0x" + SimPe.Helper.HexString(item.PFD.Group) + " - "
 							+ wrapper.ResourceName.Remove(0, 13) + " (" + item.Package.FileName + ")\n";
+						i++;
 					}
 				}
 				this.progressBar1.Value++;
+				if (i >= 180)
+					break;
 			}
 			this.Cursor = System.Windows.Forms.Cursors.Default;
-			this.rtbReport.Text = s.Length == 0 ? "No matches found" : s;
 			this.progressBar1.Value = 0;
+			this.progressBar1.Visible = false;
+			if (i < 180)
+				this.lbStatus.Text = (this.rtbReport.Text.Length == 0 ? "No" : i.ToString()) + " matches found";
+			else
+				this.lbStatus.Text = "Too many matches found, first 180 shown.  Use a more specific search.";
+			this.lbStatus.Visible = true;
 		}
 
 		private bool hex32_IsValid(object sender)
@@ -188,6 +201,7 @@ namespace pjse.guidtool
 			this.progressBar1 = new System.Windows.Forms.ProgressBar();
 			this.lbName = new System.Windows.Forms.Label();
 			this.tbName = new System.Windows.Forms.TextBox();
+			this.lbStatus = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// tbGUID
@@ -217,6 +231,7 @@ namespace pjse.guidtool
 				| System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.rtbReport.DetectUrls = false;
+			this.rtbReport.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.rtbReport.Location = new System.Drawing.Point(8, 72);
 			this.rtbReport.Name = "rtbReport";
 			this.rtbReport.ReadOnly = true;
@@ -224,7 +239,7 @@ namespace pjse.guidtool
 			this.rtbReport.Size = new System.Drawing.Size(432, 120);
 			this.rtbReport.TabIndex = 0;
 			this.rtbReport.TabStop = false;
-			this.rtbReport.Text = "Type in the GUID or (part of) the object name and click Search";
+			this.rtbReport.Text = "";
 			this.rtbReport.WordWrap = false;
 			// 
 			// btnSearch
@@ -275,12 +290,23 @@ namespace pjse.guidtool
 			this.tbName.Validated += new System.EventHandler(this.textBox_Validated);
 			this.tbName.Enter += new System.EventHandler(this.textBox_Enter);
 			// 
+			// lbStatus
+			// 
+			this.lbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lbStatus.Location = new System.Drawing.Point(0, 200);
+			this.lbStatus.Name = "lbStatus";
+			this.lbStatus.Size = new System.Drawing.Size(448, 23);
+			this.lbStatus.TabIndex = 6;
+			this.lbStatus.Text = "Type in the GUID or (part of) the object name and click Search";
+			// 
 			// GUIDTool
 			// 
 			this.AcceptButton = this.btnSearch;
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.btnClose;
 			this.ClientSize = new System.Drawing.Size(448, 221);
+			this.Controls.Add(this.lbStatus);
 			this.Controls.Add(this.tbName);
 			this.Controls.Add(this.lbName);
 			this.Controls.Add(this.lbGUID);
