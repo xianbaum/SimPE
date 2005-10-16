@@ -1,4 +1,12 @@
 
+16 October 2005 16:48 - Bhav: state scope for mesh group and material strings
+  SimPe BHAV\
+    BhavWizPrim.cs 1.11
+
+16 October 2005 16:46 - FileTable: work around for SimPe 0.49s
+  pjse filetable\
+    FileTable.cs 1.2
+
 16 October 2005 15:07 - Bhav: Change GlobalStr to only handle behaviour strings; unuseds; OpCode 0x006d
   SimPe BHAV\
     BhavOpCodeWiz.cs 1.13
