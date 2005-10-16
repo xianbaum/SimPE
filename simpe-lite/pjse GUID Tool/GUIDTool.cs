@@ -42,6 +42,7 @@ namespace pjse.guidtool
 		private System.Windows.Forms.Label lbName;
 		private System.Windows.Forms.TextBox tbName;
 		private System.Windows.Forms.Label lbStatus;
+		private System.Windows.Forms.Button btnHelp;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -108,7 +109,6 @@ namespace pjse.guidtool
 
 		private void Search(SearchType type)
 		{
-			string s = "";
 			uint itemguid = 0;
 
 			AbstractWrapper wrapper = (AbstractWrapper)SimPe.FileTable.WrapperRegistry.FindHandler(SimPe.Data.MetaData.OBJD_FILE);
@@ -202,6 +202,7 @@ namespace pjse.guidtool
 			this.lbName = new System.Windows.Forms.Label();
 			this.tbName = new System.Windows.Forms.TextBox();
 			this.lbStatus = new System.Windows.Forms.Label();
+			this.btnHelp = new System.Windows.Forms.Button();
 			this.SuspendLayout();
 			// 
 			// tbGUID
@@ -266,7 +267,7 @@ namespace pjse.guidtool
 			this.progressBar1.Location = new System.Drawing.Point(0, 198);
 			this.progressBar1.Name = "progressBar1";
 			this.progressBar1.Size = new System.Drawing.Size(448, 23);
-			this.progressBar1.TabIndex = 5;
+			this.progressBar1.TabIndex = 0;
 			// 
 			// lbName
 			// 
@@ -296,8 +297,19 @@ namespace pjse.guidtool
 			this.lbStatus.Location = new System.Drawing.Point(0, 200);
 			this.lbStatus.Name = "lbStatus";
 			this.lbStatus.Size = new System.Drawing.Size(448, 23);
-			this.lbStatus.TabIndex = 6;
+			this.lbStatus.TabIndex = 0;
 			this.lbStatus.Text = "Type in the GUID or (part of) the object name and click Search";
+			// 
+			// btnHelp
+			// 
+			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnHelp.Location = new System.Drawing.Point(232, 8);
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.Size = new System.Drawing.Size(23, 23);
+			this.btnHelp.TabIndex = 0;
+			this.btnHelp.TabStop = false;
+			this.btnHelp.Text = "&?";
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
 			// 
 			// GUIDTool
 			// 
@@ -305,6 +317,7 @@ namespace pjse.guidtool
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
 			this.CancelButton = this.btnClose;
 			this.ClientSize = new System.Drawing.Size(448, 221);
+			this.Controls.Add(this.btnHelp);
 			this.Controls.Add(this.lbStatus);
 			this.Controls.Add(this.tbName);
 			this.Controls.Add(this.lbName);
@@ -363,6 +376,16 @@ namespace pjse.guidtool
 		private void textBox_Validated(object sender, System.EventArgs e)
 		{
 			this.last = (TextBox)sender;
+		}
+
+		private void btnHelp_Click(object sender, System.EventArgs e)
+		{
+			System.Windows.Forms.MessageBox.Show("If you enter a GUID, " +
+				"the search will return all matching objects.\n\n" +
+				"If you enter a name, the search will return all objects where\n" +
+				"the name you enter matches the name of the object,\n" +
+				"using case insensitive substring matching.",
+				this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 	}
