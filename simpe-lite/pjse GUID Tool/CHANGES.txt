@@ -1,4 +1,9 @@
 
+16 October 2005 09:11 - Add a help button
+  pjse GUID Tool\
+    GUIDTool.cs 1.6
+    GUIDTool.resx 1.5
+
 15 October 2005 19:04 - Oops...  Maxlength on Name box was still 10
   pjse GUID Tool\
     GUIDTool.cs 1.6
