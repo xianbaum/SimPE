@@ -310,8 +310,7 @@ namespace pjse
 
 		public override string ToString()
 		{
-			// TODO:  Add FileTable.ToString implementation
-			return "";
+			return "-"; // hack for 0.49s
 		}
 
 		#endregion
