@@ -1,4 +1,16 @@
 
+16 October 2005 15:07 - Bhav: Change GlobalStr to only handle behaviour strings; unuseds; OpCode 0x006d
+  SimPe BHAV\
+    BhavOpCodeWiz.cs 1.13
+    BhavWiz.cs 1.9
+    BhavWizBhav.cs 1.10
+    BhavWizPrim.cs 1.10
+    BhavWizPrim0x0001.cs 1.3
+    BhavWizPrim0x0002.cs 1.6
+    GlobalStr.cs 1.7
+    ObjfItem.cs 1.7
+    TtabItemMotiveTableUI.cs 1.10
+
 12 October 2005 17:58 - Bhav: "not yet translated" for to-do primitives
   SimPe BHAV\
     BhavWizPrim.cs 1.9
