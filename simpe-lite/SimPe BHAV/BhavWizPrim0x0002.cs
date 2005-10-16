@@ -128,11 +128,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		private void FormLoad()
 		{
 			this.cbDataOwner1.Items.Clear();
-			this.cbDataOwner1.Items.AddRange(GS.gStr(GS.SF.DataOwners).ToArray());
+			this.cbDataOwner1.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
 			this.cbDataOwner2.Items.Clear();
-			this.cbDataOwner2.Items.AddRange(GS.gStr(GS.SF.DataOwners).ToArray());
+			this.cbDataOwner2.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
 			this.cbOperator.Items.Clear();
-			this.cbOperator.Items.AddRange(GS.gStr(GS.SF.Operators).ToArray());
+			this.cbOperator.Items.AddRange(GS.gStr(GS.BhavStr.Operators).ToArray());
 		}
 
 		#endregion
@@ -263,7 +263,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbPicker1.Visible = false;
 			if (BhavWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex] != null)
 			{
-				ArrayList dataOwners = GS.gStr((uint)BhavWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex]);
+				ArrayList dataOwners = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex]);
 				if (dataOwners != null)
 				{
 					this.cbPicker1.Visible = true;
@@ -292,7 +292,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbPicker2.Visible = false;
 			if (BhavWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex] != null)
 			{
-				ArrayList dataOwners = GS.gStr((uint)BhavWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex]);
+				ArrayList dataOwners = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex]);
 				if (dataOwners != null)
 				{
 					this.cbPicker2.Visible = true;
@@ -477,7 +477,7 @@ namespace pjse.BhavNameWizards
 			if (lng)
 			{
 				s += dataOwner(lhs_data_owner, lhs_value_word)
-					+ " " + GS.GStr(GS.SF.Operators, _operator)
+					+ " " + GS.GStr(GS.BhavStr.Operators, _operator)
 					+ " ";
 
 				if (_operator >= 8 && _operator <= 10) // Flag operation
@@ -491,9 +491,9 @@ namespace pjse.BhavNameWizards
 			}
 			else
 			{
-				s += GS.GStr(GS.SF.DataOwners, lhs_data_owner) + " 0x" + SimPe.Helper.HexString(lhs_value_word)
-					 + " " + GS.GStr(GS.SF.Operators, _operator)
-					 + " " + GS.GStr(GS.SF.DataOwners, rhs_data_owner) + " 0x" + SimPe.Helper.HexString(rhs_value_word);
+				s += GS.GStr(GS.BhavStr.DataOwners, lhs_data_owner) + " 0x" + SimPe.Helper.HexString(lhs_value_word)
+					 + " " + GS.GStr(GS.BhavStr.Operators, _operator)
+					 + " " + GS.GStr(GS.BhavStr.DataOwners, rhs_data_owner) + " 0x" + SimPe.Helper.HexString(rhs_value_word);
 			}
 			return s;
 		}
@@ -502,13 +502,13 @@ namespace pjse.BhavNameWizards
 		public static ArrayList flagNames(byte flagOwner, ushort flagType)
 		{
 			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.gStr((uint)flagTypes[flagType]);
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.gStr((GS.BhavStr)flagTypes[flagType]);
 		}
 
 		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
 		{
 			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((uint)flagTypes[flagType], flagValue);
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((GS.BhavStr)flagTypes[flagType], flagValue);
 		}
 
 
@@ -517,28 +517,28 @@ namespace pjse.BhavNameWizards
 		{
 			Hashtable f = new Hashtable();
 			Hashtable o = new Hashtable();
-			o.Add((ushort)0x05, GS.SF.gWallAdjFlags);
-			o.Add((ushort)0x08, GS.SF.gFlags1);
-			o.Add((ushort)0x22, GS.SF.gHiddenFlags);
-			o.Add((ushort)0x28, GS.SF.gFlags2);
-			o.Add((ushort)0x2a, GS.SF.gPlacementFlags);
-			o.Add((ushort)0x2b, GS.SF.gMoveFlags);
-			o.Add((ushort)0x3f, GS.SF.gExclPlacementFlags);
-			o.Add((ushort)0x45, GS.SF.gWallCutoutFlags);
+			o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
+			o.Add((ushort)0x08, GS.BhavStr.Flags1);
+			o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
+			o.Add((ushort)0x28, GS.BhavStr.Flags2);
+			o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);
+			o.Add((ushort)0x2b, GS.BhavStr.MoveFlags);
+			o.Add((ushort)0x3f, GS.BhavStr.ExclPlacementFlags);
+			o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
 			f.Add((byte)0x03, o); // 0x03 "My"
 			f.Add((byte)0x04, o); // 0x04 "Stack Object's"
 			Hashtable p = new Hashtable();
-			p.Add((ushort)0x1e, GS.SF.gCensorFlags);
-			p.Add((ushort)0x44, GS.SF.gGhostFlags);
-			p.Add((ushort)0x51, GS.SF.gBodyFlags);
-			p.Add((ushort)0x9e, GS.SF.gSelectionFlags);
-			p.Add((ushort)0x9f, GS.SF.gPersonFlags);
+			p.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
+			p.Add((ushort)0x44, GS.BhavStr.GhostFlags);
+			p.Add((ushort)0x51, GS.BhavStr.BodyFlags);
+			p.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
+			p.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
 			f.Add((byte)0x12, p); // 0x12 "My Person Data"
 			f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
 			f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
 			Hashtable d = new Hashtable();
-			d.Add((ushort)0x27, GS.SF.gRoomSortFlags);
-			d.Add((ushort)0x28, GS.SF.gFunctionSortFlags);
+			d.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
+			d.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
 			f.Add((byte)0x15, d); // 0x15 "stack object's definition"
 			f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
 			f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"

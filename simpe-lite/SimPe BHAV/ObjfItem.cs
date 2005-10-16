@@ -36,7 +36,7 @@ namespace SimPe.PackedFiles.Wrapper
 			set {nr = value;}
 		}
 
-		public string Name { get { return pjse.GS.GStr(pjse.GS.SF.OBJFDescs, nr); } }
+		public string Name { get { return pjse.GS.GStr(pjse.GS.BhavStr.OBJFDescs, nr); } }
 
 		public ushort Guardian
 		{

@@ -299,7 +299,7 @@ namespace pjse.BhavNameWizards
 						s += (i>0 ? ", " : "") +
 							(lng
 							? dataOwner(o[i*3], ToShort(o[(i*3) + 1], o[(i*3) + 2]))
-							: GS.GStr(GS.SF.DataOwners, o[i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(o[(i*3) + 1], o[(i*3) + 2]))
+							: GS.GStr(GS.BhavStr.DataOwners, o[i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(o[(i*3) + 1], o[(i*3) + 2]))
 							);
 				}
 

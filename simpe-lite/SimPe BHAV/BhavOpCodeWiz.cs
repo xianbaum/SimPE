@@ -147,7 +147,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (this.lbprimitives.Items.Count != 0) return;
 
 			uint i = 0;
-			foreach (string s in pjse.GS.gStr(pjse.GS.SF.Primitives))
+			foreach (string s in pjse.GS.gStr(pjse.GS.BhavStr.Primitives))
 			{
 				if (!s.StartsWith("~"))
 					this.lbprimitives.Items.Add(new SimPe.Data.Alias(i, s));

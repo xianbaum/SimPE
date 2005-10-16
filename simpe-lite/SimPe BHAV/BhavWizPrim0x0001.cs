@@ -76,8 +76,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 			byte operand0 = inst.Operands[0];
 
 			this.cbGenericSimsCall.Items.Clear();
-			for (byte i = 0; i < GS.gStr(GS.SF.Generics).Count; i++)
-				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + GS.GStr(GS.SF.Generics, i));
+			for (byte i = 0; i < GS.gStr(GS.BhavStr.Generics).Count; i++)
+				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + GS.GStr(GS.BhavStr.Generics, i));
 			this.lbGenericSimsCallparms.Text = "Should never see this";
 
 			if (operand0 < this.cbGenericSimsCall.Items.Count)
@@ -222,7 +222,7 @@ namespace pjse.BhavNameWizards
 
 		protected override string Operands(bool lng)
 		{
-			string s = GS.GStr(GS.SF.Generics, instruction.Operands[0]);
+			string s = GS.GStr(GS.BhavStr.Generics, instruction.Operands[0]);
 			if (lng)
 			{
 				if (instruction.Operands[0] >= parms.Length) s += " ([UNK args])";

@@ -561,7 +561,7 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public abstract class BhavWizPrim : BhavWiz
 	{
-		public BhavWizPrim(Instruction instruction) : base (instruction) { }
+		protected BhavWizPrim(Instruction instruction) : base (instruction) { }
 		public static implicit operator BhavWizPrim(Instruction i)
 		{
 			if (i.OpCode >= 0x0100)
@@ -580,7 +580,18 @@ namespace pjse.BhavNameWizards
 				case 0x0024: return new WizPrim0x0024(i);
 				case 0x002a: return new WizPrim0x002a(i);
 				case 0x0032: return new WizPrim0x0032(i);
+				case 0x006d: return new WizPrim0x006d(i);
+
+				case 0x0004: case 0x0005: case 0x0006: case 0x0009:
+				case 0x0015: case 0x0018: case 0x0026: case 0x0027:
+				case 0x0028: case 0x0029: case 0x002b: case 0x002c:
+				case 0x002f:
+					return new WizPrimUnused(i);
 			}
+
+			if (i.OpCode >= 0x0034 && i.OpCode <= 0x0068 || i.OpCode >= 0x007f)
+				return new WizPrimUnused(i);
+
 			return new WizPrimDefault(i);
 		}
 
@@ -590,7 +601,7 @@ namespace pjse.BhavNameWizards
 
 		protected override string Prefix { get { return "prim"; } }
 
-		protected override string OpcodeName { get { return GS.GStr(GS.SF.Primitives, instruction.OpCode); } }
+		protected override string OpcodeName { get { return GS.GStr(GS.BhavStr.Primitives, instruction.OpCode); } }
 
 
 		public override string ShortName { get { return base.ShortName + " (" + Operands(false) + ")"; } }
@@ -608,6 +619,14 @@ namespace pjse.BhavNameWizards
 		public override string ShortName { get { return base.ShortName; } }
 
 		public override string LongName { get { return base.LongName; } }
+
+	}
+
+	public class WizPrimUnused : BhavWizPrim
+	{
+		public WizPrimUnused(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng) { return "-"; }
 
 	}
 
@@ -630,9 +649,9 @@ namespace pjse.BhavNameWizards
 					+ " := random from 0 to < "
 					+ dataOwner(instruction.Operands[6], ToShort(instruction.Operands[4], instruction.Operands[5]));
 			else
-				return GS.GStr(GS.SF.DataOwners, instruction.Operands[2])
+				return GS.GStr(GS.BhavStr.DataOwners, instruction.Operands[2])
 					+ " 0x" + SimPe.Helper.HexString(ToShort(instruction.Operands[0], instruction.Operands[1]))
-					+ ", " + GS.GStr(GS.SF.DataOwners, instruction.Operands[6])
+					+ ", " + GS.GStr(GS.BhavStr.DataOwners, instruction.Operands[6])
 					+ " 0x" + SimPe.Helper.HexString(ToShort(instruction.Operands[4], instruction.Operands[5]))
 					;
 		}
@@ -663,7 +682,7 @@ namespace pjse.BhavNameWizards
 			else
 				s += dataOwner(0x09, o[1]);	// param
 
-			s += (lng ? " onto the stack object's queue, " : ", ") + GS.GStr(GS.SF.Priorities, o[2]);
+			s += (lng ? " onto the stack object's queue, " : ", ") + GS.GStr(GS.BhavStr.Priorities, o[2]);
 
 			if (lng)
 			{
@@ -731,7 +750,7 @@ namespace pjse.BhavNameWizards
 					if ((o[3] & 0x80) != 0) s += "NW";
 				}
 
-				s += ", " + GS.GStr(GS.SF.FindGLB, o[0]);
+				s += ", " + GS.GStr(GS.BhavStr.FindGLB, o[0]);
 				if (o[0] >= 5 && o[0] <= 8)
 					s += " 0x" + SimPe.Helper.HexString(o[10]);
 
@@ -765,7 +784,7 @@ namespace pjse.BhavNameWizards
 			else if ((o[2] & 2) != 0) scope = Scope.SemiGlobal;
 			else scope = Scope.Private; 
 
-			s += scope.ToString() + ": " + readStr(scope, (uint)GS.SF.gNamedTreePrim, o[4] - 1);
+			s += scope.ToString() + ": " + readStr(scope, GS.GlobalStr.gNamedTreePrim, o[4] - 1);
 
 			if (lng)
 			{
@@ -784,7 +803,7 @@ namespace pjse.BhavNameWizards
 						s += ", " +
 							(lng
 							? dataOwner(o[6 + i*3], ToShort(o[6 + (i*3) + 1], o[6 + (i*3) + 2]))
-							: GS.GStr(GS.SF.DataOwners, o[6 + i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(o[6 + (i*3) + 1], o[6 + (i*3) + 2]))
+							: GS.GStr(GS.BhavStr.DataOwners, o[6 + i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(o[6 + (i*3) + 1], o[6 + (i*3) + 2]))
 							);
 				}
 
@@ -815,7 +834,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += GS.GStr(0xa4, (ushort)(o[4] & 0x7f));
+			s += GS.GStr(GS.BhavStr.NextObject, (ushort)(o[4] & 0x7f));
 			switch(o[4] & 0x7f)
 			{
 				case 0x04: case 0x07:
@@ -825,7 +844,7 @@ namespace pjse.BhavNameWizards
 					break;
 				case 0x09: case 0x22:
 					s = s.Replace("[local]", (lng ? dataOwner(0x19, o[6]) // local
-						: GS.GStr(GS.SF.DataOwners, 0x19) + " " + o[6].ToString()));
+						: GS.GStr(GS.BhavStr.DataOwners, 0x19) + " " + o[6].ToString()));
 					//w1 = ToShort(o[9], o[10]);
 					//w2 = ToShort(o[11], o[12]);
 					//if (b[x+8] & 2) ht_fprintf(outFile,TYPE_NORMAL," where %s := %d", gString8D[w1], w2);
@@ -836,7 +855,7 @@ namespace pjse.BhavNameWizards
 				s += lng ? ", result in " + dataOwner(0x0a, 0x0000) : ""; // Stack Object
 			else
 				s += ", result in " + (lng ? dataOwner(o[5], o[7])
-					: GS.GStr(GS.SF.DataOwners, o[5]) + " 0x" + SimPe.Helper.HexString(o[7]));
+					: GS.GStr(GS.BhavStr.DataOwners, o[5]) + " 0x" + SimPe.Helper.HexString(o[7]));
 			//if ((o[5] != 0xA || o[7] != 0) && (o[4] & 0x80) != 0)
 			//	s += dataOwner(o[5], o[7]) + " := next ";
 
@@ -874,7 +893,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 			if (lng)
-				s += "Type: " + GS.GStr(GS.SF.Dialog, o[5]);
+				s += "Type: " + GS.GStr(GS.BhavStr.Dialog, o[5]);
 
 			Scope scope;
 			if ((o[8] & 0x01) != 0)
@@ -892,7 +911,7 @@ namespace pjse.BhavNameWizards
 					break;
 				case 0x08: case 0x0a:
 					s += lng ? ", " + dialogStr(scope, (o[8] & 0x02) != 0, msg)
-						: readStr(scope, (uint)GS.SF.gDialogPrim, msg - 1, 60);
+						: readStr(scope, GS.GlobalStr.gDialogPrim, msg - 1, 60);
 					if (lng)
 					{
 						s += ", priority 0x" + SimPe.Helper.HexString((byte)(o[9] + 1));
@@ -908,7 +927,7 @@ namespace pjse.BhavNameWizards
 					break;
 				default:
 					s += lng ? ", " + dialogStr(scope, (o[8] & 0x02) != 0, msg)
-						: readStr(scope, (uint)GS.SF.gDialogPrim, msg - 1, 60);
+						: readStr(scope, GS.GlobalStr.gDialogPrim, msg - 1, 60);
 					if (lng)
 					{
 						s += ", Yes: "    + dialogStr(scope, (o[8] & 0x04) != 0, o[3]);
@@ -922,7 +941,7 @@ namespace pjse.BhavNameWizards
 			if (lng)
 			{
 				/*if (msg != 0x16 && msg != 0x19 && iconType != 1) { }*/
-				s += ", icon: " + GS.GStr(GS.SF.DialogIcon, iconType);
+				s += ", icon: " + GS.GStr(GS.BhavStr.DialogIcon, iconType);
 				switch (iconType) 
 				{
 					case 3: s += ": BMP = 0x" + SimPe.Helper.HexString((ushort)(o[1] + 5000)); break;
@@ -955,7 +974,7 @@ namespace pjse.BhavNameWizards
 					s += "Private";
 				s += " STR# 0x012D strings)";
 
-				s += " (" + GS.GStr(GS.SF.DialogDesc, o[5]) + ")";
+				s += " (" + GS.GStr(GS.BhavStr.DialogDesc, o[5]) + ")";
 			}
 
 			return s;
@@ -971,7 +990,7 @@ namespace pjse.BhavNameWizards
 			{
 				if (instance != 0)
 					s += "0x" + SimPe.Helper.HexString(instance) +
-						": " + readStr(scope, (uint)GS.SF.gDialogPrim, instance - 1, len);
+						": " + readStr(scope, GS.GlobalStr.gDialogPrim, instance - 1, len);
 				else
 					s += "none";
 			}
@@ -1002,7 +1021,7 @@ namespace pjse.BhavNameWizards
 
 			if (lng)
 			{
-				s += ", place " + GS.GStr(GS.SF.ObjectPlace, o[4]);
+				s += ", place " + GS.GStr(GS.BhavStr.ObjectPlace, o[4]);
 				switch (o[4]) 
 				{
 					case 0x04: case 0x0A: s += " 0x" + SimPe.Helper.HexString(o[9]); break;
@@ -1049,7 +1068,7 @@ namespace pjse.BhavNameWizards
 					s += scope.ToString() + ": ";
 
 				if ((o[2] & 0x10) != 0) s += "STR# 0x012e:[Temp 0]";
-				else s += readStr(scope, 0x012e, o[4] - 1);
+				else s += readStr(scope, GS.GlobalStr.gMakeAction, o[4] - 1);
 			}
 			else 
 			{
@@ -1074,8 +1093,451 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x006d : BhavWizPrim	// Change Material (false = error)
+	{
+		public WizPrim0x006d(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			if (!lng) return "..."; // we can't think of anything short and useful
+
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			Scope mgScope = Scope.Private;
+			Scope matScope = Scope.Private;
+
+			if ((o[2] & 0x40) != 0)
+				mgScope = Scope.Global;
+			else if ((o[2] & 0x80) != 0)
+				mgScope = Scope.SemiGlobal;
+
+			if ((o[2] & 0x02) != 0)
+				matScope = Scope.Global;
+			else if ((o[2] & 0x04) != 0)
+				matScope = Scope.SemiGlobal;
+
+			ushort mat = ToShort(o[0], o[1]);
+			ushort mg = ToShort(o[3], o[4]);
+
+
+			string s = "";
+
+			s += "on obj in " + dataOwner(o[5], ToShort(o[6], o[7]));       // target object
+			s += ", using: ";
+
+			s += "mesh from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
+			s += " (mesh group index " + ((o[2] & 0x20) != 0
+				? "[Temp 1]"
+				: "0x" + SimPe.Helper.HexString(mg) + " [" + readStr(mgScope, GS.GlobalStr.gMesgGroup, mg) + "]") + ")";
+
+			s += ", material from " + ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
+			s += " (" + ((o[13] & 0x01) != 0 ? "Moving Texture Name" : "material") + " index " + ((o[2] & 0x10) != 0
+				? "[Temp 0]"
+				:  "0x" + SimPe.Helper.HexString(mat) + " [" + readStr(matScope, GS.GlobalStr.gMaterialName, mat) + "]") +")";
+
+			if ((o[13] & 0x02) != 0)
+				s += ", found in snap shot generated material";
+
+			if ((o[4] & 0x40) != 0) // w3 < 0
+				s += ", over all model";
+
+			return s;
+		}
+
+	}
+
 }
 #if DISASIM
+                case 0x6D:  // Change Material (false = error)
+                    w1 = *(UINT16 *) (&b[x+6]);
+                    w2 = *(UINT16 *) (&b[x+9]);
+                    w3 = *(UINT16 *) (&b[x+3]);
+                    w4 = *(UINT16 *) (&b[x]);
+                    c1 = b[x+2];
+                    if (b[x+13] & 2) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"using snap shot generated material");
+                        if (c1 & 1) {
+                            ht_fprintf(outFile,TYPE_NORMAL,", mesh found in obj in");
+                            data2(b[x+8],w2);
+                            if (c1 & 0x20)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index %d", w3);
+                        } else if (c1 & 0x20)
+                            ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
+                        else if (b[x+4] & 0x40) // w3 < 0
+                            ht_fprintf(outFile,TYPE_NORMAL,", over all model");
+                        else {
+                            ht_fprintf(outFile,TYPE_NORMAL,", On Mesh Group: ");
+                            if (c1 & 0x40)
+                                readString2(GROUP_GLOBAL, 0x87, w3);
+                            else if (c1 & 0x80)
+                                if (readString2(gGlobGroup, 0x87, w3) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x87:0x%X]", w3);
+                            else if (readString2(gGroup, 0x87, w3) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x87:0x%X]", w3);
+                        }
+                    } else if (c1 & 8) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"found in obj in ");
+                        data2(b[x+8],w2);
+                        if (c1 & 0x10)
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
+                        else
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index %d", w4);
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index %d", w4);
+                    } else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"found in me, to: ");
+                        if (c1 & 0x10)
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
+                        else
+                            if (c1 & 2)
+                                readString2(GROUP_GLOBAL, 0x88, w4);
+                            else if (c1 & 4)
+                                if (readString2(gGlobGroup, 0x88, w4) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x88:0x%X]", w4);
+                            else if (readString2(gGroup, 0x88, w4) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x88:0x%X]", w4);
+                    }
+                    ht_fprintf(outFile,TYPE_NORMAL,", affecting ID in ");
+                    data2(b[x+5],w1);       // target object
+                    break;
+                case 0x79:  // Change Outfit (false = error)
+                    c1 = b[x];
+                    w1 = *(UINT16 *) (&b[x+10]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    d1 = *(UINT32 *) (&b[x+4]);
+                    if (c1 & 0x10) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"Rebuild current outfit on sim in ");
+                        data2(b[x+9],w1);
+                    } else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"Change Outfit on sim in ");
+                        data2(b[x+9],w1);
+                        if (c1 & 1)
+                            ht_fprintf(outFile,TYPE_NORMAL," using Stack Object");
+                        else if (c1 & 2) {
+                            ht_fprintf(outFile,TYPE_NORMAL," using GUID of 0x%08X", d1);
+                            readGUID(d1);
+                        } else if (c1 & 0x40)
+                            ht_fprintf(outFile,TYPE_NORMAL,", using GUID in Temp 0/1");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using that sims outfits");
+                        ht_fprintf(outFile,TYPE_NORMAL," as source, using outfit ");
+                        if (c1 & 4) {
+                            ht_fprintf(outFile,TYPE_NORMAL,"index from ");
+                            data2(b[x+1],w2);
+                        } else {
+                            CHECK_RANGE("Person outfits", gStringFA, b[x+8]);
+                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFA[b[x+8]]);
+                        }
+                        if (c1 & 0x20)
+                            ht_fprintf(outFile,TYPE_NORMAL,", clearing GUID pointers in person data fields");
+                        if (c1 & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL,", writing changes to the .iff");
+                    }
+                    break;
+                case 0x33:  // Manage Inventory
+                    w1 = *(UINT16 *) (&b[x+14]);
+                    w2 = *(UINT16 *) (&b[x+11]);
+                    w3 = *(UINT16 *) (&b[x+2]);
+                    ht_fprintf(outFile,TYPE_NORMAL,"Access the ");
+                    switch (b[x] & 3) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Global ");
+                            break;
+                        case 1:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Lot ");
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Family ");
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Neighbor ");
+                            break;
+                    }
+                    if (b[x] & 4)
+                        ht_fprintf(outFile,TYPE_NORMAL,"Counted Inventory");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"Singular Inventory");
+                    if ((b[x] & 3) != 0) {
+                        ht_fprintf(outFile,TYPE_NORMAL," from ID ");
+                        data2(b[x+1], w3);
+                    }
+                    ht_fprintf(outFile,TYPE_NORMAL,". with category %d",b[x+9]);
+                    d1 = *(UINT32 *) (&b[x+5]);
+                    if (d1 != 0) {
+                        ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
+                        readGUID(d1);
+                        ht_fprintf(outFile,TYPE_NORMAL,". "); //?
+                    }
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL," of GUID from Stack Object. ");
+                    if (b[x] & 4)
+                        switch (b[x+4]) {
+                            case 0:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Add token");
+                                ht_fprintf(outFile,TYPE_NORMAL,". Pull count from ");
+                                data2(b[x+13], w1);
+                                break;
+                            case 1:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Add to token at index from ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,". Pull count from ");
+                                data2(b[x+13], w1);
+                                break;
+                            case 2:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Remove token");
+                                ht_fprintf(outFile,TYPE_NORMAL,". Pull count from ");
+                                data2(b[x+13], w1);
+                                break;
+                            case 3:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Remove to token at index from");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,". Pull count from ");
+                                data2(b[x+13], w1);
+                                break;
+                            case 4:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Remove all tokens");
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 5:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Remove all tokens from token at index from");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 6:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Find the token");
+                                ht_fprintf(outFile,TYPE_NORMAL,". Put count into ");
+                                data2(b[x+13], w1);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 7:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Read token");
+                                ht_fprintf(outFile,TYPE_NORMAL," into My Temp Token.");
+                                break;
+                            case 8:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Read token at index from ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL," into My Temp Token.");
+                                break;
+                            case 9:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Set To Next token");
+                                ht_fprintf(outFile,TYPE_NORMAL,". Starting at index from ");
+                                data2(b[x+10], w2);
+                                break;
+                            case 0xA:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Store the count of the tokens in this inventory into ");
+                                data2(b[x+13], w1);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                        }
+                    else
+                        switch (b[x+4]) {
+                            case 0:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Add token");
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 1:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Remove token at index from ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 2:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Remove at tokens");
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 3:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Set To Next token");
+                                ht_fprintf(outFile,TYPE_NORMAL,". Starting at index from ");
+                                data2(b[x+10], w2);
+                                break;
+                            case 4:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Push property on token at index from ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,". Get property value from ");
+                                data2(b[x+13], w1);
+                                break;
+                            case 5:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Pop property off token at index from ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,". Put property value into ");
+                                data2(b[x+13], w1);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 6:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Read token into My Temp Token at index from ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 7:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Get property from token in My Temp Token at index from ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,". Put property value into ");
+                                data2(b[x+13], w1);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 8:
+                                break;
+                            case 9:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Save My Temp Token back to the location it was loaded from.");
+                                break;
+                            case 0xA:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Store the count of the tokens in this inventory into ");
+                                data2(b[x+13], w1);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 0xB:
+                                break;
+                            case 0xC:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Set To Next ");
+                                if (b[x] & 8)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"visible ");
+                                else
+                                    ht_fprintf(outFile,TYPE_NORMAL,"hidden ");
+                                if (b[x] & 0x10)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"memory ");
+                                else
+                                    ht_fprintf(outFile,TYPE_NORMAL,"non-memory ");
+                                ht_fprintf(outFile,TYPE_NORMAL,"token. Starting at index from ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 0xD:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Store the count of the ");
+                                if (b[x] & 8)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"visible ");
+                                else
+                                    ht_fprintf(outFile,TYPE_NORMAL,"hidden ");
+                                if (b[x] & 0x10)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"memory ");
+                                else
+                                    ht_fprintf(outFile,TYPE_NORMAL,"non-memory ");
+                                ht_fprintf(outFile,TYPE_NORMAL,"tokens in this inventory into ");
+                                data2(b[x+13], w1);
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                        }
+                    break;
+                case 0x70:  // Effect Stop/Start (false = error)
+                    w1 = *(UINT16 *) (&b[x+2]);
+                    w2 = *(UINT16 *) (&b[x+13]);
+                    switch (b[x]) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft Start Effect on object in ");
+                            break;
+                        case 1:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard start effect on object in ");
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop effect on object in ");
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop effect on object in ");
+                            break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop all effects on object in ");
+                            break;
+                        case 5:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects on object in ");
+                            break;
+                        case 6:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Fire and Forget Effect on object in ");
+                            break;
+                        case 7:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Interrogate Bone for effects on object in ");
+                            break;
+                        case 8:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects and clear Queue on object in ");
+                            break;
+                        case 9:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop ALL effects on object in ");
+                            break;
+                        case 0xA:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 1 for all effects on object in ");
+                            break;
+                        case 0xB:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 2 for all effects on object in ");
+                            break;
+                        case 0xC:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 3 for all effects on object in ");
+                            break;
+                        case 0xD:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 4 for all effects on object in ");
+                            break;
+                        case 0xE:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop ALL effects on object in ");
+                            break;
+                    }
+                    data2(b[x+1],w1);       // target object
+                    if (b[x] == 4 || b[x] == 5) {
+                        if (b[x+10] & 0x40)
+                            ht_fprintf(outFile,TYPE_NORMAL,", Passing in effect ID in temp 1");
+                    } else if (b[x] < 7 || b[x] == 0xE)
+                        if (b[x+4] != 0xFF) {
+                            ht_fprintf(outFile,TYPE_NORMAL,", ");
+                            if (b[x+10] & 1)
+                                readString2(GROUP_GLOBAL, 0x8F, b[x+4]); // !!!
+                            else if (b[x+10] & 2) {
+                                if (readString2(gGlobGroup, 0x8F, b[x+4]) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x8F:0x%X]", b[x+4]);
+                            }
+                            else if (readString2(gGroup, 0x8F, b[x+4]) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x8F:0x%X]", b[x+4]);
+                        } else
+                            ht_fprintf(outFile,TYPE_NORMAL,", Affecting default effect");
+                    if (b[x] != 9) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", of Slot Type ");
+                        switch (b[x+9]) {
+                            case 0:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Target");
+                                break;
+                            case 1:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Routing");
+                                break;
+                            default:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Containment");
+                                break;
+                        }
+                        ht_fprintf(outFile,TYPE_NORMAL,", using slot number %d", b[x+6]);
+                    }
+                    if (b[x+11] & 0x10)
+                        ht_fprintf(outFile,TYPE_NORMAL,", getting icon value from Temp6");
+                    else if (b[x+11] & 4) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon with GUID in temp4/5 ");
+                        if (b[x+11] & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
+                    } else if (b[x+10] & 0x10) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from neighbor ID in ");
+                        data2(b[x+12],w2);
+                    } else if (b[x+10] & 0x20) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Conversation Icon index found in ");
+                        data2(b[x+12],w2);
+                        ht_fprintf(outFile,TYPE_NORMAL," using sheet ");
+                        if (readString2(gGroup, 0x95, b[x+15]) == 0) // ??
+                            ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x95:0x%X]", b[x+15]);
+                    } else if (b[x+10] & 4) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from object in ");
+                        data2(b[x+12],w2);
+                        if (b[x+11] & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
+                    }
+                    if (b[x+10] & 0x80)
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting effect in priority Queue");
+                    break;
+
                 case 0x03:  // Find Best Interaction
                     w1 = *(UINT16 *) (&b[x]);   // motive
                     w2 = *(UINT16 *) (&b[x+2]); // flags
@@ -1748,188 +2210,6 @@ namespace pjse.BhavNameWizards
                     break;
                 case 0x31:  // Notify the Stack Object out of Idle (implied, false = error)
                     break;
-                case 0x33:  // Manage Inventory
-                    w1 = *(UINT16 *) (&b[x+14]);
-                    w2 = *(UINT16 *) (&b[x+11]);
-                    w3 = *(UINT16 *) (&b[x+2]);
-                    ht_fprintf(outFile,TYPE_NORMAL,"Access the ");
-                    switch (b[x] & 3) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Global ");
-                            break;
-                        case 1:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Lot ");
-                            break;
-                        case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Family ");
-                            break;
-                        case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Neighbor ");
-                            break;
-                    }
-                    if (b[x] & 4)
-                        ht_fprintf(outFile,TYPE_NORMAL,"Counted Inventory");
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"Singular Inventory");
-                    if ((b[x] & 3) != 0) {
-                        ht_fprintf(outFile,TYPE_NORMAL," from ID ");
-                        data2(b[x+1], w3);
-                    }
-                    ht_fprintf(outFile,TYPE_NORMAL,". with category %d",b[x+9]);
-                    d1 = *(UINT32 *) (&b[x+5]);
-                    if (d1 != 0) {
-                        ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
-                        readGUID(d1);
-                        ht_fprintf(outFile,TYPE_NORMAL,". "); //?
-                    }
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL," of GUID from Stack Object. ");
-                    if (b[x] & 4)
-                        switch (b[x+4]) {
-                            case 0:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Add token");
-                                ht_fprintf(outFile,TYPE_NORMAL,". Pull count from ");
-                                data2(b[x+13], w1);
-                                break;
-                            case 1:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Add to token at index from ");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,". Pull count from ");
-                                data2(b[x+13], w1);
-                                break;
-                            case 2:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Remove token");
-                                ht_fprintf(outFile,TYPE_NORMAL,". Pull count from ");
-                                data2(b[x+13], w1);
-                                break;
-                            case 3:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Remove to token at index from");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,". Pull count from ");
-                                data2(b[x+13], w1);
-                                break;
-                            case 4:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Remove all tokens");
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 5:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Remove all tokens from token at index from");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 6:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Find the token");
-                                ht_fprintf(outFile,TYPE_NORMAL,". Put count into ");
-                                data2(b[x+13], w1);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 7:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Read token");
-                                ht_fprintf(outFile,TYPE_NORMAL," into My Temp Token.");
-                                break;
-                            case 8:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Read token at index from ");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL," into My Temp Token.");
-                                break;
-                            case 9:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Set To Next token");
-                                ht_fprintf(outFile,TYPE_NORMAL,". Starting at index from ");
-                                data2(b[x+10], w2);
-                                break;
-                            case 0xA:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Store the count of the tokens in this inventory into ");
-                                data2(b[x+13], w1);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                        }
-                    else
-                        switch (b[x+4]) {
-                            case 0:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Add token");
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 1:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Remove token at index from ");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 2:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Remove at tokens");
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 3:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Set To Next token");
-                                ht_fprintf(outFile,TYPE_NORMAL,". Starting at index from ");
-                                data2(b[x+10], w2);
-                                break;
-                            case 4:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Push property on token at index from ");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,". Get property value from ");
-                                data2(b[x+13], w1);
-                                break;
-                            case 5:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Pop property off token at index from ");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,". Put property value into ");
-                                data2(b[x+13], w1);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 6:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Read token into My Temp Token at index from ");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 7:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Get property from token in My Temp Token at index from ");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,". Put property value into ");
-                                data2(b[x+13], w1);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 8:
-                                break;
-                            case 9:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Save My Temp Token back to the location it was loaded from.");
-                                break;
-                            case 0xA:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Store the count of the tokens in this inventory into ");
-                                data2(b[x+13], w1);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 0xB:
-                                break;
-                            case 0xC:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Set To Next ");
-                                if (b[x] & 8)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"visible ");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"hidden ");
-                                if (b[x] & 0x10)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"memory ");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"non-memory ");
-                                ht_fprintf(outFile,TYPE_NORMAL,"token. Starting at index from ");
-                                data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                            case 0xD:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Store the count of the ");
-                                if (b[x] & 8)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"visible ");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"hidden ");
-                                if (b[x] & 0x10)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"memory ");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"non-memory ");
-                                ht_fprintf(outFile,TYPE_NORMAL,"tokens in this inventory into ");
-                                data2(b[x+13], w1);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
-                                break;
-                        }
-                    break;
                 case 0x69:  // Animate Object (false = error)
                     c1 = b[x+2];
                     c2 = b[x+10];
@@ -2312,67 +2592,6 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL,"High");
                     }
                     break;
-                case 0x6D:  // Change Material (false = error)
-                    w1 = *(UINT16 *) (&b[x+6]);
-                    w2 = *(UINT16 *) (&b[x+9]);
-                    w3 = *(UINT16 *) (&b[x+3]);
-                    w4 = *(UINT16 *) (&b[x]);
-                    c1 = b[x+2];
-                    if (b[x+13] & 2) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"using snap shot generated material");
-                        if (c1 & 1) {
-                            ht_fprintf(outFile,TYPE_NORMAL,", mesh found in obj in");
-                            data2(b[x+8],w2);
-                            if (c1 & 0x20)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index %d", w3);
-                        } else if (c1 & 0x20)
-                            ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
-                        else if (b[x+4] & 0x40) // w3 < 0
-                            ht_fprintf(outFile,TYPE_NORMAL,", over all model");
-                        else {
-                            ht_fprintf(outFile,TYPE_NORMAL,", On Mesh Group: ");
-                            if (c1 & 0x40)
-                                readString2(GROUP_GLOBAL, 0x87, w3);
-                            else if (c1 & 0x80)
-                                if (readString2(gGlobGroup, 0x87, w3) == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x87:0x%X]", w3);
-                            else if (readString2(gGroup, 0x87, w3) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x87:0x%X]", w3);
-                        }
-                    } else if (c1 & 8) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"found in obj in ");
-                        data2(b[x+8],w2);
-                        if (c1 & 0x10)
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
-                        else
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index %d", w4);
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index %d", w4);
-                    } else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"found in me, to: ");
-                        if (c1 & 0x10)
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
-                        else
-                            if (c1 & 2)
-                                readString2(GROUP_GLOBAL, 0x88, w4);
-                            else if (c1 & 4)
-                                if (readString2(gGlobGroup, 0x88, w4) == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x88:0x%X]", w4);
-                            else if (readString2(gGroup, 0x88, w4) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x88:0x%X]", w4);
-                    }
-                    ht_fprintf(outFile,TYPE_NORMAL,", affecting ID in ");
-                    data2(b[x+5],w1);       // target object
-                    break;
                 case 0x6E:  // Look At
                     w1 = *(UINT16 *) (&b[x+2]);
                     w2 = *(UINT16 *) (&b[x+9]);
@@ -2460,116 +2679,6 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL," Intensity in Temp 0");
                     else
                         ht_fprintf(outFile,TYPE_NORMAL," Intensity of %d percent", b[x+7]);
-                    break;
-                case 0x70:  // Effect Stop/Start (false = error)
-                    w1 = *(UINT16 *) (&b[x+2]);
-                    w2 = *(UINT16 *) (&b[x+13]);
-                    switch (b[x]) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Soft Start Effect on object in ");
-                            break;
-                        case 1:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard start effect on object in ");
-                            break;
-                        case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop effect on object in ");
-                            break;
-                        case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop effect on object in ");
-                            break;
-                        case 4:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop all effects on object in ");
-                            break;
-                        case 5:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects on object in ");
-                            break;
-                        case 6:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Fire and Forget Effect on object in ");
-                            break;
-                        case 7:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Interrogate Bone for effects on object in ");
-                            break;
-                        case 8:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects and clear Queue on object in ");
-                            break;
-                        case 9:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop ALL effects on object in ");
-                            break;
-                        case 0xA:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 1 for all effects on object in ");
-                            break;
-                        case 0xB:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 2 for all effects on object in ");
-                            break;
-                        case 0xC:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 3 for all effects on object in ");
-                            break;
-                        case 0xD:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 4 for all effects on object in ");
-                            break;
-                        case 0xE:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop ALL effects on object in ");
-                            break;
-                    }
-                    data2(b[x+1],w1);       // target object
-                    if (b[x] == 4 || b[x] == 5) {
-                        if (b[x+10] & 0x40)
-                            ht_fprintf(outFile,TYPE_NORMAL,", Passing in effect ID in temp 1");
-                    } else if (b[x] < 7 || b[x] == 0xE)
-                        if (b[x+4] != 0xFF) {
-                            ht_fprintf(outFile,TYPE_NORMAL,", ");
-                            if (b[x+10] & 1)
-                                readString2(GROUP_GLOBAL, 0x8F, b[x+4]); // !!!
-                            else if (b[x+10] & 2) {
-                                if (readString2(gGlobGroup, 0x8F, b[x+4]) == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x8F:0x%X]", b[x+4]);
-                            }
-                            else if (readString2(gGroup, 0x8F, b[x+4]) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x8F:0x%X]", b[x+4]);
-                        } else
-                            ht_fprintf(outFile,TYPE_NORMAL,", Affecting default effect");
-                    if (b[x] != 9) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", of Slot Type ");
-                        switch (b[x+9]) {
-                            case 0:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Target");
-                                break;
-                            case 1:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Routing");
-                                break;
-                            default:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Containment");
-                                break;
-                        }
-                        ht_fprintf(outFile,TYPE_NORMAL,", using slot number %d", b[x+6]);
-                    }
-                    if (b[x+11] & 0x10)
-                        ht_fprintf(outFile,TYPE_NORMAL,", getting icon value from Temp6");
-                    else if (b[x+11] & 4) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon with GUID in temp4/5 ");
-                        if (b[x+11] & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
-                    } else if (b[x+10] & 0x10) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from neighbor ID in ");
-                        data2(b[x+12],w2);
-                    } else if (b[x+10] & 0x20) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Conversation Icon index found in ");
-                        data2(b[x+12],w2);
-                        ht_fprintf(outFile,TYPE_NORMAL," using sheet ");
-                        if (readString2(gGroup, 0x95, b[x+15]) == 0) // ??
-                            ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x95:0x%X]", b[x+15]);
-                    } else if (b[x+10] & 4) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from object in ");
-                        data2(b[x+12],w2);
-                        if (b[x+11] & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
-                    }
-                    if (b[x+10] & 0x80)
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting effect in priority Queue");
                     break;
                 case 0x71:  // Snap Into
                     w1 = *(UINT16 *) (&b[x+1]);
@@ -2920,40 +3029,6 @@ namespace pjse.BhavNameWizards
                     }
                     if (b[x+15] & 1)
                         ht_fprintf(outFile,TYPE_NORMAL," Windows Ignored.");
-                    break;
-                case 0x79:  // Change Outfit (false = error)
-                    c1 = b[x];
-                    w1 = *(UINT16 *) (&b[x+10]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    d1 = *(UINT32 *) (&b[x+4]);
-                    if (c1 & 0x10) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"Rebuild current outfit on sim in ");
-                        data2(b[x+9],w1);
-                    } else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"Change Outfit on sim in ");
-                        data2(b[x+9],w1);
-                        if (c1 & 1)
-                            ht_fprintf(outFile,TYPE_NORMAL," using Stack Object");
-                        else if (c1 & 2) {
-                            ht_fprintf(outFile,TYPE_NORMAL," using GUID of 0x%08X", d1);
-                            readGUID(d1);
-                        } else if (c1 & 0x40)
-                            ht_fprintf(outFile,TYPE_NORMAL,", using GUID in Temp 0/1");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," using that sims outfits");
-                        ht_fprintf(outFile,TYPE_NORMAL," as source, using outfit ");
-                        if (c1 & 4) {
-                            ht_fprintf(outFile,TYPE_NORMAL,"index from ");
-                            data2(b[x+1],w2);
-                        } else {
-                            CHECK_RANGE("Person outfits", gStringFA, b[x+8]);
-                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFA[b[x+8]]);
-                        }
-                        if (c1 & 0x20)
-                            ht_fprintf(outFile,TYPE_NORMAL,", clearing GUID pointers in person data fields");
-                        if (c1 & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL,", writing changes to the .iff");
-                    }
                     break;
                 case 0x7A:  // On Timer (false = error)
                     w1 = *(UINT16 *) (&b[x+7]);

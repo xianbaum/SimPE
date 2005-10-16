@@ -102,11 +102,11 @@ namespace pjse
 		protected string dataOwner(byte doid, ushort instance)
 		{
 			ushort[] bcon;
-			string doidName = GS.GStr(GS.SF.DataOwners, doid);
+			string doidName = GS.GStr(GS.BhavStr.DataOwners, doid);
 
 			string s = "0x" + SimPe.Helper.HexString(instance);
 			if (doidGStr[doid] != null)
-				s = "0x" + SimPe.Helper.HexString(instance) + " (" + GS.GStr((uint)doidGStr[doid], instance) + ")";
+				s = "0x" + SimPe.Helper.HexString(instance) + " (" + GS.GStr((GS.BhavStr)doidGStr[doid], instance) + ")";
 			switch (doid)
 			{
 				case 0x0a:
@@ -129,7 +129,7 @@ namespace pjse
 					break;
 				case 0x2f:
 					bcon = ExpandBCON(instance);
-					doidName = GS.GStr(GS.SF.DataOwners, 0x1a);
+					doidName = GS.GStr(GS.BhavStr.DataOwners, 0x1a);
 					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]"
 						+ " " + readBcon((uint)bcon[0], bcon[1], true);
 					break;
@@ -168,7 +168,7 @@ namespace pjse
 		}
 
 
-		protected string readStr(Scope s, uint instance, int sid, int maxLen)
+		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
@@ -181,7 +181,7 @@ namespace pjse
 			else
 				strGroup = SemiGlobalGroup;
 
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, strGroup, instance];
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, strGroup, (uint)instance];
 
 			if (items == null || items.Length == 0)
 				return "[No " + s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
@@ -194,7 +194,7 @@ namespace pjse
 				);
 		}
 
-		protected string readStr(Scope s, uint instance, int sid) { return readStr(s, instance, sid, -1); }
+		protected string readStr(Scope s, GS.GlobalStr instance, int sid) { return readStr(s, instance, sid, -1); }
 
 		private static string myLeft(string str, int len)
 		{
@@ -267,27 +267,27 @@ namespace pjse
 		private static Hashtable staticInitialiser()
 		{
 			Hashtable t = new Hashtable();
-			t.Add((byte)0x03, (uint)0x008d);
-			t.Add((byte)0x04, (uint)0x008d);
-			t.Add((byte)0x06, (uint)0x0081);
-			t.Add((byte)0x0c, (uint)GS.SF.Motives);
-			t.Add((byte)0x0e, (uint)GS.SF.Motives);
-			t.Add((byte)0x0f, (uint)GS.SF.Motives);
-			t.Add((byte)0x12, (uint)0x00c8);
-			t.Add((byte)0x13, (uint)0x00c8);
-			t.Add((byte)0x1c, (uint)GS.SF.Motives);
-			t.Add((byte)0x1d, (uint)GS.SF.Motives);
-			t.Add((byte)0x20, (uint)0x00c8);
-			t.Add((byte)0x15, (uint)0x00cc);
-			t.Add((byte)0x26, (uint)0x00cc);
-			t.Add((byte)0x33, (uint)0x00cc);
-			t.Add((byte)0x17, (uint)0x00db);
-			t.Add((byte)0x18, (uint)0x00dd);
-			t.Add((byte)0x21, (uint)0x00f3);
-			t.Add((byte)0x22, (uint)0x00f9);
-			t.Add((byte)0x23, (uint)0x00f5);
-			t.Add((byte)0x27, (uint)0x00fc);
-			t.Add((byte)0x28, (uint)0x00fc);
+			t.Add((byte)0x03, GS.BhavStr.DataLabels);
+			t.Add((byte)0x04, GS.BhavStr.DataLabels);
+			t.Add((byte)0x06, GS.BhavStr.GlobalLabels);
+			t.Add((byte)0x0c, GS.BhavStr.Motives);
+			t.Add((byte)0x0e, GS.BhavStr.Motives);
+			t.Add((byte)0x0f, GS.BhavStr.Motives);
+			t.Add((byte)0x12, GS.BhavStr.PersonData);
+			t.Add((byte)0x13, GS.BhavStr.PersonData);
+			t.Add((byte)0x1c, GS.BhavStr.Motives);
+			t.Add((byte)0x1d, GS.BhavStr.Motives);
+			t.Add((byte)0x20, GS.BhavStr.PersonData);
+			t.Add((byte)0x15, GS.BhavStr.OBJDDescs);
+			t.Add((byte)0x26, GS.BhavStr.OBJDDescs);
+			t.Add((byte)0x33, GS.BhavStr.OBJDDescs);
+			t.Add((byte)0x17, GS.BhavStr.RoomValues);
+			t.Add((byte)0x18, GS.BhavStr.NeighborData);
+			t.Add((byte)0x21, GS.BhavStr.JobData);
+			t.Add((byte)0x22, GS.BhavStr.NeighborhoodData);
+			t.Add((byte)0x23, GS.BhavStr.OBJFDescs);
+			t.Add((byte)0x27, GS.BhavStr.InventoryDialog);
+			t.Add((byte)0x28, GS.BhavStr.InventoryDialog);
 			return t;
 		}
 
