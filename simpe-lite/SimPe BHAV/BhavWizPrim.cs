@@ -1128,12 +1128,12 @@ namespace pjse.BhavNameWizards
 			s += ", using: ";
 
 			s += "mesh from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
-			s += " (mesh group index " + ((o[2] & 0x20) != 0
+			s += " (" + mgScope.ToString() + " mesh group " + ((o[2] & 0x20) != 0
 				? "[Temp 1]"
 				: "0x" + SimPe.Helper.HexString(mg) + " [" + readStr(mgScope, GS.GlobalStr.gMesgGroup, mg) + "]") + ")";
 
 			s += ", material from " + ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
-			s += " (" + ((o[13] & 0x01) != 0 ? "Moving Texture Name" : "material") + " index " + ((o[2] & 0x10) != 0
+			s += " (" + matScope.ToString() + " " + ((o[13] & 0x01) != 0 ? "Moving Texture Name" : "material") + " " + ((o[2] & 0x10) != 0
 				? "[Temp 0]"
 				:  "0x" + SimPe.Helper.HexString(mat) + " [" + readStr(matScope, GS.GlobalStr.gMaterialName, mat) + "]") +")";
 
