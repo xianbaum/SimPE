@@ -1,4 +1,8 @@
 
+16 October 2005 09:33 - Change the help text (/sigh/)
+  pjse GUID Tool\
+    GUIDTool.cs 1.7
+
 16 October 2005 09:11 - Add a help button
   pjse GUID Tool\
     GUIDTool.cs 1.6
