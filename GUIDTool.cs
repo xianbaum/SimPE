@@ -380,11 +380,11 @@ namespace pjse.guidtool
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			System.Windows.Forms.MessageBox.Show("If you enter a GUID, " +
-				"the search will return all matching objects.\n\n" +
-				"If you enter a name, the search will return all objects where\n" +
-				"the name you enter matches the name of the object,\n" +
-				"using case insensitive substring matching.",
+			System.Windows.Forms.MessageBox.Show(
+				"This tool searches OBJD files in your PJSE filetable path\n" +
+				"(which for now means currently open file + objects.package).\n\n" +
+				"If you enter a string to search, it is a case insensitive whole or sub string of the OBJD filename.\n" +
+				"If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000F together)",
 				this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
