@@ -9,7 +9,7 @@
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "pjse.filetable"
+                AssemblyName = "pjse.filetable.plugin"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -102,6 +102,11 @@
                     AssemblyName = "simpe.workspace"
                     HintPath = "..\..\SimPe\simpe.workspace.dll"
                     Private = "False"
+                />
+                <Reference
+                    Name = "simpe.commonhandler"
+                    AssemblyName = "simpe.commonhandler"
+                    HintPath = "..\..\SimPe\simpe.commonhandler.dll"
                 />
             </References>
         </Build>
