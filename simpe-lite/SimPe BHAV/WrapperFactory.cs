@@ -32,7 +32,7 @@ namespace SimPe.Plugin
 	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-	public class WrapperFactory : AbstractWrapperFactory, IToolFactory
+	public class WrapperFactory : AbstractWrapperFactory
 	{
 
 		/// <summary>
@@ -70,6 +70,7 @@ namespace SimPe.Plugin
 			}
 		}
 
+
 		#region AbstractWrapperFactory Member
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
@@ -98,19 +99,6 @@ namespace SimPe.Plugin
 
 		#endregion
 
-		#region IToolFactory Members
-
-		public SimPe.Interfaces.IToolPlugin[] KnownTools
-		{
-			get
-			{
-				IToolPlugin[] tools = {
-										  new pjse.FileTable()
-									  };
-				return tools;
-			}
-		}
-
-		#endregion
 	}
+
 }

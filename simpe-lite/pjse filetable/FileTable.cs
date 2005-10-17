@@ -20,6 +20,7 @@
 using System;
 using System.IO;
 using System.Collections;
+using SimPe.Plugin;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
 using SimPe.Interfaces.Plugin;
@@ -29,7 +30,7 @@ namespace pjse
 	/// <summary>
 	/// Summary description for FileTable.
 	/// </summary>
-	public class FileTable : ITool
+	public class FileTable : IListener, ITool
 	{
 		public FileTable()
 		{
@@ -301,7 +302,7 @@ namespace pjse
 
 		public IToolResult ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
 		{
-			return new SimPe.Plugin.ToolResult(false, false);
+			return null;
 		}
 
 		#endregion
@@ -310,7 +311,45 @@ namespace pjse
 
 		public override string ToString()
 		{
-			return "-"; // hack for 0.49s
+			return "--"; // Old GUI
+		}
+
+		#endregion
+
+		#region IListener Members
+
+		public void SelectionChangedHandler(object sender, SimPe.Events.ResourceEventArgs e)
+		{
+			IPackedFileDescriptor pfd = null;
+			IPackageFile package = (e.LoadedPackage == null) ? null : e.LoadedPackage.Package;
+
+#if AtSomePoint
+			foreach (SimPe.Events.ResourceContainer item in e)
+			{
+				Interfaces.Files.IPackedFileDescriptor pfd = item.Resource.FileDescriptor;
+				// do stuff
+			}
+#endif
+
+			IsEnabled(pfd, package);
+		}
+
+		#endregion
+	}
+
+	public class FileTableWrapperFactory : AbstractWrapperFactory, IToolFactory
+	{
+		#region IToolFactory Members
+
+		public SimPe.Interfaces.IToolPlugin[] KnownTools
+		{
+			get
+			{
+				IToolPlugin[] tools = {
+										  new pjse.FileTable()
+									  };
+				return tools;
+			}
 		}
 
 		#endregion
