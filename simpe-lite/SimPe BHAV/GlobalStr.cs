@@ -55,7 +55,7 @@ namespace pjse
 			ArrayList list = new ArrayList();
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, 0x7FE59FD0, (uint)instance];
-			if (items == null) return;
+			if (items == null || items.Length == 0) return;
 
 			SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
