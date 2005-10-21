@@ -1,4 +1,8 @@
 
+21 October 2005 19:59 - GlobalStr: make LoadData more robust
+  SimPe BHAV\
+    GlobalStr.cs 1.8
+
 17 October 2005 19:53 - FileTable: Make it its own plugin, use IListener
   pjse filetable\
     FileTable.cs 1.3
