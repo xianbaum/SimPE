@@ -1,4 +1,8 @@
 
+22 October 2005 20:23 - Bhav: FIX: Flagname numbering start at 1, not 0 but strings start at 0
+  SimPe BHAV\
+    BhavWizPrim0x0002.cs
+
 22 October 2005 19:53 - Bhav: Fixups to GlobalStr and Dialog primitive
   SimPe BHAV\
     BhavWiz.cs 1.11
