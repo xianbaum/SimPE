@@ -1,4 +1,12 @@
 
+22 October 2005 09:38 - Bhav: Merge with disaSim2-23b
+  SimPe BHAV\
+    BhavWiz.cs 1.10
+    BhavWizPrim.cs 1.12
+    BhavWizPrim0x0002.cs 1.7
+    GlobalStr.cs 1.9
+  GlobalStrings.package 1.7
+
 21 October 2005 19:59 - GlobalStr: make LoadData more robust
   SimPe BHAV\
     GlobalStr.cs 1.8
