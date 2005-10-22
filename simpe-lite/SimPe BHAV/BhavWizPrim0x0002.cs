@@ -332,9 +332,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		{
 			if (cbDataOwner2.SelectedIndex == 7 && cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10)
 			{
-				ArrayList flagNames = WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text));
+				ArrayList flagNames = (ArrayList)WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text)).Clone();
 				if (flagNames != null)
 				{
+					flagNames.Insert(0, "");
 					this.cbPicker2.Visible = true;
 					this.cbPicker2.Items.Clear();
 					this.cbPicker2.Items.AddRange(flagNames.ToArray());
@@ -507,8 +508,9 @@ namespace pjse.BhavNameWizards
 
 		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
 		{
+			if (flagValue == 0) return "[0: invalid]";
 			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((GS.BhavStr)flagTypes[flagType], flagValue);
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((GS.BhavStr)flagTypes[flagType], (ushort)(flagValue-1));
 		}
 
 
