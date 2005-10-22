@@ -181,17 +181,25 @@ namespace pjse
 
 			set
 			{
-				if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+				if (currentPackage != null && !IsFixed(currentPackage))
 					Remove(currentPackage);
 				if (currentPackage != value)
-					currentPackage = fixedPackages.Contains(value) ? null : value;
-				if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+					currentPackage = IsFixed(value) ? null : value;
+				if (currentPackage != null && !IsFixed(currentPackage))
 					Add(currentPackage);
 			}
 		}
 
-		public bool CurrentPackageIsFixed { get { return fixedPackages.Contains(this.currentPackage); } }
+		public bool CurrentPackageIsFixed { get { return IsFixed(currentPackage); } }
 
+		private bool IsFixed(IPackageFile package)
+		{
+			if (package == null || fixedPackages.Contains(package)) return true;
+
+			// There doesn't appear to be a way to compare two paths and have the OS decide if they refer to the same object
+
+			return false;
+		}
 
 		private Entry[] putLocalFirst(Hashtable result, bool localOnly)
 		{
