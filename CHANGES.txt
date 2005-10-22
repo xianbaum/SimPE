@@ -1,4 +1,8 @@
 
+22 October 2005 17:04 - Take advantage of changes to FileTable for ResourceChooser
+  pjse GUID Tool\
+    GUIDTool.cs 1.7
+
 16 October 2005 09:33 - Change the help text (/sigh/)
   pjse GUID Tool\
     GUIDTool.cs 1.7
