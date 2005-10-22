@@ -1,4 +1,10 @@
 
+22 October 2005 19:53 - Bhav: Fixups to GlobalStr and Dialog primitive
+  SimPe BHAV\
+    BhavWiz.cs 1.11
+    BhavWizPrim.cs 1.14
+    GlobalStr.cs 1.11
+
 22 October 2005 18:09 - FileTable: Dirty hack for inability to compare filenames
   pjse filetable\
     FileTable.cs 1.5
