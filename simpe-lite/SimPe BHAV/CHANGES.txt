@@ -1,4 +1,23 @@
 
+22 October 2005 17:02 - ResourceChooser: Amendments to use single chooser returning FileTable.Entry
+  SimPe BHAV\
+    BhavForm.cs 1.56
+    BhavInstListControl.cs 1.40
+    BhavOpCodeWiz.cs (deleted)
+    BhavOpCodeWiz.resx (deleted)
+    Chooser.cs (deleted)
+    ObjfForm.cs 1.8
+    pjse coder plugin.csproj 1.22
+    ResourceChooser.cs 1.1
+    ResourceChooser.resx 1.1
+    StrForm.cs 1.26
+    TtabForm.cs 1.27
+    WrapperFactory.cs 1.14
+
+22 October 2005 16:58 - FileTable: Tweaks plus support for ResourceChooser (caching filenames)
+  pjse filetable\
+    FileTable.cs 1.4
+
 22 October 2005 10:56 - Bhav: Tweaks to change material
   SimPe BHAV\
     BhavWizPrim.cs 1.13
