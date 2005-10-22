@@ -346,51 +346,36 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void StrReplace()
 		{
-			uint instance = (new pjse.Chooser()).Instance(wrapper);
-			if (instance == 0xffffffff) return;
+			pjse.FileTable.Entry e = (new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel);
+			if (e == null || !(e.Wrapper is Str)) return;
 
-			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
-				wrapper.FileDescriptor.Type,
-				0, 
-				wrapper.FileDescriptor.Group,
-				instance
-				);
-
-			if (pfd == null) return;
+			Str b = (Str)e.Wrapper;
+			int strnum = (new pjse.StrChooser()).Strnum(b);
+			if (strnum < 0) return;
 
 			bool savedstate = internalchg;
 			internalchg = true;
 
-			using(Str b = new Str())
+			if (wrapper.Format == 0x0000)
 			{
-				b.Package = wrapper.Package;
-				b.FileDescriptor = wrapper.FileDescriptor;
-				b.ProcessData(pfd, b.Package);
-
-				int strnum = (new pjse.StrChooser()).Strnum(b);
-				if (strnum < 0) return;
-
-				if (wrapper.Format == 0x0000)
-				{
-					wrapper[1, index].Title = b[1, strnum].Title;
-					wrapper[1, index].Description = b[1, strnum].Description;
-				}
-				else
-					for (byte m = 1; m < 44; m++)
-					{
-						while (wrapper[m, index] == null && wrapper.Add(m, "", "") >= 0);
-						if (b[m, strnum] == null)
-						{
-							wrapper[m, index].Title = "";
-							wrapper[m, index].Description = "";
-						}
-						else
-						{
-							wrapper[m, index].Title = b[m, strnum].Title;
-							wrapper[m, index].Description = b[m, strnum].Description;
-						}
-					}
+				wrapper[1, index].Title = b[1, strnum].Title;
+				wrapper[1, index].Description = b[1, strnum].Description;
 			}
+			else
+				for (byte m = 1; m < 44; m++)
+				{
+					while (wrapper[m, index] == null && wrapper.Add(m, "", "") >= 0);
+					if (b[m, strnum] == null)
+					{
+						wrapper[m, index].Title = "";
+						wrapper[m, index].Description = "";
+					}
+					else
+					{
+						wrapper[m, index].Title = b[m, strnum].Title;
+						wrapper[m, index].Description = b[m, strnum].Description;
+					}
+				}
 
 			byte l = lid;
 			int i = index;
@@ -423,33 +408,25 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex((i >= count) ? count - 1 : i);
 		}
 
-		private void Append(uint instance)
+		private void Append(pjse.FileTable.Entry e)
 		{
-			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
-				wrapper.FileDescriptor.Type,
-				0, 
-				wrapper.FileDescriptor.Group,
-				instance
-				);
-
-			if (pfd == null) return;
+			if (e == null) return;
 
 			bool savedstate = internalchg;
 			internalchg = true;
 
 			strPanel.Parent.Cursor = Cursors.WaitCursor;
 
-			Str b = new Str();
-			b.Package = wrapper.Package;
-			b.FileDescriptor = wrapper.FileDescriptor;
-			b.ProcessData(pfd, b.Package);
-			if (wrapper.Format != 0x0000)
-				for (byte m = 1; m < 44; m++)
-					while (wrapper[m, count-1] == null && wrapper.Add(m, "", "") >= 0);
-			for (int bi = 0; bi < b.Count; bi++)
+			using(Str b = (Str)e.Wrapper)
 			{
-				if (wrapper.Format == 0x0000 && b[bi].LanguageID != 1) continue;
-				if (wrapper.Add(b[bi]) < 0) break;
+				if (wrapper.Format != 0x0000)
+					for (byte m = 1; m < 44; m++)
+						while (wrapper[m, count-1] == null && wrapper.Add(m, "", "") >= 0);
+				for (int bi = 0; bi < b.Count; bi++)
+				{
+					if (wrapper.Format == 0x0000 && b[bi].LanguageID != 1) continue;
+					if (wrapper.Add(b[bi]) < 0) break;
+				}
 			}
 
 			strPanel.Parent.Cursor = Cursors.Default;
@@ -1555,7 +1532,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnAppend_Click(object sender, System.EventArgs e)
 		{
-			this.Append((new pjse.Chooser()).Instance(wrapper));
+			this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel));
 		}
 
 

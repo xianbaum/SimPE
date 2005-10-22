@@ -233,16 +233,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "BhavOpCodeWiz.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavOpCodeWiz.resx"
-                    DependentUpon = "BhavOpCodeWiz.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "BhavOperandWiz.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -318,16 +308,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "Chooser.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "Chooser.resx"
-                    DependentUpon = "Chooser.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "GlobalStr.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -391,6 +371,16 @@
                     RelPath = "PjseObjdWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ResourceChooser.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ResourceChooser.resx"
+                    DependentUpon = "ResourceChooser.cs"
+                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "StrBig.cs"

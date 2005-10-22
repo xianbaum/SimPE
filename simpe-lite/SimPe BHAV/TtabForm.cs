@@ -258,25 +258,16 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		public void Append(uint instance)
+		public void Append(pjse.FileTable.Entry e)
 		{
-			Interfaces.Files.IPackedFileDescriptor pfd = wrapper.Package.FindFile(
-				wrapper.FileDescriptor.Type,
-				0, 
-				wrapper.FileDescriptor.Group,
-				instance
-				);
-
-			if (pfd == null) return;
+			if (e == null || !(e.Wrapper is Ttab)) return;
 
 			bool savedstate = internalchg;
 			internalchg = true;
 
 			ttabPanel.Parent.Cursor = Cursors.WaitCursor;
-			Ttab b = new Ttab(wrapper.Opcodes);
-			b.Package = wrapper.Package;
-			b.FileDescriptor = wrapper.FileDescriptor;
-			b.ProcessData(pfd, b.Package);
+
+			Ttab b = (Ttab)e.Wrapper;
 			uint offset = getTTAsCount();
 			for (int bi = 0; bi < b.Count; bi++)
 			{
@@ -2375,40 +2366,22 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnAppend_Click(object sender, System.EventArgs e)
 		{
-			this.Append((new pjse.Chooser()).Instance(wrapper));
+			this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, ttabPanel));
 		}
 
 
 		private void GetTTABGuard(object sender, System.EventArgs e)
 		{
-			try 
-			{
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, ttabPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
-
-				if (opcode != -1)
-					setBHAV(1, (ushort)opcode, false);
-			}
-			catch (Exception ex) 
-			{
-				
-				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
-			}
+			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, ttabPanel.Parent);
+			if (item != null)
+				setBHAV(1, (ushort)item.Instance, false);
 		}
 
 		private void GetTTABAction(object sender, System.EventArgs e)
 		{
-			try 
-			{
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, ttabPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
-
-				if (opcode != -1)
-					setBHAV(0, (ushort)opcode, false);
-			} 
-			catch (Exception ex) 
-			{
-				
-				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
-			}
+			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, ttabPanel.Parent);
+			if (item != null)
+				setBHAV(0, (ushort)item.Instance, false);
 		}
 
 

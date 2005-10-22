@@ -2578,10 +2578,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
-			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent, BhavOpCodeWiz.Flags.All);
+			pjse.FileTable.Entry item = new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent);
 
-			if (opcode != -1 && opcode != currentInst.Instruction.OpCode)
-				this.tbInst_OpCode.Text = "0x" + SimPe.Helper.HexString((ushort)opcode);
+			if (item != null && item.Instance != currentInst.Instruction.OpCode)
+				this.tbInst_OpCode.Text = "0x" + SimPe.Helper.HexString((ushort)item.Instance);
 		}
 
 		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
@@ -3002,10 +3002,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnAppend_Click(object sender, System.EventArgs e)
 		{
-			int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, bhavPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
-
-			if (opcode == -1) return;
-			this.pnflowcontainer.Append((uint)opcode);
+			this.pnflowcontainer.Append(new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent));
 		}
 
 		private void btnDelMerola_Click(object sender, System.EventArgs e)

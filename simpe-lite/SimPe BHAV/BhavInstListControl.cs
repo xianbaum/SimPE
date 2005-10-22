@@ -273,9 +273,12 @@ namespace SimPe.PackedFiles.UserInterface
 				flowitems[csel].Focus();
 		}
 
-		public void Append(uint opcode)
+		public void Append(pjse.FileTable.Entry item)
 		{
-			Bhav b = ((pjse.BhavWiz)new Instruction(wrapper, (ushort)opcode)).Wrapper;
+			if (item == null || !(item.Wrapper is Bhav))
+				return;
+
+			Bhav b = (Bhav)item.Wrapper;
 			if (b == null) return;
 
 			bool savedstate = internalchg;

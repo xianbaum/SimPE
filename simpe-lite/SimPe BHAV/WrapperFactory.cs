@@ -34,24 +34,6 @@ namespace SimPe.Plugin
 	/// </remarks>
 	public class WrapperFactory : AbstractWrapperFactory
 	{
-
-		/// <summary>
-		/// Bhav Wizard
-		/// </summary>
-		static BhavOpCodeWiz bw = null;
-
-		/// <summary>
-		/// Returns a handle to the Bhav Wizard Window
-		/// </summary>
-		internal static BhavOpCodeWiz BhavWizardForm
-		{
-			get 
-			{
-				if (bw==null) bw = new BhavOpCodeWiz();
-				return bw;
-			}
-		}
-
 		static IProviderRegistry provider;
 		public static IProviderRegistry Provider
 		{

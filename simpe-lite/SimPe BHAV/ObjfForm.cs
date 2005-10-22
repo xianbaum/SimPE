@@ -602,34 +602,16 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void GetObjfGuard(object sender, System.EventArgs e)
 		{
-			try 
-			{
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, objfPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
-
-				if (opcode != -1)
-					tbguard.Text = "0x"+Helper.HexString((ushort)opcode);
-			} 
-			catch (Exception ex) 
-			{
-				
-				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
-			}
+			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, objfPanel.Parent);
+			if (item != null)
+				tbguard.Text = "0x"+Helper.HexString((ushort)item.Instance);
 		}
 
 		private void GetObjfAction(object sender, System.EventArgs e)
 		{
-			try 
-			{
-				int opcode = SimPe.Plugin.WrapperFactory.BhavWizardForm.Execute(wrapper, objfPanel.Parent, BhavOpCodeWiz.Flags.NoPrims);
-
-				if (opcode != -1)
-					tbaction.Text = "0x"+Helper.HexString((ushort)opcode);
-			} 
-			catch (Exception ex) 
-			{
-				
-				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
-			}
+			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, objfPanel.Parent);
+			if (item != null)
+				tbaction.Text = "0x"+Helper.HexString((ushort)item.Instance);
 		}
 
 		private void ObjfChanged(object sender, System.EventArgs e)
