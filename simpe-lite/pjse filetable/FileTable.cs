@@ -32,6 +32,29 @@ namespace pjse
 	/// </summary>
 	public class FileTable : IListener, ITool
 	{
+		private Hashtable packedFiles = new Hashtable();
+		private Hashtable pfByPackage = new Hashtable();
+		private Hashtable pfByType = new Hashtable();
+		private Hashtable pfByGroup = new Hashtable();
+		private Hashtable pfByTypeGroup = new Hashtable();
+		private Hashtable pfByTypeGroupInstance = new Hashtable();
+
+		private IPackageFile currentPackage = null;
+
+		public static FileTable GFT = null;
+		static FileTable()
+		{
+			GFT = new FileTable();
+			if (SimPe.Helper.WindowsRegistry.SimsEP2Path.Length > 0)
+				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
+			else if (SimPe.Helper.WindowsRegistry.SimsEP1Path.Length > 0)
+				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP1Path, "TSData\\Res\\Objects\\objects.package"));
+			else if (SimPe.Helper.WindowsRegistry.SimsPath.Length > 0)
+				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package"));
+			GFT.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
+		}
+
+
 		public FileTable()
 		{
 			//
@@ -39,6 +62,22 @@ namespace pjse
 			//
 		}
 
+
+		public Entry[] this[IPackageFile package, uint packedFileType]
+		{
+			get
+			{
+				ArrayList result = new ArrayList();
+				foreach (Entry e in ((Hashtable)pfByPackage[package]).Keys)
+				{
+					if (e.PFD.Type == packedFileType)
+						result.Add(e);
+				}
+				Entry[] es = new Entry[result.Count];
+				result.CopyTo(es);
+				return es;
+			}
+		}
 
 		public Entry[] this[uint packedFileType]
 		{
@@ -71,30 +110,6 @@ namespace pjse
 		}
 
 
-		private Entry[] putLocalFirst(Hashtable result, bool localOnly)
-		{
-			if (result == null) return new Entry[0];
-
-			ArrayList local = new ArrayList();
-			ArrayList nonlocal = new ArrayList();
-			foreach (Entry e in result.Keys)
-				((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
-
-			Entry[] es = new Entry[local.Count + (localOnly ? 0 : nonlocal.Count)];
-			local.CopyTo(es, 0);
-			if (!localOnly) nonlocal.CopyTo(es, local.Count);
-
-			return es;
-		}
-
-
-		private Hashtable packedFiles = new Hashtable();
-		private Hashtable pfByPackage = new Hashtable();
-		private Hashtable pfByType = new Hashtable();
-		private Hashtable pfByGroup = new Hashtable();
-		private Hashtable pfByTypeGroup = new Hashtable();
-		private Hashtable pfByTypeGroupInstance = new Hashtable();
-
 		public void Add(string packageFile)
 		{
 			if (!File.Exists(packageFile)) return;
@@ -115,6 +130,83 @@ namespace pjse
 		public void AddFixed(IPackageFile package)
 		{
 			Add(package, true);
+		}
+
+
+		public void Remove(IPackageFile package)
+		{
+			Hashtable byPackage = (Hashtable)pfByPackage[package];
+			if (byPackage == null) return;
+			pfByPackage.Remove(package);
+
+			foreach(object key in byPackage.Keys)
+			{
+				uint type = ((Entry)key).Type;
+				uint group = ((Entry)key).Group;
+				uint instance = ((Entry)key).Instance;
+
+				packedFiles.Remove(key);
+				filenames.Remove(key);
+
+				Hashtable byType = (Hashtable)pfByType[type];
+				if (byType != null) byType.Remove(key);
+
+				Hashtable byGroup = (Hashtable)pfByGroup[group];
+				if (byGroup != null) byGroup.Remove(key);
+
+				Hashtable tgt = (Hashtable)pfByTypeGroup[type];
+				if (tgt != null)
+				{
+					Hashtable byTypeGroup = (Hashtable)tgt[group];
+					if (byTypeGroup != null) byTypeGroup.Remove(key);
+				}
+
+				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[type];
+				if (tgit != null)
+				{
+					Hashtable tgitg = (Hashtable)tgit[group];
+					if (tgitg != null)
+					{
+						Hashtable byTypeGroupInstance = (Hashtable)tgitg[instance];
+						if (byTypeGroupInstance != null) byTypeGroupInstance.Remove(key);
+					}
+				}
+			}
+		}
+
+
+		public IPackageFile CurrentPackage
+		{
+			get { return currentPackage; }
+
+			set
+			{
+				if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+					Remove(currentPackage);
+				if (currentPackage != value)
+					currentPackage = fixedPackages.Contains(value) ? null : value;
+				if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+					Add(currentPackage);
+			}
+		}
+
+		public bool CurrentPackageIsFixed { get { return fixedPackages.Contains(this.currentPackage); } }
+
+
+		private Entry[] putLocalFirst(Hashtable result, bool localOnly)
+		{
+			if (result == null) return new Entry[0];
+
+			ArrayList local = new ArrayList();
+			ArrayList nonlocal = new ArrayList();
+			foreach (Entry e in result.Keys)
+				((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
+
+			Entry[] es = new Entry[local.Count + (localOnly ? 0 : nonlocal.Count)];
+			local.CopyTo(es, 0);
+			if (!localOnly) nonlocal.CopyTo(es, local.Count);
+
+			return es;
 		}
 
 		private void Add(IPackageFile package, bool isFixed)
@@ -168,64 +260,6 @@ namespace pjse
 				fixedPackages.Add(package);
 		}
 
-
-		public void Remove(IPackageFile package)
-		{
-			Hashtable byPackage = (Hashtable)pfByPackage[package];
-			if (byPackage == null) return;
-			pfByPackage.Remove(package);
-
-			foreach(object key in byPackage.Keys)
-			{
-				uint type = ((Entry)key).Type;
-				uint group = ((Entry)key).Group;
-				uint instance = ((Entry)key).Instance;
-
-				packedFiles.Remove(key);
-
-				Hashtable byType = (Hashtable)pfByType[type];
-				if (byType != null) byType.Remove(key);
-
-				Hashtable byGroup = (Hashtable)pfByGroup[group];
-				if (byGroup != null) byGroup.Remove(key);
-
-				Hashtable tgt = (Hashtable)pfByTypeGroup[type];
-				if (tgt != null)
-				{
-					Hashtable byTypeGroup = (Hashtable)tgt[group];
-					if (byTypeGroup != null) byTypeGroup.Remove(key);
-				}
-
-				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[type];
-				if (tgit != null)
-				{
-					Hashtable tgitg = (Hashtable)tgit[group];
-					if (tgitg != null)
-					{
-						Hashtable byTypeGroupInstance = (Hashtable)tgitg[instance];
-						if (byTypeGroupInstance != null) byTypeGroupInstance.Remove(key);
-					}
-				}
-			}
-		}
-
-
-		private IPackageFile currentPackage = null;
-		public IPackageFile CurrentPackage
-		{
-			get { return currentPackage; }
-
-			set
-			{
-				if (currentPackage != null && !fixedPackages.Contains(currentPackage))
-					Remove(currentPackage);
-				if (currentPackage != value)
-					currentPackage = fixedPackages.Contains(value) ? null : value;
-				if (currentPackage != null && !fixedPackages.Contains(currentPackage))
-					Add(currentPackage);
-			}
-		}
-
 		private void RefreshCurrentPackage()
 		{
 
@@ -238,21 +272,9 @@ namespace pjse
 
 
 		private ArrayList fixedPackages = new ArrayList();
-		public static FileTable GFT = null;
-		static FileTable()
-		{
-			GFT = new FileTable();
-			if (SimPe.Helper.WindowsRegistry.SimsEP2Path.Length > 0)
-				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
-			else if (SimPe.Helper.WindowsRegistry.SimsEP1Path.Length > 0)
-				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP1Path, "TSData\\Res\\Objects\\objects.package"));
-			else if (SimPe.Helper.WindowsRegistry.SimsPath.Length > 0)
-				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package"));
-			GFT.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
-		}
 
-
-		public class Entry : IDisposable
+		protected static Hashtable filenames = new Hashtable();
+		public class Entry : IDisposable, IComparable
 		{
 			private IPackageFile package;
 			private IPackedFileDescriptor pfd;
@@ -279,6 +301,31 @@ namespace pjse
 
 			public uint Instance { get { return instance; } }
 
+			public AbstractWrapper Wrapper
+			{
+				get
+				{
+					AbstractWrapper wrapper = (AbstractWrapper)SimPe.FileTable.WrapperRegistry.FindHandler(type);
+					if (wrapper != null)
+						wrapper.ProcessData(pfd, package);
+					return wrapper;
+				}
+			}
+
+			public override string ToString() { return this + " (0x" + SimPe.Helper.HexString((ushort)instance) + ")"; }
+
+			public static implicit operator string(Entry e)
+			{
+				if (FileTable.filenames[e] == null)
+				{
+					AbstractWrapper wrapper = e.Wrapper;
+					if (wrapper != null)
+						FileTable.filenames[e] = SimPe.Helper.ToString(wrapper.StoredData.ReadBytes(64)).Trim();
+				}
+
+				return (string)FileTable.filenames[e];
+			}
+
 
 			#region IDisposable Members
 
@@ -286,6 +333,23 @@ namespace pjse
 			{
 				this.package = null;
 				this.pfd = null;
+			}
+
+			#endregion
+
+			#region IComparable Members
+
+			public int CompareTo(object obj)
+			{
+				if (!(obj is Entry))
+					return -1;
+				Entry that = (Entry)obj;
+
+				if (this.type.CompareTo(that.type) != 0)
+					return this.type.CompareTo(that.type);
+				if (this.group.CompareTo(that.group) != 0)
+					return this.group.CompareTo(that.group);
+				return this.instance.CompareTo(that.instance);
 			}
 
 			#endregion
