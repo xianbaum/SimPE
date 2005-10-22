@@ -1105,43 +1105,41 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			Scope mgScope = Scope.Private;
-			Scope matScope = Scope.Private;
-
-			if ((o[2] & 0x40) != 0)
-				mgScope = Scope.Global;
-			else if ((o[2] & 0x80) != 0)
-				mgScope = Scope.SemiGlobal;
-
-			if ((o[2] & 0x02) != 0)
-				matScope = Scope.Global;
-			else if ((o[2] & 0x04) != 0)
-				matScope = Scope.SemiGlobal;
-
-			ushort mat = ToShort(o[0], o[1]);
-			ushort mg = ToShort(o[3], o[4]);
-
-
 			string s = "";
 
 			s += "on obj in " + dataOwner(o[5], ToShort(o[6], o[7]));       // target object
-			s += ", using: ";
 
-			s += "mesh from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
-			s += " (" + mgScope.ToString() + " mesh group " + ((o[2] & 0x20) != 0
-				? "[Temp 1]"
-				: "0x" + SimPe.Helper.HexString(mg) + " [" + readStr(mgScope, GS.GlobalStr.gMesgGroup, mg) + "]") + ")";
+			
+			Scope matScope = Scope.Private;
+			if ((o[2] & 0x02) != 0) matScope = Scope.Global;
+			else if ((o[2] & 0x04) != 0) matScope = Scope.SemiGlobal;
+			ushort mat = ToShort(o[0], o[1]);
 
-			s += ", material from " + ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
-			s += " (" + matScope.ToString() + " " + ((o[13] & 0x01) != 0 ? "Moving Texture Name" : "material") + " " + ((o[2] & 0x10) != 0
-				? "[Temp 0]"
-				:  "0x" + SimPe.Helper.HexString(mat) + " [" + readStr(matScope, GS.GlobalStr.gMaterialName, mat) + "]") +")";
+			s += ", using ";
+			if ((o[13] & 0x02) == 0)
+			{
+				s += "material from " + ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
+				s += " (" + matScope.ToString() + " " + ((o[13] & 0x01) != 0 ? "moving texture" : "material") + " " + ((o[2] & 0x10) != 0
+					? "[Temp 0]"
+					:  "0x" + SimPe.Helper.HexString(mat) + " [" + readStr(matScope, GS.GlobalStr.gMaterialName, mat) + "]") +")";
+			}
+			else
+				s += "material from screen shot";
 
-			if ((o[13] & 0x02) != 0)
-				s += ", found in snap shot generated material";
+			Scope mgScope = Scope.Private;
+			if ((o[2] & 0x40) != 0) mgScope = Scope.Global;
+			else if ((o[2] & 0x80) != 0) mgScope = Scope.SemiGlobal;
+			ushort mg = ToShort(o[3], o[4]);
 
-			if ((o[4] & 0x40) != 0) // w3 < 0
-				s += ", over all model";
+			s += " and mesh from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
+			if ((o[4] & 0x40) == 0) // w3 < 0
+			{
+				s += " (" + mgScope.ToString() + " mesh group " + ((o[2] & 0x20) != 0
+					? "[Temp 1]"
+					: "0x" + SimPe.Helper.HexString(mg) + " [" + readStr(mgScope, GS.GlobalStr.gMeshGroup, mg) + "]") + ")";
+			}
+			else
+				s += " (over all model)";
 
 			return s;
 		}

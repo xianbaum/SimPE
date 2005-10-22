@@ -117,7 +117,7 @@ namespace pjse
 
 		public enum GlobalStr : uint
 		{
-			gMesgGroup = 0x0087,
+			gMeshGroup = 0x0087,
 			gMaterialName = 0x0088,
 			gMyAttributeLabels = 0x100,
 			gDialogPrim = 0x012d,
