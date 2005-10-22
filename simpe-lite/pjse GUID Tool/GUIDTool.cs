@@ -111,13 +111,6 @@ namespace pjse.guidtool
 		{
 			uint itemguid = 0;
 
-			AbstractWrapper wrapper = (AbstractWrapper)SimPe.FileTable.WrapperRegistry.FindHandler(SimPe.Data.MetaData.OBJD_FILE);
-			if (wrapper == null)
-			{
-				this.lbStatus.Text = "[Error: can't process OBJD files]";
-				return;
-			}
-
 			this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
 
 			this.lbStatus.Visible = false;
@@ -131,8 +124,7 @@ namespace pjse.guidtool
 			int i = 0;
 			foreach (pjse.FileTable.Entry item in results)
 			{
-				wrapper.ProcessData(item.PFD, item.Package);
-				System.IO.BinaryReader reader = wrapper.StoredData;
+				System.IO.BinaryReader reader = item.Wrapper.StoredData;
 
 				if (reader.BaseStream.Length >= 0x40) // filename length
 				{
@@ -146,11 +138,11 @@ namespace pjse.guidtool
 
 					if ((type == SearchType.GUID && itemguid == guid)
 						||
-						(type == SearchType.Name && wrapper.ResourceName.Trim().Remove(0, 13).ToLower().IndexOf(this.tbName.Text) >= 0))
+						(type == SearchType.Name && ((string)item).ToLower().IndexOf(this.tbName.Text) >= 0))
 					{
 						this.rtbReport.Text += "0x" + SimPe.Helper.HexString(itemguid) + ": "
 							+ "Group 0x" + SimPe.Helper.HexString(item.PFD.Group) + " - "
-							+ wrapper.ResourceName.Remove(0, 13) + " (" + item.Package.FileName + ")\n";
+							+ item + " (" + item.Package.FileName + ")\n";
 						i++;
 					}
 				}
