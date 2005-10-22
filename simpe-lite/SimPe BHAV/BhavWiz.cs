@@ -106,9 +106,12 @@ namespace pjse
 
 			string s = "0x" + SimPe.Helper.HexString(instance);
 			if (doidGStr[doid] != null)
-				s = "0x" + SimPe.Helper.HexString(instance) + " (" + GS.GStr((GS.BhavStr)doidGStr[doid], instance) + ")";
+				s += " (" + GS.GStr((GS.BhavStr)doidGStr[doid], instance) + ")";
 			switch (doid)
 			{
+				case 0x00:
+					s += " (" + readStr(Scope.Private, GS.GlobalStr.gMyAttributeLabels, instance) + ")";
+					break;
 				case 0x0a:
 					if (instance == 0)
 						s = "";
@@ -173,24 +176,23 @@ namespace pjse
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
 
-			uint strGroup = 0;
-			if (s == Scope.Global)
-				strGroup = 0x7FD46CD0;
-			else if (s == Scope.Private)
-				strGroup = instruction.Parent.FileDescriptor.Group;
-			else
-				strGroup = SemiGlobalGroup;
+			pjse.FileTable.Entry[] items = null;
 
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, strGroup, (uint)instance];
+			if (s == Scope.Private)
+				items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.FileDescriptor.Group, (uint)instance];
+			if ((items == null || items.Length == 0) && s != Scope.Global)
+				items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, SemiGlobalGroup, (uint)instance];
+			if (items == null || items.Length == 0)
+				items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, 0x7FD46CD0, (uint)instance];
 
 			if (items == null || items.Length == 0)
-				return "[No " + s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
+				return "[No " + s.ToString() + " " + instance.ToString() + " (STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ") file]";
 
 			Str str = new Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
-			return (s != Scope.Global ? str.FileName.Trim() + " ": "")
-				+ ((str[1, sid] != null) ? "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
-				: "[" + s.ToString() + " STR 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
+			return ((str[1, sid] != null)
+				? "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
+				: "[" + s.ToString() + " " + instance.ToString() + " STR 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
 				);
 		}
 
@@ -241,14 +243,17 @@ namespace pjse
 			int c = instance & 0x7F;
 			switch (a & 3) 
 			{
-				case 1:				// semi-global
+				case 0:			// private
+					b += 0x1000;
+					break;
+				case 1:			// semi-global
 					b += 0x2000;
 					break;
-				case 2:				// global
+				case 2:			// global
 					b += 0x100;
 					break;
-				default:			// private
-					b += 0x1000;
+				case 3:			// FUBAR, as it says in disaSim2-23b
+					b = 0xF5BA;
 					break;
 			}
 			if ((a & 4) != 0)

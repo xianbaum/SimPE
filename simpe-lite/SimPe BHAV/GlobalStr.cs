@@ -100,6 +100,7 @@ namespace pjse
 			Generics = 0xdc,
 			NeighborData = 0xdd,
 			Priorities = 0xe0,
+			WallPlacementFlags = 0xe5,
 			FindGLB = 0xef,
 			JobData = 0xf3,
 			DialogIcon = 0xf4,
@@ -118,6 +119,7 @@ namespace pjse
 		{
 			gMesgGroup = 0x0087,
 			gMaterialName = 0x0088,
+			gMyAttributeLabels = 0x100,
 			gDialogPrim = 0x012d,
 			gMakeAction = 0x012e,
 			gNamedTreePrim = 0x012f,

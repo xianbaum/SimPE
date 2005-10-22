@@ -519,6 +519,7 @@ namespace pjse.BhavNameWizards
 			Hashtable o = new Hashtable();
 			o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
 			o.Add((ushort)0x08, GS.BhavStr.Flags1);
+			o.Add((ushort)0x0d, GS.BhavStr.WallPlacementFlags);
 			o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
 			o.Add((ushort)0x28, GS.BhavStr.Flags2);
 			o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);

@@ -845,9 +845,6 @@ namespace pjse.BhavNameWizards
 				case 0x09: case 0x22:
 					s = s.Replace("[local]", (lng ? dataOwner(0x19, o[6]) // local
 						: GS.GStr(GS.BhavStr.DataOwners, 0x19) + " " + o[6].ToString()));
-					//w1 = ToShort(o[9], o[10]);
-					//w2 = ToShort(o[11], o[12]);
-					//if (b[x+8] & 2) ht_fprintf(outFile,TYPE_NORMAL," where %s := %d", gString8D[w1], w2);
 					break;
 			}
 
@@ -859,7 +856,9 @@ namespace pjse.BhavNameWizards
 			//if ((o[5] != 0xA || o[7] != 0) && (o[4] & 0x80) != 0)
 			//	s += dataOwner(o[5], o[7]) + " := next ";
 
-			if ((o[8] & 0x01) != 0) s += ", [including disabled objects]";
+			if ((o[8] & 0x02) != 0 && instruction.NodeVersion != 0)
+				s += " where " + GS.GStr(GS.BhavStr.DataLabels, ToShort(o[9], o[10])) + " == " + ToShort(o[11], o[12]).ToString();
+			if ((o[8] & 0x01) != 0 && instruction.NodeVersion!= 0) s += " [including disabled objects]";
 			return s;
 		}
 	}
@@ -962,6 +961,7 @@ namespace pjse.BhavNameWizards
 					case 1: s += "System"; break;
 					case 2: s += "System Dialog"; break;
 					case 3: s += "Birthday"; break;
+					case 4: s += "Sim (about Object ID in Temp 1)"; break;
 					default: s += "unknown"; break;
 				}
 
@@ -1249,8 +1249,12 @@ namespace pjse.BhavNameWizards
                     w1 = *(UINT16 *) (&b[x+14]);
                     w2 = *(UINT16 *) (&b[x+11]);
                     w3 = *(UINT16 *) (&b[x+2]);
+                    w4 = *(UINT16 *) (&b[x+7]);
+                    c1 = b[x];
+                    if (nodeVersion == 0)
+                        c1 = ((c1 & 0x3C) << 1) | (c1 & 0x83);
                     ht_fprintf(outFile,TYPE_NORMAL,"Access the ");
-                    switch (b[x] & 3) {
+                    switch (c1 & 7) {
                         case 0:
                             ht_fprintf(outFile,TYPE_NORMAL,"Global ");
                             break;
@@ -1263,25 +1267,31 @@ namespace pjse.BhavNameWizards
                         case 3:
                             ht_fprintf(outFile,TYPE_NORMAL,"Neighbor ");
                             break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Game-Wide ");
+                            break;
                     }
-                    if (b[x] & 4)
+                    if (c1 & 8)
                         ht_fprintf(outFile,TYPE_NORMAL,"Counted Inventory");
                     else
                         ht_fprintf(outFile,TYPE_NORMAL,"Singular Inventory");
-                    if ((b[x] & 3) != 0) {
+                    if ((c1 & 7) != 0) {
                         ht_fprintf(outFile,TYPE_NORMAL," from ID ");
                         data2(b[x+1], w3);
                     }
                     ht_fprintf(outFile,TYPE_NORMAL,". with category %d",b[x+9]);
-                    d1 = *(UINT32 *) (&b[x+5]);
-                    if (d1 != 0) {
-                        ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
-                        readGUID(d1);
-                        ht_fprintf(outFile,TYPE_NORMAL,". "); //?
-                    }
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL," of GUID from Stack Object. ");
-                    if (b[x] & 4)
+                    if ((b[x+4] != 0xE) && (b[x+4] != 0xF)) { //??
+                        d1 = *(UINT32 *) (&b[x+5]);
+                        if (d1 != 0) {
+                            ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
+                            readGUID(d1);
+                            ht_fprintf(outFile,TYPE_NORMAL,". "); //?
+                        }
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," of GUID from Stack Object. ");
+                    } else
+                        ht_fprintf(outFile,TYPE_NORMAL,". ");
+                    if (c1 & 8)
                         switch (b[x+4]) {
                             case 0:
                                 ht_fprintf(outFile,TYPE_NORMAL,"Add token");
@@ -1359,6 +1369,10 @@ namespace pjse.BhavNameWizards
                                 ht_fprintf(outFile,TYPE_NORMAL,"Set To Next token");
                                 ht_fprintf(outFile,TYPE_NORMAL,". Starting at index from ");
                                 data2(b[x+10], w2);
+                                if (c1 & 0x80)
+                                    ht_fprintf(outFile,TYPE_NORMAL,", Reversed.");
+                                else
+                                    ht_fprintf(outFile,TYPE_NORMAL,".");
                                 break;
                             case 4:
                                 ht_fprintf(outFile,TYPE_NORMAL,"Push property on token at index from ");
@@ -1399,25 +1413,28 @@ namespace pjse.BhavNameWizards
                                 break;
                             case 0xC:
                                 ht_fprintf(outFile,TYPE_NORMAL,"Set To Next ");
-                                if (b[x] & 8)
+                                if (c1 & 0x10)
                                     ht_fprintf(outFile,TYPE_NORMAL,"visible ");
                                 else
                                     ht_fprintf(outFile,TYPE_NORMAL,"hidden ");
-                                if (b[x] & 0x10)
+                                if (c1 & 0x20)
                                     ht_fprintf(outFile,TYPE_NORMAL,"memory ");
                                 else
                                     ht_fprintf(outFile,TYPE_NORMAL,"non-memory ");
                                 ht_fprintf(outFile,TYPE_NORMAL,"token. Starting at index from ");
                                 data2(b[x+10], w2);
-                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                if (c1 & 0x80)
+                                    ht_fprintf(outFile,TYPE_NORMAL,", Reversed.");
+                                else
+                                    ht_fprintf(outFile,TYPE_NORMAL,".");
                                 break;
                             case 0xD:
                                 ht_fprintf(outFile,TYPE_NORMAL,"Store the count of the ");
-                                if (b[x] & 8)
+                                if (c1 & 0x10)
                                     ht_fprintf(outFile,TYPE_NORMAL,"visible ");
                                 else
                                     ht_fprintf(outFile,TYPE_NORMAL,"hidden ");
-                                if (b[x] & 0x10)
+                                if (c1 & 0x20)
                                     ht_fprintf(outFile,TYPE_NORMAL,"memory ");
                                 else
                                     ht_fprintf(outFile,TYPE_NORMAL,"non-memory ");
@@ -1425,6 +1442,28 @@ namespace pjse.BhavNameWizards
                                 data2(b[x+13], w1);
                                 ht_fprintf(outFile,TYPE_NORMAL,".");
                                 break;
+                            case 0xE:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Token Index ");
+                                data2(b[x+6], w4);
+                                ht_fprintf(outFile,TYPE_NORMAL,", Property ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL," Assign to: ");
+                                data2(b[x+13], w1);
+                                break;
+                            case 0xF:
+                                data2(b[x+13], w1);
+                                ht_fprintf(outFile,TYPE_NORMAL," Assign to: Token Index ");
+                                data2(b[x+6], w4);
+                                ht_fprintf(outFile,TYPE_NORMAL,", Property ");
+                                data2(b[x+10], w2);
+                                break;
+                            case 0x10:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Add Token And Instance Info of Stack Object.");
+                                break;
+                            case 0x11:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Create Object from Token at Index.");
+                                break;
+
                         }
                     break;
                 case 0x70:  // Effect Stop/Start (false = error)
@@ -1784,7 +1823,7 @@ namespace pjse.BhavNameWizards
                     c2 = b[x+1];    // flags
                     w2 = *(UINT16 *) (&b[x+6]);
 
-                    if (f < 0x8007) {   // old-style parameter usage
+                    if (nodeVersion == 0) {   // old-style parameter usage
                         if ((c2 & 4) == 0) {
                             data2(b[x+4], w2);
                             ht_fprintf(outFile,TYPE_NORMAL," := ");
@@ -1811,6 +1850,8 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL," := ");
                             data2(b[x+4], w2);
                         }
+                        if (b[x+2] & 1) ht_fprintf(outFile,TYPE_NORMAL,", fail if too small");
+                        if (b[x+2] & 2) ht_fprintf(outFile,TYPE_NORMAL,", use neighbor IDs");
                     } else {            // new-style parameter usage
                         w1 = *(UINT16 *) (&b[x+9]);
                         w3 = *(UINT16 *) (&b[x+3]);
@@ -1831,9 +1872,12 @@ namespace pjse.BhavNameWizards
                         else
                             ht_fprintf(outFile,TYPE_NORMAL,"Put value into ");
                         data2(b[x+8], w1);
+                        if (c2 & 1) ht_fprintf(outFile,TYPE_NORMAL,", fail if too small");
+                        if (c2 & 2)
+                            ht_fprintf(outFile,TYPE_NORMAL,", use neighbor IDs");
+                        else if (c2 & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL,", don't check presence of second object"); // "object to sim" relationship
                     }
-                    if (c2 & 1) ht_fprintf(outFile,TYPE_NORMAL,", fail if too small");
-                    if (c2 & 2) ht_fprintf(outFile,TYPE_NORMAL,", use neighbors");
                     break;
                 case 0x1B:  // Go To Relative Position
                     c1 = (b[x+2] + 2) & 0xFF;
@@ -2176,6 +2220,10 @@ namespace pjse.BhavNameWizards
                         case 2:
                             ht_fprintf(outFile,TYPE_NORMAL,"global 0x%X", w1);
                             break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
+                            data2(0x19, w1);   // local
+                            break;
                         default:
                             ht_fprintf(outFile,TYPE_NORMAL,"??? 0x%X", w1);
                     }
@@ -2307,6 +2355,12 @@ namespace pjse.BhavNameWizards
                         case 0x91:
                             ht_fprintf(outFile,TYPE_NORMAL,"Baby list");
                             break;
+                        case 0x99:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Puppy list");
+                            break;
+                        case 0x9A:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Kitten list");
+                            break;
                         default:
                             ht_fprintf(outFile,TYPE_NORMAL,"Object list");
                             break;
@@ -2389,7 +2443,7 @@ namespace pjse.BhavNameWizards
                     else
                         ht_fprintf(outFile,TYPE_NORMAL,"anim id %X", w1);
                     ht_fprintf(outFile,TYPE_NORMAL," from ");
-                    switch (b[x+6]) {
+                    switch (b[x+9]) {
                         case 0x80:
                             ht_fprintf(outFile,TYPE_NORMAL,"Global list");
                             break;
@@ -2419,6 +2473,12 @@ namespace pjse.BhavNameWizards
                             break;
                         case 0x91:
                             ht_fprintf(outFile,TYPE_NORMAL,"Baby list");
+                            break;
+                        case 0x99:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Puppy list");
+                            break;
+                        case 0x9A:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Kitten list");
                             break;
                         default:
                             ht_fprintf(outFile,TYPE_NORMAL,"Object list");
@@ -2479,9 +2539,13 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL,", Align blend out with to calling objects Anim");
                     if (c2 & 0x40)
                         ht_fprintf(outFile,TYPE_NORMAL,", Using tree owners anim list");
-                    if (b[x+12] & 1)
+                    if ((b[x+12] & 1) && nodeVersion)
                         ht_fprintf(outFile,TYPE_NORMAL,", Not Hurryable");
-                    switch (b[x+11]) {
+                    if (nodeVersion)
+                        c3 = b[x+11];
+                    else
+                        c3 = b[x+12];
+                    switch (c3) {
                         case 0:
                             ht_fprintf(outFile,TYPE_NORMAL,", low priority");
                             break;
@@ -2535,6 +2599,12 @@ namespace pjse.BhavNameWizards
                                 case 0x91:
                                     ht_fprintf(outFile,TYPE_NORMAL,"Baby list");
                                     break;
+                                case 0x99:
+                                   ht_fprintf(outFile,TYPE_NORMAL,"Puppy list");
+                                   break;
+                                case 0x9A:
+                                   ht_fprintf(outFile,TYPE_NORMAL,"Kitten list");
+                                   break;
                                 default:
                                     ht_fprintf(outFile,TYPE_NORMAL,"Object list");
                                     break;
@@ -2645,14 +2715,18 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL,"STOP");
                     if (c1 & 8)
                         ht_fprintf(outFile,TYPE_NORMAL,", using turnTowardsSpeed in temp 1");
-                    else
+                    else if (nodeVersion)
                         ht_fprintf(outFile,TYPE_NORMAL,", turn towards speed of %d  degrees per second",2*b[x+4]);
-                    if (b[x+15] & 2)
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,", turn towards speed of %d  degrees per second",b[x+4]);
+                    if ((b[x+15] & 2) && nodeVersion || (c1 & 8) && (nodeVersion == 0))
                         ht_fprintf(outFile,TYPE_NORMAL,", using turnAwaySpeed in temp 1");
                     else if (b[x+15] & 1)
                         ht_fprintf(outFile,TYPE_NORMAL,", using turnAwaySpeed in temp 2");
-                    else
+                    else if (nodeVersion)
                         ht_fprintf(outFile,TYPE_NORMAL,", turn away speed of %d  degrees per second",2*b[x+5]);
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,", turn away speed of %d  degrees per second",b[x+4]);
                     if (c1 & 0x20)
                         ht_fprintf(outFile,TYPE_NORMAL,", ignoring Room");
                     if (c1 & 0x40)
@@ -3162,9 +3236,9 @@ namespace pjse.BhavNameWizards
                 case 0x7D:  // Influence (Uni)
                     w1 = *(UINT16 *) (&b[x+1]);
                     w2 = *(UINT16 *) (&b[x+6]);
-                    ht_fprintf(outFile,TYPE_NORMAL,"Sim in ");
+                    ht_fprintf(outFile,TYPE_NORMAL,"Follow Sim in ");
                     data2(b[x],w1);
-                    ht_fprintf(outFile,TYPE_NORMAL,", output result to ");
+                    ht_fprintf(outFile,TYPE_NORMAL,", output result to");
                     if (b[x+5])
                         ht_fprintf(outFile,TYPE_NORMAL," stack object's object array: ");
                     else
@@ -3176,12 +3250,26 @@ namespace pjse.BhavNameWizards
                 case 0x7E:  // Lua (NL)
                     w1 = *(UINT16 *) (&b[x]);   // STR#
                     w2 = *(UINT16 *) (&b[x+2]); // index + 1
-                    w3 = *(UINT16 *) (&b[x+4]); // mystery value
+                    w3 = *(UINT16 *) (&b[x+4]); // flags
                     if (w2 != 0) {
                         w2--;
-                        if (readString2(gGroup, w1, w2) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x%X:0x%X]", w1, w2);
-                        ht_fprintf(outFile,TYPE_NORMAL, ", %d", w3);
+                        if (w3 & 1)
+                            ht_fprintf(outFile,TYPE_NORMAL,"Run simulator script definition: \"");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL,"Run dynamic simulator script: \"");
+                        if (w3 & 2) {
+                            if (readString2(gGroup, w1, w2) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x%X:0x%X]", w1, w2);
+                            ht_fprintf(outFile,TYPE_NORMAL,"\" - stringset from tree owner");
+                        } else if (w3 & 4) {
+                            if (readString2(gGlobGroup, w1, w2) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x%X:0x%X]", w1, w2);
+                            ht_fprintf(outFile,TYPE_NORMAL,"\" - stringset from semi-global");
+                        } else {
+                            if (readString2(GROUP_GLOBAL, w1, w2) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x%X:0x%X]", w1, w2);
+                            ht_fprintf(outFile,TYPE_NORMAL,"\" - stringset from global");
+                        }
                     }
                     break;
                 case 0x00:  // Sleep (false = error)
