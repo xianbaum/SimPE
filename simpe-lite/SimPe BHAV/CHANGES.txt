@@ -1,4 +1,10 @@
 
+22 October 2005 10:56 - Bhav: Tweaks to change material
+  SimPe BHAV\
+    BhavWizPrim.cs 1.13
+    GlobalStr.cs 1.10
+  pjseTestData.package 1.7
+
 22 October 2005 09:38 - Bhav: Merge with disaSim2-23b
   SimPe BHAV\
     BhavWiz.cs 1.10
