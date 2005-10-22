@@ -1,4 +1,10 @@
 
+22 October 2005 18:09 - FileTable: Dirty hack for inability to compare filenames
+  pjse filetable\
+    FileTable.cs 1.5
+  SimPe BHAV\
+    ResourceChooser.cs 1.2
+
 22 October 2005 17:02 - ResourceChooser: Amendments to use single chooser returning FileTable.Entry
   SimPe BHAV\
     BhavForm.cs 1.56
