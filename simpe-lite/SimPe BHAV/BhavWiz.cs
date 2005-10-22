@@ -110,7 +110,7 @@ namespace pjse
 			switch (doid)
 			{
 				case 0x00:
-					s += " (" + readStr(Scope.Private, GS.GlobalStr.gMyAttributeLabels, instance) + ")";
+					s += " (" + readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance) + ")";
 					break;
 				case 0x0a:
 					if (instance == 0)
@@ -192,7 +192,7 @@ namespace pjse
 			str.ProcessData(items[0].PFD, items[0].Package);
 			return ((str[1, sid] != null)
 				? "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
-				: "[" + s.ToString() + " " + instance.ToString() + " STR 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
+				: "[" + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
 				);
 		}
 

@@ -117,12 +117,12 @@ namespace pjse
 
 		public enum GlobalStr : uint
 		{
-			gMeshGroup = 0x0087,
-			gMaterialName = 0x0088,
-			gMyAttributeLabels = 0x100,
-			gDialogPrim = 0x012d,
-			gMakeAction = 0x012e,
-			gNamedTreePrim = 0x012f,
+			MeshGroup = 0x0087,
+			MaterialName = 0x0088,
+			MyAttributeLabel = 0x100,
+			DialogString = 0x012d,
+			MakeAction = 0x012e,
+			NamedTree = 0x012f,
 		}
 	}
 }
