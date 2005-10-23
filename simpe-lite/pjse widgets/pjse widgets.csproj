@@ -3,13 +3,13 @@
         ProjectType = "Local"
         ProductVersion = "7.10.3077"
         SchemaVersion = "2.0"
-        ProjectGuid = "{84085FAA-A947-492E-88BC-B941A4623811}"
+        ProjectGuid = "{479E3361-06B6-4851-A07F-5D3449D9BCB4}"
     >
         <Build>
             <Settings
                 ApplicationIcon = ""
                 AssemblyKeyContainerName = ""
-                AssemblyName = "pjse.filetable.plugin"
+                AssemblyName = "pjse.widgets"
                 AssemblyOriginatorKeyFile = ""
                 DefaultClientScript = "JScript"
                 DefaultHTMLPageLayout = "Grid"
@@ -18,7 +18,7 @@
                 OutputType = "Library"
                 PreBuildEvent = ""
                 PostBuildEvent = ""
-                RootNamespace = "pjse"
+                RootNamespace = "pjse.widgets"
                 RunPostBuildEvent = "OnBuildSuccess"
                 StartupObject = ""
             >
@@ -62,26 +62,6 @@
                     TreatWarningsAsErrors = "false"
                     WarningLevel = "4"
                 />
-                <Config
-                    Name = "InProgress"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE;INPROGRESS"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "bin\InProgress\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
             </Settings>
             <References>
                 <Reference
@@ -96,37 +76,18 @@
                 />
                 <Reference
                     Name = "System.XML"
-                    AssemblyName = "System.Xml"
+                    AssemblyName = "System.XML"
                     HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
                 />
                 <Reference
-                    Name = "simpe.package"
-                    AssemblyName = "simpe.package"
-                    HintPath = "..\..\SimPe\simpe.package.dll"
-                    Private = "False"
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
                 />
                 <Reference
-                    Name = "simpe.helper"
-                    AssemblyName = "simpe.helper"
-                    HintPath = "..\..\SimPe\simpe.helper.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.interfaces"
-                    AssemblyName = "simpe.interfaces"
-                    HintPath = "..\..\SimPe\simpe.interfaces.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.workspace"
-                    AssemblyName = "simpe.workspace"
-                    HintPath = "..\..\SimPe\simpe.workspace.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.commonhandler"
-                    AssemblyName = "simpe.commonhandler"
-                    HintPath = "..\..\SimPe\simpe.commonhandler.dll"
+                    Name = "System.Windows.Forms"
+                    AssemblyName = "System.Windows.Forms"
+                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
                 />
             </References>
         </Build>
@@ -138,9 +99,24 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "FileTable.cs"
-                    SubType = "Code"
+                    RelPath = "DataOwner.cs"
+                    SubType = "UserControl"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DataOwner.resx"
+                    DependentUpon = "DataOwner.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "HexBox.cs"
+                    SubType = "Component"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "HexBox.resx"
+                    DependentUpon = "HexBox.cs"
+                    BuildAction = "EmbeddedResource"
                 />
             </Include>
         </Files>

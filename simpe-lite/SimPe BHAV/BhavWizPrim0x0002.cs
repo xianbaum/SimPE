@@ -332,9 +332,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		{
 			if (cbDataOwner2.SelectedIndex == 7 && cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10)
 			{
-				ArrayList flagNames = (ArrayList)WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text)).Clone();
+				ArrayList flagNames = WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text));
 				if (flagNames != null)
 				{
+					flagNames = (ArrayList)flagNames.Clone();
 					flagNames.Insert(0, "");
 					this.cbPicker2.Visible = true;
 					this.cbPicker2.Items.Clear();

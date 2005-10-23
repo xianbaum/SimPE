@@ -23,6 +23,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Data;
 using System.Windows.Forms;
+using pjse.widgets;
 using SimPe.PackedFiles.Wrapper;
 
 namespace SimPe.PackedFiles.UserInterface
@@ -32,9 +33,9 @@ namespace SimPe.PackedFiles.UserInterface
 	/// </summary>
 	public class TtabSingleMotiveUI : System.Windows.Forms.UserControl
 	{
-		private System.Windows.Forms.TextBox Min;
-		private System.Windows.Forms.TextBox Delta;
-		private System.Windows.Forms.TextBox Type;
+		private HexBoxU16 Min;
+		private HexBoxU16 Delta;
+		private HexBoxU16 Type;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -83,9 +84,9 @@ namespace SimPe.PackedFiles.UserInterface
 			mgNr = j;
 			Motive = k;
 
-			Min.Text   = Helper.HexString(mv[0] = i[j, k, 0]);
-			Delta.Text = Helper.HexString(mv[1] = i[j, k, 1]);
-			Type.Text  = Helper.HexString(mv[2] = i[j, k, 2]);
+			Min.Value   = (uint)(mv[0] = i[j, k, 0]);
+			Delta.Value = (uint)(mv[1] = i[j, k, 1]);
+			Type.Value  = (uint)(mv[2] = i[j, k, 2]);
 		}
 
 		public void SetData(TtabItem i, int j) { this.SetData(i, j, motive); }
@@ -123,7 +124,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alHex16.IndexOf(sender) < 0)
 				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToInt16(((TextBox)sender).Text, 16); }
+			try { ushort i = (ushort)((HexBox)sender).Value; }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -136,45 +137,39 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.Min = new System.Windows.Forms.TextBox();
-			this.Delta = new System.Windows.Forms.TextBox();
-			this.Type = new System.Windows.Forms.TextBox();
+			this.Min = new pjse.widgets.HexBoxU16();
+			this.Delta = new pjse.widgets.HexBoxU16();
+			this.Type = new pjse.widgets.HexBoxU16();
 			this.SuspendLayout();
 			// 
 			// Min
 			// 
 			this.Min.Location = new System.Drawing.Point(0, 0);
-			this.Min.MaxLength = 4;
 			this.Min.Name = "Min";
 			this.Min.Size = new System.Drawing.Size(40, 20);
 			this.Min.TabIndex = 1;
-			this.Min.Text = "DDDD";
-			this.Min.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.Min.Validated += new System.EventHandler(this.hex16_Validated);
+			this.Min.Text = "0xDDDD";
+			// TODO: Code generation for 'this.Min.Value' failed because of Exception 'Invalid Primitive Type: System.UInt32. Only CLS compliant primitive types can be used. Consider using CodeObjectCreateExpression.'.
 			this.Min.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// Delta
 			// 
 			this.Delta.Location = new System.Drawing.Point(44, 0);
-			this.Delta.MaxLength = 4;
 			this.Delta.Name = "Delta";
 			this.Delta.Size = new System.Drawing.Size(40, 20);
 			this.Delta.TabIndex = 2;
-			this.Delta.Text = "DDDD";
-			this.Delta.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.Delta.Validated += new System.EventHandler(this.hex16_Validated);
+			this.Delta.Text = "0xDDDD";
+			// TODO: Code generation for 'this.Delta.Value' failed because of Exception 'Invalid Primitive Type: System.UInt32. Only CLS compliant primitive types can be used. Consider using CodeObjectCreateExpression.'.
 			this.Delta.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// Type
 			// 
 			this.Type.Location = new System.Drawing.Point(88, 0);
-			this.Type.MaxLength = 4;
 			this.Type.Name = "Type";
 			this.Type.Size = new System.Drawing.Size(40, 20);
 			this.Type.TabIndex = 3;
-			this.Type.Text = "DDDD";
-			this.Type.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.Type.Validated += new System.EventHandler(this.hex16_Validated);
+			this.Type.Text = "0xDDDD";
+			// TODO: Code generation for 'this.Type.Value' failed because of Exception 'Invalid Primitive Type: System.UInt32. Only CLS compliant primitive types can be used. Consider using CodeObjectCreateExpression.'.
 			this.Type.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// TtabSingleMotiveUI
@@ -197,22 +192,6 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			int i = alHex16.IndexOf(sender);
 			item[mgNr, motive, alHex16.IndexOf(sender)] = Convert.ToInt16(((TextBox)sender).Text, 16);
-			internalchg = false;
-		}
-
-		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (hex16_IsValid(sender)) return;
-
-			e.Cancel = true;
-
-			short val = 0;
-			int i = alHex16.IndexOf(sender);
-			item[mgNr, motive, i] = val = mv[i];
-
-			internalchg = true;
-			((TextBox)sender).Text = Helper.HexString(val);
-			((TextBox)sender).SelectAll();
 			internalchg = false;
 		}
 

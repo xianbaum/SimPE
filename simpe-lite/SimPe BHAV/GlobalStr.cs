@@ -20,7 +20,6 @@
 using System;
 using System.IO;
 using System.Collections;
-using SimPe.Interfaces.Files;
 
 namespace pjse
 {
@@ -54,7 +53,7 @@ namespace pjse
 
 			ArrayList list = new ArrayList();
 
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, 0x7FE59FD0, (uint)instance];
+			FileTable.Entry[] items = FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, 0x7FE59FD0, (uint)instance];
 			if (items == null || items.Length == 0) return;
 
 			SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
