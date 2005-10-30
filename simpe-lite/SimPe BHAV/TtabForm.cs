@@ -299,7 +299,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			pjse.FileTable.Entry e = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
 			if (!notxt) tbaGA[which].Text = "0x"+Helper.HexString(target);
-			lbaGA[which].Text = (target == 0 && e != null) ? "---" : e;
+			lbaGA[which].Text = (target == 0 || e == null) ? "---" : e;
 			llaGA[which].Enabled = (e != null);
 		}
 		private void setStringIndex(uint si, bool doText, bool doCB)
