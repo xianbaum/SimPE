@@ -219,7 +219,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.tbInst_OpCode.ReadOnly = state;
 			this.btnOpCode.Enabled = !state;
-			this.tbInst_NodeVersion.ReadOnly = state;
+			this.tbInst_NodeVersion.ReadOnly = state || wrapper.Header.Format < 0x8005;
 			this.tba1.Enabled = !state;
 			this.tba2.Enabled = !state;
 
@@ -238,14 +238,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnOperandWiz.Enabled = !state;
 			this.btnOperandRaw.Enabled = !state;
 			
-			this.tbInst_Unk0.ReadOnly = state;
-			this.tbInst_Unk1.ReadOnly = state;
-			this.tbInst_Unk2.ReadOnly = state;
-			this.tbInst_Unk3.ReadOnly = state;
-			this.tbInst_Unk4.ReadOnly = state;
-			this.tbInst_Unk5.ReadOnly = state;
-			this.tbInst_Unk6.ReadOnly = state;
-			this.tbInst_Unk7.ReadOnly = state;
+			this.tbInst_Unk0.ReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk1.ReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk2.ReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk3.ReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk4.ReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk5.ReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk6.ReadOnly = state || wrapper.Header.Format < 0x8003;
+			this.tbInst_Unk7.ReadOnly = state || wrapper.Header.Format < 0x8003;
 
 			this.btnUp.Enabled = !state;
 			this.btnDown.Enabled = !state;
@@ -480,7 +480,7 @@ namespace SimPe.PackedFiles.UserInterface
 				tbHeaderFlag.Text = "0x"+Helper.HexString(wrapper.Header.HeaderFlag);
 				tbTreeVersion.Text = "0x"+Helper.HexString(wrapper.Header.TreeVersion);
 				tbCacheFlags.Text = "0x"+Helper.HexString(wrapper.Header.CacheFlags);
-				tbCacheFlags.Enabled = (wrapper.Header.Format >= 0x8009);
+				tbCacheFlags.Enabled = (wrapper.Header.Format > 0x8008);
 				internalchg = false;
 			}
 

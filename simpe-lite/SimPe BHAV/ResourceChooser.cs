@@ -94,7 +94,7 @@ namespace pjse
 
 			FillGroup(resourceType, group, this.lbGroup, this.tpGroup);
 
-			Glob g = pjse.BhavNameWizards.BhavWizBhav.GlobByGroup(group);
+			Glob g = pjse.BhavWiz.GlobByGroup(group);
 			if (g != null)
 				FillGroup(resourceType, g.SemiGlobalGroup, this.lbSemiGroup, this.tpSemiGroup);
 

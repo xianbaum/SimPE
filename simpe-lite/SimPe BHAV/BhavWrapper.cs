@@ -35,7 +35,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Bhav
-		: AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
@@ -627,7 +627,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte nodeversion = 0;
 		private wrappedByteArray operands = null;
 		private wrappedByteArray reserved_01 = null;
-		private AbstractWrapper parent;
+		private Bhav parent;
 		private static byte[] nooperands = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, };
 		#endregion
 
@@ -640,7 +640,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (opcode != value)
 				{
 					opcode = value;
-					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
+					parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -653,7 +653,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (addr1 != value)
 				{
 					addr1 = value;
-					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
+					parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -666,7 +666,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (addr2 != value)
 				{
 					addr2 = value;
-					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
+					parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -679,7 +679,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (nodeversion != value)
 				{
 					nodeversion = value;
-					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
+					parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -688,7 +688,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public wrappedByteArray Reserved1 { get { return reserved_01; } }
 
-		public AbstractWrapper Parent
+		public Bhav Parent
 		{
 			get { return parent; }
 			set
@@ -696,7 +696,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (parent != value)
 				{
 					parent = value;
-					if (parent is Bhav) ((Bhav)parent).OnWrapperChanged(this, new EventArgs());
+					parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -706,7 +706,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (AbstractWrapper parent)
+		internal Instruction (Bhav parent)
 		{
 			this.parent = parent;
 			this.operands = new wrappedByteArray(this, nooperands);
@@ -716,7 +716,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (AbstractWrapper parent, ushort opcode)
+		internal Instruction (Bhav parent, ushort opcode)
 		{
 			this.parent = parent;
 			this.opcode = opcode;
@@ -727,7 +727,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (AbstractWrapper parent, ushort opcode, ushort addr1, ushort addr2, byte nodeversion, byte[] operands, byte[] reserved_01)
+		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte nodeversion, byte[] operands, byte[] reserved_01)
 		{
 			this.parent = parent;
 			this.opcode = opcode;
@@ -741,7 +741,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (AbstractWrapper parent, System.IO.BinaryReader reader)
+		internal Instruction (Bhav parent, System.IO.BinaryReader reader)
 		{
 			this.parent = parent;
 			Unserialize(reader);
@@ -765,7 +765,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		private ushort formatSpecificSetAddr(ushort addr)
 		{
-			if (parent is Bhav && ((Bhav)parent).Header.Format < 0x8007)
+			if (parent.Header.Format < 0x8007)
 				switch (addr)
 				{
 					case 0x00FD: return 0xFFFC;	// error
@@ -783,9 +783,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader"></param>
 		private void Unserialize(System.IO.BinaryReader reader) 
 		{
-			if (!(parent is Bhav))
-				throw new InvalidOperationException("Can only unserialize into a BHAV file");
-
 			opcode = reader.ReadUInt16();
 			if (((Bhav)parent).Header.Format < 0x8007)
 			{
@@ -821,7 +818,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		private ushort formatSpecificGetAddr(ushort target)
 		{
-			if (parent is Bhav && ((Bhav)parent).Header.Format < 0x8007)
+			if (parent.Header.Format < 0x8007)
 				switch (target)
 				{
 					case 0xFFFC: return 0x00FD;	// error
@@ -839,9 +836,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="writer"></param>
 		internal void Serialize(System.IO.BinaryWriter writer) 
 		{
-			if (!(parent is Bhav))
-				throw new InvalidOperationException("Can only serialize from a BHAV file");
-
 			writer.Write(opcode);
 			if (((Bhav)parent).Header.Format < 0x8007)
 			{
@@ -897,7 +891,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (array[index] != value)
 				{
 					array[index] = value;
-					if (parent != null && parent.Parent is Bhav) ((Bhav)parent.Parent).OnWrapperChanged(parent, new EventArgs());
+					if (parent != null) parent.Parent.OnWrapperChanged(parent, new EventArgs());
 				}
 			}
 		}

@@ -47,24 +47,8 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 
 			// TODO: Add any initialization after the InitializeComponent call
-
-		}
-
-		public BhavInstListItemUI(Bhav wrapper, int index, Control parent)
-		{
-			// This call is required by the Windows.Forms Form Designer.
-			InitializeComponent();
-
-			// TODO: Add any initialization after the InitializeComponent call
-			this.wrapper = wrapper;
-			this.index = index;
-			this.Parent = parent;
 			this.Height = rowHeight;
 			MakeUnselected();
-
-			this.WrapperChanged(wrapper[index], null);
-
-			wrapper.WrapperChanged += new EventHandler(WrapperChanged);
 		}
 
 		/// <summary> 
@@ -80,9 +64,8 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
-			if (wrapper != null) wrapper.WrapperChanged -= new System.EventHandler(WrapperChanged);
-			wrapper = null;
-			Parent = null;
+			Index = -1;
+			Wrapper = null;
 		}
 
 
@@ -100,12 +83,55 @@ namespace SimPe.PackedFiles.UserInterface
 		protected virtual void OnMoveDown(EventArgs e) { if (MoveDown != null) { MoveDown(this, e); } }
 
 
+		private Bhav wrapper = null;
+		private int index = -1;
 
-		private Bhav wrapper;
-		private int index;
+		public Bhav Wrapper
+		{
+			set
+			{
+				if (wrapper != value)
+				{
+					if (wrapper != null)
+						wrapper.WrapperChanged -= new EventHandler(WrapperChanged);
+					wrapper = value;
+					if (wrapper != null)
+					{
+						if (index != -1)
+							this.WrapperChanged(wrapper[index], null);
+						wrapper.WrapperChanged += new EventHandler(WrapperChanged);
+					}
+				}
+			}
+		}
+
+		public int Index
+		{
+			set
+			{
+				if (index != value)
+				{
+					index = value;
+					if (wrapper != null && index != -1)
+						this.WrapperChanged(wrapper[index], null);
+				}
+			}
+		}
+
+		public void MakeSelected()
+		{
+			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;// .PowderBlue;
+		}
+
+		public void MakeUnselected()
+		{
+			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
+		}
+
+
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			if (wrapper == null) return;
+			if (wrapper == null || index == -1) return;
 
 			if (wrapper.IndexOf(sender) != index) return;
 			Instruction inst = (Instruction)sender;
@@ -128,16 +154,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			for(char c = System.Convert.ToChar(1); c < ' '; c++) str = str.Replace(c, ' ');
 			return str;
-		}
-
-		public void MakeSelected()
-		{
-			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.LightGray;// .PowderBlue;
-		}
-
-		public void MakeUnselected()
-		{
-			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 		}
 
 		#endregion

@@ -392,18 +392,18 @@ namespace pjse
 
 		public void SelectionChangedHandler(object sender, SimPe.Events.ResourceEventArgs e)
 		{
-			IPackedFileDescriptor pfd = null;
 			IPackageFile package = (e.LoadedPackage == null) ? null : e.LoadedPackage.Package;
+			GFT.CurrentPackage = package;
 
 #if AtSomePoint
+			// Actually, I don't think this will ever be useful -- I could have multiple BHAVs open in the new UI
+			IPackedFileDescriptor pfd = null;
 			foreach (SimPe.Events.ResourceContainer item in e)
 			{
-				Interfaces.Files.IPackedFileDescriptor pfd = item.Resource.FileDescriptor;
+				pfd = item.Resource.FileDescriptor;
 				// do stuff
 			}
 #endif
-
-			IsEnabled(pfd, package);
 		}
 
 		#endregion

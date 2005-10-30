@@ -561,7 +561,8 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public abstract class BhavWizPrim : BhavWiz
 	{
-		protected BhavWizPrim(Instruction instruction) : base (instruction) { }
+		protected BhavWizPrim(Instruction i) : base (i) { prefix = "prim"; }
+
 		public static implicit operator BhavWizPrim(Instruction i)
 		{
 			if (i.OpCode >= 0x0100)
@@ -599,8 +600,6 @@ namespace pjse.BhavNameWizards
 		// public static implicit operator <Wiz>(byte[] operands);
 
 
-		protected override string Prefix { get { return "prim"; } }
-
 		protected override string OpcodeName { get { return GS.GStr(GS.BhavStr.Primitives, instruction.OpCode); } }
 
 
@@ -608,7 +607,7 @@ namespace pjse.BhavNameWizards
 
 		public override string LongName { get { return base.ShortName + " (" + Operands(true) + ")"; } }
 
-		protected virtual string Operands(bool lng) { return "not yet translated"; }
+		protected abstract string Operands(bool lng);
 	}
 
 
@@ -616,10 +615,7 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrimDefault(Instruction i) : base(i) { }
 
-		public override string ShortName { get { return base.ShortName; } }
-
-		public override string LongName { get { return base.LongName; } }
-
+		protected override string Operands(bool lng) { return "not yet translated"; }
 	}
 
 	public class WizPrimUnused : BhavWizPrim

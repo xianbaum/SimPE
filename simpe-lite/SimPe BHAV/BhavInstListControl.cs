@@ -92,18 +92,18 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper = wrp;
 			csel = -1;
 			internalchg = false;
+			this.AutoScrollPosition = new Point(0, 0);
+			this.WrapperChanged(new ArrayList(), null);
+			if (flowitems != null && flowitems.Length > 0)
+			{
+				flowitems[0].MakeSelected(); // but don't focus!
+				SelectedIndex = 0;
+			}
 
 			if (!setHandler)
 			{
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
 				setHandler = true;
-			}
-			this.AutoScrollPosition = new Point(0, 0);
-			this.WrapperChanged(new ArrayList(), null);
-			if (flowitems.Length > 0)
-			{
-				flowitems[0].MakeSelected(); // but don't focus!
-				SelectedIndex = 0;
 			}
 		}
 
@@ -151,7 +151,6 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 		protected virtual void OnSelectedInstChanged(EventArgs e) { if (SelectedInstChanged != null) { SelectedInstChanged(this, e); } }
-
 
 
 		public void Add(BhavUIAddType type)
@@ -371,12 +370,16 @@ namespace SimPe.PackedFiles.UserInterface
 					)))
 					isTarget = true;
 
-			BhavInstListItemUI i = new BhavInstListItemUI(wrapper, ct, this);
+			BhavInstListItemUI i = new BhavInstListItemUI();
 
+			i.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
 			i.Left = this.AutoScrollPosition.X;
 			i.Top = ct*(i.Height+4) + this.AutoScrollPosition.Y;
 			i.Width = this.ClientRectangle.Width - pnflow.Width;
-			i.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
+			i.Index = ct;
+			i.TabIndex = ct;
+			i.TabStop = true;
+
 			i.MoveUp += new EventHandler(bhavInst_MoveUp);
 			i.MoveDown += new EventHandler(bhavInst_MoveDown);
 			i.Selected += new EventHandler(bhavInst_Selected);
@@ -386,6 +389,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.Controls.Add(i);
 			this.Controls.SetChildIndex(i, ct);
+
+			i.Wrapper = wrapper;
 
 			return i;
 		}
