@@ -59,16 +59,16 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public override string ToString()
 		{
-			Bhav bg = (Bhav)parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, guard);
-			Bhav ba = (Bhav)parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, action);
+			pjse.FileTable.Entry eg = parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, guard);
+			pjse.FileTable.Entry ea = parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, action);
 
 			string add = "";
-			if ((guard == 0 && action == 0) || (bg == null && ba == null))
+			if ((guard == 0 && action == 0) || (eg == null && ea == null))
 				add="            ";
 
 			return add + Name +
-				": " + ((guard == 0 || bg == null) ? "null" : bg.FileName) +
-				" -> " + ((action == 0 || ba == null) ? "null" : ba.FileName);
+				": " + ((guard == 0 || eg == null) ? "null" : eg) +
+				" -> " + ((action == 0 || ea == null) ? "null" : ea);
 		}
 
 	}

@@ -297,10 +297,10 @@ namespace SimPe.PackedFiles.UserInterface
 			Label[] lbaGA = { lbaction, lbguard };
 			LinkLabel[] llaGA = { llAction, llGuardian };
 
-			Bhav b = (Bhav)wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
+			pjse.FileTable.Entry e = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
 			if (!notxt) tbaGA[which].Text = "0x"+Helper.HexString(target);
-			lbaGA[which].Text = (target == 0 && b != null) ? "---" : b.FileName;
-			llaGA[which].Enabled = (b != null);
+			lbaGA[which].Text = (target == 0 && e != null) ? "---" : e;
+			llaGA[which].Enabled = (e != null);
 		}
 		private void setStringIndex(uint si, bool doText, bool doCB)
 		{
@@ -2317,7 +2317,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llBhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			Bhav b = (Bhav)wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, (sender == llAction) ? currentItem.Action : currentItem.Guardian);
+			pjse.FileTable.Entry item = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, (sender == llAction) ? currentItem.Action : currentItem.Guardian);
+			Bhav b = new Bhav(null);
+			b.ProcessData(item.PFD, item.Package);
+
 			BhavForm ui = (BhavForm)b.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
 			ui.Text = "View BHAV: " + b.FileName + " [" + b.Package.SaveFileName + "]";

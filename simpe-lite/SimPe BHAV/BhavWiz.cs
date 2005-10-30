@@ -116,7 +116,7 @@ namespace pjse
 			return group;
 		}
 
-		public AbstractWrapper ResourceByInstance(uint type, uint instance)
+		public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance)
 		{
 			pjse.FileTable.Entry[] items;
 
@@ -128,12 +128,7 @@ namespace pjse
 			if (items == null || items.Length == 0)
 				return null;
 
-			AbstractWrapper wrapper = (AbstractWrapper)SimPe.FileTable.WrapperRegistry.FindHandler(type);
-			if (wrapper == null)
-				return null;
-
-			wrapper.ProcessData(items[0].PFD, items[0].Package);
-			return wrapper;
+			return items[0];
 		}
 
 
@@ -174,13 +169,6 @@ namespace pjse
 
 		public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
 
-
-		/// <summary>
-		/// Returns a BHAV wrapper for the OpCode in this instruction, if it's not a primitive
-		/// </summary>
-		public virtual Bhav Wrapper { get { return null; } }
-
-
 		#region IDisposable Members
 		public void Dispose()
 		{
@@ -203,6 +191,7 @@ namespace pjse
 		public virtual string LongName { get { return ShortName; } }
 
 
+		public virtual Bhav Wrapper { get { return null; } }
 
 		protected string Prefix { get { return prefix; } }
 
@@ -217,18 +206,18 @@ namespace pjse
 			string doidName = GS.GStr(GS.BhavStr.DataOwners, doid);
 
 			string s = "0x" + SimPe.Helper.HexString(instance);
+			string temp = "";
 
 			if (doidGStr[doid] != null)
 				s += " (" + GS.GStr((GS.BhavStr)doidGStr[doid], instance) + ")";
 
 			switch (doid)
 			{
-				// Removed: "Me" might not be the object this code is running on, e.g. for interactions
-				//case 0x00:
-				//	temp = readStr(instruction.Parent.Group, GS.GlobalStr.MyAttributeLabel, instance);
-				//	if (temp != null)
-				//		s += " (" + temp + ")";
-				//	break;
+				case 0x00:
+					temp = readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance);
+					if (temp != null)
+						s += " (" + temp + ")";
+					break;
 				case 0x0a:
 					if (instance == 0)
 						s = "";
@@ -244,14 +233,14 @@ namespace pjse
 					break;
 				case 0x1a:
 					bcon = ExpandBCON(instance);
-					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
-					//	+ " " + readBcon((uint)bcon[0], bcon[1], false);
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1])
+						+ " " + readBcon((uint)bcon[0], bcon[1], false);
 					break;
 				case 0x2f:
 					doidName = GS.GStr(GS.BhavStr.DataOwners, 0x1a);
 					bcon = ExpandBCON(instance);
-					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
-					//	+ " " + readBcon((uint)bcon[0], bcon[1], true);
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]"
+						+ " " + readBcon((uint)bcon[0], bcon[1], true);
 					break;
 			}
 
@@ -259,42 +248,52 @@ namespace pjse
 		}
 
 
+		// I've also changed this from DisaSim2 to be consistent on the choice of Global/Private/Semi
 		protected string readBcon(uint instance, int bid, bool temp)
 		{
-			Scope s;
+			// in this context, the group has to be the group of the BHAV you are reading, I think
+			// which means the instruction must have a parent
+			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
+
+			uint bconGroup = 0;
 			if (instance < 0x1000)
-				s = Scope.Global;
+				bconGroup = instruction.Parent.GroupForScope(Scope.Global);
 			else if (instance < 0x2000)
-				s = Scope.Private;
-			else s = Scope.SemiGlobal;
-			uint bconGroup = instruction.Parent.GroupForScope(s);
+				bconGroup = instruction.Parent.GroupForScope(Scope.Private);
+			else
+				bconGroup = instruction.Parent.GroupForScope(Scope.SemiGlobal);
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, bconGroup, instance];
+
 			if (items == null || items.Length == 0)
-				return "";
+				return "[No BCON file]";
 
 			Bcon bcon = new Bcon();
 			bcon.ProcessData(items[0].PFD, items[0].Package);
-			return bcon.FileName + (temp ? "" : (bid >= bcon.Constants.Count)
-				? ""
-				: ": 0x" + SimPe.Helper.HexString((short)bcon.Constants[bid])
-				);
+			return bcon.FileName.Trim() + (temp ? "" : (bid >= bcon.Constants.Count)
+				? " [BCON not set]"
+				: ": 0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]));
 		}
 
 
 		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen)
 		{
-			uint strGroup = instruction.Parent.GroupForScope(s);
+			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
 
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, strGroup, (uint)instance];
+			pjse.FileTable.Entry[] items = null;
+
+			items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)instance];
+
 			if (items == null || items.Length == 0)
-				return "";
+				return "[No " + s.ToString() + " " + instance.ToString() + " (STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ") file]";
 
 			Str str = new Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
-			return str.FileName + ((str[1, sid] == null)
-				? ""
-				 : ": \"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
+			return ((str[1, sid] != null)
+				? "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
+				: "[" + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
 				);
 		}
 
