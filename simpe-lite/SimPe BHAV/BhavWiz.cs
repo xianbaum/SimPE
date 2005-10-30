@@ -22,17 +22,142 @@ using System.Collections;
 using SimPe.PackedFiles.Wrapper;
 using SimPe.Interfaces.Files;
 using SimPe.Interfaces.Scenegraph;
+using SimPe.Interfaces.Plugin;
 using pjse.BhavNameWizards;
 
 namespace pjse
 {
+	public enum Scope : int
+	{
+		Global = 0x00,
+		SemiGlobal = 0x01,
+		Private = 0x02,
+	}
+
+
+	public abstract class ExtendedWrapper : AbstractWrapper, IDisposable
+	{
+		private Scope scope;
+
+		public ExtendedWrapper() : base()
+		{
+			if (this is Bhav && this.FileDescriptor != null)
+			{
+				if (this.FileDescriptor.Instance < 0x1000)
+					scope = Scope.Global;
+				else if (this.FileDescriptor.Instance < 0x2000)
+					scope = Scope.Private;
+				else
+					scope = Scope.SemiGlobal;
+			}
+			else
+				scope = Scope.Private; // at least for now
+		}
+
+
+		/// <summary>
+		/// This object's group
+		/// </summary>
+		public uint Group { get { return this.FileDescriptor.Group; } }
+
+		/// <summary>
+		/// The SemiGlobal group for this object
+		/// </summary>
+		public uint SemiGroup
+		{
+			get
+			{
+				if (this.SemiGlobal == null) return 0;
+				return SemiGlobal.SemiGlobalGroup;
+			}
+		}
+
+		/// <summary>
+		/// The Global group
+		/// </summary>
+		public uint GlobalGroup { get { return 0x7FD46CD0; } }
+
+
+		public Scope Context
+		{
+			get
+			{
+				return scope;
+			}
+		}
+
+
+		private Glob glob = null;
+		private Glob SemiGlobal
+		{
+			get
+			{
+				return (glob != null)
+					? glob
+					: (glob = BhavWiz.GlobByGroup(this.FileDescriptor.Group));
+			}
+		}
+
+
+		public uint GroupForScope(Scope s)
+		{
+			uint group = 0;
+
+			if (s == Scope.Global)
+				group = GlobalGroup;
+			else if (Context != Scope.Global)
+			{
+				if (s == Scope.SemiGlobal)
+					group = (Context == Scope.SemiGlobal) ? Group : SemiGroup;
+				else if (Context != Scope.SemiGlobal)
+					group = Group;
+			}
+
+			return group;
+		}
+
+		public AbstractWrapper ResourceByInstance(uint type, uint instance)
+		{
+			pjse.FileTable.Entry[] items;
+
+			items = pjse.FileTable.GFT[type, Group, instance];
+			if (items == null || items.Length == 0)
+				items = pjse.FileTable.GFT[type, SemiGroup, instance];
+			if (items == null || items.Length == 0)
+				items = pjse.FileTable.GFT[type, GlobalGroup, instance];
+			if (items == null || items.Length == 0)
+				return null;
+
+			AbstractWrapper wrapper = (AbstractWrapper)SimPe.FileTable.WrapperRegistry.FindHandler(type);
+			if (wrapper == null)
+				return null;
+
+			wrapper.ProcessData(items[0].PFD, items[0].Package);
+			return wrapper;
+		}
+
+
+		#region IDisposable Members
+
+		public override void Dispose()
+		{
+			glob = null;
+			base.Dispose();
+		}
+
+		#endregion
+	}
+
+
+
 	/// <summary>
-	/// Abstract class that NameWizard providers are based
+	/// Abstract wrapper that extends the SimPe Bhav Instruction class for display purposes
 	/// </summary>
+	/// <remarks>Remember - an Instruction() is the call to a primitive or BHAV...</remarks>
 	public abstract class BhavWiz : IDisposable
 	{
 		protected Instruction instruction = null;
-		private Glob glob = null;
+		protected string prefix = null;
 
 		protected BhavWiz(Instruction instruction) 
 		{
@@ -45,38 +170,26 @@ namespace pjse
 			return (BhavWizBhav)i;
 		}
 
-		public static implicit operator BhavWiz(ushort opcode)
-		{
-			return new Instruction(null, opcode);
-		}
+		public Instruction Instruction { get { return instruction; } }
 
-		public static implicit operator BhavWiz(Bhav wrapper)
-		{
-			if (wrapper == null || wrapper.FileDescriptor == null)
-				throw new InvalidCastException("Invalid BHAV");
+		public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
 
-			return (ushort)wrapper.FileDescriptor.Instance;
-		}
+
+		/// <summary>
+		/// Returns a BHAV wrapper for the OpCode in this instruction, if it's not a primitive
+		/// </summary>
+		public virtual Bhav Wrapper { get { return null; } }
 
 
 		#region IDisposable Members
 		public void Dispose()
 		{
 			instruction = null;
-			glob = null;
 		}
 
 		#endregion
 
-		/// <summary>
-		/// The descriptive term for this type of opcode
-		/// </summary>
-		protected abstract string Prefix { get; }
-
-		/// <summary>
-		/// The name of this opcode
-		/// </summary>
-		protected abstract string OpcodeName { get; }
+		public override string ToString() { return LongName; }
 
 
 		public virtual string ShortName
@@ -89,13 +202,12 @@ namespace pjse
 
 		public virtual string LongName { get { return ShortName; } }
 
-		public override string ToString() { return LongName; }
 
-		public virtual Bhav Wrapper { get { return null; } }
 
-		public Instruction Instruction { get { return instruction; } }
+		protected string Prefix { get { return prefix; } }
 
-		public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
+		protected abstract string OpcodeName { get; }
+
 
 
 		#region Utilities
@@ -105,13 +217,18 @@ namespace pjse
 			string doidName = GS.GStr(GS.BhavStr.DataOwners, doid);
 
 			string s = "0x" + SimPe.Helper.HexString(instance);
+
 			if (doidGStr[doid] != null)
 				s += " (" + GS.GStr((GS.BhavStr)doidGStr[doid], instance) + ")";
+
 			switch (doid)
 			{
-				case 0x00:
-					s += " (" + readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance) + ")";
-					break;
+				// Removed: "Me" might not be the object this code is running on, e.g. for interactions
+				//case 0x00:
+				//	temp = readStr(instruction.Parent.Group, GS.GlobalStr.MyAttributeLabel, instance);
+				//	if (temp != null)
+				//		s += " (" + temp + ")";
+				//	break;
 				case 0x0a:
 					if (instance == 0)
 						s = "";
@@ -127,14 +244,14 @@ namespace pjse
 					break;
 				case 0x1a:
 					bcon = ExpandBCON(instance);
-					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1])
-						+ " " + readBcon((uint)bcon[0], bcon[1], false);
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
+					//	+ " " + readBcon((uint)bcon[0], bcon[1], false);
 					break;
 				case 0x2f:
-					bcon = ExpandBCON(instance);
 					doidName = GS.GStr(GS.BhavStr.DataOwners, 0x1a);
-					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]"
-						+ " " + readBcon((uint)bcon[0], bcon[1], true);
+					bcon = ExpandBCON(instance);
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
+					//	+ " " + readBcon((uint)bcon[0], bcon[1], true);
 					break;
 			}
 
@@ -142,57 +259,42 @@ namespace pjse
 		}
 
 
-		// I've also changed this from DisaSim2 to be consistent on the choice of Global/Private/Semi
 		protected string readBcon(uint instance, int bid, bool temp)
 		{
-			// in this context, the group has to be the group of the BHAV you are reading, I think
-			// which means the instruction must have a parent
-			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
-
-			uint bconGroup = 0;
+			Scope s;
 			if (instance < 0x1000)
-				bconGroup = 0x7FD46CD0;
+				s = Scope.Global;
 			else if (instance < 0x2000)
-				bconGroup = instruction.Parent.FileDescriptor.Group;
-			else
-				bconGroup = SemiGlobalGroup;
+				s = Scope.Private;
+			else s = Scope.SemiGlobal;
+			uint bconGroup = instruction.Parent.GroupForScope(s);
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, bconGroup, instance];
-
 			if (items == null || items.Length == 0)
-				return "[No BCON file]";
+				return "";
 
 			Bcon bcon = new Bcon();
 			bcon.ProcessData(items[0].PFD, items[0].Package);
-			return bcon.FileName.Trim() + (temp ? "" : (bid >= bcon.Constants.Count)
-				? " [BCON not set]"
-				: ": 0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]));
+			return bcon.FileName + (temp ? "" : (bid >= bcon.Constants.Count)
+				? ""
+				: ": 0x" + SimPe.Helper.HexString((short)bcon.Constants[bid])
+				);
 		}
 
 
 		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen)
 		{
-			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
+			uint strGroup = instruction.Parent.GroupForScope(s);
 
-			pjse.FileTable.Entry[] items = null;
-
-			if (s == Scope.Private)
-				items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.FileDescriptor.Group, (uint)instance];
-			if ((items == null || items.Length == 0) && s != Scope.Global)
-				items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, SemiGlobalGroup, (uint)instance];
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, strGroup, (uint)instance];
 			if (items == null || items.Length == 0)
-				items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, 0x7FD46CD0, (uint)instance];
-
-			if (items == null || items.Length == 0)
-				return "[No " + s.ToString() + " " + instance.ToString() + " (STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ") file]";
+				return "";
 
 			Str str = new Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
-			return ((str[1, sid] != null)
-				? "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
-				: "[" + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
+			return str.FileName + ((str[1, sid] == null)
+				? ""
+				 : ": \"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
 				);
 		}
 
@@ -202,37 +304,6 @@ namespace pjse
 		{
 			return (len < 0) ? str : str.PadRight(len).Substring(0, len).Trim() + (str.Length > len ? "..." : "");
 		}
-
-
-		/// <summary>
-		/// Get the Glob resource for the current instruction (or null, indicating a SemiGlobal perhaps)
-		/// </summary>
-		private Glob SemiGlobal
-		{
-			get
-			{
-				if (glob != null)
-					return glob;
-				if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-					throw new InvalidOperationException("Can't read GLOB for instruction with no parent");
-
-				return (glob = GlobByGroup(instruction.Parent.FileDescriptor.Group));
-			}
-		}
-
-		public static Glob GlobByGroup(uint group)
-		{
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.GLOB_FILE, group];
-			if (items == null || items.Length == 0) return null;
-
-			Glob glob = new Glob();
-			glob.ProcessData(items[0].PFD, items[0].Package);
-			return glob;
-		}
-
-		public uint SemiGlobalGroup { get { return (SemiGlobal != null) ? SemiGlobal.SemiGlobalGroup : instruction.Parent.FileDescriptor.Group; } }
-
-		public string SemiGlobalName { get { return (SemiGlobal != null) ? SemiGlobal.SemiGlobalName : "SemiGlobals"; } }
 
 
 		// I've changed this from what DisaSim2 does so that the top bit just adds 0x40, whatever. -- plj
@@ -297,12 +368,17 @@ namespace pjse
 		}
 
 
-		protected enum Scope : int
+
+		public static Glob GlobByGroup(uint group)
 		{
-			Global = 0x00,
-			Private = 0x01,
-			SemiGlobal = 0x02,
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.GLOB_FILE, group];
+			if (items == null || items.Length == 0) return null;
+
+			Glob glob = new Glob();
+			glob.ProcessData(items[0].PFD, items[0].Package);
+			return glob;
 		}
+
 		#endregion
 	}
 
