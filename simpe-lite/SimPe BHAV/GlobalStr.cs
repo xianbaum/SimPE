@@ -72,8 +72,8 @@ namespace pjse
 		{
 			//Str0x0080 = 0x80, // behavior strings
 			GlobalLabels = 0x81,
-			//Str0x0082 = 0x82, // relative locations
-			//Str0x0083 = 0x83, // relative directions
+			RelativeLocations = 0x0082,
+			RelativeDirections = 0x0083,
 			DataOwners = 0x84,
 			Motives = 0x86,
 			//Str0x0087 = 0x87, // miscellaneous strings
@@ -106,6 +106,7 @@ namespace pjse
 			DialogIcon = 0xf4,
 			OBJFDescs = 0xf5,
 			NeighborhoodData = 0xf9,
+			PersonOutfits = 0xfa,
 			ExclPlacementFlags = 0xfb,
 			InventoryDialog = 0xfc,
 			WallCutoutFlags = 0xfd,

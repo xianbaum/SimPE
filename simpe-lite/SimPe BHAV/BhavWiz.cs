@@ -214,8 +214,8 @@ namespace pjse
 			switch (doid)
 			{
 				case 0x00:
-					temp = readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance);
-					if (temp != null)
+					temp = readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
+					if (temp != "")
 						s += " (" + temp + ")";
 					break;
 				case 0x0a:
@@ -277,7 +277,7 @@ namespace pjse
 		}
 
 
-		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen)
+		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen, bool silent)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
@@ -287,17 +287,19 @@ namespace pjse
 			items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)instance];
 
 			if (items == null || items.Length == 0)
-				return "[No " + s.ToString() + " " + instance.ToString() + " (STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ") file]";
+				return silent ? "" : "[No " + s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " (" + instance.ToString() + ") file]";
 
 			Str str = new Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
 			return ((str[1, sid] != null)
-				? "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
-				: "[" + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
+				? (silent ? "" : s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " ") + "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
+				: silent ? "" : "[" + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
 				);
 		}
 
-		protected string readStr(Scope s, GS.GlobalStr instance, int sid) { return readStr(s, instance, sid, -1); }
+		protected string readStr(Scope s, GS.GlobalStr instance, int sid) { return readStr(s, instance, sid, -1, true); }
+
+		protected string readStr(Scope s, GS.GlobalStr instance, int sid, bool silent) { return readStr(s, instance, sid, -1, silent); }
 
 		private static string myLeft(string str, int len)
 		{

@@ -576,12 +576,15 @@ namespace pjse.BhavNameWizards
 				case 0x0008: return new WizPrim0x0008(i);
 				case 0x000d: return new WizPrim0x000d(i);
 				case 0x0010: return new WizPrim0x0010(i);
+				case 0x001b: return new WizPrim0x001b(i);
 				case 0x001c: return new WizPrim0x001c(i);
 				case 0x001f: return new WizPrim0x001f(i);
 				case 0x0024: return new WizPrim0x0024(i);
 				case 0x002a: return new WizPrim0x002a(i);
+				case 0x002d: return new WizPrim0x002d(i);
 				case 0x0032: return new WizPrim0x0032(i);
 				case 0x006d: return new WizPrim0x006d(i);
+				case 0x0079: return new WizPrim0x0079(i);
 
 				case 0x0004: case 0x0005: case 0x0006: case 0x0009:
 				case 0x0015: case 0x0018: case 0x0026: case 0x0027:
@@ -756,6 +759,31 @@ namespace pjse.BhavNameWizards
 				if ((o[2] & 0x20) != 0) s += ", with empty border";
 				if ((o[2] & 0x40) != 0) s += ", begin in front of refobj";
 				if ((o[2] & 0x80) != 0) s += ", with line of site to center";
+			}
+
+			return s;
+		}
+
+	}
+
+	public class WizPrim0x001b : BhavWizPrim	// Go To Relative Position
+	{
+		public WizPrim0x001b(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += (lng ? "Location: " : "") + GS.GStr(GS.BhavStr.RelativeLocations, (ushort)(o[2] + 2));
+			s += ", " + (lng ? "Direction: " : "") + GS.GStr(GS.BhavStr.RelativeDirections, (ushort)(o[3] + 2));
+			if (lng)
+			{
+				s += "; " + ((o[6] & 0x02) == 0 ? "process" : "no") + " failure trees";
+				s += ", " + ((o[6] & 0x04) == 0 ? "don't " : "") + "allow different altitudes";
 			}
 
 			return s;
@@ -976,8 +1004,8 @@ namespace pjse.BhavNameWizards
 			else
 			{
 				if (instance != 0)
-					s += "0x" + SimPe.Helper.HexString(instance) +
-						": " + readStr(scope, GS.GlobalStr.DialogString, instance - 1, len);
+					s += "0x" + SimPe.Helper.HexString(instance)
+						+ " " + readStr(scope, GS.GlobalStr.DialogString, instance - 1, len, true);
 				else
 					s += "[none]";
 			}
@@ -1022,6 +1050,52 @@ namespace pjse.BhavNameWizards
 
 				if ((o[10] & 0x01) != 0) s += ", moving in a new Sim";
 				if ((o[10] & 0x02) != 0) s += ", copying design mode materials from object in Temp 5";
+			}
+
+			return s;
+		}
+
+	}
+
+	public class WizPrim0x002d : BhavWizPrim	// Go To Routing Slot
+	{
+		public WizPrim0x002d(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = (lng ? "Slot index " : "");
+
+			if ((o[4] & 0x02) == 0)
+				switch (ToShort(o[2], o[3])) 
+				{
+					case 0:
+						s += "in " + dataOwner(0x09, ToShort(o[0], o[1])); // Param
+						break;
+					case 1:
+						s += "0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
+						break;
+					case 2:
+						s += "from " + dataOwner(0x06, ToShort(o[0], o[1])); // Global
+						break;
+					case 3:
+						s += "in " + dataOwner(0x19, ToShort(o[0], o[1])); // Local
+						break;
+					default:
+						s += "??? 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
+						break;
+				}
+			else
+				s += "in " + dataOwner(0x08, ToShort(o[0], o[1])); // Temp
+
+			if (lng)
+			{
+				s += ", " + ((o[4] & 0x01) == 0 ? "process" : "no") + " failure trees";
+				s += ", " + ((o[4] & 0x04) == 0 ? "check" : "ignore") + " dest obj footprint";
+				s += ", " + ((o[4] & 0x08) == 0 ? "don't " : "") + "allow different altitudes";
 			}
 
 			return s;
@@ -1133,103 +1207,56 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x0079 : BhavWizPrim	// Change Outfit (false = error)
+	{
+		public WizPrim0x0079(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += "Sim: " + dataOwner(o[9], ToShort(o[10], o[11]));
+
+			if ((o[0] & 0x10) == 0)
+			{
+				//s += "change outfit";
+				if (lng)
+				{
+					s += "; source: ";
+					if ((o[0] & 0x01) != 0)
+						s += "Stack Object";
+					else if ((o[0] & 0x02) != 0)
+						s += "GUID 0x" + SimPe.Helper.HexString((uint)(o[4] | (o[5] << 8) | (o[6] << 16) | (o[7] << 24)));
+					else if ((o[0] & 0x40) != 0)
+						s += "GUID in Temp 0/1";
+					else
+						s += "the sim's outfits";
+
+					s += ", outfit";
+					if ((o[0] & 4) == 0)
+						s += ": " + GS.GStr(GS.BhavStr.PersonOutfits, o[8]);
+					else 
+						s += " index: " + dataOwner(o[1], ToShort(o[2], o[3]));
+
+					s += ", " + ((o[0] & 0x20) == 0 ? "leaving" : "clearing") + " GUID pointers in person data fields";
+					s += ", " + ((o[0] & 0x08) == 0 ? "don't " : "") + "save change";
+				}
+			}
+
+			else 
+				s += "; rebuild current outfit";
+
+			return s;
+		}
+
+	}
+
 }
 #if DISASIM
-                case 0x6D:  // Change Material (false = error)
-                    w1 = *(UINT16 *) (&b[x+6]);
-                    w2 = *(UINT16 *) (&b[x+9]);
-                    w3 = *(UINT16 *) (&b[x+3]);
-                    w4 = *(UINT16 *) (&b[x]);
-                    c1 = b[x+2];
-                    if (b[x+13] & 2) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"using snap shot generated material");
-                        if (c1 & 1) {
-                            ht_fprintf(outFile,TYPE_NORMAL,", mesh found in obj in");
-                            data2(b[x+8],w2);
-                            if (c1 & 0x20)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index %d", w3);
-                        } else if (c1 & 0x20)
-                            ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
-                        else if (b[x+4] & 0x40) // w3 < 0
-                            ht_fprintf(outFile,TYPE_NORMAL,", over all model");
-                        else {
-                            ht_fprintf(outFile,TYPE_NORMAL,", On Mesh Group: ");
-                            if (c1 & 0x40)
-                                readString2(GROUP_GLOBAL, 0x87, w3);
-                            else if (c1 & 0x80)
-                                if (readString2(gGlobGroup, 0x87, w3) == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x87:0x%X]", w3);
-                            else if (readString2(gGroup, 0x87, w3) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x87:0x%X]", w3);
-                        }
-                    } else if (c1 & 8) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"found in obj in ");
-                        data2(b[x+8],w2);
-                        if (c1 & 0x10)
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
-                        else
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index %d", w4);
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index %d", w4);
-                    } else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"found in me, to: ");
-                        if (c1 & 0x10)
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
-                        else
-                            if (c1 & 2)
-                                readString2(GROUP_GLOBAL, 0x88, w4);
-                            else if (c1 & 4)
-                                if (readString2(gGlobGroup, 0x88, w4) == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x88:0x%X]", w4);
-                            else if (readString2(gGroup, 0x88, w4) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x88:0x%X]", w4);
-                    }
-                    ht_fprintf(outFile,TYPE_NORMAL,", affecting ID in ");
-                    data2(b[x+5],w1);       // target object
-                    break;
-                case 0x79:  // Change Outfit (false = error)
-                    c1 = b[x];
-                    w1 = *(UINT16 *) (&b[x+10]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    d1 = *(UINT32 *) (&b[x+4]);
-                    if (c1 & 0x10) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"Rebuild current outfit on sim in ");
-                        data2(b[x+9],w1);
-                    } else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"Change Outfit on sim in ");
-                        data2(b[x+9],w1);
-                        if (c1 & 1)
-                            ht_fprintf(outFile,TYPE_NORMAL," using Stack Object");
-                        else if (c1 & 2) {
-                            ht_fprintf(outFile,TYPE_NORMAL," using GUID of 0x%08X", d1);
-                            readGUID(d1);
-                        } else if (c1 & 0x40)
-                            ht_fprintf(outFile,TYPE_NORMAL,", using GUID in Temp 0/1");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," using that sims outfits");
-                        ht_fprintf(outFile,TYPE_NORMAL," as source, using outfit ");
-                        if (c1 & 4) {
-                            ht_fprintf(outFile,TYPE_NORMAL,"index from ");
-                            data2(b[x+1],w2);
-                        } else {
-                            CHECK_RANGE("Person outfits", gStringFA, b[x+8]);
-                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFA[b[x+8]]);
-                        }
-                        if (c1 & 0x20)
-                            ht_fprintf(outFile,TYPE_NORMAL,", clearing GUID pointers in person data fields");
-                        if (c1 & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL,", writing changes to the .iff");
-                    }
-                    break;
                 case 0x33:  // Manage Inventory
                     w1 = *(UINT16 *) (&b[x+14]);
                     w2 = *(UINT16 *) (&b[x+11]);
@@ -1864,17 +1891,6 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL,", don't check presence of second object"); // "object to sim" relationship
                     }
                     break;
-                case 0x1B:  // Go To Relative Position
-                    c1 = (b[x+2] + 2) & 0xFF;
-                    c2 = (b[x+3] + 2) & 0xFF;
-                    CHECK_RANGE("Relative locations", gString82, c1);
-                    ht_fprintf(outFile,TYPE_NORMAL,"Location = %s, ", gString82[c1]);
-                    CHECK_RANGE("Relative directions", gString83, c2);
-                    ht_fprintf(outFile,TYPE_NORMAL,"Direction = %s", gString83[c2]);
-                    c3 = b[x+6];
-                    if (c3 & 2) ht_fprintf(outFile,TYPE_NORMAL,", no failure trees");
-                    if (c3 & 4) ht_fprintf(outFile,TYPE_NORMAL,", allow different altitudes");
-                    break;
                 case 0x1D:  // Set Motive Change (false = error)
                     w1 = *(UINT16 *) (&b[x+4]);
                     w2 = *(UINT16 *) (&b[x+6]);
@@ -2187,34 +2203,6 @@ namespace pjse.BhavNameWizards
                     break;
                 case 0x25:  // Test Sim Interacting With
                     ht_fprintf(outFile,TYPE_NORMAL,"me with stack obj.");
-                    break;
-                case 0x2D:  // Go To Routing Slot
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    switch (w2) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
-                            data2(9, w1);   // param
-                            break;
-                        case 1:
-                            if (b[x+4] & 2)
-                                ht_fprintf(outFile,TYPE_NORMAL,"From Slot index in Temp 0", w1);
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,"0x%X", w1);
-                            break;
-                        case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,"global 0x%X", w1);
-                            break;
-                        case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
-                            data2(0x19, w1);   // local
-                            break;
-                        default:
-                            ht_fprintf(outFile,TYPE_NORMAL,"??? 0x%X", w1);
-                    }
-                    if (b[x+4] & 1) ht_fprintf(outFile,TYPE_NORMAL,", no failure trees");
-                    if (b[x+4] & 4) ht_fprintf(outFile,TYPE_NORMAL,", ignoring dest obj footprint");
-                    if (b[x+4] & 8) ht_fprintf(outFile,TYPE_NORMAL,", allow different altitudes");
                     break;
                 case 0x2E:  // Snap
                     w1 = *(UINT16 *) (&b[x]);
@@ -3715,6 +3703,140 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL,", Getting icon index into model table from temp 1");
                         else
                             ht_fprintf(outFile,TYPE_NORMAL,", Using index of %d",b[x+10]);
+                    }
+                    break;
+                case 0x6D:  // Change Material (false = error)
+                    w1 = *(UINT16 *) (&b[x+6]);
+                    w2 = *(UINT16 *) (&b[x+9]);
+                    w3 = *(UINT16 *) (&b[x+3]);
+                    w4 = *(UINT16 *) (&b[x]);
+                    c1 = b[x+2];
+                    if (b[x+13] & 2) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"using snap shot generated material");
+                        if (c1 & 1) {
+                            ht_fprintf(outFile,TYPE_NORMAL,", mesh found in obj in");
+                            data2(b[x+8],w2);
+                            if (c1 & 0x20)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index %d", w3);
+                        } else if (c1 & 0x20)
+                            ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
+                        else if (b[x+4] & 0x40) // w3 < 0
+                            ht_fprintf(outFile,TYPE_NORMAL,", over all model");
+                        else {
+                            ht_fprintf(outFile,TYPE_NORMAL,", On Mesh Group: ");
+                            if (c1 & 0x40)
+                                readString2(GROUP_GLOBAL, 0x87, w3);
+                            else if (c1 & 0x80)
+                                if (readString2(gGlobGroup, 0x87, w3) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x87:0x%X]", w3);
+                            else if (readString2(gGroup, 0x87, w3) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x87:0x%X]", w3);
+                        }
+                    } else if (c1 & 8) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"found in obj in ");
+                        data2(b[x+8],w2);
+                        if (c1 & 0x10)
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
+                        else
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index %d", w4);
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index %d", w4);
+                    } else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"found in me, to: ");
+                        if (c1 & 0x10)
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
+                        else
+                            if (c1 & 2)
+                                readString2(GROUP_GLOBAL, 0x88, w4);
+                            else if (c1 & 4)
+                                if (readString2(gGlobGroup, 0x88, w4) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x88:0x%X]", w4);
+                            else if (readString2(gGroup, 0x88, w4) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x88:0x%X]", w4);
+                    }
+                    ht_fprintf(outFile,TYPE_NORMAL,", affecting ID in ");
+                    data2(b[x+5],w1);       // target object
+                    break;
+                case 0x1B:  // Go To Relative Position
+                    c1 = (b[x+2] + 2) & 0xFF;
+                    c2 = (b[x+3] + 2) & 0xFF;
+                    CHECK_RANGE("Relative locations", gString82, c1);
+                    ht_fprintf(outFile,TYPE_NORMAL,"Location = %s, ", gString82[c1]);
+                    CHECK_RANGE("Relative directions", gString83, c2);
+                    ht_fprintf(outFile,TYPE_NORMAL,"Direction = %s", gString83[c2]);
+                    c3 = b[x+6];
+                    if (c3 & 2) ht_fprintf(outFile,TYPE_NORMAL,", no failure trees");
+                    if (c3 & 4) ht_fprintf(outFile,TYPE_NORMAL,", allow different altitudes");
+                    break;
+                case 0x2D:  // Go To Routing Slot
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    switch (w2) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
+                            data2(9, w1);   // param
+                            break;
+                        case 1:
+                            if (b[x+4] & 2)
+                                ht_fprintf(outFile,TYPE_NORMAL,"From Slot index in Temp 0", w1);
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,"0x%X", w1);
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,"global 0x%X", w1);
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
+                            data2(0x19, w1);   // local
+                            break;
+                        default:
+                            ht_fprintf(outFile,TYPE_NORMAL,"??? 0x%X", w1);
+                    }
+                    if (b[x+4] & 1) ht_fprintf(outFile,TYPE_NORMAL,", no failure trees");
+                    if (b[x+4] & 4) ht_fprintf(outFile,TYPE_NORMAL,", ignoring dest obj footprint");
+                    if (b[x+4] & 8) ht_fprintf(outFile,TYPE_NORMAL,", allow different altitudes");
+                    break;
+                case 0x79:  // Change Outfit (false = error)
+                    c1 = b[x];
+                    w1 = *(UINT16 *) (&b[x+10]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    d1 = *(UINT32 *) (&b[x+4]);
+                    if (c1 & 0x10) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"Rebuild current outfit on sim in ");
+                        data2(b[x+9],w1);
+                    } else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"Change Outfit on sim in ");
+                        data2(b[x+9],w1);
+                        if (c1 & 1)
+                            ht_fprintf(outFile,TYPE_NORMAL," using Stack Object");
+                        else if (c1 & 2) {
+                            ht_fprintf(outFile,TYPE_NORMAL," using GUID of 0x%08X", d1);
+                            readGUID(d1);
+                        } else if (c1 & 0x40)
+                            ht_fprintf(outFile,TYPE_NORMAL,", using GUID in Temp 0/1");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using that sims outfits");
+                        ht_fprintf(outFile,TYPE_NORMAL," as source, using outfit ");
+                        if (c1 & 4) {
+                            ht_fprintf(outFile,TYPE_NORMAL,"index from ");
+                            data2(b[x+1],w2);
+                        } else {
+                            CHECK_RANGE("Person outfits", gStringFA, b[x+8]);
+                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFA[b[x+8]]);
+                        }
+                        if (c1 & 0x20)
+                            ht_fprintf(outFile,TYPE_NORMAL,", clearing GUID pointers in person data fields");
+                        if (c1 & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL,", writing changes to the .iff");
                     }
                     break;
 #endif
