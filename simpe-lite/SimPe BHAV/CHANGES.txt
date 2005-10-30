@@ -1,4 +1,10 @@
 
+30 October 2005 17:24 - Bhav: OpCodes 0x1b, 0x2d and 0x79
+  SimPe BHAV\
+    BhavWiz.cs 1.13
+    BhavWizPrim.cs 1.16
+    GlobalStr.cs 1.12
+
 30 October 2005 15:05 - Bhav: ExtendedWrapper merge
   pjse filetable\
     FileTable.cs 1.6
