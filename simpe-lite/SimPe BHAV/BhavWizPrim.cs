@@ -599,18 +599,8 @@ namespace pjse.BhavNameWizards
 			return new WizPrimDefault(i);
 		}
 
-		// Also provide
-		// public static implicit operator <Wiz>(byte[] operands);
-
-
 		protected override string OpcodeName { get { return GS.GStr(GS.BhavStr.Primitives, instruction.OpCode); } }
 
-
-		public override string ShortName { get { return base.ShortName + " (" + Operands(false) + ")"; } }
-
-		public override string LongName { get { return base.ShortName + " (" + Operands(true) + ")"; } }
-
-		protected abstract string Operands(bool lng);
 	}
 
 

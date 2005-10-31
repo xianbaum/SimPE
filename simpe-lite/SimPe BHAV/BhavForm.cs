@@ -337,7 +337,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
-				this.llopenbhav.Enabled = currentInst.Wrapper != null;
+				this.llopenbhav.Enabled = currentInst.FTEntry != null;
 				this.btnOperandWiz.Enabled = pjse.BhavOperandWizProvider.For(currentInst) != null;
 				this.tbInst_Longname.Text = currentInst.LongName;
 			}
@@ -492,7 +492,7 @@ namespace SimPe.PackedFiles.UserInterface
 					this.btnCancel.Enabled = true;
 
 					this.currentInst = currentInst.Instruction;
-					this.llopenbhav.Enabled = currentInst.Wrapper != null;
+					this.llopenbhav.Enabled = currentInst.FTEntry != null;
 					this.btnOperandWiz.Enabled = pjse.BhavOperandWizProvider.For(currentInst) != null;
 					this.tbInst_Longname.Text = currentInst.LongName;
 				}
@@ -2563,10 +2563,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			BhavForm ui = (BhavForm)currentInst.Wrapper.UIHandler;
+			Bhav bhav = ((pjse.BhavNameWizards.BhavWizBhav)currentInst).Wrapper;
+			BhavForm ui = (BhavForm)bhav.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "View BHAV: " + currentInst.ShortName + " [" + currentInst.Wrapper.Package.SaveFileName + "]";
-			currentInst.Wrapper.RefreshUI();
+			ui.Text = "View BHAV: " + currentInst.ShortName + " [" + bhav.Package.SaveFileName + "]";
+			bhav.RefreshUI();
 			ui.Show();
 		}
 

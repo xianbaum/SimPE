@@ -165,7 +165,7 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public class BhavWizBhav : BhavWiz, IDisposable
 	{
-		private Bhav bhav = null;
+		private pjse.FileTable.Entry ftEntry = null;
 		/// <summary>
 		/// Which group to look in for the BHAV
 		/// </summary>
@@ -185,13 +185,13 @@ namespace pjse.BhavNameWizards
 			else if (i.OpCode < 0x2000)
 			{
 				prefix = "private";
-				group = i.Parent.Group;
+				group = (i.Parent.Context == Scope.Private) ? i.Parent.Group : 0xffffffff;
 			}
 
 			else
 			{
 				prefix = "semi";
-				group = i.Parent.SemiGroup;
+				group = (i.Parent.Context == Scope.SemiGlobal) ? i.Parent.Group : i.Parent.SemiGroup;
 			}
 
 		}
@@ -204,26 +204,20 @@ namespace pjse.BhavNameWizards
 			return new BhavWizBhav(i);
 		}
 
-
-		#region BhavWiz
-		public override Bhav Wrapper
+		public Bhav Wrapper
 		{
 			get
 			{
-				if (bhav == null)
-				{
-					pjse.FileTable.Entry ftEntry = FTEntry;
-					if (ftEntry != null)
-					{
-						bhav = new Bhav(null);
-						bhav.ProcessData(ftEntry.PFD, ftEntry.Package);
-					}
-				}
-				return bhav;
+				pjse.FileTable.Entry ftEntry = FTEntry;
+				if (ftEntry == null) return null;
+				Bhav wrapper = new Bhav(null);
+				wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
+				return wrapper;
 			}
 		}
 
 
+		#region BhavWiz
 		protected override string OpcodeName
 		{
 			get
@@ -234,31 +228,23 @@ namespace pjse.BhavNameWizards
 		}
 
 
-		public override string ShortName { get { return base.ShortName + " (" + Operands(false) + ")"; } }
-
-		public override string LongName { get { return base.ShortName + " (" + Operands(true) + ")"; } }
-
-
-		private pjse.FileTable.Entry FTEntry
+		public override pjse.FileTable.Entry FTEntry
 		{
 			get
 			{
-				pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group, instruction.OpCode];
-				return (items != null && items.Length > 0) ? items[0] : null;
+				if (ftEntry == null)
+				{
+					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group, instruction.OpCode];
+					if(items != null && items.Length > 0) ftEntry = items[0];
+				}
+				return ftEntry;
 			}
 		}
 
-		#endregion
 
-		public static string Filename(pjse.FileTable.Entry e)
+		protected override string Operands(bool lng)
 		{
-			return (e != null) ? e : "[BHAV not found]";
-		}
-
-		private string Operands(bool lng)
-		{
-			if (Wrapper == null) 
-				return "[" + SimPe.Localization.Manager.GetString("unk") + "]";
+			Bhav bhav = Wrapper;
 
 			string s = "";
 			int myArgc = (int)instruction.Parent.Header.ArgumentCount;
@@ -321,12 +307,13 @@ namespace pjse.BhavNameWizards
 
 		}
 
+		#endregion
 
 		#region IDisposable Members
 
 		public new void Dispose()
 		{
-			bhav = null;
+			ftEntry = null;
 		}
 
 		#endregion

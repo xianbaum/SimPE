@@ -37,22 +37,7 @@ namespace pjse
 
 	public abstract class ExtendedWrapper : AbstractWrapper, IDisposable
 	{
-		private Scope scope;
-
-		public ExtendedWrapper() : base()
-		{
-			if (this is Bhav && this.FileDescriptor != null)
-			{
-				if (this.FileDescriptor.Instance < 0x1000)
-					scope = Scope.Global;
-				else if (this.FileDescriptor.Instance < 0x2000)
-					scope = Scope.Private;
-				else
-					scope = Scope.SemiGlobal;
-			}
-			else
-				scope = Scope.Private; // at least for now
-		}
+		public ExtendedWrapper() : base() { }
 
 
 		/// <summary>
@@ -82,7 +67,17 @@ namespace pjse
 		{
 			get
 			{
-				return scope;
+				if (this is Bhav && this.FileDescriptor != null)
+				{
+					if (this.FileDescriptor.Instance < 0x1000)
+						return Scope.Global;
+					else if (this.FileDescriptor.Instance < 0x2000)
+						return Scope.Private;
+					else
+						return Scope.SemiGlobal;
+				}
+				else
+					return Scope.Private; // at least for now
 			}
 		}
 
@@ -181,22 +176,19 @@ namespace pjse
 		public override string ToString() { return LongName; }
 
 
-		public virtual string ShortName
-		{
-			get
-			{
-				return "[" + Prefix + " 0x" + SimPe.Helper.HexString(instruction.OpCode) + "] " + OpcodeName;
-			}
-		}
+		public virtual string ShortName { get { return Name + " (" + Operands(false) + ")"; } }
 
-		public virtual string LongName { get { return ShortName; } }
+		public virtual string LongName { get { return Name + " (" + Operands(true) + ")"; } }
 
+		public virtual pjse.FileTable.Entry FTEntry { get { return null; } }
 
-		public virtual Bhav Wrapper { get { return null; } }
+		protected virtual string Name { get { return "[" + Prefix + " 0x" + SimPe.Helper.HexString(instruction.OpCode) + "] " + OpcodeName; } }
 
-		protected string Prefix { get { return prefix; } }
+		protected virtual string Prefix { get { return prefix; } }
 
 		protected abstract string OpcodeName { get; }
+
+		protected abstract string Operands(bool lng);
 
 
 		#region Utilities
