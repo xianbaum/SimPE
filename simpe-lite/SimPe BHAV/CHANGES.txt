@@ -1,4 +1,11 @@
 
+31 October 2005 20:38 - Bhav: Bug fix for ExtendedWrapper semi-global handling
+  SimPe BHAV\
+    BhavForm.cs 1.58
+    BhavWiz.cs 1.14
+    BhavWizBhav.cs 1.12
+    BhavWizPrim.cs 1.17
+
 30 October 2005 17:24 - Bhav: OpCodes 0x1b, 0x2d and 0x79
   SimPe BHAV\
     BhavWiz.cs 1.13
