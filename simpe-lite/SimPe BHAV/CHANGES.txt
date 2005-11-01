@@ -1,4 +1,12 @@
 
+1 November 2005 19:30 - Bhav: Tidy up STR# display a bit
+  SimPe BHAV\
+    BhavWizPrim.cs 1.18
+
+1 November 2005 19:25 - Bhav: Oops, forgot to handle null Wrapper for not found BHAVs
+  SimPe BHAV\
+    BhavWizBhav.cs 1.13
+
 31 October 2005 20:38 - Bhav: Bug fix for ExtendedWrapper semi-global handling
   SimPe BHAV\
     BhavForm.cs 1.58
