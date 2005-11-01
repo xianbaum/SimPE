@@ -798,7 +798,7 @@ namespace pjse.BhavNameWizards
 			else if ((o[2] & 2) != 0) scope = Scope.SemiGlobal;
 			else scope = Scope.Private; 
 
-			s += scope.ToString() + ": " + readStr(scope, GS.GlobalStr.NamedTree, o[4] - 1);
+			s += readStr(scope, GS.GlobalStr.NamedTree, o[4] - 1, lng ? -1 : 60, false);
 
 			if (lng)
 			{
@@ -990,12 +990,11 @@ namespace pjse.BhavNameWizards
 		{
 			string s = "";
 			if (temp)
-				s += "[" + dataOwner(0x08, instance) + "]"; // temp
+				s += "STR# 0x" + SimPe.Helper.HexString((ushort)GS.GlobalStr.DialogString) + ":[" + dataOwner(0x08, instance) + "]"; // temp
 			else
 			{
 				if (instance != 0)
-					s += "0x" + SimPe.Helper.HexString(instance)
-						+ " " + readStr(scope, GS.GlobalStr.DialogString, instance - 1, len, true);
+					s += readStr(scope, GS.GlobalStr.DialogString, instance - 1, len, false);
 				else
 					s += "[none]";
 			}
@@ -1115,11 +1114,8 @@ namespace pjse.BhavNameWizards
 				if (lng && (o[3] & 1) != 0 && instruction.NodeVersion != 0)
 					s += "Disabled, ";
 
-				if (lng)
-					s += scope.ToString() + ": ";
-
-				if ((o[2] & 0x10) != 0) s += "STR# 0x012e:[Temp 0]";
-				else s += readStr(scope, GS.GlobalStr.MakeAction, o[4] - 1);
+				if ((o[2] & 0x10) != 0) s += (lng ? scope.ToString() + " " : "") + "STR# 0x012e:[Temp 0]";
+				else s += readStr(scope, GS.GlobalStr.MakeAction, o[4] - 1, lng ? -1 : 60, !lng);
 			}
 			else 
 			{
@@ -1170,9 +1166,10 @@ namespace pjse.BhavNameWizards
 			if ((o[13] & 0x02) == 0)
 			{
 				s += "material from " + ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
-				s += " (" + matScope.ToString() + " " + ((o[13] & 0x01) != 0 ? "moving texture" : "material") + " " + ((o[2] & 0x10) != 0
-					? "[Temp 0]"
-					:  "0x" + SimPe.Helper.HexString(mat) + " [" + readStr(matScope, GS.GlobalStr.MaterialName, mat) + "]") +")";
+				s += " (" + ((o[13] & 0x01) != 0 ? "moving texture" : "material") + " ";
+				if ((o[2] & 0x10) != 0) s += (lng ? matScope.ToString() + " " : "") + "STR# 0x0088:[Temp 0]";
+				else s += readStr(matScope, GS.GlobalStr.MaterialName, mat, lng ? -1 : 60, !lng);
+				s += ")";
 			}
 			else
 				s += "material from screen shot";
@@ -1185,9 +1182,10 @@ namespace pjse.BhavNameWizards
 			s += " and mesh from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
 			if ((o[4] & 0x40) == 0) // w3 < 0
 			{
-				s += " (" + mgScope.ToString() + " mesh group " + ((o[2] & 0x20) != 0
-					? "[Temp 1]"
-					: "0x" + SimPe.Helper.HexString(mg) + " [" + readStr(mgScope, GS.GlobalStr.MeshGroup, mg) + "]") + ")";
+				s += " (mesh group ";
+				if ((o[2] & 0x20) != 0) s += (lng ? mgScope.ToString() + " " : "") + "STR# 0x0087:[Temp 1]";
+				else s += readStr(mgScope, GS.GlobalStr.MeshGroup, mat, lng ? -1 : 60, !lng);
+				s += ")";
 			}
 			else
 				s += " (over all model)";
