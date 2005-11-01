@@ -245,6 +245,8 @@ namespace pjse.BhavNameWizards
 		protected override string Operands(bool lng)
 		{
 			Bhav bhav = Wrapper;
+			if (bhav == null)
+				return "???";
 
 			string s = "";
 			int myArgc = (int)instruction.Parent.Header.ArgumentCount;
