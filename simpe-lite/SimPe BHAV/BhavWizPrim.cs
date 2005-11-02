@@ -703,15 +703,13 @@ namespace pjse.BhavNameWizards
 
 		protected override string Operands(bool lng)
 		{
-			//return "Find location for";
-
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
 			string s = "";
 
-			if ((o[2] & 0x01) == 0)
+			if ((o[2] & 0x01) != 0)
 			{
 				s += "Stack Object";
 				if (lng)
@@ -794,9 +792,9 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			Scope scope;
-			if ((o[2] & 1) != 0) scope = Scope.Global;
-			else if ((o[2] & 2) != 0) scope = Scope.SemiGlobal;
-			else scope = Scope.Private; 
+			if      ((o[2] & 0x01) != 0) scope = Scope.Global;
+			else if ((o[2] & 0x02) != 0) scope = Scope.SemiGlobal;
+			else                         scope = Scope.Private;
 
 			s += readStr(scope, GS.GlobalStr.NamedTree, o[4] - 1, lng ? -1 : 60, false);
 
@@ -823,6 +821,13 @@ namespace pjse.BhavNameWizards
 
 				if ((o[2] & 0x20) == 0)
 					s += ", Caller's params";
+
+				// How to look for tree with given name:
+				// private -> semiglobal -> global -> "false"
+				if ((o[2] & 0x08) != 0)
+					s += ", ignore semiglobal trees";
+				if ((o[2] & 0x04) != 0)
+					s += ", ignore global trees";
 
 				switch (o[5]) 
 				{
