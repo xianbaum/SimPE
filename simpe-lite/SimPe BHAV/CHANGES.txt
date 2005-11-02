@@ -1,4 +1,8 @@
 
+2 November 2005 20:22 - Bhav: Sync with disaSim2-23d; fix typo in Find Location For 0x0010
+  SimPe BHAV\
+    BhavWizPrim.cs 1.19
+
 1 November 2005 19:30 - Bhav: Tidy up STR# display a bit
   SimPe BHAV\
     BhavWizPrim.cs 1.18
