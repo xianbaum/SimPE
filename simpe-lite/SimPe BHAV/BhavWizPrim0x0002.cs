@@ -497,6 +497,118 @@ namespace pjse.BhavNameWizards
 					 + " " + GS.GStr(GS.BhavStr.DataOwners, rhs_data_owner) + " 0x" + SimPe.Helper.HexString(rhs_value_word);
 			}
 			return s;
+#if DISASIM
+                case 0x02:  // (Evaluate) Expression (non-comparison operators return false if error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    c1 = b[x+5];
+                    c2 = b[x+6];
+                    data2(c2, w1);            // target data
+                    if (c1 == 0x14)           // abs(rhs)
+                        ht_fprintf(outFile,TYPE_OPERATOR," := abs(");
+                    else if (c1 == 0x15)      // Assign 32bit Value (both target and source are contiguous 32-bit)
+                        ht_fprintf(outFile,TYPE_OPERATOR," := int32(");
+                    else {
+                        CHECK_RANGE("Operator", gString88, c1);
+                        ht_fprintf(outFile,TYPE_OPERATOR," %s ",gString88[c1]);
+                    }
+
+                    if (b[x+7] == 7 && c1 > 7 && c1 < 11 && w2 > 0) {   // literal (non-0), flag operator
+                        if ((c2 == 3 || c2 == 4) && (w1 == 5 || w1 == 8 || w1 == 0x0D ||
+                                w1 == 0x22 || w1 == 0x28 || w1 == 0x2A ||
+                                w1 == 0x2B || w1 == 0x3F || w1 == 0x45)) {
+                            switch (w1) {
+                                case 5:
+                                    CHECK_RANGE("Wall adj. flags", gStringD0, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD0[w2 - 1]);
+                                    break;
+                                case 8:
+                                    CHECK_RANGE("Flags 1", gString8E, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8E[w2 - 1]);
+                                    break;
+                                case 0x0D:
+                                    CHECK_RANGE("Wall placement flags", gStringE5, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringE5[w2 - 1]);
+                                    break;
+                                case 0x22:
+                                    CHECK_RANGE("Hidden Flags", gString200, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString200[w2 - 1]);
+                                    break;
+                                case 0x28:
+                                    CHECK_RANGE("Flags 2", gStringD6, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD6[w2 - 1]);
+                                    break;
+                                case 0x2A:
+                                    CHECK_RANGE("Placement flags", gStringCA, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCA[w2 - 1]);
+                                    break;
+                                case 0x2B:
+                                    CHECK_RANGE("Movement flags", gStringCB, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCB[w2 - 1]);
+                                    break;
+                                case 0x3F:
+                                    CHECK_RANGE("Exclusive placement flags", gStringFB, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFB[w2 - 1]);
+                                    break;
+                                case 0x45:
+                                    CHECK_RANGE("Wall cutout flags", gStringFD, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFD[w2 - 1]);
+                                    break;
+                            }
+                        } else if ((c2 == 0x12 || c2 == 0x13 || c2 == 0x20) &&
+                        (w1 == 0x1E || w1 == 0x44 || w1 == 0x51 || w1 == 0x9E || w1 == 0x9F)) {
+                            switch (w1) {
+                                case 0x1E:
+                                    CHECK_RANGE("Censorship flags", gStringB2, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringB2[w2 - 1]);
+                                    break;
+                                case 0x44:
+                                    CHECK_RANGE("Ghost flags", gString201, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString201[w2 - 1]);
+                                    break;
+                                case 0x51:
+                                    CHECK_RANGE("Body flags", gString8F, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8F[w2 - 1]);
+                                    break;
+                                case 0x9E:
+                                    CHECK_RANGE("Selection flags", gString202, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString202[w2 - 1]);
+                                    break;
+                                case 0x9F:
+                                    CHECK_RANGE("Person flags", gString204, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString204[w2 - 1]);
+                                    break;
+                            }
+                        } else if ((c2 == 0x15 || c2 == 0x26 || c2 == 0x33) &&
+                        (w1 == 0x27 || w1 == 0x28)) {
+                            switch (w1) {
+                                case 0x27:
+                                    CHECK_RANGE("Room sort flags", gStringCD, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCD[w2 - 1]);
+                                    break;
+                                case 0x28:
+                                    CHECK_RANGE("Function sort flags", gStringCE, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCE[w2 - 1]);
+                                    break;
+                            }
+                        } else {
+                            data2(b[x+7], w2);  // unknown flag
+                        }
+                    } else {
+                        data2(b[x+7], w2);      // not a literal flag
+
+                        // flag, BCON 0x101:x (Standard Heights)
+/*
+                        if (c1 > 7 && c1 < 11 && b[x+7] == 0x1A && (w2 & 0xFF80) == 0x4080 && (w2 & 0x7F)) {
+                            CHECK_RANGE("Allowed height flags", gStringAH, (w2 & 0x7F) - 1);
+                            ht_fprintf(outFile,TYPE_NORMAL," %s", gStringAH[(w2 & 0x7F) - 1]);
+                        }
+*/
+                        if (c1 == 0x14 || c1 == 0x15)    // abs(rhs) or Assign 32bit Value
+                            ht_fprintf(outFile,TYPE_OPERATOR,")");
+                    }
+                    break;
+#endif
 		}
 
 

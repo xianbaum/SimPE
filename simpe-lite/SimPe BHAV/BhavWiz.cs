@@ -205,8 +205,13 @@ namespace pjse
 
 			switch (doid)
 			{
-				case 0x00:
+				case 0x00: case 0x01:
 					temp = readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
+					if (temp != "")
+						s += " (" + temp + ")";
+					break;
+				case 0x02: case 0x05:
+					temp = readStr(Scope.SemiGlobal, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
 					if (temp != "")
 						s += " (" + temp + ")";
 					break;
@@ -214,12 +219,9 @@ namespace pjse
 					if (instance == 0)
 						s = "";
 					break;
-				case 0x0b:
-				case 0x11:
-				case 0x1e:
-				case 0x1f:
-				case 0x30:
-				case 0x31:
+				case 0x0b: case 0x11:
+				case 0x1e: case 0x1f:
+				case 0x30: case 0x31:
 					doidName = doidName.Replace("[temp]", "[Temp " + instance.ToString() + "]");
 					s = "";
 					break;
@@ -238,6 +240,8 @@ namespace pjse
 
 			return doidName + (s.Length > 0 ? " " + s : "");
 		}
+
+		protected string dataOwner(byte doid, byte lo, byte hi) { return dataOwner(doid, ToShort(lo, hi)); }
 
 
 		// I've also changed this from DisaSim2 to be consistent on the choice of Global/Private/Semi
@@ -279,13 +283,18 @@ namespace pjse
 			items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)instance];
 
 			if (items == null || items.Length == 0)
-				return silent ? "" : "[No " + s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " (" + instance.ToString() + ") file]";
+				return silent ? "" : "[No " + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
 
 			Str str = new Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
 			return ((str[1, sid] != null)
-				? (silent ? "" : s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " ") + "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
-				: silent ? "" : "[" + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
+				? (silent
+					? ""
+					: s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " ")
+					+ "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\""
+				: silent
+					? ""
+					: "[" + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " not set]"
 				);
 		}
 

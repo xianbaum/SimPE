@@ -573,24 +573,84 @@ namespace pjse.BhavNameWizards
 				case 0x0000: return new WizPrim0x0000(i);
 				case 0x0001: return new WizPrim0x0001(i);
 				case 0x0002: return new WizPrim0x0002(i);
+					//case 0x0003: return new WizPrim0x0003(i);
+				case 0x0004:
+				case 0x0005:
+				case 0x0006:
+					return new WizPrimUnused(i);
+				case 0x0007: return new WizPrim0x0007(i);
 				case 0x0008: return new WizPrim0x0008(i);
+				case 0x0009:
+				case 0x000a:
+					return new WizPrimUnused(i);
+				case 0x000b: return new WizPrim0x000b(i);
+				case 0x000c: return new WizPrim0x000c(i);
 				case 0x000d: return new WizPrim0x000d(i);
+					//case 0x000e: return new WizPrim0x000e(i);
+				case 0x000f: return new WizPrim0x000f(i);
 				case 0x0010: return new WizPrim0x0010(i);
+					//case 0x0011: return new WizPrim0x0011(i);
+					//case 0x0012: return new WizPrim0x0012(i);
+					//case 0x0013: return new WizPrim0x0013(i);
+					//case 0x0014: return new WizPrim0x0014(i);
+				case 0x0015:
+					return new WizPrimUnused(i);
+					//case 0x0016: return new WizPrim0x0016(i);
+					//case 0x0017: return new WizPrim0x0017(i);
+				case 0x0018:
+					return new WizPrimUnused(i);
+					//case 0x0019: return new WizPrim0x0019(i);
+					//case 0x001a: return new WizPrim0x001a(i);
 				case 0x001b: return new WizPrim0x001b(i);
 				case 0x001c: return new WizPrim0x001c(i);
+					//case 0x001d: return new WizPrim0x001d(i);
+					//case 0x001e: return new WizPrim0x001e(i);
 				case 0x001f: return new WizPrim0x001f(i);
+					//case 0x0020: return new WizPrim0x0020(i);
+					//case 0x0021: return new WizPrim0x0021(i);
+					//case 0x0022: return new WizPrim0x0022(i);
+					//case 0x0023: return new WizPrim0x0023(i);
 				case 0x0024: return new WizPrim0x0024(i);
+					//case 0x0025: return new WizPrim0x0025(i);
+				case 0x0026:
+				case 0x0027:
+				case 0x0028:
+				case 0x0029:
+					return new WizPrimUnused(i);
 				case 0x002a: return new WizPrim0x002a(i);
+				case 0x002b:
+				case 0x002c:
+					return new WizPrimUnused(i);
 				case 0x002d: return new WizPrim0x002d(i);
-				case 0x0032: return new WizPrim0x0032(i);
-				case 0x006d: return new WizPrim0x006d(i);
-				case 0x0079: return new WizPrim0x0079(i);
-
-				case 0x0004: case 0x0005: case 0x0006: case 0x0009:
-				case 0x0015: case 0x0018: case 0x0026: case 0x0027:
-				case 0x0028: case 0x0029: case 0x002b: case 0x002c:
+					//case 0x002e: return new WizPrim0x002e(i);
 				case 0x002f:
 					return new WizPrimUnused(i);
+					//case 0x0030: return new WizPrim0x0030(i);
+					//case 0x0031: return new WizPrim0x0031(i);
+				case 0x0032: return new WizPrim0x0032(i);
+					//case 0x0033: return new WizPrim0x0033(i);
+					//case 0x0069: return new WizPrim0x0069(i);
+					//case 0x006a: return new WizPrim0x006a(i);
+					//case 0x006b: return new WizPrim0x006b(i);
+					//case 0x006c: return new WizPrim0x006c(i);
+				case 0x006d: return new WizPrim0x006d(i);
+					//case 0x006e: return new WizPrim0x006e(i);
+					//case 0x006f: return new WizPrim0x006f(i);
+					//case 0x0070: return new WizPrim0x0070(i);
+					//case 0x0071: return new WizPrim0x0071(i);
+					//case 0x0072: return new WizPrim0x0072(i);
+					//case 0x0073: return new WizPrim0x0073(i);
+					//case 0x0074: return new WizPrim0x0074(i);
+					//case 0x0075: return new WizPrim0x0075(i);
+					//case 0x0076: return new WizPrim0x0076(i);
+					//case 0x0077: return new WizPrim0x0077(i);
+					//case 0x0078: return new WizPrim0x0078(i);
+				case 0x0079: return new WizPrim0x0079(i);
+					//case 0x007a: return new WizPrim0x007a(i);
+					//case 0x007b: return new WizPrim0x007b(i);
+					//case 0x007c: return new WizPrim0x007c(i);
+					//case 0x007d: return new WizPrim0x007d(i);
+					//case 0x007e: return new WizPrim0x007e(i);
 			}
 
 			if (i.OpCode >= 0x0034 && i.OpCode <= 0x0068 || i.OpCode >= 0x007f)
@@ -619,11 +679,94 @@ namespace pjse.BhavNameWizards
 
 	}
 
+
 	public class WizPrim0x0000 : BhavWizPrim	// Sleep
 	{
 		public WizPrim0x0000(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng) { return dataOwner(9, ToShort(instruction.Operands[0], instruction.Operands[1])); }
+		protected override string Operands(bool lng)
+		{
+			return dataOwner(9, instruction.Operands[0], instruction.Operands[1]);
+#if DISASIM
+                case 0x00:  // Sleep (false = error)
+                    ht_fprintf(outFile,TYPE_NORMAL,"for ");
+                    data2(9, b[x]);
+                    ht_fprintf(outFile,TYPE_NORMAL," ticks");
+                    break;
+#endif
+		}
+
+	}
+
+#if DISASIM
+                case 0x03:  // Find Best Interaction
+                    w1 = *(UINT16 *) (&b[x]);   // motive
+                    w2 = *(UINT16 *) (&b[x+2]); // flags
+                    if (w2 == 0)
+                        ht_fprintf(outFile,TYPE_NORMAL,"for the N current worst motives.");
+                    else {
+                        w3 = 1;
+                        for (c1 = 0; c1 < 16; c1++) {   // this should only find 1 motive (if any)
+                            if (w1 & w3) {
+                                CHECK_RANGE("Motives", gString86, c1);
+                                ht_fprintf(outFile,TYPE_NORMAL," for %s", gString86[c1]);;
+                            }
+                            w3 = w3 << 1;
+                        }
+                        ht_fprintf(outFile,TYPE_NORMAL,".");
+                        if (w2 & 1)
+                            ht_fprintf(outFile,TYPE_NORMAL," Choose remaining motives from the worst.");
+                    }
+                    if (w2 & 0x200) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Only test objects in room held in temp 0");
+                        if (w2 & 0x400)
+                            ht_fprintf(outFile,TYPE_NORMAL," including Out Of World Objects");
+                        ht_fprintf(outFile,TYPE_NORMAL,".");
+                    }
+                    if (w2 & 0x800) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Find Nested Interactions Only");
+                        if (w2 & 0x1000)
+                            ht_fprintf(outFile,TYPE_NORMAL," and only on current Interaction object");
+                        ht_fprintf(outFile,TYPE_NORMAL,".");
+                    }
+                    break;
+#endif
+	public class WizPrim0x0007 : BhavWizPrim	// Refresh
+	{
+		public WizPrim0x0007(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += (o[0] == 0 ? "My" : "Stack Object's") + " ";
+			switch(o[2])
+			{
+				case 0: s += "graphic"; break;
+				case 1: s += "lighting contribution"; break;
+				default: s += "room score contribution"; break; // errrm...
+			}
+
+			return s;
+#if DISASIM
+                case 0x07:  // Refresh (false = error)
+                    if (b[x] == 0)
+                        ht_fprintf(outFile,TYPE_NORMAL,"My ");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"Stack Object's ");
+                    if (b[x+2] == 0)
+                        ht_fprintf(outFile,TYPE_NORMAL,"graphic");
+                    else if (b[x+2] == 1)
+                        ht_fprintf(outFile,TYPE_NORMAL,"lighting contribution");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"room score contribution");
+                    break;
+#endif
+		}
 
 	}
 
@@ -634,16 +777,98 @@ namespace pjse.BhavNameWizards
 		protected override string Operands(bool lng)
 		{
 			if (lng)
-				return dataOwner(instruction.Operands[2], ToShort(instruction.Operands[0], instruction.Operands[1]))
+				return dataOwner(instruction.Operands[2], instruction.Operands[0], instruction.Operands[1])
 					+ " := random from 0 to < "
-					+ dataOwner(instruction.Operands[6], ToShort(instruction.Operands[4], instruction.Operands[5]));
+					+ dataOwner(instruction.Operands[6], instruction.Operands[4], instruction.Operands[5]);
 			else
 				return GS.GStr(GS.BhavStr.DataOwners, instruction.Operands[2])
 					+ " 0x" + SimPe.Helper.HexString(ToShort(instruction.Operands[0], instruction.Operands[1]))
 					+ ", " + GS.GStr(GS.BhavStr.DataOwners, instruction.Operands[6])
 					+ " 0x" + SimPe.Helper.HexString(ToShort(instruction.Operands[4], instruction.Operands[5]))
 					;
+#if DISASIM
+                case 0x08:  // Random Number (false = error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+4]);
+                    data2(b[x+2], w1);
+                    ht_fprintf(outFile,TYPE_OPERATOR," := random from 0 to < ");
+                    data2(b[x+6], w2);
+                    break;
+#endif
 		}
+
+	}
+
+	public class WizPrim0x000b : BhavWizPrim	// Get Distance To
+	{
+		public WizPrim0x000b(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += (lng ? "to Stack Object " : "") + "from " + ((o[2] & 0x01) != 0 ? dataOwner(o[2], o[3], o[4]) : "Me");
+			s += ", into " + dataOwner(8, o[4], o[5]); // temp
+			s += ", in 1/100ths tile: " + ((o[6] & 0x02) != 0).ToString();
+
+			return s;
+#if DISASIM
+                case 0x0B:  // Get Distance To (false = error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+4]);
+                    data2(8, w1);   // temp
+                    ht_fprintf(outFile,TYPE_OPERATOR," := distance from ");
+                    if (b[x+2] & 1)
+                        data2(b[x+3], w2);
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"Me");
+                    ht_fprintf(outFile,TYPE_NORMAL," to Stack Object");
+                    if (b[x+6] & 2)
+                        ht_fprintf(outFile,TYPE_NORMAL," in 1/100ths of a tile");
+                    break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x000c : BhavWizPrim	// Get Direction To
+	{
+		public WizPrim0x000c(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += (lng ? "to Stack Object " : "") + "from " + ((o[4] & 0x01) != 0 ? dataOwner(o[5], o[6], o[7]) : "Me");
+			s += ", into " + dataOwner(o[2], o[0], o[1]);
+			s += ", in degrees: " + ((o[8] & 0x02) == 0).ToString();
+
+			return s;
+#if DISASIM
+                case 0x0C:  // Get Direction To (false = error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+6]);
+                    data2(b[x+2], w1);
+                    ht_fprintf(outFile,TYPE_OPERATOR," := direction from ");
+                    if (b[x+4] & 1)
+                        data2(b[x+5], w2);
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"Me");
+                    ht_fprintf(outFile,TYPE_NORMAL," to Stack Object");
+                    if ((b[x+8] & 2) == 0)
+                        ht_fprintf(outFile,TYPE_NORMAL," in degrees");
+                    break;
+#endif
+		}
+
 	}
 
 	public class WizPrim0x000d : BhavWizPrim	// Push Interaction
@@ -659,14 +884,14 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			if ((o[3] & 0x10) != 0)
-				s += (lng ? "getting interaction # from " : "# [") + dataOwner(o[5], ToShort(o[6], o[7])) + (lng ? "" : "]");
+				s += (lng ? "getting interaction # from " : "# [") + dataOwner(o[5], o[6], o[7]) + (lng ? "" : "]");
 			else if ((o[14] & 2) != 0)
 				s += (lng ? "getting interaction # from results of " : "# [") + "last FBA call" + (lng ? "" : "]");
 			else
 				s += "# 0x" + SimPe.Helper.HexString(o[0]);
 
 			s +=  " of ";
-			if ((o[3] & 2) != 0)
+			if ((o[3] & 0x02) != 0)
 				s += dataOwner(0x19, o[1]);	// local
 			else
 				s += dataOwner(0x09, o[1]);	// param
@@ -675,26 +900,116 @@ namespace pjse.BhavNameWizards
 
 			if (lng)
 			{
-				if ((o[3] & 1) != 0)
-					s += ", use icon from " + dataOwner(0x19, o[4]);
+				if ((o[3] & 0x01) != 0)
+					s += ", use icon from " + dataOwner(0x19, o[4]); // Local
 				else if ((o[14] & 4) != 0)
 					s += ", use icon from selector GUID in Temp 4,5";
 
-				if ((o[14] & 8) != 0)
+				if ((o[14] & 0x08) != 0)
 					s += ", Getting Icon Index from Temp 6";
 				else
 					s += ", Icon Index is 0x" + SimPe.Helper.HexString(o[15]);
 
-				if (0 != (o[14] & 0x01)) s += ", passing on Caller's params 0 to 3";
+				if ((o[14] & 0x01) != 0) s += ", passing on Caller's params 0 to 3";
 				// if (o[3] & 4) ht_fprintf(outFile,TYPE_NORMAL,", continue as current");
-				if (0 != (o[3] & 0x08)) s += ", use name";
-				if (0 != (o[3] & 0x20)) s += ", force run Check Tree";
-				if (0 != (o[3] & 0x40)) s += ", linking to interaction with ID in " + dataOwner(o[8], ToShort(o[9], o[10]));
-				if (0 != (o[3] & 0x80)) s += ", returing ID in " + dataOwner(o[11], ToShort(o[12], o[13]));
+				if ((o[3] & 0x08) != 0) s += ", use name";
+				if ((o[3] & 0x20) != 0) s += ", force run Check Tree";
+				if ((o[3] & 0x40) != 0) s += ", linking to interaction with ID in " + dataOwner(o[8], o[9], o[10]);
+				if ((o[3] & 0x80) != 0) s += ", returing ID in " + dataOwner(o[11], o[12], o[13]);
 			}
 
 			return s;
+#if DISASIM
+                case 0x0D:  // Push Interaction
+                    w1 = *(UINT16 *) (&b[x+6]);
+                    w2 = *(UINT16 *) (&b[x+9]);
+                    w3 = *(UINT16 *) (&b[x+12]);
+                    if (b[x+3] & 0x10) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"getting interaction # from ");
+                        data2(b[x+5],w1);
+                        ht_fprintf(outFile,TYPE_NORMAL," of ");
+                    } else if (b[x+14] & 2)
+                        ht_fprintf(outFile,TYPE_NORMAL,"getting interaction # from results of last FBA call ");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"#0x%X of ", b[x]);
+                    if (b[x+3] & 2)
+                        data2(0x19, b[x+1]);    // local
+                    else
+                        data2(9, b[x+1]);       // param
+                    ht_fprintf(outFile,TYPE_NORMAL," onto the stack object's queue, ");
+                    CHECK_RANGE("Priorities", gStringE0, b[x+2]);
+                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringE0[b[x+2]]);
+                    if (b[x+3] & 1) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", use icon from ");
+                        data2(0x19, b[x+4]);
+                    } else if (b[x+14] & 4)
+                        ht_fprintf(outFile,TYPE_NORMAL," use Icon from selector GUID in temp4/5");
+                    if (b[x+14] & 8)
+                        ht_fprintf(outFile,TYPE_NORMAL,", Getting Icon Index from Temp6");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,", Icon Index is 0x%X", b[x+15]);
+                    // if (b[x+3] & 4) ht_fprintf(outFile,TYPE_NORMAL,", continue as current");
+                    if (b[x+3] & 8) ht_fprintf(outFile,TYPE_NORMAL,", use name");
+                    if (b[x+3] & 0x20) ht_fprintf(outFile,TYPE_NORMAL,", Force run check tree");
+                    if (b[x+14] & 1) ht_fprintf(outFile,TYPE_NORMAL,", Passing first 4 params in");
+                    if (b[x+3] & 0x40) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Linking to interaction with ID in ");
+                        data2(b[x+8],w2);
+                    }
+                    if (b[x+3] & 0x80) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Returing ID in ");
+                        data2(b[x+11],w3);
+                    }
+                    break;
+#endif
 		}
+
+	}
+
+#if DISASIM
+                case 0x0E:  // Find Best Object for Function
+                    w1 = *(UINT16 *) (&b[x+4]);
+                    CHECK_RANGE("Function table", gStringC9, b[x]);
+                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringC9[b[x]]);
+                    if (b[x+2] & 1)
+                        ht_fprintf(outFile,TYPE_NORMAL,", Outside Only");
+                    else if (b[x+2] & 2)
+                        ht_fprintf(outFile,TYPE_NORMAL,", Inside Only");
+                    else if (b[x+2] & 4)
+                        ht_fprintf(outFile,TYPE_NORMAL,", In Room Only");
+                    if (b[x+2] & 0x10)
+                        ht_fprintf(outFile,TYPE_NORMAL,", In Line Of Site");
+                    if (b[x+2] & 0x40)
+                        ht_fprintf(outFile,TYPE_NORMAL,", Ignoring Lockout");
+                    if (b[x+2] & 8) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Relative to object in ");
+                        data2(b[x+3],w1);
+                    }
+
+                    break;
+#endif
+	public class WizPrim0x000f : BhavWizPrim	// Break Point
+	{
+		public WizPrim0x000f(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			return "if " + dataOwner(o[2], o[0], o[1]) + " != 0";
+#if DISASIM
+                case 0x0F:  // Break Point (false = error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    ht_fprintf(outFile,TYPE_NORMAL,"if (");
+                    data2(b[x+2], w1);
+                    ht_fprintf(outFile,TYPE_NORMAL," != 0)");
+                    break;
+#endif
+		}
+
 	}
 
 	public class WizPrim0x0010 : BhavWizPrim	// Find location for
@@ -713,47 +1028,313 @@ namespace pjse.BhavNameWizards
 			{
 				s += "Stack Object";
 				if (lng)
-					s += ", relative to " + dataOwner(0x19, o[1]);
+					s += ", start at " + dataOwner(0x19, o[1]); // Local
 			}
 			else
 			{
-				s += dataOwner(o[4], ToShort(o[5], o[6]));
+				s += dataOwner(o[4], o[5], o[6]);
 				if (lng)
-					s += ", relative to " + dataOwner(o[7], ToShort(o[8], o[9]));
+					s += ", relative to " + dataOwner(o[7], o[8], o[9]);
 			}
 
 			if (lng)
 			{
 				if ((o[2] & 0x08) != 0)
 				{
-					s += ", facing ";
-					if ((o[3] & 0x01) != 0) s += "N";
-					if ((o[3] & 0x02) != 0) s += "NE";
-					if ((o[3] & 0x04) != 0) s += "E";
-					if ((o[3] & 0x08) != 0) s += "SE";
-					if ((o[3] & 0x10) != 0) s += "S";
-					if ((o[3] & 0x20) != 0) s += "SW";
-					if ((o[3] & 0x40) != 0) s += "W";
-					if ((o[3] & 0x80) != 0) s += "NW";
+					s += ", facing";
+					if ((o[3] & 0x01) != 0) s += " N";
+					if ((o[3] & 0x02) != 0) s += " NE";
+					if ((o[3] & 0x04) != 0) s += " E";
+					if ((o[3] & 0x08) != 0) s += " SE";
+					if ((o[3] & 0x10) != 0) s += " S";
+					if ((o[3] & 0x20) != 0) s += " SW";
+					if ((o[3] & 0x40) != 0) s += " W";
+					if ((o[3] & 0x80) != 0) s += " NW";
 				}
 
 				s += ", " + GS.GStr(GS.BhavStr.FindGLB, o[0]);
 				if (o[0] >= 5 && o[0] <= 8)
 					s += " 0x" + SimPe.Helper.HexString(o[10]);
 
-				if ((o[2] & 0x02) == 0) s += ", prefer empty";
-				if ((o[2] & 0x04) != 0) s += ", user editable";
-				if ((o[2] & 0x10) != 0) s += ", on level ground";
-				if ((o[2] & 0x20) != 0) s += ", with empty border";
-				if ((o[2] & 0x40) != 0) s += ", begin in front of refobj";
-				if ((o[2] & 0x80) != 0) s += ", with line of site to center";
+				s += ", prefer empty: "                + ((o[2] & 0x02) == 0).ToString();
+				s += ", user editable: "               + ((o[2] & 0x04) != 0).ToString();
+				s += ", on level ground: "             + ((o[2] & 0x10) != 0).ToString();
+				s += ", with empty border: "           + ((o[2] & 0x20) != 0).ToString();
+				s += ", begin in front of refobj: "    + ((o[2] & 0x40) != 0).ToString();
+				s += ", with line of site to center: " + ((o[2] & 0x80) != 0).ToString();
 			}
 
 			return s;
+#if DISASIM
+                case 0x10:  // Find Location For
+                    w1 = *(UINT16 *) (&b[x+5]);
+                    w2 = *(UINT16 *) (&b[x+8]);
+                    if (b[x+2] & 8) {
+                        data2(b[x+4], w1);
+                        ht_fprintf(outFile,TYPE_NORMAL," relative to ");
+                        data2(b[x+7], w2);
+                        switch (b[x]) {
+                            case 5:
+                                ht_fprintf(outFile,TYPE_NORMAL,", routing slot in stack var %d",b[x+10]);
+                                break;
+                            case 6:
+                                ht_fprintf(outFile,TYPE_NORMAL,", routing slot in local var %d",b[x+10]);
+                                break;
+                            case 7:
+                                ht_fprintf(outFile,TYPE_NORMAL,", literal routing slot %d",b[x+10]);
+                                break;
+                            case 8:
+                                ht_fprintf(outFile,TYPE_NORMAL,", global routing slot %d",b[x+10]);
+                                break;
+                        }
+                        ht_fprintf(outFile,TYPE_NORMAL,", facing");
+                        if ((b[x+3] & 1) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," N");
+                        if ((b[x+3] & 2) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," NE");
+                        if ((b[x+3] & 4) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," E");
+                        if ((b[x+3] & 8) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," SE");
+                        if ((b[x+3] & 0x10) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," S");
+                        if ((b[x+3] & 0x20) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," SW");
+                        if ((b[x+3] & 0x40) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," W");
+                        if ((b[x+3] & 0x80) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," NW");
+                    }
+                    else if (b[x+2] & 1) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"Stack Object, start at ");       // (this seems to make a bit more sense)
+                        data2(0x19,b[x+1]);       // local
+                    }
+                    if (b[x] != 0) {
+                        if (b[x+2] & 8) ht_fprintf(outFile,TYPE_NORMAL,", ");
+                        CHECK_RANGE("Find GLB", gStringEF, b[x]);
+                        ht_fprintf(outFile,TYPE_NORMAL," %s", gStringEF[b[x]]);
+                    }
+//                    if (b[x+2] & 1) {
+//                        if (b[x] != 0 || (b[x+2] & 8)) ht_fprintf(outFile,TYPE_NORMAL,", ");
+//                        ht_fprintf(outFile,TYPE_NORMAL,"start at ");
+//                        data2(0x19, b[x+1]);    // local
+//                    }
+                    if (b[x+2] & 4) ht_fprintf(outFile,TYPE_NORMAL,", user editable");
+                    if ((b[x+2] & 2) == 0) ht_fprintf(outFile,TYPE_NORMAL,", prefer empty");
+                    if (b[x+2] & 0x10) ht_fprintf(outFile,TYPE_NORMAL,", on level ground");
+                    if (b[x+2] & 0x20) ht_fprintf(outFile,TYPE_NORMAL,", with empty border");
+                    if (b[x+2] & 0x40) ht_fprintf(outFile,TYPE_NORMAL,", begin in front of refobj");
+                    if (b[x+2] & 0x80) ht_fprintf(outFile,TYPE_NORMAL,", with line of site to center");
+                    break;
+#endif
 		}
 
 	}
 
+#if DISASIM
+                case 0x11:  // Idle for Input
+                    w1 = *(UINT16 *) (&b[x+2]);
+                    if (b[x+4] & 1)
+                        ht_fprintf(outFile,TYPE_NORMAL,"Handle Sub Queue Interactions");
+                    else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"for ");
+                        data2(9, b[x]);
+                        ht_fprintf(outFile,TYPE_NORMAL," ticks, ");
+                        if (w1 == 0) ht_fprintf(outFile,TYPE_NORMAL,"do not ");
+                        ht_fprintf(outFile,TYPE_NORMAL,"allow push");
+                    }
+                    break;
+                case 0x12:  // Remove Object Instance
+                    if (b[x] == 0)
+                        ht_fprintf(outFile,TYPE_NORMAL,"Me");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"Stack Object");
+                    if (b[x+2] & 1) ht_fprintf(outFile,TYPE_NORMAL,", return immediately");
+                    if ((b[x+2] & 2) == 0) ht_fprintf(outFile,TYPE_NORMAL,", cleanup all");
+                    break;
+                case 0x13:  // Make New Character
+                    w1 = *(UINT16 *) (&b[x+4]);
+                    w2 = *(UINT16 *) (&b[x+7]);
+                    w3 = *(UINT16 *) (&b[x+11]);
+
+                    if (b[x+9] & 8)
+                        ht_fprintf(outFile,TYPE_NORMAL,"getting data from object with GUID in temp 0/1 ");
+                    else if (b[x+9] & 0x10)
+                        ht_fprintf(outFile,TYPE_NORMAL,"getting data from object with GUID in temp Token ");
+                    else if (b[x+9] & 1) {
+                        if (b[x+9] & 2)
+                            ht_fprintf(outFile,TYPE_NORMAL,"using Neighbor ID in ");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL,"using ID in ");
+                        data2(b[x+6],w2);
+                        if (b[x+9] & 4)
+                            ht_fprintf(outFile,TYPE_NORMAL," as parent 1 and Neighbor ID in ");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," as parent 1 and ID in ");
+                        data2(b[x+3],w1);
+                        ht_fprintf(outFile,TYPE_NORMAL," as parent 2 ");
+                    }
+                    if (b[x] != 0 && b[x] != 0xFF) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"age in ");
+                        data2(0x19, b[x+1]);
+                        ht_fprintf(outFile,TYPE_NORMAL,", gender in ");
+                        data2(0x19, b[x+2]);
+                        ht_fprintf(outFile,TYPE_NORMAL,", skin color in ");
+                        data2(0x19, b[x]);
+                    }
+                    if (b[x+9] & 0x20)
+                        ht_fprintf(outFile,TYPE_NORMAL,", Getting character from Bin"); // ?
+                    if (b[x+9] & 0x40) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Using external guid for Thumbnail Outfit from ");
+                        if (b[x+9] & 0x80)
+                            ht_fprintf(outFile,TYPE_NORMAL,"GUID in temp 2/3");
+                        else
+                            data2(b[x+10],w3);
+                    }
+                    break;
+                case 0x14:  // Run Functional Tree
+                    CHECK_RANGE("Functional table", gStringC9, b[x]);
+                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringC9[b[x]]);
+                    c1 = b[x+2];
+                    if (c1 & 1) ht_fprintf(outFile,TYPE_NORMAL,", change icon");
+                    if (c1 & 2) ht_fprintf(outFile,TYPE_NORMAL,", passing parameters from calling tree");
+                    if (c1 & 4) ht_fprintf(outFile,TYPE_NORMAL,", running check tree only");
+                    break;
+                case 0x16:  // Turn Body Towards
+                    CHECK_RANGE("Turn body", gStringD8, b[x]);
+                    ht_fprintf(outFile,TYPE_FUNCTION,"%s", gStringD8[b[x]]);
+                    break;
+                case 0x17:  // Play / Stop Sound Event (false = error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    if (b[x+4] & 0x40)
+                        ht_fprintf(outFile,TYPE_NORMAL,"Stop Sound ");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"Play Sound ");
+                    if (w1 < 10000)
+                        ht_fprintf(outFile,TYPE_NORMAL,"Private id = 0x%X", w1);
+                    else if (w1 < 20000)
+                        ht_fprintf(outFile,TYPE_NORMAL,"Global id = 0x%X", w1-10000);
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"SemiGlobal id = 0x%X", w1-20000);
+                    if (b[x+4] & 2) ht_fprintf(outFile,TYPE_NORMAL,", with stack obj as source");
+                    if ((b[x+4] & 2) == 0) {
+                        if (b[x+4] & 0x10)
+                            ht_fprintf(outFile,TYPE_NORMAL,", auto vary");
+                        if (w2 != 0)
+                            ht_fprintf(outFile,TYPE_NORMAL,", sampled at %d, w2"); // ?
+                        if (b[x+5] != 0)
+                            ht_fprintf(outFile,TYPE_NORMAL,", volume %d", b[x+5]); // ?
+                    }
+                    break;
+                case 0x19:  // Alter Budget
+                    c1 = b[x+1];
+                    switch (b[x]) {
+                        case 0:
+                            c1 = 7;     // literal
+                            break;
+                        case 1:
+                            c1 = 9;     // param
+                            break;
+                        case 2:
+                            c1 = 0x19;  // local
+                            break;
+                    }
+                    w1 = *(UINT16 *) (&b[x+2]);
+                    w2 = *(UINT16 *) (&b[x+7]);
+                    switch (b[x+4] & 3) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,"subtract ");
+                            break;
+                        case 1:
+                            ht_fprintf(outFile,TYPE_NORMAL,"test if ");
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,"add ");
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"test if ");
+                            break;
+                    }
+                    if ((b[x+4] & 8) && nodeVersion)
+                        ht_fprintf(outFile,TYPE_NORMAL,"amount in temp 2 and 3"); // was "temp 3 and 4"  (SimAntics error)
+                    else
+                        data2(c1, w1);
+                    if (b[x+4] & 4)
+                        ht_fprintf(outFile,TYPE_NORMAL," Multiplied by value in Temp2");
+                    else if (w2 != 0)
+                        ht_fprintf(outFile,TYPE_NORMAL," Multiplied by %d", w2);
+                    switch (b[x+4] & 3) {
+                        case 1:
+                            ht_fprintf(outFile,TYPE_NORMAL," may be subtracted");
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL," may be added");
+                            break;
+                    }
+                    CHECK_RANGE("Expenses", gStringF0, b[x+6]);
+                    ht_fprintf(outFile,TYPE_NORMAL," as %s", gStringF0[b[x+6]]);
+                    break;
+                case 0x1A:  // Relationship
+                    c1 = b[x];      // var
+                    c2 = b[x+1];    // flags
+                    w2 = *(UINT16 *) (&b[x+6]);
+                    if (nodeVersion == 0) {   // old-style parameter usage
+                        if ((c2 & 4) == 0) {
+                            data2(b[x+4], w2);
+                            ht_fprintf(outFile,TYPE_NORMAL," := ");
+                        }
+                        ht_fprintf(outFile,TYPE_NORMAL,"var %d of ", c1);
+                        switch (c2 & 3) {
+                            case 0:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Me to Stack Object");
+                                break;
+                            case 1:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Stack Object to Me");
+                                break;
+                            case 2:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Stack Object to ");
+                                data2(0x19, b[x+3]);
+                                break;
+                            case 3:
+                                data2(0x19, b[x+3]);
+                                ht_fprintf(outFile,TYPE_NORMAL," to Stack Object");
+                                break;
+                        }
+                        if (c2 & 4) {
+                            ht_fprintf(outFile,TYPE_NORMAL," := ");
+                            data2(b[x+4], w2);
+                        }
+                        if (b[x+2] & 1) ht_fprintf(outFile,TYPE_NORMAL,", fail if too small");
+                        if (b[x+2] & 2) ht_fprintf(outFile,TYPE_NORMAL,", use neighbor IDs");
+                    } else {            // new-style parameter usage
+                        w1 = *(UINT16 *) (&b[x+9]);
+                        w3 = *(UINT16 *) (&b[x+3]);
+
+                        ht_fprintf(outFile,TYPE_NORMAL,"Access var %d ", c1);
+                        if (c2 & 2) {
+                            CHECK_RANGE("Relation Labels", gRelLabels, c1);
+                            ht_fprintf(outFile,TYPE_NORMAL,"(%s) ", gRelLabels[c1]);
+                        }
+                        ht_fprintf(outFile,TYPE_NORMAL,"of ");
+                        data2(b[x+2],w3);
+
+                        ht_fprintf(outFile,TYPE_NORMAL," to ");
+                        data2(b[x+5],w2);
+                        ht_fprintf(outFile,TYPE_NORMAL,". ");
+                        if (c2 & 4)
+                            ht_fprintf(outFile,TYPE_NORMAL,"Get value from ");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL,"Put value into ");
+                        data2(b[x+8], w1);
+                        if (c2 & 1) ht_fprintf(outFile,TYPE_NORMAL,", fail if too small");
+                        if (c2 & 2)
+                            ht_fprintf(outFile,TYPE_NORMAL,", use neighbor IDs");
+                        else if (c2 & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL,", don't check presence of second object"); // "object to sim" relationship
+                    }
+                    break;
+#endif
 	public class WizPrim0x001b : BhavWizPrim	// Go To Relative Position
 	{
 		public WizPrim0x001b(Instruction i) : base(i) { }
@@ -770,11 +1351,24 @@ namespace pjse.BhavNameWizards
 			s += ", " + (lng ? "Direction: " : "") + GS.GStr(GS.BhavStr.RelativeDirections, (ushort)(o[3] + 2));
 			if (lng)
 			{
-				s += "; " + ((o[6] & 0x02) == 0 ? "process" : "no") + " failure trees";
-				s += ", " + ((o[6] & 0x04) == 0 ? "don't " : "") + "allow different altitudes";
+				s += "; no failure trees: "          + ((o[6] & 0x02) != 0).ToString();
+				s += ", allow different altitudes: " + ((o[6] & 0x04) != 0).ToString();
 			}
 
 			return s;
+#if DISASIM
+                case 0x1B:  // Go To Relative Position
+                    c1 = (b[x+2] + 2) & 0xFF;
+                    c2 = (b[x+3] + 2) & 0xFF;
+                    CHECK_RANGE("Relative locations", gString82, c1);
+                    ht_fprintf(outFile,TYPE_NORMAL,"Location = %s, ", gString82[c1]);
+                    CHECK_RANGE("Relative directions", gString83, c2);
+                    ht_fprintf(outFile,TYPE_NORMAL,"Direction = %s", gString83[c2]);
+                    c3 = b[x+6];
+                    if (c3 & 2) ht_fprintf(outFile,TYPE_NORMAL,", no failure trees");
+                    if (c3 & 4) ht_fprintf(outFile,TYPE_NORMAL,", allow different altitudes");
+                    break;
+#endif
 		}
 
 	}
@@ -791,56 +1385,111 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			Scope scope;
+			Scope scope = Scope.Private;
 			if      ((o[2] & 0x01) != 0) scope = Scope.Global;
 			else if ((o[2] & 0x02) != 0) scope = Scope.SemiGlobal;
-			else                         scope = Scope.Private;
 
 			s += readStr(scope, GS.GlobalStr.NamedTree, o[4] - 1, lng ? -1 : 60, false);
 
 			if (lng)
 			{
-				if ((o[2] & 0x20) != 0)
-					s += ", Caller's params";
+				s += ", ignore global trees: "     + ((o[2] & 0x04) != 0).ToString();
+				s += ", ignore semiglobal trees: " + ((o[2] & 0x08) != 0).ToString();
 
-				if ((o[2] & 0x10) == 0)
+				switch (o[5]) 
 				{
-					// DisaSim2 doesn't decode these
-					//for (int i = 0; i < 4; i++, thisArgc--)
-					//	s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(ToShort(o[(i*2)], o[(i*2) + 1]));
+					case 0: s += ", run in My stack"; break;
+					case 1: s += ", run in Stack Object's stack"; break;
+					case 2: s += ", push onto My stack"; break;
 				}
-				else	// 16 byte format
+
+				if ((o[2] & 0x10) != 0) // 16 byte format
 				{
 					for (int i = 0; i < 3; i++)
-						s += ", " +
-							(lng
-							? dataOwner(o[6 + i*3], ToShort(o[6 + (i*3) + 1], o[6 + (i*3) + 2]))
+						s += ", " + (lng
+							? dataOwner(o[6 + i*3], o[6 + (i*3) + 1], o[6 + (i*3) + 2])
 							: GS.GStr(GS.BhavStr.DataOwners, o[6 + i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(o[6 + (i*3) + 1], o[6 + (i*3) + 2]))
 							);
 				}
 
-				if ((o[2] & 0x20) == 0)
+				if ((o[2] & 0x20) != 0)
 					s += ", Caller's params";
-
-				// How to look for tree with given name:
-				// private -> semiglobal -> global -> "false"
-				if ((o[2] & 0x08) != 0)
-					s += ", ignore semiglobal trees";
-				if ((o[2] & 0x04) != 0)
-					s += ", ignore global trees";
-
-				switch (o[5]) 
-				{
-					case 0: s += ", run in my stack"; break;
-					case 1: s += ", run in Stack Object's stack"; break;
-					case 2: s += ", push onto my stack"; break;
-				}
 			}
 
 			return s;
+#if DISASIM
+                case 0x1C:  // Run Tree by Name
+                    c1 = b[x+4] - 1;
+                    w1 = *(UINT16 *) (&b[x+7]);
+                    w2 = *(UINT16 *) (&b[x+10]);
+                    w3 = *(UINT16 *) (&b[x+13]);
+                    if (b[x+2] & 1) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"%s", gNamedTreePrim[c1]);
+                    } else if (b[x+2] & 2) {
+                        if (readString2(gGlobGroup, 0x12F, c1) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x12F:0x%X]", c1);
+                    } else {
+                        if (readString2(gGroup, 0x12F, c1) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12F:0x%X]", c1);
+                    }
+
+//                    if ((b[x+2] & 4) == 0) ht_fprintf(outFile,TYPE_NORMAL,", only if idle");   // ?
+
+                    // How to look for tree with given name:
+                    // private -> semiglobal -> global -> "false"
+                    if (b[x+2] & 8) 
+                        ht_fprintf(outFile,TYPE_NORMAL,", ignore semiglobal trees");
+                    if (b[x+2] & 4) 
+                        ht_fprintf(outFile,TYPE_NORMAL,", ignore global trees");
+
+                    if (b[x+2] & 0x20) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Passing in params from the current tree");
+                    } else if (b[x+2] & 0x10) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Passing in params where param 0 = ");
+                        data2(b[x+6], w1);
+                        ht_fprintf(outFile,TYPE_NORMAL,", param 1 = ");
+                        data2(b[x+9], w2);
+                        ht_fprintf(outFile,TYPE_NORMAL,", param 2 = ");
+                        data2(b[x+12], w3);
+                    }
+                    switch (b[x+5]) { // gStringDE
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,", run in my stack");
+                            break;
+                        case 1:
+                            ht_fprintf(outFile,TYPE_NORMAL,", run in Stack Object's stack");
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,", push onto my stack");
+                            break;
+                    }
+                    break;
+#endif
 		}
+
 	}
 
+#if DISASIM
+                case 0x1D:  // Set Motive Change (false = error)
+                    w1 = *(UINT16 *) (&b[x+4]);
+                    w2 = *(UINT16 *) (&b[x+6]);
+                    if (b[x+3] & 1) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"clear all");
+                    } else {
+                        data2(0xE, b[x+2]);     // my motives
+                        ht_fprintf(outFile,TYPE_NORMAL," += ");
+                        data2(b[x], w1);
+                        ht_fprintf(outFile,TYPE_NORMAL," per hour, stop at ");
+                        data2(b[x+1], w2);
+                    }
+                    if (b[x+3] & 2)
+                        ht_fprintf(outFile,TYPE_NORMAL,", Auto Clearing the Person Data Motive Decay value");
+                    break;
+                case 0x1E:  // Gosub Found Action
+                    CHECK_RANGE("Gosub Found Action", gString1FE, b[x]);
+                    ht_fprintf(outFile,TYPE_FUNCTION,"%s",gString1FE[b[x]]);
+                    break;
+#endif
 	public class WizPrim0x001f : BhavWizPrim	// Set to Next
 	{
 		public WizPrim0x001f(Instruction i) : base(i) { }
@@ -859,10 +1508,10 @@ namespace pjse.BhavNameWizards
 				case 0x04: case 0x07:
 					uint d1 = (uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24));
 					s += " GUID 0x" + SimPe.Helper.HexString(d1);
-					//readGUID(d1);
 					break;
 				case 0x09: case 0x22:
-					s = s.Replace("[local]", (lng ? dataOwner(0x19, o[6]) // local
+					s = s.Replace("[local]", (lng
+						? dataOwner(0x19, o[6]) // local
 						: GS.GStr(GS.BhavStr.DataOwners, 0x19) + " " + o[6].ToString()));
 					break;
 			}
@@ -870,18 +1519,209 @@ namespace pjse.BhavNameWizards
 			if ((o[4] & 0x80) == 0)
 				s += lng ? ", result in " + dataOwner(0x0a, 0x0000) : ""; // Stack Object
 			else
-				s += ", result in " + (lng ? dataOwner(o[5], o[7])
+				s += ", result in " + (lng
+					? dataOwner(o[5], o[7])
 					: GS.GStr(GS.BhavStr.DataOwners, o[5]) + " 0x" + SimPe.Helper.HexString(o[7]));
-			//if ((o[5] != 0xA || o[7] != 0) && (o[4] & 0x80) != 0)
-			//	s += dataOwner(o[5], o[7]) + " := next ";
 
-			if ((o[8] & 0x02) != 0 && instruction.NodeVersion != 0)
-				s += " where " + GS.GStr(GS.BhavStr.DataLabels, ToShort(o[9], o[10])) + " == " + ToShort(o[11], o[12]).ToString();
-			if ((o[8] & 0x01) != 0 && instruction.NodeVersion!= 0) s += " [including disabled objects]";
+			if (instruction.NodeVersion != 0)
+			{
+				if ((o[8] & 0x02) != 0)
+					s += " where " + GS.GStr(GS.BhavStr.DataLabels, ToShort(o[9], o[10])) + " == 0x" + SimPe.Helper.HexString(ToShort(o[11], o[12]));
+				s += ", " + ((o[8] & 0x01) != 0 ? "in" : "ex") + "cluding disabled objects";
+			}
 			return s;
+#if DISASIM
+                case 0x1F:  // Set to Next (false = next not found)
+                    w1 = *(UINT16 *) (&b[x+9]);
+                    w2 = *(UINT16 *) (&b[x+11]);
+                    if (b[x+5] != 0xA || b[x+7] != 0 && (b[x+4] & 0x80) != 0) {
+                        data2(b[x+5], b[x+7]);
+                        ht_fprintf(outFile,TYPE_NORMAL," := next ");
+                    }
+                    c1 = (b[x+4] & 0x7F);
+                    CHECK_RANGE("Next object", gStringA4, c1);
+                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringA4[c1]);
+                    d1 = *(UINT32 *) (&b[x]);
+                    if (c1 == 4 || c1 == 7) ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
+                    readGUID(d1);
+                    if (c1 == 9 || c1 == 0x22) data2(0x19, b[x+6]);   // local
+                    if ((b[x+8] & 2) && nodeVersion) ht_fprintf(outFile,TYPE_NORMAL," where %s := %d", gString8D[w1], w2);
+                    if ((b[x+8] & 1) && nodeVersion) ht_fprintf(outFile,TYPE_NORMAL," [including disabled objects]");
+                    break;
+#endif
 		}
+
 	}
 
+#if DISASIM
+                case 0x20:  // Test Object Type
+                    w1 = *(UINT16 *) (&b[x+4]);
+                    d1 = *(UINT32 *) (&b[x]);
+                    if (b[x+7] & 4)
+                        ht_fprintf(outFile,TYPE_NORMAL,"Return GUID selected in Temp0/1 ");
+                    else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"type of ");
+                        data2(b[x+6], w1);
+                    }
+                    if (d1 == 0x4C7CAB2B)
+                        ht_fprintf(outFile,TYPE_NORMAL,"the GUID of the temporary inventory token");
+                    else {
+                        ht_fprintf(outFile,TYPE_NORMAL," == GUID 0x%08X", d1);
+                        readGUID(d1);
+                    }
+                    if ((b[x+7] & 4) == 0) {
+                        if (b[x+7] & 1)
+                            ht_fprintf(outFile,TYPE_NORMAL," Checking against original, not current GUID");
+                        if (b[x+7] & 2)
+                            ht_fprintf(outFile,TYPE_NORMAL,", incoming ID is a neighbor ID");
+                    }
+
+                    break;
+                case 0x21:  // Find 5 Worst Motives (false = error)
+                    w1 = *(UINT16 *) (&b[x+4]);
+                    w2 = *(UINT16 *) (&b[x+6]);
+
+                    CHECK_RANGE("Short owner", gString99, w1);
+                    ht_fprintf(outFile,TYPE_NORMAL,"%s lowest ", gString99[w1]);
+
+                    CHECK_RANGE("Motive type", gStringA5, w2);
+                    ht_fprintf(outFile,TYPE_NORMAL,"%s into temps 0-4", gStringA5[w2]);
+                    break;
+                case 0x22:  // UI Effect (false = error)
+                    c1 = b[x];
+                    c2 = b[x+5]; // flags
+                    w1 = *(UINT16 *) (&b[x+1]);
+                    w2 = *(UINT16 *) (&b[x+3]);
+                    w3 = *(UINT16 *) (&b[x+6]);
+                    w4 = *(UINT16 *) (&b[x+8]);
+                    w5 = *(UINT16 *) (&b[x+11]);
+
+                    switch (c1) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Press Control ");
+                            break;
+                        case 1:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Disable Control ");
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Enable Control ");
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Play Effect on Control ");
+                            break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set Event tree on Control ");
+                            break;
+                        case 5:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Reset State on All Controls ");
+                            break;
+                        case 6:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Disable All Controls ");
+                            break;
+                        case 7:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Reset event trees on All Controls ");
+                            break;
+                        case 8:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set Event Tree on TNS node ");
+                            break;
+                        case 9:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set Control Visible ");
+                            break;
+                        case 0xA:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set Control Hidden ");
+                            break;
+                    }
+                    if (c1 < 5 || c1 > 8)
+                        if (c2 & 4) {
+                            if (readString2(GROUP_GLOBAL, 0x96, w2) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Global STR# 0x96:0x%X]", w2);
+                        }
+                        else if (c2 & 8){
+                            if (readString2(gGlobGroup, 0x96, w2) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x96:0x%X]", w2);
+                        }
+                        else {
+                            if (readString2(gGroup, 0x96, w2) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x96:0x%X]", w2);
+                        }
+                    if (c1 != 8) {
+                        ht_fprintf(outFile,TYPE_NORMAL," in window ");
+                        if (c2 & 1) {
+                            if (readString2(GROUP_GLOBAL, 0x96, w1) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Global STR# 0x96:0x%X]", w1);
+                        }
+                        else if (c2 & 2){
+                            if (readString2(gGlobGroup, 0x96, w1) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x96:0x%X]", w1);
+                        }
+                        else {
+                            if (readString2(gGroup, 0x96, w1) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x96:0x%X]", w1);
+                        }
+                    }
+                    if (c1 == 3)
+                        if (w3 != 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," Starting Effect ");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," Stopping Effect ");
+                    if (c1 == 4 || c1 == 8)
+                        if (w4 == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL," No Event Tree");
+                        else {
+                            switch (b[x+10]) {
+                                case 0:
+                                    ht_fprintf(outFile,TYPE_NORMAL," Using Private Event Tree: ");
+                                    break;
+                                case 1:
+                                    ht_fprintf(outFile,TYPE_NORMAL," Using SemiGlobal Event Tree: ");
+                                    break;
+                                default:
+                                    ht_fprintf(outFile,TYPE_NORMAL," Using Global Event Tree: ");
+                                    break;
+                            }
+                            ht_fprintf(outFile,TYPE_NORMAL,"0x%X (",w4);
+                            readFn2(w4);
+                            ht_fprintf(outFile,TYPE_NORMAL,")");
+                        }
+                    if (c1 == 8) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Getting TNS ID from ");
+                        data2(b[x+13],w5);
+                    }
+                    break;
+                case 0x23:  // Camera Control (false = error)
+                    c1 = b[x+4];    // flags
+                    w1 = *(UINT16 *) (&b[x]);
+                    if (c1 & 1) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"show stack obj");
+                        switch (b[x+3]) {
+                            case 1:
+                                ht_fprintf(outFile,TYPE_NORMAL,", far");
+                                break;
+                            case 2:
+                                ht_fprintf(outFile,TYPE_NORMAL,", mid");
+                                break;
+                            case 3:
+                                ht_fprintf(outFile,TYPE_NORMAL,", near");
+                                break;
+                        }
+                        ht_fprintf(outFile,TYPE_NORMAL," zoom");
+                        if ((c1 & 0x40) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL,", slow down");
+                        if (c1 & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL,", center");
+                        if (c1 & 0x20)
+                            ht_fprintf(outFile,TYPE_NORMAL,", using timeout in temp 0");
+                        else {
+                            ht_fprintf(outFile,TYPE_NORMAL,", using timeout of ");
+                            if (w1 < 10)
+                                ht_fprintf(outFile,TYPE_NORMAL,"%d", w1);
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,"%d (0x%X)", w1, w1);
+                        }
+                    } else
+                        ht_fprintf(outFile,TYPE_NORMAL,"un-show stack obj");
+                    break;
+#endif
 	public class WizPrim0x0024 : BhavWizPrim	// Dialog
 	{
 		public WizPrim0x0024(Instruction i) : base(i) { }
@@ -914,33 +1754,30 @@ namespace pjse.BhavNameWizards
 				s += "Type: " + GS.GStr(GS.BhavStr.Dialog, o[5]);
 
 			Scope scope;
-			if ((o[8] & 0x01) != 0)
-				scope = Scope.SemiGlobal;
-			else if ((o[8] & 0x40) != 0) 
-				scope = Scope.Global;
-			else
-				scope = Scope.Private;
+			if      ((o[8] & 0x01) != 0) scope = Scope.SemiGlobal;
+			else if ((o[8] & 0x40) != 0) scope = Scope.Global;
+			else                         scope = Scope.Private;
 
 			switch (o[5])
 			{
-				case 0x09:
-					if (lng)
-						s += ", getting Text ID in " + dataOwner(0x08, tempVar);
-					break;
 				case 0x08: case 0x0a:
 					s += (lng ? ", " : "") + dialogStr(scope, (o[8] & 0x02) != 0, msg, lng ? -1 : 60);
 					if (lng)
 					{
 						s += ", priority 0x" + SimPe.Helper.HexString((byte)(o[9] + 1));
 						s += ", timeout 0x" + SimPe.Helper.HexString(o[10]);
-						s += ", " + ((o[5] != 0x08) ? "getting" : "putting") + " Text ID in " + dataOwner(0x08, tempVar);
+						s += ", " + ((o[5] != 0x08) ? "getting" : "putting") + " Text ID in " + dataOwner(0x08, tempVar); // temp
 					}
 					break;
-				case 0x0e:
-					s += (lng ? ", passing through data starting with " : "") + dataOwner(0x19, o[11]); // local
+				case 0x09:
+					if (lng)
+						s += ", getting Text ID in " + dataOwner(0x08, tempVar); // temp
 					break;
 				case 0x0b: case 0x0c: case 0x0d: case 0x10: case 0x11: case 0x12: case 0x14:
 					// what are these, then?
+					break;
+				case 0x0e:
+					s += (lng ? ", passing through data starting with " : "") + dataOwner(0x19, o[11]); // local
 					break;
 				default:
 					s += (lng ? ": " : "") + dialogStr(scope, (o[8] & 0x02) != 0, msg, lng ? -1 : 60);
@@ -988,6 +1825,136 @@ namespace pjse.BhavNameWizards
 			}
 
 			return s;
+#if DISASIM
+                case 0x24:  // Dialog
+                    c1 = b[x+5];                 // prim
+                    c2 = (b[x+7] >> 4) & 7;      // temp
+                    c3 = b[x+8];                 // flags
+                    if (nodeVersion) {
+                        w1 = *(UINT16 *) (&b[x+13]); // message
+                        w2 = b[x+2] << 8 + b[x]; // cancel
+                    } else {
+                        w1 = b[x+2];             // message
+                        w2 = b[x];               // cancel
+                    }
+                    CHECK_RANGE("Dialog primitives", gStringD9, c1);
+                    if (c1 == 2) {
+                        data2(8, c2); // Temp
+                        ht_fprintf(outFile,TYPE_NORMAL," := tri choice: ");
+                    } else
+                        ht_fprintf(outFile,TYPE_NORMAL,"%s: ", gStringD9[c1]);
+
+                    if (c1 == 9) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", Getting Text Notification ID from temp %d", c2);
+                        switch (b[x+12]) {
+                            case 0:
+                                ht_fprintf(outFile,TYPE_NORMAL,", TNS Sim Type");
+                                break;
+                            case 1:
+                                ht_fprintf(outFile,TYPE_NORMAL,", TNS System Type");
+                                break;
+                        }
+                    }
+                    if (c1 == 0xE)
+                        ht_fprintf(outFile,TYPE_NORMAL,"passing through data starting with local var %d", b[x+11]);
+
+                    if (c1 < 9 || c1 == 0xA || c1 == 0xF || c1 == 0x13 || c1 > 0x14) {
+
+                        if (c3 & 2) // ?
+                            ht_fprintf(outFile,TYPE_NORMAL,", expecting message Index in temp 0");
+                        else if (c3 & 1)
+                            ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x12D:0x%X]", w1 - 1);
+                        else if (c3 & 0x40) {
+                            CHECK_RANGE("Global Dialog Primitives", gDialogPrim, w1 - 1);
+                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gDialogPrim[w1 - 1]);
+                        } else
+                            ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x12D:0x%X]", w1 - 1);
+
+
+                        if (c1 == 8 || c1 == 0xA) {
+                            switch (b[x+12]) {
+                                case 0:
+                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS Sim Type");
+                                    break;
+                                case 1:
+                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS System Type");
+                                    break;
+                                case 2:
+                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS System Dialog Type");
+                                    break;
+                                case 3:
+                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS Birthday Type");
+                                    break;
+                                case 4:
+                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS Sim (about Object ID in Temp 1) Type");
+                                    break;
+
+                            }
+                            ht_fprintf(outFile,TYPE_NORMAL,", priority %d", b[x+9] + 1);
+                            ht_fprintf(outFile,TYPE_NORMAL,", timeout %d", b[x+10]);
+                            if (c1 == 0xA)
+                                ht_fprintf(outFile,TYPE_NORMAL,", getting Text ID in temp ");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", putting Text ID in temp ");
+                            ht_fprintf(outFile,TYPE_NORMAL,"%d",c2);
+
+                        } else {
+
+                            if (c3 & 4) // ?
+                                ht_fprintf(outFile,TYPE_NORMAL,", expecting Yes button Index in temp 0");
+                            else if (b[x+3] != 0) {
+                                ht_fprintf(outFile,TYPE_NORMAL,", Yes: ");
+                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", b[x+3] - 1);
+                            }
+                            if (c3 & 8) // ?
+                                ht_fprintf(outFile,TYPE_NORMAL,", expecting No button Index in temp 0");
+                            else if (b[x+4] != 0) {
+                                ht_fprintf(outFile,TYPE_NORMAL,", No: ");
+                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", b[x+4] - 1);
+                            }
+                            if (c3 & 0x10) // ?
+                                ht_fprintf(outFile,TYPE_NORMAL,", expecting Title Index in temp 0");
+                            else if (b[x+6] != 0) {
+                                ht_fprintf(outFile,TYPE_NORMAL,", Title: ");
+                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", b[x+6] - 1);
+                            }
+                            if (c3 & 0x20) // ?
+                                ht_fprintf(outFile,TYPE_NORMAL,", expecting Cancel Index in temp 0");
+                            else if (w2 != 0) {
+                                ht_fprintf(outFile,TYPE_NORMAL,", Cancel: ");
+                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", w2 - 1);
+                            }
+//                            if ((b[x+7] & 0x81) != 0) {
+//                                if (b[x+7] & 1)
+//                                    ht_fprintf(outFile,TYPE_NORMAL," return");
+//                                else
+//                                    ht_fprintf(outFile,TYPE_NORMAL," engage");
+//                                ht_fprintf(outFile,TYPE_NORMAL," and ");
+//                                if (b[x+7] & 0x80)
+//                                    ht_fprintf(outFile,TYPE_NORMAL,"continue sim");
+//                                else
+//                                    ht_fprintf(outFile,TYPE_NORMAL,"block sim");
+//                            }
+                        }
+                        if (w1 != 0x16 && w1 != 0x19 && (b[x+7] & 0xE) != 2) {
+                            ht_fprintf(outFile,TYPE_NORMAL,", icon: ");
+                            switch ((b[x+7] >> 1)& 7) {
+                                case 3:
+                                    ht_fprintf(outFile,TYPE_NORMAL,"BMP = 0x%X", (b[x+1] + 5000));
+                                    break;
+                                case 4:
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", b[x+1] - 1);
+                                    break;
+                                default:
+                                    CHECK_RANGE("Icon types", gStringF4, (b[x+7] >> 1) & 7);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringF4[(b[x+7] >> 1) & 7]);
+                                    break;
+                            }
+                        }
+
+                    }
+                    break;
+#endif
 		}
 
 
@@ -1010,6 +1977,22 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x0025 : BhavWizPrim	// Test Sim Interacting With
+	{
+		public WizPrim0x0025(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			return "me with stack obj";
+#if DISASIM
+                case 0x25:  // Test Sim Interacting With
+                    ht_fprintf(outFile,TYPE_NORMAL,"me with stack obj.");
+                    break;
+#endif
+		}
+
+	}
+
 	public class WizPrim0x002a : BhavWizPrim	// Create new object instance
 	{
 		public WizPrim0x002a(Instruction i) : base(i) { }
@@ -1022,11 +2005,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			if (     (o[5] & 0x04) != 0) s += (lng ? "of " : "") + "neighbor in stack obj";
+			if (     (o[5] & 0x04) != 0) s += (lng ? "of "   : "") + "neighbor in stack obj";
 			else if ((o[5] & 0x40) != 0) s += (lng ? "from " : "") + "GUID in temp Inventory Token";
 			else if ((o[5] & 0x80) != 0) s += (lng ? "from " : "") + "GUID in Temp 0,1";
-			else                         s += (lng ? "of " : "") + "GUID 0x" + SimPe.Helper.HexString((uint)(o[0] | (o[1]<<8) | (o[2]<<16) | (o[3]<<24)));
-				//readGUID(d1);
+			else                         s += (lng ? "of "   : "") + "GUID 0x" + SimPe.Helper.HexString((uint)(o[0] | (o[1]<<8) | (o[2]<<16) | (o[3]<<24)));
 
 			if (lng)
 			{
@@ -1037,16 +2019,66 @@ namespace pjse.BhavNameWizards
 					case 0x08: case 0x09: s += " 0x" + SimPe.Helper.HexString(o[6]); break;
 				}
 
-				if ((o[5] & 0x02) != 0) s += ", pass object ids to main";
-				if ((o[5] & 0x10) != 0) s += ", pass Temp 0 to main";
-				if ((o[5] & 0x01) != 0) s += ", do not duplicate";
-				if ((o[5] & 0x08) != 0) s += ", fail if tile is non-empty";
+				s += ", do not duplicate: "          + ((o[5] & 0x01) != 0).ToString();
+				s += ", pass object ids to main: "   + ((o[5] & 0x02) != 0).ToString();
+				s += ", fail if tile is non-empty: " + ((o[5] & 0x08) != 0).ToString();
+				s += ", pass Temp 0 to main: "       + ((o[5] & 0x10) != 0).ToString();
 
-				if ((o[10] & 0x01) != 0) s += ", moving in a new Sim";
-				if ((o[10] & 0x02) != 0) s += ", copying design mode materials from object in Temp 5";
+				s += ", moving in a new Sim: " + ((o[10] & 0x01) != 0).ToString();
+				s += ", copying design mode materials from object in Temp 5: " + ((o[10] & 0x02) != 0).ToString();
 			}
 
 			return s;
+#if DISASIM
+                case 0x2A:  // Create New Object Instance
+                    if (b[x+5] & 4)
+                        ht_fprintf(outFile,TYPE_NORMAL,"neighbor in stack obj");
+                    else if (b[x+5] & 0x40)
+                        ht_fprintf(outFile,TYPE_NORMAL,"from GUID in temp Inventory Token");
+                    else if (b[x+5] & 0x80)
+                        ht_fprintf(outFile,TYPE_NORMAL,"from GUID in temp0/1");
+                    else {
+                        d1 = *(UINT32 *) (&b[x]);
+                        if (d1 == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL,"GUID 0");
+                        else {
+                            ht_fprintf(outFile,TYPE_NORMAL,"GUID 0x%08X", d1);
+                            readGUID(d1);
+                        }
+                    }
+                    ht_fprintf(outFile,TYPE_NORMAL,", place ");
+                    c1 = b[x+4];
+                    switch (c1) {
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL,"in stack objs slot %d", b[x+9]);
+                            break;
+                        case 0xA:
+                            ht_fprintf(outFile,TYPE_NORMAL,"in obj in temp 0's slot %d", b[x+9]);
+                            break;
+                        default:
+                            CHECK_RANGE("Object place", gStringA7, c1);
+                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringA7[c1]);
+                            break;
+                    }
+                    if (c1 == 8 || c1 == 9) {
+                        ht_fprintf(outFile,TYPE_NORMAL," ");
+                        data2(0x19, b[x+6]);     // local
+                    }
+                    c2 = b[x+5];
+                    if (c2 & 2)
+                        ht_fprintf(outFile,TYPE_NORMAL,", pass object ids to main");
+                    else if (c2 & 0x10)
+                        ht_fprintf(outFile,TYPE_NORMAL,", pass temp 0 to main");
+                    if (c2 & 1)
+                        ht_fprintf(outFile,TYPE_NORMAL,", do not duplicate");
+                    if (c2 & 8)
+                        ht_fprintf(outFile,TYPE_NORMAL,", fail if tile is non-empty");
+                    if (b[x+10] & 1)
+                        ht_fprintf(outFile,TYPE_NORMAL,", Moving in a new Sim");
+                    if (b[x+10] & 2)
+                        ht_fprintf(outFile,TYPE_NORMAL,", copying design mode materials from object in temp5");
+                    break;
+#endif
 		}
 
 	}
@@ -1067,32 +2099,121 @@ namespace pjse.BhavNameWizards
 				switch (ToShort(o[2], o[3])) 
 				{
 					case 0:
-						s += "in " + dataOwner(0x09, ToShort(o[0], o[1])); // Param
+						s += "in " + dataOwner(0x09, o[0], o[1]); // Param
 						break;
 					case 1:
 						s += "0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
 						break;
 					case 2:
-						s += "from " + dataOwner(0x06, ToShort(o[0], o[1])); // Global
+						s += "from " + dataOwner(0x06, o[0], o[1]); // Global
 						break;
 					case 3:
-						s += "in " + dataOwner(0x19, ToShort(o[0], o[1])); // Local
+						s += "in " + dataOwner(0x19, o[0], o[1]); // Local
 						break;
 					default:
 						s += "??? 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
 						break;
 				}
 			else
-				s += "in " + dataOwner(0x08, ToShort(o[0], o[1])); // Temp
+				s += "in " + dataOwner(0x08, o[0], o[1]); // Temp
 
 			if (lng)
 			{
-				s += ", " + ((o[4] & 0x01) == 0 ? "process" : "no") + " failure trees";
-				s += ", " + ((o[4] & 0x04) == 0 ? "check" : "ignore") + " dest obj footprint";
-				s += ", " + ((o[4] & 0x08) == 0 ? "don't " : "") + "allow different altitudes";
+				s += ", no failure trees: "          + ((o[4] & 0x01) != 0).ToString();
+				s += ", ignore dest obj footprint: " + ((o[4] & 0x04) != 0).ToString();
+				s += ", allow different altitudes: " + ((o[4] & 0x08) != 0).ToString();
 			}
 
 			return s;
+#if DISASIM
+                case 0x2D:  // Go To Routing Slot
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    switch (w2) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
+                            data2(9, w1);   // param
+                            break;
+                        case 1:
+                            if (b[x+4] & 2)
+                                ht_fprintf(outFile,TYPE_NORMAL,"From Slot index in Temp 0", w1);
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,"0x%X", w1);
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,"global 0x%X", w1);
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
+                            data2(0x19, w1);   // local
+                            break;
+                        default:
+                            ht_fprintf(outFile,TYPE_NORMAL,"??? 0x%X", w1);
+                    }
+                    if (b[x+4] & 1) ht_fprintf(outFile,TYPE_NORMAL,", no failure trees");
+                    if (b[x+4] & 4) ht_fprintf(outFile,TYPE_NORMAL,", ignoring dest obj footprint");
+                    if (b[x+4] & 8) ht_fprintf(outFile,TYPE_NORMAL,", allow different altitudes");
+                    break;
+#endif
+		}
+
+	}
+
+#if DISASIM
+                case 0x2E:  // Snap
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    w3 = *(UINT16 *) (&b[x+8]);
+                    CHECK_RANGE("Snap mode", gStringCF, w2);
+                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCF[w2]);
+                    if (w2 == 0 || w2 == 3 || w2 == 4)
+                        if (b[x+4] & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL," to slot in temp 0");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," 0x%X", w1);
+                    if (w3 == 1)
+                        ht_fprintf(outFile,TYPE_NORMAL,", from slot in temp 1");
+                    if (b[x+4] & 2)
+                        ht_fprintf(outFile,TYPE_NORMAL,", ask person to move");
+                    if (b[x+4] & 0x10)
+                        ht_fprintf(outFile,TYPE_NORMAL,", TEST ONLY");
+                    break;
+#endif
+	public class WizPrim0x0030 : BhavWizPrim	// Stop ALL Sounds
+	{
+		public WizPrim0x0030(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			return "of " + (ToShort(o[0], o[1]) == 0 ? "Me" : "Stack Object");
+#if DISASIM
+                case 0x30:  // Stop ALL Sounds (false = error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    if (w1 == 0)
+                        ht_fprintf(outFile,TYPE_NORMAL,"of Me");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL,"of Stack Object");
+                    break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x0031 : BhavWizPrim	// Notify the Stack Object out of Idle
+	{
+		public WizPrim0x0031(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			return "-";
+#if DISASIM
+                case 0x31:  // Notify the Stack Object out of Idle (implied, false = error)
+                    break;
+#endif
 		}
 
 	}
@@ -1110,145 +2231,96 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			Scope scope = Scope.Private;
-			if (     (o[2] & 0x04) != 0) scope = Scope.Global;
+			if      ((o[2] & 0x04) != 0) scope = Scope.Global;
 			else if ((o[2] & 0x08) != 0) scope = Scope.SemiGlobal;
 
 			if (o[9] == 0) 
 			{
-				s += (lng ? "Add / Change Interaction string Mode, " : "");
-				if (lng && (o[3] & 1) != 0 && instruction.NodeVersion != 0)
-					s += "Disabled, ";
+				if (lng)
+				{
+					s += "Add / Change Interaction string Mode, ";
+					if (instruction.NodeVersion != 0)
+						s += "Disabled: " +  ((o[3] & 0x01) != 0).ToString() + ", ";
+				}
 
-				if ((o[2] & 0x10) != 0) s += (lng ? scope.ToString() + " " : "") + "STR# 0x012e:[Temp 0]";
-				else s += readStr(scope, GS.GlobalStr.MakeAction, o[4] - 1, lng ? -1 : 60, !lng);
+				if ((o[2] & 0x10) != 0) s += scope.ToString() + " STR# 0x012E:[Temp 0]";
+				else s += readStr(scope, GS.GlobalStr.MakeAction, o[4] - 1, lng ? -1 : 60, false);
 			}
 			else 
 			{
 				s += "Interaction Icon Change Mode";
+				if ((o[2] & 0x20) != 0)
+					s += ", Thumbnail Outfit GUID " + 
+						(((o[2] & 0x40) != 0)
+						? "from Temp 2,3"
+						: "0x" + SimPe.Helper.HexString(o[5] | (o[6]<<8) | (o[7]<<16) | (o[8]<<24)));
+				else 
+					s += ", Using object ID in " + dataOwner(o[11], o[12], o[13]);
+
 				if (lng)
 				{
-					if ((o[2] & 0x20) != 0)
-						s += ", Thumbnail Outfit GUID " + 
-							(((o[2] & 0x40) != 0)
-							? "from Temp 2,3"
-							: "0x" + SimPe.Helper.HexString(o[5] | (o[6]<<8) | (o[7]<<16) | (o[8]<<24)));
-						//readGUID(d1);
-					else 
-						s += ", Using object ID in " + dataOwner(o[11], ToShort(o[12], o[13]));
-
 					s += ", model table icon index " + (((o[2] & 0x80) != 0) ? "Temp 1" : "0x" + SimPe.Helper.HexString(o[10]));
 				}
 			}
 
 			return s;
+#if DISASIM
+                case 0x32:  // Add/Change the Action String (false = error)
+                    c2 = b[x+2]; // flags
+                    if (b[x+9] == 0) {
+                        c1 = b[x+4] - 1;
+                        ht_fprintf(outFile,TYPE_NORMAL,"Add / Change Interaction string Mode, ");
+                        if ((b[x+3] & 1) && nodeVersion)
+                            ht_fprintf(outFile,TYPE_NORMAL,"Disabled, ");
+                        if (c2 & 0x10) {
+                            ht_fprintf(outFile,TYPE_NORMAL,"Getting index from temp 0");
+                            if (c2 & 4) {
+                                ht_fprintf(outFile,TYPE_NORMAL,", getting string from globals");
+                            } else if (c2 & 8) {
+                                ht_fprintf(outFile,TYPE_NORMAL,", getting string from semiglobals");
+                            } else
+                                ht_fprintf(outFile,TYPE_NORMAL,", getting string from privates");
+                        }
+                        else if (c2 & 4) {
+                            CHECK_RANGE("Action string", gActionString, c1);
+                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gActionString[c1]);
+                        } else if (c2 & 8) {
+                            if (readString2(gGlobGroup, 0x12E, c1) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x12E:0x%X]", c1);
+                        }
+                        else if (readString2(gGroup, 0x12E, c1) == 0)
+                            ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x12E:0x%X]", c1);
+                    } else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"Interaction Icon Change Mode");
+                        if (c2 & 0x20) {
+                            ht_fprintf(outFile,TYPE_NORMAL,", Using external guid for Thumbnail Outfit from ");
+                            if (c2 & 0x40)
+                                ht_fprintf(outFile,TYPE_NORMAL,"GUID in temp2/3");
+                            else {
+                                d1 = *(UINT32 *) (&b[x+5]);
+                                if (d1 == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"GUID 0");
+                                else {
+                                   ht_fprintf(outFile,TYPE_NORMAL,"GUID 0x%08X", d1);
+                                   readGUID(d1);
+                                }
+                            }
+                        } else {
+                            w1 = *(UINT16 *) (&b[x+12]);
+                            ht_fprintf(outFile,TYPE_NORMAL,", Using object ID in ");
+                            data2(b[x+11], w1);
+                        }
+                        if (c2 & 0x80)
+                            ht_fprintf(outFile,TYPE_NORMAL,", Getting icon index into model table from temp 1");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL,", Using index of %d",b[x+10]);
+                    }
+                    break;
+#endif
 		}
 
 	}
 
-	public class WizPrim0x006d : BhavWizPrim	// Change Material (false = error)
-	{
-		public WizPrim0x006d(Instruction i) : base(i) { }
-
-		protected override string Operands(bool lng)
-		{
-			if (!lng) return "..."; // we can't think of anything short and useful
-
-			byte[] o = new byte[16];
-			((byte[])instruction.Operands).CopyTo(o, 0);
-			((byte[])instruction.Reserved1).CopyTo(o, 8);
-
-			string s = "";
-
-			s += "on obj in " + dataOwner(o[5], ToShort(o[6], o[7]));       // target object
-
-			
-			Scope matScope = Scope.Private;
-			if ((o[2] & 0x02) != 0) matScope = Scope.Global;
-			else if ((o[2] & 0x04) != 0) matScope = Scope.SemiGlobal;
-			ushort mat = ToShort(o[0], o[1]);
-
-			s += ", using ";
-			if ((o[13] & 0x02) == 0)
-			{
-				s += "material from " + ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
-				s += " (" + ((o[13] & 0x01) != 0 ? "moving texture" : "material") + " ";
-				if ((o[2] & 0x10) != 0) s += (lng ? matScope.ToString() + " " : "") + "STR# 0x0088:[Temp 0]";
-				else s += readStr(matScope, GS.GlobalStr.MaterialName, mat, lng ? -1 : 60, !lng);
-				s += ")";
-			}
-			else
-				s += "material from screen shot";
-
-			Scope mgScope = Scope.Private;
-			if ((o[2] & 0x40) != 0) mgScope = Scope.Global;
-			else if ((o[2] & 0x80) != 0) mgScope = Scope.SemiGlobal;
-			ushort mg = ToShort(o[3], o[4]);
-
-			s += " and mesh from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[8], ToShort(o[9], o[10])) : "me");
-			if ((o[4] & 0x40) == 0) // w3 < 0
-			{
-				s += " (mesh group ";
-				if ((o[2] & 0x20) != 0) s += (lng ? mgScope.ToString() + " " : "") + "STR# 0x0087:[Temp 1]";
-				else s += readStr(mgScope, GS.GlobalStr.MeshGroup, mat, lng ? -1 : 60, !lng);
-				s += ")";
-			}
-			else
-				s += " (over all model)";
-
-			return s;
-		}
-
-	}
-
-	public class WizPrim0x0079 : BhavWizPrim	// Change Outfit (false = error)
-	{
-		public WizPrim0x0079(Instruction i) : base(i) { }
-
-		protected override string Operands(bool lng)
-		{
-			byte[] o = new byte[16];
-			((byte[])instruction.Operands).CopyTo(o, 0);
-			((byte[])instruction.Reserved1).CopyTo(o, 8);
-
-			string s = "";
-
-			s += "Sim: " + dataOwner(o[9], ToShort(o[10], o[11]));
-
-			if ((o[0] & 0x10) == 0)
-			{
-				//s += "change outfit";
-				if (lng)
-				{
-					s += "; source: ";
-					if ((o[0] & 0x01) != 0)
-						s += "Stack Object";
-					else if ((o[0] & 0x02) != 0)
-						s += "GUID 0x" + SimPe.Helper.HexString((uint)(o[4] | (o[5] << 8) | (o[6] << 16) | (o[7] << 24)));
-					else if ((o[0] & 0x40) != 0)
-						s += "GUID in Temp 0/1";
-					else
-						s += "the sim's outfits";
-
-					s += ", outfit";
-					if ((o[0] & 4) == 0)
-						s += ": " + GS.GStr(GS.BhavStr.PersonOutfits, o[8]);
-					else 
-						s += " index: " + dataOwner(o[1], ToShort(o[2], o[3]));
-
-					s += ", " + ((o[0] & 0x20) == 0 ? "leaving" : "clearing") + " GUID pointers in person data fields";
-					s += ", " + ((o[0] & 0x08) == 0 ? "don't " : "") + "save change";
-				}
-			}
-
-			else 
-				s += "; rebuild current outfit";
-
-			return s;
-		}
-
-	}
-
-}
 #if DISASIM
                 case 0x33:  // Manage Inventory
                     w1 = *(UINT16 *) (&b[x+14]);
@@ -1470,759 +2542,6 @@ namespace pjse.BhavNameWizards
                                 break;
 
                         }
-                    break;
-                case 0x70:  // Effect Stop/Start (false = error)
-                    w1 = *(UINT16 *) (&b[x+2]);
-                    w2 = *(UINT16 *) (&b[x+13]);
-                    switch (b[x]) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Soft Start Effect on object in ");
-                            break;
-                        case 1:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard start effect on object in ");
-                            break;
-                        case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop effect on object in ");
-                            break;
-                        case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop effect on object in ");
-                            break;
-                        case 4:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop all effects on object in ");
-                            break;
-                        case 5:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects on object in ");
-                            break;
-                        case 6:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Fire and Forget Effect on object in ");
-                            break;
-                        case 7:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Interrogate Bone for effects on object in ");
-                            break;
-                        case 8:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects and clear Queue on object in ");
-                            break;
-                        case 9:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop ALL effects on object in ");
-                            break;
-                        case 0xA:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 1 for all effects on object in ");
-                            break;
-                        case 0xB:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 2 for all effects on object in ");
-                            break;
-                        case 0xC:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 3 for all effects on object in ");
-                            break;
-                        case 0xD:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 4 for all effects on object in ");
-                            break;
-                        case 0xE:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop ALL effects on object in ");
-                            break;
-                    }
-                    data2(b[x+1],w1);       // target object
-                    if (b[x] == 4 || b[x] == 5) {
-                        if (b[x+10] & 0x40)
-                            ht_fprintf(outFile,TYPE_NORMAL,", Passing in effect ID in temp 1");
-                    } else if (b[x] < 7 || b[x] == 0xE)
-                        if (b[x+4] != 0xFF) {
-                            ht_fprintf(outFile,TYPE_NORMAL,", ");
-                            if (b[x+10] & 1)
-                                readString2(GROUP_GLOBAL, 0x8F, b[x+4]); // !!!
-                            else if (b[x+10] & 2) {
-                                if (readString2(gGlobGroup, 0x8F, b[x+4]) == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x8F:0x%X]", b[x+4]);
-                            }
-                            else if (readString2(gGroup, 0x8F, b[x+4]) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x8F:0x%X]", b[x+4]);
-                        } else
-                            ht_fprintf(outFile,TYPE_NORMAL,", Affecting default effect");
-                    if (b[x] != 9) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", of Slot Type ");
-                        switch (b[x+9]) {
-                            case 0:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Target");
-                                break;
-                            case 1:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Routing");
-                                break;
-                            default:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Containment");
-                                break;
-                        }
-                        ht_fprintf(outFile,TYPE_NORMAL,", using slot number %d", b[x+6]);
-                    }
-                    if (b[x+11] & 0x10)
-                        ht_fprintf(outFile,TYPE_NORMAL,", getting icon value from Temp6");
-                    else if (b[x+11] & 4) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon with GUID in temp4/5 ");
-                        if (b[x+11] & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
-                    } else if (b[x+10] & 0x10) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from neighbor ID in ");
-                        data2(b[x+12],w2);
-                    } else if (b[x+10] & 0x20) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Conversation Icon index found in ");
-                        data2(b[x+12],w2);
-                        ht_fprintf(outFile,TYPE_NORMAL," using sheet ");
-                        if (readString2(gGroup, 0x95, b[x+15]) == 0) // ??
-                            ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x95:0x%X]", b[x+15]);
-                    } else if (b[x+10] & 4) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from object in ");
-                        data2(b[x+12],w2);
-                        if (b[x+11] & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
-                    }
-                    if (b[x+10] & 0x80)
-                        ht_fprintf(outFile,TYPE_NORMAL,", putting effect in priority Queue");
-                    break;
-
-                case 0x03:  // Find Best Interaction
-                    w1 = *(UINT16 *) (&b[x]);   // motive
-                    w2 = *(UINT16 *) (&b[x+2]); // flags
-                    if (w2 == 0)
-                        ht_fprintf(outFile,TYPE_NORMAL,"for the N current worst motives.");
-                    else {
-                        w3 = 1;
-                        for (c1 = 0; c1 < 16; c1++) {   // this should only find 1 motive (if any)
-                            if (w1 & w3) {
-                                CHECK_RANGE("Motives", gString86, c1);
-                                ht_fprintf(outFile,TYPE_NORMAL," for %s", gString86[c1]);;
-                            }
-                            w3 = w3 << 1;
-                        }
-                        ht_fprintf(outFile,TYPE_NORMAL,".");
-                        if (w2 & 1)
-                            ht_fprintf(outFile,TYPE_NORMAL," Choose remaining motives from the worst.");
-                    }
-                    if (w2 & 0x200) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Only test objects in room held in temp 0");
-                        if (w2 & 0x400)
-                            ht_fprintf(outFile,TYPE_NORMAL," including Out Of World Objects");
-                        ht_fprintf(outFile,TYPE_NORMAL,".");
-                    }
-                    if (w2 & 0x800) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Find Nested Interactions Only");
-                        if (w2 & 0x1000)
-                            ht_fprintf(outFile,TYPE_NORMAL," and only on current Interaction object");
-                        ht_fprintf(outFile,TYPE_NORMAL,".");
-                    }
-                    break;
-                case 0x07:  // Refresh (false = error)
-                    if (b[x] == 0)
-                        ht_fprintf(outFile,TYPE_NORMAL,"My ");
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"Stack Object's ");
-                    if (b[x+2] == 0)
-                        ht_fprintf(outFile,TYPE_NORMAL,"graphic");
-                    else if (b[x+2] == 1)
-                        ht_fprintf(outFile,TYPE_NORMAL,"lighting contribution");
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"room score contribution");
-                    break;
-                case 0x0A:  // Tutorial (unused)
-                    break;
-                case 0x0B:  // Get Distance To (false = error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+4]);
-                    data2(8, w1);   // temp
-                    ht_fprintf(outFile,TYPE_OPERATOR," := distance from ");
-                    if (b[x+2] & 1)
-                        data2(b[x+3], w2);
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"Me");
-                    ht_fprintf(outFile,TYPE_NORMAL," to Stack Object");
-                    if (b[x+6] & 2)
-                        ht_fprintf(outFile,TYPE_NORMAL," in 1/100ths of a tile");
-                    break;
-                case 0x0C:  // Get Direction To (false = error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+6]);
-                    data2(b[x+2], w1);
-                    ht_fprintf(outFile,TYPE_OPERATOR," := direction from ");
-                    if (b[x+4] & 1)
-                        data2(b[x+5], w2);
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"Me");
-                    ht_fprintf(outFile,TYPE_NORMAL," to Stack Object");
-                    if ((b[x+8] & 2) == 0)
-                        ht_fprintf(outFile,TYPE_NORMAL," in degrees");
-                    break;
-                case 0x0E:  // Find Best Object for Function
-                    w1 = *(UINT16 *) (&b[x+4]);
-                    CHECK_RANGE("Function table", gStringC9, b[x]);
-                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringC9[b[x]]);
-                    if (b[x+2] & 1)
-                        ht_fprintf(outFile,TYPE_NORMAL,", Outside Only");
-                    else if (b[x+2] & 2)
-                        ht_fprintf(outFile,TYPE_NORMAL,", Inside Only");
-                    else if (b[x+2] & 4)
-                        ht_fprintf(outFile,TYPE_NORMAL,", In Room Only");
-                    if (b[x+2] & 0x10)
-                        ht_fprintf(outFile,TYPE_NORMAL,", In Line Of Site");
-                    if (b[x+2] & 0x40)
-                        ht_fprintf(outFile,TYPE_NORMAL,", Ignoring Lockout");
-                    if (b[x+2] & 8) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Relative to object in ");
-                        data2(b[x+3],w1);
-                    }
-
-                    break;
-                case 0x0F:  // Break Point (false = error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    ht_fprintf(outFile,TYPE_NORMAL,"if (");
-                    data2(b[x+2], w1);
-                    ht_fprintf(outFile,TYPE_NORMAL," != 0)");
-                    break;
-                case 0x11:  // Idle for Input
-                    w1 = *(UINT16 *) (&b[x+2]);
-                    if (b[x+4] & 1)
-                        ht_fprintf(outFile,TYPE_NORMAL,"Handle Sub Queue Interactions");
-                    else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"for ");
-                        data2(9, b[x]);
-                        ht_fprintf(outFile,TYPE_NORMAL," ticks, ");
-                        if (w1 == 0) ht_fprintf(outFile,TYPE_NORMAL,"do not ");
-                        ht_fprintf(outFile,TYPE_NORMAL,"allow push");
-                    }
-                    break;
-                case 0x12:  // Remove Object Instance
-                    if (b[x] == 0)
-                        ht_fprintf(outFile,TYPE_NORMAL,"Me");
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"Stack Object");
-                    if (b[x+2] & 1) ht_fprintf(outFile,TYPE_NORMAL,", return immediately");
-                    if ((b[x+2] & 2) == 0) ht_fprintf(outFile,TYPE_NORMAL,", cleanup all");
-                    break;
-                case 0x13:  // Make New Character
-                    w1 = *(UINT16 *) (&b[x+4]);
-                    w2 = *(UINT16 *) (&b[x+7]);
-                    w3 = *(UINT16 *) (&b[x+11]);
-
-                    if (b[x+9] & 8)
-                        ht_fprintf(outFile,TYPE_NORMAL,"getting data from object with GUID in temp 0/1 ");
-                    else if (b[x+9] & 0x10)
-                        ht_fprintf(outFile,TYPE_NORMAL,"getting data from object with GUID in temp Token ");
-                    else if (b[x+9] & 1) {
-                        if (b[x+9] & 2)
-                            ht_fprintf(outFile,TYPE_NORMAL,"using Neighbor ID in ");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL,"using ID in ");
-                        data2(b[x+6],w2);
-                        if (b[x+9] & 4)
-                            ht_fprintf(outFile,TYPE_NORMAL," as parent 1 and Neighbor ID in ");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," as parent 1 and ID in ");
-                        data2(b[x+3],w1);
-                        ht_fprintf(outFile,TYPE_NORMAL," as parent 2 ");
-                    } 
-                    if (b[x] != 0 && b[x] != 0xFF) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"age in ");
-                        data2(0x19, b[x+1]);
-                        ht_fprintf(outFile,TYPE_NORMAL,", gender in ");
-                        data2(0x19, b[x+2]);
-                        ht_fprintf(outFile,TYPE_NORMAL,", skin color in ");
-                        data2(0x19, b[x]);
-                    }
-                    if (b[x+9] & 0x20)
-                        ht_fprintf(outFile,TYPE_NORMAL,", Getting character from Bin"); // ?
-                    if (b[x+9] & 0x40) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Using external guid for Thumbnail Outfit from ");
-                        if (b[x+9] & 0x80)
-                            ht_fprintf(outFile,TYPE_NORMAL,"GUID in temp 2/3");
-                        else
-                            data2(b[x+10],w3);
-                    }
-                    break;
-                case 0x14:  // Run Functional Tree
-                    CHECK_RANGE("Functional table", gStringC9, b[x]);
-                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringC9[b[x]]);
-                    c1 = b[x+2];
-                    if (c1 & 1) ht_fprintf(outFile,TYPE_NORMAL,", change icon");
-                    if (c1 & 2) ht_fprintf(outFile,TYPE_NORMAL,", passing parameters from calling tree");
-                    if (c1 & 4) ht_fprintf(outFile,TYPE_NORMAL,", running check tree only");
-                    break;
-                case 0x16:  // Turn Body Towards
-                    CHECK_RANGE("Turn body", gStringD8, b[x]);
-                    ht_fprintf(outFile,TYPE_FUNCTION,"%s", gStringD8[b[x]]);
-                    break;
-                case 0x17:  // Play / Stop Sound Event (false = error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    if (b[x+4] & 0x40)
-                        ht_fprintf(outFile,TYPE_NORMAL,"Stop Sound ");
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"Play Sound ");
-                    if (w1 < 10000)
-                        ht_fprintf(outFile,TYPE_NORMAL,"Private id = 0x%X", w1);
-                    else if (w1 < 20000)
-                        ht_fprintf(outFile,TYPE_NORMAL,"Global id = 0x%X", w1-10000);
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"SemiGlobal id = 0x%X", w1-20000);
-                    if (b[x+4] & 2) ht_fprintf(outFile,TYPE_NORMAL,", with stack obj as source");
-                    if ((b[x+4] & 2) == 0) {
-                        if (b[x+4] & 0x10)
-                            ht_fprintf(outFile,TYPE_NORMAL,", auto vary");
-                        if (w2 != 0)
-                            ht_fprintf(outFile,TYPE_NORMAL,", sampled at %d, w2"); // ?
-                        if (b[x+5] != 0)
-                            ht_fprintf(outFile,TYPE_NORMAL,", volume %d", b[x+5]); // ?
-                    }
-                    break;
-                case 0x19:  // Alter Budget
-                    c1 = b[x+1];
-                    switch (b[x]) {
-                        case 0:
-                            c1 = 7;     // literal
-                            break;
-                        case 1:
-                            c1 = 9;     // param
-                            break;
-                        case 2:
-                            c1 = 0x19;  // local
-                            break;
-                    }
-                    w1 = *(UINT16 *) (&b[x+2]);
-                    w2 = *(UINT16 *) (&b[x+7]);
-                    switch (b[x+4] & 3) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL,"subtract ");
-                            break;
-                        case 1:
-                            ht_fprintf(outFile,TYPE_NORMAL,"test if ");
-                            break;
-                        case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,"add ");
-                            break;
-                        case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL,"test if ");
-                            break;
-                    }
-                    if ((b[x+4] & 8) && nodeVersion)
-                        ht_fprintf(outFile,TYPE_NORMAL,"amount in temp 2 and 3"); // was "temp 3 and 4"  (SimAntics error)
-                    else
-                        data2(c1, w1);
-                    if (b[x+4] & 4)
-                        ht_fprintf(outFile,TYPE_NORMAL," Multiplied by value in Temp2");
-                    else if (w2 != 0)
-                        ht_fprintf(outFile,TYPE_NORMAL," Multiplied by %d", w2);
-                    switch (b[x+4] & 3) {
-                        case 1:
-                            ht_fprintf(outFile,TYPE_NORMAL," may be subtracted");
-                            break;
-                        case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL," may be added");
-                            break;
-                    }
-                    CHECK_RANGE("Expenses", gStringF0, b[x+6]);
-                    ht_fprintf(outFile,TYPE_NORMAL," as %s", gStringF0[b[x+6]]);
-                    break;
-                case 0x1A:  // Relationship
-                    c1 = b[x];      // var
-                    c2 = b[x+1];    // flags
-                    w2 = *(UINT16 *) (&b[x+6]);
-
-                    if (nodeVersion == 0) {   // old-style parameter usage
-                        if ((c2 & 4) == 0) {
-                            data2(b[x+4], w2);
-                            ht_fprintf(outFile,TYPE_NORMAL," := ");
-                        }
-
-                        ht_fprintf(outFile,TYPE_NORMAL,"var %d of ", c1);
-                        switch (c2 & 3) {
-                            case 0:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Me to Stack Object");
-                                break;
-                            case 1:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Stack Object to Me");
-                                break;
-                            case 2:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Stack Object to ");
-                                data2(0x19, b[x+3]);
-                                break;
-                            case 3:
-                                data2(0x19, b[x+3]);
-                                ht_fprintf(outFile,TYPE_NORMAL," to Stack Object");
-                                break;
-                        }
-                        if (c2 & 4) {
-                            ht_fprintf(outFile,TYPE_NORMAL," := ");
-                            data2(b[x+4], w2);
-                        }
-                        if (b[x+2] & 1) ht_fprintf(outFile,TYPE_NORMAL,", fail if too small");
-                        if (b[x+2] & 2) ht_fprintf(outFile,TYPE_NORMAL,", use neighbor IDs");
-                    } else {            // new-style parameter usage
-                        w1 = *(UINT16 *) (&b[x+9]);
-                        w3 = *(UINT16 *) (&b[x+3]);
-
-                        ht_fprintf(outFile,TYPE_NORMAL,"Access var %d ", c1);
-                        if (c2 & 2) {
-                            CHECK_RANGE("Relation Labels", gRelLabels, c1);
-                            ht_fprintf(outFile,TYPE_NORMAL,"(%s) ", gRelLabels[c1]);
-                        }
-                        ht_fprintf(outFile,TYPE_NORMAL,"of ");
-                        data2(b[x+2],w3);
-
-                        ht_fprintf(outFile,TYPE_NORMAL," to ");
-                        data2(b[x+5],w2);
-                        ht_fprintf(outFile,TYPE_NORMAL,". ");
-                        if (c2 & 4)
-                            ht_fprintf(outFile,TYPE_NORMAL,"Get value from ");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL,"Put value into ");
-                        data2(b[x+8], w1);
-                        if (c2 & 1) ht_fprintf(outFile,TYPE_NORMAL,", fail if too small");
-                        if (c2 & 2)
-                            ht_fprintf(outFile,TYPE_NORMAL,", use neighbor IDs");
-                        else if (c2 & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL,", don't check presence of second object"); // "object to sim" relationship
-                    }
-                    break;
-                case 0x1D:  // Set Motive Change (false = error)
-                    w1 = *(UINT16 *) (&b[x+4]);
-                    w2 = *(UINT16 *) (&b[x+6]);
-                    if (b[x+3] & 1) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"clear all");
-                    } else {
-                        data2(0xE, b[x+2]);     // my motives
-                        ht_fprintf(outFile,TYPE_NORMAL," += ");
-                        data2(b[x], w1);
-                        ht_fprintf(outFile,TYPE_NORMAL," per hour, stop at ");
-                        data2(b[x+1], w2);
-                    }
-                    if (b[x+3] & 2)
-                        ht_fprintf(outFile,TYPE_NORMAL,", Auto Clearing the Person Data Motive Decay value");
-                    break;
-                case 0x1E:  // Gosub Found Action
-                    CHECK_RANGE("Gosub Found Action", gString1FE, b[x]);
-                    ht_fprintf(outFile,TYPE_FUNCTION,"%s",gString1FE[b[x]]);
-                    break;
-                case 0x20:  // Test Object Type
-                    w1 = *(UINT16 *) (&b[x+4]);
-                    d1 = *(UINT32 *) (&b[x]);
-                    if (b[x+7] & 4)
-                        ht_fprintf(outFile,TYPE_NORMAL,"Return GUID selected in Temp0/1 ");
-                    else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"type of ");
-                        data2(b[x+6], w1);
-                    }
-                    if (d1 == 0x4C7CAB2B)
-                        ht_fprintf(outFile,TYPE_NORMAL,"the GUID of the temporary inventory token");
-                    else {
-                        ht_fprintf(outFile,TYPE_NORMAL," == GUID 0x%08X", d1);
-                        readGUID(d1);
-                    }
-                    if ((b[x+7] & 4) == 0) {
-                        if (b[x+7] & 1)
-                            ht_fprintf(outFile,TYPE_NORMAL," Checking against original, not current GUID");
-                        if (b[x+7] & 2)
-                            ht_fprintf(outFile,TYPE_NORMAL,", incoming ID is a neighbor ID");
-                    }
-
-                    break;
-                case 0x21:  // Find 5 Worst Motives (false = error)
-                    w1 = *(UINT16 *) (&b[x+4]);
-                    w2 = *(UINT16 *) (&b[x+6]);
-
-                    CHECK_RANGE("Short owner", gString99, w1);
-                    ht_fprintf(outFile,TYPE_NORMAL,"%s lowest ", gString99[w1]);
-
-                    CHECK_RANGE("Motive type", gStringA5, w2);
-                    ht_fprintf(outFile,TYPE_NORMAL,"%s into temps 0-4", gStringA5[w2]);
-                    break;
-                case 0x22:  // UI Effect (false = error)
-                    c1 = b[x];
-                    c2 = b[x+5]; // flags
-                    w1 = *(UINT16 *) (&b[x+1]);
-                    w2 = *(UINT16 *) (&b[x+3]);
-                    w3 = *(UINT16 *) (&b[x+6]);
-                    w4 = *(UINT16 *) (&b[x+8]);
-                    w5 = *(UINT16 *) (&b[x+11]);
-
-                    switch (c1) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Press Control ");
-                            break;
-                        case 1:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Disable Control ");
-                            break;
-                        case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Enable Control ");
-                            break;
-                        case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Play Effect on Control ");
-                            break;
-                        case 4:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set Event tree on Control ");
-                            break;
-                        case 5:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Reset State on All Controls ");
-                            break;
-                        case 6:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Disable All Controls ");
-                            break;
-                        case 7:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Reset event trees on All Controls ");
-                            break;
-                        case 8:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set Event Tree on TNS node ");
-                            break;
-                        case 9:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set Control Visible ");
-                            break;
-                        case 0xA:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Set Control Hidden ");
-                            break;
-                    }
-                    if (c1 < 5 || c1 > 8)
-                        if (c2 & 4) {
-                            if (readString2(GROUP_GLOBAL, 0x96, w2) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Global STR# 0x96:0x%X]", w2);
-                        }
-                        else if (c2 & 8){
-                            if (readString2(gGlobGroup, 0x96, w2) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x96:0x%X]", w2);
-                        }
-                        else {
-                            if (readString2(gGroup, 0x96, w2) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x96:0x%X]", w2);
-                        }
-                    if (c1 != 8) {
-                        ht_fprintf(outFile,TYPE_NORMAL," in window ");
-                        if (c2 & 1) {
-                            if (readString2(GROUP_GLOBAL, 0x96, w1) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Global STR# 0x96:0x%X]", w1);
-                        }
-                        else if (c2 & 2){
-                            if (readString2(gGlobGroup, 0x96, w1) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x96:0x%X]", w1);
-                        }
-                        else {
-                            if (readString2(gGroup, 0x96, w1) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x96:0x%X]", w1);
-                        }
-                    }
-                    if (c1 == 3)
-                        if (w3 != 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," Starting Effect ");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," Stopping Effect ");
-                    if (c1 == 4 || c1 == 8)
-                        if (w4 == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," No Event Tree");
-                        else {
-                            switch (b[x+10]) {
-                                case 0:
-                                    ht_fprintf(outFile,TYPE_NORMAL," Using Private Event Tree: ");
-                                    break;
-                                case 1:
-                                    ht_fprintf(outFile,TYPE_NORMAL," Using SemiGlobal Event Tree: ");
-                                    break;
-                                default:
-                                    ht_fprintf(outFile,TYPE_NORMAL," Using Global Event Tree: ");
-                                    break;
-                            }
-                            ht_fprintf(outFile,TYPE_NORMAL,"0x%X (",w4);
-                            readFn2(w4);
-                            ht_fprintf(outFile,TYPE_NORMAL,")");
-                        }
-                    if (c1 == 8) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Getting TNS ID from ");
-                        data2(b[x+13],w5);
-                    }
-                    break;
-                case 0x23:  // Camera Control (false = error)
-                    c1 = b[x+4];    // flags
-                    w1 = *(UINT16 *) (&b[x]);
-                    if (c1 & 1) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"show stack obj");
-                        switch (b[x+3]) {
-                            case 1:
-                                ht_fprintf(outFile,TYPE_NORMAL,", far");
-                                break;
-                            case 2:
-                                ht_fprintf(outFile,TYPE_NORMAL,", mid");
-                                break;
-                            case 3:
-                                ht_fprintf(outFile,TYPE_NORMAL,", near");
-                                break;
-                        }
-                        ht_fprintf(outFile,TYPE_NORMAL," zoom");
-                        if ((c1 & 0x40) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL,", slow down");
-                        if (c1 & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL,", center");
-                        if (c1 & 0x20)
-                            ht_fprintf(outFile,TYPE_NORMAL,", using timeout in temp 0");
-                        else {
-                            ht_fprintf(outFile,TYPE_NORMAL,", using timeout of ");
-                            if (w1 < 10)
-                                ht_fprintf(outFile,TYPE_NORMAL,"%d", w1);
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,"%d (0x%X)", w1, w1);
-                        }
-                    } else
-                        ht_fprintf(outFile,TYPE_NORMAL,"un-show stack obj");
-                    break;
-                case 0x24:  // Dialog
-                    c1 = b[x+5];                 // prim
-                    c2 = (b[x+7] >> 4) & 7;      // temp
-                    c3 = b[x+8];                 // flags
-                    if (nodeVersion) {
-                        w1 = *(UINT16 *) (&b[x+13]); // message
-                        w2 = b[x+2] << 8 + b[x]; // cancel
-                    } else {
-                        w1 = b[x+2];             // message
-                        w2 = b[x];               // cancel
-                    }
-                    CHECK_RANGE("Dialog primitives", gStringD9, c1);
-                    if (c1 == 2) {
-                        data2(8, c2); // Temp
-                        ht_fprintf(outFile,TYPE_NORMAL," := tri choice: ");
-                    } else
-                        ht_fprintf(outFile,TYPE_NORMAL,"%s: ", gStringD9[c1]);
-
-                    if (c1 == 9) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Getting Text Notification ID from temp %d", c2);
-                        switch (b[x+12]) {
-                            case 0:
-                                ht_fprintf(outFile,TYPE_NORMAL,", TNS Sim Type");
-                                break;
-                            case 1:
-                                ht_fprintf(outFile,TYPE_NORMAL,", TNS System Type");
-                                break;
-                        }
-                    }
-                    if (c1 == 0xE)
-                        ht_fprintf(outFile,TYPE_NORMAL,"passing through data starting with local var %d", b[x+11]);
-
-                    if (c1 < 9 || c1 == 0xA || c1 == 0xF || c1 == 0x13 || c1 > 0x14) {
-
-                        if (c3 & 2) // ?
-                            ht_fprintf(outFile,TYPE_NORMAL,", expecting message Index in temp 0");
-                        else if (c3 & 1)
-                            ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x12D:0x%X]", w1 - 1);
-                        else if (c3 & 0x40) {
-                            CHECK_RANGE("Global Dialog Primitives", gDialogPrim, w1 - 1);
-                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gDialogPrim[w1 - 1]);
-                        } else
-                            ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x12D:0x%X]", w1 - 1);
-                            
-
-                        if (c1 == 8 || c1 == 0xA) {
-                            switch (b[12]) {
-                                case 0:
-                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS Sim Type");
-                                    break;
-                                case 1:
-                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS System Type");
-                                    break;
-                                case 2:
-                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS System Dialog Type");
-                                    break;
-                                case 3:
-                                    ht_fprintf(outFile,TYPE_NORMAL,", TNS Birthday Type");
-                                    break;
-                            }
-                            ht_fprintf(outFile,TYPE_NORMAL,", priority %d", b[x+9] + 1);
-                            ht_fprintf(outFile,TYPE_NORMAL,", timeout %d", b[x+10]);
-                            if (c1 == 0xA)
-                                ht_fprintf(outFile,TYPE_NORMAL,", getting Text ID in temp ");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", putting Text ID in temp ");
-                            ht_fprintf(outFile,TYPE_NORMAL,"%d",c2);
-
-                        } else {
-
-                            if (c3 & 4) // ?
-                                ht_fprintf(outFile,TYPE_NORMAL,", expecting Yes button Index in temp 0");
-                            else if (b[x+3] != 0) {
-                                ht_fprintf(outFile,TYPE_NORMAL,", Yes: ");
-                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", b[x+3] - 1);
-                            }
-                            if (c3 & 8) // ?
-                                ht_fprintf(outFile,TYPE_NORMAL,", expecting No button Index in temp 0");
-                            else if (b[x+4] != 0) {
-                                ht_fprintf(outFile,TYPE_NORMAL,", No: ");
-                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", b[x+4] - 1);
-                            }
-                            if (c3 & 0x10) // ?
-                                ht_fprintf(outFile,TYPE_NORMAL,", expecting Title Index in temp 0");
-                            else if (b[x+6] != 0) {
-                                ht_fprintf(outFile,TYPE_NORMAL,", Title: ");
-                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", b[x+6] - 1);
-                            }
-                            if (c3 & 0x20) // ?
-                                ht_fprintf(outFile,TYPE_NORMAL,", expecting Cancel Index in temp 0");
-                            else if (w2 != 0) {
-                                ht_fprintf(outFile,TYPE_NORMAL,", Cancel: ");
-                                ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", w2 - 1);
-                            }
-                            if ((b[x+7] & 0x81) != 0) {
-                                if (b[x+7] & 1)
-                                    ht_fprintf(outFile,TYPE_NORMAL," return");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL," engage");
-                                ht_fprintf(outFile,TYPE_NORMAL," and ");
-                                if (c1 & 0x80)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"continue sim");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"block sim");
-                            }
-                        }
-                        if (w1 != 0x16 && w1 != 0x19 && (b[x+7] & 0xE) != 2) {
-                            ht_fprintf(outFile,TYPE_NORMAL,", icon: ");
-                            switch ((b[x+7] >> 1)& 7) {
-                                case 3:
-                                    ht_fprintf(outFile,TYPE_NORMAL,"BMP = 0x%X", (b[x+1] + 5000));
-                                    break;
-                                case 4:
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12D:0x%X]", b[x+1] - 1);
-                                    break;
-                                default:
-                                    CHECK_RANGE("Icon types", gStringF4, (b[x+7] >> 1) & 7);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringF4[(b[x+7] >> 1) & 7]);
-                                    break;
-                            }
-                        }
-
-                    }
-                    break;
-                case 0x25:  // Test Sim Interacting With
-                    ht_fprintf(outFile,TYPE_NORMAL,"me with stack obj.");
-                    break;
-                case 0x2E:  // Snap
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    w3 = *(UINT16 *) (&b[x+8]);
-                    CHECK_RANGE("Snap mode", gStringCF, w2);
-                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCF[w2]);
-                    if (w2 == 0 || w2 == 3 || w2 == 4)
-                        if (b[x+4] & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL," to slot in temp 0");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," 0x%X", w1);
-                    if (w3 == 1)
-                        ht_fprintf(outFile,TYPE_NORMAL,", from slot in temp 1");
-                    if (b[x+4] & 2)
-                        ht_fprintf(outFile,TYPE_NORMAL,", ask person to move");
-                    if (b[x+4] & 0x10)
-                        ht_fprintf(outFile,TYPE_NORMAL,", TEST ONLY");
-                    break;
-                case 0x30:  // Stop ALL Sounds (false = error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    if (w1 == 0)
-                        ht_fprintf(outFile,TYPE_NORMAL,"of Me");
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"of Stack Object");
-                    break;
-                case 0x31:  // Notify the Stack Object out of Idle (implied, false = error)
                     break;
                 case 0x69:  // Animate Object (false = error)
                     c1 = b[x+2];
@@ -2618,7 +2937,7 @@ namespace pjse.BhavNameWizards
                         case 0:
                             ht_fprintf(outFile,TYPE_NORMAL,"Any");
                             break;
-                        case 1:
+                        case 1:                                                                 
                             ht_fprintf(outFile,TYPE_NORMAL,"Low");
                             break;
                         case 2:
@@ -2628,6 +2947,127 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL,"High");
                     }
                     break;
+#endif
+	public class WizPrim0x006d : BhavWizPrim	// Change Material
+	{
+		public WizPrim0x006d(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			if (!lng) return "..."; // we can't think of anything short and useful
+
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += "on obj in " + dataOwner(o[5], o[6], o[7]);       // target object
+
+			Scope matScope = Scope.Private;
+			if ((o[2] & 0x02) != 0) matScope = Scope.Global;
+			else if ((o[2] & 0x04) != 0) matScope = Scope.SemiGlobal;
+			ushort mat = ToShort(o[0], o[1]);
+
+			s += ", using material from ";
+			if ((o[13] & 0x02) == 0)
+			{
+				s += ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(o[8], o[9], o[10]) : "me");
+				s += " (" + ((o[13] & 0x01) != 0 ? "moving texture" : "material") + " ";
+				if ((o[2] & 0x10) != 0) s += matScope.ToString() + " STR# 0x0088:[Temp 0]";
+				else s += readStr(matScope, GS.GlobalStr.MaterialName, mat, -1, false);
+				s += ")";
+			}
+			else
+				s += "screen shot";
+
+			Scope mgScope = Scope.Private;
+			if ((o[2] & 0x40) != 0) mgScope = Scope.Global;
+			else if ((o[2] & 0x80) != 0) mgScope = Scope.SemiGlobal;
+			ushort mg = ToShort(o[3], o[4]);
+
+			s += " and mesh from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[8], o[9], o[10]) : "me");
+			if ((o[4] & 0x40) == 0) // w3 < 0
+			{
+				s += " (mesh group ";
+				if ((o[2] & 0x20) != 0) s += mgScope.ToString() + " STR# 0x0087:[Temp 1]";
+				else s += readStr(mgScope, GS.GlobalStr.MeshGroup, mg, -1, false);
+				s += ")";
+			}
+			else
+				s += " (over all model)";
+
+			return s;
+#if DISASIM
+                case 0x6D:  // Change Material (false = error)
+                    w1 = *(UINT16 *) (&b[x+6]);
+                    w2 = *(UINT16 *) (&b[x+9]);
+                    w3 = *(UINT16 *) (&b[x+3]);
+                    w4 = *(UINT16 *) (&b[x]);
+                    c1 = b[x+2];
+                    if (b[x+13] & 2) 
+                        ht_fprintf(outFile,TYPE_NORMAL,"using snap shot generated material");
+                    else if (c1 & 8) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"found in obj in ");
+                        data2(b[x+8],w2);
+                        if (c1 & 0x10)
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
+                        else
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index %d", w4);
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index %d", w4);
+                    } else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"found in me, to: ");
+                        if (c1 & 0x10)
+                            if (b[x+13] & 1)
+                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
+                            else
+                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
+                        else
+                            if (c1 & 2) {
+                                if (readString2(GROUP_GLOBAL, 0x88, w4) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[Global STR# 0x88:0x%X]", w4);
+                            } else if (c1 & 4) {
+                                if (readString2(gGlobGroup, 0x88, w4) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x88:0x%X]", w4);
+                            } else if (readString2(gGroup, 0x88, w4) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x88:0x%X]", w4);
+                    }
+                    if (c1 & 1) {                                                                              
+                        ht_fprintf(outFile,TYPE_NORMAL,", mesh found in obj in");
+                        data2(b[x+8],w2);                                                                      
+                        if (c1 & 0x20)                                                                         
+                            ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");            
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index %d", w3);                 
+                    } else if (c1 & 0x20)                                                                      
+                        ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
+                    else if (b[x+4] & 0x80) // w3 < 0
+                        ht_fprintf(outFile,TYPE_NORMAL,", over all model");
+                    else {
+                        ht_fprintf(outFile,TYPE_NORMAL,", On Mesh Group: ");
+                        if (c1 & 0x40) {
+                            if (readString2(GROUP_GLOBAL, 0x87, w3) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Global STR# 0x87:0x%X]", w3);
+                        } else if (c1 & 0x80) {
+                            if (readString2(gGlobGroup, 0x87, w3) == 0)                                        
+                                ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x87:0x%X]", w3);
+                        } else if (readString2(gGroup, 0x87, w3) == 0)                                           
+                            ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x87:0x%X]", w3);
+                    }                                                                                          
+                    ht_fprintf(outFile,TYPE_NORMAL,", affecting ID in ");
+                    data2(b[x+5],w1);       // target object
+                    break;
+#endif
+		}
+
+	}
+
+#if DISASIM
                 case 0x6E:  // Look At
                     w1 = *(UINT16 *) (&b[x+2]);
                     w2 = *(UINT16 *) (&b[x+9]);
@@ -2720,6 +3160,116 @@ namespace pjse.BhavNameWizards
                     else
                         ht_fprintf(outFile,TYPE_NORMAL," Intensity of %d percent", b[x+7]);
                     break;
+                case 0x70:  // Effect Stop/Start (false = error)
+                    w1 = *(UINT16 *) (&b[x+2]);
+                    w2 = *(UINT16 *) (&b[x+13]);
+                    switch (b[x]) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft Start Effect on object in ");
+                            break;
+                        case 1:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard start effect on object in ");
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop effect on object in ");
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop effect on object in ");
+                            break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop all effects on object in ");
+                            break;
+                        case 5:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects on object in ");
+                            break;
+                        case 6:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Fire and Forget Effect on object in ");
+                            break;
+                        case 7:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Interrogate Bone for effects on object in ");
+                            break;
+                        case 8:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects and clear Queue on object in ");
+                            break;
+                        case 9:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop ALL effects on object in ");
+                            break;
+                        case 0xA:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 1 for all effects on object in ");
+                            break;
+                        case 0xB:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 2 for all effects on object in ");
+                            break;
+                        case 0xC:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 3 for all effects on object in ");
+                            break;
+                        case 0xD:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 4 for all effects on object in ");
+                            break;
+                        case 0xE:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop ALL effects on object in ");
+                            break;
+                    }
+                    data2(b[x+1],w1);       // target object
+                    if (b[x] == 4 || b[x] == 5) {
+                        if (b[x+10] & 0x40)
+                            ht_fprintf(outFile,TYPE_NORMAL,", Passing in effect ID in temp 1");
+                    } else if (b[x] < 7 || b[x] == 0xE)
+                        if (b[x+4] != 0xFF) {
+                            ht_fprintf(outFile,TYPE_NORMAL,", ");
+                            if (b[x+10] & 1)
+                                readString2(GROUP_GLOBAL, 0x8F, b[x+4]); // !!!
+                            else if (b[x+10] & 2) {
+                                if (readString2(gGlobGroup, 0x8F, b[x+4]) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x8F:0x%X]", b[x+4]);
+                            }
+                            else if (readString2(gGroup, 0x8F, b[x+4]) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x8F:0x%X]", b[x+4]);
+                        } else
+                            ht_fprintf(outFile,TYPE_NORMAL,", Affecting default effect");
+                    if (b[x] != 9) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", of Slot Type ");
+                        switch (b[x+9]) {
+                            case 0:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Target");
+                                break;
+                            case 1:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Routing");
+                                break;
+                            default:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Containment");
+                                break;
+                        }
+                        ht_fprintf(outFile,TYPE_NORMAL,", using slot number %d", b[x+6]);
+                    }
+                    if (b[x+11] & 0x10)
+                        ht_fprintf(outFile,TYPE_NORMAL,", getting icon value from Temp6");
+                    else if (b[x+11] & 4) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon with GUID in temp4/5 ");
+                        if (b[x+11] & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
+                    } else if (b[x+10] & 0x10) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from neighbor ID in ");
+                        data2(b[x+12],w2);
+                    } else if (b[x+10] & 0x20) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Conversation Icon index found in ");
+                        data2(b[x+12],w2);
+                        ht_fprintf(outFile,TYPE_NORMAL," using sheet ");
+                        if (readString2(gGroup, 0x95, b[x+15]) == 0) // ??
+                            ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x95:0x%X]", b[x+15]);
+                    } else if (b[x+10] & 4) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from object in ");
+                        data2(b[x+12],w2);
+                        if (b[x+11] & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
+                    }
+                    if (b[x+10] & 0x80)
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting effect in priority Queue");
+                    break;
                 case 0x71:  // Snap Into
                     w1 = *(UINT16 *) (&b[x+1]);
                     w2 = *(UINT16 *) (&b[x+4]);
@@ -2799,10 +3349,10 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL,"Perform Cheat ");
                             if (b[x+14] & 4)
                                 readString2(GROUP_GLOBAL, 0x132, b[x+12]);
-                            else if (b[x+14] & 2)
+                            else if (b[x+14] & 2) {
                                 if (readString2(gGlobGroup, 0x132, b[x+12]) == 0)
                                     ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x132:0x%X]", b[x+12]);
-                            else if (readString2(gGroup, 0x132, b[x+12]) == 0)
+                            } else if (readString2(gGroup, 0x132, b[x+12]) == 0)
                                 ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x132:0x%X]", b[x+12]);
                             break;
                         case 7:
@@ -3070,6 +3620,92 @@ namespace pjse.BhavNameWizards
                     if (b[x+15] & 1)
                         ht_fprintf(outFile,TYPE_NORMAL," Windows Ignored.");
                     break;
+#endif
+	public class WizPrim0x0079 : BhavWizPrim	// Change Outfit
+	{
+		public WizPrim0x0079(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += "Sim: " + dataOwner(o[9], o[10], o[11]);
+
+			if ((o[0] & 0x10) == 0)
+			{
+				//s += "change outfit";
+				if (lng)
+				{
+					s += "; source: ";
+					if ((o[0] & 0x01) != 0)
+						s += "Stack Object";
+					else if ((o[0] & 0x02) != 0)
+						s += "GUID 0x" + SimPe.Helper.HexString((uint)(o[4] | (o[5] << 8) | (o[6] << 16) | (o[7] << 24)));
+					else if ((o[0] & 0x40) != 0)
+						s += "GUID in Temp 0/1";
+					else
+						s += "the sim's outfits";
+
+					s += ", outfit";
+					if ((o[0] & 4) == 0)
+						s += ": " + GS.GStr(GS.BhavStr.PersonOutfits, o[8]);
+					else 
+						s += " index: " + dataOwner(o[1], o[2], o[3]);
+
+					s += ", " + ((o[0] & 0x20) == 0 ? "leaving" : "clearing") + " GUID pointers in person data fields";
+					s += ", " + ((o[0] & 0x08) == 0 ? "don't " : "") + "save change";
+				}
+			}
+
+			else 
+				s += "; rebuild current outfit";
+
+			return s;
+#if DISASIM
+                case 0x79:  // Change Outfit (false = error)
+                    c1 = b[x];
+                    w1 = *(UINT16 *) (&b[x+10]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    d1 = *(UINT32 *) (&b[x+4]);
+                    if (c1 & 0x10) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"Rebuild current outfit on sim in ");
+                        data2(b[x+9],w1);
+                    } else {
+                        ht_fprintf(outFile,TYPE_NORMAL,"Change Outfit on sim in ");
+                        data2(b[x+9],w1);
+                        if (c1 & 1)
+                            ht_fprintf(outFile,TYPE_NORMAL," using Stack Object");
+                        else if (c1 & 2) {
+                            ht_fprintf(outFile,TYPE_NORMAL," using GUID of 0x%08X", d1);
+                            readGUID(d1);
+                        } else if (c1 & 0x40)
+                            ht_fprintf(outFile,TYPE_NORMAL,", using GUID in Temp 0/1");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using that sims outfits");
+                        ht_fprintf(outFile,TYPE_NORMAL," as source, using outfit ");
+                        if (c1 & 4) {
+                            ht_fprintf(outFile,TYPE_NORMAL,"index from ");
+                            data2(b[x+1],w2);
+                        } else {
+                            CHECK_RANGE("Person outfits", gStringFA, b[x+8]);
+                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFA[b[x+8]]);
+                        }
+                        if (c1 & 0x20)
+                            ht_fprintf(outFile,TYPE_NORMAL,", clearing GUID pointers in person data fields");
+                        if (c1 & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL,", writing changes to the .iff");
+                    }
+                    break;
+#endif
+		}
+
+	}
+
+#if DISASIM
                 case 0x7A:  // On Timer (false = error)
                     w1 = *(UINT16 *) (&b[x+7]);
                     w2 = *(UINT16 *) (&b[x+10]);
@@ -3238,598 +3874,5 @@ namespace pjse.BhavNameWizards
                         }
                     }
                     break;
-                case 0x00:  // Sleep (false = error)
-                    ht_fprintf(outFile,TYPE_NORMAL,"for ");
-                    data2(9, b[x]);
-                    ht_fprintf(outFile,TYPE_NORMAL," ticks");
-                    break;
-                case 0x01:  // Generic Sims Call
-                    c1 = b[x];
-                    CHECK_RANGE("Generic Sims Call", gStringDC, c1);
-                    ht_fprintf(outFile,TYPE_FUNCTION,"%s", gStringDC[c1]);
-                    switch (c1) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:neighborhood, Temp 1:evict, Temp 2:save lot, Temp 3:reset tutorial");
-                            break;
-                        case 4:
-                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID, Temp 0:familyID");
-                            break;
-                        case 5:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:familyID");
-                            break;
-                        case 6:
-                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID");
-                            break;
-                        case 0x0D:
-                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj");
-                            break;
-                        case 0x11:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID");
-                            break;
-                        case 0x12:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:speed");
-                            break;
-                        case 0x15:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:child nID, Temp 1:parent nID");
-                            break;
-                        case 0x16:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:new spouse nID, Temp 1:initial spouse nID");
-                            break;
-                        case 0x17:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:remove nID, Temp 1:relative nID");
-                            break;
-                        case 0x18:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:age");
-                            break;
-                        case 0x19:
-                        case 0x28:
-                        case 0x29:
-                        case 0x2C:
-                        case 0x31:
-                        case 0x33:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0");
-                            break;
-                        case 0x1C:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:amount, Temp 2:multiplier");
-                            break;
-                        case 0x1D:
-                        case 0x26:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID");
-                            break;
-                        case 0x1E:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit");
-                            break;
-                        case 0x1F:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0,1:GUID");
-                            break;
-                        case 0x20:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit, Temp 1:result value");
-                            break;
-                        case 0x22:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Temp 1:destination, Temp 2:result value");
-                            break;
-                        case 0x23:
-                        case 0x24:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID, Temp 1:result value");
-                            break;
-                        case 0x2D:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Stack Obj:destination");
-                            break;
-                        case 0x2E:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 3:fallback");
-                            break;
-                        case 0x30:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID, Temp 1:result value");
-                            break;
-                        case 0x32:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:take, Temp 1:target nID, Temp 2:percent, Temp 3,4:amount, Temp 5:from assets");
-                            break;
-                        case 0x34:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:direction, Temp 1:result wall obj");
-                            break;
-                        case 0x35:
-                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 2:state, Temp 3:fallback");
-                            break;
-                    }
-                    break;
-                case 0x02:  // (Evaluate) Expression (non-comparison operators return false if error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    c1 = b[x+5];
-                    c2 = b[x+6];
-                    data2(c2, w1);            // target data
-                    if (c1 == 0x14)           // abs(rhs)
-                        ht_fprintf(outFile,TYPE_OPERATOR," := abs(");
-                    else if (c1 == 0x15)      // Assign 32bit Value (both target and source are contiguous 32-bit)
-                        ht_fprintf(outFile,TYPE_OPERATOR," := int32(");
-                    else {
-                        CHECK_RANGE("Operator", gString88, c1);
-                        ht_fprintf(outFile,TYPE_OPERATOR," %s ",gString88[c1]);
-                    }
-
-                    if (b[x+7] == 7 && c1 > 7 && c1 < 11 && w2 > 0) {   // literal (non-0), flag operator
-                        if ((c2 == 3 || c2 == 4) && (w1 == 5 || w1 == 8 ||
-                                w1 == 0x22 || w1 == 0x28 || w1 == 0x2A ||
-                                w1 == 0x2B || w1 == 0x3F || w1 == 0x45)) {
-                            switch (w1) {
-                                case 5:
-                                    CHECK_RANGE("Wall adj. flags", gStringD0, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD0[w2 - 1]);
-                                    break;
-                                case 8:
-                                    CHECK_RANGE("Flags 1", gString8E, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8E[w2 - 1]);
-                                    break;
-                                case 0x22:
-                                    CHECK_RANGE("Hidden Flags", gString200, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString200[w2 - 1]);
-                                    break;
-                                case 0x28:
-                                    CHECK_RANGE("Flags 2", gStringD6, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD6[w2 - 1]);
-                                    break;
-                                case 0x2A:
-                                    CHECK_RANGE("Placement flags", gStringCA, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCA[w2 - 1]);
-                                    break;
-                                case 0x2B:
-                                    CHECK_RANGE("Movement flags", gStringCB, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCB[w2 - 1]);
-                                    break;
-                                case 0x3F:
-                                    CHECK_RANGE("Exclusive placement flags", gStringFB, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFB[w2 - 1]);
-                                    break;
-                                case 0x45:
-                                    CHECK_RANGE("Wall cutout flags", gStringFD, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFD[w2 - 1]);
-                                    break;
-                            }
-                        } else if ((c2 == 0x12 || c2 == 0x13 || c2 == 0x20) &&
-                        (w1 == 0x1E || w1 == 0x44 || w1 == 0x51 || w1 == 0x9E || w1 == 0x9F)) {
-                            switch (w1) {
-                                case 0x1E:
-                                    CHECK_RANGE("Censorship flags", gStringB2, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringB2[w2 - 1]);
-                                    break;
-                                case 0x44:
-                                    CHECK_RANGE("Ghost flags", gString201, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString201[w2 - 1]);
-                                    break;
-                                case 0x51:
-                                    CHECK_RANGE("Body flags", gString8F, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8F[w2 - 1]);
-                                    break;
-                                case 0x9E:
-                                    CHECK_RANGE("Selection flags", gString202, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString202[w2 - 1]);
-                                    break;
-                                case 0x9F:
-                                    CHECK_RANGE("Person flags", gString204, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString204[w2 - 1]);
-                                    break;
-                            }
-                        } else if ((c2 == 0x15 || c2 == 0x26 || c2 == 0x33) &&
-                        (w1 == 0x27 || w1 == 0x28)) {
-                            switch (w1) {
-                                case 0x27:
-                                    CHECK_RANGE("Room sort flags", gStringCD, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCD[w2 - 1]);
-                                    break;
-                                case 0x28:
-                                    CHECK_RANGE("Function sort flags", gStringCE, w2 - 1);
-                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCE[w2 - 1]);
-                                    break;
-                            }
-                        } else {
-                            data2(b[x+7], w2);  // unknown flag
-                        }
-                    } else {
-                        data2(b[x+7], w2);      // not a literal flag
-
-                        // flag, BCON 0x101:x (Standard Heights)
-/*
-                        if (c1 > 7 && c1 < 11 && b[x+7] == 0x1A && (w2 & 0xFF80) == 0x4080 && (w2 & 0x7F)) {
-                            CHECK_RANGE("Allowed height flags", gStringAH, (w2 & 0x7F) - 1);
-                            ht_fprintf(outFile,TYPE_NORMAL," %s", gStringAH[(w2 & 0x7F) - 1]);
-                        }
-*/
-                        if (c1 == 0x14 || c1 == 0x15)    // abs(rhs) or Assign 32bit Value
-                            ht_fprintf(outFile,TYPE_OPERATOR,")");
-                    }
-                    break;
-                case 0x08:  // Random Number (false = error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+4]);
-                    data2(b[x+2], w1);
-                    ht_fprintf(outFile,TYPE_OPERATOR," := random from 0 to < ");
-                    data2(b[x+6], w2);
-                    break;
-                case 0x1F:  // Set to Next (false = next not found)
-                    w1 = *(UINT16 *) (&b[x+9]);
-                    w2 = *(UINT16 *) (&b[x+11]);
-                    if (b[x+5] != 0xA || b[x+7] != 0 && (b[x+4] & 0x80) != 0) {
-                        data2(b[x+5], b[x+7]);
-                        ht_fprintf(outFile,TYPE_NORMAL," := next ");
-                    }
-                    c1 = (b[x+4] & 0x7F);
-                    CHECK_RANGE("Next object", gStringA4, c1);
-                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringA4[c1]);
-                    d1 = *(UINT32 *) (&b[x]);
-                    if (c1 == 4 || c1 == 7) ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
-                    readGUID(d1);
-                    if (c1 == 9 || c1 == 0x22) data2(0x19, b[x+6]);   // local
-//                    if (b[x+8] & 2) ht_fprintf(outFile,TYPE_NORMAL," where %s := %d", gString8D[w1], w2);
-                    if (b[x+8] & 1) ht_fprintf(outFile,TYPE_NORMAL," [including disabled objects]");
-                    break;
-                case 0x1C:  // Run Tree by Name
-                    c1 = b[x+4] - 1;
-                    w1 = *(UINT16 *) (&b[x+7]);
-                    w2 = *(UINT16 *) (&b[x+10]);
-                    w3 = *(UINT16 *) (&b[x+13]);
-                    if (b[x+2] & 1) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"%s", gNamedTreePrim[c1]);
-                    } else if (b[x+2] & 2) {
-                        if (readString2(gGlobGroup, 0x12F, c1) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x12F:0x%X]", c1);
-                    } else {
-                        if (readString2(gGroup, 0x12F, c1) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x12F:0x%X]", c1);
-                    }
-                    if (b[x+2] & 0x20) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Passing in params from the current tree");
-                    } else if (b[x+2] & 0x10) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Passing in params where param 0 = ");
-                        data2(b[x+6], w1);
-                        ht_fprintf(outFile,TYPE_NORMAL,", param 1 = ");
-                        data2(b[x+9], w2);
-                        ht_fprintf(outFile,TYPE_NORMAL,", param 2 = ");
-                        data2(b[x+12], w3);
-                    }
-                    switch (b[x+5]) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL,", run in my stack");
-                            break;
-                        case 1:
-                            ht_fprintf(outFile,TYPE_NORMAL,", run in Stack Object's stack");
-                            break;
-                        case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,", push onto my stack");
-                            break;
-                    }
-                    break;
-                case 0x0D:  // Push Interaction
-                    w1 = *(UINT16 *) (&b[x+6]);
-                    w2 = *(UINT16 *) (&b[x+9]);
-                    w3 = *(UINT16 *) (&b[x+12]);
-                    if (b[x+3] & 0x10) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"getting interaction # from ");
-                        data2(b[x+5],w1);
-                        ht_fprintf(outFile,TYPE_NORMAL," of ");
-                    } else if (b[x+14] & 2)
-                        ht_fprintf(outFile,TYPE_NORMAL,"getting interaction # from results of last FBA call ");
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,"#0x%X of ", b[x]);
-                    if (b[x+3] & 2)
-                        data2(0x19, b[x+1]);    // local
-                    else
-                        data2(9, b[x+1]);       // param
-                    ht_fprintf(outFile,TYPE_NORMAL," onto the stack object's queue, ");
-                    CHECK_RANGE("Priorities", gStringE0, b[x+2]);
-                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringE0[b[x+2]]);
-                    if (b[x+3] & 1) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", use icon from ");
-                        data2(0x19, b[x+4]);
-                    } else if (b[x+14] & 4)
-                        ht_fprintf(outFile,TYPE_NORMAL," use Icon from selector GUID in temp4/5");
-                    if (b[x+14] & 8)
-                        ht_fprintf(outFile,TYPE_NORMAL,", Getting Icon Index from Temp6");
-                    else
-                        ht_fprintf(outFile,TYPE_NORMAL,", Icon Index is 0x%X", b[x+15]);
-                    // if (b[x+3] & 4) ht_fprintf(outFile,TYPE_NORMAL,", continue as current");
-                    if (b[x+3] & 8) ht_fprintf(outFile,TYPE_NORMAL,", use name");
-                    if (b[x+3] & 0x20) ht_fprintf(outFile,TYPE_NORMAL,", Force run check tree");
-                    if (b[x+14] & 1) ht_fprintf(outFile,TYPE_NORMAL,", Passing first 4 params in");
-                    if (b[x+3] & 0x40) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Linking to interaction with ID in ");
-                        data2(b[x+8],w2);
-                    }
-                    if (b[x+3] & 0x80) {
-                        ht_fprintf(outFile,TYPE_NORMAL,", Returing ID in ");
-                        data2(b[x+11],w3);
-                    }
-                    break;
-                case 0x10:  // Find Location For
-                    w1 = *(UINT16 *) (&b[x+5]);
-                    w2 = *(UINT16 *) (&b[x+8]);
-                    if (b[x+2] & 8) {
-                        data2(b[x+4], w1);
-                        ht_fprintf(outFile,TYPE_NORMAL," relative to ");
-                        data2(b[x+7], w2);
-                        switch (b[x]) {
-                            case 5:
-                                ht_fprintf(outFile,TYPE_NORMAL,", routing slot in stack var %d",b[x+10]);
-                                break;
-                            case 6:
-                                ht_fprintf(outFile,TYPE_NORMAL,", routing slot in local var %d",b[x+10]);
-                                break;
-                            case 7:
-                                ht_fprintf(outFile,TYPE_NORMAL,", literal routing slot %d",b[x+10]);
-                                break;
-                            case 8:
-                                ht_fprintf(outFile,TYPE_NORMAL,", global routing slot %d",b[x+10]);
-                                break;
-                        }
-                        ht_fprintf(outFile,TYPE_NORMAL,", facing");
-                        if ((b[x+3] & 1) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," N");
-                        if ((b[x+3] & 2) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," NE");
-                        if ((b[x+3] & 4) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," E");
-                        if ((b[x+3] & 8) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," SE");
-                        if ((b[x+3] & 0x10) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," S");
-                        if ((b[x+3] & 0x20) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," SW");
-                        if ((b[x+3] & 0x40) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," W");
-                        if ((b[x+3] & 0x80) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL," NW");
-                    }
-                    else if (b[x+2] & 1) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"Stack Object, start at ");       // (this seems to make a bit more sense)
-                        data2(0x19,b[x+1]);       // local
-                    }
-                    if (b[x] != 0) {
-                        if (b[x+2] & 8) ht_fprintf(outFile,TYPE_NORMAL,", ");
-                        CHECK_RANGE("Find GLB", gStringEF, b[x]);
-                        ht_fprintf(outFile,TYPE_NORMAL," %s", gStringEF[b[x]]);
-                    }
-//                    if (b[x+2] & 1) {
-//                        if (b[x] != 0 || (b[x+2] & 8)) ht_fprintf(outFile,TYPE_NORMAL,", ");
-//                        ht_fprintf(outFile,TYPE_NORMAL,"start at ");
-//                        data2(0x19, b[x+1]);    // local
-//                    }
-                    if (b[x+2] & 4) ht_fprintf(outFile,TYPE_NORMAL,", user editable");
-                    if ((b[x+2] & 2) == 0) ht_fprintf(outFile,TYPE_NORMAL,", prefer empty");
-                    if (b[x+2] & 0x10) ht_fprintf(outFile,TYPE_NORMAL,", on level ground");
-                    if (b[x+2] & 0x20) ht_fprintf(outFile,TYPE_NORMAL,", with empty border");
-                    if (b[x+2] & 0x40) ht_fprintf(outFile,TYPE_NORMAL,", begin in front of refobj");
-                    if (b[x+2] & 0x80) ht_fprintf(outFile,TYPE_NORMAL,", with line of site to center");
-                    break;
-                case 0x2A:  // Create New Object Instance
-                    if (b[x+5] & 4)
-                        ht_fprintf(outFile,TYPE_NORMAL,"neighbor in stack obj");
-                    else if (b[x+5] & 0x40)
-                        ht_fprintf(outFile,TYPE_NORMAL,"from GUID in temp Inventory Token");
-                    else if (b[x+5] & 0x80)
-                        ht_fprintf(outFile,TYPE_NORMAL,"from GUID in temp0/1");
-                    else {
-                        d1 = *(UINT32 *) (&b[x]);
-                        if (d1 == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL,"GUID 0");
-                        else {
-                            ht_fprintf(outFile,TYPE_NORMAL,"GUID 0x%08X", d1);
-                            readGUID(d1);
-                        }
-                    }
-                    ht_fprintf(outFile,TYPE_NORMAL,", place ");
-                    c1 = b[x+4];
-                    switch (c1) {
-                        case 4:
-                            ht_fprintf(outFile,TYPE_NORMAL,"in stack objs slot %d", b[x+9]);
-                            break;
-                        case 0xA:
-                            ht_fprintf(outFile,TYPE_NORMAL,"in obj in temp 0's slot %d", b[x+9]);
-                            break;
-                        default:
-                            CHECK_RANGE("Object place", gStringA7, c1);
-                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringA7[c1]);
-                            break;
-                    }
-                    if (c1 == 8 || c1 == 9) {
-                        ht_fprintf(outFile,TYPE_NORMAL," ");
-                        data2(0x19, b[x+6]);     // local
-                    }
-                    c2 = b[x+5];
-                    if (c2 & 2)
-                        ht_fprintf(outFile,TYPE_NORMAL,", pass object ids to main");
-                    else if (c2 & 0x10)
-                        ht_fprintf(outFile,TYPE_NORMAL,", pass temp 0 to main");
-                    if (c2 & 1)
-                        ht_fprintf(outFile,TYPE_NORMAL,", do not duplicate");
-                    if (c2 & 8)
-                        ht_fprintf(outFile,TYPE_NORMAL,", fail if tile is non-empty");
-                    if (b[x+10] & 1)
-                        ht_fprintf(outFile,TYPE_NORMAL,", Moving in a new Sim");
-                    if (b[x+10] & 2)
-                        ht_fprintf(outFile,TYPE_NORMAL,", copying design mode materials from object in temp5");
-                    break;
-                case 0x32:  // Add/Change the Action String (false = error)
-                    c2 = b[x+2]; // flags
-                    if (b[x+9] == 0) {
-                        c1 = b[x+4] - 1;
-                        ht_fprintf(outFile,TYPE_NORMAL,"Add / Change Interaction string Mode, ");
-                        if ((b[x+3] & 1) && nodeVersion)
-                            ht_fprintf(outFile,TYPE_NORMAL,"Disabled, ");
-                        if (c2 & 0x10) {
-                            ht_fprintf(outFile,TYPE_NORMAL,"Getting index from temp 0");
-                            if (c2 & 4) {
-                                ht_fprintf(outFile,TYPE_NORMAL,", getting string from globals");
-                            } else if (c2 & 8) {
-                                ht_fprintf(outFile,TYPE_NORMAL,", getting string from semiglobals");
-                            } else
-                                ht_fprintf(outFile,TYPE_NORMAL,", getting string from privates");
-                        }
-                        else if (c2 & 4) {
-                            CHECK_RANGE("Action string", gActionString, c1);
-                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gActionString[c1]);
-                        } else if (c2 & 8) {
-                            if (readString2(gGlobGroup, 0x12E, c1) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x12E:0x%X]", c1);
-                        }
-                        else if (readString2(gGroup, 0x12E, c1) == 0)
-                            ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x12E:0x%X]", c1);
-                    } else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"Interaction Icon Change Mode");
-                        if (c2 & 0x20) {
-                            ht_fprintf(outFile,TYPE_NORMAL,", Using external guid for Thumbnail Outfit from ");
-                            if (c2 & 0x40)
-                                ht_fprintf(outFile,TYPE_NORMAL,"GUID in temp2/3");
-                            else {
-                                d1 = *(UINT32 *) (&b[x+5]);
-                                if (d1 == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"GUID 0");
-                                else {
-                                   ht_fprintf(outFile,TYPE_NORMAL,"GUID 0x%08X", d1);
-                                   readGUID(d1);
-                                }
-                            }
-                        } else {
-                            w1 = *(UINT16 *) (&b[x+12]);
-                            ht_fprintf(outFile,TYPE_NORMAL,", Using object ID in ");
-                            data2(b[x+11], w1);
-                        }
-                        if (c2 & 0x80)
-                            ht_fprintf(outFile,TYPE_NORMAL,", Getting icon index into model table from temp 1");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL,", Using index of %d",b[x+10]);
-                    }
-                    break;
-                case 0x6D:  // Change Material (false = error)
-                    w1 = *(UINT16 *) (&b[x+6]);
-                    w2 = *(UINT16 *) (&b[x+9]);
-                    w3 = *(UINT16 *) (&b[x+3]);
-                    w4 = *(UINT16 *) (&b[x]);
-                    c1 = b[x+2];
-                    if (b[x+13] & 2) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"using snap shot generated material");
-                        if (c1 & 1) {
-                            ht_fprintf(outFile,TYPE_NORMAL,", mesh found in obj in");
-                            data2(b[x+8],w2);
-                            if (c1 & 0x20)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index %d", w3);
-                        } else if (c1 & 0x20)
-                            ht_fprintf(outFile,TYPE_NORMAL,", using mesh group index from temp 1");
-                        else if (b[x+4] & 0x40) // w3 < 0
-                            ht_fprintf(outFile,TYPE_NORMAL,", over all model");
-                        else {
-                            ht_fprintf(outFile,TYPE_NORMAL,", On Mesh Group: ");
-                            if (c1 & 0x40)
-                                readString2(GROUP_GLOBAL, 0x87, w3);
-                            else if (c1 & 0x80)
-                                if (readString2(gGlobGroup, 0x87, w3) == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x87:0x%X]", w3);
-                            else if (readString2(gGroup, 0x87, w3) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x87:0x%X]", w3);
-                        }
-                    } else if (c1 & 8) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"found in obj in ");
-                        data2(b[x+8],w2);
-                        if (c1 & 0x10)
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
-                        else
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index %d", w4);
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index %d", w4);
-                    } else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"found in me, to: ");
-                        if (c1 & 0x10)
-                            if (b[x+13] & 1)
-                                ht_fprintf(outFile,TYPE_NORMAL,", using Moving Texture Name index from temp 0");
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,", using material index from temp 0");
-                        else
-                            if (c1 & 2)
-                                readString2(GROUP_GLOBAL, 0x88, w4);
-                            else if (c1 & 4)
-                                if (readString2(gGlobGroup, 0x88, w4) == 0)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x88:0x%X]", w4);
-                            else if (readString2(gGroup, 0x88, w4) == 0)
-                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x88:0x%X]", w4);
-                    }
-                    ht_fprintf(outFile,TYPE_NORMAL,", affecting ID in ");
-                    data2(b[x+5],w1);       // target object
-                    break;
-                case 0x1B:  // Go To Relative Position
-                    c1 = (b[x+2] + 2) & 0xFF;
-                    c2 = (b[x+3] + 2) & 0xFF;
-                    CHECK_RANGE("Relative locations", gString82, c1);
-                    ht_fprintf(outFile,TYPE_NORMAL,"Location = %s, ", gString82[c1]);
-                    CHECK_RANGE("Relative directions", gString83, c2);
-                    ht_fprintf(outFile,TYPE_NORMAL,"Direction = %s", gString83[c2]);
-                    c3 = b[x+6];
-                    if (c3 & 2) ht_fprintf(outFile,TYPE_NORMAL,", no failure trees");
-                    if (c3 & 4) ht_fprintf(outFile,TYPE_NORMAL,", allow different altitudes");
-                    break;
-                case 0x2D:  // Go To Routing Slot
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    switch (w2) {
-                        case 0:
-                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
-                            data2(9, w1);   // param
-                            break;
-                        case 1:
-                            if (b[x+4] & 2)
-                                ht_fprintf(outFile,TYPE_NORMAL,"From Slot index in Temp 0", w1);
-                            else
-                                ht_fprintf(outFile,TYPE_NORMAL,"0x%X", w1);
-                            break;
-                        case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,"global 0x%X", w1);
-                            break;
-                        case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL,"in ");
-                            data2(0x19, w1);   // local
-                            break;
-                        default:
-                            ht_fprintf(outFile,TYPE_NORMAL,"??? 0x%X", w1);
-                    }
-                    if (b[x+4] & 1) ht_fprintf(outFile,TYPE_NORMAL,", no failure trees");
-                    if (b[x+4] & 4) ht_fprintf(outFile,TYPE_NORMAL,", ignoring dest obj footprint");
-                    if (b[x+4] & 8) ht_fprintf(outFile,TYPE_NORMAL,", allow different altitudes");
-                    break;
-                case 0x79:  // Change Outfit (false = error)
-                    c1 = b[x];
-                    w1 = *(UINT16 *) (&b[x+10]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    d1 = *(UINT32 *) (&b[x+4]);
-                    if (c1 & 0x10) {
-                        ht_fprintf(outFile,TYPE_NORMAL,"Rebuild current outfit on sim in ");
-                        data2(b[x+9],w1);
-                    } else {
-                        ht_fprintf(outFile,TYPE_NORMAL,"Change Outfit on sim in ");
-                        data2(b[x+9],w1);
-                        if (c1 & 1)
-                            ht_fprintf(outFile,TYPE_NORMAL," using Stack Object");
-                        else if (c1 & 2) {
-                            ht_fprintf(outFile,TYPE_NORMAL," using GUID of 0x%08X", d1);
-                            readGUID(d1);
-                        } else if (c1 & 0x40)
-                            ht_fprintf(outFile,TYPE_NORMAL,", using GUID in Temp 0/1");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," using that sims outfits");
-                        ht_fprintf(outFile,TYPE_NORMAL," as source, using outfit ");
-                        if (c1 & 4) {
-                            ht_fprintf(outFile,TYPE_NORMAL,"index from ");
-                            data2(b[x+1],w2);
-                        } else {
-                            CHECK_RANGE("Person outfits", gStringFA, b[x+8]);
-                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFA[b[x+8]]);
-                        }
-                        if (c1 & 0x20)
-                            ht_fprintf(outFile,TYPE_NORMAL,", clearing GUID pointers in person data fields");
-                        if (c1 & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL,", writing changes to the .iff");
-                    }
-                    break;
 #endif
+}

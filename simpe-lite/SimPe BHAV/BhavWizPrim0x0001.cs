@@ -230,6 +230,97 @@ namespace pjse.BhavNameWizards
 				else s+= " (" + parms[instruction.Operands[0]].Trim() + ")";
 			}
 			return s;
+#if DISASIM
+                case 0x01:  // Generic Sims Call
+                    c1 = b[x];
+                    CHECK_RANGE("Generic Sims Call", gStringDC, c1);
+                    ht_fprintf(outFile,TYPE_FUNCTION,"%s", gStringDC[c1]);
+                    switch (c1) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:neighborhood, Temp 1:evict, Temp 2:save lot, Temp 3:reset tutorial");
+                            break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID, Temp 0:familyID");
+                            break;
+                        case 5:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:familyID");
+                            break;
+                        case 6:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID");
+                            break;
+                        case 0x0D:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj");
+                            break;
+                        case 0x11:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID");
+                            break;
+                        case 0x12:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:speed");
+                            break;
+                        case 0x15:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:child nID, Temp 1:parent nID");
+                            break;
+                        case 0x16:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:new spouse nID, Temp 1:initial spouse nID");
+                            break;
+                        case 0x17:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:remove nID, Temp 1:relative nID");
+                            break;
+                        case 0x18:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:age");
+                            break;
+                        case 0x19:
+                        case 0x28:
+                        case 0x29:
+                        case 0x2C:
+                        case 0x31:
+                        case 0x33:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0");
+                            break;
+                        case 0x1C:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:amount, Temp 2:multiplier");
+                            break;
+                        case 0x1D:
+                        case 0x26:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID");
+                            break;
+                        case 0x1E:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit");
+                            break;
+                        case 0x1F:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0,1:GUID");
+                            break;
+                        case 0x20:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit, Temp 1:result value");
+                            break;
+                        case 0x22:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Temp 1:destination, Temp 2:result value");
+                            break;
+                        case 0x23:
+                        case 0x24:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID, Temp 1:result value");
+                            break;
+                        case 0x2D:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Stack Obj:destination");
+                            break;
+                        case 0x2E:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 3:fallback");
+                            break;
+                        case 0x30:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID, Temp 1:result value");
+                            break;
+                        case 0x32:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:take, Temp 1:target nID, Temp 2:percent, Temp 3,4:amount, Temp 5:from assets");
+                            break;
+                        case 0x34:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:direction, Temp 1:result wall obj");
+                            break;
+                        case 0x35:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 2:state, Temp 3:fallback");
+                            break;
+                    }
+                    break;
+#endif
 		}
 
 
