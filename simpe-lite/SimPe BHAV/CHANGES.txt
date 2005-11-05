@@ -1,4 +1,13 @@
 
+5 November 2005 13:31 - Bhav: More parsing, fix to ChangeMaterial, code reformatting
+  * My/Stack Object's attributes and semi attributes labelled (experimental)
+  * Parse: 07 (refresh), 0b (distance), 0c (direction), 0f (breakpoint)
+  SimPe BHAV\
+    BhavWiz.cs 1.15
+    BhavWizPrim.cs 1.20
+    BhavWizPrim0x0001.cs 1.4
+    BhavWizPrim0x0002.cs 1.9
+
 2 November 2005 20:22 - Bhav: Sync with disaSim2-23d; fix typo in Find Location For 0x0010
   SimPe BHAV\
     BhavWizPrim.cs 1.19
