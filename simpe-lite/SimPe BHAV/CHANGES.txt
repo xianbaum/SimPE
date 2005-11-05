@@ -1,4 +1,9 @@
 
+5 November 2005 17:50 - Bhav: Parse 33 (inventory), 70 (effect), plus fixes to 0b, 0c
+  SimPe BHAV\
+    BhavWizPrim.cs 1.21
+    GlobalStr.cs 1.13
+
 5 November 2005 13:31 - Bhav: More parsing, fix to ChangeMaterial, code reformatting
   * My/Stack Object's attributes and semi attributes labelled (experimental)
   * Parse: 07 (refresh), 0b (distance), 0c (direction), 0f (breakpoint)
