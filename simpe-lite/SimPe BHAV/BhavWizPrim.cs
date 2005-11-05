@@ -628,7 +628,7 @@ namespace pjse.BhavNameWizards
 					//case 0x0030: return new WizPrim0x0030(i);
 					//case 0x0031: return new WizPrim0x0031(i);
 				case 0x0032: return new WizPrim0x0032(i);
-					//case 0x0033: return new WizPrim0x0033(i);
+				case 0x0033: return new WizPrim0x0033(i);
 					//case 0x0069: return new WizPrim0x0069(i);
 					//case 0x006a: return new WizPrim0x006a(i);
 					//case 0x006b: return new WizPrim0x006b(i);
@@ -636,7 +636,7 @@ namespace pjse.BhavNameWizards
 				case 0x006d: return new WizPrim0x006d(i);
 					//case 0x006e: return new WizPrim0x006e(i);
 					//case 0x006f: return new WizPrim0x006f(i);
-					//case 0x0070: return new WizPrim0x0070(i);
+				case 0x0070: return new WizPrim0x0070(i);
 					//case 0x0071: return new WizPrim0x0071(i);
 					//case 0x0072: return new WizPrim0x0072(i);
 					//case 0x0073: return new WizPrim0x0073(i);
@@ -811,9 +811,9 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "to Stack Object " : "") + "from " + ((o[2] & 0x01) != 0 ? dataOwner(o[2], o[3], o[4]) : "Me");
-			s += ", into " + dataOwner(8, o[4], o[5]); // temp
+			s += (lng ? "to Stack Object " : "") + "from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[3], o[4], o[5]) : "Me");
 			s += ", in 1/100ths tile: " + ((o[6] & 0x02) != 0).ToString();
+			s += ", into " + dataOwner(8, o[0], o[1]); // temp
 
 			return s;
 #if DISASIM
@@ -847,9 +847,9 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "to Stack Object " : "") + "from " + ((o[4] & 0x01) != 0 ? dataOwner(o[5], o[6], o[7]) : "Me");
-			s += ", into " + dataOwner(o[2], o[0], o[1]);
+			s += (lng ? "to Stack Object " : "") + "from " + ((o[4] & 0x01) != 0 ? "obj in " + dataOwner(o[5], o[6], o[7]) : "Me");
 			s += ", in degrees: " + ((o[8] & 0x02) == 0).ToString();
+			s += ", into " + dataOwner(o[2], o[0], o[1]);
 
 			return s;
 #if DISASIM
@@ -2321,6 +2321,125 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x0033 : BhavWizPrim	// Manage Inventory
+	{
+		public WizPrim0x0033(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			byte c1 = o[0];
+			if (instruction.NodeVersion == 0)
+				c1 = (byte)(((o[0] & 0x3C) << 1) | (o[0] & 0x83)); //wtf....
+
+			if (lng)
+			{
+				s += "Access the ";
+				switch (c1 & 0x07) 
+				{
+					case 0: s += "Global"; break;
+					case 1: s += "Lot"; break;
+					case 2: s += "Family"; break;
+					case 3: s += "Neighbor"; break;
+					case 4: s += "Game-Wide"; break;
+				}
+
+				s += " " + ((c1 & 0x08) != 0 ? "Counted" : "Singular") + " Inventory";
+
+				if ((c1 & 0x07) != 0)
+					s += " (ID in " + dataOwner(o[1], o[2], o[3]) + ")";
+
+				s += ", Category 0x" + SimPe.Helper.HexString(o[9]);
+
+				if ((o[4] != 0xE) && (o[4] != 0xF)) 
+				{
+					uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
+					s += ", GUID " + (d1 == 0 ? "from Stack Object" : "0x" + SimPe.Helper.HexString(d1));
+				}
+				s += ": ";
+			}
+
+			if ((c1 & 0x08) != 0) // Counted
+				switch (o[4]) 
+				{
+					case 0x0: s += "Add token. Pull count from " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x1:
+						s += "Add to token at index from " + dataOwner(o[10], o[11], o[12]) + ". "
+							+ "Pull count from " + dataOwner(o[13], o[14], o[15]);
+						break;
+					case 0x2: s += "Remove token. Pull count from " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x3:
+						s += "Remove to token at index from "+ dataOwner(o[10], o[11], o[12]) + ". "
+							+ "Pull count from " + dataOwner(o[13], o[14], o[15]);
+						break;
+					case 0x4: s += "Remove all tokens"; break;
+					case 0x5: s += "Remove all tokens from token at index from " + dataOwner(o[10], o[11], o[12]); break;
+					case 0x6: s += "Find the token. Put count into " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x7: s += "Read token into My Temp Token"; break;
+					case 0x8: s += "Read token into My Temp Token at index from " + dataOwner(o[10], o[11], o[12]); break;
+					case 0x9: s += "Set To Next token starting at index from " + dataOwner(o[10], o[11], o[12]); break;
+					case 0xa: s += "Store the count of the tokens in this inventory into " + dataOwner(o[13], o[14], o[15]); break;
+				}
+			else // Singular
+				switch (o[4]) 
+				{
+					case 0x00: s += "Add token"; break;
+					case 0x01: s += "Remove token at index from " + dataOwner(o[10], o[11], o[12]); break;
+					case 0x02: s += "Remove at tokens"; break;
+					case 0x03:
+						s += "Set To Next token starting at index from " + dataOwner(o[10], o[11], o[12])
+							+ (lng ? ", reversed: " + ((c1 & 0x80) != 0).ToString() : "");
+						break;
+					case 0x04:
+						s += "Push property on token at index from " + dataOwner(o[10], o[11], o[12])
+							+ (lng ? ". Get property value from " + dataOwner(o[13], o[14], o[15]) : "");
+						break;
+					case 0x05:
+						s += "Pop property off token at index from " + dataOwner(o[10], o[11], o[12])
+							+ (lng ? ". Put property value into " + dataOwner(o[13], o[14], o[15]) : "");
+						break;
+					case 0x06: s += "Read token into My Temp Token at index from " + dataOwner(o[10], o[11], o[12]); break;
+					case 0x07:
+						s += "Get property from token in My Temp Token at index from " + dataOwner(o[10], o[11], o[12])
+							+ (lng ? ". Put property value into " + dataOwner(o[13], o[14], o[15]) : "");
+						break;
+					case 0x08: break;
+					case 0x09: s += "Save My Temp Token back to the location it was loaded from"; break;
+					case 0x0a: s += "Store the count of the tokens in this inventory into " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x0b: break;
+					case 0x0c:
+						s += "Set To Next " + ((c1 & 0x10) != 0 ? "visible " : "hidden ") + ((c1 & 0x20) != 0 ? "memory " : "non-memory ") + "token"
+							+ (lng
+								? ", starting at index from " + dataOwner(o[10], o[11], o[12]) + ", Reversed: " + ((c1 & 0x80) != 0).ToString()
+								: "");
+						break;
+					case 0xD:
+						s += "Store the count of the "
+							+ ((c1 & 0x10) != 0 ? "visible " : "hidden ")
+							+ ((c1 & 0x20) != 0 ? "memory " : "non-memory ")
+							+ "tokens in this inventory into " + dataOwner(o[13], o[14], o[15]);
+						break;
+					case 0xE:
+						s += "Token Index " + dataOwner(o[6], ToShort(o[7], o[8]))
+							+ ", Property " + dataOwner(o[10], o[11], o[12])
+							+ " Assign to: " + dataOwner(o[13], o[14], o[15]);
+						break;
+					case 0xF:
+						s += dataOwner(o[13], o[14], o[15]) + ": "
+							+ "Assign to Token Index " + dataOwner(o[6], ToShort(o[7], o[8])) + ", "
+							+ "Property " + dataOwner(o[10], o[11], o[12]);
+						break;
+					case 0x10: s += "Add Token And Instance Info of Stack Object"; break;
+					case 0x11: s += "Create Object from Token at Index"; break;
+				}
+
+
+			return s;
 #if DISASIM
                 case 0x33:  // Manage Inventory
                     w1 = *(UINT16 *) (&b[x+14]);
@@ -2543,6 +2662,12 @@ namespace pjse.BhavNameWizards
 
                         }
                     break;
+#endif
+		}
+
+	}
+
+#if DISASIM
                 case 0x69:  // Animate Object (false = error)
                     c1 = b[x+2];
                     c2 = b[x+10];
@@ -3270,6 +3395,214 @@ namespace pjse.BhavNameWizards
                     if (b[x+10] & 0x80)
                         ht_fprintf(outFile,TYPE_NORMAL,", putting effect in priority Queue");
                     break;
+#endif
+	public class WizPrim0x0070 : BhavWizPrim	// Effect Stop/Start
+	{
+		public WizPrim0x0070(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			switch (o[0]) 
+			{
+				case 0x0: s += "Soft start effect"; break;
+				case 0x1: s += "Hard start effect"; break;
+				case 0x2: s += "Soft stop effect"; break;
+				case 0x3: s += "Hard stop effect"; break;
+				case 0x4: s += "Soft stop all effects"; break;
+				case 0x5: s += "Hard stop all effects"; break;
+				case 0x6: s += "Fire and Forget effect"; break;
+				case 0x7: s += "Interrogate Bone for effects"; break;
+				case 0x8: s += "Clear Queue and Hard stop all effects"; break;
+				case 0x9: s += "Hard stop ALL effects"; break;
+				case 0xA: s += "Set State 1 for all effects"; break;
+				case 0xB: s += "Set State 2 for all effects"; break;
+				case 0xC: s += "Set State 3 for all effects"; break;
+				case 0xD: s += "Set State 4 for all effects"; break;
+				case 0xE: s += "Soft stop ALL effects"; break;
+			}
+			
+			if (lng)
+			{
+				if (o[0] != 0x9 && o[0] != 0xE)
+				{
+					s += " on object in ";
+					switch (o[9]) 
+					{
+						case 0: s += "Target"; break;
+						case 1: s += "Routing"; break;
+						default: s += "Containment"; break;
+					}
+					s += " slot 0x" + SimPe.Helper.HexString(o[6]);
+				}
+
+				s += " of object in " + dataOwner(o[1], o[2], o[3]);       // target object
+			}
+
+			if (o[0] == 0x04 || o[0] == 0x05)
+				s += ", effect ID in temp 1: " + ((o[10] & 0x40) != 0).ToString();
+
+			else if (o[0] < 0x07 || o[0] > 0x0E)
+			{
+				if (o[4] != 0xFF) 
+				{
+					Scope scope = Scope.Private;
+					if      ((o[10] & 0x01) != 0) scope = Scope.Global;
+					else if ((o[10] & 0x02) != 0) scope = Scope.SemiGlobal;
+
+					s += ", " + readStr(scope, pjse.GS.GlobalStr.Effect, o[4], -1, false);
+				}
+				else
+					s += ", affecting default effect";
+			}
+
+			if (lng)
+			{
+				if ((o[10] & 0x04) != 0)
+					s += ", putting in Icon from object in " + dataOwner(o[12],ToShort(o[13], o[14]));
+				else if ((o[10] & 0x10) != 0)
+					s += ", putting in Icon from neighbor ID in " + dataOwner(o[12],ToShort(o[13], o[14]));
+				else if ((o[10] & 0x20) != 0)
+					s += ", putting in Conversation Icon index found in " + dataOwner(o[12],ToShort(o[13], o[14]))
+						+ " using sheet " + readStr(Scope.Private, pjse.GS.GlobalStr.Headlines, o[15], -1, false);
+				else if ((o[11] & 0x04) != 0)
+					s += ", putting in Icon with GUID in Temp 4,5";
+				else if ((o[11] & 0x10) != 0)
+					s += ", getting icon value from Temp 6";
+				else
+					s += ", no icon";
+
+				s += ", putting effect in priority Queue: " + ((o[10] & 0x80) != 0).ToString();
+
+				if ((o[11] & 0x08) != 0)
+					s += ", getting model name index from Temp 6";
+				else
+					s += ", using default object model";
+			}
+
+			return s;
+#if DISASIM
+                case 0x70:  // Effect Stop/Start (false = error)
+                    w1 = *(UINT16 *) (&b[x+2]);
+                    w2 = *(UINT16 *) (&b[x+13]);
+                    switch (b[x]) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft Start Effect on object in ");
+                            break;
+                        case 1:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard start effect on object in ");
+                            break;
+                        case 2:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop effect on object in ");
+                            break;
+                        case 3:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop effect on object in ");
+                            break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop all effects on object in ");
+                            break;
+                        case 5:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects on object in ");
+                            break;
+                        case 6:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Fire and Forget Effect on object in ");
+                            break;
+                        case 7:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Interrogate Bone for effects on object in ");
+                            break;
+                        case 8:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop all effects and clear Queue on object in ");
+                            break;
+                        case 9:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Hard stop ALL effects on object in ");
+                            break;
+                        case 0xA:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 1 for all effects on object in ");
+                            break;
+                        case 0xB:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 2 for all effects on object in ");
+                            break;
+                        case 0xC:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 3 for all effects on object in ");
+                            break;
+                        case 0xD:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Set State 4 for all effects on object in ");
+                            break;
+                        case 0xE:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Soft stop ALL effects on object in ");
+                            break;
+                    }
+                    data2(b[x+1],w1);       // target object
+                    if (b[x] == 4 || b[x] == 5) {
+                        if (b[x+10] & 0x40)
+                            ht_fprintf(outFile,TYPE_NORMAL,", Passing in effect ID in temp 1");
+                    } else if (b[x] < 7 || b[x] == 0xE)
+                        if (b[x+4] != 0xFF) {
+                            ht_fprintf(outFile,TYPE_NORMAL,", ");
+                            if (b[x+10] & 1)
+                                readString2(GROUP_GLOBAL, 0x8F, b[x+4]); // !!!
+                            else if (b[x+10] & 2) {
+                                if (readString2(gGlobGroup, 0x8F, b[x+4]) == 0)
+                                    ht_fprintf(outFile,TYPE_NORMAL,"[SemiGlobal STR# 0x8F:0x%X]", b[x+4]);
+                            }
+                            else if (readString2(gGroup, 0x8F, b[x+4]) == 0)
+                                ht_fprintf(outFile,TYPE_NORMAL,"[Private STR# 0x8F:0x%X]", b[x+4]);
+                        } else
+                            ht_fprintf(outFile,TYPE_NORMAL,", Affecting default effect");
+                    if (b[x] != 9) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", of Slot Type ");
+                        switch (b[x+9]) {
+                            case 0:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Target");
+                                break;
+                            case 1:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Routing");
+                                break;
+                            default:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Containment");
+                                break;
+                        }
+                        ht_fprintf(outFile,TYPE_NORMAL,", using slot number %d", b[x+6]);
+                    }
+                    if (b[x+11] & 0x10)
+                        ht_fprintf(outFile,TYPE_NORMAL,", getting icon value from Temp6");
+                    else if (b[x+11] & 4) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon with GUID in temp4/5 ");
+                        if (b[x+11] & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
+                    } else if (b[x+10] & 0x10) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from neighbor ID in ");
+                        data2(b[x+12],w2);
+                    } else if (b[x+10] & 0x20) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Conversation Icon index found in ");
+                        data2(b[x+12],w2);
+                        ht_fprintf(outFile,TYPE_NORMAL," using sheet ");
+                        if (readString2(gGroup, 0x95, b[x+15]) == 0) // ??
+                            ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x95:0x%X]", b[x+15]);
+                    } else if (b[x+10] & 4) {
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting in Icon from object in ");
+                        data2(b[x+12],w2);
+                        if (b[x+11] & 8)
+                            ht_fprintf(outFile,TYPE_NORMAL," getting model name index from Temp6");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL," using default object model");
+                    }
+                    if (b[x+10] & 0x80)
+                        ht_fprintf(outFile,TYPE_NORMAL,", putting effect in priority Queue");
+                    break;
+#endif
+		}
+
+	}
+
+#if DISASIM
                 case 0x71:  // Snap Into
                     w1 = *(UINT16 *) (&b[x+1]);
                     w2 = *(UINT16 *) (&b[x+4]);
