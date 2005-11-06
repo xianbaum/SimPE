@@ -268,7 +268,7 @@ namespace pjse.BhavNameWizards
 
 
 				bool noOperands = o[12] == 0; // original format; check for "operand killer"
-				for (int i = 0; i < 8 && noOperands; i++)
+				for (int i = 0; noOperands && i < 8; i++)
 					noOperands = o[i] == 0xFF;
 
 				int p = 0;
@@ -276,7 +276,7 @@ namespace pjse.BhavNameWizards
 				{
 					int i = Math.Min(thisArgc, myArgc);
 					if (i > 0)
-						s += (lng ? "Caller's params " + p.ToString() + (i > 1 ? " to " + i.ToString() : "") : "Caller's params");
+						s += (lng ? "Caller's params " + p.ToString() + (i > 1 ? " to " + (i - 1).ToString() : "") : "Caller's params");
 					thisArgc -= i;
 					myArgc -= i;
 					p += i;
