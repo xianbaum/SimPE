@@ -111,6 +111,7 @@ namespace pjse
 			return group;
 		}
 
+
 		public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance)
 		{
 			pjse.FileTable.Entry[] items;
@@ -160,8 +161,6 @@ namespace pjse
 			return (BhavWizBhav)i;
 		}
 
-		public Instruction Instruction { get { return instruction; } }
-
 		public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
 
 
@@ -173,14 +172,17 @@ namespace pjse
 
 		#endregion
 
+		public Instruction Instruction { get { return instruction; } }
+
 		public override string ToString() { return LongName; }
+
+		public virtual pjse.FileTable.Entry FTEntry { get { return null; } }
 
 
 		public virtual string ShortName { get { return Name + " (" + Operands(false) + ")"; } }
 
 		public virtual string LongName { get { return Name + " (" + Operands(true) + ")"; } }
 
-		public virtual pjse.FileTable.Entry FTEntry { get { return null; } }
 
 		protected virtual string Name { get { return "[" + Prefix + " 0x" + SimPe.Helper.HexString(instruction.OpCode) + "] " + OpcodeName; } }
 
@@ -189,7 +191,6 @@ namespace pjse
 		protected abstract string OpcodeName { get; }
 
 		protected abstract string Operands(bool lng);
-
 
 		#region Utilities
 		protected string dataOwner(byte doid, ushort instance)
@@ -242,7 +243,6 @@ namespace pjse
 		protected string dataOwner(byte doid, byte lo, byte hi) { return dataOwner(doid, ToShort(lo, hi)); }
 
 
-		// I've also changed this from DisaSim2 to be consistent on the choice of Global/Private/Semi
 		protected string readBcon(uint instance, int bid, bool temp, bool silent)
 		{
 			// in this context, the group has to be the group of the BHAV you are reading, I think
@@ -251,7 +251,7 @@ namespace pjse
 				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
 
 			Scope s = Scope.Private;
-			if      (instance < 0x1000) s = Scope.Global;
+			if      (instance <  0x1000) s = Scope.Global;
 			else if (instance >= 0x2000) s = Scope.SemiGlobal;
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
@@ -273,14 +273,21 @@ namespace pjse
 		}
 
 
+		/// <summary>
+		/// Get a string identifying the requested STR# resource
+		/// </summary>
+		/// <param name="s">Scope for STR# resource</param>
+		/// <param name="instance">STR# resource identifier</param>
+		/// <param name="sid">String number</param>
+		/// <param name="maxLen">-1: unlimited; else max string length to return</param>
+		/// <param name="silent">true: return "" if not found, else just string; false: identify requested resource</param>
+		/// <returns>Scope Instance "STR# 0x" hex(Instance) ":0x" hex(stringID) Left(string, len)</returns>
 		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen, bool silent)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
 
-			pjse.FileTable.Entry[] items = null;
-
-			items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)instance];
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)instance];
 
 			if (items == null || items.Length == 0)
 				return silent ? "" : "[No " + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
@@ -302,6 +309,7 @@ namespace pjse
 		{
 			return (len < 0) ? str : str.PadRight(len).Substring(0, len).Trim() + (str.Length > len ? "..." : "");
 		}
+
 
 		public static Glob GlobByGroup(uint group)
 		{
@@ -329,16 +337,14 @@ namespace pjse
 					b += 0x2000;
 					break;
 				case 2:			// global
-					b += 0x100;
+					b += 0x0100;
 					break;
 				case 3:			// FUBAR, as it says in disaSim2-23b
 					b = 0xF5BA;
 					break;
 			}
-			if ((a & 4) != 0)
-			{
-				b += 0x40;
-			}
+			if ((a & 4) != 0) b += 0x40;
+
 			ushort[] result = new ushort[2];
 			result[0] = (ushort)b;
 			result[1] = (ushort)c;
@@ -346,6 +352,7 @@ namespace pjse
 		}
 
 		public static ushort ToShort(byte lower, byte higher) { return (ushort)((higher << 8) + lower); }
+
 
 		public static Hashtable doidGStr = staticInitialiser();
 		private static Hashtable staticInitialiser()

@@ -669,6 +669,7 @@ namespace pjse.BhavNameWizards
 		public WizPrimDefault(Instruction i) : base(i) { }
 
 		protected override string Operands(bool lng) { return "not yet translated"; }
+
 	}
 
 	public class WizPrimUnused : BhavWizPrim
@@ -694,6 +695,378 @@ namespace pjse.BhavNameWizards
                     ht_fprintf(outFile,TYPE_NORMAL," ticks");
                     break;
 #endif
+		}
+
+	}
+
+	public class WizPrim0x0001 : BhavWizPrim	// Generic Sims Call
+	{
+		public WizPrim0x0001(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			string s = GS.GStr(GS.BhavStr.Generics, instruction.Operands[0]);
+			if (lng)
+			{
+				if (instruction.Operands[0] >= parms.Length) s += " ([UNK args])";
+				else if (parms[instruction.Operands[0]].Trim().Length == 0) s += " (no args)";
+				else s += " (" + parms[instruction.Operands[0]].Trim() + ")";
+			}
+			return s;
+#if DISASIM
+                case 0x01:  // Generic Sims Call
+                    c1 = b[x];
+                    CHECK_RANGE("Generic Sims Call", gStringDC, c1);
+                    ht_fprintf(outFile,TYPE_FUNCTION,"%s", gStringDC[c1]);
+                    switch (c1) {
+                        case 0:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:neighborhood, Temp 1:evict, Temp 2:save lot, Temp 3:reset tutorial");
+                            break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID, Temp 0:familyID");
+                            break;
+                        case 5:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:familyID");
+                            break;
+                        case 6:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj:nID");
+                            break;
+                        case 0x0D:
+                            ht_fprintf(outFile,TYPE_NORMAL," Stack Obj");
+                            break;
+                        case 0x11:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID");
+                            break;
+                        case 0x12:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:speed");
+                            break;
+                        case 0x15:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:child nID, Temp 1:parent nID");
+                            break;
+                        case 0x16:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:new spouse nID, Temp 1:initial spouse nID");
+                            break;
+                        case 0x17:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:remove nID, Temp 1:relative nID");
+                            break;
+                        case 0x18:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:age");
+                            break;
+                        case 0x19:
+                        case 0x28:
+                        case 0x29:
+                        case 0x2C:
+                        case 0x31:
+                        case 0x33:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0");
+                            break;
+                        case 0x1C:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:amount, Temp 2:multiplier");
+                            break;
+                        case 0x1D:
+                        case 0x26:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID");
+                            break;
+                        case 0x1E:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit");
+                            break;
+                        case 0x1F:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0,1:GUID");
+                            break;
+                        case 0x20:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:outfit, Temp 1:result value");
+                            break;
+                        case 0x22:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Temp 1:destination, Temp 2:result value");
+                            break;
+                        case 0x23:
+                        case 0x24:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:lotID, Temp 1:result value");
+                            break;
+                        case 0x2D:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:source, Stack Obj:destination");
+                            break;
+                        case 0x2E:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 3:fallback");
+                            break;
+                        case 0x30:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:nID, Temp 1:result value");
+                            break;
+                        case 0x32:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:take, Temp 1:target nID, Temp 2:percent, Temp 3,4:amount, Temp 5:from assets");
+                            break;
+                        case 0x34:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:direction, Temp 1:result wall obj");
+                            break;
+                        case 0x35:
+                            ht_fprintf(outFile,TYPE_NORMAL," Temp 0:tableID, Temp 1:index, Temp 2:state, Temp 3:fallback");
+                            break;
+                    }
+                    break;
+#endif
+		}
+
+
+		public static string[] parms =
+		{
+			#region genericSimsCall param descriptions
+			"Temp 0:neighborhood, Temp 1:evict, Temp 2:save lot, Temp 3:reset tutorial" // 0x00
+			,"" // 0x01
+			,"" // 0x02
+			,"" // 0x03
+			,"Stack Obj:nID, Temp 0:familyID" // 0x04
+			,"Temp 0:familyID" // 0x05
+			,"Stack Obj:nID" // 0x06
+			,"" // 0x07
+			,"" // 0x08
+			,"" // 0x09
+			,"" // 0x0a
+			,"" // 0x0b
+			,"Temp 0:result value" // 0x0c
+			,"Stack Obj" // 0x0d
+			,"Temp 0:result value" // 0x0e
+			,"Temp 0:result value" // 0x0f
+			,"" // 0x10
+			,"Temp 0:lotID" // 0x11
+			,"Temp 0:speed" // 0x12
+			,"Temp 0:neighbor ID" // 0x13
+			,"Temp 0:family" // 0x14
+			,"Temp 0:child nID, Temp 1:parent nID" // 0x15
+			,"Temp 0:new spouse nID, Temp 1:initial spouse nID" // 0x16
+			,"Temp 0:remove nID, Temp 1:relative nID" // 0x17
+			,"Temp 0:age" // 0x18
+			,"Temp 0" // 0x19
+			,"" // 0x1a
+			,"Temp 0:result value" // 0x1b
+			,"Temp 0:amount, Temp 2:multiplier" // 0x1c
+			,"Temp 0:nID" // 0x1d
+			,"Temp 0:outfit" // 0x1e
+			,"Temp 0,1:GUID" // 0x1f
+			,"Temp 0:outfit, Temp 1:result value" // 0x20
+			,"" // 0x21
+			,"Temp 0:source, Temp 1:destination, Temp 2:result value" // 0x22
+			,"Temp 0:lotID, Temp 1:result value" // 0x23
+			,"Temp 0:lotID, Temp 1:result value" // 0x24
+			,"" // 0x25
+			,"Temp 0:nID" // 0x26
+			,"" // 0x27
+			,"Temp 0" // 0x28
+			,"Temp 0" // 0x29
+			,"" // 0x2a
+			,"" // 0x2b
+			,"Temp 0" // 0x2c
+			,"Temp 0:source, Stack Obj:destination" // 0x2d
+			,"Temp 0:tableID, Temp 1:index, Temp 3:fallback" // 0x2e
+			,"" // 0x2f
+			,"Temp 0:nID, Temp 1:result value" // 0x30
+			,"Temp 0" // 0x31
+			,"Temp 0:take, Temp 1:target nID, Temp 2:percent, Temp 3,4:amount, Temp 5:from assets" // 0x32
+			,"Temp 0" // 0x33
+			,"Temp 0:direction, Temp 1:result wall obj" // 0x34
+			,"Temp 0:tableID, Temp 1:index, Temp 2:state, Temp 3:fallback" // 0x35
+			#endregion
+		};
+	}
+
+	public class WizPrim0x0002 : BhavWizPrim	// Expression
+	{
+		public WizPrim0x0002(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = instruction.Operands;
+
+			byte lhs_data_owner = o[6]; // c2
+			ushort lhs_value_word = ToShort(o[0], o[1]); // w1
+			byte _operator = o[5]; // c1
+			byte rhs_data_owner = o[7]; // b[x+7]
+			ushort rhs_value_word = ToShort(o[2], o[3]); // w2
+
+			string s = "";
+
+			if (lng)
+			{
+				s += dataOwner(lhs_data_owner, lhs_value_word)
+					+ " " + GS.GStr(GS.BhavStr.Operators, _operator)
+					+ " ";
+
+				if (_operator >= 8 && _operator <= 10) // Flag operation
+				{
+					s+= "flag# " + dataOwner(rhs_data_owner, rhs_value_word);
+					if (rhs_data_owner == 7 && flagname(lhs_data_owner, lhs_value_word, rhs_value_word) != null)
+						s += " (" + flagname(lhs_data_owner, lhs_value_word, rhs_value_word) + ")";
+				}
+				else
+					s+= dataOwner(rhs_data_owner, rhs_value_word);
+			}
+			else
+			{
+				s += GS.GStr(GS.BhavStr.DataOwners, lhs_data_owner) + " 0x" + SimPe.Helper.HexString(lhs_value_word)
+					+ " " + GS.GStr(GS.BhavStr.Operators, _operator)
+					+ " " + GS.GStr(GS.BhavStr.DataOwners, rhs_data_owner) + " 0x" + SimPe.Helper.HexString(rhs_value_word);
+			}
+			return s;
+#if DISASIM
+                case 0x02:  // (Evaluate) Expression (non-comparison operators return false if error)
+                    w1 = *(UINT16 *) (&b[x]);
+                    w2 = *(UINT16 *) (&b[x+2]);
+                    c1 = b[x+5];
+                    c2 = b[x+6];
+                    data2(c2, w1);            // target data
+                    if (c1 == 0x14)           // abs(rhs)
+                        ht_fprintf(outFile,TYPE_OPERATOR," := abs(");
+                    else if (c1 == 0x15)      // Assign 32bit Value (both target and source are contiguous 32-bit)
+                        ht_fprintf(outFile,TYPE_OPERATOR," := int32(");
+                    else {
+                        CHECK_RANGE("Operator", gString88, c1);
+                        ht_fprintf(outFile,TYPE_OPERATOR," %s ",gString88[c1]);
+                    }
+
+                    if (b[x+7] == 7 && c1 > 7 && c1 < 11 && w2 > 0) {   // literal (non-0), flag operator
+                        if ((c2 == 3 || c2 == 4) && (w1 == 5 || w1 == 8 || w1 == 0x0D ||
+                                w1 == 0x22 || w1 == 0x28 || w1 == 0x2A ||
+                                w1 == 0x2B || w1 == 0x3F || w1 == 0x45)) {
+                            switch (w1) {
+                                case 5:
+                                    CHECK_RANGE("Wall adj. flags", gStringD0, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD0[w2 - 1]);
+                                    break;
+                                case 8:
+                                    CHECK_RANGE("Flags 1", gString8E, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8E[w2 - 1]);
+                                    break;
+                                case 0x0D:
+                                    CHECK_RANGE("Wall placement flags", gStringE5, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringE5[w2 - 1]);
+                                    break;
+                                case 0x22:
+                                    CHECK_RANGE("Hidden Flags", gString200, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString200[w2 - 1]);
+                                    break;
+                                case 0x28:
+                                    CHECK_RANGE("Flags 2", gStringD6, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringD6[w2 - 1]);
+                                    break;
+                                case 0x2A:
+                                    CHECK_RANGE("Placement flags", gStringCA, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCA[w2 - 1]);
+                                    break;
+                                case 0x2B:
+                                    CHECK_RANGE("Movement flags", gStringCB, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCB[w2 - 1]);
+                                    break;
+                                case 0x3F:
+                                    CHECK_RANGE("Exclusive placement flags", gStringFB, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFB[w2 - 1]);
+                                    break;
+                                case 0x45:
+                                    CHECK_RANGE("Wall cutout flags", gStringFD, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFD[w2 - 1]);
+                                    break;
+                            }
+                        } else if ((c2 == 0x12 || c2 == 0x13 || c2 == 0x20) &&
+                        (w1 == 0x1E || w1 == 0x44 || w1 == 0x51 || w1 == 0x9E || w1 == 0x9F)) {
+                            switch (w1) {
+                                case 0x1E:
+                                    CHECK_RANGE("Censorship flags", gStringB2, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringB2[w2 - 1]);
+                                    break;
+                                case 0x44:
+                                    CHECK_RANGE("Ghost flags", gString201, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString201[w2 - 1]);
+                                    break;
+                                case 0x51:
+                                    CHECK_RANGE("Body flags", gString8F, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString8F[w2 - 1]);
+                                    break;
+                                case 0x9E:
+                                    CHECK_RANGE("Selection flags", gString202, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString202[w2 - 1]);
+                                    break;
+                                case 0x9F:
+                                    CHECK_RANGE("Person flags", gString204, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gString204[w2 - 1]);
+                                    break;
+                            }
+                        } else if ((c2 == 0x15 || c2 == 0x26 || c2 == 0x33) &&
+                        (w1 == 0x27 || w1 == 0x28)) {
+                            switch (w1) {
+                                case 0x27:
+                                    CHECK_RANGE("Room sort flags", gStringCD, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCD[w2 - 1]);
+                                    break;
+                                case 0x28:
+                                    CHECK_RANGE("Function sort flags", gStringCE, w2 - 1);
+                                    ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringCE[w2 - 1]);
+                                    break;
+                            }
+                        } else {
+                            data2(b[x+7], w2);  // unknown flag
+                        }
+                    } else {
+                        data2(b[x+7], w2);      // not a literal flag
+
+                        // flag, BCON 0x101:x (Standard Heights)
+/*
+                        if (c1 > 7 && c1 < 11 && b[x+7] == 0x1A && (w2 & 0xFF80) == 0x4080 && (w2 & 0x7F)) {
+                            CHECK_RANGE("Allowed height flags", gStringAH, (w2 & 0x7F) - 1);
+                            ht_fprintf(outFile,TYPE_NORMAL," %s", gStringAH[(w2 & 0x7F) - 1]);
+                        }
+*/
+                        if (c1 == 0x14 || c1 == 0x15)    // abs(rhs) or Assign 32bit Value
+                            ht_fprintf(outFile,TYPE_OPERATOR,")");
+                    }
+                    break;
+#endif
+		}
+
+
+		public static ArrayList flagNames(byte flagOwner, ushort flagType)
+		{
+			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.gStr((GS.BhavStr)flagTypes[flagType]);
+		}
+
+		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
+		{
+			if (flagValue == 0) return "[0: invalid]";
+			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((GS.BhavStr)flagTypes[flagType], (ushort)(flagValue-1));
+		}
+
+
+		private static Hashtable flagOwners = flagInitaliser();
+		private static Hashtable flagInitaliser()
+		{
+			Hashtable f = new Hashtable();
+			Hashtable o = new Hashtable();
+			o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
+			o.Add((ushort)0x08, GS.BhavStr.Flags1);
+			o.Add((ushort)0x0d, GS.BhavStr.WallPlacementFlags);
+			o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
+			o.Add((ushort)0x28, GS.BhavStr.Flags2);
+			o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);
+			o.Add((ushort)0x2b, GS.BhavStr.MoveFlags);
+			o.Add((ushort)0x3f, GS.BhavStr.ExclPlacementFlags);
+			o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
+			f.Add((byte)0x03, o); // 0x03 "My"
+			f.Add((byte)0x04, o); // 0x04 "Stack Object's"
+			Hashtable p = new Hashtable();
+			p.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
+			p.Add((ushort)0x44, GS.BhavStr.GhostFlags);
+			p.Add((ushort)0x51, GS.BhavStr.BodyFlags);
+			p.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
+			p.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
+			f.Add((byte)0x12, p); // 0x12 "My Person Data"
+			f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
+			f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
+			Hashtable d = new Hashtable();
+			d.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
+			d.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
+			f.Add((byte)0x15, d); // 0x15 "stack object's definition"
+			f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
+			f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"
+			return f;
 		}
 
 	}
