@@ -1,4 +1,16 @@
 
+6 November 2005 11:03 - Bhav: Parse 31 (no parms!), fix breakpoint (no parms), GRS global, effect headline scope
+  SimPe BHAV\
+    BhavWizPrim.cs 1.22
+
+6 November 2005 11:01 - Bhav: Fix off-by-one error in caller's param counting
+  SimPe BHAV\
+    BhavWizBhav.cs 1.14
+
+6 November 2005 10:59 - Bhav: BCON and STR readers brought in line and tidied
+  SimPe BHAV\
+    BhavWiz.cs 1.16
+
 5 November 2005 17:50 - Bhav: Parse 33 (inventory), 70 (effect), plus fixes to 0b, 0c
   SimPe BHAV\
     BhavWizPrim.cs 1.21
