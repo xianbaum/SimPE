@@ -626,7 +626,7 @@ namespace pjse.BhavNameWizards
 				case 0x002f:
 					return new WizPrimUnused(i);
 					//case 0x0030: return new WizPrim0x0030(i);
-					//case 0x0031: return new WizPrim0x0031(i);
+				case 0x0031: return new WizPrim0x0031(i);
 				case 0x0032: return new WizPrim0x0032(i);
 				case 0x0033: return new WizPrim0x0033(i);
 					//case 0x0069: return new WizPrim0x0069(i);
@@ -998,7 +998,11 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			return "if " + dataOwner(o[2], o[0], o[1]) + " != 0";
+			bool noOperands = true;
+			for(int i = 0; noOperands && i < 8; i++)
+				noOperands = o[i] == 0xFF;
+
+			return noOperands ? "always" : "if " + dataOwner(o[2], o[0], o[1]) + " != 0";
 #if DISASIM
                 case 0x0F:  // Break Point (false = error)
                     w1 = *(UINT16 *) (&b[x]);
@@ -2105,7 +2109,7 @@ namespace pjse.BhavNameWizards
 						s += "0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
 						break;
 					case 2:
-						s += "from " + dataOwner(0x06, o[0], o[1]); // Global
+						s += "global 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
 						break;
 					case 3:
 						s += "in " + dataOwner(0x19, o[0], o[1]); // Local
@@ -3444,19 +3448,17 @@ namespace pjse.BhavNameWizards
 				s += " of object in " + dataOwner(o[1], o[2], o[3]);       // target object
 			}
 
+			Scope scope = Scope.Private;
+			if      ((o[10] & 0x01) != 0) scope = Scope.Global;
+			else if ((o[10] & 0x02) != 0) scope = Scope.SemiGlobal;
+
 			if (o[0] == 0x04 || o[0] == 0x05)
 				s += ", effect ID in temp 1: " + ((o[10] & 0x40) != 0).ToString();
 
 			else if (o[0] < 0x07 || o[0] > 0x0E)
 			{
 				if (o[4] != 0xFF) 
-				{
-					Scope scope = Scope.Private;
-					if      ((o[10] & 0x01) != 0) scope = Scope.Global;
-					else if ((o[10] & 0x02) != 0) scope = Scope.SemiGlobal;
-
-					s += ", " + readStr(scope, pjse.GS.GlobalStr.Effect, o[4], -1, false);
-				}
+					s += ", " + readStr(scope, pjse.GS.GlobalStr.Effect, o[4], lng ? -1 : 60, !lng);
 				else
 					s += ", affecting default effect";
 			}
@@ -3469,7 +3471,7 @@ namespace pjse.BhavNameWizards
 					s += ", putting in Icon from neighbor ID in " + dataOwner(o[12],ToShort(o[13], o[14]));
 				else if ((o[10] & 0x20) != 0)
 					s += ", putting in Conversation Icon index found in " + dataOwner(o[12],ToShort(o[13], o[14]))
-						+ " using sheet " + readStr(Scope.Private, pjse.GS.GlobalStr.Headlines, o[15], -1, false);
+						+ " using sheet " + readStr(scope, pjse.GS.GlobalStr.Headlines, o[15], -1, false);
 				else if ((o[11] & 0x04) != 0)
 					s += ", putting in Icon with GUID in Temp 4,5";
 				else if ((o[11] & 0x10) != 0)
