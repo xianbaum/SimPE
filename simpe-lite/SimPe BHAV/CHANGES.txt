@@ -1,4 +1,11 @@
 
+6 November 2005 19:54 - Bhav: Sundry cosmetic changes
+  SimPe BHAV\
+    BhavWiz.cs 1.17
+    BhavWizPrim.cs 1.23
+    BhavWizPrim0x0001.cs 1.5
+    BhavWizPrim0x0002.cs 1.10
+
 6 November 2005 11:03 - Bhav: Parse 31 (no parms!), fix breakpoint (no parms), GRS global, effect headline scope
   SimPe BHAV\
     BhavWizPrim.cs 1.22
