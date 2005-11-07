@@ -2213,7 +2213,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x001e : BhavWizPrim	// Gosub Found Action
+	public class WizPrim0x001e : BhavWizPrim	// Gosub Action
 	{
 		public WizPrim0x001e(Instruction i) : base(i) { }
 
@@ -3058,7 +3058,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x002e : BhavWizPrim	// Find Best Object for Function
+	public class WizPrim0x002e : BhavWizPrim	// Snap
 	{
 		public WizPrim0x002e(Instruction i) : base(i) { }
 
