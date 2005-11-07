@@ -573,7 +573,7 @@ namespace pjse.BhavNameWizards
 				case 0x0000: return new WizPrim0x0000(i);
 				case 0x0001: return new WizPrim0x0001(i);
 				case 0x0002: return new WizPrim0x0002(i);
-					//case 0x0003: return new WizPrim0x0003(i);
+				case 0x0003: return new WizPrim0x0003(i);
 				case 0x0004:
 				case 0x0005:
 				case 0x0006:
@@ -586,32 +586,32 @@ namespace pjse.BhavNameWizards
 				case 0x000b: return new WizPrim0x000b(i);
 				case 0x000c: return new WizPrim0x000c(i);
 				case 0x000d: return new WizPrim0x000d(i);
-					//case 0x000e: return new WizPrim0x000e(i);
+				case 0x000e: return new WizPrim0x000e(i);
 				case 0x000f: return new WizPrim0x000f(i);
 				case 0x0010: return new WizPrim0x0010(i);
-					//case 0x0011: return new WizPrim0x0011(i);
-					//case 0x0012: return new WizPrim0x0012(i);
-					//case 0x0013: return new WizPrim0x0013(i);
-					//case 0x0014: return new WizPrim0x0014(i);
+				case 0x0011: return new WizPrim0x0011(i);
+				case 0x0012: return new WizPrim0x0012(i);
+				case 0x0013: return new WizPrim0x0013(i);
+				case 0x0014: return new WizPrim0x0014(i);
 				case 0x0015:
 					return new WizPrimUnused(i);
-					//case 0x0016: return new WizPrim0x0016(i);
-					//case 0x0017: return new WizPrim0x0017(i);
+				case 0x0016: return new WizPrim0x0016(i);
+				case 0x0017: return new WizPrim0x0017(i);
 				case 0x0018:
 					return new WizPrimUnused(i);
-					//case 0x0019: return new WizPrim0x0019(i);
-					//case 0x001a: return new WizPrim0x001a(i);
+				case 0x0019: return new WizPrim0x0019(i);
+				case 0x001a: return new WizPrim0x001a(i);
 				case 0x001b: return new WizPrim0x001b(i);
 				case 0x001c: return new WizPrim0x001c(i);
-					//case 0x001d: return new WizPrim0x001d(i);
-					//case 0x001e: return new WizPrim0x001e(i);
+				case 0x001d: return new WizPrim0x001d(i);
+				case 0x001e: return new WizPrim0x001e(i);
 				case 0x001f: return new WizPrim0x001f(i);
-					//case 0x0020: return new WizPrim0x0020(i);
-					//case 0x0021: return new WizPrim0x0021(i);
-					//case 0x0022: return new WizPrim0x0022(i);
-					//case 0x0023: return new WizPrim0x0023(i);
+				case 0x0020: return new WizPrim0x0020(i);
+				case 0x0021: return new WizPrim0x0021(i);
+				case 0x0022: return new WizPrim0x0022(i);
+				case 0x0023: return new WizPrim0x0023(i);
 				case 0x0024: return new WizPrim0x0024(i);
-					//case 0x0025: return new WizPrim0x0025(i);
+				case 0x0025: return new WizPrim0x0025(i);
 				case 0x0026:
 				case 0x0027:
 				case 0x0028:
@@ -622,10 +622,10 @@ namespace pjse.BhavNameWizards
 				case 0x002c:
 					return new WizPrimUnused(i);
 				case 0x002d: return new WizPrim0x002d(i);
-					//case 0x002e: return new WizPrim0x002e(i);
+				case 0x002e: return new WizPrim0x002e(i);
 				case 0x002f:
 					return new WizPrimUnused(i);
-					//case 0x0030: return new WizPrim0x0030(i);
+				case 0x0030: return new WizPrim0x0030(i);
 				case 0x0031: return new WizPrim0x0031(i);
 				case 0x0032: return new WizPrim0x0032(i);
 				case 0x0033: return new WizPrim0x0033(i);
@@ -1071,6 +1071,39 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x0003 : BhavWizPrim	// Find Best Interaction
+	{
+		public WizPrim0x0003(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			if (o[2] == 0)
+				s += "for the N current worst motives.";
+			else
+			{
+				int motives = ToShort(o[0], o[1]);
+				s += "For motive(s): ";
+				for (ushort i = 0; i < 16; i++)   // this should only find 1 motive (if any)
+					if ((motives & (1 << i)) != 0)
+						s += GS.GStr(GS.BhavStr.Motives, i) + ", ";
+				if (lng)
+					s += " with remaining motives from the worst: " + ((o[2] & 0x01) != 0).ToString();
+			}
+			if (lng)
+			{
+				s += "; Only in room held in Temp 0: "        + ((o[3] & 0x02) != 0).ToString();
+				s += "; Include Out Of World objects: "       + ((o[3] & 0x04) != 0).ToString();
+				s += "; Only nested: "                        + ((o[3] & 0x08) != 0).ToString();
+				s += "; Only on current Interaction object: " + ((o[3] & 0x10) != 0).ToString();
+			}
+
+			return s;
 #if DISASIM
                 case 0x03:  // Find Best Interaction
                     w1 = *(UINT16 *) (&b[x]);   // motive
@@ -1104,6 +1137,10 @@ namespace pjse.BhavNameWizards
                     }
                     break;
 #endif
+		}
+
+	}
+
 	public class WizPrim0x0007 : BhavWizPrim	// Refresh
 	{
 		public WizPrim0x0007(Instruction i) : base(i) { }
@@ -1116,13 +1153,8 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (o[0] == 0 ? "My" : "Stack Object's") + " ";
-			switch(o[2])
-			{
-				case 0: s += "graphic"; break;
-				case 1: s += "lighting contribution"; break;
-				default: s += "room score contribution"; break; // errrm...
-			}
+
+			s += GS.GStr(GS.BhavStr.UpdateWho, ToShort(o[0], o[1])) + " " + GS.GStr(GS.BhavStr.UpdateWhat, ToShort(o[2], o[3]));
 
 			return s;
 #if DISASIM
@@ -1339,6 +1371,30 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x000e : BhavWizPrim	// Find Best Object for Function
+	{
+		public WizPrim0x000e(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += GS.GStr(GS.BhavStr.FunctionTable, o[0]);
+			if (lng)
+			{
+				s += ", Outside Only: "     + ((o[2] & 0x01) != 0).ToString();
+				s += ", Inside Only: "      + ((o[2] & 0x02) != 0).ToString();
+				s += ", In Room Only: "     + ((o[2] & 0x04) != 0).ToString();
+				s += ", In Line Of Sight: " + ((o[2] & 0x10) != 0).ToString();
+				s += ", Ignoring Lockout: " + ((o[2] & 0x40) != 0).ToString();
+				s += ", Relative to " + ((o[2] & 0x08) != 0 ? "object in " + dataOwner(o[3], o[4], o[5]) : "Me");
+			}
+
+			return s;
 #if DISASIM
                 case 0x0E:  // Find Best Object for Function
                     w1 = *(UINT16 *) (&b[x+4]);
@@ -1361,6 +1417,10 @@ namespace pjse.BhavNameWizards
 
                     break;
 #endif
+		}
+
+	}
+
 	public class WizPrim0x000f : BhavWizPrim	// Break Point
 	{
 		public WizPrim0x000f(Instruction i) : base(i) { }
@@ -1508,6 +1568,24 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x0011 : BhavWizPrim	// Idle for Input
+	{
+		public WizPrim0x0011(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			if ((o[4] & 0x01) != 0)
+				s += "Handle Sub Queue Interactions";
+			else 
+				s += "for " + dataOwner(9, o[0]) + " ticks, " + (ToShort(o[2], o[3]) == 0 ? "do not " : "") + "allow push";
+
+			return s;
 #if DISASIM
                 case 0x11:  // Idle for Input
                     w1 = *(UINT16 *) (&b[x+2]);
@@ -1521,6 +1599,29 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL,"allow push");
                     }
                     break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x0012 : BhavWizPrim	// Remove Object Instance
+	{
+		public WizPrim0x0012(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += (o[0] == 0 ? "Me": "Stack Object");
+			s += ", return immediately: " + ((o[2] & 1) != 0).ToString();
+			s += ", cleanup all: " + ((o[2] & 2) == 0).ToString();
+
+			return s;
+#if DISASIM
                 case 0x12:  // Remove Object Instance
                     if (b[x] == 0)
                         ht_fprintf(outFile,TYPE_NORMAL,"Me");
@@ -1529,6 +1630,46 @@ namespace pjse.BhavNameWizards
                     if (b[x+2] & 1) ht_fprintf(outFile,TYPE_NORMAL,", return immediately");
                     if ((b[x+2] & 2) == 0) ht_fprintf(outFile,TYPE_NORMAL,", cleanup all");
                     break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x0013 : BhavWizPrim	// Make New Character
+	{
+		public WizPrim0x0013(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			if      ((o[9] & 0x08) != 0) s += "getting data from object with GUID in temp 0/1 ";
+			else if ((o[9] & 0x10) != 0) s += "getting data from object with GUID in temp Token ";
+			else if ((o[9] & 0x01) != 0)
+			{
+				s += "using " + ((o[9] & 0x02) != 0 ? "Neighbor" : "") + " ID in " + dataOwner(o[6], o[7], o[8]) + " as parent 1 ";
+				s += "and " + ((o[9] & 4) != 0 ? "Neighbor" : "") +" ID in " + dataOwner(o[3], o[4], o[5]) + " as parent 2 ";
+			}
+
+			if (o[0] != 0 && o[0] != 0xFF) 
+			{
+				s += ", age in " + dataOwner(0x19, o[1]);
+				s += ", gender in " + dataOwner(0x19, o[2]);
+				s += ", skin color in " + dataOwner(0x19, o[0]);
+			}
+			s += ", Getting character from Bin: " + ((o[9] & 0x20) != 0).ToString();
+			if ((o[9] & 0x40) != 0)
+			{
+				s += ", Using external guid for Thumbnail Outfit from "
+					+ ((o[9] & 0x80) != 0 ? "GUID in temp 2/3" : dataOwner(o[10], o[11], o[12]));
+			}
+
+			return s;
+#if DISASIM
                 case 0x13:  // Make New Character
                     w1 = *(UINT16 *) (&b[x+4]);
                     w2 = *(UINT16 *) (&b[x+7]);
@@ -1569,6 +1710,33 @@ namespace pjse.BhavNameWizards
                             data2(b[x+10],w3);
                     }
                     break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x0014 : BhavWizPrim	// Run Functional Tree
+	{
+		public WizPrim0x0014(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += GS.GStr(GS.BhavStr.OBJFDescs, o[0]);
+			if (lng)
+			{
+				s += ", change icon: "                          + ((o[2] & 0x01) != 0).ToString();
+				s += ", passing parameters from calling tree: " + ((o[2] & 0x02) != 0).ToString();
+				s += ", running check tree only: "              + ((o[2] & 0x04) != 0).ToString();
+			}
+
+			return s;
+#if DISASIM
                 case 0x14:  // Run Functional Tree
                     CHECK_RANGE("Functional table", gStringC9, b[x]);
                     ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringC9[b[x]]);
@@ -1577,10 +1745,75 @@ namespace pjse.BhavNameWizards
                     if (c1 & 2) ht_fprintf(outFile,TYPE_NORMAL,", passing parameters from calling tree");
                     if (c1 & 4) ht_fprintf(outFile,TYPE_NORMAL,", running check tree only");
                     break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x0016 : BhavWizPrim	// Turn Body
+	{
+		public WizPrim0x0016(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += GS.GStr(GS.BhavStr.TurnBody, o[0]);
+
+			return s;
+#if DISASIM
                 case 0x16:  // Turn Body Towards
                     CHECK_RANGE("Turn body", gStringD8, b[x]);
                     ht_fprintf(outFile,TYPE_FUNCTION,"%s", gStringD8[b[x]]);
                     break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x0017 : BhavWizPrim	// Play / Stop Sound Event
+	{
+		public WizPrim0x0017(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += ((o[4] & 0x40) != 0 ? "Stop" : "Play");
+
+			int instance = ToShort(o[0], o[1]);
+			Scope scope = Scope.Private;
+			if (instance >= 10000 && instance < 20000)
+			{
+				scope = Scope.Global;
+				instance -= 10000;
+			}
+			else if (instance >= 20000)
+			{
+				scope = Scope.SemiGlobal;
+				instance -= 20000;
+			}
+			s += " " + readStr(scope, GS.GlobalStr.Sound, instance, lng ? -1 : 60, false);
+
+			if (lng)
+			{
+				s += ", source: "    + ((o[4] & 0x02) != 0 ? "Stack object" : "Me");
+				s += ", auto vary: " + ((o[4] & 0x10) != 0).ToString();
+
+				s += ", sample rate: 0x" + SimPe.Helper.HexString(ToShort(o[2], o[3]));
+				s += ", volume: 0x"      + SimPe.Helper.HexString(o[5]);
+			}
+
+			return s;
+#if DISASIM
                 case 0x17:  // Play / Stop Sound Event (false = error)
                     w1 = *(UINT16 *) (&b[x]);
                     w2 = *(UINT16 *) (&b[x+2]);
@@ -1604,6 +1837,49 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL,", volume %d", b[x+5]); // ?
                     }
                     break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x0019 : BhavWizPrim	// Alter Budget
+	{
+		public WizPrim0x0019(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			if ((o[4] & 0x01) != 0)
+				s += "test if";
+			else s += ((o[4] & 0x02) != 0 ? "add" : "subtract");
+			s += " ";
+
+			byte owner = o[1];
+			switch (o[0]) 
+			{
+				case 0: owner = 0x07; break;	// literal
+				case 1: owner = 0x09; break;	// param
+				case 2: owner = 0x19; break;	// local
+			}
+			if ((o[4] & 0x08) != 0 && instruction.NodeVersion != 0)
+				s += "amount in Temp 2,3"; // was "temp 3 and 4"  (SimAntics error)
+			else
+				s += dataOwner(owner, o[2], o[3]);
+
+			s += " multiplied by " + ((o[4] & 0x04) != 0 ? "Temp 2" : " 0x" + SimPe.Helper.HexString(ToShort(o[7], o[8])));
+
+			if ((o[4] & 0x01) != 0)
+				s += " may be " + ((o[4] & 0x02) != 0 ? "added" : "subtracted");
+
+			s += " " + (((o[4] & 0x01) != 0) ? "as" : "from") + " " + GS.GStr(GS.BhavStr.ExpenseType, o[6]);
+
+			return s;
+#if DISASIM
                 case 0x19:  // Alter Budget
                     c1 = b[x+1];
                     switch (b[x]) {
@@ -1652,6 +1928,58 @@ namespace pjse.BhavNameWizards
                     CHECK_RANGE("Expenses", gStringF0, b[x+6]);
                     ht_fprintf(outFile,TYPE_NORMAL," as %s", gStringF0[b[x+6]]);
                     break;
+#endif
+		}
+
+	}
+
+	public class WizPrim0x001a : BhavWizPrim	// Relationship
+	{
+		public WizPrim0x001a(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			if (instruction.NodeVersion == 0)	// old-style parameter usage
+			{
+				s += "var 0x" + SimPe.Helper.HexString(o[0]) + " of ";
+				switch (o[1] & 3) 
+				{
+					case 0: s += "Me to Stack Object"; break;
+					case 1: s += "Stack Object to Me"; break;
+					case 2: s += "Stack Object to " + dataOwner(0x19, o[3]); break;
+					case 3: s += dataOwner(0x19, o[3]) + " to Stack Object"; break;
+				}
+
+				s += ", " + ((o[1] & 0x04) != 0 ? "from" : "result in") + ": " + dataOwner(o[4], ToShort(o[6], o[7]));
+
+				s += ", fail if too small: " + ((o[2] & 0x01) != 0).ToString();
+				s += ", use neighbor IDs: " + ((o[2] & 0x02) != 0).ToString();
+			} 
+			else 
+			{            // new-style parameter usage
+				s += "Access var 0x" + SimPe.Helper.HexString(o[0]);
+				if ((o[1] & 2) != 0)
+					s += readStr(Scope.Global, GS.GlobalStr.Relationship, o[0], -1, false);
+				s += " of " + dataOwner(o[2],ToShort(o[3], o[4]));
+				s += " to " + dataOwner(o[5],ToShort(o[6], o[7])) + ". ";
+				if ((o[1] & 4) != 0)
+					s += "Get value from ";
+				else
+					s += "Put value into ";
+				s += dataOwner(o[8], ToShort(o[9], o[10]));
+				s += ", fail if too small: " + ((o[1] & 0x01) != 0).ToString();
+				s += ", use neighbor IDs: " + ((o[1] & 0x02) != 0).ToString();
+				s += ", don't check presence of second object: " + ((o[1] & 0x08) != 0).ToString(); // "object to sim" relationship
+			}
+
+			return s;
+#if DISASIM
                 case 0x1A:  // Relationship
                     c1 = b[x];      // var
                     c2 = b[x+1];    // flags
@@ -1712,6 +2040,10 @@ namespace pjse.BhavNameWizards
                     }
                     break;
 #endif
+		}
+
+	}
+
 	public class WizPrim0x001b : BhavWizPrim	// Go To Relative Position
 	{
 		public WizPrim0x001b(Instruction i) : base(i) { }
@@ -1773,12 +2105,7 @@ namespace pjse.BhavNameWizards
 				s += ", ignore global trees: "     + ((o[2] & 0x04) != 0).ToString();
 				s += ", ignore semiglobal trees: " + ((o[2] & 0x08) != 0).ToString();
 
-				switch (o[5]) 
-				{
-					case 0: s += ", run in My stack"; break;
-					case 1: s += ", run in Stack Object's stack"; break;
-					case 2: s += ", push onto My stack"; break;
-				}
+				s += ", " + GS.GStr(GS.BhavStr.RTBNType, o[5]);
 
 				if ((o[2] & 0x10) != 0) // 16 byte format
 				{
@@ -1846,6 +2173,26 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x001d : BhavWizPrim	// Set Motive Change
+	{
+		public WizPrim0x001d(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += ((o[3] & 0x01) != 0
+				? "Clear all"
+				: dataOwner(0x0E, o[2]) + " += " + dataOwner(o[0], o[4], o[5]) + " per hour, stop at " + dataOwner(o[1], o[6], o[7])
+				);
+
+			s += ", Auto Clearing the Person Data Motive Decay value: " + ((o[3] & 0x02) != 0).ToString();
+
+			return s;
 #if DISASIM
                 case 0x1D:  // Set Motive Change (false = error)
                     w1 = *(UINT16 *) (&b[x+4]);
@@ -1862,11 +2209,34 @@ namespace pjse.BhavNameWizards
                     if (b[x+3] & 2)
                         ht_fprintf(outFile,TYPE_NORMAL,", Auto Clearing the Person Data Motive Decay value");
                     break;
+#endif
+		}
+	}
+
+	public class WizPrim0x001e : BhavWizPrim	// Gosub Found Action
+	{
+		public WizPrim0x001e(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += GS.GStr(GS.BhavStr.GosubAction, o[0]);
+
+			return s;
+#if DISASIM
                 case 0x1E:  // Gosub Found Action
                     CHECK_RANGE("Gosub Found Action", gString1FE, b[x]);
                     ht_fprintf(outFile,TYPE_FUNCTION,"%s",gString1FE[b[x]]);
                     break;
 #endif
+		}
+	}
+
 	public class WizPrim0x001f : BhavWizPrim	// Set to Next
 	{
 		public WizPrim0x001f(Instruction i) : base(i) { }
@@ -1930,6 +2300,33 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x0020 : BhavWizPrim	// Test Object Type
+	{
+		public WizPrim0x0020(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += "Object in " + dataOwner(o[6], o[4], o[5]);
+
+			uint d1 = (uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24));
+			s += " against GUID 0x" + SimPe.Helper.HexString(d1);
+			if (lng)
+			{
+				//if (d1 == 0x4C7CAB2B)
+				//	s += " (temporary inventory token)";
+
+				s += ", checking original, not current, GUID: " + ((o[7] & 0x01) != 0).ToString();
+				s += ", incoming ID is a neighbor ID: "         + ((o[7] & 0x02) != 0).ToString();
+				s += ", return GUID selected in Temp 0,1: "     + ((o[7] & 0x04) != 0).ToString();
+			}
+
+			return s;
 #if DISASIM
                 case 0x20:  // Test Object Type
                     w1 = *(UINT16 *) (&b[x+4]);
@@ -1954,6 +2351,27 @@ namespace pjse.BhavNameWizards
                     }
 
                     break;
+#endif
+		}
+	}
+
+	public class WizPrim0x0021 : BhavWizPrim	// Find 5 Worst Motives
+	{
+		public WizPrim0x0021(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += GS.GStr(GS.BhavStr.ShortOwner, ToShort(o[4], o[5])) + " lowest ";
+			s += GS.GStr(GS.BhavStr.MotiveType, ToShort(o[6], o[7])) + " into temps 0-4";
+
+			return s;
+#if DISASIM
                 case 0x21:  // Find 5 Worst Motives (false = error)
                     w1 = *(UINT16 *) (&b[x+4]);
                     w2 = *(UINT16 *) (&b[x+6]);
@@ -1964,6 +2382,74 @@ namespace pjse.BhavNameWizards
                     CHECK_RANGE("Motive type", gStringA5, w2);
                     ht_fprintf(outFile,TYPE_NORMAL,"%s into temps 0-4", gStringA5[w2]);
                     break;
+#endif
+		}
+	}
+
+	public class WizPrim0x0022 : BhavWizPrim	// UI Effect
+	{
+		public WizPrim0x0022(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			switch (o[0]) 
+			{
+					// why isn't there a BhavStr with these..?
+				case 0x00: s += "Press Control"; break;
+				case 0x01: s += "Disable Control"; break;
+				case 0x02: s += "Enable Control"; break;
+				case 0x03: s += "Play Effect on Control"; break;
+				case 0x04: s += "Set Event tree on Control"; break;
+				case 0x05: s += "Reset State on All Controls"; break;
+				case 0x06: s += "Disable All Controls"; break;
+				case 0x07: s += "Reset event trees on All Controls"; break;
+				case 0x08: s += "Set Event Tree on TNS node"; break;
+				case 0x09: s += "Set Control Visible"; break;
+				case 0x0a: s += "Set Control Hidden"; break;
+			}
+
+			if (o[0] < 5 || o[0] > 8)
+			{
+				Scope scope = Scope.Private;
+				if      ((o[5] & 0x04) != 0) scope = Scope.Global;
+				else if ((o[5] & 0x08) != 0) scope = Scope.SemiGlobal;
+				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, false);
+			}
+			if (o[0] != 8) 
+			{
+				Scope scope = Scope.Private;
+				if      ((o[5] & 0x01) != 0) scope = Scope.Global;
+				else if ((o[5] & 0x02) != 0) scope = Scope.SemiGlobal;
+				s += " in window " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), lng ? -1 : 60, false);
+			}
+			if (o[0] == 3)
+				s += ", " + (ToShort(o[6], o[7]) != 0 ? "Starting" : "Stopping") + " Effect";
+
+			if (o[0] == 4 || o[0] == 8)
+				if (ToShort(o[8], o[9]) == 0)
+					s += " No event tree";
+				else 
+				{
+					Scope scope = Scope.Global;
+					if      (o[10] == 0) scope = Scope.Private;
+					else if (o[10] == 1) scope = Scope.SemiGlobal;
+					s += " " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[8], o[9]));
+					pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[8], o[9]));
+					if (item != null)
+						s += " (" + item + ")";
+				}
+
+			if (o[0] == 8) 
+				s += ", getting TNS ID from " + dataOwner(o[13], o[11], o[12]);
+
+			return s;
+#if DISASIM
                 case 0x22:  // UI Effect (false = error)
                     c1 = b[x];
                     c2 = b[x+5]; // flags
@@ -2065,6 +2551,40 @@ namespace pjse.BhavNameWizards
                         data2(b[x+13],w5);
                     }
                     break;
+#endif
+		}
+	}
+
+	public class WizPrim0x0023 : BhavWizPrim	// Camera Control
+	{
+		public WizPrim0x0023(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			s += ((o[4] & 1) != 0 ? "show" : "un-show") + " stack obj";
+
+			s += ", zoom: 0x" + SimPe.Helper.HexString(o[3]) + " (";
+			switch (o[3])
+			{
+				case 1: s += "far"; break;
+				case 2: s += "mid"; break;
+				case 3: s += "near"; break;
+				default: s += "???"; break;
+			}
+			s += ")";
+
+			s += ", center: "    + ((o[4] & 0x08) != 0).ToString();
+			s += ", using timeout " + ((o[4] & 0x20) != 0 ? "in Temp 0" : "of 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])));
+			s += ", slow down: " + ((o[4] & 0x40) == 0).ToString();
+
+			return s;
+#if DISASIM
                 case 0x23:  // Camera Control (false = error)
                     c1 = b[x+4];    // flags
                     w1 = *(UINT16 *) (&b[x]);
@@ -2099,6 +2619,9 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL,"un-show stack obj");
                     break;
 #endif
+		}
+	}
+
 	public class WizPrim0x0024 : BhavWizPrim	// Dialog
 	{
 		public WizPrim0x0024(Instruction i) : base(i) { }
@@ -2178,7 +2701,7 @@ namespace pjse.BhavNameWizards
 					case 4: s += " " + dialogStr(scope, false, o[1]); break;
 				}
 
-				/*if (nowait || noblock) */
+				/*if (nowait || noblock) -- see bhav str 0xed */
 				s += ", " + (nowait ? "don't " : "") + "wait for user";/* + " and " +*/
 				s += ", " + (noblock ? "don't " : "") + "block simulation";
 
@@ -2389,15 +2912,14 @@ namespace pjse.BhavNameWizards
 
 			if (lng)
 			{
-				s += ", place " + GS.GStr(GS.BhavStr.ObjectPlace, o[4]);
+				s += ", place " + GS.GStr(GS.BhavStr.CreatePlace, o[4]);
 				switch (o[4]) 
 				{
 					case 0x04: case 0x0A: s += " 0x" + SimPe.Helper.HexString(o[9]); break;
 					case 0x08: case 0x09: s += " 0x" + SimPe.Helper.HexString(o[6]); break;
 				}
 
-				s += ", do not duplicate: "          + ((o[5] & 0x01) != 0).ToString();
-				s += ", pass object ids to main: "   + ((o[5] & 0x02) != 0).ToString();
+				s += ", " + GS.GStr(GS.BhavStr.CreateHow, (ushort)(o[5] & 0x03));
 				s += ", fail if tile is non-empty: " + ((o[5] & 0x08) != 0).ToString();
 				s += ", pass Temp 0 to main: "       + ((o[5] & 0x10) != 0).ToString();
 
@@ -2536,6 +3058,34 @@ namespace pjse.BhavNameWizards
 
 	}
 
+	public class WizPrim0x002e : BhavWizPrim	// Find Best Object for Function
+	{
+		public WizPrim0x002e(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+			ushort snapType = ToShort(o[2], o[3]);
+
+			s += "to " + GS.GStr(GS.BhavStr.SnapType, snapType);
+
+			if (snapType == 0 || snapType == 3 || snapType == 4)
+				s += " " + ((o[4] & 8) != 0 ? "in Temp 0" : "0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])));
+
+			if (lng)
+			{
+				s += ", from slot in temp 1: " + (ToShort(o[8], o[9]) == 1).ToString();
+
+				s += ", ask person to move: " + ((o[4] & 0x02) != 0).ToString();
+				s += ", TEST ONLY: "          + ((o[4] & 0x10) != 0).ToString();
+			}
+
+			return s;
 #if DISASIM
                 case 0x2E:  // Snap
                     w1 = *(UINT16 *) (&b[x]);
@@ -2556,6 +3106,9 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL,", TEST ONLY");
                     break;
 #endif
+		}
+	}
+
 	public class WizPrim0x0030 : BhavWizPrim	// Stop ALL Sounds
 	{
 		public WizPrim0x0030(Instruction i) : base(i) { }
@@ -3042,6 +3595,25 @@ namespace pjse.BhavNameWizards
 #endif
 		}
 
+	}
+
+	public class WizPrim0x0034 : BhavWizPrim	// Find Best Object for Function
+	{
+		public WizPrim0x0034(Instruction i) : base(i) { }
+
+		protected override string Operands(bool lng)
+		{
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			string s = "";
+
+
+			return s;
+#if DISASIM
+#endif
+		}
 	}
 
 #if DISASIM
@@ -3844,7 +4416,7 @@ namespace pjse.BhavNameWizards
 					s += ", putting in Icon from neighbor ID in " + dataOwner(o[12],ToShort(o[13], o[14]));
 				else if ((o[10] & 0x20) != 0)
 					s += ", putting in Conversation Icon index found in " + dataOwner(o[12],ToShort(o[13], o[14]))
-						+ " using sheet " + readStr(scope, pjse.GS.GlobalStr.Headlines, o[15], -1, false);
+						+ " using sheet " + readStr(scope, pjse.GS.GlobalStr.IconTexture, o[15], -1, false);
 				else if ((o[11] & 0x04) != 0)
 					s += ", putting in Icon with GUID in Temp 4,5";
 				else if ((o[11] & 0x10) != 0)
