@@ -1,4 +1,10 @@
 
+7 November 2005 22:22 - Bhav: Lots of parsing: 03, 0e, 11..14, 16, 17, 19, 1a, 1d, 1e, 20..23, 25, 2e, 30
+  SimPe BHAV\
+    BhavWizPrim.cs 1.24
+    GlobalStr.cs 1.14
+  GlobalsStrings.package 1.9
+
 6 November 2005 19:54 - Bhav: Sundry cosmetic changes
   SimPe BHAV\
     BhavWiz.cs 1.17
