@@ -297,7 +297,7 @@ namespace pjse
 			return
 				(str[1, sid] == null ? "[" : "")
 				+ (silent ? "" : s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " ")
-				+ (str[1, sid] == null ? " not set]" : "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\"")
+				+ (str[1, sid] == null ? "not set]" : "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\"")
 				;
 		}
 

@@ -1647,25 +1647,36 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			if      ((o[9] & 0x08) != 0) s += "getting data from object with GUID in temp 0/1 ";
-			else if ((o[9] & 0x10) != 0) s += "getting data from object with GUID in temp Token ";
-			else if ((o[9] & 0x01) != 0)
+			if ((o[9] & 0x01) != 0)
 			{
-				s += "using " + ((o[9] & 0x02) != 0 ? "Neighbor" : "") + " ID in " + dataOwner(o[6], o[7], o[8]) + " as parent 1 ";
-				s += "and " + ((o[9] & 4) != 0 ? "Neighbor" : "") +" ID in " + dataOwner(o[3], o[4], o[5]) + " as parent 2 ";
+				s += "Parent 1: "   + ((o[9] & 0x02) != 0 ? "Neighbor " : "") + "ID in " + dataOwner(o[6], o[7], o[8]);
+				s += ", Parent 2: " + ((o[9] & 0x04) != 0 ? "Neighbor " : "") + "ID in " + dataOwner(o[3], o[4], o[5]);
 			}
+			else
+				s += "No parents";
 
-			if (o[0] != 0 && o[0] != 0xFF) 
+			if (lng)
 			{
-				s += ", age in " + dataOwner(0x19, o[1]);
-				s += ", gender in " + dataOwner(0x19, o[2]);
-				s += ", skin color in " + dataOwner(0x19, o[0]);
-			}
-			s += ", Getting character from Bin: " + ((o[9] & 0x20) != 0).ToString();
-			if ((o[9] & 0x40) != 0)
-			{
-				s += ", Using external guid for Thumbnail Outfit from "
-					+ ((o[9] & 0x80) != 0 ? "GUID in temp 2/3" : dataOwner(o[10], o[11], o[12]));
+
+				s += ", getting data from object with GUID in Temp 0,1: "   + ((o[9] & 0x08) != 0).ToString();
+				s += ", getting data from object with GUID in temp Token: " + ((o[9] & 0x10) != 0).ToString();
+				s += ", getting character from Bin: "                       + ((o[9] & 0x20) != 0).ToString();
+				if ((o[9] & 0x40) != 0)
+				{
+					s += ", Using external guid for Thumbnail Outfit from "
+						+ ((o[9] & 0x80) != 0 ? "GUID in temp 2/3" : dataOwner(o[10], o[11], o[12]));
+				}
+				else
+					s += ", using default thumbnail outfit";
+
+				if (o[0] != 0 && o[0] != 0xFF) 
+				{
+					s += ", age in " + dataOwner(0x19, o[1]);
+					s += ", gender in " + dataOwner(0x19, o[2]);
+					s += ", skin color in " + dataOwner(0x19, o[0]);
+				}
+				else
+					s += ", age, gender and skin color not overridden";
 			}
 
 			return s;
@@ -1945,9 +1956,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			s += "var 0x" + SimPe.Helper.HexString(o[0]);
 			if (instruction.NodeVersion == 0)	// old-style parameter usage
 			{
-				s += "var 0x" + SimPe.Helper.HexString(o[0]) + " of ";
+				s += " of ";
 				switch (o[1] & 3) 
 				{
 					case 0: s += "Me to Stack Object"; break;
@@ -1955,27 +1967,26 @@ namespace pjse.BhavNameWizards
 					case 2: s += "Stack Object to " + dataOwner(0x19, o[3]); break;
 					case 3: s += dataOwner(0x19, o[3]) + " to Stack Object"; break;
 				}
-
-				s += ", " + ((o[1] & 0x04) != 0 ? "from" : "result in") + ": " + dataOwner(o[4], ToShort(o[6], o[7]));
-
-				s += ", fail if too small: " + ((o[2] & 0x01) != 0).ToString();
-				s += ", use neighbor IDs: " + ((o[2] & 0x02) != 0).ToString();
+				if (lng)
+				{
+					s += ", " + ((o[1] & 0x04) != 0 ? "set from" : "result in") + ": " + dataOwner(o[4], ToShort(o[6], o[7]));
+					s += ", fail if too small: " + ((o[2] & 0x01) != 0).ToString();
+					s += ", use neighbor IDs: "  + ((o[2] & 0x02) != 0).ToString();
+				}
 			} 
-			else 
-			{            // new-style parameter usage
-				s += "Access var 0x" + SimPe.Helper.HexString(o[0]);
-				if ((o[1] & 2) != 0)
-					s += readStr(Scope.Global, GS.GlobalStr.Relationship, o[0], -1, false);
+			else	// new-style parameter usage
+			{
+				s += " (" + readStr(Scope.Global, GS.GlobalStr.Relationship, o[0], -1, true) + ")";
 				s += " of " + dataOwner(o[2],ToShort(o[3], o[4]));
-				s += " to " + dataOwner(o[5],ToShort(o[6], o[7])) + ". ";
-				if ((o[1] & 4) != 0)
-					s += "Get value from ";
-				else
-					s += "Put value into ";
-				s += dataOwner(o[8], ToShort(o[9], o[10]));
-				s += ", fail if too small: " + ((o[1] & 0x01) != 0).ToString();
-				s += ", use neighbor IDs: " + ((o[1] & 0x02) != 0).ToString();
-				s += ", don't check presence of second object: " + ((o[1] & 0x08) != 0).ToString(); // "object to sim" relationship
+				s += " to " + dataOwner(o[5],ToShort(o[6], o[7]));
+
+				if (lng)
+				{
+					s += ", fail if too small: " + ((o[1] & 0x01) != 0).ToString();
+					s += ", use neighbor IDs: "  + ((o[1] & 0x02) != 0).ToString();
+					s += ", " + ((o[1] & 0x04) != 0 ? "set from" : "result in") + ": " + dataOwner(o[8], ToShort(o[9], o[10]));
+					s += ", don't check presence of second object: " + ((o[1] & 0x08) != 0).ToString(); // "object to sim" relationship
+				}
 			}
 
 			return s;
