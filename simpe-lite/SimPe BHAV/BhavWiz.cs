@@ -287,6 +287,10 @@ namespace pjse
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
 
+			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
+				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
+				return silent ? "" : s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid);
+
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)instance];
 
 			if (items == null || items.Length == 0)
@@ -296,7 +300,7 @@ namespace pjse
 			str.ProcessData(items[0].PFD, items[0].Package);
 			return
 				(str[1, sid] == null ? "[" : "")
-				+ (silent ? "" : s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid) + " ")
+				+ (silent ? "" : s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid) + " ")
 				+ (str[1, sid] == null ? "not set]" : "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\"")
 				;
 		}
