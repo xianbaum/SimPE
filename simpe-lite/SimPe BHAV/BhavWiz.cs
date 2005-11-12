@@ -208,12 +208,12 @@ namespace pjse
 			{
 				case 0x00: case 0x01:
 					temp = readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
-					if (temp != "")
+					if (!(temp.EndsWith("not set]") || temp.EndsWith("file]")))
 						s += " (" + temp + ")";
 					break;
 				case 0x02: case 0x05:
 					temp = readStr(Scope.SemiGlobal, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
-					if (temp != "")
+					if (!(temp.EndsWith("not set]") || temp.EndsWith("file]")))
 						s += " (" + temp + ")";
 					break;
 				case 0x0a:
@@ -323,20 +323,16 @@ namespace pjse
 			Scope c = instruction.Parent.Context;
 			string result = readStr(c, instance, sid, -1, true);
 
-			if (fallback && (result == null || result.Length == 0))
+			if (fallback && !(result.EndsWith("not set]") || result.EndsWith("file]")))
 			{
 				if (c == Scope.Private)
 					result = readStr(Scope.SemiGlobal, instance, sid, -1, true);
 
-				if ((result == null || result.Length == 0) && (c != Scope.Global))
+				if (!(result.EndsWith("not set]") || result.EndsWith("file]")))
 					result = readStr(Scope.Global, instance, sid, -1, true);
 			}
 
-			return
-				((result == null || result.Length == 0) ? "[" : "")
-				+ (silent ? "" : instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid) + " ")
-				+ ((result == null || result.Length == 0) ? "not set]" : "\"" + myLeft(result, maxLen) + "\"")
-				;
+			return result.Replace("Private ", "").Replace("Global ", "").Replace("SemiGlobal ", "");
 		}
 
 		protected string readStr(Scope s, uint instance, int sid, int maxLen, bool silent)
@@ -346,12 +342,12 @@ namespace pjse
 
 			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
 				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return silent ? "" : s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid);
+				return (silent ? "" : s.ToString() + " ") + "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid);
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), instance];
 
 			if (items == null || items.Length == 0)
-				return silent ? "" : "[No " + s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
+				return "[No " + (silent ? "" : s.ToString() + " ") + "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
 
 			Str str = new Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
