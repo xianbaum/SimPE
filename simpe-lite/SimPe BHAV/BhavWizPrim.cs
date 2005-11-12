@@ -637,20 +637,20 @@ namespace pjse.BhavNameWizards
 				case 0x006e: return new WizPrim0x006e(i);
 				case 0x006f: return new WizPrim0x006f(i);
 				case 0x0070: return new WizPrim0x0070(i);
-					//case 0x0071: return new WizPrim0x0071(i);
-					//case 0x0072: return new WizPrim0x0072(i);
-					//case 0x0073: return new WizPrim0x0073(i);
-					//case 0x0074: return new WizPrim0x0074(i);
-					//case 0x0075: return new WizPrim0x0075(i);
-					//case 0x0076: return new WizPrim0x0076(i);
-					//case 0x0077: return new WizPrim0x0077(i);
-					//case 0x0078: return new WizPrim0x0078(i);
+				case 0x0071: return new WizPrim0x0071(i);
+				case 0x0072: return new WizPrim0x0072(i);
+				case 0x0073: return new WizPrim0x0073(i);
+				case 0x0074: return new WizPrim0x0074(i);
+				case 0x0075: return new WizPrim0x0075(i);
+				case 0x0076: return new WizPrim0x0076(i);
+				case 0x0077: return new WizPrim0x0077(i);
+				case 0x0078: return new WizPrim0x0078(i);
 				case 0x0079: return new WizPrim0x0079(i);
-					//case 0x007a: return new WizPrim0x007a(i);
-					//case 0x007b: return new WizPrim0x007b(i);
-					//case 0x007c: return new WizPrim0x007c(i);
-					//case 0x007d: return new WizPrim0x007d(i);
-					//case 0x007e: return new WizPrim0x007e(i);
+				case 0x007a: return new WizPrim0x007a(i);
+				case 0x007b: return new WizPrim0x007b(i);
+				case 0x007c: return new WizPrim0x007c(i);
+				case 0x007d: return new WizPrim0x007d(i);
+				case 0x007e: return new WizPrim0x007e(i);
 			}
 
 			if (i.OpCode >= 0x0034 && i.OpCode <= 0x0068 || i.OpCode >= 0x007f)
@@ -884,27 +884,19 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			if (lng)
-			{
-				s += dataOwner(lhs_data_owner, lhs_value_word)
-					+ " " + GS.GStr(GS.BhavStr.Operators, _operator)
-					+ " ";
+			s += dataOwner(lng, lhs_data_owner, lhs_value_word)
+				+ " " + GS.GStr(GS.BhavStr.Operators, _operator)
+				+ " ";
 
-				if (_operator >= 8 && _operator <= 10) // Flag operation
-				{
-					s+= "flag# " + dataOwner(rhs_data_owner, rhs_value_word);
-					if (rhs_data_owner == 7 && flagname(lhs_data_owner, lhs_value_word, rhs_value_word) != null)
-						s += " (" + flagname(lhs_data_owner, lhs_value_word, rhs_value_word) + ")";
-				}
-				else
-					s+= dataOwner(rhs_data_owner, rhs_value_word);
+			if (lng && _operator >= 8 && _operator <= 10) // Flag operation
+			{
+				s+= "flag# " + dataOwner(rhs_data_owner, rhs_value_word);
+				if (rhs_data_owner == 7 && flagname(lhs_data_owner, lhs_value_word, rhs_value_word) != null)
+					s += " (" + flagname(lhs_data_owner, lhs_value_word, rhs_value_word) + ")";
 			}
 			else
-			{
-				s += GS.GStr(GS.BhavStr.DataOwners, lhs_data_owner) + " 0x" + SimPe.Helper.HexString(lhs_value_word)
-					+ " " + GS.GStr(GS.BhavStr.Operators, _operator)
-					+ " " + GS.GStr(GS.BhavStr.DataOwners, rhs_data_owner) + " 0x" + SimPe.Helper.HexString(rhs_value_word);
-			}
+				s += dataOwner(lng, rhs_data_owner, rhs_value_word);
+
 			return s;
 #if DISASIM
                 case 0x02:  // (Evaluate) Expression (non-comparison operators return false if error)
@@ -1181,16 +1173,13 @@ namespace pjse.BhavNameWizards
 
 		protected override string Operands(bool lng)
 		{
-			if (lng)
-				return dataOwner(instruction.Operands[2], instruction.Operands[0], instruction.Operands[1])
-					+ " := random from 0 to < "
-					+ dataOwner(instruction.Operands[6], instruction.Operands[4], instruction.Operands[5]);
-			else
-				return GS.GStr(GS.BhavStr.DataOwners, instruction.Operands[2])
-					+ " 0x" + SimPe.Helper.HexString(ToShort(instruction.Operands[0], instruction.Operands[1]))
-					+ ", " + GS.GStr(GS.BhavStr.DataOwners, instruction.Operands[6])
-					+ " 0x" + SimPe.Helper.HexString(ToShort(instruction.Operands[4], instruction.Operands[5]))
-					;
+			byte[] o = new byte[16];
+			((byte[])instruction.Operands).CopyTo(o, 0);
+			((byte[])instruction.Reserved1).CopyTo(o, 8);
+
+			return dataOwner(lng, o[2], o[0], o[1])
+				+ (lng ? " := random from 0 to < " : ", ")
+				+ dataOwner(lng, o[6], o[4], o[5]);
 #if DISASIM
                 case 0x08:  // Random Number (false = error)
                     w1 = *(UINT16 *) (&b[x]);
@@ -1216,9 +1205,12 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "to Stack Object " : "") + "from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[3], o[4], o[5]) : "Me");
-			s += ", in 1/100ths tile: " + ((o[6] & 0x02) != 0).ToString();
-			s += ", into " + dataOwner(8, o[0], o[1]); // temp
+			s += (lng ? "to Stack Object " : "") + "from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(lng, o[3], o[4], o[5]) : "Me");
+			s += ", into " + dataOwner(0x08, o[0], o[1]); // temp
+			if (lng)
+			{
+				s += ", in 1/100ths tile: " + ((o[6] & 0x02) != 0).ToString();
+			}
 
 			return s;
 #if DISASIM
@@ -1252,9 +1244,12 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "to Stack Object " : "") + "from " + ((o[4] & 0x01) != 0 ? "obj in " + dataOwner(o[5], o[6], o[7]) : "Me");
-			s += ", in degrees: " + ((o[8] & 0x02) == 0).ToString();
-			s += ", into " + dataOwner(o[2], o[0], o[1]);
+			s += (lng ? "to Stack Object " : "") + "from " + ((o[4] & 0x01) != 0 ? "obj in " + dataOwner(lng, o[5], o[6], o[7]) : "Me");
+			s += ", into " + dataOwner(lng, o[2], o[0], o[1]);
+			if (lng)
+			{
+				s += ", in degrees: " + ((o[8] & 0x02) == 0).ToString();
+			}
 
 			return s;
 #if DISASIM
@@ -1289,17 +1284,13 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			if ((o[3] & 0x10) != 0)
-				s += (lng ? "getting interaction # from " : "# [") + dataOwner(o[5], o[6], o[7]) + (lng ? "" : "]");
+				s += (lng ? "getting interaction # from " : "# [") + dataOwner(lng, o[5], o[6], o[7]) + (lng ? "" : "]");
 			else if ((o[14] & 2) != 0)
 				s += (lng ? "getting interaction # from results of " : "# [") + "last FBA call" + (lng ? "" : "]");
 			else
 				s += "# 0x" + SimPe.Helper.HexString(o[0]);
 
-			s +=  " of ";
-			if ((o[3] & 0x02) != 0)
-				s += dataOwner(0x19, o[1]);	// local
-			else
-				s += dataOwner(0x09, o[1]);	// param
+			s +=  " of " + dataOwner((byte)((o[3] & 0x02) != 0 ? 0x19 : 0x09), o[1]);	// local | param
 
 			s += (lng ? " onto the stack object's queue, " : ", ") + GS.GStr(GS.BhavStr.Priorities, o[2]);
 
@@ -1435,7 +1426,7 @@ namespace pjse.BhavNameWizards
 			for(int i = 0; noOperands && i < 8; i++)
 				noOperands = o[i] == 0xFF;
 
-			return noOperands ? "always" : "if " + dataOwner(o[2], o[0], o[1]) + " != 0";
+			return noOperands ? "always" : "if " + dataOwner(lng, o[2], o[0], o[1]) + " != 0";
 #if DISASIM
                 case 0x0F:  // Break Point (false = error)
                     w1 = *(UINT16 *) (&b[x]);
@@ -1469,7 +1460,7 @@ namespace pjse.BhavNameWizards
 			}
 			else
 			{
-				s += dataOwner(o[4], o[5], o[6]);
+				s += dataOwner(lng, o[4], o[5], o[6]);
 				if (lng)
 					s += ", relative to " + dataOwner(o[7], o[8], o[9]);
 			}
@@ -1617,8 +1608,11 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			s += (o[0] == 0 ? "Me": "Stack Object");
-			s += ", return immediately: " + ((o[2] & 1) != 0).ToString();
-			s += ", cleanup all: " + ((o[2] & 2) == 0).ToString();
+			if (lng)
+			{
+				s += ", return immediately: " + ((o[2] & 1) != 0).ToString();
+				s += ", cleanup all: " + ((o[2] & 2) == 0).ToString();
+			}
 
 			return s;
 #if DISASIM
@@ -1649,8 +1643,8 @@ namespace pjse.BhavNameWizards
 
 			if ((o[9] & 0x01) != 0)
 			{
-				s += "Parent 1: "   + ((o[9] & 0x02) != 0 ? "Neighbor " : "") + "ID in " + dataOwner(o[6], o[7], o[8]);
-				s += ", Parent 2: " + ((o[9] & 0x04) != 0 ? "Neighbor " : "") + "ID in " + dataOwner(o[3], o[4], o[5]);
+				s += "Parent 1: "   + ((o[9] & 0x02) != 0 ? "Neighbor " : "") + "ID in " + dataOwner(lng, o[6], o[7], o[8]);
+				s += ", Parent 2: " + ((o[9] & 0x04) != 0 ? "Neighbor " : "") + "ID in " + dataOwner(lng, o[3], o[4], o[5]);
 			}
 			else
 				s += "No parents";
@@ -1812,7 +1806,7 @@ namespace pjse.BhavNameWizards
 				scope = Scope.SemiGlobal;
 				instance -= 20000;
 			}
-			s += " " + readStr(scope, GS.GlobalStr.Sound, instance, lng ? -1 : 60, false);
+			s += " " + readStr(scope, GS.GlobalStr.Sound, instance, lng ? -1 : 60, !lng);
 
 			if (lng)
 			{
@@ -1880,9 +1874,11 @@ namespace pjse.BhavNameWizards
 			if ((o[4] & 0x08) != 0 && instruction.NodeVersion != 0)
 				s += "amount in Temp 2,3"; // was "temp 3 and 4"  (SimAntics error)
 			else
-				s += dataOwner(owner, o[2], o[3]);
+				s += dataOwner(lng, owner, o[2], o[3]);
 
-			s += " multiplied by " + ((o[4] & 0x04) != 0 ? "Temp 2" : " 0x" + SimPe.Helper.HexString(ToShort(o[7], o[8])));
+			s += " multiplied by " + ((o[4] & 0x04) != 0
+				? "Temp 2"
+				: (ToShort(o[7], o[8]) == 0 ? "1" : "0x" + SimPe.Helper.HexString(ToShort(o[7], o[8]))));
 
 			if ((o[4] & 0x01) != 0)
 				s += " may be " + ((o[4] & 0x02) != 0 ? "added" : "subtracted");
@@ -1977,8 +1973,8 @@ namespace pjse.BhavNameWizards
 			else	// new-style parameter usage
 			{
 				s += " (" + readStr(Scope.Global, GS.GlobalStr.Relationship, o[0], -1, true) + ")";
-				s += " of " + dataOwner(o[2],ToShort(o[3], o[4]));
-				s += " to " + dataOwner(o[5],ToShort(o[6], o[7]));
+				s += " of " + dataOwner(lng, o[2],ToShort(o[3], o[4]));
+				s += " to " + dataOwner(lng, o[5],ToShort(o[6], o[7]));
 
 				if (lng)
 				{
@@ -2109,7 +2105,7 @@ namespace pjse.BhavNameWizards
 			if      ((o[2] & 0x01) != 0) scope = Scope.Global;
 			else if ((o[2] & 0x02) != 0) scope = Scope.SemiGlobal;
 
-			s += readStr(scope, GS.GlobalStr.NamedTree, o[4] - 1, lng ? -1 : 60, false);
+			s += readStr(scope, GS.GlobalStr.NamedTree, o[4] - 1, lng ? -1 : 60, !lng);
 
 			if (lng)
 			{
@@ -2120,11 +2116,10 @@ namespace pjse.BhavNameWizards
 
 				if ((o[2] & 0x10) != 0) // 16 byte format
 				{
+					s += " (";
 					for (int i = 0; i < 3; i++)
-						s += ", " + (lng
-							? dataOwner(o[6 + i*3], o[6 + (i*3) + 1], o[6 + (i*3) + 2])
-							: GS.GStr(GS.BhavStr.DataOwners, o[6 + i*3]) + " 0x" + SimPe.Helper.HexString(ToShort(o[6 + (i*3) + 1], o[6 + (i*3) + 2]))
-							);
+						s += (i == 0 ? "" : ", ") + dataOwner(o[6 + i*3], o[6 + (i*3) + 1], o[6 + (i*3) + 2]);
+					s += ")";
 				}
 
 				if ((o[2] & 0x20) != 0)
@@ -2198,10 +2193,13 @@ namespace pjse.BhavNameWizards
 
 			s += ((o[3] & 0x01) != 0
 				? "Clear all"
-				: dataOwner(0x0E, o[2]) + " += " + dataOwner(o[0], o[4], o[5]) + " per hour, stop at " + dataOwner(o[1], o[6], o[7])
+				: dataOwner(0x0E, o[2]) + " += " + dataOwner(lng, o[0], o[4], o[5]) + " per hour, stop at " + dataOwner(lng, o[1], o[6], o[7])
 				);
 
-			s += ", Auto Clearing the Person Data Motive Decay value: " + ((o[3] & 0x02) != 0).ToString();
+			if (lng)
+			{
+				s += ", Auto Clearing the Person Data Motive Decay value: " + ((o[3] & 0x02) != 0).ToString();
+			}
 
 			return s;
 #if DISASIM
@@ -2268,20 +2266,16 @@ namespace pjse.BhavNameWizards
 					s += " GUID 0x" + SimPe.Helper.HexString(d1);
 					break;
 				case 0x09: case 0x22:
-					s = s.Replace("[local]", (lng
-						? dataOwner(0x19, o[6]) // local
-						: GS.GStr(GS.BhavStr.DataOwners, 0x19) + " " + o[6].ToString()));
+					s = s.Replace("[local]", dataOwner(lng, 0x19, o[6])); // local
 					break;
 			}
 
 			if ((o[4] & 0x80) == 0)
 				s += lng ? ", result in " + dataOwner(0x0a, 0x0000) : ""; // Stack Object
 			else
-				s += ", result in " + (lng
-					? dataOwner(o[5], o[7])
-					: GS.GStr(GS.BhavStr.DataOwners, o[5]) + " 0x" + SimPe.Helper.HexString(o[7]));
+				s += ", result in " + dataOwner(lng, o[5], o[7]);
 
-			if (instruction.NodeVersion != 0)
+			if (lng && instruction.NodeVersion != 0)
 			{
 				if ((o[8] & 0x02) != 0)
 					s += " where " + GS.GStr(GS.BhavStr.DataLabels, ToShort(o[9], o[10])) + " == 0x" + SimPe.Helper.HexString(ToShort(o[11], o[12]));
@@ -2323,7 +2317,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Object in " + dataOwner(o[6], o[4], o[5]);
+			s += "Object in " + dataOwner(lng, o[6], o[4], o[5]);
 
 			uint d1 = (uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24));
 			s += " against GUID 0x" + SimPe.Helper.HexString(d1);
@@ -2430,34 +2424,37 @@ namespace pjse.BhavNameWizards
 				Scope scope = Scope.Private;
 				if      ((o[5] & 0x04) != 0) scope = Scope.Global;
 				else if ((o[5] & 0x08) != 0) scope = Scope.SemiGlobal;
-				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, false);
+				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, !lng);
 			}
 			if (o[0] != 8) 
 			{
 				Scope scope = Scope.Private;
 				if      ((o[5] & 0x01) != 0) scope = Scope.Global;
 				else if ((o[5] & 0x02) != 0) scope = Scope.SemiGlobal;
-				s += " in window " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), lng ? -1 : 60, false);
+				s += " in window " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), lng ? -1 : 60, !lng);
 			}
 			if (o[0] == 3)
 				s += ", " + (ToShort(o[6], o[7]) != 0 ? "Starting" : "Stopping") + " Effect";
 
-			if (o[0] == 4 || o[0] == 8)
-				if (ToShort(o[8], o[9]) == 0)
-					s += ", No event tree";
-				else 
-				{
-					Scope scope = Scope.Global;
-					if      (o[10] == 0) scope = Scope.Private;
-					else if (o[10] == 1) scope = Scope.SemiGlobal;
-					s += ", " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[8], o[9]));
-					pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[8], o[9]));
-					if (item != null)
-						s += " (" + item + ")";
-				}
+			if (lng)
+			{
+				if (o[0] == 4 || o[0] == 8)
+					if (ToShort(o[8], o[9]) == 0)
+						s += ", No event tree";
+					else 
+					{
+						Scope scope = Scope.Global;
+						if      (o[10] == 0) scope = Scope.Private;
+						else if (o[10] == 1) scope = Scope.SemiGlobal;
+						s += ", " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[8], o[9]));
+						pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[8], o[9]));
+						if (item != null)
+							s += " (" + item + ")";
+					}
 
-			if (o[0] == 8) 
-				s += ", getting TNS ID from " + dataOwner(o[13], o[11], o[12]);
+				if (o[0] == 8) 
+					s += ", getting TNS ID from " + dataOwner(lng, o[13], o[11], o[12]);
+			}
 
 			return s;
 #if DISASIM
@@ -3185,7 +3182,7 @@ namespace pjse.BhavNameWizards
 				}
 
 				if ((o[2] & 0x10) != 0) s += scope.ToString() + " STR# 0x012E:[Temp 0]";
-				else s += readStr(scope, GS.GlobalStr.MakeAction, o[4] - 1, lng ? -1 : 60, false);
+				else s += readStr(scope, GS.GlobalStr.MakeAction, o[4] - 1, lng ? -1 : 60, !lng);
 			}
 			else 
 			{
@@ -3196,7 +3193,7 @@ namespace pjse.BhavNameWizards
 						? "from Temp 2,3"
 						: "0x" + SimPe.Helper.HexString(o[5] | (o[6]<<8) | (o[7]<<16) | (o[8]<<24)));
 				else 
-					s += ", Using object ID in " + dataOwner(o[11], o[12], o[13]);
+					s += ", Using object ID in " + dataOwner(lng, o[11], o[12], o[13]);
 
 				if (lng)
 				{
@@ -3308,72 +3305,72 @@ namespace pjse.BhavNameWizards
 			if ((c1 & 0x08) != 0) // Counted
 				switch (o[4]) 
 				{
-					case 0x0: s += "Add token. Pull count from " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x0: s += "Add token. Pull count from " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0x1:
-						s += "Add to token at index from " + dataOwner(o[10], o[11], o[12]) + ". "
-							+ "Pull count from " + dataOwner(o[13], o[14], o[15]);
+						s += "Add to token at index from " + dataOwner(lng, o[10], o[11], o[12]) + ". "
+							+ "Pull count from " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
-					case 0x2: s += "Remove token. Pull count from " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x2: s += "Remove token. Pull count from " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0x3:
-						s += "Remove to token at index from "+ dataOwner(o[10], o[11], o[12]) + ". "
-							+ "Pull count from " + dataOwner(o[13], o[14], o[15]);
+						s += "Remove to token at index from "+ dataOwner(lng, o[10], o[11], o[12]) + ". "
+							+ "Pull count from " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
 					case 0x4: s += "Remove all tokens"; break;
-					case 0x5: s += "Remove all tokens from token at index from " + dataOwner(o[10], o[11], o[12]); break;
-					case 0x6: s += "Find the token. Put count into " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x5: s += "Remove all tokens from token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
+					case 0x6: s += "Find the token. Put count into " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0x7: s += "Read token into My Temp Token"; break;
-					case 0x8: s += "Read token into My Temp Token at index from " + dataOwner(o[10], o[11], o[12]); break;
-					case 0x9: s += "Set To Next token starting at index from " + dataOwner(o[10], o[11], o[12]); break;
-					case 0xa: s += "Store the count of the tokens in this inventory into " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x8: s += "Read token into My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
+					case 0x9: s += "Set To Next token starting at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
+					case 0xa: s += "Store the count of the tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]); break;
 				}
 			else // Singular
 				switch (o[4]) 
 				{
 					case 0x00: s += "Add token"; break;
-					case 0x01: s += "Remove token at index from " + dataOwner(o[10], o[11], o[12]); break;
+					case 0x01: s += "Remove token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
 					case 0x02: s += "Remove at tokens"; break;
 					case 0x03:
-						s += "Set To Next token starting at index from " + dataOwner(o[10], o[11], o[12])
+						s += "Set To Next token starting at index from " + dataOwner(lng, o[10], o[11], o[12])
 							+ (lng ? ", reversed: " + ((c1 & 0x80) != 0).ToString() : "");
 						break;
 					case 0x04:
-						s += "Push property on token at index from " + dataOwner(o[10], o[11], o[12])
-							+ (lng ? ". Get property value from " + dataOwner(o[13], o[14], o[15]) : "");
+						s += "Push property on token at index from " + dataOwner(lng, o[10], o[11], o[12])
+							+ (lng ? ". Get property value from " + dataOwner(lng, o[13], o[14], o[15]) : "");
 						break;
 					case 0x05:
-						s += "Pop property off token at index from " + dataOwner(o[10], o[11], o[12])
-							+ (lng ? ". Put property value into " + dataOwner(o[13], o[14], o[15]) : "");
+						s += "Pop property off token at index from " + dataOwner(lng, o[10], o[11], o[12])
+							+ (lng ? ". Put property value into " + dataOwner(lng, o[13], o[14], o[15]) : "");
 						break;
-					case 0x06: s += "Read token into My Temp Token at index from " + dataOwner(o[10], o[11], o[12]); break;
+					case 0x06: s += "Read token into My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
 					case 0x07:
-						s += "Get property from token in My Temp Token at index from " + dataOwner(o[10], o[11], o[12])
-							+ (lng ? ". Put property value into " + dataOwner(o[13], o[14], o[15]) : "");
+						s += "Get property from token in My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12])
+							+ (lng ? ". Put property value into " + dataOwner(lng, o[13], o[14], o[15]) : "");
 						break;
 					case 0x08: break;
 					case 0x09: s += "Save My Temp Token back to the location it was loaded from"; break;
-					case 0x0a: s += "Store the count of the tokens in this inventory into " + dataOwner(o[13], o[14], o[15]); break;
+					case 0x0a: s += "Store the count of the tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0x0b: break;
 					case 0x0c:
 						s += "Set To Next " + ((c1 & 0x10) != 0 ? "visible " : "hidden ") + ((c1 & 0x20) != 0 ? "memory " : "non-memory ") + "token"
 							+ (lng
-								? ", starting at index from " + dataOwner(o[10], o[11], o[12]) + ", Reversed: " + ((c1 & 0x80) != 0).ToString()
+								? ", starting at index from " + dataOwner(lng, o[10], o[11], o[12]) + ", Reversed: " + ((c1 & 0x80) != 0).ToString()
 								: "");
 						break;
 					case 0xD:
 						s += "Store the count of the "
 							+ ((c1 & 0x10) != 0 ? "visible " : "hidden ")
 							+ ((c1 & 0x20) != 0 ? "memory " : "non-memory ")
-							+ "tokens in this inventory into " + dataOwner(o[13], o[14], o[15]);
+							+ "tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
 					case 0xE:
-						s += "Token Index " + dataOwner(o[6], ToShort(o[7], o[8]))
-							+ ", Property " + dataOwner(o[10], o[11], o[12])
-							+ " Assign to: " + dataOwner(o[13], o[14], o[15]);
+						s += "Token Index " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
+							+ ", Property " + dataOwner(lng, o[10], o[11], o[12])
+							+ " Assign to: " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
 					case 0xF:
-						s += dataOwner(o[13], o[14], o[15]) + ": "
-							+ "Assign to Token Index " + dataOwner(o[6], ToShort(o[7], o[8])) + ", "
-							+ "Property " + dataOwner(o[10], o[11], o[12]);
+						s += dataOwner(lng, o[13], o[14], o[15]) + ": "
+							+ "Assign to Token Index " + dataOwner(lng, o[6], ToShort(o[7], o[8])) + ", "
+							+ "Property " + dataOwner(lng, o[10], o[11], o[12]);
 						break;
 					case 0x10: s += "Add Token And Instance Info of Stack Object"; break;
 					case 0x11: s += "Create Object from Token at Index"; break;
@@ -3639,11 +3636,11 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Object in " + dataOwner(o[6], o[7], o[8]);       // target object
+			s += "Object in " + dataOwner(lng, o[6], o[7], o[8]);       // target object
 
 			s += ", animation: " + ((o[2] & 0x04) != 0
 				? "Private ObjectAnims STR# 0x86:[Param " + ToShort(o[0], o[1]).ToString() + "]"
-				: readStr(Scope.Private, GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, !lng)
+				: readStr(true, GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, !lng)
 				);
 
 			if (lng)
@@ -3948,7 +3945,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Object in " + dataOwner(o[6], o[7], o[8]);       // target object
+			s += "Object in " + dataOwner(lng, o[6], o[7], o[8]);       // target object
 
 			Scope scope = Scope.Private;
 			GS.GlobalStr instance = GS.GlobalStr.ObjectAnims;
@@ -4162,7 +4159,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Object in " + dataOwner(o[3], o[4], o[5]);       // target object
+			s += "Object in " + dataOwner(lng, o[3], o[4], o[5]);       // target object
 
 			switch (o[7]) 
 			{
@@ -4329,28 +4326,25 @@ namespace pjse.BhavNameWizards
 
 		protected override string Operands(bool lng)
 		{
-			if (!lng) return "..."; // we can't think of anything short and useful
-
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
 			string s = "";
 
-			s += "on obj in " + dataOwner(o[5], o[6], o[7]);       // target object
+			s += (lng ? "Target Object: " : "") + dataOwner(lng, o[5], o[6], o[7]);       // target object
 
 			Scope matScope = Scope.Private;
 			if ((o[2] & 0x02) != 0) matScope = Scope.Global;
 			else if ((o[2] & 0x04) != 0) matScope = Scope.SemiGlobal;
-			ushort mat = ToShort(o[0], o[1]);
 
-			s += ", using material from ";
+			s += ", " + (lng ? "Material from: " : "");
 			if ((o[13] & 0x02) == 0)
 			{
-				s += ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(o[8], o[9], o[10]) : "me");
-				s += " (" + ((o[13] & 0x01) != 0 ? "moving texture" : "material") + " ";
+				s += ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(lng, o[8], o[9], o[10]) : "Me");
+				s += " (" + (lng ? ((o[13] & 0x01) != 0 ? "moving texture" : "material") + ", " : "");
 				if ((o[2] & 0x10) != 0) s += matScope.ToString() + " STR# 0x0088:[Temp 0]";
-				else s += readStr(matScope, GS.GlobalStr.MaterialName, mat, -1, false);
+				else s += readStr(matScope, GS.GlobalStr.MaterialName, ToShort(o[0], o[1]), lng ? -1 : 30, !lng);
 				s += ")";
 			}
 			else
@@ -4359,14 +4353,13 @@ namespace pjse.BhavNameWizards
 			Scope mgScope = Scope.Private;
 			if ((o[2] & 0x40) != 0) mgScope = Scope.Global;
 			else if ((o[2] & 0x80) != 0) mgScope = Scope.SemiGlobal;
-			ushort mg = ToShort(o[3], o[4]);
 
-			s += " and mesh from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(o[8], o[9], o[10]) : "me");
+			s += ", " + (lng ? "Mesh from: " : "") + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(lng, o[8], o[9], o[10]) : "Me");
 			if ((o[4] & 0x40) == 0) // w3 < 0
 			{
-				s += " (mesh group ";
+				s += " (" + (lng ? "mesh group " : "");
 				if ((o[2] & 0x20) != 0) s += mgScope.ToString() + " STR# 0x0087:[Temp 1]";
-				else s += readStr(mgScope, GS.GlobalStr.MeshGroup, mg, -1, false);
+				else s += readStr(mgScope, GS.GlobalStr.MeshGroup, ToShort(o[3], o[4]), lng ? -1 : 30, !lng);
 				s += ")";
 			}
 			else
@@ -4454,7 +4447,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += ((o[0] & 0x80) == 0 ? "Object ID: " + dataOwner(o[1], o[2], o[3]) : "Camera");
+			s += ((o[0] & 0x80) == 0 ? "Object ID: " + dataOwner(lng, o[1], o[2], o[3]) : "Camera");
 
 			if ((o[0] & 0x01) == 0) 
 			{
@@ -4606,10 +4599,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "on object in " + dataOwner(o[2],ToShort(o[3], o[4]));       // target object
+			s += "on object in " + dataOwner(lng, o[2],ToShort(o[3], o[4]));       // target object
 			s += ", light: " + (o[8] == 0xFF
 				? "all on object"
-				: readStr(Scope.Private, GS.GlobalStr.LightSource, o[8], lng ? -1 : 60, !lng));
+				: readStr(true, GS.GlobalStr.LightSource, o[8], lng ? -1 : 60, !lng));
 			if (lng)
 			{
 				s += ", fade-in duration (ticks): " + ((o[1] & 0x01) != 0 ? "in Temp 1" : "0x" + SimPe.Helper.HexString(ToShort(o[5], o[6])));
@@ -4686,9 +4679,8 @@ namespace pjse.BhavNameWizards
 					}
 					s += " slot 0x" + SimPe.Helper.HexString(o[6]);
 				}
-
-				s += " of object in " + dataOwner(o[1], o[2], o[3]);       // target object
 			}
+			s += " of object in " + dataOwner(lng, o[1], o[2], o[3]);       // target object
 
 			Scope scope = Scope.Private;
 			if      ((o[10] & 0x01) != 0) scope = Scope.Global;
@@ -4846,7 +4838,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0071 : BhavWizPrim	// Snap
+	public class WizPrim0x0071 : BhavWizPrim	// Snap Into
 	{
 		public WizPrim0x0071(Instruction i) : base(i) { }
 
@@ -4858,6 +4850,13 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			s += "Object: " + dataOwner(lng, o[0], o[1], o[2]) + ", into Object: " + dataOwner(lng, o[3], o[4], o[5]);
+			s += ", Slot: " + ((o[9] & 0x01) != 0 ? "in Temp 0" : "0x" + SimPe.Helper.HexString(o[6]));
+			if (lng)
+			{
+				s += ", TEST ONLY: "        + ((o[9] & 0x02) != 0).ToString();
+				s += ", Reset root bones: " + ((o[9] & 0x04) != 0).ToString();
+			}
 
 			return s;
 #if DISASIM
@@ -4881,7 +4880,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x0072 : BhavWizPrim	// Snap
+	public class WizPrim0x0072 : BhavWizPrim	// Assign Locomotion Animations
 	{
 		public WizPrim0x0072(Instruction i) : base(i) { }
 
@@ -4893,6 +4892,17 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			switch (ToShort(o[0], o[1])) 
+			{
+				case 0: s += "Pop all entries from Stack"; break;
+				case 1: s += "Pop last entry from Stack"; break;
+				default:
+					Scope scope = Scope.Private;
+					if      ((o[2] & 0x04) != 0) scope = Scope.Global;
+					else if ((o[2] & 0x02) != 0) scope = Scope.SemiGlobal;
+					s += "Push " + readStr(scope, GS.GlobalStr.LocoAnims, ToShort(o[0], o[1])-2, -1, false) + " onto Stack";
+					break;
+			}
 
 			return s;
 #if DISASIM
@@ -4920,7 +4930,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x0073 : BhavWizPrim	// Snap
+	public class WizPrim0x0073 : BhavWizPrim	// Debug
 	{
 		public WizPrim0x0073(Instruction i) : base(i) { }
 
@@ -4932,6 +4942,29 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			Scope scope = Scope.Private;
+			if ((o[14] & 0x04) != 0) scope = Scope.Global;
+			else if ((o[14] & 0x02) != 0) scope = Scope.SemiGlobal;
+
+			switch (o[13]) 
+			{
+				case 0:
+					s += readStr(scope, GS.GlobalStr.DebugString, o[12], -1, false);
+					if (lng)
+					{
+						s += " (";
+						for (int i = 0; i < 4; i++) s += (i == 0 ? "" : ", ") + dataOwner(o[i*3], o[i*3 + 1], o[i*3 + 2]);
+						s += ")";
+					}
+					break;
+				case 1: s += "Toggle Window Open/Close"; break;
+				case 2: s += "Open Animation Ticker"; break;
+				case 3: s += "Show Slots"; break;
+				case 4: s += "Show Bones"; break;
+				case 5: s += "Toggle Anim Info to Debug Window"; break;
+				case 6: s += "Cheat: " + readStr(scope, GS.GlobalStr.DebugString, o[12], -1, false); break;
+				case 7: s += "Dump Happy Log"; break;
+			}
 
 			return s;
 #if DISASIM
@@ -4993,7 +5026,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x0074 : BhavWizPrim	// Snap
+	public class WizPrim0x0074 : BhavWizPrim	// Reach/Put
 	{
 		public WizPrim0x0074(Instruction i) : base(i) { }
 
@@ -5005,6 +5038,30 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			switch (o[10]) 
+			{
+				case 0: s += "Pick up Object in " + dataOwner(lng, o[3],ToShort(o[4], o[5])); break;
+				case 1: s += "Drop object onto Floor"; break;
+				default: s += "Drop onto Object in " + dataOwner(lng, o[3],ToShort(o[4], o[5])); break;
+			}
+
+			s += ", Slot: " + ((o[9] & 0x01) != 0 ? "in Temp 0" : "0x" + SimPe.Helper.HexString(o[6]));
+
+			if (lng)
+			{
+				s += ", object anim: " + (ToShort(o[13], o[14]) != 0xFFFF
+					? readStr(true, GS.GlobalStr.ObjectAnims, ToShort(o[13], o[14]), -1, false)
+					: "none"
+					);
+
+				s += ", grasp anim: " + (ToShort(o[11], o[12]) != 0xFFFF
+					? readStr(true, GS.GlobalStr.AdultAnims, ToShort(o[11], o[12]), -1, false)
+					: "none"
+					);
+
+				s += ", handedness in Temp 3: "            + ((o[9] & 0x02) != 0).ToString();
+				s += ", use Sim age to pick object Anim: " + ((o[9] & 0x04) != 0).ToString();
+			}
 
 			return s;
 #if DISASIM
@@ -5050,7 +5107,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x0075 : BhavWizPrim	// Snap
+	public class WizPrim0x0075 : BhavWizPrim	// Age
 	{
 		public WizPrim0x0075(Instruction i) : base(i) { }
 
@@ -5062,6 +5119,22 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			s += "Set to ";
+			if ((o[1] & 0x01) != 0)
+				s += "age in Temp 0";
+			else 
+			{
+				switch (o[0]) 
+				{
+					case 1: s += "Child"; break;
+					case 2: s += "Toddler"; break;
+					case 3: s += "Teen"; break;
+					case 4: s += "Elder"; break;
+					case 7: s += "Baby"; break;
+					case 9: s += "Young Adult"; break;
+					default: s += "Adult"; break;
+				}
+			}
 
 			return s;
 #if DISASIM
@@ -5098,7 +5171,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x0076 : BhavWizPrim	// Snap
+	public class WizPrim0x0076 : BhavWizPrim	// Array Operation
 	{
 		public WizPrim0x0076(Instruction i) : base(i) { }
 
@@ -5110,6 +5183,33 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			switch (o[1]) 
+			{
+				case 0x00: s += "Clear contents"; break;
+				case 0x01: s += "Get size into " + dataOwner(lng, o[5], o[6], o[7]); break;
+				case 0x02: s += "Set size to " + dataOwner(lng, o[5], o[6], o[7]); break;
+				case 0x03: s += "Set all elements to " + dataOwner(lng, o[5], o[6], o[7]); break;
+				case 0x04: s += "Unshift " + dataOwner(lng, o[5], o[6], o[7]) + " onto the front of the array."; break;
+				case 0x05: s += "Push " + dataOwner(lng, o[5], o[6], o[7]) + " onto the back of the array."; break;
+				case 0x06: s += "Insert " + dataOwner(lng, o[5], o[6], o[7]) + " at position " + dataOwner(lng, o[8], o[9], o[10]); break;
+				case 0x07: s += "Shift first element off array";
+					s += " ?into " + dataOwner(lng, o[5], o[6], o[7]) + "?";
+					break;
+				case 0x08: s += "Pop last element off array";
+					s += " ?into " + dataOwner(lng, o[5], o[6], o[7]) + "?";
+					break;
+				case 0x09: s += "Remove at position " + dataOwner(lng, o[8], o[9], o[10]);
+					s += " ?into " + dataOwner(lng, o[5], o[6], o[7]) + "?";
+					break;
+				case 0x0a: s += "Set " + dataOwner(lng, o[8], o[9], o[10]) + " to next occurrence of " + dataOwner(lng, o[5], o[6], o[7]); break;
+				case 0x0b: s += "Swap elements at " + dataOwner(lng, o[5], o[6], o[7]) + " and " + dataOwner(lng, o[8], o[9], o[10]); break;
+				case 0x0c: s += "Sort array into highest to lowest order"; break;
+				case 0x0d: s += "Sort array into lowest to highest order (?)"; break;
+				default: s += "??? 0x" + SimPe.Helper.HexString(o[1]); break;
+			}
+
+			s += " of " + (o[2] == 0 ? "My" : "Stack Object's") + " " + readStr(true, GS.GlobalStr.ArrayName, ToShort(o[3], o[4]), lng ? -1 : 60, false)
+				+ " Object Array";
 
 			return s;
 #if DISASIM
@@ -5199,7 +5299,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x0077 : BhavWizPrim	// Snap
+	public class WizPrim0x0077 : BhavWizPrim	// Message
 	{
 		public WizPrim0x0077(Instruction i) : base(i) { }
 
@@ -5211,6 +5311,44 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			s += "ID: " + dataOwner(lng, o[15], o[1], o[2]);
+
+			s += ", Target ";
+			if ((o[4] & 0x04) != 0)
+				s += "ID: " + dataOwner(lng, o[5], o[6], o[7]);
+			else 
+			{
+				switch (o[3]) 
+				{
+					case 0: s += "Selectable Sims"; break;
+					case 1: s += "Selectable Sims + Neighbors"; break;
+					case 2: s += "Selectable Sims + NPCS"; break;
+					case 3: s += "Neighbors Only"; break;
+					case 4: s += "NPCS Only"; break;
+					case 5: s += "All Sims"; break;
+					case 6: s += "Objects"; break;
+					case 7: s += "Everything"; break;
+					default: s += "??? 0x" + SimPe.Helper.HexString(o[3]); break;
+				}
+
+				if (lng)
+				{
+					s += ", ";
+					switch (o[0]) 
+					{
+						case 0: s += "In " + ((o[4] & 0x01) == 0 ? "same room" : "room: " + dataOwner(o[5], o[6], o[7])); break;
+						case 1: s += "On same level"; break;
+						case 2: s += "On lot"; break;
+						case 3: s += "Inside building"; break;
+						case 4: s += "Outside building"; break;
+						default: s += "??? 0x" + SimPe.Helper.HexString(o[0]); break;
+					}
+
+					s += ", Priority: 0x" + SimPe.Helper.HexString(o[8]);
+
+					s += ", user data: (" + dataOwner(lng, o[9], o[10], o[11]) + ", " + dataOwner(o[12], o[13], o[14]) + ")";
+				}
+			}
 
 			return s;
 #if DISASIM
@@ -5285,7 +5423,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x0078 : BhavWizPrim	// Snap
+	public class WizPrim0x0078 : BhavWizPrim	// RayTrace
 	{
 		public WizPrim0x0078(Instruction i) : base(i) { }
 
@@ -5297,6 +5435,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			s += "Object ID: " + dataOwner(lng, o[1], o[2], o[3]);
+			s += ", using " + Slot(o[4], o[5]);
+			s += ". Object hit stored in: " + (o[4] != 0 ? "Temp 0" : dataOwner(lng, o[8], o[9], o[10]) + ", using " + Slot(o[11], o[12]));
+			s += ", Windows Ignored: " + ((o[15] & 0x01) != 0).ToString();
 
 			return s;
 #if DISASIM
@@ -5346,6 +5488,20 @@ namespace pjse.BhavNameWizards
                     break;
 #endif
 		}
+
+		string Slot(byte t, byte s)
+		{
+			string f;
+			switch (t)
+			{
+				case 0: return "point at 3/4 height of object";
+				case 1: f = "targeting"; break;
+				case 2: f = "routing"; break;
+				case 3: f = "containment"; break;
+				default: f = "??? 0x" + SimPe.Helper.HexString(t); break;
+			}
+			return f + " slot 0x" + SimPe.Helper.HexString(s); 
+		}
 	}
 
 	public class WizPrim0x0079 : BhavWizPrim	// Change Outfit
@@ -5360,7 +5516,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Sim: " + dataOwner(o[9], o[10], o[11]);
+			s += "Sim: " + dataOwner(lng, o[9], o[10], o[11]);
 
 			if ((o[0] & 0x10) == 0)
 			{
@@ -5368,20 +5524,14 @@ namespace pjse.BhavNameWizards
 				if (lng)
 				{
 					s += "; source: ";
-					if ((o[0] & 0x01) != 0)
-						s += "Stack Object";
-					else if ((o[0] & 0x02) != 0)
-						s += "GUID 0x" + SimPe.Helper.HexString((uint)(o[4] | (o[5] << 8) | (o[6] << 16) | (o[7] << 24)));
-					else if ((o[0] & 0x40) != 0)
-						s += "GUID in Temp 0/1";
-					else
-						s += "the sim's outfits";
+					if      ((o[0] & 0x01) != 0) s += "Stack Object";
+					else if ((o[0] & 0x02) != 0) s += "GUID 0x" + SimPe.Helper.HexString((uint)(o[4] | (o[5] << 8) | (o[6] << 16) | (o[7] << 24)));
+					else if ((o[0] & 0x40) != 0) s += "GUID in Temp 0/1";
+					else                         s += "the sim's outfits";
 
 					s += ", outfit";
-					if ((o[0] & 4) == 0)
-						s += ": " + GS.GStr(GS.BhavStr.PersonOutfits, o[8]);
-					else 
-						s += " index: " + dataOwner(o[1], o[2], o[3]);
+					if ((o[0] & 4) == 0) s += ": " + GS.GStr(GS.BhavStr.PersonOutfits, o[8]);
+					else                 s += " index: " + dataOwner(o[1], o[2], o[3]);
 
 					s += ", " + ((o[0] & 0x20) == 0 ? "leaving" : "clearing") + " GUID pointers in person data fields";
 					s += ", " + ((o[0] & 0x08) == 0 ? "don't " : "") + "save change";
@@ -5432,7 +5582,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x007a : BhavWizPrim	// Snap
+	public class WizPrim0x007a : BhavWizPrim	// Timer
 	{
 		public WizPrim0x007a(Instruction i) : base(i) { }
 
@@ -5444,6 +5594,51 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			switch (o[15]) 
+			{
+				case 0: s += "Start"; break;
+				case 1: s += "Modify"; break;
+				case 2: s += "Delete"; break;
+			}
+			s += " Timer";
+
+			if (o[15] != 2) 
+			{
+				s += ", Ticks: " + ((o[5] & 0x08) != 0 ? "in Temp 1" : "0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])));
+
+				if (ToShort(o[3], o[4]) == 0)
+					s += ", No event tree";
+				else 
+				{
+					Scope scope = Scope.Global;
+					if      (o[14] == 0) scope = Scope.Private;
+					else if (o[14] == 1) scope = Scope.SemiGlobal;
+
+					s += ", " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[3], o[4]));
+					pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[3], o[4]));
+					if (item != null)
+						s += " (" + item + ")";
+
+					if (lng)
+					{
+						if ((o[5] & 0x01) != 0) s += ", pass Caller's Params";
+						else 
+						{
+							s += " Params: ";
+							for (int i = 0; i < 3; i++)
+								s += (i == 0 ? "" : ", ") + dataOwner(o[3*i + 6], o[3*i + 7], o[3*i + 8]);
+						}
+					}
+				}
+
+				if (lng)
+				{
+					s += ", Looping: " + ((o[5] & 0x02) != 0).ToString();
+
+					if (o[15] == 1)
+						s += ", Reset Timer Ticks: " + ((o[5] & 0x04) != 0).ToString();
+				}
+			}
 
 			return s;
 #if DISASIM
@@ -5509,7 +5704,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x007b : BhavWizPrim	// Snap
+	public class WizPrim0x007b : BhavWizPrim	// Cinematic
 	{
 		public WizPrim0x007b(Instruction i) : base(i) { }
 
@@ -5521,6 +5716,23 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			Scope scope = Scope.Private;
+			if      ((o[5] & 0x20) != 0) scope = Scope.Global;
+			else if ((o[5] & 0x40) != 0) scope = Scope.SemiGlobal;
+
+			s += "Scene" + ((o[5] & 0x10) != 0
+				? " ID: " + dataOwner(lng, o[6], o[7], o[8])
+				: ": " + readStr(scope, GS.GlobalStr.CineCam, ToShort(o[0], o[1]), lng ? -1 : 60, false)
+				);
+
+			s += ", Array on Object ID: " + dataOwner(lng, o[9], o[10], o[11]);
+
+			if (lng)
+			{
+				s += ", Flip Cinematic Anims Horizontally: " + ((o[5] & 0x02) != 0 ? "in Temp 0" : ((o[5] & 0x01) != 0).ToString());
+				s += ", Start Animations Now: " + ((o[5] & 0x04) != 0).ToString();
+				s += ", Show Entire House: " + ((o[5] & 0x08) != 0).ToString();
+			}
 
 			return s;
 #if DISASIM
@@ -5558,7 +5770,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x007c : BhavWizPrim	// Snap
+	public class WizPrim0x007c : BhavWizPrim	// Want Satisfy
 	{
 		public WizPrim0x007c(Instruction i) : base(i) { }
 
@@ -5570,6 +5782,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			uint want = (uint)(o[3] | o[4] << 8 | o[5] << 16 | o[6] << 24);
+			s += "GUID 0x" + SimPe.Helper.HexString(want);
+			s += ", Want target: " + dataOwner(lng, o[7], o[8], o[9]);
+			s += ", (optional) Want level: " + dataOwner(lng, o[10], o[11], o[12]);
 
 			return s;
 #if DISASIM
@@ -5618,7 +5834,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x007d : BhavWizPrim	// Snap
+	public class WizPrim0x007d : BhavWizPrim	// Influence
 	{
 		public WizPrim0x007d(Instruction i) : base(i) { }
 
@@ -5630,6 +5846,9 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			s += "Follow Sim in " + dataOwner(lng, o[0], o[1], o[2]);
+			s += ", output result to " + (o[5] != 0 ? "Stack Object's" : "My") + " object array: "
+				+ readStr(true, GS.GlobalStr.ArrayName, ToShort(o[6], o[7]), -1, false);
 
 			return s;
 #if DISASIM
@@ -5651,7 +5870,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x007e : BhavWizPrim	// Snap
+	public class WizPrim0x007e : BhavWizPrim	// Lua
 	{
 		public WizPrim0x007e(Instruction i) : base(i) { }
 
@@ -5663,6 +5882,17 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			s += ((ToShort(o[4], o[5]) & 0x01) != 0 ? "Definition" : "Dynamic") + " script: ";
+
+			if (ToShort(o[2], o[3]) != 0) 
+			{
+				Scope scope = Scope.Global;
+				if ((ToShort(o[4], o[5]) & 0x02) != 0) scope = Scope.Private;
+				else if ((ToShort(o[4], o[5]) & 0x04) != 0) scope = Scope.SemiGlobal;
+				s += readStr(scope, ToShort(o[0], o[1]), ToShort(o[2], o[3]) - 1, -1, false);
+			}
+			else
+				s += "none";
 
 			return s;
 #if DISASIM

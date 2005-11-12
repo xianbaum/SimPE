@@ -242,17 +242,26 @@ namespace pjse
 
 		protected string dataOwner(byte doid, byte lo, byte hi) { return dataOwner(doid, ToShort(lo, hi)); }
 
+		protected string dataOwner(bool lng, byte doid, ushort instance)
+		{
+			return (lng ? dataOwner(doid, instance) : GS.GStr(GS.BhavStr.DataOwners, doid) + " 0x" + SimPe.Helper.HexString(instance));
+		}
+
+		protected string dataOwner(bool lng, byte doid, byte lo, byte hi) {  return dataOwner(lng, doid, ToShort(lo, hi));}
+
 
 		protected string readBcon(uint instance, int bid, bool temp, bool silent)
 		{
-			// in this context, the group has to be the group of the BHAV you are reading, I think
-			// which means the instruction must have a parent
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
 
 			Scope s = Scope.Private;
 			if      (instance <  0x1000) s = Scope.Global;
 			else if (instance >= 0x2000) s = Scope.SemiGlobal;
+
+			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
+				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
+				return silent ? "" : s.ToString() + " BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)bid);
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
 
@@ -289,12 +298,12 @@ namespace pjse
 
 			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
 				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return silent ? "" : s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid);
+				return (silent ? "" : s.ToString() + " " + instance.ToString() + " ") + "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid);
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)instance];
 
 			if (items == null || items.Length == 0)
-				return silent ? "" : "[No " + s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
+				return "[No " + (silent ? "" : s.ToString() + " " + instance.ToString() + " ") + "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
 
 			Str str = new Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
@@ -308,6 +317,50 @@ namespace pjse
 		protected string readStr(Scope s, GS.GlobalStr instance, int sid) { return readStr(s, instance, sid, -1, true); }
 
 		protected string readStr(Scope s, GS.GlobalStr instance, int sid, bool silent) { return readStr(s, instance, sid, -1, silent); }
+
+		protected string readStr(bool fallback, GS.GlobalStr instance, int sid, int maxLen, bool silent)
+		{
+			Scope c = instruction.Parent.Context;
+			string result = readStr(c, instance, sid, -1, true);
+
+			if (fallback && (result == null || result.Length == 0))
+			{
+				if (c == Scope.Private)
+					result = readStr(Scope.SemiGlobal, instance, sid, -1, true);
+
+				if ((result == null || result.Length == 0) && (c != Scope.Global))
+					result = readStr(Scope.Global, instance, sid, -1, true);
+			}
+
+			return
+				((result == null || result.Length == 0) ? "[" : "")
+				+ (silent ? "" : instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid) + " ")
+				+ ((result == null || result.Length == 0) ? "not set]" : "\"" + myLeft(result, maxLen) + "\"")
+				;
+		}
+
+		protected string readStr(Scope s, uint instance, int sid, int maxLen, bool silent)
+		{
+			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
+
+			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
+				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
+				return silent ? "" : s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid);
+
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), instance];
+
+			if (items == null || items.Length == 0)
+				return silent ? "" : "[No " + s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
+
+			Str str = new Str();
+			str.ProcessData(items[0].PFD, items[0].Package);
+			return
+				(str[1, sid] == null ? "[" : "")
+				+ (silent ? "" : s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid) + " ")
+				+ (str[1, sid] == null ? "not set]" : "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\"")
+				;
+		}
 
 		private static string myLeft(string str, int len)
 		{

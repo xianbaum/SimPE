@@ -179,15 +179,17 @@ namespace pjse
 			ReachAnims       = 0x0092,
 			IconTexture      = 0x0095,
 			UIEffect         = 0x0096,
-			//CineCam          = 0x0097,
+			CineCam          = 0x0097,
 			PuppyAnims       = 0x0099,
 			KittenAnims      = 0x009a,
 			MyAttributeLabel = 0x0100,
 			Relationship     = 0x0102,
+			ArrayName        = 0x0118,
 			DialogString     = 0x012d,
 			MakeAction       = 0x012e,
 			NamedTree        = 0x012f,
 			LuaScript        = 0x0130,
+			DebugString      = 0x0132,
 			Sound            = 0x4132,
 		}
 	}
