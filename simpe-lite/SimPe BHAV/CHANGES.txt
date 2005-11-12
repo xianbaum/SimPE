@@ -1,4 +1,8 @@
 
+12 November 2005 16:14 - Bhav: readStr format fix
+  SimPe BHAV\
+    BhavWiz.cs 1.21
+
 12 November 2005 15:40 - Bhav: Finish parsing (71..78, 7a..7e); readStr and sundry format changes
   SimPe BHAV\
     BhavWiz.cs 1.20
