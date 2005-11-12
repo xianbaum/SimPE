@@ -1,4 +1,10 @@
 
+12 November 2005 15:40 - Bhav: Finish parsing (71..78, 7a..7e); readStr and sundry format changes
+  SimPe BHAV\
+    BhavWiz.cs 1.20
+    BhavWizPrim.cs 1.27
+    GlobalStr.cs 1.15
+
 11 November 2005 20:49 - Bhav: More parsing: 69, 6a, 6b, 6c, 6e, 6f
   SimPe BHAV\
     BhavWiz.cs 1.19
