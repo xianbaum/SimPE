@@ -1,4 +1,16 @@
 
+13 November 2005 19:21 - Bhav: Release BhavWizPrim.cs into public domain
+  SimPe BHAV\
+    BhavOperandWizDefault.cs 1.1
+    BhavOperandWizDefault.resx 1.1
+    BhavWizPrim.cs 1.30
+    pjse coder plugin.csproj 1.24
+  LICENSE.txt 1.4
+
+13 November 2005 12:50 - Bhav: Fix flag handling in Prim0x0002
+  SimPe BHAV\
+    BhavWizPrim0x0002.cs 1.11
+
 13 November 2005 12:50 - Bhav: fix: 0x001b wrap location/direction indices; text change
   SimPe BHAV\
     BhavWizPrim.cs 1.29
