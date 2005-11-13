@@ -2063,8 +2063,8 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "Location: " : "") + GS.GStr(GS.BhavStr.RelativeLocations, (ushort)(o[2] + 2));
-			s += ", " + (lng ? "Direction: " : "") + GS.GStr(GS.BhavStr.RelativeDirections, (ushort)(o[3] + 2));
+			s += (lng ? "Location: " : "") + GS.GStr(GS.BhavStr.RelativeLocations, (byte)(o[2] + 2));
+			s += ", " + (lng ? "Direction: " : "") + GS.GStr(GS.BhavStr.RelativeDirections, (byte)(o[3] + 2));
 			if (lng)
 			{
 				s += "; no failure trees: "          + ((o[6] & 0x02) != 0).ToString();
