@@ -1,4 +1,8 @@
 
+13 November 2005 12:50 - Bhav: fix: 0x001b wrap location/direction indices; text change
+  SimPe BHAV\
+    BhavWizPrim.cs 1.29
+
 12 November 2005 16:14 - Bhav: readStr format fix
   SimPe BHAV\
     BhavWiz.cs 1.21
