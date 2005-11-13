@@ -284,7 +284,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			{
 				tbval1.Text = "0x"+SimPe.Helper.HexString(textToUShort(tbval1.Text));
 			}
-			doFlagThing();
+			cbDataOwner2_SelectedIndexChanged(null, null);
 		}
 
 		private void cbDataOwner2_SelectedIndexChanged(object sender, System.EventArgs e)
@@ -303,51 +303,43 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 						this.cbPicker2.SelectedIndex = val;
 				}
 			}
+			else if (cbDataOwner2.SelectedIndex == 7 && cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10)
+			{
+				ArrayList flagNames = (ArrayList)WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text));
+				if (flagNames != null)
+				{
+					this.cbPicker2.Visible = true;
+					this.cbPicker2.Items.Clear();
+					this.cbPicker2.Items.Add("[0: invalid]");
+					this.cbPicker2.Items.AddRange(flagNames.ToArray());
+					ushort val = textToUShort(tbval2.Text);
+					if (this.cbPicker2.Items.Count > val)
+						this.cbPicker2.SelectedIndex = val;
+				}
+			}
 			else if (cbDataOwner2.SelectedIndex == 0x1a || cbDataOwner2.SelectedIndex == 0x2f)
 			{
 				//constant
 				ushort[] vals = ConstantValueParser(textToUShort(tbval2.Text));
 				tbval2.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
-			} 
+			}
 			else
 			{
 				tbval2.Text = "0x"+SimPe.Helper.HexString(textToUShort(tbval2.Text));
 			}
-			doFlagThing();
+
+			this.tbval2.Visible = !cbPicker2.Visible;
 		}
 
 		private void cbPicker1_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker1.SelectedIndex);
-			doFlagThing();
+			cbDataOwner2_SelectedIndexChanged(null, null);
 		}
 
 		private void cbPicker2_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)this.cbPicker2.SelectedIndex);
-		}
-
-
-		private void doFlagThing()
-		{
-			if (cbDataOwner2.SelectedIndex == 7 && cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10)
-			{
-				ArrayList flagNames = (ArrayList)WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text)).Clone();
-				if (flagNames != null)
-				{
-					flagNames.Insert(0, "");
-					this.cbPicker2.Visible = true;
-					this.cbPicker2.Items.Clear();
-					this.cbPicker2.Items.AddRange(flagNames.ToArray());
-					try 
-					{
-						ushort val = textToUShort(tbval2.Text);
-						this.cbPicker2.SelectedIndex = val;
-					} 
-					catch (Exception) { }
-				}
-			}
-			this.tbval2.Visible = !cbPicker2.Visible;
 		}
 
 
