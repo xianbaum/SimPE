@@ -243,6 +243,16 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "BhavOperandWizDefault.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BhavOperandWizDefault.resx"
+                    DependentUpon = "BhavOperandWizDefault.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "BhavOperandWizProvider.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
@@ -274,7 +284,7 @@
                 />
                 <File
                     RelPath = "BhavWizPrim.cs"
-                    SubType = "Form"
+                    SubType = "Code"
                     BuildAction = "Compile"
                 />
                 <File
