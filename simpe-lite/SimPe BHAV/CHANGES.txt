@@ -1,4 +1,9 @@
 
+17 November 2005 20:45 - Bhav: Minor changes to BCON parsing; improve fallback; tiny Dialog and ObjAnims changes
+  SimPe BHAV\
+    BhavWiz.cs 1.22
+    BhavWizPrim.cs 1.31
+
 13 November 2005 19:21 - Bhav: Release BhavWizPrim.cs into public domain
   SimPe BHAV\
     BhavOperandWizDefault.cs 1.1
