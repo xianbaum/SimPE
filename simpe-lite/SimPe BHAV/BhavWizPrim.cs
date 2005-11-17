@@ -2182,6 +2182,9 @@ namespace pjse.BhavNameWizards
 
 			if (lng)
 			{
+				if (o[5] == 0x02)
+					s += ", result in "+ dataOwner(0x08, tempVar);
+
 				/*if (msg != 0x16 && msg != 0x19 && iconType != 1) { }*/
 				s += ", icon: " + GS.GStr(GS.BhavStr.DialogIcon, iconType);
 				switch (iconType) 
@@ -2192,10 +2195,7 @@ namespace pjse.BhavNameWizards
 
 				/*if (nowait || noblock) -- see bhav str 0xed */
 				s += ", " + (nowait ? "don't " : "") + "wait for user";/* + " and " +*/
-				s += ", " + (noblock ? "don't " : "") + "block simulation";
-
-				if (o[5] == 0x02)
-					s += ", result in "+ dataOwner(0x08, tempVar);
+				s += ", " + (noblock ? "don't " : "") + "block Sim";
 
 				s += ", Style: ";
 				switch (o[12]) 
@@ -3120,7 +3120,7 @@ namespace pjse.BhavNameWizards
 			s += "Object in " + dataOwner(lng, o[6], o[7], o[8]);       // target object
 
 			s += ", animation: " + ((o[2] & 0x04) != 0
-				? "Private ObjectAnims STR# 0x86:[Param " + ToShort(o[0], o[1]).ToString() + "]"
+				? "ObjectAnims STR# 0x86:[Param " + ToShort(o[0], o[1]).ToString() + "]"
 				: readStr(true, GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, !lng)
 				);
 
@@ -3244,7 +3244,7 @@ namespace pjse.BhavNameWizards
 				 catch { instance = GS.GlobalStr.ObjectAnims; }
 
 			s += "Animation: " + ((o[2] & 0x04) != 0
-				? scope.ToString() + " " + instance.ToString() + " STR# 0x" + ((byte)instance).ToString() + ":[Param " + ToShort(o[0], o[1]).ToString() + "]"
+				? scope.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":[Param " + ToShort(o[0], o[1]).ToString() + "]"
 				: readStr(scope, instance, ToShort(o[0], o[1]), lng ? -1 : 60, !lng)
 				);
 

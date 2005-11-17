@@ -261,24 +261,24 @@ namespace pjse
 
 			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
 				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return silent ? "" : s.ToString() + " BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)bid);
+				return (silent ? "" : s.ToString() + " ") + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)bid);
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
 
 			if (items == null || items.Length == 0)
-				return silent ? "" : "[No " + s.ToString() + " BCON 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
+				return "[No " + (silent ? "" : s.ToString() + " ") + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
 
 			Bcon bcon = new Bcon();
 			bcon.ProcessData(items[0].PFD, items[0].Package);
-			return (silent ? "" : s.ToString() + " " + bcon.FileName.Trim() + " " + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":")
+			return
+				(!temp && bid >= bcon.Constants.Count ? "[" : "")
+				+ (silent ? "" : s.ToString() + " " + bcon.FileName.Trim() + " " + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":")
 				+ (temp
 					? "[Temp " + bid.ToString() + "]"
 					: (silent ? "" : "0x" + SimPe.Helper.HexString((byte)bid) + " ")
-						+ (bid >= bcon.Constants.Count
-							? "[not set]"
-							: "(0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]) + ")"
-						)
-				);
+						+ (bid >= bcon.Constants.Count ? "not set]" : "(0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]) + ")")
+					)
+				;
 		}
 
 
@@ -321,18 +321,18 @@ namespace pjse
 		protected string readStr(bool fallback, GS.GlobalStr instance, int sid, int maxLen, bool silent)
 		{
 			Scope c = instruction.Parent.Context;
-			string result = readStr(c, instance, sid, -1, true);
+			string result = readStr(c, instance, sid, maxLen, silent);
 
-			if (fallback && !(result.EndsWith("not set]") || result.EndsWith("file]")))
+			if (fallback && (result.EndsWith("not set]") || result.EndsWith("file]")))
 			{
 				if (c == Scope.Private)
-					result = readStr(Scope.SemiGlobal, instance, sid, -1, true);
+					result = readStr(Scope.SemiGlobal, instance, sid, maxLen, silent);
 
 				if (!(result.EndsWith("not set]") || result.EndsWith("file]")))
-					result = readStr(Scope.Global, instance, sid, -1, true);
+					result = readStr(Scope.Global, instance, sid, maxLen, silent);
 			}
 
-			return result.Replace("Private ", "").Replace("Global ", "").Replace("SemiGlobal ", "");
+			return result.Replace("Private ", "(Private) ").Replace("Global ", "(Global) ").Replace("SemiGlobal ", "(SemiGlobal) ");
 		}
 
 		protected string readStr(Scope s, uint instance, int sid, int maxLen, bool silent)
@@ -375,28 +375,19 @@ namespace pjse
 		}
 
 
-		// I've changed this from what DisaSim2 does so that the top bit just adds 0x40, whatever. -- plj
 		public static ushort[] ExpandBCON(ushort instance)
 		{
-			int a = instance >> 13;            // x = aaabbbbb bccccccc
-			int b = (instance >> 7) & 0x3F;
+			// x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
+			int a = (instance >> 13) & 0x03;
+			int b = ((instance >> 9) & 0x40) | ((instance >> 7) & 0x3F);
 			int c = instance & 0x7F;
-			switch (a & 3) 
+			switch (a)
 			{
-				case 0:			// private
-					b += 0x1000;
-					break;
-				case 1:			// semi-global
-					b += 0x2000;
-					break;
-				case 2:			// global
-					b += 0x0100;
-					break;
-				case 3:			// FUBAR, as it says in disaSim2-23b
-					b = 0xF5BA;
-					break;
+				case 0: b |= 0x1000; break; // private
+				case 1: b |= 0x2000; break; // semi-global
+				case 2: b |= 0x0100; break; // global
+				case 3: b |= 0xF5BA; break; // FUBAR, as it says in disaSim2-23b, I 'or' it; I reckon it s/b 0x1000, tho.
 			}
-			if ((a & 4) != 0) b += 0x40;
 
 			ushort[] result = new ushort[2];
 			result[0] = (ushort)b;
