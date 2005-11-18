@@ -208,12 +208,12 @@ namespace pjse
 			{
 				case 0x00: case 0x01:
 					temp = readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
-					if (!(temp.EndsWith("not set]") || temp.EndsWith("file]")))
+					if (temp.IndexOf('"') >= 0)
 						s += " (" + temp + ")";
 					break;
 				case 0x02: case 0x05:
 					temp = readStr(Scope.SemiGlobal, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
-					if (!(temp.EndsWith("not set]") || temp.EndsWith("file]")))
+					if (temp.IndexOf('"') >= 0)
 						s += " (" + temp + ")";
 					break;
 				case 0x0a:
