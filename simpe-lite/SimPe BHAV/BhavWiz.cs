@@ -324,16 +324,16 @@ namespace pjse
 			Scope c = instruction.Parent.Context;
 			string result = readStr(c, instance, sid, maxLen, silent);
 
-			if (fallback && (result.IndexOf('"') < 0))
+			if (fallback && result.EndsWith(" file]"))
 			{
 				if (c == Scope.Private)
 					result = readStr(Scope.SemiGlobal, instance, sid, maxLen, silent);
 
-				if (result.IndexOf('"') < 0)
+				if (result.EndsWith(" file]"))
 					result = readStr(Scope.Global, instance, sid, maxLen, silent);
 			}
 
-			return result.Replace("Private ", "(Private) ").Replace("Global ", "(Global) ").Replace("SemiGlobal ", "(SemiGlobal) ");
+			return result.Replace("Private ", "(Private) ").Replace("SemiGlobal ", "(SemiGlobal) ").Replace("Global ", "(Global) ");
 		}
 
 		protected string readStr(Scope s, uint instance, int sid, int maxLen, bool silent)
