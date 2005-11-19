@@ -1,4 +1,8 @@
 
+19 November 2005 18:39 - Bhav: Back out 1.26 fallback change
+  SimPe BHAV\
+    BhavWiz.cs 1.27
+
 19 November 2005 18:03 - Bhav: decimal input in Wiz0x0002
   SimPe BHAV\
     BhavWizPrim0x0002.cs 1.13
