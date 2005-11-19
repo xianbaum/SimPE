@@ -1,4 +1,10 @@
 
+19 November 2005 13:19 - Bhav: Fix: BCON:Temp for out-of-context values was duff, as was Wiz
+  SimPe BHAV\
+    BhavWiz.cs 1.24
+    BhavWizPrim0x0002.cs 1.12
+  pjseTestData.package 1.10
+
 18 November 2005 22:59 - Bhav: Better Attribute label handling
   SimPe BHAV\
     BhavWiz.cs 1.23
