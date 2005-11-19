@@ -261,8 +261,8 @@ namespace pjse
 
 			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
 				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return (silent ? "" : s.ToString() + " ") + "BCON 0x" + SimPe.Helper.HexString((ushort)instance)
-					+ (temp ? "[Temp " + bid.ToString() + "]" : ":0x" + SimPe.Helper.HexString((ushort)bid) );
+				return (silent ? "" : s.ToString() + " ") + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":"
+					+ (temp ? "[Temp " + bid.ToString() + "]" : "0x" + SimPe.Helper.HexString((ushort)bid) );
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
 
