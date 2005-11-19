@@ -261,7 +261,8 @@ namespace pjse
 
 			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
 				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return (silent ? "" : s.ToString() + " ") + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)bid);
+				return (silent ? "" : s.ToString() + " ") + "BCON 0x" + SimPe.Helper.HexString((ushort)instance)
+					+ (temp ? "[Temp " + bid.ToString() + "]" : ":0x" + SimPe.Helper.HexString((ushort)bid) );
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
 
@@ -323,12 +324,12 @@ namespace pjse
 			Scope c = instruction.Parent.Context;
 			string result = readStr(c, instance, sid, maxLen, silent);
 
-			if (fallback && (result.EndsWith("not set]") || result.EndsWith("file]")))
+			if (fallback && (result.IndexOf('"') < 0))
 			{
 				if (c == Scope.Private)
 					result = readStr(Scope.SemiGlobal, instance, sid, maxLen, silent);
 
-				if (!(result.EndsWith("not set]") || result.EndsWith("file]")))
+				if (result.IndexOf('"') < 0)
 					result = readStr(Scope.Global, instance, sid, maxLen, silent);
 			}
 

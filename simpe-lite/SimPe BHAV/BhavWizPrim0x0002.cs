@@ -372,14 +372,19 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private static ushort ConstantValueParser(ushort[] values) 
 		{
+			// x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
+			// values[0] is b
+			// values[1] is c
 			int output = 0;
-			output |= values[1] & 0x7f;			// .... .... .xxx xxxx
-			output |= (values[0] & 0x3f) << 7;	// ...x xxxx x... ....
-			output |= (values[0] & 0x40) << 9;	// x... .... .... ....
-			if (values[0] < 0x1000)
-				output |= 0x4000;				// .x.. .... .... ....
-			if (values[0] > 0x2000)
-				output |= 0x2000;				// ..x. .... .... ....
+			output |= values[1] & 0x7f;			// ........ .ccccccc
+			output |= (values[0] & 0x3f) << 7;	// ...bbbbb b.......
+			output |= (values[0] & 0x40) << 9;	// b....... ........
+
+			int a = 0;								// Private
+			if      (values[0] <  0x1000) a = 2;	// Global
+			else if (values[0] >= 0x2000) a = 1;	// Semi-Global
+			output |= (a << 13);				// .aa..... ........
+
 			return (ushort)output;
 		}
 
