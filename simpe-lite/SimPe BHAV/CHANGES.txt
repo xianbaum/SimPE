@@ -1,4 +1,14 @@
 
+19 November 2005 18:03 - Bhav: decimal input in Wiz0x0002
+  SimPe BHAV\
+    BhavWizPrim0x0002.cs 1.13
+    BhavWizPrim0x0002.resx 1.2
+  pjseTestData.package 1.11
+
+19 November 2005 18:01 - Bhav: Fall back only on missing file, not missing string
+  SimPe BHAV\
+    BhavWiz.cs 1.26
+
 19 November 2005 13:48 - Bhav: Scrollbar on decoded operands (and : before Temp)
   SimPe BHAV\
     BhavForm.resx 1.26
