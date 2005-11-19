@@ -1,4 +1,9 @@
 
+19 November 2005 13:48 - Bhav: Scrollbar on decoded operands (and : before Temp)
+  SimPe BHAV\
+    BhavForm.resx 1.26
+    BhavWiz.cs 1.25
+
 19 November 2005 13:19 - Bhav: Fix: BCON:Temp for out-of-context values was duff, as was Wiz
   SimPe BHAV\
     BhavWiz.cs 1.24
