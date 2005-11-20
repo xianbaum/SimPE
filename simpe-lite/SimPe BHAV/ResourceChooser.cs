@@ -83,25 +83,35 @@ namespace pjse
 		#region ResourceChooser
 		public pjse.FileTable.Entry Execute(uint resourceType, uint group, Control form)
 		{
+			return Execute(resourceType, group, form, 0);
+		}
+
+		public pjse.FileTable.Entry Execute(uint resourceType, uint group, Control form, byte skip_pages)
+		{
 			form.Cursor = Cursors.WaitCursor;
 			this.Cursor = Cursors.WaitCursor;
 
 			this.tcResources.TabPages.Clear();
 
 			// There doesn't appear to be a way to compare two paths and have the OS decide if they refer to the same object
-			if (pjse.FileTable.GFT.CurrentPackage != null && !pjse.FileTable.GFT.CurrentPackage.FileName.EndsWith("objects.package"))
+			if (((skip_pages & 0x01) == 0) && pjse.FileTable.GFT.CurrentPackage != null && !pjse.FileTable.GFT.CurrentPackage.FileName.EndsWith("objects.package"))
 				FillPackage(resourceType, this.lbPackage, this.tpPackage);
 
-			FillGroup(resourceType, group, this.lbGroup, this.tpGroup);
+			if ((skip_pages & 0x02) == 0)
+				FillGroup(resourceType, group, this.lbGroup, this.tpGroup);
 
-			Glob g = pjse.BhavWiz.GlobByGroup(group);
-			if (g != null)
-				FillGroup(resourceType, g.SemiGlobalGroup, this.lbSemiGroup, this.tpSemiGroup);
+			if ((skip_pages & 0x04) == 0)
+			{
+				Glob g = pjse.BhavWiz.GlobByGroup(group);
+				if (g != null)
+					FillGroup(resourceType, g.SemiGlobalGroup, this.lbSemiGroup, this.tpSemiGroup);
+			}
 
-			if (group != 0x7FD46CD0)
+			if ((skip_pages & 0x08) == 0 && group != 0x7FD46CD0)
 				FillGroup(resourceType, 0x7FD46CD0, this.lbGlobalGroup, this.tpGlobalGroup);
 
-			FillBuiltIn(resourceType, this.lbBuiltIn, this.tpBuiltIn);
+			if ((skip_pages & 0x10) == 0)
+				FillBuiltIn(resourceType, this.lbBuiltIn, this.tpBuiltIn);
 
 			form.Cursor = Cursors.Default;
 			this.Cursor = Cursors.Default;
