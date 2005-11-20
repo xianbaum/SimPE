@@ -279,16 +279,31 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		/// <summary>
+		/// Gets the BHAV name and existence
+		/// </summary>
+		/// <param name="target">BHAV to find</param>
+		/// <param name="found">whether it was found</param>
+		/// <returns>the filename</returns>
+		private string getBHAV(ushort target, ref bool found)
+		{
+			if (target == 0) return "---";
+			string s = "0x" + SimPe.Helper.HexString(target);
+			pjse.FileTable.Entry ftEntry = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
+			found = (ftEntry != null);
+			return s + ": " + (ftEntry != null ? ftEntry : pjse.GS.GStr(pjse.GS.BhavStr.Primitives, target));
+		}
+
 		private void setBHAV(int which, ushort target, bool notxt)
 		{
 			TextBox[] tbaGA = { tbAction, tbGuardian };
+			if (!notxt) tbaGA[which].Text = "0x"+Helper.HexString(target);
+
 			Label[] lbaGA = { lbaction, lbguard };
 			LinkLabel[] llaGA = { llAction, llGuardian };
-
-			pjse.FileTable.Entry e = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
-			if (!notxt) tbaGA[which].Text = "0x"+Helper.HexString(target);
-			lbaGA[which].Text = (target == 0 || e == null) ? "---" : e;
-			llaGA[which].Enabled = (e != null);
+			bool found = false;
+			lbaGA[which].Text = getBHAV(target, ref found);
+			llaGA[which].Enabled = found;
 		}
 
 		private void setStringIndex(uint si, bool doText, bool doCB)

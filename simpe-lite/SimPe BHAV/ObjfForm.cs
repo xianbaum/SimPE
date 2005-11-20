@@ -125,22 +125,20 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (target == 0) return "---";
 			string s = "0x" + SimPe.Helper.HexString(target);
-			pjse.FileTable.Entry e = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
-			found = (e != null);
-			return s + (e == null ? "" : ": " + e);
+			pjse.FileTable.Entry ftEntry = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
+			found = (ftEntry != null);
+			return s + ": " + (ftEntry != null ? ftEntry : pjse.GS.GStr(pjse.GS.BhavStr.Primitives, target));
 		}
 
 		private void setBHAV(int which, ushort target, bool notxt)
 		{
-			bool found = false;
-
 			TextBox[] tbaAG = { tbAction, tbGuardian };
 			if (!notxt) tbaAG[which].Text = "0x"+Helper.HexString(target);
 
 			Label[] lbaAG = { lbAction, lbGuardian };
-			this.lvObjfItem.SelectedItems[0].SubItems[1 + which].Text = lbaAG[which].Text = getBHAV(target, ref found);
-
 			LinkLabel[] llaAG = { llAction, llGuardian };
+			bool found = false;
+			this.lvObjfItem.SelectedItems[0].SubItems[1 + which].Text = lbaAG[which].Text = getBHAV(target, ref found);
 			llaAG[which].Enabled = found;
 		}
 
