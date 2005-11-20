@@ -1,4 +1,33 @@
 
+20 November 2005 14:56 - PJSE-ify Objf, remove BhavBaseItem and OpcodeProvider
+  SimPe BHAV\
+    BhavBaseItem.cs (deleted)
+    BhavWrapper.cs 1.44
+    ObjfForm.cs 1.9
+    ObjfForm.resx 1.2
+    ObjfItem.cs (deleted - incorporated into ObjfWrapper)
+    ObjfWrapper.cs 1.7
+    pjse coder plugin.csproj 1.25
+    TtabForm.cs 1.29
+    TtabForm.resx 1.15
+    TtabWrapper.cs 1.20
+    WrapperFactory.cs 1.15
+
+20 November 2005 14:45 - Bhav: Split OperandUI from Parsing bits, fix Run Functional Tree
+  SimPe BHAV\
+    BhavOperandWiz0x0001.cs 1.1 (was BhavWizPrim0x0001)
+    BhavOperandWiz0x0001.resx 1.1 (was BhavWizPrim0x0001)
+    BhavOperandWiz0x0002.cs 1.1 (was BhavWizPrim0x0002)
+    BhavOperandWiz0x0002.resx 1.1 (was BhavWizPrim0x0002)
+    BhavOperandWizBhav.cs 1.1 (from BhavWizBhav)
+    BhavOperandWizBhav.resx 1.1 (from BhavWizBhav)
+    BhavWizBhav.cs 1.16
+    BhavWizPrim.cs 1.32
+    BhavWizPrim0x0001.cs (renamed)
+    BhavWizPrim0x0001.resx (renamed)
+    BhavWizPrim0x0002.cs (renamed)
+    BhavWizPrim0x0002.resx (renamed)
+
 19 November 2005 18:39 - Bhav: Back out 1.26 fallback change
   SimPe BHAV\
     BhavWiz.cs 1.27
