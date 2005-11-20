@@ -114,17 +114,34 @@ namespace SimPe.PackedFiles.UserInterface
 			return true;
 		}
 
+
+		/// <summary>
+		/// Gets the BHAV name and existence
+		/// </summary>
+		/// <param name="target">BHAV to find</param>
+		/// <param name="found">whether it was found</param>
+		/// <returns>the filename</returns>
+		private string getBHAV(ushort target, ref bool found)
+		{
+			if (target == 0) return "---";
+			string s = "0x" + SimPe.Helper.HexString(target);
+			pjse.FileTable.Entry e = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
+			found = (e != null);
+			return s + (e == null ? "" : ": " + e);
+		}
+
 		private void setBHAV(int which, ushort target, bool notxt)
 		{
-			TextBox[] tbaGA = { tbAction, tbGuardian };
-			Label[] lbaGA = { lbAction, lbGuardian };
-			LinkLabel[] llaGA = { llAction, llGuardian };
+			bool found = false;
 
-			pjse.FileTable.Entry e = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
-			if (!notxt) tbaGA[which].Text = "0x"+Helper.HexString(target);
-			lbaGA[which].Text = (target == 0 || e == null) ? "---" : e;
-			llaGA[which].Enabled = (e != null);
-			this.lvObjfItem.SelectedItems[0].SubItems[1 + which].Text = (target == 0) ? "---" : tbaGA[which].Text;
+			TextBox[] tbaAG = { tbAction, tbGuardian };
+			if (!notxt) tbaAG[which].Text = "0x"+Helper.HexString(target);
+
+			Label[] lbaAG = { lbAction, lbGuardian };
+			this.lvObjfItem.SelectedItems[0].SubItems[1 + which].Text = lbaAG[which].Text = getBHAV(target, ref found);
+
+			LinkLabel[] llaAG = { llAction, llGuardian };
+			llaAG[which].Enabled = found;
 		}
 
 		#endregion
@@ -151,6 +168,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{
+			bool parm = false;
 			wrapper = (Objf)wrp;
 			WrapperChanged(wrapper, null);
 
@@ -160,15 +178,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.lvObjfItem.Items.Clear();
 			for(ushort i = 0; i < wrapper.Count; i++)
-			{
 				this.lvObjfItem.Items.Add( new ListViewItem(
 					new string[] {
 									 pjse.GS.GStr(pjse.GS.BhavStr.OBJFDescs, i)
-									 , wrapper[i].Action   == 0 ? "---" : "0x" + Helper.HexString(wrapper[i].Action)
-									 , wrapper[i].Guardian == 0 ? "---" : "0x" + Helper.HexString(wrapper[i].Guardian)
+									 , getBHAV(wrapper[i].Action, ref parm)
+									 , getBHAV(wrapper[i].Guardian, ref parm)
 								 }
 					) );
-			}
 
 			internalchg = false;
 
