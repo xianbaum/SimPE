@@ -34,25 +34,6 @@ namespace SimPe.Plugin
 	/// </remarks>
 	public class WrapperFactory : AbstractWrapperFactory
 	{
-		static IProviderRegistry provider;
-		public static IProviderRegistry Provider
-		{
-			get { return provider; }
-		}
-
-		/// <summary>
-		/// Returns or sets the Provider this Plugin can use
-		/// </summary>
-		public override IProviderRegistry LinkedProvider
-		{
-			get { return base.LinkedProvider; }
-			set { 
-				base.LinkedProvider = value; 
-				provider = value;
-			}
-		}
-
-
 		#region AbstractWrapperFactory Member
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
@@ -63,12 +44,12 @@ namespace SimPe.Plugin
 			get 
 			{
 				IWrapper[] wrappers = {
-										   new Bhav(LinkedProvider.OpcodeProvider)
-										  ,new Ttab(LinkedProvider.OpcodeProvider)
+										   new Bhav()
+										  ,new Objf()
 										  ,new Str()
+										  ,new Ttab()
 #if INPROGRESS || DEBUG
 										  ,new Bcon()
-										  ,new Objf(LinkedProvider.OpcodeProvider)
 										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()
 										  ,new Trcn()
@@ -80,7 +61,6 @@ namespace SimPe.Plugin
 		}
 
 		#endregion
-
 	}
 
 }

@@ -177,18 +177,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private TtabItem origItem;
 		private TtabItem currentItem;
 
-		private void WrapperChanged(object sender, System.EventArgs e)
-		{
-			this.btnCommit.Enabled = wrapper.Changed;
-
-			if (internalchg) return;
-			internalchg = true;
-			tbFilename.Text = lbttabfile.Text = wrapper.FileName;
-			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
-			internalchg = false;
-		}
-
-
 		private void doFlags()
 		{
 			internalchg = true;
@@ -302,6 +290,7 @@ namespace SimPe.PackedFiles.UserInterface
 			lbaGA[which].Text = (target == 0 || e == null) ? "---" : e;
 			llaGA[which].Enabled = (e != null);
 		}
+
 		private void setStringIndex(uint si, bool doText, bool doCB)
 		{
 			if (doText) tbStringIndex.Text = "0x"+Helper.HexString(si);
@@ -372,6 +361,17 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 		}		
 
+		private void WrapperChanged(object sender, System.EventArgs e)
+		{
+			this.btnCommit.Enabled = wrapper.Changed;
+
+			if (internalchg) return;
+			internalchg = true;
+			this.Text = tbFilename.Text = lbttabfile.Text = wrapper.FileName;
+			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
+			internalchg = false;
+		}
+
 		#endregion
 
 		#region Windows Form Designer generated code
@@ -395,6 +395,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbttab = new System.Windows.Forms.ListBox();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpSettings = new System.Windows.Forms.TabPage();
+			this.llGuardian = new System.Windows.Forms.LinkLabel();
+			this.llAction = new System.Windows.Forms.LinkLabel();
 			this.cbStringIndex = new System.Windows.Forms.ComboBox();
 			this.cbAttenuationCode = new System.Windows.Forms.ComboBox();
 			this.btnAction = new System.Windows.Forms.Button();
@@ -448,8 +450,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.panel5 = new System.Windows.Forms.Panel();
 			this.lbttabfile = new System.Windows.Forms.Label();
 			this.label25 = new System.Windows.Forms.Label();
-			this.llAction = new System.Windows.Forms.LinkLabel();
-			this.llGuardian = new System.Windows.Forms.LinkLabel();
 			this.ttabPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tpSettings.SuspendLayout();
@@ -814,6 +814,56 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpSettings.ToolTipText = resources.GetString("tpSettings.ToolTipText");
 			this.tpSettings.Visible = ((bool)(resources.GetObject("tpSettings.Visible")));
 			// 
+			// llGuardian
+			// 
+			this.llGuardian.AccessibleDescription = resources.GetString("llGuardian.AccessibleDescription");
+			this.llGuardian.AccessibleName = resources.GetString("llGuardian.AccessibleName");
+			this.llGuardian.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llGuardian.Anchor")));
+			this.llGuardian.AutoSize = ((bool)(resources.GetObject("llGuardian.AutoSize")));
+			this.llGuardian.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llGuardian.Dock")));
+			this.llGuardian.Enabled = ((bool)(resources.GetObject("llGuardian.Enabled")));
+			this.llGuardian.Font = ((System.Drawing.Font)(resources.GetObject("llGuardian.Font")));
+			this.llGuardian.Image = ((System.Drawing.Image)(resources.GetObject("llGuardian.Image")));
+			this.llGuardian.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llGuardian.ImageAlign")));
+			this.llGuardian.ImageIndex = ((int)(resources.GetObject("llGuardian.ImageIndex")));
+			this.llGuardian.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llGuardian.ImeMode")));
+			this.llGuardian.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llGuardian.LinkArea")));
+			this.llGuardian.Location = ((System.Drawing.Point)(resources.GetObject("llGuardian.Location")));
+			this.llGuardian.Name = "llGuardian";
+			this.llGuardian.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llGuardian.RightToLeft")));
+			this.llGuardian.Size = ((System.Drawing.Size)(resources.GetObject("llGuardian.Size")));
+			this.llGuardian.TabIndex = ((int)(resources.GetObject("llGuardian.TabIndex")));
+			this.llGuardian.TabStop = true;
+			this.llGuardian.Text = resources.GetString("llGuardian.Text");
+			this.llGuardian.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llGuardian.TextAlign")));
+			this.llGuardian.Visible = ((bool)(resources.GetObject("llGuardian.Visible")));
+			this.llGuardian.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
+			// 
+			// llAction
+			// 
+			this.llAction.AccessibleDescription = resources.GetString("llAction.AccessibleDescription");
+			this.llAction.AccessibleName = resources.GetString("llAction.AccessibleName");
+			this.llAction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llAction.Anchor")));
+			this.llAction.AutoSize = ((bool)(resources.GetObject("llAction.AutoSize")));
+			this.llAction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llAction.Dock")));
+			this.llAction.Enabled = ((bool)(resources.GetObject("llAction.Enabled")));
+			this.llAction.Font = ((System.Drawing.Font)(resources.GetObject("llAction.Font")));
+			this.llAction.Image = ((System.Drawing.Image)(resources.GetObject("llAction.Image")));
+			this.llAction.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llAction.ImageAlign")));
+			this.llAction.ImageIndex = ((int)(resources.GetObject("llAction.ImageIndex")));
+			this.llAction.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llAction.ImeMode")));
+			this.llAction.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llAction.LinkArea")));
+			this.llAction.Location = ((System.Drawing.Point)(resources.GetObject("llAction.Location")));
+			this.llAction.Name = "llAction";
+			this.llAction.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llAction.RightToLeft")));
+			this.llAction.Size = ((System.Drawing.Size)(resources.GetObject("llAction.Size")));
+			this.llAction.TabIndex = ((int)(resources.GetObject("llAction.TabIndex")));
+			this.llAction.TabStop = true;
+			this.llAction.Text = resources.GetString("llAction.Text");
+			this.llAction.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llAction.TextAlign")));
+			this.llAction.Visible = ((bool)(resources.GetObject("llAction.Visible")));
+			this.llAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
+			// 
 			// cbStringIndex
 			// 
 			this.cbStringIndex.AccessibleDescription = resources.GetString("cbStringIndex.AccessibleDescription");
@@ -950,6 +1000,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbaction.TabIndex = ((int)(resources.GetObject("lbaction.TabIndex")));
 			this.lbaction.Text = resources.GetString("lbaction.Text");
 			this.lbaction.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbaction.TextAlign")));
+			this.lbaction.UseMnemonic = false;
 			this.lbaction.Visible = ((bool)(resources.GetObject("lbaction.Visible")));
 			// 
 			// lbguard
@@ -972,6 +1023,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbguard.TabIndex = ((int)(resources.GetObject("lbguard.TabIndex")));
 			this.lbguard.Text = resources.GetString("lbguard.Text");
 			this.lbguard.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbguard.TextAlign")));
+			this.lbguard.UseMnemonic = false;
 			this.lbguard.Visible = ((bool)(resources.GetObject("lbguard.Visible")));
 			// 
 			// tbStringIndex
@@ -2169,56 +2221,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label25.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.TextAlign")));
 			this.label25.Visible = ((bool)(resources.GetObject("label25.Visible")));
 			// 
-			// llAction
-			// 
-			this.llAction.AccessibleDescription = resources.GetString("llAction.AccessibleDescription");
-			this.llAction.AccessibleName = resources.GetString("llAction.AccessibleName");
-			this.llAction.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llAction.Anchor")));
-			this.llAction.AutoSize = ((bool)(resources.GetObject("llAction.AutoSize")));
-			this.llAction.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llAction.Dock")));
-			this.llAction.Enabled = ((bool)(resources.GetObject("llAction.Enabled")));
-			this.llAction.Font = ((System.Drawing.Font)(resources.GetObject("llAction.Font")));
-			this.llAction.Image = ((System.Drawing.Image)(resources.GetObject("llAction.Image")));
-			this.llAction.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llAction.ImageAlign")));
-			this.llAction.ImageIndex = ((int)(resources.GetObject("llAction.ImageIndex")));
-			this.llAction.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llAction.ImeMode")));
-			this.llAction.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llAction.LinkArea")));
-			this.llAction.Location = ((System.Drawing.Point)(resources.GetObject("llAction.Location")));
-			this.llAction.Name = "llAction";
-			this.llAction.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llAction.RightToLeft")));
-			this.llAction.Size = ((System.Drawing.Size)(resources.GetObject("llAction.Size")));
-			this.llAction.TabIndex = ((int)(resources.GetObject("llAction.TabIndex")));
-			this.llAction.TabStop = true;
-			this.llAction.Text = resources.GetString("llAction.Text");
-			this.llAction.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llAction.TextAlign")));
-			this.llAction.Visible = ((bool)(resources.GetObject("llAction.Visible")));
-			this.llAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
-			// 
-			// llGuardian
-			// 
-			this.llGuardian.AccessibleDescription = resources.GetString("llGuardian.AccessibleDescription");
-			this.llGuardian.AccessibleName = resources.GetString("llGuardian.AccessibleName");
-			this.llGuardian.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llGuardian.Anchor")));
-			this.llGuardian.AutoSize = ((bool)(resources.GetObject("llGuardian.AutoSize")));
-			this.llGuardian.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llGuardian.Dock")));
-			this.llGuardian.Enabled = ((bool)(resources.GetObject("llGuardian.Enabled")));
-			this.llGuardian.Font = ((System.Drawing.Font)(resources.GetObject("llGuardian.Font")));
-			this.llGuardian.Image = ((System.Drawing.Image)(resources.GetObject("llGuardian.Image")));
-			this.llGuardian.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llGuardian.ImageAlign")));
-			this.llGuardian.ImageIndex = ((int)(resources.GetObject("llGuardian.ImageIndex")));
-			this.llGuardian.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llGuardian.ImeMode")));
-			this.llGuardian.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llGuardian.LinkArea")));
-			this.llGuardian.Location = ((System.Drawing.Point)(resources.GetObject("llGuardian.Location")));
-			this.llGuardian.Name = "llGuardian";
-			this.llGuardian.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llGuardian.RightToLeft")));
-			this.llGuardian.Size = ((System.Drawing.Size)(resources.GetObject("llGuardian.Size")));
-			this.llGuardian.TabIndex = ((int)(resources.GetObject("llGuardian.TabIndex")));
-			this.llGuardian.TabStop = true;
-			this.llGuardian.Text = resources.GetString("llGuardian.Text");
-			this.llGuardian.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llGuardian.TextAlign")));
-			this.llGuardian.Visible = ((bool)(resources.GetObject("llGuardian.Visible")));
-			this.llGuardian.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
-			// 
 			// TtabForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -2318,7 +2320,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void llBhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			pjse.FileTable.Entry item = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, (sender == llAction) ? currentItem.Action : currentItem.Guardian);
-			Bhav b = new Bhav(null);
+			Bhav b = new Bhav();
 			b.ProcessData(item.PFD, item.Package);
 
 			BhavForm ui = (BhavForm)b.UIHandler;

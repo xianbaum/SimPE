@@ -57,11 +57,6 @@ namespace SimPe.PackedFiles.Wrapper
 		private BhavItemArrayList items = new BhavItemArrayList();
 
 		/// <summary>
-		/// Contains an Opcode Provider
-		/// </summary>
-		private SimPe.Interfaces.Providers.IOpcodeProvider opcodes;
-
-		/// <summary>
 		/// Indicates the data content of the wrapper (packed file) has changed
 		/// </summary>
 		public event EventHandler WrapperChanged;
@@ -92,15 +87,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Returns the Header
 		/// </summary>
 		public BhavHeader Header { get { return header; } }
-
-
-		/// <summary>
-		/// Opcode Provider
-		/// </summary>
-		public SimPe.Interfaces.Providers.IOpcodeProvider Opcodes 
-		{
-			get { return opcodes; }
-		}
 
 
 		#region Bhav Members
@@ -236,11 +222,10 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Bhav(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
+		public Bhav() : base()
 		{
 			header = new BhavHeader(this);
 			items = new BhavItemArrayList();
-			this.opcodes = opcodes;
 		}
 
 
@@ -358,9 +343,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region IMultiplePackedFileWrapper
 		public override object[] GetConstructorArguments()
 		{
-			object[] o = new object[1];
-			o[0] = this.opcodes;
-			return o;
+			return new object[0];
 		}
 		#endregion
 

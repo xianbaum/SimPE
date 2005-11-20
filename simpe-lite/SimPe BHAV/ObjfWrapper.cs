@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections;
 using SimPe.Interfaces.Plugin;
 
 namespace SimPe.PackedFiles.Wrapper
@@ -34,69 +35,107 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
+		, ICollection
 	{
 		#region Attributes
 		/// <summary>
 		/// Contains the Filename
 		/// </summary>
-		byte[] filename;	
-	
+		private byte[] filename = new byte[64];	
+		/// <summary>
+		/// Header of the File
+		/// </summary>
+		private uint[] header = { 0x00000000, 0x00000000, 0x4f424a66 }; // 'OBJf'
+		/// <summary>
+		/// Items stored in the File
+		/// </summary>
+		private ObjfItemArrayList items = new ObjfItemArrayList();
+
+		/// <summary>
+		/// Indicates the data content of the wrapper (packed file) has changed
+		/// </summary>
+		public event EventHandler WrapperChanged;
+		/// <summary>
+		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
+		/// </summary>
+		private bool internalchg = false;
+		#endregion
+
+		#region Accessor methods
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
 		public string FileName 
 		{
 			get { return Helper.ToString(filename); }
+			set 
+			{
+				if (!Helper.ToString(filename).Equals(value))
+				{
+					filename = Helper.ToBytes(value, 0x40);
+					OnWrapperChanged();
+				}
+			}
 		}
 
 		/// <summary>
-		/// Header of the File
+		/// Returns the Item
 		/// </summary>
-		byte[] header = {
-							0, 0, 0, 0, 
-							0, 0, 0, 0,
-							(byte)'f', (byte)'J', (byte)'B', (byte)'O'
-						};
-
-		/// <summary>
-		/// Items stored in the File
-		/// </summary>
-		ObjfItem[] items;
-
-		/// <summary>
-		/// Returns /Sets the Items
-		/// </summary>
-		public ObjfItem[] Items 
+		public ObjfItem this[int index]
 		{
-			get { return items;	}			
-			set { items = value; }
-		}		
+			get
+			{
+				return items[index];
+			}
+			set
+			{
+				if (items[index] == null || !items[index].Equals(value))
+				{
+					items[index] = value;
+					OnWrapperChanged();
+				}
+			}
+		}
+
+		public int Add(ObjfItem item)
+		{
+			item.Parent = this;
+			int result = items.Add(item);
+			if (result >= 0) OnWrapperChanged();
+			return result;
+		}
+
+		public void Remove(ObjfItem item) { this.RemoveAt(items.IndexOf(item)); }
+
+		public void RemoveAt(int index)
+		{
+			if (index < 0 || index >= items.Count) return;
+
+			items.RemoveAt(index);
+			OnWrapperChanged();
+		}
+
 		#endregion
-
-		/// <summary>
-		/// Contains an Opcode Provider
-		/// </summary>
-		SimPe.Interfaces.Providers.IOpcodeProvider opcodes;
-
-		/// <summary>
-		/// Opcode Provider
-		/// </summary>
-		public SimPe.Interfaces.Providers.IOpcodeProvider Opcodes 
-		{
-			get { return opcodes; }
-		}
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Objf(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
+		public Objf() : base() { }
+
+
+		internal virtual void OnWrapperChanged()
 		{
-			this.opcodes = opcodes;
-			items = new ObjfItem[0];			
-			filename = new byte[64];
+			this.Changed = true;
+
+			if (internalchg) return;
+			if (WrapperChanged != null) 
+			{
+				WrapperChanged(this, new EventArgs());
+			}
 		}
 
-		#region IWrapper member
+
+		#region AbstractWrapper Member
 		public override bool CheckVersion(uint version) 
 		{
 			if ( (version==0012) //0.00
@@ -108,9 +147,6 @@ namespace SimPe.PackedFiles.Wrapper
 
 			return false;
 		}
-		#endregion
-		
-		#region AbstractWrapper Member
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
 			return new UserInterface.ObjfForm();
@@ -128,29 +164,9 @@ namespace SimPe.PackedFiles.Wrapper
 			return new AbstractWrapperInfo(
 				"PJSE OBJf Wrapper",
 				"Peter L Jones",
-				"---",
+				"Object Function Table Editor",
 				1
 				); 
-		}
-
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		protected override void Unserialize(System.IO.BinaryReader reader)
-		{
-			filename = reader.ReadBytes(64);
-			header = reader.ReadBytes(12);
-			items = new ObjfItem[reader.ReadUInt32()];
-						
- 
-			for (ushort i=0; i < items.Length; i++) 
-			{
-				items[i] = new ObjfItem(this);
-				items[i].LineNumber = i;
-				items[i].Guardian = reader.ReadUInt16();
-				items[i].Action = reader.ReadUInt16();
-			}
 		}
 
 		/// <summary>
@@ -164,35 +180,44 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			writer.Write(header);
-			writer.Write((uint)items.Length);
-						
- 
-			for (int i=0; i < items.Length; i++) 
-			{				
-				writer.Write(items[i].Guardian);
-				writer.Write(items[i].Action);
-			}	
-		}
-		#endregion
+			writer.Write(header[0]);
+			writer.Write(header[1]);
+			writer.Write(header[2]);
 
-		#region IFileWrapperSaveExtension Member		
-		//all covered by Serialize()
+			writer.Write((uint)items.Count);
+						
+			for (int i = 0; i < items.Count; i++)
+				if (items[i] != null) ((ObjfItem)items[i]).Serialize(writer);
+		}
+		/// <summary>
+		/// Unserializes a BinaryStream into the Attributes of this Instance
+		/// </summary>
+		/// <param name="reader">The Stream that contains the FileData</param>
+		protected override void Unserialize(System.IO.BinaryReader reader)
+		{
+			// in case we give up...
+			items = null;
+
+			filename = reader.ReadBytes(64);
+
+			header = new uint[3];
+			header[0] = reader.ReadUInt32();
+			header[1] = reader.ReadUInt32();
+			header[2] = reader.ReadUInt32();
+			if (header[2] != 0x4f424a66)
+				return;
+
+			uint itemCount = reader.ReadUInt32();
+
+			ObjfItem[] ti = new ObjfItem[itemCount];
+			items = new ObjfItemArrayList(ti);
+			for (int i = 0; i < itemCount; i++)
+				items[i] = new ObjfItem(this, reader);
+		}
+
 		#endregion
 
 		#region IFileWrapper Member
-
-		/// <summary>
-		/// Returns the Signature that can be used to identify Files processable with this Plugin
-		/// </summary>
-		public byte[] FileSignature
-		{
-			get
-			{
-				return new byte[0];
-			}
-		}
-
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process
 		/// </summary>
@@ -205,6 +230,147 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+		/// <summary>
+		/// Returns the Signature that can be used to identify Files processable with this Plugin
+		/// </summary>
+		public byte[] FileSignature
+		{
+			get
+			{
+				return new byte[0];
+			}
+		}
+
 		#endregion		
+
+		#region IFileWrapperSaveExtension Member		
+		//all covered by AbstractWrapper
+		#endregion
+
+		#region ICollection Members
+		public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+		public int Count { get { return items.Count; } }
+		public bool IsSynchronized { get { return items.IsSynchronized; } }
+		public object SyncRoot { get { return items.SyncRoot; } }
+		#region IEnumerable Members
+		public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+		#endregion
+		#endregion
+
+		#region ObjfItemArrayList
+		private class ObjfItemArrayList : ArrayList
+		{
+			public ObjfItemArrayList() : base() { }
+
+			public ObjfItemArrayList(ObjfItem[] c) : base(c) { }
+
+			public ObjfItemArrayList(int capacity) : base(capacity) { }
+
+			public int Add(ObjfItem item) { return base.Add(item); }
+
+			public void AddRange(ObjfItem[] c) { base.AddRange(c); }
+
+			public void Insert(int index, ObjfItem item) { base.Insert(index, item); }
+
+			public void SetRange(int index, ObjfItem[] c) { base.SetRange(index, c); }
+
+			public new ObjfItem this[int index]
+			{
+				get { return (ObjfItem)base[index]; }
+				set { base[index] = value; }
+			}
+
+		}
+
+		#endregion
+	}
+
+
+	/// <summary>
+	/// An Item stored in an OBJf
+	/// </summary>
+	public class ObjfItem
+	{
+		#region Attributes
+		private ushort guard = 0;
+		private ushort action = 0;
+		private Objf parent = null;
+		#endregion
+
+		#region Accessor methods
+		public ushort Action
+		{
+			get { return action; }
+			set 
+			{
+				if (action != value)
+				{
+					action = value;
+					parent.OnWrapperChanged();
+				}
+			}
+		}
+
+		public ushort Guardian
+		{
+			get { return guard; }
+			set
+			{
+				if (guard != value)
+				{
+					guard = value;
+					parent.OnWrapperChanged();
+				}
+			}
+		}		
+
+		public Objf Parent
+		{
+			get { return parent; }
+			set { parent = value; } // parent not part of wrapper
+		}
+		#endregion
+
+		public ObjfItem(Objf parent)
+		{
+			this.parent = parent;
+		}
+
+		public ObjfItem(Objf parent, System.IO.BinaryReader reader)
+		{
+			this.parent = parent;
+			Unserialize(reader);
+		}
+
+
+		public ObjfItem Clone()
+		{
+			ObjfItem clone = new ObjfItem(this.parent);
+			clone.action = this.action;
+			clone.guard = this.guard;
+			return clone;
+		}
+
+
+		/// <summary>
+		/// Reads Data from the Stream
+		/// </summary>
+		/// <param name="reader"></param>
+		internal void Unserialize(System.IO.BinaryReader reader)
+		{
+			guard = reader.ReadUInt16();
+			action = reader.ReadUInt16();
+		}
+
+		/// <summary>
+		/// Writes Data to the Stream
+		/// </summary>
+		/// <param name="reader"></param>
+		internal void Serialize(System.IO.BinaryWriter writer)
+		{
+			writer.Write(guard);
+			writer.Write(action);
+		}
+
 	}
 }

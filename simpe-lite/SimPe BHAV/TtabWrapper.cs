@@ -67,10 +67,6 @@ namespace SimPe.PackedFiles.Wrapper
 		private bool internalchg = false;
 
 		/// <summary>
-		/// Contains an Opcode Provider
-		/// </summary>
-		private SimPe.Interfaces.Providers.IOpcodeProvider opcodes = null;
-		/// <summary>
 		/// Contains a valid String Resource that describes the Function Entries
 		/// </summary>
 		private Str strres = null;
@@ -149,14 +145,6 @@ namespace SimPe.PackedFiles.Wrapper
 
 		
 		/// <summary>
-		/// Returns the used Opcode Provider
-		/// </summary>
-		internal SimPe.Interfaces.Providers.IOpcodeProvider Opcodes 
-		{
-			get { return opcodes; }
-		}
-
-		/// <summary>
 		/// Returns the describing String Resource
 		/// </summary>
 		internal PackedFiles.Wrapper.Str StringResource
@@ -195,10 +183,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Ttab(SimPe.Interfaces.Providers.IOpcodeProvider opcodes) : base()
-		{
-			this.opcodes = opcodes;
-		}
+		public Ttab() : base() { }
 
 
 		internal virtual void OnWrapperChanged()
@@ -212,7 +197,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		
+
 		#region AbstractWrapper Member
 		public override bool CheckVersion(uint version) 
 		{
@@ -242,7 +227,7 @@ namespace SimPe.PackedFiles.Wrapper
 			return new AbstractWrapperInfo(
 				"PJSE TTAB Wrapper",
 				"Peter L Jones",
-				"---",
+				"Tree Table Editor",
 				1
 				); 
 		}
@@ -378,7 +363,6 @@ namespace SimPe.PackedFiles.Wrapper
 		#region Attributes
 		private ushort action = 0;
 		private ushort guard = 0;
-		//private int[] counts = null;
 		private TtabFlags flags = null;
 		private ushort flags2 = 0;
 		private uint strindex = 0;
@@ -609,7 +593,6 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-		public SimPe.Interfaces.Providers.IOpcodeProvider Opcodes { get { return parent.Opcodes; } }
 
 		/// <summary>
 		/// Returns the Name of this Item according to the Pie Strings File
@@ -632,16 +615,6 @@ namespace SimPe.PackedFiles.Wrapper
 					return Localization.Manager.GetString("unk"); 
 				}
 			}
-		}
-
-		/// <summary>
-		/// Returns the Name of an Opcode in the Context of this Interaction
-		/// </summary>
-		/// <param name="opcode">The Opcode</param>
-		/// <returns>The Name</returns>
-		public override string ToString()
-		{
-			return "0x"+StringIndex.ToString("X")+": "+Name;// + " ("+this.ActionName+")";
 		}
 
 		public Ttab Parent
@@ -699,6 +672,13 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.groups = (ArrayList)this.groups.Clone();
 			return clone;
 		}
+
+
+		public override string ToString()
+		{
+			return "0x"+StringIndex.ToString("X")+": "+Name;// + " ("+this.ActionName+")";
+		}
+
 
 		/// <summary>
 		/// Reads Data from the Stream
