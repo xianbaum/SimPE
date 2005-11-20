@@ -145,11 +145,9 @@ namespace pjse
 			list.Items.Clear();
 
 			list.Items.AddRange(items);
+			this.tcResources.TabPages.Add(tab);
 			if (list.Items.Count > 0)
-			{
-				this.tcResources.TabPages.Add(tab);
 				list.SelectedIndex = 0;
-			}
 		}
 
 
@@ -167,11 +165,9 @@ namespace pjse
 					i++;
 				}
 			}
+			this.tcResources.TabPages.Add(tab);
 			if (list.Items.Count > 0)
-			{
-				this.tcResources.TabPages.Add(tab);
 				list.SelectedIndex = 0;
-			}
 		}
 
 		private pjse.FileTable.Entry returnBuiltIn(SimPe.Data.Alias a)
