@@ -1213,7 +1213,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += GS.GStr(GS.BhavStr.OBJFDescs, o[0]);
+			s += GS.GStr(GS.BhavStr.FunctionTable, o[0]);
 			if (lng)
 			{
 				s += ", change icon: "                          + ((o[2] & 0x01) != 0).ToString();
