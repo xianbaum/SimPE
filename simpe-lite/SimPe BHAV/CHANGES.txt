@@ -1,4 +1,18 @@
 
+20 November 2005 20:24 - Add page suppression flags to ResourceChooser (not used)
+  SimPe BHAV\
+    ResourceChooser.cs 1.5
+
+20 November 2005 20:23 - Objf: Put primitive names in OBJf (and TTAB) opcode descriptions
+  SimPe BHAV\
+    ObjfForm.cs 1.11
+    TtabForm.cs 1.30
+
+20 November 2005 20:22 - Bhav: ArgC and LocalC in hex
+  SimPe BHAV\
+    BhavForm.cs 1.59
+    BhavForm.resx 1.27
+
 20 November 2005 15:37 - Objf: Put BHAV names in ObjfItem list
   SimPe BHAV\
     ObjfForm.cs 1.10
