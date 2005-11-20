@@ -1,4 +1,13 @@
 
+20 November 2005 15:37 - Objf: Put BHAV names in ObjfItem list
+  SimPe BHAV\
+    ObjfForm.cs 1.10
+    ObjfForm.resx 1.3
+
+20 November 2005 15:36 - Show blank pages in Resource Chooser
+  SimPe BHAV\
+    ResourceChooser.cs 1.4
+
 20 November 2005 14:56 - PJSE-ify Objf, remove BhavBaseItem and OpcodeProvider
   SimPe BHAV\
     BhavBaseItem.cs (deleted)
