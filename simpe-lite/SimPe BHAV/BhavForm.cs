@@ -146,6 +146,8 @@ namespace SimPe.PackedFiles.UserInterface
 								,tbHeaderFlag
 								,tbType
 								,tbCacheFlags
+								,tbArgC
+								,tbLocalC
 							};
 			alHex8 = new ArrayList(iob);
 
@@ -154,9 +156,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			TextBox[] dw = { tbTreeVersion ,};
 			alHex32 = new ArrayList(dw);
-
-			TextBox[] db = { tbArgC ,tbLocalC ,};
-			alDec8 = new ArrayList(db);
 
 			ComboBox[] cb = { tba1 ,tba2 ,cbFormat ,};
 			alHex16cb = new ArrayList(cb);
@@ -475,8 +474,8 @@ namespace SimPe.PackedFiles.UserInterface
 				tbFilename.Text = wrapper.FileName;
 				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
 				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
-				tbArgC.Text = wrapper.Header.ArgumentCount.ToString();
-				tbLocalC.Text = wrapper.Header.LocalVarCount.ToString();
+				tbArgC.Text = "0x"+Helper.HexString(wrapper.Header.ArgumentCount);
+				tbLocalC.Text = "0x"+Helper.HexString(wrapper.Header.LocalVarCount);
 				tbHeaderFlag.Text = "0x"+Helper.HexString(wrapper.Header.HeaderFlag);
 				tbTreeVersion.Text = "0x"+Helper.HexString(wrapper.Header.TreeVersion);
 				tbCacheFlags.Text = "0x"+Helper.HexString(wrapper.Header.CacheFlags);
@@ -1567,9 +1566,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLocalC.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbLocalC.TextAlign")));
 			this.tbLocalC.Visible = ((bool)(resources.GetObject("tbLocalC.Visible")));
 			this.tbLocalC.WordWrap = ((bool)(resources.GetObject("tbLocalC.WordWrap")));
-			this.tbLocalC.Validating += new System.ComponentModel.CancelEventHandler(this.dec8_Validating);
-			this.tbLocalC.Validated += new System.EventHandler(this.dec8_Validated);
-			this.tbLocalC.TextChanged += new System.EventHandler(this.dec8_TextChanged);
+			this.tbLocalC.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbLocalC.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbLocalC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// tbArgC
 			// 
@@ -1595,9 +1594,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbArgC.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbArgC.TextAlign")));
 			this.tbArgC.Visible = ((bool)(resources.GetObject("tbArgC.Visible")));
 			this.tbArgC.WordWrap = ((bool)(resources.GetObject("tbArgC.WordWrap")));
-			this.tbArgC.Validating += new System.ComponentModel.CancelEventHandler(this.dec8_Validating);
-			this.tbArgC.Validated += new System.EventHandler(this.dec8_Validated);
-			this.tbArgC.TextChanged += new System.EventHandler(this.dec8_TextChanged);
+			this.tbArgC.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbArgC.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbArgC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// tbType
 			// 
@@ -2734,8 +2733,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			switch (alDec8.IndexOf(sender))
 			{
-				case 0: wrapper.Header.ArgumentCount = val; break;
-				case 1: wrapper.Header.LocalVarCount = val; break;
+				default: break;
 			}
 			internalchg = false;
 		}
@@ -2749,16 +2747,10 @@ namespace SimPe.PackedFiles.UserInterface
 			byte val = 0;
 			switch (alDec8.IndexOf(sender))
 			{
-				case 0: val = wrapper.Header.ArgumentCount; break;
-				case 1: val = wrapper.Header.LocalVarCount; break;
+				default: break;
 			}
 
 			((TextBox)sender).Text = val.ToString();
-			((TextBox)sender).SelectAll();
-		}
-
-		private void dec8_Validated(object sender, System.EventArgs e)
-		{
 			((TextBox)sender).SelectAll();
 		}
 
@@ -2830,6 +2822,8 @@ namespace SimPe.PackedFiles.UserInterface
 					 case 17: wrapper.Header.HeaderFlag = val; break;
 					 case 18: wrapper.Header.Type = val; break;
 					 case 19: wrapper.Header.CacheFlags = val; break;
+					 case 20: wrapper.Header.ArgumentCount = val; break;
+					 case 21: wrapper.Header.LocalVarCount = val; break;
 				 }
 
 			internalchg = false;
@@ -2852,6 +2846,8 @@ namespace SimPe.PackedFiles.UserInterface
 					 case 17: val = wrapper.Header.HeaderFlag; break;
 					 case 18: val = wrapper.Header.Type; break;
 					 case 19: val = wrapper.Header.CacheFlags; break;
+					 case 20: val = wrapper.Header.ArgumentCount; break;
+					 case 21: val = wrapper.Header.LocalVarCount; break;
 				 }
 
 			((TextBox)sender).Text = ((i >= 16) ? "0x" : "") + Helper.HexString(val);
