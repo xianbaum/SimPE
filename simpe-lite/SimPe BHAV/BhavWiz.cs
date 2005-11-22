@@ -35,7 +35,7 @@ namespace pjse
 	}
 
 
-	public abstract class ExtendedWrapper : AbstractWrapper, IDisposable
+	public abstract class ExtendedWrapper : AbstractWrapper
 	{
 		public ExtendedWrapper() : base() { }
 
@@ -52,8 +52,8 @@ namespace pjse
 		{
 			get
 			{
-				if (this.SemiGlobal == null) return 0;
-				return SemiGlobal.SemiGlobalGroup;
+				Glob glob = BhavWiz.GlobByGroup(this.FileDescriptor.Group);
+				return (glob == null ? 0 : glob.SemiGlobalGroup);
 			}
 		}
 
@@ -78,18 +78,6 @@ namespace pjse
 				}
 				else
 					return Scope.Private; // at least for now
-			}
-		}
-
-
-		private Glob glob = null;
-		private Glob SemiGlobal
-		{
-			get
-			{
-				return (glob != null)
-					? glob
-					: (glob = BhavWiz.GlobByGroup(this.FileDescriptor.Group));
 			}
 		}
 
@@ -127,16 +115,6 @@ namespace pjse
 			return items[0];
 		}
 
-
-		#region IDisposable Members
-
-		public override void Dispose()
-		{
-			glob = null;
-			base.Dispose();
-		}
-
-		#endregion
 	}
 
 
