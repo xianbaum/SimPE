@@ -1,4 +1,12 @@
 
+22 November 2005 18:21 - Filetable: read packages from packages.txt
+  SimPe BHAV\
+    FileTable.cs 1.7
+
+22 November 2005 18:19 - Bhav: No semiglobal cache
+  SimPe BHAV\
+    BhavWiz.cs 1.28
+
 20 November 2005 20:24 - Add page suppression flags to ResourceChooser (not used)
   SimPe BHAV\
     ResourceChooser.cs 1.5
