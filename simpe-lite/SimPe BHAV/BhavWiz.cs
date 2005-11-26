@@ -36,10 +36,43 @@ namespace pjse
 
 
 	public abstract class ExtendedWrapper : AbstractWrapper
+		, ICollection
 	{
+		/// <summary>
+		/// Indicates the data content of the wrapper (packed file) has changed
+		/// </summary>
+		public event EventHandler WrapperChanged;
+		/// <summary>
+		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
+		/// </summary>
+		protected bool internalchg = false;
+
 		public ExtendedWrapper() : base() { }
 
 
+		internal virtual void OnWrapperChanged(object sender, EventArgs e)
+		{
+			this.Changed = true;
+
+			if (internalchg) return;
+			if (WrapperChanged != null) 
+			{
+				WrapperChanged(sender, e);
+			}
+		}
+
+
+		#region ICollection Members
+		public abstract void CopyTo(Array a, int i);
+		public abstract int Count { get ; }
+		public abstract bool IsSynchronized { get ; }
+		public abstract object SyncRoot { get ; }
+		#region IEnumerable Members
+		public abstract IEnumerator GetEnumerator();
+		#endregion
+		#endregion
+
+		
 		/// <summary>
 		/// This object's group
 		/// </summary>

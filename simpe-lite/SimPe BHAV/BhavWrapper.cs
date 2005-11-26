@@ -40,7 +40,6 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
 		, IMultiplePackedFileWrapper	//Allow Multiple Instances
-		, ICollection
 	{
 		#region Attributes
 		/// <summary>
@@ -55,15 +54,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Contains all available Instruction 
 		/// </summary>		
 		private BhavItemArrayList items = new BhavItemArrayList();
-
-		/// <summary>
-		/// Indicates the data content of the wrapper (packed file) has changed
-		/// </summary>
-		public event EventHandler WrapperChanged;
-		/// <summary>
-		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
-		/// </summary>
-		internal bool internalchg = false;
 		#endregion
 
 		#region Accessor methods
@@ -88,135 +78,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public BhavHeader Header { get { return header; } }
 
-
-		#region Bhav Members
-		public int Add(Instruction item)
-		{
-			if (items.Count >= ((this.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
-				return -1;
-
-			item.Parent = this;
-			int result = items.Add(item);
-			OnWrapperChanged(items, new EventArgs());
-			return result;
-		}
-
-		public void Clear()
-		{
-			items.Clear();
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public bool Contains(Instruction item) { return items.Contains(item); }
-
-		public int IndexOf(object item) { return items.IndexOf(item); }
-
-		public void Insert(int index, Instruction item)
-		{
-			if (items.Count >= ((this.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
-				throw(new NotSupportedException("Too many items"));
-
-			item.Parent = this;
-			bool savedstate = internalchg;
-			internalchg = true;
-			items.Move(items.Add(item), index);
-			internalchg = savedstate;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Remove(Instruction item)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-			items.RemoveAt(items.IndexOf(item));
-			internalchg = savedstate;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void RemoveAt(int i)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-			items.RemoveAt(i);
-			internalchg = savedstate;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public Instruction this[int index]
-		{
-			get
-			{
-				return items[index];
-			}
-			set
-			{
-				if (items[index] == null || !items[index].Equals(value))
-				{
-					value.Parent = this;
-					items[index] = value;
-					OnWrapperChanged(items, new EventArgs());
-				}
-			}
-		}
-
-
-		public void Move(int from, int to)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-			items.Move(from, to);
-			internalchg = savedstate;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Sort()
-		{
-			int start = 0;		// where we got to on True pass
-			int startnext = 0;	// where we got to on False pass
-
-			bool savedstate = internalchg;
-			bool somethingchanged = false;
-			internalchg = true;
-			while (start < items.Count)
-			{
-				for (int i = start; i < items.Count; i++)
-				{
-					start = i+1;
-					if (items[i].Target1 <= i || items[i].Target1 >= items.Count)
-					{
-						if (items[i].Target2 <= i || items[i].Target2 >= items.Count)
-							break;
-
-						items.Move(items[i].Target2, start);
-						somethingchanged = true;
-
-						continue;
-					}
-					if (items[i].Target1 != start)
-					{
-						items.Move(items[i].Target1, start);
-						somethingchanged = true;
-					}
-				}
-				if (start >= items.Count)
-					break;
-
-				for (int i = startnext; i < start; i++)
-				{
-					startnext = i+1;
-					if (items[i].Target2 < start || items[i].Target2 >= items.Count)
-						continue;
-					items.Move(items[i].Target2, start);
-					somethingchanged = true;
-					break;
-				}
-			}
-			internalchg = savedstate;
-			if (somethingchanged) OnWrapperChanged(items, new EventArgs());
-		}
-
-		#endregion
-
 		#endregion
 
 		/// <summary>
@@ -225,19 +86,6 @@ namespace SimPe.PackedFiles.Wrapper
 		public Bhav() : base()
 		{
 			header = new BhavHeader(this);
-			items = new BhavItemArrayList();
-		}
-
-
-		internal virtual void OnWrapperChanged(object sender, EventArgs e)
-		{
-			this.Changed = true;
-
-			if (internalchg) return;
-			if (WrapperChanged != null) 
-			{
-				WrapperChanged(sender, e);
-			}
 		}
 
 
@@ -348,20 +196,146 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region ICollection Members
-		public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
-		public int Count { get { return items.Count; } }
-		public bool IsSynchronized { get { return items.IsSynchronized; } }
-		public object SyncRoot { get { return items.SyncRoot; } }
+		public int Add(Instruction item)
+		{
+			if (items.Count >= ((this.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
+				return -1;
+
+			item.Parent = this;
+			int result = items.Add(item);
+			if (result >= 0) OnWrapperChanged(items, new EventArgs());
+			return result;
+		}
+
+		public void Clear()
+		{
+			items.Clear();
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public void Remove(Instruction item)
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+			items.RemoveAt(items.IndexOf(item));
+			internalchg = savedstate;
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public void RemoveAt(int i)
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+			items.RemoveAt(i);
+			internalchg = savedstate;
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public Instruction this[int index]
+		{
+			get
+			{
+				return items[index];
+			}
+			set
+			{
+				if (items[index] == null || !items[index].Equals(value))
+				{
+					value.Parent = this;
+					items[index] = value;
+					OnWrapperChanged(items, new EventArgs());
+				}
+			}
+		}
+
+		public bool Contains(Instruction item) { return items.Contains(item); }
+
+		public int IndexOf(object item) { return items.IndexOf(item); }
+
+		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+
+		public override int Count { get { return items.Count; } }
+
+		public override bool IsSynchronized { get { return items.IsSynchronized; } }
+
+		public override object SyncRoot { get { return items.SyncRoot; } }
+
 		#region IEnumerable Members
-		public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+
 		#endregion
+
+		public void Insert(int index, Instruction item)
+		{
+			if (items.Count >= ((this.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
+				throw(new NotSupportedException("Too many items"));
+
+			item.Parent = this;
+			bool savedstate = internalchg;
+			internalchg = true;
+			items.Move(items.Add(item), index);
+			internalchg = savedstate;
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public void Move(int from, int to)
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+			items.Move(from, to);
+			internalchg = savedstate;
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public void Sort()
+		{
+			int start = 0;		// where we got to on True pass
+			int startnext = 0;	// where we got to on False pass
+
+			bool savedstate = internalchg;
+			bool somethingchanged = false;
+			internalchg = true;
+			while (start < items.Count)
+			{
+				for (int i = start; i < items.Count; i++)
+				{
+					start = i+1;
+					if (items[i].Target1 <= i || items[i].Target1 >= items.Count)
+					{
+						if (items[i].Target2 <= i || items[i].Target2 >= items.Count)
+							break;
+
+						items.Move(items[i].Target2, start);
+						somethingchanged = true;
+
+						continue;
+					}
+					if (items[i].Target1 != start)
+					{
+						items.Move(items[i].Target1, start);
+						somethingchanged = true;
+					}
+				}
+				if (start >= items.Count)
+					break;
+
+				for (int i = startnext; i < start; i++)
+				{
+					startnext = i+1;
+					if (items[i].Target2 < start || items[i].Target2 >= items.Count)
+						continue;
+					items.Move(items[i].Target2, start);
+					somethingchanged = true;
+					break;
+				}
+			}
+			internalchg = savedstate;
+			if (somethingchanged) OnWrapperChanged(items, new EventArgs());
+		}
+
 		#endregion
 
 		#region BhavItemArrayList
-		/// <summary>
-		/// Manages the list of items within the BHAV file
-		/// Private, so only provides strongly typed versions of the members Bhav actually uses (plus the .ctors)
-		/// </summary>
 		private class BhavItemArrayList : ArrayList
 		{
 			public BhavItemArrayList() : base() { }
@@ -369,6 +343,12 @@ namespace SimPe.PackedFiles.Wrapper
 			public BhavItemArrayList(Instruction[] c) : base(c) { }
 
 			public BhavItemArrayList(int capacity) : base(capacity) { }
+
+			public new Instruction this[int index]
+			{
+				get { return (Instruction)base[index]; }
+				set { base[index] = value; }
+			}
 
 
 			#region BhavItemArrayList
@@ -401,15 +381,6 @@ namespace SimPe.PackedFiles.Wrapper
 
 				while (from < to) this.SortSwap(from, ++from);
 				while (from > to) this.SortSwap(from, --from);
-			}
-
-			#endregion
-
-			#region ArrayList
-			public new Instruction this[int index]
-			{
-				get { return (Instruction)base[index]; }
-				set { base[index] = value; }
 			}
 
 			public void Insert(int index, Instruction item)

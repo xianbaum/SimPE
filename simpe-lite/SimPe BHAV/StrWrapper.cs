@@ -33,11 +33,11 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Str
-		: AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
-		, ICollection
+		, IMultiplePackedFileWrapper	//Allow Multiple Instances
 	{
 		#region Attributes
 		/// <summary>
@@ -47,7 +47,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Format Code of the FIle
 		/// </summary>
-		private ushort format;
+		private ushort format = (ushort)SimPe.Data.MetaData.FormatCode.normal;
 		/// <summary>
 		/// Somewhere to keep track of how many StrItems we have
 		/// </summary>
@@ -56,19 +56,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Holds all the StrItems
 		/// </summary>
 		private StrItemArrayList items = new StrItemArrayList();
-
-		/// <summary>
-		/// Maximum Number of Lines to load
-		/// </summary>
-		private int limit = 0;
-		/// <summary>
-		/// Indicates the data content of the wrapper (packed file) has changed
-		/// </summary>
-		public event EventHandler WrapperChanged;
-		/// <summary>
-		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event when it's ready
-		/// </summary>
-		private bool internalchg = false;
 		#endregion
 
 		#region Accessor methods
@@ -104,152 +91,12 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-
-		/// <summary>
-		/// Returns / Sets a specific StrItem
-		/// </summary>
-		public StrItem this[int index]
-		{
-			get
-			{
-				return items[index];
-			}
-			set
-			{
-				if (items[index] == null || !items[index].Equals(value))
-				{
-					items[index] = value;
-					OnWrapperChanged(this, new EventArgs());
-				}
-			}
-		}
-
-		public StrItem this[byte lid, int index]
-		{
-			get
-			{
-				int count = 0;
-				foreach (StrItem i in items)
-				{
-					if (i.LanguageID == lid)
-					{
-						if (count == index)
-							return i;
-						count++;
-					}
-				}
-				return null;
-			}
-		}
-
-		public StrItem this[bool fallback, byte lid, int index]
-		{
-			get
-			{
-				StrItem i = this[lid, index];
-				return (fallback && (i == null || i.Title.Trim().Equals(""))) ? this[0x01, index] : i;
-			}
-		}
-
-		public StrItem[] this[byte lid]
-		{
-			get
-			{
-				ArrayList s = new ArrayList();
-				foreach (StrItem i in items)
-				{
-					if (i.LanguageID == lid)
-						s.Add(i);
-				}
-				return (StrItem[])s.ToArray(typeof(StrItem));
-			}
-		}
-		public int Add(StrItem item)
-		{
-			if (this.limit > 0 && items.Count >= this.limit) return -1;
-			if ((this.format == 0x0000 || this.format == 0xFFFE) && items.Count >= 0xFF) return -1;
-
-			if (this.format == 0x0000)
-			{
-				item.Parent = null; // prevent anyone getting told about the change...
-				item.LanguageID = 1;
-			}
-			item.Parent = this;
-
-			int result = items.Add(item);
-			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))
-				OnWrapperChanged(this, new EventArgs());
-			return result;
-		}
-
-		public int Add(byte lid, string title, string desc) { return this.Add(new StrItem(this, lid, title, desc)); }
-
-		public void Remove(StrItem item) { this.RemoveAt(items.IndexOf(item)); }
-
-		public void RemoveAt(int index)
-		{
-			if (index < 0 || index >= items.Count) return;
-
-			bool changed = false;
-			for (int i = index; !changed && i < items.Count; i++)
-				changed = changed || (
-					(items[i].LanguageID == items[index].LanguageID)
-					&&
-					(!items[i].Title.Trim().Equals("") || !items[i].Description.Trim().Equals(""))
-					);
-
-			items.RemoveAt(index);
-			if (changed) OnWrapperChanged(this, new EventArgs());
-		}
-
-		public void CleanUp()
-		{
-			Hashtable lngs = new Hashtable();
-			foreach (StrItem i in items)
-			{
-				if (lngs[i.LanguageID] == null)
-					lngs[i.LanguageID] = new ArrayList();
-				((ArrayList)lngs[i.LanguageID]).Add(i);
-			}
-			foreach (ArrayList l in lngs.Values)
-				for (int i = l.Count - 1; i >= 0; i--)
-				{
-					if ( ((StrItem)l[i]).Title.Trim().Equals("") && ((StrItem)l[i]).Description.Trim().Equals("") )
-						items.Remove((StrItem)l[i]);
-					else break;
-				}
-		}
-
 		#endregion
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Str() : base()
-		{
-			format = (ushort)SimPe.Data.MetaData.FormatCode.normal;
-		}
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Str(int limit) : base()
-		{
-			format = (ushort)SimPe.Data.MetaData.FormatCode.normal;
-			this.limit = limit;
-		}
-
-
-		internal virtual void OnWrapperChanged(object sender, EventArgs e)
-		{
-			this.Changed = true;
-
-			if (internalchg) return;
-			if (WrapperChanged != null) 
-			{
-				WrapperChanged(sender, e);
-			}
-		}
+		public Str() : base() { }
 
 
 		#region AbstractWrapper Member
@@ -272,7 +119,7 @@ namespace SimPe.PackedFiles.Wrapper
 			return new AbstractWrapperInfo(
 				"PJSE STR#/TTAs/CTSS Wrapper",
 				"Peter L Jones",
-				"---",
+				"String Editor",
 				1
 				);  
 		}
@@ -338,7 +185,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 			items = new StrItemArrayList(count);
 
-			for (int i = 0; i < count && (limit == 0 || i < limit); i++)
+			for (int i = 0; i < count; i++)
 				items.Add(new StrItem(this, reader));
 
 			CleanUp();
@@ -381,17 +228,146 @@ namespace SimPe.PackedFiles.Wrapper
 		//all covered by AbstractWrapper
 		#endregion
 
+		#region IMultiplePackedFileWrapper
+		public override object[] GetConstructorArguments()
+		{
+			return new object[0];
+		}
+		#endregion
+
 		#region ICollection Members
-		public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
-		public int Count { get { return items.Count; } }
-		public bool IsSynchronized { get { return items.IsSynchronized; } }
-		public object SyncRoot { get { return items.SyncRoot; } }
+		public int Add(StrItem item)
+		{
+			if ((this.format == 0x0000 || this.format == 0xFFFE) && items.Count >= 0xFF)
+				return -1;
+
+			if (this.format == 0x0000)
+			{
+				item.Parent = null; // prevent anyone getting told about the change...
+				item.LanguageID = 1;
+			}
+
+			item.Parent = this;
+			int result = items.Add(item);
+			if (result >= 0 && (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))) OnWrapperChanged(items, new EventArgs());
+			return result;
+		}
+
+		public int Add(byte lid, string title, string desc) { return this.Add(new StrItem(this, lid, title, desc)); }
+
+		public void Clear()
+		{
+			items.Clear();
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public void Remove(StrItem item) { this.RemoveAt(items.IndexOf(item)); }
+
+		public void RemoveAt(int index)
+		{
+			if (index < 0 || index >= items.Count) return;
+
+			bool changed = false;
+			for (int i = index; !changed && i < items.Count; i++)
+				changed = changed || (
+					(items[i].LanguageID == items[index].LanguageID)
+					&&
+					(!items[i].Title.Trim().Equals("") || !items[i].Description.Trim().Equals(""))
+					);
+
+			items.RemoveAt(index);
+			if (changed) OnWrapperChanged(this, new EventArgs());
+		}
+
+		public StrItem this[int index]
+		{
+			get
+			{
+				return items[index];
+			}
+			set
+			{
+				if (items[index] == null || !items[index].Equals(value))
+				{
+					items[index] = value;
+					OnWrapperChanged(this, new EventArgs());
+				}
+			}
+		}
+
+		public StrItem this[byte lid, int index]
+		{
+			get
+			{
+				int count = 0;
+				foreach (StrItem i in items)
+				{
+					if (i.LanguageID == lid)
+					{
+						if (count == index)
+							return i;
+						count++;
+					}
+				}
+				return null;
+			}
+		}
+
+		public StrItem this[bool fallback, byte lid, int index]
+		{
+			get
+			{
+				StrItem i = this[lid, index];
+				return (fallback && (i == null || i.Title.Trim().Equals(""))) ? this[0x01, index] : i;
+			}
+		}
+
+		public StrItem[] this[byte lid]
+		{
+			get
+			{
+				ArrayList s = new ArrayList();
+				foreach (StrItem i in items)
+				{
+					if (i.LanguageID == lid)
+						s.Add(i);
+				}
+				return (StrItem[])s.ToArray(typeof(StrItem));
+			}
+		}
+		public bool Contains(StrItem item) { return items.Contains(item); }
+
+		public int IndexOf(object item) { return items.IndexOf(item); }
+
+		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+		public override int Count { get { return items.Count; } }
+		public override bool IsSynchronized { get { return items.IsSynchronized; } }
+		public override object SyncRoot { get { return items.SyncRoot; } }
 		#region IEnumerable Members
-		public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
 		#endregion
 		#endregion
 
 		#region StrItemArrayList
+		public void CleanUp()
+		{
+			Hashtable lngs = new Hashtable();
+			foreach (StrItem i in items)
+			{
+				if (lngs[i.LanguageID] == null)
+					lngs[i.LanguageID] = new ArrayList();
+				((ArrayList)lngs[i.LanguageID]).Add(i);
+			}
+			foreach (ArrayList l in lngs.Values)
+				for (int i = l.Count - 1; i >= 0; i--)
+				{
+					if ( ((StrItem)l[i]).Title.Trim().Equals("") && ((StrItem)l[i]).Description.Trim().Equals("") )
+						items.Remove((StrItem)l[i]);
+					else break;
+				}
+		}
+
+
 		private class StrItemArrayList : ArrayList
 		{
 			public StrItemArrayList() : base() { }
@@ -399,14 +375,6 @@ namespace SimPe.PackedFiles.Wrapper
 			public StrItemArrayList(StrItem[] c) : base(c) { }
 
 			public StrItemArrayList(int capacity) : base(capacity) { }
-
-			public int Add(StrItem item) { return base.Add(item); }
-
-			public void AddRange(StrItem[] c) { base.AddRange(c); }
-
-			public void Insert(int index, StrItem item) { base.Insert(index, item); }
-
-			public void SetRange(int index, StrItem[] c) { base.SetRange(index, c); }
 
 			public new StrItem this[int index]
 			{
@@ -498,6 +466,10 @@ namespace SimPe.PackedFiles.Wrapper
 			this.desc = desc;
 		}
 
+
+		public override string ToString() { return this.Title; }
+
+
 		public void Unserialize(System.IO.BinaryReader reader)
 		{
 			if (parent.Format == 0x0000)
@@ -556,9 +528,6 @@ namespace SimPe.PackedFiles.Wrapper
 			if (s != null) foreach (char c in s) w.Write(c);
 			w.Write((char)0);
 		}
-
-
-		public override string ToString() { return this.Title; }
 
 	}
 

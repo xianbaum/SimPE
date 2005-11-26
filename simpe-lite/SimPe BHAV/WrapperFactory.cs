@@ -48,7 +48,7 @@ namespace SimPe.Plugin
 										  ,new Objf()
 										  ,new Str()
 										  ,new Ttab()
-#if INPROGRESS || DEBUG
+#if DEBUG
 										  ,new Bcon()
 										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()

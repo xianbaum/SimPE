@@ -35,7 +35,7 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
-		, ICollection
+		, IMultiplePackedFileWrapper	//Allow Multiple Instances
 	{
 		#region Attributes
 		/// <summary>
@@ -50,15 +50,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Items stored in the File
 		/// </summary>
 		private ObjfItemArrayList items = new ObjfItemArrayList();
-
-		/// <summary>
-		/// Indicates the data content of the wrapper (packed file) has changed
-		/// </summary>
-		public event EventHandler WrapperChanged;
-		/// <summary>
-		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
-		/// </summary>
-		private bool internalchg = false;
 		#endregion
 
 		#region Accessor methods
@@ -73,46 +64,9 @@ namespace SimPe.PackedFiles.Wrapper
 				if (!Helper.ToString(filename).Equals(value))
 				{
 					filename = Helper.ToBytes(value, 0x40);
-					OnWrapperChanged();
+					OnWrapperChanged(this, new EventArgs());
 				}
 			}
-		}
-
-		/// <summary>
-		/// Returns the Item
-		/// </summary>
-		public ObjfItem this[int index]
-		{
-			get
-			{
-				return items[index];
-			}
-			set
-			{
-				if (items[index] == null || !items[index].Equals(value))
-				{
-					items[index] = value;
-					OnWrapperChanged();
-				}
-			}
-		}
-
-		public int Add(ObjfItem item)
-		{
-			item.Parent = this;
-			int result = items.Add(item);
-			if (result >= 0) OnWrapperChanged();
-			return result;
-		}
-
-		public void Remove(ObjfItem item) { this.RemoveAt(items.IndexOf(item)); }
-
-		public void RemoveAt(int index)
-		{
-			if (index < 0 || index >= items.Count) return;
-
-			items.RemoveAt(index);
-			OnWrapperChanged();
 		}
 
 		#endregion
@@ -121,18 +75,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Constructor
 		/// </summary>
 		public Objf() : base() { }
-
-
-		internal virtual void OnWrapperChanged()
-		{
-			this.Changed = true;
-
-			if (internalchg) return;
-			if (WrapperChanged != null) 
-			{
-				WrapperChanged(this, new EventArgs());
-			}
-		}
 
 
 		#region AbstractWrapper Member
@@ -247,13 +189,73 @@ namespace SimPe.PackedFiles.Wrapper
 		//all covered by AbstractWrapper
 		#endregion
 
+		#region IMultiplePackedFileWrapper
+		public override object[] GetConstructorArguments()
+		{
+			return new object[0];
+		}
+		#endregion
+
 		#region ICollection Members
-		public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
-		public int Count { get { return items.Count; } }
-		public bool IsSynchronized { get { return items.IsSynchronized; } }
-		public object SyncRoot { get { return items.SyncRoot; } }
+		public int Add(ObjfItem item)
+		{
+			if (items.Count >= 0x8000) // only allow 32K lines
+				return -1;
+
+			item.Parent = this;
+			int result = items.Add(item);
+			if (result >= 0) OnWrapperChanged(items, new EventArgs());
+			return result;
+		}
+
+		public void Clear()
+		{
+			items.Clear();
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public void Remove(ObjfItem item) { this.RemoveAt(items.IndexOf(item)); }
+
+		public void RemoveAt(int index)
+		{
+			if (index < 0 || index >= items.Count) return;
+
+			items.RemoveAt(index);
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public ObjfItem this[int index]
+		{
+			get
+			{
+				return items[index];
+			}
+			set
+			{
+				if (items[index] == null || !items[index].Equals(value))
+				{
+					value.Parent = this;
+					items[index] = value;
+					OnWrapperChanged(items, new EventArgs());
+				}
+			}
+		}
+
+		public bool Contains(ObjfItem item) { return items.Contains(item); }
+
+		public int IndexOf(object item) { return items.IndexOf(item); }
+
+		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+
+		public override int Count { get { return items.Count; } }
+
+		public override bool IsSynchronized { get { return items.IsSynchronized; } }
+
+		public override object SyncRoot { get { return items.SyncRoot; } }
+
 		#region IEnumerable Members
-		public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+
 		#endregion
 		#endregion
 
@@ -265,14 +267,6 @@ namespace SimPe.PackedFiles.Wrapper
 			public ObjfItemArrayList(ObjfItem[] c) : base(c) { }
 
 			public ObjfItemArrayList(int capacity) : base(capacity) { }
-
-			public int Add(ObjfItem item) { return base.Add(item); }
-
-			public void AddRange(ObjfItem[] c) { base.AddRange(c); }
-
-			public void Insert(int index, ObjfItem item) { base.Insert(index, item); }
-
-			public void SetRange(int index, ObjfItem[] c) { base.SetRange(index, c); }
 
 			public new ObjfItem this[int index]
 			{
@@ -306,7 +300,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (action != value)
 				{
 					action = value;
-					parent.OnWrapperChanged();
+					parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -319,7 +313,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (guard != value)
 				{
 					guard = value;
-					parent.OnWrapperChanged();
+					parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}		
