@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -35,7 +37,6 @@ namespace SimPe.PackedFiles.Wrapper
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
-		, IMultiplePackedFileWrapper	//Allow Multiple Instances
 	{
 		#region Attributes
 		/// <summary>
@@ -187,13 +188,6 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#region IFileWrapperSaveExtension Member		
 		//all covered by AbstractWrapper
-		#endregion
-
-		#region IMultiplePackedFileWrapper
-		public override object[] GetConstructorArguments()
-		{
-			return new object[0];
-		}
 		#endregion
 
 		#region ICollection Members

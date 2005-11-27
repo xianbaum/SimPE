@@ -66,11 +66,11 @@ namespace SimPe.PackedFiles.Wrapper
 					{
 						Trcn trcn = new Trcn();
 						trcn.ProcessData(pfd, parent.Package);
-						foreach (TrcnItem ti in trcn.Labels) 
+						foreach (TrcnItem ti in trcn) 
 						{
-							if (ti.LineNumber == (index+1)) 
+							if (ti.ConstId == (index+1)) 
 							{
-								name = ti.Name;
+								name = ti.ConstName;
 								continue;
 							}
 						}

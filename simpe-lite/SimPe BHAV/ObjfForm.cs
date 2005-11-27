@@ -166,15 +166,13 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{
-			bool parm = false;
 			wrapper = (Objf)wrp;
 			WrapperChanged(wrapper, null);
 
 			internalchg = true;
 
-			this.Text = tbFilename.Text = wrapper.FileName;
-
 			this.lvObjfItem.Items.Clear();
+			bool parm = false;
 			for(ushort i = 0; i < wrapper.Count; i++)
 				this.lvObjfItem.Items.Add( new ListViewItem(
 					new string[] {

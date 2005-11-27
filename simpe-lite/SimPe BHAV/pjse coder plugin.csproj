@@ -438,11 +438,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "TrcnItem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "TrcnWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"

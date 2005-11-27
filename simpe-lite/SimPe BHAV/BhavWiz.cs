@@ -36,6 +36,7 @@ namespace pjse
 
 
 	public abstract class ExtendedWrapper : AbstractWrapper
+		, IMultiplePackedFileWrapper	//Allow Multiple Instances
 		, ICollection
 	{
 		/// <summary>
