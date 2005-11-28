@@ -1,8 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
  *   peter@drealm.info                                                     *
- *   Copyright (C) 2005 by Ambertation                                     *
- *   quaxi@ambertation.de                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -68,6 +66,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ComboBox cbID;
 		private System.Windows.Forms.Button btnCancel;
 		private System.Windows.Forms.Button btnCommit;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label label4;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -214,6 +215,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 			if (lvTrcnItem.Items.Count > 0)
 				lvTrcnItem.Items[0].Selected = true;
+			else
+				lvTrcnItem_SelectedIndexChanged(null, null);
 
 			if (!setHandler)
 			{
@@ -227,10 +230,9 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.btnCommit.Enabled = wrapper.Changed;
 
-			if (internalchg) return;
-
 			if (sender.Equals(wrapper))
 			{
+				if (internalchg) return;
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
 				this.tbFormat.Text = "0x" + SimPe.Helper.HexString(wrapper.Version);
@@ -239,12 +241,10 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			else if (sender.Equals(currentItem))
 			{
-				internalchg = true;
-				int i = this.lvTrcnItem.SelectedIndices[0];
-				this.lvTrcnItem.Items[i]
-					= new ListViewItem(TrcnItemToStringArray(currentItem));
-				this.lvTrcnItem.Items[i].Selected = true;
-				internalchg = false;
+				if (internalchg)
+					this.btnCancel.Enabled = true;
+				else
+					lvTrcnItem_SelectedIndexChanged(null, null);
 			}
 		}
 		#endregion
@@ -288,6 +288,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbMaxValue = new System.Windows.Forms.TextBox();
 			this.lbMaxValue = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label4 = new System.Windows.Forms.Label();
 			this.pnHeading.SuspendLayout();
 			this.trcnPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -373,6 +376,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trcnPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("trcnPanel.AutoScrollMinSize")));
 			this.trcnPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.trcnPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("trcnPanel.BackgroundImage")));
+			this.trcnPanel.Controls.Add(this.label4);
+			this.trcnPanel.Controls.Add(this.label3);
+			this.trcnPanel.Controls.Add(this.label2);
 			this.trcnPanel.Controls.Add(this.btnCancel);
 			this.trcnPanel.Controls.Add(this.cbID);
 			this.trcnPanel.Controls.Add(this.cbUsed);
@@ -430,6 +436,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCancel.Text = resources.GetString("btnCancel.Text");
 			this.btnCancel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCancel.TextAlign")));
 			this.btnCancel.Visible = ((bool)(resources.GetObject("btnCancel.Visible")));
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
 			// 
 			// cbID
 			// 
@@ -453,9 +460,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbID.Text = resources.GetString("cbID.Text");
 			this.cbID.Visible = ((bool)(resources.GetObject("cbID.Visible")));
 			this.cbID.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex32_Validating);
-			this.cbID.Validated += new System.EventHandler(this.cbHex32_TextChanged);
+			this.cbID.Validated += new System.EventHandler(this.cbHex32_Validated);
+			this.cbID.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
 			this.cbID.SelectedIndexChanged += new System.EventHandler(this.cbHex32_SelectedIndexChanged);
-			this.cbID.ValueMemberChanged += new System.EventHandler(this.cbHex32_Validated);
 			this.cbID.Enter += new System.EventHandler(this.cbHex32_Enter);
 			// 
 			// cbUsed
@@ -482,6 +489,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbUsed.Text = resources.GetString("cbUsed.Text");
 			this.cbUsed.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbUsed.TextAlign")));
 			this.cbUsed.Visible = ((bool)(resources.GetObject("cbUsed.Visible")));
+			this.cbUsed.CheckedChanged += new System.EventHandler(this.cbUsed_CheckedChanged);
 			// 
 			// tbLabel
 			// 
@@ -600,6 +608,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrDelete.Text = resources.GetString("btnStrDelete.Text");
 			this.btnStrDelete.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrDelete.TextAlign")));
 			this.btnStrDelete.Visible = ((bool)(resources.GetObject("btnStrDelete.Visible")));
+			this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
 			// 
 			// btnStrAdd
 			// 
@@ -623,6 +632,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrAdd.Text = resources.GetString("btnStrAdd.Text");
 			this.btnStrAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrAdd.TextAlign")));
 			this.btnStrAdd.Visible = ((bool)(resources.GetObject("btnStrAdd.Visible")));
+			this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
 			// 
 			// lbFormat
 			// 
@@ -967,6 +977,72 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
 			// 
+			// label2
+			// 
+			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
+			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
+			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
+			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
+			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
+			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
+			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
+			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
+			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
+			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
+			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
+			this.label2.Name = "label2";
+			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
+			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
+			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
+			this.label2.Text = resources.GetString("label2.Text");
+			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
+			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
+			// 
+			// label3
+			// 
+			this.label3.AccessibleDescription = resources.GetString("label3.AccessibleDescription");
+			this.label3.AccessibleName = resources.GetString("label3.AccessibleName");
+			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label3.Anchor")));
+			this.label3.AutoSize = ((bool)(resources.GetObject("label3.AutoSize")));
+			this.label3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label3.Dock")));
+			this.label3.Enabled = ((bool)(resources.GetObject("label3.Enabled")));
+			this.label3.Font = ((System.Drawing.Font)(resources.GetObject("label3.Font")));
+			this.label3.Image = ((System.Drawing.Image)(resources.GetObject("label3.Image")));
+			this.label3.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label3.ImageAlign")));
+			this.label3.ImageIndex = ((int)(resources.GetObject("label3.ImageIndex")));
+			this.label3.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label3.ImeMode")));
+			this.label3.Location = ((System.Drawing.Point)(resources.GetObject("label3.Location")));
+			this.label3.Name = "label3";
+			this.label3.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label3.RightToLeft")));
+			this.label3.Size = ((System.Drawing.Size)(resources.GetObject("label3.Size")));
+			this.label3.TabIndex = ((int)(resources.GetObject("label3.TabIndex")));
+			this.label3.Text = resources.GetString("label3.Text");
+			this.label3.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label3.TextAlign")));
+			this.label3.Visible = ((bool)(resources.GetObject("label3.Visible")));
+			// 
+			// label4
+			// 
+			this.label4.AccessibleDescription = resources.GetString("label4.AccessibleDescription");
+			this.label4.AccessibleName = resources.GetString("label4.AccessibleName");
+			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label4.Anchor")));
+			this.label4.AutoSize = ((bool)(resources.GetObject("label4.AutoSize")));
+			this.label4.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label4.Dock")));
+			this.label4.Enabled = ((bool)(resources.GetObject("label4.Enabled")));
+			this.label4.Font = ((System.Drawing.Font)(resources.GetObject("label4.Font")));
+			this.label4.Image = ((System.Drawing.Image)(resources.GetObject("label4.Image")));
+			this.label4.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label4.ImageAlign")));
+			this.label4.ImageIndex = ((int)(resources.GetObject("label4.ImageIndex")));
+			this.label4.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label4.ImeMode")));
+			this.label4.Location = ((System.Drawing.Point)(resources.GetObject("label4.Location")));
+			this.label4.Name = "label4";
+			this.label4.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label4.RightToLeft")));
+			this.label4.Size = ((System.Drawing.Size)(resources.GetObject("label4.Size")));
+			this.label4.TabIndex = ((int)(resources.GetObject("label4.TabIndex")));
+			this.label4.Text = resources.GetString("label4.Text");
+			this.label4.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label4.TextAlign")));
+			this.label4.Visible = ((bool)(resources.GetObject("label4.Visible")));
+			// 
 			// TrcnForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -1003,38 +1079,41 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (this.internalchg) return;
 
+			internalchg = true;
+
 			if (lvTrcnItem.SelectedIndices.Count > 0 && lvTrcnItem.SelectedIndices[0] >= 0)
 			{
 				currentItem = wrapper[lvTrcnItem.SelectedIndices[0]];
 				origItem = currentItem.Clone();
 
-				internalchg = true;
-
 				this.cbID.Enabled = this.tbLabel.Enabled = this.cbUsed.Enabled
 					= this.tbDefValue.Enabled = this.tbMinValue.Enabled = this.tbMaxValue.Enabled
+					= this.btnStrDelete.Enabled
 					= true;
 
 				if (currentItem.ConstId < this.cbID.Items.Count)
+				{
+					this.cbID.SelectedIndex = -1;
 					this.cbID.SelectedIndex = (int)currentItem.ConstId;
+				}
 				else
 				{
 					this.cbID.SelectedIndex = -1;
 					this.cbID.Text = "0x" + SimPe.Helper.HexString(currentItem.ConstId);
 				}
 				this.tbLabel.Text = currentItem.ConstName;
-				this.cbUsed.Checked = currentItem.Used != 0;
+				this.cbUsed.CheckState = currentItem.Used != 0
+					? System.Windows.Forms.CheckState.Checked
+					: System.Windows.Forms.CheckState.Unchecked;
 				this.tbDefValue.Text = "0x" + SimPe.Helper.HexString(currentItem.DefValue);
 				this.tbMinValue.Text = "0x" + SimPe.Helper.HexString(currentItem.MinValue);
 				this.tbMaxValue.Text = "0x" + SimPe.Helper.HexString(currentItem.MaxValue);
-
-				internalchg = false;
 			}
 			else
 			{
-				internalchg = true;
-
 				this.cbID.Enabled = this.tbLabel.Enabled = this.cbUsed.Enabled
 					= this.tbDefValue.Enabled = this.tbMinValue.Enabled = this.tbMaxValue.Enabled
+					= this.btnStrDelete.Enabled
 					= false;
 
 				this.cbID.Text = this.tbLabel.Text
@@ -1042,9 +1121,10 @@ namespace SimPe.PackedFiles.UserInterface
 					= "";
 
 				this.cbUsed.CheckState = System.Windows.Forms.CheckState.Indeterminate;
-
-				internalchg = false;
 			}
+			this.btnCancel.Enabled = false;
+
+			internalchg = false;
 		}
 
 		private void btnCommit_Click(object sender, System.EventArgs e)
@@ -1062,13 +1142,147 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void btnCancel_Click(object sender, System.EventArgs e)
+		{
+			wrapper[lvTrcnItem.SelectedIndices[0]] = origItem.Clone();
+			lvTrcnItem_SelectedIndexChanged(null, null);
+		}
+
+
+		private void btnStrAdd_Click(object sender, System.EventArgs e)
+		{
+			int i = wrapper.Add((lvTrcnItem.SelectedIndices.Count == 0 || lvTrcnItem.SelectedIndices[0] == -1) ? new TrcnItem(wrapper) : currentItem.Clone());
+			if (i < 0) return;
+
+			this.lvTrcnItem.Items.Add(new ListViewItem(TrcnItemToStringArray(wrapper[i])));
+			foreach(ListViewItem ti in lvTrcnItem.Items)
+				ti.Selected = false;
+			lvTrcnItem.Items[i].Selected = true;
+		}
+
+		private void btnStrDelete_Click(object sender, System.EventArgs e)
+		{
+			if (lvTrcnItem.SelectedIndices.Count == 0) return;
+
+			int i = lvTrcnItem.SelectedIndices[0];
+
+			lvTrcnItem.Items.RemoveAt(i);
+			wrapper.RemoveAt(i);
+
+			foreach(ListViewItem ti in lvTrcnItem.Items)
+				ti.Selected = false;
+
+			if (i >= lvTrcnItem.Items.Count)
+				i = lvTrcnItem.Items.Count - 1;
+			if (i >= 0)
+				lvTrcnItem.Items[i].Selected = true;
+		}
+
+
+		private void cbHex32_Enter(object sender, System.EventArgs e)
+		{
+			((ComboBox)sender).SelectAll();
+		}
+
+		private void cbHex32_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+
+			if (!cbHex32_IsValid(sender)) return;
+
+			internalchg = true;
+			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
+			switch (alHex32cb.IndexOf(sender))
+			{
+				case 0: lvTrcnItem.SelectedItems[0].SubItems[0].Text = "0x" + (currentItem.ConstId = val).ToString("X"); break;
+			}
+			internalchg = false;
+		}
+
+		private void cbHex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+
+			if (cbHex32_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			bool origstate = internalchg;
+			internalchg = true;
+			uint val = 0;
+			switch (alHex32cb.IndexOf(sender))
+			{
+				case 0: val = currentItem.ConstId; break;
+			}
+			if (val < ((ComboBox)sender).Items.Count)
+			{
+				((ComboBox)sender).SelectedIndex = (int)val;
+			}
+			else
+			{
+				((ComboBox)sender).SelectedIndex = -1;
+				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
+			}
+			internalchg = origstate;
+
+			((ComboBox)sender).SelectAll();
+		}
+
+		private void cbHex32_Validated(object sender, System.EventArgs e)
+		{
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
+
+			bool origstate = internalchg;
+			internalchg = true;
+			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
+			switch (alHex32cb.IndexOf(sender))
+			{
+				case 0:
+					if (val < ((ComboBox)sender).Items.Count)
+					{
+						((ComboBox)sender).SelectedIndex = (int)val;
+					}
+					else
+					{
+						((ComboBox)sender).SelectedIndex = -1;
+						((ComboBox)sender).Text = "0x" + Helper.HexString(val);
+					}
+					break;
+			}
+			internalchg = origstate;
+
+			((ComboBox)sender).Select(0, 0);
+		}
+
+		private void cbHex32_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			if (((ComboBox)sender).SelectedIndex == -1) return;
+
+			internalchg = true;
+			ushort val = (ushort)((ComboBox)sender).SelectedIndex;
+			switch (alHex32cb.IndexOf(sender))
+			{
+				case 0: lvTrcnItem.SelectedItems[0].SubItems[0].Text = "0x" + (currentItem.ConstId = val).ToString("X"); break;
+			}
+			internalchg = false;
+			((ComboBox)sender).SelectAll();
+		}
+
+
 		private void tbText_TextChanged(object sender, System.EventArgs e)
 		{
+			if (internalchg) return;
+
+			internalchg = true;
 			switch(alText.IndexOf(sender))
 			{
 				case 0: wrapper.FileName = ((TextBox)sender).Text; break;
-				case 1: currentItem.ConstName = ((TextBox)sender).Text; break;
+				case 1: lvTrcnItem.SelectedItems[0].SubItems[1].Text = currentItem.ConstName = ((TextBox)sender).Text; break;
 			}
+			internalchg = false;
 		}
 
 		private void tbText_Validated(object sender, System.EventArgs e)
@@ -1077,18 +1291,29 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void cbUsed_CheckedChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			internalchg = true;
+			lvTrcnItem.SelectedItems[0].SubItems[2].Text = "0x" + (currentItem.Used = (uint)(((CheckBox)sender).Checked ? 1 : 0)).ToString("X");
+			internalchg = false;
+		}
+
+
 		private void hex16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
+
 			if (!hex16_IsValid(sender)) return;
 
-			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
 			internalchg = true;
+			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: currentItem.DefValue = val; break;
-				case 1: currentItem.MinValue = val; break;
-				case 2: currentItem.MaxValue = val; break;
+				case 0: lvTrcnItem.SelectedItems[0].SubItems[3].Text = "0x" + SimPe.Helper.HexString(currentItem.DefValue = val); break;
+				case 1: lvTrcnItem.SelectedItems[0].SubItems[4].Text = "0x" + SimPe.Helper.HexString(currentItem.MinValue = val); break;
+				case 2: lvTrcnItem.SelectedItems[0].SubItems[5].Text = "0x" + SimPe.Helper.HexString(currentItem.MaxValue = val); break;
 			}
 			internalchg = false;
 		}
@@ -1099,15 +1324,18 @@ namespace SimPe.PackedFiles.UserInterface
 
 			e.Cancel = true;
 
+			bool origstate = internalchg;
+			internalchg = true;
 			ushort val = 0;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: val = origItem.DefValue; break;
-				case 1: val = origItem.MinValue; break;
-				case 2: val = origItem.MaxValue; break;
+				case 0: val = currentItem.DefValue; break;
+				case 1: val = currentItem.MinValue; break;
+				case 2: val = currentItem.MaxValue; break;
 			}
-
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			internalchg = origstate;
+
 			((TextBox)sender).SelectAll();
 		}
 
@@ -1116,18 +1344,19 @@ namespace SimPe.PackedFiles.UserInterface
 			bool origstate = internalchg;
 			internalchg = true;
 			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
-			((TextBox)sender).SelectAll();
 			internalchg = origstate;
+			((TextBox)sender).SelectAll();
 		}
 
 
 		private void hex32_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
+
 			if (!hex32_IsValid(sender)) return;
 
-			uint val = Convert.ToUInt32(((TextBox)sender).Text, 16);
 			internalchg = true;
+			uint val = Convert.ToUInt32(((TextBox)sender).Text, 16);
 			switch (alHex32.IndexOf(sender))
 			{
 				case 0: wrapper.Version = val; break;
@@ -1141,13 +1370,16 @@ namespace SimPe.PackedFiles.UserInterface
 
 			e.Cancel = true;
 
+			bool origstate = internalchg;
+			internalchg = true;
 			uint val = 0;
 			switch (alHex32.IndexOf(sender))
 			{
 				case 0: val = wrapper.Version; break;
 			}
-
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
+			internalchg = origstate;
+
 			((TextBox)sender).SelectAll();
 		}
 
@@ -1156,102 +1388,10 @@ namespace SimPe.PackedFiles.UserInterface
 			bool origstate = internalchg;
 			internalchg = true;
 			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
+			internalchg = origstate;
 			((TextBox)sender).SelectAll();
-			internalchg = origstate;
 		}
 
-
-		private void cbHex32_Enter(object sender, System.EventArgs e)
-		{
-			((ComboBox)sender).SelectAll();
-		}
-
-		private void cbHex32_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!cbHex32_IsValid(sender)) return;
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
-
-			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
-			internalchg = true;
-			switch (alHex32cb.IndexOf(sender))
-			{
-				case 0: currentItem.ConstId = val; break;
-			}
-			internalchg = false;
-		}
-
-		private void cbHex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (cbHex32_IsValid(sender)) return;
-
-			int i = alHex32cb.IndexOf(sender);
-			if (i < 0)
-				throw new Exception("cbHex32_Validating not applicable to control " + sender.ToString());
-
-			e.Cancel = true;
-
-			uint val = 0;
-			switch (i)
-			{
-				case 0: val = origItem.ConstId; break;
-			}
-
-			if (i == 0 && val < ((ComboBox)sender).Items.Count)
-			{
-				((ComboBox)sender).SelectedIndex = (int)val;
-			}
-			else
-			{
-				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
-			}
-			((ComboBox)sender).SelectAll();
-		}
-
-		private void cbHex32_Validated(object sender, System.EventArgs e)
-		{
-			int i = alHex32cb.IndexOf(sender);
-			if (i < 0)
-				throw new Exception("cbHex32_Validated not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
-
-			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
-
-			bool origstate = internalchg;
-			internalchg = true;
-			if (i == 0 && val < ((ComboBox)sender).Items.Count)
-			{
-				((ComboBox)sender).SelectedIndex = (int)val;
-			}
-			else
-			{
-				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
-			}
-			internalchg = origstate;
-			((ComboBox)sender).Select(0, 0);
-		}
-
-		private void cbHex32_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-
-			int i = alHex32cb.IndexOf(sender);
-			if (i < 0)
-				throw new Exception("cbHex32_SelectedIndexChanged not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).SelectedIndex == -1) return;
-
-			ushort val = (ushort)((ComboBox)alHex32cb[i]).SelectedIndex;
-			((ComboBox)sender).SelectAll();
-
-			internalchg = true;
-			if (i == 0)
-			{
-				currentItem.ConstId = val;
-			}
-			internalchg = false;
-		}
 
 	}
 }

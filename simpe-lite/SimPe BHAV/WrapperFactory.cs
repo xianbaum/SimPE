@@ -48,12 +48,13 @@ namespace SimPe.Plugin
 										  ,new Objf()
 										  ,new Str()
 										  ,new Ttab()
+#if DEBUG || INPROGRESS
+										  ,new Trcn()
+#endif
 #if DEBUG
 										  ,new Bcon()
 										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()
-										  ,new Trcn()
-#else
 #endif
 									  };
 				return wrappers;
