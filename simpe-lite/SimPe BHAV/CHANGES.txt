@@ -1,4 +1,11 @@
 
+28 November 2005 14:52 - TRCN: Got Trcn editor working and integrated with BhavWiz for labelling Consts
+  SimPe BHAV\
+    BhavWiz.cs 1.29.2.2
+    TrcnForm.cs 1.3.20.2
+    TrcnForm.resx 1.1.28.2
+    WrapperFactory.cs 1.16.2.1
+
 27 November 2005 18:55 - TRCN: Branched as this doesn't really work yet
   * BhavWiz ExtendedWrapper now implements IMultiplePackedFileWrapper
   * BhavWrapper, ObjfWrapper, StrWrapper, TtabWrapper for ExtendWrapper change
