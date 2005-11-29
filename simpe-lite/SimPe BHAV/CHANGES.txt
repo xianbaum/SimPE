@@ -1,4 +1,16 @@
 
+29 November 2005 22:11 - TRCN/BCON: Start working towards single user interface
+  SimPe BHAV\
+    BconForm.cs 1.4.2.1
+    BconForm.resx 1.1.2.1
+    BconItem.cs (deleted)
+    BconWrapper.cs 1.4.2.1
+    BhavWiz.cs 1.29.2.3
+    pjse coder plugin.csproj 1.25.2.2
+    TrcnForm.cs 1.3.20.3
+    TrcnWrapper.cs 1.3.24.2
+    WrapperFactory.cs 1.16.2.2
+
 28 November 2005 14:52 - TRCN: Got Trcn editor working and integrated with BhavWiz for labelling Consts
   SimPe BHAV\
     BhavWiz.cs 1.29.2.2
