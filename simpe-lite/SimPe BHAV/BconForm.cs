@@ -41,20 +41,20 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Panel bconPanel;
 		private System.Windows.Forms.LinkLabel llccancel;
 		private System.Windows.Forms.Button btnCommit;
-		private System.Windows.Forms.ColumnHeader lineNumber;
-		private System.Windows.Forms.ColumnHeader data;
 		private System.Windows.Forms.ListView lvConstants;
 		private System.Windows.Forms.Panel pnHeading;
 		private System.Windows.Forms.GroupBox gbConstant;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
-		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox tbFlag;
 		private System.Windows.Forms.TextBox tbValueHex;
 		private System.Windows.Forms.TextBox tbValueDec;
+		private System.Windows.Forms.ColumnHeader chID;
+		private System.Windows.Forms.ColumnHeader chValue;
+		private System.Windows.Forms.ColumnHeader chLabel;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -90,20 +90,54 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region BconForm
-		private Bcon wrapper;
-		private int currentIndex;
-		private int origValue;
-		private int currentValue;
+		private Bcon wrapper = null;
+		private bool internalchg = false;
+		private bool setHandler = false;
+		private short origItem = 0;
+		private short currentItem = 0;
+
+		private bool hex8_IsValid(object sender)
+		{
+			try { Convert.ToByte(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool hex16_IsValid(object sender)
+		{
+			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool dec16_IsValid(object sender)
+		{
+			try { Convert.ToInt16(((TextBox)sender).Text, 10); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
 
 		private void UpdateBconValue()
 		{
-			if ((short)wrapper.Constants[currentIndex] == currentValue) return;
-			wrapper.Constants[currentIndex] = (short)currentValue;
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
+			wrapper[lvConstants.SelectedIndices[0]] = currentItem;
+			lvConstants.SelectedItems[0].SubItems[1].Text = "0x" + SimPe.Helper.HexString(currentItem);
+		}
 
-			lvConstants.Items[currentIndex].SubItems[1].Text = currentValue.ToString();
-			lvConstants.Update();
+		private ListViewItem lvItem(int i)
+		{
+			string cID = "0x" + i.ToString("X");
+			string cValue = "0x" + SimPe.Helper.HexString(wrapper[i]);
+			string cLabel = "";
+			Trcn trcn = wrapper.TrcnResource;
+			if (trcn != null && i < trcn.Count)
+			{
+				TrcnItem ti = trcn[i];
+				if (ti != null)
+					cLabel = ti.ConstName;
+			}
+			string[] v = { cID, cValue, cLabel };
+			return new ListViewItem(v);
 		}
 		#endregion
 
@@ -129,50 +163,49 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <param name="wrp">The Attributes of this Wrapper have to be displayed</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{
-			//wrapper;
 			wrapper = (Bcon)wrp;
-			//currentIndex;
-			currentIndex = -2; // force update
-			//currentValue;
-			currentValue = -1;
-			//origValue;
-			origValue = -1;
-			//label27 - static
-			//panel2 - static
-			//label44 - static
-			//tbFilename;
-			tbFilename.Tag = true;
-			tbFilename.Text = wrapper.FileName;
-			tbFilename.Tag = null;
-			//label22 - static
-			//tbconstflag;
-			tbFilename.Tag = true;
-			tbFlag.Text = "0x"+Helper.HexString(wrapper.Flag);
-			tbFilename.Tag = null;
-			//label28 - static
-			//lvConstants;
-			lvConstants.Tag = true;
+			WrapperChanged(wrapper, null);
+
+			internalchg = true;
+
 			lvConstants.Items.Clear();
-			foreach (short item in wrapper.Constants)
+			for(int i = 0; i < wrapper.Count; i++)
+				this.lvConstants.Items.Add(lvItem(i));
+
+			internalchg = false;
+
+			if (lvConstants.Items.Count > 0)
+				lvConstants.Items[0].Selected = true;
+			else
+				lvConstants_SelectedIndexChanged(null, null);
+
+			if (!setHandler)
 			{
-				ListViewItem i = new ListViewItem("0x" + lvConstants.Items.Count.ToString("X"));
-				i.SubItems.Add(item.ToString());
-				lvConstants.Items.Add(i);
+				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+				setHandler = true;
 			}
-			lvConstants.Tag = null;
-			lvConstants_IndexChanged(null, null);
-			//label18 - static
-			//tbValueHex - set by SelectedIndex change
-			//tbValueDec - set by SelectedIndex change
-			//llccancel - set by SelectedIndex change
-			//llcadd;
-			//llcdel - set by SelectedIndex change
-			//groupBox1 - static
-			//btnCommit;
-			btnCommit.Enabled = false;
-			//bconPanel - static
 		}		
 
+		private void WrapperChanged(object sender, System.EventArgs e)
+		{
+			this.btnCommit.Enabled = wrapper.Changed;
+
+			if (sender.Equals(wrapper))
+			{
+				if (internalchg) return;
+				internalchg = true;
+				this.Text = tbFilename.Text = wrapper.FileName;
+				this.tbFlag.Text = "0x" + SimPe.Helper.HexString(wrapper.Flag);
+				internalchg = false;
+			}
+			else
+			{
+				if (internalchg)
+					this.llccancel.Enabled = true;
+				else
+					lvConstants_SelectedIndexChanged(null, null);
+			}
+		}
 		#endregion
 
 		#region Windows Form Designer generated code
@@ -189,7 +222,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.tbFlag = new System.Windows.Forms.TextBox();
-			this.label4 = new System.Windows.Forms.Label();
 			this.tbValueDec = new System.Windows.Forms.TextBox();
 			this.llcdel = new System.Windows.Forms.LinkLabel();
 			this.llcadd = new System.Windows.Forms.LinkLabel();
@@ -200,8 +232,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label6 = new System.Windows.Forms.Label();
 			this.bconPanel = new System.Windows.Forms.Panel();
 			this.lvConstants = new System.Windows.Forms.ListView();
-			this.lineNumber = new System.Windows.Forms.ColumnHeader();
-			this.data = new System.Windows.Forms.ColumnHeader();
+			this.chID = new System.Windows.Forms.ColumnHeader();
+			this.chValue = new System.Windows.Forms.ColumnHeader();
+			this.chLabel = new System.Windows.Forms.ColumnHeader();
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.pnHeading.SuspendLayout();
 			this.gbConstant.SuspendLayout();
@@ -300,6 +333,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFilename.TextAlign")));
 			this.tbFilename.Visible = ((bool)(resources.GetObject("tbFilename.Visible")));
 			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
+			this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
 			this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
 			// 
 			// label3
@@ -348,29 +382,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFlag.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlag.TextAlign")));
 			this.tbFlag.Visible = ((bool)(resources.GetObject("tbFlag.Visible")));
 			this.tbFlag.WordWrap = ((bool)(resources.GetObject("tbFlag.WordWrap")));
-			this.tbFlag.TextChanged += new System.EventHandler(this.tbFlag_TextChanged);
-			// 
-			// label4
-			// 
-			this.label4.AccessibleDescription = resources.GetString("label4.AccessibleDescription");
-			this.label4.AccessibleName = resources.GetString("label4.AccessibleName");
-			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label4.Anchor")));
-			this.label4.AutoSize = ((bool)(resources.GetObject("label4.AutoSize")));
-			this.label4.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label4.Dock")));
-			this.label4.Enabled = ((bool)(resources.GetObject("label4.Enabled")));
-			this.label4.Font = ((System.Drawing.Font)(resources.GetObject("label4.Font")));
-			this.label4.Image = ((System.Drawing.Image)(resources.GetObject("label4.Image")));
-			this.label4.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label4.ImageAlign")));
-			this.label4.ImageIndex = ((int)(resources.GetObject("label4.ImageIndex")));
-			this.label4.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label4.ImeMode")));
-			this.label4.Location = ((System.Drawing.Point)(resources.GetObject("label4.Location")));
-			this.label4.Name = "label4";
-			this.label4.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label4.RightToLeft")));
-			this.label4.Size = ((System.Drawing.Size)(resources.GetObject("label4.Size")));
-			this.label4.TabIndex = ((int)(resources.GetObject("label4.TabIndex")));
-			this.label4.Text = resources.GetString("label4.Text");
-			this.label4.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label4.TextAlign")));
-			this.label4.Visible = ((bool)(resources.GetObject("label4.Visible")));
+			this.tbFlag.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbFlag.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// tbValueDec
 			// 
@@ -396,7 +410,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbValueDec.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbValueDec.TextAlign")));
 			this.tbValueDec.Visible = ((bool)(resources.GetObject("tbValueDec.Visible")));
 			this.tbValueDec.WordWrap = ((bool)(resources.GetObject("tbValueDec.WordWrap")));
-			this.tbValueDec.TextChanged += new System.EventHandler(this.tbdec_TextChanged);
+			this.tbValueDec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
+			this.tbValueDec.Validated += new System.EventHandler(this.dec16_Validated);
+			this.tbValueDec.TextChanged += new System.EventHandler(this.dec16_TextChanged);
 			// 
 			// llcdel
 			// 
@@ -497,7 +513,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbValueHex.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbValueHex.TextAlign")));
 			this.tbValueHex.Visible = ((bool)(resources.GetObject("tbValueHex.Visible")));
 			this.tbValueHex.WordWrap = ((bool)(resources.GetObject("tbValueHex.WordWrap")));
-			this.tbValueHex.TextChanged += new System.EventHandler(this.tbvalue_TextChanged);
+			this.tbValueHex.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbValueHex.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbValueHex.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// label5
 			// 
@@ -588,7 +606,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bconPanel.Controls.Add(this.tbFlag);
 			this.bconPanel.Controls.Add(this.label3);
 			this.bconPanel.Controls.Add(this.pnHeading);
-			this.bconPanel.Controls.Add(this.label4);
 			this.bconPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("bconPanel.Dock")));
 			this.bconPanel.Enabled = ((bool)(resources.GetObject("bconPanel.Enabled")));
 			this.bconPanel.Font = ((System.Drawing.Font)(resources.GetObject("bconPanel.Font")));
@@ -609,12 +626,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvConstants.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvConstants.Anchor")));
 			this.lvConstants.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvConstants.BackgroundImage")));
 			this.lvConstants.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																						  this.lineNumber,
-																						  this.data});
+																						  this.chID,
+																						  this.chValue,
+																						  this.chLabel});
 			this.lvConstants.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lvConstants.Dock")));
 			this.lvConstants.Enabled = ((bool)(resources.GetObject("lvConstants.Enabled")));
 			this.lvConstants.Font = ((System.Drawing.Font)(resources.GetObject("lvConstants.Font")));
 			this.lvConstants.FullRowSelect = true;
+			this.lvConstants.GridLines = true;
 			this.lvConstants.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.lvConstants.HideSelection = false;
 			this.lvConstants.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvConstants.ImeMode")));
@@ -628,19 +647,25 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvConstants.Text = resources.GetString("lvConstants.Text");
 			this.lvConstants.View = System.Windows.Forms.View.Details;
 			this.lvConstants.Visible = ((bool)(resources.GetObject("lvConstants.Visible")));
-			this.lvConstants.SelectedIndexChanged += new System.EventHandler(this.lvConstants_IndexChanged);
+			this.lvConstants.SelectedIndexChanged += new System.EventHandler(this.lvConstants_SelectedIndexChanged);
 			// 
-			// lineNumber
+			// chID
 			// 
-			this.lineNumber.Text = resources.GetString("lineNumber.Text");
-			this.lineNumber.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("lineNumber.TextAlign")));
-			this.lineNumber.Width = ((int)(resources.GetObject("lineNumber.Width")));
+			this.chID.Text = resources.GetString("chID.Text");
+			this.chID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chID.TextAlign")));
+			this.chID.Width = ((int)(resources.GetObject("chID.Width")));
 			// 
-			// data
+			// chValue
 			// 
-			this.data.Text = resources.GetString("data.Text");
-			this.data.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("data.TextAlign")));
-			this.data.Width = ((int)(resources.GetObject("data.Width")));
+			this.chValue.Text = resources.GetString("chValue.Text");
+			this.chValue.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chValue.TextAlign")));
+			this.chValue.Width = ((int)(resources.GetObject("chValue.Width")));
+			// 
+			// chLabel
+			// 
+			this.chLabel.Text = resources.GetString("chLabel.Text");
+			this.chLabel.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chLabel.TextAlign")));
+			this.chLabel.Width = ((int)(resources.GetObject("chLabel.Width")));
 			// 
 			// btnCommit
 			// 
@@ -699,147 +724,37 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#endregion
 
-		private void tbFilename_TextChanged(object sender, System.EventArgs e)
+		private void lvConstants_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			if (tbFilename.Tag != null) return;
-			wrapper.FileName = tbFilename.Text;
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
-		}
+			if (this.internalchg) return;
 
-		private void tbFlag_TextChanged(object sender, System.EventArgs e)
-		{
-			if (tbFilename.Tag != null) return;
-			try 
+			internalchg = true;
+
+			if (lvConstants.SelectedIndices.Count > 0 && lvConstants.SelectedIndices[0] >= 0)
 			{
-				wrapper.Flag = Convert.ToByte(tbFlag.Text, 16);
-				wrapper.Changed = true;
-				btnCommit.Enabled = true;
+				currentItem = wrapper[lvConstants.SelectedIndices[0]];
+				origItem = currentItem;
+
+				this.tbValueHex.Text = "0x"+Helper.HexString((ushort)currentItem);
+				this.tbValueHex.Enabled = true;
+				this.tbValueDec.Text = currentItem.ToString();
+				this.tbValueDec.Enabled = true;
+
+				this.llcdel.Enabled = true;
 			}
-			catch (Exception ex) 
+			else
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errconvert"), ex);
-			} 
-		}
-
-		private void lvConstants_IndexChanged(object sender, System.EventArgs e)
-		{
-			if (lvConstants.Tag != null) return; // Internal change
-
-			if (lvConstants.SelectedIndices.Count > 0)
-			{
-				if (currentIndex == lvConstants.SelectedIndices[0]) return; // no change
-				currentIndex = lvConstants.SelectedIndices[0];
-			}
-
-			if (currentIndex < 0) 
-			{
-				llcdel.Enabled = false;
-				origValue = currentValue = -1;
-				tbValueHex.Tag = true;
 				this.tbValueHex.Text = "";
 				this.tbValueHex.Enabled = false;
 				this.tbValueDec.Text = "";
 				this.tbValueDec.Enabled = false;
-				tbValueHex.Tag = null;
-			}
-			else
-			{
-				llcdel.Enabled = true;
-				origValue = currentValue = (short)wrapper.Constants[currentIndex];
-				tbValueHex.Tag = true;
-				this.tbValueHex.Text = "0x"+Helper.HexString((ushort)currentValue);
-				this.tbValueHex.Enabled = true;
-				this.tbValueDec.Text = currentValue.ToString();
-				this.tbValueDec.Enabled = true;
-				tbValueHex.Tag = null;
-			}
-			llccancel.Enabled = false;
-		}
 
-		private void tbvalue_TextChanged(object sender, System.EventArgs e)
-		{
-			if (tbValueHex.Tag != null) return; // Internal change
-			try 
-			{
-				int newValue = Convert.ToInt16(tbValueHex.Text, 16);
-				if (newValue == currentValue) return;
-				currentValue = newValue;
-			} 
-			catch (Exception) 
-			{ 
-				currentValue = 0;
+				this.llcdel.Enabled = false;
 			}
 
-			UpdateBconValue();
-			llccancel.Enabled = true;
-
-			tbValueHex.Tag = true;
-			tbValueDec.Text = currentValue.ToString();
-			tbValueHex.Tag = null;
-		}
-
-		private void tbdec_TextChanged(object sender, System.EventArgs e)
-		{
-			if (tbValueHex.Tag != null) return; // Internal change
-			try 
-			{
-				int newValue = Convert.ToInt16(tbValueDec.Text);
-				if (newValue == currentValue) return;
-				currentValue = newValue;
-			} 
-			catch (Exception) 
-			{ 
-				currentValue = 0;
-			}
-
-			UpdateBconValue();
-			llccancel.Enabled = true;
-
-			tbValueHex.Tag = true;
-			tbValueHex.Text = "0x"+Helper.HexString((ushort)currentValue);
-			tbValueHex.Tag = null;
-		}
-
-		private void llccancel_Clicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			currentValue = origValue;
-			UpdateBconValue();
 			llccancel.Enabled = false;
 
-			tbValueHex.Tag = true;
-			tbValueHex.Text = "0x"+Helper.HexString((ushort)currentValue);
-			tbValueDec.Text = currentValue.ToString();
-			tbValueHex.Tag = null;
-		}
-
-		private void AddConstantClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			wrapper.Constants.Add((short)0);
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
-
-			ListViewItem i = new ListViewItem("0x" + lvConstants.Items.Count.ToString("X"));
-			i.SubItems.Add("0");
-			lvConstants.Items.Add(i);
-
-			currentIndex = -1;
-			lvConstants.EnsureVisible(lvConstants.Items.Count - 1);
-			lvConstants.Update();
-		}
-
-		private void DeleteConstantClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			int ci = currentIndex;
-			wrapper.Constants.RemoveAt(currentIndex--);
-			wrapper.Changed = true;
-			btnCommit.Enabled = true;
-
-			lvConstants.Items.RemoveAt(ci);
-			for (int i = ci; i < wrapper.Constants.Count; i++)
-				lvConstants.Items[i].Text = "0x" + i.ToString("X");
-			lvConstants.Update();
-			lvConstants.EnsureVisible(ci - 1);
+			internalchg = false;
 		}
 
 		private void btnCommit_Clicked(object sender, System.EventArgs e)
@@ -848,13 +763,176 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				wrapper.SynchronizeUserData();
 				btnCommit.Enabled = false;
-//				MessageBox.Show(Localization.Manager.GetString("commited"));
+				lvConstants_SelectedIndexChanged(null, null);
 			} 
 			catch (Exception ex) 
 			{
 				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
 			}		
 		}
+
+
+		private void llccancel_Clicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			wrapper[lvConstants.SelectedIndices[0]] = origItem;
+			lvConstants_SelectedIndexChanged(null, null);
+		}
+
+
+		private void AddConstantClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			int i = wrapper.Add((lvConstants.SelectedIndices.Count == 0 || lvConstants.SelectedIndices[0] == -1) ? (short)0 : currentItem);
+			if (i < 0) return;
+
+			this.lvConstants.Items.Add(lvItem(i));
+			foreach(ListViewItem ti in lvConstants.Items)
+				ti.Selected = false;
+			lvConstants.Items[i].Selected = true;
+		}
+
+		private void DeleteConstantClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			if (lvConstants.SelectedIndices.Count == 0) return;
+
+			int i = lvConstants.SelectedIndices[0];
+
+			lvConstants.Items.RemoveAt(i);
+			wrapper.RemoveAt(i);
+
+			foreach(ListViewItem ti in lvConstants.Items)
+				ti.Selected = false;
+
+			if (i >= lvConstants.Items.Count)
+				i = lvConstants.Items.Count - 1;
+			if (i >= 0)
+				lvConstants.Items[i].Selected = true;
+		}
+
+
+		private void tbFilename_TextChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			internalchg = true;
+			wrapper.FileName = tbFilename.Text;
+			internalchg = false;
+		}
+
+		private void tbFilename_Validated(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
+		}
+
+
+		private void hex8_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+
+			if (!hex8_IsValid(sender)) return;
+
+			internalchg = true;
+			tbFlag.Text = "0x" + SimPe.Helper.HexString(wrapper.Flag = Convert.ToByte(((TextBox)sender).Text, 16));
+			internalchg = false;
+		}
+
+		private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex8_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(wrapper.Flag);
+			internalchg = origstate;
+
+			((TextBox)sender).SelectAll();
+		}
+
+		private void hex8_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
+			internalchg = origstate;
+			((TextBox)sender).SelectAll();
+		}
+
+
+		private void hex16_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+
+			if (!hex16_IsValid(sender)) return;
+
+			int i = lvConstants.SelectedIndices[0];
+
+			internalchg = true;
+			lvConstants.Items[i].SubItems[1].Text = "0x" + SimPe.Helper.HexString(wrapper[i] = Convert.ToInt16(((TextBox)sender).Text, 16));
+			tbValueDec.Text = wrapper[i].ToString();
+			internalchg = false;
+		}
+
+		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex16_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(origItem);
+			internalchg = origstate;
+
+			((TextBox)sender).SelectAll();
+		}
+
+		private void hex16_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
+			internalchg = origstate;
+			((TextBox)sender).SelectAll();
+		}
+
+
+		private void dec16_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+
+			if (!dec16_IsValid(sender)) return;
+
+			int i = lvConstants.SelectedIndices[0];
+
+			internalchg = true;
+			tbValueHex.Text = lvConstants.Items[i].SubItems[1].Text = "0x" + SimPe.Helper.HexString(wrapper[i] = Convert.ToInt16(((TextBox)sender).Text, 10));
+			internalchg = false;
+		}
+
+		private void dec16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (dec16_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = origItem.ToString();
+			internalchg = origstate;
+
+			((TextBox)sender).SelectAll();
+		}
+
+		private void dec16_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = Convert.ToInt16(((TextBox)sender).Text, 10).ToString();
+			internalchg = origstate;
+			((TextBox)sender).SelectAll();
+		}
+
 
 	}
 }

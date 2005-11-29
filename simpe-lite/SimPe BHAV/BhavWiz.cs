@@ -295,14 +295,14 @@ namespace pjse
 #endif
 
 			return
-				(!temp && bid >= bcon.Constants.Count ? "[" : "")
+				(!temp && bid >= bcon.Count ? "[" : "")
 				+ (silent ? "" : s.ToString() + " " + bcon.FileName.Trim() + " " + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":")
 				+ (temp
 					? "[Temp " + bid.ToString() + "]"
 					: (silent ? "" : "0x" + SimPe.Helper.HexString((byte)bid) + " ")
-						+ (bid >= bcon.Constants.Count
+						+ (bid >= bcon.Count
 							? "not set]"
-							: "(0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]) + (label.Equals("") ? "" : " \"" + label + "\"") + ")")
+							: "(0x" + SimPe.Helper.HexString((short)bcon[bid]) + (label.Equals("") ? "" : " \"" + label + "\"") + ")")
 					)
 				;
 		}

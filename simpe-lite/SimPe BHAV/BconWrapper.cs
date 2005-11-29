@@ -33,7 +33,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Bcon
-		: AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
@@ -42,15 +42,20 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains the Filename
 		/// </summary>
-		private byte[] filename;	
-		/// <summary>
-		/// Contains all available Constants 
-		/// </summary>		
-		private ArrayList values;
+		private byte[] filename = new byte[64];	
 		/// <summary>
 		/// Just A Flag
 		/// </summary>
-		private byte flag;
+		private byte flag = 0x00;
+		/// <summary>
+		/// Contains all available Constants 
+		/// </summary>		
+		private ArrayList items = new ArrayList();
+
+		/// <summary>
+		/// Contains a valid TRCN Resource that describes these values
+		/// </summary>
+		private Trcn trcnres = null;
 		#endregion
 
 		#region Accessor methods
@@ -60,16 +65,14 @@ namespace SimPe.PackedFiles.Wrapper
 		public string FileName 
 		{
 			get { return Helper.ToString(filename); }
-			set { filename = Helper.ToBytes(value, 0x40); }
-		}
-
-		/// <summary>
-		/// Returns/Sets the Constants
-		/// </summary>
-		public ArrayList Constants
-		{
-			get { return values; }			
-			set { values = value; }
+			set 
+			{
+				if (!Helper.ToString(filename).Equals(value))
+				{
+					filename = Helper.ToBytes(value, 0x40);
+					OnWrapperChanged(this, new EventArgs());
+				}
+			}
 		}
 
 		/// <summary>
@@ -78,23 +81,71 @@ namespace SimPe.PackedFiles.Wrapper
 		public byte Flag 
 		{
 			get { return flag;	}			
-			set { flag = value; }
+			set
+			{
+				if (flag != value)
+				{
+					flag = value;
+					OnWrapperChanged(this, new EventArgs());
+				}
+			}
 		}
 
+
+		/// <summary>
+		/// Returns the Labels describing these constants
+		/// </summary>
+		internal Trcn TrcnResource
+		{
+			get 
+			{
+				if (trcnres == null) 
+				{
+					trcnres = new Trcn();
+					if ((Package!=null) && (FileDescriptor!=null)) 
+					{
+						Interfaces.Files.IPackedFileDescriptor pfd = Package.FindFile(
+							0x5452434E, // Constant Labels File (TRCN)
+							0, 
+							FileDescriptor.Group,
+							FileDescriptor.Instance
+							);
+
+						if (pfd!=null) 
+						{
+							trcnres.ProcessData(pfd, Package);
+						}
+					} 
+					else 
+					{
+						trcnres = null;
+					}
+				}
+
+				return trcnres;
+			}
+		}
 		#endregion
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Bcon() : base()
-		{
-			filename = new byte[64];
-			values = new ArrayList();
-			flag = 0x00;
-		}
+		public Bcon() : base() { }
 
 
 		#region AbstractWrapper Member
+		public override bool CheckVersion(uint version) 
+		{
+			if ( (version==0012) //0.00
+				|| (version==0013) //0.10
+				) 
+			{
+				return true;
+			}
+
+			return false;
+		}
+
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
 			return new UserInterface.BconForm();
@@ -109,26 +160,9 @@ namespace SimPe.PackedFiles.Wrapper
 			return new AbstractWrapperInfo(
 				"PJSE BCON Wrapper",
 				"Peter L Jones",
-				"---",
+				"BCON Value Editor",
 				1
 				); 
-		}
-
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		protected override void Unserialize(System.IO.BinaryReader reader)
-		{
-			filename = reader.ReadBytes(64);
-			int length = reader.ReadByte();
-			flag = reader.ReadByte();							
- 
-			values.Clear();
-			for (int i=0; i < length; i++) 
-			{
-				values.Add((short)reader.ReadInt16());
-			}
 		}
 
 		/// <summary>
@@ -142,31 +176,43 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			writer.Write((byte)values.Count);
+			writer.Write((byte)items.Count);
 			writer.Write(flag);					
- 
-			for (int i=0; i < values.Count; i++) 
-			{
-				writer.Write((short)values[i]);
-			}		
-		}
-		#endregion
 
-		#region IWrapper member
-		public override bool CheckVersion(uint version) 
+			foreach(short v in items)
+				writer.Write(v);
+		}
+		/// <summary>
+		/// Unserializes a BinaryStream into the Attributes of this Instance
+		/// </summary>
+		/// <param name="reader">The Stream that contains the FileData</param>
+		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
-			if ( (version==0012) //0.00
-				|| (version==0013) //0.10
-				) 
-			{
-				return true;
-			}
-
-			return false;
+			filename = reader.ReadBytes(64);
+			int length = reader.ReadByte();
+			flag = reader.ReadByte();							
+ 
+			short[] bi = new short[length];
+			items = new ArrayList(bi);
+			for (int i = 0; i < length; i++) 
+				items[i] = reader.ReadInt16();
 		}
+
 		#endregion
 
 		#region IFileWrapper Member
+		/// <summary>
+		/// Returns a list of File Type this Plugin can process
+		/// </summary>
+		public uint[] AssignableTypes
+		{
+			get
+			{
+				uint[] types = {0x42434F4E};	 // BCON
+				return types;
+			}
+		}
+
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin
 		/// </summary>
@@ -178,24 +224,74 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		/// <summary>
-		/// Returns a list of File Type this Plugin can process
-		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {
-								   0x42434F4E	 // BCON
-							   };
-				return types;
-			}
-		}
-
 		#endregion		
 
 		#region IFileWrapperSaveExtension Member		
 		//all covered by Serialize()
 		#endregion
+
+		#region ICollection Members
+		public int Add(short item)
+		{
+			if (items.Count >= 0x80) // only allow 128 lines, as that's all a dataOwner can reference
+				return -1;
+
+			//item.Parent = this;
+			int result = items.Add(item);
+			if (result >= 0) OnWrapperChanged(items, new EventArgs());
+			return result;
+		}
+
+		public void Clear()
+		{
+			items.Clear();
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public void Remove(short item) { this.RemoveAt(items.IndexOf(item)); }
+
+		public void RemoveAt(int index)
+		{
+			if (index < 0 || index >= items.Count) return;
+
+			items.RemoveAt(index);
+			OnWrapperChanged(items, new EventArgs());
+		}
+
+		public short this[int index]
+		{
+			get
+			{
+				return (short)items[index];
+			}
+			set
+			{
+				if (items[index] == null || !items[index].Equals(value))
+				{
+					//value.Parent = this;
+					items[index] = value;
+					OnWrapperChanged(items, new EventArgs());
+				}
+			}
+		}
+
+		public bool Contains(short item) { return items.Contains(item); }
+
+		public int IndexOf(object item) { return items.IndexOf(item); }
+
+		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+
+		public override int Count { get { return items.Count; } }
+
+		public override bool IsSynchronized { get { return items.IsSynchronized; } }
+
+		public override object SyncRoot { get { return items.SyncRoot; } }
+
+		#region IEnumerable Members
+		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+
+		#endregion
+		#endregion
+
 	}
 }

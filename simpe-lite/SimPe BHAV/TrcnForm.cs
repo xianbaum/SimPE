@@ -170,11 +170,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbID.Items.Clear();
 
 			Bcon bcon = wrapper.BconResource;
-			for(int i = 0; i < bcon.Constants.Count; i++)
+			for(int i = 0; i < bcon.Count; i++)
 			{
 				this.cbID.Items.Add(
 					"0x" + i.ToString("X") + ": "
-					+ "0x" + SimPe.Helper.HexString((short)bcon.Constants[i])
+					+ "0x" + SimPe.Helper.HexString((short)bcon[i])
 					);
 			}
 		}
@@ -223,7 +223,6 @@ namespace SimPe.PackedFiles.UserInterface
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
 				setHandler = true;
 			}
-
 		}
 
 		private void WrapperChanged(object sender, System.EventArgs e)
@@ -261,6 +260,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.label1 = new System.Windows.Forms.Label();
 			this.trcnPanel = new System.Windows.Forms.Panel();
+			this.label4 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.cbID = new System.Windows.Forms.ComboBox();
 			this.cbUsed = new System.Windows.Forms.CheckBox();
@@ -288,9 +290,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbMaxValue = new System.Windows.Forms.TextBox();
 			this.lbMaxValue = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
-			this.label2 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.label4 = new System.Windows.Forms.Label();
 			this.pnHeading.SuspendLayout();
 			this.trcnPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -413,6 +412,72 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trcnPanel.TabIndex = ((int)(resources.GetObject("trcnPanel.TabIndex")));
 			this.trcnPanel.Text = resources.GetString("trcnPanel.Text");
 			this.trcnPanel.Visible = ((bool)(resources.GetObject("trcnPanel.Visible")));
+			// 
+			// label4
+			// 
+			this.label4.AccessibleDescription = resources.GetString("label4.AccessibleDescription");
+			this.label4.AccessibleName = resources.GetString("label4.AccessibleName");
+			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label4.Anchor")));
+			this.label4.AutoSize = ((bool)(resources.GetObject("label4.AutoSize")));
+			this.label4.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label4.Dock")));
+			this.label4.Enabled = ((bool)(resources.GetObject("label4.Enabled")));
+			this.label4.Font = ((System.Drawing.Font)(resources.GetObject("label4.Font")));
+			this.label4.Image = ((System.Drawing.Image)(resources.GetObject("label4.Image")));
+			this.label4.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label4.ImageAlign")));
+			this.label4.ImageIndex = ((int)(resources.GetObject("label4.ImageIndex")));
+			this.label4.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label4.ImeMode")));
+			this.label4.Location = ((System.Drawing.Point)(resources.GetObject("label4.Location")));
+			this.label4.Name = "label4";
+			this.label4.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label4.RightToLeft")));
+			this.label4.Size = ((System.Drawing.Size)(resources.GetObject("label4.Size")));
+			this.label4.TabIndex = ((int)(resources.GetObject("label4.TabIndex")));
+			this.label4.Text = resources.GetString("label4.Text");
+			this.label4.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label4.TextAlign")));
+			this.label4.Visible = ((bool)(resources.GetObject("label4.Visible")));
+			// 
+			// label3
+			// 
+			this.label3.AccessibleDescription = resources.GetString("label3.AccessibleDescription");
+			this.label3.AccessibleName = resources.GetString("label3.AccessibleName");
+			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label3.Anchor")));
+			this.label3.AutoSize = ((bool)(resources.GetObject("label3.AutoSize")));
+			this.label3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label3.Dock")));
+			this.label3.Enabled = ((bool)(resources.GetObject("label3.Enabled")));
+			this.label3.Font = ((System.Drawing.Font)(resources.GetObject("label3.Font")));
+			this.label3.Image = ((System.Drawing.Image)(resources.GetObject("label3.Image")));
+			this.label3.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label3.ImageAlign")));
+			this.label3.ImageIndex = ((int)(resources.GetObject("label3.ImageIndex")));
+			this.label3.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label3.ImeMode")));
+			this.label3.Location = ((System.Drawing.Point)(resources.GetObject("label3.Location")));
+			this.label3.Name = "label3";
+			this.label3.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label3.RightToLeft")));
+			this.label3.Size = ((System.Drawing.Size)(resources.GetObject("label3.Size")));
+			this.label3.TabIndex = ((int)(resources.GetObject("label3.TabIndex")));
+			this.label3.Text = resources.GetString("label3.Text");
+			this.label3.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label3.TextAlign")));
+			this.label3.Visible = ((bool)(resources.GetObject("label3.Visible")));
+			// 
+			// label2
+			// 
+			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
+			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
+			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
+			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
+			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
+			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
+			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
+			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
+			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
+			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
+			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
+			this.label2.Name = "label2";
+			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
+			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
+			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
+			this.label2.Text = resources.GetString("label2.Text");
+			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
+			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
 			// 
 			// btnCancel
 			// 
@@ -976,72 +1041,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.Text = resources.GetString("lbLabel.Text");
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
-			// 
-			// label2
-			// 
-			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
-			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
-			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
-			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
-			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
-			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
-			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
-			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
-			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
-			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
-			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
-			this.label2.Name = "label2";
-			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
-			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
-			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
-			this.label2.Text = resources.GetString("label2.Text");
-			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
-			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
-			// 
-			// label3
-			// 
-			this.label3.AccessibleDescription = resources.GetString("label3.AccessibleDescription");
-			this.label3.AccessibleName = resources.GetString("label3.AccessibleName");
-			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label3.Anchor")));
-			this.label3.AutoSize = ((bool)(resources.GetObject("label3.AutoSize")));
-			this.label3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label3.Dock")));
-			this.label3.Enabled = ((bool)(resources.GetObject("label3.Enabled")));
-			this.label3.Font = ((System.Drawing.Font)(resources.GetObject("label3.Font")));
-			this.label3.Image = ((System.Drawing.Image)(resources.GetObject("label3.Image")));
-			this.label3.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label3.ImageAlign")));
-			this.label3.ImageIndex = ((int)(resources.GetObject("label3.ImageIndex")));
-			this.label3.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label3.ImeMode")));
-			this.label3.Location = ((System.Drawing.Point)(resources.GetObject("label3.Location")));
-			this.label3.Name = "label3";
-			this.label3.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label3.RightToLeft")));
-			this.label3.Size = ((System.Drawing.Size)(resources.GetObject("label3.Size")));
-			this.label3.TabIndex = ((int)(resources.GetObject("label3.TabIndex")));
-			this.label3.Text = resources.GetString("label3.Text");
-			this.label3.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label3.TextAlign")));
-			this.label3.Visible = ((bool)(resources.GetObject("label3.Visible")));
-			// 
-			// label4
-			// 
-			this.label4.AccessibleDescription = resources.GetString("label4.AccessibleDescription");
-			this.label4.AccessibleName = resources.GetString("label4.AccessibleName");
-			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label4.Anchor")));
-			this.label4.AutoSize = ((bool)(resources.GetObject("label4.AutoSize")));
-			this.label4.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label4.Dock")));
-			this.label4.Enabled = ((bool)(resources.GetObject("label4.Enabled")));
-			this.label4.Font = ((System.Drawing.Font)(resources.GetObject("label4.Font")));
-			this.label4.Image = ((System.Drawing.Image)(resources.GetObject("label4.Image")));
-			this.label4.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label4.ImageAlign")));
-			this.label4.ImageIndex = ((int)(resources.GetObject("label4.ImageIndex")));
-			this.label4.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label4.ImeMode")));
-			this.label4.Location = ((System.Drawing.Point)(resources.GetObject("label4.Location")));
-			this.label4.Name = "label4";
-			this.label4.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label4.RightToLeft")));
-			this.label4.Size = ((System.Drawing.Size)(resources.GetObject("label4.Size")));
-			this.label4.TabIndex = ((int)(resources.GetObject("label4.TabIndex")));
-			this.label4.Text = resources.GetString("label4.Text");
-			this.label4.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label4.TextAlign")));
-			this.label4.Visible = ((bool)(resources.GetObject("label4.Visible")));
 			// 
 			// TrcnForm
 			// 

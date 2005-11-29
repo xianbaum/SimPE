@@ -91,20 +91,21 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+
 		/// <summary>
-		/// Returns the describing String Resource
+		/// Returns the Constants described by these labels
 		/// </summary>
-		internal PackedFiles.Wrapper.Bcon BconResource
+		internal Bcon BconResource
 		{
 			get 
 			{
-				if (bconres==null) 
+				if (bconres == null) 
 				{
-					bconres = new PackedFiles.Wrapper.Bcon();
+					bconres = new Bcon();
 					if ((Package!=null) && (FileDescriptor!=null)) 
 					{
 						Interfaces.Files.IPackedFileDescriptor pfd = Package.FindFile(
-							0x42434F4E, //Pie String File
+							0x42434F4E, // Constant (values) File (BCON)
 							0, 
 							FileDescriptor.Group,
 							FileDescriptor.Instance
@@ -117,8 +118,8 @@ namespace SimPe.PackedFiles.Wrapper
 					} 
 					else 
 					{
-						return null;
-					}		
+						bconres = null;
+					}
 				}
 
 				return bconres;
@@ -156,9 +157,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <returns>Human Readable Description</returns>
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
-			///
-			/// TODO: Change the Description passed here
-			/// 
 			return new AbstractWrapperInfo(
 				"PJSE TRCN Wrapper",
 				"Peter L Jones",

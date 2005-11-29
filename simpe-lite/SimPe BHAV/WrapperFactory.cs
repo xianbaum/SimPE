@@ -49,10 +49,10 @@ namespace SimPe.Plugin
 										  ,new Str()
 										  ,new Ttab()
 #if DEBUG || INPROGRESS
+										  ,new Bcon()
 										  ,new Trcn()
 #endif
 #if DEBUG
-										  ,new Bcon()
 										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()
 #endif

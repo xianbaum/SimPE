@@ -188,11 +188,6 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
-                    RelPath = "BconItem.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "BconWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
