@@ -348,27 +348,27 @@ namespace SimPe.PackedFiles.UserInterface
 		private void CopyListing()
 		{
 			string listing = "";
+
 			int lines = wrapper.Count;
-			for (int i = 0; i < lines; i++)
+			for (short i = 0; i < lines; i++)
 			{
 				Instruction inst = wrapper[i];
 				BhavWiz w = inst;
 
 				string operands = "";
-				for(int j = 0; j < 7; j++)
-				{
-					operands += SimPe.Helper.HexString(inst.Operands[j]);
-				}
-				for(int j = 0; j < 7; j++)
-				{
-					operands += SimPe.Helper.HexString(inst.Reserved1[j]);
-				}
-				listing += (
-					 "0x" + SimPe.Helper.HexString(inst.OpCode)
-					+ ":" + operands
-					+ ":" + w.ShortName
-					+ "\r\n");
+				for(int j = 0; j < 7; j++) operands += SimPe.Helper.HexString(inst.Operands[j]);
+				for(int j = 0; j < 7; j++) operands += SimPe.Helper.HexString(inst.Reserved1[j]);
+
+				listing += ("     "
+					+ SimPe.Helper.HexString(i)
+					+ " : " + SimPe.Helper.HexString(inst.OpCode)
+					+ " : " + operands
+					+ " : " + SimPe.Helper.HexString(inst.NodeVersion)
+					+ " : " + SimPe.Helper.HexString(inst.Target1)
+					+ " : " + SimPe.Helper.HexString(inst.Target2)
+					+ "\r\n" + w.ShortName + "\r\n\r\n");
 			}
+
 			Clipboard.SetDataObject(listing, true);
 		}
 
