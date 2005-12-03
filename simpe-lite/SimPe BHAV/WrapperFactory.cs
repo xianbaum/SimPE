@@ -44,16 +44,15 @@ namespace SimPe.Plugin
 			get 
 			{
 				IWrapper[] wrappers = {
-										   new Bhav()
+										   new Bcon()
+										  ,new Bhav()
 										  ,new Objf()
 										  ,new Str()
+										  ,new Trcn()
 										  ,new Ttab()
 #if DEBUG
-										  ,new Bcon()
 										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()
-										  ,new Trcn()
-#else
 #endif
 									  };
 				return wrappers;

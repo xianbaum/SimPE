@@ -283,13 +283,26 @@ namespace pjse
 
 			Bcon bcon = new Bcon();
 			bcon.ProcessData(items[0].PFD, items[0].Package);
+			string label = "";
+			if (!temp)
+			{
+				items = pjse.FileTable.GFT[0x5452434E, instruction.Parent.GroupForScope(s), instance];
+				if (items != null && items.Length != 0)
+				{
+					Trcn trcn = bcon.TrcnResource;
+					if (trcn != null && bid < trcn.Count) label = trcn[bid].ConstName;
+				}
+			}
+
 			return
-				(!temp && bid >= bcon.Constants.Count ? "[" : "")
+				(!temp && bid >= bcon.Count ? "[" : "")
 				+ (silent ? "" : s.ToString() + " " + bcon.FileName.Trim() + " " + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":")
 				+ (temp
 					? "[Temp " + bid.ToString() + "]"
 					: (silent ? "" : "0x" + SimPe.Helper.HexString((byte)bid) + " ")
-						+ (bid >= bcon.Constants.Count ? "not set]" : "(0x" + SimPe.Helper.HexString((short)bcon.Constants[bid]) + ")")
+						+ (bid >= bcon.Count
+							? "not set]"
+							: "(0x" + SimPe.Helper.HexString((short)bcon[bid]) + (label.Equals("") ? "" : " \"" + label + "\"") + ")")
 					)
 				;
 		}
