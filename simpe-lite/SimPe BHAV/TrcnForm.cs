@@ -51,8 +51,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbFormat;
 		private System.Windows.Forms.Button btnStrDelete;
 		private System.Windows.Forms.Button btnStrAdd;
-		private System.Windows.Forms.Button btnStrPrev;
-		private System.Windows.Forms.Button btnStrNext;
 		private System.Windows.Forms.Label lbID;
 		private System.Windows.Forms.Label lbDefValue;
 		private System.Windows.Forms.Label lbMinValue;
@@ -69,6 +67,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label4;
+		private System.Windows.Forms.ColumnHeader chValue;
+		private System.Windows.Forms.TextBox tbID;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -88,7 +88,7 @@ namespace SimPe.PackedFiles.UserInterface
 			TextBox[] w = { tbDefValue ,tbMinValue ,tbMaxValue ,};
 			alHex16 = new ArrayList(w);
 
-			TextBox[] dw = { tbFormat ,};
+			TextBox[] dw = { tbFormat ,tbID ,};
 			alHex32 = new ArrayList(dw);
 
 			ComboBox[] cb = { cbID ,};
@@ -126,8 +126,8 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (alHex32cb.IndexOf(sender) < 0)
 				throw new Exception("cbHex32_IsValid not applicable to control " + sender.ToString());
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return true;
 
+			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return true;
 			try { Convert.ToUInt32(((ComboBox)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
@@ -154,8 +154,16 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private string[] TrcnItemToStringArray(TrcnItem ti)
 		{
+			Bcon bcon = wrapper.BconResource;
+			string tiValue = "";
+			if (ti.ConstId < bcon.Count)
+				tiValue = "0x" + SimPe.Helper.HexString(bcon[(int)ti.ConstId]);
+			else
+				tiValue = "?";
+
 			return new string[] {
 									"0x" + ti.ConstId.ToString("X")
+									, tiValue
 									, ti.ConstName
 									, "0x" + ti.Used.ToString("X")
 									, "0x" + SimPe.Helper.HexString(ti.DefValue)
@@ -268,14 +276,13 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbUsed = new System.Windows.Forms.CheckBox();
 			this.tbLabel = new System.Windows.Forms.TextBox();
 			this.lbID = new System.Windows.Forms.Label();
-			this.btnStrPrev = new System.Windows.Forms.Button();
-			this.btnStrNext = new System.Windows.Forms.Button();
 			this.btnStrDelete = new System.Windows.Forms.Button();
 			this.btnStrAdd = new System.Windows.Forms.Button();
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.tbFormat = new System.Windows.Forms.TextBox();
 			this.lvTrcnItem = new System.Windows.Forms.ListView();
 			this.chConstId = new System.Windows.Forms.ColumnHeader();
+			this.chValue = new System.Windows.Forms.ColumnHeader();
 			this.chConstName = new System.Windows.Forms.ColumnHeader();
 			this.chUsed = new System.Windows.Forms.ColumnHeader();
 			this.chDefValue = new System.Windows.Forms.ColumnHeader();
@@ -290,6 +297,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbMaxValue = new System.Windows.Forms.TextBox();
 			this.lbMaxValue = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
+			this.tbID = new System.Windows.Forms.TextBox();
 			this.pnHeading.SuspendLayout();
 			this.trcnPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -375,6 +383,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trcnPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("trcnPanel.AutoScrollMinSize")));
 			this.trcnPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.trcnPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("trcnPanel.BackgroundImage")));
+			this.trcnPanel.Controls.Add(this.tbID);
 			this.trcnPanel.Controls.Add(this.label4);
 			this.trcnPanel.Controls.Add(this.label3);
 			this.trcnPanel.Controls.Add(this.label2);
@@ -383,8 +392,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trcnPanel.Controls.Add(this.cbUsed);
 			this.trcnPanel.Controls.Add(this.tbLabel);
 			this.trcnPanel.Controls.Add(this.lbID);
-			this.trcnPanel.Controls.Add(this.btnStrPrev);
-			this.trcnPanel.Controls.Add(this.btnStrNext);
 			this.trcnPanel.Controls.Add(this.btnStrDelete);
 			this.trcnPanel.Controls.Add(this.btnStrAdd);
 			this.trcnPanel.Controls.Add(this.lbFormat);
@@ -510,6 +517,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbID.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbID.Anchor")));
 			this.cbID.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbID.BackgroundImage")));
 			this.cbID.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbID.Dock")));
+			this.cbID.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbID.DropDownWidth = 210;
 			this.cbID.Enabled = ((bool)(resources.GetObject("cbID.Enabled")));
 			this.cbID.Font = ((System.Drawing.Font)(resources.GetObject("cbID.Font")));
 			this.cbID.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbID.ImeMode")));
@@ -522,13 +531,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbID.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbID.RightToLeft")));
 			this.cbID.Size = ((System.Drawing.Size)(resources.GetObject("cbID.Size")));
 			this.cbID.TabIndex = ((int)(resources.GetObject("cbID.TabIndex")));
+			this.cbID.TabStop = false;
 			this.cbID.Text = resources.GetString("cbID.Text");
 			this.cbID.Visible = ((bool)(resources.GetObject("cbID.Visible")));
-			this.cbID.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex32_Validating);
-			this.cbID.Validated += new System.EventHandler(this.cbHex32_Validated);
-			this.cbID.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
 			this.cbID.SelectedIndexChanged += new System.EventHandler(this.cbHex32_SelectedIndexChanged);
-			this.cbID.Enter += new System.EventHandler(this.cbHex32_Enter);
 			// 
 			// cbUsed
 			// 
@@ -604,52 +610,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbID.Text = resources.GetString("lbID.Text");
 			this.lbID.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbID.TextAlign")));
 			this.lbID.Visible = ((bool)(resources.GetObject("lbID.Visible")));
-			// 
-			// btnStrPrev
-			// 
-			this.btnStrPrev.AccessibleDescription = resources.GetString("btnStrPrev.AccessibleDescription");
-			this.btnStrPrev.AccessibleName = resources.GetString("btnStrPrev.AccessibleName");
-			this.btnStrPrev.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrPrev.Anchor")));
-			this.btnStrPrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.BackgroundImage")));
-			this.btnStrPrev.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrPrev.Dock")));
-			this.btnStrPrev.Enabled = ((bool)(resources.GetObject("btnStrPrev.Enabled")));
-			this.btnStrPrev.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrPrev.FlatStyle")));
-			this.btnStrPrev.Font = ((System.Drawing.Font)(resources.GetObject("btnStrPrev.Font")));
-			this.btnStrPrev.Image = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.Image")));
-			this.btnStrPrev.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.ImageAlign")));
-			this.btnStrPrev.ImageIndex = ((int)(resources.GetObject("btnStrPrev.ImageIndex")));
-			this.btnStrPrev.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrPrev.ImeMode")));
-			this.btnStrPrev.Location = ((System.Drawing.Point)(resources.GetObject("btnStrPrev.Location")));
-			this.btnStrPrev.Name = "btnStrPrev";
-			this.btnStrPrev.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrPrev.RightToLeft")));
-			this.btnStrPrev.Size = ((System.Drawing.Size)(resources.GetObject("btnStrPrev.Size")));
-			this.btnStrPrev.TabIndex = ((int)(resources.GetObject("btnStrPrev.TabIndex")));
-			this.btnStrPrev.Text = resources.GetString("btnStrPrev.Text");
-			this.btnStrPrev.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.TextAlign")));
-			this.btnStrPrev.Visible = ((bool)(resources.GetObject("btnStrPrev.Visible")));
-			// 
-			// btnStrNext
-			// 
-			this.btnStrNext.AccessibleDescription = resources.GetString("btnStrNext.AccessibleDescription");
-			this.btnStrNext.AccessibleName = resources.GetString("btnStrNext.AccessibleName");
-			this.btnStrNext.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrNext.Anchor")));
-			this.btnStrNext.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrNext.BackgroundImage")));
-			this.btnStrNext.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrNext.Dock")));
-			this.btnStrNext.Enabled = ((bool)(resources.GetObject("btnStrNext.Enabled")));
-			this.btnStrNext.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrNext.FlatStyle")));
-			this.btnStrNext.Font = ((System.Drawing.Font)(resources.GetObject("btnStrNext.Font")));
-			this.btnStrNext.Image = ((System.Drawing.Image)(resources.GetObject("btnStrNext.Image")));
-			this.btnStrNext.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.ImageAlign")));
-			this.btnStrNext.ImageIndex = ((int)(resources.GetObject("btnStrNext.ImageIndex")));
-			this.btnStrNext.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrNext.ImeMode")));
-			this.btnStrNext.Location = ((System.Drawing.Point)(resources.GetObject("btnStrNext.Location")));
-			this.btnStrNext.Name = "btnStrNext";
-			this.btnStrNext.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrNext.RightToLeft")));
-			this.btnStrNext.Size = ((System.Drawing.Size)(resources.GetObject("btnStrNext.Size")));
-			this.btnStrNext.TabIndex = ((int)(resources.GetObject("btnStrNext.TabIndex")));
-			this.btnStrNext.Text = resources.GetString("btnStrNext.Text");
-			this.btnStrNext.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.TextAlign")));
-			this.btnStrNext.Visible = ((bool)(resources.GetObject("btnStrNext.Visible")));
 			// 
 			// btnStrDelete
 			// 
@@ -758,6 +718,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvTrcnItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvTrcnItem.BackgroundImage")));
 			this.lvTrcnItem.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
 																						 this.chConstId,
+																						 this.chValue,
 																						 this.chConstName,
 																						 this.chUsed,
 																						 this.chDefValue,
@@ -790,6 +751,12 @@ namespace SimPe.PackedFiles.UserInterface
 			this.chConstId.Text = resources.GetString("chConstId.Text");
 			this.chConstId.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chConstId.TextAlign")));
 			this.chConstId.Width = ((int)(resources.GetObject("chConstId.Width")));
+			// 
+			// chValue
+			// 
+			this.chValue.Text = resources.GetString("chValue.Text");
+			this.chValue.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chValue.TextAlign")));
+			this.chValue.Width = ((int)(resources.GetObject("chValue.Width")));
 			// 
 			// chConstName
 			// 
@@ -1042,6 +1009,34 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
 			// 
+			// tbID
+			// 
+			this.tbID.AccessibleDescription = resources.GetString("tbID.AccessibleDescription");
+			this.tbID.AccessibleName = resources.GetString("tbID.AccessibleName");
+			this.tbID.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbID.Anchor")));
+			this.tbID.AutoSize = ((bool)(resources.GetObject("tbID.AutoSize")));
+			this.tbID.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbID.BackgroundImage")));
+			this.tbID.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbID.Dock")));
+			this.tbID.Enabled = ((bool)(resources.GetObject("tbID.Enabled")));
+			this.tbID.Font = ((System.Drawing.Font)(resources.GetObject("tbID.Font")));
+			this.tbID.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbID.ImeMode")));
+			this.tbID.Location = ((System.Drawing.Point)(resources.GetObject("tbID.Location")));
+			this.tbID.MaxLength = ((int)(resources.GetObject("tbID.MaxLength")));
+			this.tbID.Multiline = ((bool)(resources.GetObject("tbID.Multiline")));
+			this.tbID.Name = "tbID";
+			this.tbID.PasswordChar = ((char)(resources.GetObject("tbID.PasswordChar")));
+			this.tbID.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbID.RightToLeft")));
+			this.tbID.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbID.ScrollBars")));
+			this.tbID.Size = ((System.Drawing.Size)(resources.GetObject("tbID.Size")));
+			this.tbID.TabIndex = ((int)(resources.GetObject("tbID.TabIndex")));
+			this.tbID.Text = resources.GetString("tbID.Text");
+			this.tbID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbID.TextAlign")));
+			this.tbID.Visible = ((bool)(resources.GetObject("tbID.Visible")));
+			this.tbID.WordWrap = ((bool)(resources.GetObject("tbID.WordWrap")));
+			this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+			// 
 			// TrcnForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -1085,37 +1080,30 @@ namespace SimPe.PackedFiles.UserInterface
 				currentItem = wrapper[lvTrcnItem.SelectedIndices[0]];
 				origItem = currentItem.Clone();
 
-				this.cbID.Enabled = this.tbLabel.Enabled = this.cbUsed.Enabled
+				this.tbID.Enabled = this.cbID.Enabled = this.tbLabel.Enabled = this.cbUsed.Enabled
 					= this.tbDefValue.Enabled = this.tbMinValue.Enabled = this.tbMaxValue.Enabled
 					= this.btnStrDelete.Enabled
 					= true;
 
-				if (currentItem.ConstId < this.cbID.Items.Count)
-				{
-					this.cbID.SelectedIndex = -1;
-					this.cbID.SelectedIndex = (int)currentItem.ConstId;
-				}
-				else
-				{
-					this.cbID.SelectedIndex = -1;
-					this.cbID.Text = "0x" + SimPe.Helper.HexString(currentItem.ConstId);
-				}
-				this.tbLabel.Text = currentItem.ConstName;
+
+				string[] s = TrcnItemToStringArray(currentItem);
+				this.tbID.Text = s[0];
+				this.tbLabel.Text = s[2];
 				this.cbUsed.CheckState = currentItem.Used != 0
 					? System.Windows.Forms.CheckState.Checked
 					: System.Windows.Forms.CheckState.Unchecked;
-				this.tbDefValue.Text = "0x" + SimPe.Helper.HexString(currentItem.DefValue);
-				this.tbMinValue.Text = "0x" + SimPe.Helper.HexString(currentItem.MinValue);
-				this.tbMaxValue.Text = "0x" + SimPe.Helper.HexString(currentItem.MaxValue);
+				this.tbDefValue.Text = s[4];
+				this.tbMinValue.Text = s[5];
+				this.tbMaxValue.Text = s[6];
 			}
 			else
 			{
-				this.cbID.Enabled = this.tbLabel.Enabled = this.cbUsed.Enabled
+				this.tbID.Enabled = this.cbID.Enabled = this.tbLabel.Enabled = this.cbUsed.Enabled
 					= this.tbDefValue.Enabled = this.tbMinValue.Enabled = this.tbMaxValue.Enabled
 					= this.btnStrDelete.Enabled
 					= false;
 
-				this.cbID.Text = this.tbLabel.Text
+				this.tbID.Text = this.tbLabel.Text
 					= this.tbDefValue.Text = this.tbMinValue.Text = this.tbMaxValue.Text
 					= "";
 
@@ -1178,82 +1166,6 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void cbHex32_Enter(object sender, System.EventArgs e)
-		{
-			((ComboBox)sender).SelectAll();
-		}
-
-		private void cbHex32_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
-
-			if (!cbHex32_IsValid(sender)) return;
-
-			internalchg = true;
-			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
-			switch (alHex32cb.IndexOf(sender))
-			{
-				case 0: lvTrcnItem.SelectedItems[0].SubItems[0].Text = "0x" + (currentItem.ConstId = val).ToString("X"); break;
-			}
-			internalchg = false;
-		}
-
-		private void cbHex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
-
-			if (cbHex32_IsValid(sender)) return;
-
-			e.Cancel = true;
-
-			bool origstate = internalchg;
-			internalchg = true;
-			uint val = 0;
-			switch (alHex32cb.IndexOf(sender))
-			{
-				case 0: val = currentItem.ConstId; break;
-			}
-			if (val < ((ComboBox)sender).Items.Count)
-			{
-				((ComboBox)sender).SelectedIndex = (int)val;
-			}
-			else
-			{
-				((ComboBox)sender).SelectedIndex = -1;
-				((ComboBox)sender).Text = "0x" + Helper.HexString(val);
-			}
-			internalchg = origstate;
-
-			((ComboBox)sender).SelectAll();
-		}
-
-		private void cbHex32_Validated(object sender, System.EventArgs e)
-		{
-			if (((ComboBox)sender).Items.IndexOf(((ComboBox)sender).Text) != -1) return;
-
-			bool origstate = internalchg;
-			internalchg = true;
-			uint val = Convert.ToUInt32(((ComboBox)sender).Text, 16);
-			switch (alHex32cb.IndexOf(sender))
-			{
-				case 0:
-					if (val < ((ComboBox)sender).Items.Count)
-					{
-						((ComboBox)sender).SelectedIndex = (int)val;
-					}
-					else
-					{
-						((ComboBox)sender).SelectedIndex = -1;
-						((ComboBox)sender).Text = "0x" + Helper.HexString(val);
-					}
-					break;
-			}
-			internalchg = origstate;
-
-			((ComboBox)sender).Select(0, 0);
-		}
-
 		private void cbHex32_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
@@ -1261,10 +1173,15 @@ namespace SimPe.PackedFiles.UserInterface
 			if (((ComboBox)sender).SelectedIndex == -1) return;
 
 			internalchg = true;
-			ushort val = (ushort)((ComboBox)sender).SelectedIndex;
 			switch (alHex32cb.IndexOf(sender))
 			{
-				case 0: lvTrcnItem.SelectedItems[0].SubItems[0].Text = "0x" + (currentItem.ConstId = val).ToString("X"); break;
+				case 0:
+					currentItem.ConstId = (uint)((ComboBox)sender).SelectedIndex;
+					string[] s = TrcnItemToStringArray(currentItem);
+					lvTrcnItem.SelectedItems[0].SubItems[0].Text = this.tbID.Text = s[0];
+					lvTrcnItem.SelectedItems[0].SubItems[1].Text = s[1];
+					tbID.Focus();
+					break;
 			}
 			internalchg = false;
 			((ComboBox)sender).SelectAll();
@@ -1279,7 +1196,9 @@ namespace SimPe.PackedFiles.UserInterface
 			switch(alText.IndexOf(sender))
 			{
 				case 0: wrapper.FileName = ((TextBox)sender).Text; break;
-				case 1: lvTrcnItem.SelectedItems[0].SubItems[1].Text = currentItem.ConstName = ((TextBox)sender).Text; break;
+				case 1:
+					lvTrcnItem.SelectedItems[0].SubItems[2].Text = currentItem.ConstName = ((TextBox)sender).Text;
+					break;
 			}
 			internalchg = false;
 		}
@@ -1295,7 +1214,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			internalchg = true;
-			lvTrcnItem.SelectedItems[0].SubItems[2].Text = "0x" + (currentItem.Used = (uint)(((CheckBox)sender).Checked ? 1 : 0)).ToString("X");
+			lvTrcnItem.SelectedItems[0].SubItems[3].Text = "0x" + (currentItem.Used = (uint)(((CheckBox)sender).Checked ? 1 : 0)).ToString("X");
 			internalchg = false;
 		}
 
@@ -1310,9 +1229,9 @@ namespace SimPe.PackedFiles.UserInterface
 			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: lvTrcnItem.SelectedItems[0].SubItems[3].Text = "0x" + SimPe.Helper.HexString(currentItem.DefValue = val); break;
-				case 1: lvTrcnItem.SelectedItems[0].SubItems[4].Text = "0x" + SimPe.Helper.HexString(currentItem.MinValue = val); break;
-				case 2: lvTrcnItem.SelectedItems[0].SubItems[5].Text = "0x" + SimPe.Helper.HexString(currentItem.MaxValue = val); break;
+				case 0: lvTrcnItem.SelectedItems[0].SubItems[4].Text = "0x" + SimPe.Helper.HexString(currentItem.DefValue = val); break;
+				case 1: lvTrcnItem.SelectedItems[0].SubItems[5].Text = "0x" + SimPe.Helper.HexString(currentItem.MinValue = val); break;
+				case 2: lvTrcnItem.SelectedItems[0].SubItems[6].Text = "0x" + SimPe.Helper.HexString(currentItem.MaxValue = val); break;
 			}
 			internalchg = false;
 		}
@@ -1359,6 +1278,12 @@ namespace SimPe.PackedFiles.UserInterface
 			switch (alHex32.IndexOf(sender))
 			{
 				case 0: wrapper.Version = val; break;
+				case 1:
+					currentItem.ConstId = val;
+					string[] s = TrcnItemToStringArray(currentItem);
+					lvTrcnItem.SelectedItems[0].SubItems[0].Text = s[0];
+					lvTrcnItem.SelectedItems[0].SubItems[1].Text = s[1];
+					break;
 			}
 			internalchg = false;
 		}
@@ -1375,6 +1300,7 @@ namespace SimPe.PackedFiles.UserInterface
 			switch (alHex32.IndexOf(sender))
 			{
 				case 0: val = wrapper.Version; break;
+				case 1: val = currentItem.ConstId; break;
 			}
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			internalchg = origstate;
