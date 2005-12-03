@@ -1,4 +1,25 @@
 
+3 December 2005 13:05 - TRCN Landing: Use labels in BhavWiz, use wrappers
+  SimPe BHAV\
+    BhavWiz.cs 1.31
+    pjse coder plugin.csproj 1.26
+    WrapperFactory.cs 1.17
+  pjseTestData.package 1.12
+
+3 December 2005 13:02 - TRCN Landing: New TRCN form and wrapper
+  SimPe BHAV\
+    TrcnForm.cs 1.4
+    TrcnForm.resx 1.2
+    TrcnItem.cs (deleted)
+    TrcnWrapper.cs 1.4
+
+3 December 2005 12:54 - TRCN Landing: New BCON form and wrapper
+  SimPe BHAV\
+    BconForm.cs 1.5
+    BconForm.resx 1.2
+    BconItem.cs (deleted)
+    BconWrapper.cs 1.5
+
 27 November 2005 19:04 - Objf: Pedantry...
   SimPe BHAV\
     ObjfForm.cs 1.12
