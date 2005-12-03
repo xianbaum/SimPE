@@ -107,6 +107,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.CheckBox cbSpecial;
 		private System.Windows.Forms.CheckBox cbDecimal;
 		private System.Windows.Forms.TextBox tbInst_Longname;
+		private System.Windows.Forms.Button btnListing;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -343,6 +344,33 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
+
+		private void CopyListing()
+		{
+			string listing = "";
+			int lines = wrapper.Count;
+			for (int i = 0; i < lines; i++)
+			{
+				Instruction inst = wrapper[i];
+				BhavWiz w = inst;
+
+				string operands = "";
+				for(int j = 0; j < 7; j++)
+				{
+					operands += SimPe.Helper.HexString(inst.Operands[j]);
+				}
+				for(int j = 0; j < 7; j++)
+				{
+					operands += SimPe.Helper.HexString(inst.Reserved1[j]);
+				}
+				listing += (
+					 "0x" + SimPe.Helper.HexString(inst.OpCode)
+					+ ":" + operands
+					+ ":" + w.ShortName
+					+ "\r\n");
+			}
+			Clipboard.SetDataObject(listing, true);
+		}
 
 		private short OpsToShort(byte lo, byte hi)
 		{
@@ -581,6 +609,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
 			this.cbDecimal = new System.Windows.Forms.CheckBox();
+			this.btnListing = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -1986,6 +2015,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbSpecial.Controls.Add(this.btnDelPescado);
 			this.gbSpecial.Controls.Add(this.btnLinkInge);
 			this.gbSpecial.Controls.Add(this.btnDelMerola);
+			this.gbSpecial.Controls.Add(this.btnListing);
 			this.gbSpecial.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbSpecial.Dock")));
 			this.gbSpecial.Enabled = ((bool)(resources.GetObject("gbSpecial.Enabled")));
 			this.gbSpecial.Font = ((System.Drawing.Font)(resources.GetObject("gbSpecial.Font")));
@@ -2455,6 +2485,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbDecimal.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbDecimal.TextAlign")));
 			this.cbDecimal.Visible = ((bool)(resources.GetObject("cbDecimal.Visible")));
 			this.cbDecimal.CheckStateChanged += new System.EventHandler(this.cbDecimal_CheckStateChanged);
+			// 
+			// btnListing
+			// 
+			this.btnListing.AccessibleDescription = resources.GetString("btnListing.AccessibleDescription");
+			this.btnListing.AccessibleName = resources.GetString("btnListing.AccessibleName");
+			this.btnListing.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnListing.Anchor")));
+			this.btnListing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnListing.BackgroundImage")));
+			this.btnListing.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnListing.Dock")));
+			this.btnListing.Enabled = ((bool)(resources.GetObject("btnListing.Enabled")));
+			this.btnListing.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnListing.FlatStyle")));
+			this.btnListing.Font = ((System.Drawing.Font)(resources.GetObject("btnListing.Font")));
+			this.btnListing.Image = ((System.Drawing.Image)(resources.GetObject("btnListing.Image")));
+			this.btnListing.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnListing.ImageAlign")));
+			this.btnListing.ImageIndex = ((int)(resources.GetObject("btnListing.ImageIndex")));
+			this.btnListing.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnListing.ImeMode")));
+			this.btnListing.Location = ((System.Drawing.Point)(resources.GetObject("btnListing.Location")));
+			this.btnListing.Name = "btnListing";
+			this.btnListing.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnListing.RightToLeft")));
+			this.btnListing.Size = ((System.Drawing.Size)(resources.GetObject("btnListing.Size")));
+			this.btnListing.TabIndex = ((int)(resources.GetObject("btnListing.TabIndex")));
+			this.btnListing.Text = resources.GetString("btnListing.Text");
+			this.btnListing.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnListing.TextAlign")));
+			this.btnListing.Visible = ((bool)(resources.GetObject("btnListing.Visible")));
+			this.btnListing.Click += new System.EventHandler(this.btnListing_Click);
 			// 
 			// BhavForm
 			// 
@@ -3005,6 +3059,11 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnDelMerola_Click(object sender, System.EventArgs e)
 		{
 			this.pnflowcontainer.DeleteUnlinked();
+		}
+
+		private void btnListing_Click(object sender, System.EventArgs e)
+		{
+			this.CopyListing();
 		}
 
 	}

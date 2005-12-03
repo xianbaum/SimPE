@@ -78,7 +78,7 @@ namespace pjse
 				ArrayList result = new ArrayList();
 				foreach (Entry e in ((Hashtable)pfByPackage[package]).Keys)
 				{
-					if (e.PFD.Type == packedFileType)
+					if (!e.PFD.MarkForDelete && e.PFD.Type == packedFileType)
 						result.Add(e);
 				}
 				Entry[] es = new Entry[result.Count];
@@ -216,7 +216,7 @@ namespace pjse
 			ArrayList local = new ArrayList();
 			ArrayList nonlocal = new ArrayList();
 			foreach (Entry e in result.Keys)
-				((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
+				if (!e.PFD.MarkForDelete) ((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
 
 			Entry[] es = new Entry[local.Count + (localOnly ? 0 : nonlocal.Count)];
 			local.CopyTo(es, 0);

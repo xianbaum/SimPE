@@ -99,20 +99,13 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get 
 			{
-				if (bconres == null && Package != null && FileDescriptor != null)
+				if (bconres == null && FileDescriptor != null)
 				{
-					Interfaces.Files.IPackedFileDescriptor pfd = Package.FindFile(
-						0x42434F4E, // Constant (values) File (BCON)
-						0, 
-						FileDescriptor.Group,
-						FileDescriptor.Instance
-						);
+					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, FileDescriptor.Group, FileDescriptor.Instance];
+					if (items == null || items.Length == 0) return null;
 
-					if (pfd != null) 
-					{
-						bconres = new Bcon();
-						bconres.ProcessData(pfd, Package);
-					}
+					bconres = new Bcon();
+					bconres.ProcessData(items[0].PFD, items[0].Package);
 				}
 
 				return bconres;

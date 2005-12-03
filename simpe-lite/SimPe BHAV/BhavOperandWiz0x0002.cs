@@ -423,13 +423,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		{
 			if (this.cbDecimal.Checked)
 			{
-				tbval1.Text = ((short)textToUShort(tbval1.Text)).ToString();
-				tbval2.Text = ((short)textToUShort(tbval2.Text)).ToString();
+				if (cbDataOwner1.SelectedIndex != 0x1a && cbDataOwner1.SelectedIndex != 0x2f)
+					tbval1.Text = ((short)textToUShort(tbval1.Text)).ToString();
+				if (cbDataOwner2.SelectedIndex != 0x1a && cbDataOwner2.SelectedIndex != 0x2f)
+					tbval2.Text = ((short)textToUShort(tbval2.Text)).ToString();
 			}
 			else
 			{
-				tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)textToShort(tbval1.Text));
-				tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)textToShort(tbval2.Text));
+				if (cbDataOwner1.SelectedIndex != 0x1a && cbDataOwner1.SelectedIndex != 0x2f)
+					tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)textToShort(tbval1.Text));
+				if (cbDataOwner2.SelectedIndex != 0x1a && cbDataOwner2.SelectedIndex != 0x2f)
+					tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)textToShort(tbval2.Text));
 			}
 		}
 

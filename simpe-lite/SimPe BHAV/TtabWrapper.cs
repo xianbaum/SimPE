@@ -103,27 +103,13 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get 
 			{
-				if (strres==null) 
+				if (strres == null && FileDescriptor != null)
 				{
-					strres = new PackedFiles.Wrapper.Str();
-					if ((Package!=null) && (FileDescriptor!=null)) 
-					{
-						Interfaces.Files.IPackedFileDescriptor pfd = Package.FindFile(
-							Data.MetaData.PIE_STRING_FILE, //Pie String File
-							0, 
-							FileDescriptor.Group,
-							FileDescriptor.Instance
-							);
+					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[Data.MetaData.PIE_STRING_FILE, FileDescriptor.Group, FileDescriptor.Instance];
+					if (items == null || items.Length == 0) return null;
 
-						if (pfd!=null) 
-						{
-							strres.ProcessData(pfd, Package);
-						}
-					} 
-					else 
-					{
-						return null;
-					}		
+					strres = new Str();
+					strres.ProcessData(items[0].PFD, items[0].Package);
 				}
 
 				return strres;
