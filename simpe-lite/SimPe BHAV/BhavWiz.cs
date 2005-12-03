@@ -285,12 +285,15 @@ namespace pjse
 			bcon.ProcessData(items[0].PFD, items[0].Package);
 			string label = "";
 #if INPROGRESS || DEBUG
-			items = pjse.FileTable.GFT[0x5452434E, instruction.Parent.GroupForScope(s), instance];
-			if (items != null && items.Length != 0)
+			if (!temp)
 			{
-				Trcn trcn = new Trcn();
-				trcn.ProcessData(items[0].PFD, items[0].Package);
-				if (bid < trcn.Count) label = trcn[0].ConstName;
+				items = pjse.FileTable.GFT[0x5452434E, instruction.Parent.GroupForScope(s), instance];
+				if (items != null && items.Length != 0)
+				{
+					Trcn trcn = new Trcn();
+					trcn.ProcessData(items[0].PFD, items[0].Package);
+					if (bid < trcn.Count) label = trcn[bid].ConstName;
+				}
 			}
 #endif
 
