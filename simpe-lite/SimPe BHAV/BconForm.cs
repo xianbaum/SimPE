@@ -637,6 +637,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvConstants.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
 			this.lvConstants.HideSelection = false;
 			this.lvConstants.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvConstants.ImeMode")));
+			this.lvConstants.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+																						((System.Windows.Forms.ListViewItem)(resources.GetObject("lvConstants.Items")))});
 			this.lvConstants.LabelWrap = ((bool)(resources.GetObject("lvConstants.LabelWrap")));
 			this.lvConstants.Location = ((System.Drawing.Point)(resources.GetObject("lvConstants.Location")));
 			this.lvConstants.MultiSelect = false;
