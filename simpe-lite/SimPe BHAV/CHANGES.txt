@@ -1,4 +1,19 @@
 
+3 December 2005 12:30 - BHAV: Use the right BCON Label (TRCN)
+  SimPe BHAV\
+    BhavWiz.cs 1.29.2.4
+  pjseTestData.package 1.11.2.2
+
+3 December 2005 12:29 - TRCN: Re-arrange form - fixed area on left, StringID-like BCON selector
+  SimPe BHAV\
+    TrcnForm.cs 1.3.20.4
+    TrcnForm.resx 1.1.28.4
+
+3 December 2005 12:25 - BCON: Re-arrange form - fixed area on left
+  SimPe BHAV\
+    BconForm.cs 1.4.20.2
+    BconForm.resx 1.1.28.2
+
 29 November 2005 22:11 - TRCN/BCON: Start working towards single user interface
   SimPe BHAV\
     BconForm.cs 1.4.2.1
