@@ -1,4 +1,13 @@
 
+3 December 2005 14:41 - handle MarkForDelete; BHAV: copy listing; Use pjse.filetable for resource cross-references
+  pjse filetable\
+    FileTable.cs 1.8
+  SimPe BHAV\
+    BconWrapper.cs 1.6
+    BhavOperandWiz0x0002.cs 1.2
+    TrcnWrapper.cs 1.5
+    TtabWrapper.cs 1.23
+
 3 December 2005 13:05 - TRCN Landing: Use labels in BhavWiz, use wrappers
   SimPe BHAV\
     BhavWiz.cs 1.31
