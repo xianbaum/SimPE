@@ -132,13 +132,14 @@ namespace SimPe.PackedFiles.UserInterface
 			Trcn trcn = wrapper.TrcnResource;
 			if (trcn != null && i < trcn.Count)
 			{
-				TrcnItem ti = trcn[i];
+				TrcnItem ti = trcn.ByID(i);
 				if (ti != null)
 					cLabel = ti.ConstName;
 			}
 			string[] v = { cID, cValue, cLabel };
 			return new ListViewItem(v);
 		}
+
 		#endregion
 
 		#region IPackedFileUI Member
