@@ -118,10 +118,17 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void UpdateBconValue()
+		private void UpdateBconItem_Value(short val, bool doHex, bool doDec)
 		{
-			wrapper[lvConstants.SelectedIndices[0]] = currentItem;
+			internalchg = true;
+			wrapper[lvConstants.SelectedIndices[0]] = currentItem = val;
 			lvConstants.SelectedItems[0].SubItems[1].Text = "0x" + SimPe.Helper.HexString(currentItem);
+			if (doHex)
+				tbValueHex.Text = lvConstants.SelectedItems[0].SubItems[1].Text;
+			if (doDec)
+				tbValueDec.Text = currentItem.ToString();
+			internalchg = false;
+			llccancel.Enabled = currentItem != origItem;
 		}
 
 		private ListViewItem lvItem(int i)
@@ -129,10 +136,9 @@ namespace SimPe.PackedFiles.UserInterface
 			string cID = "0x" + i.ToString("X");
 			string cValue = "0x" + SimPe.Helper.HexString(wrapper[i]);
 			string cLabel = "";
-			Trcn trcn = wrapper.TrcnResource;
-			if (trcn != null && i < trcn.Count)
+			if (wrapper.TrcnResource != null)
 			{
-				TrcnItem ti = trcn.ByID(i);
+				TrcnItem ti = wrapper.TrcnResource.ByID(i);
 				if (ti != null)
 					cLabel = ti.ConstName;
 			}
@@ -190,22 +196,19 @@ namespace SimPe.PackedFiles.UserInterface
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
 			this.btnCommit.Enabled = wrapper.Changed;
+			if (internalchg) return;
 
 			if (sender.Equals(wrapper))
 			{
-				if (internalchg) return;
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
 				this.tbFlag.Text = "0x" + SimPe.Helper.HexString(wrapper.Flag);
 				internalchg = false;
 			}
+			else if (sender is short)
+				this.llccancel.Enabled = true;
 			else
-			{
-				if (internalchg)
-					this.llccancel.Enabled = true;
-				else
-					lvConstants_SelectedIndexChanged(null, null);
-			}
+				lvConstants_SelectedIndexChanged(null, null);
 		}
 		#endregion
 
@@ -727,9 +730,24 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#endregion
 
+		private void btnCommit_Clicked(object sender, System.EventArgs e)
+		{
+			try 
+			{
+				wrapper.SynchronizeUserData();
+				btnCommit.Enabled = false;
+				lvConstants_SelectedIndexChanged(null, null);
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+			}		
+		}
+
+
 		private void lvConstants_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			if (this.internalchg) return;
+			if (internalchg) return;
 
 			internalchg = true;
 
@@ -760,50 +778,44 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
-		private void btnCommit_Clicked(object sender, System.EventArgs e)
-		{
-			try 
-			{
-				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = false;
-				lvConstants_SelectedIndexChanged(null, null);
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
-			}		
-		}
-
-
-		private void llccancel_Clicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			wrapper[lvConstants.SelectedIndices[0]] = origItem;
-			lvConstants_SelectedIndexChanged(null, null);
-		}
-
-
 		private void AddConstantClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
+			internalchg = true;
 			int i = wrapper.Add((lvConstants.SelectedIndices.Count == 0 || lvConstants.SelectedIndices[0] == -1) ? (short)0 : currentItem);
+			internalchg = false;
+
 			if (i < 0) return;
 
-			this.lvConstants.Items.Add(lvItem(i));
-			foreach(ListViewItem ti in lvConstants.Items)
+			internalchg = true;
+			foreach(ListViewItem ti in lvConstants.SelectedItems)
 				ti.Selected = false;
+			this.lvConstants.Items.Add(lvItem(i));
+			internalchg = false;
+
 			lvConstants.Items[i].Selected = true;
 		}
 
 		private void DeleteConstantClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			if (lvConstants.SelectedIndices.Count == 0) return;
-
 			int i = lvConstants.SelectedIndices[0];
 
-			lvConstants.Items.RemoveAt(i);
+			internalchg = true;
 			wrapper.RemoveAt(i);
 
-			foreach(ListViewItem ti in lvConstants.Items)
+			lvConstants.BeginUpdate();
+
+			foreach(ListViewItem ti in lvConstants.SelectedItems)
 				ti.Selected = false;
+
+			lvConstants.Items.RemoveAt(i);
+
+			for(int j = i; j < wrapper.Count; j++)
+				lvConstants.Items[j] = lvItem(j);
+
+			lvConstants.EndUpdate();
+
+			internalchg = false;
 
 			if (i >= lvConstants.Items.Count)
 				i = lvConstants.Items.Count - 1;
@@ -830,110 +842,81 @@ namespace SimPe.PackedFiles.UserInterface
 		private void hex8_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-
 			if (!hex8_IsValid(sender)) return;
 
 			internalchg = true;
-			tbFlag.Text = "0x" + SimPe.Helper.HexString(wrapper.Flag = Convert.ToByte(((TextBox)sender).Text, 16));
+			wrapper.Flag = Convert.ToByte(tbFlag.Text, 16);
 			internalchg = false;
 		}
 
 		private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex8_IsValid(sender)) return;
-
 			e.Cancel = true;
-
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(wrapper.Flag);
-			internalchg = origstate;
-
-			((TextBox)sender).SelectAll();
+			hex8_Validated(sender, null);
 		}
 
 		private void hex8_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
-			internalchg = origstate;
+			((TextBox)sender).Text = "0x" + Helper.HexString(wrapper.Flag);
 			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
 
 		private void hex16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-
 			if (!hex16_IsValid(sender)) return;
-
-			int i = lvConstants.SelectedIndices[0];
-
-			internalchg = true;
-			lvConstants.Items[i].SubItems[1].Text = "0x" + SimPe.Helper.HexString(wrapper[i] = Convert.ToInt16(((TextBox)sender).Text, 16));
-			tbValueDec.Text = wrapper[i].ToString();
-			internalchg = false;
+			UpdateBconItem_Value(Convert.ToInt16(((TextBox)sender).Text, 16), false, true);
 		}
 
 		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex16_IsValid(sender)) return;
-
 			e.Cancel = true;
-
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(origItem);
-			internalchg = origstate;
-
-			((TextBox)sender).SelectAll();
+			hex16_Validated(sender, null);
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
-			internalchg = origstate;
+			((TextBox)sender).Text = "0x" + Helper.HexString(currentItem);
 			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
 
 		private void dec16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-
 			if (!dec16_IsValid(sender)) return;
-
-			int i = lvConstants.SelectedIndices[0];
-
-			internalchg = true;
-			tbValueHex.Text = lvConstants.Items[i].SubItems[1].Text = "0x" + SimPe.Helper.HexString(wrapper[i] = Convert.ToInt16(((TextBox)sender).Text, 10));
-			internalchg = false;
+			UpdateBconItem_Value(Convert.ToInt16(((TextBox)sender).Text, 10), true, false);
 		}
 
 		private void dec16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (dec16_IsValid(sender)) return;
-
 			e.Cancel = true;
-
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = origItem.ToString();
-			internalchg = origstate;
-
-			((TextBox)sender).SelectAll();
+			dec16_Validated(sender, null);
 		}
 
 		private void dec16_Validated(object sender, System.EventArgs e)
 		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = Convert.ToInt16(((TextBox)sender).Text, 10).ToString();
-			internalchg = origstate;
+			((TextBox)sender).Text = currentItem.ToString();
 			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+
+		private void llccancel_Clicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		{
+			UpdateBconItem_Value(origItem, true, true);
 		}
 
 

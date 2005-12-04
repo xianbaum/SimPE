@@ -186,6 +186,46 @@ namespace SimPe.PackedFiles.UserInterface
 					);
 			}
 		}
+
+		private void UpdateTrcnItem_ID(uint id)
+		{
+			internalchg = true;
+			currentItem.ConstId = id;
+
+			string[] s = TrcnItemToStringArray(currentItem);
+			lvTrcnItem.SelectedItems[0].SubItems[0].Text = s[0];
+			lvTrcnItem.SelectedItems[0].SubItems[1].Text = s[1];
+			internalchg = false;
+		}
+
+		private void UpdateTrcnItem_Label(string label)
+		{
+			internalchg = true;
+			lvTrcnItem.SelectedItems[0].SubItems[2].Text = currentItem.ConstName = label;
+			internalchg = false;
+		}
+
+		private void UpdateTrcnItem_Used(uint used)
+		{
+			internalchg = true;
+			currentItem.Used = used;
+			lvTrcnItem.SelectedItems[0].SubItems[3].Text = "0x" + used.ToString("X");
+			internalchg = false;
+		}
+
+		private void UpdateTrcnItem_Value(ushort val, int which)
+		{
+			internalchg = true;
+			switch(which)
+			{
+				case 0: currentItem.DefValue = val; break;
+				case 1: currentItem.MinValue = val; break;
+				case 2: currentItem.MaxValue = val; break;
+			}
+			lvTrcnItem.SelectedItems[0].SubItems[4 + which].Text = "0x" + SimPe.Helper.HexString(val);
+			internalchg = false;
+		}
+
 		#endregion
 
 		#region IPackedFileUI Member
@@ -212,6 +252,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			wrapper = (Trcn)wrp;
 			WrapperChanged(wrapper, null);
+			SetIDs();
 
 			internalchg = true;
 
@@ -243,16 +284,12 @@ namespace SimPe.PackedFiles.UserInterface
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
 				this.tbFormat.Text = "0x" + SimPe.Helper.HexString(wrapper.Version);
-				SetIDs();
 				internalchg = false;
 			}
 			else if (sender.Equals(currentItem))
-			{
-				if (internalchg)
-					this.btnCancel.Enabled = true;
-				else
-					lvTrcnItem_SelectedIndexChanged(null, null);
-			}
+				this.btnCancel.Enabled = true;
+			else
+				lvTrcnItem_SelectedIndexChanged(null, null);
 		}
 		#endregion
 
@@ -1069,9 +1106,24 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#endregion
 
+		private void btnCommit_Click(object sender, System.EventArgs e)
+		{
+			try 
+			{
+				wrapper.SynchronizeUserData();
+				btnCommit.Enabled = wrapper.Changed;
+				lvTrcnItem_SelectedIndexChanged(null, null);
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+			}			
+		}
+
+
 		private void lvTrcnItem_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			if (this.internalchg) return;
+			if (internalchg) return;
 
 			internalchg = true;
 
@@ -1085,9 +1137,8 @@ namespace SimPe.PackedFiles.UserInterface
 					= this.btnStrDelete.Enabled
 					= true;
 
-
 				string[] s = TrcnItemToStringArray(currentItem);
-				this.tbID.Text = s[0];
+				this.tbID.Text = "0x" + SimPe.Helper.HexString(currentItem.ConstId);
 				this.tbLabel.Text = s[2];
 				this.cbUsed.CheckState = currentItem.Used != 0
 					? System.Windows.Forms.CheckState.Checked
@@ -1114,57 +1165,65 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
-		private void btnCommit_Click(object sender, System.EventArgs e)
-		{
-			try 
-			{
-				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = wrapper.Changed;
-				lvTrcnItem_SelectedIndexChanged(null, null);
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
-			}			
-		}
-
-
-		private void btnCancel_Click(object sender, System.EventArgs e)
-		{
-			int i = lvTrcnItem.SelectedIndices[0];
-			wrapper[i] = origItem.Clone();
-			this.lvTrcnItem.Items[i] = new ListViewItem(TrcnItemToStringArray(wrapper[i]));
-			lvTrcnItem.Items[i].Selected = true;
-		}
-
-
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
+			internalchg = true;
 			int i = wrapper.Add((lvTrcnItem.SelectedIndices.Count == 0 || lvTrcnItem.SelectedIndices[0] == -1) ? new TrcnItem(wrapper) : currentItem.Clone());
+			internalchg = false;
+
 			if (i < 0) return;
 
-			this.lvTrcnItem.Items.Add(new ListViewItem(TrcnItemToStringArray(wrapper[i])));
-			foreach(ListViewItem ti in lvTrcnItem.Items)
+			internalchg = true;
+			foreach(ListViewItem ti in lvTrcnItem.SelectedItems)
 				ti.Selected = false;
+			this.lvTrcnItem.Items.Add(new ListViewItem(TrcnItemToStringArray(wrapper[i])));
+			internalchg = false;
+
 			lvTrcnItem.Items[i].Selected = true;
 		}
 
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
 			if (lvTrcnItem.SelectedIndices.Count == 0) return;
-
 			int i = lvTrcnItem.SelectedIndices[0];
 
-			lvTrcnItem.Items.RemoveAt(i);
+			internalchg = true;
 			wrapper.RemoveAt(i);
 
-			foreach(ListViewItem ti in lvTrcnItem.Items)
+			lvTrcnItem.BeginUpdate();
+
+			foreach(ListViewItem ti in lvTrcnItem.SelectedItems)
 				ti.Selected = false;
+
+			lvTrcnItem.Items.RemoveAt(i);
+
+			lvTrcnItem.EndUpdate();
+
+			internalchg = false;
 
 			if (i >= lvTrcnItem.Items.Count)
 				i = lvTrcnItem.Items.Count - 1;
 			if (i >= 0)
 				lvTrcnItem.Items[i].Selected = true;
+		}
+
+
+		private void tbText_TextChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			internalchg = true;
+			switch(alText.IndexOf(sender))
+			{
+				case 0: wrapper.FileName = ((TextBox)sender).Text; break;
+				case 1: UpdateTrcnItem_Label(((TextBox)sender).Text); break;
+			}
+			internalchg = false;
+		}
+
+		private void tbText_Validated(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
 		}
 
 
@@ -1179,10 +1238,11 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case 0:
 					currentItem.ConstId = (uint)((ComboBox)sender).SelectedIndex;
-					string[] s = TrcnItemToStringArray(currentItem);
-					lvTrcnItem.SelectedItems[0].SubItems[0].Text = this.tbID.Text = s[0];
-					lvTrcnItem.SelectedItems[0].SubItems[1].Text = s[1];
+					this.tbID.Text = "0x" + SimPe.Helper.HexString(currentItem.ConstId);
 					tbID.Focus();
+					string[] s = TrcnItemToStringArray(currentItem);
+					lvTrcnItem.SelectedItems[0].SubItems[0].Text = s[0];
+					lvTrcnItem.SelectedItems[0].SubItems[1].Text = s[1];
 					break;
 			}
 			internalchg = false;
@@ -1190,89 +1250,48 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void tbText_TextChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-
-			internalchg = true;
-			switch(alText.IndexOf(sender))
-			{
-				case 0: wrapper.FileName = ((TextBox)sender).Text; break;
-				case 1:
-					lvTrcnItem.SelectedItems[0].SubItems[2].Text = currentItem.ConstName = ((TextBox)sender).Text;
-					break;
-			}
-			internalchg = false;
-		}
-
-		private void tbText_Validated(object sender, System.EventArgs e)
-		{
-			((TextBox)sender).SelectAll();
-		}
-
-
 		private void cbUsed_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-
-			internalchg = true;
-			lvTrcnItem.SelectedItems[0].SubItems[3].Text = "0x" + (currentItem.Used = (uint)(((CheckBox)sender).Checked ? 1 : 0)).ToString("X");
-			internalchg = false;
+			UpdateTrcnItem_Used((uint)(((CheckBox)sender).Checked ? 1 : 0));
 		}
 
 
 		private void hex16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-
 			if (!hex16_IsValid(sender)) return;
-
-			internalchg = true;
-			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
-			switch (alHex16.IndexOf(sender))
-			{
-				case 0: lvTrcnItem.SelectedItems[0].SubItems[4].Text = "0x" + SimPe.Helper.HexString(currentItem.DefValue = val); break;
-				case 1: lvTrcnItem.SelectedItems[0].SubItems[5].Text = "0x" + SimPe.Helper.HexString(currentItem.MinValue = val); break;
-				case 2: lvTrcnItem.SelectedItems[0].SubItems[6].Text = "0x" + SimPe.Helper.HexString(currentItem.MaxValue = val); break;
-			}
-			internalchg = false;
+			UpdateTrcnItem_Value(Convert.ToUInt16(((TextBox)sender).Text, 16), alHex16.IndexOf(sender));
 		}
 
 		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex16_IsValid(sender)) return;
-
 			e.Cancel = true;
+			hex16_Validated(sender, null);
+		}
 
-			bool origstate = internalchg;
-			internalchg = true;
+		private void hex16_Validated(object sender, System.EventArgs e)
+		{
 			ushort val = 0;
-			switch (alHex16.IndexOf(sender))
+			switch(alHex16.IndexOf(sender))
 			{
 				case 0: val = currentItem.DefValue; break;
 				case 1: val = currentItem.MinValue; break;
 				case 2: val = currentItem.MaxValue; break;
 			}
-			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			internalchg = origstate;
 
-			((TextBox)sender).SelectAll();
-		}
-
-		private void hex16_Validated(object sender, System.EventArgs e)
-		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
-			internalchg = origstate;
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
 
 		private void hex32_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
-
 			if (!hex32_IsValid(sender)) return;
 
 			internalchg = true;
@@ -1280,12 +1299,7 @@ namespace SimPe.PackedFiles.UserInterface
 			switch (alHex32.IndexOf(sender))
 			{
 				case 0: wrapper.Version = val; break;
-				case 1:
-					currentItem.ConstId = val;
-					string[] s = TrcnItemToStringArray(currentItem);
-					lvTrcnItem.SelectedItems[0].SubItems[0].Text = s[0];
-					lvTrcnItem.SelectedItems[0].SubItems[1].Text = s[1];
-					break;
+				case 1: UpdateTrcnItem_ID(val); break;
 			}
 			internalchg = false;
 		}
@@ -1293,32 +1307,37 @@ namespace SimPe.PackedFiles.UserInterface
 		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex32_IsValid(sender)) return;
-
 			e.Cancel = true;
+			hex32_Validated(sender, null);
+		}
 
-			bool origstate = internalchg;
-			internalchg = true;
+		private void hex32_Validated(object sender, System.EventArgs e)
+		{
 			uint val = 0;
 			switch (alHex32.IndexOf(sender))
 			{
 				case 0: val = wrapper.Version; break;
 				case 1: val = currentItem.ConstId; break;
 			}
-			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			internalchg = origstate;
 
-			((TextBox)sender).SelectAll();
-		}
-
-		private void hex32_Validated(object sender, System.EventArgs e)
-		{
 			bool origstate = internalchg;
 			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
-			internalchg = origstate;
+			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
+
+		private void btnCancel_Click(object sender, System.EventArgs e)
+		{
+			UpdateTrcnItem_ID(origItem.ConstId);
+			UpdateTrcnItem_Label(origItem.ConstName);
+			UpdateTrcnItem_Used(origItem.Used);
+			UpdateTrcnItem_Value(origItem.DefValue, 0);
+			UpdateTrcnItem_Value(origItem.MinValue, 1);
+			UpdateTrcnItem_Value(origItem.MaxValue, 2);
+			lvTrcnItem_SelectedIndexChanged(null, null);
+		}
 
 	}
 }

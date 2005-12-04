@@ -256,7 +256,7 @@ namespace SimPe.PackedFiles.Wrapper
 				{
 					//value.Parent = this;
 					items[index] = value;
-					OnWrapperChanged(items, new EventArgs());
+					OnWrapperChanged(items[index], new EventArgs());
 				}
 			}
 		}
