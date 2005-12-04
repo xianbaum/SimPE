@@ -1,4 +1,11 @@
 
+4 December 2005 13:40 - TRCN/BCON bug fixes
+  SimPe BHAV\
+    BconForm.cs 1.7
+    BconWrapper.cs 1.7
+    TrcnForm.cs 1.5
+    pjseTestData.package 1.13
+
 4 December 2005 09:59 - TRCN: Look up by ID
   SimPe BHAV\
     BconForm.cs 1.6
