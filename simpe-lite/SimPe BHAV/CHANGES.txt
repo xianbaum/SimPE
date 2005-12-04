@@ -1,4 +1,10 @@
 
+4 December 2005 09:59 - TRCN: Look up by ID
+  SimPe BHAV\
+    BconForm.cs 1.6
+    BhavWiz.cs 1.32
+    TrcnWrapper.cs 1.6
+
 3 December 2005 17:37 - BHAV: copy listing, slight changes
   SimPe BHAV\
     BhavForm.cs 1.61
