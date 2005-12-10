@@ -1,4 +1,17 @@
 
+10 December 2005 17:52 - OBJD: Start rewriting Quaxi's code (NB: does not work)
+  SimPe BHAV\
+    .cvsignore 1.4.6.1
+    ObjdForm.cs 1.1.2.1
+    ObjdForm.resx 1.1.2.1
+    ObjdWrapper.cs 1.1.2.1
+    ObjfWrapper.cs 1.9.2.1
+    pjse coder plugin.csproj 1.26.2.1
+    PjseObjdForm.cs (renamed, sort of)
+    PjseObjdForm.resx (renamed, sort of)
+    PjseObjdWrapper.cs (renamed, sort of)
+    TtabWrapper.cs 1.23.2.1
+
 10 December 2005 11:33 - (Mostly) BCON Cosmetic changes
   SimPe BHAV\
     BconForm.cs 1.8
