@@ -36,16 +36,11 @@ namespace SimPe.PackedFiles.UserInterface
 	{
 		#region Form variables
 		private System.Windows.Forms.TextBox tbFilename;
-		private System.Windows.Forms.LinkLabel llcadd;
-		private System.Windows.Forms.LinkLabel llcdel;
 		private System.Windows.Forms.Panel bconPanel;
-		private System.Windows.Forms.LinkLabel llccancel;
 		private System.Windows.Forms.Button btnCommit;
 		private System.Windows.Forms.ListView lvConstants;
 		private System.Windows.Forms.Panel pnHeading;
-		private System.Windows.Forms.GroupBox gbConstant;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
@@ -55,6 +50,11 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ColumnHeader chID;
 		private System.Windows.Forms.ColumnHeader chValue;
 		private System.Windows.Forms.ColumnHeader chLabel;
+		private System.Windows.Forms.Button btnStrDelete;
+		private System.Windows.Forms.Button btnStrAdd;
+		private System.Windows.Forms.Label lbFilename;
+		private System.Windows.Forms.GroupBox gbValue;
+		private System.Windows.Forms.Button btnCancel;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -128,7 +128,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (doDec)
 				tbValueDec.Text = currentItem.ToString();
 			internalchg = false;
-			llccancel.Enabled = currentItem != origItem;
+			this.btnCancel.Enabled = currentItem != origItem;
 		}
 
 		private ListViewItem lvItem(int i)
@@ -206,7 +206,7 @@ namespace SimPe.PackedFiles.UserInterface
 				internalchg = false;
 			}
 			else if (sender is short)
-				this.llccancel.Enabled = true;
+				this.btnCancel.Enabled = true;
 			else
 				lvConstants_SelectedIndexChanged(null, null);
 		}
@@ -222,26 +222,26 @@ namespace SimPe.PackedFiles.UserInterface
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(BconForm));
 			this.label1 = new System.Windows.Forms.Label();
 			this.pnHeading = new System.Windows.Forms.Panel();
-			this.label2 = new System.Windows.Forms.Label();
+			this.lbFilename = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.tbFlag = new System.Windows.Forms.TextBox();
 			this.tbValueDec = new System.Windows.Forms.TextBox();
-			this.llcdel = new System.Windows.Forms.LinkLabel();
-			this.llcadd = new System.Windows.Forms.LinkLabel();
-			this.llccancel = new System.Windows.Forms.LinkLabel();
 			this.tbValueHex = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
-			this.gbConstant = new System.Windows.Forms.GroupBox();
+			this.gbValue = new System.Windows.Forms.GroupBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.bconPanel = new System.Windows.Forms.Panel();
+			this.btnCancel = new System.Windows.Forms.Button();
+			this.btnStrDelete = new System.Windows.Forms.Button();
+			this.btnStrAdd = new System.Windows.Forms.Button();
 			this.lvConstants = new System.Windows.Forms.ListView();
 			this.chID = new System.Windows.Forms.ColumnHeader();
 			this.chValue = new System.Windows.Forms.ColumnHeader();
 			this.chLabel = new System.Windows.Forms.ColumnHeader();
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.pnHeading.SuspendLayout();
-			this.gbConstant.SuspendLayout();
+			this.gbValue.SuspendLayout();
 			this.bconPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -291,27 +291,27 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading.Text = resources.GetString("pnHeading.Text");
 			this.pnHeading.Visible = ((bool)(resources.GetObject("pnHeading.Visible")));
 			// 
-			// label2
+			// lbFilename
 			// 
-			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
-			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
-			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
-			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
-			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
-			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
-			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
-			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
-			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
-			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
-			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
-			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
-			this.label2.Name = "label2";
-			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
-			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
-			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
-			this.label2.Text = resources.GetString("label2.Text");
-			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
-			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
+			this.lbFilename.AccessibleDescription = resources.GetString("lbFilename.AccessibleDescription");
+			this.lbFilename.AccessibleName = resources.GetString("lbFilename.AccessibleName");
+			this.lbFilename.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbFilename.Anchor")));
+			this.lbFilename.AutoSize = ((bool)(resources.GetObject("lbFilename.AutoSize")));
+			this.lbFilename.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbFilename.Dock")));
+			this.lbFilename.Enabled = ((bool)(resources.GetObject("lbFilename.Enabled")));
+			this.lbFilename.Font = ((System.Drawing.Font)(resources.GetObject("lbFilename.Font")));
+			this.lbFilename.Image = ((System.Drawing.Image)(resources.GetObject("lbFilename.Image")));
+			this.lbFilename.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.ImageAlign")));
+			this.lbFilename.ImageIndex = ((int)(resources.GetObject("lbFilename.ImageIndex")));
+			this.lbFilename.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbFilename.ImeMode")));
+			this.lbFilename.Location = ((System.Drawing.Point)(resources.GetObject("lbFilename.Location")));
+			this.lbFilename.Name = "lbFilename";
+			this.lbFilename.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbFilename.RightToLeft")));
+			this.lbFilename.Size = ((System.Drawing.Size)(resources.GetObject("lbFilename.Size")));
+			this.lbFilename.TabIndex = ((int)(resources.GetObject("lbFilename.TabIndex")));
+			this.lbFilename.Text = resources.GetString("lbFilename.Text");
+			this.lbFilename.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.TextAlign")));
+			this.lbFilename.Visible = ((bool)(resources.GetObject("lbFilename.Visible")));
 			// 
 			// tbFilename
 			// 
@@ -418,81 +418,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbValueDec.Validated += new System.EventHandler(this.dec16_Validated);
 			this.tbValueDec.TextChanged += new System.EventHandler(this.dec16_TextChanged);
 			// 
-			// llcdel
-			// 
-			this.llcdel.AccessibleDescription = resources.GetString("llcdel.AccessibleDescription");
-			this.llcdel.AccessibleName = resources.GetString("llcdel.AccessibleName");
-			this.llcdel.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llcdel.Anchor")));
-			this.llcdel.AutoSize = ((bool)(resources.GetObject("llcdel.AutoSize")));
-			this.llcdel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llcdel.Dock")));
-			this.llcdel.Enabled = ((bool)(resources.GetObject("llcdel.Enabled")));
-			this.llcdel.Font = ((System.Drawing.Font)(resources.GetObject("llcdel.Font")));
-			this.llcdel.Image = ((System.Drawing.Image)(resources.GetObject("llcdel.Image")));
-			this.llcdel.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llcdel.ImageAlign")));
-			this.llcdel.ImageIndex = ((int)(resources.GetObject("llcdel.ImageIndex")));
-			this.llcdel.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llcdel.ImeMode")));
-			this.llcdel.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llcdel.LinkArea")));
-			this.llcdel.Location = ((System.Drawing.Point)(resources.GetObject("llcdel.Location")));
-			this.llcdel.Name = "llcdel";
-			this.llcdel.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llcdel.RightToLeft")));
-			this.llcdel.Size = ((System.Drawing.Size)(resources.GetObject("llcdel.Size")));
-			this.llcdel.TabIndex = ((int)(resources.GetObject("llcdel.TabIndex")));
-			this.llcdel.TabStop = true;
-			this.llcdel.Text = resources.GetString("llcdel.Text");
-			this.llcdel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llcdel.TextAlign")));
-			this.llcdel.Visible = ((bool)(resources.GetObject("llcdel.Visible")));
-			this.llcdel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.DeleteConstantClicked);
-			// 
-			// llcadd
-			// 
-			this.llcadd.AccessibleDescription = resources.GetString("llcadd.AccessibleDescription");
-			this.llcadd.AccessibleName = resources.GetString("llcadd.AccessibleName");
-			this.llcadd.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llcadd.Anchor")));
-			this.llcadd.AutoSize = ((bool)(resources.GetObject("llcadd.AutoSize")));
-			this.llcadd.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llcadd.Dock")));
-			this.llcadd.Enabled = ((bool)(resources.GetObject("llcadd.Enabled")));
-			this.llcadd.Font = ((System.Drawing.Font)(resources.GetObject("llcadd.Font")));
-			this.llcadd.Image = ((System.Drawing.Image)(resources.GetObject("llcadd.Image")));
-			this.llcadd.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llcadd.ImageAlign")));
-			this.llcadd.ImageIndex = ((int)(resources.GetObject("llcadd.ImageIndex")));
-			this.llcadd.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llcadd.ImeMode")));
-			this.llcadd.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llcadd.LinkArea")));
-			this.llcadd.Location = ((System.Drawing.Point)(resources.GetObject("llcadd.Location")));
-			this.llcadd.Name = "llcadd";
-			this.llcadd.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llcadd.RightToLeft")));
-			this.llcadd.Size = ((System.Drawing.Size)(resources.GetObject("llcadd.Size")));
-			this.llcadd.TabIndex = ((int)(resources.GetObject("llcadd.TabIndex")));
-			this.llcadd.TabStop = true;
-			this.llcadd.Text = resources.GetString("llcadd.Text");
-			this.llcadd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llcadd.TextAlign")));
-			this.llcadd.Visible = ((bool)(resources.GetObject("llcadd.Visible")));
-			this.llcadd.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AddConstantClicked);
-			// 
-			// llccancel
-			// 
-			this.llccancel.AccessibleDescription = resources.GetString("llccancel.AccessibleDescription");
-			this.llccancel.AccessibleName = resources.GetString("llccancel.AccessibleName");
-			this.llccancel.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("llccancel.Anchor")));
-			this.llccancel.AutoSize = ((bool)(resources.GetObject("llccancel.AutoSize")));
-			this.llccancel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("llccancel.Dock")));
-			this.llccancel.Enabled = ((bool)(resources.GetObject("llccancel.Enabled")));
-			this.llccancel.Font = ((System.Drawing.Font)(resources.GetObject("llccancel.Font")));
-			this.llccancel.Image = ((System.Drawing.Image)(resources.GetObject("llccancel.Image")));
-			this.llccancel.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llccancel.ImageAlign")));
-			this.llccancel.ImageIndex = ((int)(resources.GetObject("llccancel.ImageIndex")));
-			this.llccancel.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("llccancel.ImeMode")));
-			this.llccancel.LinkArea = ((System.Windows.Forms.LinkArea)(resources.GetObject("llccancel.LinkArea")));
-			this.llccancel.Location = ((System.Drawing.Point)(resources.GetObject("llccancel.Location")));
-			this.llccancel.Name = "llccancel";
-			this.llccancel.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("llccancel.RightToLeft")));
-			this.llccancel.Size = ((System.Drawing.Size)(resources.GetObject("llccancel.Size")));
-			this.llccancel.TabIndex = ((int)(resources.GetObject("llccancel.TabIndex")));
-			this.llccancel.TabStop = true;
-			this.llccancel.Text = resources.GetString("llccancel.Text");
-			this.llccancel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("llccancel.TextAlign")));
-			this.llccancel.Visible = ((bool)(resources.GetObject("llccancel.Visible")));
-			this.llccancel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llccancel_Clicked);
-			// 
 			// tbValueHex
 			// 
 			this.tbValueHex.AccessibleDescription = resources.GetString("tbValueHex.AccessibleDescription");
@@ -543,32 +468,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label5.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label5.TextAlign")));
 			this.label5.Visible = ((bool)(resources.GetObject("label5.Visible")));
 			// 
-			// gbConstant
+			// gbValue
 			// 
-			this.gbConstant.AccessibleDescription = resources.GetString("gbConstant.AccessibleDescription");
-			this.gbConstant.AccessibleName = resources.GetString("gbConstant.AccessibleName");
-			this.gbConstant.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbConstant.Anchor")));
-			this.gbConstant.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbConstant.BackgroundImage")));
-			this.gbConstant.Controls.Add(this.tbValueDec);
-			this.gbConstant.Controls.Add(this.llcdel);
-			this.gbConstant.Controls.Add(this.llcadd);
-			this.gbConstant.Controls.Add(this.llccancel);
-			this.gbConstant.Controls.Add(this.tbValueHex);
-			this.gbConstant.Controls.Add(this.label5);
-			this.gbConstant.Controls.Add(this.label6);
-			this.gbConstant.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbConstant.Dock")));
-			this.gbConstant.Enabled = ((bool)(resources.GetObject("gbConstant.Enabled")));
-			this.gbConstant.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.gbConstant.Font = ((System.Drawing.Font)(resources.GetObject("gbConstant.Font")));
-			this.gbConstant.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("gbConstant.ImeMode")));
-			this.gbConstant.Location = ((System.Drawing.Point)(resources.GetObject("gbConstant.Location")));
-			this.gbConstant.Name = "gbConstant";
-			this.gbConstant.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("gbConstant.RightToLeft")));
-			this.gbConstant.Size = ((System.Drawing.Size)(resources.GetObject("gbConstant.Size")));
-			this.gbConstant.TabIndex = ((int)(resources.GetObject("gbConstant.TabIndex")));
-			this.gbConstant.TabStop = false;
-			this.gbConstant.Text = resources.GetString("gbConstant.Text");
-			this.gbConstant.Visible = ((bool)(resources.GetObject("gbConstant.Visible")));
+			this.gbValue.AccessibleDescription = resources.GetString("gbValue.AccessibleDescription");
+			this.gbValue.AccessibleName = resources.GetString("gbValue.AccessibleName");
+			this.gbValue.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbValue.Anchor")));
+			this.gbValue.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbValue.BackgroundImage")));
+			this.gbValue.Controls.Add(this.tbValueDec);
+			this.gbValue.Controls.Add(this.tbValueHex);
+			this.gbValue.Controls.Add(this.label5);
+			this.gbValue.Controls.Add(this.label6);
+			this.gbValue.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbValue.Dock")));
+			this.gbValue.Enabled = ((bool)(resources.GetObject("gbValue.Enabled")));
+			this.gbValue.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.gbValue.Font = ((System.Drawing.Font)(resources.GetObject("gbValue.Font")));
+			this.gbValue.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("gbValue.ImeMode")));
+			this.gbValue.Location = ((System.Drawing.Point)(resources.GetObject("gbValue.Location")));
+			this.gbValue.Name = "gbValue";
+			this.gbValue.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("gbValue.RightToLeft")));
+			this.gbValue.Size = ((System.Drawing.Size)(resources.GetObject("gbValue.Size")));
+			this.gbValue.TabIndex = ((int)(resources.GetObject("gbValue.TabIndex")));
+			this.gbValue.TabStop = false;
+			this.gbValue.Text = resources.GetString("gbValue.Text");
+			this.gbValue.Visible = ((bool)(resources.GetObject("gbValue.Visible")));
 			// 
 			// label6
 			// 
@@ -602,11 +524,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bconPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bconPanel.AutoScrollMinSize")));
 			this.bconPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bconPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bconPanel.BackgroundImage")));
+			this.bconPanel.Controls.Add(this.btnCancel);
+			this.bconPanel.Controls.Add(this.btnStrDelete);
+			this.bconPanel.Controls.Add(this.btnStrAdd);
 			this.bconPanel.Controls.Add(this.lvConstants);
 			this.bconPanel.Controls.Add(this.btnCommit);
-			this.bconPanel.Controls.Add(this.label2);
+			this.bconPanel.Controls.Add(this.lbFilename);
 			this.bconPanel.Controls.Add(this.tbFilename);
-			this.bconPanel.Controls.Add(this.gbConstant);
+			this.bconPanel.Controls.Add(this.gbValue);
 			this.bconPanel.Controls.Add(this.tbFlag);
 			this.bconPanel.Controls.Add(this.label3);
 			this.bconPanel.Controls.Add(this.pnHeading);
@@ -621,6 +546,78 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bconPanel.TabIndex = ((int)(resources.GetObject("bconPanel.TabIndex")));
 			this.bconPanel.Text = resources.GetString("bconPanel.Text");
 			this.bconPanel.Visible = ((bool)(resources.GetObject("bconPanel.Visible")));
+			// 
+			// btnCancel
+			// 
+			this.btnCancel.AccessibleDescription = resources.GetString("btnCancel.AccessibleDescription");
+			this.btnCancel.AccessibleName = resources.GetString("btnCancel.AccessibleName");
+			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCancel.Anchor")));
+			this.btnCancel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCancel.BackgroundImage")));
+			this.btnCancel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCancel.Dock")));
+			this.btnCancel.Enabled = ((bool)(resources.GetObject("btnCancel.Enabled")));
+			this.btnCancel.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCancel.FlatStyle")));
+			this.btnCancel.Font = ((System.Drawing.Font)(resources.GetObject("btnCancel.Font")));
+			this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
+			this.btnCancel.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCancel.ImageAlign")));
+			this.btnCancel.ImageIndex = ((int)(resources.GetObject("btnCancel.ImageIndex")));
+			this.btnCancel.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCancel.ImeMode")));
+			this.btnCancel.Location = ((System.Drawing.Point)(resources.GetObject("btnCancel.Location")));
+			this.btnCancel.Name = "btnCancel";
+			this.btnCancel.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCancel.RightToLeft")));
+			this.btnCancel.Size = ((System.Drawing.Size)(resources.GetObject("btnCancel.Size")));
+			this.btnCancel.TabIndex = ((int)(resources.GetObject("btnCancel.TabIndex")));
+			this.btnCancel.Text = resources.GetString("btnCancel.Text");
+			this.btnCancel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCancel.TextAlign")));
+			this.btnCancel.Visible = ((bool)(resources.GetObject("btnCancel.Visible")));
+			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+			// 
+			// btnStrDelete
+			// 
+			this.btnStrDelete.AccessibleDescription = resources.GetString("btnStrDelete.AccessibleDescription");
+			this.btnStrDelete.AccessibleName = resources.GetString("btnStrDelete.AccessibleName");
+			this.btnStrDelete.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrDelete.Anchor")));
+			this.btnStrDelete.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrDelete.BackgroundImage")));
+			this.btnStrDelete.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrDelete.Dock")));
+			this.btnStrDelete.Enabled = ((bool)(resources.GetObject("btnStrDelete.Enabled")));
+			this.btnStrDelete.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrDelete.FlatStyle")));
+			this.btnStrDelete.Font = ((System.Drawing.Font)(resources.GetObject("btnStrDelete.Font")));
+			this.btnStrDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnStrDelete.Image")));
+			this.btnStrDelete.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrDelete.ImageAlign")));
+			this.btnStrDelete.ImageIndex = ((int)(resources.GetObject("btnStrDelete.ImageIndex")));
+			this.btnStrDelete.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrDelete.ImeMode")));
+			this.btnStrDelete.Location = ((System.Drawing.Point)(resources.GetObject("btnStrDelete.Location")));
+			this.btnStrDelete.Name = "btnStrDelete";
+			this.btnStrDelete.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrDelete.RightToLeft")));
+			this.btnStrDelete.Size = ((System.Drawing.Size)(resources.GetObject("btnStrDelete.Size")));
+			this.btnStrDelete.TabIndex = ((int)(resources.GetObject("btnStrDelete.TabIndex")));
+			this.btnStrDelete.Text = resources.GetString("btnStrDelete.Text");
+			this.btnStrDelete.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrDelete.TextAlign")));
+			this.btnStrDelete.Visible = ((bool)(resources.GetObject("btnStrDelete.Visible")));
+			this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
+			// 
+			// btnStrAdd
+			// 
+			this.btnStrAdd.AccessibleDescription = resources.GetString("btnStrAdd.AccessibleDescription");
+			this.btnStrAdd.AccessibleName = resources.GetString("btnStrAdd.AccessibleName");
+			this.btnStrAdd.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrAdd.Anchor")));
+			this.btnStrAdd.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrAdd.BackgroundImage")));
+			this.btnStrAdd.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrAdd.Dock")));
+			this.btnStrAdd.Enabled = ((bool)(resources.GetObject("btnStrAdd.Enabled")));
+			this.btnStrAdd.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrAdd.FlatStyle")));
+			this.btnStrAdd.Font = ((System.Drawing.Font)(resources.GetObject("btnStrAdd.Font")));
+			this.btnStrAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnStrAdd.Image")));
+			this.btnStrAdd.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrAdd.ImageAlign")));
+			this.btnStrAdd.ImageIndex = ((int)(resources.GetObject("btnStrAdd.ImageIndex")));
+			this.btnStrAdd.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrAdd.ImeMode")));
+			this.btnStrAdd.Location = ((System.Drawing.Point)(resources.GetObject("btnStrAdd.Location")));
+			this.btnStrAdd.Name = "btnStrAdd";
+			this.btnStrAdd.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrAdd.RightToLeft")));
+			this.btnStrAdd.Size = ((System.Drawing.Size)(resources.GetObject("btnStrAdd.Size")));
+			this.btnStrAdd.TabIndex = ((int)(resources.GetObject("btnStrAdd.TabIndex")));
+			this.btnStrAdd.Text = resources.GetString("btnStrAdd.Text");
+			this.btnStrAdd.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrAdd.TextAlign")));
+			this.btnStrAdd.Visible = ((bool)(resources.GetObject("btnStrAdd.Visible")));
+			this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
 			// 
 			// lvConstants
 			// 
@@ -722,7 +719,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Text = resources.GetString("$this.Text");
 			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 			this.pnHeading.ResumeLayout(false);
-			this.gbConstant.ResumeLayout(false);
+			this.gbValue.ResumeLayout(false);
 			this.bconPanel.ResumeLayout(false);
 			this.ResumeLayout(false);
 
@@ -761,7 +758,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbValueDec.Text = currentItem.ToString();
 				this.tbValueDec.Enabled = true;
 
-				this.llcdel.Enabled = true;
+				this.btnStrAdd.Enabled = true;
 			}
 			else
 			{
@@ -770,15 +767,15 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbValueDec.Text = "";
 				this.tbValueDec.Enabled = false;
 
-				this.llcdel.Enabled = false;
+				this.btnStrDelete.Enabled = false;
 			}
 
-			llccancel.Enabled = false;
+			this.btnCancel.Enabled = false;
 
 			internalchg = false;
 		}
 
-		private void AddConstantClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
 			internalchg = true;
 			int i = wrapper.Add((lvConstants.SelectedIndices.Count == 0 || lvConstants.SelectedIndices[0] == -1) ? (short)0 : currentItem);
@@ -795,7 +792,7 @@ namespace SimPe.PackedFiles.UserInterface
 			lvConstants.Items[i].Selected = true;
 		}
 
-		private void DeleteConstantClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
 			if (lvConstants.SelectedIndices.Count == 0) return;
 			int i = lvConstants.SelectedIndices[0];
@@ -914,7 +911,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void llccancel_Clicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void btnCancel_Click(object sender, System.EventArgs e)
 		{
 			UpdateBconItem_Value(origItem, true, true);
 		}
