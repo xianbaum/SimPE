@@ -162,12 +162,6 @@
                     Project = "{84085FAA-A947-492E-88BC-B941A4623811}"
                     Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
                 />
-                <Reference
-                    Name = "simpe.filehandler"
-                    AssemblyName = "simpe.filehandler"
-                    HintPath = "..\..\SimPe\simpe.filehandler.dll"
-                    Private = "False"
-                />
             </References>
         </Build>
         <Files>
@@ -348,6 +342,21 @@
                     BuildAction = "EmbeddedResource"
                 />
                 <File
+                    RelPath = "ObjdForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "ObjdForm.resx"
+                    DependentUpon = "ObjdForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "ObjdWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "ObjfForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
@@ -359,21 +368,6 @@
                 />
                 <File
                     RelPath = "ObjfWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PjseObjdForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PjseObjdForm.resx"
-                    DependentUpon = "PjseObjdForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "PjseObjdWrapper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />

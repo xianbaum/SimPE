@@ -90,6 +90,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 			return false;
 		}
+
 		protected override IPackedFileUI CreateDefaultUIHandler()
 		{
 			return new UserInterface.ObjfForm();
@@ -101,9 +102,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <returns>Human Readable Description</returns>
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
-			///
-			/// TODO: Change the Description passed here
-			/// 
 			return new AbstractWrapperInfo(
 				"PJSE OBJf Wrapper",
 				"Peter L Jones",
@@ -113,7 +111,7 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		/// <summary>
-		/// Serializes a the Attributes stored in this Instance to the BinaryStream
+		/// Serializes the Attributes stored in this Instance to the BinaryStream
 		/// </summary>
 		/// <param name="writer">The Stream the Data should be stored to</param>
 		/// <remarks>

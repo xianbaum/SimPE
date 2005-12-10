@@ -658,10 +658,12 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 
-		public override string ToString()
+		public static implicit operator string(TtabItem i)
 		{
-			return "0x"+StringIndex.ToString("X")+": "+Name;// + " ("+this.ActionName+")";
+			return "0x"+i.StringIndex.ToString("X")+": "+i.Name;// + " ("+i.ActionName+")";
 		}
+
+		public override string ToString() { return this; }
 
 
 		/// <summary>
