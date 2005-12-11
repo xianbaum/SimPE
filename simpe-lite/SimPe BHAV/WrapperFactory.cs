@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -20,7 +22,6 @@
 using System;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Plugin;
-using SimPe.PackedFiles.UserInterface;
 using SimPe.PackedFiles.Wrapper;
 
 namespace SimPe.Plugin
@@ -34,12 +35,11 @@ namespace SimPe.Plugin
 	/// </remarks>
 	public class WrapperFactory : AbstractWrapperFactory
 	{
-		#region AbstractWrapperFactory Member
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
 		/// </summary>
 		/// <returns>A List of all provided Plugins (=FileType Wrappers)</returns>
-		public override SimPe.Interfaces.IWrapper[] KnownWrappers
+		public override IWrapper[] KnownWrappers
 		{
 			get 
 			{
@@ -51,15 +51,15 @@ namespace SimPe.Plugin
 										  ,new Trcn()
 										  ,new Ttab()
 #if DEBUG
-										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
+										  ,new Objd()
 										  ,new Glob()
 #endif
 									  };
 				return wrappers;
 			}
+
 		}
 
-		#endregion
 	}
 
 }

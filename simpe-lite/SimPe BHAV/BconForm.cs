@@ -162,11 +162,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		/// <summary>
 		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should updatet the Data displayed by the Panel with the Attributes stored in the
+		/// you should update the Data displayed by the Panel with the Attributes stored in the
 		/// passed Wrapper.
 		/// </summary>
-		/// <remarks>attr.Tag is used to let TextChanged event handlers know the change is being
-		/// made internally rather than by the users.</remarks>
 		/// <param name="wrp">The Attributes of this Wrapper have to be displayed</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{

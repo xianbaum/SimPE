@@ -299,6 +299,10 @@ namespace SimPe.PackedFiles.Wrapper
 		private Objd parent = null;
 		private int index = -1;
 
+		private object category = null;
+
+
+
 		#region shortFields
 		private static int[] shortFields = { // identifiees two-byte fields containing unsigned shorts
 											   //0x00: Initial Stack Size

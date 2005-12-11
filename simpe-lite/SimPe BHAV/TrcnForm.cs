@@ -305,6 +305,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.label1 = new System.Windows.Forms.Label();
 			this.trcnPanel = new System.Windows.Forms.Panel();
+			this.tbID = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.label3 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
@@ -334,7 +335,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbMaxValue = new System.Windows.Forms.TextBox();
 			this.lbMaxValue = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
-			this.tbID = new System.Windows.Forms.TextBox();
 			this.pnHeading.SuspendLayout();
 			this.trcnPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -456,6 +456,34 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trcnPanel.TabIndex = ((int)(resources.GetObject("trcnPanel.TabIndex")));
 			this.trcnPanel.Text = resources.GetString("trcnPanel.Text");
 			this.trcnPanel.Visible = ((bool)(resources.GetObject("trcnPanel.Visible")));
+			// 
+			// tbID
+			// 
+			this.tbID.AccessibleDescription = resources.GetString("tbID.AccessibleDescription");
+			this.tbID.AccessibleName = resources.GetString("tbID.AccessibleName");
+			this.tbID.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbID.Anchor")));
+			this.tbID.AutoSize = ((bool)(resources.GetObject("tbID.AutoSize")));
+			this.tbID.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbID.BackgroundImage")));
+			this.tbID.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbID.Dock")));
+			this.tbID.Enabled = ((bool)(resources.GetObject("tbID.Enabled")));
+			this.tbID.Font = ((System.Drawing.Font)(resources.GetObject("tbID.Font")));
+			this.tbID.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbID.ImeMode")));
+			this.tbID.Location = ((System.Drawing.Point)(resources.GetObject("tbID.Location")));
+			this.tbID.MaxLength = ((int)(resources.GetObject("tbID.MaxLength")));
+			this.tbID.Multiline = ((bool)(resources.GetObject("tbID.Multiline")));
+			this.tbID.Name = "tbID";
+			this.tbID.PasswordChar = ((char)(resources.GetObject("tbID.PasswordChar")));
+			this.tbID.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbID.RightToLeft")));
+			this.tbID.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbID.ScrollBars")));
+			this.tbID.Size = ((System.Drawing.Size)(resources.GetObject("tbID.Size")));
+			this.tbID.TabIndex = ((int)(resources.GetObject("tbID.TabIndex")));
+			this.tbID.Text = resources.GetString("tbID.Text");
+			this.tbID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbID.TextAlign")));
+			this.tbID.Visible = ((bool)(resources.GetObject("tbID.Visible")));
+			this.tbID.WordWrap = ((bool)(resources.GetObject("tbID.WordWrap")));
+			this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+			this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
+			this.tbID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// label4
 			// 
@@ -1045,34 +1073,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.Text = resources.GetString("lbLabel.Text");
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
-			// 
-			// tbID
-			// 
-			this.tbID.AccessibleDescription = resources.GetString("tbID.AccessibleDescription");
-			this.tbID.AccessibleName = resources.GetString("tbID.AccessibleName");
-			this.tbID.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbID.Anchor")));
-			this.tbID.AutoSize = ((bool)(resources.GetObject("tbID.AutoSize")));
-			this.tbID.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbID.BackgroundImage")));
-			this.tbID.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbID.Dock")));
-			this.tbID.Enabled = ((bool)(resources.GetObject("tbID.Enabled")));
-			this.tbID.Font = ((System.Drawing.Font)(resources.GetObject("tbID.Font")));
-			this.tbID.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbID.ImeMode")));
-			this.tbID.Location = ((System.Drawing.Point)(resources.GetObject("tbID.Location")));
-			this.tbID.MaxLength = ((int)(resources.GetObject("tbID.MaxLength")));
-			this.tbID.Multiline = ((bool)(resources.GetObject("tbID.Multiline")));
-			this.tbID.Name = "tbID";
-			this.tbID.PasswordChar = ((char)(resources.GetObject("tbID.PasswordChar")));
-			this.tbID.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbID.RightToLeft")));
-			this.tbID.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbID.ScrollBars")));
-			this.tbID.Size = ((System.Drawing.Size)(resources.GetObject("tbID.Size")));
-			this.tbID.TabIndex = ((int)(resources.GetObject("tbID.TabIndex")));
-			this.tbID.Text = resources.GetString("tbID.Text");
-			this.tbID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbID.TextAlign")));
-			this.tbID.Visible = ((bool)(resources.GetObject("tbID.Visible")));
-			this.tbID.WordWrap = ((bool)(resources.GetObject("tbID.WordWrap")));
-			this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-			this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
-			this.tbID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
 			// 
 			// TrcnForm
 			// 

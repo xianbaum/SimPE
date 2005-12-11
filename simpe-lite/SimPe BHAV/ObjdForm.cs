@@ -30,64 +30,22 @@ using SimPe.PackedFiles.Wrapper;
 namespace SimPe.PackedFiles.UserInterface
 {
 	/// <summary>
-	/// Zusammenfassung für ExtObjdForm.
+	/// Summary description for ObjdForm.
 	/// </summary>
 	public class ObjdForm : System.Windows.Forms.Form, IPackedFileUI
 	{
 		#region Form variables
-		private System.Windows.Forms.Label label63;
-		private System.Windows.Forms.TextBox tbproxguid;
-		private System.Windows.Forms.Label label97;
-		private System.Windows.Forms.TextBox tborgguid;
-		private System.Windows.Forms.LinkLabel llgetGUID;
-		private System.Windows.Forms.LinkLabel llcommitobjd;
-		private System.Windows.Forms.Label label65;
-		private System.Windows.Forms.Label label9;
-		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.Panel panel6;
-		private System.Windows.Forms.Label label12;
-		private System.Windows.Forms.TextBox tbflname;
-		private System.Windows.Forms.TextBox tbguid;
-		private System.Windows.Forms.ComboBox cbtype;
-		private System.Windows.Forms.TextBox tbtype;
-		private System.Windows.Forms.Panel pnobjd;
-		private System.Windows.Forms.CheckBox cbbathroom;
-		private System.Windows.Forms.CheckBox cbbedroom;
-		private System.Windows.Forms.CheckBox cbdinigroom;
-		private System.Windows.Forms.CheckBox cbkitchen;
-		private System.Windows.Forms.CheckBox cbstudy;
-		private System.Windows.Forms.CheckBox cblivingroom;
-		private System.Windows.Forms.CheckBox cboutside;
-		private System.Windows.Forms.CheckBox cbmisc;
-		private System.Windows.Forms.CheckBox cbgeneral;
-		private System.Windows.Forms.CheckBox cbelectronics;
-		private System.Windows.Forms.CheckBox cbdecorative;
-		private System.Windows.Forms.CheckBox cbappliances;
-		private System.Windows.Forms.CheckBox cbsurfaces;
-		private System.Windows.Forms.CheckBox cbseating;
-		private System.Windows.Forms.CheckBox cbplumbing;
-		private System.Windows.Forms.CheckBox cblightning;
-		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.GroupBox groupBox2;
-		private System.Windows.Forms.LinkLabel linkLabel1;
-		private System.Windows.Forms.PropertyGrid pg;
-		private System.Windows.Forms.TabControl tc;
-		private System.Windows.Forms.TabPage tpcatalogsort;
-		private System.Windows.Forms.TabPage tpraw;
-		private System.Windows.Forms.CheckBox cbhobby;
-		private System.Windows.Forms.CheckBox cbaspiration;
-		private System.Windows.Forms.CheckBox cbcareer;
-		private System.Windows.Forms.CheckBox cbkids;
-		private System.Windows.Forms.RadioButton rbbin;
-		private System.Windows.Forms.RadioButton rbdec;
-		private System.Windows.Forms.RadioButton rbhex;
-		private System.Windows.Forms.CheckBox cball;
-		private System.Windows.Forms.Label lbIsOk;
+		private System.Windows.Forms.Panel objdPanel;
+		private System.Windows.Forms.Panel pnHeading;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.ComboBox cbsort;
-		//private Ambertation.Windows.Forms.EnumComboBox cbsort;
+		private System.Windows.Forms.Label lbFormat;
+		private System.Windows.Forms.TextBox tbFilename;
+		private System.Windows.Forms.Label lbFilename;
+		private System.Windows.Forms.Button btnCommit;
+		private System.Windows.Forms.TextBox tbVersion;
+		private System.Windows.Forms.Button btnCancel;
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		#endregion
@@ -95,38 +53,17 @@ namespace SimPe.PackedFiles.UserInterface
 		public ObjdForm()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-#if DEBUG
-#else
-			//cbsort.Visible = false;
-			//label1.Visible = false;
-#endif
 
-			this.cbtype.Items.Add(Data.ObjectTypes.Unknown);
-			this.cbtype.Items.Add(Data.ObjectTypes.ArchitecturalSupport);
-			this.cbtype.Items.Add(Data.ObjectTypes.Door);
-			this.cbtype.Items.Add(Data.ObjectTypes.Memory);
-			this.cbtype.Items.Add(Data.ObjectTypes.ModularStairs);
-			this.cbtype.Items.Add(Data.ObjectTypes.ModularStairsPortal);
-			this.cbtype.Items.Add(Data.ObjectTypes.Normal);
-			this.cbtype.Items.Add(Data.ObjectTypes.Outfit);
-			this.cbtype.Items.Add(Data.ObjectTypes.Person);
-			this.cbtype.Items.Add(Data.ObjectTypes.SimType);
-			this.cbtype.Items.Add(Data.ObjectTypes.Stairs);
-			this.cbtype.Items.Add(Data.ObjectTypes.Template);
-			this.cbtype.Items.Add(Data.ObjectTypes.Vehicle);
-			this.cbtype.Items.Add(Data.ObjectTypes.Window);
-			this.cbtype.Items.Add(Data.ObjectTypes.Tiles);
-			
-			//this.cbsort.Enum = typeof(Data.ObjFunctionSubSort);	
-
-			//this.cbsort.ResourceManager = SimPe.Localization.Manager;
+			//
+			// TODO: Add any constructor code after InitializeComponent call
+			//
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -142,1072 +79,437 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region ObjdForm
-		private Objd wrapper;
-		private uint initialguid;
-		Ambertation.PropertyObjectBuilderExt pob;
-		ArrayList names;
-		bool propchanged;
-		string GetName(int i)
+		private Objd wrapper = null;
+		private bool internalchg = false;
+		private bool setHandler = false;
+		private object origItem = null;
+		private object currentItem = null;
+
+		private bool hex16_IsValid(object sender)
 		{
-			string name = "0x"+Helper.HexString((ushort)i) + ": ";
-			name += (string)names[i];
-
-			return name;
+			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
 		}
 
-		void ShowData()
+		private bool dec16_IsValid(object sender)
 		{
-#if FALSE
-			propchanged = false;
-			this.pg.SelectedObject = null;
-			
-			names = new ArrayList();
-			names = wrapper.Opcodes.OBJDDescription((ushort)wrapper.Type);
-
-			Hashtable ht = new Hashtable();
-			for (int i=0; i<Math.Min(names.Count, wrapper.Data.Length); i++)
-			{
-				Ambertation.PropertyDescription pf = ExtObjd.PropertyParser.GetDescriptor((ushort)wrapper.Type, (ushort)i);
-				if (pf==null) 
-					pf = new Ambertation.PropertyDescription("Unknown", null, wrapper.Data[i]);
-				else 					
-					pf.Property = wrapper.Data[i];				
-
-				ht[GetName(i)] = pf;				
-			}
-
-			pob = new Ambertation.PropertyObjectBuilderExt(ht);
-			this.pg.SelectedObject = pob.Instance;
-#endif
+			try { Convert.ToInt16(((TextBox)sender).Text, 10); }
+			catch (Exception) { return false; }
+			return true;
 		}
 
-		void UpdateData()
+
+		private void UpdateBconItem_Value(short val, bool doHex, bool doDec)
 		{
-#if FALSE
-			if (!propchanged) return;
-			propchanged = false;
-
-			try 
-			{
-				Hashtable ht = pob.Properties;
-
-				for (int i=0; i<Math.Min(names.Count, wrapper.Data.Length); i++)
-				{
-					string name = GetName(i);	
-					try 
-					{
-						if (ht.Contains(name)) 
-						{
-							object o = ht[name];
-							if (o is SimPe.FlagBase) 
-								wrapper.Data[i] = ((SimPe.FlagBase)ht[name]);
-							else
-								wrapper.Data[i] = Convert.ToInt16(ht[name]);
-						} 
-					}				
-					catch (Exception ex)
-					{
-						if (Helper.DebugMode) Helper.ExceptionMessage("Error converting "+name, ex);
-					}
-				}
-
-				wrapper.Changed = true;
-				wrapper.UpdateFlags();
-				wrapper.RefreshUI();
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage("", ex);
-			}
-#endif
+			internalchg = true;
+			internalchg = false;
+			this.btnCancel.Enabled = currentItem != origItem;
 		}
 
-		internal void SetFunctionCb(Wrapper.Objd objd)
-		{			
-			this.cbappliances.Checked = objd.FunctionSort.InAppliances;
-			this.cbdecorative.Checked = objd.FunctionSort.InDecorative;
-			this.cbelectronics.Checked = objd.FunctionSort.InElectronics;
-			this.cbgeneral.Checked = objd.FunctionSort.InGeneral;
-			this.cblightning.Checked = objd.FunctionSort.InLighting;
-			this.cbplumbing.Checked = objd.FunctionSort.InPlumbing;
-			this.cbseating.Checked = objd.FunctionSort.InSeating;
-			this.cbsurfaces.Checked = objd.FunctionSort.InSurfaces;
-			this.cbhobby.Checked = objd.FunctionSort.InHobbies;
-			this.cbaspiration.Checked = objd.FunctionSort.InAspirationRewards;
-			this.cbcareer.Checked = objd.FunctionSort.InCareerRewards;
-
-			this.groupBox2.Refresh();
-		}
+		ObjdProperties wrapperProperties = null;
 		#endregion
 
 		#region IPackedFileUI Member
 		/// <summary>
 		/// Returns the Panel that will be displayed within SimPe
 		/// </summary>
-		public Control GUIHandle
+		public System.Windows.Forms.Control GUIHandle
 		{
 			get 
 			{
-				return this.pnobjd;
+				return objdPanel;
 			}
 		}
 
-		public void UpdateGUI(SimPe.Interfaces.Plugin.IFileWrapper wrapper)
+		/// <summary>
+		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
+		/// you should update the Data displayed by the Panel with the Attributes stored in the
+		/// passed Wrapper.
+		/// </summary>
+		/// <param name="wrp">The Attributes of this Wrapper have to be displayed</param>
+		public void UpdateGUI(IFileWrapper wrp)
 		{
-			Wrapper.Objd objd = (Wrapper.Objd)wrapper;
-			this.wrapper = objd;
-			this.initialguid = objd.Guid;
-			this.Tag = true;
+			wrapper = (Objd)wrp;
+			wrapperProperties = new ObjdProperties(wrapper);
+			WrapperChanged(wrapper, null);
 
-			try 
+			internalchg = true;
+			internalchg = false;
+
+			if (!setHandler)
 			{
-				this.lbIsOk.Visible = objd.Ok!=Wrapper.ObjdHealth.Ok;
-				if (Helper.WindowsRegistry.HiddenMode) 
-					this.lbIsOk.Text = "Please commit! ("+objd.Ok.ToString()+")";				
-				this.pg.SelectedObject = null;
-				this.tc.SelectedTab = this.tpcatalogsort;				
-
-				this.cbtype.SelectedIndex = 0;
-				for (int i=0; i<this.cbtype.Items.Count; i++)
-				{
-					Data.ObjectTypes ot = (Data.ObjectTypes)this.cbtype.Items[i];
-					if (ot==objd.Type) 
-					{
-						this.cbtype.SelectedIndex = i;
-						break;
-					}
-				}
-
-				this.tbtype.Text = "0x"+Helper.HexString((ushort)(objd.Type));
-
-				this.tbguid.Text = "0x"+Helper.HexString(objd.Guid);
-				this.tbproxguid.Text = "0x"+Helper.HexString(objd.ProxyGuid);
-				this.tborgguid.Text = "0x"+Helper.HexString(objd.OriginalGuid);
-
-				this.tbflname.Text = objd.FileName;
-
-				this.cbbathroom.Checked = (objd.RoomSort.InBathroom);
-				this.cbbedroom.Checked = (objd.RoomSort.InBedroom);
-				this.cbdinigroom.Checked = (objd.RoomSort.InDiningRoom);
-				this.cbkitchen.Checked = (objd.RoomSort.InKitchen);
-				this.cblivingroom.Checked = (objd.RoomSort.InLivingRoom);
-				this.cbmisc.Checked = (objd.RoomSort.InMisc);
-				this.cboutside.Checked = (objd.RoomSort.InOutside);
-				this.cbstudy.Checked = (objd.RoomSort.InStudy);
-				this.cbkids.Checked = (objd.RoomSort.InKids);
-
-				this.SetFunctionCb(objd);
-				this.cbsort.SelectedValue = objd.FunctionSubSort;
-			} 
-			finally 
-			{
-				this.Tag = null;
+				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+				setHandler = true;
 			}
 		}
 
+		private void WrapperChanged(object sender, System.EventArgs e)
+		{
+			this.btnCommit.Enabled = wrapper.Changed;
+			if (internalchg) return;
+
+			if (sender.Equals(wrapper))
+			{
+				internalchg = true;
+				this.Text = tbFilename.Text = wrapper.FileName;
+				this.tbVersion.Text = "0x" + SimPe.Helper.HexString(wrapper.Version);
+				internalchg = false;
+			}
+		}
 		
 		#endregion
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pnobjd = new System.Windows.Forms.Panel();
-			this.lbIsOk = new System.Windows.Forms.Label();
-			this.cball = new System.Windows.Forms.CheckBox();
-			this.tc = new System.Windows.Forms.TabControl();
-			this.tpcatalogsort = new System.Windows.Forms.TabPage();
-			this.groupBox2 = new System.Windows.Forms.GroupBox();
-			this.cbaspiration = new System.Windows.Forms.CheckBox();
-			this.cbhobby = new System.Windows.Forms.CheckBox();
-			this.cbappliances = new System.Windows.Forms.CheckBox();
-			this.cbdecorative = new System.Windows.Forms.CheckBox();
-			this.cbelectronics = new System.Windows.Forms.CheckBox();
-			this.cbgeneral = new System.Windows.Forms.CheckBox();
-			this.cblightning = new System.Windows.Forms.CheckBox();
-			this.cbplumbing = new System.Windows.Forms.CheckBox();
-			this.cbseating = new System.Windows.Forms.CheckBox();
-			this.cbsurfaces = new System.Windows.Forms.CheckBox();
-			this.cbsort = new Ambertation.Windows.Forms.EnumComboBox();
+			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(ObjdForm));
+			this.objdPanel = new System.Windows.Forms.Panel();
+			this.btnCancel = new System.Windows.Forms.Button();
+			this.lbFormat = new System.Windows.Forms.Label();
+			this.tbVersion = new System.Windows.Forms.TextBox();
+			this.tbFilename = new System.Windows.Forms.TextBox();
+			this.lbFilename = new System.Windows.Forms.Label();
+			this.btnCommit = new System.Windows.Forms.Button();
+			this.pnHeading = new System.Windows.Forms.Panel();
 			this.label1 = new System.Windows.Forms.Label();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.cbkids = new System.Windows.Forms.CheckBox();
-			this.cbbathroom = new System.Windows.Forms.CheckBox();
-			this.cbbedroom = new System.Windows.Forms.CheckBox();
-			this.cbdinigroom = new System.Windows.Forms.CheckBox();
-			this.cbkitchen = new System.Windows.Forms.CheckBox();
-			this.cbmisc = new System.Windows.Forms.CheckBox();
-			this.cboutside = new System.Windows.Forms.CheckBox();
-			this.cblivingroom = new System.Windows.Forms.CheckBox();
-			this.cbstudy = new System.Windows.Forms.CheckBox();
-			this.tpraw = new System.Windows.Forms.TabPage();
-			this.rbhex = new System.Windows.Forms.RadioButton();
-			this.rbdec = new System.Windows.Forms.RadioButton();
-			this.rbbin = new System.Windows.Forms.RadioButton();
-			this.pg = new System.Windows.Forms.PropertyGrid();
-			this.tbtype = new System.Windows.Forms.TextBox();
-			this.cbtype = new System.Windows.Forms.ComboBox();
-			this.label63 = new System.Windows.Forms.Label();
-			this.tbproxguid = new System.Windows.Forms.TextBox();
-			this.label97 = new System.Windows.Forms.Label();
-			this.tborgguid = new System.Windows.Forms.TextBox();
-			this.llgetGUID = new System.Windows.Forms.LinkLabel();
-			this.llcommitobjd = new System.Windows.Forms.LinkLabel();
-			this.label65 = new System.Windows.Forms.Label();
-			this.tbflname = new System.Windows.Forms.TextBox();
-			this.label9 = new System.Windows.Forms.Label();
-			this.tbguid = new System.Windows.Forms.TextBox();
-			this.label8 = new System.Windows.Forms.Label();
-			this.panel6 = new System.Windows.Forms.Panel();
-			this.label12 = new System.Windows.Forms.Label();
-			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-			this.cbcareer = new System.Windows.Forms.CheckBox();
-			this.pnobjd.SuspendLayout();
-			this.tc.SuspendLayout();
-			this.tpcatalogsort.SuspendLayout();
-			this.groupBox2.SuspendLayout();
-			this.groupBox1.SuspendLayout();
-			this.tpraw.SuspendLayout();
-			this.panel6.SuspendLayout();
+			this.objdPanel.SuspendLayout();
+			this.pnHeading.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// pnobjd
+			// objdPanel
 			// 
-			this.pnobjd.AutoScroll = true;
-			this.pnobjd.Controls.Add(this.lbIsOk);
-			this.pnobjd.Controls.Add(this.cball);
-			this.pnobjd.Controls.Add(this.tc);
-			this.pnobjd.Controls.Add(this.tbtype);
-			this.pnobjd.Controls.Add(this.cbtype);
-			this.pnobjd.Controls.Add(this.label63);
-			this.pnobjd.Controls.Add(this.tbproxguid);
-			this.pnobjd.Controls.Add(this.label97);
-			this.pnobjd.Controls.Add(this.tborgguid);
-			this.pnobjd.Controls.Add(this.llgetGUID);
-			this.pnobjd.Controls.Add(this.llcommitobjd);
-			this.pnobjd.Controls.Add(this.label65);
-			this.pnobjd.Controls.Add(this.tbflname);
-			this.pnobjd.Controls.Add(this.label9);
-			this.pnobjd.Controls.Add(this.tbguid);
-			this.pnobjd.Controls.Add(this.label8);
-			this.pnobjd.Controls.Add(this.panel6);
-			this.pnobjd.Controls.Add(this.linkLabel1);
-			this.pnobjd.Location = new System.Drawing.Point(8, 8);
-			this.pnobjd.Name = "pnobjd";
-			this.pnobjd.Size = new System.Drawing.Size(680, 328);
-			this.pnobjd.TabIndex = 6;
+			this.objdPanel.AccessibleDescription = resources.GetString("objdPanel.AccessibleDescription");
+			this.objdPanel.AccessibleName = resources.GetString("objdPanel.AccessibleName");
+			this.objdPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("objdPanel.Anchor")));
+			this.objdPanel.AutoScroll = ((bool)(resources.GetObject("objdPanel.AutoScroll")));
+			this.objdPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("objdPanel.AutoScrollMargin")));
+			this.objdPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("objdPanel.AutoScrollMinSize")));
+			this.objdPanel.BackColor = System.Drawing.SystemColors.Control;
+			this.objdPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("objdPanel.BackgroundImage")));
+			this.objdPanel.Controls.Add(this.btnCancel);
+			this.objdPanel.Controls.Add(this.lbFormat);
+			this.objdPanel.Controls.Add(this.tbVersion);
+			this.objdPanel.Controls.Add(this.tbFilename);
+			this.objdPanel.Controls.Add(this.lbFilename);
+			this.objdPanel.Controls.Add(this.btnCommit);
+			this.objdPanel.Controls.Add(this.pnHeading);
+			this.objdPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("objdPanel.Dock")));
+			this.objdPanel.Enabled = ((bool)(resources.GetObject("objdPanel.Enabled")));
+			this.objdPanel.Font = ((System.Drawing.Font)(resources.GetObject("objdPanel.Font")));
+			this.objdPanel.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("objdPanel.ImeMode")));
+			this.objdPanel.Location = ((System.Drawing.Point)(resources.GetObject("objdPanel.Location")));
+			this.objdPanel.Name = "objdPanel";
+			this.objdPanel.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("objdPanel.RightToLeft")));
+			this.objdPanel.Size = ((System.Drawing.Size)(resources.GetObject("objdPanel.Size")));
+			this.objdPanel.TabIndex = ((int)(resources.GetObject("objdPanel.TabIndex")));
+			this.objdPanel.Text = resources.GetString("objdPanel.Text");
+			this.objdPanel.Visible = ((bool)(resources.GetObject("objdPanel.Visible")));
 			// 
-			// lbIsOk
+			// btnCancel
 			// 
-			this.lbIsOk.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lbIsOk.Location = new System.Drawing.Point(384, 104);
-			this.lbIsOk.Name = "lbIsOk";
-			this.lbIsOk.Size = new System.Drawing.Size(224, 23);
-			this.lbIsOk.TabIndex = 29;
-			this.lbIsOk.Text = "Please commit!";
-			this.lbIsOk.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.lbIsOk.Visible = false;
+			this.btnCancel.AccessibleDescription = resources.GetString("btnCancel.AccessibleDescription");
+			this.btnCancel.AccessibleName = resources.GetString("btnCancel.AccessibleName");
+			this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCancel.Anchor")));
+			this.btnCancel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCancel.BackgroundImage")));
+			this.btnCancel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCancel.Dock")));
+			this.btnCancel.Enabled = ((bool)(resources.GetObject("btnCancel.Enabled")));
+			this.btnCancel.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCancel.FlatStyle")));
+			this.btnCancel.Font = ((System.Drawing.Font)(resources.GetObject("btnCancel.Font")));
+			this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
+			this.btnCancel.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCancel.ImageAlign")));
+			this.btnCancel.ImageIndex = ((int)(resources.GetObject("btnCancel.ImageIndex")));
+			this.btnCancel.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCancel.ImeMode")));
+			this.btnCancel.Location = ((System.Drawing.Point)(resources.GetObject("btnCancel.Location")));
+			this.btnCancel.Name = "btnCancel";
+			this.btnCancel.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCancel.RightToLeft")));
+			this.btnCancel.Size = ((System.Drawing.Size)(resources.GetObject("btnCancel.Size")));
+			this.btnCancel.TabIndex = ((int)(resources.GetObject("btnCancel.TabIndex")));
+			this.btnCancel.Text = resources.GetString("btnCancel.Text");
+			this.btnCancel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCancel.TextAlign")));
+			this.btnCancel.Visible = ((bool)(resources.GetObject("btnCancel.Visible")));
 			// 
-			// cball
+			// lbFormat
 			// 
-			this.cball.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cball.Location = new System.Drawing.Point(280, 56);
-			this.cball.Name = "cball";
-			this.cball.Size = new System.Drawing.Size(120, 24);
-			this.cball.TabIndex = 28;
-			this.cball.Text = "update all MMATs";
+			this.lbFormat.AccessibleDescription = resources.GetString("lbFormat.AccessibleDescription");
+			this.lbFormat.AccessibleName = resources.GetString("lbFormat.AccessibleName");
+			this.lbFormat.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbFormat.Anchor")));
+			this.lbFormat.AutoSize = ((bool)(resources.GetObject("lbFormat.AutoSize")));
+			this.lbFormat.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbFormat.Dock")));
+			this.lbFormat.Enabled = ((bool)(resources.GetObject("lbFormat.Enabled")));
+			this.lbFormat.Font = ((System.Drawing.Font)(resources.GetObject("lbFormat.Font")));
+			this.lbFormat.Image = ((System.Drawing.Image)(resources.GetObject("lbFormat.Image")));
+			this.lbFormat.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFormat.ImageAlign")));
+			this.lbFormat.ImageIndex = ((int)(resources.GetObject("lbFormat.ImageIndex")));
+			this.lbFormat.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbFormat.ImeMode")));
+			this.lbFormat.Location = ((System.Drawing.Point)(resources.GetObject("lbFormat.Location")));
+			this.lbFormat.Name = "lbFormat";
+			this.lbFormat.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbFormat.RightToLeft")));
+			this.lbFormat.Size = ((System.Drawing.Size)(resources.GetObject("lbFormat.Size")));
+			this.lbFormat.TabIndex = ((int)(resources.GetObject("lbFormat.TabIndex")));
+			this.lbFormat.Text = resources.GetString("lbFormat.Text");
+			this.lbFormat.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFormat.TextAlign")));
+			this.lbFormat.Visible = ((bool)(resources.GetObject("lbFormat.Visible")));
 			// 
-			// tc
+			// tbVersion
 			// 
-			this.tc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tc.Controls.Add(this.tpcatalogsort);
-			this.tc.Controls.Add(this.tpraw);
-			this.tc.Location = new System.Drawing.Point(8, 136);
-			this.tc.Name = "tc";
-			this.tc.SelectedIndex = 0;
-			this.tc.Size = new System.Drawing.Size(664, 184);
-			this.tc.TabIndex = 26;
-			this.tc.SelectedIndexChanged += new System.EventHandler(this.CangedTab);
+			this.tbVersion.AccessibleDescription = resources.GetString("tbVersion.AccessibleDescription");
+			this.tbVersion.AccessibleName = resources.GetString("tbVersion.AccessibleName");
+			this.tbVersion.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbVersion.Anchor")));
+			this.tbVersion.AutoSize = ((bool)(resources.GetObject("tbVersion.AutoSize")));
+			this.tbVersion.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbVersion.BackgroundImage")));
+			this.tbVersion.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbVersion.Dock")));
+			this.tbVersion.Enabled = ((bool)(resources.GetObject("tbVersion.Enabled")));
+			this.tbVersion.Font = ((System.Drawing.Font)(resources.GetObject("tbVersion.Font")));
+			this.tbVersion.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbVersion.ImeMode")));
+			this.tbVersion.Location = ((System.Drawing.Point)(resources.GetObject("tbVersion.Location")));
+			this.tbVersion.MaxLength = ((int)(resources.GetObject("tbVersion.MaxLength")));
+			this.tbVersion.Multiline = ((bool)(resources.GetObject("tbVersion.Multiline")));
+			this.tbVersion.Name = "tbVersion";
+			this.tbVersion.PasswordChar = ((char)(resources.GetObject("tbVersion.PasswordChar")));
+			this.tbVersion.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbVersion.RightToLeft")));
+			this.tbVersion.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbVersion.ScrollBars")));
+			this.tbVersion.Size = ((System.Drawing.Size)(resources.GetObject("tbVersion.Size")));
+			this.tbVersion.TabIndex = ((int)(resources.GetObject("tbVersion.TabIndex")));
+			this.tbVersion.Text = resources.GetString("tbVersion.Text");
+			this.tbVersion.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbVersion.TextAlign")));
+			this.tbVersion.Visible = ((bool)(resources.GetObject("tbVersion.Visible")));
+			this.tbVersion.WordWrap = ((bool)(resources.GetObject("tbVersion.WordWrap")));
 			// 
-			// tpcatalogsort
+			// tbFilename
 			// 
-			this.tpcatalogsort.Controls.Add(this.groupBox2);
-			this.tpcatalogsort.Controls.Add(this.groupBox1);
-			this.tpcatalogsort.Location = new System.Drawing.Point(4, 22);
-			this.tpcatalogsort.Name = "tpcatalogsort";
-			this.tpcatalogsort.Size = new System.Drawing.Size(656, 158);
-			this.tpcatalogsort.TabIndex = 0;
-			this.tpcatalogsort.Text = "Catalog Sort";
+			this.tbFilename.AccessibleDescription = resources.GetString("tbFilename.AccessibleDescription");
+			this.tbFilename.AccessibleName = resources.GetString("tbFilename.AccessibleName");
+			this.tbFilename.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFilename.Anchor")));
+			this.tbFilename.AutoSize = ((bool)(resources.GetObject("tbFilename.AutoSize")));
+			this.tbFilename.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFilename.BackgroundImage")));
+			this.tbFilename.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFilename.Dock")));
+			this.tbFilename.Enabled = ((bool)(resources.GetObject("tbFilename.Enabled")));
+			this.tbFilename.Font = ((System.Drawing.Font)(resources.GetObject("tbFilename.Font")));
+			this.tbFilename.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFilename.ImeMode")));
+			this.tbFilename.Location = ((System.Drawing.Point)(resources.GetObject("tbFilename.Location")));
+			this.tbFilename.MaxLength = ((int)(resources.GetObject("tbFilename.MaxLength")));
+			this.tbFilename.Multiline = ((bool)(resources.GetObject("tbFilename.Multiline")));
+			this.tbFilename.Name = "tbFilename";
+			this.tbFilename.PasswordChar = ((char)(resources.GetObject("tbFilename.PasswordChar")));
+			this.tbFilename.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFilename.RightToLeft")));
+			this.tbFilename.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFilename.ScrollBars")));
+			this.tbFilename.Size = ((System.Drawing.Size)(resources.GetObject("tbFilename.Size")));
+			this.tbFilename.TabIndex = ((int)(resources.GetObject("tbFilename.TabIndex")));
+			this.tbFilename.Text = resources.GetString("tbFilename.Text");
+			this.tbFilename.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFilename.TextAlign")));
+			this.tbFilename.Visible = ((bool)(resources.GetObject("tbFilename.Visible")));
+			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
 			// 
-			// groupBox2
+			// lbFilename
 			// 
-			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.groupBox2.Controls.Add(this.cbaspiration);
-			this.groupBox2.Controls.Add(this.cbhobby);
-			this.groupBox2.Controls.Add(this.cbappliances);
-			this.groupBox2.Controls.Add(this.cbdecorative);
-			this.groupBox2.Controls.Add(this.cbelectronics);
-			this.groupBox2.Controls.Add(this.cbgeneral);
-			this.groupBox2.Controls.Add(this.cblightning);
-			this.groupBox2.Controls.Add(this.cbplumbing);
-			this.groupBox2.Controls.Add(this.cbseating);
-			this.groupBox2.Controls.Add(this.cbsurfaces);
-			this.groupBox2.Controls.Add(this.cbsort);
-			this.groupBox2.Controls.Add(this.label1);
-			this.groupBox2.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.groupBox2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.groupBox2.Location = new System.Drawing.Point(312, 8);
-			this.groupBox2.Name = "groupBox2";
-			this.groupBox2.Size = new System.Drawing.Size(336, 144);
-			this.groupBox2.TabIndex = 17;
-			this.groupBox2.TabStop = false;
-			this.groupBox2.Text = "Function Sort";
+			this.lbFilename.AccessibleDescription = resources.GetString("lbFilename.AccessibleDescription");
+			this.lbFilename.AccessibleName = resources.GetString("lbFilename.AccessibleName");
+			this.lbFilename.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbFilename.Anchor")));
+			this.lbFilename.AutoSize = ((bool)(resources.GetObject("lbFilename.AutoSize")));
+			this.lbFilename.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbFilename.Dock")));
+			this.lbFilename.Enabled = ((bool)(resources.GetObject("lbFilename.Enabled")));
+			this.lbFilename.Font = ((System.Drawing.Font)(resources.GetObject("lbFilename.Font")));
+			this.lbFilename.Image = ((System.Drawing.Image)(resources.GetObject("lbFilename.Image")));
+			this.lbFilename.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.ImageAlign")));
+			this.lbFilename.ImageIndex = ((int)(resources.GetObject("lbFilename.ImageIndex")));
+			this.lbFilename.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbFilename.ImeMode")));
+			this.lbFilename.Location = ((System.Drawing.Point)(resources.GetObject("lbFilename.Location")));
+			this.lbFilename.Name = "lbFilename";
+			this.lbFilename.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbFilename.RightToLeft")));
+			this.lbFilename.Size = ((System.Drawing.Size)(resources.GetObject("lbFilename.Size")));
+			this.lbFilename.TabIndex = ((int)(resources.GetObject("lbFilename.TabIndex")));
+			this.lbFilename.Text = resources.GetString("lbFilename.Text");
+			this.lbFilename.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.TextAlign")));
+			this.lbFilename.Visible = ((bool)(resources.GetObject("lbFilename.Visible")));
 			// 
-			// cbaspiration
+			// btnCommit
 			// 
-			this.cbaspiration.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbaspiration.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbaspiration.Location = new System.Drawing.Point(224, 44);
-			this.cbaspiration.Name = "cbaspiration";
-			this.cbaspiration.TabIndex = 17;
-			this.cbaspiration.Text = "Aspiration";
-			this.cbaspiration.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
+			this.btnCommit.AccessibleDescription = resources.GetString("btnCommit.AccessibleDescription");
+			this.btnCommit.AccessibleName = resources.GetString("btnCommit.AccessibleName");
+			this.btnCommit.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnCommit.Anchor")));
+			this.btnCommit.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnCommit.BackgroundImage")));
+			this.btnCommit.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnCommit.Dock")));
+			this.btnCommit.Enabled = ((bool)(resources.GetObject("btnCommit.Enabled")));
+			this.btnCommit.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnCommit.FlatStyle")));
+			this.btnCommit.Font = ((System.Drawing.Font)(resources.GetObject("btnCommit.Font")));
+			this.btnCommit.Image = ((System.Drawing.Image)(resources.GetObject("btnCommit.Image")));
+			this.btnCommit.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.ImageAlign")));
+			this.btnCommit.ImageIndex = ((int)(resources.GetObject("btnCommit.ImageIndex")));
+			this.btnCommit.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnCommit.ImeMode")));
+			this.btnCommit.Location = ((System.Drawing.Point)(resources.GetObject("btnCommit.Location")));
+			this.btnCommit.Name = "btnCommit";
+			this.btnCommit.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnCommit.RightToLeft")));
+			this.btnCommit.Size = ((System.Drawing.Size)(resources.GetObject("btnCommit.Size")));
+			this.btnCommit.TabIndex = ((int)(resources.GetObject("btnCommit.TabIndex")));
+			this.btnCommit.Text = resources.GetString("btnCommit.Text");
+			this.btnCommit.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.TextAlign")));
+			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
 			// 
-			// cbhobby
+			// pnHeading
 			// 
-			this.cbhobby.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbhobby.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbhobby.Location = new System.Drawing.Point(224, 24);
-			this.cbhobby.Name = "cbhobby";
-			this.cbhobby.TabIndex = 16;
-			this.cbhobby.Text = "Hobbies";
-			this.cbhobby.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cbappliances
-			// 
-			this.cbappliances.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbappliances.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbappliances.Location = new System.Drawing.Point(16, 24);
-			this.cbappliances.Name = "cbappliances";
-			this.cbappliances.TabIndex = 8;
-			this.cbappliances.Text = "Appliances";
-			this.cbappliances.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cbdecorative
-			// 
-			this.cbdecorative.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbdecorative.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbdecorative.Location = new System.Drawing.Point(16, 44);
-			this.cbdecorative.Name = "cbdecorative";
-			this.cbdecorative.TabIndex = 9;
-			this.cbdecorative.Text = "Decorative";
-			this.cbdecorative.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cbelectronics
-			// 
-			this.cbelectronics.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbelectronics.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbelectronics.Location = new System.Drawing.Point(16, 64);
-			this.cbelectronics.Name = "cbelectronics";
-			this.cbelectronics.TabIndex = 10;
-			this.cbelectronics.Text = "Electronics";
-			this.cbelectronics.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cbgeneral
-			// 
-			this.cbgeneral.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbgeneral.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbgeneral.Location = new System.Drawing.Point(16, 84);
-			this.cbgeneral.Name = "cbgeneral";
-			this.cbgeneral.TabIndex = 11;
-			this.cbgeneral.Text = "General";
-			this.cbgeneral.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cblightning
-			// 
-			this.cblightning.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cblightning.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cblightning.Location = new System.Drawing.Point(120, 24);
-			this.cblightning.Name = "cblightning";
-			this.cblightning.TabIndex = 12;
-			this.cblightning.Text = "Lights";
-			this.cblightning.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cbplumbing
-			// 
-			this.cbplumbing.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbplumbing.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbplumbing.Location = new System.Drawing.Point(120, 44);
-			this.cbplumbing.Name = "cbplumbing";
-			this.cbplumbing.TabIndex = 13;
-			this.cbplumbing.Text = "Plumbing";
-			this.cbplumbing.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cbseating
-			// 
-			this.cbseating.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbseating.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbseating.Location = new System.Drawing.Point(120, 64);
-			this.cbseating.Name = "cbseating";
-			this.cbseating.TabIndex = 14;
-			this.cbseating.Text = "Seating";
-			this.cbseating.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cbsurfaces
-			// 
-			this.cbsurfaces.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbsurfaces.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbsurfaces.Location = new System.Drawing.Point(120, 84);
-			this.cbsurfaces.Name = "cbsurfaces";
-			this.cbsurfaces.TabIndex = 15;
-			this.cbsurfaces.Text = "Surfaces";
-			this.cbsurfaces.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// cbsort
-			// 
-			this.cbsort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbsort.Enum = null;
-			this.cbsort.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbsort.Location = new System.Drawing.Point(120, 112);
-			this.cbsort.Name = "cbsort";
-			this.cbsort.ResourceManager = null;
-			this.cbsort.Size = new System.Drawing.Size(208, 21);
-			this.cbsort.TabIndex = 19;
-			this.cbsort.SelectedIndexChanged += new System.EventHandler(this.cbsort_SelectedIndexChanged);
+			this.pnHeading.AccessibleDescription = resources.GetString("pnHeading.AccessibleDescription");
+			this.pnHeading.AccessibleName = resources.GetString("pnHeading.AccessibleName");
+			this.pnHeading.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnHeading.Anchor")));
+			this.pnHeading.AutoScroll = ((bool)(resources.GetObject("pnHeading.AutoScroll")));
+			this.pnHeading.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("pnHeading.AutoScrollMargin")));
+			this.pnHeading.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnHeading.AutoScrollMinSize")));
+			this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
+			this.pnHeading.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnHeading.BackgroundImage")));
+			this.pnHeading.Controls.Add(this.label1);
+			this.pnHeading.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnHeading.Dock")));
+			this.pnHeading.Enabled = ((bool)(resources.GetObject("pnHeading.Enabled")));
+			this.pnHeading.Font = ((System.Drawing.Font)(resources.GetObject("pnHeading.Font")));
+			this.pnHeading.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.pnHeading.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("pnHeading.ImeMode")));
+			this.pnHeading.Location = ((System.Drawing.Point)(resources.GetObject("pnHeading.Location")));
+			this.pnHeading.Name = "pnHeading";
+			this.pnHeading.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnHeading.RightToLeft")));
+			this.pnHeading.Size = ((System.Drawing.Size)(resources.GetObject("pnHeading.Size")));
+			this.pnHeading.TabIndex = ((int)(resources.GetObject("pnHeading.TabIndex")));
+			this.pnHeading.Text = resources.GetString("pnHeading.Text");
+			this.pnHeading.Visible = ((bool)(resources.GetObject("pnHeading.Visible")));
 			// 
 			// label1
 			// 
-			this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label1.Location = new System.Drawing.Point(16, 112);
+			this.label1.AccessibleDescription = resources.GetString("label1.AccessibleDescription");
+			this.label1.AccessibleName = resources.GetString("label1.AccessibleName");
+			this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label1.Anchor")));
+			this.label1.AutoSize = ((bool)(resources.GetObject("label1.AutoSize")));
+			this.label1.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label1.Dock")));
+			this.label1.Enabled = ((bool)(resources.GetObject("label1.Enabled")));
+			this.label1.Font = ((System.Drawing.Font)(resources.GetObject("label1.Font")));
+			this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.label1.Image = ((System.Drawing.Image)(resources.GetObject("label1.Image")));
+			this.label1.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.ImageAlign")));
+			this.label1.ImageIndex = ((int)(resources.GetObject("label1.ImageIndex")));
+			this.label1.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label1.ImeMode")));
+			this.label1.Location = ((System.Drawing.Point)(resources.GetObject("label1.Location")));
 			this.label1.Name = "label1";
-			this.label1.TabIndex = 18;
-			this.label1.Text = "Overall Sort:";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
-			// 
-			// groupBox1
-			// 
-			this.groupBox1.Controls.Add(this.cbkids);
-			this.groupBox1.Controls.Add(this.cbbathroom);
-			this.groupBox1.Controls.Add(this.cbbedroom);
-			this.groupBox1.Controls.Add(this.cbdinigroom);
-			this.groupBox1.Controls.Add(this.cbkitchen);
-			this.groupBox1.Controls.Add(this.cbmisc);
-			this.groupBox1.Controls.Add(this.cboutside);
-			this.groupBox1.Controls.Add(this.cblivingroom);
-			this.groupBox1.Controls.Add(this.cbstudy);
-			this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.groupBox1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.groupBox1.Location = new System.Drawing.Point(8, 8);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(296, 112);
-			this.groupBox1.TabIndex = 16;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Room Sort";
-			// 
-			// cbkids
-			// 
-			this.cbkids.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbkids.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbkids.Location = new System.Drawing.Point(232, 24);
-			this.cbkids.Name = "cbkids";
-			this.cbkids.Size = new System.Drawing.Size(56, 24);
-			this.cbkids.TabIndex = 8;
-			this.cbkids.Text = "Kids";
-			this.cbkids.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// cbbathroom
-			// 
-			this.cbbathroom.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbbathroom.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbbathroom.Location = new System.Drawing.Point(16, 24);
-			this.cbbathroom.Name = "cbbathroom";
-			this.cbbathroom.TabIndex = 0;
-			this.cbbathroom.Text = "Bathroom";
-			this.cbbathroom.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// cbbedroom
-			// 
-			this.cbbedroom.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbbedroom.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbbedroom.Location = new System.Drawing.Point(16, 44);
-			this.cbbedroom.Name = "cbbedroom";
-			this.cbbedroom.TabIndex = 1;
-			this.cbbedroom.Text = "Bedroom";
-			this.cbbedroom.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// cbdinigroom
-			// 
-			this.cbdinigroom.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbdinigroom.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbdinigroom.Location = new System.Drawing.Point(16, 64);
-			this.cbdinigroom.Name = "cbdinigroom";
-			this.cbdinigroom.TabIndex = 2;
-			this.cbdinigroom.Text = "Dinigroom";
-			this.cbdinigroom.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// cbkitchen
-			// 
-			this.cbkitchen.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbkitchen.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbkitchen.Location = new System.Drawing.Point(16, 84);
-			this.cbkitchen.Name = "cbkitchen";
-			this.cbkitchen.TabIndex = 3;
-			this.cbkitchen.Text = "Kitchen";
-			this.cbkitchen.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// cbmisc
-			// 
-			this.cbmisc.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbmisc.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbmisc.Location = new System.Drawing.Point(120, 44);
-			this.cbmisc.Name = "cbmisc";
-			this.cbmisc.TabIndex = 4;
-			this.cbmisc.Text = "Misc.";
-			this.cbmisc.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// cboutside
-			// 
-			this.cboutside.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cboutside.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cboutside.Location = new System.Drawing.Point(120, 64);
-			this.cboutside.Name = "cboutside";
-			this.cboutside.TabIndex = 5;
-			this.cboutside.Text = "Outside";
-			this.cboutside.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// cblivingroom
-			// 
-			this.cblivingroom.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cblivingroom.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cblivingroom.Location = new System.Drawing.Point(120, 24);
-			this.cblivingroom.Name = "cblivingroom";
-			this.cblivingroom.TabIndex = 6;
-			this.cblivingroom.Text = "Livingroom";
-			this.cblivingroom.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// cbstudy
-			// 
-			this.cbstudy.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.cbstudy.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbstudy.Location = new System.Drawing.Point(120, 84);
-			this.cbstudy.Name = "cbstudy";
-			this.cbstudy.TabIndex = 7;
-			this.cbstudy.Text = "Study";
-			this.cbstudy.CheckedChanged += new System.EventHandler(this.SetRoomFlags);
-			// 
-			// tpraw
-			// 
-			this.tpraw.Controls.Add(this.rbhex);
-			this.tpraw.Controls.Add(this.rbdec);
-			this.tpraw.Controls.Add(this.rbbin);
-			this.tpraw.Controls.Add(this.pg);
-			this.tpraw.Location = new System.Drawing.Point(4, 22);
-			this.tpraw.Name = "tpraw";
-			this.tpraw.Size = new System.Drawing.Size(656, 158);
-			this.tpraw.TabIndex = 1;
-			this.tpraw.Text = "RAW Data";
-			// 
-			// rbhex
-			// 
-			this.rbhex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.rbhex.Location = new System.Drawing.Point(544, 16);
-			this.rbhex.Name = "rbhex";
-			this.rbhex.Size = new System.Drawing.Size(96, 16);
-			this.rbhex.TabIndex = 3;
-			this.rbhex.Text = "Hexadecimal";
-			this.rbhex.CheckedChanged += new System.EventHandler(this.DigitChanged);
-			// 
-			// rbdec
-			// 
-			this.rbdec.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.rbdec.Location = new System.Drawing.Point(464, 16);
-			this.rbdec.Name = "rbdec";
-			this.rbdec.Size = new System.Drawing.Size(72, 16);
-			this.rbdec.TabIndex = 2;
-			this.rbdec.Text = "Decimal";
-			this.rbdec.CheckedChanged += new System.EventHandler(this.DigitChanged);
-			// 
-			// rbbin
-			// 
-			this.rbbin.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.rbbin.Location = new System.Drawing.Point(392, 16);
-			this.rbbin.Name = "rbbin";
-			this.rbbin.Size = new System.Drawing.Size(64, 16);
-			this.rbbin.TabIndex = 1;
-			this.rbbin.Text = "Binary";
-			this.rbbin.CheckedChanged += new System.EventHandler(this.DigitChanged);
-			// 
-			// pg
-			// 
-			this.pg.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.pg.CommandsVisibleIfAvailable = true;
-			this.pg.HelpVisible = false;
-			this.pg.LargeButtons = false;
-			this.pg.LineColor = System.Drawing.SystemColors.ScrollBar;
-			this.pg.Location = new System.Drawing.Point(8, 8);
-			this.pg.Name = "pg";
-			this.pg.Size = new System.Drawing.Size(640, 144);
-			this.pg.TabIndex = 0;
-			this.pg.Text = "RAW Items";
-			this.pg.ViewBackColor = System.Drawing.SystemColors.Window;
-			this.pg.ViewForeColor = System.Drawing.SystemColors.WindowText;
-			this.pg.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.PropChanged);
-			// 
-			// tbtype
-			// 
-			this.tbtype.Location = new System.Drawing.Point(304, 104);
-			this.tbtype.Name = "tbtype";
-			this.tbtype.ReadOnly = true;
-			this.tbtype.Size = new System.Drawing.Size(72, 21);
-			this.tbtype.TabIndex = 25;
-			this.tbtype.Text = "";
-			// 
-			// cbtype
-			// 
-			this.cbtype.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbtype.Location = new System.Drawing.Point(88, 104);
-			this.cbtype.Name = "cbtype";
-			this.cbtype.Size = new System.Drawing.Size(208, 21);
-			this.cbtype.TabIndex = 24;
-			this.cbtype.SelectedIndexChanged += new System.EventHandler(this.ChangeType);
-			// 
-			// label63
-			// 
-			this.label63.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label63.AutoSize = true;
-			this.label63.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.label63.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label63.Location = new System.Drawing.Point(296, 40);
-			this.label63.Name = "label63";
-			this.label63.Size = new System.Drawing.Size(78, 17);
-			this.label63.TabIndex = 22;
-			this.label63.Text = "Orig. GUID:";
-			// 
-			// tbproxguid
-			// 
-			this.tbproxguid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tbproxguid.Location = new System.Drawing.Point(584, 32);
-			this.tbproxguid.Name = "tbproxguid";
-			this.tbproxguid.Size = new System.Drawing.Size(88, 21);
-			this.tbproxguid.TabIndex = 21;
-			this.tbproxguid.Text = "";
-			this.tbproxguid.TextChanged += new System.EventHandler(this.SetGuid);
-			// 
-			// label97
-			// 
-			this.label97.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.label97.AutoSize = true;
-			this.label97.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.label97.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label97.Location = new System.Drawing.Point(480, 40);
-			this.label97.Name = "label97";
-			this.label97.Size = new System.Drawing.Size(99, 17);
-			this.label97.TabIndex = 20;
-			this.label97.Text = "Fallback GUID:";
-			// 
-			// tborgguid
-			// 
-			this.tborgguid.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tborgguid.Location = new System.Drawing.Point(376, 32);
-			this.tborgguid.Name = "tborgguid";
-			this.tborgguid.Size = new System.Drawing.Size(88, 21);
-			this.tborgguid.TabIndex = 19;
-			this.tborgguid.Text = "";
-			this.tborgguid.TextChanged += new System.EventHandler(this.SetGuid);
-			// 
-			// llgetGUID
-			// 
-			this.llgetGUID.AutoSize = true;
-			this.llgetGUID.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.llgetGUID.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.llgetGUID.LinkArea = new System.Windows.Forms.LinkArea(0, 8);
-			this.llgetGUID.Location = new System.Drawing.Point(184, 41);
-			this.llgetGUID.Name = "llgetGUID";
-			this.llgetGUID.Size = new System.Drawing.Size(63, 17);
-			this.llgetGUID.TabIndex = 16;
-			this.llgetGUID.TabStop = true;
-			this.llgetGUID.Text = "get GUID";
-			this.llgetGUID.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.GetGuid);
-			// 
-			// llcommitobjd
-			// 
-			this.llcommitobjd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.llcommitobjd.AutoSize = true;
-			this.llcommitobjd.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.llcommitobjd.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.llcommitobjd.LinkArea = new System.Windows.Forms.LinkArea(0, 10);
-			this.llcommitobjd.Location = new System.Drawing.Point(619, 104);
-			this.llcommitobjd.Name = "llcommitobjd";
-			this.llcommitobjd.Size = new System.Drawing.Size(53, 17);
-			this.llcommitobjd.TabIndex = 14;
-			this.llcommitobjd.TabStop = true;
-			this.llcommitobjd.Text = "Commit";
-			this.llcommitobjd.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Commit);
-			// 
-			// label65
-			// 
-			this.label65.AutoSize = true;
-			this.label65.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.label65.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label65.Location = new System.Drawing.Point(14, 112);
-			this.label65.Name = "label65";
-			this.label65.Size = new System.Drawing.Size(69, 17);
-			this.label65.TabIndex = 12;
-			this.label65.Text = "Obj. Type:";
-			// 
-			// tbflname
-			// 
-			this.tbflname.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbflname.Location = new System.Drawing.Point(88, 80);
-			this.tbflname.Name = "tbflname";
-			this.tbflname.Size = new System.Drawing.Size(584, 21);
-			this.tbflname.TabIndex = 11;
-			this.tbflname.Text = "";
-			this.tbflname.TextChanged += new System.EventHandler(this.SetFlName);
-			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
-			this.label9.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.label9.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label9.Location = new System.Drawing.Point(16, 88);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(67, 17);
-			this.label9.TabIndex = 10;
-			this.label9.Text = "Filename:";
-			// 
-			// tbguid
-			// 
-			this.tbguid.Location = new System.Drawing.Point(88, 37);
-			this.tbguid.Name = "tbguid";
-			this.tbguid.Size = new System.Drawing.Size(88, 21);
-			this.tbguid.TabIndex = 9;
-			this.tbguid.Text = "";
-			this.tbguid.TextChanged += new System.EventHandler(this.SetGuid);
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.label8.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label8.Location = new System.Drawing.Point(40, 40);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(43, 17);
-			this.label8.TabIndex = 8;
-			this.label8.Text = "GUID:";
-			this.label8.Click += new System.EventHandler(this.label8_Click);
-			// 
-			// panel6
-			// 
-			this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel6.BackColor = System.Drawing.SystemColors.AppWorkspace;
-			this.panel6.Controls.Add(this.label12);
-			this.panel6.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-			this.panel6.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.panel6.Location = new System.Drawing.Point(0, 0);
-			this.panel6.Name = "panel6";
-			this.panel6.Size = new System.Drawing.Size(680, 24);
-			this.panel6.TabIndex = 0;
-			// 
-			// label12
-			// 
-			this.label12.AutoSize = true;
-			this.label12.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label12.Location = new System.Drawing.Point(0, 4);
-			this.label12.Name = "label12";
-			this.label12.Size = new System.Drawing.Size(145, 19);
-			this.label12.TabIndex = 0;
-			this.label12.Text = "Objekt Description";
-			// 
-			// linkLabel1
-			// 
-			this.linkLabel1.AutoSize = true;
-			this.linkLabel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.linkLabel1.LinkArea = new System.Windows.Forms.LinkArea(0, 6);
-			this.linkLabel1.Location = new System.Drawing.Point(88, 60);
-			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(177, 17);
-			this.linkLabel1.TabIndex = 27;
-			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "Update MMATs and commit";
-			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.UpdateMMAT);
-			// 
-			// cbcareer
-			// 
-			this.cbcareer.Location = new System.Drawing.Point(0, 0);
-			this.cbcareer.Name = "cbcareer";
-			this.cbcareer.TabIndex = 0;
-			this.cbcareer.CheckedChanged += new System.EventHandler(this.SetFunctionFlags);
-			// 
-			// ExtObjdForm
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(888, 350);
-			this.Controls.Add(this.pnobjd);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "ExtObjdForm";
-			this.Text = "ExtObjdForm";
-			this.pnobjd.ResumeLayout(false);
-			this.tc.ResumeLayout(false);
-			this.tpcatalogsort.ResumeLayout(false);
-			this.groupBox2.ResumeLayout(false);
-			this.groupBox1.ResumeLayout(false);
-			this.tpraw.ResumeLayout(false);
-			this.panel6.ResumeLayout(false);
+			this.label1.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label1.RightToLeft")));
+			this.label1.Size = ((System.Drawing.Size)(resources.GetObject("label1.Size")));
+			this.label1.TabIndex = ((int)(resources.GetObject("label1.TabIndex")));
+			this.label1.Text = resources.GetString("label1.Text");
+			this.label1.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label1.TextAlign")));
+			this.label1.Visible = ((bool)(resources.GetObject("label1.Visible")));
+			// 
+			// ObjdForm
+			// 
+			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
+			this.AccessibleName = resources.GetString("$this.AccessibleName");
+			this.AutoScaleBaseSize = ((System.Drawing.Size)(resources.GetObject("$this.AutoScaleBaseSize")));
+			this.AutoScroll = ((bool)(resources.GetObject("$this.AutoScroll")));
+			this.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMargin")));
+			this.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMinSize")));
+			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
+			this.ClientSize = ((System.Drawing.Size)(resources.GetObject("$this.ClientSize")));
+			this.Controls.Add(this.objdPanel);
+			this.Enabled = ((bool)(resources.GetObject("$this.Enabled")));
+			this.Font = ((System.Drawing.Font)(resources.GetObject("$this.Font")));
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("$this.ImeMode")));
+			this.Location = ((System.Drawing.Point)(resources.GetObject("$this.Location")));
+			this.MaximumSize = ((System.Drawing.Size)(resources.GetObject("$this.MaximumSize")));
+			this.MinimumSize = ((System.Drawing.Size)(resources.GetObject("$this.MinimumSize")));
+			this.Name = "ObjdForm";
+			this.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("$this.RightToLeft")));
+			this.StartPosition = ((System.Windows.Forms.FormStartPosition)(resources.GetObject("$this.StartPosition")));
+			this.Text = resources.GetString("$this.Text");
+			this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+			this.objdPanel.ResumeLayout(false);
+			this.pnHeading.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
 		#endregion
 
-		private void GetGuid(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void btnCommit_Clicked(object sender, System.EventArgs e)
 		{
-			Sims.GUID.GUIDGetterForm form = new Sims.GUID.GUIDGetterForm();
-			Registry reg = Helper.WindowsRegistry;
-
 			try 
 			{
-				uint guid = form.GetNewGUID(reg.Username, reg.Password, this.wrapper.Guid, this.tbflname.Text);
-
-				reg.Username = form.tbusername.Text;
-				reg.Password = form.tbpassword.Text;
-				this.tbguid.Text = "0x"+Helper.HexString(guid);				
+				wrapper.SynchronizeUserData();
+				btnCommit.Enabled = false;
 			} 
-			catch (Exception ex) {
-				if (Helper.DebugMode) Helper.ExceptionMessage("", ex);
-			}
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+			}		
 		}
 
-		private void ChangeType(object sender, System.EventArgs e)
+
+		private void tbFilename_TextChanged(object sender, System.EventArgs e)
 		{
-			if (this.Tag!=null) return;
-			this.Tag = true;
+			if (internalchg) return;
 
-			try 
-			{
-				if (cbtype.SelectedIndex<0) return;
-				Data.ObjectTypes ot = (Data.ObjectTypes)cbtype.Items[cbtype.SelectedIndex];
-				tbtype.Text = "0x"+Helper.HexString((ushort)ot);
-
-				wrapper.Type = ot;
-				wrapper.Changed = true;
-
-				if (this.pg.SelectedObject!=null) 
-				{
-					UpdateData();
-					ShowData();
-				}
-			} 
-			finally 
-			{
-				this.Tag = null;
-			}
+			internalchg = true;
+			wrapper.FileName = tbFilename.Text;
+			internalchg = false;
 		}
 
-		private void SetRoomFlags(object sender, System.EventArgs e)
+		private void tbFilename_Validated(object sender, System.EventArgs e)
 		{
-			if (this.Tag!=null) return;
-			this.Tag = true;
-
-			try 
-			{
-				wrapper.RoomSort.InBathroom = cbbathroom.Checked;
-				wrapper.RoomSort.InBedroom = cbbedroom.Checked;
-				wrapper.RoomSort.InDiningRoom = cbdinigroom.Checked;
-				wrapper.RoomSort.InKitchen = cbkitchen.Checked;
-				wrapper.RoomSort.InLivingRoom = cblivingroom.Checked;
-				wrapper.RoomSort.InMisc = cbmisc.Checked;
-				wrapper.RoomSort.InOutside = cboutside.Checked;
-				wrapper.RoomSort.InStudy = cbstudy.Checked;
-				wrapper.RoomSort.InKids = cbkids.Checked;
-
-				wrapper.Changed = true;				
-			}
-			finally 
-			{
-				this.Tag = null;
-			}
+			((TextBox)sender).SelectAll();
 		}
 
-		private void SetFunctionFlags(object sender, System.EventArgs e)
+
+		private void hex16_TextChanged(object sender, System.EventArgs ev)
 		{
-			if (this.Tag!=null) return;
-			this.Tag = true;
-
-			try 
-			{
-				wrapper.FunctionSort.InAppliances = this.cbappliances.Checked;
-				wrapper.FunctionSort.InDecorative = this.cbdecorative.Checked;
-				wrapper.FunctionSort.InElectronics = this.cbelectronics.Checked;
-				wrapper.FunctionSort.InGeneral = this.cbgeneral.Checked;
-				wrapper.FunctionSort.InLighting = this.cblightning.Checked;
-				wrapper.FunctionSort.InPlumbing = this.cbplumbing.Checked;
-				wrapper.FunctionSort.InSeating = this.cbseating.Checked;
-				wrapper.FunctionSort.InSurfaces = this.cbsurfaces.Checked;
-				wrapper.FunctionSort.InHobbies = this.cbhobby.Checked;
-				wrapper.FunctionSort.InAspirationRewards = this.cbaspiration.Checked;
-				wrapper.FunctionSort.InCareerRewards = this.cbcareer.Checked;
-
-				wrapper.Changed = true;
-			} 
-			finally 
-			{
-				this.Tag = null;
-			}
+			if (internalchg) return;
+			if (!hex16_IsValid(sender)) return;
+			UpdateBconItem_Value(Convert.ToInt16(((TextBox)sender).Text, 16), false, true);
 		}
 
-		private void SetGuid(object sender, System.EventArgs e)
+		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			if (this.Tag!=null) return;
-			this.Tag = true;
-
-			try 
-			{
-				wrapper.Guid = Convert.ToUInt32(tbguid.Text, 16);
-				wrapper.ProxyGuid = Convert.ToUInt32(this.tbproxguid.Text, 16);
-				wrapper.OriginalGuid = Convert.ToUInt32(this.tborgguid.Text, 16);
-				wrapper.Changed = true;
-			} 
-			catch (Exception){}
-			finally 
-			{
-				this.Tag = null;
-			}
+			if (hex16_IsValid(sender)) return;
+			e.Cancel = true;
+			hex16_Validated(sender, null);
 		}
 
-		private void Commit(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{	
-			if (this.pg.SelectedObject!=null) UpdateData();
-			wrapper.SynchronizeUserData();
-		}
-
-		private void UpdateMMAT(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+		private void hex16_Validated(object sender, System.EventArgs e)
 		{
-			if ((wrapper.Guid!=initialguid) || (cball.Checked))
-			{
-				SimPe.Plugin.FixGuid fg = new SimPe.Plugin.FixGuid(wrapper.Package);
-				if (cball.Checked) 
-				{
-					fg.FixGuids(wrapper.Guid);
-				} 
-				else 
-				{
-					ArrayList al = new ArrayList();
-					SimPe.Plugin.GuidSet gs = new SimPe.Plugin.GuidSet();
-					gs.oldguid = initialguid;
-					gs.guid = wrapper.Guid;
-					al.Add(gs);
-
-					fg.FixGuids(al);
-				}
-				initialguid = wrapper.Guid;
-			}
-
-			wrapper.SynchronizeUserData();
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + Helper.HexString((short)currentItem);
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
-		private void CangedTab(object sender, System.EventArgs e)
-		{
-			if (tc.SelectedTab == tpraw)
-			{
-				rbhex.Checked = (Ambertation.BaseChangeableNumber.DigitBase==16);
-				rbbin.Checked = (Ambertation.BaseChangeableNumber.DigitBase==2);
-				rbdec.Checked = (!rbhex.Checked && !rbbin.Checked);
 
-				//if (this.pg.SelectedObject==null) 
-					ShowData();
-			} 
-			else 
-			{
-				if (this.pg.SelectedObject!=null) UpdateData();
-				this.pg.SelectedObject = null;
-			}
+		private void dec16_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!dec16_IsValid(sender)) return;
+			UpdateBconItem_Value(Convert.ToInt16(((TextBox)sender).Text, 10), true, false);
 		}
 
-		private void PropChanged(object s, System.Windows.Forms.PropertyValueChangedEventArgs e)
+		private void dec16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
-			propchanged = true;
+			if (dec16_IsValid(sender)) return;
+			e.Cancel = true;
+			dec16_Validated(sender, null);
 		}
 
-		private void SetFlName(object sender, System.EventArgs e)
+		private void dec16_Validated(object sender, System.EventArgs e)
 		{
-			if (this.Tag!=null) return;
-			wrapper.FileName = tbflname.Text;
-			wrapper.Changed = true;
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = currentItem.ToString();
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
 		}
 
-		private void DigitChanged(object sender, System.EventArgs e)
+
+		private void btnCancel_Click(object sender, System.EventArgs e)
 		{
-			if (rbhex.Checked) Ambertation.BaseChangeableNumber.DigitBase = 16;
-			else if (rbbin.Checked) Ambertation.BaseChangeableNumber.DigitBase = 2;			
-			else Ambertation.BaseChangeableNumber.DigitBase = 10;
-
-			this.pg.Refresh();		
-		}
-
-		private void label8_Click(object sender, System.EventArgs e)
-		{
-			SimPe.Data.ObjectTypes[] ts = (SimPe.Data.ObjectTypes[])System.Enum.GetValues(typeof(SimPe.Data.ObjectTypes));
-			System.IO.StreamWriter sw = System.IO.File.CreateText(@"h:\objd.xml");
-			Hashtable have = new Hashtable();
-			try
-			{
-				sw.WriteLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-				sw.WriteLine("<properties xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:noNamespaceSchemaLocation=\"propertydefinition.xsd\">");
-				foreach (SimPe.Data.ObjectTypes t in ts)
-				{
-					names = wrapper.Opcodes.OBJDDescription((ushort)t);
-					for (int i=0; i<names.Count; i++)
-					{
-						string k = (string)names[i];
-						string cont = (string)have[k.Trim().ToLower()];
-						if (cont==null) 
-						{					
-							cont += "<property type=\"short\">" + Helper.lbr;
-							cont += "    <name>"+k.Trim()+"</name>" + Helper.lbr;
-							cont += "    <help>"+k.Trim()+"</help>" + Helper.lbr;
-							cont += "    <default>0</default>" + Helper.lbr;
-							if (k.Trim().ToLower().IndexOf("read_only")!=-1 || k.Trim().ToLower().IndexOf("readonly")!=-1 || k.Trim().ToLower().IndexOf("read only")!=-1) 
-								cont += "    <readonly />" + Helper.lbr;
-						}
-						cont += "    <index type=\""+((ushort)t).ToString()+"\">"+i.ToString()+"</index>" + Helper.lbr;						
-
-						have[k.Trim().ToLower()] = cont;
-					}
-				}
-
-				foreach (string v in have.Values)
-				{
-					sw.Write(v);
-					sw.WriteLine("</property>");
-				}
-				sw.WriteLine("</properties>");
-			} 
-			finally 
-			{
-				sw.Close();
-			}
-		}
-
-		private void cbsort_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if (Tag!=null) return;
-			this.Tag = true;
-			wrapper.FunctionSubSort = (Data.ObjFunctionSubSort)cbsort.SelectedValue;
-			wrapper.Changed = true;
-			this.SetFunctionCb(wrapper);
-			this.Tag = null;
+			UpdateBconItem_Value((short)origItem, true, true);
 		}
 
 	}
+
 }
