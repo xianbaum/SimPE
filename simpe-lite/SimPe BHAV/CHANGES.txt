@@ -1,4 +1,14 @@
 
+11 December 2005 14:42 - OBJD: Remove even more working code (abandonned)
+  SimPe BHAV\
+    BconForm.cs 1.8.2.1
+    ObjdForm.cs 1.1.2.2
+    ObjdForm.resx 1.1.2.2
+    ObjdWrapper.cs 1.1.2.2
+    TrcnForm.cs 1.5.2.1
+    TrcnForm.cs 1.3.2.1
+    WrapperFactory.cs 1.17.2.1
+
 10 December 2005 17:52 - OBJD: Start rewriting Quaxi's code (NB: does not work)
   SimPe BHAV\
     .cvsignore 1.4.6.1
