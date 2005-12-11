@@ -34,7 +34,6 @@ namespace SimPe.Plugin
 	/// </remarks>
 	public class WrapperFactory : AbstractWrapperFactory
 	{
-		#region AbstractWrapperFactory Member
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
 		/// </summary>
@@ -51,7 +50,6 @@ namespace SimPe.Plugin
 										  ,new Trcn()
 										  ,new Ttab()
 #if DEBUG
-										  ,new PjseObjd(LinkedProvider.OpcodeProvider)
 										  ,new Glob()
 #endif
 									  };
@@ -59,7 +57,6 @@ namespace SimPe.Plugin
 			}
 		}
 
-		#endregion
 	}
 
 }

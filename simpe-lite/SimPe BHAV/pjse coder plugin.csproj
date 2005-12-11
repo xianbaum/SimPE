@@ -363,21 +363,6 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "PjseObjdForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "PjseObjdForm.resx"
-                    DependentUpon = "PjseObjdForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "PjseObjdWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
                     RelPath = "ResourceChooser.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
