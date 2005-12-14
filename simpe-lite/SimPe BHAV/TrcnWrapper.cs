@@ -274,16 +274,6 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public TrcnItem ByID(uint id)
-		{
-			foreach(TrcnItem ti in items)
-				if (ti.ConstId == id)
-					return ti;
-			return null;
-		}
-
-		public TrcnItem ByID(int id) { return ByID((uint)id); }
-
 		public bool Contains(TrcnItem item) { return items.Contains(item); }
 
 		public int IndexOf(object item) { return items.IndexOf(item); }

@@ -290,7 +290,7 @@ namespace pjse
 				if (items != null && items.Length != 0)
 				{
 					Trcn trcn = bcon.TrcnResource;
-					if (trcn != null && trcn.ByID(bid) != null) label = trcn.ByID(bid).ConstName;
+					if (trcn != null && bid < trcn.Count) label = trcn[bid].ConstName;
 				}
 			}
 

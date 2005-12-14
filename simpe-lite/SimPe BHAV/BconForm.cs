@@ -135,13 +135,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			string cID = "0x" + i.ToString("X");
 			string cValue = "0x" + SimPe.Helper.HexString(wrapper[i]);
-			string cLabel = "";
-			if (wrapper.TrcnResource != null)
-			{
-				TrcnItem ti = wrapper.TrcnResource.ByID(i);
-				if (ti != null)
-					cLabel = ti.ConstName;
-			}
+			string cLabel = (wrapper.TrcnResource != null && i < wrapper.TrcnResource.Count) ? wrapper.TrcnResource[i].ConstName : "";
 			string[] v = { cID, cValue, cLabel };
 			return new ListViewItem(v);
 		}
@@ -758,7 +752,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbValueDec.Text = currentItem.ToString();
 				this.tbValueDec.Enabled = true;
 
-				this.btnStrAdd.Enabled = true;
+				this.btnStrDelete.Enabled = true;
 			}
 			else
 			{
