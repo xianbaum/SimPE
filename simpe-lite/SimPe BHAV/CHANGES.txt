@@ -1,4 +1,13 @@
 
+14 December 2005 22:09 - Ignore "ID" in TRCN, just use line number (Maxoid Monkey strikes back)
+  SimPe BHAV\
+    BconForm.cs 1.9
+    BconForm.resx 1.4
+    BhavWiz.cs 1.33
+    TrcnForm.cs 1.6
+    TrcnForm.resx 1.4
+    TrcnWrapper.cs 1.7
+
 11 December 2005 14:47 - Drop OBJD from PJSE scope
   SimPe BHAV\
     pjse coder plugin.csproj 1.27
