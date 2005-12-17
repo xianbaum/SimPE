@@ -162,7 +162,7 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			int countflag = items.Count & (flag ? 0x8000 : 0x0000);
+			int countflag = items.Count | (flag ? 0x8000 : 0x0000);
 			writer.Write((ushort)countflag);
 
 			foreach(short v in items)
