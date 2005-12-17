@@ -41,10 +41,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ListView lvConstants;
 		private System.Windows.Forms.Panel pnHeading;
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
-		private System.Windows.Forms.TextBox tbFlag;
 		private System.Windows.Forms.TextBox tbValueHex;
 		private System.Windows.Forms.TextBox tbValueDec;
 		private System.Windows.Forms.ColumnHeader chID;
@@ -196,7 +194,6 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
-				this.tbFlag.Text = "0x" + SimPe.Helper.HexString(wrapper.Flag);
 				internalchg = false;
 			}
 			else if (sender is short)
@@ -218,8 +215,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
-			this.label3 = new System.Windows.Forms.Label();
-			this.tbFlag = new System.Windows.Forms.TextBox();
 			this.tbValueDec = new System.Windows.Forms.TextBox();
 			this.tbValueHex = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
@@ -333,56 +328,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
 			this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
 			this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
-			// 
-			// label3
-			// 
-			this.label3.AccessibleDescription = resources.GetString("label3.AccessibleDescription");
-			this.label3.AccessibleName = resources.GetString("label3.AccessibleName");
-			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label3.Anchor")));
-			this.label3.AutoSize = ((bool)(resources.GetObject("label3.AutoSize")));
-			this.label3.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label3.Dock")));
-			this.label3.Enabled = ((bool)(resources.GetObject("label3.Enabled")));
-			this.label3.Font = ((System.Drawing.Font)(resources.GetObject("label3.Font")));
-			this.label3.Image = ((System.Drawing.Image)(resources.GetObject("label3.Image")));
-			this.label3.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label3.ImageAlign")));
-			this.label3.ImageIndex = ((int)(resources.GetObject("label3.ImageIndex")));
-			this.label3.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label3.ImeMode")));
-			this.label3.Location = ((System.Drawing.Point)(resources.GetObject("label3.Location")));
-			this.label3.Name = "label3";
-			this.label3.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label3.RightToLeft")));
-			this.label3.Size = ((System.Drawing.Size)(resources.GetObject("label3.Size")));
-			this.label3.TabIndex = ((int)(resources.GetObject("label3.TabIndex")));
-			this.label3.Text = resources.GetString("label3.Text");
-			this.label3.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label3.TextAlign")));
-			this.label3.Visible = ((bool)(resources.GetObject("label3.Visible")));
-			// 
-			// tbFlag
-			// 
-			this.tbFlag.AccessibleDescription = resources.GetString("tbFlag.AccessibleDescription");
-			this.tbFlag.AccessibleName = resources.GetString("tbFlag.AccessibleName");
-			this.tbFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("tbFlag.Anchor")));
-			this.tbFlag.AutoSize = ((bool)(resources.GetObject("tbFlag.AutoSize")));
-			this.tbFlag.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tbFlag.BackgroundImage")));
-			this.tbFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tbFlag.Dock")));
-			this.tbFlag.Enabled = ((bool)(resources.GetObject("tbFlag.Enabled")));
-			this.tbFlag.Font = ((System.Drawing.Font)(resources.GetObject("tbFlag.Font")));
-			this.tbFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("tbFlag.ImeMode")));
-			this.tbFlag.Location = ((System.Drawing.Point)(resources.GetObject("tbFlag.Location")));
-			this.tbFlag.MaxLength = ((int)(resources.GetObject("tbFlag.MaxLength")));
-			this.tbFlag.Multiline = ((bool)(resources.GetObject("tbFlag.Multiline")));
-			this.tbFlag.Name = "tbFlag";
-			this.tbFlag.PasswordChar = ((char)(resources.GetObject("tbFlag.PasswordChar")));
-			this.tbFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("tbFlag.RightToLeft")));
-			this.tbFlag.ScrollBars = ((System.Windows.Forms.ScrollBars)(resources.GetObject("tbFlag.ScrollBars")));
-			this.tbFlag.Size = ((System.Drawing.Size)(resources.GetObject("tbFlag.Size")));
-			this.tbFlag.TabIndex = ((int)(resources.GetObject("tbFlag.TabIndex")));
-			this.tbFlag.Text = resources.GetString("tbFlag.Text");
-			this.tbFlag.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFlag.TextAlign")));
-			this.tbFlag.Visible = ((bool)(resources.GetObject("tbFlag.Visible")));
-			this.tbFlag.WordWrap = ((bool)(resources.GetObject("tbFlag.WordWrap")));
-			this.tbFlag.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbFlag.Validated += new System.EventHandler(this.hex8_Validated);
-			this.tbFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// tbValueDec
 			// 
@@ -526,8 +471,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bconPanel.Controls.Add(this.lbFilename);
 			this.bconPanel.Controls.Add(this.tbFilename);
 			this.bconPanel.Controls.Add(this.gbValue);
-			this.bconPanel.Controls.Add(this.tbFlag);
-			this.bconPanel.Controls.Add(this.label3);
 			this.bconPanel.Controls.Add(this.pnHeading);
 			this.bconPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("bconPanel.Dock")));
 			this.bconPanel.Enabled = ((bool)(resources.GetObject("bconPanel.Enabled")));
@@ -827,33 +770,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private void tbFilename_Validated(object sender, System.EventArgs e)
 		{
 			((TextBox)sender).SelectAll();
-		}
-
-
-		private void hex8_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!hex8_IsValid(sender)) return;
-
-			internalchg = true;
-			wrapper.Flag = Convert.ToByte(tbFlag.Text, 16);
-			internalchg = false;
-		}
-
-		private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (hex8_IsValid(sender)) return;
-			e.Cancel = true;
-			hex8_Validated(sender, null);
-		}
-
-		private void hex8_Validated(object sender, System.EventArgs e)
-		{
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(wrapper.Flag);
-			((TextBox)sender).SelectAll();
-			internalchg = origstate;
 		}
 
 

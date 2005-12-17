@@ -44,10 +44,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		private byte[] filename = new byte[64];	
 		/// <summary>
-		/// Just A Flag
-		/// </summary>
-		private byte flag = 0x00;
-		/// <summary>
 		/// Contains all available Constants 
 		/// </summary>		
 		private ArrayList items = new ArrayList();
@@ -70,22 +66,6 @@ namespace SimPe.PackedFiles.Wrapper
 				if (!Helper.ToString(filename).Equals(value))
 				{
 					filename = Helper.ToBytes(value, 0x40);
-					OnWrapperChanged(this, new EventArgs());
-				}
-			}
-		}
-
-		/// <summary>
-		/// Returns /Sets the Flag
-		/// </summary>
-		public byte Flag 
-		{
-			get { return flag;	}			
-			set
-			{
-				if (flag != value)
-				{
-					flag = value;
 					OnWrapperChanged(this, new EventArgs());
 				}
 			}
@@ -162,8 +142,7 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			writer.Write((byte)items.Count);
-			writer.Write(flag);					
+			writer.Write((short)items.Count);
 
 			foreach(short v in items)
 				writer.Write(v);
@@ -175,8 +154,7 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
 			filename = reader.ReadBytes(64);
-			int length = reader.ReadByte();
-			flag = reader.ReadByte();							
+			short length = reader.ReadInt16();
  
 			short[] bi = new short[length];
 			items = new ArrayList(bi);
@@ -219,7 +197,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region ICollection Members
 		public int Add(short item)
 		{
-			if (items.Count >= 0x80) // only allow 128 lines, as that's all a dataOwner can reference
+			if (items.Count >= 0x10000) // The count in the wrapper is two bytes
 				return -1;
 
 			//item.Parent = this;
