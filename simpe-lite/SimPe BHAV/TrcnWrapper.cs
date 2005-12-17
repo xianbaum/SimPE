@@ -232,7 +232,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region ICollection Members
 		public int Add(TrcnItem item)
 		{
-			if (items.Count >= 0x10000) // Allow for two-byte count in BCON wrapper
+			if (items.Count >= 0x8000) // Allow for two-byte count (less flag) in BCON wrapper
 				return -1;
 
 			item.Parent = this;

@@ -44,6 +44,10 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		private byte[] filename = new byte[64];	
 		/// <summary>
+		/// Just A Flag
+		/// </summary>
+		private bool flag = false;
+		/// <summary>
 		/// Contains all available Constants 
 		/// </summary>		
 		private ArrayList items = new ArrayList();
@@ -66,6 +70,22 @@ namespace SimPe.PackedFiles.Wrapper
 				if (!Helper.ToString(filename).Equals(value))
 				{
 					filename = Helper.ToBytes(value, 0x40);
+					OnWrapperChanged(this, new EventArgs());
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns /Sets the Flag
+		/// </summary>
+		public bool Flag 
+		{
+			get { return flag;	}			
+			set
+			{
+				if (flag != value)
+				{
+					flag = value;
 					OnWrapperChanged(this, new EventArgs());
 				}
 			}
@@ -142,7 +162,8 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(filename);
-			writer.Write((short)items.Count);
+			int countflag = items.Count & (flag ? 0x8000 : 0x0000);
+			writer.Write((ushort)countflag);
 
 			foreach(short v in items)
 				writer.Write(v);
@@ -154,7 +175,9 @@ namespace SimPe.PackedFiles.Wrapper
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
 			filename = reader.ReadBytes(64);
-			short length = reader.ReadInt16();
+			ushort countflag = reader.ReadUInt16();
+			flag = (countflag & 0x8000) != 0;
+			int length = countflag & 0x7fff;
  
 			short[] bi = new short[length];
 			items = new ArrayList(bi);
@@ -197,7 +220,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region ICollection Members
 		public int Add(short item)
 		{
-			if (items.Count >= 0x10000) // The count in the wrapper is two bytes
+			if (items.Count >= 0x8000) // two bytes less top bit
 				return -1;
 
 			//item.Parent = this;

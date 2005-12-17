@@ -53,6 +53,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbFilename;
 		private System.Windows.Forms.GroupBox gbValue;
 		private System.Windows.Forms.Button btnCancel;
+		private System.Windows.Forms.CheckBox cbFlag;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -93,13 +94,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private bool setHandler = false;
 		private short origItem = 0;
 		private short currentItem = 0;
-
-		private bool hex8_IsValid(object sender)
-		{
-			try { Convert.ToByte(((TextBox)sender).Text, 16); }
-			catch (Exception) { return false; }
-			return true;
-		}
 
 		private bool hex16_IsValid(object sender)
 		{
@@ -194,6 +188,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
+				this.cbFlag.Checked = wrapper.Flag;
 				internalchg = false;
 			}
 			else if (sender is short)
@@ -229,6 +224,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.chValue = new System.Windows.Forms.ColumnHeader();
 			this.chLabel = new System.Windows.Forms.ColumnHeader();
 			this.btnCommit = new System.Windows.Forms.Button();
+			this.cbFlag = new System.Windows.Forms.CheckBox();
 			this.pnHeading.SuspendLayout();
 			this.gbValue.SuspendLayout();
 			this.bconPanel.SuspendLayout();
@@ -463,6 +459,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bconPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("bconPanel.AutoScrollMinSize")));
 			this.bconPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.bconPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bconPanel.BackgroundImage")));
+			this.bconPanel.Controls.Add(this.cbFlag);
 			this.bconPanel.Controls.Add(this.btnCancel);
 			this.bconPanel.Controls.Add(this.btnStrDelete);
 			this.bconPanel.Controls.Add(this.btnStrAdd);
@@ -630,6 +627,32 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnCommit.TextAlign")));
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
 			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
+			// 
+			// cbFlag
+			// 
+			this.cbFlag.AccessibleDescription = resources.GetString("cbFlag.AccessibleDescription");
+			this.cbFlag.AccessibleName = resources.GetString("cbFlag.AccessibleName");
+			this.cbFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbFlag.Anchor")));
+			this.cbFlag.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("cbFlag.Appearance")));
+			this.cbFlag.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbFlag.BackgroundImage")));
+			this.cbFlag.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.CheckAlign")));
+			this.cbFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbFlag.Dock")));
+			this.cbFlag.Enabled = ((bool)(resources.GetObject("cbFlag.Enabled")));
+			this.cbFlag.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("cbFlag.FlatStyle")));
+			this.cbFlag.Font = ((System.Drawing.Font)(resources.GetObject("cbFlag.Font")));
+			this.cbFlag.Image = ((System.Drawing.Image)(resources.GetObject("cbFlag.Image")));
+			this.cbFlag.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.ImageAlign")));
+			this.cbFlag.ImageIndex = ((int)(resources.GetObject("cbFlag.ImageIndex")));
+			this.cbFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbFlag.ImeMode")));
+			this.cbFlag.Location = ((System.Drawing.Point)(resources.GetObject("cbFlag.Location")));
+			this.cbFlag.Name = "cbFlag";
+			this.cbFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbFlag.RightToLeft")));
+			this.cbFlag.Size = ((System.Drawing.Size)(resources.GetObject("cbFlag.Size")));
+			this.cbFlag.TabIndex = ((int)(resources.GetObject("cbFlag.TabIndex")));
+			this.cbFlag.Text = resources.GetString("cbFlag.Text");
+			this.cbFlag.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.TextAlign")));
+			this.cbFlag.Visible = ((bool)(resources.GetObject("cbFlag.Visible")));
+			this.cbFlag.CheckedChanged += new System.EventHandler(this.cbFlag_CheckedChanged);
 			// 
 			// BconForm
 			// 
@@ -818,6 +841,15 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).Text = currentItem.ToString();
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
+		}
+
+
+		private void cbFlag_CheckedChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+			internalchg = true;
+			wrapper.Flag = ((CheckBox)sender).Checked;
+			internalchg = false;
 		}
 
 
