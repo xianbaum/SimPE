@@ -1,4 +1,11 @@
 
+17 December 2005 12:02 - BCON/TRCN: fix for syberspunk re Global BCON 0x0100
+  SimPe BHAV\
+    BconForm.cs 1.10
+    BconForm.resx 1.5
+    BconWrapper.cs 1.8
+    TrcnWrapper.cs 1.8
+
 14 December 2005 22:09 - Ignore "ID" in TRCN, just use line number (Maxoid Monkey strikes back)
   SimPe BHAV\
     BconForm.cs 1.9
