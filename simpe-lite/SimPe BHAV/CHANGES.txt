@@ -1,4 +1,8 @@
 
+17 December 2005 13:47 - BCON/TRCN: oops!  AND != OR
+  SimPe BHAV\
+    BconWrapper.cs 1.10
+
 17 December 2005 13:22 - BCON/TRCN: better fix - keep the flag bit
   SimPe BHAV\
     BconForm.cs 1.11
