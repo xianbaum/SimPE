@@ -1,4 +1,11 @@
 
+17 December 2005 13:22 - BCON/TRCN: better fix - keep the flag bit
+  SimPe BHAV\
+    BconForm.cs 1.11
+    BconForm.resx 1.6
+    BconWrapper.cs 1.9
+    TrcnWrapper.cs 1.9
+
 17 December 2005 12:02 - BCON/TRCN: fix for syberspunk re Global BCON 0x0100
   SimPe BHAV\
     BconForm.cs 1.10
