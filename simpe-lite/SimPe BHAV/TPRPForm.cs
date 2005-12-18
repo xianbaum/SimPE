@@ -49,10 +49,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tpParams;
 		private System.Windows.Forms.TabPage tpLocals;
-		private System.Windows.Forms.ListBox lbParams;
-		private System.Windows.Forms.ListBox lbLocals;
 		private System.Windows.Forms.Panel tprpPanel;
 		private System.Windows.Forms.TextBox tbVersion;
+		private System.Windows.Forms.ListView lvParams;
+		private System.Windows.Forms.ListView lvLocals;
+		private System.Windows.Forms.ColumnHeader chPID;
+		private System.Windows.Forms.ColumnHeader chPLabel;
+		private System.Windows.Forms.ColumnHeader chLID;
+		private System.Windows.Forms.ColumnHeader chLLabel;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -108,9 +112,18 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private ListBox lbCurrent
+		private ListView lvCurrent
 		{
-			get { return (ListBox)((tabControl1.SelectedIndex == 0) ? lbParams : lbLocals); }
+			get { return (ListView)((tabControl1.SelectedIndex != 0) ? lvLocals : lvParams); }
+		}
+
+		private ListViewItem For(int n, TPRPItem item)
+		{
+			string[] s = {
+							 "0x" + n.ToString("X")
+							 , item.Label
+						 };
+			return new ListViewItem(s);
 		}
 
 		#endregion
@@ -142,11 +155,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 			internalchg = true;
 
+			lvParams.Items.Clear();
+			lvLocals.Items.Clear();
 			foreach (TPRPItem item in wrapper)
-				if (item is TPRPParamLabel)
-					this.lbParams.Items.Add(item);
+				if (item is TPRPLocalLabel)
+					this.lvParams.Items.Add(For(lvLocals.Items.Count, item));
 				else
-					this.lbLocals.Items.Add(item);
+					this.lvLocals.Items.Add(For(lvParams.Items.Count, item));
 
 			internalchg = false;
 
@@ -169,6 +184,8 @@ namespace SimPe.PackedFiles.UserInterface
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
 				this.tbVersion.Text = "0x" + SimPe.Helper.HexString(wrapper.Version);
+				this.tpParams.Text = "Params (" + wrapper.BhavParamCount + ")";
+				this.tpLocals.Text = "Locals (" + wrapper.BhavLocalCount + ")";
 				internalchg = false;
 			}
 			else if (sender.Equals(currentItem))
@@ -192,9 +209,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tprpPanel = new System.Windows.Forms.Panel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpParams = new System.Windows.Forms.TabPage();
-			this.lbParams = new System.Windows.Forms.ListBox();
 			this.tpLocals = new System.Windows.Forms.TabPage();
-			this.lbLocals = new System.Windows.Forms.ListBox();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.tbLabel = new System.Windows.Forms.TextBox();
 			this.btnStrDelete = new System.Windows.Forms.Button();
@@ -204,6 +219,12 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
+			this.lvParams = new System.Windows.Forms.ListView();
+			this.lvLocals = new System.Windows.Forms.ListView();
+			this.chPID = new System.Windows.Forms.ColumnHeader();
+			this.chPLabel = new System.Windows.Forms.ColumnHeader();
+			this.chLID = new System.Windows.Forms.ColumnHeader();
+			this.chLLabel = new System.Windows.Forms.ColumnHeader();
 			this.pnHeading.SuspendLayout();
 			this.tprpPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -352,7 +373,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpParams.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("tpParams.AutoScrollMargin")));
 			this.tpParams.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("tpParams.AutoScrollMinSize")));
 			this.tpParams.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tpParams.BackgroundImage")));
-			this.tpParams.Controls.Add(this.lbParams);
+			this.tpParams.Controls.Add(this.lvParams);
 			this.tpParams.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tpParams.Dock")));
 			this.tpParams.Enabled = ((bool)(resources.GetObject("tpParams.Enabled")));
 			this.tpParams.Font = ((System.Drawing.Font)(resources.GetObject("tpParams.Font")));
@@ -367,30 +388,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpParams.ToolTipText = resources.GetString("tpParams.ToolTipText");
 			this.tpParams.Visible = ((bool)(resources.GetObject("tpParams.Visible")));
 			// 
-			// lbParams
-			// 
-			this.lbParams.AccessibleDescription = resources.GetString("lbParams.AccessibleDescription");
-			this.lbParams.AccessibleName = resources.GetString("lbParams.AccessibleName");
-			this.lbParams.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbParams.Anchor")));
-			this.lbParams.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lbParams.BackgroundImage")));
-			this.lbParams.ColumnWidth = ((int)(resources.GetObject("lbParams.ColumnWidth")));
-			this.lbParams.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbParams.Dock")));
-			this.lbParams.Enabled = ((bool)(resources.GetObject("lbParams.Enabled")));
-			this.lbParams.Font = ((System.Drawing.Font)(resources.GetObject("lbParams.Font")));
-			this.lbParams.HorizontalExtent = ((int)(resources.GetObject("lbParams.HorizontalExtent")));
-			this.lbParams.HorizontalScrollbar = ((bool)(resources.GetObject("lbParams.HorizontalScrollbar")));
-			this.lbParams.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbParams.ImeMode")));
-			this.lbParams.IntegralHeight = ((bool)(resources.GetObject("lbParams.IntegralHeight")));
-			this.lbParams.ItemHeight = ((int)(resources.GetObject("lbParams.ItemHeight")));
-			this.lbParams.Location = ((System.Drawing.Point)(resources.GetObject("lbParams.Location")));
-			this.lbParams.Name = "lbParams";
-			this.lbParams.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbParams.RightToLeft")));
-			this.lbParams.ScrollAlwaysVisible = ((bool)(resources.GetObject("lbParams.ScrollAlwaysVisible")));
-			this.lbParams.Size = ((System.Drawing.Size)(resources.GetObject("lbParams.Size")));
-			this.lbParams.TabIndex = ((int)(resources.GetObject("lbParams.TabIndex")));
-			this.lbParams.Visible = ((bool)(resources.GetObject("lbParams.Visible")));
-			this.lbParams.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
-			// 
 			// tpLocals
 			// 
 			this.tpLocals.AccessibleDescription = resources.GetString("tpLocals.AccessibleDescription");
@@ -400,7 +397,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpLocals.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("tpLocals.AutoScrollMargin")));
 			this.tpLocals.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("tpLocals.AutoScrollMinSize")));
 			this.tpLocals.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tpLocals.BackgroundImage")));
-			this.tpLocals.Controls.Add(this.lbLocals);
+			this.tpLocals.Controls.Add(this.lvLocals);
 			this.tpLocals.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("tpLocals.Dock")));
 			this.tpLocals.Enabled = ((bool)(resources.GetObject("tpLocals.Enabled")));
 			this.tpLocals.Font = ((System.Drawing.Font)(resources.GetObject("tpLocals.Font")));
@@ -414,30 +411,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpLocals.Text = resources.GetString("tpLocals.Text");
 			this.tpLocals.ToolTipText = resources.GetString("tpLocals.ToolTipText");
 			this.tpLocals.Visible = ((bool)(resources.GetObject("tpLocals.Visible")));
-			// 
-			// lbLocals
-			// 
-			this.lbLocals.AccessibleDescription = resources.GetString("lbLocals.AccessibleDescription");
-			this.lbLocals.AccessibleName = resources.GetString("lbLocals.AccessibleName");
-			this.lbLocals.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbLocals.Anchor")));
-			this.lbLocals.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lbLocals.BackgroundImage")));
-			this.lbLocals.ColumnWidth = ((int)(resources.GetObject("lbLocals.ColumnWidth")));
-			this.lbLocals.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbLocals.Dock")));
-			this.lbLocals.Enabled = ((bool)(resources.GetObject("lbLocals.Enabled")));
-			this.lbLocals.Font = ((System.Drawing.Font)(resources.GetObject("lbLocals.Font")));
-			this.lbLocals.HorizontalExtent = ((int)(resources.GetObject("lbLocals.HorizontalExtent")));
-			this.lbLocals.HorizontalScrollbar = ((bool)(resources.GetObject("lbLocals.HorizontalScrollbar")));
-			this.lbLocals.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbLocals.ImeMode")));
-			this.lbLocals.IntegralHeight = ((bool)(resources.GetObject("lbLocals.IntegralHeight")));
-			this.lbLocals.ItemHeight = ((int)(resources.GetObject("lbLocals.ItemHeight")));
-			this.lbLocals.Location = ((System.Drawing.Point)(resources.GetObject("lbLocals.Location")));
-			this.lbLocals.Name = "lbLocals";
-			this.lbLocals.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbLocals.RightToLeft")));
-			this.lbLocals.ScrollAlwaysVisible = ((bool)(resources.GetObject("lbLocals.ScrollAlwaysVisible")));
-			this.lbLocals.Size = ((System.Drawing.Size)(resources.GetObject("lbLocals.Size")));
-			this.lbLocals.TabIndex = ((int)(resources.GetObject("lbLocals.TabIndex")));
-			this.lbLocals.Visible = ((bool)(resources.GetObject("lbLocals.Visible")));
-			this.lbLocals.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
 			// 
 			// btnCancel
 			// 
@@ -660,6 +633,88 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
 			// 
+			// lvParams
+			// 
+			this.lvParams.AccessibleDescription = resources.GetString("lvParams.AccessibleDescription");
+			this.lvParams.AccessibleName = resources.GetString("lvParams.AccessibleName");
+			this.lvParams.Alignment = ((System.Windows.Forms.ListViewAlignment)(resources.GetObject("lvParams.Alignment")));
+			this.lvParams.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvParams.Anchor")));
+			this.lvParams.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvParams.BackgroundImage")));
+			this.lvParams.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																					   this.chPID,
+																					   this.chPLabel});
+			this.lvParams.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lvParams.Dock")));
+			this.lvParams.Enabled = ((bool)(resources.GetObject("lvParams.Enabled")));
+			this.lvParams.Font = ((System.Drawing.Font)(resources.GetObject("lvParams.Font")));
+			this.lvParams.FullRowSelect = true;
+			this.lvParams.GridLines = true;
+			this.lvParams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvParams.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvParams.ImeMode")));
+			this.lvParams.LabelWrap = ((bool)(resources.GetObject("lvParams.LabelWrap")));
+			this.lvParams.Location = ((System.Drawing.Point)(resources.GetObject("lvParams.Location")));
+			this.lvParams.MultiSelect = false;
+			this.lvParams.Name = "lvParams";
+			this.lvParams.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lvParams.RightToLeft")));
+			this.lvParams.Size = ((System.Drawing.Size)(resources.GetObject("lvParams.Size")));
+			this.lvParams.TabIndex = ((int)(resources.GetObject("lvParams.TabIndex")));
+			this.lvParams.Text = resources.GetString("lvParams.Text");
+			this.lvParams.View = System.Windows.Forms.View.Details;
+			this.lvParams.Visible = ((bool)(resources.GetObject("lvParams.Visible")));
+			this.lvParams.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
+			// 
+			// lvLocals
+			// 
+			this.lvLocals.AccessibleDescription = resources.GetString("lvLocals.AccessibleDescription");
+			this.lvLocals.AccessibleName = resources.GetString("lvLocals.AccessibleName");
+			this.lvLocals.Alignment = ((System.Windows.Forms.ListViewAlignment)(resources.GetObject("lvLocals.Alignment")));
+			this.lvLocals.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvLocals.Anchor")));
+			this.lvLocals.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvLocals.BackgroundImage")));
+			this.lvLocals.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																					   this.chLID,
+																					   this.chLLabel});
+			this.lvLocals.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lvLocals.Dock")));
+			this.lvLocals.Enabled = ((bool)(resources.GetObject("lvLocals.Enabled")));
+			this.lvLocals.Font = ((System.Drawing.Font)(resources.GetObject("lvLocals.Font")));
+			this.lvLocals.FullRowSelect = true;
+			this.lvLocals.GridLines = true;
+			this.lvLocals.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvLocals.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvLocals.ImeMode")));
+			this.lvLocals.LabelWrap = ((bool)(resources.GetObject("lvLocals.LabelWrap")));
+			this.lvLocals.Location = ((System.Drawing.Point)(resources.GetObject("lvLocals.Location")));
+			this.lvLocals.MultiSelect = false;
+			this.lvLocals.Name = "lvLocals";
+			this.lvLocals.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lvLocals.RightToLeft")));
+			this.lvLocals.Size = ((System.Drawing.Size)(resources.GetObject("lvLocals.Size")));
+			this.lvLocals.TabIndex = ((int)(resources.GetObject("lvLocals.TabIndex")));
+			this.lvLocals.Text = resources.GetString("lvLocals.Text");
+			this.lvLocals.View = System.Windows.Forms.View.Details;
+			this.lvLocals.Visible = ((bool)(resources.GetObject("lvLocals.Visible")));
+			this.lvLocals.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
+			// 
+			// chPID
+			// 
+			this.chPID.Text = resources.GetString("chPID.Text");
+			this.chPID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chPID.TextAlign")));
+			this.chPID.Width = ((int)(resources.GetObject("chPID.Width")));
+			// 
+			// chPLabel
+			// 
+			this.chPLabel.Text = resources.GetString("chPLabel.Text");
+			this.chPLabel.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chPLabel.TextAlign")));
+			this.chPLabel.Width = ((int)(resources.GetObject("chPLabel.Width")));
+			// 
+			// chLID
+			// 
+			this.chLID.Text = resources.GetString("chLID.Text");
+			this.chLID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chLID.TextAlign")));
+			this.chLID.Width = ((int)(resources.GetObject("chLID.Width")));
+			// 
+			// chLLabel
+			// 
+			this.chLLabel.Text = resources.GetString("chLLabel.Text");
+			this.chLLabel.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chLLabel.TextAlign")));
+			this.chLLabel.Width = ((int)(resources.GetObject("chLLabel.Width")));
+			// 
 			// TPRPForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -702,12 +757,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 			internalchg = true;
 
-			if (lbCurrent.Items.Count > 0 && lbCurrent.SelectedIndex == -1)
-				lbCurrent.SelectedIndex = 0;
+			if (lvCurrent.Items.Count > 0 && lvCurrent.SelectedIndices.Count == 0)
+				lvCurrent.Items[0].Selected = true;
 
-			if (lbCurrent.SelectedItem != null)
+			if (lvCurrent.SelectedIndices.Count > 0)
 			{
-				currentItem = (TPRPItem)lbCurrent.SelectedItem;
+				currentItem = wrapper[tabControl1.SelectedIndex.Equals(1), lvCurrent.SelectedIndices[0]];
 				origItem = currentItem.Clone();
 				this.tbLabel.Text = currentItem;
 				this.btnStrDelete.Enabled = this.tbLabel.Enabled = true;
@@ -721,7 +776,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.btnCancel.Enabled = false;
 			internalchg = false;
-			//TODO: Show the correct Label in the text box for the selected tab and list item
 		}
 
 
@@ -756,22 +810,34 @@ namespace SimPe.PackedFiles.UserInterface
 			if (wrapper.Add(newItem) < 0) return;
 
 			internalchg = true;
-			lbCurrent.Items.Add(newItem);
-			lbCurrent.SelectedIndex = -1;
+			lvCurrent.Items.Add(For(lvCurrent.Items.Count, newItem));
+			foreach(int sel in lvCurrent.SelectedIndices)
+				lvCurrent.Items[sel].Selected = false;
 			internalchg = false;
-			lbCurrent.SelectedIndex = lbCurrent.Items.Count - 1;
 
-			this.tbLabel.Focus();
+			int s = lvCurrent.Items.Count - 1;
+			if (s >= 0)
+			{
+				lvCurrent.Items[s].Selected = true;
+				this.tbLabel.Focus();
+			}
 		}
 
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
 			wrapper.Remove(currentItem);
-			int i = lbCurrent.SelectedIndex;
+			int i = (lvCurrent.SelectedIndices.Count > 0) ? lvCurrent.SelectedIndices[0] : -1;
 			internalchg = true;
-			lbCurrent.Items.RemoveAt(i);
+			lvCurrent.Items.RemoveAt(i);
+			foreach(int sel in lvCurrent.SelectedIndices)
+				lvCurrent.Items[sel].Selected = false;
 			internalchg = false;
-			lbCurrent.SelectedIndex = (i > 0 ? i : lbCurrent.Items.Count) - 1;
+
+			int s = (i > 0 ? i : lvCurrent.Items.Count) - 1;
+			if (s >= 0)
+				lvCurrent.Items[s].Selected = true;
+			else
+				SelectedIndexChanged(null, null);
 		}
 
 
@@ -783,7 +849,7 @@ namespace SimPe.PackedFiles.UserInterface
 			switch(alText.IndexOf(sender))
 			{
 				case 0: wrapper.FileName = ((TextBox)sender).Text; break;
-				case 1: currentItem.Label = ((TextBox)sender).Text; lbCurrent.Refresh(); break;
+				case 1: lvCurrent.SelectedItems[0].SubItems[1].Text = currentItem.Label = ((TextBox)sender).Text; break;
 			}
 			internalchg = false;
 		}
