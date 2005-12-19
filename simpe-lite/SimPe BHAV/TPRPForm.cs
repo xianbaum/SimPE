@@ -117,13 +117,13 @@ namespace SimPe.PackedFiles.UserInterface
 			get { return (ListView)((tabControl1.SelectedIndex != 0) ? lvLocals : lvParams); }
 		}
 
-		private ListViewItem For(int n, TPRPItem item)
+		private void LVAdd(ListView lv, TPRPItem item)
 		{
 			string[] s = {
-							 "0x" + n.ToString("X")
-							 , item.Label
+							 "0x" + lv.Items.Count.ToString("X")
+							 ,item.Label
 						 };
-			return new ListViewItem(s);
+			lv.Items.Add(new ListViewItem(s));
 		}
 
 		#endregion
@@ -158,17 +158,11 @@ namespace SimPe.PackedFiles.UserInterface
 			lvParams.Items.Clear();
 			lvLocals.Items.Clear();
 			foreach (TPRPItem item in wrapper)
-				if (item is TPRPLocalLabel)
-					this.lvParams.Items.Add(For(lvLocals.Items.Count, item));
-				else
-					this.lvLocals.Items.Add(For(lvParams.Items.Count, item));
-
-			if (lvCurrent.Items.Count > 0 && lvCurrent.SelectedIndices.Count == 0)
-				lvCurrent.Items[0].Selected = true;
+				LVAdd((item is TPRPLocalLabel) ? lvLocals : lvParams, item);
 
 			internalchg = false;
 
-			SelectedIndexChanged(null, null);
+			tabControl1_SelectedIndexChanged(null, null);
 
 			if (!setHandler)
 			{
@@ -192,7 +186,7 @@ namespace SimPe.PackedFiles.UserInterface
 			else if (sender.Equals(currentItem))
 				this.btnCancel.Enabled = true;
 			else
-				SelectedIndexChanged(null, null);
+				ListView_SelectedIndexChanged(null, null);
 		}
 		#endregion
 
@@ -363,7 +357,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tabControl1.TabIndex = ((int)(resources.GetObject("tabControl1.TabIndex")));
 			this.tabControl1.Text = resources.GetString("tabControl1.Text");
 			this.tabControl1.Visible = ((bool)(resources.GetObject("tabControl1.Visible")));
-			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
+			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
 			// tpParams
 			// 
@@ -417,7 +411,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvParams.Text = resources.GetString("lvParams.Text");
 			this.lvParams.View = System.Windows.Forms.View.Details;
 			this.lvParams.Visible = ((bool)(resources.GetObject("lvParams.Visible")));
-			this.lvParams.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
+			this.lvParams.SelectedIndexChanged += new System.EventHandler(this.ListView_SelectedIndexChanged);
 			// 
 			// chPID
 			// 
@@ -483,7 +477,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvLocals.Text = resources.GetString("lvLocals.Text");
 			this.lvLocals.View = System.Windows.Forms.View.Details;
 			this.lvLocals.Visible = ((bool)(resources.GetObject("lvLocals.Visible")));
-			this.lvLocals.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
+			this.lvLocals.SelectedIndexChanged += new System.EventHandler(this.ListView_SelectedIndexChanged);
 			// 
 			// chLID
 			// 
@@ -754,27 +748,46 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#endregion
 
-		private void SelectedIndexChanged(object sender, System.EventArgs e)
+		private void tabControl1_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			internalchg = true;
+
+			if (lvCurrent.Items.Count > 0 && lvCurrent.SelectedIndices.Count == 0)
+			{
+				lvCurrent.Items[0].Selected = true;
+				currentItem = wrapper[tabControl1.SelectedIndex.Equals(1), lvCurrent.SelectedIndices[0]];
+			}
+
+			internalchg = false;
+
+			ListView_SelectedIndexChanged(null, null);
+		}
+
+		private void ListView_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 
 			internalchg = true;
 
+			currentItem = null;
 			if (lvCurrent.SelectedIndices.Count > 0)
-			{
 				currentItem = wrapper[tabControl1.SelectedIndex.Equals(1), lvCurrent.SelectedIndices[0]];
+
+			if (currentItem != null)
+			{
 				origItem = currentItem.Clone();
 				this.tbLabel.Text = currentItem.Label;
 				this.btnStrDelete.Enabled = this.tbLabel.Enabled = true;
 			}
 			else
 			{
-				currentItem = origItem = null;
+				origItem = null;
 				this.tbLabel.Text = "";
 				this.btnStrDelete.Enabled = this.tbLabel.Enabled = false;
 			}
 
 			this.btnCancel.Enabled = false;
+
 			internalchg = false;
 		}
 
@@ -796,7 +809,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			internalchg = true;
 			currentItem.Label = origItem.Label;
-			SelectedIndexChanged(null, null);
+			ListView_SelectedIndexChanged(null, null);
 			internalchg = false;
 		}
 
@@ -810,7 +823,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (wrapper.Add(newItem) < 0) return;
 
 			internalchg = true;
-			lvCurrent.Items.Add(For(lvCurrent.Items.Count, newItem));
+			LVAdd(lvCurrent, newItem);
 			foreach(int sel in lvCurrent.SelectedIndices)
 				lvCurrent.Items[sel].Selected = false;
 			internalchg = false;
@@ -837,7 +850,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (s >= 0)
 				lvCurrent.Items[s].Selected = true;
 			else
-				SelectedIndexChanged(null, null);
+				ListView_SelectedIndexChanged(null, null);
 		}
 
 
@@ -895,7 +908,6 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
-
 
 	}
 }

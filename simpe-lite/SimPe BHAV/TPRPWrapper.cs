@@ -248,14 +248,26 @@ namespace SimPe.PackedFiles.Wrapper
 		#region ICollection Members
 		public int Add(TPRPItem item)
 		{
-			item.Parent = this;
-			int result = items.Add(item);
-			if (result >= 0) OnWrapperChanged(items, new EventArgs());
-			if (item is TPRPParamLabel)
-				this.paramCount++;
-			else
-				this.localCount++;
+			int result = (item is TPRPLocalLabel) ? localCount : paramCount;
+			this.Insert(result, item);
 			return result;
+		}
+
+		public void Insert(int index, TPRPItem item)
+		{
+			if (item is TPRPLocalLabel)
+				index += paramCount;
+			else if (index > paramCount)
+				throw new ArgumentOutOfRangeException();
+
+			item.Parent = this;
+			items.Insert(index, item);
+
+			if (item is TPRPLocalLabel)
+				localCount++;
+			else
+				paramCount++;
+			OnWrapperChanged(items, new EventArgs());
 		}
 
 		public void Clear()
