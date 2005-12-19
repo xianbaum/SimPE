@@ -1,4 +1,10 @@
 
+19 December 2005 18:44 - TPRP: oops: Post-landing bug fix
+  SimPe BHAV\
+    TPRPForm.cs 1.3
+    TPRPForm.resx 1.3
+    TPRPWrapper.cs 1.3
+
 19 December 2005 15:53 - TPRP Landing
   * Fix field length for ArgC and LocalC on BHAV form
   * Provide wizard support for picking Param and Local variables
