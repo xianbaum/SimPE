@@ -228,6 +228,16 @@ namespace pjse
 					if (temp.IndexOf('"') >= 0)
 						s += " (" + temp + ")";
 					break;
+				case 0x09:
+					temp = readParam(instance, false);
+					if (temp != null && temp.Length > 0)
+						s += " (" + temp + ")";
+					break;
+				case 0x19:
+					temp = readLocal(instance, false);
+					if (temp != null && temp.Length > 0)
+						s += " (" + temp + ")";
+					break;
 				case 0x0a:
 					if (instance == 0)
 						s = "";
@@ -389,6 +399,36 @@ namespace pjse
 			return (len < 0) ? str : str.PadRight(len).Substring(0, len).Trim() + (str.Length > len ? "..." : "");
 		}
 
+
+		protected string readParam(int pid, bool silent) { return readTPRP(false, pid, silent); }
+
+		protected string readLocal(int lid, bool silent) { return readTPRP(true, lid, silent); }
+
+		private string readTPRP(bool flag, int sid, bool silent)
+		{
+			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
+
+			uint group    = instruction.Parent.FileDescriptor.Group;
+			uint instance = instruction.Parent.FileDescriptor.Instance;
+
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, group, instance];
+
+			if (items == null || items.Length == 0)
+				return silent ? null : "[No TPRP 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
+
+			TPRP tprp = new TPRP();
+			tprp.ProcessData(items[0].PFD, items[0].Package);
+			TPRPItem item = tprp[flag, sid];
+			return (item != null)
+				? item.Label
+				: (silent
+					? null
+					: "[TPRP 0x" + SimPe.Helper.HexString((ushort)instance) + ":" +
+						(flag ? "Local" : "Param") + " 0x" +
+						SimPe.Helper.HexString((ushort)sid) + " not set]"
+					);
+		}
 
 		public static Glob GlobByGroup(uint group)
 		{

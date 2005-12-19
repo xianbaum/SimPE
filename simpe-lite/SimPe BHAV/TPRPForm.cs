@@ -163,6 +163,9 @@ namespace SimPe.PackedFiles.UserInterface
 				else
 					this.lvLocals.Items.Add(For(lvParams.Items.Count, item));
 
+			if (lvCurrent.Items.Count > 0 && lvCurrent.SelectedIndices.Count == 0)
+				lvCurrent.Items[0].Selected = true;
+
 			internalchg = false;
 
 			SelectedIndexChanged(null, null);
@@ -184,8 +187,6 @@ namespace SimPe.PackedFiles.UserInterface
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
 				this.tbVersion.Text = "0x" + SimPe.Helper.HexString(wrapper.Version);
-				this.tpParams.Text = "Params (" + wrapper.BhavParamCount + ")";
-				this.tpLocals.Text = "Locals (" + wrapper.BhavLocalCount + ")";
 				internalchg = false;
 			}
 			else if (sender.Equals(currentItem))
@@ -209,7 +210,13 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tprpPanel = new System.Windows.Forms.Panel();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpParams = new System.Windows.Forms.TabPage();
+			this.lvParams = new System.Windows.Forms.ListView();
+			this.chPID = new System.Windows.Forms.ColumnHeader();
+			this.chPLabel = new System.Windows.Forms.ColumnHeader();
 			this.tpLocals = new System.Windows.Forms.TabPage();
+			this.lvLocals = new System.Windows.Forms.ListView();
+			this.chLID = new System.Windows.Forms.ColumnHeader();
+			this.chLLabel = new System.Windows.Forms.ColumnHeader();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.tbLabel = new System.Windows.Forms.TextBox();
 			this.btnStrDelete = new System.Windows.Forms.Button();
@@ -219,12 +226,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
-			this.lvParams = new System.Windows.Forms.ListView();
-			this.lvLocals = new System.Windows.Forms.ListView();
-			this.chPID = new System.Windows.Forms.ColumnHeader();
-			this.chPLabel = new System.Windows.Forms.ColumnHeader();
-			this.chLID = new System.Windows.Forms.ColumnHeader();
-			this.chLLabel = new System.Windows.Forms.ColumnHeader();
 			this.pnHeading.SuspendLayout();
 			this.tprpPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -388,6 +389,48 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpParams.ToolTipText = resources.GetString("tpParams.ToolTipText");
 			this.tpParams.Visible = ((bool)(resources.GetObject("tpParams.Visible")));
 			// 
+			// lvParams
+			// 
+			this.lvParams.AccessibleDescription = resources.GetString("lvParams.AccessibleDescription");
+			this.lvParams.AccessibleName = resources.GetString("lvParams.AccessibleName");
+			this.lvParams.Alignment = ((System.Windows.Forms.ListViewAlignment)(resources.GetObject("lvParams.Alignment")));
+			this.lvParams.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvParams.Anchor")));
+			this.lvParams.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvParams.BackgroundImage")));
+			this.lvParams.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																					   this.chPID,
+																					   this.chPLabel});
+			this.lvParams.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lvParams.Dock")));
+			this.lvParams.Enabled = ((bool)(resources.GetObject("lvParams.Enabled")));
+			this.lvParams.Font = ((System.Drawing.Font)(resources.GetObject("lvParams.Font")));
+			this.lvParams.FullRowSelect = true;
+			this.lvParams.GridLines = true;
+			this.lvParams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvParams.HideSelection = false;
+			this.lvParams.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvParams.ImeMode")));
+			this.lvParams.LabelWrap = ((bool)(resources.GetObject("lvParams.LabelWrap")));
+			this.lvParams.Location = ((System.Drawing.Point)(resources.GetObject("lvParams.Location")));
+			this.lvParams.MultiSelect = false;
+			this.lvParams.Name = "lvParams";
+			this.lvParams.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lvParams.RightToLeft")));
+			this.lvParams.Size = ((System.Drawing.Size)(resources.GetObject("lvParams.Size")));
+			this.lvParams.TabIndex = ((int)(resources.GetObject("lvParams.TabIndex")));
+			this.lvParams.Text = resources.GetString("lvParams.Text");
+			this.lvParams.View = System.Windows.Forms.View.Details;
+			this.lvParams.Visible = ((bool)(resources.GetObject("lvParams.Visible")));
+			this.lvParams.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
+			// 
+			// chPID
+			// 
+			this.chPID.Text = resources.GetString("chPID.Text");
+			this.chPID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chPID.TextAlign")));
+			this.chPID.Width = ((int)(resources.GetObject("chPID.Width")));
+			// 
+			// chPLabel
+			// 
+			this.chPLabel.Text = resources.GetString("chPLabel.Text");
+			this.chPLabel.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chPLabel.TextAlign")));
+			this.chPLabel.Width = ((int)(resources.GetObject("chPLabel.Width")));
+			// 
 			// tpLocals
 			// 
 			this.tpLocals.AccessibleDescription = resources.GetString("tpLocals.AccessibleDescription");
@@ -411,6 +454,48 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpLocals.Text = resources.GetString("tpLocals.Text");
 			this.tpLocals.ToolTipText = resources.GetString("tpLocals.ToolTipText");
 			this.tpLocals.Visible = ((bool)(resources.GetObject("tpLocals.Visible")));
+			// 
+			// lvLocals
+			// 
+			this.lvLocals.AccessibleDescription = resources.GetString("lvLocals.AccessibleDescription");
+			this.lvLocals.AccessibleName = resources.GetString("lvLocals.AccessibleName");
+			this.lvLocals.Alignment = ((System.Windows.Forms.ListViewAlignment)(resources.GetObject("lvLocals.Alignment")));
+			this.lvLocals.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvLocals.Anchor")));
+			this.lvLocals.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvLocals.BackgroundImage")));
+			this.lvLocals.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+																					   this.chLID,
+																					   this.chLLabel});
+			this.lvLocals.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lvLocals.Dock")));
+			this.lvLocals.Enabled = ((bool)(resources.GetObject("lvLocals.Enabled")));
+			this.lvLocals.Font = ((System.Drawing.Font)(resources.GetObject("lvLocals.Font")));
+			this.lvLocals.FullRowSelect = true;
+			this.lvLocals.GridLines = true;
+			this.lvLocals.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+			this.lvLocals.HideSelection = false;
+			this.lvLocals.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvLocals.ImeMode")));
+			this.lvLocals.LabelWrap = ((bool)(resources.GetObject("lvLocals.LabelWrap")));
+			this.lvLocals.Location = ((System.Drawing.Point)(resources.GetObject("lvLocals.Location")));
+			this.lvLocals.MultiSelect = false;
+			this.lvLocals.Name = "lvLocals";
+			this.lvLocals.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lvLocals.RightToLeft")));
+			this.lvLocals.Size = ((System.Drawing.Size)(resources.GetObject("lvLocals.Size")));
+			this.lvLocals.TabIndex = ((int)(resources.GetObject("lvLocals.TabIndex")));
+			this.lvLocals.Text = resources.GetString("lvLocals.Text");
+			this.lvLocals.View = System.Windows.Forms.View.Details;
+			this.lvLocals.Visible = ((bool)(resources.GetObject("lvLocals.Visible")));
+			this.lvLocals.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
+			// 
+			// chLID
+			// 
+			this.chLID.Text = resources.GetString("chLID.Text");
+			this.chLID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chLID.TextAlign")));
+			this.chLID.Width = ((int)(resources.GetObject("chLID.Width")));
+			// 
+			// chLLabel
+			// 
+			this.chLLabel.Text = resources.GetString("chLLabel.Text");
+			this.chLLabel.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chLLabel.TextAlign")));
+			this.chLLabel.Width = ((int)(resources.GetObject("chLLabel.Width")));
 			// 
 			// btnCancel
 			// 
@@ -633,88 +718,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
 			// 
-			// lvParams
-			// 
-			this.lvParams.AccessibleDescription = resources.GetString("lvParams.AccessibleDescription");
-			this.lvParams.AccessibleName = resources.GetString("lvParams.AccessibleName");
-			this.lvParams.Alignment = ((System.Windows.Forms.ListViewAlignment)(resources.GetObject("lvParams.Alignment")));
-			this.lvParams.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvParams.Anchor")));
-			this.lvParams.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvParams.BackgroundImage")));
-			this.lvParams.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																					   this.chPID,
-																					   this.chPLabel});
-			this.lvParams.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lvParams.Dock")));
-			this.lvParams.Enabled = ((bool)(resources.GetObject("lvParams.Enabled")));
-			this.lvParams.Font = ((System.Drawing.Font)(resources.GetObject("lvParams.Font")));
-			this.lvParams.FullRowSelect = true;
-			this.lvParams.GridLines = true;
-			this.lvParams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.lvParams.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvParams.ImeMode")));
-			this.lvParams.LabelWrap = ((bool)(resources.GetObject("lvParams.LabelWrap")));
-			this.lvParams.Location = ((System.Drawing.Point)(resources.GetObject("lvParams.Location")));
-			this.lvParams.MultiSelect = false;
-			this.lvParams.Name = "lvParams";
-			this.lvParams.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lvParams.RightToLeft")));
-			this.lvParams.Size = ((System.Drawing.Size)(resources.GetObject("lvParams.Size")));
-			this.lvParams.TabIndex = ((int)(resources.GetObject("lvParams.TabIndex")));
-			this.lvParams.Text = resources.GetString("lvParams.Text");
-			this.lvParams.View = System.Windows.Forms.View.Details;
-			this.lvParams.Visible = ((bool)(resources.GetObject("lvParams.Visible")));
-			this.lvParams.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
-			// 
-			// lvLocals
-			// 
-			this.lvLocals.AccessibleDescription = resources.GetString("lvLocals.AccessibleDescription");
-			this.lvLocals.AccessibleName = resources.GetString("lvLocals.AccessibleName");
-			this.lvLocals.Alignment = ((System.Windows.Forms.ListViewAlignment)(resources.GetObject("lvLocals.Alignment")));
-			this.lvLocals.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lvLocals.Anchor")));
-			this.lvLocals.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("lvLocals.BackgroundImage")));
-			this.lvLocals.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-																					   this.chLID,
-																					   this.chLLabel});
-			this.lvLocals.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lvLocals.Dock")));
-			this.lvLocals.Enabled = ((bool)(resources.GetObject("lvLocals.Enabled")));
-			this.lvLocals.Font = ((System.Drawing.Font)(resources.GetObject("lvLocals.Font")));
-			this.lvLocals.FullRowSelect = true;
-			this.lvLocals.GridLines = true;
-			this.lvLocals.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
-			this.lvLocals.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lvLocals.ImeMode")));
-			this.lvLocals.LabelWrap = ((bool)(resources.GetObject("lvLocals.LabelWrap")));
-			this.lvLocals.Location = ((System.Drawing.Point)(resources.GetObject("lvLocals.Location")));
-			this.lvLocals.MultiSelect = false;
-			this.lvLocals.Name = "lvLocals";
-			this.lvLocals.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lvLocals.RightToLeft")));
-			this.lvLocals.Size = ((System.Drawing.Size)(resources.GetObject("lvLocals.Size")));
-			this.lvLocals.TabIndex = ((int)(resources.GetObject("lvLocals.TabIndex")));
-			this.lvLocals.Text = resources.GetString("lvLocals.Text");
-			this.lvLocals.View = System.Windows.Forms.View.Details;
-			this.lvLocals.Visible = ((bool)(resources.GetObject("lvLocals.Visible")));
-			this.lvLocals.SelectedIndexChanged += new System.EventHandler(this.SelectedIndexChanged);
-			// 
-			// chPID
-			// 
-			this.chPID.Text = resources.GetString("chPID.Text");
-			this.chPID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chPID.TextAlign")));
-			this.chPID.Width = ((int)(resources.GetObject("chPID.Width")));
-			// 
-			// chPLabel
-			// 
-			this.chPLabel.Text = resources.GetString("chPLabel.Text");
-			this.chPLabel.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chPLabel.TextAlign")));
-			this.chPLabel.Width = ((int)(resources.GetObject("chPLabel.Width")));
-			// 
-			// chLID
-			// 
-			this.chLID.Text = resources.GetString("chLID.Text");
-			this.chLID.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chLID.TextAlign")));
-			this.chLID.Width = ((int)(resources.GetObject("chLID.Width")));
-			// 
-			// chLLabel
-			// 
-			this.chLLabel.Text = resources.GetString("chLLabel.Text");
-			this.chLLabel.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("chLLabel.TextAlign")));
-			this.chLLabel.Width = ((int)(resources.GetObject("chLLabel.Width")));
-			// 
 			// TPRPForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -757,14 +760,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 			internalchg = true;
 
-			if (lvCurrent.Items.Count > 0 && lvCurrent.SelectedIndices.Count == 0)
-				lvCurrent.Items[0].Selected = true;
-
 			if (lvCurrent.SelectedIndices.Count > 0)
 			{
 				currentItem = wrapper[tabControl1.SelectedIndex.Equals(1), lvCurrent.SelectedIndices[0]];
 				origItem = currentItem.Clone();
-				this.tbLabel.Text = currentItem;
+				this.tbLabel.Text = currentItem.Label;
 				this.btnStrDelete.Enabled = this.tbLabel.Enabled = true;
 			}
 			else
@@ -804,7 +804,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
 			TPRPItem newItem = (currentItem == null)
-				? ((tabControl1.SelectedIndex == 0) ? (TPRPItem)new TPRPParamLabel(wrapper) : (TPRPItem)new TPRPLocalLabel(wrapper))
+				? (tabControl1.SelectedIndex.Equals(1) ? (TPRPItem)new TPRPLocalLabel(wrapper) : (TPRPItem)new TPRPParamLabel(wrapper))
 				: currentItem.Clone();
 
 			if (wrapper.Add(newItem) < 0) return;

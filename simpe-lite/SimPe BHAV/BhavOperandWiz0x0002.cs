@@ -81,8 +81,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		
 		#region UI
+		Instruction inst = null;
 		public void Execute(Instruction inst)
 		{
+			this.inst = inst;
+
 			wrappedByteArray ops = inst.Operands;
 			int val1 = (ops[0x01] << 8) | ops[0x00];
 			int val2 = (ops[0x03] << 8) | ops[0x02];
@@ -134,6 +137,48 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbDataOwner2.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
 			this.cbOperator.Items.Clear();
 			this.cbOperator.Items.AddRange(GS.gStr(GS.BhavStr.Operators).ToArray());
+		}
+
+		private void doTPRPPicker(ComboBox picker, ushort val, bool local)
+		{
+			if (inst == null || inst.Parent == null)
+			{
+				tbval1.Text = this.cbDecimal.Checked
+					? textToShort(tbval1.Text).ToString()
+					: "0x"+SimPe.Helper.HexString(textToUShort(tbval1.Text));
+				return;
+			}
+
+			uint group    = inst.Parent.FileDescriptor.Group;
+			uint instance = inst.Parent.FileDescriptor.Instance;
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, group, instance];
+
+			if (items == null || items.Length == 0)
+			{
+				tbval1.Text = this.cbDecimal.Checked
+					? textToShort(tbval1.Text).ToString()
+					: "0x"+SimPe.Helper.HexString(textToUShort(tbval1.Text));
+				return;
+			}
+
+			TPRP tprp = new TPRP();
+			tprp.ProcessData(items[0].PFD, items[0].Package);
+
+			picker.Visible = true;
+			picker.Items.Clear();
+			foreach (TPRPItem i in tprp)
+				if ((local && i is TPRPLocalLabel) || (!local && i is TPRPParamLabel))
+					picker.Items.Add(i.Label);
+
+			while (picker.Items.Count < (local ? inst.Parent.Header.LocalVarCount : inst.Parent.Header.ArgumentCount))
+				picker.Items.Add("(" + (local ? "Local" : "Param") +
+					(this.cbDecimal.Checked
+					? " 0x" + SimPe.Helper.HexString((byte)picker.Items.Count)
+					: picker.Items.Count.ToString())
+					+ ")");
+
+			if (picker.Items.Count > val)
+				picker.SelectedIndex = val;
 		}
 
 		#endregion
@@ -290,13 +335,21 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 						this.cbPicker1.SelectedIndex = val;
 				}
 			}
+			else if (cbDataOwner1.SelectedIndex == 0x09)
+			{
+				doTPRPPicker(cbPicker1, this.cbDecimal.Checked ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text), false);
+			}
+			else if (cbDataOwner1.SelectedIndex == 0x19)
+			{
+				doTPRPPicker(cbPicker1, this.cbDecimal.Checked ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text), true);
+			}
 			else if (cbDataOwner1.SelectedIndex == 0x1a || cbDataOwner1.SelectedIndex == 0x2f)
 			{
 				//constant
 				ushort val = this.cbDecimal.Checked ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text);
 				ushort[] vals = ConstantValueParser(val);
 				tbval1.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
-			} 
+			}
 			else
 			{
 				tbval1.Text = this.cbDecimal.Checked
@@ -336,6 +389,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 					if (this.cbPicker2.Items.Count > val)
 						this.cbPicker2.SelectedIndex = val;
 				}
+			}
+			else if (cbDataOwner2.SelectedIndex == 0x09)
+			{
+				doTPRPPicker(cbPicker2, this.cbDecimal.Checked ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text), false);
+			}
+			else if (cbDataOwner2.SelectedIndex == 0x19)
+			{
+				doTPRPPicker(cbPicker2, this.cbDecimal.Checked ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text), true);
 			}
 			else if (cbDataOwner2.SelectedIndex == 0x1a || cbDataOwner2.SelectedIndex == 0x2f)
 			{

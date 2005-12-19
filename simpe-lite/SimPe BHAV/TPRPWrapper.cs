@@ -71,13 +71,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Trailer of the File
 		/// </summary>
 		private uint[] trailer = { 0x00000005, 0x00000000 }; // Display code, null
-
-		/// <summary>
-		/// Contains a valid BHAV Resource that these labels describe
-		/// </summary>
-		private Bhav bhavres = null;
-		private byte bhavParamCount = 0;
-		private byte bhavLocalCount = 0;
 		#endregion
 
 		#region Accessor methods
@@ -113,61 +106,12 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-
-		/// <summary>
-		/// Returns the BHAV described by these labels
-		/// </summary>
-		public Bhav BhavResource
-		{
-			get 
-			{
-				if (bhavres == null && FileDescriptor != null)
-				{
-					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, FileDescriptor.Group, FileDescriptor.Instance];
-					if (items == null || items.Length == 0) return null;
-
-					bhavres = new Bhav();
-					bhavres.ProcessData(items[0].PFD, items[0].Package);
-				}
-
-				return bhavres;
-			}
-		}
-
-		public byte BhavParamCount
-		{
-			get { return bhavParamCount = BhavResource.Header.ArgumentCount; }
-		}
-
-		public byte BhavLocalCount
-		{
-			get { return bhavLocalCount = BhavResource.Header.LocalVarCount; }
-		}
-
 		#endregion
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public TPRP() : base()
-		{
-			if (BhavResource != null)
-			{
-				paramCount = bhavParamCount = BhavResource.Header.ArgumentCount;
-				localCount = bhavLocalCount = BhavResource.Header.LocalVarCount;
-				BhavResource.WrapperChanged += new EventHandler(BhavResource_WrapperChanged);
-			}
-		}
-
-		private void BhavResource_WrapperChanged(object sender, System.EventArgs e)
-		{
-			if (sender == BhavResource)
-			{
-				if (bhavParamCount != BhavResource.Header.ArgumentCount
-					|| bhavLocalCount != BhavResource.Header.LocalVarCount)
-					OnWrapperChanged(this, new EventArgs());
-			}
-		}
+		public TPRP() : base() { }
 
 
 		#region AbstractWrapper Member
@@ -336,7 +280,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public TPRPItem this[bool local, int index]
 		{
-			get { return this[(local ? paramCount : 0) + index]; }
+			get
+			{
+				int i = (local ? paramCount : 0) + index;
+				return (i < this.Count) ? this[i] : null;
+			}
+
 			set { this[(local ? paramCount : 0) + index] = value; }
 		}
 
@@ -397,7 +346,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 
 	/// <summary>
-	/// An Item stored in a TRCN
+	/// An Item stored in a TPRP
 	/// </summary>
 	public abstract class TPRPItem
 	{
