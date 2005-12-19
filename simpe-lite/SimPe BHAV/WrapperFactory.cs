@@ -51,9 +51,7 @@ namespace SimPe.Plugin
 										  ,new Str()
 										  ,new Trcn()
 										  ,new Ttab()
-#if DEBUG
-										  ,new Glob()
-#endif
+										  ,new TPRP()
 									  };
 				return wrappers;
 			}

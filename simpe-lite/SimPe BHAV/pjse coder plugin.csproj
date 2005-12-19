@@ -408,6 +408,21 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "TPRPForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "TPRPForm.resx"
+                    DependentUpon = "TPRPForm.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TPRPWrapper.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TrcnForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"

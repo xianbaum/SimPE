@@ -1074,6 +1074,8 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			else
 			{
+				currentItem = origItem = null;
+
 				this.tbID.Enabled = this.tbLabel.Enabled = this.cbUsed.Enabled
 					= this.tbDefValue.Enabled = this.tbMinValue.Enabled = this.tbMaxValue.Enabled
 					= this.btnStrDelete.Enabled
@@ -1092,9 +1094,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
-			internalchg = true;
 			int i = wrapper.Add((lvTrcnItem.SelectedIndices.Count == 0 || lvTrcnItem.SelectedIndices[0] == -1) ? new TrcnItem(wrapper) : currentItem.Clone());
-			internalchg = false;
 
 			if (i < 0) return;
 
