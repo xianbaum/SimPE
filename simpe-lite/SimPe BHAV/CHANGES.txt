@@ -1,4 +1,13 @@
 
+19 December 2005 15:42 - TPRP: Work In Progress: Don't get counts from BHAV, update parsing and Wiz0x0002
+  SimPe BHAV\
+    BhavOperandWiz0x0002.cs 1.2.2.1
+    BhavWiz.cs 1.33.2.1
+    TPRPForm.cs 1.1.2.3
+    TPRPForm.resx 1.1.2.3
+    TPRPWrapper.cs 1.1.2.3
+  pjseTestData.package 1.13.2.1
+
 18 December 2005 14:38 - TPRP: Work In Progress: use ListView, get counts from BHAV
   SimPe BHAV\
     BhavForm.cs 1.29.2.1
