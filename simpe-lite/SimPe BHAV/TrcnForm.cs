@@ -68,6 +68,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ColumnHeader chLine;
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label label5;
+		private System.Windows.Forms.Button btnStrPrev;
+		private System.Windows.Forms.Button btnStrNext;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -245,8 +247,8 @@ namespace SimPe.PackedFiles.UserInterface
 					= this.btnStrDelete.Enabled
 					= false;
 			}
-			//this.btnStrPrev.Enabled = (index > 0);
-			//this.btnStrNext.Enabled = (index < lvCurrent.Items.Count - 1);
+			this.btnStrPrev.Enabled = (index > 0);
+			this.btnStrNext.Enabled = (index < lvTrcnItem.Items.Count - 1);
 			internalchg = false;
 
 			this.btnCancel.Enabled = false;
@@ -422,6 +424,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbMaxValue = new System.Windows.Forms.TextBox();
 			this.lbMaxValue = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
+			this.btnStrPrev = new System.Windows.Forms.Button();
+			this.btnStrNext = new System.Windows.Forms.Button();
 			this.pnHeading.SuspendLayout();
 			this.trcnPanel.SuspendLayout();
 			this.SuspendLayout();
@@ -530,6 +534,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trcnPanel.Controls.Add(this.tbMaxValue);
 			this.trcnPanel.Controls.Add(this.lbMaxValue);
 			this.trcnPanel.Controls.Add(this.lbLabel);
+			this.trcnPanel.Controls.Add(this.btnStrPrev);
+			this.trcnPanel.Controls.Add(this.btnStrNext);
 			this.trcnPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("trcnPanel.Dock")));
 			this.trcnPanel.Enabled = ((bool)(resources.GetObject("trcnPanel.Enabled")));
 			this.trcnPanel.Font = ((System.Drawing.Font)(resources.GetObject("trcnPanel.Font")));
@@ -1118,6 +1124,56 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
 			// 
+			// btnStrPrev
+			// 
+			this.btnStrPrev.AccessibleDescription = resources.GetString("btnStrPrev.AccessibleDescription");
+			this.btnStrPrev.AccessibleName = resources.GetString("btnStrPrev.AccessibleName");
+			this.btnStrPrev.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrPrev.Anchor")));
+			this.btnStrPrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.BackgroundImage")));
+			this.btnStrPrev.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrPrev.Dock")));
+			this.btnStrPrev.Enabled = ((bool)(resources.GetObject("btnStrPrev.Enabled")));
+			this.btnStrPrev.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrPrev.FlatStyle")));
+			this.btnStrPrev.Font = ((System.Drawing.Font)(resources.GetObject("btnStrPrev.Font")));
+			this.btnStrPrev.Image = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.Image")));
+			this.btnStrPrev.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.ImageAlign")));
+			this.btnStrPrev.ImageIndex = ((int)(resources.GetObject("btnStrPrev.ImageIndex")));
+			this.btnStrPrev.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrPrev.ImeMode")));
+			this.btnStrPrev.Location = ((System.Drawing.Point)(resources.GetObject("btnStrPrev.Location")));
+			this.btnStrPrev.Name = "btnStrPrev";
+			this.btnStrPrev.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrPrev.RightToLeft")));
+			this.btnStrPrev.Size = ((System.Drawing.Size)(resources.GetObject("btnStrPrev.Size")));
+			this.btnStrPrev.TabIndex = ((int)(resources.GetObject("btnStrPrev.TabIndex")));
+			this.btnStrPrev.TabStop = false;
+			this.btnStrPrev.Text = resources.GetString("btnStrPrev.Text");
+			this.btnStrPrev.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.TextAlign")));
+			this.btnStrPrev.Visible = ((bool)(resources.GetObject("btnStrPrev.Visible")));
+			this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
+			// 
+			// btnStrNext
+			// 
+			this.btnStrNext.AccessibleDescription = resources.GetString("btnStrNext.AccessibleDescription");
+			this.btnStrNext.AccessibleName = resources.GetString("btnStrNext.AccessibleName");
+			this.btnStrNext.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrNext.Anchor")));
+			this.btnStrNext.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrNext.BackgroundImage")));
+			this.btnStrNext.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrNext.Dock")));
+			this.btnStrNext.Enabled = ((bool)(resources.GetObject("btnStrNext.Enabled")));
+			this.btnStrNext.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrNext.FlatStyle")));
+			this.btnStrNext.Font = ((System.Drawing.Font)(resources.GetObject("btnStrNext.Font")));
+			this.btnStrNext.Image = ((System.Drawing.Image)(resources.GetObject("btnStrNext.Image")));
+			this.btnStrNext.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.ImageAlign")));
+			this.btnStrNext.ImageIndex = ((int)(resources.GetObject("btnStrNext.ImageIndex")));
+			this.btnStrNext.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrNext.ImeMode")));
+			this.btnStrNext.Location = ((System.Drawing.Point)(resources.GetObject("btnStrNext.Location")));
+			this.btnStrNext.Name = "btnStrNext";
+			this.btnStrNext.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrNext.RightToLeft")));
+			this.btnStrNext.Size = ((System.Drawing.Size)(resources.GetObject("btnStrNext.Size")));
+			this.btnStrNext.TabIndex = ((int)(resources.GetObject("btnStrNext.TabIndex")));
+			this.btnStrNext.TabStop = false;
+			this.btnStrNext.Text = resources.GetString("btnStrNext.Text");
+			this.btnStrNext.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.TextAlign")));
+			this.btnStrNext.Visible = ((bool)(resources.GetObject("btnStrNext.Visible")));
+			this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
+			// 
 			// TrcnForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -1167,6 +1223,16 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Cancel();
 		}
 
+
+		private void btnStrPrev_Click(object sender, System.EventArgs e)
+		{
+			this.setIndex(index - 1);
+		}
+
+		private void btnStrNext_Click(object sender, System.EventArgs e)
+		{
+			this.setIndex(index + 1);
+		}
 
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
