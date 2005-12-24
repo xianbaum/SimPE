@@ -1,4 +1,11 @@
 
+24 December 2005 19:07 - Refactoring BCON, TPRP, TRCN forms mostly to match STR# (part 2)
+  SimPe BHAV\
+    BconForm.cs 1.13
+    BconForm.resx 1.8
+    TrcnForm.cs 1.9
+    TrcnForm.resx 1.6
+
 24 December 2005 18:03 - Refactoring BCON, TPRP, TRCN forms mostly to match STR# (part 1)
   SimPe BHAV\
     BconForm.cs 1.12
