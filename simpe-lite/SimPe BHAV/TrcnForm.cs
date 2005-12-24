@@ -311,12 +311,13 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 			internalchg = true;
 
+			this.lvTrcnItem.SelectedItems[0].SubItems[2].Text = currentItem.ConstName = origItem.ConstName;
 			currentItem.ConstId = origItem.ConstId;
-			currentItem.ConstName = origItem.ConstName;
 			currentItem.Used = origItem.Used;
 			currentItem.DefValue = origItem.DefValue;
 			currentItem.MaxValue = origItem.MaxValue;
 			currentItem.MinValue = origItem.MinValue;
+			updateSelectedItem();
 
 			internalchg = savedstate;
 
@@ -619,6 +620,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
 			this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
 			this.tbID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+			this.tbID.Enter += new System.EventHandler(this.tbText_Enter);
 			// 
 			// btnCancel
 			// 
@@ -816,6 +818,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
 			this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
 			this.tbFormat.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+			this.tbFormat.Enter += new System.EventHandler(this.tbText_Enter);
 			// 
 			// lvTrcnItem
 			// 
@@ -1001,6 +1004,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbDefValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
 			this.tbDefValue.Validated += new System.EventHandler(this.hex16_Validated);
 			this.tbDefValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			this.tbDefValue.Enter += new System.EventHandler(this.tbText_Enter);
 			// 
 			// tbMinValue
 			// 
@@ -1029,6 +1033,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbMinValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
 			this.tbMinValue.Validated += new System.EventHandler(this.hex16_Validated);
 			this.tbMinValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			this.tbMinValue.Enter += new System.EventHandler(this.tbText_Enter);
 			// 
 			// lbMinValue
 			// 
@@ -1079,6 +1084,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbMaxValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
 			this.tbMaxValue.Validated += new System.EventHandler(this.hex16_Validated);
 			this.tbMaxValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			this.tbMaxValue.Enter += new System.EventHandler(this.tbText_Enter);
 			// 
 			// lbMaxValue
 			// 
@@ -1221,6 +1227,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnCancel_Click(object sender, System.EventArgs e)
 		{
 			this.Cancel();
+			this.tbLabel.SelectAll();
+			this.tbLabel.Focus();
 		}
 
 
@@ -1237,6 +1245,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
 			this.TrcnItemAdd();
+			this.tbLabel.SelectAll();
+			this.tbLabel.Focus();
 		}
 
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
@@ -1308,7 +1318,6 @@ namespace SimPe.PackedFiles.UserInterface
 			bool origstate = internalchg;
 			internalchg = true;
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
 
@@ -1347,7 +1356,6 @@ namespace SimPe.PackedFiles.UserInterface
 			bool origstate = internalchg;
 			internalchg = true;
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
 
