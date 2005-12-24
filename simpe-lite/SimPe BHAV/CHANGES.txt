@@ -1,4 +1,16 @@
 
+24 December 2005 18:03 - Refactoring BCON, TPRP, TRCN forms mostly to match STR# (part 1)
+  SimPe BHAV\
+    BconForm.cs 1.12
+    BconForm.resx 1.7
+    StrForm.cs 1.27
+    TPRPForm.cs 1.4
+    TPRPForm.resx 1.4
+    TPRPWrapper.cs 1.4
+    TrcnForm.cs 1.8
+    TrcnForm.resx 1.5
+    TrcnWrapper.cs 1.10
+
 19 December 2005 18:44 - TPRP: oops: Post-landing bug fix
   SimPe BHAV\
     TPRPForm.cs 1.3
