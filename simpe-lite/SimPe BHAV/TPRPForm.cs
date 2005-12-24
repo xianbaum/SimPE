@@ -57,6 +57,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ColumnHeader chPLabel;
 		private System.Windows.Forms.ColumnHeader chLID;
 		private System.Windows.Forms.ColumnHeader chLLabel;
+		private System.Windows.Forms.Button btnStrPrev;
+		private System.Windows.Forms.Button btnStrNext;
+		private System.Windows.Forms.Button btnTabNext;
+		private System.Windows.Forms.Button btnTabPrev;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -93,14 +97,18 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		#region TPRPForm
+		#region Controller
 		private TPRP wrapper = null;
-		private bool internalchg = false;
 		private bool setHandler = false;
-		private TPRPItem origItem = null;
-		private TPRPItem currentItem = null;
+		private bool internalchg = false;
+
 		private ArrayList alText = null;
 		private ArrayList alHex32 = null;
+
+		private int index = -1;
+		private int tab = 0;
+		private TPRPItem origItem = null;
+		private TPRPItem currentItem = null;
 
 		private bool hex32_IsValid(object sender)
 		{
@@ -124,6 +132,150 @@ namespace SimPe.PackedFiles.UserInterface
 							 ,item.Label
 						 };
 			lv.Items.Add(new ListViewItem(s));
+		}
+
+		private void updateLists()
+		{
+			wrapper.CleanUp();
+
+			index = -1;
+
+			lvParams.Items.Clear();
+			lvLocals.Items.Clear();
+			foreach (TPRPItem item in wrapper)
+				LVAdd((item is TPRPLocalLabel) ? lvLocals : lvParams, item);
+		}
+
+
+		private void setTab(int l)
+		{
+			internalchg = true;
+			this.tabControl1.SelectedIndex = tab = l;
+			internalchg = false;
+
+			this.btnTabPrev.Enabled = tab > 0;
+			this.btnTabNext.Enabled = tab < this.tabControl1.TabCount - 1;
+
+			if (this.lvCurrent.SelectedIndices.Count == 0)
+				setIndex(lvCurrent.Items.Count > 0 ? 0 : -1);
+			else
+			{
+				index = this.lvCurrent.SelectedIndices[0];
+				displayTPRPItem();
+			}
+		}
+
+		private void setIndex(int i)
+		{
+			internalchg = true;
+			if (i >= 0) this.lvCurrent.Items[i].Selected = true;
+			else if (index >= 0) this.lvCurrent.Items[index].Selected = false;
+			internalchg = false;
+
+			if (this.lvCurrent.SelectedItems.Count > 0)
+			{
+				if (this.lvCurrent.Focused) this.lvCurrent.SelectedItems[0].Focused = true;
+				this.lvCurrent.SelectedItems[0].EnsureVisible();
+			}
+
+			if (index == i) return;
+			index = i;
+			displayTPRPItem();
+		}
+
+
+		private void displayTPRPItem()
+		{
+			currentItem = (index < 0) ? null : wrapper[tabControl1.SelectedIndex.Equals(1), index];
+
+			internalchg = true;
+			if (currentItem != null)
+			{
+				origItem = currentItem.Clone();
+				this.tbLabel.Text = currentItem.Label;
+				this.btnStrDelete.Enabled = this.tbLabel.Enabled = true;
+				this.tbLabel.SelectAll();
+			}
+			else
+			{
+				origItem = null;
+				this.tbLabel.Text = "";
+				this.btnStrDelete.Enabled = this.tbLabel.Enabled = false;
+			}
+			this.btnStrPrev.Enabled = (index > 0);
+			this.btnStrNext.Enabled = (index < lvCurrent.Items.Count - 1);
+			internalchg = false;
+
+			this.btnCancel.Enabled = false;
+		}
+
+
+		private void TPRPItemAdd()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			TPRPItem newItem = tabControl1.SelectedIndex.Equals(1)
+				? (TPRPItem)new TPRPLocalLabel(wrapper)
+				: (TPRPItem)new TPRPParamLabel(wrapper)
+				;
+
+			if (wrapper.Add(newItem) >= 0)
+				LVAdd(lvCurrent, newItem);
+
+			internalchg = savedstate;
+
+			setIndex(lvCurrent.Items.Count - 1);
+		}
+
+		private void TPRPItemDelete()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			wrapper.Remove(currentItem);
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setIndex((i >= lvCurrent.Items.Count) ? lvCurrent.Items.Count - 1 : i);
+		}
+
+		private void Commit()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			try 
+			{
+				wrapper.SynchronizeUserData();
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+			}
+
+			btnCommit.Enabled = wrapper.Changed;
+
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setIndex((i >= lvCurrent.Items.Count) ? lvCurrent.Items.Count - 1 : i);
+		}
+
+		private void Cancel()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			currentItem.Label = origItem.Label;
+
+			internalchg = savedstate;
+
+			displayTPRPItem();
 		}
 
 		#endregion
@@ -154,15 +306,10 @@ namespace SimPe.PackedFiles.UserInterface
 			WrapperChanged(wrapper, null);
 
 			internalchg = true;
-
-			lvParams.Items.Clear();
-			lvLocals.Items.Clear();
-			foreach (TPRPItem item in wrapper)
-				LVAdd((item is TPRPLocalLabel) ? lvLocals : lvParams, item);
-
+			updateLists();
 			internalchg = false;
 
-			tabControl1_SelectedIndexChanged(null, null);
+			setTab(0);
 
 			if (!setHandler)
 			{
@@ -174,19 +321,20 @@ namespace SimPe.PackedFiles.UserInterface
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
 			this.btnCommit.Enabled = wrapper.Changed;
+			if (sender.Equals(currentItem))
+				this.btnCancel.Enabled = true;
+
+			if (internalchg) return;
 
 			if (sender.Equals(wrapper))
 			{
-				if (internalchg) return;
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
 				this.tbVersion.Text = "0x" + SimPe.Helper.HexString(wrapper.Version);
 				internalchg = false;
 			}
-			else if (sender.Equals(currentItem))
-				this.btnCancel.Enabled = true;
-			else
-				ListView_SelectedIndexChanged(null, null);
+			else if (!sender.Equals(currentItem))
+				updateLists();
 		}
 		#endregion
 
@@ -202,6 +350,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.label1 = new System.Windows.Forms.Label();
 			this.tprpPanel = new System.Windows.Forms.Panel();
+			this.btnStrPrev = new System.Windows.Forms.Button();
+			this.btnStrNext = new System.Windows.Forms.Button();
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.tpParams = new System.Windows.Forms.TabPage();
 			this.lvParams = new System.Windows.Forms.ListView();
@@ -220,6 +370,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
+			this.btnTabNext = new System.Windows.Forms.Button();
+			this.btnTabPrev = new System.Windows.Forms.Button();
 			this.pnHeading.SuspendLayout();
 			this.tprpPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -308,6 +460,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tprpPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("tprpPanel.AutoScrollMinSize")));
 			this.tprpPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.tprpPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tprpPanel.BackgroundImage")));
+			this.tprpPanel.Controls.Add(this.btnTabNext);
+			this.tprpPanel.Controls.Add(this.btnTabPrev);
+			this.tprpPanel.Controls.Add(this.btnStrPrev);
+			this.tprpPanel.Controls.Add(this.btnStrNext);
 			this.tprpPanel.Controls.Add(this.tabControl1);
 			this.tprpPanel.Controls.Add(this.btnCancel);
 			this.tprpPanel.Controls.Add(this.tbLabel);
@@ -331,6 +487,56 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tprpPanel.TabIndex = ((int)(resources.GetObject("tprpPanel.TabIndex")));
 			this.tprpPanel.Text = resources.GetString("tprpPanel.Text");
 			this.tprpPanel.Visible = ((bool)(resources.GetObject("tprpPanel.Visible")));
+			// 
+			// btnStrPrev
+			// 
+			this.btnStrPrev.AccessibleDescription = resources.GetString("btnStrPrev.AccessibleDescription");
+			this.btnStrPrev.AccessibleName = resources.GetString("btnStrPrev.AccessibleName");
+			this.btnStrPrev.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrPrev.Anchor")));
+			this.btnStrPrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.BackgroundImage")));
+			this.btnStrPrev.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrPrev.Dock")));
+			this.btnStrPrev.Enabled = ((bool)(resources.GetObject("btnStrPrev.Enabled")));
+			this.btnStrPrev.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrPrev.FlatStyle")));
+			this.btnStrPrev.Font = ((System.Drawing.Font)(resources.GetObject("btnStrPrev.Font")));
+			this.btnStrPrev.Image = ((System.Drawing.Image)(resources.GetObject("btnStrPrev.Image")));
+			this.btnStrPrev.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.ImageAlign")));
+			this.btnStrPrev.ImageIndex = ((int)(resources.GetObject("btnStrPrev.ImageIndex")));
+			this.btnStrPrev.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrPrev.ImeMode")));
+			this.btnStrPrev.Location = ((System.Drawing.Point)(resources.GetObject("btnStrPrev.Location")));
+			this.btnStrPrev.Name = "btnStrPrev";
+			this.btnStrPrev.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrPrev.RightToLeft")));
+			this.btnStrPrev.Size = ((System.Drawing.Size)(resources.GetObject("btnStrPrev.Size")));
+			this.btnStrPrev.TabIndex = ((int)(resources.GetObject("btnStrPrev.TabIndex")));
+			this.btnStrPrev.TabStop = false;
+			this.btnStrPrev.Text = resources.GetString("btnStrPrev.Text");
+			this.btnStrPrev.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrPrev.TextAlign")));
+			this.btnStrPrev.Visible = ((bool)(resources.GetObject("btnStrPrev.Visible")));
+			this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
+			// 
+			// btnStrNext
+			// 
+			this.btnStrNext.AccessibleDescription = resources.GetString("btnStrNext.AccessibleDescription");
+			this.btnStrNext.AccessibleName = resources.GetString("btnStrNext.AccessibleName");
+			this.btnStrNext.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnStrNext.Anchor")));
+			this.btnStrNext.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnStrNext.BackgroundImage")));
+			this.btnStrNext.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnStrNext.Dock")));
+			this.btnStrNext.Enabled = ((bool)(resources.GetObject("btnStrNext.Enabled")));
+			this.btnStrNext.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnStrNext.FlatStyle")));
+			this.btnStrNext.Font = ((System.Drawing.Font)(resources.GetObject("btnStrNext.Font")));
+			this.btnStrNext.Image = ((System.Drawing.Image)(resources.GetObject("btnStrNext.Image")));
+			this.btnStrNext.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.ImageAlign")));
+			this.btnStrNext.ImageIndex = ((int)(resources.GetObject("btnStrNext.ImageIndex")));
+			this.btnStrNext.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnStrNext.ImeMode")));
+			this.btnStrNext.Location = ((System.Drawing.Point)(resources.GetObject("btnStrNext.Location")));
+			this.btnStrNext.Name = "btnStrNext";
+			this.btnStrNext.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnStrNext.RightToLeft")));
+			this.btnStrNext.Size = ((System.Drawing.Size)(resources.GetObject("btnStrNext.Size")));
+			this.btnStrNext.TabIndex = ((int)(resources.GetObject("btnStrNext.TabIndex")));
+			this.btnStrNext.TabStop = false;
+			this.btnStrNext.Text = resources.GetString("btnStrNext.Text");
+			this.btnStrNext.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnStrNext.TextAlign")));
+			this.btnStrNext.Visible = ((bool)(resources.GetObject("btnStrNext.Visible")));
+			this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
 			// 
 			// tabControl1
 			// 
@@ -411,6 +617,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvParams.Text = resources.GetString("lvParams.Text");
 			this.lvParams.View = System.Windows.Forms.View.Details;
 			this.lvParams.Visible = ((bool)(resources.GetObject("lvParams.Visible")));
+			this.lvParams.ItemActivate += new System.EventHandler(this.ListView_ItemActivate);
 			this.lvParams.SelectedIndexChanged += new System.EventHandler(this.ListView_SelectedIndexChanged);
 			// 
 			// chPID
@@ -477,6 +684,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvLocals.Text = resources.GetString("lvLocals.Text");
 			this.lvLocals.View = System.Windows.Forms.View.Details;
 			this.lvLocals.Visible = ((bool)(resources.GetObject("lvLocals.Visible")));
+			this.lvLocals.ItemActivate += new System.EventHandler(this.ListView_ItemActivate);
 			this.lvLocals.SelectedIndexChanged += new System.EventHandler(this.ListView_SelectedIndexChanged);
 			// 
 			// chLID
@@ -540,7 +748,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLabel.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbLabel.TextAlign")));
 			this.tbLabel.Visible = ((bool)(resources.GetObject("tbLabel.Visible")));
 			this.tbLabel.WordWrap = ((bool)(resources.GetObject("tbLabel.WordWrap")));
-			this.tbLabel.Validated += new System.EventHandler(this.tbText_Validated);
+			this.tbLabel.Validated += new System.EventHandler(this.tbText_Enter);
 			this.tbLabel.TextChanged += new System.EventHandler(this.tbText_TextChanged);
 			// 
 			// btnStrDelete
@@ -665,7 +873,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFilename.TextAlign")));
 			this.tbFilename.Visible = ((bool)(resources.GetObject("tbFilename.Visible")));
 			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
-			this.tbFilename.Validated += new System.EventHandler(this.tbText_Validated);
+			this.tbFilename.Validated += new System.EventHandler(this.tbText_Enter);
 			this.tbFilename.TextChanged += new System.EventHandler(this.tbText_TextChanged);
 			// 
 			// lbFilename
@@ -712,6 +920,56 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
 			// 
+			// btnTabNext
+			// 
+			this.btnTabNext.AccessibleDescription = resources.GetString("btnTabNext.AccessibleDescription");
+			this.btnTabNext.AccessibleName = resources.GetString("btnTabNext.AccessibleName");
+			this.btnTabNext.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnTabNext.Anchor")));
+			this.btnTabNext.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTabNext.BackgroundImage")));
+			this.btnTabNext.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnTabNext.Dock")));
+			this.btnTabNext.Enabled = ((bool)(resources.GetObject("btnTabNext.Enabled")));
+			this.btnTabNext.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnTabNext.FlatStyle")));
+			this.btnTabNext.Font = ((System.Drawing.Font)(resources.GetObject("btnTabNext.Font")));
+			this.btnTabNext.Image = ((System.Drawing.Image)(resources.GetObject("btnTabNext.Image")));
+			this.btnTabNext.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnTabNext.ImageAlign")));
+			this.btnTabNext.ImageIndex = ((int)(resources.GetObject("btnTabNext.ImageIndex")));
+			this.btnTabNext.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnTabNext.ImeMode")));
+			this.btnTabNext.Location = ((System.Drawing.Point)(resources.GetObject("btnTabNext.Location")));
+			this.btnTabNext.Name = "btnTabNext";
+			this.btnTabNext.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnTabNext.RightToLeft")));
+			this.btnTabNext.Size = ((System.Drawing.Size)(resources.GetObject("btnTabNext.Size")));
+			this.btnTabNext.TabIndex = ((int)(resources.GetObject("btnTabNext.TabIndex")));
+			this.btnTabNext.TabStop = false;
+			this.btnTabNext.Text = resources.GetString("btnTabNext.Text");
+			this.btnTabNext.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnTabNext.TextAlign")));
+			this.btnTabNext.Visible = ((bool)(resources.GetObject("btnTabNext.Visible")));
+			this.btnTabNext.Click += new System.EventHandler(this.btnTabNext_Click);
+			// 
+			// btnTabPrev
+			// 
+			this.btnTabPrev.AccessibleDescription = resources.GetString("btnTabPrev.AccessibleDescription");
+			this.btnTabPrev.AccessibleName = resources.GetString("btnTabPrev.AccessibleName");
+			this.btnTabPrev.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnTabPrev.Anchor")));
+			this.btnTabPrev.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTabPrev.BackgroundImage")));
+			this.btnTabPrev.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnTabPrev.Dock")));
+			this.btnTabPrev.Enabled = ((bool)(resources.GetObject("btnTabPrev.Enabled")));
+			this.btnTabPrev.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnTabPrev.FlatStyle")));
+			this.btnTabPrev.Font = ((System.Drawing.Font)(resources.GetObject("btnTabPrev.Font")));
+			this.btnTabPrev.Image = ((System.Drawing.Image)(resources.GetObject("btnTabPrev.Image")));
+			this.btnTabPrev.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnTabPrev.ImageAlign")));
+			this.btnTabPrev.ImageIndex = ((int)(resources.GetObject("btnTabPrev.ImageIndex")));
+			this.btnTabPrev.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnTabPrev.ImeMode")));
+			this.btnTabPrev.Location = ((System.Drawing.Point)(resources.GetObject("btnTabPrev.Location")));
+			this.btnTabPrev.Name = "btnTabPrev";
+			this.btnTabPrev.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnTabPrev.RightToLeft")));
+			this.btnTabPrev.Size = ((System.Drawing.Size)(resources.GetObject("btnTabPrev.Size")));
+			this.btnTabPrev.TabIndex = ((int)(resources.GetObject("btnTabPrev.TabIndex")));
+			this.btnTabPrev.TabStop = false;
+			this.btnTabPrev.Text = resources.GetString("btnTabPrev.Text");
+			this.btnTabPrev.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnTabPrev.TextAlign")));
+			this.btnTabPrev.Visible = ((bool)(resources.GetObject("btnTabPrev.Visible")));
+			this.btnTabPrev.Click += new System.EventHandler(this.btnTabPrev_Click);
+			// 
 			// TPRPForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -750,109 +1008,69 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void tabControl1_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			internalchg = true;
-
-			if (lvCurrent.Items.Count > 0 && lvCurrent.SelectedIndices.Count == 0)
-			{
-				lvCurrent.Items[0].Selected = true;
-				currentItem = wrapper[tabControl1.SelectedIndex.Equals(1), lvCurrent.SelectedIndices[0]];
-			}
-
-			internalchg = false;
-
-			ListView_SelectedIndexChanged(null, null);
+			if (internalchg) return;
+			setTab(tabControl1.SelectedIndex);
 		}
 
 		private void ListView_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
+			setIndex((this.lvCurrent.SelectedIndices.Count > 0) ? this.lvCurrent.SelectedIndices[0] : -1);
+		}
 
-			internalchg = true;
-
-			currentItem = null;
-			if (lvCurrent.SelectedIndices.Count > 0)
-				currentItem = wrapper[tabControl1.SelectedIndex.Equals(1), lvCurrent.SelectedIndices[0]];
-
-			if (currentItem != null)
-			{
-				origItem = currentItem.Clone();
-				this.tbLabel.Text = currentItem.Label;
-				this.btnStrDelete.Enabled = this.tbLabel.Enabled = true;
-			}
-			else
-			{
-				origItem = null;
-				this.tbLabel.Text = "";
-				this.btnStrDelete.Enabled = this.tbLabel.Enabled = false;
-			}
-
-			this.btnCancel.Enabled = false;
-
-			internalchg = false;
+		private void ListView_ItemActivate(object sender, System.EventArgs e)
+		{
+			this.tbLabel.Focus();
 		}
 
 
 		private void btnCommit_Click(object sender, System.EventArgs e)
 		{
-			try 
-			{
-				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = wrapper.Changed;
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
-			}			
+			this.Commit();
 		}
 
 		private void btnCancel_Click(object sender, System.EventArgs e)
 		{
-			internalchg = true;
-			currentItem.Label = origItem.Label;
-			ListView_SelectedIndexChanged(null, null);
-			internalchg = false;
+			this.Cancel();
+		}
+
+
+		private void btnStrPrev_Click(object sender, System.EventArgs e)
+		{
+			setIndex(index - 1);
+		}
+
+		private void btnStrNext_Click(object sender, System.EventArgs e)
+		{
+			setIndex(index + 1);
+		}
+
+		private void btnTabPrev_Click(object sender, System.EventArgs e)
+		{
+			this.setTab(tab - 1);
+		}
+
+		private void btnTabNext_Click(object sender, System.EventArgs e)
+		{
+			this.setTab(tab + 1);
 		}
 
 
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
-			TPRPItem newItem = (currentItem == null)
-				? (tabControl1.SelectedIndex.Equals(1) ? (TPRPItem)new TPRPLocalLabel(wrapper) : (TPRPItem)new TPRPParamLabel(wrapper))
-				: currentItem.Clone();
-
-			if (wrapper.Add(newItem) < 0) return;
-
-			internalchg = true;
-			LVAdd(lvCurrent, newItem);
-			foreach(int sel in lvCurrent.SelectedIndices)
-				lvCurrent.Items[sel].Selected = false;
-			internalchg = false;
-
-			int s = lvCurrent.Items.Count - 1;
-			if (s >= 0)
-			{
-				lvCurrent.Items[s].Selected = true;
-				this.tbLabel.Focus();
-			}
+			this.TPRPItemAdd();
 		}
 
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
-			wrapper.Remove(currentItem);
-			int i = (lvCurrent.SelectedIndices.Count > 0) ? lvCurrent.SelectedIndices[0] : -1;
-			internalchg = true;
-			lvCurrent.Items.RemoveAt(i);
-			foreach(int sel in lvCurrent.SelectedIndices)
-				lvCurrent.Items[sel].Selected = false;
-			internalchg = false;
-
-			int s = (i > 0 ? i : lvCurrent.Items.Count) - 1;
-			if (s >= 0)
-				lvCurrent.Items[s].Selected = true;
-			else
-				ListView_SelectedIndexChanged(null, null);
+			this.TPRPItemDelete();
 		}
 
+
+		private void tbText_Enter(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
+		}
 
 		private void tbText_TextChanged(object sender, System.EventArgs e)
 		{
@@ -865,11 +1083,6 @@ namespace SimPe.PackedFiles.UserInterface
 				case 1: lvCurrent.SelectedItems[0].SubItems[1].Text = currentItem.Label = ((TextBox)sender).Text; break;
 			}
 			internalchg = false;
-		}
-
-		private void tbText_Validated(object sender, System.EventArgs e)
-		{
-			((TextBox)sender).SelectAll();
 		}
 
 

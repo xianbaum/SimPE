@@ -161,6 +161,8 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
+			CleanUp();
+
 			writer.Write(filename);
 			writer.Write(header[0]);
 			writer.Write(header[1]);
@@ -293,6 +295,12 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region TrcnItemArrayList
+		public void CleanUp()
+		{
+			while(items.Count > 0 && ((TrcnItem)items[items.Count-1]).ConstName.Trim().Length == 0) items.RemoveAt(items.Count - 1);
+		}
+
+
 		private class TrcnItemArrayList : ArrayList
 		{
 			public TrcnItemArrayList() : base() { }

@@ -88,12 +88,14 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		#region BconForm
+		#region Controller
 		private Bcon wrapper = null;
-		private bool internalchg = false;
 		private bool setHandler = false;
-		private short origItem = 0;
-		private short currentItem = 0;
+		private bool internalchg = false;
+
+		private int index = -1;
+		private short origItem = -1;
+		private short currentItem = -1;
 
 		private bool hex16_IsValid(object sender)
 		{
@@ -113,14 +115,13 @@ namespace SimPe.PackedFiles.UserInterface
 		private void UpdateBconItem_Value(short val, bool doHex, bool doDec)
 		{
 			internalchg = true;
-			wrapper[lvConstants.SelectedIndices[0]] = currentItem = val;
+			wrapper[index] = currentItem = val;
 			lvConstants.SelectedItems[0].SubItems[1].Text = "0x" + SimPe.Helper.HexString(currentItem);
 			if (doHex)
 				tbValueHex.Text = lvConstants.SelectedItems[0].SubItems[1].Text;
 			if (doDec)
 				tbValueDec.Text = currentItem.ToString();
 			internalchg = false;
-			this.btnCancel.Enabled = currentItem != origItem;
 		}
 
 		private ListViewItem lvItem(int i)
@@ -130,6 +131,124 @@ namespace SimPe.PackedFiles.UserInterface
 			string cLabel = (wrapper.TrcnResource != null && i < wrapper.TrcnResource.Count) ? wrapper.TrcnResource[i].ConstName : "";
 			string[] v = { cID, cValue, cLabel };
 			return new ListViewItem(v);
+		}
+
+		private void updateLists()
+		{
+			index = -1;
+
+			this.lvConstants.Items.Clear();
+			int nItems = wrapper.Count;
+			for(int i = 0; i < nItems; i++)
+				this.lvConstants.Items.Add(lvItem(i));
+		}
+
+		private void setIndex(int i)
+		{
+			internalchg = true;
+			if (i >= 0) this.lvConstants.Items[i].Selected = true;
+			else if (index >= 0) this.lvConstants.Items[index].Selected = false;
+			internalchg = false;
+
+			if (this.lvConstants.SelectedItems.Count > 0)
+			{
+				if (this.lvConstants.Focused) this.lvConstants.SelectedItems[0].Focused = true;
+				this.lvConstants.SelectedItems[0].EnsureVisible();
+			}
+
+			if (index == i) return;
+			index = i;
+			displayBconItem();
+		}
+
+
+		private void displayBconItem()
+		{
+			internalchg = true;
+			if (index >= 0 && index < wrapper.Count)
+			{
+				origItem = currentItem = wrapper[index];
+
+				this.tbValueHex.Text = "0x" + SimPe.Helper.HexString(currentItem);
+				this.tbValueDec.Text = currentItem.ToString();
+
+				this.tbValueHex.Enabled = this.tbValueDec.Enabled = true;
+			}
+			else
+			{
+				origItem = currentItem = -1;
+				this.tbValueHex.Text = this.tbValueDec.Text = "";
+				this.tbValueHex.Enabled = this.tbValueDec.Enabled = false;
+			}
+			//this.btnStrPrev.Enabled = (index > 0);
+			//this.btnStrNext.Enabled = (index < lvCurrent.Items.Count - 1);
+			internalchg = false;
+
+			this.btnCancel.Enabled = false;
+		}
+
+
+		private void BconItemAdd()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			if (wrapper.Add(0) >= 0)
+				this.lvConstants.Items.Add(lvItem(wrapper.Count - 1));
+
+			internalchg = savedstate;
+
+			setIndex(lvConstants.Items.Count - 1);
+		}
+
+		private void BconItemDelete()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			int i = index;
+			wrapper.RemoveAt(i);
+			updateLists();
+
+			internalchg = savedstate;
+
+			setIndex((i >= lvConstants.Items.Count) ? lvConstants.Items.Count - 1 : i);
+		}
+
+		private void Commit()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			try 
+			{
+				wrapper.SynchronizeUserData();
+			} 
+			catch (Exception ex) 
+			{
+				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+			}
+
+			btnCommit.Enabled = wrapper.Changed;
+
+			int i = index;
+			updateLists();
+
+			internalchg = savedstate;
+
+			setIndex((i >= lvConstants.Items.Count) ? lvConstants.Items.Count - 1 : i);
+		}
+
+		private void Cancel()
+		{
+			bool savedstate = internalchg;
+			internalchg = true;
+
+			wrapper[index] = currentItem = origItem;
+
+			internalchg = savedstate;
+
+			displayBconItem();
 		}
 
 		#endregion
@@ -160,17 +279,10 @@ namespace SimPe.PackedFiles.UserInterface
 			WrapperChanged(wrapper, null);
 
 			internalchg = true;
-
-			lvConstants.Items.Clear();
-			for(int i = 0; i < wrapper.Count; i++)
-				this.lvConstants.Items.Add(lvItem(i));
-
+			updateLists();
 			internalchg = false;
 
-			if (lvConstants.Items.Count > 0)
-				lvConstants.Items[0].Selected = true;
-			else
-				lvConstants_SelectedIndexChanged(null, null);
+			setIndex(lvConstants.Items.Count > 0 ? 0 : -1);
 
 			if (!setHandler)
 			{
@@ -182,6 +294,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
 			this.btnCommit.Enabled = wrapper.Changed;
+			if (sender.Equals(currentItem))
+				this.btnCancel.Enabled = true;
+
 			if (internalchg) return;
 
 			if (sender.Equals(wrapper))
@@ -191,10 +306,8 @@ namespace SimPe.PackedFiles.UserInterface
 				this.cbFlag.Checked = wrapper.Flag;
 				internalchg = false;
 			}
-			else if (sender is short)
-				this.btnCancel.Enabled = true;
-			else
-				lvConstants_SelectedIndexChanged(null, null);
+			else if (!(sender is short))
+				updateLists();
 		}
 		#endregion
 
@@ -216,6 +329,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbValue = new System.Windows.Forms.GroupBox();
 			this.label6 = new System.Windows.Forms.Label();
 			this.bconPanel = new System.Windows.Forms.Panel();
+			this.cbFlag = new System.Windows.Forms.CheckBox();
 			this.btnCancel = new System.Windows.Forms.Button();
 			this.btnStrDelete = new System.Windows.Forms.Button();
 			this.btnStrAdd = new System.Windows.Forms.Button();
@@ -224,7 +338,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.chValue = new System.Windows.Forms.ColumnHeader();
 			this.chLabel = new System.Windows.Forms.ColumnHeader();
 			this.btnCommit = new System.Windows.Forms.Button();
-			this.cbFlag = new System.Windows.Forms.CheckBox();
 			this.pnHeading.SuspendLayout();
 			this.gbValue.SuspendLayout();
 			this.bconPanel.SuspendLayout();
@@ -322,8 +435,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.TextAlign = ((System.Windows.Forms.HorizontalAlignment)(resources.GetObject("tbFilename.TextAlign")));
 			this.tbFilename.Visible = ((bool)(resources.GetObject("tbFilename.Visible")));
 			this.tbFilename.WordWrap = ((bool)(resources.GetObject("tbFilename.WordWrap")));
-			this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
 			this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
+			this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
 			// 
 			// tbValueDec
 			// 
@@ -481,6 +594,32 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bconPanel.Text = resources.GetString("bconPanel.Text");
 			this.bconPanel.Visible = ((bool)(resources.GetObject("bconPanel.Visible")));
 			// 
+			// cbFlag
+			// 
+			this.cbFlag.AccessibleDescription = resources.GetString("cbFlag.AccessibleDescription");
+			this.cbFlag.AccessibleName = resources.GetString("cbFlag.AccessibleName");
+			this.cbFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbFlag.Anchor")));
+			this.cbFlag.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("cbFlag.Appearance")));
+			this.cbFlag.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbFlag.BackgroundImage")));
+			this.cbFlag.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.CheckAlign")));
+			this.cbFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbFlag.Dock")));
+			this.cbFlag.Enabled = ((bool)(resources.GetObject("cbFlag.Enabled")));
+			this.cbFlag.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("cbFlag.FlatStyle")));
+			this.cbFlag.Font = ((System.Drawing.Font)(resources.GetObject("cbFlag.Font")));
+			this.cbFlag.Image = ((System.Drawing.Image)(resources.GetObject("cbFlag.Image")));
+			this.cbFlag.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.ImageAlign")));
+			this.cbFlag.ImageIndex = ((int)(resources.GetObject("cbFlag.ImageIndex")));
+			this.cbFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbFlag.ImeMode")));
+			this.cbFlag.Location = ((System.Drawing.Point)(resources.GetObject("cbFlag.Location")));
+			this.cbFlag.Name = "cbFlag";
+			this.cbFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbFlag.RightToLeft")));
+			this.cbFlag.Size = ((System.Drawing.Size)(resources.GetObject("cbFlag.Size")));
+			this.cbFlag.TabIndex = ((int)(resources.GetObject("cbFlag.TabIndex")));
+			this.cbFlag.Text = resources.GetString("cbFlag.Text");
+			this.cbFlag.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.TextAlign")));
+			this.cbFlag.Visible = ((bool)(resources.GetObject("cbFlag.Visible")));
+			this.cbFlag.CheckedChanged += new System.EventHandler(this.cbFlag_CheckedChanged);
+			// 
 			// btnCancel
 			// 
 			this.btnCancel.AccessibleDescription = resources.GetString("btnCancel.AccessibleDescription");
@@ -628,32 +767,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
 			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
 			// 
-			// cbFlag
-			// 
-			this.cbFlag.AccessibleDescription = resources.GetString("cbFlag.AccessibleDescription");
-			this.cbFlag.AccessibleName = resources.GetString("cbFlag.AccessibleName");
-			this.cbFlag.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbFlag.Anchor")));
-			this.cbFlag.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("cbFlag.Appearance")));
-			this.cbFlag.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbFlag.BackgroundImage")));
-			this.cbFlag.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.CheckAlign")));
-			this.cbFlag.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbFlag.Dock")));
-			this.cbFlag.Enabled = ((bool)(resources.GetObject("cbFlag.Enabled")));
-			this.cbFlag.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("cbFlag.FlatStyle")));
-			this.cbFlag.Font = ((System.Drawing.Font)(resources.GetObject("cbFlag.Font")));
-			this.cbFlag.Image = ((System.Drawing.Image)(resources.GetObject("cbFlag.Image")));
-			this.cbFlag.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.ImageAlign")));
-			this.cbFlag.ImageIndex = ((int)(resources.GetObject("cbFlag.ImageIndex")));
-			this.cbFlag.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbFlag.ImeMode")));
-			this.cbFlag.Location = ((System.Drawing.Point)(resources.GetObject("cbFlag.Location")));
-			this.cbFlag.Name = "cbFlag";
-			this.cbFlag.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbFlag.RightToLeft")));
-			this.cbFlag.Size = ((System.Drawing.Size)(resources.GetObject("cbFlag.Size")));
-			this.cbFlag.TabIndex = ((int)(resources.GetObject("cbFlag.TabIndex")));
-			this.cbFlag.Text = resources.GetString("cbFlag.Text");
-			this.cbFlag.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbFlag.TextAlign")));
-			this.cbFlag.Visible = ((bool)(resources.GetObject("cbFlag.Visible")));
-			this.cbFlag.CheckedChanged += new System.EventHandler(this.cbFlag_CheckedChanged);
-			// 
 			// BconForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -687,99 +800,48 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#endregion
 
-		private void btnCommit_Clicked(object sender, System.EventArgs e)
-		{
-			try 
-			{
-				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = false;
-				lvConstants_SelectedIndexChanged(null, null);
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
-			}		
-		}
-
-
 		private void lvConstants_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-
-			internalchg = true;
-
-			if (lvConstants.SelectedIndices.Count > 0 && lvConstants.SelectedIndices[0] >= 0)
-			{
-				currentItem = wrapper[lvConstants.SelectedIndices[0]];
-				origItem = currentItem;
-
-				this.tbValueHex.Text = "0x"+Helper.HexString((ushort)currentItem);
-				this.tbValueHex.Enabled = true;
-				this.tbValueDec.Text = currentItem.ToString();
-				this.tbValueDec.Enabled = true;
-
-				this.btnStrDelete.Enabled = true;
-			}
-			else
-			{
-				this.tbValueHex.Text = "";
-				this.tbValueHex.Enabled = false;
-				this.tbValueDec.Text = "";
-				this.tbValueDec.Enabled = false;
-
-				this.btnStrDelete.Enabled = false;
-			}
-
-			this.btnCancel.Enabled = false;
-
-			internalchg = false;
+			setIndex((this.lvConstants.SelectedIndices.Count > 0) ? this.lvConstants.SelectedIndices[0] : -1);
 		}
+
+
+		private void btnCommit_Clicked(object sender, System.EventArgs e)
+		{
+			this.Commit();
+		}
+
+		private void btnCancel_Click(object sender, System.EventArgs e)
+		{
+			this.Cancel();
+		}
+
 
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
-			internalchg = true;
-			int i = wrapper.Add((lvConstants.SelectedIndices.Count == 0 || lvConstants.SelectedIndices[0] == -1) ? (short)0 : currentItem);
-			internalchg = false;
-
-			if (i < 0) return;
-
-			internalchg = true;
-			foreach(ListViewItem ti in lvConstants.SelectedItems)
-				ti.Selected = false;
-			this.lvConstants.Items.Add(lvItem(i));
-			internalchg = false;
-
-			lvConstants.Items[i].Selected = true;
+			this.BconItemAdd();
 		}
 
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
-			if (lvConstants.SelectedIndices.Count == 0) return;
-			int i = lvConstants.SelectedIndices[0];
-
-			internalchg = true;
-			wrapper.RemoveAt(i);
-
-			lvConstants.BeginUpdate();
-
-			foreach(ListViewItem ti in lvConstants.SelectedItems)
-				ti.Selected = false;
-
-			lvConstants.Items.RemoveAt(i);
-
-			for(int j = i; j < wrapper.Count; j++)
-				lvConstants.Items[j] = lvItem(j);
-
-			lvConstants.EndUpdate();
-
-			internalchg = false;
-
-			if (i >= lvConstants.Items.Count)
-				i = lvConstants.Items.Count - 1;
-			if (i >= 0)
-				lvConstants.Items[i].Selected = true;
+			this.BconItemDelete();
 		}
 
+
+		private void cbFlag_CheckedChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+			internalchg = true;
+			wrapper.Flag = ((CheckBox)sender).Checked;
+			internalchg = false;
+		}
+
+
+		private void tbText_Enter(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
+		}
 
 		private void tbFilename_TextChanged(object sender, System.EventArgs e)
 		{
@@ -788,11 +850,6 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			wrapper.FileName = tbFilename.Text;
 			internalchg = false;
-		}
-
-		private void tbFilename_Validated(object sender, System.EventArgs e)
-		{
-			((TextBox)sender).SelectAll();
 		}
 
 
@@ -842,22 +899,6 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
-
-
-		private void cbFlag_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-			internalchg = true;
-			wrapper.Flag = ((CheckBox)sender).Checked;
-			internalchg = false;
-		}
-
-
-		private void btnCancel_Click(object sender, System.EventArgs e)
-		{
-			UpdateBconItem_Value(origItem, true, true);
-		}
-
 
 	}
 }

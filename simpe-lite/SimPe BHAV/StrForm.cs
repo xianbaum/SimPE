@@ -104,7 +104,7 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		#region StrForm
+		#region Controller
 		private Str wrapper = null;
 		private bool setHandler = false;
 		private bool internalchg = false;
@@ -251,7 +251,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 
 			this.btnStrDelete.Enabled = index >= 0;
-			this.btnStrClear.Enabled = (wrapper.Format != 0x000 && index >= 0);
+			this.btnStrClear.Enabled = (wrapper.Format != 0x0000 && index >= 0);
 		}
 
 
@@ -1409,9 +1409,13 @@ namespace SimPe.PackedFiles.UserInterface
 		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex16_IsValid(sender)) return;
-
 			e.Cancel = true;
+			hex16_Validated(sender, null);
+		}
 
+		private void hex16_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
 			internalchg = true;
 			ushort val = 0;
 			switch (alHex16.IndexOf(sender))
@@ -1420,15 +1424,6 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			((TextBox)sender).SelectAll();
-			internalchg = false;
-		}
-
-		private void hex16_Validated(object sender, System.EventArgs e)
-		{
-			bool origstate = internalchg;
-			internalchg = true;
-			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}

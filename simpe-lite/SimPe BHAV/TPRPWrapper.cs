@@ -156,6 +156,8 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
+			CleanUp();
+
 			writer.Write(filename);
 			writer.Write(header[0]);
 			writer.Write(header[1]);
@@ -278,7 +280,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public void Remove(TPRPItem item) { this.RemoveAt(items.IndexOf(item)); }
 
-		public void RemoveAt(int index)
+		protected void RemoveAt(int index)
 		{
 			if (index < 0 || index >= items.Count) return;
 
@@ -301,7 +303,7 @@ namespace SimPe.PackedFiles.Wrapper
 			set { this[(local ? paramCount : 0) + index] = value; }
 		}
 
-		private TPRPItem this[int index]
+		protected TPRPItem this[int index]
 		{
 			get
 			{
@@ -337,6 +339,15 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region TPRPItemArrayList
+		public void CleanUp()
+		{
+			internalchg = true;
+			while (paramCount > 0 && this[false, paramCount-1].Label.Trim().Length == 0) Remove(this[false, paramCount-1]);
+			while (localCount > 0 && this[true, localCount-1].Label.Trim().Length == 0) Remove(this[true, localCount-1]);
+			internalchg = false;
+		}
+
+
 		private class TPRPItemArrayList : ArrayList
 		{
 			public TPRPItemArrayList() : base() { }
