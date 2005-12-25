@@ -161,6 +161,7 @@ namespace SimPe.PackedFiles.UserInterface
 			ComboBox[] cb = { tba1 ,tba2 ,cbFormat ,};
 			alHex16cb = new ArrayList(cb);
 
+			this.cbSpecial.Checked = this.gbSpecial.Visible = this.ShowSpecialButtons;
 		}
 
 		/// <summary>
@@ -446,6 +447,24 @@ namespace SimPe.PackedFiles.UserInterface
 			try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
+		}
+
+
+		private bool ShowSpecialButtons
+		{
+			get
+			{
+				XmlRegistryKey  rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+				object o = rkf.GetValue("showSpecialButtons", false);
+				return Convert.ToBoolean(o);
+			}
+
+			set
+			{
+				XmlRegistryKey rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+				rkf.SetValue("showSpecialButtons", value);
+			}
+
 		}
 
 		#endregion
@@ -3032,7 +3051,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void cbSpecial_CheckStateChanged(object sender, System.EventArgs e)
 		{
-			gbSpecial.Visible = ((CheckBox)sender).Checked;
+			this.ShowSpecialButtons = gbSpecial.Visible = ((CheckBox)sender).Checked;
 		}
 
 
