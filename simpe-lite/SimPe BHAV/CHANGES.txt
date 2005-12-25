@@ -1,4 +1,8 @@
 
+25 December 2005 09:35 - BHAV: Remember state of Special Buttons checkbox
+  SimPe BHAV\
+    BhavForm.cs 1.62
+
 24 December 2005 20:53 - Refactoring BCON, TPRP, TRCN forms mostly to match STR# (part 3 - bugfixes)
   SimPe BHAV\
     BconForm.cs 1.14
