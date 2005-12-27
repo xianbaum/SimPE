@@ -49,7 +49,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// TODO: Add any initialization after the InitializeComponent call
 			this.Height = rowHeight;
 			MakeUnselected();
-			pjse.FileTable.GFT.FiletableRefresh += new System.EventHandler(this.WrapperChanged);
+			pjse.FileTable.GFT.FiletableRefresh += new EventHandler(FiletableRefresh);
 		}
 
 		/// <summary> 
@@ -66,7 +66,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			base.Dispose( disposing );
 
-			pjse.FileTable.GFT.FiletableRefresh -= new System.EventHandler(WrapperChanged);
+			pjse.FileTable.GFT.FiletableRefresh -= new EventHandler(FiletableRefresh);
 			Index = -1;
 			Wrapper = null;
 		}
@@ -151,6 +151,12 @@ namespace SimPe.PackedFiles.UserInterface
 			falseTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target2 < wrapper.Count)
 				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);
+		}
+
+		private void FiletableRefresh(object sender, System.EventArgs e)
+		{
+			if (wrapper == null || index == -1) return;
+			instrText.Text = index.ToString("X") + ": " + cleanup(((pjse.BhavWiz)wrapper[index]).ShortName);//LongName;
 		}
 
 		private string cleanup(string str)
