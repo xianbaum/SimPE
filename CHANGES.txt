@@ -1,15 +1,19 @@
 
+27 december 2005 12:25 - Move GUIDTool under PJSE menu
+  pjse GUID Tool\
+    GUIDTool.cs 1.10
+
 22 October 2005 17:04 - Take advantage of changes to FileTable for ResourceChooser
   pjse GUID Tool\
-    GUIDTool.cs 1.7
+    GUIDTool.cs 1.9
 
 16 October 2005 09:33 - Change the help text (/sigh/)
   pjse GUID Tool\
-    GUIDTool.cs 1.7
+    GUIDTool.cs 1.8
 
 16 October 2005 09:11 - Add a help button
   pjse GUID Tool\
-    GUIDTool.cs 1.6
+    GUIDTool.cs 1.7
     GUIDTool.resx 1.5
 
 15 October 2005 19:04 - Oops...  Maxlength on Name box was still 10
