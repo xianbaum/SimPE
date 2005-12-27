@@ -94,7 +94,10 @@ namespace pjse
 			this.tcResources.TabPages.Clear();
 
 			// There doesn't appear to be a way to compare two paths and have the OS decide if they refer to the same object
-			if (((skip_pages & 0x01) == 0) && pjse.FileTable.GFT.CurrentPackage != null && !pjse.FileTable.GFT.CurrentPackage.FileName.EndsWith("objects.package"))
+			if (((skip_pages & 0x01) == 0) 
+				&& pjse.FileTable.GFT.CurrentPackage != null 
+				&& pjse.FileTable.GFT.CurrentPackage.FileName != null 
+				&& !pjse.FileTable.GFT.CurrentPackage.FileName.EndsWith("objects.package"))
 				FillPackage(resourceType, this.lbPackage, this.tpPackage);
 
 			if ((skip_pages & 0x02) == 0)
