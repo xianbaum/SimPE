@@ -1,4 +1,23 @@
 
+27 December 2005 12:38 - Trivial code/comment changes
+  SimPe BHAV\
+    BconForm.cs 1.15
+    BhavForm.cs 1.64
+    ObjfForm.cs 1.13
+    StrForm.cs 1.28
+    TPRPForm.cs 1.6
+    TrcnForm.cs 1.11
+    TtabForm.cs 1.31
+
+27 December 2005 12:31 - FileTable: Respond to FiletableRefresh events
+  SimPe BHAV\
+    BhavForm.cs 1.62
+    BhavInstListItemUI.cs 1.22
+
+27 December 2005 12:28 - FileTable: Add Refresh menu option and Event
+  pjse filetable\
+    FileTable.cs 1.9
+
 25 December 2005 09:35 - BHAV: Remember state of Special Buttons checkbox
   SimPe BHAV\
     BhavForm.cs 1.62
