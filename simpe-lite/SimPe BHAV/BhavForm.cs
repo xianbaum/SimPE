@@ -162,6 +162,8 @@ namespace SimPe.PackedFiles.UserInterface
 			alHex16cb = new ArrayList(cb);
 
 			this.cbSpecial.Checked = this.gbSpecial.Visible = this.ShowSpecialButtons;
+
+			pjse.FileTable.GFT.FiletableRefresh += new System.EventHandler(this.FiletableRefresh);
 		}
 
 		/// <summary>
@@ -467,6 +469,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
+
+		private void FiletableRefresh(object sender, System.EventArgs e)
+		{
+			UpdateInstPanel();
+		}
+
 		#endregion
 
 		#region IPackedFileUI Member
@@ -482,11 +490,9 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 		/// <summary>
-		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should update the Data displayed by the Panel with the Attributes stored in the
-		/// passed Wrapper.
+		/// Called by the AbstractWrapper when the file should be displayed to the user.
 		/// </summary>
-		/// <param name="wrp">The Attributes of this Wrapper have to be displayed</param>
+		/// <param name="wrp">Reference to the wrapper to be displayed.</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Bhav) wrp;

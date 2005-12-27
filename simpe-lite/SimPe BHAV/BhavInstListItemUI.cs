@@ -49,6 +49,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// TODO: Add any initialization after the InitializeComponent call
 			this.Height = rowHeight;
 			MakeUnselected();
+			pjse.FileTable.GFT.FiletableRefresh += new System.EventHandler(this.WrapperChanged);
 		}
 
 		/// <summary> 
@@ -64,6 +65,8 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
+
+			pjse.FileTable.GFT.FiletableRefresh -= new System.EventHandler(WrapperChanged);
 			Index = -1;
 			Wrapper = null;
 		}
