@@ -30,7 +30,7 @@ namespace pjse
 	/// <summary>
 	/// Summary description for FileTable.
 	/// </summary>
-	public class FileTable : IListener, ITool
+	public class FileTable : ITool
 	{
 		private Hashtable packedFiles = new Hashtable();
 		private Hashtable pfByPackage = new Hashtable();
@@ -45,21 +45,7 @@ namespace pjse
 		static FileTable()
 		{
 			GFT = new FileTable();
-			if (SimPe.Helper.WindowsRegistry.SimsEP2Path.Length > 0)
-				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
-			else if (SimPe.Helper.WindowsRegistry.SimsEP1Path.Length > 0)
-				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP1Path, "TSData\\Res\\Objects\\objects.package"));
-			else if (SimPe.Helper.WindowsRegistry.SimsPath.Length > 0)
-				GFT.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package"));
-			GFT.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
-
-			string packages_txt = Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\packages.txt");
-			if (File.Exists(packages_txt))
-			{
-				System.IO.StreamReader sr = new StreamReader(packages_txt);
-				for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
-					GFT.AddFixed(line);
-			}
+			GFT.Refresh();
 		}
 
 
@@ -68,6 +54,27 @@ namespace pjse
 			//
 			// TODO: Add constructor logic here
 			//
+		}
+
+
+		public void Refresh()
+		{
+			if (SimPe.Helper.WindowsRegistry.SimsEP2Path.Length > 0)
+				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
+			else if (SimPe.Helper.WindowsRegistry.SimsEP1Path.Length > 0)
+				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP1Path, "TSData\\Res\\Objects\\objects.package"));
+			else if (SimPe.Helper.WindowsRegistry.SimsPath.Length > 0)
+				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package"));
+			this.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
+
+			string packages_txt = Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\packages.txt");
+			if (File.Exists(packages_txt))
+			{
+				System.IO.StreamReader sr = new StreamReader(packages_txt);
+				for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
+					this.AddFixed(line);
+			}
+			OnFiletableRefresh(this, new EventArgs());
 		}
 
 
@@ -377,45 +384,40 @@ namespace pjse
 		public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
 		{
 			GFT.CurrentPackage = package;
-			return false;
+			return true;
 		}
 
 		public IToolResult ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
 		{
-			return null;
+			GFT.Refresh();
+			return new SimPe.Plugin.ToolResult(false, false);
 		}
 
-		#endregion
 
 		#region IToolPlugin Members
 
 		public override string ToString()
 		{
-			return "--"; // Old GUI
+			return "PJSE\\&Refresh filetable";
 		}
 
 		#endregion
+		#endregion
 
-		#region IListener Members
-
-		public void SelectionChangedHandler(object sender, SimPe.Events.ResourceEventArgs e)
+		/// <summary>
+		/// Indicates the Refresh() was called
+		/// </summary>
+		public event EventHandler FiletableRefresh;
+		internal virtual void OnFiletableRefresh(object sender, EventArgs e)
 		{
-			IPackageFile package = (e.LoadedPackage == null) ? null : e.LoadedPackage.Package;
-			GFT.CurrentPackage = package;
-
-#if AtSomePoint
-			// Actually, I don't think this will ever be useful -- I could have multiple BHAVs open in the new UI
-			IPackedFileDescriptor pfd = null;
-			foreach (SimPe.Events.ResourceContainer item in e)
+			if (FiletableRefresh != null) 
 			{
-				pfd = item.Resource.FileDescriptor;
-				// do stuff
+				FiletableRefresh(sender, e);
 			}
-#endif
 		}
 
-		#endregion
 	}
+
 
 	public class FileTableWrapperFactory : AbstractWrapperFactory, IToolFactory
 	{
