@@ -1,4 +1,21 @@
 
+27 December 2005 19:24 - BHAV: Label BHAV parameters
+  SimPe BHAV\
+    BhavWiz.cs 1.35
+    BhavWizBhav.cs 1.17
+
+27 December 2005 19:05 - FileTable: Can't use same handler as wrapper in BhavInstListItemUI
+  SimPe BHAV\
+    BhavInstListItemUI.cs 1.23
+
+27 December 2005 19:03 - ResourceChooser: Oops: Handle un-saved (new) packages
+  SimPe BHAV\
+    ResourceChooser.cs 1.6
+
+27 December 2005 19:02 - FileTable: Remember to remove old entries and close the file
+  SimPe BHAV\
+    FileTable.cs 1.10
+
 27 December 2005 12:38 - Trivial code/comment changes
   SimPe BHAV\
     BconForm.cs 1.15
