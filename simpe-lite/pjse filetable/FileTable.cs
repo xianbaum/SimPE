@@ -32,22 +32,12 @@ namespace pjse
 	/// </summary>
 	public class FileTable : ITool
 	{
-		private Hashtable packedFiles = new Hashtable();
-		private Hashtable pfByPackage = new Hashtable();
-		private Hashtable pfByType = new Hashtable();
-		private Hashtable pfByGroup = new Hashtable();
-		private Hashtable pfByTypeGroup = new Hashtable();
-		private Hashtable pfByTypeGroupInstance = new Hashtable();
-
-		private IPackageFile currentPackage = null;
-
 		public static FileTable GFT = null;
 		static FileTable()
 		{
 			GFT = new FileTable();
 			GFT.Refresh();
 		}
-
 
 		public FileTable()
 		{
@@ -57,8 +47,25 @@ namespace pjse
 		}
 
 
+		private Hashtable packedFiles = new Hashtable();
+		private Hashtable pfByPackage = new Hashtable();
+		private Hashtable pfByType = new Hashtable();
+		private Hashtable pfByGroup = new Hashtable();
+		private Hashtable pfByTypeGroup = new Hashtable();
+		private Hashtable pfByTypeGroupInstance = new Hashtable();
+
+		private IPackageFile currentPackage = null;
+
+
 		public void Refresh()
 		{
+			packedFiles = new Hashtable();
+			pfByPackage = new Hashtable();
+			pfByType = new Hashtable();
+			pfByGroup = new Hashtable();
+			pfByTypeGroup = new Hashtable();
+			pfByTypeGroupInstance = new Hashtable();
+
 			if (SimPe.Helper.WindowsRegistry.SimsEP2Path.Length > 0)
 				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
 			else if (SimPe.Helper.WindowsRegistry.SimsEP1Path.Length > 0)
@@ -73,9 +80,26 @@ namespace pjse
 				System.IO.StreamReader sr = new StreamReader(packages_txt);
 				for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
 					this.AddFixed(line);
+				sr.Close();
 			}
+
+			RefreshCurrentPackage();
+
 			OnFiletableRefresh(this, new EventArgs());
 		}
+
+		/// <summary>
+		/// Indicates the Refresh() was called
+		/// </summary>
+		public event EventHandler FiletableRefresh;
+		internal virtual void OnFiletableRefresh(object sender, EventArgs e)
+		{
+			if (FiletableRefresh != null) 
+			{
+				FiletableRefresh(sender, e);
+			}
+		}
+
 
 
 		public Entry[] this[IPackageFile package, uint packedFileType]
@@ -285,7 +309,6 @@ namespace pjse
 
 		private void RefreshCurrentPackage()
 		{
-
 			if (currentPackage != null && !fixedPackages.Contains(currentPackage))
 			{
 				Remove(currentPackage);
@@ -403,19 +426,6 @@ namespace pjse
 
 		#endregion
 		#endregion
-
-		/// <summary>
-		/// Indicates the Refresh() was called
-		/// </summary>
-		public event EventHandler FiletableRefresh;
-		internal virtual void OnFiletableRefresh(object sender, EventArgs e)
-		{
-			if (FiletableRefresh != null) 
-			{
-				FiletableRefresh(sender, e);
-			}
-		}
-
 	}
 
 
