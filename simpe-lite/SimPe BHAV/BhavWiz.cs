@@ -400,18 +400,20 @@ namespace pjse
 		}
 
 
-		protected string readParam(int pid, bool silent) { return readTPRP(false, pid, silent); }
+		protected string readParam(int pid, bool silent) { return readMyTPRP(false, pid, silent); }
 
-		protected string readLocal(int lid, bool silent) { return readTPRP(true, lid, silent); }
+		protected string readLocal(int lid, bool silent) { return readMyTPRP(true, lid, silent); }
 
-		private string readTPRP(bool flag, int sid, bool silent)
+		private string readMyTPRP(bool flag, int sid, bool silent)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
 
-			uint group    = instruction.Parent.FileDescriptor.Group;
-			uint instance = instruction.Parent.FileDescriptor.Instance;
+			return readAnyTPRP(instruction.Parent.FileDescriptor.Group, instruction.Parent.FileDescriptor.Instance, flag, sid, silent);
+		}
 
+		protected string readAnyTPRP(uint group, uint instance, bool flag, int sid, bool silent)
+		{
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, group, instance];
 
 			if (items == null || items.Length == 0)

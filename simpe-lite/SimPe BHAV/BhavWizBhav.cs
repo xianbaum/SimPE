@@ -153,12 +153,22 @@ namespace pjse.BhavNameWizards
 				if ((o[12] & 0x01) == 0) // original format
 				{
 					for (int i = 0; !noOperands && thisArgc > 0 && i < 4; i++, thisArgc--)
-						s += (i>0 ? ", " : "") + "0x" + SimPe.Helper.HexString(ToShort(o[(i*2)], o[(i*2) + 1]));
+					{
+						string pn = lng ? readAnyTPRP(bhav.FileDescriptor.Group, bhav.FileDescriptor.Instance, false, i, true) : "";
+						s += (i>0 ? ", " : "") +
+							((pn != null && pn != "") ? pn + "=" : "") +
+                            "0x" + SimPe.Helper.HexString(ToShort(o[(i*2)], o[(i*2) + 1]));
+					}
 				}
 				else	// 16 byte format
 				{
 					for (int i = 0; thisArgc > 0 && i < 4; i++, thisArgc--)
-						s += (i>0 ? ", " : "") + dataOwner(lng, o[i*3], o[(i*3) + 1], o[(i*3) + 2]);
+					{
+						string pn = lng ? readAnyTPRP(bhav.FileDescriptor.Group, bhav.FileDescriptor.Instance, false, i, true) : "";
+						s += (i>0 ? ", " : "") +
+							(pn == "" ? pn : pn + "=") +
+							dataOwner(lng, o[i*3], o[(i*3) + 1], o[(i*3) + 2]);
+					}
 				}
 
 				if (thisArgc > 0)
