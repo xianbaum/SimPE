@@ -98,7 +98,7 @@ namespace pjse.guidtool
 
 		public override string ToString()
 		{
-			return "&" + this.Text;
+			return "PJSE\\&" + this.Text;
 		}
 
 		#endregion
