@@ -146,9 +146,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#region IPackedFileUI Member
 		/// <summary>
-		/// Returns the Panel that will be displayed within SimPe
+		/// Returns the Control that will be displayed within SimPe
 		/// </summary>
-		public System.Windows.Forms.Control GUIHandle
+		public Control GUIHandle
 		{
 			get
 			{
@@ -157,13 +157,9 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 		/// <summary>
-		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should updatet the Data displayed by the Panel with the Attributes stored in the
-		/// passed Wrapper.
+		/// Called by the AbstractWrapper when the file should be displayed to the user.
 		/// </summary>
-		/// <remarks>internalchg is used to let TextChanged event handlers know the change is being
-		/// made internally rather than by the users.</remarks>
-		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
+		/// <param name="wrp">Reference to the wrapper to be displayed.</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Objf)wrp;

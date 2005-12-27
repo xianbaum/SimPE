@@ -479,9 +479,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#region IPackedFileUI Member
 		/// <summary>
-		/// Returns the Panel that will be displayed within SimPe
+		/// Returns the Control that will be displayed within SimPe
 		/// </summary>
-		public System.Windows.Forms.Control GUIHandle
+		public Control GUIHandle
 		{
 			get
 			{

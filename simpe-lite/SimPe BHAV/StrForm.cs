@@ -472,16 +472,20 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#region IPackedFileUI Member
 		/// <summary>
-		/// Returns the Panel that will be displayed within SimPe
+		/// Returns the Control that will be displayed within SimPe
 		/// </summary>
-		public System.Windows.Forms.Control GUIHandle { get { return strPanel; } }
+		public Control GUIHandle
+		{
+			get
+			{
+				return strPanel;
+			}
+		}
 
 		/// <summary>
-		/// Is called by SimPe (through the Wrapper) when the Panel is going to be displayed, so
-		/// you should update the Data displayed by the Panel with the Attributes stored in the
-		/// passed Wrapper.
+		/// Called by the AbstractWrapper when the file should be displayed to the user.
 		/// </summary>
-		/// <param name="wrp">The Attributes of this Wrapper have to be displayed</param>
+		/// <param name="wrp">Reference to the wrapper to be displayed.</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Str) wrp;
