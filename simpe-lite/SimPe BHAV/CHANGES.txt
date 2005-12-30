@@ -1,4 +1,25 @@
 
+30 December 2005 12:!7 - BHAV: Wiz0x0002 enhanced, dataOwners tidied
+  * Wiz0x0002: Decimal mode sticky, new pickers (param, local, attribute). some code moved into BhavWiz
+  * BhavWiz: Many "consistency" changes (still don't like attr labels)
+  * BhavWiz: dataowners 0x16 and 0x32 use Param
+  * BhavWiz: Consts (0x1a, 0x2f) reformatted
+  * BhavWiz: STR#, BCON, TRCN and TPRP reading rewritten; added GetAttrNames
+  * BhavWizBhav: Use new TPRP access via BHAV
+  * BhavWizPrim: dataOwner/readStr usage amended, clone flagname array before returning, added comments
+  * BhavWrapper: provides link to TPRP
+  * TPRPWrapper: Fixed bugs with finding/adding labels
+  SimPe BHAV\
+    BhavOperandWiz0x0002.cs 1.4
+    BhavWiz.cs 1.36
+    BhavWizBhav.cs 1.18
+    BhavWizPrim.cs 1.33
+    BhavWrapper.cs 1.47
+    GlobalStr.cs 1.17
+    TPRPWrapper.cs 1.5
+    TrcnWrapper.cs 1.11
+  pjseTestData.package 1.16
+
 27 December 2005 19:24 - BHAV: Label BHAV parameters
   SimPe BHAV\
     BhavWiz.cs 1.35
