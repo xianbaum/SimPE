@@ -53,6 +53,11 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Contains all available Instruction 
 		/// </summary>		
 		private BhavItemArrayList items = new BhavItemArrayList();
+
+		/// <summary>
+		/// Contains a valid TPRP Resource that describes the Params and Locals for this BHAV
+		/// </summary>
+		private TPRP tprpres = null;
 		#endregion
 
 		#region Accessor methods
@@ -77,6 +82,27 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public BhavHeader Header { get { return header; } }
 
+
+
+		/// <summary>
+		/// Returns the Labels describing the Params and Locals for this BHAV
+		/// </summary>
+		public TPRP TPRPResource
+		{
+			get 
+			{
+				if (tprpres == null && FileDescriptor != null)
+				{
+					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, FileDescriptor.Group, FileDescriptor.Instance];
+					if (items == null || items.Length == 0) return null;
+
+					tprpres = new TPRP();
+					tprpres.ProcessData(items[0].PFD, items[0].Package);
+				}
+
+				return tprpres;
+			}
+		}
 		#endregion
 
 		/// <summary>

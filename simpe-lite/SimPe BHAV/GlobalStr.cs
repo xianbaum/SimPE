@@ -182,7 +182,7 @@ namespace pjse
 			CineCam          = 0x0097,
 			PuppyAnims       = 0x0099,
 			KittenAnims      = 0x009a,
-			MyAttributeLabel = 0x0100,
+			AttributeLabels  = 0x0100,
 			Relationship     = 0x0102,
 			ArrayName        = 0x0118,
 			DialogString     = 0x012d,

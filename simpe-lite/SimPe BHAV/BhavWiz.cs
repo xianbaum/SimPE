@@ -34,6 +34,14 @@ namespace pjse
 		Private = 0x02,
 	}
 
+	public enum Detail : int
+	{
+		ValueOnly = 0x00,
+		Errors = 0x01,
+		Comments = 0x02,
+		Full = 0x03,
+	}
+
 
 	public abstract class ExtendedWrapper : AbstractWrapper
 		, IMultiplePackedFileWrapper	//Allow Multiple Instances
@@ -219,23 +227,23 @@ namespace pjse
 			switch (doid)
 			{
 				case 0x00: case 0x01:
-					temp = readStr(Scope.Private, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
-					if (temp.IndexOf('"') >= 0)
-						s += " (" + temp + ")";
+					temp = readStr(Scope.Private, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.Errors);
+					if (temp.Length > 0)
+						s += " " + temp;
 					break;
 				case 0x02: case 0x05:
-					temp = readStr(Scope.SemiGlobal, GS.GlobalStr.MyAttributeLabel, instance, -1, true);
-					if (temp.IndexOf('"') >= 0)
-						s += " (" + temp + ")";
+					temp = readStr(Scope.SemiGlobal, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.Errors);
+					if (temp.Length > 0)
+						s += " " + temp;
 					break;
 				case 0x09:
-					temp = readParam(instance, false);
-					if (temp != null && temp.Length > 0)
+					temp = readParam(instruction.Parent, instance, pjse.Detail.Errors);
+					if (temp.Length > 0)
 						s += " (" + temp + ")";
 					break;
 				case 0x19:
-					temp = readLocal(instance, false);
-					if (temp != null && temp.Length > 0)
+					temp = readLocal(instruction.Parent, instance, pjse.Detail.Errors);
+					if (temp.Length > 0)
 						s += " (" + temp + ")";
 					break;
 				case 0x0a:
@@ -248,14 +256,24 @@ namespace pjse
 					doidName = doidName.Replace("[temp]", "[Temp " + instance.ToString() + "]");
 					s = "";
 					break;
+				case 0x16: case 0x32:
+					doidName = doidName.Replace("[param]", "[" + dataOwner(0x09, instance) + "]");
+					s = "";
+					break;
 				case 0x1a:
 					bcon = ExpandBCON(instance);
-					s = readBcon((uint)bcon[0], bcon[1], false, false);
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
+					temp = readBcon((uint)bcon[0], bcon[1], false, pjse.Detail.Comments);
+					if (temp.Length > 0)
+						s += " (" + temp + ")";
 					break;
 				case 0x2f:
 					doidName = GS.GStr(GS.BhavStr.DataOwners, 0x1a);
 					bcon = ExpandBCON(instance);
-					s = readBcon((uint)bcon[0], bcon[1], true, false);
+					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
+					temp = readBcon((uint)bcon[0], bcon[1], true, pjse.Detail.Comments);
+					if (temp.Length > 0)
+						s += " (" + temp + ")";
 					break;
 			}
 
@@ -266,56 +284,10 @@ namespace pjse
 
 		protected string dataOwner(bool lng, byte doid, ushort instance)
 		{
-			return (lng ? dataOwner(doid, instance) : GS.GStr(GS.BhavStr.DataOwners, doid) + " 0x" + SimPe.Helper.HexString(instance));
+			return lng ? dataOwner(doid, instance) : GS.GStr(GS.BhavStr.DataOwners, doid) + " 0x" + SimPe.Helper.HexString(instance);
 		}
 
 		protected string dataOwner(bool lng, byte doid, byte lo, byte hi) {  return dataOwner(lng, doid, ToShort(lo, hi));}
-
-
-		protected string readBcon(uint instance, int bid, bool temp, bool silent)
-		{
-			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
-
-			Scope s = Scope.Private;
-			if      (instance <  0x1000) s = Scope.Global;
-			else if (instance >= 0x2000) s = Scope.SemiGlobal;
-
-			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
-				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return (silent ? "" : s.ToString() + " ") + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":"
-					+ (temp ? "[Temp " + bid.ToString() + "]" : "0x" + SimPe.Helper.HexString((ushort)bid) );
-
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
-
-			if (items == null || items.Length == 0)
-				return "[No " + (silent ? "" : s.ToString() + " ") + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
-
-			Bcon bcon = new Bcon();
-			bcon.ProcessData(items[0].PFD, items[0].Package);
-			string label = "";
-			if (!temp)
-			{
-				items = pjse.FileTable.GFT[0x5452434E, instruction.Parent.GroupForScope(s), instance];
-				if (items != null && items.Length != 0)
-				{
-					Trcn trcn = bcon.TrcnResource;
-					if (trcn != null && bid < trcn.Count) label = trcn[bid].ConstName;
-				}
-			}
-
-			return
-				(!temp && bid >= bcon.Count ? "[" : "")
-				+ (silent ? "" : s.ToString() + " " + bcon.FileName.Trim() + " " + "BCON 0x" + SimPe.Helper.HexString((ushort)instance) + ":")
-				+ (temp
-					? "[Temp " + bid.ToString() + "]"
-					: (silent ? "" : "0x" + SimPe.Helper.HexString((byte)bid) + " ")
-						+ (bid >= bcon.Count
-							? "not set]"
-							: "(0x" + SimPe.Helper.HexString((short)bcon[bid]) + (label.Equals("") ? "" : " \"" + label + "\"") + ")")
-					)
-				;
-		}
 
 
 		/// <summary>
@@ -327,71 +299,63 @@ namespace pjse
 		/// <param name="maxLen">-1: unlimited; else max string length to return</param>
 		/// <param name="silent">true: return "" if not found, else just string; false: identify requested resource</param>
 		/// <returns>Scope Instance "STR# 0x" hex(Instance) ":0x" hex(stringID) Left(string, len)</returns>
-		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen, bool silent)
+		private string readStr(string strIprefix, Scope s, uint instance, int sid, int maxLen, Detail detail)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
 
-			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
-				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return (silent ? "" : s.ToString() + " " + instance.ToString() + " ") + "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid);
-
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)instance];
-
-			if (items == null || items.Length == 0)
-				return "[No " + (silent ? "" : s.ToString() + " " + instance.ToString() + " ") + "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
-
-			Str str = new Str();
-			str.ProcessData(items[0].PFD, items[0].Package);
-			return
-				(str[1, sid] == null ? "[" : "")
-				+ (silent ? "" : s.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid) + " ")
-				+ (str[1, sid] == null ? "not set]" : "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\"")
-				;
-		}
-
-		protected string readStr(Scope s, GS.GlobalStr instance, int sid) { return readStr(s, instance, sid, -1, true); }
-
-		protected string readStr(Scope s, GS.GlobalStr instance, int sid, bool silent) { return readStr(s, instance, sid, -1, silent); }
-
-		protected string readStr(bool fallback, GS.GlobalStr instance, int sid, int maxLen, bool silent)
-		{
-			Scope c = instruction.Parent.Context;
-			string result = readStr(c, instance, sid, maxLen, silent);
-
-			if (fallback && (result.IndexOf('"') < 0))
-			{
-				if (c == Scope.Private)
-					result = readStr(Scope.SemiGlobal, instance, sid, maxLen, silent);
-
-				if (result.IndexOf('"') < 0)
-					result = readStr(Scope.Global, instance, sid, maxLen, silent);
-			}
-
-			return result.Replace("Private ", "(Private) ").Replace("SemiGlobal ", "(SemiGlobal) ").Replace("Global ", "(Global) ");
-		}
-
-		protected string readStr(Scope s, uint instance, int sid, int maxLen, bool silent)
-		{
-			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
+			string strI = strIprefix + s.ToString() + " " + "STR# 0x" + SimPe.Helper.HexString((ushort)instance);
+			string strS = ":0x" + SimPe.Helper.HexString((ushort)sid);
 
 			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
 				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return (silent ? "" : s.ToString() + " ") + "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid);
+				return (detail == Detail.Full) ? strI + strS : "";
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), instance];
 
 			if (items == null || items.Length == 0)
-				return "[No " + (silent ? "" : s.ToString() + " ") + "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
+				return (detail == Detail.ValueOnly) ? "" : "[No " + strI + " file]" + (detail == Detail.Full ? strS : "");
 
 			Str str = new Str();
 			str.ProcessData(items[0].PFD, items[0].Package);
-			return
-				(str[1, sid] == null ? "[" : "")
-				+ (silent ? "" : s.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((ushort)sid) + " ")
-				+ (str[1, sid] == null ? "not set]" : "\"" + myLeft(str[1, sid].Title.Trim(), maxLen) + "\"")
-				;
+			StrItem si = str[1, sid];
+
+			if (si == null)
+				return (detail == Detail.ValueOnly) ? "" : "[" + strI + strS + " not set]";
+
+			return (detail == Detail.Full || detail == Detail.Comments ? strI + strS + " " : "") + "\"" + myLeft(si.Title.Trim(), maxLen) + "\"" ;
+		}
+
+
+		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen, Detail detail)
+		{
+			return readStr(instance.ToString() + ": ", s, (uint)instance, sid, maxLen, detail);
+		}
+
+		protected string readStr(Scope s, uint instance, int sid, int maxLen, Detail detail)
+		{
+			return readStr("", s, instance, sid, maxLen, detail);
+		}
+
+		protected string readStr(Scope s, GS.GlobalStr instance, int sid) { return readStr(s, instance, sid, -1, pjse.Detail.ValueOnly); }
+
+		protected string readStr(Scope s, GS.GlobalStr instance, int sid, Detail detail) { return readStr(s, instance, sid, -1, detail); }
+
+		protected string readStr(bool fallback, GS.GlobalStr instance, int sid, int maxLen, Detail detail)
+		{
+			Scope c = instruction.Parent.Context;
+			string result = readStr(c, instance, sid, maxLen, detail);
+
+			if (fallback && (result.IndexOf('"') < 0))
+			{
+				if (c == Scope.Private)
+					result = readStr(Scope.SemiGlobal, instance, sid, maxLen, detail);
+
+				if (result.IndexOf('"') < 0)
+					result = readStr(Scope.Global, instance, sid, maxLen, detail);
+			}
+
+			return result.Replace("Private ", "(Private) ").Replace("SemiGlobal ", "(SemiGlobal) ").Replace("Global ", "(Global) ");
 		}
 
 		private static string myLeft(string str, int len)
@@ -400,37 +364,129 @@ namespace pjse
 		}
 
 
-		protected string readParam(int pid, bool silent) { return readMyTPRP(false, pid, silent); }
-
-		protected string readLocal(int lid, bool silent) { return readMyTPRP(true, lid, silent); }
-
-		private string readMyTPRP(bool flag, int sid, bool silent)
+		protected string readBcon(uint instance, int bid, bool temp, Detail detail)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
 
-			return readAnyTPRP(instruction.Parent.FileDescriptor.Group, instruction.Parent.FileDescriptor.Instance, flag, sid, silent);
+			Scope s = Scope.Private;
+			if      (instance <  0x1000) s = Scope.Global;
+			else if (instance >= 0x2000) s = Scope.SemiGlobal;
+
+			string strI = s.ToString() + " " + "BCON 0x" + SimPe.Helper.HexString((ushort)instance);
+			string strS = (temp ? "[Temp " + bid.ToString() + "]" : ":0x" + SimPe.Helper.HexString((byte)bid));
+
+			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
+				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
+				return (detail == Detail.Full) ? strI + strS : "";
+
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
+
+			if (items == null || items.Length == 0)
+				return (detail == Detail.ValueOnly) ? "" : "[No " + strI + " file]" + (detail == Detail.Full ? strS : "");
+
+			Bcon bcon = new Bcon();
+			bcon.ProcessData(items[0].PFD, items[0].Package);
+
+			string f = bcon.FileName.Trim();
+			strI = (f.Length > 0 ? f + ": " : "") + strI;
+
+			if (temp)
+				return (detail == Detail.ValueOnly || detail == Detail.Errors) ? "" : strI + (detail == Detail.Full ? strS : "");
+
+			string label = readTrcn(bcon, bid, detail).Trim();
+			label = label.Length > 0 ? " (" + label + ")" : "";
+
+			if (bid >= bcon.Count)
+				return (detail == Detail.ValueOnly) ? "" : "[Not set: " + strI + strS + label + "]";
+
+			return
+				"0x" + SimPe.Helper.HexString((short)bcon[bid])
+				+ (detail == Detail.Full || detail == Detail.Comments ? " - " + strI + strS + label : "")
+				;
 		}
 
-		protected string readAnyTPRP(uint group, uint instance, bool flag, int sid, bool silent)
+		protected string readTrcn(Bcon bcon, int bid, Detail detail)
 		{
+			Trcn trcn = bcon.TrcnResource;
+			return (trcn != null && bid < trcn.Count) ? trcn[bid] :
+				(detail == Detail.ValueOnly ? ""
+				: "[No TRCN for BCON 0x" + SimPe.Helper.HexString((ushort)bcon.FileDescriptor.Instance)
+				+ ":0x" + SimPe.Helper.HexString((byte)bid)) + "]";
+		}
+
+
+		protected string readParam(Bhav instance, int pno, Detail detail) { return readParamLocal(false, instance, pno, detail); }
+
+		protected string readLocal(Bhav instance, int lno, Detail detail) { return readParamLocal(true, instance, lno, detail); }
+
+		private string readParamLocal(bool local, Bhav bhav, int sid, Detail detail)
+		{
+			TPRP tprp = bhav.TPRPResource;
+			return (tprp != null && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] :
+				(detail == Detail.ValueOnly ? ""
+				: "[No TPRP label for BHAV 0x" + SimPe.Helper.HexString((ushort)bhav.FileDescriptor.Instance)
+				+ " " + (local ? "Local" : "Param") + " 0x" + SimPe.Helper.HexString((ushort)sid) + "]");
+			}
+
+
+		/// <summary>
+		/// Returns a list of Param or Local labels
+		/// </summary>
+		/// <param name="local">True to retrieve Local labels, false for Params</param>
+		/// <returns></returns>
+		public ArrayList GetTPRPnames(bool local)
+		{
+			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+				throw new InvalidOperationException("Can't read TPRP for instruction with no parent");
+
+			uint group    = instruction.Parent.FileDescriptor.Group;
+			uint instance = instruction.Parent.FileDescriptor.Instance;
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, group, instance];
 
 			if (items == null || items.Length == 0)
-				return silent ? null : "[No TPRP 0x" + SimPe.Helper.HexString((ushort)instance) + " file]";
+				return null;
+
+			ArrayList TPRPnames = new ArrayList();
 
 			TPRP tprp = new TPRP();
 			tprp.ProcessData(items[0].PFD, items[0].Package);
-			TPRPItem item = tprp[flag, sid];
-			return (item != null)
-				? item.Label
-				: (silent
-					? null
-					: "[TPRP 0x" + SimPe.Helper.HexString((ushort)instance) + ":" +
-						(flag ? "Local" : "Param") + " 0x" +
-						SimPe.Helper.HexString((ushort)sid) + " not set]"
-					);
+			foreach (TPRPItem i in tprp)
+				if ((local && i is TPRPLocalLabel) || (!local && i is TPRPParamLabel))
+					TPRPnames.Add(i.Label);
+			int limit = local ? instruction.Parent.Header.LocalVarCount : instruction.Parent.Header.ArgumentCount;
+			while (TPRPnames.Count < limit)
+				TPRPnames.Add("(" + (local ? "Local" : "Param") + TPRPnames.Count.ToString() + ")");
+			return TPRPnames;
 		}
+
+
+		public ArrayList GetAttrNames(Scope s)
+		{
+			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
+
+			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
+				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
+				return null;
+
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)GS.GlobalStr.AttributeLabels];
+
+			if (items == null || items.Length == 0)
+				return null;
+
+			Str str = new Str();
+			str.ProcessData(items[0].PFD, items[0].Package);
+			StrItem[] asi = str[(byte)1];
+
+			if (asi == null || asi.Length == 0)
+				return null;
+
+			ArrayList al = new ArrayList();
+			foreach(StrItem si in asi) al.Add(si.Title);
+			return al;
+		}
+
 
 		public static Glob GlobByGroup(uint group)
 		{
@@ -461,6 +517,24 @@ namespace pjse
 			result[0] = (ushort)b;
 			result[1] = (ushort)c;
 			return result;
+		}
+
+		public static ushort ExpandBCON(ushort[] values)
+		{
+			// x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
+			// values[0] is b
+			// values[1] is c
+			int output = 0;
+			output |= values[1] & 0x7f;			// ........ .ccccccc
+			output |= (values[0] & 0x3f) << 7;	// ...bbbbb b.......
+			output |= (values[0] & 0x40) << 9;	// b....... ........
+
+			int a = 0;								// Private
+			if      (values[0] <  0x1000) a = 2;	// Global
+			else if (values[0] >= 0x2000) a = 1;	// Semi-Global
+			output |= (a << 13);				// .aa..... ........
+
+			return (ushort)output;
 		}
 
 		public static ushort ToShort(byte lower, byte higher) { return (ushort)((higher << 8) + lower); }

@@ -106,6 +106,12 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+
+		public int ParamCount { get { return paramCount; } }
+
+		public int LocalCount { get { return localCount; } }
+
+
 		#endregion
 
 		/// <summary>
@@ -296,11 +302,32 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				int i = (local ? paramCount : 0) + index;
-				return (i < this.Count) ? this[i] : null;
+				if (local)
+					index += paramCount;
+				else if (index > paramCount)
+					throw new ArgumentOutOfRangeException();
+
+				return this[index];
 			}
 
-			set { this[(local ? paramCount : 0) + index] = value; }
+			set
+			{
+				if (local)
+				{
+					if (value is TPRPParamLabel)
+						throw new InvalidCastException();
+					index += paramCount;
+				}
+				else
+				{
+					if (value is TPRPLocalLabel)
+						throw new InvalidCastException();
+					if (index > paramCount)
+						throw new ArgumentOutOfRangeException();
+				}
+
+				this[index] = value;
+			}
 		}
 
 		protected TPRPItem this[int index]
@@ -322,7 +349,10 @@ namespace SimPe.PackedFiles.Wrapper
 
 		public bool Contains(TPRPItem item) { return items.Contains(item); }
 
-		public int IndexOf(object item) { return items.IndexOf(item); }
+		public int IndexOf(object item)
+		{
+			return items.IndexOf(item) - (item is TPRPLocalLabel ? paramCount : 0);
+		}
 
 		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
 

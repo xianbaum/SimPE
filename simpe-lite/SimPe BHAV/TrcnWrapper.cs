@@ -516,5 +516,10 @@ namespace SimPe.PackedFiles.Wrapper
 			w.Write((char)0);
 		}
 
+
+		public override string ToString() { return constName; }
+
+		public static implicit operator string(TrcnItem i) { return i.constName; }
+
 	}
 }

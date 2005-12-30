@@ -31,7 +31,6 @@ using pjse.BhavOperandWizards;
 
 namespace pjse.BhavOperandWizards.Wiz0x0002
 {
-	#region internal form
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
@@ -77,29 +76,60 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				}
 			}
 			base.Dispose( disposing );
+
+			inst = null;
 		}
 
-		
-		#region UI
-		Instruction inst = null;
+
+		#region Controller
+		private Instruction inst = null;
+
+		private bool Decimal
+		{
+			get
+			{
+				SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x02");
+				object o = rkf.GetValue("decimal", false);
+				return Convert.ToBoolean(o);
+			}
+
+			set
+			{
+				SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x02");
+				rkf.SetValue("decimal", value);
+			}
+
+		}
+
+
+		private void FormLoad()
+		{
+			this.cbDataOwner1.Items.Clear();
+			this.cbDataOwner1.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
+			this.cbDataOwner2.Items.Clear();
+			this.cbDataOwner2.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
+			this.cbOperator.Items.Clear();
+			this.cbOperator.Items.AddRange(GS.gStr(GS.BhavStr.Operators).ToArray());
+		}
+
+
 		public void Execute(Instruction inst)
 		{
 			this.inst = inst;
 
 			wrappedByteArray ops = inst.Operands;
+
 			int val1 = (ops[0x01] << 8) | ops[0x00];
 			int val2 = (ops[0x03] << 8) | ops[0x02];
+			tbval1.Text = Decimal ? val1.ToString() : "0x"+SimPe.Helper.HexString((ushort)val1);
+			tbval2.Text = Decimal ? val2.ToString() : "0x"+SimPe.Helper.HexString((ushort)val2);
 
-			tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)val1);
-			tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)val2);
+			cbOperator.SelectedIndex   = (cbOperator.Items.Count   > ops[0x05]) ? ops[0x05] : -1;
 
-			byte op = ops[0x05];
-			if (cbOperator.Items.Count>op) cbOperator.SelectedIndex = op;
+			cbDataOwner1.SelectedIndex = (cbDataOwner1.Items.Count > ops[0x06]) ? ops[0x06] : -1;
+			cbDataOwner2.SelectedIndex = (cbDataOwner2.Items.Count > ops[0x07]) ? ops[0x07] : -1;
 
-			byte n1 = ops[0x06];
-			byte n2 = ops[0x07];
-			if (cbDataOwner1.Items.Count>n1) cbDataOwner1.SelectedIndex = n1;
-			if (cbDataOwner2.Items.Count>n2) cbDataOwner2.SelectedIndex = n2;
+			this.cbDecimal.Checked = Decimal;
 		}
 
 		public Instruction Write(Instruction inst)
@@ -111,8 +141,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				ops[0x07] = (byte)cbDataOwner2.SelectedIndex;
 				ops[0x05] = (byte)cbOperator.SelectedIndex;
 
-				ushort val1 = this.cbDecimal.Checked ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text);
-				ushort val2 = this.cbDecimal.Checked ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text);
+				ushort val1 = Decimal ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text);
+				ushort val2 = Decimal ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text);
 
 				ops[0x00] = (byte)(val1 & 0xff);
 				ops[0x01] = (byte)((val1 >> 8) & 0xff);
@@ -129,57 +159,113 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			}
 		}
 
-		private void FormLoad()
-		{
-			this.cbDataOwner1.Items.Clear();
-			this.cbDataOwner1.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
-			this.cbDataOwner2.Items.Clear();
-			this.cbDataOwner2.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
-			this.cbOperator.Items.Clear();
-			this.cbOperator.Items.AddRange(GS.gStr(GS.BhavStr.Operators).ToArray());
-		}
 
-		private void doTPRPPicker(ComboBox picker, ushort val, bool local)
+
+		private void doDataOwnerSelectedIndexChanged(ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, bool useFlagnames)
 		{
-			if (inst == null || inst.Parent == null)
+			ArrayList pickerNames = null;
+
+			if (useFlagnames)
 			{
-				tbval1.Text = this.cbDecimal.Checked
-					? textToShort(tbval1.Text).ToString()
-					: "0x"+SimPe.Helper.HexString(textToUShort(tbval1.Text));
-				return;
+				pickerNames = WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text));
+				if (pickerNames != null)
+					pickerNames.Insert(0, "[0: invalid]");
+			}
+			else if (cbDataOwner.SelectedIndex == 0x00 || cbDataOwner.SelectedIndex == 0x01)
+			{
+				pickerNames = ((BhavWiz)inst).GetAttrNames(Scope.Private);
+			}
+			else if (cbDataOwner.SelectedIndex == 0x02 || cbDataOwner.SelectedIndex == 0x05)
+			{
+				pickerNames = ((BhavWiz)inst).GetAttrNames(Scope.SemiGlobal);
+			}
+			else if (cbDataOwner.SelectedIndex == 0x09 || cbDataOwner.SelectedIndex == 0x16 || cbDataOwner.SelectedIndex == 0x32) // Param
+			{
+				pickerNames = ((BhavWiz)inst).GetTPRPnames(false);
+			}
+			else if (cbDataOwner.SelectedIndex == 0x19) // Local
+			{
+				pickerNames = ((BhavWiz)inst).GetTPRPnames(true);
+			}
+			else if (BhavWiz.doidGStr[(byte)cbDataOwner.SelectedIndex] != null)
+			{
+				pickerNames = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[(byte)cbDataOwner.SelectedIndex]);
 			}
 
-			uint group    = inst.Parent.FileDescriptor.Group;
-			uint instance = inst.Parent.FileDescriptor.Instance;
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, group, instance];
 
-			if (items == null || items.Length == 0)
+			cbPicker.Visible = false;
+			if (cbDataOwner.SelectedIndex == 0x1a || cbDataOwner.SelectedIndex == 0x2f) // Constant (and Const[Temp])
 			{
-				tbval1.Text = this.cbDecimal.Checked
-					? textToShort(tbval1.Text).ToString()
-					: "0x"+SimPe.Helper.HexString(textToUShort(tbval1.Text));
-				return;
+				ushort val = Decimal ? (ushort)textToShort(tbValue.Text) : textToUShort(tbValue.Text);
+				ushort[] vals = pjse.BhavWiz.ExpandBCON(val);
+				tbValue.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
 			}
-
-			TPRP tprp = new TPRP();
-			tprp.ProcessData(items[0].PFD, items[0].Package);
-
-			picker.Visible = true;
-			picker.Items.Clear();
-			foreach (TPRPItem i in tprp)
-				if ((local && i is TPRPLocalLabel) || (!local && i is TPRPParamLabel))
-					picker.Items.Add(i.Label);
-
-			while (picker.Items.Count < (local ? inst.Parent.Header.LocalVarCount : inst.Parent.Header.ArgumentCount))
-				picker.Items.Add("(" + (local ? "Local" : "Param") +
-					(this.cbDecimal.Checked
-					? " 0x" + SimPe.Helper.HexString((byte)picker.Items.Count)
-					: picker.Items.Count.ToString())
-					+ ")");
-
-			if (picker.Items.Count > val)
-				picker.SelectedIndex = val;
+			else if (pickerNames != null && pickerNames.Count > 0)
+			{
+				ushort val = Decimal ? (ushort)textToShort(tbValue.Text) : textToUShort(tbValue.Text);
+				cbPicker.Visible = true;
+				cbPicker.Items.Clear();
+				cbPicker.Items.AddRange(pickerNames.ToArray());
+				cbPicker.SelectedIndex = (cbPicker.Items.Count > val) ? val : -1;
+			}
+			else
+			{
+				tbValue.Text = Decimal ? textToShort(tbValue.Text).ToString() : "0x"+SimPe.Helper.HexString(textToUShort(tbValue.Text));
+			}
+			tbValue.Visible = !cbPicker.Visible;
 		}
+
+
+		private void doPickerSelectedIndexChanged(ComboBox cbPicker, TextBox tbValue)
+		{
+			tbValue.Text = Decimal ? cbPicker.SelectedIndex.ToString() : "0x"+SimPe.Helper.HexString((ushort)cbPicker.SelectedIndex);
+		}
+
+
+		private short textToShort(string text)
+		{
+			short val = 0;
+			try 
+			{
+				if (text.IndexOf(":") == -1)
+				{
+					val = Convert.ToInt16(text);
+				}
+				else 
+				{
+					string[] s = text.Split(":".ToCharArray(), 2);
+					ushort[] b = new ushort[2];
+					b[0] = Convert.ToUInt16(s[0], 16);
+					b[1] = Convert.ToUInt16(s[1], 16);
+					val = (short)pjse.BhavWiz.ExpandBCON(b);
+				}
+			}
+			catch (Exception) { }
+			return val;
+		}
+
+		private ushort textToUShort(string text)
+		{
+			ushort val = 0;
+			try 
+			{
+				if (text.IndexOf(":") == -1)
+				{
+					val = Convert.ToUInt16(text, 16);
+				}
+				else 
+				{
+					string[] s = text.Split(":".ToCharArray(), 2);
+					ushort[] b = new ushort[2];
+					b[0] = Convert.ToUInt16(s[0], 16);
+					b[1] = Convert.ToUInt16(s[1], 16);
+					val = pjse.BhavWiz.ExpandBCON(b);
+				}
+			}
+			catch (Exception) { }
+			return val;
+		}
+
 
 		#endregion
 
@@ -321,168 +407,32 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void cbDataOwner1_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			this.cbPicker1.Visible = false;
-			if (BhavWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex] != null)
-			{
-				ArrayList dataOwners = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[(byte)cbDataOwner1.SelectedIndex]);
-				if (dataOwners != null)
-				{
-					this.cbPicker1.Visible = true;
-					this.cbPicker1.Items.Clear();
-					this.cbPicker1.Items.AddRange(dataOwners.ToArray());
-					ushort val = this.cbDecimal.Checked ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text);
-					if (this.cbPicker1.Items.Count > val)
-						this.cbPicker1.SelectedIndex = val;
-				}
-			}
-			else if (cbDataOwner1.SelectedIndex == 0x09)
-			{
-				doTPRPPicker(cbPicker1, this.cbDecimal.Checked ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text), false);
-			}
-			else if (cbDataOwner1.SelectedIndex == 0x19)
-			{
-				doTPRPPicker(cbPicker1, this.cbDecimal.Checked ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text), true);
-			}
-			else if (cbDataOwner1.SelectedIndex == 0x1a || cbDataOwner1.SelectedIndex == 0x2f)
-			{
-				//constant
-				ushort val = this.cbDecimal.Checked ? (ushort)textToShort(tbval1.Text) : textToUShort(tbval1.Text);
-				ushort[] vals = ConstantValueParser(val);
-				tbval1.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
-			}
-			else
-			{
-				tbval1.Text = this.cbDecimal.Checked
-					? textToShort(tbval1.Text).ToString()
-					: "0x"+SimPe.Helper.HexString(textToUShort(tbval1.Text));
-			}
-			this.tbval1.Visible = !this.cbPicker1.Visible;
+			doDataOwnerSelectedIndexChanged(cbDataOwner1, cbPicker1, tbval1, false);
 			cbDataOwner2_SelectedIndexChanged(null, null);
 		}
 
 		private void cbDataOwner2_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			this.cbPicker2.Visible = false;
-			if (BhavWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex] != null)
-			{
-				ArrayList dataOwners = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[(byte)cbDataOwner2.SelectedIndex]);
-				if (dataOwners != null)
-				{
-					this.cbPicker2.Visible = true;
-					this.cbPicker2.Items.Clear();
-					this.cbPicker2.Items.AddRange(dataOwners.ToArray());
-					ushort val = this.cbDecimal.Checked ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text);
-					if (this.cbPicker2.Items.Count > val)
-						this.cbPicker2.SelectedIndex = val;
-				}
-			}
-			else if (cbDataOwner2.SelectedIndex == 7 && cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10)
-			{
-				ArrayList flagNames = (ArrayList)WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex, (ushort)textToUShort(tbval1.Text));
-				if (flagNames != null)
-				{
-					this.cbPicker2.Visible = true;
-					this.cbPicker2.Items.Clear();
-					this.cbPicker2.Items.Add("[0: invalid]");
-					this.cbPicker2.Items.AddRange(flagNames.ToArray());
-					ushort val = this.cbDecimal.Checked ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text);
-					if (this.cbPicker2.Items.Count > val)
-						this.cbPicker2.SelectedIndex = val;
-				}
-			}
-			else if (cbDataOwner2.SelectedIndex == 0x09)
-			{
-				doTPRPPicker(cbPicker2, this.cbDecimal.Checked ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text), false);
-			}
-			else if (cbDataOwner2.SelectedIndex == 0x19)
-			{
-				doTPRPPicker(cbPicker2, this.cbDecimal.Checked ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text), true);
-			}
-			else if (cbDataOwner2.SelectedIndex == 0x1a || cbDataOwner2.SelectedIndex == 0x2f)
-			{
-				//constant
-				ushort val = this.cbDecimal.Checked ? (ushort)textToShort(tbval2.Text) : textToUShort(tbval2.Text);
-				ushort[] vals = ConstantValueParser(val);
-				tbval2.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
-			}
-			else
-			{
-				tbval2.Text = this.cbDecimal.Checked
-					? textToShort(tbval2.Text).ToString()
-					: "0x"+SimPe.Helper.HexString(textToUShort(tbval2.Text));
-			}
-
-			this.tbval2.Visible = !cbPicker2.Visible;
+			doDataOwnerSelectedIndexChanged(cbDataOwner2, cbPicker2, tbval2,
+				cbDataOwner2.SelectedIndex == 7 && cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10);
 		}
+
 
 		private void cbPicker1_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			tbval1.Text = this.cbDecimal.Checked
-				? this.cbPicker1.SelectedIndex.ToString()
-				: "0x"+SimPe.Helper.HexString((ushort)this.cbPicker1.SelectedIndex);
+			doPickerSelectedIndexChanged(cbPicker1, tbval1);
 			cbDataOwner2_SelectedIndexChanged(null, null);
 		}
 
 		private void cbPicker2_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			tbval2.Text = this.cbDecimal.Checked
-				? this.cbPicker2.SelectedIndex.ToString()
-				: "0x"+SimPe.Helper.HexString((ushort)this.cbPicker2.SelectedIndex);
+			doPickerSelectedIndexChanged(cbPicker2, tbval2);
 		}
 
-
-		private short textToShort(string text)
-		{
-			short val = 0;
-			try 
-			{
-				if (text.IndexOf(":") == -1)
-				{
-					val = Convert.ToInt16(text);
-				}
-				else 
-				{
-					string[] s = text.Split(":".ToCharArray(), 2);
-					ushort[] b = new ushort[2];
-					b[0] = Convert.ToUInt16(s[0], 16);
-					b[1] = Convert.ToUInt16(s[1], 16);
-					val = (short)ConstantValueParser(b);
-				}
-			}
-			catch (Exception) { }
-			return val;
-		}
-
-		private ushort textToUShort(string text)
-		{
-			ushort val = 0;
-			try 
-			{
-				if (text.IndexOf(":") == -1)
-				{
-					val = Convert.ToUInt16(text, 16);
-				}
-				else 
-				{
-					string[] s = text.Split(":".ToCharArray(), 2);
-					ushort[] b = new ushort[2];
-					b[0] = Convert.ToUInt16(s[0], 16);
-					b[1] = Convert.ToUInt16(s[1], 16);
-					val = ConstantValueParser(b);
-				}
-			}
-			catch (Exception) { }
-			return val;
-		}
-
-		private static ushort[] ConstantValueParser(ushort val) 
-		{
-			return pjse.BhavWiz.ExpandBCON(val);
-		}
 
 		private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
 		{
-			if (this.cbDecimal.Checked)
+			if (Decimal = this.cbDecimal.Checked)
 			{
 				if (cbDataOwner1.SelectedIndex != 0x1a && cbDataOwner1.SelectedIndex != 0x2f)
 					tbval1.Text = ((short)textToUShort(tbval1.Text)).ToString();
@@ -498,27 +448,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			}
 		}
 
-		private static ushort ConstantValueParser(ushort[] values) 
-		{
-			// x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
-			// values[0] is b
-			// values[1] is c
-			int output = 0;
-			output |= values[1] & 0x7f;			// ........ .ccccccc
-			output |= (values[0] & 0x3f) << 7;	// ...bbbbb b.......
-			output |= (values[0] & 0x40) << 9;	// b....... ........
-
-			int a = 0;								// Private
-			if      (values[0] <  0x1000) a = 2;	// Global
-			else if (values[0] >= 0x2000) a = 1;	// Semi-Global
-			output |= (a << 13);				// .aa..... ........
-
-			return (ushort)output;
-		}
-
 	}
 
-	#endregion
 }
 
 namespace pjse.BhavOperandWizards
@@ -530,7 +461,6 @@ namespace pjse.BhavOperandWizards
 		public BhavOperandWiz0x0002(Instruction i) : base(i) { }
 
 
-		#region pjse.ABhavOperandWiz
 		private Wiz0x0002.UI myForm = null;
 		public override Panel bhavPrimWizPanel
 		{
@@ -559,7 +489,6 @@ namespace pjse.BhavOperandWizards
 		}
 		#endregion
 
-		#endregion
 	}
 
 }
