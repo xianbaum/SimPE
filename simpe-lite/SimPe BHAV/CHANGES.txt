@@ -1,5 +1,10 @@
 
-30 December 2005 12:!7 - BHAV: Wiz0x0002 enhanced, dataOwners tidied
+31 December 2005 09:41 - BHAV: Wiz0x0002: Allow AttrPicker to be turned off
+  SimPe BHAV\
+    BhavOperandWiz0x0002.cs 1.5
+    BhavOperandWiz0x0002.resx 1.2
+
+30 December 2005 12:17 - BHAV: Wiz0x0002 enhanced, dataOwners tidied
   * Wiz0x0002: Decimal mode sticky, new pickers (param, local, attribute). some code moved into BhavWiz
   * BhavWiz: Many "consistency" changes (still don't like attr labels)
   * BhavWiz: dataowners 0x16 and 0x32 use Param
