@@ -47,6 +47,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		private System.Windows.Forms.ComboBox cbDataOwner1;
 		private System.Windows.Forms.ComboBox cbDataOwner2;
 		private System.Windows.Forms.CheckBox cbDecimal;
+		private System.Windows.Forms.CheckBox cbAttrPicker;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -101,6 +102,23 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		}
 
+		private bool AttrPicker
+		{
+			get
+			{
+				SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x02");
+				object o = rkf.GetValue("attrPicker", true);
+				return Convert.ToBoolean(o);
+			}
+
+			set
+			{
+				SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x02");
+				rkf.SetValue("attrPicker", value);
+			}
+
+		}
+
 
 		private void FormLoad()
 		{
@@ -130,6 +148,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			cbDataOwner2.SelectedIndex = (cbDataOwner2.Items.Count > ops[0x07]) ? ops[0x07] : -1;
 
 			this.cbDecimal.Checked = Decimal;
+			this.cbAttrPicker.Checked = AttrPicker;
 		}
 
 		public Instruction Write(Instruction inst)
@@ -171,11 +190,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				if (pickerNames != null)
 					pickerNames.Insert(0, "[0: invalid]");
 			}
-			else if (cbDataOwner.SelectedIndex == 0x00 || cbDataOwner.SelectedIndex == 0x01)
+			else if (AttrPicker && (cbDataOwner.SelectedIndex == 0x00 || cbDataOwner.SelectedIndex == 0x01))
 			{
 				pickerNames = ((BhavWiz)inst).GetAttrNames(Scope.Private);
 			}
-			else if (cbDataOwner.SelectedIndex == 0x02 || cbDataOwner.SelectedIndex == 0x05)
+			else if (AttrPicker && (cbDataOwner.SelectedIndex == 0x02 || cbDataOwner.SelectedIndex == 0x05))
 			{
 				pickerNames = ((BhavWiz)inst).GetAttrNames(Scope.SemiGlobal);
 			}
@@ -277,6 +296,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		private void InitializeComponent()
 		{
 			this.pnWiz0x0002 = new System.Windows.Forms.Panel();
+			this.cbAttrPicker = new System.Windows.Forms.CheckBox();
+			this.cbDecimal = new System.Windows.Forms.CheckBox();
 			this.cbPicker2 = new System.Windows.Forms.ComboBox();
 			this.cbPicker1 = new System.Windows.Forms.ComboBox();
 			this.cbOperator = new System.Windows.Forms.ComboBox();
@@ -284,12 +305,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
 			this.tbval1 = new System.Windows.Forms.TextBox();
 			this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
-			this.cbDecimal = new System.Windows.Forms.CheckBox();
 			this.pnWiz0x0002.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pnWiz0x0002
 			// 
+			this.pnWiz0x0002.Controls.Add(this.cbAttrPicker);
 			this.pnWiz0x0002.Controls.Add(this.cbDecimal);
 			this.pnWiz0x0002.Controls.Add(this.cbPicker2);
 			this.pnWiz0x0002.Controls.Add(this.cbPicker1);
@@ -301,8 +322,30 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.pnWiz0x0002.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.pnWiz0x0002.Location = new System.Drawing.Point(8, 8);
 			this.pnWiz0x0002.Name = "pnWiz0x0002";
-			this.pnWiz0x0002.Size = new System.Drawing.Size(240, 96);
+			this.pnWiz0x0002.Size = new System.Drawing.Size(240, 120);
 			this.pnWiz0x0002.TabIndex = 0;
+			// 
+			// cbAttrPicker
+			// 
+			this.cbAttrPicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.cbAttrPicker.Location = new System.Drawing.Point(0, 96);
+			this.cbAttrPicker.Name = "cbAttrPicker";
+			this.cbAttrPicker.Size = new System.Drawing.Size(240, 24);
+			this.cbAttrPicker.TabIndex = 7;
+			this.cbAttrPicker.Text = "use Attribute picker";
+			this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
+			// 
+			// cbDecimal
+			// 
+			this.cbDecimal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.cbDecimal.Location = new System.Drawing.Point(0, 72);
+			this.cbDecimal.Name = "cbDecimal";
+			this.cbDecimal.Size = new System.Drawing.Size(240, 24);
+			this.cbDecimal.TabIndex = 6;
+			this.cbDecimal.Text = "Decimal (except Consts)";
+			this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
 			// 
 			// cbPicker2
 			// 
@@ -380,17 +423,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbDataOwner1.TabIndex = 1;
 			this.cbDataOwner1.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner1_SelectedIndexChanged);
 			// 
-			// cbDecimal
-			// 
-			this.cbDecimal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbDecimal.Location = new System.Drawing.Point(0, 72);
-			this.cbDecimal.Name = "cbDecimal";
-			this.cbDecimal.Size = new System.Drawing.Size(240, 24);
-			this.cbDecimal.TabIndex = 6;
-			this.cbDecimal.Text = "Decimal (except Consts)";
-			this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
-			// 
 			// UI
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
@@ -446,6 +478,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				if (cbDataOwner2.SelectedIndex != 0x1a && cbDataOwner2.SelectedIndex != 0x2f)
 					tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)textToShort(tbval2.Text));
 			}
+		}
+
+		private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
+		{
+			AttrPicker = this.cbAttrPicker.Checked;
+			cbDataOwner1_SelectedIndexChanged(null, null);
 		}
 
 	}
