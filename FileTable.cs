@@ -160,10 +160,16 @@ namespace pjse
 			Add(package, false);
 		}
 
-		public void AddFixed(string packageFile)
+		public void AddFixed(string v)
 		{
-			if (!File.Exists(packageFile)) return;
-			AddFixed(SimPe.Packages.File.LoadFromFile(packageFile));
+			if (System.IO.Directory.Exists(v))
+			{
+				string[] va = System.IO.Directory.GetFiles(v, "*.package");
+				foreach(string i in va)
+					AddFixed(i);
+			}
+			else if (File.Exists(v))
+				AddFixed(SimPe.Packages.File.LoadFromFile(v));
 		}
 
 		public void AddFixed(IPackageFile package)
