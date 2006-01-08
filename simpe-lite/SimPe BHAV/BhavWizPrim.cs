@@ -497,7 +497,7 @@ namespace pjse.BhavNameWizards
 		public static ArrayList flagNames(byte flagOwner, ushort flagType)
 		{
 			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : (ArrayList)GS.gStr((GS.BhavStr)flagTypes[flagType]).Clone();
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.gStr((GS.BhavStr)flagTypes[flagType]);
 		}
 
 		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)

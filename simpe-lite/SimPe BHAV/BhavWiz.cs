@@ -261,7 +261,7 @@ namespace pjse
 					s = "";
 					break;
 				case 0x1a:
-					bcon = ExpandBCON(instance);
+					bcon = ExpandBCON(instance, false);
 					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
 					temp = readBcon((uint)bcon[0], bcon[1], false, pjse.Detail.Comments);
 					if (temp.Length > 0)
@@ -269,7 +269,7 @@ namespace pjse
 					break;
 				case 0x2f:
 					doidName = GS.GStr(GS.BhavStr.DataOwners, 0x1a);
-					bcon = ExpandBCON(instance);
+					bcon = ExpandBCON(instance, true);
 					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
 					temp = readBcon((uint)bcon[0], bcon[1], true, pjse.Detail.Comments);
 					if (temp.Length > 0)
@@ -499,40 +499,112 @@ namespace pjse
 		}
 
 
-		public static ushort[] ExpandBCON(ushort instance)
+#if UNDEF
+		/*
+		 * From disaSim2-23d
+		 */
+        case 0x1A:  // Constant Value
+            a = x >> 13;            // x = aaabbbbb bccccccc
+            b = (x >> 7) & 0x3F;
+            c = x & 0x7F;
+
+            if (a & 4) {            // extended
+                b += 0x40;
+                a &= 3;
+            }
+            switch (a) {
+                case 0:             // private
+                    b += 0x1000;
+                    break;
+                case 1:             // semi-global
+                    b += 0x2000;
+                    break;
+                case 2:             // global
+                    b += 0x100;
+                    break;
+                case 3:             // FUBAR
+                    b = 0xF5BA;
+                    break;
+            }
+//            ht_fprintf(outFile,TYPE_DATA,"%s 0x%X:0x%X", gString84[o], b, c);
+            ht_fprintf(outFile,TYPE_DATA,"%s 0x%X", gString84[o], b);
+            readConst2(b, c);
+            break;
+        case 0x2F:  // Constants [temp]
+            a = x >> 13;            // x = aaabbbbb bbbbbccc
+            b = (x >> 3) & 0x3FF;
+            c = x & 7;
+
+            if (a & 4) {            // extended
+                b += 0x40;
+                a &= 3;
+            }
+            switch (a) {
+                case 0:             // private
+                    b += 0x1000;
+                    break;
+                case 1:             // semi-global
+                    b += 0x2000;
+                    break;
+                case 2:             // global
+                    b += 0x100;
+                    break;
+                case 3:             // FUBAR
+                    b = 0xF5BA;
+                    break;
+            }
+            ht_fprintf(outFile,TYPE_DATA,"%s ", gString84[o]);
+            ht_fprintf(outFile,TYPE_DATA,"0x%X", b);
+            readConst2(b, 0xFFFF);
+            ht_fprintf(outFile,TYPE_DATA,":[Temp %d]", c);
+            break;
+#endif
+
+		// not temp:
+		// x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
+		// temp:
+		// x = baabbbbb bbbbbccc, where a is scope, b is BCON instance and c is temp #
+		public static ushort[] ExpandBCON(ushort instance, bool temp)
 		{
-			// x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
-			int a = (instance >> 13) & 0x03;
-			int b = ((instance >> 9) & 0x40) | ((instance >> 7) & 0x3F);
-			int c = instance & 0x7F;
+			ushort[] result = new ushort[2];
+			result[1] = (ushort)(instance & (!temp ? 0x7f : 0x07));	// ........ .ccccccc -or- ........ .....ccc
+
+			int b;
+			if (!temp) b = ((instance >> 9) & 0x0040) | ((instance >> 7) & 0x003f);	// b..bbbbb b.......
+			else       b = ((instance >> 5) & 0x0400) | ((instance >> 3) & 0x03ff);	// b..bbbbb bbbbb...
+
+			int a = (instance >> 13) & 0x03;						// .aa..... ........
 			switch (a)
 			{
-				case 0: b |= 0x1000; break; // private
-				case 1: b |= 0x2000; break; // semi-global
-				case 2: b |= 0x0100; break; // global
-				case 3: b |= 0xF5BA; break; // FUBAR, as it says in disaSim2-23b, I 'or' it; I reckon it s/b 0x1000, tho.
+				case 0: b += 0x1000; break; // private
+				case 1: b += 0x2000; break; // semi-global
+				case 2: b += 0x0100; break; // global
+				//case 3: b |= 0xF5BA; break; // do nothing
 			}
 
-			ushort[] result = new ushort[2];
 			result[0] = (ushort)b;
-			result[1] = (ushort)c;
 			return result;
 		}
 
-		public static ushort ExpandBCON(ushort[] values)
+		public static ushort ExpandBCON(ushort[] values, bool temp)
 		{
-			// x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
-			// values[0] is b
-			// values[1] is c
 			int output = 0;
-			output |= values[1] & 0x7f;			// ........ .ccccccc
-			output |= (values[0] & 0x3f) << 7;	// ...bbbbb b.......
-			output |= (values[0] & 0x40) << 9;	// b....... ........
 
-			int a = 0;								// Private
-			if      (values[0] <  0x1000) a = 2;	// Global
-			else if (values[0] >= 0x2000) a = 1;	// Semi-Global
-			output |= (a << 13);				// .aa..... ........
+			int b = values[0];
+			if (!temp) { output = (b & 0x0040) << 9; b -= (b & 0x0040); }	// b....... ........
+			else       { output = (b & 0x0400) << 5; b -= (b & 0x0400); }	// b....... ........
+
+			int a;
+			if      ((b & 0x2000) != 0) { b -= 0x2000; a = 1; }			// Semi-Global
+			else if ((b & 0x1000) != 0) { b -= 0x1000; a = 0; }			// Private
+			else if ((b & 0x0300) == 0x0100) { b -= 0x0100; a = 2; }	// Global
+			else                        {              a = 3; }			// do nothing
+			output |= (a << 13);							// .aa..... ........
+
+			if (!temp) output |= (b & 0x003f) << 7;			// ...bbbbb b.......
+			else       output |= (b & 0x03ff) << 3;			// ...bbbbb bbbbb...
+
+			output |= values[1] & (!temp ? 0x7f : 0x07);	// ........ .ccccccc -or- ........ .....ccc
 
 			return (ushort)output;
 		}
