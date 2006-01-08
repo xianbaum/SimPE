@@ -408,6 +408,11 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "SystemClasses.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
                     RelPath = "TPRPForm.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
