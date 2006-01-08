@@ -1,4 +1,22 @@
 
+8 January 2006 15:21 - BhavWiz: ExpandBCON rewrite plus OperandWiz changes
+  * BhavOperandWiz0x0002, BhavWizPrim: also changed way flagnames handled (again)
+  SimPe BHAV\
+    BhavOperandWiz0x0002.cs 1.6
+    BhavWiz.cs 1.37
+    BhavWizPrim.cs 1.34
+  pjseTestData.package 1.17
+
+8 January 2006 15:19 - BhavWizBhav: BHAV calling conventions
+  SimPe BHAV\
+    BhavWizBhav.cs 1.19
+    pjse coder plugin.csproj 1.29
+    SystemClasses.cs 1.1
+
+8 January 2006 15:17 - FileTable: Support folders in packages.txt
+  pjse filetable\
+    FileTable.cs 1.11
+
 31 December 2005 09:41 - BHAV: Wiz0x0002: Allow AttrPicker to be turned off
   SimPe BHAV\
     BhavOperandWiz0x0002.cs 1.5
