@@ -158,7 +158,7 @@ namespace pjse.BhavNameWizards
 				if (!noOperands)
 				{
 					if (nv == 0 || !b12[1]) // b12.Matches("xxxxxx00")
-						s += this.do8Cx(thisArgc, lng, tprp, o);
+						s += this.do8Cx(thisArgc, lng, tprp, o, nv == 0);
 					else // nv == 1 && b12.Matches("xxxxxx10")
 					{
 						if (thisArgc < 9)
@@ -187,7 +187,7 @@ namespace pjse.BhavNameWizards
 				else // nv == 1 && o12 = 0xff
 				{
 					if (!noOperands)
-						s += this.do8Cx(thisArgc, lng, tprp, o);
+						s += this.do8Cx(thisArgc, lng, tprp, o, false);
 					else
 						s += this.doUnknown(thisArgc, lng, tprp);
 				}
@@ -212,16 +212,15 @@ namespace pjse.BhavNameWizards
 			return s;
 		}
 
-		private string do8Cx(int thisArgc, bool lng, TPRP tprp, byte[] o)
+		private string do8Cx(int thisArgc, bool lng, TPRP tprp, byte[] o, bool z12)
 		{
 			string s = "";
-			// Note that I'm ignoring the fact that o[12] apparently should be passed as 0x00 for NodeVersion==0
 			for (int i = 0; thisArgc > 0 && i < 8; i++, thisArgc--)
 			{
 				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
 				s += (i>0 ? ", " : "") +
 					((pn != null && pn != "") ? pn + "=" : "") +
-					"0x" + SimPe.Helper.HexString(ToShort(o[(i*2)], o[(i*2) + 1]));
+					"0x" + SimPe.Helper.HexString(ToShort((z12 && i == 6) ? (byte)0 : o[(i*2)], o[(i*2) + 1]));
 			}
 			if (thisArgc > 0)
 				s += doUnknown(thisArgc, lng, tprp, 8);

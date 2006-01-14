@@ -1,4 +1,9 @@
 
+8 January 2006 15:21 - BhavWizBhav: BHAV calling fixes
+  SimPe BHAV\
+    BhavWizBhav.cs 1.19.2.1
+  pjseTestData.package 1.17.2.1
+
 8 January 2006 15:21 - BhavWiz: ExpandBCON rewrite plus OperandWiz changes
   * BhavOperandWiz0x0002, BhavWizPrim: also changed way flagnames handled (again)
   SimPe BHAV\
