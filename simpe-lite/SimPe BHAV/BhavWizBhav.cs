@@ -162,7 +162,7 @@ namespace pjse.BhavNameWizards
 					else // nv == 1 && b12.Matches("xxxxxx10")
 					{
 						if (thisArgc < 9)
-							s += this.doParams(thisArgc, lng, tprp);
+							s += this.doParams(thisArgc, myArgc, lng, tprp);
 						else
 							s += this.doZero(thisArgc, lng, tprp);
 					}
@@ -223,7 +223,24 @@ namespace pjse.BhavNameWizards
 					"0x" + SimPe.Helper.HexString(ToShort((z12 && i == 6) ? (byte)0 : o[(i*2)], o[(i*2) + 1]));
 			}
 			if (thisArgc > 0)
-				s += doUnknown(thisArgc, lng, tprp, 8);
+				s += doZero(thisArgc, lng, tprp, 8);
+			return s;
+		}
+
+		private string doParams(int thisArgc, int myArgc, bool lng, TPRP tprp)
+		{
+			if (!lng)
+				return "caller's params";
+
+			string s = "";
+			for (int i = 0; thisArgc > 0 && i < myArgc; i++, thisArgc--)
+			{
+				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
+				s += (i>0 ? ", " : "") +
+					((pn != null && pn != "") ? pn + "=" : "") + dataOwner(9, (ushort)i);
+			}
+			if (thisArgc > 0)
+				s += doZero(thisArgc, lng, tprp, myArgc);
 			return s;
 		}
 
@@ -231,33 +248,21 @@ namespace pjse.BhavNameWizards
 
 		private string doZero(int thisArgc, bool lng, TPRP tprp, int start)
 		{
+			if (start >= 8)
+				return doUnknown(thisArgc, lng, tprp, start);
+
 			if (!lng)
-				return (start > 0 ? ", " : "") + "all zeros";
+				return (start > 0 ? "," : "all") + " zeros";
 
 			string s = "";
-			for (int i = start; thisArgc > 0; i++, thisArgc--)
+			for (int i = start; thisArgc > 0 && i < 8; i++, thisArgc--)
 			{
 				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
 				s += (i>0 ? ", " : "") +
 					((pn != null && pn != "") ? pn + "=" : "") + "0x0000";
 			}
-			return s;
-		}
-
-		private string doParams(int thisArgc, bool lng, TPRP tprp) { return this.doParams(thisArgc, lng, tprp, 0); }
-
-		private string doParams(int thisArgc, bool lng, TPRP tprp, int start)
-		{
-			if (!lng)
-				return (start > 0 ? ", " : "") + "caller's params";
-
-			string s = "";
-			for (int i = start; thisArgc > 0; i++, thisArgc--)
-			{
-				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
-				s += (i>0 ? ", " : "") +
-					((pn != null && pn != "") ? pn + "=" : "") + dataOwner(9, (ushort)i);
-			}
+			if (thisArgc > 0)
+				s += doUnknown(thisArgc, lng, tprp, 8);
 			return s;
 		}
 
