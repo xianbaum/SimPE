@@ -125,10 +125,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 			wrappedByteArray ops = inst.Operands;
 
+			doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbval1, ops[0x06], (ushort)((ops[0x01] << 8) | ops[0x00]));
 			doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbval2, ops[0x07], (ushort)((ops[0x03] << 8) | ops[0x02]));
-
-			// Have to set up doid2 first so it can be doid1's listener
-			doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbval1, ops[0x06], (ushort)((ops[0x01] << 8) | ops[0x00]), this.doid2);
+			doid2.FlagsFor = doid1;
+			doid1.SetListener(doid2);
 
 			doid1.Decimal = doid2.Decimal = this.cbDecimal.Checked = Decimal;
 			doid1.UseAttrPicker = doid2.UseAttrPicker = this.cbAttrPicker.Checked = AttrPicker;

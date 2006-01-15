@@ -251,20 +251,16 @@ namespace pjse
 
 		#endregion
 
-		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, byte dataOwner, ushort instance, IDataOwnerListener listener)
+		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, byte dataOwner, ushort instance)
 		{
+			this.inst = inst;
 			this.cbDataOwner = cbDataOwner;
 			this.cbPicker = cbPicker;
 			this.tbValue = tbValue;
-
-			this.inst = inst;
-			this.listener = listener;
-			if (listener != null)
-				listener.FlagsFor = this;
-
 			this.dataOwner = dataOwner;
 			this.instance = instance;
 
+			this.listener = null;
 			this.flagsFor = null;
 
 			this.tbValue.Text = this.tbValueConverter(instance);
@@ -283,9 +279,6 @@ namespace pjse
 			this.tbValue.TextChanged += new System.EventHandler(this.tbValue_TextChanged);
 			this.tbValue.Enter += new System.EventHandler(this.tbValue_Enter);
 		}
-
-		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, byte dataOwner, ushort instance)
-			: this(inst, cbDataOwner, cbPicker, tbValue, dataOwner, instance, null) {}
 
 
 		#region IDisposable Members
@@ -332,6 +325,13 @@ namespace pjse
 		}
 
 		#endregion
+
+		private IDataOwnerListener listener;
+		public void SetListener(IDataOwnerListener listener)
+		{
+			this.listener = listener;
+		}
+
 
 		private bool internalchg = false;
 
@@ -388,7 +388,6 @@ namespace pjse
 
 
 		private BhavWiz inst;
-		private IDataOwnerListener listener;
 
 		private void UpdateDataOwner()
 		{

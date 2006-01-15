@@ -1,4 +1,9 @@
 
+15 January 2006 19:43 - Wiz0x0002: Fix flag updating (oops)
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.3
+    BhavOperandWiz0x0002.cs 1.6.2.2
+
 15 January 2006 19:14 - Wiz0x0002: Fix Const/Const[Temp] validation and refactor for reuse some more
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.2
