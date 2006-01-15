@@ -1,4 +1,9 @@
 
+15 January 2006 08:39 - Wiz0x0002: Park changes for fixing Decimal flag
+  SimPe BHAV\
+    BhavOperandWiz0x0002.cs 1.6.1.1.2.1
+    BhavOperandWiz0x0002.resx 1.2.1.1.2.1
+
 8 January 2006 15:21 - BhavWizBhav: BHAV calling fixes: P_in < P_out, Zero padding, unk over 8
   SimPe BHAV\
     BhavWizBhav.cs 1.19.2.2

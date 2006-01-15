@@ -82,9 +82,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		}
 
 
-		#region Controller
 		private Instruction inst = null;
-		private int val1, val2;
+		private DataOwnerControl doid1 = null;
+		private DataOwnerControl doid2 = null;
 
 		private bool Decimal
 		{
@@ -138,165 +138,37 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 			wrappedByteArray ops = inst.Operands;
 
-			val1 = (ops[0x01] << 8) | ops[0x00];
-			val2 = (ops[0x03] << 8) | ops[0x02];
-			tbval1.Text = Decimal ? val1.ToString() : "0x"+SimPe.Helper.HexString((ushort)val1);
-			tbval2.Text = Decimal ? val2.ToString() : "0x"+SimPe.Helper.HexString((ushort)val2);
+			doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbval2);
+			doid2.DataOwner = ops[0x07];
+			doid2.Value = (ushort)((ops[0x03] << 8) | ops[0x02]);
 
-			cbOperator.SelectedIndex   = (cbOperator.Items.Count   > ops[0x05]) ? ops[0x05] : -1;
+			// Have to set up doid2 first so it can be doid1's listener
+			doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbval1, this.doid2);
+			doid1.DataOwner = ops[0x06];
+			doid1.Value = (ushort)((ops[0x01] << 8) | ops[0x00]);
 
-			cbDataOwner1.SelectedIndex = (cbDataOwner1.Items.Count > ops[0x06]) ? ops[0x06] : -1;
-			cbDataOwner2.SelectedIndex = (cbDataOwner2.Items.Count > ops[0x07]) ? ops[0x07] : -1;
+			doid1.Decimal = doid2.Decimal = this.cbDecimal.Checked = Decimal;
+			doid1.UseAttrPicker = doid2.UseAttrPicker = this.cbAttrPicker.Checked = AttrPicker;
 
-			this.cbDecimal.Checked = Decimal;
-			this.cbAttrPicker.Checked = AttrPicker;
+			cbOperator.SelectedIndex = (cbOperator.Items.Count > ops[0x05]) ? ops[0x05] : -1;
 		}
 
 		public Instruction Write(Instruction inst)
 		{
-			try 
+			if (inst != null)
 			{
 				wrappedByteArray ops = inst.Operands;
-				ops[0x06] = (byte)cbDataOwner1.SelectedIndex;
-				ops[0x07] = (byte)cbDataOwner2.SelectedIndex;
+				ops[0x06] = doid1.DataOwner;
+				ops[0x00] = (byte)(doid1.Value & 0xff);
+				ops[0x01] = (byte)((doid1.Value >> 8) & 0xff);
 				ops[0x05] = (byte)cbOperator.SelectedIndex;
-
-				val1 = (ops[0x01] << 8) | ops[0x00];
-				val2 = (ops[0x03] << 8) | ops[0x02];
-				val1 = Decimal ? (ushort)textToShort(tbval1.Text, (short)val1) : textToUShort(tbval1.Text, (ushort)val1);
-				val2 = Decimal ? (ushort)textToShort(tbval2.Text, (short)val2) : textToUShort(tbval2.Text, (ushort)val2);
-
-				ops[0x00] = (byte)(val1 & 0xff);
-				ops[0x01] = (byte)((val1 >> 8) & 0xff);
-
-				ops[0x02] = (byte)(val2 & 0xff);
-				ops[0x03] = (byte)((val2 >> 8) & 0xff);
-
-				return inst;
-			} 
-			catch (Exception ex) 
-			{
-				SimPe.Helper.ExceptionMessage(SimPe.Localization.Manager.GetString("errconvert"), ex);
-				return null;
+				ops[0x07] = doid2.DataOwner;
+				ops[0x02] = (byte)(doid2.Value & 0xff);
+				ops[0x03] = (byte)((doid2.Value >> 8) & 0xff);
 			}
+			return inst;
 		}
 
-
-
-		private void doDataOwnerSelectedIndexChanged(ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, ArrayList flagNames, int def)
-		{
-			ArrayList pickerNames = null;
-
-			if (flagNames != null)
-			{
-				pickerNames = (ArrayList)flagNames.Clone();
-				pickerNames.Insert(0, "[0: invalid]");
-			}
-			else if (AttrPicker && (cbDataOwner.SelectedIndex == 0x00 || cbDataOwner.SelectedIndex == 0x01))
-			{
-				pickerNames = ((BhavWiz)inst).GetAttrNames(Scope.Private);
-			}
-			else if (AttrPicker && (cbDataOwner.SelectedIndex == 0x02 || cbDataOwner.SelectedIndex == 0x05))
-			{
-				pickerNames = ((BhavWiz)inst).GetAttrNames(Scope.SemiGlobal);
-			}
-			else if (cbDataOwner.SelectedIndex == 0x09 || cbDataOwner.SelectedIndex == 0x16 || cbDataOwner.SelectedIndex == 0x32) // Param
-			{
-				pickerNames = ((BhavWiz)inst).GetTPRPnames(false);
-			}
-			else if (cbDataOwner.SelectedIndex == 0x19) // Local
-			{
-				pickerNames = ((BhavWiz)inst).GetTPRPnames(true);
-			}
-			else if (BhavWiz.doidGStr[(byte)cbDataOwner.SelectedIndex] != null)
-			{
-				pickerNames = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[(byte)cbDataOwner.SelectedIndex]);
-			}
-
-
-			cbPicker.Visible = false;
-			if (cbDataOwner.SelectedIndex == 0x1a) // Constant
-			{
-				ushort val = Decimal ? (ushort)textToShort(tbValue.Text, (short)def) : textToUShort(tbValue.Text, (ushort)def);
-				ushort[] vals = pjse.BhavWiz.ExpandBCON(val, false);
-				tbValue.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
-			}
-			else if (cbDataOwner.SelectedIndex == 0x2f) // Const[Temp]
-			{
-				ushort val = Decimal ? (ushort)textToShort(tbValue.Text, (short)def) : textToUShort(tbValue.Text, (ushort)def);
-				ushort[] vals = pjse.BhavWiz.ExpandBCON(val, true);
-				tbValue.Text = "0x" + SimPe.Helper.HexString(vals[0])+":[Temp " + vals[1].ToString() + "]";
-			}
-			else if (pickerNames != null && pickerNames.Count > 0)
-			{
-				ushort val = Decimal ? (ushort)textToShort(tbValue.Text, (short)def) : textToUShort(tbValue.Text, (ushort)def);
-				cbPicker.Visible = true;
-				cbPicker.Items.Clear();
-				cbPicker.Items.AddRange(pickerNames.ToArray());
-				cbPicker.SelectedIndex = (cbPicker.Items.Count > val) ? val : -1;
-			}
-			else
-			{
-				tbValue.Text = Decimal ? textToShort(tbValue.Text, (short)def).ToString() : "0x"+SimPe.Helper.HexString(textToUShort(tbValue.Text, (ushort)def));
-			}
-			tbValue.Visible = !cbPicker.Visible;
-		}
-
-
-		private void doPickerSelectedIndexChanged(ComboBox cbPicker, TextBox tbValue)
-		{
-			tbValue.Text = Decimal ? cbPicker.SelectedIndex.ToString() : "0x"+SimPe.Helper.HexString((ushort)cbPicker.SelectedIndex);
-		}
-
-
-		private short textToShort(string text, short def)
-		{
-			short val = 0;
-			try 
-			{
-				if (text.IndexOf(":") == -1)
-				{
-					val = Convert.ToInt16(text);
-				}
-				else 
-				{
-					string[] s = text.Split(":".ToCharArray(), 2);
-					ushort[] b = new ushort[2];
-					b[0] = Convert.ToUInt16(s[0], 16);
-					b[1] = (s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8))
-						? Convert.ToUInt16(s[1].Substring(6, 1)) : Convert.ToUInt16(s[1], 16);
-					val = (short)pjse.BhavWiz.ExpandBCON(b, s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8));
-				}
-			}
-			catch (Exception) { val = def; }
-			return val;
-		}
-
-		private ushort textToUShort(string text, ushort def)
-		{
-			ushort val = 0;
-			try 
-			{
-				if (text.IndexOf(":") == -1)
-				{
-					val = Convert.ToUInt16(text, 16);
-				}
-				else 
-				{
-					string[] s = text.Split(":".ToCharArray(), 2);
-					ushort[] b = new ushort[2];
-					b[0] = Convert.ToUInt16(s[0], 16);
-					b[1] = (s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8))
-						? Convert.ToUInt16(s[1].Substring(6, 1)) : Convert.ToUInt16(s[1], 16);
-					val = pjse.BhavWiz.ExpandBCON(b, s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8));
-				}
-			}
-			catch (Exception) { val = def; }
-			return val;
-		}
-
-
-		#endregion
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
@@ -390,6 +262,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			this.cbOperator.Name = "cbOperator";
 			this.cbOperator.Size = new System.Drawing.Size(240, 21);
 			this.cbOperator.TabIndex = 3;
+			this.cbOperator.SelectedIndexChanged += new System.EventHandler(this.cbOperator_SelectedIndexChanged);
 			// 
 			// tbval2
 			// 
@@ -449,56 +322,311 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void cbDataOwner1_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			doDataOwnerSelectedIndexChanged(cbDataOwner1, cbPicker1, tbval1, null, val1);
-			cbDataOwner2_SelectedIndexChanged(null, null);
+			doid1.DataOwner = (byte)cbDataOwner1.SelectedIndex;
+			doid2.Refresh();
 		}
-
-		private void cbDataOwner2_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			doDataOwnerSelectedIndexChanged(cbDataOwner2, cbPicker2, tbval2,
-				(cbDataOwner2.SelectedIndex == 7 && cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10)
-				? WizPrim0x0002.flagNames((byte)cbDataOwner1.SelectedIndex,
-					Decimal ? (ushort)textToShort(tbval1.Text, (short)val1) : textToUShort(tbval1.Text, (ushort)val1))
-				: null, val2);
-		}
-
 
 		private void cbPicker1_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			doPickerSelectedIndexChanged(cbPicker1, tbval1);
-			cbDataOwner2_SelectedIndexChanged(null, null);
+			doid1.Value = (ushort)cbPicker1.SelectedIndex;
+			doid2.Refresh();
+		}
+
+
+		private void cbOperator_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (cbOperator.SelectedIndex >= 8 && cbOperator.SelectedIndex <= 10)
+				doid2.UseFlagNames = true;
+			else
+				doid2.UseFlagNames = false;
+		}
+
+
+		private void cbDataOwner2_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			doid2.DataOwner = (byte)cbDataOwner2.SelectedIndex;
 		}
 
 		private void cbPicker2_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			doPickerSelectedIndexChanged(cbPicker2, tbval2);
+			doid2.Value = (ushort)cbPicker2.SelectedIndex;
 		}
 
 
 		private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
 		{
-			if (Decimal = this.cbDecimal.Checked)
-			{
-				if (cbDataOwner1.SelectedIndex != 0x1a && cbDataOwner1.SelectedIndex != 0x2f)
-					tbval1.Text = ((short)textToUShort(tbval1.Text, (ushort)val1)).ToString();
-				if (cbDataOwner2.SelectedIndex != 0x1a && cbDataOwner2.SelectedIndex != 0x2f)
-					tbval2.Text = ((short)textToUShort(tbval2.Text, (ushort)val2)).ToString();
-			}
-			else
-			{
-				if (cbDataOwner1.SelectedIndex != 0x1a && cbDataOwner1.SelectedIndex != 0x2f)
-					tbval1.Text = "0x"+SimPe.Helper.HexString((ushort)textToShort(tbval1.Text, (short)val1));
-				if (cbDataOwner2.SelectedIndex != 0x1a && cbDataOwner2.SelectedIndex != 0x2f)
-					tbval2.Text = "0x"+SimPe.Helper.HexString((ushort)textToShort(tbval2.Text, (short)val2));
-			}
+			doid1.Decimal = doid2.Decimal = Decimal = this.cbDecimal.Checked;
 		}
 
 		private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
 		{
-			AttrPicker = this.cbAttrPicker.Checked;
-			cbDataOwner1_SelectedIndexChanged(null, null);
+			doid1.UseAttrPicker = doid2.UseAttrPicker = AttrPicker = this.cbAttrPicker.Checked;
 		}
 
+	}
+
+	class DataOwnerControl : IDisposable
+	{
+		private BhavWiz inst;
+		private ComboBox cbDataOwner;
+		private ComboBox cbPicker;
+		private TextBox tbValue;
+		private DataOwnerControl listener;
+		private DataOwnerControl flagsFor;
+
+		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, DataOwnerControl listener)
+		{
+			this.inst = inst;
+			this.cbDataOwner = cbDataOwner;
+			this.cbPicker = cbPicker;
+			this.tbValue = tbValue;
+			this.listener = listener;
+			if (listener != null)
+				listener.FlagsFor = this;
+			this.flagsFor = null;
+		}
+
+		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue) : this(inst, cbDataOwner, cbPicker, tbValue, null) {}
+
+		protected DataOwnerControl FlagsFor
+		{
+			set
+			{
+				flagsFor = value;
+			}
+		}
+
+
+		private bool internalchg = false;
+
+		private void GetInstance()
+		{
+			// responsible for translating the content of tbValue into instance
+		}
+
+		private short textToShort(string text, short def)
+		{
+			short val = 0;
+			try 
+			{
+				if (text.IndexOf(":") == -1)
+				{
+					val = Convert.ToInt16(text);
+				}
+				else 
+				{
+					string[] s = text.Split(":".ToCharArray(), 2);
+					ushort[] b = new ushort[2];
+					b[0] = Convert.ToUInt16(s[0], 16);
+					b[1] = (s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8))
+						? Convert.ToUInt16(s[1].Substring(6, 1)) : Convert.ToUInt16(s[1], 16);
+					val = (short)pjse.BhavWiz.ExpandBCON(b, s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8));
+				}
+			}
+			catch (Exception) { val = def; }
+			return val;
+		}
+
+		private ushort textToUShort(string text, ushort def)
+		{
+			ushort val = 0;
+			try 
+			{
+				if (text.IndexOf(":") == -1)
+				{
+					val = Convert.ToUInt16(text, 16);
+				}
+				else 
+				{
+					string[] s = text.Split(":".ToCharArray(), 2);
+					ushort[] b = new ushort[2];
+					b[0] = Convert.ToUInt16(s[0], 16);
+					b[1] = (s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8))
+						? Convert.ToUInt16(s[1].Substring(6, 1)) : Convert.ToUInt16(s[1], 16);
+					val = pjse.BhavWiz.ExpandBCON(b, s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8));
+				}
+			}
+			catch (Exception) { val = def; }
+			return val;
+		}
+
+
+		private void UpdateDataOwner()
+		{
+			if (internalchg)
+				return;
+
+			internalchg = true;
+
+			if (cbDataOwner.SelectedIndex != dataOwner)
+				cbDataOwner.SelectedIndex = dataOwner;
+
+			ArrayList pickerNames = null;
+			if (useFlagNames && dataOwner == 0x07)
+			{
+				pickerNames = (ArrayList)WizPrim0x0002.flagNames(flagsFor.DataOwner, flagsFor.Value).Clone();
+				pickerNames.Insert(0, "[0: invalid]");
+			}
+			else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
+			{
+				pickerNames = inst.GetAttrNames(Scope.Private);
+			}
+			else if (useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
+			{
+				pickerNames = inst.GetAttrNames(Scope.SemiGlobal);
+			}
+			else if (dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
+			{
+				pickerNames = inst.GetTPRPnames(false);
+			}
+			else if (dataOwner == 0x19) // Local
+			{
+				pickerNames = inst.GetTPRPnames(true);
+			}
+			else if (BhavWiz.doidGStr[dataOwner] != null)
+			{
+				pickerNames = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
+			}
+
+			GetInstance();
+			cbPicker.Visible = false;
+			if (cbDataOwner.SelectedIndex == 0x1a) // Constant
+			{
+				ushort[] vals = pjse.BhavWiz.ExpandBCON(instance, false);
+				tbValue.Text = "0x"+SimPe.Helper.HexString(vals[0])+":0x"+SimPe.Helper.HexString((byte)vals[1]);
+			}
+			else if (cbDataOwner.SelectedIndex == 0x2f) // Const[Temp]
+			{
+				ushort[] vals = pjse.BhavWiz.ExpandBCON(instance, true);
+				tbValue.Text = "0x" + SimPe.Helper.HexString(vals[0])+":[Temp " + vals[1].ToString() + "]";
+			}
+			else if (pickerNames != null && pickerNames.Count > 0)
+			{
+				cbPicker.Visible = true;
+				cbPicker.Items.Clear();
+				cbPicker.Items.AddRange(pickerNames.ToArray());
+				cbPicker.SelectedIndex = (cbPicker.Items.Count > instance) ? instance : -1;
+			}
+			else
+			{
+				tbValue.Text = isDecimal ? instance.ToString() : "0x"+SimPe.Helper.HexString(instance);
+			}
+			tbValue.Visible = !cbPicker.Visible;
+
+			internalchg = false;
+		}
+
+
+		private byte dataOwner = 0;
+		private ushort instance = 0;
+		private bool isDecimal = false;
+		private bool useAttrPicker = true;
+		private bool useFlagNames = false;
+
+		public byte DataOwner
+		{
+			get
+			{
+				return dataOwner;
+			}
+
+			set
+			{
+				if (dataOwner != value)
+				{
+					dataOwner = value;
+					UpdateDataOwner();
+					if (listener != null)
+						listener.Refresh();
+				}
+			}
+
+		}
+
+		public ushort Value
+		{
+			get
+			{
+				GetInstance();
+				return instance;
+			}
+
+			set
+			{
+				if (instance != value)
+				{
+					instance = value;
+					UpdateDataOwner();
+					if (listener != null)
+						listener.Refresh();
+				}
+			}
+
+		}
+
+		public bool Decimal
+		{
+			set
+			{
+				if (isDecimal != value)
+				{
+					isDecimal = value;
+					UpdateDataOwner();
+				}
+			}
+
+		}
+
+		public bool UseAttrPicker
+		{
+			get { return this.useAttrPicker; }
+
+			set
+			{
+				if (useAttrPicker != value)
+				{
+					useAttrPicker = value;
+					UpdateDataOwner();
+				}
+			}
+
+		}
+
+		public bool UseFlagNames
+		{
+			get { return this.useFlagNames; }
+
+			set
+			{
+				if (useFlagNames != value)
+				{
+					useFlagNames = value;
+					UpdateDataOwner();
+				}
+			}
+
+		}
+
+
+		public void Refresh()
+		{
+			UpdateDataOwner();
+		}
+
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			this.inst = null;
+			this.cbDataOwner = null;
+			this.cbPicker = null;
+			this.tbValue = null;
+			this.listener = null;
+			this.flagsFor = null;
+		}
+
+		#endregion
 	}
 
 }
