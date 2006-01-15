@@ -609,6 +609,16 @@ namespace pjse
 			return (ushort)output;
 		}
 
+
+		public static string ExpandBCONtoString(ushort instance, bool temp)
+		{
+			ushort[] result = ExpandBCON(instance, temp);
+			return !temp
+				? "0x" + SimPe.Helper.HexString(result[0]) + ":0x" + SimPe.Helper.HexString((byte)result[1])
+				: "0x" + SimPe.Helper.HexString(result[0]) + ":[Temp " + result[1].ToString() + "]";
+		}
+
+
 		public static ushort ToShort(byte lower, byte higher) { return (ushort)((higher << 8) + lower); }
 
 

@@ -1,4 +1,11 @@
 
+15 January 2006 08:39 - Wiz0x0002: Move DataOwnerControl to BhavOperandWiz.cs
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.2.1
+    BhavOperandWiz0x0002.cs 1.6.4.2
+    BhavOperandWiz0x0002.resx 1.2.4.2
+    BhavWiz.cs 1.37.2.1
+
 15 January 2006 08:39 - Wiz0x0002: Park changes for fixing Decimal flag
   SimPe BHAV\
     BhavOperandWiz0x0002.cs 1.6.4.1
