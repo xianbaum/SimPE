@@ -609,13 +609,34 @@ namespace pjse
 			return (ushort)output;
 		}
 
-
 		public static string ExpandBCONtoString(ushort instance, bool temp)
 		{
 			ushort[] result = ExpandBCON(instance, temp);
 			return !temp
 				? "0x" + SimPe.Helper.HexString(result[0]) + ":0x" + SimPe.Helper.HexString((byte)result[1])
 				: "0x" + SimPe.Helper.HexString(result[0]) + ":[Temp " + result[1].ToString() + "]";
+		}
+
+		public static ushort StringtoExpandBCON(string text, bool temp)
+		{
+			string[] s = text.Split(":".ToCharArray(), 2);
+			if (s.Length != 2
+				|| (temp && !(s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8))))
+				throw new InvalidCastException();
+
+			ushort[] b = new ushort[2];
+			b[0] = Convert.ToUInt16(s[0], 16);
+			b[1] = !temp
+				? Convert.ToUInt16(s[1], 16)
+				: Convert.ToUInt16(s[1].Substring(6, 1));
+
+			ushort c = ExpandBCON(b, temp);
+
+			ushort[] d = ExpandBCON(c, temp);
+			if (d[0] != b[0] || d[1] != b[1])
+				throw new InvalidCastException();
+
+			return c;
 		}
 
 
@@ -652,6 +673,18 @@ namespace pjse
 
 
 		#endregion
+	}
+
+	public interface IDataOwner
+	{
+		byte DataOwner { get; }
+		ushort Value { get; }
+	}
+
+	public interface IDataOwnerListener : IDataOwner
+	{
+		IDataOwner FlagsFor { set; }
+		void Notify();
 	}
 
 }

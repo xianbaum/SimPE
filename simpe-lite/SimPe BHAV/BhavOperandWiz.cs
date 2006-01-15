@@ -166,7 +166,7 @@ namespace pjse
 	}
 
 
-	class DataOwnerControl : IDisposable
+	class DataOwnerControl : IDisposable, IDataOwnerListener
 	{
 		#region Form variables
 		private ComboBox cbDataOwner;
@@ -243,40 +243,15 @@ namespace pjse
 
 		private ushort tbValueConverter(TextBox sender)
 		{
-			if      (dataOwner == 0x1a) return doConst(((TextBox)sender).Text);
-			else if (dataOwner == 0x2f) return doConstTemp(((TextBox)sender).Text);
+			if      (dataOwner == 0x1a) return pjse.BhavWiz.StringtoExpandBCON(((TextBox)sender).Text, false);
+			else if (dataOwner == 0x2f) return pjse.BhavWiz.StringtoExpandBCON(((TextBox)sender).Text, true);
 			else if (isDecimal) return Convert.ToUInt16(((TextBox)sender).Text, 10);
 			else                return Convert.ToUInt16(((TextBox)sender).Text, 16);
 		}
 
-		private ushort doConst(string text)
-		{
-			string[] s = text.Split(":".ToCharArray(), 2);
-			if (s.Length != 2)
-				throw new InvalidCastException();
-
-			ushort[] b = new ushort[2];
-			b[0] = Convert.ToUInt16(s[0], 16);
-			b[1] = Convert.ToUInt16(s[1], 16);
-			return pjse.BhavWiz.ExpandBCON(b, false);
-		}
-
-		private ushort doConstTemp(string text)
-		{
-			string[] s = text.Split(":".ToCharArray(), 2);
-			if (s.Length != 2 || !(s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8)))
-				throw new InvalidCastException();
-
-			ushort[] b = new ushort[2];
-			b[0] = Convert.ToUInt16(s[0], 16);
-			b[1] = Convert.ToUInt16(s[1].Substring(6, 1));
-			return pjse.BhavWiz.ExpandBCON(b, false);
-		}
-
-
 		#endregion
 
-		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, byte dataOwner, ushort instance, DataOwnerControl listener)
+		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, byte dataOwner, ushort instance, IDataOwnerListener listener)
 		{
 			this.cbDataOwner = cbDataOwner;
 			this.cbPicker = cbPicker;
@@ -312,14 +287,6 @@ namespace pjse
 		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, byte dataOwner, ushort instance)
 			: this(inst, cbDataOwner, cbPicker, tbValue, dataOwner, instance, null) {}
 
-		protected DataOwnerControl FlagsFor
-		{
-			set
-			{
-				flagsFor = value;
-			}
-		}
-
 
 		#region IDisposable Members
 
@@ -338,21 +305,39 @@ namespace pjse
 
 		#endregion
 
-		private bool internalchg = false;
-
-		private BhavWiz inst;
-		private DataOwnerControl listener;
-		private DataOwnerControl flagsFor;
+		#region IDataOwner Members
 
 		private byte dataOwner = 0;
 		private ushort instance = 0;
-		private bool isDecimal = false;
-		private bool useAttrPicker = true;
-		private bool useFlagNames = false;
-
 		public byte DataOwner { get { return dataOwner; } }
 
 		public ushort Value { get { return instance; } }
+
+		#endregion
+
+		#region IDataOwnerListener Members
+
+		private IDataOwner flagsFor = null;
+		public IDataOwner FlagsFor
+		{
+			set
+			{
+				flagsFor = value;
+			}
+		}
+
+		public void Notify()
+		{
+			UpdateDataOwner();
+		}
+
+		#endregion
+
+		private bool internalchg = false;
+
+		private bool isDecimal = false;
+		private bool useAttrPicker = true;
+		private bool useFlagNames = false;
 
 		public bool Decimal
 		{
@@ -402,11 +387,8 @@ namespace pjse
 		}
 
 
-		public void Refresh()
-		{
-			UpdateDataOwner();
-		}
-
+		private BhavWiz inst;
+		private IDataOwnerListener listener;
 
 		private void UpdateDataOwner()
 		{
@@ -420,7 +402,7 @@ namespace pjse
 				dataOwner = (byte)cbDataOwner.SelectedIndex;
 				tbValue.Text = tbValueConverter(instance);
 				if (listener != null)
-					listener.Refresh();
+					listener.Notify();
 			}
 
 			#region pickerNames
@@ -475,10 +457,9 @@ namespace pjse
 			{
 				instance = i;
 				if (listener != null)
-					listener.Refresh();
+					listener.Notify();
 			}
 		}
-
 	}
 
 }
