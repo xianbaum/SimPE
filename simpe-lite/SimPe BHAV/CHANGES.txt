@@ -1,10 +1,19 @@
 
-8 January 2006 15:21 - BhavWizBhav: BHAV calling fixes: P_in < P_out, Zero padding, unk over 8
+15 January 2006 13:18 - Wiz0x0002: Fix Decimal check-box bug
+  * Move DataOwnerControl to BhavOperandWiz.cs for later reuse
+  * ExpandBCONtoString added to BhavWiz.cs
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.4.1
+    BhavOperandWiz0x0002.cs 1.6.6.1
+    BhavOperandWiz0x0002.resx 1.2.6.2
+    BhavWiz.cs 1.37.4.1
+
+14 January 2006 11:15 - BhavWizBhav: BHAV calling fixes: P_in < P_out, Zero padding, unk over 8
   SimPe BHAV\
     BhavWizBhav.cs 1.19.2.2
   pjseTestData.package 1.17.2.2
 
-8 January 2006 15:21 - BhavWizBhav: BHAV calling fixes: NV 0, byte 12 handling
+14 January 2006 09:53 - BhavWizBhav: BHAV calling fixes: NV 0, byte 12 handling
   SimPe BHAV\
     BhavWizBhav.cs 1.19.2.1
   pjseTestData.package 1.17.2.1

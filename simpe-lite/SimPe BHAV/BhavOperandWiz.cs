@@ -25,8 +25,10 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
+using pjse.BhavNameWizards;
+using pjse.BhavOperandWizards;
 
-namespace SimPe.PackedFiles.UserInterface
+namespace pjse
 {
 	/// <summary>
 	/// Container for bhavPrimWizPanel from BhavOperandWizProvider
@@ -162,4 +164,321 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
 	}
+
+
+	class DataOwnerControl : IDisposable
+	{
+		#region Form variables
+		private ComboBox cbDataOwner;
+		private ComboBox cbPicker;
+		private TextBox tbValue;
+		#endregion
+
+		#region Form event handlers
+		private void cbDataOwner_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+			if (cbDataOwner.SelectedIndex != -1)
+				UpdateDataOwner();
+		}
+
+		private void cbPicker_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+			if (cbPicker.SelectedIndex != -1)
+				SetInstance((ushort)cbPicker.SelectedIndex);
+		}
+
+
+		private void tbValue_Enter(object sender, System.EventArgs e)
+		{
+			((TextBox)sender).SelectAll();
+		}
+
+		private void tbValue_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!tbValue_IsValid((TextBox)sender)) return;
+			SetInstance(tbValueConverter((TextBox)sender));
+		}
+
+		private void tbValue_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (tbValue_IsValid((TextBox)sender)) return;
+			e.Cancel = true;
+			tbValue_Validated(sender, null);
+		}
+
+		private void tbValue_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = tbValueConverter(instance);
+			internalchg = origstate;
+		}
+
+		#endregion
+
+		#region Form validation
+		private bool tbValue_IsValid(TextBox tb)
+		{
+			try
+			{
+				ushort v = tbValueConverter(tb);
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
+		}
+
+		private string tbValueConverter(ushort v)
+		{
+			if      (dataOwner == 0x1a) return pjse.BhavWiz.ExpandBCONtoString(v, false);
+			else if (dataOwner == 0x2f) return pjse.BhavWiz.ExpandBCONtoString(v, true);
+			else if (isDecimal) return ((int)v).ToString();
+			else                return "0x" + SimPe.Helper.HexString(v);
+		}
+
+		private ushort tbValueConverter(TextBox sender)
+		{
+			if      (dataOwner == 0x1a) return doConst(((TextBox)sender).Text);
+			else if (dataOwner == 0x2f) return doConstTemp(((TextBox)sender).Text);
+			else if (isDecimal) return Convert.ToUInt16(((TextBox)sender).Text, 10);
+			else                return Convert.ToUInt16(((TextBox)sender).Text, 16);
+		}
+
+		private ushort doConst(string text)
+		{
+			string[] s = text.Split(":".ToCharArray(), 2);
+			if (s.Length != 2)
+				throw new InvalidCastException();
+
+			ushort[] b = new ushort[2];
+			b[0] = Convert.ToUInt16(s[0], 16);
+			b[1] = Convert.ToUInt16(s[1], 16);
+			return pjse.BhavWiz.ExpandBCON(b, false);
+		}
+
+		private ushort doConstTemp(string text)
+		{
+			string[] s = text.Split(":".ToCharArray(), 2);
+			if (s.Length != 2 || !(s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8)))
+				throw new InvalidCastException();
+
+			ushort[] b = new ushort[2];
+			b[0] = Convert.ToUInt16(s[0], 16);
+			b[1] = Convert.ToUInt16(s[1].Substring(6, 1));
+			return pjse.BhavWiz.ExpandBCON(b, false);
+		}
+
+
+		#endregion
+
+		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, byte dataOwner, ushort instance, DataOwnerControl listener)
+		{
+			this.cbDataOwner = cbDataOwner;
+			this.cbPicker = cbPicker;
+			this.tbValue = tbValue;
+
+			this.inst = inst;
+			this.listener = listener;
+			if (listener != null)
+				listener.FlagsFor = this;
+
+			this.dataOwner = dataOwner;
+			this.instance = instance;
+
+			this.flagsFor = null;
+
+			this.tbValue.Text = this.tbValueConverter(instance);
+
+			this.cbDataOwner.Items.Clear();
+			this.cbDataOwner.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
+			if (cbDataOwner.Items.Count > dataOwner)
+				cbDataOwner.SelectedIndex = dataOwner;
+			UpdateDataOwner();
+
+			this.cbDataOwner.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
+			this.cbPicker.SelectedIndexChanged += new System.EventHandler(this.cbPicker_SelectedIndexChanged);
+
+			this.tbValue.Validating += new System.ComponentModel.CancelEventHandler(this.tbValue_Validating);
+			this.tbValue.Validated += new System.EventHandler(this.tbValue_Validated);
+			this.tbValue.TextChanged += new System.EventHandler(this.tbValue_TextChanged);
+			this.tbValue.Enter += new System.EventHandler(this.tbValue_Enter);
+		}
+
+		public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue, byte dataOwner, ushort instance)
+			: this(inst, cbDataOwner, cbPicker, tbValue, dataOwner, instance, null) {}
+
+		protected DataOwnerControl FlagsFor
+		{
+			set
+			{
+				flagsFor = value;
+			}
+		}
+
+
+		#region IDisposable Members
+
+		public void Dispose()
+		{
+			this.inst = null;
+			this.cbDataOwner = null;
+			this.cbPicker = null;
+			this.tbValue = null;
+			this.listener = null;
+			this.flagsFor = null;
+			this.cbDataOwner.SelectedIndexChanged -= new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
+			this.cbPicker.SelectedIndexChanged -= new System.EventHandler(this.cbPicker_SelectedIndexChanged);
+			this.tbValue.TextChanged -= new System.EventHandler(this.tbValue_TextChanged);
+		}
+
+		#endregion
+
+		private bool internalchg = false;
+
+		private BhavWiz inst;
+		private DataOwnerControl listener;
+		private DataOwnerControl flagsFor;
+
+		private byte dataOwner = 0;
+		private ushort instance = 0;
+		private bool isDecimal = false;
+		private bool useAttrPicker = true;
+		private bool useFlagNames = false;
+
+		public byte DataOwner { get { return dataOwner; } }
+
+		public ushort Value { get { return instance; } }
+
+		public bool Decimal
+		{
+			get { return this.isDecimal; }
+
+			set
+			{
+				if (isDecimal != value)
+				{
+					isDecimal = value;
+					internalchg = true;
+					tbValue.Text = tbValueConverter(instance);
+					internalchg = false;
+				}
+			}
+
+		}
+
+		public bool UseAttrPicker
+		{
+			get { return this.useAttrPicker; }
+
+			set
+			{
+				if (useAttrPicker != value)
+				{
+					useAttrPicker = value;
+					UpdateDataOwner();
+				}
+			}
+
+		}
+
+		public bool UseFlagNames
+		{
+			get { return this.useFlagNames; }
+
+			set
+			{
+				if (useFlagNames != value)
+				{
+					useFlagNames = value;
+					UpdateDataOwner();
+				}
+			}
+
+		}
+
+
+		public void Refresh()
+		{
+			UpdateDataOwner();
+		}
+
+
+		private void UpdateDataOwner()
+		{
+			if (internalchg)
+				return;
+
+			internalchg = true;
+
+			if (cbDataOwner.SelectedIndex != dataOwner)
+			{
+				dataOwner = (byte)cbDataOwner.SelectedIndex;
+				tbValue.Text = tbValueConverter(instance);
+				if (listener != null)
+					listener.Refresh();
+			}
+
+			#region pickerNames
+			ArrayList pickerNames = null;
+			if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
+			{
+				pickerNames = (ArrayList)WizPrim0x0002.flagNames(flagsFor.DataOwner, flagsFor.Value);
+				if (pickerNames != null)
+				{
+					pickerNames = (ArrayList)pickerNames.Clone();
+					pickerNames.Insert(0, "[0: invalid]");
+				}
+			}
+			else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
+			{
+				pickerNames = inst.GetAttrNames(Scope.Private);
+			}
+			else if (useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
+			{
+				pickerNames = inst.GetAttrNames(Scope.SemiGlobal);
+			}
+			else if (dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
+			{
+				pickerNames = inst.GetTPRPnames(false);
+			}
+			else if (dataOwner == 0x19) // Local
+			{
+				pickerNames = inst.GetTPRPnames(true);
+			}
+			else if (BhavWiz.doidGStr[dataOwner] != null)
+			{
+				pickerNames = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
+			}
+			#endregion
+
+			cbPicker.Visible = false;
+			if (pickerNames != null && pickerNames.Count > 0)
+			{
+				cbPicker.Visible = true;
+				cbPicker.Items.Clear();
+				cbPicker.Items.AddRange(pickerNames.ToArray());
+				cbPicker.SelectedIndex = (cbPicker.Items.Count > instance) ? instance : -1;
+			}
+			tbValue.Visible = !cbPicker.Visible;
+
+			internalchg = false;
+		}
+
+		private void SetInstance(ushort i)
+		{
+			if (instance != i)
+			{
+				instance = i;
+				if (listener != null)
+					listener.Refresh();
+			}
+		}
+
+	}
+
 }
