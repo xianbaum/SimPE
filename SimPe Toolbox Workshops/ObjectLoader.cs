@@ -35,7 +35,7 @@ namespace SimPe.Plugin.Tool.Dockable
 		}
 
 		#region Cache Handling		
-		SimPe.Cache.ObjectCacheFile cachefile;
+		SimPe.Cache.ObjectLoaderCacheFile cachefile;
 		bool cachechg;
 
 		/// <summary>
@@ -54,7 +54,7 @@ namespace SimPe.Plugin.Tool.Dockable
 			if (cachefile!=null) return;
 			
 			cachechg = false;
-			cachefile = new SimPe.Cache.ObjectCacheFile();
+			cachefile = new SimPe.Cache.ObjectLoaderCacheFile();
 		
 			if (!Helper.WindowsRegistry.UseCache) return;
 			Wait.Message = "Loading Cache";
@@ -100,7 +100,12 @@ namespace SimPe.Plugin.Tool.Dockable
 			{
 				ct++;
 				Interfaces.Scenegraph.IScenegraphFileIndexItem nrefitem = lnrefitem;
-				if (ct%134==1) Wait.Progress = ct;				
+				if (ct%134==1) 				
+					Wait.Progress = ct;				
+				
+#if MAC
+				Console.WriteLine(ct.ToString()+len);
+#endif
 
 				//if (nrefitem.FileDescriptor.Instance != 0x41A7) continue;
 				if (nrefitem.LocalGroup == Data.MetaData.LOCAL_GROUP) continue;
@@ -245,6 +250,7 @@ namespace SimPe.Plugin.Tool.Dockable
 				ProduceByXObj(Data.MetaData.XROF);
 				ProduceByXObj(Data.MetaData.XFLR);
 				ProduceByXObj(Data.MetaData.XFNC);
+				ProduceByXObj(Data.MetaData.XNGB);
 			}
 		}
 
@@ -290,14 +296,16 @@ namespace SimPe.Plugin.Tool.Dockable
 			oci.ObjectType = SimPe.Data.ObjectTypes.Normal;
 			
 			SetFunctionSortForXObj(cpf, oci);
-			
+						
 			oci.ObjectFileName = cpf.GetSaveItem("filename").StringValue;
-			oci.Useable = true;
+			if (oci.ObjectFileName=="") oci.ObjectFileName = cpf.GetSaveItem("name").StringValue;
+
+			oci.Useable = true; 
 			oci.Class = SimPe.Cache.ObjectClass.XObject;
 			
 
 			
-			Interfaces.Scenegraph.IScenegraphFileIndexItem[] ctssitems = FileTable.FileIndex.FindFile(Data.MetaData.STRING_FILE, cpf.GetSaveItem("stringsetgroupid").UIntegerValue, cpf.GetSaveItem("stringsetid").UIntegerValue, null);
+			Interfaces.Scenegraph.IScenegraphFileIndexItem[] ctssitems = FileTable.FileIndex.FindFile(cpf.GetSaveItem("stringsetrestypeid").UIntegerValue, cpf.GetSaveItem("stringsetgroupid").UIntegerValue, cpf.GetSaveItem("stringsetid").UIntegerValue, null); //Data.MetaData.STRING_FILE
 			if (ctssitems.Length>0) 
 			{
 				SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();

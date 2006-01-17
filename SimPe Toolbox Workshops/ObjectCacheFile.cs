@@ -29,12 +29,12 @@ namespace SimPe.Cache
 	/// <summary>
 	/// Contains an Instance of a CacheFile
 	/// </summary>
-	public class ObjectCacheFile: CacheFile
+	public class ObjectLoaderCacheFile: CacheFile
 	{
 		/// <summary>
 		/// Creaet a new Instance for an empty File
 		/// </summary>
-		public ObjectCacheFile() : base()
+		public ObjectLoaderCacheFile() : base()
 		{
 			DEFAULT_TYPE = ContainerType.Object;
 		}		
