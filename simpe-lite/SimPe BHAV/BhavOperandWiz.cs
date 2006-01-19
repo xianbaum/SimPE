@@ -237,7 +237,7 @@ namespace pjse
 		{
 			if      (dataOwner == 0x1a) return pjse.BhavWiz.ExpandBCONtoString(v, false);
 			else if (dataOwner == 0x2f) return pjse.BhavWiz.ExpandBCONtoString(v, true);
-			else if (isDecimal) return ((int)v).ToString();
+			else if (isDecimal) return ((short)v).ToString();
 			else                return "0x" + SimPe.Helper.HexString(v);
 		}
 
@@ -245,7 +245,7 @@ namespace pjse
 		{
 			if      (dataOwner == 0x1a) return pjse.BhavWiz.StringtoExpandBCON(((TextBox)sender).Text, false);
 			else if (dataOwner == 0x2f) return pjse.BhavWiz.StringtoExpandBCON(((TextBox)sender).Text, true);
-			else if (isDecimal) return Convert.ToUInt16(((TextBox)sender).Text, 10);
+			else if (isDecimal) return (ushort)Convert.ToInt16(((TextBox)sender).Text, 10);
 			else                return Convert.ToUInt16(((TextBox)sender).Text, 16);
 		}
 

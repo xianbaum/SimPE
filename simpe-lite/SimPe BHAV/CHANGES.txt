@@ -1,4 +1,8 @@
 
+19 January 2006 20:56 - Wiz0x0002: oops - no negative decimals allowed
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.4
+
 15 January 2006 19:43 - Wiz0x0002: Fix flag updating (oops)
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.3
