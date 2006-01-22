@@ -22,14 +22,10 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
-using SimPe.Interfaces.Files;
-using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
-using SimPe.Interfaces.Scenegraph;
 
 namespace pjse.BhavOperandWizards.WizBhav
 {
-	#region internal form
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
@@ -154,6 +150,5 @@ namespace pjse.BhavOperandWizards.WizBhav
 		#endregion
 	}
 
-	#endregion
 }
 

@@ -341,7 +341,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
 				this.llopenbhav.Enabled = currentInst.FTEntry != null;
-				this.btnOperandWiz.Enabled = pjse.BhavOperandWizProvider.For(currentInst) != null;
+				this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
 				this.tbInst_Longname.Text = currentInst.LongName;
 			}
 			internalchg = false;
@@ -545,7 +545,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 					this.currentInst = currentInst.Instruction;
 					this.llopenbhav.Enabled = currentInst.FTEntry != null;
-					this.btnOperandWiz.Enabled = pjse.BhavOperandWizProvider.For(currentInst) != null;
+					this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
 					this.tbInst_Longname.Text = currentInst.LongName;
 				}
 				else

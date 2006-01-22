@@ -184,6 +184,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0001(Instruction i) : base(i) { }
 
+		public override ABhavOperandWiz Wizard()
+		{
+			return new pjse.BhavOperandWizards.BhavOperandWiz0x0001(instruction);
+		}
+
+
 		protected override string Operands(bool lng)
 		{
 			string s = GS.GStr(GS.BhavStr.Generics, instruction.Operands[0]);
@@ -353,6 +359,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0002(Instruction i) : base(i) { }
 
+		public override ABhavOperandWiz Wizard()
+		{
+			return new pjse.BhavOperandWizards.BhavOperandWiz0x0002(instruction);
+		}
+
+
 		protected override string Operands(bool lng)
 		{
 			byte[] o = instruction.Operands;
@@ -491,55 +503,6 @@ namespace pjse.BhavNameWizards
                     }
                     break;
 #endif
-		}
-
-
-		public static ArrayList flagNames(byte flagOwner, ushort flagType)
-		{
-			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.gStr((GS.BhavStr)flagTypes[flagType]);
-		}
-
-		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
-		{
-			if (flagValue == 0) return "[0: invalid]";
-			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((GS.BhavStr)flagTypes[flagType], (ushort)(flagValue-1));
-		}
-
-
-		private static Hashtable flagOwners = flagInitaliser();
-		private static Hashtable flagInitaliser()
-		{
-			Hashtable f = new Hashtable();
-			Hashtable o = new Hashtable();
-			o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
-			o.Add((ushort)0x08, GS.BhavStr.Flags1);
-			o.Add((ushort)0x0d, GS.BhavStr.WallPlacementFlags);
-			o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
-			o.Add((ushort)0x28, GS.BhavStr.Flags2);
-			o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);
-			o.Add((ushort)0x2b, GS.BhavStr.MoveFlags);
-			o.Add((ushort)0x3f, GS.BhavStr.ExclPlacementFlags);
-			o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
-			f.Add((byte)0x03, o); // 0x03 "My"
-			f.Add((byte)0x04, o); // 0x04 "Stack Object's"
-			Hashtable p = new Hashtable();
-			p.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
-			p.Add((ushort)0x44, GS.BhavStr.GhostFlags);
-			p.Add((ushort)0x51, GS.BhavStr.BodyFlags);
-			p.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
-			p.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
-			f.Add((byte)0x12, p); // 0x12 "My Person Data"
-			f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
-			f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
-			Hashtable d = new Hashtable();
-			d.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
-			d.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
-			f.Add((byte)0x15, d); // 0x15 "stack object's definition"
-			f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
-			f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"
-			return f;
 		}
 
 	}
@@ -2118,6 +2081,12 @@ namespace pjse.BhavNameWizards
 	public class WizPrim0x0024 : BhavWizPrim	// Dialog
 	{
 		public WizPrim0x0024(Instruction i) : base(i) { }
+
+		public override ABhavOperandWiz Wizard()
+		{
+			return new pjse.BhavOperandWizards.BhavOperandWiz0x0024(instruction);
+		}
+
 
 		protected override string Operands(bool lng)
 		{

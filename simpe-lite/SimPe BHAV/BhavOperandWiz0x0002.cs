@@ -25,9 +25,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
-using SimPe.PackedFiles.UserInterface;
-using pjse.BhavNameWizards;
-using pjse.BhavOperandWizards;
 
 namespace pjse.BhavOperandWizards.Wiz0x0002
 {
@@ -80,6 +77,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		}
 
 
+		#region UI
 		private Instruction inst = null;
 		private DataOwnerControl doid1 = null;
 		private DataOwnerControl doid2 = null;
@@ -154,6 +152,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			return inst;
 		}
 
+		#endregion
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>

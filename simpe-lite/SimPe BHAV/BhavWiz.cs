@@ -20,9 +20,6 @@
 using System;
 using System.Collections;
 using SimPe.PackedFiles.Wrapper;
-using SimPe.Interfaces.Files;
-using SimPe.Interfaces.Scenegraph;
-using SimPe.Interfaces.Plugin;
 using pjse.BhavNameWizards;
 
 namespace pjse
@@ -41,124 +38,6 @@ namespace pjse
 		Comments = 0x02,
 		Full = 0x03,
 	}
-
-
-	public abstract class ExtendedWrapper : AbstractWrapper
-		, IMultiplePackedFileWrapper	//Allow Multiple Instances
-		, ICollection
-	{
-		/// <summary>
-		/// Indicates the data content of the wrapper (packed file) has changed
-		/// </summary>
-		public event EventHandler WrapperChanged;
-		/// <summary>
-		/// Indicates a wrapper routine is updating the wrapper and will generate the WrapperChanged event
-		/// </summary>
-		protected bool internalchg = false;
-
-		public ExtendedWrapper() : base() { }
-
-
-		internal virtual void OnWrapperChanged(object sender, EventArgs e)
-		{
-			this.Changed = true;
-
-			if (internalchg) return;
-			if (WrapperChanged != null) 
-			{
-				WrapperChanged(sender, e);
-			}
-		}
-
-
-		#region ICollection Members
-		public abstract void CopyTo(Array a, int i);
-		public abstract int Count { get ; }
-		public abstract bool IsSynchronized { get ; }
-		public abstract object SyncRoot { get ; }
-		#region IEnumerable Members
-		public abstract IEnumerator GetEnumerator();
-		#endregion
-		#endregion
-
-		
-		/// <summary>
-		/// This object's group
-		/// </summary>
-		public uint Group { get { return this.FileDescriptor.Group; } }
-
-		/// <summary>
-		/// The SemiGlobal group for this object
-		/// </summary>
-		public uint SemiGroup
-		{
-			get
-			{
-				Glob glob = BhavWiz.GlobByGroup(this.FileDescriptor.Group);
-				return (glob == null ? 0 : glob.SemiGlobalGroup);
-			}
-		}
-
-		/// <summary>
-		/// The Global group
-		/// </summary>
-		public uint GlobalGroup { get { return 0x7FD46CD0; } }
-
-
-		public Scope Context
-		{
-			get
-			{
-				if (this is Bhav && this.FileDescriptor != null)
-				{
-					if (this.FileDescriptor.Instance < 0x1000)
-						return Scope.Global;
-					else if (this.FileDescriptor.Instance < 0x2000)
-						return Scope.Private;
-					else
-						return Scope.SemiGlobal;
-				}
-				else
-					return Scope.Private; // at least for now
-			}
-		}
-
-
-		public uint GroupForScope(Scope s)
-		{
-			uint group = 0;
-
-			if (s == Scope.Global)
-				group = GlobalGroup;
-			else if (Context != Scope.Global)
-			{
-				if (s == Scope.SemiGlobal)
-					group = (Context == Scope.SemiGlobal) ? Group : SemiGroup;
-				else if (Context != Scope.SemiGlobal)
-					group = Group;
-			}
-
-			return group;
-		}
-
-
-		public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance)
-		{
-			pjse.FileTable.Entry[] items;
-
-			items = pjse.FileTable.GFT[type, Group, instance];
-			if (items == null || items.Length == 0)
-				items = pjse.FileTable.GFT[type, SemiGroup, instance];
-			if (items == null || items.Length == 0)
-				items = pjse.FileTable.GFT[type, GlobalGroup, instance];
-			if (items == null || items.Length == 0)
-				return null;
-
-			return items[0];
-		}
-
-	}
-
 
 
 	/// <summary>
@@ -202,6 +81,12 @@ namespace pjse
 		public virtual string ShortName { get { return Name + " (" + Operands(false) + ")"; } }
 
 		public virtual string LongName { get { return Name + " (" + Operands(true) + ")"; } }
+
+
+		public virtual ABhavOperandWiz Wizard()
+		{
+			return null;
+		}
 
 
 		protected virtual string Name { get { return "[" + Prefix + " 0x" + SimPe.Helper.HexString(instruction.OpCode) + "] " + OpcodeName; } }
@@ -485,6 +370,55 @@ namespace pjse
 			ArrayList al = new ArrayList();
 			foreach(StrItem si in asi) al.Add(si.Title);
 			return al;
+		}
+
+
+		public static ArrayList flagNames(byte flagOwner, ushort flagType)
+		{
+			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.gStr((GS.BhavStr)flagTypes[flagType]);
+		}
+
+		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
+		{
+			if (flagValue == 0) return "[0: invalid]";
+			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
+			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((GS.BhavStr)flagTypes[flagType], (ushort)(flagValue-1));
+		}
+
+
+		private static Hashtable flagOwners = flagInitaliser();
+		private static Hashtable flagInitaliser()
+		{
+			Hashtable f = new Hashtable();
+			Hashtable o = new Hashtable();
+			o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
+			o.Add((ushort)0x08, GS.BhavStr.Flags1);
+			o.Add((ushort)0x0d, GS.BhavStr.WallPlacementFlags);
+			o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
+			o.Add((ushort)0x28, GS.BhavStr.Flags2);
+			o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);
+			o.Add((ushort)0x2b, GS.BhavStr.MoveFlags);
+			o.Add((ushort)0x3f, GS.BhavStr.ExclPlacementFlags);
+			o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
+			f.Add((byte)0x03, o); // 0x03 "My"
+			f.Add((byte)0x04, o); // 0x04 "Stack Object's"
+			Hashtable p = new Hashtable();
+			p.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
+			p.Add((ushort)0x44, GS.BhavStr.GhostFlags);
+			p.Add((ushort)0x51, GS.BhavStr.BodyFlags);
+			p.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
+			p.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
+			f.Add((byte)0x12, p); // 0x12 "My Person Data"
+			f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
+			f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
+			Hashtable d = new Hashtable();
+			d.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
+			d.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
+			f.Add((byte)0x15, d); // 0x15 "stack object's definition"
+			f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
+			f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"
+			return f;
 		}
 
 

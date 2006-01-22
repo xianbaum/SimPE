@@ -28,7 +28,6 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.WizDefault
 {
-	#region internal form
 	/// <summary>
 	/// Summary description for BhavPrimWizDefault.
 	/// </summary>
@@ -507,7 +506,6 @@ namespace pjse.BhavOperandWizards.WizDefault
 		}
 
 	}
-	#endregion
 }
 
 namespace pjse.BhavOperandWizards
@@ -519,7 +517,6 @@ namespace pjse.BhavOperandWizards
 		public BhavOperandWizDefault(Instruction i) : base(i) { }
 
 
-		#region pjse.ABhavOperandWiz
 		private WizDefault.UI myForm = null;
 		public override Panel bhavPrimWizPanel
 		{
@@ -549,7 +546,6 @@ namespace pjse.BhavOperandWizards
 		}
 		#endregion
 
-		#endregion
 	}
 
 }

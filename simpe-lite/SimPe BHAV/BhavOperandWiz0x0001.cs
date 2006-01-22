@@ -23,13 +23,9 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
-using SimPe.PackedFiles.UserInterface;
-using pjse.BhavNameWizards;
-using pjse.BhavOperandWizards;
 
 namespace pjse.BhavOperandWizards.Wiz0x0001
 {
-	#region internal form
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
@@ -156,12 +152,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 		private void cbGenericSimsCall_Changed(object sender, System.EventArgs e)
 		{
 			if (cbGenericSimsCall.SelectedIndex >= 0)
-				lbGenericSimsCallparms.Text = WizPrim0x0001.parms[cbGenericSimsCall.SelectedIndex];
+				lbGenericSimsCallparms.Text = pjse.BhavNameWizards.WizPrim0x0001.parms[cbGenericSimsCall.SelectedIndex];
 		}
 
 	}
 
-	#endregion
 }
 
 namespace pjse.BhavOperandWizards
@@ -173,7 +168,6 @@ namespace pjse.BhavOperandWizards
 		public BhavOperandWiz0x0001(Instruction i) : base(i) { }
 
 
-		#region pjse.ABhavOperandWiz
 		private Wiz0x0001.UI myForm = null;
 		public override Panel bhavPrimWizPanel
 		{
@@ -202,7 +196,6 @@ namespace pjse.BhavOperandWizards
 		}
 		#endregion
 
-		#endregion
 	}
 
 }
