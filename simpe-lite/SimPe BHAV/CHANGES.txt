@@ -1,4 +1,15 @@
 
+28 January 2006 14:25 - Wiz0x0024: TNS Style (using Global STR# 0x01f3) and Scope processing added
+  * also noted location of useful bits of edithWiki for more wizards
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.2.2
+    BhavOperandWiz0x0024.resx 1.1.2.2
+    BhavOperandWizBhav.cs 1.1.12.2
+    BhavOperandWizBhav.resx 1.1.2.1
+    BhavWizPrim.cs 1.34.6.2
+    GlobalStr.cs 1.17.2.1
+  GlobalsStrings.package 1.10.2.1
+
 19 January 2006 20:56 - Wiz0x0024: Dialog Wizard branch begins
   * Opportunity taken to refactor loads of code as usual
   * BhavWiz has a Wizard() method to return the Operand Wizard (or null)

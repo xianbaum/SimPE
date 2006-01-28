@@ -715,7 +715,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x000d : BhavWizPrim	// Push Interaction
+	public class WizPrim0x000d : BhavWizPrim	// Push Interaction -- for wizard, see edithWiki FunWithControllers
 	{
 		public WizPrim0x000d(Instruction i) : base(i) { }
 
@@ -884,7 +884,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0010 : BhavWizPrim	// Find location for
+	public class WizPrim0x0010 : BhavWizPrim	// Find location for -- for wizard, see edithWiki AkeaPostMortem
 	{
 		public WizPrim0x0010(Instruction i) : base(i) { }
 
@@ -1040,7 +1040,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0012 : BhavWizPrim	// Remove Object Instance
+	public class WizPrim0x0012 : BhavWizPrim	// Remove Object Instance -- for wizard, see edithWiki AkeaPostMortem
 	{
 		public WizPrim0x0012(Instruction i) : base(i) { }
 
@@ -1225,7 +1225,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0017 : BhavWizPrim	// Play / Stop Sound Event
+	public class WizPrim0x0017 : BhavWizPrim	// Play / Stop Sound Event -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x0017(Instruction i) : base(i) { }
 
@@ -1294,7 +1294,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0019 : BhavWizPrim	// Alter Budget
+	public class WizPrim0x0019 : BhavWizPrim	// Alter Budget -- for wizard, see edithWiki WorkAndSchool, Chance Card - Results
 	{
 		public WizPrim0x0019(Instruction i) : base(i) { }
 
@@ -1626,7 +1626,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x001d : BhavWizPrim	// Set Motive Change
+	public class WizPrim0x001d : BhavWizPrim	// Set Motive Change -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x001d(Instruction i) : base(i) { }
 
@@ -2170,16 +2170,9 @@ namespace pjse.BhavNameWizards
 				s += ", " + (nowait ? "don't " : "") + "wait for user";/* + " and " +*/
 				s += ", " + (noblock ? "don't " : "") + "block Sim";
 
-				s += ", Style: ";
-				switch (o[12]) 
-				{
-					case 0: s += "Sim"; break;
-					case 1: s += "System"; break;
-					case 2: s += "System Dialog"; break;
-					case 3: s += "Birthday"; break;
-					case 4: s += "Sim (about Object ID in Temp 1)"; break;
-					default: s += "unknown"; break;
-				}
+				// these are the TNS notification types.  Only show for 0x08 and 0x0a.
+				if (o[5] == 0x08 || o[5] == 0x0a)
+					s += ", TNS Style: " + GS.GStr(GS.BhavStr.TnsStyle, o[12]);
 
 				s += ", " + scope.ToString() + " strings.";
 
@@ -2355,7 +2348,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x002a : BhavWizPrim	// Create new object instance
+	public class WizPrim0x002a : BhavWizPrim	// Create new object instance -- for wizard, see edithWiki AkeaPostMortem
 	{
 		public WizPrim0x002a(Instruction i) : base(i) { }
 
@@ -2444,7 +2437,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x002d : BhavWizPrim	// Go To Routing Slot
+	public class WizPrim0x002d : BhavWizPrim	// Go To Routing Slot -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x002d(Instruction i) : base(i) { }
 
@@ -2520,7 +2513,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x002e : BhavWizPrim	// Snap
+	public class WizPrim0x002e : BhavWizPrim	// Snap -- for wizard, see edithWiki CreatingAChair (assume this is s/t/r/s)
 	{
 		public WizPrim0x002e(Instruction i) : base(i) { }
 
@@ -2715,7 +2708,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0033 : BhavWizPrim	// Manage Inventory
+	public class WizPrim0x0033 : BhavWizPrim	// Manage Inventory -- for wizard, see edithWiki WorkAndSchool, Career rewards
 	{
 		public WizPrim0x0033(Instruction i) : base(i) { }
 
@@ -3191,7 +3184,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x006a : BhavWizPrim	// Animate Sim
+	public class WizPrim0x006a : BhavWizPrim	// Animate Sim -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x006a(Instruction i) : base(i) { }
 
@@ -4297,7 +4290,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0071 : BhavWizPrim	// Snap Into
+	public class WizPrim0x0071 : BhavWizPrim	// Snap Into -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x0071(Instruction i) : base(i) { }
 
@@ -5229,7 +5222,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x007c : BhavWizPrim	// Want Satisfy
+	public class WizPrim0x007c : BhavWizPrim	// Want Satisfy -- for wizard, see edithWiki WantSatisfacton
 	{
 		public WizPrim0x007c(Instruction i) : base(i) { }
 

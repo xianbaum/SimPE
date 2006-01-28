@@ -36,6 +36,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		internal System.Windows.Forms.Panel pnWiz0x0024;
 		private System.Windows.Forms.ComboBox cbType;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label lbType;
+		private System.Windows.Forms.ComboBox cbTnsStyle;
+		private System.Windows.Forms.Label lbTnsStyle;
+		private System.Windows.Forms.Label lbMessage;
+		private System.Windows.Forms.Label lbYes;
+		private System.Windows.Forms.Label lbNo;
+		private System.Windows.Forms.Label lbCancel;
+		private System.Windows.Forms.Label lbTitle;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.ComboBox cbScope;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -55,6 +66,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			cbType.Items.Clear();
 			cbType.Items.AddRange(GS.gStr(GS.BhavStr.Dialog).ToArray());
+			if (typeDescriptions == null)
+				typeDescriptions = (string[])(GS.gStr(GS.BhavStr.DialogDesc).ToArray(typeof(string)));
+			cbTnsStyle.Items.Clear();
+			cbTnsStyle.Items.AddRange(GS.gStr(GS.BhavStr.TnsStyle).ToArray());
+			
 		}
 
 
@@ -78,6 +94,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 		#region UI
 		private Instruction inst = null;
+		private static string[] typeDescriptions = null;
 
 		bool nowait   = false;
 		byte iconType = 0;
@@ -85,10 +102,23 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		bool noblock  = false;
 		ushort msg    = 0;
 		ushort cnc    = 0;
+		byte tnsStyle = 0;
 		Scope scope   = Scope.Private;
 
 		private void doType(int newType)
 		{
+			this.lbType.Text = newType < typeDescriptions.Length ? typeDescriptions[newType] : "";
+
+			if (newType == 0x08 || newType == 0x0a)
+			{
+				this.lbTnsStyle.Visible = this.cbTnsStyle.Visible = true;
+				this.cbTnsStyle.SelectedIndex = this.cbTnsStyle.Items.Count > tnsStyle ? tnsStyle : -1;
+			}
+			else
+			{
+				this.lbTnsStyle.Visible = this.cbTnsStyle.Visible = false;
+			}
+
 			/*
 			06 p/b - invite
 			0c jewlery rack
@@ -136,6 +166,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			*/
 		}
 
+		private void doTnsStyle(int newStyle)
+		{
+			tnsStyle = (byte)newStyle;
+		}
+
+		private void doScope(int newScope)
+		{
+			scope = (Scope)newScope;
+		}
+
 
 		public void Execute(Instruction inst)
 		{
@@ -148,6 +188,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			iconType = (byte)((ops1[7] >> 1) & 0x07);
 			tempVar  = (byte)((ops1[7] >> 4) & 0x07);
 			noblock  = (ops1[7] & 0x80) != 0;
+			tnsStyle = ops2[4];
+
 			if (inst.NodeVersion == 0)
 			{
 				msg = ops1[2];	// message
@@ -164,6 +206,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			else                            scope = Scope.Private;
 
 			cbType.SelectedIndex = (cbType.Items.Count > ops1[0x05]) ? ops1[0x05] : -1;
+			doType(cbType.SelectedIndex);
+			cbScope.SelectedIndex = cbScope.Items.Count > ((int)scope) ? ((int)scope) : -1;
 		}
 
 
@@ -171,8 +215,18 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			if (inst != null)
 			{
-				wrappedByteArray ops = inst.Operands;
-				ops[0x05] = (byte)cbType.SelectedIndex;
+				wrappedByteArray ops1 = inst.Operands;
+				wrappedByteArray ops2 = inst.Reserved1;
+
+				ops1[0x05] = (byte)cbType.SelectedIndex;
+				if (ops1[0x05] == 0x08 || ops1[0x05] == 0x0a)
+				{
+					ops2[4] = tnsStyle;
+				}
+
+				ops2[0] &= 0xbe;
+				if      (scope == Scope.SemiGlobal) ops2[0] |= 0x01;
+				else if (scope == Scope.Global)     ops2[0] |= 0x40;
 			}
 			return inst;
 		}
@@ -187,24 +241,79 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private void InitializeComponent()
 		{
 			this.pnWiz0x0024 = new System.Windows.Forms.Panel();
+			this.lbTnsStyle = new System.Windows.Forms.Label();
+			this.cbTnsStyle = new System.Windows.Forms.ComboBox();
+			this.lbType = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.cbType = new System.Windows.Forms.ComboBox();
+			this.label2 = new System.Windows.Forms.Label();
+			this.lbMessage = new System.Windows.Forms.Label();
+			this.lbYes = new System.Windows.Forms.Label();
+			this.lbNo = new System.Windows.Forms.Label();
+			this.lbCancel = new System.Windows.Forms.Label();
+			this.lbTitle = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.cbScope = new System.Windows.Forms.ComboBox();
 			this.pnWiz0x0024.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pnWiz0x0024
 			// 
+			this.pnWiz0x0024.Controls.Add(this.cbScope);
+			this.pnWiz0x0024.Controls.Add(this.label3);
+			this.pnWiz0x0024.Controls.Add(this.lbTitle);
+			this.pnWiz0x0024.Controls.Add(this.lbCancel);
+			this.pnWiz0x0024.Controls.Add(this.lbNo);
+			this.pnWiz0x0024.Controls.Add(this.lbYes);
+			this.pnWiz0x0024.Controls.Add(this.lbMessage);
+			this.pnWiz0x0024.Controls.Add(this.lbTnsStyle);
+			this.pnWiz0x0024.Controls.Add(this.cbTnsStyle);
+			this.pnWiz0x0024.Controls.Add(this.lbType);
 			this.pnWiz0x0024.Controls.Add(this.label1);
 			this.pnWiz0x0024.Controls.Add(this.cbType);
-			this.pnWiz0x0024.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.pnWiz0x0024.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.pnWiz0x0024.Location = new System.Drawing.Point(0, 0);
 			this.pnWiz0x0024.Name = "pnWiz0x0024";
-			this.pnWiz0x0024.Size = new System.Drawing.Size(248, 32);
+			this.pnWiz0x0024.Size = new System.Drawing.Size(528, 272);
 			this.pnWiz0x0024.TabIndex = 0;
+			// 
+			// lbTnsStyle
+			// 
+			this.lbTnsStyle.AutoSize = true;
+			this.lbTnsStyle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbTnsStyle.Location = new System.Drawing.Point(258, 11);
+			this.lbTnsStyle.Name = "lbTnsStyle";
+			this.lbTnsStyle.Size = new System.Drawing.Size(65, 17);
+			this.lbTnsStyle.TabIndex = 4;
+			this.lbTnsStyle.Text = "TNS Style";
+			// 
+			// cbTnsStyle
+			// 
+			this.cbTnsStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.cbTnsStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTnsStyle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cbTnsStyle.Location = new System.Drawing.Point(328, 8);
+			this.cbTnsStyle.Name = "cbTnsStyle";
+			this.cbTnsStyle.Size = new System.Drawing.Size(200, 21);
+			this.cbTnsStyle.TabIndex = 3;
+			this.cbTnsStyle.SelectedIndexChanged += new System.EventHandler(this.cbTnsStyle_SelectedIndexChanged);
+			// 
+			// lbType
+			// 
+			this.lbType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
+			this.lbType.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbType.Location = new System.Drawing.Point(0, 32);
+			this.lbType.Name = "lbType";
+			this.lbType.Size = new System.Drawing.Size(528, 64);
+			this.lbType.TabIndex = 2;
+			this.lbType.Text = "Description of dialog type";
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
+			this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.label1.Location = new System.Drawing.Point(4, 11);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(79, 17);
@@ -213,19 +322,101 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// cbType
 			// 
+			this.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbType.DropDownWidth = 160;
 			this.cbType.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.cbType.Location = new System.Drawing.Point(88, 8);
 			this.cbType.Name = "cbType";
 			this.cbType.Size = new System.Drawing.Size(160, 21);
 			this.cbType.TabIndex = 0;
-			this.cbType.Text = "comboBox1";
 			this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
+			// 
+			// label2
+			// 
+			this.label2.Location = new System.Drawing.Point(672, 0);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(176, 96);
+			this.label2.TabIndex = 1;
+			this.label2.Text = "see edithWiki AkeaPostMortem for a nice DialogEditor screenshot";
+			// 
+			// lbMessage
+			// 
+			this.lbMessage.AutoSize = true;
+			this.lbMessage.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbMessage.Location = new System.Drawing.Point(16, 144);
+			this.lbMessage.Name = "lbMessage";
+			this.lbMessage.Size = new System.Drawing.Size(59, 17);
+			this.lbMessage.TabIndex = 5;
+			this.lbMessage.Text = "Message";
+			// 
+			// lbYes
+			// 
+			this.lbYes.AutoSize = true;
+			this.lbYes.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbYes.Location = new System.Drawing.Point(16, 168);
+			this.lbYes.Name = "lbYes";
+			this.lbYes.Size = new System.Drawing.Size(27, 17);
+			this.lbYes.TabIndex = 6;
+			this.lbYes.Text = "Yes";
+			// 
+			// lbNo
+			// 
+			this.lbNo.AutoSize = true;
+			this.lbNo.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbNo.Location = new System.Drawing.Point(16, 192);
+			this.lbNo.Name = "lbNo";
+			this.lbNo.Size = new System.Drawing.Size(22, 17);
+			this.lbNo.TabIndex = 7;
+			this.lbNo.Text = "No";
+			// 
+			// lbCancel
+			// 
+			this.lbCancel.AutoSize = true;
+			this.lbCancel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbCancel.Location = new System.Drawing.Point(16, 216);
+			this.lbCancel.Name = "lbCancel";
+			this.lbCancel.Size = new System.Drawing.Size(46, 17);
+			this.lbCancel.TabIndex = 8;
+			this.lbCancel.Text = "Cancel";
+			// 
+			// lbTitle
+			// 
+			this.lbTitle.AutoSize = true;
+			this.lbTitle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbTitle.Location = new System.Drawing.Point(16, 240);
+			this.lbTitle.Name = "lbTitle";
+			this.lbTitle.Size = new System.Drawing.Size(32, 17);
+			this.lbTitle.TabIndex = 9;
+			this.lbTitle.Text = "Title";
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label3.Location = new System.Drawing.Point(14, 107);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(85, 17);
+			this.label3.TabIndex = 10;
+			this.label3.Text = "String Scope";
+			// 
+			// cbScope
+			// 
+			this.cbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbScope.Items.AddRange(new object[] {
+														 "Global",
+														 "Semi-global",
+														 "Private"});
+			this.cbScope.Location = new System.Drawing.Point(104, 104);
+			this.cbScope.Name = "cbScope";
+			this.cbScope.Size = new System.Drawing.Size(144, 21);
+			this.cbScope.TabIndex = 11;
+			this.cbScope.SelectedIndexChanged += new System.EventHandler(this.cbScope_SelectedIndexChanged);
 			// 
 			// UI
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(640, 366);
+			this.ClientSize = new System.Drawing.Size(856, 605);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.pnWiz0x0024);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.Name = "UI";
@@ -239,6 +430,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private void cbType_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			doType(((ComboBox)sender).SelectedIndex);
+		}
+
+		private void cbTnsStyle_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			doTnsStyle(((ComboBox)sender).SelectedIndex);
+		}
+
+		private void cbScope_SelectedIndexChanged(object sender, System.EventArgs e)
+		{
+			doScope(((ComboBox)sender).SelectedIndex);
 		}
 
 	}

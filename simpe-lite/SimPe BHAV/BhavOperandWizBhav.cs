@@ -37,6 +37,7 @@ namespace pjse.BhavOperandWizards.WizBhav
 		internal System.Windows.Forms.Panel pnWiz0x0002;
 		private System.Windows.Forms.ComboBox cbPicker1;
 		private System.Windows.Forms.ComboBox cbDataOwner1;
+		private System.Windows.Forms.Label label1;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -91,6 +92,7 @@ namespace pjse.BhavOperandWizards.WizBhav
 			this.cbPicker1 = new System.Windows.Forms.ComboBox();
 			this.tbval1 = new System.Windows.Forms.TextBox();
 			this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
+			this.label1 = new System.Windows.Forms.Label();
 			this.pnWiz0x0002.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -135,10 +137,20 @@ namespace pjse.BhavOperandWizards.WizBhav
 			this.cbDataOwner1.Size = new System.Drawing.Size(112, 21);
 			this.cbDataOwner1.TabIndex = 1;
 			// 
+			// label1
+			// 
+			this.label1.Location = new System.Drawing.Point(240, 152);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(288, 128);
+			this.label1.TabIndex = 1;
+			this.label1.Text = "The edithWiki page on SimPregnancy has a screenshot of the Edith editor, as does " +
+				"AkeaPostMortem";
+			// 
 			// UI
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
 			this.ClientSize = new System.Drawing.Size(640, 366);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.pnWiz0x0002);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.Name = "UI";
