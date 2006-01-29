@@ -212,10 +212,11 @@ namespace pjse
 		}
 
 
-		protected string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen, Detail detail)
+		public string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen, Detail detail)
 		{
 			return readStr(instance.ToString() + ": ", s, (uint)instance, sid, maxLen, detail);
 		}
+
 
 		protected string readStr(Scope s, uint instance, int sid, int maxLen, Detail detail)
 		{

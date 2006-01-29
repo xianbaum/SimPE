@@ -1,4 +1,12 @@
 
+29 January 2006 16:02 - Wiz0x0024: More bits of the Wizard added (strings: "vua" changed to "via")
+  * Made readStr() public -- need to review that decision
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.2.3
+    BhavOperandWiz0x0024.resx 1.1.2.3
+    BhavWiz.cs 1.37.2.2.2.2
+  GlobalString.package 1.10.2.1.2.1
+
 28 January 2006 14:25 - Wiz0x0024: TNS Style (using Global STR# 0x01f3) and Scope processing added
   * also noted location of useful bits of edithWiki for more wizards
   SimPe BHAV\
