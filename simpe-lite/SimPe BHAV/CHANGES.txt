@@ -1,3 +1,9 @@
+!!! Made readStr() public -- need to review that decision (sticky)
+
+29 January 2006 20:04 - Wiz0x0024: More bits of the Wizard added (almost done?)
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.2.4
+    BhavOperandWiz0x0024.resx 1.1.2.4
 
 29 January 2006 16:02 - Wiz0x0024: More bits of the Wizard added (strings: "vua" changed to "via")
   * Made readStr() public -- need to review that decision

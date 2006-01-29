@@ -38,8 +38,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label lbType;
-		private System.Windows.Forms.ComboBox cbTnsStyle;
-		private System.Windows.Forms.Label lbTnsStyle;
 		private System.Windows.Forms.Label lbMessage;
 		private System.Windows.Forms.Label lbYes;
 		private System.Windows.Forms.Label lbNo;
@@ -48,36 +46,47 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ComboBox cbScope;
 		private System.Windows.Forms.Label lbIconType;
-		private System.Windows.Forms.Label lbTempVar;
 		private System.Windows.Forms.CheckBox cbBlockBHAV;
 		private System.Windows.Forms.CheckBox cbBlockSim;
-		private System.Windows.Forms.NumericUpDown udTempVar;
 		private System.Windows.Forms.Button btnStrMessage;
-		private System.Windows.Forms.Button btnStrYes;
-		private System.Windows.Forms.Button btnStrNo;
-		private System.Windows.Forms.Button btnStrCancel;
+		private System.Windows.Forms.Button btnStrButton1;
+		private System.Windows.Forms.Button btnStrButton2;
+		private System.Windows.Forms.Button btnStrButton3;
 		private System.Windows.Forms.Button btnStrTitle;
 		private System.Windows.Forms.TextBox tbMessage;
-		private System.Windows.Forms.TextBox tbYes;
-		private System.Windows.Forms.TextBox tbNo;
-		private System.Windows.Forms.TextBox tbCancel;
+		private System.Windows.Forms.TextBox tbButton1;
+		private System.Windows.Forms.TextBox tbButton2;
+		private System.Windows.Forms.TextBox tbButton3;
 		private System.Windows.Forms.TextBox tbTitle;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.CheckBox cbUTMessage;
-		private System.Windows.Forms.CheckBox cbUTYes;
-		private System.Windows.Forms.CheckBox cbUTNo;
-		private System.Windows.Forms.CheckBox cbUTCancel;
+		private System.Windows.Forms.CheckBox cbUTButton1;
+		private System.Windows.Forms.CheckBox cbUTButton2;
+		private System.Windows.Forms.CheckBox cbUTButton3;
 		private System.Windows.Forms.CheckBox cbUTTitle;
 		private System.Windows.Forms.ComboBox cbIconType;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.TextBox tbIconID;
 		private System.Windows.Forms.Button btnDefMessage;
-		private System.Windows.Forms.Button btnDefYes;
-		private System.Windows.Forms.Button btnDefNo;
-		private System.Windows.Forms.Button btnDefCancel;
+		private System.Windows.Forms.Button btnDefButton1;
+		private System.Windows.Forms.Button btnDefButton2;
+		private System.Windows.Forms.Button btnDefButton3;
 		private System.Windows.Forms.Button btnDefTitle;
 		private System.Windows.Forms.Button btnStrIcon;
+		private System.Windows.Forms.Panel pnTNS;
+		private System.Windows.Forms.TextBox tbPriority;
+		private System.Windows.Forms.Label label6;
+		private System.Windows.Forms.Label label7;
+		private System.Windows.Forms.TextBox tbTimeout;
+		private System.Windows.Forms.Label lbTnsStyle;
+		private System.Windows.Forms.ComboBox cbTnsStyle;
+		private System.Windows.Forms.Panel pnTempVar;
+		private System.Windows.Forms.Label lbTempVar;
+		private System.Windows.Forms.NumericUpDown udTempVar;
+		private System.Windows.Forms.Panel pnLocalVar;
+		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.NumericUpDown udLocalVar;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -107,16 +116,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			cbIconType.Items.Clear();
 			cbIconType.Items.AddRange(GS.gStr(GS.BhavStr.DialogIcon).ToArray());
 
-			Button[] b = { btnStrMessage ,btnStrYes ,btnStrNo ,btnStrCancel ,btnStrTitle ,btnStrIcon ,};
+			Button[] b = { btnStrMessage ,btnStrButton1 ,btnStrButton2 ,btnStrButton3 ,btnStrTitle ,btnStrIcon ,};
 			alStrBtn = new ArrayList(b);
 
-			Button[] bd = { btnDefMessage ,btnDefYes ,btnDefNo ,btnDefCancel ,btnDefTitle ,};
+			Button[] bd = { btnDefMessage ,btnDefButton1 ,btnDefButton2 ,btnDefButton3 ,btnDefTitle ,};
 			alDefBtn = new ArrayList(bd);
 
-			TextBox[] t = { tbMessage ,tbYes ,tbNo ,tbCancel ,tbTitle ,};
+			TextBox[] t = { tbMessage ,tbButton1 ,tbButton2 ,tbButton3 ,tbTitle ,};
 			alTextBox = new ArrayList(t);
 
-			CheckBox[] c = { cbUTMessage ,cbUTYes ,cbUTNo ,cbUTCancel ,cbUTTitle ,};
+			CheckBox[] c = { cbUTMessage ,cbUTButton1 ,cbUTButton2 ,cbUTButton3 ,cbUTTitle ,};
 			alCBUseTemp = new ArrayList(c);
 		}
 
@@ -154,10 +163,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		byte iconID   = 0;
 		byte tempVar  = 0;
 		bool noblock  = false;
+		byte tnsStyle = 0;
+		byte priority = 0;
+		byte timeout  = 0;
+		byte localVar = 0;
+		Scope scope   = Scope.Private;
 		ushort[] messages = { 0, 0, 0, 0, 0 }; // Message, Yes, No, Cancel, Title
 		bool[] useTemp = { false, false, false, false, false }; // Message, Yes, No, Cancel, Title
-		byte tnsStyle = 0;
-		Scope scope   = Scope.Private;
 
 		bool internalchg = false;
 
@@ -172,55 +184,58 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			this.lbType.Text = typeDescriptions.Length > dialog ? typeDescriptions[dialog] : "";
 
-			this.lbTnsStyle.Visible = this.cbTnsStyle.Visible = (newType == 0x08 || newType == 0x0a);
-			//need to add TNS priority, TNS timeout
+			bool[] states = { false, false, false, false, false }; // message, yes, no, cancel, title
+			bool tvState = false;
+			bool tnsState = false;
+			bool lvState = false;
+
+			switch(dialog)
+			{
+				case 0x00: case 0x03: case 0x04:
+					states[0] = states[1] = states[4] = true; // message, button 1, title
+					break;
+				case 0x02:
+					states[0] = states[1] = states[2] = states[4] = true; // message, button 1, button 2, title
+					tvState = states[3] = true; // button 3
+					break;
+				case 0x08: case 0x0a: // TNS, TNS modify
+					tnsState = tvState = states[0] = true; // message
+					break;
+				case 0x09: // TNS stop
+					tvState = true;
+					break;
+				case 0x0e:
+					states[0] = states[1] = states[2] = states[4] = true; // message, button 1, button 2, title
+					lvState = true;
+					break;
+				case 0x0f:
+					states[1] = states[2] = true; // button 1, button 2
+					break;
+				case 0x13:
+					states[1] = states[2] = states[4] = true; // button 1, button 2, title
+					break;
+				case 0x0b: case 0x0c: case 0x0d:
+				case 0x10: case 0x11: case 0x12:
+				case 0x14: case 0x15:
+					break;
+				case 0x16: case 0x19:
+					states[0] = states[4] = true; // message, title
+					break;
+				default:
+					states[0] = states[1] = states[2] = states[4] = true; // message, button 1, button 2, title
+					break;
+			}
+
+			// Make the display match the help text
+			for(int i = 0; i < states.Length; i++)
+				((Button)this.alStrBtn[i]).Enabled =
+					((Button)this.alDefBtn[i]).Enabled =
+					((CheckBox)this.alCBUseTemp[i]).Enabled = states[i];
+			this.pnTempVar.Visible  = tvState;
+			this.pnTNS.Visible      = tnsState;
+			this.pnLocalVar.Visible = lvState;
 
 			internalchg = false;
-			/*
-			06 p/b - invite
-			0c jewlery rack
-			0d video game rack
-			10 clothing purchase
-			11 clothing selection
-			12 tutorial tasks
-			14 clothing try on
-			 */
-			/*
-			08 start text notification
-			0a modify t/n
-			 */
-			/*
-			09 stop t/n
-			 */
-			/*
-			0e food rack
-			 */
-			/*
-			00 message
-			01 yes-no
-			02 yes-no-cancel
-			03 text entry
-			04 tutorial
-			05 phone book - services
-			07 p/b - party
-			0b magazine rack
-			0f special phone services
-			13 list selection
-			15 Vanity table
-			16 Tutorial Next
-			17 Baby Name
-			18 Set Aspiration
-			19 Tutorial Next Modal
-			1a Set Major
-			1b Resurectonomitron
-			1c Fire Forget Append
-			1d Move grave to lot
-			1e Visit another lot
-			1f Dating Services
-			20 Manage groups
-			21 Phone groups
-			22 Set Turn On/Offs
-			*/
 		}
 
 		private void setTnsStyle(int newStyle)
@@ -331,6 +346,36 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			setString(which, messages[which]);
 		}
 
+		private void setPriority(int newPriority)
+		{
+			internalchg = true;
+
+			priority = (byte)newPriority;
+			this.tbPriority.Text = "0x" + SimPe.Helper.HexString((byte)newPriority);
+
+			internalchg = false;
+		}
+
+		private void setTimeout(int newTimeout)
+		{
+			internalchg = true;
+
+			timeout = (byte)newTimeout;
+			this.tbTimeout.Text = "0x" + SimPe.Helper.HexString((byte)newTimeout);
+
+			internalchg = false;
+		}
+
+		private void setLocalVar(int newLocalVar)
+		{
+			internalchg = true;
+
+			localVar = (byte)newLocalVar;
+			this.udLocalVar.Value = localVar;
+
+			internalchg = false;
+		}
+
 
 		private void doStrChooser(int which)
 		{
@@ -401,6 +446,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			setUseTemp(2, (ops2[0] & 0x08) != 0); // No
 			setUseTemp(3, (ops2[0] & 0x20) != 0); // Cancel
 			setUseTemp(4, (ops2[0] & 0x10) != 0); // Title
+
+			setPriority(ops2[1] + 1);
+			setTimeout(ops2[2]);
+			setLocalVar(ops2[3]);
 		}
 
 		public Instruction Write(Instruction inst)
@@ -445,6 +494,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 				if      (scope == Scope.SemiGlobal) ops2[0] |= 0x01;
 				else if (scope == Scope.Global)     ops2[0] |= 0x40;
 
+				ops2[1] = (byte)(priority - 1);
+				ops2[2] = timeout;
+				ops2[3] = localVar;
 				ops2[4] = tnsStyle;
 
 			}
@@ -461,6 +513,29 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private void InitializeComponent()
 		{
 			this.pnWiz0x0024 = new System.Windows.Forms.Panel();
+			this.pnLocalVar = new System.Windows.Forms.Panel();
+			this.label8 = new System.Windows.Forms.Label();
+			this.udLocalVar = new System.Windows.Forms.NumericUpDown();
+			this.pnTempVar = new System.Windows.Forms.Panel();
+			this.lbTempVar = new System.Windows.Forms.Label();
+			this.udTempVar = new System.Windows.Forms.NumericUpDown();
+			this.pnTNS = new System.Windows.Forms.Panel();
+			this.tbPriority = new System.Windows.Forms.TextBox();
+			this.label6 = new System.Windows.Forms.Label();
+			this.label7 = new System.Windows.Forms.Label();
+			this.tbTimeout = new System.Windows.Forms.TextBox();
+			this.lbTnsStyle = new System.Windows.Forms.Label();
+			this.cbTnsStyle = new System.Windows.Forms.ComboBox();
+			this.btnStrIcon = new System.Windows.Forms.Button();
+			this.tbIconID = new System.Windows.Forms.TextBox();
+			this.label5 = new System.Windows.Forms.Label();
+			this.cbIconType = new System.Windows.Forms.ComboBox();
+			this.label4 = new System.Windows.Forms.Label();
+			this.cbUTMessage = new System.Windows.Forms.CheckBox();
+			this.btnDefMessage = new System.Windows.Forms.Button();
+			this.tbMessage = new System.Windows.Forms.TextBox();
+			this.btnStrMessage = new System.Windows.Forms.Button();
+			this.cbBlockBHAV = new System.Windows.Forms.CheckBox();
 			this.cbScope = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.lbTitle = new System.Windows.Forms.Label();
@@ -468,49 +543,42 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.lbNo = new System.Windows.Forms.Label();
 			this.lbYes = new System.Windows.Forms.Label();
 			this.lbMessage = new System.Windows.Forms.Label();
-			this.lbTnsStyle = new System.Windows.Forms.Label();
-			this.cbTnsStyle = new System.Windows.Forms.ComboBox();
 			this.lbType = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.cbType = new System.Windows.Forms.ComboBox();
-			this.label2 = new System.Windows.Forms.Label();
 			this.lbIconType = new System.Windows.Forms.Label();
-			this.lbTempVar = new System.Windows.Forms.Label();
-			this.cbBlockBHAV = new System.Windows.Forms.CheckBox();
 			this.cbBlockSim = new System.Windows.Forms.CheckBox();
-			this.udTempVar = new System.Windows.Forms.NumericUpDown();
-			this.btnStrMessage = new System.Windows.Forms.Button();
-			this.btnStrYes = new System.Windows.Forms.Button();
-			this.btnStrNo = new System.Windows.Forms.Button();
-			this.btnStrCancel = new System.Windows.Forms.Button();
+			this.btnStrButton1 = new System.Windows.Forms.Button();
+			this.btnStrButton2 = new System.Windows.Forms.Button();
+			this.btnStrButton3 = new System.Windows.Forms.Button();
 			this.btnStrTitle = new System.Windows.Forms.Button();
-			this.tbMessage = new System.Windows.Forms.TextBox();
-			this.tbYes = new System.Windows.Forms.TextBox();
-			this.tbNo = new System.Windows.Forms.TextBox();
-			this.tbCancel = new System.Windows.Forms.TextBox();
+			this.tbButton1 = new System.Windows.Forms.TextBox();
+			this.tbButton2 = new System.Windows.Forms.TextBox();
+			this.tbButton3 = new System.Windows.Forms.TextBox();
 			this.tbTitle = new System.Windows.Forms.TextBox();
-			this.button1 = new System.Windows.Forms.Button();
-			this.btnDefMessage = new System.Windows.Forms.Button();
-			this.btnDefYes = new System.Windows.Forms.Button();
-			this.btnDefNo = new System.Windows.Forms.Button();
-			this.btnDefCancel = new System.Windows.Forms.Button();
+			this.btnDefButton1 = new System.Windows.Forms.Button();
+			this.btnDefButton2 = new System.Windows.Forms.Button();
+			this.btnDefButton3 = new System.Windows.Forms.Button();
 			this.btnDefTitle = new System.Windows.Forms.Button();
-			this.cbUTMessage = new System.Windows.Forms.CheckBox();
-			this.cbUTYes = new System.Windows.Forms.CheckBox();
-			this.cbUTNo = new System.Windows.Forms.CheckBox();
-			this.cbUTCancel = new System.Windows.Forms.CheckBox();
+			this.cbUTButton1 = new System.Windows.Forms.CheckBox();
+			this.cbUTButton2 = new System.Windows.Forms.CheckBox();
+			this.cbUTButton3 = new System.Windows.Forms.CheckBox();
 			this.cbUTTitle = new System.Windows.Forms.CheckBox();
-			this.label4 = new System.Windows.Forms.Label();
-			this.cbIconType = new System.Windows.Forms.ComboBox();
-			this.label5 = new System.Windows.Forms.Label();
-			this.tbIconID = new System.Windows.Forms.TextBox();
-			this.btnStrIcon = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
+			this.button1 = new System.Windows.Forms.Button();
 			this.pnWiz0x0024.SuspendLayout();
+			this.pnLocalVar.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.udLocalVar)).BeginInit();
+			this.pnTempVar.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.udTempVar)).BeginInit();
+			this.pnTNS.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// pnWiz0x0024
 			// 
+			this.pnWiz0x0024.Controls.Add(this.pnLocalVar);
+			this.pnWiz0x0024.Controls.Add(this.pnTempVar);
+			this.pnWiz0x0024.Controls.Add(this.pnTNS);
 			this.pnWiz0x0024.Controls.Add(this.btnStrIcon);
 			this.pnWiz0x0024.Controls.Add(this.tbIconID);
 			this.pnWiz0x0024.Controls.Add(this.label5);
@@ -528,30 +596,26 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnWiz0x0024.Controls.Add(this.lbNo);
 			this.pnWiz0x0024.Controls.Add(this.lbYes);
 			this.pnWiz0x0024.Controls.Add(this.lbMessage);
-			this.pnWiz0x0024.Controls.Add(this.lbTnsStyle);
-			this.pnWiz0x0024.Controls.Add(this.cbTnsStyle);
 			this.pnWiz0x0024.Controls.Add(this.lbType);
 			this.pnWiz0x0024.Controls.Add(this.label1);
 			this.pnWiz0x0024.Controls.Add(this.cbType);
 			this.pnWiz0x0024.Controls.Add(this.lbIconType);
-			this.pnWiz0x0024.Controls.Add(this.lbTempVar);
 			this.pnWiz0x0024.Controls.Add(this.cbBlockSim);
-			this.pnWiz0x0024.Controls.Add(this.udTempVar);
-			this.pnWiz0x0024.Controls.Add(this.btnStrYes);
-			this.pnWiz0x0024.Controls.Add(this.btnStrNo);
-			this.pnWiz0x0024.Controls.Add(this.btnStrCancel);
+			this.pnWiz0x0024.Controls.Add(this.btnStrButton1);
+			this.pnWiz0x0024.Controls.Add(this.btnStrButton2);
+			this.pnWiz0x0024.Controls.Add(this.btnStrButton3);
 			this.pnWiz0x0024.Controls.Add(this.btnStrTitle);
-			this.pnWiz0x0024.Controls.Add(this.tbYes);
-			this.pnWiz0x0024.Controls.Add(this.tbNo);
-			this.pnWiz0x0024.Controls.Add(this.tbCancel);
+			this.pnWiz0x0024.Controls.Add(this.tbButton1);
+			this.pnWiz0x0024.Controls.Add(this.tbButton2);
+			this.pnWiz0x0024.Controls.Add(this.tbButton3);
 			this.pnWiz0x0024.Controls.Add(this.tbTitle);
-			this.pnWiz0x0024.Controls.Add(this.btnDefYes);
-			this.pnWiz0x0024.Controls.Add(this.btnDefNo);
-			this.pnWiz0x0024.Controls.Add(this.btnDefCancel);
+			this.pnWiz0x0024.Controls.Add(this.btnDefButton1);
+			this.pnWiz0x0024.Controls.Add(this.btnDefButton2);
+			this.pnWiz0x0024.Controls.Add(this.btnDefButton3);
 			this.pnWiz0x0024.Controls.Add(this.btnDefTitle);
-			this.pnWiz0x0024.Controls.Add(this.cbUTYes);
-			this.pnWiz0x0024.Controls.Add(this.cbUTNo);
-			this.pnWiz0x0024.Controls.Add(this.cbUTCancel);
+			this.pnWiz0x0024.Controls.Add(this.cbUTButton1);
+			this.pnWiz0x0024.Controls.Add(this.cbUTButton2);
+			this.pnWiz0x0024.Controls.Add(this.cbUTButton3);
 			this.pnWiz0x0024.Controls.Add(this.cbUTTitle);
 			this.pnWiz0x0024.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.pnWiz0x0024.Location = new System.Drawing.Point(0, 0);
@@ -559,9 +623,260 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnWiz0x0024.Size = new System.Drawing.Size(528, 280);
 			this.pnWiz0x0024.TabIndex = 0;
 			// 
+			// pnLocalVar
+			// 
+			this.pnLocalVar.Controls.Add(this.label8);
+			this.pnLocalVar.Controls.Add(this.udLocalVar);
+			this.pnLocalVar.Location = new System.Drawing.Point(408, 184);
+			this.pnLocalVar.Name = "pnLocalVar";
+			this.pnLocalVar.Size = new System.Drawing.Size(112, 24);
+			this.pnLocalVar.TabIndex = 41;
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label8.Location = new System.Drawing.Point(2, 3);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(63, 17);
+			this.label8.TabIndex = 14;
+			this.label8.Text = "Local Var";
+			// 
+			// udLocalVar
+			// 
+			this.udLocalVar.Hexadecimal = true;
+			this.udLocalVar.Location = new System.Drawing.Point(72, 0);
+			this.udLocalVar.Maximum = new System.Decimal(new int[] {
+																	   255,
+																	   0,
+																	   0,
+																	   0});
+			this.udLocalVar.Name = "udLocalVar";
+			this.udLocalVar.Size = new System.Drawing.Size(40, 21);
+			this.udLocalVar.TabIndex = 15;
+			this.udLocalVar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.udLocalVar.Value = new System.Decimal(new int[] {
+																	 221,
+																	 0,
+																	 0,
+																	 0});
+			this.udLocalVar.ValueChanged += new System.EventHandler(this.udLocalVar_ValueChanged);
+			// 
+			// pnTempVar
+			// 
+			this.pnTempVar.Controls.Add(this.lbTempVar);
+			this.pnTempVar.Controls.Add(this.udTempVar);
+			this.pnTempVar.Location = new System.Drawing.Point(408, 160);
+			this.pnTempVar.Name = "pnTempVar";
+			this.pnTempVar.Size = new System.Drawing.Size(112, 24);
+			this.pnTempVar.TabIndex = 38;
+			// 
+			// lbTempVar
+			// 
+			this.lbTempVar.AutoSize = true;
+			this.lbTempVar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbTempVar.Location = new System.Drawing.Point(2, 3);
+			this.lbTempVar.Name = "lbTempVar";
+			this.lbTempVar.Size = new System.Drawing.Size(65, 17);
+			this.lbTempVar.TabIndex = 14;
+			this.lbTempVar.Text = "Temp Var";
+			// 
+			// udTempVar
+			// 
+			this.udTempVar.Location = new System.Drawing.Point(72, 0);
+			this.udTempVar.Maximum = new System.Decimal(new int[] {
+																	  7,
+																	  0,
+																	  0,
+																	  0});
+			this.udTempVar.Name = "udTempVar";
+			this.udTempVar.Size = new System.Drawing.Size(40, 21);
+			this.udTempVar.TabIndex = 15;
+			this.udTempVar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// pnTNS
+			// 
+			this.pnTNS.Controls.Add(this.tbPriority);
+			this.pnTNS.Controls.Add(this.label6);
+			this.pnTNS.Controls.Add(this.label7);
+			this.pnTNS.Controls.Add(this.tbTimeout);
+			this.pnTNS.Controls.Add(this.lbTnsStyle);
+			this.pnTNS.Controls.Add(this.cbTnsStyle);
+			this.pnTNS.Location = new System.Drawing.Point(0, 104);
+			this.pnTNS.Name = "pnTNS";
+			this.pnTNS.Size = new System.Drawing.Size(528, 24);
+			this.pnTNS.TabIndex = 37;
+			// 
+			// tbPriority
+			// 
+			this.tbPriority.Enabled = false;
+			this.tbPriority.Location = new System.Drawing.Point(360, 0);
+			this.tbPriority.MaxLength = 4;
+			this.tbPriority.Name = "tbPriority";
+			this.tbPriority.Size = new System.Drawing.Size(40, 21);
+			this.tbPriority.TabIndex = 42;
+			this.tbPriority.Text = "0xDD";
+			// 
+			// label6
+			// 
+			this.label6.AutoSize = true;
+			this.label6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label6.Location = new System.Drawing.Point(303, 3);
+			this.label6.Name = "label6";
+			this.label6.Size = new System.Drawing.Size(52, 17);
+			this.label6.TabIndex = 40;
+			this.label6.Text = "Priority";
+			// 
+			// label7
+			// 
+			this.label7.AutoSize = true;
+			this.label7.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label7.Location = new System.Drawing.Point(411, 3);
+			this.label7.Name = "label7";
+			this.label7.Size = new System.Drawing.Size(56, 17);
+			this.label7.TabIndex = 39;
+			this.label7.Text = "Timeout";
+			// 
+			// tbTimeout
+			// 
+			this.tbTimeout.Enabled = false;
+			this.tbTimeout.Location = new System.Drawing.Point(472, 0);
+			this.tbTimeout.MaxLength = 4;
+			this.tbTimeout.Name = "tbTimeout";
+			this.tbTimeout.Size = new System.Drawing.Size(40, 21);
+			this.tbTimeout.TabIndex = 41;
+			this.tbTimeout.Text = "0xDD";
+			// 
+			// lbTnsStyle
+			// 
+			this.lbTnsStyle.AutoSize = true;
+			this.lbTnsStyle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbTnsStyle.Location = new System.Drawing.Point(2, 3);
+			this.lbTnsStyle.Name = "lbTnsStyle";
+			this.lbTnsStyle.Size = new System.Drawing.Size(65, 17);
+			this.lbTnsStyle.TabIndex = 6;
+			this.lbTnsStyle.Text = "TNS Style";
+			// 
+			// cbTnsStyle
+			// 
+			this.cbTnsStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTnsStyle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cbTnsStyle.Location = new System.Drawing.Point(72, 0);
+			this.cbTnsStyle.Name = "cbTnsStyle";
+			this.cbTnsStyle.Size = new System.Drawing.Size(216, 21);
+			this.cbTnsStyle.TabIndex = 5;
+			// 
+			// btnStrIcon
+			// 
+			this.btnStrIcon.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnStrIcon.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
+			this.btnStrIcon.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnStrIcon.Location = new System.Drawing.Point(440, 0);
+			this.btnStrIcon.Name = "btnStrIcon";
+			this.btnStrIcon.Size = new System.Drawing.Size(21, 21);
+			this.btnStrIcon.TabIndex = 36;
+			this.btnStrIcon.Text = "8";
+			this.btnStrIcon.Click += new System.EventHandler(this.btnStr_Click);
+			// 
+			// tbIconID
+			// 
+			this.tbIconID.Location = new System.Drawing.Point(400, 0);
+			this.tbIconID.MaxLength = 4;
+			this.tbIconID.Name = "tbIconID";
+			this.tbIconID.Size = new System.Drawing.Size(40, 21);
+			this.tbIconID.TabIndex = 35;
+			this.tbIconID.Text = "0xDD";
+			// 
+			// label5
+			// 
+			this.label5.AutoSize = true;
+			this.label5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label5.Location = new System.Drawing.Point(381, 3);
+			this.label5.Name = "label5";
+			this.label5.Size = new System.Drawing.Size(14, 17);
+			this.label5.TabIndex = 34;
+			this.label5.Text = "#";
+			// 
+			// cbIconType
+			// 
+			this.cbIconType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbIconType.DropDownWidth = 120;
+			this.cbIconType.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cbIconType.Location = new System.Drawing.Point(296, 0);
+			this.cbIconType.Name = "cbIconType";
+			this.cbIconType.Size = new System.Drawing.Size(80, 21);
+			this.cbIconType.TabIndex = 33;
+			this.cbIconType.SelectedIndexChanged += new System.EventHandler(this.cbIconType_SelectedIndexChanged);
+			// 
+			// label4
+			// 
+			this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.label4.Location = new System.Drawing.Point(334, 134);
+			this.label4.Name = "label4";
+			this.label4.Size = new System.Drawing.Size(68, 16);
+			this.label4.TabIndex = 32;
+			this.label4.Text = "Use temp";
+			this.label4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+			// 
+			// cbUTMessage
+			// 
+			this.cbUTMessage.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.cbUTMessage.Location = new System.Drawing.Point(360, 155);
+			this.cbUTMessage.Name = "cbUTMessage";
+			this.cbUTMessage.Size = new System.Drawing.Size(16, 16);
+			this.cbUTMessage.TabIndex = 31;
+			this.cbUTMessage.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
+			// 
+			// btnDefMessage
+			// 
+			this.btnDefMessage.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnDefMessage.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
+			this.btnDefMessage.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.btnDefMessage.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnDefMessage.Location = new System.Drawing.Point(336, 152);
+			this.btnDefMessage.Name = "btnDefMessage";
+			this.btnDefMessage.Size = new System.Drawing.Size(21, 21);
+			this.btnDefMessage.TabIndex = 30;
+			this.btnDefMessage.Text = "X";
+			this.btnDefMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.btnDefMessage.Click += new System.EventHandler(this.btnDef_Click);
+			// 
+			// tbMessage
+			// 
+			this.tbMessage.Location = new System.Drawing.Point(80, 152);
+			this.tbMessage.MaxLength = 6;
+			this.tbMessage.Name = "tbMessage";
+			this.tbMessage.ReadOnly = true;
+			this.tbMessage.Size = new System.Drawing.Size(232, 21);
+			this.tbMessage.TabIndex = 27;
+			this.tbMessage.Text = "tbMessage";
+			// 
+			// btnStrMessage
+			// 
+			this.btnStrMessage.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnStrMessage.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
+			this.btnStrMessage.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnStrMessage.Location = new System.Drawing.Point(312, 152);
+			this.btnStrMessage.Name = "btnStrMessage";
+			this.btnStrMessage.Size = new System.Drawing.Size(21, 21);
+			this.btnStrMessage.TabIndex = 26;
+			this.btnStrMessage.Text = "8";
+			this.btnStrMessage.Click += new System.EventHandler(this.btnStr_Click);
+			// 
+			// cbBlockBHAV
+			// 
+			this.cbBlockBHAV.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.cbBlockBHAV.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
+			this.cbBlockBHAV.Location = new System.Drawing.Point(384, 208);
+			this.cbBlockBHAV.Name = "cbBlockBHAV";
+			this.cbBlockBHAV.Size = new System.Drawing.Size(112, 24);
+			this.cbBlockBHAV.TabIndex = 12;
+			this.cbBlockBHAV.Text = "Wait for user";
+			this.cbBlockBHAV.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+			this.cbBlockBHAV.CheckedChanged += new System.EventHandler(this.cbBlockBHAV_CheckedChanged);
+			// 
 			// cbScope
 			// 
-			this.cbScope.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.cbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbScope.Items.AddRange(new object[] {
 														 "Global",
@@ -575,7 +890,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// label3
 			// 
-			this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.label3.Location = new System.Drawing.Point(14, 131);
@@ -586,7 +900,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// lbTitle
 			// 
-			this.lbTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lbTitle.AutoSize = true;
 			this.lbTitle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.lbTitle.Location = new System.Drawing.Point(43, 251);
@@ -597,40 +910,36 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// lbCancel
 			// 
-			this.lbCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lbCancel.AutoSize = true;
 			this.lbCancel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbCancel.Location = new System.Drawing.Point(29, 227);
+			this.lbCancel.Location = new System.Drawing.Point(15, 227);
 			this.lbCancel.Name = "lbCancel";
-			this.lbCancel.Size = new System.Drawing.Size(46, 17);
+			this.lbCancel.Size = new System.Drawing.Size(59, 17);
 			this.lbCancel.TabIndex = 8;
-			this.lbCancel.Text = "Cancel";
+			this.lbCancel.Text = "Button 3";
 			// 
 			// lbNo
 			// 
-			this.lbNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lbNo.AutoSize = true;
 			this.lbNo.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbNo.Location = new System.Drawing.Point(53, 203);
+			this.lbNo.Location = new System.Drawing.Point(15, 203);
 			this.lbNo.Name = "lbNo";
-			this.lbNo.Size = new System.Drawing.Size(22, 17);
+			this.lbNo.Size = new System.Drawing.Size(59, 17);
 			this.lbNo.TabIndex = 7;
-			this.lbNo.Text = "No";
+			this.lbNo.Text = "Button 2";
 			// 
 			// lbYes
 			// 
-			this.lbYes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lbYes.AutoSize = true;
 			this.lbYes.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbYes.Location = new System.Drawing.Point(48, 179);
+			this.lbYes.Location = new System.Drawing.Point(15, 179);
 			this.lbYes.Name = "lbYes";
-			this.lbYes.Size = new System.Drawing.Size(27, 17);
+			this.lbYes.Size = new System.Drawing.Size(59, 17);
 			this.lbYes.TabIndex = 6;
-			this.lbYes.Text = "Yes";
+			this.lbYes.Text = "Button 1";
 			// 
 			// lbMessage
 			// 
-			this.lbMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.lbMessage.AutoSize = true;
 			this.lbMessage.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.lbMessage.Location = new System.Drawing.Point(16, 155);
@@ -639,31 +948,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.lbMessage.TabIndex = 5;
 			this.lbMessage.Text = "Message";
 			// 
-			// lbTnsStyle
-			// 
-			this.lbTnsStyle.AutoSize = true;
-			this.lbTnsStyle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbTnsStyle.Location = new System.Drawing.Point(258, 11);
-			this.lbTnsStyle.Name = "lbTnsStyle";
-			this.lbTnsStyle.Size = new System.Drawing.Size(65, 17);
-			this.lbTnsStyle.TabIndex = 4;
-			this.lbTnsStyle.Text = "TNS Style";
-			// 
-			// cbTnsStyle
-			// 
-			this.cbTnsStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbTnsStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbTnsStyle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbTnsStyle.Location = new System.Drawing.Point(328, 8);
-			this.cbTnsStyle.Name = "cbTnsStyle";
-			this.cbTnsStyle.Size = new System.Drawing.Size(200, 21);
-			this.cbTnsStyle.TabIndex = 3;
-			this.cbTnsStyle.SelectedIndexChanged += new System.EventHandler(this.cbTnsStyle_SelectedIndexChanged);
-			// 
 			// lbType
 			// 
-			this.lbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lbType.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.lbType.Location = new System.Drawing.Point(0, 32);
 			this.lbType.Name = "lbType";
@@ -675,7 +961,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label1.Location = new System.Drawing.Point(4, 11);
+			this.label1.Location = new System.Drawing.Point(4, 3);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(79, 17);
 			this.label1.TabIndex = 1;
@@ -686,61 +972,27 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbType.DropDownWidth = 160;
 			this.cbType.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbType.Location = new System.Drawing.Point(88, 8);
+			this.cbType.Location = new System.Drawing.Point(88, 0);
 			this.cbType.Name = "cbType";
 			this.cbType.Size = new System.Drawing.Size(160, 21);
 			this.cbType.TabIndex = 0;
 			this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
 			// 
-			// label2
-			// 
-			this.label2.Location = new System.Drawing.Point(672, 0);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(176, 96);
-			this.label2.TabIndex = 1;
-			this.label2.Text = "see edithWiki AkeaPostMortem for a nice DialogEditor screenshot";
-			// 
 			// lbIconType
 			// 
-			this.lbIconType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.lbIconType.AutoSize = true;
 			this.lbIconType.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbIconType.Location = new System.Drawing.Point(403, 115);
+			this.lbIconType.Location = new System.Drawing.Point(258, 3);
 			this.lbIconType.Name = "lbIconType";
 			this.lbIconType.Size = new System.Drawing.Size(33, 17);
 			this.lbIconType.TabIndex = 5;
 			this.lbIconType.Text = "Icon";
 			// 
-			// lbTempVar
-			// 
-			this.lbTempVar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.lbTempVar.AutoSize = true;
-			this.lbTempVar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbTempVar.Location = new System.Drawing.Point(408, 163);
-			this.lbTempVar.Name = "lbTempVar";
-			this.lbTempVar.Size = new System.Drawing.Size(65, 17);
-			this.lbTempVar.TabIndex = 5;
-			this.lbTempVar.Text = "Temp Var";
-			// 
-			// cbBlockBHAV
-			// 
-			this.cbBlockBHAV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbBlockBHAV.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.cbBlockBHAV.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.cbBlockBHAV.Location = new System.Drawing.Point(384, 184);
-			this.cbBlockBHAV.Name = "cbBlockBHAV";
-			this.cbBlockBHAV.Size = new System.Drawing.Size(112, 24);
-			this.cbBlockBHAV.TabIndex = 12;
-			this.cbBlockBHAV.Text = "Wait for user";
-			this.cbBlockBHAV.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-			this.cbBlockBHAV.CheckedChanged += new System.EventHandler(this.cbBlockBHAV_CheckedChanged);
-			// 
 			// cbBlockSim
 			// 
-			this.cbBlockSim.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbBlockSim.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cbBlockSim.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.cbBlockSim.Location = new System.Drawing.Point(384, 208);
+			this.cbBlockSim.Location = new System.Drawing.Point(384, 232);
 			this.cbBlockSim.Name = "cbBlockSim";
 			this.cbBlockSim.Size = new System.Drawing.Size(112, 24);
 			this.cbBlockSim.TabIndex = 12;
@@ -748,76 +1000,44 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.cbBlockSim.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cbBlockSim.CheckedChanged += new System.EventHandler(this.cbBlockSim_CheckedChanged);
 			// 
-			// udTempVar
+			// btnStrButton1
 			// 
-			this.udTempVar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.udTempVar.Location = new System.Drawing.Point(480, 160);
-			this.udTempVar.Maximum = new System.Decimal(new int[] {
-																	  7,
-																	  0,
-																	  0,
-																	  0});
-			this.udTempVar.Name = "udTempVar";
-			this.udTempVar.Size = new System.Drawing.Size(40, 21);
-			this.udTempVar.TabIndex = 13;
-			this.udTempVar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.udTempVar.ValueChanged += new System.EventHandler(this.udTempVar_ValueChanged);
+			this.btnStrButton1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnStrButton1.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
+			this.btnStrButton1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnStrButton1.Location = new System.Drawing.Point(312, 176);
+			this.btnStrButton1.Name = "btnStrButton1";
+			this.btnStrButton1.Size = new System.Drawing.Size(21, 21);
+			this.btnStrButton1.TabIndex = 26;
+			this.btnStrButton1.Text = "8";
+			this.btnStrButton1.Click += new System.EventHandler(this.btnStr_Click);
 			// 
-			// btnStrMessage
+			// btnStrButton2
 			// 
-			this.btnStrMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStrMessage.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnStrMessage.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
-			this.btnStrMessage.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrMessage.Location = new System.Drawing.Point(312, 152);
-			this.btnStrMessage.Name = "btnStrMessage";
-			this.btnStrMessage.Size = new System.Drawing.Size(21, 21);
-			this.btnStrMessage.TabIndex = 26;
-			this.btnStrMessage.Text = "8";
-			this.btnStrMessage.Click += new System.EventHandler(this.btnStr_Click);
+			this.btnStrButton2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnStrButton2.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
+			this.btnStrButton2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnStrButton2.Location = new System.Drawing.Point(312, 200);
+			this.btnStrButton2.Name = "btnStrButton2";
+			this.btnStrButton2.Size = new System.Drawing.Size(21, 21);
+			this.btnStrButton2.TabIndex = 26;
+			this.btnStrButton2.Text = "8";
+			this.btnStrButton2.Click += new System.EventHandler(this.btnStr_Click);
 			// 
-			// btnStrYes
+			// btnStrButton3
 			// 
-			this.btnStrYes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStrYes.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnStrYes.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
-			this.btnStrYes.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrYes.Location = new System.Drawing.Point(312, 176);
-			this.btnStrYes.Name = "btnStrYes";
-			this.btnStrYes.Size = new System.Drawing.Size(21, 21);
-			this.btnStrYes.TabIndex = 26;
-			this.btnStrYes.Text = "8";
-			this.btnStrYes.Click += new System.EventHandler(this.btnStr_Click);
-			// 
-			// btnStrNo
-			// 
-			this.btnStrNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStrNo.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnStrNo.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
-			this.btnStrNo.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrNo.Location = new System.Drawing.Point(312, 200);
-			this.btnStrNo.Name = "btnStrNo";
-			this.btnStrNo.Size = new System.Drawing.Size(21, 21);
-			this.btnStrNo.TabIndex = 26;
-			this.btnStrNo.Text = "8";
-			this.btnStrNo.Click += new System.EventHandler(this.btnStr_Click);
-			// 
-			// btnStrCancel
-			// 
-			this.btnStrCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStrCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnStrCancel.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
-			this.btnStrCancel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrCancel.Location = new System.Drawing.Point(312, 224);
-			this.btnStrCancel.Name = "btnStrCancel";
-			this.btnStrCancel.Size = new System.Drawing.Size(21, 21);
-			this.btnStrCancel.TabIndex = 26;
-			this.btnStrCancel.Text = "8";
-			this.btnStrCancel.Click += new System.EventHandler(this.btnStr_Click);
+			this.btnStrButton3.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnStrButton3.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
+			this.btnStrButton3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnStrButton3.Location = new System.Drawing.Point(312, 224);
+			this.btnStrButton3.Name = "btnStrButton3";
+			this.btnStrButton3.Size = new System.Drawing.Size(21, 21);
+			this.btnStrButton3.TabIndex = 26;
+			this.btnStrButton3.Text = "8";
+			this.btnStrButton3.Click += new System.EventHandler(this.btnStr_Click);
 			// 
 			// btnStrTitle
 			// 
-			this.btnStrTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnStrTitle.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnStrTitle.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
 			this.btnStrTitle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -828,58 +1048,38 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnStrTitle.Text = "8";
 			this.btnStrTitle.Click += new System.EventHandler(this.btnStr_Click);
 			// 
-			// tbMessage
+			// tbButton1
 			// 
-			this.tbMessage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbMessage.Location = new System.Drawing.Point(80, 152);
-			this.tbMessage.MaxLength = 6;
-			this.tbMessage.Name = "tbMessage";
-			this.tbMessage.ReadOnly = true;
-			this.tbMessage.Size = new System.Drawing.Size(232, 21);
-			this.tbMessage.TabIndex = 27;
-			this.tbMessage.Text = "tbMessage";
+			this.tbButton1.Location = new System.Drawing.Point(80, 176);
+			this.tbButton1.MaxLength = 6;
+			this.tbButton1.Name = "tbButton1";
+			this.tbButton1.ReadOnly = true;
+			this.tbButton1.Size = new System.Drawing.Size(232, 21);
+			this.tbButton1.TabIndex = 27;
+			this.tbButton1.Text = "tbButton1";
 			// 
-			// tbYes
+			// tbButton2
 			// 
-			this.tbYes.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbYes.Location = new System.Drawing.Point(80, 176);
-			this.tbYes.MaxLength = 6;
-			this.tbYes.Name = "tbYes";
-			this.tbYes.ReadOnly = true;
-			this.tbYes.Size = new System.Drawing.Size(232, 21);
-			this.tbYes.TabIndex = 27;
-			this.tbYes.Text = "tbYes";
+			this.tbButton2.Location = new System.Drawing.Point(80, 200);
+			this.tbButton2.MaxLength = 6;
+			this.tbButton2.Name = "tbButton2";
+			this.tbButton2.ReadOnly = true;
+			this.tbButton2.Size = new System.Drawing.Size(232, 21);
+			this.tbButton2.TabIndex = 27;
+			this.tbButton2.Text = "tbButton2";
 			// 
-			// tbNo
+			// tbButton3
 			// 
-			this.tbNo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbNo.Location = new System.Drawing.Point(80, 200);
-			this.tbNo.MaxLength = 6;
-			this.tbNo.Name = "tbNo";
-			this.tbNo.ReadOnly = true;
-			this.tbNo.Size = new System.Drawing.Size(232, 21);
-			this.tbNo.TabIndex = 27;
-			this.tbNo.Text = "tbNo";
-			// 
-			// tbCancel
-			// 
-			this.tbCancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbCancel.Location = new System.Drawing.Point(80, 224);
-			this.tbCancel.MaxLength = 6;
-			this.tbCancel.Name = "tbCancel";
-			this.tbCancel.ReadOnly = true;
-			this.tbCancel.Size = new System.Drawing.Size(232, 21);
-			this.tbCancel.TabIndex = 27;
-			this.tbCancel.Text = "tbCancel";
+			this.tbButton3.Location = new System.Drawing.Point(80, 224);
+			this.tbButton3.MaxLength = 6;
+			this.tbButton3.Name = "tbButton3";
+			this.tbButton3.ReadOnly = true;
+			this.tbButton3.Size = new System.Drawing.Size(232, 21);
+			this.tbButton3.TabIndex = 27;
+			this.tbButton3.Text = "tbButton3";
 			// 
 			// tbTitle
 			// 
-			this.tbTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
 			this.tbTitle.Location = new System.Drawing.Point(80, 248);
 			this.tbTitle.MaxLength = 6;
 			this.tbTitle.Name = "tbTitle";
@@ -888,76 +1088,50 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.tbTitle.TabIndex = 27;
 			this.tbTitle.Text = "tbTitle";
 			// 
-			// button1
+			// btnDefButton1
 			// 
-			this.button1.Location = new System.Drawing.Point(528, 280);
-			this.button1.Name = "button1";
-			this.button1.TabIndex = 2;
-			this.button1.Text = "button1";
+			this.btnDefButton1.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnDefButton1.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
+			this.btnDefButton1.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.btnDefButton1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnDefButton1.Location = new System.Drawing.Point(336, 176);
+			this.btnDefButton1.Name = "btnDefButton1";
+			this.btnDefButton1.Size = new System.Drawing.Size(21, 21);
+			this.btnDefButton1.TabIndex = 30;
+			this.btnDefButton1.Text = "X";
+			this.btnDefButton1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.btnDefButton1.Click += new System.EventHandler(this.btnDef_Click);
 			// 
-			// btnDefMessage
+			// btnDefButton2
 			// 
-			this.btnDefMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnDefMessage.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnDefMessage.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
-			this.btnDefMessage.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.btnDefMessage.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefMessage.Location = new System.Drawing.Point(336, 152);
-			this.btnDefMessage.Name = "btnDefMessage";
-			this.btnDefMessage.Size = new System.Drawing.Size(21, 21);
-			this.btnDefMessage.TabIndex = 30;
-			this.btnDefMessage.Text = "X";
-			this.btnDefMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnDefMessage.Click += new System.EventHandler(this.btnDef_Click);
+			this.btnDefButton2.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnDefButton2.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
+			this.btnDefButton2.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.btnDefButton2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnDefButton2.Location = new System.Drawing.Point(336, 200);
+			this.btnDefButton2.Name = "btnDefButton2";
+			this.btnDefButton2.Size = new System.Drawing.Size(21, 21);
+			this.btnDefButton2.TabIndex = 30;
+			this.btnDefButton2.Text = "X";
+			this.btnDefButton2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.btnDefButton2.Click += new System.EventHandler(this.btnDef_Click);
 			// 
-			// btnDefYes
+			// btnDefButton3
 			// 
-			this.btnDefYes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnDefYes.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnDefYes.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
-			this.btnDefYes.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.btnDefYes.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefYes.Location = new System.Drawing.Point(336, 176);
-			this.btnDefYes.Name = "btnDefYes";
-			this.btnDefYes.Size = new System.Drawing.Size(21, 21);
-			this.btnDefYes.TabIndex = 30;
-			this.btnDefYes.Text = "X";
-			this.btnDefYes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnDefYes.Click += new System.EventHandler(this.btnDef_Click);
-			// 
-			// btnDefNo
-			// 
-			this.btnDefNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnDefNo.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnDefNo.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
-			this.btnDefNo.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.btnDefNo.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefNo.Location = new System.Drawing.Point(336, 200);
-			this.btnDefNo.Name = "btnDefNo";
-			this.btnDefNo.Size = new System.Drawing.Size(21, 21);
-			this.btnDefNo.TabIndex = 30;
-			this.btnDefNo.Text = "X";
-			this.btnDefNo.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnDefNo.Click += new System.EventHandler(this.btnDef_Click);
-			// 
-			// btnDefCancel
-			// 
-			this.btnDefCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnDefCancel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnDefCancel.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
-			this.btnDefCancel.ForeColor = System.Drawing.SystemColors.ControlText;
-			this.btnDefCancel.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefCancel.Location = new System.Drawing.Point(336, 224);
-			this.btnDefCancel.Name = "btnDefCancel";
-			this.btnDefCancel.Size = new System.Drawing.Size(21, 21);
-			this.btnDefCancel.TabIndex = 30;
-			this.btnDefCancel.Text = "X";
-			this.btnDefCancel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.btnDefCancel.Click += new System.EventHandler(this.btnDef_Click);
+			this.btnDefButton3.FlatStyle = System.Windows.Forms.FlatStyle.System;
+			this.btnDefButton3.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
+			this.btnDefButton3.ForeColor = System.Drawing.SystemColors.ControlText;
+			this.btnDefButton3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+			this.btnDefButton3.Location = new System.Drawing.Point(336, 224);
+			this.btnDefButton3.Name = "btnDefButton3";
+			this.btnDefButton3.Size = new System.Drawing.Size(21, 21);
+			this.btnDefButton3.TabIndex = 30;
+			this.btnDefButton3.Text = "X";
+			this.btnDefButton3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.btnDefButton3.Click += new System.EventHandler(this.btnDef_Click);
 			// 
 			// btnDefTitle
 			// 
-			this.btnDefTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.btnDefTitle.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnDefTitle.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
 			this.btnDefTitle.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -970,49 +1144,35 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnDefTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.btnDefTitle.Click += new System.EventHandler(this.btnDef_Click);
 			// 
-			// cbUTMessage
+			// cbUTButton1
 			// 
-			this.cbUTMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbUTMessage.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.cbUTMessage.Location = new System.Drawing.Point(360, 155);
-			this.cbUTMessage.Name = "cbUTMessage";
-			this.cbUTMessage.Size = new System.Drawing.Size(16, 16);
-			this.cbUTMessage.TabIndex = 31;
-			this.cbUTMessage.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
+			this.cbUTButton1.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.cbUTButton1.Location = new System.Drawing.Point(360, 179);
+			this.cbUTButton1.Name = "cbUTButton1";
+			this.cbUTButton1.Size = new System.Drawing.Size(16, 16);
+			this.cbUTButton1.TabIndex = 31;
+			this.cbUTButton1.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
 			// 
-			// cbUTYes
+			// cbUTButton2
 			// 
-			this.cbUTYes.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbUTYes.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.cbUTYes.Location = new System.Drawing.Point(360, 179);
-			this.cbUTYes.Name = "cbUTYes";
-			this.cbUTYes.Size = new System.Drawing.Size(16, 16);
-			this.cbUTYes.TabIndex = 31;
-			this.cbUTYes.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
+			this.cbUTButton2.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.cbUTButton2.Location = new System.Drawing.Point(360, 203);
+			this.cbUTButton2.Name = "cbUTButton2";
+			this.cbUTButton2.Size = new System.Drawing.Size(16, 16);
+			this.cbUTButton2.TabIndex = 31;
+			this.cbUTButton2.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
 			// 
-			// cbUTNo
+			// cbUTButton3
 			// 
-			this.cbUTNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbUTNo.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.cbUTNo.Location = new System.Drawing.Point(360, 203);
-			this.cbUTNo.Name = "cbUTNo";
-			this.cbUTNo.Size = new System.Drawing.Size(16, 16);
-			this.cbUTNo.TabIndex = 31;
-			this.cbUTNo.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
-			// 
-			// cbUTCancel
-			// 
-			this.cbUTCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbUTCancel.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.cbUTCancel.Location = new System.Drawing.Point(360, 227);
-			this.cbUTCancel.Name = "cbUTCancel";
-			this.cbUTCancel.Size = new System.Drawing.Size(16, 16);
-			this.cbUTCancel.TabIndex = 31;
-			this.cbUTCancel.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
+			this.cbUTButton3.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.cbUTButton3.Location = new System.Drawing.Point(360, 227);
+			this.cbUTButton3.Name = "cbUTButton3";
+			this.cbUTButton3.Size = new System.Drawing.Size(16, 16);
+			this.cbUTButton3.TabIndex = 31;
+			this.cbUTButton3.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
 			// 
 			// cbUTTitle
 			// 
-			this.cbUTTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbUTTitle.CheckAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			this.cbUTTitle.Location = new System.Drawing.Point(360, 251);
 			this.cbUTTitle.Name = "cbUTTitle";
@@ -1020,67 +1180,26 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.cbUTTitle.TabIndex = 31;
 			this.cbUTTitle.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
 			// 
-			// label4
+			// label2
 			// 
-			this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label4.Location = new System.Drawing.Point(340, 116);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(56, 32);
-			this.label4.TabIndex = 32;
-			this.label4.Text = "Use temp";
-			this.label4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.label2.Location = new System.Drawing.Point(696, 0);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(160, 64);
+			this.label2.TabIndex = 1;
+			this.label2.Text = "see edithWiki AkeaPostMortem for a nice Edith DialogEditor screenshot";
 			// 
-			// cbIconType
+			// button1
 			// 
-			this.cbIconType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbIconType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbIconType.DropDownWidth = 120;
-			this.cbIconType.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.cbIconType.Location = new System.Drawing.Point(440, 112);
-			this.cbIconType.Name = "cbIconType";
-			this.cbIconType.Size = new System.Drawing.Size(80, 21);
-			this.cbIconType.TabIndex = 33;
-			this.cbIconType.SelectedIndexChanged += new System.EventHandler(this.cbIconType_SelectedIndexChanged);
-			// 
-			// label5
-			// 
-			this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label5.Location = new System.Drawing.Point(421, 139);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(14, 17);
-			this.label5.TabIndex = 34;
-			this.label5.Text = "#";
-			// 
-			// tbIconID
-			// 
-			this.tbIconID.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.tbIconID.Location = new System.Drawing.Point(440, 136);
-			this.tbIconID.MaxLength = 4;
-			this.tbIconID.Name = "tbIconID";
-			this.tbIconID.Size = new System.Drawing.Size(40, 21);
-			this.tbIconID.TabIndex = 35;
-			this.tbIconID.Text = "0xDD";
-			// 
-			// btnStrIcon
-			// 
-			this.btnStrIcon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnStrIcon.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btnStrIcon.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
-			this.btnStrIcon.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrIcon.Location = new System.Drawing.Point(480, 136);
-			this.btnStrIcon.Name = "btnStrIcon";
-			this.btnStrIcon.Size = new System.Drawing.Size(21, 21);
-			this.btnStrIcon.TabIndex = 36;
-			this.btnStrIcon.Text = "8";
-			this.btnStrIcon.Click += new System.EventHandler(this.btnStr_Click);
+			this.button1.Location = new System.Drawing.Point(528, 280);
+			this.button1.Name = "button1";
+			this.button1.TabIndex = 2;
+			this.button1.Text = "button1";
 			// 
 			// UI
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(856, 605);
+			this.ClientSize = new System.Drawing.Size(856, 805);
 			this.Controls.Add(this.button1);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.pnWiz0x0024);
@@ -1088,7 +1207,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.Name = "UI";
 			this.Text = "UI";
 			this.pnWiz0x0024.ResumeLayout(false);
+			this.pnLocalVar.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.udLocalVar)).EndInit();
+			this.pnTempVar.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.udTempVar)).EndInit();
+			this.pnTNS.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -1149,6 +1272,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			if (internalchg) return;
 
 			setTempVar(Convert.ToInt32(((NumericUpDown)sender).Value));
+		}
+
+		private void udLocalVar_ValueChanged(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+			setLocalVar(Convert.ToInt32(((NumericUpDown)sender).Value));
 		}
 
 
