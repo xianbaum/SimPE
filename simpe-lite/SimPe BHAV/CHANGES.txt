@@ -1,4 +1,16 @@
 
+4 February 2006 10:33 - TPRP: remember open tab; TTAB: disable menu option button
+  SimPe BHAV\
+    TPRPForm.cs 1.6.2.1
+    TtabForm.cs 1.31.2.1
+    TtabForm.cs 1.15.2.1
+
+4 February 2006 10:31 - BHAV: BCON shortform change; motive shortform change; ">>" active in read-only
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.1
+    BhavWiz.cs 1.37.2.3
+  pjseTestData.package 1.17.2.3
+
 19 January 2006 20:56 - Wiz0x0002: oops - no negative decimals allowed
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.4
