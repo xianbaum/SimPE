@@ -2081,12 +2081,12 @@ namespace pjse.BhavNameWizards
 	public class WizPrim0x0024 : BhavWizPrim	// Dialog
 	{
 		public WizPrim0x0024(Instruction i) : base(i) { }
-#if INPROGRESS
+
 		public override ABhavOperandWiz Wizard()
 		{
 			return new pjse.BhavOperandWizards.BhavOperandWiz0x0024(instruction);
 		}
-#endif
+
 
 		protected override string Operands(bool lng)
 		{

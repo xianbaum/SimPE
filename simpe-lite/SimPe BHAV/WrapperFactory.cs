@@ -49,9 +49,9 @@ namespace SimPe.Plugin
 										  ,new Bhav()
 										  ,new Objf()
 										  ,new Str()
+										  ,new TPRP()
 										  ,new Trcn()
 										  ,new Ttab()
-										  ,new TPRP()
 									  };
 				return wrappers;
 			}

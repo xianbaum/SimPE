@@ -108,6 +108,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.CheckBox cbDecimal;
 		private System.Windows.Forms.TextBox tbInst_Longname;
 		private System.Windows.Forms.Button btnListing;
+		private System.Windows.Forms.Button btnHelp;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -524,7 +525,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (internalchg) return;
 				internalchg = true;
-				tbFilename.Text = wrapper.FileName;
+				this.Text = tbFilename.Text = wrapper.FileName;
 				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
 				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
 				tbArgC.Text = "0x"+Helper.HexString(wrapper.Header.ArgumentCount);
@@ -621,6 +622,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnDelPescado = new System.Windows.Forms.Button();
 			this.btnLinkInge = new System.Windows.Forms.Button();
 			this.btnDelMerola = new System.Windows.Forms.Button();
+			this.btnListing = new System.Windows.Forms.Button();
 			this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
 			this.btnDel = new System.Windows.Forms.Button();
 			this.gbMove = new System.Windows.Forms.GroupBox();
@@ -634,7 +636,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
 			this.cbDecimal = new System.Windows.Forms.CheckBox();
-			this.btnListing = new System.Windows.Forms.Button();
+			this.btnHelp = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -1800,6 +1802,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnHeading.AutoScrollMinSize")));
 			this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
 			this.pnHeading.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnHeading.BackgroundImage")));
+			this.pnHeading.Controls.Add(this.btnHelp);
 			this.pnHeading.Controls.Add(this.label1);
 			this.pnHeading.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnHeading.Dock")));
 			this.pnHeading.Enabled = ((bool)(resources.GetObject("pnHeading.Enabled")));
@@ -2198,6 +2201,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnDelMerola.Visible = ((bool)(resources.GetObject("btnDelMerola.Visible")));
 			this.btnDelMerola.Click += new System.EventHandler(this.btnDelMerola_Click);
 			// 
+			// btnListing
+			// 
+			this.btnListing.AccessibleDescription = resources.GetString("btnListing.AccessibleDescription");
+			this.btnListing.AccessibleName = resources.GetString("btnListing.AccessibleName");
+			this.btnListing.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnListing.Anchor")));
+			this.btnListing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnListing.BackgroundImage")));
+			this.btnListing.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnListing.Dock")));
+			this.btnListing.Enabled = ((bool)(resources.GetObject("btnListing.Enabled")));
+			this.btnListing.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnListing.FlatStyle")));
+			this.btnListing.Font = ((System.Drawing.Font)(resources.GetObject("btnListing.Font")));
+			this.btnListing.Image = ((System.Drawing.Image)(resources.GetObject("btnListing.Image")));
+			this.btnListing.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnListing.ImageAlign")));
+			this.btnListing.ImageIndex = ((int)(resources.GetObject("btnListing.ImageIndex")));
+			this.btnListing.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnListing.ImeMode")));
+			this.btnListing.Location = ((System.Drawing.Point)(resources.GetObject("btnListing.Location")));
+			this.btnListing.Name = "btnListing";
+			this.btnListing.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnListing.RightToLeft")));
+			this.btnListing.Size = ((System.Drawing.Size)(resources.GetObject("btnListing.Size")));
+			this.btnListing.TabIndex = ((int)(resources.GetObject("btnListing.TabIndex")));
+			this.btnListing.Text = resources.GetString("btnListing.Text");
+			this.btnListing.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnListing.TextAlign")));
+			this.btnListing.Visible = ((bool)(resources.GetObject("btnListing.Visible")));
+			this.btnListing.Click += new System.EventHandler(this.btnListing_Click);
+			// 
 			// pnflowcontainer
 			// 
 			this.pnflowcontainer.AccessibleDescription = resources.GetString("pnflowcontainer.AccessibleDescription");
@@ -2511,29 +2538,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbDecimal.Visible = ((bool)(resources.GetObject("cbDecimal.Visible")));
 			this.cbDecimal.CheckStateChanged += new System.EventHandler(this.cbDecimal_CheckStateChanged);
 			// 
-			// btnListing
+			// btnHelp
 			// 
-			this.btnListing.AccessibleDescription = resources.GetString("btnListing.AccessibleDescription");
-			this.btnListing.AccessibleName = resources.GetString("btnListing.AccessibleName");
-			this.btnListing.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnListing.Anchor")));
-			this.btnListing.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnListing.BackgroundImage")));
-			this.btnListing.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnListing.Dock")));
-			this.btnListing.Enabled = ((bool)(resources.GetObject("btnListing.Enabled")));
-			this.btnListing.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnListing.FlatStyle")));
-			this.btnListing.Font = ((System.Drawing.Font)(resources.GetObject("btnListing.Font")));
-			this.btnListing.Image = ((System.Drawing.Image)(resources.GetObject("btnListing.Image")));
-			this.btnListing.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnListing.ImageAlign")));
-			this.btnListing.ImageIndex = ((int)(resources.GetObject("btnListing.ImageIndex")));
-			this.btnListing.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnListing.ImeMode")));
-			this.btnListing.Location = ((System.Drawing.Point)(resources.GetObject("btnListing.Location")));
-			this.btnListing.Name = "btnListing";
-			this.btnListing.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnListing.RightToLeft")));
-			this.btnListing.Size = ((System.Drawing.Size)(resources.GetObject("btnListing.Size")));
-			this.btnListing.TabIndex = ((int)(resources.GetObject("btnListing.TabIndex")));
-			this.btnListing.Text = resources.GetString("btnListing.Text");
-			this.btnListing.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnListing.TextAlign")));
-			this.btnListing.Visible = ((bool)(resources.GetObject("btnListing.Visible")));
-			this.btnListing.Click += new System.EventHandler(this.btnListing_Click);
+			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
+			this.btnHelp.AccessibleName = resources.GetString("btnHelp.AccessibleName");
+			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnHelp.Anchor")));
+			this.btnHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHelp.BackgroundImage")));
+			this.btnHelp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnHelp.Dock")));
+			this.btnHelp.Enabled = ((bool)(resources.GetObject("btnHelp.Enabled")));
+			this.btnHelp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnHelp.FlatStyle")));
+			this.btnHelp.Font = ((System.Drawing.Font)(resources.GetObject("btnHelp.Font")));
+			this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+			this.btnHelp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.ImageAlign")));
+			this.btnHelp.ImageIndex = ((int)(resources.GetObject("btnHelp.ImageIndex")));
+			this.btnHelp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnHelp.ImeMode")));
+			this.btnHelp.Location = ((System.Drawing.Point)(resources.GetObject("btnHelp.Location")));
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnHelp.RightToLeft")));
+			this.btnHelp.Size = ((System.Drawing.Size)(resources.GetObject("btnHelp.Size")));
+			this.btnHelp.TabIndex = ((int)(resources.GetObject("btnHelp.TabIndex")));
+			this.btnHelp.Text = resources.GetString("btnHelp.Text");
+			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
+			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
 			// 
 			// BhavForm
 			// 
@@ -2637,6 +2664,13 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper[pnflowcontainer.SelectedIndex] = origInst.Clone();
 			pnflowcontainer_SelectedInstChanged(null, null);
 		}
+
+
+		private void btnHelp_Click(object sender, System.EventArgs e)
+		{
+			pjse.HelpHelper.PluginHelp("Bhavs");
+		}
+
 
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)

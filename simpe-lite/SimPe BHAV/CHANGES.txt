@@ -1,6 +1,44 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+4 February 2006 18:04 - Help: Bundle initial help files and add help button
+  * Note: HelpContainer used - probably rename it at some stage
+  * Also tagged up various popups to make them obviously PJSE ones
+  * Also made DialogWizard a release-available tool
+  SimPe BHAV\
+    BconForm.cs 1.15.2.1
+    BconForm.resx 1.9.2.1
+    BhavForm.cs 1.64.2.3
+    BhavForm.resx 1.30.2.1
+    BhavWizPrim.cs 1.34.2.2
+    HelpContainer.cs 1.2.2.1
+    ObjfForm.cs 1.13.2.1
+    ObjfForm.resx 1.4.2.1
+    pjse coder plugin.csproj 1.29.2.2
+    ResourceChooser.cs 1.6.2.1
+    ResourceChooser.resx 1.1.2.1
+    StrBig.cs 1.3.2.1
+    StrBig.resx 1.2.2.1
+    StrChooser.cs 1.1.2.1
+    StrChooser.resx 1.1.2.1
+    StrForm.cs 1.28.2.1
+    StrForm.resx 1.18.2.1
+    TPRPForm.cs 1.6.2.2
+    TPRPForm.resx 1.5.2.1
+    TrcnForm.cs 1.11.2.1
+    TrcnForm.resx 1.7.2.1
+    TtabForm.cs 1.31.2.2
+    TtabForm.resx 1.15.8.2
+    TtabItemMotiveTableUI.cs 1.10.2.1
+    TtabItemMotiveTableUI.resx 1.5.2.1
+    WrapperFactory.cs 1.20.2.1
+  SimPe BHAV\PJSE_Help\
+    About.htm 1.1
+    Contents.htm 1.1
+    HelpLinks.htm 1.1
+    PieMenus.htm 1.1
+    Support.htm 1.1
+
 4 February 2006 15:03 - Wiz0x0024 landing onto PreRelease
   * Opportunity taken to refactor loads of code as usual
   * BhavWiz has a Wizard() method to return the Operand Wizard (or null)
