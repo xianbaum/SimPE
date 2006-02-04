@@ -1378,11 +1378,11 @@
   <data name="cbAttenuationCode.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>Private</value>
   </data>
-  <data name="cbAttenuationCode.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
   <data name="cbAttenuationCode.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
+  </data>
+  <data name="cbAttenuationCode.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Private</value>
   </data>
   <data name="cbAttenuationCode.AccessibleDescription" type="System.Resources.ResXNullRef, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value />
@@ -2734,11 +2734,11 @@
   <data name="&gt;&gt;tbFaceAnimID.ZOrder">
     <value>19</value>
   </data>
-  <data name="label30.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>Private</value>
-  </data>
   <data name="label30.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
+  </data>
+  <data name="label30.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Private</value>
   </data>
   <data name="label30.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>Private</value>
@@ -3358,6 +3358,84 @@
   <data name="&gt;&gt;gbFlags.ZOrder">
     <value>27</value>
   </data>
+  <data name="btnNoFlags.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </data>
+  <data name="btnNoFlags.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Private</value>
+  </data>
+  <data name="btnNoFlags.Modifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Private</value>
+  </data>
+  <data name="btnNoFlags.AccessibleDescription" type="System.Resources.ResXNullRef, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value />
+  </data>
+  <data name="btnNoFlags.AccessibleName" type="System.Resources.ResXNullRef, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value />
+  </data>
+  <data name="btnNoFlags.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Top, Left</value>
+  </data>
+  <data name="btnNoFlags.BackgroundImage" type="System.Resources.ResXNullRef, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value />
+  </data>
+  <data name="btnNoFlags.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>None</value>
+  </data>
+  <data name="btnNoFlags.Enabled" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </data>
+  <data name="btnNoFlags.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Standard</value>
+  </data>
+  <data name="btnNoFlags.Font" type="System.Resources.ResXNullRef, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value />
+  </data>
+  <data name="btnNoFlags.Image" type="System.Resources.ResXNullRef, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value />
+  </data>
+  <data name="btnNoFlags.ImageAlign" type="System.Drawing.ContentAlignment, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="btnNoFlags.ImageIndex" type="System.Int32, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>-1</value>
+  </data>
+  <data name="btnNoFlags.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>NoControl</value>
+  </data>
+  <data name="btnNoFlags.Location" type="System.Drawing.Point, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>112, 24</value>
+  </data>
+  <data name="btnNoFlags.RightToLeft" type="System.Windows.Forms.RightToLeft, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>Inherit</value>
+  </data>
+  <data name="btnNoFlags.Size" type="System.Drawing.Size, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>48, 20</value>
+  </data>
+  <data name="btnNoFlags.TabIndex" type="System.Int32, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>88</value>
+  </data>
+  <data name="btnNoFlags.Text">
+    <value>&amp;None</value>
+  </data>
+  <data name="btnNoFlags.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>MiddleCenter</value>
+  </data>
+  <data name="btnNoFlags.Visible" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </data>
+  <data name="&gt;&gt;btnNoFlags.Name">
+    <value>btnNoFlags</value>
+  </data>
+  <data name="&gt;&gt;btnNoFlags.Type">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnNoFlags.Parent">
+    <value>gbFlags</value>
+  </data>
+  <data name="&gt;&gt;btnNoFlags.ZOrder">
+    <value>0</value>
+  </data>
   <data name="tbFlags.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>Private</value>
   </data>
@@ -3440,7 +3518,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;tbFlags.ZOrder">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label24.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -3515,7 +3593,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;label24.ZOrder">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="cbvisitor.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -3599,7 +3677,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbvisitor.ZOrder">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="cbunk3.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -3683,7 +3761,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbunk3.ZOrder">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="cbunk4.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -3767,7 +3845,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbunk4.ZOrder">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="cbunk1.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -3851,7 +3929,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbunk1.ZOrder">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="cbunk2.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -3935,7 +4013,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbunk2.ZOrder">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="cbteens.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4019,7 +4097,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbteens.ZOrder">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="cbelders.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4103,7 +4181,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbelders.ZOrder">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="cbtodlers.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4187,7 +4265,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbtodlers.ZOrder">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="cbautofirst.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4271,7 +4349,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbautofirst.ZOrder">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="cbdebugmenu.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4355,7 +4433,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbdebugmenu.ZOrder">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="cbadults.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4439,7 +4517,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbadults.ZOrder">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="cbdemochild.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4523,7 +4601,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbdemochild.ZOrder">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="cbchildren.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4607,7 +4685,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbchildren.ZOrder">
-    <value>14</value>
+    <value>15</value>
   </data>
   <data name="cbconsecutive.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4691,7 +4769,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbconsecutive.ZOrder">
-    <value>15</value>
+    <value>16</value>
   </data>
   <data name="cbimmediately.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4775,7 +4853,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbimmediately.ZOrder">
-    <value>16</value>
+    <value>17</value>
   </data>
   <data name="cbjoinable.Locked" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>False</value>
@@ -4859,7 +4937,7 @@
     <value>gbFlags</value>
   </data>
   <data name="&gt;&gt;cbjoinable.ZOrder">
-    <value>17</value>
+    <value>18</value>
   </data>
   <data name="tbAction.DefaultModifiers" type="System.CodeDom.MemberAttributes, System, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>Private</value>
@@ -5327,7 +5405,7 @@
     <value>ttabItemMotiveTableUI1</value>
   </data>
   <data name="&gt;&gt;ttabItemMotiveTableUI1.Type">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=1.0.2150.25678, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=1.0.2226.17420, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ttabItemMotiveTableUI1.Parent">
     <value>tpMotives</value>
@@ -5584,11 +5662,11 @@
   <data name="$this.DrawGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </data>
-  <data name="$this.TrayHeight" type="System.Int32, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>80</value>
-  </data>
   <data name="$this.Name">
     <value>TtabForm</value>
+  </data>
+  <data name="$this.TrayHeight" type="System.Int32, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>80</value>
   </data>
   <data name="$this.SnapToGrid" type="System.Boolean, mscorlib, Version=1.0.5000.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

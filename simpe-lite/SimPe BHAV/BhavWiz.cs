@@ -169,7 +169,21 @@ namespace pjse
 
 		protected string dataOwner(bool lng, byte doid, ushort instance)
 		{
-			return lng ? dataOwner(doid, instance) : GS.GStr(GS.BhavStr.DataOwners, doid) + " 0x" + SimPe.Helper.HexString(instance);
+			if (lng)
+				return dataOwner(doid, instance);
+
+			ushort[] bcon;
+			switch(doid)
+			{
+				case 0x0c: case 0x0e: case 0x0f: case 0x1c: case 0x1d:
+					return GS.GStr(GS.BhavStr.DataOwners, doid) + " " + GS.GStr((GS.BhavStr)doidGStr[doid], instance);
+				case 0x1a:
+					bcon = ExpandBCON(instance, false);
+					return readBcon((uint)bcon[0], bcon[1], false, pjse.Detail.Errors) +
+						"(" + GS.GStr(GS.BhavStr.DataOwners, 0x1a) + ")";
+				default:
+					return GS.GStr(GS.BhavStr.DataOwners, doid) + " 0x" + SimPe.Helper.HexString(instance);
+			}
 		}
 
 		protected string dataOwner(bool lng, byte doid, byte lo, byte hi) {  return dataOwner(lng, doid, ToShort(lo, hi));}

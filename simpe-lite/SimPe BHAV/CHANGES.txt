@@ -1,5 +1,14 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+4 February 2006 11:02 - Merge with PreRelease
+  SimPe BHAV\
+    BhavForm.cs 1.64.6.2
+    BhavWiz.cs 1.37.2.2.2.3
+    TPRPForm.cs 1.6.6.2
+    TtabForm.cs 1.31.6.2
+    TtabForm.cs 1.15.12.2
+  pjseTestData.package 1.17.2.2.4.1
+
 29 January 2006 20:04 - Wiz0x0024: More bits of the Wizard added (almost done?)
   SimPe BHAV\
     BhavOperandWiz0x0024.cs 1.1.2.4
