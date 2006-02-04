@@ -1,4 +1,10 @@
 
+4 February 2006 11:43 - Add sensible assembly info
+  pjse filetable\
+    AssemblyInfo.cs 1.1.14.1
+  pjse GUID Tool\
+    AssemblyInfo.cs 1.1.14.1
+
 4 February 2006 10:33 - TPRP: remember open tab; TTAB: disable menu option button
   SimPe BHAV\
     TPRPForm.cs 1.6.2.1
