@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("PJSE FileTable services")]
+[assembly: AssemblyDescription("FileTable services for PJSE Plugins")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCompany("Peter L Jones")]
+[assembly: AssemblyProduct("pjse.coder.plugin")]
+[assembly: AssemblyCopyright("Released under the GNU GPL")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

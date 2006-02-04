@@ -2,60 +2,56 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 
 //
-// Allgemeine Informationen über eine Assembly werden über folgende Attribute 
-// gesteuert. Ändern Sie diese Attributswerte, um die Informationen zu modifizieren,
-// die mit einer Assembly verknüpft sind.
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
 //
-[assembly: AssemblyTitle("SimPe BHAV Plugin")]
-[assembly: AssemblyDescription("BHAV Plugin")]
+[assembly: AssemblyTitle("PJSE Coder Plugins")]
+[assembly: AssemblyDescription("PJSE enhanced object behaviour modification Plugins for SimPe")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ambertation")]
-#if DEBUG
-[assembly: AssemblyProduct("[DEBUG]")]
-#else
-	[assembly: AssemblyProduct("")]
-#endif	
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCompany("Peter L Jones")]
+[assembly: AssemblyProduct("pjse.coder.plugin")]
+[assembly: AssemblyCopyright("Released under the GNU GPL")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]	
 
 //
-// Versionsinformationen für eine Assembly bestehen aus folgenden vier Werten:
+// Version information for an assembly consists of the following four values:
 //
-//      Hauptversion
-//      Nebenversion 
-//      Buildnummer
+//      Major Version
+//      Minor Version 
+//      Build Number
 //      Revision
 //
-// Sie können alle Werte oder die standardmäßige Revision und Buildnummer 
-// mit '*' angeben:
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]
 
 //
-// Um die Assembly zu signieren, müssen Sie einen Schlüssel angeben. Weitere Informationen 
-// über die Assemblysignierung finden Sie in der Microsoft .NET Framework-Dokumentation.
+// In order to sign your assembly you must specify a key to use. Refer to the 
+// Microsoft .NET Framework documentation for more information on assembly signing.
 //
-// Mit den folgenden Attributen können Sie festlegen, welcher Schlüssel für die Signierung verwendet wird. 
+// Use the attributes below to control which key is used for signing. 
 //
-// Hinweise: 
-//   (*) Wenn kein Schlüssel angegeben ist, wird die Assembly nicht signiert.
-//   (*) KeyName verweist auf einen Schlüssel, der im CSP (Crypto Service
-//       Provider) auf Ihrem Computer installiert wurde. KeyFile verweist auf eine Datei, die einen
-//       Schlüssel enthält.
-//   (*) Wenn die Werte für KeyFile und KeyName angegeben werden, 
-//       werden folgende Vorgänge ausgeführt:
-//       (1) Wenn KeyName im CSP gefunden wird, wird dieser Schlüssel verwendet.
-//       (2) Wenn KeyName nicht vorhanden ist und KeyFile vorhanden ist, 
-//           wird der Schlüssel in KeyFile im CSP installiert und verwendet.
-//   (*) Um eine KeyFile zu erstellen, können Sie das Programm sn.exe (Strong Name) verwenden.
-//       Wenn KeyFile angegeben wird, muss der Pfad von KeyFile
-//       relativ zum Projektausgabeverzeichnis sein:
-//       %Project Directory%\obj\<configuration>. Wenn sich KeyFile z.B.
-//       im Projektverzeichnis befindet, geben Sie das AssemblyKeyFile-Attribut 
-//       wie folgt an: [assembly: AssemblyKeyFile("..\\..\\mykey.snk")]
-//   (*) Das verzögern der Signierung ist eine erweiterte Option. Weitere Informationen finden Sie in der
-//       Microsoft .NET Framework-Dokumentation.
+// Notes: 
+//   (*) If no key is specified, the assembly is not signed.
+//   (*) KeyName refers to a key that has been installed in the Crypto Service
+//       Provider (CSP) on your machine. KeyFile refers to a file which contains
+//       a key.
+//   (*) If the KeyFile and the KeyName values are both specified, the 
+//       following processing occurs:
+//       (1) If the KeyName can be found in the CSP, that key is used.
+//       (2) If the KeyName does not exist and the KeyFile does exist, the key 
+//           in the KeyFile is installed into the CSP and used.
+//   (*) In order to create a KeyFile, you can use the sn.exe (Strong Name) utility.
+//       When specifying the KeyFile, the location of the KeyFile should be
+//       relative to the project output directory which is
+//       %Project Directory%\obj\<configuration>. For example, if your KeyFile is
+//       located in the project directory, you would specify the AssemblyKeyFile 
+//       attribute as [assembly: AssemblyKeyFile("..\\..\\mykey.snk")]
+//   (*) Delay Signing is an advanced option - see the Microsoft .NET Framework
+//       documentation for more information on this.
 //
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
