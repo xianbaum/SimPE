@@ -110,6 +110,23 @@ namespace SimPe.PackedFiles.UserInterface
 		private TPRPItem origItem = null;
 		private TPRPItem currentItem = null;
 
+		private int InitialTab
+		{
+			get
+			{
+				XmlRegistryKey  rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\TPRP");
+				object o = rkf.GetValue("initialTab", 1);
+				return Convert.ToInt16(o);
+			}
+
+			set
+			{
+				XmlRegistryKey rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\TPRP");
+				rkf.SetValue("initialTab", value);
+			}
+
+		}
+
 		private bool hex32_IsValid(object sender)
 		{
 			if (alHex32.IndexOf(sender) < 0)
@@ -150,7 +167,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void setTab(int l)
 		{
 			internalchg = true;
-			this.tabControl1.SelectedIndex = tab = l;
+			InitialTab = this.tabControl1.SelectedIndex = tab = l;
 			internalchg = false;
 
 			if (this.lvCurrent.SelectedIndices.Count == 0)
@@ -307,7 +324,7 @@ namespace SimPe.PackedFiles.UserInterface
 			updateLists();
 			internalchg = false;
 
-			setTab(0);
+			setTab(InitialTab);
 
 			if (!setHandler)
 			{

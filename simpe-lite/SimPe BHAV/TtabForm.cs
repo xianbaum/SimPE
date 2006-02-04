@@ -105,6 +105,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ComboBox cbStringIndex;
 		private System.Windows.Forms.LinkLabel llAction;
 		private System.Windows.Forms.LinkLabel llGuardian;
+		private System.Windows.Forms.Button btnNoFlags;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -434,6 +435,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label20 = new System.Windows.Forms.Label();
 			this.tbGuardian = new System.Windows.Forms.TextBox();
 			this.gbFlags = new System.Windows.Forms.GroupBox();
+			this.btnNoFlags = new System.Windows.Forms.Button();
 			this.tbFlags = new System.Windows.Forms.TextBox();
 			this.label24 = new System.Windows.Forms.Label();
 			this.cbvisitor = new System.Windows.Forms.CheckBox();
@@ -1521,6 +1523,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbFlags.AccessibleName = resources.GetString("gbFlags.AccessibleName");
 			this.gbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbFlags.Anchor")));
 			this.gbFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbFlags.BackgroundImage")));
+			this.gbFlags.Controls.Add(this.btnNoFlags);
 			this.gbFlags.Controls.Add(this.tbFlags);
 			this.gbFlags.Controls.Add(this.label24);
 			this.gbFlags.Controls.Add(this.cbvisitor);
@@ -1552,6 +1555,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbFlags.TabStop = false;
 			this.gbFlags.Text = resources.GetString("gbFlags.Text");
 			this.gbFlags.Visible = ((bool)(resources.GetObject("gbFlags.Visible")));
+			// 
+			// btnNoFlags
+			// 
+			this.btnNoFlags.AccessibleDescription = resources.GetString("btnNoFlags.AccessibleDescription");
+			this.btnNoFlags.AccessibleName = resources.GetString("btnNoFlags.AccessibleName");
+			this.btnNoFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnNoFlags.Anchor")));
+			this.btnNoFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNoFlags.BackgroundImage")));
+			this.btnNoFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnNoFlags.Dock")));
+			this.btnNoFlags.Enabled = ((bool)(resources.GetObject("btnNoFlags.Enabled")));
+			this.btnNoFlags.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnNoFlags.FlatStyle")));
+			this.btnNoFlags.Font = ((System.Drawing.Font)(resources.GetObject("btnNoFlags.Font")));
+			this.btnNoFlags.Image = ((System.Drawing.Image)(resources.GetObject("btnNoFlags.Image")));
+			this.btnNoFlags.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnNoFlags.ImageAlign")));
+			this.btnNoFlags.ImageIndex = ((int)(resources.GetObject("btnNoFlags.ImageIndex")));
+			this.btnNoFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnNoFlags.ImeMode")));
+			this.btnNoFlags.Location = ((System.Drawing.Point)(resources.GetObject("btnNoFlags.Location")));
+			this.btnNoFlags.Name = "btnNoFlags";
+			this.btnNoFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnNoFlags.RightToLeft")));
+			this.btnNoFlags.Size = ((System.Drawing.Size)(resources.GetObject("btnNoFlags.Size")));
+			this.btnNoFlags.TabIndex = ((int)(resources.GetObject("btnNoFlags.TabIndex")));
+			this.btnNoFlags.Text = resources.GetString("btnNoFlags.Text");
+			this.btnNoFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnNoFlags.TextAlign")));
+			this.btnNoFlags.Visible = ((bool)(resources.GetObject("btnNoFlags.Visible")));
+			this.btnNoFlags.Click += new System.EventHandler(this.btnNoFlags_Click);
 			// 
 			// tbFlags
 			// 
@@ -2383,6 +2410,15 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnAppend_Click(object sender, System.EventArgs e)
 		{
 			this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, ttabPanel));
+		}
+
+		private void btnNoFlags_Click(object sender, System.EventArgs e)
+		{
+			internalchg = true;
+			currentItem.Flags.Value = (ushort)0x0070;
+			this.tbFlags.Text = "0x"+Helper.HexString(currentItem.Flags.Value);
+			doFlags();
+			internalchg = false;
 		}
 
 
