@@ -1,5 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+4 February 2006 14:21 - Wiz0x0024: Made the per-message Temp choosers appear (and tidied up outer Wiz)
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.4.2.2
+    BhavOperandWiz.resx 1.3.2.1
+    BhavOperandWiz0x0024.cs 1.1.2.5
+    BhavOperandWiz0x0024.resx 1.1.2.5
+
 4 February 2006 11:43 - Add sensible assembly info
   pjse filetable\
     AssemblyInfo.cs 1.1.14.1

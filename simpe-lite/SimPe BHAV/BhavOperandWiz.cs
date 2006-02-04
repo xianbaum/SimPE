@@ -84,6 +84,7 @@ namespace pjse
 			pn.Parent = this;
 			pn.Top = 0;
 			pn.Left = 0;
+			pn.TabIndex = 1;
 			int footHeight = this.Height - this.panel1.Bottom + 8;
 			this.Width = pn.Width + 8;
 			this.Height = pn.Height + footHeight;
@@ -139,7 +140,7 @@ namespace pjse
 			this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.Cancel.Location = new System.Drawing.Point(144, 120);
 			this.Cancel.Name = "Cancel";
-			this.Cancel.TabIndex = 2;
+			this.Cancel.TabIndex = 3;
 			this.Cancel.Text = "Cancel";
 			// 
 			// BhavOperandWiz
