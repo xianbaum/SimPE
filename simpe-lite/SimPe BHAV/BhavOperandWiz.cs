@@ -25,8 +25,6 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
-using pjse.BhavNameWizards;
-using pjse.BhavOperandWizards;
 
 namespace pjse
 {
@@ -71,14 +69,14 @@ namespace pjse
 		}
 
 
-		public Instruction Execute(Instruction i, int wizType)
+		public Instruction Execute(BhavWiz i, int wizType)
 		{
 			pjse.ABhavOperandWiz wiz = null;
 			switch(wizType)
 			{
-				case 0: wiz = pjse.BhavOperandWizProvider.Raw(i); break;
-				case 1: wiz = pjse.BhavOperandWizProvider.For(i); break;
-				default: wiz = pjse.BhavOperandWizProvider.Default(i); break;
+				case 0: wiz = new pjse.BhavOperandWizards.BhavOperandWizRaw(i); break;
+				case 1: wiz = i.Wizard(); break;
+				default: wiz = new pjse.BhavOperandWizards.BhavOperandWizDefault(i); break;
 			}
 			if (wiz == null) return null;
 
@@ -86,6 +84,7 @@ namespace pjse
 			pn.Parent = this;
 			pn.Top = 0;
 			pn.Left = 0;
+			pn.TabIndex = 1;
 			int footHeight = this.Height - this.panel1.Bottom + 8;
 			this.Width = pn.Width + 8;
 			this.Height = pn.Height + footHeight;
@@ -141,7 +140,7 @@ namespace pjse
 			this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
 			this.Cancel.Location = new System.Drawing.Point(144, 120);
 			this.Cancel.Name = "Cancel";
-			this.Cancel.TabIndex = 2;
+			this.Cancel.TabIndex = 3;
 			this.Cancel.Text = "Cancel";
 			// 
 			// BhavOperandWiz
@@ -165,7 +164,31 @@ namespace pjse
 
 	}
 
+	/// <summary>
+	/// Provides the operand wizard for a given Bhav Instruction.
+	/// </summary>
+	/// <summary>
+	/// Abstract class for BHAV Operand Wizards to extend
+	/// </summary>
+	public abstract class ABhavOperandWiz : IDisposable
+	{
+		protected Instruction instruction = null;
+		protected ABhavOperandWiz() {}
+		protected ABhavOperandWiz(Instruction instruction) { this.instruction = instruction; }
 
+
+		public abstract Panel bhavPrimWizPanel { get; }
+		public abstract void Execute();
+		public abstract Instruction Write();
+
+		#region IDisposable Members
+		public abstract void Dispose();
+		#endregion
+	}
+
+}
+namespace pjse.BhavOperandWizards
+{
 	class DataOwnerControl : IDisposable, IDataOwnerListener
 	{
 		#region Form variables
@@ -408,7 +431,7 @@ namespace pjse
 			ArrayList pickerNames = null;
 			if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
 			{
-				pickerNames = (ArrayList)WizPrim0x0002.flagNames(flagsFor.DataOwner, flagsFor.Value);
+				pickerNames = BhavWiz.flagNames(flagsFor.DataOwner, flagsFor.Value);
 				if (pickerNames != null)
 				{
 					pickerNames = (ArrayList)pickerNames.Clone();

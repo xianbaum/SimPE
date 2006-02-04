@@ -75,15 +75,20 @@ namespace pjse
 			RelativeLocations = 0x0082,
 			RelativeDirections = 0x0083,
 			DataOwners = 0x84,
+			//Str0x0085 - there is no Str0x0085
 			Motives = 0x86,
 			//Str0x0087 = 0x87, // miscellaneous strings
 			Operators = 0x88,
 			//Str0x0089 = 0x89, // unused - search types
+			//Str0x008a - there is no Str0x008a
 			Primitives = 0x8b,
+			//Str0x008c - there is no Str0x008c
 			DataLabels = 0x8d, // Data labels +EP1 +EP2
 			Flags1 = 0x8e, // flags for flag field
 			BodyFlags = 0x8f,
+			//Str0x0090..95 - there are no Str0x0090..95
 			//Str0x0096 unused
+			//Str0x0097..98 - there are no Str0x0097..98
 			ShortOwner = 0x99,
 			//Str0x009a unused
 			//Str0x009b unused
@@ -92,14 +97,17 @@ namespace pjse
 			//Str0x009e .. a3 unused
 			NextObject = 0xa4,
 			MotiveType = 0xa5, // motive search types
+			//Str0x00a6 - there is no Str0x00a6
 			CreatePlace = 0xa7, // where to create object
 			CreateHow = 0xa8, // how to create object
 			//Str0x00a9 .. ab unused
 			//Str0x00ac Interrupt (idle for input?)
 			//Str0x00ad .. ae unused
+			//Str0x00af - there is no Str0x00af
 			//Str0x00b0 0123
 			//Str0x00b1 unused
 			CensorFlags = 0xb2,
+			//Str0x00b3..c7 - there are no Str0x00b3..c7
 			PersonData = 0xc8,
 			FunctionTable = 0xc9,
 			PlacementFlags = 0xca, // Allowed Height Flags
@@ -122,6 +130,7 @@ namespace pjse
 			Generics = 0xdc,
 			NeighborData = 0xdd,
 			RTBNType = 0xde, // how to call named tree
+			//Str0x00df - there is no Str0x00df
 			Priorities = 0xe0,
 			//Str0x00e1 times of day
 			//Str0x00e2 tree categories
@@ -149,6 +158,8 @@ namespace pjse
 			InventoryDialog = 0xfc,
 			WallCutoutFlags = 0xfd,
 			//Str0x00fe unused
+			//Str0x00ff..01f3 - there are no Str0x00ff..01f3
+			TnsStyle = 0x1f3,
 			//Str0x01f4 .. 1fd unused
 			GosubAction = 0x1fe,
 			//Str0x01ff Routing slot directions
