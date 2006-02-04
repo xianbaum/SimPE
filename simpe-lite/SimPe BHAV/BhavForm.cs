@@ -206,7 +206,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void SetReadOnly(bool state) 
 		{
-			if (btnClose.Visible = ((string)this.Tag).Equals("Popup"))
+			if (((string)this.Tag).Equals("Popup"))
 			{
 				// make it very clear it's read only
 				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =
@@ -214,9 +214,9 @@ namespace SimPe.PackedFiles.UserInterface
 					tbArgC.Enabled = tbLocalC.Enabled =
 					/*btnSort.Visible =*/ btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
-					btnOpCode.Visible = btnOperandWiz.Visible = btnOperandRaw.Visible =
+					btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/
 					gbSpecial.Visible = cbSpecial.Visible =
-					btnCancel.Visible = false;
+					btnCancel.Visible = btnClose.Visible = false;
 				state = true;
 			}
 
@@ -239,7 +239,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbInst_Op7.ReadOnly = state;
 
 			this.btnOperandWiz.Enabled = !state;
-			this.btnOperandRaw.Enabled = !state;
+			/*this.btnOperandRaw.Enabled = !state;*/
 			
 			this.tbInst_Unk0.ReadOnly = state || wrapper.Header.Format < 0x8003;
 			this.tbInst_Unk1.ReadOnly = state || wrapper.Header.Format < 0x8003;
@@ -2674,7 +2674,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnOperandRaw_Click(object sender, System.EventArgs e)
 		{
 			internalchg = true;
-			if ((new BhavOperandWiz()).Execute(currentInst, 0) != null)
+			if ((new BhavOperandWiz()).Execute(btnCommit.Visible ? currentInst : (BhavWiz)(currentInst.Instruction.Clone()), 0) != null)
 				UpdateInstPanel();
 			internalchg = false;
 		}
