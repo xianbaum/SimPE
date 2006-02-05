@@ -2082,11 +2082,13 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0024(Instruction i) : base(i) { }
 
+#if INPROGRESS || DEBUG
 		public override ABhavOperandWiz Wizard()
 		{
 			return new pjse.BhavOperandWizards.BhavOperandWiz0x0024(instruction);
 		}
 
+#endif
 
 		protected override string Operands(bool lng)
 		{

@@ -365,6 +365,7 @@ namespace SimPe.PackedFiles.UserInterface
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TPRPForm));
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.pnHeading = new System.Windows.Forms.Panel();
+			this.btnHelp = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.tprpPanel = new System.Windows.Forms.Panel();
 			this.btnTabNext = new System.Windows.Forms.Button();
@@ -389,7 +390,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
 			this.lbLabel = new System.Windows.Forms.Label();
-			this.btnHelp = new System.Windows.Forms.Button();
 			this.pnHeading.SuspendLayout();
 			this.tprpPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -445,6 +445,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading.TabIndex = ((int)(resources.GetObject("pnHeading.TabIndex")));
 			this.pnHeading.Text = resources.GetString("pnHeading.Text");
 			this.pnHeading.Visible = ((bool)(resources.GetObject("pnHeading.Visible")));
+			// 
+			// btnHelp
+			// 
+			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
+			this.btnHelp.AccessibleName = resources.GetString("btnHelp.AccessibleName");
+			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnHelp.Anchor")));
+			this.btnHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHelp.BackgroundImage")));
+			this.btnHelp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnHelp.Dock")));
+			this.btnHelp.Enabled = ((bool)(resources.GetObject("btnHelp.Enabled")));
+			this.btnHelp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnHelp.FlatStyle")));
+			this.btnHelp.Font = ((System.Drawing.Font)(resources.GetObject("btnHelp.Font")));
+			this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+			this.btnHelp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.ImageAlign")));
+			this.btnHelp.ImageIndex = ((int)(resources.GetObject("btnHelp.ImageIndex")));
+			this.btnHelp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnHelp.ImeMode")));
+			this.btnHelp.Location = ((System.Drawing.Point)(resources.GetObject("btnHelp.Location")));
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnHelp.RightToLeft")));
+			this.btnHelp.Size = ((System.Drawing.Size)(resources.GetObject("btnHelp.Size")));
+			this.btnHelp.TabIndex = ((int)(resources.GetObject("btnHelp.TabIndex")));
+			this.btnHelp.Text = resources.GetString("btnHelp.Text");
+			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
+			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
 			// 
 			// label1
 			// 
@@ -991,30 +1015,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbLabel.Text = resources.GetString("lbLabel.Text");
 			this.lbLabel.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbLabel.TextAlign")));
 			this.lbLabel.Visible = ((bool)(resources.GetObject("lbLabel.Visible")));
-			// 
-			// btnHelp
-			// 
-			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
-			this.btnHelp.AccessibleName = resources.GetString("btnHelp.AccessibleName");
-			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnHelp.Anchor")));
-			this.btnHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHelp.BackgroundImage")));
-			this.btnHelp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnHelp.Dock")));
-			this.btnHelp.Enabled = ((bool)(resources.GetObject("btnHelp.Enabled")));
-			this.btnHelp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnHelp.FlatStyle")));
-			this.btnHelp.Font = ((System.Drawing.Font)(resources.GetObject("btnHelp.Font")));
-			this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
-			this.btnHelp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.ImageAlign")));
-			this.btnHelp.ImageIndex = ((int)(resources.GetObject("btnHelp.ImageIndex")));
-			this.btnHelp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnHelp.ImeMode")));
-			this.btnHelp.Location = ((System.Drawing.Point)(resources.GetObject("btnHelp.Location")));
-			this.btnHelp.Name = "btnHelp";
-			this.btnHelp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnHelp.RightToLeft")));
-			this.btnHelp.Size = ((System.Drawing.Size)(resources.GetObject("btnHelp.Size")));
-			this.btnHelp.TabIndex = ((int)(resources.GetObject("btnHelp.TabIndex")));
-			this.btnHelp.Text = resources.GetString("btnHelp.Text");
-			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
-			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
-			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
 			// 
 			// TPRPForm
 			// 

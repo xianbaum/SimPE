@@ -461,8 +461,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpMotives = new System.Windows.Forms.TabPage();
 			this.ttabItemMotiveTableUI1 = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
 			this.panel5 = new System.Windows.Forms.Panel();
-			this.label25 = new System.Windows.Forms.Label();
 			this.btnHelp = new System.Windows.Forms.Button();
+			this.label25 = new System.Windows.Forms.Label();
 			this.ttabPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
 			this.tpSettings.SuspendLayout();
@@ -2215,28 +2215,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.panel5.Text = resources.GetString("panel5.Text");
 			this.panel5.Visible = ((bool)(resources.GetObject("panel5.Visible")));
 			// 
-			// label25
-			// 
-			this.label25.AccessibleDescription = resources.GetString("label25.AccessibleDescription");
-			this.label25.AccessibleName = resources.GetString("label25.AccessibleName");
-			this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label25.Anchor")));
-			this.label25.AutoSize = ((bool)(resources.GetObject("label25.AutoSize")));
-			this.label25.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label25.Dock")));
-			this.label25.Enabled = ((bool)(resources.GetObject("label25.Enabled")));
-			this.label25.Font = ((System.Drawing.Font)(resources.GetObject("label25.Font")));
-			this.label25.Image = ((System.Drawing.Image)(resources.GetObject("label25.Image")));
-			this.label25.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.ImageAlign")));
-			this.label25.ImageIndex = ((int)(resources.GetObject("label25.ImageIndex")));
-			this.label25.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label25.ImeMode")));
-			this.label25.Location = ((System.Drawing.Point)(resources.GetObject("label25.Location")));
-			this.label25.Name = "label25";
-			this.label25.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label25.RightToLeft")));
-			this.label25.Size = ((System.Drawing.Size)(resources.GetObject("label25.Size")));
-			this.label25.TabIndex = ((int)(resources.GetObject("label25.TabIndex")));
-			this.label25.Text = resources.GetString("label25.Text");
-			this.label25.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.TextAlign")));
-			this.label25.Visible = ((bool)(resources.GetObject("label25.Visible")));
-			// 
 			// btnHelp
 			// 
 			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
@@ -2259,6 +2237,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnHelp.Text = resources.GetString("btnHelp.Text");
 			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
 			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+			// 
+			// label25
+			// 
+			this.label25.AccessibleDescription = resources.GetString("label25.AccessibleDescription");
+			this.label25.AccessibleName = resources.GetString("label25.AccessibleName");
+			this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label25.Anchor")));
+			this.label25.AutoSize = ((bool)(resources.GetObject("label25.AutoSize")));
+			this.label25.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label25.Dock")));
+			this.label25.Enabled = ((bool)(resources.GetObject("label25.Enabled")));
+			this.label25.Font = ((System.Drawing.Font)(resources.GetObject("label25.Font")));
+			this.label25.Image = ((System.Drawing.Image)(resources.GetObject("label25.Image")));
+			this.label25.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.ImageAlign")));
+			this.label25.ImageIndex = ((int)(resources.GetObject("label25.ImageIndex")));
+			this.label25.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label25.ImeMode")));
+			this.label25.Location = ((System.Drawing.Point)(resources.GetObject("label25.Location")));
+			this.label25.Name = "label25";
+			this.label25.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label25.RightToLeft")));
+			this.label25.Size = ((System.Drawing.Size)(resources.GetObject("label25.Size")));
+			this.label25.TabIndex = ((int)(resources.GetObject("label25.TabIndex")));
+			this.label25.Text = resources.GetString("label25.Text");
+			this.label25.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label25.TextAlign")));
+			this.label25.Visible = ((bool)(resources.GetObject("label25.Visible")));
 			// 
 			// TtabForm
 			// 

@@ -156,7 +156,7 @@ namespace pjse
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "BhavOperandWiz";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Instruction Wizard (EXPERIMENTAL)";
+			this.Text = "PJSE: Instruction Wizard (EXPERIMENTAL)";
 			this.ResumeLayout(false);
 
 		}

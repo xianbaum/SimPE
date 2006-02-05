@@ -405,7 +405,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			str.ProcessData(items[0].PFD, items[0].Package);
 
 			int i = (new StrChooser()).Strnum(str);
-			if (i > 0)
+			if (i >= 0)
 			{
 				if (messages.Length > which)
 				{

@@ -1,6 +1,27 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+5 February 2006 09:26 - Help: A few fixes; DialogWiz: not in Release plus fix string chooser
+  SimPe BHAV\
+    BconForm.cs 1.15.2.2
+    BconForm.resx 1.9.2.3
+    BhavForm.cs 1.64.2.4
+    BhavForm.resx 1.30.2.2
+    BhavOperandWiz.cs 1.7.14.6
+    BhavOperandWiz.resx 1.3.22.2
+    BhavOperandWiz0x0024.cs 1.1.4.3
+    BhavWizPrim.cs 1.34.2.3
+    ObjfForm.cs 1.13.2.2
+    ObjfForm.resx 1.4.6.2
+    StrForm.cs 1.28.2.2
+    StrForm.resx 1.18.14.2
+    TPRPForm.cs 1.6.2.3
+    TPRPForm.resx 1.5.2.2
+    TrcnForm.cs 1.11.2.2
+    TrcnForm.resx 1.7.2.2
+    TtabForm.cs 1.31.2.3
+    TtabForm.resx 1.15.8.3
+
 4 February 2006 18:04 - Help: Bundle initial help files and add help button
   * Note: HelpContainer used - probably rename it at some stage
   * Also tagged up various popups to make them obviously PJSE ones
