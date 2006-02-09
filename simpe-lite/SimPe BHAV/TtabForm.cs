@@ -38,7 +38,6 @@ namespace SimPe.PackedFiles.UserInterface
 		#region Form variables
 
 		private System.Windows.Forms.Panel panel5;
-		private System.Windows.Forms.Label lbttabfile;
 		private System.Windows.Forms.Label label25;
 		private System.Windows.Forms.Panel ttabPanel;
 		private System.Windows.Forms.TabControl tabControl1;
@@ -105,6 +104,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ComboBox cbStringIndex;
 		private System.Windows.Forms.LinkLabel llAction;
 		private System.Windows.Forms.LinkLabel llGuardian;
+		private System.Windows.Forms.Button btnNoFlags;
+		private System.Windows.Forms.Button btnHelp;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -378,7 +379,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			if (internalchg) return;
 			internalchg = true;
-			this.Text = tbFilename.Text = lbttabfile.Text = wrapper.FileName;
+			this.Text = tbFilename.Text = wrapper.FileName;
 			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
 			internalchg = false;
 		}
@@ -434,6 +435,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label20 = new System.Windows.Forms.Label();
 			this.tbGuardian = new System.Windows.Forms.TextBox();
 			this.gbFlags = new System.Windows.Forms.GroupBox();
+			this.btnNoFlags = new System.Windows.Forms.Button();
 			this.tbFlags = new System.Windows.Forms.TextBox();
 			this.label24 = new System.Windows.Forms.Label();
 			this.cbvisitor = new System.Windows.Forms.CheckBox();
@@ -459,7 +461,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tpMotives = new System.Windows.Forms.TabPage();
 			this.ttabItemMotiveTableUI1 = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
 			this.panel5 = new System.Windows.Forms.Panel();
-			this.lbttabfile = new System.Windows.Forms.Label();
+			this.btnHelp = new System.Windows.Forms.Button();
 			this.label25 = new System.Windows.Forms.Label();
 			this.ttabPanel.SuspendLayout();
 			this.tabControl1.SuspendLayout();
@@ -1521,6 +1523,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbFlags.AccessibleName = resources.GetString("gbFlags.AccessibleName");
 			this.gbFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("gbFlags.Anchor")));
 			this.gbFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("gbFlags.BackgroundImage")));
+			this.gbFlags.Controls.Add(this.btnNoFlags);
 			this.gbFlags.Controls.Add(this.tbFlags);
 			this.gbFlags.Controls.Add(this.label24);
 			this.gbFlags.Controls.Add(this.cbvisitor);
@@ -1552,6 +1555,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbFlags.TabStop = false;
 			this.gbFlags.Text = resources.GetString("gbFlags.Text");
 			this.gbFlags.Visible = ((bool)(resources.GetObject("gbFlags.Visible")));
+			// 
+			// btnNoFlags
+			// 
+			this.btnNoFlags.AccessibleDescription = resources.GetString("btnNoFlags.AccessibleDescription");
+			this.btnNoFlags.AccessibleName = resources.GetString("btnNoFlags.AccessibleName");
+			this.btnNoFlags.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnNoFlags.Anchor")));
+			this.btnNoFlags.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnNoFlags.BackgroundImage")));
+			this.btnNoFlags.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnNoFlags.Dock")));
+			this.btnNoFlags.Enabled = ((bool)(resources.GetObject("btnNoFlags.Enabled")));
+			this.btnNoFlags.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnNoFlags.FlatStyle")));
+			this.btnNoFlags.Font = ((System.Drawing.Font)(resources.GetObject("btnNoFlags.Font")));
+			this.btnNoFlags.Image = ((System.Drawing.Image)(resources.GetObject("btnNoFlags.Image")));
+			this.btnNoFlags.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnNoFlags.ImageAlign")));
+			this.btnNoFlags.ImageIndex = ((int)(resources.GetObject("btnNoFlags.ImageIndex")));
+			this.btnNoFlags.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnNoFlags.ImeMode")));
+			this.btnNoFlags.Location = ((System.Drawing.Point)(resources.GetObject("btnNoFlags.Location")));
+			this.btnNoFlags.Name = "btnNoFlags";
+			this.btnNoFlags.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnNoFlags.RightToLeft")));
+			this.btnNoFlags.Size = ((System.Drawing.Size)(resources.GetObject("btnNoFlags.Size")));
+			this.btnNoFlags.TabIndex = ((int)(resources.GetObject("btnNoFlags.TabIndex")));
+			this.btnNoFlags.Text = resources.GetString("btnNoFlags.Text");
+			this.btnNoFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnNoFlags.TextAlign")));
+			this.btnNoFlags.Visible = ((bool)(resources.GetObject("btnNoFlags.Visible")));
+			this.btnNoFlags.Click += new System.EventHandler(this.btnNoFlags_Click);
 			// 
 			// tbFlags
 			// 
@@ -2173,7 +2200,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.panel5.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("panel5.AutoScrollMinSize")));
 			this.panel5.BackColor = System.Drawing.SystemColors.AppWorkspace;
 			this.panel5.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("panel5.BackgroundImage")));
-			this.panel5.Controls.Add(this.lbttabfile);
+			this.panel5.Controls.Add(this.btnHelp);
 			this.panel5.Controls.Add(this.label25);
 			this.panel5.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("panel5.Dock")));
 			this.panel5.Enabled = ((bool)(resources.GetObject("panel5.Enabled")));
@@ -2188,27 +2215,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.panel5.Text = resources.GetString("panel5.Text");
 			this.panel5.Visible = ((bool)(resources.GetObject("panel5.Visible")));
 			// 
-			// lbttabfile
+			// btnHelp
 			// 
-			this.lbttabfile.AccessibleDescription = resources.GetString("lbttabfile.AccessibleDescription");
-			this.lbttabfile.AccessibleName = resources.GetString("lbttabfile.AccessibleName");
-			this.lbttabfile.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbttabfile.Anchor")));
-			this.lbttabfile.AutoSize = ((bool)(resources.GetObject("lbttabfile.AutoSize")));
-			this.lbttabfile.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbttabfile.Dock")));
-			this.lbttabfile.Enabled = ((bool)(resources.GetObject("lbttabfile.Enabled")));
-			this.lbttabfile.Font = ((System.Drawing.Font)(resources.GetObject("lbttabfile.Font")));
-			this.lbttabfile.Image = ((System.Drawing.Image)(resources.GetObject("lbttabfile.Image")));
-			this.lbttabfile.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbttabfile.ImageAlign")));
-			this.lbttabfile.ImageIndex = ((int)(resources.GetObject("lbttabfile.ImageIndex")));
-			this.lbttabfile.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbttabfile.ImeMode")));
-			this.lbttabfile.Location = ((System.Drawing.Point)(resources.GetObject("lbttabfile.Location")));
-			this.lbttabfile.Name = "lbttabfile";
-			this.lbttabfile.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbttabfile.RightToLeft")));
-			this.lbttabfile.Size = ((System.Drawing.Size)(resources.GetObject("lbttabfile.Size")));
-			this.lbttabfile.TabIndex = ((int)(resources.GetObject("lbttabfile.TabIndex")));
-			this.lbttabfile.Text = resources.GetString("lbttabfile.Text");
-			this.lbttabfile.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbttabfile.TextAlign")));
-			this.lbttabfile.Visible = ((bool)(resources.GetObject("lbttabfile.Visible")));
+			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
+			this.btnHelp.AccessibleName = resources.GetString("btnHelp.AccessibleName");
+			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnHelp.Anchor")));
+			this.btnHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHelp.BackgroundImage")));
+			this.btnHelp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnHelp.Dock")));
+			this.btnHelp.Enabled = ((bool)(resources.GetObject("btnHelp.Enabled")));
+			this.btnHelp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnHelp.FlatStyle")));
+			this.btnHelp.Font = ((System.Drawing.Font)(resources.GetObject("btnHelp.Font")));
+			this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+			this.btnHelp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.ImageAlign")));
+			this.btnHelp.ImageIndex = ((int)(resources.GetObject("btnHelp.ImageIndex")));
+			this.btnHelp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnHelp.ImeMode")));
+			this.btnHelp.Location = ((System.Drawing.Point)(resources.GetObject("btnHelp.Location")));
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnHelp.RightToLeft")));
+			this.btnHelp.Size = ((System.Drawing.Size)(resources.GetObject("btnHelp.Size")));
+			this.btnHelp.TabIndex = ((int)(resources.GetObject("btnHelp.TabIndex")));
+			this.btnHelp.Text = resources.GetString("btnHelp.Text");
+			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
+			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
 			// 
 			// label25
 			// 
@@ -2355,6 +2384,11 @@ namespace SimPe.PackedFiles.UserInterface
 			}			
 		}
 
+		private void btnHelp_Click(object sender, System.EventArgs e)
+		{
+			pjse.HelpHelper.PluginHelp("PieMenus");
+		}
+
 
 		private void btnAdd_Click(object sender, System.EventArgs e)
 		{
@@ -2383,6 +2417,15 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnAppend_Click(object sender, System.EventArgs e)
 		{
 			this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, ttabPanel));
+		}
+
+		private void btnNoFlags_Click(object sender, System.EventArgs e)
+		{
+			internalchg = true;
+			currentItem.Flags.Value = (ushort)0x0070;
+			this.tbFlags.Text = "0x"+Helper.HexString(currentItem.Flags.Value);
+			doFlags();
+			internalchg = false;
 		}
 
 

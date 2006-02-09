@@ -202,21 +202,21 @@ namespace pjse
 			this.tcResources = new System.Windows.Forms.TabControl();
 			this.tpPackage = new System.Windows.Forms.TabPage();
 			this.lbPackage = new System.Windows.Forms.ListBox();
+			this.tpGlobalGroup = new System.Windows.Forms.TabPage();
+			this.lbGlobalGroup = new System.Windows.Forms.ListBox();
 			this.tpGroup = new System.Windows.Forms.TabPage();
 			this.lbGroup = new System.Windows.Forms.ListBox();
 			this.tpSemiGroup = new System.Windows.Forms.TabPage();
 			this.lbSemiGroup = new System.Windows.Forms.ListBox();
-			this.tpGlobalGroup = new System.Windows.Forms.TabPage();
-			this.lbGlobalGroup = new System.Windows.Forms.ListBox();
 			this.tpBuiltIn = new System.Windows.Forms.TabPage();
 			this.lbBuiltIn = new System.Windows.Forms.ListBox();
 			this.OK = new System.Windows.Forms.Button();
 			this.Cancel = new System.Windows.Forms.Button();
 			this.tcResources.SuspendLayout();
 			this.tpPackage.SuspendLayout();
+			this.tpGlobalGroup.SuspendLayout();
 			this.tpGroup.SuspendLayout();
 			this.tpSemiGroup.SuspendLayout();
-			this.tpGlobalGroup.SuspendLayout();
 			this.tpBuiltIn.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -253,6 +253,27 @@ namespace pjse
 			this.lbPackage.Sorted = true;
 			this.lbPackage.TabIndex = 0;
 			this.lbPackage.DoubleClick += new System.EventHandler(this.listBox_DoubleClick);
+			// 
+			// tpGlobalGroup
+			// 
+			this.tpGlobalGroup.Controls.Add(this.lbGlobalGroup);
+			this.tpGlobalGroup.Location = new System.Drawing.Point(4, 22);
+			this.tpGlobalGroup.Name = "tpGlobalGroup";
+			this.tpGlobalGroup.Size = new System.Drawing.Size(402, 406);
+			this.tpGlobalGroup.TabIndex = 3;
+			this.tpGlobalGroup.Text = "Global";
+			this.tpGlobalGroup.Visible = false;
+			// 
+			// lbGlobalGroup
+			// 
+			this.lbGlobalGroup.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lbGlobalGroup.IntegralHeight = false;
+			this.lbGlobalGroup.Location = new System.Drawing.Point(0, 0);
+			this.lbGlobalGroup.Name = "lbGlobalGroup";
+			this.lbGlobalGroup.Size = new System.Drawing.Size(402, 406);
+			this.lbGlobalGroup.Sorted = true;
+			this.lbGlobalGroup.TabIndex = 0;
+			this.lbGlobalGroup.DoubleClick += new System.EventHandler(this.listBox_DoubleClick);
 			// 
 			// tpGroup
 			// 
@@ -295,27 +316,6 @@ namespace pjse
 			this.lbSemiGroup.Sorted = true;
 			this.lbSemiGroup.TabIndex = 0;
 			this.lbSemiGroup.DoubleClick += new System.EventHandler(this.listBox_DoubleClick);
-			// 
-			// tpGlobalGroup
-			// 
-			this.tpGlobalGroup.Controls.Add(this.lbGlobalGroup);
-			this.tpGlobalGroup.Location = new System.Drawing.Point(4, 22);
-			this.tpGlobalGroup.Name = "tpGlobalGroup";
-			this.tpGlobalGroup.Size = new System.Drawing.Size(402, 406);
-			this.tpGlobalGroup.TabIndex = 3;
-			this.tpGlobalGroup.Text = "Global";
-			this.tpGlobalGroup.Visible = false;
-			// 
-			// lbGlobalGroup
-			// 
-			this.lbGlobalGroup.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lbGlobalGroup.IntegralHeight = false;
-			this.lbGlobalGroup.Location = new System.Drawing.Point(0, 0);
-			this.lbGlobalGroup.Name = "lbGlobalGroup";
-			this.lbGlobalGroup.Size = new System.Drawing.Size(402, 406);
-			this.lbGlobalGroup.Sorted = true;
-			this.lbGlobalGroup.TabIndex = 0;
-			this.lbGlobalGroup.DoubleClick += new System.EventHandler(this.listBox_DoubleClick);
 			// 
 			// tpBuiltIn
 			// 
@@ -367,12 +367,12 @@ namespace pjse
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			this.Name = "ResourceChooser";
 			this.ShowInTaskbar = false;
-			this.Text = "Resource Chooser";
+			this.Text = "PJSE: Resource Chooser";
 			this.tcResources.ResumeLayout(false);
 			this.tpPackage.ResumeLayout(false);
+			this.tpGlobalGroup.ResumeLayout(false);
 			this.tpGroup.ResumeLayout(false);
 			this.tpSemiGroup.ResumeLayout(false);
-			this.tpGlobalGroup.ResumeLayout(false);
 			this.tpBuiltIn.ResumeLayout(false);
 			this.ResumeLayout(false);
 

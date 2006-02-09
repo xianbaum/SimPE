@@ -1,3 +1,109 @@
+!!! Made readStr() public -- need to review that decision (sticky)
+!!! stole Global STR# 0x1f3 for TNS Style
+
+5 February 2006 09:26 - Help: A few fixes; DialogWiz: not in Release plus fix string chooser
+  SimPe BHAV\
+    BconForm.cs 1.15.2.2
+    BconForm.resx 1.9.2.3
+    BhavForm.cs 1.64.2.4
+    BhavForm.resx 1.30.2.2
+    BhavOperandWiz.cs 1.7.14.6
+    BhavOperandWiz.resx 1.3.22.2
+    BhavOperandWiz0x0024.cs 1.1.4.3
+    BhavWizPrim.cs 1.34.2.3
+    ObjfForm.cs 1.13.2.2
+    ObjfForm.resx 1.4.6.2
+    StrForm.cs 1.28.2.2
+    StrForm.resx 1.18.14.2
+    TPRPForm.cs 1.6.2.3
+    TPRPForm.resx 1.5.2.2
+    TrcnForm.cs 1.11.2.2
+    TrcnForm.resx 1.7.2.2
+    TtabForm.cs 1.31.2.3
+    TtabForm.resx 1.15.8.3
+
+4 February 2006 18:04 - Help: Bundle initial help files and add help button
+  * Note: HelpContainer used - probably rename it at some stage
+  * Also tagged up various popups to make them obviously PJSE ones
+  * Also made DialogWizard a release-available tool
+  SimPe BHAV\PJSE_Help\
+    About.htm 1.1.2.1
+    Contents.htm 1.1.2.1
+    HelpLinks.htm 1.1.2.1
+    PieMenus.htm 1.1.2.1
+    Support.htm 1.1.2.1
+  SimPe BHAV\
+    BconForm.cs 1.15.2.1
+    BconForm.resx 1.9.2.1
+    BhavForm.cs 1.64.2.3
+    BhavForm.resx 1.30.2.1
+    BhavWizPrim.cs 1.34.2.2
+    HelpContainer.cs 1.2.28.1
+    ObjfForm.cs 1.13.2.1
+    ObjfForm.resx 1.4.6.1
+    pjse coder plugin.csproj 1.29.2.2
+    ResourceChooser.cs 1.6.2.1
+    ResourceChooser.resx 1.1.12.1
+    StrBig.cs 1.3
+    StrBig.resx 1.2.22.1
+    StrChooser.cs 1.1
+    StrChooser.resx 1.1.14.1
+    StrForm.cs 1.28.2.1
+    StrForm.resx 1.18.14.1
+    TPRPForm.cs 1.6.2.2
+    TPRPForm.resx 1.5.2.1
+    TrcnForm.cs 1.11.2.1
+    TrcnForm.resx 1.7.2.1
+    TtabForm.cs 1.31.2.2
+    TtabForm.resx 1.15.8.2
+    TtabItemMotiveTableUI.cs 1.10.12.1
+    TtabItemMotiveTableUI.resx 1.5.22.1
+    WrapperFactory.cs 1.20.2.1
+
+4 February 2006 15:03 - Wiz0x0024 landing onto PreRelease
+  * Opportunity taken to refactor loads of code as usual
+  * BhavWiz has a Wizard() method to return the Operand Wizard (or null)
+  * ABhavOperandWiz moved to BhavOperandWiz - more obvious place!
+  * ExtendedWrapper moved to ExtendedWrapper.cs - more obvious place!
+  * OpCode 0x0002 flagnames moved to BhavWiz.cs
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.2
+    BhavOperandWiz.cs 1.7.14.5
+    BhavOperandWiz.resx 1.3.4.1
+    BhavOperandWiz0x0001.cs 1.1.2.1
+    BhavOperandWiz0x0002.cs 1.6.2.2.2.1
+    BhavOperandWiz0x0024.cs 1.1.4.1
+    BhavOperandWiz0x0024.resx 1.1.4.1
+    BhavOperandWizBhav.cs 1.1.24.2
+    BhavOperandWizBhav.resx 1.1.24.1
+    BhavOperandWizDefault.cs 1.1.2.1
+    BhavOperandWizProvider.cs (deleted)
+    BhavOperandWizRaw.cs 1.1.4.1
+    BhavWiz.cs 1.37.4.1
+    BhavWizPrim.cs 1.34.6.3
+    ExtendedWrapper.cs 1.1.4.1
+    GlobalStr.cs 1.17.4.1
+    pjse coder plugin.csproj 1.29.4.1
+  GlobalsStrings.package 1.10.4.1
+  pjseTestData.package 1.17.4.1
+
+4 February 2006 11:43 - Add sensible assembly info
+  pjse filetable\
+    AssemblyInfo.cs 1.1.14.1
+  pjse GUID Tool\
+    AssemblyInfo.cs 1.1.14.1
+
+4 February 2006 10:33 - TPRP: remember open tab; TTAB: disable menu option button
+  SimPe BHAV\
+    TPRPForm.cs 1.6.2.1
+    TtabForm.cs 1.31.2.1
+    TtabForm.cs 1.15.2.1
+
+4 February 2006 10:31 - BHAV: BCON shortform change; motive shortform change; ">>" active in read-only
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.1
+    BhavWiz.cs 1.37.2.3
+  pjseTestData.package 1.17.2.3
 
 19 January 2006 20:56 - Wiz0x0002: oops - no negative decimals allowed
   SimPe BHAV\

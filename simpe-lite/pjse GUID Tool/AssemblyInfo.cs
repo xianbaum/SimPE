@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("PJSE GUID Search Plugin")]
+[assembly: AssemblyDescription("PJSE GUID Search Plugin for SimPe")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCompany("Peter L Jones")]
+[assembly: AssemblyProduct("pjse.guidtool.plugin")]
+[assembly: AssemblyCopyright("Released under the GNU GPL")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

@@ -61,6 +61,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnStrNext;
 		private System.Windows.Forms.Button btnTabNext;
 		private System.Windows.Forms.Button btnTabPrev;
+		private System.Windows.Forms.Button btnHelp;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -110,6 +111,23 @@ namespace SimPe.PackedFiles.UserInterface
 		private TPRPItem origItem = null;
 		private TPRPItem currentItem = null;
 
+		private int InitialTab
+		{
+			get
+			{
+				XmlRegistryKey  rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\TPRP");
+				object o = rkf.GetValue("initialTab", 1);
+				return Convert.ToInt16(o);
+			}
+
+			set
+			{
+				XmlRegistryKey rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\TPRP");
+				rkf.SetValue("initialTab", value);
+			}
+
+		}
+
 		private bool hex32_IsValid(object sender)
 		{
 			if (alHex32.IndexOf(sender) < 0)
@@ -150,7 +168,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void setTab(int l)
 		{
 			internalchg = true;
-			this.tabControl1.SelectedIndex = tab = l;
+			InitialTab = this.tabControl1.SelectedIndex = tab = l;
 			internalchg = false;
 
 			if (this.lvCurrent.SelectedIndices.Count == 0)
@@ -307,7 +325,7 @@ namespace SimPe.PackedFiles.UserInterface
 			updateLists();
 			internalchg = false;
 
-			setTab(0);
+			setTab(InitialTab);
 
 			if (!setHandler)
 			{
@@ -347,6 +365,7 @@ namespace SimPe.PackedFiles.UserInterface
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TPRPForm));
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.pnHeading = new System.Windows.Forms.Panel();
+			this.btnHelp = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.tprpPanel = new System.Windows.Forms.Panel();
 			this.btnTabNext = new System.Windows.Forms.Button();
@@ -412,6 +431,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnHeading.AutoScrollMinSize")));
 			this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
 			this.pnHeading.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnHeading.BackgroundImage")));
+			this.pnHeading.Controls.Add(this.btnHelp);
 			this.pnHeading.Controls.Add(this.label1);
 			this.pnHeading.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnHeading.Dock")));
 			this.pnHeading.Enabled = ((bool)(resources.GetObject("pnHeading.Enabled")));
@@ -425,6 +445,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnHeading.TabIndex = ((int)(resources.GetObject("pnHeading.TabIndex")));
 			this.pnHeading.Text = resources.GetString("pnHeading.Text");
 			this.pnHeading.Visible = ((bool)(resources.GetObject("pnHeading.Visible")));
+			// 
+			// btnHelp
+			// 
+			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
+			this.btnHelp.AccessibleName = resources.GetString("btnHelp.AccessibleName");
+			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnHelp.Anchor")));
+			this.btnHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHelp.BackgroundImage")));
+			this.btnHelp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnHelp.Dock")));
+			this.btnHelp.Enabled = ((bool)(resources.GetObject("btnHelp.Enabled")));
+			this.btnHelp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnHelp.FlatStyle")));
+			this.btnHelp.Font = ((System.Drawing.Font)(resources.GetObject("btnHelp.Font")));
+			this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+			this.btnHelp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.ImageAlign")));
+			this.btnHelp.ImageIndex = ((int)(resources.GetObject("btnHelp.ImageIndex")));
+			this.btnHelp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnHelp.ImeMode")));
+			this.btnHelp.Location = ((System.Drawing.Point)(resources.GetObject("btnHelp.Location")));
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnHelp.RightToLeft")));
+			this.btnHelp.Size = ((System.Drawing.Size)(resources.GetObject("btnHelp.Size")));
+			this.btnHelp.TabIndex = ((int)(resources.GetObject("btnHelp.TabIndex")));
+			this.btnHelp.Text = resources.GetString("btnHelp.Text");
+			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
+			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
 			// 
 			// label1
 			// 
@@ -1036,6 +1080,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Cancel();
 			this.tbLabel.SelectAll();
 			this.tbLabel.Focus();
+		}
+
+		private void btnHelp_Click(object sender, System.EventArgs e)
+		{
+			pjse.HelpHelper.PluginHelp("Bhavs");
 		}
 
 

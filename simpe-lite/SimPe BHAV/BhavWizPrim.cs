@@ -184,6 +184,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0001(Instruction i) : base(i) { }
 
+		public override ABhavOperandWiz Wizard()
+		{
+			return new pjse.BhavOperandWizards.BhavOperandWiz0x0001(instruction);
+		}
+
+
 		protected override string Operands(bool lng)
 		{
 			string s = GS.GStr(GS.BhavStr.Generics, instruction.Operands[0]);
@@ -353,6 +359,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0002(Instruction i) : base(i) { }
 
+		public override ABhavOperandWiz Wizard()
+		{
+			return new pjse.BhavOperandWizards.BhavOperandWiz0x0002(instruction);
+		}
+
+
 		protected override string Operands(bool lng)
 		{
 			byte[] o = instruction.Operands;
@@ -491,55 +503,6 @@ namespace pjse.BhavNameWizards
                     }
                     break;
 #endif
-		}
-
-
-		public static ArrayList flagNames(byte flagOwner, ushort flagType)
-		{
-			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.gStr((GS.BhavStr)flagTypes[flagType]);
-		}
-
-		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
-		{
-			if (flagValue == 0) return "[0: invalid]";
-			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : GS.GStr((GS.BhavStr)flagTypes[flagType], (ushort)(flagValue-1));
-		}
-
-
-		private static Hashtable flagOwners = flagInitaliser();
-		private static Hashtable flagInitaliser()
-		{
-			Hashtable f = new Hashtable();
-			Hashtable o = new Hashtable();
-			o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
-			o.Add((ushort)0x08, GS.BhavStr.Flags1);
-			o.Add((ushort)0x0d, GS.BhavStr.WallPlacementFlags);
-			o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
-			o.Add((ushort)0x28, GS.BhavStr.Flags2);
-			o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);
-			o.Add((ushort)0x2b, GS.BhavStr.MoveFlags);
-			o.Add((ushort)0x3f, GS.BhavStr.ExclPlacementFlags);
-			o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
-			f.Add((byte)0x03, o); // 0x03 "My"
-			f.Add((byte)0x04, o); // 0x04 "Stack Object's"
-			Hashtable p = new Hashtable();
-			p.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
-			p.Add((ushort)0x44, GS.BhavStr.GhostFlags);
-			p.Add((ushort)0x51, GS.BhavStr.BodyFlags);
-			p.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
-			p.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
-			f.Add((byte)0x12, p); // 0x12 "My Person Data"
-			f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
-			f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
-			Hashtable d = new Hashtable();
-			d.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
-			d.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
-			f.Add((byte)0x15, d); // 0x15 "stack object's definition"
-			f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
-			f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"
-			return f;
 		}
 
 	}
@@ -752,7 +715,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x000d : BhavWizPrim	// Push Interaction
+	public class WizPrim0x000d : BhavWizPrim	// Push Interaction -- for wizard, see edithWiki FunWithControllers
 	{
 		public WizPrim0x000d(Instruction i) : base(i) { }
 
@@ -921,7 +884,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0010 : BhavWizPrim	// Find location for
+	public class WizPrim0x0010 : BhavWizPrim	// Find location for -- for wizard, see edithWiki AkeaPostMortem
 	{
 		public WizPrim0x0010(Instruction i) : base(i) { }
 
@@ -1077,7 +1040,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0012 : BhavWizPrim	// Remove Object Instance
+	public class WizPrim0x0012 : BhavWizPrim	// Remove Object Instance -- for wizard, see edithWiki AkeaPostMortem
 	{
 		public WizPrim0x0012(Instruction i) : base(i) { }
 
@@ -1262,7 +1225,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0017 : BhavWizPrim	// Play / Stop Sound Event
+	public class WizPrim0x0017 : BhavWizPrim	// Play / Stop Sound Event -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x0017(Instruction i) : base(i) { }
 
@@ -1331,7 +1294,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0019 : BhavWizPrim	// Alter Budget
+	public class WizPrim0x0019 : BhavWizPrim	// Alter Budget -- for wizard, see edithWiki WorkAndSchool, Chance Card - Results
 	{
 		public WizPrim0x0019(Instruction i) : base(i) { }
 
@@ -1663,7 +1626,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x001d : BhavWizPrim	// Set Motive Change
+	public class WizPrim0x001d : BhavWizPrim	// Set Motive Change -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x001d(Instruction i) : base(i) { }
 
@@ -2119,6 +2082,14 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0024(Instruction i) : base(i) { }
 
+#if INPROGRESS || DEBUG
+		public override ABhavOperandWiz Wizard()
+		{
+			return new pjse.BhavOperandWizards.BhavOperandWiz0x0024(instruction);
+		}
+
+#endif
+
 		protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
@@ -2201,16 +2172,9 @@ namespace pjse.BhavNameWizards
 				s += ", " + (nowait ? "don't " : "") + "wait for user";/* + " and " +*/
 				s += ", " + (noblock ? "don't " : "") + "block Sim";
 
-				s += ", Style: ";
-				switch (o[12]) 
-				{
-					case 0: s += "Sim"; break;
-					case 1: s += "System"; break;
-					case 2: s += "System Dialog"; break;
-					case 3: s += "Birthday"; break;
-					case 4: s += "Sim (about Object ID in Temp 1)"; break;
-					default: s += "unknown"; break;
-				}
+				// these are the TNS notification types.  Only show for 0x08 and 0x0a.
+				if (o[5] == 0x08 || o[5] == 0x0a)
+					s += ", TNS Style: " + GS.GStr(GS.BhavStr.TnsStyle, o[12]);
 
 				s += ", " + scope.ToString() + " strings.";
 
@@ -2386,7 +2350,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x002a : BhavWizPrim	// Create new object instance
+	public class WizPrim0x002a : BhavWizPrim	// Create new object instance -- for wizard, see edithWiki AkeaPostMortem
 	{
 		public WizPrim0x002a(Instruction i) : base(i) { }
 
@@ -2475,7 +2439,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x002d : BhavWizPrim	// Go To Routing Slot
+	public class WizPrim0x002d : BhavWizPrim	// Go To Routing Slot -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x002d(Instruction i) : base(i) { }
 
@@ -2551,7 +2515,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x002e : BhavWizPrim	// Snap
+	public class WizPrim0x002e : BhavWizPrim	// Snap -- for wizard, see edithWiki CreatingAChair (assume this is s/t/r/s)
 	{
 		public WizPrim0x002e(Instruction i) : base(i) { }
 
@@ -2746,7 +2710,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0033 : BhavWizPrim	// Manage Inventory
+	public class WizPrim0x0033 : BhavWizPrim	// Manage Inventory -- for wizard, see edithWiki WorkAndSchool, Career rewards
 	{
 		public WizPrim0x0033(Instruction i) : base(i) { }
 
@@ -3222,7 +3186,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x006a : BhavWizPrim	// Animate Sim
+	public class WizPrim0x006a : BhavWizPrim	// Animate Sim -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x006a(Instruction i) : base(i) { }
 
@@ -4328,7 +4292,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0071 : BhavWizPrim	// Snap Into
+	public class WizPrim0x0071 : BhavWizPrim	// Snap Into -- for wizard, see edithWiki CreatingAChair
 	{
 		public WizPrim0x0071(Instruction i) : base(i) { }
 
@@ -5260,7 +5224,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x007c : BhavWizPrim	// Want Satisfy
+	public class WizPrim0x007c : BhavWizPrim	// Want Satisfy -- for wizard, see edithWiki WantSatisfacton
 	{
 		public WizPrim0x007c(Instruction i) : base(i) { }
 

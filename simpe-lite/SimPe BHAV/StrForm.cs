@@ -40,7 +40,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbFormat;
 		private System.Windows.Forms.TextBox tbFormat;
 		private System.Windows.Forms.Label lbStringNum;
-		private System.Windows.Forms.Label lbPlugin;
 		private System.Windows.Forms.Button btnStrDelete;
 		private System.Windows.Forms.Button btnStrAdd;
 		private System.Windows.Forms.Button btnClearAll;
@@ -65,6 +64,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnStrPrev;
 		private System.Windows.Forms.Button btnStrNext;
 		private System.Windows.Forms.Button btnImport;
+		private System.Windows.Forms.Panel pnHeading;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Button btnHelp;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -515,7 +517,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			if (internalchg) return;
 			internalchg = true;
-			this.tbFilename.Text = wrapper.FileName;
+			this.Text = this.tbFilename.Text = wrapper.FileName;
 			this.tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
 			if (wrapper.Format == 0x0000)
 			{
@@ -546,6 +548,9 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
 			this.strPanel = new System.Windows.Forms.Panel();
+			this.pnHeading = new System.Windows.Forms.Panel();
+			this.btnHelp = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
 			this.btnStrPrev = new System.Windows.Forms.Button();
 			this.btnStrNext = new System.Windows.Forms.Button();
 			this.ckbDefault = new System.Windows.Forms.CheckBox();
@@ -569,7 +574,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbStringNum = new System.Windows.Forms.Label();
 			this.tbFilename = new System.Windows.Forms.TextBox();
 			this.lbFilename = new System.Windows.Forms.Label();
-			this.lbPlugin = new System.Windows.Forms.Label();
 			this.btnCommit = new System.Windows.Forms.Button();
 			this.lbFormat = new System.Windows.Forms.Label();
 			this.tbFormat = new System.Windows.Forms.TextBox();
@@ -578,6 +582,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrAdd = new System.Windows.Forms.Button();
 			this.btnImport = new System.Windows.Forms.Button();
 			this.strPanel.SuspendLayout();
+			this.pnHeading.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// strPanel
@@ -589,6 +594,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMargin")));
 			this.strPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMinSize")));
 			this.strPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("strPanel.BackgroundImage")));
+			this.strPanel.Controls.Add(this.pnHeading);
 			this.strPanel.Controls.Add(this.btnStrPrev);
 			this.strPanel.Controls.Add(this.btnStrNext);
 			this.strPanel.Controls.Add(this.ckbDefault);
@@ -609,7 +615,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Controls.Add(this.lbStringNum);
 			this.strPanel.Controls.Add(this.tbFilename);
 			this.strPanel.Controls.Add(this.lbFilename);
-			this.strPanel.Controls.Add(this.lbPlugin);
 			this.strPanel.Controls.Add(this.btnCommit);
 			this.strPanel.Controls.Add(this.lbFormat);
 			this.strPanel.Controls.Add(this.tbFormat);
@@ -629,6 +634,77 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Text = resources.GetString("strPanel.Text");
 			this.strPanel.Visible = ((bool)(resources.GetObject("strPanel.Visible")));
 			this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
+			// 
+			// pnHeading
+			// 
+			this.pnHeading.AccessibleDescription = resources.GetString("pnHeading.AccessibleDescription");
+			this.pnHeading.AccessibleName = resources.GetString("pnHeading.AccessibleName");
+			this.pnHeading.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnHeading.Anchor")));
+			this.pnHeading.AutoScroll = ((bool)(resources.GetObject("pnHeading.AutoScroll")));
+			this.pnHeading.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("pnHeading.AutoScrollMargin")));
+			this.pnHeading.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("pnHeading.AutoScrollMinSize")));
+			this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
+			this.pnHeading.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnHeading.BackgroundImage")));
+			this.pnHeading.Controls.Add(this.btnHelp);
+			this.pnHeading.Controls.Add(this.label2);
+			this.pnHeading.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("pnHeading.Dock")));
+			this.pnHeading.Enabled = ((bool)(resources.GetObject("pnHeading.Enabled")));
+			this.pnHeading.Font = ((System.Drawing.Font)(resources.GetObject("pnHeading.Font")));
+			this.pnHeading.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.pnHeading.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("pnHeading.ImeMode")));
+			this.pnHeading.Location = ((System.Drawing.Point)(resources.GetObject("pnHeading.Location")));
+			this.pnHeading.Name = "pnHeading";
+			this.pnHeading.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("pnHeading.RightToLeft")));
+			this.pnHeading.Size = ((System.Drawing.Size)(resources.GetObject("pnHeading.Size")));
+			this.pnHeading.TabIndex = ((int)(resources.GetObject("pnHeading.TabIndex")));
+			this.pnHeading.Text = resources.GetString("pnHeading.Text");
+			this.pnHeading.Visible = ((bool)(resources.GetObject("pnHeading.Visible")));
+			// 
+			// btnHelp
+			// 
+			this.btnHelp.AccessibleDescription = resources.GetString("btnHelp.AccessibleDescription");
+			this.btnHelp.AccessibleName = resources.GetString("btnHelp.AccessibleName");
+			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnHelp.Anchor")));
+			this.btnHelp.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnHelp.BackgroundImage")));
+			this.btnHelp.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnHelp.Dock")));
+			this.btnHelp.Enabled = ((bool)(resources.GetObject("btnHelp.Enabled")));
+			this.btnHelp.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnHelp.FlatStyle")));
+			this.btnHelp.Font = ((System.Drawing.Font)(resources.GetObject("btnHelp.Font")));
+			this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+			this.btnHelp.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.ImageAlign")));
+			this.btnHelp.ImageIndex = ((int)(resources.GetObject("btnHelp.ImageIndex")));
+			this.btnHelp.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnHelp.ImeMode")));
+			this.btnHelp.Location = ((System.Drawing.Point)(resources.GetObject("btnHelp.Location")));
+			this.btnHelp.Name = "btnHelp";
+			this.btnHelp.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnHelp.RightToLeft")));
+			this.btnHelp.Size = ((System.Drawing.Size)(resources.GetObject("btnHelp.Size")));
+			this.btnHelp.TabIndex = ((int)(resources.GetObject("btnHelp.TabIndex")));
+			this.btnHelp.Text = resources.GetString("btnHelp.Text");
+			this.btnHelp.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnHelp.TextAlign")));
+			this.btnHelp.Visible = ((bool)(resources.GetObject("btnHelp.Visible")));
+			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+			// 
+			// label2
+			// 
+			this.label2.AccessibleDescription = resources.GetString("label2.AccessibleDescription");
+			this.label2.AccessibleName = resources.GetString("label2.AccessibleName");
+			this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("label2.Anchor")));
+			this.label2.AutoSize = ((bool)(resources.GetObject("label2.AutoSize")));
+			this.label2.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("label2.Dock")));
+			this.label2.Enabled = ((bool)(resources.GetObject("label2.Enabled")));
+			this.label2.Font = ((System.Drawing.Font)(resources.GetObject("label2.Font")));
+			this.label2.Image = ((System.Drawing.Image)(resources.GetObject("label2.Image")));
+			this.label2.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.ImageAlign")));
+			this.label2.ImageIndex = ((int)(resources.GetObject("label2.ImageIndex")));
+			this.label2.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("label2.ImeMode")));
+			this.label2.Location = ((System.Drawing.Point)(resources.GetObject("label2.Location")));
+			this.label2.Name = "label2";
+			this.label2.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("label2.RightToLeft")));
+			this.label2.Size = ((System.Drawing.Size)(resources.GetObject("label2.Size")));
+			this.label2.TabIndex = ((int)(resources.GetObject("label2.TabIndex")));
+			this.label2.Text = resources.GetString("label2.Text");
+			this.label2.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label2.TextAlign")));
+			this.label2.Visible = ((bool)(resources.GetObject("label2.Visible")));
 			// 
 			// btnStrPrev
 			// 
@@ -1141,30 +1217,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbFilename.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFilename.TextAlign")));
 			this.lbFilename.Visible = ((bool)(resources.GetObject("lbFilename.Visible")));
 			// 
-			// lbPlugin
-			// 
-			this.lbPlugin.AccessibleDescription = resources.GetString("lbPlugin.AccessibleDescription");
-			this.lbPlugin.AccessibleName = resources.GetString("lbPlugin.AccessibleName");
-			this.lbPlugin.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbPlugin.Anchor")));
-			this.lbPlugin.AutoSize = ((bool)(resources.GetObject("lbPlugin.AutoSize")));
-			this.lbPlugin.BackColor = System.Drawing.SystemColors.AppWorkspace;
-			this.lbPlugin.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbPlugin.Dock")));
-			this.lbPlugin.Enabled = ((bool)(resources.GetObject("lbPlugin.Enabled")));
-			this.lbPlugin.Font = ((System.Drawing.Font)(resources.GetObject("lbPlugin.Font")));
-			this.lbPlugin.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.lbPlugin.Image = ((System.Drawing.Image)(resources.GetObject("lbPlugin.Image")));
-			this.lbPlugin.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbPlugin.ImageAlign")));
-			this.lbPlugin.ImageIndex = ((int)(resources.GetObject("lbPlugin.ImageIndex")));
-			this.lbPlugin.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbPlugin.ImeMode")));
-			this.lbPlugin.Location = ((System.Drawing.Point)(resources.GetObject("lbPlugin.Location")));
-			this.lbPlugin.Name = "lbPlugin";
-			this.lbPlugin.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbPlugin.RightToLeft")));
-			this.lbPlugin.Size = ((System.Drawing.Size)(resources.GetObject("lbPlugin.Size")));
-			this.lbPlugin.TabIndex = ((int)(resources.GetObject("lbPlugin.TabIndex")));
-			this.lbPlugin.Text = resources.GetString("lbPlugin.Text");
-			this.lbPlugin.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbPlugin.TextAlign")));
-			this.lbPlugin.Visible = ((bool)(resources.GetObject("lbPlugin.Visible")));
-			// 
 			// btnCommit
 			// 
 			this.btnCommit.AccessibleDescription = resources.GetString("btnCommit.AccessibleDescription");
@@ -1348,6 +1400,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Controls.Add(this.strPanel);
 			this.Enabled = ((bool)(resources.GetObject("$this.Enabled")));
 			this.Font = ((System.Drawing.Font)(resources.GetObject("$this.Font")));
+			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("$this.ImeMode")));
 			this.Location = ((System.Drawing.Point)(resources.GetObject("$this.Location")));
@@ -1358,6 +1411,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.StartPosition = ((System.Windows.Forms.FormStartPosition)(resources.GetObject("$this.StartPosition")));
 			this.Text = resources.GetString("$this.Text");
 			this.strPanel.ResumeLayout(false);
+			this.pnHeading.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -1545,6 +1599,13 @@ namespace SimPe.PackedFiles.UserInterface
 			this.StrReplace();
 		}
 
+
+		private void btnHelp_Click(object sender, System.EventArgs e)
+		{
+			pjse.HelpHelper.PluginHelp((wrapper.FileDescriptor.Type == 0x54544173)
+				? "PieMenus"
+				: "Strings");
+		}
 
 	}
 

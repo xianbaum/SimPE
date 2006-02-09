@@ -25,13 +25,9 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
-using SimPe.PackedFiles.UserInterface;
-//using pjse.BhavNameWizards;
-using pjse.BhavOperandWizards;
 
 namespace pjse.BhavOperandWizards.WizRaw
 {
-	#region internal form
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
@@ -70,7 +66,7 @@ namespace pjse.BhavOperandWizards.WizRaw
 		}
 
 		
-		#region MyForm
+		#region UI
 		public Instruction Write(Instruction inst)
 		{
 			try 
@@ -149,7 +145,6 @@ namespace pjse.BhavOperandWizards.WizRaw
 
 	}
 
-	#endregion
 }
 
 namespace pjse.BhavOperandWizards
@@ -161,7 +156,6 @@ namespace pjse.BhavOperandWizards
 		public BhavOperandWizRaw(Instruction i) : base(i) { }
 
 
-		#region pjse.ABhavOperandWiz
 		private WizRaw.UI myForm = null;
 		public override Panel bhavPrimWizPanel
 		{
@@ -190,7 +184,6 @@ namespace pjse.BhavOperandWizards
 		}
 		#endregion
 
-		#endregion
 	}
 }
 
