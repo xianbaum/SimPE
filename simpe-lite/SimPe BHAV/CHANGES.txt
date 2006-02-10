@@ -1,6 +1,13 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+10 February 2006 21:41 - FileTable: make load at start up configurable
+  pjse filetable\
+    FileTable.cs 1.11.2.1
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.5
+    BhavForm.resx 1.30.2.3
+
 10 February 2006 20:31 - Help: More helpful "missing helpfiles" message
   SimPe BHAV\
     HelpContainer.cs 1.2.28.2

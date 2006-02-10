@@ -105,10 +105,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbInst_NodeVersion;
 		private System.Windows.Forms.Button btnClose;
 		private System.Windows.Forms.CheckBox cbSpecial;
-		private System.Windows.Forms.CheckBox cbDecimal;
 		private System.Windows.Forms.TextBox tbInst_Longname;
 		private System.Windows.Forms.Button btnListing;
 		private System.Windows.Forms.Button btnHelp;
+		private System.Windows.Forms.CheckBox cbLoadAtStartup;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -162,7 +162,10 @@ namespace SimPe.PackedFiles.UserInterface
 			ComboBox[] cb = { tba1 ,tba2 ,cbFormat ,};
 			alHex16cb = new ArrayList(cb);
 
-			this.cbSpecial.Checked = this.gbSpecial.Visible = this.ShowSpecialButtons;
+			cbLoadAtStartup.Checked = this.LoadAtStartup;
+
+			this.gbSpecial.Visible = this.cbLoadAtStartup.Visible =
+				this.cbSpecial.Checked = this.ShowSpecialButtons;
 
 			pjse.FileTable.GFT.FiletableRefresh += new System.EventHandler(this.FiletableRefresh);
 		}
@@ -470,6 +473,23 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
+		private bool LoadAtStartup
+		{
+			get
+			{
+				XmlRegistryKey  rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+				object o = rkf.GetValue("loadAtStartup", false);
+				return Convert.ToBoolean(o);
+			}
+
+			set
+			{
+				XmlRegistryKey rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+				rkf.SetValue("loadAtStartup", value);
+			}
+
+		}
+
 
 		private void FiletableRefresh(object sender, System.EventArgs e)
 		{
@@ -636,7 +656,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
-			this.cbDecimal = new System.Windows.Forms.CheckBox();
+			this.cbLoadAtStartup = new System.Windows.Forms.CheckBox();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -1877,7 +1897,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavPanel.Controls.Add(this.pnHeading);
 			this.bhavPanel.Controls.Add(this.btnAdd);
 			this.bhavPanel.Controls.Add(this.lbCacheFlags);
-			this.bhavPanel.Controls.Add(this.cbDecimal);
+			this.bhavPanel.Controls.Add(this.cbLoadAtStartup);
 			this.bhavPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("bhavPanel.Dock")));
 			this.bhavPanel.Enabled = ((bool)(resources.GetObject("bhavPanel.Enabled")));
 			this.bhavPanel.Font = ((System.Drawing.Font)(resources.GetObject("bhavPanel.Font")));
@@ -2536,31 +2556,31 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
 			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
 			// 
-			// cbDecimal
+			// cbLoadAtStartup
 			// 
-			this.cbDecimal.AccessibleDescription = resources.GetString("cbDecimal.AccessibleDescription");
-			this.cbDecimal.AccessibleName = resources.GetString("cbDecimal.AccessibleName");
-			this.cbDecimal.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbDecimal.Anchor")));
-			this.cbDecimal.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("cbDecimal.Appearance")));
-			this.cbDecimal.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbDecimal.BackgroundImage")));
-			this.cbDecimal.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbDecimal.CheckAlign")));
-			this.cbDecimal.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbDecimal.Dock")));
-			this.cbDecimal.Enabled = ((bool)(resources.GetObject("cbDecimal.Enabled")));
-			this.cbDecimal.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("cbDecimal.FlatStyle")));
-			this.cbDecimal.Font = ((System.Drawing.Font)(resources.GetObject("cbDecimal.Font")));
-			this.cbDecimal.Image = ((System.Drawing.Image)(resources.GetObject("cbDecimal.Image")));
-			this.cbDecimal.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbDecimal.ImageAlign")));
-			this.cbDecimal.ImageIndex = ((int)(resources.GetObject("cbDecimal.ImageIndex")));
-			this.cbDecimal.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbDecimal.ImeMode")));
-			this.cbDecimal.Location = ((System.Drawing.Point)(resources.GetObject("cbDecimal.Location")));
-			this.cbDecimal.Name = "cbDecimal";
-			this.cbDecimal.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbDecimal.RightToLeft")));
-			this.cbDecimal.Size = ((System.Drawing.Size)(resources.GetObject("cbDecimal.Size")));
-			this.cbDecimal.TabIndex = ((int)(resources.GetObject("cbDecimal.TabIndex")));
-			this.cbDecimal.Text = resources.GetString("cbDecimal.Text");
-			this.cbDecimal.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbDecimal.TextAlign")));
-			this.cbDecimal.Visible = ((bool)(resources.GetObject("cbDecimal.Visible")));
-			this.cbDecimal.CheckStateChanged += new System.EventHandler(this.cbDecimal_CheckStateChanged);
+			this.cbLoadAtStartup.AccessibleDescription = resources.GetString("cbLoadAtStartup.AccessibleDescription");
+			this.cbLoadAtStartup.AccessibleName = resources.GetString("cbLoadAtStartup.AccessibleName");
+			this.cbLoadAtStartup.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("cbLoadAtStartup.Anchor")));
+			this.cbLoadAtStartup.Appearance = ((System.Windows.Forms.Appearance)(resources.GetObject("cbLoadAtStartup.Appearance")));
+			this.cbLoadAtStartup.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("cbLoadAtStartup.BackgroundImage")));
+			this.cbLoadAtStartup.CheckAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbLoadAtStartup.CheckAlign")));
+			this.cbLoadAtStartup.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("cbLoadAtStartup.Dock")));
+			this.cbLoadAtStartup.Enabled = ((bool)(resources.GetObject("cbLoadAtStartup.Enabled")));
+			this.cbLoadAtStartup.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("cbLoadAtStartup.FlatStyle")));
+			this.cbLoadAtStartup.Font = ((System.Drawing.Font)(resources.GetObject("cbLoadAtStartup.Font")));
+			this.cbLoadAtStartup.Image = ((System.Drawing.Image)(resources.GetObject("cbLoadAtStartup.Image")));
+			this.cbLoadAtStartup.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbLoadAtStartup.ImageAlign")));
+			this.cbLoadAtStartup.ImageIndex = ((int)(resources.GetObject("cbLoadAtStartup.ImageIndex")));
+			this.cbLoadAtStartup.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("cbLoadAtStartup.ImeMode")));
+			this.cbLoadAtStartup.Location = ((System.Drawing.Point)(resources.GetObject("cbLoadAtStartup.Location")));
+			this.cbLoadAtStartup.Name = "cbLoadAtStartup";
+			this.cbLoadAtStartup.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("cbLoadAtStartup.RightToLeft")));
+			this.cbLoadAtStartup.Size = ((System.Drawing.Size)(resources.GetObject("cbLoadAtStartup.Size")));
+			this.cbLoadAtStartup.TabIndex = ((int)(resources.GetObject("cbLoadAtStartup.TabIndex")));
+			this.cbLoadAtStartup.Text = resources.GetString("cbLoadAtStartup.Text");
+			this.cbLoadAtStartup.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("cbLoadAtStartup.TextAlign")));
+			this.cbLoadAtStartup.Visible = ((bool)(resources.GetObject("cbLoadAtStartup.Visible")));
+			this.cbLoadAtStartup.CheckedChanged += new System.EventHandler(this.cbLoadAtStartup_CheckedChanged);
 			// 
 			// BhavForm
 			// 
@@ -3084,14 +3104,15 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void cbDecimal_CheckStateChanged(object sender, System.EventArgs e)
+		private void cbLoadAtStartup_CheckedChanged(object sender, System.EventArgs e)
 		{
-			UpdateInstPanel();
+			this.LoadAtStartup = ((CheckBox)sender).Checked;
 		}
 
 		private void cbSpecial_CheckStateChanged(object sender, System.EventArgs e)
 		{
-			this.ShowSpecialButtons = gbSpecial.Visible = ((CheckBox)sender).Checked;
+			gbSpecial.Visible = this.cbLoadAtStartup.Visible =
+				this.ShowSpecialButtons = ((CheckBox)sender).Checked;
 		}
 
 

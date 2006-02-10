@@ -36,8 +36,9 @@ namespace pjse
 		static FileTable()
 		{
 			GFT = new FileTable();
-			GFT.Refresh();
+			if (static_getter_LoadAtStartup()) GFT.Refresh();
 		}
+
 
 		public FileTable()
 		{
@@ -53,12 +54,21 @@ namespace pjse
 		private Hashtable pfByGroup = new Hashtable();
 		private Hashtable pfByTypeGroup = new Hashtable();
 		private Hashtable pfByTypeGroupInstance = new Hashtable();
+		private bool hasLoaded = false;
 
 		private IPackageFile currentPackage = null;
 
 
+		private static bool static_getter_LoadAtStartup()
+		{
+			SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+			object o = rkf.GetValue("loadAtStartup", true);
+			return Convert.ToBoolean(o);
+		}
+
 		public void Refresh()
 		{
+			hasLoaded = true;
 			packedFiles = new Hashtable();
 			pfByPackage = new Hashtable();
 			pfByType = new Hashtable();
@@ -106,6 +116,8 @@ namespace pjse
 		{
 			get
 			{
+				if (!hasLoaded) Refresh();
+
 				ArrayList result = new ArrayList();
 				foreach (Entry e in ((Hashtable)pfByPackage[package]).Keys)
 				{
@@ -122,6 +134,8 @@ namespace pjse
 		{
 			get
 			{
+				if (!hasLoaded) Refresh();
+
 				return putLocalFirst((Hashtable)pfByType[packedFileType], false);
 			}
 		}
@@ -130,6 +144,8 @@ namespace pjse
 		{
 			get
 			{
+				if (!hasLoaded) Refresh();
+
 				Hashtable tgt = (Hashtable)pfByTypeGroup[packedFileType];
 				if (tgt == null) return new Entry[0];
 				return putLocalFirst((Hashtable)tgt[group], group == 0xffffffff);
@@ -140,6 +156,8 @@ namespace pjse
 		{
 			get
 			{
+				if (!hasLoaded) Refresh();
+
 				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[packedFileType];
 				if (tgit == null) return new Entry[0];
 				Hashtable tgitg = (Hashtable)tgit[group];
