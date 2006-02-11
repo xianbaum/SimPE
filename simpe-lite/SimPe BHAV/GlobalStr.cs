@@ -89,7 +89,7 @@ namespace pjse
 			//Str0x0090..95 - there are no Str0x0090..95
 			//Str0x0096 unused
 			//Str0x0097..98 - there are no Str0x0097..98
-			ShortOwner = 0x99,
+			ShortOwner = 0x99,	// see Find 5 worst motives prim
 			//Str0x009a unused
 			//Str0x009b unused
 			//Str0x009c kill object options
@@ -118,8 +118,8 @@ namespace pjse
 			SnapType = 0xcf, // How To Snap
 			WallAdjFlags = 0xd0,
 			//Str0x00d1 .. d2 unused
-			UpdateWho = 0xd3,
-			UpdateWhat = 0xd4,
+			UpdateWho = 0xd3,	// See Refresh prim
+			UpdateWhat = 0xd4,	// See Refresh prim
 			//Str0x00d5 unused
 			Flags2 = 0xd6, // Flags for Flag Field 2
 			//Str0x00d7 Routing slot param types (Go To Routing slot - not used here)
@@ -131,7 +131,7 @@ namespace pjse
 			NeighborData = 0xdd,
 			RTBNType = 0xde, // how to call named tree
 			//Str0x00df - there is no Str0x00df
-			Priorities = 0xe0,
+			Priorities = 0xe0,	// See Push Interaction prim
 			//Str0x00e1 times of day
 			//Str0x00e2 tree categories
 			//Str0x00e3 .. e4 unused
@@ -147,27 +147,27 @@ namespace pjse
 			ExpenseType = 0xf0,
 			//Str0x00f1 route results
 			//Str0x00f2 add subtract
-			JobData = 0xf3,
+			JobData = 0xf3,	// for Data owner 0x21
 			DialogIcon = 0xf4,
 			OBJFDescs = 0xf5, // entry points
 			//Str0x00f6 object types
 			//Str0x00f7 .. f8 unused
-			NeighborhoodData = 0xf9,
-			PersonOutfits = 0xfa,
-			ExclPlacementFlags = 0xfb,
-			InventoryDialog = 0xfc,
-			WallCutoutFlags = 0xfd,
+			NeighborhoodData = 0xf9,	// for Data owner 0x22
+			PersonOutfits = 0xfa,	// see Change Outfit prim
+			ExclPlacementFlags = 0xfb,	// for Data owners 0x03 and 0x04
+			InventoryDialog = 0xfc,	// for Data owners 0x27 and 0x28
+			WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
 			//Str0x00fe unused
 			//Str0x00ff..01f3 - there are no Str0x00ff..01f3
-			TnsStyle = 0x1f3,
+			TnsStyle = 0x1f3,	// PJSE: string number stolen
 			//Str0x01f4 .. 1fd unused
-			GosubAction = 0x1fe,
+			GosubAction = 0x1fe, // See Gosub Action prim
 			//Str0x01ff Routing slot directions
-			HiddenFlags = 0x200,
-			GhostFlags = 0x201,
-			SelectionFlags = 0x202,
+			HiddenFlags = 0x200,	// for Data owners 0x03 and 0x04
+			GhostFlags = 0x201,	// for Data owners 0x12, 0x13 and 0x20
+			SelectionFlags = 0x202,	// for Data owners 0x12, 0x13 and 0x20
 			//Str0x0203 unused
-			PersonFlags = 0x204,
+			PersonFlags = 0x204,	// for Data owners 0x12, 0x13 and 0x20
 		}
 
 		public enum GlobalStr : uint
