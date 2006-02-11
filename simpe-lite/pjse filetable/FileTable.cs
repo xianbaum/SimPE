@@ -62,7 +62,7 @@ namespace pjse
 		private static bool static_getter_LoadAtStartup()
 		{
 			SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
-			object o = rkf.GetValue("loadAtStartup", true);
+			object o = rkf.GetValue("loadAtStartup", false);
 			return Convert.ToBoolean(o);
 		}
 
@@ -76,12 +76,30 @@ namespace pjse
 			pfByTypeGroup = new Hashtable();
 			pfByTypeGroupInstance = new Hashtable();
 
-			if (SimPe.Helper.WindowsRegistry.SimsEP2Path.Length > 0)
-				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
-			else if (SimPe.Helper.WindowsRegistry.SimsEP1Path.Length > 0)
-				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP1Path, "TSData\\Res\\Objects\\objects.package"));
-			else if (SimPe.Helper.WindowsRegistry.SimsPath.Length > 0)
-				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package"));
+
+			ArrayList folders = SimPe.FileTable.DefaultFolders;
+
+			string[] paths = {
+						   SimPe.Helper.WindowsRegistry.SimsEP3Path,
+						   SimPe.Helper.WindowsRegistry.SimsEP2Path,
+						   SimPe.Helper.WindowsRegistry.SimsEP1Path,
+						   SimPe.Helper.WindowsRegistry.SimsPath
+					   };
+
+			foreach(string path in paths)
+			{
+				if (path.Trim().Length.Equals(0)) continue;
+				string o = Path.Combine(path, "TSData\\Res\\Objects");
+				bool found = false;
+				int i = -1;
+				while(!found && ++i < folders.Count)
+					found = ((SimPe.FileTableItem)folders[i]).Name.ToLower().Trim().Equals(o.ToLower().Trim());
+				if (found && !((SimPe.FileTableItem)folders[i]).Ignore)
+				{
+					this.AddFixed(o + "\\objects.package");
+					break;
+				}
+			}
 			this.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
 
 			string packages_txt = Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\packages.txt");
