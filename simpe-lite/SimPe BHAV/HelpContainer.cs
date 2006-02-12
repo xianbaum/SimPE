@@ -41,16 +41,19 @@ namespace pjse
 
 		public static void Help(string s1, string s2)
 		{
+			string ss = s1;
 			string s = help(s1);
-			if (!System.IO.File.Exists(s))
-				s = help(s2);
+			if (!System.IO.File.Exists(s)) { s = help(s2); ss = s2; }
 			try
 			{
 				System.Diagnostics.Process.Start(s);
 			}
 			catch
 			{
-				System.Windows.Forms.MessageBox.Show("Please install the PJSE_Help archive.");
+				System.Windows.Forms.MessageBox.Show("Help file \"" + ss + "\" did not load.\n" +
+					"Please install the PJSE_Help archive.\n\n" +
+					"See the FORUM for PJSE at simlogical.com",
+					"PJSE Help System");
 			}
 		}
 
