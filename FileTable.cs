@@ -36,8 +36,9 @@ namespace pjse
 		static FileTable()
 		{
 			GFT = new FileTable();
-			GFT.Refresh();
+			if (static_getter_LoadAtStartup()) GFT.Refresh();
 		}
+
 
 		public FileTable()
 		{
@@ -53,12 +54,21 @@ namespace pjse
 		private Hashtable pfByGroup = new Hashtable();
 		private Hashtable pfByTypeGroup = new Hashtable();
 		private Hashtable pfByTypeGroupInstance = new Hashtable();
+		private bool hasLoaded = false;
 
 		private IPackageFile currentPackage = null;
 
 
+		private static bool static_getter_LoadAtStartup()
+		{
+			SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+			object o = rkf.GetValue("loadAtStartup", false);
+			return Convert.ToBoolean(o);
+		}
+
 		public void Refresh()
 		{
+			hasLoaded = true;
 			packedFiles = new Hashtable();
 			pfByPackage = new Hashtable();
 			pfByType = new Hashtable();
@@ -66,12 +76,30 @@ namespace pjse
 			pfByTypeGroup = new Hashtable();
 			pfByTypeGroupInstance = new Hashtable();
 
-			if (SimPe.Helper.WindowsRegistry.SimsEP2Path.Length > 0)
-				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP2Path, "TSData\\Res\\Objects\\objects.package"));
-			else if (SimPe.Helper.WindowsRegistry.SimsEP1Path.Length > 0)
-				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsEP1Path, "TSData\\Res\\Objects\\objects.package"));
-			else if (SimPe.Helper.WindowsRegistry.SimsPath.Length > 0)
-				this.AddFixed(Path.Combine(SimPe.Helper.WindowsRegistry.SimsPath, "TSData\\Res\\Objects\\objects.package"));
+
+			ArrayList folders = SimPe.FileTable.DefaultFolders;
+
+			string[] paths = {
+						   SimPe.Helper.WindowsRegistry.SimsEP3Path,
+						   SimPe.Helper.WindowsRegistry.SimsEP2Path,
+						   SimPe.Helper.WindowsRegistry.SimsEP1Path,
+						   SimPe.Helper.WindowsRegistry.SimsPath
+					   };
+
+			foreach(string path in paths)
+			{
+				if (path.Trim().Length.Equals(0)) continue;
+				string o = Path.Combine(path, "TSData\\Res\\Objects");
+				bool found = false;
+				int i = -1;
+				while(!found && ++i < folders.Count)
+					found = ((SimPe.FileTableItem)folders[i]).Name.ToLower().Trim().Equals(o.ToLower().Trim());
+				if (found && !((SimPe.FileTableItem)folders[i]).Ignore)
+				{
+					this.AddFixed(o + "\\objects.package");
+					break;
+				}
+			}
 			this.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
 
 			string packages_txt = Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\packages.txt");
@@ -106,6 +134,8 @@ namespace pjse
 		{
 			get
 			{
+				if (!hasLoaded) Refresh();
+
 				ArrayList result = new ArrayList();
 				foreach (Entry e in ((Hashtable)pfByPackage[package]).Keys)
 				{
@@ -122,6 +152,8 @@ namespace pjse
 		{
 			get
 			{
+				if (!hasLoaded) Refresh();
+
 				return putLocalFirst((Hashtable)pfByType[packedFileType], false);
 			}
 		}
@@ -130,6 +162,8 @@ namespace pjse
 		{
 			get
 			{
+				if (!hasLoaded) Refresh();
+
 				Hashtable tgt = (Hashtable)pfByTypeGroup[packedFileType];
 				if (tgt == null) return new Entry[0];
 				return putLocalFirst((Hashtable)tgt[group], group == 0xffffffff);
@@ -140,6 +174,8 @@ namespace pjse
 		{
 			get
 			{
+				if (!hasLoaded) Refresh();
+
 				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[packedFileType];
 				if (tgit == null) return new Entry[0];
 				Hashtable tgitg = (Hashtable)tgit[group];
