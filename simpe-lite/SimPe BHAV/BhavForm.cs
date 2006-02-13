@@ -219,9 +219,9 @@ namespace SimPe.PackedFiles.UserInterface
 					/*btnSort.Visible =*/ btnCommit.Visible = gbMove.Visible = 
 					btnDel.Visible = btnAdd.Visible = 
 					btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/
-					gbSpecial.Visible = cbSpecial.Visible =
-					btnCancel.Visible = btnClose.Visible = false;
-				state = true;
+					cbLoadAtStartup.Visible = gbSpecial.Visible = cbSpecial.Visible =
+					btnCancel.Visible = false;
+				btnClose.Visible = state = true;
 			}
 
 			this.tbInst_OpCode.ReadOnly = state;
