@@ -102,7 +102,7 @@ namespace pjse
 			}
 			this.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
 
-			string packages_txt = Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\packages.txt");
+			string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
 			if (File.Exists(packages_txt))
 			{
 				System.IO.StreamReader sr = new StreamReader(packages_txt);

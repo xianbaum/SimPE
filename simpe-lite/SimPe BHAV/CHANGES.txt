@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+18 February 2006 15:27 - Filetable: use SimPePluginDataPath instead of SimPePluginPath
+  pjse filetable\
+    FileTable.cs 1.11.2.4
+
 18 February 2006 11:35 - Filetable: move LoadAtStart and Refresh onto Settings form
   pjse filetable\
     FileTable.cs 1.11.2.3
