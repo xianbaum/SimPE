@@ -90,16 +90,6 @@
                     HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
                 />
                 <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
                     Name = "simpe.package"
                     AssemblyName = "simpe.package"
                     HintPath = "..\..\SimPe\simpe.package.dll"
@@ -127,6 +117,7 @@
                     Name = "simpe.commonhandler"
                     AssemblyName = "simpe.commonhandler"
                     HintPath = "..\..\SimPe\simpe.commonhandler.dll"
+                    Private = "False"
                 />
                 <Reference
                     Name = "System.Drawing"
