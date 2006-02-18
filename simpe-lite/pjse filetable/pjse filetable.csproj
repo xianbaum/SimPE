@@ -128,6 +128,16 @@
                     AssemblyName = "simpe.commonhandler"
                     HintPath = "..\..\SimPe\simpe.commonhandler.dll"
                 />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
+                />
+                <Reference
+                    Name = "System.Windows.Forms"
+                    AssemblyName = "System.Windows.Forms"
+                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
+                />
             </References>
         </Build>
         <Files>
@@ -141,6 +151,16 @@
                     RelPath = "FileTable.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "FileTableForm.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "FileTableForm.resx"
+                    DependentUpon = "FileTableForm.cs"
+                    BuildAction = "EmbeddedResource"
                 />
             </Include>
         </Files>

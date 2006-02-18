@@ -454,7 +454,7 @@ namespace pjse
 
 		public IToolResult ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
 		{
-			GFT.Refresh();
+			(new FileTableForm()).Settings();
 			return new SimPe.Plugin.ToolResult(false, false);
 		}
 
@@ -463,7 +463,7 @@ namespace pjse
 
 		public override string ToString()
 		{
-			return "PJSE\\&Refresh filetable";
+			return "PJSE\\Filetable &Settings";
 		}
 
 		#endregion
