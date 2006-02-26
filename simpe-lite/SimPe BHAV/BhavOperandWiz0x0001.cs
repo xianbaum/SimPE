@@ -151,8 +151,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 		private void cbGenericSimsCall_Changed(object sender, System.EventArgs e)
 		{
-			if (cbGenericSimsCall.SelectedIndex >= 0)
+			if (cbGenericSimsCall.SelectedIndex >= 0
+				&& pjse.BhavNameWizards.WizPrim0x0001.parms.Length > cbGenericSimsCall.SelectedIndex)
 				lbGenericSimsCallparms.Text = pjse.BhavNameWizards.WizPrim0x0001.parms[cbGenericSimsCall.SelectedIndex];
+			else
+				lbGenericSimsCallparms.Text = "[UNK args]";
 		}
 
 	}
