@@ -23,6 +23,7 @@ using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
+using pjse.BhavNameWizards;
 
 namespace pjse.BhavOperandWizards.Wiz0x0001
 {
@@ -41,6 +42,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		#endregion
+
+		private string genericSimsCallparamText(int i)
+		{
+			if (i >= WizPrim0x0001.parms.Length) return "[UNK args]";
+			else if (WizPrim0x0001.parms[i].Trim().Length == 0) return "no args";
+			else return WizPrim0x0001.parms[i].Trim();
+		}
+
 
 		public UI()
 		{
@@ -76,12 +85,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + GS.GStr(GS.BhavStr.Generics, i));
 			this.lbGenericSimsCallparms.Text = "Should never see this";
 
-			if (operand0 < this.cbGenericSimsCall.Items.Count)
-				this.cbGenericSimsCall.SelectedIndex = operand0;
-			else
+			lbGenericSimsCallparms.Text = genericSimsCallparamText(operand0);
+			if (operand0 >= this.cbGenericSimsCall.Items.Count)
 			{
 				this.cbGenericSimsCall.SelectedIndex = -1;
-				lbGenericSimsCallparms.Text = "Unknown operand 0 value 0x" + SimPe.Helper.HexString(operand0);
+				lbGenericSimsCallparms.Text = "";
 			}
 		}
 
@@ -151,11 +159,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 		private void cbGenericSimsCall_Changed(object sender, System.EventArgs e)
 		{
-			if (cbGenericSimsCall.SelectedIndex >= 0
-				&& pjse.BhavNameWizards.WizPrim0x0001.parms.Length > cbGenericSimsCall.SelectedIndex)
-				lbGenericSimsCallparms.Text = pjse.BhavNameWizards.WizPrim0x0001.parms[cbGenericSimsCall.SelectedIndex];
-			else
-				lbGenericSimsCallparms.Text = "[UNK args]";
+			lbGenericSimsCallparms.Text = (cbGenericSimsCall.SelectedIndex >= 0)
+				? genericSimsCallparamText(cbGenericSimsCall.SelectedIndex)
+				: "";
 		}
 
 	}

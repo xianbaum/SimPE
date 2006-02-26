@@ -36,8 +36,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.LinkLabel trueTarget;
 		private System.Windows.Forms.LinkLabel falseTarget;
 		private System.Windows.Forms.TextBox bhavInstListItem;
-		private System.Windows.Forms.Label lbTrue;
-		private System.Windows.Forms.Label lbFalse;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -144,15 +142,15 @@ namespace SimPe.PackedFiles.UserInterface
 			bhavInstListItem.Text = "";
 			instrText.Text = index.ToString("X") + ": " + cleanup(((pjse.BhavWiz)inst).ShortName);//LongName;
 
-			trueTarget.Text = "0x" + SimPe.Helper.HexString(inst.Target1);
+			trueTarget.Text = "true: "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target1 < wrapper.Count)
-				trueTarget.Links.Add(0, trueTarget.Text.Length, inst.Target1);
+				trueTarget.Links.Add(6, trueTarget.Text.Length-6, inst.Target1);
 
-			falseTarget.Text = "0x" + SimPe.Helper.HexString(inst.Target2);
+			falseTarget.Text = "false: "+inst.Target2.ToString("X");
 			falseTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target2 < wrapper.Count)
-				falseTarget.Links.Add(0, falseTarget.Text.Length, inst.Target2);
+				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);
 		}
 
 		private void FiletableRefresh(object sender, System.EventArgs e)
@@ -181,8 +179,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trueTarget = new System.Windows.Forms.LinkLabel();
 			this.falseTarget = new System.Windows.Forms.LinkLabel();
 			this.bhavInstListItem = new System.Windows.Forms.TextBox();
-			this.lbTrue = new System.Windows.Forms.Label();
-			this.lbFalse = new System.Windows.Forms.Label();
 			this.bhavInstListItem.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -192,6 +188,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.instrText.AccessibleName = resources.GetString("instrText.AccessibleName");
 			this.instrText.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("instrText.Anchor")));
 			this.instrText.AutoSize = ((bool)(resources.GetObject("instrText.AutoSize")));
+			this.instrText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.instrText.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("instrText.Dock")));
 			this.instrText.Enabled = ((bool)(resources.GetObject("instrText.Enabled")));
 			this.instrText.Font = ((System.Drawing.Font)(resources.GetObject("instrText.Font")));
@@ -268,7 +265,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavInstListItem.AutoSize = ((bool)(resources.GetObject("bhavInstListItem.AutoSize")));
 			this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 			this.bhavInstListItem.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("bhavInstListItem.BackgroundImage")));
-			this.bhavInstListItem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.bhavInstListItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
 			this.bhavInstListItem.Controls.Add(this.falseTarget);
 			this.bhavInstListItem.Controls.Add(this.trueTarget);
 			this.bhavInstListItem.Controls.Add(this.instrText);
@@ -292,50 +289,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavInstListItem.WordWrap = ((bool)(resources.GetObject("bhavInstListItem.WordWrap")));
 			this.bhavInstListItem.KeyDown += new System.Windows.Forms.KeyEventHandler(this.bhavInstListItem_KeyDown);
 			// 
-			// lbTrue
-			// 
-			this.lbTrue.AccessibleDescription = resources.GetString("lbTrue.AccessibleDescription");
-			this.lbTrue.AccessibleName = resources.GetString("lbTrue.AccessibleName");
-			this.lbTrue.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbTrue.Anchor")));
-			this.lbTrue.AutoSize = ((bool)(resources.GetObject("lbTrue.AutoSize")));
-			this.lbTrue.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbTrue.Dock")));
-			this.lbTrue.Enabled = ((bool)(resources.GetObject("lbTrue.Enabled")));
-			this.lbTrue.Font = ((System.Drawing.Font)(resources.GetObject("lbTrue.Font")));
-			this.lbTrue.Image = ((System.Drawing.Image)(resources.GetObject("lbTrue.Image")));
-			this.lbTrue.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbTrue.ImageAlign")));
-			this.lbTrue.ImageIndex = ((int)(resources.GetObject("lbTrue.ImageIndex")));
-			this.lbTrue.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbTrue.ImeMode")));
-			this.lbTrue.Location = ((System.Drawing.Point)(resources.GetObject("lbTrue.Location")));
-			this.lbTrue.Name = "lbTrue";
-			this.lbTrue.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbTrue.RightToLeft")));
-			this.lbTrue.Size = ((System.Drawing.Size)(resources.GetObject("lbTrue.Size")));
-			this.lbTrue.TabIndex = ((int)(resources.GetObject("lbTrue.TabIndex")));
-			this.lbTrue.Text = resources.GetString("lbTrue.Text");
-			this.lbTrue.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbTrue.TextAlign")));
-			this.lbTrue.Visible = ((bool)(resources.GetObject("lbTrue.Visible")));
-			// 
-			// lbFalse
-			// 
-			this.lbFalse.AccessibleDescription = resources.GetString("lbFalse.AccessibleDescription");
-			this.lbFalse.AccessibleName = resources.GetString("lbFalse.AccessibleName");
-			this.lbFalse.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("lbFalse.Anchor")));
-			this.lbFalse.AutoSize = ((bool)(resources.GetObject("lbFalse.AutoSize")));
-			this.lbFalse.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("lbFalse.Dock")));
-			this.lbFalse.Enabled = ((bool)(resources.GetObject("lbFalse.Enabled")));
-			this.lbFalse.Font = ((System.Drawing.Font)(resources.GetObject("lbFalse.Font")));
-			this.lbFalse.Image = ((System.Drawing.Image)(resources.GetObject("lbFalse.Image")));
-			this.lbFalse.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFalse.ImageAlign")));
-			this.lbFalse.ImageIndex = ((int)(resources.GetObject("lbFalse.ImageIndex")));
-			this.lbFalse.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("lbFalse.ImeMode")));
-			this.lbFalse.Location = ((System.Drawing.Point)(resources.GetObject("lbFalse.Location")));
-			this.lbFalse.Name = "lbFalse";
-			this.lbFalse.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("lbFalse.RightToLeft")));
-			this.lbFalse.Size = ((System.Drawing.Size)(resources.GetObject("lbFalse.Size")));
-			this.lbFalse.TabIndex = ((int)(resources.GetObject("lbFalse.TabIndex")));
-			this.lbFalse.Text = resources.GetString("lbFalse.Text");
-			this.lbFalse.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbFalse.TextAlign")));
-			this.lbFalse.Visible = ((bool)(resources.GetObject("lbFalse.Visible")));
-			// 
 			// BhavInstListItemUI
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -345,8 +298,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("$this.AutoScrollMinSize")));
 			this.BackColor = System.Drawing.SystemColors.Control;
 			this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-			this.Controls.Add(this.lbFalse);
-			this.Controls.Add(this.lbTrue);
 			this.Controls.Add(this.bhavInstListItem);
 			this.Enabled = ((bool)(resources.GetObject("$this.Enabled")));
 			this.Font = ((System.Drawing.Font)(resources.GetObject("$this.Font")));
