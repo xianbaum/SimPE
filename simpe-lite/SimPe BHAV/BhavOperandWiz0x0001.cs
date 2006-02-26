@@ -86,11 +86,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 			this.lbGenericSimsCallparms.Text = "Should never see this";
 
 			lbGenericSimsCallparms.Text = genericSimsCallparamText(operand0);
-			if (operand0 >= this.cbGenericSimsCall.Items.Count)
-			{
-				this.cbGenericSimsCall.SelectedIndex = -1;
-				lbGenericSimsCallparms.Text = "";
-			}
+			cbGenericSimsCall.SelectedIndex = (operand0 < cbGenericSimsCall.Items.Count) ? operand0 : -1;
 		}
 
 		public Instruction Write(Instruction inst)

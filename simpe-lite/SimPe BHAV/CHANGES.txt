@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+26 February 2006 17:07 - Wiz0x0001: Oops: initialise combobox...
+  SimPe BHAV\
+    BhavOperandWiz0x0001.cs 1.1.8.4
+
 26 February 2006 17:01 - BHAV: Back out T/F change as not liked; Wiz0x0001: say "no args" for no args
   SimPe BHAV\
     BhavInstListItemUI.cs 1.23.2.2
