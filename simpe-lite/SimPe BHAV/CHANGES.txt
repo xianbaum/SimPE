@@ -1,6 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+9 March 2006 13:56 - OfB GlobalStrings changed a little more
+  GlobalStrings.package 1.10.8.4
+
 9 March 2006 13:33 - BHAV: LongForm text wrapping, OfB Prim0x0032 change, OfB GlobalStrings change
   SimPe BHAV\
     BhavForm.cs 1.64.2.8
