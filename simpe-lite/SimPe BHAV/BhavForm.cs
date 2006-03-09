@@ -343,7 +343,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.llopenbhav.Enabled = currentInst.FTEntry != null;
 				this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
-				this.tbInst_Longname.Text = currentInst.LongName;
+				this.tbInst_Longname.Text = currentInst.LongName.Replace(", ", ",\r\n  ");
 			}
 			internalchg = false;
 		}
