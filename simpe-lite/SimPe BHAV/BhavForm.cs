@@ -288,7 +288,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk6.Text = "";
 				this.tbInst_Unk7.Text = "";
 
-				this.tbInst_Longname.Text = "";
+				Longname = "";
 			}
 			else
 			{
@@ -343,9 +343,18 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.llopenbhav.Enabled = currentInst.FTEntry != null;
 				this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
-				this.tbInst_Longname.Text = currentInst.LongName;
+				Longname = currentInst.LongName;
 			}
 			internalchg = false;
+		}
+
+
+		private string Longname
+		{
+			set
+			{
+				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ").Replace("args: ", "args:\r\n  ");
+			}
 		}
 
 
@@ -546,7 +555,7 @@ namespace SimPe.PackedFiles.UserInterface
 					this.currentInst = currentInst.Instruction;
 					this.llopenbhav.Enabled = currentInst.FTEntry != null;
 					this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
-					this.tbInst_Longname.Text = currentInst.LongName;
+					Longname = currentInst.LongName;
 				}
 				else
 					pnflowcontainer_SelectedInstChanged(null, null);

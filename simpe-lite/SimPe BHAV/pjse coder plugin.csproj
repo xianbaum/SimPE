@@ -303,19 +303,9 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "BhavWizBhav.resx"
-                    DependentUpon = "BhavWizBhav.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
                     RelPath = "BhavWizPrim.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavWizPrim.resx"
-                    DependentUpon = "BhavWizPrim.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "BhavWrapper.cs"

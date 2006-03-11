@@ -10,7 +10,7 @@
  */
 
 //==============================================================================
-// disassemble Sims 2 "SimAntics" (ver 2.3d)
+// disassemble Sims 2 "SimAntics" (ver 2.4a)
 //
 // This file is PUBLIC DOMAIN (free as in "freestyle" or "freeway")
 //==============================================================================
@@ -1364,7 +1364,7 @@ namespace pjse.BhavNameWizards
                             break;
                     }
                     if ((b[x+4] & 8) && nodeVersion)
-                        ht_fprintf(outFile,TYPE_NORMAL,"amount in temp 2 and 3"); // was "temp 3 and 4"  (SimAntics error)
+                        ht_fprintf(outFile,TYPE_NORMAL,"amount in temp 2 and 3");
                     else
                         data2(c1, w1);
                     if (b[x+4] & 4)
@@ -1593,7 +1593,7 @@ namespace pjse.BhavNameWizards
 //                    if ((b[x+2] & 4) == 0) ht_fprintf(outFile,TYPE_NORMAL,", only if idle");   // ?
 
                     // How to look for tree with given name:
-                    // private -> semiglobal -> global -> "false"
+                    // private -> semiglobal -> global -> "false" if not found
                     if (b[x+2] & 8) 
                         ht_fprintf(outFile,TYPE_NORMAL,", ignore semiglobal trees");
                     if (b[x+2] & 4) 
@@ -1609,7 +1609,7 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL,", param 2 = ");
                         data2(b[x+12], w3);
                     }
-                    switch (b[x+5]) { // gStringDE
+                    switch (b[x+5]) { // Behavior string 0xDE
                         case 0:
                             ht_fprintf(outFile,TYPE_NORMAL,", run in my stack");
                             break;
@@ -2633,7 +2633,9 @@ namespace pjse.BhavNameWizards
 				}
 
 				if ((o[2] & 0x10) != 0) s += scope.ToString() + " STR# 0x012E:[Temp 0]";
-				else s += readStr(scope, GS.GlobalStr.MakeAction, o[4] - 1, lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+				else s += readStr(scope, GS.GlobalStr.MakeAction,
+						 o[instruction.NodeVersion == 0 ? 0x04 : 0x14] - 1,
+						 lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
 			}
 			else 
 			{
@@ -4658,7 +4660,7 @@ namespace pjse.BhavNameWizards
 				case 0x0a: s += "Set " + dataOwner(lng, o[8], o[9], o[10]) + " to next occurrence of " + dataOwner(lng, o[5], o[6], o[7]); break;
 				case 0x0b: s += "Swap elements at " + dataOwner(lng, o[5], o[6], o[7]) + " and " + dataOwner(lng, o[8], o[9], o[10]); break;
 				case 0x0c: s += "Sort array into highest to lowest order"; break;
-				case 0x0d: s += "Sort array into lowest to highest order (?)"; break;
+				case 0x0d: s += "Sort array into lowest to highest order"; break;
 				default: s += "??? 0x" + SimPe.Helper.HexString(o[1]); break;
 			}
 
@@ -4743,7 +4745,7 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL,"Sort array into highest to lowest order.");
                             break;
                         case 0xD:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Sort array into highest to lowest order.");
+                            ht_fprintf(outFile,TYPE_NORMAL,"Sort array into lowest to highest order.");
                             break;
                         default:
                             ht_fprintf(outFile,TYPE_NORMAL,"Alex Fennell's magic array operation. If you see this string....be afraid.");
@@ -4972,28 +4974,24 @@ namespace pjse.BhavNameWizards
 
 			s += "Sim: " + dataOwner(lng, o[9], o[10], o[11]);
 
-			if ((o[0] & 0x10) == 0)
+			if ((o[0] & 0x10) != 0) s += "; rebuild current outfit";
+			//else s += "change outfit";
+
+			if (lng)
 			{
-				//s += "change outfit";
-				if (lng)
-				{
-					s += "; source: ";
-					if      ((o[0] & 0x01) != 0) s += "Stack Object";
-					else if ((o[0] & 0x02) != 0) s += "GUID 0x" + SimPe.Helper.HexString((uint)(o[4] | (o[5] << 8) | (o[6] << 16) | (o[7] << 24)));
-					else if ((o[0] & 0x40) != 0) s += "GUID in Temp 0/1";
-					else                         s += "the sim's outfits";
+				s += "; source: ";
+				if      ((o[0] & 0x01) != 0) s += "Stack Object";
+				else if ((o[0] & 0x02) != 0) s += "GUID 0x" + SimPe.Helper.HexString((uint)(o[4] | (o[5] << 8) | (o[6] << 16) | (o[7] << 24)));
+				else if ((o[0] & 0x40) != 0) s += "GUID in Temp 0/1";
+				else                         s += "the sim's outfits";
 
-					s += ", outfit";
-					if ((o[0] & 4) == 0) s += ": " + GS.GStr(GS.BhavStr.PersonOutfits, o[8]);
-					else                 s += " index: " + dataOwner(o[1], o[2], o[3]);
+				s += ", outfit";
+				if ((o[0] & 4) == 0) s += ": " + GS.GStr(GS.BhavStr.PersonOutfits, o[8]);
+				else                 s += " index: " + dataOwner(o[1], o[2], o[3]);
 
-					s += ", " + ((o[0] & 0x20) == 0 ? "leaving" : "clearing") + " GUID pointers in person data fields";
-					s += ", " + ((o[0] & 0x08) == 0 ? "don't " : "") + "save change";
-				}
+				s += ", " + ((o[0] & 0x20) == 0 ? "leaving" : "clearing") + " GUID pointers in person data fields";
+				s += ", " + ((o[0] & 0x08) == 0 ? "don't " : "") + "save change";
 			}
-
-			else 
-				s += "; rebuild current outfit";
 
 			return s;
 #if DISASIM
@@ -5002,34 +5000,32 @@ namespace pjse.BhavNameWizards
                     w1 = *(UINT16 *) (&b[x+10]);
                     w2 = *(UINT16 *) (&b[x+2]);
                     d1 = *(UINT32 *) (&b[x+4]);
-                    if (c1 & 0x10) {
+                    if (c1 & 0x10) 
                         ht_fprintf(outFile,TYPE_NORMAL,"Rebuild current outfit on sim in ");
-                        data2(b[x+9],w1);
-                    } else {
+                    else 
                         ht_fprintf(outFile,TYPE_NORMAL,"Change Outfit on sim in ");
-                        data2(b[x+9],w1);
-                        if (c1 & 1)
-                            ht_fprintf(outFile,TYPE_NORMAL," using Stack Object");
-                        else if (c1 & 2) {
-                            ht_fprintf(outFile,TYPE_NORMAL," using GUID of 0x%08X", d1);
-                            readGUID(d1);
-                        } else if (c1 & 0x40)
-                            ht_fprintf(outFile,TYPE_NORMAL,", using GUID in Temp 0/1");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL," using that sims outfits");
-                        ht_fprintf(outFile,TYPE_NORMAL," as source, using outfit ");
-                        if (c1 & 4) {
-                            ht_fprintf(outFile,TYPE_NORMAL,"index from ");
-                            data2(b[x+1],w2);
-                        } else {
-                            CHECK_RANGE("Person outfits", gStringFA, b[x+8]);
-                            ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFA[b[x+8]]);
-                        }
-                        if (c1 & 0x20)
-                            ht_fprintf(outFile,TYPE_NORMAL,", clearing GUID pointers in person data fields");
-                        if (c1 & 8)
-                            ht_fprintf(outFile,TYPE_NORMAL,", writing changes to the .iff");
+                    data2(b[x+9],w1);
+                    if (c1 & 1)
+                        ht_fprintf(outFile,TYPE_NORMAL," using Stack Object");
+                    else if (c1 & 2) {
+                        ht_fprintf(outFile,TYPE_NORMAL," using GUID of 0x%08X", d1);
+                        readGUID(d1);
+                    } else if (c1 & 0x40)
+                        ht_fprintf(outFile,TYPE_NORMAL,", using GUID in Temp 0/1");
+                    else
+                        ht_fprintf(outFile,TYPE_NORMAL," using that sims outfits");
+                    ht_fprintf(outFile,TYPE_NORMAL," as source, using outfit ");
+                    if (c1 & 4) {
+                        ht_fprintf(outFile,TYPE_NORMAL,"index from ");
+                        data2(b[x+1],w2);
+                    } else {
+                        CHECK_RANGE("Person outfits", gStringFA, b[x+8]);
+                        ht_fprintf(outFile,TYPE_NORMAL,"%s", gStringFA[b[x+8]]);
                     }
+                    if (c1 & 0x20)
+                        ht_fprintf(outFile,TYPE_NORMAL,", clearing GUID pointers in person data fields");
+                    if (c1 & 8)
+                        ht_fprintf(outFile,TYPE_NORMAL,", writing changes to the .iff");
                     break;
 #endif
 		}
