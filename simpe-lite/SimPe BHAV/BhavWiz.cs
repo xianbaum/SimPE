@@ -175,6 +175,8 @@ namespace pjse
 			ushort[] bcon;
 			switch(doid)
 			{
+				case 0x06:
+					return (doidGStr[doid] != null) ? GS.GStr((GS.BhavStr)doidGStr[doid], instance) : "";
 				case 0x0c: case 0x0e: case 0x0f: case 0x1c: case 0x1d:
 					return GS.GStr(GS.BhavStr.DataOwners, doid) + " " + GS.GStr((GS.BhavStr)doidGStr[doid], instance);
 				case 0x1a:

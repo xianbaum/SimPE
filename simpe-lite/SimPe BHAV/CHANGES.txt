@@ -1,6 +1,13 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+12 March 2006 14:33 - BHAV: Wiz0x0024 enhanced (debug only), doid 6 to show instance only, fix 0x0032
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.4.4
+    BhavOperandWiz0x0024.resx 1.1.4.3
+    BhavWiz.cs 1.37.2.5
+    BhavWizPrim.cs 1.34.2.6
+
 11 March 2006 13:14 - BHAV: fix for tuna's tweak
   SimPe BHAV\
     BhavForm.cs 1.64.2.10
