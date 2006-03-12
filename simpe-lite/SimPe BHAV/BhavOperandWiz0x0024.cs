@@ -85,13 +85,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private System.Windows.Forms.Label lbTempVar;
 		private System.Windows.Forms.Panel pnLocalVar;
 		private System.Windows.Forms.Label label8;
-		private System.Windows.Forms.NumericUpDown udLocalVar;
 		private System.Windows.Forms.ComboBox cbTempVar;
 		private System.Windows.Forms.ComboBox cbTVMessage;
 		private System.Windows.Forms.ComboBox cbTVButton1;
 		private System.Windows.Forms.ComboBox cbTVButton2;
 		private System.Windows.Forms.ComboBox cbTVButton3;
 		private System.Windows.Forms.ComboBox cbTVTitle;
+		private System.Windows.Forms.TextBox tbLocalVar;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -135,6 +135,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			ComboBox[] ct = { cbTVMessage ,cbTVButton1 ,cbTVButton2 ,cbTVButton3 ,cbTVTitle ,};
 			alCBTempVar = new ArrayList(ct);
+
+			TextBox[] tb = { tbPriority ,tbTimeout ,tbLocalVar ,tbIconID ,};
+			alHex8 = new ArrayList(tb);
 		}
 
 
@@ -165,6 +168,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private ArrayList alTextBox = null;
 		private ArrayList alCBUseTemp = null;
 		private ArrayList alCBTempVar = null;
+		private ArrayList alHex8 = null;
 
 		byte dialog   = 0;
 		bool nowait   = false;
@@ -181,6 +185,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		bool[] useTemp = { false, false, false, false, false }; // Message, Yes, No, Cancel, Title
 
 		bool internalchg = false;
+
+		private bool hex8_IsValid(object sender)
+		{
+			if (alHex8.IndexOf(sender) < 0)
+				throw new Exception("hex8_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToByte(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
 
 		private void setType(int newType)
 		{
@@ -318,10 +332,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			internalchg = false;
 		}
 
-		private void setIconID(int i)
+		private void setIconID(int newIconID)
 		{
-			iconID = (byte)i;
-			tbIconID.Text = "0x" + SimPe.Helper.HexString(iconID);
+			iconID = (byte)newIconID;
+
+			if (internalchg) return;
+			internalchg = true;
+
+			this.tbIconID.Text = "0x" + SimPe.Helper.HexString((byte)newIconID);
+
+			internalchg = false;
 		}
 
 		private void setString(int which, int strnum)
@@ -365,9 +385,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 		private void setPriority(int newPriority)
 		{
+			priority = (byte)newPriority;
+
+			if (internalchg) return;
 			internalchg = true;
 
-			priority = (byte)newPriority;
 			this.tbPriority.Text = "0x" + SimPe.Helper.HexString((byte)newPriority);
 
 			internalchg = false;
@@ -375,9 +397,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 		private void setTimeout(int newTimeout)
 		{
+			timeout = (byte)newTimeout;
+
+			if (internalchg) return;
 			internalchg = true;
 
-			timeout = (byte)newTimeout;
 			this.tbTimeout.Text = "0x" + SimPe.Helper.HexString((byte)newTimeout);
 
 			internalchg = false;
@@ -385,10 +409,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 		private void setLocalVar(int newLocalVar)
 		{
+			localVar = (byte)newLocalVar;
+
+			if (internalchg) return;
 			internalchg = true;
 
-			localVar = (byte)newLocalVar;
-			this.udLocalVar.Value = localVar;
+			this.tbLocalVar.Text = "0x" + SimPe.Helper.HexString((byte)newLocalVar);
 
 			internalchg = false;
 		}
@@ -446,7 +472,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			} 
 			else 
 			{
-				setString(0, BhavWiz.ToShort(ops2[5], ops1[6]));	// message
+				setString(0, BhavWiz.ToShort(ops2[5], ops2[6]));	// message
 				setString(3, BhavWiz.ToShort(ops1[0], ops1[2]));	// cancel
 			}
 			setString(1, ops1[3]); // Yes
@@ -530,10 +556,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private void InitializeComponent()
 		{
 			this.pnWiz0x0024 = new System.Windows.Forms.Panel();
+			this.cbTVTitle = new System.Windows.Forms.ComboBox();
+			this.cbTVButton3 = new System.Windows.Forms.ComboBox();
+			this.cbTVButton2 = new System.Windows.Forms.ComboBox();
+			this.cbTVButton1 = new System.Windows.Forms.ComboBox();
+			this.cbTVMessage = new System.Windows.Forms.ComboBox();
 			this.pnLocalVar = new System.Windows.Forms.Panel();
+			this.tbLocalVar = new System.Windows.Forms.TextBox();
 			this.label8 = new System.Windows.Forms.Label();
-			this.udLocalVar = new System.Windows.Forms.NumericUpDown();
 			this.pnTempVar = new System.Windows.Forms.Panel();
+			this.cbTempVar = new System.Windows.Forms.ComboBox();
 			this.lbTempVar = new System.Windows.Forms.Label();
 			this.pnTNS = new System.Windows.Forms.Panel();
 			this.tbPriority = new System.Windows.Forms.TextBox();
@@ -582,15 +614,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.cbUTTitle = new System.Windows.Forms.CheckBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.button1 = new System.Windows.Forms.Button();
-			this.cbTempVar = new System.Windows.Forms.ComboBox();
-			this.cbTVMessage = new System.Windows.Forms.ComboBox();
-			this.cbTVButton1 = new System.Windows.Forms.ComboBox();
-			this.cbTVButton2 = new System.Windows.Forms.ComboBox();
-			this.cbTVButton3 = new System.Windows.Forms.ComboBox();
-			this.cbTVTitle = new System.Windows.Forms.ComboBox();
 			this.pnWiz0x0024.SuspendLayout();
 			this.pnLocalVar.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.udLocalVar)).BeginInit();
 			this.pnTempVar.SuspendLayout();
 			this.pnTNS.SuspendLayout();
 			this.SuspendLayout();
@@ -649,14 +674,121 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnWiz0x0024.Size = new System.Drawing.Size(528, 280);
 			this.pnWiz0x0024.TabIndex = 0;
 			// 
+			// cbTVTitle
+			// 
+			this.cbTVTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTVTitle.Items.AddRange(new object[] {
+														   "Temp 0",
+														   "Temp 1",
+														   "Temp 2",
+														   "Temp 3",
+														   "Temp 4",
+														   "Temp 5",
+														   "Temp 6",
+														   "Temp 7"});
+			this.cbTVTitle.Location = new System.Drawing.Point(80, 248);
+			this.cbTVTitle.Name = "cbTVTitle";
+			this.cbTVTitle.Size = new System.Drawing.Size(72, 21);
+			this.cbTVTitle.Sorted = true;
+			this.cbTVTitle.TabIndex = 31;
+			this.cbTVTitle.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
+			// 
+			// cbTVButton3
+			// 
+			this.cbTVButton3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTVButton3.Items.AddRange(new object[] {
+															 "Temp 0",
+															 "Temp 1",
+															 "Temp 2",
+															 "Temp 3",
+															 "Temp 4",
+															 "Temp 5",
+															 "Temp 6",
+															 "Temp 7"});
+			this.cbTVButton3.Location = new System.Drawing.Point(80, 224);
+			this.cbTVButton3.Name = "cbTVButton3";
+			this.cbTVButton3.Size = new System.Drawing.Size(72, 21);
+			this.cbTVButton3.Sorted = true;
+			this.cbTVButton3.TabIndex = 30;
+			this.cbTVButton3.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
+			// 
+			// cbTVButton2
+			// 
+			this.cbTVButton2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTVButton2.Items.AddRange(new object[] {
+															 "Temp 0",
+															 "Temp 1",
+															 "Temp 2",
+															 "Temp 3",
+															 "Temp 4",
+															 "Temp 5",
+															 "Temp 6",
+															 "Temp 7"});
+			this.cbTVButton2.Location = new System.Drawing.Point(80, 200);
+			this.cbTVButton2.Name = "cbTVButton2";
+			this.cbTVButton2.Size = new System.Drawing.Size(72, 21);
+			this.cbTVButton2.Sorted = true;
+			this.cbTVButton2.TabIndex = 29;
+			this.cbTVButton2.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
+			// 
+			// cbTVButton1
+			// 
+			this.cbTVButton1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTVButton1.Items.AddRange(new object[] {
+															 "Temp 0",
+															 "Temp 1",
+															 "Temp 2",
+															 "Temp 3",
+															 "Temp 4",
+															 "Temp 5",
+															 "Temp 6",
+															 "Temp 7"});
+			this.cbTVButton1.Location = new System.Drawing.Point(80, 176);
+			this.cbTVButton1.Name = "cbTVButton1";
+			this.cbTVButton1.Size = new System.Drawing.Size(72, 21);
+			this.cbTVButton1.Sorted = true;
+			this.cbTVButton1.TabIndex = 28;
+			this.cbTVButton1.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
+			// 
+			// cbTVMessage
+			// 
+			this.cbTVMessage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTVMessage.Items.AddRange(new object[] {
+															 "Temp 0",
+															 "Temp 1",
+															 "Temp 2",
+															 "Temp 3",
+															 "Temp 4",
+															 "Temp 5",
+															 "Temp 6",
+															 "Temp 7"});
+			this.cbTVMessage.Location = new System.Drawing.Point(80, 152);
+			this.cbTVMessage.Name = "cbTVMessage";
+			this.cbTVMessage.Size = new System.Drawing.Size(72, 21);
+			this.cbTVMessage.Sorted = true;
+			this.cbTVMessage.TabIndex = 27;
+			this.cbTVMessage.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
+			// 
 			// pnLocalVar
 			// 
+			this.pnLocalVar.Controls.Add(this.tbLocalVar);
 			this.pnLocalVar.Controls.Add(this.label8);
-			this.pnLocalVar.Controls.Add(this.udLocalVar);
 			this.pnLocalVar.Location = new System.Drawing.Point(408, 184);
 			this.pnLocalVar.Name = "pnLocalVar";
 			this.pnLocalVar.Size = new System.Drawing.Size(112, 24);
 			this.pnLocalVar.TabIndex = 24;
+			// 
+			// tbLocalVar
+			// 
+			this.tbLocalVar.Location = new System.Drawing.Point(72, 0);
+			this.tbLocalVar.MaxLength = 4;
+			this.tbLocalVar.Name = "tbLocalVar";
+			this.tbLocalVar.Size = new System.Drawing.Size(40, 21);
+			this.tbLocalVar.TabIndex = 4;
+			this.tbLocalVar.Text = "0xDD";
+			this.tbLocalVar.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbLocalVar.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbLocalVar.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// label8
 			// 
@@ -668,26 +800,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.label8.TabIndex = 0;
 			this.label8.Text = "Local Var";
 			// 
-			// udLocalVar
-			// 
-			this.udLocalVar.Hexadecimal = true;
-			this.udLocalVar.Location = new System.Drawing.Point(72, 0);
-			this.udLocalVar.Maximum = new System.Decimal(new int[] {
-																	   255,
-																	   0,
-																	   0,
-																	   0});
-			this.udLocalVar.Name = "udLocalVar";
-			this.udLocalVar.Size = new System.Drawing.Size(40, 21);
-			this.udLocalVar.TabIndex = 1;
-			this.udLocalVar.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.udLocalVar.Value = new System.Decimal(new int[] {
-																	 221,
-																	 0,
-																	 0,
-																	 0});
-			this.udLocalVar.ValueChanged += new System.EventHandler(this.udLocalVar_ValueChanged);
-			// 
 			// pnTempVar
 			// 
 			this.pnTempVar.Controls.Add(this.cbTempVar);
@@ -696,6 +808,25 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnTempVar.Name = "pnTempVar";
 			this.pnTempVar.Size = new System.Drawing.Size(112, 24);
 			this.pnTempVar.TabIndex = 23;
+			// 
+			// cbTempVar
+			// 
+			this.cbTempVar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbTempVar.Items.AddRange(new object[] {
+														   "0",
+														   "1",
+														   "2",
+														   "3",
+														   "4",
+														   "5",
+														   "6",
+														   "7"});
+			this.cbTempVar.Location = new System.Drawing.Point(72, 0);
+			this.cbTempVar.Name = "cbTempVar";
+			this.cbTempVar.Size = new System.Drawing.Size(40, 21);
+			this.cbTempVar.Sorted = true;
+			this.cbTempVar.TabIndex = 1;
+			this.cbTempVar.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
 			// 
 			// lbTempVar
 			// 
@@ -722,13 +853,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// tbPriority
 			// 
-			this.tbPriority.Enabled = false;
 			this.tbPriority.Location = new System.Drawing.Point(360, 0);
 			this.tbPriority.MaxLength = 4;
 			this.tbPriority.Name = "tbPriority";
 			this.tbPriority.Size = new System.Drawing.Size(40, 21);
 			this.tbPriority.TabIndex = 2;
 			this.tbPriority.Text = "0xDD";
+			this.tbPriority.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbPriority.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbPriority.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// label6
 			// 
@@ -752,13 +885,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// tbTimeout
 			// 
-			this.tbTimeout.Enabled = false;
 			this.tbTimeout.Location = new System.Drawing.Point(472, 0);
 			this.tbTimeout.MaxLength = 4;
 			this.tbTimeout.Name = "tbTimeout";
 			this.tbTimeout.Size = new System.Drawing.Size(40, 21);
 			this.tbTimeout.TabIndex = 3;
 			this.tbTimeout.Text = "0xDD";
+			this.tbTimeout.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbTimeout.Validated += new System.EventHandler(this.hex8_Validated);
+			this.tbTimeout.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// lbTnsStyle
 			// 
@@ -799,6 +934,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.tbIconID.Size = new System.Drawing.Size(40, 21);
 			this.tbIconID.TabIndex = 3;
 			this.tbIconID.Text = "0xDD";
+			this.tbIconID.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+			this.tbIconID.Validated += new System.EventHandler(this.hex8_TextChanged);
+			this.tbIconID.TextChanged += new System.EventHandler(this.hex8_TextChanged);
 			// 
 			// label5
 			// 
@@ -1214,120 +1352,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.button1.TabIndex = 2;
 			this.button1.Text = "button1";
 			// 
-			// cbTempVar
-			// 
-			this.cbTempVar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbTempVar.Items.AddRange(new object[] {
-														   "0",
-														   "1",
-														   "2",
-														   "3",
-														   "4",
-														   "5",
-														   "6",
-														   "7"});
-			this.cbTempVar.Location = new System.Drawing.Point(72, 0);
-			this.cbTempVar.Name = "cbTempVar";
-			this.cbTempVar.Size = new System.Drawing.Size(40, 21);
-			this.cbTempVar.Sorted = true;
-			this.cbTempVar.TabIndex = 1;
-			this.cbTempVar.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-			// 
-			// cbTVMessage
-			// 
-			this.cbTVMessage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbTVMessage.Items.AddRange(new object[] {
-															 "Temp 0",
-															 "Temp 1",
-															 "Temp 2",
-															 "Temp 3",
-															 "Temp 4",
-															 "Temp 5",
-															 "Temp 6",
-															 "Temp 7"});
-			this.cbTVMessage.Location = new System.Drawing.Point(80, 152);
-			this.cbTVMessage.Name = "cbTVMessage";
-			this.cbTVMessage.Size = new System.Drawing.Size(72, 21);
-			this.cbTVMessage.Sorted = true;
-			this.cbTVMessage.TabIndex = 27;
-			this.cbTVMessage.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-			// 
-			// cbTVButton1
-			// 
-			this.cbTVButton1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbTVButton1.Items.AddRange(new object[] {
-															 "Temp 0",
-															 "Temp 1",
-															 "Temp 2",
-															 "Temp 3",
-															 "Temp 4",
-															 "Temp 5",
-															 "Temp 6",
-															 "Temp 7"});
-			this.cbTVButton1.Location = new System.Drawing.Point(80, 176);
-			this.cbTVButton1.Name = "cbTVButton1";
-			this.cbTVButton1.Size = new System.Drawing.Size(72, 21);
-			this.cbTVButton1.Sorted = true;
-			this.cbTVButton1.TabIndex = 28;
-			this.cbTVButton1.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-			// 
-			// cbTVButton2
-			// 
-			this.cbTVButton2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbTVButton2.Items.AddRange(new object[] {
-															 "Temp 0",
-															 "Temp 1",
-															 "Temp 2",
-															 "Temp 3",
-															 "Temp 4",
-															 "Temp 5",
-															 "Temp 6",
-															 "Temp 7"});
-			this.cbTVButton2.Location = new System.Drawing.Point(80, 200);
-			this.cbTVButton2.Name = "cbTVButton2";
-			this.cbTVButton2.Size = new System.Drawing.Size(72, 21);
-			this.cbTVButton2.Sorted = true;
-			this.cbTVButton2.TabIndex = 29;
-			this.cbTVButton2.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-			// 
-			// cbTVButton3
-			// 
-			this.cbTVButton3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbTVButton3.Items.AddRange(new object[] {
-															 "Temp 0",
-															 "Temp 1",
-															 "Temp 2",
-															 "Temp 3",
-															 "Temp 4",
-															 "Temp 5",
-															 "Temp 6",
-															 "Temp 7"});
-			this.cbTVButton3.Location = new System.Drawing.Point(80, 224);
-			this.cbTVButton3.Name = "cbTVButton3";
-			this.cbTVButton3.Size = new System.Drawing.Size(72, 21);
-			this.cbTVButton3.Sorted = true;
-			this.cbTVButton3.TabIndex = 30;
-			this.cbTVButton3.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-			// 
-			// cbTVTitle
-			// 
-			this.cbTVTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbTVTitle.Items.AddRange(new object[] {
-														   "Temp 0",
-														   "Temp 1",
-														   "Temp 2",
-														   "Temp 3",
-														   "Temp 4",
-														   "Temp 5",
-														   "Temp 6",
-														   "Temp 7"});
-			this.cbTVTitle.Location = new System.Drawing.Point(80, 248);
-			this.cbTVTitle.Name = "cbTVTitle";
-			this.cbTVTitle.Size = new System.Drawing.Size(72, 21);
-			this.cbTVTitle.Sorted = true;
-			this.cbTVTitle.TabIndex = 31;
-			this.cbTVTitle.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-			// 
 			// UI
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
@@ -1340,7 +1364,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.Text = "UI";
 			this.pnWiz0x0024.ResumeLayout(false);
 			this.pnLocalVar.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.udLocalVar)).EndInit();
 			this.pnTempVar.ResumeLayout(false);
 			this.pnTNS.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -1427,7 +1450,63 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.setString(alDefBtn.IndexOf(sender), 0);
 		}
 
+		private void hex8_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!hex8_IsValid(sender)) return;
+
+			byte val = Convert.ToByte(((TextBox)sender).Text, 16);
+			int i = alHex8.IndexOf(sender);
+
+			internalchg = true;
+
+			switch(i)
+			{
+				case 0: setPriority(val); break;
+				case 1: setTimeout(val); break;
+				case 2: setLocalVar(val); break;
+				case 3: setIconID(val); break;
+			}
+
+			internalchg = false;
+		}
+
+		private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex8_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			byte val = 0;
+			int i = alHex8.IndexOf(sender);
+
+			switch(i)
+			{
+				case 0: val = priority; break;
+				case 1: val = timeout; break;
+				case 2: val = localVar; break;
+				case 3: val = iconID; break;
+			}
+
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(val);
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+		private void hex8_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+
 	}
+
 
 }
 
