@@ -176,7 +176,11 @@ namespace SimPe.PackedFiles.UserInterface
 					}
 			}
 			else
+			{
+				MessageBox.Show("Failed to add a new line.\r\nCheck BHAV format and number of lines.",
+					"PJSE: Behaviour Editor", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				newLine = csel;
+			}
 
 			internalchg = savedstate;
 

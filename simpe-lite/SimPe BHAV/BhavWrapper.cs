@@ -216,7 +216,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#region ICollection Members
 		public int Add(Instruction item)
 		{
-			if (items.Count >= ((this.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
+			if (items.Count >= (this.Header.Format < 0x8007 ? 0x80 : 0x8000)) // only allow 32K or 128 lines
 				return -1;
 
 			item.Parent = this;
