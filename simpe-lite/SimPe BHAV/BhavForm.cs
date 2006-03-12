@@ -2045,7 +2045,9 @@ namespace SimPe.PackedFiles.UserInterface
 														  resources.GetString("cbFormat.Items4"),
 														  resources.GetString("cbFormat.Items5"),
 														  resources.GetString("cbFormat.Items6"),
-														  resources.GetString("cbFormat.Items7")});
+														  resources.GetString("cbFormat.Items7"),
+														  resources.GetString("cbFormat.Items8"),
+														  resources.GetString("cbFormat.Items9")});
 			this.cbFormat.Location = ((System.Drawing.Point)(resources.GetObject("cbFormat.Location")));
 			this.cbFormat.MaxDropDownItems = ((int)(resources.GetObject("cbFormat.MaxDropDownItems")));
 			this.cbFormat.MaxLength = ((int)(resources.GetObject("cbFormat.MaxLength")));

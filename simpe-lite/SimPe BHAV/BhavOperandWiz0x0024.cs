@@ -53,11 +53,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private System.Windows.Forms.Button btnStrButton2;
 		private System.Windows.Forms.Button btnStrButton3;
 		private System.Windows.Forms.Button btnStrTitle;
-		private System.Windows.Forms.TextBox tbMessage;
-		private System.Windows.Forms.TextBox tbButton1;
-		private System.Windows.Forms.TextBox tbButton2;
-		private System.Windows.Forms.TextBox tbButton3;
-		private System.Windows.Forms.TextBox tbTitle;
 		private System.Windows.Forms.Button button1;
 		private System.Windows.Forms.Label label4;
 		private System.Windows.Forms.CheckBox cbUTMessage;
@@ -92,6 +87,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private System.Windows.Forms.ComboBox cbTVButton3;
 		private System.Windows.Forms.ComboBox cbTVTitle;
 		private System.Windows.Forms.TextBox tbLocalVar;
+		private System.Windows.Forms.TextBox tbMessage;
+		private System.Windows.Forms.TextBox tbButton1;
+		private System.Windows.Forms.TextBox tbButton2;
+		private System.Windows.Forms.TextBox tbButton3;
+		private System.Windows.Forms.TextBox tbTitle;
+		private System.Windows.Forms.TextBox tbStrMessage;
+		private System.Windows.Forms.TextBox tbStrButton1;
+		private System.Windows.Forms.TextBox tbStrButton2;
+		private System.Windows.Forms.TextBox tbStrButton3;
+		private System.Windows.Forms.TextBox tbStrTitle;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -127,7 +132,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			Button[] bd = { btnDefMessage ,btnDefButton1 ,btnDefButton2 ,btnDefButton3 ,btnDefTitle ,};
 			alDefBtn = new ArrayList(bd);
 
-			TextBox[] t = { tbMessage ,tbButton1 ,tbButton2 ,tbButton3 ,tbTitle ,};
+			TextBox[] t = { tbStrMessage ,tbStrButton1 ,tbStrButton2 ,tbStrButton3 ,tbStrTitle ,};
 			alTextBox = new ArrayList(t);
 
 			CheckBox[] c = { cbUTMessage ,cbUTButton1 ,cbUTButton2 ,cbUTButton3 ,cbUTTitle ,};
@@ -136,8 +141,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			ComboBox[] ct = { cbTVMessage ,cbTVButton1 ,cbTVButton2 ,cbTVButton3 ,cbTVTitle ,};
 			alCBTempVar = new ArrayList(ct);
 
-			TextBox[] tb = { tbPriority ,tbTimeout ,tbLocalVar ,tbIconID ,};
-			alHex8 = new ArrayList(tb);
+			TextBox[] tb8 = { tbPriority ,tbTimeout ,tbLocalVar ,tbIconID ,};
+			alHex8 = new ArrayList(tb8);
+
+			TextBox[] tb16 = { tbMessage ,tbButton1 ,tbButton2 ,tbButton3 ,tbTitle ,};
+			alHex16 = new ArrayList(tb16);
 		}
 
 
@@ -169,6 +177,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private ArrayList alCBUseTemp = null;
 		private ArrayList alCBTempVar = null;
 		private ArrayList alHex8 = null;
+		private ArrayList alHex16 = null;
 
 		byte dialog   = 0;
 		bool nowait   = false;
@@ -183,6 +192,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		Scope scope   = Scope.Private;
 		ushort[] messages = { 0, 0, 0, 0, 0 }; // Message, Yes, No, Cancel, Title
 		bool[] useTemp = { false, false, false, false, false }; // Message, Yes, No, Cancel, Title
+		bool[] states = { false, false, false, false, false }; // message, yes, no, cancel, title
 
 		bool internalchg = false;
 
@@ -191,6 +201,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			if (alHex8.IndexOf(sender) < 0)
 				throw new Exception("hex8_IsValid not applicable to control " + sender.ToString());
 			try { Convert.ToByte(((TextBox)sender).Text, 16); }
+			catch (Exception) { return false; }
+			return true;
+		}
+
+		private bool hex16_IsValid(object sender)
+		{
+			if (alHex16.IndexOf(sender) < 0)
+				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
+			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
 			catch (Exception) { return false; }
 			return true;
 		}
@@ -207,11 +226,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			this.lbType.Text = typeDescriptions.Length > dialog ? typeDescriptions[dialog] : "";
 
-			bool[] states = { false, false, false, false, false }; // message, yes, no, cancel, title
 			bool tvState = false;
 			bool tnsState = false;
 			bool lvState = false;
 
+			states[0] = states[1] = states[2] = states[3] = states[4] = false; // forget everything...
 			switch(dialog)
 			{
 				case 0x00: case 0x03: case 0x04:
@@ -233,6 +252,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 					break;
 				case 0x0f:
 					states[1] = states[2] = true; // button 1, button 2
+					states[0] = states[3] = states[4] = false; // msg, btn3, title
 					break;
 				case 0x13:
 					states[1] = states[2] = states[4] = true; // button 1, button 2, title
@@ -249,16 +269,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 					break;
 			}
 
-			// Make the display match the help text
-			for(int i = 0; i < states.Length; i++)
-				((Button)this.alStrBtn[i]).Enabled =
-					((Button)this.alDefBtn[i]).Enabled =
-					((CheckBox)this.alCBUseTemp[i]).Enabled = states[i];
 			this.pnTempVar.Visible  = tvState;
 			this.pnTNS.Visible      = tnsState;
 			this.pnLocalVar.Visible = lvState;
 
 			internalchg = false;
+
+			// Make the display match the help text
+			for(int i = 0; i < states.Length; i++)
+				setString(i, messages[i]);
 		}
 
 		private void setTnsStyle(int newStyle)
@@ -348,32 +367,68 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			messages[which] = (ushort)strnum;
 
-			if (useTemp[which])
+			if (!states[which])
 			{
-				((TextBox)alTextBox[which]).Visible = false;
-				((Button)alDefBtn[which]).Enabled = false;
-				((Button)alStrBtn[which]).Enabled = false;
-
-				ComboBox c = (ComboBox)alCBTempVar[which];
-
 				internalchg = true;
-				c.SelectedIndex = c.Items.Count > strnum ? strnum : -1;
+				((ComboBox)alCBTempVar[which]).SelectedIndex = -1;
+				((TextBox)alHex16[which]).Text = "";
 				internalchg = false;
 
-				c.Visible = true;
+				((TextBox)alTextBox[which]).Text = "";
+
+				((ComboBox)this.alCBTempVar[which]).Enabled =
+					((CheckBox)this.alCBUseTemp[which]).Enabled =
+					((TextBox)alHex16[which]).Enabled =
+					((Button)alStrBtn[which]).Enabled =
+					((Button)alDefBtn[which]).Enabled =
+					((TextBox)alTextBox[which]).Enabled =
+					false;
+
+				return;
+			}
+
+			((CheckBox)this.alCBUseTemp[which]).Enabled = true;
+
+			if (useTemp[which])
+			{
+				ComboBox c = (ComboBox)alCBTempVar[which];
+				internalchg = true;
+				c.SelectedIndex = c.Items.Count > strnum ? strnum : -1;
+				((TextBox)alHex16[which]).Text = "";
+				internalchg = false;
+
+				((TextBox)alTextBox[which]).Text = "";
+
+				((CheckBox)this.alCBUseTemp[which]).Checked =
+					((ComboBox)this.alCBTempVar[which]).Enabled = true;
+				((TextBox)alHex16[which]).Enabled =
+					((Button)alStrBtn[which]).Enabled =
+					((Button)alDefBtn[which]).Enabled =
+					((TextBox)alTextBox[which]).Enabled =
+					false;
 			}
 			else
 			{
-				((ComboBox)this.alCBTempVar[which]).Visible = false;
-				((Button)alDefBtn[which]).Enabled = (strnum != 0);
-				((Button)alStrBtn[which]).Enabled = true;
+				if (!internalchg)
+				{
+					internalchg = true;
+					((ComboBox)this.alCBTempVar[which]).SelectedIndex = -1;
+					((TextBox)alHex16[which]).Text = "0x" + SimPe.Helper.HexString((ushort)strnum);
+					internalchg = false;
+				}
 
-				TextBox t = (TextBox)alTextBox[which];
-				t.Text = (strnum <= 0)
+				((TextBox)alTextBox[which]).Text = (strnum <= 0)
 					? "[none]"
-					: ((BhavWiz)inst).readStr(scope, GS.GlobalStr.DialogString, strnum - 1, 60, pjse.Detail.Errors)
+					: ((BhavWiz)inst).readStr(scope, GS.GlobalStr.DialogString, strnum - 1, -1, pjse.Detail.Errors)
 					;
-				t.Visible = true;
+
+				((CheckBox)this.alCBUseTemp[which]).Checked =
+					((ComboBox)this.alCBTempVar[which]).Enabled = false;
+				((TextBox)alHex16[which]).Enabled =
+					((Button)alStrBtn[which]).Enabled =
+					((TextBox)alTextBox[which]).Enabled =
+					true;
+				((Button)alDefBtn[which]).Enabled = (strnum != 0);
 			}
 		}
 
@@ -556,6 +611,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private void InitializeComponent()
 		{
 			this.pnWiz0x0024 = new System.Windows.Forms.Panel();
+			this.tbStrTitle = new System.Windows.Forms.TextBox();
+			this.tbStrButton3 = new System.Windows.Forms.TextBox();
+			this.tbStrButton2 = new System.Windows.Forms.TextBox();
+			this.tbStrButton1 = new System.Windows.Forms.TextBox();
+			this.tbStrMessage = new System.Windows.Forms.TextBox();
+			this.tbMessage = new System.Windows.Forms.TextBox();
 			this.cbTVTitle = new System.Windows.Forms.ComboBox();
 			this.cbTVButton3 = new System.Windows.Forms.ComboBox();
 			this.cbTVButton2 = new System.Windows.Forms.ComboBox();
@@ -581,7 +642,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.label4 = new System.Windows.Forms.Label();
 			this.cbUTMessage = new System.Windows.Forms.CheckBox();
 			this.btnDefMessage = new System.Windows.Forms.Button();
-			this.tbMessage = new System.Windows.Forms.TextBox();
 			this.btnStrMessage = new System.Windows.Forms.Button();
 			this.cbBlockBHAV = new System.Windows.Forms.CheckBox();
 			this.cbScope = new System.Windows.Forms.ComboBox();
@@ -600,10 +660,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnStrButton2 = new System.Windows.Forms.Button();
 			this.btnStrButton3 = new System.Windows.Forms.Button();
 			this.btnStrTitle = new System.Windows.Forms.Button();
-			this.tbButton1 = new System.Windows.Forms.TextBox();
-			this.tbButton2 = new System.Windows.Forms.TextBox();
-			this.tbButton3 = new System.Windows.Forms.TextBox();
-			this.tbTitle = new System.Windows.Forms.TextBox();
 			this.btnDefButton1 = new System.Windows.Forms.Button();
 			this.btnDefButton2 = new System.Windows.Forms.Button();
 			this.btnDefButton3 = new System.Windows.Forms.Button();
@@ -612,6 +668,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.cbUTButton2 = new System.Windows.Forms.CheckBox();
 			this.cbUTButton3 = new System.Windows.Forms.CheckBox();
 			this.cbUTTitle = new System.Windows.Forms.CheckBox();
+			this.tbButton1 = new System.Windows.Forms.TextBox();
+			this.tbButton2 = new System.Windows.Forms.TextBox();
+			this.tbButton3 = new System.Windows.Forms.TextBox();
+			this.tbTitle = new System.Windows.Forms.TextBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.button1 = new System.Windows.Forms.Button();
 			this.pnWiz0x0024.SuspendLayout();
@@ -622,6 +682,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// pnWiz0x0024
 			// 
+			this.pnWiz0x0024.Controls.Add(this.tbStrTitle);
+			this.pnWiz0x0024.Controls.Add(this.tbStrButton3);
+			this.pnWiz0x0024.Controls.Add(this.tbStrButton2);
+			this.pnWiz0x0024.Controls.Add(this.tbStrButton1);
+			this.pnWiz0x0024.Controls.Add(this.tbStrMessage);
+			this.pnWiz0x0024.Controls.Add(this.tbMessage);
 			this.pnWiz0x0024.Controls.Add(this.cbTVTitle);
 			this.pnWiz0x0024.Controls.Add(this.cbTVButton3);
 			this.pnWiz0x0024.Controls.Add(this.cbTVButton2);
@@ -637,7 +703,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnWiz0x0024.Controls.Add(this.label4);
 			this.pnWiz0x0024.Controls.Add(this.cbUTMessage);
 			this.pnWiz0x0024.Controls.Add(this.btnDefMessage);
-			this.pnWiz0x0024.Controls.Add(this.tbMessage);
 			this.pnWiz0x0024.Controls.Add(this.btnStrMessage);
 			this.pnWiz0x0024.Controls.Add(this.cbBlockBHAV);
 			this.pnWiz0x0024.Controls.Add(this.cbScope);
@@ -656,10 +721,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnWiz0x0024.Controls.Add(this.btnStrButton2);
 			this.pnWiz0x0024.Controls.Add(this.btnStrButton3);
 			this.pnWiz0x0024.Controls.Add(this.btnStrTitle);
-			this.pnWiz0x0024.Controls.Add(this.tbButton1);
-			this.pnWiz0x0024.Controls.Add(this.tbButton2);
-			this.pnWiz0x0024.Controls.Add(this.tbButton3);
-			this.pnWiz0x0024.Controls.Add(this.tbTitle);
 			this.pnWiz0x0024.Controls.Add(this.btnDefButton1);
 			this.pnWiz0x0024.Controls.Add(this.btnDefButton2);
 			this.pnWiz0x0024.Controls.Add(this.btnDefButton3);
@@ -668,115 +729,186 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnWiz0x0024.Controls.Add(this.cbUTButton2);
 			this.pnWiz0x0024.Controls.Add(this.cbUTButton3);
 			this.pnWiz0x0024.Controls.Add(this.cbUTTitle);
+			this.pnWiz0x0024.Controls.Add(this.tbButton1);
+			this.pnWiz0x0024.Controls.Add(this.tbButton2);
+			this.pnWiz0x0024.Controls.Add(this.tbButton3);
+			this.pnWiz0x0024.Controls.Add(this.tbTitle);
 			this.pnWiz0x0024.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.pnWiz0x0024.Location = new System.Drawing.Point(0, 0);
 			this.pnWiz0x0024.Name = "pnWiz0x0024";
-			this.pnWiz0x0024.Size = new System.Drawing.Size(528, 280);
+			this.pnWiz0x0024.Size = new System.Drawing.Size(632, 280);
 			this.pnWiz0x0024.TabIndex = 0;
+			// 
+			// tbStrTitle
+			// 
+			this.tbStrTitle.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.tbStrTitle.Location = new System.Drawing.Point(248, 252);
+			this.tbStrTitle.Name = "tbStrTitle";
+			this.tbStrTitle.ReadOnly = true;
+			this.tbStrTitle.Size = new System.Drawing.Size(232, 14);
+			this.tbStrTitle.TabIndex = 39;
+			this.tbStrTitle.TabStop = false;
+			this.tbStrTitle.Text = "Title string";
+			// 
+			// tbStrButton3
+			// 
+			this.tbStrButton3.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.tbStrButton3.Location = new System.Drawing.Point(248, 228);
+			this.tbStrButton3.Name = "tbStrButton3";
+			this.tbStrButton3.ReadOnly = true;
+			this.tbStrButton3.Size = new System.Drawing.Size(232, 14);
+			this.tbStrButton3.TabIndex = 38;
+			this.tbStrButton3.TabStop = false;
+			this.tbStrButton3.Text = "Button3 string";
+			// 
+			// tbStrButton2
+			// 
+			this.tbStrButton2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.tbStrButton2.Location = new System.Drawing.Point(248, 204);
+			this.tbStrButton2.Name = "tbStrButton2";
+			this.tbStrButton2.ReadOnly = true;
+			this.tbStrButton2.Size = new System.Drawing.Size(232, 14);
+			this.tbStrButton2.TabIndex = 37;
+			this.tbStrButton2.TabStop = false;
+			this.tbStrButton2.Text = "Button2 string";
+			// 
+			// tbStrButton1
+			// 
+			this.tbStrButton1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.tbStrButton1.Location = new System.Drawing.Point(248, 180);
+			this.tbStrButton1.Name = "tbStrButton1";
+			this.tbStrButton1.ReadOnly = true;
+			this.tbStrButton1.Size = new System.Drawing.Size(232, 14);
+			this.tbStrButton1.TabIndex = 36;
+			this.tbStrButton1.TabStop = false;
+			this.tbStrButton1.Text = "Button1 string";
+			// 
+			// tbStrMessage
+			// 
+			this.tbStrMessage.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.tbStrMessage.Location = new System.Drawing.Point(248, 156);
+			this.tbStrMessage.Name = "tbStrMessage";
+			this.tbStrMessage.ReadOnly = true;
+			this.tbStrMessage.Size = new System.Drawing.Size(232, 14);
+			this.tbStrMessage.TabIndex = 35;
+			this.tbStrMessage.TabStop = false;
+			this.tbStrMessage.Text = "Message string";
+			// 
+			// tbMessage
+			// 
+			this.tbMessage.Location = new System.Drawing.Point(144, 152);
+			this.tbMessage.Name = "tbMessage";
+			this.tbMessage.Size = new System.Drawing.Size(56, 21);
+			this.tbMessage.TabIndex = 8;
+			this.tbMessage.Text = "0xDDDD";
+			this.tbMessage.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbMessage.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbMessage.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// cbTVTitle
 			// 
 			this.cbTVTitle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbTVTitle.Items.AddRange(new object[] {
-														   "Temp 0",
-														   "Temp 1",
-														   "Temp 2",
-														   "Temp 3",
-														   "Temp 4",
-														   "Temp 5",
-														   "Temp 6",
-														   "Temp 7"});
+														   "0",
+														   "1",
+														   "2",
+														   "3",
+														   "4",
+														   "5",
+														   "6",
+														   "7"});
 			this.cbTVTitle.Location = new System.Drawing.Point(80, 248);
 			this.cbTVTitle.Name = "cbTVTitle";
-			this.cbTVTitle.Size = new System.Drawing.Size(72, 21);
+			this.cbTVTitle.Size = new System.Drawing.Size(40, 21);
 			this.cbTVTitle.Sorted = true;
-			this.cbTVTitle.TabIndex = 31;
+			this.cbTVTitle.TabIndex = 26;
 			this.cbTVTitle.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
 			// 
 			// cbTVButton3
 			// 
 			this.cbTVButton3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbTVButton3.Items.AddRange(new object[] {
-															 "Temp 0",
-															 "Temp 1",
-															 "Temp 2",
-															 "Temp 3",
-															 "Temp 4",
-															 "Temp 5",
-															 "Temp 6",
-															 "Temp 7"});
+															 "0",
+															 "1",
+															 "2",
+															 "3",
+															 "4",
+															 "5",
+															 "6",
+															 "7"});
 			this.cbTVButton3.Location = new System.Drawing.Point(80, 224);
 			this.cbTVButton3.Name = "cbTVButton3";
-			this.cbTVButton3.Size = new System.Drawing.Size(72, 21);
+			this.cbTVButton3.Size = new System.Drawing.Size(40, 21);
 			this.cbTVButton3.Sorted = true;
-			this.cbTVButton3.TabIndex = 30;
+			this.cbTVButton3.TabIndex = 21;
 			this.cbTVButton3.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
 			// 
 			// cbTVButton2
 			// 
 			this.cbTVButton2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbTVButton2.Items.AddRange(new object[] {
-															 "Temp 0",
-															 "Temp 1",
-															 "Temp 2",
-															 "Temp 3",
-															 "Temp 4",
-															 "Temp 5",
-															 "Temp 6",
-															 "Temp 7"});
+															 "0",
+															 "1",
+															 "2",
+															 "3",
+															 "4",
+															 "5",
+															 "6",
+															 "7"});
 			this.cbTVButton2.Location = new System.Drawing.Point(80, 200);
 			this.cbTVButton2.Name = "cbTVButton2";
-			this.cbTVButton2.Size = new System.Drawing.Size(72, 21);
+			this.cbTVButton2.Size = new System.Drawing.Size(40, 21);
 			this.cbTVButton2.Sorted = true;
-			this.cbTVButton2.TabIndex = 29;
+			this.cbTVButton2.TabIndex = 16;
 			this.cbTVButton2.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
 			// 
 			// cbTVButton1
 			// 
 			this.cbTVButton1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbTVButton1.Items.AddRange(new object[] {
-															 "Temp 0",
-															 "Temp 1",
-															 "Temp 2",
-															 "Temp 3",
-															 "Temp 4",
-															 "Temp 5",
-															 "Temp 6",
-															 "Temp 7"});
+															 "0",
+															 "1",
+															 "2",
+															 "3",
+															 "4",
+															 "5",
+															 "6",
+															 "7"});
 			this.cbTVButton1.Location = new System.Drawing.Point(80, 176);
 			this.cbTVButton1.Name = "cbTVButton1";
-			this.cbTVButton1.Size = new System.Drawing.Size(72, 21);
+			this.cbTVButton1.Size = new System.Drawing.Size(40, 21);
 			this.cbTVButton1.Sorted = true;
-			this.cbTVButton1.TabIndex = 28;
+			this.cbTVButton1.TabIndex = 11;
 			this.cbTVButton1.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
 			// 
 			// cbTVMessage
 			// 
 			this.cbTVMessage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbTVMessage.Items.AddRange(new object[] {
-															 "Temp 0",
-															 "Temp 1",
-															 "Temp 2",
-															 "Temp 3",
-															 "Temp 4",
-															 "Temp 5",
-															 "Temp 6",
-															 "Temp 7"});
+															 "0",
+															 "1",
+															 "2",
+															 "3",
+															 "4",
+															 "5",
+															 "6",
+															 "7"});
 			this.cbTVMessage.Location = new System.Drawing.Point(80, 152);
 			this.cbTVMessage.Name = "cbTVMessage";
-			this.cbTVMessage.Size = new System.Drawing.Size(72, 21);
+			this.cbTVMessage.Size = new System.Drawing.Size(40, 21);
 			this.cbTVMessage.Sorted = true;
-			this.cbTVMessage.TabIndex = 27;
+			this.cbTVMessage.TabIndex = 6;
 			this.cbTVMessage.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
 			// 
 			// pnLocalVar
 			// 
+			this.pnLocalVar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.pnLocalVar.Controls.Add(this.tbLocalVar);
 			this.pnLocalVar.Controls.Add(this.label8);
-			this.pnLocalVar.Location = new System.Drawing.Point(408, 184);
+			this.pnLocalVar.Location = new System.Drawing.Point(512, 184);
 			this.pnLocalVar.Name = "pnLocalVar";
 			this.pnLocalVar.Size = new System.Drawing.Size(112, 24);
-			this.pnLocalVar.TabIndex = 24;
+			this.pnLocalVar.TabIndex = 32;
 			// 
 			// tbLocalVar
 			// 
@@ -784,7 +916,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.tbLocalVar.MaxLength = 4;
 			this.tbLocalVar.Name = "tbLocalVar";
 			this.tbLocalVar.Size = new System.Drawing.Size(40, 21);
-			this.tbLocalVar.TabIndex = 4;
+			this.tbLocalVar.TabIndex = 1;
 			this.tbLocalVar.Text = "0xDD";
 			this.tbLocalVar.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
 			this.tbLocalVar.Validated += new System.EventHandler(this.hex8_Validated);
@@ -802,12 +934,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// pnTempVar
 			// 
+			this.pnTempVar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.pnTempVar.Controls.Add(this.cbTempVar);
 			this.pnTempVar.Controls.Add(this.lbTempVar);
-			this.pnTempVar.Location = new System.Drawing.Point(408, 160);
+			this.pnTempVar.Location = new System.Drawing.Point(512, 160);
 			this.pnTempVar.Name = "pnTempVar";
 			this.pnTempVar.Size = new System.Drawing.Size(112, 24);
-			this.pnTempVar.TabIndex = 23;
+			this.pnTempVar.TabIndex = 31;
 			// 
 			// cbTempVar
 			// 
@@ -840,6 +973,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// pnTNS
 			// 
+			this.pnTNS.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
 			this.pnTNS.Controls.Add(this.tbPriority);
 			this.pnTNS.Controls.Add(this.label6);
 			this.pnTNS.Controls.Add(this.label7);
@@ -848,12 +983,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnTNS.Controls.Add(this.cbTnsStyle);
 			this.pnTNS.Location = new System.Drawing.Point(0, 104);
 			this.pnTNS.Name = "pnTNS";
-			this.pnTNS.Size = new System.Drawing.Size(528, 24);
-			this.pnTNS.TabIndex = 6;
+			this.pnTNS.Size = new System.Drawing.Size(632, 24);
+			this.pnTNS.TabIndex = 5;
 			// 
 			// tbPriority
 			// 
-			this.tbPriority.Location = new System.Drawing.Point(360, 0);
+			this.tbPriority.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tbPriority.Location = new System.Drawing.Point(464, 0);
 			this.tbPriority.MaxLength = 4;
 			this.tbPriority.Name = "tbPriority";
 			this.tbPriority.Size = new System.Drawing.Size(40, 21);
@@ -865,9 +1001,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// label6
 			// 
+			this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label6.AutoSize = true;
 			this.label6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label6.Location = new System.Drawing.Point(303, 3);
+			this.label6.Location = new System.Drawing.Point(407, 3);
 			this.label6.Name = "label6";
 			this.label6.Size = new System.Drawing.Size(52, 17);
 			this.label6.TabIndex = 0;
@@ -875,9 +1012,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// label7
 			// 
+			this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.label7.AutoSize = true;
 			this.label7.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label7.Location = new System.Drawing.Point(411, 3);
+			this.label7.Location = new System.Drawing.Point(515, 3);
 			this.label7.Name = "label7";
 			this.label7.Size = new System.Drawing.Size(56, 17);
 			this.label7.TabIndex = 0;
@@ -885,7 +1023,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// tbTimeout
 			// 
-			this.tbTimeout.Location = new System.Drawing.Point(472, 0);
+			this.tbTimeout.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.tbTimeout.Location = new System.Drawing.Point(576, 0);
 			this.tbTimeout.MaxLength = 4;
 			this.tbTimeout.Name = "tbTimeout";
 			this.tbTimeout.Size = new System.Drawing.Size(40, 21);
@@ -907,11 +1046,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// cbTnsStyle
 			// 
+			this.cbTnsStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
 			this.cbTnsStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cbTnsStyle.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.cbTnsStyle.Location = new System.Drawing.Point(72, 0);
 			this.cbTnsStyle.Name = "cbTnsStyle";
-			this.cbTnsStyle.Size = new System.Drawing.Size(216, 21);
+			this.cbTnsStyle.Size = new System.Drawing.Size(320, 21);
 			this.cbTnsStyle.TabIndex = 1;
 			// 
 			// btnStrIcon
@@ -962,7 +1103,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// label4
 			// 
 			this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label4.Location = new System.Drawing.Point(334, 134);
+			this.label4.Location = new System.Drawing.Point(88, 131);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(68, 16);
 			this.label4.TabIndex = 0;
@@ -971,10 +1112,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// cbUTMessage
 			// 
-			this.cbUTMessage.Location = new System.Drawing.Point(360, 155);
+			this.cbUTMessage.Location = new System.Drawing.Point(120, 155);
 			this.cbUTMessage.Name = "cbUTMessage";
 			this.cbUTMessage.Size = new System.Drawing.Size(22, 16);
-			this.cbUTMessage.TabIndex = 10;
+			this.cbUTMessage.TabIndex = 7;
 			this.cbUTMessage.Text = "-";
 			this.cbUTMessage.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
 			// 
@@ -984,45 +1125,35 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnDefMessage.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
 			this.btnDefMessage.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.btnDefMessage.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefMessage.Location = new System.Drawing.Point(336, 152);
+			this.btnDefMessage.Location = new System.Drawing.Point(224, 152);
 			this.btnDefMessage.Name = "btnDefMessage";
 			this.btnDefMessage.Size = new System.Drawing.Size(21, 21);
-			this.btnDefMessage.TabIndex = 9;
+			this.btnDefMessage.TabIndex = 10;
 			this.btnDefMessage.Text = "X";
 			this.btnDefMessage.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.btnDefMessage.Click += new System.EventHandler(this.btnDef_Click);
-			// 
-			// tbMessage
-			// 
-			this.tbMessage.Location = new System.Drawing.Point(80, 152);
-			this.tbMessage.MaxLength = 6;
-			this.tbMessage.Name = "tbMessage";
-			this.tbMessage.ReadOnly = true;
-			this.tbMessage.Size = new System.Drawing.Size(232, 21);
-			this.tbMessage.TabIndex = 0;
-			this.tbMessage.TabStop = false;
-			this.tbMessage.Text = "tbMessage";
 			// 
 			// btnStrMessage
 			// 
 			this.btnStrMessage.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnStrMessage.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
 			this.btnStrMessage.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrMessage.Location = new System.Drawing.Point(312, 152);
+			this.btnStrMessage.Location = new System.Drawing.Point(200, 152);
 			this.btnStrMessage.Name = "btnStrMessage";
 			this.btnStrMessage.Size = new System.Drawing.Size(21, 21);
-			this.btnStrMessage.TabIndex = 8;
+			this.btnStrMessage.TabIndex = 9;
 			this.btnStrMessage.Text = "8";
 			this.btnStrMessage.Click += new System.EventHandler(this.btnStr_Click);
 			// 
 			// cbBlockBHAV
 			// 
+			this.cbBlockBHAV.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbBlockBHAV.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cbBlockBHAV.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.cbBlockBHAV.Location = new System.Drawing.Point(384, 208);
+			this.cbBlockBHAV.Location = new System.Drawing.Point(488, 208);
 			this.cbBlockBHAV.Name = "cbBlockBHAV";
 			this.cbBlockBHAV.Size = new System.Drawing.Size(112, 24);
-			this.cbBlockBHAV.TabIndex = 25;
+			this.cbBlockBHAV.TabIndex = 33;
 			this.cbBlockBHAV.Text = "Wait for user";
 			this.cbBlockBHAV.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cbBlockBHAV.CheckedChanged += new System.EventHandler(this.cbBlockBHAV_CheckedChanged);
@@ -1034,17 +1165,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 														 "Global",
 														 "Semi-global",
 														 "Private"});
-			this.cbScope.Location = new System.Drawing.Point(104, 128);
+			this.cbScope.Location = new System.Drawing.Point(280, 128);
 			this.cbScope.Name = "cbScope";
 			this.cbScope.Size = new System.Drawing.Size(144, 21);
-			this.cbScope.TabIndex = 7;
+			this.cbScope.TabIndex = 5;
 			this.cbScope.SelectedIndexChanged += new System.EventHandler(this.cbScope_SelectedIndexChanged);
 			// 
 			// label3
 			// 
 			this.label3.AutoSize = true;
 			this.label3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label3.Location = new System.Drawing.Point(14, 131);
+			this.label3.Location = new System.Drawing.Point(190, 132);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(85, 17);
 			this.label3.TabIndex = 0;
@@ -1057,7 +1188,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.lbTitle.Location = new System.Drawing.Point(43, 251);
 			this.lbTitle.Name = "lbTitle";
 			this.lbTitle.Size = new System.Drawing.Size(32, 17);
-			this.lbTitle.TabIndex = 9;
+			this.lbTitle.TabIndex = 0;
 			this.lbTitle.Text = "Title";
 			// 
 			// lbCancel
@@ -1067,7 +1198,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.lbCancel.Location = new System.Drawing.Point(15, 227);
 			this.lbCancel.Name = "lbCancel";
 			this.lbCancel.Size = new System.Drawing.Size(59, 17);
-			this.lbCancel.TabIndex = 8;
+			this.lbCancel.TabIndex = 0;
 			this.lbCancel.Text = "Button 3";
 			// 
 			// lbNo
@@ -1077,7 +1208,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.lbNo.Location = new System.Drawing.Point(15, 203);
 			this.lbNo.Name = "lbNo";
 			this.lbNo.Size = new System.Drawing.Size(59, 17);
-			this.lbNo.TabIndex = 7;
+			this.lbNo.TabIndex = 0;
 			this.lbNo.Text = "Button 2";
 			// 
 			// lbYes
@@ -1087,7 +1218,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.lbYes.Location = new System.Drawing.Point(15, 179);
 			this.lbYes.Name = "lbYes";
 			this.lbYes.Size = new System.Drawing.Size(59, 17);
-			this.lbYes.TabIndex = 6;
+			this.lbYes.TabIndex = 0;
 			this.lbYes.Text = "Button 1";
 			// 
 			// lbMessage
@@ -1102,11 +1233,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// lbType
 			// 
+			this.lbType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+				| System.Windows.Forms.AnchorStyles.Right)));
 			this.lbType.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.lbType.Location = new System.Drawing.Point(0, 32);
 			this.lbType.Name = "lbType";
-			this.lbType.Size = new System.Drawing.Size(528, 72);
-			this.lbType.TabIndex = 5;
+			this.lbType.Size = new System.Drawing.Size(632, 72);
+			this.lbType.TabIndex = 0;
 			this.lbType.Text = "Description of dialog type";
 			// 
 			// label1
@@ -1142,12 +1275,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// cbBlockSim
 			// 
+			this.cbBlockSim.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.cbBlockSim.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cbBlockSim.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
-			this.cbBlockSim.Location = new System.Drawing.Point(384, 232);
+			this.cbBlockSim.Location = new System.Drawing.Point(488, 232);
 			this.cbBlockSim.Name = "cbBlockSim";
 			this.cbBlockSim.Size = new System.Drawing.Size(112, 24);
-			this.cbBlockSim.TabIndex = 26;
+			this.cbBlockSim.TabIndex = 34;
 			this.cbBlockSim.Text = "Block Sim";
 			this.cbBlockSim.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.cbBlockSim.CheckedChanged += new System.EventHandler(this.cbBlockSim_CheckedChanged);
@@ -1157,10 +1291,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnStrButton1.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnStrButton1.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
 			this.btnStrButton1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrButton1.Location = new System.Drawing.Point(312, 176);
+			this.btnStrButton1.Location = new System.Drawing.Point(200, 176);
 			this.btnStrButton1.Name = "btnStrButton1";
 			this.btnStrButton1.Size = new System.Drawing.Size(21, 21);
-			this.btnStrButton1.TabIndex = 11;
+			this.btnStrButton1.TabIndex = 14;
 			this.btnStrButton1.Text = "8";
 			this.btnStrButton1.Click += new System.EventHandler(this.btnStr_Click);
 			// 
@@ -1169,10 +1303,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnStrButton2.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnStrButton2.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
 			this.btnStrButton2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrButton2.Location = new System.Drawing.Point(312, 200);
+			this.btnStrButton2.Location = new System.Drawing.Point(200, 200);
 			this.btnStrButton2.Name = "btnStrButton2";
 			this.btnStrButton2.Size = new System.Drawing.Size(21, 21);
-			this.btnStrButton2.TabIndex = 14;
+			this.btnStrButton2.TabIndex = 19;
 			this.btnStrButton2.Text = "8";
 			this.btnStrButton2.Click += new System.EventHandler(this.btnStr_Click);
 			// 
@@ -1181,10 +1315,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnStrButton3.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnStrButton3.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
 			this.btnStrButton3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrButton3.Location = new System.Drawing.Point(312, 224);
+			this.btnStrButton3.Location = new System.Drawing.Point(200, 224);
 			this.btnStrButton3.Name = "btnStrButton3";
 			this.btnStrButton3.Size = new System.Drawing.Size(21, 21);
-			this.btnStrButton3.TabIndex = 17;
+			this.btnStrButton3.TabIndex = 24;
 			this.btnStrButton3.Text = "8";
 			this.btnStrButton3.Click += new System.EventHandler(this.btnStr_Click);
 			// 
@@ -1193,56 +1327,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnStrTitle.FlatStyle = System.Windows.Forms.FlatStyle.System;
 			this.btnStrTitle.Font = new System.Drawing.Font("Webdings", 12F, System.Drawing.FontStyle.Bold);
 			this.btnStrTitle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnStrTitle.Location = new System.Drawing.Point(312, 248);
+			this.btnStrTitle.Location = new System.Drawing.Point(200, 248);
 			this.btnStrTitle.Name = "btnStrTitle";
 			this.btnStrTitle.Size = new System.Drawing.Size(21, 21);
-			this.btnStrTitle.TabIndex = 20;
+			this.btnStrTitle.TabIndex = 29;
 			this.btnStrTitle.Text = "8";
 			this.btnStrTitle.Click += new System.EventHandler(this.btnStr_Click);
-			// 
-			// tbButton1
-			// 
-			this.tbButton1.Location = new System.Drawing.Point(80, 176);
-			this.tbButton1.MaxLength = 6;
-			this.tbButton1.Name = "tbButton1";
-			this.tbButton1.ReadOnly = true;
-			this.tbButton1.Size = new System.Drawing.Size(232, 21);
-			this.tbButton1.TabIndex = 0;
-			this.tbButton1.TabStop = false;
-			this.tbButton1.Text = "tbButton1";
-			// 
-			// tbButton2
-			// 
-			this.tbButton2.Location = new System.Drawing.Point(80, 200);
-			this.tbButton2.MaxLength = 6;
-			this.tbButton2.Name = "tbButton2";
-			this.tbButton2.ReadOnly = true;
-			this.tbButton2.Size = new System.Drawing.Size(232, 21);
-			this.tbButton2.TabIndex = 0;
-			this.tbButton2.TabStop = false;
-			this.tbButton2.Text = "tbButton2";
-			// 
-			// tbButton3
-			// 
-			this.tbButton3.Location = new System.Drawing.Point(80, 224);
-			this.tbButton3.MaxLength = 6;
-			this.tbButton3.Name = "tbButton3";
-			this.tbButton3.ReadOnly = true;
-			this.tbButton3.Size = new System.Drawing.Size(232, 21);
-			this.tbButton3.TabIndex = 0;
-			this.tbButton3.TabStop = false;
-			this.tbButton3.Text = "tbButton3";
-			// 
-			// tbTitle
-			// 
-			this.tbTitle.Location = new System.Drawing.Point(80, 248);
-			this.tbTitle.MaxLength = 6;
-			this.tbTitle.Name = "tbTitle";
-			this.tbTitle.ReadOnly = true;
-			this.tbTitle.Size = new System.Drawing.Size(232, 21);
-			this.tbTitle.TabIndex = 0;
-			this.tbTitle.TabStop = false;
-			this.tbTitle.Text = "tbTitle";
 			// 
 			// btnDefButton1
 			// 
@@ -1250,10 +1340,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnDefButton1.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
 			this.btnDefButton1.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.btnDefButton1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefButton1.Location = new System.Drawing.Point(336, 176);
+			this.btnDefButton1.Location = new System.Drawing.Point(224, 176);
 			this.btnDefButton1.Name = "btnDefButton1";
 			this.btnDefButton1.Size = new System.Drawing.Size(21, 21);
-			this.btnDefButton1.TabIndex = 12;
+			this.btnDefButton1.TabIndex = 15;
 			this.btnDefButton1.Text = "X";
 			this.btnDefButton1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.btnDefButton1.Click += new System.EventHandler(this.btnDef_Click);
@@ -1264,10 +1354,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnDefButton2.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
 			this.btnDefButton2.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.btnDefButton2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefButton2.Location = new System.Drawing.Point(336, 200);
+			this.btnDefButton2.Location = new System.Drawing.Point(224, 200);
 			this.btnDefButton2.Name = "btnDefButton2";
 			this.btnDefButton2.Size = new System.Drawing.Size(21, 21);
-			this.btnDefButton2.TabIndex = 15;
+			this.btnDefButton2.TabIndex = 20;
 			this.btnDefButton2.Text = "X";
 			this.btnDefButton2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.btnDefButton2.Click += new System.EventHandler(this.btnDef_Click);
@@ -1278,10 +1368,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnDefButton3.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
 			this.btnDefButton3.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.btnDefButton3.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefButton3.Location = new System.Drawing.Point(336, 224);
+			this.btnDefButton3.Location = new System.Drawing.Point(224, 224);
 			this.btnDefButton3.Name = "btnDefButton3";
 			this.btnDefButton3.Size = new System.Drawing.Size(21, 21);
-			this.btnDefButton3.TabIndex = 18;
+			this.btnDefButton3.TabIndex = 25;
 			this.btnDefButton3.Text = "X";
 			this.btnDefButton3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.btnDefButton3.Click += new System.EventHandler(this.btnDef_Click);
@@ -1292,49 +1382,93 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.btnDefTitle.Font = new System.Drawing.Font("Comic Sans MS", 12F, System.Drawing.FontStyle.Bold);
 			this.btnDefTitle.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.btnDefTitle.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.btnDefTitle.Location = new System.Drawing.Point(336, 248);
+			this.btnDefTitle.Location = new System.Drawing.Point(224, 248);
 			this.btnDefTitle.Name = "btnDefTitle";
 			this.btnDefTitle.Size = new System.Drawing.Size(21, 21);
-			this.btnDefTitle.TabIndex = 21;
+			this.btnDefTitle.TabIndex = 30;
 			this.btnDefTitle.Text = "X";
 			this.btnDefTitle.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.btnDefTitle.Click += new System.EventHandler(this.btnDef_Click);
 			// 
 			// cbUTButton1
 			// 
-			this.cbUTButton1.Location = new System.Drawing.Point(360, 179);
+			this.cbUTButton1.Location = new System.Drawing.Point(120, 179);
 			this.cbUTButton1.Name = "cbUTButton1";
 			this.cbUTButton1.Size = new System.Drawing.Size(22, 16);
-			this.cbUTButton1.TabIndex = 13;
+			this.cbUTButton1.TabIndex = 12;
 			this.cbUTButton1.Text = "-";
 			this.cbUTButton1.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
 			// 
 			// cbUTButton2
 			// 
-			this.cbUTButton2.Location = new System.Drawing.Point(360, 203);
+			this.cbUTButton2.Location = new System.Drawing.Point(120, 203);
 			this.cbUTButton2.Name = "cbUTButton2";
 			this.cbUTButton2.Size = new System.Drawing.Size(22, 16);
-			this.cbUTButton2.TabIndex = 16;
+			this.cbUTButton2.TabIndex = 17;
 			this.cbUTButton2.Text = "-";
 			this.cbUTButton2.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
 			// 
 			// cbUTButton3
 			// 
-			this.cbUTButton3.Location = new System.Drawing.Point(360, 227);
+			this.cbUTButton3.Location = new System.Drawing.Point(120, 227);
 			this.cbUTButton3.Name = "cbUTButton3";
 			this.cbUTButton3.Size = new System.Drawing.Size(22, 16);
-			this.cbUTButton3.TabIndex = 19;
+			this.cbUTButton3.TabIndex = 22;
 			this.cbUTButton3.Text = "-";
 			this.cbUTButton3.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
 			// 
 			// cbUTTitle
 			// 
-			this.cbUTTitle.Location = new System.Drawing.Point(360, 251);
+			this.cbUTTitle.Location = new System.Drawing.Point(120, 251);
 			this.cbUTTitle.Name = "cbUTTitle";
 			this.cbUTTitle.Size = new System.Drawing.Size(22, 16);
-			this.cbUTTitle.TabIndex = 22;
+			this.cbUTTitle.TabIndex = 27;
 			this.cbUTTitle.Text = "-";
 			this.cbUTTitle.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
+			// 
+			// tbButton1
+			// 
+			this.tbButton1.Location = new System.Drawing.Point(144, 176);
+			this.tbButton1.Name = "tbButton1";
+			this.tbButton1.Size = new System.Drawing.Size(56, 21);
+			this.tbButton1.TabIndex = 13;
+			this.tbButton1.Text = "0xDDDD";
+			this.tbButton1.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbButton1.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbButton1.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			// 
+			// tbButton2
+			// 
+			this.tbButton2.Location = new System.Drawing.Point(144, 200);
+			this.tbButton2.Name = "tbButton2";
+			this.tbButton2.Size = new System.Drawing.Size(56, 21);
+			this.tbButton2.TabIndex = 18;
+			this.tbButton2.Text = "0xDDDD";
+			this.tbButton2.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbButton2.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbButton2.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			// 
+			// tbButton3
+			// 
+			this.tbButton3.Location = new System.Drawing.Point(144, 224);
+			this.tbButton3.Name = "tbButton3";
+			this.tbButton3.Size = new System.Drawing.Size(56, 21);
+			this.tbButton3.TabIndex = 23;
+			this.tbButton3.Text = "0xDDDD";
+			this.tbButton3.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbButton3.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbButton3.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+			// 
+			// tbTitle
+			// 
+			this.tbTitle.Location = new System.Drawing.Point(144, 248);
+			this.tbTitle.Name = "tbTitle";
+			this.tbTitle.Size = new System.Drawing.Size(56, 21);
+			this.tbTitle.TabIndex = 28;
+			this.tbTitle.Text = "0xDDDD";
+			this.tbTitle.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+			this.tbTitle.Validated += new System.EventHandler(this.hex16_Validated);
+			this.tbTitle.TextChanged += new System.EventHandler(this.hex16_TextChanged);
 			// 
 			// label2
 			// 
@@ -1347,7 +1481,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			// 
 			// button1
 			// 
-			this.button1.Location = new System.Drawing.Point(528, 280);
+			this.button1.Location = new System.Drawing.Point(632, 280);
 			this.button1.Name = "button1";
 			this.button1.TabIndex = 2;
 			this.button1.Text = "button1";
@@ -1432,13 +1566,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 				setTempVar(((ComboBox)sender).SelectedIndex);
 		}
 
-		private void udLocalVar_ValueChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-
-			setLocalVar(Convert.ToInt32(((NumericUpDown)sender).Value));
-		}
-
 
 		private void btnStr_Click(object sender, System.EventArgs e)
 		{
@@ -1449,6 +1576,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			this.setString(alDefBtn.IndexOf(sender), 0);
 		}
+
 
 		private void hex8_TextChanged(object sender, System.EventArgs ev)
 		{
@@ -1500,6 +1628,39 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			bool origstate = internalchg;
 			internalchg = true;
 			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+
+		private void hex16_TextChanged(object sender, System.EventArgs ev)
+		{
+			if (internalchg) return;
+			if (!hex16_IsValid(sender)) return;
+
+			internalchg = true;
+			setString(alHex16.IndexOf(sender), Convert.ToUInt16(((TextBox)sender).Text, 16));
+			internalchg = false;
+		}
+
+		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+		{
+			if (hex16_IsValid(sender)) return;
+
+			e.Cancel = true;
+
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(messages[alHex16.IndexOf(sender)]);
+			((TextBox)sender).SelectAll();
+			internalchg = origstate;
+		}
+
+		private void hex16_Validated(object sender, System.EventArgs e)
+		{
+			bool origstate = internalchg;
+			internalchg = true;
+			((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt16(((TextBox)sender).Text, 16));
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
