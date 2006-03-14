@@ -2082,13 +2082,11 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0024(Instruction i) : base(i) { }
 
-#if INPROGRESS || DEBUG
 		public override ABhavOperandWiz Wizard()
 		{
 			return new pjse.BhavOperandWizards.BhavOperandWiz0x0024(instruction);
 		}
 
-#endif
 
 		protected override string Operands(bool lng)
 		{
@@ -2634,7 +2632,7 @@ namespace pjse.BhavNameWizards
 
 				if ((o[2] & 0x10) != 0) s += scope.ToString() + " STR# 0x012E:[Temp 0]";
 				else s += readStr(scope, GS.GlobalStr.MakeAction,
-						 o[instruction.NodeVersion == 0 ? 0x04 : 0x0e] - 1,
+						 (instruction.NodeVersion == 0 ? o[0x04] : ToShort(o[0x0e], o[0x0f])) - 1,
 						 lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
 			}
 			else 
@@ -5332,7 +5330,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += ((ToShort(o[4], o[5]) & 0x01) != 0 ? "Definition" : "Dynamic") + " script: ";
+			s += lng ? (((ToShort(o[4], o[5]) & 0x01) != 0 ? "Definition" : "Dynamic") + " script: ") : "";
 
 			if (ToShort(o[2], o[3]) != 0) 
 			{
@@ -5340,6 +5338,9 @@ namespace pjse.BhavNameWizards
 				if ((ToShort(o[4], o[5]) & 0x02) != 0) scope = Scope.Private;
 				else if ((ToShort(o[4], o[5]) & 0x04) != 0) scope = Scope.SemiGlobal;
 				s += readStr(scope, ToShort(o[0], o[1]), ToShort(o[2], o[3]) - 1, lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+
+				s += lng ? "; args: " : ", ";
+				for (int i = 0; i < 3; i++) s += (i != 0 ? ", " : "") + dataOwner(lng, o[6+3*i], o[7+3*i], o[8+3*i]);
 			}
 			else
 				s += "none";
