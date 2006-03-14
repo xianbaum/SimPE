@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+14 March 2006 22:38 - BHAV: Tidy up 0x0022 parsed output
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.8
+
 14 March 2006 18:41 - BHAV: Release Dialog Wizard, improvements to 0x0032 and 0x007e (Lua) parsing
   SimPe BHAV\
     BhavWizPrim.cs 1.34.2.7

@@ -1874,35 +1874,37 @@ namespace pjse.BhavNameWizards
 				else if ((o[5] & 0x08) != 0) scope = Scope.SemiGlobal;
 				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
 			}
+
 			if (o[0] != 8) 
 			{
 				Scope scope = Scope.Private;
 				if      ((o[5] & 0x01) != 0) scope = Scope.Global;
 				else if ((o[5] & 0x02) != 0) scope = Scope.SemiGlobal;
-				s += " in window " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+				s += ", window ID " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
 			}
+			else
+				s += ", TNS ID " + dataOwner(lng, o[13], o[11], o[12]);
+
 			if (o[0] == 3)
 				s += ", " + (ToShort(o[6], o[7]) != 0 ? "Starting" : "Stopping") + " Effect";
 
-			if (lng)
-			{
-				if (o[0] == 4 || o[0] == 8)
-					if (ToShort(o[8], o[9]) == 0)
-						s += ", No event tree";
-					else 
+			if (o[0] == 4 || o[0] == 8)
+				if (ToShort(o[8], o[9]) == 0)
+					s += ", no event tree";
+				else 
+				{
+					Scope scope = Scope.Global;
+					if      (o[10] == 0) scope = Scope.Private;
+					else if (o[10] == 1) scope = Scope.SemiGlobal;
+					s += ", " + (lng ? scope.ToString() + " event tree " : "") + "0x" + SimPe.Helper.HexString(ToShort(o[8], o[9]));
+					if (lng)
 					{
-						Scope scope = Scope.Global;
-						if      (o[10] == 0) scope = Scope.Private;
-						else if (o[10] == 1) scope = Scope.SemiGlobal;
-						s += ", " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[8], o[9]));
 						pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[8], o[9]));
 						if (item != null)
 							s += " (" + item + ")";
 					}
+				}
 
-				if (o[0] == 8) 
-					s += ", getting TNS ID from " + dataOwner(o[13], o[11], o[12]);
-			}
 
 			return s;
 #if DISASIM
