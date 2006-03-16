@@ -22,13 +22,6 @@
    BhavInstListControl.cs 1.41.8.1
    BhavWrapper.cs 1.47.2.1
 
-12 March 2006 19:48 - BHAV: Better support for 0x8009 BHAVs
-  SimPe BHAV\
-   BhavForm.cs 1.64.2.11
-   BhavForm.resx 1.30.2.5
-   BhavInstListControl.cs 1.41.8.1
-   BhavWrapper.cs 1.47.2.1
-
 12 March 2006 17:34 - BHAV: Wiz0x0024 enhanced even more (debug only)
   SimPe BHAV\
     BhavOperandWiz0x0024.cs 1.1.4.5
