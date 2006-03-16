@@ -1,6 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+16 March 2006 08:22 - BHAV: fix 0x0032 change; more dialog strings (and some test data)
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.9
+  GlobalStrings.package 1.10.8.6
+  pjseTestData.package 1.17.2.6
+
 14 March 2006 22:38 - BHAV: Tidy up 0x0022 parsed output
   SimPe BHAV\
     BhavWizPrim.cs 1.34.2.8

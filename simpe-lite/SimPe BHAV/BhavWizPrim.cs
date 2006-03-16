@@ -2634,7 +2634,7 @@ namespace pjse.BhavNameWizards
 
 				if ((o[2] & 0x10) != 0) s += scope.ToString() + " STR# 0x012E:[Temp 0]";
 				else s += readStr(scope, GS.GlobalStr.MakeAction,
-						 (instruction.NodeVersion == 0 ? o[0x04] : ToShort(o[0x0e], o[0x0f])) - 1,
+						 (instruction.NodeVersion < 2 ? o[0x04] : ToShort(o[0x0e], o[0x0f])) - 1,
 						 lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
 			}
 			else 
