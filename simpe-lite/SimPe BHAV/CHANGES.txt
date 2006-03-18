@@ -1,6 +1,19 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+18 March 2006 18:06 - Str: New Next/Prev/First language icons
+  SimPe BHAV\
+    start.png 1.2.2.1
+    StrForm.cs 1.28.2.3
+    StrForm.resx 1.18.14.3
+
+18 March 2006 18:04 - Test data: Updated for add/change action string
+  pjseTestData.package 1.17.2.7
+
+18 March 2006 17:54 - BHAV: change Wiz and Raw icons
+  SimPe BHAV\
+    BhavForm.resx 1.30.2.6
+
 16 March 2006 16:12 - BHAV: Add a progress meter to show we've not died
   SimPe BHAV\
     BhavInstListControl.cs 1.41.8.2
