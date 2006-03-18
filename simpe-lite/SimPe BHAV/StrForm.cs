@@ -67,6 +67,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Panel pnHeading;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button btnHelp;
+		private System.Windows.Forms.Button btnLngFirst;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -548,6 +549,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
 			this.strPanel = new System.Windows.Forms.Panel();
+			this.btnLngFirst = new System.Windows.Forms.Button();
 			this.pnHeading = new System.Windows.Forms.Panel();
 			this.btnHelp = new System.Windows.Forms.Button();
 			this.label2 = new System.Windows.Forms.Label();
@@ -594,6 +596,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.AutoScrollMargin = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMargin")));
 			this.strPanel.AutoScrollMinSize = ((System.Drawing.Size)(resources.GetObject("strPanel.AutoScrollMinSize")));
 			this.strPanel.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("strPanel.BackgroundImage")));
+			this.strPanel.Controls.Add(this.btnLngFirst);
 			this.strPanel.Controls.Add(this.pnHeading);
 			this.strPanel.Controls.Add(this.btnStrPrev);
 			this.strPanel.Controls.Add(this.btnStrNext);
@@ -634,6 +637,29 @@ namespace SimPe.PackedFiles.UserInterface
 			this.strPanel.Text = resources.GetString("strPanel.Text");
 			this.strPanel.Visible = ((bool)(resources.GetObject("strPanel.Visible")));
 			this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
+			// 
+			// btnLngFirst
+			// 
+			this.btnLngFirst.AccessibleDescription = resources.GetString("btnLngFirst.AccessibleDescription");
+			this.btnLngFirst.AccessibleName = resources.GetString("btnLngFirst.AccessibleName");
+			this.btnLngFirst.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnLngFirst.Anchor")));
+			this.btnLngFirst.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnLngFirst.BackgroundImage")));
+			this.btnLngFirst.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnLngFirst.Dock")));
+			this.btnLngFirst.Enabled = ((bool)(resources.GetObject("btnLngFirst.Enabled")));
+			this.btnLngFirst.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnLngFirst.FlatStyle")));
+			this.btnLngFirst.Font = ((System.Drawing.Font)(resources.GetObject("btnLngFirst.Font")));
+			this.btnLngFirst.Image = ((System.Drawing.Image)(resources.GetObject("btnLngFirst.Image")));
+			this.btnLngFirst.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnLngFirst.ImageAlign")));
+			this.btnLngFirst.ImageIndex = ((int)(resources.GetObject("btnLngFirst.ImageIndex")));
+			this.btnLngFirst.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnLngFirst.ImeMode")));
+			this.btnLngFirst.Location = ((System.Drawing.Point)(resources.GetObject("btnLngFirst.Location")));
+			this.btnLngFirst.Name = "btnLngFirst";
+			this.btnLngFirst.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnLngFirst.RightToLeft")));
+			this.btnLngFirst.Size = ((System.Drawing.Size)(resources.GetObject("btnLngFirst.Size")));
+			this.btnLngFirst.TabIndex = ((int)(resources.GetObject("btnLngFirst.TabIndex")));
+			this.btnLngFirst.Text = resources.GetString("btnLngFirst.Text");
+			this.btnLngFirst.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnLngFirst.TextAlign")));
+			this.btnLngFirst.Visible = ((bool)(resources.GetObject("btnLngFirst.Visible")));
 			// 
 			// pnHeading
 			// 
