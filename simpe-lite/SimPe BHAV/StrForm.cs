@@ -195,7 +195,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			if (lid > 0) this.cbLngSelect.SelectedIndex = l - 1;
 			internalchg = false;
-			this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
+			this.btnLngFirst.Enabled = this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
 			this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
 			this.btnLngClear.Text = "Clear " + ((SimPe.Data.MetaData.Languages)lid).ToString();
@@ -220,6 +220,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (this.lvStrItems.Focused) this.lvStrItems.SelectedItems[0].Focused = true;
 				this.lvStrItems.SelectedItems[0].EnsureVisible();
+				this.rtbTitle.Focus();
 			}
 
 			if (index == i) return;
@@ -253,7 +254,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrNext.Enabled = (index < count - 1);
 			internalchg = false;
 
-			this.btnStrDelete.Enabled = index >= 0;
+			this.btnStrDelete.Enabled = (lid == 1) && (index >= 0);
 			this.btnStrClear.Enabled = (wrapper.Format != 0x0000 && index >= 0);
 		}
 
@@ -660,6 +661,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnLngFirst.Text = resources.GetString("btnLngFirst.Text");
 			this.btnLngFirst.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnLngFirst.TextAlign")));
 			this.btnLngFirst.Visible = ((bool)(resources.GetObject("btnLngFirst.Visible")));
+			this.btnLngFirst.Click += new System.EventHandler(this.btnLngFirst_Click);
 			// 
 			// pnHeading
 			// 
@@ -1526,11 +1528,6 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex((this.lvStrItems.SelectedIndices.Count > 0) ? this.lvStrItems.SelectedIndices[0] : -1);
 		}
 
-		private void lvStrItems_ItemActivate(object sender, System.EventArgs e)
-		{
-			this.rtbTitle.Focus();
-		}
-
 
 		private void ckbDefault_CheckedChanged(object sender, System.EventArgs e)
 		{
@@ -1572,6 +1569,11 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex(index + 1);
 		}
 
+
+		private void btnLngFirst_Click(object sender, System.EventArgs e)
+		{
+			setLid(1);
+		}
 
 		private void btnLngPrev_Click(object sender, System.EventArgs e)
 		{
