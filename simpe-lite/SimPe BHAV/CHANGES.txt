@@ -1,6 +1,15 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+19 March 2006 12:41 - General tidy-ups
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.4.6
+    BhavOperandWiz0x0024.resx 1.1.4.5
+    BhavOperandWizBhav.cs 1.1.8.2
+    BhavOperandWizBhav.resx 1.1.8.2
+    ObjfForm.cs 1.13.2.3
+    ObjfForm.resx 1.4.6.3
+
 19 March 2006 12:41 - Str: Cursor to title automatically with mouse, too
   SimPe BHAV\
     StrForm.cs 1.28.2.5
