@@ -1,6 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+19 March 2006 19:36 - Str: Add str changes; new Make default; removed Replace string
+  SimPe BHAV\
+    StrForm.cs 1.28.2.6
+    StrForm.resx 1.18.14.6
+
 19 March 2006 13:34 - General tidy-ups
   SimPe BHAV\
     BhavOperandWiz0x0024.cs 1.1.4.6
