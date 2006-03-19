@@ -1,6 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+19 March 2006 12:41 - Str: Cursor to title automatically with mouse, too
+  SimPe BHAV\
+    StrForm.cs 1.28.2.5
+    StrForm.resx 1.18.14.5
+
 19 March 2006 11:36 - Str: Enable First button, cursor to title automatically, other tweaks
   SimPe BHAV\
     StrForm.cs 1.28.2.4

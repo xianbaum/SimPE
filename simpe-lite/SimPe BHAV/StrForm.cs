@@ -220,7 +220,6 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (this.lvStrItems.Focused) this.lvStrItems.SelectedItems[0].Focused = true;
 				this.lvStrItems.SelectedItems[0].EnsureVisible();
-				this.rtbTitle.Focus();
 			}
 
 			if (index == i) return;
@@ -864,6 +863,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lvStrItems.Text = resources.GetString("lvStrItems.Text");
 			this.lvStrItems.View = System.Windows.Forms.View.Details;
 			this.lvStrItems.Visible = ((bool)(resources.GetObject("lvStrItems.Visible")));
+			this.lvStrItems.ItemActivate += new System.EventHandler(this.lvStrItems_ItemActivate);
 			this.lvStrItems.SelectedIndexChanged += new System.EventHandler(this.lvStrItems_SelectedIndexChanged);
 			// 
 			// chString
@@ -1522,6 +1522,12 @@ namespace SimPe.PackedFiles.UserInterface
 				setLid((byte)(this.cbLngSelect.SelectedIndex + 1));
 		}
 
+
+		private void lvStrItems_ItemActivate(object sender, System.EventArgs e)
+		{
+			this.rtbTitle.Focus();
+		}
+
 		private void lvStrItems_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
@@ -1599,6 +1605,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnStrAdd_Click(object sender, System.EventArgs e)
 		{
 			this.StrAdd();
+			this.rtbTitle.Focus();
 		}
 
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
