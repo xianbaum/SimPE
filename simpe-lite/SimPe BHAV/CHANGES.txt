@@ -1,7 +1,7 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
-19 March 2006 12:41 - General tidy-ups
+19 March 2006 13:34 - General tidy-ups
   SimPe BHAV\
     BhavOperandWiz0x0024.cs 1.1.4.6
     BhavOperandWiz0x0024.resx 1.1.4.5
