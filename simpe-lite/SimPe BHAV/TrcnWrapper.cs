@@ -179,8 +179,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader">The Stream that contains the FileData</param>
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
-			// in case we give up...
-			items = null;
+			items = new TrcnItemArrayList();
 
 			filename = reader.ReadBytes(64);
 
@@ -188,15 +187,17 @@ namespace SimPe.PackedFiles.Wrapper
 			header[0] = reader.ReadUInt32();
 			header[1] = reader.ReadUInt32();
 			header[2] = reader.ReadUInt32();
-			if (header[0] != 0x5452434E)
-				return;
+			//if (header[0] != 0x5452434E)
+			//	return;
 
 			uint itemCount = reader.ReadUInt32();
 
-			TrcnItem[] ti = new TrcnItem[itemCount];
-			items = new TrcnItemArrayList(ti);
+			// Rather than do the filetype header check, range check the number of lines
+			if (itemCount >= 0x10000)
+				return;
+
 			for (int i = 0; i < itemCount; i++)
-				items[i] = new TrcnItem(this, reader);
+				items.Add(new TrcnItem(this, reader));
 		}
 
 		#endregion

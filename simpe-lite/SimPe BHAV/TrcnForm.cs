@@ -203,6 +203,18 @@ namespace SimPe.PackedFiles.UserInterface
 				if (this.lvTrcnItem.Focused) this.lvTrcnItem.SelectedItems[0].Focused = true;
 				this.lvTrcnItem.SelectedItems[0].EnsureVisible();
 			}
+			else
+			{
+				internalchg = true;
+				this.tbLabel.Text = "";
+				this.tbID.Text = "";
+				this.cbUsed.CheckState = System.Windows.Forms.CheckState.Indeterminate;
+				this.tbDefValue.Text = "";
+				this.tbMinValue.Text = "";
+				this.tbMaxValue.Text = "";
+				this.btnCancel.Enabled = false;
+				internalchg = false;
+			}
 
 			if (index == i) return;
 			index = i;
