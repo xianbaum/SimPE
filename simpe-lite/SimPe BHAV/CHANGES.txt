@@ -1,6 +1,16 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+19 March 2006 11:36 - Str: Enable First button, cursor to title automatically, other tweaks
+  SimPe BHAV\
+    StrForm.cs 1.28.2.4
+    StrForm.resx 1.18.14.4
+
+19 March 2006 11:33 - TRCN: Handle empty file, handle strange files more forgivingly
+  SimPe BHAV\
+    TrcnForm.cs 1.11.2.3
+    TrcnWrapper.cs 1.11.2.1
+
 18 March 2006 18:06 - Str: New Next/Prev/First language icons
   SimPe BHAV\
     start.png 1.2.2.1
