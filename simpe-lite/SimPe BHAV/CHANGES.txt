@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+25 March 2006 11:49 - Help: Added a Help menu option
+  SimPe BHAV\
+    WrapperFactory.cs 1.20.2.2
+
 25 March 2006 11:29 - Help: Updated!
   SimPe BHAV\PJSE_Help\
     Bhavs.htm 1.1.2.1
