@@ -1,6 +1,71 @@
 <p align="left"><a href="Contents.htm">Help Contents</a></p>
 <p align="center"><b><font size="5">The Pie Menu Editor Plugin (TTAB)</font></b></p>
 <p>&nbsp;</p>
+<p>The TTAB is where you decide which options are available to a Sim to interact 
+with the object, or for a player to set options on that object via the selected 
+Sim.&nbsp; The actual text that will appear on the menu is held in the Pie Menu 
+Strings (TTAs) file with the matching instance number.&nbsp;&nbsp; See the
+<a href="Strings.htm">String Editor help file</a> for details of how to edit the 
+TTAs.</p>
+<p><font size="4"><a name="TTABHeaders"></a></font><a href="Contents.htm">Help Contents</a></p>
+<p><font size="4">Headers</font></p>
+<p>These values refer to the TTAB file as a whole</p>
+<blockquote>
+  <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="96%" id="AutoNumber3">
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Filename</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Any descriptive title you like</td>
+    </tr>
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Format</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Not sure.&nbsp; Probably best not to edit this.</td>
+    </tr>
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Commit File</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Updates the package file in memory to include edits to current resource.&nbsp; 
+      No change made to file on disk.&nbsp; If you don't commit, you can abandon 
+      edits to current resource by simply opening another resource.</td>
+    </tr>
+    </table>
+</blockquote>
+<p>.</p>
+<p><font size="4"><a name="TTABButtons"></a></font><a href="Contents.htm">Help Contents</a></p>
+<p><font size="4">Buttons</font></p>
+<blockquote>
+  <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="96%" id="AutoNumber4">
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Add</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Appends a line which is an exact copy of the selected line, including all 
+      settings and BHAV calls</td>
+    </tr>
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Delete</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Deletes selected line and renumbers later lines to close the gap</td>
+    </tr>
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Append</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Pops up a list of available TTABs and appends all lines from the chosen 
+      TTAB to the current TTAB.&nbsp;&nbsp; The appended lines are altered so 
+      that they reference lines in the Pie Menu String file with a value that is 
+      increased by the number of lines already in the TTAB.&nbsp;&nbsp; This 
+      allows you to then append the other TTAB's TTAs and still have the lines 
+      displaying the appropriate text.</td>
+    </tr>
+    </table>
+</blockquote>
+<p>.</p>
 <p><font size="4"><a name="SettingsTab"></a></font><a href="Contents.htm">Help Contents</a></p>
 <p><font size="4">Settings tab</font> </p>
 <p>This is where you define what options are available, and to which Sims.</p>
@@ -218,105 +283,134 @@ don't want using the option are not ticked on the Settings tab.</p>
 <p class="MsoNormal"><span lang="EN-GB">&nbsp;Values for the Type field:</span></p>
 <blockquote>
   <blockquote>
-    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="46%" id="AutoNumber1">
+    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="46%" id="AutoNumber1" height="475">
       <tr>
-        <td width="74%"><span lang="EN-GB">None (All Sims get the same advert)</span></td>
-        <td width="26%"><span lang="EN-GB">0000</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">None (All Sims get the same advert)</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0000</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Nice</span></td>
-        <td width="26%"><span lang="EN-GB">0001</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Nice</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0001</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Grouchy</span></td>
-        <td width="26%"><span lang="EN-GB">0002</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Grouchy</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0002</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Active</span></td>
-        <td width="26%"><span lang="EN-GB">0003</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Active</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0003</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Lazy</span></td>
-        <td width="26%"><span lang="EN-GB">0004</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Lazy</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0004</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Generous&nbsp;(probably unused)</span></td>
-        <td width="26%"><span lang="EN-GB">0005</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Generous&nbsp;(probably unused)</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0005</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Selfish (probably unused)</span></td>
-        <td width="26%"><span lang="EN-GB">0006</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Selfish (probably unused)</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0006</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Playful</span></td>
-        <td width="26%"><span lang="EN-GB">0007</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Playful</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0007</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Serious</span></td>
-        <td width="26%"><span lang="EN-GB">0008</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Serious</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0008</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Outgoing</span></td>
-        <td width="26%"><span lang="EN-GB">0009</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Outgoing</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0009</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Shy</span></td>
-        <td width="26%"><span lang="EN-GB">000A</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Shy</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">000A</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Neat</span></td>
-        <td width="26%"><span lang="EN-GB">000B</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Neat</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">000B</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Sloppy</span></td>
-        <td width="26%"><span lang="EN-GB">000C</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Sloppy</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">000C</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Cleaning Skill</span></td>
-        <td width="26%"><span lang="EN-GB">000D</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Cleaning Skill</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">000D</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Cooking Skill</span></td>
-        <td width="26%"><span lang="EN-GB">000E</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Cooking Skill</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">000E</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Social Skill (Charisma)</span></td>
-        <td width="26%"><span lang="EN-GB">000F</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Social Skill (Charisma)</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">000F</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Mechanical Skill</span></td>
-        <td width="26%"><span lang="EN-GB">0010</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Mechanical Skill</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0010</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Gardening Skill&nbsp; (may be unused)</span></td>
-        <td width="26%"><span lang="EN-GB">0011</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Gardening Skill&nbsp; (may be unused)</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0011</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Music Skill (may be unused)</span></td>
-        <td width="26%"><span lang="EN-GB">0012</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Music Skill (may be unused)</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0012</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Creative Skill</span></td>
-        <td width="26%"><span lang="EN-GB">0013</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Creative Skill</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0013</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Literacy Skill&nbsp; (probably unused)</span></td>
-        <td width="26%"><span lang="EN-GB">0014</span></td>
+        <td width="74%" height="17"><span lang="EN-GB">Literacy Skill&nbsp; (probably unused)</span></td>
+        <td width="26%" height="17"><span lang="EN-GB">0014</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Physical Skill (Body)</span></td>
-        <td width="26%"><span lang="EN-GB">0015</span></td>
+        <td width="74%" height="17"><span lang="EN-GB">Physical Skill (Body)</span></td>
+        <td width="26%" height="17"><span lang="EN-GB">0015</span></td>
       </tr>
       <tr>
-        <td width="74%"><span lang="EN-GB">Logic Skill</span></td>
-        <td width="26%"><span lang="EN-GB">0016</span></td>
+        <td width="74%" height="19"><span lang="EN-GB">Logic Skill</span></td>
+        <td width="26%" height="19"><span lang="EN-GB">0016</span></td>
       </tr>
       <tr>
-        <td width="74%">&nbsp;</td>
-        <td width="26%">&nbsp;</td>
+        <td width="74%" height="19">&nbsp;</td>
+        <td width="26%" height="19">&nbsp;</td>
       </tr>
     </table>
   </blockquote>
 </blockquote>
-<p class="MsoNormal"><span lang="EN-GB">&nbsp;&nbsp;</span></p>
+<p class="MsoNormal">&nbsp;</p>
+<p class="MsoNormal"><font size="4"><a name="TTABKeyboard"></a></font><a href="Contents.htm">Help Contents</a><span lang="EN-GB">&nbsp;&nbsp;</span></p>
+<p class="MsoNormal"><font size="4">Keyboard Shortcuts</font></p>
+<blockquote>
+  <blockquote>
+    <table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="46%" id="AutoNumber1">
+      <tr>
+        <td width="34%"><span lang="en-gb">Alt-A</span></td>
+        <td width="66%"><span lang="en-gb">Add menu entry</span></td>
+      </tr>
+      <tr>
+        <td width="34%"><span lang="en-gb">Alt-P</span></td>
+        <td width="66%"><span lang="en-gb">Append File</span></td>
+      </tr>
+      <tr>
+        <td width="34%"><span lang="en-gb">Alt-L</span></td>
+        <td width="66%"><span lang="en-gb">Delete menu entry</span></td>
+      </tr>
+      <tr>
+        <td width="34%"><span lang="en-gb">Alt-N</span></td>
+        <td width="66%"><span lang="en-gb">Disable menu entry</span></td>
+      </tr>
+      <tr>
+        <td width="34%"><span lang="en-gb">Alt-W</span></td>
+        <td width="66%"><span lang="en-gb">Show all motives (on Motives tab)</span></td>
+      </tr>
+    </table>
+  </blockquote>
+</blockquote>
+<p>&nbsp;</p>
 <p><a href="Contents.htm">Help Contents</a></p>

@@ -34,7 +34,7 @@ namespace SimPe.Plugin
 	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-	public class WrapperFactory : AbstractWrapperFactory
+	public class WrapperFactory : AbstractWrapperFactory, IToolFactory
 	{
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
@@ -57,6 +57,48 @@ namespace SimPe.Plugin
 			}
 		}
 
+		#region IToolFactory Members
+		public IToolPlugin[] KnownTools
+		{
+			get
+			{
+				ITool[] tools = {
+									new CoderIToolPlugin()
+								};
+				return tools;
+			}
+		}
+
+		class CoderIToolPlugin : ITool
+		{
+			#region ITool Members
+
+			public bool IsEnabled(SimPe.Interfaces.Files.IPackedFileDescriptor pfd, SimPe.Interfaces.Files.IPackageFile package)
+			{
+				return true;
+			}
+
+			public IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
+			{
+				pjse.HelpHelper.Help("Contents");
+				return new SimPe.Plugin.ToolResult(false, false);
+			}
+
+			#endregion
+
+			#region IToolPlugin Members
+
+			public override string ToString()
+			{
+				return "PJSE\\&Help";
+			}
+
+			#endregion
+
+		}
+
+
+		#endregion
 	}
 
 }

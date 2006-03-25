@@ -39,9 +39,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Label lbType;
 		private System.Windows.Forms.Label lbMessage;
-		private System.Windows.Forms.Label lbYes;
-		private System.Windows.Forms.Label lbNo;
-		private System.Windows.Forms.Label lbCancel;
 		private System.Windows.Forms.Label lbTitle;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ComboBox cbScope;
@@ -97,6 +94,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		private System.Windows.Forms.TextBox tbStrButton2;
 		private System.Windows.Forms.TextBox tbStrButton3;
 		private System.Windows.Forms.TextBox tbStrTitle;
+		private System.Windows.Forms.Label lbButton3;
+		private System.Windows.Forms.Label lbButton2;
+		private System.Windows.Forms.Label lbButton1;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -647,9 +647,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.cbScope = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.lbTitle = new System.Windows.Forms.Label();
-			this.lbCancel = new System.Windows.Forms.Label();
-			this.lbNo = new System.Windows.Forms.Label();
-			this.lbYes = new System.Windows.Forms.Label();
+			this.lbButton3 = new System.Windows.Forms.Label();
+			this.lbButton2 = new System.Windows.Forms.Label();
+			this.lbButton1 = new System.Windows.Forms.Label();
 			this.lbMessage = new System.Windows.Forms.Label();
 			this.lbType = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
@@ -708,9 +708,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.pnWiz0x0024.Controls.Add(this.cbScope);
 			this.pnWiz0x0024.Controls.Add(this.label3);
 			this.pnWiz0x0024.Controls.Add(this.lbTitle);
-			this.pnWiz0x0024.Controls.Add(this.lbCancel);
-			this.pnWiz0x0024.Controls.Add(this.lbNo);
-			this.pnWiz0x0024.Controls.Add(this.lbYes);
+			this.pnWiz0x0024.Controls.Add(this.lbButton3);
+			this.pnWiz0x0024.Controls.Add(this.lbButton2);
+			this.pnWiz0x0024.Controls.Add(this.lbButton1);
 			this.pnWiz0x0024.Controls.Add(this.lbMessage);
 			this.pnWiz0x0024.Controls.Add(this.lbType);
 			this.pnWiz0x0024.Controls.Add(this.label1);
@@ -1191,35 +1191,35 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			this.lbTitle.TabIndex = 0;
 			this.lbTitle.Text = "Title";
 			// 
-			// lbCancel
+			// lbButton3
 			// 
-			this.lbCancel.AutoSize = true;
-			this.lbCancel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbCancel.Location = new System.Drawing.Point(15, 227);
-			this.lbCancel.Name = "lbCancel";
-			this.lbCancel.Size = new System.Drawing.Size(59, 17);
-			this.lbCancel.TabIndex = 0;
-			this.lbCancel.Text = "Button 3";
+			this.lbButton3.AutoSize = true;
+			this.lbButton3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbButton3.Location = new System.Drawing.Point(15, 227);
+			this.lbButton3.Name = "lbButton3";
+			this.lbButton3.Size = new System.Drawing.Size(59, 17);
+			this.lbButton3.TabIndex = 0;
+			this.lbButton3.Text = "Button 3";
 			// 
-			// lbNo
+			// lbButton2
 			// 
-			this.lbNo.AutoSize = true;
-			this.lbNo.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbNo.Location = new System.Drawing.Point(15, 203);
-			this.lbNo.Name = "lbNo";
-			this.lbNo.Size = new System.Drawing.Size(59, 17);
-			this.lbNo.TabIndex = 0;
-			this.lbNo.Text = "Button 2";
+			this.lbButton2.AutoSize = true;
+			this.lbButton2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbButton2.Location = new System.Drawing.Point(15, 203);
+			this.lbButton2.Name = "lbButton2";
+			this.lbButton2.Size = new System.Drawing.Size(59, 17);
+			this.lbButton2.TabIndex = 0;
+			this.lbButton2.Text = "Button 2";
 			// 
-			// lbYes
+			// lbButton1
 			// 
-			this.lbYes.AutoSize = true;
-			this.lbYes.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lbYes.Location = new System.Drawing.Point(15, 179);
-			this.lbYes.Name = "lbYes";
-			this.lbYes.Size = new System.Drawing.Size(59, 17);
-			this.lbYes.TabIndex = 0;
-			this.lbYes.Text = "Button 1";
+			this.lbButton1.AutoSize = true;
+			this.lbButton1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lbButton1.Location = new System.Drawing.Point(15, 179);
+			this.lbButton1.Name = "lbButton1";
+			this.lbButton1.Size = new System.Drawing.Size(59, 17);
+			this.lbButton1.TabIndex = 0;
+			this.lbButton1.Text = "Button 1";
 			// 
 			// lbMessage
 			// 

@@ -37,8 +37,6 @@ namespace SimPe.PackedFiles.UserInterface
 		#region Form variables
 
 		private System.Windows.Forms.Label label19;
-		private System.Windows.Forms.MenuItem menuItem1;
-		private System.Windows.Forms.MenuItem menuItem2;
 		private System.Windows.Forms.Panel objfPanel;
 		private System.Windows.Forms.Label lbFilename;
 		private System.Windows.Forms.TextBox tbFilename;
@@ -230,8 +228,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnHelp = new System.Windows.Forms.Button();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label19 = new System.Windows.Forms.Label();
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
 			this.objfPanel.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.SuspendLayout();
@@ -687,24 +683,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.label19.Text = resources.GetString("label19.Text");
 			this.label19.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("label19.TextAlign")));
 			this.label19.Visible = ((bool)(resources.GetObject("label19.Visible")));
-			// 
-			// menuItem1
-			// 
-			this.menuItem1.Enabled = ((bool)(resources.GetObject("menuItem1.Enabled")));
-			this.menuItem1.Index = -1;
-			this.menuItem1.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("menuItem1.Shortcut")));
-			this.menuItem1.ShowShortcut = ((bool)(resources.GetObject("menuItem1.ShowShortcut")));
-			this.menuItem1.Text = resources.GetString("menuItem1.Text");
-			this.menuItem1.Visible = ((bool)(resources.GetObject("menuItem1.Visible")));
-			// 
-			// menuItem2
-			// 
-			this.menuItem2.Enabled = ((bool)(resources.GetObject("menuItem2.Enabled")));
-			this.menuItem2.Index = -1;
-			this.menuItem2.Shortcut = ((System.Windows.Forms.Shortcut)(resources.GetObject("menuItem2.Shortcut")));
-			this.menuItem2.ShowShortcut = ((bool)(resources.GetObject("menuItem2.ShowShortcut")));
-			this.menuItem2.Text = resources.GetString("menuItem2.Text");
-			this.menuItem2.Visible = ((bool)(resources.GetObject("menuItem2.Visible")));
 			// 
 			// ObjfForm
 			// 

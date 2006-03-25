@@ -34,10 +34,10 @@ namespace pjse.BhavOperandWizards.WizBhav
 		#region Form variables
 
 		private System.Windows.Forms.TextBox tbval1;
-		internal System.Windows.Forms.Panel pnWiz0x0002;
 		private System.Windows.Forms.ComboBox cbPicker1;
 		private System.Windows.Forms.ComboBox cbDataOwner1;
 		private System.Windows.Forms.Label label1;
+		internal System.Windows.Forms.Panel pnWizBhav;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -88,24 +88,24 @@ namespace pjse.BhavOperandWizards.WizBhav
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pnWiz0x0002 = new System.Windows.Forms.Panel();
+			this.pnWizBhav = new System.Windows.Forms.Panel();
 			this.cbPicker1 = new System.Windows.Forms.ComboBox();
 			this.tbval1 = new System.Windows.Forms.TextBox();
 			this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
-			this.pnWiz0x0002.SuspendLayout();
+			this.pnWizBhav.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// pnWiz0x0002
+			// pnWizBhav
 			// 
-			this.pnWiz0x0002.Controls.Add(this.cbPicker1);
-			this.pnWiz0x0002.Controls.Add(this.tbval1);
-			this.pnWiz0x0002.Controls.Add(this.cbDataOwner1);
-			this.pnWiz0x0002.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.pnWiz0x0002.Location = new System.Drawing.Point(8, 8);
-			this.pnWiz0x0002.Name = "pnWiz0x0002";
-			this.pnWiz0x0002.Size = new System.Drawing.Size(224, 24);
-			this.pnWiz0x0002.TabIndex = 0;
+			this.pnWizBhav.Controls.Add(this.cbPicker1);
+			this.pnWizBhav.Controls.Add(this.tbval1);
+			this.pnWizBhav.Controls.Add(this.cbDataOwner1);
+			this.pnWizBhav.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.pnWizBhav.Location = new System.Drawing.Point(8, 8);
+			this.pnWizBhav.Name = "pnWizBhav";
+			this.pnWizBhav.Size = new System.Drawing.Size(224, 24);
+			this.pnWizBhav.TabIndex = 0;
 			// 
 			// cbPicker1
 			// 
@@ -151,11 +151,11 @@ namespace pjse.BhavOperandWizards.WizBhav
 			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
 			this.ClientSize = new System.Drawing.Size(640, 366);
 			this.Controls.Add(this.label1);
-			this.Controls.Add(this.pnWiz0x0002);
+			this.Controls.Add(this.pnWizBhav);
 			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.Name = "UI";
 			this.Text = "UI";
-			this.pnWiz0x0002.ResumeLayout(false);
+			this.pnWizBhav.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
