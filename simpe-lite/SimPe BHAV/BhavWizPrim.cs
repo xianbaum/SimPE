@@ -856,7 +856,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x000f : BhavWizPrim	// Break Point
+	public class WizPrim0x000f : BhavWizPrim	// Break Point (disaSim2 24b)
 	{
 		public WizPrim0x000f(Instruction i) : base(i) { }
 
@@ -866,18 +866,20 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			bool noOperands = true;
-			for(int i = 0; noOperands && i < 8; i++)
-				noOperands = o[i] == 0xFF;
-
-			return noOperands ? "always" : "if " + dataOwner(lng, o[2], o[0], o[1]) + " != 0";
+			return ((o[4] & 0x01) != 0)
+				? "ignored in Release"
+				: "if " + dataOwner(lng, o[2], o[0], o[1]) + " != 0";
 #if DISASIM
                 case 0x0F:  // Break Point (false = error)
-                    w1 = *(UINT16 *) (&b[x]);
-                    w2 = *(UINT16 *) (&b[x+2]);
-                    ht_fprintf(outFile,TYPE_NORMAL,"if (");
-                    data2(b[x+2], w1);
-                    ht_fprintf(outFile,TYPE_NORMAL," != 0)");
+                    if (b[x+4] & 1)
+                      ht_fprintf(outFile,TYPE_NORMAL,"(IGNORE IN RELEASE)");
+                    else {
+                      w1 = *(UINT16 *) (&b[x]);
+                      w2 = *(UINT16 *) (&b[x+2]);
+                      ht_fprintf(outFile,TYPE_NORMAL,"if (");
+                      data2(b[x+2], w1);
+                      ht_fprintf(outFile,TYPE_NORMAL," != 0)");
+                    }
                     break;
 #endif
 		}
@@ -2607,7 +2609,7 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0032 : BhavWizPrim	// Add/Change action string
+	public class WizPrim0x0032 : BhavWizPrim	// Add/Change action string (disaSim2 24b)
 	{
 		public WizPrim0x0032(Instruction i) : base(i) { }
 
@@ -2629,7 +2631,13 @@ namespace pjse.BhavNameWizards
 				{
 					s += "Add / Change Interaction string Mode, ";
 					if (instruction.NodeVersion != 0)
-						s += "Disabled: " +  ((o[3] & 0x01) != 0).ToString() + ", ";
+					{
+						s += "Disabled: ";
+						if      ((o[3] & 0x01) != 0) s += "propagating";
+						else if ((o[3] & 0x02) != 0) s += "non-propagating";
+						else                         s += "false";
+						s += ", ";
+					}
 				}
 
 				if ((o[2] & 0x10) != 0) s += scope.ToString() + " STR# 0x012E:[Temp 0]";
@@ -2659,10 +2667,15 @@ namespace pjse.BhavNameWizards
                 case 0x32:  // Add/Change the Action String (false = error)
                     c2 = b[x+2]; // flags
                     if (b[x+9] == 0) {
-                        c1 = b[x+4] - 1;
+                        if (nodeVersion < 2)
+                            c1 = b[x+4] - 1;
+                        else
+                            c1 = b[x+14] - 1;
                         ht_fprintf(outFile,TYPE_NORMAL,"Add / Change Interaction string Mode, ");
                         if ((b[x+3] & 1) && nodeVersion)
-                            ht_fprintf(outFile,TYPE_NORMAL,"Disabled, ");
+                            ht_fprintf(outFile,TYPE_NORMAL,"Disabled (Propagating), ");
+                        if (b[x+3] & 2)
+                            ht_fprintf(outFile,TYPE_NORMAL,"Disabled (NonPropagating), ");
                         if (c2 & 0x10) {
                             ht_fprintf(outFile,TYPE_NORMAL,"Getting index from temp 0");
                             if (c2 & 4) {
@@ -2712,9 +2725,15 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0033 : BhavWizPrim	// Manage Inventory -- for wizard, see edithWiki WorkAndSchool, Career rewards
+	public class WizPrim0x0033 : BhavWizPrim	// Manage Inventory -- for wizard, see edithWiki WorkAndSchool, Career rewards (disaSim2 24b)
 	{
 		public WizPrim0x0033(Instruction i) : base(i) { }
+
+		private string inventory(int i)
+		{
+			string[] invType = { "Global" ,"Lot" ,"Family" ,"Neighbor" ,"Game-wide" ,}; // These should be in a Behaviour String file
+			return (i >= 0 && i < invType.Length) ? invType[i] : "[unk]";
+		}
 
 		protected override string Operands(bool lng)
 		{
@@ -2728,22 +2747,13 @@ namespace pjse.BhavNameWizards
 			if (instruction.NodeVersion == 0)
 				c1 = (byte)(((o[0] & 0x3C) << 1) | (o[0] & 0x83)); //wtf....
 
+			byte c2 = (instruction.NodeVersion >= 2) ? o[9] : (byte)0x0c;
+
 			if (lng)
 			{
-				s += "Access the ";
-				switch (c1 & 0x07) 
-				{
-					case 0: s += "Global"; break;
-					case 1: s += "Lot"; break;
-					case 2: s += "Family"; break;
-					case 3: s += "Neighbor"; break;
-					case 4: s += "Game-Wide"; break;
-				}
-
-				s += " " + ((c1 & 0x08) != 0 ? "Counted" : "Singular") + " Inventory";
-
-				if ((c1 & 0x07) != 0)
-					s += " (ID in " + dataOwner(o[1], o[2], o[3]) + ")";
+				s += "Access the " + inventory(c1 & 0x07) + " " + ((c1 & 0x08) != 0 ? "Counted" : "Singular") + " Inventory";
+				if ((c1 & 0x07) >= 1 && (c1 & 0x07) <= 3)
+					s += ", with ID " + dataOwner(o[1], o[2], o[3]);
 
 				s += ", Category 0x" + SimPe.Helper.HexString(o[9]);
 
@@ -2752,21 +2762,21 @@ namespace pjse.BhavNameWizards
 					uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
 					s += ", GUID " + (d1 == 0 ? "from Stack Object" : "0x" + SimPe.Helper.HexString(d1));
 				}
-				s += ": ";
+				s += ".\r\n";
 			}
 
 			if ((c1 & 0x08) != 0) // Counted
 				switch (o[4]) 
 				{
-					case 0x0: s += "Add token. Pull count from " + dataOwner(lng, o[13], o[14], o[15]); break;
+					case 0x0: s += "Add token, pull count from " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0x1:
-						s += "Add to token at index from " + dataOwner(lng, o[10], o[11], o[12]) + ". "
-							+ "Pull count from " + dataOwner(lng, o[13], o[14], o[15]);
+						s += "Add to token at index from " + dataOwner(lng, o[10], o[11], o[12])
+							+ ", pull count from " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
-					case 0x2: s += "Remove token. Pull count from " + dataOwner(lng, o[13], o[14], o[15]); break;
+					case 0x2: s += "Remove token, pull count from " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0x3:
-						s += "Remove to token at index from "+ dataOwner(lng, o[10], o[11], o[12]) + ". "
-							+ "Pull count from " + dataOwner(lng, o[13], o[14], o[15]);
+						s += "Remove to token at index from "+ dataOwner(lng, o[10], o[11], o[12])
+							+ ", pull count from " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
 					case 0x4: s += "Remove all tokens"; break;
 					case 0x5: s += "Remove all tokens from token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
@@ -2775,15 +2785,33 @@ namespace pjse.BhavNameWizards
 					case 0x8: s += "Read token into My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
 					case 0x9: s += "Set To Next token starting at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
 					case 0xa: s += "Store the count of the tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]); break;
+					case 0xb:
+						s += "Copy token at index " + dataOwner(lng, o[10], o[11], o[12]);
+						s += ", from the " + inventory(o[6] & 0x07) + " inventory";
+						if ((o[6] & 0x07) >= 1 && (o[7] & 0x07) <= 3)
+							s += ", with ID " + dataOwner(lng, o[13], o[14], o[15]);
+
+						break;
 				}
 			else // Singular
 				switch (o[4]) 
 				{
 					case 0x00: s += "Add token"; break;
 					case 0x01: s += "Remove token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0x02: s += "Remove at tokens"; break;
+					case 0x02:
+						s += "Remove ";
+						if ((c2 & 0x04) != 0) s += ((c1 & 0x10) == 0 ? "non-" : "") + "visible ";
+						if ((c2 & 0x08) != 0) s += ((c1 & 0x20) == 0 ? "non-" : "") + "memory ";
+						if ((c2 & 0x20) != 0) s += ((c2 & 0x01) == 0 ? "non-" : "") + "shopping ";
+						if (c2 == 0)          s += "all ";
+						s += "tokens";
+						break;
 					case 0x03:
-						s += "Set To Next token starting at index from " + dataOwner(lng, o[10], o[11], o[12])
+						s += "Set To Next ";
+						if ((c2 & 0x04) != 0) s += ((c1 & 0x10) == 0 ? "non-" : "") + "visible ";
+						if ((c2 & 0x08) != 0) s += ((c1 & 0x20) == 0 ? "non-" : "") + "memory ";
+						if ((c2 & 0x20) != 0) s += ((c2 & 0x01) == 0 ? "non-" : "") + "shopping ";
+						s += "token starting at index from " + dataOwner(lng, o[10], o[11], o[12])
 							+ (lng ? ", reversed: " + ((c1 & 0x80) != 0).ToString() : "");
 						break;
 					case 0x04:
@@ -2797,36 +2825,49 @@ namespace pjse.BhavNameWizards
 					case 0x06: s += "Read token into My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
 					case 0x07:
 						s += "Get property from token in My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12])
-							+ (lng ? ". Put property value into " + dataOwner(o[13], o[14], o[15]) : "");
+							+ (lng ? ", put property value into " + dataOwner(o[13], o[14], o[15]) : "");
 						break;
 					case 0x08: break;
 					case 0x09: s += "Save My Temp Token back to the location it was loaded from"; break;
 					case 0x0a: s += "Store the count of the tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0x0b: break;
 					case 0x0c:
-						s += "Set To Next " + ((c1 & 0x10) != 0 ? "visible " : "hidden ") + ((c1 & 0x20) != 0 ? "memory " : "non-memory ") + "token"
+						s += "Set To Next ";
+						if ((c2 & 0x04) != 0) s += ((c1 & 0x10) == 0 ? "non-" : "") + "visible ";
+						if ((c2 & 0x08) != 0) s += ((c1 & 0x20) == 0 ? "non-" : "") + "memory ";
+						if ((c2 & 0x20) != 0) s += ((c2 & 0x01) == 0 ? "non-" : "") + "shopping ";
+						s += "token"
 							+ (lng
 								? ", starting at index from " + dataOwner(o[10], o[11], o[12]) + ", Reversed: " + ((c1 & 0x80) != 0).ToString()
 								: "");
 						break;
 					case 0xD:
-						s += "Store the count of the "
-							+ ((c1 & 0x10) != 0 ? "visible " : "hidden ")
-							+ ((c1 & 0x20) != 0 ? "memory " : "non-memory ")
-							+ "tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]);
+						s += "Store the count of ";
+						if ((c2 & 0x04) != 0) s += ((c1 & 0x10) == 0 ? "non-" : "") + "visible ";
+						if ((c2 & 0x08) != 0) s += ((c1 & 0x20) == 0 ? "non-" : "") + "memory ";
+						if ((c2 & 0x20) != 0) s += ((c2 & 0x01) == 0 ? "non-" : "") + "shopping ";
+						if (c2 == 0)          s += "all ";
+						s += "tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
 					case 0xE:
 						s += "Token Index " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
 							+ ", Property " + dataOwner(lng, o[10], o[11], o[12])
-							+ " Assign to: " + dataOwner(lng, o[13], o[14], o[15]);
+							+ ", Assign to: " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
 					case 0xF:
-						s += dataOwner(lng, o[13], o[14], o[15]) + ": "
-							+ "Assign to Token Index " + dataOwner(lng, o[6], ToShort(o[7], o[8])) + ", "
-							+ "Property " + dataOwner(lng, o[10], o[11], o[12]);
+						s += dataOwner(lng, o[13], o[14], o[15])
+							+ ", Assign to Token Index " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
+							+ ", Property " + dataOwner(lng, o[10], o[11], o[12]);
 						break;
 					case 0x10: s += "Add Token And Instance Info of Stack Object"; break;
 					case 0x11: s += "Create Object from Token at Index"; break;
+					case 0x12:
+						s += "Copy token at index " + dataOwner(lng, o[10], o[11], o[12]);
+						s += ", from the " + inventory(o[6] & 0x07) + " inventory";
+						if ((o[6] & 0x07) >= 1 && (o[7] & 0x07) <= 3)
+							s += ", with ID " + dataOwner(lng, o[13], o[14], o[15]);
+						break;
+					case 0x13: s += "Add Token And Instance Info of Stack Object excluding contained objects"; break;
 				}
 
 
@@ -2936,8 +2977,40 @@ namespace pjse.BhavNameWizards
                                 data2(b[x+13], w1);
                                 ht_fprintf(outFile,TYPE_NORMAL,".");
                                 break;
+                            case 0xB:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Copy token at index ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL," from the ");
+                                switch (b[x+6] & 7) {
+                                    case 0:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Global ");
+                                        break;
+                                    case 1:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Lot ");
+                                        break;
+                                    case 2:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Family ");
+                                        break;
+                                    case 3:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Neighbor ");
+                                        break;
+                                    case 4:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Game-Wide ");
+                                        break;
+                                }
+
+                                if ((b[x+6] & 7) > 0 && (b[x+6] & 7) <= 3) {
+                                    ht_fprintf(outFile,TYPE_NORMAL,"inventory with id ");
+                                    data2(b[x+13], w1);
+                                } else ht_fprintf(outFile,TYPE_NORMAL,"inventory");
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
                         }
-                    else
+                    else {
+                        if (nodeVersion < 2)
+                            c2 = 0xC;
+                        else
+                            c2 = b[x+9];
                         switch (b[x+4]) {
                             case 0:
                                 ht_fprintf(outFile,TYPE_NORMAL,"Add token");
@@ -2949,12 +3022,31 @@ namespace pjse.BhavNameWizards
                                 ht_fprintf(outFile,TYPE_NORMAL,".");
                                 break;
                             case 2:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Remove at tokens");
+                                ht_fprintf(outFile,TYPE_NORMAL,"Remove ");
+                                if (c2 & 4)
+                                    if (c1 & 0x10) ht_fprintf(outFile,TYPE_NORMAL,"visible "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"hidden "); 
+                                if (c2 & 8)
+                                    if (c1 & 0x10) ht_fprintf(outFile,TYPE_NORMAL,"memory "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"non-memory "); 
+                                if (c2 & 0x20)
+                                    if (c2 & 1) ht_fprintf(outFile,TYPE_NORMAL,"shopping "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"non-shopping "); 
+                                ht_fprintf(outFile,TYPE_NORMAL,"tokens");
                                 ht_fprintf(outFile,TYPE_NORMAL,".");
                                 break;
                             case 3:
-                                ht_fprintf(outFile,TYPE_NORMAL,"Set To Next token");
-                                ht_fprintf(outFile,TYPE_NORMAL,". Starting at index from ");
+                                ht_fprintf(outFile,TYPE_NORMAL,"Set To Next ");
+                                if (c2 & 4)
+                                    if (c1 & 0x10) ht_fprintf(outFile,TYPE_NORMAL,"visible "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"hidden "); 
+                                if (c2 & 8)
+                                    if (c1 & 0x10) ht_fprintf(outFile,TYPE_NORMAL,"memory "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"non-memory "); 
+                                if (c2 & 0x20)
+                                    if (c2 & 1) ht_fprintf(outFile,TYPE_NORMAL,"shopping "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"non-shopping "); 
+                                ht_fprintf(outFile,TYPE_NORMAL,"token. Starting at index from ");
                                 data2(b[x+10], w2);
                                 if (c1 & 0x80)
                                     ht_fprintf(outFile,TYPE_NORMAL,", Reversed.");
@@ -3000,14 +3092,15 @@ namespace pjse.BhavNameWizards
                                 break;
                             case 0xC:
                                 ht_fprintf(outFile,TYPE_NORMAL,"Set To Next ");
-                                if (c1 & 0x10)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"visible ");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"hidden ");
-                                if (c1 & 0x20)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"memory ");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"non-memory ");
+                                if (c2 & 4)
+                                    if (c1 & 0x10) ht_fprintf(outFile,TYPE_NORMAL,"visible "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"hidden "); 
+                                if (c2 & 8)
+                                    if (c1 & 0x10) ht_fprintf(outFile,TYPE_NORMAL,"memory "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"non-memory "); 
+                                if (c2 & 0x20)
+                                    if (c2 & 1) ht_fprintf(outFile,TYPE_NORMAL,"shopping "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"non-shopping "); 
                                 ht_fprintf(outFile,TYPE_NORMAL,"token. Starting at index from ");
                                 data2(b[x+10], w2);
                                 if (c1 & 0x80)
@@ -3017,14 +3110,15 @@ namespace pjse.BhavNameWizards
                                 break;
                             case 0xD:
                                 ht_fprintf(outFile,TYPE_NORMAL,"Store the count of the ");
-                                if (c1 & 0x10)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"visible ");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"hidden ");
-                                if (c1 & 0x20)
-                                    ht_fprintf(outFile,TYPE_NORMAL,"memory ");
-                                else
-                                    ht_fprintf(outFile,TYPE_NORMAL,"non-memory ");
+                                if (c2 & 4)
+                                    if (c1 & 0x10) ht_fprintf(outFile,TYPE_NORMAL,"visible "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"hidden "); 
+                                if (c2 & 8)
+                                    if (c1 & 0x10) ht_fprintf(outFile,TYPE_NORMAL,"memory "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"non-memory "); 
+                                if (c2 & 0x20)
+                                    if (c2 & 1) ht_fprintf(outFile,TYPE_NORMAL,"shopping "); 
+                                    else ht_fprintf(outFile,TYPE_NORMAL,"non-shopping "); 
                                 ht_fprintf(outFile,TYPE_NORMAL,"tokens in this inventory into ");
                                 data2(b[x+13], w1);
                                 ht_fprintf(outFile,TYPE_NORMAL,".");
@@ -3050,8 +3144,39 @@ namespace pjse.BhavNameWizards
                             case 0x11:
                                 ht_fprintf(outFile,TYPE_NORMAL,"Create Object from Token at Index.");
                                 break;
+                            case 0x12:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Copy token at index ");
+                                data2(b[x+10], w2);
+                                ht_fprintf(outFile,TYPE_NORMAL," from the ");
+                                switch (b[x+6] & 7) {
+                                    case 0:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Global ");
+                                        break;
+                                    case 1:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Lot ");
+                                        break;
+                                    case 2:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Family ");
+                                        break;
+                                    case 3:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Neighbor ");
+                                        break;
+                                    case 4:
+                                        ht_fprintf(outFile,TYPE_NORMAL,"Game-Wide ");
+                                        break;
+                                }
 
+                                if ((b[x+6] & 7) > 0 && (b[x+6] & 7) <= 3) {
+                                    ht_fprintf(outFile,TYPE_NORMAL,"inventory with id ");
+                                    data2(b[x+13], w1);
+                                } else ht_fprintf(outFile,TYPE_NORMAL,"inventory");
+                                ht_fprintf(outFile,TYPE_NORMAL,".");
+                                break;
+                            case 0x13:
+                                ht_fprintf(outFile,TYPE_NORMAL,"Add Token And Instance Info of Stack Object excluding contained objects.");
+                                break;
                         }
+                    }
                     break;
 #endif
 		}
@@ -3602,7 +3727,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x006c : BhavWizPrim	// Animate Stop
+	public class WizPrim0x006c : BhavWizPrim	// Animate Stop (disaSim2 24b)
 	{
 		public WizPrim0x006c(Instruction i) : base(i) { }
 
@@ -3614,11 +3739,11 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Object in " + dataOwner(lng, o[3], o[4], o[5]);       // target object
+			s += "Object in " + dataOwner(lng, o[3], o[4], o[5]) + ", ";       // target object
 
 			switch (o[7]) 
 			{
-				case 0:
+				case 0x00:
 					Scope scope = Scope.Private;
 					GS.GlobalStr instance = GS.GlobalStr.ObjectAnims;
 					if (o[6] == 0x80)
@@ -3634,16 +3759,24 @@ namespace pjse.BhavNameWizards
 						 }
 						 catch { instance = GS.GlobalStr.ObjectAnims; }
 
-					s += ", animation: " + ((o[2] & 0x04) != 0
+					s += "animation: " + ((o[2] & 0x04) != 0
 						? scope.ToString() + " " + instance.ToString() + " STR# 0x" + ((byte)instance).ToString()
 						+ ":[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
 						: readStr(scope, instance, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors)
 						);
 					break;
-				case 1: s += ", all Overlay animations"; break;
-				case 2: s += ", all Full Body animations"; break;
-				case 3: s += ", all animations"; break;
-				default: s += ", Carry Pose"; break;
+				case 0x01: s += "all Overlay animations"; break;
+				case 0x02: s += "all Full Body animations"; break;
+				case 0x03: s += "all animations"; break;
+				case 0x04: s += "Carry Poses"; break;
+				case 0x05: s += "Idle Animations"; break;
+				case 0x06: s += "Gesture Animations"; break;
+				case 0x07: s += "Reaction Animations"; break;
+				case 0x08: s += "Normal Animations"; break;
+				case 0x09: s += "Facial Animations"; break;
+				case 0x0a: s += "Facial Idle Animations"; break;
+				case 0x0b: s += "Receptivity Animations"; break;
+				default:   s += "Unknown Type"; break;
 			}
 
 			if (lng)
@@ -3734,16 +3867,40 @@ namespace pjse.BhavNameWizards
                             }
                             break;
                         case 1:
-                            ht_fprintf(outFile,TYPE_NORMAL,"All Overlay animations running");
+                            ht_fprintf(outFile,TYPE_NORMAL,"All Overlay animations");
                             break;
                         case 2:
-                            ht_fprintf(outFile,TYPE_NORMAL,"All Full Body Animations running");
+                            ht_fprintf(outFile,TYPE_NORMAL,"All Full Body Animations");
                             break;
                         case 3:
-                            ht_fprintf(outFile,TYPE_NORMAL,"All Animations running");
+                            ht_fprintf(outFile,TYPE_NORMAL,"All Animations");
+                            break;
+                        case 4:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Carry Poses");
+                            break;
+                        case 5:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Idle Animations");
+                            break;
+                        case 6:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Gesture Animations");
+                            break;
+                        case 7:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Reaction Animations");
+                            break;
+                        case 8:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Normal Animations");
+                            break;
+                        case 9:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Facial Animations");
+                            break;
+                        case 10:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Facial Idle Animations");
+                            break;
+                        case 11:
+                            ht_fprintf(outFile,TYPE_NORMAL,"Receptivity Animations");
                             break;
                         default:
-                            ht_fprintf(outFile,TYPE_NORMAL,"Carry Pose");
+                            ht_fprintf(outFile,TYPE_NORMAL,"Unknown Type");
                     }
                     ht_fprintf(outFile,TYPE_NORMAL," affecting ");
                     data2(b[x+3],w2);       // target object
@@ -5232,6 +5389,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+			// This is limited compared with disaSim2 as I don't do GUID look ups...
 			uint want = (uint)(o[3] | o[4] << 8 | o[5] << 16 | o[6] << 24);
 			s += "GUID 0x" + SimPe.Helper.HexString(want);
 			s += ", Want target: " + dataOwner(lng, o[7], o[8], o[9]);
@@ -5270,10 +5428,13 @@ namespace pjse.BhavNameWizards
                             case 5:        // Career
                                 ht_fprintf(outFile,TYPE_NORMAL,"with career ");
                                 break;
+                            case 6:        // Badge
+                                ht_fprintf(outFile,TYPE_NORMAL,"with badge ");
+                                break;
                         }
 
                         data2(b[x+7],w3);
-                        if (gWants[w2].type == 4 || gWants[w2].type == 5) {
+                        if (gWants[w2].type >= 4 && gWants[w2].type <= 6) {
                             ht_fprintf(outFile,TYPE_NORMAL," and level ");
                             data2(b[x+10],w4);
                         }
@@ -5320,7 +5481,7 @@ namespace pjse.BhavNameWizards
 		}
 	}
 
-	public class WizPrim0x007e : BhavWizPrim	// Lua
+	public class WizPrim0x007e : BhavWizPrim	// Lua (disaSim2 24b)
 	{
 		public WizPrim0x007e(Instruction i) : base(i) { }
 
@@ -5330,6 +5491,8 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
+			ushort o4_5 = ToShort(o[4], o[5]);
+
 			string s = "";
 
 			s += lng ? (((ToShort(o[4], o[5]) & 0x01) != 0 ? "Definition" : "Dynamic") + " script: ") : "";
@@ -5337,12 +5500,19 @@ namespace pjse.BhavNameWizards
 			if (ToShort(o[2], o[3]) != 0) 
 			{
 				Scope scope = Scope.Global;
-				if ((ToShort(o[4], o[5]) & 0x02) != 0) scope = Scope.Private;
-				else if ((ToShort(o[4], o[5]) & 0x04) != 0) scope = Scope.SemiGlobal;
+				if      ((o4_5 & 0x02) != 0) scope = Scope.Private;
+				else if ((o4_5 & 0x04) != 0) scope = Scope.SemiGlobal;
+
 				s += readStr(scope, ToShort(o[0], o[1]), ToShort(o[2], o[3]) - 1, lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
 
-				s += lng ? "; args: " : ", ";
-				for (int i = 0; i < 3; i++) s += (i != 0 ? ", " : "") + dataOwner(lng, o[6+3*i], o[7+3*i], o[8+3*i]);
+				if (lng)
+					s += ", defined in " + (((o4_5 & 0x01) != 0) ? "objLua file" : "description");
+
+				if ((o4_5 & 0x08) != 0)
+				{
+					s += lng ? "; args: " : ", ";
+					for (int i = 0; i < 3; i++) s += (i != 0 ? ", " : "") + dataOwner(lng, o[6+3*i], o[7+3*i], o[8+3*i]);
+				}
 			}
 			else
 				s += "none";
@@ -5353,25 +5523,38 @@ namespace pjse.BhavNameWizards
                     w1 = *(UINT16 *) (&b[x]);   // STR#
                     w2 = *(UINT16 *) (&b[x+2]); // index + 1
                     w3 = *(UINT16 *) (&b[x+4]); // flags
+                    w4 = *(UINT16 *) (&b[x+7]);
+                    w5 = *(UINT16 *) (&b[x+10]);
+                    w6 = *(UINT16 *) (&b[x+13]);
                     if (w2 != 0) {
                         w2--;
-                        if (w3 & 1)
-                            ht_fprintf(outFile,TYPE_NORMAL,"Run simulator script definition: \"");
-                        else
-                            ht_fprintf(outFile,TYPE_NORMAL,"Run dynamic simulator script: \"");
                         if (w3 & 2) {
+                            ht_fprintf(outFile,TYPE_NORMAL,"Private - \"");
                             if (readString2(gGroup, w1, w2) == 0)
                                 ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x%X:0x%X]", w1, w2);
-                            ht_fprintf(outFile,TYPE_NORMAL,"\" - stringset from tree owner");
+
                         } else if (w3 & 4) {
+                            ht_fprintf(outFile,TYPE_NORMAL,"Semi-Global - \"");
                             if (readString2(gGlobGroup, w1, w2) == 0)
                                 ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x%X:0x%X]", w1, w2);
-                            ht_fprintf(outFile,TYPE_NORMAL,"\" - stringset from semi-global");
                         } else {
+                            ht_fprintf(outFile,TYPE_NORMAL,"Global - \"");
                             if (readString2(GROUP_GLOBAL, w1, w2) == 0)
                                 ht_fprintf(outFile,TYPE_NORMAL,"[STR# 0x%X:0x%X]", w1, w2);
-                            ht_fprintf(outFile,TYPE_NORMAL,"\" - stringset from global");
                         }
+                        if (w3 & 1)
+                            ht_fprintf(outFile,TYPE_NORMAL,"\", defined in objLua file");
+                        else
+                            ht_fprintf(outFile,TYPE_NORMAL,"\", defined in description");
+                        if (w3 & 8) {
+                            ht_fprintf(outFile,TYPE_NORMAL,", Passing in params where param 0 = ");
+                            data2(b[x+6],w4);     
+                            ht_fprintf(outFile,TYPE_NORMAL,", param 1 = ");
+                            data2(b[x+9],w5);     
+                            ht_fprintf(outFile,TYPE_NORMAL,", param 2 = ");
+                            data2(b[x+12],w6);     
+                        }
+
                     }
                     break;
 #endif
