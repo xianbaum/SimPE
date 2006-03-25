@@ -1,6 +1,24 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+25 March 2006 11:29 - Help: Updated!
+  SimPe BHAV\PJSE_Help\
+    Bhavs.htm 1.1.2.1
+    Constants.htm 1.1.2.1
+    Contents.htm 1.1.2.2
+    HelpLinks.htm (deleted)
+    ObjectFuncs.htm 1.1.2.2
+    Strings.htm 1.1.2.1
+  SimPe BHAV\PJSE_Help\PJSE_HelpImages
+    DownArrow.png 1.1.2.1
+    DropDown.png 1.1.2.1
+    FastRewind.png 1.1.2.1
+    Quotes.png 1.1.2.1
+    ScrollLeft.png 1.1.2.1
+    ScrollRight.png 1.1.2.1
+    Tools.png 1.1.2.1
+    UpArrow.png 1.1.2.1
+
 19 March 2006 19:36 - Str: Add str changes; new Make default; removed Replace string
   SimPe BHAV\
     StrForm.cs 1.28.2.6
