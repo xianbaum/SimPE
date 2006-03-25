@@ -1550,9 +1550,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.PluginHelp((wrapper.FileDescriptor.Type == 0x54544173)
+			/*pjse.HelpHelper.PluginHelp((wrapper.FileDescriptor.Type == 0x54544173)
 				? "PieMenus"
-				: "Strings");
+				: "Strings");*/
+			pjse.HelpHelper.PluginHelp("Strings");
 		}
 
 		private void btnBigString_Click(object sender, System.EventArgs e)
