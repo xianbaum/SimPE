@@ -2735,6 +2735,16 @@ namespace pjse.BhavNameWizards
 			return (i >= 0 && i < invType.Length) ? invType[i] : "[unk]";
 		}
 
+		private string tokenType(int i, int j, bool all)
+		{
+			string s = "";
+			if ((i & 0x04) != 0)        s += ((j & 0x10) == 0 ? "non-" : "") + "visible ";
+			if ((i & 0x08) != 0)        s += ((j & 0x20) == 0 ? "non-" : "") + "memory ";
+			if ((i & 0x20) != 0)        s += ((i & 0x01) == 0 ? "non-" : "") + "shopping ";
+			if ((i & 0x2c) == 0 && all) s += "all ";
+			return s;
+		}
+
 		protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
@@ -2743,24 +2753,21 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			byte c1 = o[0];
-			if (instruction.NodeVersion == 0)
-				c1 = (byte)(((o[0] & 0x3C) << 1) | (o[0] & 0x83)); //wtf....
-
+			byte c1 = (instruction.NodeVersion >= 1) ? o[0] : (byte)(((o[0] & 0x3C) << 1) | (o[0] & 0x83)); //wtf....
 			byte c2 = (instruction.NodeVersion >= 2) ? o[9] : (byte)0x0c;
 
 			if (lng)
 			{
-				s += "Access the " + inventory(c1 & 0x07) + " " + ((c1 & 0x08) != 0 ? "Counted" : "Singular") + " Inventory";
+				s += inventory(c1 & 0x07) + " " + ((c1 & 0x08) != 0 ? "Counted" : "Singular") + " inventory";
 				if ((c1 & 0x07) >= 1 && (c1 & 0x07) <= 3)
 					s += ", with ID " + dataOwner(o[1], o[2], o[3]);
 
 				s += ", Category 0x" + SimPe.Helper.HexString(o[9]);
 
-				if ((o[4] != 0xE) && (o[4] != 0xF)) 
+				if ((c1 & 0x08) != 0 || ((o[4] != 0xE) && (o[4] != 0xF)))
 				{
 					uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
-					s += ", GUID " + (d1 == 0 ? "from Stack Object" : "0x" + SimPe.Helper.HexString(d1));
+					s += ", token GUID" + (d1 == 0 ? " from Stack Object" : ": 0x" + SimPe.Helper.HexString(d1));
 				}
 				s += ".\r\n";
 			}
@@ -2779,19 +2786,22 @@ namespace pjse.BhavNameWizards
 							+ ", pull count from " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
 					case 0x4: s += "Remove all tokens"; break;
-					case 0x5: s += "Remove all tokens from token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0x6: s += "Find the token. Put count into " + dataOwner(lng, o[13], o[14], o[15]); break;
+					case 0x5: s += "Remove all tokens, from token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
+					case 0x6: s += "Find the token, put count into " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0x7: s += "Read token into My Temp Token"; break;
 					case 0x8: s += "Read token into My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0x9: s += "Set To Next token starting at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0xa: s += "Store the count of the tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]); break;
+					case 0x9: s += "Set To Next token, starting at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
+					case 0xa:
+						s += "Store the count of the tokens "
+							+ (lng ? "in this inventory " : "")
+							+ "into " + dataOwner(lng, o[13], o[14], o[15]); break;
 					case 0xb:
 						s += "Copy token at index " + dataOwner(lng, o[10], o[11], o[12]);
 						s += ", from the " + inventory(o[6] & 0x07) + " inventory";
 						if ((o[6] & 0x07) >= 1 && (o[7] & 0x07) <= 3)
 							s += ", with ID " + dataOwner(lng, o[13], o[14], o[15]);
-
 						break;
+					default: s += "Unknown"; break;
 				}
 			else // Singular
 				switch (o[4]) 
@@ -2799,75 +2809,65 @@ namespace pjse.BhavNameWizards
 					case 0x00: s += "Add token"; break;
 					case 0x01: s += "Remove token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
 					case 0x02:
-						s += "Remove ";
-						if ((c2 & 0x04) != 0) s += ((c1 & 0x10) == 0 ? "non-" : "") + "visible ";
-						if ((c2 & 0x08) != 0) s += ((c1 & 0x20) == 0 ? "non-" : "") + "memory ";
-						if ((c2 & 0x20) != 0) s += ((c2 & 0x01) == 0 ? "non-" : "") + "shopping ";
-						if (c2 == 0)          s += "all ";
-						s += "tokens";
+						s += "Remove " + tokenType(c2, c1, true) + "tokens";
 						break;
-					case 0x03:
-						s += "Set To Next ";
-						if ((c2 & 0x04) != 0) s += ((c1 & 0x10) == 0 ? "non-" : "") + "visible ";
-						if ((c2 & 0x08) != 0) s += ((c1 & 0x20) == 0 ? "non-" : "") + "memory ";
-						if ((c2 & 0x20) != 0) s += ((c2 & 0x01) == 0 ? "non-" : "") + "shopping ";
-						s += "token starting at index from " + dataOwner(lng, o[10], o[11], o[12])
-							+ (lng ? ", reversed: " + ((c1 & 0x80) != 0).ToString() : "");
+					case 0x03: case 0x0c:
+						s += "Set To Next " + tokenType(c2, c1, false) + "token";
+						if (lng)
+							s += ", starting at index from " + dataOwner(lng, o[10], o[11], o[12])
+								+ ", reversed: " + ((c1 & 0x80) != 0).ToString();
 						break;
 					case 0x04:
 						s += "Push property on token at index from " + dataOwner(lng, o[10], o[11], o[12])
-							+ (lng ? ". Get property value from " + dataOwner(o[13], o[14], o[15]) : "");
+							+ (lng ? ", get property value from " + dataOwner(o[13], o[14], o[15]) : "");
 						break;
 					case 0x05:
 						s += "Pop property off token at index from " + dataOwner(lng, o[10], o[11], o[12])
-							+ (lng ? ". Put property value into " + dataOwner(o[13], o[14], o[15]) : "");
+							+ (lng ? ", put property value into " + dataOwner(o[13], o[14], o[15]) : "");
 						break;
 					case 0x06: s += "Read token into My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
 					case 0x07:
 						s += "Get property from token in My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12])
 							+ (lng ? ", put property value into " + dataOwner(o[13], o[14], o[15]) : "");
 						break;
-					case 0x08: break;
+					//case 0x08: break;
 					case 0x09: s += "Save My Temp Token back to the location it was loaded from"; break;
 					case 0x0a: s += "Store the count of the tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]); break;
-					case 0x0b: break;
+					//case 0x0b: break;
+					/*
+					 * Same as case 0x03, so moved...
+					 * 
 					case 0x0c:
-						s += "Set To Next ";
-						if ((c2 & 0x04) != 0) s += ((c1 & 0x10) == 0 ? "non-" : "") + "visible ";
-						if ((c2 & 0x08) != 0) s += ((c1 & 0x20) == 0 ? "non-" : "") + "memory ";
-						if ((c2 & 0x20) != 0) s += ((c2 & 0x01) == 0 ? "non-" : "") + "shopping ";
-						s += "token"
-							+ (lng
-								? ", starting at index from " + dataOwner(o[10], o[11], o[12]) + ", Reversed: " + ((c1 & 0x80) != 0).ToString()
-								: "");
+						s += "Set To Next " + tokenType(c2, c1, false) + "token";
+						if (lng)
+							s += ", starting at index from " + dataOwner(o[10], o[11], o[12])
+								+ ", Reversed: " + ((c1 & 0x80) != 0).ToString();
 						break;
-					case 0xD:
-						s += "Store the count of ";
-						if ((c2 & 0x04) != 0) s += ((c1 & 0x10) == 0 ? "non-" : "") + "visible ";
-						if ((c2 & 0x08) != 0) s += ((c1 & 0x20) == 0 ? "non-" : "") + "memory ";
-						if ((c2 & 0x20) != 0) s += ((c2 & 0x01) == 0 ? "non-" : "") + "shopping ";
-						if (c2 == 0)          s += "all ";
-						s += "tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]);
+					 */
+					case 0x0d:
+						s += "Store the count of " + tokenType(c2, c1, true) + "tokens in this inventory"
+							+ ", into " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
-					case 0xE:
-						s += "Token Index " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
-							+ ", Property " + dataOwner(lng, o[10], o[11], o[12])
+					case 0x0e:
+						s += "Token Index: " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
+							+ ", Property: " + dataOwner(lng, o[10], o[11], o[12])
 							+ ", Assign to: " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
-					case 0xF:
+					case 0x0f:
 						s += dataOwner(lng, o[13], o[14], o[15])
-							+ ", Assign to Token Index " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
-							+ ", Property " + dataOwner(lng, o[10], o[11], o[12]);
+							+ ", Assign to Token Index: " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
+							+ ", Property: " + dataOwner(lng, o[10], o[11], o[12]);
 						break;
 					case 0x10: s += "Add Token And Instance Info of Stack Object"; break;
 					case 0x11: s += "Create Object from Token at Index"; break;
 					case 0x12:
-						s += "Copy token at index " + dataOwner(lng, o[10], o[11], o[12]);
-						s += ", from the " + inventory(o[6] & 0x07) + " inventory";
+						s += "Copy token at index " + dataOwner(lng, o[10], o[11], o[12])
+							+ ", from the " + inventory(o[6] & 0x07) + " inventory";
 						if ((o[6] & 0x07) >= 1 && (o[7] & 0x07) <= 3)
 							s += ", with ID " + dataOwner(lng, o[13], o[14], o[15]);
 						break;
-					case 0x13: s += "Add Token And Instance Info of Stack Object excluding contained objects"; break;
+					case 0x13: s += "Add Token And Instance Info of Stack Object, excluding contained objects"; break;
+					default: s += "Unknown"; break;
 				}
 
 
