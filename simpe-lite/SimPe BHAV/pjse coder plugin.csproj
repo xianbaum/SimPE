@@ -338,14 +338,9 @@
                     BuildAction = "Compile"
                 />
                 <File
-                    RelPath = "HelpContainer.cs"
+                    RelPath = "HelpHelper.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HelpContainer.resx"
-                    DependentUpon = "HelpContainer.cs"
-                    BuildAction = "EmbeddedResource"
                 />
                 <File
                     RelPath = "ObjfForm.cs"
