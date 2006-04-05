@@ -353,7 +353,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			set
 			{
-				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ").Replace("args: ", "args:\r\n  ");
+				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ").Replace("args: ", "args:\r\n  ").Replace("arg: ", "arg:\r\n  ");
 			}
 		}
 
@@ -2650,7 +2650,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.PluginHelp("Bhavs");
+			pjse.HelpHelper.Help("Bhavs");
 		}
 
 

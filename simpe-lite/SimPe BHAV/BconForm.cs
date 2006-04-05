@@ -888,6 +888,11 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+		private void btnHelp_Click(object sender, System.EventArgs e)
+		{
+			pjse.HelpHelper.Help("Constants");
+		}
+
 		private void btnCommit_Clicked(object sender, System.EventArgs e)
 		{
 			this.Commit();
@@ -921,11 +926,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
 			this.BconItemDelete();
-		}
-
-		private void btnHelp_Click(object sender, System.EventArgs e)
-		{
-			pjse.HelpHelper.PluginHelp("Constants");
 		}
 
 
