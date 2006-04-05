@@ -22,44 +22,12 @@ namespace pjse
 {
 	public class HelpHelper
 	{
-		private static string help(string s)
-		{
-			return System.IO.Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\PJSE_Help\\" + s + ".htm");
-		}
+		static string protocol = "file://";
+		static string relativePathToHelp = "pjse.coder.plugin/PJSE_Help";
 
 		public static void Help(string s)
 		{
-			try
-			{
-				System.Diagnostics.Process.Start(help(s));
-			}
-			catch
-			{
-				System.Windows.Forms.MessageBox.Show("Please install the PJSE_Help archive.");
-			}
-		}
-
-		public static void Help(string s1, string s2)
-		{
-			string ss = s1;
-			string s = help(s1);
-			if (!System.IO.File.Exists(s)) { s = help(s2); ss = s2; }
-			try
-			{
-				System.Diagnostics.Process.Start(s);
-			}
-			catch
-			{
-				System.Windows.Forms.MessageBox.Show("Help file \"" + ss + "\" did not load.\n" +
-					"Please install the PJSE_Help archive.\n\n" +
-					"See the FORUM for PJSE at simlogical.com",
-					"PJSE Help System");
-			}
-		}
-
-		public static void PluginHelp(string s)
-		{
-			Help(s, "Contents");
+			SimPe.RemoteControl.ShowHelp(protocol + SimPe.Helper.SimPePluginPath + "/" + relativePathToHelp + "/" + s + ".htm");
 		}
 
 	}

@@ -34,7 +34,7 @@ namespace SimPe.Plugin
 	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-	public class WrapperFactory : AbstractWrapperFactory, IToolFactory
+	public class WrapperFactory : AbstractWrapperFactory, IToolFactory, IHelpFactory
 	{
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
@@ -57,19 +57,10 @@ namespace SimPe.Plugin
 			}
 		}
 
-		#region IToolFactory Members
-		public IToolPlugin[] KnownTools
-		{
-			get
-			{
-				ITool[] tools = {
-									new CoderIToolPlugin()
-								};
-				return tools;
-			}
-		}
 
-		class CoderIToolPlugin : ITool
+		#region IToolFactory Members
+
+		class tool : ITool
 		{
 			#region ITool Members
 
@@ -84,8 +75,6 @@ namespace SimPe.Plugin
 				return new SimPe.Plugin.ToolResult(false, false);
 			}
 
-			#endregion
-
 			#region IToolPlugin Members
 
 			public override string ToString()
@@ -95,6 +84,63 @@ namespace SimPe.Plugin
 
 			#endregion
 
+			#endregion
+
+		}
+
+
+		public IToolPlugin[] KnownTools
+		{
+			get
+			{
+				ITool[] tools = {
+									new tool()
+								};
+				return tools;
+			}
+		}
+
+
+		#endregion
+
+		#region IHelpFactory Members
+
+		class helpContents : IHelp
+		{
+			#region IHelp Members
+
+			public void ShowHelp(ShowHelpEventArgs e)
+			{
+				pjse.HelpHelper.Help("Contents");
+			}
+
+			public override string ToString()
+			{
+				return "PJSE";
+			}
+
+			public System.Drawing.Image Icon
+			{
+				get
+				{
+					return null;
+				}
+			}
+
+			#endregion
+
+		}
+
+
+		public IHelp[] KnownHelpTopics
+		{
+			get
+			{
+				IHelp[] helpTopics = {
+									new helpContents()
+								};
+				return helpTopics;
+			}
 		}
 
 

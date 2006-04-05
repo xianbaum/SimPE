@@ -311,10 +311,11 @@ namespace pjse
 		protected string readTrcn(Bcon bcon, int bid, Detail detail)
 		{
 			Trcn trcn = bcon.TrcnResource;
-			return (trcn != null && bid < trcn.Count) ? trcn[bid] :
-				(detail == Detail.ValueOnly ? ""
+			return (trcn != null && bid < trcn.Count) ? trcn[bid] : ""
+				/*(detail == Detail.ValueOnly ? ""
 				: "[No TRCN for BCON 0x" + SimPe.Helper.HexString((ushort)bcon.FileDescriptor.Instance)
-				+ ":0x" + SimPe.Helper.HexString((byte)bid)) + "]";
+				+ ":0x" + SimPe.Helper.HexString((byte)bid) + "]")*/
+				;
 		}
 
 
@@ -325,10 +326,11 @@ namespace pjse
 		private string readParamLocal(bool local, Bhav bhav, int sid, Detail detail)
 		{
 			TPRP tprp = bhav.TPRPResource;
-			return (tprp != null && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] :
-				(detail == Detail.ValueOnly ? ""
+			return (tprp != null && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] : ""
+				/*(detail == Detail.ValueOnly ? ""
 				: "[No TPRP label for BHAV 0x" + SimPe.Helper.HexString((ushort)bhav.FileDescriptor.Instance)
-				+ " " + (local ? "Local" : "Param") + " 0x" + SimPe.Helper.HexString((ushort)sid) + "]");
+				+ " " + (local ? "Local" : "Param") + " 0x" + SimPe.Helper.HexString((ushort)sid) + "]")*/
+				;
 			}
 
 

@@ -1291,7 +1291,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.PluginHelp("Constants");
+			pjse.HelpHelper.Help("Constants");
 		}
 
 
