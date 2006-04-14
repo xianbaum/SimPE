@@ -81,8 +81,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 			byte operand0 = inst.Operands[0];
 
 			this.cbGenericSimsCall.Items.Clear();
-			for (byte i = 0; i < GS.gStr(GS.BhavStr.Generics).Count; i++)
-				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + GS.GStr(GS.BhavStr.Generics, i));
+			for (byte i = 0; i < BhavWiz.readStr(GS.BhavStr.Generics).Count; i++)
+				this.cbGenericSimsCall.Items.Add("0x" + SimPe.Helper.HexString(i) + ": " + BhavWiz.readStr(GS.BhavStr.Generics, i));
 			this.lbGenericSimsCallparms.Text = "Should never see this";
 
 			lbGenericSimsCallparms.Text = genericSimsCallparamText(operand0);

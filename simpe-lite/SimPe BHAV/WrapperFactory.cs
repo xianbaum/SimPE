@@ -48,7 +48,7 @@ namespace SimPe.Plugin
 										   new Bcon()
 										  ,new Bhav()
 										  ,new Objf()
-										  ,new Str()
+										  ,new StrWrapper()
 										  ,new TPRP()
 										  ,new Trcn()
 										  ,new Ttab()

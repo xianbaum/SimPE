@@ -59,7 +59,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains a valid String Resource that describes the Function Entries
 		/// </summary>
-		private Str strres = null;
+		private StrWrapper strres = null;
 		#endregion
 
 		#region Accessor methods
@@ -99,7 +99,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns the describing String Resource
 		/// </summary>
-		internal PackedFiles.Wrapper.Str StringResource
+		internal PackedFiles.Wrapper.StrWrapper StringResource
 		{
 			get 
 			{
@@ -108,7 +108,7 @@ namespace SimPe.PackedFiles.Wrapper
 					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[Data.MetaData.PIE_STRING_FILE, FileDescriptor.Group, FileDescriptor.Instance];
 					if (items == null || items.Length == 0) return null;
 
-					strres = new Str();
+					strres = new StrWrapper();
 					strres.ProcessData(items[0].PFD, items[0].Package);
 				}
 
