@@ -1,6 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+15 April 2006 15:14 - Parsing: Pick up resource changes dynamically for readStr (and formatting fixes)
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.6.2.2
+    BhavWizPrim.cs 1.34.2.10.2.2
+    Str.cs 1.1.2.2
+
 14 April 2006 22:15 - Parsing: Rewrite readStr to perform fallback on all missing strings
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.6.4.1

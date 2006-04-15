@@ -1259,6 +1259,7 @@ namespace pjse.BhavNameWizards
 
 			if (lng)
 			{
+				s += ", scope: " + scope;
 				s += ", source: "    + ((o[4] & 0x02) != 0 ? "Stack object" : "Me");
 				s += ", auto vary: " + ((o[4] & 0x10) != 0).ToString();
 
@@ -1554,11 +1555,11 @@ namespace pjse.BhavNameWizards
 			if      ((o[2] & 0x01) != 0) scope = Scope.Global;
 			else if ((o[2] & 0x02) != 0) scope = Scope.SemiGlobal;
 
-			s += readStr(scope, GS.GlobalStr.NamedTree, (ushort)(o[4] - 1), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+			s += readStr(scope, GS.GlobalStr.NamedTree, (ushort)(o[4] - 1), lng ? -1 : 60, pjse.Detail.Errors);
 
 			if (lng)
 			{
-				s += ", Scope: " + scope;
+				s += ", scope: " + scope;
 				s += ", ignore global trees: "     + ((o[2] & 0x04) != 0).ToString();
 				s += ", ignore semiglobal trees: " + ((o[2] & 0x08) != 0).ToString();
 
@@ -1875,7 +1876,8 @@ namespace pjse.BhavNameWizards
 				Scope scope = Scope.Private;
 				if      ((o[5] & 0x04) != 0) scope = Scope.Global;
 				else if ((o[5] & 0x08) != 0) scope = Scope.SemiGlobal;
-				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, pjse.Detail.Errors);
+				if (lng) s += " (" + scope + ")";
 			}
 
 			if (o[0] != 8) 
@@ -1883,7 +1885,8 @@ namespace pjse.BhavNameWizards
 				Scope scope = Scope.Private;
 				if      ((o[5] & 0x01) != 0) scope = Scope.Global;
 				else if ((o[5] & 0x02) != 0) scope = Scope.SemiGlobal;
-				s += ", window ID " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+				s += ", window ID " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), lng ? -1 : 60, pjse.Detail.Errors);
+				if (lng) s += " (" + scope + ")";
 			}
 			else
 				s += ", TNS ID " + dataOwner(lng, o[13], o[11], o[12]);
@@ -2124,7 +2127,7 @@ namespace pjse.BhavNameWizards
 			string s = "";
 			if (lng)
 			{
-				s += "Scope: " + scope.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)GS.GlobalStr.DialogString);
+				s += "Scope: " + scope;
 				s += ", Type: " + readStr(GS.BhavStr.Dialog, o[5]);
 			}
 
@@ -2623,12 +2626,12 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			Scope scope = Scope.Private;
-			if      ((o[2] & 0x04) != 0) scope = Scope.Global;
-			else if ((o[2] & 0x08) != 0) scope = Scope.SemiGlobal;
-
 			if (o[9] == 0) 
 			{
+				Scope scope = Scope.Private;
+				if      ((o[2] & 0x04) != 0) scope = Scope.Global;
+				else if ((o[2] & 0x08) != 0) scope = Scope.SemiGlobal;
+
 				if (lng)
 				{
 					s += "Add / Change Interaction string Mode, ";
@@ -2642,10 +2645,11 @@ namespace pjse.BhavNameWizards
 					}
 				}
 
-				if ((o[2] & 0x10) != 0) s += scope.ToString() + " STR# 0x012E:[Temp 0]";
+				if ((o[2] & 0x10) != 0) s += "STR# 0x012E:[Temp 0]";
 				else s += readStr(scope, GS.GlobalStr.MakeAction,
 						 (ushort)((instruction.NodeVersion < 2 ? o[0x04] : ToShort(o[0x0e], o[0x0f])) - 1),
-						 lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+						 lng ? -1 : 60, pjse.Detail.Errors);
+				if (lng) s += ", scope: " + scope;
 			}
 			else 
 			{
@@ -3220,7 +3224,7 @@ namespace pjse.BhavNameWizards
 
 			s += ", animation: " + ((o[2] & 0x04) != 0
 				? "ObjectAnims STR# 0x86:[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
-				: readStr(GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors)
+				: readStr(GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, pjse.Detail.Errors)
 				);
 
 			if (lng)
@@ -3959,7 +3963,7 @@ namespace pjse.BhavNameWizards
 				s += ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(lng, o[8], o[9], o[10]) : "Me");
 				s += " (" + (lng ? ((o[13] & 0x01) != 0 ? "moving texture" : "material") + " " : "");
 				if ((o[2] & 0x10) != 0) s += matScope.ToString() + " STR# 0x0088:[Temp 0]";
-				else s += readStr(matScope, GS.GlobalStr.MaterialName, ToShort(o[0], o[1]), lng ? -1 : 30, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+				else s += readStr(matScope, GS.GlobalStr.MaterialName, ToShort(o[0], o[1]), lng ? -1 : 30, pjse.Detail.Errors);
 				s += ")";
 			}
 			else
@@ -3974,7 +3978,7 @@ namespace pjse.BhavNameWizards
 			{
 				s += " (" + (lng ? "mesh group " : "");
 				if ((o[2] & 0x20) != 0) s += mgScope.ToString() + " STR# 0x0087:[Temp 1]";
-				else s += readStr(mgScope, GS.GlobalStr.MeshGroup, ToShort(o[3], o[4]), lng ? -1 : 30, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+				else s += readStr(mgScope, GS.GlobalStr.MeshGroup, ToShort(o[3], o[4]), lng ? -1 : 30, pjse.Detail.Errors);
 				s += ")";
 			}
 			else
@@ -4217,7 +4221,7 @@ namespace pjse.BhavNameWizards
 			s += "on object in " + dataOwner(lng, o[2],ToShort(o[3], o[4]));       // target object
 			s += ", light: " + (o[8] == 0xFF
 				? "all on object"
-				: readStr(GS.GlobalStr.LightSource, o[8], lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors));
+				: readStr(GS.GlobalStr.LightSource, o[8], lng ? -1 : 60, pjse.Detail.Errors));
 			if (lng)
 			{
 				s += ", fade-in duration (ticks): " + ((o[1] & 0x01) != 0 ? "in Temp 1" : "0x" + SimPe.Helper.HexString(ToShort(o[5], o[6])));
@@ -4307,7 +4311,8 @@ namespace pjse.BhavNameWizards
 			else if (o[0] < 0x07 || o[0] > 0x0E)
 			{
 				if (o[4] != 0xFF) 
-					s += ", " + readStr(scope, pjse.GS.GlobalStr.Effect, o[4], lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+					s += ", " + readStr(scope, pjse.GS.GlobalStr.Effect, o[4], lng ? -1 : 60, pjse.Detail.Errors)
+						+ (lng ? ", scope: " + scope : "");
 				else
 					s += ", affecting default effect";
 			}
@@ -4320,7 +4325,8 @@ namespace pjse.BhavNameWizards
 					s += ", putting in Icon from neighbor ID in " + dataOwner(o[12], ToShort(o[13], o[14]));
 				else if ((o[10] & 0x20) != 0)
 					s += ", putting in Conversation Icon index found in " + dataOwner(o[12], ToShort(o[13], o[14]))
-						+ " using sheet " + readStr(scope, pjse.GS.GlobalStr.IconTexture, o[15], -1, pjse.Detail.Full);
+						+ " using sheet " + readStr(scope, pjse.GS.GlobalStr.IconTexture, o[15], -1, pjse.Detail.Errors)
+						+ (lng ? ", scope: " + scope : "");
 				else if ((o[11] & 0x04) != 0)
 					s += ", putting in Icon with GUID in Temp 4,5";
 				else if ((o[11] & 0x10) != 0)
@@ -4515,7 +4521,8 @@ namespace pjse.BhavNameWizards
 					Scope scope = Scope.Private;
 					if      ((o[2] & 0x04) != 0) scope = Scope.Global;
 					else if ((o[2] & 0x02) != 0) scope = Scope.SemiGlobal;
-					s += "Push " + readStr(scope, GS.GlobalStr.LocoAnims, (ushort)(ToShort(o[0], o[1])-2), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors) + " onto Stack";
+					s += "Push " + readStr(scope, GS.GlobalStr.LocoAnims, (ushort)(ToShort(o[0], o[1])-2), lng ? -1 : 60, pjse.Detail.Errors)
+						+ " onto Stack" + (lng ? ", scope: " + scope : "");
 					break;
 			}
 
@@ -4564,7 +4571,8 @@ namespace pjse.BhavNameWizards
 			switch (o[13]) 
 			{
 				case 0:
-					s += readStr(scope, GS.GlobalStr.DebugString, o[12], lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+					s += readStr(scope, GS.GlobalStr.DebugString, o[12], lng ? -1 : 60, pjse.Detail.Errors)
+						+ (lng ? ", scope: " + scope : "");
 					if (lng)
 					{
 						s += " (";
@@ -4577,7 +4585,7 @@ namespace pjse.BhavNameWizards
 				case 3: s += "Show Slots"; break;
 				case 4: s += "Show Bones"; break;
 				case 5: s += "Toggle Anim Info to Debug Window"; break;
-				case 6: s += "Cheat: " + readStr(scope, GS.GlobalStr.DebugString, o[12], lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors); break;
+				case 6: s += "Cheat: " + readStr(scope, GS.GlobalStr.DebugString, o[12], lng ? -1 : 60, pjse.Detail.Errors); break;
 				case 7: s += "Dump Happy Log"; break;
 			}
 
@@ -4665,12 +4673,12 @@ namespace pjse.BhavNameWizards
 			if (lng)
 			{
 				s += ", object anim: " + (ToShort(o[13], o[14]) != 0xFFFF
-					? readStr(GS.GlobalStr.ObjectAnims, ToShort(o[13], o[14]), -1, pjse.Detail.Full)
+					? readStr(GS.GlobalStr.ObjectAnims, ToShort(o[13], o[14]), -1, pjse.Detail.Errors)
 					: "none"
 					);
 
 				s += ", grasp anim: " + (ToShort(o[11], o[12]) != 0xFFFF
-					? readStr(GS.GlobalStr.AdultAnims, ToShort(o[11], o[12]), -1, pjse.Detail.Full)
+					? readStr(GS.GlobalStr.AdultAnims, ToShort(o[11], o[12]), -1, pjse.Detail.Errors)
 					: "none"
 					);
 
@@ -4823,7 +4831,7 @@ namespace pjse.BhavNameWizards
 				default: s += "??? 0x" + SimPe.Helper.HexString(o[1]); break;
 			}
 
-			s += " of " + (o[2] == 0 ? "My" : "Stack Object's") + " " + readStr(GS.GlobalStr.ArrayName, ToShort(o[3], o[4]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors)
+			s += " of " + (o[2] == 0 ? "My" : "Stack Object's") + " " + readStr(GS.GlobalStr.ArrayName, ToShort(o[3], o[4]), lng ? -1 : 60, pjse.Detail.Errors)
 				+ " Object Array";
 
 			return s;
@@ -5331,8 +5339,9 @@ namespace pjse.BhavNameWizards
 
 			s += "Scene" + ((o[5] & 0x10) != 0
 				? " ID: " + dataOwner(lng, o[6], o[7], o[8])
-				: ": " + readStr(scope, GS.GlobalStr.CineCam, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors)
-				);
+				: ": " + readStr(scope, GS.GlobalStr.CineCam, ToShort(o[0], o[1]), lng ? -1 : 60, pjse.Detail.Errors)
+				)
+				+ (lng ? ", scope: " + scope : "");
 
 			s += ", Array on Object ID: " + dataOwner(lng, o[9], o[10], o[11]);
 
@@ -5461,7 +5470,7 @@ namespace pjse.BhavNameWizards
 
 			s += "Follow Sim in " + dataOwner(lng, o[0], o[1], o[2]);
 			s += ", output result to " + (o[5] != 0 ? "Stack Object's" : "My") + " object array: "
-				+ readStr(GS.GlobalStr.ArrayName, ToShort(o[6], o[7]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+				+ readStr(GS.GlobalStr.ArrayName, ToShort(o[6], o[7]), lng ? -1 : 60, pjse.Detail.Errors);
 
 			return s;
 #if DISASIM
@@ -5505,7 +5514,8 @@ namespace pjse.BhavNameWizards
 				if      ((o4_5 & 0x02) != 0) scope = Scope.Private;
 				else if ((o4_5 & 0x04) != 0) scope = Scope.SemiGlobal;
 
-				s += readStr(scope, ToShort(o[0], o[1]), (ushort)(ToShort(o[2], o[3]) - 1), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors);
+				s += readStr(scope, ToShort(o[0], o[1]), (ushort)(ToShort(o[2], o[3]) - 1), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors)
+					+ (lng ? ", scope: " + scope : "");
 
 				if (lng)
 					s += ", defined in " + (((o4_5 & 0x01) != 0) ? "objLua file" : "description");

@@ -270,7 +270,8 @@ namespace pjse
 
 		/*
 		 * 
-		 * Run Tree By Name (0x001C) has flags to prevent/allow string fallback separately for Global and Semiglobal
+		 * Run Tree By Name (0x001C) has flags to prevent/allow string fallback separately for Global and Semiglobal.
+		 * We can let the programmer worry about that, though.
 		 * 
 		 */
 
@@ -301,17 +302,17 @@ namespace pjse
 		{
 			Str str = new Str(parent, group, instance);
 			String pfname = "";
-			if (detail == Detail.Full || detail == Detail.Errors)
+			if (detail == Detail.Full)
 			{
-				pfname = "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid);
 				if (group == (uint)Group.BhavFuncs)
-					try { pfname += " (" + (GS.BhavStr)instance + ")"; }
+					try { pfname += (GS.BhavStr)instance + ": "; }
 					catch { }
-				//if (group == (uint)Group.Global)
 				else
-					try { pfname += " (" + (GS.GlobalStr)instance + ")"; }
+					try { pfname += (GS.GlobalStr)instance + ": "; }
 					catch { }
 			}
+			if (detail == Detail.Full || detail == Detail.Errors)
+					pfname += "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid);
 
 
 			if (str != null)
@@ -319,11 +320,8 @@ namespace pjse
 				FallbackStrItem fsi = str[sid];
 				if (fsi != null && fsi.strItem != null)
 				{
-					if (fsi.fallback == null || fsi.fallback.Count == 0) return fsi.strItem.Title.Trim()
-																			 + (detail == Detail.Full ? " [" + pfname + "]" : "");
-
 					String s = "";
-					if (detail != Detail.ValueOnly)
+					if (detail != Detail.ValueOnly && fsi.fallback != null && fsi.fallback.Count != 0)
 					{
 						s += "[";
 						for(int i=0; i < fsi.fallback.Count; i++) s += (i==0?"":"; ") + fsi.fallback[i];
