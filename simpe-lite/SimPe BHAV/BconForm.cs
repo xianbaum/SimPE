@@ -57,6 +57,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnStrPrev;
 		private System.Windows.Forms.Button btnStrNext;
 		private System.Windows.Forms.Button btnHelp;
+		private System.Windows.Forms.Button btnTRCNMaker;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -254,6 +255,50 @@ namespace SimPe.PackedFiles.UserInterface
 			displayBconItem();
 		}
 
+		private void TRCNMaker()
+		{
+			int minArgc = 0;
+			Trcn trcn = wrapper.TrcnResource;
+
+			wrapper.Package.BeginUpdate();
+
+			// find Trcn for this Bcon
+			if (trcn != null)
+			{
+				// if it exists ask if user wants to preserve content
+				DialogResult dr = MessageBox.Show("Keep existing labels?"
+					, btnTRCNMaker.Text
+					, MessageBoxButtons.YesNoCancel
+					, MessageBoxIcon.Warning);
+				if (dr == DialogResult.Cancel)
+					return;
+				if (dr == DialogResult.Yes)
+					minArgc = trcn.Count;
+				else
+					trcn.Clear();
+			}
+			else
+			{
+				// create a new Trcn file
+				SimPe.Interfaces.Files.IPackedFileDescriptor npfd
+					= wrapper.Package.Add(0x5452434E, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
+				trcn = new Trcn();
+				trcn.ProcessData(npfd, wrapper.Package);
+				trcn.FileName = wrapper.FileName;
+			}
+
+			for(int arg = minArgc; arg < wrapper.Count; arg++)
+			{
+				int p = trcn.Add(new TrcnItem(trcn));
+				trcn[arg].ConstId = (uint)arg;
+				trcn[arg].ConstName = "Label " + arg.ToString();
+				trcn[arg].DefValue = trcn[arg].MaxValue = trcn[arg].MinValue = 0;
+			}
+			trcn.SynchronizeUserData();
+			wrapper.Package.EndUpdate();
+			this.updateLists();
+			MessageBox.Show("Done!", btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
 		#endregion
 
 		#region IPackedFileUI Member
@@ -340,6 +385,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.chValue = new System.Windows.Forms.ColumnHeader();
 			this.chLabel = new System.Windows.Forms.ColumnHeader();
 			this.btnCommit = new System.Windows.Forms.Button();
+			this.btnTRCNMaker = new System.Windows.Forms.Button();
 			this.pnHeading.SuspendLayout();
 			this.gbValue.SuspendLayout();
 			this.bconPanel.SuspendLayout();
@@ -613,6 +659,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bconPanel.Controls.Add(this.tbFilename);
 			this.bconPanel.Controls.Add(this.gbValue);
 			this.bconPanel.Controls.Add(this.pnHeading);
+			this.bconPanel.Controls.Add(this.btnTRCNMaker);
 			this.bconPanel.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("bconPanel.Dock")));
 			this.bconPanel.Enabled = ((bool)(resources.GetObject("bconPanel.Enabled")));
 			this.bconPanel.Font = ((System.Drawing.Font)(resources.GetObject("bconPanel.Font")));
@@ -848,6 +895,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnCommit.Visible = ((bool)(resources.GetObject("btnCommit.Visible")));
 			this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
 			// 
+			// btnTRCNMaker
+			// 
+			this.btnTRCNMaker.AccessibleDescription = resources.GetString("btnTRCNMaker.AccessibleDescription");
+			this.btnTRCNMaker.AccessibleName = resources.GetString("btnTRCNMaker.AccessibleName");
+			this.btnTRCNMaker.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnTRCNMaker.Anchor")));
+			this.btnTRCNMaker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTRCNMaker.BackgroundImage")));
+			this.btnTRCNMaker.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnTRCNMaker.Dock")));
+			this.btnTRCNMaker.Enabled = ((bool)(resources.GetObject("btnTRCNMaker.Enabled")));
+			this.btnTRCNMaker.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnTRCNMaker.FlatStyle")));
+			this.btnTRCNMaker.Font = ((System.Drawing.Font)(resources.GetObject("btnTRCNMaker.Font")));
+			this.btnTRCNMaker.Image = ((System.Drawing.Image)(resources.GetObject("btnTRCNMaker.Image")));
+			this.btnTRCNMaker.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnTRCNMaker.ImageAlign")));
+			this.btnTRCNMaker.ImageIndex = ((int)(resources.GetObject("btnTRCNMaker.ImageIndex")));
+			this.btnTRCNMaker.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnTRCNMaker.ImeMode")));
+			this.btnTRCNMaker.Location = ((System.Drawing.Point)(resources.GetObject("btnTRCNMaker.Location")));
+			this.btnTRCNMaker.Name = "btnTRCNMaker";
+			this.btnTRCNMaker.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnTRCNMaker.RightToLeft")));
+			this.btnTRCNMaker.Size = ((System.Drawing.Size)(resources.GetObject("btnTRCNMaker.Size")));
+			this.btnTRCNMaker.TabIndex = ((int)(resources.GetObject("btnTRCNMaker.TabIndex")));
+			this.btnTRCNMaker.Text = resources.GetString("btnTRCNMaker.Text");
+			this.btnTRCNMaker.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnTRCNMaker.TextAlign")));
+			this.btnTRCNMaker.Visible = ((bool)(resources.GetObject("btnTRCNMaker.Visible")));
+			this.btnTRCNMaker.Click += new System.EventHandler(this.btnTRCNMaker_Click);
+			// 
 			// BconForm
 			// 
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
@@ -903,6 +974,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Cancel();
 			this.tbValueHex.SelectAll();
 			this.tbValueHex.Focus();
+		}
+
+		private void btnTRCNMaker_Click(object sender, System.EventArgs e)
+		{
+			this.TRCNMaker();
 		}
 
 

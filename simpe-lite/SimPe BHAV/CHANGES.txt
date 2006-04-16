@@ -1,6 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+16 April 2006 15:25 - BCON: TRCNMaker
+  SimPe BHAV\
+    BconForm.cs 1.15.2.4
+    BconForm.resx 1.9.2.3
+
 16 April 2006 14:45 - Parsing: Make string instance and SID numbers the "right" length
   SimPe BHAV\
     BhavWiz.cs 1.37.2.10
