@@ -1,6 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+16 April 2006 13:23 - BHAV: TPRPMaker (and a TPRPWrapper bugfix)
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.12.4.1
+    BhavForm.resx 1.30.2.6.6.1
+    TPRPWrapper.cs 1.5.12.1
+
 16 April 2006 10:48 - Parsing: don't put quotes around lists of non-literals (like expression operators)
   SimPe BHAV\
     BhavWiz.cs 1.37.2.8
