@@ -153,7 +153,7 @@ namespace pjse
 				case 0x1a:
 					bcon = ExpandBCON(instance, false);
 					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
-					temp = readBcon((uint)bcon[0], bcon[1], false, pjse.Detail.Full);
+					temp = readBcon((uint)bcon[0], bcon[1], false);
 					if (temp.Length > 0)
 						s += " (" + temp + ")";
 					break;
@@ -161,7 +161,7 @@ namespace pjse
 					doidName = readStr(GS.BhavStr.DataOwners, 0x1a);
 					bcon = ExpandBCON(instance, true);
 					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
-					temp = readBcon((uint)bcon[0], bcon[1], true, pjse.Detail.Errors);
+					temp = readBcon((uint)bcon[0], bcon[1], true);
 					if (temp.Length > 0)
 						s += " (" + temp + ")";
 					break;
@@ -186,8 +186,12 @@ namespace pjse
 					return readStr(GS.BhavStr.DataOwners, doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
 				case 0x1a:
 					bcon = ExpandBCON(instance, false);
-					return readBcon((uint)bcon[0], bcon[1], false, pjse.Detail.Errors) +
-						"(" + readStr(GS.BhavStr.DataOwners, 0x1a) + ")";
+					return readStr(GS.BhavStr.DataOwners, doid)
+						+ " 0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
+				case 0x2f:
+					bcon = ExpandBCON(instance, true);
+					return readStr(GS.BhavStr.DataOwners, 0x1a)
+						+ " 0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
 				default:
 					return readStr(GS.BhavStr.DataOwners, doid) + " 0x" + SimPe.Helper.HexString(instance);
 			}
@@ -195,85 +199,6 @@ namespace pjse
 
 		protected string dataOwner(bool lng, byte doid, byte lo, byte hi) {  return dataOwner(lng, doid, ToShort(lo, hi));}
 
-
-#if DONTUSEREADSTR
-		/// <summary>
-		/// Get a string identifying the requested STR# resource
-		/// </summary>
-		/// <param name="s">Scope for STR# resource</param>
-		/// <param name="instance">STR# resource identifier</param>
-		/// <param name="sid">String number</param>
-		/// <param name="maxLen">-1: unlimited; else max string length to return</param>
-		/// <param name="silent">true: return "" if not found, else just string; false: identify requested resource</param>
-		/// <returns>Scope Instance "STR# 0x" hex(Instance) ":0x" hex(stringID) Left(string, len)</returns>
-		private string readStr(string strIprefix, Scope s, uint instance, int sid, int maxLen, Detail detail)
-		{
-			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
-
-			string strI = strIprefix + s.ToString() + " " + "STR# 0x" + SimPe.Helper.HexString((ushort)instance);
-			string strS = ":0x" + SimPe.Helper.HexString((ushort)sid);
-
-			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
-				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return (detail == Detail.Full) ? strI + strS : "";
-
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), instance];
-
-			if (items == null || items.Length == 0)
-				return (detail == Detail.ValueOnly) ? "" : "[No " + strI + " file]" + (detail == Detail.Full ? strS : "");
-
-			StrWrapper str = new StrWrapper();
-			str.ProcessData(items[0].PFD, items[0].Package);
-			StrItem si = str[1, sid];
-
-			if (si == null)
-				return (detail == Detail.ValueOnly) ? "" : "[" + strI + strS + " not set]";
-
-			return (detail == Detail.Full || detail == Detail.Comments ? strI + strS + " " : "") + "\"" + myLeft(si.Title.Trim(), maxLen) + "\"" ;
-		}
-
-
-		public string readStr(Scope s, GS.GlobalStr instance, int sid, int maxLen, Detail detail)
-		{
-			return readStr(instance.ToString() + ": ", s, (uint)instance, sid, maxLen, detail);
-		}
-
-
-		protected string readStr(Scope s, uint instance, int sid, int maxLen, Detail detail)
-		{
-			return readStr("", s, instance, sid, maxLen, detail);
-		}
-
-		protected string readStr(Scope s, GS.GlobalStr instance, int sid) { return readStr(s, instance, sid, -1, pjse.Detail.ValueOnly); }
-
-		protected string readStr(Scope s, GS.GlobalStr instance, int sid, Detail detail) { return readStr(s, instance, sid, -1, detail); }
-
-		protected string readStr(bool fallback, GS.GlobalStr instance, int sid, int maxLen, Detail detail)
-		{
-			Scope c = instruction.Parent.Context;
-			string result = readStr(c, instance, sid, maxLen, detail);
-
-			if (fallback && (result.IndexOf('"') < 0))
-			{
-				if (c == Scope.Private)
-					result = readStr(Scope.SemiGlobal, instance, sid, maxLen, detail);
-
-				if (result.IndexOf('"') < 0)
-					result = readStr(Scope.Global, instance, sid, maxLen, detail);
-			}
-
-			return result.Replace("Private ", "(Private) ").Replace("SemiGlobal ", "(SemiGlobal) ").Replace("Global ", "(Global) ");
-		}
-
-#else
-
-		/*
-		 * 
-		 * Run Tree By Name (0x001C) has flags to prevent/allow string fallback separately for Global and Semiglobal.
-		 * We can let the programmer worry about that, though.
-		 * 
-		 */
 
 
 		public string readStr(GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
@@ -302,7 +227,6 @@ namespace pjse
 		{
 			return readStr(parent, group, instance, sid, maxlen, detail, true);
 		}
-
 
 		private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail, bool addQuotes)
 		{
@@ -358,14 +282,15 @@ namespace pjse
 			return (ArrayList)gString[instance];
 		}
 
-#endif
+
 		private static string myLeft(string str, int len)
 		{
 			return (len < 0) ? str : str.PadRight(len).Substring(0, len).Trim() + (str.Length > len ? "..." : "");
 		}
 
 
-		protected string readBcon(uint instance, int bid, bool temp, Detail detail)
+
+		protected string readBcon(uint instance, int bid, bool temp)
 		{
 			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
 				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
@@ -374,47 +299,29 @@ namespace pjse
 			if      (instance <  0x1000) s = Scope.Global;
 			else if (instance >= 0x2000) s = Scope.SemiGlobal;
 
-			string strI = s.ToString() + " " + "BCON 0x" + SimPe.Helper.HexString((ushort)instance);
-			string strS = (temp ? "[Temp " + bid.ToString() + "]" : ":0x" + SimPe.Helper.HexString((byte)bid));
-
 			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
 				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return (detail == Detail.Full) ? strI + strS : "";
+				return "";
 
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
 
 			if (items == null || items.Length == 0)
-				return (detail == Detail.ValueOnly) ? "" : "[No " + strI + " file]" + (detail == Detail.Full ? strS : "");
+				return "[not found]";
 
 			Bcon bcon = new Bcon();
 			bcon.ProcessData(items[0].PFD, items[0].Package);
 
-			string f = bcon.FileName.Trim();
-			strI = (f.Length > 0 ? f + ": " : "") + strI;
-
 			if (temp)
-				return (detail == Detail.ValueOnly || detail == Detail.Errors) ? "" : strI + (detail == Detail.Full ? strS : "");
+				return ""; //"Filename: " + bcon.FileName;
 
-			string label = readTrcn(bcon, bid, detail).Trim();
-			label = label.Length > 0 ? " (" + label + ")" : "";
+			Trcn trcn = bcon.TrcnResource;
+			string label = ((trcn != null && bid < trcn.Count) ? trcn[bid] : "").Trim();
+			label = label.Length > 0 ? "\"" + label + "\" " : "";
 
 			if (bid >= bcon.Count)
-				return (detail == Detail.ValueOnly) ? "" : "[Not set: " + strI + strS + label + "]";
+				return label + "[not set]";
 
-			return
-				"0x" + SimPe.Helper.HexString((short)bcon[bid])
-				+ (detail == Detail.Full ? " - " + strI + strS + label : "")
-				;
-		}
-
-		protected string readTrcn(Bcon bcon, int bid, Detail detail)
-		{
-			Trcn trcn = bcon.TrcnResource;
-			return (trcn != null && bid < trcn.Count) ? trcn[bid] : ""
-				/*(detail == Detail.ValueOnly ? ""
-				: "[No TRCN for BCON 0x" + SimPe.Helper.HexString((ushort)bcon.FileDescriptor.Instance)
-				+ ":0x" + SimPe.Helper.HexString((byte)bid) + "]")*/
-				;
+			return label + "Value: 0x" + SimPe.Helper.HexString((short)bcon[bid]);
 		}
 
 

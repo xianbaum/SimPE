@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+16 April 2006 14:16 - Parsing: Tidy up BCON labelling
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.9
+
 16 April 2006 13:23 - BHAV: TPRPMaker (and a TPRPWrapper bugfix)
   SimPe BHAV\
     BhavForm.cs 1.64.2.12.4.1
