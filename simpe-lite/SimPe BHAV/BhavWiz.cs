@@ -242,7 +242,8 @@ namespace pjse
 					catch { }
 			}
 			if (detail == Detail.Full || detail == Detail.Errors)
-					pfname += "STR# 0x" + SimPe.Helper.HexString((ushort)instance) + ":0x" + SimPe.Helper.HexString((byte)sid);
+				pfname += "STR# 0x" + (instance >= 0x10000 ? SimPe.Helper.HexString(instance) : SimPe.Helper.HexString((ushort)instance))
+					+ ":0x" + (sid >= 0x0100 ? SimPe.Helper.HexString(sid) : SimPe.Helper.HexString((byte)sid));
 
 
 			if (str != null)
