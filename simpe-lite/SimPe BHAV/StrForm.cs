@@ -109,7 +109,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region Controller
-		private Str wrapper = null;
+		private StrWrapper wrapper = null;
 		private bool setHandler = false;
 		private bool internalchg = false;
 
@@ -369,9 +369,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private void StrReplace()
 		{
 			pjse.FileTable.Entry e = (new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel);
-			if (e == null || !(e.Wrapper is Str)) return;
+			if (e == null || !(e.Wrapper is StrWrapper)) return;
 
-			Str b = (Str)e.Wrapper;
+			StrWrapper b = (StrWrapper)e.Wrapper;
 			int strnum = (new pjse.StrChooser()).Strnum(b);
 			if (strnum < 0) return;
 
@@ -459,7 +459,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			strPanel.Parent.Cursor = Cursors.WaitCursor;
 
-			using(Str b = (Str)e.Wrapper)
+			using(StrWrapper b = (StrWrapper)e.Wrapper)
 			{
 				if (wrapper.Format != 0x0000)
 					for (byte m = 1; m < 44; m++)
@@ -530,7 +530,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <param name="wrp">Reference to the wrapper to be displayed.</param>
 		public void UpdateGUI(IFileWrapper wrp)
 		{
-			wrapper = (Str) wrp;
+			wrapper = (StrWrapper) wrp;
 			this.WrapperChanged(wrapper, null);
 
 			internalchg = true;

@@ -32,7 +32,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
-	public class Str
+	public class StrWrapper
 		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
@@ -95,7 +95,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Str() : base() { }
+		public StrWrapper() : base() { }
 
 
 		#region AbstractWrapper Member
@@ -305,14 +305,14 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public StrItem this[bool fallback, byte lid, int index]
+		/*public StrItem this[bool fallback, byte lid, int index]
 		{
 			get
 			{
 				StrItem i = this[lid, index];
 				return (fallback && (i == null || i.Title.Trim().Equals(""))) ? this[0x01, index] : i;
 			}
-		}
+		}*/
 
 		public StrItem[] this[byte lid]
 		{
@@ -386,7 +386,7 @@ namespace SimPe.PackedFiles.Wrapper
 	public class StrItem
 	{
 		#region Attributes
-		private Str parent = null;
+		private StrWrapper parent = null;
 		private byte lid = 0;
 		private string title = null;
 		private string desc = null;
@@ -432,25 +432,25 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public Str Parent
+		public StrWrapper Parent
 		{
 			get { return parent; }
 			set { parent = value; } // parent not part of wrapper
 		}
 		#endregion
 
-		public StrItem(Str parent)
+		public StrItem(StrWrapper parent)
 		{
 			this.parent = parent;
 		}
 
-		public StrItem(Str parent, System.IO.BinaryReader reader)
+		public StrItem(StrWrapper parent, System.IO.BinaryReader reader)
 		{
 			this.parent = parent;
 			this.Unserialize(reader);
 		}
 
-		public StrItem(Str parent, byte lid, string title, string desc)
+		public StrItem(StrWrapper parent, byte lid, string title, string desc)
 		{
 			this.parent = parent;
 			this.lid = lid;
@@ -460,6 +460,8 @@ namespace SimPe.PackedFiles.Wrapper
 
 
 		public override string ToString() { return this.Title; }
+
+		public static implicit operator String(StrItem si) { return si.Title; }
 
 
 		public void Unserialize(System.IO.BinaryReader reader)

@@ -292,7 +292,7 @@ namespace SimPe.PackedFiles.UserInterface
 			string s = "0x" + SimPe.Helper.HexString(target);
 			pjse.FileTable.Entry ftEntry = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
 			found = (ftEntry != null);
-			return s + ": " + (ftEntry != null ? ftEntry : pjse.GS.GStr(pjse.GS.BhavStr.Primitives, target));
+			return s + ": " + (ftEntry != null ? ftEntry : pjse.BhavWiz.readStr(pjse.GS.BhavStr.Primitives, target));
 		}
 
 		private void setBHAV(int which, ushort target, bool notxt)

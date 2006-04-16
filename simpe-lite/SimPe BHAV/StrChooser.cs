@@ -70,7 +70,7 @@ namespace pjse
 
 
 		#region StrChooser
-		public int Strnum(Str wrapper)
+		public int Strnum(StrWrapper wrapper)
 		{
 			fill(wrapper);
 
@@ -87,7 +87,7 @@ namespace pjse
 			}
 		}
 
-		private void fill(Str wrapper)
+		private void fill(StrWrapper wrapper)
 		{
 			this.lbItemList.Items.Clear();
 

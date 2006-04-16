@@ -132,7 +132,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			doid1.UseAttrPicker = doid2.UseAttrPicker = this.cbAttrPicker.Checked = AttrPicker;
 
 			cbOperator.Items.Clear();
-			cbOperator.Items.AddRange(GS.gStr(GS.BhavStr.Operators).ToArray());
+			cbOperator.Items.AddRange(BhavWiz.readStr(GS.BhavStr.Operators).ToArray());
 			cbOperator.SelectedIndex = (cbOperator.Items.Count > ops[0x05]) ? ops[0x05] : -1;
 		}
 

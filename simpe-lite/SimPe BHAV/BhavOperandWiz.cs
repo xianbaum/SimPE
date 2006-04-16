@@ -289,7 +289,7 @@ namespace pjse.BhavOperandWizards
 			this.tbValue.Text = this.tbValueConverter(instance);
 
 			this.cbDataOwner.Items.Clear();
-			this.cbDataOwner.Items.AddRange(GS.gStr(GS.BhavStr.DataOwners).ToArray());
+			this.cbDataOwner.Items.AddRange(BhavWiz.readStr(GS.BhavStr.DataOwners).ToArray());
 			if (cbDataOwner.Items.Count > dataOwner)
 				cbDataOwner.SelectedIndex = dataOwner;
 			UpdateDataOwner();
@@ -456,7 +456,7 @@ namespace pjse.BhavOperandWizards
 			}
 			else if (BhavWiz.doidGStr[dataOwner] != null)
 			{
-				pickerNames = GS.gStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
+				pickerNames = BhavWiz.readStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
 			}
 			#endregion
 
