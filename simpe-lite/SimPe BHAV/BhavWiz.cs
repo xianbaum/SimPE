@@ -294,11 +294,17 @@ namespace pjse
 
 		public static string readStr(GS.BhavStr instance, ushort sid)
 		{
-			return readStr(null, (uint)Group.BhavFuncs, (uint)instance, sid, -1, Detail.Errors);
+			return readStr(null, (uint)Group.BhavFuncs, (uint)instance, sid, -1, Detail.Errors, false);
 		}
 
 
 		private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail)
+		{
+			return readStr(parent, group, instance, sid, maxlen, detail, true);
+		}
+
+
+		private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail, bool addQuotes)
 		{
 			Str str = new Str(parent, group, instance);
 			String pfname = "";
@@ -327,7 +333,10 @@ namespace pjse
 						for(int i=0; i < fsi.fallback.Count; i++) s += (i==0?"":"; ") + fsi.fallback[i];
 						s += "] ";
 					}
-					return s + myLeft(fsi.strItem.Title.Trim(), maxlen) + (detail == Detail.Full ? " [" + pfname + "]" : "");
+					if (addQuotes)
+						return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full ? " [" + pfname + "]" : "");
+					else
+						return s + myLeft(fsi.strItem.Title.Trim(), maxlen) + (detail == Detail.Full ? " [" + pfname + "]" : "");
 				}
 			}
 			if (detail == Detail.ValueOnly)
