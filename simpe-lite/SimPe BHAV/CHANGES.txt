@@ -1,6 +1,13 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+16 April 2006 21:06 - Help: Add help for TRCNMaker and TPRPMaker (plus some other updates)
+  SimPe BHAV\PJSE_Help\
+    About.htm 1.1.2.3
+    Bhavs.htm 1.1.2.2
+    Constants.htm 1.1.2.2
+    Contents.htm 1.1.2.3
+
 16 April 2006 21:00 - FileTable: FamilyFunPack compatibility update
   pjse filetable\
     FileTable.cs 1.11.2.5
