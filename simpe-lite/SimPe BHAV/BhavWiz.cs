@@ -352,7 +352,7 @@ namespace pjse
 			{
 				ArrayList list = new ArrayList();
 				String s;
-				for(ushort i = 0; (s = readStr(null, (uint)Group.BhavFuncs, (uint)instance, i, -1, Detail.ValueOnly)) != null; i++) list.Add(s);
+				for(ushort i = 0; (s = readStr(null, (uint)Group.BhavFuncs, (uint)instance, i, -1, Detail.ValueOnly, false)) != null; i++) list.Add(s);
 				gString[instance] = list;
 			}
 			return (ArrayList)gString[instance];

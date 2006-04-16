@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+16 April 2006 10:48 - Parsing: don't put quotes around lists of non-literals (like expression operators)
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.8
+
 16 April 2006 10:14 - Parsing: put quotes around string literals
   SimPe BHAV\
     BhavWiz.cs 1.37.2.6.2.3
