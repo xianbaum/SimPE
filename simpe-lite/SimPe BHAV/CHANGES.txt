@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+16 April 2006 21:00 - FileTable: FamilyFunPack compatibility update
+  pjse filetable\
+    FileTable.cs 1.11.2.5
+
 16 April 2006 15:25 - BCON: TRCNMaker
   SimPe BHAV\
     BconForm.cs 1.15.2.4

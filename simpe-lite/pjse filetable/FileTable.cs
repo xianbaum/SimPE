@@ -80,11 +80,12 @@ namespace pjse
 			ArrayList folders = SimPe.FileTable.DefaultFolders;
 
 			string[] paths = {
-						   SimPe.Helper.WindowsRegistry.SimsEP3Path,
-						   SimPe.Helper.WindowsRegistry.SimsEP2Path,
-						   SimPe.Helper.WindowsRegistry.SimsEP1Path,
-						   SimPe.Helper.WindowsRegistry.SimsPath
-					   };
+								 SimPe.Helper.WindowsRegistry.SimsSP1Path,
+								 SimPe.Helper.WindowsRegistry.SimsEP3Path,
+								 SimPe.Helper.WindowsRegistry.SimsEP2Path,
+								 SimPe.Helper.WindowsRegistry.SimsEP1Path,
+								 SimPe.Helper.WindowsRegistry.SimsPath
+							 };
 
 			foreach(string path in paths)
 			{
