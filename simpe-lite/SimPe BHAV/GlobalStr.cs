@@ -29,45 +29,6 @@ namespace pjse
 	/// </summary>
 	public class GS
 	{
-		public static string GStr(BhavStr instance, ushort sid)
-		{
-			ArrayList str = gStr(instance);
-			if (str != null && sid < str.Count)
-				return (string)str[sid];
-			else
-				return "[" + SimPe.Localization.Manager.GetString("unk") + ": 0x" + SimPe.Helper.HexString(sid) + "]";
-		}
-
-
-		public static ArrayList gStr(BhavStr instance)
-		{
-			LoadData(instance);
-			return (ArrayList)gString[instance];
-		}
-
-
-		private static Hashtable gString = new Hashtable();
-
-		private static void LoadData(BhavStr instance)
-		{
-			if (gString[instance] != null) return;
-
-			ArrayList list = new ArrayList();
-
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, 0x7FE59FD0, (uint)instance];
-			if (items == null || items.Length == 0) return;
-
-			SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
-			str.ProcessData(items[0].PFD, items[0].Package);
-
-			SimPe.PackedFiles.Wrapper.StrItem si;
-			for(int i = 0; (si = str[1, i]) != null; i++)
-				list.Add(si.Title);
-
-			gString[instance] = list;
-		}
-
-
 		public enum BhavStr : uint
 		{
 			//Str0x0080 = 0x80, // behavior strings

@@ -179,7 +179,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			for (ushort m = 0; m < aMotiveLabels.Length; m++)
 			{
-				aMotiveLabels[m].Text = pjse.GS.GStr(pjse.GS.BhavStr.Motives, m);
+				aMotiveLabels[m].Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Motives, m);
 				aMotiveLabels[m].Left = ttabMotiveGroupUI1.Left - aMotiveLabels[m].Width - 4;
 			}
 

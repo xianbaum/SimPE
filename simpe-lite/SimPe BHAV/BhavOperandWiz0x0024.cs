@@ -115,16 +115,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			//
 
 			cbType.Items.Clear();
-			cbType.Items.AddRange(GS.gStr(GS.BhavStr.Dialog).ToArray());
+			cbType.Items.AddRange(BhavWiz.readStr(GS.BhavStr.Dialog).ToArray());
 
 			if (typeDescriptions == null)
-				typeDescriptions = (string[])(GS.gStr(GS.BhavStr.DialogDesc).ToArray(typeof(string)));
+				typeDescriptions = (string[])(BhavWiz.readStr(GS.BhavStr.DialogDesc).ToArray(typeof(string)));
 
 			cbTnsStyle.Items.Clear();
-			cbTnsStyle.Items.AddRange(GS.gStr(GS.BhavStr.TnsStyle).ToArray());
+			cbTnsStyle.Items.AddRange(BhavWiz.readStr(GS.BhavStr.TnsStyle).ToArray());
 
 			cbIconType.Items.Clear();
-			cbIconType.Items.AddRange(GS.gStr(GS.BhavStr.DialogIcon).ToArray());
+			cbIconType.Items.AddRange(BhavWiz.readStr(GS.BhavStr.DialogIcon).ToArray());
 
 			Button[] b = { btnStrMessage ,btnStrButton1 ,btnStrButton2 ,btnStrButton3 ,btnStrTitle ,btnStrIcon ,};
 			alStrBtn = new ArrayList(b);
@@ -419,7 +419,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 				((TextBox)alTextBox[which]).Text = (strnum <= 0)
 					? "[none]"
-					: ((BhavWiz)inst).readStr(scope, GS.GlobalStr.DialogString, strnum - 1, -1, pjse.Detail.Errors)
+					: ((BhavWiz)inst).readStr(scope, GS.GlobalStr.DialogString, (ushort)(strnum - 1), -1, pjse.Detail.Errors)
 					;
 
 				((CheckBox)this.alCBUseTemp[which]).Checked =
@@ -482,7 +482,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			if (items == null || items.Length == 0)
 				return; // eek!
 
-			SimPe.PackedFiles.Wrapper.Str str = new Str();
+			SimPe.PackedFiles.Wrapper.StrWrapper str = new StrWrapper();
 			str.ProcessData(items[0].PFD, items[0].Package);
 
 			int i = (new StrChooser()).Strnum(str);

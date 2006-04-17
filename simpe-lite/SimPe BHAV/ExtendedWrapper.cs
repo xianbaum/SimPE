@@ -85,7 +85,7 @@ namespace pjse
 		/// <summary>
 		/// The Global group
 		/// </summary>
-		public uint GlobalGroup { get { return 0x7FD46CD0; } }
+		public uint GlobalGroup { get { return (uint)pjse.Group.Global; } }
 
 
 		public Scope Context
@@ -124,6 +124,8 @@ namespace pjse
 			return group;
 		}
 
+
+		public uint GroupForContext { get { return GroupForScope(Context); } }
 
 		public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance)
 		{

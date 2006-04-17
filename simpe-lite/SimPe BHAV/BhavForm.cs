@@ -108,6 +108,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbInst_Longname;
 		private System.Windows.Forms.Button btnListing;
 		private System.Windows.Forms.Button btnHelp;
+		private System.Windows.Forms.Button btnTPRPMaker;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -385,6 +386,58 @@ namespace SimPe.PackedFiles.UserInterface
 			Clipboard.SetDataObject(listing, true);
 		}
 
+		private void TPRPMaker()
+		{
+			int minArgc = 0;
+			int minLocalC = 0;
+			TPRP tprp = wrapper.TPRPResource;
+
+			wrapper.Package.BeginUpdate();
+
+			// find TPRP for this BHAV
+			if (tprp != null)
+			{
+				// if it exists ask if user wants to preserve content
+				DialogResult dr = MessageBox.Show("Keep existing labels?"
+					, btnTPRPMaker.Text
+					, MessageBoxButtons.YesNoCancel
+					, MessageBoxIcon.Warning);
+				if (dr == DialogResult.Cancel)
+					return;
+				if (dr == DialogResult.Yes)
+				{
+					minArgc = tprp.ParamCount;
+					minLocalC = tprp.LocalCount;
+				}
+				else
+					tprp.Clear();
+			}
+			else
+			{
+				// create a new TPRP file
+				SimPe.Interfaces.Files.IPackedFileDescriptor npfd
+					= wrapper.Package.Add(0x54505250, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
+				tprp = new TPRP();
+				tprp.ProcessData(npfd, wrapper.Package);
+				tprp.FileName = wrapper.FileName;
+			}
+
+			for(int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
+			{
+				int p = tprp.Add(new TPRPParamLabel(tprp));
+				tprp[false, p].Label = "Param " + arg.ToString();
+			}
+			for(int local = minLocalC; local < wrapper.Header.LocalVarCount; local++)
+			{
+				int l = tprp.Add(new TPRPLocalLabel(tprp));
+				tprp[true, l].Label = "Local " + local.ToString();
+			}
+			tprp.SynchronizeUserData();
+			wrapper.Package.EndUpdate();
+			MessageBox.Show("Done!", btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
+
 		private short OpsToShort(byte lo, byte hi)
 		{
 			ushort uval = (ushort)(lo + (hi << 8));
@@ -644,6 +697,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbTreeVersion = new System.Windows.Forms.TextBox();
 			this.btnAdd = new System.Windows.Forms.Button();
 			this.lbCacheFlags = new System.Windows.Forms.Label();
+			this.btnTPRPMaker = new System.Windows.Forms.Button();
 			this.gbInstruction.SuspendLayout();
 			this.pnHeading.SuspendLayout();
 			this.bhavPanel.SuspendLayout();
@@ -2076,6 +2130,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.gbSpecial.Controls.Add(this.btnLinkInge);
 			this.gbSpecial.Controls.Add(this.btnDelMerola);
 			this.gbSpecial.Controls.Add(this.btnListing);
+			this.gbSpecial.Controls.Add(this.btnTPRPMaker);
 			this.gbSpecial.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("gbSpecial.Dock")));
 			this.gbSpecial.Enabled = ((bool)(resources.GetObject("gbSpecial.Enabled")));
 			this.gbSpecial.Font = ((System.Drawing.Font)(resources.GetObject("gbSpecial.Font")));
@@ -2543,6 +2598,30 @@ namespace SimPe.PackedFiles.UserInterface
 			this.lbCacheFlags.Text = resources.GetString("lbCacheFlags.Text");
 			this.lbCacheFlags.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("lbCacheFlags.TextAlign")));
 			this.lbCacheFlags.Visible = ((bool)(resources.GetObject("lbCacheFlags.Visible")));
+			// 
+			// btnTPRPMaker
+			// 
+			this.btnTPRPMaker.AccessibleDescription = resources.GetString("btnTPRPMaker.AccessibleDescription");
+			this.btnTPRPMaker.AccessibleName = resources.GetString("btnTPRPMaker.AccessibleName");
+			this.btnTPRPMaker.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("btnTPRPMaker.Anchor")));
+			this.btnTPRPMaker.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnTPRPMaker.BackgroundImage")));
+			this.btnTPRPMaker.Dock = ((System.Windows.Forms.DockStyle)(resources.GetObject("btnTPRPMaker.Dock")));
+			this.btnTPRPMaker.Enabled = ((bool)(resources.GetObject("btnTPRPMaker.Enabled")));
+			this.btnTPRPMaker.FlatStyle = ((System.Windows.Forms.FlatStyle)(resources.GetObject("btnTPRPMaker.FlatStyle")));
+			this.btnTPRPMaker.Font = ((System.Drawing.Font)(resources.GetObject("btnTPRPMaker.Font")));
+			this.btnTPRPMaker.Image = ((System.Drawing.Image)(resources.GetObject("btnTPRPMaker.Image")));
+			this.btnTPRPMaker.ImageAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnTPRPMaker.ImageAlign")));
+			this.btnTPRPMaker.ImageIndex = ((int)(resources.GetObject("btnTPRPMaker.ImageIndex")));
+			this.btnTPRPMaker.ImeMode = ((System.Windows.Forms.ImeMode)(resources.GetObject("btnTPRPMaker.ImeMode")));
+			this.btnTPRPMaker.Location = ((System.Drawing.Point)(resources.GetObject("btnTPRPMaker.Location")));
+			this.btnTPRPMaker.Name = "btnTPRPMaker";
+			this.btnTPRPMaker.RightToLeft = ((System.Windows.Forms.RightToLeft)(resources.GetObject("btnTPRPMaker.RightToLeft")));
+			this.btnTPRPMaker.Size = ((System.Drawing.Size)(resources.GetObject("btnTPRPMaker.Size")));
+			this.btnTPRPMaker.TabIndex = ((int)(resources.GetObject("btnTPRPMaker.TabIndex")));
+			this.btnTPRPMaker.Text = resources.GetString("btnTPRPMaker.Text");
+			this.btnTPRPMaker.TextAlign = ((System.Drawing.ContentAlignment)(resources.GetObject("btnTPRPMaker.TextAlign")));
+			this.btnTPRPMaker.Visible = ((bool)(resources.GetObject("btnTPRPMaker.Visible")));
+			this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
 			// 
 			// BhavForm
 			// 
@@ -3101,6 +3180,11 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnListing_Click(object sender, System.EventArgs e)
 		{
 			this.CopyListing();
+		}
+
+		private void btnTPRPMaker_Click(object sender, System.EventArgs e)
+		{
+			this.TPRPMaker();
 		}
 
 	}

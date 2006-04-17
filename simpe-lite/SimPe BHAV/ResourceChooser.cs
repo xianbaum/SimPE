@@ -110,8 +110,8 @@ namespace pjse
 					FillGroup(resourceType, g.SemiGlobalGroup, this.lbSemiGroup, this.tpSemiGroup);
 			}
 
-			if ((skip_pages & 0x08) == 0 && group != 0x7FD46CD0)
-				FillGroup(resourceType, 0x7FD46CD0, this.lbGlobalGroup, this.tpGlobalGroup);
+			if ((skip_pages & 0x08) == 0 && group != (uint)Group.Global)
+				FillGroup(resourceType, (uint)Group.Global, this.lbGlobalGroup, this.tpGlobalGroup);
 
 			if ((skip_pages & 0x10) == 0)
 				FillBuiltIn(resourceType, this.lbBuiltIn, this.tpBuiltIn);
@@ -171,7 +171,7 @@ namespace pjse
 			if (type == SimPe.Data.MetaData.BHAV_FILE)
 			{
 				uint i = 0;
-				foreach (string s in pjse.GS.gStr(pjse.GS.BhavStr.Primitives))
+				foreach (string s in BhavWiz.readStr(pjse.GS.BhavStr.Primitives))
 				{
 					if (!s.StartsWith("~"))
 						list.Items.Add(new SimPe.Data.Alias(i, s));

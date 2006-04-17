@@ -281,6 +281,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public void Clear()
 		{
 			items.Clear();
+			localCount = paramCount = 0;
 			OnWrapperChanged(items, new EventArgs());
 		}
 
