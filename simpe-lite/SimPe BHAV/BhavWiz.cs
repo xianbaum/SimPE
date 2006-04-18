@@ -35,7 +35,8 @@ namespace pjse
 	{
 		ValueOnly = 0x00,
 		Errors = 0x01,
-		Full = 0x02,
+		ErrorNames = 0x02,
+		Full = 0x03,
 	}
 
 	public enum Group : int
@@ -219,7 +220,7 @@ namespace pjse
 
 		public static string readStr(GS.BhavStr instance, ushort sid)
 		{
-			return readStr(null, (uint)Group.BhavFuncs, (uint)instance, sid, -1, Detail.Errors, false);
+			return readStr(null, (uint)Group.BhavFuncs, (uint)instance, sid, -1, Detail.ErrorNames, false);
 		}
 
 
@@ -232,7 +233,7 @@ namespace pjse
 		{
 			Str str = new Str(parent, group, instance);
 			String pfname = "";
-			if (detail == Detail.Full)
+			if (detail == Detail.Full || detail == Detail.ErrorNames)
 			{
 				if (group == (uint)Group.BhavFuncs)
 					try { pfname += (GS.BhavStr)instance + ": "; }
@@ -242,8 +243,9 @@ namespace pjse
 					catch { }
 			}
 			if (detail == Detail.Full || detail == Detail.Errors)
-				pfname += "STR# 0x" + (instance >= 0x10000 ? SimPe.Helper.HexString(instance) : SimPe.Helper.HexString((ushort)instance))
-					+ ":0x" + (sid >= 0x0100 ? SimPe.Helper.HexString(sid) : SimPe.Helper.HexString((byte)sid));
+				pfname += "STR# 0x" + (instance >= 0x10000 ? SimPe.Helper.HexString(instance) : SimPe.Helper.HexString((ushort)instance)) + ":";
+			if (detail == Detail.Full || detail == Detail.ErrorNames || detail == Detail.Errors)
+				pfname += "0x" + (sid >= 0x0100 ? SimPe.Helper.HexString(sid) : SimPe.Helper.HexString((byte)sid));
 
 
 			if (str != null)
@@ -290,6 +292,29 @@ namespace pjse
 		}
 
 
+
+		/// <summary>
+		/// Returns the name of a BHAV or Primitive for a given instance number.
+		/// <br/>
+		/// Scope etc are taken from the provided ExtendedWrapper.
+		/// </summary>
+		/// <param name="parent"></param>
+		/// <param name="instance">Which BHAV to find</param>
+		/// <param name="found">Indicates that a BHAV was found</param>
+		/// <returns>Name of BHAV found</returns>
+		public static String bhavName(ExtendedWrapper parent, uint instance, ref bool found)
+		{
+			found = false;
+			string s = "0x" + SimPe.Helper.HexString((ushort)instance) + ": ";
+
+			if (instance == 0) return "---";
+			else if (instance < 0x0100)
+				return s + readStr(pjse.GS.BhavStr.Primitives, (ushort)instance);
+
+			pjse.FileTable.Entry ftEntry = parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instance);
+			found = (ftEntry != null);
+			return s + (found ? ftEntry : "[BHAV not found]");
+		}
 
 		protected string readBcon(uint instance, int bid, bool temp)
 		{

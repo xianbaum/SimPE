@@ -114,21 +114,6 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		/// <summary>
-		/// Gets the BHAV name and existence
-		/// </summary>
-		/// <param name="target">BHAV to find</param>
-		/// <param name="found">whether it was found</param>
-		/// <returns>the filename</returns>
-		private string getBHAV(ushort target, ref bool found)
-		{
-			if (target == 0) return "---";
-			string s = "0x" + SimPe.Helper.HexString(target);
-			pjse.FileTable.Entry ftEntry = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, target);
-			found = (ftEntry != null);
-			return s + ": " + (ftEntry != null ? ftEntry : pjse.BhavWiz.readStr(pjse.GS.BhavStr.Primitives, target));
-		}
-
 		private void setBHAV(int which, ushort target, bool notxt)
 		{
 			TextBox[] tbaAG = { tbAction, tbGuardian };
@@ -137,7 +122,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Label[] lbaAG = { lbAction, lbGuardian };
 			LinkLabel[] llaAG = { llAction, llGuardian };
 			bool found = false;
-			this.lvObjfItem.SelectedItems[0].SubItems[1 + which].Text = lbaAG[which].Text = getBHAV(target, ref found);
+			this.lvObjfItem.SelectedItems[0].SubItems[1 + which].Text = lbaAG[which].Text = pjse.BhavWiz.bhavName(wrapper, target, ref found);
 			llaAG[which].Enabled = found;
 		}
 
@@ -172,8 +157,8 @@ namespace SimPe.PackedFiles.UserInterface
 				this.lvObjfItem.Items.Add( new ListViewItem(
 					new string[] {
 									 pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs, i)
-									 , getBHAV(wrapper[i].Action, ref parm)
-									 , getBHAV(wrapper[i].Guardian, ref parm)
+									 , pjse.BhavWiz.bhavName(wrapper, wrapper[i].Action, ref parm)
+									 , pjse.BhavWiz.bhavName(wrapper, wrapper[i].Guardian, ref parm)
 								 }
 					) );
 

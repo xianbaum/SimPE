@@ -75,7 +75,13 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Objf() : base() { }
+		public Objf() : base()
+		{
+			ArrayList al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
+			for(int i = 0; i < al.Count; i++)
+				this.Add(new ObjfItem(this));
+			al = null;
+		}
 
 
 		#region AbstractWrapper Member

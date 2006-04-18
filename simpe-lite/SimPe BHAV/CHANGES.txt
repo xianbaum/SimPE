@@ -1,6 +1,13 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+18 April 2006 22:01 - Fix: Better handling of missing BHAVs in ObjfForm and TtabForm (and fix ObjfWrapper())
+  SimPe BHAV\
+    BhavWiz.cs 1.27.2.11
+    ObjfForm.cs 1.13.2.6
+    ObjfWrapper.cs 1.9.6.1
+    TtabForm.cs 1.31.2.6
+
 16 April 2006 21:06 - Help: Add help for TRCNMaker and TPRPMaker (plus some other updates)
   SimPe BHAV\PJSE_Help\
     About.htm 1.1.2.3
