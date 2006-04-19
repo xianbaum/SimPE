@@ -78,8 +78,8 @@ namespace SimPe.PackedFiles.Wrapper
 		public Objf() : base()
 		{
 			ArrayList al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
-			for(int i = 0; i < al.Count; i++)
-				this.Add(new ObjfItem(this));
+			while (items.Count < al.Count)
+				items.Add(new ObjfItem(this));
 			al = null;
 		}
 
