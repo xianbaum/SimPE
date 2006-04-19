@@ -1894,22 +1894,22 @@ namespace pjse.BhavNameWizards
 			if (o[0] == 3)
 				s += ", " + (ToShort(o[6], o[7]) != 0 ? "Starting" : "Stopping") + " Effect";
 
-			if (o[0] == 4 || o[0] == 8)
-				if (ToShort(o[8], o[9]) == 0)
-					s += ", no event tree";
-				else 
-				{
-					Scope scope = Scope.Global;
-					if      (o[10] == 0) scope = Scope.Private;
-					else if (o[10] == 1) scope = Scope.SemiGlobal;
-					s += ", " + (lng ? scope.ToString() + " event tree " : "") + "0x" + SimPe.Helper.HexString(ToShort(o[8], o[9]));
-					if (lng)
+			if (lng)
+			{
+				if (o[0] == 4 || o[0] == 8)
+					if (ToShort(o[8], o[9]) == 0)
+						s += ", No event tree";
+					else 
 					{
-						pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[8], o[9]));
-						if (item != null)
-							s += " (" + item + ")";
+						Scope scope = Scope.Global;
+						if      (o[10] == 0) scope = Scope.Private;
+						else if (o[10] == 1) scope = Scope.SemiGlobal;
+						s += ", Scope: " + scope.ToString();
+
+						bool found = false;
+						s += ", Event tree: " + bhavName(ToShort(o[8], o[9]), ref found);
 					}
-				}
+			}
 
 
 			return s;
@@ -3236,12 +3236,10 @@ namespace pjse.BhavNameWizards
 					Scope scope = Scope.Global;
 					if      (o[9] == 0) scope = Scope.Private;
 					else if (o[9] == 1) scope = Scope.SemiGlobal;
+					s += ", Scope: " + scope.ToString();
 
-					s += ", " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[4], o[5]));
-					pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[4], o[5]));
-					if (item != null)
-						s += " (" + item + ")";
-
+					bool found = false;
+					s += ", Event tree: " + bhavName(ToShort(o[4], o[5]), ref found);
 				}
 
 				s += ", Flipped: "                + ((o[2] & 0x01) != 0).ToString();
@@ -3361,11 +3359,10 @@ namespace pjse.BhavNameWizards
 					scope = Scope.Global;
 					if      (o[7] == 0) scope = Scope.Private;
 					else if (o[7] == 1) scope = Scope.SemiGlobal;
+					s += ", Scope: " + scope.ToString();
 
-					s += ", " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[4], o[5]));
-					pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[4], o[5]));
-					if (item != null)
-						s += " (" + item + ")";
+					bool found = false;
+					s += ", Event tree: " + bhavName(ToShort(o[4], o[5]), ref found);
 				}
 
 				s += ", Flipped: "                + ((o[2] & 0x01) != 0).ToString();
@@ -3562,12 +3559,10 @@ namespace pjse.BhavNameWizards
 					scope = Scope.Global;
 					if      (o[14] == 0) scope = Scope.Private;
 					else if (o[14] == 1) scope = Scope.SemiGlobal;
+					s += ", Scope: " + scope.ToString();
 
-					s += ", " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[4], o[5]));
-					pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[4], o[5]));
-					if (item != null)
-						s += " (" + item + ")";
-
+					bool found = false;
+					s += ", Event tree: " + bhavName(ToShort(o[4], o[5]), ref found);
 				}
 
 				s += ", Flipped: "                + ((o[2] & 0x01) != 0).ToString();
@@ -4080,11 +4075,10 @@ namespace pjse.BhavNameWizards
 						Scope scope = Scope.Global;
 						if      (o[11] == 0) scope = Scope.Private;
 						else if (o[11] == 1) scope = Scope.SemiGlobal;
+						s += ", Scope: " + scope.ToString();
 
-						s += scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[9], o[10]));
-						pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[9], o[10]));
-						if (item != null)
-							s += " (" + item + ")";
+						bool found = false;
+						s += ", Event tree: " + bhavName(ToShort(o[9], o[10]), ref found);
 					}
 
 					s += ", using ";
@@ -5230,11 +5224,10 @@ namespace pjse.BhavNameWizards
 					Scope scope = Scope.Global;
 					if      (o[14] == 0) scope = Scope.Private;
 					else if (o[14] == 1) scope = Scope.SemiGlobal;
+					s += ", Scope: " + scope.ToString();
 
-					s += ", " + scope.ToString() + " event tree 0x" + SimPe.Helper.HexString(ToShort(o[3], o[4]));
-					pjse.FileTable.Entry item = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, ToShort(o[3], o[4]));
-					if (item != null)
-						s += " (" + item + ")";
+					bool found = false;
+					s += ", Event tree: " + bhavName(ToShort(o[3], o[4]), ref found);
 
 					if (lng)
 					{

@@ -313,8 +313,15 @@ namespace pjse
 
 			pjse.FileTable.Entry ftEntry = parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instance);
 			found = (ftEntry != null);
-			return s + (found ? ftEntry : "[BHAV not found]");
+			return s + (found ? "\"" + ftEntry + "\"" : "[BHAV not found]");
 		}
+
+		public String bhavName(uint instance, ref bool found)
+		{
+			return bhavName(instruction.Parent, instance, ref found);
+		}
+
+
 
 		protected string readBcon(uint instance, int bid, bool temp)
 		{
