@@ -1,6 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+19 April 2006 20:54 - Parsing: Sync with disaSim2 24c
+  SimPe BHAV\
+    BhavWizPrim.cs 1.24.2.13
+  GlobalStrings.package 1.10.8.8
+
 19 April 2006 20:32 - Parsing: Use this.bhavName(instance) method to get BHAV names
   SimPe BHAV\
     BhavWiz.cs 1.37.2.12

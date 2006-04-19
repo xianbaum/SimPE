@@ -2770,7 +2770,7 @@ namespace pjse.BhavNameWizards
 
 				s += ", Category 0x" + SimPe.Helper.HexString(o[9]);
 
-				if ((c1 & 0x08) != 0 || ((o[4] != 0xE) && (o[4] != 0xF)))
+				if (((c1 & 0x08) != 0 && (o[4] != 0x0b)) || ((o[4] != 0xE) && (o[4] != 0xF) && (o[4] != 0x12)))
 				{
 					uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
 					s += ", token GUID" + (d1 == 0 ? " from Stack Object" : ": 0x" + SimPe.Helper.HexString(d1));
@@ -2914,7 +2914,8 @@ namespace pjse.BhavNameWizards
                         data2(b[x+1], w3);
                     }
                     ht_fprintf(outFile,TYPE_NORMAL,". with category %d",b[x+9]);
-                    if ((b[x+4] != 0xE) && (b[x+4] != 0xF)) { //??
+                    if ((c1 & 8) && (b[x+4] != 0xB) || ((c1 & 8) == 0) && (b[x+4] != 0xE) && (b[x+4] != 0xF) && (b[x+4] != 0x12)) { //??
+//                    if ((b[x+4] != 0xE) && (b[x+4] != 0xF)) { //??
                         d1 = *(UINT32 *) (&b[x+5]);
                         if (d1 != 0) {
                             ht_fprintf(outFile,TYPE_NORMAL," GUID 0x%08X", d1);
