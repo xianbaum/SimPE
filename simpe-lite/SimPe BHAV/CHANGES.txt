@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+22 April 2006 12:12 - Oops: tidy up before building new ZIP file
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.8
+
 22 April 2006 12:08 - Amended post-build event to produce a source ZIP file
   SimPe BHAV\
     pjse coder plugin.csproj 1.29.2.7
