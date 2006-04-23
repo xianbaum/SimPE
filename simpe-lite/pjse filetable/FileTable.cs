@@ -264,17 +264,10 @@ namespace pjse
 
 			set
 			{
-				bool changed = false;
 				if (currentPackage != null && !IsFixed(currentPackage)) Remove(currentPackage);
-				if (currentPackage != value)
-				{
-					currentPackage = IsFixed(value) ? null : value;
-					changed = true;
-				}
+				currentPackage = IsFixed(value) ? null : value;
 				if (currentPackage != null && !IsFixed(currentPackage)) Add(currentPackage);
-
-				if (changed)
-					OnFiletableRefresh(this, new EventArgs());
+				OnFiletableRefresh(this, new EventArgs());
 			}
 		}
 
@@ -314,6 +307,8 @@ namespace pjse
 
 			foreach (IPackedFileDescriptor i in package.Index)
 			{
+				if (i.Invalid || i.MarkForDelete) continue;
+
 				object val = true;
 				object key = new Entry(package, i);
 
@@ -358,7 +353,7 @@ namespace pjse
 
 		private void RefreshCurrentPackage()
 		{
-			if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+			if (currentPackage != null && !IsFixed(currentPackage))
 			{
 				Remove(currentPackage);
 				Add(currentPackage);

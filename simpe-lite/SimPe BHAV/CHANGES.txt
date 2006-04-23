@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+23 April 2006 14:34 - FileTable: Eliminate invalid and deleted entries from the filetable
+  pjse filetable\
+    FileTable.cs 1.11.2.7
+
 23 April 2006 13:59 - Parsing: another go at handling string fallback (does pick up deleting resources yet)
   SimPe BHAV\
     Str.cs 1.1.4.3
