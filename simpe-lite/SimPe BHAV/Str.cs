@@ -40,11 +40,19 @@ namespace pjse
 
 
 
-		private static myHT wrapperHashtable = new myHT();
-		class myHT : Hashtable
+		private static myHT strHashtable = new myHT();
+
+
+		class myHT : Hashtable, IDisposable
 		{
+			public myHT() 
+			{
+				pjse.FileTable.GFT.FiletableRefresh += new EventHandler(this.GFT_FiletableRefresh);
+			}
+
+
 			private Hashtable groupHash = new Hashtable();
-			public StrWrapper this[uint group, uint instance]
+			public Str this[uint group, uint instance]
 			{
 				get
 				{
@@ -53,28 +61,77 @@ namespace pjse
 					Hashtable instanceHash = (Hashtable)groupHash[group];
 					if (instanceHash[instance] == null)
 						return null;
-					return (StrWrapper)instanceHash[instance];
+					return (Str)instanceHash[instance];
 				}
 
 				set
 				{
-					Hashtable instanceHash = (Hashtable)groupHash[group];
-					if (instanceHash == null)
-						groupHash[group] = instanceHash = new Hashtable();
-					instanceHash[instance] = value;
+					Hashtable instanceHash = null;
+					if (groupHash[group] == null)
+						groupHash[group] = new Hashtable();
+					instanceHash = (Hashtable)groupHash[group];
+
+					if (instanceHash[instance] != value)
+					{
+						if (instanceHash[instance] != null)
+						{
+							StrWrapper wrapper = ((Str)instanceHash[instance]).wrapper;
+							if (wrapper != null && wrapper.FileDescriptor != null)
+								wrapper.FileDescriptor.ChangedData -= new SimPe.Events.PackedFileChanged(this.FileDescriptor_ChangedData);
+						}
+						instanceHash[instance] = value;
+						if (instanceHash[instance] != null)
+						{
+							StrWrapper wrapper = ((Str)instanceHash[instance]).wrapper;
+							if (wrapper != null && wrapper.FileDescriptor != null)
+								wrapper.FileDescriptor.ChangedData += new SimPe.Events.PackedFileChanged(this.FileDescriptor_ChangedData);
+						}
+					}
 				}
 
 			}
 
-			public void Invalidate(uint group, uint instance)
+
+			private void FileDescriptor_ChangedData(SimPe.Interfaces.Files.IPackedFileDescriptor pfd)
 			{
-				if (groupHash[group] == null) return;
-				Hashtable instanceHash = (Hashtable)groupHash[group];
-				if (instanceHash[instance] == null) return;
-				instanceHash.Remove(instance);
+				if (pfd == null) return;
+				if (pfd.Type != SimPe.Data.MetaData.STRING_FILE) return;
+				if (groupHash[pfd.Group] == null) return;
+				Hashtable instanceHash = (Hashtable)groupHash[pfd.Group];
+				if (instanceHash[pfd.Instance] == null) return;
+
+				((Str)instanceHash[pfd.Instance]).Dispose(); // just in case
+				instanceHash.Remove(pfd.Instance);
 				if (instanceHash.Count == 0)
-					groupHash.Remove(group);
+					groupHash.Remove(pfd.Group);
 			}
+
+			private void GFT_FiletableRefresh(object sender, EventArgs e)
+			{
+				foreach(Hashtable ht in groupHash.Values)
+				{
+					foreach(Str s in ht.Values)
+					{
+						s.wrapper = null;
+						s.semiGlobalStr = null;
+						s.globalStr = null;
+					}
+					ht.Clear();
+				}
+				groupHash.Clear();
+				groupHash = new Hashtable();
+			}
+
+
+			#region IDisposable Members
+
+			public void Dispose()
+			{
+				GFT_FiletableRefresh(null, null);
+				pjse.FileTable.GFT.FiletableRefresh -= new EventHandler(this.GFT_FiletableRefresh);
+			}
+
+			#endregion
 		}
 
 		private StrWrapper wrapper = null;
@@ -84,7 +141,8 @@ namespace pjse
 			{
 				if (wrapper == null)
 				{
-					if (wrapperHashtable[this.group, this.instance] == null)
+					Str str = strHashtable[this.group, this.instance];
+					if (str == null)
 					{
 						pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, this.group, this.instance];
 
@@ -92,25 +150,14 @@ namespace pjse
 						{
 							wrapper = new StrWrapper();
 							wrapper.ProcessData(items[0].PFD, items[0].Package);
-							wrapper.FileDescriptor.ChangedData += new SimPe.Events.PackedFileChanged(FileDescriptor_ChangedData);
-							wrapperHashtable[this.group, this.instance] = wrapper;
+							strHashtable[this.group, this.instance] = this;
 						}
 					}
 					else
-						wrapper = (StrWrapper)wrapperHashtable[this.group, this.instance];
+						wrapper = str.wrapper;
 				}
 				return wrapper;
 			}
-		}
-
-
-		public void FileDescriptor_ChangedData(SimPe.Interfaces.Files.IPackedFileDescriptor pfd)
-		{
-			if (pfd == null) return;
-			if (pfd.Type != SimPe.Data.MetaData.STRING_FILE) return;
-			if (pfd.Group != group) return;
-			if (pfd.Instance != instance) return;
-			wrapperHashtable.Invalidate(group, instance);
 		}
 
 
@@ -224,8 +271,6 @@ namespace pjse
 
 		public void Dispose()
 		{
-			if (this.wrapper != null && this.wrapper.FileDescriptor != null)
-				this.wrapper.FileDescriptor.ChangedData -= new SimPe.Events.PackedFileChanged(FileDescriptor_ChangedData);
 			this.parent = null;
 			this.wrapper = null;
 			this.semiGlobalStr = null;

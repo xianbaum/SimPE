@@ -1,6 +1,18 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+23 April 2006 13:59 - Parsing: another go at handling string fallback (does pick up deleting resources yet)
+  SimPe BHAV\
+    Str.cs 1.1.4.3
+
+23 April 2006 13:57 - Amend post-build event for speed (debug only builds .zip and installs plugin)
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.9
+
+23 April 2006 13:54 - FileTable: Issue FiletableRefresh events when the current package changes
+  pjse filetable\
+    FileTable.cs 1.11.2.6
+
 22 April 2006 12:12 - Oops: tidy up before building new ZIP file
   SimPe BHAV\
     pjse coder plugin.csproj 1.29.2.8
