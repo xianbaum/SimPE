@@ -117,6 +117,7 @@ namespace pjse
 			OnFiletableRefresh(this, new EventArgs());
 		}
 
+
 		/// <summary>
 		/// Indicates the Refresh() was called
 		/// </summary>
@@ -263,12 +264,17 @@ namespace pjse
 
 			set
 			{
-				if (currentPackage != null && !IsFixed(currentPackage))
-					Remove(currentPackage);
+				bool changed = false;
+				if (currentPackage != null && !IsFixed(currentPackage)) Remove(currentPackage);
 				if (currentPackage != value)
+				{
 					currentPackage = IsFixed(value) ? null : value;
-				if (currentPackage != null && !IsFixed(currentPackage))
-					Add(currentPackage);
+					changed = true;
+				}
+				if (currentPackage != null && !IsFixed(currentPackage)) Add(currentPackage);
+
+				if (changed)
+					OnFiletableRefresh(this, new EventArgs());
 			}
 		}
 
