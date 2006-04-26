@@ -45,8 +45,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 		private string genericSimsCallparamText(int i)
 		{
-			if (i >= WizPrim0x0001.parms.Length) return "[UNK args]";
-			else if (WizPrim0x0001.parms[i].Trim().Length == 0) return "no args";
+			if (i >= WizPrim0x0001.parms.Length) return "[" + pjse.coder.Localization.GetString("unkargs") + "]";
+			else if (WizPrim0x0001.parms[i].Trim().Length == 0) return pjse.coder.Localization.GetString("noargs");
 			else return WizPrim0x0001.parms[i].Trim();
 		}
 
@@ -105,50 +105,40 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pnWiz0x0001 = new System.Windows.Forms.Panel();
-			this.lbGenericSimsCallparms = new System.Windows.Forms.Label();
-			this.cbGenericSimsCall = new System.Windows.Forms.ComboBox();
-			this.pnWiz0x0001.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// pnWiz0x0001
-			// 
-			this.pnWiz0x0001.Controls.Add(this.lbGenericSimsCallparms);
-			this.pnWiz0x0001.Controls.Add(this.cbGenericSimsCall);
-			this.pnWiz0x0001.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.pnWiz0x0001.Location = new System.Drawing.Point(8, 8);
-			this.pnWiz0x0001.Name = "pnWiz0x0001";
-			this.pnWiz0x0001.Size = new System.Drawing.Size(264, 72);
-			this.pnWiz0x0001.TabIndex = 0;
-			// 
-			// lbGenericSimsCallparms
-			// 
-			this.lbGenericSimsCallparms.Location = new System.Drawing.Point(0, 24);
-			this.lbGenericSimsCallparms.Name = "lbGenericSimsCallparms";
-			this.lbGenericSimsCallparms.Size = new System.Drawing.Size(264, 48);
-			this.lbGenericSimsCallparms.TabIndex = 1;
-			this.lbGenericSimsCallparms.Text = "label1";
-			// 
-			// cbGenericSimsCall
-			// 
-			this.cbGenericSimsCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbGenericSimsCall.DropDownWidth = 352;
-			this.cbGenericSimsCall.Location = new System.Drawing.Point(0, 0);
-			this.cbGenericSimsCall.Name = "cbGenericSimsCall";
-			this.cbGenericSimsCall.Size = new System.Drawing.Size(264, 21);
-			this.cbGenericSimsCall.TabIndex = 0;
-			this.cbGenericSimsCall.SelectedIndexChanged += new System.EventHandler(this.cbGenericSimsCall_Changed);
-			// 
-			// UI
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(640, 366);
-			this.Controls.Add(this.pnWiz0x0001);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "UI";
-			this.Text = "UI";
-			this.pnWiz0x0001.ResumeLayout(false);
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
+            this.pnWiz0x0001 = new System.Windows.Forms.Panel();
+            this.lbGenericSimsCallparms = new System.Windows.Forms.Label();
+            this.cbGenericSimsCall = new System.Windows.Forms.ComboBox();
+            this.pnWiz0x0001.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnWiz0x0001
+            // 
+            this.pnWiz0x0001.Controls.Add(this.lbGenericSimsCallparms);
+            this.pnWiz0x0001.Controls.Add(this.cbGenericSimsCall);
+            resources.ApplyResources(this.pnWiz0x0001, "pnWiz0x0001");
+            this.pnWiz0x0001.Name = "pnWiz0x0001";
+            // 
+            // lbGenericSimsCallparms
+            // 
+            resources.ApplyResources(this.lbGenericSimsCallparms, "lbGenericSimsCallparms");
+            this.lbGenericSimsCallparms.Name = "lbGenericSimsCallparms";
+            // 
+            // cbGenericSimsCall
+            // 
+            this.cbGenericSimsCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbGenericSimsCall.DropDownWidth = 352;
+            resources.ApplyResources(this.cbGenericSimsCall, "cbGenericSimsCall");
+            this.cbGenericSimsCall.Name = "cbGenericSimsCall";
+            this.cbGenericSimsCall.SelectedIndexChanged += new System.EventHandler(this.cbGenericSimsCall_Changed);
+            // 
+            // UI
+            // 
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.pnWiz0x0001);
+            this.Name = "UI";
+            this.pnWiz0x0001.ResumeLayout(false);
+            this.ResumeLayout(false);
 
 		}
 		#endregion

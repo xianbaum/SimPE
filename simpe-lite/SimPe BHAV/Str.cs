@@ -215,7 +215,7 @@ namespace pjse
 						if (!this.rejectStrItem(fsi))
 						{
 							if (fsi.fallback.Count == 0)
-								fsi.fallback.Add("Fallback: LID=1");
+								fsi.fallback.Add(pjse.coder.Localization.GetString("Fallback") + ": LID=1");
 							return fsi;
 						}
 					}
@@ -231,7 +231,8 @@ namespace pjse
 							if (!this.rejectStrItem(fsi))
 							{
 								if (fsi.fallback.Count == 0)
-									fsi.fallback.Add("Fallback: SemiGlobal");
+                                    fsi.fallback.Add(pjse.coder.Localization.GetString("Fallback")
+                                        + ": " + pjse.coder.Localization.GetString("SemiGlobal"));
 								return fsi;
 							}
 						}
@@ -242,7 +243,8 @@ namespace pjse
 							if (!this.rejectStrItem(fsi))
 							{
 								if (fsi.fallback.Count == 0)
-									fsi.fallback.Add("Fallback: Global");
+                                    fsi.fallback.Add(pjse.coder.Localization.GetString("Fallback")
+                                        + ": " + pjse.coder.Localization.GetString("Global"));
 								return fsi;
 							}
 						}

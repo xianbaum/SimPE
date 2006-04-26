@@ -43,454 +43,640 @@ namespace pjse
 	{
 		Global = 0x7FD46CD0,
 		BhavFuncs = 0x7FE59FD0,
-	}
+    }
 
+    #region Previously known as GlobalStr.cs
+    public class GS
+    {
+        public enum BhavStr : uint
+        {
+            //Str0x0080 = 0x80, // behavior strings
+            GlobalLabels = 0x81,
+            RelativeLocations = 0x0082,
+            RelativeDirections = 0x0083,
+            DataOwners = 0x84,
+            //Str0x0085 - there is no Str0x0085
+            Motives = 0x86,
+            //Str0x0087 = 0x87, // miscellaneous strings
+            Operators = 0x88,
+            //Str0x0089 = 0x89, // unused - search types
+            //Str0x008a - there is no Str0x008a
+            Primitives = 0x8b,
+            //Str0x008c - there is no Str0x008c
+            DataLabels = 0x8d, // Data labels +EP1 +EP2
+            Flags1 = 0x8e, // flags for flag field
+            BodyFlags = 0x8f,
+            //Str0x0090..95 - there are no Str0x0090..95
+            //Str0x0096 unused
+            //Str0x0097..98 - there are no Str0x0097..98
+            ShortOwner = 0x99,	// see Find 5 worst motives prim
+            //Str0x009a unused
+            //Str0x009b unused
+            //Str0x009c kill object options
+            //Str0x009d tree types
+            //Str0x009e .. a3 unused
+            NextObject = 0xa4,
+            MotiveType = 0xa5, // motive search types
+            //Str0x00a6 - there is no Str0x00a6
+            CreatePlace = 0xa7, // where to create object
+            CreateHow = 0xa8, // how to create object
+            //Str0x00a9 .. ab unused
+            //Str0x00ac Interrupt (idle for input?)
+            //Str0x00ad .. ae unused
+            //Str0x00af - there is no Str0x00af
+            //Str0x00b0 0123
+            //Str0x00b1 unused
+            CensorFlags = 0xb2,
+            //Str0x00b3..c7 - there are no Str0x00b3..c7
+            PersonData = 0xc8,
+            FunctionTable = 0xc9,
+            PlacementFlags = 0xca, // Allowed Height Flags
+            MoveFlags = 0xcb,
+            OBJDDescs = 0xcc, // Object Definitions
+            RoomSortFlags = 0xcd,
+            FunctionSortFlags = 0xce,
+            SnapType = 0xcf, // How To Snap
+            WallAdjFlags = 0xd0,
+            //Str0x00d1 .. d2 unused
+            UpdateWho = 0xd3,	// See Refresh prim
+            UpdateWhat = 0xd4,	// See Refresh prim
+            //Str0x00d5 unused
+            Flags2 = 0xd6, // Flags for Flag Field 2
+            //Str0x00d7 Routing slot param types (Go To Routing slot - not used here)
+            TurnBody = 0xd8,
+            Dialog = 0xd9,
+            DialogDesc = 0xda,
+            RoomValues = 0xdb,
+            Generics = 0xdc,
+            NeighborData = 0xdd,
+            RTBNType = 0xde, // how to call named tree
+            //Str0x00df - there is no Str0x00df
+            Priorities = 0xe0,	// See Push Interaction prim
+            //Str0x00e1 times of day
+            //Str0x00e2 tree categories
+            //Str0x00e3 .. e4 unused
+            WallPlacementFlags = 0xe5,
+            //Str0x00e6 entry types
+            //Str0x00e7 unused
+            //Str0x00e8 personality ads
+            Attenuations = 0xe9,
+            //Str0x00ea .. ec unused
+            //Str0x00ed dialog behavior (Dialog - not used here)
+            //Str0x00ee situation action descriptions
+            FindGLB = 0xef, // find good location behaviors
+            ExpenseType = 0xf0,
+            //Str0x00f1 route results
+            //Str0x00f2 add subtract
+            JobData = 0xf3,	// for Data owner 0x21
+            DialogIcon = 0xf4,
+            OBJFDescs = 0xf5, // entry points
+            //Str0x00f6 object types
+            //Str0x00f7 .. f8 unused
+            NeighborhoodData = 0xf9,	// for Data owner 0x22
+            PersonOutfits = 0xfa,	// see Change Outfit prim
+            ExclPlacementFlags = 0xfb,	// for Data owners 0x03 and 0x04
+            InventoryDialog = 0xfc,	// for Data owners 0x27 and 0x28
+            WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
+            //Str0x00fe unused
+            //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            TnsStyle = 0x1f3,	// PJSE: string number stolen
+            //Str0x01f4 .. 1fd unused
+            GosubAction = 0x1fe, // See Gosub Action prim
+            //Str0x01ff Routing slot directions
+            HiddenFlags = 0x200,	// for Data owners 0x03 and 0x04
+            GhostFlags = 0x201,	// for Data owners 0x12, 0x13 and 0x20
+            SelectionFlags = 0x202,	// for Data owners 0x12, 0x13 and 0x20
+            //Str0x0203 unused
+            PersonFlags = 0x204,	// for Data owners 0x12, 0x13 and 0x20
+        }
 
-	/// <summary>
+        public enum GlobalStr : uint
+        {
+            AdultAnims = 0x0081,
+            ChildAnims = 0x0082,
+            SocialAnims = 0x0083,
+            LocoAnims = 0x0084,
+            ObjectAnims = 0x0086,
+            MeshGroup = 0x0087,
+            MaterialName = 0x0088,
+            ToddlerAnims = 0x0089,
+            TeenAnims = 0x008a,
+            ElderAnims = 0x008b,
+            CatAnims = 0x008c,
+            DogAnims = 0x008d,
+            LightSource = 0x008e,
+            Effect = 0x008f,
+            BabyAnims = 0x0091,
+            ReachAnims = 0x0092,
+            IconTexture = 0x0095,
+            UIEffect = 0x0096,
+            CineCam = 0x0097,
+            PuppyAnims = 0x0099,
+            KittenAnims = 0x009a,
+            AttributeLabels = 0x0100,
+            Relationship = 0x0102,
+            ArrayName = 0x0118,
+            DialogString = 0x012d,
+            MakeAction = 0x012e,
+            NamedTree = 0x012f,
+            LuaScript = 0x0130,
+            DebugString = 0x0132,
+            Sound = 0x4132,
+        }
+    }
+    #endregion
+
+    /// <summary>
 	/// Abstract wrapper that extends the SimPe Bhav Instruction class for display purposes
 	/// </summary>
 	/// <remarks>Remember - an Instruction() is the call to a primitive or BHAV...</remarks>
-	public abstract class BhavWiz : IDisposable
-	{
-		protected Instruction instruction = null;
-		protected string prefix = null;
-
-		protected BhavWiz(Instruction instruction) 
-		{
-			this.instruction = instruction;
-		}
-
-		public static implicit operator BhavWiz(Instruction i)
-		{
-			if (i.OpCode < 0x0100) return (BhavWizPrim)i;
-			return (BhavWizBhav)i;
-		}
-
-		public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
-
-
-		#region IDisposable Members
-		public void Dispose()
-		{
-			instruction = null;
-		}
-
-		#endregion
-
-		public Instruction Instruction { get { return instruction; } }
-
-		public override string ToString() { return LongName; }
-
-		public virtual pjse.FileTable.Entry FTEntry { get { return null; } }
-
-
-		public virtual string ShortName { get { return Name + " (" + Operands(false) + ")"; } }
-
-		public virtual string LongName { get { return Name + " (" + Operands(true) + ")"; } }
-
-
-		public virtual ABhavOperandWiz Wizard()
-		{
-			return null;
-		}
-
-
-		protected virtual string Name { get { return "[" + Prefix + " 0x" + SimPe.Helper.HexString(instruction.OpCode) + "] " + OpcodeName; } }
-
-		protected virtual string Prefix { get { return prefix; } }
-
-		protected abstract string OpcodeName { get; }
-
-		protected abstract string Operands(bool lng);
-
-		#region Utilities
-		protected string dataOwner(byte doid, ushort instance)
-		{
-			ushort[] bcon;
-			string doidName = readStr(GS.BhavStr.DataOwners, doid);
-
-			string s = "0x" + SimPe.Helper.HexString(instance);
-			string temp = "";
-
-			if (doidGStr[doid] != null)
-				s += " (" + readStr((GS.BhavStr)doidGStr[doid], instance) + ")";
-
-			switch (doid)
-			{
-				case 0x00: case 0x01:
-					temp = readStr(Scope.Private, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.ValueOnly);
-					if (temp != null && temp.Length > 0)
-						s += " (" + temp + ")";
-					break;
-				case 0x02: case 0x05:
-					temp = readStr(Scope.SemiGlobal, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.ValueOnly);
-					if (temp != null && temp.Length > 0)
-						s += " (" + temp + ")";
-					break;
-				case 0x09:
-					temp = readParam(instruction.Parent, instance, pjse.Detail.Errors);
-					if (temp.Length > 0)
-						s += " (" + temp + ")";
-					break;
-				case 0x19:
-					temp = readLocal(instruction.Parent, instance, pjse.Detail.Errors);
-					if (temp.Length > 0)
-						s += " (" + temp + ")";
-					break;
-				case 0x0a:
-					if (instance == 0)
-						s = "";
-					break;
-				case 0x0b: case 0x11:
-				case 0x1e: case 0x1f:
-				case 0x30: case 0x31:
-					doidName = doidName.Replace("[temp]", "[Temp " + instance.ToString() + "]");
-					s = "";
-					break;
-				case 0x16: case 0x32:
-					doidName = doidName.Replace("[param]", "[" + dataOwner(0x09, instance) + "]");
-					s = "";
-					break;
-				case 0x1a:
-					bcon = ExpandBCON(instance, false);
-					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
-					temp = readBcon((uint)bcon[0], bcon[1], false);
-					if (temp.Length > 0)
-						s += " (" + temp + ")";
-					break;
-				case 0x2f:
-					doidName = readStr(GS.BhavStr.DataOwners, 0x1a);
-					bcon = ExpandBCON(instance, true);
-					s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
-					temp = readBcon((uint)bcon[0], bcon[1], true);
-					if (temp.Length > 0)
-						s += " (" + temp + ")";
-					break;
-			}
-
-			return doidName + (s.Length > 0 ? " " + s : "");
-		}
-
-		protected string dataOwner(byte doid, byte lo, byte hi) { return dataOwner(doid, ToShort(lo, hi)); }
-
-		protected string dataOwner(bool lng, byte doid, ushort instance)
-		{
-			if (lng)
-				return dataOwner(doid, instance);
-
-			ushort[] bcon;
-			switch(doid)
-			{
-				case 0x03: case 0x04: case 0x0c: case 0x0e: case 0x0f: case 0x1c: case 0x1d:
-					return readStr(GS.BhavStr.DataOwners, doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
-				case 0x06:
-					return (doidGStr[doid] != null) ? readStr((GS.BhavStr)doidGStr[doid], instance) : "";
-				case 0x0b: case 0x11: case 0x1e: case 0x1f: case 0x30: case 0x31:
-					return dataOwner(doid, instance);
-				case 0x1a:
-					bcon = ExpandBCON(instance, false);
-					return readStr(GS.BhavStr.DataOwners, doid)
-						+ " 0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
-				case 0x2f:
-					bcon = ExpandBCON(instance, true);
-					return readStr(GS.BhavStr.DataOwners, 0x1a)
-						+ " 0x" + SimPe.Helper.HexString(bcon[0]) + ":[Temp " + bcon[1].ToString() + "]";
-				default:
-					return readStr(GS.BhavStr.DataOwners, doid) + " 0x" + SimPe.Helper.HexString(instance);
-			}
-		}
-
-		protected string dataOwner(bool lng, byte doid, byte lo, byte hi) {  return dataOwner(lng, doid, ToShort(lo, hi));}
-
-
-
-		public string readStr(GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
-		{
-			return readStr(instruction.Parent.Context, (uint)instance, sid, maxlen, detail);
-		}
-
-		public string readStr(Scope scope, GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
-		{
-			return readStr(scope, (uint)instance, sid, maxlen, detail);
-		}
-
-		protected string readStr(Scope scope, uint instance, ushort sid, int maxlen, Detail detail)
-		{
-			return readStr(instruction.Parent, instruction.Parent.GroupForScope(scope), instance, sid, maxlen, detail);
-		}
-
-
-		public static string readStr(GS.BhavStr instance, ushort sid)
-		{
-			return readStr(null, (uint)Group.BhavFuncs, (uint)instance, sid, -1, Detail.ErrorNames, false);
-		}
-
-
-		private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail)
-		{
-			return readStr(parent, group, instance, sid, maxlen, detail, true);
-		}
-
-		private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail, bool addQuotes)
-		{
-			Str str = new Str(parent, group, instance);
-			String pfname = "";
-			if (detail == Detail.Full || detail == Detail.ErrorNames)
-			{
-				if (group == (uint)Group.BhavFuncs)
-					try { pfname += (GS.BhavStr)instance + ": "; }
-					catch { }
-				else
-					try { pfname += (GS.GlobalStr)instance + ": "; }
-					catch { }
-			}
-			if (detail == Detail.Full || detail == Detail.Errors)
-				pfname += "STR# 0x" + (instance >= 0x10000 ? SimPe.Helper.HexString(instance) : SimPe.Helper.HexString((ushort)instance)) + ":";
-			if (detail == Detail.Full || detail == Detail.ErrorNames || detail == Detail.Errors)
-				pfname += "0x" + (sid >= 0x0100 ? SimPe.Helper.HexString(sid) : SimPe.Helper.HexString((byte)sid));
-
-
-			if (str != null)
-			{
-				FallbackStrItem fsi = str[sid];
-				if (fsi != null && fsi.strItem != null)
-				{
-					String s = "";
-					if (detail != Detail.ValueOnly && fsi.fallback != null && fsi.fallback.Count != 0)
-					{
-						s += "[";
-						for(int i=0; i < fsi.fallback.Count; i++) s += (i==0?"":"; ") + fsi.fallback[i];
-						s += "] ";
-					}
-					if (addQuotes)
-						return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full ? " [" + pfname + "]" : "");
-					else
-						return s + myLeft(fsi.strItem.Title.Trim(), maxlen) + (detail == Detail.Full ? " [" + pfname + "]" : "");
-				}
-			}
-			if (detail == Detail.ValueOnly)
-				return null;
-			return "[" + SimPe.Localization.Manager.GetString("unk") + ": " + pfname + "]";
-		}
-
-
-		private static Hashtable gString = new Hashtable();
-		public static ArrayList readStr(GS.BhavStr instance)
-		{
-			if (gString[instance] == null)
-			{
-				ArrayList list = new ArrayList();
-				String s;
-				for(ushort i = 0; (s = readStr(null, (uint)Group.BhavFuncs, (uint)instance, i, -1, Detail.ValueOnly, false)) != null; i++) list.Add(s);
-				gString[instance] = list;
-			}
-			return (ArrayList)gString[instance];
-		}
-
-
-		private static string myLeft(string str, int len)
-		{
-			return (len < 0) ? str : str.PadRight(len).Substring(0, len).Trim() + (str.Length > len ? "..." : "");
-		}
-
-
-
-		/// <summary>
-		/// Returns the name of a BHAV or Primitive for a given instance number.
-		/// <br/>
-		/// Scope etc are taken from the provided ExtendedWrapper.
-		/// </summary>
-		/// <param name="parent"></param>
-		/// <param name="instance">Which BHAV to find</param>
-		/// <param name="found">Indicates that a BHAV was found</param>
-		/// <returns>Name of BHAV found</returns>
-		public static String bhavName(ExtendedWrapper parent, uint instance, ref bool found)
-		{
-			found = false;
-			string s = "0x" + SimPe.Helper.HexString((ushort)instance) + ": ";
-
-			if (instance == 0) return "---";
-			else if (instance < 0x0100)
-				return s + readStr(pjse.GS.BhavStr.Primitives, (ushort)instance);
-
-			pjse.FileTable.Entry ftEntry = parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instance);
-			found = (ftEntry != null);
-			return s + (found ? "\"" + ftEntry + "\"" : "[BHAV not found]");
-		}
-
-		public String bhavName(uint instance, ref bool found)
-		{
-			return bhavName(instruction.Parent, instance, ref found);
-		}
-
-
-
-		protected string readBcon(uint instance, int bid, bool temp)
-		{
-			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-				throw new InvalidOperationException("Can't read BCON for instruction with no parent");
-
-			Scope s = Scope.Private;
-			if      (instance <  0x1000) s = Scope.Global;
-			else if (instance >= 0x2000) s = Scope.SemiGlobal;
-
-			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
-				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return "";
-
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
-
-			if (items == null || items.Length == 0)
-				return "[not found]";
-
-			Bcon bcon = new Bcon();
-			bcon.ProcessData(items[0].PFD, items[0].Package);
-
-			if (temp)
-				return ""; //"Filename: " + bcon.FileName;
-
-			Trcn trcn = bcon.TrcnResource;
-			string label = ((trcn != null && bid < trcn.Count) ? trcn[bid] : "").Trim();
-			label = label.Length > 0 ? "\"" + label + "\" " : "";
-
-			if (bid >= bcon.Count)
-				return label + "[not set]";
-
-			return label + "Value: 0x" + SimPe.Helper.HexString((short)bcon[bid]);
-		}
-
-
-		protected string readParam(Bhav instance, int pno, Detail detail) { return readParamLocal(false, instance, pno, detail); }
-
-		protected string readLocal(Bhav instance, int lno, Detail detail) { return readParamLocal(true, instance, lno, detail); }
-
-		private string readParamLocal(bool local, Bhav bhav, int sid, Detail detail)
-		{
-			TPRP tprp = bhav.TPRPResource;
-			return (tprp != null && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] : ""
-				/*(detail == Detail.ValueOnly ? ""
-				: "[No TPRP label for BHAV 0x" + SimPe.Helper.HexString((ushort)bhav.FileDescriptor.Instance)
-				+ " " + (local ? "Local" : "Param") + " 0x" + SimPe.Helper.HexString((ushort)sid) + "]")*/
-				;
-			}
-
-
-		/// <summary>
-		/// Returns a list of Param or Local labels
-		/// </summary>
-		/// <param name="local">True to retrieve Local labels, false for Params</param>
-		/// <returns></returns>
-		public ArrayList GetTPRPnames(bool local)
-		{
-			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-				throw new InvalidOperationException("Can't read TPRP for instruction with no parent");
-
-			uint group    = instruction.Parent.FileDescriptor.Group;
-			uint instance = instruction.Parent.FileDescriptor.Instance;
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, group, instance];
-
-			if (items == null || items.Length == 0)
-				return null;
-
-			ArrayList TPRPnames = new ArrayList();
-
-			TPRP tprp = new TPRP();
-			tprp.ProcessData(items[0].PFD, items[0].Package);
-			foreach (TPRPItem i in tprp)
-				if ((local && i is TPRPLocalLabel) || (!local && i is TPRPParamLabel))
-					TPRPnames.Add(i.Label);
-			int limit = local ? instruction.Parent.Header.LocalVarCount : instruction.Parent.Header.ArgumentCount;
-			while (TPRPnames.Count < limit)
-				TPRPnames.Add("(" + (local ? "Local" : "Param") + TPRPnames.Count.ToString() + ")");
-			return TPRPnames;
-		}
-
-
-		public ArrayList GetAttrNames(Scope s)
-		{
-			if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
-				throw new InvalidOperationException("Can't read STR# for instruction with no parent");
-
-			if (instruction.Parent.Context == Scope.Global && s != Scope.Global
-				|| instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
-				return null;
-
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, instruction.Parent.GroupForScope(s), (uint)GS.GlobalStr.AttributeLabels];
-
-			if (items == null || items.Length == 0)
-				return null;
-
-			StrWrapper str = new StrWrapper();
-			str.ProcessData(items[0].PFD, items[0].Package);
-			StrItem[] asi = str[(byte)1];
-
-			if (asi == null || asi.Length == 0)
-				return null;
-
-			ArrayList al = new ArrayList();
-			foreach(StrItem si in asi) al.Add(si.Title);
-			return al;
-		}
-
-
-		public static ArrayList flagNames(byte flagOwner, ushort flagType)
-		{
-			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : BhavWiz.readStr((GS.BhavStr)flagTypes[flagType]);
-		}
-
-		public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
-		{
-			if (flagValue == 0) return "[0: invalid]";
-			Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
-			return (flagTypes == null || flagTypes[flagType] == null) ? null : readStr((GS.BhavStr)flagTypes[flagType], (ushort)(flagValue-1));
-		}
-
-
-		private static Hashtable flagOwners = flagInitaliser();
-		private static Hashtable flagInitaliser()
-		{
-			Hashtable f = new Hashtable();
-			Hashtable o = new Hashtable();
-			o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
-			o.Add((ushort)0x08, GS.BhavStr.Flags1);
-			o.Add((ushort)0x0d, GS.BhavStr.WallPlacementFlags);
-			o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
-			o.Add((ushort)0x28, GS.BhavStr.Flags2);
-			o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);
-			o.Add((ushort)0x2b, GS.BhavStr.MoveFlags);
-			o.Add((ushort)0x3f, GS.BhavStr.ExclPlacementFlags);
-			o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
-			f.Add((byte)0x03, o); // 0x03 "My"
-			f.Add((byte)0x04, o); // 0x04 "Stack Object's"
-			Hashtable p = new Hashtable();
-			p.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
-			p.Add((ushort)0x44, GS.BhavStr.GhostFlags);
-			p.Add((ushort)0x51, GS.BhavStr.BodyFlags);
-			p.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
-			p.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
-			f.Add((byte)0x12, p); // 0x12 "My Person Data"
-			f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
-			f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
-			Hashtable d = new Hashtable();
-			d.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
-			d.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
-			f.Add((byte)0x15, d); // 0x15 "stack object's definition"
-			f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
-			f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"
-			return f;
-		}
-
-
-		public static Glob GlobByGroup(uint group)
-		{
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.GLOB_FILE, group];
-			if (items == null || items.Length == 0) return null;
-
-			Glob glob = new Glob();
-			glob.ProcessData(items[0].PFD, items[0].Package);
-			return glob;
-		}
+    public abstract class BhavWiz : IDisposable
+    {
+        protected Instruction instruction = null;
+        protected string prefix = null;
+
+        protected BhavWiz(Instruction instruction)
+        {
+            this.instruction = instruction;
+        }
+
+        public static implicit operator BhavWiz(Instruction i)
+        {
+            if (i.OpCode < 0x0100) return (BhavWizPrim)i;
+            return (BhavWizBhav)i;
+        }
+
+        public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
+
+
+        #region IDisposable Members
+        public void Dispose()
+        {
+            instruction = null;
+        }
+
+        #endregion
+
+        public Instruction Instruction { get { return instruction; } }
+
+        public override string ToString() { return LongName; }
+
+        public virtual pjse.FileTable.Entry FTEntry { get { return null; } }
+
+
+        public virtual string ShortName { get { return Name + " (" + Operands(false) + ")"; } }
+
+        public virtual string LongName { get { return Name + " (" + Operands(true) + ")"; } }
+
+
+        public virtual ABhavOperandWiz Wizard() { return null; }
+
+
+        protected virtual string Name { get { return "[" + Prefix + " 0x" + SimPe.Helper.HexString(instruction.OpCode) + "] " + OpcodeName; } }
+
+        protected virtual string Prefix { get { return prefix; } }
+
+        protected abstract string OpcodeName { get; }
+
+        protected abstract string Operands(bool lng);
+
+
+        #region Utilities
+
+        #region DataOwner routines
+        public static String DoidName(byte doid) { return readStr(GS.BhavStr.DataOwners, doid); }
+        public static String dnParam() { return DoidName(0x09); }
+        public static String dnLocal() { return DoidName(0x19); }
+        public static String dnConst() { return DoidName(0x1a); }
+        public static String dnTemp() { return DoidName(0x09); }
+
+        protected string dataOwner(byte doid, ushort instance)
+        {
+            ushort[] bcon;
+            string doidName = DoidName(doid);
+
+            string s = "0x" + SimPe.Helper.HexString(instance);
+            string temp = "";
+
+            if (doidGStr[doid] != null)
+                s += " (" + readStr((GS.BhavStr)doidGStr[doid], instance) + ")";
+
+            switch (doid)
+            {
+                case 0x00:
+                case 0x01:
+                    temp = readStr(Scope.Private, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.ValueOnly);
+                    if (temp != null && temp.Length > 0)
+                        s += " (" + temp + ")";
+                    break;
+                case 0x02:
+                case 0x05:
+                    temp = readStr(Scope.SemiGlobal, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.ValueOnly);
+                    if (temp != null && temp.Length > 0)
+                        s += " (" + temp + ")";
+                    break;
+                case 0x09:
+                    temp = readParam(instruction.Parent, instance, pjse.Detail.Errors);
+                    if (temp.Length > 0)
+                        s += " (" + temp + ")";
+                    break;
+                case 0x19:
+                    temp = readLocal(instruction.Parent, instance, pjse.Detail.Errors);
+                    if (temp.Length > 0)
+                        s += " (" + temp + ")";
+                    break;
+                case 0x0a:
+                    if (instance == 0)
+                        s = "";
+                    break;
+                case 0x0b:
+                case 0x11:
+                case 0x1e:
+                case 0x1f:
+                case 0x30:
+                case 0x31:
+                    doidName = doidName.Replace("[temp]", "[" + dnTemp() + " " + instance.ToString() + "]");
+                    s = "";
+                    break;
+                case 0x16:
+                case 0x32:
+                    doidName = doidName.Replace("[param]", "[" + dataOwner(0x09, instance) + "]");
+                    s = "";
+                    break;
+                case 0x1a:
+                    bcon = ExpandBCON(instance, false);
+                    s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
+                    temp = readBcon((uint)bcon[0], bcon[1], false);
+                    if (temp.Length > 0)
+                        s += " (" + temp + ")";
+                    break;
+                case 0x2f:
+                    doidName = dnConst();
+                    bcon = ExpandBCON(instance, true);
+                    s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[" + dnTemp() + " " + bcon[1].ToString() + "]";
+                    temp = readBcon((uint)bcon[0], bcon[1], true);
+                    if (temp.Length > 0)
+                        s += " (" + temp + ")";
+                    break;
+            }
+
+            return doidName + (s.Length > 0 ? " " + s : "");
+        }
+
+        protected string dataOwner(byte doid, byte lo, byte hi) { return dataOwner(doid, ToShort(lo, hi)); }
+
+        protected string dataOwner(bool lng, byte doid, ushort instance)
+        {
+            if (lng)
+                return dataOwner(doid, instance);
+
+            ushort[] bcon;
+            switch (doid)
+            {
+                case 0x03:
+                case 0x04:
+                case 0x0c:
+                case 0x0e:
+                case 0x0f:
+                case 0x1c:
+                case 0x1d:
+                    return DoidName(doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
+                case 0x06:
+                    return readStr((GS.BhavStr)doidGStr[doid], instance);
+                case 0x0b:
+                case 0x11:
+                case 0x1e:
+                case 0x1f:
+                case 0x30:
+                case 0x31:
+                    return dataOwner(doid, instance);
+                case 0x1a:
+                    bcon = ExpandBCON(instance, false);
+                    return dnConst()
+                        + " 0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
+                case 0x2f:
+                    bcon = ExpandBCON(instance, true);
+                    return dnConst()
+                        + " 0x" + SimPe.Helper.HexString(bcon[0]) + ":[" + dnTemp() + " " + bcon[1].ToString() + "]";
+                default:
+                    return DoidName(doid) + " 0x" + SimPe.Helper.HexString(instance);
+            }
+        }
+
+        protected string dataOwner(bool lng, byte doid, byte lo, byte hi) { return dataOwner(lng, doid, ToShort(lo, hi)); }
+        public static Hashtable doidGStr = staticInitialiser();
+        private static Hashtable staticInitialiser()
+        {
+            Hashtable t = new Hashtable();
+            t.Add((byte)0x03, GS.BhavStr.DataLabels);
+            t.Add((byte)0x04, GS.BhavStr.DataLabels);
+            t.Add((byte)0x06, GS.BhavStr.GlobalLabels);
+            t.Add((byte)0x0c, GS.BhavStr.Motives);
+            t.Add((byte)0x0e, GS.BhavStr.Motives);
+            t.Add((byte)0x0f, GS.BhavStr.Motives);
+            t.Add((byte)0x12, GS.BhavStr.PersonData);
+            t.Add((byte)0x13, GS.BhavStr.PersonData);
+            t.Add((byte)0x1c, GS.BhavStr.Motives);
+            t.Add((byte)0x1d, GS.BhavStr.Motives);
+            t.Add((byte)0x20, GS.BhavStr.PersonData);
+            t.Add((byte)0x15, GS.BhavStr.OBJDDescs);
+            t.Add((byte)0x26, GS.BhavStr.OBJDDescs);
+            t.Add((byte)0x33, GS.BhavStr.OBJDDescs);
+            t.Add((byte)0x17, GS.BhavStr.RoomValues);
+            t.Add((byte)0x18, GS.BhavStr.NeighborData);
+            t.Add((byte)0x21, GS.BhavStr.JobData);
+            t.Add((byte)0x22, GS.BhavStr.NeighborhoodData);
+            t.Add((byte)0x23, GS.BhavStr.OBJFDescs);
+            t.Add((byte)0x27, GS.BhavStr.InventoryDialog);
+            t.Add((byte)0x28, GS.BhavStr.InventoryDialog);
+            return t;
+        }
+
+
+        #endregion
+
+
+        #region STR# routines
+        public string readStr(GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
+        {
+            return readStr(instruction.Parent.Context, (uint)instance, sid, maxlen, detail);
+        }
+
+        public string readStr(Scope scope, GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
+        {
+            return readStr(scope, (uint)instance, sid, maxlen, detail);
+        }
+
+        protected string readStr(Scope scope, uint instance, ushort sid, int maxlen, Detail detail)
+        {
+            return readStr(instruction.Parent, instruction.Parent.GroupForScope(scope), instance, sid, maxlen, detail);
+        }
+
+
+        public static string readStr(GS.BhavStr instance, ushort sid)
+        {
+            return readStr(null, (uint)Group.BhavFuncs, (uint)instance, sid, -1, Detail.ErrorNames, false);
+        }
+
+
+        private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail)
+        {
+            return readStr(parent, group, instance, sid, maxlen, detail, true);
+        }
+
+        private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail, bool addQuotes)
+        {
+            Str str = new Str(parent, group, instance);
+            String pfname = "";
+            if (detail == Detail.Full || detail == Detail.ErrorNames)
+            {
+                if (group == (uint)Group.BhavFuncs)
+                    try { pfname += (GS.BhavStr)instance + ": "; }
+                    catch { }
+                else
+                    try { pfname += (GS.GlobalStr)instance + ": "; }
+                    catch { }
+            }
+            if (detail == Detail.Full || detail == Detail.Errors)
+                pfname += "STR# 0x" + (instance >= 0x10000 ? SimPe.Helper.HexString(instance) : SimPe.Helper.HexString((ushort)instance)) + ":";
+            if (detail == Detail.Full || detail == Detail.ErrorNames || detail == Detail.Errors)
+                pfname += "0x" + (sid >= 0x0100 ? SimPe.Helper.HexString(sid) : SimPe.Helper.HexString((byte)sid));
+
+
+            if (str != null)
+            {
+                FallbackStrItem fsi = str[sid];
+                if (fsi != null && fsi.strItem != null)
+                {
+                    String s = "";
+                    if (detail != Detail.ValueOnly && fsi.fallback != null && fsi.fallback.Count != 0)
+                    {
+                        s += "[";
+                        for (int i = 0; i < fsi.fallback.Count; i++) s += (i == 0 ? "" : "; ") + fsi.fallback[i];
+                        s += "] ";
+                    }
+                    if (addQuotes)
+                        return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full ? " [" + pfname + "]" : "");
+                    else
+                        return s + myLeft(fsi.strItem.Title.Trim(), maxlen) + (detail == Detail.Full ? " [" + pfname + "]" : "");
+                }
+            }
+            if (detail == Detail.ValueOnly)
+                return null;
+            return "[" + pjse.coder.Localization.Manager.GetString("unk") + ": " + pfname + "]";
+        }
+
+
+        private static Hashtable gString = new Hashtable();
+        public static ArrayList readStr(GS.BhavStr instance)
+        {
+            if (gString[instance] == null)
+            {
+                ArrayList list = new ArrayList();
+                String s;
+                for (ushort i = 0; (s = readStr(null, (uint)Group.BhavFuncs, (uint)instance, i, -1, Detail.ValueOnly, false)) != null; i++) list.Add(s);
+                gString[instance] = list;
+            }
+            return (ArrayList)gString[instance];
+        }
+
+
+        public ArrayList GetAttrNames(Scope s)
+        {
+            if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+                throw new InvalidOperationException("Can't read STR# for instruction with no parent");
+
+            if (instruction.Parent.Context == Scope.Global && s != Scope.Global
+                || instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
+                return null;
+
+            ArrayList al = new ArrayList();
+            String st;
+            for (ushort i = 0; (st = readStr(null, instruction.Parent.GroupForScope(s), (uint)GS.GlobalStr.AttributeLabels, i, -1, Detail.ValueOnly, false)) != null; i++) al.Add(st);
+            return al;
+        }
+
+
+        private static string myLeft(string str, int len)
+        {
+            return (len < 0) ? str : str.PadRight(len).Substring(0, len).Trim() + (str.Length > len ? "..." : "");
+        }
+        #endregion
+
+
+        #region Flag parsing
+        public static ArrayList flagNames(byte flagOwner, ushort flagType)
+        {
+            Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
+            return (flagTypes == null || flagTypes[flagType] == null) ? null : BhavWiz.readStr((GS.BhavStr)flagTypes[flagType]);
+        }
+
+        public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
+        {
+            if (flagValue == 0) return "[0: " + pjse.coder.Localization.Manager.GetString("invalid") + "]";
+            Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
+            return (flagTypes == null || flagTypes[flagType] == null) ? null : readStr((GS.BhavStr)flagTypes[flagType], (ushort)(flagValue - 1));
+        }
+
+
+        private static Hashtable flagOwners = flagInitaliser();
+        private static Hashtable flagInitaliser()
+        {
+            Hashtable f = new Hashtable();
+            Hashtable o = new Hashtable();
+            o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
+            o.Add((ushort)0x08, GS.BhavStr.Flags1);
+            o.Add((ushort)0x0d, GS.BhavStr.WallPlacementFlags);
+            o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
+            o.Add((ushort)0x28, GS.BhavStr.Flags2);
+            o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);
+            o.Add((ushort)0x2b, GS.BhavStr.MoveFlags);
+            o.Add((ushort)0x3f, GS.BhavStr.ExclPlacementFlags);
+            o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
+            f.Add((byte)0x03, o); // 0x03 "My"
+            f.Add((byte)0x04, o); // 0x04 "Stack Object's"
+            Hashtable p = new Hashtable();
+            p.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
+            p.Add((ushort)0x44, GS.BhavStr.GhostFlags);
+            p.Add((ushort)0x51, GS.BhavStr.BodyFlags);
+            p.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
+            p.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
+            f.Add((byte)0x12, p); // 0x12 "My Person Data"
+            f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
+            f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
+            Hashtable d = new Hashtable();
+            d.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
+            d.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
+            f.Add((byte)0x15, d); // 0x15 "stack object's definition"
+            f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
+            f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"
+            return f;
+        }
+        #endregion
+
+
+        #region BHAV and TPRP routines
+        /// <summary>
+        /// Returns the name of a BHAV or Primitive for a given instance number.
+        /// <br/>
+        /// Scope etc are taken from the provided ExtendedWrapper.
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="instance">Which BHAV to find</param>
+        /// <param name="found">Indicates that a BHAV was found</param>
+        /// <returns>Name of BHAV found</returns>
+        public static String bhavName(ExtendedWrapper parent, uint instance, ref bool found)
+        {
+            found = false;
+            string s = "0x" + SimPe.Helper.HexString((ushort)instance) + ": ";
+
+            if (instance == 0) return "---";
+            else if (instance < 0x0100)
+                return s + readStr(pjse.GS.BhavStr.Primitives, (ushort)instance);
+
+            pjse.FileTable.Entry ftEntry = parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instance);
+            found = (ftEntry != null);
+            return s + (found ? "\"" + ftEntry + "\"" : pjse.coder.Localization.Manager.GetString("bhavnotfound"));
+        }
+
+        public String bhavName(uint instance, ref bool found)
+        {
+            return bhavName(instruction.Parent, instance, ref found);
+        }
+
+
+        protected string readParam(Bhav instance, int pno, Detail detail) { return readParamLocal(false, instance, pno, detail); }
+
+        protected string readLocal(Bhav instance, int lno, Detail detail) { return readParamLocal(true, instance, lno, detail); }
+
+        private string readParamLocal(bool local, Bhav bhav, int sid, Detail detail)
+        {
+            TPRP tprp = bhav.TPRPResource;
+            return (tprp != null && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] : ""
+                /*(detail == Detail.ValueOnly ? ""
+                : "[No TPRP label for BHAV 0x" + SimPe.Helper.HexString((ushort)bhav.FileDescriptor.Instance)
+                + " " + (local ? "Local" : "Param") + " 0x" + SimPe.Helper.HexString((ushort)sid) + "]")*/
+                ;
+        }
+
+
+        /// <summary>
+        /// Returns a list of Param or Local labels
+        /// </summary>
+        /// <param name="local">True to retrieve Local labels, false for Params</param>
+        /// <returns></returns>
+        public ArrayList GetTPRPnames(bool local)
+        {
+            if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+                throw new InvalidOperationException("Can't read TPRP for instruction with no parent");
+
+            uint group = instruction.Parent.FileDescriptor.Group;
+            uint instance = instruction.Parent.FileDescriptor.Instance;
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, group, instance];
+
+            if (items == null || items.Length == 0)
+                return null;
+
+            ArrayList TPRPnames = new ArrayList();
+
+            TPRP tprp = new TPRP();
+            tprp.ProcessData(items[0].PFD, items[0].Package);
+            foreach (TPRPItem i in tprp)
+                if ((local && i is TPRPLocalLabel) || (!local && i is TPRPParamLabel))
+                    TPRPnames.Add(i.Label);
+            int limit = local ? instruction.Parent.Header.LocalVarCount : instruction.Parent.Header.ArgumentCount;
+            while (TPRPnames.Count < limit)
+                TPRPnames.Add("(" + (local ? dnLocal() : dnParam()) + TPRPnames.Count.ToString() + ")");
+            return TPRPnames;
+        }
+        #endregion
+
+
+        public static Glob GlobByGroup(uint group)
+        {
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.GLOB_FILE, group];
+            if (items == null || items.Length == 0) return null;
+
+            Glob glob = new Glob();
+            glob.ProcessData(items[0].PFD, items[0].Package);
+            return glob;
+        }
+
+
+        #region Constant parsing
+        protected string readBcon(uint instance, int bid, bool temp)
+        {
+            if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
+                throw new InvalidOperationException("Can't read BCON for instruction with no parent");
+
+            Scope s = Scope.Private;
+            if (instance < 0x1000) s = Scope.Global;
+            else if (instance >= 0x2000) s = Scope.SemiGlobal;
+
+            if (instruction.Parent.Context == Scope.Global && s != Scope.Global
+                || instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
+                return "";
+
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
+
+            if (items == null || items.Length == 0)
+                return "[" + pjse.coder.Localization.Manager.GetString("notfound") + "]";
+
+            Bcon bcon = new Bcon();
+            bcon.ProcessData(items[0].PFD, items[0].Package);
+
+            if (temp)
+                return ""; //"Filename: " + bcon.FileName;
+
+            Trcn trcn = bcon.TrcnResource;
+            string label = ((trcn != null && bid < trcn.Count) ? trcn[bid] : "").Trim();
+            label = label.Length > 0 ? "\"" + label + "\" " : "";
+
+            if (bid >= bcon.Count)
+                return label + "[" + pjse.coder.Localization.Manager.GetString("notset") + "]";
+
+            return label + pjse.coder.Localization.Manager.GetString("Value") + ": 0x" + SimPe.Helper.HexString((short)bcon[bid]);
+        }
 
 
 #if UNDEF
@@ -554,120 +740,92 @@ namespace pjse
             break;
 #endif
 
-		// not temp:
-		// x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
-		// temp:
-		// x = baabbbbb bbbbbccc, where a is scope, b is BCON instance and c is temp #
-		public static ushort[] ExpandBCON(ushort instance, bool temp)
-		{
-			ushort[] result = new ushort[2];
-			result[1] = (ushort)(instance & (!temp ? 0x7f : 0x07));	// ........ .ccccccc -or- ........ .....ccc
+        // not temp:
+        // x = baabbbbb bccccccc, where a is scope, b is BCON instance and c is constant id
+        // temp:
+        // x = baabbbbb bbbbbccc, where a is scope, b is BCON instance and c is temp #
+        public static ushort[] ExpandBCON(ushort instance, bool temp)
+        {
+            ushort[] result = new ushort[2];
+            result[1] = (ushort)(instance & (!temp ? 0x7f : 0x07));	// ........ .ccccccc -or- ........ .....ccc
 
-			int b;
-			if (!temp) b = ((instance >> 9) & 0x0040) | ((instance >> 7) & 0x003f);	// b..bbbbb b.......
-			else       b = ((instance >> 5) & 0x0400) | ((instance >> 3) & 0x03ff);	// b..bbbbb bbbbb...
+            int b;
+            if (!temp) b = ((instance >> 9) & 0x0040) | ((instance >> 7) & 0x003f);	// b..bbbbb b.......
+            else b = ((instance >> 5) & 0x0400) | ((instance >> 3) & 0x03ff);	// b..bbbbb bbbbb...
 
-			int a = (instance >> 13) & 0x03;						// .aa..... ........
-			switch (a)
-			{
-				case 0: b += 0x1000; break; // private
-				case 1: b += 0x2000; break; // semi-global
-				case 2: b += 0x0100; break; // global
-				//case 3: b |= 0xF5BA; break; // do nothing
-			}
+            int a = (instance >> 13) & 0x03;						// .aa..... ........
+            switch (a)
+            {
+                case 0: b += 0x1000; break; // private
+                case 1: b += 0x2000; break; // semi-global
+                case 2: b += 0x0100; break; // global
+                //case 3: b |= 0xF5BA; break; // do nothing
+            }
 
-			result[0] = (ushort)b;
-			return result;
-		}
+            result[0] = (ushort)b;
+            return result;
+        }
 
-		public static ushort ExpandBCON(ushort[] values, bool temp)
-		{
-			int output = 0;
+        public static ushort ExpandBCON(ushort[] values, bool temp)
+        {
+            int output = 0;
 
-			int b = values[0];
-			if (!temp) { output = (b & 0x0040) << 9; b -= (b & 0x0040); }	// b....... ........
-			else       { output = (b & 0x0400) << 5; b -= (b & 0x0400); }	// b....... ........
+            int b = values[0];
+            if (!temp) { output = (b & 0x0040) << 9; b -= (b & 0x0040); }	// b....... ........
+            else { output = (b & 0x0400) << 5; b -= (b & 0x0400); }	// b....... ........
 
-			int a;
-			if      ((b & 0x2000) != 0) { b -= 0x2000; a = 1; }			// Semi-Global
-			else if ((b & 0x1000) != 0) { b -= 0x1000; a = 0; }			// Private
-			else if ((b & 0x0300) == 0x0100) { b -= 0x0100; a = 2; }	// Global
-			else                        {              a = 3; }			// do nothing
-			output |= (a << 13);							// .aa..... ........
+            int a;
+            if ((b & 0x2000) != 0) { b -= 0x2000; a = 1; }			// Semi-Global
+            else if ((b & 0x1000) != 0) { b -= 0x1000; a = 0; }			// Private
+            else if ((b & 0x0300) == 0x0100) { b -= 0x0100; a = 2; }	// Global
+            else { a = 3; }			// do nothing
+            output |= (a << 13);							// .aa..... ........
 
-			if (!temp) output |= (b & 0x003f) << 7;			// ...bbbbb b.......
-			else       output |= (b & 0x03ff) << 3;			// ...bbbbb bbbbb...
+            if (!temp) output |= (b & 0x003f) << 7;			// ...bbbbb b.......
+            else output |= (b & 0x03ff) << 3;			// ...bbbbb bbbbb...
 
-			output |= values[1] & (!temp ? 0x7f : 0x07);	// ........ .ccccccc -or- ........ .....ccc
+            output |= values[1] & (!temp ? 0x7f : 0x07);	// ........ .ccccccc -or- ........ .....ccc
 
-			return (ushort)output;
-		}
+            return (ushort)output;
+        }
 
-		public static string ExpandBCONtoString(ushort instance, bool temp)
-		{
-			ushort[] result = ExpandBCON(instance, temp);
-			return !temp
-				? "0x" + SimPe.Helper.HexString(result[0]) + ":0x" + SimPe.Helper.HexString((byte)result[1])
-				: "0x" + SimPe.Helper.HexString(result[0]) + ":[Temp " + result[1].ToString() + "]";
-		}
+        public static string ExpandBCONtoString(ushort instance, bool temp)
+        {
+            ushort[] result = ExpandBCON(instance, temp);
+            return !temp
+                ? "0x" + SimPe.Helper.HexString(result[0]) + ":0x" + SimPe.Helper.HexString((byte)result[1])
+                : "0x" + SimPe.Helper.HexString(result[0]) + ":[" + dnTemp() + " " + result[1].ToString() + "]";
+        }
 
-		public static ushort StringtoExpandBCON(string text, bool temp)
-		{
-			string[] s = text.Split(":".ToCharArray(), 2);
-			if (s.Length != 2
-				|| (temp && !(s[1].StartsWith("[Temp ") && s[1].EndsWith("]") && s[1].Length.Equals(8))))
-				throw new InvalidCastException();
+        public static ushort StringtoExpandBCON(string text, bool temp)
+        {
+            string[] s = text.Split(":".ToCharArray(), 2);
+            if (s.Length != 2
+                || (temp && !(s[1].StartsWith("[" + dnTemp() + " ") && s[1].EndsWith("]") && s[1].Length.Equals(8))))
+                throw new InvalidCastException();
 
-			ushort[] b = new ushort[2];
-			b[0] = Convert.ToUInt16(s[0], 16);
-			b[1] = !temp
-				? Convert.ToUInt16(s[1], 16)
-				: Convert.ToUInt16(s[1].Substring(6, 1));
+            ushort[] b = new ushort[2];
+            b[0] = Convert.ToUInt16(s[0], 16);
+            b[1] = !temp
+                ? Convert.ToUInt16(s[1], 16)
+                : Convert.ToUInt16(s[1].Substring(6, 1));
 
-			ushort c = ExpandBCON(b, temp);
+            ushort c = ExpandBCON(b, temp);
 
-			ushort[] d = ExpandBCON(c, temp);
-			if (d[0] != b[0] || d[1] != b[1])
-				throw new InvalidCastException();
+            ushort[] d = ExpandBCON(c, temp);
+            if (d[0] != b[0] || d[1] != b[1])
+                throw new InvalidCastException();
 
-			return c;
-		}
+            return c;
+        }
 
-
-		public static ushort ToShort(byte lower, byte higher) { return (ushort)((higher << 8) + lower); }
-
-
-		public static Hashtable doidGStr = staticInitialiser();
-		private static Hashtable staticInitialiser()
-		{
-			Hashtable t = new Hashtable();
-			t.Add((byte)0x03, GS.BhavStr.DataLabels);
-			t.Add((byte)0x04, GS.BhavStr.DataLabels);
-			t.Add((byte)0x06, GS.BhavStr.GlobalLabels);
-			t.Add((byte)0x0c, GS.BhavStr.Motives);
-			t.Add((byte)0x0e, GS.BhavStr.Motives);
-			t.Add((byte)0x0f, GS.BhavStr.Motives);
-			t.Add((byte)0x12, GS.BhavStr.PersonData);
-			t.Add((byte)0x13, GS.BhavStr.PersonData);
-			t.Add((byte)0x1c, GS.BhavStr.Motives);
-			t.Add((byte)0x1d, GS.BhavStr.Motives);
-			t.Add((byte)0x20, GS.BhavStr.PersonData);
-			t.Add((byte)0x15, GS.BhavStr.OBJDDescs);
-			t.Add((byte)0x26, GS.BhavStr.OBJDDescs);
-			t.Add((byte)0x33, GS.BhavStr.OBJDDescs);
-			t.Add((byte)0x17, GS.BhavStr.RoomValues);
-			t.Add((byte)0x18, GS.BhavStr.NeighborData);
-			t.Add((byte)0x21, GS.BhavStr.JobData);
-			t.Add((byte)0x22, GS.BhavStr.NeighborhoodData);
-			t.Add((byte)0x23, GS.BhavStr.OBJFDescs);
-			t.Add((byte)0x27, GS.BhavStr.InventoryDialog);
-			t.Add((byte)0x28, GS.BhavStr.InventoryDialog);
-			return t;
-		}
+        #endregion
 
 
-		#endregion
-	}
+        public static ushort ToShort(byte lower, byte higher) { return (ushort)((higher << 8) + lower); }
+
+        #endregion
+    }
 
 	public interface IDataOwner
 	{

@@ -354,7 +354,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			set
 			{
-				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ").Replace("args: ", "args:\r\n  ").Replace("arg: ", "arg:\r\n  ");
+				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ").Replace(": ", ":\r\n  ");
 			}
 		}
 
@@ -398,7 +398,8 @@ namespace SimPe.PackedFiles.UserInterface
 			if (tprp != null)
 			{
 				// if it exists ask if user wants to preserve content
-				DialogResult dr = MessageBox.Show("Keep existing labels?"
+				DialogResult dr = MessageBox.Show(
+                    pjse.coder.Localization.Manager.GetString("keeplabels")
 					, btnTPRPMaker.Text
 					, MessageBoxButtons.YesNoCancel
 					, MessageBoxIcon.Warning);
@@ -425,16 +426,18 @@ namespace SimPe.PackedFiles.UserInterface
 			for(int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
 			{
 				int p = tprp.Add(new TPRPParamLabel(tprp));
-				tprp[false, p].Label = "Param " + arg.ToString();
+				tprp[false, p].Label = BhavWiz.dnParam() + " " + arg.ToString();
 			}
 			for(int local = minLocalC; local < wrapper.Header.LocalVarCount; local++)
 			{
 				int l = tprp.Add(new TPRPLocalLabel(tprp));
-				tprp[true, l].Label = "Local " + local.ToString();
+                tprp[true, l].Label = BhavWiz.dnLocal() + " " + local.ToString();
 			}
 			tprp.SynchronizeUserData();
 			wrapper.Package.EndUpdate();
-			MessageBox.Show("Done!", btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show(
+                pjse.coder.Localization.Manager.GetString("done")
+                , btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 
@@ -586,7 +589,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (internalchg) return;
 				internalchg = true;
-				this.Text = tbFilename.Text = wrapper.FileName;
+				/*this.Text = */tbFilename.Text = wrapper.FileName;
 				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
 				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
 				tbArgC.Text = "0x"+Helper.HexString(wrapper.Header.ArgumentCount);
@@ -2715,7 +2718,7 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.coder.Localization.Manager.GetString("errwritingfile"), ex);
 			}			
 		}
 
@@ -2739,7 +2742,8 @@ namespace SimPe.PackedFiles.UserInterface
 			Bhav bhav = ((pjse.BhavNameWizards.BhavWizBhav)currentInst).Wrapper;
 			BhavForm ui = (BhavForm)bhav.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "View BHAV: " + currentInst.ShortName + " [" + bhav.Package.SaveFileName + "]";
+			ui.Text = 
+                pjse.coder.Localization.Manager.GetString("viewbhav") + ": " + currentInst.ShortName + " [" + bhav.Package.SaveFileName + "]";
 			bhav.RefreshUI();
 			ui.Show();
 		}
