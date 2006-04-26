@@ -635,7 +635,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.start = start;
 			this.stop = stop;
-			this.lane = lane;
 			this.truerule = truerule;
 		}
 
