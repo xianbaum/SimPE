@@ -289,7 +289,7 @@ namespace pjse
 			ArrayList local = new ArrayList();
 			ArrayList nonlocal = new ArrayList();
 			foreach (Entry e in result.Keys)
-				if (!e.PFD.MarkForDelete) ((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
+				if (!e.PFD.Invalid && !e.PFD.MarkForDelete) ((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
 
 			Entry[] es = new Entry[local.Count + (localOnly ? 0 : nonlocal.Count)];
 			local.CopyTo(es, 0);
@@ -313,30 +313,30 @@ namespace pjse
 				object key = new Entry(package, i);
 
 				if (packedFiles[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("packedFiles[key] != null");
 				packedFiles[key] = val;
 
 				if (byPackage[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byPackage[key] != null");
 				byPackage[key] = val;
 
 				Hashtable byType = (Hashtable)pfByType[i.Type];
 				if (byType == null) byType = (Hashtable)(pfByType[i.Type] = new Hashtable());
 				if (byType[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byType[key] != null");
 				byType[key] = val;
 
 				Hashtable byGroup = (Hashtable)pfByGroup[i.Group];
 				if (byGroup == null) byGroup = (Hashtable)(pfByGroup[i.Group] = new Hashtable());
 				if (byGroup[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byGroup[key] != null");
 				byGroup[key] = val;
 
 				Hashtable tgt = (Hashtable)pfByTypeGroup[i.Type];
 				if (tgt == null) tgt = (Hashtable)(pfByTypeGroup[i.Type] = new Hashtable());
 				Hashtable byTypeGroup = (Hashtable)((tgt[i.Group] == null) ? (tgt[i.Group] = new Hashtable()) : tgt[i.Group]);
 				if (byTypeGroup[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byTypeGroup[key] != null");
 				byTypeGroup[key] = val;
 
 				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[i.Type];
@@ -344,7 +344,7 @@ namespace pjse
 				Hashtable tgitg = (Hashtable)((tgit[i.Group] == null) ? (tgit[i.Group] = new Hashtable()) : tgit[i.Group]);
 				Hashtable byTypeGroupInstance = (Hashtable)((tgitg[i.Instance] == null) ? (tgitg[i.Instance] = new Hashtable()) : tgitg[i.Instance]);
 				if (byTypeGroupInstance[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byTypeGroupInstance[key] != null");
 				byTypeGroupInstance[key] = val;
 			}
 			if (isFixed)
@@ -465,7 +465,7 @@ namespace pjse
 
 		public override string ToString()
 		{
-			return "PJSE\\Filetable &Settings";
+			return "PJSE\\" + pjse.filetable.Localization.GetString("FiletableSettings");
 		}
 
 		#endregion
