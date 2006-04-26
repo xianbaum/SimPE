@@ -1,4 +1,13 @@
 
+26 April 2006 18:11 - Enable localisation
+  pjse GUID Tool\
+    AssemblyInfo.cs 1.1.14.1.10.1
+    GUIDTool.cs 1.10.16.1
+    GUIDTool.resx 1.4.26.1
+    Localization.cs 1.1.2.1
+    Localization.resx 1.1.2.1
+    pjse GUID Tool.csproj 1.6.10.3.2.1
+
 26 April 2006 09:37 - Change to .NET2
   pjse GUID Tool\
     pjse GUID Tool.csproj 1.6.10.2.2.1
