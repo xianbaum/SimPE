@@ -1,4 +1,8 @@
 
+26 April 2006 09:37 - Change to .NET2
+  pjse GUID Tool\
+    pjse GUID Tool.csproj 1.6.10.2.2.1
+
 23 April 2006 13:55 - Change post-build event to match pjse coder plugin
   pjse GUID Tool\
     pjse GUID Tool.csproj 1.6.10.2
