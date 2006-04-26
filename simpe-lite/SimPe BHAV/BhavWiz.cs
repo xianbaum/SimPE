@@ -295,7 +295,7 @@ namespace pjse
                 case 0x1f:
                 case 0x30:
                 case 0x31:
-                    doidName = doidName.Replace("[temp]", "[" + dnTemp() + " " + instance.ToString() + "]");
+                    doidName = doidName.Replace("[temp]", "[" + dataOwner(0x08, instance) + "]");
                     s = "";
                     break;
                 case 0x16:
@@ -313,7 +313,7 @@ namespace pjse
                 case 0x2f:
                     doidName = dnConst();
                     bcon = ExpandBCON(instance, true);
-                    s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[" + dnTemp() + " " + bcon[1].ToString() + "]";
+                    s = "0x" + SimPe.Helper.HexString(bcon[0]) + ":[" + dataOwner(0x08, bcon[1]) + "]";
                     temp = readBcon((uint)bcon[0], bcon[1], true);
                     if (temp.Length > 0)
                         s += " (" + temp + ")";
@@ -350,6 +350,9 @@ namespace pjse
                 case 0x30:
                 case 0x31:
                     return dataOwner(doid, instance);
+                case 0x16:
+                case 0x32:
+                    return DoidName(doid).Replace("[param]", "[" + dnParam() + " 0x" + SimPe.Helper.HexString(instance) + "]");
                 case 0x1a:
                     bcon = ExpandBCON(instance, false);
                     return dnConst()
@@ -357,7 +360,7 @@ namespace pjse
                 case 0x2f:
                     bcon = ExpandBCON(instance, true);
                     return dnConst()
-                        + " 0x" + SimPe.Helper.HexString(bcon[0]) + ":[" + dnTemp() + " " + bcon[1].ToString() + "]";
+                        + " 0x" + SimPe.Helper.HexString(bcon[0]) + ":[" + dataOwner(0x08, bcon[1]) + "]";
                 default:
                     return DoidName(doid) + " 0x" + SimPe.Helper.HexString(instance);
             }

@@ -354,7 +354,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			set
 			{
-				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ").Replace(": ", ":\r\n  ");
+				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ")
+                    .Replace(pjse.coder.Localization.GetString("onearg") + ": ", ":\r\n  ")
+                    .Replace(pjse.coder.Localization.GetString("manyarg") + ": ", ":\r\n  ")
+                    ;
 			}
 		}
 

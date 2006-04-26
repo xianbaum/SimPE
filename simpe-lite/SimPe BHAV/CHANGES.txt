@@ -1,6 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 !!! stole Global STR# 0x1f3 for TNS Style
 
+26 April 2006 20:24 - Parsing/Localisation fixes and tidy ups
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.13.4.2
+    BhavWiz.cs 1.37.2.13.4.2
+
 26 April 2006 19:22 - Enable localisation
   * BhavWiz.cs: moved in class GS from GlobalStr.cs; added several DoidName helpers; much re-organisation
   * Renamed "boolset" to "Boolset" to make it look more like a class than a primitive type
