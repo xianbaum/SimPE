@@ -139,6 +139,8 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            FuncLocationFlags = 0x1f1, // PJSE: string number stolen
+            GenericsDesc = 0x1f2, // PJSE: string number stolen
             TnsStyle = 0x1f3,	// PJSE: string number stolen
             //Str0x01f4 .. 1fd unused
             GosubAction = 0x1fe, // See Gosub Action prim
@@ -245,10 +247,10 @@ namespace pjse
 
         #region DataOwner routines
         public static String DoidName(byte doid) { return readStr(GS.BhavStr.DataOwners, doid); }
+        public static String dnTemp()  { return DoidName(0x08); }
         public static String dnParam() { return DoidName(0x09); }
         public static String dnLocal() { return DoidName(0x19); }
         public static String dnConst() { return DoidName(0x1a); }
-        public static String dnTemp() { return DoidName(0x09); }
 
         protected string dataOwner(byte doid, ushort instance)
         {
@@ -274,6 +276,12 @@ namespace pjse
                     temp = readStr(Scope.SemiGlobal, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.ValueOnly);
                     if (temp != null && temp.Length > 0)
                         s += " (" + temp + ")";
+                    break;
+                case 0x03:
+                    if (instance == 0x0b) { doidName = pjse.coder.Localization.GetString("me"); s = ""; }
+                    break;
+                case 0x04:
+                    if (instance == 0x0b) { doidName = pjse.coder.Localization.GetString("stackobj"); s = "";  }
                     break;
                 case 0x09:
                     temp = readParam(instruction.Parent, instance, pjse.Detail.Errors);
@@ -367,6 +375,7 @@ namespace pjse
         }
 
         protected string dataOwner(bool lng, byte doid, byte lo, byte hi) { return dataOwner(lng, doid, ToShort(lo, hi)); }
+
         public static Hashtable doidGStr = staticInitialiser();
         private static Hashtable staticInitialiser()
         {
@@ -448,7 +457,7 @@ namespace pjse
 
             if (str != null)
             {
-                FallbackStrItem fsi = str[sid];
+                FallbackStrItem fsi = str[(byte)SimPe.Helper.WindowsRegistry.LanguageCode, sid];
                 if (fsi != null && fsi.strItem != null)
                 {
                     String s = "";
@@ -458,6 +467,8 @@ namespace pjse
                         for (int i = 0; i < fsi.fallback.Count; i++) s += (i == 0 ? "" : "; ") + fsi.fallback[i];
                         s += "] ";
                     }
+                    if (detail == Detail.Full && fsi.fallback == null && fsi.lidFallback)
+                        s += "[" + pjse.coder.Localization.GetString("Fallback") + ": LID=1]";
                     if (addQuotes)
                         return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full ? " [" + pfname + "]" : "");
                     else

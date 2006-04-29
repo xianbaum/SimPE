@@ -45,9 +45,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 		private string genericSimsCallparamText(int i)
 		{
-			if (i >= WizPrim0x0001.parms.Length) return "[" + pjse.coder.Localization.GetString("unkargs") + "]";
-			else if (WizPrim0x0001.parms[i].Trim().Length == 0) return pjse.coder.Localization.GetString("noargs");
-			else return WizPrim0x0001.parms[i].Trim();
+            return BhavWiz.readStr(GS.BhavStr.GenericsDesc, (ushort)i);
 		}
 
 

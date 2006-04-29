@@ -27,8 +27,8 @@
  * the C source of disaSim2, mostly using some quick global replaces.  I (plj)
  * cannot claim any intellectual property rights over that!  Of course, if you
  * find something that this code gets wrong - whether disaSim2 gets it right
- * or not - please let me know by posting on the PJSE forum
- * http://simlogical.com/SMF/index.php?board=3.0
+ * or not - please let me know by posting on the PJSE forum at
+ * http://simlogical.com
  */
 
 using System;
@@ -42,7 +42,7 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public abstract class BhavWizPrim : BhavWiz
 	{
-		protected BhavWizPrim(Instruction i) : base (i) { prefix = "prim"; }
+		protected BhavWizPrim(Instruction i) : base (i) { prefix = pjse.coder.Localization.GetString("prim"); }
 
 		public static implicit operator BhavWizPrim(Instruction i)
 		{
@@ -149,7 +149,7 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrimDefault(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng) { return "not yet translated"; }
+        protected override string Operands(bool lng) { return pjse.coder.Localization.GetString("nyt"); }
 
 	}
 
@@ -189,17 +189,10 @@ namespace pjse.BhavNameWizards
 			return new pjse.BhavOperandWizards.BhavOperandWiz0x0001(instruction);
 		}
 
-
 		protected override string Operands(bool lng)
 		{
-			string s = readStr(GS.BhavStr.Generics, instruction.Operands[0]);
-			if (lng)
-			{
-				if (instruction.Operands[0] >= parms.Length) s += " ([UNK args])";
-				else if (parms[instruction.Operands[0]].Trim().Length == 0) s += " (no args)";
-				else s += " (" + parms[instruction.Operands[0]].Trim() + ")";
-			}
-			return s;
+            return readStr(GS.BhavStr.Generics, instruction.Operands[0])
+                + (lng ? " (" + readStr(GS.BhavStr.GenericsDesc, instruction.Operands[0]) + ")" : "" );
 #if DISASIM
                 case 0x01:  // Generic Sims Call
                     c1 = b[x];
@@ -292,67 +285,6 @@ namespace pjse.BhavNameWizards
                     break;
 #endif
 		}
-
-
-		public static string[] parms =
-		{
-			#region genericSimsCall param descriptions
-			"Temp 0:neighborhood, Temp 1:evict, Temp 2:save lot, Temp 3:reset tutorial" // 0x00
-			,"" // 0x01
-			,"" // 0x02
-			,"" // 0x03
-			,"Stack Obj:nID, Temp 0:familyID" // 0x04
-			,"Temp 0:familyID" // 0x05
-			,"Stack Obj:nID" // 0x06
-			,"" // 0x07
-			,"" // 0x08
-			,"" // 0x09
-			,"" // 0x0a
-			,"" // 0x0b
-			,"Temp 0:result value" // 0x0c
-			,"Stack Obj" // 0x0d
-			,"Temp 0:result value" // 0x0e
-			,"Temp 0:result value" // 0x0f
-			,"" // 0x10
-			,"Temp 0:lotID" // 0x11
-			,"Temp 0:speed" // 0x12
-			,"Temp 0:neighbor ID" // 0x13
-			,"Temp 0:family" // 0x14
-			,"Temp 0:child nID, Temp 1:parent nID" // 0x15
-			,"Temp 0:new spouse nID, Temp 1:initial spouse nID" // 0x16
-			,"Temp 0:remove nID, Temp 1:relative nID" // 0x17
-			,"Temp 0:age" // 0x18
-			,"Temp 0" // 0x19
-			,"" // 0x1a
-			,"Temp 0:result value" // 0x1b
-			,"Temp 0:amount, Temp 2:multiplier" // 0x1c
-			,"Temp 0:nID" // 0x1d
-			,"Temp 0:outfit" // 0x1e
-			,"Temp 0,1:GUID" // 0x1f
-			,"Temp 0:outfit, Temp 1:result value" // 0x20
-			,"" // 0x21
-			,"Temp 0:source, Temp 1:destination, Temp 2:result value" // 0x22
-			,"Temp 0:lotID, Temp 1:result value" // 0x23
-			,"Temp 0:lotID, Temp 1:result value" // 0x24
-			,"" // 0x25
-			,"Temp 0:nID" // 0x26
-			,"" // 0x27
-			,"Temp 0" // 0x28
-			,"Temp 0" // 0x29
-			,"" // 0x2a
-			,"" // 0x2b
-			,"Temp 0" // 0x2c
-			,"Temp 0:source, Stack Obj:destination" // 0x2d
-			,"Temp 0:tableID, Temp 1:index, Temp 3:fallback" // 0x2e
-			,"" // 0x2f
-			,"Temp 0:nID, Temp 1:result value" // 0x30
-			,"Temp 0" // 0x31
-			,"Temp 0:take, Temp 1:target nID, Temp 2:percent, Temp 3,4:amount, Temp 5:from assets" // 0x32
-			,"Temp 0" // 0x33
-			,"Temp 0:direction, Temp 1:result wall obj" // 0x34
-			,"Temp 0:tableID, Temp 1:index, Temp 2:state, Temp 3:fallback" // 0x35
-			#endregion
-		};
 	}
 
 	public class WizPrim0x0002 : BhavWizPrim	// Expression
@@ -363,7 +295,6 @@ namespace pjse.BhavNameWizards
 		{
 			return new pjse.BhavOperandWizards.BhavOperandWiz0x0002(instruction);
 		}
-
 
 		protected override string Operands(bool lng)
 		{
@@ -383,7 +314,7 @@ namespace pjse.BhavNameWizards
 
 			if (lng && _operator >= 8 && _operator <= 10) // Flag operation
 			{
-				s+= "flag# " + dataOwner(rhs_data_owner, rhs_value_word);
+				s+= pjse.coder.Localization.GetString("flagnr") + " " + dataOwner(rhs_data_owner, rhs_value_word);
 				if (rhs_data_owner == 7 && flagname(lhs_data_owner, lhs_value_word, rhs_value_word) != null)
 					s += " (" + flagname(lhs_data_owner, lhs_value_word, rhs_value_word) + ")";
 			}
@@ -520,23 +451,37 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			if (o[2] == 0)
-				s += "for the N current worst motives.";
+                s += pjse.coder.Localization.GetString("bwp03_nworst");
 			else
 			{
 				int motives = ToShort(o[0], o[1]);
-				s += "For motive(s): ";
-				for (ushort i = 0; i < 16; i++)   // this should only find 1 motive (if any)
-					if ((motives & (1 << i)) != 0)
-						s += readStr(GS.BhavStr.Motives, i) + "; ";
+                s += pjse.coder.Localization.GetString("bwp03_formotive")
+                    + ": ";
+                bool found = false;
+                for (ushort i = 0; i < 16; i++)   // this should only find 1 motive (if any)
+                    if ((motives & (1 << i)) != 0)
+                    {
+                        s += (found ? "; " : "") + readStr(GS.BhavStr.Motives, i);
+                        found = true;
+                    }
+                if (!found) s += "("
+                    + pjse.coder.Localization.GetString("none")
+                    + ")";
 				if (lng)
-					s += "with remaining motives from the worst: " + ((o[2] & 0x01) != 0).ToString();
+                    s += ", "
+                        + pjse.coder.Localization.GetString("bwp03_remworst")
+                        + ": " + ((o[2] & 0x01) != 0).ToString();
 			}
 			if (lng)
 			{
-				s += ", Only in room held in Temp 0: "        + ((o[3] & 0x02) != 0).ToString();
-				s += ", Include Out Of World objects: "       + ((o[3] & 0x04) != 0).ToString();
-				s += ", Only nested: "                        + ((o[3] & 0x08) != 0).ToString();
-				s += ", Only on current Interaction object: " + ((o[3] & 0x10) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp03_inroom")
+                    + " " + this.dataOwner(0x08, 0) + " " + ((o[3] & 0x02) != 0).ToString(); // Temp
+                s += ", " + pjse.coder.Localization.GetString("bwp03_oow")
+                    + ": " + ((o[3] & 0x04) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp03_nested")
+                    + ": " + ((o[3] & 0x08) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp03_oninteraction")
+                    + ": " + ((o[3] & 0x10) != 0).ToString();
 			}
 
 			return s;
@@ -621,9 +566,7 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			return dataOwner(lng, o[2], o[0], o[1])
-				+ (lng ? " := random from 0 to < " : ", ")
-				+ dataOwner(lng, o[6], o[4], o[5]);
+            return dataOwner(lng, o[2], o[0], o[1]) + " := 0 .. < " + dataOwner(lng, o[6], o[4], o[5]);
 #if DISASIM
                 case 0x08:  // Random Number (false = error)
                     w1 = *(UINT16 *) (&b[x]);
@@ -649,12 +592,20 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "to Stack Object " : "") + "from " + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(lng, o[3], o[4], o[5]) : "Me");
-			s += ", into " + dataOwner(lng, 0x08, o[0], o[1]); // temp
-			if (lng)
-			{
-				s += ", in 1/100ths tile: " + ((o[6] & 0x02) != 0).ToString();
-			}
+            s += dataOwner(lng, 0x08, o[0], o[1]); // temp
+            s += " := ";
+            s += ((o[2] & 0x01) != 0
+                    ? dataOwner(lng, o[3], o[4], o[5])
+                    : dataOwner(0x03, 0x0b) // Me
+                    )
+                ;
+            s += " .. " + dataOwner(0x04, 0x0b); // Stack Object
+            if (lng)
+            {
+                s += ", "
+                    + pjse.coder.Localization.GetString("bwp0b_100tile")
+                    + ": " + ((o[6] & 0x02) != 0).ToString();
+            }
 
 			return s;
 #if DISASIM
@@ -688,12 +639,20 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "to Stack Object " : "") + "from " + ((o[4] & 0x01) != 0 ? "obj in " + dataOwner(lng, o[5], o[6], o[7]) : "Me");
-			s += ", into " + dataOwner(lng, o[2], o[0], o[1]);
-			if (lng)
-			{
-				s += ", in degrees: " + ((o[8] & 0x02) == 0).ToString();
-			}
+            s += dataOwner(lng, o[2], o[0], o[1]);
+            s += " := ";
+            s += ((o[4] & 0x01) != 0
+                    ? dataOwner(lng, o[5], o[6], o[7])
+                    : dataOwner(0x03, 0x0b) // Me
+                    )
+                ;
+            s += " .. " + dataOwner(0x04, 0x0b); // Stack Object
+            if (lng)
+            {
+                s += ", "
+                    + pjse.coder.Localization.GetString("bwp0c_degrees")
+                    + ": " + ((o[8] & 0x02) == 0).ToString();
+            }
 
 			return s;
 #if DISASIM
@@ -727,35 +686,44 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			if ((o[3] & 0x10) != 0)
-				s += (lng ? "getting interaction # from " : "# [") + dataOwner(lng, o[5], o[6], o[7]) + (lng ? "" : "]");
+            if (lng)
+                s += pjse.coder.Localization.GetString("Target") + ": " + dataOwner(0x04, 0x0b) + ", "; // Stack Object
+
+            s += (lng ? pjse.coder.Localization.GetString("Object") + ": " : "")
+                + dataOwner(lng, (byte)((o[3] & 0x02) != 0 ? 0x19 : 0x09), o[1]);	// local | param
+
+            s += ", " + (lng ? pjse.coder.Localization.GetString("Interaction") + ": " : "");
+            if ((o[3] & 0x10) != 0)
+				s += dataOwner(lng, o[5], o[6], o[7]);
 			else if ((o[14] & 2) != 0)
-				s += (lng ? "getting interaction # from results of " : "# [") + "last FBA call" + (lng ? "" : "]");
+                s += pjse.coder.Localization.GetString("bwp0d_lastfba");
 			else
-				s += "# 0x" + SimPe.Helper.HexString(o[0]);
+				s += dataOwner(lng, 0x07, o[0]); // Literal
 
-			s +=  " of " + dataOwner(lng, (byte)((o[3] & 0x02) != 0 ? 0x19 : 0x09), o[1]);	// local | param
-
-			s += (lng ? " onto the stack object's queue, " : ", ") + readStr(GS.BhavStr.Priorities, o[2]);
+            s += ", " + readStr(GS.BhavStr.Priorities, o[2]);
 
 			if (lng)
 			{
 				if ((o[3] & 0x01) != 0)
-					s += ", use icon from " + dataOwner(0x19, o[4]); // Local
+					s += ", " + pjse.coder.Localization.GetString("bwp0d_IconObject") + ": " + dataOwner(0x19, o[4]); // Local
 				else if ((o[14] & 4) != 0)
-					s += ", use icon from selector GUID in Temp 4,5";
+                    s += ", " + pjse.coder.Localization.GetString("bwp0d_IconObject") + ": " + dataOwner(0x08, 0x04) + ",5"; // Temp
 
-				if ((o[14] & 0x08) != 0)
-					s += ", Getting Icon Index from Temp 6";
-				else
-					s += ", Icon Index is 0x" + SimPe.Helper.HexString(o[15]);
+                s += ", " + pjse.coder.Localization.GetString("bwp0d_IconIndex") + ": "
+                    + ((o[14] & 0x08) != 0
+                        ? dataOwner(0x08, 0x06) // Temp
+                        : dataOwner(0x07, o[15]) // Literal
+                        )
+                    ;
 
-				if ((o[14] & 0x01) != 0) s += ", passing on Caller's params 0 to 3";
+                if ((o[14] & 0x01) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_callersparams");
 				// if (o[3] & 4) ht_fprintf(outFile,TYPE_NORMAL,", continue as current");
-				if ((o[3] & 0x08) != 0) s += ", use name";
-				if ((o[3] & 0x20) != 0) s += ", force run Check Tree";
-				if ((o[3] & 0x40) != 0) s += ", linking to interaction with ID in " + dataOwner(o[8], o[9], o[10]);
-				if ((o[3] & 0x80) != 0) s += ", returing ID in " + dataOwner(o[11], o[12], o[13]);
+				if ((o[3] & 0x08) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_usename");
+                if ((o[3] & 0x20) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_forcerun");
+                if ((o[3] & 0x40) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_linkto")
+                    + " " + dataOwner(o[8], o[9], o[10]);
+                if ((o[3] & 0x80) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_returnID")
+                    + " " + dataOwner(o[11], o[12], o[13]);
 			}
 
 			return s;
@@ -821,12 +789,12 @@ namespace pjse.BhavNameWizards
 			s += readStr(GS.BhavStr.FunctionTable, o[0]);
 			if (lng)
 			{
-				s += ", Outside Only: "     + ((o[2] & 0x01) != 0).ToString();
-				s += ", Inside Only: "      + ((o[2] & 0x02) != 0).ToString();
-				s += ", In Room Only: "     + ((o[2] & 0x04) != 0).ToString();
-				s += ", In Line Of Sight: " + ((o[2] & 0x10) != 0).ToString();
-				s += ", Ignoring Lockout: " + ((o[2] & 0x40) != 0).ToString();
-				s += ", Relative to " + ((o[2] & 0x08) != 0 ? "object in " + dataOwner(o[3], o[4], o[5]) : "Me");
+                byte[] flags = { 0x01, 0x02, 0x04, 0x00, 0x10, 0x00, 0x40, 0x00, };
+                for (int i = 0; i < flags.Length; i++)
+                    if (flags[i] != 0)
+                    s += ", " + readStr(GS.BhavStr.FuncLocationFlags, (ushort)(i+1)) + ": " + ((o[2] & flags[i]) != 0).ToString();
+                s += ", " + readStr(GS.BhavStr.FuncLocationFlags, 4) + ": "
+                    + ((o[2] & 0x08) != 0 ? dataOwner(o[3], o[4], o[5]) : dataOwner(0x03, 0x0b)); // Me
 			}
 
 			return s;

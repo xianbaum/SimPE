@@ -214,8 +214,8 @@ namespace pjse
 						fsi.strItem = Wrapper[1, sid]; // try to find instance/1/sid at scope
 						if (!this.rejectStrItem(fsi))
 						{
-							if (fsi.fallback.Count == 0)
-								fsi.fallback.Add(pjse.coder.Localization.GetString("Fallback") + ": LID=1");
+							if (fsi.fallback.Count == 0) // ignore unless this is the first / only fallback
+                                fsi.lidFallback = true;
 							return fsi;
 						}
 					}
@@ -285,6 +285,7 @@ namespace pjse
 	public class FallbackStrItem
 	{
 		public ArrayList fallback = new ArrayList();
+        public bool lidFallback = false;
 		public StrItem strItem = null;
 	}
 

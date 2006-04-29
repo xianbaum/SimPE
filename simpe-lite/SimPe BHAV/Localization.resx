@@ -256,4 +256,83 @@ Check BHAV format and number of lines.</value>
   <data name="zeros" xml:space="preserve">
     <value>zeros</value>
   </data>
+  <data name="bwp03_formotive" xml:space="preserve">
+    <value>for motive(s)</value>
+  </data>
+  <data name="bwp03_inroom" xml:space="preserve">
+    <value>Only in room held in</value>
+  </data>
+  <data name="bwp03_nested" xml:space="preserve">
+    <value>Only nested</value>
+  </data>
+  <data name="bwp03_nworst" xml:space="preserve">
+    <value>for the N current worst motives</value>
+  </data>
+  <data name="bwp03_oninteraction" xml:space="preserve">
+    <value>Only on current Interaction object</value>
+  </data>
+  <data name="bwp03_oow" xml:space="preserve">
+    <value>Include Out Of World objects</value>
+  </data>
+  <data name="bwp03_remworst" xml:space="preserve">
+    <value>with remaining motives from the worst</value>
+  </data>
+  <data name="bwp0b_100tile" xml:space="preserve">
+    <value>in 1/100ths tile</value>
+  </data>
+  <data name="bwp0c_degrees" xml:space="preserve">
+    <value>in degrees</value>
+  </data>
+  <data name="bwp0d_callersparams" xml:space="preserve">
+    <value>passing on Caller's params 0 to 3</value>
+  </data>
+  <data name="bwp0d_forcerun" xml:space="preserve">
+    <value>force run Check Tree</value>
+  </data>
+  <data name="bwp0d_IconIndex" xml:space="preserve">
+    <value>Icon index</value>
+  </data>
+  <data name="bwp0d_IconObject" xml:space="preserve">
+    <value>Icon object</value>
+  </data>
+  <data name="bwp0d_lastfba" xml:space="preserve">
+    <value>from last FBA call</value>
+  </data>
+  <data name="bwp0d_linkto" xml:space="preserve">
+    <value>linking to interaction</value>
+  </data>
+  <data name="bwp0d_returnID" xml:space="preserve">
+    <value>returning ID in</value>
+  </data>
+  <data name="bwp0d_usename" xml:space="preserve">
+    <value>use name</value>
+  </data>
+  <data name="flagnr" xml:space="preserve">
+    <value>flag#</value>
+  </data>
+  <data name="Interaction" xml:space="preserve">
+    <value>Interaction</value>
+  </data>
+  <data name="lcPrim" xml:space="preserve">
+    <value>prim</value>
+    <comment>BhavWizPrim prefix value</comment>
+  </data>
+  <data name="me" xml:space="preserve">
+    <value>Me</value>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="nyt" xml:space="preserve">
+    <value>not yet translated</value>
+  </data>
+  <data name="Object" xml:space="preserve">
+    <value>Object</value>
+  </data>
+  <data name="stackobj" xml:space="preserve">
+    <value>Stack Object</value>
+  </data>
+  <data name="Target" xml:space="preserve">
+    <value>Target</value>
+  </data>
 </root>
