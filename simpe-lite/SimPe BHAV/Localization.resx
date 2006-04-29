@@ -117,99 +117,143 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="Min.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+  <data name="errwritingfile" xml:space="preserve">
+    <value>Error while writing to File</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Min.MaxLength" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="errconvert" xml:space="preserve">
+    <value>Error Assigning a Value</value>
   </data>
-  <data name="Min.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 20</value>
+  <data name="unknown" xml:space="preserve">
+    <value>Unknown</value>
   </data>
-  <data name="Min.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="unk" xml:space="preserve">
+    <value>UNK</value>
   </data>
-  <data name="Min.Text" xml:space="preserve">
-    <value>DDDD</value>
+  <data name="bhavnotfound" xml:space="preserve">
+    <value>[BHAV not found]</value>
   </data>
-  <data name="&gt;&gt;Min.Name" xml:space="preserve">
-    <value>Min</value>
+  <data name="done" xml:space="preserve">
+    <value>Done!</value>
   </data>
-  <data name="&gt;&gt;Min.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="Global" xml:space="preserve">
+    <value>Global</value>
+    <comment>Scope enum</comment>
   </data>
-  <data name="&gt;&gt;Min.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="invalid" xml:space="preserve">
+    <value>invalid</value>
   </data>
-  <data name="&gt;&gt;Min.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="keeplabels" xml:space="preserve">
+    <value>Keep existing labels?</value>
   </data>
-  <data name="Delta.Location" type="System.Drawing.Point, System.Drawing">
-    <value>44, 0</value>
+  <data name="notset" xml:space="preserve">
+    <value>not set</value>
   </data>
-  <data name="Delta.MaxLength" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="Private" xml:space="preserve">
+    <value>Private</value>
+    <comment>Scope enum</comment>
   </data>
-  <data name="Delta.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 20</value>
+  <data name="SemiGlobal" xml:space="preserve">
+    <value>SemiGlobal</value>
+    <comment>Scope enum</comment>
   </data>
-  <data name="Delta.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
   </data>
-  <data name="Delta.Text" xml:space="preserve">
-    <value>DDDD</value>
+  <data name="viewbhav" xml:space="preserve">
+    <value>View BHAV</value>
   </data>
-  <data name="&gt;&gt;Delta.Name" xml:space="preserve">
-    <value>Delta</value>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
   </data>
-  <data name="&gt;&gt;Delta.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="empty" xml:space="preserve">
+    <value>empty</value>
   </data>
-  <data name="&gt;&gt;Delta.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="String" xml:space="preserve">
+    <value>String</value>
   </data>
-  <data name="&gt;&gt;Delta.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="Adult" xml:space="preserve">
+    <value>Adult</value>
+    <comment>TtabMotives enum</comment>
   </data>
-  <data name="Type.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 0</value>
+  <data name="Cat" xml:space="preserve">
+    <value>Cat</value>
+    <comment>TtabMotives enum</comment>
   </data>
-  <data name="Type.MaxLength" type="System.Int32, mscorlib">
-    <value>4</value>
+  <data name="Child" xml:space="preserve">
+    <value>Child</value>
+    <comment>TtabMotives enum</comment>
   </data>
-  <data name="Type.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 20</value>
+  <data name="Dog" xml:space="preserve">
+    <value>Dog</value>
+    <comment>TtabMotives enum</comment>
   </data>
-  <data name="Type.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+  <data name="Elder" xml:space="preserve">
+    <value>Elder</value>
+    <comment>TtabMotives enum</comment>
   </data>
-  <data name="Type.Text" xml:space="preserve">
-    <value>DDDD</value>
+  <data name="Teen" xml:space="preserve">
+    <value>Teen</value>
+    <comment>TtabMotives enum</comment>
   </data>
-  <data name="&gt;&gt;Type.Name" xml:space="preserve">
-    <value>Type</value>
+  <data name="Toddler" xml:space="preserve">
+    <value>Toddler</value>
+    <comment>TtabMotives enum</comment>
   </data>
-  <data name="&gt;&gt;Type.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="false" xml:space="preserve">
+    <value>false</value>
+    <comment>BhavInstListUI</comment>
   </data>
-  <data name="&gt;&gt;Type.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="noargs" xml:space="preserve">
+    <value>no args</value>
   </data>
-  <data name="&gt;&gt;Type.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="notfound" xml:space="preserve">
+    <value>not found</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 24</value>
+  <data name="toomanylines" xml:space="preserve">
+    <value>Failed to add a new line.
+Check BHAV format and number of lines.</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>TtabSingleMotiveUI</value>
+  <data name="true" xml:space="preserve">
+    <value>true</value>
+    <comment>BhavInstListUI</comment>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.UserControl, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="unkargs" xml:space="preserve">
+    <value>args unknown</value>
+  </data>
+  <data name="all" xml:space="preserve">
+    <value>all</value>
+  </data>
+  <data name="callerparams" xml:space="preserve">
+    <value>caller's params</value>
+  </data>
+  <data name="Fallback" xml:space="preserve">
+    <value>Fallback</value>
+  </data>
+  <data name="lcGlobal" xml:space="preserve">
+    <value>global</value>
+    <comment>BhavWizBhav prefix value</comment>
+  </data>
+  <data name="lcPrivate" xml:space="preserve">
+    <value>private</value>
+    <comment>BhavWizBhav prefix value</comment>
+  </data>
+  <data name="lcSemiGlobal" xml:space="preserve">
+    <value>semi</value>
+    <comment>BhavWizBhav prefix value</comment>
+  </data>
+  <data name="manyArg" xml:space="preserve">
+    <value>args</value>
+  </data>
+  <data name="menuhelp" xml:space="preserve">
+    <value>&amp;Help</value>
+  </data>
+  <data name="oneArg" xml:space="preserve">
+    <value>arg</value>
+  </data>
+  <data name="unkops" xml:space="preserve">
+    <value>unknown operands</value>
+  </data>
+  <data name="zeros" xml:space="preserve">
+    <value>zeros</value>
   </data>
 </root>

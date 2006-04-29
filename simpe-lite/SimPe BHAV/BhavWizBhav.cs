@@ -44,19 +44,19 @@ namespace pjse.BhavNameWizards
 
 			if (i.OpCode < 0x1000)
 			{
-				prefix = "global";
+				prefix = pjse.coder.Localization.GetString("lcGlobal");
 				group = i.Parent.GlobalGroup;
 			}
 
 			else if (i.OpCode < 0x2000)
 			{
-				prefix = "private";
+				prefix = pjse.coder.Localization.GetString("lcPrivate");
 				group = (i.Parent.Context == Scope.Private) ? i.Parent.Group : 0xffffffff;
 			}
 
 			else
 			{
-				prefix = "semi";
+				prefix = pjse.coder.Localization.GetString("lcSemiGlobal");
 				group = (i.Parent.Context == Scope.SemiGlobal) ? i.Parent.Group : i.Parent.SemiGroup;
 			}
 
@@ -99,7 +99,7 @@ namespace pjse.BhavNameWizards
 			get
 			{
 				pjse.FileTable.Entry ftEntry = FTEntry;
-				return (ftEntry != null) ? ftEntry : "[BHAV not found]";
+                return (ftEntry != null) ? ftEntry : pjse.coder.Localization.GetString("bhavnotfound");
 			}
 		}
 
@@ -134,11 +134,15 @@ namespace pjse.BhavNameWizards
 			int thisArgc = bhav.Header.ArgumentCount;
 
 			if (thisArgc == 0)
-				return lng ? "no args" : "";
+                return lng ? pjse.coder.Localization.GetString("noargs") : "";
 
 			string s = "";
 			if (lng)
-				s += thisArgc.ToString() + " arg" + (thisArgc == 1 ? "" : "s") + ": ";
+				s += thisArgc.ToString() + " "
+                    + (thisArgc == 1
+                        ? pjse.coder.Localization.GetString("oneArg")
+                        : pjse.coder.Localization.GetString("manyArgs"))
+                    + ": ";
 
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
@@ -149,7 +153,7 @@ namespace pjse.BhavNameWizards
 				noOperands = o[i] == 0xFF;
 
 			byte nv = instruction.NodeVersion;
-			boolset b12 = o[12];
+			Boolset b12 = o[12];
 			TPRP tprp = bhav.TPRPResource;
 
 
@@ -230,7 +234,7 @@ namespace pjse.BhavNameWizards
 		private string doParams(int thisArgc, int myArgc, bool lng, TPRP tprp)
 		{
 			if (!lng)
-				return "caller's params";
+                return pjse.coder.Localization.GetString("callerparams");
 
 			string s = "";
 			for (int i = 0; thisArgc > 0 && i < myArgc; i++, thisArgc--)
@@ -252,7 +256,8 @@ namespace pjse.BhavNameWizards
 				return doUnknown(thisArgc, lng, tprp, start);
 
 			if (!lng)
-				return (start > 0 ? "," : "all") + " zeros";
+				return (start > 0 ? "," : pjse.coder.Localization.GetString("all")) + " "
+                    + pjse.coder.Localization.GetString("zeros");
 
 			string s = "";
 			for (int i = start; thisArgc > 0 && i < 8; i++, thisArgc--)
@@ -271,7 +276,8 @@ namespace pjse.BhavNameWizards
 		private string doUnknown(int thisArgc, bool lng, TPRP tprp, int start)
 		{
 			if (!lng)
-				return (start > 0 ? ", " : "") + "unknown operands";
+				return (start > 0 ? ", " : "")
+                    + pjse.coder.Localization.GetString("unkops");
 
 			string s = "";
 			for (int i = start; thisArgc > 0; i++, thisArgc--)

@@ -230,7 +230,7 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.coder.Localization.Manager.GetString("errwritingfile"), ex);
 			}
 
 			btnCommit.Enabled = wrapper.Changed;
@@ -266,7 +266,8 @@ namespace SimPe.PackedFiles.UserInterface
 			if (trcn != null)
 			{
 				// if it exists ask if user wants to preserve content
-				DialogResult dr = MessageBox.Show("Keep existing labels?"
+				DialogResult dr = MessageBox.Show(
+                    pjse.coder.Localization.Manager.GetString("keeplabels")
 					, btnTRCNMaker.Text
 					, MessageBoxButtons.YesNoCancel
 					, MessageBoxIcon.Warning);
@@ -297,7 +298,9 @@ namespace SimPe.PackedFiles.UserInterface
 			trcn.SynchronizeUserData();
 			wrapper.Package.EndUpdate();
 			this.updateLists();
-			MessageBox.Show("Done!", btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show(
+                pjse.coder.Localization.Manager.GetString("done")
+                , btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		#endregion
 

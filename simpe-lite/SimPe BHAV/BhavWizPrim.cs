@@ -2539,7 +2539,7 @@ namespace pjse.BhavNameWizards
 			s += "to " + readStr(GS.BhavStr.SnapType, snapType);
 
 			if (snapType == 0 && (o[4] & 0x08) == 0)
-				s = s.Replace("Param", dataOwner(lng, 0x09, o[0], o[1])); // Param
+				s = s.Replace(dnParam(), dataOwner(lng, 0x09, o[0], o[1])); // Param
 			else if (snapType == 0 || snapType == 3 || snapType == 4)
 				s += (o[4] & 0x08) != 0 ? "[Temp 0]" : " 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
 

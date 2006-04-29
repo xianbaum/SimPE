@@ -161,141 +161,99 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pnWiz0x0002 = new System.Windows.Forms.Panel();
-			this.cbAttrPicker = new System.Windows.Forms.CheckBox();
-			this.cbDecimal = new System.Windows.Forms.CheckBox();
-			this.cbPicker2 = new System.Windows.Forms.ComboBox();
-			this.cbPicker1 = new System.Windows.Forms.ComboBox();
-			this.cbOperator = new System.Windows.Forms.ComboBox();
-			this.tbval2 = new System.Windows.Forms.TextBox();
-			this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
-			this.tbval1 = new System.Windows.Forms.TextBox();
-			this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
-			this.pnWiz0x0002.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// pnWiz0x0002
-			// 
-			this.pnWiz0x0002.Controls.Add(this.cbAttrPicker);
-			this.pnWiz0x0002.Controls.Add(this.cbDecimal);
-			this.pnWiz0x0002.Controls.Add(this.cbPicker2);
-			this.pnWiz0x0002.Controls.Add(this.cbPicker1);
-			this.pnWiz0x0002.Controls.Add(this.cbOperator);
-			this.pnWiz0x0002.Controls.Add(this.tbval2);
-			this.pnWiz0x0002.Controls.Add(this.cbDataOwner2);
-			this.pnWiz0x0002.Controls.Add(this.tbval1);
-			this.pnWiz0x0002.Controls.Add(this.cbDataOwner1);
-			this.pnWiz0x0002.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.pnWiz0x0002.Location = new System.Drawing.Point(8, 8);
-			this.pnWiz0x0002.Name = "pnWiz0x0002";
-			this.pnWiz0x0002.Size = new System.Drawing.Size(240, 120);
-			this.pnWiz0x0002.TabIndex = 0;
-			// 
-			// cbAttrPicker
-			// 
-			this.cbAttrPicker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbAttrPicker.Location = new System.Drawing.Point(0, 96);
-			this.cbAttrPicker.Name = "cbAttrPicker";
-			this.cbAttrPicker.Size = new System.Drawing.Size(240, 24);
-			this.cbAttrPicker.TabIndex = 7;
-			this.cbAttrPicker.Text = "use Attribute picker";
-			this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
-			// 
-			// cbDecimal
-			// 
-			this.cbDecimal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbDecimal.Location = new System.Drawing.Point(0, 72);
-			this.cbDecimal.Name = "cbDecimal";
-			this.cbDecimal.Size = new System.Drawing.Size(240, 24);
-			this.cbDecimal.TabIndex = 6;
-			this.cbDecimal.Text = "Decimal (except Consts)";
-			this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
-			// 
-			// cbPicker2
-			// 
-			this.cbPicker2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbPicker2.DropDownWidth = 384;
-			this.cbPicker2.Location = new System.Drawing.Point(128, 50);
-			this.cbPicker2.Name = "cbPicker2";
-			this.cbPicker2.Size = new System.Drawing.Size(112, 21);
-			this.cbPicker2.TabIndex = 5;
-			this.cbPicker2.Visible = false;
-			// 
-			// cbPicker1
-			// 
-			this.cbPicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbPicker1.DropDownWidth = 384;
-			this.cbPicker1.Location = new System.Drawing.Point(128, 0);
-			this.cbPicker1.Name = "cbPicker1";
-			this.cbPicker1.Size = new System.Drawing.Size(112, 21);
-			this.cbPicker1.TabIndex = 2;
-			this.cbPicker1.Visible = false;
-			// 
-			// cbOperator
-			// 
-			this.cbOperator.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbOperator.Location = new System.Drawing.Point(0, 26);
-			this.cbOperator.Name = "cbOperator";
-			this.cbOperator.Size = new System.Drawing.Size(240, 21);
-			this.cbOperator.TabIndex = 3;
-			this.cbOperator.SelectedIndexChanged += new System.EventHandler(this.cbOperator_SelectedIndexChanged);
-			// 
-			// tbval2
-			// 
-			this.tbval2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tbval2.Location = new System.Drawing.Point(128, 50);
-			this.tbval2.Name = "tbval2";
-			this.tbval2.Size = new System.Drawing.Size(112, 21);
-			this.tbval2.TabIndex = 5;
-			this.tbval2.Text = "";
-			// 
-			// cbDataOwner2
-			// 
-			this.cbDataOwner2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbDataOwner2.DropDownWidth = 384;
-			this.cbDataOwner2.Location = new System.Drawing.Point(0, 50);
-			this.cbDataOwner2.Name = "cbDataOwner2";
-			this.cbDataOwner2.Size = new System.Drawing.Size(128, 21);
-			this.cbDataOwner2.TabIndex = 4;
-			// 
-			// tbval1
-			// 
-			this.tbval1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tbval1.Location = new System.Drawing.Point(128, 0);
-			this.tbval1.Name = "tbval1";
-			this.tbval1.Size = new System.Drawing.Size(112, 21);
-			this.tbval1.TabIndex = 2;
-			this.tbval1.Text = "";
-			// 
-			// cbDataOwner1
-			// 
-			this.cbDataOwner1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbDataOwner1.DropDownWidth = 384;
-			this.cbDataOwner1.Location = new System.Drawing.Point(0, 0);
-			this.cbDataOwner1.Name = "cbDataOwner1";
-			this.cbDataOwner1.Size = new System.Drawing.Size(128, 21);
-			this.cbDataOwner1.TabIndex = 1;
-			// 
-			// UI
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(640, 366);
-			this.Controls.Add(this.pnWiz0x0002);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "UI";
-			this.Text = "UI";
-			this.pnWiz0x0002.ResumeLayout(false);
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
+            this.pnWiz0x0002 = new System.Windows.Forms.Panel();
+            this.cbAttrPicker = new System.Windows.Forms.CheckBox();
+            this.cbDecimal = new System.Windows.Forms.CheckBox();
+            this.cbPicker2 = new System.Windows.Forms.ComboBox();
+            this.cbPicker1 = new System.Windows.Forms.ComboBox();
+            this.cbOperator = new System.Windows.Forms.ComboBox();
+            this.tbval2 = new System.Windows.Forms.TextBox();
+            this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
+            this.tbval1 = new System.Windows.Forms.TextBox();
+            this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
+            this.pnWiz0x0002.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnWiz0x0002
+            // 
+            this.pnWiz0x0002.Controls.Add(this.cbAttrPicker);
+            this.pnWiz0x0002.Controls.Add(this.cbDecimal);
+            this.pnWiz0x0002.Controls.Add(this.cbPicker2);
+            this.pnWiz0x0002.Controls.Add(this.cbPicker1);
+            this.pnWiz0x0002.Controls.Add(this.cbOperator);
+            this.pnWiz0x0002.Controls.Add(this.tbval2);
+            this.pnWiz0x0002.Controls.Add(this.cbDataOwner2);
+            this.pnWiz0x0002.Controls.Add(this.tbval1);
+            this.pnWiz0x0002.Controls.Add(this.cbDataOwner1);
+            resources.ApplyResources(this.pnWiz0x0002, "pnWiz0x0002");
+            this.pnWiz0x0002.Name = "pnWiz0x0002";
+            // 
+            // cbAttrPicker
+            // 
+            resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
+            this.cbAttrPicker.Name = "cbAttrPicker";
+            this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
+            // 
+            // cbDecimal
+            // 
+            resources.ApplyResources(this.cbDecimal, "cbDecimal");
+            this.cbDecimal.Name = "cbDecimal";
+            this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
+            // 
+            // cbPicker2
+            // 
+            resources.ApplyResources(this.cbPicker2, "cbPicker2");
+            this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPicker2.DropDownWidth = 384;
+            this.cbPicker2.Name = "cbPicker2";
+            // 
+            // cbPicker1
+            // 
+            resources.ApplyResources(this.cbPicker1, "cbPicker1");
+            this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPicker1.DropDownWidth = 384;
+            this.cbPicker1.Name = "cbPicker1";
+            // 
+            // cbOperator
+            // 
+            resources.ApplyResources(this.cbOperator, "cbOperator");
+            this.cbOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOperator.Name = "cbOperator";
+            this.cbOperator.SelectedIndexChanged += new System.EventHandler(this.cbOperator_SelectedIndexChanged);
+            // 
+            // tbval2
+            // 
+            resources.ApplyResources(this.tbval2, "tbval2");
+            this.tbval2.Name = "tbval2";
+            // 
+            // cbDataOwner2
+            // 
+            resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
+            this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataOwner2.DropDownWidth = 384;
+            this.cbDataOwner2.Name = "cbDataOwner2";
+            // 
+            // tbval1
+            // 
+            resources.ApplyResources(this.tbval1, "tbval1");
+            this.tbval1.Name = "tbval1";
+            // 
+            // cbDataOwner1
+            // 
+            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
+            this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataOwner1.DropDownWidth = 384;
+            this.cbDataOwner1.Name = "cbDataOwner1";
+            // 
+            // UI
+            // 
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.pnWiz0x0002);
+            this.Name = "UI";
+            this.pnWiz0x0002.ResumeLayout(false);
+            this.pnWiz0x0002.PerformLayout();
+            this.ResumeLayout(false);
 
 		}
 		#endregion

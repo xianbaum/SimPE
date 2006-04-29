@@ -88,75 +88,55 @@ namespace pjse.BhavOperandWizards.WizBhav
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pnWizBhav = new System.Windows.Forms.Panel();
-			this.cbPicker1 = new System.Windows.Forms.ComboBox();
-			this.tbval1 = new System.Windows.Forms.TextBox();
-			this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.pnWizBhav.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// pnWizBhav
-			// 
-			this.pnWizBhav.Controls.Add(this.cbPicker1);
-			this.pnWizBhav.Controls.Add(this.tbval1);
-			this.pnWizBhav.Controls.Add(this.cbDataOwner1);
-			this.pnWizBhav.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.pnWizBhav.Location = new System.Drawing.Point(8, 8);
-			this.pnWizBhav.Name = "pnWizBhav";
-			this.pnWizBhav.Size = new System.Drawing.Size(224, 24);
-			this.pnWizBhav.TabIndex = 0;
-			// 
-			// cbPicker1
-			// 
-			this.cbPicker1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbPicker1.DropDownWidth = 352;
-			this.cbPicker1.Location = new System.Drawing.Point(112, 0);
-			this.cbPicker1.Name = "cbPicker1";
-			this.cbPicker1.Size = new System.Drawing.Size(112, 21);
-			this.cbPicker1.TabIndex = 2;
-			this.cbPicker1.Visible = false;
-			// 
-			// tbval1
-			// 
-			this.tbval1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.tbval1.Location = new System.Drawing.Point(112, 0);
-			this.tbval1.Name = "tbval1";
-			this.tbval1.Size = new System.Drawing.Size(112, 21);
-			this.tbval1.TabIndex = 2;
-			this.tbval1.Text = "";
-			// 
-			// cbDataOwner1
-			// 
-			this.cbDataOwner1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbDataOwner1.Location = new System.Drawing.Point(0, 0);
-			this.cbDataOwner1.Name = "cbDataOwner1";
-			this.cbDataOwner1.Size = new System.Drawing.Size(112, 21);
-			this.cbDataOwner1.TabIndex = 1;
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(240, 152);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(288, 128);
-			this.label1.TabIndex = 1;
-			this.label1.Text = "The edithWiki page on SimPregnancy has a screenshot of the Edith editor, as does " +
-				"AkeaPostMortem";
-			// 
-			// UI
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(640, 366);
-			this.Controls.Add(this.label1);
-			this.Controls.Add(this.pnWizBhav);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "UI";
-			this.Text = "UI";
-			this.pnWizBhav.ResumeLayout(false);
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
+            this.pnWizBhav = new System.Windows.Forms.Panel();
+            this.cbPicker1 = new System.Windows.Forms.ComboBox();
+            this.tbval1 = new System.Windows.Forms.TextBox();
+            this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pnWizBhav.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnWizBhav
+            // 
+            this.pnWizBhav.Controls.Add(this.cbPicker1);
+            this.pnWizBhav.Controls.Add(this.tbval1);
+            this.pnWizBhav.Controls.Add(this.cbDataOwner1);
+            resources.ApplyResources(this.pnWizBhav, "pnWizBhav");
+            this.pnWizBhav.Name = "pnWizBhav";
+            // 
+            // cbPicker1
+            // 
+            resources.ApplyResources(this.cbPicker1, "cbPicker1");
+            this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPicker1.DropDownWidth = 352;
+            this.cbPicker1.Name = "cbPicker1";
+            // 
+            // tbval1
+            // 
+            resources.ApplyResources(this.tbval1, "tbval1");
+            this.tbval1.Name = "tbval1";
+            // 
+            // cbDataOwner1
+            // 
+            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
+            this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataOwner1.Name = "cbDataOwner1";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // UI
+            // 
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.pnWizBhav);
+            this.Name = "UI";
+            this.pnWizBhav.ResumeLayout(false);
+            this.pnWizBhav.PerformLayout();
+            this.ResumeLayout(false);
 
 		}
 		#endregion
