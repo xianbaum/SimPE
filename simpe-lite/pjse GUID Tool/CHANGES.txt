@@ -1,4 +1,11 @@
 
+30 April 2006 14:29 - Centralise localisation
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.16.2
+    Localization.cs (deleted)
+    Localization.resx (deleted: merged into central resx file)
+    pjse GUID Tool.csproj 1.6.10.3.2.2
+
 26 April 2006 18:17 - Enable localisation
   pjse GUID Tool\
     AssemblyInfo.cs 1.1.14.1.10.1
