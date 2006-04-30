@@ -160,7 +160,7 @@
     <value>Value</value>
   </data>
   <data name="viewbhav" xml:space="preserve">
-    <value>View BHAV</value>
+    <value>(default) View BHAV</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
@@ -199,10 +199,6 @@
     <value>Toddler</value>
     <comment>TtabMotives enum</comment>
   </data>
-  <data name="false" xml:space="preserve">
-    <value>false</value>
-    <comment>BhavInstListUI</comment>
-  </data>
   <data name="noargs" xml:space="preserve">
     <value>no args</value>
   </data>
@@ -213,15 +209,8 @@
     <value>Failed to add a new line.
 Check BHAV format and number of lines.</value>
   </data>
-  <data name="true" xml:space="preserve">
-    <value>true</value>
-    <comment>BhavInstListUI</comment>
-  </data>
   <data name="unkargs" xml:space="preserve">
     <value>args unknown</value>
-  </data>
-  <data name="all" xml:space="preserve">
-    <value>all</value>
   </data>
   <data name="callerparams" xml:space="preserve">
     <value>caller's params</value>
@@ -241,7 +230,7 @@ Check BHAV format and number of lines.</value>
     <value>semi</value>
     <comment>BhavWizBhav prefix value</comment>
   </data>
-  <data name="manyArg" xml:space="preserve">
+  <data name="manyArgs" xml:space="preserve">
     <value>args</value>
   </data>
   <data name="menuhelp" xml:space="preserve">
@@ -252,9 +241,6 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="unkops" xml:space="preserve">
     <value>unknown operands</value>
-  </data>
-  <data name="zeros" xml:space="preserve">
-    <value>zeros</value>
   </data>
   <data name="bwp03_formotive" xml:space="preserve">
     <value>for motive(s)</value>
@@ -322,9 +308,6 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>none</value>
-  </data>
-  <data name="nyt" xml:space="preserve">
-    <value>not yet translated</value>
   </data>
   <data name="Object" xml:space="preserve">
     <value>Object</value>
@@ -439,5 +422,33 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="Parent" xml:space="preserve">
     <value>Parent</value>
+  </data>
+  <data name="FiletableSettings" xml:space="preserve">
+    <value>Filetable &amp;Settings</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Group</value>
+  </data>
+  <data name="MatchesFound" xml:space="preserve">
+    <value>matches found</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="ObjectFinder" xml:space="preserve">
+    <value>&amp;Object Finder</value>
+  </data>
+  <data name="ObjectFinderHelp" xml:space="preserve">
+    <value>This tool searches OBJD files in your PJSE filetable path
+(which for now means currently open file + objects.package).
+
+If you enter a string to search, it is a case insensitive whole or sub string of the OBJD filename.
+If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000F together).</value>
+  </data>
+  <data name="TooManyMatches" xml:space="preserve">
+    <value>Too many matches found, first 180 shown.  Use a more specific search.</value>
+  </data>
+  <data name="allZeros" xml:space="preserve">
+    <value>all zeros</value>
   </data>
 </root>

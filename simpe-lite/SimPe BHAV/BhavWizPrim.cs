@@ -42,7 +42,7 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public abstract class BhavWizPrim : BhavWiz
 	{
-		protected BhavWizPrim(Instruction i) : base (i) { prefix = pjse.coder.Localization.GetString("prim"); }
+		protected BhavWizPrim(Instruction i) : base (i) { prefix = pjse.Localization.GetString("prim"); }
 
 		public static implicit operator BhavWizPrim(Instruction i)
 		{
@@ -137,21 +137,13 @@ namespace pjse.BhavNameWizards
 			if (i.OpCode >= 0x0034 && i.OpCode <= 0x0068 || i.OpCode >= 0x007f)
 				return new WizPrimUnused(i);
 
-			return new WizPrimDefault(i);
-		}
+            throw new Exception("OpCode defies understanding");
+        }
 
 		protected override string OpcodeName { get { return readStr(GS.BhavStr.Primitives, instruction.OpCode); } }
 
 	}
 
-
-	public class WizPrimDefault : BhavWizPrim
-	{
-		public WizPrimDefault(Instruction i) : base(i) { }
-
-        protected override string Operands(bool lng) { return pjse.coder.Localization.GetString("nyt"); }
-
-	}
 
 	public class WizPrimUnused : BhavWizPrim
 	{
@@ -314,7 +306,7 @@ namespace pjse.BhavNameWizards
 
 			if (lng && _operator >= 8 && _operator <= 10) // Flag operation
 			{
-				s+= pjse.coder.Localization.GetString("flagnr") + " " + dataOwner(rhs_data_owner, rhs_value_word);
+				s+= pjse.Localization.GetString("flagnr") + " " + dataOwner(rhs_data_owner, rhs_value_word);
 				if (rhs_data_owner == 7 && flagname(lhs_data_owner, lhs_value_word, rhs_value_word) != null)
 					s += " (" + flagname(lhs_data_owner, lhs_value_word, rhs_value_word) + ")";
 			}
@@ -451,11 +443,11 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			if (o[2] == 0)
-                s += pjse.coder.Localization.GetString("bwp03_nworst");
+                s += pjse.Localization.GetString("bwp03_nworst");
 			else
 			{
 				int motives = ToShort(o[0], o[1]);
-                s += pjse.coder.Localization.GetString("bwp03_formotive")
+                s += pjse.Localization.GetString("bwp03_formotive")
                     + ": ";
                 bool found = false;
                 for (ushort i = 0; i < 16; i++)   // this should only find 1 motive (if any)
@@ -465,22 +457,22 @@ namespace pjse.BhavNameWizards
                         found = true;
                     }
                 if (!found) s += "("
-                    + pjse.coder.Localization.GetString("none")
+                    + pjse.Localization.GetString("none")
                     + ")";
 				if (lng)
                     s += ", "
-                        + pjse.coder.Localization.GetString("bwp03_remworst")
+                        + pjse.Localization.GetString("bwp03_remworst")
                         + ": " + ((o[2] & 0x01) != 0).ToString();
 			}
 			if (lng)
 			{
-                s += ", " + pjse.coder.Localization.GetString("bwp03_inroom")
-                    + " " + this.dataOwner(0x08, 0) + " " + ((o[3] & 0x02) != 0).ToString(); // Temp
-                s += ", " + pjse.coder.Localization.GetString("bwp03_oow")
+                s += ", " + pjse.Localization.GetString("bwp03_inroom") + " " + this.dataOwner(0x08, 0) // Temp
+                    + ": " + ((o[3] & 0x02) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp03_oow")
                     + ": " + ((o[3] & 0x04) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp03_nested")
+                s += ", " + pjse.Localization.GetString("bwp03_nested")
                     + ": " + ((o[3] & 0x08) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp03_oninteraction")
+                s += ", " + pjse.Localization.GetString("bwp03_oninteraction")
                     + ": " + ((o[3] & 0x10) != 0).ToString();
 			}
 
@@ -603,7 +595,7 @@ namespace pjse.BhavNameWizards
             if (lng)
             {
                 s += ", "
-                    + pjse.coder.Localization.GetString("bwp0b_100tile")
+                    + pjse.Localization.GetString("bwp0b_100tile")
                     + ": " + ((o[6] & 0x02) != 0).ToString();
             }
 
@@ -650,7 +642,7 @@ namespace pjse.BhavNameWizards
             if (lng)
             {
                 s += ", "
-                    + pjse.coder.Localization.GetString("bwp0c_degrees")
+                    + pjse.Localization.GetString("bwp0c_degrees")
                     + ": " + ((o[8] & 0x02) == 0).ToString();
             }
 
@@ -687,16 +679,16 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
             if (lng)
-                s += pjse.coder.Localization.GetString("Target") + ": " + dataOwner(0x04, 0x0b) + ", "; // Stack Object
+                s += pjse.Localization.GetString("Target") + ": " + dataOwner(0x04, 0x0b) + ", "; // Stack Object
 
-            s += (lng ? pjse.coder.Localization.GetString("Object") + ": " : "")
+            s += (lng ? pjse.Localization.GetString("Object") + ": " : "")
                 + dataOwner(lng, (byte)((o[3] & 0x02) != 0 ? 0x19 : 0x09), o[1]);	// local | param
 
-            s += ", " + (lng ? pjse.coder.Localization.GetString("Interaction") + ": " : "");
+            s += ", " + (lng ? pjse.Localization.GetString("Interaction") + ": " : "");
             if ((o[3] & 0x10) != 0)
 				s += dataOwner(lng, o[5], o[6], o[7]);
 			else if ((o[14] & 2) != 0)
-                s += pjse.coder.Localization.GetString("bwp0d_lastfba");
+                s += pjse.Localization.GetString("bwp0d_lastfba");
 			else
 				s += dataOwner(lng, 0x07, o[0]); // Literal
 
@@ -705,24 +697,24 @@ namespace pjse.BhavNameWizards
 			if (lng)
 			{
 				if ((o[3] & 0x01) != 0)
-					s += ", " + pjse.coder.Localization.GetString("bwp0d_IconObject") + ": " + dataOwner(0x19, o[4]); // Local
+					s += ", " + pjse.Localization.GetString("bwp0d_IconObject") + ": " + dataOwner(0x19, o[4]); // Local
 				else if ((o[14] & 4) != 0)
-                    s += ", " + pjse.coder.Localization.GetString("bwp0d_IconObject") + ": " + dataOwner(0x08, 0x04) + ",5"; // Temp
+                    s += ", " + pjse.Localization.GetString("bwp0d_IconObject") + ": " + dataOwner(0x08, 0x04) + ",5"; // Temp
 
-                s += ", " + pjse.coder.Localization.GetString("bwp0d_IconIndex") + ": "
+                s += ", " + pjse.Localization.GetString("bwp0d_IconIndex") + ": "
                     + ((o[14] & 0x08) != 0
                         ? dataOwner(0x08, 0x06) // Temp
                         : dataOwner(0x07, o[15]) // Literal
                         )
                     ;
 
-                if ((o[14] & 0x01) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_callersparams");
+                if ((o[14] & 0x01) != 0) s += ", " + pjse.Localization.GetString("bwp0d_callersparams");
 				// if (o[3] & 4) ht_fprintf(outFile,TYPE_NORMAL,", continue as current");
-				if ((o[3] & 0x08) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_usename");
-                if ((o[3] & 0x20) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_forcerun");
-                if ((o[3] & 0x40) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_linkto")
+				if ((o[3] & 0x08) != 0) s += ", " + pjse.Localization.GetString("bwp0d_usename");
+                if ((o[3] & 0x20) != 0) s += ", " + pjse.Localization.GetString("bwp0d_forcerun");
+                if ((o[3] & 0x40) != 0) s += ", " + pjse.Localization.GetString("bwp0d_linkto")
                     + " " + dataOwner(o[8], o[9], o[10]);
-                if ((o[3] & 0x80) != 0) s += ", " + pjse.coder.Localization.GetString("bwp0d_returnID")
+                if ((o[3] & 0x80) != 0) s += ", " + pjse.Localization.GetString("bwp0d_returnID")
                     + " " + dataOwner(o[11], o[12], o[13]);
 			}
 
@@ -835,8 +827,8 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
 			return ((o[4] & 0x01) != 0)
-				? pjse.coder.Localization.GetString("bwp0f_ignored")
-				: pjse.coder.Localization.GetString("bwp0f_if") + " " + dataOwner(lng, o[2], o[0], o[1]) + " != 0";
+				? pjse.Localization.GetString("bwp0f_ignored")
+				: pjse.Localization.GetString("bwp0f_if") + " " + dataOwner(lng, o[2], o[0], o[1]) + " != 0";
 #if DISASIM
                 case 0x0F:  // Break Point (false = error)
                     if (b[x+4] & 1)
@@ -870,40 +862,40 @@ namespace pjse.BhavNameWizards
 			{
 				s += dataOwner(0x04, 0x0b); // Stack Object
 				if (lng)
-                    s += ", " + pjse.coder.Localization.GetString("bwp10_startAt") + " " + dataOwner(0x19, o[1]); // Local
+                    s += ", " + pjse.Localization.GetString("bwp10_startAt") + " " + dataOwner(0x19, o[1]); // Local
 			}
 			else
 			{
 				s += dataOwner(lng, o[4], o[5], o[6]);
 				if (lng)
-                    s += ", " + pjse.coder.Localization.GetString("bwp10_relativeTo") + " " + dataOwner(o[7], o[8], o[9]);
+                    s += ", " + pjse.Localization.GetString("bwp10_relativeTo") + " " + dataOwner(o[7], o[8], o[9]);
 			}
 
 			if (lng)
 			{
 				if ((o[2] & 0x08) != 0)
 				{
-                    s += ", " + pjse.coder.Localization.GetString("bwp10_facing");
-                    if ((o[3] & 0x01) != 0) s += " " + pjse.coder.Localization.GetString("compassN");
-                    if ((o[3] & 0x02) != 0) s += " " + pjse.coder.Localization.GetString("compassNE");
-                    if ((o[3] & 0x04) != 0) s += " " + pjse.coder.Localization.GetString("compassE");
-                    if ((o[3] & 0x08) != 0) s += " " + pjse.coder.Localization.GetString("compassSE");
-                    if ((o[3] & 0x10) != 0) s += " " + pjse.coder.Localization.GetString("compassS");
-                    if ((o[3] & 0x20) != 0) s += " " + pjse.coder.Localization.GetString("compassSW");
-                    if ((o[3] & 0x40) != 0) s += " " + pjse.coder.Localization.GetString("compassW");
-                    if ((o[3] & 0x80) != 0) s += " " + pjse.coder.Localization.GetString("compassNW");
+                    s += ", " + pjse.Localization.GetString("bwp10_facing");
+                    if ((o[3] & 0x01) != 0) s += " " + pjse.Localization.GetString("compassN");
+                    if ((o[3] & 0x02) != 0) s += " " + pjse.Localization.GetString("compassNE");
+                    if ((o[3] & 0x04) != 0) s += " " + pjse.Localization.GetString("compassE");
+                    if ((o[3] & 0x08) != 0) s += " " + pjse.Localization.GetString("compassSE");
+                    if ((o[3] & 0x10) != 0) s += " " + pjse.Localization.GetString("compassS");
+                    if ((o[3] & 0x20) != 0) s += " " + pjse.Localization.GetString("compassSW");
+                    if ((o[3] & 0x40) != 0) s += " " + pjse.Localization.GetString("compassW");
+                    if ((o[3] & 0x80) != 0) s += " " + pjse.Localization.GetString("compassNW");
 				}
 
 				s += ", " + readStr(GS.BhavStr.FindGLB, o[0]);
 				if (o[0] >= 5 && o[0] <= 8)
 					s += " 0x" + SimPe.Helper.HexString(o[10]);
 
-                s += ", " + pjse.coder.Localization.GetString("bhwp10_preferEmpty") + ": " + ((o[2] & 0x02) == 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp10_userEditable") + ": " + ((o[2] & 0x04) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp10_onLevelGround") + ": " + ((o[2] & 0x10) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp10_withEmptyBorder") + ": " + ((o[2] & 0x20) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp10_beginInFrontOfRefobj") + ": " + ((o[2] & 0x40) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp10_withLineOfSightToCenter") + ": " + ((o[2] & 0x80) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bhwp10_preferEmpty") + ": " + ((o[2] & 0x02) == 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp10_userEditable") + ": " + ((o[2] & 0x04) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp10_onLevelGround") + ": " + ((o[2] & 0x10) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp10_withEmptyBorder") + ": " + ((o[2] & 0x20) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp10_beginInFrontOfRefobj") + ": " + ((o[2] & 0x40) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp10_withLineOfSightToCenter") + ": " + ((o[2] & 0x80) != 0).ToString();
 			}
 
 			return s;
@@ -986,10 +978,10 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			if ((o[4] & 0x01) != 0)
-                s += pjse.coder.Localization.GetString("bwp11_handleSubQueueInteractions");
+                s += pjse.Localization.GetString("bwp11_handleSubQueueInteractions");
 			else
-                s += pjse.coder.Localization.GetString("bwp11_ticks") + ": " + dataOwner(lng, 0x09, o[0]) // Param
-                    + ", " + pjse.coder.Localization.GetString("bwp11_allowPush") + ": " + (ToShort(o[2], o[3]) == 0).ToString();
+                s += pjse.Localization.GetString("bwp11_ticks") + ": " + dataOwner(lng, 0x09, o[0]) // Param
+                    + ", " + pjse.Localization.GetString("bwp11_allowPush") + ": " + (ToShort(o[2], o[3]) == 0).ToString();
 
 			return s;
 #if DISASIM
@@ -1025,8 +1017,8 @@ namespace pjse.BhavNameWizards
 			s += dataOwner((byte)(o[0] == 0 ? 0x03: 0x04), 0x0b); // Me | Stack Object
 			if (lng)
 			{
-                s += ", " + pjse.coder.Localization.GetString("bwp12_returnImmediately") + ": " + ((o[2] & 1) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp12_cleanupAll") + ": " + ((o[2] & 2) == 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp12_returnImmediately") + ": " + ((o[2] & 1) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp12_cleanupAll") + ": " + ((o[2] & 2) == 0).ToString();
 			}
 
 			return s;
@@ -1058,44 +1050,44 @@ namespace pjse.BhavNameWizards
 
 			if ((o[9] & 0x01) != 0)
 			{
-                s += pjse.coder.Localization.GetString("Parent") + " 1"
-                    + ((o[9] & 0x02) != 0 ? " " + pjse.coder.Localization.GetString("NeighborID") : "")
+                s += pjse.Localization.GetString("Parent") + " 1"
+                    + ((o[9] & 0x02) != 0 ? " " + pjse.Localization.GetString("NeighborID") : "")
                     + ": " + dataOwner(lng, o[6], o[7], o[8]);
                 s += ", ";
-                s += pjse.coder.Localization.GetString("Parent") + " 2"
-                    + ((o[9] & 0x04) != 0 ? " " + pjse.coder.Localization.GetString("NeighborID") : "")
+                s += pjse.Localization.GetString("Parent") + " 2"
+                    + ((o[9] & 0x04) != 0 ? " " + pjse.Localization.GetString("NeighborID") : "")
                     + ": " + dataOwner(lng, o[3], o[4], o[5]);
 			}
 			else
-                s += pjse.coder.Localization.GetString("bwp13_noParents");
+                s += pjse.Localization.GetString("bwp13_noParents");
 
 			if (lng)
 			{
 
-                s += ", " + pjse.coder.Localization.GetString("bwp13_personDataSource")
+                s += ", " + pjse.Localization.GetString("bwp13_personDataSource")
                     + ": (GUID) " + dataOwner(0x08, 0x00) + ",1: " + ((o[9] & 0x08) != 0).ToString(); // Temp
-                s += ", " + pjse.coder.Localization.GetString("bwp13_personDataSource")
+                s += ", " + pjse.Localization.GetString("bwp13_personDataSource")
                     + ": (GUID) " + "temp Token" + ": " + ((o[9] & 0x10) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp13_characterFromBin")
+                s += ", " + pjse.Localization.GetString("bwp13_characterFromBin")
                     + ": " + ((o[9] & 0x20) != 0).ToString();
-                s += ", " + pjse.coder.Localization.GetString("bwp13_thumbnailOutfit")
+                s += ", " + pjse.Localization.GetString("bwp13_thumbnailOutfit")
                     + ": " + (((o[9] & 0x40) != 0)
                         ? "(GUID) " + (((o[9] & 0x80) != 0)
                             ? dataOwner(0x08, 0x02) + ",3" // Temp
                             : dataOwner(o[10], o[11], o[12]))
-                        : pjse.coder.Localization.GetString("default"));
+                        : pjse.Localization.GetString("default"));
 
 				if (o[0] != 0 && o[0] != 0xFF) 
 				{
-                    s += ", " + pjse.coder.Localization.GetString("bwp13_skinColor")
+                    s += ", " + pjse.Localization.GetString("bwp13_skinColor")
                         + ": " + dataOwner(0x19, o[0]); // Local
-                    s += ", " + pjse.coder.Localization.GetString("bwp13_age")
+                    s += ", " + pjse.Localization.GetString("bwp13_age")
                         + ": " + dataOwner(0x19, o[1]); // Local
-                    s += ", " + pjse.coder.Localization.GetString("bwp13_gender")
+                    s += ", " + pjse.Localization.GetString("bwp13_gender")
                         + ": " + dataOwner(0x19, o[2]); // Local
 				}
 				else
-                    s += ", " + pjse.coder.Localization.GetString("bwp13_defAgeGenderSkin");
+                    s += ", " + pjse.Localization.GetString("bwp13_defAgeGenderSkin");
 			}
 
 			return s;
@@ -2308,7 +2300,7 @@ namespace pjse.BhavNameWizards
 			else
 			{
 				if (instance != 0)
-					s += readStr(scope, GS.GlobalStr.DialogString, (ushort)(instance - 1), len, pjse.Detail.Errors);
+                    s += readStr(scope, (uint)GS.GlobalStr.DialogString, (ushort)(instance - 1), len, pjse.Detail.Errors, true);
 				else
 					s += "[none]";
 			}
@@ -5478,7 +5470,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += lng ? (((ToShort(o[4], o[5]) & 0x01) != 0 ? "Definition" : "Dynamic") + " script: ") : "";
+            s += lng ? (((o4_5 & 0x01) != 0 ? "Definition" : "Dynamic") + " script: ") : "";
 
 			if (ToShort(o[2], o[3]) != 0) 
 			{
@@ -5486,7 +5478,7 @@ namespace pjse.BhavNameWizards
 				if      ((o4_5 & 0x02) != 0) scope = Scope.Private;
 				else if ((o4_5 & 0x04) != 0) scope = Scope.SemiGlobal;
 
-				s += readStr(scope, ToShort(o[0], o[1]), (ushort)(ToShort(o[2], o[3]) - 1), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors)
+                s += readStr(scope, ToShort(o[0], o[1]), (ushort)(ToShort(o[2], o[3]) - 1), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.Errors, false)
 					+ (lng ? ", scope: " + scope : "");
 
 				if (lng)

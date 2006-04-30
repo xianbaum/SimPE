@@ -1,4 +1,6 @@
 /***************************************************************************
+ *   Copyright (C) 2006 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -22,64 +24,48 @@ using System.Resources;
 using System.Globalization;
 using System.Threading;
 
-
-
-namespace pjse.filetable
+namespace pjse
 {
-	/// <summary>
-	/// Supports the Localization
-	/// </summary>
-	public class Localization
-	{
-		/// <summary>
-		/// The Resource Class
-		/// </summary>
-		private static ResourceManager resource = null;
+    /// <summary>
+    /// Supports the Localization
+    /// </summary>
+    public class Localization
+    {
+        /// <summary>
+        /// The ResourceManager singleton object
+        /// </summary>
+        private static ResourceManager resource = null;
 
-		/// <summary>
-		/// Initializes the Resource
-		/// </summary>
-		protected static void Initialize() 
-		{					
-			Localization l = new Localization();
-			System.Reflection.Assembly myAssembly;
-			myAssembly = l.GetType().Assembly;			
+        /// <summary>
+        /// Initializes the ResourceManager
+        /// </summary>
+        private static void Initialize() { resource = new ResourceManager(typeof(pjse.Localization)); }
 
-			resource = new ResourceManager(typeof(Localization));					
-		}
+        /// <summary>
+        /// Returns the current Resource Manager
+        /// </summary>
+        private static ResourceManager Manager
+        {
+            get
+            {
+                if (resource == null) Initialize();
+                return resource;
+            }
+        }
 
-		/// <summary>
-		/// Returns a translated String
-		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
-		/// <remarks>If there is no Translation, the passsed string will be returned</remarks>
-		public static string GetString(string name)
-		{
-			string res = Manager.GetString(name);
-			if (res==null) res = Manager.GetString(name.Trim().ToLower());
-			if (res==null) res = name;
+        /// <summary>
+        /// Returns a translated String
+        /// </summary>
+        /// <param name="name">string to translate</param>
+        /// <returns>translated string</returns>
+        /// <remarks>If there is no Translation, the passsed string will be returned</remarks>
+        public static string GetString(string name)
+        {
+            string res = pjse.Localization.Manager.GetString(name);
+            //if (res == null) res = pjse.Localization.Manager.GetString(name.Trim().ToLower());
+            if (res == null) res = name;
 
-			return res;
-		}
-
-		/// <summary>
-		/// Returns the currrent Resource Manager
-		/// </summary>
-		public static ResourceManager Manager 
-		{
-			get { 
-				if (resource==null) Initialize();
-				return resource; 
-			}
-		}
-
-		/// <summary>
-		/// Returns the current Culture
-		/// </summary>
-		public static CultureInfo Culture 
-		{
-			get { return Thread.CurrentThread.CurrentUICulture; }
-		}
-	}
+            return res;
+        }
+    }
 }

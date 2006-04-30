@@ -258,18 +258,35 @@ namespace pjse
 		}
 
 
-		public IPackageFile CurrentPackage
-		{
-			get { return currentPackage; }
+        private void currentPackage_IndexChanged(object sender, EventArgs e) { OnFiletableRefresh(this, new EventArgs()); }
 
-			set
-			{
-				if (currentPackage != null && !IsFixed(currentPackage)) Remove(currentPackage);
-				currentPackage = IsFixed(value) ? null : value;
-				if (currentPackage != null && !IsFixed(currentPackage)) Add(currentPackage);
-				OnFiletableRefresh(this, new EventArgs());
-			}
-		}
+        public IPackageFile CurrentPackage
+        {
+            get { return currentPackage; }
+
+            set
+            {
+                if (currentPackage != value)
+                {
+                    if (currentPackage != null)
+                    {
+                        currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
+                        Remove(currentPackage);
+                    }
+                    if ((IsFixed(value) && currentPackage != null)
+                        || (!IsFixed(value) && currentPackage == null))
+                    {
+                        currentPackage = value;
+                        if (currentPackage != null)
+                        {
+                            Add(currentPackage);
+                            currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
+                        }
+                        OnFiletableRefresh(this, new EventArgs());
+                    }
+                }
+            }
+        }
 
 		public bool CurrentPackageIsFixed { get { return IsFixed(currentPackage); } }
 
@@ -465,7 +482,7 @@ namespace pjse
 
 		public override string ToString()
 		{
-			return "PJSE\\" + pjse.filetable.Localization.GetString("FiletableSettings");
+			return "PJSE\\" + pjse.Localization.GetString("FiletableSettings");
 		}
 
 		#endregion

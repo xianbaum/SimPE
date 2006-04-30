@@ -230,7 +230,7 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(pjse.coder.Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}
 
 			btnCommit.Enabled = wrapper.Changed;
@@ -267,7 +267,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				// if it exists ask if user wants to preserve content
 				DialogResult dr = MessageBox.Show(
-                    pjse.coder.Localization.Manager.GetString("keeplabels")
+                    pjse.Localization.GetString("keeplabels")
 					, btnTRCNMaker.Text
 					, MessageBoxButtons.YesNoCancel
 					, MessageBoxIcon.Warning);
@@ -299,7 +299,7 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper.Package.EndUpdate();
 			this.updateLists();
 			MessageBox.Show(
-                pjse.coder.Localization.Manager.GetString("done")
+                pjse.Localization.GetString("done")
                 , btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		#endregion

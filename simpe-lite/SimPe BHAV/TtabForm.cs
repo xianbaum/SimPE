@@ -297,7 +297,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (doText) tbStringIndex.Text = "0x"+Helper.HexString(si);
 			if (doCB)
 			{
-				if (wrapper.StringResource[1, (int)si] != null)
+                if (wrapper.StringResource != null && wrapper.StringResource[1, (int)si] != null)
 					this.cbStringIndex.SelectedIndex = (int)si;
 					//this.cbStringIndex.SelectedValue = tbStringIndex.Text;
 				else
@@ -2350,7 +2350,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			BhavForm ui = (BhavForm)b.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = pjse.coder.Localization.GetString("viewbhav")
+			ui.Text = pjse.Localization.GetString("viewbhav")
                 + ": " + b.FileName + " [" + b.Package.SaveFileName + "]";
 			b.RefreshUI();
 			ui.Show();
@@ -2366,7 +2366,7 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(pjse.coder.Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}			
 		}
 

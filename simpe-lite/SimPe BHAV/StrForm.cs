@@ -144,7 +144,7 @@ namespace SimPe.PackedFiles.UserInterface
 					empty = false;
 			this.btnLngClear.Enabled = (lid == 1) ? false : !empty;
 			this.cbLngSelect.Items[lid - 1] = ((SimPe.Data.MetaData.Languages)lid).ToString()
-                + (empty ? " (" + pjse.coder.Localization.Manager.GetString("empty") + ")" : "");
+                + (empty ? " (" + pjse.Localization.GetString("empty") + ")" : "");
 
 			empty = true;
 			foreach (StrItem s in wrapper)
@@ -167,7 +167,7 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 bool empty = wrapper[i].Length == 0;
                 this.cbLngSelect.Items.Add(((SimPe.Data.MetaData.Languages)i).ToString()
-                    + (empty ? " (" + pjse.coder.Localization.Manager.GetString("empty") + ")" : ""));
+                    + (empty ? " (" + pjse.Localization.GetString("empty") + ")" : ""));
                 if (!empty && i > 1) onlyDefault = false;
             }
 			this.btnClearAll.Enabled = !onlyDefault;
@@ -201,8 +201,8 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnLngFirst.Enabled = this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
 			this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
-			this.btnLngClear.Text = pjse.coder.Localization.Manager.GetString("Clear") + " " + ((SimPe.Data.MetaData.Languages)lid).ToString();
-			this.btnLngClear.Enabled = (lid > 1) && !this.cbLngSelect.SelectedItem.ToString().EndsWith(" (" + pjse.coder.Localization.Manager.GetString("empty") + ")");
+			this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + ((SimPe.Data.MetaData.Languages)lid).ToString();
+			this.btnLngClear.Enabled = (lid > 1) && !this.cbLngSelect.SelectedItem.ToString().EndsWith(" (" + pjse.Localization.GetString("empty") + ")");
 
 			while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
 			this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
@@ -238,7 +238,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			if (s != null)
 			{
-				this.lbStringNum.Text = pjse.coder.Localization.Manager.GetString("String") + " 0x"
+				this.lbStringNum.Text = pjse.Localization.GetString("String") + " 0x"
                     + Helper.HexString((ushort)index) + " (" + ((SimPe.Data.MetaData.Languages)lid).ToString() + ")";
 				this.rtbTitle.Text = s.Title;
 				this.rtbTitle.SelectAll();
@@ -452,7 +452,7 @@ namespace SimPe.PackedFiles.UserInterface
 				if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
 					empty = false;
 			this.cbLngSelect.Items[0] = ((SimPe.Data.MetaData.Languages)1).ToString()
-                + (empty ? " (" + pjse.coder.Localization.Manager.GetString("empty") + ")" : "");
+                + (empty ? " (" + pjse.Localization.GetString("empty") + ")" : "");
 		}
 
 
@@ -500,7 +500,7 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(pjse.coder.Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}			
 
 			btnCommit.Enabled = wrapper.Changed;

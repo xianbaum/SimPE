@@ -178,7 +178,7 @@ namespace SimPe.PackedFiles.UserInterface
 			else
 			{
 				MessageBox.Show(
-                    pjse.coder.Localization.GetString("toomanylines")
+                    pjse.Localization.GetString("toomanylines")
                     , "PJSE: Behaviour Editor"
                     , MessageBoxButtons.OK, MessageBoxIcon.Error);
 				newLine = csel;

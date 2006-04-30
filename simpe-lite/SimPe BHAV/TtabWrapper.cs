@@ -574,16 +574,16 @@ namespace SimPe.PackedFiles.Wrapper
 			{
 				try 
 				{
-					if (parent==null) return pjse.coder.Localization.Manager.GetString("unknown");
-					if (parent.StringResource == null) return pjse.coder.Localization.Manager.GetString("unknown");
+					if (parent==null) return pjse.Localization.GetString("unknown");
+					if (parent.StringResource == null) return pjse.Localization.GetString("unknown");
 
 					PackedFiles.Wrapper.StrItem item = parent.StringResource[0x1, (int)StringIndex];
-					if (item==null) return pjse.coder.Localization.Manager.GetString("unknown");
+					if (item==null) return pjse.Localization.GetString("unknown");
 					return item.Title;
 				} 
 				catch (Exception) 
 				{ 
-					return pjse.coder.Localization.Manager.GetString("unk"); 
+					return pjse.Localization.GetString("unk"); 
 				}
 			}
 		}
