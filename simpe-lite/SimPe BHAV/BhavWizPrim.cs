@@ -835,8 +835,8 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
 			return ((o[4] & 0x01) != 0)
-				? "ignored in Release"
-				: "if " + dataOwner(lng, o[2], o[0], o[1]) + " != 0";
+				? pjse.coder.Localization.GetString("bwp0f_ignored")
+				: pjse.coder.Localization.GetString("bwp0f_if") + " " + dataOwner(lng, o[2], o[0], o[1]) + " != 0";
 #if DISASIM
                 case 0x0F:  // Break Point (false = error)
                     if (b[x+4] & 1)
@@ -868,42 +868,42 @@ namespace pjse.BhavNameWizards
 
 			if ((o[2] & 0x01) != 0)
 			{
-				s += "Stack Object";
+				s += dataOwner(0x04, 0x0b); // Stack Object
 				if (lng)
-					s += ", start at " + dataOwner(0x19, o[1]); // Local
+                    s += ", " + pjse.coder.Localization.GetString("bwp10_startAt") + " " + dataOwner(0x19, o[1]); // Local
 			}
 			else
 			{
 				s += dataOwner(lng, o[4], o[5], o[6]);
 				if (lng)
-					s += ", relative to " + dataOwner(o[7], o[8], o[9]);
+                    s += ", " + pjse.coder.Localization.GetString("bwp10_relativeTo") + " " + dataOwner(o[7], o[8], o[9]);
 			}
 
 			if (lng)
 			{
 				if ((o[2] & 0x08) != 0)
 				{
-					s += ", facing";
-					if ((o[3] & 0x01) != 0) s += " N";
-					if ((o[3] & 0x02) != 0) s += " NE";
-					if ((o[3] & 0x04) != 0) s += " E";
-					if ((o[3] & 0x08) != 0) s += " SE";
-					if ((o[3] & 0x10) != 0) s += " S";
-					if ((o[3] & 0x20) != 0) s += " SW";
-					if ((o[3] & 0x40) != 0) s += " W";
-					if ((o[3] & 0x80) != 0) s += " NW";
+                    s += ", " + pjse.coder.Localization.GetString("bwp10_facing");
+                    if ((o[3] & 0x01) != 0) s += " " + pjse.coder.Localization.GetString("compassN");
+                    if ((o[3] & 0x02) != 0) s += " " + pjse.coder.Localization.GetString("compassNE");
+                    if ((o[3] & 0x04) != 0) s += " " + pjse.coder.Localization.GetString("compassE");
+                    if ((o[3] & 0x08) != 0) s += " " + pjse.coder.Localization.GetString("compassSE");
+                    if ((o[3] & 0x10) != 0) s += " " + pjse.coder.Localization.GetString("compassS");
+                    if ((o[3] & 0x20) != 0) s += " " + pjse.coder.Localization.GetString("compassSW");
+                    if ((o[3] & 0x40) != 0) s += " " + pjse.coder.Localization.GetString("compassW");
+                    if ((o[3] & 0x80) != 0) s += " " + pjse.coder.Localization.GetString("compassNW");
 				}
 
 				s += ", " + readStr(GS.BhavStr.FindGLB, o[0]);
 				if (o[0] >= 5 && o[0] <= 8)
 					s += " 0x" + SimPe.Helper.HexString(o[10]);
 
-				s += ", prefer empty: "                + ((o[2] & 0x02) == 0).ToString();
-				s += ", user editable: "               + ((o[2] & 0x04) != 0).ToString();
-				s += ", on level ground: "             + ((o[2] & 0x10) != 0).ToString();
-				s += ", with empty border: "           + ((o[2] & 0x20) != 0).ToString();
-				s += ", begin in front of refobj: "    + ((o[2] & 0x40) != 0).ToString();
-				s += ", with line of site to center: " + ((o[2] & 0x80) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bhwp10_preferEmpty") + ": " + ((o[2] & 0x02) == 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp10_userEditable") + ": " + ((o[2] & 0x04) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp10_onLevelGround") + ": " + ((o[2] & 0x10) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp10_withEmptyBorder") + ": " + ((o[2] & 0x20) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp10_beginInFrontOfRefobj") + ": " + ((o[2] & 0x40) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp10_withLineOfSightToCenter") + ": " + ((o[2] & 0x80) != 0).ToString();
 			}
 
 			return s;
@@ -986,10 +986,10 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			if ((o[4] & 0x01) != 0)
-				s += "Handle Sub Queue Interactions";
-			else 
-				s += "for " + dataOwner(lng, 0x09, o[0]) + " ticks, " // Param
-					+ (ToShort(o[2], o[3]) == 0 ? "do not " : "") + "allow push";
+                s += pjse.coder.Localization.GetString("bwp11_handleSubQueueInteractions");
+			else
+                s += pjse.coder.Localization.GetString("bwp11_ticks") + ": " + dataOwner(lng, 0x09, o[0]) // Param
+                    + ", " + pjse.coder.Localization.GetString("bwp11_allowPush") + ": " + (ToShort(o[2], o[3]) == 0).ToString();
 
 			return s;
 #if DISASIM
@@ -1022,11 +1022,11 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (o[0] == 0 ? "Me": "Stack Object");
+			s += dataOwner((byte)(o[0] == 0 ? 0x03: 0x04), 0x0b); // Me | Stack Object
 			if (lng)
 			{
-				s += ", return immediately: " + ((o[2] & 1) != 0).ToString();
-				s += ", cleanup all: " + ((o[2] & 2) == 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp12_returnImmediately") + ": " + ((o[2] & 1) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp12_cleanupAll") + ": " + ((o[2] & 2) == 0).ToString();
 			}
 
 			return s;
@@ -1058,34 +1058,44 @@ namespace pjse.BhavNameWizards
 
 			if ((o[9] & 0x01) != 0)
 			{
-				s += "Parent 1: "   + ((o[9] & 0x02) != 0 ? "Neighbor " : "") + "ID in " + dataOwner(lng, o[6], o[7], o[8]);
-				s += ", Parent 2: " + ((o[9] & 0x04) != 0 ? "Neighbor " : "") + "ID in " + dataOwner(lng, o[3], o[4], o[5]);
+                s += pjse.coder.Localization.GetString("Parent") + " 1"
+                    + ((o[9] & 0x02) != 0 ? " " + pjse.coder.Localization.GetString("NeighborID") : "")
+                    + ": " + dataOwner(lng, o[6], o[7], o[8]);
+                s += ", ";
+                s += pjse.coder.Localization.GetString("Parent") + " 2"
+                    + ((o[9] & 0x04) != 0 ? " " + pjse.coder.Localization.GetString("NeighborID") : "")
+                    + ": " + dataOwner(lng, o[3], o[4], o[5]);
 			}
 			else
-				s += "No parents";
+                s += pjse.coder.Localization.GetString("bwp13_noParents");
 
 			if (lng)
 			{
 
-				s += ", getting data from object with GUID in Temp 0,1: "   + ((o[9] & 0x08) != 0).ToString();
-				s += ", getting data from object with GUID in temp Token: " + ((o[9] & 0x10) != 0).ToString();
-				s += ", getting character from Bin: "                       + ((o[9] & 0x20) != 0).ToString();
-				if ((o[9] & 0x40) != 0)
-				{
-					s += ", Using external guid for Thumbnail Outfit from "
-						+ ((o[9] & 0x80) != 0 ? "GUID in temp 2/3" : dataOwner(o[10], o[11], o[12]));
-				}
-				else
-					s += ", using default thumbnail outfit";
+                s += ", " + pjse.coder.Localization.GetString("bwp13_personDataSource")
+                    + ": (GUID) " + dataOwner(0x08, 0x00) + ",1: " + ((o[9] & 0x08) != 0).ToString(); // Temp
+                s += ", " + pjse.coder.Localization.GetString("bwp13_personDataSource")
+                    + ": (GUID) " + "temp Token" + ": " + ((o[9] & 0x10) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp13_characterFromBin")
+                    + ": " + ((o[9] & 0x20) != 0).ToString();
+                s += ", " + pjse.coder.Localization.GetString("bwp13_thumbnailOutfit")
+                    + ": " + (((o[9] & 0x40) != 0)
+                        ? "(GUID) " + (((o[9] & 0x80) != 0)
+                            ? dataOwner(0x08, 0x02) + ",3" // Temp
+                            : dataOwner(o[10], o[11], o[12]))
+                        : pjse.coder.Localization.GetString("default"));
 
 				if (o[0] != 0 && o[0] != 0xFF) 
 				{
-					s += ", skin color in " + dataOwner(0x19, o[0]); // Local
-					s += ", age in " + dataOwner(0x19, o[1]); // Local
-					s += ", gender in " + dataOwner(0x19, o[2]); // Local
+                    s += ", " + pjse.coder.Localization.GetString("bwp13_skinColor")
+                        + ": " + dataOwner(0x19, o[0]); // Local
+                    s += ", " + pjse.coder.Localization.GetString("bwp13_age")
+                        + ": " + dataOwner(0x19, o[1]); // Local
+                    s += ", " + pjse.coder.Localization.GetString("bwp13_gender")
+                        + ": " + dataOwner(0x19, o[2]); // Local
 				}
 				else
-					s += ", age, gender and skin color not overridden";
+                    s += ", " + pjse.coder.Localization.GetString("bwp13_defAgeGenderSkin");
 			}
 
 			return s;

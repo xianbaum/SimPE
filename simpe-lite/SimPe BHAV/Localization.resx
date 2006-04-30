@@ -335,4 +335,109 @@ Check BHAV format and number of lines.</value>
   <data name="Target" xml:space="preserve">
     <value>Target</value>
   </data>
+  <data name="bhwp10_preferEmpty" xml:space="preserve">
+    <value>prefer empty</value>
+  </data>
+  <data name="bwp0f_if" xml:space="preserve">
+    <value>if</value>
+  </data>
+  <data name="bwp0f_ignored" xml:space="preserve">
+    <value>ignored in Release</value>
+  </data>
+  <data name="bwp10_beginInFrontOfRefobj" xml:space="preserve">
+    <value>begin in front of refobj</value>
+  </data>
+  <data name="bwp10_facing" xml:space="preserve">
+    <value>facing</value>
+  </data>
+  <data name="bwp10_onLevelGround" xml:space="preserve">
+    <value>on level ground</value>
+  </data>
+  <data name="bwp10_relativeTo" xml:space="preserve">
+    <value>relative to</value>
+  </data>
+  <data name="bwp10_startAt" xml:space="preserve">
+    <value>start at</value>
+  </data>
+  <data name="bwp10_userEditable" xml:space="preserve">
+    <value>user editable</value>
+  </data>
+  <data name="bwp10_withEmptyBorder" xml:space="preserve">
+    <value>with empty border</value>
+  </data>
+  <data name="bwp10_withLineOfSightToCenter" xml:space="preserve">
+    <value>with line of sight to center</value>
+  </data>
+  <data name="bwp11_allowPush" xml:space="preserve">
+    <value>allow push</value>
+  </data>
+  <data name="bwp11_handleSubQueueInteractions" xml:space="preserve">
+    <value>Handle Sub Queue Interactions</value>
+  </data>
+  <data name="bwp11_ticks" xml:space="preserve">
+    <value>ticks</value>
+  </data>
+  <data name="bwp12_cleanupAll" xml:space="preserve">
+    <value>cleanup all</value>
+  </data>
+  <data name="bwp12_returnImmediately" xml:space="preserve">
+    <value>return immediately</value>
+  </data>
+  <data name="bwp13_age" xml:space="preserve">
+    <value>age</value>
+  </data>
+  <data name="bwp13_characterFromBin" xml:space="preserve">
+    <value>Character from Bin</value>
+  </data>
+  <data name="bwp13_defAgeGenderSkin" xml:space="preserve">
+    <value>default age / gender / skin color</value>
+  </data>
+  <data name="bwp13_gender" xml:space="preserve">
+    <value>gender</value>
+  </data>
+  <data name="bwp13_noParents" xml:space="preserve">
+    <value>No parents</value>
+  </data>
+  <data name="bwp13_personDataSource" xml:space="preserve">
+    <value>Person data source</value>
+  </data>
+  <data name="bwp13_skinColor" xml:space="preserve">
+    <value>skin color</value>
+  </data>
+  <data name="bwp13_thumbnailOutfit" xml:space="preserve">
+    <value>Thumbnail Outfit</value>
+  </data>
+  <data name="compassE" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="compassN" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="compassNE" xml:space="preserve">
+    <value>NE</value>
+  </data>
+  <data name="compassNW" xml:space="preserve">
+    <value>NW</value>
+  </data>
+  <data name="compassS" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="compassSE" xml:space="preserve">
+    <value>SE</value>
+  </data>
+  <data name="compassSW" xml:space="preserve">
+    <value>SW</value>
+  </data>
+  <data name="compassW" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="default" xml:space="preserve">
+    <value>default</value>
+  </data>
+  <data name="NeighborID" xml:space="preserve">
+    <value>Neighbor ID</value>
+  </data>
+  <data name="Parent" xml:space="preserve">
+    <value>Parent</value>
+  </data>
 </root>
