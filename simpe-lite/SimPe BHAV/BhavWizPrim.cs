@@ -1152,9 +1152,9 @@ namespace pjse.BhavNameWizards
 			s += readStr(GS.BhavStr.FunctionTable, o[0]);
 			if (lng)
 			{
-				s += ", change icon: "                          + ((o[2] & 0x01) != 0).ToString();
-				s += ", passing parameters from calling tree: " + ((o[2] & 0x02) != 0).ToString();
-				s += ", running check tree only: "              + ((o[2] & 0x04) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp14_changeIcon") + ": " + ((o[2] & 0x01) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp14_callersParams") + ": " + ((o[2] & 0x02) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp14_CTonly") + ": " + ((o[2] & 0x04) != 0).ToString();
 			}
 
 			return s;
@@ -1209,7 +1209,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += ((o[4] & 0x40) != 0 ? "Stop" : "Play");
+			s += ((o[4] & 0x40) != 0
+                ? pjse.Localization.GetString("Stop")
+                : pjse.Localization.GetString("Play")
+                );
 
 			int instance = ToShort(o[0], o[1]);
 			Scope scope = Scope.Private;
@@ -1229,12 +1232,17 @@ namespace pjse.BhavNameWizards
 
 			if (lng)
 			{
-				s += ", scope: " + scope;
-				s += ", source: "    + ((o[4] & 0x02) != 0 ? "Stack object" : "Me");
-				s += ", auto vary: " + ((o[4] & 0x10) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("Scope")
+                    + ": " + scope;
+                s += ", " + pjse.Localization.GetString("bwp17_source")
+                    + ": " + dataOwner((byte)((o[4] & 0x02) == 0 ? 0x03 : 0x04), 0x0b);
+                s += ", " + pjse.Localization.GetString("bwp17_autoVary")
+                    + ": " + ((o[4] & 0x10) != 0).ToString();
 
-				s += ", sample rate: 0x" + SimPe.Helper.HexString(ToShort(o[2], o[3]));
-				s += ", volume: 0x"      + SimPe.Helper.HexString(o[5]);
+                s += ", " + pjse.Localization.GetString("bwp17_sampleRate")
+                    + ": 0x" + SimPe.Helper.HexString(ToShort(o[2], o[3]));
+                s += ", " + pjse.Localization.GetString("bwp17_volume")
+                    + ": 0x" + SimPe.Helper.HexString(o[5]);
 			}
 
 			return s;

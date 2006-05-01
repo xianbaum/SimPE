@@ -155,8 +155,9 @@ namespace pjse.guidtool
 			this.progressBar1.Visible = false;
 			if (i < 180)
 				this.lbStatus.Text = (this.rtbReport.Text.Length == 0
-                    ? pjse.Localization.GetString("No")
-                    : i.ToString()) + Localization.GetString("MatchesFound");
+                    ? pjse.Localization.GetString("NoMatchesFound")
+                    : i.ToString() + Localization.GetString("MatchesFound")
+                    );
 			else
 				this.lbStatus.Text = pjse.Localization.GetString("TooManyMatches");
 			this.lbStatus.Visible = true;
