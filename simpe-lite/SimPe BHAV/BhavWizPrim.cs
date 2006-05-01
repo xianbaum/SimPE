@@ -1384,38 +1384,61 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "var 0x" + SimPe.Helper.HexString(o[0]);
-			if (instruction.NodeVersion == 0)	// old-style parameter usage
-			{
-				s += " of ";
-				switch (o[1] & 3) 
-				{
-					case 0: s += "Me to Stack Object"; break;
-					case 1: s += "Stack Object to Me"; break;
-					case 2: s += "Stack Object to " + dataOwner(lng, 0x19, o[3]); break; // Local
-					case 3: s += dataOwner(lng, 0x19, o[3]) + " to Stack Object"; break; // Local
-				}
-				if (lng)
-				{
-					s += ", " + ((o[1] & 0x04) != 0 ? "set from" : "result in") + ": " + dataOwner(o[4], ToShort(o[6], o[7]));
-					s += ", fail if too small: " + ((o[2] & 0x01) != 0).ToString();
-					s += ", use neighbor IDs: "  + ((o[2] & 0x02) != 0).ToString();
-				}
-			} 
-			else	// new-style parameter usage
-			{
-				s += " (" + readStr(Scope.Global, GS.GlobalStr.Relationship, o[0], -1, pjse.Detail.ErrorNames) + ")";
-				s += " of " + dataOwner(lng, o[2],ToShort(o[3], o[4]));
-				s += " to " + dataOwner(lng, o[5],ToShort(o[6], o[7]));
+            if ((o[1] & 0x04) == 0)
+            {
+                if (instruction.NodeVersion == 0)	// old-style parameter usage
+                    s += dataOwner(o[4], ToShort(o[6], o[7]));
+                else
+                    s += dataOwner(o[8], ToShort(o[9], o[10]));
+                s += " := ";
+            }
 
-				if (lng)
-				{
-					s += ", fail if too small: " + ((o[1] & 0x01) != 0).ToString();
-					s += ", use neighbor IDs: "  + ((o[1] & 0x02) != 0).ToString();
-					s += ", " + ((o[1] & 0x04) != 0 ? "set from" : "result in") + ": " + dataOwner(o[8], ToShort(o[9], o[10]));
-					s += ", don't check presence of second object: " + ((o[1] & 0x08) != 0).ToString(); // "object to sim" relationship
-				}
-			}
+            s += readStr(Scope.Global, GS.GlobalStr.Relationship, o[0], -1, Detail.ErrorNames);
+
+            if ((o[1] & 0x04) != 0)
+            {
+                s += " := ";
+                if (instruction.NodeVersion == 0)	// old-style parameter usage
+                    s += dataOwner(o[4], ToShort(o[6], o[7]));
+                else
+                    s += dataOwner(o[8], ToShort(o[9], o[10]));
+            }
+
+            s += ", " + pjse.Localization.GetString("bwp1a_relationship")
+                + ": ";
+            if (instruction.NodeVersion == 0)	// old-style parameter usage
+            {
+                switch (o[1] & 3) 
+                {
+                    case 0: s += dataOwner(0x03, 0x0b) + " .. " + dataOwner(0x04, 0x0b); break; // Me .. Stack Object
+                    case 1: s += dataOwner(0x04, 0x0b) + " .. " + dataOwner(0x03, 0x0b); break; // Stack Object .. Me
+                    case 2: s += dataOwner(0x04, 0x0b) + " .. " + dataOwner(0x19, o[3]); break; // Local .. Stack Object
+                    case 3: s += dataOwner(0x19, o[3]) + " .. " + dataOwner(0x04, 0x0b); break; // Stack Object .. Local
+                }
+            } 
+            else	// new-style parameter usage
+            {
+                s += dataOwner(lng, o[2], ToShort(o[3], o[4])) + " .. " + dataOwner(lng, o[5], ToShort(o[6], o[7]));
+            }
+
+            if (lng)
+                if (instruction.NodeVersion == 0)	// old-style parameter usage
+                {
+                    s += ", " + pjse.Localization.GetString("bwp1a_failTooSmall")
+                        + ": " + ((o[2] & 0x01) != 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp1a_useNIDs")
+                        + ": " + ((o[2] & 0x02) != 0).ToString();
+                }
+                else
+                {
+                    s += ", " + pjse.Localization.GetString("bwp1a_failTooSmall")
+                        + ": " + ((o[1] & 0x01) != 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp1a_useNIDs")
+                        + ": " + ((o[1] & 0x02) != 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp1a_noCheckObj2")
+                        + ": " + ((o[1] & 0x08) != 0).ToString(); // "object to sim" relationship
+                }
+
 
 			return s;
 #if DISASIM

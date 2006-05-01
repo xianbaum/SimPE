@@ -472,6 +472,18 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp19_test" xml:space="preserve">
     <value>TEST</value>
   </data>
+  <data name="bwp1a_failTooSmall" xml:space="preserve">
+    <value>fail if too small</value>
+  </data>
+  <data name="bwp1a_noCheckObj2" xml:space="preserve">
+    <value>don't check presence of second object</value>
+  </data>
+  <data name="bwp1a_relationship" xml:space="preserve">
+    <value>relationship</value>
+  </data>
+  <data name="bwp1a_useNIDs" xml:space="preserve">
+    <value>use neighbor IDs</value>
+  </data>
   <data name="NoMatchesFound" xml:space="preserve">
     <value>No matches found</value>
   </data>
