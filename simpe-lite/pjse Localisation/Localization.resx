@@ -469,6 +469,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp17_volume" xml:space="preserve">
     <value>volume</value>
   </data>
+  <data name="bwp19_test" xml:space="preserve">
+    <value>TEST</value>
+  </data>
   <data name="NoMatchesFound" xml:space="preserve">
     <value>No matches found</value>
   </data>

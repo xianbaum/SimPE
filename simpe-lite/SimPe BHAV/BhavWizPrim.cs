@@ -1287,31 +1287,35 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			if ((o[4] & 0x01) != 0)
-				s += "test if";
-			else s += ((o[4] & 0x02) != 0 ? "add" : "subtract");
-			s += " ";
 
-			byte owner = o[1];
-			switch (o[0]) 
-			{
-				case 0: owner = 0x07; break;	// literal
-				case 1: owner = 0x09; break;	// param
-				case 2: owner = 0x19; break;	// local
-			}
-			if ((o[4] & 0x08) != 0 && instruction.NodeVersion != 0)
-				s += "amount in Temp 2,3"; // was "temp 3 and 4"  (SimAntics error)
-			else
-				s += dataOwner(lng, owner, o[2], o[3]);
+            // expense type | operator | amount
 
-			s += " multiplied by " + ((o[4] & 0x04) != 0
-				? "Temp 2"
-				: (ToShort(o[7], o[8]) == 0 ? "1" : "0x" + SimPe.Helper.HexString(ToShort(o[7], o[8]))));
+            if ((o[4] & 0x01) != 0)
+                s += pjse.Localization.GetString("bwp19_test")
+                    + ": ";
 
-			if ((o[4] & 0x01) != 0)
-				s += " may be " + ((o[4] & 0x02) != 0 ? "added" : "subtracted");
+            s += readStr(GS.BhavStr.ExpenseType, o[6])
+                + " " + readStr(GS.BhavStr.Operators, (ushort)(((o[4] & 0x02) != 0) ? 0x03 : 0x04)) // -= | +=
+                + " (";
 
-			s += " " + (((o[4] & 0x01) != 0) ? "as" : "from") + " " + readStr(GS.BhavStr.ExpenseType, o[6]);
+            byte owner = o[1];
+            switch (o[0])
+            {
+                case 0: owner = 0x07; break;	// literal
+                case 1: owner = 0x09; break;	// param
+                case 2: owner = 0x19; break;	// local
+            }
+            if ((o[4] & 0x08) != 0 && instruction.NodeVersion != 0)
+                s += dataOwner(0x08, 2) + ",3"; // was "temp 3 and 4"  (SimAntics error)
+            else
+                s += dataOwner(lng, owner, o[2], o[3]);
+            s += " * ";
+            s += ((o[4] & 0x04) != 0)
+                ? dataOwner(0x08, 2)
+                : (ToShort(o[7], o[8]) == 0)
+                    ? "1"
+                    : "0x" + SimPe.Helper.HexString(ToShort(o[7], o[8]));
+            s += ")";
 
 			return s;
 #if DISASIM
