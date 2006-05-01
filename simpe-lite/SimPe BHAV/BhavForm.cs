@@ -259,6 +259,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = !state;
 		}
 
+        private bool instIsBhav()
+        {
+            return wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode) != null;
+        }
+
 		private void UpdateInstPanel()
 		{
 			internalchg = true;
@@ -342,7 +347,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
-				this.llopenbhav.Enabled = currentInst.FTEntry != null;
+                this.llopenbhav.Enabled = instIsBhav();
 				this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
 				Longname = currentInst.LongName;
 			}
@@ -614,7 +619,7 @@ namespace SimPe.PackedFiles.UserInterface
 					this.btnCancel.Enabled = true;
 
 					this.currentInst = currentInst.Instruction;
-					this.llopenbhav.Enabled = currentInst.FTEntry != null;
+                    this.llopenbhav.Enabled = instIsBhav();
 					this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
 					Longname = currentInst.LongName;
 				}
@@ -2744,8 +2749,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			Bhav bhav = ((pjse.BhavNameWizards.BhavWizBhav)currentInst).Wrapper;
-			BhavForm ui = (BhavForm)bhav.UIHandler;
+            pjse.FileTable.Entry item = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode);
+            if (item == null) return; // this should never happen
+            Bhav bhav = new Bhav();
+            bhav.ProcessData(item.PFD, item.Package);
+
+            BhavForm ui = (BhavForm)bhav.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
 			ui.Text = 
                 pjse.Localization.GetString("viewbhav") + ": " + currentInst.ShortName + " [" + bhav.Package.SaveFileName + "]";

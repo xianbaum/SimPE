@@ -32,6 +32,8 @@ namespace pjse.BhavNameWizards
 	public class BhavWizBhav : BhavWiz, IDisposable
 	{
 		private pjse.FileTable.Entry ftEntry = null;
+        private Bhav wrapper = null;
+
 		/// <summary>
 		/// Which group to look in for the BHAV
 		/// </summary>
@@ -59,9 +61,7 @@ namespace pjse.BhavNameWizards
 				prefix = pjse.Localization.GetString("lcSemiGlobal");
 				group = (i.Parent.Context == Scope.SemiGlobal) ? i.Parent.Group : i.Parent.SemiGroup;
 			}
-
 		}
-
 
 		public static implicit operator BhavWizBhav(Instruction i)
 		{
@@ -74,21 +74,35 @@ namespace pjse.BhavNameWizards
 
 		#region IDisposable Members
 
-		public new void Dispose()
-		{
-			ftEntry = null;
-		}
+		public new void Dispose() { GFT_FiletableRefresh(null, null); }
 
 		#endregion
 
-		public Bhav Wrapper
+        void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            FileTable.GFT.FiletableRefresh -= new EventHandler(GFT_FiletableRefresh);
+            ftEntry = null;
+            wrapper = null;
+        }
+
+		private Bhav Wrapper
 		{
 			get
 			{
-				pjse.FileTable.Entry ftEntry = FTEntry;
-				if (ftEntry == null) return null;
-				Bhav wrapper = new Bhav();
+                if (wrapper != null) return wrapper;
+
+                if (ftEntry == null)
+                {
+                    if (instruction == null || instruction.Parent == null)
+                        throw new Exception("Can't find wrapper for instruction with no parent");
+
+                    ftEntry = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instruction.OpCode);
+                    if (ftEntry == null) return null;
+                }
+
+				wrapper = new Bhav();
 				wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
+                FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
 				return wrapper;
 			}
 		}
@@ -98,22 +112,8 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				pjse.FileTable.Entry ftEntry = FTEntry;
+                pjse.FileTable.Entry ftEntry = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instruction.OpCode);
                 return (ftEntry != null) ? ftEntry : pjse.Localization.GetString("bhavnotfound");
-			}
-		}
-
-
-		public override pjse.FileTable.Entry FTEntry
-		{
-			get
-			{
-				if (ftEntry == null)
-				{
-					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group, instruction.OpCode];
-					if(items != null && items.Length > 0) ftEntry = items[0];
-				}
-				return ftEntry;
 			}
 		}
 

@@ -258,7 +258,14 @@ namespace pjse
 		}
 
 
-        private void currentPackage_IndexChanged(object sender, EventArgs e) { OnFiletableRefresh(this, new EventArgs()); }
+        private void currentPackage_IndexChanged(object sender, EventArgs e)
+        {
+            currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
+            Remove(currentPackage);
+            Add(currentPackage);
+            currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
+            OnFiletableRefresh(this, new EventArgs());
+        }
 
         public IPackageFile CurrentPackage
         {
@@ -276,7 +283,7 @@ namespace pjse
                     if ((IsFixed(value) && currentPackage != null)
                         || (!IsFixed(value) && currentPackage == null))
                     {
-                        currentPackage = value;
+                        currentPackage = IsFixed(value) ? null : value;
                         if (currentPackage != null)
                         {
                             Add(currentPackage);

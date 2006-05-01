@@ -106,8 +106,11 @@ namespace pjse
 			if ((skip_pages & 0x04) == 0)
 			{
 				Glob g = pjse.BhavWiz.GlobByGroup(group);
-				if (g != null)
-					FillGroup(resourceType, g.SemiGlobalGroup, this.lbSemiGroup, this.tpSemiGroup);
+                if (g != null)
+                {
+                    FillGroup(resourceType, g.SemiGlobalGroup, this.lbSemiGroup, this.tpSemiGroup);
+                    this.tpSemiGroup.Text = g.SemiGlobalName;
+                }
 			}
 
 			if ((skip_pages & 0x08) == 0 && group != (uint)Group.Global)

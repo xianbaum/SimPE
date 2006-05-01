@@ -223,8 +223,6 @@ namespace pjse
 
         public override string ToString() { return LongName; }
 
-        public virtual pjse.FileTable.Entry FTEntry { get { return null; } }
-
 
         public virtual string ShortName { get { return Name + " (" + Operands(false) + ")"; } }
 
