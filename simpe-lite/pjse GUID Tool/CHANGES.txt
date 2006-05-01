@@ -1,4 +1,12 @@
 
+1 May 2006 14:00 - Resource renaming
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.16.4
+
+1 May 2006 10:33 - Fix GUID Tool
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.16.3
+
 30 April 2006 14:29 - Centralise localisation
   pjse GUID Tool\
     GUIDTool.cs 1.10.16.2

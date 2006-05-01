@@ -98,7 +98,7 @@ namespace pjse.guidtool
 
 		public override string ToString()
 		{
-			return "PJSE\\" + pjse.Localization.GetString("ObjectFinder");
+            return "PJSE\\" + pjse.Localization.GetString("gt_ObjectFinder");
 		}
 
 		#endregion
@@ -141,7 +141,7 @@ namespace pjse.guidtool
 						(type == SearchType.Name && ((string)item).ToLower().IndexOf(this.tbName.Text) >= 0))
 					{
 						this.rtbReport.Text += "0x" + SimPe.Helper.HexString(itemguid) + ": "
-							+ pjse.Localization.GetString("Group") + " 0x" + SimPe.Helper.HexString(item.PFD.Group)
+                            + pjse.Localization.GetString("gt_Group") + " 0x" + SimPe.Helper.HexString(item.PFD.Group)
                             + " - " + item + " (" + item.Package.FileName + ")\n";
 						i++;
 					}
@@ -155,11 +155,11 @@ namespace pjse.guidtool
 			this.progressBar1.Visible = false;
 			if (i < 180)
 				this.lbStatus.Text = (this.rtbReport.Text.Length == 0
-                    ? pjse.Localization.GetString("NoMatchesFound")
-                    : i.ToString() + Localization.GetString("MatchesFound")
+                    ? pjse.Localization.GetString("gt_NoMatchesFound")
+                    : Localization.GetString("gt_MatchesFound") + ": " + i.ToString()
                     );
 			else
-				this.lbStatus.Text = pjse.Localization.GetString("TooManyMatches");
+                this.lbStatus.Text = pjse.Localization.GetString("gt_TooManyMatches");
 			this.lbStatus.Visible = true;
 		}
 
@@ -333,7 +333,7 @@ namespace pjse.guidtool
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
 			System.Windows.Forms.MessageBox.Show(
-                pjse.Localization.GetString("ObjectFinderHelp"),
+                pjse.Localization.GetString("gt_ObjectFinderHelp"),
 				this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
