@@ -27,6 +27,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
+using pjse;
 
 namespace SimPe.PackedFiles.UserInterface
 {
@@ -270,26 +271,69 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = savedstate;
 		}
 
-		private uint getTTAsCount()
+        private Str str = null;
+        private Str StrRes
+        {
+            get
+            {
+                if (str == null)
+                    str = new Str(null, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance, 0x54544173);
+                        // "null" prevents fallback to Semi or Global groups.
+                return str;
+            }
+        }
+
+
+        private uint getTTAsCount()
 		{
-			if (wrapper.StringResource == null) return 0;
+            Str w = StrRes;
+            if (w == null) return 0;
 
-			int max = 0;
-			for (byte lid = 1; lid < 44; lid++) max = Math.Max(max, wrapper.StringResource[lid].Length);
-			return (uint)max;
-		}
+            uint max = 0;
+            for (byte lid = 1; lid < 44; lid++) max = (uint)Math.Max(max, w[lid].Length);
+            return max;
+        }
 
+        private void populateCbStringIndex()
+        {
+            this.cbStringIndex.Items.Clear();
+
+            uint c = getTTAsCount();
+            Str w = StrRes;
+            for (int i = 0; i < c; i++)
+			{
+                FallbackStrItem si = w[1, i];
+				this.cbStringIndex.Items.Add("0x" + i.ToString("X") + ": " + ((si == null)
+                    ? "*!no default string!*"
+                    : si.strItem.Title + (si.lidFallback ? " [LID=1]" : "")));
+			}
+        }
+
+        private void populateLbttab()
+        {
+            lbttab.Items.Clear();
+            for (int i = 0; i < cbStringIndex.Items.Count; i++) addItem(i);
+        }
+
+        private void addItem(int i)
+        {
+            if (i < cbStringIndex.Items.Count)
+                lbttab.Items.Add(cbStringIndex.Items[i]);
+            else
+                lbttab.Items.Add("0x" + i.ToString("X") + ": " + pjse.Localization.GetString("UNK"));
+        }
 
 		private void setBHAV(int which, ushort target, bool notxt)
 		{
 			TextBox[] tbaGA = { tbAction, tbGuardian };
 			if (!notxt) tbaGA[which].Text = "0x"+Helper.HexString(target);
 
-			Label[] lbaGA = { lbaction, lbguard };
-			LinkLabel[] llaGA = { llAction, llGuardian };
 			bool found = false;
-			lbaGA[which].Text = pjse.BhavWiz.bhavName(wrapper, target, ref found);
-			llaGA[which].Enabled = found;
+            Label[] lbaGA = { lbaction, lbguard };
+            lbaGA[which].Text = pjse.BhavWiz.bhavName(wrapper, target, ref found);
+
+            LinkLabel[] llaGA = { llAction, llGuardian };
+            llaGA[which].Enabled = found;
 		}
 
 		private void setStringIndex(uint si, bool doText, bool doCB)
@@ -297,9 +341,8 @@ namespace SimPe.PackedFiles.UserInterface
 			if (doText) tbStringIndex.Text = "0x"+Helper.HexString(si);
 			if (doCB)
 			{
-                if (wrapper.StringResource != null && wrapper.StringResource[1, (int)si] != null)
+                if (si < cbStringIndex.Items.Count)
 					this.cbStringIndex.SelectedIndex = (int)si;
-					//this.cbStringIndex.SelectedValue = tbStringIndex.Text;
 				else
 				{
 					this.cbStringIndex.SelectedIndex = -1;
@@ -333,18 +376,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 			internalchg = true;
 
-			lbttab.Items.Clear();
-			for(int i = 0; i < wrapper.Count; i++)
-				lbttab.Items.Add(wrapper[i]);
-
-			this.cbStringIndex.Items.Clear();
-			int c = (int)getTTAsCount();
-			for (int i = 0; i < c; i++)
-			{
-				StrItem si = wrapper.StringResource[(byte)1, i];
-				this.cbStringIndex.Items.Add("0x" + i.ToString("X") + ": " + ((si == null) ? "*!no default string!*" : si.Title));
-			}
-			this.cbStringIndex.SelectedIndex = -1;
+            this.cbStringIndex.SelectedIndex = -1;
+            GFT_FiletableRefresh(null, null);
 
 			internalchg = false;
 
@@ -354,9 +387,17 @@ namespace SimPe.PackedFiles.UserInterface
 			if (!setHandler)
 			{
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
 				setHandler = true;
 			}
-		}		
+		}
+
+        private void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            str = null;
+            populateCbStringIndex();
+            populateLbttab();
+        }		
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
@@ -2381,8 +2422,8 @@ namespace SimPe.PackedFiles.UserInterface
 			int i = wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
 			if (i < 0) return;
 
-			lbttab.Items.Add(wrapper[i]);
-			lbttab.SelectedIndex = i;
+            addItem((int)wrapper[i].StringIndex);
+            lbttab.SelectedIndex = i;
 		}
 
 		private void btnDelete_Click(object sender, System.EventArgs e)
@@ -2664,8 +2705,11 @@ namespace SimPe.PackedFiles.UserInterface
 				case 1:
 					currentItem.StringIndex = val;
 					setStringIndex(val, false, true);
-					lbttab.Items[lbttab.SelectedIndex] = currentItem;
-					break;
+                    if (val < cbStringIndex.Items.Count)
+                        lbttab.Items[lbttab.SelectedIndex] = cbStringIndex.Items[(int)val];
+                    else
+                        lbttab.Items[lbttab.SelectedIndex] = "0x" + val.ToString("X") + ": " + pjse.Localization.GetString("UNK");
+                    break;
 				case 2: currentItem.Autonomy = val; break;
 				case 3: currentItem.FacialAnimationID = val; break;
 				case 4: currentItem.ObjectType = val; break;

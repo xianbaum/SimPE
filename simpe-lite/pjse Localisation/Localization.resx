@@ -548,10 +548,4 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>Stop</value>
     <comment>0x17</comment>
   </data>
-  <data name="TtabWrapper_noTTAsFile" xml:space="preserve">
-    <value>(No TTAs)</value>
-  </data>
-  <data name="TtabWrapper_noTTAsString" xml:space="preserve">
-    <value>(No such TTAs entry)</value>
-  </data>
 </root>

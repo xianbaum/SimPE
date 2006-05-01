@@ -55,11 +55,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Unknown Data following the TTAB
 		/// </summary>
 		private byte[] footer = new byte[0];
-
-		/// <summary>
-		/// Contains a valid String Resource that describes the Function Entries
-		/// </summary>
-		private StrWrapper strres = null;
 		#endregion
 
 		#region Accessor methods
@@ -94,28 +89,6 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-
-
-		/// <summary>
-		/// Returns the describing String Resource
-		/// </summary>
-		internal PackedFiles.Wrapper.StrWrapper StringResource
-		{
-			get 
-			{
-				if (strres == null && FileDescriptor != null)
-				{
-					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[Data.MetaData.PIE_STRING_FILE, FileDescriptor.Group, FileDescriptor.Instance];
-					if (items == null || items.Length == 0) return null;
-
-					strres = new StrWrapper();
-					strres.ProcessData(items[0].PFD, items[0].Package);
-				}
-
-				return strres;
-			}
-		}
-
 		#endregion
 
 		/// <summary>
@@ -189,7 +162,6 @@ namespace SimPe.PackedFiles.Wrapper
 			// in case we give up...
 			items = null;
 			footer = new byte[0];
-			strres = null;
 
 			filename = reader.ReadBytes(0x40);
 
@@ -323,7 +295,7 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		#endregion
-	}
+    }
 
 
 	/// <summary>
@@ -565,23 +537,6 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		/// <summary>
-		/// Returns the Name of this Item according to the Pie Strings File
-		/// </summary>
-		public string Name
-		{
-			get 
-			{
-                if (parent == null) return pjse.Localization.GetString("TtabWrapper_noTTAsFile");
-                if (parent.StringResource == null) return pjse.Localization.GetString("TtabWrapper_noTTAsFile");
-
-                PackedFiles.Wrapper.StrItem item = parent.StringResource[(byte)SimPe.Helper.WindowsRegistry.LanguageCode, (int)StringIndex];
-                if (item == null) item = parent.StringResource[0x01, (int)StringIndex];
-                if (item == null) return pjse.Localization.GetString("TtabWrapper_noTTAsString");
-                return item.Title;
-            }
-		}
-
 		public Ttab Parent
 		{
 			get { return parent; }
@@ -649,12 +604,6 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 
 			return clone;
-		}
-
-
-		public override string ToString()
-		{
-			return "0x"+StringIndex.ToString("X")+": "+Name;// + " ("+this.ActionName+")";
 		}
 
 

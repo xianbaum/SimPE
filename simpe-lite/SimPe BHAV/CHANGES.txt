@@ -3,6 +3,24 @@
 !!! stole BhavStr STR# 0x1f2 for Generic Sims Call descriptions
 !!! stole BhavStr STR# 0x1f1 for Find Best Object for Function location flags
 
+1 May 2006 22:19 - TTAB: Use Str managed wrappers (to simplify Localisation)
+  pjse Localisation\
+    Localization.resx 1.1.2.6
+  SimPe BHAV\
+    Str.cs 1.1.4.3.4.4
+    TtabForm.cs 1.31.2.6.4.3
+    TtabWrapper.cs 1.23.6.1.6.4
+  pjseTestData.package 1.17.2.9.6.4
+
+1 May 2006 13:57 - FileTable: Better tracking of Package Index updates (and label SGs in RC)
+  pjse filetable\
+    FileTable.cs 1.11.2.7.4.3
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.13.4.5
+    BhavWiz.cs 1.37.2.13.4.5
+    BhavWizBhav.cs 1.19.2.2.14.4
+    ResourceChooser.cs 1.6.2.2.6.2
+
 1 May 2006 13:57 - Localisation: BhavWizPrim 0x1b; resource renaming
   pjse Localisation\
     Localization.resx 1.1.2.5
@@ -25,9 +43,7 @@
   SimPe BHAV\
     BhavWizPrim.cs 1.34.2.13.4.7
 
-1 May 2006 09:43 - Localisation: BhavWizPrim down to 0x18; fix GUID tool
-  pjse GUID Tool
-    GUIDTool.cs 1.10.16.3
+1 May 2006 10:33 - Localisation: BhavWizPrim down to 0x18
   pjse Localisation\
     Localization.resx 1.1.2.2
   SimPe BHAV\
