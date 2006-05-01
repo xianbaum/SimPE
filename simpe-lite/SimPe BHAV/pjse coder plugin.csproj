@@ -108,16 +108,6 @@
       <HintPath>..\..\SimPe\simpe.filehandler.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.genericbase">
-      <Name>simpe.genericbase</Name>
-      <HintPath>..\..\SimPe\simpe.genericbase.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="simpe.generichandler">
-      <Name>simpe.generichandler</Name>
-      <HintPath>..\..\SimPe\simpe.generichandler.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="simpe.helper">
       <Name>simpe.helper</Name>
       <HintPath>..\..\SimPe\simpe.helper.dll</HintPath>
