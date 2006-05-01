@@ -1233,7 +1233,7 @@ namespace pjse.BhavNameWizards
 			if (lng)
 			{
                 s += ", " + pjse.Localization.GetString("Scope")
-                    + ": " + scope;
+                    + ": " + pjse.Localization.GetString(scope.ToString());
                 s += ", " + pjse.Localization.GetString("bwp17_source")
                     + ": " + dataOwner((byte)((o[4] & 0x02) == 0 ? 0x03 : 0x04), 0x0b);
                 s += ", " + pjse.Localization.GetString("bwp17_autoVary")
@@ -1518,12 +1518,22 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "Location: " : "") + readStr(GS.BhavStr.RelativeLocations, (byte)(o[2] + 2));
-			s += ", " + (lng ? "Direction: " : "") + readStr(GS.BhavStr.RelativeDirections, (byte)(o[3] + 2));
+			s += (lng
+                ? pjse.Localization.GetString("Location")
+                    + ": "
+                : ""
+                ) + readStr(GS.BhavStr.RelativeLocations, (byte)(o[2] + 2));
+            s += ", " + (lng
+                ? pjse.Localization.GetString("Direction")
+                    + ": "
+                : ""
+                ) + readStr(GS.BhavStr.RelativeDirections, (byte)(o[3] + 2));
 			if (lng)
 			{
-				s += ", no failure trees: "          + ((o[6] & 0x02) != 0).ToString();
-				s += ", allow different altitudes: " + ((o[6] & 0x04) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp1b_noFailureTrees")
+                    + ": " + ((o[6] & 0x02) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp1b_differentAltitudes")
+                    + ": " + ((o[6] & 0x04) != 0).ToString();
 			}
 
 			return s;

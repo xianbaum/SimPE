@@ -572,20 +572,14 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get 
 			{
-				try 
-				{
-					if (parent==null) return pjse.Localization.GetString("unknown");
-					if (parent.StringResource == null) return pjse.Localization.GetString("unknown");
+                if (parent == null) return pjse.Localization.GetString("TtabWrapper_noTTAsFile");
+                if (parent.StringResource == null) return pjse.Localization.GetString("TtabWrapper_noTTAsFile");
 
-					PackedFiles.Wrapper.StrItem item = parent.StringResource[0x1, (int)StringIndex];
-					if (item==null) return pjse.Localization.GetString("unknown");
-					return item.Title;
-				} 
-				catch (Exception) 
-				{ 
-					return pjse.Localization.GetString("unk"); 
-				}
-			}
+                PackedFiles.Wrapper.StrItem item = parent.StringResource[(byte)SimPe.Helper.WindowsRegistry.LanguageCode, (int)StringIndex];
+                if (item == null) item = parent.StringResource[0x01, (int)StringIndex];
+                if (item == null) return pjse.Localization.GetString("TtabWrapper_noTTAsString");
+                return item.Title;
+            }
 		}
 
 		public Ttab Parent

@@ -123,17 +123,17 @@
   <data name="errconvert" xml:space="preserve">
     <value>Error Assigning a Value</value>
   </data>
-  <data name="unknown" xml:space="preserve">
-    <value>Unknown</value>
-  </data>
   <data name="unk" xml:space="preserve">
     <value>UNK</value>
+    <comment>Generally means a user-set value was not found</comment>
   </data>
   <data name="bhavnotfound" xml:space="preserve">
     <value>[BHAV not found]</value>
+    <comment>BhavWiz, BhavWizBhav</comment>
   </data>
-  <data name="done" xml:space="preserve">
+  <data name="ml_done" xml:space="preserve">
     <value>Done!</value>
+    <comment>Make Labels prompt</comment>
   </data>
   <data name="Global" xml:space="preserve">
     <value>Global</value>
@@ -141,12 +141,15 @@
   </data>
   <data name="invalid" xml:space="preserve">
     <value>invalid</value>
+    <comment>BhavWiz, BhavOperandWiz: Identifies flag number zero as invalid</comment>
   </data>
-  <data name="keeplabels" xml:space="preserve">
+  <data name="ml_keeplabels" xml:space="preserve">
     <value>Keep existing labels?</value>
+    <comment>Make Labels prompt</comment>
   </data>
   <data name="notset" xml:space="preserve">
     <value>not set</value>
+    <comment>BhavWiz: BCON found, entry not set</comment>
   </data>
   <data name="Private" xml:space="preserve">
     <value>Private</value>
@@ -158,18 +161,23 @@
   </data>
   <data name="Value" xml:space="preserve">
     <value>Value</value>
+    <comment>BhavWiz: BCON value prefix</comment>
   </data>
   <data name="viewbhav" xml:space="preserve">
     <value>(default) View BHAV</value>
+    <comment>BhavForm (popup) title bar prefix</comment>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
+    <comment>StrForm button label</comment>
   </data>
   <data name="empty" xml:space="preserve">
     <value>empty</value>
+    <comment>StrForm, empty language</comment>
   </data>
   <data name="String" xml:space="preserve">
     <value>String</value>
+    <comment>StrForm</comment>
   </data>
   <data name="Adult" xml:space="preserve">
     <value>Adult</value>
@@ -201,22 +209,27 @@
   </data>
   <data name="noargs" xml:space="preserve">
     <value>no args</value>
+    <comment>BhavWizBhav params</comment>
   </data>
   <data name="notfound" xml:space="preserve">
     <value>not found</value>
+    <comment>BhavWiz: BCON not found</comment>
   </data>
   <data name="toomanylines" xml:space="preserve">
     <value>Failed to add a new line.
 Check BHAV format and number of lines.</value>
+    <comment>BhavWrapper error</comment>
   </data>
   <data name="unkargs" xml:space="preserve">
     <value>args unknown</value>
+    <comment>BhavWizBhav params</comment>
   </data>
-  <data name="callerparams" xml:space="preserve">
+  <data name="bwb_callerparams" xml:space="preserve">
     <value>caller's params</value>
   </data>
   <data name="Fallback" xml:space="preserve">
     <value>Fallback</value>
+    <comment>Str, various fallback conditions</comment>
   </data>
   <data name="lcGlobal" xml:space="preserve">
     <value>global</value>
@@ -232,15 +245,19 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="manyArgs" xml:space="preserve">
     <value>args</value>
+    <comment>BhavWizBhav params</comment>
   </data>
   <data name="menuhelp" xml:space="preserve">
     <value>&amp;Help</value>
+    <comment>Menu item</comment>
   </data>
   <data name="oneArg" xml:space="preserve">
     <value>arg</value>
+    <comment>BhavWizBhav params</comment>
   </data>
   <data name="unkops" xml:space="preserve">
     <value>unknown operands</value>
+    <comment>BhavWizBhav params</comment>
   </data>
   <data name="bwp03_formotive" xml:space="preserve">
     <value>for motive(s)</value>
@@ -295,9 +312,11 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="flagnr" xml:space="preserve">
     <value>flag#</value>
+    <comment>Prim 0x02 flag operator: flag number</comment>
   </data>
   <data name="Interaction" xml:space="preserve">
     <value>Interaction</value>
+    <comment>0x0d</comment>
   </data>
   <data name="lcPrim" xml:space="preserve">
     <value>prim</value>
@@ -305,18 +324,23 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="me" xml:space="preserve">
     <value>Me</value>
+    <comment>BhavWiz: Data Owner 0x03, 0x000b</comment>
   </data>
   <data name="none" xml:space="preserve">
     <value>none</value>
+    <comment>0x03 (indicating an empty list)</comment>
   </data>
   <data name="Object" xml:space="preserve">
     <value>Object</value>
+    <comment>0x0d</comment>
   </data>
   <data name="stackobj" xml:space="preserve">
     <value>Stack Object</value>
+    <comment>BhavWiz: Data Owner 0x04, 0x000b</comment>
   </data>
   <data name="Target" xml:space="preserve">
     <value>Target</value>
+    <comment>0x0d (identifies object to receive interaction)</comment>
   </data>
   <data name="bhwp10_preferEmpty" xml:space="preserve">
     <value>prefer empty</value>
@@ -416,37 +440,47 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="default" xml:space="preserve">
     <value>default</value>
+    <comment>0x13</comment>
   </data>
   <data name="NeighborID" xml:space="preserve">
     <value>Neighbor ID</value>
+    <comment>0x13</comment>
   </data>
   <data name="Parent" xml:space="preserve">
     <value>Parent</value>
+    <comment>0x13</comment>
   </data>
   <data name="FiletableSettings" xml:space="preserve">
     <value>Filetable &amp;Settings</value>
+    <comment>Menu item</comment>
   </data>
-  <data name="Group" xml:space="preserve">
+  <data name="gt_Group" xml:space="preserve">
     <value>Group</value>
+    <comment>GUIDTool listing</comment>
   </data>
-  <data name="MatchesFound" xml:space="preserve">
-    <value>matches found</value>
+  <data name="gt_MatchesFound" xml:space="preserve">
+    <value>Matches found</value>
+    <comment>GUIDTool result ("Matches found: nnn")</comment>
   </data>
-  <data name="ObjectFinder" xml:space="preserve">
+  <data name="gt_ObjectFinder" xml:space="preserve">
     <value>&amp;Object Finder</value>
+    <comment>GUIDTool menu item</comment>
   </data>
-  <data name="ObjectFinderHelp" xml:space="preserve">
+  <data name="gt_ObjectFinderHelp" xml:space="preserve">
     <value>This tool searches OBJD files in your PJSE filetable path
 (which for now means currently open file + objects.package).
 
 If you enter a string to search, it is a case insensitive whole or sub string of the OBJD filename.
 If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000F together).</value>
+    <comment>GUIDTool prompt</comment>
   </data>
-  <data name="TooManyMatches" xml:space="preserve">
+  <data name="gt_TooManyMatches" xml:space="preserve">
     <value>Too many matches found, first 180 shown.  Use a more specific search.</value>
+    <comment>GUIDTool result</comment>
   </data>
   <data name="allZeros" xml:space="preserve">
     <value>all zeros</value>
+    <comment>BhavWizBhav params</comment>
   </data>
   <data name="bwp14_callersParams" xml:space="preserve">
     <value>passing parameters from calling tree</value>
@@ -484,16 +518,40 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp1a_useNIDs" xml:space="preserve">
     <value>use neighbor IDs</value>
   </data>
-  <data name="NoMatchesFound" xml:space="preserve">
+  <data name="bwp1b_differentAltitudes" xml:space="preserve">
+    <value>allow different altitudes</value>
+  </data>
+  <data name="bwp1b_noFailureTrees" xml:space="preserve">
+    <value>no failure trees</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction</value>
+    <comment>0x1b</comment>
+  </data>
+  <data name="gt_NoMatchesFound" xml:space="preserve">
     <value>No matches found</value>
+    <comment>GUIDTool result</comment>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+    <comment>0x1b</comment>
   </data>
   <data name="Play" xml:space="preserve">
     <value>Play</value>
+    <comment>0x17</comment>
   </data>
   <data name="Scope" xml:space="preserve">
     <value>Scope</value>
+    <comment>0x17 (to label Scope enum)</comment>
   </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
+    <comment>0x17</comment>
+  </data>
+  <data name="TtabWrapper_noTTAsFile" xml:space="preserve">
+    <value>(No TTAs)</value>
+  </data>
+  <data name="TtabWrapper_noTTAsString" xml:space="preserve">
+    <value>(No such TTAs entry)</value>
   </data>
 </root>

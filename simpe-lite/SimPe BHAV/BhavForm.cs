@@ -404,7 +404,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				// if it exists ask if user wants to preserve content
 				DialogResult dr = MessageBox.Show(
-                    pjse.Localization.GetString("keeplabels")
+                    pjse.Localization.GetString("ml_keeplabels")
 					, btnTPRPMaker.Text
 					, MessageBoxButtons.YesNoCancel
 					, MessageBoxIcon.Warning);
@@ -441,7 +441,7 @@ namespace SimPe.PackedFiles.UserInterface
 			tprp.SynchronizeUserData();
 			wrapper.Package.EndUpdate();
 			MessageBox.Show(
-                pjse.Localization.GetString("done")
+                pjse.Localization.GetString("ml_done")
                 , btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 

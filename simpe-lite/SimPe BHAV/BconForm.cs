@@ -267,7 +267,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				// if it exists ask if user wants to preserve content
 				DialogResult dr = MessageBox.Show(
-                    pjse.Localization.GetString("keeplabels")
+                    pjse.Localization.GetString("ml_keeplabels")
 					, btnTRCNMaker.Text
 					, MessageBoxButtons.YesNoCancel
 					, MessageBoxIcon.Warning);
@@ -299,7 +299,7 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper.Package.EndUpdate();
 			this.updateLists();
 			MessageBox.Show(
-                pjse.Localization.GetString("done")
+                pjse.Localization.GetString("ml_done")
                 , btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		#endregion
