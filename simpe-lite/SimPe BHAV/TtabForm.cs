@@ -161,6 +161,12 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
+            if (setHandler)
+            {
+                wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
+                pjse.FileTable.GFT.FiletableRefresh -= new EventHandler(GFT_FiletableRefresh);
+                setHandler = false;
+            }
 		}
 
 		
@@ -312,13 +318,17 @@ namespace SimPe.PackedFiles.UserInterface
         private void populateLbttab()
         {
             lbttab.Items.Clear();
-            for (int i = 0; i < cbStringIndex.Items.Count; i++) addItem(i);
+            for (int i = 0; i < wrapper.Count; i++) addItem(i);
         }
 
+        /// <summary>
+        /// Add the ith TtabItem to the lbttab listbox
+        /// </summary>
+        /// <param name="i">index of TtabItem to add</param>
         private void addItem(int i)
         {
-            if (i < cbStringIndex.Items.Count)
-                lbttab.Items.Add(cbStringIndex.Items[i]);
+            if (wrapper[i] != null && wrapper[i].StringIndex < cbStringIndex.Items.Count)
+                lbttab.Items.Add(cbStringIndex.Items[(int)wrapper[i].StringIndex]);
             else
                 lbttab.Items.Add("0x" + i.ToString("X") + ": " + pjse.Localization.GetString("UNK"));
         }
@@ -395,6 +405,8 @@ namespace SimPe.PackedFiles.UserInterface
         private void GFT_FiletableRefresh(object sender, EventArgs e)
         {
             str = null;
+            if (wrapper == null || wrapper.FileDescriptor == null) return;
+
             populateCbStringIndex();
             populateLbttab();
         }		
@@ -2422,7 +2434,7 @@ namespace SimPe.PackedFiles.UserInterface
 			int i = wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
 			if (i < 0) return;
 
-            addItem((int)wrapper[i].StringIndex);
+            addItem(i);
             lbttab.SelectedIndex = i;
 		}
 
@@ -2587,17 +2599,22 @@ namespace SimPe.PackedFiles.UserInterface
 				throw new Exception("cbHex32_SelectedIndexChanged not applicable to control " + sender.ToString());
 			if (((ComboBox)sender).SelectedIndex == -1) return;
 
+            int val = ((ComboBox)sender).SelectedIndex;
+
 			internalchg = true;
 			if (i == 0)
 			{
-				currentItem.StringIndex = (uint)((ComboBox)sender).SelectedIndex;
-				setStringIndex(currentItem.StringIndex, true, false);
-				lbttab.Items[lbttab.SelectedIndex] = currentItem;
-				tbStringIndex.Focus();
-			}
+				currentItem.StringIndex = (uint)val;
+                setStringIndex(currentItem.StringIndex, true, false);
+                if (val < cbStringIndex.Items.Count)
+                    lbttab.Items[lbttab.SelectedIndex] = cbStringIndex.Items[val];
+                else
+                    lbttab.Items[lbttab.SelectedIndex] = "0x" + val.ToString("X") + ": " + pjse.Localization.GetString("UNK");
+                tbStringIndex.Focus();
+            }
 			else if (i == 1)
 			{
-				currentItem.AttenuationCode = (uint)((ComboBox)sender).SelectedIndex;
+				currentItem.AttenuationCode = (uint)val;
 			}
 			internalchg = false;
 

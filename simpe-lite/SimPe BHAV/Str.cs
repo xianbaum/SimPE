@@ -128,27 +128,23 @@ namespace pjse
 			{
 				if (pfd == null) return;
 				if (!ValidTypes.Contains(pfd.Type)) return;
-				if (groupHash[pfd.Group] == null) return;
-				Hashtable instanceHash = (Hashtable)groupHash[pfd.Group];
-				if (instanceHash[pfd.Instance] == null) return;
-
-				((Str)instanceHash[pfd.Instance]).Dispose(); // just in case
-				instanceHash.Remove(pfd.Instance);
-				if (instanceHash.Count == 0)
-					groupHash.Remove(pfd.Group);
+                if (this[pfd.Group, pfd.Instance, pfd.Type] != null)
+                    this[pfd.Group, pfd.Instance, pfd.Type] = null;
 			}
 
 			private void GFT_FiletableRefresh(object sender, EventArgs e)
 			{
-				foreach(Hashtable ht in groupHash.Values)
+				foreach(Hashtable iht in groupHash.Values)
 				{
-					foreach(Str s in ht.Values)
-					{
-						s.wrapper = null;
-						s.semiGlobalStr = null;
-						s.globalStr = null;
-					}
-					ht.Clear();
+                    foreach (Hashtable tht in iht.Values)
+                    {
+                        foreach (Str s in tht.Values)
+                        {
+                            s.Dispose(); // just in case
+                        }
+                        tht.Clear();
+                    }
+					iht.Clear();
 				}
 				groupHash.Clear();
 				groupHash = new Hashtable();
@@ -159,7 +155,7 @@ namespace pjse
 
 			public void Dispose()
 			{
-				GFT_FiletableRefresh(null, null);
+                GFT_FiletableRefresh(null, null);
 				pjse.FileTable.GFT.FiletableRefresh -= new EventHandler(this.GFT_FiletableRefresh);
 			}
 
@@ -318,7 +314,7 @@ namespace pjse
 			this.wrapper = null;
 			this.semiGlobalStr = null;
 			this.globalStr = null;
-		}
+        }
 
 		#endregion
 	}
