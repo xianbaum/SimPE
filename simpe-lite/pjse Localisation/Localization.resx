@@ -164,7 +164,7 @@
     <comment>BhavWiz: BCON value prefix</comment>
   </data>
   <data name="viewbhav" xml:space="preserve">
-    <value>(default) View BHAV</value>
+    <value>View BHAV</value>
     <comment>BhavForm (popup) title bar prefix</comment>
   </data>
   <data name="Clear" xml:space="preserve">
@@ -226,6 +226,7 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="bwb_callerparams" xml:space="preserve">
     <value>caller's params</value>
+    <comment>bwb, 0x1c</comment>
   </data>
   <data name="Fallback" xml:space="preserve">
     <value>Fallback</value>
@@ -323,7 +324,7 @@ Check BHAV format and number of lines.</value>
     <comment>BhavWizPrim prefix value</comment>
   </data>
   <data name="me" xml:space="preserve">
-    <value>Me</value>
+    <value>My ID</value>
     <comment>BhavWiz: Data Owner 0x03, 0x000b</comment>
   </data>
   <data name="none" xml:space="preserve">
@@ -333,10 +334,6 @@ Check BHAV format and number of lines.</value>
   <data name="Object" xml:space="preserve">
     <value>Object</value>
     <comment>0x0d</comment>
-  </data>
-  <data name="stackobj" xml:space="preserve">
-    <value>Stack Object</value>
-    <comment>BhavWiz: Data Owner 0x04, 0x000b</comment>
   </data>
   <data name="Target" xml:space="preserve">
     <value>Target</value>
@@ -540,12 +537,26 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>Play</value>
     <comment>0x17</comment>
   </data>
-  <data name="Scope" xml:space="preserve">
-    <value>Scope</value>
-    <comment>0x17 (to label Scope enum)</comment>
-  </data>
   <data name="Stop" xml:space="preserve">
     <value>Stop</value>
     <comment>0x17</comment>
+  </data>
+  <data name="bwp1c_search" xml:space="preserve">
+    <value>Search for BHAV</value>
+  </data>
+  <data name="bwp1c_treeName" xml:space="preserve">
+    <value>Tree name</value>
+  </data>
+  <data name="bwp1d_autoClear" xml:space="preserve">
+    <value>Auto Clearing the Person Data Motive Decay value</value>
+  </data>
+  <data name="bwp1d_clearAll" xml:space="preserve">
+    <value>Clear all</value>
+  </data>
+  <data name="bwp1d_perHour" xml:space="preserve">
+    <value>per hour</value>
+  </data>
+  <data name="bwp1d_stopAt" xml:space="preserve">
+    <value>stop at</value>
   </data>
 </root>

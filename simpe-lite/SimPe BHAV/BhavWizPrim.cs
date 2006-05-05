@@ -1232,8 +1232,7 @@ namespace pjse.BhavNameWizards
 
 			if (lng)
 			{
-                s += ", " + pjse.Localization.GetString("Scope")
-                    + ": " + pjse.Localization.GetString(scope.ToString());
+                s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
                 s += ", " + pjse.Localization.GetString("bwp17_source")
                     + ": " + dataOwner((byte)((o[4] & 0x02) == 0 ? 0x03 : 0x04), 0x0b);
                 s += ", " + pjse.Localization.GetString("bwp17_autoVary")
@@ -1570,13 +1569,18 @@ namespace pjse.BhavNameWizards
 			if      ((o[2] & 0x01) != 0) scope = Scope.Global;
 			else if ((o[2] & 0x02) != 0) scope = Scope.SemiGlobal;
 
+            if (lng)
+                s += pjse.Localization.GetString("bwp1c_treeName") + ": ";
+
 			s += readStr(scope, GS.GlobalStr.NamedTree, (ushort)(o[4] - 1), lng ? -1 : 60, pjse.Detail.ErrorNames);
 
 			if (lng)
 			{
-				s += ", scope: " + scope;
-				s += ", ignore global trees: "     + ((o[2] & 0x04) != 0).ToString();
-				s += ", ignore semiglobal trees: " + ((o[2] & 0x08) != 0).ToString();
+                s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
+                s += ", " + pjse.Localization.GetString("bwp1c_search") + ": ";
+                s += pjse.Localization.GetString("Private");
+                s += (o[2] & 0x08) == 0 ? " " + pjse.Localization.GetString("SemiGlobal") : "";
+                s += (o[2] & 0x04) == 0 ? " " + pjse.Localization.GetString("Global") : "";
 
 				s += ", " + readStr(GS.BhavStr.RTBNType, o[5]);
 
@@ -1589,7 +1593,7 @@ namespace pjse.BhavNameWizards
 				}
 
 				if ((o[2] & 0x20) != 0)
-					s += ", Caller's params";
+                    s += ", " + pjse.Localization.GetString("bwb_callerparams");
 			}
 
 			return s;
@@ -1658,14 +1662,21 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			s += ((o[3] & 0x01) != 0
-				? "Clear all"
+                ? pjse.Localization.GetString("bwp1d_clearAll")
 				: dataOwner(lng, 0x0E, o[2]) // My Motives
-					+ " += " + dataOwner(lng, o[0], o[4], o[5]) + " per hour, stop at " + dataOwner(lng, o[1], o[6], o[7])
+					+ " += " + dataOwner(lng, o[0], o[4], o[5])
+                    + " " + (lng
+                        ? pjse.Localization.GetString("bwp1d_perHour")
+                            + ", " + pjse.Localization.GetString("bwp1d_stopAt")
+                            + ":"
+                        : "..")
+                    + " " + dataOwner(lng, o[1], o[6], o[7])
 				);
 
 			if (lng)
 			{
-				s += ", Auto Clearing the Person Data Motive Decay value: " + ((o[3] & 0x02) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp1d_autoClear")
+                    + ": " + ((o[3] & 0x02) != 0).ToString();
 			}
 
 			return s;
