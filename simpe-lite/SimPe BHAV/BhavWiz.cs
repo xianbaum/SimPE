@@ -247,8 +247,10 @@ namespace pjse
         public static String DoidName(byte doid) { return readStr(GS.BhavStr.DataOwners, doid); }
         public static String dnTemp()  { return DoidName(0x08); }
         public static String dnParam() { return DoidName(0x09); }
+        public static String dnStkOb() { return DoidName(0x0a); }
         public static String dnLocal() { return DoidName(0x19); }
         public static String dnConst() { return DoidName(0x1a); }
+        public static String dnMe()    { return pjse.Localization.GetString("me"); }
 
         protected string dataOwner(byte doid, ushort instance)
         {
@@ -330,7 +332,7 @@ namespace pjse
                 case 0x03:
                 case 0x04:
                     if (instance == 0x0b)
-                        return doid == 0x03 ? pjse.Localization.GetString("me") : DoidName(0x0a);
+                        return doid == 0x03 ? dnMe() : dnStkOb();
                     break;
                 case 0x06:
                     return readStr((GS.BhavStr)doidGStr[doid], instance);

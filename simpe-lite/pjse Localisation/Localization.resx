@@ -559,4 +559,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp1d_stopAt" xml:space="preserve">
     <value>stop at</value>
   </data>
+  <data name="bwp1f_disabledObjects" xml:space="preserve">
+    <value>disabled objects included</value>
+  </data>
 </root>
