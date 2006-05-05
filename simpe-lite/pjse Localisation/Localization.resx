@@ -128,7 +128,7 @@
     <comment>Generally means a user-set value was not found</comment>
   </data>
   <data name="bhavnotfound" xml:space="preserve">
-    <value>[BHAV not found]</value>
+    <value>[invalid BHAV]</value>
     <comment>BhavWiz, BhavWizBhav</comment>
   </data>
   <data name="ml_done" xml:space="preserve">

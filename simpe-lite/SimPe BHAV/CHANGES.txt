@@ -3,6 +3,11 @@
 !!! stole BhavStr STR# 0x1f2 for Generic Sims Call descriptions
 !!! stole BhavStr STR# 0x1f1 for Find Best Object for Function location flags
 
+5 May 2006 10:55 - Localisation: change text for bhavnotfound, remove test locales
+  pjse Localisation\
+    Localization.resx 1.1.2.7
+    pjse localisation.csproj 1.1.2.3
+
 4 May 2006 19:50 - TTAB: Fix up bugs, as one does...
   SimPe BHAV\
     Str.cs 1.1.4.3.4.5
