@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse GUID Tool", "..\pjse G
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse filetable", "..\pjse filetable\pjse filetable.csproj", "{84085FAA-A947-492E-88BC-B941A4623811}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse localisation", "..\pjse Localisation\pjse localisation.csproj", "{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,12 @@ Global
 		{84085FAA-A947-492E-88BC-B941A4623811}.InProgress|Any CPU.Build.0 = InProgress|Any CPU
 		{84085FAA-A947-492E-88BC-B941A4623811}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{84085FAA-A947-492E-88BC-B941A4623811}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}.InProgress|Any CPU.ActiveCfg = Release|Any CPU
+		{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}.InProgress|Any CPU.Build.0 = Release|Any CPU
+		{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

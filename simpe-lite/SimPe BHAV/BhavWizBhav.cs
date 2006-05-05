@@ -32,6 +32,8 @@ namespace pjse.BhavNameWizards
 	public class BhavWizBhav : BhavWiz, IDisposable
 	{
 		private pjse.FileTable.Entry ftEntry = null;
+        private Bhav wrapper = null;
+
 		/// <summary>
 		/// Which group to look in for the BHAV
 		/// </summary>
@@ -44,24 +46,22 @@ namespace pjse.BhavNameWizards
 
 			if (i.OpCode < 0x1000)
 			{
-				prefix = pjse.coder.Localization.GetString("lcGlobal");
+				prefix = pjse.Localization.GetString("lcGlobal");
 				group = i.Parent.GlobalGroup;
 			}
 
 			else if (i.OpCode < 0x2000)
 			{
-				prefix = pjse.coder.Localization.GetString("lcPrivate");
+				prefix = pjse.Localization.GetString("lcPrivate");
 				group = (i.Parent.Context == Scope.Private) ? i.Parent.Group : 0xffffffff;
 			}
 
 			else
 			{
-				prefix = pjse.coder.Localization.GetString("lcSemiGlobal");
+				prefix = pjse.Localization.GetString("lcSemiGlobal");
 				group = (i.Parent.Context == Scope.SemiGlobal) ? i.Parent.Group : i.Parent.SemiGroup;
 			}
-
 		}
-
 
 		public static implicit operator BhavWizBhav(Instruction i)
 		{
@@ -74,21 +74,35 @@ namespace pjse.BhavNameWizards
 
 		#region IDisposable Members
 
-		public new void Dispose()
-		{
-			ftEntry = null;
-		}
+		public new void Dispose() { GFT_FiletableRefresh(null, null); }
 
 		#endregion
 
-		public Bhav Wrapper
+        void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            FileTable.GFT.FiletableRefresh -= new EventHandler(GFT_FiletableRefresh);
+            ftEntry = null;
+            wrapper = null;
+        }
+
+		private Bhav Wrapper
 		{
 			get
 			{
-				pjse.FileTable.Entry ftEntry = FTEntry;
-				if (ftEntry == null) return null;
-				Bhav wrapper = new Bhav();
+                if (wrapper != null) return wrapper;
+
+                if (ftEntry == null)
+                {
+                    if (instruction == null || instruction.Parent == null)
+                        throw new Exception("Can't find wrapper for instruction with no parent");
+
+                    ftEntry = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instruction.OpCode);
+                    if (ftEntry == null) return null;
+                }
+
+				wrapper = new Bhav();
 				wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
+                FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
 				return wrapper;
 			}
 		}
@@ -98,22 +112,8 @@ namespace pjse.BhavNameWizards
 		{
 			get
 			{
-				pjse.FileTable.Entry ftEntry = FTEntry;
-                return (ftEntry != null) ? ftEntry : pjse.coder.Localization.GetString("bhavnotfound");
-			}
-		}
-
-
-		public override pjse.FileTable.Entry FTEntry
-		{
-			get
-			{
-				if (ftEntry == null)
-				{
-					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group, instruction.OpCode];
-					if(items != null && items.Length > 0) ftEntry = items[0];
-				}
-				return ftEntry;
+                pjse.FileTable.Entry ftEntry = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instruction.OpCode);
+                return (ftEntry != null) ? ftEntry : pjse.Localization.GetString("bhavnotfound");
 			}
 		}
 
@@ -134,14 +134,14 @@ namespace pjse.BhavNameWizards
 			int thisArgc = bhav.Header.ArgumentCount;
 
 			if (thisArgc == 0)
-                return lng ? pjse.coder.Localization.GetString("noargs") : "";
+                return lng ? pjse.Localization.GetString("noargs") : "";
 
 			string s = "";
 			if (lng)
 				s += thisArgc.ToString() + " "
                     + (thisArgc == 1
-                        ? pjse.coder.Localization.GetString("oneArg")
-                        : pjse.coder.Localization.GetString("manyArgs"))
+                        ? pjse.Localization.GetString("oneArg")
+                        : pjse.Localization.GetString("manyArgs"))
                     + ": ";
 
 			byte[] o = new byte[16];
@@ -234,7 +234,7 @@ namespace pjse.BhavNameWizards
 		private string doParams(int thisArgc, int myArgc, bool lng, TPRP tprp)
 		{
 			if (!lng)
-                return pjse.coder.Localization.GetString("callerparams");
+                return pjse.Localization.GetString("bwb_callerparams");
 
 			string s = "";
 			for (int i = 0; thisArgc > 0 && i < myArgc; i++, thisArgc--)
@@ -256,8 +256,7 @@ namespace pjse.BhavNameWizards
 				return doUnknown(thisArgc, lng, tprp, start);
 
 			if (!lng)
-				return (start > 0 ? "," : pjse.coder.Localization.GetString("all")) + " "
-                    + pjse.coder.Localization.GetString("zeros");
+				return (start > 0 ? "," : pjse.Localization.GetString("allZeros"));
 
 			string s = "";
 			for (int i = start; thisArgc > 0 && i < 8; i++, thisArgc--)
@@ -277,7 +276,7 @@ namespace pjse.BhavNameWizards
 		{
 			if (!lng)
 				return (start > 0 ? ", " : "")
-                    + pjse.coder.Localization.GetString("unkops");
+                    + pjse.Localization.GetString("unkops");
 
 			string s = "";
 			for (int i = start; thisArgc > 0; i++, thisArgc--)

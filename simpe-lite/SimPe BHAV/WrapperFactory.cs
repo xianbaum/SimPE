@@ -79,7 +79,7 @@ namespace SimPe.Plugin
 
 			public override string ToString()
 			{
-				return "PJSE\\" + pjse.coder.Localization.GetString("menuhelp");
+				return "PJSE\\" + pjse.Localization.GetString("menuhelp");
 			}
 
 			#endregion

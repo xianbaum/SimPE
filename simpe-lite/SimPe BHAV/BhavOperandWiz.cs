@@ -422,7 +422,7 @@ namespace pjse.BhavOperandWizards
 				if (pickerNames != null)
 				{
 					pickerNames = (ArrayList)pickerNames.Clone();
-					pickerNames.Insert(0, "[0: " + pjse.coder.Localization.GetString("invalid") + "]");
+					pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
 				}
 			}
 			else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))

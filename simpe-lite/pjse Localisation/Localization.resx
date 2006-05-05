@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="errwritingfile" xml:space="preserve">
+    <value>Error while writing to File</value>
+  </data>
+  <data name="errconvert" xml:space="preserve">
+    <value>Error Assigning a Value</value>
+  </data>
+  <data name="unk" xml:space="preserve">
+    <value>UNK</value>
+    <comment>Generally means a user-set value was not found</comment>
+  </data>
+  <data name="bhavnotfound" xml:space="preserve">
+    <value>[invalid BHAV]</value>
+    <comment>BhavWiz, BhavWizBhav</comment>
+  </data>
+  <data name="ml_done" xml:space="preserve">
+    <value>Done!</value>
+    <comment>Make Labels prompt</comment>
+  </data>
+  <data name="Global" xml:space="preserve">
+    <value>Global</value>
+    <comment>Scope enum</comment>
+  </data>
+  <data name="invalid" xml:space="preserve">
+    <value>invalid</value>
+    <comment>BhavWiz, BhavOperandWiz: Identifies flag number zero as invalid</comment>
+  </data>
+  <data name="ml_keeplabels" xml:space="preserve">
+    <value>Keep existing labels?</value>
+    <comment>Make Labels prompt</comment>
+  </data>
+  <data name="notset" xml:space="preserve">
+    <value>not set</value>
+    <comment>BhavWiz: BCON found, entry not set</comment>
+  </data>
+  <data name="Private" xml:space="preserve">
+    <value>Private</value>
+    <comment>Scope enum</comment>
+  </data>
+  <data name="SemiGlobal" xml:space="preserve">
+    <value>SemiGlobal</value>
+    <comment>Scope enum</comment>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+    <comment>BhavWiz: BCON value prefix</comment>
+  </data>
+  <data name="viewbhav" xml:space="preserve">
+    <value>(default) View BHAV</value>
+    <comment>BhavForm (popup) title bar prefix</comment>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+    <comment>StrForm button label</comment>
+  </data>
+  <data name="empty" xml:space="preserve">
+    <value>empty</value>
+    <comment>StrForm, empty language</comment>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value>String</value>
+    <comment>StrForm</comment>
+  </data>
+  <data name="Adult" xml:space="preserve">
+    <value>Adult</value>
+    <comment>TtabMotives enum</comment>
+  </data>
+  <data name="Cat" xml:space="preserve">
+    <value>Cat</value>
+    <comment>TtabMotives enum</comment>
+  </data>
+  <data name="Child" xml:space="preserve">
+    <value>Child</value>
+    <comment>TtabMotives enum</comment>
+  </data>
+  <data name="Dog" xml:space="preserve">
+    <value>Dog</value>
+    <comment>TtabMotives enum</comment>
+  </data>
+  <data name="Elder" xml:space="preserve">
+    <value>Elder</value>
+    <comment>TtabMotives enum</comment>
+  </data>
+  <data name="Teen" xml:space="preserve">
+    <value>Teen</value>
+    <comment>TtabMotives enum</comment>
+  </data>
+  <data name="Toddler" xml:space="preserve">
+    <value>Toddler</value>
+    <comment>TtabMotives enum</comment>
+  </data>
+  <data name="noargs" xml:space="preserve">
+    <value>no args</value>
+    <comment>BhavWizBhav params</comment>
+  </data>
+  <data name="notfound" xml:space="preserve">
+    <value>not found</value>
+    <comment>BhavWiz: BCON not found</comment>
+  </data>
+  <data name="toomanylines" xml:space="preserve">
+    <value>Failed to add a new line.
+Check BHAV format and number of lines.</value>
+    <comment>BhavWrapper error</comment>
+  </data>
+  <data name="unkargs" xml:space="preserve">
+    <value>args unknown</value>
+    <comment>BhavWizBhav params</comment>
+  </data>
+  <data name="bwb_callerparams" xml:space="preserve">
+    <value>caller's params</value>
+  </data>
+  <data name="Fallback" xml:space="preserve">
+    <value>Fallback</value>
+    <comment>Str, various fallback conditions</comment>
+  </data>
+  <data name="lcGlobal" xml:space="preserve">
+    <value>global</value>
+    <comment>BhavWizBhav prefix value</comment>
+  </data>
+  <data name="lcPrivate" xml:space="preserve">
+    <value>private</value>
+    <comment>BhavWizBhav prefix value</comment>
+  </data>
+  <data name="lcSemiGlobal" xml:space="preserve">
+    <value>semi</value>
+    <comment>BhavWizBhav prefix value</comment>
+  </data>
+  <data name="manyArgs" xml:space="preserve">
+    <value>args</value>
+    <comment>BhavWizBhav params</comment>
+  </data>
+  <data name="menuhelp" xml:space="preserve">
+    <value>&amp;Help</value>
+    <comment>Menu item</comment>
+  </data>
+  <data name="oneArg" xml:space="preserve">
+    <value>arg</value>
+    <comment>BhavWizBhav params</comment>
+  </data>
+  <data name="unkops" xml:space="preserve">
+    <value>unknown operands</value>
+    <comment>BhavWizBhav params</comment>
+  </data>
+  <data name="bwp03_formotive" xml:space="preserve">
+    <value>for motive(s)</value>
+  </data>
+  <data name="bwp03_inroom" xml:space="preserve">
+    <value>Only in room held in</value>
+  </data>
+  <data name="bwp03_nested" xml:space="preserve">
+    <value>Only nested</value>
+  </data>
+  <data name="bwp03_nworst" xml:space="preserve">
+    <value>for the N current worst motives</value>
+  </data>
+  <data name="bwp03_oninteraction" xml:space="preserve">
+    <value>Only on current Interaction object</value>
+  </data>
+  <data name="bwp03_oow" xml:space="preserve">
+    <value>Include Out Of World objects</value>
+  </data>
+  <data name="bwp03_remworst" xml:space="preserve">
+    <value>with remaining motives from the worst</value>
+  </data>
+  <data name="bwp0b_100tile" xml:space="preserve">
+    <value>in 1/100ths tile</value>
+  </data>
+  <data name="bwp0c_degrees" xml:space="preserve">
+    <value>in degrees</value>
+  </data>
+  <data name="bwp0d_callersparams" xml:space="preserve">
+    <value>passing on Caller's params 0 to 3</value>
+  </data>
+  <data name="bwp0d_forcerun" xml:space="preserve">
+    <value>force run Check Tree</value>
+  </data>
+  <data name="bwp0d_IconIndex" xml:space="preserve">
+    <value>Icon index</value>
+  </data>
+  <data name="bwp0d_IconObject" xml:space="preserve">
+    <value>Icon object</value>
+  </data>
+  <data name="bwp0d_lastfba" xml:space="preserve">
+    <value>from last FBA call</value>
+  </data>
+  <data name="bwp0d_linkto" xml:space="preserve">
+    <value>linking to interaction</value>
+  </data>
+  <data name="bwp0d_returnID" xml:space="preserve">
+    <value>returning ID in</value>
+  </data>
+  <data name="bwp0d_usename" xml:space="preserve">
+    <value>use name</value>
+  </data>
+  <data name="flagnr" xml:space="preserve">
+    <value>flag#</value>
+    <comment>Prim 0x02 flag operator: flag number</comment>
+  </data>
+  <data name="Interaction" xml:space="preserve">
+    <value>Interaction</value>
+    <comment>0x0d</comment>
+  </data>
+  <data name="lcPrim" xml:space="preserve">
+    <value>prim</value>
+    <comment>BhavWizPrim prefix value</comment>
+  </data>
+  <data name="me" xml:space="preserve">
+    <value>Me</value>
+    <comment>BhavWiz: Data Owner 0x03, 0x000b</comment>
+  </data>
+  <data name="none" xml:space="preserve">
+    <value>none</value>
+    <comment>0x03 (indicating an empty list)</comment>
+  </data>
+  <data name="Object" xml:space="preserve">
+    <value>Object</value>
+    <comment>0x0d</comment>
+  </data>
+  <data name="stackobj" xml:space="preserve">
+    <value>Stack Object</value>
+    <comment>BhavWiz: Data Owner 0x04, 0x000b</comment>
+  </data>
+  <data name="Target" xml:space="preserve">
+    <value>Target</value>
+    <comment>0x0d (identifies object to receive interaction)</comment>
+  </data>
+  <data name="bhwp10_preferEmpty" xml:space="preserve">
+    <value>prefer empty</value>
+  </data>
+  <data name="bwp0f_if" xml:space="preserve">
+    <value>if</value>
+  </data>
+  <data name="bwp0f_ignored" xml:space="preserve">
+    <value>ignored in Release</value>
+  </data>
+  <data name="bwp10_beginInFrontOfRefobj" xml:space="preserve">
+    <value>begin in front of refobj</value>
+  </data>
+  <data name="bwp10_facing" xml:space="preserve">
+    <value>facing</value>
+  </data>
+  <data name="bwp10_onLevelGround" xml:space="preserve">
+    <value>on level ground</value>
+  </data>
+  <data name="bwp10_relativeTo" xml:space="preserve">
+    <value>relative to</value>
+  </data>
+  <data name="bwp10_startAt" xml:space="preserve">
+    <value>start at</value>
+  </data>
+  <data name="bwp10_userEditable" xml:space="preserve">
+    <value>user editable</value>
+  </data>
+  <data name="bwp10_withEmptyBorder" xml:space="preserve">
+    <value>with empty border</value>
+  </data>
+  <data name="bwp10_withLineOfSightToCenter" xml:space="preserve">
+    <value>with line of sight to center</value>
+  </data>
+  <data name="bwp11_allowPush" xml:space="preserve">
+    <value>allow push</value>
+  </data>
+  <data name="bwp11_handleSubQueueInteractions" xml:space="preserve">
+    <value>Handle Sub Queue Interactions</value>
+  </data>
+  <data name="bwp11_ticks" xml:space="preserve">
+    <value>ticks</value>
+  </data>
+  <data name="bwp12_cleanupAll" xml:space="preserve">
+    <value>cleanup all</value>
+  </data>
+  <data name="bwp12_returnImmediately" xml:space="preserve">
+    <value>return immediately</value>
+  </data>
+  <data name="bwp13_age" xml:space="preserve">
+    <value>age</value>
+  </data>
+  <data name="bwp13_characterFromBin" xml:space="preserve">
+    <value>Character from Bin</value>
+  </data>
+  <data name="bwp13_defAgeGenderSkin" xml:space="preserve">
+    <value>default age / gender / skin color</value>
+  </data>
+  <data name="bwp13_gender" xml:space="preserve">
+    <value>gender</value>
+  </data>
+  <data name="bwp13_noParents" xml:space="preserve">
+    <value>No parents</value>
+  </data>
+  <data name="bwp13_personDataSource" xml:space="preserve">
+    <value>Person data source</value>
+  </data>
+  <data name="bwp13_skinColor" xml:space="preserve">
+    <value>skin color</value>
+  </data>
+  <data name="bwp13_thumbnailOutfit" xml:space="preserve">
+    <value>Thumbnail Outfit</value>
+  </data>
+  <data name="compassE" xml:space="preserve">
+    <value>E</value>
+  </data>
+  <data name="compassN" xml:space="preserve">
+    <value>N</value>
+  </data>
+  <data name="compassNE" xml:space="preserve">
+    <value>NE</value>
+  </data>
+  <data name="compassNW" xml:space="preserve">
+    <value>NW</value>
+  </data>
+  <data name="compassS" xml:space="preserve">
+    <value>S</value>
+  </data>
+  <data name="compassSE" xml:space="preserve">
+    <value>SE</value>
+  </data>
+  <data name="compassSW" xml:space="preserve">
+    <value>SW</value>
+  </data>
+  <data name="compassW" xml:space="preserve">
+    <value>W</value>
+  </data>
+  <data name="default" xml:space="preserve">
+    <value>default</value>
+    <comment>0x13</comment>
+  </data>
+  <data name="NeighborID" xml:space="preserve">
+    <value>Neighbor ID</value>
+    <comment>0x13</comment>
+  </data>
+  <data name="Parent" xml:space="preserve">
+    <value>Parent</value>
+    <comment>0x13</comment>
+  </data>
+  <data name="FiletableSettings" xml:space="preserve">
+    <value>Filetable &amp;Settings</value>
+    <comment>Menu item</comment>
+  </data>
+  <data name="gt_Group" xml:space="preserve">
+    <value>Group</value>
+    <comment>GUIDTool listing</comment>
+  </data>
+  <data name="gt_MatchesFound" xml:space="preserve">
+    <value>Matches found</value>
+    <comment>GUIDTool result ("Matches found: nnn")</comment>
+  </data>
+  <data name="gt_ObjectFinder" xml:space="preserve">
+    <value>&amp;Object Finder</value>
+    <comment>GUIDTool menu item</comment>
+  </data>
+  <data name="gt_ObjectFinderHelp" xml:space="preserve">
+    <value>This tool searches OBJD files in your PJSE filetable path
+(which for now means currently open file + objects.package).
+
+If you enter a string to search, it is a case insensitive whole or sub string of the OBJD filename.
+If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000F together).</value>
+    <comment>GUIDTool prompt</comment>
+  </data>
+  <data name="gt_TooManyMatches" xml:space="preserve">
+    <value>Too many matches found, first 180 shown.  Use a more specific search.</value>
+    <comment>GUIDTool result</comment>
+  </data>
+  <data name="allZeros" xml:space="preserve">
+    <value>all zeros</value>
+    <comment>BhavWizBhav params</comment>
+  </data>
+  <data name="bwp14_callersParams" xml:space="preserve">
+    <value>passing parameters from calling tree</value>
+  </data>
+  <data name="bwp14_changeIcon" xml:space="preserve">
+    <value>change icon</value>
+  </data>
+  <data name="bwp14_CTonly" xml:space="preserve">
+    <value>running check tree only</value>
+  </data>
+  <data name="bwp17_autoVary" xml:space="preserve">
+    <value>auto vary</value>
+  </data>
+  <data name="bwp17_sampleRate" xml:space="preserve">
+    <value>sample rate</value>
+  </data>
+  <data name="bwp17_source" xml:space="preserve">
+    <value>source</value>
+  </data>
+  <data name="bwp17_volume" xml:space="preserve">
+    <value>volume</value>
+  </data>
+  <data name="bwp19_test" xml:space="preserve">
+    <value>TEST</value>
+  </data>
+  <data name="bwp1a_failTooSmall" xml:space="preserve">
+    <value>fail if too small</value>
+  </data>
+  <data name="bwp1a_noCheckObj2" xml:space="preserve">
+    <value>don't check presence of second object</value>
+  </data>
+  <data name="bwp1a_relationship" xml:space="preserve">
+    <value>relationship</value>
+  </data>
+  <data name="bwp1a_useNIDs" xml:space="preserve">
+    <value>use neighbor IDs</value>
+  </data>
+  <data name="bwp1b_differentAltitudes" xml:space="preserve">
+    <value>allow different altitudes</value>
+  </data>
+  <data name="bwp1b_noFailureTrees" xml:space="preserve">
+    <value>no failure trees</value>
+  </data>
+  <data name="Direction" xml:space="preserve">
+    <value>Direction</value>
+    <comment>0x1b</comment>
+  </data>
+  <data name="gt_NoMatchesFound" xml:space="preserve">
+    <value>No matches found</value>
+    <comment>GUIDTool result</comment>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+    <comment>0x1b</comment>
+  </data>
+  <data name="Play" xml:space="preserve">
+    <value>Play</value>
+    <comment>0x17</comment>
+  </data>
+  <data name="Scope" xml:space="preserve">
+    <value>Scope</value>
+    <comment>0x17 (to label Scope enum)</comment>
+  </data>
+  <data name="Stop" xml:space="preserve">
+    <value>Stop</value>
+    <comment>0x17</comment>
+  </data>
+</root>

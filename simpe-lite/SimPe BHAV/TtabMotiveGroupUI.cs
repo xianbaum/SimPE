@@ -130,7 +130,7 @@ namespace SimPe.PackedFiles.UserInterface
 					throw new Exception("Motive group must be in range 0 to 6.");
 				mgnr = value;
 
-				gbMotiveGroup.Text = pjse.coder.Localization.Manager.GetString(((TtabMotives)mgnr).ToString());
+				gbMotiveGroup.Text = pjse.Localization.GetString(((TtabMotives)mgnr).ToString());
 				//gbMotiveGroup.Text = ((TtabMotives)mgnr).ToString();
 			}
 		}

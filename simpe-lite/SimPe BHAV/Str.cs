@@ -28,20 +28,40 @@ namespace pjse
 	/// </summary>
 	public class Str : IDisposable
 	{
+        private static ArrayList ValidTypes = null;
+        static Str()
+        {
+            uint[] aui = { 0x43545353, 0x53545223, 0x54544173, };  // CTSS ,STR# ,TTAs ,
+            ValidTypes = new ArrayList(aui);
+        }
+
 		private ExtendedWrapper parent = null;
 		private uint group = 0;
 		private uint instance = 0;
+        private uint type = 0;
+
 		public Str(ExtendedWrapper parent, uint group, uint instance)
 		{
 			this.parent = parent;
 			this.group = group;
 			this.instance = instance;
+            this.type = SimPe.Data.MetaData.STRING_FILE;
 		}
+
+        public Str(ExtendedWrapper parent, uint group, uint instance, uint type)
+        {
+            if (!ValidTypes.Contains(type))
+                throw new InvalidOperationException("type must be CTSS, STR# or TTAs");
+
+            this.parent = parent;
+            this.group = group;
+            this.instance = instance;
+            this.type = type;
+        }
 
 
 
 		private static myHT strHashtable = new myHT();
-
 
 		class myHT : Hashtable, IDisposable
 		{
@@ -52,37 +72,49 @@ namespace pjse
 
 
 			private Hashtable groupHash = new Hashtable();
-			public Str this[uint group, uint instance]
+            public Str this[uint group, uint instance]
+            {
+                get { return this[group, instance, SimPe.Data.MetaData.STRING_FILE]; }
+                set { this[group, instance, SimPe.Data.MetaData.STRING_FILE] = value; }
+            }
+
+			public Str this[uint group, uint instance, uint type]
 			{
 				get
 				{
-					if (groupHash[group] == null)
-						return null;
-					Hashtable instanceHash = (Hashtable)groupHash[group];
-					if (instanceHash[instance] == null)
-						return null;
-					return (Str)instanceHash[instance];
+                    Hashtable instanceHash = (Hashtable)groupHash[group];
+                    if (instanceHash == null) return null;
+
+                    Hashtable typeHash = (Hashtable)instanceHash[type];
+                    if (typeHash == null) return null;
+
+                    return (Str)typeHash[type];
 				}
 
 				set
 				{
-					Hashtable instanceHash = null;
 					if (groupHash[group] == null)
 						groupHash[group] = new Hashtable();
-					instanceHash = (Hashtable)groupHash[group];
 
-					if (instanceHash[instance] != value)
+                    Hashtable instanceHash = (Hashtable)groupHash[group];
+
+                    if (instanceHash[instance] == null)
+                        instanceHash[instance] = new Hashtable();
+
+                    Hashtable typeHash = (Hashtable)instanceHash[instance];
+
+                    if (typeHash[type] != value)
 					{
-						if (instanceHash[instance] != null)
+                        if (typeHash[type] != null)
 						{
-							StrWrapper wrapper = ((Str)instanceHash[instance]).wrapper;
+                            StrWrapper wrapper = ((Str)typeHash[type]).wrapper;
 							if (wrapper != null && wrapper.FileDescriptor != null)
 								wrapper.FileDescriptor.ChangedData -= new SimPe.Events.PackedFileChanged(this.FileDescriptor_ChangedData);
 						}
-						instanceHash[instance] = value;
-						if (instanceHash[instance] != null)
+                        typeHash[type] = value;
+                        if (typeHash[type] != null)
 						{
-							StrWrapper wrapper = ((Str)instanceHash[instance]).wrapper;
+                            StrWrapper wrapper = ((Str)typeHash[type]).wrapper;
 							if (wrapper != null && wrapper.FileDescriptor != null)
 								wrapper.FileDescriptor.ChangedData += new SimPe.Events.PackedFileChanged(this.FileDescriptor_ChangedData);
 						}
@@ -95,28 +127,24 @@ namespace pjse
 			private void FileDescriptor_ChangedData(SimPe.Interfaces.Files.IPackedFileDescriptor pfd)
 			{
 				if (pfd == null) return;
-				if (pfd.Type != SimPe.Data.MetaData.STRING_FILE) return;
-				if (groupHash[pfd.Group] == null) return;
-				Hashtable instanceHash = (Hashtable)groupHash[pfd.Group];
-				if (instanceHash[pfd.Instance] == null) return;
-
-				((Str)instanceHash[pfd.Instance]).Dispose(); // just in case
-				instanceHash.Remove(pfd.Instance);
-				if (instanceHash.Count == 0)
-					groupHash.Remove(pfd.Group);
+				if (!ValidTypes.Contains(pfd.Type)) return;
+                if (this[pfd.Group, pfd.Instance, pfd.Type] != null)
+                    this[pfd.Group, pfd.Instance, pfd.Type] = null;
 			}
 
 			private void GFT_FiletableRefresh(object sender, EventArgs e)
 			{
-				foreach(Hashtable ht in groupHash.Values)
+				foreach(Hashtable iht in groupHash.Values)
 				{
-					foreach(Str s in ht.Values)
-					{
-						s.wrapper = null;
-						s.semiGlobalStr = null;
-						s.globalStr = null;
-					}
-					ht.Clear();
+                    foreach (Hashtable tht in iht.Values)
+                    {
+                        foreach (Str s in tht.Values)
+                        {
+                            s.Dispose(); // just in case
+                        }
+                        tht.Clear();
+                    }
+					iht.Clear();
 				}
 				groupHash.Clear();
 				groupHash = new Hashtable();
@@ -127,7 +155,7 @@ namespace pjse
 
 			public void Dispose()
 			{
-				GFT_FiletableRefresh(null, null);
+                GFT_FiletableRefresh(null, null);
 				pjse.FileTable.GFT.FiletableRefresh -= new EventHandler(this.GFT_FiletableRefresh);
 			}
 
@@ -135,22 +163,22 @@ namespace pjse
 		}
 
 		private StrWrapper wrapper = null;
-		private StrWrapper Wrapper
+        private StrWrapper Wrapper
 		{
 			get
 			{
 				if (wrapper == null)
 				{
-					Str str = strHashtable[this.group, this.instance];
+					Str str = strHashtable[this.group, this.instance, this.type];
 					if (str == null)
 					{
-						pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, this.group, this.instance];
+						pjse.FileTable.Entry[] items = pjse.FileTable.GFT[this.type, this.group, this.instance];
 
 						if (items != null && items.Length != 0)
 						{
 							wrapper = new StrWrapper();
 							wrapper.ProcessData(items[0].PFD, items[0].Package);
-							strHashtable[this.group, this.instance] = this;
+							strHashtable[this.group, this.instance, this.type] = this;
 						}
 					}
 					else
@@ -195,6 +223,15 @@ namespace pjse
 		}
 
 
+        public StrItem[] this[byte lid]
+        {
+            get
+            {
+                StrWrapper w = Wrapper;
+                return (w == null) ? new StrItem[0] : w[lid];
+            }
+        }
+
 		public FallbackStrItem this[int sid] { get { return this[1, sid]; } }
 
 		public FallbackStrItem this[byte lid, int sid]
@@ -214,8 +251,8 @@ namespace pjse
 						fsi.strItem = Wrapper[1, sid]; // try to find instance/1/sid at scope
 						if (!this.rejectStrItem(fsi))
 						{
-							if (fsi.fallback.Count == 0)
-								fsi.fallback.Add(pjse.coder.Localization.GetString("Fallback") + ": LID=1");
+							if (fsi.fallback.Count == 0) // ignore unless this is the first / only fallback
+                                fsi.lidFallback = true;
 							return fsi;
 						}
 					}
@@ -231,8 +268,8 @@ namespace pjse
 							if (!this.rejectStrItem(fsi))
 							{
 								if (fsi.fallback.Count == 0)
-                                    fsi.fallback.Add(pjse.coder.Localization.GetString("Fallback")
-                                        + ": " + pjse.coder.Localization.GetString("SemiGlobal"));
+                                    fsi.fallback.Add(pjse.Localization.GetString("Fallback")
+                                        + ": " + pjse.Localization.GetString("SemiGlobal"));
 								return fsi;
 							}
 						}
@@ -243,8 +280,8 @@ namespace pjse
 							if (!this.rejectStrItem(fsi))
 							{
 								if (fsi.fallback.Count == 0)
-                                    fsi.fallback.Add(pjse.coder.Localization.GetString("Fallback")
-                                        + ": " + pjse.coder.Localization.GetString("Global"));
+                                    fsi.fallback.Add(pjse.Localization.GetString("Fallback")
+                                        + ": " + pjse.Localization.GetString("Global"));
 								return fsi;
 							}
 						}
@@ -277,7 +314,7 @@ namespace pjse
 			this.wrapper = null;
 			this.semiGlobalStr = null;
 			this.globalStr = null;
-		}
+        }
 
 		#endregion
 	}
@@ -285,6 +322,7 @@ namespace pjse
 	public class FallbackStrItem
 	{
 		public ArrayList fallback = new ArrayList();
+        public bool lidFallback = false;
 		public StrItem strItem = null;
 	}
 

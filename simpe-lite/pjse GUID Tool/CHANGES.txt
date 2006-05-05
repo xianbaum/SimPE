@@ -1,4 +1,19 @@
 
+1 May 2006 14:00 - Resource renaming
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.16.4
+
+1 May 2006 10:33 - Fix GUID Tool
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.16.3
+
+30 April 2006 14:29 - Centralise localisation
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.16.2
+    Localization.cs (deleted)
+    Localization.resx (deleted: merged into central resx file)
+    pjse GUID Tool.csproj 1.6.10.3.2.2
+
 26 April 2006 18:17 - Enable localisation
   pjse GUID Tool\
     AssemblyInfo.cs 1.1.14.1.10.1

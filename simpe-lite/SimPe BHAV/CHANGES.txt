@@ -1,5 +1,131 @@
 !!! Made readStr() public -- need to review that decision (sticky)
-!!! stole Global STR# 0x1f3 for TNS Style
+!!! stole BhavStr STR# 0x1f3 for TNS Style
+!!! stole BhavStr STR# 0x1f2 for Generic Sims Call descriptions
+!!! stole BhavStr STR# 0x1f1 for Find Best Object for Function location flags
+
+5 May 2006 10:55 - Localisation: change text for bhavnotfound, remove test locales
+  pjse Localisation\
+    Localization.resx 1.1.2.7
+    pjse localisation.csproj 1.1.2.3
+
+4 May 2006 19:50 - TTAB: Fix up bugs, as one does...
+  SimPe BHAV\
+    Str.cs 1.1.4.3.4.5
+    TtabForm.cs 1.31.2.6.4.4
+
+1 May 2006 22:19 - TTAB: Use Str managed wrappers (to simplify Localisation)
+  pjse Localisation\
+    Localization.resx 1.1.2.6
+  SimPe BHAV\
+    Str.cs 1.1.4.3.4.4
+    TtabForm.cs 1.31.2.6.4.3
+    TtabWrapper.cs 1.23.6.1.6.4
+  pjseTestData.package 1.17.2.9.6.4
+
+1 May 2006 13:57 - FileTable: Better tracking of Package Index updates (and label SGs in RC)
+  pjse filetable\
+    FileTable.cs 1.11.2.7.4.3
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.13.4.5
+    BhavWiz.cs 1.37.2.13.4.5
+    BhavWizBhav.cs 1.19.2.2.14.4
+    ResourceChooser.cs 1.6.2.2.6.2
+
+1 May 2006 13:57 - Localisation: BhavWizPrim 0x1b; resource renaming
+  pjse Localisation\
+    Localization.resx 1.1.2.5
+  SimPe BHAV\
+    BconForm.cs 1.15.2.4.4.3
+    BhavForm.cs 1.64.2.13.4.4
+    BhavWizBhav.cs 1.19.2.2.14.3
+    BhavWizPrim.cs 1.34.2.13.4.9
+    TtabWrapper.cs 1.23.6.1.6.3
+
+1 May 2006 12:36 - Localisation: BhavWizPrim 0x1a
+  pjse Localisation\
+    Localization.resx 1.1.2.4
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.8
+
+1 May 2006 11:11 - Localisation: BhavWizPrim 0x19
+  pjse Localisation\
+    Localization.resx 1.1.2.3
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.7
+
+1 May 2006 10:33 - Localisation: BhavWizPrim down to 0x18
+  pjse Localisation\
+    Localization.resx 1.1.2.2
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.6
+
+1 May 2006 09:43 - Correct localisation DLL name; adjust for SimPe_059c_qa; use ErrorNames where appropriate
+  pjse Localisation\
+    pjse localisation.csproj 1.1.2.2
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.5
+    pjse coder plugin.csproj 1.29.2.10.2.3
+  pjseTestData.package 1.17.2.9.6.3
+
+30 April 2006 20:10 - Centralise Localisation (plus retest everything in sight)
+  * BhavWizPrim down to 0x13
+  * readStr got heavily attacked
+  pjse filetable\
+    FileTable.cs 1.11.2.7.4.2
+    Localization.cs (deleted)
+    Localization.resx (deleted:  merged into central resx file)
+    pjse filetable.csproj 1.3.10.3.2.2
+  pjse Localisation\
+    .cvsignore 1.1.2.1
+    Localization.cs 1.1.2.1
+    Localization.resx 1.1.2.1
+    pjse localisation.csproj 1.1.2.1
+  pjse Localisation\Properties
+    AssembleyInfo.cs 1.1.2.1
+  SimPe BHAV\
+    BconForm.cs 1.15.2.4.4.2
+    BhavForm.cs 1.64.2.13.4.3
+    BhavInstListControl.cs 1.41.8.3.2.2
+    BhavInstListItemUI.cs 1.23.2.2.10.2
+    BhavOperandWiz.cs 1.7.14.7.6.2
+    BhavOperandWizRaw.cs 1.1.14.1.10.2
+    BhavWiz.cs 1.37.2.13.4.4
+    BhavWizBhav.cs 1.19.2.2.14.2
+    BhavWizPrim.cs 1.34.2.13.4.4
+    Localization.cs (deleted)
+    Localization.resx (deleted:  merged into central resx file)
+    ObjfForm.cs 1.13.2.6.4.2
+    ObjfWrapper.cs 1.9.6.2.4.1
+    pjse coder plugin.csproj 1.29.2.10.2.2
+    pjse coder plugin.sln 1.6.10.1.2.1
+    Str.cs 1.1.4.3.4.3
+    StrForm.cs 1.28.2.9.6.2
+    TPRPForm.cs 1.6.2.4.8.2
+    TrcnForm.cs 1.11.2.4.8.2
+    TtabForm.cs 1.31.2.6.4.2
+    TtabMotiveGroupUI.cs 1.3.40.2
+    TtabWrapper.cs 1.23.6.1.6.2
+    WrapperFactory.cs 1.20.2.4.6.2
+  pjseTestData.package 1.17.2.9.6.2
+
+30 April 2006 09:55 - Localisation: BhavWizPrim down to 0x13
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.3
+    Localization.resx 1.1.2.3
+
+29 April 2006 20:24 - Localisation: BhavWizPrim down to 0x0E, plus resulting changes
+  * Two new BhavStr entries (0x01, 0x09)
+  * Wiz0x0001 changed to use new BhavStr
+  * Special-cased "Me" and "Stack Object"
+  * language fallback separated from scope fallback (to allow "quiet" BhavStr localisation)
+  SimPe BHAV\
+    BhavOperandWiz0x0001.cs 1.1.8.5.6.2
+    BhavWiz.cs 1.37.2.13.4.3
+    BhavWizPrim.cs 1.34.2.13.4.2
+    Localization.resx 1.1.2.2
+    Str.cs 1.1.4.3.4.2
+  GlobalStrings.package 1.10.8.8.4.1
+  pjseTestData.package 1.17.2.9.6.1
 
 26 April 2006 20:24 - Parsing/Localisation fixes and tidy ups
   SimPe BHAV\

@@ -108,16 +108,6 @@
       <HintPath>..\..\SimPe\simpe.filehandler.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.genericbase">
-      <Name>simpe.genericbase</Name>
-      <HintPath>..\..\SimPe\simpe.genericbase.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="simpe.generichandler">
-      <Name>simpe.generichandler</Name>
-      <HintPath>..\..\SimPe\simpe.generichandler.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="simpe.helper">
       <Name>simpe.helper</Name>
       <HintPath>..\..\SimPe\simpe.helper.dll</HintPath>
@@ -162,6 +152,10 @@
       <Name>pjse filetable</Name>
       <Project>{84085FAA-A947-492E-88BC-B941A4623811}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\pjse Localisation\pjse localisation.csproj">
+      <Project>{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}</Project>
+      <Name>pjse localisation</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -228,7 +222,6 @@
     <Compile Include="HelpHelper.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Localization.cs" />
     <Compile Include="ObjfForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -332,10 +325,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GlobForm.resx">
       <DependentUpon>GlobForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Localization.resx">
-      <DependentUpon>Localization.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjfForm.resx">

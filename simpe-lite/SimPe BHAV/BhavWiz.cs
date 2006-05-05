@@ -139,6 +139,8 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            FuncLocationFlags = 0x1f1, // PJSE: string number stolen
+            GenericsDesc = 0x1f2, // PJSE: string number stolen
             TnsStyle = 0x1f3,	// PJSE: string number stolen
             //Str0x01f4 .. 1fd unused
             GosubAction = 0x1fe, // See Gosub Action prim
@@ -221,8 +223,6 @@ namespace pjse
 
         public override string ToString() { return LongName; }
 
-        public virtual pjse.FileTable.Entry FTEntry { get { return null; } }
-
 
         public virtual string ShortName { get { return Name + " (" + Operands(false) + ")"; } }
 
@@ -245,10 +245,10 @@ namespace pjse
 
         #region DataOwner routines
         public static String DoidName(byte doid) { return readStr(GS.BhavStr.DataOwners, doid); }
+        public static String dnTemp()  { return DoidName(0x08); }
         public static String dnParam() { return DoidName(0x09); }
         public static String dnLocal() { return DoidName(0x19); }
         public static String dnConst() { return DoidName(0x1a); }
-        public static String dnTemp() { return DoidName(0x09); }
 
         protected string dataOwner(byte doid, ushort instance)
         {
@@ -274,6 +274,12 @@ namespace pjse
                     temp = readStr(Scope.SemiGlobal, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.ValueOnly);
                     if (temp != null && temp.Length > 0)
                         s += " (" + temp + ")";
+                    break;
+                case 0x03:
+                    if (instance == 0x0b) { doidName = pjse.Localization.GetString("me"); s = ""; }
+                    break;
+                case 0x04:
+                    if (instance == 0x0b) { doidName = pjse.Localization.GetString("stackobj"); s = "";  }
                     break;
                 case 0x09:
                     temp = readParam(instruction.Parent, instance, pjse.Detail.Errors);
@@ -367,6 +373,7 @@ namespace pjse
         }
 
         protected string dataOwner(bool lng, byte doid, byte lo, byte hi) { return dataOwner(lng, doid, ToShort(lo, hi)); }
+
         public static Hashtable doidGStr = staticInitialiser();
         private static Hashtable staticInitialiser()
         {
@@ -402,32 +409,32 @@ namespace pjse
         #region STR# routines
         public string readStr(GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
         {
-            return readStr(instruction.Parent.Context, (uint)instance, sid, maxlen, detail);
+            return readStr(instruction.Parent.Context, (uint)instance, sid, maxlen, detail, false);
         }
 
         public string readStr(Scope scope, GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
         {
-            return readStr(scope, (uint)instance, sid, maxlen, detail);
+            return readStr(scope, (uint)instance, sid, maxlen, detail, false);
         }
 
-        protected string readStr(Scope scope, uint instance, ushort sid, int maxlen, Detail detail)
+        protected string readStr(Scope scope, uint instance, ushort sid, int maxlen, Detail detail, bool showLngFB)
         {
-            return readStr(instruction.Parent, instruction.Parent.GroupForScope(scope), instance, sid, maxlen, detail);
+            return readStr(instruction.Parent, instruction.Parent.GroupForScope(scope), instance, sid, maxlen, detail, true, showLngFB);
         }
 
 
         public static string readStr(GS.BhavStr instance, ushort sid)
         {
-            return readStr(null, (uint)Group.BhavFuncs, (uint)instance, sid, -1, Detail.ErrorNames, false);
+            return readStr((uint)Group.BhavFuncs, (uint)instance, sid, Detail.ErrorNames);
         }
 
-
-        private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail)
+        private static string readStr(uint group, uint instance, ushort sid, Detail detail)
         {
-            return readStr(parent, group, instance, sid, maxlen, detail, true);
+            return readStr(null, group, instance, sid, -1, detail, false, false);
         }
 
-        private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail, bool addQuotes)
+
+        private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail, bool addQuotes, bool showLngFB)
         {
             Str str = new Str(parent, group, instance);
             String pfname = "";
@@ -442,13 +449,13 @@ namespace pjse
             }
             if (detail == Detail.Full || detail == Detail.Errors)
                 pfname += "STR# 0x" + (instance >= 0x10000 ? SimPe.Helper.HexString(instance) : SimPe.Helper.HexString((ushort)instance)) + ":";
-            if (detail == Detail.Full || detail == Detail.ErrorNames || detail == Detail.Errors)
+            if (detail != Detail.ValueOnly)
                 pfname += "0x" + (sid >= 0x0100 ? SimPe.Helper.HexString(sid) : SimPe.Helper.HexString((byte)sid));
 
 
             if (str != null)
             {
-                FallbackStrItem fsi = str[sid];
+                FallbackStrItem fsi = str[(byte)SimPe.Helper.WindowsRegistry.LanguageCode, sid];
                 if (fsi != null && fsi.strItem != null)
                 {
                     String s = "";
@@ -458,6 +465,8 @@ namespace pjse
                         for (int i = 0; i < fsi.fallback.Count; i++) s += (i == 0 ? "" : "; ") + fsi.fallback[i];
                         s += "] ";
                     }
+                    if (showLngFB && (fsi.fallback == null || fsi.fallback.Count == 0) && fsi.lidFallback)
+                        s += "[" + pjse.Localization.GetString("Fallback") + ": LID=1] ";
                     if (addQuotes)
                         return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full ? " [" + pfname + "]" : "");
                     else
@@ -466,7 +475,7 @@ namespace pjse
             }
             if (detail == Detail.ValueOnly)
                 return null;
-            return "[" + pjse.coder.Localization.Manager.GetString("unk") + ": " + pfname + "]";
+            return "[" + pjse.Localization.GetString("unk") + ": " + pfname + "]";
         }
 
 
@@ -477,7 +486,7 @@ namespace pjse
             {
                 ArrayList list = new ArrayList();
                 String s;
-                for (ushort i = 0; (s = readStr(null, (uint)Group.BhavFuncs, (uint)instance, i, -1, Detail.ValueOnly, false)) != null; i++) list.Add(s);
+                for (ushort i = 0; (s = readStr((uint)Group.BhavFuncs, (uint)instance, i, Detail.ValueOnly)) != null; i++) list.Add(s);
                 gString[instance] = list;
             }
             return (ArrayList)gString[instance];
@@ -495,9 +504,10 @@ namespace pjse
 
             ArrayList al = new ArrayList();
             String st;
-            for (ushort i = 0; (st = readStr(null, instruction.Parent.GroupForScope(s), (uint)GS.GlobalStr.AttributeLabels, i, -1, Detail.ValueOnly, false)) != null; i++) al.Add(st);
+            for (ushort i = 0; (st = readStr(instruction.Parent.GroupForScope(s), (uint)GS.GlobalStr.AttributeLabels, i, Detail.ValueOnly)) != null; i++) al.Add(st);
             return al;
         }
+
 
 
         private static string myLeft(string str, int len)
@@ -516,7 +526,7 @@ namespace pjse
 
         public static string flagname(byte flagOwner, ushort flagType, ushort flagValue)
         {
-            if (flagValue == 0) return "[0: " + pjse.coder.Localization.Manager.GetString("invalid") + "]";
+            if (flagValue == 0) return "[0: " + pjse.Localization.GetString("invalid") + "]";
             Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
             return (flagTypes == null || flagTypes[flagType] == null) ? null : readStr((GS.BhavStr)flagTypes[flagType], (ushort)(flagValue - 1));
         }
@@ -579,7 +589,7 @@ namespace pjse
 
             pjse.FileTable.Entry ftEntry = parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instance);
             found = (ftEntry != null);
-            return s + (found ? "\"" + ftEntry + "\"" : pjse.coder.Localization.Manager.GetString("bhavnotfound"));
+            return s + (found ? "\"" + ftEntry + "\"" : pjse.Localization.GetString("bhavnotfound"));
         }
 
         public String bhavName(uint instance, ref bool found)
@@ -663,7 +673,7 @@ namespace pjse
             pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, instruction.Parent.GroupForScope(s), instance];
 
             if (items == null || items.Length == 0)
-                return "[" + pjse.coder.Localization.Manager.GetString("notfound") + "]";
+                return "[" + pjse.Localization.GetString("notfound") + "]";
 
             Bcon bcon = new Bcon();
             bcon.ProcessData(items[0].PFD, items[0].Package);
@@ -676,9 +686,9 @@ namespace pjse
             label = label.Length > 0 ? "\"" + label + "\" " : "";
 
             if (bid >= bcon.Count)
-                return label + "[" + pjse.coder.Localization.Manager.GetString("notset") + "]";
+                return label + "[" + pjse.Localization.GetString("notset") + "]";
 
-            return label + pjse.coder.Localization.Manager.GetString("Value") + ": 0x" + SimPe.Helper.HexString((short)bcon[bid]);
+            return label + pjse.Localization.GetString("Value") + ": 0x" + SimPe.Helper.HexString((short)bcon[bid]);
         }
 
 

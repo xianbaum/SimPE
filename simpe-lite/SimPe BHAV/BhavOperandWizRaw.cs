@@ -81,7 +81,7 @@ namespace pjse.BhavOperandWizards.WizRaw
 			} 
 			catch (Exception ex) 
 			{
-				SimPe.Helper.ExceptionMessage(pjse.coder.Localization.Manager.GetString("errconvert"), ex);
+				SimPe.Helper.ExceptionMessage(pjse.Localization.GetString("errconvert"), ex);
 				return null;
 			}
 		}
