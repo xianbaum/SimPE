@@ -3216,25 +3216,6 @@ namespace pjse.BhavNameWizards
 
 	}
 
-	public class WizPrim0x0034 : BhavWizPrim	// Find Best Object for Function
-	{
-		public WizPrim0x0034(Instruction i) : base(i) { }
-
-		protected override string Operands(bool lng)
-		{
-			byte[] o = new byte[16];
-			((byte[])instruction.Operands).CopyTo(o, 0);
-			((byte[])instruction.Reserved1).CopyTo(o, 8);
-
-			string s = "";
-
-
-			return s;
-#if DISASIM
-#endif
-		}
-	}
-
 	public class WizPrim0x0069 : BhavWizPrim	// Animate Object
 	{
 		public WizPrim0x0069(Instruction i) : base(i) { }
