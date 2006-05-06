@@ -313,7 +313,7 @@ namespace pjse
 			ArrayList local = new ArrayList();
 			ArrayList nonlocal = new ArrayList();
 			foreach (Entry e in result.Keys)
-				if (!e.PFD.Invalid && !e.PFD.MarkForDelete) ((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
+				if (!e.PFD.MarkForDelete) ((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
 
 			Entry[] es = new Entry[local.Count + (localOnly ? 0 : nonlocal.Count)];
 			local.CopyTo(es, 0);
@@ -331,7 +331,7 @@ namespace pjse
 
 			foreach (IPackedFileDescriptor i in package.Index)
 			{
-				if (i.Invalid || i.MarkForDelete) continue;
+				if (i.MarkForDelete) continue;
 
 				object val = true;
 				object key = new Entry(package, i);
