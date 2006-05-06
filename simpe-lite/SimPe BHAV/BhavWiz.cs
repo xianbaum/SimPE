@@ -247,8 +247,10 @@ namespace pjse
         public static String DoidName(byte doid) { return readStr(GS.BhavStr.DataOwners, doid); }
         public static String dnTemp()  { return DoidName(0x08); }
         public static String dnParam() { return DoidName(0x09); }
+        public static String dnStkOb() { return DoidName(0x0a); }
         public static String dnLocal() { return DoidName(0x19); }
         public static String dnConst() { return DoidName(0x1a); }
+        public static String dnMe()    { return pjse.Localization.GetString("me"); }
 
         protected string dataOwner(byte doid, ushort instance)
         {
@@ -275,25 +277,13 @@ namespace pjse
                     if (temp != null && temp.Length > 0)
                         s += " (" + temp + ")";
                     break;
-                case 0x03:
-                    if (instance == 0x0b) { doidName = pjse.Localization.GetString("me"); s = ""; }
-                    break;
-                case 0x04:
-                    if (instance == 0x0b) { doidName = pjse.Localization.GetString("stackobj"); s = "";  }
-                    break;
                 case 0x09:
-                    temp = readParam(instruction.Parent, instance, pjse.Detail.Errors);
-                    if (temp.Length > 0)
-                        s += " (" + temp + ")";
-                    break;
                 case 0x19:
-                    temp = readLocal(instruction.Parent, instance, pjse.Detail.Errors);
+                    temp = doid == 0x09
+                        ? readParam(instruction.Parent, instance, pjse.Detail.Errors)
+                        : readLocal(instruction.Parent, instance, pjse.Detail.Errors);
                     if (temp.Length > 0)
                         s += " (" + temp + ")";
-                    break;
-                case 0x0a:
-                    if (instance == 0)
-                        s = "";
                     break;
                 case 0x0b:
                 case 0x11:
@@ -341,14 +331,13 @@ namespace pjse
             {
                 case 0x03:
                 case 0x04:
-                case 0x0c:
-                case 0x0e:
-                case 0x0f:
-                case 0x1c:
-                case 0x1d:
-                    return DoidName(doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
+                    if (instance == 0x0b)
+                        return doid == 0x03 ? dnMe() : dnStkOb();
+                    break;
                 case 0x06:
                     return readStr((GS.BhavStr)doidGStr[doid], instance);
+                case 0x0a:
+                    return DoidName(doid) + (instance == 0x00 ? "" : " 0x" + SimPe.Helper.HexString(instance));
                 case 0x0b:
                 case 0x11:
                 case 0x1e:
@@ -356,6 +345,12 @@ namespace pjse
                 case 0x30:
                 case 0x31:
                     return dataOwner(doid, instance);
+                case 0x0c:
+                case 0x0e:
+                case 0x0f:
+                case 0x1c:
+                case 0x1d:
+                    return DoidName(doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
                 case 0x16:
                 case 0x32:
                     return DoidName(doid).Replace("[param]", "[" + dnParam() + " 0x" + SimPe.Helper.HexString(instance) + "]");
@@ -367,9 +362,8 @@ namespace pjse
                     bcon = ExpandBCON(instance, true);
                     return dnConst()
                         + " 0x" + SimPe.Helper.HexString(bcon[0]) + ":[" + dataOwner(0x08, bcon[1]) + "]";
-                default:
-                    return DoidName(doid) + " 0x" + SimPe.Helper.HexString(instance);
             }
+            return DoidName(doid) + " 0x" + SimPe.Helper.HexString(instance);
         }
 
         protected string dataOwner(bool lng, byte doid, byte lo, byte hi) { return dataOwner(lng, doid, ToShort(lo, hi)); }
