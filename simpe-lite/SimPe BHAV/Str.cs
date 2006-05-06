@@ -295,7 +295,6 @@ namespace pjse
 
 		public static FallbackStrItem getFallbackStrItem(ExtendedWrapper parent, uint group, uint instance, int sid)
 		{
-			Str str = new Str(parent, group, instance);
 			return getFallbackStrItem(parent, group, instance, 1, sid);
 		}
 
