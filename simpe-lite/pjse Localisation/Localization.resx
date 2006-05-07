@@ -324,12 +324,12 @@ Check BHAV format and number of lines.</value>
     <comment>BhavWizPrim prefix value</comment>
   </data>
   <data name="me" xml:space="preserve">
-    <value>My ID</value>
-    <comment>BhavWiz: Data Owner 0x03, 0x000b</comment>
+    <value>Me</value>
+    <comment>BhavWiz: dnMe()</comment>
   </data>
   <data name="none" xml:space="preserve">
     <value>none</value>
-    <comment>0x03 (indicating an empty list)</comment>
+    <comment>0x03 (indicating an empty list), 0x22 (indicating no string specified - and in b.o.w)</comment>
   </data>
   <data name="Object" xml:space="preserve">
     <value>Object</value>
@@ -561,5 +561,106 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp1f_disabledObjects" xml:space="preserve">
     <value>disabled objects included</value>
+  </data>
+  <data name="bwp_timeout" xml:space="preserve">
+    <value>timeout</value>
+    <comment>0x23, 0x24</comment>
+  </data>
+  <data name="bwp_TNSID" xml:space="preserve">
+    <value>TNS ID</value>
+  </data>
+  <data name="bwp20_isInstanceOf" xml:space="preserve">
+    <value>is instance of</value>
+  </data>
+  <data name="bwp20_neighbourID" xml:space="preserve">
+    <value>incoming ID is a neighbor ID</value>
+  </data>
+  <data name="bwp20_originalGUID" xml:space="preserve">
+    <value>checking original (not current) GUID</value>
+  </data>
+  <data name="bwp20_returnTemp01" xml:space="preserve">
+    <value>return GUID selected in Temp 0,1</value>
+  </data>
+  <data name="bwp22_eventTree" xml:space="preserve">
+    <value>Event tree</value>
+  </data>
+  <data name="bwp22_noEventTree" xml:space="preserve">
+    <value>No event tree</value>
+  </data>
+  <data name="bwp22_startingEffect" xml:space="preserve">
+    <value>Starting Effect</value>
+  </data>
+  <data name="bwp22_stoppingEffect" xml:space="preserve">
+    <value>Stopping Effect</value>
+  </data>
+  <data name="bwp22_windowID" xml:space="preserve">
+    <value>Window ID</value>
+  </data>
+  <data name="bwp23_center" xml:space="preserve">
+    <value>center</value>
+  </data>
+  <data name="bwp23_far" xml:space="preserve">
+    <value>far</value>
+  </data>
+  <data name="bwp23_mid" xml:space="preserve">
+    <value>mid</value>
+  </data>
+  <data name="bwp23_near" xml:space="preserve">
+    <value>near</value>
+  </data>
+  <data name="bwp23_notVisible" xml:space="preserve">
+    <value>not visible</value>
+  </data>
+  <data name="bwp23_slowDown" xml:space="preserve">
+    <value>slow down</value>
+  </data>
+  <data name="bwp23_visible" xml:space="preserve">
+    <value>visible</value>
+  </data>
+  <data name="bwp23_zoom" xml:space="preserve">
+    <value>zoom</value>
+  </data>
+  <data name="bwp24_blockSimulation" xml:space="preserve">
+    <value>block simulation</value>
+  </data>
+  <data name="bwp24_button1" xml:space="preserve">
+    <value>Button 1</value>
+  </data>
+  <data name="bwp24_button2" xml:space="preserve">
+    <value>Button 2</value>
+  </data>
+  <data name="bwp24_button3" xml:space="preserve">
+    <value>Button 3</value>
+  </data>
+  <data name="bwp24_icon" xml:space="preserve">
+    <value>icon</value>
+  </data>
+  <data name="bwp24_Locals" xml:space="preserve">
+    <value>passing through data starting with</value>
+  </data>
+  <data name="bwp24_message" xml:space="preserve">
+    <value>Message</value>
+  </data>
+  <data name="bwp24_priority" xml:space="preserve">
+    <value>priority</value>
+  </data>
+  <data name="bwp24_resultIn" xml:space="preserve">
+    <value>result in</value>
+  </data>
+  <data name="bwp24_strings" xml:space="preserve">
+    <value>Strings</value>
+  </data>
+  <data name="bwp24_title" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="bwp24_TNSStyle" xml:space="preserve">
+    <value>TNS Style</value>
+  </data>
+  <data name="bwp24_waitForUser" xml:space="preserve">
+    <value>wait for user</value>
+  </data>
+  <data name="stackobj" xml:space="preserve">
+    <value>Stack Object</value>
+    <comment>BhavWiz: dnStkOb()</comment>
   </data>
 </root>

@@ -1738,14 +1738,14 @@ namespace pjse.BhavNameWizards
 
             s += ((o[4] & 0x80) == 0
                 ? dnStkOb() // Stack Object
-                : dataOwner(lng, o[5], o[7])) + ", ";
+                : dataOwner(lng, o[5], o[7])) + ", "; // ":=" didn't look right here.
 
             s += readStr(GS.BhavStr.NextObject, (ushort)(o[4] & 0x7f));
 			switch(o[4] & 0x7f)
 			{
 				case 0x04: case 0x07:
 					uint d1 = (uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24));
-					s += " GUID 0x" + SimPe.Helper.HexString(d1);
+					s += ": GUID 0x" + SimPe.Helper.HexString(d1);
 					break;
 				case 0x09: case 0x22:
 					s = s.Replace("[local]", dataOwner(lng, 0x19, o[6])); // local
@@ -1795,18 +1795,22 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Object in " + dataOwner(lng, o[6], o[4], o[5]);
+			s += dataOwner(lng, o[6], o[4], o[5]);
 
 			uint d1 = (uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24));
-			s += " against GUID 0x" + SimPe.Helper.HexString(d1);
+            s += ", " + pjse.Localization.GetString("bwp20_isInstanceOf")
+                + ": GUID 0x" + SimPe.Helper.HexString(d1);
 			if (lng)
 			{
 				//if (d1 == 0x4C7CAB2B)
 				//	s += " (temporary inventory token)";
 
-				s += ", checking original, not current, GUID: " + ((o[7] & 0x01) != 0).ToString();
-				s += ", incoming ID is a neighbor ID: "         + ((o[7] & 0x02) != 0).ToString();
-				s += ", return GUID selected in Temp 0,1: "     + ((o[7] & 0x04) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp20_originalGUID")
+                    + ": " + ((o[7] & 0x01) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp20_neighbourID")
+                    + ": " + ((o[7] & 0x02) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp20_returnTemp01")
+                    + ": " + ((o[7] & 0x04) != 0).ToString();
 			}
 
 			return s;
@@ -1850,8 +1854,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += readStr(GS.BhavStr.ShortOwner, ToShort(o[4], o[5])) + " lowest ";
-			s += readStr(GS.BhavStr.MotiveType, ToShort(o[6], o[7])) + " into temps 0-4";
+            s += dataOwner(0x08, 0) + "..4 :=";
+
+			s += " " + readStr(GS.BhavStr.ShortOwner, ToShort(o[4], o[5]));
+            s += " " + readStr(GS.BhavStr.MotiveType, ToShort(o[6], o[7]));
 
 			return s;
 #if DISASIM
@@ -1881,60 +1887,52 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			switch (o[0]) 
-			{
-					// why isn't there a BhavStr with these..?
-				case 0x00: s += "Press Control"; break;
-				case 0x01: s += "Disable Control"; break;
-				case 0x02: s += "Enable Control"; break;
-				case 0x03: s += "Play Effect on Control"; break;
-				case 0x04: s += "Set Event tree on Control"; break;
-				case 0x05: s += "Reset State on All Controls"; break;
-				case 0x06: s += "Disable All Controls"; break;
-				case 0x07: s += "Reset event trees on All Controls"; break;
-				case 0x08: s += "Set Event Tree on TNS node"; break;
-				case 0x09: s += "Set Control Visible"; break;
-				case 0x0a: s += "Set Control Hidden"; break;
-			}
+            s += readStr(GS.BhavStr.UIEffectType, o[0]);
 
 			if (o[0] < 5 || o[0] > 8)
 			{
 				Scope scope = Scope.Private;
 				if      ((o[5] & 0x04) != 0) scope = Scope.Global;
 				else if ((o[5] & 0x08) != 0) scope = Scope.SemiGlobal;
-				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, pjse.Detail.ErrorNames);
-				if (lng) s += " (" + scope + ")";
+				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.ErrorNames);
+                if (lng) s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
 			}
-
-			if (o[0] != 8) 
-			{
-				Scope scope = Scope.Private;
-				if      ((o[5] & 0x01) != 0) scope = Scope.Global;
-				else if ((o[5] & 0x02) != 0) scope = Scope.SemiGlobal;
-				s += ", window ID " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), lng ? -1 : 60, pjse.Detail.ErrorNames);
-				if (lng) s += " (" + scope + ")";
-			}
-			else
-				s += ", TNS ID " + dataOwner(lng, o[13], o[11], o[12]);
-
-			if (o[0] == 3)
-				s += ", " + (ToShort(o[6], o[7]) != 0 ? "Starting" : "Stopping") + " Effect";
 
 			if (lng)
 			{
-				if (o[0] == 4 || o[0] == 8)
+                if (o[0] != 8)
+                {
+                    Scope scope = Scope.Private;
+                    if ((o[5] & 0x01) != 0) scope = Scope.Global;
+                    else if ((o[5] & 0x02) != 0) scope = Scope.SemiGlobal;
+                    s += ", " + pjse.Localization.GetString("bwp22_windowID")
+                        + ": " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), -1, pjse.Detail.Full);
+                    s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
+                }
+                else
+                    s += ", " + pjse.Localization.GetString("bwp_TNSID")
+                        + ": " + dataOwner(o[13], o[11], o[12]);
+
+                if (o[0] == 3)
+                    s += ", " + (ToShort(o[6], o[7]) != 0
+                        ? pjse.Localization.GetString("bwp22_startingEffect")
+                        : pjse.Localization.GetString("bwp22_stoppingEffect")
+                        );
+
+                if (o[0] == 4 || o[0] == 8)
 					if (ToShort(o[8], o[9]) == 0)
-						s += ", No event tree";
+                        s += ", " + pjse.Localization.GetString("bwp22_noEventTree")
+                            ;
 					else 
 					{
 						Scope scope = Scope.Global;
 						if      (o[10] == 0) scope = Scope.Private;
 						else if (o[10] == 1) scope = Scope.SemiGlobal;
-						s += ", Scope: " + scope.ToString();
-
 						bool found = false;
-						s += ", Event tree: " + bhavName(ToShort(o[8], o[9]), ref found);
-					}
+                        s += ", " + pjse.Localization.GetString("bwp22_eventTree")
+                            + ": " + bhavName(ToShort(o[8], o[9]), ref found);
+                        s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
+                    }
 			}
 
 
@@ -2057,21 +2055,32 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += ((o[4] & 1) != 0 ? "show" : "un-show") + " stack obj";
+			s += dnStkOb() + ": " + ((o[4] & 1) != 0
+                ? pjse.Localization.GetString("bwp23_visible")
+                : pjse.Localization.GetString("bwp23_notVisible")
+                );
 
-			s += ", zoom: 0x" + SimPe.Helper.HexString(o[3]) + " (";
+            s += ", " + pjse.Localization.GetString("bwp23_zoom")
+                + ": 0x" + SimPe.Helper.HexString(o[3]) + " (";
 			switch (o[3])
 			{
-				case 1: s += "far"; break;
-				case 2: s += "mid"; break;
-				case 3: s += "near"; break;
-				default: s += "???"; break;
+                case 1: s += pjse.Localization.GetString("bwp23_far")
+                    ; break;
+                case 2: s += pjse.Localization.GetString("bwp23_mid")
+                    ; break;
+                case 3: s += pjse.Localization.GetString("bwp23_near")
+                    ; break;
+				default: s += pjse.Localization.GetString("UNK")
+                    ; break;
 			}
 			s += ")";
 
-			s += ", center: "    + ((o[4] & 0x08) != 0).ToString();
-			s += ", using timeout " + ((o[4] & 0x20) != 0 ? "in Temp 0" : "of 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])));
-			s += ", slow down: " + ((o[4] & 0x40) == 0).ToString();
+            s += ", " + pjse.Localization.GetString("bwp23_center")
+                + ": " + ((o[4] & 0x08) != 0).ToString();
+            s += ", " + pjse.Localization.GetString("bwp_timeout")
+                + ": " + ((o[4] & 0x20) != 0 ? dataOwner(0x08, 0) : "0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])));
+            s += ", " + pjse.Localization.GetString("bwp23_slowDown")
+                + ": " + ((o[4] & 0x40) == 0).ToString();
 
 			return s;
 #if DISASIM
@@ -2128,10 +2137,44 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			bool nowait   = (o[7] & 0x01) != 0;
-			byte iconType = (byte)((o[7] >> 1) & 0x07);
-			byte tempVar  = (byte)((o[7] >> 4) & 0x07);
-			bool noblock  = (o[7] & 0x80) != 0;
+            bool tvState = false;
+            bool tnsState = false;
+            bool lvState = false;
+            bool[] states = { false, false, false, false, false }; // message, yes, no, cancel, title
+
+            switch (o[5])
+            {
+                case 0x00: case 0x03: case 0x04:
+                    states[0] = states[1] = states[4] = true; // message, button 1, title
+                    break;
+                case 0x02:
+                    tvState = states[0] = states[1] = states[2] = states[3] = states[4] = true; // message, button 1, button 2, button 3, title
+                    break;
+                case 0x08: case 0x0a: // TNS, TNS modify
+                    tnsState = tvState = states[0] = true; // message
+                    break;
+                case 0x09: // TNS stop
+                    tvState = true;
+                    break;
+                case 0x0e:
+                    lvState = states[0] = states[1] = states[2] = states[4] = true; // message, button 1, button 2, title
+                    break;
+                case 0x0f:
+                    states[1] = states[2] = true; // button 1, button 2
+                    break;
+                case 0x13:
+                    states[1] = states[2] = states[4] = true; // button 1, button 2, title
+                    break;
+                case 0x0b: case 0x0c: case 0x0d: case 0x10: case 0x11: case 0x12: case 0x14: case 0x15:
+                    break;
+                case 0x16: case 0x19:
+                    states[0] = states[4] = true; // message, title
+                    break;
+                default:
+                    states[0] = states[1] = states[2] = states[4] = true; // message, button 1, button 2, title
+                    break;
+            }
+
 
 			ushort msg, cnc;
 			if (instruction.NodeVersion == 0)
@@ -2151,65 +2194,66 @@ namespace pjse.BhavNameWizards
 			else                         scope = Scope.Private;
 
 			string s = "";
-			if (lng)
-			{
-				s += "Scope: " + scope;
-				s += ", Type: " + readStr(GS.BhavStr.Dialog, o[5]);
-			}
 
-			switch (o[5])
-			{
-				case 0x08: case 0x0a:
-					s += (lng ? ", " : "") + dialogStr(scope, (o[8] & 0x02) != 0, msg, lng ? -1 : 60);
-					if (lng)
-					{
-						s += ", priority 0x" + SimPe.Helper.HexString((byte)(o[9] + 1));
-						s += ", timeout 0x" + SimPe.Helper.HexString(o[10]);
-						s += ", " + ((o[5] != 0x08) ? "getting" : "putting") + " Text ID in " + dataOwner(0x08, tempVar); // temp
-					}
-					break;
-				case 0x09:
-					if (lng)
-						s += ", getting Text ID in " + dataOwner(0x08, tempVar); // temp
-					break;
-				case 0x0b: case 0x0c: case 0x0d: case 0x10: case 0x11: case 0x12: case 0x14:
-					// what are these, then?
-					break;
-				case 0x0e:
-					s += (lng ? ", passing through data starting with " : "") + dataOwner(0x19, o[11]); // local
-					break;
-				default:
-					s += (lng ? ": " : "") + dialogStr(scope, (o[8] & 0x02) != 0, msg, lng ? -1 : 60);
-					if (lng)
-					{
-						s += ", Yes: "    + dialogStr(scope, (o[8] & 0x04) != 0, o[3]);
-						s += ", No: "     + dialogStr(scope, (o[8] & 0x08) != 0, o[4]);
-						s += ", Title: "  + dialogStr(scope, (o[8] & 0x10) != 0, o[6]);
-						s += ", Cancel: " + dialogStr(scope, (o[8] & 0x20) != 0, cnc);
-					}
-					break;
-			}
+            s += readStr(GS.BhavStr.Dialog, o[5]);
+
+            if (lng)
+                s += ", " + pjse.Localization.GetString("bwp24_strings")
+                    + ": " + pjse.Localization.GetString(scope.ToString());
+
+            if (states[4]) s += ", " + pjse.Localization.GetString("bwp24_title")
+                + ": " + dialogStr(scope, (o[8] & 0x10) != 0, o[6], lng ? -1 : 60);
+            if (states[0]) s += ", " + pjse.Localization.GetString("bwp24_message")
+                + ": " + dialogStr(scope, (o[8] & 0x02) != 0, msg, lng ? -1 : 60);
+            if (lng)
+            {
+                if (states[1]) s += ", " + pjse.Localization.GetString("bwp24_button1")
+                    + ": " + dialogStr(scope, (o[8] & 0x04) != 0, o[3]);
+                if (states[2]) s += ", " + pjse.Localization.GetString("bwp24_button2")
+                    + ": " + dialogStr(scope, (o[8] & 0x08) != 0, o[4]);
+                if (states[3]) s += ", " + pjse.Localization.GetString("bwp24_button3")
+                    + ": " + dialogStr(scope, (o[8] & 0x20) != 0, cnc);
+            }
+
+            if (tnsState)
+            {
+                s += ", " + pjse.Localization.GetString("bwp24_TNSStyle")
+                    + ": " + readStr(GS.BhavStr.TnsStyle, o[12]);
+                if (lng)
+                {
+                    s += ", " + pjse.Localization.GetString("bwp24_priority")
+                        + ": 0x" + SimPe.Helper.HexString((byte)(o[9] + 1));
+                    s += ", " + pjse.Localization.GetString("bwp_timeout")
+                        + ": 0x" + SimPe.Helper.HexString(o[10]);
+                }
+            }
 
 			if (lng)
 			{
-				if (o[5] == 0x02)
-					s += ", result in "+ dataOwner(0x08, tempVar); // temp
+                byte tempVar = (byte)((o[7] >> 4) & 0x07);
+                if (tvState)
+                    s += ", " + (o[5] == 0x02
+                        ? pjse.Localization.GetString("bwp24_resultIn")
+                        : pjse.Localization.GetString("bwp_TNSID")
+                        ) + ": " + dataOwner(0x08, tempVar); // temp
 
-				/*if (msg != 0x16 && msg != 0x19 && iconType != 1) { }*/
-				s += ", icon: " + readStr(GS.BhavStr.DialogIcon, iconType);
-				switch (iconType) 
-				{
-					case 3: s += ": BMP = 0x" + SimPe.Helper.HexString((ushort)(o[1] + 5000)); break;
-					case 4: s += " " + dialogStr(scope, false, o[1]); break;
-				}
+                if (lvState)
+                    s += ", " + pjse.Localization.GetString("bwp24_Locals")
+                        + ": " + dataOwner(0x19, o[11]); // local
 
-				/*if (nowait || noblock) -- see bhav str 0xed */
-				s += ", " + (nowait ? "don't " : "") + "wait for user";/* + " and " +*/
-				s += ", " + (noblock ? "don't " : "") + "block Sim";
+                byte iconType = (byte)((o[7] >> 1) & 0x07);
+                s += ", " + pjse.Localization.GetString("bwp24_icon")
+                    + ": " + readStr(GS.BhavStr.DialogIcon, iconType);
+                switch (iconType)
+                {
+                    case 3: s += ": BMP = 0x" + SimPe.Helper.HexString((ushort)(o[1] + 5000)); break;
+                    case 4: s += " " + dialogStr(scope, false, o[1]); break;
+                }
 
-				// these are the TNS notification types.  Only show for 0x08 and 0x0a.
-				if (o[5] == 0x08 || o[5] == 0x0a)
-					s += ", TNS Style: " + readStr(GS.BhavStr.TnsStyle, o[12]);
+                s += ", " + pjse.Localization.GetString("bwp24_waitForUser")
+                    + ": " + ((o[7] & 0x01) == 0);
+                s += ", " + pjse.Localization.GetString("bwp24_blockSimulation")
+                    + ": " + ((o[7] & 0x80) == 0);
 
 				s += ".  (" + readStr(GS.BhavStr.DialogDesc, o[5]) + ")";
 			}
@@ -2358,7 +2402,7 @@ namespace pjse.BhavNameWizards
 				if (instance != 0)
                     s += readStr(scope, (uint)GS.GlobalStr.DialogString, (ushort)(instance - 1), len, pjse.Detail.ErrorNames, true);
 				else
-					s += "[none]";
+                    s += "[" + pjse.Localization.GetString("none") + "]";
 			}
 			return s;
 		}

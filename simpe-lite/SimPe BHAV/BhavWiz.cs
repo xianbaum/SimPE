@@ -139,6 +139,7 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            UIEffectType = 0x1f0, // PJSE: string number stolen
             FuncLocationFlags = 0x1f1, // PJSE: string number stolen
             GenericsDesc = 0x1f2, // PJSE: string number stolen
             TnsStyle = 0x1f3,	// PJSE: string number stolen
@@ -247,9 +248,10 @@ namespace pjse
         public static String DoidName(byte doid) { return readStr(GS.BhavStr.DataOwners, doid); }
         public static String dnTemp()  { return DoidName(0x08); }
         public static String dnParam() { return DoidName(0x09); }
-        public static String dnStkOb() { return DoidName(0x0a); }
         public static String dnLocal() { return DoidName(0x19); }
         public static String dnConst() { return DoidName(0x1a); }
+
+        public static String dnStkOb() { return pjse.Localization.GetString("stackobj"); }
         public static String dnMe()    { return pjse.Localization.GetString("me"); }
 
         protected string dataOwner(byte doid, ushort instance)
@@ -330,10 +332,16 @@ namespace pjse
             switch (doid)
             {
                 case 0x03:
+                case 0x0c:
+                case 0x0e:
+                case 0x0f:
+                case 0x1c:
+                case 0x1d:
+                    return DoidName(doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
                 case 0x04:
                     if (instance == 0x0b)
-                        return doid == 0x03 ? dnMe() : dnStkOb();
-                    break;
+                        return DoidName(0x0a);
+                    return DoidName(doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
                 case 0x06:
                     return readStr((GS.BhavStr)doidGStr[doid], instance);
                 case 0x0a:
@@ -345,12 +353,6 @@ namespace pjse
                 case 0x30:
                 case 0x31:
                     return dataOwner(doid, instance);
-                case 0x0c:
-                case 0x0e:
-                case 0x0f:
-                case 0x1c:
-                case 0x1d:
-                    return DoidName(doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
                 case 0x16:
                 case 0x32:
                     return DoidName(doid).Replace("[param]", "[" + dnParam() + " 0x" + SimPe.Helper.HexString(instance) + "]");
