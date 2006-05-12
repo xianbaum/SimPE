@@ -518,8 +518,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp1b_differentAltitudes" xml:space="preserve">
     <value>allow different altitudes</value>
   </data>
-  <data name="bwp1b_noFailureTrees" xml:space="preserve">
+  <data name="bwp_noFailureTrees" xml:space="preserve">
     <value>no failure trees</value>
+    <comment>1b, 2d</comment>
   </data>
   <data name="Direction" xml:space="preserve">
     <value>Direction</value>
@@ -662,5 +663,35 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="stackobj" xml:space="preserve">
     <value>Stack Object</value>
     <comment>BhavWiz: dnStkOb()</comment>
+  </data>
+  <data name="bwp2a_copyTemp5" xml:space="preserve">
+    <value>copying design mode materials from object in Temp 5</value>
+  </data>
+  <data name="bwp2a_failNonEmpty" xml:space="preserve">
+    <value>fail if tile is non-empty</value>
+  </data>
+  <data name="bwp2a_moveInNewSim" xml:space="preserve">
+    <value>move in a new Sim</value>
+  </data>
+  <data name="bwp2a_passTemp0" xml:space="preserve">
+    <value>pass Temp 0 to main</value>
+  </data>
+  <data name="bwp2a_place" xml:space="preserve">
+    <value>place</value>
+  </data>
+  <data name="bwp2d_allowDiffAltitudes" xml:space="preserve">
+    <value>allow different altitudes</value>
+  </data>
+  <data name="bwp2d_ignoreDestObjFootprint" xml:space="preserve">
+    <value>ignore dest obj footprint</value>
+  </data>
+  <data name="bwp2e_askSimToMove" xml:space="preserve">
+    <value>ask person to move</value>
+  </data>
+  <data name="bwp2e_fromTemp1" xml:space="preserve">
+    <value>from slot in temp 1</value>
+  </data>
+  <data name="bwp2e_testOnly" xml:space="preserve">
+    <value>TEST ONLY</value>
   </data>
 </root>

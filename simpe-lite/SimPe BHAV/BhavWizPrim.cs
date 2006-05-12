@@ -2417,7 +2417,7 @@ namespace pjse.BhavNameWizards
 
 		protected override string Operands(bool lng)
 		{
-			return "me with stack obj";
+			return dnMe() + " .. " + dnStkOb();
 #if DISASIM
                 case 0x25:  // Test Sim Interacting With
                     ht_fprintf(outFile,TYPE_NORMAL,"me with stack obj.");
@@ -2439,26 +2439,34 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			if (     (o[5] & 0x04) != 0) s += (lng ? "of "   : "") + "neighbor in stack obj";
-			else if ((o[5] & 0x40) != 0) s += (lng ? "from " : "") + "GUID in temp Inventory Token";
-			else if ((o[5] & 0x80) != 0) s += (lng ? "from " : "") + "GUID in Temp 0,1";
-			else                         s += (lng ? "of "   : "") + "GUID 0x" + SimPe.Helper.HexString((uint)(o[0] | (o[1]<<8) | (o[2]<<16) | (o[3]<<24)));
+            if (lng)
+                s += "GUID: ";
+            if ((o[5] & 0x04) != 0) s += DoidName(0x18);
+            else if ((o[5] & 0x40) != 0) s += DoidName(0x27);
+            else if ((o[5] & 0x80) != 0) s += dataOwner(0x08, 0x00) + ",1";
+            else s += "0x" + SimPe.Helper.HexString((uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24)));
 
 			if (lng)
 			{
-				s += ", place " + readStr(GS.BhavStr.CreatePlace, o[4]);
+                s += ", " + pjse.Localization.GetString("bwp2a_place")
+                    + ": " + readStr(GS.BhavStr.CreatePlace, o[4]);
 				switch (o[4]) 
 				{
-					case 0x04: case 0x0A: s += " 0x" + SimPe.Helper.HexString(o[9]); break;
-					case 0x08: case 0x09: s += " 0x" + SimPe.Helper.HexString(o[6]); break;
-				}
+                    case 0x04: s = s.Replace(DoidName(0x10), dataOwner(0x10, o[9])); break;
+					case 0x08: case 0x09: s = s.Replace(dnLocal(), dataOwner(0x19, o[6])); break;
+                    case 0x0A: s = s.Replace("[slot]", "0x" + SimPe.Helper.HexString(o[9])); break;
+                }
 
 				s += ", " + readStr(GS.BhavStr.CreateHow, (ushort)(o[5] & 0x03));
-				s += ", fail if tile is non-empty: " + ((o[5] & 0x08) != 0).ToString();
-				s += ", pass Temp 0 to main: "       + ((o[5] & 0x10) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2a_failNonEmpty")
+                    + ": " + ((o[5] & 0x08) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2a_passTemp0")
+                    + ": " + ((o[5] & 0x10) != 0).ToString();
 
-				s += ", moving in a new Sim: " + ((o[10] & 0x01) != 0).ToString();
-				s += ", copying design mode materials from object in Temp 5: " + ((o[10] & 0x02) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2a_moveInNewSim")
+                    + ": " + ((o[10] & 0x01) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2a_copyTemp5")
+                    + ": " + ((o[10] & 0x02) != 0).ToString();
 			}
 
 			return s;
@@ -2526,35 +2534,39 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			string s = (lng ? "Slot index " : "");
+            string s = "";
 
 			if ((o[4] & 0x02) == 0)
 				switch (ToShort(o[2], o[3])) 
 				{
 					case 0:
-						s += "in " + dataOwner(lng, 0x09, o[0], o[1]); // Param
+						s += dataOwner(lng, 0x09, o[0], o[1]); // Param
 						break;
 					case 1:
 						s += "0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
 						break;
 					case 2:
-						s += "global 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
+						s += pjse.Localization.GetString("lcGlobal")
+                            + " 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
 						break;
 					case 3:
-						s += "in " + dataOwner(lng, 0x19, o[0], o[1]); // Local
+						s += dataOwner(lng, 0x19, o[0], o[1]); // Local
 						break;
 					default:
 						s += "??? 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
 						break;
 				}
 			else
-				s += "in " + dataOwner(lng, 0x08, o[0], o[1]); // Temp
+				s += dataOwner(lng, 0x08, o[0], o[1]); // Temp
 
 			if (lng)
 			{
-				s += ", no failure trees: "          + ((o[4] & 0x01) != 0).ToString();
-				s += ", ignore dest obj footprint: " + ((o[4] & 0x04) != 0).ToString();
-				s += ", allow different altitudes: " + ((o[4] & 0x08) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_noFailureTrees")
+                    + ": " + ((o[4] & 0x01) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2d_ignoreDestObjFootprint")
+                    + ": " + ((o[4] & 0x04) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2d_allowDiffAltitudes")
+                    + ": " + ((o[4] & 0x08) != 0).ToString();
 			}
 
 			return s;
@@ -2606,19 +2618,32 @@ namespace pjse.BhavNameWizards
 
 			ushort snapType = ToShort(o[2], o[3]);
 
-			s += "to " + readStr(GS.BhavStr.SnapType, snapType);
+			s += readStr(GS.BhavStr.SnapType, snapType);
 
-			if (snapType == 0 && (o[4] & 0x08) == 0)
-				s = s.Replace(dnParam(), dataOwner(lng, 0x09, o[0], o[1])); // Param
-			else if (snapType == 0 || snapType == 3 || snapType == 4)
-				s += (o[4] & 0x08) != 0 ? "[Temp 0]" : " 0x" + SimPe.Helper.HexString(ToShort(o[0], o[1]));
+            if ((o[4] & 0x08) != 0)
+            {
+                if (snapType == 0)
+                    s += " [" + dataOwner(0x08, 0x00) + "]"; // Temp
+                else if (snapType == 3 || snapType == 4)
+                    s = s.Replace("[slot]", "[" + dataOwner(0x08, 0x00) + "]");
+            }
+            else
+            {
+                if (snapType == 0)
+                    s = s.Replace(dnParam(), dataOwner(lng, 0x09, o[0], o[1])); // Param
+                else if (snapType == 3 || snapType == 4)
+                    s = s.Replace("[slot]", "0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])));
+            }
 
 			if (lng)
 			{
-				s += ", from slot in temp 1: " + (ToShort(o[8], o[9]) == 1).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2e_fromTemp1")
+                    + ": " + (ToShort(o[8], o[9]) == 1).ToString();
 
-				s += ", ask person to move: " + ((o[4] & 0x02) != 0).ToString();
-				s += ", TEST ONLY: "          + ((o[4] & 0x10) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2e_askSimToMove")
+                    + ": " + ((o[4] & 0x02) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp2e_testOnly")
+                    + ": " + ((o[4] & 0x10) != 0).ToString();
 			}
 
 			return s;
@@ -2655,7 +2680,7 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			return "of " + (ToShort(o[0], o[1]) == 0 ? "Me" : "Stack Object");
+			return (ToShort(o[0], o[1]) == 0 ? dnMe() : dnStkOb());
 #if DISASIM
                 case 0x30:  // Stop ALL Sounds (false = error)
                     w1 = *(UINT16 *) (&b[x]);
