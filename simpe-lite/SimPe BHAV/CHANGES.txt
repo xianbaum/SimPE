@@ -3,6 +3,22 @@
 !!! stole BhavStr STR# 0x1f2 for Generic Sims Call descriptions (0x01)
 !!! stole BhavStr STR# 0x1f1 for Find Best Object for Function location flags (0x0e?)
 !!! stole BhavStr STR# 0x1f0 for UIEffect type (0x22)
+!!! stole BhavStr STR# 0x1ef for Inventory type (0x33)
+!!! stole BhavStr STR# 0x1ee for Token type (0x33)
+
+13 May 2006 16:08 - Localisation: BhavWizPrim 0x33 (plus tweaks)
+  * flag missing strings in debug build
+  * 0x1a to use BhavStr 0xaa
+  * localise "prim" prefix (oops!)
+  * Move inventory type and token type to BhavStrings
+  pjse Localisation\
+    Localization.cs 1.1.2.2
+    Localization.resx 1.1.2.13
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.9
+    BhavWizPrim.cs 1.34.2.13.4.16
+  GlobalStrings.package 1.10.8.8.4.4
+  UnusedBehaviourStrings.package 1.1.2.2
 
 13 May 2006 10:03 - Localisation: BhavWizPrim 0x32 (plus tweaks)
   pjse Localisation\

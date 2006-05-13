@@ -80,7 +80,9 @@ namespace pjse
             //Str0x00a6 - there is no Str0x00a6
             CreatePlace = 0xa7, // where to create object
             CreateHow = 0xa8, // how to create object
-            //Str0x00a9 .. ab unused
+            //Str0x00a9 unused
+            RelVar = 0xaa, // relationship between objects
+            //Str0x00ab unused
             //Str0x00ac Interrupt (idle for input?)
             //Str0x00ad .. ae unused
             //Str0x00af - there is no Str0x00af
@@ -139,6 +141,8 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            TokenType = 0x1ee, // PJSE: string number stolen
+            InventoryType = 0x1ef, // PJSE: string number stolen
             UIEffectType = 0x1f0, // PJSE: string number stolen
             FuncLocationFlags = 0x1f1, // PJSE: string number stolen
             GenericsDesc = 0x1f2, // PJSE: string number stolen

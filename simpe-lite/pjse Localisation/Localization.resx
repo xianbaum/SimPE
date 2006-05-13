@@ -715,4 +715,88 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp32_thumbnailOutfit" xml:space="preserve">
     <value>Thumbnail Outfit</value>
   </data>
+  <data name="bwp33_addInfo" xml:space="preserve">
+    <value>Add Token And Instance Info of Stack Object</value>
+  </data>
+  <data name="bwp33_addToken" xml:space="preserve">
+    <value>Add token</value>
+  </data>
+  <data name="bwp33_addToToken" xml:space="preserve">
+    <value>Add to token</value>
+  </data>
+  <data name="bwp33_category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="bwp33_copyToken" xml:space="preserve">
+    <value>Copy token</value>
+  </data>
+  <data name="bwp33_count" xml:space="preserve">
+    <value>count</value>
+  </data>
+  <data name="bwp33_counted" xml:space="preserve">
+    <value>counted</value>
+  </data>
+  <data name="bwp33_createObj" xml:space="preserve">
+    <value>Create Object from Token at Index</value>
+  </data>
+  <data name="bwp33_exclContained" xml:space="preserve">
+    <value>exclude contained objects</value>
+  </data>
+  <data name="bwp33_findToken" xml:space="preserve">
+    <value>Find token</value>
+  </data>
+  <data name="bwp33_fromInventory" xml:space="preserve">
+    <value>from inventory</value>
+  </data>
+  <data name="bwp33_get" xml:space="preserve">
+    <value>Get from My Temp Token</value>
+  </data>
+  <data name="bwp33_index" xml:space="preserve">
+    <value>index</value>
+  </data>
+  <data name="bwp33_Inventory" xml:space="preserve">
+    <value>Inventory</value>
+  </data>
+  <data name="bwp33_loadTemp" xml:space="preserve">
+    <value>Read token into My Temp Token</value>
+  </data>
+  <data name="bwp33_pop" xml:space="preserve">
+    <value>Pop from token</value>
+  </data>
+  <data name="bwp33_property" xml:space="preserve">
+    <value>property</value>
+  </data>
+  <data name="bwp33_push" xml:space="preserve">
+    <value>Push onto token</value>
+  </data>
+  <data name="bwp33_removeFromToken" xml:space="preserve">
+    <value>Remove from token</value>
+  </data>
+  <data name="bwp33_removeToken" xml:space="preserve">
+    <value>Remove token</value>
+  </data>
+  <data name="bwp33_removeTokens" xml:space="preserve">
+    <value>Remove tokens</value>
+  </data>
+  <data name="bwp33_reversed" xml:space="preserve">
+    <value>reversed</value>
+  </data>
+  <data name="bwp33_saveTemp" xml:space="preserve">
+    <value>Save My Temp Token back to the location it was loaded from</value>
+  </data>
+  <data name="bwp33_setToNext" xml:space="preserve">
+    <value>Set To Next token</value>
+  </data>
+  <data name="bwp33_singular" xml:space="preserve">
+    <value>singular</value>
+  </data>
+  <data name="bwp33_storeCount" xml:space="preserve">
+    <value>Store token count</value>
+  </data>
+  <data name="bwp33_token" xml:space="preserve">
+    <value>token</value>
+  </data>
+  <data name="bwp33_unknown" xml:space="preserve">
+    <value>Unknown</value>
+  </data>
 </root>

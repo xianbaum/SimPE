@@ -42,7 +42,7 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public abstract class BhavWizPrim : BhavWiz
 	{
-		protected BhavWizPrim(Instruction i) : base (i) { prefix = pjse.Localization.GetString("prim"); }
+		protected BhavWizPrim(Instruction i) : base (i) { prefix = pjse.Localization.GetString("lcPrim"); }
 
 		public static implicit operator BhavWizPrim(Instruction i)
 		{
@@ -1406,19 +1406,9 @@ namespace pjse.BhavNameWizards
             s += ", " + pjse.Localization.GetString("bwp1a_relationship")
                 + ": ";
             if (instruction.NodeVersion == 0)	// old-style parameter usage
-            {
-                switch (o[1] & 3) 
-                {
-                    case 0: s += dnMe() + " .. " + dnStkOb(); break; // Me .. Stack Object
-                    case 1: s += dnStkOb() + " .. " + dnMe(); break; // Stack Object .. Me
-                    case 2: s += dnStkOb() + " .. " + dataOwner(lng, 0x19, o[3]); break; // Stack Object .. Local
-                    case 3: s += dataOwner(lng, 0x19, o[3]) + " .. " + dnStkOb(); break; // Local .. Stack Object
-                }
-            } 
+                s += readStr(GS.BhavStr.RelVar, (ushort)(o[1] & 3));
             else	// new-style parameter usage
-            {
                 s += dataOwner(lng, o[2], ToShort(o[3], o[4])) + " .. " + dataOwner(lng, o[5], ToShort(o[6], o[7]));
-            }
 
             if (lng)
                 if (instruction.NodeVersion == 0)	// old-style parameter usage
@@ -2836,20 +2826,16 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0033(Instruction i) : base(i) { }
 
-		private string inventory(int i)
-		{
-			string[] invType = { "Global" ,"Lot" ,"Family" ,"Neighbor" ,"Game-wide" ,}; // These should be in a Behaviour String file
-			return (i >= 0 && i < invType.Length) ? invType[i] : "[unk]";
-		}
-
 		private string tokenType(int i, int j, bool all)
 		{
+            //string[] tokType = { "any", "all", "non-visible", "visible", "non-memory", "memory", "non-shopping", "shopping", };
+
 			string s = "";
-			if ((i & 0x04) != 0)        s += ((j & 0x10) == 0 ? "non-" : "") + "visible ";
-			if ((i & 0x08) != 0)        s += ((j & 0x20) == 0 ? "non-" : "") + "memory ";
-			if ((i & 0x20) != 0)        s += ((i & 0x01) == 0 ? "non-" : "") + "shopping ";
-			if ((i & 0x2c) == 0 && all) s += "all ";
-			return s;
+            if ((i & 0x04) != 0) s += readStr(GS.BhavStr.TokenType, (ushort)(2 + ((j & 0x10) == 0 ? 0 : 1))) + " ";
+            if ((i & 0x08) != 0) s += readStr(GS.BhavStr.TokenType, (ushort)(4 + ((j & 0x20) == 0 ? 0 : 1))) + " ";
+            if ((i & 0x20) != 0) s += readStr(GS.BhavStr.TokenType, (ushort)(6 + ((i & 0x01) == 0 ? 0 : 1))) + " ";
+            if ((i & 0x2c) == 0) s += readStr(GS.BhavStr.TokenType, (ushort)(all ? 1 : 0)) + " ";
+			return s.Trim();
 		}
 
 		protected override string Operands(bool lng)
@@ -2860,123 +2846,103 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			byte c1 = (instruction.NodeVersion >= 1) ? o[0] : (byte)(((o[0] & 0x3C) << 1) | (o[0] & 0x83)); //wtf....
+			byte c1 = (instruction.NodeVersion >= 1) ? o[0] : (byte)(((o[0] & 0x3C) << 1) | (o[0] & 0x83));
 			byte c2 = (instruction.NodeVersion >= 2) ? o[9] : (byte)0x0c;
 
-			if (lng)
-			{
-				s += inventory(c1 & 0x07) + " " + ((c1 & 0x08) != 0 ? "Counted" : "Singular") + " inventory";
-				if ((c1 & 0x07) >= 1 && (c1 & 0x07) <= 3)
-					s += ", with ID " + dataOwner(o[1], o[2], o[3]);
+            bool index, count, val, frominv, token, reversed;
+            index = count = val = frominv = reversed = token = false;
+            int toktype = 0;
 
-				s += ", Category 0x" + SimPe.Helper.HexString(o[9]);
+            if ((c1 & 0x08) != 0) // Counted
+                switch (o[4])
+                {
+                    case 0x00: s += pjse.Localization.GetString("bwp33_addToken"); count = token = true; break;
+                    case 0x01: s += pjse.Localization.GetString("bwp33_addToToken"); index = count = true; break;
+                    case 0x02: s += pjse.Localization.GetString("bwp33_removeFromToken"); count = token = true; break;
+                    case 0x03: s += pjse.Localization.GetString("bwp33_removeFromToken"); index = count = true; break;
+                    case 0x04: s += pjse.Localization.GetString("bwp33_removeTokens"); toktype = 1; c1 = c2 = 0; break;
+                    case 0x05: s += pjse.Localization.GetString("bwp33_removeToken"); index = true; break;
+                    case 0x06: s += pjse.Localization.GetString("bwp33_findToken"); count = token = true; break;
+                    case 0x07: s += pjse.Localization.GetString("bwp33_loadTemp"); token = true; break;
+                    case 0x08: s += pjse.Localization.GetString("bwp33_loadTemp"); index = true; break;
+                    case 0x09: s += pjse.Localization.GetString("bwp33_setToNext"); index = true; token = true; break;
+                    case 0x0a: s += pjse.Localization.GetString("bwp33_storeCount"); count = true; break;
+                    case 0x0b: s += pjse.Localization.GetString("bwp33_copyToken"); frominv = lng; index = true; break;
+                    default: s += pjse.Localization.GetString("bwp33_unknown") + ": 0x" + SimPe.Helper.HexString(o[4]); break;
+                }
+            else // Singular
+                switch (o[4])
+                {
+                    case 0x00: s += pjse.Localization.GetString("bwp33_addToken"); token = true; break;
+                    case 0x01: s += pjse.Localization.GetString("bwp33_removeToken"); index = true; break;
+                    case 0x02: s += pjse.Localization.GetString("bwp33_removeTokens"); toktype = 1; break;
+                    case 0x03: s += pjse.Localization.GetString("bwp33_setToNext"); toktype = 2; reversed = index = true; break;
+                    case 0x04: s += pjse.Localization.GetString("bwp33_push"); index = val = true; break;
+                    case 0x05: s += pjse.Localization.GetString("bwp33_pop"); index = val = true; break;
+                    case 0x06: s += pjse.Localization.GetString("bwp33_loadTemp"); index = true; token = true; break;//token = true; ??
+                    case 0x07: s += pjse.Localization.GetString("bwp33_get"); index = val = true; break;
+                    //case 0x08: break;
+                    case 0x09: s += pjse.Localization.GetString("bwp33_saveTemp"); break;
+                    case 0x0a: s += pjse.Localization.GetString("bwp33_storeCount"); count = true; break;
+                    //case 0x0b: break;
+                    case 0x0c: s += pjse.Localization.GetString("bwp33_setToNext"); toktype = 2; reversed = index = true; break; // same as 0x03
+                    case 0x0d: s += pjse.Localization.GetString("bwp33_storeCount"); toktype = 1; count = true; break;
+                    case 0x0e:
+                        s += dataOwner(lng, o[13], o[14], o[15])
+                            + " := " + pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[6], o[7], o[8])
+                            + " [" + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[10], o[11], o[12]) + "]";
+                        break;
+                    case 0x0f:
+                        s += pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
+                            + " [" + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[10], o[11], o[12]) + "]"
+                            + " := " + dataOwner(lng, o[13], o[14], o[15]);
+                        break;
+                    case 0x10: s += pjse.Localization.GetString("bwp33_addInfo")
+                            + (lng ? ", " + pjse.Localization.GetString("bwp33_exclContained") + ": " + false.ToString() : "");
+                        break;
+                    case 0x11: s += pjse.Localization.GetString("bwp33_createObj"); break;
+                    case 0x12: s += pjse.Localization.GetString("bwp33_copyToken"); frominv = lng; index = true; break;
+                    case 0x13: s += pjse.Localization.GetString("bwp33_addInfo")
+                            + ", " + pjse.Localization.GetString("bwp33_exclContained") + ": " + true.ToString();
+                        break;
+                    default: s += pjse.Localization.GetString("bwp33_unknown") + ": 0x" + SimPe.Helper.HexString(o[4]); break;
+                }
 
-				if (((c1 & 0x08) != 0 && (o[4] != 0x0b)) || ((o[4] != 0xE) && (o[4] != 0xF) && (o[4] != 0x12)))
-				{
-					uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
-					s += ", token GUID" + (d1 == 0 ? " from Stack Object" : ": 0x" + SimPe.Helper.HexString(d1));
-				}
-				s += ".\r\n";
-			}
+            if (toktype != 0)
+                s += (lng ? ", " + pjse.Localization.GetString("bwp33_category") : "") + ": "
+                    + ((instruction.NodeVersion >= 2) ? "0x" + SimPe.Helper.HexString(o[9]) + " - " : "")
+                    + tokenType(c2, c1, toktype == 1);
+            if (reversed && ((c1 & 0x80) != 0 || lng))
+                s += ", " + pjse.Localization.GetString("bwp33_reversed") + ": " + ((c1 & 0x80) != 0).ToString();
+            if (frominv)
+            {
+                s += ", " + pjse.Localization.GetString("bwp33_fromInventory") + ": " + readStr(GS.BhavStr.InventoryType, (ushort)(o[6] & 0x07));
+                if ((o[6] & 0x07) >= 1 && (o[7] & 0x07) <= 3)
+                    s += /*", " + "ID" +*/ ": " + dataOwner(lng, o[13], o[14], o[15]);
+            }
+            if (lng && token)
+            {
+                uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
+                s += ", " + pjse.Localization.GetString("bwp33_token") + ": " + (d1 == 0 ? dnStkOb() : "GUID 0x" + SimPe.Helper.HexString(d1));
+            }
+            if (index)
+                s += ", " + pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[10], o[11], o[12]);
+            if (val)
+                s += " [" + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[13], o[14], o[15]) + "]";
+            if (count)
+                s += ", " + pjse.Localization.GetString("bwp33_count") + ": " + dataOwner(lng, o[13], o[14], o[15]);
 
-			if ((c1 & 0x08) != 0) // Counted
-				switch (o[4]) 
-				{
-					case 0x0: s += "Add token, pull count from " + dataOwner(lng, o[13], o[14], o[15]); break;
-					case 0x1:
-						s += "Add to token at index from " + dataOwner(lng, o[10], o[11], o[12])
-							+ ", pull count from " + dataOwner(lng, o[13], o[14], o[15]);
-						break;
-					case 0x2: s += "Remove token, pull count from " + dataOwner(lng, o[13], o[14], o[15]); break;
-					case 0x3:
-						s += "Remove to token at index from "+ dataOwner(lng, o[10], o[11], o[12])
-							+ ", pull count from " + dataOwner(lng, o[13], o[14], o[15]);
-						break;
-					case 0x4: s += "Remove all tokens"; break;
-					case 0x5: s += "Remove all tokens, from token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0x6: s += "Find the token, put count into " + dataOwner(lng, o[13], o[14], o[15]); break;
-					case 0x7: s += "Read token into My Temp Token"; break;
-					case 0x8: s += "Read token into My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0x9: s += "Set To Next token, starting at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0xa:
-						s += "Store the count of the tokens "
-							+ (lng ? "in this inventory " : "")
-							+ "into " + dataOwner(lng, o[13], o[14], o[15]); break;
-					case 0xb:
-						s += "Copy token at index " + dataOwner(lng, o[10], o[11], o[12]);
-						s += ", from the " + inventory(o[6] & 0x07) + " inventory";
-						if ((o[6] & 0x07) >= 1 && (o[7] & 0x07) <= 3)
-							s += ", with ID " + dataOwner(lng, o[13], o[14], o[15]);
-						break;
-					default: s += "Unknown"; break;
-				}
-			else // Singular
-				switch (o[4]) 
-				{
-					case 0x00: s += "Add token"; break;
-					case 0x01: s += "Remove token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0x02:
-						s += "Remove " + tokenType(c2, c1, true) + "tokens";
-						break;
-					case 0x03: case 0x0c:
-						s += "Set To Next " + tokenType(c2, c1, false) + "token";
-						if (lng)
-							s += ", starting at index from " + dataOwner(lng, o[10], o[11], o[12])
-								+ ", reversed: " + ((c1 & 0x80) != 0).ToString();
-						break;
-					case 0x04:
-						s += "Push property on token at index from " + dataOwner(lng, o[10], o[11], o[12])
-							+ (lng ? ", get property value from " + dataOwner(o[13], o[14], o[15]) : "");
-						break;
-					case 0x05:
-						s += "Pop property off token at index from " + dataOwner(lng, o[10], o[11], o[12])
-							+ (lng ? ", put property value into " + dataOwner(o[13], o[14], o[15]) : "");
-						break;
-					case 0x06: s += "Read token into My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12]); break;
-					case 0x07:
-						s += "Get property from token in My Temp Token at index from " + dataOwner(lng, o[10], o[11], o[12])
-							+ (lng ? ", put property value into " + dataOwner(o[13], o[14], o[15]) : "");
-						break;
-					//case 0x08: break;
-					case 0x09: s += "Save My Temp Token back to the location it was loaded from"; break;
-					case 0x0a: s += "Store the count of the tokens in this inventory into " + dataOwner(lng, o[13], o[14], o[15]); break;
-					//case 0x0b: break;
-					/*
-					 * Same as case 0x03, so moved...
-					 * 
-					case 0x0c:
-						s += "Set To Next " + tokenType(c2, c1, false) + "token";
-						if (lng)
-							s += ", starting at index from " + dataOwner(o[10], o[11], o[12])
-								+ ", Reversed: " + ((c1 & 0x80) != 0).ToString();
-						break;
-					 */
-					case 0x0d:
-						s += "Store the count of " + tokenType(c2, c1, true) + "tokens in this inventory"
-							+ ", into " + dataOwner(lng, o[13], o[14], o[15]);
-						break;
-					case 0x0e:
-						s += "Token Index: " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
-							+ ", Property: " + dataOwner(lng, o[10], o[11], o[12])
-							+ ", Assign to: " + dataOwner(lng, o[13], o[14], o[15]);
-						break;
-					case 0x0f:
-						s += dataOwner(lng, o[13], o[14], o[15])
-							+ ", Assign to Token Index: " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
-							+ ", Property: " + dataOwner(lng, o[10], o[11], o[12]);
-						break;
-					case 0x10: s += "Add Token And Instance Info of Stack Object"; break;
-					case 0x11: s += "Create Object from Token at Index"; break;
-					case 0x12:
-						s += "Copy token at index " + dataOwner(lng, o[10], o[11], o[12])
-							+ ", from the " + inventory(o[6] & 0x07) + " inventory";
-						if ((o[6] & 0x07) >= 1 && (o[7] & 0x07) <= 3)
-							s += ", with ID " + dataOwner(lng, o[13], o[14], o[15]);
-						break;
-					case 0x13: s += "Add Token And Instance Info of Stack Object, excluding contained objects"; break;
-					default: s += "Unknown"; break;
-				}
-
+            if (lng)
+            {
+                s += ", " + pjse.Localization.GetString("bwp33_Inventory");
+                s += " (" + ((c1 & 0x08) != 0
+                    ? pjse.Localization.GetString("bwp33_counted")
+                    : pjse.Localization.GetString("bwp33_singular")
+                    ) + ")";
+                s += ": " + readStr(GS.BhavStr.InventoryType, (ushort)(c1 & 0x07));
+                if ((c1 & 0x07) >= 1 && (c1 & 0x07) <= 3)
+                    s += /*", " + "ID" +*/ ": " + dataOwner(o[1], o[2], o[3]);
+            }
 
 			return s;
 #if DISASIM
