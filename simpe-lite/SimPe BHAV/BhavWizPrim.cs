@@ -1226,7 +1226,7 @@ namespace pjse.BhavNameWizards
 				scope = Scope.SemiGlobal;
 				instance -= 20000;
 			}
-			string temp = readStr(scope, GS.GlobalStr.Sound, (ushort)(instance), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.ErrorNames);
+			string temp = readStr(scope, GS.GlobalStr.Sound, (ushort)(instance), lng ? -1 : 60, pjse.Detail.ErrorNames);
 			if (temp.Length > 0)
 				s += " " + temp;
 
@@ -1894,7 +1894,7 @@ namespace pjse.BhavNameWizards
 				Scope scope = Scope.Private;
 				if      ((o[5] & 0x04) != 0) scope = Scope.Global;
 				else if ((o[5] & 0x08) != 0) scope = Scope.SemiGlobal;
-				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.ErrorNames);
+				s += " " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[3], o[4]), lng ? -1 : 60, pjse.Detail.ErrorNames);
                 if (lng) s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
 			}
 
@@ -1906,7 +1906,7 @@ namespace pjse.BhavNameWizards
                     if ((o[5] & 0x01) != 0) scope = Scope.Global;
                     else if ((o[5] & 0x02) != 0) scope = Scope.SemiGlobal;
                     s += ", " + pjse.Localization.GetString("bwp22_windowID")
-                        + ": " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), -1, pjse.Detail.Full);
+                        + ": " + readStr(scope, GS.GlobalStr.UIEffect, ToShort(o[1], o[2]), -1, pjse.Detail.ErrorNames);
                     s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
                 }
                 else
@@ -2729,38 +2729,44 @@ namespace pjse.BhavNameWizards
 
 				if (lng)
 				{
-					s += "Add / Change Interaction string Mode, ";
+                    s += pjse.Localization.GetString("bwp32_addChange");
 					if (instruction.NodeVersion != 0)
 					{
-						s += "Disabled: ";
-						if      ((o[3] & 0x01) != 0) s += "propagating";
-						else if ((o[3] & 0x02) != 0) s += "non-propagating";
-						else                         s += "false";
-						s += ", ";
+                        s += ", " + pjse.Localization.GetString("bwp32_disabled")
+                            + ": ";
+                        if      ((o[3] & 0x01) != 0) s += pjse.Localization.GetString("bwp32_propagating");
+                        else if ((o[3] & 0x02) != 0) s += pjse.Localization.GetString("bwp32_nonPropagating");
+						else                         s += false.ToString();
 					}
-				}
+                    s += ", ";
+                }
 
-				if ((o[2] & 0x10) != 0) s += "STR# 0x012E:[Temp 0]";
+				if ((o[2] & 0x10) != 0) s += "STR# 0x012E:[" + dataOwner(false, 0x08, 0) + "]"; // Temp 0
 				else s += readStr(scope, GS.GlobalStr.MakeAction,
 						 (ushort)((instruction.NodeVersion < 2 ? o[0x04] : ToShort(o[0x0e], o[0x0f])) - 1),
 						 lng ? -1 : 60, pjse.Detail.ErrorNames);
-				if (lng) s += ", scope: " + scope;
+                if (lng) s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
 			}
 			else 
 			{
-				s += "Interaction Icon Change Mode";
-				if ((o[2] & 0x20) != 0)
-					s += ", Thumbnail Outfit GUID " + 
-						(((o[2] & 0x40) != 0)
-						? "from Temp 2,3"
-						: "0x" + SimPe.Helper.HexString(o[5] | (o[6]<<8) | (o[7]<<16) | (o[8]<<24)));
-				else 
-					s += ", Using object ID in " + dataOwner(lng, o[11], o[12], o[13]);
+                s += pjse.Localization.GetString("bwp32_iconChange");
 
-				if (lng)
-				{
-					s += ", model table icon index " + (((o[2] & 0x80) != 0) ? "Temp 1" : "0x" + SimPe.Helper.HexString(o[10]));
-				}
+                s += ", " + pjse.Localization.GetString("bwp32_iconIndex")
+                    + ": " + (((o[2] & 0x80) != 0)
+                    ? dataOwner(false, 0x08, 1) // Temp 1
+                    : "0x" + SimPe.Helper.HexString(o[10]));
+
+                if (lng)
+                {
+                    if ((o[2] & 0x20) != 0)
+                        s += ", " + pjse.Localization.GetString("bwp32_thumbnailOutfit")
+                            + ": GUID " + (((o[2] & 0x40) != 0)
+                            ? dataOwner(false, 0x08, 2) + ",3" // Temp 2,3
+                            : "0x" + SimPe.Helper.HexString(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24)));
+                    else
+                        s += ", " + pjse.Localization.GetString("Object")
+                            + ": " + dataOwner(lng, o[11], o[12], o[13]);
+                }
 			}
 
 			return s;

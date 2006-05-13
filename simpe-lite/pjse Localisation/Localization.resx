@@ -333,7 +333,7 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="Object" xml:space="preserve">
     <value>Object</value>
-    <comment>0x0d</comment>
+    <comment>0x0d, 0x32</comment>
   </data>
   <data name="Target" xml:space="preserve">
     <value>Target</value>
@@ -693,5 +693,26 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp2e_testOnly" xml:space="preserve">
     <value>TEST ONLY</value>
+  </data>
+  <data name="bwp32_addChange" xml:space="preserve">
+    <value>Add / Change Interaction string Mode</value>
+  </data>
+  <data name="bwp32_disabled" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="bwp32_iconChange" xml:space="preserve">
+    <value>Interaction Icon Change Mode</value>
+  </data>
+  <data name="bwp32_iconIndex" xml:space="preserve">
+    <value>Model table icon index</value>
+  </data>
+  <data name="bwp32_nonPropagating" xml:space="preserve">
+    <value>non-propagating</value>
+  </data>
+  <data name="bwp32_propagating" xml:space="preserve">
+    <value>propagating</value>
+  </data>
+  <data name="bwp32_thumbnailOutfit" xml:space="preserve">
+    <value>Thumbnail Outfit</value>
   </data>
 </root>
