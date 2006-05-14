@@ -36,7 +36,8 @@ namespace pjse
 		ValueOnly = 0x00,
 		Errors = 0x01,
 		ErrorNames = 0x02,
-		Full = 0x03,
+        Normal = 0x03,
+		Full = 0x04,
 	}
 
 	public enum Group : int
@@ -419,39 +420,37 @@ namespace pjse
 
         protected string readStr(Scope scope, uint instance, ushort sid, int maxlen, Detail detail, bool showLngFB)
         {
-            return readStr(instruction.Parent, instruction.Parent.GroupForScope(scope), instance, sid, maxlen, detail, true, showLngFB);
+            return readStr(new Str(scope, instruction.Parent, instance), sid, maxlen, detail, true, showLngFB);
         }
 
 
         public static string readStr(GS.BhavStr instance, ushort sid)
         {
-            return readStr((uint)Group.BhavFuncs, (uint)instance, sid, Detail.ErrorNames);
+            return readStr(new Str(instance), sid, -1, Detail.ErrorNames, false, false);
         }
 
-        private static string readStr(uint group, uint instance, ushort sid, Detail detail)
+        private static string readStr(Str str, ushort sid, int maxlen, Detail detail, bool addQuotes, bool showLngFB)
         {
-            return readStr(null, group, instance, sid, -1, detail, false, false);
-        }
-
-
-        private static string readStr(ExtendedWrapper parent, uint group, uint instance, ushort sid, int maxlen, Detail detail, bool addQuotes, bool showLngFB)
-        {
-            Str str = new Str(parent, group, instance);
             String pfname = "";
-            if (detail == Detail.Full || detail == Detail.ErrorNames)
-            {
-                if (group == (uint)Group.BhavFuncs)
-                    try { pfname += (GS.BhavStr)instance + ": "; }
-                    catch { }
-                else
-                    try { pfname += (GS.GlobalStr)instance + ": "; }
-                    catch { }
-            }
-            if (detail == Detail.Full || detail == Detail.Errors)
-                pfname += "STR# 0x" + (instance >= 0x10000 ? SimPe.Helper.HexString(instance) : SimPe.Helper.HexString((ushort)instance)) + ":";
             if (detail != Detail.ValueOnly)
+            {
+                if (detail != Detail.Errors)
+                {
+                    if (str.Group == (uint)Group.BhavFuncs)
+                        try { pfname += (GS.BhavStr)str.Instance; }
+                        catch { }
+                    else
+                        try { pfname += (GS.GlobalStr)str.Instance; }
+                        catch { }
+                }
+                if (pfname.Length == 0 && detail != Detail.Normal)
+                    pfname += "STR# 0x" + (str.Instance >= 0x10000 ? SimPe.Helper.HexString(str.Instance) : SimPe.Helper.HexString((ushort)str.Instance));
+                if (pfname.Length != 0)
+                    pfname += ":";
                 pfname += "0x" + (sid >= 0x0100 ? SimPe.Helper.HexString(sid) : SimPe.Helper.HexString((byte)sid));
-
+                if (detail == Detail.Full || detail == Detail.Normal)
+                    pfname += " (" + pjse.Localization.GetString(str.Scope.ToString()) + ")";
+            }
 
             if (str != null)
             {
@@ -468,9 +467,9 @@ namespace pjse
                     if (showLngFB && (fsi.fallback == null || fsi.fallback.Count == 0) && fsi.lidFallback)
                         s += "[" + pjse.Localization.GetString("Fallback") + ": LID=1] ";
                     if (addQuotes)
-                        return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full ? " [" + pfname + "]" : "");
+                        return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full || detail == Detail.Normal ? " [" + pfname + "]" : "");
                     else
-                        return s + myLeft(fsi.strItem.Title.Trim(), maxlen) + (detail == Detail.Full ? " [" + pfname + "]" : "");
+                        return s + myLeft(fsi.strItem.Title.Trim(), maxlen) + (detail == Detail.Full || detail == Detail.Normal ? " [" + pfname + "]" : "");
                 }
             }
             if (detail == Detail.ValueOnly)
@@ -486,7 +485,8 @@ namespace pjse
             {
                 ArrayList list = new ArrayList();
                 String s;
-                for (ushort i = 0; (s = readStr((uint)Group.BhavFuncs, (uint)instance, i, Detail.ValueOnly)) != null; i++) list.Add(s);
+                Str str = new Str(instance);
+                for (ushort i = 0; (s = readStr(str, i, -1, Detail.ValueOnly, false, false)) != null; i++) list.Add(s);
                 gString[instance] = list;
             }
             return (ArrayList)gString[instance];
@@ -504,7 +504,8 @@ namespace pjse
 
             ArrayList al = new ArrayList();
             String st;
-            for (ushort i = 0; (st = readStr(instruction.Parent.GroupForScope(s), (uint)GS.GlobalStr.AttributeLabels, i, Detail.ValueOnly)) != null; i++) al.Add(st);
+            Str str = new Str(s, instruction.Parent, (uint)GS.GlobalStr.AttributeLabels);
+            for (ushort i = 0; (st = readStr(str, i, -1, Detail.ValueOnly, false, false)) != null; i++) al.Add(st);
             return al;
         }
 

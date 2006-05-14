@@ -35,18 +35,34 @@ namespace pjse
             ValidTypes = new ArrayList(aui);
         }
 
+        private Scope scope = Scope.Private;
 		private ExtendedWrapper parent = null;
 		private uint group = 0;
 		private uint instance = 0;
         private uint type = 0;
+        
+        public Scope Scope { get { return scope; } }
+        public ExtendedWrapper Parent { get { return parent; } }
+        public uint Group { get { return group; } }
+        public uint Instance { get { return instance; } }
+        public uint Type { get { return type; } }
 
-		public Str(ExtendedWrapper parent, uint group, uint instance) : this(parent, group, instance, SimPe.Data.MetaData.STRING_FILE) {}
 
-        public Str(ExtendedWrapper parent, uint group, uint instance, uint type)
+        public Str(Scope scope, ExtendedWrapper parent, uint instance)
+            : this(scope, parent, parent.GroupForScope(scope), instance, SimPe.Data.MetaData.STRING_FILE) { }
+
+        public Str(ExtendedWrapper parent, uint instance, uint type)
+            : this(Scope.Private, parent, parent.PrivateGroup, instance, type) { }
+
+        public Str(GS.BhavStr instance)
+            : this(Scope.Private, null, (uint)pjse.Group.BhavFuncs, (uint)instance, SimPe.Data.MetaData.STRING_FILE) { }
+
+        protected Str(Scope scope, ExtendedWrapper parent, uint group, uint instance, uint type)
         {
             if (!ValidTypes.Contains(type))
                 throw new InvalidOperationException("type must be CTSS, STR# or TTAs");
 
+            this.scope = scope;
             this.parent = parent;
             this.group = group;
             this.instance = instance;
@@ -163,21 +179,15 @@ namespace pjse
 			{
 				if (wrapper == null)
 				{
-					Str str = strHashtable[this.group, this.instance, this.type];
-					if (str == null)
-					{
-						pjse.FileTable.Entry[] items = pjse.FileTable.GFT[this.type, this.group, this.instance];
+                    pjse.FileTable.Entry[] items = pjse.FileTable.GFT[this.type, this.group, this.instance];
 
-						if (items != null && items.Length != 0)
-						{
-							wrapper = new StrWrapper();
-							wrapper.ProcessData(items[0].PFD, items[0].Package);
-							strHashtable[this.group, this.instance, this.type] = this;
-						}
-					}
-					else
-						wrapper = str.wrapper;
-				}
+                    if (items != null && items.Length != 0)
+                    {
+                        wrapper = new StrWrapper();
+                        wrapper.ProcessData(items[0].PFD, items[0].Package);
+                        strHashtable[this.group, this.instance, this.type] = this;
+                    }
+                }
 				return wrapper;
 			}
 		}
@@ -189,7 +199,7 @@ namespace pjse
 			get
 			{
 				if (semiGlobalStr == null)
-					semiGlobalStr = new Str(parent, parent.SemiGroup, this.instance);
+					semiGlobalStr = new Str(Scope.SemiGlobal, null, parent.SemiGroup, this.instance, this.type);
 				return semiGlobalStr;
 			}
 		}
@@ -201,7 +211,7 @@ namespace pjse
 			get
 			{
 				if (globalStr == null)
-					globalStr = new Str(parent, parent.GlobalGroup, this.instance);
+					globalStr = new Str(Scope.Global, null, parent.GlobalGroup, this.instance, this.type);
 				return globalStr;
 			}
 		}
@@ -222,6 +232,13 @@ namespace pjse
             get
             {
                 StrWrapper w = Wrapper;
+                if (parent != null && group != parent.GlobalGroup)
+                {
+                    if (w == null && group != parent.SemiGroup && SemiGlobalStr != null)
+                        w = SemiGlobalStr.Wrapper;
+                    if (w == null && GlobalStr != null)
+                        w = GlobalStr.Wrapper;
+                }
                 return (w == null) ? new StrItem[0] : w[lid];
             }
         }
