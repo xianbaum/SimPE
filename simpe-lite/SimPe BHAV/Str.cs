@@ -40,13 +40,7 @@ namespace pjse
 		private uint instance = 0;
         private uint type = 0;
 
-		public Str(ExtendedWrapper parent, uint group, uint instance)
-		{
-			this.parent = parent;
-			this.group = group;
-			this.instance = instance;
-            this.type = SimPe.Data.MetaData.STRING_FILE;
-		}
+		public Str(ExtendedWrapper parent, uint group, uint instance) : this(parent, group, instance, SimPe.Data.MetaData.STRING_FILE) {}
 
         public Str(ExtendedWrapper parent, uint group, uint instance, uint type)
         {

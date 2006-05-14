@@ -1519,7 +1519,7 @@ namespace pjse.BhavNameWizards
                 ) + readStr(GS.BhavStr.RelativeDirections, (byte)(o[3] + 2));
 			if (lng)
 			{
-                s += ", " + pjse.Localization.GetString("bwp1b_noFailureTrees")
+                s += ", " + pjse.Localization.GetString("bwp_noFailureTrees")
                     + ": " + ((o[6] & 0x02) != 0).ToString();
                 s += ", " + pjse.Localization.GetString("bwp1b_differentAltitudes")
                     + ": " + ((o[6] & 0x04) != 0).ToString();
@@ -1910,16 +1910,12 @@ namespace pjse.BhavNameWizards
                         );
 
                 if (o[0] == 4 || o[0] == 8)
-					if (ToShort(o[8], o[9]) == 0)
-                        s += ", " + pjse.Localization.GetString("bwp22_noEventTree")
-                            ;
-					else 
 					{
 						Scope scope = Scope.Global;
 						if      (o[10] == 0) scope = Scope.Private;
 						else if (o[10] == 1) scope = Scope.SemiGlobal;
 						bool found = false;
-                        s += ", " + pjse.Localization.GetString("bwp22_eventTree")
+                        s += ", " + pjse.Localization.GetString("bwp_eventTree")
                             + ": " + bhavName(ToShort(o[8], o[9]), ref found);
                         s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
                     }
@@ -3261,51 +3257,48 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0069(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng)
-		{
-			byte[] o = new byte[16];
-			((byte[])instruction.Operands).CopyTo(o, 0);
-			((byte[])instruction.Reserved1).CopyTo(o, 8);
+        protected override string Operands(bool lng)
+        {
+            byte[] o = new byte[16];
+            ((byte[])instruction.Operands).CopyTo(o, 0);
+            ((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			string s = "";
+            string s = "";
 
-			s += "Object in " + dataOwner(lng, o[6], o[7], o[8]);       // target object
+            s += (lng ? pjse.Localization.GetString("Object") + ": " : "")
+                + dataOwner(lng, o[6], o[7], o[8]);       // target object
 
-			s += ", animation: " + ((o[2] & 0x04) != 0
-				? "ObjectAnims STR# 0x86:[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
-				: readStr(GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, pjse.Detail.ErrorNames)
-				);
+            s += ", " + (lng ? pjse.Localization.GetString("bwp69_animation") + ": " : "")
+                + ((o[2] & 0x04) != 0
+                ? "ObjectAnims STR# 0x86:[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
+                : readStr(GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, pjse.Detail.ErrorNames)
+                );
 
-			if (lng)
-			{
-				if (ToShort(o[4], o[5]) == 0)
-					s += ", No event tree";
-				else 
-				{
-					Scope scope = Scope.Global;
-					if      (o[9] == 0) scope = Scope.Private;
-					else if (o[9] == 1) scope = Scope.SemiGlobal;
-					s += ", Scope: " + scope.ToString();
+            if (lng)
+            {
+                bool found = false;
+                s += ", " + pjse.Localization.GetString("bwp_eventTree") + ": " + bhavName(ToShort(o[4], o[5]), ref found);
 
-					bool found = false;
-					s += ", Event tree: " + bhavName(ToShort(o[4], o[5]), ref found);
-				}
+                Scope scope = Scope.Global;
+                if (o[9] == 0) scope = Scope.Private;
+                else if (o[9] == 1) scope = Scope.SemiGlobal;
+                s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
 
-				s += ", Flipped: "                + ((o[2] & 0x01) != 0).ToString();
-				s += ", Anim Speed in Temp 2: "   + ((o[2] & 0x02) != 0).ToString();
-				s += ", Interruptible: "          + ((o[2] & 0x08) != 0).ToString();
-				s += ", Start at tag in Temp 0: " + ((o[2] & 0x10) != 0).ToString();
-				s += ", Loop Count in Temp 1: "   + ((o[2] & 0x20) != 0).ToString();
-				s += ", No Blend out: "           + ((o[2] & 0x40) != 0).ToString();
-				s += ", No Blend in: "            + ((o[2] & 0x80) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp69_flipped") + ": " + ((o[2] & 0x01) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp69_animSpeed") + ": " + ((o[2] & 0x02) != 0 ? dataOwner(0x08, 2) : "---"); // Temp 2
+                s += ", " + pjse.Localization.GetString("bwpp69_interruptible") + ": " + ((o[2] & 0x08) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp69_startTag") + ": " + ((o[2] & 0x10) != 0 ? dataOwner(0x08, 0) : "---"); // Temp 0
+                s += ", " + pjse.Localization.GetString("bwp69_loopCount") + ": " + ((o[2] & 0x20) != 0 ? dataOwner(0x08, 1) : "---");
+                s += ", " + pjse.Localization.GetString("bwp69_blendOut") + ": " + ((o[2] & 0x40) == 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp69_blendIn") + ": " + ((o[2] & 0x80) == 0).ToString();
 
-				s += ", Flip Flag in Temp 3: "                 + ((o[10] & 0x01) != 0).ToString();
-				s += ", Sync to calling object: "              + ((o[10] & 0x04) != 0).ToString();
-				s += ", Align blend out with calling object: " + ((o[10] & 0x08) != 0).ToString();
-				s += ", Not hurryable: "                       + ((o[10] & 0x80) != 0).ToString();
-			}
+                s += ", " + pjse.Localization.GetString("bwp69_flipFlag") + ": " + ((o[10] & 0x01) != 0 ? dataOwner(0x08, 3) : "---"); // Temp 3
+                s += ", " + pjse.Localization.GetString("bwp69_sync") + ": " + ((o[10] & 0x04) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp69_alignBlend") + ": " + ((o[10] & 0x08) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp69_notHurryable") + ": " + ((o[10] & 0x80) != 0).ToString();
+            }
 
-			return s;
+            return s;
 #if DISASIM
                 case 0x69:  // Animate Object (false = error)
                     c1 = b[x+2];
@@ -3363,7 +3356,7 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL,", Not Hurryable");
                     break;
 #endif
-		}
+        }
 	}
 
 	public class WizPrim0x006a : BhavWizPrim	// Animate Sim -- for wizard, see edithWiki CreatingAChair

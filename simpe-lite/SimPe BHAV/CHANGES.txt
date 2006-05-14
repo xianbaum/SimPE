@@ -6,6 +6,17 @@
 !!! stole BhavStr STR# 0x1ef for Inventory type (0x33)
 !!! stole BhavStr STR# 0x1ee for Token type (0x33)
 
+14 May 2006 10:08 - Localisation: BhavWizPrim 0x69; partial rework of group/scope/context
+  * plus fix 1a; don't say "no event tree", use "---" (0x22 amended); tiny tidy-up in Str.cs.
+  pjse Localisation\
+    Localization.resx 1.1.2.14
+  SimPe BHAV\
+    BhavWizBhav.cs 1.19.2.2.14.5
+    BhavWizPrim.cs 1.34.2.13.4.17
+    ExtendedWrapper.cs 1.1.4.4
+    Str.cs 1.1.4.3.4.7
+  pjseTestData.package 1.17.2.9.6.6
+
 13 May 2006 16:08 - Localisation: BhavWizPrim 0x33 (plus tweaks)
   * flag missing strings in debug build
   * 0x1a to use BhavStr 0xaa

@@ -333,7 +333,7 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="Object" xml:space="preserve">
     <value>Object</value>
-    <comment>0x0d, 0x32</comment>
+    <comment>0x0d, 0x32, 0x69</comment>
   </data>
   <data name="Target" xml:space="preserve">
     <value>Target</value>
@@ -582,11 +582,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp20_returnTemp01" xml:space="preserve">
     <value>return GUID selected in Temp 0,1</value>
   </data>
-  <data name="bwp22_eventTree" xml:space="preserve">
+  <data name="bwp_eventTree" xml:space="preserve">
     <value>Event tree</value>
-  </data>
-  <data name="bwp22_noEventTree" xml:space="preserve">
-    <value>No event tree</value>
+    <comment>0x22, 0x69</comment>
   </data>
   <data name="bwp22_startingEffect" xml:space="preserve">
     <value>Starting Effect</value>
@@ -798,5 +796,41 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp33_unknown" xml:space="preserve">
     <value>Unknown</value>
+  </data>
+  <data name="bwp69_alignBlend" xml:space="preserve">
+    <value>Align blend out with calling object</value>
+  </data>
+  <data name="bwp69_animation" xml:space="preserve">
+    <value>animation</value>
+  </data>
+  <data name="bwp69_animSpeed" xml:space="preserve">
+    <value>Anim Speed</value>
+  </data>
+  <data name="bwp69_blendIn" xml:space="preserve">
+    <value>Blend in</value>
+  </data>
+  <data name="bwp69_blendOut" xml:space="preserve">
+    <value>Blend out</value>
+  </data>
+  <data name="bwp69_flipFlag" xml:space="preserve">
+    <value>Flip Flag</value>
+  </data>
+  <data name="bwp69_flipped" xml:space="preserve">
+    <value>Flipped</value>
+  </data>
+  <data name="bwp69_loopCount" xml:space="preserve">
+    <value>Loop Count</value>
+  </data>
+  <data name="bwp69_notHurryable" xml:space="preserve">
+    <value>Not hurryable</value>
+  </data>
+  <data name="bwp69_startTag" xml:space="preserve">
+    <value>Start at tag</value>
+  </data>
+  <data name="bwp69_sync" xml:space="preserve">
+    <value>Sync to calling object</value>
+  </data>
+  <data name="bwpp69_interruptible" xml:space="preserve">
+    <value>Interruptible</value>
   </data>
 </root>
