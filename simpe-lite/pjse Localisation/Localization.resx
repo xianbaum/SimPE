@@ -867,4 +867,8 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp6a_transToIdle" xml:space="preserve">
     <value>Trans to Idle</value>
   </data>
+  <data name="neigh" xml:space="preserve">
+    <value>Neighbor's</value>
+    <comment>BhavWiz: dnNeigh()</comment>
+  </data>
 </root>

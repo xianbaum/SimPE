@@ -258,6 +258,7 @@ namespace pjse
 
         public static String dnStkOb() { return pjse.Localization.GetString("stackobj"); }
         public static String dnMe()    { return pjse.Localization.GetString("me"); }
+        public static String dnNeigh() { return pjse.Localization.GetString("neigh"); }
 
         protected string dataOwner(byte doid, ushort instance)
         {
@@ -336,12 +337,9 @@ namespace pjse
             ushort[] bcon;
             switch (doid)
             {
-                case 0x03:
-                case 0x0c:
-                case 0x0e:
-                case 0x0f:
-                case 0x1c:
-                case 0x1d:
+                case 0x03: case 0x0c: case 0x0e: case 0x0f:
+                case 0x17: case 0x18: case 0x1c: case 0x1d:
+                case 0x21: case 0x22: case 0x23: case 0x33:
                     return DoidName(doid) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
                 case 0x04:
                     if (instance == 0x0b)
@@ -358,6 +356,11 @@ namespace pjse
                 case 0x30:
                 case 0x31:
                     return dataOwner(doid, instance);
+                case 0x12:
+                    return DoidName(0x03) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
+                case 0x13:
+                case 0x15:
+                    return DoidName(0x04) + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
                 case 0x16:
                 case 0x32:
                     return DoidName(doid).Replace("[param]", "[" + dnParam() + " 0x" + SimPe.Helper.HexString(instance) + "]");
@@ -365,6 +368,9 @@ namespace pjse
                     bcon = ExpandBCON(instance, false);
                     return dnConst()
                         + " 0x" + SimPe.Helper.HexString(bcon[0]) + ":0x" + SimPe.Helper.HexString((byte)bcon[1]);
+                case 0x20:
+                case 0x26:
+                    return dnNeigh() + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
                 case 0x2f:
                     bcon = ExpandBCON(instance, true);
                     return dnConst()
