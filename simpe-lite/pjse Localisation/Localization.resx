@@ -584,7 +584,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp_eventTree" xml:space="preserve">
     <value>Event tree</value>
-    <comment>0x22, 0x69</comment>
+    <comment>0x22, 0x69, 0x6a</comment>
   </data>
   <data name="bwp22_startingEffect" xml:space="preserve">
     <value>Starting Effect</value>
@@ -800,37 +800,71 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp69_alignBlend" xml:space="preserve">
     <value>Align blend out with calling object</value>
   </data>
-  <data name="bwp69_animation" xml:space="preserve">
+  <data name="bwp_animation" xml:space="preserve">
     <value>animation</value>
+    <comment>0x69, 0x6a</comment>
   </data>
-  <data name="bwp69_animSpeed" xml:space="preserve">
+  <data name="bwp_animSpeed" xml:space="preserve">
     <value>Anim Speed</value>
+    <comment>0x69, 0x6a</comment>
   </data>
-  <data name="bwp69_blendIn" xml:space="preserve">
+  <data name="bwp_blendIn" xml:space="preserve">
     <value>Blend in</value>
+    <comment>0x69, 0x6a</comment>
   </data>
-  <data name="bwp69_blendOut" xml:space="preserve">
+  <data name="bwp_blendOut" xml:space="preserve">
     <value>Blend out</value>
+    <comment>0x69, 0x6a</comment>
   </data>
-  <data name="bwp69_flipFlag" xml:space="preserve">
+  <data name="bwp_flipFlag" xml:space="preserve">
     <value>Flip Flag</value>
+    <comment>0x69, 0x6a</comment>
   </data>
-  <data name="bwp69_flipped" xml:space="preserve">
+  <data name="bwp_flipped" xml:space="preserve">
     <value>Flipped</value>
+    <comment>0x69, 0x6a</comment>
   </data>
   <data name="bwp69_loopCount" xml:space="preserve">
     <value>Loop Count</value>
   </data>
-  <data name="bwp69_notHurryable" xml:space="preserve">
+  <data name="bwp_notHurryable" xml:space="preserve">
     <value>Not hurryable</value>
+    <comment>0x69, 0x6a</comment>
   </data>
-  <data name="bwp69_startTag" xml:space="preserve">
+  <data name="bwp_startTag" xml:space="preserve">
     <value>Start at tag</value>
+    <comment>0x69, 0x6a</comment>
   </data>
   <data name="bwp69_sync" xml:space="preserve">
     <value>Sync to calling object</value>
   </data>
-  <data name="bwpp69_interruptible" xml:space="preserve">
+  <data name="bwp_interruptible" xml:space="preserve">
     <value>Interruptible</value>
+    <comment>0x69, 0x6a</comment>
+  </data>
+  <data name="bwp6a_controllerIsSource" xml:space="preserve">
+    <value>Use controlling object as anim source</value>
+  </data>
+  <data name="bwp6a_high" xml:space="preserve">
+    <value>high</value>
+  </data>
+  <data name="bwp6a_IK" xml:space="preserve">
+    <value>IK Object</value>
+  </data>
+  <data name="bwp6a_low" xml:space="preserve">
+    <value>low</value>
+    <comment>priority level</comment>
+  </data>
+  <data name="bwp6a_medium" xml:space="preserve">
+    <value>medium</value>
+  </data>
+  <data name="bwp6a_priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="bwp6a_sync" xml:space="preserve">
+    <value>Synch to last anim</value>
+  </data>
+  <data name="bwp6a_transToIdle" xml:space="preserve">
+    <value>Trans to Idle</value>
   </data>
 </root>

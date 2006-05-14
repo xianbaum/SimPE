@@ -3263,7 +3263,7 @@ namespace pjse.BhavNameWizards
             s += (lng ? pjse.Localization.GetString("Object") + ": " : "")
                 + dataOwner(lng, o[6], o[7], o[8]);       // target object
 
-            s += ", " + (lng ? pjse.Localization.GetString("bwp69_animation") + ": " : "")
+            s += ", " + (lng ? pjse.Localization.GetString("bwp_animation") + ": " : "")
                 + ((o[2] & 0x04) != 0
                 ? "ObjectAnims STR# 0x86:[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
                 : readStr(GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? Detail.Normal : pjse.Detail.ErrorNames)
@@ -3279,18 +3279,18 @@ namespace pjse.BhavNameWizards
                 else if (o[9] == 1) scope = Scope.SemiGlobal;
                 s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
 
-                s += ", " + pjse.Localization.GetString("bwp69_flipped") + ": " + ((o[2] & 0x01) != 0).ToString();
-                s += ", " + pjse.Localization.GetString("bwp69_animSpeed") + ": " + ((o[2] & 0x02) != 0 ? dataOwner(0x08, 2) : "---"); // Temp 2
-                s += ", " + pjse.Localization.GetString("bwpp69_interruptible") + ": " + ((o[2] & 0x08) != 0).ToString();
-                s += ", " + pjse.Localization.GetString("bwp69_startTag") + ": " + ((o[2] & 0x10) != 0 ? dataOwner(0x08, 0) : "---"); // Temp 0
+                s += ", " + pjse.Localization.GetString("bwp_flipped") + ": " + ((o[2] & 0x01) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_animSpeed") + ": " + ((o[2] & 0x02) != 0 ? dataOwner(0x08, 2) : "---"); // Temp 2
+                s += ", " + pjse.Localization.GetString("bwp_interruptible") + ": " + ((o[2] & 0x08) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_startTag") + ": " + ((o[2] & 0x10) != 0 ? dataOwner(0x08, 0) : "---"); // Temp 0
                 s += ", " + pjse.Localization.GetString("bwp69_loopCount") + ": " + ((o[2] & 0x20) != 0 ? dataOwner(0x08, 1) : "---");
-                s += ", " + pjse.Localization.GetString("bwp69_blendOut") + ": " + ((o[2] & 0x40) == 0).ToString();
-                s += ", " + pjse.Localization.GetString("bwp69_blendIn") + ": " + ((o[2] & 0x80) == 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_blendOut") + ": " + ((o[2] & 0x40) == 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_blendIn") + ": " + ((o[2] & 0x80) == 0).ToString();
 
-                s += ", " + pjse.Localization.GetString("bwp69_flipFlag") + ": " + ((o[10] & 0x01) != 0 ? dataOwner(0x08, 3) : "---"); // Temp 3
+                s += ", " + pjse.Localization.GetString("bwp_flipFlag") + ": " + ((o[10] & 0x01) != 0 ? dataOwner(0x08, 3) : "---"); // Temp 3
                 s += ", " + pjse.Localization.GetString("bwp69_sync") + ": " + ((o[10] & 0x04) != 0).ToString();
                 s += ", " + pjse.Localization.GetString("bwp69_alignBlend") + ": " + ((o[10] & 0x08) != 0).ToString();
-                s += ", " + pjse.Localization.GetString("bwp69_notHurryable") + ": " + ((o[10] & 0x80) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_notHurryable") + ": " + ((o[10] & 0x80) != 0).ToString();
             }
 
             return s;
@@ -3381,43 +3381,44 @@ namespace pjse.BhavNameWizards
 				 }
 				 catch { instance = GS.GlobalStr.ObjectAnims; }
 
-			s += "Animation: " + ((o[2] & 0x04) != 0
-				? scope.ToString() + " " + instance.ToString() + " STR# 0x" + SimPe.Helper.HexString((ushort)instance)
-				+ ":[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
-				: readStr(scope, instance, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? pjse.Detail.Full : pjse.Detail.ErrorNames)
+             s += (lng ? pjse.Localization.GetString("bwp_animation") + ": " : "")
+                + ((o[2] & 0x04) != 0
+                    ? instance.ToString() + ":[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
+				    + " (" + pjse.Localization.GetString(scope.ToString()) + ")"
+				: readStr(scope, instance, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? pjse.Detail.Normal : pjse.Detail.ErrorNames)
 				);
 
 			if (lng)
 			{
+                bool found = false;
+                s += ", " + pjse.Localization.GetString("bwp_eventTree") + ": " + bhavName(ToShort(o[4], o[5]), ref found);
+
                 scope = Scope.Global;
                 if (o[7] == 0) scope = Scope.Private;
                 else if (o[7] == 1) scope = Scope.SemiGlobal;
-                s += ", Scope: " + scope.ToString();
+                s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
 
-                bool found = false;
-                s += ", Event tree: " + bhavName(ToShort(o[4], o[5]), ref found);
+                s += ", " + pjse.Localization.GetString("bwp_flipped") + ": " + ((o[2] & 0x01) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_animSpeed") + ": " + ((o[2] & 0x02) != 0 ? dataOwner(0x08, 2) : "---"); // Temp 2
+                s += ", " + pjse.Localization.GetString("bwp_interruptible") + ": " + ((o[2] & 0x08) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_startTag") + ": " + ((o[2] & 0x10) != 0 ? dataOwner(0x08, 0) : "---"); // Temp 0
+                s += ", " + pjse.Localization.GetString("bwp6a_transToIdle") + ": " + ((o[2] & 0x20) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_blendOut") + ": " + ((o[2] & 0x40) == 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_blendIn") + ": " + ((o[2] & 0x80) == 0).ToString();
 
-				s += ", Flipped: "                + ((o[2] & 0x01) != 0).ToString();
-				s += ", Anim Speed in Temp 2: "   + ((o[2] & 0x02) != 0).ToString();
-				s += ", Interruptible: "          + ((o[2] & 0x08) != 0).ToString();
-				s += ", Start at tag in Temp 0: " + ((o[2] & 0x10) != 0).ToString();
-				s += ", Trans to Idle: "          + ((o[2] & 0x20) != 0).ToString();
-				s += ", No Blend out: "           + ((o[2] & 0x40) != 0).ToString();
-				s += ", No Blend in: "            + ((o[2] & 0x80) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_flipFlag") + ": " + ((o[8] & 0x01) != 0 ? dataOwner(0x08, 3) : "---"); // Temp 3
+                s += ", " + pjse.Localization.GetString("bwp6a_sync") + ": " + ((o[8] & 0x02) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp6a_controllerIsSource") + ": " + ((o[8] & 0x10) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_notHurryable") + ": " + ((o[8] & 0x20) != 0).ToString();
 
-				s += ", Flip Flag in Temp 3: "                   + ((o[8] & 0x01) != 0).ToString();
-				s += ", Synch to last anim: "                    + ((o[8] & 0x02) != 0).ToString();
-				s += ", Use controlling object as anim source: " + ((o[8] & 0x10) != 0).ToString();
-				s += ", Not hurryable: "                         + ((o[8] & 0x20) != 0).ToString();
-
-				s += ", IK Object: " + dataOwner(o[9],ToShort(o[10], o[11]));
-				s += ", Priority: 0x" + SimPe.Helper.HexString(o[12]) + " (";
+                s += ", " + pjse.Localization.GetString("bwp6a_IK") + ": " + dataOwner(o[9], ToShort(o[10], o[11]));
+                s += ", " + pjse.Localization.GetString("bwp6a_priority") + ": 0x" + SimPe.Helper.HexString(o[12]) + " (";
 				switch (o[12]) 
 				{
-					case 0: s += "low"; break;
-					case 1: s += "medium"; break;
-					case 2: s += "high"; break;
-					default: s += "???"; break;
+                    case 0: s += pjse.Localization.GetString("bwp6a_low"); break;
+                    case 1: s += pjse.Localization.GetString("bwp6a_medium"); break;
+                    case 2: s += pjse.Localization.GetString("bwp6a_high"); break;
+					default: s += pjse.Localization.GetString("unk"); break;
 				}
 				s += ")";
 			}
@@ -4810,6 +4811,18 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0076(Instruction i) : base(i) { }
 
+        private string ArrayName(bool lng, ushort instance)
+        {
+            string s = "0x" + SimPe.Helper.HexString(instance);
+            if (lng)
+            {
+                string temp = readStr(GS.GlobalStr.ArrayName, instance, lng ? -1 : 60, Detail.ValueOnly);
+                if (temp != null && temp.Length > 0)
+                    s += " (\"" + temp + "\")";
+            }
+            return s;
+        }
+
 		protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
@@ -4843,8 +4856,7 @@ namespace pjse.BhavNameWizards
 				default: s += "??? 0x" + SimPe.Helper.HexString(o[1]); break;
 			}
 
-            s += " of " + (o[2] == 0 ? "My" : "Stack Object's") + " " + readStr(GS.GlobalStr.ArrayName, ToShort(o[3], o[4]), lng ? -1 : 60, lng ? Detail.Normal : pjse.Detail.ErrorNames)
-				+ " Object Array";
+            s += " of " + (o[2] == 0 ? "My" : "Stack Object's") + " Object Array" + ": " + ArrayName(lng, ToShort(o[3], o[4]));
 
 			return s;
 #if DISASIM
@@ -5071,9 +5083,13 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			s += "Object ID: " + dataOwner(lng, o[1], o[2], o[3]);
-			s += ", using " + Slot(o[4], o[5]);
-			s += ". Object hit stored in: " + (o[4] != 0 ? "Temp 0" : dataOwner(lng, o[8], o[9], o[10]) + ", using " + Slot(o[11], o[12]));
-			s += ", Windows Ignored: " + ((o[15] & 0x01) != 0).ToString();
+			s += " (using " + Slot(o[4], o[5]) + ")";
+            if (lng)
+            {
+                s += ", Object hit stored in: " + (o[4] != 0 ? "Temp 0" : dataOwner(lng, o[8], o[9], o[10])
+                    + " (using " + Slot(o[11], o[12])) + ")";
+                s += ", Windows Ignored: " + ((o[15] & 0x01) != 0).ToString();
+            }
 
 			return s;
 #if DISASIM
