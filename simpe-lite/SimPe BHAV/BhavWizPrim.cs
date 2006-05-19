@@ -2203,7 +2203,7 @@ namespace pjse.BhavNameWizards
                     + ": " + readStr(GS.BhavStr.TnsStyle, o[12]);
                 if (lng)
                 {
-                    s += ", " + pjse.Localization.GetString("bwp24_priority")
+                    s += ", " + pjse.Localization.GetString("bwp_priority")
                         + ": 0x" + SimPe.Helper.HexString((byte)(o[9] + 1));
                     s += ", " + pjse.Localization.GetString("bwp_timeout")
                         + ": 0x" + SimPe.Helper.HexString(o[10]);
@@ -2224,7 +2224,7 @@ namespace pjse.BhavNameWizards
                         + ": " + dataOwner(0x19, o[11]); // local
 
                 byte iconType = (byte)((o[7] >> 1) & 0x07);
-                s += ", " + pjse.Localization.GetString("bwp24_icon")
+                s += ", " + pjse.Localization.GetString("bwp_icon")
                     + ": " + readStr(GS.BhavStr.DialogIcon, iconType);
                 switch (iconType)
                 {
@@ -4118,9 +4118,9 @@ namespace pjse.BhavNameWizards
 						s += ": 0x" + SimPe.Helper.HexString(o[8]);
 					}
 
-                    s += ", " + pjse.Localization.GetString("bwp6e_earlyExit") + ": " + ((o[0] & 0x02) == 0).ToString();
-                    s += ", " + pjse.Localization.GetString("bwp6e_includeSpine") + ": " + ((o[0] & 0x04) != 0).ToString();
-                    s += ", " + pjse.Localization.GetString("bwp6e_duration") + ": "
+                    s += ", " + pjse.Localization.GetString("bwp_earlyExit") + ": " + ((o[0] & 0x02) == 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp_includeSpine") + ": " + ((o[0] & 0x04) != 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp_duration") + ": "
                         + ((o[0] & 0x10) != 0 ? dataOwner(0x08, 0) : "---"); // Temp 0
 				}
 			} 
@@ -4243,14 +4243,16 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "on object in " + dataOwner(lng, o[2],ToShort(o[3], o[4]));       // target object
-			s += ", light: " + (o[8] == 0xFF
-				? "all on object"
+			s += (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[2], o[3], o[4]);       // target object
+            s += ", " + pjse.Localization.GetString("bwp6f_light") + ": " + (o[8] == 0xFF
+                ? pjse.Localization.GetString("bwp6f_all")
                 : readStr(GS.GlobalStr.LightSource, o[8], lng ? -1 : 60, lng ? Detail.Normal : pjse.Detail.ErrorNames));
 			if (lng)
 			{
-				s += ", fade-in duration (ticks): " + ((o[1] & 0x01) != 0 ? "in Temp 1" : "0x" + SimPe.Helper.HexString(ToShort(o[5], o[6])));
-				s += ", intensity: "                + ((o[1] & 0x02) != 0 ? "in Temp 0" : o[7].ToString() + "%");
+                s += ", " + pjse.Localization.GetString("bwp6f_ticks") + ": "
+                    + ((o[1] & 0x01) != 0 ? dataOwner(0x08, 1) : "0x" + SimPe.Helper.HexString(ToShort(o[5], o[6])));
+                s += ", " + pjse.Localization.GetString("bwp6f_intensity") + ": "
+                    + ((o[1] & 0x02) != 0 ? dataOwner(0x08, 0) : o[7].ToString() + "%");
 			}
 
 			return s;
@@ -4291,78 +4293,63 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			switch (o[0]) 
-			{
-				case 0x0: s += "Soft start effect"; break;
-				case 0x1: s += "Hard start effect"; break;
-				case 0x2: s += "Soft stop effect"; break;
-				case 0x3: s += "Hard stop effect"; break;
-				case 0x4: s += "Soft stop all effects"; break;
-				case 0x5: s += "Hard stop all effects"; break;
-				case 0x6: s += "Fire and Forget effect"; break;
-				case 0x7: s += "Interrogate Bone for effects"; break;
-				case 0x8: s += "Clear Queue and Hard stop all effects"; break;
-				case 0x9: s += "Hard stop ALL effects"; break;
-				case 0xA: s += "Set State 1 for all effects"; break;
-				case 0xB: s += "Set State 2 for all effects"; break;
-				case 0xC: s += "Set State 3 for all effects"; break;
-				case 0xD: s += "Set State 4 for all effects"; break;
-				case 0xE: s += "Soft stop ALL effects"; break;
-			}
-			
-			if (lng)
+            s += readStr(GS.BhavStr.EffectSSType, o[0]);
+
+            s += ", " + (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[1], o[2], o[3]);       // target object
+            if (lng)
 			{
 				if (o[0] != 0x9 && o[0] != 0xE)
 				{
-					s += " on object in ";
+					s += ", ";
 					switch (o[9]) 
 					{
-						case 0: s += "Target"; break;
-						case 1: s += "Routing"; break;
-						default: s += "Containment"; break;
-					}
-					s += " slot 0x" + SimPe.Helper.HexString(o[6]);
+                        case 1: s += pjse.Localization.GetString("bwp_targetingSlot"); break;
+                        case 2: s += pjse.Localization.GetString("bwp_routingSlot"); break;
+                        default: s += pjse.Localization.GetString("bwp_containmentSlot"); break;
+                    }
+					s += ": 0x" + SimPe.Helper.HexString(o[6]);
 				}
 			}
-			s += " of object in " + dataOwner(lng, o[1], o[2], o[3]);       // target object
 
 			Scope scope = Scope.Private;
 			if      ((o[10] & 0x01) != 0) scope = Scope.Global;
 			else if ((o[10] & 0x02) != 0) scope = Scope.SemiGlobal;
 
-			if (o[0] == 0x04 || o[0] == 0x05)
-				s += ", effect ID in temp 1: " + ((o[10] & 0x40) != 0).ToString();
+            if (o[0] == 0x04 || o[0] == 0x05)
+                s += ", " + pjse.Localization.GetString("bwp70_effectID") + ": "
+                    + ((o[10] & 0x40) != 0 ? dataOwner(0x08, 1) : "---"); // Temp 1
 
-			else if (o[0] < 0x07 || o[0] > 0x0E)
-			{
-				if (o[4] != 0xFF)
+            else if (o[0] < 0x07 || o[0] > 0x0E)
+            {
+                if (o[4] != 0xFF)
                     s += ", " + readStr(scope, pjse.GS.GlobalStr.Effect, o[4], lng ? -1 : 60, lng ? Detail.Normal : pjse.Detail.ErrorNames);
-				else
-					s += ", affecting default effect";
-			}
+                else
+                    s += ", " + pjse.Localization.GetString("bwp70_defaultEffect");
+            }
 
 			if (lng)
 			{
+                s += ", " + pjse.Localization.GetString("bwp_icon") + ": ";
 				if ((o[10] & 0x04) != 0)
-					s += ", putting in Icon from object in " + dataOwner(o[12], ToShort(o[13], o[14]));
+					s += dataOwner(o[12], o[13], o[14]);
 				else if ((o[10] & 0x10) != 0)
-					s += ", putting in Icon from neighbor ID in " + dataOwner(o[12], ToShort(o[13], o[14]));
+                    s += dataOwner(o[12], o[13], o[14]) + " (" + pjse.Localization.GetString("NeighborID") + ")";
 				else if ((o[10] & 0x20) != 0)
-					s += ", putting in Conversation Icon index found in " + dataOwner(o[12], ToShort(o[13], o[14]))
-                        + " using sheet " + readStr(scope, pjse.GS.GlobalStr.IconTexture, o[15], -1, lng ? Detail.Normal : pjse.Detail.ErrorNames);
+                    s += dataOwner(o[12], o[13], o[14]) + " (" + pjse.Localization.GetString("bwp70_conversation") + ")"
+                        + ", " + "bwp70_sheet"
+                            + ": " + readStr(scope, pjse.GS.GlobalStr.IconTexture, o[15], -1, lng ? Detail.Normal : pjse.Detail.ErrorNames);
 				else if ((o[11] & 0x04) != 0)
-					s += ", putting in Icon with GUID in Temp 4,5";
+                    s += "GUID [" + dataOwner(0x08, 4) + ",5]"; // Temp 4
 				else if ((o[11] & 0x10) != 0)
-					s += ", getting icon value from Temp 6";
+                    s += dataOwner(0x08, 6); // Temp 6
 				else
-					s += ", no icon";
+                    s += ", " + pjse.Localization.GetString("bwp70_noIcon");
 
-				s += ", putting effect in priority Queue: " + ((o[10] & 0x80) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp_priority") + ": " + ((o[10] & 0x80) != 0).ToString();
 
-				if ((o[11] & 0x08) != 0)
-					s += ", getting model name index from Temp 6";
-				else
-					s += ", using default object model";
+                s += ", " + pjse.Localization.GetString("bwp70_model")
+                    + ": " + ((o[11] & 0x08) != 0 ? dataOwner(0x08, 6) // Temp 6
+                    : pjse.Localization.GetString("default"));
 			}
 
 			return s;

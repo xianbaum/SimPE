@@ -437,11 +437,11 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="default" xml:space="preserve">
     <value>default</value>
-    <comment>0x13</comment>
+    <comment>0x13, 0x70</comment>
   </data>
   <data name="NeighborID" xml:space="preserve">
     <value>Neighbor ID</value>
-    <comment>0x13</comment>
+    <comment>0x13, 0x70</comment>
   </data>
   <data name="Parent" xml:space="preserve">
     <value>Parent</value>
@@ -631,17 +631,15 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp24_button3" xml:space="preserve">
     <value>Button 3</value>
   </data>
-  <data name="bwp24_icon" xml:space="preserve">
+  <data name="bwp_icon" xml:space="preserve">
     <value>icon</value>
+    <comment>0x24</comment>
   </data>
   <data name="bwp24_Locals" xml:space="preserve">
     <value>passing through data starting with</value>
   </data>
   <data name="bwp24_message" xml:space="preserve">
     <value>Message</value>
-  </data>
-  <data name="bwp24_priority" xml:space="preserve">
-    <value>priority</value>
   </data>
   <data name="bwp24_resultIn" xml:space="preserve">
     <value>result in</value>
@@ -865,7 +863,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp_priority" xml:space="preserve">
     <value>Priority</value>
-    <comment>0x6a, 0x6b</comment>
+    <comment>0x24, 0x6a, 0x6b</comment>
   </data>
   <data name="bwp6a_sync" xml:space="preserve">
     <value>Synch to last anim</value>
@@ -904,7 +902,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp6d_screenShot" xml:space="preserve">
     <value>screen shot</value>
   </data>
-  <data name="bwp6e_containmentSlot" xml:space="preserve">
+  <data name="bwp_containmentSlot" xml:space="preserve">
     <value>containment slot</value>
   </data>
   <data name="bwp6e_defHeight" xml:space="preserve">
@@ -929,7 +927,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp6e_includeSpine" xml:space="preserve">
     <value>including Spine</value>
   </data>
-  <data name="bwp6e_routingSlot" xml:space="preserve">
+  <data name="bwp_routingSlot" xml:space="preserve">
     <value>routing slot</value>
   </data>
   <data name="bwp6e_speed" xml:space="preserve">
@@ -938,7 +936,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp6e_STOP" xml:space="preserve">
     <value>STOP</value>
   </data>
-  <data name="bwp6e_targetingSlot" xml:space="preserve">
+  <data name="bwp_targetingSlot" xml:space="preserve">
     <value>targeting slot</value>
   </data>
   <data name="bwp6e_turnAway" xml:space="preserve">
@@ -946,5 +944,35 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp6e_turnTowards" xml:space="preserve">
     <value>Turn towards speed</value>
+  </data>
+  <data name="bwp6f_all" xml:space="preserve">
+    <value>all on object</value>
+  </data>
+  <data name="bwp6f_intensity" xml:space="preserve">
+    <value>intensity</value>
+  </data>
+  <data name="bwp6f_light" xml:space="preserve">
+    <value>light</value>
+  </data>
+  <data name="bwp6f_ticks" xml:space="preserve">
+    <value>fade-in duration (ticks)</value>
+  </data>
+  <data name="bwp70_conversation" xml:space="preserve">
+    <value>Conversation</value>
+  </data>
+  <data name="bwp70_defaultEffect" xml:space="preserve">
+    <value>affecting default effect</value>
+  </data>
+  <data name="bwp70_effectID" xml:space="preserve">
+    <value>effect ID</value>
+  </data>
+  <data name="bwp70_model" xml:space="preserve">
+    <value>model</value>
+  </data>
+  <data name="bwp70_noIcon" xml:space="preserve">
+    <value>no icon</value>
+  </data>
+  <data name="bwp70_sheet" xml:space="preserve">
+    <value>sheet</value>
   </data>
 </root>
