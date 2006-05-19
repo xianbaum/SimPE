@@ -142,6 +142,7 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            StopAnimType = 0x1ed, // PJSE: string number stolen
             TokenType = 0x1ee, // PJSE: string number stolen
             InventoryType = 0x1ef, // PJSE: string number stolen
             UIEffectType = 0x1f0, // PJSE: string number stolen

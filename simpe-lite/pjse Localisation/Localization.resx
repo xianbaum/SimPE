@@ -584,7 +584,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp_eventTree" xml:space="preserve">
     <value>Event tree</value>
-    <comment>0x22, 0x69, 0x6a</comment>
+    <comment>0x22, 0x69, 0x6a, 0x6b</comment>
   </data>
   <data name="bwp22_startingEffect" xml:space="preserve">
     <value>Starting Effect</value>
@@ -797,8 +797,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp33_unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
-  <data name="bwp69_alignBlend" xml:space="preserve">
+  <data name="bwp_alignBlend" xml:space="preserve">
     <value>Align blend out with calling object</value>
+    <comment>0x69, 0x6b</comment>
   </data>
   <data name="bwp_animation" xml:space="preserve">
     <value>animation</value>
@@ -806,26 +807,27 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp_animSpeed" xml:space="preserve">
     <value>Anim Speed</value>
-    <comment>0x69, 0x6a</comment>
+    <comment>0x69, 0x6a, 0x6b</comment>
   </data>
   <data name="bwp_blendIn" xml:space="preserve">
     <value>Blend in</value>
-    <comment>0x69, 0x6a</comment>
+    <comment>0x69, 0x6a, 0x6b</comment>
   </data>
   <data name="bwp_blendOut" xml:space="preserve">
     <value>Blend out</value>
-    <comment>0x69, 0x6a</comment>
+    <comment>0x69, 0x6a, 0x6b</comment>
   </data>
   <data name="bwp_flipFlag" xml:space="preserve">
     <value>Flip Flag</value>
-    <comment>0x69, 0x6a</comment>
+    <comment>0x69, 0x6a, 0x6b</comment>
   </data>
   <data name="bwp_flipped" xml:space="preserve">
     <value>Flipped</value>
-    <comment>0x69, 0x6a</comment>
+    <comment>0x69, 0x6a, 0x6b</comment>
   </data>
-  <data name="bwp69_loopCount" xml:space="preserve">
+  <data name="bwp_loopCount" xml:space="preserve">
     <value>Loop Count</value>
+    <comment>0x69, 0x6b</comment>
   </data>
   <data name="bwp_notHurryable" xml:space="preserve">
     <value>Not hurryable</value>
@@ -833,33 +835,37 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp_startTag" xml:space="preserve">
     <value>Start at tag</value>
-    <comment>0x69, 0x6a</comment>
+    <comment>0x69, 0x6a, 0x6b</comment>
   </data>
-  <data name="bwp69_sync" xml:space="preserve">
+  <data name="bwp_sync" xml:space="preserve">
     <value>Sync to calling object</value>
+    <comment>0x69, 0x6b</comment>
   </data>
   <data name="bwp_interruptible" xml:space="preserve">
     <value>Interruptible</value>
-    <comment>0x69, 0x6a</comment>
+    <comment>0x69, 0x6a, 0x6b</comment>
   </data>
   <data name="bwp6a_controllerIsSource" xml:space="preserve">
     <value>Use controlling object as anim source</value>
   </data>
-  <data name="bwp6a_high" xml:space="preserve">
+  <data name="bwp_high" xml:space="preserve">
     <value>high</value>
+    <comment>priority level, 0x6a, 0x6b</comment>
   </data>
   <data name="bwp6a_IK" xml:space="preserve">
     <value>IK Object</value>
   </data>
-  <data name="bwp6a_low" xml:space="preserve">
+  <data name="bwp_low" xml:space="preserve">
     <value>low</value>
-    <comment>priority level</comment>
+    <comment>priority level, 0x6a, 0x6b</comment>
   </data>
-  <data name="bwp6a_medium" xml:space="preserve">
+  <data name="bwp_medium" xml:space="preserve">
     <value>medium</value>
+    <comment>priority level, 0x6a, 0x6b</comment>
   </data>
-  <data name="bwp6a_priority" xml:space="preserve">
+  <data name="bwp_priority" xml:space="preserve">
     <value>Priority</value>
+    <comment>0x6a, 0x6b</comment>
   </data>
   <data name="bwp6a_sync" xml:space="preserve">
     <value>Synch to last anim</value>
@@ -870,5 +876,11 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="neigh" xml:space="preserve">
     <value>Neighbor's</value>
     <comment>BhavWiz: dnNeigh()</comment>
+  </data>
+  <data name="bwp6c_normalAndFlipped" xml:space="preserve">
+    <value>both normal AND flipped anims</value>
+  </data>
+  <data name="bwp6c_shortBlendOut" xml:space="preserve">
+    <value>short blend out</value>
   </data>
 </root>
