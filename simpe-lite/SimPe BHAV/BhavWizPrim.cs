@@ -3580,7 +3580,7 @@ namespace pjse.BhavNameWizards
 
              s += ", " + (lng ? pjse.Localization.GetString("bwp_animation") + ": " : "")
                  + ((o[2] & 0x04) != 0
-                 ? instance.ToString() + " STR# 0x" + SimPe.Helper.HexString(((byte)instance)) + ":[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
+                 ? instance.ToString() + ":[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
                     + (lng ? " (" + pjse.Localization.GetString(scope.ToString()) + ")" : "")
                  : readStr(scope, instance, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? Detail.Full : pjse.Detail.ErrorNames) // variable instance
                  );
@@ -3792,7 +3792,7 @@ namespace pjse.BhavNameWizards
                         catch { instance = GS.GlobalStr.ObjectAnims; }
 
                     s += ((o[2] & 0x04) != 0
-                        ? instance.ToString() + " STR# 0x" + SimPe.Helper.HexString(((byte)instance)) + ":[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
+                        ? instance.ToString() + ":[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
                            + (lng ? " (" + pjse.Localization.GetString(scope.ToString()) + ")" : "")
                         : readStr(scope, instance, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? Detail.Full : pjse.Detail.ErrorNames) // variable instance
                         );
@@ -3966,38 +3966,44 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += (lng ? "Target Object: " : "") + dataOwner(lng, o[5], o[6], o[7]);       // target object
+            s += (lng ? pjse.Localization.GetString("Target") + ": " : "")
+                + dataOwner(lng, o[5], o[6], o[7]);       // target object
 
 			Scope matScope = Scope.Private;
 			if ((o[2] & 0x02) != 0) matScope = Scope.Global;
 			else if ((o[2] & 0x04) != 0) matScope = Scope.SemiGlobal;
 
-			s += ", " + (lng ? "Material from: " : "");
+            s += ", " + (lng ? pjse.Localization.GetString("bwp6d_materialFrom") + ": " : "");
 			if ((o[13] & 0x02) == 0)
 			{
-				s += ((o[2] & 0x08) != 0 ? "obj in " + dataOwner(lng, o[8], o[9], o[10]) : "Me");
-				s += " (" + (lng ? ((o[13] & 0x01) != 0 ? "moving texture" : "material") + " " : "");
-				if ((o[2] & 0x10) != 0) s += matScope.ToString() + " STR# 0x0088:[Temp 0]";
+				s += ((o[2] & 0x08) != 0 ? dataOwner(lng, o[8], o[9], o[10]) : dnMe());
+				s += " (" + (lng ? ((o[13] & 0x01) != 0
+                    ? pjse.Localization.GetString("bwp6d_movingTexture")
+                    : pjse.Localization.GetString("bwp6d_material")
+                    ) + ": " : "");
+				if ((o[2] & 0x10) != 0) s += GS.GlobalStr.MaterialName.ToString() + ":[" + dataOwner(lng, 0x08, 0) // Temp 0
+                    + "]" + (lng ? " (" + matScope.ToString() + ")" : "");
                 else s += readStr(matScope, GS.GlobalStr.MaterialName, ToShort(o[0], o[1]), lng ? -1 : 30, lng ? Detail.Normal : pjse.Detail.ErrorNames);
 				s += ")";
 			}
 			else
-				s += "screen shot";
+                s += pjse.Localization.GetString("bwp6d_screenShot");
 
 			Scope mgScope = Scope.Private;
 			if ((o[2] & 0x40) != 0) mgScope = Scope.Global;
 			else if ((o[2] & 0x80) != 0) mgScope = Scope.SemiGlobal;
 
-			s += ", " + (lng ? "Mesh from: " : "") + ((o[2] & 0x01) != 0 ? "obj in " + dataOwner(lng, o[8], o[9], o[10]) : "Me");
+            s += ", " + (lng ? pjse.Localization.GetString("bwp6d_meshFrom") + ": " : "") + ((o[2] & 0x01) != 0 ? dataOwner(lng, o[8], o[9], o[10]) : dnMe());
 			if ((o[4] & 0x40) == 0) // w3 < 0
 			{
-				s += " (" + (lng ? "mesh group " : "");
-				if ((o[2] & 0x20) != 0) s += mgScope.ToString() + " STR# 0x0087:[Temp 1]";
+                s += " (" + (lng ? pjse.Localization.GetString("bwp6d_meshGroup") + ": " : "");
+                if ((o[2] & 0x20) != 0) s += GS.GlobalStr.MeshGroup.ToString() + ":[" + dataOwner(lng, 0x08, 1) // Temp 1
+                    + "]" + (lng ? " (" + mgScope.ToString() + ")" : "");
                 else s += readStr(mgScope, GS.GlobalStr.MeshGroup, ToShort(o[3], o[4]), lng ? -1 : 30, lng ? Detail.Normal : pjse.Detail.ErrorNames);
 				s += ")";
 			}
 			else
-				s += " (over all model)";
+                s += " (" + pjse.Localization.GetString("bwp6d_allOver") + ")";
 
 			return s;
 #if DISASIM
@@ -4081,59 +4087,70 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += ((o[0] & 0x80) == 0 ? "Object ID: " + dataOwner(lng, o[1], o[2], o[3]) : "Camera");
+            s += ((o[0] & 0x80) == 0
+                ? (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[1], o[2], o[3])
+                : "Camera"
+                );
 
 			if ((o[0] & 0x01) == 0) 
 			{
 				if (lng)
 				{
+                    bool found = false;
+                    s += ", " + pjse.Localization.GetString("bwp_eventTree") + ": " + bhavName(ToShort(o[9], o[10]), ref found);
+
                     Scope scope = Scope.Global;
                     if (o[11] == 0) scope = Scope.Private;
                     else if (o[11] == 1) scope = Scope.SemiGlobal;
-                    s += ", Scope: " + scope.ToString();
+                    s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
 
-                    bool found = false;
-                    s += ", Event tree: " + bhavName(ToShort(o[9], o[10]), ref found);
-
-					s += ", using ";
+					s += ", ";
 					if (o[14] == 0)
-						s += "default 3/4 height";
+                        s += pjse.Localization.GetString("bwp6e_defHeight");
 					else
 					{
 						switch (o[14]) 
 						{
-							case 1: s += "targeting"; break;
-							case 2: s += "routing"; break;
-							default: s += "containment"; break;
+                            case 1: s += pjse.Localization.GetString("bwp6e_targetingSlot"); break;
+                            case 2: s += pjse.Localization.GetString("bwp6e_routingSlot"); break;
+                            default: s += pjse.Localization.GetString("bwp6e_containmentSlot"); break;
 						}
-						s += " slot number 0x" + SimPe.Helper.HexString(o[8]);
+						s += ": 0x" + SimPe.Helper.HexString(o[8]);
 					}
 
-					s += ", no early exit: "      + ((o[0] & 0x02) != 0).ToString();
-					s += ", including Spine: "    + ((o[0] & 0x04) != 0).ToString();
-					s += ", duration in Temp 0: " + ((o[0] & 0x10) != 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp6e_earlyExit") + ": " + ((o[0] & 0x02) == 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp6e_includeSpine") + ": " + ((o[0] & 0x04) != 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp6e_duration") + ": "
+                        + ((o[0] & 0x10) != 0 ? dataOwner(0x08, 0) : "---"); // Temp 0
 				}
 			} 
 			else
-				s += ": STOP";
+                s += ": " + pjse.Localization.GetString("bwp6e_STOP");
 
 			if (lng)
 			{
 				if (instruction.NodeVersion != 0)
 				{
-					s += ", Turn towards speed: " + ((o[0] & 0x08) != 0 ? "in Temp 1" : (2 * o[4]).ToString() + " deg/s");
-					s += ", Turn away speed: ";
-					if      ((o[15] & 0x02) != 0) s += "in Temp 1";
-					else if ((o[15] & 0x01) != 0) s += "in Temp 2";
-					else s += (2 * o[5]).ToString() + " deg/s";
+                    s += ", " + pjse.Localization.GetString("bwp6e_turnTowards")
+                        + ": " + ((o[0] & 0x08) != 0 ? dataOwner(0x08, 1) // Temp 1
+                        : (2 * o[4]).ToString() + " " + pjse.Localization.GetString("bwp6e_deg_s"));
+                    s += ", " + pjse.Localization.GetString("bwp6e_turnAway") + ": ";
+                    if ((o[15] & 0x02) != 0) s += dataOwner(0x08, 1); // Temp 1
+                    else if ((o[15] & 0x01) != 0) s += dataOwner(0x08, 2); // Temp 2
+                    else s += (2 * o[5]).ToString() + " " + pjse.Localization.GetString("bwp6e_deg_s");
 
-					s += ", Not hurryable: "     + ((o[15] & 0x04) != 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp_notHurryable")
+                        + ": " + ((o[15] & 0x04) != 0).ToString();
 				}
 				else
-					s += ", Turn speed: " + ((o[0] & 0x08) != 0 ? "in Temp 1" : o[4].ToString() + " deg/s");
+                    s += ", " + pjse.Localization.GetString("bwp6e_speed")
+                        + ": " + ((o[0] & 0x08) != 0 ? dataOwner(0x08, 1) // Temp 1
+                        : o[4].ToString() + " " + pjse.Localization.GetString("bwp6e_deg_s"));
 
-				s += ", ignoring room: "     + ((o[0] & 0x20) != 0).ToString();
-				s += ", ignoring frustrum: " + ((o[0] & 0x40) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp6e_ignoreRoom")
+                    + ": " + ((o[0] & 0x20) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp6e_ignoreFrustrum")
+                    + ": " + ((o[0] & 0x40) != 0).ToString();
 			}
 
 			return s;

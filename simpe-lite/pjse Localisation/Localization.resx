@@ -883,4 +883,68 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp6c_shortBlendOut" xml:space="preserve">
     <value>short blend out</value>
   </data>
+  <data name="bwp6d_allOver" xml:space="preserve">
+    <value>over all model</value>
+  </data>
+  <data name="bwp6d_material" xml:space="preserve">
+    <value>material</value>
+  </data>
+  <data name="bwp6d_materialFrom" xml:space="preserve">
+    <value>Material from</value>
+  </data>
+  <data name="bwp6d_meshFrom" xml:space="preserve">
+    <value>Mesh from</value>
+  </data>
+  <data name="bwp6d_meshGroup" xml:space="preserve">
+    <value>mesh group</value>
+  </data>
+  <data name="bwp6d_movingTexture" xml:space="preserve">
+    <value>moving texture</value>
+  </data>
+  <data name="bwp6d_screenShot" xml:space="preserve">
+    <value>screen shot</value>
+  </data>
+  <data name="bwp6e_containmentSlot" xml:space="preserve">
+    <value>containment slot</value>
+  </data>
+  <data name="bwp6e_defHeight" xml:space="preserve">
+    <value>default 3/4 height</value>
+  </data>
+  <data name="bwp6e_deg_s" xml:space="preserve">
+    <value>deg/s</value>
+    <comment>degrees per second</comment>
+  </data>
+  <data name="bwp6e_duration" xml:space="preserve">
+    <value>duration</value>
+  </data>
+  <data name="bwp6e_earlyExit" xml:space="preserve">
+    <value>allow early exit</value>
+  </data>
+  <data name="bwp6e_ignoreFrustrum" xml:space="preserve">
+    <value>ignoring frustrum</value>
+  </data>
+  <data name="bwp6e_ignoreRoom" xml:space="preserve">
+    <value>ignoring room</value>
+  </data>
+  <data name="bwp6e_includeSpine" xml:space="preserve">
+    <value>including Spine</value>
+  </data>
+  <data name="bwp6e_routingSlot" xml:space="preserve">
+    <value>routing slot</value>
+  </data>
+  <data name="bwp6e_speed" xml:space="preserve">
+    <value>Turn speed</value>
+  </data>
+  <data name="bwp6e_STOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="bwp6e_targetingSlot" xml:space="preserve">
+    <value>targeting slot</value>
+  </data>
+  <data name="bwp6e_turnAway" xml:space="preserve">
+    <value>Turn away speed</value>
+  </data>
+  <data name="bwp6e_turnTowards" xml:space="preserve">
+    <value>Turn towards speed</value>
+  </data>
 </root>
