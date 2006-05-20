@@ -283,8 +283,7 @@ namespace SimPe.PackedFiles.UserInterface
             get
             {
                 if (str == null)
-                    str = new Str(null, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance, 0x54544173);
-                        // "null" prevents fallback to Semi or Global groups.
+                    str = new Str(wrapper, wrapper.FileDescriptor.Instance, 0x54544173);
                 return str;
             }
         }
@@ -311,7 +310,7 @@ namespace SimPe.PackedFiles.UserInterface
                 FallbackStrItem si = w[1, i];
 				this.cbStringIndex.Items.Add("0x" + i.ToString("X") + ": " + ((si == null)
                     ? "*!no default string!*"
-                    : si.strItem.Title + (si.lidFallback ? " [LID=1]" : "")));
+                    : si.strItem.Title + (si.lidFallback ? " [LID=1]" : "") + (si.fallback.Count > 0 ? " [*]" :"")));
 			}
         }
 
@@ -330,7 +329,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (wrapper[i] != null && wrapper[i].StringIndex < cbStringIndex.Items.Count)
                 lbttab.Items.Add(cbStringIndex.Items[(int)wrapper[i].StringIndex]);
             else
-                lbttab.Items.Add("0x" + i.ToString("X") + ": " + pjse.Localization.GetString("UNK"));
+                lbttab.Items.Add("0x" + i.ToString("X") + ": " + pjse.Localization.GetString("unk"));
         }
 
 		private void setBHAV(int which, ushort target, bool notxt)

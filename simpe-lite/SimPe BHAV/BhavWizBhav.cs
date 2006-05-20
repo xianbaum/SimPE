@@ -53,13 +53,13 @@ namespace pjse.BhavNameWizards
 			else if (i.OpCode < 0x2000)
 			{
 				prefix = pjse.Localization.GetString("lcPrivate");
-				group = (i.Parent.Context == Scope.Private) ? i.Parent.Group : 0xffffffff;
+				group = i.Parent.PrivateGroup;
 			}
 
 			else
 			{
 				prefix = pjse.Localization.GetString("lcSemiGlobal");
-				group = (i.Parent.Context == Scope.SemiGlobal) ? i.Parent.Group : i.Parent.SemiGroup;
+				group = i.Parent.SemiGroup;
 			}
 		}
 
@@ -234,7 +234,7 @@ namespace pjse.BhavNameWizards
 		private string doParams(int thisArgc, int myArgc, bool lng, TPRP tprp)
 		{
 			if (!lng)
-                return pjse.Localization.GetString("bwb_callerparams");
+                return pjse.Localization.GetString("bw_callerparams");
 
 			string s = "";
 			for (int i = 0; thisArgc > 0 && i < myArgc; i++, thisArgc--)

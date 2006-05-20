@@ -418,8 +418,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 				}
 
 				((TextBox)alTextBox[which]).Text = (strnum <= 0)
-					? "[none]"
-					: ((BhavWiz)inst).readStr(scope, GS.GlobalStr.DialogString, (ushort)(strnum - 1), -1, pjse.Detail.Errors)
+                    ? "[" + pjse.Localization.GetString("none") + "]"
+					: ((BhavWiz)inst).readStr(scope, GS.GlobalStr.DialogString, (ushort)(strnum - 1), -1, pjse.Detail.ErrorNames)
 					;
 
 				((CheckBox)this.alCBUseTemp[which]).Checked =

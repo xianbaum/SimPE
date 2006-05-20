@@ -1,7 +1,155 @@
 !!! Made readStr() public -- need to review that decision (sticky)
-!!! stole BhavStr STR# 0x1f3 for TNS Style
-!!! stole BhavStr STR# 0x1f2 for Generic Sims Call descriptions
-!!! stole BhavStr STR# 0x1f1 for Find Best Object for Function location flags
+!!! stole BhavStr STR# 0x1f3 for TNS Style (0x24)
+!!! stole BhavStr STR# 0x1f2 for Generic Sims Call descriptions (0x01)
+!!! stole BhavStr STR# 0x1f1 for Find Best Object for Function location flags (0x0e?)
+!!! stole BhavStr STR# 0x1f0 for UIEffect type (0x22)
+!!! stole BhavStr STR# 0x1ef for Inventory type (0x33)
+!!! stole BhavStr STR# 0x1ee for Token type (0x33)
+!!! stole BhavStr STR# 0x1ed for Stop Animation type (0x6c)
+!!! stole BhavStr STR# 0x1ec for Effect start/stop type (0x70)
+!!! stole BhavStr STR# 0x1eb for Debug type (0x72)
+!!! stole BhavStr STR# 0x1ea for Ages (0x75)
+
+20 May 2006 16:55 - Localisation: BhavWizPrim 0x7c, 0x7d, 0x7e (plus string re-use and fixes)
+  * no fallback on attr names
+  * more sensible name guess for Global string files (and catch dodgy Behaviour string files)
+  * central handling for array names - affects: 0x76, 0x7d
+  pjse Localisation\
+    Localization.resx 1.1.2.23
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.17
+    BhavWizPrim.cs 1.34.2.13.4.27
+    Str.cs 1.1.4.3.4.9
+
+20 May 2006 15:07 - Localisation: BhavWizPrim 0x78, 0x79, 0x7a, 0x7b (plus string re-use)
+  pjse Localisation\
+    Localization.resx 1.1.2.22
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.16
+    BhavWizPrim.cs 1.34.2.13.4.26
+
+20 May 2006 13:36 - Localisation: BhavWizPrim 0x77 (plus fixes, tweaks and string re-use)
+  * Slot() moved to BhavWiz.cs
+  pjse Localisation\
+    Localization.resx 1.1.2.22
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.16
+    BhavWizPrim.cs 1.34.2.13.4.25
+
+20 May 2006 11:53 - Localisation: BhavWizPrim 0x74, 0x75, 0x76 (plus tweaks and string re-use)
+  * stole BhavStr STR# 0x1ea for Ages (0x75) - also affected TTAB
+  pjse Localisation\
+    Localization.resx 1.1.2.21
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.15
+    BhavWizPrim.cs 1.34.2.13.4.24
+    TtabMotiveGroupUI.cs 1.3.40.3
+    TtabWrapper.cs 1.23.6.1.6.5
+  GlobalStrings.package 1.10.8.8.4.8
+
+20 May 2006 10:27 - Localisation: BhavWizPrim 0x71, 0x72, 0x73 (plus tweaks and string re-use)
+  * stole BhavStr STR# 0x1eb for Debug type (0x72)
+  pjse Localisation\
+    Localization.resx 1.1.2.20
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.14
+    BhavWizPrim.cs 1.34.2.13.4.23
+  GlobalStrings.package 1.10.8.8.4.7
+
+19 May 2006 23:30 - Localisation: BhavWizPrim 0x6f, 0x70 (plus tweaks and string re-use)
+  * stole BhavStr STR# 0x1ec for Effect start/stop type (0x70)
+  pjse Localisation\
+    Localization.resx 1.1.2.19
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.13
+    BhavWizPrim.cs 1.34.2.13.4.22
+  GlobalStrings.package 1.10.8.8.4.6
+
+19 May 2006 22:45 - Localisation: BhavWizPrim 0x6d, 0x6e (plus tweaks)
+  pjse Localisation\
+    Localization.resx 1.1.2.18
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.21
+
+19 May 2006 20:13 - Localisation: BhavWizPrim 0x6b, 0x6c (plus string re-use)
+  * stole BhavStr STR# 0x1ed for Stop Animation type (0x6c)
+  pjse Localisation\
+    Localization.resx 1.1.2.17
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.12
+    BhavWizPrim.cs 1.34.2.13.4.20
+  GlobalStrings.package 1.10.8.8.4.5
+
+14 May 2006 16:25 - Parsing: friendlier shortforms for dataowners
+  pjse Localisation\
+    Localization.resx 1.1.2.16
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.11
+
+14 May 2006 15:23 - Localisation: BhavWizPrim 0x6a (plus tweaks and string re-use)
+  pjse Localisation\
+    Localization.resx 1.1.2.15
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.19
+
+14 May 2006 14:21 - Strings: Improve information displayed (instance, scope, etc); further fallback changes
+  * plus more removal of "no event tree"
+  * 0x17, 0x1a, 0x1c, 0x22-3, 0x32, 0x69-b, 0x6d-f, 0x70, 0x72-4, 0x76, 0x7b, 0x7d-e
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.4.7.6.3
+    BhavWiz.cs 1.37.2.13.4.10
+    BhavWizPrim.cs 1.34.2.13.4.18
+    Str.cs 1.1.4.3.4.8
+    TtabForm.cs 1.31.2.6.4.5
+
+14 May 2006 10:08 - Localisation: BhavWizPrim 0x69; partial rework of group/scope/context
+  * plus fix 1a; don't say "no event tree", use "---" (0x22 amended); tiny tidy-up in Str.cs.
+  pjse Localisation\
+    Localization.resx 1.1.2.14
+  SimPe BHAV\
+    BhavWizBhav.cs 1.19.2.2.14.5
+    BhavWizPrim.cs 1.34.2.13.4.17
+    ExtendedWrapper.cs 1.1.4.4
+    Str.cs 1.1.4.3.4.7
+  pjseTestData.package 1.17.2.9.6.6
+
+13 May 2006 16:08 - Localisation: BhavWizPrim 0x33 (plus tweaks)
+  * flag missing strings in debug build
+  * 0x1a to use BhavStr 0xaa
+  * localise "prim" prefix (oops!)
+  * Move inventory type and token type to BhavStrings
+  pjse Localisation\
+    Localization.cs 1.1.2.2
+    Localization.resx 1.1.2.13
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.9
+    BhavWizPrim.cs 1.34.2.13.4.16
+  GlobalStrings.package 1.10.8.8.4.4
+  UnusedBehaviourStrings.package 1.1.2.2
+
+13 May 2006 10:03 - Localisation: BhavWizPrim 0x32 (plus tweaks)
+  pjse Localisation\
+    Localization.resx 1.1.2.12
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.15
+
+11 May 2006 16:29 - Localisation: BhavWizPrim 0x25, 0x2a, 0x2d, 0x2e, 0x30 (plus tweaks)
+  * Note: /late/ CVS commit as SourceForge unavailable
+  pjse Localisation\
+    Localization.resx 1.1.2.11
+    pjse localisation.csproj 1.1.2.4
+  SimPe BHAV\
+    BhavWizPrim.cs 1.34.2.13.4.14
+  GlobalStrings.package 1.10.8.8.4.3
+
+7 May 2006 17:28 - Localisation: BhavWizPrim 0x20, 0x21, 0x22, 0x23, 0x24 (plus tweaks)
+  pjse Localisation\
+    Localization.resx 1.1.2.10
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.4.7.6.2
+    BhavWiz.cs 1.37.2.13.4.8
+    BhavWizPrim.cs 1.34.2.13.4.13
+  GlobalStrings.package 1.10.8.8.4.2
 
 6 May 2006 18:44 - Remove "PFD.Invalid" checking (nothing to do with the PF being invalid)
   pjse filetable\

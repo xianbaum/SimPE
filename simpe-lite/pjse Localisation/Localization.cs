@@ -63,7 +63,11 @@ namespace pjse
         {
             string res = pjse.Localization.Manager.GetString(name);
             //if (res == null) res = pjse.Localization.Manager.GetString(name.Trim().ToLower());
+#if DEBUG
+            if (res == null) res = "<<" + name + ">>";
+#else
             if (res == null) res = name;
+#endif
 
             return res;
         }
