@@ -502,9 +502,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>No matches found</value>
     <comment>GUIDTool result</comment>
   </data>
-  <data name="Location" xml:space="preserve">
+  <data name="bwp_Location" xml:space="preserve">
     <value>Location</value>
-    <comment>0x1b</comment>
+    <comment>0x1b, 0x77</comment>
   </data>
   <data name="Play" xml:space="preserve">
     <value>Play</value>
@@ -610,8 +610,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp24_Locals" xml:space="preserve">
     <value>passing through data starting with</value>
   </data>
-  <data name="bwp24_message" xml:space="preserve">
+  <data name="bwp_message" xml:space="preserve">
     <value>Message</value>
+    <comment>0x24, 0x77</comment>
   </data>
   <data name="bwp24_resultIn" xml:space="preserve">
     <value>result in</value>
@@ -836,7 +837,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp_priority" xml:space="preserve">
     <value>Priority</value>
-    <comment>0x24, 0x6a, 0x6b</comment>
+    <comment>0x24, 0x6a, 0x6b, 0x77</comment>
   </data>
   <data name="bwp6a_sync" xml:space="preserve">
     <value>Synch to last anim</value>
@@ -875,11 +876,13 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp6d_screenShot" xml:space="preserve">
     <value>screen shot</value>
   </data>
-  <data name="bwp_containmentSlot" xml:space="preserve">
+  <data name="bw_containmentSlot" xml:space="preserve">
     <value>containment slot</value>
+    <comment>bw Slot()</comment>
   </data>
-  <data name="bwp6e_defHeight" xml:space="preserve">
+  <data name="bw_defHeight" xml:space="preserve">
     <value>default 3/4 height</value>
+    <comment>bw Slot()</comment>
   </data>
   <data name="bwp6e_deg_s" xml:space="preserve">
     <value>deg/s</value>
@@ -900,8 +903,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp6e_includeSpine" xml:space="preserve">
     <value>including Spine</value>
   </data>
-  <data name="bwp_routingSlot" xml:space="preserve">
+  <data name="bw_routingSlot" xml:space="preserve">
     <value>routing slot</value>
+    <comment>bw Slot()</comment>
   </data>
   <data name="bwp6e_speed" xml:space="preserve">
     <value>Turn speed</value>
@@ -909,8 +913,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp6e_STOP" xml:space="preserve">
     <value>STOP</value>
   </data>
-  <data name="bwp_targetingSlot" xml:space="preserve">
+  <data name="bw_targetingSlot" xml:space="preserve">
     <value>targeting slot</value>
+    <comment>bw Slot()</comment>
   </data>
   <data name="bwp6e_turnAway" xml:space="preserve">
     <value>Turn away speed</value>
@@ -951,6 +956,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp_slot" xml:space="preserve">
     <value>Slot</value>
     <comment>0x71</comment>
+  </data>
+  <data name="bwp6e_camera" xml:space="preserve">
+    <value>Camera</value>
   </data>
   <data name="bwp71_resetRootBones" xml:space="preserve">
     <value>Reset root bones</value>
@@ -1041,5 +1049,44 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp76_unshift" xml:space="preserve">
     <value>Unshift onto the front of the array</value>
+  </data>
+  <data name="bwp77_allSims" xml:space="preserve">
+    <value>All Sims</value>
+  </data>
+  <data name="bwp77_everything" xml:space="preserve">
+    <value>Everything</value>
+  </data>
+  <data name="bwp77_insideBuilding" xml:space="preserve">
+    <value>Inside building</value>
+  </data>
+  <data name="bwp77_neighbors" xml:space="preserve">
+    <value>Neighbors</value>
+  </data>
+  <data name="bwp77_npcs" xml:space="preserve">
+    <value>NPCs</value>
+  </data>
+  <data name="bwp77_objects" xml:space="preserve">
+    <value>Objects</value>
+  </data>
+  <data name="bwp77_onLot" xml:space="preserve">
+    <value>On lot</value>
+  </data>
+  <data name="bwp77_onSameLevel" xml:space="preserve">
+    <value>On same level</value>
+  </data>
+  <data name="bwp77_outsideBuilding" xml:space="preserve">
+    <value>Outside building</value>
+  </data>
+  <data name="bwp77_room" xml:space="preserve">
+    <value>In room</value>
+  </data>
+  <data name="bwp77_same" xml:space="preserve">
+    <value>same</value>
+  </data>
+  <data name="bwp77_selectableSims" xml:space="preserve">
+    <value>Selectable Sims</value>
+  </data>
+  <data name="bwp77_userData" xml:space="preserve">
+    <value>user data</value>
   </data>
 </root>

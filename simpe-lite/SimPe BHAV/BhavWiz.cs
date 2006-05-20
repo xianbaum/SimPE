@@ -656,6 +656,21 @@ namespace pjse
         #endregion
 
 
+        protected static string Slot(byte t, byte s)
+        {
+            string f = "";
+            switch (t)
+            {
+                case 0: f += pjse.Localization.GetString("bw_defHeight"); break;
+                case 1: f += pjse.Localization.GetString("bw_targetingSlot"); break;
+                case 2: f += pjse.Localization.GetString("bw_routingSlot"); break;
+                case 3: f += pjse.Localization.GetString("bw_containmentSlot"); break;
+                default: f += pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(t); break;
+            }
+            return f + (t != 0 ? ": 0x" + SimPe.Helper.HexString(s) : "");
+        }
+
+
         public static Glob GlobByGroup(uint group)
         {
             pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.GLOB_FILE, group];

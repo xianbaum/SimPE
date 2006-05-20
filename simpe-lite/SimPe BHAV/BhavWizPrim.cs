@@ -1507,7 +1507,7 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
 			s += (lng
-                ? pjse.Localization.GetString("Location")
+                ? pjse.Localization.GetString("bwp_Location")
                     + ": "
                 : ""
                 ) + readStr(GS.BhavStr.RelativeLocations, (byte)(o[2] + 2));
@@ -2185,7 +2185,7 @@ namespace pjse.BhavNameWizards
 
             if (states[4]) s += ", " + pjse.Localization.GetString("bwp24_title")
                 + ": " + dialogStr(scope, (o[8] & 0x10) != 0, o[6], lng ? -1 : 60);
-            if (states[0]) s += ", " + pjse.Localization.GetString("bwp24_message")
+            if (states[0]) s += ", " + pjse.Localization.GetString("bwp_message")
                 + ": " + dialogStr(scope, (o[8] & 0x02) != 0, msg, lng ? -1 : 60);
             if (lng)
             {
@@ -4087,10 +4087,12 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-            s += ((o[0] & 0x80) == 0
-                ? (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[1], o[2], o[3])
-                : "Camera"
+            s += (lng ? pjse.Localization.GetString("Target") + ": " : "") + ((o[0] & 0x80) == 0
+                ? dataOwner(lng, o[1], o[2], o[3])
+                : pjse.Localization.GetString("bwp6e_camera")
                 );
+
+            s += ", " + Slot(o[14], o[8]);
 
 			if ((o[0] & 0x01) == 0) 
 			{
@@ -4104,23 +4106,9 @@ namespace pjse.BhavNameWizards
                     else if (o[11] == 1) scope = Scope.SemiGlobal;
                     s += " (" + pjse.Localization.GetString(scope.ToString()) + ")";
 
-					s += ", ";
-					if (o[14] == 0)
-                        s += pjse.Localization.GetString("bwp6e_defHeight");
-					else
-					{
-						switch (o[14]) 
-						{
-                            case 1: s += pjse.Localization.GetString("bwp6e_targetingSlot"); break;
-                            case 2: s += pjse.Localization.GetString("bwp6e_routingSlot"); break;
-                            default: s += pjse.Localization.GetString("bwp6e_containmentSlot"); break;
-						}
-						s += ": 0x" + SimPe.Helper.HexString(o[8]);
-					}
-
-                    s += ", " + pjse.Localization.GetString("bwp_earlyExit") + ": " + ((o[0] & 0x02) == 0).ToString();
-                    s += ", " + pjse.Localization.GetString("bwp_includeSpine") + ": " + ((o[0] & 0x04) != 0).ToString();
-                    s += ", " + pjse.Localization.GetString("bwp_duration") + ": "
+                    s += ", " + pjse.Localization.GetString("bwp6e_earlyExit") + ": " + ((o[0] & 0x02) == 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp6e_includeSpine") + ": " + ((o[0] & 0x04) != 0).ToString();
+                    s += ", " + pjse.Localization.GetString("bwp6e_duration") + ": "
                         + ((o[0] & 0x10) != 0 ? dataOwner(0x08, 0) : "---"); // Temp 0
 				}
 			} 
@@ -4296,20 +4284,9 @@ namespace pjse.BhavNameWizards
             s += readStr(GS.BhavStr.EffectSSType, o[0]);
 
             s += ", " + (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[1], o[2], o[3]);       // target object
-            if (lng)
-			{
-				if (o[0] != 0x9 && o[0] != 0xE)
-				{
-					s += ", ";
-					switch (o[9]) 
-					{
-                        case 1: s += pjse.Localization.GetString("bwp_targetingSlot"); break;
-                        case 2: s += pjse.Localization.GetString("bwp_routingSlot"); break;
-                        default: s += pjse.Localization.GetString("bwp_containmentSlot"); break;
-                    }
-					s += ": 0x" + SimPe.Helper.HexString(o[6]);
-				}
-			}
+
+            if (lng && o[0] != 0x9 && o[0] != 0xE)
+                s += ", " + Slot(o[9], o[6]);
 
 			Scope scope = Scope.Private;
 			if      ((o[10] & 0x01) != 0) scope = Scope.Global;
@@ -4955,44 +4932,46 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "ID: " + dataOwner(lng, o[15], o[1], o[2]);
+            s += (lng ? pjse.Localization.GetString("bwp_message") + ": " : "") + dataOwner(lng, o[15], o[1], o[2]);
 
-			s += ", Target ";
+			s += ", " + (lng ? pjse.Localization.GetString("Target") + ": " : "");
 			if ((o[4] & 0x04) != 0)
-				s += "ID: " + dataOwner(lng, o[5], o[6], o[7]);
-			else 
-			{
-				switch (o[3]) 
-				{
-					case 0: s += "Selectable Sims"; break;
-					case 1: s += "Selectable Sims + Neighbors"; break;
-					case 2: s += "Selectable Sims + NPCS"; break;
-					case 3: s += "Neighbors Only"; break;
-					case 4: s += "NPCS Only"; break;
-					case 5: s += "All Sims"; break;
-					case 6: s += "Objects"; break;
-					case 7: s += "Everything"; break;
-					default: s += "??? 0x" + SimPe.Helper.HexString(o[3]); break;
-				}
+				s += dataOwner(lng, o[5], o[6], o[7]);
+			else
+                switch (o[3])
+                {
+                    case 0: s += pjse.Localization.GetString("bwp77_selectableSims"); break;
+                    case 1: s += pjse.Localization.GetString("bwp77_selectableSims")
+                        + " + " + pjse.Localization.GetString("bwp77_neighbors"); break;
+                    case 2: s += pjse.Localization.GetString("bwp77_selectableSims")
+                        + " + " + pjse.Localization.GetString("bwp77_npcs"); break;
+                    case 3: s += pjse.Localization.GetString("bwp77_neighbors"); break;
+                    case 4: s += pjse.Localization.GetString("bwp77_npcs"); break;
+                    case 5: s += pjse.Localization.GetString("bwp77_allSims"); break;
+                    case 6: s += pjse.Localization.GetString("bwp77_objects"); break;
+                    case 7: s += pjse.Localization.GetString("bwp77_everything"); break;
+                    default: s += pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(o[3]); break;
+                }
 
-				if (lng)
-				{
-					s += ", ";
-					switch (o[0]) 
-					{
-						case 0: s += "In " + ((o[4] & 0x01) == 0 ? "same room" : "room: " + dataOwner(o[5], o[6], o[7])); break;
-						case 1: s += "On same level"; break;
-						case 2: s += "On lot"; break;
-						case 3: s += "Inside building"; break;
-						case 4: s += "Outside building"; break;
-						default: s += "??? 0x" + SimPe.Helper.HexString(o[0]); break;
-					}
+            if (lng)
+            {
+                s += ", " + (lng ? pjse.Localization.GetString("bwp_Location") + ": " : "");
+                switch (o[0])
+                {
+                    case 0: s += pjse.Localization.GetString("bwp77_room")
+                        + ": " + ((o[4] & 0x01) == 0 ? pjse.Localization.GetString("bwp77_same") : dataOwner(o[5], o[6], o[7])); break;
+                    case 1: s += pjse.Localization.GetString("bwp77_onSameLevel"); break;
+                    case 2: s += pjse.Localization.GetString("bwp77_onLot"); break;
+                    case 3: s += pjse.Localization.GetString("bwp77_insideBuilding"); break;
+                    case 4: s += pjse.Localization.GetString("bwp77_outsideBuilding"); break;
+                    default: s += pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(o[0]); break;
+                }
 
-					s += ", Priority: 0x" + SimPe.Helper.HexString(o[8]);
+                s += ", " + pjse.Localization.GetString("bwp_priority") + ": 0x" + SimPe.Helper.HexString(o[8]);
 
-					s += ", user data: (" + dataOwner(o[9], o[10], o[11]) + ", " + dataOwner(o[12], o[13], o[14]) + ")";
-				}
-			}
+                s += ", " + pjse.Localization.GetString("bwp77_userData")
+                    + ": (" + dataOwner(o[9], o[10], o[11]) + ", " + dataOwner(o[12], o[13], o[14]) + ")";
+            }
 
 			return s;
 #if DISASIM
@@ -5135,20 +5114,6 @@ namespace pjse.BhavNameWizards
                         ht_fprintf(outFile,TYPE_NORMAL," Windows Ignored.");
                     break;
 #endif
-		}
-
-		string Slot(byte t, byte s)
-		{
-			string f;
-			switch (t)
-			{
-				case 0: return "point at 3/4 height of object";
-				case 1: f = "targeting"; break;
-				case 2: f = "routing"; break;
-				case 3: f = "containment"; break;
-				default: f = "??? 0x" + SimPe.Helper.HexString(t); break;
-			}
-			return f + " slot 0x" + SimPe.Helper.HexString(s); 
 		}
 	}
 
