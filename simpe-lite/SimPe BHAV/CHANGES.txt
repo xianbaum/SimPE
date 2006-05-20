@@ -7,6 +7,16 @@
 !!! stole BhavStr STR# 0x1ee for Token type (0x33)
 !!! stole BhavStr STR# 0x1ed for Stop Animation type (0x6c)
 !!! stole BhavStr STR# 0x1ec for Effect start/stop type (0x70)
+!!! stole BhavStr STR# 0x1eb for Debug type (0x72)
+
+20 May 2006 10:27 - Localisation: BhavWizPrim 0x71, 0x72, 0x73 (plus tweaks and string re-use)
+  * stole BhavStr STR# 0x1eb for Debug type (0x72)
+  pjse Localisation\
+    Localization.resx 1.1.2.20
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.14
+    BhavWizPrim.cs 1.34.2.13.4.23
+  GlobalStrings.package 1.10.8.8.4.7
 
 19 May 2006 23:30 - Localisation: BhavWizPrim 0x6f, 0x70 (plus tweaks and string re-use)
   * stole BhavStr STR# 0x1ec for Effect start/stop type (0x70)

@@ -687,8 +687,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp2e_fromTemp1" xml:space="preserve">
     <value>from slot in temp 1</value>
   </data>
-  <data name="bwp2e_testOnly" xml:space="preserve">
+  <data name="bwp_testOnly" xml:space="preserve">
     <value>TEST ONLY</value>
+    <comment>0x2e, 0x71</comment>
   </data>
   <data name="bwp32_addChange" xml:space="preserve">
     <value>Add / Change Interaction string Mode</value>
@@ -974,5 +975,20 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp70_sheet" xml:space="preserve">
     <value>sheet</value>
+  </data>
+  <data name="bwp71_resetRootBones" xml:space="preserve">
+    <value>Reset root bones</value>
+  </data>
+  <data name="bwp71_slot" xml:space="preserve">
+    <value>Slot</value>
+  </data>
+  <data name="bwp72_pop" xml:space="preserve">
+    <value>Pop last entry from Stack</value>
+  </data>
+  <data name="bwp72_popAll" xml:space="preserve">
+    <value>Pop all entries from Stack</value>
+  </data>
+  <data name="bwp72_push" xml:space="preserve">
+    <value>Push onto Stack</value>
   </data>
 </root>
