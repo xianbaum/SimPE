@@ -4781,18 +4781,6 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0076(Instruction i) : base(i) { }
 
-        private string ArrayName(bool lng, ushort instance)
-        {
-            string s = "0x" + SimPe.Helper.HexString(instance);
-            if (lng)
-            {
-                string temp = readStr(GS.GlobalStr.ArrayName, instance, lng ? -1 : 60, Detail.ValueOnly);
-                if (temp != null && temp.Length > 0)
-                    s += " (\"" + temp + "\")";
-            }
-            return s;
-        }
-
 		protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
@@ -4802,9 +4790,9 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
             s += (o[2] == 0
-                ? pjse.Localization.GetString("bwp76_myArray")
-                : pjse.Localization.GetString("bwp76_stackObjectArray")
-                ) + ": " + ArrayName(lng, ToShort(o[3], o[4])) + ", ";
+                ? pjse.Localization.GetString("bwp_myArray")
+                : pjse.Localization.GetString("bwp_stackObjectArray")
+                ) + " " + ArrayName(lng, ToShort(o[3], o[4])) + ", ";
 
 			switch (o[1]) 
 			{
@@ -5392,11 +5380,12 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			// This is limited compared with disaSim2 as I don't do GUID look ups...
+            s += (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[7], o[8], o[9]);
+            // This is limited compared with disaSim2 as I don't do GUID look ups...
 			uint want = (uint)(o[3] | o[4] << 8 | o[5] << 16 | o[6] << 24);
-			s += "GUID 0x" + SimPe.Helper.HexString(want);
-			s += ", Want target: " + dataOwner(lng, o[7], o[8], o[9]);
-			s += ", (optional) Want level: " + dataOwner(lng, o[10], o[11], o[12]);
+            s += ", " + "GUID 0x" + SimPe.Helper.HexString(want);
+            if (lng)
+                s += ", " + pjse.Localization.GetString("bwp7c_level") + ": " + dataOwner(o[10], o[11], o[12]);
 
 			return s;
 #if DISASIM
@@ -5460,9 +5449,16 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Follow Sim in " + dataOwner(lng, o[0], o[1], o[2]);
-			s += ", output result to " + (o[5] != 0 ? "Stack Object's" : "My") + " object array: "
-                + readStr(GS.GlobalStr.ArrayName, ToShort(o[6], o[7]), lng ? -1 : 60, lng ? Detail.Normal : Detail.ErrorNames);
+			s += (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[0], o[1], o[2]);
+
+            if (lng)
+            {
+                s += ", " + pjse.Localization.GetString("bwp_resultIn") + ": ";
+                s += (o[5] == 0
+                    ? pjse.Localization.GetString("bwp_myArray")
+                    : pjse.Localization.GetString("bwp_stackObjectArray")
+                    ) + " " + ArrayName(lng, ToShort(o[3], o[4]));
+            }
 
 			return s;
 #if DISASIM
@@ -5498,7 +5494,8 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-            s += lng ? (((o4_5 & 0x01) != 0 ? "Definition" : "Dynamic") + " script: ") : "";
+            if (lng)
+                s += pjse.Localization.GetString("bwp7e_script") + ": ";
 
 			if (ToShort(o[2], o[3]) != 0) 
 			{
@@ -5506,19 +5503,26 @@ namespace pjse.BhavNameWizards
 				if      ((o4_5 & 0x02) != 0) scope = Scope.Private;
 				else if ((o4_5 & 0x04) != 0) scope = Scope.SemiGlobal;
 
-                s += readStr(scope, ToShort(o[0], o[1]), (ushort)(ToShort(o[2], o[3]) - 1), lng ? -1 : 60, lng ? Detail.Full : Detail.Normal, false);
-
-				if (lng)
-					s += ", defined in " + (((o4_5 & 0x01) != 0) ? "objLua file" : "description");
+                s += readStr(scope, ToShort(o[0], o[1]), (ushort)(ToShort(o[2], o[3]) - 1), lng ? -1 : 60, lng ? Detail.Full : Detail.Errors, false);
 
 				if ((o4_5 & 0x08) != 0)
 				{
-					s += lng ? "; args: " : ", ";
+                    s += lng ? ", " + pjse.Localization.GetString("manyArgs") + ": " : ", ";
 					for (int i = 0; i < 3; i++) s += (i != 0 ? ", " : "") + dataOwner(lng, o[6+3*i], o[7+3*i], o[8+3*i]);
 				}
-			}
+
+                if (lng)
+                {
+                    s += ", " + pjse.Localization.GetString("bwp7e_type") + ": " + ((o4_5 & 0x01) != 0
+                        ? pjse.Localization.GetString("bwp7e_definition")
+                        : pjse.Localization.GetString("bwp7e_dynamic"));
+                    s += ", " + pjse.Localization.GetString("bwp7e_definitionIn") + ": " + (((o4_5 & 0x01) != 0)
+                        ? pjse.Localization.GetString("bwp7e_objLuaFile")
+                        : pjse.Localization.GetString("bwp7e_description"));
+                }
+            }
 			else
-				s += "none";
+				s += pjse.Localization.GetString("none");
 
 			return s;
 #if DISASIM

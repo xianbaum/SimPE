@@ -218,7 +218,7 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="manyArgs" xml:space="preserve">
     <value>args</value>
-    <comment>BhavWizBhav params, 0x7a</comment>
+    <comment>BhavWizBhav params, 0x7a, 0x7e</comment>
   </data>
   <data name="menuhelp" xml:space="preserve">
     <value>&amp;Help</value>
@@ -301,7 +301,7 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>none</value>
-    <comment>0x03 (indicating an empty list), 0x22 (indicating no string specified - and in b.o.w), 0x74 (indicating no animation)</comment>
+    <comment>0x03 (indicating an empty list), 0x22 (indicating no string specified - and in b.o.w), 0x74 (indicating no animation), 0x7e (no script)</comment>
   </data>
   <data name="Object" xml:space="preserve">
     <value>Object</value>
@@ -952,9 +952,17 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp70_sheet" xml:space="preserve">
     <value>sheet</value>
   </data>
+  <data name="bwp_myArray" xml:space="preserve">
+    <value>My Object Array</value>
+    <comment>0x76, 0x7d</comment>
+  </data>
   <data name="bwp_slot" xml:space="preserve">
     <value>Slot</value>
     <comment>0x71</comment>
+  </data>
+  <data name="bwp_stackObjectArray" xml:space="preserve">
+    <value>Stack Object's Object Array</value>
+    <comment>0x76, 0x7d</comment>
   </data>
   <data name="bwp6e_camera" xml:space="preserve">
     <value>Camera</value>
@@ -1007,9 +1015,6 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp76_into" xml:space="preserve">
     <value>into</value>
   </data>
-  <data name="bwp76_myArray" xml:space="preserve">
-    <value>My Object Array</value>
-  </data>
   <data name="bwp76_pop" xml:space="preserve">
     <value>Pop last element off array</value>
   </data>
@@ -1036,9 +1041,6 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp76_sortLoHi" xml:space="preserve">
     <value>Sort array into lowest to highest order</value>
-  </data>
-  <data name="bwp76_stackObjectArray" xml:space="preserve">
-    <value>Stack Object's Object Array</value>
   </data>
   <data name="bwp76_swap" xml:space="preserve">
     <value>Swap elements</value>
@@ -1135,5 +1137,29 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp7b_start" xml:space="preserve">
     <value>Start Animations Now</value>
+  </data>
+  <data name="bwp7c_level" xml:space="preserve">
+    <value>(optional) Want level</value>
+  </data>
+  <data name="bwp7e_definition" xml:space="preserve">
+    <value>Definition</value>
+  </data>
+  <data name="bwp7e_definitionIn" xml:space="preserve">
+    <value>definition in</value>
+  </data>
+  <data name="bwp7e_description" xml:space="preserve">
+    <value>description</value>
+  </data>
+  <data name="bwp7e_dynamic" xml:space="preserve">
+    <value>Dynamic</value>
+  </data>
+  <data name="bwp7e_objLuaFile" xml:space="preserve">
+    <value>objLua file</value>
+  </data>
+  <data name="bwp7e_script" xml:space="preserve">
+    <value>Script</value>
+  </data>
+  <data name="bwp7e_type" xml:space="preserve">
+    <value>type</value>
   </data>
 </root>

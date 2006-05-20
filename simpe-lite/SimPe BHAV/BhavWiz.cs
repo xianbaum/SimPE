@@ -279,13 +279,13 @@ namespace pjse
             {
                 case 0x00:
                 case 0x01:
-                    temp = readStr(Scope.Private, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.ValueOnly);
+                    temp = readStr(new Str(Scope.Private, instruction.Parent, (uint)GS.GlobalStr.AttributeLabels, false), instance, -1, pjse.Detail.ValueOnly, true, false);
                     if (temp != null && temp.Length > 0)
                         s += " (" + temp + ")";
                     break;
                 case 0x02:
                 case 0x05:
-                    temp = readStr(Scope.SemiGlobal, GS.GlobalStr.AttributeLabels, instance, -1, pjse.Detail.ValueOnly);
+                    temp = readStr(new Str(Scope.SemiGlobal, instruction.Parent, (uint)GS.GlobalStr.AttributeLabels, false), instance, -1, pjse.Detail.ValueOnly, true, false);
                     if (temp != null && temp.Length > 0)
                         s += " (" + temp + ")";
                     break;
@@ -447,10 +447,20 @@ namespace pjse
                 if (detail != Detail.Errors)
                 {
                     if (str.Group == (uint)Group.BhavFuncs)
-                        try { pfname += (GS.BhavStr)str.Instance; }
+                        try
+                        {
+                            if (((GS.BhavStr)str.Instance).ToString() != str.Instance.ToString())
+                                pfname += (GS.BhavStr)str.Instance;
+                            else
+                                pfname += "[" + pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(str.Instance) + "]";
+                        }
                         catch { }
                     else
-                        try { pfname += (GS.GlobalStr)str.Instance; }
+                        try
+                        {
+                            if (((GS.GlobalStr)str.Instance).ToString() != str.Instance.ToString())
+                                pfname += (GS.GlobalStr)str.Instance;
+                        }
                         catch { }
                 }
                 if (pfname.Length == 0 && detail != Detail.Normal)
@@ -668,6 +678,18 @@ namespace pjse
                 default: f += pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(t); break;
             }
             return f + (t != 0 ? ": 0x" + SimPe.Helper.HexString(s) : "");
+        }
+
+        protected string ArrayName(bool lng, ushort instance)
+        {
+            string s = "0x" + SimPe.Helper.HexString(instance);
+            if (lng)
+            {
+                string temp = readStr(GS.GlobalStr.ArrayName, instance, lng ? -1 : 60, Detail.ValueOnly);
+                if (temp != null && temp.Length > 0)
+                    s += " (\"" + temp + "\")";
+            }
+            return s;
         }
 
 

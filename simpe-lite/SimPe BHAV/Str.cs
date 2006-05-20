@@ -48,14 +48,17 @@ namespace pjse
         public uint Type { get { return type; } }
 
 
+        public Str(Scope scope, ExtendedWrapper parent, uint instance, bool fallback)
+            : this(scope, fallback ? parent : null, parent.GroupForScope(scope), instance, SimPe.Data.MetaData.STRING_FILE) { }
+
         public Str(Scope scope, ExtendedWrapper parent, uint instance)
             : this(scope, parent, parent.GroupForScope(scope), instance, SimPe.Data.MetaData.STRING_FILE) { }
 
-        public Str(ExtendedWrapper parent, uint instance, uint type)
-            : this(Scope.Private, parent, parent.PrivateGroup, instance, type) { }
-
         public Str(GS.BhavStr instance)
             : this(Scope.Private, null, (uint)pjse.Group.BhavFuncs, (uint)instance, SimPe.Data.MetaData.STRING_FILE) { }
+
+        public Str(ExtendedWrapper parent, uint instance, uint type)
+            : this(Scope.Private, parent, parent.PrivateGroup, instance, type) { }
 
         protected Str(Scope scope, ExtendedWrapper parent, uint group, uint instance, uint type)
         {
