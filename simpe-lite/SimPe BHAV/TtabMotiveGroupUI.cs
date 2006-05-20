@@ -126,11 +126,11 @@ namespace SimPe.PackedFiles.UserInterface
 			get { return mgnr; }
 			set
 			{
-				if (value < 0 || value > 6)
-					throw new Exception("Motive group must be in range 0 to 6.");
+				//if (value < 0 || value > 6)
+				//	throw new Exception("Motive group must be in range 0 to 6.");
 				mgnr = value;
 
-				gbMotiveGroup.Text = pjse.Localization.GetString(((TtabMotives)mgnr).ToString());
+                gbMotiveGroup.Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Ages, (ushort)mgnr);
 				//gbMotiveGroup.Text = ((TtabMotives)mgnr).ToString();
 			}
 		}

@@ -846,18 +846,5 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 	}
 
-	/// <summary>
-	/// Names for the Ttab Motive Groups
-	/// </summary>
-	public enum TtabMotives : int
-	{
-		Adult = 0x00,
-		Child = 0x01,
-		Teen = 0x02,
-		Toddler = 0x03,
-		Elder = 0x04,
-		Cat = 0x05,
-		Dog = 0x06
-	}
 	#endregion
 }

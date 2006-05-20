@@ -179,34 +179,6 @@
     <value>String</value>
     <comment>StrForm</comment>
   </data>
-  <data name="Adult" xml:space="preserve">
-    <value>Adult</value>
-    <comment>TtabMotives enum</comment>
-  </data>
-  <data name="Cat" xml:space="preserve">
-    <value>Cat</value>
-    <comment>TtabMotives enum</comment>
-  </data>
-  <data name="Child" xml:space="preserve">
-    <value>Child</value>
-    <comment>TtabMotives enum</comment>
-  </data>
-  <data name="Dog" xml:space="preserve">
-    <value>Dog</value>
-    <comment>TtabMotives enum</comment>
-  </data>
-  <data name="Elder" xml:space="preserve">
-    <value>Elder</value>
-    <comment>TtabMotives enum</comment>
-  </data>
-  <data name="Teen" xml:space="preserve">
-    <value>Teen</value>
-    <comment>TtabMotives enum</comment>
-  </data>
-  <data name="Toddler" xml:space="preserve">
-    <value>Toddler</value>
-    <comment>TtabMotives enum</comment>
-  </data>
   <data name="noargs" xml:space="preserve">
     <value>no args</value>
     <comment>BhavWizBhav params</comment>
@@ -329,7 +301,7 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="none" xml:space="preserve">
     <value>none</value>
-    <comment>0x03 (indicating an empty list), 0x22 (indicating no string specified - and in b.o.w)</comment>
+    <comment>0x03 (indicating an empty list), 0x22 (indicating no string specified - and in b.o.w), 0x74 (indicating no animation)</comment>
   </data>
   <data name="Object" xml:space="preserve">
     <value>Object</value>
@@ -976,11 +948,12 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp70_sheet" xml:space="preserve">
     <value>sheet</value>
   </data>
+  <data name="bwp_slot" xml:space="preserve">
+    <value>Slot</value>
+    <comment>0x71</comment>
+  </data>
   <data name="bwp71_resetRootBones" xml:space="preserve">
     <value>Reset root bones</value>
-  </data>
-  <data name="bwp71_slot" xml:space="preserve">
-    <value>Slot</value>
   </data>
   <data name="bwp72_pop" xml:space="preserve">
     <value>Pop last entry from Stack</value>
@@ -990,5 +963,83 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp72_push" xml:space="preserve">
     <value>Push onto Stack</value>
+  </data>
+  <data name="bwp74_agedAnim" xml:space="preserve">
+    <value>use Sim age to pick object Anim</value>
+  </data>
+  <data name="bwp74_dropOnto" xml:space="preserve">
+    <value>Drop onto</value>
+  </data>
+  <data name="bwp74_floor" xml:space="preserve">
+    <value>Floor</value>
+  </data>
+  <data name="bwp74_graspAnim" xml:space="preserve">
+    <value>grasp anim</value>
+  </data>
+  <data name="bwp74_handedness" xml:space="preserve">
+    <value>handedness</value>
+  </data>
+  <data name="bwp74_objectAnim" xml:space="preserve">
+    <value>object anim</value>
+  </data>
+  <data name="bwp74_pickUp" xml:space="preserve">
+    <value>Pick up</value>
+  </data>
+  <data name="bwp76_at" xml:space="preserve">
+    <value>at</value>
+  </data>
+  <data name="bwp76_clearContents" xml:space="preserve">
+    <value>Clear contents</value>
+  </data>
+  <data name="bwp76_getSize" xml:space="preserve">
+    <value>Get size</value>
+  </data>
+  <data name="bwp76_insert" xml:space="preserve">
+    <value>Insert</value>
+  </data>
+  <data name="bwp76_into" xml:space="preserve">
+    <value>into</value>
+  </data>
+  <data name="bwp76_myArray" xml:space="preserve">
+    <value>My Object Array</value>
+  </data>
+  <data name="bwp76_pop" xml:space="preserve">
+    <value>Pop last element off array</value>
+  </data>
+  <data name="bwp76_push" xml:space="preserve">
+    <value>Push onto the back of the array</value>
+  </data>
+  <data name="bwp76_remove" xml:space="preserve">
+    <value>Remove at position</value>
+  </data>
+  <data name="bwp76_set" xml:space="preserve">
+    <value>Set</value>
+  </data>
+  <data name="bwp76_setAll" xml:space="preserve">
+    <value>Set all elements</value>
+  </data>
+  <data name="bwp76_setSize" xml:space="preserve">
+    <value>Set size</value>
+  </data>
+  <data name="bwp76_shift" xml:space="preserve">
+    <value>Shift first element off array</value>
+  </data>
+  <data name="bwp76_sortHiLo" xml:space="preserve">
+    <value>Sort array into highest to lowest order</value>
+  </data>
+  <data name="bwp76_sortLoHi" xml:space="preserve">
+    <value>Sort array into lowest to highest order</value>
+  </data>
+  <data name="bwp76_stackObjectArray" xml:space="preserve">
+    <value>Stack Object's Object Array</value>
+  </data>
+  <data name="bwp76_swap" xml:space="preserve">
+    <value>Swap elements</value>
+  </data>
+  <data name="bwp76_toNext" xml:space="preserve">
+    <value>to next</value>
+  </data>
+  <data name="bwp76_unshift" xml:space="preserve">
+    <value>Unshift onto the front of the array</value>
   </data>
 </root>

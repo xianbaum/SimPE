@@ -4483,7 +4483,7 @@ namespace pjse.BhavNameWizards
 
             s += (lng ? pjse.Localization.GetString("Object") + ": " : "") + dataOwner(lng, o[0], o[1], o[2])
                 + ", " + (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[3], o[4], o[5]);
-            s += ", " + (lng ? pjse.Localization.GetString("bwp71_slot") + ": " : "")
+            s += ", " + (lng ? pjse.Localization.GetString("bwp_slot") + ": " : "")
                 + ((o[9] & 0x01) != 0 ? dataOwner(0x08, 0) : "0x" + SimPe.Helper.HexString(o[6]));
 			if (lng)
 			{
@@ -4671,27 +4671,30 @@ namespace pjse.BhavNameWizards
 
 			switch (o[10]) 
 			{
-				case 0: s += "Pick up Object in " + dataOwner(lng, o[3],ToShort(o[4], o[5])); break;
-				case 1: s += "Drop object onto Floor"; break;
-				default: s += "Drop onto Object in " + dataOwner(lng, o[3],ToShort(o[4], o[5])); break;
+                case 0: s += pjse.Localization.GetString("bwp74_pickUp") + ": " + dataOwner(lng, o[3], ToShort(o[4], o[5])); break;
+                case 1: s += pjse.Localization.GetString("bwp74_dropOnto") + ": "
+                    + pjse.Localization.GetString("bwp74_floor"); break;
+                default: s += pjse.Localization.GetString("bwp74_dropOnto") + ": " + dataOwner(lng, o[3], ToShort(o[4], o[5])); break;
 			}
 
-			s += ", Slot: " + ((o[9] & 0x01) != 0 ? "in Temp 0" : "0x" + SimPe.Helper.HexString(o[6]));
+            s += ", " + pjse.Localization.GetString("bwp_slot") + ": " + ((o[9] & 0x01) != 0
+                ? dataOwner(0x08, 0) // Temp 0
+                : "0x" + SimPe.Helper.HexString(o[6]));
 
 			if (lng)
 			{
-				s += ", object anim: " + (ToShort(o[13], o[14]) != 0xFFFF
-                    ? readStr(GS.GlobalStr.ObjectAnims, ToShort(o[13], o[14]), -1, lng ? Detail.Normal : Detail.ErrorNames)
-					: "none"
+                s += ", " + pjse.Localization.GetString("bwp74_objectAnim") + ": " + (ToShort(o[13], o[14]) != 0xFFFF
+                    ? readStr(GS.GlobalStr.ObjectAnims, ToShort(o[13], o[14]), -1, Detail.ErrorNames)
+					: pjse.Localization.GetString("none")
 					);
 
-				s += ", grasp anim: " + (ToShort(o[11], o[12]) != 0xFFFF
-                    ? readStr(GS.GlobalStr.AdultAnims, ToShort(o[11], o[12]), -1, lng ? Detail.Normal : Detail.ErrorNames)
-					: "none"
+                s += ", " + pjse.Localization.GetString("bwp74_graspAnim") + ": " + (ToShort(o[11], o[12]) != 0xFFFF
+                    ? readStr(GS.GlobalStr.AdultAnims, ToShort(o[11], o[12]), -1, Detail.ErrorNames)
+					: pjse.Localization.GetString("none")
 					);
 
-				s += ", handedness in Temp 3: "            + ((o[9] & 0x02) != 0).ToString();
-				s += ", use Sim age to pick object Anim: " + ((o[9] & 0x04) != 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp74_handedness") + ": " + ((o[9] & 0x02) != 0 ? dataOwner(0x08, 3) : "---"); // Temp 3
+                s += ", " + pjse.Localization.GetString("bwp74_agedAnim") + ": " + ((o[9] & 0x04) != 0).ToString();
 			}
 
 			return s;
@@ -4750,22 +4753,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-			s += "Set to ";
 			if ((o[1] & 0x01) != 0)
-				s += "age in Temp 0";
-			else 
-			{
-				switch (o[0]) 
-				{
-					case 1: s += "Child"; break;
-					case 2: s += "Toddler"; break;
-					case 3: s += "Teen"; break;
-					case 4: s += "Elder"; break;
-					case 7: s += "Baby"; break;
-					case 9: s += "Young Adult"; break;
-					default: s += "Adult"; break;
-				}
-			}
+				s += dataOwner(0x08, 0);
+			else
+                s += readStr(pjse.GS.BhavStr.Ages, o[0]);
 
 			return s;
 #if DISASIM
@@ -4826,32 +4817,43 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+            s += (o[2] == 0
+                ? pjse.Localization.GetString("bwp76_myArray")
+                : pjse.Localization.GetString("bwp76_stackObjectArray")
+                ) + ": " + ArrayName(lng, ToShort(o[3], o[4])) + ", ";
+
 			switch (o[1]) 
 			{
-				case 0x00: s += "Clear contents"; break;
-				case 0x01: s += "Get size into " + dataOwner(lng, o[5], o[6], o[7]); break;
-				case 0x02: s += "Set size to " + dataOwner(lng, o[5], o[6], o[7]); break;
-				case 0x03: s += "Set all elements to " + dataOwner(lng, o[5], o[6], o[7]); break;
-				case 0x04: s += "Unshift " + dataOwner(lng, o[5], o[6], o[7]) + " onto the front of the array."; break;
-				case 0x05: s += "Push " + dataOwner(lng, o[5], o[6], o[7]) + " onto the back of the array."; break;
-				case 0x06: s += "Insert " + dataOwner(lng, o[5], o[6], o[7]) + " at position " + dataOwner(lng, o[8], o[9], o[10]); break;
-				case 0x07: s += "Shift first element off array";
-					s += " ?into " + dataOwner(lng, o[5], o[6], o[7]) + "?";
+                case 0x00: s += pjse.Localization.GetString("bwp76_clearContents"); break;
+                case 0x01: s += pjse.Localization.GetString("bwp76_getSize") + ": " + dataOwner(lng, o[5], o[6], o[7]); break;
+                case 0x02: s += pjse.Localization.GetString("bwp76_setSize") + ": " + dataOwner(lng, o[5], o[6], o[7]); break;
+                case 0x03: s += pjse.Localization.GetString("bwp76_setAll") + ": " + dataOwner(lng, o[5], o[6], o[7]); break;
+                case 0x04: s += pjse.Localization.GetString("bwp76_unshift") + ": " + dataOwner(lng, o[5], o[6], o[7]); break;
+                case 0x05: s += pjse.Localization.GetString("bwp76_push") + ": " + dataOwner(lng, o[5], o[6], o[7]); break;
+                case 0x06: s += pjse.Localization.GetString("bwp76_insert") + ": " + dataOwner(lng, o[5], o[6], o[7])
+                    + ", " + pjse.Localization.GetString("bwp76_at")
+                    + ": " + dataOwner(lng, o[8], o[9], o[10]); break;
+                case 0x07: s += pjse.Localization.GetString("bwp76_shift");
+                    s += ", ?" + pjse.Localization.GetString("bwp76_into")
+                        + ": " + dataOwner(lng, o[5], o[6], o[7]) + "?";
 					break;
-				case 0x08: s += "Pop last element off array";
-					s += " ?into " + dataOwner(lng, o[5], o[6], o[7]) + "?";
-					break;
-				case 0x09: s += "Remove at position " + dataOwner(lng, o[8], o[9], o[10]);
-					s += " ?into " + dataOwner(lng, o[5], o[6], o[7]) + "?";
-					break;
-				case 0x0a: s += "Set " + dataOwner(lng, o[8], o[9], o[10]) + " to next occurrence of " + dataOwner(lng, o[5], o[6], o[7]); break;
-				case 0x0b: s += "Swap elements at " + dataOwner(lng, o[5], o[6], o[7]) + " and " + dataOwner(lng, o[8], o[9], o[10]); break;
-				case 0x0c: s += "Sort array into highest to lowest order"; break;
-				case 0x0d: s += "Sort array into lowest to highest order"; break;
-				default: s += "??? 0x" + SimPe.Helper.HexString(o[1]); break;
+                case 0x08: s += pjse.Localization.GetString("bwp76_pop");
+                    s += ", ?" + pjse.Localization.GetString("bwp76_into")
+                        + ": " + dataOwner(lng, o[5], o[6], o[7]) + "?";
+                    break;
+                case 0x09: s += pjse.Localization.GetString("bwp76_remove") + ": " + dataOwner(lng, o[8], o[9], o[10]);
+                    s += ", ?" + pjse.Localization.GetString("bwp76_into")
+                        + ": " + dataOwner(lng, o[5], o[6], o[7]) + "?";
+                    break;
+                case 0x0a: s += pjse.Localization.GetString("bwp76_set") + ": " + dataOwner(lng, o[8], o[9], o[10])
+                    + ", " + pjse.Localization.GetString("bwp76_toNext")
+                    + ": " + dataOwner(lng, o[5], o[6], o[7]); break;
+                case 0x0b: s += pjse.Localization.GetString("bwp76_swap") + ": " + dataOwner(lng, o[5], o[6], o[7])
+                    + ", " + dataOwner(lng, o[8], o[9], o[10]); break;
+                case 0x0c: s += pjse.Localization.GetString("bwp76_sortHiLo"); break;
+                case 0x0d: s += pjse.Localization.GetString("bwp76_sortLoHi"); break;
+				default: s += pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(o[1]); break;
 			}
-
-            s += " of " + (o[2] == 0 ? "My" : "Stack Object's") + " Object Array" + ": " + ArrayName(lng, ToShort(o[3], o[4]));
 
 			return s;
 #if DISASIM

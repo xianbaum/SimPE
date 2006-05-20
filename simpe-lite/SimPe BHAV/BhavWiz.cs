@@ -142,6 +142,7 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            Ages = 0x1ea, // PJSE: string number stolen
             DebugType = 0x1eb, // PJSE: string number stolen
             EffectSSType = 0x1ec, // PJSE: string number stolen
             StopAnimType = 0x1ed, // PJSE: string number stolen
