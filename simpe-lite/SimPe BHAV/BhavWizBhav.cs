@@ -234,7 +234,7 @@ namespace pjse.BhavNameWizards
 		private string doParams(int thisArgc, int myArgc, bool lng, TPRP tprp)
 		{
 			if (!lng)
-                return pjse.Localization.GetString("bwb_callerparams");
+                return pjse.Localization.GetString("bw_callerparams");
 
 			string s = "";
 			for (int i = 0; thisArgc > 0 && i < myArgc; i++, thisArgc--)

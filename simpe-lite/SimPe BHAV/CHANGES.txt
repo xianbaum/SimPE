@@ -10,6 +10,13 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+20 May 2006 15:07 - Localisation: BhavWizPrim 0x78, 0x79, 0x7a, 0x7b (plus string re-use)
+  pjse Localisation\
+    Localization.resx 1.1.2.22
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.13.4.16
+    BhavWizPrim.cs 1.34.2.13.4.25
+
 20 May 2006 13:36 - Localisation: BhavWizPrim 0x77 (plus fixes, tweaks and string re-use)
   * Slot() moved to BhavWiz.cs
   pjse Localisation\

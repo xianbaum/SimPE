@@ -196,9 +196,9 @@ Check BHAV format and number of lines.</value>
     <value>args unknown</value>
     <comment>BhavWizBhav params</comment>
   </data>
-  <data name="bwb_callerparams" xml:space="preserve">
+  <data name="bw_callerparams" xml:space="preserve">
     <value>caller's params</value>
-    <comment>bwb, 0x1c</comment>
+    <comment>bwb, 0x1c, 0x7a</comment>
   </data>
   <data name="Fallback" xml:space="preserve">
     <value>Fallback</value>
@@ -218,7 +218,7 @@ Check BHAV format and number of lines.</value>
   </data>
   <data name="manyArgs" xml:space="preserve">
     <value>args</value>
-    <comment>BhavWizBhav params</comment>
+    <comment>BhavWizBhav params, 0x7a</comment>
   </data>
   <data name="menuhelp" xml:space="preserve">
     <value>&amp;Help</value>
@@ -350,8 +350,9 @@ Check BHAV format and number of lines.</value>
   <data name="bwp11_handleSubQueueInteractions" xml:space="preserve">
     <value>Handle Sub Queue Interactions</value>
   </data>
-  <data name="bwp11_ticks" xml:space="preserve">
+  <data name="bwp_ticks" xml:space="preserve">
     <value>ticks</value>
+    <comment>0x11, 0x7a</comment>
   </data>
   <data name="bwp12_cleanupAll" xml:space="preserve">
     <value>cleanup all</value>
@@ -466,8 +467,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp17_sampleRate" xml:space="preserve">
     <value>sample rate</value>
   </data>
-  <data name="bwp17_source" xml:space="preserve">
+  <data name="bwp_source" xml:space="preserve">
     <value>source</value>
+    <comment>0x17, 0x79</comment>
   </data>
   <data name="bwp17_volume" xml:space="preserve">
     <value>volume</value>
@@ -614,8 +616,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>Message</value>
     <comment>0x24, 0x77</comment>
   </data>
-  <data name="bwp24_resultIn" xml:space="preserve">
+  <data name="bwp_resultIn" xml:space="preserve">
     <value>result in</value>
+    <comment>0x24, 0x78</comment>
   </data>
   <data name="bwp24_strings" xml:space="preserve">
     <value>Strings</value>
@@ -791,11 +794,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp_flipFlag" xml:space="preserve">
     <value>Flip Flag</value>
-    <comment>0x69, 0x6a, 0x6b</comment>
-  </data>
-  <data name="bwp_flipped" xml:space="preserve">
-    <value>Flipped</value>
-    <comment>0x69, 0x6a, 0x6b</comment>
+    <comment>0x69, 0x6a, 0x6b, 0x7b</comment>
   </data>
   <data name="bwp_loopCount" xml:space="preserve">
     <value>Loop Count</value>
@@ -1088,5 +1087,53 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp77_userData" xml:space="preserve">
     <value>user data</value>
+  </data>
+  <data name="bwp78_windowsIgnored" xml:space="preserve">
+    <value>Windows Ignored</value>
+  </data>
+  <data name="bwp79_outfit" xml:space="preserve">
+    <value>Outfit</value>
+  </data>
+  <data name="bwp79_outfitIndex" xml:space="preserve">
+    <value>Outfit index</value>
+  </data>
+  <data name="bwp79_personData" xml:space="preserve">
+    <value>Clear GUID pointers in person data fields</value>
+  </data>
+  <data name="bwp79_rebuild" xml:space="preserve">
+    <value>Rebuild current outfit</value>
+  </data>
+  <data name="bwp79_save" xml:space="preserve">
+    <value>Save change</value>
+  </data>
+  <data name="bwp79_self" xml:space="preserve">
+    <value>the sim's outfits</value>
+  </data>
+  <data name="bwp7a_delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="bwp7a_looping" xml:space="preserve">
+    <value>Looping</value>
+  </data>
+  <data name="bwp7a_modify" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="bwp7a_reset" xml:space="preserve">
+    <value>Reset Timer Ticks</value>
+  </data>
+  <data name="bwp7a_start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="bwp7b_array" xml:space="preserve">
+    <value>Array</value>
+  </data>
+  <data name="bwp7b_scene" xml:space="preserve">
+    <value>Scene</value>
+  </data>
+  <data name="bwp7b_showHouse" xml:space="preserve">
+    <value>Show Entire House</value>
+  </data>
+  <data name="bwp7b_start" xml:space="preserve">
+    <value>Start Animations Now</value>
   </data>
 </root>
