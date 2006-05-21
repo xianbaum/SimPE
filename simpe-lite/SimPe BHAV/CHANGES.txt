@@ -10,6 +10,17 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+21 May 2006 11:36 - FileTable: Use SimPe preferences system
+  pjse filetable\
+    FileTable.cs 1.11.2.11
+  pjse Localisation\
+    Localization.resx 1.1.4.5
+
+21 May 2006 11:34 - TRCN: Move buttons above unused input boxes
+  SimPe BHAV\
+    TrcnForm.cs 1.11.2.7
+    TrcnForm.resx 1.7.2.3
+
 20 May 2006 16:55 - Localisation: BhavWizPrim 0x7c, 0x7d, 0x7e (plus string re-use and fixes)
   * no fallback on attr names
   * more sensible name guess for Global string files (and catch dodgy Behaviour string files)
