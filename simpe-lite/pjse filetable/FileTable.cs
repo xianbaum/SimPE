@@ -20,6 +20,8 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Resources;
+using System.Globalization;
 using SimPe.Plugin;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
@@ -480,8 +482,11 @@ namespace pjse
 
 		public IToolResult ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
 		{
-			(new FileTableForm()).Settings();
-			return new SimPe.Plugin.ToolResult(false, false);
+			//(new FileTableForm()).Settings();
+            SimPe.Wait.Start();
+            pjse.FileTable.GFT.Refresh();
+            SimPe.Wait.Stop();
+            return new SimPe.Plugin.ToolResult(false, false);
 		}
 
 
@@ -489,15 +494,56 @@ namespace pjse
 
 		public override string ToString()
 		{
-			return "PJSE\\" + pjse.Localization.GetString("FiletableSettings");
-		}
+            //return "PJSE\\" + pjse.Localization.GetString("FiletableSettings");
+            return "PJSE\\" + pjse.Localization.GetString("ft_Refresh");
+        }
 
 		#endregion
 		#endregion
 	}
 
+    public class FileTableSettings : SimPe.GlobalizedObject, SimPe.Interfaces.ISettings
+    {
+        static ResourceManager rm = new ResourceManager(typeof(pjse.Localization));
 
-	public class FileTableWrapperFactory : AbstractWrapperFactory, IToolFactory
+        private static FileTableSettings fts;
+        public static FileTableSettings FTS { get { return fts; } }
+        static FileTableSettings() { fts = new FileTableSettings(); }
+
+        const string BASENAME = "PJSE\\Bhav";
+        SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
+        public FileTableSettings() : base(rm) { }
+
+        [System.ComponentModel.Category("PJSE")]
+        public bool LoadAtStartup
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("loadAtStartup", false);
+                return Convert.ToBoolean(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("loadAtStartup", value);
+            }
+        }
+
+        #region ISettings Members
+
+        public object GetSettingsObject() { return this; }
+
+        public override string ToString() { return pjse.Localization.GetString("ft_Preferences"); }
+
+        [System.ComponentModel.Browsable(false)]
+        public System.Drawing.Image Icon { get { return null; } }
+
+        #endregion
+    }
+
+    public class FileTableWrapperFactory : AbstractWrapperFactory, IToolFactory, ISettingsFactory
 	{
 		#region IToolFactory Members
 
@@ -513,6 +559,12 @@ namespace pjse
 		}
 
 		#endregion
-	}
+
+        #region ISettingsFactory Members
+
+        public ISettings[] KnownSettings { get { return new ISettings[] { FileTableSettings.FTS }; } }
+
+        #endregion
+    }
 
 }
