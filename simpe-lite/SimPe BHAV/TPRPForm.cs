@@ -1084,7 +1084,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.Help("Bhavs");
+			pjse.HelpHelper.Help("TPRP");
 		}
 
 
