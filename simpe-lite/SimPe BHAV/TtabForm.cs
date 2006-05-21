@@ -2424,7 +2424,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.Help("PieMenus");
+            pjse.HelpHelper.Help("Contents");
 		}
 
 

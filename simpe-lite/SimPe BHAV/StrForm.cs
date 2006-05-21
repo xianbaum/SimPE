@@ -1629,7 +1629,7 @@ namespace SimPe.PackedFiles.UserInterface
 			/*pjse.HelpHelper.PluginHelp((wrapper.FileDescriptor.Type == 0x54544173)
 				? "PieMenus"
 				: "Strings");*/
-			pjse.HelpHelper.Help("Strings");
+            pjse.HelpHelper.Help("Contents");
 		}
 
 		private void btnBigString_Click(object sender, System.EventArgs e)

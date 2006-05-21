@@ -10,6 +10,16 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+21 May 2006 14:16 - Help: Just go to Contents.htm...
+  SimPe BHAV\
+    BconForm.cs 1.15.2.8
+    BhavForm.cs 1.64.2.17
+    ObjfForm.cs 1.13.2.9
+    StrForm.cs 1.28.2.12
+    TPRPForm.cs 1.6.2.8
+    TrcnForm.cs 1.11.2.9
+    TtabForm.cs 1.31.2.10
+
 21 May 2006 13:38 - Help: Just the help files...
   SimPe BHAV\
     BconForm.cs 1.15.2.8
