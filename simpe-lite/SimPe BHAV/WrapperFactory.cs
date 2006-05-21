@@ -105,44 +105,31 @@ namespace SimPe.Plugin
 
 		#region IHelpFactory Members
 
-        class helpContents : IHelp
-        {
-            #region IHelp Members
+		class helpContents : IHelp
+		{
+			#region IHelp Members
 
-            public void ShowHelp(ShowHelpEventArgs e) { pjse.HelpHelper.Help("Contents"); }
+			public void ShowHelp(ShowHelpEventArgs e)
+			{
+				pjse.HelpHelper.Help("Contents");
+			}
 
-            public override string ToString() { return "PJSE\\Contents"; }
+			public override string ToString()
+			{
+				return "PJSE";
+			}
 
-            public System.Drawing.Image Icon { get { return null; } }
+			public System.Drawing.Image Icon
+			{
+				get
+				{
+					return null;
+				}
+			}
 
-            #endregion
-        }
+			#endregion
 
-        class helpBhavs : IHelp
-        {
-            #region IHelp Members
-
-            public void ShowHelp(ShowHelpEventArgs e) { pjse.HelpHelper.Help("Bhavs"); }
-
-            public override string ToString() { return "PJSE\\Overviews...\\Behaviour Editing"; }
-
-            public System.Drawing.Image Icon { get { return null; } }
-
-            #endregion
-        }
-
-        class helpConstants : IHelp
-        {
-            #region IHelp Members
-
-            public void ShowHelp(ShowHelpEventArgs e) { pjse.HelpHelper.Help("Constants"); }
-
-            public override string ToString() { return "PJSE\\Overviews...\\Constants"; }
-
-            public System.Drawing.Image Icon { get { return null; } }
-
-            #endregion
-        }
+		}
 
 
 		public IHelp[] KnownHelpTopics
@@ -150,10 +137,8 @@ namespace SimPe.Plugin
 			get
 			{
 				IHelp[] helpTopics = {
-                    new helpContents(),
-                    new helpBhavs(),
-                    new helpConstants(),
-                };
+									new helpContents()
+								};
 				return helpTopics;
 			}
 		}
