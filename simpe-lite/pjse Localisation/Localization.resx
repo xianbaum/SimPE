@@ -1179,7 +1179,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <comment>Menu item</comment>
   </data>
   <data name="strContext" xml:space="preserve">
-    <value>Outside scope</value>
+    <value>Runtime object cannot be predicted</value>
   </data>
   <data name="bow24_noStrings" xml:space="preserve">
     <value>No strings found</value>

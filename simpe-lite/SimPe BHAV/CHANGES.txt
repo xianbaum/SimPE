@@ -10,6 +10,12 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+26 May 2006 21:57 - Fallback: Amend text of out of context message
+  pjse Localisation\
+    Localization.resx 1.1.4.7
+  SimPe BHAV\
+    Str.cs 1.1.4.9
+
 26 May 2006 20:32 - Fallback: Stop falling back out of context (and some other bits)
   * Basically, if the requested group is zero, it means the scope and context mismatched (in GroupForScope)
   * tiny reposition to "true" and "false" labels... doesn't really help
@@ -22,7 +28,9 @@
   SimPe BHAV\
     BhavInstListItemUI.resx 1.3.34.3
     BhavOperandWiz0024.cs 1.1.4.10
-    
+    BhavWiz.cs 1.37.2.18
+    BhavWizPrim.cs 1.34.2.18
+    Str.cs 1.1.4.8
 
 21 May 2006 14:16 - Help: Just go to Contents.htm...
   SimPe BHAV\

@@ -258,7 +258,8 @@ namespace pjse
                 {
                     fsi.strItem = null;
                     fsi.fallback.Add(pjse.Localization.GetString("strContext")
-                        + ": " + pjse.Localization.GetString(parent.Context.ToString()));
+                        //+ ": " + pjse.Localization.GetString(parent.Context.ToString())
+                        );
                     return fsi;
                 }
 
