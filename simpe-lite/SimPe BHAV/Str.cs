@@ -254,6 +254,14 @@ namespace pjse
 			{
 				FallbackStrItem fsi = new FallbackStrItem();
 
+                if (group == 0)
+                {
+                    fsi.strItem = null;
+                    fsi.fallback.Add(pjse.Localization.GetString("strContext")
+                        + ": " + pjse.Localization.GetString(parent.Context.ToString()));
+                    return fsi;
+                }
+
 				if (Wrapper != null)
 				{
 					fsi.strItem = Wrapper[lid, sid]; // try to find instance/lid/sid at scope

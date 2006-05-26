@@ -890,7 +890,7 @@ namespace pjse.BhavNameWizards
 				if (o[0] >= 5 && o[0] <= 8)
 					s += " 0x" + SimPe.Helper.HexString(o[10]);
 
-                s += ", " + pjse.Localization.GetString("bhwp10_preferEmpty") + ": " + ((o[2] & 0x02) == 0).ToString();
+                s += ", " + pjse.Localization.GetString("bwp10_preferEmpty") + ": " + ((o[2] & 0x02) == 0).ToString();
                 s += ", " + pjse.Localization.GetString("bwp10_userEditable") + ": " + ((o[2] & 0x04) != 0).ToString();
                 s += ", " + pjse.Localization.GetString("bwp10_onLevelGround") + ": " + ((o[2] & 0x10) != 0).ToString();
                 s += ", " + pjse.Localization.GetString("bwp10_withEmptyBorder") + ": " + ((o[2] & 0x20) != 0).ToString();
@@ -2377,7 +2377,7 @@ namespace pjse.BhavNameWizards
 		{
 			string s = "";
 			if (temp)
-				s += "STR# 0x" + SimPe.Helper.HexString((ushort)GS.GlobalStr.DialogString) + ":[" + dataOwner(false, 0x08, instance) + "]"; // temp
+				s += GS.GlobalStr.DialogString.ToString() + ":[" + dataOwner(false, 0x08, instance) + "]"; // temp
 			else
 			{
 				if (instance != 0)
@@ -3264,7 +3264,7 @@ namespace pjse.BhavNameWizards
 
             s += ", " + (lng ? pjse.Localization.GetString("bwp_animation") + ": " : "")
                 + ((o[2] & 0x04) != 0
-                ? "ObjectAnims STR# 0x86:[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
+                ? "ObjectAnims:[" + dataOwner(lng, 0x09, o[0], o[1]) + "]" // Param
                 : readStr(GS.GlobalStr.ObjectAnims, ToShort(o[0], o[1]), lng ? -1 : 60, lng ? Detail.Normal : Detail.ErrorNames)
                 );
 

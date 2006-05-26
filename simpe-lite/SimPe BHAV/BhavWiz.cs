@@ -420,7 +420,7 @@ namespace pjse
         #region STR# routines
         public string readStr(GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
         {
-            return readStr(instruction.Parent.Context, (uint)instance, sid, maxlen, detail, false);
+            return readStr(Scope.Private, (uint)instance, sid, maxlen, detail, false);
         }
 
         public string readStr(Scope scope, GS.GlobalStr instance, ushort sid, int maxlen, Detail detail)
@@ -475,7 +475,7 @@ namespace pjse
             if (str != null)
             {
                 FallbackStrItem fsi = str[(byte)SimPe.Helper.WindowsRegistry.LanguageCode, sid];
-                if (fsi != null && fsi.strItem != null)
+                if (fsi != null)
                 {
                     String s = "";
                     if (detail != Detail.ValueOnly && fsi.fallback != null && fsi.fallback.Count != 0)
@@ -484,12 +484,17 @@ namespace pjse
                         for (int i = 0; i < fsi.fallback.Count; i++) s += (i == 0 ? "" : "; ") + fsi.fallback[i];
                         s += "] ";
                     }
-                    if (showLngFB && (fsi.fallback == null || fsi.fallback.Count == 0) && fsi.lidFallback)
-                        s += "[" + pjse.Localization.GetString("Fallback") + ": LID=1] ";
-                    if (addQuotes)
-                        return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full || detail == Detail.Normal ? " [" + pfname + "]" : "");
+                    if (fsi.strItem != null)
+                    {
+                        if (showLngFB && (s.Length == 0) && fsi.lidFallback)
+                            s += "[" + pjse.Localization.GetString("Fallback") + ": LID=1] ";
+                        if (addQuotes)
+                            return s + "\"" + myLeft(fsi.strItem.Title.Trim(), maxlen) + "\"" + (detail == Detail.Full || detail == Detail.Normal ? " [" + pfname + "]" : "");
+                        else
+                            return s + myLeft(fsi.strItem.Title.Trim(), maxlen) + (detail == Detail.Full || detail == Detail.Normal ? " [" + pfname + "]" : "");
+                    }
                     else
-                        return s + myLeft(fsi.strItem.Title.Trim(), maxlen) + (detail == Detail.Full || detail == Detail.Normal ? " [" + pfname + "]" : "");
+                        return (detail == Detail.ValueOnly) ? null : s + pfname;
                 }
             }
             if (detail == Detail.ValueOnly)

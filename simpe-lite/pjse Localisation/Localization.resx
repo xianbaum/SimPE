@@ -311,7 +311,7 @@ Check BHAV format and number of lines.</value>
     <value>Target</value>
     <comment>0x0d (identifies object to receive interaction)</comment>
   </data>
-  <data name="bhwp10_preferEmpty" xml:space="preserve">
+  <data name="bwp10_preferEmpty" xml:space="preserve">
     <value>prefer empty</value>
   </data>
   <data name="bwp0f_if" xml:space="preserve">
@@ -1177,5 +1177,11 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="ft_Refresh" xml:space="preserve">
     <value>Refresh &amp;FileTable</value>
     <comment>Menu item</comment>
+  </data>
+  <data name="strContext" xml:space="preserve">
+    <value>Outside scope</value>
+  </data>
+  <data name="bow24_noStrings" xml:space="preserve">
+    <value>No strings found</value>
   </data>
 </root>

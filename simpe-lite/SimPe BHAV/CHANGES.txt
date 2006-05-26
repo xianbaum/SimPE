@@ -10,6 +10,20 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+26 May 2006 20:32 - Fallback: Stop falling back out of context (and some other bits)
+  * Basically, if the requested group is zero, it means the scope and context mismatched (in GroupForScope)
+  * tiny reposition to "true" and "false" labels... doesn't really help
+  * popup to inform user no dialog strings at requested scope
+  * Where no scope is specified, use "Private" rather than "Context"
+  * Say "DialogStr" rather than the number in prim 0x24 parsing [Temp x]
+  * Don't bother with the number of ObjectAnims in prim 0x69 parsing [Param x]
+  pjse Localisation\
+    Localization.resx 1.1.4.6
+  SimPe BHAV\
+    BhavInstListItemUI.resx 1.3.34.3
+    BhavOperandWiz0024.cs 1.1.4.10
+    
+
 21 May 2006 14:16 - Help: Just go to Contents.htm...
   SimPe BHAV\
     BconForm.cs 1.15.2.8

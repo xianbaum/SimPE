@@ -479,8 +479,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
 			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, inst.Parent.GroupForScope(scope), (uint)GS.GlobalStr.DialogString];
 
-			if (items == null || items.Length == 0)
-				return; // eek!
+            if (items == null || items.Length == 0)
+            {
+                MessageBox.Show(pjse.Localization.GetString("bow24_noStrings")
+                    + " (" + pjse.Localization.GetString(scope.ToString())  + ")");
+                return; // eek!
+            }
 
 			SimPe.PackedFiles.Wrapper.StrWrapper str = new StrWrapper();
 			str.ProcessData(items[0].PFD, items[0].Package);
