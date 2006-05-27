@@ -1,3 +1,22 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 using System;
 using System.Drawing;
 using System.Collections;
@@ -88,75 +107,58 @@ namespace pjse
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.OK = new System.Windows.Forms.Button();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.Cancel = new System.Windows.Forms.Button();
-			this.cbLoadAtStartup = new System.Windows.Forms.CheckBox();
-			this.btnRefresh = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// OK
-			// 
-			this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OK.Location = new System.Drawing.Point(144, 80);
-			this.OK.Name = "OK";
-			this.OK.TabIndex = 3;
-			this.OK.Text = "Okay";
-			// 
-			// panel2
-			// 
-			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel2.Location = new System.Drawing.Point(0, 72);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(232, 1);
-			this.panel2.TabIndex = 0;
-			// 
-			// Cancel
-			// 
-			this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.Cancel.Location = new System.Drawing.Point(64, 80);
-			this.Cancel.Name = "Cancel";
-			this.Cancel.TabIndex = 4;
-			this.Cancel.Text = "Cancel";
-			// 
-			// cbLoadAtStartup
-			// 
-			this.cbLoadAtStartup.Location = new System.Drawing.Point(8, 40);
-			this.cbLoadAtStartup.Name = "cbLoadAtStartup";
-			this.cbLoadAtStartup.TabIndex = 2;
-			this.cbLoadAtStartup.Text = "Load at startup";
-			// 
-			// btnRefresh
-			// 
-			this.btnRefresh.Location = new System.Drawing.Point(8, 8);
-			this.btnRefresh.Name = "btnRefresh";
-			this.btnRefresh.Size = new System.Drawing.Size(80, 23);
-			this.btnRefresh.TabIndex = 1;
-			this.btnRefresh.Text = "Refresh now";
-			this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-			// 
-			// FileTableForm
-			// 
-			this.AcceptButton = this.OK;
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.CancelButton = this.Cancel;
-			this.ClientSize = new System.Drawing.Size(224, 109);
-			this.Controls.Add(this.cbLoadAtStartup);
-			this.Controls.Add(this.btnRefresh);
-			this.Controls.Add(this.OK);
-			this.Controls.Add(this.panel2);
-			this.Controls.Add(this.Cancel);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
-			this.Name = "FileTableForm";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "PJSE Filetable Settings";
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileTableForm));
+            this.OK = new System.Windows.Forms.Button();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.Cancel = new System.Windows.Forms.Button();
+            this.cbLoadAtStartup = new System.Windows.Forms.CheckBox();
+            this.btnRefresh = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // OK
+            // 
+            resources.ApplyResources(this.OK, "OK");
+            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.OK.Name = "OK";
+            // 
+            // panel2
+            // 
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel2.Name = "panel2";
+            // 
+            // Cancel
+            // 
+            resources.ApplyResources(this.Cancel, "Cancel");
+            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel.Name = "Cancel";
+            // 
+            // cbLoadAtStartup
+            // 
+            resources.ApplyResources(this.cbLoadAtStartup, "cbLoadAtStartup");
+            this.cbLoadAtStartup.Name = "cbLoadAtStartup";
+            // 
+            // btnRefresh
+            // 
+            resources.ApplyResources(this.btnRefresh, "btnRefresh");
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // FileTableForm
+            // 
+            this.AcceptButton = this.OK;
+            resources.ApplyResources(this, "$this");
+            this.CancelButton = this.Cancel;
+            this.Controls.Add(this.cbLoadAtStartup);
+            this.Controls.Add(this.btnRefresh);
+            this.Controls.Add(this.OK);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.Cancel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "FileTableForm";
+            this.ResumeLayout(false);
 
 		}
 		#endregion

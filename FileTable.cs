@@ -20,6 +20,8 @@
 using System;
 using System.IO;
 using System.Collections;
+using System.Resources;
+using System.Globalization;
 using SimPe.Plugin;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
@@ -116,6 +118,7 @@ namespace pjse
 
 			OnFiletableRefresh(this, new EventArgs());
 		}
+
 
 		/// <summary>
 		/// Indicates the Refresh() was called
@@ -257,20 +260,42 @@ namespace pjse
 		}
 
 
-		public IPackageFile CurrentPackage
-		{
-			get { return currentPackage; }
+        private void currentPackage_IndexChanged(object sender, EventArgs e)
+        {
+            currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
+            Remove(currentPackage);
+            Add(currentPackage);
+            currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
+            OnFiletableRefresh(this, new EventArgs());
+        }
 
-			set
-			{
-				if (currentPackage != null && !IsFixed(currentPackage))
-					Remove(currentPackage);
-				if (currentPackage != value)
-					currentPackage = IsFixed(value) ? null : value;
-				if (currentPackage != null && !IsFixed(currentPackage))
-					Add(currentPackage);
-			}
-		}
+        public IPackageFile CurrentPackage
+        {
+            get { return currentPackage; }
+
+            set
+            {
+                if (currentPackage != value)
+                {
+                    if (currentPackage != null)
+                    {
+                        currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
+                        Remove(currentPackage);
+                    }
+                    if ((IsFixed(value) && currentPackage != null)
+                        || (!IsFixed(value) && currentPackage == null))
+                    {
+                        currentPackage = IsFixed(value) ? null : value;
+                        if (currentPackage != null)
+                        {
+                            Add(currentPackage);
+                            currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
+                        }
+                        OnFiletableRefresh(this, new EventArgs());
+                    }
+                }
+            }
+        }
 
 		public bool CurrentPackageIsFixed { get { return IsFixed(currentPackage); } }
 
@@ -308,34 +333,36 @@ namespace pjse
 
 			foreach (IPackedFileDescriptor i in package.Index)
 			{
+				if (i.MarkForDelete) continue;
+
 				object val = true;
 				object key = new Entry(package, i);
 
 				if (packedFiles[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("packedFiles[key] != null");
 				packedFiles[key] = val;
 
 				if (byPackage[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byPackage[key] != null");
 				byPackage[key] = val;
 
 				Hashtable byType = (Hashtable)pfByType[i.Type];
 				if (byType == null) byType = (Hashtable)(pfByType[i.Type] = new Hashtable());
 				if (byType[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byType[key] != null");
 				byType[key] = val;
 
 				Hashtable byGroup = (Hashtable)pfByGroup[i.Group];
 				if (byGroup == null) byGroup = (Hashtable)(pfByGroup[i.Group] = new Hashtable());
 				if (byGroup[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byGroup[key] != null");
 				byGroup[key] = val;
 
 				Hashtable tgt = (Hashtable)pfByTypeGroup[i.Type];
 				if (tgt == null) tgt = (Hashtable)(pfByTypeGroup[i.Type] = new Hashtable());
 				Hashtable byTypeGroup = (Hashtable)((tgt[i.Group] == null) ? (tgt[i.Group] = new Hashtable()) : tgt[i.Group]);
 				if (byTypeGroup[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byTypeGroup[key] != null");
 				byTypeGroup[key] = val;
 
 				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[i.Type];
@@ -343,7 +370,7 @@ namespace pjse
 				Hashtable tgitg = (Hashtable)((tgit[i.Group] == null) ? (tgit[i.Group] = new Hashtable()) : tgit[i.Group]);
 				Hashtable byTypeGroupInstance = (Hashtable)((tgitg[i.Instance] == null) ? (tgitg[i.Instance] = new Hashtable()) : tgitg[i.Instance]);
 				if (byTypeGroupInstance[key] != null)
-					throw new Exception("How did that get there?");
+                    throw new Exception("byTypeGroupInstance[key] != null");
 				byTypeGroupInstance[key] = val;
 			}
 			if (isFixed)
@@ -352,7 +379,7 @@ namespace pjse
 
 		private void RefreshCurrentPackage()
 		{
-			if (currentPackage != null && !fixedPackages.Contains(currentPackage))
+			if (currentPackage != null && !IsFixed(currentPackage))
 			{
 				Remove(currentPackage);
 				Add(currentPackage);
@@ -455,8 +482,11 @@ namespace pjse
 
 		public IToolResult ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
 		{
-			(new FileTableForm()).Settings();
-			return new SimPe.Plugin.ToolResult(false, false);
+			//(new FileTableForm()).Settings();
+            SimPe.Wait.Start();
+            pjse.FileTable.GFT.Refresh();
+            SimPe.Wait.Stop();
+            return new SimPe.Plugin.ToolResult(false, false);
 		}
 
 
@@ -464,15 +494,56 @@ namespace pjse
 
 		public override string ToString()
 		{
-			return "PJSE\\Filetable &Settings";
-		}
+            //return "PJSE\\" + pjse.Localization.GetString("FiletableSettings");
+            return "PJSE\\" + pjse.Localization.GetString("ft_Refresh");
+        }
 
 		#endregion
 		#endregion
 	}
 
+    public class FileTableSettings : SimPe.GlobalizedObject, SimPe.Interfaces.ISettings
+    {
+        static ResourceManager rm = new ResourceManager(typeof(pjse.Localization));
 
-	public class FileTableWrapperFactory : AbstractWrapperFactory, IToolFactory
+        private static FileTableSettings fts;
+        public static FileTableSettings FTS { get { return fts; } }
+        static FileTableSettings() { fts = new FileTableSettings(); }
+
+        const string BASENAME = "PJSE\\Bhav";
+        SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
+        public FileTableSettings() : base(rm) { }
+
+        [System.ComponentModel.Category("PJSE")]
+        public bool LoadAtStartup
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("loadAtStartup", false);
+                return Convert.ToBoolean(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("loadAtStartup", value);
+            }
+        }
+
+        #region ISettings Members
+
+        public object GetSettingsObject() { return this; }
+
+        public override string ToString() { return pjse.Localization.GetString("ft_Preferences"); }
+
+        [System.ComponentModel.Browsable(false)]
+        public System.Drawing.Image Icon { get { return null; } }
+
+        #endregion
+    }
+
+    public class FileTableWrapperFactory : AbstractWrapperFactory, IToolFactory, ISettingsFactory
 	{
 		#region IToolFactory Members
 
@@ -488,6 +559,12 @@ namespace pjse
 		}
 
 		#endregion
-	}
+
+        #region ISettingsFactory Members
+
+        public ISettings[] KnownSettings { get { return new ISettings[] { FileTableSettings.FTS }; } }
+
+        #endregion
+    }
 
 }
