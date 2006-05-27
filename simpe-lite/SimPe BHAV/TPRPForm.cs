@@ -273,7 +273,7 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}
 
 			btnCommit.Enabled = wrapper.Changed;
@@ -1084,7 +1084,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.Help("Bhavs");
+            pjse.HelpHelper.Help("Contents");
 		}
 
 

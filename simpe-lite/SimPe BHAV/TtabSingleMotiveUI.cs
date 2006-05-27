@@ -136,55 +136,45 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.Min = new System.Windows.Forms.TextBox();
-			this.Delta = new System.Windows.Forms.TextBox();
-			this.Type = new System.Windows.Forms.TextBox();
-			this.SuspendLayout();
-			// 
-			// Min
-			// 
-			this.Min.Location = new System.Drawing.Point(0, 0);
-			this.Min.MaxLength = 4;
-			this.Min.Name = "Min";
-			this.Min.Size = new System.Drawing.Size(40, 20);
-			this.Min.TabIndex = 1;
-			this.Min.Text = "DDDD";
-			this.Min.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.Min.Validated += new System.EventHandler(this.hex16_Validated);
-			this.Min.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-			// 
-			// Delta
-			// 
-			this.Delta.Location = new System.Drawing.Point(44, 0);
-			this.Delta.MaxLength = 4;
-			this.Delta.Name = "Delta";
-			this.Delta.Size = new System.Drawing.Size(40, 20);
-			this.Delta.TabIndex = 2;
-			this.Delta.Text = "DDDD";
-			this.Delta.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.Delta.Validated += new System.EventHandler(this.hex16_Validated);
-			this.Delta.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-			// 
-			// Type
-			// 
-			this.Type.Location = new System.Drawing.Point(88, 0);
-			this.Type.MaxLength = 4;
-			this.Type.Name = "Type";
-			this.Type.Size = new System.Drawing.Size(40, 20);
-			this.Type.TabIndex = 3;
-			this.Type.Text = "DDDD";
-			this.Type.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-			this.Type.Validated += new System.EventHandler(this.hex16_Validated);
-			this.Type.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-			// 
-			// TtabSingleMotiveUI
-			// 
-			this.Controls.Add(this.Min);
-			this.Controls.Add(this.Delta);
-			this.Controls.Add(this.Type);
-			this.Name = "TtabSingleMotiveUI";
-			this.Size = new System.Drawing.Size(128, 24);
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabSingleMotiveUI));
+            this.Min = new System.Windows.Forms.TextBox();
+            this.Delta = new System.Windows.Forms.TextBox();
+            this.Type = new System.Windows.Forms.TextBox();
+            this.SuspendLayout();
+            // 
+            // Min
+            // 
+            resources.ApplyResources(this.Min, "Min");
+            this.Min.Name = "Min";
+            this.Min.Validated += new System.EventHandler(this.hex16_Validated);
+            this.Min.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+            this.Min.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            // 
+            // Delta
+            // 
+            resources.ApplyResources(this.Delta, "Delta");
+            this.Delta.Name = "Delta";
+            this.Delta.Validated += new System.EventHandler(this.hex16_Validated);
+            this.Delta.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+            this.Delta.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            // 
+            // Type
+            // 
+            resources.ApplyResources(this.Type, "Type");
+            this.Type.Name = "Type";
+            this.Type.Validated += new System.EventHandler(this.hex16_Validated);
+            this.Type.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+            this.Type.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            // 
+            // TtabSingleMotiveUI
+            // 
+            this.Controls.Add(this.Min);
+            this.Controls.Add(this.Delta);
+            this.Controls.Add(this.Type);
+            this.Name = "TtabSingleMotiveUI";
+            resources.ApplyResources(this, "$this");
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

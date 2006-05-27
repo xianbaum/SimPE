@@ -230,7 +230,7 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}
 
 			btnCommit.Enabled = wrapper.Changed;
@@ -266,7 +266,8 @@ namespace SimPe.PackedFiles.UserInterface
 			if (trcn != null)
 			{
 				// if it exists ask if user wants to preserve content
-				DialogResult dr = MessageBox.Show("Keep existing labels?"
+				DialogResult dr = MessageBox.Show(
+                    pjse.Localization.GetString("ml_keeplabels")
 					, btnTRCNMaker.Text
 					, MessageBoxButtons.YesNoCancel
 					, MessageBoxIcon.Warning);
@@ -297,7 +298,9 @@ namespace SimPe.PackedFiles.UserInterface
 			trcn.SynchronizeUserData();
 			wrapper.Package.EndUpdate();
 			this.updateLists();
-			MessageBox.Show("Done!", btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show(
+                pjse.Localization.GetString("ml_done")
+                , btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 		#endregion
 
@@ -961,7 +964,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.Help("Constants");
+			pjse.HelpHelper.Help("Contents");
 		}
 
 		private void btnCommit_Clicked(object sender, System.EventArgs e)

@@ -738,7 +738,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			BhavForm ui = (BhavForm)b.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "View BHAV: " + b.FileName + " [" + b.Package.SaveFileName + "]";
+			ui.Text = pjse.Localization.GetString("viewbhav") + ": " + b.FileName + " [" + b.Package.SaveFileName + "]";
 			b.RefreshUI();
 			ui.Show();
 		}
@@ -753,13 +753,13 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}			
 		}
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.Help("ObjectFuncs");
+            pjse.HelpHelper.Help("Contents");
 		}
 
 

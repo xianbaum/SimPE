@@ -68,7 +68,16 @@ namespace pjse
 		/// <summary>
 		/// This object's group
 		/// </summary>
-		public uint Group { get { return this.FileDescriptor.Group; } }
+		public uint PrivateGroup
+        {
+            get
+            {
+                if (Context == Scope.Global || Context == Scope.SemiGlobal)
+                    return 0;
+
+                return this.FileDescriptor.Group;
+            }
+        }
 
 		/// <summary>
 		/// The SemiGlobal group for this object
@@ -77,7 +86,13 @@ namespace pjse
 		{
 			get
 			{
-				Glob glob = BhavWiz.GlobByGroup(this.FileDescriptor.Group);
+                if (Context == Scope.Global)
+                    return 0;
+
+                if (Context == Scope.SemiGlobal)
+                    return this.FileDescriptor.Group;
+
+                Glob glob = BhavWiz.GlobByGroup(this.FileDescriptor.Group);
 				return (glob == null ? 0 : glob.SemiGlobalGroup);
 			}
 		}
@@ -107,39 +122,28 @@ namespace pjse
 		}
 
 
-		public uint GroupForScope(Scope s)
-		{
-			uint group = 0;
-
-			if (s == Scope.Global)
-				group = GlobalGroup;
-			else if (Context != Scope.Global)
-			{
-				if (s == Scope.SemiGlobal)
-					group = (Context == Scope.SemiGlobal) ? Group : SemiGroup;
-				else if (Context != Scope.SemiGlobal)
-					group = Group;
-			}
-
-			return group;
-		}
+        public uint GroupForScope(Scope s)
+        {
+            if (s == Scope.Global) return GlobalGroup;
+            if (s == Scope.SemiGlobal) return SemiGroup;
+            return PrivateGroup;
+        }
 
 
 		public uint GroupForContext { get { return GroupForScope(Context); } }
 
+
 		public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance)
 		{
-			pjse.FileTable.Entry[] items;
+            uint group = PrivateGroup;
+            if (type == SimPe.Data.MetaData.BHAV_FILE)
+            {
+                if (instance < 0x1000) group = GlobalGroup;
+                else if (instance >= 0x2000) group = SemiGroup;
+            }
 
-			items = pjse.FileTable.GFT[type, Group, instance];
-			if (items == null || items.Length == 0)
-				items = pjse.FileTable.GFT[type, SemiGroup, instance];
-			if (items == null || items.Length == 0)
-				items = pjse.FileTable.GFT[type, GlobalGroup, instance];
-			if (items == null || items.Length == 0)
-				return null;
-
-			return items[0];
+			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[type, group, instance];
+			return (items == null || items.Length == 0) ? null : items[0];
 		}
 
 	}

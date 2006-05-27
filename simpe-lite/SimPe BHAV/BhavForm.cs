@@ -259,6 +259,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnInsTrue.Enabled = this.btnInsFalse.Enabled = this.btnAdd.Enabled = !state;
 		}
 
+        private bool instIsBhav()
+        {
+            return wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode) != null;
+        }
+
 		private void UpdateInstPanel()
 		{
 			internalchg = true;
@@ -342,7 +347,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 				this.btnDelPescado.Enabled = this.btnDel.Enabled = wrapper.Count > 1;
 
-				this.llopenbhav.Enabled = currentInst.FTEntry != null;
+                this.llopenbhav.Enabled = instIsBhav();
 				this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
 				Longname = currentInst.LongName;
 			}
@@ -350,11 +355,16 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private string Longname
+        private static string onearg = pjse.Localization.GetString("oneArg");
+        private static string manyargs = pjse.Localization.GetString("manyArgs");
+        private string Longname
 		{
 			set
 			{
-				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ").Replace("args: ", "args:\r\n  ").Replace("arg: ", "arg:\r\n  ");
+				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ")
+                    .Replace(onearg + ": ", onearg  +":\r\n  ")
+                    .Replace(manyargs + ": ", manyargs + ":\r\n  ")
+                    ;
 			}
 		}
 
@@ -398,7 +408,8 @@ namespace SimPe.PackedFiles.UserInterface
 			if (tprp != null)
 			{
 				// if it exists ask if user wants to preserve content
-				DialogResult dr = MessageBox.Show("Keep existing labels?"
+				DialogResult dr = MessageBox.Show(
+                    pjse.Localization.GetString("ml_keeplabels")
 					, btnTPRPMaker.Text
 					, MessageBoxButtons.YesNoCancel
 					, MessageBoxIcon.Warning);
@@ -425,16 +436,18 @@ namespace SimPe.PackedFiles.UserInterface
 			for(int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
 			{
 				int p = tprp.Add(new TPRPParamLabel(tprp));
-				tprp[false, p].Label = "Param " + arg.ToString();
+				tprp[false, p].Label = BhavWiz.dnParam() + " " + arg.ToString();
 			}
 			for(int local = minLocalC; local < wrapper.Header.LocalVarCount; local++)
 			{
 				int l = tprp.Add(new TPRPLocalLabel(tprp));
-				tprp[true, l].Label = "Local " + local.ToString();
+                tprp[true, l].Label = BhavWiz.dnLocal() + " " + local.ToString();
 			}
 			tprp.SynchronizeUserData();
 			wrapper.Package.EndUpdate();
-			MessageBox.Show("Done!", btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+			MessageBox.Show(
+                pjse.Localization.GetString("ml_done")
+                , btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 
@@ -586,7 +599,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				if (internalchg) return;
 				internalchg = true;
-				this.Text = tbFilename.Text = wrapper.FileName;
+				/*this.Text = */tbFilename.Text = wrapper.FileName;
 				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
 				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
 				tbArgC.Text = "0x"+Helper.HexString(wrapper.Header.ArgumentCount);
@@ -606,7 +619,7 @@ namespace SimPe.PackedFiles.UserInterface
 					this.btnCancel.Enabled = true;
 
 					this.currentInst = currentInst.Instruction;
-					this.llopenbhav.Enabled = currentInst.FTEntry != null;
+                    this.llopenbhav.Enabled = instIsBhav();
 					this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
 					Longname = currentInst.LongName;
 				}
@@ -2715,7 +2728,7 @@ namespace SimPe.PackedFiles.UserInterface
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage(Localization.Manager.GetString("errwritingfile"), ex);
+				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}			
 		}
 
@@ -2729,17 +2742,22 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			pjse.HelpHelper.Help("Bhavs");
+            pjse.HelpHelper.Help("Contents");
 		}
 
 
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-			Bhav bhav = ((pjse.BhavNameWizards.BhavWizBhav)currentInst).Wrapper;
-			BhavForm ui = (BhavForm)bhav.UIHandler;
+            pjse.FileTable.Entry item = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode);
+            if (item == null) return; // this should never happen
+            Bhav bhav = new Bhav();
+            bhav.ProcessData(item.PFD, item.Package);
+
+            BhavForm ui = (BhavForm)bhav.UIHandler;
 			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = "View BHAV: " + currentInst.ShortName + " [" + bhav.Package.SaveFileName + "]";
+			ui.Text = 
+                pjse.Localization.GetString("viewbhav") + ": " + currentInst.ShortName + " [" + bhav.Package.SaveFileName + "]";
 			bhav.RefreshUI();
 			ui.Show();
 		}

@@ -110,54 +110,41 @@ namespace pjse
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.OK = new System.Windows.Forms.Button();
-			this.Cancel = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// panel1
-			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel1.Location = new System.Drawing.Point(0, 112);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(320, 1);
-			this.panel1.TabIndex = 1;
-			// 
-			// OK
-			// 
-			this.OK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.OK.Location = new System.Drawing.Point(232, 120);
-			this.OK.Name = "OK";
-			this.OK.TabIndex = 2;
-			this.OK.Text = "Okay";
-			// 
-			// Cancel
-			// 
-			this.Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.Cancel.Location = new System.Drawing.Point(144, 120);
-			this.Cancel.Name = "Cancel";
-			this.Cancel.TabIndex = 3;
-			this.Cancel.Text = "Cancel";
-			// 
-			// BhavOperandWiz
-			// 
-			this.AcceptButton = this.OK;
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.CancelButton = this.Cancel;
-			this.ClientSize = new System.Drawing.Size(314, 151);
-			this.Controls.Add(this.OK);
-			this.Controls.Add(this.panel1);
-			this.Controls.Add(this.Cancel);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-			this.Name = "BhavOperandWiz";
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "PJSE: Instruction Wizard (EXPERIMENTAL)";
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BhavOperandWiz));
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.OK = new System.Windows.Forms.Button();
+            this.Cancel = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // panel1
+            // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Name = "panel1";
+            // 
+            // OK
+            // 
+            resources.ApplyResources(this.OK, "OK");
+            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.OK.Name = "OK";
+            // 
+            // Cancel
+            // 
+            resources.ApplyResources(this.Cancel, "Cancel");
+            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel.Name = "Cancel";
+            // 
+            // BhavOperandWiz
+            // 
+            this.AcceptButton = this.OK;
+            resources.ApplyResources(this, "$this");
+            this.CancelButton = this.Cancel;
+            this.Controls.Add(this.OK);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.Cancel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Name = "BhavOperandWiz";
+            this.ResumeLayout(false);
 
 		}
 		#endregion
@@ -435,7 +422,7 @@ namespace pjse.BhavOperandWizards
 				if (pickerNames != null)
 				{
 					pickerNames = (ArrayList)pickerNames.Clone();
-					pickerNames.Insert(0, "[0: invalid]");
+					pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
 				}
 			}
 			else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))

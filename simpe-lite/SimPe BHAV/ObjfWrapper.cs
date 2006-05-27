@@ -72,15 +72,14 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		/// <summary>
+        private static ArrayList al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
+        /// <summary>
 		/// Constructor
 		/// </summary>
 		public Objf() : base()
 		{
-			ArrayList al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
 			while (items.Count < al.Count)
 				items.Add(new ObjfItem(this));
-			al = null;
 		}
 
 

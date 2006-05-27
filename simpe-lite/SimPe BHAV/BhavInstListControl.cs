@@ -177,8 +177,10 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			else
 			{
-				MessageBox.Show("Failed to add a new line.\r\nCheck BHAV format and number of lines.",
-					"PJSE: Behaviour Editor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(
+                    pjse.Localization.GetString("toomanylines")
+                    , "PJSE: Behaviour Editor"
+                    , MessageBoxButtons.OK, MessageBoxIcon.Error);
 				newLine = csel;
 			}
 
@@ -635,7 +637,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.start = start;
 			this.stop = stop;
-			this.lane = lane;
 			this.truerule = truerule;
 		}
 

@@ -1,171 +1,204 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = ""
-                AssemblyKeyContainerName = ""
-                AssemblyName = "pjse.guidtool.plugin"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = 'cd "$(ProjectDir)"&#xd;&#xa;if exist Plugins rmdir /s/q Plugins&#xd;&#xa;mkdir Plugins&#xd;&#xa;mkdir "Plugins\$(TargetName)"&#xd;&#xa;(cd "$(TargetDir)"&#xd;&#xa;tar c --exclude "*.bat" . ) | tar x -C "Plugins"&#xd;&#xa;copy ..\LICENSE.txt "Plugins\$(TargetName)"&#xd;&#xa;rem copy ..\*.package "Plugins\$(TargetName)"&#xd;&#xa;copy CHANGES.txt "Plugins\$(TargetName)"&#xd;&#xa;&#xd;&#xa;set base=$(TargetName)-$(ConfigurationName)&#xd;&#xa;set mydate=%date%&#xd;&#xa;set dd=%mydate:~0,2%&#xd;&#xa;set mm=%mydate:~3,2%&#xd;&#xa;set yy=%mydate:~6,4%&#xd;&#xa;set mytime=%time%&#xd;&#xa;set h=%mytime:~0,2%&#xd;&#xa;set m=%mytime:~3,2%&#xd;&#xa;set s=%mytime:~6,2%&#xd;&#xa;set suffix=%yy%%mm%%dd%-%h%%m%&#xd;&#xa;&#xd;&#xa;del ..\"%base%*"&#xd;&#xa;rem zip -r9 "%base%-%suffix%.zip" Plugins&#xd;&#xa;7za a -tzip -r -mx9 "%base%-%suffix%.zip" Plugins&#xd;&#xa;move "%base%-%suffix%.zip" ..&#xd;&#xa;tar cv Plugins | bzip2 > "%base%-%suffix%.tar.bz2"&#xd;&#xa;move "%base%-%suffix%.tar.bz2" ..&#xd;&#xa;7za a -t7z -mx9 -ms "%base%-%suffix%.7z" Plugins&#xd;&#xa;move "%base%-%suffix%.7z" ..&#xd;&#xa;&#xd;&#xa;cd ..\..\SimPe&#xd;&#xa;xcopy /m /e /y "$(ProjectDir)Plugins" Plugins'
-                RootNamespace = "pjse.guidtool"
-                RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "true"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "false"
-                    OutputPath = "bin\Debug\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "bin\Release\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "InProgress"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "INPROGRESS;TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "bin\InProgress\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.Drawing"
-                    AssemblyName = "System.Drawing"
-                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
-                />
-                <Reference
-                    Name = "System.Windows.Forms"
-                    AssemblyName = "System.Windows.Forms"
-                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "I:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
-                    Name = "simpe.helper"
-                    AssemblyName = "simpe.helper"
-                    HintPath = "..\..\SimPe\simpe.helper.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.package"
-                    AssemblyName = "simpe.package"
-                    HintPath = "..\..\SimPe\simpe.package.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.workspace"
-                    AssemblyName = "simpe.workspace"
-                    HintPath = "..\..\SimPe\simpe.workspace.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.interfaces"
-                    AssemblyName = "simpe.interfaces"
-                    HintPath = "..\..\SimPe\simpe.interfaces.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.commonhandler"
-                    AssemblyName = "simpe.commonhandler"
-                    HintPath = "..\..\SimPe\simpe.commonhandler.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "pjse filetable"
-                    Project = "{84085FAA-A947-492E-88BC-B941A4623811}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                    Private = "False"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "GUIDTool.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "GUIDTool.resx"
-                    DependentUpon = "GUIDTool.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>pjse.guidtool.plugin</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>pjse.guidtool</RootNamespace>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'InProgress|AnyCPU' ">
+    <OutputPath>bin\InProgress\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>INPROGRESS;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="simpe.commonhandler">
+      <Name>simpe.commonhandler</Name>
+      <HintPath>..\..\SimPe\simpe.commonhandler.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.helper">
+      <Name>simpe.helper</Name>
+      <HintPath>..\..\SimPe\simpe.helper.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.interfaces">
+      <Name>simpe.interfaces</Name>
+      <HintPath>..\..\SimPe\simpe.interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.package">
+      <Name>simpe.package</Name>
+      <HintPath>..\..\SimPe\simpe.package.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.workspace">
+      <Name>simpe.workspace</Name>
+      <HintPath>..\..\SimPe\simpe.workspace.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\pjse filetable\pjse filetable.csproj">
+      <Name>pjse filetable</Name>
+      <Project>{84085FAA-A947-492E-88BC-B941A4623811}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\pjse Localisation\pjse localisation.csproj">
+      <Project>{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}</Project>
+      <Name>pjse localisation</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GUIDTool.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <EmbeddedResource Include="GUIDTool.resx">
+      <DependentUpon>GUIDTool.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>set base=$(TargetName)-$(ConfigurationName)
+set src=Source-$(ConfigurationName)
+set mydate=%25date%25
+set dd=%25mydate:~0,2%25
+set mm=%25mydate:~3,2%25
+set yy=%25mydate:~6,4%25
+set mytime=%25time%25
+set h=%25mytime:~0,2%25
+set m=%25mytime:~3,2%25
+set s=%25mytime:~6,2%25
+set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
+set tarv=
 
+cd "$(ProjectDir)"
+
+if exist Plugins rmdir /s/q Plugins
+mkdir Plugins
+mkdir "Plugins\$(TargetName)"
+
+(cd "$(TargetDir)"
+tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
+(cd ..
+tar c LICENSE.txt) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+tar c CHANGES.txt | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+
+tar c Plugins | (cd ..\..\SimPe
+tar xv)
+
+del ..\"%25base%25*"
+7za a -tzip -r -mx9 "..\%25base%25-%25suffix%25.zip" Plugins
+
+if not $(ConfigurationName)==Release goto skip
+tar cv Plugins | bzip2 &gt; "..\%25base%25-%25suffix%25.tar.bz2"
+7za a -t7z -mx9 -ms "..\%25base%25-%25suffix%25.7z" Plugins
+:skip:</PostBuildEvent>
+  </PropertyGroup>
+</Project>

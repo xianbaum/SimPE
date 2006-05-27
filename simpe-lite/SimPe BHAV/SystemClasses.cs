@@ -1,3 +1,23 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+
 using System;
 
 namespace System
@@ -5,32 +25,32 @@ namespace System
 	/// <summary>
 	/// Summary description for SystemClasses.
 	/// </summary>
-	public class boolset
+	public class Boolset
 	{
 		private bool[] bitset = null;
 
-		private boolset(int size, uint val)
+		private Boolset(int size, uint val)
 		{
 			bitset = new bool[size];
 			for(int i = 0; i < size; i++)
 				bitset[i] = (val & (1 << i)) != 0;
 		}
 
-		public boolset(uint val) : this(32, val) {}
+		public Boolset(uint val) : this(32, val) {}
 
-		public boolset(ushort val) : this(16, val) {}
+		public Boolset(ushort val) : this(16, val) {}
 
-		public boolset(byte val) : this(8, val) {}
-
-
-		public static implicit operator boolset(uint o) { return new boolset(o); }
-
-		public static implicit operator boolset(ushort o) { return new boolset(o); }
-
-		public static implicit operator boolset(byte o) { return new boolset(o); }
+		public Boolset(byte val) : this(8, val) {}
 
 
-		private static int doOperator(boolset t, int l)
+		public static implicit operator Boolset(uint o) { return new Boolset(o); }
+
+		public static implicit operator Boolset(ushort o) { return new Boolset(o); }
+
+		public static implicit operator Boolset(byte o) { return new Boolset(o); }
+
+
+		private static int doOperator(Boolset t, int l)
 		{
 			int val = 0;
 			for(int i = 0; i < l && i < t.bitset.Length; i++)
@@ -38,11 +58,11 @@ namespace System
 			return val;
 		}
 
-		public static implicit operator byte(boolset t) { return (byte)doOperator(t, 8); }
+		public static implicit operator byte(Boolset t) { return (byte)doOperator(t, 8); }
 
-		public static implicit operator ushort(boolset t) { return (ushort)doOperator(t, 16); }
+		public static implicit operator ushort(Boolset t) { return (ushort)doOperator(t, 16); }
 
-		public static implicit operator uint(boolset t) { return (uint)doOperator(t, 32); }
+		public static implicit operator uint(Boolset t) { return (uint)doOperator(t, 32); }
 
 
 		public bool this[int i]

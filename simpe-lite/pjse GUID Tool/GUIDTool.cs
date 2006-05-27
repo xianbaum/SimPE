@@ -98,7 +98,7 @@ namespace pjse.guidtool
 
 		public override string ToString()
 		{
-			return "PJSE\\&" + this.Text;
+            return "PJSE\\" + pjse.Localization.GetString("gt_ObjectFinder");
 		}
 
 		#endregion
@@ -141,8 +141,8 @@ namespace pjse.guidtool
 						(type == SearchType.Name && ((string)item).ToLower().IndexOf(this.tbName.Text) >= 0))
 					{
 						this.rtbReport.Text += "0x" + SimPe.Helper.HexString(itemguid) + ": "
-							+ "Group 0x" + SimPe.Helper.HexString(item.PFD.Group) + " - "
-							+ item + " (" + item.Package.FileName + ")\n";
+                            + pjse.Localization.GetString("gt_Group") + " 0x" + SimPe.Helper.HexString(item.PFD.Group)
+                            + " - " + item + " (" + item.Package.FileName + ")\n";
 						i++;
 					}
 				}
@@ -154,9 +154,12 @@ namespace pjse.guidtool
 			this.progressBar1.Value = 0;
 			this.progressBar1.Visible = false;
 			if (i < 180)
-				this.lbStatus.Text = (this.rtbReport.Text.Length == 0 ? "No" : i.ToString()) + " matches found";
+				this.lbStatus.Text = (this.rtbReport.Text.Length == 0
+                    ? pjse.Localization.GetString("gt_NoMatchesFound")
+                    : Localization.GetString("gt_MatchesFound") + ": " + i.ToString()
+                    );
 			else
-				this.lbStatus.Text = "Too many matches found, first 180 shown.  Use a more specific search.";
+                this.lbStatus.Text = pjse.Localization.GetString("gt_TooManyMatches");
 			this.lbStatus.Visible = true;
 		}
 
@@ -185,143 +188,100 @@ namespace pjse.guidtool
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.tbGUID = new System.Windows.Forms.TextBox();
-			this.lbGUID = new System.Windows.Forms.Label();
-			this.rtbReport = new System.Windows.Forms.RichTextBox();
-			this.btnSearch = new System.Windows.Forms.Button();
-			this.btnClose = new System.Windows.Forms.Button();
-			this.progressBar1 = new System.Windows.Forms.ProgressBar();
-			this.lbName = new System.Windows.Forms.Label();
-			this.tbName = new System.Windows.Forms.TextBox();
-			this.lbStatus = new System.Windows.Forms.Label();
-			this.btnHelp = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// tbGUID
-			// 
-			this.tbGUID.Location = new System.Drawing.Point(56, 8);
-			this.tbGUID.MaxLength = 10;
-			this.tbGUID.Name = "tbGUID";
-			this.tbGUID.Size = new System.Drawing.Size(88, 20);
-			this.tbGUID.TabIndex = 1;
-			this.tbGUID.Text = "0xDDDDDDDD";
-			this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-			this.tbGUID.Validated += new System.EventHandler(this.textBox_Validated);
-			this.tbGUID.Enter += new System.EventHandler(this.textBox_Enter);
-			// 
-			// lbGUID
-			// 
-			this.lbGUID.AutoSize = true;
-			this.lbGUID.Location = new System.Drawing.Point(19, 11);
-			this.lbGUID.Name = "lbGUID";
-			this.lbGUID.Size = new System.Drawing.Size(32, 16);
-			this.lbGUID.TabIndex = 0;
-			this.lbGUID.Text = "GUID";
-			// 
-			// rtbReport
-			// 
-			this.rtbReport.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.rtbReport.DetectUrls = false;
-			this.rtbReport.Font = new System.Drawing.Font("Lucida Console", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.rtbReport.Location = new System.Drawing.Point(8, 72);
-			this.rtbReport.Name = "rtbReport";
-			this.rtbReport.ReadOnly = true;
-			this.rtbReport.ShowSelectionMargin = true;
-			this.rtbReport.Size = new System.Drawing.Size(432, 120);
-			this.rtbReport.TabIndex = 0;
-			this.rtbReport.TabStop = false;
-			this.rtbReport.Text = "";
-			this.rtbReport.WordWrap = false;
-			// 
-			// btnSearch
-			// 
-			this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSearch.Location = new System.Drawing.Point(272, 8);
-			this.btnSearch.Name = "btnSearch";
-			this.btnSearch.TabIndex = 3;
-			this.btnSearch.Text = "Search";
-			this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-			// 
-			// btnClose
-			// 
-			this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnClose.Location = new System.Drawing.Point(360, 8);
-			this.btnClose.Name = "btnClose";
-			this.btnClose.TabIndex = 4;
-			this.btnClose.Text = "Close";
-			// 
-			// progressBar1
-			// 
-			this.progressBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.progressBar1.Location = new System.Drawing.Point(0, 198);
-			this.progressBar1.Name = "progressBar1";
-			this.progressBar1.Size = new System.Drawing.Size(448, 23);
-			this.progressBar1.TabIndex = 0;
-			// 
-			// lbName
-			// 
-			this.lbName.AutoSize = true;
-			this.lbName.Location = new System.Drawing.Point(17, 43);
-			this.lbName.Name = "lbName";
-			this.lbName.Size = new System.Drawing.Size(34, 16);
-			this.lbName.TabIndex = 0;
-			this.lbName.Text = "Name";
-			// 
-			// tbName
-			// 
-			this.tbName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tbName.Location = new System.Drawing.Point(56, 40);
-			this.tbName.Name = "tbName";
-			this.tbName.Size = new System.Drawing.Size(376, 20);
-			this.tbName.TabIndex = 2;
-			this.tbName.Text = "";
-			this.tbName.Validated += new System.EventHandler(this.textBox_Validated);
-			this.tbName.Enter += new System.EventHandler(this.textBox_Enter);
-			// 
-			// lbStatus
-			// 
-			this.lbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.lbStatus.Location = new System.Drawing.Point(0, 200);
-			this.lbStatus.Name = "lbStatus";
-			this.lbStatus.Size = new System.Drawing.Size(448, 23);
-			this.lbStatus.TabIndex = 0;
-			this.lbStatus.Text = "Type in the GUID or (part of) the object name and click Search";
-			// 
-			// btnHelp
-			// 
-			this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnHelp.Location = new System.Drawing.Point(232, 8);
-			this.btnHelp.Name = "btnHelp";
-			this.btnHelp.Size = new System.Drawing.Size(23, 23);
-			this.btnHelp.TabIndex = 0;
-			this.btnHelp.TabStop = false;
-			this.btnHelp.Text = "&?";
-			this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-			// 
-			// GUIDTool
-			// 
-			this.AcceptButton = this.btnSearch;
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.CancelButton = this.btnClose;
-			this.ClientSize = new System.Drawing.Size(448, 221);
-			this.Controls.Add(this.btnHelp);
-			this.Controls.Add(this.lbStatus);
-			this.Controls.Add(this.tbName);
-			this.Controls.Add(this.lbName);
-			this.Controls.Add(this.lbGUID);
-			this.Controls.Add(this.tbGUID);
-			this.Controls.Add(this.progressBar1);
-			this.Controls.Add(this.btnClose);
-			this.Controls.Add(this.btnSearch);
-			this.Controls.Add(this.rtbReport);
-			this.Name = "GUIDTool";
-			this.Text = "Object Finder";
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUIDTool));
+            this.tbGUID = new System.Windows.Forms.TextBox();
+            this.lbGUID = new System.Windows.Forms.Label();
+            this.rtbReport = new System.Windows.Forms.RichTextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.lbName = new System.Windows.Forms.Label();
+            this.tbName = new System.Windows.Forms.TextBox();
+            this.lbStatus = new System.Windows.Forms.Label();
+            this.btnHelp = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // tbGUID
+            // 
+            resources.ApplyResources(this.tbGUID, "tbGUID");
+            this.tbGUID.Name = "tbGUID";
+            this.tbGUID.Enter += new System.EventHandler(this.textBox_Enter);
+            this.tbGUID.Validated += new System.EventHandler(this.textBox_Validated);
+            this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+            // 
+            // lbGUID
+            // 
+            resources.ApplyResources(this.lbGUID, "lbGUID");
+            this.lbGUID.Name = "lbGUID";
+            // 
+            // rtbReport
+            // 
+            resources.ApplyResources(this.rtbReport, "rtbReport");
+            this.rtbReport.DetectUrls = false;
+            this.rtbReport.Name = "rtbReport";
+            this.rtbReport.ReadOnly = true;
+            this.rtbReport.ShowSelectionMargin = true;
+            this.rtbReport.TabStop = false;
+            // 
+            // btnSearch
+            // 
+            resources.ApplyResources(this.btnSearch, "btnSearch");
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // btnClose
+            // 
+            resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnClose.Name = "btnClose";
+            // 
+            // progressBar1
+            // 
+            resources.ApplyResources(this.progressBar1, "progressBar1");
+            this.progressBar1.Name = "progressBar1";
+            // 
+            // lbName
+            // 
+            resources.ApplyResources(this.lbName, "lbName");
+            this.lbName.Name = "lbName";
+            // 
+            // tbName
+            // 
+            resources.ApplyResources(this.tbName, "tbName");
+            this.tbName.Name = "tbName";
+            this.tbName.Enter += new System.EventHandler(this.textBox_Enter);
+            this.tbName.Validated += new System.EventHandler(this.textBox_Validated);
+            // 
+            // lbStatus
+            // 
+            resources.ApplyResources(this.lbStatus, "lbStatus");
+            this.lbStatus.Name = "lbStatus";
+            // 
+            // btnHelp
+            // 
+            resources.ApplyResources(this.btnHelp, "btnHelp");
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.TabStop = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
+            // GUIDTool
+            // 
+            this.AcceptButton = this.btnSearch;
+            resources.ApplyResources(this, "$this");
+            this.CancelButton = this.btnClose;
+            this.Controls.Add(this.btnHelp);
+            this.Controls.Add(this.lbStatus);
+            this.Controls.Add(this.tbName);
+            this.Controls.Add(this.lbName);
+            this.Controls.Add(this.lbGUID);
+            this.Controls.Add(this.tbGUID);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.rtbReport);
+            this.Name = "GUIDTool";
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -373,10 +333,7 @@ namespace pjse.guidtool
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
 			System.Windows.Forms.MessageBox.Show(
-				"This tool searches OBJD files in your PJSE filetable path\n" +
-				"(which for now means currently open file + objects.package).\n\n" +
-				"If you enter a string to search, it is a case insensitive whole or sub string of the OBJD filename.\n" +
-				"If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000F together)",
+                pjse.Localization.GetString("gt_ObjectFinderHelp"),
 				this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 

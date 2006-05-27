@@ -31,8 +31,9 @@ namespace SimPe.PackedFiles.UserInterface
 	/// Summary description for BhavInstListItemUI.
 	/// </summary>
 	public class BhavInstListItemUI : System.Windows.Forms.UserControl
-	{
-		private System.Windows.Forms.Label instrText;
+    {
+        #region Control variables
+        private System.Windows.Forms.Label instrText;
 		private System.Windows.Forms.LinkLabel trueTarget;
 		private System.Windows.Forms.LinkLabel falseTarget;
 		private System.Windows.Forms.TextBox bhavInstListItem;
@@ -40,8 +41,9 @@ namespace SimPe.PackedFiles.UserInterface
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
+        #endregion
 
-		public BhavInstListItemUI()
+        public BhavInstListItemUI()
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
@@ -50,7 +52,10 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Height = rowHeight;
 			MakeUnselected();
 			pjse.FileTable.GFT.FiletableRefresh += new EventHandler(FiletableRefresh);
-		}
+
+            if (strTrue == null) strTrue = this.trueTarget.Text;
+            if (strFalse == null) strFalse = this.falseTarget.Text;
+        }
 
 		/// <summary> 
 		/// Clean up any resources being used.
@@ -88,6 +93,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private Bhav wrapper = null;
 		private int index = -1;
+
+        private static String strTrue  = null;
+        private static String strFalse = null;
 
 		public Bhav Wrapper
 		{
@@ -142,12 +150,12 @@ namespace SimPe.PackedFiles.UserInterface
 			bhavInstListItem.Text = "";
 			instrText.Text = index.ToString("X") + ": " + cleanup(((pjse.BhavWiz)inst).ShortName);//LongName;
 
-			trueTarget.Text = "true: "+inst.Target1.ToString("X");
+			trueTarget.Text = strTrue + ": "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target1 < wrapper.Count)
 				trueTarget.Links.Add(6, trueTarget.Text.Length-6, inst.Target1);
 
-			falseTarget.Text = "false: "+inst.Target2.ToString("X");
+            falseTarget.Text = strFalse + ": " + inst.Target2.ToString("X");
 			falseTarget.LinkArea = new LinkArea(0, 0);
 			if (inst.Target2 < wrapper.Count)
 				falseTarget.Links.Add(7, falseTarget.Text.Length-7, inst.Target2);

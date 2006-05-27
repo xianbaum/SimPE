@@ -1,499 +1,428 @@
-<VisualStudioProject>
-    <CSHARP
-        ProjectType = "Local"
-        ProductVersion = "7.10.3077"
-        SchemaVersion = "2.0"
-        ProjectGuid = "{6AA664E9-B45F-4D61-9B9F-E68341C16473}"
-    >
-        <Build>
-            <Settings
-                ApplicationIcon = ""
-                AssemblyKeyContainerName = ""
-                AssemblyName = "pjse.coder.plugin"
-                AssemblyOriginatorKeyFile = ""
-                DefaultClientScript = "JScript"
-                DefaultHTMLPageLayout = "Grid"
-                DefaultTargetSchema = "IE50"
-                DelaySign = "false"
-                OutputType = "Library"
-                PreBuildEvent = ""
-                PostBuildEvent = 'cd "$(ProjectDir)"&#xd;&#xa;if exist Plugins rmdir /s/q Plugins&#xd;&#xa;mkdir Plugins&#xd;&#xa;mkdir "Plugins\$(TargetName)"&#xd;&#xa;(cd "$(TargetDir)"&#xd;&#xa;tar c --exclude "*.bat" . ) | tar x -C "Plugins"&#xd;&#xa;copy ..\LICENSE.txt "Plugins\$(TargetName)"&#xd;&#xa;copy ..\*.package "Plugins\$(TargetName)"&#xd;&#xa;copy CHANGES.txt "Plugins\$(TargetName)"&#xd;&#xa;(cd "$(SolutionDir)"&#xd;&#xa;tar c --exclude CVS PJSE_Help ) | tar x -C "Plugins\$(TargetName)"&#xd;&#xa;&#xd;&#xa;set base=$(TargetName)-$(ConfigurationName)&#xd;&#xa;set mydate=%date%&#xd;&#xa;set dd=%mydate:~0,2%&#xd;&#xa;set mm=%mydate:~3,2%&#xd;&#xa;set yy=%mydate:~6,4%&#xd;&#xa;set mytime=%time%&#xd;&#xa;set h=%mytime:~0,2%&#xd;&#xa;set m=%mytime:~3,2%&#xd;&#xa;set s=%mytime:~6,2%&#xd;&#xa;set suffix=%yy%%mm%%dd%-%h%%m%&#xd;&#xa;&#xd;&#xa;del ..\"%base%*"&#xd;&#xa;7za a -tzip -r -mx9 "%base%-%suffix%.zip" Plugins&#xd;&#xa;move "%base%-%suffix%.zip" ..&#xd;&#xa;tar cv Plugins | bzip2 > "%base%-%suffix%.tar.bz2"&#xd;&#xa;move "%base%-%suffix%.tar.bz2" ..&#xd;&#xa;7za a -t7z -mx9 -ms "%base%-%suffix%.7z" Plugins&#xd;&#xa;move "%base%-%suffix%.7z" ..&#xd;&#xa;&#xd;&#xa;cd ..\..\SimPe&#xd;&#xa;xcopy /m /e /y "$(ProjectDir)Plugins" Plugins&#xd;&#xa;'
-                RootNamespace = "pjse"
-                RunPostBuildEvent = "OnBuildSuccess"
-                StartupObject = ""
-            >
-                <Config
-                    Name = "Debug"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "DEBUG;TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "true"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "true"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "false"
-                    OutputPath = "bin\Debug\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "Release"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "bin\Release\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-                <Config
-                    Name = "InProgress"
-                    AllowUnsafeBlocks = "false"
-                    BaseAddress = "285212672"
-                    CheckForOverflowUnderflow = "false"
-                    ConfigurationOverrideFile = ""
-                    DefineConstants = "INPROGRESS;TRACE"
-                    DocumentationFile = ""
-                    DebugSymbols = "false"
-                    FileAlignment = "4096"
-                    IncrementalBuild = "false"
-                    NoStdLib = "false"
-                    NoWarn = ""
-                    Optimize = "true"
-                    OutputPath = "bin\InProgress\"
-                    RegisterForComInterop = "false"
-                    RemoveIntegerChecks = "false"
-                    TreatWarningsAsErrors = "false"
-                    WarningLevel = "4"
-                />
-            </Settings>
-            <References>
-                <Reference
-                    Name = "System"
-                    AssemblyName = "System"
-                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.dll"
-                />
-                <Reference
-                    Name = "System.Data"
-                    AssemblyName = "System.Data"
-                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Data.dll"
-                />
-                <Reference
-                    Name = "System.XML"
-                    AssemblyName = "System.Xml"
-                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.XML.dll"
-                />
-                <Reference
-                    Name = "System.Drawing"
-                    AssemblyName = "System.Drawing"
-                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Drawing.dll"
-                />
-                <Reference
-                    Name = "System.Windows.Forms"
-                    AssemblyName = "System.Windows.Forms"
-                    HintPath = "C:\WINDOWS\Microsoft.NET\Framework\v1.1.4322\System.Windows.Forms.dll"
-                />
-                <Reference
-                    Name = "simpe.commonhandler"
-                    AssemblyName = "simpe.commonhandler"
-                    HintPath = "..\..\SimPe\simpe.commonhandler.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.genericbase"
-                    AssemblyName = "simpe.genericbase"
-                    HintPath = "..\..\SimPe\simpe.genericbase.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.generichandler"
-                    AssemblyName = "simpe.generichandler"
-                    HintPath = "..\..\SimPe\simpe.generichandler.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.helper"
-                    AssemblyName = "simpe.helper"
-                    HintPath = "..\..\SimPe\simpe.helper.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.interfaces"
-                    AssemblyName = "simpe.interfaces"
-                    HintPath = "..\..\SimPe\simpe.interfaces.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.names"
-                    AssemblyName = "simpe.names"
-                    HintPath = "..\..\SimPe\simpe.names.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.package"
-                    AssemblyName = "simpe.package"
-                    HintPath = "..\..\SimPe\simpe.package.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "simpe.workspace"
-                    AssemblyName = "simpe.workspace"
-                    HintPath = "..\..\SimPe\simpe.workspace.dll"
-                    Private = "False"
-                />
-                <Reference
-                    Name = "pjse filetable"
-                    Project = "{84085FAA-A947-492E-88BC-B941A4623811}"
-                    Package = "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
-                />
-                <Reference
-                    Name = "simpe.filehandler"
-                    AssemblyName = "simpe.filehandler"
-                    HintPath = "..\..\SimPe\simpe.filehandler.dll"
-                    Private = "False"
-                />
-            </References>
-        </Build>
-        <Files>
-            <Include>
-                <File
-                    RelPath = "AssemblyInfo.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BconForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BconForm.resx"
-                    DependentUpon = "BconForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BconWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavForm.resx"
-                    DependentUpon = "BhavForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavInstListControl.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavInstListControl.resx"
-                    DependentUpon = "BhavInstListControl.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavInstListItemUI.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavInstListItemUI.resx"
-                    DependentUpon = "BhavInstListItemUI.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavOperandWiz.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavOperandWiz.resx"
-                    DependentUpon = "BhavOperandWiz.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavOperandWiz0x0001.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavOperandWiz0x0001.resx"
-                    DependentUpon = "BhavOperandWiz0x0001.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavOperandWiz0x0002.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavOperandWiz0x0002.resx"
-                    DependentUpon = "BhavOperandWiz0x0002.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavOperandWiz0x0024.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavOperandWiz0x0024.resx"
-                    DependentUpon = "BhavOperandWiz0x0024.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavOperandWizBhav.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavOperandWizBhav.resx"
-                    DependentUpon = "BhavOperandWizBhav.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavOperandWizDefault.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavOperandWizDefault.resx"
-                    DependentUpon = "BhavOperandWizDefault.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavOperandWizRaw.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavOperandWizRaw.resx"
-                    DependentUpon = "BhavOperandWizRaw.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "BhavWiz.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavWizBhav.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavWizPrim.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "BhavWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ExtendedWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "GlobalStr.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "GlobForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "GlobForm.resx"
-                    DependentUpon = "GlobForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "GlobWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "HelpHelper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjfForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ObjfForm.resx"
-                    DependentUpon = "ObjfForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "ObjfWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ResourceChooser.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "ResourceChooser.resx"
-                    DependentUpon = "ResourceChooser.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "Str.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StrBig.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StrBig.resx"
-                    DependentUpon = "StrBig.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "StrChooser.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StrChooser.resx"
-                    DependentUpon = "StrChooser.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "StrForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "StrForm.resx"
-                    DependentUpon = "StrForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "StrWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "SystemClasses.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TPRPForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TPRPForm.resx"
-                    DependentUpon = "TPRPForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TPRPWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TrcnForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TrcnForm.resx"
-                    DependentUpon = "TrcnForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TrcnWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TtabForm.cs"
-                    SubType = "Form"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TtabForm.resx"
-                    DependentUpon = "TtabForm.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TtabItemMotiveTableUI.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TtabItemMotiveTableUI.resx"
-                    DependentUpon = "TtabItemMotiveTableUI.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TtabMotiveGroupUI.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TtabMotiveGroupUI.resx"
-                    DependentUpon = "TtabMotiveGroupUI.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TtabSingleMotiveUI.cs"
-                    SubType = "UserControl"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "TtabSingleMotiveUI.resx"
-                    DependentUpon = "TtabSingleMotiveUI.cs"
-                    BuildAction = "EmbeddedResource"
-                />
-                <File
-                    RelPath = "TtabWrapper.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-                <File
-                    RelPath = "WrapperFactory.cs"
-                    SubType = "Code"
-                    BuildAction = "Compile"
-                />
-            </Include>
-        </Files>
-    </CSHARP>
-</VisualStudioProject>
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6AA664E9-B45F-4D61-9B9F-E68341C16473}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>pjse.coder.plugin</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RootNamespace>pjse</RootNamespace>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'InProgress|AnyCPU' ">
+    <OutputPath>bin\InProgress\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>INPROGRESS;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="simpe.commonhandler">
+      <Name>simpe.commonhandler</Name>
+      <HintPath>..\..\SimPe\simpe.commonhandler.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.filehandler">
+      <Name>simpe.filehandler</Name>
+      <HintPath>..\..\SimPe\simpe.filehandler.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.helper">
+      <Name>simpe.helper</Name>
+      <HintPath>..\..\SimPe\simpe.helper.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.interfaces">
+      <Name>simpe.interfaces</Name>
+      <HintPath>..\..\SimPe\simpe.interfaces.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.names">
+      <Name>simpe.names</Name>
+      <HintPath>..\..\SimPe\simpe.names.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.package">
+      <Name>simpe.package</Name>
+      <HintPath>..\..\SimPe\simpe.package.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.workspace">
+      <Name>simpe.workspace</Name>
+      <HintPath>..\..\SimPe\simpe.workspace.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\pjse filetable\pjse filetable.csproj">
+      <Name>pjse filetable</Name>
+      <Project>{84085FAA-A947-492E-88BC-B941A4623811}</Project>
+      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\pjse Localisation\pjse localisation.csproj">
+      <Project>{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}</Project>
+      <Name>pjse localisation</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BconForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BconWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BhavForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavInstListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BhavInstListItemUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz0x0001.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz0x0002.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz0x0024.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWizBhav.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWizDefault.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWizRaw.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavWiz.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BhavWizBhav.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BhavWizPrim.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="BhavWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ExtendedWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="GlobForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GlobWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="HelpHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ObjfForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ObjfWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ResourceChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Str.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="StrBig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StrChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StrForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="StrWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SystemClasses.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TPRPForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TPRPWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TrcnForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TrcnWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TtabForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TtabItemMotiveTableUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TtabMotiveGroupUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TtabSingleMotiveUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TtabWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="WrapperFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="BconForm.resx">
+      <DependentUpon>BconForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavForm.resx">
+      <DependentUpon>BhavForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavInstListControl.resx">
+      <DependentUpon>BhavInstListControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavInstListItemUI.resx">
+      <DependentUpon>BhavInstListItemUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz.resx">
+      <DependentUpon>BhavOperandWiz.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x0001.resx">
+      <DependentUpon>BhavOperandWiz0x0001.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x0002.resx">
+      <DependentUpon>BhavOperandWiz0x0002.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x0024.resx">
+      <DependentUpon>BhavOperandWiz0x0024.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWizBhav.resx">
+      <DependentUpon>BhavOperandWizBhav.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWizDefault.resx">
+      <DependentUpon>BhavOperandWizDefault.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWizRaw.resx">
+      <DependentUpon>BhavOperandWizRaw.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GlobForm.resx">
+      <DependentUpon>GlobForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjfForm.resx">
+      <DependentUpon>ObjfForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ResourceChooser.resx">
+      <DependentUpon>ResourceChooser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StrBig.resx">
+      <DependentUpon>StrBig.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StrChooser.resx">
+      <DependentUpon>StrChooser.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StrForm.resx">
+      <DependentUpon>StrForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TPRPForm.resx">
+      <DependentUpon>TPRPForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TrcnForm.resx">
+      <DependentUpon>TrcnForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TtabForm.resx">
+      <DependentUpon>TtabForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TtabItemMotiveTableUI.resx">
+      <DependentUpon>TtabItemMotiveTableUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TtabMotiveGroupUI.resx">
+      <DependentUpon>TtabMotiveGroupUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TtabSingleMotiveUI.resx">
+      <DependentUpon>TtabSingleMotiveUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>set base=$(TargetName)-$(ConfigurationName)
+set src=Source-$(ConfigurationName)
+set mydate=%25date%25
+set dd=%25mydate:~0,2%25
+set mm=%25mydate:~3,2%25
+set yy=%25mydate:~6,4%25
+set mytime=%25time%25
+set h=%25mytime:~0,2%25
+set m=%25mytime:~3,2%25
+set s=%25mytime:~6,2%25
+set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
+set tarv=
 
+cd "$(ProjectDir)"
+
+if exist Plugins rmdir /s/q Plugins
+mkdir Plugins
+mkdir "Plugins\$(TargetName)"
+
+(cd "$(TargetDir)"
+tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
+
+(cd ..
+tar c LICENSE.txt *.package) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+tar c --exclude=CVS CHANGES.txt PJSE_Help | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+
+tar c Plugins | (cd ..\..\SimPe
+tar xv)
+
+del ..\"%25base%25*"
+7za a -tzip -r -mx9 "..\%25base%25-%25suffix%25.zip" Plugins
+
+if not $(ConfigurationName)==Release goto skip
+
+tar cv Plugins | bzip2 &gt; "..\%25base%25-%25suffix%25.tar.bz2"
+7za a -t7z -mx9 -ms "..\%25base%25-%25suffix%25.7z" Plugins
+
+cd "$(ProjectDir).."
+if exist "%25src%25" rmdir /s/q "%25src%25"
+del "%25src%25*"
+mkdir "%25src%25"
+
+tar c --exclude="%25src%25" --exclude=CVS --exclude=*.7z --exclude=*.zip --exclude=*.tar.bz2 --exclude=.project --exclude=.metadata --exclude=bin --exclude=obj --exclude=Plugins --exclude=*.suo --exclude=*.csproj.user --exclude=*.bak --exclude=.#* . | tar x%25tarv%25 -C "%25src%25"
+7za a -tzip -r -mx9 "%25src%25-%25suffix%25.zip" "%25src%25"
+if exist "%25src%25" rmdir /s/q "%25src%25"
+
+:skip:
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>

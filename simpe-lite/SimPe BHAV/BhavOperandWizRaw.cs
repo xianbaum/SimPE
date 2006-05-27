@@ -81,7 +81,7 @@ namespace pjse.BhavOperandWizards.WizRaw
 			} 
 			catch (Exception ex) 
 			{
-				SimPe.Helper.ExceptionMessage(SimPe.Localization.Manager.GetString("errconvert"), ex);
+				SimPe.Helper.ExceptionMessage(pjse.Localization.GetString("errconvert"), ex);
 				return null;
 			}
 		}
@@ -105,40 +105,31 @@ namespace pjse.BhavOperandWizards.WizRaw
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pnWizRaw = new System.Windows.Forms.Panel();
-			this.tbRaw = new System.Windows.Forms.TextBox();
-			this.pnWizRaw.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// pnWizRaw
-			// 
-			this.pnWizRaw.Controls.Add(this.tbRaw);
-			this.pnWizRaw.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.pnWizRaw.Location = new System.Drawing.Point(8, 8);
-			this.pnWizRaw.Name = "pnWizRaw";
-			this.pnWizRaw.Size = new System.Drawing.Size(264, 24);
-			this.pnWizRaw.TabIndex = 0;
-			// 
-			// tbRaw
-			// 
-			this.tbRaw.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tbRaw.Location = new System.Drawing.Point(0, 0);
-			this.tbRaw.MaxLength = 32;
-			this.tbRaw.Name = "tbRaw";
-			this.tbRaw.Size = new System.Drawing.Size(264, 21);
-			this.tbRaw.TabIndex = 0;
-			this.tbRaw.Text = "textBox1";
-			// 
-			// UI
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(640, 366);
-			this.Controls.Add(this.pnWizRaw);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "UI";
-			this.Text = "UI";
-			this.pnWizRaw.ResumeLayout(false);
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
+            this.pnWizRaw = new System.Windows.Forms.Panel();
+            this.tbRaw = new System.Windows.Forms.TextBox();
+            this.pnWizRaw.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnWizRaw
+            // 
+            this.pnWizRaw.Controls.Add(this.tbRaw);
+            resources.ApplyResources(this.pnWizRaw, "pnWizRaw");
+            this.pnWizRaw.Name = "pnWizRaw";
+            // 
+            // tbRaw
+            // 
+            resources.ApplyResources(this.tbRaw, "tbRaw");
+            this.tbRaw.Name = "tbRaw";
+            // 
+            // UI
+            // 
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.pnWizRaw);
+            this.Name = "UI";
+            this.pnWizRaw.ResumeLayout(false);
+            this.pnWizRaw.PerformLayout();
+            this.ResumeLayout(false);
 
 		}
 		#endregion

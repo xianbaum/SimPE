@@ -140,304 +140,200 @@ namespace pjse.BhavOperandWizards.WizDefault
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.pnWizDefault = new System.Windows.Forms.Panel();
-			this.tbInst_Op01_dec = new System.Windows.Forms.TextBox();
-			this.label13 = new System.Windows.Forms.Label();
-			this.tbInst_Unk7 = new System.Windows.Forms.TextBox();
-			this.tbInst_Unk6 = new System.Windows.Forms.TextBox();
-			this.tbInst_Unk5 = new System.Windows.Forms.TextBox();
-			this.tbInst_Unk4 = new System.Windows.Forms.TextBox();
-			this.tbInst_Unk3 = new System.Windows.Forms.TextBox();
-			this.tbInst_Unk2 = new System.Windows.Forms.TextBox();
-			this.tbInst_Unk1 = new System.Windows.Forms.TextBox();
-			this.tbInst_Unk0 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op7 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op6 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op5 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op4 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op3 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op2 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op1 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op0 = new System.Windows.Forms.TextBox();
-			this.tbInst_Op23_dec = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.pnWizDefault.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// pnWizDefault
-			// 
-			this.pnWizDefault.Controls.Add(this.tbInst_Op01_dec);
-			this.pnWizDefault.Controls.Add(this.label13);
-			this.pnWizDefault.Controls.Add(this.tbInst_Unk7);
-			this.pnWizDefault.Controls.Add(this.tbInst_Unk6);
-			this.pnWizDefault.Controls.Add(this.tbInst_Unk5);
-			this.pnWizDefault.Controls.Add(this.tbInst_Unk4);
-			this.pnWizDefault.Controls.Add(this.tbInst_Unk3);
-			this.pnWizDefault.Controls.Add(this.tbInst_Unk2);
-			this.pnWizDefault.Controls.Add(this.tbInst_Unk1);
-			this.pnWizDefault.Controls.Add(this.tbInst_Unk0);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op7);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op6);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op5);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op4);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op3);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op2);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op1);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op0);
-			this.pnWizDefault.Controls.Add(this.tbInst_Op23_dec);
-			this.pnWizDefault.Controls.Add(this.label2);
-			this.pnWizDefault.Location = new System.Drawing.Point(0, 0);
-			this.pnWizDefault.Name = "pnWizDefault";
-			this.pnWizDefault.Size = new System.Drawing.Size(264, 72);
-			this.pnWizDefault.TabIndex = 0;
-			// 
-			// tbInst_Op01_dec
-			// 
-			this.tbInst_Op01_dec.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op01_dec.Location = new System.Drawing.Point(72, 0);
-			this.tbInst_Op01_dec.MaxLength = 5;
-			this.tbInst_Op01_dec.Name = "tbInst_Op01_dec";
-			this.tbInst_Op01_dec.Size = new System.Drawing.Size(48, 21);
-			this.tbInst_Op01_dec.TabIndex = 26;
-			this.tbInst_Op01_dec.Text = "88888";
-			this.tbInst_Op01_dec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
-			this.tbInst_Op01_dec.Validated += new System.EventHandler(this.dec16_Validated);
-			// 
-			// label13
-			// 
-			this.label13.AutoSize = true;
-			this.label13.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.label13.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label13.Location = new System.Drawing.Point(0, 0);
-			this.label13.Name = "label13";
-			this.label13.Size = new System.Drawing.Size(64, 17);
-			this.label13.TabIndex = 25;
-			this.label13.Text = "&Operands:";
-			// 
-			// tbInst_Unk7
-			// 
-			this.tbInst_Unk7.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Unk7.Location = new System.Drawing.Point(240, 48);
-			this.tbInst_Unk7.MaxLength = 2;
-			this.tbInst_Unk7.Name = "tbInst_Unk7";
-			this.tbInst_Unk7.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Unk7.TabIndex = 43;
-			this.tbInst_Unk7.Text = "0";
-			this.tbInst_Unk7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Unk7.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Unk6
-			// 
-			this.tbInst_Unk6.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Unk6.Location = new System.Drawing.Point(216, 48);
-			this.tbInst_Unk6.MaxLength = 2;
-			this.tbInst_Unk6.Name = "tbInst_Unk6";
-			this.tbInst_Unk6.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Unk6.TabIndex = 42;
-			this.tbInst_Unk6.Text = "0";
-			this.tbInst_Unk6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Unk6.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Unk5
-			// 
-			this.tbInst_Unk5.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Unk5.Location = new System.Drawing.Point(192, 48);
-			this.tbInst_Unk5.MaxLength = 2;
-			this.tbInst_Unk5.Name = "tbInst_Unk5";
-			this.tbInst_Unk5.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Unk5.TabIndex = 41;
-			this.tbInst_Unk5.Text = "0";
-			this.tbInst_Unk5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Unk5.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Unk4
-			// 
-			this.tbInst_Unk4.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Unk4.Location = new System.Drawing.Point(168, 48);
-			this.tbInst_Unk4.MaxLength = 2;
-			this.tbInst_Unk4.Name = "tbInst_Unk4";
-			this.tbInst_Unk4.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Unk4.TabIndex = 40;
-			this.tbInst_Unk4.Text = "0";
-			this.tbInst_Unk4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Unk4.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Unk3
-			// 
-			this.tbInst_Unk3.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Unk3.Location = new System.Drawing.Point(144, 48);
-			this.tbInst_Unk3.MaxLength = 2;
-			this.tbInst_Unk3.Name = "tbInst_Unk3";
-			this.tbInst_Unk3.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Unk3.TabIndex = 39;
-			this.tbInst_Unk3.Text = "0";
-			this.tbInst_Unk3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Unk3.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Unk2
-			// 
-			this.tbInst_Unk2.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Unk2.Location = new System.Drawing.Point(120, 48);
-			this.tbInst_Unk2.MaxLength = 2;
-			this.tbInst_Unk2.Name = "tbInst_Unk2";
-			this.tbInst_Unk2.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Unk2.TabIndex = 38;
-			this.tbInst_Unk2.Text = "0";
-			this.tbInst_Unk2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Unk2.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Unk1
-			// 
-			this.tbInst_Unk1.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Unk1.Location = new System.Drawing.Point(96, 48);
-			this.tbInst_Unk1.MaxLength = 2;
-			this.tbInst_Unk1.Name = "tbInst_Unk1";
-			this.tbInst_Unk1.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Unk1.TabIndex = 37;
-			this.tbInst_Unk1.Text = "0";
-			this.tbInst_Unk1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Unk1.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Unk0
-			// 
-			this.tbInst_Unk0.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Unk0.Location = new System.Drawing.Point(72, 48);
-			this.tbInst_Unk0.MaxLength = 2;
-			this.tbInst_Unk0.Name = "tbInst_Unk0";
-			this.tbInst_Unk0.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Unk0.TabIndex = 36;
-			this.tbInst_Unk0.Text = "0";
-			this.tbInst_Unk0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Unk0.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op7
-			// 
-			this.tbInst_Op7.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op7.Location = new System.Drawing.Point(240, 24);
-			this.tbInst_Op7.MaxLength = 2;
-			this.tbInst_Op7.Name = "tbInst_Op7";
-			this.tbInst_Op7.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Op7.TabIndex = 35;
-			this.tbInst_Op7.Text = "0";
-			this.tbInst_Op7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Op7.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op6
-			// 
-			this.tbInst_Op6.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op6.Location = new System.Drawing.Point(216, 24);
-			this.tbInst_Op6.MaxLength = 2;
-			this.tbInst_Op6.Name = "tbInst_Op6";
-			this.tbInst_Op6.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Op6.TabIndex = 34;
-			this.tbInst_Op6.Text = "0";
-			this.tbInst_Op6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Op6.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op5
-			// 
-			this.tbInst_Op5.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op5.Location = new System.Drawing.Point(192, 24);
-			this.tbInst_Op5.MaxLength = 2;
-			this.tbInst_Op5.Name = "tbInst_Op5";
-			this.tbInst_Op5.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Op5.TabIndex = 33;
-			this.tbInst_Op5.Text = "0";
-			this.tbInst_Op5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Op5.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op4
-			// 
-			this.tbInst_Op4.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op4.Location = new System.Drawing.Point(168, 24);
-			this.tbInst_Op4.MaxLength = 2;
-			this.tbInst_Op4.Name = "tbInst_Op4";
-			this.tbInst_Op4.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Op4.TabIndex = 32;
-			this.tbInst_Op4.Text = "0";
-			this.tbInst_Op4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Op4.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op3
-			// 
-			this.tbInst_Op3.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op3.Location = new System.Drawing.Point(144, 24);
-			this.tbInst_Op3.MaxLength = 2;
-			this.tbInst_Op3.Name = "tbInst_Op3";
-			this.tbInst_Op3.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Op3.TabIndex = 31;
-			this.tbInst_Op3.Text = "0";
-			this.tbInst_Op3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Op3.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op2
-			// 
-			this.tbInst_Op2.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op2.Location = new System.Drawing.Point(120, 24);
-			this.tbInst_Op2.MaxLength = 2;
-			this.tbInst_Op2.Name = "tbInst_Op2";
-			this.tbInst_Op2.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Op2.TabIndex = 30;
-			this.tbInst_Op2.Text = "0";
-			this.tbInst_Op2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Op2.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op1
-			// 
-			this.tbInst_Op1.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op1.Location = new System.Drawing.Point(96, 24);
-			this.tbInst_Op1.MaxLength = 2;
-			this.tbInst_Op1.Name = "tbInst_Op1";
-			this.tbInst_Op1.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Op1.TabIndex = 29;
-			this.tbInst_Op1.Text = "0";
-			this.tbInst_Op1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Op1.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op0
-			// 
-			this.tbInst_Op0.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op0.Location = new System.Drawing.Point(72, 24);
-			this.tbInst_Op0.MaxLength = 2;
-			this.tbInst_Op0.Name = "tbInst_Op0";
-			this.tbInst_Op0.Size = new System.Drawing.Size(24, 21);
-			this.tbInst_Op0.TabIndex = 28;
-			this.tbInst_Op0.Text = "DD";
-			this.tbInst_Op0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-			this.tbInst_Op0.Validated += new System.EventHandler(this.hex8_Validated);
-			// 
-			// tbInst_Op23_dec
-			// 
-			this.tbInst_Op23_dec.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.tbInst_Op23_dec.Location = new System.Drawing.Point(120, 0);
-			this.tbInst_Op23_dec.MaxLength = 5;
-			this.tbInst_Op23_dec.Name = "tbInst_Op23_dec";
-			this.tbInst_Op23_dec.Size = new System.Drawing.Size(48, 21);
-			this.tbInst_Op23_dec.TabIndex = 27;
-			this.tbInst_Op23_dec.Text = "0";
-			this.tbInst_Op23_dec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
-			this.tbInst_Op23_dec.Validated += new System.EventHandler(this.dec16_Validated);
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.label2.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label2.Location = new System.Drawing.Point(168, 0);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(58, 17);
-			this.label2.TabIndex = 24;
-			this.label2.Text = "(decimal)";
-			// 
-			// UI
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(292, 273);
-			this.Controls.Add(this.pnWizDefault);
-			this.Name = "UI";
-			this.Text = "BhavPrimWizDefaultUI";
-			this.pnWizDefault.ResumeLayout(false);
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
+            this.pnWizDefault = new System.Windows.Forms.Panel();
+            this.tbInst_Op01_dec = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.tbInst_Unk7 = new System.Windows.Forms.TextBox();
+            this.tbInst_Unk6 = new System.Windows.Forms.TextBox();
+            this.tbInst_Unk5 = new System.Windows.Forms.TextBox();
+            this.tbInst_Unk4 = new System.Windows.Forms.TextBox();
+            this.tbInst_Unk3 = new System.Windows.Forms.TextBox();
+            this.tbInst_Unk2 = new System.Windows.Forms.TextBox();
+            this.tbInst_Unk1 = new System.Windows.Forms.TextBox();
+            this.tbInst_Unk0 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op7 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op6 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op5 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op4 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op3 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op2 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op1 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op0 = new System.Windows.Forms.TextBox();
+            this.tbInst_Op23_dec = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.pnWizDefault.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnWizDefault
+            // 
+            this.pnWizDefault.Controls.Add(this.tbInst_Op01_dec);
+            this.pnWizDefault.Controls.Add(this.label13);
+            this.pnWizDefault.Controls.Add(this.tbInst_Unk7);
+            this.pnWizDefault.Controls.Add(this.tbInst_Unk6);
+            this.pnWizDefault.Controls.Add(this.tbInst_Unk5);
+            this.pnWizDefault.Controls.Add(this.tbInst_Unk4);
+            this.pnWizDefault.Controls.Add(this.tbInst_Unk3);
+            this.pnWizDefault.Controls.Add(this.tbInst_Unk2);
+            this.pnWizDefault.Controls.Add(this.tbInst_Unk1);
+            this.pnWizDefault.Controls.Add(this.tbInst_Unk0);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op7);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op6);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op5);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op4);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op3);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op2);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op1);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op0);
+            this.pnWizDefault.Controls.Add(this.tbInst_Op23_dec);
+            this.pnWizDefault.Controls.Add(this.label2);
+            resources.ApplyResources(this.pnWizDefault, "pnWizDefault");
+            this.pnWizDefault.Name = "pnWizDefault";
+            // 
+            // tbInst_Op01_dec
+            // 
+            resources.ApplyResources(this.tbInst_Op01_dec, "tbInst_Op01_dec");
+            this.tbInst_Op01_dec.Name = "tbInst_Op01_dec";
+            this.tbInst_Op01_dec.Validated += new System.EventHandler(this.dec16_Validated);
+            this.tbInst_Op01_dec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
+            // 
+            // label13
+            // 
+            resources.ApplyResources(this.label13, "label13");
+            this.label13.Name = "label13";
+            // 
+            // tbInst_Unk7
+            // 
+            resources.ApplyResources(this.tbInst_Unk7, "tbInst_Unk7");
+            this.tbInst_Unk7.Name = "tbInst_Unk7";
+            this.tbInst_Unk7.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Unk7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Unk6
+            // 
+            resources.ApplyResources(this.tbInst_Unk6, "tbInst_Unk6");
+            this.tbInst_Unk6.Name = "tbInst_Unk6";
+            this.tbInst_Unk6.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Unk6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Unk5
+            // 
+            resources.ApplyResources(this.tbInst_Unk5, "tbInst_Unk5");
+            this.tbInst_Unk5.Name = "tbInst_Unk5";
+            this.tbInst_Unk5.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Unk5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Unk4
+            // 
+            resources.ApplyResources(this.tbInst_Unk4, "tbInst_Unk4");
+            this.tbInst_Unk4.Name = "tbInst_Unk4";
+            this.tbInst_Unk4.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Unk4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Unk3
+            // 
+            resources.ApplyResources(this.tbInst_Unk3, "tbInst_Unk3");
+            this.tbInst_Unk3.Name = "tbInst_Unk3";
+            this.tbInst_Unk3.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Unk3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Unk2
+            // 
+            resources.ApplyResources(this.tbInst_Unk2, "tbInst_Unk2");
+            this.tbInst_Unk2.Name = "tbInst_Unk2";
+            this.tbInst_Unk2.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Unk2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Unk1
+            // 
+            resources.ApplyResources(this.tbInst_Unk1, "tbInst_Unk1");
+            this.tbInst_Unk1.Name = "tbInst_Unk1";
+            this.tbInst_Unk1.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Unk1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Unk0
+            // 
+            resources.ApplyResources(this.tbInst_Unk0, "tbInst_Unk0");
+            this.tbInst_Unk0.Name = "tbInst_Unk0";
+            this.tbInst_Unk0.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Unk0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op7
+            // 
+            resources.ApplyResources(this.tbInst_Op7, "tbInst_Op7");
+            this.tbInst_Op7.Name = "tbInst_Op7";
+            this.tbInst_Op7.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Op7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op6
+            // 
+            resources.ApplyResources(this.tbInst_Op6, "tbInst_Op6");
+            this.tbInst_Op6.Name = "tbInst_Op6";
+            this.tbInst_Op6.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Op6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op5
+            // 
+            resources.ApplyResources(this.tbInst_Op5, "tbInst_Op5");
+            this.tbInst_Op5.Name = "tbInst_Op5";
+            this.tbInst_Op5.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Op5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op4
+            // 
+            resources.ApplyResources(this.tbInst_Op4, "tbInst_Op4");
+            this.tbInst_Op4.Name = "tbInst_Op4";
+            this.tbInst_Op4.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Op4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op3
+            // 
+            resources.ApplyResources(this.tbInst_Op3, "tbInst_Op3");
+            this.tbInst_Op3.Name = "tbInst_Op3";
+            this.tbInst_Op3.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Op3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op2
+            // 
+            resources.ApplyResources(this.tbInst_Op2, "tbInst_Op2");
+            this.tbInst_Op2.Name = "tbInst_Op2";
+            this.tbInst_Op2.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Op2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op1
+            // 
+            resources.ApplyResources(this.tbInst_Op1, "tbInst_Op1");
+            this.tbInst_Op1.Name = "tbInst_Op1";
+            this.tbInst_Op1.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Op1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op0
+            // 
+            resources.ApplyResources(this.tbInst_Op0, "tbInst_Op0");
+            this.tbInst_Op0.Name = "tbInst_Op0";
+            this.tbInst_Op0.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbInst_Op0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            // 
+            // tbInst_Op23_dec
+            // 
+            resources.ApplyResources(this.tbInst_Op23_dec, "tbInst_Op23_dec");
+            this.tbInst_Op23_dec.Name = "tbInst_Op23_dec";
+            this.tbInst_Op23_dec.Validated += new System.EventHandler(this.dec16_Validated);
+            this.tbInst_Op23_dec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // UI
+            // 
+            resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.pnWizDefault);
+            this.Name = "UI";
+            this.pnWizDefault.ResumeLayout(false);
+            this.pnWizDefault.PerformLayout();
+            this.ResumeLayout(false);
 
 		}
 		#endregion
