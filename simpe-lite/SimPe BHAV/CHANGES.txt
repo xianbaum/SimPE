@@ -10,6 +10,10 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+27 May 2006 20:43 - Ttab: bugfix for when ttab gets "bigger"
+  SimPe BHAV\
+    TtabWrapper.cs 1.23.6.5
+
 26 May 2006 21:57 - Fallback: Amend text of out of context message
   pjse Localisation\
     Localization.resx 1.1.4.7

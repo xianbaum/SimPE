@@ -684,7 +684,8 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(action);
 			writer.Write(guard);
 
-			for (int i=0; i < nrGroups; i++) writer.Write(((ArrayList)groups[i]).Count);
+            for (int i = 0; i < nrGroups; i++) writer.Write(i < groups.Count ? ((ArrayList)groups[i]).Count : 0);
+
 
 			writer.Write(flags.Value);
 			writer.Write(flags2);
@@ -712,15 +713,15 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 
-			for (int k=0; k < nrGroups; k++) 
+            for (int k = 0; k < groups.Count; k++) 
 			{
-				for (int i=0; i < ((ArrayList)groups[k]).Count; i++) 
-				{
-					short[] item = (short[])((ArrayList)groups[k])[i];
-					for (int j = 0; j < item.Length; j++)
-						writer.Write(item[j]);
-				}
-			}
+                for (int i = 0; i < ((ArrayList)groups[k]).Count; i++)
+                {
+                    short[] item = (short[])((ArrayList)groups[k])[i];
+                    for (int j = 0; j < item.Length; j++)
+                        writer.Write(item[j]);
+                }
+            }
 		}
 
 	}
