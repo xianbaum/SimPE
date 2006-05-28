@@ -328,8 +328,8 @@ namespace SimPe.PackedFiles.UserInterface
 
             if (wrapper.Format >= 0x44 && previousFormat < 0x44)
             {
-                DialogResult dr = MessageBox.Show("Are you sure?",
-                    "Use multiple sets of adverts",
+                DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
+                    pjse.Localization.GetString("ttabForm_Multiple"),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
                 if (!DialogResult.OK.Equals(dr))
                 {
@@ -341,8 +341,8 @@ namespace SimPe.PackedFiles.UserInterface
 
             else if (wrapper.Format < 0x44 && previousFormat >= 0x44)
             {
-                DialogResult dr = MessageBox.Show("Are you sure?",
-                    "Use only one set of adverts",
+                DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
+                    pjse.Localization.GetString("ttabForm_Single"),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (!DialogResult.OK.Equals(dr))
                 {

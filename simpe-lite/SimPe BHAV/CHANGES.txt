@@ -10,6 +10,12 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+28 May 2006 11:29 - Ttab: Oops: forgot to allow localisation of strings
+  pjse Localisation\
+    Localization.resx 1.1.4.8
+  SimPe BHAV\
+    TtabForm.cs 1.31.2.12
+
 28 May 2006 11:20 - Ttab: Enhance TtabForm for changes to Ttab format
   SimPe BHAV\
     TtabForm.cs 1.31.2.11
