@@ -1193,4 +1193,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="ttabForm_Sure" xml:space="preserve">
     <value>Are you sure?</value>
   </data>
+  <data name="gt_Stop" xml:space="preserve">
+    <value>Stop</value>
+  </data>
 </root>
