@@ -606,6 +606,45 @@ namespace SimPe.PackedFiles.Wrapper
 			return clone;
 		}
 
+        public void CopyTo(TtabItem newTi)
+        {
+            newTi.action = action;
+            newTi.guard = guard;
+            newTi.flags = flags.Clone();
+            newTi.flags2 = flags2;
+            newTi.strindex = strindex;
+            newTi.attenuationcode = attenuationcode;
+            newTi.attenuationvalue = attenuationvalue;
+            newTi.autonomy = autonomy;
+            newTi.joinindex = joinindex;
+            newTi.uidisplaytype = uidisplaytype;
+            newTi.facialanimation = facialanimation;
+            newTi.memoryitermult = memoryitermult;
+            newTi.objecttype = objecttype;
+            newTi.modeltableid = modeltableid;
+
+            // newTi.groups = null;
+            if (groups.Count != 0)
+            {
+                for (int i = 0; i < newTi.groups.Count; i++)
+                {
+                    int p = (i >= groups.Count) ? groups.Count - 1 : i;
+                    ArrayList pa = (ArrayList)newTi.groups[p];
+                    if (pa.Count != 0)
+                    {
+                        for (int j = 0; j < pa.Count; j++)
+                        {
+                            int q = (j > pa.Count) ? pa.Count - 1 : j;
+                            newTi[i, j, 0] = this[p, q, 0];
+                            newTi[i, j, 1] = this[p, q, 1];
+                            newTi[i, j, 2] = this[p, q, 2];
+                        }
+                    }
+                }
+            }
+            //newTi.parent = null;
+        }
+
 
 		/// <summary>
 		/// Reads Data from the Stream

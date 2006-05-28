@@ -122,7 +122,7 @@ namespace SimPe.PackedFiles.UserInterface
 							,btnCpyM12 ,btnCpyM13 ,btnCpyM14 ,btnCpyM15
 							};
 			aButtons = b;
-			pnAllGroups.Visible = true;
+            pnAllGroups.Visible = false;
 			pnCopyButtons.Visible = false;
 
 			pnCopyButtons.Anchor = pnAllGroups.Anchor = AnchorStyles.Top | AnchorStyles.Left;
@@ -1725,8 +1725,8 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			else
 			{
-				pnAllGroups.Visible = false;
-				pnCopyButtons.Visible = true;
+                pnAllGroups.Visible = cbShowAll.Enabled;
+                pnCopyButtons.Visible = cbShowAll.Enabled;
 			}
 		}
 

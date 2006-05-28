@@ -288,6 +288,8 @@ namespace SimPe.PackedFiles.UserInterface
             }
         }
 
+        private uint previousFormat;
+
 
         private uint getTTAsCount()
 		{
@@ -318,6 +320,52 @@ namespace SimPe.PackedFiles.UserInterface
         {
             lbttab.Items.Clear();
             for (int i = 0; i < wrapper.Count; i++) addItem(i);
+        }
+
+        private void setFormat()
+        {
+            if (wrapper.Format == previousFormat) return;
+
+            if (wrapper.Format >= 0x44 && previousFormat < 0x44)
+            {
+                DialogResult dr = MessageBox.Show("Are you sure?",
+                    "Use multiple sets of adverts",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                if (!DialogResult.OK.Equals(dr))
+                {
+                    wrapper.Format = previousFormat;
+                    return;
+                }
+                changeSize();
+            }
+
+            else if (wrapper.Format < 0x44 && previousFormat >= 0x44)
+            {
+                DialogResult dr = MessageBox.Show("Are you sure?",
+                    "Use only one set of adverts",
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+                if (!DialogResult.OK.Equals(dr))
+                {
+                    wrapper.Format = previousFormat;
+                    return;
+                }
+                changeSize();
+            }
+            previousFormat = wrapper.Format;
+        }
+
+        private void changeSize()
+        {
+            bool origstate = internalchg;
+            internalchg = true;
+            for (int i = 0; i < wrapper.Count; i++)
+            {
+                TtabItem newTi = new TtabItem(wrapper);
+                wrapper[i].CopyTo(newTi);
+                wrapper[i] = newTi;
+            }
+            internalchg = origstate;
+            TtabSelect(null, null);
         }
 
         /// <summary>
@@ -389,6 +437,8 @@ namespace SimPe.PackedFiles.UserInterface
             GFT_FiletableRefresh(null, null);
 
 			internalchg = false;
+
+            previousFormat = wrapper.Format;
 
 			if (lbttab.Items.Count>0) lbttab.SelectedIndex = 0;
 			else TtabSelect(null, null);
@@ -2769,6 +2819,7 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).Text = "0x" + Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
+            if (alHex32.IndexOf(sender) == 0) setFormat();
 		}
 
 
