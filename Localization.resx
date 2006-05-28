@@ -1184,4 +1184,13 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bow24_noStrings" xml:space="preserve">
     <value>No strings found</value>
   </data>
+  <data name="ttabForm_Multiple" xml:space="preserve">
+    <value>Use multiple sets of adverts</value>
+  </data>
+  <data name="ttabForm_Single" xml:space="preserve">
+    <value>Use only one set of adverts</value>
+  </data>
+  <data name="ttabForm_Sure" xml:space="preserve">
+    <value>Are you sure?</value>
+  </data>
 </root>
