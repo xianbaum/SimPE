@@ -444,10 +444,6 @@ If you enter a string to search, it is a case insensitive whole or sub string of
 If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000F together).</value>
     <comment>GUIDTool prompt</comment>
   </data>
-  <data name="gt_TooManyMatches" xml:space="preserve">
-    <value>Too many matches found, first 180 shown.  Use a more specific search.</value>
-    <comment>GUIDTool result</comment>
-  </data>
   <data name="allZeros" xml:space="preserve">
     <value>all zeros</value>
     <comment>BhavWizBhav params</comment>
@@ -1194,6 +1190,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>Are you sure?</value>
   </data>
   <data name="gt_Stop" xml:space="preserve">
-    <value>Stop</value>
+    <value>&amp;Stop</value>
+    <comment>btnSearch alternate label</comment>
   </data>
 </root>
