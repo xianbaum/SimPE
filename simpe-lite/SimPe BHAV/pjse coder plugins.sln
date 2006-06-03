@@ -1,6 +1,9 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual C# Express 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse coder plugin", "pjse coder plugin.csproj", "{6AA664E9-B45F-4D61-9B9F-E68341C16473}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7} = {DF925ACD-1B45-4B03-8832-54E00EE6C5D7}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse GUID Tool", "..\pjse GUID Tool\pjse GUID Tool.csproj", "{DF925ACD-1B45-4B03-8832-54E00EE6C5D7}"
 EndProject

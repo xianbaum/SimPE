@@ -28,7 +28,7 @@
     </UpgradeBackupLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\SimPe BHAV\bin\Debug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -51,7 +51,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\SimPe BHAV\bin\Release\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -74,7 +74,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'InProgress|AnyCPU' ">
-    <OutputPath>bin\InProgress\</OutputPath>
+    <OutputPath>..\SimPe BHAV\bin\InProgress\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -165,40 +165,7 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>set base=$(TargetName)-$(ConfigurationName)
-set src=Source-$(ConfigurationName)
-set mydate=%25date%25
-set dd=%25mydate:~0,2%25
-set mm=%25mydate:~3,2%25
-set yy=%25mydate:~6,4%25
-set mytime=%25time%25
-set h=%25mytime:~0,2%25
-set m=%25mytime:~3,2%25
-set s=%25mytime:~6,2%25
-set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
-set tarv=
-
-cd "$(ProjectDir)"
-
-if exist Plugins rmdir /s/q Plugins
-mkdir Plugins
-mkdir "Plugins\$(TargetName)"
-
-(cd "$(TargetDir)"
-tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
-(cd ..
-tar c LICENSE.txt) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
-tar c CHANGES.txt | tar x%25tarv%25 -C "Plugins\$(TargetName)"
-
-tar c Plugins | (cd ..\..\SimPe
-tar xv)
-
-del ..\"%25base%25*"
-7za a -tzip -r -mx9 "..\%25base%25-%25suffix%25.zip" Plugins
-
-if not $(ConfigurationName)==Release goto skip
-tar cv Plugins | bzip2 &gt; "..\%25base%25-%25suffix%25.tar.bz2"
-7za a -t7z -mx9 -ms "..\%25base%25-%25suffix%25.7z" Plugins
-:skip:</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
