@@ -71,6 +71,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnStrPrev;
 		private System.Windows.Forms.Button btnStrNext;
 		private System.Windows.Forms.Button btnHelp;
+        private Button btnRefreshFT;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -437,6 +438,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbLabel = new System.Windows.Forms.Label();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
+            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.pnHeading.SuspendLayout();
             this.trcnPanel.SuspendLayout();
             this.SuspendLayout();
@@ -451,6 +453,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.pnHeading, "pnHeading");
             this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pnHeading.Controls.Add(this.btnRefreshFT);
             this.pnHeading.Controls.Add(this.btnHelp);
             this.pnHeading.Controls.Add(this.label1);
             this.pnHeading.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -698,6 +701,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrNext.TabStop = false;
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
             // 
+            // btnRefreshFT
+            // 
+            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
+            this.btnRefreshFT.Name = "btnRefreshFT";
+            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
+            // 
             // TrcnForm
             // 
             resources.ApplyResources(this, "$this");
@@ -866,6 +875,11 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			internalchg = origstate;
 		}
+
+        private void btnRefreshFT_Click(object sender, EventArgs e)
+        {
+            pjse.FileTable.GFT.UIRefresh();
+        }
 
 	}
 }

@@ -10,6 +10,25 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+3 June 2006 08:40 - Filetable: add a Refresh Filetable (RFT) button to all editors
+  pjse filetable
+    FileTable.cs
+  SimPe BHAV\
+    BconForm.cs 1.15.2.10
+    BconForm.resx 1.9.2.4
+    BhavForm.cs 1.64.2.19
+    BhavForm.resx 1.30.2.8
+    ObjfForm.cs 1.13.2.10
+    ObjfForm.resx 1.4.6.4
+    StrForm.cs 1.28.2.13
+    StrForm.resx 1.18.14.8
+    TPRPForm.cs 1.6.2.10
+    TPRPForm.resx 1.5.2.3
+    TrcnForm.cs 1.11.2.11
+    TrcnForm.resx 1.7.2.4
+    TtabForm.cs 1.31.2.13
+    TtabForm.resx 1.15.8.3
+
 30 May 2006 19:38 - GUID Tool: Package as part of pjse coder plugins distribution
   * Merge CHANGES.txt with SimPe BHAV\CHANGES.txt
   pjse GUID Tool\
