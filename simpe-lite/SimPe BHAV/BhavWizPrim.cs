@@ -1546,7 +1546,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x001c(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng)
+        public override ABhavOperandWiz Wizard()
+        {
+            return new pjse.BhavOperandWizards.BhavOperandWiz0x001c(instruction);
+        }
+
+        protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
@@ -1578,7 +1583,7 @@ namespace pjse.BhavNameWizards
 					for (int i = 0; i < 3; i++)
 						s += (i == 0 ? "" : ", ") + dataOwner(o[6 + i*3], o[6 + (i*3) + 1], o[6 + (i*3) + 2]);
 				}
-                if ((o[2] & 0x30) != 0) s += ", ";
+                if ((o[2] & 0x30) == 0x30) s += ", ";
                 if ((o[2] & 0x20) != 0)
                     s += pjse.Localization.GetString("bw_callerparams");
 			}
@@ -2694,7 +2699,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0032(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng)
+        public override ABhavOperandWiz Wizard()
+        {
+            return new pjse.BhavOperandWizards.BhavOperandWiz0x0032(instruction);
+        }
+
+        protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);

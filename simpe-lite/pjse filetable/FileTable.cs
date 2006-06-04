@@ -119,6 +119,13 @@ namespace pjse
 			OnFiletableRefresh(this, new EventArgs());
 		}
 
+        public void UIRefresh()
+        {
+            SimPe.Wait.Start();
+            pjse.FileTable.GFT.Refresh();
+            SimPe.Wait.Stop();
+        }
+
 
 		/// <summary>
 		/// Indicates the Refresh() was called
@@ -483,9 +490,7 @@ namespace pjse
 		public IToolResult ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
 		{
 			//(new FileTableForm()).Settings();
-            SimPe.Wait.Start();
-            pjse.FileTable.GFT.Refresh();
-            SimPe.Wait.Stop();
+            pjse.FileTable.GFT.UIRefresh();
             return new SimPe.Plugin.ToolResult(false, false);
 		}
 
