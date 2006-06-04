@@ -22,6 +22,7 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Threading;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Plugin;
 using SimPe.Interfaces.Scenegraph;
@@ -32,8 +33,10 @@ namespace pjse.guidtool
 	/// Summary description for GUIDTool.
 	/// </summary>
 	public class GUIDTool : System.Windows.Forms.Form, ITool
-	{
-		private System.Windows.Forms.Label lbGUID;
+    {
+        #region Form variables
+
+        private System.Windows.Forms.Label lbGUID;
 		private System.Windows.Forms.TextBox tbGUID;
 		private System.Windows.Forms.RichTextBox rtbReport;
 		private System.Windows.Forms.Button btnSearch;
@@ -48,7 +51,9 @@ namespace pjse.guidtool
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
-		public GUIDTool()
+        #endregion
+
+        public GUIDTool()
 		{
 			//
 			// Required for Windows Form Designer support
@@ -57,8 +62,11 @@ namespace pjse.guidtool
 
 			TextBox[] alHex32s = { tbGUID, };
 			alHex32 = new ArrayList(alHex32s);
-			this.progressBar1.Visible = false;
-		}
+            this.oldText = this.btnSearch.Text;
+            this.prompt = this.lbStatus.Text;
+
+            SearchComplete += new EventHandler(Complete);
+        }
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -76,94 +84,168 @@ namespace pjse.guidtool
 		}
 
 
-		#region ITool Members
+        private bool searching = false;
+        private int matches = 0;
+        private string oldText = null;
+        private string prompt = null;
+        private Thread searchThread = null;
+        private Control last = null;
 
-		public bool IsEnabled(SimPe.Interfaces.Files.IPackedFileDescriptor pfd, SimPe.Interfaces.Files.IPackageFile package)
-		{
-			return true;
-		}
 
-		public SimPe.Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
-		{
-			this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
-			this.progressBar1.Value = 0;
+        private void Search(object o)
+        {
+            SearchType type = (SearchType)((object[])o)[0];
+            uint searchGUID = (uint)((object[])o)[1];
+            string searchText = (string)((object[])o)[2];
 
-			this.ShowDialog(this.Parent);
-			return new SimPe.Plugin.ToolResult(false, false);
-		}
+            SetProgressCallback setProgress = new SetProgressCallback(SetProgress);
+            AddResultCallback addResult = new AddResultCallback(AddResult);
+            StopSearchCallback stopSearch = new StopSearchCallback(StopSearch);
+            EventHandler onSearchComplete = new EventHandler(OnSearchComplete);
 
-		#endregion
 
-		#region IToolPlugin Members
+            try
+            {
+                pjse.FileTable.Entry[] results = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
 
-		public override string ToString()
-		{
-            return "PJSE\\" + pjse.Localization.GetString("gt_ObjectFinder");
-		}
+                Invoke(setProgress, new object[] { false, results.Length });
 
-		#endregion
+                int j = 0;
+                foreach (pjse.FileTable.Entry item in results)
+                {
+                    uint itemguid = 0;
 
-		private uint guid = 0;
-		private ArrayList alHex32 = null;
-		private Control last = null;
+                    System.IO.BinaryReader reader = item.Wrapper.StoredData;
 
-		private void Search(SearchType type)
-		{
-			uint itemguid = 0;
+                    if (reader.BaseStream.Length >= 0x40) // filename length
+                    {
+                        if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
+                        {
+                            reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
+                            itemguid = reader.ReadUInt32();
+                        }
+                        else
+                            itemguid = 0;
 
-			this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+                        if ((type == SearchType.GUID && itemguid == searchGUID)
+                            || (type == SearchType.Name && item.ToString().ToLower().IndexOf(searchText) >= 0))
+                            Invoke(addResult, new object[] { itemguid, item.PFD.Group, item.ToString(), item.Package.FileName });
+                    }
 
-			this.lbStatus.Visible = false;
-			this.progressBar1.Value = 0;
-			this.progressBar1.Visible = true;
+                    Invoke(setProgress, new object[] { true, ++j });
+                    Thread.Sleep(0);
+                    if ((bool)Invoke(stopSearch))
+                        break;
+                }
+            }
+            finally
+            {
+                Thread.Sleep(0);
+                BeginInvoke(onSearchComplete, new object[] { this, EventArgs.Empty });
+            }
+        }
 
-			pjse.FileTable.Entry[] results = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
-			this.progressBar1.Maximum = results.Length;
+        private delegate void SetProgressCallback(bool maxOrValue, int progress);
+        private void SetProgress(bool maxOrValue, int progress)
+        {
+            if (maxOrValue == false)
+                this.progressBar1.Maximum = progress;
+            else
+                this.progressBar1.Value = progress;
+        }
 
-			this.rtbReport.Text = "";
-			int i = 0;
-			foreach (pjse.FileTable.Entry item in results)
-			{
-				System.IO.BinaryReader reader = item.Wrapper.StoredData;
+        private delegate void AddResultCallback(uint itemguid, uint group, string itemName, string itemPkgName);
+        private void AddResult(uint itemguid, uint group, string itemName, string itemPkgName)
+        {
+            this.rtbReport.AppendText("0x" + SimPe.Helper.HexString(itemguid) + ": "
+                + pjse.Localization.GetString("gt_Group") + " 0x" + SimPe.Helper.HexString(group)
+                + " - " + itemName + " (" + itemPkgName + ")\n");
+            this.rtbReport.ScrollToCaret();
+            matches++;
+        }
 
-				if (reader.BaseStream.Length >= 0x40) // filename length
-				{
-					if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
-					{
-						reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
-						itemguid = reader.ReadUInt32();
-					}
-					else
-						itemguid = 0;
+        private delegate bool StopSearchCallback();
+        private bool StopSearch()
+        {
+            return !searching;
+        }
 
-					if ((type == SearchType.GUID && itemguid == guid)
-						||
-						(type == SearchType.Name && ((string)item).ToLower().IndexOf(this.tbName.Text) >= 0))
-					{
-						this.rtbReport.Text += "0x" + SimPe.Helper.HexString(itemguid) + ": "
-                            + pjse.Localization.GetString("gt_Group") + " 0x" + SimPe.Helper.HexString(item.PFD.Group)
-                            + " - " + item + " (" + item.Package.FileName + ")\n";
-						i++;
-					}
-				}
-				this.progressBar1.Value++;
-				if (i >= 180)
-					break;
-			}
-			this.Cursor = System.Windows.Forms.Cursors.Default;
-			this.progressBar1.Value = 0;
-			this.progressBar1.Visible = false;
-			if (i < 180)
-				this.lbStatus.Text = (this.rtbReport.Text.Length == 0
-                    ? pjse.Localization.GetString("gt_NoMatchesFound")
-                    : Localization.GetString("gt_MatchesFound") + ": " + i.ToString()
-                    );
-			else
-                this.lbStatus.Text = pjse.Localization.GetString("gt_TooManyMatches");
-			this.lbStatus.Visible = true;
-		}
+        private event EventHandler SearchComplete;
+        private void OnSearchComplete(object sender, EventArgs e)
+        {
+            if (SearchComplete != null) { SearchComplete(sender, e); }
+        }
 
-		private bool hex32_IsValid(object sender)
+
+
+        private void Start()
+        {
+            uint guid = 0;
+            SearchType type = SearchType.GUID;
+            if (this.last == this.tbGUID)
+            {
+                type = SearchType.GUID;
+                guid = Convert.ToUInt32(this.tbGUID.Text, 16);
+                this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
+                this.tbName.Text = "";
+            }
+            else if (this.last == this.tbName)
+            {
+                type = SearchType.Name;
+                guid = 0;
+                this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
+                this.tbName.Text = this.tbName.Text.Trim().ToLower();
+            }
+            this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+            this.rtbReport.UseWaitCursor = true;
+            this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = false;
+            this.btnSearch.Text = pjse.Localization.GetString("gt_Stop");
+            this.lbStatus.Visible = false;
+            this.progressBar1.Value = 0;
+            this.progressBar1.Visible = true;
+            this.rtbReport.Text = "";
+
+            searching = true;
+            matches = 0;
+
+            searchThread = new Thread(new ParameterizedThreadStart(Search));
+            searchThread.Start(new object[] { type, guid, this.tbName.Text });
+        }
+
+        private void Stop()
+        {
+            if (!searching) Complete(null, null);
+            else
+            {
+                this.btnSearch.Enabled = false;
+                this.btnSearch.Cursor = System.Windows.Forms.Cursors.WaitCursor;
+                searching = false;
+            }
+        }
+
+        private void Complete(object sender, EventArgs e)
+        {
+            searching = false;
+            while (searchThread != null && searchThread.IsAlive)
+                searchThread.Join(10);
+            searchThread = null;
+            this.Cursor = this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rtbReport.UseWaitCursor = false;
+            this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = this.btnSearch.Enabled = true;
+            this.btnSearch.Text = oldText;
+            this.progressBar1.Value = 0;
+            this.progressBar1.Visible = false;
+            this.lbStatus.Visible = true;
+            if (matches > 0)
+                this.lbStatus.Text = pjse.Localization.GetString("gt_MatchesFound") + ": " + matches.ToString();
+            else
+                this.lbStatus.Text = pjse.Localization.GetString("gt_NoMatchesFound");
+        }
+
+
+        private ArrayList alHex32 = null;
+        private bool hex32_IsValid(object sender)
 		{
 			if (alHex32.IndexOf(sender) < 0)
 				throw new Exception("hex32_IsValid not applicable to control " + sender.ToString());
@@ -181,7 +263,38 @@ namespace pjse.guidtool
 		}
 		#endregion
 
-		#region Windows Form Designer generated code
+        #region ITool Members
+
+        public bool IsEnabled(SimPe.Interfaces.Files.IPackedFileDescriptor pfd, SimPe.Interfaces.Files.IPackageFile package)
+        {
+            return true;
+        }
+
+        public SimPe.Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
+        {
+            Complete(null, null);
+            this.tbGUID.Text = "0x" + SimPe.Helper.HexString((uint)0);
+            this.rtbReport.Text = this.tbName.Text = "";
+            this.progressBar1.Visible = false;
+            this.lbStatus.Text = this.prompt;
+            this.lbStatus.Visible = true;
+
+            this.ShowDialog(this.Parent);
+            return new SimPe.Plugin.ToolResult(false, false);
+        }
+
+        #endregion
+
+        #region IToolPlugin Members
+
+        public override string ToString()
+        {
+            return "PJSE\\" + pjse.Localization.GetString("gt_ObjectFinder");
+        }
+
+        #endregion
+
+        #region Windows Form Designer generated code
 		/// <summary>
 		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
@@ -286,6 +399,12 @@ namespace pjse.guidtool
 		}
 		#endregion
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            Complete(null, null);
+            base.OnClosing(e);
+        }
+
 		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
 		{
 			if (hex32_IsValid(sender)) return;
@@ -302,23 +421,13 @@ namespace pjse.guidtool
 			((TextBox)sender).SelectAll();
 		}
 
-		private void btnSearch_Click(object sender, System.EventArgs e)
-		{
-			if (this.last == this.tbGUID)
-			{
-				guid = Convert.ToUInt32(this.tbGUID.Text, 16);
-				this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
-				this.tbName.Text = "";
-				Search(SearchType.GUID);
-			}
-			else if (this.last == this.tbName)
-			{
-				guid = 0;
-				this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
-				this.tbName.Text = this.tbName.Text.Trim().ToLower();
-				Search(SearchType.Name);
-			}
-		}
+        private void btnSearch_Click(object sender, System.EventArgs e)
+        {
+            if (searching)
+                Stop();
+            else
+                Start();
+        }
 
 		private void textBox_Enter(object sender, System.EventArgs e)
 		{

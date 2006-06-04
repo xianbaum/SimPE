@@ -129,7 +129,7 @@
     <value>88, 20</value>
   </data>
   <data name="tbGUID.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="tbGUID.Text" xml:space="preserve">
     <value>0xDDDDDDDD</value>
@@ -156,7 +156,7 @@
     <value>34, 13</value>
   </data>
   <data name="lbGUID.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="lbGUID.Text" xml:space="preserve">
     <value>GUID</value>
@@ -217,10 +217,10 @@
     <value>75, 23</value>
   </data>
   <data name="btnSearch.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="btnSearch.Text" xml:space="preserve">
-    <value>Search</value>
+    <value>&amp;Search</value>
   </data>
   <data name="&gt;&gt;btnSearch.Name" xml:space="preserve">
     <value>btnSearch</value>
@@ -244,7 +244,7 @@
     <value>75, 23</value>
   </data>
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>Close</value>
@@ -295,7 +295,7 @@
     <value>35, 13</value>
   </data>
   <data name="lbName.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="lbName.Text" xml:space="preserve">
     <value>Name</value>
@@ -322,7 +322,7 @@
     <value>376, 20</value>
   </data>
   <data name="tbName.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;tbName.Name" xml:space="preserve">
     <value>tbName</value>
