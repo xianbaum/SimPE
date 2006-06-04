@@ -10,6 +10,14 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+4 June 2006 11:47 - Help updates
+  SimPe BHAV\PJSE_Help\
+    About.htm 1.1.2.5
+    Contents.htm 1.1.2.5
+    General.htm 1.1.2.2
+    ObjectFuncs.htm 1.1.2.3
+    Support.htm 1.1.2.3
+
 3 June 2006 16:52 - Wizards: Create wizard for opcode 0x32 (Add/Change Action String)
   SimPe BHAV\
     BhavOperandWiz0x0032.cs 1.1.2.1
