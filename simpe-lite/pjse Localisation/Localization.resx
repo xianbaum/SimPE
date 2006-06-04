@@ -1177,8 +1177,9 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="strContext" xml:space="preserve">
     <value>Runtime object cannot be predicted</value>
   </data>
-  <data name="bow24_noStrings" xml:space="preserve">
+  <data name="bow_noStrings" xml:space="preserve">
     <value>No strings found</value>
+    <comment>0x1c, 0x24</comment>
   </data>
   <data name="ttabForm_Multiple" xml:space="preserve">
     <value>Use multiple sets of adverts</value>

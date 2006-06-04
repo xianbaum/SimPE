@@ -53,6 +53,8 @@ namespace pjse
 
 		}
 
+        public StrChooser(bool sortflag) : this() { this.sortflag = sortflag; }
+
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
@@ -70,6 +72,8 @@ namespace pjse
 
 
 		#region StrChooser
+        private bool sortflag = false;
+
 		public int Strnum(StrWrapper wrapper)
 		{
 			fill(wrapper);
@@ -93,6 +97,8 @@ namespace pjse
 
 			for (int i = 0; wrapper[1, i] != null; i++)
 				lbItemList.Items.Add(new SimPe.Data.Alias((uint)i, wrapper[1, i].Title));
+
+            lbItemList.Sorted = sortflag;
 		}
 
 		#endregion

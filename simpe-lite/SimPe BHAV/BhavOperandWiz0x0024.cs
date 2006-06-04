@@ -481,7 +481,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
             if (items == null || items.Length == 0)
             {
-                MessageBox.Show(pjse.Localization.GetString("bow24_noStrings")
+                MessageBox.Show(pjse.Localization.GetString("bow_noStrings")
                     + " (" + pjse.Localization.GetString(scope.ToString())  + ")");
                 return; // eek!
             }
