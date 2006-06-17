@@ -1165,10 +1165,10 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>Settings for PJSE tools</value>
   </data>
   <data name="[Description:LoadAtStartup]" xml:space="preserve">
-    <value>When true, the PJSE FileTable is loaded when SimPE starts, rather than when first needed.</value>
+    <value>When true, the PJSE FileTable is loaded when SimPE starts, rather than when first needed.  If you don't use the PJSE (BHAV) editor, set to false.</value>
   </data>
   <data name="[Property:LoadAtStartup]" xml:space="preserve">
-    <value>When to load the PJSE FileTable</value>
+    <value>Load the PJSE FileTable at start up</value>
   </data>
   <data name="ft_Refresh" xml:space="preserve">
     <value>Refresh &amp;FileTable</value>

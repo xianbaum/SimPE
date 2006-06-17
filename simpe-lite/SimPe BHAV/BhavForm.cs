@@ -1813,11 +1813,13 @@ namespace SimPe.PackedFiles.UserInterface
 			int mv;
 			try { mv = Convert.ToInt32(tbLines.Text); }
 			catch (Exception) { return; }
+            this.gbMove.Enabled = false;
 			if (sender == this.btnUp)
 				this.pnflowcontainer.MoveInst(mv * -1);
 			else
 				this.pnflowcontainer.MoveInst(mv);
-		}
+            this.gbMove.Enabled = true;
+        }
 
 		private void btnAdd_Clicked(object sender, System.EventArgs e)
 		{
