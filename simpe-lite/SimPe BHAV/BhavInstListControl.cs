@@ -337,8 +337,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void myrepaint()
 		{
-			this.Parent.Cursor = Cursors.WaitCursor;
-			SimPe.Wait.Start(wrapper.Count);
+            SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
+            //this.Parent.Cursor = Cursors.WaitCursor;
+			//SimPe.Wait.Start(wrapper.Count);
 			try
 			{
 				this.SuspendLayout();
@@ -353,7 +354,7 @@ namespace SimPe.PackedFiles.UserInterface
 				for (int i = 0; i < wrapper.Count; i++)
 				{
 					flowitems[i] = makeBhavInstListItemUI(i);
-					SimPe.Wait.Progress = i;
+					//SimPe.Wait.Progress = i;
 				}
 
 				if (csel >= 0) flowitems[csel].MakeSelected();
@@ -366,8 +367,9 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			finally
 			{
-				this.Parent.Cursor = Cursors.Default;
-				SimPe.Wait.Stop();
+                SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
+                //this.Parent.Cursor = Cursors.Default;
+                //SimPe.Wait.Stop();
 			}
 		}
 
