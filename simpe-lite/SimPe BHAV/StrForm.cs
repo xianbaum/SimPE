@@ -1037,33 +1037,27 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void ckb_CheckedChanged(object sender, System.EventArgs e)
-		{
+        private void ckb_CheckedChanged(object sender, System.EventArgs e)
+        {
             if (internalchg) return;
 
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
-			while (this.lvStrItems.Columns.Count > 2)
-				this.lvStrItems.Columns.RemoveAt(2);
+            System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
 
-            this.chString.Width = ((int)(resources.GetObject("chString.Width")));
-            int w2 = ((int)(resources.GetObject("chLangDesc.Width")));
-            int w1 = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18);
+            int w1 = this.lvStrItems.ClientRectangle.Width - (int)(resources.GetObject("chString.Width")) - 18;
+            int w2 = this.ckbDescription.Checked ? (int)(resources.GetObject("chLangDesc.Width")) : 0;
 
             if (this.ckbDefault.Checked) w1 /= 2;
-            if (this.ckbDescription.Checked) w1 -= w2;
+            w1 -= w2;
 
-            this.chLang.Width = this.chDefault.Width = w1;
-            this.chLangDesc.Width = this.chDefaultDesc.Width = w2;
-
-            if (this.ckbDescription.Checked)
-                this.lvStrItems.Columns.Add(this.chLangDesc);
+            this.chLangDesc.Width = this.chDefault.Width = this.chDefaultDesc.Width = 0;
+            this.chLang.Width = w1;
+            this.chLangDesc.Width = w2;
             if (this.ckbDefault.Checked)
-			{
-                this.lvStrItems.Columns.Add(this.chDefault);
-                if (this.ckbDescription.Checked)
-                    this.lvStrItems.Columns.Add(this.chDefaultDesc);
+            {
+                this.chDefault.Width = w1;
+                this.chDefaultDesc.Width = w2;
             }
-		}
+        }
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
