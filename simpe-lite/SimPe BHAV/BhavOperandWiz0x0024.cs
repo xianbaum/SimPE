@@ -286,8 +286,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 			tnsStyle = (byte)newStyle;
 
-			if (cbTnsStyle.Items.Count > tnsStyle)
-				cbTnsStyle.SelectedIndex = tnsStyle;
+			if (cbTnsStyle.Items.Count != tnsStyle)
+				cbTnsStyle.SelectedIndex = (tnsStyle >= 0 && tnsStyle < cbTnsStyle.Items.Count) ? tnsStyle : -1;
 
 			internalchg = false;
 		}
@@ -299,7 +299,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			scope = (Scope)newScope;
 
 			if (cbScope.SelectedIndex != newScope)
-				cbScope.SelectedIndex = newScope;
+				cbScope.SelectedIndex = (newScope >= 0 && newScope < cbScope.Items.Count) ? newScope : -1;
 
 			for(int i = 0; i < messages.Length; i++)
 				setString(i, messages[i]);
@@ -314,7 +314,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			iconType = (byte)newType;
 
 			if (cbIconType.SelectedIndex != iconType)
-				cbIconType.SelectedIndex = iconType;
+                cbIconType.SelectedIndex = (iconType >= 0  && iconType < cbIconType.Items.Count) ? iconType : -1;
 			tbIconID.Enabled = (iconType == 3);
 			btnStrIcon.Enabled = (iconType == 4);
 
@@ -326,7 +326,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			internalchg = true;
 
 			tempVar = (byte)newTempVar;
-			this.cbTempVar.SelectedIndex = tempVar;
+            if (cbTempVar.SelectedIndex != tempVar)
+    			cbTempVar.SelectedIndex = (tempVar >= 0 && tempVar < cbTempVar.Items.Count) ? tempVar : -1;
 
 			internalchg = false;
 		}
