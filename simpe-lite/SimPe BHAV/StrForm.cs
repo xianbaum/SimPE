@@ -70,6 +70,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnLngFirst;
 		private System.Windows.Forms.Button btnStrDefault;
         private Button btnRefreshFT;
+        private ColumnHeader chLangDesc;
+        private ColumnHeader chDefaultDesc;
+        private CheckBox ckbDescription;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -134,9 +137,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void updateSelectedItem()
 		{
-			if (lid == 1)
-				this.lvStrItems.Items[index].SubItems[2].Text = wrapper[1, index].Title;
-			this.lvStrItems.Items[index].SubItems[1].Text = wrapper[lid, index].Title;
+            if (lid == 1)
+            {
+                this.lvStrItems.Items[index].SubItems[3].Text = wrapper[1, index].Title;
+                this.lvStrItems.Items[index].SubItems[4].Text = wrapper[1, index].Description;
+            }
+            this.lvStrItems.Items[index].SubItems[1].Text = wrapper[lid, index].Title;
+            this.lvStrItems.Items[index].SubItems[2].Text = wrapper[lid, index].Description;
 
 			bool empty = true;
 			StrItem[] sa = wrapper[lid];
@@ -183,11 +190,13 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				StrItem si = wrapper[1, i];
 				this.lvStrItems.Items.Add( new ListViewItem(
-					new string[] { "0x" + Helper.HexString((ushort)i), "", ((si == null) ? "" : si.Title) }
+                    new string[] { "0x" + Helper.HexString((ushort)i), "", "", ((si == null) ? "" : si.Title), ((si == null) ? "" : si.Description) }
 					) );
 				this.lvStrItems.Items[i].UseItemStyleForSubItems = false;
-				this.lvStrItems.Items[i].SubItems[2].ForeColor = System.Drawing.SystemColors.ControlDark;
-			}
+                this.lvStrItems.Items[i].SubItems[2].ForeColor = System.Drawing.SystemColors.ControlDark;
+                this.lvStrItems.Items[i].SubItems[3].ForeColor = System.Drawing.SystemColors.ControlDark;
+                this.lvStrItems.Items[i].SubItems[4].ForeColor = System.Drawing.SystemColors.ControlDark;
+            }
 		}
 
 
@@ -207,8 +216,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 			while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
 			this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
-			for (int i = 0; i < count; i++)
-				this.lvStrItems.Items[i].SubItems[1].Text = wrapper[lid, i].Title;
+            for (int i = 0; i < count; i++)
+            {
+                this.lvStrItems.Items[i].SubItems[1].Text = wrapper[lid, i].Title;
+                this.lvStrItems.Items[i].SubItems[2].Text = wrapper[lid, i].Description;
+            }
 
 			displayStrItem();
 		}
@@ -445,7 +457,8 @@ namespace SimPe.PackedFiles.UserInterface
 			di.Title       = si.Title;
 			di.Description = si.Description;
 
-			this.lvStrItems.Items[index].SubItems[2].Text = wrapper[1, index].Title;
+            this.lvStrItems.Items[index].SubItems[3].Text = wrapper[1, index].Title;
+            this.lvStrItems.Items[index].SubItems[4].Text = wrapper[1, index].Description;
 
 			bool empty = true;
 			StrItem[] sa = wrapper[(byte)1];
@@ -546,10 +559,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 			setLid(1);
 			setIndex(count > 0 ? 0 : -1);
-			if (this.ckbDefault.Checked)
-				this.ckbDefault.Checked = false;
+			if (this.ckbDefault.Checked || this.ckbDescription.Checked)
+				this.ckbDefault.Checked = this.ckbDescription.Checked = false;
 			else
-				ckbDefault_CheckedChanged(null, null);
+                ckb_CheckedChanged(null, null);
 
 			if (!setHandler)
 			{
@@ -597,6 +610,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.strPanel = new System.Windows.Forms.Panel();
             this.btnLngFirst = new System.Windows.Forms.Button();
             this.pnHeading = new System.Windows.Forms.Panel();
+            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnStrPrev = new System.Windows.Forms.Button();
@@ -630,13 +644,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrAdd = new System.Windows.Forms.Button();
             this.btnImport = new System.Windows.Forms.Button();
             this.btnStrDefault = new System.Windows.Forms.Button();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
+            this.chLangDesc = new System.Windows.Forms.ColumnHeader();
+            this.chDefaultDesc = new System.Windows.Forms.ColumnHeader();
+            this.ckbDescription = new System.Windows.Forms.CheckBox();
             this.strPanel.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.SuspendLayout();
             // 
             // strPanel
             // 
+            this.strPanel.Controls.Add(this.ckbDescription);
             this.strPanel.Controls.Add(this.btnLngFirst);
             this.strPanel.Controls.Add(this.pnHeading);
             this.strPanel.Controls.Add(this.btnStrPrev);
@@ -687,6 +704,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnHeading.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pnHeading.Name = "pnHeading";
             // 
+            // btnRefreshFT
+            // 
+            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
+            this.btnRefreshFT.Name = "btnRefreshFT";
+            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
+            // 
             // btnHelp
             // 
             resources.ApplyResources(this.btnHelp, "btnHelp");
@@ -714,7 +737,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.ckbDefault, "ckbDefault");
             this.ckbDefault.Name = "ckbDefault";
-            this.ckbDefault.CheckedChanged += new System.EventHandler(this.ckbDefault_CheckedChanged);
+            this.ckbDefault.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
             // 
             // btnStrClear
             // 
@@ -729,7 +752,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvStrItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chString,
             this.chLang,
-            this.chDefault});
+            this.chLangDesc,
+            this.chDefault,
+            this.chDefaultDesc});
             this.lvStrItems.FullRowSelect = true;
             this.lvStrItems.GridLines = true;
             this.lvStrItems.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
@@ -893,11 +918,19 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrDefault.Name = "btnStrDefault";
             this.btnStrDefault.Click += new System.EventHandler(this.btnStrDefault_Click);
             // 
-            // btnRefreshFT
+            // chLangDesc
             // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
+            resources.ApplyResources(this.chLangDesc, "chLangDesc");
+            // 
+            // chDefaultDesc
+            // 
+            resources.ApplyResources(this.chDefaultDesc, "chDefaultDesc");
+            // 
+            // ckbDescription
+            // 
+            resources.ApplyResources(this.ckbDescription, "ckbDescription");
+            this.ckbDescription.Name = "ckbDescription";
+            this.ckbDescription.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
             // 
             // StrForm
             // 
@@ -1004,23 +1037,33 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void ckbDefault_CheckedChanged(object sender, System.EventArgs e)
+		private void ckb_CheckedChanged(object sender, System.EventArgs e)
 		{
+            if (internalchg) return;
+
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
-			this.chString.Width = ((int)(resources.GetObject("chString.Width")));
 			while (this.lvStrItems.Columns.Count > 2)
 				this.lvStrItems.Columns.RemoveAt(2);
-			if (this.ckbDefault.Checked)
-			{
-				this.chDefault.Width = this.chLang.Width = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18) / 2;
-				this.lvStrItems.Columns.Add(this.chDefault);
-			}
-			else
-			{
-				this.chLang.Width = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18);
-			}
-		}
 
+            this.chString.Width = ((int)(resources.GetObject("chString.Width")));
+            int w2 = ((int)(resources.GetObject("chLangDesc.Width")));
+            int w1 = (this.lvStrItems.ClientRectangle.Width - this.chString.Width - 18);
+
+            if (this.ckbDefault.Checked) w1 /= 2;
+            if (this.ckbDescription.Checked) w1 -= w2;
+
+            this.chLang.Width = this.chDefault.Width = w1;
+            this.chLangDesc.Width = this.chDefaultDesc.Width = w2;
+
+            if (this.ckbDescription.Checked)
+                this.lvStrItems.Columns.Add(this.chLangDesc);
+            if (this.ckbDefault.Checked)
+			{
+                this.lvStrItems.Columns.Add(this.chDefault);
+                if (this.ckbDescription.Checked)
+                    this.lvStrItems.Columns.Add(this.chDefaultDesc);
+            }
+		}
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
@@ -1119,7 +1162,6 @@ namespace SimPe.PackedFiles.UserInterface
         {
             pjse.FileTable.GFT.UIRefresh();
         }
-
 
 	}
 
