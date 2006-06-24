@@ -608,6 +608,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StrForm));
             this.strPanel = new System.Windows.Forms.Panel();
+            this.ckbDescription = new System.Windows.Forms.CheckBox();
             this.btnLngFirst = new System.Windows.Forms.Button();
             this.pnHeading = new System.Windows.Forms.Panel();
             this.btnRefreshFT = new System.Windows.Forms.Button();
@@ -620,7 +621,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvStrItems = new System.Windows.Forms.ListView();
             this.chString = new System.Windows.Forms.ColumnHeader();
             this.chLang = new System.Windows.Forms.ColumnHeader();
+            this.chLangDesc = new System.Windows.Forms.ColumnHeader();
             this.chDefault = new System.Windows.Forms.ColumnHeader();
+            this.chDefaultDesc = new System.Windows.Forms.ColumnHeader();
             this.btnBigDesc = new System.Windows.Forms.Button();
             this.btnBigString = new System.Windows.Forms.Button();
             this.lbDesc = new System.Windows.Forms.Label();
@@ -644,9 +647,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrAdd = new System.Windows.Forms.Button();
             this.btnImport = new System.Windows.Forms.Button();
             this.btnStrDefault = new System.Windows.Forms.Button();
-            this.chLangDesc = new System.Windows.Forms.ColumnHeader();
-            this.chDefaultDesc = new System.Windows.Forms.ColumnHeader();
-            this.ckbDescription = new System.Windows.Forms.CheckBox();
             this.strPanel.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.SuspendLayout();
@@ -687,6 +687,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.strPanel, "strPanel");
             this.strPanel.Name = "strPanel";
             this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
+            // 
+            // ckbDescription
+            // 
+            resources.ApplyResources(this.ckbDescription, "ckbDescription");
+            this.ckbDescription.Name = "ckbDescription";
+            this.ckbDescription.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
             // 
             // btnLngFirst
             // 
@@ -776,9 +782,17 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.chLang, "chLang");
             // 
+            // chLangDesc
+            // 
+            resources.ApplyResources(this.chLangDesc, "chLangDesc");
+            // 
             // chDefault
             // 
             resources.ApplyResources(this.chDefault, "chDefault");
+            // 
+            // chDefaultDesc
+            // 
+            resources.ApplyResources(this.chDefaultDesc, "chDefaultDesc");
             // 
             // btnBigDesc
             // 
@@ -917,20 +931,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.btnStrDefault, "btnStrDefault");
             this.btnStrDefault.Name = "btnStrDefault";
             this.btnStrDefault.Click += new System.EventHandler(this.btnStrDefault_Click);
-            // 
-            // chLangDesc
-            // 
-            resources.ApplyResources(this.chLangDesc, "chLangDesc");
-            // 
-            // chDefaultDesc
-            // 
-            resources.ApplyResources(this.chDefaultDesc, "chDefaultDesc");
-            // 
-            // ckbDescription
-            // 
-            resources.ApplyResources(this.ckbDescription, "ckbDescription");
-            this.ckbDescription.Name = "ckbDescription";
-            this.ckbDescription.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
             // 
             // StrForm
             // 

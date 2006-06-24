@@ -117,23 +117,26 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ckbDescription.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ckbDescription.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="ckbDescription.Location" type="System.Drawing.Point, System.Drawing">
-    <value>322, 142</value>
+    <value>322, 146</value>
   </data>
   <data name="ckbDescription.Size" type="System.Drawing.Size, System.Drawing">
-    <value>168, 24</value>
+    <value>147, 17</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ckbDescription.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
   </data>
   <data name="ckbDescription.Text" xml:space="preserve">
-    <value>Show string descriptions</value>
+    <value>Reveal string descriptions</value>
   </data>
   <data name="&gt;&gt;ckbDescription.Name" xml:space="preserve">
     <value>ckbDescription</value>
@@ -371,20 +374,23 @@
   <data name="&gt;&gt;btnStrNext.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="ckbDefault.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="ckbDefault.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="ckbDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>322, 124</value>
+    <value>322, 128</value>
   </data>
   <data name="ckbDefault.Size" type="System.Drawing.Size, System.Drawing">
-    <value>224, 24</value>
+    <value>214, 17</value>
   </data>
   <data name="ckbDefault.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
   <data name="ckbDefault.Text" xml:space="preserve">
-    <value>Show default language for comparison</value>
+    <value>Reveal default language for comparison</value>
   </data>
   <data name="&gt;&gt;ckbDefault.Name" xml:space="preserve">
     <value>ckbDefault</value>
@@ -477,16 +483,16 @@
         b3dzLkZvcm1zLkxpc3RWaWV3SXRlbStMaXN0Vmlld1N1Ykl0ZW0EAAAABHRleHQEbmFtZQVzdHlsZQh1
         c2VyRGF0YQEBBAI+U3lzdGVtLldpbmRvd3MuRm9ybXMuTGlzdFZpZXdJdGVtK0xpc3RWaWV3U3ViSXRl
         bStTdWJJdGVtU3R5bGUCAAAAAgAAAAYMAAAADk90aGVyIGxhbmd1YWdlCgkNAAAACgEGAAAABQAAAAYO
-        AAAADFdXV1dXd2liYmJseQYPAAAAAAoKAQcAAAAFAAAABhAAAAAIQW1lcmljYW4KCgoBCAAAAAUAAAAG
-        EQAAAAtXV1dXV3dpYmJseQYSAAAAAAoKBQoAAAATU3lzdGVtLkRyYXdpbmcuRm9udAQAAAAETmFtZQRT
-        aXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUDAAAAG1N5c3RlbS5EcmF3
-        aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABhMAAAAUTWljcm9zb2Z0IFNhbnMgU2VyaWYAAARBBez///8Y
-        U3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAQAAAAd2YWx1ZV9fAAgDAAAAAAAAAAXr////G1N5c3RlbS5E
-        cmF3aW5nLkdyYXBoaWNzVW5pdAEAAAAHdmFsdWVfXwAIAwAAAAMAAAAFDQAAAD5TeXN0ZW0uV2luZG93
-        cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdTdWJJdGVtK1N1Ykl0ZW1TdHlsZQMAAAAJYmFja0Nv
-        bG9yCWZvcmVDb2xvcgRmb250BAQEFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAABRTeXN0ZW0uRHJhd2lu
-        Zy5Db2xvcgMAAAATU3lzdGVtLkRyYXdpbmcuRm9udAMAAAACAAAAAer////3////CgAAAAAAAAAAGAAB
-        AAHp////9////woAAAAAAAAAAAAAAAAKCw==
+        AAAADFdXV1dXd2liYmJseQoKCgEHAAAABQAAAAYPAAAACEFtZXJpY2FuCgoKAQgAAAAFAAAABhAAAAAL
+        V1dXV1d3aWJibHkKCgoFCgAAABNTeXN0ZW0uRHJhd2luZy5Gb250BAAAAAROYW1lBFNpemUFU3R5bGUE
+        VW5pdAEABAQLGFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQMAAAAbU3lzdGVtLkRyYXdpbmcuR3JhcGhp
+        Y3NVbml0AwAAAAMAAAAGEQAAABRNaWNyb3NvZnQgU2FucyBTZXJpZgAABEEF7v///xhTeXN0ZW0uRHJh
+        d2luZy5Gb250U3R5bGUBAAAAB3ZhbHVlX18ACAMAAAAAAAAABe3///8bU3lzdGVtLkRyYXdpbmcuR3Jh
+        cGhpY3NVbml0AQAAAAd2YWx1ZV9fAAgDAAAAAwAAAAUNAAAAPlN5c3RlbS5XaW5kb3dzLkZvcm1zLkxp
+        c3RWaWV3SXRlbStMaXN0Vmlld1N1Ykl0ZW0rU3ViSXRlbVN0eWxlAwAAAAliYWNrQ29sb3IJZm9yZUNv
+        bG9yBGZvbnQEBAQUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAA
+        ABNTeXN0ZW0uRHJhd2luZy5Gb250AwAAAAIAAAAB7P////f///8KAAAAAAAAAAAYAAEAAev////3////
+        CgAAAAAAAAAAAAAAAAoL
 </value>
   </data>
   <data name="lvStrItems.LabelWrap" type="System.Boolean, mscorlib">
@@ -1257,16 +1263,16 @@
   <data name="&gt;&gt;chLang.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;chDefault.Name" xml:space="preserve">
-    <value>chDefault</value>
-  </data>
-  <data name="&gt;&gt;chDefault.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="&gt;&gt;chLangDesc.Name" xml:space="preserve">
     <value>chLangDesc</value>
   </data>
   <data name="&gt;&gt;chLangDesc.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chDefault.Name" xml:space="preserve">
+    <value>chDefault</value>
+  </data>
+  <data name="&gt;&gt;chDefault.Type" xml:space="preserve">
     <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;chDefaultDesc.Name" xml:space="preserve">

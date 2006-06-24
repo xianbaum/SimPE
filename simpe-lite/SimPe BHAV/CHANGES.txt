@@ -10,6 +10,11 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+24 June 2006 18:08 - STR#: Rename checkbox labels for extra column headings
+  SimPe BHAV\
+    StrForm.cs 1.28.2.16
+    StrForm.resx 1.18.14.10
+
 24 June 2006 17:56 - STR#: Fix bug with column handling (cheat big time)
   SimPe BHAV\
     StrForm.cs 1.28.2.15
