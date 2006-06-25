@@ -10,6 +10,10 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+25 June 2006 09:39 - BHAV: Wiz0x0024 - bug fixed (TNSStyle selection disconnected)
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.4.13
+
 24 June 2006 21:23 - BHAV: Wiz0x0024 - bugs fixed (out of range on dropdowns)
   SimPe BHAV\
     BhavOperandWiz0x0024.cs 1.1.4.12

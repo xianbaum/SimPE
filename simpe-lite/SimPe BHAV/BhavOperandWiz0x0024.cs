@@ -971,6 +971,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             resources.ApplyResources(this.cbTnsStyle, "cbTnsStyle");
             this.cbTnsStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTnsStyle.Name = "cbTnsStyle";
+            this.cbTnsStyle.SelectedIndexChanged += new System.EventHandler(this.cbTnsStyle_SelectedIndexChanged);
             // 
             // btnStrIcon
             // 
