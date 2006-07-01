@@ -2218,7 +2218,7 @@
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=2.0.2341.33585, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=2.0.2366.16335, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2332,7 +2332,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbUpDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 23</value>
+    <value>85, 25</value>
   </data>
   <data name="lbUpDown.Size" type="System.Drawing.Size, System.Drawing">
     <value>33, 13</value>
@@ -2368,16 +2368,16 @@
     <value>28, 22</value>
   </data>
   <data name="tbLines.MaxLength" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="tbLines.Size" type="System.Drawing.Size, System.Drawing">
-    <value>44, 20</value>
+    <value>56, 21</value>
   </data>
   <data name="tbLines.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
   <data name="tbLines.Text" xml:space="preserve">
-    <value>1</value>
+    <value>0xDDDD</value>
   </data>
   <data name="&gt;&gt;tbLines.Name" xml:space="preserve">
     <value>tbLines</value>
@@ -2612,9 +2612,6 @@
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BhavForm</value>

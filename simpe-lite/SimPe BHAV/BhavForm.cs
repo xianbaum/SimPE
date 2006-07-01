@@ -138,9 +138,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbFilename.Width = this.lbFormat.Left - (this.tbFilename.Left + 4);
 			this.Tag = "Normal"; // Used by SetReadOnly
 
-			TextBox[] iow = { /*tbInst_Op01_dec, tbInst_Op23_dec, */null, null, tbLines };
+#if DEC16
+			TextBox[] iow = { null, null, null };
 			alDec16 = new ArrayList(iow);
-			TextBox[] iob = {
+#endif
+            TextBox[] iob = {
 								 tbInst_Op0  ,tbInst_Op1  ,tbInst_Op2  ,tbInst_Op3
 								,tbInst_Op4  ,tbInst_Op5  ,tbInst_Op6  ,tbInst_Op7
 								,tbInst_Unk0 ,tbInst_Unk1 ,tbInst_Unk2 ,tbInst_Unk3
@@ -154,7 +156,7 @@ namespace SimPe.PackedFiles.UserInterface
 							};
 			alHex8 = new ArrayList(iob);
 
-			TextBox[] w = { tbInst_OpCode ,};
+            TextBox[] w = { tbInst_OpCode ,tbLines ,};
 			alHex16 = new ArrayList(w);
 
 			TextBox[] dw = { tbTreeVersion ,};
@@ -190,7 +192,10 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper = null;
 			currentInst = null;
 			origInst = null;
-			alDec16 = alHex8 = alHex16 = alHex32 = alDec8 = alHex16cb = null;
+#if DEC16
+			alDec16 = 
+#endif
+            alHex8 = alHex16 = alHex32 = alDec8 = alHex16cb = null;
 		}
 
 		
@@ -200,8 +205,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private BhavWiz currentInst;
 		private Instruction origInst;
 		private bool internalchg;
+#if DEC16
 		private ArrayList alDec16;
-		private ArrayList alHex8;
+#endif
+        private ArrayList alHex8;
 		private ArrayList alHex16;
 		private ArrayList alHex32;
 		private ArrayList alDec8;
@@ -492,6 +499,7 @@ namespace SimPe.PackedFiles.UserInterface
 			return true;
 		}
 
+#if DEC16
 		private bool dec16_IsValid(object sender)
 		{
 			if (alDec16.IndexOf(sender) < 0)
@@ -500,6 +508,7 @@ namespace SimPe.PackedFiles.UserInterface
 			catch (Exception) { return false; }
 			return true;
 		}
+#endif
 
 		private bool hex8_IsValid(object sender)
 		{
@@ -572,6 +581,11 @@ namespace SimPe.PackedFiles.UserInterface
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Bhav) wrp;
+
+			internalchg = true;
+            this.tbLines.Text = "0x0001";
+			internalchg = false;
+
 			this.WrapperChanged(wrapper, null);
 
 			currentInst = null;
@@ -683,6 +697,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbArgC = new System.Windows.Forms.Label();
             this.lbFormat = new System.Windows.Forms.Label();
             this.pnHeading = new System.Windows.Forms.Panel();
+            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.bhavPanel = new System.Windows.Forms.Panel();
             this.cbSpecial = new System.Windows.Forms.CheckBox();
@@ -712,7 +727,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbTreeVersion = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lbCacheFlags = new System.Windows.Forms.Label();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.gbInstruction.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
@@ -1077,6 +1091,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnHeading.Controls.Add(this.label1);
             this.pnHeading.Name = "pnHeading";
             // 
+            // btnRefreshFT
+            // 
+            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
+            this.btnRefreshFT.Name = "btnRefreshFT";
+            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
+            // 
             // btnHelp
             // 
             resources.ApplyResources(this.btnHelp, "btnHelp");
@@ -1277,7 +1297,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbLines, "tbLines");
             this.tbLines.Name = "tbLines";
-            this.tbLines.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
+            this.tbLines.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbLines.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+            this.tbLines.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // btnSort
             // 
@@ -1309,12 +1331,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.lbCacheFlags, "lbCacheFlags");
             this.lbCacheFlags.Name = "lbCacheFlags";
-            // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
             // 
             // BhavForm
             // 
@@ -1611,9 +1627,10 @@ namespace SimPe.PackedFiles.UserInterface
 
 			((TextBox)sender).Text = val.ToString();
 			((TextBox)sender).SelectAll();
-		}
+        }
 
 
+#if DEC16
 		private void dec16_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
@@ -1661,9 +1678,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			((TextBox)sender).SelectAll();
 		}
+#endif
 
 
-		private void hex8_TextChanged(object sender, System.EventArgs ev)
+        private void hex8_TextChanged(object sender, System.EventArgs ev)
 		{
 			if (internalchg) return;
 			if (!hex8_IsValid(sender)) return;
@@ -1747,6 +1765,7 @@ namespace SimPe.PackedFiles.UserInterface
 			switch (alHex16.IndexOf(sender))
 			{
 				case 0: val = origInst.OpCode; break;
+                case 1: val = 1; break;
 			}
 
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
@@ -1811,13 +1830,21 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnMove_Clicked(object sender, System.EventArgs e)
 		{
 			int mv;
-			try { mv = Convert.ToInt32(tbLines.Text); }
+			try { mv = Convert.ToInt32(tbLines.Text, 16); }
 			catch (Exception) { return; }
-			if (sender == this.btnUp)
-				this.pnflowcontainer.MoveInst(mv * -1);
-			else
-				this.pnflowcontainer.MoveInst(mv);
-		}
+            try
+            {
+                this.gbMove.Enabled = false;
+                if (sender == this.btnUp)
+                    this.pnflowcontainer.MoveInst(mv * -1);
+                else
+                    this.pnflowcontainer.MoveInst(mv);
+            }
+            finally
+            {
+                this.gbMove.Enabled = true;
+            }
+        }
 
 		private void btnAdd_Clicked(object sender, System.EventArgs e)
 		{
