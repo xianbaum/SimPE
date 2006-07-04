@@ -10,6 +10,19 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+4 July 2006 16:37 - ResolveGUIDs: First commit of something that works
+  * New configuration option to turn on/off resolving GUIDs
+  * New "ObjdEntry" extension to Entry class
+  * Updates to opcodes: 1f, 20, 2a, 32, 33, 79
+  * Update to opcode 7c to make it clear Want IDs aren't GUIDs
+  pjse filetable\
+    FileTable.cs 1.11.2.12.4.1
+  pjse Localisation\
+    Localization.resx 1.1.4.11.2.1
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.18.6.1
+    BhavWizPrim.cs 1.24.2.19.2.1
+    
 15 July 2006 17:22 - STR#: Add string descriptions to string item list -- add to help
   SimPe BHAV\PJSE_Help
     Strings.htm 1.1.2.3

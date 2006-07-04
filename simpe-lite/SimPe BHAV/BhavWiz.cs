@@ -708,6 +708,24 @@ namespace pjse
             return glob;
         }
 
+        public static String FormatGUID(bool lng, UInt32 guid)
+        {
+            pjse.FileTable.ObjdEntry objdItem = pjse.FileTable.GFT.byGUID(guid);
+            String objName = (objdItem == null) ? "" : objdItem.ObjdName;
+
+            if (objName.Length > 0)
+            {
+                if (lng) return "GUID 0x" + SimPe.Helper.HexString(guid) + " (\"" + objName + "\")";
+                return "\"" + myLeft(objName, 60) + "\"";
+            }
+            return (lng ? "GUID " : "") + "0x" + SimPe.Helper.HexString(guid);
+        }
+
+        public static String FormatGUID(bool lng, byte[] o, int op)
+        {
+            return FormatGUID(lng, (UInt32)(o[op] | o[op + 1] << 8 | o[op + 2] << 16 | o[op + 3] << 24));
+        }
+
 
         #region Constant parsing
         protected string readBcon(uint instance, int bid, bool temp)

@@ -56,19 +56,27 @@ namespace pjse
 		private Hashtable pfByGroup = new Hashtable();
 		private Hashtable pfByTypeGroup = new Hashtable();
 		private Hashtable pfByTypeGroupInstance = new Hashtable();
-		private bool hasLoaded = false;
+        private Hashtable ObjdByGUID = new Hashtable();
+        private bool hasLoaded = false;
 
 		private IPackageFile currentPackage = null;
 
 
-		private static bool static_getter_LoadAtStartup()
-		{
-			SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
-			object o = rkf.GetValue("loadAtStartup", false);
-			return Convert.ToBoolean(o);
-		}
+        private static bool static_getter_LoadAtStartup()
+        {
+            SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+            object o = rkf.GetValue("loadAtStartup", false);
+            return Convert.ToBoolean(o);
+        }
 
-		public void Refresh()
+        private static bool static_getter_PopulateObjdIndex()
+        {
+            SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+            object o = rkf.GetValue("populateObjdIndex", false);
+            return Convert.ToBoolean(o);
+        }
+
+        public void Refresh()
 		{
 			hasLoaded = true;
 			packedFiles = new Hashtable();
@@ -89,21 +97,21 @@ namespace pjse
 								 SimPe.Helper.WindowsRegistry.SimsPath
 							 };
 
-			foreach(string path in paths)
-			{
-				if (path.Trim().Length.Equals(0)) continue;
-				string o = Path.Combine(path, "TSData\\Res\\Objects");
-				bool found = false;
-				int i = -1;
-				while(!found && ++i < folders.Count)
-					found = ((SimPe.FileTableItem)folders[i]).Name.ToLower().Trim().Equals(o.ToLower().Trim());
-				if (found && !((SimPe.FileTableItem)folders[i]).Ignore)
-				{
-					this.AddFixed(o + "\\objects.package");
-					break;
-				}
-			}
-			this.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
+            foreach (string path in paths)
+            {
+                if (path.Trim().Length.Equals(0)) continue;
+                string o = Path.Combine(path, "TSData\\Res\\Objects");
+                bool found = false;
+                int i = -1;
+                while (!found && ++i < folders.Count)
+                    found = ((SimPe.FileTableItem)folders[i]).Name.ToLower().Trim().Equals(o.ToLower().Trim());
+                if (found && !((SimPe.FileTableItem)folders[i]).Ignore)
+                {
+                    this.AddFixed(o + "\\objects.package");
+                    break;
+                }
+            }
+            this.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
 
 			string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
 			if (File.Exists(packages_txt))
@@ -194,6 +202,27 @@ namespace pjse
 				return putLocalFirst((Hashtable)tgitg[instance], group == 0xffffffff);
 			}
 		}
+
+        public ObjdEntry byGUID(UInt32 guid)
+        {
+            ObjdEntry objdItem = (ObjdEntry)ObjdByGUID[guid];
+            if (objdItem != null) return objdItem;
+
+            foreach (Entry item in packedFiles.Keys)
+            {
+                if (item is ObjdEntry)
+                {
+                    objdItem = (ObjdEntry)item;
+                    if (objdItem.ObjdName != null)
+                    {
+                        ObjdByGUID[objdItem.ObjdGUID] = objdItem;
+                        if (objdItem.ObjdGUID == guid)
+                            return objdItem;
+                    }
+                }
+            }
+            return null;
+        }
 
 
 		public void Add(string packageFile)
@@ -343,7 +372,10 @@ namespace pjse
 				if (i.MarkForDelete) continue;
 
 				object val = true;
-				object key = new Entry(package, i);
+                object key = null;
+                if (i.Type == SimPe.Data.MetaData.OBJD_FILE)
+                    key = new ObjdEntry(package, i);
+                else key = new Entry(package, i);
 
 				if (packedFiles[key] != null)
                     throw new Exception("packedFiles[key] != null");
@@ -379,6 +411,7 @@ namespace pjse
 				if (byTypeGroupInstance[key] != null)
                     throw new Exception("byTypeGroupInstance[key] != null");
 				byTypeGroupInstance[key] = val;
+
 			}
 			if (isFixed)
 				fixedPackages.Add(package);
@@ -478,6 +511,38 @@ namespace pjse
 			#endregion
 		}
 
+        public class ObjdEntry : Entry
+        {
+            private UInt32 objdGUID;
+            private String objdName = null;
+
+            public ObjdEntry(IPackageFile package, IPackedFileDescriptor pfd) : base(package, pfd) { loadThis(); }
+
+            private void loadThis()
+            {
+                if (!static_getter_PopulateObjdIndex()) return;
+
+                if (Wrapper != null)
+                {
+                    System.IO.BinaryReader reader = Wrapper.StoredData;
+
+                    if (reader.BaseStream.Length >= 0x40) // filename length
+                    {
+                        objdName = SimPe.Helper.ToString(reader.ReadBytes(0x40)).Trim();
+                        if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
+                        {
+                            reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
+                            objdGUID = reader.ReadUInt32();
+                        }
+                    }
+                }
+            }
+
+            public UInt32 ObjdGUID { get { if (objdName == null) loadThis(); return objdGUID; } }
+
+            public String ObjdName { get { if (objdName == null) loadThis(); return objdName; } }
+        }
+
 
 		#region ITool Members
 
@@ -533,6 +598,23 @@ namespace pjse
             {
                 SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
                 rkf.SetValue("loadAtStartup", value);
+            }
+        }
+
+        [System.ComponentModel.Category("PJSE")]
+        public bool PopulateObjdIndex
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("populateObjdIndex", false);
+                return Convert.ToBoolean(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("populateObjdIndex", value);
             }
         }
 
