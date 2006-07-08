@@ -710,10 +710,9 @@ namespace pjse
 
         public static String FormatGUID(bool lng, UInt32 guid)
         {
-            pjse.FileTable.ObjdEntry objdItem = pjse.FileTable.GFT.byGUID(guid);
-            String objName = (objdItem == null) ? "" : objdItem.ObjdName;
+            String objName = pjse.GUIDIndex.TheGUIDIndex[guid];
 
-            if (objName.Length > 0)
+            if (objName != null && objName.Length > 0)
             {
                 if (lng) return "GUID 0x" + SimPe.Helper.HexString(guid) + " (\"" + objName + "\")";
                 return "\"" + myLeft(objName, 60) + "\"";

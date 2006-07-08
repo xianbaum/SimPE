@@ -1194,13 +1194,4 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>&amp;Stop</value>
     <comment>btnSearch alternate label</comment>
   </data>
-  <data name="[Description:PopulateObjdIndex]" xml:space="preserve">
-    <value>When true, GUID lookups will be performed, so you can see the name of the object - not just the GUID - in the BHAV editor.  This can take a long time.  If you don't use the PJSE (BHAV) editor, set to false.</value>
-  </data>
-  <data name="[Property:PopulateObjdIndex]" xml:space="preserve">
-    <value>Look up Object name from GUIDs</value>
-  </data>
-  <data name="bwp7c_want" xml:space="preserve">
-    <value>Want</value>
-  </data>
 </root>
