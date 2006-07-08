@@ -131,7 +131,7 @@ namespace pjse
 		/// Indicates the Refresh() was called
 		/// </summary>
 		public event EventHandler FiletableRefresh;
-		internal virtual void OnFiletableRefresh(object sender, EventArgs e)
+		public virtual void OnFiletableRefresh(object sender, EventArgs e)
 		{
 			if (FiletableRefresh != null) 
 			{

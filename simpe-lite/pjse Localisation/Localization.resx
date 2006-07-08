@@ -1194,4 +1194,13 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>&amp;Stop</value>
     <comment>btnSearch alternate label</comment>
   </data>
+  <data name="guidFilter" xml:space="preserve">
+    <value>GUID Index|*.txt|All files|*.*</value>
+  </data>
+  <data name="guidLoadIndex" xml:space="preserve">
+    <value>Load GUID Index</value>
+  </data>
+  <data name="guidSaveIndex" xml:space="preserve">
+    <value>Save GUID Index</value>
+  </data>
 </root>

@@ -32,17 +32,18 @@ namespace pjse
         public static GUIDIndex TheGUIDIndex = new GUIDIndex();
         private static String DefaultGUIDFile = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\guidindex.txt");
 
-        public void Create() { Create(true); }
+        public void Create() { Create(false); }
         public void Create(bool fromCurrent)
         {
             guidIndex = new Hashtable();
-            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
+            pjse.FileTable.Entry[] items = fromCurrent
+                ? pjse.FileTable.GFT[pjse.FileTable.GFT.CurrentPackage, SimPe.Data.MetaData.OBJD_FILE]
+                : pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
+
             foreach (pjse.FileTable.Entry item in items)
             {
                 if (item.Wrapper != null)
                 {
-                    if (fromCurrent && item.Wrapper.Package != pjse.FileTable.GFT.CurrentPackage) continue;
-
                     System.IO.BinaryReader reader = item.Wrapper.StoredData;
                     if (reader.BaseStream.Length >= 0x40) // filename length
                     {
@@ -56,10 +57,11 @@ namespace pjse
                     }
                 }
             }
+            pjse.FileTable.GFT.OnFiletableRefresh(this, new EventArgs());
         }
 
         public void Load() { Load(DefaultGUIDFile); }
-        public bool Load(String fromFile)
+        public void Load(String fromFile)
         {
             if (File.Exists(fromFile))
             {
@@ -69,6 +71,7 @@ namespace pjse
                 {
                     if (line.StartsWith("#")) continue;
                     String[] s = line.Split(new char[] { '=' }, 2, StringSplitOptions.None);
+                    if (s.Length != 2) continue;
                     try
                     {
                         UInt32 guid = Convert.ToUInt32(s[0], 16);
@@ -77,17 +80,15 @@ namespace pjse
                     catch(System.FormatException) { continue; }
                 }
                 sr.Close();
-                return true;
-            }
-            else
-            {
-                return false;
+                pjse.FileTable.GFT.OnFiletableRefresh(this, new EventArgs());
             }
         }
 
         public void Save() { Save(DefaultGUIDFile); }
         public void Save(String toFile)
         {
+            if (!System.IO.Directory.Exists(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin")))
+                System.IO.Directory.CreateDirectory(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin"));
             System.IO.StreamWriter sw = new StreamWriter(toFile, false);
             sw.WriteLine("# PJSE GUID Index");
             foreach(UInt32 guid in guidIndex.Keys)
