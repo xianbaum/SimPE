@@ -10,6 +10,10 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+8 July 2006 09:01 - ResolveGUIDs: Force complete GUID scan on RFT click
+  pjse filetable\
+    FileTable.cs 1.11.2.12.4.2
+
 4 July 2006 16:37 - ResolveGUIDs: First commit of something that works
   * New configuration option to turn on/off resolving GUIDs
   * New "ObjdEntry" extension to Entry class

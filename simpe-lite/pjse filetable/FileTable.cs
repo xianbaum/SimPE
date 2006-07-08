@@ -131,6 +131,7 @@ namespace pjse
         {
             SimPe.Wait.Start();
             pjse.FileTable.GFT.Refresh();
+            byGUID(0);
             SimPe.Wait.Stop();
         }
 
