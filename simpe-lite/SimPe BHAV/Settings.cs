@@ -92,11 +92,28 @@ namespace pjse
 
         }
 
+        [System.ComponentModel.Category("GI")]
+        public bool LoadGUIDIndexAtStartup
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("loadGUIDIndexAtStartup", false);
+                return Convert.ToBoolean(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("loadGUIDIndexAtStartup", value);
+            }
+        }
+
         #region ISettings Members
 
         public object GetSettingsObject() { return this; }
 
-        public override string ToString() { return pjse.Localization.GetString("pjse_Preferences"); }
+        public override string ToString() { return pjse.Localization.GetString("pjse_Settings"); }
 
         [System.ComponentModel.Browsable(false)]
         public System.Drawing.Image Icon { get { return null; } }

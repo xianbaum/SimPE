@@ -1158,11 +1158,8 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bwp7e_type" xml:space="preserve">
     <value>type</value>
   </data>
-  <data name="ft_Preferences" xml:space="preserve">
-    <value>PJSE FileTable Preferences</value>
-  </data>
   <data name="[Category:PJSE]" xml:space="preserve">
-    <value>Settings for PJSE tools</value>
+    <value>PJSE General Preferences</value>
   </data>
   <data name="[Description:LoadAtStartup]" xml:space="preserve">
     <value>When true, the PJSE FileTable is loaded when SimPE starts, rather than when first needed.  If you don't use the PJSE (BHAV) editor, set to false.</value>
@@ -1209,28 +1206,34 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="[Property:LoadGUIDIndexAtStartup]" xml:space="preserve">
     <value>Load the default GUID Index at start up</value>
   </data>
-  <data name="gi_Preferences" xml:space="preserve">
-    <value>PJSE GUID Index Preferences</value>
-  </data>
   <data name="[Description:AttrPickerAsText]" xml:space="preserve">
-    <value>When true, the attribute data owners will limit values to the known, named values from the appropriate STR# 0x0100.</value>
+    <value>In PJSE Wizards, Object attributes can be edited numerically when this is false, or selected from the known (labelled) values when this is true.  Labels are from the STR# 0x0100 file for this object (or group).  The affected Wizards all have a checkbox on the form, too, so you'll know which ones this applies to.</value>
   </data>
   <data name="[Description:DecimalDOValue]" xml:space="preserve">
-    <value>When true, the data owner value - e.g. the value for a literal - will be in decimal.</value>
+    <value>Normally, all values in PJSE editors are shown in hexadecimal.  If you set this value to "true", then some Wizards will provide decimal input.  The affected Wizards all have a "Decimal" checkbox on the form, too, so you'll know which ones this applies to.</value>
   </data>
   <data name="[Property:AttrPickerAsText]" xml:space="preserve">
     <value>Choose from known attributes</value>
   </data>
   <data name="[Property:DecimalDOValue]" xml:space="preserve">
-    <value>Edit data owner values in decimal</value>
-  </data>
-  <data name="pjse_Preferences" xml:space="preserve">
-    <value>PJSE General Preferences</value>
+    <value>Edit "Data owner" values in decimal</value>
   </data>
   <data name="[Description:ShowSpecialButtons]" xml:space="preserve">
-    <value>When true, the addition "Special Buttons" panel in the PJSE BHAV Editor will be displayed.</value>
+    <value>When true, the additional "Special Buttons" panel in the PJSE BHAV Editor will be displayed.  This is the same as setting the checkbox on the form.</value>
   </data>
   <data name="[Property:ShowSpecialButtons]" xml:space="preserve">
     <value>Display "Special Buttons" panel</value>
+  </data>
+  <data name="[Category:FT]" xml:space="preserve">
+    <value>PJSE FileTable Preferences</value>
+  </data>
+  <data name="[Category:GI]" xml:space="preserve">
+    <value>PJSE GUID Index Preferences</value>
+  </data>
+  <data name="ft_Settings" xml:space="preserve">
+    <value>PJSE FileTable</value>
+  </data>
+  <data name="pjse_Settings" xml:space="preserve">
+    <value>PJSE editors</value>
   </data>
 </root>

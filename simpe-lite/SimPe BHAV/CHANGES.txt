@@ -10,6 +10,16 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+9 July 2006 22:03 - Moving Settings stuff around and fixing descriptions
+  pjse filetable\
+    FileTable.cs 1.11.2.13.2.1
+  pjse Localisation\
+    Localization.resx 1.1.4.12.2.2
+  SimPe BHAV\
+    GUIDIndex.cs 1.1.4.2.2.1
+    Settings.cs 1.1.2.2
+    WrapperFactory.cs 1.20.2.9.2.2
+
 9 July 2006 15:02 - Wiz0x001f: Added "write back" code
   SimPe BHAV\
     BhavOperandWiz0x001f.cs 1.1.2.2
