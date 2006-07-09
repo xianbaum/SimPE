@@ -151,6 +151,11 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
 
             internalchg = true;
 
+            setGUID(ops1, 0);
+
+            this.cbToNext.SelectedIndex = -1;
+            setToNext((byte)(ops1[4] & 0x7f));
+
             this.ckbStackObj.Checked = (ops1[4] & 0x80) == 0;
             this.pnObject.Enabled = !this.ckbStackObj.Checked;
 
@@ -158,12 +163,10 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             doid1.Decimal = this.cbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
             doid1.UseAttrPicker = this.cbAttrPicker.Checked = pjse.Settings.PJSE.AttrPickerAsText;
 
-            this.cbToNext.SelectedIndex = -1;
-            setToNext((byte)(ops1[4] & 0x7f));
-            setGUID(ops1, 0);
             this.tbLocalVar.Text = "0x" + SimPe.Helper.HexString(ops1[0x06]);
 
             this.pnNodeVersion.Enabled = (inst.NodeVersion != 0);
+            this.ckbDisabled.Checked = (ops2[0x00] & 0x01) != 0;
             this.pnWhere.Enabled = this.ckbWhere.Checked = (ops2[0x00] & 0x02) != 0;
 
             ushort where = BhavWiz.ToShort(ops2[0x01], ops2[0x02]);
@@ -171,8 +174,6 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             if (this.cbWhere.Items.Count > where)
                 this.cbWhere.SelectedIndex = where;
             this.tbWhereVal.Text = "0x" + SimPe.Helper.HexString(BhavWiz.ToShort(ops2[0x03], ops2[0x04]));
-
-            this.ckbDisabled.Checked = (ops2[0x00] & 0x01) != 0;
 
             internalchg = false;
         }
@@ -183,6 +184,30 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
 			{
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
+
+                UInt32 val = Convert.ToUInt32(this.tbGUID.Text, 16);
+                ops1[0x00] = (byte)(val & 0xff);
+                ops1[0x01] = (byte)(val >> 8 & 0xff);
+                ops1[0x02] = (byte)(val >> 16 & 0xff);
+                ops1[0x03] = (byte)(val >> 24 & 0xff);
+                if (this.cbToNext.SelectedIndex >= 0)
+                    ops1[0x04] = (byte)(this.cbToNext.SelectedIndex & 0x7f);
+                ops1[0x04] |= (byte)(!this.ckbStackObj.Checked ? 0x80 : 0x00);
+                ops1[0x05] = doid1.DataOwner;
+                ops1[0x06] = Convert.ToByte(this.tbLocalVar.Text, 16);
+                ops1[0x07] = (byte)(doid1.Value & 0xff);
+
+                ops2[0x00] &= 0xfc;
+                ops2[0x00] |= (byte)(this.ckbDisabled.Checked ? 0x01 : 0x00);
+                ops2[0x00] |= (byte)(this.ckbWhere.Checked ? 0x02 : 0x00);
+                if (this.cbWhere.SelectedIndex >= 0)
+                {
+                    ops2[0x01] = (byte)(this.cbWhere.SelectedIndex & 0xff);
+                    ops2[0x02] = (byte)(this.cbWhere.SelectedIndex >> 8 & 0xff);
+                }
+                val = Convert.ToUInt32(this.tbWhereVal.Text, 16);
+                ops2[0x03] = (byte)(val & 0xff);
+                ops2[0x04] = (byte)(val >> 8 & 0xff);
 
             }
 			return inst;

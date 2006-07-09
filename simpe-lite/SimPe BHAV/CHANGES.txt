@@ -10,6 +10,10 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+9 July 2006 15:02 - Wiz0x001f: Added "write back" code
+  SimPe BHAV\
+    BhavOperandWiz0x001f.cs 1.1.2.2
+
 9 July 2006 13:43 - Wiz0x001f: Initial "readonly" user-interface
   * Also made some sweeping changes to Settings stuff
   pjse Localisation\
