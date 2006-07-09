@@ -38,7 +38,7 @@ namespace pjse
 		static FileTable()
 		{
 			GFT = new FileTable();
-			if (static_getter_LoadAtStartup()) GFT.Refresh();
+			if (FileTableSettings.FTS.LoadAtStartup) GFT.Refresh();
 		}
 
 
@@ -60,13 +60,6 @@ namespace pjse
 
 		private IPackageFile currentPackage = null;
 
-
-		private static bool static_getter_LoadAtStartup()
-		{
-			SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
-			object o = rkf.GetValue("loadAtStartup", false);
-			return Convert.ToBoolean(o);
-		}
 
 		public void Refresh()
 		{

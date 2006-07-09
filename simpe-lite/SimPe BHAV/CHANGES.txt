@@ -10,6 +10,21 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+9 July 2006 10:31 - ResolveGUIDs: Version 2: Add in "load at start up" option
+  * Plus tidy-ups to filetable
+  * Plug bugfix (oops) in Woz0x0032
+  pjse filetable\
+    FileTable.cs 1.11.2.12.4.5
+    FileTableForm.cs (removed)
+    FileTableForm.resx (removed)
+    pjse filetable.csproj 1.3.10.5.6.1
+  pjse Localisation\
+    Localization.resx 1.1.4.11.2.4
+  SimPe BHAV\
+    BhavOperandWiz0x0032.cs 1.1.4.2.2.1
+    GUIDIndex.cs 1.1.2.3
+    WrapperFactory.cs 1.20.2.8.6.1
+
 8 July 2006 14:47 - ResolveGUIDs: Version 2 front-end changes
   * allow anyone to throw FileTable changed events...
   * throw FileTable changed events on GUIDIndex create and load
