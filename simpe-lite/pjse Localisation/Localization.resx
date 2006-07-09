@@ -1194,4 +1194,22 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>&amp;Stop</value>
     <comment>btnSearch alternate label</comment>
   </data>
+  <data name="guidFilter" xml:space="preserve">
+    <value>GUID Index|*.txt|All files|*.*</value>
+  </data>
+  <data name="guidLoadIndex" xml:space="preserve">
+    <value>Load GUID Index</value>
+  </data>
+  <data name="guidSaveIndex" xml:space="preserve">
+    <value>Save GUID Index</value>
+  </data>
+  <data name="[Description:LoadGUIDIndexAtStartup]" xml:space="preserve">
+    <value>When true, the default GUID Index file is loaded when SimPE starts, rather than when the user requests it.  If you don't use the PJSE (BHAV) editor, set to false.</value>
+  </data>
+  <data name="[Property:LoadGUIDIndexAtStartup]" xml:space="preserve">
+    <value>Load the default GUID Index at start up</value>
+  </data>
+  <data name="gi_Preferences" xml:space="preserve">
+    <value>PJSE GUID Index Preferences</value>
+  </data>
 </root>

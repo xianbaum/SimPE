@@ -110,11 +110,18 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnHelp;
 		private System.Windows.Forms.Button btnTPRPMaker;
         private Button btnRefreshFT;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+        private Button btnGUIDIndex;
+        private ContextMenuStrip cmenuGUIDIndex;
+        private ToolStripMenuItem createAllPackagesToolStripMenuItem;
+        private ToolStripMenuItem createCurrentPackageToolStripMenuItem;
+        private ToolStripMenuItem loadIndexToolStripMenuItem;
+        private ToolStripMenuItem defaultFileToolStripMenuItem;
+        private ToolStripMenuItem fromFileToolStripMenuItem;
+        private ToolStripMenuItem saveIndexToolStripMenuItem;
+        private ToolStripMenuItem defaultFileToolStripMenuItem1;
+        private ToolStripMenuItem toFileToolStripMenuItem;
+        private IContainer components;
+        #endregion
        
 		public BhavForm()
 		{
@@ -652,6 +659,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BhavForm));
             this.label1 = new System.Windows.Forms.Label();
             this.gbInstruction = new System.Windows.Forms.GroupBox();
@@ -712,6 +720,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnInsFalse = new System.Windows.Forms.Button();
             this.btnDelPescado = new System.Windows.Forms.Button();
             this.btnLinkInge = new System.Windows.Forms.Button();
+            this.btnGUIDIndex = new System.Windows.Forms.Button();
             this.btnDelMerola = new System.Windows.Forms.Button();
             this.btnListing = new System.Windows.Forms.Button();
             this.btnTPRPMaker = new System.Windows.Forms.Button();
@@ -727,11 +736,21 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbTreeVersion = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lbCacheFlags = new System.Windows.Forms.Label();
+            this.cmenuGUIDIndex = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createAllPackagesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createCurrentPackageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.defaultFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gbInstruction.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
             this.gbSpecial.SuspendLayout();
             this.gbMove.SuspendLayout();
+            this.cmenuGUIDIndex.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -1199,6 +1218,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbSpecial.Controls.Add(this.btnInsFalse);
             this.gbSpecial.Controls.Add(this.btnDelPescado);
             this.gbSpecial.Controls.Add(this.btnLinkInge);
+            this.gbSpecial.Controls.Add(this.btnGUIDIndex);
             this.gbSpecial.Controls.Add(this.btnDelMerola);
             this.gbSpecial.Controls.Add(this.btnListing);
             this.gbSpecial.Controls.Add(this.btnTPRPMaker);
@@ -1234,6 +1254,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.btnLinkInge, "btnLinkInge");
             this.btnLinkInge.Name = "btnLinkInge";
             this.btnLinkInge.Click += new System.EventHandler(this.btnLinkInge_Click);
+            // 
+            // btnGUIDIndex
+            // 
+            resources.ApplyResources(this.btnGUIDIndex, "btnGUIDIndex");
+            this.btnGUIDIndex.Name = "btnGUIDIndex";
+            this.btnGUIDIndex.Click += new System.EventHandler(this.btnGUIDIndex_Click);
             // 
             // btnDelMerola
             // 
@@ -1332,6 +1358,68 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.lbCacheFlags, "lbCacheFlags");
             this.lbCacheFlags.Name = "lbCacheFlags";
             // 
+            // cmenuGUIDIndex
+            // 
+            this.cmenuGUIDIndex.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createAllPackagesToolStripMenuItem,
+            this.createCurrentPackageToolStripMenuItem,
+            this.loadIndexToolStripMenuItem,
+            this.saveIndexToolStripMenuItem});
+            this.cmenuGUIDIndex.Name = "cmenuGUIDIndex";
+            resources.ApplyResources(this.cmenuGUIDIndex, "cmenuGUIDIndex");
+            // 
+            // createAllPackagesToolStripMenuItem
+            // 
+            this.createAllPackagesToolStripMenuItem.Name = "createAllPackagesToolStripMenuItem";
+            resources.ApplyResources(this.createAllPackagesToolStripMenuItem, "createAllPackagesToolStripMenuItem");
+            this.createAllPackagesToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
+            // 
+            // createCurrentPackageToolStripMenuItem
+            // 
+            this.createCurrentPackageToolStripMenuItem.Name = "createCurrentPackageToolStripMenuItem";
+            resources.ApplyResources(this.createCurrentPackageToolStripMenuItem, "createCurrentPackageToolStripMenuItem");
+            this.createCurrentPackageToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
+            // 
+            // loadIndexToolStripMenuItem
+            // 
+            this.loadIndexToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.defaultFileToolStripMenuItem,
+            this.fromFileToolStripMenuItem});
+            this.loadIndexToolStripMenuItem.Name = "loadIndexToolStripMenuItem";
+            resources.ApplyResources(this.loadIndexToolStripMenuItem, "loadIndexToolStripMenuItem");
+            // 
+            // defaultFileToolStripMenuItem
+            // 
+            this.defaultFileToolStripMenuItem.Name = "defaultFileToolStripMenuItem";
+            resources.ApplyResources(this.defaultFileToolStripMenuItem, "defaultFileToolStripMenuItem");
+            this.defaultFileToolStripMenuItem.Click += new System.EventHandler(this.defaultFileToolStripMenuItem_Click);
+            // 
+            // fromFileToolStripMenuItem
+            // 
+            this.fromFileToolStripMenuItem.Name = "fromFileToolStripMenuItem";
+            resources.ApplyResources(this.fromFileToolStripMenuItem, "fromFileToolStripMenuItem");
+            this.fromFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            // 
+            // saveIndexToolStripMenuItem
+            // 
+            this.saveIndexToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.defaultFileToolStripMenuItem1,
+            this.toFileToolStripMenuItem});
+            this.saveIndexToolStripMenuItem.Name = "saveIndexToolStripMenuItem";
+            resources.ApplyResources(this.saveIndexToolStripMenuItem, "saveIndexToolStripMenuItem");
+            // 
+            // defaultFileToolStripMenuItem1
+            // 
+            this.defaultFileToolStripMenuItem1.Name = "defaultFileToolStripMenuItem1";
+            resources.ApplyResources(this.defaultFileToolStripMenuItem1, "defaultFileToolStripMenuItem1");
+            this.defaultFileToolStripMenuItem1.Click += new System.EventHandler(this.defaultFileToolStripMenuItem_Click);
+            // 
+            // toFileToolStripMenuItem
+            // 
+            this.toFileToolStripMenuItem.Name = "toFileToolStripMenuItem";
+            resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
+            this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            // 
             // BhavForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1349,6 +1437,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbSpecial.ResumeLayout(false);
             this.gbMove.ResumeLayout(false);
             this.gbMove.PerformLayout();
+            this.cmenuGUIDIndex.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -1902,6 +1991,61 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnRefreshFT_Click(object sender, EventArgs e)
         {
             pjse.FileTable.GFT.UIRefresh();
+        }
+
+        private void btnGUIDIndex_Click(object sender, EventArgs e)
+        {
+            this.cmenuGUIDIndex.Show((Control)sender, new Point(3 ,3));
+        }
+
+        private void createToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SimPe.Wait.Start();
+            SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
+            pjse.GUIDIndex.TheGUIDIndex.Create(sender.Equals(this.createCurrentPackageToolStripMenuItem));
+            SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
+            SimPe.Wait.Stop();
+        }
+
+        private void defaultFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (sender.Equals(this.defaultFileToolStripMenuItem))
+                pjse.GUIDIndex.TheGUIDIndex.Load();
+            else
+                pjse.GUIDIndex.TheGUIDIndex.Save();
+        }
+
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FileDialog fd;
+            bool load;
+            if (load = sender.Equals(this.fromFileToolStripMenuItem))
+                fd = new OpenFileDialog();
+            else
+                fd = new SaveFileDialog();
+            fd.AddExtension = true;
+            fd.CheckFileExists = load;
+            fd.CheckPathExists = true;
+            fd.DefaultExt = "txt";
+            fd.DereferenceLinks = true;
+            fd.FileName = "guidindex.txt";
+            fd.Filter = pjse.Localization.GetString("guidFilter");
+            fd.FilterIndex = 1;
+            fd.RestoreDirectory = false;
+            fd.ShowHelp = false;
+            fd.SupportMultiDottedExtensions = false;
+            fd.Title = load
+                ? pjse.Localization.GetString("guidLoadIndex")
+                : pjse.Localization.GetString("guidSaveIndex");
+            fd.ValidateNames = true;
+            DialogResult dr = fd.ShowDialog();
+            if (dr == DialogResult.OK)
+            {
+                if (load)
+                    pjse.GUIDIndex.TheGUIDIndex.Load(fd.FileName);
+                else
+                    pjse.GUIDIndex.TheGUIDIndex.Save(fd.FileName);
+            }
         }
 
 	}

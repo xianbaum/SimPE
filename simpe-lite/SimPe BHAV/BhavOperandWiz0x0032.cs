@@ -754,7 +754,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
         private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (hex8_IsValid(sender)) return;
+            if (hex32_IsValid(sender)) return;
 
             e.Cancel = true;
 

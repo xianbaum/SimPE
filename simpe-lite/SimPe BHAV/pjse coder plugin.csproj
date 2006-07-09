@@ -225,6 +225,7 @@
     <Compile Include="GlobWrapper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="GUIDIndex.cs" />
     <Compile Include="HelpHelper.cs">
       <SubType>Code</SubType>
     </Compile>
