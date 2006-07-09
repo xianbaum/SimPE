@@ -148,7 +148,10 @@ namespace SimPe.Plugin
 
         #region ISettingsFactory Members
 
-        public ISettings[] KnownSettings { get { return new ISettings[] { pjse.GUIDIndexSettings.GIS }; } }
+        public ISettings[] KnownSettings { get { return new ISettings[] {
+            pjse.GUIDIndexSettings.GIS
+            ,pjse.Settings.PJSE
+        }; } }
 
         #endregion
     }

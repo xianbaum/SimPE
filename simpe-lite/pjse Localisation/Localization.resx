@@ -1212,4 +1212,25 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="gi_Preferences" xml:space="preserve">
     <value>PJSE GUID Index Preferences</value>
   </data>
+  <data name="[Description:AttrPickerAsText]" xml:space="preserve">
+    <value>When true, the attribute data owners will limit values to the known, named values from the appropriate STR# 0x0100.</value>
+  </data>
+  <data name="[Description:DecimalDOValue]" xml:space="preserve">
+    <value>When true, the data owner value - e.g. the value for a literal - will be in decimal.</value>
+  </data>
+  <data name="[Property:AttrPickerAsText]" xml:space="preserve">
+    <value>Choose from known attributes</value>
+  </data>
+  <data name="[Property:DecimalDOValue]" xml:space="preserve">
+    <value>Edit data owner values in decimal</value>
+  </data>
+  <data name="pjse_Preferences" xml:space="preserve">
+    <value>PJSE General Preferences</value>
+  </data>
+  <data name="[Description:ShowSpecialButtons]" xml:space="preserve">
+    <value>When true, the addition "Special Buttons" panel in the PJSE BHAV Editor will be displayed.</value>
+  </data>
+  <data name="[Property:ShowSpecialButtons]" xml:space="preserve">
+    <value>Display "Special Buttons" panel</value>
+  </data>
 </root>

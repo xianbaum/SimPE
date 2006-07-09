@@ -173,7 +173,7 @@ namespace SimPe.PackedFiles.UserInterface
 			alHex16cb = new ArrayList(cb);
 
 			this.gbSpecial.Visible =
-				this.cbSpecial.Checked = this.ShowSpecialButtons;
+				this.cbSpecial.Checked = pjse.Settings.PJSE.ShowSpecialButtons;
 
 			pjse.FileTable.GFT.FiletableRefresh += new System.EventHandler(this.FiletableRefresh);
 		}
@@ -544,23 +544,6 @@ namespace SimPe.PackedFiles.UserInterface
 			return true;
 		}
 
-
-		private bool ShowSpecialButtons
-		{
-			get
-			{
-				XmlRegistryKey  rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
-				object o = rkf.GetValue("showSpecialButtons", false);
-				return Convert.ToBoolean(o);
-			}
-
-			set
-			{
-				XmlRegistryKey rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
-				rkf.SetValue("showSpecialButtons", value);
-			}
-
-		}
 
 		private void FiletableRefresh(object sender, System.EventArgs e)
 		{
@@ -1949,7 +1932,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void cbSpecial_CheckStateChanged(object sender, System.EventArgs e)
 		{
 			gbSpecial.Visible =
-				this.ShowSpecialButtons = ((CheckBox)sender).Checked;
+                pjse.Settings.PJSE.ShowSpecialButtons = ((CheckBox)sender).Checked;
 		}
 
 
