@@ -512,7 +512,7 @@ namespace pjse
         SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
         public FileTableSettings() : base(rm) { }
 
-        [System.ComponentModel.Category("PJSE")]
+        [System.ComponentModel.Category("FT")]
         public bool LoadAtStartup
         {
             get
@@ -533,7 +533,7 @@ namespace pjse
 
         public object GetSettingsObject() { return this; }
 
-        public override string ToString() { return pjse.Localization.GetString("ft_Preferences"); }
+        public override string ToString() { return pjse.Localization.GetString("ft_Settings"); }
 
         [System.ComponentModel.Browsable(false)]
         public System.Drawing.Image Icon { get { return null; } }

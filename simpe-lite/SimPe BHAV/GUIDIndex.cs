@@ -34,7 +34,7 @@ namespace pjse
         public static String DefaultGUIDFile = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\guidindex.txt");
         static GUIDIndex()
 		{
-            if (GUIDIndexSettings.GIS.LoadGUIDIndexAtStartup) TheGUIDIndex.Load();
+            if (Settings.PJSE.LoadGUIDIndexAtStartup) TheGUIDIndex.Load();
 		}
         
         public void Create() { Create(false); }
@@ -118,47 +118,6 @@ namespace pjse
         #region IEnumerable Members
         public IEnumerator GetEnumerator() { return guidIndex.GetEnumerator(); }
         #endregion
-        #endregion
-    }
-
-    public class GUIDIndexSettings : SimPe.GlobalizedObject, SimPe.Interfaces.ISettings
-    {
-        static ResourceManager rm = new ResourceManager(typeof(pjse.Localization));
-
-        private static GUIDIndexSettings gis;
-        public static GUIDIndexSettings GIS { get { return gis; } }
-        static GUIDIndexSettings() { gis = new GUIDIndexSettings(); }
-
-        const string BASENAME = "PJSE\\Bhav";
-        SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
-        public GUIDIndexSettings() : base(rm) { }
-
-        [System.ComponentModel.Category("PJSE")]
-        public bool LoadGUIDIndexAtStartup
-        {
-            get
-            {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                object o = rkf.GetValue("loadGUIDIndexAtStartup", false);
-                return Convert.ToBoolean(o);
-            }
-
-            set
-            {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                rkf.SetValue("loadGUIDIndexAtStartup", value);
-            }
-        }
-
-        #region ISettings Members
-
-        public object GetSettingsObject() { return this; }
-
-        public override string ToString() { return pjse.Localization.GetString("gi_Preferences"); }
-
-        [System.ComponentModel.Browsable(false)]
-        public System.Drawing.Image Icon { get { return null; } }
-
         #endregion
     }
 }

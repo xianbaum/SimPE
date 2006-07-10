@@ -10,6 +10,35 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+9 July 2006 22:03 - Moving Settings stuff around and fixing descriptions
+  pjse filetable\
+    FileTable.cs 1.11.2.13.2.1
+  pjse Localisation\
+    Localization.resx 1.1.4.12.2.2
+  SimPe BHAV\
+    GUIDIndex.cs 1.1.4.2.2.1
+    Settings.cs 1.1.2.2
+    WrapperFactory.cs 1.20.2.9.2.2
+
+9 July 2006 15:02 - Wiz0x001f: Added "write back" code
+  SimPe BHAV\
+    BhavOperandWiz0x001f.cs 1.1.2.2
+
+9 July 2006 13:43 - Wiz0x001f: Initial "readonly" user-interface
+  * Also made some sweeping changes to Settings stuff
+  pjse Localisation\
+    Localization.resx 1.1.4.12.2.1
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.22.2.1
+    BhavOperandWiz0x0002.cs 1.6.2.5.8.1
+    BhavOperandWiz0x001f.cs 1.1.2.1
+    BhavOperandWiz0x001f.resx 1.1.2.1
+    BhavOperandWiz0x0032.cs 1.1.4.3.2.1
+    BhavWizPrim.cs 1.34.2.20.2.1
+    pjse coder plugin.csproj 1.29.2.15.2.1
+    Settings.cs 1.1.2.1
+    WrapperFactory.cs 1.20.2.9.2.1
+
 9 July 2006 10:31 - ResolveGUIDs: Version 2: Add in "load at start up" option
   * Plus tidy-ups to filetable
   * Plug bugfix (oops) in Woz0x0032
