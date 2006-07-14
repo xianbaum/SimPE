@@ -354,6 +354,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             // 
             // pnObject
             // 
+            this.pnObject.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnObject.Controls.Add(this.cbAttrPicker);
             this.pnObject.Controls.Add(this.cbDecimal);
             this.pnObject.Controls.Add(this.cbPicker1);

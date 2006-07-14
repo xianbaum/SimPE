@@ -453,6 +453,30 @@
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
+  <data name="cbAttrPicker.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="cbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbAttrPicker.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="cbAttrPicker.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
+    <value>253, 30</value>
+  </data>
+  <data name="cbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
+    <value>138, 17</value>
+  </data>
+  <data name="cbAttrPicker.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="cbAttrPicker.Text" xml:space="preserve">
+    <value>use Attribute picker</value>
+  </data>
   <data name="&gt;&gt;cbAttrPicker.Name" xml:space="preserve">
     <value>cbAttrPicker</value>
   </data>
@@ -464,6 +488,30 @@
   </data>
   <data name="&gt;&gt;cbAttrPicker.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="cbDecimal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="cbDecimal.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="cbDecimal.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="cbDecimal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cbDecimal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>80, 30</value>
+  </data>
+  <data name="cbDecimal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>167, 17</value>
+  </data>
+  <data name="cbDecimal.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="cbDecimal.Text" xml:space="preserve">
+    <value>Decimal (except Consts)</value>
   </data>
   <data name="&gt;&gt;cbDecimal.Name" xml:space="preserve">
     <value>cbDecimal</value>
@@ -477,6 +525,21 @@
   <data name="&gt;&gt;cbDecimal.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="cbPicker1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="cbPicker1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>259, 3</value>
+  </data>
+  <data name="cbPicker1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 21</value>
+  </data>
+  <data name="cbPicker1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="cbPicker1.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
   <data name="&gt;&gt;cbPicker1.Name" xml:space="preserve">
     <value>cbPicker1</value>
   </data>
@@ -487,6 +550,18 @@
     <value>pnObject</value>
   </data>
   <data name="&gt;&gt;cbPicker1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tbVal1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="tbVal1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>259, 3</value>
+  </data>
+  <data name="tbVal1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 21</value>
+  </data>
+  <data name="tbVal1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="&gt;&gt;tbVal1.Name" xml:space="preserve">
@@ -500,6 +575,18 @@
   </data>
   <data name="&gt;&gt;tbVal1.ZOrder" xml:space="preserve">
     <value>3</value>
+  </data>
+  <data name="cbDataOwner1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="cbDataOwner1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="cbDataOwner1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 21</value>
+  </data>
+  <data name="cbDataOwner1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
   <data name="&gt;&gt;cbDataOwner1.Name" xml:space="preserve">
     <value>cbDataOwner1</value>
@@ -581,153 +668,6 @@
   </data>
   <data name="&gt;&gt;pnWiz0x001f.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="cbAttrPicker.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="cbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="cbAttrPicker.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cbAttrPicker.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>255, 30</value>
-  </data>
-  <data name="cbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 17</value>
-  </data>
-  <data name="cbAttrPicker.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="cbAttrPicker.Text" xml:space="preserve">
-    <value>use Attribute picker</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.Name" xml:space="preserve">
-    <value>cbAttrPicker</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="cbDecimal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="cbDecimal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="cbDecimal.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="cbDecimal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="cbDecimal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>82, 30</value>
-  </data>
-  <data name="cbDecimal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 17</value>
-  </data>
-  <data name="cbDecimal.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="cbDecimal.Text" xml:space="preserve">
-    <value>Decimal (except Consts)</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Name" xml:space="preserve">
-    <value>cbDecimal</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="cbPicker1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="cbPicker1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>261, 3</value>
-  </data>
-  <data name="cbPicker1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>133, 21</value>
-  </data>
-  <data name="cbPicker1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="cbPicker1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Name" xml:space="preserve">
-    <value>cbPicker1</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tbVal1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="tbVal1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>261, 3</value>
-  </data>
-  <data name="tbVal1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 21</value>
-  </data>
-  <data name="tbVal1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tbVal1.Name" xml:space="preserve">
-    <value>tbVal1</value>
-  </data>
-  <data name="&gt;&gt;tbVal1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbVal1.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;tbVal1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="cbDataOwner1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="cbDataOwner1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 3</value>
-  </data>
-  <data name="cbDataOwner1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 21</value>
-  </data>
-  <data name="cbDataOwner1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner1.Name" xml:space="preserve">
-    <value>cbDataOwner1</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner1.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner1.ZOrder" xml:space="preserve">
-    <value>4</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
