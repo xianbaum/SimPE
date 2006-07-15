@@ -1921,7 +1921,7 @@
     <value>112, 20</value>
   </data>
   <data name="btnAppend.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="btnAppend.Text" xml:space="preserve">
     <value>Append BHAV</value>
@@ -2020,7 +2020,7 @@
     <value>112, 20</value>
   </data>
   <data name="btnDelPescado.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="btnDelPescado.Text" xml:space="preserve">
     <value>Pescado's Delete</value>
@@ -2053,7 +2053,7 @@
     <value>112, 20</value>
   </data>
   <data name="btnLinkInge.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="btnLinkInge.Text" xml:space="preserve">
     <value>Inge's InitLinker</value>
@@ -2069,6 +2069,39 @@
   </data>
   <data name="&gt;&gt;btnLinkInge.ZOrder" xml:space="preserve">
     <value>4</value>
+  </data>
+  <data name="btnGUIDIndex.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnGUIDIndex.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 8.25pt</value>
+  </data>
+  <data name="btnGUIDIndex.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnGUIDIndex.Location" type="System.Drawing.Point, System.Drawing">
+    <value>132, 64</value>
+  </data>
+  <data name="btnGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 20</value>
+  </data>
+  <data name="btnGUIDIndex.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="btnGUIDIndex.Text" xml:space="preserve">
+    <value>GUID Index</value>
+  </data>
+  <data name="&gt;&gt;btnGUIDIndex.Name" xml:space="preserve">
+    <value>btnGUIDIndex</value>
+  </data>
+  <data name="&gt;&gt;btnGUIDIndex.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnGUIDIndex.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnGUIDIndex.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="btnDelMerola.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2086,7 +2119,7 @@
     <value>112, 20</value>
   </data>
   <data name="btnDelMerola.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="btnDelMerola.Text" xml:space="preserve">
     <value>Delete to end</value>
@@ -2101,7 +2134,7 @@
     <value>gbSpecial</value>
   </data>
   <data name="&gt;&gt;btnDelMerola.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="btnListing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2119,7 +2152,7 @@
     <value>112, 20</value>
   </data>
   <data name="btnListing.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>8</value>
   </data>
   <data name="btnListing.Text" xml:space="preserve">
     <value>Copy Listing</value>
@@ -2134,7 +2167,7 @@
     <value>gbSpecial</value>
   </data>
   <data name="&gt;&gt;btnListing.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="btnTPRPMaker.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2152,7 +2185,7 @@
     <value>112, 20</value>
   </data>
   <data name="btnTPRPMaker.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>9</value>
   </data>
   <data name="btnTPRPMaker.Text" xml:space="preserve">
     <value>Make Labels</value>
@@ -2167,7 +2200,7 @@
     <value>gbSpecial</value>
   </data>
   <data name="&gt;&gt;btnTPRPMaker.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="gbSpecial.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt, style=Bold</value>
@@ -2218,7 +2251,7 @@
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=2.0.2366.16335, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=2.0.2380.24612, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2599,7 +2632,67 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;bhavPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
+  </data>
+  <metadata name="cmenuGUIDIndex.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="createAllPackagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 22</value>
+  </data>
+  <data name="createAllPackagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Create - all packages</value>
+  </data>
+  <data name="createCurrentPackageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 22</value>
+  </data>
+  <data name="createCurrentPackageToolStripMenuItem.Text" xml:space="preserve">
+    <value>Create - current package</value>
+  </data>
+  <data name="defaultFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 22</value>
+  </data>
+  <data name="defaultFileToolStripMenuItem.Text" xml:space="preserve">
+    <value>Default file</value>
+  </data>
+  <data name="fromFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 22</value>
+  </data>
+  <data name="fromFileToolStripMenuItem.Text" xml:space="preserve">
+    <value>From file...</value>
+  </data>
+  <data name="loadIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 22</value>
+  </data>
+  <data name="loadIndexToolStripMenuItem.Text" xml:space="preserve">
+    <value>Load index...</value>
+  </data>
+  <data name="defaultFileToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 22</value>
+  </data>
+  <data name="defaultFileToolStripMenuItem1.Text" xml:space="preserve">
+    <value>Default file</value>
+  </data>
+  <data name="toFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>144, 22</value>
+  </data>
+  <data name="toFileToolStripMenuItem.Text" xml:space="preserve">
+    <value>To file...</value>
+  </data>
+  <data name="saveIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>223, 22</value>
+  </data>
+  <data name="saveIndexToolStripMenuItem.Text" xml:space="preserve">
+    <value>Save index...</value>
+  </data>
+  <data name="cmenuGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>224, 92</value>
+  </data>
+  <data name="&gt;&gt;cmenuGUIDIndex.Name" xml:space="preserve">
+    <value>cmenuGUIDIndex</value>
+  </data>
+  <data name="&gt;&gt;cmenuGUIDIndex.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -2615,6 +2708,54 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BhavForm</value>
+  </data>
+  <data name="&gt;&gt;createAllPackagesToolStripMenuItem.Name" xml:space="preserve">
+    <value>createAllPackagesToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;createAllPackagesToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;createCurrentPackageToolStripMenuItem.Name" xml:space="preserve">
+    <value>createCurrentPackageToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;createCurrentPackageToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;loadIndexToolStripMenuItem.Name" xml:space="preserve">
+    <value>loadIndexToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;loadIndexToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;defaultFileToolStripMenuItem.Name" xml:space="preserve">
+    <value>defaultFileToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;defaultFileToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;fromFileToolStripMenuItem.Name" xml:space="preserve">
+    <value>fromFileToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;fromFileToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;saveIndexToolStripMenuItem.Name" xml:space="preserve">
+    <value>saveIndexToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;saveIndexToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;defaultFileToolStripMenuItem1.Name" xml:space="preserve">
+    <value>defaultFileToolStripMenuItem1</value>
+  </data>
+  <data name="&gt;&gt;defaultFileToolStripMenuItem1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;toFileToolStripMenuItem.Name" xml:space="preserve">
+    <value>toFileToolStripMenuItem</value>
+  </data>
+  <data name="&gt;&gt;toFileToolStripMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>BhavForm</value>

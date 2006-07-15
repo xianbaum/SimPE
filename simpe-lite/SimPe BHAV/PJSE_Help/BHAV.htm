@@ -127,9 +127,9 @@
 <blockquote>
   <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="96%" id="AutoNumber2">
     <tr>
-      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Insert via True</td>
-      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">
       A copy of your currently selected line is created underneath the one you have selected.&nbsp; The 
       selected line's True points to the new line and the new line's True points 
       to the line the selected line's True used to point to.&nbsp;&nbsp; The 
@@ -137,9 +137,9 @@
       line's False points to the same line as the selected line's False.</td>
     </tr>
     <tr>
-      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Insert via False</td>
-      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">A 
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">A 
       copy of your currently selected line is created underneath the one you have selected.&nbsp; The 
       selected line's False points to the new line and the new line's False 
       points to the line the selected line's False used to point to.&nbsp;&nbsp; 
@@ -147,48 +147,48 @@
       new line's True points to the same line as the selected line's True.</td>
     </tr>
     <tr>
-      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Pescado's Delete</td>
-      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Remaining lines will stay pointing to the same line number they used to, 
       which will now be a new line if it was after the one that got deleted.&nbsp; 
       Used most effectively after having sorted the BHAV.</td>
     </tr>
     <tr>
-      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Delete to end</td>
-      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Deletes selected line and all higher lines.&nbsp; Any lines that used to 
       go to a deleted line will now be left &quot;hanging&quot;.</td>
     </tr>
     <tr>
-      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Copy Listing</td>
-      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Lists the entire BHAV into your clipboard</td>
     </tr>
     <tr>
-      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Append BHAV</td>
-      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Pops up the file picker window populated with available BHAVs.&nbsp; 
       Chosen BHAV has its lines added after the last line in currect BHAV, and 
       they are renumbered to appropriately, but not linked in to the existing 
       flow.</td>
     </tr>
     <tr>
-      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Inge's Initlinker</td>
-      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Links every line in the current BHAV so that the True of each line goes to 
       the next line numerically, while the False goes to Error.&nbsp; The last 
       line returns True through through its True.&nbsp;&nbsp; This is ideal for 
       an Init BHAV or similar.</td>
     </tr>
     <tr>
-      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Make labels</td>
-      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Creates a TPRP resource with the same Instance number as your current 
       BHAV.&nbsp;&nbsp; Writes a dummy label line (ready for editing) to match 
       your Arg Count and Local Var Count.&nbsp;&nbsp; You can use this button 
@@ -196,9 +196,62 @@
       values (Keep existing labels? No) or append lines for the additional ones 
       (Keep existing labels? Yes)</td>
     </tr>
+    <tr>
+      <td width="13%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      GUID Index</td>
+      <td width="87%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      This is the information used to translate GUIDs into object names in the 
+      display.&nbsp; Opens dialog with the following options:<table border="1" cellpadding="0" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="97%" id="AutoNumber5">
+        <tr>
+          <td width="17%" align="left" valign="top">Create - all packages</td>
+          <td width="13%" align="left" valign="top">&nbsp;</td>
+          <td width="70%">Reads into memory any OBJD found in packages included 
+          in the file table.&nbsp; Makes an index of the GUIDs and OBJD name.&nbsp; 
+          Remember this is not self-updating.&nbsp; You need to use this option 
+          again from time to time to ensure the index is up to date with any new 
+          objects.</td>
+        </tr>
+        <tr>
+          <td width="17%" align="left" valign="top">Create - current package</td>
+          <td width="13%" align="left" valign="top">&nbsp;</td>
+          <td width="70%">Creates index from the package you have open at the 
+          time.&nbsp; Useful in some circumstances where you want a quicker and 
+          lighter index possibly for a self-referencing multi-tile object</td>
+        </tr>
+        <tr>
+          <td width="17%" align="left" valign="top">Load index</td>
+          <td width="13%" align="left" valign="top">Default file</td>
+          <td width="70%">Loading pre-saved index saves a LOT of time.&nbsp; In 
+          Preferences, you can configure to always load the default saved file 
+          at startup.&nbsp; Obviously you need to have created and saved one 
+          first.</td>
+        </tr>
+        <tr>
+          <td width="17%" align="left" valign="top">&nbsp;</td>
+          <td width="13%" align="left" valign="top">From file...</td>
+          <td width="70%">Loads index from file of your choice.&nbsp; This might 
+          be useful if you have various projects and would like a different 
+          index for each one - and do not have enough spare resources to load 
+          all known GUIDs</td>
+        </tr>
+        <tr>
+          <td width="17%" align="left" valign="top">Save index</td>
+          <td width="13%" align="left" valign="top">Default file</td>
+          <td width="70%">Saves&nbsp; the index currently in memory to 
+          SimPE\Data\Plugins\pjse.coder.plugin\guidindex.txt</td>
+        </tr>
+        <tr>
+          <td width="17%" align="left" valign="top">&nbsp;</td>
+          <td width="13%" align="left" valign="top">To file...</td>
+          <td width="70%">Saves&nbsp; the index currently in memory to file of 
+          your choice</td>
+        </tr>
+      </table>
+      </td>
+    </tr>
     </table>
 </blockquote>
-<p>&nbsp;</p>
+<p style="margin-top: 0; margin-bottom: 0">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
 <p><font size="4">Keyboard Shortcuts</font></p>
 <blockquote>
   <blockquote>

@@ -34,7 +34,7 @@ namespace SimPe.Plugin
 	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-	public class WrapperFactory : AbstractWrapperFactory, IToolFactory, IHelpFactory
+    public class WrapperFactory : AbstractWrapperFactory, IToolFactory, IHelpFactory, ISettingsFactory
 	{
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
@@ -145,6 +145,14 @@ namespace SimPe.Plugin
 
 
 		#endregion
-	}
+
+        #region ISettingsFactory Members
+
+        public ISettings[] KnownSettings { get { return new ISettings[] {
+            pjse.Settings.PJSE,
+        }; } }
+
+        #endregion
+    }
 
 }

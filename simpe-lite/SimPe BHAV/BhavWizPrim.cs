@@ -1720,7 +1720,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x001f(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng)
+        public override ABhavOperandWiz Wizard()
+        {
+            return new pjse.BhavOperandWizards.BhavOperandWiz0x001f(instruction);
+        }
+
+        protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
@@ -1736,8 +1741,7 @@ namespace pjse.BhavNameWizards
 			switch(o[4] & 0x7f)
 			{
 				case 0x04: case 0x07:
-					uint d1 = (uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24));
-					s += ": GUID 0x" + SimPe.Helper.HexString(d1);
+                    s += ": " + BhavWiz.FormatGUID(lng, o, 0);
 					break;
 				case 0x09: case 0x22:
 					s = s.Replace("[local]", dataOwner(lng, 0x19, o[6])); // local
@@ -1789,10 +1793,10 @@ namespace pjse.BhavNameWizards
 
 			s += dataOwner(lng, o[6], o[4], o[5]);
 
-			uint d1 = (uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24));
-            s += ", " + pjse.Localization.GetString("bwp20_isInstanceOf")
-                + ": GUID 0x" + SimPe.Helper.HexString(d1);
-			if (lng)
+            s += ", " + pjse.Localization.GetString("bwp20_isInstanceOf");
+
+            s += ": " + BhavWiz.FormatGUID(lng, o, 0);
+            if (lng)
 			{
 				//if (d1 == 0x4C7CAB2B)
 				//	s += " (temporary inventory token)";
@@ -2425,12 +2429,10 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-            if (lng)
-                s += "GUID: ";
             if ((o[5] & 0x04) != 0) s += DoidName(0x18);
-            else if ((o[5] & 0x40) != 0) s += DoidName(0x27);
-            else if ((o[5] & 0x80) != 0) s += dataOwner(0x08, 0x00) + ",1";
-            else s += "0x" + SimPe.Helper.HexString((uint)(o[0] | (o[1] << 8) | (o[2] << 16) | (o[3] << 24)));
+            else if ((o[5] & 0x40) != 0) s += (lng ? "GUID: " : "") + DoidName(0x27);
+            else if ((o[5] & 0x80) != 0) s += (lng ? "GUID: " : "") + dataOwner(0x08, 0x00) + ",1";
+            else s += BhavWiz.FormatGUID(lng, o, 0);
 
 			if (lng)
 			{
@@ -2750,9 +2752,9 @@ namespace pjse.BhavNameWizards
                 {
                     if ((o[2] & 0x20) != 0)
                         s += ", " + pjse.Localization.GetString("bwp32_thumbnailOutfit")
-                            + ": GUID " + (((o[2] & 0x40) != 0)
-                            ? dataOwner(false, 0x08, 2) + ",3" // Temp 2,3
-                            : "0x" + SimPe.Helper.HexString(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24)));
+                            + ": " + (((o[2] & 0x40) != 0)
+                            ? "GUID " + dataOwner(false, 0x08, 2) + ",3" // Temp 2,3
+                            : BhavWiz.FormatGUID(lng, o, 5));
                     else
                         s += ", " + pjse.Localization.GetString("Object")
                             + ": " + dataOwner(lng, o[11], o[12], o[13]);
@@ -2923,7 +2925,8 @@ namespace pjse.BhavNameWizards
             if (lng && token)
             {
                 uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
-                s += ", " + pjse.Localization.GetString("bwp33_token") + ": " + (d1 == 0 ? dnStkOb() : "GUID 0x" + SimPe.Helper.HexString(d1));
+                s += ", " + pjse.Localization.GetString("bwp33_token") + ": "
+                    + (d1 == 0 ? dnStkOb() : BhavWiz.FormatGUID(lng, d1));
             }
             if (index)
                 s += ", " + pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[10], o[11], o[12]);
@@ -5144,9 +5147,9 @@ namespace pjse.BhavNameWizards
 			if (lng)
 			{
                 s += ", " + pjse.Localization.GetString("bwp_source") + ": ";
-				if      ((o[0] & 0x01) != 0) s += dnStkOb();
-				else if ((o[0] & 0x02) != 0) s += "GUID 0x" + SimPe.Helper.HexString((uint)(o[4] | (o[5] << 8) | (o[6] << 16) | (o[7] << 24)));
-				else if ((o[0] & 0x40) != 0) s += "GUID [" + dataOwner(0x08, 0) + ",1]";
+                if ((o[0] & 0x01) != 0) s += dnStkOb();
+                else if ((o[0] & 0x02) != 0) s += BhavWiz.FormatGUID(lng, o, 4);
+                else if ((o[0] & 0x40) != 0) s += "GUID [" + dataOwner(0x08, 0) + ",1]";
                 else s += pjse.Localization.GetString("bwp79_self");
 
 				s += ", ";
@@ -5391,9 +5394,9 @@ namespace pjse.BhavNameWizards
 			string s = "";
 
             s += (lng ? pjse.Localization.GetString("Target") + ": " : "") + dataOwner(lng, o[7], o[8], o[9]);
-            // This is limited compared with disaSim2 as I don't do GUID look ups...
+            // Mmm, wants don't appear to use OBJDs, so GUID lookups don't work...
 			uint want = (uint)(o[3] | o[4] << 8 | o[5] << 16 | o[6] << 24);
-            s += ", " + "GUID 0x" + SimPe.Helper.HexString(want);
+            s += ", " + pjse.Localization.GetString("bwp7c_want") + ": 0x" + SimPe.Helper.HexString(want);
             if (lng)
                 s += ", " + pjse.Localization.GetString("bwp7c_level") + ": " + dataOwner(o[10], o[11], o[12]);
 

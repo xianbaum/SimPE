@@ -38,7 +38,7 @@ namespace pjse
 		static FileTable()
 		{
 			GFT = new FileTable();
-			if (static_getter_LoadAtStartup()) GFT.Refresh();
+			if (FileTableSettings.FTS.LoadAtStartup) GFT.Refresh();
 		}
 
 
@@ -60,13 +60,6 @@ namespace pjse
 
 		private IPackageFile currentPackage = null;
 
-
-		private static bool static_getter_LoadAtStartup()
-		{
-			SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
-			object o = rkf.GetValue("loadAtStartup", false);
-			return Convert.ToBoolean(o);
-		}
 
 		public void Refresh()
 		{
@@ -131,7 +124,7 @@ namespace pjse
 		/// Indicates the Refresh() was called
 		/// </summary>
 		public event EventHandler FiletableRefresh;
-		internal virtual void OnFiletableRefresh(object sender, EventArgs e)
+		public virtual void OnFiletableRefresh(object sender, EventArgs e)
 		{
 			if (FiletableRefresh != null) 
 			{
@@ -519,7 +512,7 @@ namespace pjse
         SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
         public FileTableSettings() : base(rm) { }
 
-        [System.ComponentModel.Category("PJSE")]
+        [System.ComponentModel.Category("FT")]
         public bool LoadAtStartup
         {
             get
@@ -540,7 +533,7 @@ namespace pjse
 
         public object GetSettingsObject() { return this; }
 
-        public override string ToString() { return pjse.Localization.GetString("ft_Preferences"); }
+        public override string ToString() { return pjse.Localization.GetString("ft_Settings"); }
 
         [System.ComponentModel.Browsable(false)]
         public System.Drawing.Image Icon { get { return null; } }

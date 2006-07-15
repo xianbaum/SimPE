@@ -139,13 +139,6 @@
     <Compile Include="FileTable.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FileTableForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <EmbeddedResource Include="FileTableForm.resx">
-      <DependentUpon>FileTableForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\pjse Localisation\pjse localisation.csproj">

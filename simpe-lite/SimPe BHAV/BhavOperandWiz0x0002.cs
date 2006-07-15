@@ -82,41 +82,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 		private DataOwnerControl doid1 = null;
 		private DataOwnerControl doid2 = null;
 
-		private bool Decimal
-		{
-			get
-			{
-				SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x02");
-				object o = rkf.GetValue("decimal", false);
-				return Convert.ToBoolean(o);
-			}
-
-			set
-			{
-				SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x02");
-				rkf.SetValue("decimal", value);
-			}
-
-		}
-
-		private bool AttrPicker
-		{
-			get
-			{
-				SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x02");
-				object o = rkf.GetValue("attrPicker", true);
-				return Convert.ToBoolean(o);
-			}
-
-			set
-			{
-				SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x02");
-				rkf.SetValue("attrPicker", value);
-			}
-
-		}
-
-
 		public void Execute(Instruction inst)
 		{
 			this.inst = inst;
@@ -128,8 +93,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 			doid2.FlagsFor = doid1;
 			doid1.SetListener(doid2);
 
-			doid1.Decimal = doid2.Decimal = this.cbDecimal.Checked = Decimal;
-			doid1.UseAttrPicker = doid2.UseAttrPicker = this.cbAttrPicker.Checked = AttrPicker;
+            doid1.Decimal = doid2.Decimal = this.cbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
+            doid1.UseAttrPicker = doid2.UseAttrPicker = this.cbAttrPicker.Checked = pjse.Settings.PJSE.AttrPickerAsText;
 
 			cbOperator.Items.Clear();
 			cbOperator.Items.AddRange(BhavWiz.readStr(GS.BhavStr.Operators).ToArray());
@@ -268,12 +233,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 		private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
 		{
-			doid1.Decimal = doid2.Decimal = Decimal = this.cbDecimal.Checked;
+            doid1.Decimal = doid2.Decimal = pjse.Settings.PJSE.DecimalDOValue = this.cbDecimal.Checked;
 		}
 
 		private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
 		{
-			doid1.UseAttrPicker = doid2.UseAttrPicker = AttrPicker = this.cbAttrPicker.Checked;
+            doid1.UseAttrPicker = doid2.UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText = this.cbAttrPicker.Checked;
 		}
 
 	}
