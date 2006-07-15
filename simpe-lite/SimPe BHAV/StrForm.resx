@@ -133,7 +133,7 @@
     <value>147, 17</value>
   </data>
   <data name="ckbDescription.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+    <value>15</value>
   </data>
   <data name="ckbDescription.Text" xml:space="preserve">
     <value>Reveal string descriptions</value>
@@ -201,13 +201,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnRefreshFT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>626, 0</value>
+    <value>789, 0</value>
   </data>
   <data name="btnRefreshFT.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 24</value>
   </data>
   <data name="btnRefreshFT.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>1</value>
   </data>
   <data name="btnRefreshFT.Text" xml:space="preserve">
     <value>RFT</value>
@@ -237,13 +237,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>675, 0</value>
+    <value>838, 0</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 24</value>
   </data>
   <data name="btnHelp.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnHelp.Text" xml:space="preserve">
     <value>Help</value>
@@ -297,10 +297,10 @@
     <value>0, 0</value>
   </data>
   <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>723, 24</value>
+    <value>886, 24</value>
   </data>
   <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+    <value>27</value>
   </data>
   <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
     <value>pnHeading</value>
@@ -414,7 +414,7 @@
     <value>104, 24</value>
   </data>
   <data name="btnStrClear.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>24</value>
   </data>
   <data name="btnStrClear.Text" xml:space="preserve">
     <value>Default string only</value>
@@ -502,10 +502,10 @@
     <value>120, 168</value>
   </data>
   <data name="lvStrItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>595, 266</value>
+    <value>758, 266</value>
   </data>
   <data name="lvStrItems.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>26</value>
   </data>
   <data name="&gt;&gt;lvStrItems.Name" xml:space="preserve">
     <value>lvStrItems</value>
@@ -769,7 +769,7 @@
     <value>104, 24</value>
   </data>
   <data name="btnLngClear.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>20</value>
   </data>
   <data name="btnLngClear.Text" xml:space="preserve">
     <value>Clear lang</value>
@@ -853,7 +853,7 @@
     <value>104, 24</value>
   </data>
   <data name="btnClearAll.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>19</value>
   </data>
   <data name="btnClearAll.Text" xml:space="preserve">
     <value>Default lang only</value>
@@ -919,7 +919,7 @@
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>411, 21</value>
+    <value>574, 21</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -982,7 +982,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>611, 32</value>
+    <value>774, 32</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 24</value>
@@ -1018,7 +1018,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>492, 33</value>
+    <value>655, 33</value>
   </data>
   <data name="lbFormat.Size" type="System.Drawing.Size, System.Drawing">
     <value>54, 13</value>
@@ -1051,7 +1051,7 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>547, 32</value>
+    <value>710, 32</value>
   </data>
   <data name="tbFormat.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1077,6 +1077,60 @@
   <data name="&gt;&gt;tbFormat.ZOrder" xml:space="preserve">
     <value>25</value>
   </data>
+  <data name="btnImport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnImport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>640, 136</value>
+  </data>
+  <data name="btnImport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 24</value>
+  </data>
+  <data name="btnImport.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="btnImport.Text" xml:space="preserve">
+    <value>Import Lang</value>
+  </data>
+  <data name="&gt;&gt;btnImport.Name" xml:space="preserve">
+    <value>btnImport</value>
+  </data>
+  <data name="&gt;&gt;btnImport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnImport.Parent" xml:space="preserve">
+    <value>strPanel</value>
+  </data>
+  <data name="&gt;&gt;btnImport.ZOrder" xml:space="preserve">
+    <value>26</value>
+  </data>
+  <data name="btnExport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnExport.Location" type="System.Drawing.Point, System.Drawing">
+    <value>554, 136</value>
+  </data>
+  <data name="btnExport.Size" type="System.Drawing.Size, System.Drawing">
+    <value>80, 24</value>
+  </data>
+  <data name="btnExport.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="btnExport.Text" xml:space="preserve">
+    <value>Export Lang</value>
+  </data>
+  <data name="&gt;&gt;btnExport.Name" xml:space="preserve">
+    <value>btnExport</value>
+  </data>
+  <data name="&gt;&gt;btnExport.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnExport.Parent" xml:space="preserve">
+    <value>strPanel</value>
+  </data>
+  <data name="&gt;&gt;btnExport.ZOrder" xml:space="preserve">
+    <value>27</value>
+  </data>
   <data name="btnAppend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -1084,13 +1138,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnAppend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>611, 136</value>
+    <value>774, 136</value>
   </data>
   <data name="btnAppend.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 24</value>
   </data>
   <data name="btnAppend.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>18</value>
   </data>
   <data name="btnAppend.Text" xml:space="preserve">
     <value>A&amp;ppend File</value>
@@ -1105,7 +1159,7 @@
     <value>strPanel</value>
   </data>
   <data name="&gt;&gt;btnAppend.ZOrder" xml:space="preserve">
-    <value>26</value>
+    <value>28</value>
   </data>
   <data name="btnStrDelete.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1117,7 +1171,7 @@
     <value>104, 24</value>
   </data>
   <data name="btnStrDelete.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>22</value>
   </data>
   <data name="btnStrDelete.Text" xml:space="preserve">
     <value>De&amp;lete string</value>
@@ -1132,7 +1186,7 @@
     <value>strPanel</value>
   </data>
   <data name="&gt;&gt;btnStrDelete.ZOrder" xml:space="preserve">
-    <value>27</value>
+    <value>29</value>
   </data>
   <data name="btnStrAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1144,7 +1198,7 @@
     <value>104, 24</value>
   </data>
   <data name="btnStrAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+    <value>21</value>
   </data>
   <data name="btnStrAdd.Text" xml:space="preserve">
     <value>&amp;Add string</value>
@@ -1159,34 +1213,34 @@
     <value>strPanel</value>
   </data>
   <data name="&gt;&gt;btnStrAdd.ZOrder" xml:space="preserve">
-    <value>28</value>
+    <value>30</value>
   </data>
-  <data name="btnImport.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="btnReplace.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="btnImport.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="btnReplace.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 408</value>
   </data>
-  <data name="btnImport.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnReplace.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 24</value>
   </data>
-  <data name="btnImport.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+  <data name="btnReplace.TabIndex" type="System.Int32, mscorlib">
+    <value>25</value>
   </data>
-  <data name="btnImport.Text" xml:space="preserve">
+  <data name="btnReplace.Text" xml:space="preserve">
     <value>Replace string...</value>
   </data>
-  <data name="&gt;&gt;btnImport.Name" xml:space="preserve">
-    <value>btnImport</value>
+  <data name="&gt;&gt;btnReplace.Name" xml:space="preserve">
+    <value>btnReplace</value>
   </data>
-  <data name="&gt;&gt;btnImport.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnReplace.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnImport.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnReplace.Parent" xml:space="preserve">
     <value>strPanel</value>
   </data>
-  <data name="&gt;&gt;btnImport.ZOrder" xml:space="preserve">
-    <value>29</value>
+  <data name="&gt;&gt;btnReplace.ZOrder" xml:space="preserve">
+    <value>31</value>
   </data>
   <data name="btnStrDefault.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -1198,7 +1252,7 @@
     <value>104, 24</value>
   </data>
   <data name="btnStrDefault.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>23</value>
   </data>
   <data name="btnStrDefault.Text" xml:space="preserve">
     <value>Make default</value>
@@ -1213,7 +1267,7 @@
     <value>strPanel</value>
   </data>
   <data name="&gt;&gt;btnStrDefault.ZOrder" xml:space="preserve">
-    <value>30</value>
+    <value>32</value>
   </data>
   <data name="strPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1222,7 +1276,7 @@
     <value>0, 0</value>
   </data>
   <data name="strPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>723, 439</value>
+    <value>886, 439</value>
   </data>
   <data name="strPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1246,7 +1300,7 @@
     <value>5, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>723, 439</value>
+    <value>886, 439</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>StrForm</value>

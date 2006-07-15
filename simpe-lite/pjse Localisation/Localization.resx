@@ -1236,4 +1236,13 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="pjse_Settings" xml:space="preserve">
     <value>PJSE editors</value>
   </data>
+  <data name="strLangFilter" xml:space="preserve">
+    <value>Text Files|*.txt</value>
+  </data>
+  <data name="strLangLoad" xml:space="preserve">
+    <value>Import Language</value>
+  </data>
+  <data name="strLangSave" xml:space="preserve">
+    <value>Export Language</value>
+  </data>
 </root>

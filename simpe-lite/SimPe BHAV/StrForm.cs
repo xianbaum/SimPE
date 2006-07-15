@@ -63,7 +63,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.CheckBox ckbDefault;
 		private System.Windows.Forms.Button btnStrPrev;
 		private System.Windows.Forms.Button btnStrNext;
-		private System.Windows.Forms.Button btnImport;
+		private System.Windows.Forms.Button btnReplace;
 		private System.Windows.Forms.Panel pnHeading;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button btnHelp;
@@ -73,6 +73,8 @@ namespace SimPe.PackedFiles.UserInterface
         private ColumnHeader chLangDesc;
         private ColumnHeader chDefaultDesc;
         private CheckBox ckbDescription;
+        private Button btnImport;
+        private Button btnExport;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -272,7 +274,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnStrPrev.Enabled = (index > 0);
 			this.btnStrNext.Enabled = (index < count - 1);
 			this.btnStrAdd.Enabled = lid == 1;
-			this.btnImport.Enabled = this.btnStrDelete.Enabled = (lid == 1) && (index >= 0);
+			this.btnReplace.Enabled = this.btnStrDelete.Enabled = (lid == 1) && (index >= 0);
 			this.btnStrClear.Enabled = (wrapper.Format != 0x0000 && index >= 0);
 		}
 
@@ -529,6 +531,49 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex((i >= count) ? count - 1 : i);
 		}
 
+        private void StringFile(bool load)
+        {
+            FileDialog fd = load ? (FileDialog)new OpenFileDialog() : (FileDialog)new SaveFileDialog();
+            fd.AddExtension = true;
+            fd.CheckFileExists = load;
+            fd.CheckPathExists = true;
+            fd.DefaultExt = "txt";
+            fd.DereferenceLinks = true;
+            fd.FileName = ((SimPe.Data.MetaData.Languages)lid).ToString() + ".txt";
+            fd.Filter = pjse.Localization.GetString("strLangFilter");
+            fd.FilterIndex = 1;
+            fd.RestoreDirectory = false;
+            fd.ShowHelp = false;
+            fd.SupportMultiDottedExtensions = false;
+            fd.Title = load
+                ? pjse.Localization.GetString("strLangLoad")
+                : pjse.Localization.GetString("strLangSave");
+            fd.ValidateNames = true;
+            DialogResult dr = fd.ShowDialog();
+
+            if (dr == DialogResult.OK)
+            {
+                if (load)
+                {
+                    bool savedstate = internalchg;
+                    internalchg = true;
+
+                    wrapper.ImportLanguage(lid, fd.FileName);
+
+                    byte l = lid;
+                    int i = index;
+                    updateLists();
+
+                    internalchg = savedstate;
+
+                    setLid(l);
+                    setIndex((i >= count) ? count - 1 : i);
+                }
+                else
+                    wrapper.ExportLanguage(lid, fd.FileName);
+            }
+        }
+
 
 		#endregion
 
@@ -642,10 +687,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnCommit = new System.Windows.Forms.Button();
             this.lbFormat = new System.Windows.Forms.Label();
             this.tbFormat = new System.Windows.Forms.TextBox();
+            this.btnImport = new System.Windows.Forms.Button();
+            this.btnExport = new System.Windows.Forms.Button();
             this.btnAppend = new System.Windows.Forms.Button();
             this.btnStrDelete = new System.Windows.Forms.Button();
             this.btnStrAdd = new System.Windows.Forms.Button();
-            this.btnImport = new System.Windows.Forms.Button();
+            this.btnReplace = new System.Windows.Forms.Button();
             this.btnStrDefault = new System.Windows.Forms.Button();
             this.strPanel.SuspendLayout();
             this.pnHeading.SuspendLayout();
@@ -679,10 +726,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.strPanel.Controls.Add(this.btnCommit);
             this.strPanel.Controls.Add(this.lbFormat);
             this.strPanel.Controls.Add(this.tbFormat);
+            this.strPanel.Controls.Add(this.btnImport);
+            this.strPanel.Controls.Add(this.btnExport);
             this.strPanel.Controls.Add(this.btnAppend);
             this.strPanel.Controls.Add(this.btnStrDelete);
             this.strPanel.Controls.Add(this.btnStrAdd);
-            this.strPanel.Controls.Add(this.btnImport);
+            this.strPanel.Controls.Add(this.btnReplace);
             this.strPanel.Controls.Add(this.btnStrDefault);
             resources.ApplyResources(this.strPanel, "strPanel");
             this.strPanel.Name = "strPanel";
@@ -902,6 +951,18 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
+            // btnImport
+            // 
+            resources.ApplyResources(this.btnImport, "btnImport");
+            this.btnImport.Name = "btnImport";
+            this.btnImport.Click += new System.EventHandler(this.btnStringFile_Click);
+            // 
+            // btnExport
+            // 
+            resources.ApplyResources(this.btnExport, "btnExport");
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Click += new System.EventHandler(this.btnStringFile_Click);
+            // 
             // btnAppend
             // 
             resources.ApplyResources(this.btnAppend, "btnAppend");
@@ -920,11 +981,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrAdd.Name = "btnStrAdd";
             this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
             // 
-            // btnImport
+            // btnReplace
             // 
-            resources.ApplyResources(this.btnImport, "btnImport");
-            this.btnImport.Name = "btnImport";
-            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
+            resources.ApplyResources(this.btnReplace, "btnReplace");
+            this.btnReplace.Name = "btnReplace";
+            this.btnReplace.Click += new System.EventHandler(this.btnImport_Click);
             // 
             // btnStrDefault
             // 
@@ -1155,6 +1216,11 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnRefreshFT_Click(object sender, EventArgs e)
         {
             pjse.FileTable.GFT.UIRefresh();
+        }
+
+        private void btnStringFile_Click(object sender, EventArgs e)
+        {
+            this.StringFile(sender.Equals(this.btnImport));
         }
 
 	}
