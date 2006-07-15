@@ -600,14 +600,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 			internalchg = true;
 			updateLists();
-			internalchg = false;
+            this.ckbDefault.Checked = pjse.Settings.PJSE.StrShowDefault;
+            this.ckbDescription.Checked = pjse.Settings.PJSE.StrShowDesc;
+            internalchg = false;
 
 			setLid(1);
 			setIndex(count > 0 ? 0 : -1);
-			if (this.ckbDefault.Checked || this.ckbDescription.Checked)
-				this.ckbDefault.Checked = this.ckbDescription.Checked = false;
-			else
-                ckb_CheckedChanged(null, null);
+            ckb_CheckedChanged(null, null);
 
 			if (!setHandler)
 			{
@@ -1101,6 +1100,8 @@ namespace SimPe.PackedFiles.UserInterface
         private void ckb_CheckedChanged(object sender, System.EventArgs e)
         {
             if (internalchg) return;
+            pjse.Settings.PJSE.StrShowDefault = this.ckbDefault.Checked;
+            pjse.Settings.PJSE.StrShowDesc = this.ckbDescription.Checked;
 
             System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(StrForm));
 

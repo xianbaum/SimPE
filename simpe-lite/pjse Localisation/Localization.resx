@@ -1245,4 +1245,16 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="strLangSave" xml:space="preserve">
     <value>Export Language</value>
   </data>
+  <data name="[Description:StrShowDefault]" xml:space="preserve">
+    <value>In the PJSE String Editors, show the default language text alongside the current language.</value>
+  </data>
+  <data name="[Description:StrShowDesc]" xml:space="preserve">
+    <value>In the PJSE String Editors, show the string description text alongside the strings.</value>
+  </data>
+  <data name="[Property:StrShowDefault]" xml:space="preserve">
+    <value>Reveal default language for comparison</value>
+  </data>
+  <data name="[Property:StrShowDesc]" xml:space="preserve">
+    <value>Reveal string descriptions</value>
+  </data>
 </root>
