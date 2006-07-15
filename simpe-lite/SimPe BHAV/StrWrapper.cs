@@ -382,7 +382,8 @@ namespace SimPe.PackedFiles.Wrapper
         public void ExportLanguage(byte lid, String path)
         {
             System.IO.StreamWriter sw = new StreamWriter(path, false);
-            sw.WriteLine("# PJSE String file - single language export");
+            sw.WriteLine("<-Comment->");
+            sw.WriteLine("PJSE String file - single language export");
             StrItem[] items = this[lid];
             if (items.Length == 0)
             {
@@ -393,9 +394,9 @@ namespace SimPe.PackedFiles.Wrapper
                 foreach (StrItem item in items)
                 {
                     sw.WriteLine("<-String->");
-                    sw.WriteLine(item.Title);
+                    if (item.Title.Trim().Length > 0) sw.WriteLine(item.Title);
                     sw.WriteLine("<-Desc->");
-                    sw.WriteLine(item.Description);
+                    if (item.Description.Trim().Length > 0) sw.WriteLine(item.Description);
                 }
             sw.Close();
         }
@@ -410,7 +411,8 @@ namespace SimPe.PackedFiles.Wrapper
                 bool isDesc = false;
                 for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
                 {
-                    if (line.Equals("<-String->"))
+                    if (line.Equals("<-Comment->")) { isString = false; isDesc = false; }
+                    else if (line.Equals("<-String->"))
                     {
                         isString = true; isDesc = false; lineCt++;
                         if (this[lid, lineCt] != null)
@@ -418,10 +420,9 @@ namespace SimPe.PackedFiles.Wrapper
                         else
                             this.Add(lid, "", "");
                     }
-                    else if (line.Equals("<-Desc->")) { isString = false; isDesc = true; }
+                    else if (isString && line.Equals("<-Desc->")) { isString = false; isDesc = true; }
                     else if (isString) this[lid, lineCt].Title += (this[lid, lineCt].Title.Length == 0 ? "" : "\n") + line;
                     else if (isDesc) this[lid, lineCt].Description += (this[lid, lineCt].Description.Length == 0 ? "" : "\n") + line;
-                    else { isString = false; isDesc = false; }
                 }
                 sr.Close();
             }
