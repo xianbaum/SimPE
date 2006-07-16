@@ -209,12 +209,12 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
             this.cbRTBNType.SelectedIndex = ops1[0x05] < this.cbRTBNType.Items.Count ? ops1[0x05] : -1;
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, ops1[0x06], BhavWiz.ToShort(ops1[0x07], ops2[0x00]));
-            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2, ops2[0x01], BhavWiz.ToShort(ops2[0x02], ops2[0x03]));
-            doid3 = new DataOwnerControl(inst, this.cbDataOwner3, this.cbPicker3, this.tbVal3, ops2[0x04], BhavWiz.ToShort(ops2[0x05], ops2[0x06]));
-
-            doid1.Decimal = doid2.Decimal = doid3.Decimal = this.cbDecimal.Checked = Decimal;
-            doid1.UseAttrPicker = doid2.UseAttrPicker = doid3.UseAttrPicker = this.cbAttrPicker.Checked = AttrPicker;
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1,
+                this.cbDecimal, this.cbAttrPicker, ops1[0x06], BhavWiz.ToShort(ops1[0x07], ops2[0x00]));
+            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2,
+                this.cbDecimal, this.cbAttrPicker, ops2[0x01], BhavWiz.ToShort(ops2[0x02], ops2[0x03]));
+            doid3 = new DataOwnerControl(inst, this.cbDataOwner3, this.cbPicker3, this.tbVal3,
+                this.cbDecimal, this.cbAttrPicker, ops2[0x04], BhavWiz.ToShort(ops2[0x05], ops2[0x06]));
 
             internalchg = false;
         }
@@ -377,7 +377,6 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             // 
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
             // 
             // cbPicker2
             // 
@@ -395,7 +394,6 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             // 
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
             // 
             // tbVal2
             // 
@@ -470,6 +468,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             // 
             // cbRTBNType
             // 
+            this.cbRTBNType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbRTBNType.FormattingEnabled = true;
             this.cbRTBNType.Items.AddRange(new object[] {
             resources.GetString("cbRTBNType.Items"),
@@ -533,16 +532,6 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
 		}
 		#endregion
-
-		private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
-		{
-            doid1.Decimal = doid2.Decimal = doid3.Decimal = Decimal = this.cbDecimal.Checked;
-		}
-
-		private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
-		{
-            doid1.UseAttrPicker = doid2.UseAttrPicker = doid3.UseAttrPicker = AttrPicker = this.cbAttrPicker.Checked;
-		}
 
         private void btnTreeName_Click(object sender, EventArgs e)
         {

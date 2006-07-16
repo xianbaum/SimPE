@@ -88,13 +88,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
 			wrappedByteArray ops = inst.Operands;
 
-			doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbval1, ops[0x06], (ushort)((ops[0x01] << 8) | ops[0x00]));
-			doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbval2, ops[0x07], (ushort)((ops[0x03] << 8) | ops[0x02]));
+			doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbval1, this.cbDecimal, this.cbAttrPicker,
+                ops[0x06], (ushort)((ops[0x01] << 8) | ops[0x00]));
+            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbval2, this.cbDecimal, this.cbAttrPicker,
+                ops[0x07], (ushort)((ops[0x03] << 8) | ops[0x02]));
 			doid2.FlagsFor = doid1;
 			doid1.SetListener(doid2);
-
-            doid1.Decimal = doid2.Decimal = this.cbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
-            doid1.UseAttrPicker = doid2.UseAttrPicker = this.cbAttrPicker.Checked = pjse.Settings.PJSE.AttrPickerAsText;
 
 			cbOperator.Items.Clear();
 			cbOperator.Items.AddRange(BhavWiz.readStr(GS.BhavStr.Operators).ToArray());
@@ -158,13 +157,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
             // 
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
             // 
             // cbDecimal
             // 
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
             // 
             // cbPicker2
             // 
@@ -229,16 +226,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 				doid2.UseFlagNames = true;
 			else
 				doid2.UseFlagNames = false;
-		}
-
-		private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
-		{
-            doid1.Decimal = doid2.Decimal = pjse.Settings.PJSE.DecimalDOValue = this.cbDecimal.Checked;
-		}
-
-		private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
-		{
-            doid1.UseAttrPicker = doid2.UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText = this.cbAttrPicker.Checked;
 		}
 
 	}

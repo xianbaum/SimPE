@@ -10,6 +10,16 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+16 July 2006 19:39 - Wiz0x006d: Fixes to DataOwnerControl; fixes to Wiz0x006d
+  * Pass Decimal and UseAttrPicker checkboxes to DataOwnerControl
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.9.10.3
+    BhavOperandWiz0x0002.cs 1.6.2.6.2.1
+    BhavOperandWiz0x001c.cs 1.1.4.2.6.1
+    BhavOperandWiz0x001f.cs 1.1.4.3.2.1
+    BhavOperandWiz0x0032.cs 1.1.4.4.2.1
+    BhavOperandWiz0x006d.cs 1.1.2.3
+
 16 July 2006 16:03 - Wiz0x006d: Pretty much working
   pjse Localisation\
     Localization.resx 1.1.4.15.2.1

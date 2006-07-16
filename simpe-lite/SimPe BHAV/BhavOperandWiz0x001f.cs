@@ -159,9 +159,8 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             this.ckbStackObj.Checked = (ops1[4] & 0x80) == 0;
             this.pnObject.Enabled = !this.ckbStackObj.Checked;
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, ops1[0x05], ops1[0x07]);
-            doid1.Decimal = this.cbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
-            doid1.UseAttrPicker = this.cbAttrPicker.Checked = pjse.Settings.PJSE.AttrPickerAsText;
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1,
+                this.cbDecimal, this.cbAttrPicker, ops1[0x05], ops1[0x07]);
 
             this.tbLocalVar.Text = "0x" + SimPe.Helper.HexString(ops1[0x06]);
 
@@ -367,13 +366,11 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             // 
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
             // 
             // cbDecimal
             // 
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
             // 
             // cbPicker1
             // 
@@ -418,16 +415,6 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
 
 		}
 		#endregion
-
-		private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
-		{
-            doid1.Decimal = pjse.Settings.PJSE.DecimalDOValue = this.cbDecimal.Checked;
-		}
-
-		private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
-		{
-            doid1.UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText = this.cbAttrPicker.Checked;
-		}
 
         private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
         {

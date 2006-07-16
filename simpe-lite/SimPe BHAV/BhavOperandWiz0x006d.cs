@@ -167,21 +167,17 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 ((BhavWiz)inst).readStr(s[scope.SelectedIndex], instance, strno, -1, pjse.Detail.ErrorNames);
         }
 
-        private void MaterialFrom(int newState)
+        private void MaterialFrom()
         {
-            bool isScrShot = false;
-            bool isMe = false;
-            switch (newState)
-            {
-                case 0:
-                    isScrShot = true;
-                    break;
-                case 1:
-                    isMe = true;
-                    break;
-            }
-            this.pnNotScrShot.Enabled = !isScrShot;
-            this.btnMaterial.Visible = this.tbMaterial.Visible = isMe;
+            this.pnNotScrShot.Enabled = !this.rb1ScrShot.Checked;
+            this.tbVal3.Enabled = !this.ckbMaterialTemp.Checked;
+            this.btnMaterial.Enabled = this.tbMaterial.Visible = this.rb1Me.Checked && !this.ckbMaterialTemp.Checked;
+        }
+
+        private void MeshFrom()
+        {
+            this.tbVal5.Enabled = !this.ckbMeshTemp.Checked;
+            this.btnMesh.Enabled = this.tbMesh.Visible = this.rb3Me.Checked && !this.ckbMeshTemp.Checked;
         }
 
         public void Execute(Instruction inst)
@@ -193,7 +189,8 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
 
             internalchg = true;
 
-            doid3 = new DataOwnerControl(inst, null, null, this.tbVal3, 0x07, BhavWiz.ToShort(ops1[0x00], ops1[0x01]));
+            doid3 = new DataOwnerControl(inst, null, null, this.tbVal3,
+                this.cbDecimal, this.cbAttrPicker, 0x07, BhavWiz.ToShort(ops1[0x00], ops1[0x01]));
 
             this.rb3Object.Checked = ((ops1[0x02] & 0x01) != 0);
             this.btnMesh.Visible = this.tbMesh.Visible = this.rb3Me.Checked = !this.rb3Object.Checked;
@@ -209,13 +206,11 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.rb1ScrShot.Checked = ((ops2[0x05] & 0x02) != 0);
             this.rb1Me.Checked = !this.rb1ScrShot.Checked && ((ops1[0x02] & 0x08) == 0);
             this.rb1Object.Checked = !this.rb1ScrShot.Checked && !this.rb1Me.Checked;
-            this.MaterialFrom(this.rb1ScrShot.Checked ? 0 : (this.rb1Me.Checked ? 1 : 2));
 
             this.rb2MovingTexture.Checked = ((ops2[0x05] & 0x01) != 0);
             this.rb2Material.Checked = !this.rb2MovingTexture.Checked;
 
             this.ckbMaterialTemp.Checked = ((ops1[0x02] & 0x10) != 0);
-            this.tbVal3.Enabled = this.btnMaterial.Enabled = this.tbMaterial.Enabled = !this.ckbMaterialTemp.Checked;
 
             this.cbMeshScope.SelectedIndex = -1;
             switch (ops1[0x02] & 0xc0)
@@ -225,16 +220,14 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 case 0x80: this.cbMeshScope.SelectedIndex = 1; break; // SemiGlobal
             }
 
-            doid5 = new DataOwnerControl(inst, null, null, this.tbVal5, 0x07, (ushort)(BhavWiz.ToShort(ops1[0x03], ops1[0x04]) & 0x7fff));
+            doid5 = new DataOwnerControl(inst, null, null, this.tbVal5,
+                this.cbDecimal, this.cbAttrPicker, 0x07, (ushort)(BhavWiz.ToShort(ops1[0x03], ops1[0x04]) & 0x7fff));
             this.ckbAllOver.Checked = (ops1[0x04] & 0x80) != 0;
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, ops1[0x05], BhavWiz.ToShort(ops1[0x06], ops1[0x07]));
-            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2, ops2[0x00], BhavWiz.ToShort(ops2[0x01], ops2[0x02]));
-
-            doid1.Decimal = doid2.Decimal = doid3.Decimal = doid5.Decimal =
-                this.cbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
-            doid1.UseAttrPicker = doid2.UseAttrPicker =
-                this.cbAttrPicker.Checked = pjse.Settings.PJSE.AttrPickerAsText;
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1,
+                this.cbDecimal, this.cbAttrPicker, ops1[0x05], BhavWiz.ToShort(ops1[0x06], ops1[0x07]));
+            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2,
+                this.cbDecimal, this.cbAttrPicker, ops2[0x00], BhavWiz.ToShort(ops2[0x01], ops2[0x02]));
 
             doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
             doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
@@ -243,6 +236,8 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             doid5.SetListener(this);
 
             internalchg = false;
+
+            this.MaterialFrom();
         }
 
         public Instruction Write(Instruction inst)
@@ -374,13 +369,11 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             // 
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
             // 
             // cbDecimal
             // 
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
             // 
             // tbVal2
             // 
@@ -662,28 +655,27 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         }
         #endregion
 
-        private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
-        {
-            if (internalchg) return;
-            doid1.Decimal = doid2.Decimal = doid3.Decimal = doid5.Decimal = pjse.Settings.PJSE.DecimalDOValue = this.cbDecimal.Checked;
-        }
-
-        private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
-        {
-            if (internalchg) return;
-            doid1.UseAttrPicker = doid2.UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText = this.cbAttrPicker.Checked;
-        }
-
         private void rb1group_CheckedChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            this.MaterialFrom(this.rb1ScrShot.Checked ? 0 : (this.rb1Me.Checked ? 1 : 2));
+            this.MaterialFrom();
+        }
+
+        private void ckbMaterialTemp_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            this.MaterialFrom();
+        }
+
+        private void btnMaterial_Click(object sender, EventArgs e)
+        {
+            this.doStrChooser(this.cbMatScope, GS.GlobalStr.MaterialName, this.tbVal3, this.tbMaterial);
         }
 
         private void rb3group_CheckedChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            this.btnMesh.Visible = this.tbMesh.Visible = this.rb3Me.Checked = !this.rb3Object.Checked;
+            this.MeshFrom();
         }
 
         private void ckbAllOver_CheckedChanged(object sender, EventArgs e)
@@ -692,23 +684,10 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnNotAllOver.Enabled = !((CheckBox)sender).Checked;
         }
 
-        private void ckbMaterialTemp_CheckedChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            this.tbVal3.Enabled = this.btnMaterial.Enabled = this.tbMaterial.Enabled =
-                !((CheckBox)sender).Checked;
-        }
-
         private void ckbMeshTemp_CheckedChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            this.tbVal5.Enabled = this.btnMesh.Enabled = this.tbMesh.Enabled =
-                !((CheckBox)sender).Checked;
-        }
-
-        private void btnMaterial_Click(object sender, EventArgs e)
-        {
-            this.doStrChooser(this.cbMatScope, GS.GlobalStr.MaterialName, this.tbVal3, this.tbMaterial);
+            this.MeshFrom();
         }
 
         private void btnMesh_Click(object sender, EventArgs e)
