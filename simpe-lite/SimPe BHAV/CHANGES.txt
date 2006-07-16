@@ -10,6 +10,10 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+16 July 2006 20:08 - Wiz0x006d: Fix scope name in no strings popup (plus bits)
+  SimPe BHAV\
+    BhavOperandWiz0x006d.cs 1.1.2.4
+
 16 July 2006 19:39 - Wiz0x006d: Fixes to DataOwnerControl; fixes to Wiz0x006d
   * Pass Decimal and UseAttrPicker checkboxes to DataOwnerControl
   SimPe BHAV\

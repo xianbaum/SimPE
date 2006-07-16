@@ -135,14 +135,14 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
 
         private void doStrChooser(ComboBox scope, pjse.GS.GlobalStr instance, TextBox tbVal, TextBox strText)
         {
-            Scope[] s = { Scope.Private, Scope.Global, Scope.SemiGlobal };
+            Scope[] s = { Scope.Private, Scope.SemiGlobal, Scope.Global };
             pjse.FileTable.Entry[] items = (scope.SelectedIndex < 0) ? null :
                 pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, inst.Parent.GroupForScope(s[scope.SelectedIndex]), (uint)instance];
 
             if (items == null || items.Length == 0)
             {
                 MessageBox.Show(pjse.Localization.GetString("bow_noStrings")
-                    + " (" + pjse.Localization.GetString(scope.ToString()) + ")");
+                    + " (" + pjse.Localization.GetString(s[scope.SelectedIndex].ToString()) + ")");
                 return; // eek!
             }
 
@@ -176,8 +176,9 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
 
         private void MeshFrom()
         {
+            this.pnNotAllOver.Enabled = !this.ckbAllOver.Checked;
             this.tbVal5.Enabled = !this.ckbMeshTemp.Checked;
-            this.btnMesh.Enabled = this.tbMesh.Visible = this.rb3Me.Checked && !this.ckbMeshTemp.Checked;
+            this.btnMesh.Enabled = this.tbMesh.Visible = !this.ckbAllOver.Checked && this.rb3Me.Checked && !this.ckbMeshTemp.Checked;
         }
 
         public void Execute(Instruction inst)
@@ -681,7 +682,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         private void ckbAllOver_CheckedChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            this.pnNotAllOver.Enabled = !((CheckBox)sender).Checked;
+            this.MeshFrom();
         }
 
         private void ckbMeshTemp_CheckedChanged(object sender, EventArgs e)
