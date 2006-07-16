@@ -273,21 +273,27 @@ namespace pjse.BhavOperandWizards
 			this.listener = null;
 			this.flagsFor = null;
 
-			this.tbValue.Text = this.tbValueConverter(instance);
+            if (this.cbDataOwner != null)
+            {
+                this.cbDataOwner.Items.Clear();
+                this.cbDataOwner.Items.AddRange(BhavWiz.readStr(GS.BhavStr.DataOwners).ToArray());
+                if (cbDataOwner.Items.Count > dataOwner)
+                    cbDataOwner.SelectedIndex = dataOwner;
+                UpdateDataOwner();
+                this.cbDataOwner.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
+            }
 
-			this.cbDataOwner.Items.Clear();
-			this.cbDataOwner.Items.AddRange(BhavWiz.readStr(GS.BhavStr.DataOwners).ToArray());
-			if (cbDataOwner.Items.Count > dataOwner)
-				cbDataOwner.SelectedIndex = dataOwner;
-			UpdateDataOwner();
+            if (this.cbPicker != null)
+    			this.cbPicker.SelectedIndexChanged += new System.EventHandler(this.cbPicker_SelectedIndexChanged);
 
-			this.cbDataOwner.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
-			this.cbPicker.SelectedIndexChanged += new System.EventHandler(this.cbPicker_SelectedIndexChanged);
-
-			this.tbValue.Validating += new System.ComponentModel.CancelEventHandler(this.tbValue_Validating);
-			this.tbValue.Validated += new System.EventHandler(this.tbValue_Validated);
-			this.tbValue.TextChanged += new System.EventHandler(this.tbValue_TextChanged);
-			this.tbValue.Enter += new System.EventHandler(this.tbValue_Enter);
+            if (this.tbValue != null)
+            {
+                this.tbValue.Text = this.tbValueConverter(instance);
+                this.tbValue.Validating += new System.ComponentModel.CancelEventHandler(this.tbValue_Validating);
+                this.tbValue.Validated += new System.EventHandler(this.tbValue_Validated);
+                this.tbValue.TextChanged += new System.EventHandler(this.tbValue_TextChanged);
+                this.tbValue.Enter += new System.EventHandler(this.tbValue_Enter);
+            }
 		}
 
 
