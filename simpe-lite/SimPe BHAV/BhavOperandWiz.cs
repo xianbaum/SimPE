@@ -335,7 +335,7 @@ namespace pjse.BhavOperandWizards
 			}
 		}
 
-		public void Notify()
+		public void Notify(object sender)
 		{
 			UpdateDataOwner();
 		}
@@ -417,7 +417,7 @@ namespace pjse.BhavOperandWizards
 				dataOwner = (byte)cbDataOwner.SelectedIndex;
 				tbValue.Text = tbValueConverter(instance);
 				if (listener != null)
-					listener.Notify();
+					listener.Notify(this);
 			}
 
 			#region pickerNames
@@ -472,7 +472,7 @@ namespace pjse.BhavOperandWizards
 			{
 				instance = i;
 				if (listener != null)
-					listener.Notify();
+					listener.Notify(this);
 			}
 		}
 	}

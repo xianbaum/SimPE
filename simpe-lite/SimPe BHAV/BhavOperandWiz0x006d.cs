@@ -29,9 +29,9 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
     /// <summary>
     /// Summary description for StrBig.
     /// </summary>
-    internal class UI : System.Windows.Forms.Form
-	{
-		#region Form variables
+    internal class UI : System.Windows.Forms.Form, IDataOwnerListener
+    {
+        #region Form variables
 
         internal System.Windows.Forms.Panel pnWiz0x006d;
         private Label label1;
@@ -45,10 +45,6 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         private RadioButton rb1Object;
         private RadioButton rb1Me;
         private RadioButton rb1ScrShot;
-        private Panel pnMaterialDoid;
-        private ComboBox cbPicker2;
-        private TextBox tbVal2;
-        private ComboBox cbDataOwner2;
         private Panel pnNotScrShot;
         private CheckBox ckbMaterialTemp;
         private RadioButton rb2MovingTexture;
@@ -63,28 +59,28 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         private Label label2;
         private RadioButton rb3Object;
         private RadioButton rb3Me;
-        private Panel pnMeshDoid;
-        private ComboBox cbPicker4;
-        private TextBox tbVal4;
-        private ComboBox cbDataOwner4;
         private Panel pnNotAllOver;
         private CheckBox ckbAllOver;
-        private ComboBox comboBox1;
+        private ComboBox cbMeshScope;
         private Label label4;
         private Label label7;
         private TextBox tbMesh;
         private Button btnMesh;
         private TextBox tbVal5;
         private Label label8;
-        private CheckBox checkBox1;
-		/// <summary>
-		/// Erforderliche Designervariable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+        private CheckBox ckbMeshTemp;
+        private Label label9;
+        private ComboBox cbPicker2;
+        private TextBox tbVal2;
+        private ComboBox cbDataOwner2;
+        /// <summary>
+        /// Erforderliche Designervariable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
+        #endregion
 
-		public UI()
-		{
+        public UI()
+        {
             //
             // Required for Windows Form Designer support
             //
@@ -98,36 +94,83 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         /// Clean up any resources being used.
         /// </summary>
         protected override void Dispose(bool disposing)
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
 
-			inst = null;
-		}
+            inst = null;
+        }
 
 
-		#region UI
-		private Instruction inst = null;
+        #region UI
+        private Instruction inst = null;
+
         private DataOwnerControl doid1 = null;
         private DataOwnerControl doid2 = null;
         private DataOwnerControl doid3 = null;
-        private DataOwnerControl doid4 = null;
         private DataOwnerControl doid5 = null;
+
+        #region IDataOwnerListener
+        public byte DataOwner { get { return 0; } }
+        public ushort Value { get { return 0; } }
+        public IDataOwner FlagsFor { set { } }
+        public void Notify(object sender)
+        {
+            if (sender.Equals(doid3))
+                doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
+            else
+                doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
+        }
+        #endregion
+
         ArrayList rb1group = null;
         ArrayList rb3group = null;
         private bool internalchg = false;
+
+        private void doStrChooser(ComboBox scope, pjse.GS.GlobalStr instance, TextBox tbVal, TextBox strText)
+        {
+            Scope[] s = { Scope.Private, Scope.Global, Scope.SemiGlobal };
+            pjse.FileTable.Entry[] items = (scope.SelectedIndex < 0) ? null :
+                pjse.FileTable.GFT[(uint)SimPe.Data.MetaData.STRING_FILE, inst.Parent.GroupForScope(s[scope.SelectedIndex]), (uint)instance];
+
+            if (items == null || items.Length == 0)
+            {
+                MessageBox.Show(pjse.Localization.GetString("bow_noStrings")
+                    + " (" + pjse.Localization.GetString(scope.ToString()) + ")");
+                return; // eek!
+            }
+
+            SimPe.PackedFiles.Wrapper.StrWrapper str = new StrWrapper();
+            str.ProcessData(items[0].PFD, items[0].Package);
+
+            int i = (new StrChooser(true)).Strnum(str);
+            if (i >= 0)
+            {
+                bool savedState = internalchg;
+                internalchg = true;
+                tbVal.Text = "0x" + SimPe.Helper.HexString((ushort)i);
+                doStrValue(scope, instance, (ushort)i, strText);
+                internalchg = savedState;
+            }
+        }
+
+        private void doStrValue(ComboBox scope, pjse.GS.GlobalStr instance, ushort strno, TextBox strText)
+        {
+            Scope[] s = { Scope.Private, Scope.Global, Scope.SemiGlobal };
+            strText.Text = (scope.SelectedIndex < 0) ? "" :
+                ((BhavWiz)inst).readStr(s[scope.SelectedIndex], instance, strno, -1, pjse.Detail.ErrorNames);
+        }
 
         private void MaterialFrom(int newState)
         {
             bool isScrShot = false;
             bool isMe = false;
-            bool isObject = false;
             switch (newState)
             {
                 case 0:
@@ -136,30 +179,9 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 case 1:
                     isMe = true;
                     break;
-                case 2:
-                    isObject = true;
-                    break;
             }
             this.pnNotScrShot.Enabled = !isScrShot;
             this.btnMaterial.Visible = this.tbMaterial.Visible = isMe;
-            this.pnMaterialDoid.Enabled = isObject;
-        }
-
-        private void MeshFrom(int newState)
-        {
-            bool isMe = false;
-            bool isObject = false;
-            switch (newState)
-            {
-                case 0:
-                    isMe = true;
-                    break;
-                case 1:
-                    isObject = true;
-                    break;
-            }
-            this.btnMesh.Visible = this.tbMesh.Visible = isMe;
-            this.pnMeshDoid.Enabled = isObject;
         }
 
         public void Execute(Instruction inst)
@@ -171,31 +193,103 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
 
             internalchg = true;
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, ops1[0x05], ops1[0x07]);
-            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2, ops1[0x05], ops1[0x07]);
-            doid3 = new DataOwnerControl(inst, null, null, this.tbVal3, 0x07, ops1[0x07]);
-            doid4 = new DataOwnerControl(inst, this.cbDataOwner4, this.cbPicker4, this.tbVal4, ops1[0x05], ops1[0x07]);
-            doid5 = new DataOwnerControl(inst, null, null, this.tbVal5, 0x07, ops1[0x07]);
+            doid3 = new DataOwnerControl(inst, null, null, this.tbVal3, 0x07, BhavWiz.ToShort(ops1[0x00], ops1[0x01]));
 
-            doid1.Decimal = doid2.Decimal = doid3.Decimal = doid4.Decimal = doid5.Decimal =
+            this.rb3Object.Checked = ((ops1[0x02] & 0x01) != 0);
+            this.btnMesh.Visible = this.tbMesh.Visible = this.rb3Me.Checked = !this.rb3Object.Checked;
+
+            this.cbMatScope.SelectedIndex = -1;
+            switch (ops1[0x02] & 0x06)
+            {
+                case 0x00: this.cbMatScope.SelectedIndex = 0; break; // Private
+                case 0x02: this.cbMatScope.SelectedIndex = 2; break; // Global
+                case 0x04: this.cbMatScope.SelectedIndex = 1; break; // SemiGlobal
+            }
+
+            this.rb1ScrShot.Checked = ((ops2[0x05] & 0x02) != 0);
+            this.rb1Me.Checked = !this.rb1ScrShot.Checked && ((ops1[0x02] & 0x08) == 0);
+            this.rb1Object.Checked = !this.rb1ScrShot.Checked && !this.rb1Me.Checked;
+            this.MaterialFrom(this.rb1ScrShot.Checked ? 0 : (this.rb1Me.Checked ? 1 : 2));
+
+            this.rb2MovingTexture.Checked = ((ops2[0x05] & 0x01) != 0);
+            this.rb2Material.Checked = !this.rb2MovingTexture.Checked;
+
+            this.ckbMaterialTemp.Checked = ((ops1[0x02] & 0x10) != 0);
+            this.tbVal3.Enabled = this.btnMaterial.Enabled = this.tbMaterial.Enabled = !this.ckbMaterialTemp.Checked;
+
+            this.cbMeshScope.SelectedIndex = -1;
+            switch (ops1[0x02] & 0xc0)
+            {
+                case 0x00: this.cbMeshScope.SelectedIndex = 0; break; // Private
+                case 0x40: this.cbMeshScope.SelectedIndex = 2; break; // Global
+                case 0x80: this.cbMeshScope.SelectedIndex = 1; break; // SemiGlobal
+            }
+
+            doid5 = new DataOwnerControl(inst, null, null, this.tbVal5, 0x07, (ushort)(BhavWiz.ToShort(ops1[0x03], ops1[0x04]) & 0x7fff));
+            this.ckbAllOver.Checked = (ops1[0x04] & 0x80) != 0;
+
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, ops1[0x05], BhavWiz.ToShort(ops1[0x06], ops1[0x07]));
+            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2, ops2[0x00], BhavWiz.ToShort(ops2[0x01], ops2[0x02]));
+
+            doid1.Decimal = doid2.Decimal = doid3.Decimal = doid5.Decimal =
                 this.cbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
-            doid1.UseAttrPicker = doid2.UseAttrPicker = doid4.UseAttrPicker =
+            doid1.UseAttrPicker = doid2.UseAttrPicker =
                 this.cbAttrPicker.Checked = pjse.Settings.PJSE.AttrPickerAsText;
+
+            doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
+            doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
+
+            doid3.SetListener(this);
+            doid5.SetListener(this);
 
             internalchg = false;
         }
 
-		public Instruction Write(Instruction inst)
-		{
-			if (inst != null)
-			{
+        public Instruction Write(Instruction inst)
+        {
+            if (inst != null)
+            {
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
-            }
-			return inst;
-		}
 
-		#endregion
+                ops1[0x00] = (byte)(doid3.Value & 0xff);
+                ops1[0x01] = (byte)(doid3.Value >> 8 & 0xff);
+
+                ops1[0x02] &= 0x20;
+                ops1[0x02] |= (byte)(this.rb3Object.Checked ? 0x01 : 0x00);
+                switch (this.cbMatScope.SelectedIndex)
+                {
+                    case 2: ops1[0x02] |= 0x02; break; // Global
+                    case 1: ops1[0x02] |= 0x04; break; // SemiGlobal
+                }
+                ops1[0x02] |= (byte)(this.rb1Object.Checked ? 0x08 : 0x00);
+                ops1[0x02] |= (byte)(this.ckbMaterialTemp.Checked ? 0x10 : 0x00);
+                switch (this.cbMeshScope.SelectedIndex)
+                {
+                    case 2: ops1[0x02] |= 0x40; break; // Global
+                    case 1: ops1[0x02] |= 0x80; break; // SemiGlobal
+                }
+
+                ops1[0x03] = (byte)(doid5.Value & 0xff);
+                ops1[0x04] = (byte)(doid5.Value >> 8 & 0x7f);
+                ops1[0x04] |= (byte)(this.ckbAllOver.Checked ? 0x80 : 0x00);
+
+                ops1[0x05] = doid1.DataOwner;
+                ops1[0x06] = (byte)(doid1.Value & 0xff);
+                ops1[0x07] = (byte)(doid1.Value >> 8 & 0xff);
+
+                ops2[0x00] = doid2.DataOwner;
+                ops2[0x01] = (byte)(doid2.Value & 0xff);
+                ops2[0x02] = (byte)(doid2.Value >> 8 & 0xff);
+
+                ops2[0x05] &= 0xfc;
+                ops2[0x05] |= (byte)(this.rb2MovingTexture.Checked ? 0x01 : 0x00);
+                ops2[0x05] |= (byte)(this.rb1ScrShot.Checked ? 0x02 : 0x00);
+            }
+            return inst;
+        }
+
+        #endregion
 
         #region Windows Form Designer generated code
         /// <summary>
@@ -203,30 +297,29 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
-		{
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             this.pnWiz0x006d = new System.Windows.Forms.Panel();
+            this.cbPicker2 = new System.Windows.Forms.ComboBox();
+            this.cbAttrPicker = new System.Windows.Forms.CheckBox();
+            this.cbDecimal = new System.Windows.Forms.CheckBox();
+            this.tbVal2 = new System.Windows.Forms.TextBox();
+            this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnNotAllOver = new System.Windows.Forms.Panel();
             this.tbMesh = new System.Windows.Forms.TextBox();
             this.btnMesh = new System.Windows.Forms.Button();
             this.tbVal5 = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.ckbMeshTemp = new System.Windows.Forms.CheckBox();
+            this.cbMeshScope = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.ckbAllOver = new System.Windows.Forms.CheckBox();
             this.rb3Object = new System.Windows.Forms.RadioButton();
             this.rb3Me = new System.Windows.Forms.RadioButton();
-            this.pnMeshDoid = new System.Windows.Forms.Panel();
-            this.cbPicker4 = new System.Windows.Forms.ComboBox();
-            this.tbVal4 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner4 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.cbPicker1 = new System.Windows.Forms.ComboBox();
-            this.cbDecimal = new System.Windows.Forms.CheckBox();
             this.tbVal1 = new System.Windows.Forms.TextBox();
-            this.cbAttrPicker = new System.Windows.Forms.CheckBox();
             this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
             this.pnMaterial = new System.Windows.Forms.Panel();
             this.pnNotScrShot = new System.Windows.Forms.Panel();
@@ -243,33 +336,63 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.rb1Object = new System.Windows.Forms.RadioButton();
             this.rb1Me = new System.Windows.Forms.RadioButton();
             this.rb1ScrShot = new System.Windows.Forms.RadioButton();
-            this.pnMaterialDoid = new System.Windows.Forms.Panel();
-            this.cbPicker2 = new System.Windows.Forms.ComboBox();
-            this.tbVal2 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pnWiz0x006d.SuspendLayout();
             this.panel1.SuspendLayout();
             this.pnNotAllOver.SuspendLayout();
-            this.pnMeshDoid.SuspendLayout();
             this.pnMaterial.SuspendLayout();
             this.pnNotScrShot.SuspendLayout();
-            this.pnMaterialDoid.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnWiz0x006d
             // 
+            this.pnWiz0x006d.Controls.Add(this.cbPicker2);
+            this.pnWiz0x006d.Controls.Add(this.cbAttrPicker);
+            this.pnWiz0x006d.Controls.Add(this.cbDecimal);
+            this.pnWiz0x006d.Controls.Add(this.tbVal2);
+            this.pnWiz0x006d.Controls.Add(this.cbDataOwner2);
             this.pnWiz0x006d.Controls.Add(this.panel1);
             this.pnWiz0x006d.Controls.Add(this.cbPicker1);
-            this.pnWiz0x006d.Controls.Add(this.cbDecimal);
             this.pnWiz0x006d.Controls.Add(this.tbVal1);
-            this.pnWiz0x006d.Controls.Add(this.cbAttrPicker);
             this.pnWiz0x006d.Controls.Add(this.cbDataOwner1);
             this.pnWiz0x006d.Controls.Add(this.pnMaterial);
+            this.pnWiz0x006d.Controls.Add(this.label9);
             this.pnWiz0x006d.Controls.Add(this.label1);
             resources.ApplyResources(this.pnWiz0x006d, "pnWiz0x006d");
             this.pnWiz0x006d.Name = "pnWiz0x006d";
+            // 
+            // cbPicker2
+            // 
+            this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPicker2.DropDownWidth = 384;
+            resources.ApplyResources(this.cbPicker2, "cbPicker2");
+            this.cbPicker2.Name = "cbPicker2";
+            // 
+            // cbAttrPicker
+            // 
+            resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
+            this.cbAttrPicker.Name = "cbAttrPicker";
+            this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
+            // 
+            // cbDecimal
+            // 
+            resources.ApplyResources(this.cbDecimal, "cbDecimal");
+            this.cbDecimal.Name = "cbDecimal";
+            this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
+            // 
+            // tbVal2
+            // 
+            resources.ApplyResources(this.tbVal2, "tbVal2");
+            this.tbVal2.Name = "tbVal2";
+            // 
+            // cbDataOwner2
+            // 
+            this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataOwner2.DropDownWidth = 384;
+            resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
+            this.cbDataOwner2.Name = "cbDataOwner2";
             // 
             // panel1
             // 
@@ -277,7 +400,6 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.panel1.Controls.Add(this.ckbAllOver);
             this.panel1.Controls.Add(this.rb3Object);
             this.panel1.Controls.Add(this.rb3Me);
-            this.panel1.Controls.Add(this.pnMeshDoid);
             this.panel1.Controls.Add(this.label2);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
@@ -288,8 +410,8 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnNotAllOver.Controls.Add(this.btnMesh);
             this.pnNotAllOver.Controls.Add(this.tbVal5);
             this.pnNotAllOver.Controls.Add(this.label8);
-            this.pnNotAllOver.Controls.Add(this.checkBox1);
-            this.pnNotAllOver.Controls.Add(this.comboBox1);
+            this.pnNotAllOver.Controls.Add(this.ckbMeshTemp);
+            this.pnNotAllOver.Controls.Add(this.cbMeshScope);
             this.pnNotAllOver.Controls.Add(this.label4);
             resources.ApplyResources(this.pnNotAllOver, "pnNotAllOver");
             this.pnNotAllOver.Name = "pnNotAllOver";
@@ -306,6 +428,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             // 
             resources.ApplyResources(this.btnMesh, "btnMesh");
             this.btnMesh.Name = "btnMesh";
+            this.btnMesh.Click += new System.EventHandler(this.btnMesh_Click);
             // 
             // tbVal5
             // 
@@ -317,18 +440,24 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
             // 
-            // checkBox1
+            // ckbMeshTemp
             // 
-            resources.ApplyResources(this.checkBox1, "checkBox1");
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            resources.ApplyResources(this.ckbMeshTemp, "ckbMeshTemp");
+            this.ckbMeshTemp.Name = "ckbMeshTemp";
+            this.ckbMeshTemp.UseVisualStyleBackColor = true;
+            this.ckbMeshTemp.CheckedChanged += new System.EventHandler(this.ckbMeshTemp_CheckedChanged);
             // 
-            // comboBox1
+            // cbMeshScope
             // 
-            this.comboBox1.FormattingEnabled = true;
-            resources.ApplyResources(this.comboBox1, "comboBox1");
-            this.comboBox1.Name = "comboBox1";
+            this.cbMeshScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMeshScope.FormattingEnabled = true;
+            this.cbMeshScope.Items.AddRange(new object[] {
+            resources.GetString("cbMeshScope.Items"),
+            resources.GetString("cbMeshScope.Items1"),
+            resources.GetString("cbMeshScope.Items2")});
+            resources.ApplyResources(this.cbMeshScope, "cbMeshScope");
+            this.cbMeshScope.Name = "cbMeshScope";
+            this.cbMeshScope.SelectedIndexChanged += new System.EventHandler(this.cbMatMeshScope_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -358,33 +487,6 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.rb3Me.UseVisualStyleBackColor = true;
             this.rb3Me.CheckedChanged += new System.EventHandler(this.rb3group_CheckedChanged);
             // 
-            // pnMeshDoid
-            // 
-            this.pnMeshDoid.Controls.Add(this.cbPicker4);
-            this.pnMeshDoid.Controls.Add(this.tbVal4);
-            this.pnMeshDoid.Controls.Add(this.cbDataOwner4);
-            resources.ApplyResources(this.pnMeshDoid, "pnMeshDoid");
-            this.pnMeshDoid.Name = "pnMeshDoid";
-            // 
-            // cbPicker4
-            // 
-            this.cbPicker4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker4.DropDownWidth = 384;
-            resources.ApplyResources(this.cbPicker4, "cbPicker4");
-            this.cbPicker4.Name = "cbPicker4";
-            // 
-            // tbVal4
-            // 
-            resources.ApplyResources(this.tbVal4, "tbVal4");
-            this.tbVal4.Name = "tbVal4";
-            // 
-            // cbDataOwner4
-            // 
-            this.cbDataOwner4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner4.DropDownWidth = 384;
-            resources.ApplyResources(this.cbDataOwner4, "cbDataOwner4");
-            this.cbDataOwner4.Name = "cbDataOwner4";
-            // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
@@ -397,22 +499,10 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
             // 
-            // cbDecimal
-            // 
-            resources.ApplyResources(this.cbDecimal, "cbDecimal");
-            this.cbDecimal.Name = "cbDecimal";
-            this.cbDecimal.CheckedChanged += new System.EventHandler(this.cbDecimal_CheckedChanged);
-            // 
             // tbVal1
             // 
             resources.ApplyResources(this.tbVal1, "tbVal1");
             this.tbVal1.Name = "tbVal1";
-            // 
-            // cbAttrPicker
-            // 
-            resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
-            this.cbAttrPicker.Name = "cbAttrPicker";
-            this.cbAttrPicker.CheckedChanged += new System.EventHandler(this.cbAttrPicker_CheckedChanged);
             // 
             // cbDataOwner1
             // 
@@ -427,7 +517,6 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnMaterial.Controls.Add(this.rb1Object);
             this.pnMaterial.Controls.Add(this.rb1Me);
             this.pnMaterial.Controls.Add(this.rb1ScrShot);
-            this.pnMaterial.Controls.Add(this.pnMaterialDoid);
             this.pnMaterial.Controls.Add(this.label3);
             resources.ApplyResources(this.pnMaterial, "pnMaterial");
             this.pnMaterial.Name = "pnMaterial";
@@ -459,6 +548,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             // 
             resources.ApplyResources(this.btnMaterial, "btnMaterial");
             this.btnMaterial.Name = "btnMaterial";
+            this.btnMaterial.Click += new System.EventHandler(this.btnMaterial_Click);
             // 
             // tbVal3
             // 
@@ -467,9 +557,15 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             // 
             // cbMatScope
             // 
+            this.cbMatScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMatScope.FormattingEnabled = true;
+            this.cbMatScope.Items.AddRange(new object[] {
+            resources.GetString("cbMatScope.Items"),
+            resources.GetString("cbMatScope.Items1"),
+            resources.GetString("cbMatScope.Items2")});
             resources.ApplyResources(this.cbMatScope, "cbMatScope");
             this.cbMatScope.Name = "cbMatScope";
+            this.cbMatScope.SelectedIndexChanged += new System.EventHandler(this.cbMatMeshScope_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -531,37 +627,15 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.rb1ScrShot.UseVisualStyleBackColor = true;
             this.rb1ScrShot.CheckedChanged += new System.EventHandler(this.rb1group_CheckedChanged);
             // 
-            // pnMaterialDoid
-            // 
-            this.pnMaterialDoid.Controls.Add(this.cbPicker2);
-            this.pnMaterialDoid.Controls.Add(this.tbVal2);
-            this.pnMaterialDoid.Controls.Add(this.cbDataOwner2);
-            resources.ApplyResources(this.pnMaterialDoid, "pnMaterialDoid");
-            this.pnMaterialDoid.Name = "pnMaterialDoid";
-            // 
-            // cbPicker2
-            // 
-            this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker2.DropDownWidth = 384;
-            resources.ApplyResources(this.cbPicker2, "cbPicker2");
-            this.cbPicker2.Name = "cbPicker2";
-            // 
-            // tbVal2
-            // 
-            resources.ApplyResources(this.tbVal2, "tbVal2");
-            this.tbVal2.Name = "tbVal2";
-            // 
-            // cbDataOwner2
-            // 
-            this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner2.DropDownWidth = 384;
-            resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
-            this.cbDataOwner2.Name = "cbDataOwner2";
-            // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
             // 
             // label1
             // 
@@ -579,57 +653,79 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.panel1.PerformLayout();
             this.pnNotAllOver.ResumeLayout(false);
             this.pnNotAllOver.PerformLayout();
-            this.pnMeshDoid.ResumeLayout(false);
-            this.pnMeshDoid.PerformLayout();
             this.pnMaterial.ResumeLayout(false);
             this.pnMaterial.PerformLayout();
             this.pnNotScrShot.ResumeLayout(false);
             this.pnNotScrShot.PerformLayout();
-            this.pnMaterialDoid.ResumeLayout(false);
-            this.pnMaterialDoid.PerformLayout();
             this.ResumeLayout(false);
 
-		}
-		#endregion
+        }
+        #endregion
 
-		private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
-		{
-            doid1.Decimal = doid2.Decimal = doid3.Decimal = doid4.Decimal = doid5.Decimal = pjse.Settings.PJSE.DecimalDOValue = this.cbDecimal.Checked;
-		}
+        private void cbDecimal_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (internalchg) return;
+            doid1.Decimal = doid2.Decimal = doid3.Decimal = doid5.Decimal = pjse.Settings.PJSE.DecimalDOValue = this.cbDecimal.Checked;
+        }
 
-		private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
-		{
-            doid1.UseAttrPicker = doid2.UseAttrPicker = doid4.UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText = this.cbAttrPicker.Checked;
-		}
+        private void cbAttrPicker_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (internalchg) return;
+            doid1.UseAttrPicker = doid2.UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText = this.cbAttrPicker.Checked;
+        }
 
         private void rb1group_CheckedChanged(object sender, EventArgs e)
         {
-            this.MaterialFrom(rb1group.IndexOf(sender));
+            if (internalchg) return;
+            this.MaterialFrom(this.rb1ScrShot.Checked ? 0 : (this.rb1Me.Checked ? 1 : 2));
         }
 
         private void rb3group_CheckedChanged(object sender, EventArgs e)
         {
-            this.MeshFrom(rb3group.IndexOf(sender));
+            if (internalchg) return;
+            this.btnMesh.Visible = this.tbMesh.Visible = this.rb3Me.Checked = !this.rb3Object.Checked;
         }
 
         private void ckbAllOver_CheckedChanged(object sender, EventArgs e)
         {
+            if (internalchg) return;
             this.pnNotAllOver.Enabled = !((CheckBox)sender).Checked;
         }
 
         private void ckbMaterialTemp_CheckedChanged(object sender, EventArgs e)
         {
+            if (internalchg) return;
             this.tbVal3.Enabled = this.btnMaterial.Enabled = this.tbMaterial.Enabled =
                 !((CheckBox)sender).Checked;
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void ckbMeshTemp_CheckedChanged(object sender, EventArgs e)
         {
+            if (internalchg) return;
             this.tbVal5.Enabled = this.btnMesh.Enabled = this.tbMesh.Enabled =
                 !((CheckBox)sender).Checked;
         }
 
-	}
+        private void btnMaterial_Click(object sender, EventArgs e)
+        {
+            this.doStrChooser(this.cbMatScope, GS.GlobalStr.MaterialName, this.tbVal3, this.tbMaterial);
+        }
+
+        private void btnMesh_Click(object sender, EventArgs e)
+        {
+            this.doStrChooser(this.cbMeshScope, GS.GlobalStr.MeshGroup, this.tbVal5, this.tbMesh);
+        }
+
+        private void cbMatMeshScope_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            if (sender.Equals(this.cbMatScope))
+                doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
+            else
+                doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
+        }
+
+    }
 
 }
 
