@@ -919,7 +919,7 @@ namespace pjse
 	public interface IDataOwnerListener : IDataOwner
 	{
 		IDataOwner FlagsFor { set; }
-		void Notify();
+		void Notify(object sender);
 	}
 
 }

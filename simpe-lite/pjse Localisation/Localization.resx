@@ -465,7 +465,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bwp_source" xml:space="preserve">
     <value>source</value>
-    <comment>0x17, 0x79</comment>
+    <comment>0x17, 0x6d, 0x79</comment>
   </data>
   <data name="bwp17_volume" xml:space="preserve">
     <value>volume</value>
