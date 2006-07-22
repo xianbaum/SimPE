@@ -75,6 +75,7 @@ namespace SimPe.PackedFiles.UserInterface
         private CheckBox ckbDescription;
         private Button btnImport;
         private Button btnExport;
+        private Button btnStrCopy;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -126,6 +127,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private byte lid = 1;
 		private int index = -1;
 		private int count = 0;
+        private bool[] isEmpty = new bool[44];
 
 		private bool hex16_IsValid(object sender)
 		{
@@ -147,21 +149,41 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvStrItems.Items[index].SubItems[1].Text = wrapper[lid, index].Title;
             this.lvStrItems.Items[index].SubItems[2].Text = wrapper[lid, index].Description;
 
-			bool empty = true;
+			isEmpty[lid] = true;
 			StrItem[] sa = wrapper[lid];
-			for (int j = count - 1; j >= 0 && empty; j--)
+            for (int j = count - 1; j >= 0 && isEmpty[lid]; j--)
 				if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
-					empty = false;
-			this.btnLngClear.Enabled = (lid == 1) ? false : !empty;
-			this.cbLngSelect.Items[lid - 1] = ((SimPe.Data.MetaData.Languages)lid).ToString()
-                + (empty ? " (" + pjse.Localization.GetString("empty") + ")" : "");
+                    isEmpty[lid] = false;
+            this.cbLngSelect.Items[lid - 1] = ((SimPe.Data.MetaData.Languages)lid).ToString()
+                + (isEmpty[lid] ? " (" + pjse.Localization.GetString("empty") + ")" : "");
 
-			empty = true;
-			foreach (StrItem s in wrapper)
-				if ((s.LanguageID != 1) && (s.Title.Trim().Length + s.Description.Trim().Length > 0))
-					empty = false;
-			this.btnClearAll.Enabled = !empty;
-		}
+            doButtons();
+        }
+
+        private void doButtons()
+        {
+            // (index >= 0) means row selected
+            // isEmpty[lid] means rows exist
+            // empty means only default language has strings
+
+            bool empty = true;
+            foreach (StrItem s in wrapper)
+                if ((s.LanguageID != 1) && (s.Title.Trim().Length + s.Description.Trim().Length > 0))
+                    empty = false;
+
+            this.btnStrPrev.Enabled = (index > 0);
+            this.btnStrNext.Enabled = (index < count - 1);
+
+            this.btnClearAll.Enabled = !empty; // "Default lang only"
+            this.btnLngClear.Enabled = (lid != 1) && !isEmpty[lid]; // "Clear this lang"
+
+            this.btnStrAdd.Enabled = (lid == 1);
+            this.btnStrDelete.Enabled = (lid == 1) && (index >= 0);
+            this.btnStrDefault.Enabled = (lid != 1) && !isEmpty[lid] && (index >= 0); // "Make default"
+            this.btnStrClear.Enabled = (wrapper.Format != 0x0000) && !empty && (index >= 0); // "Default string only"
+            this.btnStrCopy.Enabled = (wrapper.Format != 0x0000) && !isEmpty[lid] && (index >= 0);
+            this.btnReplace.Enabled = (lid == 1);
+        }
 
 		private void updateLists()
 		{
@@ -175,10 +197,10 @@ namespace SimPe.PackedFiles.UserInterface
 			bool onlyDefault = true;
             for (byte i = 1; i < 44; i++)
             {
-                bool empty = wrapper[i].Length == 0;
+                isEmpty[i] = wrapper[i].Length == 0;
                 this.cbLngSelect.Items.Add(((SimPe.Data.MetaData.Languages)i).ToString()
-                    + (empty ? " (" + pjse.Localization.GetString("empty") + ")" : ""));
-                if (!empty && i > 1) onlyDefault = false;
+                    + (isEmpty[i] ? " (" + pjse.Localization.GetString("empty") + ")" : ""));
+                if (!isEmpty[i] && i > 1) onlyDefault = false;
             }
 			this.btnClearAll.Enabled = !onlyDefault;
 
@@ -214,7 +236,6 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
 			this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + ((SimPe.Data.MetaData.Languages)lid).ToString();
-			this.btnLngClear.Enabled = (lid > 1) && !this.cbLngSelect.SelectedItem.ToString().EndsWith(" (" + pjse.Localization.GetString("empty") + ")");
 
 			while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
 			this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
@@ -270,13 +291,8 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			internalchg = false;
 
-			this.btnStrDefault.Enabled = (lid != 1) && (index >= 0);
-			this.btnStrPrev.Enabled = (index > 0);
-			this.btnStrNext.Enabled = (index < count - 1);
-			this.btnStrAdd.Enabled = lid == 1;
-			this.btnReplace.Enabled = this.btnStrDelete.Enabled = (lid == 1) && (index >= 0);
-			this.btnStrClear.Enabled = (wrapper.Format != 0x0000 && index >= 0);
-		}
+            doButtons();
+        }
 
 
 		private void LngClear()
@@ -386,7 +402,31 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex((i >= count) ? count - 1 : i);
 		}
 
-		private void StrReplace()
+        private void StrCopy()
+        {
+            bool savedstate = internalchg;
+            internalchg = true;
+
+            for (byte m = 1; m < 44; m++)
+            {
+                if (m == lid) continue;
+
+                while (wrapper[m, index] == null && wrapper.Add(m, "", "") >= 0) ;
+                wrapper[m, index].Title = wrapper[lid, index].Title;
+                wrapper[m, index].Description = wrapper[lid, index].Description;
+            }
+
+            byte l = lid;
+            int i = index;
+            updateLists();
+
+            internalchg = savedstate;
+
+            setLid(l);
+            setIndex((i >= count) ? count - 1 : i);
+        }
+
+        private void StrReplace()
 		{
 			pjse.FileTable.Entry e = (new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel);
 			if (e == null || !(e.Wrapper is StrWrapper)) return;
@@ -429,26 +469,26 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex((i >= count) ? count - 1 : i);
 		}
 
-		private void StrClear()
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
+        private void StrClear()
+        {
+            bool savedstate = internalchg;
+            internalchg = true;
 
-			for (byte m = 2; m < 44; m++)
-			{
-				StrItem s = wrapper[m, index];
-				if (s != null) s.Description = s.Title = "";
-			}
+            for (byte m = 2; m < 44; m++)
+            {
+                StrItem s = wrapper[m, index];
+                if (s != null) s.Description = s.Title = "";
+            }
 
-			byte l = lid;
-			int i = index;
-			updateLists();
+            byte l = lid;
+            int i = index;
+            updateLists();
 
-			internalchg = savedstate;
+            internalchg = savedstate;
 
-			setLid(l);
-			setIndex((i >= count) ? count - 1 : i);
-		}
+            setLid(l);
+            setIndex((i >= count) ? count - 1 : i);
+        }
 
 
 		private void StrDefault()
@@ -462,14 +502,15 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvStrItems.Items[index].SubItems[3].Text = wrapper[1, index].Title;
             this.lvStrItems.Items[index].SubItems[4].Text = wrapper[1, index].Description;
 
-			bool empty = true;
+            isEmpty[1] = true;
 			StrItem[] sa = wrapper[(byte)1];
-			for (int j = count - 1; j >= 0 && empty; j--)
+            for (int j = count - 1; j >= 0 && isEmpty[1]; j--)
 				if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
-					empty = false;
+                    isEmpty[1] = false;
 			this.cbLngSelect.Items[0] = ((SimPe.Data.MetaData.Languages)1).ToString()
-                + (empty ? " (" + pjse.Localization.GetString("empty") + ")" : "");
+                + (isEmpty[1] ? " (" + pjse.Localization.GetString("empty") + ")" : "");
 		}
+
 
 
 		private void Append(pjse.FileTable.Entry e)
@@ -693,6 +734,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrAdd = new System.Windows.Forms.Button();
             this.btnReplace = new System.Windows.Forms.Button();
             this.btnStrDefault = new System.Windows.Forms.Button();
+            this.btnStrCopy = new System.Windows.Forms.Button();
             this.strPanel.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.SuspendLayout();
@@ -731,6 +773,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.strPanel.Controls.Add(this.btnStrDelete);
             this.strPanel.Controls.Add(this.btnStrAdd);
             this.strPanel.Controls.Add(this.btnReplace);
+            this.strPanel.Controls.Add(this.btnStrCopy);
             this.strPanel.Controls.Add(this.btnStrDefault);
             resources.ApplyResources(this.strPanel, "strPanel");
             this.strPanel.Name = "strPanel";
@@ -992,6 +1035,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrDefault.Name = "btnStrDefault";
             this.btnStrDefault.Click += new System.EventHandler(this.btnStrDefault_Click);
             // 
+            // btnStrCopy
+            // 
+            resources.ApplyResources(this.btnStrCopy, "btnStrCopy");
+            this.btnStrCopy.Name = "btnStrCopy";
+            this.btnStrCopy.Click += new System.EventHandler(this.btnStrCopy_Click);
+            // 
             // StrForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1204,7 +1253,12 @@ namespace SimPe.PackedFiles.UserInterface
 			this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel));
 		}
 
-		private void btnImport_Click(object sender, System.EventArgs e)
+        private void btnStrCopy_Click(object sender, EventArgs e)
+        {
+            this.StrCopy();
+        }
+
+        private void btnImport_Click(object sender, System.EventArgs e)
 		{
 			this.StrReplace();
 		}

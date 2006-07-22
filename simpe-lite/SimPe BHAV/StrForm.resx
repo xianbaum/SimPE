@@ -408,7 +408,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrClear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 376</value>
+    <value>8, 334</value>
   </data>
   <data name="btnStrClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 24</value>
@@ -502,7 +502,7 @@
     <value>120, 168</value>
   </data>
   <data name="lvStrItems.Size" type="System.Drawing.Size, System.Drawing">
-    <value>758, 266</value>
+    <value>758, 253</value>
   </data>
   <data name="lvStrItems.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -763,7 +763,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnLngClear.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 216</value>
+    <value>8, 214</value>
   </data>
   <data name="btnLngClear.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 24</value>
@@ -1165,16 +1165,16 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 312</value>
+    <value>62, 274</value>
   </data>
   <data name="btnStrDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 24</value>
+    <value>50, 24</value>
   </data>
   <data name="btnStrDelete.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
   </data>
   <data name="btnStrDelete.Text" xml:space="preserve">
-    <value>De&amp;lete string</value>
+    <value>De&amp;lete</value>
   </data>
   <data name="&gt;&gt;btnStrDelete.Name" xml:space="preserve">
     <value>btnStrDelete</value>
@@ -1192,16 +1192,16 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 280</value>
+    <value>8, 274</value>
   </data>
   <data name="btnStrAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 24</value>
+    <value>50, 24</value>
   </data>
   <data name="btnStrAdd.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
   </data>
   <data name="btnStrAdd.Text" xml:space="preserve">
-    <value>&amp;Add string</value>
+    <value>&amp;Add</value>
   </data>
   <data name="&gt;&gt;btnStrAdd.Name" xml:space="preserve">
     <value>btnStrAdd</value>
@@ -1219,7 +1219,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnReplace.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 408</value>
+    <value>8, 394</value>
   </data>
   <data name="btnReplace.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 24</value>
@@ -1242,11 +1242,38 @@
   <data name="&gt;&gt;btnReplace.ZOrder" xml:space="preserve">
     <value>31</value>
   </data>
+  <data name="btnStrCopy.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnStrCopy.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 364</value>
+  </data>
+  <data name="btnStrCopy.Size" type="System.Drawing.Size, System.Drawing">
+    <value>104, 24</value>
+  </data>
+  <data name="btnStrCopy.TabIndex" type="System.Int32, mscorlib">
+    <value>23</value>
+  </data>
+  <data name="btnStrCopy.Text" xml:space="preserve">
+    <value>Copy string to all</value>
+  </data>
+  <data name="&gt;&gt;btnStrCopy.Name" xml:space="preserve">
+    <value>btnStrCopy</value>
+  </data>
+  <data name="&gt;&gt;btnStrCopy.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnStrCopy.Parent" xml:space="preserve">
+    <value>strPanel</value>
+  </data>
+  <data name="&gt;&gt;btnStrCopy.ZOrder" xml:space="preserve">
+    <value>32</value>
+  </data>
   <data name="btnStrDefault.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnStrDefault.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 344</value>
+    <value>8, 304</value>
   </data>
   <data name="btnStrDefault.Size" type="System.Drawing.Size, System.Drawing">
     <value>104, 24</value>
@@ -1267,7 +1294,7 @@
     <value>strPanel</value>
   </data>
   <data name="&gt;&gt;btnStrDefault.ZOrder" xml:space="preserve">
-    <value>32</value>
+    <value>33</value>
   </data>
   <data name="strPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -1276,7 +1303,7 @@
     <value>0, 0</value>
   </data>
   <data name="strPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>886, 439</value>
+    <value>886, 426</value>
   </data>
   <data name="strPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1300,7 +1327,7 @@
     <value>5, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>886, 439</value>
+    <value>886, 426</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>StrForm</value>

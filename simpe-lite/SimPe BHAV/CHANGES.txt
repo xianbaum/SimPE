@@ -10,6 +10,11 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+22 July 2006 18:45 - STR#: Add "Copy to all" button
+  SimPe BHAV\
+    StrForm.cs 1.28.2.20
+    StrForm.resx 1.18.14.12
+
 22 July 2006 16:41 - Fix: Change the way SemiGroup works (for semiglobal TTABs)
   SimPe BHAV\
     ExtendedWrapper.cs 1.1.4.5
