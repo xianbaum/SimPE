@@ -138,6 +138,28 @@ you want a localised translation for any language.</p>
   <table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse" bordercolor="#111111" width="96%" id="AutoNumber2">
     <tr>
       <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Export Lang</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Exports currently selected language to a text file.&nbsp; Uses labels 
+      &lt;-String-&gt; and &lt;-Desc-&gt; (one pair of each for every string in the language 
+      set whether used or empty) and &lt;-Comment-&gt; (optional for programmers' 
+      comments).&nbsp;&nbsp; The format of the output is deliberately 
+      non-technical looking so as not to scare off anyone who might be doing 
+      language translations for you. You can use a &lt;-Comment-&gt; block to remind 
+      your translator not to delete or rearrange any of the label blocks!</td>
+    </tr>
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Import Lang</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Imports text file in the above format to currently selected file.&nbsp; 
+      Text block beneath one label in the import file will be considered input 
+      to that field until the next label is reached.&nbsp;&nbsp; Reserve unused 
+      strings or descriptions in the middle of the set by using labels with no 
+      text block under them.</td>
+    </tr>
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Append File</td>
       <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Opens dialog where you can choose from available string files.&nbsp; 
@@ -184,6 +206,25 @@ you want a localised translation for any language.</p>
       Default String Only</td>
       <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
       Wipes out selected string across all language sets other than default</td>
+    </tr>
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Copy String to All</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Copies currently selected string in currently selected language set to all 
+      languages replacing whatever they already had in that string position.&nbsp; 
+      In most situations you don't need to do this, you just use &quot;make default&quot; 
+      and &quot;default string only&quot; which keeps the file size smaller.&nbsp; However 
+      there are some cases where the game will not fall back to default 
+      reliably, and it is appropriate to use this choice for those.</td>
+    </tr>
+    <tr>
+      <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Replace String</td>
+      <td width="81%" valign="top" style="padding-top: 5; padding-bottom: 5">
+      Replace currently selected string with one from another string resource, 
+      across all language sets. Brings up a resource chooser where you can 
+      choose the source file and from there, the individual string.</td>
     </tr>
     </table>
 </blockquote>
