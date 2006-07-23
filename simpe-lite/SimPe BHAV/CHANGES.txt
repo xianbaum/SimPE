@@ -10,6 +10,70 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+23 July 2006 08:53 - STR#: Add help for new buttons
+  SimPe BHAV\PJSE_Help
+    Strings.htm 1.1.2.4
+
+22 July 2006 18:45 - STR#: Add "Copy to all" button
+  SimPe BHAV\
+    StrForm.cs 1.28.2.20
+    StrForm.resx 1.18.14.12
+
+22 July 2006 16:41 - Fix: Change the way SemiGroup works (for semiglobal TTABs)
+  SimPe BHAV\
+    ExtendedWrapper.cs 1.1.4.5
+
+16 July 2006 20:08 - Wiz0x006d: Fix scope name in no strings popup (plus bits)
+  SimPe BHAV\
+    BhavOperandWiz0x006d.cs 1.1.2.4
+
+16 July 2006 19:39 - Wiz0x006d: Fixes to DataOwnerControl; fixes to Wiz0x006d
+  * Pass Decimal and UseAttrPicker checkboxes to DataOwnerControl
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.9.10.3
+    BhavOperandWiz0x0002.cs 1.6.2.6.2.1
+    BhavOperandWiz0x001c.cs 1.1.4.2.6.1
+    BhavOperandWiz0x001f.cs 1.1.4.3.2.1
+    BhavOperandWiz0x0032.cs 1.1.4.4.2.1
+    BhavOperandWiz0x006d.cs 1.1.2.3
+
+16 July 2006 16:03 - Wiz0x006d: Pretty much working
+  pjse Localisation\
+    Localization.resx 1.1.4.15.2.1
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.9.10.2
+    BhavOperandWiz0x006d.cs 1.1.2.2
+    BhavOperandWiz0x006d.resx 1.1.2.2
+    BhavWiz.cs 1.37.2.19.4.1
+    BhavWizPrim.cs 1.34.2.21.2.2
+
+16 July 2006 12:08 - Wiz0x006d: Check in user interface
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.9.10.1
+    BhavOperandWiz0x006d.cs 1.1.2.1
+    BhavOperandWiz0x006d.resx 1.1.2.1
+    BhavWizPrim.cs 1.34.2.21.2.1
+    pjse coder plugin.csproj 1.29.2.16.2.1
+
+15 July 2006 13:14 - STR#: Make the two reveal checkboxes into Settings
+  pjse Localisation\
+    Localization.resx 1.1.4.15
+  SimPe BHAV\
+    Settings.cs 1.1.4.3
+    StrForm.cs 1.28.2.19
+
+15 July 2006 12:13 - STR#: Language to text file export/import - use "<-Comment->" not "#" for comments
+  SimPe BHAV\
+    StrWrapper.cs 1.16.6.3
+
+15 July 2006 11:36 - STR#: Language to text file export/import
+  pjse Localisation\
+    Localization.resx 1.1.4.14
+  SimPe BHAV\
+    StrForm.cs 1.28.2.18
+    StrForm.resx 1.18.14.11
+    StrWrapper.cs 1.16.6.2
+
 14 July 2006 19:36 - Documentation updates, cosmetic "fix" to Wiz0x001f
   SimPe BHAV\
     BhavOperandWiz0x001f.cs 1.1.4.3

@@ -92,6 +92,40 @@ namespace pjse
 
         }
 
+        [System.ComponentModel.Category("PJSE")]
+        public bool StrShowDefault
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("strShowDefault", false);
+                return Convert.ToBoolean(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("strShowDefault", value);
+            }
+        }
+
+        [System.ComponentModel.Category("PJSE")]
+        public bool StrShowDesc
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("strShowDesc", false);
+                return Convert.ToBoolean(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("strShowDesc", value);
+            }
+        }
+
         [System.ComponentModel.Category("GI")]
         public bool LoadGUIDIndexAtStartup
         {

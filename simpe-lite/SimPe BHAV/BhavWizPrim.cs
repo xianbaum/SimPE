@@ -3978,7 +3978,13 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x006d(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng)
+        public override ABhavOperandWiz Wizard()
+        {
+            return new pjse.BhavOperandWizards.BhavOperandWiz0x006d(instruction);
+        }
+
+
+        protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
@@ -3996,14 +4002,15 @@ namespace pjse.BhavNameWizards
             s += ", " + (lng ? pjse.Localization.GetString("bwp6d_materialFrom") + ": " : "");
 			if ((o[13] & 0x02) == 0)
 			{
-				s += ((o[2] & 0x08) != 0 ? dataOwner(lng, o[8], o[9], o[10]) : dnMe());
+                s += ((o[2] & 0x08) != 0 ? pjse.Localization.GetString("bwp_source") : dnMe());
 				s += " (" + (lng ? ((o[13] & 0x01) != 0
                     ? pjse.Localization.GetString("bwp6d_movingTexture")
                     : pjse.Localization.GetString("bwp6d_material")
                     ) + ": " : "");
-				if ((o[2] & 0x10) != 0) s += GS.GlobalStr.MaterialName.ToString() + ":[" + dataOwner(lng, 0x08, 0) // Temp 0
+                if ((o[2] & 0x10) != 0) s += GS.GlobalStr.MaterialName.ToString() + ":[" + dataOwner(lng, 0x08, 0) // Temp 0
                     + "]" + (lng ? " (" + matScope.ToString() + ")" : "");
-                else s += readStr(matScope, GS.GlobalStr.MaterialName, ToShort(o[0], o[1]), lng ? -1 : 30, lng ? Detail.Normal : Detail.ErrorNames);
+                else if ((o[2] & 0x08) == 0) s += readStr(matScope, GS.GlobalStr.MaterialName, ToShort(o[0], o[1]), lng ? -1 : 30, lng ? Detail.Normal : Detail.ErrorNames);
+                else s += GS.GlobalStr.MaterialName.ToString() + ":[0x" + SimPe.Helper.HexString(ToShort(o[0], o[1])) + "]" + (lng ? " (" + matScope.ToString() + ")" : "");
 				s += ")";
 			}
 			else
@@ -4013,17 +4020,24 @@ namespace pjse.BhavNameWizards
 			if ((o[2] & 0x40) != 0) mgScope = Scope.Global;
 			else if ((o[2] & 0x80) != 0) mgScope = Scope.SemiGlobal;
 
-            s += ", " + (lng ? pjse.Localization.GetString("bwp6d_meshFrom") + ": " : "") + ((o[2] & 0x01) != 0 ? dataOwner(lng, o[8], o[9], o[10]) : dnMe());
-			if ((o[4] & 0x40) == 0) // w3 < 0
+            s += ", " + (lng ? pjse.Localization.GetString("bwp6d_meshFrom") + ": " : "") + ((o[2] & 0x01) != 0 ? pjse.Localization.GetString("bwp_source") : dnMe());
+            if ((o[4] & 0x80) == 0) // w3 < 0
 			{
                 s += " (" + (lng ? pjse.Localization.GetString("bwp6d_meshGroup") + ": " : "");
                 if ((o[2] & 0x20) != 0) s += GS.GlobalStr.MeshGroup.ToString() + ":[" + dataOwner(lng, 0x08, 1) // Temp 1
                     + "]" + (lng ? " (" + mgScope.ToString() + ")" : "");
-                else s += readStr(mgScope, GS.GlobalStr.MeshGroup, ToShort(o[3], o[4]), lng ? -1 : 30, lng ? Detail.Normal : Detail.ErrorNames);
+                else if ((o[2] & 0x01) == 0) s += readStr(mgScope, GS.GlobalStr.MeshGroup, ToShort(o[3], o[4]), lng ? -1 : 30, lng ? Detail.Normal : Detail.ErrorNames);
+                else s += GS.GlobalStr.MeshGroup.ToString() + ":[0x" + SimPe.Helper.HexString(ToShort(o[3], o[4])) + "]" + (lng ? " (" + mgScope.ToString() + ")" : "");
 				s += ")";
 			}
 			else
                 s += " (" + pjse.Localization.GetString("bwp6d_allOver") + ")";
+
+            if (((o[13] & 0x02) == 0 && (o[2] & 0x08) != 0) || (o[2] & 0x01) != 0)
+            {
+                s += ", " + pjse.Localization.GetString("bwp_source") + ": "
+                    + dataOwner(lng, o[8], o[9], o[10]);
+            }
 
 			return s;
 #if DISASIM

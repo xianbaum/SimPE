@@ -22,6 +22,7 @@
 using System;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
+using System.IO;
 
 namespace SimPe.PackedFiles.Wrapper
 {
@@ -377,6 +378,55 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		#endregion
+
+        public void ExportLanguage(byte lid, String path)
+        {
+            System.IO.StreamWriter sw = new StreamWriter(path, false);
+            sw.WriteLine("<-Comment->");
+            sw.WriteLine("PJSE String file - single language export");
+            StrItem[] items = this[lid];
+            if (items.Length == 0)
+            {
+                sw.WriteLine("<-String->");
+                sw.WriteLine("<-Desc->");
+            }
+            else
+                foreach (StrItem item in items)
+                {
+                    sw.WriteLine("<-String->");
+                    if (item.Title.Trim().Length > 0) sw.WriteLine(item.Title);
+                    sw.WriteLine("<-Desc->");
+                    if (item.Description.Trim().Length > 0) sw.WriteLine(item.Description);
+                }
+            sw.Close();
+        }
+
+        public void ImportLanguage(byte lid, String path)
+        {
+            if (File.Exists(path))
+            {
+                System.IO.StreamReader sr = new StreamReader(path);
+                int lineCt = -1;
+                bool isString = false;
+                bool isDesc = false;
+                for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
+                {
+                    if (line.Equals("<-Comment->")) { isString = false; isDesc = false; }
+                    else if (line.Equals("<-String->"))
+                    {
+                        isString = true; isDesc = false; lineCt++;
+                        if (this[lid, lineCt] != null)
+                            this[lid, lineCt].Description = this[lid, lineCt].Title = "";
+                        else
+                            this.Add(lid, "", "");
+                    }
+                    else if (isString && line.Equals("<-Desc->")) { isString = false; isDesc = true; }
+                    else if (isString) this[lid, lineCt].Title += (this[lid, lineCt].Title.Length == 0 ? "" : "\n") + line;
+                    else if (isDesc) this[lid, lineCt].Description += (this[lid, lineCt].Description.Length == 0 ? "" : "\n") + line;
+                }
+                sr.Close();
+            }
+        }
 	}
 
 

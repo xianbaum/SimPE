@@ -89,12 +89,9 @@ namespace pjse
                 if (Context == Scope.Global)
                     return 0;
 
-                if (Context == Scope.SemiGlobal)
-                    return this.FileDescriptor.Group;
-
                 Glob glob = BhavWiz.GlobByGroup(this.FileDescriptor.Group);
-				return (glob == null ? 0 : glob.SemiGlobalGroup);
-			}
+                return (glob != null ? glob.SemiGlobalGroup : this.FileDescriptor.Group);
+            }
 		}
 
 		/// <summary>
