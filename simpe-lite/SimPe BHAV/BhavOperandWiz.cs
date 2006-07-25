@@ -251,7 +251,7 @@ namespace pjse.BhavOperandWizards
 			try
 			{
 				ushort v = tbValueConverter(tb);
-                return (v < 1 << (bitsInValue - 1));
+                return (v < 1 << bitsInValue);
 			}
 			catch
 			{
