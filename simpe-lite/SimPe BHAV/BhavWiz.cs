@@ -727,7 +727,7 @@ namespace pjse
 
 
         #region Constant parsing
-        protected string readBcon(uint instance, int bid, bool temp)
+        public string readBcon(uint instance, int bid, bool temp)
         {
             if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
                 throw new InvalidOperationException("Can't read BCON for instruction with no parent");
@@ -914,13 +914,8 @@ namespace pjse
 	{
 		byte DataOwner { get; }
 		ushort Value { get; }
-	}
-
-	public interface IDataOwnerListener : IDataOwner
-	{
-		IDataOwner FlagsFor { set; }
-		void Notify(object sender);
-	}
+        event EventHandler DataOwnerControlChanged;
+    }
 
 }
 

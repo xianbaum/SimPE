@@ -29,7 +29,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
     /// <summary>
     /// Summary description for StrBig.
     /// </summary>
-    internal class UI : System.Windows.Forms.Form, IDataOwnerListener
+    internal class UI : System.Windows.Forms.Form
     {
         #region Form variables
 
@@ -116,19 +116,6 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         private DataOwnerControl doid3 = null;
         private DataOwnerControl doid5 = null;
 
-        #region IDataOwnerListener
-        public byte DataOwner { get { return 0; } }
-        public ushort Value { get { return 0; } }
-        public IDataOwner FlagsFor { set { } }
-        public void Notify(object sender)
-        {
-            if (sender.Equals(doid3))
-                doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
-            else
-                doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
-        }
-        #endregion
-
         ArrayList rb1group = null;
         ArrayList rb3group = null;
         private bool internalchg = false;
@@ -190,8 +177,8 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
 
             internalchg = true;
 
-            doid3 = new DataOwnerControl(inst, null, null, this.tbVal3,
-                this.cbDecimal, this.cbAttrPicker, 0x07, BhavWiz.ToShort(ops1[0x00], ops1[0x01]));
+            doid3 = new DataOwnerControl(inst, null, null, this.tbVal3, this.cbDecimal, this.cbAttrPicker, null,
+                0x07, BhavWiz.ToShort(ops1[0x00], ops1[0x01]));
 
             this.rb3Object.Checked = ((ops1[0x02] & 0x01) != 0);
             this.btnMesh.Visible = this.tbMesh.Visible = this.rb3Me.Checked = !this.rb3Object.Checked;
@@ -221,24 +208,33 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 case 0x80: this.cbMeshScope.SelectedIndex = 1; break; // SemiGlobal
             }
 
-            doid5 = new DataOwnerControl(inst, null, null, this.tbVal5,
-                this.cbDecimal, this.cbAttrPicker, 0x07, (ushort)(BhavWiz.ToShort(ops1[0x03], ops1[0x04]) & 0x7fff));
+            doid5 = new DataOwnerControl(inst, null, null, this.tbVal5, this.cbDecimal, this.cbAttrPicker, null,
+                0x07, (ushort)(BhavWiz.ToShort(ops1[0x03], ops1[0x04]) & 0x7fff));
             this.ckbAllOver.Checked = (ops1[0x04] & 0x80) != 0;
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1,
-                this.cbDecimal, this.cbAttrPicker, ops1[0x05], BhavWiz.ToShort(ops1[0x06], ops1[0x07]));
-            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2,
-                this.cbDecimal, this.cbAttrPicker, ops2[0x00], BhavWiz.ToShort(ops2[0x01], ops2[0x02]));
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, this.cbDecimal, this.cbAttrPicker, null,
+                ops1[0x05], BhavWiz.ToShort(ops1[0x06], ops1[0x07]));
+            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2, this.cbDecimal, this.cbAttrPicker, null,
+                ops2[0x00], BhavWiz.ToShort(ops2[0x01], ops2[0x02]));
 
-            doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
-            doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
-
-            doid3.SetListener(this);
-            doid5.SetListener(this);
+            doid3.DataOwnerControlChanged += new EventHandler(doid3_DataOwnerControlChanged);
+            doid3_DataOwnerControlChanged(null, null);
+            doid5.DataOwnerControlChanged += new EventHandler(doid5_DataOwnerControlChanged);
+            doid5_DataOwnerControlChanged(null, null);
 
             internalchg = false;
 
             this.MaterialFrom();
+        }
+
+        void doid3_DataOwnerControlChanged(object sender, EventArgs e)
+        {
+            doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
+        }
+
+        void doid5_DataOwnerControlChanged(object sender, EventArgs e)
+        {
+            doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
         }
 
         public Instruction Write(Instruction inst)

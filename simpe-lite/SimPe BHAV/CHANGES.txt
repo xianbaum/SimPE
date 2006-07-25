@@ -10,6 +10,18 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+25 July 2006 15:07 - DataOwnerControl: various bugfixes, add label for Const values
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.12
+    BhavOperandWiz0x0002.cs 1.6.2.8
+    BhavOperandWiz0x0002.resx 1.2.2.3
+    BhavOperandWiz0x001c.cs 1.1.4.4
+    BhavOperandWiz0x001c.resx 1.1.4.3
+    BhavOperandWiz0x001f.cs 1.1.4.4
+    BhavOperandWiz0x0032.cs 1.1.4.5
+    BhavOperandWiz0x006d.cs 1.1.4.3
+    BhavWiz.cs 1.37.2.21
+
 25 July 2006 12:19 - Bugfix: 16 bit numbers should allow, err, 16 bit values...
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.11

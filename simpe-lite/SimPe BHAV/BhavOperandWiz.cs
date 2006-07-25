@@ -176,7 +176,7 @@ namespace pjse
 }
 namespace pjse.BhavOperandWizards
 {
-	class DataOwnerControl : IDisposable, IDataOwnerListener
+	class DataOwnerControl : IDisposable, IDataOwner
 	{
 		#region Form variables
 		private ComboBox cbDataOwner;
@@ -184,6 +184,7 @@ namespace pjse.BhavOperandWizards
 		private TextBox tbValue;
         private CheckBox ckbDecimal;
         private CheckBox ckbUseAttrPicker;
+        private Label lbConst;
 		#endregion
 
 		#region Form event handlers
@@ -191,14 +192,14 @@ namespace pjse.BhavOperandWizards
 		{
 			if (internalchg) return;
 			if (cbDataOwner.SelectedIndex != -1)
-				UpdateDataOwner();
+				SetDataOwner();
 		}
 
 		private void cbPicker_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 			if (cbPicker.SelectedIndex != -1)
-				SetInstance((ushort)cbPicker.SelectedIndex);
+				SetValue((ushort)cbPicker.SelectedIndex);
 		}
 
 
@@ -211,7 +212,7 @@ namespace pjse.BhavOperandWizards
 		{
 			if (internalchg) return;
 			if (!tbValue_IsValid((TextBox)sender)) return;
-			SetInstance(tbValueConverter((TextBox)sender));
+			SetValue(tbValueConverter((TextBox)sender));
 		}
 
 		private void tbValue_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -278,7 +279,7 @@ namespace pjse.BhavOperandWizards
 		#endregion
 
         public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, byte dataOwner, ushort instance)
+            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
             this.inst = inst;
             this.cbDataOwner = cbDataOwner;
@@ -286,10 +287,10 @@ namespace pjse.BhavOperandWizards
             this.tbValue = tbValue;
             this.ckbDecimal = cbkDecimal;
             this.ckbUseAttrPicker = ckbUseAttrPicker;
+            this.lbConst = lbConst;
             this.dataOwner = dataOwner;
             this.instance = instance;
 
-            this.listener = null;
             this.flagsFor = null;
 
             if (this.cbDataOwner != null)
@@ -298,7 +299,7 @@ namespace pjse.BhavOperandWizards
                 this.cbDataOwner.Items.AddRange(BhavWiz.readStr(GS.BhavStr.DataOwners).ToArray());
                 if (cbDataOwner.Items.Count > dataOwner)
                     cbDataOwner.SelectedIndex = dataOwner;
-                UpdateDataOwner();
+                SetDataOwner();
                 this.cbDataOwner.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
             }
 
@@ -307,8 +308,6 @@ namespace pjse.BhavOperandWizards
 
             if (this.tbValue != null)
             {
-                this.tbValue.MaxLength =
-                    Convert.ToInt16(isDecimal ? (use0xPrefix ? 2 : 0) + ((bitsInValue - 1) / 4) + 1 : ((bitsInValue - 1) / 3.25) + 1);
                 this.tbValue.Text = this.tbValueConverter(instance);
                 this.tbValue.Validating += new System.ComponentModel.CancelEventHandler(this.tbValue_Validating);
                 this.tbValue.Validated += new System.EventHandler(this.tbValue_Validated);
@@ -342,7 +341,6 @@ namespace pjse.BhavOperandWizards
 			this.cbDataOwner = null;
 			this.cbPicker = null;
 			this.tbValue = null;
-			this.listener = null;
 			this.flagsFor = null;
 			this.cbDataOwner.SelectedIndexChanged -= new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
 			this.cbPicker.SelectedIndexChanged -= new System.EventHandler(this.cbPicker_SelectedIndexChanged);
@@ -359,97 +357,18 @@ namespace pjse.BhavOperandWizards
 
 		public ushort Value { get { return instance; } }
 
-		#endregion
-
-		#region IDataOwnerListener Members
-
-		private IDataOwner flagsFor = null;
-		public IDataOwner FlagsFor
-		{
-			set
-			{
-				flagsFor = value;
-			}
-		}
-
-		public void Notify(object sender)
-		{
-			UpdateDataOwner();
-		}
+        public event EventHandler DataOwnerControlChanged;
+        internal virtual void OnDataOwnerControlChanged(object sender, EventArgs e)
+        {
+            if (DataOwnerControlChanged != null)
+            {
+                DataOwnerControlChanged(sender, e);
+            }
+        }
 
 		#endregion
 
-		private IDataOwnerListener listener;
-		public void SetListener(IDataOwnerListener listener)
-		{
-			this.listener = listener;
-		}
-
-
-		private bool internalchg = false;
-
-		private bool isDecimal = false;
-		private bool useAttrPicker = true;
-		private bool useFlagNames = false;
-        private bool use0xPrefix = true;
-        private int bitsInValue = 16;
-
-		public bool Decimal
-		{
-			get { return this.isDecimal; }
-
-			set
-			{
-				if (isDecimal != value)
-				{
-					isDecimal = value;
-					internalchg = true;
-                    if (tbValue != null)
-                    {
-                        tbValue.MaxLength =
-                            Convert.ToInt16(isDecimal ? (use0xPrefix ? 2 : 0) + ((bitsInValue - 1) / 4) + 1 : ((bitsInValue - 1) / 3.25) + 1);
-                        tbValue.Text = tbValueConverter(instance);
-                    }
-					internalchg = false;
-				}
-			}
-
-		}
-
-		public bool UseAttrPicker
-		{
-			get { return this.useAttrPicker; }
-
-			set
-			{
-				if (useAttrPicker != value)
-				{
-					useAttrPicker = value;
-					UpdateDataOwner();
-				}
-			}
-
-		}
-
-		public bool UseFlagNames
-		{
-			get { return this.useFlagNames; }
-
-			set
-			{
-				if (useFlagNames != value)
-				{
-					useFlagNames = value;
-					UpdateDataOwner();
-				}
-			}
-
-		}
-
-
-		private BhavWiz inst;
-
-		private void UpdateDataOwner()
+		private void SetDataOwner()
 		{
 			if (internalchg)
 				return;
@@ -457,12 +376,12 @@ namespace pjse.BhavOperandWizards
 			internalchg = true;
 
             if (cbDataOwner != null && cbDataOwner.SelectedIndex != dataOwner)
-			{
-				dataOwner = (byte)cbDataOwner.SelectedIndex;
-				tbValue.Text = tbValueConverter(instance);
-				if (listener != null)
-					listener.Notify(this);
-			}
+            {
+                dataOwner = (byte)cbDataOwner.SelectedIndex;
+                setTextBoxLength();
+                tbValue.Text = tbValueConverter(instance);
+                OnDataOwnerControlChanged(this, new EventArgs());
+            }
 
 			#region pickerNames
 			ArrayList pickerNames = null;
@@ -509,21 +428,125 @@ namespace pjse.BhavOperandWizards
                 }
             }
 
+            setConstLabel();
+
             if (tbValue != null)
                 tbValue.Visible = (cbPicker == null) || !cbPicker.Visible;
 
 			internalchg = false;
 		}
 
-		private void SetInstance(ushort i)
+        private void setConstLabel()
+        {
+            if (lbConst != null)
+            {
+                if (dataOwner == 0x1a)
+                {
+                    ushort[] bcon = BhavWiz.ExpandBCON(instance, false);
+                    lbConst.Text = ((BhavWiz)inst).readBcon(bcon[0], bcon[1], false);
+                }
+                else lbConst.Text = "";
+            }
+        }
+
+        private static int[] decBitToDigits = new int[] { 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5 };
+        private void setTextBoxLength()
+        {
+            tbValue.MaxLength = Convert.ToInt32(
+                (this.dataOwner == 0x1a) ? 13 : (this.dataOwner == 0x2f) ? 15 :
+                isDecimal ? 1 + decBitToDigits[bitsInValue - 1] : (use0xPrefix ? 2 : 0) + ((bitsInValue - 1) / 4) + 1
+                );
+        }
+
+		private void SetValue(ushort i)
 		{
 			if (instance != i)
 			{
 				instance = i;
-				if (listener != null)
-					listener.Notify(this);
+                setConstLabel();
+                OnDataOwnerControlChanged(this, new EventArgs());
 			}
 		}
-	}
+
+		private bool internalchg = false;
+		private BhavWiz inst;
+
+        private bool use0xPrefix = true;
+        public bool Use0xPrefix { set { } }
+
+        private int bitsInValue = 16;
+        public bool BitsInValue { set { } }
+
+        private bool isDecimal = false;
+		public bool Decimal
+		{
+			get { return this.isDecimal; }
+
+			set
+			{
+				if (isDecimal != value)
+				{
+					isDecimal = value;
+                    setTextBoxLength();
+                    internalchg = true;
+                    if (tbValue != null)
+                    {
+                        tbValue.Text = tbValueConverter(instance);
+                    }
+					internalchg = false;
+				}
+			}
+
+		}
+
+		private bool useAttrPicker = true;
+		public bool UseAttrPicker
+		{
+			get { return this.useAttrPicker; }
+
+			set
+			{
+				if (useAttrPicker != value)
+				{
+					useAttrPicker = value;
+					SetDataOwner();
+				}
+			}
+
+		}
+
+		private bool useFlagNames = false;
+		public bool UseFlagNames
+		{
+			get { return this.useFlagNames; }
+
+			set
+			{
+				if (useFlagNames != value)
+				{
+					useFlagNames = value;
+					SetDataOwner();
+				}
+			}
+
+		}
+
+		private IDataOwner flagsFor = null;
+		public IDataOwner FlagsFor
+		{
+			set
+			{
+                if (flagsFor != value)
+                {
+                    if (flagsFor != null)
+                        flagsFor.DataOwnerControlChanged -= new EventHandler(value_DataOwnerControlChanged);
+                    flagsFor = value;
+                    flagsFor.DataOwnerControlChanged += new EventHandler(value_DataOwnerControlChanged);
+                }
+			}
+		}
+        void value_DataOwnerControlChanged(object sender, EventArgs e) { SetDataOwner(); }
+
+    }
 
 }

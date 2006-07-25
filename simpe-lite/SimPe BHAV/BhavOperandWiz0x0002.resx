@@ -117,18 +117,75 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lbConst2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="cbAttrPicker.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="lbConst2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lbConst2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 90</value>
+  </data>
+  <data name="lbConst2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="lbConst2.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="lbConst2.Text" xml:space="preserve">
+    <value>Const2 value</value>
+  </data>
+  <data name="&gt;&gt;lbConst2.Name" xml:space="preserve">
+    <value>lbConst2</value>
+  </data>
+  <data name="&gt;&gt;lbConst2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbConst2.Parent" xml:space="preserve">
+    <value>pnWiz0x0002</value>
+  </data>
+  <data name="&gt;&gt;lbConst2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lbConst1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbConst1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 24</value>
+  </data>
+  <data name="lbConst1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="lbConst1.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="lbConst1.Text" xml:space="preserve">
+    <value>Const1 value</value>
+  </data>
+  <data name="&gt;&gt;lbConst1.Name" xml:space="preserve">
+    <value>lbConst1</value>
+  </data>
+  <data name="&gt;&gt;lbConst1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbConst1.Parent" xml:space="preserve">
+    <value>pnWiz0x0002</value>
+  </data>
+  <data name="&gt;&gt;lbConst1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="cbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="cbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 96</value>
+    <value>247, 106</value>
   </data>
   <data name="cbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 24</value>
+    <value>138, 17</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cbAttrPicker.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
@@ -145,16 +202,16 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;cbAttrPicker.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
-  <data name="cbDecimal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="cbDecimal.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbDecimal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 72</value>
+    <value>74, 106</value>
   </data>
   <data name="cbDecimal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 24</value>
+    <value>167, 17</value>
   </data>
   <data name="cbDecimal.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -172,16 +229,13 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;cbDecimal.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="cbPicker2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>3</value>
   </data>
   <data name="cbPicker2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 50</value>
+    <value>254, 66</value>
   </data>
   <data name="cbPicker2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 21</value>
+    <value>131, 21</value>
   </data>
   <data name="cbPicker2.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -199,16 +253,13 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;cbPicker2.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="cbPicker1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>4</value>
   </data>
   <data name="cbPicker1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 0</value>
+    <value>254, 0</value>
   </data>
   <data name="cbPicker1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 21</value>
+    <value>131, 21</value>
   </data>
   <data name="cbPicker1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -226,16 +277,13 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;cbPicker1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="cbOperator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>5</value>
   </data>
   <data name="cbOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 26</value>
+    <value>0, 41</value>
   </data>
   <data name="cbOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 21</value>
+    <value>385, 21</value>
   </data>
   <data name="cbOperator.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -250,16 +298,13 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;cbOperator.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="tbval2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>6</value>
   </data>
   <data name="tbval2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 50</value>
+    <value>254, 66</value>
   </data>
   <data name="tbval2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 21</value>
+    <value>131, 21</value>
   </data>
   <data name="tbval2.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -274,16 +319,13 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;tbval2.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="cbDataOwner2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>7</value>
   </data>
   <data name="cbDataOwner2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 50</value>
+    <value>0, 66</value>
   </data>
   <data name="cbDataOwner2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 21</value>
+    <value>254, 21</value>
   </data>
   <data name="cbDataOwner2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -298,16 +340,13 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;cbDataOwner2.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="tbval1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>8</value>
   </data>
   <data name="tbval1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>128, 0</value>
+    <value>254, 0</value>
   </data>
   <data name="tbval1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 21</value>
+    <value>131, 21</value>
   </data>
   <data name="tbval1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -322,16 +361,13 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;tbval1.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="cbDataOwner1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>9</value>
   </data>
   <data name="cbDataOwner1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="cbDataOwner1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 21</value>
+    <value>254, 21</value>
   </data>
   <data name="cbDataOwner1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -346,16 +382,16 @@
     <value>pnWiz0x0002</value>
   </data>
   <data name="&gt;&gt;cbDataOwner1.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="pnWiz0x0002.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="pnWiz0x0002.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 8</value>
+    <value>0, 0</value>
   </data>
   <data name="pnWiz0x0002.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 120</value>
+    <value>388, 126</value>
   </data>
   <data name="pnWiz0x0002.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -379,7 +415,7 @@
     <value>6, 14</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>640, 366</value>
+    <value>410, 157</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>

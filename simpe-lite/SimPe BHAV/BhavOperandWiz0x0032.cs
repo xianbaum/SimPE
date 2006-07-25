@@ -217,8 +217,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
             this.tbIconIndex.Text = "0x" + SimPe.Helper.HexString(ops2[0x03]);
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1,
-                this.cbDecimal, this.cbAttrPicker, ops2[0x03], BhavWiz.ToShort(ops2[0x04], ops2[0x05]));
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, this.cbDecimal, this.cbAttrPicker, null,
+                ops2[0x03], BhavWiz.ToShort(ops2[0x04], ops2[0x05]));
 
             internalchg = false;
         }
