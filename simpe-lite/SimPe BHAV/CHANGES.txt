@@ -10,6 +10,11 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+25 July 2006 16:55 - DataOwnerControl: value for Consts toggles to decimal (only in Wizards)
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.13
+    BhavWiz.cs 1.37.2.22
+
 25 July 2006 15:07 - DataOwnerControl: various bugfixes, add label for Const values
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.12

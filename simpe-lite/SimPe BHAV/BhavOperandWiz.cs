@@ -330,6 +330,8 @@ namespace pjse.BhavOperandWizards
             }
             else
                 UseAttrPicker = true;
+
+            setConstLabel();
         }
 
 
@@ -443,7 +445,7 @@ namespace pjse.BhavOperandWizards
                 if (dataOwner == 0x1a)
                 {
                     ushort[] bcon = BhavWiz.ExpandBCON(instance, false);
-                    lbConst.Text = ((BhavWiz)inst).readBcon(bcon[0], bcon[1], false);
+                    lbConst.Text = ((BhavWiz)inst).readBcon(bcon[0], bcon[1], false, true);
                 }
                 else lbConst.Text = "";
             }
@@ -488,6 +490,7 @@ namespace pjse.BhavOperandWizards
 				{
 					isDecimal = value;
                     setTextBoxLength();
+                    setConstLabel();
                     internalchg = true;
                     if (tbValue != null)
                     {

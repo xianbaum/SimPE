@@ -727,8 +727,11 @@ namespace pjse
 
 
         #region Constant parsing
-        public string readBcon(uint instance, int bid, bool temp)
+        public string readBcon(uint instance, int bid, bool temp) { return readBcon(instance, bid, temp, false); }
+        public string readBcon(uint instance, int bid, bool temp, bool useDecimal)
         {
+            bool inDecimal = useDecimal ? pjse.Settings.PJSE.DecimalDOValue : false;
+           
             if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
                 throw new InvalidOperationException("Can't read BCON for instruction with no parent");
 
@@ -758,7 +761,9 @@ namespace pjse
             if (bid >= bcon.Count)
                 return label + "[" + pjse.Localization.GetString("notset") + "]";
 
-            return label + pjse.Localization.GetString("Value") + ": 0x" + SimPe.Helper.HexString((short)bcon[bid]);
+            return label + pjse.Localization.GetString("Value") + ": " + (inDecimal
+                ? ((short)bcon[bid]).ToString()
+                : "0x" + SimPe.Helper.HexString((short)bcon[bid]));
         }
 
 
