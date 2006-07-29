@@ -120,6 +120,7 @@ namespace SimPe.PackedFiles.UserInterface
         private ToolStripMenuItem saveIndexToolStripMenuItem;
         private ToolStripMenuItem defaultFileToolStripMenuItem1;
         private ToolStripMenuItem toFileToolStripMenuItem;
+        private Button btnFloat;
         private IContainer components;
         #endregion
        
@@ -728,6 +729,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnFloat = new System.Windows.Forms.Button();
             this.gbInstruction.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
@@ -1088,6 +1090,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.pnHeading, "pnHeading");
             this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pnHeading.Controls.Add(this.btnFloat);
             this.pnHeading.Controls.Add(this.btnRefreshFT);
             this.pnHeading.Controls.Add(this.btnHelp);
             this.pnHeading.Controls.Add(this.label1);
@@ -1403,6 +1406,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
+            // btnFloat
+            // 
+            resources.ApplyResources(this.btnFloat, "btnFloat");
+            this.btnFloat.Name = "btnFloat";
+            this.btnFloat.Click += new System.EventHandler(this.btnFloat_Click);
+            // 
             // BhavForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1501,6 +1510,34 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+        private void btnRefreshFT_Click(object sender, EventArgs e)
+        {
+            pjse.FileTable.GFT.UIRefresh();
+        }
+
+
+        private void btnFloat_Click(object sender, EventArgs e)
+        {
+            Bhav bhav = wrapper;
+
+            this.btnFloat.Visible = false;
+            this.btnClose.Visible = true;
+            Control old = this.bhavPanel.Parent;
+            Form f = new Form();
+            f.Text = "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + ": "
+                + wrapper.FileName + " [" + wrapper.Package.SaveFileName + "]";
+            f.Controls.Add(this.bhavPanel);
+            this.bhavPanel.Location = new Point(0, 0);
+            this.bhavPanel.Dock = DockStyle.Fill;
+            f.WindowState = FormWindowState.Maximized;
+            f.CancelButton = this.btnClose;
+            f.ShowDialog();
+            old.Controls.Add(this.bhavPanel);
+            this.btnClose.Visible = false;
+            this.btnFloat.Visible = true;
+
+            bhav.RefreshUI();
+        }
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
@@ -1970,11 +2007,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.TPRPMaker();
 		}
-
-        private void btnRefreshFT_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.GFT.UIRefresh();
-        }
 
         private void btnGUIDIndex_Click(object sender, EventArgs e)
         {
