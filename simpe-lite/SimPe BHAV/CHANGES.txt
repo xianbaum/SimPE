@@ -10,6 +10,16 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+29 July 2006 21:00 - BHAV: Full screen mode for editing
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.24
+    BhavForm.resx 1.30.2.11
+
+29 July 2006 20:59 - TTAB: Up and Down keys for Merola64
+  SimPe BHAV\
+    TtabForm.cs 1.31.2.14
+    TtabForm.resx 1.15.8.5
+
 25 July 2006 16:55 - DataOwnerControl: value for Consts toggles to decimal (only in Wizards)
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.13
