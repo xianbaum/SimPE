@@ -207,7 +207,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
             int val = inst.NodeVersion < 2 ? ops1[0x04] : BhavWiz.ToShort(ops2[0x06], ops2[0x07]);
             this.tbStrIndex.Text = "0x" + SimPe.Helper.HexString((ushort)val);
-            this.lbActionString.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)val, -1, pjse.Detail.ErrorNames);
+            this.lbActionString.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
 
             this.tbGUID.Text
                 = "0x" + SimPe.Helper.HexString(ops1[0x05] | (ops1[0x06] << 8) | (ops1[0x07] << 16) | (ops2[0x00] << 24));
