@@ -234,7 +234,7 @@ namespace SimPe.PackedFiles.UserInterface
 					btnDel.Visible = btnAdd.Visible = 
 					btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/
 					gbSpecial.Visible = cbSpecial.Visible =
-					btnCancel.Visible = false;
+					btnCancel.Visible = btnFloat.Visible = false;
 				btnClose.Visible = state = true;
 			}
 

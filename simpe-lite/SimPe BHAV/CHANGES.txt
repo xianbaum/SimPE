@@ -10,6 +10,10 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+30 July 2006 12:12 - BHAV: Full screen mode for editing: minor fix (remove Float in View mode)
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.25
+
 29 July 2006 21:00 - BHAV: Full screen mode for editing
   SimPe BHAV\
     BhavForm.cs 1.64.2.24
