@@ -1518,25 +1518,25 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void btnFloat_Click(object sender, EventArgs e)
         {
-            Bhav bhav = wrapper;
-
-            this.btnFloat.Visible = false;
-            this.btnClose.Visible = true;
             Control old = this.bhavPanel.Parent;
+
             Form f = new Form();
             f.Text = "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + ": "
                 + wrapper.FileName + " [" + wrapper.Package.SaveFileName + "]";
-            f.Controls.Add(this.bhavPanel);
-            this.bhavPanel.Location = new Point(0, 0);
-            this.bhavPanel.Dock = DockStyle.Fill;
             f.WindowState = FormWindowState.Maximized;
             f.CancelButton = this.btnClose;
+            f.Controls.Add(this.bhavPanel);
+            this.btnFloat.Visible = false;
+            this.btnClose.Visible = true;
             f.ShowDialog();
+
             old.Controls.Add(this.bhavPanel);
             this.btnClose.Visible = false;
             this.btnFloat.Visible = true;
 
-            bhav.RefreshUI();
+            f.Dispose();
+
+            wrapper.RefreshUI();
         }
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
@@ -1556,7 +1556,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnClose_Click(object sender, System.EventArgs e)
 		{
-			Close();
+            if (((string)this.Tag).Equals("Popup"))
+                Close();
 		}
 
 
