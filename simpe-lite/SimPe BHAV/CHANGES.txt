@@ -10,6 +10,13 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+5 August 2006 14:10 - BHAV: Full screen mode for editing: Unfloat button; special buttons on always
+  pjse Localisation\
+    Localization.resx 1.1.4.17
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.27
+    BhavForm.resx 1.30.2.12
+
 30 July 2006 18:07 - BHAV: Full screen mode for editing: fix the Close() problem
   SimPe BHAV\
     BhavForm.cs 1.64.2.26

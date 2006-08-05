@@ -689,6 +689,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbArgC = new System.Windows.Forms.Label();
             this.lbFormat = new System.Windows.Forms.Label();
             this.pnHeading = new System.Windows.Forms.Panel();
+            this.btnFloat = new System.Windows.Forms.Button();
             this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.bhavPanel = new System.Windows.Forms.Panel();
@@ -708,7 +709,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnDelMerola = new System.Windows.Forms.Button();
             this.btnListing = new System.Windows.Forms.Button();
             this.btnTPRPMaker = new System.Windows.Forms.Button();
-            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.btnDel = new System.Windows.Forms.Button();
             this.gbMove = new System.Windows.Forms.GroupBox();
             this.btnUp = new System.Windows.Forms.Button();
@@ -729,7 +729,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnFloat = new System.Windows.Forms.Button();
+            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.gbInstruction.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
@@ -1096,6 +1096,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnHeading.Controls.Add(this.label1);
             this.pnHeading.Name = "pnHeading";
             // 
+            // btnFloat
+            // 
+            resources.ApplyResources(this.btnFloat, "btnFloat");
+            this.btnFloat.Name = "btnFloat";
+            this.btnFloat.Click += new System.EventHandler(this.btnFloat_Click);
+            // 
             // btnRefreshFT
             // 
             resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
@@ -1265,13 +1271,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnTPRPMaker.Name = "btnTPRPMaker";
             this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
             // 
-            // pnflowcontainer
-            // 
-            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
-            this.pnflowcontainer.Name = "pnflowcontainer";
-            this.pnflowcontainer.SelectedIndex = -1;
-            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
-            // 
             // btnDel
             // 
             resources.ApplyResources(this.btnDel, "btnDel");
@@ -1406,11 +1405,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
-            // btnFloat
+            // pnflowcontainer
             // 
-            resources.ApplyResources(this.btnFloat, "btnFloat");
-            this.btnFloat.Name = "btnFloat";
-            this.btnFloat.Click += new System.EventHandler(this.btnFloat_Click);
+            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
+            this.pnflowcontainer.Name = "pnflowcontainer";
+            this.pnflowcontainer.SelectedIndex = -1;
+            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
             // 
             // BhavForm
             // 
@@ -1524,15 +1524,20 @@ namespace SimPe.PackedFiles.UserInterface
             f.Text = "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + ": "
                 + wrapper.FileName + " [" + wrapper.Package.SaveFileName + "]";
             f.WindowState = FormWindowState.Maximized;
-            f.CancelButton = this.btnClose;
             f.Controls.Add(this.bhavPanel);
-            this.btnFloat.Visible = false;
-            this.btnClose.Visible = true;
+            this.btnFloat.Text = pjse.Localization.GetString("bhavForm.Unfloat");
+            this.btnFloat.Click -= new System.EventHandler(this.btnFloat_Click);
+            this.gbSpecial.Visible = true;
+            this.cbSpecial.Enabled = false;
+            f.CancelButton = this.btnFloat;
             f.ShowDialog();
 
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BhavForm));
+            this.btnFloat.Text = resources.GetString("btnFloat.Text");
+            this.btnFloat.Click += new System.EventHandler(this.btnFloat_Click);
+            this.gbSpecial.Visible = this.cbSpecial.Checked;
+            this.cbSpecial.Enabled = true;
             old.Controls.Add(this.bhavPanel);
-            this.btnClose.Visible = false;
-            this.btnFloat.Visible = true;
 
             f.Dispose();
 
