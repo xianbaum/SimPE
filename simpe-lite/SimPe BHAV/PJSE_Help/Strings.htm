@@ -156,7 +156,10 @@ you want a localised translation for any language.</p>
       Text block beneath one label in the import file will be considered input 
       to that field until the next label is reached.&nbsp;&nbsp; Reserve unused 
       strings or descriptions in the middle of the set by using labels with no 
-      text block under them.</td>
+      text block under them.<p>Any language file for import containing extended 
+      characters (e.g. accented characters or two-byte charcters like Chinese) 
+      should be saved to UTF-8 format which will allow PJSE to import it 
+      correctly.</td>
     </tr>
     <tr>
       <td width="19%" valign="top" style="padding-top: 5; padding-bottom: 5">
