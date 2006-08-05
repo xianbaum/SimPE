@@ -10,6 +10,11 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+5 August 2006 17:11 - Help: mention Up and Down in TTAB editor; minor in BHAV.htm to match button text
+  SimPe BHAV\PJSE_Help\
+    BHAV.htm 1.1.2.4
+    PieMenus.htm 1.1.2.5
+
 5 August 2006 14:20 - Help: Full-screen BHAV edit; mention UTF-8 for Strings
   SimPe BHAV\PJSE_Help\
     BHAV.htm 1.1.2.3
