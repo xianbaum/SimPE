@@ -10,6 +10,13 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+12 August 2006 11:22 - BHAV: Fix: list all attributes labels (even empty ones); Help: fix PieMenus
+  SimPe BHAV\
+    BhavWiz.cs 1.27.2.23
+  SimPe BHAV\PJSE_Help\
+    PieMenus.htm 1.1.2.6
+  pjseTestData.package 1.17.2.14
+
 5 August 2006 17:11 - Help: mention Up and Down in TTAB editor; minor in BHAV.htm to match button text
   SimPe BHAV\PJSE_Help\
     BHAV.htm 1.1.2.4

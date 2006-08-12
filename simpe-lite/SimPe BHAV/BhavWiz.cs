@@ -528,9 +528,10 @@ namespace pjse
                 return null;
 
             ArrayList al = new ArrayList();
-            String st;
             Str str = new Str(s, instruction.Parent, (uint)GS.GlobalStr.AttributeLabels);
-            for (ushort i = 0; (st = readStr(str, i, -1, Detail.ValueOnly, false, false)) != null; i++) al.Add(st);
+            int n = (str == null) ? 0 : ((StrItem[])str[(byte)1]).Length;
+            String st;
+            for (ushort i = 0; i < n; i++) al.Add((st = readStr(str, i, -1, Detail.ValueOnly, false, false)) == null ? "" : st);
             return al;
         }
 
