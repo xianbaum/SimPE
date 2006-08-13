@@ -207,7 +207,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
             int val = inst.NodeVersion < 2 ? ops1[0x04] : BhavWiz.ToShort(ops2[0x06], ops2[0x07]);
             this.tbStrIndex.Text = "0x" + SimPe.Helper.HexString((ushort)val);
-            this.lbActionString.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)val, -1, pjse.Detail.ErrorNames);
+            this.lbActionString.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.MakeAction, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
 
             this.tbGUID.Text
                 = "0x" + SimPe.Helper.HexString(ops1[0x05] | (ops1[0x06] << 8) | (ops1[0x07] << 16) | (ops2[0x00] << 24));
@@ -217,8 +217,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 
             this.tbIconIndex.Text = "0x" + SimPe.Helper.HexString(ops2[0x03]);
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1,
-                this.cbDecimal, this.cbAttrPicker, ops2[0x03], BhavWiz.ToShort(ops2[0x04], ops2[0x05]));
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, this.cbDecimal, this.cbAttrPicker, null,
+                ops2[0x03], BhavWiz.ToShort(ops2[0x04], ops2[0x05]));
 
             internalchg = false;
         }

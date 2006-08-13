@@ -177,6 +177,96 @@
   <data name="&gt;&gt;tbTree.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="lbConst3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbConst3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbConst3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 109</value>
+  </data>
+  <data name="lbConst3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="lbConst3.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="lbConst3.Text" xml:space="preserve">
+    <value>Const3 value</value>
+  </data>
+  <data name="&gt;&gt;lbConst3.Name" xml:space="preserve">
+    <value>lbConst3</value>
+  </data>
+  <data name="&gt;&gt;lbConst3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbConst3.Parent" xml:space="preserve">
+    <value>pnArgs</value>
+  </data>
+  <data name="&gt;&gt;lbConst3.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="lbConst2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbConst2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbConst2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 66</value>
+  </data>
+  <data name="lbConst2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="lbConst2.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="lbConst2.Text" xml:space="preserve">
+    <value>Const2 value</value>
+  </data>
+  <data name="&gt;&gt;lbConst2.Name" xml:space="preserve">
+    <value>lbConst2</value>
+  </data>
+  <data name="&gt;&gt;lbConst2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbConst2.Parent" xml:space="preserve">
+    <value>pnArgs</value>
+  </data>
+  <data name="&gt;&gt;lbConst2.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lbConst1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbConst1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbConst1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>75, 24</value>
+  </data>
+  <data name="lbConst1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 13</value>
+  </data>
+  <data name="lbConst1.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="lbConst1.Text" xml:space="preserve">
+    <value>Const1 value</value>
+  </data>
+  <data name="&gt;&gt;lbConst1.Name" xml:space="preserve">
+    <value>lbConst1</value>
+  </data>
+  <data name="&gt;&gt;lbConst1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbConst1.Parent" xml:space="preserve">
+    <value>pnArgs</value>
+  </data>
+  <data name="&gt;&gt;lbConst1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="label7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -184,7 +274,7 @@
     <value>NoControl</value>
   </data>
   <data name="label7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 56</value>
+    <value>3, 88</value>
   </data>
   <data name="label7.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 13</value>
@@ -205,7 +295,7 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;label7.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="label6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -214,7 +304,7 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 30</value>
+    <value>3, 45</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 13</value>
@@ -235,7 +325,7 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -265,10 +355,10 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="cbPicker3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 53</value>
+    <value>334, 85</value>
   </data>
   <data name="cbPicker3.Size" type="System.Drawing.Size, System.Drawing">
     <value>133, 21</value>
@@ -289,7 +379,7 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;cbPicker3.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="cbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -301,7 +391,7 @@
     <value>NoControl</value>
   </data>
   <data name="cbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>327, 80</value>
+    <value>330, 127</value>
   </data>
   <data name="cbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
     <value>138, 17</value>
@@ -322,10 +412,10 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;cbAttrPicker.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="cbPicker2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 27</value>
+    <value>334, 42</value>
   </data>
   <data name="cbPicker2.Size" type="System.Drawing.Size, System.Drawing">
     <value>133, 21</value>
@@ -346,10 +436,10 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;cbPicker2.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="tbVal3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 53</value>
+    <value>334, 85</value>
   </data>
   <data name="tbVal3.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 21</value>
@@ -367,7 +457,7 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;tbVal3.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="cbDecimal.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -379,7 +469,7 @@
     <value>NoControl</value>
   </data>
   <data name="cbDecimal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>154, 80</value>
+    <value>157, 127</value>
   </data>
   <data name="cbDecimal.Size" type="System.Drawing.Size, System.Drawing">
     <value>167, 17</value>
@@ -400,10 +490,10 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;cbDecimal.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>10</value>
   </data>
   <data name="tbVal2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>334, 27</value>
+    <value>334, 42</value>
   </data>
   <data name="tbVal2.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 21</value>
@@ -421,10 +511,10 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;tbVal2.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>11</value>
   </data>
   <data name="cbDataOwner3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 53</value>
+    <value>78, 85</value>
   </data>
   <data name="cbDataOwner3.Size" type="System.Drawing.Size, System.Drawing">
     <value>254, 21</value>
@@ -442,7 +532,7 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;cbDataOwner3.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>12</value>
   </data>
   <data name="cbPicker1.Location" type="System.Drawing.Point, System.Drawing">
     <value>334, 0</value>
@@ -466,10 +556,10 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;cbPicker1.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>13</value>
   </data>
   <data name="cbDataOwner2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>78, 27</value>
+    <value>78, 42</value>
   </data>
   <data name="cbDataOwner2.Size" type="System.Drawing.Size, System.Drawing">
     <value>254, 21</value>
@@ -487,7 +577,7 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;cbDataOwner2.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>14</value>
   </data>
   <data name="tbVal1.Location" type="System.Drawing.Point, System.Drawing">
     <value>334, 0</value>
@@ -508,7 +598,7 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;tbVal1.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>15</value>
   </data>
   <data name="cbDataOwner1.Location" type="System.Drawing.Point, System.Drawing">
     <value>78, 0</value>
@@ -529,13 +619,13 @@
     <value>pnArgs</value>
   </data>
   <data name="&gt;&gt;cbDataOwner1.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>16</value>
   </data>
   <data name="pnArgs.Location" type="System.Drawing.Point, System.Drawing">
     <value>8, 143</value>
   </data>
   <data name="pnArgs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>468, 106</value>
+    <value>468, 148</value>
   </data>
   <data name="pnArgs.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -955,7 +1045,7 @@
     <value>0, 0</value>
   </data>
   <data name="pnWiz0x001c.Size" type="System.Drawing.Size, System.Drawing">
-    <value>490, 267</value>
+    <value>479, 296</value>
   </data>
   <data name="pnWiz0x001c.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -979,7 +1069,7 @@
     <value>6, 14</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>490, 267</value>
+    <value>481, 298</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>

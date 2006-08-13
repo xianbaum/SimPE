@@ -64,6 +64,9 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
         private TextBox tbTree;
         private Label lbTreeName;
         private Button btnTreeName;
+        private Label lbConst3;
+        private Label lbConst2;
+        private Label lbConst1;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -105,40 +108,6 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
         private DataOwnerControl doid2 = null;
         private DataOwnerControl doid3 = null;
         private bool internalchg = false;
-
-		private bool Decimal
-		{
-			get
-			{
-				SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x1c");
-				object o = rkf.GetValue("decimal", false);
-				return Convert.ToBoolean(o);
-			}
-
-			set
-			{
-				SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x1c");
-				rkf.SetValue("decimal", value);
-			}
-
-		}
-
-		private bool AttrPicker
-		{
-			get
-			{
-				SimPe.XmlRegistryKey  rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x1c");
-				object o = rkf.GetValue("attrPicker", true);
-				return Convert.ToBoolean(o);
-			}
-
-			set
-			{
-				SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav\\OperandWiz0x1c");
-				rkf.SetValue("attrPicker", value);
-			}
-
-		}
 
         private Scope Scope
         {
@@ -209,12 +178,12 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
             this.cbRTBNType.SelectedIndex = ops1[0x05] < this.cbRTBNType.Items.Count ? ops1[0x05] : -1;
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1,
-                this.cbDecimal, this.cbAttrPicker, ops1[0x06], BhavWiz.ToShort(ops1[0x07], ops2[0x00]));
-            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2,
-                this.cbDecimal, this.cbAttrPicker, ops2[0x01], BhavWiz.ToShort(ops2[0x02], ops2[0x03]));
-            doid3 = new DataOwnerControl(inst, this.cbDataOwner3, this.cbPicker3, this.tbVal3,
-                this.cbDecimal, this.cbAttrPicker, ops2[0x04], BhavWiz.ToShort(ops2[0x05], ops2[0x06]));
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, this.cbDecimal, this.cbAttrPicker, this.lbConst1,
+                ops1[0x06], BhavWiz.ToShort(ops1[0x07], ops2[0x00]));
+            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2, this.cbDecimal, this.cbAttrPicker, this.lbConst2,
+                ops2[0x01], BhavWiz.ToShort(ops2[0x02], ops2[0x03]));
+            doid3 = new DataOwnerControl(inst, this.cbDataOwner3, this.cbPicker3, this.tbVal3, this.cbDecimal, this.cbAttrPicker, this.lbConst3,
+                ops2[0x04], BhavWiz.ToShort(ops2[0x05], ops2[0x06]));
 
             internalchg = false;
         }
@@ -293,6 +262,9 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.lbConst1 = new System.Windows.Forms.Label();
+            this.lbConst2 = new System.Windows.Forms.Label();
+            this.lbConst3 = new System.Windows.Forms.Label();
             this.pnWiz0x001c.SuspendLayout();
             this.pnArgs.SuspendLayout();
             this.SuspendLayout();
@@ -334,6 +306,9 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             // 
             // pnArgs
             // 
+            this.pnArgs.Controls.Add(this.lbConst3);
+            this.pnArgs.Controls.Add(this.lbConst2);
+            this.pnArgs.Controls.Add(this.lbConst1);
             this.pnArgs.Controls.Add(this.label7);
             this.pnArgs.Controls.Add(this.label6);
             this.pnArgs.Controls.Add(this.label5);
@@ -518,6 +493,21 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             // 
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
+            // 
+            // lbConst1
+            // 
+            resources.ApplyResources(this.lbConst1, "lbConst1");
+            this.lbConst1.Name = "lbConst1";
+            // 
+            // lbConst2
+            // 
+            resources.ApplyResources(this.lbConst2, "lbConst2");
+            this.lbConst2.Name = "lbConst2";
+            // 
+            // lbConst3
+            // 
+            resources.ApplyResources(this.lbConst3, "lbConst3");
+            this.lbConst3.Name = "lbConst3";
             // 
             // UI
             // 

@@ -1257,4 +1257,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="[Property:StrShowDesc]" xml:space="preserve">
     <value>Reveal string descriptions</value>
   </data>
+  <data name="bhavForm.Unfloat" xml:space="preserve">
+    <value>Unfloat</value>
+  </data>
 </root>

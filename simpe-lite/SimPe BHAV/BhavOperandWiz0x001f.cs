@@ -159,8 +159,8 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             this.ckbStackObj.Checked = (ops1[4] & 0x80) == 0;
             this.pnObject.Enabled = !this.ckbStackObj.Checked;
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1,
-                this.cbDecimal, this.cbAttrPicker, ops1[0x05], ops1[0x07]);
+            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, this.cbDecimal, this.cbAttrPicker, null,
+                ops1[0x05], ops1[0x07]);
 
             this.tbLocalVar.Text = "0x" + SimPe.Helper.HexString(ops1[0x06]);
 

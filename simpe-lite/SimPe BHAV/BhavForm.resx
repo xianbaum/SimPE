@@ -148,7 +148,7 @@
     <value>pnHeading</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="gbInstruction.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1578,6 +1578,42 @@
   <data name="pnHeading.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="btnFloat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnFloat.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
+    <value>System</value>
+  </data>
+  <data name="btnFloat.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 8.25pt, style=Bold</value>
+  </data>
+  <data name="btnFloat.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnFloat.Location" type="System.Drawing.Point, System.Drawing">
+    <value>736, 0</value>
+  </data>
+  <data name="btnFloat.Size" type="System.Drawing.Size, System.Drawing">
+    <value>64, 24</value>
+  </data>
+  <data name="btnFloat.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="btnFloat.Text" xml:space="preserve">
+    <value>Float</value>
+  </data>
+  <data name="&gt;&gt;btnFloat.Name" xml:space="preserve">
+    <value>btnFloat</value>
+  </data>
+  <data name="&gt;&gt;btnFloat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnFloat.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;btnFloat.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="btnRefreshFT.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -1597,7 +1633,7 @@
     <value>48, 24</value>
   </data>
   <data name="btnRefreshFT.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>2</value>
   </data>
   <data name="btnRefreshFT.Text" xml:space="preserve">
     <value>RFT</value>
@@ -1612,7 +1648,7 @@
     <value>pnHeading</value>
   </data>
   <data name="&gt;&gt;btnRefreshFT.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnHelp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1633,7 +1669,7 @@
     <value>48, 24</value>
   </data>
   <data name="btnHelp.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>3</value>
   </data>
   <data name="btnHelp.Text" xml:space="preserve">
     <value>Help</value>
@@ -1648,7 +1684,7 @@
     <value>pnHeading</value>
   </data>
   <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 9.75pt, style=Bold</value>
@@ -2251,7 +2287,7 @@
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=2.0.2380.24612, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=2.0.2408.23338, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2705,6 +2741,9 @@
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BhavForm</value>

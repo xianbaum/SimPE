@@ -108,6 +108,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnNoFlags;
 		private System.Windows.Forms.Button btnHelp;
         private Button btnRefreshFT;
+        private Button btnStrPrev;
+        private Button btnStrNext;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -549,9 +551,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpMotives = new System.Windows.Forms.TabPage();
             this.ttabItemMotiveTableUI1 = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
+            this.btnStrPrev = new System.Windows.Forms.Button();
+            this.btnStrNext = new System.Windows.Forms.Button();
             this.ttabPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSettings.SuspendLayout();
@@ -564,6 +568,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.ttabPanel, "ttabPanel");
             this.ttabPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.ttabPanel.Controls.Add(this.btnStrPrev);
+            this.ttabPanel.Controls.Add(this.btnStrNext);
             this.ttabPanel.Controls.Add(this.btnAppend);
             this.ttabPanel.Controls.Add(this.lbFilename);
             this.ttabPanel.Controls.Add(this.tbFilename);
@@ -1068,6 +1074,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.panel5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.panel5.Name = "panel5";
             // 
+            // btnRefreshFT
+            // 
+            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
+            this.btnRefreshFT.Name = "btnRefreshFT";
+            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
+            // 
             // btnHelp
             // 
             resources.ApplyResources(this.btnHelp, "btnHelp");
@@ -1079,11 +1091,17 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label25, "label25");
             this.label25.Name = "label25";
             // 
-            // btnRefreshFT
+            // btnStrPrev
             // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
+            resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
+            this.btnStrPrev.Name = "btnStrPrev";
+            this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
+            // 
+            // btnStrNext
+            // 
+            resources.ApplyResources(this.btnStrNext, "btnStrNext");
+            this.btnStrNext.Name = "btnStrNext";
+            this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
             // 
             // TtabForm
             // 
@@ -1113,6 +1131,8 @@ namespace SimPe.PackedFiles.UserInterface
 			if (this.internalchg) return;
 
 			this.btnDelete.Enabled = false;
+            this.btnStrPrev.Enabled = (lbttab.SelectedIndex > 0);
+            this.btnStrNext.Enabled = (lbttab.SelectedIndex < lbttab.Items.Count - 1);
 			if (lbttab.SelectedIndex >= 0)
 			{
 				currentItem = wrapper[lbttab.SelectedIndex];
@@ -1628,6 +1648,16 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnRefreshFT_Click(object sender, EventArgs e)
         {
             pjse.FileTable.GFT.UIRefresh();
+        }
+
+        private void btnStrPrev_Click(object sender, EventArgs e)
+        {
+            lbttab.SelectedIndex--;
+        }
+
+        private void btnStrNext_Click(object sender, EventArgs e)
+        {
+            lbttab.SelectedIndex++;
         }
 
 	}
