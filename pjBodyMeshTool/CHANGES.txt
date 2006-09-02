@@ -1,1 +1,13 @@
+
+2006-09-02 17:37 Body Mesh Tool added to CVS PreRelease
+	pjBodyMeshTool/
+		.cvsignore
+		BodyMeshTool.cs
+		pjBodyMeshTool.csproj
+	pjBodyMeshTool/Properties
+		AssemblyInfo.cs
+	.cvsignore
+	LICENCE.txt
+	pjBodyMeshTool.sln
+
 2006-09-02 17:33 Base line
