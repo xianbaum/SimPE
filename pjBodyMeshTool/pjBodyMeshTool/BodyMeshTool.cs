@@ -53,24 +53,29 @@ namespace pj
             return null;
         }
 
+        private static String SimsPath = SimPe.Helper.WindowsRegistry.GetExecutableFolder(0);
+        private static ArrayList paths = new ArrayList();
+        static BodyMeshTool()
+        {
+            paths.Insert(0, SimsPath);
+
+            for (int maxSP = 0x00010000; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Equals(SimsPath); maxSP += 0x00010000)
+                paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP));
+
+            for (int maxEP = 1; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP).Equals(SimsPath); maxEP++)
+                paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP));
+        }
+
         private bool findAndAdd(String name, uint type, String source)
         {
-            string[] paths = {
-								 SimPe.Helper.WindowsRegistry.SimsSP1Path,
-								 SimPe.Helper.WindowsRegistry.SimsEP3Path,
-								 SimPe.Helper.WindowsRegistry.SimsEP2Path,
-								 SimPe.Helper.WindowsRegistry.SimsEP1Path,
-								 SimPe.Helper.WindowsRegistry.SimsPath
-							 };
-
-            for (int i = 0; i < paths.Length; i++)
+            foreach (String path in paths)
             {
-                if (paths[i].Length == 0)
+                if (path.Length == 0)
                     continue;
 
-                String sims2loc = System.IO.Path.Combine(paths[i], "TSData\\Res\\3D");
+                String sims2loc = System.IO.Path.Combine(path, "TSData\\Res\\3D");
                 if (!System.IO.Directory.Exists(sims2loc))
-                    sims2loc = System.IO.Path.Combine(paths[i], "TSData\\Res\\Sims3D");
+                    sims2loc = System.IO.Path.Combine(path, "TSData\\Res\\Sims3D");
                 if (!System.IO.Directory.Exists(sims2loc))
                     continue;
 

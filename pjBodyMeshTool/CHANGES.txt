@@ -1,4 +1,9 @@
 
+2006-09-03 20:12 Dynamically detect game folders; NET1/NET2 tidy-ups
+	pjBodyMeshTool/
+		BodyMeshTool.cs 1.1.2.4
+		pjBodyMeshTool_NET1.csproj 1.1.2.2
+
 2006-09-03 18:13 Integrate NET1 and NET2 build folders; tidy up message boxes
 	pjBodyMeshTool/
 		AssemblyInfo.cs 1.1.2.1
