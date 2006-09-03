@@ -18,13 +18,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Drawing;
 using System.Collections;
-using System.ComponentModel;
 using System.Windows.Forms;
-using System.Threading;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Plugin;
 using SimPe.Interfaces.Scenegraph;
@@ -122,8 +117,12 @@ namespace pj
             #endregion
 
             #region Find the Property Set and get the name(s)
-            IPackedFileDescriptor[] pfa = p.FindFiles(0xebcf3e27);
-            if (pfa == null || pfa.Length == 0) return;
+            IPackedFileDescriptor[] pfa = p.FindFiles(SimPe.Data.MetaData.GZPS);
+            if (pfa == null || pfa.Length == 0)
+            {
+                MessageBox.Show("No Property Sets in package.", "Body Mesh Tool", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             ArrayList al = new ArrayList();
             bool prompted = false;
@@ -137,8 +136,9 @@ namespace pj
                         al.Add(cpf.Items[j].StringValue);
                     if (al.Count > 10 && !prompted)
                     {
-                        if (MessageBox.Show("More than 10 Property Set files found (did you pick the right file?)."
-                            + "\r\nImport resources for them all?", "Locate mesh", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                        if (MessageBox.Show("More than 10 meshes found (did you pick the right package?)."
+                            + "\r\nImport resources for them all?", "Body Mesh Tool", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)
+                            != DialogResult.Yes)
                             return;
                         prompted = true;
                     }
@@ -147,15 +147,17 @@ namespace pj
 
             if (al.Count == 0)
             {
-                MessageBox.Show("No mesh found.");
+                MessageBox.Show("No meshes in package.", "Body Mesh Tool", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             #endregion
 
 
             #region For each mesh, find the GMDC, GMND, SHPE and CRES and add them to the current package
+
             foreach (String m in al)
             {
+                SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
                 String mesh = m.Split('_')[0];
 
                 bool success = true
@@ -164,6 +166,7 @@ namespace pj
                     && findAndAdd(mesh, SimPe.Data.MetaData.SHPE, "Sims05.package")
                     && findAndAdd(mesh, SimPe.Data.MetaData.CRES, "Sims06.package")
                     ;
+                SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
                 if (!success)
                     MessageBox.Show("Be aware that not all resources were added to the current package.", "Mesh " + m);
             }
