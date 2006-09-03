@@ -70,7 +70,9 @@ namespace pj
 
             for (int i = 0; i < paths.Length; i++)
             {
-                if (paths[i].Length == 0) continue;
+                if (paths[i].Length == 0)
+                    continue;
+
                 String sims2loc = System.IO.Path.Combine(paths[i], "TSData\\Res\\3D");
                 if (!System.IO.Directory.Exists(sims2loc))
                     sims2loc = System.IO.Path.Combine(paths[i], "TSData\\Res\\Sims3D");
@@ -78,22 +80,27 @@ namespace pj
                     continue;
 
                 IPackageFile p = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(sims2loc, source));
-                if (p == null) continue;
+                if (p == null)
+                    continue;
 
                 IPackedFileDescriptor[] pfa = p.FindFiles(SimPe.Data.MetaData.NAME_MAP);
-                if (pfa == null || pfa.Length == 0) continue;
+                if (pfa == null || pfa.Length != 1)
+                    continue;
 
                 SimPe.Plugin.Nmap nmap = new SimPe.Plugin.Nmap(null);
                 nmap.ProcessData(pfa[0], p);
                 pfa = nmap.FindFiles(name + "_");
-                if (pfa == null || pfa.Length == 0) continue;
+                if (pfa == null || pfa.Length != 1)
+                    continue;
 
                 IPackedFileDescriptor pfd = null;
-                ArrayList al = new ArrayList();
                 for (int j = 0; j < p.Index.Length && pfd == null; j++)
-                    if (p.Index[j].Group == pfa[0].Group && p.Index[j].Instance== pfa[0].Instance)
+                    if (p.Index[j].Type == type
+                        && p.Index[j].Group == pfa[0].Group
+                        && p.Index[j].Instance == pfa[0].Instance)
                         pfd = p.Index[j];
-                if (pfd == null) continue;
+                if (pfd == null)
+                    continue;
 
                 IPackedFileDescriptor npfd = pfd.Clone();
                 npfd.UserData = p.Read(pfd).UncompressedData;
@@ -114,11 +121,12 @@ namespace pj
             if (p == null) return;
             #endregion
 
-            #region Find the Property Set and get the name, up to the "_"
+            #region Find the Property Set and get the name(s)
             IPackedFileDescriptor[] pfa = p.FindFiles(0xebcf3e27);
             if (pfa == null || pfa.Length == 0) return;
 
             ArrayList al = new ArrayList();
+            bool prompted = false;
             SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
             for (int i = 0; i < pfa.Length; i++)
             {
@@ -127,6 +135,13 @@ namespace pj
                 {
                     if (cpf.Items[j].Name.ToLower().Equals("name"))
                         al.Add(cpf.Items[j].StringValue);
+                    if (al.Count > 10 && !prompted)
+                    {
+                        if (MessageBox.Show("More than 10 Property Set files found (did you pick the right file?)."
+                            + "\r\nImport resources for them all?", "Locate mesh", MessageBoxButtons.YesNo) != DialogResult.Yes)
+                            return;
+                        prompted = true;
+                    }
                 }
             }
 
@@ -135,22 +150,23 @@ namespace pj
                 MessageBox.Show("No mesh found.");
                 return;
             }
-
-            String mesh = (String)al[0];
-            mesh = mesh.Split('_')[0];
-            if (al.Count > 1)
-                MessageBox.Show("Found multiple meshes.  Using first found: " + mesh);
             #endregion
 
-            #region Find the GMDC, GMND, SHPE and CRES and add them to the current package
-            bool success = true
-                && findAndAdd(mesh, SimPe.Data.MetaData.GMDC, "Sims03.package")
-                && findAndAdd(mesh, SimPe.Data.MetaData.GMND, "Sims04.package")
-                && findAndAdd(mesh, SimPe.Data.MetaData.SHPE, "Sims05.package")
-                && findAndAdd(mesh, SimPe.Data.MetaData.CRES, "Sims06.package")
-                ;
-            if (!success)
-                MessageBox.Show("Be aware that not all resources were added to the current package.");
+
+            #region For each mesh, find the GMDC, GMND, SHPE and CRES and add them to the current package
+            foreach (String m in al)
+            {
+                String mesh = m.Split('_')[0];
+
+                bool success = true
+                    && findAndAdd(mesh, SimPe.Data.MetaData.GMDC, "Sims03.package")
+                    && findAndAdd(mesh, SimPe.Data.MetaData.GMND, "Sims04.package")
+                    && findAndAdd(mesh, SimPe.Data.MetaData.SHPE, "Sims05.package")
+                    && findAndAdd(mesh, SimPe.Data.MetaData.CRES, "Sims06.package")
+                    ;
+                if (!success)
+                    MessageBox.Show("Be aware that not all resources were added to the current package.", "Mesh " + m);
+            }
             #endregion
         }
 

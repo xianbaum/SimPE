@@ -1,4 +1,9 @@
 
+2006-09-03 10:49 Import resources for all Property sets found
+	pjBodyMeshTool/
+		BodyMeshTool.cs 1.1.2.2
+		pjBodyMeshTool.csproj 1.1.2.2
+
 2006-09-02 17:37 Body Mesh Tool added to CVS PreRelease
 	pjBodyMeshTool/
 		.cvsignore
