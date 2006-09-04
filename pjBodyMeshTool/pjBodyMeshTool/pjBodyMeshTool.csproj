@@ -69,7 +69,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BodyMeshTool.cs" />
+    <Compile Include="GetMeshName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GetMeshName.Designer.cs">
+      <DependentUpon>GetMeshName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GetMeshName.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GetMeshName.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

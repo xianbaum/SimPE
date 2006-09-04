@@ -19,6 +19,7 @@
  ***************************************************************************/
 using System;
 using System.Collections;
+using System.IO;
 using System.Windows.Forms;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Plugin;
@@ -55,15 +56,28 @@ namespace pj
 
         private static String SimsPath = SimPe.Helper.WindowsRegistry.GetExecutableFolder(0);
         private static ArrayList paths = new ArrayList();
+        private static ArrayList packs = new ArrayList();
         static BodyMeshTool()
         {
             paths.Insert(0, SimsPath);
 
             for (int maxSP = 0x00010000; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Equals(SimsPath); maxSP += 0x00010000)
-                paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP));
+                if (SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Length > 0)
+                    paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP));
 
             for (int maxEP = 1; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP).Equals(SimsPath); maxEP++)
-                paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP));
+                if (SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP).Length > 0)
+                    paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP));
+
+            foreach (String path in paths)
+            {
+                string[] va = Directory.GetFiles(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), "*.package");
+                foreach (String pkg in va)
+                {
+                    if (!pkg.ToLower().Equals("globalcatbin.bundle.package"))
+                        packs.Insert(0, pkg);
+                }
+            }
         }
 
         private bool findAndAdd(String name, uint type, String source)
@@ -73,97 +87,139 @@ namespace pj
                 if (path.Length == 0)
                     continue;
 
-                String sims2loc = System.IO.Path.Combine(path, "TSData\\Res\\3D");
-                if (!System.IO.Directory.Exists(sims2loc))
-                    sims2loc = System.IO.Path.Combine(path, "TSData\\Res\\Sims3D");
-                if (!System.IO.Directory.Exists(sims2loc))
+                String sims2loc = Path.Combine(path, "TSData\\Res\\3D");
+                if (!Directory.Exists(sims2loc))
+                    sims2loc = Path.Combine(path, "TSData\\Res\\Sims3D");
+                if (!Directory.Exists(sims2loc))
                     continue;
 
-                IPackageFile p = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(sims2loc, source));
-                if (p == null)
+                if (!addFromPkg(name, type, Path.Combine(sims2loc, source)))
                     continue;
-
-                IPackedFileDescriptor[] pfa = p.FindFiles(SimPe.Data.MetaData.NAME_MAP);
-                if (pfa == null || pfa.Length != 1)
-                    continue;
-
-                SimPe.Plugin.Nmap nmap = new SimPe.Plugin.Nmap(null);
-                nmap.ProcessData(pfa[0], p);
-                pfa = nmap.FindFiles(name + "_");
-                if (pfa == null || pfa.Length != 1)
-                    continue;
-
-                IPackedFileDescriptor pfd = null;
-                for (int j = 0; j < p.Index.Length && pfd == null; j++)
-                    if (p.Index[j].Type == type
-                        && p.Index[j].Group == pfa[0].Group
-                        && p.Index[j].Instance == pfa[0].Instance)
-                        pfd = p.Index[j];
-                if (pfd == null)
-                    continue;
-
-                IPackedFileDescriptor npfd = pfd.Clone();
-                npfd.UserData = p.Read(pfd).UncompressedData;
-                currentPackage.Add(npfd, true);
 
                 return true;
             }
+
+            foreach (String pack in packs)
+            {
+                if (!addFromPkg(name, type, pack))
+                    continue;
+
+                return true;
+            }
+
             return false;
+        }
+
+        private bool addFromPkg(String name, uint type, String pkg)
+        {
+            IPackageFile p = SimPe.Packages.File.LoadFromFile(pkg);
+            if (p == null)
+                return false;
+
+            IPackedFileDescriptor[] pfa = p.FindFiles(SimPe.Data.MetaData.NAME_MAP);
+            if (pfa == null || pfa.Length != 1)
+                return false;
+
+            SimPe.Plugin.Nmap nmap = new SimPe.Plugin.Nmap(null);
+            nmap.ProcessData(pfa[0], p);
+            pfa = nmap.FindFiles(name + "_");
+            if (pfa == null || pfa.Length != 1)
+                return false;
+
+            IPackedFileDescriptor pfd = null;
+            for (int j = 0; j < p.Index.Length && pfd == null; j++)
+                if (p.Index[j].Type == type
+                    && p.Index[j].Group == pfa[0].Group
+                    && p.Index[j].Instance == pfa[0].Instance)
+                    pfd = p.Index[j];
+            if (pfd == null)
+                return false;
+
+            IPackedFileDescriptor npfd = pfd.Clone();
+            npfd.UserData = p.Read(pfd).UncompressedData;
+            currentPackage.Add(npfd, true);
+
+            return true;
         }
 
         private void Main()
         {
-            #region Get body mesh package file name and open the package
-            String bodyMeshPackage = getFilename();
-            if (bodyMeshPackage == null) return;
-
-            IPackageFile p = SimPe.Packages.File.LoadFromFile(bodyMeshPackage);
-            if (p == null) return;
-            #endregion
-
-            #region Find the Property Set and get the name(s)
-            IPackedFileDescriptor[] pfa = p.FindFiles(SimPe.Data.MetaData.GZPS);
-            if (pfa == null || pfa.Length == 0)
-            {
-                MessageBox.Show("No Property Sets in package.", "Body Mesh Tool", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
-            }
-
             ArrayList al = new ArrayList();
-            bool prompted = false;
-            SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
-            for (int i = 0; i < pfa.Length; i++)
+
+            #region Prompt for mesh name or browse for package and extract names
+            GetMeshName gmn = new GetMeshName();
+            DialogResult dr = gmn.ShowDialog();
+            if (dr.Equals(DialogResult.OK))
             {
-                cpf.ProcessData(pfa[i], p);
-                for (int j = 0; j < cpf.Items.Length; j++)
+                if (gmn.MeshName.Length > 0)
+                    al.Add(gmn.MeshName);
+                else
+                    MessageBox.Show("No mesh name entered", "Sim Mesh Extractor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (dr.Equals(DialogResult.Retry)) // nasty...
+            {
+                #region Get body mesh package file name and open the package
+                String bodyMeshPackage = getFilename();
+                if (bodyMeshPackage == null) return;
+
+                IPackageFile p = SimPe.Packages.File.LoadFromFile(bodyMeshPackage);
+                if (p == null) return;
+                #endregion
+
+                #region Find the Property Set or XML Mesh Overlay
+                IPackedFileDescriptor[] pfa = p.FindFiles(SimPe.Data.MetaData.GZPS);
+                IPackedFileDescriptor[] pfb = p.FindFiles(0x0C1FE246); // XMOL?
+                if ((pfa == null || pfa.Length == 0) && (pfb == null || pfb.Length == 0))
                 {
-                    if (cpf.Items[j].Name.ToLower().Equals("name"))
-                        al.Add(cpf.Items[j].StringValue);
-                    if (al.Count > 10 && !prompted)
+                    MessageBox.Show("No Property Set or Mesh Overlay XML files in package.",
+                        "Sim Mesh Extractor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                #endregion
+
+                #region Get the mesh name(s)
+                bool prompted = false;
+                SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
+                for (int i = 0; i < pfa.Length + pfb.Length; i++)
+                {
+                    if (i < pfa.Length)
+                        cpf.ProcessData(pfa[i], p);
+                    else
+                        cpf.ProcessData(pfb[i - pfa.Length], p);
+
+                    for (int j = 0; j < cpf.Items.Length; j++)
                     {
-                        if (MessageBox.Show("More than 10 meshes found (did you pick the right package?)."
-                            + "\r\nImport resources for them all?", "Body Mesh Tool", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)
-                            != DialogResult.Yes)
-                            return;
-                        prompted = true;
+                        if (cpf.Items[j].Name.ToLower().Equals("name"))
+                            al.Add(cpf.Items[j].StringValue);
+                        if (al.Count > 1 && !prompted)
+                        {
+                            if (MessageBox.Show("Multiple meshes found (did you pick the right package?)."
+                                + "\r\nImport resources for them all?", "Sim Mesh Extractor", MessageBoxButtons.YesNo, MessageBoxIcon.Warning)
+                                != DialogResult.Yes)
+                                return;
+                            prompted = true;
+                        }
                     }
                 }
+                if (al.Count == 0)
+                {
+                    MessageBox.Show("No meshes in package.", "Sim Mesh Extractor", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                #endregion
             }
-
-            if (al.Count == 0)
-            {
-                MessageBox.Show("No meshes in package.", "Body Mesh Tool", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else
                 return;
-            }
-            #endregion
 
+            #endregion
 
             #region For each mesh, find the GMDC, GMND, SHPE and CRES and add them to the current package
 
             foreach (String m in al)
             {
                 SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
-                String mesh = m.Split('_')[0];
+                String[] ma = m.Split('_');
+                String mesh = ma[ma[0].Equals("CASIE") ? 1 : 0];
 
                 bool success = true
                     && findAndAdd(mesh, SimPe.Data.MetaData.GMDC, "Sims03.package")
@@ -173,7 +229,8 @@ namespace pj
                     ;
                 SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
                 if (!success)
-                    MessageBox.Show("Be aware that not all resources were added to the current package.", "Mesh " + m);
+                    MessageBox.Show("Mesh " + m + "\r\nBe aware that not all resources were added to the current package.",
+                        "Sim Mesh Extractor");
             }
             #endregion
         }
@@ -197,7 +254,7 @@ namespace pj
 
         public override string ToString()
         {
-            return "PJSE\\Body Mesh Tool";
+            return "PJSE\\Sim Mesh Extractor";
         }
 
         #endregion

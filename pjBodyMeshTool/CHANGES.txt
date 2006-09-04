@@ -1,4 +1,12 @@
 
+2006-09-04 19:59 Prompt for mesh name; search Holiday pack; change name to Sim Mesh Extractor
+	pjBodyMeshTool/
+		BodyMeshTool.cs 1.1.2.5
+		GetMeshName.cs 1.1.2.1
+		GetMeshName.Designer.cs 1.1.2.1
+		GetMeshName.resx 1.1.2.1
+		pjBodyMeshTool.csproj 1.1.2.4
+
 2006-09-03 20:12 Dynamically detect game folders; NET1/NET2 tidy-ups
 	pjBodyMeshTool/
 		BodyMeshTool.cs 1.1.2.4
