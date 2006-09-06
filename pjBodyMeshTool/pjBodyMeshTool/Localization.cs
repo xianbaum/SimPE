@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   Copyright (C) 2006 by Peter L Jones                                   *
  *   peter@drealm.info                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,26 +18,25 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using SimPe.Interfaces;
-using SimPe.Interfaces.Plugin;
+using System.Resources;
 
 namespace pj
 {
-    class BodyMeshTool : AbstractWrapperFactory, IToolFactory
+    public class L
     {
-        #region IToolFactory Members
+        private static ResourceManager resource = null;
 
-        public IToolPlugin[] KnownTools
+        static L() { resource = new ResourceManager(typeof(L)); }
+
+        public static string Get(string name)
         {
-            get
-            {
-                IToolPlugin[] tools = {
-                    new BodyMeshExtractor()
-                };
-                return tools;
-            }
+            string res = resource.GetString(name);
+#if DEBUG
+            if (res == null) res = "<<" + name + ">>";
+#else
+            if (res == null) res = name;
+#endif
+            return res;
         }
-
-        #endregion
     }
 }

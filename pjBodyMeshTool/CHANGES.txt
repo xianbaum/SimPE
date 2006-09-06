@@ -1,4 +1,15 @@
 
+2006-09-06 20:29 Localisation; change message; ym;yf->am/af; change menu; reorganise
+	pjBodyMeshTool/
+		BodyMeshExtractor.cs 1.1.2.1
+		BodyMeshTool.cs 1.1.2.6
+		GetMeshName.cs 1.1.2.2
+		GetMeshName.Designer.cs (deleted)
+		Localization.cs 1.1.2.1
+		Localization.resx 1.1.2.1
+		pjBodyMeshTool_NET1.csproj 1.1.2.3
+		pjBodyMeshTool.csproj 1.1.2.5
+
 2006-09-04 19:59 Prompt for mesh name; search Holiday pack; change name to Sim Mesh Extractor
 	pjBodyMeshTool/
 		BodyMeshTool.cs 1.1.2.5
