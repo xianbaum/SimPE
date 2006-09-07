@@ -10,6 +10,12 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+7 September 2006 19:09 - Filetable: use GetExecutableFolder(index); change source pkgname
+  pjse filetable\
+    FileTable.cs 1.11.2.15
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.18
+
 12 August 2006 11:22 - BHAV: Fix: list all attributes labels (even empty ones); Help: fix PieMenus
   SimPe BHAV\
     BhavWiz.cs 1.27.2.23
