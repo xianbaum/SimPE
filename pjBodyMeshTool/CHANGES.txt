@@ -1,4 +1,10 @@
 
+2006-09-07 11:53 Redesign form to include guidance note; tiny fix
+	pjBodyMeshTool/
+		BodyMeshExtractor.cs 1.1.2.2
+		GetMeshName.cs 1.1.2.3
+		GetMeshName.resx 1.1.2.2
+
 2006-09-06 20:29 Localisation; change message; ym;yf->am/af; change menu; reorganise
 	pjBodyMeshTool/
 		BodyMeshExtractor.cs 1.1.2.1

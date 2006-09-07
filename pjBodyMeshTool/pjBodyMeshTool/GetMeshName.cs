@@ -27,11 +27,13 @@ namespace pj
 {
     public class GetMeshName : Form
     {
-		private System.Windows.Forms.TextBox tbMeshName;
-		private System.Windows.Forms.Button btnCancel;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Button btnBrowse;
-		private System.Windows.Forms.Button btnOK;
+        private Label label1;
+        private TextBox tbMeshName;
+        private Label label2;
+        private Button btnOK;
+        private Button btnBrowse;
+        private Button btnCancel;
+        private Label label3;
  
 		/// <summary>
         /// Required designer variable.
@@ -60,17 +62,47 @@ namespace pj
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GetMeshName));
-            this.tbMeshName = new System.Windows.Forms.TextBox();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.btnBrowse = new System.Windows.Forms.Button();
+            this.tbMeshName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
+            this.btnBrowse = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // tbMeshName
             // 
             resources.ApplyResources(this.tbMeshName, "tbMeshName");
             this.tbMeshName.Name = "tbMeshName";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // btnOK
+            // 
+            resources.ApplyResources(this.btnOK, "btnOK");
+            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOK.Name = "btnOK";
+#if !NET1
+            this.btnOK.UseVisualStyleBackColor = true;
+#endif
+            // 
+            // btnBrowse
+            // 
+            resources.ApplyResources(this.btnBrowse, "btnBrowse");
+            this.btnBrowse.DialogResult = System.Windows.Forms.DialogResult.Retry;
+            this.btnBrowse.Name = "btnBrowse";
+#if !NET1
+            this.btnBrowse.UseVisualStyleBackColor = true;
+#endif
             // 
             // btnCancel
             // 
@@ -81,29 +113,11 @@ namespace pj
             this.btnCancel.UseVisualStyleBackColor = true;
 #endif
             // 
-            // label1
+            // label3
             // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
             // 
-            // btnBrowse
-            // 
-            resources.ApplyResources(this.btnBrowse, "btnBrowse");
-            this.btnBrowse.DialogResult = System.Windows.Forms.DialogResult.Retry;
-            this.btnBrowse.Name = "btnBrowse";
-#if !NET1
-            this.btnBrowse.UseVisualStyleBackColor = true;
-#endif
-			// 
-            // btnOK
-            // 
-            resources.ApplyResources(this.btnOK, "btnOK");
-            this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnOK.Name = "btnOK";
-#if !NET1
-            this.btnOK.UseVisualStyleBackColor = true;
-#endif
-			// 
             // GetMeshName
             // 
             this.AcceptButton = this.btnOK;
@@ -111,13 +125,18 @@ namespace pj
 #if !NET1
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 #endif
-			this.CancelButton = this.btnCancel;
-            this.Controls.Add(this.label1);
+            this.CancelButton = this.btnCancel;
+            this.ControlBox = false;
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnBrowse);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.tbMeshName);
+            this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "GetMeshName";
+            this.ShowInTaskbar = false;
             this.ResumeLayout(false);
             this.PerformLayout();
 

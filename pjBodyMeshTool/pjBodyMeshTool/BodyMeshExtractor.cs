@@ -153,7 +153,10 @@ namespace pj
                 if (gmn.MeshName.Length > 0)
                     al.Add(gmn.MeshName);
                 else
+                {
                     MessageBox.Show(L.Get("noMeshName"), L.Get("pjSME"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
             else if (dr.Equals(DialogResult.Retry)) // nasty...
             {
