@@ -45,7 +45,7 @@ namespace pj
             ofd.Multiselect = false;
             ofd.ReadOnlyChecked = true;
             ofd.ShowHelp = ofd.ShowReadOnly = false;
-            ofd.Title = L.Get("selectPkg");
+            ofd.Title = L.Get("selectPkgTexture");
             ofd.ValidateNames = true;
             DialogResult dr = ofd.ShowDialog();
             if (DialogResult.OK.Equals(dr))
@@ -56,6 +56,7 @@ namespace pj
         private static String SimsPath = SimPe.Helper.WindowsRegistry.GetExecutableFolder(0);
         private static ArrayList paths = new ArrayList();
         private static ArrayList packs = new ArrayList();
+
         static BodyMeshExtractor()
         {
             paths.Insert(0, SimsPath);

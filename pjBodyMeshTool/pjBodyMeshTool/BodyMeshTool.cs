@@ -31,10 +31,10 @@ namespace pj
         {
             get
             {
-                IToolPlugin[] tools = {
+                return new IToolPlugin[] {
                     new BodyMeshExtractor()
+                    , new BodyMeshLinker()
                 };
-                return tools;
             }
         }
 

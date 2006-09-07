@@ -1,4 +1,12 @@
 
+2006-09-07 21:56 Body Mesh Linker (NET2)
+	pjBodyMeshTool/
+		BodyMeshExtractor.cs 1.1.2.4
+		BodyMeshLinker.cs 1.1.2.1
+		BodyMeshTool.cs 1.1.2.7
+		Localization.cs 1.1.2.2
+		pjBodyMeshTool.csproj 1.1.2.6
+
 2006-09-07 14:56 Put SPs before EPs; try all resources
 	pjBodyMeshTool/
 		BodyMeshExtractor.cs 1.1.2.3
