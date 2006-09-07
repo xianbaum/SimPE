@@ -1,4 +1,8 @@
 
+2006-09-07 14:56 Put SPs before EPs; try all resources
+	pjBodyMeshTool/
+		BodyMeshExtractor.cs 1.1.2.3
+
 2006-09-07 11:53 Redesign form to include guidance note; tiny fix
 	pjBodyMeshTool/
 		BodyMeshExtractor.cs 1.1.2.2

@@ -60,13 +60,13 @@ namespace pj
         {
             paths.Insert(0, SimsPath);
 
-            for (int maxSP = 0x00010000; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Equals(SimsPath); maxSP += 0x00010000)
-                if (SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Length > 0)
-                    paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP));
-
             for (int maxEP = 1; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP).Equals(SimsPath); maxEP++)
                 if (SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP).Length > 0)
                     paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP));
+
+            for (int maxSP = 0x00010000; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Equals(SimsPath); maxSP += 0x00010000)
+                if (SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Length > 0)
+                    paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP));
 
             foreach (String path in paths)
             {
@@ -220,18 +220,17 @@ namespace pj
 
             foreach (String m in al)
             {
-                SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
                 String[] ma = m.Split('_');
                 String mesh = ma[ma[0].Equals("CASIE") ? 1 : 0];
                 if (mesh.ToLower().StartsWith("ym")) mesh = "am" + mesh.Substring(2);
                 if (mesh.ToLower().StartsWith("yf")) mesh = "af" + mesh.Substring(2);
 
-                bool success = true
-                    && findAndAdd(mesh, SimPe.Data.MetaData.GMDC, "Sims03.package")
-                    && findAndAdd(mesh, SimPe.Data.MetaData.GMND, "Sims04.package")
-                    && findAndAdd(mesh, SimPe.Data.MetaData.SHPE, "Sims05.package")
-                    && findAndAdd(mesh, SimPe.Data.MetaData.CRES, "Sims06.package")
-                    ;
+                bool success = true;
+                SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
+                success = success && findAndAdd(mesh, SimPe.Data.MetaData.GMDC, "Sims03.package");
+                success = success && findAndAdd(mesh, SimPe.Data.MetaData.GMND, "Sims04.package");
+                success = success && findAndAdd(mesh, SimPe.Data.MetaData.SHPE, "Sims05.package");
+                success = success && findAndAdd(mesh, SimPe.Data.MetaData.CRES, "Sims06.package");
                 SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
                 if (!success)
                     MessageBox.Show(L.Get("notAllPartsFound") + m,
