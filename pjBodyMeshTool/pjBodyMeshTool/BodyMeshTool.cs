@@ -33,7 +33,7 @@ namespace pj
             {
                 return new IToolPlugin[] {
                     new BodyMeshExtractor()
-                    , new BodyMeshLinker()
+                    //, new BodyMeshLinker()
                 };
             }
         }

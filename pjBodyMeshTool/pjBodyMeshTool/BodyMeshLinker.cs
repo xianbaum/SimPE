@@ -59,6 +59,19 @@ namespace pj
         {
             SimPe.Plugin.RefFile refFile = new SimPe.Plugin.RefFile();
             refFile.ProcessData(refFilePFD, currentPackage);
+
+            LinkBodyMesh(refFile);
+
+            refFile.SynchronizeUserData();
+            MessageBox.Show(L.Get("done") + meshPackage,
+                L.Get("pjSML"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+
+
+
+        public void LinkBodyMesh(SimPe.Plugin.RefFile refFile)
+        {
             if (refFile.Items[0].Type != SimPe.Data.MetaData.CRES
                 || refFile.Items[1].Type != SimPe.Data.MetaData.SHPE)
             {
@@ -93,10 +106,6 @@ namespace pj
             refFile.Items[1].Group = pfb[0].Group;
             refFile.Items[1].SubType = pfb[0].SubType;
             refFile.Items[1].Instance = pfb[0].Instance;
-
-            refFile.SynchronizeUserData();
-            MessageBox.Show(L.Get("done") + meshPackage,
-                L.Get("pjSML"), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         #region ITool Members

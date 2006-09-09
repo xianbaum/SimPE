@@ -1,4 +1,9 @@
 
+2006-09-09 16:35 Body Mesh Linker (NET2) - disable for now
+	pjBodyMeshTool/
+		BodyMeshLinker.cs 1.1.2.2
+		BodyMeshTool.cs 1.1.2.8
+
 2006-09-07 21:56 Body Mesh Linker (NET2)
 	pjBodyMeshTool/
 		BodyMeshExtractor.cs 1.1.2.4
