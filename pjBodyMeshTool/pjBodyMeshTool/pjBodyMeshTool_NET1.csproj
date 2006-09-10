@@ -126,6 +126,12 @@
                     HintPath = "..\..\SimPe\simpe.package.dll"
                     Private = "False"
                 />
+                <Reference
+                    Name = "simpe.scenegraph"
+                    AssemblyName = "simpe.scenegraph"
+                    HintPath = "..\..\SimPe\simpe.scenegraph.dll"
+                    Private = "False"
+                />
             </References>
         </Build>
         <Files>
@@ -137,6 +143,11 @@
                 />
                 <File
                     RelPath = "BodyMeshExtractor.cs"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "BodyMeshLinker.cs"
                     SubType = "Code"
                     BuildAction = "Compile"
                 />
