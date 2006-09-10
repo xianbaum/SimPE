@@ -118,15 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="badMeshPackage" xml:space="preserve">
-    <value>Could not use this package.
-Either zero or multiple CRES or SHPE resources were found.</value>
+    <value>Could not use this package.  Either zero or multiple CRES or SHPE resources were found.</value>
   </data>
   <data name="didNotOpen" xml:space="preserve">
-    <value>Package did not open: </value>
-  </data>
-  <data name="done" xml:space="preserve">
-    <value>The process is complete.
-Please close and open the 3IDR file in SimPE to pick up the changes.</value>
+    <value>Chosen package did not open.</value>
   </data>
   <data name="multipleMeshes" xml:space="preserve">
     <value>Multiple meshes found (did you pick the right package?).
@@ -158,6 +153,12 @@ Import resources for them all?</value>
   </data>
   <data name="pjSML" xml:space="preserve">
     <value>Sim Mesh Linker</value>
+  </data>
+  <data name="pjSMLbegin" xml:space="preserve">
+    <value>After beginning linking, you will be asked to close your 3IDR resource without committing; so if you have changes to save, please click Cancel and do so first.   Otherwise click OK to browse to your mesh file.</value>
+  </data>
+  <data name="pjSMLdone" xml:space="preserve">
+    <value>Now close your 3IDR resource, without committing, by opening a different resource.  After that you can continue as normal.   Remember to save.</value>
   </data>
   <data name="pkgFilter" xml:space="preserve">
     <value>Package file|*.package|All files|*.*</value>

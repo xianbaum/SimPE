@@ -56,21 +56,17 @@ namespace pj
         private static String SimsPath = SimPe.Helper.WindowsRegistry.GetExecutableFolder(0);
         private static ArrayList paths = new ArrayList();
         private static ArrayList packs = new ArrayList();
+        private static int[] epOrder = { 0x00030000, 4, 0x00020000, 0x00010000, 3, 2, 1, 0 };
 
         static BodyMeshExtractor()
         {
-            paths.Insert(0, SimsPath);
-
-            for (int maxEP = 1; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP).Equals(SimsPath); maxEP++)
-                if (SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP).Length > 0)
-                    paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP));
-
-            for (int maxSP = 0x00010000; !SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Equals(SimsPath); maxSP += 0x00010000)
-                if (SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP).Length > 0)
-                    paths.Insert(0, SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP));
-
-            foreach (String path in paths)
+            for (int i = 0; i < epOrder.Length; i++)
             {
+                String path = SimPe.Helper.WindowsRegistry.GetExecutableFolder(epOrder[i]);
+                if (path.Length == 0 || (epOrder[i] != 0 && path.Equals(SimsPath)))
+                    continue;
+                paths.Add(path);
+
                 string[] va = Directory.GetFiles(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), "*.package");
                 foreach (String pkg in va)
                 {

@@ -1,4 +1,11 @@
 
+2006-09-10 13:13 Reintroduce/update Linker (NET2); make Extractor search in order
+	pjBodyMeshTool/
+		BodyMeshExtractor.cs 1.1.2.5
+		BodyMeshLinker.cs 1.1.2.3
+		BodyMeshTool.cs 1.1.2.9
+		Localization.resx 1.1.2.3
+
 2006-09-09 16:35 Body Mesh Linker (NET2) - disable for now
 	pjBodyMeshTool/
 		BodyMeshLinker.cs 1.1.2.2

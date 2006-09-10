@@ -57,47 +57,52 @@ namespace pj
 
         private void Main()
         {
+            if (!MessageBox.Show(L.Get("pjSMLbegin"),
+                L.Get("pjSML"), MessageBoxButtons.OKCancel, MessageBoxIcon.Information).Equals(DialogResult.OK))
+                return;
+
             SimPe.Plugin.RefFile refFile = new SimPe.Plugin.RefFile();
             refFile.ProcessData(refFilePFD, currentPackage);
 
-            LinkBodyMesh(refFile);
-
-            refFile.SynchronizeUserData();
-            MessageBox.Show(L.Get("done") + meshPackage,
-                L.Get("pjSML"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (LinkBodyMesh(refFile))
+            {
+                refFile.SynchronizeUserData();
+                MessageBox.Show(L.Get("pjSMLdone"),
+                    L.Get("pjSML"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
-
-
-
-        public void LinkBodyMesh(SimPe.Plugin.RefFile refFile)
+        public bool LinkBodyMesh(SimPe.Plugin.RefFile refFile)
         {
             if (refFile.Items[0].Type != SimPe.Data.MetaData.CRES
                 || refFile.Items[1].Type != SimPe.Data.MetaData.SHPE)
             {
                 MessageBox.Show(L.Get("noCRESSHPE"),
                     L.Get("pjSML"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                return false;
             }
 
             String meshPackage = getFilename();
             if (meshPackage == null || meshPackage.Length == 0)
-                return;
-            IPackageFile p = SimPe.Packages.File.LoadFromFile(meshPackage);
+                return false;
+
+            IPackageFile p = null;
+            try { p = SimPe.Packages.File.LoadFromFile(meshPackage); }
+            catch { p = null; }
             if (p == null)
             {
-                MessageBox.Show(L.Get("didNotOpen") + meshPackage,
+                MessageBox.Show(L.Get("didNotOpen") + "\r\n" + meshPackage,
                     L.Get("pjSML"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                return false;
             }
 
             IPackedFileDescriptor[] pfa = p.FindFiles(SimPe.Data.MetaData.CRES);
             IPackedFileDescriptor[] pfb = p.FindFiles(SimPe.Data.MetaData.SHPE);
             if (pfa == null || pfa.Length != 1 || pfb == null || pfb.Length != 1)
             {
-                MessageBox.Show(L.Get("badMeshPackage") + meshPackage,
+                MessageBox.Show(L.Get("badMeshPackage") + "\r\n" + meshPackage,
                     L.Get("pjSML"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                return false;
             }
 
             refFile.Items[0].Group = pfa[0].Group;
@@ -106,6 +111,8 @@ namespace pj
             refFile.Items[1].Group = pfb[0].Group;
             refFile.Items[1].SubType = pfb[0].SubType;
             refFile.Items[1].Instance = pfb[0].Instance;
+
+            return true;
         }
 
         #region ITool Members
