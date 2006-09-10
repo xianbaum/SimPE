@@ -57,7 +57,10 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.scenegraph, Version=1.0.2437.22378, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="simpe.scenegraph, Version=1.0.2437.22378, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="simpe.workspace, Version=1.0.2302.1286, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
