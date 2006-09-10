@@ -10,6 +10,10 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+10 September 2006 13:15 - Filetable: search using hard-coded order for now
+  pjse filetable\
+    FileTable.cs 1.11.2.17
+
 9 September 2006 11:46 - Filetable: use only last-created objects.package
   pjse filetable\
     FileTable.cs 1.11.2.16

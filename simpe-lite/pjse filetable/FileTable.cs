@@ -97,62 +97,45 @@ namespace pjse
             OnFiletableRefresh(this, new EventArgs());
         }
 
+        private static int[] epOrder = { 0x00030000, 4, 0x00020000, 0x00010000, 3, 2, 1, 0 };
         private void AddFixedMaxis()
         {
             defaultFolders = SimPe.FileTable.DefaultFolders; // in case they've been updated
-            ArrayList packs = new ArrayList();
 
             String SimsPath = SimPe.Helper.WindowsRegistry.GetExecutableFolder(0);
-            String LatestOP = Path.Combine(SimsPath, "TSData\\Res\\Objects\\objects.package");
-            int maxEP = 1;
-            for (String path = SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxEP); path != SimsPath;
-                path = SimPe.Helper.WindowsRegistry.GetExecutableFolder(++maxEP))
-            {
-                if (path.Length > 0)
-                {
-                    String o = Path.Combine(path, "TSData\\Res\\Objects");
-                    if (Directory.Exists(o) && !isIgnored(o))
-                    {
-                        String pkg = Path.Combine(o, "objects.package");
-                        if (File.Exists(pkg) && File.GetCreationTime(LatestOP) < File.GetCreationTime(pkg))
-                            LatestOP = pkg;
-                    }
+            bool addedOP = false;
 
-                    o = Path.Combine(path, "TSData\\Res\\Catalog\\Bins");
-                    if (Directory.Exists(o) && !isIgnored(o))
+            for (int i = 0; i < epOrder.Length; i++)
+            {
+                String path = SimPe.Helper.WindowsRegistry.GetExecutableFolder(epOrder[i]);
+                if (path.Length == 0 || (epOrder[i] != 0 && path.Equals(SimsPath)))
+                    continue;
+
+                String o;
+                if (!addedOP)
+                {
+                    o = Path.Combine(path, "TSData\\Res\\Objects");
+                    if (!Directory.Exists(o) || isIgnored(o))
+                        continue;
+
+                    String pkg = Path.Combine(o, "objects.package");
+                    if (File.Exists(pkg))
                     {
-                        string[] va = Directory.GetFiles(o, "*.package");
-                        foreach (String pkg in va)
-                            if (!pkg.ToLower().Equals("globalcatbin.bundle.package"))
-                                AddFixed(pkg);
+                        AddFixed(pkg);
+                        addedOP = true;
                     }
                 }
-            }
-            int maxSP = 0x00010000;
-            for (String path = SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP); path != SimsPath;
-                path = SimPe.Helper.WindowsRegistry.GetExecutableFolder(maxSP += 0x00010000))
-            {
-                if (path.Length > 0)
-                {
-                    String o = Path.Combine(path, "TSData\\Res\\Objects");
-                    if (Directory.Exists(o) && !isIgnored(o))
-                    {
-                        String pkg = Path.Combine(o, "objects.package");
-                        if (File.Exists(pkg) && File.GetCreationTime(LatestOP) < File.GetCreationTime(pkg))
-                            LatestOP = pkg;
-                    }
 
-                    o = Path.Combine(path, "TSData\\Res\\Catalog\\Bins");
-                    if (Directory.Exists(o) && !isIgnored(o))
-                    {
-                        string[] va = Directory.GetFiles(o, "*.package");
-                        foreach (String pkg in va)
-                            if (!pkg.ToLower().Equals("globalcatbin.bundle.package"))
-                                AddFixed(pkg);
-                    }
-                }
+
+                o = Path.Combine(path, "TSData\\Res\\Catalog\\Bins");
+                if (!Directory.Exists(o) || isIgnored(o))
+                    continue;
+
+                string[] va = Directory.GetFiles(o, "*.package");
+                foreach (String pkg in va)
+                    if (!pkg.ToLower().Equals("globalcatbin.bundle.package"))
+                        AddFixed(pkg);
             }
-            AddFixed(LatestOP);
         }
 
         private ArrayList defaultFolders = SimPe.FileTable.DefaultFolders;
