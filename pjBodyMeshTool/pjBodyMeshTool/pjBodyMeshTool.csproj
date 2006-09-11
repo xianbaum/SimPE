@@ -31,13 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="simpe.3idr, Version=1.0.2370.36230, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="simpe.commonhandler, Version=1.0.2370.36224, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.3idr, Version=1.0.2370.36230, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SimPe\simpe.commonhandler.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.filehandler, Version=1.0.2370.36229, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.commonhandler, Version=1.0.2302.1285, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.filehandler, Version=1.0.2302.1288, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="simpe.helper, Version=0.59.10.36224, Culture=neutral, processorArchitecture=MSIL">
@@ -50,14 +53,16 @@
       <HintPath>..\..\SimPe\simpe.interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.package, Version=1.0.2370.36226, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.package, Version=1.0.2302.1285, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SimPe\simpe.package.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.workspace, Version=1.0.2370.36226, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.scenegraph, Version=1.0.2437.22378, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\SimPe\simpe.workspace.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.workspace, Version=1.0.2302.1286, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -67,8 +72,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BodyMeshExtractor.cs" />
+    <Compile Include="BodyMeshLinker.cs" />
     <Compile Include="BodyMeshTool.cs" />
+    <Compile Include="GetMeshName.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Localization.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="GetMeshName.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>GetMeshName.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Localization.resx">
+      <DependentUpon>Localization.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -80,7 +103,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>set base=$(TargetName)-$(ConfigurationName)
-set src=Source-$(ConfigurationName)
+set src=$(TargetName)-Source
 set mydate=%25date%25
 set dd=%25mydate:~0,2%25
 set mm=%25mydate:~3,2%25
