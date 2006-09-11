@@ -407,7 +407,7 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>set base=$(TargetName)-$(ConfigurationName)
-set src=Source-$(ConfigurationName)
+set src=$(TargetName)-Source
 set mydate=%25date%25
 set dd=%25mydate:~0,2%25
 set mm=%25mydate:~3,2%25
