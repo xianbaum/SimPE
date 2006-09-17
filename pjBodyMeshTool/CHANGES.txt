@@ -1,4 +1,11 @@
 
+2006-09-17 12:51 Add hook into help (Inge to supply help)
+	pjBodyMeshTool/
+		BodyMeshHelp.cs 1.1.2.1
+		BodyMeshTool.cs 1.1.2.10
+		pjBodyMeshTool_NET1.csproj 1.1.2.5
+		pjBodyMeshTool.csproj 1.1.2.8
+
 2006-09-10 14:05 Body Mesh Linker (NET1)
 	pjBodyMeshTool/
 		pjBodyMeshTool_NET1.csproj 1.1.2.4

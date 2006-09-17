@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BodyMeshExtractor.cs" />
+    <Compile Include="BodyMeshHelp.cs" />
     <Compile Include="BodyMeshLinker.cs" />
     <Compile Include="BodyMeshTool.cs" />
     <Compile Include="GetMeshName.cs">
