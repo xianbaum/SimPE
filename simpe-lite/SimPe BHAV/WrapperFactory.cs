@@ -34,7 +34,7 @@ namespace SimPe.Plugin
 	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-    public class WrapperFactory : AbstractWrapperFactory, IToolFactory, IHelpFactory, ISettingsFactory
+    public class WrapperFactory : AbstractWrapperFactory, IHelpFactory, ISettingsFactory
 	{
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
@@ -44,7 +44,7 @@ namespace SimPe.Plugin
 		{
 			get 
 			{
-				IWrapper[] wrappers = {
+				return new IWrapper[] {
 										   new Bcon()
 										  ,new Bhav()
 										  ,new Objf()
@@ -53,55 +53,8 @@ namespace SimPe.Plugin
 										  ,new Trcn()
 										  ,new Ttab()
 									  };
-				return wrappers;
 			}
 		}
-
-
-		#region IToolFactory Members
-
-		class tool : ITool
-		{
-			#region ITool Members
-
-			public bool IsEnabled(SimPe.Interfaces.Files.IPackedFileDescriptor pfd, SimPe.Interfaces.Files.IPackageFile package)
-			{
-				return true;
-			}
-
-			public IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
-			{
-				pjse.HelpHelper.Help("Contents");
-				return new SimPe.Plugin.ToolResult(false, false);
-			}
-
-			#region IToolPlugin Members
-
-			public override string ToString()
-			{
-				return "PJSE\\" + pjse.Localization.GetString("menuhelp");
-			}
-
-			#endregion
-
-			#endregion
-
-		}
-
-
-		public IToolPlugin[] KnownTools
-		{
-			get
-			{
-				ITool[] tools = {
-									new tool()
-								};
-				return tools;
-			}
-		}
-
-
-		#endregion
 
 		#region IHelpFactory Members
 

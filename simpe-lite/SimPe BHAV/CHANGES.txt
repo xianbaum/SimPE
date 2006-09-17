@@ -10,6 +10,10 @@
 !!! stole BhavStr STR# 0x1eb for Debug type (0x72)
 !!! stole BhavStr STR# 0x1ea for Ages (0x75)
 
+17 September 2006 13:32 - Help: Remove from Tools->PJSE menu
+  SimPe BHAV\
+    WrapperFactory.cs 1.20.2.11
+
 17 September 2006 12:18 - Help: Removed help files (Inge to manage)
   SimPe BHAV\
     pjse coder plugin.csproj 1.29.2.19
