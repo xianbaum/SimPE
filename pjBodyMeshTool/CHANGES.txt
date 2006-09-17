@@ -1,4 +1,8 @@
 
+2006-09-17 14:54 Oops, fix up NET1 help folder
+	pjBodyMeshTool/
+		BodyMeshHelp.cs 1.1.2.3
+
 2006-09-17 13:38 Oops, make menu entry localisable (and add "PJ")
 	pjBodyMeshTool/
 		BodyMeshHelp.cs 1.1.2.2

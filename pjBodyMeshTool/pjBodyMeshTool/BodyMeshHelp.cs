@@ -28,8 +28,12 @@ namespace pj
 
         public void ShowHelp(SimPe.ShowHelpEventArgs e)
         {
-            string relativePathToHelp = "pjBodyMeshTool.plugin/pjBodyMeshTool_Help";
-            SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.SimPePluginPath + "/" + relativePathToHelp + "/Contents.htm");
+#if NET1
+			string relativePathToHelp = "pjBodyMeshTool_NET1.plugin/pjBodyMeshTool_Help";
+#else
+			string relativePathToHelp = "pjBodyMeshTool.plugin/pjBodyMeshTool_Help";
+#endif
+			SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.SimPePluginPath + "/" + relativePathToHelp + "/Contents.htm");
         }
 
         public override string ToString() { return L.Get("pjBMTHelp"); }
