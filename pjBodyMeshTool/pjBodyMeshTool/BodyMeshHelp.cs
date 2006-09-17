@@ -19,33 +19,26 @@
  ***************************************************************************/
 using System;
 using SimPe.Interfaces;
-using SimPe.Interfaces.Plugin;
 
 namespace pj
 {
-    class BodyMeshTool : AbstractWrapperFactory, IToolFactory, IHelpFactory
+    class BodyMeshHelp : IHelp
     {
-        #region IToolFactory Members
+        #region IHelp Members
 
-        public IToolPlugin[] KnownTools
+        public void ShowHelp(SimPe.ShowHelpEventArgs e)
         {
-            get
-            {
-                return new IToolPlugin[] {
-                    new BodyMeshExtractor()
-                    , new BodyMeshLinker()
-                };
-            }
+#if NET1
+			string relativePathToHelp = "pjBodyMeshTool_NET1.plugin/pjBodyMeshTool_Help";
+#else
+			string relativePathToHelp = "pjBodyMeshTool.plugin/pjBodyMeshTool_Help";
+#endif
+			SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.SimPePluginPath + "/" + relativePathToHelp + "/Contents.htm");
         }
 
-        #endregion
+        public override string ToString() { return L.Get("pjBMTHelp"); }
 
-        #region IHelpFactory Members
-
-        public IHelp[] KnownHelpTopics
-        {
-            get { return new IHelp[] { new BodyMeshHelp() }; }
-        }
+        public System.Drawing.Image Icon { get { return null; } }
 
         #endregion
     }
