@@ -1,4 +1,9 @@
 
+2006-09-17 13:38 Oops, make menu entry localisable (and add "PJ")
+	pjBodyMeshTool/
+		BodyMeshHelp.cs 1.1.2.2
+		Localizatiom.resx 1.1.2.4
+
 2006-09-17 12:51 Add hook into help (Inge to supply help)
 	pjBodyMeshTool/
 		BodyMeshHelp.cs 1.1.2.1

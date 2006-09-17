@@ -145,6 +145,9 @@ Import resources for them all?</value>
   <data name="pjBMTExtract" xml:space="preserve">
     <value>PJSE\Body Mesh Tool\Extracting stage</value>
   </data>
+  <data name="pjBMTHelp" xml:space="preserve">
+    <value>PJ Body Mesh Tool</value>
+  </data>
   <data name="pjBMTLink" xml:space="preserve">
     <value>PJSE\Body Mesh Tool\Linking stage</value>
   </data>

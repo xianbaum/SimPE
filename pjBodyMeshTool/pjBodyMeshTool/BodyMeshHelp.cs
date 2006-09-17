@@ -32,7 +32,7 @@ namespace pj
             SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.SimPePluginPath + "/" + relativePathToHelp + "/Contents.htm");
         }
 
-        public override string ToString() { return "Body Mesh Tool"; }
+        public override string ToString() { return L.Get("pjBMTHelp"); }
 
         public System.Drawing.Image Icon { get { return null; } }
 
