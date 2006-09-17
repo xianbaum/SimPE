@@ -430,7 +430,7 @@ tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
 
 (cd ..
 tar c LICENSE.txt *.package) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
-tar c --exclude=CVS CHANGES.txt PJSE_Help | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+tar c --exclude=CVS CHANGES.txt | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 
 tar c Plugins | (cd ..\..\SimPe
 tar xv)
