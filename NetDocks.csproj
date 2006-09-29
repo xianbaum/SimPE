@@ -4,10 +4,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>d03c55a5-0f78-460c-a78f-0dbf3c08f6fb</ProjectGuid>
+    <ProjectGuid>{F65B296C-6435-4AA9-A5DF-188BE363C43E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetDocks</RootNamespace>
+    <RootNamespace>Floaters</RootNamespace>
     <AssemblyName>NetDocks</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,14 +35,90 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UserControl1.cs">
+    <Compile Include="BaseControlRenderer.cs" />
+    <Compile Include="BaseDockPanelRenderer.cs" />
+    <Compile Include="BaseFontTable.cs" />
+    <Compile Include="BaseRenderer.cs" />
+    <Compile Include="DockAnimationEventArgs.cs" />
+    <Compile Include="DockButtonBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl1.Designer.cs">
-      <DependentUpon>UserControl1.cs</DependentUpon>
+    <Compile Include="DockButtonBar.Designer.cs">
+      <DependentUpon>DockButtonBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockHint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockOverlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockPanel.Designer.cs">
+      <DependentUpon>DockPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanelButtonManager.cs" />
+    <Compile Include="DockPanelCaptionButton.cs" />
+    <Compile Include="DockPanelCloseButton.cs" />
+    <Compile Include="DockPanelCollapseButton.cs" />
+    <Compile Include="IButtonContainer.cs" />
+    <Compile Include="IColorTable.cs" />
+    <Compile Include="IControlRenderer.cs" />
+    <Compile Include="IDockPanelRenderer.cs" />
+    <Compile Include="IDockTarget.cs" />
+    <Compile Include="IFontTable.cs" />
+    <Compile Include="IRenderDockHints.cs" />
+    <Compile Include="LayeredForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NCHittestEventArgs.cs" />
+    <Compile Include="NCPaintEventArgs.cs" />
+    <Compile Include="NCResizeBorders.cs" />
+    <Compile Include="NCUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NCUserControl.Designer.cs">
+      <DependentUpon>NCUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WhidbeyColorTable.cs" />
+    <Compile Include="WhidbeyFontTable.cs" />
+    <Compile Include="WhidbeyRenderDockHints.cs" />
+    <Compile Include="WhidbeyRenderDockPanel.cs" />
+    <Compile Include="WhidbeyRenderer.cs" />
+    <Compile Include="WinApiHelper.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="bottom.png" />
+    <EmbeddedResource Include="closeX.png" />
+    <EmbeddedResource Include="closeX_f.png" />
+    <EmbeddedResource Include="dockhint.PNG" />
+    <EmbeddedResource Include="left.png" />
+    <EmbeddedResource Include="pinD.png" />
+    <EmbeddedResource Include="pinD_f.png" />
+    <EmbeddedResource Include="pinH.png" />
+    <EmbeddedResource Include="pinH_f.png" />
+    <EmbeddedResource Include="pinV.png" />
+    <EmbeddedResource Include="pinV_f.png" />
+    <EmbeddedResource Include="right.png" />
+    <EmbeddedResource Include="top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DockContainer.resx">
+      <DependentUpon>DockContainer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
