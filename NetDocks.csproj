@@ -30,6 +30,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
@@ -39,6 +40,8 @@
     <Compile Include="BaseDockPanelRenderer.cs" />
     <Compile Include="BaseFontTable.cs" />
     <Compile Include="BaseRenderer.cs" />
+    <Compile Include="DockManagerDesigner.cs">
+    </Compile>
     <Compile Include="DockAnimationEventArgs.cs" />
     <Compile Include="DockButtonBar.cs">
       <SubType>UserControl</SubType>
@@ -62,7 +65,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DockPanel.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="DockPanel.Designer.cs">
       <DependentUpon>DockPanel.cs</DependentUpon>
@@ -71,6 +74,7 @@
     <Compile Include="DockPanelCaptionButton.cs" />
     <Compile Include="DockPanelCloseButton.cs" />
     <Compile Include="DockPanelCollapseButton.cs" />
+    <Compile Include="DockPanelDesigner.cs" />
     <Compile Include="IButtonContainer.cs" />
     <Compile Include="IColorTable.cs" />
     <Compile Include="IControlRenderer.cs" />
@@ -78,6 +82,7 @@
     <Compile Include="IDockTarget.cs" />
     <Compile Include="IFontTable.cs" />
     <Compile Include="IRenderDockHints.cs" />
+    <Compile Include="DockContainerDesigner.cs" />
     <Compile Include="LayeredForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -85,7 +90,7 @@
     <Compile Include="NCPaintEventArgs.cs" />
     <Compile Include="NCResizeBorders.cs" />
     <Compile Include="NCUserControl.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="NCUserControl.Designer.cs">
       <DependentUpon>NCUserControl.cs</DependentUpon>

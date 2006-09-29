@@ -28,19 +28,22 @@ using System.Runtime.InteropServices;
 
 namespace Floaters
 {
-    
+
+    [Designer(typeof(DockContainerDesigner))]
     public partial class DockPanel : NCUserControl
     {
         List<DockPanelCaptionButton> cbuttons;
         DockPanelCollapseButton collapse;
         DockPanelCloseButton close;
+
         public DockPanel(DockManager manager) : base()
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.ContainerControl, true);
             seperateindockbar = false;
             canundock = true;
 
-            this.manager = manager;
+            SetManager(manager);
             this.DragBorder = false;
             this.ResizeBorder.Left = false;
             this.ResizeBorder.Right = false;
@@ -48,10 +51,15 @@ namespace Floaters
             this.ResizeBorder.Bottom = false;
             
 
-            InitializeComponent();
-
-            this.NonClientMargin = manager.Renderer.DockPanelRenderer.GetPanelBorderSize(BestOrientation);
+            InitializeComponent();            
             SetupCaptionButtons();
+        }
+
+        public DockPanel() : this(null) { }
+        internal void SetManager(DockManager manager)
+        {
+            this.manager = manager;
+            if (manager != null) this.NonClientMargin = manager.Renderer.DockPanelRenderer.GetPanelBorderSize(BestOrientation);
         }
 
         private void SetupCaptionButtons()
@@ -82,7 +90,7 @@ namespace Floaters
         public DockManager Manager
         {
             get { return manager; }
-            set { manager = value; }
+            set { SetManager(value); }
         }
 
         bool canundock;
@@ -104,6 +112,13 @@ namespace Floaters
         public DockContainer DockContainer
         {
             get { return Parent as DockContainer; }
+            set
+            {
+                if (value != Parent)
+                {
+                    DockControl(value);
+                }
+            }
         }
 
         public Size GetButtonSize()
@@ -191,9 +206,9 @@ namespace Floaters
         /// Makes sure, that this Panel is the visible one in the container
         /// </summary>
         public void EnsureVisible()
-        {            
+        {
             if (DockContainer != null)
-            {                
+            {
                 //Console.WriteLine("Changed Highlight to " + this.Text);
 
                 DockContainer.ShowDockPanel(this);
@@ -250,8 +265,11 @@ namespace Floaters
                 f.Dispose();                
             }
 
-            this.NonClientMargin = manager.Renderer.DockPanelRenderer.GetPanelBorderSize(BestOrientation);
+            if (manager!=null)
+                this.NonClientMargin = manager.Renderer.DockPanelRenderer.GetPanelBorderSize(BestOrientation);
+
             parent.AddDock(this);
+            parent.RepaintAll();
         }
 
         internal void UnFloat(DockPanelFloatingForm f)
@@ -317,14 +335,16 @@ namespace Floaters
         {
             //base.OnNcPaint(e);
             
-            e.Graphics.FillRegion(new SolidBrush(manager.Renderer.ColorTable.DockBackgroundColor), e.PaintRegion);
+            if (Manager!=null) {
+                e.Graphics.FillRegion(new SolidBrush(manager.Renderer.ColorTable.DockBackgroundColor), e.PaintRegion);
             
-            buttonData = Manager.Renderer.DockPanelRenderer.ConstructButtonData(DockContainer, e);
-            buttonData.Render();
+                buttonData = Manager.Renderer.DockPanelRenderer.ConstructButtonData(DockContainer, e);
+                buttonData.Render();
             
-            Manager.Renderer.DockPanelRenderer.RenderCaption(this, e);
-            foreach (DockPanelCaptionButton b in cbuttons) b.Render(e);
-            Manager.Renderer.DockPanelRenderer.RenderBorder(this, e);
+                Manager.Renderer.DockPanelRenderer.RenderCaption(this, e);
+                foreach (DockPanelCaptionButton b in cbuttons) b.Render(e);
+                Manager.Renderer.DockPanelRenderer.RenderBorder(this, e);
+            }
         }
         
         bool seperateindockbar;

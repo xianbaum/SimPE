@@ -28,6 +28,7 @@ using System.Runtime.InteropServices;
 
 namespace Floaters
 {
+    [Designer(typeof(DockContainerDesigner))]
     public class DockContainer : UserControl, IButtonContainer
     {
         protected List<DockContainer> containers;
@@ -45,32 +46,34 @@ namespace Floaters
         
         internal DockContainer(DockManager manager)
         {
+            this.SetStyle(ControlStyles.ContainerControl, true);
             this.BackColor = Color.DarkCyan;
-            this.manager = manager;
+            
             containers = new List<DockContainer>();
             panels = new DockButtonBar.DockPanelList();
 
             noclean = false;
             state = Status.Expanded;
-            if (manager!=null) manager.Renderer.DockPanelRenderer.FinishedAnimation += new DockAnimationEventHandler(DockPanelRenderer_FinishedAnimation);
+            SetManager(manager);
         }
 
          ~DockContainer()
         {
             if(manager!=null) manager.Renderer.DockPanelRenderer.FinishedAnimation -= new DockAnimationEventHandler(DockPanelRenderer_FinishedAnimation);
         }
-
         
+        public DockContainer() :this(null) {}
 
-        internal DockContainer()
-            :this(null)
+        internal void SetManager(DockManager manager)
         {
-            
+            this.manager = manager;
+            if (manager != null) manager.Renderer.DockPanelRenderer.FinishedAnimation += new DockAnimationEventHandler(DockPanelRenderer_FinishedAnimation);
         }
 
         public DockManager Manager
         {
             get { return manager; }
+            set { SetManager(value); }
         }
 
         DockContainer pc;
@@ -152,7 +155,7 @@ namespace Floaters
             Controls.SetChildIndex(s, index);
         }
 
-        void RefreshSplitters()
+        protected void RefreshSplitters()
         {
             this.SuspendLayout();
             ////Console.WriteLine("Setting Splitters");
@@ -601,6 +604,8 @@ namespace Floaters
             Rectangle r = new Rectangle(ClientRectangle.Location, new Size(Width - 1, Height - 1));
             e.Graphics.FillRectangle(new SolidBrush(BackColor), r);
             e.Graphics.DrawRectangle(new Pen(Color.WhiteSmoke), r);
+
+            if (this.DesignMode) e.Graphics.DrawString(Name, Font, new SolidBrush(ForeColor), 2, 2);
         }
 
         protected bool IgnoreAsTarget
@@ -619,6 +624,14 @@ namespace Floaters
 
             foreach (DockContainer dc in containers)
                 dc.ForcePanelRepaint();
+        }
+
+        /// <summary>
+        /// Makes sure, that all <see cref="DockPanel"/> controls known by this manager get invalidated
+        /// </summary>
+        public void RepaintAll()
+        {
+            ForcePanelRepaint();
         }
 
         #region Collapse /Expand

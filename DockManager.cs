@@ -28,8 +28,9 @@ using System.Runtime.InteropServices;
 
 namespace Floaters
 {
+    [Designer(typeof(DockManagerDesigner))]
     public class DockManager : DockContainer
-    {        
+    {
         List<ManagedLayeredForm> layers;
         List<DockHint> hints;
         bool dockmode;
@@ -40,21 +41,21 @@ namespace Floaters
 
         Dictionary<DockStyle, DockButtonBar> colconts;
 
-        
+
         public bool DockMode
         {
-            get { return dockmode; }            
-        }                       
+            get { return dockmode; }
+        }
 
-        public DockManager() 
+        public DockManager()
             : base()
         {
             last = new ContainerInfo();
             manager = this;
 
             renderer = new WhidbeyRenderer();
-            defsz = new Size(100, 100);           
-            
+            defsz = new Size(100, 100);
+
             layers = new List<ManagedLayeredForm>();
             hints = new List<DockHint>();
 
@@ -67,7 +68,7 @@ namespace Floaters
             allright = new DockHint(this, false, false, true, false, false); hints.Add(allright); allright.Text = "Right hint";
             allbottom = new DockHint(this, false, false, false, true, false); hints.Add(allbottom); allbottom.Text = "Bottom hint";
             hints.Add(allcenter);
-            
+
             ChangeHostControl();
 
             layers.Add(overlay);
@@ -83,15 +84,14 @@ namespace Floaters
             BuildSpecialContainer(DockStyle.Left);
             BuildSpecialContainer(DockStyle.Top);
             BuildSpecialContainer(DockStyle.Right);
-            BuildSpecialContainer(DockStyle.Bottom);
-            
+            BuildSpecialContainer(DockStyle.Bottom);            
         }
 
         void BuildSpecialContainer(DockStyle d)
         {
             colconts[d] = new DockButtonBar(this);
             colconts[d].BackColor = SystemColors.Control;
-            colconts[d].Width = 20; 
+            colconts[d].Width = 20;
             colconts[d].Height = 20;
             colconts[d].Dock = d;
             colconts[d].Parent = this;
@@ -119,7 +119,7 @@ namespace Floaters
                 index = 0;
                 toplevel = false;
             }
-            
+
         }
 
         protected void ShowOverlay(Rectangle rect)
@@ -144,7 +144,7 @@ namespace Floaters
         }
 
         Point HostToScreen(Point pt)
-        {            
+        {
             return this.PointToScreen(pt);
         }
 
@@ -158,9 +158,9 @@ namespace Floaters
 
         protected override void OnMouseOverHint(DockHint sender, ref ContainerInfo nfo)
         {
-            base.OnMouseOverHint(sender,ref nfo);
+            base.OnMouseOverHint(sender, ref nfo);
             //Console.WriteLine("update last from "+sender.Text+" with "+nfo);
-            
+
 
             last = nfo;
             if (nfo.Hint == SelectedHint.None)
@@ -172,7 +172,7 @@ namespace Floaters
             ShowOverlay(nfo.OverlayRectangle);
         }
 
-        
+
 
 
         Size defsz;
@@ -182,7 +182,7 @@ namespace Floaters
             set { defsz = value; }
         }
 
-        
+
 
         protected void ChangeHostControl()
         {
@@ -193,22 +193,22 @@ namespace Floaters
 
             TakeHint(allcenter);
             allleft.SetDesktopLocation(
-                r.Left + dist, 
+                r.Left + dist,
                 r.Top + (r.Height - allleft.Height) / 2
                 );
 
             alltop.SetDesktopLocation(
-                r.Left + (r.Width - alltop.Width) / 2, 
+                r.Left + (r.Width - alltop.Width) / 2,
                 r.Top + dist
                 );
 
             allright.SetDesktopLocation(
-                r.Left + r.Width - dist - allright.Width, 
+                r.Left + r.Width - dist - allright.Width,
                 r.Top + (r.Height - allleft.Height) / 2
                 );
 
             allbottom.SetDesktopLocation(
-                r.Left + (r.Width - allbottom.Width) / 2, 
+                r.Left + (r.Width - allbottom.Width) / 2,
                 r.Top + r.Height - dist - allbottom.Height
                 );
         }
@@ -246,15 +246,16 @@ namespace Floaters
 
         protected override void OnTakeHint()
         {
-            
-             
+
+
         }
 
         BaseRenderer renderer;
         public BaseRenderer Renderer
         {
             get { return renderer; }
-            set {
+            set
+            {
                 if (renderer != value)
                 {
                     renderer = value;
@@ -265,13 +266,13 @@ namespace Floaters
 
         public new void Refresh()
         {
-            
-        }        
+
+        }
 
 
         protected override void OnSizeChanged(EventArgs e)
         {
-            base.OnSizeChanged(e);        
+            base.OnSizeChanged(e);
             ChangeHostControl();
         }
 
@@ -324,22 +325,22 @@ namespace Floaters
                 TakeHint(allcenter);
                 UpdateHintVisibility();
                 CleanUp();
-                                
+
                 OnStartDockMode(dock);
             }
         }
-        
+
 
         protected virtual void OnStartDockMode(DockPanel dock)
         {
-            
+
         }
-       
+
         internal void StopDockMode(DockPanel dock)
         {
             if (dockmode)
             {
-                dockmode = false;                
+                dockmode = false;
 
                 foreach (LayeredForm l in layers)
                     l.Hide();
@@ -353,32 +354,32 @@ namespace Floaters
                         DockContainer dc = last.Seed;
                         if (last.Hint != SelectedHint.Center)
                         {
-                            dc = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);                            
+                            dc = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
                             dc.Width = Math.Max(20, Math.Min(DefaultSize.Width, last.Parent.Width / 2));
                             dc.Height = Math.Max(20, Math.Min(DefaultSize.Height, last.Parent.Height / 2));
                         }
 
                         dock.DockControl(dc);
-                        dock.BringToFront();                        
+                        dock.BringToFront();
                     }
                     CleanUp();
                 }
-                
+
                 OnStopDockMode(dock);
             }
         }
 
         protected virtual void OnStopDockMode(DockPanel dock)
         {
-            
+
         }
 
         protected override DockContainer GetDockContainer(Point scrpt)
         {
             foreach (ManagedLayeredForm l in layers)
             {
-               bool hit = l.Hit(scrpt);                
-               l.MouseOver(l.PointToClient(scrpt), hit);
+                bool hit = l.Hit(scrpt);
+                l.MouseOver(l.PointToClient(scrpt), hit);
             }
 
             return base.GetDockContainer(scrpt);
@@ -387,11 +388,11 @@ namespace Floaters
         internal void MouseMoved(Point scrpt)
         {
             DockContainer dc = GetDockContainer(scrpt);
-            if (dc != null)            
+            if (dc != null)
                 TakeHint(allcenter, dc.ScreenBounds, dc);
-            
+
             else TakeHint(allcenter);
-            
+
         }
 
 
@@ -411,12 +412,11 @@ namespace Floaters
             return colconts[c.Dock];
         }
 
-        /// <summary>
-        /// Makes sure, that all <see cref="DockPanel"/> controls known by this manager get invalidated
-        /// </summary>
-        public void RepaintAll()
+        protected override void OnLoad(EventArgs e)
         {
-            ForcePanelRepaint();
+            base.OnLoad(e);
+            if (!this.DesignMode) CleanUp();
+            RefreshSplitters();
         }
-    }    
+    } 
 }

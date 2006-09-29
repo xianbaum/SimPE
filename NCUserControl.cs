@@ -31,7 +31,7 @@ namespace Floaters
 
     
 
-    public partial class NCUserControl : UserControl
+    public partial class NCUserControl : Panel
     {
         
         Padding ncsz;
