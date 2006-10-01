@@ -50,12 +50,38 @@ namespace Floaters
 
         public Color DockButtonBorderColor
         {
-            get { return Color.DarkBlue; }
+            get { return Color.FromArgb(0x50, DockButtonHighlightBorderColor); }
         }
 
         public Color DockButtonHighlightBorderColor
         {
-            get { return Color.Red; }
+            get { return Color.FromArgb(0xAC, 0xA8, 0x99); }
+        }
+        public Color DockButtonBackgroundTop
+        {
+            get { return Color.FromArgb(0xED, 0xEC, 0xE0); }
+        }
+        public Color DockButtonBackgroundBottom
+        {
+            get { return DockButtonBackgroundTop; }
+        }
+        public Color DockButtonHighlightBackgroundTop
+        {
+            get { return Color.FromArgb(0xFC, 0xFC, 0xFE); }
+        }
+        public Color DockButtonHighlightBackgroundBottom
+        {
+            get { return DockButtonHighlightBackgroundTop; }
+        }
+
+
+        public Color DockButtonTextColor
+        {
+            get { return Color.FromArgb(0x71, 0x6F, 0x64); }
+        }
+        public Color DockButtonHighlightTextColor
+        {
+            get { return Color.Black; }
         }
 
         public Color DockCaptionColorTop

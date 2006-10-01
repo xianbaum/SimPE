@@ -64,7 +64,7 @@ namespace Floaters
             set { dborder = value; }
         }
 
-        public Padding NonClientMargin
+        protected Padding NonClientMargin
         {
             get { return ncsz; }
             set
@@ -291,6 +291,8 @@ namespace Floaters
                 {
                     Bitmap bmp = new Bitmap(WindowRect.Width, WindowRect.Height);
                     Graphics g = Graphics.FromImage(bmp);
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
                     NCPaintEventArgs e = new NCPaintEventArgs(g, ClientRectangle, WindowRect, PaintRegion);
                     this.OnNcPaint(e);
                     grTemp.DrawImage(bmp, 0, 0);

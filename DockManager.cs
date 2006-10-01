@@ -350,13 +350,21 @@ namespace Floaters
                 {
                     if (last.Parent != null)
                     {
-                        //Console.WriteLine(last);
+                        Console.WriteLine(last);
                         DockContainer dc = last.Seed;
                         if (last.Hint != SelectedHint.Center)
                         {
                             dc = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
-                            dc.Width = Math.Max(20, Math.Min(DefaultSize.Width, last.Parent.Width / 2));
-                            dc.Height = Math.Max(20, Math.Min(DefaultSize.Height, last.Parent.Height / 2));
+                            if (!(last.Parent is DockManager))
+                            {
+                                dc.Width = Math.Max(20, Math.Min(DefaultSize.Width, last.Parent.Width / 2));
+                                dc.Height = Math.Max(20, Math.Min(DefaultSize.Height, last.Parent.Height / 2));
+                            }
+                            else
+                            {
+                                dc.Width = Math.Min(last.Parent.Width /2, dock.Width);
+                                dc.Height = Math.Min(last.Parent.Height / 2, dock.Height);
+                            }
                         }
 
                         dock.DockControl(dc);

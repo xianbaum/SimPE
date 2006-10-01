@@ -36,7 +36,7 @@ namespace Floaters
         public WhidbeyRenderDockPanel(BaseRenderer parent)
             :base(parent)
         {
-            dim = new Dimensions(16, 32, 1, 4);
+            dim = new Dimensions(16, 24, 1, 4, 2, 16);
             atc = new DockAnimationEventHandler(InvokedAnimationTimerCallback);
             animtimer = new System.Threading.Timer(new TimerCallback(AnimationTimerCallback), null, Timeout.Infinite, SPEED);
         }
@@ -149,6 +149,8 @@ namespace Floaters
 
         protected override void RenderCaptionBackground(CaptionState state, NCPaintEventArgs e, Rectangle caprect)
         {
+            caprect.Offset(-1, -1);
+            caprect.Inflate(1, 1);
             Color c1 = Parent.ColorTable.DockCaptionColorTop;
             Color c2 = Parent.ColorTable.DockCaptionColorBottom;
             if (state == CaptionState.Focused) {
@@ -166,19 +168,77 @@ namespace Floaters
             e.Graphics.FillRectangle(b, caprect);
         }
 
-
-        protected override void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Color c, Font f, StringFormat sf)
+        protected override void RenderButtonBackground(NCPaintEventArgs e, Rectangle r, Point pt1, Point pt2, SolidBrush brush, Pen pen)
         {
-            SolidBrush b = new SolidBrush(c);
-            Pen p = new Pen(b);
-            g.DrawRectangle(p, r);
+            e.Graphics.FillRectangle(brush, r);
+            e.Graphics.DrawLine(pen, pt1, pt2);
+        }
 
-            g.DrawString(caption, f, b, new PointF(r.Left, r.Top), sf);
-        }       
+        protected System.Drawing.Drawing2D.GraphicsPath ButtonFullPath(Rectangle r)
+        {
+            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
+            path.AddLine(r.Left + 2, r.Top, r.Right - 2, r.Top);
+            path.AddLine(r.Right - 2, r.Top, r.Right, r.Top + 2);
+            path.AddLine(r.Right, r.Top + 2, r.Right, r.Bottom - 2);
+            path.AddLine(r.Right, r.Bottom - 2, r.Right - 2, r.Bottom );
+            path.AddLine(r.Right - 2, r.Bottom , r.Left + 2, r.Bottom );
+            path.AddLine(r.Left + 2, r.Bottom , r.Left, r.Bottom - 2);
+            path.AddLine(r.Left, r.Bottom - 2, r.Left, r.Top + 2);
+            path.CloseFigure();
+            return path;
+        }
+
+        protected System.Drawing.Drawing2D.GraphicsPath ButtonIndicatorPath(Rectangle r, ButtonOrientation orient)
+        {
+            return ButtonFullPath(r);
+        }
+
+
+        protected override void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state)
+        {
+            SolidBrush b; SolidBrush bb; System.Drawing.Drawing2D.LinearGradientBrush bg; Pen p;
+            SetupButtonColors(r, c, fontc, orient, state, out b, out bb, out bg, out p);
+
+            Rectangle linerectangle; Point linept1, linept2; Rectangle textrect; Rectangle imgrect;
+            r = SetupButtonRectangles(r, f, orient, out linerectangle, out linept1, out linept2, out textrect, out imgrect);
+
+            System.Drawing.Drawing2D.GraphicsPath path;
+            if (state == ButtonState.Normal) path = ButtonFullPath(r);
+            else path = ButtonIndicatorPath(r, orient);
+
+            StringFormat sfreal = new StringFormat(sf.FormatFlags | StringFormatFlags.NoWrap);
+            System.Drawing.Drawing2D.GraphicsPath pathbg = path.Clone() as System.Drawing.Drawing2D.GraphicsPath;
+            pathbg.CloseFigure();
+
+            g.FillPath(bg, pathbg);
+            g.DrawImage(
+                    img,
+                    new Rectangle(
+                        (imgrect.Width - img.Width) / 2 + imgrect.Left + 1,
+                        (imgrect.Height - img.Height) / 2 + imgrect.Top + 1,
+                        img.Width,
+                        img.Height),
+                    new Rectangle(0, 0, img.Width, img.Height),
+                    GraphicsUnit.Pixel
+            );
+
+            g.DrawString(this.GetFittingString(f, caption, orient, new Size(textrect.Width, textrect.Height)), f, b, textrect, sfreal);
+            g.DrawPath(p, path);
+
+            g.FillRectangle(bb, linerectangle);
+
+            if (state != ButtonState.Highlight) g.DrawLine(new Pen(ColorTable.DockButtonHighlightBorderColor), linept1, linept2);
+        }     
+
+             
         #endregion
 
         #region IDockPanelRenderer Member
 
+
+        
+
+        
         public override Dimensions Dimension
         {
             get { return dim; }
@@ -188,15 +248,11 @@ namespace Floaters
         public void RenderBorder(DockPanel dp, NCPaintEventArgs e)
         {
             Pen p = new Pen(Parent.ColorTable.DockBorderColor, Dimension.Border);
-            Padding pad = GetPanelBorderSize(dp.BestOrientation);
-            e.Graphics.DrawRectangle(p,
-                new Rectangle(
-                    pad.Left - Dimension.Border,
-                    pad.Top - Dimension.Border - Dimension.Caption,
-                    e.WindowRectangle.Width - pad.Horizontal + 2 * Dimension.Border -1,
-                    e.WindowRectangle.Height - pad.Vertical + 2 * Dimension.Border + Dimension.Caption-1
-                )
-            );
+            
+            Rectangle cl = GetPanelClientRectangle(e, dp.BestOrientation);
+            cl = new Rectangle(cl.Left - Dimension.Border, cl.Top - Dimension.Border - Dimension.Caption, cl.Width + 2 * Dimension.Border -1 , cl.Height + 2 * Dimension.Border-1 + Dimension.Caption);
+            
+            e.Graphics.DrawRectangle(p, cl );
         }
 
         public void Animate(DockAnimationEventArgs e)

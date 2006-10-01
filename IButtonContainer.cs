@@ -35,7 +35,6 @@ namespace Floaters
         DockPanel Highlight
         {
             get;
-            set;
         }
     }
 }

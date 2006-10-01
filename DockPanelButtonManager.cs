@@ -74,7 +74,8 @@ namespace Floaters
             if (cnt != null)
             {
                 DockButtonBar.DockPanelList panels = cnt.GetButtons();
-                System.Windows.Forms.Padding pad = renderer.DockPanelRenderer.GetBorderSize(cnt);
+                Rectangle pad = renderer.DockPanelRenderer.GetButtonsRectangle(cnt.BestOrientation, e);
+                //Console.WriteLine(pad);
 
 
                 if (cnt.BestOrientation == ButtonOrientation.Bottom || cnt.BestOrientation == ButtonOrientation.Top)
@@ -100,13 +101,13 @@ namespace Floaters
         }
 
         #region Vertical
-        private List<Place> SetVerticalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, int top, int shg, System.Windows.Forms.Padding pad)
+        private List<Place> SetVerticalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, int top, int shg, Rectangle pad)
         {
-            int maxhg = e.WindowRectangle.Height - pad.Bottom;
+            int maxhg = pad.Height;
             ////Console.WriteLine(maxhg + " > " + top + " ? ("+e.WindowRectangle+" "+pad+")");
             if (top > maxhg)
             {
-                ////Console.WriteLine("    Fixing height!");
+                Console.WriteLine("--> Fixing height!");
                 if (shg * panels.Count > maxhg) shg = maxhg / panels.Count;
                 List<Place> buttonsnew = new List<Place>();
 
@@ -127,20 +128,15 @@ namespace Floaters
             return buttons;
         }
 
-        private void PlanVerticalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, ButtonOrientation orient, System.Windows.Forms.Padding pad, out int top, out int shg)
+        private void PlanVerticalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, ButtonOrientation orient, Rectangle pad, out int top, out int shg)
         {
-            top = pad.Top;
+            top = pad.Top ;
             shg = int.MaxValue;
             foreach (DockPanel dp in panels)
             {
 
                 Size sz = renderer.DockPanelRenderer.GetButtonSize(dp, orient);
-                Rectangle r;
-                if (orient == ButtonOrientation.Left)
-                    r = new Rectangle(pad.Left, top, sz.Width-pad.Horizontal, sz.Height);
-                else
-                    r = new Rectangle(e.WindowRectangle.Width - sz.Width, top, sz.Width, sz.Height);
-
+                Rectangle r = new Rectangle(pad.Left, top, sz.Width, sz.Height);
                 buttons.Add(new Place(dp, r));
 
                 top += sz.Height;
@@ -151,9 +147,9 @@ namespace Floaters
         #endregion
 
         #region Horizontal
-        private List<Place> SetHorizontalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, int left, int swd, System.Windows.Forms.Padding pad)
+        private List<Place> SetHorizontalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, int left, int swd, Rectangle pad)
         {
-            int maxwd = e.WindowRectangle.Width - pad.Right;
+            int maxwd = pad.Width;
             ////Console.WriteLine(maxwd + " > " + left + " ?");
             if (left > maxwd)
             {
@@ -178,19 +174,15 @@ namespace Floaters
             return buttons;
         }
 
-        private void PlanHorizontalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, ButtonOrientation orient, System.Windows.Forms.Padding pad, out int left, out int swd)
+        private void PlanHorizontalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, ButtonOrientation orient, Rectangle pad, out int left, out int swd)
         {
-            left = pad.Left;
+            left = pad.Left ;
             swd = int.MaxValue;
             foreach (DockPanel dp in panels)
             {
 
                 Size sz = renderer.DockPanelRenderer.GetButtonSize(dp, orient);
-                Rectangle r;
-                if (orient == ButtonOrientation.Top)
-                    r = new Rectangle(left, pad.Top, sz.Width, sz.Height);
-                else
-                    r = new Rectangle(left, e.WindowRectangle.Height - sz.Height, sz.Width, sz.Height);
+                Rectangle r = new Rectangle(left, pad.Top, sz.Width, sz.Height);
 
                 buttons.Add(new Place(dp, r));
 
@@ -215,7 +207,7 @@ namespace Floaters
             {
                 ButtonState s = ButtonState.Normal;
                 if (p.Panel == cnt.Highlight) s = ButtonState.Highlight;
-                renderer.DockPanelRenderer.RenderButton(eventarg.Graphics, p.Rectangle, p.Panel.Text, cnt.BestOrientation, s);
+                renderer.DockPanelRenderer.RenderButton(eventarg.Graphics, p.Rectangle, p.Panel.ButtonText, p.Panel.Image, cnt.BestOrientation, s);
             }
         }
 

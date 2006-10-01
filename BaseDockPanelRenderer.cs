@@ -29,12 +29,14 @@ namespace Floaters
         #region Helper classes
         public class Dimensions
         {
-            public Dimensions(int capt, int but, int bord, int dbarspace)
+            public Dimensions(int capt, int but, int bord, int dbarspace, int pad, int iconsize)
             {
                 caption = capt;
                 buttons = but;
                 border = bord;
                 this.dbarspace = dbarspace;
+                padding = pad;
+                iconsz = iconsize;
             }
 
             int caption;
@@ -60,6 +62,18 @@ namespace Floaters
             {
                 get { return dbarspace; }
             }
+
+            int padding;
+            public int ButtonTextPadding
+            {
+                get { return padding; }
+            }
+
+            int iconsz;
+            public int IconSize
+            {
+                get { return iconsz; }
+            }
         }
 
         
@@ -84,16 +98,19 @@ namespace Floaters
         #region Border Size
         public virtual System.Windows.Forms.Padding GetPanelBorderSize(ButtonOrientation orient)
         {
+            Rectangle wnd = new Rectangle(0, 0, 100, 100);
+            Rectangle brect = GetButtonsRectangle(orient, new NCPaintEventArgs(null, wnd, wnd, null));
+            
             if (orient == ButtonOrientation.Bottom)
-                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border, Dimension.Border, Dimension.Buttons + Dimension.Border);
+                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border, Dimension.Border, Dimension.Border + brect.Height);
 
             if (orient == ButtonOrientation.Right)
-                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border, Dimension.Buttons + Dimension.Border, Dimension.Border);
+                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border, Dimension.Border + brect.Width, Dimension.Border);
 
             if (orient == ButtonOrientation.Top)
-                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border + Dimension.Buttons, Dimension.Border, Dimension.Border);
+                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border + brect.Height, Dimension.Border, Dimension.Border);
 
-            return new System.Windows.Forms.Padding(Dimension.Border + Dimension.Buttons, Dimension.Caption + Dimension.Border, Dimension.Border, Dimension.Border);
+            return new System.Windows.Forms.Padding(Dimension.Border + brect.Width, Dimension.Caption + Dimension.Border, Dimension.Border, Dimension.Border);
         }
 
         public virtual System.Windows.Forms.Padding GetBarBorderSize(ButtonOrientation orient)
@@ -165,6 +182,18 @@ namespace Floaters
         }
         #endregion
 
+        public virtual Rectangle GetPanelClientRectangle(DockPanel dp, ButtonOrientation orient)
+        {
+            System.Windows.Forms.Padding pad = GetPanelBorderSize(orient);
+            return new Rectangle(pad.Left, pad.Top, dp.Width - pad.Horizontal, dp.Height - pad.Vertical);
+        }
+
+        public virtual Rectangle GetPanelClientRectangle(NCPaintEventArgs e, ButtonOrientation orient)
+        {
+            System.Windows.Forms.Padding pad = GetPanelBorderSize(orient);
+            return new Rectangle(pad.Left, pad.Top, e.WindowRectangle.Width - pad.Horizontal, e.WindowRectangle.Height - pad.Vertical);
+        }
+
         #region Caption Rectangle
         public System.Drawing.Rectangle GetCaptionRect(DockPanel dp)
         {
@@ -173,7 +202,13 @@ namespace Floaters
 
         public virtual System.Drawing.Rectangle GetCaptionRect(DockPanel dp, ButtonOrientation orient)
         {
-            return new Rectangle(Dimension.Border, Dimension.Border, dp.Width - 2 * Dimension.Border, Dimension.Caption);
+            NCPaintEventArgs e = new NCPaintEventArgs(null, dp.ClientRectangle, dp.Bounds, null);
+            Rectangle buts = GetButtonsRectangle(orient, e);
+            Rectangle client = GetPanelClientRectangle(dp, orient);
+
+
+            return new Rectangle(client.Left, client.Top - Dimension.Caption , client.Width, Dimension.Caption);
+            
         }
         
         public virtual System.Drawing.Rectangle GetCloseButtonRect(DockPanel dp, Rectangle caprect){
@@ -219,13 +254,136 @@ namespace Floaters
         #endregion
 
         #region Render base instructions
-        public void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, ButtonOrientation orient, ButtonState state)
+        protected void SetupButtonColors(System.Drawing.Rectangle r, Color c, Color fontc, ButtonOrientation orient, ButtonState state, out SolidBrush fontbrush, out SolidBrush linebackgroundbrush, out System.Drawing.Drawing2D.LinearGradientBrush backgroundbrush, out Pen borderpen)
         {
+            fontbrush = new SolidBrush(fontc);
+            Color c1 = ColorTable.DockButtonBackgroundTop;
+            Color c2 = ColorTable.DockButtonBackgroundBottom;
+            if (state == ButtonState.Highlight)
+            {
+                c1 = ColorTable.DockButtonHighlightBackgroundTop;
+                c2 = ColorTable.DockButtonHighlightBackgroundBottom;
+            }
+
+            linebackgroundbrush = new SolidBrush(ColorTable.DockButtonHighlightBackgroundTop);
+            if (orient == ButtonOrientation.Top || orient == ButtonOrientation.Left)
+            {
+                Color dum = c1; c1 = c2; c2 = dum;
+            }
+
+            System.Drawing.Drawing2D.LinearGradientMode mode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            if (orient == ButtonOrientation.Left || orient == ButtonOrientation.Right)
+                mode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
+
+
+
+            backgroundbrush = new System.Drawing.Drawing2D.LinearGradientBrush(
+                    r,
+                    c1,
+                    c2,
+                    mode
+                );
+            borderpen = new Pen(c);
+        }
+
+        protected System.Drawing.Rectangle SetupButtonRectangles(System.Drawing.Rectangle r, Font f, ButtonOrientation orient, out Rectangle linerectangle, out Point linept1, out Point linept2, out Rectangle textrect, out Rectangle imgrect)
+        {
+            if (orient == ButtonOrientation.Bottom)
+            {
+                linerectangle = new Rectangle(r.Left, r.Top - 1, r.Width, 3);
+                linept1 = new Point(linerectangle.Left, linerectangle.Bottom);
+                linept2 = new Point(linerectangle.Right, linerectangle.Bottom);
+
+
+                imgrect = new Rectangle(
+                    r.Left + Dimension.ButtonTextPadding,
+                    linerectangle.Bottom + 1,
+                    Dimension.IconSize,
+                    Dimension.IconSize);
+
+                textrect = new Rectangle(
+                    imgrect.Right + 1,
+                    imgrect.Top + (imgrect.Height - f.Height) / 2 + 1,
+                    r.Width - imgrect.Width - 3 * Dimension.ButtonTextPadding,
+                    f.Height);
+
+                r = new Rectangle(r.Left, r.Top, r.Width, r.Height - 2);
+            }
+            else if (orient == ButtonOrientation.Top)
+            {
+                linerectangle = new Rectangle(r.Left, r.Bottom - 4, r.Width, 4);
+                linept1 = new Point(linerectangle.Left, linerectangle.Top);
+                linept2 = new Point(linerectangle.Right, linerectangle.Top);
+
+                imgrect = new Rectangle(
+                    r.Left + Dimension.ButtonTextPadding,
+                    r.Top + 1,
+                    Dimension.IconSize,
+                    Dimension.IconSize);
+
+                textrect = new Rectangle(
+                    imgrect.Right + 1,
+                    imgrect.Top + (imgrect.Height - f.Height) / 2 + 1,
+                    r.Width - imgrect.Width - 3 * Dimension.ButtonTextPadding,
+                    f.Height);
+
+                r = new Rectangle(r.Left, r.Top + 1, r.Width, r.Height - 2);
+            }
+            else if (orient == ButtonOrientation.Right)
+            {
+                linerectangle = new Rectangle(r.Left - 1, r.Top, 4, r.Height);
+                linept1 = new Point(linerectangle.Right, linerectangle.Top);
+                linept2 = new Point(linerectangle.Right, linerectangle.Bottom);
+
+                imgrect = new Rectangle(
+                    linerectangle.Right + (r.Width - linerectangle.Width - Dimension.IconSize) / 2,
+                    r.Top + Dimension.ButtonTextPadding,
+                    Dimension.IconSize,
+                    Dimension.IconSize);
+
+                textrect = new Rectangle(
+                    imgrect.Left,
+                    imgrect.Bottom + Dimension.ButtonTextPadding,
+                    f.Height,
+                    r.Height - imgrect.Height - 3 * Dimension.ButtonTextPadding);
+
+                r = new Rectangle(r.Left, r.Top, r.Width - 2, r.Height);
+            }
+            else
+            {
+                Console.WriteLine(r);
+                linerectangle = new Rectangle(r.Right - 3, r.Top, 4, r.Height);
+                linept1 = new Point(linerectangle.Left, linerectangle.Top);
+                linept2 = new Point(linerectangle.Left, linerectangle.Bottom);
+
+                imgrect = new Rectangle(
+                    (r.Width - linerectangle.Width - Dimension.IconSize) / 2 + 1,
+                    r.Top + Dimension.ButtonTextPadding,
+                    Dimension.IconSize,
+                    Dimension.IconSize);
+
+                textrect = new Rectangle(
+                    imgrect.Left,
+                    imgrect.Bottom + Dimension.ButtonTextPadding,
+                    f.Height,
+                    r.Height - imgrect.Height - 3 * Dimension.ButtonTextPadding);
+
+                r = new Rectangle(r.Left + 1, r.Top, r.Width - 2, r.Height);
+            }
+            return r;
+        }
+
+        public void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state)
+        {
+            if (r.Height == 0 || r.Width == 0) return;
+
             Color c = ColorTable.DockButtonBorderColor;
+            Color fc = ColorTable.DockButtonTextColor;
             Font f = Parent.FontTable.ButtonFont;
             if (state == ButtonState.Highlight)
             {
                 c = ColorTable.DockButtonHighlightBorderColor;
+                fc = ColorTable.DockButtonHighlightTextColor;
                 f = Parent.FontTable.ButtonHighlightFont;
             }
             StringFormat sf;
@@ -233,9 +391,10 @@ namespace Floaters
             else sf = new StringFormat(StringFormatFlags.DirectionVertical);
             caption = GetFittingString(f, caption, orient, new Size(r.Width, r.Height));
 
-            RenderButton(g, r, caption, c, f, sf);
+            
+            RenderButton(g, r, caption, img, c, fc, f, sf, orient, state);
         }
-        protected abstract void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Color c, Font f, StringFormat sf);
+        protected abstract void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state);
 
 
         public void RenderCaption(DockPanel dp, NCPaintEventArgs e)
@@ -243,7 +402,7 @@ namespace Floaters
             Rectangle caprect = GetCaptionRect(dp);
             Rectangle txtrect = GetCaptionTextRect(dp, caprect);
 
-            string caption = GetFittingString(Parent.FontTable.CaptionFont, dp.Text, ButtonOrientation.Top, new Size(txtrect.Width, txtrect.Height));
+            string caption = GetFittingString(Parent.FontTable.CaptionFont, dp.CaptionText, ButtonOrientation.Top, new Size(txtrect.Width, txtrect.Height));
 
             RenderCaptionBackground(dp.CaptionState, e, caprect);
 
@@ -260,9 +419,65 @@ namespace Floaters
         protected abstract void RenderCaptionButton(DockPanel dp, DockPanelCaptionButton but, string iname, NCPaintEventArgs e);        
         protected abstract void RenderCaptionText(CaptionState state, NCPaintEventArgs e, Rectangle txtrect, string caption);
         protected abstract void RenderCaptionBackground(CaptionState state, NCPaintEventArgs e, Rectangle caprect);
+
+        public void RenderButtonBackground(DockPanel dp, NCPaintEventArgs e)
+        {
+            if (dp.DockContainer == null) return;
+            Rectangle pad = GetButtonsRectangle(dp.BestOrientation, e);
+
+            Rectangle r; 
+            Point pt1, pt2;
+            ButtonOrientation orient = dp.BestOrientation;
+            Size sz = GetButtonSize(dp, orient);
+
+            if (orient == ButtonOrientation.Top)
+            {
+                r = new Rectangle(pad.Left, pad.Top + sz.Height - 4, e.WindowRectangle.Width, 3);
+                pt1 = new Point(r.Left, r.Top);
+                pt2 = new Point(r.Right, r.Top);
+            }
+            else if (orient == ButtonOrientation.Bottom)
+            {
+                r = new Rectangle(pad.Left, e.WindowRectangle.Height-sz.Height-1, e.WindowRectangle.Width, 3);
+                pt1 = new Point(r.Left, r.Bottom);
+                pt2 = new Point(r.Right, r.Bottom);
+            }
+            else if (orient == ButtonOrientation.Right)
+            {
+                r = new Rectangle(pad.Left, pad.Top , 3, pad.Height);
+                pt1 = new Point(r.Right, r.Top);
+                pt2 = new Point(r.Right, r.Bottom);
+            }
+            else 
+            {
+                r = new Rectangle(pad.Right-3,  pad.Top, 3, pad.Height);
+                pt1 = new Point(r.Left, r.Top);
+                pt2 = new Point(r.Left, r.Bottom);
+            }
+
+            SolidBrush brush = new SolidBrush(ColorTable.DockButtonHighlightBackgroundTop);
+            Pen pen = new Pen(ColorTable.DockButtonHighlightBorderColor);
+
+
+            RenderButtonBackground(e, r, pt1, pt2, brush, pen);
+        }
+        protected abstract void RenderButtonBackground(NCPaintEventArgs e, Rectangle r, Point pt1, Point pt2, SolidBrush brush, Pen pen);
+        
         #endregion
 
         #region ButtonSize
+        public Rectangle GetButtonsRectangle(ButtonOrientation orient, NCPaintEventArgs e)
+        {
+            if (orient == ButtonOrientation.Bottom)
+                return new Rectangle(0, e.WindowRectangle.Height - Dimension.Buttons, e.WindowRectangle.Width, Dimension.Buttons);
+            else if (orient == ButtonOrientation.Top)
+                return new Rectangle(0, 0, e.WindowRectangle.Width, Dimension.Buttons);
+            else if (orient == ButtonOrientation.Left)
+                return new Rectangle(0, 0, Dimension.Buttons, e.WindowRectangle.Height);
+            else //if (orient == ButtonOrientation.Right)
+                return new Rectangle(e.WindowRectangle.Width - Dimension.Buttons, 0, Dimension.Buttons, e.WindowRectangle.Height);
+        }
+
         public Size GetButtonSize(DockPanel dp)
         {
             return GetButtonSize(dp, dp.BestOrientation);
@@ -271,9 +486,9 @@ namespace Floaters
         public virtual Size GetButtonSize(DockPanel dp, ButtonOrientation orient)
         {
             if (orient == ButtonOrientation.Top || orient==ButtonOrientation.Bottom)
-                return new Size(GetButtonCaptionWidth(GetFont(dp), dp.Text, orient), Dimension.Buttons);
+                return new Size(GetButtonCaptionWidth(GetFont(dp), dp.ButtonText, orient) + Dimension.IconSize + 5*Dimension.ButtonTextPadding, Dimension.Buttons);
             else
-                return new Size(Dimension.Buttons, GetButtonCaptionWidth(GetFont(dp), dp.Text, orient));
+                return new Size(Dimension.Buttons, GetButtonCaptionWidth(GetFont(dp), dp.ButtonText, orient) + Dimension.IconSize + 5 * Dimension.ButtonTextPadding);
         }
         #endregion
 

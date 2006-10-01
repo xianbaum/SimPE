@@ -60,7 +60,7 @@ namespace Floaters
         internal void StartFloatingBlocked(DockPanel p)
         {
             StartFloating();
-            this.Text = p.Text;
+            this.Text = p.CaptionText;
             APIHelp.ReleaseCapture();
 
             //this call will block the calling thread

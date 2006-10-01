@@ -80,7 +80,32 @@ namespace Floaters
     /// </summary>
     public interface IDockPanelRenderer 
     {
-        DockPanelButtonManager ConstructButtonData(IButtonContainer cnt, NCPaintEventArgs e); //ok        
+        DockPanelButtonManager ConstructButtonData(IButtonContainer cnt, NCPaintEventArgs e); //ok  
+
+        /// <summary>
+        /// Returns the size of the Rectangle that displays the buttons
+        /// </summary>
+        /// <param name="orient">Orientation of the container</param>
+        /// <param name="e">the painting events</param>
+        /// <returns>The rectangle the buttons can be displayed in</returns>
+        Rectangle GetButtonsRectangle(ButtonOrientation orient, NCPaintEventArgs e);
+
+        /// <summary>
+        /// Returns the Rectangle where the client can draw
+        /// </summary>
+        /// <param name="dp">The panel you want to get the client rectangle for</param>
+        /// <param name="orient">The orientation of the panel</param>
+        /// <returns>The client rectangle</returns>
+        Rectangle GetPanelClientRectangle(DockPanel dp, ButtonOrientation orient);
+
+        /// <summary>
+        /// Returns the Rectangle where the client can draw
+        /// </summary>
+        /// <param name="e">The latest paint event</param>
+        /// <param name="orient">The orientation of the panel</param>
+        /// <returns>The client rectangle</returns>
+        Rectangle GetPanelClientRectangle(NCPaintEventArgs e, ButtonOrientation orient);
+
         System.Windows.Forms.Padding GetPanelBorderSize(ButtonOrientation orient); //ok
         System.Windows.Forms.Padding GetBarBorderSize(ButtonOrientation orient); //ok
         System.Windows.Forms.Padding GetBorderSize(IButtonContainer c); //ok
@@ -95,7 +120,8 @@ namespace Floaters
         System.Drawing.Rectangle GetCollapseButtonRect(DockPanel dp, Rectangle caprect); //ok
         System.Drawing.Rectangle GetCaptionTextRect(DockPanel dp, Rectangle caprect); //ok
 
-        void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, ButtonOrientation orient, ButtonState state); //ok        
+        void RenderButtonBackground(DockPanel dp, NCPaintEventArgs e);
+        void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state); //ok        
                                 
         void RenderCaption(DockPanel dp, NCPaintEventArgs e); //ok
         void RenderCaptionButton(DockPanel dp, DockPanelCaptionButton but, NCPaintEventArgs e); //ok

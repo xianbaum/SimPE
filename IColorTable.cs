@@ -34,6 +34,12 @@ namespace Floaters
 
         Color DockButtonBorderColor { get; }
         Color DockButtonHighlightBorderColor { get; }
+        Color DockButtonBackgroundTop { get; }
+        Color DockButtonBackgroundBottom { get; }
+        Color DockButtonHighlightBackgroundTop { get; }
+        Color DockButtonHighlightBackgroundBottom { get; }
+        Color DockButtonTextColor { get; }
+        Color DockButtonHighlightTextColor { get; }
 
         Color DockCaptionColorTop { get; }
         Color DockCaptionFocusColorTop { get; }

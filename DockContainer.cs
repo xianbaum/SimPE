@@ -123,7 +123,13 @@ namespace Floaters
             else
             {
                 DockPanel p = e.Control as DockPanel;
-                if (p!=null) panels.Add(p);
+                if (p != null)
+                {
+                    panels.Add(p);
+                    p.Parent = this;
+                    p.Dock = DockStyle.Fill;
+                    p.EnsureVisible();
+                }
             }
         }
 
@@ -140,7 +146,14 @@ namespace Floaters
             else
             {
                 DockPanel p = e.Control as DockPanel;
-                if (p!=null) panels.Remove(p);
+                if (p != null)
+                {
+                    p.Parent = null;
+                    panels.Remove(p);
+                    if (Highlight == p)
+                        if (panels.Count > 0)
+                            panels[0].EnsureVisible();
+                }
             }
         }
 
@@ -184,6 +197,12 @@ namespace Floaters
 
             ListControls();
             this.ResumeLayout();
+        }
+
+        public new void ResumeLayout()
+        {
+            base.ResumeLayout();
+            if (Highlight != null) Highlight.EnsureVisible();
         }
 
         internal void ListControls()
@@ -275,15 +294,13 @@ namespace Floaters
         internal void AddDock(DockPanel child)
         {
             this.Controls.Add(child);
-            child.Parent = this;
-            child.Dock = DockStyle.Fill;
-            this.Highlight = child;
+            
         }
 
         internal void RemoveDock(DockPanel child)
         {
             this.Controls.Remove(child);
-            child.Parent = null;
+            
         }
 
         internal virtual void TakeHint(DockHint hint)
@@ -352,7 +369,7 @@ namespace Floaters
 
             public override string ToString()
             {
-                return "hint:"+Hint+", topl:"+TopLevel+", dockins:"+DockInside+", dock:"+Dock+", rect:"+OverlayRectangle+", sid="+SeedIndex;
+                return "hint:"+Hint+", topl:"+TopLevel+", dockins:"+DockInside+", dock:"+Dock+", rect:"+OverlayRectangle+", sid="+SeedIndex+", parent:"+Parent;
             }
         }
 
@@ -579,7 +596,7 @@ namespace Floaters
         /// Make sure that a DockPanel, that is parented by this Container is the one that is visible
         /// </summary>
         /// <param name="pn"></param>
-        internal void ShowDockPanel(DockPanel pn)
+        protected void ShowDockPanel(DockPanel pn)
         {
             int gotoindex = -1;
             int ct = 0;
@@ -781,13 +798,16 @@ namespace Floaters
         public DockPanel Highlight
         {
             get { return hldp; }
-            set {
-                if (hldp != value)
+        }
+
+        public void SetActiveDock(DockPanel dp){
+            if (hldp != dp)
                 {
-                    hldp = value;
-                    hldp.InvalidateWindow();
+                    hldp = dp;
+                
+                    ShowDockPanel(dp);
+                    hldp.MakeVisibleByParentDockContainer();
                 }
-            }
         }
         public DockButtonBar.DockPanelList GetButtons()
         {

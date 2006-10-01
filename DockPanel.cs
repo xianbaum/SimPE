@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 namespace Floaters
 {
 
-    [Designer(typeof(DockContainerDesigner))]
+    [Designer(typeof(DockPanelDesigner))]
     public partial class DockPanel : NCUserControl
     {
         List<DockPanelCaptionButton> cbuttons;
@@ -53,6 +53,9 @@ namespace Floaters
 
             InitializeComponent();            
             SetupCaptionButtons();
+            SetDefaultImage();
+            text = Name;
+            btext = "";
         }
 
         public DockPanel() : this(null) { }
@@ -73,17 +76,61 @@ namespace Floaters
             cbuttons.Add(close);
         }
 
-        string text;
         public new string Text
         {
-            get { return Name; }
+            get { return CaptionText; }
+            set { CaptionText = value; }
+        }
+
+        string text, btext;
+        public  string CaptionText
+        {
+            get { return text; }
             set {
-                if (text != value)
-                {
+                if (text != value) {
                     text = value;
-                    Refresh();
+                    if (btext == "") btext = text;
+                    InvalidateWindow();
                 }
             }
+        }
+
+        public string ButtonText
+        {
+            get { return btext; }
+            set
+            {
+                if (btext != value)
+                {
+                    btext = value;
+                    InvalidateWindow();
+                }
+            }
+        }
+
+        Image img;
+        public Image Image
+        {
+            get {return img; }
+            set
+            {
+                if (img != value)
+                {
+                    img = value;
+                    if (img == null)
+                    {
+                        SetDefaultImage();
+                    }
+                    InvalidateWindow();
+                }
+            }
+        }
+
+        private void SetDefaultImage()
+        {
+            System.IO.Stream s = this.GetType().Assembly.GetManifestResourceStream("Floaters.dockimg.png");
+            if (s != null) img = Image.FromStream(s);
+            else img = new Bitmap(16, 16);
         }
 
         DockManager manager;
@@ -179,23 +226,17 @@ namespace Floaters
 
             if (MouseOnSelector(e.ControlPosition) && e.MouseButtons.Left)
             {
-                //Console.WriteLine("Selected " + Text);
-                this.Focus();
+                Console.WriteLine("Selected " + Text);
+                this.EnsureVisible();
                 Manager.RepaintAll();
             }
 
             DockPanel dp = ButtonData.GetHitPanel(e.ControlPosition);
             if (dp != null)
             {
-                if (e.MouseButtons.Right)
+                if (e.MouseButtons.Left)
                 {
-                    if (dp.DockContainer != null) if (dp.DockContainer.Collapsed) dp.DockContainer.Expand();
-                    else dp.DockContainer.Collapse();
-                }
-                else if (e.MouseButtons.Left)
-                {
-                    dp.EnsureVisible();
-                    
+                    dp.EnsureVisible();                    
                 }
             }
         }
@@ -207,13 +248,16 @@ namespace Floaters
         /// </summary>
         public void EnsureVisible()
         {
-            if (DockContainer != null)
-            {
-                //Console.WriteLine("Changed Highlight to " + this.Text);
+            if (DockContainer != null)            
+                DockContainer.SetActiveDock(this);
+            
+        }
 
-                DockContainer.ShowDockPanel(this);
-                DockContainer.Highlight = this;
-            }
+        internal void MakeVisibleByParentDockContainer()
+        {
+            this.Focus();
+            this.InvalidateWindow();
+
         }
 
         /// <summary>
@@ -224,9 +268,14 @@ namespace Floaters
             DoInvalidateWindow();
         }
 
+        public bool Floating
+        {
+           get { return (this.Parent is DockPanelFloatingForm); }
+        }
+
         private void Float(NCMouseEventArgs e)
         {
-            if (this.Parent is DockPanelFloatingForm) return;
+            if (Floating) return;
 
             this.NonClientMargin = new Padding(0);
 
@@ -335,9 +384,10 @@ namespace Floaters
         {
             //base.OnNcPaint(e);
             
-            if (Manager!=null) {
+            if (Manager!=null && !Floating) {
                 e.Graphics.FillRegion(new SolidBrush(manager.Renderer.ColorTable.DockBackgroundColor), e.PaintRegion);
-            
+
+                Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);
                 buttonData = Manager.Renderer.DockPanelRenderer.ConstructButtonData(DockContainer, e);
                 buttonData.Render();
             
