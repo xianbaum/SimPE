@@ -27,11 +27,11 @@ using System.ComponentModel.Design;
 using System.Collections;
 using System.Windows.Forms.Design;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
-    public class DockPanelDesigner : System.Windows.Forms.Design.ControlDesigner
+    public class DockPanelDesigner : System.Windows.Forms.Design.ParentControlDesigner
     {
-
+       
        /* public override bool CanBeParentedTo(IDesigner parentDesigner)
         {
             if (parentDesigner is DockContainer) return true;

@@ -25,7 +25,7 @@ using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Floaters{
+namespace Ambertation.Windows.Forms{
     public class ManagedLayeredForm : LayeredForm
     {
         DockManager manager;

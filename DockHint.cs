@@ -23,7 +23,7 @@ using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
    public class DockHint : ManagedLayeredForm
    {        

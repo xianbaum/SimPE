@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {    
     public class WhidbeyRenderDockHints : BaseControlRenderer, IRenderDockHints
     {        
@@ -53,7 +53,7 @@ namespace Floaters
             get
             {
                 if (hintcenter == null)
-                    hintcenter = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Floaters.dockhint.PNG")) as Bitmap;
+                    hintcenter = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Ambertation.Windows.Forms.dockhint.PNG")) as Bitmap;
 
                 return hintcenter;
             }
@@ -64,7 +64,7 @@ namespace Floaters
             get
             {
                 if (hintleft == null)
-                    hintleft = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Floaters.left.png")) as Bitmap;
+                    hintleft = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Ambertation.Windows.Forms.left.png")) as Bitmap;
                 return hintleft;
             }
         }
@@ -74,7 +74,7 @@ namespace Floaters
             get
             {
                 if (hinttop == null)
-                    hinttop = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Floaters.top.png")) as Bitmap;
+                    hinttop = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Ambertation.Windows.Forms.top.png")) as Bitmap;
                 return hinttop;
             }
         }
@@ -84,7 +84,7 @@ namespace Floaters
             get
             {
                 if (hintright == null)
-                    hintright = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Floaters.right.png")) as Bitmap;
+                    hintright = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Ambertation.Windows.Forms.right.png")) as Bitmap;
                 return hintright;
             }
         }
@@ -94,7 +94,7 @@ namespace Floaters
             get
             {
                 if (hintbottom == null)
-                    hintbottom = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Floaters.bottom.png")) as Bitmap;
+                    hintbottom = Image.FromStream(typeof(DockHint).Assembly.GetManifestResourceStream("Ambertation.Windows.Forms.bottom.png")) as Bitmap;
 
                 return hintbottom;
             }

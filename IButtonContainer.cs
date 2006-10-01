@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     public interface IButtonContainer
     {

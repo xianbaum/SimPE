@@ -24,7 +24,7 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Drawing;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     class DockPanelFloatingForm : Form
     {

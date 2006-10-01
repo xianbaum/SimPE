@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     /// <summary>
     /// This enum determins the orientation of a <see cref="DockPanel"/>-Button that is going to be rendered

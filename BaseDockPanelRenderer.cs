@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     public abstract class BaseDockPanelRenderer : BaseControlRenderer, System.IDisposable
     {
@@ -235,7 +235,7 @@ namespace Floaters
         #region Caption Buttons
         protected virtual void DrawButtonImage(Graphics g, string name, Rectangle r)
         {
-            name = "Floaters."+name+".png";
+            name = "Ambertation.Windows.Forms." + name + ".png";
             System.IO.Stream s = this.GetType().Assembly.GetManifestResourceStream(name);
             if (s != null)
             {
@@ -351,7 +351,7 @@ namespace Floaters
             }
             else
             {
-                Console.WriteLine(r);
+                //Console.WriteLine(r);
                 linerectangle = new Rectangle(r.Right - 3, r.Top, 4, r.Height);
                 linept1 = new Point(linerectangle.Left, linerectangle.Top);
                 linept2 = new Point(linerectangle.Left, linerectangle.Bottom);

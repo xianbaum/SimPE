@@ -26,10 +26,10 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
 
-    [Designer(typeof(DockPanelDesigner))]
+    [Designer(typeof(DockPanelDesigner)), Browsable(false), ToolboxItem(false)]
     public partial class DockPanel : NCUserControl
     {
         List<DockPanelCaptionButton> cbuttons;
@@ -83,6 +83,7 @@ namespace Floaters
         }
 
         string text, btext;
+        [System.ComponentModel.Localizable(true)]
         public  string CaptionText
         {
             get { return text; }
@@ -95,6 +96,7 @@ namespace Floaters
             }
         }
 
+        [System.ComponentModel.Localizable(true)]
         public string ButtonText
         {
             get { return btext; }
@@ -128,7 +130,7 @@ namespace Floaters
 
         private void SetDefaultImage()
         {
-            System.IO.Stream s = this.GetType().Assembly.GetManifestResourceStream("Floaters.dockimg.png");
+            System.IO.Stream s = this.GetType().Assembly.GetManifestResourceStream("Ambertation.Windows.Forms.dockimg.png");
             if (s != null) img = Image.FromStream(s);
             else img = new Bitmap(16, 16);
         }
@@ -226,7 +228,7 @@ namespace Floaters
 
             if (MouseOnSelector(e.ControlPosition) && e.MouseButtons.Left)
             {
-                Console.WriteLine("Selected " + Text);
+                //Console.WriteLine("Selected " + Text);
                 this.EnsureVisible();
                 Manager.RepaintAll();
             }

@@ -7,7 +7,7 @@
     <ProjectGuid>{F65B296C-6435-4AA9-A5DF-188BE363C43E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Floaters</RootNamespace>
+    <RootNamespace>Ambertation.Windows.Forms</RootNamespace>
     <AssemblyName>NetDocks</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

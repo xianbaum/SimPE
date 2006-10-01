@@ -25,7 +25,7 @@ using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     // Class to assist with Win32 API calls
     class APIHelp

@@ -1,4 +1,4 @@
-﻿namespace Floaters
+﻿namespace Ambertation.Windows.Forms
 {
     partial class NCUserControl
     {

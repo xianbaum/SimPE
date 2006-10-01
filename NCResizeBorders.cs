@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     [TypeConverterAttribute(typeof(System.ComponentModel.ExpandableObjectConverter))]
     public class NCResizeBorders

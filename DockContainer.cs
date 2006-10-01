@@ -26,9 +26,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
-    [Designer(typeof(DockContainerDesigner))]
+    [Designer(typeof(DockContainerDesigner)), ToolboxItem(false)]
     public class DockContainer : UserControl, IButtonContainer
     {
         protected List<DockContainer> containers;
@@ -46,7 +46,7 @@ namespace Floaters
         
         internal DockContainer(DockManager manager)
         {
-            this.SetStyle(ControlStyles.ContainerControl, true);
+            //this.SetStyle(ControlStyles.ContainerControl, true);
             this.BackColor = Color.DarkCyan;
             
             containers = new List<DockContainer>();
@@ -603,10 +603,13 @@ namespace Floaters
             foreach (Control c in Controls)
             {
                 DockPanel dp = c as DockPanel;
-                if (dp.Dock == DockStyle.Fill && gotoindex == -1)
+                if (dp != null)
                 {
-                    gotoindex = ct;
-                    break;
+                    if (dp.Dock == DockStyle.Fill && gotoindex == -1)
+                    {
+                        gotoindex = ct;
+                        break;
+                    }
                 }
                 ct++;
             }

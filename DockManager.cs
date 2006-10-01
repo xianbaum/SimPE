@@ -26,9 +26,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
-    [Designer(typeof(DockManagerDesigner))]
+    [Designer(typeof(DockManagerDesigner)), ToolboxItem(true), ToolboxBitmap(typeof(DockManager), "Floaters.dockimg.png")]
     public class DockManager : DockContainer
     {
         List<ManagedLayeredForm> layers;
@@ -320,11 +320,13 @@ namespace Floaters
         {
             if (!dockmode)
             {
+                this.SuspendLayout();
                 last = new ContainerInfo();
                 dockmode = true;
                 TakeHint(allcenter);
                 UpdateHintVisibility();
                 CleanUp();
+                this.ResumeLayout();
 
                 OnStartDockMode(dock);
             }
@@ -338,6 +340,7 @@ namespace Floaters
 
         internal void StopDockMode(DockPanel dock)
         {
+            //this.SuspendLayout();
             if (dockmode)
             {
                 dockmode = false;
@@ -350,7 +353,7 @@ namespace Floaters
                 {
                     if (last.Parent != null)
                     {
-                        Console.WriteLine(last);
+                        //Console.WriteLine(last);
                         DockContainer dc = last.Seed;
                         if (last.Hint != SelectedHint.Center)
                         {
@@ -375,6 +378,7 @@ namespace Floaters
 
                 OnStopDockMode(dock);
             }
+            //this.ResumeLayout();
         }
 
         protected virtual void OnStopDockMode(DockPanel dock)

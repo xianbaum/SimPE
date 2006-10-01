@@ -25,8 +25,9 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
+    [ToolboxItem(false)]
     public partial class DockButtonBar : UserControl, IButtonContainer
     {
         public class DockPanelList : List<DockPanel>{}

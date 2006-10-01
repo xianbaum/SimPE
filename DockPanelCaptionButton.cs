@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     /// <summary>
     /// Used to identify the display state of a <see cref="DockPanelCaptionButton"/>

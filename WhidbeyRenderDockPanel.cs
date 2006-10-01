@@ -24,7 +24,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Drawing;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     public class WhidbeyRenderDockPanel : BaseDockPanelRenderer, IDockPanelRenderer
     {

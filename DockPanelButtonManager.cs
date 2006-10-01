@@ -22,7 +22,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
     
     public class DockPanelButtonManager : IEnumerable<DockPanelButtonManager.Place>
@@ -107,7 +107,7 @@ namespace Floaters
             ////Console.WriteLine(maxhg + " > " + top + " ? ("+e.WindowRectangle+" "+pad+")");
             if (top > maxhg)
             {
-                Console.WriteLine("--> Fixing height!");
+                //Console.WriteLine("--> Fixing height!");
                 if (shg * panels.Count > maxhg) shg = maxhg / panels.Count;
                 List<Place> buttonsnew = new List<Place>();
 

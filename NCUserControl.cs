@@ -26,7 +26,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace Floaters
+namespace Ambertation.Windows.Forms
 {
 
     
