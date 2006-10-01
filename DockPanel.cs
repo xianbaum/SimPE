@@ -173,8 +173,12 @@ namespace Ambertation.Windows.Forms
         public Size GetButtonSize()
         {
             return Manager.Renderer.DockPanelRenderer.GetButtonSize(this);
-        }        
-        
+        }
+
+        internal void CallNcMouseChanged(NCMouseEventArgs e)
+        {
+            OnNcMouseChanged(e);
+        }
         protected override void OnNcMouseChanged(NCMouseEventArgs e)
         {
             base.OnNcMouseChanged(e);
@@ -220,7 +224,11 @@ namespace Ambertation.Windows.Forms
 
             return candrag;
         }
-        
+
+        internal void CallNcMouseDown(NCMouseEventArgs e)
+        {
+            OnNcMouseDown(e);
+        }
 
         protected override void OnNcMouseDown(NCMouseEventArgs e)
         {

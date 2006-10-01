@@ -125,6 +125,44 @@ namespace Ambertation.Windows.Forms
             c.OnComponentChanged(pn, null, null, null);
             c.OnComponentChanged(manager, TypeDescriptor.GetProperties(this.manager)["Controls"], null, null);*/
             dt.Commit();
-        }	
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {               
+                case APIHelp.WM_NCLBUTTONDOWN:
+                case APIHelp.WM_NCLBUTTONUP:
+                case APIHelp.WM_NCRBUTTONDOWN:
+                case APIHelp.WM_NCRBUTTONUP:
+                case APIHelp.WM_NCMBUTTONDOWN:
+                case APIHelp.WM_NCMBUTTONUP:
+                case APIHelp.WM_NCMOUSEMOVE:
+                    {
+                        NCMouseEventArgs e = dp.CallGetMouseParams(ref m, true);
+                        /*if (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP)
+                            this.OnNcMouseUp(e);*/
+
+                        ////Console.WriteLine("DOWN " + m.Result + " " + m.WParam);
+                        /*if (m.Msg == APIHelp.WM_NCLBUTTONDOWN) mb.LeftInt = true;
+                        else if (m.Msg == APIHelp.WM_NCLBUTTONUP) mb.LeftInt = false;
+                        else if (m.Msg == APIHelp.WM_NCRBUTTONDOWN) mb.RightInt = true;
+                        else if (m.Msg == APIHelp.WM_NCRBUTTONUP) mb.RightInt = false;
+                        else if (m.Msg == APIHelp.WM_NCMBUTTONDOWN) mb.MiddleInt = true;
+                        else if (m.Msg == APIHelp.WM_NCMBUTTONUP) mb.MiddleInt = false;*/
+                        //GetMouseButtonState();
+
+
+
+                        if (m.Msg == APIHelp.WM_NCLBUTTONDOWN || m.Msg == APIHelp.WM_NCMBUTTONDOWN || m.Msg == APIHelp.WM_NCRBUTTONDOWN)
+                            dp.CallNcMouseDown(e);
+
+
+                        //dp.CallNcMouseChanged(e);
+                        break;
+                    }                
+            }
+            base.WndProc(ref m);
+        }
     }
 }

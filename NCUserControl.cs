@@ -222,6 +222,12 @@ namespace Ambertation.Windows.Forms
             return e;
         }
 
+        internal NCMouseEventArgs CallGetMouseParams(ref Message m, bool getdelta)
+        {
+            GetMouseButtonState();
+            return GetMouseParams(ref m, getdelta);
+        }
+
         private NCMouseEventArgs GetMouseParams(ref Message m, bool getdelta)
         {
             return GetMouseParams(ref m, getdelta, mb);
