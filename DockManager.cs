@@ -100,6 +100,7 @@ namespace Ambertation.Windows.Forms
 
         protected override void CleanUp()
         {
+            Console.WriteLine("DO CleanUp");
             base.CleanUp();
 
             colconts[DockStyle.Bottom].SendToBack();
@@ -186,12 +187,21 @@ namespace Ambertation.Windows.Forms
 
         protected void ChangeHostControl()
         {
-            const int dist = 8;
-
-            Rectangle r = ScreenBounds;
-            ////Console.WriteLine(r);
-
             TakeHint(allcenter);
+            
+            SetMainHintLocation();            
+        }
+
+        private void SetMainHintLocation()
+        {
+            const int dist = 8;
+            Rectangle r = ScreenBounds;
+            /*if (Parent!=null)
+                if (Parent.Parent!=null)
+                    r = new Rectangle(Parent.Parent.PointToScreen(Location), this.Size);*/
+            Console.WriteLine(r + " " + Location + " " + Parent);
+
+
             allleft.SetDesktopLocation(
                 r.Left + dist,
                 r.Top + (r.Height - allleft.Height) / 2
@@ -212,6 +222,8 @@ namespace Ambertation.Windows.Forms
                 r.Top + r.Height - dist - allbottom.Height
                 );
         }
+
+        
 
         /*protected Rectangle GetHostRectangle()
         {
@@ -240,7 +252,7 @@ namespace Ambertation.Windows.Forms
         }*/
 
         internal override void TakeHint(DockHint hint)
-        {
+        {            
             TakeHint(hint, ScreenBounds, null);
         }
 
@@ -282,19 +294,34 @@ namespace Ambertation.Windows.Forms
             if (oldparent != null)
             {
                 oldparent.LocationChanged -= new EventHandler(oldparent_LocationChanged);
+                oldparent.SizeChanged -= new EventHandler(oldparent_LocationChanged);
+                oldparent.Layout -= new LayoutEventHandler(oldparent_Layout);
+              
             }
             base.OnParentChanged(e);
             oldparent = Parent;
             if (oldparent != null)
             {
                 oldparent.LocationChanged += new EventHandler(oldparent_LocationChanged);
+                oldparent.SizeChanged += new EventHandler(oldparent_LocationChanged);
+                oldparent.Layout += new LayoutEventHandler(oldparent_Layout);
             }
+
+            //Console.WriteLine("new Parent");
             ChangeHostControl();
         }
 
+       
+     
+        void oldparent_Layout(object sender, LayoutEventArgs e)
+        {
+            //Console.WriteLine("Parent layout");
+            ChangeHostControl();
+        }        
+
         protected void oldparent_LocationChanged(object sender, EventArgs e)
         {
-
+            //Console.WriteLine("Parent moved/sized");
             ChangeHostControl();
         }
 
@@ -304,10 +331,17 @@ namespace Ambertation.Windows.Forms
             ChangeHostControl();
         }
 
+        protected override void OnLayout(LayoutEventArgs e)
+        {
+            base.OnLayout(e);
+            RepaintAll();
+        }
+
 
         protected override void UpdateHintVisibility()
-        {
+        {            
             base.UpdateHintVisibility();
+            
             foreach (DockHint hint in hints)
             {
                 if (hint == allcenter) hint.Show();
@@ -321,6 +355,7 @@ namespace Ambertation.Windows.Forms
             if (!dockmode)
             {
                 this.SuspendLayout();
+                SetMainHintLocation();
                 last = new ContainerInfo();
                 dockmode = true;
                 TakeHint(allcenter);
@@ -329,6 +364,7 @@ namespace Ambertation.Windows.Forms
                 this.ResumeLayout();
 
                 OnStartDockMode(dock);
+                
             }
         }
 
@@ -340,9 +376,10 @@ namespace Ambertation.Windows.Forms
 
         internal void StopDockMode(DockPanel dock)
         {
-            //this.SuspendLayout();
+            
             if (dockmode)
             {
+                this.SuspendLayout();
                 dockmode = false;
 
                 foreach (LayeredForm l in layers)
@@ -376,9 +413,10 @@ namespace Ambertation.Windows.Forms
                     CleanUp();
                 }
 
+                this.ResumeLayout();
                 OnStopDockMode(dock);
             }
-            //this.ResumeLayout();
+           
         }
 
         protected virtual void OnStopDockMode(DockPanel dock)

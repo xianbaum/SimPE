@@ -47,7 +47,7 @@ namespace Ambertation.Windows.Forms
         internal DockContainer(DockManager manager)
         {
             //this.SetStyle(ControlStyles.ContainerControl, true);
-            this.BackColor = Color.DarkCyan;
+            //this.BackColor = Color.DarkCyan;
             
             containers = new List<DockContainer>();
             panels = new DockButtonBar.DockPanelList();
@@ -262,16 +262,26 @@ namespace Ambertation.Windows.Forms
         internal Point ScreenLocation
         {
             get {
+                //if (ParentForm != null && Parent != null) return ParentForm.PointToScreen(Location);
                 if (Parent != null) return Parent.PointToScreen(Location);
                 return Location; 
             }
         }
 
+        internal Size ScreenSize {
+            get
+            {
+                //if (ParentForm != null && Parent != null) return ParentForm.ClientSize;
+                //if (Parent != null) return Parent.ClientSize;
+                return ClientSize; 
+            }
+    }
+
         internal Rectangle ScreenBounds
         {
             get
             {
-                return new Rectangle(ScreenLocation, Size);
+                return new Rectangle(ScreenLocation, ScreenSize);
             }
         }
 
