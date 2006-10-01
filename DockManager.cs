@@ -380,6 +380,8 @@ namespace Ambertation.Windows.Forms
             if (dockmode)
             {
                 this.SuspendLayout();
+                dock.SuspendLayout();
+                dock.Visible = false;
                 dockmode = false;
 
                 foreach (LayeredForm l in layers)
@@ -388,13 +390,19 @@ namespace Ambertation.Windows.Forms
 
                 if (last.Hint != SelectedHint.None)
                 {
+                    DockContainer dcmain = null;
                     if (last.Parent != null)
                     {
                         //Console.WriteLine(last);
-                        DockContainer dc = last.Seed;
+                        dcmain = last.Seed;
+                        DockContainer dc = dcmain;
+                        dcmain.SuspendLayout();
                         if (last.Hint != SelectedHint.Center)
                         {
-                            dc = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
+                            
+                            DockContainer dcnew = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
+                            dc = dcnew;
+                            dcnew.SuspendLayout();
                             if (!(last.Parent is DockManager))
                             {
                                 dc.Width = Math.Max(20, Math.Min(DefaultSize.Width, last.Parent.Width / 2));
@@ -405,16 +413,25 @@ namespace Ambertation.Windows.Forms
                                 dc.Width = Math.Min(last.Parent.Width /2, dock.Width);
                                 dc.Height = Math.Min(last.Parent.Height / 2, dock.Height);
                             }
+                            dcnew.Visible = true;
+                            dcnew.ResumeLayout();
                         }
 
                         dock.DockControl(dc);
                         dock.BringToFront();
+                        
                     }
                     CleanUp();
+                    if (dcmain!=null) dcmain.ResumeLayout();
                 }
 
-                this.ResumeLayout();
                 OnStopDockMode(dock);
+
+
+                this.ResumeLayout();
+                dock.Visible = true;
+                dock.ResumeLayout();
+                dock.InvalidateWindow();
             }
            
         }

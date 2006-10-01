@@ -217,7 +217,9 @@ namespace Ambertation.Windows.Forms
 
         public DockContainer CreateNewContainer()
         {
-            return CreateNewContainer(-1, true, true, DockStyle.None);
+            DockContainer dc = CreateNewContainer(-1, true, true, DockStyle.None);
+            dc.Visible = true;
+            return dc;
         }
 
         public void SetDefaultSize()
@@ -244,6 +246,7 @@ namespace Ambertation.Windows.Forms
             //Console.WriteLine("2: "+toplevel + " " + after + " " + index);
                         
             DockContainer dc = new DockContainer(this.Manager);
+            dc.Visible = false;
             dc.Dock = dockstyle;
             this.Controls.Add(dc);
             if (index >= 0 && index < Controls.Count && !toplevel)
