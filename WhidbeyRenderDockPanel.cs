@@ -258,7 +258,14 @@ namespace Ambertation.Windows.Forms
         public void Animate(DockAnimationEventArgs e)
         {            
             animdata.e = e;
-            animtimer.Change(0, SPEED);
+            if (e.Container.Dock == DockStyle.Fill) DoFinishAnimation(e);
+            else
+            {
+                //animtimer.Change(0, SPEED);
+                InvokedAnimationTimerCallback(this, e);
+                InvokedAnimationTimerCallback(this, e);
+                DoFinishAnimation(e);
+            }
         }
 
         public event DockAnimationEventHandler FinishedAnimation;

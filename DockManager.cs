@@ -108,15 +108,22 @@ namespace Ambertation.Windows.Forms
             colconts[d].Visible = false;
         }
 
+        public void ForceCleanUp()
+        {
+            CleanUp();
+            RepaintAll();
+        }
         protected override void CleanUp()
         {
             //Console.WriteLine("DO CleanUp");
             base.CleanUp();
-
-            colconts[DockStyle.Bottom].SendToBack();
-            colconts[DockStyle.Right].SendToBack();
-            colconts[DockStyle.Top].SendToBack();
-            colconts[DockStyle.Left].SendToBack();
+            if (colconts.Count >= 4)
+            {
+                colconts[DockStyle.Bottom].SendToBack();
+                colconts[DockStyle.Right].SendToBack();
+                colconts[DockStyle.Top].SendToBack();
+                colconts[DockStyle.Left].SendToBack();
+            }
 
             ListControls();
         }
@@ -344,6 +351,8 @@ namespace Ambertation.Windows.Forms
         protected override void OnLayout(LayoutEventArgs e)
         {
             base.OnLayout(e);
+            /*CleanUp();
+            RefreshSplitters();*/
             RepaintAll();
         }
 
@@ -501,5 +510,31 @@ namespace Ambertation.Windows.Forms
             if (!this.DesignMode) CleanUp();
             RefreshSplitters();
         }
+
+        public void DockPanel(DockPanel dp, DockStyle style)
+        {
+            bool docked = false;
+            this.SuspendLayout();
+            foreach (DockContainer dc in containers)
+                if (dc.Dock == style)
+                {
+                    docked = true;
+                    dp.DockControl(dc);
+                    break;
+
+                }
+
+            if (!docked)
+            {
+
+                DockContainer dc = CreateNewContainer(-1, false, true, style);
+                dc.SetNoCleanUpIntern(true);
+                dc.Visible = true;
+
+                dp.DockControl(dc);
+                dc.SetNoCleanUpIntern(false);
+            }
+            this.ResumeLayout();
+        }        
     } 
 }

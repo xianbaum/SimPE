@@ -175,6 +175,23 @@ namespace Ambertation.Windows.Forms
             return Manager.Renderer.DockPanelRenderer.GetButtonSize(this);
         }
 
+        
+
+        protected bool MouseOnSelector(Point mouse)
+        {
+            bool candrag = false;
+            if (canundock)
+                candrag = (Manager.Renderer.DockPanelRenderer.GetCaptionRect(this).Contains(mouse));
+
+            if (ButtonData != null && !candrag)
+            {
+                DockPanel dp = ButtonData.GetHitPanel(mouse);
+                candrag = (dp == this);
+            }
+
+            return candrag;
+        }
+
         internal void CallNcMouseChanged(NCMouseEventArgs e)
         {
             OnNcMouseChanged(e);
@@ -194,10 +211,10 @@ namespace Ambertation.Windows.Forms
                 else chg |= b.SetState(CaptionButtonState.Normal);
             }
             if (chg) this.InvalidateWindow();
-            
+
             if (e.MouseButtons.Left && e.InitialResult == NCHitTestEventArgs.Results.HTBORDER
-                && (Math.Abs(e.Delta.X) >= 2 || Math.Abs(e.Delta.Y) >= 2) )
-            {        
+                && (Math.Abs(e.Delta.X) >= 2 || Math.Abs(e.Delta.Y) >= 2))
+            {
                 bool candrag = MouseOnSelector(e.ControlPosition);
 
                 if (candrag)
@@ -205,24 +222,19 @@ namespace Ambertation.Windows.Forms
                     //Console.WriteLine("Start floating " + Text + ": " + e.Delta + ", " + e.MouseButtons + ", " + e.InitialResult);
                     Float(e);
                 }
-                
+
             }
             //else //Console.WriteLine("    " + Text + ": " + e.Delta);
         }
 
-        protected bool MouseOnSelector(Point mouse)
+        protected override void OnNcClick(NCMouseEventArgs e)
         {
-            bool candrag = false;
-            if (canundock)
-                candrag = (Manager.Renderer.DockPanelRenderer.GetCaptionRect(this).Contains(mouse));
-
-            if (ButtonData != null && !candrag)
+            base.OnNcClick(e);
+            foreach (DockPanelCaptionButton b in cbuttons)
             {
-                DockPanel dp = ButtonData.GetHitPanel(mouse);
-                candrag = (dp == this);
+                if (b.Hit(e))
+                    b.PerformClick();                
             }
-
-            return candrag;
         }
 
         internal void CallNcMouseDown(NCMouseEventArgs e)
@@ -238,6 +250,8 @@ namespace Ambertation.Windows.Forms
             {
                 //Console.WriteLine("Selected " + Text);
                 this.EnsureVisible();
+                this.Focus();
+                
                 Manager.RepaintAll();
             }
 
@@ -246,6 +260,7 @@ namespace Ambertation.Windows.Forms
             {
                 if (e.MouseButtons.Left)
                 {
+                    if (dp.DockContainer != null) dp.DockContainer.Focus();
                     dp.EnsureVisible();                    
                 }
             }
@@ -489,11 +504,20 @@ namespace Ambertation.Windows.Forms
         {
             get
             {
-                bool foc = this.Focused;
+                bool foc = this.HasFocus();
                 if (DockContainer != null) foc |= DockContainer.Focused;
                 if (foc) return CaptionState.Focused;
                 else return CaptionState.Normal;
             }
+        }
+
+        protected bool HasFocus()
+        {
+            if (Focused) return true;
+            foreach (Control c in Controls)
+                if (c.Focused) return true;
+
+            return false;
         }
     }
 }

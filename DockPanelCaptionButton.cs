@@ -80,10 +80,17 @@ namespace Ambertation.Windows.Forms
         internal bool SetState(CaptionButtonState st){
             bool res = (state != st);
             state = st;
-            if (res && state == CaptionButtonState.Selected) OnClick();
+            //if (res && state == CaptionButtonState.Selected) OnClick();
             return res;
         }
 
+        /// <summary>
+        /// Performs the click action
+        /// </summary>
+        public void PerformClick()
+        {
+            OnClick();
+        }
         /// <summary>
         /// Fired whenever teh button get's activated
         /// </summary>

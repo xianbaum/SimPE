@@ -144,7 +144,7 @@ namespace Ambertation.Windows.Forms
                         if (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP)
                             this.OnNcMouseUp(e);
 
-                        //Console.WriteLine("DOWN " + m.Result + " " + m.WParam);
+                        //Console.WriteLine("Mouse 0x" + m.Msg.ToString("X") + " " + m.WParam);
                         /*if (m.Msg == APIHelp.WM_NCLBUTTONDOWN) mb.LeftInt = true;
                         else if (m.Msg == APIHelp.WM_NCLBUTTONUP) mb.LeftInt = false;
                         else if (m.Msg == APIHelp.WM_NCRBUTTONDOWN) mb.RightInt = true;
@@ -152,13 +152,12 @@ namespace Ambertation.Windows.Forms
                         else if (m.Msg == APIHelp.WM_NCMBUTTONDOWN) mb.MiddleInt = true;
                         else if (m.Msg == APIHelp.WM_NCMBUTTONUP) mb.MiddleInt = false;*/
                         GetMouseButtonState();
-
-
+                        if ((!mb.Left && !mb.Right && !mb.Middle) && (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP))
+                            this.OnNcClick(e);
                         
-                        if (m.Msg == APIHelp.WM_NCLBUTTONDOWN || m.Msg == APIHelp.WM_NCMBUTTONDOWN || m.Msg == APIHelp.WM_NCRBUTTONDOWN)                        
+                        if (m.Msg == APIHelp.WM_NCLBUTTONDOWN || m.Msg == APIHelp.WM_NCMBUTTONDOWN || m.Msg == APIHelp.WM_NCRBUTTONDOWN)
                             this.OnNcMouseDown(e);
                         
-
                         
                         this.OnNcMouseChanged(e);
                         break;
@@ -429,6 +428,11 @@ namespace Ambertation.Windows.Forms
         {
            //Console.WriteLine("NCUp: " + e);
            
+        }
+
+        protected virtual void OnNcClick(NCMouseEventArgs e)
+        {
+           // //Console.WriteLine("NCClick: " + e);
         }
 
         protected virtual void OnNcMouseLeave(NCMouseEventArgs e)

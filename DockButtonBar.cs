@@ -83,6 +83,7 @@ namespace Ambertation.Windows.Forms
 
         public void Remove(DockContainer c)
         {
+            if (!containers.ContainsKey(c)) return;
             DockPanelList dp = containers[c];
             if (dp != null)
             {
