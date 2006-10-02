@@ -71,7 +71,7 @@ namespace Ambertation.Windows.Forms
             {
                 if (value != ncsz)
                 {
-                    ////Console.WriteLine("Set Margin to " + value);
+                    //Console.WriteLine("Set Margin to " + value);
                     ncsz = value;
                     this.Width += 1;
                     this.Width -= 1;
@@ -144,7 +144,7 @@ namespace Ambertation.Windows.Forms
                         if (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP)
                             this.OnNcMouseUp(e);
 
-                        ////Console.WriteLine("DOWN " + m.Result + " " + m.WParam);
+                        //Console.WriteLine("DOWN " + m.Result + " " + m.WParam);
                         /*if (m.Msg == APIHelp.WM_NCLBUTTONDOWN) mb.LeftInt = true;
                         else if (m.Msg == APIHelp.WM_NCLBUTTONUP) mb.LeftInt = false;
                         else if (m.Msg == APIHelp.WM_NCRBUTTONDOWN) mb.RightInt = true;
@@ -417,7 +417,7 @@ namespace Ambertation.Windows.Forms
         
         protected virtual void OnNcMouseChanged(NCMouseEventArgs e)
         {
-            ////Console.WriteLine("NCMouse: " + e);
+            //Console.WriteLine("NCMouse: " + e);
         }
 
         protected virtual void OnNcMouseDown(NCMouseEventArgs e)
@@ -443,14 +443,14 @@ namespace Ambertation.Windows.Forms
 
         protected virtual void OnNcDoubleClick(NCMouseEventArgs e)
         {
-            ////Console.WriteLine("NCDbl: " + e);
+            //Console.WriteLine("NCDbl: " + e);
         }
 
 
         protected virtual void OnNcHitTest(NCHitTestEventArgs e)
         {
             if (dborder && e.Result == NCHitTestEventArgs.Results.HTBORDER) e.Result = NCHitTestEventArgs.Results.HTCAPTION;
-            ////Console.WriteLine("NCHit: " + e);            
+            //Console.WriteLine("NCHit: " + e);            
         }        
     }
 }

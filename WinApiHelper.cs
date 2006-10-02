@@ -52,6 +52,7 @@ namespace Ambertation.Windows.Forms
         public const Int32 WS_EX_TOOLWINDOW = 0x00000080;
         public const Int32 WS_EX_APPWINDOW = 0x00040000;
         public const Int32 WM_EXITSIZEMOVE = 0x232;
+        public const Int32 WM_MOVING = 0x216;
 
         public const Int32 WS_BORDER = ~8388608;
         public const Int32 WS_EX_CLIENTEDGE = ~512;

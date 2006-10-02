@@ -149,7 +149,7 @@ namespace Ambertation.Windows.Forms
 
             SizeF res = g.MeasureString(caption, font, maxwd, sf);
 
-            ////Console.WriteLine("Getting Caption Size " + caption + "(" + res + "=" + (int)res.Width + "x" + (int)res.Height + ", "+orient+")");
+            //Console.WriteLine("Getting Caption Size " + caption + "(" + res + "=" + (int)res.Width + "x" + (int)res.Height + ", "+orient+")");
             if (orient == ButtonOrientation.Bottom || orient == ButtonOrientation.Top) return (int)res.Width;
             else return (int)res.Height;
         }
@@ -166,7 +166,7 @@ namespace Ambertation.Windows.Forms
             int msz = maxsz.Width;
             if (orient == ButtonOrientation.Left || orient == ButtonOrientation.Right) msz = maxsz.Height;
             int sz = GetButtonCaptionWidth(font, g, caption, orient, msz);
-            ////Console.WriteLine("Fitting Text " + caption + "(" + sz + ") to " + msz);
+            //Console.WriteLine("Fitting Text " + caption + "(" + sz + ") to " + msz);
             bool elips = false;
             while (sz > msz && caption.Length>0)
             {
@@ -174,7 +174,7 @@ namespace Ambertation.Windows.Forms
                 else caption = caption.Substring(0, caption.Length - 1);
                 elips = true;
                 sz = GetButtonCaptionWidth(font, g, caption + "...", orient, msz);
-                ////Console.WriteLine("Fitting Text " + caption + "...(" + sz + ") to " + msz);
+                //Console.WriteLine("Fitting Text " + caption + "...(" + sz + ") to " + msz);
             }
 
             if (caption.Length > 0 && elips) caption += "...";

@@ -48,9 +48,18 @@ namespace Ambertation.Windows.Forms
 
         protected override void WndProc(ref Message m)
         {
-            //System.Diagnostics.Debug.WriteLine(m.Msg.ToString("X") + " " + m.WParam.ToString("X") + " " + m.LParam.ToString("X") + " " + m.Result);                
+
+            //Console.WriteLine("#### #" + m.Msg.ToString("X") + " " + m.WParam.ToString("X") + " " + m.LParam.ToString("X") + " " + m.Result);                
             if (m.Msg == APIHelp.WM_NCMOUSEMOVE || m.Msg == APIHelp.WM_EXITSIZEMOVE)
+            {
+                //Console.WriteLine("#### Stop floating " + m);
                 if (Manager.DockMode) StopFloating();
+            }
+            else if (m.Msg == APIHelp.WM_MOVING)
+            {
+                APIHelp.RECT rc = (APIHelp.RECT)m.GetLParam(typeof(APIHelp.RECT));
+                FireLocationChangeEvent();
+            }
             
             
             base.WndProc(ref m);
@@ -59,6 +68,7 @@ namespace Ambertation.Windows.Forms
        
         internal void StartFloatingBlocked(DockPanel p)
         {
+            //Console.WriteLine("#### Start floating blocked " + p.Text);
             StartFloating();
             this.Text = p.CaptionText;
             APIHelp.ReleaseCapture();
@@ -91,6 +101,7 @@ namespace Ambertation.Windows.Forms
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
+            //Console.WriteLine("#### Form MouseUp " + e);
             if (Manager.DockMode) StopFloating();
         }
 
@@ -98,6 +109,12 @@ namespace Ambertation.Windows.Forms
         {
             base.OnLocationChanged(e);
 
+            //Console.WriteLine("#### Change Form Location " + e);
+            FireLocationChangeEvent();
+        }
+
+        private void FireLocationChangeEvent()
+        {
             if (!Manager.DockMode && Visible) Manager.StartDockMode(this.DockControl);
             Manager.MouseMoved(Cursor.Position);
         }       

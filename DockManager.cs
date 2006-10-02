@@ -47,9 +47,19 @@ namespace Ambertation.Windows.Forms
             get { return dockmode; }
         }
 
+        System.IO.TextWriter writer;
+        ~DockManager()
+        {
+            writer.Close();
+        }
         public DockManager()
             : base()
         {
+            /*string flname = System.Windows.Forms.Application.StartupPath;
+            flname = System.IO.Path.Combine(flname, "netdocks.log");
+            writer = new System.IO.StreamWriter(flname, false);
+            //Console.SetOut(writer);*/
+
             last = new ContainerInfo();
             manager = this;
 
@@ -100,7 +110,7 @@ namespace Ambertation.Windows.Forms
 
         protected override void CleanUp()
         {
-            Console.WriteLine("DO CleanUp");
+            //Console.WriteLine("DO CleanUp");
             base.CleanUp();
 
             colconts[DockStyle.Bottom].SendToBack();
@@ -199,7 +209,7 @@ namespace Ambertation.Windows.Forms
             /*if (Parent!=null)
                 if (Parent.Parent!=null)
                     r = new Rectangle(Parent.Parent.PointToScreen(Location), this.Size);*/
-            Console.WriteLine(r + " " + Location + " " + Parent);
+            //Console.WriteLine(r + " " + Location + " " + Parent);
 
 
             allleft.SetDesktopLocation(
@@ -344,16 +354,20 @@ namespace Ambertation.Windows.Forms
             
             foreach (DockHint hint in hints)
             {
+                //Console.WriteLine("    Updating hint " + hint.Text + " from " + hint.Visible);
                 if (hint == allcenter) hint.Show();
                 else if (!hint.Rectangle.IntersectsWith(allcenter.Rectangle)) hint.Show();
                 else hint.Hide();
+                //Console.WriteLine("      to " + hint.Visible);
             }
         }
 
         internal void StartDockMode(DockPanel dock)
         {
+            //Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from "+dock.Parent);
             if (!dockmode)
             {
+                //Console.WriteLine(" -> started");
                 this.SuspendLayout();
                 SetMainHintLocation();
                 last = new ContainerInfo();
@@ -376,9 +390,11 @@ namespace Ambertation.Windows.Forms
 
         internal void StopDockMode(DockPanel dock)
         {
-            
+
+            //Console.WriteLine("#### StopDockMode for " + dock.Text + " (" + dockmode + ")");
             if (dockmode)
             {
+                //Console.WriteLine(" -> stopping to "+last);
                 this.SuspendLayout();
                 dock.SuspendLayout();
                 dock.Visible = false;

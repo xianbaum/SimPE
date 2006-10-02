@@ -143,7 +143,7 @@ namespace Ambertation.Windows.Forms
                         /*if (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP)
                             this.OnNcMouseUp(e);*/
 
-                        ////Console.WriteLine("DOWN " + m.Result + " " + m.WParam);
+                        //Console.WriteLine("DOWN " + m.Result + " " + m.WParam);
                         /*if (m.Msg == APIHelp.WM_NCLBUTTONDOWN) mb.LeftInt = true;
                         else if (m.Msg == APIHelp.WM_NCLBUTTONUP) mb.LeftInt = false;
                         else if (m.Msg == APIHelp.WM_NCRBUTTONDOWN) mb.RightInt = true;

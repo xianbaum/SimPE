@@ -36,7 +36,7 @@ namespace Ambertation.Windows.Forms
                 this.panel = panel;
                 this.rect = rect;
 
-                ////Console.WriteLine("    Creating " + panel.Text + " " + Rectangle);
+                //Console.WriteLine("    Creating " + panel.Text + " " + Rectangle);
             }
 
             DockPanel panel;
@@ -104,7 +104,7 @@ namespace Ambertation.Windows.Forms
         private List<Place> SetVerticalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, int top, int shg, Rectangle pad)
         {
             int maxhg = pad.Height;
-            ////Console.WriteLine(maxhg + " > " + top + " ? ("+e.WindowRectangle+" "+pad+")");
+            //Console.WriteLine(maxhg + " > " + top + " ? ("+e.WindowRectangle+" "+pad+")");
             if (top > maxhg)
             {
                 //Console.WriteLine("--> Fixing height!");
@@ -150,10 +150,10 @@ namespace Ambertation.Windows.Forms
         private List<Place> SetHorizontalButtons(List<Place> buttons, DockButtonBar.DockPanelList panels, NCPaintEventArgs e, int left, int swd, Rectangle pad)
         {
             int maxwd = pad.Width;
-            ////Console.WriteLine(maxwd + " > " + left + " ?");
+            //Console.WriteLine(maxwd + " > " + left + " ?");
             if (left > maxwd)
             {
-                ////Console.WriteLine("    Fixing length!");
+                //Console.WriteLine("    Fixing length!");
                 if (swd * panels.Count > maxwd) swd = maxwd / panels.Count;
                 List<Place> buttonsnew = new List<Place>();
                                

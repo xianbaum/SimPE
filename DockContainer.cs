@@ -159,7 +159,7 @@ namespace Ambertation.Windows.Forms
 
         void GenerateSplitter(DockStyle ds, int index)        
         {
-            ////Console.Write("Adding " + ds + " at " + index);            
+            //Console.Write("Adding " + ds + " at " + index);            
             Splitter s = new Splitter();
             s.Parent = this;
             s.Dock = ds;
@@ -171,7 +171,7 @@ namespace Ambertation.Windows.Forms
         protected void RefreshSplitters()
         {
             this.SuspendLayout();
-            ////Console.WriteLine("Setting Splitters");
+            //Console.WriteLine("Setting Splitters");
             List<Control>splitters = new List<Control>();
             foreach (Control c in Controls)
                 if (c is Splitter) splitters.Add(c as Splitter);
@@ -187,7 +187,7 @@ namespace Ambertation.Windows.Forms
                 DockContainer dc = c as DockContainer;
                 if (dc != null) if (dc.IgnoreAsTarget) continue;
 
-                ////Console.WriteLine(c.Dock);
+                //Console.WriteLine(c.Dock);
                 if (c.Dock == DockStyle.Right) GenerateSplitter(DockStyle.Right, i);
                 else if (c.Dock == DockStyle.Left) GenerateSplitter(DockStyle.Left, i);
                 else if (c.Dock == DockStyle.Top) GenerateSplitter(DockStyle.Top, i);
@@ -365,6 +365,7 @@ namespace Ambertation.Windows.Forms
 
         protected virtual void UpdateHintVisibility()
         {
+            //Console.WriteLine("Update Visible Hints");
         }
 
 
@@ -389,14 +390,14 @@ namespace Ambertation.Windows.Forms
         protected void MouseOverHint(DockHint sender, SelectedHint hint)
         {
             if (!sender.Visible) return;
-            ////Console.WriteLine(hint + "; " + sender.Text);
+            //Console.WriteLine(hint + "; " + sender.Text);
             ContainerInfo nfo = new ContainerInfo();
             
             nfo.Hint = hint; 
             nfo.Parent = this;
             nfo.DockInside = false;
             nfo.TopLevel = false;
-            ////Console.WriteLine(this.GetType().Name+" "+nfo.Parent.GetType().Name);
+            //Console.WriteLine(this.GetType().Name+" "+nfo.Parent.GetType().Name);
             if (sender.ParentContainer == null)
             {
                 nfo.Seed = this;
@@ -417,7 +418,7 @@ namespace Ambertation.Windows.Forms
 
             nfo.Parent.GetTargetRectangle(ref nfo);
             nfo.SeedIndex = nfo.Parent.Controls.IndexOf(nfo.Seed);
-            ////Console.WriteLine(nfo.OverlayRectangle + " " + nfo.Parent.GetType().Name + " " + nfo.Seed.GetType().Name + " " + nfo.Dock + " " + nfo.SeedIndex + " " + nfo.DockInside + " " + nfo.TopLevel);
+            //Console.WriteLine(nfo.OverlayRectangle + " " + nfo.Parent.GetType().Name + " " + nfo.Seed.GetType().Name + " " + nfo.Dock + " " + nfo.SeedIndex + " " + nfo.DockInside + " " + nfo.TopLevel);
             OnMouseOverHint(sender, ref nfo);
         }
 
@@ -465,8 +466,8 @@ namespace Ambertation.Windows.Forms
         private void SetContainerParent(ref ContainerInfo nfo)
         {
             nfo.Parent = this;
-            ////Console.WriteLine(this.GetType().Name+": "+nfo.Hint + " -- " + this.Dock);
-            ////Console.WriteLine("Parent IN: " + nfo.Parent.GetType().Name);
+            //Console.WriteLine(this.GetType().Name+": "+nfo.Hint + " -- " + this.Dock);
+            //Console.WriteLine("Parent IN: " + nfo.Parent.GetType().Name);
             if (this.Dock == DockStyle.Left || this.Dock == DockStyle.Right)
             {
                 if ((nfo.Hint == SelectedHint.Left || nfo.Hint == SelectedHint.Right) && this.ParentContainer != null)
@@ -478,12 +479,12 @@ namespace Ambertation.Windows.Forms
                 if ((nfo.Hint == SelectedHint.Top || nfo.Hint == SelectedHint.Bottom) && this.ParentContainer != null)
                     nfo.Parent = this.ParentContainer;
             }
-            ////Console.WriteLine("Parent OUT: " + nfo.Parent.GetType().Name);
+            //Console.WriteLine("Parent OUT: " + nfo.Parent.GetType().Name);
         }
 
         protected virtual void GetTargetRectangle(ref ContainerInfo nfo)
         {
-            ////Console.WriteLine(nfo.Parent.GetType().Name + " " + nfo.Seed.GetType().Name + " " + this.GetType().Name);
+            //Console.WriteLine(nfo.Parent.GetType().Name + " " + nfo.Seed.GetType().Name + " " + this.GetType().Name);
             Rectangle sb = nfo.Parent.ScreenBounds;
             Rectangle ssb = nfo.Seed.ScreenBounds;
 

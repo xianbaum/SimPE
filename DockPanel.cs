@@ -207,7 +207,7 @@ namespace Ambertation.Windows.Forms
                 }
                 
             }
-            //else Console.WriteLine("    " + Text + ": " + e.Delta);
+            //else //Console.WriteLine("    " + Text + ": " + e.Delta);
         }
 
         protected bool MouseOnSelector(Point mouse)
