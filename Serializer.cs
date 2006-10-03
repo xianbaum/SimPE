@@ -18,25 +18,27 @@ namespace Ambertation.Windows.Forms
             }
         }
 
-        Dictionary<Type, Descriptor> map;
-        Dictionary<int, Descriptor> revmap;
+        List<Pass2Descriptor> pass2;
+        Dictionary<Type, SerilaizeDescriptor> map;
+        Dictionary<int, SerilaizeDescriptor> revmap;
 
         Dictionary<string, Control> items;
         Dictionary<string, ToolStripItem> buts;
         Serializer()
         {
+            pass2 = new List<Pass2Descriptor>();
             items = new Dictionary<string, Control>();
             buts = new Dictionary<string, ToolStripItem>();
 
-            map = new Dictionary<Type, Descriptor>();
-            map[typeof(object)] = new Descriptor(0, new SerializeControl(SerializeGeneric), new DeSerializeControl(DeserializeGeneric));
-            map[typeof(ToolStripItem)] = new Descriptor(1, new SerializeControl(SerializeToolStripItem), new DeSerializeControl(DeserializeToolStripItem));
-            map[typeof(ToolStrip)] = new Descriptor(2, new SerializeControl(SerializeToolStrip), new DeSerializeControl(DeserializeToolStrip));
-            map[typeof(DockManager)] = new Descriptor(3, new SerializeControl(SerializeDockManager), new DeSerializeControl(DeserializeDockManager));
+            map = new Dictionary<Type, SerilaizeDescriptor>();
+            map[typeof(object)] = new SerilaizeDescriptor(0, new SerializeControl(SerializeGeneric), new DeSerializeControl(DeserializeGeneric));
+            map[typeof(ToolStripItem)] = new SerilaizeDescriptor(1, new SerializeControl(SerializeToolStripItem), new DeSerializeControl(DeserializeToolStripItem));
+            map[typeof(ToolStrip)] = new SerilaizeDescriptor(2, new SerializeControl(SerializeToolStrip), new DeSerializeControl(DeserializeToolStrip));
+            map[typeof(DockManager)] = new SerilaizeDescriptor(3, new SerializeControl(SerializeDockManager), new DeSerializeControl(DeserializeDockManager));
 
 
-            revmap = new Dictionary<int, Descriptor>();
-            foreach (Descriptor d in map.Values)
+            revmap = new Dictionary<int, SerilaizeDescriptor>();
+            foreach (SerilaizeDescriptor d in map.Values)
                 revmap[d.Id] = d;
         }
 
@@ -115,7 +117,7 @@ namespace Ambertation.Windows.Forms
                 Type t = c.GetType();
                 if (!map.ContainsKey(t)) t = typeof(object);
 
-                Descriptor d = map[t];
+                SerilaizeDescriptor d = map[t];
                 Serialize(writer, d, c.Name, c);
 
             }
@@ -126,12 +128,12 @@ namespace Ambertation.Windows.Forms
             writer.Write(buts.Count);
             foreach (ToolStripItem ts in buts.Values)
             {
-                Descriptor d = map[typeof(ToolStripItem)];
+                SerilaizeDescriptor d = map[typeof(ToolStripItem)];
                 Serialize(writer, d, ts.Name, ts);
             }
         }
 
-        void Serialize(BinaryWriter writer, Descriptor d, string name, object o)
+        void Serialize(BinaryWriter writer, SerilaizeDescriptor d, string name, object o)
         {
             if (o == null || d == null) return;
             writer.Write(d.Id);
@@ -143,6 +145,7 @@ namespace Ambertation.Windows.Forms
         #region Deserialize
         public void Deserialize(string flname)
         {
+            pass2.Clear();
             BinaryReader reader = new BinaryReader(File.Open(flname, FileMode.Open));
             DeserializeButtons(reader);
 
@@ -153,7 +156,7 @@ namespace Ambertation.Windows.Forms
                 string name = reader.ReadString();
                 if (revmap.ContainsKey(id))
                 {
-                    Descriptor d = revmap[id];
+                    SerilaizeDescriptor d = revmap[id];
                     Control c;
                     if (items.ContainsKey(name)) c  = items[name];
                     else c = new Control();
@@ -161,6 +164,9 @@ namespace Ambertation.Windows.Forms
                 }
             }
             reader.Close();
+
+            foreach (Pass2Descriptor pass in pass2)
+                pass.Pass2(pass);
         }
 
         private void DeserializeButtons(BinaryReader reader)
@@ -172,7 +178,7 @@ namespace Ambertation.Windows.Forms
                 string name = reader.ReadString();
                 if (revmap.ContainsKey(id))
                 {
-                    Descriptor d = revmap[id];
+                    SerilaizeDescriptor d = revmap[id];
                     if (buts.ContainsKey(name))
                     {
                         ToolStripItem ts = buts[name];
@@ -185,7 +191,52 @@ namespace Ambertation.Windows.Forms
 
 
         #region Descriptor
-        protected class Descriptor
+        protected class Pass2Descriptor
+        {
+            object o;
+            public object Object
+            {
+                get { return o; }
+            }
+            Pass2Control ser;
+            public Pass2Control Pass2
+            {
+                get { return ser; }
+            }
+
+
+
+            public Pass2Descriptor(object o, Pass2Control pass)
+            {
+                this.o = o;
+                this.ser = pass;
+            }
+        }
+
+        protected class Pass2ToolStripDescriptor : Pass2Descriptor
+        {
+            System.Drawing.Point loc;
+            public System.Drawing.Point Location
+            {
+                get { return loc; }
+            }
+
+            int index;
+            public int Index
+            {
+                get { return index; }
+            }
+
+            public Pass2ToolStripDescriptor(object o, Pass2Control pass, int index, System.Drawing.Point loc)
+                : base(o, pass)
+            {
+                this.loc = loc;
+                this.index = index;
+            }
+        }
+        protected delegate void Pass2Control(Pass2Descriptor o);
+
+        protected class SerilaizeDescriptor
         {
             int id;
             public int Id
@@ -205,7 +256,7 @@ namespace Ambertation.Windows.Forms
                 get { return deser; }
             }
 
-            public Descriptor(int id, SerializeControl ser, DeSerializeControl deser)
+            public SerilaizeDescriptor(int id, SerializeControl ser, DeSerializeControl deser)
             {
                 this.id = id;
                 this.ser = ser;
@@ -265,7 +316,7 @@ namespace Ambertation.Windows.Forms
             ToolStrip ts = o as ToolStrip;
             int x = reader.ReadInt32();
             int y = reader.ReadInt32();
-            ts.Location = new System.Drawing.Point(x, y);
+            
             string pname = reader.ReadString();
             int index = reader.ReadInt32();
             if (items.ContainsKey(pname))
@@ -274,6 +325,18 @@ namespace Ambertation.Windows.Forms
                 ts.Parent.Controls.SetChildIndex(ts, index);
             }
             ts.Visible = reader.ReadBoolean();
+            ts.Location = new System.Drawing.Point(x, y);
+
+            pass2.Add(new Pass2ToolStripDescriptor(o, new Pass2Control(Pass2ToolStrip), index, new System.Drawing.Point(x, y)));
+        }
+
+        void Pass2ToolStrip(Pass2Descriptor pass)
+        {
+            Pass2ToolStripDescriptor pass2 = pass as Pass2ToolStripDescriptor;
+            ToolStrip ts = pass2.Object as ToolStrip;
+            if (ts.Parent!=null)
+                ts.Parent.Controls.SetChildIndex(ts, pass2.Index);
+            ts.Location = pass2.Location;
         }
 
         void SerializeDockManager(BinaryWriter writer, object o)
