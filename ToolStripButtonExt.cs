@@ -31,11 +31,13 @@ namespace Ambertation.Windows.Forms
             : base()
         {
             this.Text = item.Text;
+            this.Name = "tsbe_" + item.Name;
             this.Image = item.Image;
             this.ImageScaling = item.ImageScaling;
             this.Overflow = ToolStripItemOverflow.Always;
             this.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.item = item;
+            this.Visible = true;
             item.VisibleChanged += new EventHandler(item_VisibleChanged);
 
             UpdateChecked();

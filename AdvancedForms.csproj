@@ -39,12 +39,19 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serializer.cs" />
     <Compile Include="ToolStripButtonExt.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ToolStripRuntimeDesigner.cs">
     </Compile>
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetDocks\NetDocks.csproj">
+      <Project>{F65B296C-6435-4AA9-A5DF-188BE363C43E}</Project>
+      <Name>NetDocks</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

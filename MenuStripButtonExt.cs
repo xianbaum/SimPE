@@ -31,10 +31,12 @@ namespace Ambertation.Windows.Forms
             : base()
         {
             this.Text = item.Text;
+            this.Name = "msbe_" + item.Name;
             if (this.Text == "") this.Text = item.Name;
             Text += " ";
             
             this.item = item;
+            this.Visible = true;
             item.VisibleChanged += new EventHandler(item_VisibleChanged);
 
             UpdateChecked();
