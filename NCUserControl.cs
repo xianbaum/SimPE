@@ -31,7 +31,7 @@ namespace Ambertation.Windows.Forms
 
     
 
-    public partial class NCUserControl : Panel
+    public abstract partial class NCUserControl : UserControl
     {
         
         Padding ncsz;
@@ -258,8 +258,12 @@ namespace Ambertation.Windows.Forms
             
             return m;
         }
-
-         IntPtr NCPaint(IntPtr region)
+        internal IntPtr CallNCPaint(IntPtr reg)
+        {
+            return NCPaint(reg);
+        }
+        
+        protected IntPtr NCPaint(IntPtr region)
         {
             IntPtr hDC = APIHelp.GetWindowDC(this.Handle);
             if (hDC != IntPtr.Zero)

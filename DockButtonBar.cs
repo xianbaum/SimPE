@@ -97,6 +97,16 @@ namespace Ambertation.Windows.Forms
             SetVisibleState();
         }
 
+        public void Clear()
+        {
+            foreach (DockPanel p in panels)
+                p.SeperateInDockBar = false;
+
+            panels.Clear();
+            containers.Clear();
+            SetVisibleState();
+        }
+
         DockContainer FindDock(DockPanel p)
         {
             foreach (DockContainer dc in containers.Keys)

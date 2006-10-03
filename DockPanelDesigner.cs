@@ -130,7 +130,12 @@ namespace Ambertation.Windows.Forms
         protected override void WndProc(ref Message m)
         {
             switch (m.Msg)
-            {               
+            {
+                case APIHelp.WM_NCPAINT:
+                    {
+                        m.WParam = dp.CallNCPaint(m.WParam);
+                        break;
+                    }
                 case APIHelp.WM_NCLBUTTONDOWN:
                 case APIHelp.WM_NCLBUTTONUP:
                 case APIHelp.WM_NCRBUTTONDOWN:

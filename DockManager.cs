@@ -29,11 +29,13 @@ using System.Runtime.InteropServices;
 namespace Ambertation.Windows.Forms
 {
     [Designer(typeof(DockManagerDesigner)), ToolboxItem(true), ToolboxBitmap(typeof(DockManager), "Floaters.dockimg.png")]
-    public class DockManager : DockContainer
+    public partial class DockManager : DockContainer
     {
         List<ManagedLayeredForm> layers;
         List<DockHint> hints;
-        bool dockmode;
+        DockButtonBar.DockPanelList floatingpanels;
+
+        bool dockmode, didinit;
         ContainerInfo last;
 
         DockHint allleft, allright, alltop, allbottom, allcenter;
@@ -60,6 +62,7 @@ namespace Ambertation.Windows.Forms
             writer = new System.IO.StreamWriter(flname, false);
             //Console.SetOut(writer);*/
 
+            didinit = false;
             last = new ContainerInfo();
             manager = this;
 
@@ -94,7 +97,19 @@ namespace Ambertation.Windows.Forms
             BuildSpecialContainer(DockStyle.Left);
             BuildSpecialContainer(DockStyle.Top);
             BuildSpecialContainer(DockStyle.Right);
-            BuildSpecialContainer(DockStyle.Bottom);            
+            BuildSpecialContainer(DockStyle.Bottom);
+
+            floatingpanels = new DockButtonBar.DockPanelList();
+        }
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (Visible && !didinit)
+            {
+                didinit = false;
+                RefreshSplitters();
+            }
         }
 
         void BuildSpecialContainer(DockStyle d)
@@ -105,7 +120,7 @@ namespace Ambertation.Windows.Forms
             colconts[d].Height = 20;
             colconts[d].Dock = d;
             colconts[d].Parent = this;
-            colconts[d].Visible = false;
+            colconts[d].Visible = false;            
         }
 
         public void ForceCleanUp()
@@ -113,10 +128,20 @@ namespace Ambertation.Windows.Forms
             CleanUp();
             RepaintAll();
         }
+
+        
         protected override void CleanUp()
-        {
+        {        
             //Console.WriteLine("DO CleanUp");
             base.CleanUp();
+            //RearrangeControls();
+
+            ListControls();
+        }
+
+        protected override void RearrangeControls()
+        {
+            base.RearrangeControls();
             if (colconts.Count >= 4)
             {
                 colconts[DockStyle.Bottom].SendToBack();
@@ -124,8 +149,6 @@ namespace Ambertation.Windows.Forms
                 colconts[DockStyle.Top].SendToBack();
                 colconts[DockStyle.Left].SendToBack();
             }
-
-            ListControls();
         }
 
         protected override void SetNewContainerIndex(ref int index, ref bool after, ref bool toplevel, DockStyle dockstyle)
@@ -205,8 +228,8 @@ namespace Ambertation.Windows.Forms
         protected void ChangeHostControl()
         {
             TakeHint(allcenter);
-            
-            SetMainHintLocation();            
+
+            SetMainHintLocation();
         }
 
         private void SetMainHintLocation()
@@ -240,7 +263,7 @@ namespace Ambertation.Windows.Forms
                 );
         }
 
-        
+
 
         /*protected Rectangle GetHostRectangle()
         {
@@ -269,7 +292,7 @@ namespace Ambertation.Windows.Forms
         }*/
 
         internal override void TakeHint(DockHint hint)
-        {            
+        {
             TakeHint(hint, ScreenBounds, null);
         }
 
@@ -308,12 +331,13 @@ namespace Ambertation.Windows.Forms
         Control oldparent;
         protected override void OnParentChanged(EventArgs e)
         {
+    
             if (oldparent != null)
             {
                 oldparent.LocationChanged -= new EventHandler(oldparent_LocationChanged);
                 oldparent.SizeChanged -= new EventHandler(oldparent_LocationChanged);
                 oldparent.Layout -= new LayoutEventHandler(oldparent_Layout);
-              
+
             }
             base.OnParentChanged(e);
             oldparent = Parent;
@@ -323,18 +347,21 @@ namespace Ambertation.Windows.Forms
                 oldparent.SizeChanged += new EventHandler(oldparent_LocationChanged);
                 oldparent.Layout += new LayoutEventHandler(oldparent_Layout);
             }
+            
 
             //Console.WriteLine("new Parent");
             ChangeHostControl();
         }
 
-       
-     
+        
+
+
+
         void oldparent_Layout(object sender, LayoutEventArgs e)
         {
             //Console.WriteLine("Parent layout");
             ChangeHostControl();
-        }        
+        }
 
         protected void oldparent_LocationChanged(object sender, EventArgs e)
         {
@@ -358,9 +385,9 @@ namespace Ambertation.Windows.Forms
 
 
         protected override void UpdateHintVisibility()
-        {            
+        {
             base.UpdateHintVisibility();
-            
+
             foreach (DockHint hint in hints)
             {
                 //Console.WriteLine("    Updating hint " + hint.Text + " from " + hint.Visible);
@@ -373,10 +400,11 @@ namespace Ambertation.Windows.Forms
 
         internal void StartDockMode(DockPanel dock)
         {
-            //Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from "+dock.Parent);
+            Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from " + dock.Parent);
             if (!dockmode)
             {
-                //Console.WriteLine(" -> started");
+                Console.WriteLine(" -> started");
+                this.SetMainHintLocation(); //this seems to be needed to ensure working hints with Win2K
                 this.SuspendLayout();
                 SetMainHintLocation();
                 last = new ContainerInfo();
@@ -387,7 +415,7 @@ namespace Ambertation.Windows.Forms
                 this.ResumeLayout();
 
                 OnStartDockMode(dock);
-                
+
             }
         }
 
@@ -424,7 +452,7 @@ namespace Ambertation.Windows.Forms
                         dcmain.SuspendLayout();
                         if (last.Hint != SelectedHint.Center)
                         {
-                            
+
                             DockContainer dcnew = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
                             dc = dcnew;
                             dcnew.SuspendLayout();
@@ -435,7 +463,7 @@ namespace Ambertation.Windows.Forms
                             }
                             else
                             {
-                                dc.Width = Math.Min(last.Parent.Width /2, dock.Width);
+                                dc.Width = Math.Min(last.Parent.Width / 2, dock.Width);
                                 dc.Height = Math.Min(last.Parent.Height / 2, dock.Height);
                             }
                             dcnew.Visible = true;
@@ -444,10 +472,10 @@ namespace Ambertation.Windows.Forms
 
                         dock.DockControl(dc);
                         dock.BringToFront();
-                        
+
                     }
                     CleanUp();
-                    if (dcmain!=null) dcmain.ResumeLayout();
+                    if (dcmain != null) dcmain.ResumeLayout();
                 }
 
                 OnStopDockMode(dock);
@@ -458,7 +486,7 @@ namespace Ambertation.Windows.Forms
                 dock.ResumeLayout();
                 dock.InvalidateWindow();
             }
-           
+
         }
 
         protected virtual void OnStopDockMode(DockPanel dock)
@@ -511,6 +539,7 @@ namespace Ambertation.Windows.Forms
             RefreshSplitters();
         }
 
+
         public void DockPanel(DockPanel dp, DockStyle style)
         {
             bool docked = false;
@@ -535,6 +564,12 @@ namespace Ambertation.Windows.Forms
                 dc.SetNoCleanUpIntern(false);
             }
             this.ResumeLayout();
-        }        
-    } 
+        }
+
+        internal void NotifyFloating(DockPanel dp)
+        {
+            if (dp.Floating && !floatingpanels.Contains(dp)) floatingpanels.Add(dp);
+            else if (!dp.Floating && floatingpanels.Contains(dp)) floatingpanels.Remove(dp);
+        }
+    }
 }

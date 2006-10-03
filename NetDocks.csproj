@@ -40,6 +40,12 @@
     <Compile Include="BaseDockPanelRenderer.cs" />
     <Compile Include="BaseFontTable.cs" />
     <Compile Include="BaseRenderer.cs" />
+    <Compile Include="DockContainer.Serializer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockManager.Serializer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="DockManagerDesigner.cs">
     </Compile>
     <Compile Include="DockAnimationEventArgs.cs" />
@@ -65,10 +71,13 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DockPanel.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DockPanel.Designer.cs">
       <DependentUpon>DockPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanel.Serializer.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="DockPanelButtonManager.cs" />
     <Compile Include="DockPanelCaptionButton.cs" />
@@ -90,7 +99,7 @@
     <Compile Include="NCPaintEventArgs.cs" />
     <Compile Include="NCResizeBorders.cs" />
     <Compile Include="NCUserControl.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="NCUserControl.Designer.cs">
       <DependentUpon>NCUserControl.cs</DependentUpon>

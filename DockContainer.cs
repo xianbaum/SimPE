@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 namespace Ambertation.Windows.Forms
 {
     [Designer(typeof(DockContainerDesigner)), ToolboxItem(false)]
-    public class DockContainer : UserControl, IButtonContainer
+    public partial class DockContainer : UserControl, IButtonContainer
     {
         protected List<DockContainer> containers;
         DockButtonBar.DockPanelList panels;
@@ -46,6 +46,7 @@ namespace Ambertation.Windows.Forms
         
         internal DockContainer(DockManager manager)
         {
+            layoutct = 0;
             //this.SetStyle(ControlStyles.ContainerControl, true);
             //this.BackColor = Color.DarkCyan;
             
@@ -106,6 +107,12 @@ namespace Ambertation.Windows.Forms
         {
             base.OnSizeChanged(e);
             if (state == Status.Expanded) expsz = this.Size;
+
+            foreach (DockContainer dc in containers)
+            {
+                if (dc.Left < 0) dc.Width = Math.Max(dc.Width + dc.Left, MinimumDockSize);
+                if (dc.Top < 0) dc.Height = Math.Max(dc.Height + dc.Top, MinimumDockSize);
+            }
         }
         
 
@@ -126,10 +133,7 @@ namespace Ambertation.Windows.Forms
                 containers.Add(dc);
                 dc.ParentContainer = this;
                 //Console.WriteLine("Adding Container to " + Name);
-                ListControls();
-                dc.SetForceUseAsTarget(true);
-                RefreshSplitters();
-                dc.SetForceUseAsTarget(false);
+                //OnDockContainerAdded(dc);
             }
             else
             {
@@ -144,6 +148,16 @@ namespace Ambertation.Windows.Forms
                     else CleanUp();
                 }
             }
+        }
+
+        private void OnDockContainerAdded(DockContainer dc)
+        {
+            Console.WriteLine("#### Adding Container " + dc.Name);
+            ListControls();
+            dc.SetForceUseAsTarget(true);
+            RearrangeControls();
+            RefreshSplitters();
+            dc.SetForceUseAsTarget(false);
         }
 
         protected override void OnControlRemoved(ControlEventArgs e)
@@ -177,7 +191,7 @@ namespace Ambertation.Windows.Forms
 
         void GenerateSplitter(DockStyle ds, int index)        
         {
-            //Console.Write("Adding " + ds + " at " + index);            
+            Console.Write("Adding " + ds + " at " + index);            
             Splitter s = new Splitter();
             s.Parent = this;
             s.Dock = ds;
@@ -189,7 +203,7 @@ namespace Ambertation.Windows.Forms
         public void RefreshSplitters()
         {
             this.SuspendLayout();
-            //Console.WriteLine("#### Setting Splitters "+Name);
+            Console.WriteLine("#### Setting Splitters "+Name);
             List<Control>splitters = new List<Control>();
             List<DockPanel> panels = new List<DockPanel>();
             foreach (Control c in Controls)
@@ -207,16 +221,32 @@ namespace Ambertation.Windows.Forms
 
             foreach (DockPanel dp in panels)
                 Controls.SetChildIndex(dp, 0);
-            
+
+            ListControls();
+            foreach (DockContainer dc in containers)
+            {
+                int i = Controls.GetChildIndex(dc);
+                Console.WriteLine("  -> Found Dock " + dc.Name + " " + dc.IgnoreAsTarget + " " + dc.Dock + " " + dc.Visible + " " + i);
+                if (dc.IgnoreAsTarget) 
+                    continue;
+
+                if (dc.Dock == DockStyle.Right) GenerateSplitter(DockStyle.Right, i);
+                else if (dc.Dock == DockStyle.Left) GenerateSplitter(DockStyle.Left, i);
+                else if (dc.Dock == DockStyle.Top) GenerateSplitter(DockStyle.Top, i);
+                else if (dc.Dock == DockStyle.Bottom) GenerateSplitter(DockStyle.Bottom, i);
+            }
+
+            /*
             for (int i = Controls.Count - 1; i >= 0; i--)
             {
+                Console.WriteLine(i);
                 Control c = Controls[i];
                 if (c is Splitter) continue;
                 if (c is DockButtonBar) continue;
                 DockContainer dc = c as DockContainer;
                 if (dc != null)
                 {
-                    //Console.WriteLine("  -> Found Dock " + dc.Name+" "+dc.IgnoreAsTarget+" "+dc.Dock+" "+dc.Visible);
+                    Console.WriteLine("  -> Found Dock " + dc.Name+" "+dc.IgnoreAsTarget+" "+dc.Dock+" "+dc.Visible+" "+i);
                     if (dc.IgnoreAsTarget) continue;
                 }
 
@@ -226,26 +256,22 @@ namespace Ambertation.Windows.Forms
                 else if (c.Dock == DockStyle.Top) GenerateSplitter(DockStyle.Top, i);
                 else if (c.Dock == DockStyle.Bottom) GenerateSplitter(DockStyle.Bottom, i);
                 
-            }
+            }*/
 
             ListControls();
             this.ResumeLayout();
         }
 
-        public new void ResumeLayout()
-        {
-            base.ResumeLayout();
-            if (Highlight != null) Highlight.EnsureVisible();
-        }
+        
 
         internal void ListControls()
         {
-            return;
-            //Console.WriteLine("Listing " + Name);
+           
+            Console.WriteLine("Listing " + Name);
             for (int i = Controls.Count - 1; i >= 0; i--)
             {
                 Control c = Controls[i];
-                //Console.WriteLine(i + ": " + c.GetType().Name);
+                Console.WriteLine(i + ": " + c.GetType().Name+" "+c.Dock+" "+c.Name);
             }
         }
 
@@ -272,7 +298,11 @@ namespace Ambertation.Windows.Forms
         {
             if (after && index >= 0) index++; //do not move the first element in the list!
         }
-
+        protected override void OnChangeUICues(UICuesEventArgs e)
+        {
+            base.OnChangeUICues(e);
+            Console.WriteLine("Change UI Cues");
+        }
         public DockContainer CreateNewContainer(int index, bool after, bool toplevel, DockStyle dockstyle)
         {
             //Console.WriteLine("1: "+toplevel + " " + after + " " + index);
@@ -283,10 +313,12 @@ namespace Ambertation.Windows.Forms
             dc.Visible = false;
             dc.Dock = dockstyle;
             this.Controls.Add(dc);
+            
             if (index >= 0 && index < Controls.Count && !toplevel)
                 Controls.SetChildIndex(dc, index);
 
             dc.SetDefaultSize();
+            this.OnDockContainerAdded(dc);
             return dc;
         }
 
@@ -573,11 +605,13 @@ namespace Ambertation.Windows.Forms
                 return ret;
             }
         }
-    
+
+        protected virtual void RearrangeControls()
+        {
+        }
 
         protected virtual void CleanUp()
         {
-            //Console.WriteLine("++++ Do Cleanup in " + Name);
             for (int i=containers.Count-1; i>=0; i--)
             {
                 DockContainer dc = containers[i];
@@ -601,8 +635,6 @@ namespace Ambertation.Windows.Forms
 
         protected void SetParent(DockContainer dc, int index)
         {            
-            /*this.ParentContainer.Controls.Remove(this);
-            dc.Controls.Add(this);*/
             this.Parent = dc;
             if (index>=0) dc.Controls.SetChildIndex(this, index);
         }
@@ -669,11 +701,11 @@ namespace Ambertation.Windows.Forms
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            Rectangle r = new Rectangle(ClientRectangle.Location, new Size(Width - 1, Height - 1));
+            /*Rectangle r = new Rectangle(ClientRectangle.Location, new Size(Width - 1, Height - 1));
             e.Graphics.FillRectangle(new SolidBrush(BackColor), r);
             e.Graphics.DrawRectangle(new Pen(Color.WhiteSmoke), r);
 
-            if (this.DesignMode) e.Graphics.DrawString(Name, Font, new SolidBrush(ForeColor), 2, 2);
+            if (this.DesignMode) e.Graphics.DrawString(Name, Font, new SolidBrush(ForeColor), 2, 2);*/
         }
 
         bool useastar;
@@ -900,5 +932,33 @@ namespace Ambertation.Windows.Forms
             base.Update();
             CleanUp();
         }
+
+        
+
+        #region Layout
+        int layoutct;
+        public new void SuspendLayout()
+        {
+            if (layoutct==0) base.SuspendLayout();
+            layoutct++;
+        }       
+
+        public new void ResumeLayout()
+        {
+            layoutct--;
+            if (layoutct == 0)
+            {
+                base.ResumeLayout();
+                if (Highlight != null) Highlight.EnsureVisible();
+            }
+            else if (layoutct < 0) layoutct = 0;
+        }
+
+        public void ForceResumeLayout()
+        {
+            layoutct = 0;
+            base.ResumeLayout();
+        }
+        #endregion
     }
 }

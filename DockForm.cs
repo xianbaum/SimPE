@@ -60,11 +60,23 @@ namespace Ambertation.Windows.Forms
                 APIHelp.RECT rc = (APIHelp.RECT)m.GetLParam(typeof(APIHelp.RECT));
                 FireLocationChangeEvent();
             }
+            else if (m.Msg == APIHelp.WM_ACTIVATEAPP)
+            {
+                OnActivateApplication((int)m.WParam == 1);               
+            }
             
             
             base.WndProc(ref m);
-        }              
+        }
 
+         protected virtual void OnActivateApplication(bool active)
+        {
+            Console.WriteLine("Activate Application " + active);
+            if (active) this.TopMost = true;
+            else TopMost = false;
+        }
+
+       
        
         internal void StartFloatingBlocked(DockPanel p)
         {
@@ -117,6 +129,11 @@ namespace Ambertation.Windows.Forms
         {
             if (!Manager.DockMode && Visible) Manager.StartDockMode(this.DockControl);
             Manager.MouseMoved(Cursor.Position);
-        }       
+        }
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            if (dock != null) dock.Parent = null;
+        }
     }
 }

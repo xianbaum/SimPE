@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 namespace Ambertation.Windows.Forms
 {
 
-    [Designer(typeof(DockPanelDesigner)), Browsable(false), ToolboxItem(false)]
+    [Designer(typeof(DockPanelDesigner)), ToolboxItem(false)]
     public partial class DockPanel : NCUserControl
     {
         List<DockPanelCaptionButton> cbuttons;
@@ -298,10 +298,39 @@ namespace Ambertation.Windows.Forms
            get { return (this.Parent is DockPanelFloatingForm); }
         }
 
+        public event System.EventHandler StartedFloating;
         private void Float(NCMouseEventArgs e)
         {
             if (Floating) return;
 
+            Point scr = e.ScreenPosition; // PointToScreen(new Point(e.X, e.Y));
+            scr = new Point(
+                scr.X - e.ControlPosition.X - System.Windows.Forms.SystemInformation.FrameBorderSize.Width,
+                scr.Y - e.ControlPosition.Y - System.Windows.Forms.SystemInformation.FrameBorderSize.Height
+                );
+            DockPanelFloatingForm frm = LetFloat(scr) as DockPanelFloatingForm;
+            Manager.StartDockMode(this);
+
+            frm.Show();
+            frm.StartFloatingBlocked(this);
+        }
+
+        public void Float(Point pos)
+        {
+            DockPanelFloatingForm frm = LetFloat(pos) as DockPanelFloatingForm;
+            frm.Text = this.CaptionText;
+            frm.Show();
+        }
+
+        public void Float()
+        {
+            Point p = PointToScreen(new Point(0, 0));
+            Float(p);   
+        }
+
+        protected Form LetFloat(Point pos)
+        {
+            if (Floating) return ParentForm as DockPanelFloatingForm; 
             this.NonClientMargin = new Padding(0);
 
             DockPanelFloatingForm frm = new DockPanelFloatingForm(this);
@@ -310,10 +339,8 @@ namespace Ambertation.Windows.Forms
             frm.ShowInTaskbar = false;
             frm.Width = this.Width + 2 * System.Windows.Forms.SystemInformation.FrameBorderSize.Width;
             frm.Height = this.Height + System.Windows.Forms.SystemInformation.ToolWindowCaptionHeight + 2 * System.Windows.Forms.SystemInformation.FrameBorderSize.Height;
-            Point scr = e.ScreenPosition; // PointToScreen(new Point(e.X, e.Y));
-
-            frm.Left = scr.X - e.ControlPosition.X - System.Windows.Forms.SystemInformation.FrameBorderSize.Width;
-            frm.Top = scr.Y - e.ControlPosition.Y - System.Windows.Forms.SystemInformation.FrameBorderSize.Height;
+            frm.Left = pos.X;
+            frm.Top = pos.Y;
             frm.BringToFront();
 
             DockContainer dc = Parent as DockContainer;
@@ -322,10 +349,10 @@ namespace Ambertation.Windows.Forms
             this.Parent = frm;
             this.Dock = DockStyle.Fill;
             this.ResetNCMouseState();
-            Manager.StartDockMode(this);
 
-            frm.Show();
-            frm.StartFloatingBlocked(this);
+            if (StartedFloating != null) StartedFloating(this, new EventArgs());
+            if (Manager != null) Manager.NotifyFloating(this);
+            return frm;
         }                
 
         internal void DockControl(DockContainer parent)
@@ -383,7 +410,7 @@ namespace Ambertation.Windows.Forms
         {
             base.OnPaint(e);
 
-            Brush b = new SolidBrush(Color.White);
+            /*Brush b = new SolidBrush(Color.White);
             e.Graphics.FillEllipse(b, 0, 0, 10, 10);
             e.Graphics.FillEllipse(b, 0, ClientRectangle.Height - 11, 10, 10);
             e.Graphics.FillEllipse(b, ClientRectangle.Width - 11, 0, 10, 10);
@@ -395,7 +422,7 @@ namespace Ambertation.Windows.Forms
             e.Graphics.DrawEllipse(p, 0, ClientRectangle.Height - 11, 10, 10);
             e.Graphics.DrawEllipse(p, ClientRectangle.Width - 11, 0, 10, 10);
             e.Graphics.DrawEllipse(p, ClientRectangle.Width - 11, ClientRectangle.Height - 11, 10, 10);
-            p.Dispose();
+            p.Dispose();*/
         }
 
 

@@ -112,6 +112,8 @@ namespace Ambertation.Windows.Forms
         {
             animtimer.Change(Timeout.Infinite, SPEED);
             if (FinishedAnimation != null) FinishedAnimation(this, e);
+            e.Container.ResumeLayout();
+            e.Container.RepaintAll();
         }
         #endregion
 
@@ -258,6 +260,7 @@ namespace Ambertation.Windows.Forms
         public void Animate(DockAnimationEventArgs e)
         {            
             animdata.e = e;
+            e.Container.SuspendLayout();
             if (e.Container.Dock == DockStyle.Fill) DoFinishAnimation(e);
             else
             {
