@@ -26,7 +26,7 @@ using System.Drawing;
 
 namespace Ambertation.Windows.Forms
 {
-    class DockPanelFloatingForm : Form
+    class DockPanelFloatingForm : Form, IMessageFilter
     {
         DockPanel dock;
 
@@ -43,30 +43,45 @@ namespace Ambertation.Windows.Forms
         public DockPanelFloatingForm(DockPanel dock) 
             : base()
         {
+            Application.AddMessageFilter(this);
+            this.TopMost = true;
             this.dock = dock;
         }
 
+        ~DockPanelFloatingForm()
+        {
+            Application.RemoveMessageFilter(this);
+        }
+
+        public bool PreFilterMessage(ref Message m)
+        {
+            if (m.Msg  == APIHelp.WM_ACTIVATEAPP)
+                OnActivateApplication((int)m.WParam != 0);            
+            return false;
+        }
+
+        [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message m)
         {
-
+            
             //Console.WriteLine("#### #" + m.Msg.ToString("X") + " " + m.WParam.ToString("X") + " " + m.LParam.ToString("X") + " " + m.Result);                
             if (m.Msg == APIHelp.WM_NCMOUSEMOVE || m.Msg == APIHelp.WM_EXITSIZEMOVE)
             {
                 //Console.WriteLine("#### Stop floating " + m);
                 if (Manager.DockMode) StopFloating();
+                base.WndProc(ref m);
             }
             else if (m.Msg == APIHelp.WM_MOVING)
             {
                 APIHelp.RECT rc = (APIHelp.RECT)m.GetLParam(typeof(APIHelp.RECT));
                 FireLocationChangeEvent();
+                base.WndProc(ref m);
             }
             else if (m.Msg == APIHelp.WM_ACTIVATEAPP)
             {
-                OnActivateApplication((int)m.WParam == 1);               
-            }
-            
-            
-            base.WndProc(ref m);
+                OnActivateApplication((int)m.WParam != 0);
+                m.Result = new IntPtr(0);
+            } else   base.WndProc(ref m);
         }
 
          protected virtual void OnActivateApplication(bool active)
@@ -76,8 +91,7 @@ namespace Ambertation.Windows.Forms
             else TopMost = false;
         }
 
-       
-       
+               
         internal void StartFloatingBlocked(DockPanel p)
         {
             //Console.WriteLine("#### Start floating blocked " + p.Text);
@@ -135,5 +149,6 @@ namespace Ambertation.Windows.Forms
         {
             if (dock != null) dock.Parent = null;
         }
+  
     }
 }
