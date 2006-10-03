@@ -70,5 +70,29 @@ namespace Ambertation.Windows.Forms
             Add(cnt.RightToolStripPanel, men);
             cnt.ContextMenuStrip = men;
         }
+
+        public static void LineUpToolBars(ToolStripContainer cnt)
+        {
+            LineUpToolBars(cnt.TopToolStripPanel, true);
+            LineUpToolBars(cnt.LeftToolStripPanel, false);
+            LineUpToolBars(cnt.BottomToolStripPanel, true);
+            LineUpToolBars(cnt.RightToolStripPanel, false);
+        }
+
+        public static void LineUpToolBars(ToolStripPanel pn, bool horz)
+        {
+            int left = 0;
+            int top = 0;
+            foreach (Control c in pn.Controls)
+            {
+                ToolStrip ts = c as ToolStrip;
+                if (ts == null) continue;
+                ts.Left = left;
+                ts.Top = top;
+
+                if (horz) left = ts.Left + ts.Width + 1;
+                else top = ts.Top + ts.Height + 1;
+            }
+        }
     }
 }
