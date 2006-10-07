@@ -114,5 +114,19 @@ namespace Ambertation.Windows.Forms
             get { return Color.White; }
         }
         #endregion
+
+        public Color DockGripColor
+        {
+            get { return SystemColors.ControlLight; }
+        }
+
+        public Color DockReSizeBackgroundColor
+        {
+            get { return Color.SteelBlue; }
+        }
+        public Color DockReSizeGripColor
+        {
+            get { return Color.Navy; }
+        }
     }
 }

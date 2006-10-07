@@ -40,6 +40,7 @@ namespace Ambertation.Windows.Forms
         {
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             SetStyle(ControlStyles.ContainerControl, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             seperateindockbar = false;
             canundock = true;
 
@@ -59,6 +60,21 @@ namespace Ambertation.Windows.Forms
         }
 
         public DockPanel() : this(null) { }
+
+        /*protected override void WndProc(ref Message m)
+        {
+            if (DockContainer!=null)
+                if (DockContainer.CollapseState == DockContainer.Status.Collapsing || DockContainer.CollapseState == DockContainer.Status.Expanding)
+                {
+                    if (m.Msg == APIHelp.WM_PAINT || m.Msg == APIHelp.WM_SIZING || m.Msg == APIHelp.WM_MOVING || m.Msg == APIHelp.WM_NCCALCSIZE || m.Msg == APIHelp.WM_ENTERSIZEMOVE || m.Msg == APIHelp.WM_EXITSIZEMOVE)
+                    {
+                        return;
+                    }
+                }
+            base.WndProc(ref m);
+        }*/
+
+
         internal void SetManager(DockManager manager)
         {
             this.manager = manager;
@@ -91,7 +107,7 @@ namespace Ambertation.Windows.Forms
                 if (text != value) {
                     text = value;
                     if (btext == "") btext = text;
-                    InvalidateWindow();
+                    NCRefresh();
                 }
             }
         }
@@ -105,7 +121,7 @@ namespace Ambertation.Windows.Forms
                 if (btext != value)
                 {
                     btext = value;
-                    InvalidateWindow();
+                    NCRefresh();
                 }
             }
         }
@@ -123,7 +139,7 @@ namespace Ambertation.Windows.Forms
                     {
                         SetDefaultImage();
                     }
-                    InvalidateWindow();
+                    NCRefresh();
                 }
             }
         }
@@ -163,7 +179,7 @@ namespace Ambertation.Windows.Forms
             get { return Parent as DockContainer; }
             set
             {
-                if (value != Parent)
+                if (value != Parent as DockContainer)
                 {
                     DockControl(value);
                 }
@@ -210,7 +226,7 @@ namespace Ambertation.Windows.Forms
                 }
                 else chg |= b.SetState(CaptionButtonState.Normal);
             }
-            if (chg) this.InvalidateWindow();
+            if (chg) this.NCRefresh();
 
             if (e.MouseButtons.Left && e.InitialResult == NCHitTestEventArgs.Results.HTBORDER
                 && (Math.Abs(e.Delta.X) >= 2 || Math.Abs(e.Delta.Y) >= 2))
@@ -230,10 +246,18 @@ namespace Ambertation.Windows.Forms
         protected override void OnNcClick(NCMouseEventArgs e)
         {
             base.OnNcClick(e);
+            if (DockContainer != null)
+            {
+                if (DockContainer.CollapseState != DockContainer.Status.Expanded) return;
+            }
+
             foreach (DockPanelCaptionButton b in cbuttons)
             {
                 if (b.Hit(e))
-                    b.PerformClick();                
+                {
+                    b.PerformClick();
+                    break;
+                }
             }
         }
 
@@ -281,14 +305,14 @@ namespace Ambertation.Windows.Forms
         internal void MakeVisibleByParentDockContainer()
         {
             this.Focus();
-            this.InvalidateWindow();
+            this.NCRefresh();
 
         }
 
         /// <summary>
         /// Force a complete redraw of the Panel
         /// </summary>
-        public void InvalidateWindow()
+        public void InvalidateWindow_old()
         {
             DoInvalidateWindow();
         }
@@ -381,6 +405,10 @@ namespace Ambertation.Windows.Forms
 
         public void Close()
         {
+            DockPanelClosingEvent e = new DockPanelClosingEvent(this);
+            if (Closing != null) this.Closing(this, e);
+            if (e.Cancel) return;
+
             DockContainer dc = this.DockContainer;
             if (dc != null)
             {
@@ -394,6 +422,25 @@ namespace Ambertation.Windows.Forms
                 f.Close();
             }
 
+            if (Closed != null) Closed(this, new EventArgs());
+        }
+        public event System.EventHandler Closed;
+        public event ClosingHandler Closing;
+        public delegate void ClosingHandler(object sender, DockPanelClosingEvent e);
+        public class DockPanelClosingEvent : EventArgs
+        {
+            DockPanel dp;
+            bool cancel;
+
+            public bool Cancel
+            {
+                get { return cancel; }
+                set { cancel = value; }
+            }
+            public DockPanelClosingEvent(DockPanel dp) : base (){ 
+                this.dp = dp;
+                cancel = false;
+            }
         }
 
         public void Collapse()
@@ -401,15 +448,53 @@ namespace Ambertation.Windows.Forms
             if (DockContainer != null) DockContainer.Collapse();
         }
 
+        public void Collapse(bool anim)
+        {
+            if (DockContainer != null) DockContainer.Collapse(anim);
+        }
+
         public void Expand()
         {
             if (DockContainer != null) DockContainer.Expand();
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        public void Expand(bool anim)
         {
-            base.OnPaint(e);
+            if (DockContainer != null) DockContainer.Expand(anim);
+        }
 
+       
+
+
+        DockPanelButtonManager buttonData;
+        protected DockPanelButtonManager ButtonData
+        {
+            get { return buttonData; }
+        }
+
+        
+        protected override void OnNcPaint(NCPaintEventArgs e)
+        {
+            //base.OnNcPaint(e);
+            
+            if (Manager!=null && !Floating) {
+                //Console.WriteLine("NCPaint " + Text);
+                e.Graphics.FillRegion(new SolidBrush(manager.Renderer.ColorTable.DockBackgroundColor), e.PaintRegion);
+
+                Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);
+                buttonData = Manager.Renderer.DockPanelRenderer.ConstructButtonData(DockContainer, e);
+                buttonData.Render();
+            
+                Manager.Renderer.DockPanelRenderer.RenderCaption(this, e);
+                foreach (DockPanelCaptionButton b in cbuttons) b.Render(e);
+                Manager.Renderer.DockPanelRenderer.RenderBorder(this, e);
+            }
+        }
+
+        protected override void OnBufferedPaint(PaintEventArgs e)
+        {
+            base.OnBufferedPaint(e);
+            //Console.WriteLine("Paint " + Text);
             /*Brush b = new SolidBrush(Color.White);
             e.Graphics.FillEllipse(b, 0, 0, 10, 10);
             e.Graphics.FillEllipse(b, 0, ClientRectangle.Height - 11, 10, 10);
@@ -426,29 +511,50 @@ namespace Ambertation.Windows.Forms
         }
 
 
-        DockPanelButtonManager buttonData;
-        protected DockPanelButtonManager ButtonData
+        protected override void OnParentChanged(EventArgs e)
         {
-            get { return buttonData; }
+            base.OnParentChanged(e);
         }
-
-        protected override void OnNcPaint(NCPaintEventArgs e)
+        #region Highlight change
+        internal void FireHighlightChanged(DockPanel dp)
         {
-            //base.OnNcPaint(e);
+            if (dp == this)
+            {                
+                this.Visible = true;
+                this.NCRefresh();
+                
+            }
+            else this.Visible = false;
             
-            if (Manager!=null && !Floating) {
-                e.Graphics.FillRegion(new SolidBrush(manager.Renderer.ColorTable.DockBackgroundColor), e.PaintRegion);
+            
 
-                Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);
-                buttonData = Manager.Renderer.DockPanelRenderer.ConstructButtonData(DockContainer, e);
-                buttonData.Render();
+            if (HighlightChange != null) HighlightChange(this, new HighlightChangeEventArgs(this, dp));
+        }
+        public event HighlightChangeEvent HighlightChange;
+
+        public delegate void HighlightChangeEvent(DockPanel sender, HighlightChangeEventArgs e);
+        public class HighlightChangeEventArgs : EventArgs
+        {
+            DockPanel newhl, cur;
+            public DockPanel NewHighlight
+            {
+                get { return newhl; }
+            }
+
+            public bool GotHighlight
+            {
+                get { return newhl == cur; }
+            }
             
-                Manager.Renderer.DockPanelRenderer.RenderCaption(this, e);
-                foreach (DockPanelCaptionButton b in cbuttons) b.Render(e);
-                Manager.Renderer.DockPanelRenderer.RenderBorder(this, e);
+            internal HighlightChangeEventArgs(DockPanel cur, DockPanel newhl)
+                : base()
+            {
+                this.newhl = newhl;
+                this.cur = cur;
             }
         }
-        
+        #endregion
+
         bool seperateindockbar;
         internal bool SeperateInDockBar
         {
@@ -512,7 +618,7 @@ namespace Ambertation.Windows.Forms
         {
             get { return close.Visible; }
             set {
-                if (close.SetVisible(value)) InvalidateWindow();                
+                if (close.SetVisible(value)) NCRefresh();                
             }
         }
 
@@ -520,7 +626,7 @@ namespace Ambertation.Windows.Forms
         {
             get { return collapse.Visible; }
             set {
-                if (collapse.SetVisible(value)) InvalidateWindow();                
+                if (collapse.SetVisible(value)) NCRefresh();                
             }
         }
 

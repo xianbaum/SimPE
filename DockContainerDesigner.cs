@@ -124,6 +124,24 @@ namespace Ambertation.Windows.Forms
             c.OnComponentChanged(pn, null, null, null);
             c.OnComponentChanged(manager, TypeDescriptor.GetProperties(this.manager)["Controls"], null, null);*/
             dt.Commit();
-        }	
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            switch (m.Msg)
+            {
+                case APIHelp.WM_NCCALCSIZE:
+                    {
+                        m = cnt.WndProc_WM_NCCALCSIZE(m);
+                        break;
+                    }
+                case APIHelp.WM_NCHITTEST:
+                    {
+                        m = cnt.WndProc_WM_NCHITTEST(m);
+                        return;
+                    }
+            }
+            base.WndProc(ref m);
+        }
     }
 }

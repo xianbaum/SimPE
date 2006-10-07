@@ -28,7 +28,7 @@ namespace Ambertation.Windows.Forms
 {
     public class WhidbeyRenderDockPanel : BaseDockPanelRenderer, IDockPanelRenderer
     {
-        const int SIZE_DELTA = 40;
+        const int SIZE_DELTA = 10;
         const int SPEED = 1000 / 50;
         Dimensions dim;
         DockAnimationEventHandler atc;
@@ -36,7 +36,7 @@ namespace Ambertation.Windows.Forms
         public WhidbeyRenderDockPanel(BaseRenderer parent)
             :base(parent)
         {
-            dim = new Dimensions(16, 24, 1, 4, 2, 16);
+            dim = new Dimensions(16, 24, 1, 4, 2, 16, 2);
             atc = new DockAnimationEventHandler(InvokedAnimationTimerCallback);
             animtimer = new System.Threading.Timer(new TimerCallback(AnimationTimerCallback), null, Timeout.Infinite, SPEED);
         }
@@ -238,7 +238,21 @@ namespace Ambertation.Windows.Forms
         #region IDockPanelRenderer Member
 
 
-        
+        public void RenderGrip(DockContainer dc, NCPaintEventArgs e, Rectangle r)
+        {
+            e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockGripColor), r);
+        }
+
+        public void RenderResizePanel(DockContainer dc, RubberBandHelper rbh, PaintEventArgs e)
+        {
+            Rectangle rect = rbh.ClientRectangle;
+            //Console.WriteLine(rect);
+            e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeBackgroundColor), new Rectangle(rect.Left, rect.Top, rect.Width - 1, rect.Height - 1));
+            if (rbh.ContainerDock == DockStyle.Right) e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeGripColor), new Rectangle(rect.Left, rect.Top, 3, rect.Height - 1));
+            else if (rbh.ContainerDock == DockStyle.Left) e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeGripColor), new Rectangle(rect.Width - 4, rect.Top, 3, rect.Height - 1));
+            else if (rbh.ContainerDock == DockStyle.Bottom) e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeGripColor), new Rectangle(rect.Left, rect.Top, rect.Width - 1, 3));
+            else if (rbh.ContainerDock == DockStyle.Top) e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeGripColor), new Rectangle(rect.Left, rect.Height - 4, rect.Width - 1, 3));
+        }
 
         
         public override Dimensions Dimension
@@ -264,10 +278,10 @@ namespace Ambertation.Windows.Forms
             if (e.Container.Dock == DockStyle.Fill) DoFinishAnimation(e);
             else
             {
-                //animtimer.Change(0, SPEED);
+                animtimer.Change(0, SPEED);
+                /*InvokedAnimationTimerCallback(this, e);
                 InvokedAnimationTimerCallback(this, e);
-                InvokedAnimationTimerCallback(this, e);
-                DoFinishAnimation(e);
+                DoFinishAnimation(e);*/
             }
         }
 

@@ -52,7 +52,7 @@ namespace Ambertation.Windows.Forms
         System.IO.TextWriter writer;
         ~DockManager()
         {
-            writer.Close();
+            //writer.Close();
         }
         public DockManager()
             : base()
@@ -102,13 +102,16 @@ namespace Ambertation.Windows.Forms
             floatingpanels = new DockButtonBar.DockPanelList();
         }
 
+        protected override void DoDockChanged()
+        {
+        }
+
         protected override void OnVisibleChanged(EventArgs e)
         {
             base.OnVisibleChanged(e);
             if (Visible && !didinit)
             {
                 didinit = false;
-                RefreshSplitters();
             }
         }
 
@@ -144,10 +147,16 @@ namespace Ambertation.Windows.Forms
             base.RearrangeControls();
             if (colconts.Count >= 4)
             {
-                colconts[DockStyle.Bottom].SendToBack();
-                colconts[DockStyle.Right].SendToBack();
-                colconts[DockStyle.Top].SendToBack();
-                colconts[DockStyle.Left].SendToBack();
+                if (Controls.GetChildIndex(colconts[DockStyle.Bottom]) > 3 ||
+                    Controls.GetChildIndex(colconts[DockStyle.Right]) > 3 ||
+                    Controls.GetChildIndex(colconts[DockStyle.Top]) > 3 ||
+                    Controls.GetChildIndex(colconts[DockStyle.Left]) > 3)
+                {
+                    colconts[DockStyle.Bottom].SendToBack();
+                    colconts[DockStyle.Right].SendToBack();
+                    colconts[DockStyle.Top].SendToBack();
+                    colconts[DockStyle.Left].SendToBack();
+                }
             }
         }
 
@@ -241,6 +250,7 @@ namespace Ambertation.Windows.Forms
                     r = new Rectangle(Parent.Parent.PointToScreen(Location), this.Size);*/
             //Console.WriteLine(r + " " + Location + " " + Parent);
 
+            if (allleft == null || allright == null || alltop == null || allbottom == null) return;
 
             allleft.SetDesktopLocation(
                 r.Left + dist,
@@ -400,10 +410,10 @@ namespace Ambertation.Windows.Forms
 
         internal void StartDockMode(DockPanel dock)
         {
-            Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from " + dock.Parent);
+            //Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from " + dock.Parent);
             if (!dockmode)
             {
-                Console.WriteLine(" -> started");
+                //Console.WriteLine(" -> started");
                 this.SetMainHintLocation(); //this seems to be needed to ensure working hints with Win2K
                 this.SuspendLayout();
                 SetMainHintLocation();
@@ -484,7 +494,7 @@ namespace Ambertation.Windows.Forms
                 this.ResumeLayout();
                 dock.Visible = true;
                 dock.ResumeLayout();
-                dock.InvalidateWindow();
+                dock.NCRefresh();
             }
 
         }
@@ -536,7 +546,6 @@ namespace Ambertation.Windows.Forms
         {
             base.OnLoad(e);
             if (!this.DesignMode) CleanUp();
-            RefreshSplitters();
         }
 
 

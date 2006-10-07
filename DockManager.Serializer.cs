@@ -7,6 +7,18 @@ namespace Ambertation.Windows.Forms
 {
     partial class DockManager
     {
+        public List<DockPanel> GetPanels()
+        {
+            Dictionary<string, DockPanel> list = new Dictionary<string, DockPanel>();
+            GetPanels(list);
+
+            List<DockPanel> ret = new List<DockPanel>();
+            foreach (DockPanel dp in list.Values)
+                ret.Add(dp);
+
+            return ret;
+        }
+
         protected override void GetPanels(Dictionary<string, DockPanel> list)
         {
             foreach (DockPanel dp in floatingpanels)

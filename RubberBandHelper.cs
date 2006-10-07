@@ -19,69 +19,67 @@
 ***************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Text;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Ambertation.Windows.Forms
 {
-    [TypeConverterAttribute(typeof(System.ComponentModel.ExpandableObjectConverter))]
-    public class NCResizeBorders
+    [ToolboxItem(false)]
+    public class RubberBandHelper : Control
     {
-        public NCResizeBorders() : this(false, false, true, true) { }
-        public NCResizeBorders(bool l, bool t, bool r, bool b)
+        DockContainer dc;
+        Dictionary<Control, bool> map;
+        DockStyle dock;
+        public DockStyle ContainerDock
         {
-            left = l;
-            top = t;
-            right = r;
-            bottom = b;
+            get { return dock; }
+        }
+        internal RubberBandHelper(DockContainer dc)
+        {
+            SetStyle(ControlStyles.ResizeRedraw, true);
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.dc = dc;
+            map = new Dictionary<Control, bool>();
+            foreach (Control c in dc.Controls)
+            {
+                map[c] = c.Visible;
+                c.Visible = false;
+            }
+
+            this.Dock = DockStyle.Fill;
+            dock = dc.Dock;
+            dc.Controls.Add(this);
         }
 
-        private bool left;
-        public bool Left
+        internal void Close() {
+            dc.Controls.Remove(this);
+            foreach (Control c in map.Keys)
+            {
+                c.Visible = map[c];
+                if (c is DockPanel) ((DockPanel)c).NCRefresh();
+            }
+        }
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-            get { return left; }
-            set { left = value; }
+            base.OnMouseMove(e);
+            //Console.WriteLine("Moving "+Location);
+        }
+        
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+
+            dc.Manager.Renderer.DockPanelRenderer.RenderResizePanel(dc, this, e);
         }
 
-        private bool right;
-        public bool Right
-        {
-            get { return right; }
-            set { right = value; }
-        }
-
-        private bool top;
-        public bool Top
-        {
-            get { return top; }
-            set { top = value; }
-        }
-
-        private bool bottom;
-        public bool Bottom
-        {
-            get { return bottom; }
-            set { bottom = value; }
-        }
-
-        public void SetAll(bool val)
-        {
-            bottom = val;
-            top = val;
-            left = val;
-            right = val;
-        }
-
-        public override string ToString()
-        {
-            string s = "";
-            if (Left) s += "[Left] ";
-            if (Bottom) s += "[Bottom] ";
-            if (Top) s += "[Top] ";
-            if (Right) s += "[Right] ";
-            s = s.Trim();
-            if (s == "") s = "[None]";
-            return s;
-        }
+        
     }
 }

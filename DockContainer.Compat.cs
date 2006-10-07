@@ -19,69 +19,29 @@
 ***************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Text;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace Ambertation.Windows.Forms
 {
-    [TypeConverterAttribute(typeof(System.ComponentModel.ExpandableObjectConverter))]
-    public class NCResizeBorders
+    partial class DockContainer
     {
-        public NCResizeBorders() : this(false, false, true, true) { }
-        public NCResizeBorders(bool l, bool t, bool r, bool b)
+        [Browsable(false)]
+        public Image TabImage
         {
-            left = l;
-            top = t;
-            right = r;
-            bottom = b;
+            get { return null; }
+            set {  }
         }
 
-        private bool left;
-        public bool Left
+        [Browsable(false)]
+        public string TabText
         {
-            get { return left; }
-            set { left = value; }
-        }
-
-        private bool right;
-        public bool Right
-        {
-            get { return right; }
-            set { right = value; }
-        }
-
-        private bool top;
-        public bool Top
-        {
-            get { return top; }
-            set { top = value; }
-        }
-
-        private bool bottom;
-        public bool Bottom
-        {
-            get { return bottom; }
-            set { bottom = value; }
-        }
-
-        public void SetAll(bool val)
-        {
-            bottom = val;
-            top = val;
-            left = val;
-            right = val;
-        }
-
-        public override string ToString()
-        {
-            string s = "";
-            if (Left) s += "[Left] ";
-            if (Bottom) s += "[Bottom] ";
-            if (Top) s += "[Top] ";
-            if (Right) s += "[Right] ";
-            s = s.Trim();
-            if (s == "") s = "[None]";
-            return s;
+            get { return ""; }
+            set {  }
         }
     }
 }

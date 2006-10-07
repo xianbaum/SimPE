@@ -47,5 +47,9 @@ namespace Ambertation.Windows.Forms
         Color DockCaptionFocusColorBottom { get; }
         Color DockCaptionTextColor { get;}
         Color DockCaptionFocusTextColor { get;}
+
+        Color DockGripColor { get;}
+        Color DockReSizeBackgroundColor { get;}
+        Color DockReSizeGripColor { get;}
     }
 }

@@ -68,7 +68,8 @@ namespace Ambertation.Windows.Forms
             if (m.Msg == APIHelp.WM_NCMOUSEMOVE || m.Msg == APIHelp.WM_EXITSIZEMOVE)
             {
                 //Console.WriteLine("#### Stop floating " + m);
-                if (Manager.DockMode) StopFloating();
+                if (Manager!=null) 
+                    if (Manager.DockMode) StopFloating();
                 base.WndProc(ref m);
             }
             else if (m.Msg == APIHelp.WM_MOVING)
@@ -86,7 +87,7 @@ namespace Ambertation.Windows.Forms
 
          protected virtual void OnActivateApplication(bool active)
         {
-            Console.WriteLine("Activate Application " + active);
+            //Console.WriteLine("Activate Application " + active);
             if (active) this.TopMost = true;
             else TopMost = false;
         }
@@ -128,7 +129,8 @@ namespace Ambertation.Windows.Forms
         {
             base.OnMouseUp(e);
             //Console.WriteLine("#### Form MouseUp " + e);
-            if (Manager.DockMode) StopFloating();
+            if (Manager!=null) 
+                if (Manager.DockMode) StopFloating();
         }
 
         protected override void OnLocationChanged(EventArgs e)
@@ -141,8 +143,11 @@ namespace Ambertation.Windows.Forms
 
         private void FireLocationChangeEvent()
         {
-            if (!Manager.DockMode && Visible) Manager.StartDockMode(this.DockControl);
-            Manager.MouseMoved(Cursor.Position);
+            if (Manager != null)
+            {
+                if (!Manager.DockMode && Visible) Manager.StartDockMode(this.DockControl);
+                Manager.MouseMoved(Cursor.Position);
+            }
         }
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)

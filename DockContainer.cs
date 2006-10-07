@@ -29,7 +29,7 @@ using System.Runtime.InteropServices;
 namespace Ambertation.Windows.Forms
 {
     [Designer(typeof(DockContainerDesigner)), ToolboxItem(false)]
-    public partial class DockContainer : UserControl, IButtonContainer
+    public partial class DockContainer : NCUserControl, IButtonContainer
     {
         protected List<DockContainer> containers;
         DockButtonBar.DockPanelList panels;
@@ -47,8 +47,9 @@ namespace Ambertation.Windows.Forms
         internal DockContainer(DockManager manager)
         {
             layoutct = 0;
-            //this.SetStyle(ControlStyles.ContainerControl, true);
-            //this.BackColor = Color.DarkCyan;
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+
             
             containers = new List<DockContainer>();
             panels = new DockButtonBar.DockPanelList();
@@ -57,20 +58,34 @@ namespace Ambertation.Windows.Forms
             nccleanint = false;
             useastar = false;
             state = Status.Expanded;
-            SetManager(manager);
+            SetManager(manager);         
+            
+            this.NonClientMargin = new Padding(0);
         }
 
          ~DockContainer()
         {
             if(manager!=null) manager.Renderer.DockPanelRenderer.FinishedAnimation -= new DockAnimationEventHandler(DockPanelRenderer_FinishedAnimation);
         }
+
+
+
+        
+
+        
         
         public DockContainer() :this(null) {}
 
         internal void SetManager(DockManager manager)
         {
+            
             this.manager = manager;
-            if (manager != null) manager.Renderer.DockPanelRenderer.FinishedAnimation += new DockAnimationEventHandler(DockPanelRenderer_FinishedAnimation);
+            if (manager != null)
+            {
+                manager.Renderer.DockPanelRenderer.FinishedAnimation += new DockAnimationEventHandler(DockPanelRenderer_FinishedAnimation);
+            }
+
+            this.DoDockChanged();
         }
         
         public DockManager Manager
@@ -108,11 +123,13 @@ namespace Ambertation.Windows.Forms
             base.OnSizeChanged(e);
             if (state == Status.Expanded) expsz = this.Size;
 
-            foreach (DockContainer dc in containers)
+            /*foreach (DockContainer dc in containers)
             {
                 if (dc.Left < 0) dc.Width = Math.Max(dc.Width + dc.Left, MinimumDockSize);
                 if (dc.Top < 0) dc.Height = Math.Max(dc.Height + dc.Top, MinimumDockSize);
-            }
+            }*/
+
+            //Console.WriteLine(Name + " has new Size " + Size);
         }
         
 
@@ -144,6 +161,7 @@ namespace Ambertation.Windows.Forms
                     p.Parent = this;
                     p.Dock = DockStyle.Fill;
                     p.EnsureVisible();
+                    if (p.Manager == null) p.Manager = Manager;
                     if (Manager != null) Manager.CleanUp();
                     else CleanUp();
                 }
@@ -152,11 +170,10 @@ namespace Ambertation.Windows.Forms
 
         private void OnDockContainerAdded(DockContainer dc)
         {
-            Console.WriteLine("#### Adding Container " + dc.Name);
+            //Console.WriteLine("#### Adding Container " + dc.Name);
             ListControls();
             dc.SetForceUseAsTarget(true);
             RearrangeControls();
-            RefreshSplitters();
             dc.SetForceUseAsTarget(false);
         }
 
@@ -169,7 +186,6 @@ namespace Ambertation.Windows.Forms
                 //Console.WriteLine("Removing Container from " + Name);
                 containers.Remove(dc);
                 dc.ParentContainer = null;
-                RefreshSplitters();
             }
             else
             {
@@ -187,91 +203,18 @@ namespace Ambertation.Windows.Forms
                     else CleanUp();
                 }
             }
-        }
-
-        void GenerateSplitter(DockStyle ds, int index)        
-        {
-            Console.Write("Adding " + ds + " at " + index);            
-            Splitter s = new Splitter();
-            s.Parent = this;
-            s.Dock = ds;
-
-            Controls.Add(s);
-            if (Controls.Contains(s)) Controls.SetChildIndex(s, index);
-        }
-
-        public void RefreshSplitters()
-        {
-            this.SuspendLayout();
-            Console.WriteLine("#### Setting Splitters "+Name);
-            List<Control>splitters = new List<Control>();
-            List<DockPanel> panels = new List<DockPanel>();
-            foreach (Control c in Controls)
-            {
-                if (c is Splitter) splitters.Add(c as Splitter);
-                else if (c is DockPanel)
-                {
-                    DockPanel dp = c as DockPanel;
-                    if (dp.Dock == DockStyle.Fill) panels.Add(dp);
-                }
-            }
-
-            foreach (Splitter s in splitters)
-                Controls.Remove(s);
-
-            foreach (DockPanel dp in panels)
-                Controls.SetChildIndex(dp, 0);
-
-            ListControls();
-            foreach (DockContainer dc in containers)
-            {
-                int i = Controls.GetChildIndex(dc);
-                Console.WriteLine("  -> Found Dock " + dc.Name + " " + dc.IgnoreAsTarget + " " + dc.Dock + " " + dc.Visible + " " + i);
-                if (dc.IgnoreAsTarget) 
-                    continue;
-
-                if (dc.Dock == DockStyle.Right) GenerateSplitter(DockStyle.Right, i);
-                else if (dc.Dock == DockStyle.Left) GenerateSplitter(DockStyle.Left, i);
-                else if (dc.Dock == DockStyle.Top) GenerateSplitter(DockStyle.Top, i);
-                else if (dc.Dock == DockStyle.Bottom) GenerateSplitter(DockStyle.Bottom, i);
-            }
-
-            /*
-            for (int i = Controls.Count - 1; i >= 0; i--)
-            {
-                Console.WriteLine(i);
-                Control c = Controls[i];
-                if (c is Splitter) continue;
-                if (c is DockButtonBar) continue;
-                DockContainer dc = c as DockContainer;
-                if (dc != null)
-                {
-                    Console.WriteLine("  -> Found Dock " + dc.Name+" "+dc.IgnoreAsTarget+" "+dc.Dock+" "+dc.Visible+" "+i);
-                    if (dc.IgnoreAsTarget) continue;
-                }
-
-                //Console.WriteLine(c.Dock);
-                if (c.Dock == DockStyle.Right) GenerateSplitter(DockStyle.Right, i);
-                else if (c.Dock == DockStyle.Left) GenerateSplitter(DockStyle.Left, i);
-                else if (c.Dock == DockStyle.Top) GenerateSplitter(DockStyle.Top, i);
-                else if (c.Dock == DockStyle.Bottom) GenerateSplitter(DockStyle.Bottom, i);
-                
-            }*/
-
-            ListControls();
-            this.ResumeLayout();
-        }
+        }      
 
         
 
         internal void ListControls()
         {
            
-            Console.WriteLine("Listing " + Name);
+            //Console.WriteLine("Listing " + Name);
             for (int i = Controls.Count - 1; i >= 0; i--)
             {
                 Control c = Controls[i];
-                Console.WriteLine(i + ": " + c.GetType().Name+" "+c.Dock+" "+c.Name);
+                //Console.WriteLine(i + ": " + c.GetType().Name+" "+c.Dock+" "+c.Name);
             }
         }
 
@@ -301,7 +244,7 @@ namespace Ambertation.Windows.Forms
         protected override void OnChangeUICues(UICuesEventArgs e)
         {
             base.OnChangeUICues(e);
-            Console.WriteLine("Change UI Cues");
+            //Console.WriteLine("Change UI Cues");
         }
         public DockContainer CreateNewContainer(int index, bool after, bool toplevel, DockStyle dockstyle)
         {
@@ -389,6 +332,7 @@ namespace Ambertation.Windows.Forms
 
         internal void TakeHint(DockHint hint, Rectangle r, DockContainer d)
         {
+            if (d == null) return;
             hint.ParentContainer = d;
             hint.SetDesktopLocation(
                 r.Left + (r.Width - hint.Width) / 2,
@@ -708,6 +652,19 @@ namespace Ambertation.Windows.Forms
             if (this.DesignMode) e.Graphics.DrawString(Name, Font, new SolidBrush(ForeColor), 2, 2);*/
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            if (!MyWndProc(ref m)) return;
+
+            if (m.Msg == APIHelp.WM_PAINT)
+            {
+                if (CollapseState == DockContainer.Status.Collapsing || CollapseState == DockContainer.Status.Expanding)    return;
+            }
+            base.WndProc(ref m);
+        }
+
+        
+
         bool useastar;
         internal void SetForceUseAsTarget(bool val)
         {
@@ -725,7 +682,7 @@ namespace Ambertation.Windows.Forms
         {
             DockButtonBar.DockPanelList list = this.GetDockedPanels();
             foreach (DockPanel dp in list)
-                dp.InvalidateWindow();
+                dp.NCRefresh();
 
             foreach (DockContainer dc in containers)
                 dc.ForcePanelRepaint();
@@ -741,6 +698,10 @@ namespace Ambertation.Windows.Forms
 
         #region Collapse /Expand
         Status state;
+        public Status CollapseState
+        {
+            get { return state; }
+        }
         public DockAnimationEventArgs.Alignment Alignment
         {
             get { return this.GetAlignment(); }
@@ -754,6 +715,8 @@ namespace Ambertation.Windows.Forms
             return a;
         }
 
+        
+
         public void Collapse() { Collapse(true); }
         public void Collapse(bool animated)
         {
@@ -763,11 +726,14 @@ namespace Ambertation.Windows.Forms
             DockAnimationEventArgs e = new DockAnimationEventArgs(this, DockAnimationEventArgs.Type.Collapse, a);
             state = Status.Collapsing;
 
-            if (animated) Manager.Renderer.DockPanelRenderer.Animate(e);
+
+                      
+            if (Manager != null) Manager.SuspendLayout();
+            if (animated && false) Manager.Renderer.DockPanelRenderer.Animate(e);
             else
             {
-                if (e.DockAlignment == DockAnimationEventArgs.Alignment.Horizontal) Height = this.MinimumDockSize;
-                else if (e.DockAlignment == DockAnimationEventArgs.Alignment.Vertical) Width = this.MinimumDockSize;
+                /*if (e.DockAlignment == DockAnimationEventArgs.Alignment.Horizontal) Height = this.MinimumDockSize;
+                else if (e.DockAlignment == DockAnimationEventArgs.Alignment.Vertical) Width = this.MinimumDockSize;*/
 
                 DockPanelRenderer_FinishedAnimation(Manager.Renderer.DockPanelRenderer, e);
             }
@@ -782,7 +748,11 @@ namespace Ambertation.Windows.Forms
 
             DockAnimationEventArgs e = new DockAnimationEventArgs(this, DockAnimationEventArgs.Type.Expand, a);
             state = Status.Expanding;
-            if (animated) Manager.Renderer.DockPanelRenderer.Animate(e);
+            
+           
+            if (Manager != null) Manager.SuspendLayout();
+
+            if (animated && false) Manager.Renderer.DockPanelRenderer.Animate(e);
             else
             {
                 if (e.DockAlignment == DockAnimationEventArgs.Alignment.Horizontal) Height = this.ExpandedSize.Height;
@@ -817,15 +787,15 @@ namespace Ambertation.Windows.Forms
                 this.Visible = false;
                 MoveChildDocksUp(true);
                 Manager.GetBestButtonBar(this).Add(this);
-                if (ParentContainer!=null) ParentContainer.RefreshSplitters();
             }
             else if (e.AnimationType == DockAnimationEventArgs.Type.Expand)
             {
                 state = Status.Expanded;
                 Manager.GetBestButtonBar(this).Remove(this);
                 this.Visible = true;
-                if (ParentContainer != null) ParentContainer.RefreshSplitters();
             }
+
+            if (Manager != null) Manager.ResumeLayout();
         }        
         #endregion
 
@@ -890,10 +860,15 @@ namespace Ambertation.Windows.Forms
         public void SetActiveDock(DockPanel dp){
             if (hldp != dp)
                 {
+                    if (hldp!=null) hldp.FireHighlightChanged(dp);
                     hldp = dp;
                 
                     ShowDockPanel(dp);
-                    hldp.MakeVisibleByParentDockContainer();
+                    if (hldp != null)
+                    {
+                        hldp.MakeVisibleByParentDockContainer();
+                        hldp.FireHighlightChanged(dp);
+                    }
                 }
         }
         public DockButtonBar.DockPanelList GetButtons()

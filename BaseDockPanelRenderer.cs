@@ -29,7 +29,7 @@ namespace Ambertation.Windows.Forms
         #region Helper classes
         public class Dimensions
         {
-            public Dimensions(int capt, int but, int bord, int dbarspace, int pad, int iconsize)
+            public Dimensions(int capt, int but, int bord, int dbarspace, int pad, int iconsize, int gripsz)
             {
                 caption = capt;
                 buttons = but;
@@ -37,6 +37,7 @@ namespace Ambertation.Windows.Forms
                 this.dbarspace = dbarspace;
                 padding = pad;
                 iconsz = iconsize;
+                this.gripsz = gripsz;
             }
 
             int caption;
@@ -49,6 +50,12 @@ namespace Ambertation.Windows.Forms
             public int Buttons
             {
                 get { return buttons; }
+            }
+
+            int gripsz;
+            public int GripSize
+            {
+                get { return gripsz; }
             }
 
             int border;
@@ -95,6 +102,27 @@ namespace Ambertation.Windows.Forms
             return new DockPanelButtonManager(this.Parent, e, cnt);
         }
 
+        #region Grip
+        public virtual System.Windows.Forms.Padding GetGripSize(System.Windows.Forms.DockStyle dock)
+        {
+            if (dock == System.Windows.Forms.DockStyle.Right) return new System.Windows.Forms.Padding(Dimension.GripSize, 0, 0, 0);
+            if (dock == System.Windows.Forms.DockStyle.Bottom) return new System.Windows.Forms.Padding(0, Dimension.GripSize, 0, 0);
+            if (dock == System.Windows.Forms.DockStyle.Left) return new System.Windows.Forms.Padding(0, 0, Dimension.GripSize, 0);
+            if (dock == System.Windows.Forms.DockStyle.Top) return new System.Windows.Forms.Padding(0, 0, 0, Dimension.GripSize);
+            return new System.Windows.Forms.Padding(0);
+        }
+
+        public virtual Rectangle GetGripRectangle(NCPaintEventArgs e, System.Windows.Forms.DockStyle dock)
+        {
+            if (dock == System.Windows.Forms.DockStyle.Right) return new Rectangle(-1, -1, Dimension.GripSize + 1, e.WindowRectangle.Height + 1);
+            if (dock == System.Windows.Forms.DockStyle.Bottom) return new Rectangle(-1, -1, e.WindowRectangle.Width + 1, Dimension.GripSize + 1);
+            if (dock == System.Windows.Forms.DockStyle.Left) return new Rectangle(e.WindowRectangle.Width - Dimension.GripSize, -1, Dimension.GripSize + 1, e.WindowRectangle.Height + 1);
+            if (dock == System.Windows.Forms.DockStyle.Top) return new Rectangle(-1, e.WindowRectangle.Height - Dimension.GripSize, e.WindowRectangle.Width + 1, Dimension.GripSize + 1);
+
+            return Rectangle.Empty;
+        }
+        #endregion
+
         #region Border Size
         public virtual System.Windows.Forms.Padding GetPanelBorderSize(ButtonOrientation orient)
         {
@@ -123,7 +151,6 @@ namespace Ambertation.Windows.Forms
             return c.GetBorderSize(c.BestOrientation);
         }
         #endregion
-
         
         #region ButtonCaptionWidth
         protected int GetButtonCaptionWidth(System.Drawing.Font font, string caption)
@@ -404,7 +431,8 @@ namespace Ambertation.Windows.Forms
 
             string caption = GetFittingString(Parent.FontTable.CaptionFont, dp.CaptionText, ButtonOrientation.Top, new Size(txtrect.Width, txtrect.Height));
 
-            RenderCaptionBackground(dp.CaptionState, e, caprect);
+            if (caprect.Width>0 && caprect.Height>0) 
+                RenderCaptionBackground(dp.CaptionState, e, caprect);
 
 
             RenderCaptionText(dp.CaptionState, e, txtrect, caption);

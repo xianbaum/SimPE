@@ -40,6 +40,8 @@ namespace Ambertation.Windows.Forms
         
         public NCUserControl()
         {
+            needrepaint = true;
+            needncrepaint = true;
             doublebuffer = true;
             ncsz = new Padding(6, 6, 6, 20);
             mb = new NCButtons();
@@ -50,7 +52,7 @@ namespace Ambertation.Windows.Forms
         }
 
         NCResizeBorders ersz;
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content), Description("Set all Borders to true, that should allow the User to resize this Control.")]
+        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden), Description("Set all Borders to true, that should allow the User to resize this Control.")]
         public NCResizeBorders ResizeBorder
         {
             get { return ersz; }
@@ -90,41 +92,27 @@ namespace Ambertation.Windows.Forms
         //     - http://www.syncfusion.com/FAQ/WindowsForms/FAQ_c41c.aspx#q1026q
 
         protected void DoInvalidateWindow()
-        {
+        {          
             Rectangle cr = this.ClientRectangle;
             APIHelp.RECT rc = new APIHelp.RECT(0, 0, Width, Height);
             APIHelp.RedrawWindow(this.Handle, ref rc, IntPtr.Zero,
                  APIHelp.RDW_FRAME | APIHelp.RDW_UPDATENOW | APIHelp.RDW_INVALIDATE);
-        } 
+        }
 
+        public void NCRefresh()
+        {
+            needncrepaint = true;
+            if (Visible) NCPaint(new IntPtr(0));
+        }
+        
         protected override void WndProc(ref Message m)
         {
+             
             switch (m.Msg)
-            {
-                case APIHelp.WM_NCCALCSIZE:
+            {        
+               case APIHelp.WM_NCCALCSIZE:
                     {
-                        if (m.WParam.ToInt32() == 0)
-                        {
-                            APIHelp.RECT rc = (APIHelp.RECT)m.GetLParam(typeof(APIHelp.RECT));
-                            rc.Left += ncsz.Left;
-                            rc.Top += ncsz.Top;
-                            rc.Right -= ncsz.Right;
-                            rc.Bottom -= ncsz.Bottom;
-                            Marshal.StructureToPtr(rc, m.LParam, true);
-                            m.Result = IntPtr.Zero;
-                        }
-                        else
-                        {
-                            APIHelp.NCCALCSIZE_PARAMS csp;
-                            csp = (APIHelp.NCCALCSIZE_PARAMS)m.GetLParam(typeof(APIHelp.NCCALCSIZE_PARAMS));
-                            csp.rgrc0.Top += ncsz.Top;
-                            csp.rgrc0.Bottom -= ncsz.Bottom;
-                            csp.rgrc0.Left += ncsz.Left;
-                            csp.rgrc0.Right -= ncsz.Right;
-                            Marshal.StructureToPtr(csp, m.LParam, true);
-                            //Return zero to preserve client rectangle
-                            m.Result = IntPtr.Zero;
-                        }
+                        m = WndProc_WM_NCCALCSIZE(m);
                         break;
                     }
                 case APIHelp.WM_NCPAINT:
@@ -140,26 +128,7 @@ namespace Ambertation.Windows.Forms
                 case APIHelp.WM_NCMBUTTONUP:
                 case APIHelp.WM_NCMOUSEMOVE:
                     {
-                        NCMouseEventArgs e = GetMouseParams(ref m, true);
-                        if (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP)
-                            this.OnNcMouseUp(e);
-
-                        //Console.WriteLine("Mouse 0x" + m.Msg.ToString("X") + " " + m.WParam);
-                        /*if (m.Msg == APIHelp.WM_NCLBUTTONDOWN) mb.LeftInt = true;
-                        else if (m.Msg == APIHelp.WM_NCLBUTTONUP) mb.LeftInt = false;
-                        else if (m.Msg == APIHelp.WM_NCRBUTTONDOWN) mb.RightInt = true;
-                        else if (m.Msg == APIHelp.WM_NCRBUTTONUP) mb.RightInt = false;
-                        else if (m.Msg == APIHelp.WM_NCMBUTTONDOWN) mb.MiddleInt = true;
-                        else if (m.Msg == APIHelp.WM_NCMBUTTONUP) mb.MiddleInt = false;*/
-                        GetMouseButtonState();
-                        if ((!mb.Left && !mb.Right && !mb.Middle) && (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP))
-                            this.OnNcClick(e);
-                        
-                        if (m.Msg == APIHelp.WM_NCLBUTTONDOWN || m.Msg == APIHelp.WM_NCMBUTTONDOWN || m.Msg == APIHelp.WM_NCRBUTTONDOWN)
-                            this.OnNcMouseDown(e);
-                        
-                        
-                        this.OnNcMouseChanged(e);
+                        m = WndProc_WM_NCMOUSE(m);
                         break;
                     }
                 case APIHelp.WM_NCLBUTTONDBLCLK:
@@ -190,15 +159,75 @@ namespace Ambertation.Windows.Forms
                     }
                 case APIHelp.WM_NCHITTEST:
                     {
-                        base.WndProc(ref m);
-                        NCHitTestEventArgs e = GetHitTestParams(ref m);
-                        
-                        DoNcHitTest(e);
-                        m.Result = e.GetResult();
+                        m = WndProc_WM_NCHITTEST(m);
                         return;
                     }
             }
             base.WndProc(ref m);
+        }
+
+        internal  Message WndProc_WM_NCMOUSE(Message m)
+        {
+            NCMouseEventArgs e = GetMouseParams(ref m, true);
+            if (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP)
+            {
+                this.OnNcMouseUp(e);
+            }
+
+            //Console.WriteLine("Mouse 0x" + m.Msg.ToString("X") + " " + m.WParam);
+            /*if (m.Msg == APIHelp.WM_NCLBUTTONDOWN) mb.LeftInt = true;
+            else if (m.Msg == APIHelp.WM_NCLBUTTONUP) mb.LeftInt = false;
+            else if (m.Msg == APIHelp.WM_NCRBUTTONDOWN) mb.RightInt = true;
+            else if (m.Msg == APIHelp.WM_NCRBUTTONUP) mb.RightInt = false;
+            else if (m.Msg == APIHelp.WM_NCMBUTTONDOWN) mb.MiddleInt = true;
+            else if (m.Msg == APIHelp.WM_NCMBUTTONUP) mb.MiddleInt = false;*/
+            GetMouseButtonState();
+            if ((!mb.Left && !mb.Right && !mb.Middle) && (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_NCMBUTTONUP || m.Msg == APIHelp.WM_NCRBUTTONUP))
+                this.OnNcClick(e);
+
+            if (m.Msg == APIHelp.WM_NCLBUTTONDOWN || m.Msg == APIHelp.WM_NCMBUTTONDOWN || m.Msg == APIHelp.WM_NCRBUTTONDOWN)
+                this.OnNcMouseDown(e);
+
+
+            this.OnNcMouseChanged(e);
+            return m;
+        }
+
+        internal Message WndProc_WM_NCHITTEST(Message m)
+        {
+            base.WndProc(ref m);
+            NCHitTestEventArgs e = GetHitTestParams(ref m);
+
+            DoNcHitTest(e);
+            m.Result = e.GetResult();
+            return m;
+        }
+
+        internal Message WndProc_WM_NCCALCSIZE(Message m)
+        {
+            if (m.WParam.ToInt32() == 0)
+            {
+                APIHelp.RECT rc = (APIHelp.RECT)m.GetLParam(typeof(APIHelp.RECT));
+                rc.Left += ncsz.Left;
+                rc.Top += ncsz.Top;
+                rc.Right -= ncsz.Right;
+                rc.Bottom -= ncsz.Bottom;
+                Marshal.StructureToPtr(rc, m.LParam, true);
+                m.Result = IntPtr.Zero;
+            }
+            else
+            {
+                APIHelp.NCCALCSIZE_PARAMS csp;
+                csp = (APIHelp.NCCALCSIZE_PARAMS)m.GetLParam(typeof(APIHelp.NCCALCSIZE_PARAMS));
+                csp.rgrc0.Top += ncsz.Top;
+                csp.rgrc0.Bottom -= ncsz.Bottom;
+                csp.rgrc0.Left += ncsz.Left;
+                csp.rgrc0.Right -= ncsz.Right;
+                Marshal.StructureToPtr(csp, m.LParam, true);
+                //Return zero to preserve client rectangle
+                m.Result = IntPtr.Zero;
+            }
+            return m;
         }
 
         private void GetMouseButtonState()
@@ -262,7 +291,56 @@ namespace Ambertation.Windows.Forms
         {
             return NCPaint(reg);
         }
-        
+
+        Bitmap bmpbuffer;
+        Graphics gbuffer;
+        bool needrepaint, needncrepaint;
+        protected bool NeedRepaint
+        {
+            get { return needrepaint; }
+            set { needrepaint = value; }
+        }
+
+        protected bool NCNeedRepaint
+        {
+            get { return needncrepaint; }
+            set { needncrepaint = value; }
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            SetupBitmapBuffer();
+        }
+
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            SetupBitmapBuffer();
+        }
+
+        private void SetupBitmapBuffer()
+        {
+            Region UpdateRegion;
+            Rectangle WindowRect = GetWindowRectangle(out UpdateRegion);
+            if (bmpbuffer != null)
+            {
+                if (bmpbuffer.Width == WindowRect.Width && bmpbuffer.Height == WindowRect.Height) return;
+            }
+
+            if (gbuffer != null) gbuffer.Dispose();
+            if (bmpbuffer != null) bmpbuffer.Dispose();
+
+
+            needrepaint = true;
+            needncrepaint = true;
+            bmpbuffer = new Bitmap(Math.Max(1, WindowRect.Width), Math.Max(1, WindowRect.Height));
+            gbuffer = Graphics.FromImage(bmpbuffer);
+
+            gbuffer.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            gbuffer.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.Low;
+        }
+
         protected IntPtr NCPaint(IntPtr region)
         {
             IntPtr hDC = APIHelp.GetWindowDC(this.Handle);
@@ -296,17 +374,23 @@ namespace Ambertation.Windows.Forms
                     ScrollRect.Offset(-1, -1);
                 }
 
+                SetupBitmapBuffer();
                 if (doublebuffer)
                 {
-                    Bitmap bmp = new Bitmap(WindowRect.Width, WindowRect.Height);
-                    Graphics g = Graphics.FromImage(bmp);
-                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBilinear;
-                    NCPaintEventArgs e = new NCPaintEventArgs(g, ClientRectangle, WindowRect, PaintRegion);
-                    this.OnNcPaint(e);
-                    grTemp.DrawImage(bmp, 0, 0);
-                    g.Dispose();
-                    bmp.Dispose();
+                    if (WindowRect.Width > 0 && WindowRect.Height > 1)
+                    {
+                        if (needncrepaint)
+                        {
+                            NCPaintEventArgs e = new NCPaintEventArgs(gbuffer, ClientRectangle, WindowRect, PaintRegion);
+                            this.OnNcPaint(e);
+                            needncrepaint = false;
+                        }
+                        /*RectangleF[] recs = e.PaintRegion.GetRegionScans(new System.Drawing.Drawing2D.Matrix());
+                        foreach (RectangleF r in recs)
+                            grTemp.DrawImage(bmp, r, r, GraphicsUnit.Pixel);*/
+
+                        grTemp.DrawImage(bmpbuffer, 0, 0);                        
+                    }
                 }
                 else
                 {
@@ -324,11 +408,31 @@ namespace Ambertation.Windows.Forms
             return region;
         }
 
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            Rectangle cr = e.ClipRectangle;
+            cr.Offset(ncsz.Left, ncsz.Top);
+            PaintEventArgs e2 = new PaintEventArgs(gbuffer, cr);
+
+            if (needrepaint)
+            {
+                this.OnBufferedPaint(e);
+                needrepaint = false;
+            }
+
+            e.Graphics.DrawImage(bmpbuffer, -1 *ncsz.Left, -1 * ncsz.Top);
+        }
+
+        protected virtual void OnBufferedPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+        }
+
         /// <summary>
         /// Returns the Rectangle of the space, this Control occupies
         /// </summary>
         /// <returns></returns>
-        private Rectangle GetWindowRectangle()
+        protected Rectangle GetWindowRectangle()
         {
             Region UpdateRegion;
             return GetWindowRectangle(out UpdateRegion);
@@ -339,7 +443,7 @@ namespace Ambertation.Windows.Forms
         /// </summary>
         /// <param name="UpdateRegion"></param>
         /// <returns></returns>
-        private Rectangle GetWindowRectangle(out Region UpdateRegion)
+        protected Rectangle GetWindowRectangle(out Region UpdateRegion)
         {            
             //Bounds is unreliable as it often reports the incorrect
             //location, especially when part of the window is OffScreen.
@@ -381,12 +485,12 @@ namespace Ambertation.Windows.Forms
             /*if (this.HScroll) cr.Width -= ScrollBarWidth;
             if (this.VScroll) cr.Height -= ScrollBarHeight;*/
             return cr;
-        }        
+        }
 
-        void DoNcHitTest(NCHitTestEventArgs e)
+        protected virtual void DoNcHitTest(NCHitTestEventArgs e)
         {
             Rectangle cr = GetClientArea();
-
+            
 
             if (!cr.Contains(e.ControlPosition))
             {
@@ -394,7 +498,7 @@ namespace Ambertation.Windows.Forms
                 bool l = e.ControlPosition.X < 2 && ersz.Left;
                 bool t = e.ControlPosition.Y < 2 && ersz.Top;
                 bool r = e.ControlPosition.X > Width - 3 && ersz.Right;
-                bool b = e.ControlPosition.Y > Height - 3 && ersz.Bottom;
+                bool b = e.ControlPosition.Y > Height - 3 && ersz.Bottom;                
 
                 if (l && t) e.Result = NCHitTestEventArgs.Results.HTTOPLEFT;
                 else if (r && t) e.Result = NCHitTestEventArgs.Results.HTTOPRIGHT;
@@ -459,6 +563,12 @@ namespace Ambertation.Windows.Forms
         {
             if (dborder && e.Result == NCHitTestEventArgs.Results.HTBORDER) e.Result = NCHitTestEventArgs.Results.HTCAPTION;
             //Console.WriteLine("NCHit: " + e);            
-        }        
+        }
+
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            this.NCRefresh();
+        }
     }
 }

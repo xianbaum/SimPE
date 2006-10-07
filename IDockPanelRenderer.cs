@@ -106,6 +106,31 @@ namespace Ambertation.Windows.Forms
         /// <returns>The client rectangle</returns>
         Rectangle GetPanelClientRectangle(NCPaintEventArgs e, ButtonOrientation orient);
 
+        /// <summary>
+        /// Returns the pagging, that should be applied in order to display the grip
+        /// </summary>
+        /// <param name="dock">Where is the <see cref="DockCOntainer"/> docked at</param>
+        /// <returns></returns>
+        System.Windows.Forms.Padding GetGripSize(System.Windows.Forms.DockStyle dock);
+
+        /// <summary>
+        /// Returns the rectangle that should be used to draw the grip
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="dock">Where is the <see cref="DockCOntainer"/> docked at</param>
+        /// <returns></returns>
+        Rectangle GetGripRectangle(NCPaintEventArgs e, System.Windows.Forms.DockStyle dock);
+
+        /// <summary>
+        /// Renders the Grip for a <see cref="DockContainer"/>
+        /// </summary>
+        /// <param name="dc"></param>
+        /// <param name="e"></param>
+        /// <param name="r"></param>
+        void RenderGrip(DockContainer dc, NCPaintEventArgs e, Rectangle r);
+
+        void RenderResizePanel(DockContainer dc, RubberBandHelper rbh, System.Windows.Forms.PaintEventArgs e); //ok
+
         System.Windows.Forms.Padding GetPanelBorderSize(ButtonOrientation orient); //ok
         System.Windows.Forms.Padding GetBarBorderSize(ButtonOrientation orient); //ok
         System.Windows.Forms.Padding GetBorderSize(IButtonContainer c); //ok
