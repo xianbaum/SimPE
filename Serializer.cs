@@ -270,7 +270,7 @@ namespace Ambertation.Windows.Forms
             int ct = reader.ReadInt32();
             for (int i = 0; i < ct; i++)
             {
-                Console.WriteLine(reader.BaseStream.Position);
+                //Console.WriteLine(reader.BaseStream.Position);
                 int id = reader.ReadInt32();
                 string name = reader.ReadString();
                 if (revmap.ContainsKey(id))
@@ -289,7 +289,7 @@ namespace Ambertation.Windows.Forms
             int ct = reader.ReadInt32();
             for (int i = 0; i < ct; i++)
             {
-                Console.WriteLine(reader.BaseStream.Position);
+                //Console.WriteLine(reader.BaseStream.Position);
                 int id = reader.ReadInt32();
                 string name = reader.ReadString();
                 if (revmap.ContainsKey(id))
