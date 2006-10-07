@@ -26,6 +26,7 @@ namespace Ambertation.Windows.Forms
         Dictionary<string, ToolStripItem> buts;
         Serializer()
         {
+            namect = 0;
             pass2 = new List<Pass2Descriptor>();
             items = new Dictionary<string, Control>();
             buts = new Dictionary<string, ToolStripItem>();
@@ -37,6 +38,7 @@ namespace Ambertation.Windows.Forms
             map[typeof(DockManager)] = new SerilaizeDescriptor(3, new SerializeControl(SerializeDockManager), new DeSerializeControl(DeserializeDockManager));
 
 
+            reorderstrips = new List<Pass2ToolStripDescriptor>();
             revmap = new Dictionary<int, SerilaizeDescriptor>();
             foreach (SerilaizeDescriptor d in map.Values)
                 revmap[d.Id] = d;
@@ -46,6 +48,7 @@ namespace Ambertation.Windows.Forms
         void RegisterControl(Control obj)
         {
             if (obj == null) return;
+            SetName(obj);
             items[obj.Name] = obj;
         }
 
@@ -91,26 +94,72 @@ namespace Ambertation.Windows.Forms
             RegisterControl(ts);
             foreach (ToolStripItem i in ts.Items)
                 Register(i);
+
         }
 
         public void Register(ToolStripItem item)
         {
             if (item == null) return;
+            SetName(item);
             buts[item.Name] = item;
         }
         #endregion
 
+        int namect;
+        void SetName(Control c)
+        {
+            if (c.Name == "")
+            {
+                c.Name = "my"+c.GetType().Name+"_" + namect;
+                namect++;
+            }
+        }
+
+        void SetName(ToolStripItem c)
+        {
+            if (c.Name == "")
+            {
+                c.Name = "my" + c.GetType().Name + "_" + namect;
+                namect++;
+            }
+        }
+
+        const uint MAGIC = 0xFB001A07;
+        const uint VERSION = 5;
         #region Serialize
-        public void Serialize(string flname)
+        public void ToFile(string flname)
         {
             BinaryWriter writer = new BinaryWriter(File.Create(flname));
-            SerializeButtons(writer);
-            SerializeControls(writer);
+            Serialize(writer);
             writer.Close();
         }
 
-        private void SerializeControls(BinaryWriter writer)
+        public Stream ToStream()
         {
+            MemoryStream s = new MemoryStream();
+            ToStream(s);
+            return s;
+        }
+
+        public void ToStream(Stream s)
+        {
+            BinaryWriter bw = new BinaryWriter(s);
+            Serialize(bw);
+            s.Flush();
+        }
+
+
+        private void Serialize(BinaryWriter writer)
+        {
+            writer.Write(MAGIC);
+            writer.Write(VERSION);
+            SerializeButtons(writer);
+            SerializeControls(writer);
+        }
+
+        private void SerializeControls(BinaryWriter writer)
+        {            
+            
             writer.Write(items.Count);
             foreach (Control c in items.Values)
             {
@@ -125,7 +174,7 @@ namespace Ambertation.Windows.Forms
 
         private void SerializeButtons(BinaryWriter writer)
         {
-            writer.Write(buts.Count);
+            writer.Write(buts.Values.Count);
             foreach (ToolStripItem ts in buts.Values)
             {
                 SerilaizeDescriptor d = map[typeof(ToolStripItem)];
@@ -135,7 +184,9 @@ namespace Ambertation.Windows.Forms
 
         void Serialize(BinaryWriter writer, SerilaizeDescriptor d, string name, object o)
         {
-            if (o == null || d == null) return;
+            if (o == null) o = new Object();
+            if (d == null) d = map[typeof(object)];
+            //Console.WriteLine(writer.BaseStream.Position + ": " + d.Id + " " + name);
             writer.Write(d.Id);
             writer.Write(name);
             d.Serilaizer(writer, o);
@@ -143,30 +194,94 @@ namespace Ambertation.Windows.Forms
         #endregion
 
         #region Deserialize
-        public void Deserialize(string flname)
+        public void FromFile(string flname)
         {
-            pass2.Clear();
-            BinaryReader reader = new BinaryReader(File.Open(flname, FileMode.Open));
-            DeserializeButtons(reader);
+            if (File.Exists(flname))
+            {
+                Stream s = File.Open(flname, FileMode.Open);
+                try
+                {
+                    FromStream(s);
+                }
+                finally
+                {
+                    s.Close();
+                }
+            }
+        }
 
+        public void FromStream(Stream s)
+        {           
+            FromStream(s, true);
+        }
+
+        void ReadException(BinaryReader reader, string msg)
+        {            
+            throw new System.IO.FileLoadException(msg);
+        }
+
+        public void FromStream(Stream s, bool seekbeg)
+        {
+            if (seekbeg) s.Seek(0, SeekOrigin.Begin);
+            pass2.Clear();
+            BinaryReader reader = new BinaryReader(s);
+
+            if (s.Length - s.Position < 8) return; // ReadException(reader, "Not a Layout Resource (invalid length)");
+            uint mg = reader.ReadUInt32();
+            uint ver = reader.ReadUInt32();
+
+            if (mg != MAGIC) ReadException(reader, "Not a Layout Resource (invalid MAGIC Code)");
+            if (ver>VERSION) ReadException(reader, "Not a Layout Resource (unknown Version)");
+            DeserializeButtons(reader);
+            DeserializeControls(reader);
+            //reader.Close();
+
+            foreach (Pass2Descriptor pass in pass2)
+                pass.Pass2(pass);
+
+            RorderButtons();
+        }
+
+        private void RorderButtons()
+        {
+            reorderstrips.Sort();
+            foreach (Pass2ToolStripDescriptor ts in reorderstrips)
+            {
+                ToolStrip strip = ts.Object as ToolStrip;
+                strip.Parent = null;
+            }
+
+            foreach (Pass2ToolStripDescriptor ts in reorderstrips)
+            {
+                ToolStripPanel parent = ts.Parent as ToolStripPanel;
+                ToolStrip strip = ts.Object as ToolStrip;
+                if (parent != null)
+                {
+                    strip.Location = ts.Location;
+                    parent.Controls.Add(strip);
+                    strip.Location = ts.Location;
+                }
+            }
+        }
+
+        private void DeserializeControls(BinaryReader reader)
+        {
+            reorderstrips.Clear();
             int ct = reader.ReadInt32();
             for (int i = 0; i < ct; i++)
             {
+                Console.WriteLine(reader.BaseStream.Position);
                 int id = reader.ReadInt32();
                 string name = reader.ReadString();
                 if (revmap.ContainsKey(id))
                 {
                     SerilaizeDescriptor d = revmap[id];
                     Control c;
-                    if (items.ContainsKey(name)) c  = items[name];
+                    if (items.ContainsKey(name)) c = items[name];
                     else c = new Control();
-                    d.DeSerializer(reader, c);                    
-                }
+                    d.DeSerializer(reader, c);
+                } 
             }
-            reader.Close();
-
-            foreach (Pass2Descriptor pass in pass2)
-                pass.Pass2(pass);
         }
 
         private void DeserializeButtons(BinaryReader reader)
@@ -174,6 +289,7 @@ namespace Ambertation.Windows.Forms
             int ct = reader.ReadInt32();
             for (int i = 0; i < ct; i++)
             {
+                Console.WriteLine(reader.BaseStream.Position);
                 int id = reader.ReadInt32();
                 string name = reader.ReadString();
                 if (revmap.ContainsKey(id))
@@ -191,13 +307,21 @@ namespace Ambertation.Windows.Forms
 
 
         #region Descriptor
-        protected class Pass2Descriptor
+        
+        protected class Pass2Descriptor 
         {
-            object o;
+            object o, par;
             public object Object
             {
                 get { return o; }
             }
+
+            public Control Parent
+            {
+                get { return par as Control; }
+            }
+
+
             Pass2Control ser;
             public Pass2Control Pass2
             {
@@ -210,10 +334,20 @@ namespace Ambertation.Windows.Forms
             {
                 this.o = o;
                 this.ser = pass;
+                if (o is Control)
+                {
+                    par = ((Control)o).Parent;
+                }
+                else
+                {
+                    par = null;
+                }
             }
+
+            
         }
 
-        protected class Pass2ToolStripDescriptor : Pass2Descriptor
+        protected class Pass2ToolStripDescriptor : Pass2Descriptor, IComparable
         {
             System.Drawing.Point loc;
             public System.Drawing.Point Location
@@ -233,6 +367,22 @@ namespace Ambertation.Windows.Forms
                 this.loc = loc;
                 this.index = index;
             }
+
+            #region IComparable Member
+
+            public int CompareTo(object obj)
+            {
+                Pass2ToolStripDescriptor b = obj as Pass2ToolStripDescriptor;
+                if (b != null)
+                {
+                    if (this.Location.X > b.Location.X) return 1;
+                    else if (this.Location.X < b.Location.X) return -1;
+                }
+
+                return 0;
+            }
+
+            #endregion
         }
         protected delegate void Pass2Control(Pass2Descriptor o);
 
@@ -266,7 +416,7 @@ namespace Ambertation.Windows.Forms
         protected delegate void SerializeControl(BinaryWriter writer, object o);
         protected delegate void DeSerializeControl(BinaryReader reader, object o);
         #endregion
-
+        #region Custom (De)Serializing
         void SerializeGeneric(BinaryWriter writer, object o)
         {
         }
@@ -282,19 +432,37 @@ namespace Ambertation.Windows.Forms
             ToolStripItem ts = o as ToolStripItem;
             writer.Write((int)ts.Overflow);
             writer.Write(ts.Visible);
+            writer.Write(ts.Available);
+            if (ts is ToolStripButton)
+            {
+                writer.Write(((ToolStripButton)ts).Checked);
+                //Console.WriteLine(((ToolStripButton)ts).Checked + " " + ((ToolStripButton)ts).Visible + " " + ((ToolStripButton)ts).Available);
+            }
         }
 
         void DeserializeToolStripItem(BinaryReader reader, object o)
         {
             ToolStripItem ts = o as ToolStripItem;
             ts.Overflow = (ToolStripItemOverflow)reader.ReadInt32();
-            ts.Visible = reader.ReadBoolean();
+            bool vis = reader.ReadBoolean(); 
+            ts.Visible = vis;
+            ts.Available = reader.ReadBoolean();
+            
             if (ts is ToolStripButtonExt || ts is MenuStripButtonExt) ts.Visible = true;
+
+            if (ts is ToolStripButton)
+            {
+                bool chk = reader.ReadBoolean();
+                ((ToolStripButton)ts).Checked = chk;
+                //Console.WriteLine(((ToolStripButton)ts).Checked + " " + ((ToolStripButton)ts).Visible + " " + ((ToolStripButton)ts).Available);
+            }
+            
         }
 
         void SerializeToolStrip(BinaryWriter writer, object o)
         {
             ToolStrip ts = o as ToolStrip;
+            
             writer.Write(ts.Location.X);
             writer.Write(ts.Location.Y);
             if (ts.Parent != null)
@@ -308,7 +476,6 @@ namespace Ambertation.Windows.Forms
                 writer.Write((int)0);
             }
             writer.Write(ts.Visible);
-           
         }
 
         void DeserializeToolStrip(BinaryReader reader, object o)
@@ -330,6 +497,7 @@ namespace Ambertation.Windows.Forms
             pass2.Add(new Pass2ToolStripDescriptor(o, new Pass2Control(Pass2ToolStrip), index, new System.Drawing.Point(x, y)));
         }
 
+        List<Pass2ToolStripDescriptor> reorderstrips;
         void Pass2ToolStrip(Pass2Descriptor pass)
         {
             Pass2ToolStripDescriptor pass2 = pass as Pass2ToolStripDescriptor;
@@ -337,6 +505,9 @@ namespace Ambertation.Windows.Forms
             if (ts.Parent!=null)
                 ts.Parent.Controls.SetChildIndex(ts, pass2.Index);
             ts.Location = pass2.Location;
+
+            if (ts.Parent is ToolStripPanel)
+                reorderstrips.Add(pass2);
         }
 
         void SerializeDockManager(BinaryWriter writer, object o)
@@ -350,5 +521,6 @@ namespace Ambertation.Windows.Forms
             DockManager dm = o as DockManager;
             dm.Deserialize(reader);
         }
+        #endregion
     }
 }

@@ -37,6 +37,7 @@ namespace Ambertation.Windows.Forms
             
             this.item = item;
             this.Visible = true;
+            this.Available = true;
             item.VisibleChanged += new EventHandler(item_VisibleChanged);
 
             UpdateChecked();

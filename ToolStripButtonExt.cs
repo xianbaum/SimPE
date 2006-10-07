@@ -27,9 +27,14 @@ namespace Ambertation.Windows.Forms
     internal class ToolStripButtonExt : ToolStripButton
     {
         ToolStripItem item;
+        internal ToolStripItem Item
+        {
+            get {return item; }
+        }
         internal ToolStripButtonExt(ToolStripItem item)
             : base()
         {
+            intern = false;
             this.Text = item.Text;
             this.Name = "tsbe_" + item.Name;
             this.Image = item.Image;
@@ -37,22 +42,37 @@ namespace Ambertation.Windows.Forms
             this.Overflow = ToolStripItemOverflow.Always;
             this.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.item = item;
-            this.Visible = true;
+            this.Visible = true;            
             item.VisibleChanged += new EventHandler(item_VisibleChanged);
+            item.AvailableChanged += new EventHandler(item_AvailableChanged);
 
             UpdateChecked();
         }
 
-        void item_VisibleChanged(object sender, EventArgs e)
+        void item_AvailableChanged(object sender, EventArgs e)
         {
-            UpdateChecked();
+            UpdateChecked();   
+        }
+
+        protected override void OnCheckedChanged(EventArgs e)
+        {
+            base.OnCheckedChanged(e);
+            if (!intern)
+            {       
+                item.Available = this.Checked;
+            }
+        }
+
+        bool intern;
+        void item_VisibleChanged(object sender, EventArgs e)
+        {            
+            UpdateChecked();            
         }
 
         protected override void OnClick(EventArgs e)
         {
             base.OnClick(e);
-            item.Visible = !item.Visible;
-
+            item.Available = !item.Available;            
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -61,9 +81,14 @@ namespace Ambertation.Windows.Forms
             UpdateChecked();
         }
 
+        
         private void UpdateChecked()
         {
-            this.Checked = item.Visible;
+            intern = true;
+            this.Checked = item.Available;
+            intern = false;
         }
+
+        
     }
 }
