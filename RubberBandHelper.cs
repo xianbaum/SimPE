@@ -58,12 +58,14 @@ namespace Ambertation.Windows.Forms
         }
 
         internal void Close() {
+            dc.SuspendLayout();
             dc.Controls.Remove(this);
             foreach (Control c in map.Keys)
             {
                 c.Visible = map[c];
                 if (c is DockPanel) ((DockPanel)c).NCRefresh();
             }
+            dc.ResumeLayout();
         }
         protected override void OnMouseMove(MouseEventArgs e)
         {

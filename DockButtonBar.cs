@@ -32,7 +32,7 @@ namespace Ambertation.Windows.Forms
     {
         public class DockPanelList : List<DockPanel>{}
 
-        DockPanelList panels;
+        DockPanelList panels, hidden;
         Dictionary<DockContainer, DockPanelList> containers;
         DockManager manager;
 
@@ -66,35 +66,66 @@ namespace Ambertation.Windows.Forms
             this.Visible = v;
         }
 
-        public void Add(DockContainer c)
+        public bool Contains(DockContainer dc)
         {
+            return containers.ContainsKey(dc);
+        }        
+
+        public void Add(DockContainer c)
+        {            
             DockPanelList dp = c.GetDockedPanels();
             containers[c] = dp;
 
             foreach (DockPanel p in dp)
             {
                 p.SeperateInDockBar = false;
-                if (!panels.Contains(p)) panels.Add(p);
+                if (!panels.Contains(p))
+                {
+                    AddPanel(p);
+                }
             }
             if (panels.Count > 0) panels[panels.Count - 1].SeperateInDockBar = true;
 
             SetVisibleState();
         }
 
+        private void AddPanel(DockPanel p)
+        {
+            panels.Add(p);
+        }
+
+        
+
         public void Remove(DockContainer c)
         {
             if (!containers.ContainsKey(c)) return;
+            DoRemove(c);
+            SetVisibleState();
+        }
+
+        internal void SilentRemove(DockContainer c)
+        {
+            if (containers.ContainsKey(c)) DoRemove(c);
+        }
+
+        private void DoRemove(DockContainer c)
+        {
+            
             DockPanelList dp = containers[c];
             if (dp != null)
             {
                 containers.Remove(c);
                 foreach (DockPanel p in dp)
                 {
-                    p.SeperateInDockBar = false;
-                    panels.Remove(p);
+                    RemovePanel(p);
                 }
             }
-            SetVisibleState();
+        }
+
+        private void RemovePanel(DockPanel p)
+        {
+            p.SeperateInDockBar = false;
+            panels.Remove(p);
         }
 
         public void Clear()

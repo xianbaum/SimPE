@@ -525,7 +525,14 @@ namespace Ambertation.Windows.Forms
 
         }
 
-
+        public DockButtonBar GetButtonBar(DockContainer dc)
+        {
+            foreach (DockButtonBar bar in colconts.Values)
+            {
+                if (bar.Contains(dc)) return bar;
+            }
+            return null;
+        }
 
         public DockButtonBar GetBestButtonBar(DockContainer dc)
         {
@@ -568,6 +575,8 @@ namespace Ambertation.Windows.Forms
                 DockContainer dc = CreateNewContainer(-1, false, true, style);
                 dc.SetNoCleanUpIntern(true);
                 dc.Visible = true;
+                dc.Width = Math.Max(dc.Width, dp.Width);
+                dc.Height = Math.Max(dc.Height, dp.Height);
 
                 dp.DockControl(dc);
                 dc.SetNoCleanUpIntern(false);

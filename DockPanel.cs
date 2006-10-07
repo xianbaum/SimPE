@@ -38,6 +38,8 @@ namespace Ambertation.Windows.Forms
 
         public DockPanel(DockManager manager) : base()
         {
+            lastdock = null;
+            lastpos = Point.Empty;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             SetStyle(ControlStyles.ContainerControl, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
@@ -371,11 +373,15 @@ namespace Ambertation.Windows.Forms
             if (dc != null) dc.RemoveDock(this);
 
             this.Parent = frm;
+            
+            this.Visible = true;
             this.Dock = DockStyle.Fill;
             this.ResetNCMouseState();
 
             if (StartedFloating != null) StartedFloating(this, new EventArgs());
             if (Manager != null) Manager.NotifyFloating(this);
+
+            this.InvalidateWindow_old();
             return frm;
         }                
 
@@ -403,16 +409,42 @@ namespace Ambertation.Windows.Forms
             this.Refresh();
         }
 
+        public void Open()
+        {
+            if (lastdock != null)
+            {
+                if (lastdock.Parent != null)
+                {
+                    lastdock.AddDock(this);
+                    EnsureVisible();
+
+                    return;
+                }
+                else if (Manager!=null)
+                {
+                    Manager.DockPanel(this, lastdock.Dock);
+                    return;
+                }
+            }
+            Float(lastpos);
+
+        }
+
+        DockContainer lastdock;
+        Point lastpos;
         public void Close()
         {
             DockPanelClosingEvent e = new DockPanelClosingEvent(this);
             if (Closing != null) this.Closing(this, e);
             if (e.Cancel) return;
 
-            DockContainer dc = this.DockContainer;
-            if (dc != null)
+            lastdock = this.DockContainer;
+            lastpos = Location;
+            if (lastdock != null)
             {
-                dc.RemoveDock(this);
+
+                lastdock.RemoveDock(this);
+                if (lastdock.Highlight != null) lastdock.Highlight.NCRefresh();
                 Manager.Update();
             }
 
@@ -420,10 +452,12 @@ namespace Ambertation.Windows.Forms
             if (f != null)
             {
                 f.Close();
+                lastpos = f.Location;
             }
 
             if (Closed != null) Closed(this, new EventArgs());
         }
+
         public event System.EventHandler Closed;
         public event ClosingHandler Closing;
         public delegate void ClosingHandler(object sender, DockPanelClosingEvent e);
@@ -478,7 +512,7 @@ namespace Ambertation.Windows.Forms
             //base.OnNcPaint(e);
             
             if (Manager!=null && !Floating) {
-                //Console.WriteLine("NCPaint " + Text);
+                //Console.WriteLine("NCPaint " + Text + " " + Floating);
                 e.Graphics.FillRegion(new SolidBrush(manager.Renderer.ColorTable.DockBackgroundColor), e.PaintRegion);
 
                 Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);

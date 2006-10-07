@@ -92,7 +92,9 @@ namespace Ambertation.Windows.Forms
         //     - http://www.syncfusion.com/FAQ/WindowsForms/FAQ_c41c.aspx#q1026q
 
         protected void DoInvalidateWindow()
-        {          
+        {
+            this.needncrepaint = true;
+            this.needrepaint = true;
             Rectangle cr = this.ClientRectangle;
             APIHelp.RECT rc = new APIHelp.RECT(0, 0, Width, Height);
             APIHelp.RedrawWindow(this.Handle, ref rc, IntPtr.Zero,
@@ -316,6 +318,7 @@ namespace Ambertation.Windows.Forms
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
+            
             SetupBitmapBuffer();
         }
 
@@ -377,7 +380,7 @@ namespace Ambertation.Windows.Forms
                 SetupBitmapBuffer();
                 if (doublebuffer)
                 {
-                    if (WindowRect.Width > 0 && WindowRect.Height > 1)
+                    if (WindowRect.Width > 0 && WindowRect.Height > 1 && (ncsz.Horizontal>0 || ncsz.Vertical>0) )
                     {
                         if (needncrepaint)
                         {
@@ -408,19 +411,24 @@ namespace Ambertation.Windows.Forms
             return region;
         }
 
+        
+
         protected override void OnPaint(PaintEventArgs e)
         {
+            
             Rectangle cr = e.ClipRectangle;
             cr.Offset(ncsz.Left, ncsz.Top);
             PaintEventArgs e2 = new PaintEventArgs(gbuffer, cr);
 
             if (needrepaint)
             {
+                Console.WriteLine("Paint " + Name);
+                
                 this.OnBufferedPaint(e);
                 needrepaint = false;
             }
 
-            e.Graphics.DrawImage(bmpbuffer, -1 *ncsz.Left, -1 * ncsz.Top);
+            //e.Graphics.DrawImage(bmpbuffer, cr, cr, GraphicsUnit.Pixel);
         }
 
         protected virtual void OnBufferedPaint(PaintEventArgs e)

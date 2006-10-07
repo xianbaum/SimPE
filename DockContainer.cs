@@ -61,6 +61,7 @@ namespace Ambertation.Windows.Forms
             SetManager(manager);         
             
             this.NonClientMargin = new Padding(0);
+
         }
 
          ~DockContainer()
@@ -164,6 +165,12 @@ namespace Ambertation.Windows.Forms
                     if (p.Manager == null) p.Manager = Manager;
                     if (Manager != null) Manager.CleanUp();
                     else CleanUp();
+
+                    if (Collapsed && Manager!=null)
+                    {
+                        DockButtonBar bar = Manager.GetButtonBar(this);
+                        if (bar != null) bar.Add(this);
+                    }
                 }
             }
         }
@@ -192,6 +199,14 @@ namespace Ambertation.Windows.Forms
                 DockPanel p = e.Control as DockPanel;
                 if (p != null)
                 {
+                    DockButtonBar bar = null;
+                    if (Collapsed && Manager != null)
+                    {
+                        bar = Manager.GetButtonBar(this);
+                        if (bar != null) 
+                            bar.SilentRemove(this);
+                    }
+
                     p.Parent = null;
                     panels.Remove(p);
                     if (Highlight == p)
@@ -201,6 +216,11 @@ namespace Ambertation.Windows.Forms
 
                     if (Manager != null) Manager.CleanUp();
                     else CleanUp();
+
+                    if (bar != null)
+                    {
+                        bar.Add(this);
+                    }
                 }
             }
         }      
@@ -935,5 +955,7 @@ namespace Ambertation.Windows.Forms
             base.ResumeLayout();
         }
         #endregion
+
+        
     }
 }

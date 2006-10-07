@@ -50,13 +50,16 @@ namespace Ambertation.Windows.Forms
 
         ~DockPanelFloatingForm()
         {
-            Application.RemoveMessageFilter(this);
+                       
         }
 
         public bool PreFilterMessage(ref Message m)
         {
-            if (m.Msg  == APIHelp.WM_ACTIVATEAPP)
-                OnActivateApplication((int)m.WParam != 0);            
+            if (m.HWnd == Handle)
+            {
+                if (m.Msg == APIHelp.WM_ACTIVATEAPP)
+                    OnActivateApplication((int)m.WParam != 0);
+            }
             return false;
         }
 
@@ -98,7 +101,7 @@ namespace Ambertation.Windows.Forms
             //Console.WriteLine("#### Start floating blocked " + p.Text);
             StartFloating();
             this.Text = p.CaptionText;
-            APIHelp.ReleaseCapture();
+            APIHelp.ReleaseCapture(Handle);
 
             //this call will block the calling thread
             APIHelp.SendMessage(Handle, APIHelp.WM_NCLBUTTONDOWN, APIHelp.HTCAPTION, 0);             
@@ -114,9 +117,10 @@ namespace Ambertation.Windows.Forms
         protected virtual void OnStartFloating()
         {
         }
-
+        
         protected void StopFloating()
         {
+            TopMost = false;
             DockControl.UnFloat(this);
             OnStopFloating();
         }
@@ -129,8 +133,12 @@ namespace Ambertation.Windows.Forms
         {
             base.OnMouseUp(e);
             //Console.WriteLine("#### Form MouseUp " + e);
-            if (Manager!=null) 
-                if (Manager.DockMode) StopFloating();
+            if (Manager!=null)
+                if (Manager.DockMode)
+                {
+                    APIHelp.ReleaseCapture(Handle);
+                    StopFloating();
+                }
         }
 
         protected override void OnLocationChanged(EventArgs e)
@@ -153,6 +161,12 @@ namespace Ambertation.Windows.Forms
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             if (dock != null) dock.Parent = null;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            Application.RemoveMessageFilter(this); 
+            base.Dispose(disposing);
         }
   
     }

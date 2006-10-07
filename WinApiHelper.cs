@@ -411,6 +411,12 @@ namespace Ambertation.Windows.Forms
         [DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
+        [DllImportAttribute("user32.dll")]
+        public static extern int ReleaseCapture(IntPtr hwnd);
+
+        [DllImportAttribute("user32.dll")]
+        public static extern IntPtr SetCapture(IntPtr hWnd);
+
         [DllImport("user32.dll")]
         public static extern bool RedrawWindow(IntPtr hWnd, [In] ref RECT lprcUpdate, IntPtr hrgnUpdate, uint flags);
 

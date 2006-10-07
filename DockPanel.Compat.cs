@@ -104,7 +104,7 @@ namespace Ambertation.Windows.Forms
         [Browsable(false)]
         public bool IsOpen
         {
-            get { return this.Visible; }
+            get { return IsFloating || IsDocked; }
 
         }
 
@@ -119,10 +119,6 @@ namespace Ambertation.Windows.Forms
             this.Float();
         }
 
-        public void Open()
-        {
-            this.Visible = true; 
-            EnsureVisible();
-        }
+        
     }
 }
