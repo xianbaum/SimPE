@@ -93,14 +93,13 @@ namespace Ambertation.Windows.Forms
             }
             else if (m.Msg == APIHelp.WM_ENTERSIZEMOVE)
             {
-                Console.WriteLine("Start Fire");
+                //Console.WriteLine("Start Fire");
                 FireLocationChangeEvent();
                 base.WndProc(ref m);
             }
             else if (m.Msg == APIHelp.WM_NCHITTEST)
             {
-                base.WndProc(ref m);
-                if (m.Result == new IntPtr(APIHelp.HTCAPTION)) Console.WriteLine("Start Hits");
+                base.WndProc(ref m);                
             }
             else if (m.Msg == APIHelp.WM_MOVING)
             {
@@ -162,7 +161,7 @@ namespace Ambertation.Windows.Forms
         protected void StopFloating()
         {
             if (dock == null) return;
-            Console.WriteLine("Stop Float "+dock.Name+" "+Controls.Count);
+            //Console.WriteLine("Stop Float "+dock.Name+" "+Controls.Count);
             TopMost = false;
             if (HasContainer)
             {
@@ -180,7 +179,7 @@ namespace Ambertation.Windows.Forms
             OnStopFloating();
             if (Controls.Count == 0) dock = null;
             if (dock == null) Close();
-            Console.WriteLine("Stoped Float "  + " " + Controls.Count);
+            //Console.WriteLine("Stoped Float "  + " " + Controls.Count);
         }
 
         protected virtual void OnStopFloating()
@@ -209,13 +208,13 @@ namespace Ambertation.Windows.Forms
 
         private void FireLocationChangeEvent()
         {
-            Console.WriteLine("test");
+            //Console.WriteLine("test");
             if (Manager != null)
             {
-                Console.WriteLine("test 2 "+Manager.DockMode + " "+Visible);
+                //Console.WriteLine("test 2 "+Manager.DockMode + " "+Visible);
                 if (!Manager.DockMode && Visible)
                 {
-                    Console.WriteLine("Startup");
+                    //Console.WriteLine("Startup");
                     Manager.StartDockMode(this.DockControl);
                 }
                 Manager.MouseMoved(Cursor.Position);

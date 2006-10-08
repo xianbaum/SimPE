@@ -228,7 +228,7 @@ namespace Ambertation.Windows.Forms
                 if (dp != this  && dp!=null && DockContainer!=null)
                 {
                     DockContainer.SwapPanelsInButtonList(this, dp);
-                    Console.WriteLine("Change Location");
+                    //Console.WriteLine("Change Location");
                 }
                 return;
             }
@@ -469,7 +469,7 @@ namespace Ambertation.Windows.Forms
             {
                 
                 this.NonClientMargin = manager.Renderer.DockPanelRenderer.GetPanelBorderSize(DockContainer, this, BestOrientation);
-                Console.WriteLine("Changed Margin in " + Name + " to " + NonClientMargin);
+                //Console.WriteLine("Changed Margin in " + Name + " to " + NonClientMargin);
             }
         }
 
@@ -792,13 +792,13 @@ namespace Ambertation.Windows.Forms
         {
             if (remove && OnlyChild)
             {
-                Console.WriteLine("Changed Collection " + Name);
+                //Console.WriteLine("Changed Collection " + Name);
                 this.SetNonClientMargin();
                 RefreshAll();
             }
             else if (!remove && !OnlyChild)
             {
-                Console.WriteLine("Changed Collection " + Name);
+                //Console.WriteLine("Changed Collection " + Name);
                 this.SetNonClientMargin();
                 RefreshAll();
             }

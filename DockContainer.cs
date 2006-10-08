@@ -141,6 +141,7 @@ namespace Ambertation.Windows.Forms
             base.OnParentChanged(e);
             //Console.WriteLine("Change Parent of " + Name);
             pc = Parent as DockContainer;
+            SetTopMostContainer();
         }
 
         protected override void OnControlAdded(ControlEventArgs e)
@@ -270,7 +271,7 @@ namespace Ambertation.Windows.Forms
 
         protected virtual void SetNewContainerIndex(ref int index, ref bool after, ref bool toplevel, DockStyle dockstyle)
         {
-            if (after && index >= 0) index++; //do not move the first element in the list!
+            if (after && index >= 0) index++; //do not move the first element in the list!            
         }
         protected override void OnChangeUICues(UICuesEventArgs e)
         {
@@ -287,9 +288,9 @@ namespace Ambertation.Windows.Forms
 
         public void SetupContainer(int index, bool after, bool toplevel, DockStyle dockstyle, DockContainer dc)
         {
-            //Console.WriteLine("1: "+toplevel + " " + after + " " + index);
+            Console.WriteLine("1: "+toplevel + " " + after + " " + index);
             SetNewContainerIndex(ref index, ref after, ref toplevel, dockstyle);
-            //Console.WriteLine("2: "+toplevel + " " + after + " " + index);
+            Console.WriteLine("2: "+toplevel + " " + after + " " + index);
 
 
             dc.HideSingleButton = this.HideSingleButton;
@@ -569,11 +570,13 @@ namespace Ambertation.Windows.Forms
                     nfo.OverlayRectangle = sb;
                 else nfo.OverlayRectangle = Rectangle.Empty;
             }
-        }
+        }        
 
         protected virtual void OnMouseOverHint(DockHint sender, ref ContainerInfo nfo)
         {
         }
+
+        
 
         protected int SubControls
         {

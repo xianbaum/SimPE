@@ -40,9 +40,22 @@ namespace Ambertation.Windows.Forms
         }
         protected override void OnDockChanged(EventArgs e)
         {
+            Console.WriteLine("Changed Dock");
             base.OnDockChanged(e);
             DoDockChanged();
+            SetTopMostContainer();
         }
+
+        private void SetTopMostContainer()
+        {
+            if (Parent!=null)
+                Console.WriteLine(Dock + " " + Parent.Name);
+            else
+                Console.WriteLine(Dock + " NULL");
+            if (Dock == DockStyle.Fill && Parent as DockManager == Manager)
+                this.BringToFront();
+        }
+        
 
         protected virtual void DoDockChanged()
         {

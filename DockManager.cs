@@ -139,6 +139,7 @@ namespace Ambertation.Windows.Forms
             base.CleanUp();
             //RearrangeControls();
 
+            TopmostCenter();
             ListControls();
         }
 
@@ -158,6 +159,19 @@ namespace Ambertation.Windows.Forms
                     colconts[DockStyle.Left].SendToBack();
                 }
             }
+
+            
+        }
+
+        internal void TopmostCenter()
+        {
+            List<DockContainer> cnts = new List<DockContainer>();
+            foreach (DockContainer c in containers)
+                if (c.Dock == DockStyle.Fill) cnts.Add(c);
+
+            //Console.WriteLine(cnts.Count+" "+containers.Count);
+            foreach (DockContainer c in cnts)
+                c.BringToFront();
         }
 
         protected override void SetNewContainerIndex(ref int index, ref bool after, ref bool toplevel, DockStyle dockstyle)
@@ -413,7 +427,7 @@ namespace Ambertation.Windows.Forms
             //Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from " + dock.Parent);
             if (!dockmode)
             {
-                Console.WriteLine(" -> started");
+                //Console.WriteLine(" -> started");
                 this.SetMainHintLocation(); //this seems to be needed to ensure working hints with Win2K
                 this.SuspendLayout();
                 SetMainHintLocation();
@@ -460,7 +474,7 @@ namespace Ambertation.Windows.Forms
                         dcmain = last.Seed;
                         DockContainer dc = dcmain;
                         dcmain.SuspendLayout();
-                        if (last.Hint != SelectedHint.Center)
+                        if (last.Hint != SelectedHint.Center || last.Parent is DockManager)
                         {
 
                             DockContainer dcnew;
@@ -496,6 +510,7 @@ namespace Ambertation.Windows.Forms
                             dcnew.Visible = true;
                             dcnew.ResumeLayout();
                         }
+
                         else if (dock.FloatContainer)
                         {
                             DockContainer olddc = dock.DockContainer;
