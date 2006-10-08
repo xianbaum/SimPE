@@ -74,6 +74,8 @@ namespace Ambertation.Windows.Forms
             if (cnt != null)
             {
                 DockButtonBar.DockPanelList panels = cnt.GetButtons();
+                if (cnt is DockButtonBar) 
+                    Console.WriteLine("Bar");
                 Rectangle pad = renderer.DockPanelRenderer.GetButtonsRectangle(cnt.BestOrientation, e, cnt as DockContainer);
                 //Console.WriteLine(pad);
 
@@ -207,6 +209,7 @@ namespace Ambertation.Windows.Forms
             {
                 ButtonState s = ButtonState.Normal;
                 if (p.Panel == cnt.Highlight) s = ButtonState.Highlight;
+                Console.WriteLine(p.Rectangle);
                 renderer.DockPanelRenderer.RenderButton(eventarg.Graphics, p.Rectangle, p.Panel.ButtonText, p.Panel.Image, cnt.BestOrientation, s);
             }
         }

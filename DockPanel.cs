@@ -38,6 +38,7 @@ namespace Ambertation.Windows.Forms
 
         public DockPanel(DockManager manager) : base()
         {
+            ManagerSingelton.Global.AddPanel(this);
             lastdock = null;
             lastpos = Point.Empty;
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
@@ -63,6 +64,10 @@ namespace Ambertation.Windows.Forms
 
         public DockPanel() : this(null) { }
 
+        ~DockPanel()
+        {
+            ManagerSingelton.Global.RemovePanel(this);
+        }
         /*protected override void WndProc(ref Message m)
         {
             if (DockContainer!=null)

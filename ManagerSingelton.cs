@@ -20,16 +20,48 @@ namespace Ambertation.Windows.Forms
 
         DockPanel startdrag;
         NCMouseEventArgs events;
-             
+        DockButtonBar.DockPanelList known;
 
         ManagerSingelton()
         {
+            known = new DockButtonBar.DockPanelList();
             startdrag = null;
             Application.AddMessageFilter(this);
         }
 
         #region IMessageFilter Member
 
+        internal void AddPanel(DockPanel dp)
+        {
+            if (!known.Contains(dp))
+            {
+                known.Add(dp);
+                dp.Disposed += new EventHandler(dp_Disposed);
+            }
+        }
+
+        void dp_Disposed(object sender, EventArgs e)
+        {
+            DockPanel dp = sender as DockPanel;
+            RemovePanel(dp);
+        }
+
+        internal void RemovePanel(DockPanel dp)
+        {
+            if (known.Contains(dp))
+            {
+                dp.Disposed -= new EventHandler(dp_Disposed);
+                known.Remove(dp);
+            }
+        }
+
+        public DockPanel GetPanelWithName(string name)
+        {
+            foreach (DockPanel dp in known)
+                if (dp.Name == name) return dp;
+
+            return null;
+        }
 
         public void SetDragPanelOnMouseMove(DockPanel p, NCMouseEventArgs e)
         {            

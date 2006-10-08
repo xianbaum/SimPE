@@ -82,7 +82,9 @@ namespace Ambertation.Windows.Forms
 
         public void Deserialize(BinaryReader reader)
         {
+            bool vis = Visible;            
             SuspendLayout();
+            Visible = false;
 
             Dictionary<string , DockPanel> list = new Dictionary<string , DockPanel>();
             Dictionary<string, DockPanel> vlist = new Dictionary<string, DockPanel>();
@@ -96,7 +98,8 @@ namespace Ambertation.Windows.Forms
 
             DeserializePanels(reader, list, vlist, docks);            
             DeserializePass2(docks, vlist);
-            
+
+            Visible = vis;
             ResumeLayout();
         }
 
@@ -113,7 +116,11 @@ namespace Ambertation.Windows.Forms
             {
                 string name = reader.ReadString();
                 DockPanel p;
-                if (!list.ContainsKey(name)) p = new DockPanel(this);
+                if (!list.ContainsKey(name))
+                {
+                    p = ManagerSingelton.Global.GetPanelWithName(name);
+                    if (p == null) p= new DockPanel(this);
+                }
                 else
                 {
                     p = list[name];

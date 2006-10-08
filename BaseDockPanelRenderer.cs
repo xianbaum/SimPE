@@ -508,7 +508,7 @@ namespace Ambertation.Windows.Forms
         #region ButtonSize
         public Rectangle GetButtonsRectangle(ButtonOrientation orient, NCPaintEventArgs e, DockContainer dc)
         {
-            bool one = true;
+            bool one = false;
             if (dc != null) one = dc.OneChild && dc.HideSingleButton;
 
             int butsub = Dimension.Buttons;

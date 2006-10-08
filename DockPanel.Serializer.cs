@@ -15,6 +15,7 @@ namespace Ambertation.Windows.Forms
         protected virtual void DoSerialize(BinaryWriter writer)
         {            
             writer.Write(Visible);
+            writer.Write(IsOpen);
             writer.Write(Width);
             writer.Write(Height);
             if (Floating)
@@ -47,6 +48,7 @@ namespace Ambertation.Windows.Forms
         protected virtual void DoDeserialize(BinaryReader reader, Dictionary<string, DockManager.DockContainerDescriptor> docks)
         {
             Visible = reader.ReadBoolean();
+            bool open = reader.ReadBoolean();
             Visible = true;
 
             Width = reader.ReadInt32();
@@ -59,11 +61,13 @@ namespace Ambertation.Windows.Forms
 
             if (docks.ContainsKey(name))
             {
-                this.DockControl(docks[name].Container);
+                this.Close();
+                lastdock = docks[name].Container;
+                if (open) this.Open();
             }
             else
             {
-                Float(new System.Drawing.Point(left, top));
+                if (open)  Float(new System.Drawing.Point(left, top));
             }
             
         }
