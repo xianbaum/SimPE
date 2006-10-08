@@ -87,8 +87,9 @@ namespace Ambertation.Windows.Forms
         /// </summary>
         /// <param name="orient">Orientation of the container</param>
         /// <param name="e">the painting events</param>
+        /// <param name="dc">the Panel that should display the Buttons Bar (can be null)</param>
         /// <returns>The rectangle the buttons can be displayed in</returns>
-        Rectangle GetButtonsRectangle(ButtonOrientation orient, NCPaintEventArgs e);
+        Rectangle GetButtonsRectangle(ButtonOrientation orient, NCPaintEventArgs e, DockContainer dc);
 
         /// <summary>
         /// Returns the Rectangle where the client can draw
@@ -104,7 +105,7 @@ namespace Ambertation.Windows.Forms
         /// <param name="e">The latest paint event</param>
         /// <param name="orient">The orientation of the panel</param>
         /// <returns>The client rectangle</returns>
-        Rectangle GetPanelClientRectangle(NCPaintEventArgs e, ButtonOrientation orient);
+        Rectangle GetPanelClientRectangle(DockContainer dc, NCPaintEventArgs e, ButtonOrientation orient);
 
         /// <summary>
         /// Returns the pagging, that should be applied in order to display the grip
@@ -131,7 +132,7 @@ namespace Ambertation.Windows.Forms
 
         void RenderResizePanel(DockContainer dc, RubberBandHelper rbh, System.Windows.Forms.PaintEventArgs e); //ok
 
-        System.Windows.Forms.Padding GetPanelBorderSize(ButtonOrientation orient); //ok
+        System.Windows.Forms.Padding GetPanelBorderSize(DockContainer dc, DockPanel dp, ButtonOrientation orient); //ok
         System.Windows.Forms.Padding GetBarBorderSize(ButtonOrientation orient); //ok
         System.Windows.Forms.Padding GetBorderSize(IButtonContainer c); //ok
         Size GetButtonSize(DockPanel dp); //ok

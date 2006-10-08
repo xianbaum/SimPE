@@ -80,7 +80,7 @@ namespace Ambertation.Windows.Forms
         internal void SetManager(DockManager manager)
         {
             this.manager = manager;
-            if (manager != null) this.NonClientMargin = manager.Renderer.DockPanelRenderer.GetPanelBorderSize(BestOrientation);
+            this.SetNonClientMargin();
         }
 
         private void SetupCaptionButtons()
@@ -214,10 +214,21 @@ namespace Ambertation.Windows.Forms
         {
             OnNcMouseChanged(e);
         }
+       
         protected override void OnNcMouseChanged(NCMouseEventArgs e)
         {
+            if (ManagerSingelton.Global.HasDragPanelForMouseMove)
+            {
+                DockPanel dp = ButtonData.GetHitPanel(e.ControlPosition);
+                if (dp != this  && dp!=null && DockContainer!=null)
+                {
+                    DockContainer.SwapPanelsInButtonList(this, dp);
+                    Console.WriteLine("Change Location");
+                }
+                return;
+            }
             base.OnNcMouseChanged(e);
-
+            
             bool chg = false;
             foreach (DockPanelCaptionButton b in cbuttons)
             {
@@ -235,10 +246,18 @@ namespace Ambertation.Windows.Forms
             {
                 bool candrag = MouseOnSelector(e.ControlPosition);
 
+                
+
                 if (candrag)
                 {
+                    Rectangle buts = Manager.Renderer.DockPanelRenderer.GetButtonsRectangle(BestOrientation, new NCPaintEventArgs(null, ClientRectangle, Bounds, null), DockContainer);
+                    if (buts.Contains(e.ControlPosition))
+                    {
+                        candrag = false;
+                        ManagerSingelton.Global.SetDragPanelOnMouseMove(this, e);
+                    }
                     //Console.WriteLine("Start floating " + Text + ": " + e.Delta + ", " + e.MouseButtons + ", " + e.InitialResult);
-                    Float(e);
+                    if (candrag) StartDockModeFloat(e);
                 }
 
             }
@@ -247,6 +266,7 @@ namespace Ambertation.Windows.Forms
 
         protected override void OnNcClick(NCMouseEventArgs e)
         {
+            
             base.OnNcClick(e);
             if (DockContainer != null)
             {
@@ -314,36 +334,59 @@ namespace Ambertation.Windows.Forms
         /// <summary>
         /// Force a complete redraw of the Panel
         /// </summary>
-        public void InvalidateWindow_old()
+        public void InvalidateWindow()
         {
             DoInvalidateWindow();
         }
 
         public bool Floating
         {
-           get { return (this.Parent is DockPanelFloatingForm); }
+           get { return (this.ParentForm is DockPanelFloatingForm); }
+        }
+
+        internal DockPanelFloatingForm FloatForm
+        {
+            get { return ParentForm as DockPanelFloatingForm; }
+        }
+
+        public bool FloatContainer
+        {
+            get
+            {
+                if (FloatForm == null) return false;
+                return FloatForm.HasContainer;
+            }
         }
 
         public event System.EventHandler StartedFloating;
-        private void Float(NCMouseEventArgs e)
+        internal void StartDockModeFloat(NCMouseEventArgs e)
         {
             if (Floating) return;
-
+            DockContainer dcsofar = DockContainer;
             Point scr = e.ScreenPosition; // PointToScreen(new Point(e.X, e.Y));
-            scr = new Point(
+            bool dragcontainer = false;
+            if (Manager != null && DockContainer!=null)
+            {
+                Rectangle capt = Manager.Renderer.DockPanelRenderer.GetCaptionRect(this);
+                if (capt.Contains(e.ControlPosition)) 
+                    dragcontainer = !DockContainer.OneChild;
+            }
+
+            /*scr = new Point(
                 scr.X - e.ControlPosition.X - System.Windows.Forms.SystemInformation.FrameBorderSize.Width,
                 scr.Y - e.ControlPosition.Y - System.Windows.Forms.SystemInformation.FrameBorderSize.Height
-                );
-            DockPanelFloatingForm frm = LetFloat(scr) as DockPanelFloatingForm;
+                );*/
+            DockPanelFloatingForm frm = LetFloat(scr, dragcontainer) as DockPanelFloatingForm;
             Manager.StartDockMode(this);
-
+            
+            
             frm.Show();
             frm.StartFloatingBlocked(this);
         }
 
         public void Float(Point pos)
         {
-            DockPanelFloatingForm frm = LetFloat(pos) as DockPanelFloatingForm;
+            DockPanelFloatingForm frm = LetFloat(pos, false) as DockPanelFloatingForm;
             frm.Text = this.CaptionText;
             frm.Show();
         }
@@ -354,10 +397,10 @@ namespace Ambertation.Windows.Forms
             Float(p);   
         }
 
-        protected Form LetFloat(Point pos)
+        protected Form LetFloat(Point pos, bool container)
         {
-            if (Floating) return ParentForm as DockPanelFloatingForm; 
-            this.NonClientMargin = new Padding(0);
+            if (Floating) return FloatForm;
+            
 
             DockPanelFloatingForm frm = new DockPanelFloatingForm(this);
             frm.FormBorderStyle = FormBorderStyle.SizableToolWindow;
@@ -369,24 +412,37 @@ namespace Ambertation.Windows.Forms
             frm.Top = pos.Y;
             frm.BringToFront();
 
-            DockContainer dc = Parent as DockContainer;
-            if (dc != null) dc.RemoveDock(this);
-
-            this.Parent = frm;
+            DockContainer dc = DockContainer;
             
-            this.Visible = true;
-            this.Dock = DockStyle.Fill;
+
+            if (container && DockContainer != null)
+            {
+                DockContainer.Parent = frm;
+                DockContainer.Dock = DockStyle.Fill;
+                frm.DragContainerAlong(DockContainer);
+                this.NCRefresh();
+            }
+            else
+            {
+                if (dc != null) dc.RemoveDock(this);
+                this.Parent = frm;
+                this.Visible = true;
+                this.Dock = DockStyle.Fill;
+            }
+
+            SetNonClientMargin();            
             this.ResetNCMouseState();
 
             if (StartedFloating != null) StartedFloating(this, new EventArgs());
             if (Manager != null) Manager.NotifyFloating(this);
-
-            this.InvalidateWindow_old();
+            
             return frm;
         }                
 
         internal void DockControl(DockContainer parent)
-        {                                   
+        {
+            if (parent == DockContainer) return;
+  
             DockPanelFloatingForm f = this.Parent as DockPanelFloatingForm;
 
             if (f!=null) 
@@ -396,11 +452,20 @@ namespace Ambertation.Windows.Forms
                 f.Dispose();                
             }
 
-            if (manager!=null)
-                this.NonClientMargin = manager.Renderer.DockPanelRenderer.GetPanelBorderSize(BestOrientation);
+            SetNonClientMargin();
 
             parent.AddDock(this);
             parent.RepaintAll();
+        }
+
+        private void SetNonClientMargin()
+        {
+            if (manager != null)
+            {
+                
+                this.NonClientMargin = manager.Renderer.DockPanelRenderer.GetPanelBorderSize(DockContainer, this, BestOrientation);
+                Console.WriteLine("Changed Margin in " + Name + " to " + NonClientMargin);
+            }
         }
 
         internal void UnFloat(DockPanelFloatingForm f)
@@ -511,17 +576,35 @@ namespace Ambertation.Windows.Forms
         {
             //base.OnNcPaint(e);
             
-            if (Manager!=null && !Floating) {
+            if (Manager!=null) {
                 //Console.WriteLine("NCPaint " + Text + " " + Floating);
                 e.Graphics.FillRegion(new SolidBrush(manager.Renderer.ColorTable.DockBackgroundColor), e.PaintRegion);
 
-                Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);
+                
                 buttonData = Manager.Renderer.DockPanelRenderer.ConstructButtonData(DockContainer, e);
-                buttonData.Render();
-            
-                Manager.Renderer.DockPanelRenderer.RenderCaption(this, e);
-                foreach (DockPanelCaptionButton b in cbuttons) b.Render(e);
-                Manager.Renderer.DockPanelRenderer.RenderBorder(this, e);
+                if ((Floating == false || FloatContainer))
+                {
+                    if (DockContainer != null)
+                    {
+                        if (!OnlyChild || !DockContainer.HideSingleButton)
+                        {
+                            Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);
+                            buttonData.Render();
+                        }
+                    }
+                    else
+                    {
+                        Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);
+                        buttonData.Render();
+                    }
+                }
+
+                if (!Floating)
+                {
+                    Manager.Renderer.DockPanelRenderer.RenderCaption(this, e);
+                    foreach (DockPanelCaptionButton b in cbuttons) b.Render(e);
+                    Manager.Renderer.DockPanelRenderer.RenderBorder(this, e);
+                }
             }
         }
 
@@ -549,6 +632,7 @@ namespace Ambertation.Windows.Forms
         {
             base.OnParentChanged(e);
         }
+
         #region Highlight change
         internal void FireHighlightChanged(DockPanel dp)
         {
@@ -685,6 +769,45 @@ namespace Ambertation.Windows.Forms
                 if (c.Focused) return true;
 
             return false;
+        }
+
+        /// <summary>
+        /// True, if the parent <see cref="DockContainer"/> does only contain this <see cref="DockPanel"/>
+        /// </summary>
+        public bool OnlyChild
+        {
+            get
+            {
+                if (DockContainer == null) return true;
+                return DockContainer.OneChild;
+            }
+        }
+
+        internal void OnPanelCollectionChanged(DockPanel newdp, DockContainer cnt, bool remove)
+        {
+            if (remove && OnlyChild)
+            {
+                Console.WriteLine("Changed Collection " + Name);
+                this.SetNonClientMargin();
+                RefreshAll();
+            }
+            else if (!remove && !OnlyChild)
+            {
+                Console.WriteLine("Changed Collection " + Name);
+                this.SetNonClientMargin();
+                RefreshAll();
+            }
+        }
+
+        public virtual void RefreshMargin()
+        {
+            this.SetNonClientMargin();
+        }
+
+        public override void RefreshAll()
+        {
+            RefreshMargin();
+            base.RefreshAll();
         }
     }
 }

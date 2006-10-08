@@ -49,11 +49,13 @@ namespace Ambertation.Windows.Forms
             layoutct = 0;
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.UserPaint, true);
 
             
             containers = new List<DockContainer>();
             panels = new DockButtonBar.DockPanelList();
 
+            hidesinglebut = true;
             noclean = false;
             nccleanint = false;
             useastar = false;
@@ -166,11 +168,15 @@ namespace Ambertation.Windows.Forms
                     if (Manager != null) Manager.CleanUp();
                     else CleanUp();
 
-                    if (Collapsed && Manager!=null)
+                    if (Collapsed && Manager != null)
                     {
                         DockButtonBar bar = Manager.GetButtonBar(this);
                         if (bar != null) bar.Add(this);
                     }
+                    else if (Highlight != null) Highlight.NCRefresh();
+
+                    foreach (DockPanel dp in panels) dp.OnPanelCollectionChanged(p, this, false);
+                    if (PanelCollectionChanged != null) PanelCollectionChanged(this, new EventArgs());
                 }
             }
         }
@@ -221,11 +227,16 @@ namespace Ambertation.Windows.Forms
                     {
                         bar.Add(this);
                     }
+                    else if (Highlight != null) Highlight.NCRefresh();
+
+                    p.OnPanelCollectionChanged(p, this, true);
+                    foreach (DockPanel dp in panels) dp.OnPanelCollectionChanged(p, this, true);
+                    if (PanelCollectionChanged != null) PanelCollectionChanged(this, new EventArgs());
                 }
             }
-        }      
+        }
 
-        
+        public event EventHandler PanelCollectionChanged;
 
         internal void ListControls()
         {
@@ -268,21 +279,29 @@ namespace Ambertation.Windows.Forms
         }
         public DockContainer CreateNewContainer(int index, bool after, bool toplevel, DockStyle dockstyle)
         {
+            DockContainer dc = new DockContainer(this.Manager);
+
+            SetupContainer(index, after, toplevel, dockstyle, dc);
+            return dc;
+        }
+
+        public void SetupContainer(int index, bool after, bool toplevel, DockStyle dockstyle, DockContainer dc)
+        {
             //Console.WriteLine("1: "+toplevel + " " + after + " " + index);
             SetNewContainerIndex(ref index, ref after, ref toplevel, dockstyle);
             //Console.WriteLine("2: "+toplevel + " " + after + " " + index);
-                        
-            DockContainer dc = new DockContainer(this.Manager);
+
+
+            dc.HideSingleButton = this.HideSingleButton;
             dc.Visible = false;
             dc.Dock = dockstyle;
             this.Controls.Add(dc);
-            
+
             if (index >= 0 && index < Controls.Count && !toplevel)
                 Controls.SetChildIndex(dc, index);
 
             dc.SetDefaultSize();
             this.OnDockContainerAdded(dc);
-            return dc;
         }
 
         public DockButtonBar.DockPanelList GetDockedPanels()
@@ -906,7 +925,7 @@ namespace Ambertation.Windows.Forms
 
         public Padding GetBorderSize(ButtonOrientation orient)
         {
-            return manager.Renderer.DockPanelRenderer.GetPanelBorderSize(orient);
+            return manager.Renderer.DockPanelRenderer.GetPanelBorderSize(this, null, orient);
         }
 
         #endregion
@@ -956,6 +975,53 @@ namespace Ambertation.Windows.Forms
         }
         #endregion
 
-        
+
+        /// <summary>
+        /// True, if this <see cref="DockContainer"/> does only contain one <see cref="DockPanel"/>
+        /// </summary>
+        public bool OneChild
+        {
+            get
+            {                
+                return panels.Count <= 1;
+            }
+        }
+
+        bool hidesinglebut;
+        /// <summary>
+        /// True, if you do not want to see the list of Buttons when only one <see cref="DockPanel"/> is docked to this Container.
+        /// </summary>
+        [DefaultValue(true)]
+        public bool HideSingleButton
+        {
+            get { return hidesinglebut; }
+            set {
+                if (hidesinglebut != value)
+                {
+                    hidesinglebut = value;
+                    if (Highlight != null && OneChild) this.Highlight.NCRefresh();
+                }
+            }
+        }
+
+        public void SwapPanelsInButtonList(DockPanel pn1, DockPanel pn2)
+        {
+            int i1 = -1;
+            int i2 = -1;
+            for (int i = 0; i < panels.Count; i++)
+                if (panels[i] == pn1) i1 = i;
+                else if (panels[i] == pn2) i2 = i;
+
+            if (i1 >= 0 && i1 < panels.Count && i2 >= 0 && i2 < panels.Count)
+            {
+                panels.RemoveAt(i1);
+                panels.Insert(i1, pn2);
+
+                panels.RemoveAt(i2);
+                panels.Insert(i2, pn1);
+
+                if (Highlight!=null) Highlight.NCRefresh();
+            }
+        }
     }
 }

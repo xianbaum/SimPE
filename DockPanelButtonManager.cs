@@ -74,7 +74,7 @@ namespace Ambertation.Windows.Forms
             if (cnt != null)
             {
                 DockButtonBar.DockPanelList panels = cnt.GetButtons();
-                Rectangle pad = renderer.DockPanelRenderer.GetButtonsRectangle(cnt.BestOrientation, e);
+                Rectangle pad = renderer.DockPanelRenderer.GetButtonsRectangle(cnt.BestOrientation, e, cnt as DockContainer);
                 //Console.WriteLine(pad);
 
 

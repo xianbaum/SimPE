@@ -104,6 +104,7 @@
     <Compile Include="LayeredForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="ManagerSingelton.cs" />
     <Compile Include="NCHittestEventArgs.cs" />
     <Compile Include="NCPaintEventArgs.cs" />
     <Compile Include="NCResizeBorders.cs" />

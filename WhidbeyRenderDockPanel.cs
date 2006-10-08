@@ -265,7 +265,7 @@ namespace Ambertation.Windows.Forms
         {
             Pen p = new Pen(Parent.ColorTable.DockBorderColor, Dimension.Border);
             
-            Rectangle cl = GetPanelClientRectangle(e, dp.BestOrientation);
+            Rectangle cl = GetPanelClientRectangle(dp.DockContainer, e, dp.BestOrientation);
             cl = new Rectangle(cl.Left - Dimension.Border, cl.Top - Dimension.Border - Dimension.Caption, cl.Width + 2 * Dimension.Border -1 , cl.Height + 2 * Dimension.Border-1 + Dimension.Caption);
             
             e.Graphics.DrawRectangle(p, cl );

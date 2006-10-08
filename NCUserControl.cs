@@ -40,6 +40,7 @@ namespace Ambertation.Windows.Forms
         
         public NCUserControl()
         {
+            SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             needrepaint = true;
             needncrepaint = true;
             doublebuffer = true;
@@ -422,7 +423,7 @@ namespace Ambertation.Windows.Forms
 
             if (needrepaint)
             {
-                Console.WriteLine("Paint " + Name);
+                //Console.WriteLine("Paint " + Name);
                 
                 this.OnBufferedPaint(e);
                 needrepaint = false;
@@ -577,6 +578,14 @@ namespace Ambertation.Windows.Forms
         {
             base.OnVisibleChanged(e);
             this.NCRefresh();
+        }
+
+        /// <summary>
+        /// Refreshes the content of the NonClient Area and the Client Area
+        /// </summary>
+        public virtual void RefreshAll(){
+            NCRefresh();
+            Refresh();
         }
     }
 }

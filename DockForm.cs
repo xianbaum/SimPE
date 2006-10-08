@@ -37,7 +37,10 @@ namespace Ambertation.Windows.Forms
 
         public DockManager Manager
         {
-            get { return DockControl.Manager; }
+            get {
+                if (DockControl == null) return null;
+                return DockControl.Manager; 
+            }
         }
        
         public DockPanelFloatingForm(DockPanel dock) 
@@ -51,6 +54,19 @@ namespace Ambertation.Windows.Forms
         ~DockPanelFloatingForm()
         {
                        
+        }
+
+        DockContainer cnt;
+        public void DragContainerAlong(DockContainer cnt)
+        {
+            this.cnt = cnt;
+            foreach (DockPanel dp in cnt.GetDockedPanels())
+                dp.RefreshMargin();
+        }
+
+        public bool HasContainer
+        {
+            get { return cnt != null; }
         }
 
         public bool PreFilterMessage(ref Message m)
@@ -68,12 +84,23 @@ namespace Ambertation.Windows.Forms
         {
             
             //Console.WriteLine("#### #" + m.Msg.ToString("X") + " " + m.WParam.ToString("X") + " " + m.LParam.ToString("X") + " " + m.Result);                
-            if (m.Msg == APIHelp.WM_NCMOUSEMOVE || m.Msg == APIHelp.WM_EXITSIZEMOVE)
+            if (m.Msg == APIHelp.WM_NCLBUTTONUP || m.Msg == APIHelp.WM_EXITSIZEMOVE)
             {
                 //Console.WriteLine("#### Stop floating " + m);
                 if (Manager!=null) 
                     if (Manager.DockMode) StopFloating();
                 base.WndProc(ref m);
+            }
+            else if (m.Msg == APIHelp.WM_ENTERSIZEMOVE)
+            {
+                Console.WriteLine("Start Fire");
+                FireLocationChangeEvent();
+                base.WndProc(ref m);
+            }
+            else if (m.Msg == APIHelp.WM_NCHITTEST)
+            {
+                base.WndProc(ref m);
+                if (m.Result == new IntPtr(APIHelp.HTCAPTION)) Console.WriteLine("Start Hits");
             }
             else if (m.Msg == APIHelp.WM_MOVING)
             {
@@ -85,7 +112,8 @@ namespace Ambertation.Windows.Forms
             {
                 OnActivateApplication((int)m.WParam != 0);
                 m.Result = new IntPtr(0);
-            } else   base.WndProc(ref m);
+            }
+            else base.WndProc(ref m);
         }
 
          protected virtual void OnActivateApplication(bool active)
@@ -109,6 +137,18 @@ namespace Ambertation.Windows.Forms
             StopFloating();
         }
 
+        protected override void OnControlRemoved(ControlEventArgs e)
+        {
+            base.OnControlRemoved(e);
+            if (Manager == null) Close();
+
+            if (Controls.Count == 0 && HasContainer && !Manager.DockMode)
+            {
+                dock = null;
+                Close();
+            }
+        }
+
         protected void StartFloating()
         {
             OnStartFloating();
@@ -117,12 +157,30 @@ namespace Ambertation.Windows.Forms
         protected virtual void OnStartFloating()
         {
         }
-        
+
+       
         protected void StopFloating()
         {
+            if (dock == null) return;
+            Console.WriteLine("Stop Float "+dock.Name+" "+Controls.Count);
             TopMost = false;
-            DockControl.UnFloat(this);
+            if (HasContainer)
+            {
+                DockControl.UnFloat(this);
+                if (cnt.GetDockedPanels().Count == 0)
+                {
+                    cnt.Parent = null;
+                    dock = null;
+                }
+            }
+            else
+            {
+                DockControl.UnFloat(this);
+            }
             OnStopFloating();
+            if (Controls.Count == 0) dock = null;
+            if (dock == null) Close();
+            Console.WriteLine("Stoped Float "  + " " + Controls.Count);
         }
 
         protected virtual void OnStopFloating()
@@ -151,9 +209,15 @@ namespace Ambertation.Windows.Forms
 
         private void FireLocationChangeEvent()
         {
+            Console.WriteLine("test");
             if (Manager != null)
             {
-                if (!Manager.DockMode && Visible) Manager.StartDockMode(this.DockControl);
+                Console.WriteLine("test 2 "+Manager.DockMode + " "+Visible);
+                if (!Manager.DockMode && Visible)
+                {
+                    Console.WriteLine("Startup");
+                    Manager.StartDockMode(this.DockControl);
+                }
                 Manager.MouseMoved(Cursor.Position);
             }
         }

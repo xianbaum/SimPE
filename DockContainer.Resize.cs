@@ -88,13 +88,18 @@ namespace Ambertation.Windows.Forms
                 if (Manager != null) Manager.ResumeLayout();
             }
             if (m.Msg == APIHelp.WM_EXITSIZEMOVE)
-            {
+            {                
                 if (Manager != null) Manager.SuspendLayout();
+                if (Parent != null) Parent.SuspendLayout();
                 if (rbh != null) Dock = rbh.ContainerDock;
                 if (Parent != null) Parent.Controls.SetChildIndex(this, index);
+
                 if (rbh != null) rbh.Close();
                 rbh = null;
+
+                if (Parent != null) Parent.ResumeLayout();
                 if (Manager != null) Manager.ResumeLayout();
+                this.Refresh();
             }
             return true;
         }

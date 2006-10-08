@@ -413,7 +413,7 @@ namespace Ambertation.Windows.Forms
             //Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from " + dock.Parent);
             if (!dockmode)
             {
-                //Console.WriteLine(" -> started");
+                Console.WriteLine(" -> started");
                 this.SetMainHintLocation(); //this seems to be needed to ensure working hints with Win2K
                 this.SuspendLayout();
                 SetMainHintLocation();
@@ -463,9 +463,25 @@ namespace Ambertation.Windows.Forms
                         if (last.Hint != SelectedHint.Center)
                         {
 
-                            DockContainer dcnew = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
-                            dc = dcnew;
-                            dcnew.SuspendLayout();
+                            DockContainer dcnew;
+                            if (dock.FloatContainer)
+                            {
+                                dcnew = dock.DockContainer;
+                                dc = dcnew;
+                                dcnew.SuspendLayout();
+                                if (dcnew.Parent as DockContainer != last.Parent)
+                                {
+                                    dcnew.Parent = last.Parent;
+                                    last.Parent.SetupContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock, dcnew);                                    
+                                }                                                                
+                            }
+                            else
+                            {
+                                dcnew = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
+                                dc = dcnew;
+                                dcnew.SuspendLayout();                                
+                            }
+
                             if (!(last.Parent is DockManager))
                             {
                                 dc.Width = Math.Max(20, Math.Min(DefaultSize.Width, last.Parent.Width / 2));
@@ -476,12 +492,26 @@ namespace Ambertation.Windows.Forms
                                 dc.Width = Math.Min(last.Parent.Width / 2, dock.Width);
                                 dc.Height = Math.Min(last.Parent.Height / 2, dock.Height);
                             }
+
                             dcnew.Visible = true;
                             dcnew.ResumeLayout();
                         }
+                        else if (dock.FloatContainer)
+                        {
+                            DockContainer olddc = dock.DockContainer;
+                            int ct = olddc.GetDockedPanels().Count;
+                            for (int i=ct-1; i>=0; i--){
+                                DockPanel dp = olddc.GetDockedPanels()[i];
+                                dp.DockControl(dc);
+                                dp.RefreshMargin();
+                            }
+                        }
 
-                        dock.DockControl(dc);
-                        dock.BringToFront();
+                        if (dock.DockContainer != dc)                        
+                            dock.DockControl(dc);
+
+                        dock.EnsureVisible();
+                        dock.RefreshAll();
 
                     }
                     CleanUp();

@@ -124,21 +124,33 @@ namespace Ambertation.Windows.Forms
         #endregion
 
         #region Border Size
-        public virtual System.Windows.Forms.Padding GetPanelBorderSize(ButtonOrientation orient)
+        public virtual System.Windows.Forms.Padding GetPanelBorderSize(DockContainer dc, DockPanel dp, ButtonOrientation orient)
         {
             Rectangle wnd = new Rectangle(0, 0, 100, 100);
-            Rectangle brect = GetButtonsRectangle(orient, new NCPaintEventArgs(null, wnd, wnd, null));
-            
+            Rectangle brect = GetButtonsRectangle(orient, new NCPaintEventArgs(null, wnd, wnd, null), dc);
+            int dbord = Dimension.Border;
+            int dcapt = Dimension.Caption;
+            if (dp != null)
+            {
+                if (dp.Floating && !dp.FloatContainer) return new System.Windows.Forms.Padding(0);
+                if (dp.FloatContainer)
+                {
+                    dbord = 0;
+                    dcapt = 0;
+                }
+            }
+
+            //Console.WriteLine(dc.Name + " " + brect+" "+dc.OneChild);
             if (orient == ButtonOrientation.Bottom)
-                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border, Dimension.Border, Dimension.Border + brect.Height);
+                return new System.Windows.Forms.Padding(dbord, dcapt + dbord, dbord, dbord + brect.Height);
 
             if (orient == ButtonOrientation.Right)
-                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border, Dimension.Border + brect.Width, Dimension.Border);
+                return new System.Windows.Forms.Padding(dbord, dcapt + dbord, dbord + brect.Width, dbord);
 
             if (orient == ButtonOrientation.Top)
-                return new System.Windows.Forms.Padding(Dimension.Border, Dimension.Caption + Dimension.Border + brect.Height, Dimension.Border, Dimension.Border);
+                return new System.Windows.Forms.Padding(dbord, dcapt + dbord + brect.Height, dbord, dbord);
 
-            return new System.Windows.Forms.Padding(Dimension.Border + brect.Width, Dimension.Caption + Dimension.Border, Dimension.Border, Dimension.Border);
+            return new System.Windows.Forms.Padding(dbord + brect.Width, dcapt + dbord, dbord, dbord);
         }
 
         public virtual System.Windows.Forms.Padding GetBarBorderSize(ButtonOrientation orient)
@@ -210,14 +222,14 @@ namespace Ambertation.Windows.Forms
         #endregion
 
         public virtual Rectangle GetPanelClientRectangle(DockPanel dp, ButtonOrientation orient)
-        {
-            System.Windows.Forms.Padding pad = GetPanelBorderSize(orient);
+        {            
+            System.Windows.Forms.Padding pad = GetPanelBorderSize(dp.DockContainer, dp, orient);
             return new Rectangle(pad.Left, pad.Top, dp.Width - pad.Horizontal, dp.Height - pad.Vertical);
         }
 
-        public virtual Rectangle GetPanelClientRectangle(NCPaintEventArgs e, ButtonOrientation orient)
+        public virtual Rectangle GetPanelClientRectangle(DockContainer dc, NCPaintEventArgs e, ButtonOrientation orient)
         {
-            System.Windows.Forms.Padding pad = GetPanelBorderSize(orient);
+            System.Windows.Forms.Padding pad = GetPanelBorderSize(dc, null, orient);
             return new Rectangle(pad.Left, pad.Top, e.WindowRectangle.Width - pad.Horizontal, e.WindowRectangle.Height - pad.Vertical);
         }
 
@@ -230,7 +242,7 @@ namespace Ambertation.Windows.Forms
         public virtual System.Drawing.Rectangle GetCaptionRect(DockPanel dp, ButtonOrientation orient)
         {
             NCPaintEventArgs e = new NCPaintEventArgs(null, dp.ClientRectangle, dp.Bounds, null);
-            Rectangle buts = GetButtonsRectangle(orient, e);
+            Rectangle buts = GetButtonsRectangle(orient, e, dp.DockContainer);
             Rectangle client = GetPanelClientRectangle(dp, orient);
 
 
@@ -451,7 +463,7 @@ namespace Ambertation.Windows.Forms
         public void RenderButtonBackground(DockPanel dp, NCPaintEventArgs e)
         {
             if (dp.DockContainer == null) return;
-            Rectangle pad = GetButtonsRectangle(dp.BestOrientation, e);
+            Rectangle pad = GetButtonsRectangle(dp.BestOrientation, e, dp.DockContainer);
 
             Rectangle r; 
             Point pt1, pt2;
@@ -494,16 +506,22 @@ namespace Ambertation.Windows.Forms
         #endregion
 
         #region ButtonSize
-        public Rectangle GetButtonsRectangle(ButtonOrientation orient, NCPaintEventArgs e)
+        public Rectangle GetButtonsRectangle(ButtonOrientation orient, NCPaintEventArgs e, DockContainer dc)
         {
+            bool one = true;
+            if (dc != null) one = dc.OneChild && dc.HideSingleButton;
+
+            int butsub = Dimension.Buttons;
+            if (one) butsub = 0;
+
             if (orient == ButtonOrientation.Bottom)
-                return new Rectangle(0, e.WindowRectangle.Height - Dimension.Buttons, e.WindowRectangle.Width, Dimension.Buttons);
+                return new Rectangle(0, e.WindowRectangle.Height - butsub, e.WindowRectangle.Width, butsub);
             else if (orient == ButtonOrientation.Top)
-                return new Rectangle(0, 0, e.WindowRectangle.Width, Dimension.Buttons);
+                return new Rectangle(0, 0, e.WindowRectangle.Width, butsub);
             else if (orient == ButtonOrientation.Left)
-                return new Rectangle(0, 0, Dimension.Buttons, e.WindowRectangle.Height);
+                return new Rectangle(0, 0, butsub, e.WindowRectangle.Height);
             else //if (orient == ButtonOrientation.Right)
-                return new Rectangle(e.WindowRectangle.Width - Dimension.Buttons, 0, Dimension.Buttons, e.WindowRectangle.Height);
+                return new Rectangle(e.WindowRectangle.Width - butsub, 0, butsub, e.WindowRectangle.Height);
         }
 
         public Size GetButtonSize(DockPanel dp)
