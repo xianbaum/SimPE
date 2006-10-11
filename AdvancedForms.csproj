@@ -35,9 +35,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FlatComboBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="MenuStripButtonExt.cs">
       <SubType>Component</SubType>
     </Compile>
