@@ -288,9 +288,9 @@ namespace Ambertation.Windows.Forms
 
         public void SetupContainer(int index, bool after, bool toplevel, DockStyle dockstyle, DockContainer dc)
         {
-            Console.WriteLine("1: "+toplevel + " " + after + " " + index);
+            //Console.WriteLine("1: "+toplevel + " " + after + " " + index);
             SetNewContainerIndex(ref index, ref after, ref toplevel, dockstyle);
-            Console.WriteLine("2: "+toplevel + " " + after + " " + index);
+            //Console.WriteLine("2: "+toplevel + " " + after + " " + index);
 
 
             dc.HideSingleButton = this.HideSingleButton;
@@ -729,7 +729,7 @@ namespace Ambertation.Windows.Forms
             foreach (DockContainer dc in containers)
                 dc.ForcePanelRepaint();
         }
-
+        
         /// <summary>
         /// Makes sure, that all <see cref="DockPanel"/> controls known by this manager get invalidated
         /// </summary>

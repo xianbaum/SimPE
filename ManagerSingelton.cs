@@ -24,9 +24,21 @@ namespace Ambertation.Windows.Forms
 
         ManagerSingelton()
         {
+            dm = null;
             known = new DockButtonBar.DockPanelList();
             startdrag = null;
             Application.AddMessageFilter(this);
+        }
+
+        DockManager dm;
+        internal void SetMainManager(DockManager m)
+        {
+            if (dm==null)
+                dm = m;
+        }
+        public DockManager MainDockManager
+        {
+            get { return dm; }
         }
 
         #region IMessageFilter Member

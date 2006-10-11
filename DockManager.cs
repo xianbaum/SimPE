@@ -57,6 +57,7 @@ namespace Ambertation.Windows.Forms
         public DockManager()
             : base()
         {
+            ManagerSingelton.Global.SetMainManager(this);
             /*string flname = System.Windows.Forms.Application.StartupPath;
             flname = System.IO.Path.Combine(flname, "netdocks.log");
             writer = new System.IO.StreamWriter(flname, false);
@@ -404,7 +405,7 @@ namespace Ambertation.Windows.Forms
             base.OnLayout(e);
             /*CleanUp();
             RefreshSplitters();*/
-            RepaintAll();
+            //RepaintAll();
         }
 
 

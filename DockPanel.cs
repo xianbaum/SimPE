@@ -60,6 +60,7 @@ namespace Ambertation.Windows.Forms
             SetDefaultImage();
             text = Name;
             btext = "";
+            Visible = false;                    
         }
 
         public DockPanel() : this(null) { }
@@ -481,6 +482,8 @@ namespace Ambertation.Windows.Forms
 
         public void Open()
         {
+            DockStyle best = DockStyle.Bottom;
+            if (Height > Width) best = DockStyle.Right;
             if (lastdock != null)
             {
                 if (lastdock.Parent != null)
@@ -490,11 +493,21 @@ namespace Ambertation.Windows.Forms
 
                     return;
                 }
-                else if (Manager!=null)
+                else if (Manager != null)
                 {
                     Manager.DockPanel(this, lastdock.Dock);
                     return;
                 }
+            }
+            else if (Manager != null)
+            {
+                Manager.DockPanel(this, best);
+                return;
+            }
+            else if (ManagerSingelton.Global.MainDockManager != null)
+            {
+                ManagerSingelton.Global.MainDockManager.DockPanel(this, best);
+                return;
             }
             Float(lastpos);
 
