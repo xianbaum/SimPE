@@ -63,7 +63,7 @@ namespace Ambertation.Windows.Forms
             SetManager(manager);         
             
             this.NonClientMargin = new Padding(0);
-
+            this.MinimumSize = DefaultSize;
         }
 
          ~DockContainer()
@@ -124,8 +124,7 @@ namespace Ambertation.Windows.Forms
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
-            if (state == Status.Expanded) expsz = this.Size;
-
+            if (state == Status.Expanded) expsz = this.Size;            
             /*foreach (DockContainer dc in containers)
             {
                 if (dc.Left < 0) dc.Width = Math.Max(dc.Width + dc.Left, MinimumDockSize);
@@ -154,33 +153,19 @@ namespace Ambertation.Windows.Forms
                 containers.Add(dc);
                 dc.ParentContainer = this;
                 //Console.WriteLine("Adding Container to " + Name);
-                //OnDockContainerAdded(dc);
+                //OnDockContainerAdded(dc);                
             }
             else
             {
                 DockPanel p = e.Control as DockPanel;
                 if (p != null)
                 {
-                    panels.Add(p);
-                    p.Parent = this;
-                    p.Dock = DockStyle.Fill;
-                    p.EnsureVisible();
-                    if (p.Manager == null) p.Manager = Manager;
-                    if (Manager != null) Manager.CleanUp();
-                    else CleanUp();
-
-                    if (Collapsed && Manager != null)
-                    {
-                        DockButtonBar bar = Manager.GetButtonBar(this);
-                        if (bar != null) bar.Add(this);
-                    }
-                    else if (Highlight != null) Highlight.NCRefresh();
-
-                    foreach (DockPanel dp in panels) dp.OnPanelCollectionChanged(p, this, false);
-                    if (PanelCollectionChanged != null) PanelCollectionChanged(this, new EventArgs());
+                    AddDockPanel(p);
                 }
             }
         }
+
+        
 
         private void OnDockContainerAdded(DockContainer dc)
         {
@@ -206,35 +191,61 @@ namespace Ambertation.Windows.Forms
                 DockPanel p = e.Control as DockPanel;
                 if (p != null)
                 {
-                    DockButtonBar bar = null;
-                    if (Collapsed && Manager != null)
-                    {
-                        bar = Manager.GetButtonBar(this);
-                        if (bar != null) 
-                            bar.SilentRemove(this);
-                    }
-
-                    p.Parent = null;
-                    panels.Remove(p);
-                    if (Highlight == p)
-                        if (panels.Count > 0)
-                            panels[0].EnsureVisible();
-
-
-                    if (Manager != null) Manager.CleanUp();
-                    else CleanUp();
-
-                    if (bar != null)
-                    {
-                        bar.Add(this);
-                    }
-                    else if (Highlight != null) Highlight.NCRefresh();
-
-                    p.OnPanelCollectionChanged(p, this, true);
-                    foreach (DockPanel dp in panels) dp.OnPanelCollectionChanged(p, this, true);
-                    if (PanelCollectionChanged != null) PanelCollectionChanged(this, new EventArgs());
+                    RemoveDockPanel(p);
                 }
             }
+        }
+
+        private void AddDockPanel(DockPanel p)
+        {
+            panels.Add(p);
+            p.Parent = this;
+            p.Dock = DockStyle.Fill;
+            p.EnsureVisible();
+            if (p.Manager == null) p.Manager = Manager;
+            if (Manager != null) Manager.CleanUp();
+            else CleanUp();
+
+            if (Collapsed && Manager != null)
+            {
+                DockButtonBar bar = Manager.GetButtonBar(this);
+                if (bar != null) bar.Add(this);
+            }
+            else if (Highlight != null) Highlight.RefreshAll();
+
+            foreach (DockPanel dp in panels) dp.OnPanelCollectionChanged(p, this, false);
+            if (PanelCollectionChanged != null) PanelCollectionChanged(this, new EventArgs());
+        }
+
+        private void RemoveDockPanel(DockPanel p)
+        {
+            DockButtonBar bar = null;
+            if (Collapsed && Manager != null)
+            {
+                bar = Manager.GetButtonBar(this);
+                if (bar != null)
+                    bar.SilentRemove(this);
+            }
+
+            p.Parent = null;
+            panels.Remove(p);
+            if (Highlight == p)
+                if (panels.Count > 0)
+                    panels[0].EnsureVisible();
+
+
+            if (Manager != null) Manager.CleanUp();
+            else CleanUp();
+
+            if (bar != null)
+            {
+                bar.Add(this);
+            }
+            else if (Highlight != null) Highlight.RefreshAll();
+
+            p.OnPanelCollectionChanged(p, this, true);
+            foreach (DockPanel dp in panels) dp.OnPanelCollectionChanged(p, this, true);
+            if (PanelCollectionChanged != null) PanelCollectionChanged(this, new EventArgs());
         }
 
         public event EventHandler PanelCollectionChanged;
@@ -367,12 +378,70 @@ namespace Ambertation.Windows.Forms
         internal virtual void TakeHint(DockHint hint)
         {
             Rectangle r = this.ScreenBounds;
+            r = this.GetScreenDockAreaBounds();
             TakeHint(hint, r, this);
+        }
+
+        /// <summary>
+        /// Returns the rectangle that holds all child <see cref="DockPanel"/>s.
+        /// </summary>
+        /// <returns></returns>
+        public Rectangle GetDockAreaBounds()
+        {
+            if (panels.Count > 0) return panels[0].Bounds;
+            return CalculateDockAreaBounds();
+        }
+
+        /// <summary>
+        /// Returns the rectangle (in Screen coordinates) that holds all child <see cref="DockPanel"/>s.
+        /// </summary>
+        /// <returns></returns>
+        public Rectangle GetScreenDockAreaBounds()
+        {
+            //if (panels.Count > 0) return panels[0].Bounds;
+            Rectangle r = ScreenBounds;
+            return CalculateDockAreaBounds(r.Left, r.Top, r.Width, r.Height);
+        }
+
+        private Rectangle CalculateDockAreaBounds()
+        {
+            int wd = Width;
+            int hg = Height;
+            int left = Left;
+            int top = Top;
+            return CalculateDockAreaBounds(left, top, wd, hg);
+        }
+
+        private Rectangle CalculateDockAreaBounds(int left, int top, int wd, int hg )
+        {
+            foreach (DockContainer dc in containers)
+            {
+                if (dc.Dock == DockStyle.Left)
+                {
+                    wd -= dc.Width;
+                    left += dc.Width;
+                }
+                else if (dc.Dock == DockStyle.Top)
+                {
+                    hg -= dc.Height;
+                    top += dc.Height;
+                }
+                else if (dc.Dock == DockStyle.Right)
+                {
+                    wd -= dc.Width;
+                }
+                else if (dc.Dock == DockStyle.Bottom)
+                {
+                    hg -= dc.Height;
+                }
+            }
+
+            return new Rectangle(left, top, wd, hg);
         }
 
         internal void TakeHint(DockHint hint, Rectangle r, DockContainer d)
         {
-            if (d == null) return;
+            if (d == null) return;            
             hint.ParentContainer = d;
             hint.SetDesktopLocation(
                 r.Left + (r.Width - hint.Width) / 2,
@@ -535,7 +604,9 @@ namespace Ambertation.Windows.Forms
         {
             //Console.WriteLine(nfo.Parent.GetType().Name + " " + nfo.Seed.GetType().Name + " " + this.GetType().Name);
             Rectangle sb = nfo.Parent.ScreenBounds;
-            Rectangle ssb = nfo.Seed.ScreenBounds;
+            //Rectangle ssb =  nfo.Seed.ScreenBounds;
+            //Rectangle sb = nfo.Parent.GetScreenDockAreaBounds(); 
+            Rectangle ssb = nfo.Seed.GetScreenDockAreaBounds();
 
             Size dsz = new Size(
                 Math.Max(10, Math.Min(sb.Width / 2, Manager.DefaultSize.Width)),
@@ -553,7 +624,7 @@ namespace Ambertation.Windows.Forms
                 else if (nfo.Hint == SelectedHint.Top)
                     nfo.OverlayRectangle = new Rectangle(ssb.Left, ssb.Bottom, ssb.Width, dsz.Height);
                 else if (nfo.Hint == SelectedHint.Center && !IsManager)
-                    nfo.OverlayRectangle = sb;
+                    nfo.OverlayRectangle = nfo.Parent.GetScreenDockAreaBounds(); //sb;
                 else nfo.OverlayRectangle = Rectangle.Empty;
             }
             else
@@ -567,7 +638,7 @@ namespace Ambertation.Windows.Forms
                 else if (nfo.Hint == SelectedHint.Bottom)
                     nfo.OverlayRectangle = new Rectangle(ssb.Left, sb.Bottom - dsz.Height, ssb.Width, dsz.Height);
                 else if (nfo.Hint == SelectedHint.Center && !IsManager)
-                    nfo.OverlayRectangle = sb;
+                    nfo.OverlayRectangle = nfo.Parent.GetScreenDockAreaBounds(); //sb;
                 else nfo.OverlayRectangle = Rectangle.Empty;
             }
         }        
@@ -829,12 +900,14 @@ namespace Ambertation.Windows.Forms
                 this.Visible = false;
                 MoveChildDocksUp(true);
                 Manager.GetBestButtonBar(this).Add(this);
+                if (Manager != null) Manager.RepaintAll();
             }
             else if (e.AnimationType == DockAnimationEventArgs.Type.Expand)
             {
                 state = Status.Expanded;
                 Manager.GetBestButtonBar(this).Remove(this);
                 this.Visible = true;
+                if (Manager != null) Manager.RepaintAll();
             }
 
             if (Manager != null) Manager.ResumeLayout();

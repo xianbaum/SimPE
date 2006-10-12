@@ -24,6 +24,7 @@ namespace Ambertation.Windows.Forms
 
         ManagerSingelton()
         {
+            pnid = 0;
             dm = null;
             known = new DockButtonBar.DockPanelList();
             startdrag = null;
@@ -43,12 +44,18 @@ namespace Ambertation.Windows.Forms
 
         #region IMessageFilter Member
 
+        int pnid;
         internal void AddPanel(DockPanel dp)
         {
             if (!known.Contains(dp))
             {
                 known.Add(dp);
                 dp.Disposed += new EventHandler(dp_Disposed);
+                if (dp.Name == "")
+                {
+                    dp.Name = "ManagedDockPanel" + pnid;
+                    pnid++;
+                }
             }
         }
 

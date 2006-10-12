@@ -565,7 +565,7 @@ namespace Ambertation.Windows.Forms
         {
             DockContainer dc = GetDockContainer(scrpt);
             if (dc != null)
-                TakeHint(allcenter, dc.ScreenBounds, dc);
+                TakeHint(allcenter, dc.GetScreenDockAreaBounds(), dc);
 
             else TakeHint(allcenter);
 

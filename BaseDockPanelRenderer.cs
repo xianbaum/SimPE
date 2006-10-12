@@ -183,10 +183,10 @@ namespace Ambertation.Windows.Forms
         protected virtual int GetButtonCaptionWidth(System.Drawing.Font font, System.Drawing.Graphics g, string caption, ButtonOrientation orient, int maxwd)
         {
             StringFormat sf;
-            if (orient == ButtonOrientation.Bottom || orient == ButtonOrientation.Top) sf = new StringFormat();
-            else sf = new StringFormat(StringFormatFlags.DirectionVertical);
+            if (orient == ButtonOrientation.Bottom || orient == ButtonOrientation.Top) sf = new StringFormat(StringFormatFlags.NoWrap | StringFormatFlags.NoClip );
+            else sf = new StringFormat(StringFormatFlags.DirectionVertical | StringFormatFlags.NoWrap | StringFormatFlags.NoClip);
 
-            SizeF res = g.MeasureString(caption, font, maxwd, sf);
+            SizeF res = g.MeasureString(caption, font, int.MaxValue, sf);
 
             //Console.WriteLine("Getting Caption Size " + caption + "(" + res + "=" + (int)res.Width + "x" + (int)res.Height + ", "+orient+")");
             if (orient == ButtonOrientation.Bottom || orient == ButtonOrientation.Top) return (int)res.Width;
@@ -267,6 +267,12 @@ namespace Ambertation.Windows.Forms
         public virtual System.Drawing.Rectangle GetCaptionTextRect(DockPanel dp, Rectangle caprect)
         {
             int wd = caprect.Width;
+            Rectangle colbr = GetCollapseButtonRect(dp, caprect);
+            Rectangle clobr = GetCloseButtonRect(dp, caprect);
+            int mleft = 0;
+            if (colbr != Rectangle.Empty) mleft = caprect.Width - colbr.Left + 4;
+            if (clobr != Rectangle.Empty) mleft = Math.Max(mleft, caprect.Width - clobr.Left + 4);
+            wd = Math.Max(1, wd-mleft);
             return new Rectangle(caprect.Left, caprect.Top, wd, caprect.Height);
         }
         #endregion

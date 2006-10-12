@@ -146,7 +146,9 @@ namespace Ambertation.Windows.Forms
         {
             Color c = Parent.ColorTable.DockCaptionTextColor;
             if (state == CaptionState.Focused) c = Parent.ColorTable.DockCaptionFocusTextColor;
-            e.Graphics.DrawString(caption, Parent.FontTable.CaptionFont, new SolidBrush(c), txtrect);
+            e.Graphics.DrawString(
+                this.GetFittingString(Parent.FontTable.CaptionFont, caption, ButtonOrientation.Top, txtrect.Size)
+                , Parent.FontTable.CaptionFont, new SolidBrush(c), txtrect);
         }
 
         protected override void RenderCaptionBackground(CaptionState state, NCPaintEventArgs e, Rectangle caprect)

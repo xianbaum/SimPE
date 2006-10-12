@@ -651,6 +651,12 @@ namespace Ambertation.Windows.Forms
             base.OnParentChanged(e);
         }
 
+        protected override void OnSizeChanged(EventArgs e)
+        {
+            base.OnSizeChanged(e);
+            if (Visible && CaptionText != null && ButtonText !=null) this.NCRefresh();
+        }
+
         #region Highlight change
         internal void FireHighlightChanged(DockPanel dp)
         {
