@@ -40,10 +40,10 @@ namespace pjse
 		Full = 0x04,
 	}
 
-	public enum Group : int
+	public enum Group : uint
 	{
 		Global = 0x7FD46CD0,
-		BhavFuncs = 0x7FE59FD0,
+        Parsing = 0xFEEDF00D,
     }
 
     #region Previously known as GlobalStr.cs
@@ -446,7 +446,7 @@ namespace pjse
             {
                 if (detail != Detail.Errors)
                 {
-                    if (str.Group == (uint)Group.BhavFuncs)
+                    if (str.Group == (uint)Group.Parsing)
                         try
                         {
                             if (((GS.BhavStr)str.Instance).ToString() != str.Instance.ToString())

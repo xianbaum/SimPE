@@ -55,7 +55,7 @@ namespace pjse
             : this(scope, parent, parent.GroupForScope(scope), instance, SimPe.Data.MetaData.STRING_FILE) { }
 
         public Str(GS.BhavStr instance)
-            : this(Scope.Private, null, (uint)pjse.Group.BhavFuncs, (uint)instance, SimPe.Data.MetaData.STRING_FILE) { }
+            : this(Scope.Private, null, (uint)pjse.Group.Parsing, (uint)instance, SimPe.Data.MetaData.STRING_FILE) { }
 
         public Str(ExtendedWrapper parent, uint instance, uint type)
             : this(Scope.Private, parent, parent.PrivateGroup, instance, type) { }
