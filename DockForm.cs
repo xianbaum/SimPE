@@ -35,7 +35,7 @@ namespace Ambertation.Windows.Forms
             get { return dock; }
         }
 
-        public DockManager Manager
+        public BaseDockManager Manager
         {
             get {
                 if (DockControl == null) return null;

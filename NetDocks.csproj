@@ -37,6 +37,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseControlRenderer.cs" />
+    <Compile Include="BaseDockManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="BaseDockPanelRenderer.cs" />
     <Compile Include="BaseFontTable.cs" />
     <Compile Include="BaseRenderer.cs" />
@@ -118,11 +121,19 @@
     <Compile Include="RubberBandHelper.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="TabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TabPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="WhidbeyColorTable.cs" />
     <Compile Include="WhidbeyFontTable.cs" />
     <Compile Include="WhidbeyRenderDockHints.cs" />
     <Compile Include="WhidbeyRenderDockPanel.cs" />
     <Compile Include="WhidbeyRenderer.cs" />
+    <Compile Include="WhidbeyRenderTabs.cs" />
+    <Compile Include="WhidbeyTabRenderer.cs" />
     <Compile Include="WinApiHelper.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>

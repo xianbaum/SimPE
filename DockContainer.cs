@@ -33,7 +33,7 @@ namespace Ambertation.Windows.Forms
     {
         protected List<DockContainer> containers;
         DockButtonBar.DockPanelList panels;
-        protected DockManager manager;
+        protected BaseDockManager manager;
         
 
         public enum Status
@@ -43,8 +43,8 @@ namespace Ambertation.Windows.Forms
             Collapsing,
             Expanding
         }
-        
-        internal DockContainer(DockManager manager)
+
+        internal DockContainer(BaseDockManager manager)
         {
             layoutct = 0;
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
@@ -79,7 +79,7 @@ namespace Ambertation.Windows.Forms
         
         public DockContainer() :this(null) {}
 
-        internal void SetManager(DockManager manager)
+        internal void SetManager(BaseDockManager manager)
         {
             
             this.manager = manager;
@@ -90,11 +90,16 @@ namespace Ambertation.Windows.Forms
 
             this.DoDockChanged();
         }
-        
-        public DockManager Manager
+
+        public BaseDockManager Manager
         {
             get { return manager; }
             set { SetManager(value); }
+        }
+
+        public DockManager DockManager
+        {
+            get { return manager as DockManager; }
         }
 
         DockContainer pc;
@@ -206,9 +211,9 @@ namespace Ambertation.Windows.Forms
             if (Manager != null) Manager.CleanUp();
             else CleanUp();
 
-            if (Collapsed && Manager != null)
+            if (Collapsed && DockManager != null)
             {
-                DockButtonBar bar = Manager.GetButtonBar(this);
+                DockButtonBar bar = DockManager.GetButtonBar(this);
                 if (bar != null) bar.Add(this);
             }
             else if (Highlight != null) Highlight.RefreshAll();
@@ -220,9 +225,9 @@ namespace Ambertation.Windows.Forms
         private void RemoveDockPanel(DockPanel p)
         {
             DockButtonBar bar = null;
-            if (Collapsed && Manager != null)
+            if (Collapsed && DockManager != null)
             {
-                bar = Manager.GetButtonBar(this);
+                bar = DockManager.GetButtonBar(this);
                 if (bar != null)
                     bar.SilentRemove(this);
             }
@@ -831,7 +836,7 @@ namespace Ambertation.Windows.Forms
         
 
         public void Collapse() { Collapse(true); }
-        public void Collapse(bool animated)
+        public virtual void Collapse(bool animated)
         {
             if (Collapsed) return;
             DockAnimationEventArgs.Alignment a = GetAlignment();
@@ -854,7 +859,7 @@ namespace Ambertation.Windows.Forms
 
 
         public void Expand() { Expand(true); }
-        public void Expand(bool animated)
+        public virtual void Expand(bool animated)
         {
             if (Expanded) return;
             DockAnimationEventArgs.Alignment a = GetAlignment();
@@ -892,20 +897,19 @@ namespace Ambertation.Windows.Forms
 
         void DockPanelRenderer_FinishedAnimation(IDockPanelRenderer sender, DockAnimationEventArgs e)
         {
-            if (e.Container != this) return;
-
+            if (e.Container != this) return;            
             if (e.AnimationType == DockAnimationEventArgs.Type.Collapse)
             {
                 state = Status.Collapsed;
                 this.Visible = false;
                 MoveChildDocksUp(true);
-                Manager.GetBestButtonBar(this).Add(this);
+                if (DockManager != null) DockManager.GetBestButtonBar(this).Add(this);
                 if (Manager != null) Manager.RepaintAll();
             }
             else if (e.AnimationType == DockAnimationEventArgs.Type.Expand)
             {
                 state = Status.Expanded;
-                Manager.GetBestButtonBar(this).Remove(this);
+                if (DockManager != null) DockManager.GetBestButtonBar(this).Remove(this);
                 this.Visible = true;
                 if (Manager != null) Manager.RepaintAll();
             }
@@ -1055,7 +1059,7 @@ namespace Ambertation.Windows.Forms
         /// <summary>
         /// True, if this <see cref="DockContainer"/> does only contain one <see cref="DockPanel"/>
         /// </summary>
-        public bool OneChild
+        public virtual bool OneChild
         {
             get
             {                

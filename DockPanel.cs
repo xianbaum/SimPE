@@ -36,7 +36,8 @@ namespace Ambertation.Windows.Forms
         DockPanelCollapseButton collapse;
         DockPanelCloseButton close;
 
-        public DockPanel(DockManager manager) : base()
+        public DockPanel(BaseDockManager manager)
+            : base()
         {
             ManagerSingelton.Global.AddPanel(this);
             lastdock = null;
@@ -83,7 +84,7 @@ namespace Ambertation.Windows.Forms
         }*/
 
 
-        internal void SetManager(DockManager manager)
+        internal void SetManager(BaseDockManager manager)
         {
             this.manager = manager;
             this.SetNonClientMargin();
@@ -121,7 +122,7 @@ namespace Ambertation.Windows.Forms
         }
 
         [System.ComponentModel.Localizable(true)]
-        public string ButtonText
+        public virtual string ButtonText
         {
             get { return btext; }
             set
@@ -159,8 +160,8 @@ namespace Ambertation.Windows.Forms
             else img = new Bitmap(16, 16);
         }
 
-        DockManager manager;
-        public DockManager Manager
+        BaseDockManager manager;
+        public BaseDockManager Manager
         {
             get { return manager; }
             set { SetManager(value); }
@@ -495,13 +496,13 @@ namespace Ambertation.Windows.Forms
                 }
                 else if (Manager != null)
                 {
-                    Manager.DockPanel(this, lastdock.Dock);
+                    Manager.DockPanelInt(this, lastdock.Dock);
                     return;
                 }
             }
             else if (Manager != null)
             {
-                Manager.DockPanel(this, best);
+                Manager.DockPanelInt(this, best);
                 return;
             }
             else if (ManagerSingelton.Global.MainDockManager != null)
@@ -756,7 +757,7 @@ namespace Ambertation.Windows.Forms
         #endregion
 
 
-        public bool ShowCloseButton
+        public virtual bool ShowCloseButton
         {
             get { return close.Visible; }
             set {
@@ -764,7 +765,7 @@ namespace Ambertation.Windows.Forms
             }
         }
 
-        public bool ShowCollapseButton
+        public virtual bool ShowCollapseButton
         {
             get { return collapse.Visible; }
             set {
@@ -798,7 +799,7 @@ namespace Ambertation.Windows.Forms
         /// <summary>
         /// True, if the parent <see cref="DockContainer"/> does only contain this <see cref="DockPanel"/>
         /// </summary>
-        public bool OnlyChild
+        public virtual bool OnlyChild
         {
             get
             {

@@ -29,13 +29,13 @@ using System.Runtime.InteropServices;
 namespace Ambertation.Windows.Forms
 {
     [Designer(typeof(DockManagerDesigner)), ToolboxItem(true), ToolboxBitmap(typeof(DockManager), "Floaters.dockimg.png")]
-    public partial class DockManager : DockContainer
+    public partial class DockManager : BaseDockManager
     {
         List<ManagedLayeredForm> layers;
         List<DockHint> hints;
-        DockButtonBar.DockPanelList floatingpanels;
+        
 
-        bool dockmode, didinit;
+        bool didinit;
         ContainerInfo last;
 
         DockHint allleft, allright, alltop, allbottom, allcenter;
@@ -44,10 +44,7 @@ namespace Ambertation.Windows.Forms
         Dictionary<DockStyle, DockButtonBar> colconts;
 
 
-        public bool DockMode
-        {
-            get { return dockmode; }
-        }
+        
 
         System.IO.TextWriter writer;
         ~DockManager()
@@ -55,7 +52,7 @@ namespace Ambertation.Windows.Forms
             //writer.Close();
         }
         public DockManager()
-            : base()
+            : base(ManagerSingelton.Global.DockRenderer)
         {
             ManagerSingelton.Global.SetMainManager(this);
             /*string flname = System.Windows.Forms.Application.StartupPath;
@@ -67,7 +64,6 @@ namespace Ambertation.Windows.Forms
             last = new ContainerInfo();
             manager = this;
 
-            renderer = new WhidbeyRenderer();
             defsz = new Size(100, 100);
 
             layers = new List<ManagedLayeredForm>();
@@ -100,7 +96,6 @@ namespace Ambertation.Windows.Forms
             BuildSpecialContainer(DockStyle.Right);
             BuildSpecialContainer(DockStyle.Bottom);
 
-            floatingpanels = new DockButtonBar.DockPanelList();
         }
 
         protected override void DoDockChanged()
@@ -325,21 +320,7 @@ namespace Ambertation.Windows.Forms
         {
 
 
-        }
-
-        BaseRenderer renderer;
-        public BaseRenderer Renderer
-        {
-            get { return renderer; }
-            set
-            {
-                if (renderer != value)
-                {
-                    renderer = value;
-                    this.Refresh();
-                }
-            }
-        }
+        }       
 
         public new void Refresh()
         {
@@ -423,132 +404,9 @@ namespace Ambertation.Windows.Forms
             }
         }
 
-        internal void StartDockMode(DockPanel dock)
-        {
-            //Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from " + dock.Parent);
-            if (!dockmode)
-            {
-                //Console.WriteLine(" -> started");
-                this.SetMainHintLocation(); //this seems to be needed to ensure working hints with Win2K
-                this.SuspendLayout();
-                SetMainHintLocation();
-                last = new ContainerInfo();
-                dockmode = true;
-                TakeHint(allcenter);
-                UpdateHintVisibility();
-                CleanUp();
-                this.ResumeLayout();
+        
 
-                OnStartDockMode(dock);
-
-            }
-        }
-
-
-        protected virtual void OnStartDockMode(DockPanel dock)
-        {
-
-        }
-
-        internal void StopDockMode(DockPanel dock)
-        {
-
-            //Console.WriteLine("#### StopDockMode for " + dock.Text + " (" + dockmode + ")");
-            if (dockmode)
-            {
-                //Console.WriteLine(" -> stopping to "+last);
-                this.SuspendLayout();
-                dock.SuspendLayout();
-                dock.Visible = false;
-                dockmode = false;
-
-                foreach (LayeredForm l in layers)
-                    l.Hide();
-
-
-                if (last.Hint != SelectedHint.None)
-                {
-                    DockContainer dcmain = null;
-                    if (last.Parent != null)
-                    {
-                        //Console.WriteLine(last);
-                        dcmain = last.Seed;
-                        DockContainer dc = dcmain;
-                        dcmain.SuspendLayout();
-                        if (last.Hint != SelectedHint.Center || last.Parent is DockManager)
-                        {
-
-                            DockContainer dcnew;
-                            if (dock.FloatContainer)
-                            {
-                                dcnew = dock.DockContainer;
-                                dc = dcnew;
-                                dcnew.SuspendLayout();
-                                if (dcnew.Parent as DockContainer != last.Parent)
-                                {
-                                    dcnew.Parent = last.Parent;
-                                    last.Parent.SetupContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock, dcnew);                                    
-                                }                                                                
-                            }
-                            else
-                            {
-                                dcnew = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
-                                dc = dcnew;
-                                dcnew.SuspendLayout();                                
-                            }
-
-                            if (!(last.Parent is DockManager))
-                            {
-                                dc.Width = Math.Max(20, Math.Min(DefaultSize.Width, last.Parent.Width / 2));
-                                dc.Height = Math.Max(20, Math.Min(DefaultSize.Height, last.Parent.Height / 2));
-                            }
-                            else
-                            {
-                                dc.Width = Math.Min(last.Parent.Width / 2, dock.Width);
-                                dc.Height = Math.Min(last.Parent.Height / 2, dock.Height);
-                            }
-
-                            dcnew.Visible = true;
-                            dcnew.ResumeLayout();
-                        }
-
-                        else if (dock.FloatContainer)
-                        {
-                            DockContainer olddc = dock.DockContainer;
-                            int ct = olddc.GetDockedPanels().Count;
-                            for (int i=ct-1; i>=0; i--){
-                                DockPanel dp = olddc.GetDockedPanels()[i];
-                                dp.DockControl(dc);
-                                dp.RefreshMargin();
-                            }
-                        }
-
-                        if (dock.DockContainer != dc)                        
-                            dock.DockControl(dc);
-
-                        dock.EnsureVisible();
-                        dock.RefreshAll();
-
-                    }
-                    CleanUp();
-                    if (dcmain != null) dcmain.ResumeLayout();
-                }
-
-                OnStopDockMode(dock);
-
-
-                this.ResumeLayout();
-                dock.Visible = true;
-                dock.ResumeLayout();
-                dock.NCRefresh();
-            }
-
-        }
-
-        protected virtual void OnStopDockMode(DockPanel dock)
-        {
-
-        }
+        
 
         protected override DockContainer GetDockContainer(Point scrpt)
         {
@@ -561,7 +419,7 @@ namespace Ambertation.Windows.Forms
             return base.GetDockContainer(scrpt);
         }
 
-        internal void MouseMoved(Point scrpt)
+        internal override void MouseMoved(Point scrpt)
         {
             DockContainer dc = GetDockContainer(scrpt);
             if (dc != null)
@@ -604,36 +462,140 @@ namespace Ambertation.Windows.Forms
 
         public void DockPanel(DockPanel dp, DockStyle style)
         {
-            bool docked = false;
-            this.SuspendLayout();
-            foreach (DockContainer dc in containers)
-                if (dc.Dock == style)
-                {
-                    docked = true;
-                    dp.DockControl(dc);
-                    break;
-
-                }
-
-            if (!docked)
-            {
-
-                DockContainer dc = CreateNewContainer(-1, false, true, style);
-                dc.SetNoCleanUpIntern(true);
-                dc.Visible = true;
-                dc.Width = Math.Max(dc.Width, dp.Width);
-                dc.Height = Math.Max(dc.Height, dp.Height);
-
-                dp.DockControl(dc);
-                dc.SetNoCleanUpIntern(false);
-            }
-            this.ResumeLayout();
+            DockPanelInt(dp, style);
         }
 
-        internal void NotifyFloating(DockPanel dp)
+        protected override bool MeAsCenterDock
         {
-            if (dp.Floating && !floatingpanels.Contains(dp)) floatingpanels.Add(dp);
-            else if (!dp.Floating && floatingpanels.Contains(dp)) floatingpanels.Remove(dp);
+            get { return false; }
+        }
+
+        internal override void StartDockMode(DockPanel dock)
+        {
+            //Console.WriteLine("#### StartDockMode for " + dock.Text + " (" + dockmode + ") from " + dock.Parent);
+            if (!dockmode)
+            {
+                //Console.WriteLine(" -> started");
+                this.SetMainHintLocation(); //this seems to be needed to ensure working hints with Win2K
+                this.SuspendLayout();
+                SetMainHintLocation();
+                last = new ContainerInfo();
+                dockmode = true;
+                TakeHint(allcenter);
+                UpdateHintVisibility();
+                CleanUp();
+                this.ResumeLayout();
+
+                OnStartDockMode(dock);
+
+            }
+        }
+
+
+        protected virtual void OnStartDockMode(DockPanel dock)
+        {
+
+        }
+
+        internal override void StopDockMode(DockPanel dock)
+        {
+
+            //Console.WriteLine("#### StopDockMode for " + dock.Text + " (" + dockmode + ")");
+            if (dockmode)
+            {
+                //Console.WriteLine(" -> stopping to "+last);
+                this.SuspendLayout();
+                dock.SuspendLayout();
+                dock.Visible = false;
+                dockmode = false;
+
+                foreach (LayeredForm l in layers)
+                    l.Hide();
+
+
+                if (last.Hint != SelectedHint.None)
+                {
+                    DockContainer dcmain = null;
+                    if (last.Parent != null)
+                    {
+                        //Console.WriteLine(last);
+                        dcmain = last.Seed;
+                        DockContainer dc = dcmain;
+                        dcmain.SuspendLayout();
+                        if (last.Hint != SelectedHint.Center || last.Parent is DockManager)
+                        {
+
+                            DockContainer dcnew;
+                            if (dock.FloatContainer)
+                            {
+                                dcnew = dock.DockContainer;
+                                dc = dcnew;
+                                dcnew.SuspendLayout();
+                                if (dcnew.Parent as DockContainer != last.Parent)
+                                {
+                                    dcnew.Parent = last.Parent;
+                                    last.Parent.SetupContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock, dcnew);
+                                }
+                            }
+                            else
+                            {
+                                dcnew = last.Parent.CreateNewContainer(last.SeedIndex, !last.DockInside, last.TopLevel, last.Dock);
+                                dc = dcnew;
+                                dcnew.SuspendLayout();
+                            }
+
+                            if (!(last.Parent is DockManager))
+                            {
+                                dc.Width = Math.Max(20, Math.Min(DefaultSize.Width, last.Parent.Width / 2));
+                                dc.Height = Math.Max(20, Math.Min(DefaultSize.Height, last.Parent.Height / 2));
+                            }
+                            else
+                            {
+                                dc.Width = Math.Min(last.Parent.Width / 2, dock.Width);
+                                dc.Height = Math.Min(last.Parent.Height / 2, dock.Height);
+                            }
+
+                            dcnew.Visible = true;
+                            dcnew.ResumeLayout();
+                        }
+
+                        else if (dock.FloatContainer)
+                        {
+                            DockContainer olddc = dock.DockContainer;
+                            int ct = olddc.GetDockedPanels().Count;
+                            for (int i = ct - 1; i >= 0; i--)
+                            {
+                                DockPanel dp = olddc.GetDockedPanels()[i];
+                                dp.DockControl(dc);
+                                dp.RefreshMargin();
+                            }
+                        }
+
+                        if (dock.DockContainer != dc)
+                            dock.DockControl(dc);
+
+                        dock.EnsureVisible();
+                        dock.RefreshAll();
+
+                    }
+                    CleanUp();
+                    if (dcmain != null) dcmain.ResumeLayout();
+                }
+
+                OnStopDockMode(dock);
+
+
+                this.ResumeLayout();
+                dock.Visible = true;
+                dock.ResumeLayout();
+                dock.NCRefresh();
+            }
+
+        }
+
+        protected virtual void OnStopDockMode(DockPanel dock)
+        {
+
         }
     }
 }

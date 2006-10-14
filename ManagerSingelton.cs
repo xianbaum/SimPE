@@ -29,6 +29,20 @@ namespace Ambertation.Windows.Forms
             known = new DockButtonBar.DockPanelList();
             startdrag = null;
             Application.AddMessageFilter(this);
+
+            dock = new WhidbeyRenderer();
+            tab = new WhidbeyTabRenderer();
+        }
+
+        BaseRenderer dock, tab;
+        public BaseRenderer DockRenderer
+        {
+            get { return dock; }
+        }
+
+        public BaseRenderer TabRenderer
+        {
+            get { return tab; }
         }
 
         DockManager dm;
