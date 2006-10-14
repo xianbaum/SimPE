@@ -607,13 +607,13 @@ namespace Ambertation.Windows.Forms
                         if (!OnlyChild || !DockContainer.HideSingleButton)
                         {
                             Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);
-                            buttonData.Render();
+                            buttonData.Render(true);
                         }
                     }
                     else
                     {
                         Manager.Renderer.DockPanelRenderer.RenderButtonBackground(this, e);
-                        buttonData.Render();
+                        buttonData.Render(true);
                     }
                 }
 
@@ -833,5 +833,16 @@ namespace Ambertation.Windows.Forms
             RefreshMargin();
             base.RefreshAll();
         }
+
+        public bool Collapsed
+        {
+            get
+            {
+                if (Floating) return false;
+                if (DockContainer == null) return false;
+                return DockContainer.Collapsed;
+            }
+        }
+
     }
 }

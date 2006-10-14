@@ -147,7 +147,7 @@ namespace Ambertation.Windows.Forms
         System.Drawing.Rectangle GetCaptionTextRect(DockPanel dp, Rectangle caprect); //ok
 
         void RenderButtonBackground(DockPanel dp, NCPaintEventArgs e);
-        void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state); //ok        
+        void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar); //ok        
                                 
         void RenderCaption(DockPanel dp, NCPaintEventArgs e); //ok
         void RenderCaptionButton(DockPanel dp, DockPanelCaptionButton but, NCPaintEventArgs e); //ok

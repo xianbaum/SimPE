@@ -57,13 +57,15 @@ namespace Ambertation.Windows.Forms
             {
                 if (e.DockAlignment == DockAnimationEventArgs.Alignment.Horizontal)
                 {
-                    if (dc.Height < dc.MinimumDockSize + SIZE_DELTA) { DoFinishAnimation(e); }
-                    else dc.Height -= SIZE_DELTA;
+                    if (dc.Parent == null) DoFinishAnimation(e);
+                    else if (dc.Right <= 0) { DoFinishAnimation(e); }
+                    else dc.Left -= SIZE_DELTA;
                 }
                 else if (e.DockAlignment == DockAnimationEventArgs.Alignment.Vertical)
                 {
-                    if (dc.Width < dc.MinimumDockSize + SIZE_DELTA) { DoFinishAnimation(e); }
-                    else dc.Width -= SIZE_DELTA;
+                    if (dc.Parent == null) DoFinishAnimation(e);
+                    else if (dc.Left >= dc.Parent.Width) { DoFinishAnimation(e); }
+                    else dc.Left += SIZE_DELTA;
                 }
                 else
                 {
@@ -74,14 +76,16 @@ namespace Ambertation.Windows.Forms
             {
                 if (e.DockAlignment == DockAnimationEventArgs.Alignment.Horizontal)
                 {
-                    if (dc.Height >= dc.ExpandedSize.Height) { DoFinishAnimation(e); }
-                    else dc.Height = Math.Min(dc.Height + SIZE_DELTA, dc.ExpandedSize.Height);
+                    if (dc.Parent == null) DoFinishAnimation(e);
+                    else if (dc.Left >= 0) { DoFinishAnimation(e); }
+                    else dc.Left = Math.Min(0, dc.Left + SIZE_DELTA);
                 }
                 else if (e.DockAlignment == DockAnimationEventArgs.Alignment.Vertical)
                 {
-                    if (dc.Width >= dc.ExpandedSize.Width) { DoFinishAnimation(e); }
-                    else dc.Width = Math.Min(dc.Width + SIZE_DELTA, dc.ExpandedSize.Width);
-                }
+                    if (dc.Parent == null) DoFinishAnimation(e);
+                    else if (dc.Right <= dc.Parent.Width) { DoFinishAnimation(e); }
+                    else dc.Left = Math.Max(dc.Parent.Width-dc.Width, dc.Left-SIZE_DELTA);
+                }                
                 else
                 {
                     DoFinishAnimation(e);
@@ -198,7 +202,7 @@ namespace Ambertation.Windows.Forms
         }
 
 
-        protected override void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state)
+        protected override void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
         {
             SolidBrush b; SolidBrush bb; System.Drawing.Drawing2D.LinearGradientBrush bg; Pen p;
             SetupButtonColors(r, c, fontc, orient, state, out b, out bb, out bg, out p);
@@ -226,12 +230,24 @@ namespace Ambertation.Windows.Forms
                     GraphicsUnit.Pixel
             );
 
+            
             g.DrawString(this.GetFittingString(f, caption, orient, new Size(textrect.Width, textrect.Height)), f, b, textrect, sfreal);
             g.DrawPath(p, path);
 
-            g.FillRectangle(bb, linerectangle);
-
-            if (state != ButtonState.Highlight) g.DrawLine(new Pen(ColorTable.DockButtonHighlightBorderColor), linept1, linept2);
+            Pen pp = new Pen(ColorTable.DockButtonHighlightBorderColor);
+            if (renderbackgroundbar)
+            {
+                g.FillRectangle(bb, linerectangle);
+                if (state != ButtonState.Highlight) g.DrawLine(pp, linept1, linept2);
+            }
+            else
+            {
+                g.FillRectangle(bg, linerectangle);
+                g.DrawRectangle(p, linerectangle);
+                g.DrawLine(new Pen(bg), linept1, linept2);
+                g.DrawLine(p, linept1, linept1);
+                g.DrawLine(p, linept2, linept2);
+            }
         }     
 
              

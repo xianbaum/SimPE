@@ -418,7 +418,7 @@ namespace Ambertation.Windows.Forms
             return r;
         }
 
-        public void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state)
+        public void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
         {
             if (r.Height == 0 || r.Width == 0) return;
 
@@ -436,10 +436,10 @@ namespace Ambertation.Windows.Forms
             else sf = new StringFormat(StringFormatFlags.DirectionVertical);
             caption = GetFittingString(f, caption, orient, new Size(r.Width, r.Height));
 
-            
-            RenderButton(g, r, caption, img, c, fc, f, sf, orient, state);
+
+            RenderButton(g, r, caption, img, c, fc, f, sf, orient, state, renderbackgroundbar);
         }
-        protected abstract void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state);
+        protected abstract void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar);
 
 
         public void RenderCaption(DockPanel dp, NCPaintEventArgs e)

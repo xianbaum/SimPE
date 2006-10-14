@@ -7,6 +7,9 @@ namespace Ambertation.Windows.Forms
 {
     partial class DockManager
     {
+        const uint MAGIC = 0xFB001A07;
+        const uint VERSION = 5;
+
         public List<DockPanel> GetPanels()
         {
             Dictionary<string, DockPanel> list = new Dictionary<string, DockPanel>();
@@ -31,6 +34,8 @@ namespace Ambertation.Windows.Forms
 
         public void Serialize(BinaryWriter writer)
         {
+            writer.Write(MAGIC);
+            writer.Write(VERSION);
             Dictionary<string, DockPanel> list = new Dictionary<string, DockPanel>();
             GetPanels(list);
 
@@ -80,8 +85,19 @@ namespace Ambertation.Windows.Forms
             }
         }
 
+        void ReadException(BinaryReader reader, string msg)
+        {
+            throw new System.IO.FileLoadException(msg);
+        }
+
         public void Deserialize(BinaryReader reader)
         {
+            uint mg = reader.ReadUInt32();
+            uint ver = reader.ReadUInt32();
+
+            if (mg != MAGIC) ReadException(reader, "Not a DockLayout Resource (invalid MAGIC Code)");
+            if (ver > VERSION) ReadException(reader, "Not a DockLayout Resource (unknown Version)");
+
             bool vis = Visible;            
             SuspendLayout();
             Visible = false;
@@ -147,12 +163,13 @@ namespace Ambertation.Windows.Forms
                 if (dc.Container is DockManager) continue;
 
                 dc.Container.Parent.Controls.SetChildIndex(dc.Container, dc.Index);
-                if (dc.Collapsed) dc.Container.Collapse();
+                if (dc.Collapsed) dc.Container.Collapse(false);
+                else dc.Container.Visible = true;
                 if (list.ContainsKey(dc.HighlightName)) list[dc.HighlightName].EnsureVisible();
 
                 dc.Container.SetNoCleanUpIntern(false);
                 dc.Container.SetForceUseAsTarget(false);
-                dc.Container.Visible = true;
+                
             }
         }
     }

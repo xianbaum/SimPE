@@ -162,7 +162,7 @@ namespace Ambertation.Windows.Forms
         {
             if (dock == null) return;
             //Console.WriteLine("Stop Float "+dock.Name+" "+Controls.Count);
-            TopMost = false;
+            //
             if (HasContainer)
             {
                 DockControl.UnFloat(this);
@@ -223,6 +223,7 @@ namespace Ambertation.Windows.Forms
 
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
+            TopMost = false;
             if (dock != null) dock.Parent = null;
         }
 

@@ -203,14 +203,14 @@ namespace Ambertation.Windows.Forms
             return null;
         }
 
-        public void Render()
+        public void Render(bool renderbackgroundbar)
         {
             foreach (Place p in buttons)
             {
                 ButtonState s = ButtonState.Normal;
                 if (p.Panel == cnt.Highlight) s = ButtonState.Highlight;
                 //Console.WriteLine(p.Rectangle);
-                renderer.DockPanelRenderer.RenderButton(eventarg.Graphics, p.Rectangle, p.Panel.ButtonText, p.Panel.Image, cnt.BestOrientation, s);
+                renderer.DockPanelRenderer.RenderButton(eventarg.Graphics, p.Rectangle, p.Panel.ButtonText, p.Panel.Image, cnt.BestOrientation, s, renderbackgroundbar);
             }
         }
 
