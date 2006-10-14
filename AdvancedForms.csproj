@@ -38,9 +38,6 @@
     <Compile Include="FlatComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="FlatComboBox.Designer.cs">
-      <DependentUpon>FlatComboBox.cs</DependentUpon>
-    </Compile>
     <Compile Include="MenuStripButtonExt.cs">
       <SubType>Component</SubType>
     </Compile>
