@@ -1,4 +1,8 @@
 
+2006-10-15 13:26 Amend to use SimPe.PathProvider
+	pjBodyMeshTool/
+		BodyMeshExtractor.cs 1.1.2.6
+		
 2006-09-17 14:54 Oops, fix up NET1 help folder
 	pjBodyMeshTool/
 		BodyMeshHelp.cs 1.1.2.3

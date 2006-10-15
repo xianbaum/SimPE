@@ -97,18 +97,17 @@ namespace pjse
             OnFiletableRefresh(this, new EventArgs());
         }
 
-        private static int[] epOrder = { 0x00030000, 4, 0x00020000, 0x00010000, 3, 2, 1, 0 };
         private void AddFixedMaxis()
         {
             defaultFolders = SimPe.FileTable.DefaultFolders; // in case they've been updated
 
-            String SimsPath = SimPe.Helper.WindowsRegistry.GetExecutableFolder(0);
+            String SimsPath = SimPe.PathProvider.Global[0].InstallFolder;
             bool addedOP = false;
 
-            for (int i = 0; i < epOrder.Length; i++)
+            for (int i = SimPe.PathProvider.Global.Expansions.Count; --i >= 0; )
             {
-                String path = SimPe.Helper.WindowsRegistry.GetExecutableFolder(epOrder[i]);
-                if (path.Length == 0 || (epOrder[i] != 0 && path.Equals(SimsPath)))
+                String path = SimPe.PathProvider.Global[i].InstallFolder;
+                if (path.Length == 0 || (i != 0 && path.Equals(SimsPath)))
                     continue;
 
                 String o;
@@ -133,7 +132,7 @@ namespace pjse
 
                 string[] va = Directory.GetFiles(o, "*.package");
                 foreach (String pkg in va)
-                    if (!pkg.ToLower().Equals("globalcatbin.bundle.package"))
+                    if (!pkg.ToLower().EndsWith("\\globalcatbin.bundle.package"))
                         AddFixed(pkg);
             }
         }

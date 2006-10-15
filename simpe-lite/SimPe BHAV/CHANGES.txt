@@ -1,5 +1,8 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+15 October 2006 13:28 - Amend to use SimPe.PathProvider
+  pjse filetable\
+    FileTable.cs 1.11.2.18
 
 14 October 2006 12:32 - Stop using BhavFuncs (0x7FE59FD0)
   SimPe BHAV\
