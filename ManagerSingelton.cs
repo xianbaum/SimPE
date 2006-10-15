@@ -21,7 +21,7 @@ namespace Ambertation.Windows.Forms
         DockPanel startdrag;
         NCMouseEventArgs events;
         DockButtonBar.DockPanelList known;
-
+        List<DockPanelFloatingForm> knownf;
         ManagerSingelton()
         {
             pnid = 0;
@@ -31,7 +31,13 @@ namespace Ambertation.Windows.Forms
             Application.AddMessageFilter(this);
 
             dock = new WhidbeyRenderer();
+            knownf = new List<DockPanelFloatingForm>();
             tab = new WhidbeyTabRenderer();
+        }
+
+        ~ManagerSingelton()
+        {
+            Application.RemoveMessageFilter(this);
         }
 
         BaseRenderer dock, tab;
@@ -57,6 +63,29 @@ namespace Ambertation.Windows.Forms
         }
 
         #region IMessageFilter Member
+        internal void AddFloatForm(DockPanelFloatingForm f)
+        {
+            if (!knownf.Contains(f))
+            {
+                knownf.Add(f);
+                f.Disposed += new EventHandler(f_Disposed);                
+            }
+        }
+
+        void f_Disposed(object sender, EventArgs e)
+        {
+            DockPanelFloatingForm f = sender as DockPanelFloatingForm;
+            RemoveFloatForm(f);
+        }
+
+        internal void RemoveFloatForm(DockPanelFloatingForm f)
+        {
+            if (knownf.Contains(f))
+            {
+                f.Disposed -= new EventHandler(f_Disposed);
+                knownf.Remove(f);
+            }
+        }
 
         int pnid;
         internal void AddPanel(DockPanel dp)
@@ -115,7 +144,11 @@ namespace Ambertation.Windows.Forms
 
         public bool PreFilterMessage(ref Message m)
         {
-            
+            if (m.Msg == APIHelp.WM_ACTIVATEAPP)
+            {
+                foreach(DockPanelFloatingForm f in knownf)
+                    f.SendeActivateEvent((int)m.WParam != 0);
+            }
 
             if (startdrag != null)
             {

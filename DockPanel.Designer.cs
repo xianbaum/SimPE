@@ -13,6 +13,7 @@
         /// <param name="disposing">True, wenn verwaltete Ressourcen gelöscht werden sollen; andernfalls False.</param>
         protected override void Dispose(bool disposing)
         {
+            System.Diagnostics.Debug.WriteLine("Disposing Panel " + Name + " " + CaptionText + " " + ButtonText);
             if (disposing && (components != null))
             {
                 components.Dispose();

@@ -8,7 +8,7 @@ namespace Ambertation.Windows.Forms
     partial class DockManager
     {
         const uint MAGIC = 0xFB001A07;
-        const uint VERSION = 5;
+        const uint VERSION = 6;
 
         public List<DockPanel> GetPanels()
         {
@@ -112,7 +112,7 @@ namespace Ambertation.Windows.Forms
             Dictionary<string, DockContainerDescriptor> docks = new Dictionary<string, DockContainerDescriptor>();
             DeserializeContainers(reader, docks);
 
-            DeserializePanels(reader, list, vlist, docks);            
+            DeserializePanels(reader, list, vlist, docks, ver);            
             DeserializePass2(docks, vlist);
 
             Visible = vis;
@@ -125,7 +125,7 @@ namespace Ambertation.Windows.Forms
             DoDeserialize(reader, docks, null);
         }
 
-        private void DeserializePanels(BinaryReader reader, Dictionary<string, DockPanel> list, Dictionary<string, DockPanel> vlist, Dictionary<string, DockContainerDescriptor> docks)
+        private void DeserializePanels(BinaryReader reader, Dictionary<string, DockPanel> list, Dictionary<string, DockPanel> vlist, Dictionary<string, DockContainerDescriptor> docks, uint ver)
         {
             int ct = reader.ReadInt32();
             for (int i = 0; i < ct; i++)
@@ -144,7 +144,7 @@ namespace Ambertation.Windows.Forms
                     vlist[name] = p;
                 }
 
-                p.Deserialize(reader, docks);
+                p.Deserialize(reader, docks, ver);
             }
             
             CloseRemainingPanels(list);

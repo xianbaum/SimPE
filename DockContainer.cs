@@ -204,7 +204,7 @@ namespace Ambertation.Windows.Forms
         private void AddDockPanel(DockPanel p)
         {
             panels.Add(p);
-            p.Parent = this;
+            p.SetParentInt(this);
             p.Dock = DockStyle.Fill;
             p.EnsureVisible();
             if (p.Manager == null) p.Manager = Manager;
@@ -232,7 +232,7 @@ namespace Ambertation.Windows.Forms
                     bar.SilentRemove(this);
             }
 
-            p.Parent = null;
+            p.SetParentInt(null);
             panels.Remove(p);
             if (Highlight == p)
                 if (panels.Count > 0)
@@ -1102,6 +1102,12 @@ namespace Ambertation.Windows.Forms
 
                 if (Highlight!=null) Highlight.NCRefresh();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            System.Diagnostics.Debug.WriteLine("Disposing Container " + Name);            
+            base.Dispose(disposing);
         }
     }
 }

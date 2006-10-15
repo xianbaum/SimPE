@@ -419,15 +419,7 @@ namespace Ambertation.Windows.Forms
             return base.GetDockContainer(scrpt);
         }
 
-        internal override void MouseMoved(Point scrpt)
-        {
-            DockContainer dc = GetDockContainer(scrpt);
-            if (dc != null)
-                TakeHint(allcenter, dc.GetScreenDockAreaBounds(), dc);
-
-            else TakeHint(allcenter);
-
-        }
+        
 
         public DockButtonBar GetButtonBar(DockContainer dc)
         {
@@ -468,6 +460,16 @@ namespace Ambertation.Windows.Forms
         protected override bool MeAsCenterDock
         {
             get { return false; }
+        }
+
+        internal override void MouseMoved(Point scrpt)
+        {
+            DockContainer dc = GetDockContainer(scrpt);
+            if (dc != null)
+                TakeHint(allcenter, dc.GetScreenDockAreaBounds(), dc);
+
+            else TakeHint(allcenter);
+
         }
 
         internal override void StartDockMode(DockPanel dock)

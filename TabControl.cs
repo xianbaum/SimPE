@@ -40,6 +40,11 @@ namespace Ambertation.Windows.Forms
         
         #endregion
 
+        protected override void CleanUp()
+        {
+            //base.CleanUp();
+        }
+
         protected override void OnControlAdded(System.Windows.Forms.ControlEventArgs e)
         {
             TabPage tp = e.Control as TabPage;            
@@ -58,11 +63,15 @@ namespace Ambertation.Windows.Forms
 
         internal override void StartDockMode(DockPanel dock)
         {
+            //dockmode = true;
         }
 
         internal override void StopDockMode(DockPanel dock)
         {
-            
+            //if (dockmode)
+            {
+                AddPage(dock as TabPage);
+            }
         }
 
         internal override void MouseMoved(Point scrpt)

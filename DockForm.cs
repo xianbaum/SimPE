@@ -46,14 +46,14 @@ namespace Ambertation.Windows.Forms
         public DockPanelFloatingForm(DockPanel dock) 
             : base()
         {
-            Application.AddMessageFilter(this);
+            ManagerSingelton.Global.AddFloatForm(this);
             this.TopMost = true;
             this.dock = dock;
         }
 
         ~DockPanelFloatingForm()
         {
-                       
+            ManagerSingelton.Global.RemoveFloatForm(this);         
         }
 
         DockContainer cnt;
@@ -71,13 +71,14 @@ namespace Ambertation.Windows.Forms
 
         public bool PreFilterMessage(ref Message m)
         {
-            if (m.HWnd == Handle)
+            //if (m.HWnd == Handle)
             {
                 if (m.Msg == APIHelp.WM_ACTIVATEAPP)
                     OnActivateApplication((int)m.WParam != 0);
             }
             return false;
         }
+        Size lastsz;
 
         [System.Security.Permissions.PermissionSet(System.Security.Permissions.SecurityAction.Demand, Name = "FullTrust")]
         protected override void WndProc(ref Message m)
@@ -93,8 +94,9 @@ namespace Ambertation.Windows.Forms
             }
             else if (m.Msg == APIHelp.WM_ENTERSIZEMOVE)
             {
-                //Console.WriteLine("Start Fire");
-                FireLocationChangeEvent();
+                //Console.WriteLine("ENTERSIZEMOVE");
+                lastsz = this.Size;
+                //FireLocationChangeEvent();
                 base.WndProc(ref m);
             }
             else if (m.Msg == APIHelp.WM_NCHITTEST)
@@ -115,7 +117,11 @@ namespace Ambertation.Windows.Forms
             else base.WndProc(ref m);
         }
 
-         protected virtual void OnActivateApplication(bool active)
+        internal void SendeActivateEvent(bool active)
+        {
+            OnActivateApplication(active);
+        }
+        protected virtual void OnActivateApplication(bool active)
         {
             //Console.WriteLine("Activate Application " + active);
             if (active) this.TopMost = true;
@@ -143,7 +149,7 @@ namespace Ambertation.Windows.Forms
 
             if (Controls.Count == 0 && HasContainer && !Manager.DockMode)
             {
-                dock = null;
+                dock = null;                
                 Close();
             }
         }
@@ -178,7 +184,11 @@ namespace Ambertation.Windows.Forms
             }
             OnStopFloating();
             if (Controls.Count == 0) dock = null;
-            if (dock == null) Close();
+            if (dock == null)
+            {
+                cnt = null;
+                Close();
+            }
             //Console.WriteLine("Stoped Float "  + " " + Controls.Count);
         }
 
@@ -208,7 +218,8 @@ namespace Ambertation.Windows.Forms
 
         private void FireLocationChangeEvent()
         {
-            //Console.WriteLine("test");
+            if (Size.Width != lastsz.Width || Size.Height != lastsz.Height) return;
+            
             if (Manager != null)
             {
                 //Console.WriteLine("test 2 "+Manager.DockMode + " "+Visible);
@@ -224,11 +235,24 @@ namespace Ambertation.Windows.Forms
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             TopMost = false;
-            if (dock != null) dock.Parent = null;
+            if (cnt != null && dock!=null)
+            {
+                DockButtonBar.DockPanelList panels = cnt.GetDockedPanels();
+                DockButtonBar.DockPanelList ps = new DockButtonBar.DockPanelList();
+                foreach (DockPanel dp in panels) ps.Add(dp);
+                foreach (DockPanel dp in ps) 
+                    dp.CloseFromForm();
+                
+            } else if (dock != null)
+            {
+                dock.CloseFromForm();
+                //dock.Parent = null;
+            }
         }
 
         protected override void Dispose(bool disposing)
         {
+            System.Diagnostics.Debug.WriteLine("Disposing DockForm " + Text);
             Application.RemoveMessageFilter(this); 
             base.Dispose(disposing);
         }

@@ -13,7 +13,13 @@ namespace Ambertation.Windows.Forms
         }
 
         protected virtual void DoSerialize(BinaryWriter writer)
-        {            
+        {
+            writer.Write(last.Pos.X);
+            writer.Write(last.Pos.Y);
+            writer.Write(last.Floating);
+            if (last.Container != null) writer.Write(last.Container.Name);
+            else writer.Write("");
+
             writer.Write(Visible);
             writer.Write(Collapsed);
             writer.Write(IsOpen);
@@ -41,13 +47,23 @@ namespace Ambertation.Windows.Forms
             }
         }
 
-        internal void Deserialize(BinaryReader reader, Dictionary<string, DockManager.DockContainerDescriptor> docks)
+        internal void Deserialize(BinaryReader reader, Dictionary<string, DockManager.DockContainerDescriptor> docks, uint ver)
         {
-            DoDeserialize(reader, docks);
+            DoDeserialize(reader, docks, ver);
         }
 
-        protected virtual void DoDeserialize(BinaryReader reader, Dictionary<string, DockManager.DockContainerDescriptor> docks)
+        protected virtual void DoDeserialize(BinaryReader reader, Dictionary<string, DockManager.DockContainerDescriptor> docks, uint ver)
         {
+            if (ver >= 6)
+            {
+                int px = reader.ReadInt32();
+                int py = reader.ReadInt32();
+                last.Pos = new System.Drawing.Point(px, py);
+                last.Floating = reader.ReadBoolean();
+                string pname = reader.ReadString();
+                if (docks.ContainsKey(pname))                
+                    last.Container = docks[pname].Container;                
+            }
             Visible = reader.ReadBoolean();
             bool collaps = reader.ReadBoolean();
             bool open = reader.ReadBoolean();
@@ -64,7 +80,7 @@ namespace Ambertation.Windows.Forms
             if (docks.ContainsKey(name))
             {
                 this.Close();
-                lastdock = docks[name].Container;
+                last.Container = docks[name].Container;
                 if (open) this.Open();
                 Visible = !collaps;
             }

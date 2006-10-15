@@ -49,9 +49,9 @@ namespace Ambertation.Windows.Forms
         private void SetTopMostContainer()
         {
             /*if (Parent!=null)
-                Console.WriteLine(Dock + " " + Parent.Name);
+                //Console.WriteLine(Dock + " " + Parent.Name);
             else
-                Console.WriteLine(Dock + " NULL");*/
+                //Console.WriteLine(Dock + " NULL");*/
             if (Dock == DockStyle.Fill && Parent as DockManager == Manager)
                 this.BringToFront();
         }

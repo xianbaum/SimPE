@@ -40,8 +40,10 @@ namespace Ambertation.Windows.Forms
             : base()
         {
             ManagerSingelton.Global.AddPanel(this);
-            lastdock = null;
-            lastpos = Point.Empty;
+            last.Container = null;
+            last.Pos = Point.Empty;
+            last.Floating = false;
+
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             SetStyle(ControlStyles.ContainerControl, true);
             SetStyle(ControlStyles.AllPaintingInWmPaint, true);
@@ -335,7 +337,7 @@ namespace Ambertation.Windows.Forms
         {
             this.Focus();
             this.NCRefresh();
-
+            if (this.FloatForm != null) this.FloatForm.Text = this.CaptionText;
         }
 
         /// <summary>
@@ -391,14 +393,14 @@ namespace Ambertation.Windows.Forms
             frm.StartFloatingBlocked(this);
         }
 
-        public void Float(Point pos)
+        internal void Float(Point pos)
         {
             DockPanelFloatingForm frm = LetFloat(pos, false) as DockPanelFloatingForm;
             frm.Text = this.CaptionText;
             frm.Show();
         }
 
-        public void Float()
+        internal void Float()
         {
             Point p = PointToScreen(new Point(0, 0));
             Float(p);   
@@ -432,7 +434,7 @@ namespace Ambertation.Windows.Forms
             else
             {
                 if (dc != null) dc.RemoveDock(this);
-                this.Parent = frm;
+                base.Parent = frm;
                 this.Visible = true;
                 this.Dock = DockStyle.Fill;
             }
@@ -454,7 +456,7 @@ namespace Ambertation.Windows.Forms
 
             if (f!=null) 
             {
-                this.Parent = null;
+                base.Parent = null;
                 f.Close();
                 f.Dispose();                
             }
@@ -485,64 +487,111 @@ namespace Ambertation.Windows.Forms
         {
             DockStyle best = DockStyle.Bottom;
             if (Height > Width) best = DockStyle.Right;
-            if (lastdock != null)
+
+            if (last.Floating)
             {
-                if (lastdock.Parent != null)
+                Float(last.Pos);
+                if (Opened != null) Opened(this, new EventArgs());
+                return;
+            }
+
+            if (last.Container != null)
+            {
+                if (last.Container.Parent != null)
                 {
-                    lastdock.AddDock(this);
+                    last.Container.AddDock(this);
                     EnsureVisible();
+                    if (Opened != null) Opened(this, new EventArgs());
 
                     return;
                 }
                 else if (Manager != null)
                 {
-                    Manager.DockPanelInt(this, lastdock.Dock);
+                    Manager.DockPanelInt(this, last.Container.Dock);
+                    if (Opened != null) Opened(this, new EventArgs());
                     return;
                 }
             }
             else if (Manager != null)
             {
                 Manager.DockPanelInt(this, best);
+                if (Opened != null) Opened(this, new EventArgs());
                 return;
             }
             else if (ManagerSingelton.Global.MainDockManager != null)
             {
                 ManagerSingelton.Global.MainDockManager.DockPanel(this, best);
+                if (Opened != null) Opened(this, new EventArgs());
                 return;
             }
-            Float(lastpos);
-
+            Float(last.Pos);
+            if (Opened != null) Opened(this, new EventArgs());
         }
 
-        DockContainer lastdock;
-        Point lastpos;
+        struct LastOpenState
+        {
+            public DockContainer Container;
+            public Point Pos;
+            public bool Floating;
+        };
+
+        LastOpenState last;
         public void Close()
+        {
+            Close(false);
+        }
+        internal void CloseFromForm()
+        {
+            Close(true);
+        }
+
+        protected void Close(bool fromform)
         {
             DockPanelClosingEvent e = new DockPanelClosingEvent(this);
             if (Closing != null) this.Closing(this, e);
             if (e.Cancel) return;
+            DockPanelFloatingForm f = this.FloatForm;
 
-            lastdock = this.DockContainer;
-            lastpos = Location;
-            if (lastdock != null)
+            last.Floating = Floating;
+            last.Container = this.DockContainer;
+            last.Pos = Location;
+            if (last.Container != null)
             {
 
-                lastdock.RemoveDock(this);
-                if (lastdock.Highlight != null) lastdock.Highlight.NCRefresh();
+                last.Container.RemoveDock(this);
+                if (last.Container.Highlight != null) last.Container.Highlight.NCRefresh();
                 Manager.Update();
             }
 
-            DockPanelFloatingForm f = this.Parent as DockPanelFloatingForm;
+            
             if (f != null)
             {
-                f.Close();
-                lastpos = f.Location;
+                if (!fromform) f.Close();
+                last.Pos= f.Location;
             }
 
+            base.Parent = null;
             if (Closed != null) Closed(this, new EventArgs());
         }
 
+        public new Control Parent
+        {
+            get { return base.Parent; }
+            set { throw new Exception("Do not set a DockPanel's Parent manually!"); }
+        }
+        internal void SetParentInt(Control p)
+        {
+            SetParent(p);
+        }
+        protected void SetParent(Control p)
+        {
+            base.Parent = p;
+        }
+        
+
         public event System.EventHandler Closed;
+        public event System.EventHandler Opened;
+        public event System.EventHandler OpenedStateChanged;
         public event ClosingHandler Closing;
         public delegate void ClosingHandler(object sender, DockPanelClosingEvent e);
         public class DockPanelClosingEvent : EventArgs
@@ -650,6 +699,12 @@ namespace Ambertation.Windows.Forms
         protected override void OnParentChanged(EventArgs e)
         {
             base.OnParentChanged(e);
+            if (OpenedStateChanged != null) OpenedStateChanged(this, new EventArgs());
+        }
+        protected override void OnVisibleChanged(EventArgs e)
+        {
+            base.OnVisibleChanged(e);
+            if (OpenedStateChanged != null) OpenedStateChanged(this, new EventArgs());
         }
 
         protected override void OnSizeChanged(EventArgs e)
@@ -845,5 +900,6 @@ namespace Ambertation.Windows.Forms
             }
         }
 
+        
     }
 }
