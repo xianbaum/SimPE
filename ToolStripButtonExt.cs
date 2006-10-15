@@ -31,10 +31,11 @@ namespace Ambertation.Windows.Forms
         {
             get {return item; }
         }
-        internal ToolStripButtonExt(ToolStripItem item)
+        internal ToolStripButtonExt(ToolStripItem item, ref int top)
             : base()
         {
             intern = false;
+            item.Overflow = ToolStripItemOverflow.Never;            
             this.Text = item.Text;
             this.Name = "tsbe_" + item.Name;
             this.Image = item.Image;
@@ -42,10 +43,15 @@ namespace Ambertation.Windows.Forms
             this.Overflow = ToolStripItemOverflow.Always;
             this.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.item = item;
+            this.SetBounds(new System.Drawing.Rectangle(0, top, Bounds.Width, Bounds.Height));
             this.Visible = true;            
             item.VisibleChanged += new EventHandler(item_VisibleChanged);
             item.AvailableChanged += new EventHandler(item_AvailableChanged);
+            this.Alignment = ToolStripItemAlignment.Left;
+            this.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
+            this.TextImageRelation = TextImageRelation.ImageBeforeText;            
 
+            top += Bounds.Height;
             UpdateChecked();
         }
 

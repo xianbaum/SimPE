@@ -83,6 +83,7 @@ namespace Ambertation.Windows.Forms
 
         public void Register(ContextMenuStrip men)
         {
+            if (men == null) return;
             RegisterControl(men);
 
             foreach (ToolStripItem ts in men.Items)
@@ -125,7 +126,7 @@ namespace Ambertation.Windows.Forms
         }
 
         const uint MAGIC = 0xFB001A07;
-        const uint VERSION = 5;
+        const uint VERSION = 6;
         #region Serialize
         public void ToFile(string flname)
         {
@@ -232,8 +233,8 @@ namespace Ambertation.Windows.Forms
 
             if (mg != MAGIC) ReadException(reader, "Not a Layout Resource (invalid MAGIC Code)");
             if (ver>VERSION) ReadException(reader, "Not a Layout Resource (unknown Version)");
-            DeserializeButtons(reader);
-            DeserializeControls(reader);
+            DeserializeButtons(reader, ver);
+            DeserializeControls(reader, ver);
             //reader.Close();
 
             foreach (Pass2Descriptor pass in pass2)
@@ -264,27 +265,33 @@ namespace Ambertation.Windows.Forms
             }
         }
 
-        private void DeserializeControls(BinaryReader reader)
+        private void DeserializeControls(BinaryReader reader, uint ver)
         {
             reorderstrips.Clear();
             int ct = reader.ReadInt32();
             for (int i = 0; i < ct; i++)
             {
-                //Console.WriteLine(reader.BaseStream.Position);
+                //Console.Write(reader.BaseStream.Position);                
                 int id = reader.ReadInt32();
+                //Console.Write(" " + id);
                 string name = reader.ReadString();
+                //Console.WriteLine(" " + name);
                 if (revmap.ContainsKey(id))
                 {
                     SerilaizeDescriptor d = revmap[id];
                     Control c;
                     if (items.ContainsKey(name)) c = items[name];
                     else c = new Control();
-                    d.DeSerializer(reader, c);
-                } 
+                    d.DeSerializer(reader, c, ver);
+                }
+                else
+                {
+                    //Console.WriteLine("Error");
+                }
             }
         }
 
-        private void DeserializeButtons(BinaryReader reader)
+        private void DeserializeButtons(BinaryReader reader, uint ver)
         {
             int ct = reader.ReadInt32();
             for (int i = 0; i < ct; i++)
@@ -295,11 +302,18 @@ namespace Ambertation.Windows.Forms
                 if (revmap.ContainsKey(id))
                 {
                     SerilaizeDescriptor d = revmap[id];
+                    ToolStripItem ts;
                     if (buts.ContainsKey(name))
                     {
-                        ToolStripItem ts = buts[name];
-                        d.DeSerializer(reader, ts);
+                        ts = buts[name];
+
                     }
+                    else ts = new ToolStripButton();
+                    d.DeSerializer(reader, ts, ver);
+                }
+                else
+                {
+                    //Console.WriteLine("Error");
                 }
             }
         }
@@ -414,7 +428,7 @@ namespace Ambertation.Windows.Forms
             }
         }
         protected delegate void SerializeControl(BinaryWriter writer, object o);
-        protected delegate void DeSerializeControl(BinaryReader reader, object o);
+        protected delegate void DeSerializeControl(BinaryReader reader, object o, uint ver);
         #endregion
         #region Custom (De)Serializing
         void SerializeGeneric(BinaryWriter writer, object o)
@@ -422,7 +436,7 @@ namespace Ambertation.Windows.Forms
         }
 
 
-        void DeserializeGeneric(BinaryReader reader, object o)
+        void DeserializeGeneric(BinaryReader reader, object o, uint ver)
         {
         }
 
@@ -438,9 +452,10 @@ namespace Ambertation.Windows.Forms
                 writer.Write(((ToolStripButton)ts).Checked);
                 //Console.WriteLine(((ToolStripButton)ts).Checked + " " + ((ToolStripButton)ts).Visible + " " + ((ToolStripButton)ts).Available);
             }
+            else writer.Write(false);
         }
 
-        void DeserializeToolStripItem(BinaryReader reader, object o)
+        void DeserializeToolStripItem(BinaryReader reader, object o, uint ver)
         {
             ToolStripItem ts = o as ToolStripItem;
             ts.Overflow = (ToolStripItemOverflow)reader.ReadInt32();
@@ -450,9 +465,11 @@ namespace Ambertation.Windows.Forms
             
             if (ts is ToolStripButtonExt || ts is MenuStripButtonExt) ts.Visible = true;
 
+            bool chk = false;
+            if (ver>=6) chk = reader.ReadBoolean();
             if (ts is ToolStripButton)
             {
-                bool chk = reader.ReadBoolean();
+                if (ver <= 5) chk = reader.ReadBoolean();
                 ((ToolStripButton)ts).Checked = chk;
                 //Console.WriteLine(((ToolStripButton)ts).Checked + " " + ((ToolStripButton)ts).Visible + " " + ((ToolStripButton)ts).Available);
             }
@@ -478,7 +495,7 @@ namespace Ambertation.Windows.Forms
             writer.Write(ts.Visible);
         }
 
-        void DeserializeToolStrip(BinaryReader reader, object o)
+        void DeserializeToolStrip(BinaryReader reader, object o, uint ver)
         {
             ToolStrip ts = o as ToolStrip;
             int x = reader.ReadInt32();
@@ -491,8 +508,12 @@ namespace Ambertation.Windows.Forms
                 ts.Parent = items[pname];
                 ts.Parent.Controls.SetChildIndex(ts, index);
             }
-            ts.Visible = reader.ReadBoolean();
-            ts.Location = new System.Drawing.Point(x, y);
+            bool vis = reader.ReadBoolean();
+            if (ts != null)
+            {
+                ts.Visible = vis;
+                ts.Location = new System.Drawing.Point(x, y);
+            }
 
             pass2.Add(new Pass2ToolStripDescriptor(o, new Pass2Control(Pass2ToolStrip), index, new System.Drawing.Point(x, y)));
         }
@@ -516,7 +537,7 @@ namespace Ambertation.Windows.Forms
             dm.Serialize(writer);
         }
 
-        void DeserializeDockManager(BinaryReader reader, object o)
+        void DeserializeDockManager(BinaryReader reader, object o, uint ver)
         {
             DockManager dm = o as DockManager;
             dm.Deserialize(reader);

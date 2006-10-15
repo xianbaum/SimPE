@@ -31,16 +31,17 @@ namespace Ambertation.Windows.Forms
         public static void Add(ToolStrip ts)
         {
             List<ToolStripButton> buts = new List<ToolStripButton>();
+            int top = 0;
             foreach (ToolStripItem item in ts.Items)
             {
-                item.Overflow = ToolStripItemOverflow.Never;
-                ToolStripButton bt = new ToolStripButtonExt(item);
-                                
+                ToolStripButton bt = new ToolStripButtonExt(item, ref top);
                 buts.Add(bt);
             }
 
             foreach (ToolStripButton bt in buts)
+            {
                 ts.Items.Add(bt);
+            }
         }
 
         protected static void Add(ToolStripPanel pn, ContextMenuStrip men)
@@ -57,6 +58,8 @@ namespace Ambertation.Windows.Forms
 
                 if (ts != null) Add(ts);
             }
+
+            pn.ContextMenuStrip = men;
         }
 
         
@@ -68,7 +71,6 @@ namespace Ambertation.Windows.Forms
             Add(cnt.LeftToolStripPanel, men);
             Add(cnt.BottomToolStripPanel, men);
             Add(cnt.RightToolStripPanel, men);
-            cnt.ContextMenuStrip = men;
         }
 
         public static void LineUpToolBars(ToolStripContainer cnt)
