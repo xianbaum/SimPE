@@ -54,7 +54,7 @@ namespace Ambertation.Windows.Forms
             
             containers = new List<DockContainer>();
             panels = new DockButtonBar.DockPanelList();
-
+            canresize = true;
             hidesinglebut = true;
             noclean = false;
             nccleanint = false;
@@ -128,8 +128,7 @@ namespace Ambertation.Windows.Forms
 
         protected override void OnSizeChanged(EventArgs e)
         {
-            base.OnSizeChanged(e);
-            if (state == Status.Expanded) expsz = this.Size;            
+            base.OnSizeChanged(e);                     
             /*foreach (DockContainer dc in containers)
             {
                 if (dc.Left < 0) dc.Width = Math.Max(dc.Width + dc.Left, MinimumDockSize);
@@ -834,11 +833,11 @@ namespace Ambertation.Windows.Forms
         }
 
         
-
         public void Collapse() { Collapse(true); }
         public virtual void Collapse(bool animated)
         {
             if (Collapsed) return;
+            expsz = this.Size;
             DockAnimationEventArgs.Alignment a = GetAlignment();
 
             DockAnimationEventArgs e = new DockAnimationEventArgs(this, DockAnimationEventArgs.Type.Collapse, a);
@@ -908,7 +907,7 @@ namespace Ambertation.Windows.Forms
             }
             else if (e.AnimationType == DockAnimationEventArgs.Type.Expand)
             {
-                state = Status.Expanded;
+                state = Status.Expanded;                
                 if (DockManager != null) DockManager.GetBestButtonBar(this).Remove(this);
                 this.Visible = true;
                 if (Manager != null) Manager.RepaintAll();

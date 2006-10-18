@@ -38,7 +38,7 @@ namespace Ambertation.Windows.Forms
 
         public DockPanel(BaseDockManager manager)
             : base()
-        {
+        {            
             ManagerSingelton.Global.AddPanel(this);
             last.Container = null;
             last.Pos = Point.Empty;
@@ -176,6 +176,18 @@ namespace Ambertation.Windows.Forms
             set { canundock = value; }
         }
 
+        
+        public bool CanResize
+        {
+            get {
+                if (DockContainer==null) return false;
+                return DockContainer.CanResize; 
+            }
+            set {
+                if (DockContainer != null) DockContainer.CanResize = value;
+            }
+        }
+
         public ButtonOrientation BestOrientation
         {
             get
@@ -206,6 +218,8 @@ namespace Ambertation.Windows.Forms
 
         protected bool MouseOnSelector(Point mouse)
         {
+            //if (!DragBorder) return false;
+
             bool candrag = false;
             if (canundock)
                 candrag = (Manager.Renderer.DockPanelRenderer.GetCaptionRect(this).Contains(mouse));
@@ -292,6 +306,13 @@ namespace Ambertation.Windows.Forms
             }
         }
 
+        protected override void OnNcHitTest(NCHitTestEventArgs e)
+        {
+           // if (!DragBorder) e.Result = NCHitTestEventArgs.Results.HTCLIENT;
+
+            base.OnNcHitTest(e);
+        }
+
         internal void CallNcMouseDown(NCMouseEventArgs e)
         {
             OnNcMouseDown(e);
@@ -370,6 +391,7 @@ namespace Ambertation.Windows.Forms
         public event System.EventHandler StartedFloating;
         internal void StartDockModeFloat(NCMouseEventArgs e)
         {
+            if (!CanUndock) return;
             if (Floating) return;
             DockContainer dcsofar = DockContainer;
             Point scr = e.ScreenPosition; // PointToScreen(new Point(e.X, e.Y));
@@ -710,7 +732,7 @@ namespace Ambertation.Windows.Forms
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
-            if (Visible && CaptionText != null && ButtonText !=null) this.NCRefresh();
+            if (CaptionText != null && ButtonText !=null) this.NCRefresh(true);
         }
 
         #region Highlight change

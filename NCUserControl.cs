@@ -104,8 +104,13 @@ namespace Ambertation.Windows.Forms
 
         public void NCRefresh()
         {
+            NCRefresh(false);
+        }
+
+        public void NCRefresh(bool force)
+        {
             needncrepaint = true;
-            if (Visible) NCPaint(new IntPtr(0));
+            if (Visible || force) NCPaint(new IntPtr(0));
         }
         
         protected override void WndProc(ref Message m)

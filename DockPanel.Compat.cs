@@ -46,8 +46,8 @@ namespace Ambertation.Windows.Forms
 
         [Browsable(false)]
         public bool AllowFloat {
-            get { return true;}
-            set {}
+            get { return true; }
+            set {  }
         }
         [Browsable(false)]
         public bool AllowDockBottom
@@ -83,8 +83,15 @@ namespace Ambertation.Windows.Forms
         [Browsable(false)]
         public bool AllowClose
         {
-            get { return true; }
-            set { }
+            get { return this.ShowCloseButton; }
+            set { this.ShowCloseButton = value;  }
+        }
+
+        [Browsable(false)]
+        public bool AllowCollapse
+        {
+            get { return this.ShowCollapseButton; }
+            set { this.ShowCollapseButton = value; }
         }
 
         [Browsable(false)]

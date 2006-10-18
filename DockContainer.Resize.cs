@@ -55,20 +55,40 @@ namespace Ambertation.Windows.Forms
             if (Dock == DockStyle.Fill && Parent as DockManager == Manager)
                 this.BringToFront();
         }
+
+        bool canresize;
+        internal bool CanResize
+        {
+            get { return canresize; }
+            set {
+                if (value != canresize)
+                {
+                    canresize = value;
+                    DoDockChanged();
+                }
+            }
+        }
         
 
         protected virtual void DoDockChanged()
         {
             if (Manager == null) return;
-
-
             this.ResizeBorder.SetAll(false);
-            this.NonClientMargin = Manager.Renderer.DockPanelRenderer.GetGripSize(Dock);
-            if (Dock == DockStyle.Right) this.ResizeBorder.Left = true;
-            else if (Dock == DockStyle.Top) this.ResizeBorder.Bottom = true;
-            else if (Dock == DockStyle.Left) this.ResizeBorder.Right = true;
-            else if (Dock == DockStyle.Bottom) this.ResizeBorder.Top = true;
+            if (!canresize)
+            {
+                this.NonClientMargin = new Padding(0);
+            }
+            else
+            {
+                this.NonClientMargin = Manager.Renderer.DockPanelRenderer.GetGripSize(Dock);
+                if (Dock == DockStyle.Right) this.ResizeBorder.Left = true;
+                else if (Dock == DockStyle.Top) this.ResizeBorder.Bottom = true;
+                else if (Dock == DockStyle.Left) this.ResizeBorder.Right = true;
+                else if (Dock == DockStyle.Bottom) this.ResizeBorder.Top = true;
+            }
         }
+
+        
 
         protected override void OnNcPaint(NCPaintEventArgs e)
         {
@@ -80,38 +100,64 @@ namespace Ambertation.Windows.Forms
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
-        }
-
-        
+        }        
 
 
         RubberBandHelper rbh;
         int index;
+        Control parent;
+        Size lastfit;
         protected virtual bool MyWndProc(ref Message m)
         {
-            if (m.Msg == APIHelp.WM_ENTERSIZEMOVE)
+            if (m.HWnd != Handle) return true;
+            if (m.Msg == APIHelp.WM_SIZE || m.Msg == APIHelp.WM_SIZING)
             {
+                DockContainer dc = Parent as DockContainer;
+                if (dc != null)
+                {
+                    foreach (DockContainer d in dc.containers)
+                    {
+                        if (d.Width == d.MinimumSize.Width || d.Height == d.MinimumSize.Height)
+                        {
+                            if (d.Bounds.IntersectsWith(dc.Bounds))
+                            {
+                                this.Size = lastfit;
+                                return false;
+                                break;
+                            }
+                        }
+                    }
+
+                    lastfit = this.Size;                    
+                }
+            }
+            else if (m.Msg == APIHelp.WM_ENTERSIZEMOVE)
+            {                
+                parent = Parent;
                 if (Manager != null) Manager.SuspendLayout();
-                if (Parent != null) index = Parent.Controls.GetChildIndex(this);             
+                //if (Parent != null) Parent.SuspendLayout();
+                if (Parent != null) index = Parent.Controls.GetChildIndex(this);
+                //this.BringToFront();
+                lastfit = this.Size;
                 rbh = new RubberBandHelper(this);
                 Rectangle rect = this.Bounds;
                 
-                /*this.SetBounds(rect.Left, rect.Top, rect.Width, rect.Height);
-                this.BringToFront();                */
                 if (Manager != null) Manager.ResumeLayout();
             }
-            if (m.Msg == APIHelp.WM_EXITSIZEMOVE)
-            {                
+            else if (m.Msg == APIHelp.WM_EXITSIZEMOVE)
+            {
                 if (Manager != null) Manager.SuspendLayout();
                 if (Parent != null) Parent.SuspendLayout();
+
                 if (rbh != null) Dock = rbh.ContainerDock;
                 if (Parent != null) Parent.Controls.SetChildIndex(this, index);
 
                 if (rbh != null) rbh.Close();
                 rbh = null;
 
-                if (Parent != null) Parent.ResumeLayout();
-                if (Manager != null) Manager.ResumeLayout();
+                if (parent != null) parent.ResumeLayout();
+                if (Manager != null) Manager.ResumeLayout();                
+
                 this.Refresh();
             }
             return true;
