@@ -318,8 +318,10 @@ namespace SimPe.PackedFiles.Wrapper
 		private float memoryitermult = 0f;
 		private uint objecttype = 0;
 		private uint modeltableid = 0;
-		private ArrayList groups = null;
-		private Ttab parent = null;
+        private TtabItemMotiveTable humanGroups = null;
+        private TtabItemMotiveTable animalGroups = null;
+
+        private Ttab parent = null;
 		#endregion
 
 		#region Accessor Methods
@@ -504,38 +506,31 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public int nrGroups { get { return groups.Count; } }
-		public int[] nrMotives
-		{
-			get
-			{
-				int[] count = new int[groups.Count];
-				for (int i = 0; i < groups.Count; i++)
-				{
-					count[i] = ((ArrayList)groups[i]).Count;
-				}
-				return count;
-			}
-		}
-		public short this[int mg, int m, int i]
-		{
-			get
-			{
-				ArrayList gg = (ArrayList)groups[mg];
-				short[] hh = (short[])gg[m];
-				return hh[i];
-			}
-			set
-			{
-				ArrayList gg = (ArrayList)groups[mg];
-				short[] hh = (short[])gg[m];
-				if (hh[i] != value)
-				{
-					hh[i] = value;
-					parent.OnWrapperChanged(this, new EventArgs());
-				}
-			}
-		}
+        public TtabItemMotiveTable HumanMotives
+        {
+            get { return humanGroups; }
+            set
+            {
+                if (humanGroups != value)
+                {
+                    humanGroups = value;
+                    parent.OnWrapperChanged(this, new EventArgs());
+                }
+            }
+        }
+
+        public TtabItemMotiveTable AnimalMotives
+        {
+            get { return animalGroups; }
+            set
+            {
+                if (animalGroups != value)
+                {
+                    animalGroups = value;
+                    parent.OnWrapperChanged(this, new EventArgs());
+                }
+            }
+        }
 
 		public Ttab Parent
 		{
@@ -549,20 +544,9 @@ namespace SimPe.PackedFiles.Wrapper
 			this.parent = parent;
 			flags = new TtabFlags(parent, 0);
 
-			int[] counts;
-			if (parent.Format<0x44) counts = new int[1];
-			else counts = new int[7];
-
-			groups = new ArrayList(counts.Length);
-			for (int j=0; j < counts.Length; j++)
-			{
-				counts[j] = 16;
-				groups.Add(new ArrayList(16));
-				for (int i=0; i < counts[j]; i++) 
-				{
-					((ArrayList)groups[j]).Add(new short[3]);
-				}
-			}
+            humanGroups = new TtabItemMotiveTable(this, TtabItemMotiveTableType.Human);
+            if (parent.Format >= 0x54)
+                animalGroups = new TtabItemMotiveTable(this, TtabItemMotiveTableType.Animal);
 		}
 
 		public TtabItem(Ttab parent, System.IO.BinaryReader reader)
@@ -589,19 +573,8 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.memoryitermult = this.memoryitermult;
 			clone.objecttype = this.objecttype;
 			clone.modeltableid = this.modeltableid;
-
-			clone.groups = new ArrayList();
-			for (int i=0; i < this.groups.Count; i++)
-			{
-				clone.groups.Add(new ArrayList());
-				for (int j=0; j < ((ArrayList)this.groups[i]).Count; j++)
-				{
-					short[] item = (short[])((ArrayList)this.groups[i])[j];
-					((ArrayList)clone.groups[i]).Add(new short [item.Length]);
-					for (int k = 0; k < item.Length; k++)
-						((short [])((ArrayList)clone.groups[i])[j])[k] = item[k];
-				}
-			}
+            clone.humanGroups = this.humanGroups.Clone();
+            clone.animalGroups = this.animalGroups.Clone();
 
 			return clone;
 		}
@@ -622,27 +595,8 @@ namespace SimPe.PackedFiles.Wrapper
             newTi.memoryitermult = memoryitermult;
             newTi.objecttype = objecttype;
             newTi.modeltableid = modeltableid;
-
-            // newTi.groups = null;
-            if (groups.Count != 0)
-            {
-                for (int i = 0; i < newTi.groups.Count; i++)
-                {
-                    int p = (i >= groups.Count) ? groups.Count - 1 : i;
-                    ArrayList pa = (ArrayList)newTi.groups[p];
-                    if (pa.Count != 0)
-                    {
-                        for (int j = 0; j < pa.Count; j++)
-                        {
-                            int q = (j > pa.Count) ? pa.Count - 1 : j;
-                            newTi[i, j, 0] = this[p, q, 0];
-                            newTi[i, j, 1] = this[p, q, 1];
-                            newTi[i, j, 2] = this[p, q, 2];
-                        }
-                    }
-                }
-            }
-            //newTi.parent = null;
+            humanGroups.CopyTo(newTi.humanGroups);
+            animalGroups.CopyTo(newTi.humanGroups);
         }
 
 
@@ -650,16 +604,18 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Reads Data from the Stream
 		/// </summary>
 		/// <param name="reader"></param>
-		internal void Unserialize(System.IO.BinaryReader reader)
+		private void Unserialize(System.IO.BinaryReader reader)
 		{
 			action = reader.ReadUInt16();
 			guard = reader.ReadUInt16();
 
-			int[] counts;
-			if (parent.Format<0x44) counts = new int[1];
-			else counts = new int[7];
-			for (int i=0; i<counts.Length; i++)
-				counts[i] = reader.ReadInt32();
+            uint nGroups = 0;
+            if (parent.Format < 0x44) nGroups = 1;
+            else if (parent.Format < 0x54) nGroups = 7;
+
+            uint[] counts = new uint[nGroups];
+            for (int i = 0; i < nGroups; i++)
+				counts[i] = reader.ReadUInt32();
 
 			flags = new TtabFlags(parent, reader.ReadUInt16());
 			flags2 = reader.ReadUInt16();
@@ -675,39 +631,27 @@ namespace SimPe.PackedFiles.Wrapper
 			memoryitermult = 0f;
 			objecttype = 0;
 			modeltableid = 0;
-			if (parent.Format >0x44) 
-			{
-				uidisplaytype = reader.ReadUInt16();
-				if (parent.Format >= 0x46)
-				{
-					if (parent.Format >= 0x4a) 
-					{
-						facialanimation = reader.ReadUInt32();
-						if (parent.Format >= 0x4c)
-						{
-							memoryitermult = reader.ReadSingle(); //float
-							objecttype = reader.ReadUInt32();
-						}
-					}
-					modeltableid = reader.ReadUInt32();
-				}
-			}
+            if (parent.Format > 0x44)
+            {
+                uidisplaytype = reader.ReadUInt16();
+                if (parent.Format >= 0x46)
+                {
+                    if (parent.Format >= 0x4a)
+                    {
+                        facialanimation = reader.ReadUInt32();
+                        if (parent.Format >= 0x4c)
+                        {
+                            memoryitermult = reader.ReadSingle(); //float
+                            objecttype = reader.ReadUInt32();
+                        }
+                    }
+                    modeltableid = reader.ReadUInt32();
+                }
+            }
 
-			groups = new ArrayList(counts.Length);
-			for (int k=0; k < counts.Length; k++) 
-			{
-				int g = groups.Add(new ArrayList((int)counts[k]));
-				ArrayList gg = (ArrayList)groups[g];
-				for (int i=0; i < 16; i++) 
-				{
-					int h = gg.Add(new short[3]);
-					short[] item = (short[])gg[h];
-					for (int j = 0; j < item.Length; j++)
-					{
-						item[j] = (i < counts[k] ? reader.ReadInt16() : (short)0);
-					}
-				}
-			}
+            humanGroups = new TtabItemMotiveTable(this, TtabItemMotiveTableType.Human, reader);
+            if (parent.Format >= 0x54)
+                animalGroups = new TtabItemMotiveTable(this, TtabItemMotiveTableType.Animal, reader);
 		}
 
 		/// <summary>
@@ -716,14 +660,13 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader"></param>
 		internal void Serialize(System.IO.BinaryWriter writer)
 		{
-			int nrGroups;
-			if (parent.Format<0x44) nrGroups = 1;
-			else nrGroups = 7;
-
 			writer.Write(action);
 			writer.Write(guard);
 
-            for (int i = 0; i < nrGroups; i++) writer.Write(i < groups.Count ? ((ArrayList)groups[i]).Count : 0);
+            uint nGroups = 0;
+            if (parent.Format < 0x44) nGroups = 1;
+            else if (parent.Format < 0x54) nGroups = 7;
+            for (int i = 0; i < nGroups; i++) writer.Write(i < humanGroups.Count ? ((ArrayList)humanGroups[i]).Count : 0);
 
 
 			writer.Write(flags.Value);
@@ -751,26 +694,307 @@ namespace SimPe.PackedFiles.Wrapper
 					writer.Write(modeltableid);
 				}
 			}
+            humanGroups.Serialize(writer);
+            if (parent.Format >= 0x54)
+                animalGroups.Serialize(writer);
+		}
 
-            for (int k = 0; k < groups.Count; k++) 
-			{
-                for (int i = 0; i < ((ArrayList)groups[k]).Count; i++)
+	}
+
+    public class TtabItemMotiveTable : ICollection
+    {
+        #region Attributes
+        private Ttab wrapper;
+        private TtabItem parent;
+        private TtabItemMotiveTableType type;
+        private int nGroups;
+        private int unknown;
+        private TtabItemMotiveGroup[] groups;
+        #endregion
+
+        #region Accessor Methods
+        public TtabItem Parent
+        {
+            get { return parent; }
+            set { this.parent = value; }
+        }
+        public TtabItemMotiveGroup this[int mg]
+        {
+            get { return (ArrayList)groups[mg]; }
+            set
+            {
+                if (groups[mg] != value)
                 {
-                    short[] item = (short[])((ArrayList)groups[k])[i];
+                    groups[mg] = value;
+                    wrapper.OnWrapperChanged(this, new EventArgs());
+                }
+            }
+        }
+        public short[] this[int mg, int m]
+        {
+            get { return (short[])((ArrayList)groups[mg])[m]; }
+            set
+            {
+                if (((ArrayList)groups[mg])[m] != value)
+                {
+                    ((ArrayList)groups[mg])[m] = value;
+                    wrapper.OnWrapperChanged(this, new EventArgs());
+                }
+            }
+        }
+        #endregion
+
+
+        public TtabItemMotiveTable(TtabItem parent, TtabItemMotiveTableType type)
+		{
+            this.wrapper = parent.Parent;
+            this.parent = parent;
+            this.type = type;
+		}
+
+        public TtabItemMotiveTable(TtabItem parent, TtabItemMotiveTableType type, System.IO.BinaryReader reader)
+            : this(parent, type) { Unserialize(reader); }
+
+        private void Unserialize(System.IO.BinaryReader reader)
+        {
+            uint format = wrapper.Format;
+            if (type == TtabItemMotiveTableType.Animal)
+                unknown = reader.ReadUInt32();
+
+            uint nGroups;
+            if (wrapper.Format < 0x44) nGroups = 1;
+            else if (wrapper.Format < 0x54) nGroups = 7;
+            else nGroups = reader.ReadUInt32();
+
+            for (int groupN = 0; groupN < nGroups; groupN++)
+                groups[groupN] = new TtabItemMotiveGroup(this, wrapper.Format < 0x54 ? counts[groupN] : reader.ReadUInt32(), reader);
+        }
+
+        internal void Serialize(System.IO.BinaryWriter writer)
+        {
+            for (int k = 0; k < humanGroups.Count; k++)
+            {
+                for (int i = 0; i < ((ArrayList)humanGroups[k]).Count; i++)
+                {
+                    short[] item = (short[])((ArrayList)humanGroups[k])[i];
                     for (int j = 0; j < item.Length; j++)
                         writer.Write(item[j]);
                 }
             }
-		}
+        }
 
-	}
+        public TtabItemMotiveTable Clone()
+        {
+            TtabItemMotiveTable clone = new TtabItemMotiveTable(parent, type);
+            clone.nGroups = nGroups;
+            clone.groups = groups.Clone();
+            return clone;
+        }
+
+        public void CopyTo(TtabItemMotiveTable target)
+        {
+            target.parent = parent;
+            target.type = type;
+            target.nGroups = nGroups;
+            target.groups = groups.Clone();
+        }
+
+
+        #region ICollection Members
+        public void CopyTo(Array array, int index) { groups.CopyTo(array, index); }
+        public int Count { get { return nGroups; } }
+        public bool IsSynchronized { get { return groups.IsSynchronized; } }
+        public object SyncRoot { get { return groups.SyncRoot; } }
+        #endregion
+
+        #region IEnumerable Members
+        public IEnumerator GetEnumerator() { return groups.GetEnumerator(); }
+        #endregion
+    }
+
+    public class TtabItemMotiveGroup
+    {
+        #region Attributes
+        private Ttab wrapper = null;
+        private TtabItemMotiveTable parent = null;
+        private int nrMotives = 0;
+        private short[,] motives = null;
+        #endregion
+
+        #region Accessor Methods
+        public TtabItemMotiveTable Parent
+        {
+            get { return parent; }
+            set {
+                this.wrapper = value.Parent.Parent;
+                this.parent = value;
+            }
+        }
+        public int NrMotives
+        {
+            get { return nrMotives; }
+            set
+            {
+                if (value == nrMotives) return;
+
+                short[,] newMotives = new short[value, 3];
+
+                if (value < nrMotives)
+                {
+                    for (int i = 0; i < value; i++)
+                        for (int j = 0; j < 3; j++)
+                            newMotives[i, j] = motives[i, j];
+                }
+                else
+                {
+                    for (int i = 0; i < nrMotives; i++)
+                        for (int j = 0; j < 3; j++)
+                            newMotives[i, j] = motives[i, j];
+                    for (int i = nrMotives; i < value; i++)
+                        for (int j = 0; j < 3; j++)
+                            newMotives[i, j] = new short[3] { 0, 0, 0 };
+                }
+                nrMotives = value;
+                motives = newMotives;
+                wrapper.OnWrapperChanged(this, new EventArgs());
+            }
+        }
+        #endregion
+
+        public TtabItemMotiveGroup(TtabItemMotiveTable parent, int nrMotives)
+        {
+            this.wrapper = parent.Parent.Parent;
+            this.parent = parent;
+            this.nrMotives = nrMotives;
+            motives = new short[nrMotives, 3];
+        }
+
+        public TtabItemMotiveGroup(TtabItemMotiveTable parent, int nrMotives, System.IO.BinaryReader reader)
+            : this(parent, nrMotives) { Unserialize(reader); }
+
+        private void Unserialize(System.IO.BinaryReader reader)
+        {
+            for (int rowN = 0; rowN < nrMotives; rowN++)
+                for (int i = 0; i < 3; i++)
+                    motives[rowN, i] = reader.ReadInt16();
+        }
+
+        internal void Serialize(System.IO.BinaryReader reader)
+        {
+            for (int rowN = 0; rowN < nrMotives; rowN++)
+                for (int i = 0; i < 3; i++)
+                    writer.Write(motives[rowN, i]);
+        }
+    }
+
 
 
 	#region Flags and Enums
 	public class TtabFlags : FlagBase
 	{
-		private Ttab parent;
-		public TtabFlags(Ttab parent, ushort flags) : base(flags) { this.parent = parent; }
+        #region Attributes
+        private Ttab parent;
+        #endregion
+
+        #region Accessor Methods
+        public bool ByVisitors
+        {
+            get { return GetBit(0); }
+            set { SetBit(0, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool Joinable
+        {
+            get { return GetBit(1); }
+            set { SetBit(1, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool RunImmediately
+        {
+            get { return GetBit(2); }
+            set { SetBit(2, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool AvailConsecutive
+        {
+            get { return GetBit(3); }
+            set { SetBit(3, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool ByChildren
+        {
+            get { return !GetBit(4); }
+            set { SetBit(4, !value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool ByDemoChild
+        {
+            get { return !GetBit(5); }
+            set { SetBit(5, !value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool ByAdults
+        {
+            get { return !GetBit(6); }
+            set { SetBit(6, !value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool DebugMenu
+        {
+            get { return GetBit(7); }
+            set { SetBit(7, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool AutoFirstSelect
+        {
+            get { return GetBit(8); }
+            set { SetBit(8, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool ByToddlers
+        {
+            get { return GetBit(9); }
+            set { SetBit(9, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool ByElders
+        {
+            get { return GetBit(10); }
+            set { SetBit(10, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool ByTeens
+        {
+            get { return GetBit(11); }
+            set { SetBit(11, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool Unknown1
+        {
+            get { return GetBit(12); }
+            set { SetBit(12, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool Unknown2
+        {
+            get { return GetBit(13); }
+            set { SetBit(13, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool Unknown3
+        {
+            get { return GetBit(14); }
+            set { SetBit(14, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+
+        public bool Unknown4
+        {
+            get { return GetBit(15); }
+            set { SetBit(15, value); parent.OnWrapperChanged(this, new EventArgs()); }
+        }
+        #endregion
+
+        public TtabFlags(Ttab parent, ushort flags) : base(flags) { this.parent = parent; }
 
 		public new ushort Value
 		{
@@ -785,106 +1009,16 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public bool ByVisitors
-		{
-			get { return GetBit(0); }
-			set { SetBit(0, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool Joinable
-		{
-			get { return GetBit(1); }
-			set { SetBit(1, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool RunImmediately
-		{
-			get { return GetBit(2); }
-			set { SetBit(2, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool AvailConsecutive
-		{
-			get { return GetBit(3); }
-			set { SetBit(3, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool ByChildren
-		{
-			get { return !GetBit(4); }
-			set { SetBit(4, !value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool ByDemoChild
-		{
-			get { return !GetBit(5); }
-			set { SetBit(5, !value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool ByAdults
-		{
-			get { return !GetBit(6); }
-			set { SetBit(6, !value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool DebugMenu
-		{
-			get { return GetBit(7); }
-			set { SetBit(7, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool AutoFirstSelect
-		{
-			get { return GetBit(8); }
-			set { SetBit(8, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool ByToddlers
-		{
-			get { return GetBit(9); }
-			set { SetBit(9, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool ByElders
-		{
-			get { return GetBit(10); }
-			set { SetBit(10, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool ByTeens
-		{
-			get { return GetBit(11); }
-			set { SetBit(11, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool Unknown1
-		{
-			get { return GetBit(12); }
-			set { SetBit(12, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool Unknown2
-		{
-			get { return GetBit(13); }
-			set { SetBit(13, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool Unknown3
-		{
-			get { return GetBit(14); }
-			set { SetBit(14, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
-
-		public bool Unknown4
-		{
-			get { return GetBit(15); }
-			set { SetBit(15, value); parent.OnWrapperChanged(this, new EventArgs()); }
-		}
 		public TtabFlags Clone()
 		{
 			return new TtabFlags(parent, Value);
 		}
 	}
+
+    public enum TtabItemMotiveTableType : int
+    {
+        Human, Animal
+    }
 
 	#endregion
 }

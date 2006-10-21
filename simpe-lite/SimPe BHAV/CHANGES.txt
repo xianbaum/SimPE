@@ -1,5 +1,15 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+21 October 2006 23:36 - Save TTAB changes (Pets) - non-compiling!
+  SimPe BHAV\
+    TtabItemMotiveTableUI.cs 1.10.12.3.12.1
+    TtabItemMotiveTableUI.resx 1.5.22.1.22.1
+    TtabMotiveGroupUI.cs 1.3.26.3.12.1
+    TtabMotiveGroupUI.resx 1.4.52.1
+    TtabSingleMotiveUI.cs 1.5.26.1.12.1
+    TtabSingleMotiveUI.resx 1.3.26.1.12.1
+    TtabWrapper.cs 1.23.6.6.12.1
+
 15 October 2006 13:28 - Amend to use SimPe.PathProvider
   pjse filetable\
     FileTable.cs 1.11.2.18

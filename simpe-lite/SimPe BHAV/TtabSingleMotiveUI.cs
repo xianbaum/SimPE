@@ -32,18 +32,21 @@ namespace SimPe.PackedFiles.UserInterface
 	/// </summary>
 	public class TtabSingleMotiveUI : System.Windows.Forms.UserControl
 	{
-		private System.Windows.Forms.TextBox Min;
+        #region Form variables
+        private System.Windows.Forms.TextBox Min;
 		private System.Windows.Forms.TextBox Delta;
 		private System.Windows.Forms.TextBox Type;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
+        #endregion
 
-		public TtabSingleMotiveUI()
+        public TtabSingleMotiveUI()
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
+            Visible = false;
 
 			// TODO: Add any initialization after the InitializeComponent call
 			TextBox[] tb = { Min, Delta, Type };
@@ -70,6 +73,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private TtabItem item = null;
 		private int mgNr;
 		private int motive;
+
 		private ArrayList alHex16;
 		private short[] mv;
 		private bool internalchg;
@@ -86,6 +90,8 @@ namespace SimPe.PackedFiles.UserInterface
 			Min.Text   = Helper.HexString(mv[0] = i[j, k, 0]);
 			Delta.Text = Helper.HexString(mv[1] = i[j, k, 1]);
 			Type.Text  = Helper.HexString(mv[2] = i[j, k, 2]);
+
+            Visible = true;
 		}
 
 		public void SetData(TtabItem i, int j) { this.SetData(i, j, motive); }
