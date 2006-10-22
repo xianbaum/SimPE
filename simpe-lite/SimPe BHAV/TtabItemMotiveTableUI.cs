@@ -33,8 +33,8 @@ namespace SimPe.PackedFiles.UserInterface
 	public class TtabItemMotiveTableUI : System.Windows.Forms.UserControl
 	{
 		#region Form variables
-		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI1;
-		private System.Windows.Forms.Label lbMotive0;
+
+        private System.Windows.Forms.Label lbMotive0;
 		private System.Windows.Forms.Label lbMotive1;
 		private System.Windows.Forms.Label lbMotive2;
 		private System.Windows.Forms.Label lbMotive3;
@@ -50,13 +50,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbMotive15;
 		private System.Windows.Forms.Label lbMotive13;
 		private System.Windows.Forms.Label lbMotive12;
-		private System.Windows.Forms.Panel pnAllGroups;
-		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI2;
-		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI3;
-		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI4;
-		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI5;
-		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI6;
-		private SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI ttabMotiveGroupUI7;
+        private System.Windows.Forms.Panel pnAllGroups;
 		private System.Windows.Forms.CheckBox cbShowAll;
 		private System.Windows.Forms.Panel pnCopyButtons;
 		private System.Windows.Forms.Button btnCpyM0;
@@ -105,28 +99,30 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 
 			// TODO: Add any initialization after the InitializeComponent call
-            Visible = false;
             pnAllGroups.Visible = false;
-            pnCopyButtons.Visible = false;
 
-			Label[] l = {
+            Label[] aMotiveLabels = {
 							lbMotive0 ,lbMotive1 ,lbMotive2  ,lbMotive3  ,lbMotive4  ,lbMotive5  ,lbMotive6  ,lbMotive7
 							,lbMotive8 ,lbMotive9 ,lbMotive10 ,lbMotive11 ,lbMotive12 ,lbMotive13 ,lbMotive14 ,lbMotive15
 						};
-			aMotiveLabels = l;
+            maxWidth = this.cbShowAll.Width;
+            for (ushort m = 0; m < aMotiveLabels.Length; m++)
+            {
+                aMotiveLabels[m].Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Motives, m);
+                maxWidth = aMotiveLabels[m].Width > maxWidth ? aMotiveLabels[m].Width : maxWidth;
+            }
+            for (ushort m = 0; m < aMotiveLabels.Length; m++)
+            {
+                aMotiveLabels[m].Left = maxWidth - aMotiveLabels[m].Width;
+            }
+
+            pnCopyButtons.Visible = pnAllGroups.Visible = false;
+
             Button[] b = {
-							 btnCpyM0  ,btnCpyM1  ,btnCpyM2  ,btnCpyM3
-							,btnCpyM4  ,btnCpyM5  ,btnCpyM6  ,btnCpyM7
-							,btnCpyM8  ,btnCpyM9  ,btnCpyM10 ,btnCpyM11
-							,btnCpyM12 ,btnCpyM13 ,btnCpyM14 ,btnCpyM15
+							 btnCpyM0  ,btnCpyM1  ,btnCpyM2  ,btnCpyM3  ,btnCpyM4  ,btnCpyM5  ,btnCpyM6  ,btnCpyM7
+							,btnCpyM8  ,btnCpyM9  ,btnCpyM10 ,btnCpyM11 ,btnCpyM12 ,btnCpyM13 ,btnCpyM14 ,btnCpyM15
 							};
             aButtons = b;
-
-			TtabMotiveGroupUI[] t = {
-										ttabMotiveGroupUI1  ,ttabMotiveGroupUI2  ,ttabMotiveGroupUI3
-										,ttabMotiveGroupUI4  ,ttabMotiveGroupUI5  ,ttabMotiveGroupUI6  ,ttabMotiveGroupUI7
-									};
-			aMotiveGroups = t;
 		}
 
 		/// <summary> 
@@ -146,63 +142,77 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region TtabItemMotiveTableUI
-		private TtabItem item = null;
-		private Label[] aMotiveLabels;
-		private TtabMotiveGroupUI[] aMotiveGroups;
+        private TtabItemMotiveTable items = null;
+
 		private Button[] aButtons;
+        private int maxWidth = 0;
+
+        public TtabItemMotiveTable MotiveTable
+        {
+            get { return items; }
+            set
+            {
+                this.items = value;
+                if (value != null)
+                {
+                    setData();
+                    items.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                }
+            }
+        }
+
+        private void WrapperChanged(object sender, System.EventArgs e)
+        {
+            if (sender != items) return;
+            setData();
+        }
+
+
+        private void setData()
+        {
+            int nGroups = items.Count;
+            this.lbNrGroups.Text = (this.lbNrGroups.Text.Split(':')[0]) + ": " + items.Count.ToString();
+
+            cbShowAll.Enabled = false;
+
+            foreach (Control c in this.Controls)
+                if (c is TtabMotiveGroupUI)
+                    this.Controls.Remove(c);
+            foreach (Control c in this.pnAllGroups.Controls)
+                if (c is TtabMotiveGroupUI)
+                    this.pnAllGroups.Controls.Remove(c);
+
+            if (items.Count > 0)
+            {
+                TtabMotiveGroupUI c = new TtabMotiveGroupUI();
+                this.Controls.Add(c);
+                c.MotiveGroup = items[0];
+                c.Location = new Point(maxWidth + 2, 0);
+                if (items.Count > 1)
+                {
+                    cbShowAll.Enabled = true;
+                    pnCopyButtons.Left = this.pnAllGroups.Left = c.Right + 2;
+                    int nextLeft = 0;
+                    for (int i = 1; i < items.Count; i++)
+                    {
+                        c = new TtabMotiveGroupUI();
+                        this.pnAllGroups.Controls.Add(c);
+                        c.MotiveGroup = items[i];
+                        c.Location = new Point(nextLeft, 0);
+                        nextLeft += c.Width + 2;
+                    }
+                    this.pnAllGroups.Size = new Size(this.Width - this.pnAllGroups.Left, this.Height);
+                }
+            }
+            cbShowAll_CheckedChanged(null, null);
+        }
+
 
 		private void doCopyMotive(int m)
 		{
-			for (int mg = 1; mg < item.nrGroups; mg++)
-			{
-				item[mg, m, 0] = item[0, m, 0];
-				item[mg, m, 1] = item[0, m, 1];
-				item[mg, m, 2] = item[0, m, 2];
-			}
-			SetData();
+            for (int i = 1; i < items.Count; i++)
+                items[i][m] = items[0][m].Clone();
 		}
-
-
-		public void SetData(TtabItem i)
-		{
-			item = i;
-
-            int nGroups = item.nrGroups;
-            this.lbNrGroups.Text = (this.lbNrGroups.Text.Split(new char[] { ':' })[0]) + ": " + nGroups.ToString();
-
-            int maxWidth = this.cbShowAll.Width;
-
-            for (ushort m = 0; m < aMotiveLabels.Length; m++)
-            {
-                maxWidth = aMotiveLabels[m].Width > maxWidth ? aMotiveLabels[m].Width : maxWidth;
-            }
-            for (ushort m = 0; m < aMotiveLabels.Length; m++)
-            {
-                aMotiveLabels[m].Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Motives, m);
-                aMotiveLabels[m].Left = maxWidth - aMotiveLabels[m].Width;
-            }
-
-
-            if (item.Parent.Format < 0x44)
-                cbShowAll.Enabled = false;
-
-            ttabMotiveGroupUI1.Location = new Point(maxWidth, 0);
-
-			if (item.nrGroups > 1)
-			{
-				cbShowAll.Enabled = true;
-				for (int m = 0; m < aMotiveGroups.Length; m++) 
-					aMotiveGroups[m].SetData(item, m);
-			}
-			else
-			{
-				cbShowAll.Enabled = false;
-				ttabMotiveGroupUI1.SetData(item, (cbShowAll.Enabled) ? -1 : 0);
-			}
-			cbShowAll_CheckedChanged(null, null);
-		}
-
-		public void SetData() { this.SetData(item); }
 
 
 		#endregion
@@ -268,14 +278,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbCBM10 = new System.Windows.Forms.Label();
             this.lbCBM12 = new System.Windows.Forms.Label();
             this.lbNrGroups = new System.Windows.Forms.Label();
-            this.ttabMotiveGroupUI2 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
-            this.ttabMotiveGroupUI3 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
-            this.ttabMotiveGroupUI4 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
-            this.ttabMotiveGroupUI5 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
-            this.ttabMotiveGroupUI6 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
-            this.ttabMotiveGroupUI7 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
-            this.ttabMotiveGroupUI1 = new SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI();
-            this.pnAllGroups.SuspendLayout();
             this.pnCopyButtons.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -370,12 +372,6 @@ namespace SimPe.PackedFiles.UserInterface
             // pnAllGroups
             // 
             resources.ApplyResources(this.pnAllGroups, "pnAllGroups");
-            this.pnAllGroups.Controls.Add(this.ttabMotiveGroupUI2);
-            this.pnAllGroups.Controls.Add(this.ttabMotiveGroupUI3);
-            this.pnAllGroups.Controls.Add(this.ttabMotiveGroupUI4);
-            this.pnAllGroups.Controls.Add(this.ttabMotiveGroupUI5);
-            this.pnAllGroups.Controls.Add(this.ttabMotiveGroupUI6);
-            this.pnAllGroups.Controls.Add(this.ttabMotiveGroupUI7);
             this.pnAllGroups.Name = "pnAllGroups";
             // 
             // cbShowAll
@@ -633,48 +629,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.lbNrGroups, "lbNrGroups");
             this.lbNrGroups.Name = "lbNrGroups";
             // 
-            // ttabMotiveGroupUI2
-            // 
-            resources.ApplyResources(this.ttabMotiveGroupUI2, "ttabMotiveGroupUI2");
-            this.ttabMotiveGroupUI2.MotiveGroup = 1;
-            this.ttabMotiveGroupUI2.Name = "ttabMotiveGroupUI2";
-            // 
-            // ttabMotiveGroupUI3
-            // 
-            resources.ApplyResources(this.ttabMotiveGroupUI3, "ttabMotiveGroupUI3");
-            this.ttabMotiveGroupUI3.MotiveGroup = 2;
-            this.ttabMotiveGroupUI3.Name = "ttabMotiveGroupUI3";
-            // 
-            // ttabMotiveGroupUI4
-            // 
-            resources.ApplyResources(this.ttabMotiveGroupUI4, "ttabMotiveGroupUI4");
-            this.ttabMotiveGroupUI4.MotiveGroup = 3;
-            this.ttabMotiveGroupUI4.Name = "ttabMotiveGroupUI4";
-            // 
-            // ttabMotiveGroupUI5
-            // 
-            resources.ApplyResources(this.ttabMotiveGroupUI5, "ttabMotiveGroupUI5");
-            this.ttabMotiveGroupUI5.MotiveGroup = 4;
-            this.ttabMotiveGroupUI5.Name = "ttabMotiveGroupUI5";
-            // 
-            // ttabMotiveGroupUI6
-            // 
-            resources.ApplyResources(this.ttabMotiveGroupUI6, "ttabMotiveGroupUI6");
-            this.ttabMotiveGroupUI6.MotiveGroup = 5;
-            this.ttabMotiveGroupUI6.Name = "ttabMotiveGroupUI6";
-            // 
-            // ttabMotiveGroupUI7
-            // 
-            resources.ApplyResources(this.ttabMotiveGroupUI7, "ttabMotiveGroupUI7");
-            this.ttabMotiveGroupUI7.MotiveGroup = 6;
-            this.ttabMotiveGroupUI7.Name = "ttabMotiveGroupUI7";
-            // 
-            // ttabMotiveGroupUI1
-            // 
-            resources.ApplyResources(this.ttabMotiveGroupUI1, "ttabMotiveGroupUI1");
-            this.ttabMotiveGroupUI1.MotiveGroup = 0;
-            this.ttabMotiveGroupUI1.Name = "ttabMotiveGroupUI1";
-            // 
             // TtabItemMotiveTableUI
             // 
             this.Controls.Add(this.lbNrGroups);
@@ -682,7 +636,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.Controls.Add(this.cbShowAll);
             this.Controls.Add(this.pnAllGroups);
             this.Controls.Add(this.lbMotive0);
-            this.Controls.Add(this.ttabMotiveGroupUI1);
             this.Controls.Add(this.lbMotive1);
             this.Controls.Add(this.lbMotive2);
             this.Controls.Add(this.lbMotive3);
@@ -700,7 +653,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.Controls.Add(this.lbMotive12);
             this.Name = "TtabItemMotiveTableUI";
             resources.ApplyResources(this, "$this");
-            this.pnAllGroups.ResumeLayout(false);
             this.pnCopyButtons.ResumeLayout(false);
             this.pnCopyButtons.PerformLayout();
             this.ResumeLayout(false);
@@ -716,23 +668,14 @@ namespace SimPe.PackedFiles.UserInterface
 			if (bn >= 0)
 				doCopyMotive(bn);
 			else
-				for(int i = 0; i < item.nrMotives[0]; i++)
+                for (int i = 0; i < aButtons.Length; i++)
 					doCopyMotive(i);
 		}
 
 		private void cbShowAll_CheckedChanged(object sender, System.EventArgs e)
 		{
-			if (cbShowAll.Enabled && cbShowAll.Checked)
-			{
-				pnCopyButtons.Visible = false;
-				pnAllGroups.Visible = true;
-			}
-			else
-			{
-                pnAllGroups.Visible = cbShowAll.Enabled;
-                pnCopyButtons.Visible = cbShowAll.Enabled;
-			}
-		}
-
+            pnAllGroups.Visible = cbShowAll.Enabled && cbShowAll.Checked;
+            pnCopyButtons.Visible = cbShowAll.Enabled && !cbShowAll.Checked;
+        }
 	}
 }

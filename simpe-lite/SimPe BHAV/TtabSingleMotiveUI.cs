@@ -46,7 +46,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			// This call is required by the Windows.Forms Form Designer.
 			InitializeComponent();
-            Visible = false;
 
 			// TODO: Add any initialization after the InitializeComponent call
 			TextBox[] tb = { Min, Delta, Type };
@@ -70,60 +69,46 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region TtabSingleMotiveUI
-		private TtabItem item = null;
-		private int mgNr;
-		private int motive;
+        private TtabItemMotiveItem item = null;
 
 		private ArrayList alHex16;
-		private short[] mv;
 		private bool internalchg;
 
-		public void SetData(TtabItem i, int j, int k)
-		{
-			this.Visible = true;
-			mv = new short[3];
+        public TtabItemMotiveItem Motive
+        {
+            get { return item; }
+            set
+            {
+                this.item = value;
+                setText();
+                item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+            }
+        }
 
-			item = i;
-			mgNr = j;
-			Motive = k;
+        private void WrapperChanged(object sender, System.EventArgs e)
+        {
+            if (internalchg || sender != item) return;
+            setText();
+        }
 
-			Min.Text   = Helper.HexString(mv[0] = i[j, k, 0]);
-			Delta.Text = Helper.HexString(mv[1] = i[j, k, 1]);
-			Type.Text  = Helper.HexString(mv[2] = i[j, k, 2]);
-
-            Visible = true;
-		}
-
-		public void SetData(TtabItem i, int j) { this.SetData(i, j, motive); }
-
-		public void SetData(TtabItem i) { this.SetData(i, mgNr, motive); }
-
-		public void SetData() { this.SetData(item, mgNr, motive); }
-
+        private void setText()
+        {
+            bool prev = internalchg;
+            internalchg = true;
+            Min.Text = Helper.HexString(item.Min);
+            Delta.Text = Helper.HexString(item.Delta);
+            Type.Text = Helper.HexString(item.Type);
+            internalchg = prev;
+        }
 
 		public void Clear()
 		{
-			item[mgNr, motive, 0] = 0;
-			item[mgNr, motive, 1] = 0;
-			item[mgNr, motive, 2] = 0;
-			SetData();
-		}
-
-		/// <summary>
-		/// Which of the sixteen motives the control is editing (0-15)
-		/// </summary>
-		public int Motive
-		{
-			get { return motive; }
-			set
-			{
-				if (value < 0 || value > 15)
-					throw new Exception("Motive must be in range 0 to 15");
-
-				motive = value;
-			}
-		}
-
+            bool prev = internalchg;
+            internalchg = true;
+			item.Min = item.Delta = item.Type = 0;
+            setText();
+            internalchg = prev;
+        }
 
 		private bool hex16_IsValid(object sender)
 		{
@@ -191,8 +176,13 @@ namespace SimPe.PackedFiles.UserInterface
 			if (!hex16_IsValid(sender)) return;
 
 			internalchg = true;
-			int i = alHex16.IndexOf(sender);
-			item[mgNr, motive, alHex16.IndexOf(sender)] = Convert.ToInt16(((TextBox)sender).Text, 16);
+            short val = Convert.ToInt16(((TextBox)sender).Text, 16);
+            switch (alHex16.IndexOf(sender))
+            {
+                case 0: item.Min = val; break;
+                case 1: item.Delta = val; break;
+                case 2: item.Type = val; break;
+            }
 			internalchg = false;
 		}
 
@@ -202,21 +192,26 @@ namespace SimPe.PackedFiles.UserInterface
 
 			e.Cancel = true;
 
-			short val = 0;
-			int i = alHex16.IndexOf(sender);
-			item[mgNr, motive, i] = val = mv[i];
-
-			internalchg = true;
-			((TextBox)sender).Text = Helper.HexString(val);
+            short val = 0;
+            switch (alHex16.IndexOf(sender))
+            {
+                case 0: val = item.Min; break;
+                case 1: val = item.Delta; break;
+                case 2: val = item.Type; break;
+            }
+            internalchg = true;
+            ((TextBox)sender).Text = Helper.HexString(val);
 			((TextBox)sender).SelectAll();
 			internalchg = false;
 		}
 
 		private void hex16_Validated(object sender, System.EventArgs ev)
 		{
-			((TextBox)sender).Text = Helper.HexString(item[mgNr, motive, alHex16.IndexOf(sender)]);
+            internalchg = true;
+            Motive = item;
 			((TextBox)sender).SelectAll();
-		}
+            internalchg = false;
+        }
 
 	}
 }

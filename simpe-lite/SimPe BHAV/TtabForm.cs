@@ -70,7 +70,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.CheckBox cbconsecutive;
 		private System.Windows.Forms.CheckBox cbimmediately;
 		private System.Windows.Forms.CheckBox cbjoinable;
-		private System.Windows.Forms.TabPage tpMotives;
+		private System.Windows.Forms.TabPage tpHumanMotives;
 		private System.Windows.Forms.CheckBox cbvisitor;
 		private System.Windows.Forms.Label label24;
 		private System.Windows.Forms.TextBox tbAction;
@@ -110,6 +110,8 @@ namespace SimPe.PackedFiles.UserInterface
         private Button btnRefreshFT;
         private Button btnStrPrev;
         private Button btnStrNext;
+        private TabPage tpAnimalMotives;
+        private TtabItemMotiveTableUI ttabItemMotiveTableUI2;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -329,20 +331,7 @@ namespace SimPe.PackedFiles.UserInterface
         {
             if (wrapper.Format == previousFormat) return;
 
-            if (wrapper.Format >= 0x44 && previousFormat < 0x44)
-            {
-                DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
-                    pjse.Localization.GetString("ttabForm_Multiple"),
-                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
-                if (!DialogResult.OK.Equals(dr))
-                {
-                    wrapper.Format = previousFormat;
-                    return;
-                }
-                changeSize();
-            }
-
-            else if (wrapper.Format < 0x44 && previousFormat >= 0x44)
+            if (previousFormat >= 0x44 && wrapper.Format < 0x44)
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
                     pjse.Localization.GetString("ttabForm_Single"),
@@ -354,21 +343,64 @@ namespace SimPe.PackedFiles.UserInterface
                 }
                 changeSize();
             }
+            else if (previousFormat < 0x44 && wrapper.Format >= 0x44 && wrapper.Format < 0x54)
+            {
+                DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
+                    pjse.Localization.GetString("ttabForm_MultipleFixed"),
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                if (!DialogResult.OK.Equals(dr))
+                {
+                    wrapper.Format = previousFormat;
+                    return;
+                }
+                changeSize();
+            }
+            else if (previousFormat < 0x54 && wrapper.Format >= 0x54)
+            {
+                DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
+                    pjse.Localization.GetString("ttabForm_MultipleVaries"),
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                if (!DialogResult.OK.Equals(dr))
+                {
+                    wrapper.Format = previousFormat;
+                    return;
+                }
+                changeSize();
+            }
             previousFormat = wrapper.Format;
+
+            this.tbUIDispType.Enabled = this.tbFaceAnimID.Enabled =
+                this.tbModelTabID.Enabled = this.tbMemIterMult.Enabled = this.tbObjType.Enabled = false;
+
+            if (previousFormat >= 0x45)
+            {
+                this.tbUIDispType.Enabled = true;
+                if (previousFormat >= 0x46)
+                {
+                    this.tbModelTabID.Enabled = true;
+                    if (previousFormat >= 0x4a)
+                    {
+                        this.tbFaceAnimID.Enabled = true;
+                        if (previousFormat >= 0x4c)
+                        {
+                            this.tbMemIterMult.Enabled = this.tbObjType.Enabled = true;
+                        }
+                    }
+                }
+            }
+
         }
 
         private void changeSize()
         {
-            bool origstate = internalchg;
-            internalchg = true;
-            for (int i = 0; i < wrapper.Count; i++)
+            this.tabControl1.TabPages.Remove(this.tpAnimalMotives);
+            if (wrapper.Format >= 0x54)
             {
-                TtabItem newTi = new TtabItem(wrapper);
-                wrapper[i].CopyTo(newTi);
-                wrapper[i] = newTi;
+                this.tabControl1.TabPages.Add(this.tpAnimalMotives);
+                this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[1];
             }
-            internalchg = origstate;
-            TtabSelect(null, null);
+            else
+                this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[0];
         }
 
         /// <summary>
@@ -471,7 +503,8 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			this.Text = tbFilename.Text = wrapper.FileName;
 			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
-			internalchg = false;
+            changeSize();
+            internalchg = false;
 		}
 
 		#endregion
@@ -485,6 +518,8 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabForm));
             this.ttabPanel = new System.Windows.Forms.Panel();
+            this.btnStrPrev = new System.Windows.Forms.Button();
+            this.btnStrNext = new System.Windows.Forms.Button();
             this.btnAppend = new System.Windows.Forms.Button();
             this.lbFilename = new System.Windows.Forms.Label();
             this.tbFilename = new System.Windows.Forms.TextBox();
@@ -548,19 +583,20 @@ namespace SimPe.PackedFiles.UserInterface
             this.label1 = new System.Windows.Forms.Label();
             this.tbJoinIndex = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.tpMotives = new System.Windows.Forms.TabPage();
+            this.tpHumanMotives = new System.Windows.Forms.TabPage();
             this.ttabItemMotiveTableUI1 = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
+            this.tpAnimalMotives = new System.Windows.Forms.TabPage();
+            this.ttabItemMotiveTableUI2 = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.panel5 = new System.Windows.Forms.Panel();
             this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
-            this.btnStrPrev = new System.Windows.Forms.Button();
-            this.btnStrNext = new System.Windows.Forms.Button();
             this.ttabPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSettings.SuspendLayout();
             this.gbFlags.SuspendLayout();
-            this.tpMotives.SuspendLayout();
+            this.tpHumanMotives.SuspendLayout();
+            this.tpAnimalMotives.SuspendLayout();
             this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -583,6 +619,18 @@ namespace SimPe.PackedFiles.UserInterface
             this.ttabPanel.Controls.Add(this.tabControl1);
             this.ttabPanel.Controls.Add(this.panel5);
             this.ttabPanel.Name = "ttabPanel";
+            // 
+            // btnStrPrev
+            // 
+            resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
+            this.btnStrPrev.Name = "btnStrPrev";
+            this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
+            // 
+            // btnStrNext
+            // 
+            resources.ApplyResources(this.btnStrNext, "btnStrNext");
+            this.btnStrNext.Name = "btnStrNext";
+            this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
             // 
             // btnAppend
             // 
@@ -648,7 +696,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tpSettings);
-            this.tabControl1.Controls.Add(this.tpMotives);
+            this.tabControl1.Controls.Add(this.tpHumanMotives);
+            this.tabControl1.Controls.Add(this.tpAnimalMotives);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
@@ -688,6 +737,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpSettings.Controls.Add(this.tbJoinIndex);
             this.tpSettings.Controls.Add(this.label2);
             this.tpSettings.Name = "tpSettings";
+            this.tpSettings.UseVisualStyleBackColor = true;
             // 
             // llGuardian
             // 
@@ -1053,16 +1103,32 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // tpMotives
+            // tpHumanMotives
             // 
-            resources.ApplyResources(this.tpMotives, "tpMotives");
-            this.tpMotives.Controls.Add(this.ttabItemMotiveTableUI1);
-            this.tpMotives.Name = "tpMotives";
+            resources.ApplyResources(this.tpHumanMotives, "tpHumanMotives");
+            this.tpHumanMotives.Controls.Add(this.ttabItemMotiveTableUI1);
+            this.tpHumanMotives.Name = "tpHumanMotives";
+            this.tpHumanMotives.Tag = "Motives/Human Motives";
+            this.tpHumanMotives.UseVisualStyleBackColor = true;
             // 
             // ttabItemMotiveTableUI1
             // 
             resources.ApplyResources(this.ttabItemMotiveTableUI1, "ttabItemMotiveTableUI1");
+            this.ttabItemMotiveTableUI1.MotiveTable = null;
             this.ttabItemMotiveTableUI1.Name = "ttabItemMotiveTableUI1";
+            // 
+            // tpAnimalMotives
+            // 
+            this.tpAnimalMotives.Controls.Add(this.ttabItemMotiveTableUI2);
+            resources.ApplyResources(this.tpAnimalMotives, "tpAnimalMotives");
+            this.tpAnimalMotives.Name = "tpAnimalMotives";
+            this.tpAnimalMotives.UseVisualStyleBackColor = true;
+            // 
+            // ttabItemMotiveTableUI2
+            // 
+            resources.ApplyResources(this.ttabItemMotiveTableUI2, "ttabItemMotiveTableUI2");
+            this.ttabItemMotiveTableUI2.MotiveTable = null;
+            this.ttabItemMotiveTableUI2.Name = "ttabItemMotiveTableUI2";
             // 
             // panel5
             // 
@@ -1091,18 +1157,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label25, "label25");
             this.label25.Name = "label25";
             // 
-            // btnStrPrev
-            // 
-            resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
-            this.btnStrPrev.Name = "btnStrPrev";
-            this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
-            // 
-            // btnStrNext
-            // 
-            resources.ApplyResources(this.btnStrNext, "btnStrNext");
-            this.btnStrNext.Name = "btnStrNext";
-            this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
-            // 
             // TtabForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1117,7 +1171,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpSettings.PerformLayout();
             this.gbFlags.ResumeLayout(false);
             this.gbFlags.PerformLayout();
-            this.tpMotives.ResumeLayout(false);
+            this.tpHumanMotives.ResumeLayout(false);
+            this.tpAnimalMotives.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.ResumeLayout(false);
@@ -1169,8 +1224,11 @@ namespace SimPe.PackedFiles.UserInterface
 
 				doFlags();
 
-				this.ttabItemMotiveTableUI1.SetData(wrapper[lbttab.SelectedIndex]);
-				this.tabControl1.Enabled = true;
+                this.ttabItemMotiveTableUI1.MotiveTable = wrapper[lbttab.SelectedIndex].HumanMotives;
+                if (wrapper.Format >= 0x54)
+                    this.ttabItemMotiveTableUI2.MotiveTable = wrapper[lbttab.SelectedIndex].AnimalMotives;
+
+                this.tabControl1.Enabled = true;
 				internalchg = false;
 			}
 			else

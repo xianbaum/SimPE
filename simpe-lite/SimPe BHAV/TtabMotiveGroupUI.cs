@@ -38,6 +38,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbDelta;
         private System.Windows.Forms.Label lbType;
 		private System.Windows.Forms.Button btnClear;
+        private TextBox tbUnknown;
+        private Label lbUnknown;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -50,7 +52,19 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 
 			// TODO: Add any initialization after the InitializeComponent call
-		}
+
+            int muiW, muiH;
+            {
+                TtabSingleMotiveUI c = new TtabSingleMotiveUI();
+                muiW = c.Width;
+                muiH = c.Height;
+            }
+
+            this.lbMin.Location = new Point(muiW / 4 - this.lbMin.Width / 2, 13);
+            this.lbDelta.Location = new Point(muiW / 2 - this.lbDelta.Width / 2, 13);
+            this.lbType.Location = new Point((3 * muiW) / 4 - this.lbType.Width / 2, 13);
+            this.Width = 2 + muiW + 2;
+        }
 
 		/// <summary> 
 		/// Clean up any resources being used.
@@ -69,62 +83,58 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region TtabMotiveGroupUI
-		private TtabItem item = null;
-		private int mgnr;
-        private bool isHuman = true;
+        private TtabItemMotiveGroup item = null;
+        private bool internalchg;
 
 
-		public void SetData(TtabItem i, int mg, bool h)
-        {
-            item = i;
-            MotiveGroup = mg;
-            isHuman = h;
-
-            int nRows = item[mg].Count;
-
-            int muiW, muiH;
-            {
-                TtabSingleMotiveUI c = new TtabSingleMotiveUI();
-                muiW = c.Width + 2;
-                muiH = c.Height + 1;
+        public TtabItemMotiveGroup MotiveGroup
+		{
+            get { return item; }
+			set
+			{
+                this.item = value;
+                setData();
+                item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
             }
-            this.lbMin.Location = new Point(muiW / 4 - muiW / 8, 13);
-            this.lbDelta.Location = new Point(muiW / 2 - muiW / 8, 13);
-            this.lbType.Location = new Point((3 * muiW) / 4 + muiW / 8, 13);
+		}
 
-            for (int rowN = 0; rowN < nRows; rowN++)
+        private void WrapperChanged(object sender, System.EventArgs e)
+        {
+            if (internalchg || sender != item) return;
+            setData();
+        }
+
+
+        private void setData()
+        {
+            foreach (Control c in this.gbMotiveGroup.Controls)
+                if (c is TtabSingleMotiveUI)
+                    this.Controls.Remove(c);
+
+            int nextTop = 35;
+            for (int i = 0; i < item.Count; i++)
             {
                 TtabSingleMotiveUI c = new TtabSingleMotiveUI();
                 this.gbMotiveGroup.Controls.Add(c);
-
-                c.Location = new Point(2, 35 + rowN * muiH);
-                c.SetData(i, mg, rowN);
+                c.Motive = item[i];
+                c.Location = new Point(2, nextTop);
+                nextTop += c.Height + 2;
             }
-            this.btnClear.Location = new Point(this.btnClear.Location.X, 35 + nRows * muiH + 2);
-            this.Size =
-                new Size(2 + muiW + 2, this.btnClear.Location.Y + this.btnClear.Height + 4);
-
-            this.Visible = true;
+            this.btnClear.Top = nextTop + 2;
+            if (item.Parent.Type == TtabItemMotiveTableType.Human)
+            {
+                this.lbUnknown.Visible = this.tbUnknown.Visible = false;
+                this.Height = this.btnClear.Bottom + 4;
+            }
+            else
+            {
+                this.lbUnknown.Top = this.btnClear.Bottom + 2;
+                this.tbUnknown.Top = this.lbUnknown.Bottom + 2;
+                this.tbUnknown.Text = "0x" + SimPe.Helper.HexString(item.Unknown);
+                this.lbUnknown.Visible = this.tbUnknown.Visible = true;
+                this.Height = this.tbUnknown.Bottom + 4;
+            }
         }
-
-        public void SetData(TtabItem i, int j) { this.SetData(i, j, isHuman); }
-
-        public void SetData(TtabItem i) { this.SetData(i, mgnr, isHuman); }
-
-        public void SetData() { this.SetData(item, mgnr, isHuman); }
-
-		public int MotiveGroup
-		{
-			get { return mgnr; }
-			set
-			{
-				mgnr = value;
-                if (isHuman)
-                    gbMotiveGroup.Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Ages, (ushort)mgnr);
-                else
-                    gbMotiveGroup.Text = mgnr.ToString();
-			}
-		}
 
 		#endregion
 
@@ -137,6 +147,8 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabMotiveGroupUI));
             this.gbMotiveGroup = new System.Windows.Forms.GroupBox();
+            this.tbUnknown = new System.Windows.Forms.TextBox();
+            this.lbUnknown = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
             this.lbMin = new System.Windows.Forms.Label();
             this.lbDelta = new System.Windows.Forms.Label();
@@ -146,6 +158,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // gbMotiveGroup
             // 
+            this.gbMotiveGroup.Controls.Add(this.tbUnknown);
+            this.gbMotiveGroup.Controls.Add(this.lbUnknown);
             this.gbMotiveGroup.Controls.Add(this.btnClear);
             this.gbMotiveGroup.Controls.Add(this.lbMin);
             this.gbMotiveGroup.Controls.Add(this.lbDelta);
@@ -153,6 +167,16 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.gbMotiveGroup, "gbMotiveGroup");
             this.gbMotiveGroup.Name = "gbMotiveGroup";
             this.gbMotiveGroup.TabStop = false;
+            // 
+            // tbUnknown
+            // 
+            resources.ApplyResources(this.tbUnknown, "tbUnknown");
+            this.tbUnknown.Name = "tbUnknown";
+            // 
+            // lbUnknown
+            // 
+            resources.ApplyResources(this.lbUnknown, "lbUnknown");
+            this.lbUnknown.Name = "lbUnknown";
             // 
             // btnClear
             // 
@@ -189,10 +213,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnClear_Click(object sender, System.EventArgs e)
 		{
+            internalchg = true;
             foreach (Control c in this.Controls)
                 if (c is TtabSingleMotiveUI)
                     ((TtabSingleMotiveUI)c).Clear();
-		}
+            internalchg = false;
+        }
 
 	}
 

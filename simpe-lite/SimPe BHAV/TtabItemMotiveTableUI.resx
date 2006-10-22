@@ -178,7 +178,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive1.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="lbMotive2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -208,7 +208,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="lbMotive3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -238,7 +238,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive3.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="lbMotive4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -268,7 +268,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive4.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="lbMotive5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -298,7 +298,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive5.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="lbMotive6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -328,7 +328,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive6.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="lbMotive7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -358,7 +358,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive7.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>11</value>
   </data>
   <data name="lbMotive9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -388,7 +388,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive9.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>12</value>
   </data>
   <data name="lbMotive11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -418,7 +418,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive11.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>13</value>
   </data>
   <data name="lbMotive8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -448,7 +448,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive8.ZOrder" xml:space="preserve">
-    <value>15</value>
+    <value>14</value>
   </data>
   <data name="lbMotive10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -478,7 +478,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive10.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>15</value>
   </data>
   <data name="lbMotive14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -508,7 +508,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive14.ZOrder" xml:space="preserve">
-    <value>17</value>
+    <value>16</value>
   </data>
   <data name="lbMotive15.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -538,7 +538,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive15.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>17</value>
   </data>
   <data name="lbMotive13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -568,7 +568,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive13.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>18</value>
   </data>
   <data name="lbMotive12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -598,142 +598,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbMotive12.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>19</value>
   </data>
   <data name="pnAllGroups.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="ttabMotiveGroupUI2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="ttabMotiveGroupUI2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 432</value>
-  </data>
-  <data name="ttabMotiveGroupUI2.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI2.Name" xml:space="preserve">
-    <value>ttabMotiveGroupUI2</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI2.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI, pjse.coder.plugin, Version=2.0.2485.34482, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI2.Parent" xml:space="preserve">
-    <value>pnAllGroups</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="ttabMotiveGroupUI3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>144, 0</value>
-  </data>
-  <data name="ttabMotiveGroupUI3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 432</value>
-  </data>
-  <data name="ttabMotiveGroupUI3.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI3.Name" xml:space="preserve">
-    <value>ttabMotiveGroupUI3</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI3.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI, pjse.coder.plugin, Version=2.0.2485.34482, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI3.Parent" xml:space="preserve">
-    <value>pnAllGroups</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI3.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="ttabMotiveGroupUI4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>288, 0</value>
-  </data>
-  <data name="ttabMotiveGroupUI4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 432</value>
-  </data>
-  <data name="ttabMotiveGroupUI4.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI4.Name" xml:space="preserve">
-    <value>ttabMotiveGroupUI4</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI4.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI, pjse.coder.plugin, Version=2.0.2485.34482, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI4.Parent" xml:space="preserve">
-    <value>pnAllGroups</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI4.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="ttabMotiveGroupUI5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>432, 0</value>
-  </data>
-  <data name="ttabMotiveGroupUI5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 432</value>
-  </data>
-  <data name="ttabMotiveGroupUI5.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI5.Name" xml:space="preserve">
-    <value>ttabMotiveGroupUI5</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI5.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI, pjse.coder.plugin, Version=2.0.2485.34482, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI5.Parent" xml:space="preserve">
-    <value>pnAllGroups</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI5.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="ttabMotiveGroupUI6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>576, 0</value>
-  </data>
-  <data name="ttabMotiveGroupUI6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 432</value>
-  </data>
-  <data name="ttabMotiveGroupUI6.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI6.Name" xml:space="preserve">
-    <value>ttabMotiveGroupUI6</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI6.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI, pjse.coder.plugin, Version=2.0.2485.34482, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI6.Parent" xml:space="preserve">
-    <value>pnAllGroups</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI6.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="ttabMotiveGroupUI7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>720, 0</value>
-  </data>
-  <data name="ttabMotiveGroupUI7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 432</value>
-  </data>
-  <data name="ttabMotiveGroupUI7.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI7.Name" xml:space="preserve">
-    <value>ttabMotiveGroupUI7</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI7.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI, pjse.coder.plugin, Version=2.0.2485.34482, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI7.Parent" xml:space="preserve">
-    <value>pnAllGroups</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI7.ZOrder" xml:space="preserve">
-    <value>5</value>
   </data>
   <data name="pnAllGroups.Location" type="System.Drawing.Point, System.Drawing">
     <value>232, 0</value>
   </data>
   <data name="pnAllGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>872, 456</value>
+    <value>153, 456</value>
   </data>
   <data name="pnAllGroups.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1723,7 +1597,7 @@
     <value>32</value>
   </data>
   <data name="pnCopyButtons.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1096, 0</value>
+    <value>391, 0</value>
   </data>
   <data name="pnCopyButtons.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 432</value>
@@ -1750,16 +1624,16 @@
     <value>NoControl</value>
   </data>
   <data name="lbNrGroups.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 415</value>
+    <value>3, 435</value>
   </data>
   <data name="lbNrGroups.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 17</value>
+    <value>157, 17</value>
   </data>
   <data name="lbNrGroups.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="lbNrGroups.Text" xml:space="preserve">
-    <value>Ages: DD</value>
+    <value>Groups: 0xDDDDDDDD</value>
   </data>
   <data name="&gt;&gt;lbNrGroups.Name" xml:space="preserve">
     <value>lbNrGroups</value>
@@ -1773,32 +1647,11 @@
   <data name="&gt;&gt;lbNrGroups.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="ttabMotiveGroupUI1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 0</value>
-  </data>
-  <data name="ttabMotiveGroupUI1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 432</value>
-  </data>
-  <data name="ttabMotiveGroupUI1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI1.Name" xml:space="preserve">
-    <value>ttabMotiveGroupUI1</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI1.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabMotiveGroupUI, pjse.coder.plugin, Version=2.0.2485.34482, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;ttabMotiveGroupUI1.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1224, 456</value>
+    <value>549, 456</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>TtabItemMotiveTableUI</value>

@@ -39,28 +39,13 @@ namespace SimPe.PackedFiles.Wrapper
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
 	{
 		#region Attributes
-		/// <summary>
-		/// Contains the Filename
-		/// </summary>
 		private byte[] filename = new byte[64];
-		/// <summary>
-		/// Header of the File
-		/// </summary>
-		private uint[] header = { 0xffffffff, 0x0000004e, 0x00000000 };
-		/// <summary>
-		/// Items stored in the File
-		/// </summary>
+		private uint[] header = { 0xffffffff, 0x00000054, 0x00000000 };
 		private TtabItemArrayList items = new TtabItemArrayList();
-		/// <summary>
-		/// Unknown Data following the TTAB
-		/// </summary>
 		private byte[] footer = new byte[0];
 		#endregion
 
 		#region Accessor methods
-		/// <summary>
-		/// Returns the Filename
-		/// </summary>
 		public string FileName 
 		{
 			get { return Helper.ToString(filename); }
@@ -73,10 +58,6 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-
-		/// <summary>
-		/// Returns / Sets the Format this File is in
-		/// </summary>
 		public uint Format 
 		{
 			get { return header[1]; }
@@ -89,7 +70,19 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-		#endregion
+        public uint Unknown
+        {
+            get { return header[2]; }
+            set
+            {
+                if (header[2] != value)
+                {
+                    header[2] = value;
+                    OnWrapperChanged(this, new EventArgs());
+                }
+            }
+        }
+        #endregion
 
 		/// <summary>
 		/// Constructor
@@ -168,7 +161,9 @@ namespace SimPe.PackedFiles.Wrapper
 			header = new uint[3];
 			header[0] = reader.ReadUInt32();
 			if (header[0] != 0xffffffff)
-				return;
+				throw new Exception("Unexpected data in TTAB header."
+                    + "  Read 0x" + SimPe.Helper.HexString(header[0]) + "."
+                    + "  Expected 0xFFFFFFFF.");
 			header[1] = reader.ReadUInt32();
 			header[2] = reader.ReadUInt32();
 
@@ -544,9 +539,9 @@ namespace SimPe.PackedFiles.Wrapper
 			this.parent = parent;
 			flags = new TtabFlags(parent, 0);
 
-            humanGroups = new TtabItemMotiveTable(this, TtabItemMotiveTableType.Human);
+            humanGroups = new TtabItemMotiveTable(this, null, TtabItemMotiveTableType.Human);
             if (parent.Format >= 0x54)
-                animalGroups = new TtabItemMotiveTable(this, TtabItemMotiveTableType.Animal);
+                animalGroups = new TtabItemMotiveTable(this, null, TtabItemMotiveTableType.Animal);
 		}
 
 		public TtabItem(Ttab parent, System.IO.BinaryReader reader)
@@ -573,32 +568,11 @@ namespace SimPe.PackedFiles.Wrapper
 			clone.memoryitermult = this.memoryitermult;
 			clone.objecttype = this.objecttype;
 			clone.modeltableid = this.modeltableid;
-            clone.humanGroups = this.humanGroups.Clone();
-            clone.animalGroups = this.animalGroups.Clone();
+            clone.humanGroups = this.humanGroups == null ? null : this.humanGroups.Clone();
+            clone.animalGroups = this.animalGroups == null ? null : this.animalGroups.Clone();
 
 			return clone;
 		}
-
-        public void CopyTo(TtabItem newTi)
-        {
-            newTi.action = action;
-            newTi.guard = guard;
-            newTi.flags = flags.Clone();
-            newTi.flags2 = flags2;
-            newTi.strindex = strindex;
-            newTi.attenuationcode = attenuationcode;
-            newTi.attenuationvalue = attenuationvalue;
-            newTi.autonomy = autonomy;
-            newTi.joinindex = joinindex;
-            newTi.uidisplaytype = uidisplaytype;
-            newTi.facialanimation = facialanimation;
-            newTi.memoryitermult = memoryitermult;
-            newTi.objecttype = objecttype;
-            newTi.modeltableid = modeltableid;
-            humanGroups.CopyTo(newTi.humanGroups);
-            animalGroups.CopyTo(newTi.humanGroups);
-        }
-
 
 		/// <summary>
 		/// Reads Data from the Stream
@@ -613,9 +587,9 @@ namespace SimPe.PackedFiles.Wrapper
             if (parent.Format < 0x44) nGroups = 1;
             else if (parent.Format < 0x54) nGroups = 7;
 
-            uint[] counts = new uint[nGroups];
+            int[] counts = nGroups > 0 ? new int[nGroups] : null;
             for (int i = 0; i < nGroups; i++)
-				counts[i] = reader.ReadUInt32();
+				counts[i] = reader.ReadInt32();
 
 			flags = new TtabFlags(parent, reader.ReadUInt16());
 			flags2 = reader.ReadUInt16();
@@ -649,9 +623,9 @@ namespace SimPe.PackedFiles.Wrapper
                 }
             }
 
-            humanGroups = new TtabItemMotiveTable(this, TtabItemMotiveTableType.Human, reader);
+            humanGroups = new TtabItemMotiveTable(this, counts, TtabItemMotiveTableType.Human, reader);
             if (parent.Format >= 0x54)
-                animalGroups = new TtabItemMotiveTable(this, TtabItemMotiveTableType.Animal, reader);
+                animalGroups = new TtabItemMotiveTable(this, null, TtabItemMotiveTableType.Animal, reader);
 		}
 
 		/// <summary>
@@ -666,8 +640,7 @@ namespace SimPe.PackedFiles.Wrapper
             uint nGroups = 0;
             if (parent.Format < 0x44) nGroups = 1;
             else if (parent.Format < 0x54) nGroups = 7;
-            for (int i = 0; i < nGroups; i++) writer.Write(i < humanGroups.Count ? ((ArrayList)humanGroups[i]).Count : 0);
-
+            for (int i = 0; i < nGroups; i++) writer.Write(i < humanGroups.Count ? humanGroups[i].Count : 0);
 
 			writer.Write(flags.Value);
 			writer.Write(flags2);
@@ -698,18 +671,15 @@ namespace SimPe.PackedFiles.Wrapper
             if (parent.Format >= 0x54)
                 animalGroups.Serialize(writer);
 		}
-
-	}
+    }
 
     public class TtabItemMotiveTable : ICollection
     {
         #region Attributes
-        private Ttab wrapper;
         private TtabItem parent;
+        private int[] counts = null;
         private TtabItemMotiveTableType type;
-        private int nGroups;
-        private int unknown;
-        private TtabItemMotiveGroup[] groups;
+        private TtabItemMotiveGroupArrayList items = null;
         #endregion
 
         #region Accessor Methods
@@ -718,176 +688,398 @@ namespace SimPe.PackedFiles.Wrapper
             get { return parent; }
             set { this.parent = value; }
         }
-        public TtabItemMotiveGroup this[int mg]
+        public Ttab Wrapper { get { return parent.Parent; } }
+        public TtabItemMotiveTableType Type
         {
-            get { return (ArrayList)groups[mg]; }
+            get { return type; }
             set
             {
-                if (groups[mg] != value)
+                if (type != value)
                 {
-                    groups[mg] = value;
-                    wrapper.OnWrapperChanged(this, new EventArgs());
-                }
-            }
-        }
-        public short[] this[int mg, int m]
-        {
-            get { return (short[])((ArrayList)groups[mg])[m]; }
-            set
-            {
-                if (((ArrayList)groups[mg])[m] != value)
-                {
-                    ((ArrayList)groups[mg])[m] = value;
-                    wrapper.OnWrapperChanged(this, new EventArgs());
+                    type = value;
+                    Wrapper.OnWrapperChanged(this, new EventArgs());
                 }
             }
         }
         #endregion
 
 
-        public TtabItemMotiveTable(TtabItem parent, TtabItemMotiveTableType type)
+        public TtabItemMotiveTable(TtabItem parent, int[] counts, TtabItemMotiveTableType type)
 		{
-            this.wrapper = parent.Parent;
             this.parent = parent;
+            this.counts = counts;
             this.type = type;
+
+            if (Wrapper.Format >= 0x54 && counts != null)
+                throw new Exception("'counts' must be null for Format >= 0x54");
 		}
 
-        public TtabItemMotiveTable(TtabItem parent, TtabItemMotiveTableType type, System.IO.BinaryReader reader)
-            : this(parent, type) { Unserialize(reader); }
+        public TtabItemMotiveTable(TtabItem parent, int[] counts, TtabItemMotiveTableType type, System.IO.BinaryReader reader)
+            : this(parent, counts, type) { Unserialize(reader); }
 
         private void Unserialize(System.IO.BinaryReader reader)
         {
-            uint format = wrapper.Format;
-            if (type == TtabItemMotiveTableType.Animal)
-                unknown = reader.ReadUInt32();
+            int nrGroups = 0;
+            if (Wrapper.Format < 0x44) nrGroups = 1;
+            else if (Wrapper.Format < 0x54) nrGroups = 7;
+            else nrGroups = reader.ReadInt32();
 
-            uint nGroups;
-            if (wrapper.Format < 0x44) nGroups = 1;
-            else if (wrapper.Format < 0x54) nGroups = 7;
-            else nGroups = reader.ReadUInt32();
-
-            for (int groupN = 0; groupN < nGroups; groupN++)
-                groups[groupN] = new TtabItemMotiveGroup(this, wrapper.Format < 0x54 ? counts[groupN] : reader.ReadUInt32(), reader);
+            items = new TtabItemMotiveGroupArrayList(new TtabItemMotiveGroup[nrGroups]);
+            for (int i = 0; i < nrGroups; i++)
+                items[i] = new TtabItemMotiveGroup(this, counts != null ? counts[i] : 0, type, reader);
         }
 
         internal void Serialize(System.IO.BinaryWriter writer)
         {
-            for (int k = 0; k < humanGroups.Count; k++)
-            {
-                for (int i = 0; i < ((ArrayList)humanGroups[k]).Count; i++)
-                {
-                    short[] item = (short[])((ArrayList)humanGroups[k])[i];
-                    for (int j = 0; j < item.Length; j++)
-                        writer.Write(item[j]);
-                }
-            }
+            if (Wrapper.Format >= 0x54)
+                writer.Write(items.Count);
+            for (int i = 0; i < items.Count; i++)
+                items[i].Serialize(writer);
         }
 
         public TtabItemMotiveTable Clone()
         {
-            TtabItemMotiveTable clone = new TtabItemMotiveTable(parent, type);
-            clone.nGroups = nGroups;
-            clone.groups = groups.Clone();
+            TtabItemMotiveTable clone = new TtabItemMotiveTable(parent, counts, type);
+            clone.items = items == null ? null : items.Clone();
             return clone;
         }
 
-        public void CopyTo(TtabItemMotiveTable target)
-        {
-            target.parent = parent;
-            target.type = type;
-            target.nGroups = nGroups;
-            target.groups = groups.Clone();
-        }
 
+        #region TtabItemMotiveGroupArrayList
+        private class TtabItemMotiveGroupArrayList : ArrayList
+        {
+			public TtabItemMotiveGroupArrayList() : base() { }
+
+            public TtabItemMotiveGroupArrayList(TtabItemMotiveGroup[] c) : base(c) { }
+
+            public TtabItemMotiveGroupArrayList(int capacity) : base(capacity) { }
+
+            public new TtabItemMotiveGroup this[int index]
+			{
+                get { return (TtabItemMotiveGroup)base[index]; }
+				set { base[index] = value; }
+			}
+
+            public new TtabItemMotiveGroupArrayList Clone()
+            {
+                TtabItemMotiveGroupArrayList clone = new TtabItemMotiveGroupArrayList();
+                foreach (TtabItemMotiveGroup item in this)
+                    clone.Add(item);
+                return clone;
+            }
+
+        }
+        #endregion
 
         #region ICollection Members
-        public void CopyTo(Array array, int index) { groups.CopyTo(array, index); }
-        public int Count { get { return nGroups; } }
-        public bool IsSynchronized { get { return groups.IsSynchronized; } }
-        public object SyncRoot { get { return groups.SyncRoot; } }
-        #endregion
+        public int Add(TtabItemMotiveGroup item)
+        {
+            //if (items.Count >= 0x08) // we don't really know...
+                //return -1;
+
+            item.Parent = this;
+            int result = items.Add(item);
+            if (result >= 0) Wrapper.OnWrapperChanged(items, new EventArgs());
+            return result;
+        }
+
+        public void Clear()
+        {
+            items.Clear();
+            Wrapper.OnWrapperChanged(items, new EventArgs());
+        }
+
+        public void Remove(TtabItemMotiveGroup item) { this.RemoveAt(items.IndexOf(item)); }
+
+        public void RemoveAt(int index)
+        {
+            if (index < 0 || index >= items.Count) return;
+
+            items.RemoveAt(index);
+            Wrapper.OnWrapperChanged(items, new EventArgs());
+        }
+
+        public TtabItemMotiveGroup this[int index]
+        {
+            get
+            {
+                return items[index];
+            }
+            set
+            {
+                if (items[index] == null || !items[index].Equals(value))
+                {
+                    value.Parent = this;
+                    items[index] = value;
+                    Wrapper.OnWrapperChanged(items, new EventArgs());
+                }
+            }
+        }
+
+        public bool Contains(TtabItem item) { return items.Contains(item); }
+
+        public int IndexOf(object item) { return items.IndexOf(item); }
+
+        public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+
+        public int Count { get { return items.Count; } }
+
+        public bool IsSynchronized { get { return items.IsSynchronized; } }
+
+        public object SyncRoot { get { return items.SyncRoot; } }
 
         #region IEnumerable Members
-        public IEnumerator GetEnumerator() { return groups.GetEnumerator(); }
+        public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+
         #endregion
+        #endregion
+
     }
 
-    public class TtabItemMotiveGroup
+    public class TtabItemMotiveGroup : ICollection
     {
         #region Attributes
-        private Ttab wrapper = null;
         private TtabItemMotiveTable parent = null;
-        private int nrMotives = 0;
-        private short[,] motives = null;
+        private int count = 0;
+        private TtabItemMotiveTableType type = TtabItemMotiveTableType.Human;
+        private int unknown = 0;
+        private TtabItemMotiveItemArrayList items = null;
         #endregion
 
         #region Accessor Methods
+        public Ttab Wrapper { get { return parent.Parent.Parent; } }
         public TtabItemMotiveTable Parent
         {
             get { return parent; }
-            set {
-                this.wrapper = value.Parent.Parent;
-                this.parent = value;
-            }
+            set { parent = value; }
         }
-        public int NrMotives
+        public int Unknown
         {
-            get { return nrMotives; }
+            get { return unknown; }
             set
             {
-                if (value == nrMotives) return;
-
-                short[,] newMotives = new short[value, 3];
-
-                if (value < nrMotives)
+                if (unknown != value)
                 {
-                    for (int i = 0; i < value; i++)
-                        for (int j = 0; j < 3; j++)
-                            newMotives[i, j] = motives[i, j];
+                    unknown = value;
+                    Wrapper.OnWrapperChanged(this, new EventArgs());
                 }
-                else
-                {
-                    for (int i = 0; i < nrMotives; i++)
-                        for (int j = 0; j < 3; j++)
-                            newMotives[i, j] = motives[i, j];
-                    for (int i = nrMotives; i < value; i++)
-                        for (int j = 0; j < 3; j++)
-                            newMotives[i, j] = new short[3] { 0, 0, 0 };
-                }
-                nrMotives = value;
-                motives = newMotives;
-                wrapper.OnWrapperChanged(this, new EventArgs());
             }
         }
         #endregion
 
-        public TtabItemMotiveGroup(TtabItemMotiveTable parent, int nrMotives)
+        public TtabItemMotiveGroup(TtabItemMotiveTable parent, int count, TtabItemMotiveTableType type)
         {
-            this.wrapper = parent.Parent.Parent;
             this.parent = parent;
-            this.nrMotives = nrMotives;
-            motives = new short[nrMotives, 3];
+            this.count = count;
+            this.type = type;
         }
 
-        public TtabItemMotiveGroup(TtabItemMotiveTable parent, int nrMotives, System.IO.BinaryReader reader)
-            : this(parent, nrMotives) { Unserialize(reader); }
+        public TtabItemMotiveGroup(TtabItemMotiveTable parent, int count, TtabItemMotiveTableType type, System.IO.BinaryReader reader)
+            : this(parent, count, type) { Unserialize(reader); }
 
         private void Unserialize(System.IO.BinaryReader reader)
         {
-            for (int rowN = 0; rowN < nrMotives; rowN++)
-                for (int i = 0; i < 3; i++)
-                    motives[rowN, i] = reader.ReadInt16();
+            if (Wrapper.Format >= 0x54)
+            {
+                count = reader.ReadInt32();
+                if (type == TtabItemMotiveTableType.Animal)
+                    unknown = reader.ReadInt32();
+            }
+
+            items = new TtabItemMotiveItemArrayList(new TtabItemMotiveItem[count < 16 ? 16 : count]);
+            for (int i = 0; i < count; i++)
+                items[i] = new TtabItemMotiveItem(this, reader);
+            for (int i = count; i < 16; i++)
+                items[i] = new TtabItemMotiveItem(this);
         }
 
-        internal void Serialize(System.IO.BinaryReader reader)
+        internal void Serialize(System.IO.BinaryWriter writer)
         {
-            for (int rowN = 0; rowN < nrMotives; rowN++)
-                for (int i = 0; i < 3; i++)
-                    writer.Write(motives[rowN, i]);
+            if (Wrapper.Format >= 0x54)
+            {
+                writer.Write(items.Count);
+                if (type == TtabItemMotiveTableType.Animal)
+                    writer.Write(unknown);
+            }
+
+            for (int i = 0; i < items.Count; i++)
+                items[i].Serialize(writer);
         }
+
+
+        private class TtabItemMotiveItemArrayList : ArrayList
+        {
+			public TtabItemMotiveItemArrayList() : base() { }
+
+            public TtabItemMotiveItemArrayList(TtabItemMotiveItem[] c) : base(c) { }
+
+            public TtabItemMotiveItemArrayList(int capacity) : base(capacity) { }
+
+            public new TtabItemMotiveItem this[int index]
+			{
+                get { return (TtabItemMotiveItem)base[index]; }
+				set { base[index] = value; }
+			}
+
+            /// <summary>
+            /// Creates a deep copy of the TtabItemMotiveItemArrayList
+            /// </summary>
+            public new TtabItemMotiveItemArrayList Clone()
+            {
+                TtabItemMotiveItemArrayList clone = new TtabItemMotiveItemArrayList();
+                foreach (TtabItemMotiveItem item in this)
+                    clone.Add(item.Clone());
+                return clone;
+            }
+
+        }
+
+        public TtabItemMotiveGroup Clone()
+        {
+            TtabItemMotiveGroup clone = new TtabItemMotiveGroup(parent, count, type);
+            clone.unknown = unknown;
+            clone.items = items == null ? null : items.Clone();
+            return clone;
+        }
+
+        #region ICollection Members
+        public int Add(TtabItemMotiveItem item)
+        {
+            //if (items.Count >= 0x10) // we don't really know...
+            //return -1;
+
+            item.Parent = this;
+            int result = items.Add(item);
+            if (result >= 0) Wrapper.OnWrapperChanged(items, new EventArgs());
+            return result;
+        }
+
+        public void Clear()
+        {
+            items.Clear();
+            Wrapper.OnWrapperChanged(items, new EventArgs());
+        }
+
+        public void Remove(TtabItemMotiveItem item) { this.RemoveAt(items.IndexOf(item)); }
+
+        public void RemoveAt(int index)
+        {
+            if (index < 0 || index >= items.Count) return;
+
+            items.RemoveAt(index);
+            Wrapper.OnWrapperChanged(items, new EventArgs());
+        }
+
+        public TtabItemMotiveItem this[int index]
+        {
+            get
+            {
+                return items[index];
+            }
+            set
+            {
+                if (items[index] == null || !items[index].Equals(value))
+                {
+                    value.Parent = this;
+                    items[index] = value;
+                    Wrapper.OnWrapperChanged(items, new EventArgs());
+                }
+            }
+        }
+
+        public bool Contains(TtabItem item) { return items.Contains(item); }
+
+        public int IndexOf(object item) { return items.IndexOf(item); }
+
+        public void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+
+        public int Count { get { return items.Count; } }
+
+        public bool IsSynchronized { get { return items.IsSynchronized; } }
+
+        public object SyncRoot { get { return items.SyncRoot; } }
+
+        #region IEnumerable Members
+        public IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+
+        #endregion
+        #endregion
     }
 
+    public class TtabItemMotiveItem
+    {
+        #region Attributes
+        private TtabItemMotiveGroup parent = null;
+        private short[] items = null;
+        #endregion
 
+        #region Accessor Methods
+        public TtabItemMotiveGroup Parent
+        {
+            get { return parent; }
+            set { parent = value; }
+        }
+        public short Min
+        {
+            get { return this[0]; }
+            set { this[0] = value; }
+        }
+        public short Delta
+        {
+            get { return items[1]; }
+            set { this[1] = value; }
+        }
+        public short Type
+        {
+            get { return items[2]; }
+            set { this[2] = value; }
+        }
+        #endregion
+
+        public Ttab Wrapper { get { return parent.Wrapper; } }
+
+        public TtabItemMotiveItem(TtabItemMotiveGroup parent)
+        {
+            this.parent = parent;
+            items = new short[3];
+        }
+
+        public TtabItemMotiveItem(TtabItemMotiveGroup parent, System.IO.BinaryReader reader)
+            : this(parent) { Unserialize(reader); }
+
+        private void Unserialize(System.IO.BinaryReader reader)
+        {
+            for (int i = 0; i < items.Length; i++)
+                items[i] = reader.ReadInt16();
+        }
+
+        internal void Serialize(System.IO.BinaryWriter writer)
+        {
+            for (int i = 0; i < items.Length; i++)
+                writer.Write(items[i]);
+        }
+
+        private short this[int index]
+        {
+            get { return items[index]; }
+            set
+            {
+                if (items[index] != value)
+                {
+                    items[index] = value;
+                    Wrapper.OnWrapperChanged(items, new EventArgs());
+                }
+            }
+        }
+
+        public TtabItemMotiveItem Clone()
+        {
+            TtabItemMotiveItem clone = new TtabItemMotiveItem(parent);
+            clone.items = new short[3];
+            items.CopyTo(clone.items, 0);
+            return clone;
+        }
+    }
 
 	#region Flags and Enums
 	public class TtabFlags : FlagBase
