@@ -359,6 +359,7 @@ namespace Ambertation.Windows.Forms
             this.Focus();
             this.NCRefresh();
             if (this.FloatForm != null) this.FloatForm.Text = this.CaptionText;
+            this.Visible = true;
         }
 
         /// <summary>
@@ -509,7 +510,11 @@ namespace Ambertation.Windows.Forms
         {
             DockStyle best = DockStyle.Bottom;
             if (Height > Width) best = DockStyle.Right;
+            Open(best);
+        }
 
+        public void Open(DockStyle best)
+        {
             if (last.Floating)
             {
                 Float(last.Pos);

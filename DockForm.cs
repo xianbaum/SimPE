@@ -47,7 +47,8 @@ namespace Ambertation.Windows.Forms
             : base()
         {
             ManagerSingelton.Global.AddFloatForm(this);
-            this.TopMost = true;
+            this.TopMost = ManagerSingelton.Global.TopmostFloats;
+            //APIHelp.SetWindowPos(Handle, APIHelp.HWND_TOP, Left, Top, 0, 0, APIHelp.SWP_NOSIZE | APIHelp.SWP_NOMOVE);
             this.dock = dock;
         }
 
@@ -109,11 +110,18 @@ namespace Ambertation.Windows.Forms
                 FireLocationChangeEvent();
                 base.WndProc(ref m);
             }
-            else if (m.Msg == APIHelp.WM_ACTIVATEAPP)
+            /*else if (m.Msg == APIHelp.WM_ACTIVATEAPP)
             {
+                Console.WriteLine(m.Msg.ToString("X") + " " + m.WParam + " " + m.LParam);
                 OnActivateApplication((int)m.WParam != 0);
-                m.Result = new IntPtr(0);
+                //m.Result = new IntPtr(0);
             }
+            else if (m.Msg == APIHelp.WM_ACTIVATEAPP_EXT)
+            {
+                Console.WriteLine(m.Msg.ToString("X") + " " + m.WParam + " " + m.LParam);
+                if (m.LParam.ToInt32() == 0 && m.WParam.ToInt32() == 1) OnActivateApplication(false);
+                else if (m.LParam.ToInt32() == 0 && m.WParam.ToInt32() == 0) OnActivateApplication(true);
+            }*/
             else base.WndProc(ref m);
         }
 
@@ -123,9 +131,9 @@ namespace Ambertation.Windows.Forms
         }
         protected virtual void OnActivateApplication(bool active)
         {
-            //Console.WriteLine("Activate Application " + active);
-            if (active) this.TopMost = true;
-            else TopMost = false;
+            Console.WriteLine("Activate Application " + active);
+            if (active && ManagerSingelton.Global.TopmostFloats) {  this.TopMost = true; }
+            else { this.TopMost = false; }
         }
 
                

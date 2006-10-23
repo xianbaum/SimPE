@@ -112,7 +112,7 @@ namespace Ambertation.Windows.Forms
             if (m.HWnd != Handle) return true;
             if (m.Msg == APIHelp.WM_SIZE || m.Msg == APIHelp.WM_SIZING)
             {
-                DockContainer dc = Parent as DockContainer;
+                /*DockContainer dc = Parent as DockContainer;
                 if (dc != null)
                 {
                     foreach (DockContainer d in dc.containers)
@@ -129,25 +129,25 @@ namespace Ambertation.Windows.Forms
                     }
 
                     lastfit = this.Size;                    
-                }
+                }*/
             }
             else if (m.Msg == APIHelp.WM_ENTERSIZEMOVE)
             {                
                 parent = Parent;
                 if (Manager != null) Manager.SuspendLayout();
-                //if (Parent != null) Parent.SuspendLayout();
+                if (Parent != null) Parent.SuspendLayout();
                 if (Parent != null) index = Parent.Controls.GetChildIndex(this);
-                //this.BringToFront();
+                this.BringToFront();
                 lastfit = this.Size;
                 rbh = new RubberBandHelper(this);
                 Rectangle rect = this.Bounds;
                 
-                if (Manager != null) Manager.ResumeLayout();
+                //if (Manager != null) Manager.ResumeLayout();
             }
             else if (m.Msg == APIHelp.WM_EXITSIZEMOVE)
             {
-                if (Manager != null) Manager.SuspendLayout();
-                if (Parent != null) Parent.SuspendLayout();
+                //if (Manager != null) Manager.SuspendLayout();
+                //if (Parent != null) Parent.SuspendLayout();
 
                 if (rbh != null) Dock = rbh.ContainerDock;
                 if (Parent != null) Parent.Controls.SetChildIndex(this, index);

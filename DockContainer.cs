@@ -48,7 +48,7 @@ namespace Ambertation.Windows.Forms
         {
             layoutct = 0;
             this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, false);
             this.SetStyle(ControlStyles.UserPaint, true);
 
             
@@ -718,10 +718,13 @@ namespace Ambertation.Windows.Forms
                 if (np == null)
                 {
                     np = dc;
+                    DockStyle olddock = dc.Dock;
                     dc.Dock = DockStyle.None;
                     dc.SetParent(this.ParentContainer, ParentContainer.Controls.IndexOf(this));
 
-                    dc.Dock = this.Dock;
+                    if (this.Dock != DockStyle.Fill)
+                        dc.Dock = this.Dock;
+                    else dc.Dock = olddock;
                 }
                 else
                 {

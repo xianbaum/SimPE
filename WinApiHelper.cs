@@ -28,11 +28,12 @@ using System.Runtime.InteropServices;
 namespace Ambertation.Windows.Forms
 {
     // Class to assist with Win32 API calls
-    class APIHelp
+    public class APIHelp
     {
         // Required constants from Pinvoke.NET
         public const Int32 WM_ACTIVATE = 0x0006;
         public const Int32 WM_ACTIVATEAPP = 0x001C;
+        public const Int32 WM_ACTIVATEAPP_EXT = 0xC0F3;
         public const Int32 WM_AFXFIRST = 0x0360;
         public const Int32 WM_AFXLAST = 0x037F;
         public const Int32 WM_APP = 0x8000;
@@ -612,6 +613,28 @@ namespace Ambertation.Windows.Forms
             VK_PA1 = 0xFD,
             VK_OEM_CLEAR = 0xFE
         }
+        #endregion
+
+        #region SetWindowPos
+        [DllImport("user32.dll")]
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+
+        public static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        public static readonly IntPtr HWND_NOTOPMOST = new IntPtr(-2);
+        public static readonly IntPtr HWND_TOP = new IntPtr(0);
+        public static readonly IntPtr HWND_BOTTOM = new IntPtr(1);
+
+        public const UInt32 SWP_NOSIZE = 0x0001;
+        public const UInt32 SWP_NOMOVE = 0x0002;
+        public const UInt32 SWP_NOZORDER = 0x0004;
+        public const UInt32 SWP_NOREDRAW = 0x0008;
+        public const UInt32 SWP_NOACTIVATE = 0x0010;
+        public const UInt32 SWP_FRAMECHANGED = 0x0020;  /* The frame changed: send WM_NCCALCSIZE */
+        public const UInt32 SWP_SHOWWINDOW = 0x0040;
+        public const UInt32 SWP_HIDEWINDOW = 0x0080;
+        public const UInt32 SWP_NOCOPYBITS = 0x0100;
+        public const UInt32 SWP_NOOWNERZORDER = 0x0200;  /* Don't do owner Z ordering */
+        public const UInt32 SWP_NOSENDCHANGING = 0x0400;  /* Don't send WM_WINDOWPOSCHANGING */
         #endregion
     }
 }

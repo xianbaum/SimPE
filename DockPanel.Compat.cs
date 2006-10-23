@@ -123,7 +123,7 @@ namespace Ambertation.Windows.Forms
 
         public void OpenFloating()
         {
-            this.Float();
+            this.Float(last.Pos);
             if (Opened != null) Opened(this, new EventArgs());
         }
 

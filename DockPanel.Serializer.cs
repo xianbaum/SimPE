@@ -82,7 +82,7 @@ namespace Ambertation.Windows.Forms
                 this.Close();
                 last.Container = docks[name].Container;
                 if (open) this.Open();
-                Visible = !collaps;
+                //Visible = !collaps;
             }
             else
             {

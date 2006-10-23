@@ -24,6 +24,7 @@ namespace Ambertation.Windows.Forms
         List<DockPanelFloatingForm> knownf;
         ManagerSingelton()
         {
+            topmostfloats = false;
             pnid = 0;
             dm = null;
             known = new DockButtonBar.DockPanelList();
@@ -38,6 +39,14 @@ namespace Ambertation.Windows.Forms
         ~ManagerSingelton()
         {
             Application.RemoveMessageFilter(this);
+        }
+
+        bool topmostfloats;
+
+        public bool TopmostFloats
+        {
+            get { return topmostfloats; }
+            set { topmostfloats = value; }
         }
 
         BaseRenderer dock, tab;
@@ -144,10 +153,21 @@ namespace Ambertation.Windows.Forms
 
         public bool PreFilterMessage(ref Message m)
         {
-            if (m.Msg == APIHelp.WM_ACTIVATEAPP)
+            
+            if (m.Msg == APIHelp.WM_ACTIVATEAPP )
             {
+                Console.WriteLine(m.Msg.ToString("X") + " " + m.WParam + " " + m.LParam);
                 foreach(DockPanelFloatingForm f in knownf)
                     f.SendeActivateEvent((int)m.WParam != 0);
+            }
+            else if (m.Msg == APIHelp.WM_ACTIVATEAPP_EXT)
+            {
+                Console.WriteLine(m.Msg.ToString("X") + " " + m.WParam + " " + m.LParam);
+                if (m.LParam.ToInt32() == 0 && (m.WParam.ToInt32()==1 || m.WParam.ToInt32()==0))
+                {
+                    foreach (DockPanelFloatingForm f in knownf)
+                        f.SendeActivateEvent((int)m.WParam == 0);
+                }
             }
 
             if (startdrag != null)
