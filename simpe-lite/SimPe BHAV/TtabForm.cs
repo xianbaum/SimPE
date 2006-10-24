@@ -448,7 +448,7 @@ namespace SimPe.PackedFiles.UserInterface
                 Label notWorking = new Label();
                 notWorking.AutoSize = true;
                 notWorking.Text = "PJSE does not currently support this file format."
-                    + "\r\nIf you manage to decode it please contact inge@simlogical.com";
+                    + "\r\nWe're working hard on a version that does, please bear with us!";
                 notWorking.Top = ttabPanel.Top + (ttabPanel.Height - notWorking.Height) / 2;
                 notWorking.Left = ttabPanel.Left + (ttabPanel.Width - notWorking.Width) / 2;
                 notWorking.Anchor = AnchorStyles.Top | AnchorStyles.Left;

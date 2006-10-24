@@ -1,6 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
-24 October 2006 13:23 - Pets: Add the message to TTAB 0x54
+24 October 2006 19:00 - Pets: Change the message for TTAB 0x54
+  SimPe BHAV\
+    TtabForm.cs 1.31.2.14.4.3
+
+24 October 2006 13:23 - Pets: Add the message for TTAB 0x54
   SimPe BHAV\
     TtabForm.cs 1.31.2.14.4.2
 
