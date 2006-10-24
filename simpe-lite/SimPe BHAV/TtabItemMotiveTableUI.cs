@@ -199,20 +199,22 @@ namespace SimPe.PackedFiles.UserInterface
             foreach (Control c in this.Controls)
                 if (c is TtabMotiveGroupUI)
                     this.Controls.Remove(c);
-            foreach (Control c in this.pnAllGroups.Controls)
-                if (c is TtabMotiveGroupUI)
-                    this.pnAllGroups.Controls.Remove(c);
+            this.pnAllGroups.Controls.Clear();
 
             if (item != null && item.Count > 0)
             {
                 TtabMotiveGroupUI c = new TtabMotiveGroupUI();
                 this.Controls.Add(c);
                 c.MotiveGroup = item[0];
+                if (item.Type == TtabItemMotiveTableType.Human)
+                    c.MGName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Ages, 0);
+                else
+                    c.MGName = "[0]";
                 c.Location = new Point(maxWidth + 2, 0);
 
                 this.pnAllGroups.Anchor = AnchorStyles.None;
                 this.pnCopyButtons.Location = this.pnAllGroups.Location = new Point(c.Right + 2, 0);
-                this.pnAllGroups.Size = new Size(this.Width - this.pnAllGroups.Left, c.Bottom);
+                this.pnAllGroups.Size = new Size(this.Width - this.pnAllGroups.Left, c.Bottom + 24);
                 this.pnAllGroups.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
 
                 if (item.Count > 1)
@@ -224,6 +226,10 @@ namespace SimPe.PackedFiles.UserInterface
                         c = new TtabMotiveGroupUI();
                         this.pnAllGroups.Controls.Add(c);
                         c.MotiveGroup = item[i];
+                        if (item.Type == TtabItemMotiveTableType.Human)
+                            c.MGName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Ages, (ushort)i);
+                        else
+                            c.MGName = "[" + i.ToString() + "]";
                         c.Location = new Point(nextLeft, 0);
                         nextLeft += c.Width + 2;
                     }

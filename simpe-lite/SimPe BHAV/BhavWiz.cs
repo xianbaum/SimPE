@@ -652,6 +652,7 @@ namespace pjse
             o.Add((ushort)0x51, GS.BhavStr.BodyFlags);
             o.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
             o.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
+            o.Add((ushort)0xc7, GS.BhavStr.PetTraitFlags);
             f.Add((byte)0x12, o); // 0x12 "My Person Data"
             f.Add((byte)0x13, o); // 0x13 "Stack Object's Person Data"
             f.Add((byte)0x20, o); // 0x20 "Neighbour's Person Data"

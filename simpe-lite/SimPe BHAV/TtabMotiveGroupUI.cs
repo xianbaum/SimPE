@@ -102,6 +102,12 @@ namespace SimPe.PackedFiles.UserInterface
             }
 		}
 
+        public String MGName
+        {
+            get { return this.gbMotiveGroup.Text; }
+            set { this.gbMotiveGroup.Text = value; }
+        }
+
         private void WrapperChanged(object sender, System.EventArgs e)
         {
             if (internalchg || sender != item) return;
@@ -113,22 +119,38 @@ namespace SimPe.PackedFiles.UserInterface
         {
             this.SuspendLayout();
 
-            foreach (Control c in this.gbMotiveGroup.Controls)
-                if (c is TtabSingleMotiveUI)
-                    this.Controls.Remove(c);
+            this.gbMotiveGroup.Controls.Clear();
 
             int nextTop = 35;
 
             if (item != null)
+            {
+                if (item.Parent.Type == TtabItemMotiveTableType.Human)
+                {
+                    this.gbMotiveGroup.Controls.Add(this.lbMin);
+                    this.gbMotiveGroup.Controls.Add(this.lbDelta);
+                    this.gbMotiveGroup.Controls.Add(this.lbType);
+                }
                 for (int i = 0; i < item.Count; i++)
                 {
-                    TtabSingleMotiveUI c = new TtabSingleMotiveUI();
+                    Control c;
+                    if (item[i] is TtabItemSingleMotiveItem)
+                    {
+                        c = new TtabSingleMotiveUI();
+                        ((TtabSingleMotiveUI)c).Motive = (TtabItemSingleMotiveItem)item[i];
+                    }
+                    else
+                    {
+                        c = new TtabAnimalMotiveUI();
+                        ((TtabAnimalMotiveUI)c).Motive = (TtabItemAnimalMotiveItem)item[i];
+                    }
                     this.gbMotiveGroup.Controls.Add(c);
-                    c.Motive = item[i];
                     c.Location = new Point(2, nextTop);
                     nextTop += c.Height + 2;
                 }
+            }
 
+            this.gbMotiveGroup.Controls.Add(this.btnClear);
             this.btnClear.Top = nextTop + 2;
             this.Height = this.btnClear.Bottom + 4;
 

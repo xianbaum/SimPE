@@ -2151,32 +2151,104 @@
   <data name="&gt;&gt;tpSettings.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tpMotives.AutoScroll" type="System.Boolean, mscorlib">
+  <data name="tpHumanMotives.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="tpMotives.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+  <data name="timtuiHuman.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="tpMotives.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="timtuiHuman.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="timtuiHuman.Size" type="System.Drawing.Size, System.Drawing">
     <value>740, 500</value>
   </data>
-  <data name="tpMotives.TabIndex" type="System.Int32, mscorlib">
+  <data name="timtuiHuman.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;timtuiHuman.Name" xml:space="preserve">
+    <value>timtuiHuman</value>
+  </data>
+  <data name="&gt;&gt;timtuiHuman.Type" xml:space="preserve">
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2488.33776, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;timtuiHuman.Parent" xml:space="preserve">
+    <value>tpHumanMotives</value>
+  </data>
+  <data name="&gt;&gt;timtuiHuman.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tpHumanMotives.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tpHumanMotives.Size" type="System.Drawing.Size, System.Drawing">
+    <value>740, 500</value>
+  </data>
+  <data name="tpHumanMotives.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="tpMotives.Text" xml:space="preserve">
+  <data name="tpHumanMotives.Text" xml:space="preserve">
     <value>Human Motives</value>
   </data>
-  <data name="&gt;&gt;tpMotives.Name" xml:space="preserve">
-    <value>tpMotives</value>
+  <data name="&gt;&gt;tpHumanMotives.Name" xml:space="preserve">
+    <value>tpHumanMotives</value>
   </data>
-  <data name="&gt;&gt;tpMotives.Type" xml:space="preserve">
+  <data name="&gt;&gt;tpHumanMotives.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tpMotives.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tpHumanMotives.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
-  <data name="&gt;&gt;tpMotives.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tpHumanMotives.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="timtuiAnimal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="timtuiAnimal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="timtuiAnimal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>740, 500</value>
+  </data>
+  <data name="timtuiAnimal.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;timtuiAnimal.Name" xml:space="preserve">
+    <value>timtuiAnimal</value>
+  </data>
+  <data name="&gt;&gt;timtuiAnimal.Type" xml:space="preserve">
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2488.33776, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;timtuiAnimal.Parent" xml:space="preserve">
+    <value>tpAnimalMotives</value>
+  </data>
+  <data name="&gt;&gt;timtuiAnimal.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tpAnimalMotives.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tpAnimalMotives.Size" type="System.Drawing.Size, System.Drawing">
+    <value>740, 500</value>
+  </data>
+  <data name="tpAnimalMotives.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tpAnimalMotives.Text" xml:space="preserve">
+    <value>Animal Motives</value>
+  </data>
+  <data name="&gt;&gt;tpAnimalMotives.Name" xml:space="preserve">
+    <value>tpAnimalMotives</value>
+  </data>
+  <data name="&gt;&gt;tpAnimalMotives.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpAnimalMotives.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tpAnimalMotives.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="tabControl1.ItemSize" type="System.Drawing.Size, System.Drawing">
     <value>58, 18</value>

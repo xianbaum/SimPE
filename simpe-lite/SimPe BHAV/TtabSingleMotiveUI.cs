@@ -69,12 +69,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 		#region TtabSingleMotiveUI
-        private TtabItemMotiveItem item = null;
+        private TtabItemSingleMotiveItem item = null;
 
 		private ArrayList alHex16;
 		private bool internalchg;
 
-        public TtabItemMotiveItem Motive
+        public TtabItemSingleMotiveItem Motive
         {
             get { return item; }
             set

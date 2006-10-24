@@ -1,5 +1,18 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+24 October 2006 21:39 - Pets: TTAB changes - this one seems to work!
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.24.2.2
+    pjse coder plugin.csproj 1.29.2.19.2.1
+    TtabAnimalMotiveUI.cs 1.1.2.1
+    TtabAnimalMotiveUI.resx 1.1.2.1
+    TtabForm.cs 1.31.2.14.2.3
+    TtabForm.resx 1.15.8.5.2.3
+    TtabItemMotiveTableUI.cs 1.1.12.3.12.4
+    TtabMotiveGroupUI.cs 1.3.26.3.12.4
+    TtabSingleMotiveUI.cs 1.5.26.1.12.4
+    TtabWrapper.cs 1.23.6.6.12.4
+
 24 October 2006 18:52 - Pets: TTAB changes - back to non-compiling...
   SimPe BHAV\
     TtabForm.cs 1.31.2.14.2.2

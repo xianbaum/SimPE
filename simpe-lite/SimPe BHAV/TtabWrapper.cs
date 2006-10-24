@@ -1081,7 +1081,7 @@ namespace SimPe.PackedFiles.Wrapper
     public class TtabItemAnimalMotiveItem : TtabItemMotiveItem, ICollection
     {
         #region Attributes
-        private TtabItemSingleMotiveItemArrayList items = null;
+        private TtabItemSingleMotiveItemArrayList items = new TtabItemSingleMotiveItemArrayList(new TtabItemSingleMotiveItem[0]);
         #endregion
 
         #region Accessor Methods
@@ -1094,6 +1094,7 @@ namespace SimPe.PackedFiles.Wrapper
         protected override void Unserialize(System.IO.BinaryReader reader)
         {
             int count = reader.ReadInt32();
+            items = new TtabItemSingleMotiveItemArrayList(new TtabItemSingleMotiveItem[count]);
             for (int i = 0; i < count; i++)
                 items[i] = new TtabItemSingleMotiveItem(this.parent, reader);
         }
