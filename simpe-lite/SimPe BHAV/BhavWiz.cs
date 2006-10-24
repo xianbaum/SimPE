@@ -142,6 +142,9 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            PetDecayIndices = 0x1e7,
+            SpeciesValues = 0x1e8, // for Data owners 0x12, 0x13 and 0x20
+            PetTraitFlags = 0x1e9, // for Data owners 0x12, 0x13 and 0x20
             Ages = 0x1ea, // PJSE: string number stolen
             DebugType = 0x1eb, // PJSE: string number stolen
             EffectSSType = 0x1ec, // PJSE: string number stolen
@@ -164,11 +167,13 @@ namespace pjse
 
         public enum GlobalStr : uint
         {
+            //Slots = 0x0080, // one occurrance in objects.package(7F029114)
             AdultAnims = 0x0081,
             ChildAnims = 0x0082,
             SocialAnims = 0x0083,
             LocoAnims = 0x0084,
-            ObjectAnims = 0x0086,
+            ObjectName3D = 0x0085, // no Global ones
+            ObjectAnims = 0x0086, // "Adult" = default
             MeshGroup = 0x0087,
             MaterialName = 0x0088,
             ToddlerAnims = 0x0089,
@@ -178,21 +183,85 @@ namespace pjse
             DogAnims = 0x008d,
             LightSource = 0x008e,
             Effect = 0x008f,
+            Bones = 0x0090, // no Global ones
             BabyAnims = 0x0091,
             ReachAnims = 0x0092,
-            IconTexture = 0x0095,
+            CareerLevels = 0x0093, // no Global ones - and some other random-ish stuff, too
+            SoundInfo = 0x0094, // no Global ones
+            IconTexture = 0x0095,   // Balloon Icon Texture Names
             UIEffect = 0x0096,
             CineCam = 0x0097,
+            CannotPlace = 0x0098, // See 7FA815EA and 7F12A804
             PuppyAnims = 0x0099,
             KittenAnims = 0x009a,
+            SmallDogAnims = 0x009b, //EP4(Pets)
+            ElderLargeDogAnims = 0x009c, // no Global ones
+            ElderSmallDogAnims = 0x009d, // no Global ones
+            ElderCatAnims = 0x009e, // no Global ones
+            //no 0x009F..0x00C7
+            MaleBody = 0x00C8, // no Global ones
+            FemaleBody = 0x00C9, // no Global ones
+            //no 0x00CA..0x00FF
             AttributeLabels = 0x0100,
+            //no 0x0101
             Relationship = 0x0102,
+            //no 0x0103..0x117
             ArrayName = 0x0118,
+            //no 0x119..0x012c
             DialogString = 0x012d,
             MakeAction = 0x012e,
             NamedTree = 0x012f,
             LuaScript = 0x0130,
+            PipMessages = 0x0131,
             DebugString = 0x0132,
+            LuaProperty = 0x0133,
+            //no 0x0134..0x018f
+            ObjectElderAnims = 0x0190, // no Global ones
+            ObjectTeenAnims = 0x0191, // no Global ones
+            ObjectChildAnims = 0x0192,
+            ObjectToddlerAnims = 0x0193, // no Global ones
+            //no 0x0194
+            ObjectLargeDogAnims = 0x0195, // no Global ones
+            ObjectCatAnims = 0x0196, // no Global ones
+            ObjectPuppyAnims = 0x0197, // no Global ones
+            ObjectKittenAnims = 0x0198, // no Global ones
+            ObjectSmallDogAnims = 0x0199, // no Global ones
+            //no 0x019A..0x0225
+            ElderHappyCurve = 0x0226,
+            AdultHappyCurve = 0x0227,
+            TeenHappyCurve = 0x0228,
+            ChildHappyCurve = 0x0229,
+            ToddlerHappyCurve = 0x022A,
+            BabyHappyCurve = 0x022B,
+            ElderLargeDogHappyCurve = 0x022C,
+            AdultLargeDogHappyCurve = 0x022D,
+            ElderSmallDogHappyCurve = 0x022E,
+            AdultSmallDogHappyCurve = 0x022F,
+            PuppieHappyCurve = 0x0230,
+            ElderCatHappyCurve = 0x0231,
+            AdultCatHappyCurve = 0x0232,
+            KittenHappyCurve = 0x0233,
+            //no 0x0234..0x0289
+            ElderInteractionCurve = 0x028A,
+            AdultInteractionCurve = 0x028B,
+            TeenInteractionCurve = 0x028C,
+            ChildInteractionCurve = 0x028D,
+            ToddlerInteractionCurve = 0x028E,
+            BabyInteractionCurve = 0x028F,
+            ElderLargeDogInteractionCurve = 0x0290,
+            AdultLargeDogInteractionCurve = 0x0291,
+            ElderSmallDogInteractionCurve = 0x0292,
+            AdultSmallDogInteractionCurve = 0x0293,
+            PuppieInteractionCurve = 0x0294,
+            ElderCatInteractionCurve = 0x0295,
+            AdultCatInteractionCurve = 0x0296,
+            KittenInteractionCurve = 0x0297,
+            //no 0x0298..0x02B1
+            SnapFailure = 0x02B2,
+            RouteFailure = 0x02B3,
+            //no 0x02B4..0x02BB
+            EnvironmentScoreCurve = 0x02BC,
+            HairOverrides = 0x3039,
             Sound = 0x4132,
         }
     }
@@ -395,10 +464,10 @@ namespace pjse
             t.Add((byte)0x0c, GS.BhavStr.Motives);
             t.Add((byte)0x0e, GS.BhavStr.Motives);
             t.Add((byte)0x0f, GS.BhavStr.Motives);
-            t.Add((byte)0x12, GS.BhavStr.PersonData);
-            t.Add((byte)0x13, GS.BhavStr.PersonData);
             t.Add((byte)0x1c, GS.BhavStr.Motives);
             t.Add((byte)0x1d, GS.BhavStr.Motives);
+            t.Add((byte)0x12, GS.BhavStr.PersonData);
+            t.Add((byte)0x13, GS.BhavStr.PersonData);
             t.Add((byte)0x20, GS.BhavStr.PersonData);
             t.Add((byte)0x15, GS.BhavStr.OBJDDescs);
             t.Add((byte)0x26, GS.BhavStr.OBJDDescs);
@@ -412,6 +481,8 @@ namespace pjse
             t.Add((byte)0x28, GS.BhavStr.InventoryDialog);
             return t;
         }
+        // for Data Owners 0x12, 0x13, 0x20:
+        // o.Add((ushort)0xba, GS.BhavStr.SpeciesValues);
 
 
         #endregion
@@ -575,21 +646,21 @@ namespace pjse
             o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
             f.Add((byte)0x03, o); // 0x03 "My"
             f.Add((byte)0x04, o); // 0x04 "Stack Object's"
-            Hashtable p = new Hashtable();
-            p.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
-            p.Add((ushort)0x44, GS.BhavStr.GhostFlags);
-            p.Add((ushort)0x51, GS.BhavStr.BodyFlags);
-            p.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
-            p.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
-            f.Add((byte)0x12, p); // 0x12 "My Person Data"
-            f.Add((byte)0x13, p); // 0x13 "Stack Object's Person Data"
-            f.Add((byte)0x20, p); // 0x20 "Neighbour's Person Data"
-            Hashtable d = new Hashtable();
-            d.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
-            d.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
-            f.Add((byte)0x15, d); // 0x15 "stack object's definition"
-            f.Add((byte)0x26, d); // 0x26 "Neighbor's Object Definition"
-            f.Add((byte)0x33, d); // 0x33 "Stack Object's Master Definition"
+            o = new Hashtable();
+            o.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
+            o.Add((ushort)0x44, GS.BhavStr.GhostFlags);
+            o.Add((ushort)0x51, GS.BhavStr.BodyFlags);
+            o.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
+            o.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
+            f.Add((byte)0x12, o); // 0x12 "My Person Data"
+            f.Add((byte)0x13, o); // 0x13 "Stack Object's Person Data"
+            f.Add((byte)0x20, o); // 0x20 "Neighbour's Person Data"
+            o = new Hashtable();
+            o.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
+            o.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
+            f.Add((byte)0x15, o); // 0x15 "stack object's definition"
+            f.Add((byte)0x26, o); // 0x26 "Neighbor's Object Definition"
+            f.Add((byte)0x33, o); // 0x33 "Stack Object's Master Definition"
             return f;
         }
         #endregion
