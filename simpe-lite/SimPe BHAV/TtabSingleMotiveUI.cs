@@ -79,9 +79,15 @@ namespace SimPe.PackedFiles.UserInterface
             get { return item; }
             set
             {
-                this.item = value;
-                setText();
-                item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                if (this.item != value)
+                {
+                    if (item != null)
+                        item.Wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
+                    this.item = value;
+                    setText();
+                    if (item != null)
+                        item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                }
             }
         }
 
@@ -95,10 +101,11 @@ namespace SimPe.PackedFiles.UserInterface
         {
             bool prev = internalchg;
             internalchg = true;
-            Min.Text = Helper.HexString(item.Min);
-            Delta.Text = Helper.HexString(item.Delta);
-            Type.Text = Helper.HexString(item.Type);
+            Min.Text = item == null ? "" : Helper.HexString(item.Min);
+            Delta.Text = item == null ? "" : Helper.HexString(item.Delta);
+            Type.Text = item == null ? "" : Helper.HexString(item.Type);
             internalchg = prev;
+            this.Enabled = (item != null);
         }
 
 		public void Clear()

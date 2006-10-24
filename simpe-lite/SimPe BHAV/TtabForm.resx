@@ -2151,110 +2151,32 @@
   <data name="&gt;&gt;tpSettings.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tpHumanMotives.AutoScroll" type="System.Boolean, mscorlib">
+  <data name="tpMotives.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="ttabItemMotiveTableUI1.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ttabItemMotiveTableUI1.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="ttabItemMotiveTableUI1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="ttabItemMotiveTableUI1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>740, 500</value>
-  </data>
-  <data name="ttabItemMotiveTableUI1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI1.Name" xml:space="preserve">
-    <value>ttabItemMotiveTableUI1</value>
-  </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI1.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2486.27819, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI1.Parent" xml:space="preserve">
-    <value>tpHumanMotives</value>
-  </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tpHumanMotives.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tpMotives.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="tpHumanMotives.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tpMotives.Size" type="System.Drawing.Size, System.Drawing">
     <value>740, 500</value>
   </data>
-  <data name="tpHumanMotives.TabIndex" type="System.Int32, mscorlib">
+  <data name="tpMotives.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="tpHumanMotives.Text" xml:space="preserve">
+  <data name="tpMotives.Text" xml:space="preserve">
     <value>Human Motives</value>
   </data>
-  <data name="&gt;&gt;tpHumanMotives.Name" xml:space="preserve">
-    <value>tpHumanMotives</value>
+  <data name="&gt;&gt;tpMotives.Name" xml:space="preserve">
+    <value>tpMotives</value>
   </data>
-  <data name="&gt;&gt;tpHumanMotives.Type" xml:space="preserve">
+  <data name="&gt;&gt;tpMotives.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tpHumanMotives.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tpMotives.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
-  <data name="&gt;&gt;tpHumanMotives.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tpMotives.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="ttabItemMotiveTableUI2.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ttabItemMotiveTableUI2.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="ttabItemMotiveTableUI2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="ttabItemMotiveTableUI2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>740, 500</value>
-  </data>
-  <data name="ttabItemMotiveTableUI2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI2.Name" xml:space="preserve">
-    <value>ttabItemMotiveTableUI2</value>
-  </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI2.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2486.27819, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI2.Parent" xml:space="preserve">
-    <value>tpAnimalMotives</value>
-  </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tpAnimalMotives.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
-  </data>
-  <data name="tpAnimalMotives.Size" type="System.Drawing.Size, System.Drawing">
-    <value>740, 500</value>
-  </data>
-  <data name="tpAnimalMotives.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="tpAnimalMotives.Text" xml:space="preserve">
-    <value>Animal Motives</value>
-  </data>
-  <data name="&gt;&gt;tpAnimalMotives.Name" xml:space="preserve">
-    <value>tpAnimalMotives</value>
-  </data>
-  <data name="&gt;&gt;tpAnimalMotives.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tpAnimalMotives.Parent" xml:space="preserve">
-    <value>tabControl1</value>
-  </data>
-  <data name="&gt;&gt;tpAnimalMotives.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="tabControl1.ItemSize" type="System.Drawing.Size, System.Drawing">
     <value>58, 18</value>

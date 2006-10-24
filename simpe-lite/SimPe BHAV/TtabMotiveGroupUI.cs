@@ -37,9 +37,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbMin;
 		private System.Windows.Forms.Label lbDelta;
         private System.Windows.Forms.Label lbType;
-		private System.Windows.Forms.Button btnClear;
-        private TextBox tbUnknown;
-        private Label lbUnknown;
+        private System.Windows.Forms.Button btnClear;
 		/// <summary> 
 		/// Required designer variable.
 		/// </summary>
@@ -92,9 +90,15 @@ namespace SimPe.PackedFiles.UserInterface
             get { return item; }
 			set
 			{
-                this.item = value;
-                setData();
-                item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                if (this.item != value)
+                {
+                    if (item != null)
+                        item.Wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
+                    this.item = value;
+                    setData();
+                    if (item != null)
+                        item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                }
             }
 		}
 
@@ -107,33 +111,28 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void setData()
         {
+            this.SuspendLayout();
+
             foreach (Control c in this.gbMotiveGroup.Controls)
                 if (c is TtabSingleMotiveUI)
                     this.Controls.Remove(c);
 
             int nextTop = 35;
-            for (int i = 0; i < item.Count; i++)
-            {
-                TtabSingleMotiveUI c = new TtabSingleMotiveUI();
-                this.gbMotiveGroup.Controls.Add(c);
-                c.Motive = item[i];
-                c.Location = new Point(2, nextTop);
-                nextTop += c.Height + 2;
-            }
+
+            if (item != null)
+                for (int i = 0; i < item.Count; i++)
+                {
+                    TtabSingleMotiveUI c = new TtabSingleMotiveUI();
+                    this.gbMotiveGroup.Controls.Add(c);
+                    c.Motive = item[i];
+                    c.Location = new Point(2, nextTop);
+                    nextTop += c.Height + 2;
+                }
+
             this.btnClear.Top = nextTop + 2;
-            if (item.Parent.Type == TtabItemMotiveTableType.Human)
-            {
-                this.lbUnknown.Visible = this.tbUnknown.Visible = false;
-                this.Height = this.btnClear.Bottom + 4;
-            }
-            else
-            {
-                this.lbUnknown.Top = this.btnClear.Bottom + 2;
-                this.tbUnknown.Top = this.lbUnknown.Bottom + 2;
-                this.tbUnknown.Text = "0x" + SimPe.Helper.HexString(item.Unknown);
-                this.lbUnknown.Visible = this.tbUnknown.Visible = true;
-                this.Height = this.tbUnknown.Bottom + 4;
-            }
+            this.Height = this.btnClear.Bottom + 4;
+
+            this.ResumeLayout();
         }
 
 		#endregion
@@ -147,8 +146,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabMotiveGroupUI));
             this.gbMotiveGroup = new System.Windows.Forms.GroupBox();
-            this.tbUnknown = new System.Windows.Forms.TextBox();
-            this.lbUnknown = new System.Windows.Forms.Label();
             this.btnClear = new System.Windows.Forms.Button();
             this.lbMin = new System.Windows.Forms.Label();
             this.lbDelta = new System.Windows.Forms.Label();
@@ -158,8 +155,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // gbMotiveGroup
             // 
-            this.gbMotiveGroup.Controls.Add(this.tbUnknown);
-            this.gbMotiveGroup.Controls.Add(this.lbUnknown);
             this.gbMotiveGroup.Controls.Add(this.btnClear);
             this.gbMotiveGroup.Controls.Add(this.lbMin);
             this.gbMotiveGroup.Controls.Add(this.lbDelta);
@@ -167,16 +162,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.gbMotiveGroup, "gbMotiveGroup");
             this.gbMotiveGroup.Name = "gbMotiveGroup";
             this.gbMotiveGroup.TabStop = false;
-            // 
-            // tbUnknown
-            // 
-            resources.ApplyResources(this.tbUnknown, "tbUnknown");
-            this.tbUnknown.Name = "tbUnknown";
-            // 
-            // lbUnknown
-            // 
-            resources.ApplyResources(this.lbUnknown, "lbUnknown");
-            this.lbUnknown.Name = "lbUnknown";
             // 
             // btnClear
             // 

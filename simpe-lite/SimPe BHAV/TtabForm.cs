@@ -70,7 +70,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.CheckBox cbconsecutive;
 		private System.Windows.Forms.CheckBox cbimmediately;
 		private System.Windows.Forms.CheckBox cbjoinable;
-		private System.Windows.Forms.TabPage tpHumanMotives;
+		private System.Windows.Forms.TabPage tpMotives;
 		private System.Windows.Forms.CheckBox cbvisitor;
 		private System.Windows.Forms.Label label24;
 		private System.Windows.Forms.TextBox tbAction;
@@ -84,8 +84,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbJoinIndex;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button btnGuardian;
-		private System.Windows.Forms.Button btnAction;
-		private SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI ttabItemMotiveTableUI1;
+        private System.Windows.Forms.Button btnAction;
 		private System.Windows.Forms.ComboBox cbAttenuationCode;
 		private System.Windows.Forms.ListBox lbttab;
 		private System.Windows.Forms.Button btnAdd;
@@ -110,8 +109,6 @@ namespace SimPe.PackedFiles.UserInterface
         private Button btnRefreshFT;
         private Button btnStrPrev;
         private Button btnStrNext;
-        private TabPage tpAnimalMotives;
-        private TtabItemMotiveTableUI ttabItemMotiveTableUI2;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -393,14 +390,43 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void changeSize()
         {
-            this.tabControl1.TabPages.Remove(this.tpAnimalMotives);
-            if (wrapper.Format >= 0x54)
+            this.ttabPanel.SuspendLayout();
+
+            this.tabControl1.Enabled = false;
+            this.tabControl1.TabPages.Clear();
+            this.tabControl1.TabPages.Add(this.tpSettings);
+
+            if (lbttab.SelectedIndex >= 0)
             {
-                this.tabControl1.TabPages.Add(this.tpAnimalMotives);
-                this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[1];
+                System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabForm));
+                if (wrapper[lbttab.SelectedIndex].HumanMotives != null)
+                {
+                    TabPage tp = new TabPage();
+                    resources.ApplyResources(tp, "tpMotives");
+                    TtabItemMotiveTableUI timtui = new TtabItemMotiveTableUI();
+                    timtui.Location = new Point(0, 0);
+                    timtui.Dock = DockStyle.Fill;
+                    timtui.MotiveTable = wrapper[lbttab.SelectedIndex].HumanMotives;
+                    tp.Controls.Add(timtui);
+                    this.tabControl1.TabPages.Add(tp);
+                }
+                if (wrapper[lbttab.SelectedIndex].Animals != null)
+                    for (int i = 0; i < wrapper[lbttab.SelectedIndex].Animals.Length; i++)
+                    {
+                        TabPage tp = new TabPage();
+                        resources.ApplyResources(tp, "tpMotives");
+                        tp.Text = tp.Tag + " [" + i.ToString() + "]";
+                        TtabItemMotiveTableUI timtui = new TtabItemMotiveTableUI();
+                        timtui.Location = new Point(0, 0);
+                        timtui.Dock = DockStyle.Fill;
+                        timtui.MotiveTable = wrapper[lbttab.SelectedIndex].Animals[i];
+                        tp.Controls.Add(timtui);
+                        this.tabControl1.TabPages.Add(tp);
+                    }
+                this.tabControl1.Enabled = true;
             }
-            else
-                this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[0];
+
+            this.ttabPanel.ResumeLayout();
         }
 
         /// <summary>
@@ -583,10 +609,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.label1 = new System.Windows.Forms.Label();
             this.tbJoinIndex = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.tpHumanMotives = new System.Windows.Forms.TabPage();
-            this.ttabItemMotiveTableUI1 = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
-            this.tpAnimalMotives = new System.Windows.Forms.TabPage();
-            this.ttabItemMotiveTableUI2 = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
+            this.tpMotives = new System.Windows.Forms.TabPage();
             this.panel5 = new System.Windows.Forms.Panel();
             this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
@@ -595,8 +618,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tabControl1.SuspendLayout();
             this.tpSettings.SuspendLayout();
             this.gbFlags.SuspendLayout();
-            this.tpHumanMotives.SuspendLayout();
-            this.tpAnimalMotives.SuspendLayout();
             this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -696,8 +717,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tpSettings);
-            this.tabControl1.Controls.Add(this.tpHumanMotives);
-            this.tabControl1.Controls.Add(this.tpAnimalMotives);
+            this.tabControl1.Controls.Add(this.tpMotives);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
@@ -1103,32 +1123,11 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // tpHumanMotives
+            // tpMotives
             // 
-            resources.ApplyResources(this.tpHumanMotives, "tpHumanMotives");
-            this.tpHumanMotives.Controls.Add(this.ttabItemMotiveTableUI1);
-            this.tpHumanMotives.Name = "tpHumanMotives";
-            this.tpHumanMotives.Tag = "Motives/Human Motives";
-            this.tpHumanMotives.UseVisualStyleBackColor = true;
-            // 
-            // ttabItemMotiveTableUI1
-            // 
-            resources.ApplyResources(this.ttabItemMotiveTableUI1, "ttabItemMotiveTableUI1");
-            this.ttabItemMotiveTableUI1.MotiveTable = null;
-            this.ttabItemMotiveTableUI1.Name = "ttabItemMotiveTableUI1";
-            // 
-            // tpAnimalMotives
-            // 
-            this.tpAnimalMotives.Controls.Add(this.ttabItemMotiveTableUI2);
-            resources.ApplyResources(this.tpAnimalMotives, "tpAnimalMotives");
-            this.tpAnimalMotives.Name = "tpAnimalMotives";
-            this.tpAnimalMotives.UseVisualStyleBackColor = true;
-            // 
-            // ttabItemMotiveTableUI2
-            // 
-            resources.ApplyResources(this.ttabItemMotiveTableUI2, "ttabItemMotiveTableUI2");
-            this.ttabItemMotiveTableUI2.MotiveTable = null;
-            this.ttabItemMotiveTableUI2.Name = "ttabItemMotiveTableUI2";
+            resources.ApplyResources(this.tpMotives, "tpMotives");
+            this.tpMotives.Name = "tpMotives";
+            this.tpMotives.Tag = "Animal Motive Group";
             // 
             // panel5
             // 
@@ -1171,8 +1170,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpSettings.PerformLayout();
             this.gbFlags.ResumeLayout(false);
             this.gbFlags.PerformLayout();
-            this.tpHumanMotives.ResumeLayout(false);
-            this.tpAnimalMotives.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
             this.ResumeLayout(false);
@@ -1188,6 +1185,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnDelete.Enabled = false;
             this.btnStrPrev.Enabled = (lbttab.SelectedIndex > 0);
             this.btnStrNext.Enabled = (lbttab.SelectedIndex < lbttab.Items.Count - 1);
+
 			if (lbttab.SelectedIndex >= 0)
 			{
 				currentItem = wrapper[lbttab.SelectedIndex];
@@ -1224,11 +1222,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 				doFlags();
 
-                this.ttabItemMotiveTableUI1.MotiveTable = wrapper[lbttab.SelectedIndex].HumanMotives;
-                if (wrapper.Format >= 0x54)
-                    this.ttabItemMotiveTableUI2.MotiveTable = wrapper[lbttab.SelectedIndex].AnimalMotives;
+                changeSize();
 
-                this.tabControl1.Enabled = true;
 				internalchg = false;
 			}
 			else
@@ -1240,7 +1235,7 @@ namespace SimPe.PackedFiles.UserInterface
 					tbUIDispType.Text = tbFaceAnimID.Text = tbMemIterMult.Text = tbObjType.Text = tbModelTabID.Text = 
 					"";
 				for (int i = 0; i < alFlags.Count; i++) ((CheckBox)alFlags[i]).Checked = false;
-				this.tabControl1.Enabled = false;
+                changeSize();
 				internalchg = false;
 			}
 		}		
