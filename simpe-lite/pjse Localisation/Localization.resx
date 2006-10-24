@@ -1260,4 +1260,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="bhavForm.Unfloat" xml:space="preserve">
     <value>Unfloat</value>
   </data>
+  <data name="ttabForm_NotSupported" xml:space="preserve">
+    <value>TTAB file formats 0x54 and above are not supported</value>
+  </data>
 </root>

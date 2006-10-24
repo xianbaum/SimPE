@@ -146,10 +146,13 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(header[1]);
 			writer.Write(header[2]);
 
-			writer.Write((ushort)items.Count);
+            if (header[1] < 0x54)
+            {
+                writer.Write((ushort)items.Count);
 
-			for (int i = 0; i < items.Count; i++)
-				if (items[i] != null) ((TtabItem)items[i]).Serialize(writer);
+                for (int i = 0; i < items.Count; i++)
+                    if (items[i] != null) ((TtabItem)items[i]).Serialize(writer);
+            }
 
 			writer.Write(footer);
 		}
@@ -172,12 +175,15 @@ namespace SimPe.PackedFiles.Wrapper
 			header[1] = reader.ReadUInt32();
 			header[2] = reader.ReadUInt32();
 
-			ushort itemCount = reader.ReadUInt16();
+            if (header[1] < 0x54)
+            {
+                ushort itemCount = reader.ReadUInt16();
 
-			TtabItem[] ti = new TtabItem[itemCount];
-			items = new TtabItemArrayList(ti);
-			for (int i = 0; i < itemCount; i++)
-				items[i] = new TtabItem(this, reader);
+                TtabItem[] ti = new TtabItem[itemCount];
+                items = new TtabItemArrayList(ti);
+                for (int i = 0; i < itemCount; i++)
+                    items[i] = new TtabItem(this, reader);
+            }
 
 			footer = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 		}

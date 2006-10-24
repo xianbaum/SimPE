@@ -327,9 +327,21 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void setFormat()
         {
-            if (wrapper.Format == previousFormat) return;
+            if (previousFormat == wrapper.Format) return;
 
-            if (wrapper.Format >= 0x44 && previousFormat < 0x44)
+            if (previousFormat >= 0x44 && wrapper.Format < 0x44)
+            {
+                DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
+                    pjse.Localization.GetString("ttabForm_Single"),
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
+                if (!DialogResult.OK.Equals(dr))
+                {
+                    wrapper.Format = previousFormat;
+                    return;
+                }
+                changeSize();
+            }
+            else if (previousFormat < 0x44 && wrapper.Format >= 0x44 && wrapper.Format < 0x54)
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
                     pjse.Localization.GetString("ttabForm_Multiple"),
@@ -341,18 +353,13 @@ namespace SimPe.PackedFiles.UserInterface
                 }
                 changeSize();
             }
-
-            else if (wrapper.Format < 0x44 && previousFormat >= 0x44)
+            else if (previousFormat < 0x54 && wrapper.Format >= 0x54)
             {
-                DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
-                    pjse.Localization.GetString("ttabForm_Single"),
-                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
-                if (!DialogResult.OK.Equals(dr))
-                {
-                    wrapper.Format = previousFormat;
-                    return;
-                }
-                changeSize();
+                MessageBox.Show(pjse.Localization.GetString("ttabForm_NotSupported"),
+                    this.label25.Text,
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                wrapper.Format = previousFormat;
+                return;
             }
             previousFormat = wrapper.Format;
         }
@@ -432,6 +439,15 @@ namespace SimPe.PackedFiles.UserInterface
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Ttab) wrp;
+            if (wrapper.Format >= 0x54)
+            {
+                this.tbFilename.Enabled = this.tbFormat.Enabled = false;
+                this.btnStrPrev.Visible = this.btnStrNext.Visible = this.btnAppend.Visible
+                    = this.btnCommit.Visible = this.btnAdd.Visible = this.label26.Visible = this.btnDelete.Visible
+                    = this.lbttab.Visible = this.tabControl1.Visible = false;
+                WrapperChanged(wrapper, null);
+                return;
+            }
 			WrapperChanged(wrapper, null);
 
 			internalchg = true;
