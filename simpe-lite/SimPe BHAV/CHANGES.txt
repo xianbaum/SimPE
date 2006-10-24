@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+24 October 2006 19:09 - Pets: Oops: Lost PetTrait flags
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.24.6.2
+
 24 October 2006 19:00 - Pets: Change the message for TTAB 0x54
   SimPe BHAV\
     TtabForm.cs 1.31.2.14.4.3
