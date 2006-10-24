@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+24 October 2006 13:05 - Pets: Update strings
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.24.6.1
+  GlobalStrings.package 1.10.8.11.8.1
+
 24 October 2006 09:41 - Pets: Make opening TTAB format 0x54 not crash SimPE
   pjse Localisation\
     Localization.resx 1.1.4.17.4.1
