@@ -445,6 +445,14 @@ namespace SimPe.PackedFiles.UserInterface
                 this.btnStrPrev.Visible = this.btnStrNext.Visible = this.btnAppend.Visible
                     = this.btnCommit.Visible = this.btnAdd.Visible = this.label26.Visible = this.btnDelete.Visible
                     = this.lbttab.Visible = this.tabControl1.Visible = false;
+                Label notWorking = new Label();
+                notWorking.AutoSize = true;
+                notWorking.Text = "PJSE does not currently support this file format."
+                    + "\r\nIf you manage to decode it please contact inge@simlogical.com";
+                notWorking.Top = ttabPanel.Top + (ttabPanel.Height - notWorking.Height) / 2;
+                notWorking.Left = ttabPanel.Left + (ttabPanel.Width - notWorking.Width) / 2;
+                notWorking.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+                ttabPanel.Controls.Add(notWorking);
                 WrapperChanged(wrapper, null);
                 return;
             }

@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+24 October 2006 13:23 - Pets: Add the message to TTAB 0x54
+  SimPe BHAV\
+    TtabForm.cs 1.31.2.14.4.2
+
 24 October 2006 13:05 - Pets: Update strings
   SimPe BHAV\
     BhavWiz.cs 1.37.2.24.6.1
