@@ -1137,8 +1137,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // tpAnimalMotives
             // 
-            this.tpAnimalMotives.Controls.Add(this.timtuiAnimal);
             resources.ApplyResources(this.tpAnimalMotives, "tpAnimalMotives");
+            this.tpAnimalMotives.Controls.Add(this.timtuiAnimal);
             this.tpAnimalMotives.Name = "tpAnimalMotives";
             this.tpAnimalMotives.UseVisualStyleBackColor = true;
             // 

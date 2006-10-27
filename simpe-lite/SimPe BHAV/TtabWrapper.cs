@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   Copyright (C) 2006 by Peter L Jones                                   *
  *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
@@ -709,19 +709,24 @@ namespace SimPe.PackedFiles.Wrapper
             this.parent = parent;
             this.counts = counts;
             this.type = type;
-		}
+
+            int nrGroups = 0;
+            if (Wrapper.Format < 0x44) nrGroups = 1;
+            else if (Wrapper.Format < 0x54) nrGroups = 7;
+            else nrGroups = type == TtabItemMotiveTableType.Human ? 5 : 8;
+
+            items = new TtabItemMotiveGroupArrayList(new TtabItemMotiveGroup[nrGroups]);
+            for (int i = 0; i < nrGroups; i++)
+                items[i] = new TtabItemMotiveGroup(this, counts != null ? counts[i] : 0, type);
+        }
 
         public TtabItemMotiveTable(TtabItem parent, int[] counts, TtabItemMotiveTableType type, System.IO.BinaryReader reader)
             : this(parent, counts, type) { Unserialize(reader); }
 
         private void Unserialize(System.IO.BinaryReader reader)
         {
-            int nrGroups = 0;
-            if (Wrapper.Format < 0x44) nrGroups = 1;
-            else if (Wrapper.Format < 0x54) nrGroups = 7;
-            else nrGroups = reader.ReadInt32();
+            int nrGroups = Wrapper.Format < 0x54 ? items.Count : reader.ReadInt32();
 
-            items = new TtabItemMotiveGroupArrayList(new TtabItemMotiveGroup[nrGroups]);
             for (int i = 0; i < nrGroups; i++)
                 items[i] = new TtabItemMotiveGroup(this, counts != null ? counts[i] : 0, type, reader);
         }
@@ -857,6 +862,16 @@ namespace SimPe.PackedFiles.Wrapper
             this.parent = parent;
             this.count = count;
             this.type = type;
+
+            int nrItems = Wrapper.Format < 0x54 ? count : 16;
+
+            items = new TtabItemMotiveItemArrayList(new TtabItemMotiveItem[nrItems < 16 ? 16 : nrItems]);
+            if (type == TtabItemMotiveTableType.Human)
+                for (int i = 0; i < nrItems; i++)
+                    items[i] = new TtabItemSingleMotiveItem(this);
+            else
+                for (int i = 0; i < nrItems; i++)
+                    items[i] = new TtabItemAnimalMotiveItem(this);
         }
 
         public TtabItemMotiveGroup(TtabItemMotiveTable parent, int count, TtabItemMotiveTableType type, System.IO.BinaryReader reader)
@@ -866,19 +881,18 @@ namespace SimPe.PackedFiles.Wrapper
         {
             int nrItems = Wrapper.Format < 0x54 ? count : reader.ReadInt32();
 
-            items = new TtabItemMotiveItemArrayList(new TtabItemMotiveItem[nrItems < 16 ? 16 : nrItems]);
             if (type == TtabItemMotiveTableType.Human)
             {
                 for (int i = 0; i < nrItems; i++)
                     items[i] = new TtabItemSingleMotiveItem(this, reader);
-                for (int i = nrItems; i < 16; i++)
+                for (int i = nrItems; i < items.Count; i++)
                     items[i] = new TtabItemSingleMotiveItem(this);
             }
             else
             {
                 for (int i = 0; i < nrItems; i++)
                     items[i] = new TtabItemAnimalMotiveItem(this, reader);
-                for (int i = nrItems; i < 16; i++)
+                for (int i = nrItems; i < items.Count; i++)
                     items[i] = new TtabItemAnimalMotiveItem(this);
             }
         }

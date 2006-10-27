@@ -2203,7 +2203,7 @@
     <value>timtuiHuman</value>
   </data>
   <data name="&gt;&gt;timtuiHuman.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2491.31573, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2491.32449, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;timtuiHuman.Parent" xml:space="preserve">
     <value>tpHumanMotives</value>
@@ -2235,8 +2235,11 @@
   <data name="&gt;&gt;tpHumanMotives.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="timtuiAnimal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="tpAnimalMotives.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="timtuiAnimal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="timtuiAnimal.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
@@ -2251,7 +2254,7 @@
     <value>timtuiAnimal</value>
   </data>
   <data name="&gt;&gt;timtuiAnimal.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2491.31573, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2491.32449, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;timtuiAnimal.Parent" xml:space="preserve">
     <value>tpAnimalMotives</value>
