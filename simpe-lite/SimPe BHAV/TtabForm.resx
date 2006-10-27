@@ -130,10 +130,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrPrev.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 120</value>
+    <value>8, 146</value>
   </data>
   <data name="btnStrPrev.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 18</value>
+    <value>24, 22</value>
   </data>
   <data name="btnStrPrev.TabIndex" type="System.Int32, mscorlib">
     <value>119</value>
@@ -160,10 +160,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrNext.Location" type="System.Drawing.Point, System.Drawing">
-    <value>29, 120</value>
+    <value>39, 146</value>
   </data>
   <data name="btnStrNext.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 18</value>
+    <value>24, 22</value>
   </data>
   <data name="btnStrNext.TabIndex" type="System.Int32, mscorlib">
     <value>120</value>
@@ -187,10 +187,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnAppend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>150, 118</value>
+    <value>200, 143</value>
   </data>
   <data name="btnAppend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 20</value>
+    <value>75, 25</value>
   </data>
   <data name="btnAppend.TabIndex" type="System.Int32, mscorlib">
     <value>118</value>
@@ -220,10 +220,10 @@
     <value>NoControl</value>
   </data>
   <data name="lbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 28</value>
+    <value>3, 34</value>
   </data>
   <data name="lbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 13</value>
+    <value>76, 17</value>
   </data>
   <data name="lbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>117</value>
@@ -247,13 +247,13 @@
     <value>3</value>
   </data>
   <data name="tbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 48</value>
+    <value>0, 58</value>
   </data>
   <data name="tbFilename.MaxLength" type="System.Int32, mscorlib">
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 21</value>
+    <value>320, 24</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -277,13 +277,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>48, 72</value>
+    <value>64, 87</value>
   </data>
   <data name="tbFormat.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 21</value>
+    <value>114, 24</value>
   </data>
   <data name="tbFormat.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -313,10 +313,10 @@
     <value>NoControl</value>
   </data>
   <data name="label41.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 75</value>
+    <value>3, 91</value>
   </data>
   <data name="label41.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 13</value>
+    <value>58, 17</value>
   </data>
   <data name="label41.TabIndex" type="System.Int32, mscorlib">
     <value>116</value>
@@ -343,10 +343,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>146, 70</value>
+    <value>198, 85</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 23</value>
+    <value>122, 28</value>
   </data>
   <data name="btnCommit.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -370,10 +370,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>53, 118</value>
+    <value>71, 143</value>
   </data>
   <data name="btnAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>36, 20</value>
+    <value>48, 25</value>
   </data>
   <data name="btnAdd.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -403,10 +403,10 @@
     <value>NoControl</value>
   </data>
   <data name="label26.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 102</value>
+    <value>4, 124</value>
   </data>
   <data name="label26.Size" type="System.Drawing.Size, System.Drawing">
-    <value>87, 13</value>
+    <value>103, 17</value>
   </data>
   <data name="label26.TabIndex" type="System.Int32, mscorlib">
     <value>112</value>
@@ -433,10 +433,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>95, 118</value>
+    <value>127, 143</value>
   </data>
   <data name="btnDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>50, 20</value>
+    <value>66, 25</value>
   </data>
   <data name="btnDelete.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -465,11 +465,14 @@
   <data name="lbttab.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="lbttab.ItemHeight" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
   <data name="lbttab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 144</value>
+    <value>0, 175</value>
   </data>
   <data name="lbttab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>240, 421</value>
+    <value>320, 356</value>
   </data>
   <data name="lbttab.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -502,10 +505,10 @@
     <value>0, 13</value>
   </data>
   <data name="llGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 80</value>
+    <value>11, 97</value>
   </data>
   <data name="llGuardian.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 13</value>
+    <value>116, 17</value>
   </data>
   <data name="llGuardian.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -535,10 +538,10 @@
     <value>0, 11</value>
   </data>
   <data name="llAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>24, 48</value>
+    <value>32, 58</value>
   </data>
   <data name="llAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 13</value>
+    <value>97, 17</value>
   </data>
   <data name="llAction.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -559,7 +562,7 @@
     <value>1</value>
   </data>
   <data name="cbStringIndex.ItemHeight" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>17</value>
   </data>
   <data name="cbStringIndex.Items" xml:space="preserve">
     <value>0x00000000 Zeroth string</value>
@@ -571,7 +574,7 @@
     <value>0x00000002 Twoth string</value>
   </data>
   <data name="cbStringIndex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>196, 16</value>
+    <value>252, 19</value>
   </data>
   <data name="cbStringIndex.MaxDropDownItems" type="System.Int32, mscorlib">
     <value>32</value>
@@ -580,7 +583,7 @@
     <value>10</value>
   </data>
   <data name="cbStringIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>21, 21</value>
+    <value>24, 25</value>
   </data>
   <data name="cbStringIndex.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -601,7 +604,7 @@
     <value>2</value>
   </data>
   <data name="cbAttenuationCode.ItemHeight" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>17</value>
   </data>
   <data name="cbAttenuationCode.Items" xml:space="preserve">
     <value>Custom</value>
@@ -619,10 +622,10 @@
     <value>High</value>
   </data>
   <data name="cbAttenuationCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 112</value>
+    <value>465, 134</value>
   </data>
   <data name="cbAttenuationCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>114, 21</value>
+    <value>132, 25</value>
   </data>
   <data name="cbAttenuationCode.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -649,10 +652,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 47</value>
+    <value>208, 57</value>
   </data>
   <data name="btnAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>19, 19</value>
+    <value>22, 22</value>
   </data>
   <data name="btnAction.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -679,10 +682,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 79</value>
+    <value>208, 96</value>
   </data>
   <data name="btnGuardian.Size" type="System.Drawing.Size, System.Drawing">
-    <value>19, 19</value>
+    <value>22, 22</value>
   </data>
   <data name="btnGuardian.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -712,10 +715,10 @@
     <value>NoControl</value>
   </data>
   <data name="lbaction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 49</value>
+    <value>245, 60</value>
   </data>
   <data name="lbaction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 17</value>
+    <value>347, 20</value>
   </data>
   <data name="lbaction.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -745,10 +748,10 @@
     <value>NoControl</value>
   </data>
   <data name="lbguard.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 81</value>
+    <value>245, 98</value>
   </data>
   <data name="lbguard.Size" type="System.Drawing.Size, System.Drawing">
-    <value>493, 17</value>
+    <value>347, 21</value>
   </data>
   <data name="lbguard.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -772,13 +775,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbStringIndex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 16</value>
+    <value>139, 19</value>
   </data>
   <data name="tbStringIndex.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbStringIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 21</value>
+    <value>114, 24</value>
   </data>
   <data name="tbStringIndex.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -808,10 +811,10 @@
     <value>NoControl</value>
   </data>
   <data name="label40.Location" type="System.Drawing.Point, System.Drawing">
-    <value>22, 19</value>
+    <value>29, 23</value>
   </data>
   <data name="label40.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 13</value>
+    <value>96, 17</value>
   </data>
   <data name="label40.TabIndex" type="System.Int32, mscorlib">
     <value>95</value>
@@ -835,13 +838,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbModelTabID.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 336</value>
+    <value>465, 408</value>
   </data>
   <data name="tbModelTabID.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbModelTabID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 21</value>
+    <value>114, 24</value>
   </data>
   <data name="tbModelTabID.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -871,16 +874,19 @@
     <value>NoControl</value>
   </data>
   <data name="label33.Location" type="System.Drawing.Point, System.Drawing">
-    <value>329, 339</value>
+    <value>348, 411</value>
   </data>
   <data name="label33.Size" type="System.Drawing.Size, System.Drawing">
-    <value>93, 13</value>
+    <value>111, 17</value>
   </data>
   <data name="label33.TabIndex" type="System.Int32, mscorlib">
     <value>94</value>
   </data>
   <data name="label33.Text" xml:space="preserve">
     <value>Model Table ID</value>
+  </data>
+  <data name="label33.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label33.Name" xml:space="preserve">
     <value>label33</value>
@@ -898,13 +904,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbObjType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 312</value>
+    <value>465, 379</value>
   </data>
   <data name="tbObjType.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbObjType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 21</value>
+    <value>114, 24</value>
   </data>
   <data name="tbObjType.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -934,16 +940,19 @@
     <value>NoControl</value>
   </data>
   <data name="label34.Location" type="System.Drawing.Point, System.Drawing">
-    <value>346, 315</value>
+    <value>366, 382</value>
   </data>
   <data name="label34.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 13</value>
+    <value>93, 17</value>
   </data>
   <data name="label34.TabIndex" type="System.Int32, mscorlib">
     <value>93</value>
   </data>
   <data name="label34.Text" xml:space="preserve">
     <value>Object Type</value>
+  </data>
+  <data name="label34.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label34.Name" xml:space="preserve">
     <value>label34</value>
@@ -961,13 +970,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbUIDispType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 240</value>
+    <value>465, 291</value>
   </data>
   <data name="tbUIDispType.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbUIDispType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>69, 24</value>
   </data>
   <data name="tbUIDispType.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -997,16 +1006,19 @@
     <value>NoControl</value>
   </data>
   <data name="label35.Location" type="System.Drawing.Point, System.Drawing">
-    <value>356, 187</value>
+    <value>379, 223</value>
   </data>
   <data name="label35.Size" type="System.Drawing.Size, System.Drawing">
-    <value>66, 13</value>
+    <value>80, 17</value>
   </data>
   <data name="label35.TabIndex" type="System.Int32, mscorlib">
     <value>92</value>
   </data>
   <data name="label35.Text" xml:space="preserve">
     <value>Join Index</value>
+  </data>
+  <data name="label35.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label35.Name" xml:space="preserve">
     <value>label35</value>
@@ -1024,13 +1036,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbAutonomy.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 160</value>
+    <value>465, 192</value>
   </data>
   <data name="tbAutonomy.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbAutonomy.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 21</value>
+    <value>114, 24</value>
   </data>
   <data name="tbAutonomy.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1054,16 +1066,16 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbMemIterMult.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 288</value>
+    <value>465, 350</value>
   </data>
   <data name="tbMemIterMult.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 21</value>
+    <value>93, 24</value>
   </data>
   <data name="tbMemIterMult.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
   <data name="tbMemIterMult.Text" xml:space="preserve">
-    <value>8.8888889</value>
+    <value>8.88888889</value>
   </data>
   <data name="&gt;&gt;tbMemIterMult.Name" xml:space="preserve">
     <value>tbMemIterMult</value>
@@ -1087,16 +1099,19 @@
     <value>NoControl</value>
   </data>
   <data name="label29.Location" type="System.Drawing.Point, System.Drawing">
-    <value>260, 291</value>
+    <value>267, 353</value>
   </data>
   <data name="label29.Size" type="System.Drawing.Size, System.Drawing">
-    <value>161, 13</value>
+    <value>192, 17</value>
   </data>
   <data name="label29.TabIndex" type="System.Int32, mscorlib">
     <value>90</value>
   </data>
   <data name="label29.Text" xml:space="preserve">
     <value>Memory Iterative Multiplier</value>
+  </data>
+  <data name="label29.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label29.Name" xml:space="preserve">
     <value>label29</value>
@@ -1114,13 +1129,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbFaceAnimID.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 264</value>
+    <value>465, 321</value>
   </data>
   <data name="tbFaceAnimID.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbFaceAnimID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 21</value>
+    <value>114, 24</value>
   </data>
   <data name="tbFaceAnimID.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -1150,16 +1165,19 @@
     <value>NoControl</value>
   </data>
   <data name="label30.Location" type="System.Drawing.Point, System.Drawing">
-    <value>325, 243</value>
+    <value>342, 294</value>
   </data>
   <data name="label30.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 13</value>
+    <value>117, 17</value>
   </data>
   <data name="label30.TabIndex" type="System.Int32, mscorlib">
     <value>89</value>
   </data>
   <data name="label30.Text" xml:space="preserve">
     <value>UI Display Type</value>
+  </data>
+  <data name="label30.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label30.Name" xml:space="preserve">
     <value>label30</value>
@@ -1177,19 +1195,19 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbAttenuationValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 136</value>
+    <value>465, 163</value>
   </data>
   <data name="tbAttenuationValue.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbAttenuationValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 21</value>
+    <value>93, 24</value>
   </data>
   <data name="tbAttenuationValue.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="tbAttenuationValue.Text" xml:space="preserve">
-    <value>8.8888889</value>
+    <value>8.88888889</value>
   </data>
   <data name="&gt;&gt;tbAttenuationValue.Name" xml:space="preserve">
     <value>tbAttenuationValue</value>
@@ -1213,16 +1231,19 @@
     <value>NoControl</value>
   </data>
   <data name="label31.Location" type="System.Drawing.Point, System.Drawing">
-    <value>313, 139</value>
+    <value>325, 166</value>
   </data>
   <data name="label31.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 13</value>
+    <value>134, 17</value>
   </data>
   <data name="label31.TabIndex" type="System.Int32, mscorlib">
     <value>88</value>
   </data>
   <data name="label31.Text" xml:space="preserve">
     <value>Attenuation Value</value>
+  </data>
+  <data name="label31.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label31.Name" xml:space="preserve">
     <value>label31</value>
@@ -1246,16 +1267,19 @@
     <value>NoControl</value>
   </data>
   <data name="label32.Location" type="System.Drawing.Point, System.Drawing">
-    <value>316, 115</value>
+    <value>327, 137</value>
   </data>
   <data name="label32.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 13</value>
+    <value>132, 17</value>
   </data>
   <data name="label32.TabIndex" type="System.Int32, mscorlib">
     <value>87</value>
   </data>
   <data name="label32.Text" xml:space="preserve">
     <value>Attenuation Code</value>
+  </data>
+  <data name="label32.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label32.Name" xml:space="preserve">
     <value>label32</value>
@@ -1273,13 +1297,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbFlags2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 216</value>
+    <value>465, 258</value>
   </data>
   <data name="tbFlags2.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbFlags2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>69, 24</value>
   </data>
   <data name="tbFlags2.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1309,16 +1333,19 @@
     <value>NoControl</value>
   </data>
   <data name="label20.Location" type="System.Drawing.Point, System.Drawing">
-    <value>378, 219</value>
+    <value>406, 261</value>
   </data>
   <data name="label20.Size" type="System.Drawing.Size, System.Drawing">
-    <value>43, 13</value>
+    <value>53, 17</value>
   </data>
   <data name="label20.TabIndex" type="System.Int32, mscorlib">
     <value>86</value>
   </data>
   <data name="label20.Text" xml:space="preserve">
     <value>Flags2</value>
+  </data>
+  <data name="label20.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label20.Name" xml:space="preserve">
     <value>label20</value>
@@ -1336,13 +1363,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 78</value>
+    <value>139, 95</value>
   </data>
   <data name="tbGuardian.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbGuardian.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>69, 24</value>
   </data>
   <data name="tbGuardian.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1366,10 +1393,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnNoFlags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 24</value>
+    <value>149, 29</value>
   </data>
   <data name="btnNoFlags.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 20</value>
+    <value>64, 24</value>
   </data>
   <data name="btnNoFlags.TabIndex" type="System.Int32, mscorlib">
     <value>88</value>
@@ -1393,13 +1420,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbFlags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>48, 24</value>
+    <value>64, 29</value>
   </data>
   <data name="tbFlags.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbFlags.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>69, 24</value>
   </data>
   <data name="tbFlags.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1429,10 +1456,10 @@
     <value>NoControl</value>
   </data>
   <data name="label24.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 26</value>
+    <value>9, 32</value>
   </data>
   <data name="label24.Size" type="System.Drawing.Size, System.Drawing">
-    <value>39, 13</value>
+    <value>46, 17</value>
   </data>
   <data name="label24.TabIndex" type="System.Int32, mscorlib">
     <value>87</value>
@@ -1452,14 +1479,17 @@
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="cbvisitor.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="cbvisitor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="cbvisitor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 48</value>
+    <value>6, 59</value>
   </data>
   <data name="cbvisitor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>70, 21</value>
   </data>
   <data name="cbvisitor.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1479,8 +1509,8 @@
   <data name="&gt;&gt;cbvisitor.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="cbunk3.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbunk3.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbunk3.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1489,10 +1519,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbunk3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 192</value>
+    <value>127, 211</value>
   </data>
   <data name="cbunk3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>114, 21</value>
   </data>
   <data name="cbunk3.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1512,8 +1542,8 @@
   <data name="&gt;&gt;cbunk3.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="cbunk4.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbunk4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbunk4.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1522,10 +1552,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbunk4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 216</value>
+    <value>127, 236</value>
   </data>
   <data name="cbunk4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>58, 21</value>
   </data>
   <data name="cbunk4.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -1545,8 +1575,8 @@
   <data name="&gt;&gt;cbunk4.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="cbunk1.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbunk1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbunk1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1555,10 +1585,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbunk1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 144</value>
+    <value>127, 161</value>
   </data>
   <data name="cbunk1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>62, 21</value>
   </data>
   <data name="cbunk1.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1578,8 +1608,8 @@
   <data name="&gt;&gt;cbunk1.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="cbunk2.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbunk2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbunk2.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1588,10 +1618,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbunk2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 168</value>
+    <value>127, 186</value>
   </data>
   <data name="cbunk2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>56, 21</value>
   </data>
   <data name="cbunk2.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1611,8 +1641,8 @@
   <data name="&gt;&gt;cbunk2.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="cbteens.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbteens.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbteens.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1621,10 +1651,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbteens.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 120</value>
+    <value>127, 136</value>
   </data>
   <data name="cbteens.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>66, 21</value>
   </data>
   <data name="cbteens.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -1644,8 +1674,8 @@
   <data name="&gt;&gt;cbteens.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="cbelders.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbelders.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbelders.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1654,10 +1684,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbelders.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 96</value>
+    <value>127, 111</value>
   </data>
   <data name="cbelders.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>69, 21</value>
   </data>
   <data name="cbelders.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -1677,8 +1707,8 @@
   <data name="&gt;&gt;cbelders.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="cbtodlers.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbtodlers.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbtodlers.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1687,10 +1717,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbtodlers.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 72</value>
+    <value>127, 86</value>
   </data>
   <data name="cbtodlers.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>85, 21</value>
   </data>
   <data name="cbtodlers.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -1710,8 +1740,8 @@
   <data name="&gt;&gt;cbtodlers.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="cbautofirst.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbautofirst.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbautofirst.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1720,10 +1750,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbautofirst.Location" type="System.Drawing.Point, System.Drawing">
-    <value>120, 48</value>
+    <value>127, 59</value>
   </data>
   <data name="cbautofirst.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>92, 21</value>
   </data>
   <data name="cbautofirst.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -1743,8 +1773,8 @@
   <data name="&gt;&gt;cbautofirst.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="cbdebugmenu.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbdebugmenu.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbdebugmenu.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1753,10 +1783,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbdebugmenu.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 216</value>
+    <value>6, 236</value>
   </data>
   <data name="cbdebugmenu.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>115, 21</value>
   </data>
   <data name="cbdebugmenu.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1776,8 +1806,8 @@
   <data name="&gt;&gt;cbdebugmenu.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="cbadults.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbadults.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbadults.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1786,10 +1816,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbadults.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 192</value>
+    <value>6, 211</value>
   </data>
   <data name="cbadults.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>70, 21</value>
   </data>
   <data name="cbadults.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1809,8 +1839,8 @@
   <data name="&gt;&gt;cbadults.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="cbdemochild.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbdemochild.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbdemochild.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1819,10 +1849,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbdemochild.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 168</value>
+    <value>6, 186</value>
   </data>
   <data name="cbdemochild.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>102, 21</value>
   </data>
   <data name="cbdemochild.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -1842,8 +1872,8 @@
   <data name="&gt;&gt;cbdemochild.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="cbchildren.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbchildren.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbchildren.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1852,10 +1882,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbchildren.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 144</value>
+    <value>6, 161</value>
   </data>
   <data name="cbchildren.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>81, 21</value>
   </data>
   <data name="cbchildren.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1875,8 +1905,8 @@
   <data name="&gt;&gt;cbchildren.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="cbconsecutive.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbconsecutive.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbconsecutive.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1885,10 +1915,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbconsecutive.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 120</value>
+    <value>6, 136</value>
   </data>
   <data name="cbconsecutive.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>109, 21</value>
   </data>
   <data name="cbconsecutive.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1908,8 +1938,8 @@
   <data name="&gt;&gt;cbconsecutive.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
-  <data name="cbimmediately.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbimmediately.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbimmediately.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1918,10 +1948,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbimmediately.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 96</value>
+    <value>6, 111</value>
   </data>
   <data name="cbimmediately.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>109, 21</value>
   </data>
   <data name="cbimmediately.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1941,8 +1971,8 @@
   <data name="&gt;&gt;cbimmediately.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="cbjoinable.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
+  <data name="cbjoinable.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <data name="cbjoinable.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1951,10 +1981,10 @@
     <value>NoControl</value>
   </data>
   <data name="cbjoinable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 72</value>
+    <value>6, 86</value>
   </data>
   <data name="cbjoinable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 24</value>
+    <value>81, 21</value>
   </data>
   <data name="cbjoinable.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1975,10 +2005,10 @@
     <value>18</value>
   </data>
   <data name="gbFlags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 112</value>
+    <value>11, 136</value>
   </data>
   <data name="gbFlags.Size" type="System.Drawing.Size, System.Drawing">
-    <value>232, 248</value>
+    <value>250, 267</value>
   </data>
   <data name="gbFlags.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -2002,13 +2032,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>104, 46</value>
+    <value>139, 56</value>
   </data>
   <data name="tbAction.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>69, 24</value>
   </data>
   <data name="tbAction.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2038,16 +2068,19 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>357, 163</value>
+    <value>378, 195</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 13</value>
+    <value>81, 17</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>88</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Autonomy</value>
+  </data>
+  <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -2065,13 +2098,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbJoinIndex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>424, 184</value>
+    <value>465, 220</value>
   </data>
   <data name="tbJoinIndex.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbJoinIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 21</value>
+    <value>114, 24</value>
   </data>
   <data name="tbJoinIndex.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -2101,16 +2134,19 @@
     <value>NoControl</value>
   </data>
   <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>304, 267</value>
+    <value>318, 324</value>
   </data>
   <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>118, 13</value>
+    <value>141, 17</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
     <value>89</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Facial Animation ID</value>
+  </data>
+  <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
   </data>
   <data name="&gt;&gt;label2.Name" xml:space="preserve">
     <value>label2</value>
@@ -2128,7 +2164,7 @@
     <value>4, 22</value>
   </data>
   <data name="tpSettings.Size" type="System.Drawing.Size, System.Drawing">
-    <value>688, 507</value>
+    <value>609, 466</value>
   </data>
   <data name="tpSettings.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2148,68 +2184,116 @@
   <data name="&gt;&gt;tpSettings.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tpMotives.AutoScroll" type="System.Boolean, mscorlib">
+  <data name="tpHumanMotives.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="ttabItemMotiveTableUI1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
+  <data name="timtuiHuman.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="ttabItemMotiveTableUI1.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ttabItemMotiveTableUI1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="timtuiHuman.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="ttabItemMotiveTableUI1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>680, 501</value>
+  <data name="timtuiHuman.Size" type="System.Drawing.Size, System.Drawing">
+    <value>609, 466</value>
   </data>
-  <data name="ttabItemMotiveTableUI1.TabIndex" type="System.Int32, mscorlib">
+  <data name="timtuiHuman.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI1.Name" xml:space="preserve">
-    <value>ttabItemMotiveTableUI1</value>
+  <data name="&gt;&gt;timtuiHuman.Name" xml:space="preserve">
+    <value>timtuiHuman</value>
   </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI1.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2401.19789, Culture=neutral, PublicKeyToken=null</value>
+  <data name="&gt;&gt;timtuiHuman.Type" xml:space="preserve">
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2491.32449, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI1.Parent" xml:space="preserve">
-    <value>tpMotives</value>
+  <data name="&gt;&gt;timtuiHuman.Parent" xml:space="preserve">
+    <value>tpHumanMotives</value>
   </data>
-  <data name="&gt;&gt;ttabItemMotiveTableUI1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;timtuiHuman.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tpMotives.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tpHumanMotives.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 22</value>
   </data>
-  <data name="tpMotives.Size" type="System.Drawing.Size, System.Drawing">
-    <value>688, 507</value>
+  <data name="tpHumanMotives.Size" type="System.Drawing.Size, System.Drawing">
+    <value>609, 466</value>
   </data>
-  <data name="tpMotives.TabIndex" type="System.Int32, mscorlib">
+  <data name="tpHumanMotives.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="tpMotives.Text" xml:space="preserve">
-    <value>Motives</value>
+  <data name="tpHumanMotives.Text" xml:space="preserve">
+    <value>Human Motives</value>
   </data>
-  <data name="&gt;&gt;tpMotives.Name" xml:space="preserve">
-    <value>tpMotives</value>
+  <data name="&gt;&gt;tpHumanMotives.Name" xml:space="preserve">
+    <value>tpHumanMotives</value>
   </data>
-  <data name="&gt;&gt;tpMotives.Type" xml:space="preserve">
+  <data name="&gt;&gt;tpHumanMotives.Type" xml:space="preserve">
     <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tpMotives.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tpHumanMotives.Parent" xml:space="preserve">
     <value>tabControl1</value>
   </data>
-  <data name="&gt;&gt;tpMotives.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tpHumanMotives.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="tpAnimalMotives.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="timtuiAnimal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="timtuiAnimal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="timtuiAnimal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>609, 466</value>
+  </data>
+  <data name="timtuiAnimal.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;timtuiAnimal.Name" xml:space="preserve">
+    <value>timtuiAnimal</value>
+  </data>
+  <data name="&gt;&gt;timtuiAnimal.Type" xml:space="preserve">
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2491.32449, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;timtuiAnimal.Parent" xml:space="preserve">
+    <value>tpAnimalMotives</value>
+  </data>
+  <data name="&gt;&gt;timtuiAnimal.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tpAnimalMotives.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 22</value>
+  </data>
+  <data name="tpAnimalMotives.Size" type="System.Drawing.Size, System.Drawing">
+    <value>609, 466</value>
+  </data>
+  <data name="tpAnimalMotives.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tpAnimalMotives.Text" xml:space="preserve">
+    <value>Animal Motives</value>
+  </data>
+  <data name="&gt;&gt;tpAnimalMotives.Name" xml:space="preserve">
+    <value>tpAnimalMotives</value>
+  </data>
+  <data name="&gt;&gt;tpAnimalMotives.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TabPage, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tpAnimalMotives.Parent" xml:space="preserve">
+    <value>tabControl1</value>
+  </data>
+  <data name="&gt;&gt;tpAnimalMotives.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="tabControl1.ItemSize" type="System.Drawing.Size, System.Drawing">
     <value>58, 18</value>
   </data>
   <data name="tabControl1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>248, 32</value>
+    <value>331, 39</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>696, 533</value>
+    <value>617, 492</value>
   </data>
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -2242,10 +2326,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnRefreshFT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>847, 0</value>
+    <value>818, 0</value>
   </data>
   <data name="btnRefreshFT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>64, 29</value>
   </data>
   <data name="btnRefreshFT.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -2278,10 +2362,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>896, 0</value>
+    <value>884, 0</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>64, 29</value>
   </data>
   <data name="btnHelp.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -2308,10 +2392,10 @@
     <value>NoControl</value>
   </data>
   <data name="label25.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 4</value>
+    <value>0, 5</value>
   </data>
   <data name="label25.Size" type="System.Drawing.Size, System.Drawing">
-    <value>206, 16</value>
+    <value>274, 20</value>
   </data>
   <data name="label25.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2338,7 +2422,7 @@
     <value>0, 0</value>
   </data>
   <data name="panel5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>944, 24</value>
+    <value>948, 29</value>
   </data>
   <data name="panel5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -2362,7 +2446,7 @@
     <value>0, 0</value>
   </data>
   <data name="ttabPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>944, 565</value>
+    <value>948, 531</value>
   </data>
   <data name="ttabPanel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2383,10 +2467,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>6, 14</value>
+    <value>8, 17</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>944, 565</value>
+    <value>948, 531</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>

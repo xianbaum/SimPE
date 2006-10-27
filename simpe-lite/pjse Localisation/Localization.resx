@@ -1178,11 +1178,11 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>No strings found</value>
     <comment>0x1c, 0x24</comment>
   </data>
-  <data name="ttabForm_Multiple" xml:space="preserve">
-    <value>Use multiple sets of adverts</value>
+  <data name="ttabForm_MultipleFixed" xml:space="preserve">
+    <value>Use seven age groups? (human plus cats/dogs)</value>
   </data>
   <data name="ttabForm_Single" xml:space="preserve">
-    <value>Use only one set of adverts</value>
+    <value>Use only one age group?</value>
   </data>
   <data name="ttabForm_Sure" xml:space="preserve">
     <value>Are you sure?</value>
@@ -1259,5 +1259,8 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   </data>
   <data name="bhavForm.Unfloat" xml:space="preserve">
     <value>Unfloat</value>
+  </data>
+  <data name="ttabForm_MultipleVaries" xml:space="preserve">
+    <value>Use separate human and animal adverts?</value>
   </data>
 </root>
