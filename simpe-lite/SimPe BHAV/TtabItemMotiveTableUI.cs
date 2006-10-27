@@ -138,7 +138,7 @@ namespace SimPe.PackedFiles.UserInterface
                 nextTop += muiH + 2;
             }
             this.btnCopyAll.Top = nextTop;
-            this.pnCopyButtons.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            this.pnCopyButtons.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom;
             this.pnCopyButtons.Size = new Size(lbCBM0.Right + 4, this.Height);
 
             pnCopyButtons.Visible = pnAllGroups.Visible = false;
@@ -212,6 +212,8 @@ namespace SimPe.PackedFiles.UserInterface
                     c.MGName = "[0]";
                 c.Location = new Point(maxWidth + 2, 0);
 
+                this.Height = c.Height + 24;
+
                 this.pnAllGroups.Anchor = AnchorStyles.None;
                 this.pnCopyButtons.Location = this.pnAllGroups.Location = new Point(c.Right + 2, 0);
                 this.pnAllGroups.Size = new Size(this.Width - this.pnAllGroups.Left, c.Bottom + 24);
@@ -235,6 +237,8 @@ namespace SimPe.PackedFiles.UserInterface
                     }
                 }
             }
+            this.lbNrGroups.Top = this.Height - 24 - this.lbNrGroups.Height;
+
             cbShowAll_CheckedChanged(null, null);
         }
 

@@ -401,7 +401,6 @@ namespace SimPe.PackedFiles.UserInterface
 
             if (lbttab.SelectedIndex >= 0)
             {
-                System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabForm));
                 if (wrapper[lbttab.SelectedIndex].HumanMotives != null)
                 {
                     timtuiHuman.MotiveTable = wrapper[lbttab.SelectedIndex].HumanMotives;
@@ -409,9 +408,13 @@ namespace SimPe.PackedFiles.UserInterface
                 }
                 if (wrapper[lbttab.SelectedIndex].AnimalMotives != null)
                 {
+                    this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[1];
                     timtuiAnimal.MotiveTable = wrapper[lbttab.SelectedIndex].AnimalMotives;
                     this.tabControl1.TabPages.Add(this.tpAnimalMotives);
                 }
+                else
+                    this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[0];
+
                 this.tabControl1.Enabled = true;
             }
 
@@ -514,7 +517,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.btnCommit.Enabled = wrapper.Changed;
 
-			if (internalchg) return;
+			if (internalchg || sender != wrapper) return;
 			internalchg = true;
 			this.Text = tbFilename.Text = wrapper.FileName;
 			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
@@ -599,13 +602,13 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbJoinIndex = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tpHumanMotives = new System.Windows.Forms.TabPage();
+            this.timtuiHuman = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.tpAnimalMotives = new System.Windows.Forms.TabPage();
+            this.timtuiAnimal = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.panel5 = new System.Windows.Forms.Panel();
             this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
-            this.timtuiHuman = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
-            this.timtuiAnimal = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.ttabPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSettings.SuspendLayout();
@@ -1123,8 +1126,14 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.tpHumanMotives, "tpHumanMotives");
             this.tpHumanMotives.Controls.Add(this.timtuiHuman);
             this.tpHumanMotives.Name = "tpHumanMotives";
-            this.tpHumanMotives.Tag = "";
+            this.tpHumanMotives.Tag = "Motives/Human Motives";
             this.tpHumanMotives.UseVisualStyleBackColor = true;
+            // 
+            // timtuiHuman
+            // 
+            resources.ApplyResources(this.timtuiHuman, "timtuiHuman");
+            this.timtuiHuman.MotiveTable = null;
+            this.timtuiHuman.Name = "timtuiHuman";
             // 
             // tpAnimalMotives
             // 
@@ -1132,6 +1141,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.tpAnimalMotives, "tpAnimalMotives");
             this.tpAnimalMotives.Name = "tpAnimalMotives";
             this.tpAnimalMotives.UseVisualStyleBackColor = true;
+            // 
+            // timtuiAnimal
+            // 
+            resources.ApplyResources(this.timtuiAnimal, "timtuiAnimal");
+            this.timtuiAnimal.MotiveTable = null;
+            this.timtuiAnimal.Name = "timtuiAnimal";
             // 
             // panel5
             // 
@@ -1159,18 +1174,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.label25, "label25");
             this.label25.Name = "label25";
-            // 
-            // timtuiHuman
-            // 
-            resources.ApplyResources(this.timtuiHuman, "timtuiHuman");
-            this.timtuiHuman.MotiveTable = null;
-            this.timtuiHuman.Name = "timtuiHuman";
-            // 
-            // timtuiAnimal
-            // 
-            resources.ApplyResources(this.timtuiAnimal, "timtuiAnimal");
-            this.timtuiAnimal.MotiveTable = null;
-            this.timtuiAnimal.Name = "timtuiAnimal";
             // 
             // TtabForm
             // 

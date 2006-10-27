@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="Min.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 8.25pt</value>
+  </data>
   <data name="Min.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -126,7 +129,7 @@
     <value>4</value>
   </data>
   <data name="Min.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 22</value>
+    <value>48, 24</value>
   </data>
   <data name="Min.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -146,6 +149,9 @@
   <data name="&gt;&gt;Min.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="Delta.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 8.25pt</value>
+  </data>
   <data name="Delta.Location" type="System.Drawing.Point, System.Drawing">
     <value>48, 0</value>
   </data>
@@ -153,7 +159,7 @@
     <value>4</value>
   </data>
   <data name="Delta.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 22</value>
+    <value>48, 24</value>
   </data>
   <data name="Delta.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -173,6 +179,9 @@
   <data name="&gt;&gt;Delta.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="Type.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 8.25pt</value>
+  </data>
   <data name="Type.Location" type="System.Drawing.Point, System.Drawing">
     <value>96, 0</value>
   </data>
@@ -180,7 +189,7 @@
     <value>4</value>
   </data>
   <data name="Type.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 22</value>
+    <value>48, 24</value>
   </data>
   <data name="Type.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -204,7 +213,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 22</value>
+    <value>146, 25</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>TtabSingleMotiveUI</value>
