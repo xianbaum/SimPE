@@ -1,5 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+27 October 2006 19:14 - Pets: TTAB changes: Fully expand type 0x54 on read
+  SimPe BHAV\
+    TtabForm.cs 1.31.2.14.2.5
+    TtabForm.resx 1.15.8.5.2.5
+    TtabWrapper.cs 1.23.6.6.12.5
+
 27 October 2006 18:41 - Pets: TTAB changes: fix some display issues
   SimPe BHAV\
     TtabAnimalMotiveUI.resx 1.1.2.2
