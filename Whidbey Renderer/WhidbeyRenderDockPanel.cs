@@ -124,7 +124,7 @@ namespace Ambertation.Windows.Forms
         #region BaseDockPanelRenderer Member
         protected string SetupCaptionButtonName(DockPanel dp, string name)
         {
-            if (dp.CaptionState == CaptionState.Focused) return name + "_f";
+            if (dp.CaptionState == CaptionState.Focused) return name;
             return name;
         }
 

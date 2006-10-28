@@ -96,6 +96,13 @@
     <Compile Include="DockPanelCloseButton.cs" />
     <Compile Include="DockPanelCollapseButton.cs" />
     <Compile Include="DockPanelDesigner.cs" />
+    <Compile Include="Glossy Rendering\GlossyColorTable.cs" />
+    <Compile Include="Glossy Rendering\GlossyFontTable.cs" />
+    <Compile Include="Glossy Rendering\GlossyRenderDockHints.cs" />
+    <Compile Include="Glossy Rendering\GlossyRenderDockPanel.cs" />
+    <Compile Include="Glossy Rendering\GlossyRenderer.cs" />
+    <Compile Include="Glossy Rendering\GlossyRenderTabs.cs" />
+    <Compile Include="Glossy Rendering\GlossyTabRenderer.cs" />
     <Compile Include="IButtonContainer.cs" />
     <Compile Include="IColorTable.cs" />
     <Compile Include="IControlRenderer.cs" />
@@ -127,13 +134,13 @@
     <Compile Include="TabPage.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="WhidbeyColorTable.cs" />
-    <Compile Include="WhidbeyFontTable.cs" />
-    <Compile Include="WhidbeyRenderDockHints.cs" />
-    <Compile Include="WhidbeyRenderDockPanel.cs" />
-    <Compile Include="WhidbeyRenderer.cs" />
-    <Compile Include="WhidbeyRenderTabs.cs" />
-    <Compile Include="WhidbeyTabRenderer.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyColorTable.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyFontTable.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyRenderDockHints.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyRenderDockPanel.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyRenderer.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyRenderTabs.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyTabRenderer.cs" />
     <Compile Include="WinApiHelper.cs" />
     <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
   </ItemGroup>

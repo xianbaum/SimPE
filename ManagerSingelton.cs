@@ -31,7 +31,7 @@ namespace Ambertation.Windows.Forms
             startdrag = null;
             Application.AddMessageFilter(this);
 
-            dock = new WhidbeyRenderer();
+            dock = new GlossyRenderer();
             knownf = new List<DockPanelFloatingForm>();
             tab = new WhidbeyTabRenderer();
         }

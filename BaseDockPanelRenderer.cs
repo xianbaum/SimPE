@@ -504,9 +504,10 @@ namespace Ambertation.Windows.Forms
             SolidBrush brush = new SolidBrush(ColorTable.DockButtonHighlightBackgroundTop);
             Pen pen = new Pen(ColorTable.DockButtonHighlightBorderColor);
 
-
+            RenderButtonBackground(e, pad, pt1, pt2, dp);
             RenderButtonBackground(e, r, pt1, pt2, brush, pen);
         }
+        protected virtual void RenderButtonBackground(NCPaintEventArgs e, Rectangle r, Point pt1, Point pt2, DockPanel dp) { }
         protected abstract void RenderButtonBackground(NCPaintEventArgs e, Rectangle r, Point pt1, Point pt2, SolidBrush brush, Pen pen);
         
         #endregion
