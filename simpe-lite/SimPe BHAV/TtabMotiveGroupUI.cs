@@ -58,9 +58,9 @@ namespace SimPe.PackedFiles.UserInterface
                 muiH = c.Height;
             }
 
-            this.lbMin.Location = new Point(muiW / 4 - this.lbMin.Width / 2, 13);
+            this.lbMin.Location = new Point(muiW / 6 - this.lbMin.Width / 2, 13);
             this.lbDelta.Location = new Point(muiW / 2 - this.lbDelta.Width / 2, 13);
-            this.lbType.Location = new Point((3 * muiW) / 4 - this.lbType.Width / 2, 13);
+            this.lbType.Location = new Point((5 * muiW) / 6 - this.lbType.Width / 2, 13);
             this.Width = 2 + muiW + 2;
         }
 
@@ -224,6 +224,8 @@ namespace SimPe.PackedFiles.UserInterface
             foreach (Control c in this.Controls)
                 if (c is TtabSingleMotiveUI)
                     ((TtabSingleMotiveUI)c).Clear();
+                else if (c is TtabAnimalMotiveUI)
+                    ((TtabAnimalMotiveUI)c).Clear();
             internalchg = false;
         }
 

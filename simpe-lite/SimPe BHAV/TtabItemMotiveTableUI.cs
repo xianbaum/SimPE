@@ -243,11 +243,11 @@ namespace SimPe.PackedFiles.UserInterface
         }
 
 
-		private void doCopyMotive(int m)
-		{
+        private void doCopyMotive(int m)
+        {
             for (int i = 1; i < item.Count; i++)
-                item[i][m] = item[0][m].Clone();
-		}
+                item[0][m].CopyTo(item[i][m]);
+        }
 
 
 		#endregion
@@ -705,7 +705,7 @@ namespace SimPe.PackedFiles.UserInterface
 			else
                 for (int i = 0; i < aButtons.Length; i++)
 					doCopyMotive(i);
-		}
+        }
 
 		private void cbShowAll_CheckedChanged(object sender, System.EventArgs e)
 		{

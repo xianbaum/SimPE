@@ -166,11 +166,12 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // TtabSingleMotiveUI
             // 
+            resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.Min);
             this.Controls.Add(this.Delta);
             this.Controls.Add(this.Type);
             this.Name = "TtabSingleMotiveUI";
-            resources.ApplyResources(this, "$this");
             this.ResumeLayout(false);
             this.PerformLayout();
 

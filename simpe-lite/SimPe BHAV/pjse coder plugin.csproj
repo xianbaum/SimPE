@@ -278,6 +278,12 @@
     <Compile Include="TrcnWrapper.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TtabAnimalMotiveWiz.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TtabAnimalMotiveWiz.Designer.cs">
+      <DependentUpon>TtabAnimalMotiveWiz.cs</DependentUpon>
+    </Compile>
     <Compile Include="TtabForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -391,6 +397,10 @@
     <EmbeddedResource Include="TrcnForm.resx">
       <DependentUpon>TrcnForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TtabAnimalMotiveWiz.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>TtabAnimalMotiveWiz.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TtabForm.resx">
       <DependentUpon>TtabForm.cs</DependentUpon>
