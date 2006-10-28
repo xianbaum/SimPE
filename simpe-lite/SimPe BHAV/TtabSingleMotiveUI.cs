@@ -81,11 +81,11 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 if (this.item != value)
                 {
-                    if (item != null)
+                    if (item != null && item.Wrapper != null)
                         item.Wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
                     this.item = value;
                     setText();
-                    if (item != null)
+                    if (item != null && item.Wrapper != null)
                         item.Wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
                 }
             }
@@ -166,12 +166,12 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // TtabSingleMotiveUI
             // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.Min);
             this.Controls.Add(this.Delta);
             this.Controls.Add(this.Type);
             this.Name = "TtabSingleMotiveUI";
+            resources.ApplyResources(this, "$this");
             this.ResumeLayout(false);
             this.PerformLayout();
 

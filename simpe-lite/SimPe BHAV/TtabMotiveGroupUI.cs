@@ -61,7 +61,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbMin.Location = new Point(muiW / 6 - this.lbMin.Width / 2, 13);
             this.lbDelta.Location = new Point(muiW / 2 - this.lbDelta.Width / 2, 13);
             this.lbType.Location = new Point((5 * muiW) / 6 - this.lbType.Width / 2, 13);
-            this.Width = 2 + muiW + 2;
         }
 
 		/// <summary> 
@@ -77,11 +76,22 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
-		}
+        }
 
 
-		#region TtabMotiveGroupUI
+        #region Extra attributes
         private TtabItemMotiveGroup item = null;
+        public String MGName
+        {
+            get { return this.gbMotiveGroup.Text; }
+            set { this.gbMotiveGroup.Text = value; }
+        }
+
+        private ArrayList tops = new ArrayList();
+        public int[] Tops { get { return (int[])tops.ToArray(typeof(Int32)); } }
+        #endregion
+
+        #region TtabMotiveGroupUI
         private bool internalchg;
 
 
@@ -102,12 +112,6 @@ namespace SimPe.PackedFiles.UserInterface
             }
 		}
 
-        public String MGName
-        {
-            get { return this.gbMotiveGroup.Text; }
-            set { this.gbMotiveGroup.Text = value; }
-        }
-
         private void WrapperChanged(object sender, System.EventArgs e)
         {
             if (internalchg || sender != item) return;
@@ -120,8 +124,10 @@ namespace SimPe.PackedFiles.UserInterface
             this.SuspendLayout();
 
             this.gbMotiveGroup.Controls.Clear();
+            tops = new ArrayList();
 
             int nextTop = 35;
+            int width = this.Width;
 
             if (item != null)
             {
@@ -130,28 +136,40 @@ namespace SimPe.PackedFiles.UserInterface
                     this.gbMotiveGroup.Controls.Add(this.lbMin);
                     this.gbMotiveGroup.Controls.Add(this.lbDelta);
                     this.gbMotiveGroup.Controls.Add(this.lbType);
+
+                    for (int i = 0; i < item.Count; i++)
+                    {
+                        TtabSingleMotiveUI c = new TtabSingleMotiveUI();
+                        c.Motive = (TtabItemSingleMotiveItem)item[i];
+
+                        this.gbMotiveGroup.Controls.Add(c);
+                        c.Location = new Point(2, nextTop);
+                        tops.Add(nextTop);
+                        nextTop += c.Height + 2;
+                        width = c.Width;
+                    }
+                    btnClear.Enabled = true;
                 }
-                for (int i = 0; i < item.Count; i++)
+                else
                 {
-                    Control c;
-                    if (item[i] is TtabItemSingleMotiveItem)
+                    for (int i = 0; i < item.Count; i++)
                     {
-                        c = new TtabSingleMotiveUI();
-                        ((TtabSingleMotiveUI)c).Motive = (TtabItemSingleMotiveItem)item[i];
+                        TtabAnimalMotiveUI c = new TtabAnimalMotiveUI();
+                        c.Motive = (TtabItemAnimalMotiveItem)item[i];
+
+                        this.gbMotiveGroup.Controls.Add(c);
+                        c.Location = new Point(2, nextTop);
+                        tops.Add(nextTop);
+                        nextTop += c.Height + 2;
+                        width = c.Width;
                     }
-                    else
-                    {
-                        c = new TtabAnimalMotiveUI();
-                        ((TtabAnimalMotiveUI)c).Motive = (TtabItemAnimalMotiveItem)item[i];
-                    }
-                    this.gbMotiveGroup.Controls.Add(c);
-                    c.Location = new Point(2, nextTop);
-                    nextTop += c.Height + 2;
+                    btnClear.Enabled = false;
                 }
             }
 
+            this.Width = 2 + width + 2;
             this.gbMotiveGroup.Controls.Add(this.btnClear);
-            this.btnClear.Top = nextTop + 2;
+            this.btnClear.Location = new Point((this.Width - this.btnClear.Width) / 2, nextTop + 2);
             this.Height = this.btnClear.Bottom + 4;
 
             this.ResumeLayout();
@@ -208,6 +226,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // TtabMotiveGroupUI
             // 
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.gbMotiveGroup);
             this.Name = "TtabMotiveGroupUI";
             resources.ApplyResources(this, "$this");

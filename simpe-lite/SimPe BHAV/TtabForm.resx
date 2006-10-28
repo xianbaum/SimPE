@@ -2203,7 +2203,7 @@
     <value>timtuiHuman</value>
   </data>
   <data name="&gt;&gt;timtuiHuman.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2491.32449, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2492.31251, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;timtuiHuman.Parent" xml:space="preserve">
     <value>tpHumanMotives</value>
@@ -2254,7 +2254,7 @@
     <value>timtuiAnimal</value>
   </data>
   <data name="&gt;&gt;timtuiAnimal.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2491.32449, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2492.31251, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;timtuiAnimal.Parent" xml:space="preserve">
     <value>tpAnimalMotives</value>
@@ -2466,8 +2466,8 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>8, 17</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>9, 17</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>948, 531</value>

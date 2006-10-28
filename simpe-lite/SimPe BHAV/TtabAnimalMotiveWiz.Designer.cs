@@ -29,24 +29,26 @@ namespace pjse
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabAnimalMotiveWiz));
-            this.OK = new System.Windows.Forms.Button();
-            this.Cancel = new System.Windows.Forms.Button();
+            this.btnOkay = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.ttabSingleMotiveUI1 = new SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI();
+            this.btnPlus = new System.Windows.Forms.Button();
+            this.btnMinus = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // OK
+            // btnOkay
             // 
-            resources.ApplyResources(this.OK, "OK");
-            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OK.Name = "OK";
+            resources.ApplyResources(this.btnOkay, "btnOkay");
+            this.btnOkay.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnOkay.Name = "btnOkay";
             // 
-            // Cancel
+            // btnCancel
             // 
-            resources.ApplyResources(this.Cancel, "Cancel");
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel.Name = "Cancel";
+            resources.ApplyResources(this.btnCancel, "btnCancel");
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Name = "btnCancel";
             // 
             // panel1
             // 
@@ -65,18 +67,32 @@ namespace pjse
             this.ttabSingleMotiveUI1.Motive = null;
             this.ttabSingleMotiveUI1.Name = "ttabSingleMotiveUI1";
             // 
+            // btnPlus
+            // 
+            resources.ApplyResources(this.btnPlus, "btnPlus");
+            this.btnPlus.Name = "btnPlus";
+            this.btnPlus.UseVisualStyleBackColor = true;
+            this.btnPlus.Click += new System.EventHandler(this.btnPlus_Click);
+            // 
+            // btnMinus
+            // 
+            resources.ApplyResources(this.btnMinus, "btnMinus");
+            this.btnMinus.Name = "btnMinus";
+            this.btnMinus.UseVisualStyleBackColor = true;
+            this.btnMinus.Click += new System.EventHandler(this.btnMinus_Click);
+            // 
             // TtabAnimalMotiveWiz
             // 
-            this.AcceptButton = this.OK;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.Cancel;
+            this.Controls.Add(this.btnMinus);
+            this.Controls.Add(this.btnPlus);
             this.Controls.Add(this.ttabSingleMotiveUI1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.OK);
-            this.Controls.Add(this.Cancel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Controls.Add(this.btnOkay);
+            this.Controls.Add(this.btnCancel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "TtabAnimalMotiveWiz";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -85,11 +101,13 @@ namespace pjse
 
         #endregion
 
-        private System.Windows.Forms.Button OK;
-        private System.Windows.Forms.Button Cancel;
+        private System.Windows.Forms.Button btnOkay;
+        private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
         private SimPe.PackedFiles.UserInterface.TtabSingleMotiveUI ttabSingleMotiveUI1;
+        private System.Windows.Forms.Button btnPlus;
+        private System.Windows.Forms.Button btnMinus;
 
     }
 }

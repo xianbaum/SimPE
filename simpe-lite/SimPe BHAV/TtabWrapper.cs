@@ -792,7 +792,7 @@ namespace SimPe.PackedFiles.Wrapper
             {
                 TtabItemMotiveGroupArrayList clone = new TtabItemMotiveGroupArrayList();
                 foreach (TtabItemMotiveGroup item in this)
-                    clone.Add(item.Clone());
+                    clone.Add(item.Clone(parent));
                 return clone;
             }
 
@@ -1211,7 +1211,7 @@ namespace SimPe.PackedFiles.Wrapper
             {
                 TtabItemSingleMotiveItemArrayList clone = new TtabItemSingleMotiveItemArrayList();
                 foreach (TtabItemSingleMotiveItem item in this)
-                    clone.Add(item.Clone());
+                    clone.Add(item.Clone(parent.parent));
                 return clone;
             }
 

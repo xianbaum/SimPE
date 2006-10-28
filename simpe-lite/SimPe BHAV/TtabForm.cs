@@ -1183,6 +1183,7 @@ namespace SimPe.PackedFiles.UserInterface
             // TtabForm
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ttabPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "TtabForm";
