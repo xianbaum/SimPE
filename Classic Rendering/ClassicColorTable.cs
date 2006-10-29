@@ -24,13 +24,13 @@ using System.Drawing;
 
 namespace Ambertation.Windows.Forms
 {
-    public class WhidbeyColorTable : IColorTable
+    public class ClassicColorTable : IColorTable
     {
         #region IColorTable Member
 
         public System.Drawing.Color DockBorderColor
         {
-            get { return Color.FromArgb(0xAC, 0xA8, 0x99); }
+            get { return SystemColors.ActiveBorder; }
         }
 
         public System.Drawing.Color DockBackgroundColor
@@ -45,12 +45,12 @@ namespace Ambertation.Windows.Forms
 
         public System.Drawing.Color DockHintOverlayColor
         {
-            get { return Color.FromArgb(128, SystemColors.MenuHighlight); }
+            get { return Color.FromArgb(128, Color.White); }
         }
 
         public Color DockButtonBorderColorOuter
         {
-            get { return Color.FromArgb(0x50, DockButtonHighlightBorderColorOuter); }
+            get { return SystemColors.InactiveBorder; }
         }
 
         public Color DockButtonBorderColorInner
@@ -60,7 +60,7 @@ namespace Ambertation.Windows.Forms
 
         public Color DockButtonHighlightBorderColorOuter
         {
-            get { return Color.FromArgb(0xAC, 0xA8, 0x99); }
+            get { return SystemColors.ActiveBorder; }
         }
 
         public Color DockButtonHighlightBorderColorInner
@@ -68,27 +68,28 @@ namespace Ambertation.Windows.Forms
             get { return Color.Transparent; }
         }
 
+
         public Color DockButtonBarBackgroundTop
         {
-            get { return DockBackgroundColor; }
+            get { return SystemColors.ControlDarkDark; }
         }
         public Color DockButtonBarBackgroundBottom
         {
-            get { return DockBackgroundColor; }
+            get { return DockButtonBarBackgroundTop; }
         }
-
 
         public Color DockButtonBackgroundTop
         {
-            get { return Color.FromArgb(0xED, 0xEC, 0xE0); }
+            get { return SystemColors.Control; }
         }
         public Color DockButtonBackgroundBottom
         {
             get { return DockButtonBackgroundTop; }
         }
+
         public Color DockButtonHighlightBackgroundTop
         {
-            get { return Color.FromArgb(0xFC, 0xFC, 0xFE); }
+            get { return SystemColors.ControlLightLight; }
         }
         public Color DockButtonHighlightBackgroundBottom
         {
@@ -98,56 +99,56 @@ namespace Ambertation.Windows.Forms
 
         public Color DockButtonTextColor
         {
-            get { return Color.FromArgb(0x71, 0x6F, 0x64); }
+            get { return SystemColors.GrayText; }
         }
         public Color DockButtonHighlightTextColor
         {
-            get { return Color.Black; }
+            get { return SystemColors.ControlText; }
         }
 
-        public Color DockCaptionColorTop
+        public Color DockCaptionColorTop //ok
         {
-            get { return Color.FromArgb(0xC0, 0xBB, 0xAF); }
+            get { return SystemColors.InactiveCaption; }
         }
 
-        public Color DockCaptionColorBottom
+        public Color DockCaptionColorBottom //ok
         {
             get { return DockCaptionColorTop; }
         }
 
-        public Color DockCaptionFocusColorTop
+        public Color DockCaptionFocusColorTop //ok
         {
-            get { return Color.FromArgb(0x3B, 0x80, 0xED); }
+            get { return SystemColors.ActiveCaption; }
         }        
 
-        public Color DockCaptionFocusColorBottom
+        public Color DockCaptionFocusColorBottom //ok
         {
-            get { return Color.FromArgb(0x31, 0x6A, 0xC5); }
+            get { return DockCaptionFocusColorTop; }
         }
 
-        public Color DockCaptionTextColor
+        public Color DockCaptionTextColor //ok
         {
-            get { return Color.Black; }
+            get { return SystemColors.InactiveCaptionText; }
         }
 
-        public Color DockCaptionFocusTextColor
+        public Color DockCaptionFocusTextColor //ok
         {
-            get { return Color.White; }
+            get { return SystemColors.ActiveCaptionText; }
         }
         #endregion
 
         public Color DockGripColor
         {
-            get { return SystemColors.ControlLight; }
+            get { return SystemColors.ControlDark; }
         }
 
         public Color DockReSizeBackgroundColor
         {
-            get { return Color.SteelBlue; }
+            get { return SystemColors.AppWorkspace; }
         }
         public Color DockReSizeGripColor
         {
-            get { return Color.Navy; }
+            get { return SystemColors.ButtonShadow; }
         }
     }
 }

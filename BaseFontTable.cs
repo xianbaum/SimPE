@@ -28,13 +28,15 @@ namespace Ambertation.Windows.Forms
         System.Drawing.Font fnt;
         public BaseFontTable()
         {
-            fnt = new System.Drawing.Font("Tahoma", 8);
+            fnt = new System.Drawing.Font("Arial", 8f, System.Drawing.FontStyle.Regular);
+            
         }
 
         protected System.Drawing.Font DefaultFont
         {
             get { return fnt; }
         }
+
 
         #region IFontTable Member
 

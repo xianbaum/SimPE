@@ -146,6 +146,8 @@ namespace Ambertation.Windows.Forms
         System.Drawing.Rectangle GetCollapseButtonRect(DockPanel dp, Rectangle caprect); //ok
         System.Drawing.Rectangle GetCaptionTextRect(DockPanel dp, Rectangle caprect); //ok
 
+
+        void RenderButtonBarBackground(NCPaintEventArgs e, Rectangle r, ButtonOrientation orient);
         void RenderButtonBackground(DockPanel dp, NCPaintEventArgs e);
         void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar); //ok        
                                 

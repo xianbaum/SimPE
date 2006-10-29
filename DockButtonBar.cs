@@ -182,7 +182,8 @@ namespace Ambertation.Windows.Forms
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);            
+            base.OnPaint(e);
+            this.Manager.Renderer.DockPanelRenderer.RenderButtonBarBackground(new NCPaintEventArgs(e.Graphics, Bounds, Bounds, null), new Rectangle(0, 0, Width, Height), BestOrientation);
 
             NCPaintEventArgs ee = new NCPaintEventArgs(e.Graphics, this.ClientRectangle, this.Bounds, null);
             buttonData = Manager.Renderer.DockPanelRenderer.ConstructButtonData(this, ee);

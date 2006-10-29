@@ -26,117 +26,50 @@ using System.Drawing;
 
 namespace Ambertation.Windows.Forms
 {
-    public class GlossyRenderDockPanel : BaseDockPanelRenderer, IDockPanelRenderer
+    public class GlossyRenderDockPanel : WhidbeyRenderDockPanel
     {
         const int SIZE_DELTA = 10;
         const int SPEED = 1000 / 50;
-        Dimensions dim;
-        DockAnimationEventHandler atc;
-        System.Drawing.Drawing2D.ColorBlend butbgblend;
+        System.Drawing.Drawing2D.ColorBlend butbarbgblend, butbgblendhl, butbgblend;
 
         public GlossyRenderDockPanel(BaseRenderer parent)
             : base(parent)
         {
-            dim = new Dimensions(16, 24, 1, 4, 2, 16, 2);
-            atc = new DockAnimationEventHandler(InvokedAnimationTimerCallback);
-            animtimer = new System.Threading.Timer(new TimerCallback(AnimationTimerCallback), null, Timeout.Infinite, SPEED);
+            dim = new Dimensions(16, 27, 1, 4, 6, 3, 16, 2, 2);
+            
+            
+            butbarbgblend = new System.Drawing.Drawing2D.ColorBlend();
+            butbarbgblend.Colors = new Color[] {ColorTable.DockButtonBarBackgroundTop,
+                           ColorTable.DockButtonBarBackgroundBottom,
+                           ColorTable.DockButtonBarBackgroundBottom,
+                           ColorTable.DockButtonBarBackgroundTop
+            };
+            butbarbgblend.Positions = new float[] { 0, 0.60f, 0.70f, 1 };
+
+            butbgblendhl = new System.Drawing.Drawing2D.ColorBlend();
+            butbgblendhl.Colors = new Color[] {
+                           Parent.Interpolate(ColorTable.DockButtonBackgroundTop, Color.Black, 0.02f),
+                           ColorTable.DockButtonBackgroundTop,
+                           ColorTable.DockButtonBackgroundBottom,
+                           Parent.Interpolate(ColorTable.DockButtonBackgroundBottom, Color.White, 0.1f)
+                           
+            };
+            butbgblendhl.Positions = new float[] { 0, 0.4f, 0.405f, 1 };
 
             butbgblend = new System.Drawing.Drawing2D.ColorBlend();
-            butbgblend.Colors = new Color[] {ColorTable.DockButtonBackgroundTop,
-                           ColorTable.DockButtonBackgroundBottom,
-                           ColorTable.DockButtonBackgroundBottom,
-                           ColorTable.DockButtonBackgroundTop
+            butbgblend.Colors = new Color[] {
+                           Parent.Interpolate(ColorTable.DockButtonHighlightBackgroundTop, Color.White, 0.1f),
+                           ColorTable.DockButtonHighlightBackgroundTop,
+                           ColorTable.DockButtonHighlightBackgroundBottom,
+                           Parent.Interpolate(ColorTable.DockButtonHighlightBackgroundBottom, Color.White, 0.1f)
+                           
             };
-            butbgblend.Positions = new float[] { 0, 0.60f, 0.70f, 1 };
+            butbgblend.Positions = new float[] { 0, 0.4f, 0.405f, 1 };
         }
 
-        #region Animation
-        System.Threading.Timer animtimer;
-        struct AnimationData
-        {
-            public DockAnimationEventArgs e;
-        }
-        AnimationData animdata;
-        void InvokedAnimationTimerCallback(IDockPanelRenderer sender, DockAnimationEventArgs e)
-        {
-            
-            DockContainer dc = e.Container;
-            //Console.WriteLine(dc.Guid.ToString() + ": " + e.DockAlignment + ", " + e.AnimationType);
-            if (animdata.e.AnimationType == DockAnimationEventArgs.Type.Collapse)
-            {
-                if (e.DockAlignment == DockAnimationEventArgs.Alignment.Horizontal)
-                {
-                    if (dc.Parent == null) DoFinishAnimation(e);
-                    else if (dc.Right <= 0) { DoFinishAnimation(e); }
-                    else dc.Left -= SIZE_DELTA;
-                }
-                else if (e.DockAlignment == DockAnimationEventArgs.Alignment.Vertical)
-                {
-                    if (dc.Parent == null) DoFinishAnimation(e);
-                    else if (dc.Left >= dc.Parent.Width) { DoFinishAnimation(e); }
-                    else dc.Left += SIZE_DELTA;
-                }
-                else
-                {
-                    DoFinishAnimation(e);
-                }
-            }
-            else if (e.AnimationType == DockAnimationEventArgs.Type.Expand)
-            {
-                if (e.DockAlignment == DockAnimationEventArgs.Alignment.Horizontal)
-                {
-                    if (dc.Parent == null) DoFinishAnimation(e);
-                    else if (dc.Left >= 0) { DoFinishAnimation(e); }
-                    else dc.Left = Math.Min(0, dc.Left + SIZE_DELTA);
-                }
-                else if (e.DockAlignment == DockAnimationEventArgs.Alignment.Vertical)
-                {
-                    if (dc.Parent == null) DoFinishAnimation(e);
-                    else if (dc.Right <= dc.Parent.Width) { DoFinishAnimation(e); }
-                    else dc.Left = Math.Max(dc.Parent.Width-dc.Width, dc.Left-SIZE_DELTA);
-                }                
-                else
-                {
-                    DoFinishAnimation(e);
-                }
-            }
-            else
-            {
-                DoFinishAnimation(e);
-            }
-        }
-
-
-        void AnimationTimerCallback(Object stateInfo)
-        {
-            DockContainer dc = animdata.e.Container;
-
-            if (dc.InvokeRequired)
-            {
-                object[] dum = new object[] { this, animdata.e };
-                dc.Invoke(atc, dum);
-            }
-            else
-                atc(this, animdata.e);
-            
-        }
-
-        void DoFinishAnimation(DockAnimationEventArgs e)
-        {
-            animtimer.Change(Timeout.Infinite, SPEED);
-            if (FinishedAnimation != null) FinishedAnimation(this, e);
-            e.Container.ResumeLayout();
-            e.Container.RepaintAll();
-        }
-        #endregion
 
         #region BaseDockPanelRenderer Member
-        protected string SetupCaptionButtonName(DockPanel dp, string name)
-        {
-            if (dp.CaptionState == CaptionState.Focused) return name;
-            return name;
-        }
-
+       
         protected override void RenderCaptionButton(DockPanel dp, DockPanelCaptionButton but, string iname, NCPaintEventArgs e)
         {
             if (but.State != CaptionButtonState.Normal)
@@ -152,85 +85,95 @@ namespace Ambertation.Windows.Forms
                 e.Graphics.DrawRectangle(p, but.Bounds);
             }
 
-            DrawButtonImage(e.Graphics, SetupCaptionButtonName(dp, iname), but.Bounds);
-        }        
-
-        protected override void RenderCaptionText(CaptionState state, NCPaintEventArgs e, Rectangle txtrect, string caption)
-        {
-            Color c = Parent.ColorTable.DockCaptionTextColor;
-            if (state == CaptionState.Focused) c = Parent.ColorTable.DockCaptionFocusTextColor;
-            e.Graphics.DrawString(
-                this.GetFittingString(Parent.FontTable.CaptionFont, caption, ButtonOrientation.Top, txtrect.Size)
-                , Parent.FontTable.CaptionFont, new SolidBrush(c), txtrect);
-        }
+            DrawButtonImage(e.Graphics, SetupCaptionButtonName(dp, iname), but.Bounds, dp.CaptionState== CaptionState.Focused);
+        }                
 
         protected override void RenderCaptionBackground(CaptionState state, NCPaintEventArgs e, Rectangle caprect)
         {
-            caprect.Offset(-1, -1);
-            caprect.Inflate(1, 1);
-            Color c1 = Parent.ColorTable.DockCaptionColorTop;
-            Color c2 = Parent.ColorTable.DockCaptionColorBottom;
-            if (state == CaptionState.Focused) {
-                c1 = Parent.ColorTable.DockCaptionFocusColorTop;
-                c2 = Parent.ColorTable.DockCaptionFocusColorBottom;
-            }
-            System.Drawing.Drawing2D.LinearGradientBrush b = 
-                new System.Drawing.Drawing2D.LinearGradientBrush(
-                    caprect, 
-                    c1, 
-                    c2, 
-                    System.Drawing.Drawing2D.LinearGradientMode.Vertical
-                );
-
-            e.Graphics.FillRectangle(b, caprect);
-        }
-
-        protected override void RenderButtonBackground(NCPaintEventArgs e, Rectangle r, Point pt1, Point pt2, SolidBrush brush, Pen pen)
-        {
-        }
-        protected override void RenderButtonBackground(NCPaintEventArgs e, Rectangle r, Point pt1, Point pt2, DockPanel dp)
-        {
-            ButtonOrientation orient = dp.BestOrientation;
-            System.Drawing.Drawing2D.LinearGradientMode mode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;            
-            if (orient == ButtonOrientation.Left || orient == ButtonOrientation.Right)
+            base.RenderCaptionBackground(state, e, caprect);
+            if (state == CaptionState.Normal)
             {
-                mode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
+                Rectangle c = caprect;
+                
+                Pen p = new Pen(Color.FromArgb(0x40, Parent.Interpolate(Parent.ColorTable.DockBorderColor, Color.Black, 0.2f)));
+                e.Graphics.DrawLine(p, c.Left, c.Top, c.Right, c.Top);
+                e.Graphics.DrawLine(p, c.Left, c.Top, c.Left, c.Bottom-1);
             }
-                                               
-            Color c1 = ColorTable.DockButtonBackgroundTop;
-            Color c2 =  ColorTable.DockButtonBackgroundBottom;
+        }
 
-            System.Drawing.Drawing2D.LinearGradientBrush backgroundbrush = new System.Drawing.Drawing2D.LinearGradientBrush(r, c1, c2, mode );
-            backgroundbrush.InterpolationColors = butbgblend;
+        
+        protected override void RenderButtonBackground(NCPaintEventArgs e, Rectangle barr, Rectangle r, Point pt1, Point pt2, DockPanel dp)
+        {
+            RenderButtonBarBackground(e, r, dp.BestOrientation);
+        }
+
+        public override void RenderButtonBarBackground(NCPaintEventArgs e, Rectangle r, ButtonOrientation orient)
+        {
+            System.Drawing.Drawing2D.LinearGradientMode mode = GetGradientMode(orient);
+
+            Color c1 = ColorTable.DockButtonBarBackgroundTop;
+            Color c2 = ColorTable.DockButtonBarBackgroundBottom;
+
+            System.Drawing.Drawing2D.LinearGradientBrush backgroundbrush = new System.Drawing.Drawing2D.LinearGradientBrush(r, c1, c2, mode);
+            backgroundbrush.InterpolationColors = butbarbgblend;
             e.Graphics.FillRectangle(backgroundbrush, r);
-
             
         }
 
-        protected System.Drawing.Drawing2D.GraphicsPath ButtonFullPath(Rectangle r)
+        
+
+        protected override void ModifyButtonRectangle(ref Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
         {
-            System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
-            path.AddLine(r.Left + 2, r.Top, r.Right - 2, r.Top);
-            path.AddLine(r.Right - 2, r.Top, r.Right, r.Top + 2);
-            path.AddLine(r.Right, r.Top + 2, r.Right, r.Bottom - 2);
-            path.AddLine(r.Right, r.Bottom - 2, r.Right - 2, r.Bottom );
-            path.AddLine(r.Right - 2, r.Bottom , r.Left + 2, r.Bottom );
-            path.AddLine(r.Left + 2, r.Bottom , r.Left, r.Bottom - 2);
-            path.AddLine(r.Left, r.Bottom - 2, r.Left, r.Top + 2);
-            path.CloseFigure();
-            return path;
+            base.ModifyButtonRectangle(ref r, caption, img, orient, state, renderbackgroundbar);
+
+            if (orient == ButtonOrientation.Bottom)
+            {
+                r = new Rectangle(r.Left + 1, r.Top, r.Width - 1, r.Height - 3);
+            }
+            else if (orient == ButtonOrientation.Top)
+            {
+                r = new Rectangle(r.Left + 1, r.Top + 3, r.Width - 1, r.Height - 3);
+            }
+            else if (orient == ButtonOrientation.Left)
+            {
+                r = new Rectangle(r.Left +3, r.Top + 1, r.Width - 3, r.Height - 1);
+            }
+            else
+            {
+                r = new Rectangle(r.Left , r.Top + 1, r.Width - 3, r.Height - 1);
+            }
+        }
+        
+
+        protected override void SetupButtonColors(Rectangle r, Color c, Color ci, Color fontc, ButtonOrientation orient, ButtonState state, out SolidBrush fontbrush, out SolidBrush linebackgroundbrush, out System.Drawing.Brush backgroundbrush, out Pen borderpen, out Pen borderpeninner)
+        {
+            base.SetupButtonColors(r, c, ci, fontc, orient, state, out fontbrush, out linebackgroundbrush, out backgroundbrush, out borderpen, out borderpeninner);
+        
+            System.Drawing.Drawing2D.LinearGradientMode mode = GetGradientMode(orient);
+            System.Drawing.Drawing2D.LinearGradientBrush bg = new System.Drawing.Drawing2D.LinearGradientBrush(r, ColorTable.DockButtonBackgroundTop, ColorTable.DockButtonBackgroundBottom, mode);
+            
+            if (state == ButtonState.Highlight) bg.InterpolationColors = butbgblendhl;
+            else bg.InterpolationColors = butbgblend; 
+
+            backgroundbrush = bg;
         }
 
-        protected System.Drawing.Drawing2D.GraphicsPath ButtonIndicatorPath(Rectangle r, ButtonOrientation orient)
+        protected override void RenderInnerButtonBorder(Graphics g, Rectangle r, Pen pi, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
         {
-            return ButtonFullPath(r);
+            Rectangle rs = r;
+            rs.Inflate(-2, -2);
+            rs.Offset(1, 1);
+            System.Drawing.Drawing2D.GraphicsPath pathbgi;
+            if (state == ButtonState.Normal) pathbgi = ButtonFullPath(rs);
+            else pathbgi = ButtonIndicatorPath(rs, orient);
+            g.DrawPath(new Pen(pi.Brush, 2), pathbgi);
         }
 
 
-        protected override void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
+        /*protected override void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color ci, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
         {
-            SolidBrush b; SolidBrush bb; System.Drawing.Drawing2D.LinearGradientBrush bg; Pen p;
-            SetupButtonColors(r, c, fontc, orient, state, out b, out bb, out bg, out p);
+            SolidBrush b; SolidBrush bb; System.Drawing.Brush bg; Pen p; Pen pi;
+            SetupButtonColors(r, c, ci, fontc, orient, state, out b, out bb, out bg, out p, out pi);
 
             Rectangle linerectangle; Point linept1, linept2; Rectangle textrect; Rectangle imgrect;
             r = SetupButtonRectangles(r, f, orient, out linerectangle, out linept1, out linept2, out textrect, out imgrect);
@@ -242,7 +185,7 @@ namespace Ambertation.Windows.Forms
             StringFormat sfreal = new StringFormat(sf.FormatFlags | StringFormatFlags.NoWrap);
             System.Drawing.Drawing2D.GraphicsPath pathbg = path.Clone() as System.Drawing.Drawing2D.GraphicsPath;
             pathbg.CloseFigure();
-
+           
             g.FillPath(bg, pathbg);
             g.DrawImage(
                     img,
@@ -256,73 +199,32 @@ namespace Ambertation.Windows.Forms
             );
 
             
+
             g.DrawString(this.GetFittingString(f, caption, orient, new Size(textrect.Width, textrect.Height)), f, b, textrect, sfreal);
             g.DrawPath(p, path);
-
-            Pen pp = new Pen(ColorTable.DockButtonHighlightBorderColor);
             
-            g.FillRectangle(bg, linerectangle);
-            g.DrawRectangle(p, linerectangle);
-            //g.DrawLine(new Pen(bg), linept1, linept2);
-            g.DrawLine(p, linept1, linept1);
-            g.DrawLine(p, linept2, linept2);            
-        }     
+
+
+            Pen pp = new Pen(ColorTable.DockButtonHighlightBorderColorOuter);
+            if (renderbackgroundbar)
+            {
+                g.FillRectangle(bb, linerectangle);
+                if (state != ButtonState.Highlight) g.DrawLine(pp, linept1, linept2);
+            }
+            else
+            {
+                g.FillRectangle(bg, linerectangle);
+                g.DrawRectangle(p, linerectangle);
+                g.DrawLine(new Pen(bg), linept1, linept2);
+                g.DrawLine(p, linept1, linept1);
+                g.DrawLine(p, linept2, linept2);
+            }           
+        }     */
 
              
         #endregion
 
-        #region IDockPanelRenderer Member
-
-
-        public void RenderGrip(DockContainer dc, NCPaintEventArgs e, Rectangle r)
-        {
-            e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockGripColor), r);
-        }
-
-        public void RenderResizePanel(DockContainer dc, RubberBandHelper rbh, PaintEventArgs e)
-        {
-            Rectangle rect = rbh.ClientRectangle;
-            //Console.WriteLine(rect);
-            e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeBackgroundColor), new Rectangle(rect.Left, rect.Top, rect.Width - 1, rect.Height - 1));
-            if (rbh.ContainerDock == DockStyle.Right) e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeGripColor), new Rectangle(rect.Left, rect.Top, 3, rect.Height - 1));
-            else if (rbh.ContainerDock == DockStyle.Left) e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeGripColor), new Rectangle(rect.Width - 4, rect.Top, 3, rect.Height - 1));
-            else if (rbh.ContainerDock == DockStyle.Bottom) e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeGripColor), new Rectangle(rect.Left, rect.Top, rect.Width - 1, 3));
-            else if (rbh.ContainerDock == DockStyle.Top) e.Graphics.FillRectangle(new SolidBrush(ColorTable.DockReSizeGripColor), new Rectangle(rect.Left, rect.Height - 4, rect.Width - 1, 3));
-        }
-
-        
-        public override Dimensions Dimension
-        {
-            get { return dim; }
-        }
-
-
-        public void RenderBorder(DockPanel dp, NCPaintEventArgs e)
-        {
-            Pen p = new Pen(Parent.ColorTable.DockBorderColor, Dimension.Border);
-            
-            Rectangle cl = GetPanelClientRectangle(dp.DockContainer, e, dp.BestOrientation);
-            cl = new Rectangle(cl.Left - Dimension.Border, cl.Top - Dimension.Border - Dimension.Caption, cl.Width + 2 * Dimension.Border -1 , cl.Height + 2 * Dimension.Border-1 + Dimension.Caption);
-            
-            e.Graphics.DrawRectangle(p, cl );
-        }
-
-        public void Animate(DockAnimationEventArgs e)
-        {            
-            animdata.e = e;
-            e.Container.SuspendLayout();
-            if (e.Container.Dock == DockStyle.Fill) DoFinishAnimation(e);
-            else
-            {
-                animtimer.Change(0, SPEED);
-                /*InvokedAnimationTimerCallback(this, e);
-                InvokedAnimationTimerCallback(this, e);
-                DoFinishAnimation(e);*/
-            }
-        }
-
-        public event DockAnimationEventHandler FinishedAnimation;
-
+        #region IDockPanelRenderer Member              
         #endregion
 
         

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Ambertation.Windows.Forms
 {
-    public class GlossyTabRenderer : WhidbeyTabRenderer
+    public class ClassicTabRenderer : WhidbeyTabRenderer
     {
     }
 }

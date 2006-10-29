@@ -25,6 +25,17 @@ namespace Ambertation.Windows.Forms
 {
     public class GlossyFontTable : BaseFontTable
     {
-        public GlossyFontTable() : base() { }
+        System.Drawing.Font fontbld;
+        public GlossyFontTable() : base() {
+            fontbld = new System.Drawing.Font(DefaultFont.FontFamily, DefaultFont.Size, System.Drawing.FontStyle.Bold);
+        }
+
+        public override System.Drawing.Font ButtonHighlightFont
+        {
+            get
+            {
+                return fontbld;
+            }
+        }
     }
 }

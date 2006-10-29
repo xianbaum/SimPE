@@ -30,13 +30,13 @@ namespace Ambertation.Windows.Forms
     {
         const int SIZE_DELTA = 10;
         const int SPEED = 1000 / 50;
-        Dimensions dim;
+        protected Dimensions dim;
         DockAnimationEventHandler atc;
 
         public WhidbeyRenderDockPanel(BaseRenderer parent)
             :base(parent)
         {
-            dim = new Dimensions(16, 24, 1, 4, 2, 16, 2);
+            dim = new Dimensions(16, 24, 1, 4, 4, 2, 16, 2);
             atc = new DockAnimationEventHandler(InvokedAnimationTimerCallback);
             animtimer = new System.Threading.Timer(new TimerCallback(AnimationTimerCallback), null, Timeout.Infinite, SPEED);
         }
@@ -143,7 +143,7 @@ namespace Ambertation.Windows.Forms
                 e.Graphics.DrawRectangle(p, but.Bounds);
             }
 
-            DrawButtonImage(e.Graphics, SetupCaptionButtonName(dp, iname), but.Bounds);
+            DrawButtonImage(e.Graphics, SetupCaptionButtonName(dp, iname), but.Bounds, false);
         }        
 
         protected override void RenderCaptionText(CaptionState state, NCPaintEventArgs e, Rectangle txtrect, string caption)
@@ -182,7 +182,7 @@ namespace Ambertation.Windows.Forms
             e.Graphics.DrawLine(pen, pt1, pt2);
         }
 
-        protected System.Drawing.Drawing2D.GraphicsPath ButtonFullPath(Rectangle r)
+        protected virtual System.Drawing.Drawing2D.GraphicsPath ButtonFullPath(Rectangle r)
         {
             System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
             path.AddLine(r.Left + 2, r.Top, r.Right - 2, r.Top);
@@ -201,14 +201,18 @@ namespace Ambertation.Windows.Forms
             return ButtonFullPath(r);
         }
 
-
-        protected override void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
+        protected virtual void RenderInnerButtonBorder(System.Drawing.Graphics g, System.Drawing.Rectangle r, Pen pi, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
         {
-            SolidBrush b; SolidBrush bb; System.Drawing.Drawing2D.LinearGradientBrush bg; Pen p;
-            SetupButtonColors(r, c, fontc, orient, state, out b, out bb, out bg, out p);
+        }
+
+
+        protected override void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, System.Drawing.Rectangle fullr, string caption, Image img, Color c, Color ci, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
+        {
+            SolidBrush b; SolidBrush bb; System.Drawing.Brush bg; Pen p; Pen pi;
+            SetupButtonColors(r, c, ci, fontc, orient, state, out b, out bb, out bg, out p, out pi);
 
             Rectangle linerectangle; Point linept1, linept2; Rectangle textrect; Rectangle imgrect;
-            r = SetupButtonRectangles(r, f, orient, out linerectangle, out linept1, out linept2, out textrect, out imgrect);
+            r = SetupButtonRectangles(r, fullr, f, orient, out linerectangle, out linept1, out linept2, out textrect, out imgrect);
 
             System.Drawing.Drawing2D.GraphicsPath path;
             if (state == ButtonState.Normal) path = ButtonFullPath(r);
@@ -219,6 +223,36 @@ namespace Ambertation.Windows.Forms
             pathbg.CloseFigure();
 
             g.FillPath(bg, pathbg);
+            RenderButtonIcon(g, img, imgrect);
+
+            
+            g.DrawString(this.GetFittingString(f, caption, orient, new Size(textrect.Width, textrect.Height)), f, b, textrect, sfreal);
+            RenderInnerButtonBorder(g, r, pi, orient, state, renderbackgroundbar);
+            g.DrawPath(p, path);
+
+            Pen pp = new Pen(ColorTable.DockButtonHighlightBorderColorOuter);
+            if (renderbackgroundbar)
+            {
+                g.FillRectangle(bb, linerectangle);
+                if (state != ButtonState.Highlight) g.DrawLine(pp, linept1, linept2);
+            }
+            else
+            {
+                FixButtonCorners(g, bg, p, ref linerectangle, ref linept1, ref linept2, pp);
+            }
+        }
+
+        protected virtual void FixButtonCorners(System.Drawing.Graphics g, System.Drawing.Brush bg, Pen p, ref Rectangle linerectangle, ref Point linept1, ref Point linept2, Pen pp)
+        {
+            g.FillRectangle(bg, linerectangle);
+            g.DrawRectangle(pp, linerectangle);
+            g.DrawLine(new Pen(bg), linept1, linept2);
+            g.DrawLine(p, linept1, linept1);
+            g.DrawLine(p, linept2, linept2);
+        }
+
+       protected virtual void RenderButtonIcon(System.Drawing.Graphics g, Image img, Rectangle imgrect)
+        {
             g.DrawImage(
                     img,
                     new Rectangle(
@@ -229,25 +263,6 @@ namespace Ambertation.Windows.Forms
                     new Rectangle(0, 0, img.Width, img.Height),
                     GraphicsUnit.Pixel
             );
-
-            
-            g.DrawString(this.GetFittingString(f, caption, orient, new Size(textrect.Width, textrect.Height)), f, b, textrect, sfreal);
-            g.DrawPath(p, path);
-
-            Pen pp = new Pen(ColorTable.DockButtonHighlightBorderColor);
-            if (renderbackgroundbar)
-            {
-                g.FillRectangle(bb, linerectangle);
-                if (state != ButtonState.Highlight) g.DrawLine(pp, linept1, linept2);
-            }
-            else
-            {
-                g.FillRectangle(bg, linerectangle);
-                g.DrawRectangle(p, linerectangle);
-                g.DrawLine(new Pen(bg), linept1, linept2);
-                g.DrawLine(p, linept1, linept1);
-                g.DrawLine(p, linept2, linept2);
-            }
         }     
 
              

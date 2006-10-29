@@ -20,6 +20,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
 
 namespace Ambertation.Windows.Forms
 {
@@ -74,6 +75,17 @@ namespace Ambertation.Windows.Forms
 
         protected abstract void CreateDockPanelRenderer(out IDockPanelRenderer rnd);
 
-        
+        byte Interpolate(byte cl1, byte cl2, float val)
+        {
+            return (byte)Math.Min(0xff, Math.Max(0x00, (cl2 * val) + (cl1 * (1 - val))));
+        }
+        public Color Interpolate(Color cl1, Color cl2, float val)
+        {
+            return Color.FromArgb(
+                Interpolate(cl1.R, cl2.R, val),
+                Interpolate(cl1.G, cl2.G, val),
+                Interpolate(cl1.B, cl2.B, val)
+                );
+        }
     }
 }

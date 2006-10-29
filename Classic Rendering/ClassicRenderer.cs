@@ -20,41 +20,37 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Drawing;
 
 namespace Ambertation.Windows.Forms
 {
-    public interface IColorTable
+    public class ClassicRenderer : BaseRenderer
     {
-        Color DockBorderColor { get; }
-        Color DockBackgroundColor { get; }
 
-        Color DockHintHightlightColor { get; }
-        Color DockHintOverlayColor { get; }
+        public ClassicRenderer(IColorTable ct, IFontTable ft)
+            : base(ct, ft)
+        {
+        }
 
-        Color DockButtonBarBackgroundTop { get; }
-        Color DockButtonBarBackgroundBottom { get; }
+        public ClassicRenderer(IColorTable ct)
+            : this(ct, new ClassicFontTable())
+        {            
+        }
 
-        Color DockButtonBorderColorOuter { get; }
-        Color DockButtonBorderColorInner { get; }
-        Color DockButtonHighlightBorderColorOuter { get; }
-        Color DockButtonHighlightBorderColorInner { get; }
-        Color DockButtonBackgroundTop { get; }
-        Color DockButtonBackgroundBottom { get; }
-        Color DockButtonHighlightBackgroundTop { get; }
-        Color DockButtonHighlightBackgroundBottom { get; }
-        Color DockButtonTextColor { get; }
-        Color DockButtonHighlightTextColor { get; }
+        public ClassicRenderer()
+            : this(new ClassicColorTable())
+        {
+        }
 
-        Color DockCaptionColorTop { get; }
-        Color DockCaptionFocusColorTop { get; }
-        Color DockCaptionColorBottom { get; }
-        Color DockCaptionFocusColorBottom { get; }
-        Color DockCaptionTextColor { get;}
-        Color DockCaptionFocusTextColor { get;}
+        protected override void CreateDockRenderer(out IRenderDockHints rnd)
+        {
+            rnd = new ClassicRenderDockHints(this);
+        }
 
-        Color DockGripColor { get;}
-        Color DockReSizeBackgroundColor { get;}
-        Color DockReSizeGripColor { get;}
+        protected override void CreateDockPanelRenderer(out IDockPanelRenderer rnd)
+        {
+            rnd = new ClassicRenderDockPanel(this) ;
+        }
+
+       
     }
 }

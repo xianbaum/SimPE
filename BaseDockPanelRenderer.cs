@@ -29,15 +29,22 @@ namespace Ambertation.Windows.Forms
         #region Helper classes
         public class Dimensions
         {
-            public Dimensions(int capt, int but, int bord, int dbarspace, int pad, int iconsize, int gripsz)
+            public Dimensions(int capt, int but, int bord, int dbarspace, int pad, int imgpad, int iconsize, int gripsz)
+                :this(capt, but, bord, dbarspace, pad, imgpad, iconsize, gripsz, 0)
+            {
+            }
+
+            public Dimensions(int capt, int but, int bord, int dbarspace, int pad, int imgpad, int iconsize, int gripsz, int shrinkwd)
             {
                 caption = capt;
                 buttons = but;
                 border = bord;
                 this.dbarspace = dbarspace;
                 padding = pad;
+                this.imgpadding = imgpad;
                 iconsz = iconsize;
                 this.gripsz = gripsz;
+                this.shrinkwd = shrinkwd;
             }
 
             int caption;
@@ -76,10 +83,22 @@ namespace Ambertation.Windows.Forms
                 get { return padding; }
             }
 
+            int imgpadding;
+            public int ButtonTextImagePadding
+            {
+                get { return imgpadding; }
+            }
+
             int iconsz;
             public int IconSize
             {
                 get { return iconsz; }
+            }
+
+            int shrinkwd;
+            public int ShrinkWidth
+            {
+                get { return shrinkwd; }
             }
         }
 
@@ -278,9 +297,12 @@ namespace Ambertation.Windows.Forms
         #endregion
 
         #region Caption Buttons
-        protected virtual void DrawButtonImage(Graphics g, string name, Rectangle r)
+        protected virtual void DrawButtonImage(Graphics g, string name, Rectangle r, bool focused)
         {
-            name = "Ambertation.Windows.Forms." + name + ".png";
+
+            name = "Ambertation.Windows.Forms." + name;
+            if (focused) name += "_f";
+            name += ".png";
             System.IO.Stream s = this.GetType().Assembly.GetManifestResourceStream(name);
             if (s != null)
             {
@@ -288,7 +310,7 @@ namespace Ambertation.Windows.Forms
                 int left = (r.Width - i.Width) / 2 + r.Left;
                 int top = (r.Height - i.Height) / 2 + r.Top;
 
-                g.DrawImage(i, left+1, top+1);
+                g.DrawImage(i, left + 1, top + 1);
             }
         }
 
@@ -299,7 +321,7 @@ namespace Ambertation.Windows.Forms
         #endregion
 
         #region Render base instructions
-        protected void SetupButtonColors(System.Drawing.Rectangle r, Color c, Color fontc, ButtonOrientation orient, ButtonState state, out SolidBrush fontbrush, out SolidBrush linebackgroundbrush, out System.Drawing.Drawing2D.LinearGradientBrush backgroundbrush, out Pen borderpen)
+        protected virtual void SetupButtonColors(System.Drawing.Rectangle r, Color c, Color ci, Color fontc, ButtonOrientation orient, ButtonState state, out SolidBrush fontbrush, out SolidBrush linebackgroundbrush, out System.Drawing.Brush backgroundbrush, out Pen borderpen, out Pen borderpeninner)
         {
             fontbrush = new SolidBrush(fontc);
             Color c1 = ColorTable.DockButtonBackgroundTop;
@@ -329,89 +351,93 @@ namespace Ambertation.Windows.Forms
                     mode
                 );
             borderpen = new Pen(c);
+            borderpeninner = new Pen(ci);
         }
 
-        protected System.Drawing.Rectangle SetupButtonRectangles(System.Drawing.Rectangle r, Font f, ButtonOrientation orient, out Rectangle linerectangle, out Point linept1, out Point linept2, out Rectangle textrect, out Rectangle imgrect)
+        protected virtual System.Drawing.Rectangle SetupButtonRectangles(System.Drawing.Rectangle r, Rectangle fullr, Font f, ButtonOrientation orient, out Rectangle linerectangle, out Point linept1, out Point linept2, out Rectangle textrect, out Rectangle imgrect)
         {
             if (orient == ButtonOrientation.Bottom)
             {
-                linerectangle = new Rectangle(r.Left, r.Top - 1, r.Width, 3);
+                linerectangle = new Rectangle(fullr.Left, fullr.Top - 1, fullr.Width, 3);
                 linept1 = new Point(linerectangle.Left, linerectangle.Bottom);
                 linept2 = new Point(linerectangle.Right, linerectangle.Bottom);
 
-
+                int rmhg = r.Height - linerectangle.Height;
                 imgrect = new Rectangle(
                     r.Left + Dimension.ButtonTextPadding,
-                    linerectangle.Bottom + 1,
+                    linerectangle.Bottom + (rmhg - Dimension.IconSize) / 2,
                     Dimension.IconSize,
                     Dimension.IconSize);
 
                 textrect = new Rectangle(
-                    imgrect.Right + 1,
-                    imgrect.Top + (imgrect.Height - f.Height) / 2 + 1,
-                    r.Width - imgrect.Width - 3 * Dimension.ButtonTextPadding,
+                    imgrect.Right + Dimension.ButtonTextImagePadding,
+                    linerectangle.Bottom + (rmhg - f.Height) / 2 ,
+                    r.Width - imgrect.Width - 2 * Dimension.ButtonTextPadding - Dimension.ButtonTextImagePadding,
                     f.Height);
 
                 r = new Rectangle(r.Left, r.Top, r.Width, r.Height - 2);
             }
             else if (orient == ButtonOrientation.Top)
             {
-                linerectangle = new Rectangle(r.Left, r.Bottom - 4, r.Width, 4);
+
+                linerectangle = new Rectangle(fullr.Left, fullr.Bottom - 4, fullr.Width, 4);
                 linept1 = new Point(linerectangle.Left, linerectangle.Top);
                 linept2 = new Point(linerectangle.Right, linerectangle.Top);
-
+                int rmhg = r.Height - linerectangle.Height;
                 imgrect = new Rectangle(
                     r.Left + Dimension.ButtonTextPadding,
-                    r.Top + 1,
+                    r.Top + (rmhg - Dimension.IconSize) / 2,
                     Dimension.IconSize,
                     Dimension.IconSize);
 
                 textrect = new Rectangle(
-                    imgrect.Right + 1,
-                    imgrect.Top + (imgrect.Height - f.Height) / 2 + 1,
-                    r.Width - imgrect.Width - 3 * Dimension.ButtonTextPadding,
+                    imgrect.Right + Dimension.ButtonTextImagePadding,
+                    r.Top + (rmhg - f.Height) / 2 ,
+                    r.Width - imgrect.Width - 2 * Dimension.ButtonTextPadding - Dimension.ButtonTextImagePadding,
                     f.Height);
 
                 r = new Rectangle(r.Left, r.Top + 1, r.Width, r.Height - 2);
             }
             else if (orient == ButtonOrientation.Right)
             {
-                linerectangle = new Rectangle(r.Left - 1, r.Top, 4, r.Height);
+                linerectangle = new Rectangle(fullr.Left - 1, fullr.Top, 4, fullr.Height);
                 linept1 = new Point(linerectangle.Right, linerectangle.Top);
                 linept2 = new Point(linerectangle.Right, linerectangle.Bottom);
 
+                int rmwd = r.Width - linerectangle.Width;
                 imgrect = new Rectangle(
-                    linerectangle.Right + (r.Width - linerectangle.Width - Dimension.IconSize) / 2,
+                    linerectangle.Right + (rmwd - Dimension.IconSize) / 2+1,
                     r.Top + Dimension.ButtonTextPadding,
                     Dimension.IconSize,
                     Dimension.IconSize);
 
                 textrect = new Rectangle(
-                    imgrect.Left,
-                    imgrect.Bottom + Dimension.ButtonTextPadding,
+                    linerectangle.Right + (rmwd - f.Height) / 2-1, 
+                    imgrect.Bottom + Dimension.ButtonTextImagePadding,
                     f.Height,
-                    r.Height - imgrect.Height - 3 * Dimension.ButtonTextPadding);
+                    r.Height - imgrect.Height - 2 * Dimension.ButtonTextPadding - Dimension.ButtonTextImagePadding);
 
                 r = new Rectangle(r.Left, r.Top, r.Width - 2, r.Height);
             }
             else
             {
                 //Console.WriteLine(r);
-                linerectangle = new Rectangle(r.Right - 3, r.Top, 4, r.Height);
+                linerectangle = new Rectangle(fullr.Right - 3, fullr.Top, 4, fullr.Height);
                 linept1 = new Point(linerectangle.Left, linerectangle.Top);
                 linept2 = new Point(linerectangle.Left, linerectangle.Bottom);
 
+                int rmwd = r.Width - linerectangle.Width;
                 imgrect = new Rectangle(
-                    (r.Width - linerectangle.Width - Dimension.IconSize) / 2 + 1,
+                    r.Left + (rmwd - Dimension.IconSize) / 2+1,
                     r.Top + Dimension.ButtonTextPadding,
                     Dimension.IconSize,
                     Dimension.IconSize);
 
                 textrect = new Rectangle(
-                    imgrect.Left,
-                    imgrect.Bottom + Dimension.ButtonTextPadding,
+                    r.Left + (rmwd - f.Height) / 2-1,
+                    imgrect.Bottom + Dimension.ButtonTextImagePadding,
                     f.Height,
-                    r.Height - imgrect.Height - 3 * Dimension.ButtonTextPadding);
+                    r.Height - imgrect.Height - 2 * Dimension.ButtonTextPadding - Dimension.ButtonTextImagePadding);
 
                 r = new Rectangle(r.Left + 1, r.Top, r.Width - 2, r.Height);
             }
@@ -422,12 +448,16 @@ namespace Ambertation.Windows.Forms
         {
             if (r.Height == 0 || r.Width == 0) return;
 
-            Color c = ColorTable.DockButtonBorderColor;
+            Rectangle fullr = r;
+            ModifyButtonRectangle(ref r, caption, img, orient, state, renderbackgroundbar);
+            Color c = ColorTable.DockButtonBorderColorOuter;
+            Color ci = ColorTable.DockButtonBorderColorInner;
             Color fc = ColorTable.DockButtonTextColor;
             Font f = Parent.FontTable.ButtonFont;
             if (state == ButtonState.Highlight)
             {
-                c = ColorTable.DockButtonHighlightBorderColor;
+                c = ColorTable.DockButtonHighlightBorderColorOuter;
+                ci = ColorTable.DockButtonHighlightBorderColorInner;
                 fc = ColorTable.DockButtonHighlightTextColor;
                 f = Parent.FontTable.ButtonHighlightFont;
             }
@@ -437,9 +467,13 @@ namespace Ambertation.Windows.Forms
             caption = GetFittingString(f, caption, orient, new Size(r.Width, r.Height));
 
 
-            RenderButton(g, r, caption, img, c, fc, f, sf, orient, state, renderbackgroundbar);
+            RenderButton(g, r, fullr, caption, img, c, ci, fc, f, sf, orient, state, renderbackgroundbar);
         }
-        protected abstract void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, string caption, Image img, Color c, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar);
+
+        protected virtual void ModifyButtonRectangle(ref System.Drawing.Rectangle r, string caption, Image img, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar)
+        {
+        }
+        protected abstract void RenderButton(System.Drawing.Graphics g, System.Drawing.Rectangle r, System.Drawing.Rectangle fullr, string caption, Image img, Color c, Color ci, Color fontc, Font f, StringFormat sf, ButtonOrientation orient, ButtonState state, bool renderbackgroundbar);
 
 
         public void RenderCaption(DockPanel dp, NCPaintEventArgs e)
@@ -465,6 +499,28 @@ namespace Ambertation.Windows.Forms
         protected abstract void RenderCaptionButton(DockPanel dp, DockPanelCaptionButton but, string iname, NCPaintEventArgs e);        
         protected abstract void RenderCaptionText(CaptionState state, NCPaintEventArgs e, Rectangle txtrect, string caption);
         protected abstract void RenderCaptionBackground(CaptionState state, NCPaintEventArgs e, Rectangle caprect);
+
+
+        protected virtual  System.Drawing.Drawing2D.LinearGradientMode GetGradientMode(ButtonOrientation orient)
+        {
+            System.Drawing.Drawing2D.LinearGradientMode mode = System.Drawing.Drawing2D.LinearGradientMode.Vertical;
+            if (orient == ButtonOrientation.Left || orient == ButtonOrientation.Right)
+            {
+                mode = System.Drawing.Drawing2D.LinearGradientMode.Horizontal;
+            }
+            return mode;
+        }
+
+        public virtual void RenderButtonBarBackground(NCPaintEventArgs e, Rectangle r, ButtonOrientation orient)
+        {
+            System.Drawing.Drawing2D.LinearGradientMode mode = GetGradientMode(orient);
+
+            Color c1 = ColorTable.DockButtonBarBackgroundTop;
+            Color c2 = ColorTable.DockButtonBarBackgroundBottom;
+
+            System.Drawing.Drawing2D.LinearGradientBrush backgroundbrush = new System.Drawing.Drawing2D.LinearGradientBrush(r, c1, c2, mode);
+            e.Graphics.FillRectangle(backgroundbrush, r);
+        }
 
         public void RenderButtonBackground(DockPanel dp, NCPaintEventArgs e)
         {
@@ -502,12 +558,12 @@ namespace Ambertation.Windows.Forms
             }
 
             SolidBrush brush = new SolidBrush(ColorTable.DockButtonHighlightBackgroundTop);
-            Pen pen = new Pen(ColorTable.DockButtonHighlightBorderColor);
+            Pen pen = new Pen(ColorTable.DockButtonHighlightBorderColorOuter);
 
-            RenderButtonBackground(e, pad, pt1, pt2, dp);
+            RenderButtonBackground(e, r, pad, pt1, pt2, dp);
             RenderButtonBackground(e, r, pt1, pt2, brush, pen);
         }
-        protected virtual void RenderButtonBackground(NCPaintEventArgs e, Rectangle r, Point pt1, Point pt2, DockPanel dp) { }
+        protected virtual void RenderButtonBackground(NCPaintEventArgs e, Rectangle barr, Rectangle r, Point pt1, Point pt2, DockPanel dp) { }
         protected abstract void RenderButtonBackground(NCPaintEventArgs e, Rectangle r, Point pt1, Point pt2, SolidBrush brush, Pen pen);
         
         #endregion
@@ -539,9 +595,9 @@ namespace Ambertation.Windows.Forms
         public virtual Size GetButtonSize(DockPanel dp, ButtonOrientation orient)
         {
             if (orient == ButtonOrientation.Top || orient==ButtonOrientation.Bottom)
-                return new Size(GetButtonCaptionWidth(GetFont(dp), dp.ButtonText, orient) + Dimension.IconSize + 5*Dimension.ButtonTextPadding, Dimension.Buttons);
+                return new Size(GetButtonCaptionWidth(GetFont(dp), dp.ButtonText, orient) + 1 + Dimension.IconSize + 2 * Dimension.ButtonTextPadding + Dimension.ButtonTextImagePadding + Dimension.ShrinkWidth, Dimension.Buttons);
             else
-                return new Size(Dimension.Buttons, GetButtonCaptionWidth(GetFont(dp), dp.ButtonText, orient) + Dimension.IconSize + 5 * Dimension.ButtonTextPadding);
+                return new Size(Dimension.Buttons, GetButtonCaptionWidth(GetFont(dp), dp.ButtonText, orient) +1 + Dimension.IconSize + 2 * Dimension.ButtonTextPadding + Dimension.ButtonTextImagePadding + Dimension.ShrinkWidth);
         }
         #endregion
 

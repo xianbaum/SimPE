@@ -48,30 +48,51 @@ namespace Ambertation.Windows.Forms
             get { return Color.FromArgb(128, SystemColors.MenuHighlight); }
         }
 
-        public Color DockButtonBorderColor
+        public Color DockButtonBorderColorOuter
         {
-            get { return Color.FromArgb(0x50, DockButtonHighlightBorderColor); }
+            get { return Color.FromArgb(0x60, DockButtonHighlightBorderColorOuter); }
         }
 
-        public Color DockButtonHighlightBorderColor
+        public Color DockButtonBorderColorInner
         {
-            get { return Color.FromArgb(0xAC, 0xA8, 0x99); }
+            get { return Color.FromArgb(0x40, Color.White); }
         }
-        public Color DockButtonBackgroundTop
+
+        public Color DockButtonHighlightBorderColorOuter
+        {
+            get { return Color.FromArgb(0xA0, 0xAC, 0xA8, 0x99); }
+        }
+
+        public Color DockButtonHighlightBorderColorInner
+        {
+            get { return Color.FromArgb(0xA0, Color.White); }
+        }
+
+
+        public Color DockButtonBarBackgroundTop
         {
             get { return Color.FromArgb(0xE0, 0xE0, 0xE4); }
         }
-        public Color DockButtonBackgroundBottom
+        public Color DockButtonBarBackgroundBottom
         {
             get { return Color.FromArgb(0xFC, 0xFC, 0xFE); }
+        }
+
+        public Color DockButtonBackgroundTop
+        {
+            get { return Color.FromArgb(0xFC, 0xFC, 0xFE); }
+        }
+        public Color DockButtonBackgroundBottom
+        {
+            get { return  Color.FromArgb(0xE5, 0xE5, 0xE9); }
         }
         public Color DockButtonHighlightBackgroundTop
         {
-            get { return Color.FromArgb(0xFC, 0xFC, 0xFE); }
+            get { return Color.FromArgb(0xED, 0xED, 0xF1); }
         }
         public Color DockButtonHighlightBackgroundBottom
         {
-            get { return DockButtonHighlightBackgroundTop; }
+            get { return Color.FromArgb(0xE0, 0xE0, 0xE4); }
         }
 
 
@@ -86,22 +107,22 @@ namespace Ambertation.Windows.Forms
 
         public Color DockCaptionColorTop
         {
-            get { return Color.FromArgb(0xC0, 0xBB, 0xAF); }
+            get { return Color.FromArgb(0xD3, 0xD3, 0xD7); }
         }
 
         public Color DockCaptionColorBottom
         {
-            get { return DockCaptionColorTop; }
+            get { return Color.FromArgb(0xD0, 0xD0, 0xD4); }
         }
 
         public Color DockCaptionFocusColorTop
         {
-            get { return Color.FromArgb(0x3B, 0x80, 0xED); }
+            get { return Color.FromArgb(0x56, 0x5D, 0x61); }
         }        
 
         public Color DockCaptionFocusColorBottom
         {
-            get { return Color.FromArgb(0x31, 0x6A, 0xC5); }
+            get { return Color.FromArgb(0x4F, 0x55, 0x59); }
         }
 
         public Color DockCaptionTextColor
@@ -122,11 +143,11 @@ namespace Ambertation.Windows.Forms
 
         public Color DockReSizeBackgroundColor
         {
-            get { return Color.SteelBlue; }
+            get { return Color.FromArgb(0x70, 0x72, 0x86); }
         }
         public Color DockReSizeGripColor
         {
-            get { return Color.Navy; }
+            get { return Color.FromArgb(0x3E, 0x3F, 0x4A); }
         }
     }
 }

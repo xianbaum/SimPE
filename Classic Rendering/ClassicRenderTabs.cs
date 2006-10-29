@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Ambertation.Windows.Forms
 {
-    public class GlossyRenderTabs : WhidbeyRenderTabs
+    public class ClassicRenderTabs : WhidbeyRenderTabs
     {
-        public GlossyRenderTabs(BaseRenderer parent)
+        public ClassicRenderTabs(BaseRenderer parent)
             : base(parent)
         {
         }

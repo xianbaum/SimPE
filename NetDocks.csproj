@@ -43,6 +43,13 @@
     <Compile Include="BaseDockPanelRenderer.cs" />
     <Compile Include="BaseFontTable.cs" />
     <Compile Include="BaseRenderer.cs" />
+    <Compile Include="Classic Rendering\ClassicColorTable.cs" />
+    <Compile Include="Classic Rendering\ClassicFontTable.cs" />
+    <Compile Include="Classic Rendering\ClassicRenderDockHints.cs" />
+    <Compile Include="Classic Rendering\ClassicRenderDockPanel.cs" />
+    <Compile Include="Classic Rendering\ClassicRenderer.cs" />
+    <Compile Include="Classic Rendering\ClassicRenderTabs.cs" />
+    <Compile Include="Classic Rendering\ClassicTabRenderer.cs" />
     <Compile Include="DockContainer.Compat.cs">
       <SubType>UserControl</SubType>
     </Compile>
