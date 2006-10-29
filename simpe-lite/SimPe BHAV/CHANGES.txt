@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+29 October 2006 09:16 - Pets: TTAB changes: Functioning plus/minus on popup (sort of)
+  SimPe BHAV\
+    TtabAnimalMotiveWiz.cs 1.1.2.3
+    TtabAnimalMotiveWiz.resx 1.1.2.3
+
 28 October 2006 21:42 - Pets: TTAB changes: Non-functioning plus/minus on popup
   SimPe BHAV\
     TtabAnimalMotiveUI.cs 1.1.2.3

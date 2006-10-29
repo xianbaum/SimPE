@@ -55,27 +55,19 @@ namespace pjse
             }
         }
 
-        private int lastTop
-        {
-            get
-            {
-                return (pairs.Count > 0)
-                    ? ((ctrlPair)pairs[pairs.Count - 1]).s.Top
-                    : 20;
-            }
-        }
+        private int nextTop = 20;
 
         private int width
         {
             get
             {
+                int a = 0, b = 20 + this.btnCancel.Width + 20 + this.btnOkay.Width + 20;
                 if (pairs.Count > 0)
                 {
                     ctrlPair c = (ctrlPair)pairs[0];
-                    return 20 + c.l.Width + 4 + c.s.Width + 20;
+                    a = 20 + c.l.Width + 4 + c.s.Width + 20;
                 }
-                else
-                    return 20 + this.btnCancel.Width + 20 + this.btnOkay.Width + 20;
+                return a > b ? a : b;
             }
         }
 
@@ -100,8 +92,7 @@ namespace pjse
             for (int i = 0; i < item.Count; i++)
                 addItem(item[i], i);
 
-            this.Size = new Size(width, lastTop + 20 + this.btnOkay.Height + 20);
-
+            this.Size = new Size(width, nextTop + 60 + this.btnOkay.Height + 20);
             this.btnMinus.Enabled = (pairs.Count > 0);
 
             this.ResumeLayout();
@@ -114,7 +105,7 @@ namespace pjse
             TtabSingleMotiveUI s = new TtabSingleMotiveUI();
             resources.ApplyResources(s, "ttabSingleMotiveUI1");
             s.Motive = item;
-            s.Location = new Point(this.Right - s.Width - 20, lastTop);
+            s.Location = new Point(this.Right - s.Width - 20, nextTop);
             this.Controls.Add(s);
 
             Label l = new Label();
@@ -124,6 +115,8 @@ namespace pjse
             this.Controls.Add(l);
 
             pairs.Add(new ctrlPair(s, l));
+
+            nextTop += s.Height + 1;
         }
 
         private void delItem()
@@ -132,21 +125,34 @@ namespace pjse
             this.Controls.Remove(c.s);
             this.Controls.Remove(c.l);
             pairs.RemoveAt(pairs.Count - 1);
+
+            nextTop -= c.s.Height + 1;
         }
 
         private void btnPlus_Click(object sender, EventArgs e)
         {
+            this.SuspendLayout();
+
             TtabItemSingleMotiveItem i = new TtabItemSingleMotiveItem(item.Parent);
+
             addItem(i, item.Add(i));
-            this.Size = new Size(width, lastTop + 20 + this.btnOkay.Height + 20);
+            this.Size = new Size(width, nextTop + 60 + this.btnOkay.Height + 20);
+            this.btnMinus.Enabled = (pairs.Count > 0);
+
+            this.ResumeLayout();
         }
 
         private void btnMinus_Click(object sender, EventArgs e)
         {
-            delItem();
-            this.Size = new Size(width, lastTop + 20 + this.btnOkay.Height + 20);
+            this.SuspendLayout();
 
+            item.RemoveAt(item.Count - 1);
+
+            delItem();
+            this.Size = new Size(width, nextTop + 60 + this.btnOkay.Height + 20);
             this.btnMinus.Enabled = (pairs.Count > 0);
+
+            this.ResumeLayout();
         }
 
     }
