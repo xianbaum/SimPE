@@ -152,10 +152,9 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnPopup_Click(object sender, EventArgs e)
         {
             pjse.TtabAnimalMotiveWiz amw = new pjse.TtabAnimalMotiveWiz();
-            TtabItemAnimalMotiveItem saved = (TtabItemAnimalMotiveItem)item.Clone(null);
-            amw.MotiveSet = saved;
+            amw.MotiveSet = item;
             if (amw.ShowDialog() == DialogResult.OK)
-                saved.CopyTo(item);
+                amw.MotiveSet.CopyTo(item);
             else
                 setText();
         }

@@ -50,6 +50,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// TODO: Add any initialization after the InitializeComponent call
 			TextBox[] tb = { Min, Delta, Type };
 			alHex16 = new ArrayList(tb);
+            this.Enabled = false;
 		}
 
 		/// <summary> 

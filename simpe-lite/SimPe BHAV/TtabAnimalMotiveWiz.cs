@@ -36,123 +36,76 @@ namespace pjse
         {
             InitializeComponent();
 
-            this.Controls.Remove(this.label1);
-            this.Controls.Remove(this.ttabSingleMotiveUI1);
+            TtabSingleMotiveUI[] m = {
+                ttabSingleMotiveUI1,  ttabSingleMotiveUI2,  ttabSingleMotiveUI3,  ttabSingleMotiveUI4,
+                ttabSingleMotiveUI5,  ttabSingleMotiveUI6,  ttabSingleMotiveUI7,  ttabSingleMotiveUI8,
+                ttabSingleMotiveUI9,  ttabSingleMotiveUI10, ttabSingleMotiveUI11, ttabSingleMotiveUI12,
+                ttabSingleMotiveUI13, ttabSingleMotiveUI14, ttabSingleMotiveUI15, ttabSingleMotiveUI16,
+            };
+            mUI = m;
+
+            item = new TtabItemAnimalMotiveItem(null);
+            for (int i = 0; i < m.Length; i++)
+            {
+                item.Add(new TtabItemSingleMotiveItem(null));
+                m[i].Motive = item[i];
+            }
+            Count = 0;
         }
+
+        private TtabSingleMotiveUI[] mUI = null;
 
         private TtabItemAnimalMotiveItem item = null;
-
         public TtabItemAnimalMotiveItem MotiveSet
-        {
-            get { return item; }
-            set
-            {
-                if (item != value)
-                {
-                    item = value;
-                    setItem();
-                }
-            }
-        }
-
-        private int nextTop = 20;
-
-        private int width
         {
             get
             {
-                int a = 0, b = 20 + this.btnCancel.Width + 20 + this.btnOkay.Width + 20;
-                if (pairs.Count > 0)
+                TtabItemAnimalMotiveItem value = new TtabItemAnimalMotiveItem(null);
+                for (int i = 0; i < nrItems; i++) value.Add(item[i]);
+                return value;
+            }
+            set
+            {
+                if (value.Count > 16)
+                    throw new ArgumentException("Argument contains too many SingleMotiveItems", "value");
+
+                item.Clear();
+                for (int i = 0; i < mUI.Length; i++)
                 {
-                    ctrlPair c = (ctrlPair)pairs[0];
-                    a = 20 + c.l.Width + 4 + c.s.Width + 20;
+                    item.Add((i < value.Count) ? value[i] : new TtabItemSingleMotiveItem(null));
+                    mUI[i].Motive = item[i]; // as there's no wrapper, we need to refresh
                 }
-                return a > b ? a : b;
+                Count = value.Count;
             }
         }
 
-        private class ctrlPair
+        private int nrItems = 0;
+        public int Count
         {
-            public TtabSingleMotiveUI s;
-            public Label l;
-            public ctrlPair(TtabSingleMotiveUI s, Label l) { this.s = s; this.l = l; }
+            get { return nrItems; }
+            set
+            {
+                if (value < 0 || value > 16)
+                    throw new ArgumentOutOfRangeException("value", value, "must be between zero and sixteen");
+                if (nrItems == value) return;
+
+                nrItems = value;
+
+                for (int i = 0; i < mUI.Length; i++) mUI[i].Enabled = i < nrItems;
+                btnMinus.Enabled = nrItems > 0;
+                btnPlus.Enabled = nrItems < 16;
+            }
         }
 
-        private ArrayList pairs = null;
-
-        private void setItem()
-        {
-            this.SuspendLayout();
-
-            foreach (Control c in this.Controls)
-                if (c is TtabSingleMotiveUI )
-                    this.Controls.Remove(c);
-
-            pairs = new ArrayList();
-            for (int i = 0; i < item.Count; i++)
-                addItem(item[i], i);
-
-            this.Size = new Size(width, nextTop + 60 + this.btnOkay.Height + 20);
-            this.btnMinus.Enabled = (pairs.Count > 0);
-
-            this.ResumeLayout();
-        }
-
-        private void addItem(TtabItemSingleMotiveItem item, int i)
-        {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabAnimalMotiveWiz));
-
-            TtabSingleMotiveUI s = new TtabSingleMotiveUI();
-            resources.ApplyResources(s, "ttabSingleMotiveUI1");
-            s.Motive = item;
-            s.Location = new Point(this.Right - s.Width - 20, nextTop);
-            this.Controls.Add(s);
-
-            Label l = new Label();
-            resources.ApplyResources(l, "label1");
-            l.Text = "0x" + SimPe.Helper.HexString((short)i);
-            l.Location = new Point(s.Left - l.Width - 4, s.Top + 2);
-            this.Controls.Add(l);
-
-            pairs.Add(new ctrlPair(s, l));
-
-            nextTop += s.Height + 1;
-        }
-
-        private void delItem()
-        {
-            ctrlPair c = (ctrlPair)pairs[pairs.Count - 1];
-            this.Controls.Remove(c.s);
-            this.Controls.Remove(c.l);
-            pairs.RemoveAt(pairs.Count - 1);
-
-            nextTop -= c.s.Height + 1;
-        }
 
         private void btnPlus_Click(object sender, EventArgs e)
         {
-            this.SuspendLayout();
-
-            TtabItemSingleMotiveItem i = new TtabItemSingleMotiveItem(item.Parent);
-
-            addItem(i, item.Add(i));
-            this.Size = new Size(width, nextTop + 60 + this.btnOkay.Height + 20);
-            this.btnMinus.Enabled = (pairs.Count > 0);
-
-            this.ResumeLayout();
+            Count++;
         }
 
         private void btnMinus_Click(object sender, EventArgs e)
         {
-            this.SuspendLayout();
-
-            item.RemoveAt(item.Count - 1);
-
-            delItem();
-            this.Size = new Size(width, nextTop + 60 + this.btnOkay.Height + 20);
-            this.btnMinus.Enabled = (pairs.Count > 0);
-
-            this.ResumeLayout();
+            Count--;
         }
 
     }
