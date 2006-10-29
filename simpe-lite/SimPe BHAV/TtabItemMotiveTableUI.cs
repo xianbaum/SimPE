@@ -228,9 +228,11 @@ namespace SimPe.PackedFiles.UserInterface
             for (ushort m = 0; m < aMotiveLabels.Length; m++)
             {
                 aMotiveLabels[m].Location = new Point(maxWidth - aMotiveLabels[m].Width, c.Tops[m] + 2);
-                aButtons[m].Location = new Point(0, c.Tops[m] + 1);
+                aButtons[m].Location = new Point(0, c.Tops[m]);
                 lbCBM[m].Location = new Point(cbW + 2, c.Tops[m] + 2);
             }
+
+            this.cbShowAll.Location = new Point(maxWidth - this.cbShowAll.Width, 2);
 
             c.Location = new Point(maxWidth + 2, 0);
             this.Height = c.Height + 24;

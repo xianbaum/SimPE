@@ -50,6 +50,7 @@ namespace pjse
                 item.Add(new TtabItemSingleMotiveItem(null));
                 m[i].Motive = item[i];
             }
+            nrItems = -1;
             Count = 0;
         }
 
@@ -75,6 +76,7 @@ namespace pjse
                     item.Add((i < value.Count) ? value[i] : new TtabItemSingleMotiveItem(null));
                     mUI[i].Motive = item[i]; // as there's no wrapper, we need to refresh
                 }
+                nrItems = -1;
                 Count = value.Count;
             }
         }

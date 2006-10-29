@@ -1,5 +1,20 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+29 October 2006 13:54 - Pets: TTAB changes: sort out fonts
+  SimPe BHAV\
+    TtabAnimalMotiveUI.cs 1.1.2.5
+    TtabAnimalMotiveUI.resx 1.1.2.4
+    TtabAnimalMotiveWiz.cs 1.1.2.5
+    TtabAnimalMotiveWiz.resx 1.1.2.5
+    TtabForm.cs 1.31.2.14.2.8
+    TtabForm.resx 1.15.8.5.2.7
+    TtabItemMotiveTableUI.cs 1.10.12.3.12.8
+    TtabItemMotiveTableUI.resx 1.5.22.1.22.4
+    TtabMotiveGroupUI.cs 1.3.26.3.12.7
+    TtabMotiveGroupUI.resx 1.4.52.4
+    TtabSingleMotiveUI.cs 1.5.26.1.12.8
+    TtabSingleMotiveUI.resx 1.10.12.3.12.5
+
 29 October 2006 10:49 - Pets: TTAB changes: Functioning plus/minus on popup (new)
   SimPe BHAV\
     TtabAnimalMotiveUI.cs 1.1.2.4
