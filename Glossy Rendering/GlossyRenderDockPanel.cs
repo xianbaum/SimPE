@@ -51,7 +51,7 @@ namespace Ambertation.Windows.Forms
                            Parent.Interpolate(ColorTable.DockButtonBackgroundTop, Color.Black, 0.02f),
                            ColorTable.DockButtonBackgroundTop,
                            ColorTable.DockButtonBackgroundBottom,
-                           Parent.Interpolate(ColorTable.DockButtonBackgroundBottom, Color.White, 0.1f)
+                           Parent.Interpolate(ColorTable.DockButtonBackgroundBottom, Color.White, 0.2f)
                            
             };
             butbgblendhl.Positions = new float[] { 0, 0.4f, 0.405f, 1 };

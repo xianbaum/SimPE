@@ -71,28 +71,28 @@ namespace Ambertation.Windows.Forms
 
         public Color DockButtonBarBackgroundTop
         {
-            get { return Color.FromArgb(0xE0, 0xE0, 0xE4); }
+            get { return Color.FromArgb(0xEE, 0xEE, 0xEE); }
         }
         public Color DockButtonBarBackgroundBottom
         {
-            get { return Color.FromArgb(0xFC, 0xFC, 0xFE); }
+            get { return Color.FromArgb(0xFF, 0xFF, 0xFF); }
         }
 
         public Color DockButtonBackgroundTop
         {
-            get { return Color.FromArgb(0xFC, 0xFC, 0xFE); }
+            get { return Color.FromArgb(0xFF, 0xFF, 0xFF); }
         }
         public Color DockButtonBackgroundBottom
         {
-            get { return  Color.FromArgb(0xE5, 0xE5, 0xE9); }
+            get { return  Color.FromArgb(0xE9, 0xE9, 0xE9); }
         }
         public Color DockButtonHighlightBackgroundTop
         {
-            get { return Color.FromArgb(0xED, 0xED, 0xF1); }
+            get { return Color.FromArgb(0xF5, 0xF5, 0xF5); }
         }
         public Color DockButtonHighlightBackgroundBottom
         {
-            get { return Color.FromArgb(0xE0, 0xE0, 0xE4); }
+            get { return Color.FromArgb(0xEA, 0xEA, 0xEA); }
         }
 
 
