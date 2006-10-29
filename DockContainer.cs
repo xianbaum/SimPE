@@ -32,7 +32,7 @@ namespace Ambertation.Windows.Forms
     public partial class DockContainer : NCUserControl, IButtonContainer
     {
         protected List<DockContainer> containers;
-        DockButtonBar.DockPanelList panels;
+        protected DockButtonBar.DockPanelList panels;
         protected BaseDockManager manager;
         
 
@@ -673,6 +673,7 @@ namespace Ambertation.Windows.Forms
 
         protected virtual void CleanUp()
         {
+            if (NoCleanup) return;
             for (int i=containers.Count-1; i>=0; i--)
             {
                 DockContainer dc = containers[i];

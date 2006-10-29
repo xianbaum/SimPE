@@ -26,7 +26,7 @@ namespace Ambertation.Windows.Forms
         {
             foreach (DockPanel dp in floatingpanels)
             {
-                if (dp.Name == "") dp.Name = "myDockPanel_" + list.Count;
+                if (dp.Name == "") dp.Name = "dp_" + list.Count+"_"+dp.Guid.ToString();
                 list[dp.Name] = dp;
             }
             base.GetPanels(list);

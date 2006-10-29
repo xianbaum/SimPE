@@ -59,7 +59,7 @@ namespace Ambertation.Windows.Forms
         {
             if (Name == "")
             {
-                Name = "myDockContainer_" + counter;
+                Name = "dc_" + counter+"_"+Guid.ToString();
                 counter++;
             }
             return counter;

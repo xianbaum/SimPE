@@ -96,22 +96,27 @@ namespace Ambertation.Windows.Forms{
 
         bool colored;
         Color cl;
-        static Bitmap CreateBitmap(Color cl, Size sz)
+        protected Bitmap CreateBitmap(Color cl, Size sz)
         {
             Bitmap ret = new Bitmap(sz.Width, sz.Height);
             Graphics g = Graphics.FromImage(ret);
             SolidBrush b = new SolidBrush(cl);
             g.FillRectangle(b, 0, 0, sz.Width - 1, sz.Height - 1);
+            OnCreateBitmap(g, ret);
             b.Dispose();
             g.Dispose();
 
             return ret;
         }
 
-        public LayeredForm(Color cl, Size sz)
-            :this(CreateBitmap(cl, sz))
+        protected virtual void OnCreateBitmap(Graphics g, Bitmap bmp)
         {
+        }
 
+        public LayeredForm(Color cl, Size sz)            
+        {
+            this.Visible = false;
+            Init(CreateBitmap(cl, sz));
             colored = true;
             this.cl = cl;
         }

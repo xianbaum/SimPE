@@ -74,6 +74,7 @@ namespace Ambertation.Windows.Forms
             {
                 docked = true;
                 dp.DockControl(this);
+                
                 this.ResumeLayout();
                 return;
             }

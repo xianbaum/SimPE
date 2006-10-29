@@ -23,9 +23,12 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -135,6 +138,12 @@
     <Compile Include="RubberBandHelper.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="StructureTreeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StructureTreeView.Designer.cs">
+      <DependentUpon>StructureTreeView.cs</DependentUpon>
+    </Compile>
     <Compile Include="TabControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -174,6 +183,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="dockimg.png" />
+    <EmbeddedResource Include="StructureTreeView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StructureTreeView.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

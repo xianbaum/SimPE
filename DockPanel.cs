@@ -565,17 +565,23 @@ namespace Ambertation.Windows.Forms
         LastOpenState last;
         public void Close()
         {
-            Close(false);
-        }
-        internal void CloseFromForm()
-        {
-            Close(true);
+            Close(false, false);
         }
 
-        protected void Close(bool fromform)
+        internal void CloseIntern()
+        {
+            Close(false, true);
+        }
+
+        internal void CloseFromForm()
+        {
+            Close(true, false);
+        }
+
+        protected void Close(bool fromform, bool intern)
         {
             DockPanelClosingEvent e = new DockPanelClosingEvent(this);
-            if (Closing != null) this.Closing(this, e);
+            if (Closing != null && !intern) this.Closing(this, e);
             if (e.Cancel) return;
             DockPanelFloatingForm f = this.FloatForm;
 
@@ -598,7 +604,7 @@ namespace Ambertation.Windows.Forms
             }
 
             base.Parent = null;
-            if (Closed != null) Closed(this, new EventArgs());
+            if (Closed != null && !intern) Closed(this, new EventArgs());
         }
 
         public new Control Parent

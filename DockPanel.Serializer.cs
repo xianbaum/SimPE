@@ -54,15 +54,16 @@ namespace Ambertation.Windows.Forms
 
         protected virtual void DoDeserialize(BinaryReader reader, Dictionary<string, DockManager.DockContainerDescriptor> docks, uint ver)
         {
+            LastOpenState l = new LastOpenState();
             if (ver >= 6)
             {
                 int px = reader.ReadInt32();
                 int py = reader.ReadInt32();
-                last.Pos = new System.Drawing.Point(px, py);
-                last.Floating = reader.ReadBoolean();
+                l.Pos = new System.Drawing.Point(px, py);
+                l.Floating = reader.ReadBoolean();
                 string pname = reader.ReadString();
                 if (docks.ContainsKey(pname))                
-                    last.Container = docks[pname].Container;                
+                    l.Container = docks[pname].Container;                
             }
             Visible = reader.ReadBoolean();
             bool collaps = reader.ReadBoolean();
@@ -80,12 +81,14 @@ namespace Ambertation.Windows.Forms
             if (docks.ContainsKey(name))
             {
                 this.Close();
+                last = l;
                 last.Container = docks[name].Container;
                 if (open) this.Open();
                 //Visible = !collaps;
             }
             else
             {
+                last = l;
                 Visible = true;
                 if (open)  Float(new System.Drawing.Point(left, top));
             }

@@ -21,7 +21,7 @@ namespace Ambertation.Windows.Forms
         DockPanel startdrag;
         NCMouseEventArgs events;
         DockButtonBar.DockPanelList known;
-        List<DockPanelFloatingForm> knownf;
+        List<DockPanelFloatingForm> knownf;        
         ManagerSingelton()
         {
             topmostfloats = false;

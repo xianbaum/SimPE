@@ -165,6 +165,12 @@ namespace Ambertation.Windows.Forms
             foreach (DockContainer c in containers)
                 if (c.Dock == DockStyle.Fill) cnts.Add(c);
 
+            foreach (DockPanel p in panels){
+                p.BringToFront();
+            }
+
+            if (Highlight != null) Highlight.BringToFront();
+
             //Console.WriteLine(cnts.Count+" "+containers.Count);
             foreach (DockContainer c in cnts)
                 c.BringToFront();
@@ -459,7 +465,17 @@ namespace Ambertation.Windows.Forms
 
         protected override bool MeAsCenterDock
         {
-            get { return false; }
+            get { return true; }
+        }
+
+        protected override void OnControlAdded(ControlEventArgs e)
+        {
+            base.OnControlAdded(e);
+            DockPanel dp = e.Control as DockPanel;
+            if (dp != null && e.Control.Dock == DockStyle.Fill)
+            {
+                TopmostCenter();
+            }
         }
 
         internal override void MouseMoved(Point scrpt)
@@ -524,7 +540,7 @@ namespace Ambertation.Windows.Forms
                         dcmain = last.Seed;
                         DockContainer dc = dcmain;
                         dcmain.SuspendLayout();
-                        if (last.Hint != SelectedHint.Center || last.Parent is DockManager)
+                        if (last.Hint != SelectedHint.Center /*|| last.Parent is DockManager*/)
                         {
 
                             DockContainer dcnew;
