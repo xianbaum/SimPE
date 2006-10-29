@@ -148,6 +148,15 @@ namespace SimPe.PackedFiles.UserInterface
 			ComboBox[] cbb = { cbStringIndex ,cbAttenuationCode };
 			alHex32cb = new ArrayList(cbb);
 
+            this.label40.Left = this.tbStringIndex.Left - this.label40.Width - 6;
+            this.llAction.Left = this.tbStringIndex.Left - this.llAction.Width - 6;
+            this.llGuardian.Left = this.tbStringIndex.Left - this.llGuardian.Width - 6;
+
+            Label[] al = { label32, label31, label1, label35, label20, label30, label2, label29, label34, label33 };
+            foreach (Label l in al)
+                l.Left = cbAttenuationCode.Left - l.Width - 6;
+
+
 #if !(INPROGRESS || DEBUG)
 			this.btnAppend.Visible = false;
 #endif

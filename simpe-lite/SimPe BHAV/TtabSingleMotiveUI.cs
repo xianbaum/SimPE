@@ -50,6 +50,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// TODO: Add any initialization after the InitializeComponent call
 			TextBox[] tb = { Min, Delta, Type };
 			alHex16 = new ArrayList(tb);
+            this.Enabled = false;
 		}
 
 		/// <summary> 
@@ -216,8 +217,9 @@ namespace SimPe.PackedFiles.UserInterface
 		private void hex16_Validated(object sender, System.EventArgs ev)
 		{
             internalchg = true;
-            Motive = item;
-			((TextBox)sender).SelectAll();
+            short val = Convert.ToInt16(((TextBox)sender).Text, 16);
+            ((TextBox)sender).Text = Helper.HexString(val);
+            ((TextBox)sender).SelectAll();
             internalchg = false;
         }
 

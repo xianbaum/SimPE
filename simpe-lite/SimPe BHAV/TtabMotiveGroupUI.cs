@@ -58,9 +58,9 @@ namespace SimPe.PackedFiles.UserInterface
                 muiH = c.Height;
             }
 
-            this.lbMin.Location = new Point(muiW / 6 - this.lbMin.Width / 2, 13);
-            this.lbDelta.Location = new Point(muiW / 2 - this.lbDelta.Width / 2, 13);
-            this.lbType.Location = new Point((5 * muiW) / 6 - this.lbType.Width / 2, 13);
+            this.lbMin.Left = muiW / 6 - this.lbMin.Width / 2;
+            this.lbDelta.Left = muiW / 2 - this.lbDelta.Width / 2;
+            this.lbType.Left = (5 * muiW) / 6 - this.lbType.Width / 2;
         }
 
 		/// <summary> 
@@ -126,7 +126,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbMotiveGroup.Controls.Clear();
             tops = new ArrayList();
 
-            int nextTop = 35;
+            int nextTop = this.lbMin.Bottom + 2;
             int width = this.Width;
 
             if (item != null)

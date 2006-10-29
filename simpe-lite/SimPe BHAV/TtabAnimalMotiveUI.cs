@@ -93,14 +93,17 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void setText()
         {
-            this.tbValue.Text = "0x" + Helper.HexString(item.Count);
+            this.tbValue.Text = "0x" + 
+                ((item.Count<0x100) ? Helper.HexString((byte)item.Count)
+                : (item.Count<0x10000) ? Helper.HexString((ushort)item.Count)
+                : Helper.HexString(item.Count))
+                ;
             for (int i = 0; i < item.Count; i++)
             {
-                this.tbValue.Text += " " + Helper.HexString(item[i].Min)
+                this.tbValue.Text += "; " + Helper.HexString(item[i].Min)
                 + " " + Helper.HexString(item[i].Delta)
                 + " " + Helper.HexString(item[i].Type)
-                + ";"
-            ;
+                ;
             }
         }
 
@@ -152,10 +155,9 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnPopup_Click(object sender, EventArgs e)
         {
             pjse.TtabAnimalMotiveWiz amw = new pjse.TtabAnimalMotiveWiz();
-            TtabItemAnimalMotiveItem saved = (TtabItemAnimalMotiveItem)item.Clone(null);
-            amw.MotiveSet = saved;
+            amw.MotiveSet = item;
             if (amw.ShowDialog() == DialogResult.OK)
-                saved.CopyTo(item);
+                amw.MotiveSet.CopyTo(item);
             else
                 setText();
         }
