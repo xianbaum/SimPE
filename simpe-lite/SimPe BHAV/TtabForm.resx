@@ -1398,484 +1398,484 @@
   <data name="&gt;&gt;label24.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="cbvisitor.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit0.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbvisitor.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit0.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbvisitor.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit0.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 55</value>
   </data>
-  <data name="cbvisitor.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit0.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 21</value>
   </data>
-  <data name="cbvisitor.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit0.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="cbvisitor.Text" xml:space="preserve">
+  <data name="cbBit0.Text" xml:space="preserve">
     <value>visitor</value>
   </data>
-  <data name="&gt;&gt;cbvisitor.Name" xml:space="preserve">
-    <value>cbvisitor</value>
+  <data name="&gt;&gt;cbBit0.Name" xml:space="preserve">
+    <value>cbBit0</value>
   </data>
-  <data name="&gt;&gt;cbvisitor.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit0.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbvisitor.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit0.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbvisitor.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit0.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="cbunk3.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBitE.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbunk3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBitE.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbunk3.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBitE.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 199</value>
   </data>
-  <data name="cbunk3.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBitE.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 21</value>
   </data>
-  <data name="cbunk3.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBitE.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
-  <data name="cbunk3.Text" xml:space="preserve">
+  <data name="cbBitE.Text" xml:space="preserve">
     <value>allow nested</value>
   </data>
-  <data name="&gt;&gt;cbunk3.Name" xml:space="preserve">
-    <value>cbunk3</value>
+  <data name="&gt;&gt;cbBitE.Name" xml:space="preserve">
+    <value>cbBitE</value>
   </data>
-  <data name="&gt;&gt;cbunk3.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBitE.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbunk3.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBitE.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbunk3.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBitE.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="cbunk4.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBitF.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbunk4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBitF.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbunk4.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBitF.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 222</value>
   </data>
-  <data name="cbunk4.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBitF.Size" type="System.Drawing.Size, System.Drawing">
     <value>54, 21</value>
   </data>
-  <data name="cbunk4.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBitF.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
   </data>
-  <data name="cbunk4.Text" xml:space="preserve">
+  <data name="cbBitF.Text" xml:space="preserve">
     <value>nest</value>
   </data>
-  <data name="&gt;&gt;cbunk4.Name" xml:space="preserve">
-    <value>cbunk4</value>
+  <data name="&gt;&gt;cbBitF.Name" xml:space="preserve">
+    <value>cbBitF</value>
   </data>
-  <data name="&gt;&gt;cbunk4.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBitF.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbunk4.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBitF.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbunk4.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBitF.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="cbunk1.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBitC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbunk1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBitC.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbunk1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBitC.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 151</value>
   </data>
-  <data name="cbunk1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBitC.Size" type="System.Drawing.Size, System.Drawing">
     <value>58, 21</value>
   </data>
-  <data name="cbunk1.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBitC.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
   </data>
-  <data name="cbunk1.Text" xml:space="preserve">
+  <data name="cbBitC.Text" xml:space="preserve">
     <value>dogs</value>
   </data>
-  <data name="&gt;&gt;cbunk1.Name" xml:space="preserve">
-    <value>cbunk1</value>
+  <data name="&gt;&gt;cbBitC.Name" xml:space="preserve">
+    <value>cbBitC</value>
   </data>
-  <data name="&gt;&gt;cbunk1.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBitC.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbunk1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBitC.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbunk1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBitC.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="cbunk2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBitD.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbunk2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBitD.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbunk2.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBitD.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 175</value>
   </data>
-  <data name="cbunk2.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBitD.Size" type="System.Drawing.Size, System.Drawing">
     <value>53, 21</value>
   </data>
-  <data name="cbunk2.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBitD.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="cbunk2.Text" xml:space="preserve">
+  <data name="cbBitD.Text" xml:space="preserve">
     <value>cats</value>
   </data>
-  <data name="&gt;&gt;cbunk2.Name" xml:space="preserve">
-    <value>cbunk2</value>
+  <data name="&gt;&gt;cbBitD.Name" xml:space="preserve">
+    <value>cbBitD</value>
   </data>
-  <data name="&gt;&gt;cbunk2.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBitD.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbunk2.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBitD.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbunk2.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBitD.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="cbteens.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBitB.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbteens.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBitB.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbteens.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBitB.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 128</value>
   </data>
-  <data name="cbteens.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBitB.Size" type="System.Drawing.Size, System.Drawing">
     <value>62, 21</value>
   </data>
-  <data name="cbteens.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBitB.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
   </data>
-  <data name="cbteens.Text" xml:space="preserve">
+  <data name="cbBitB.Text" xml:space="preserve">
     <value>teens</value>
   </data>
-  <data name="&gt;&gt;cbteens.Name" xml:space="preserve">
-    <value>cbteens</value>
+  <data name="&gt;&gt;cbBitB.Name" xml:space="preserve">
+    <value>cbBitB</value>
   </data>
-  <data name="&gt;&gt;cbteens.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBitB.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbteens.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBitB.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbteens.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBitB.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="cbelders.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBitA.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbelders.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBitA.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbelders.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBitA.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 105</value>
   </data>
-  <data name="cbelders.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBitA.Size" type="System.Drawing.Size, System.Drawing">
     <value>66, 21</value>
   </data>
-  <data name="cbelders.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBitA.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
   </data>
-  <data name="cbelders.Text" xml:space="preserve">
+  <data name="cbBitA.Text" xml:space="preserve">
     <value>elders</value>
   </data>
-  <data name="&gt;&gt;cbelders.Name" xml:space="preserve">
-    <value>cbelders</value>
+  <data name="&gt;&gt;cbBitA.Name" xml:space="preserve">
+    <value>cbBitA</value>
   </data>
-  <data name="&gt;&gt;cbelders.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBitA.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbelders.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBitA.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbelders.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBitA.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="cbtodlers.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbtodlers.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbtodlers.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit9.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 81</value>
   </data>
-  <data name="cbtodlers.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit9.Size" type="System.Drawing.Size, System.Drawing">
     <value>78, 21</value>
   </data>
-  <data name="cbtodlers.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit9.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="cbtodlers.Text" xml:space="preserve">
+  <data name="cbBit9.Text" xml:space="preserve">
     <value>toddlers</value>
   </data>
-  <data name="&gt;&gt;cbtodlers.Name" xml:space="preserve">
-    <value>cbtodlers</value>
+  <data name="&gt;&gt;cbBit9.Name" xml:space="preserve">
+    <value>cbBit9</value>
   </data>
-  <data name="&gt;&gt;cbtodlers.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit9.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbtodlers.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit9.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbtodlers.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit9.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="cbautofirst.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit8.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbautofirst.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbautofirst.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit8.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 55</value>
   </data>
-  <data name="cbautofirst.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit8.Size" type="System.Drawing.Size, System.Drawing">
     <value>82, 21</value>
   </data>
-  <data name="cbautofirst.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit8.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="cbautofirst.Text" xml:space="preserve">
+  <data name="cbBit8.Text" xml:space="preserve">
     <value>auto first</value>
   </data>
-  <data name="&gt;&gt;cbautofirst.Name" xml:space="preserve">
-    <value>cbautofirst</value>
+  <data name="&gt;&gt;cbBit8.Name" xml:space="preserve">
+    <value>cbBit8</value>
   </data>
-  <data name="&gt;&gt;cbautofirst.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit8.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbautofirst.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit8.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbautofirst.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit8.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="cbdebugmenu.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit7.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbdebugmenu.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit7.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbdebugmenu.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit7.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 222</value>
   </data>
-  <data name="cbdebugmenu.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit7.Size" type="System.Drawing.Size, System.Drawing">
     <value>106, 21</value>
   </data>
-  <data name="cbdebugmenu.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit7.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="cbdebugmenu.Text" xml:space="preserve">
+  <data name="cbBit7.Text" xml:space="preserve">
     <value>debug menu</value>
   </data>
-  <data name="&gt;&gt;cbdebugmenu.Name" xml:space="preserve">
-    <value>cbdebugmenu</value>
+  <data name="&gt;&gt;cbBit7.Name" xml:space="preserve">
+    <value>cbBit7</value>
   </data>
-  <data name="&gt;&gt;cbdebugmenu.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit7.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbdebugmenu.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit7.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbdebugmenu.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit7.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="cbadults.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit6.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbadults.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit6.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbadults.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit6.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 199</value>
   </data>
-  <data name="cbadults.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit6.Size" type="System.Drawing.Size, System.Drawing">
     <value>65, 21</value>
   </data>
-  <data name="cbadults.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit6.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="cbadults.Text" xml:space="preserve">
+  <data name="cbBit6.Text" xml:space="preserve">
     <value>adults</value>
   </data>
-  <data name="&gt;&gt;cbadults.Name" xml:space="preserve">
-    <value>cbadults</value>
+  <data name="&gt;&gt;cbBit6.Name" xml:space="preserve">
+    <value>cbBit6</value>
   </data>
-  <data name="&gt;&gt;cbadults.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit6.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbadults.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit6.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbadults.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit6.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="cbdemochild.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbdemochild.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbdemochild.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit5.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 175</value>
   </data>
-  <data name="cbdemochild.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit5.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 21</value>
   </data>
-  <data name="cbdemochild.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit5.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="cbdemochild.Text" xml:space="preserve">
+  <data name="cbBit5.Text" xml:space="preserve">
     <value>demo child</value>
   </data>
-  <data name="&gt;&gt;cbdemochild.Name" xml:space="preserve">
-    <value>cbdemochild</value>
+  <data name="&gt;&gt;cbBit5.Name" xml:space="preserve">
+    <value>cbBit5</value>
   </data>
-  <data name="&gt;&gt;cbdemochild.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit5.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbdemochild.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit5.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbdemochild.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit5.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="cbchildren.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit4.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbchildren.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbchildren.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit4.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 151</value>
   </data>
-  <data name="cbchildren.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit4.Size" type="System.Drawing.Size, System.Drawing">
     <value>77, 21</value>
   </data>
-  <data name="cbchildren.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit4.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
-  <data name="cbchildren.Text" xml:space="preserve">
+  <data name="cbBit4.Text" xml:space="preserve">
     <value>children</value>
   </data>
-  <data name="&gt;&gt;cbchildren.Name" xml:space="preserve">
-    <value>cbchildren</value>
+  <data name="&gt;&gt;cbBit4.Name" xml:space="preserve">
+    <value>cbBit4</value>
   </data>
-  <data name="&gt;&gt;cbchildren.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit4.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbchildren.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit4.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbchildren.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit4.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="cbconsecutive.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbconsecutive.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbconsecutive.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit3.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 128</value>
   </data>
-  <data name="cbconsecutive.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit3.Size" type="System.Drawing.Size, System.Drawing">
     <value>102, 21</value>
   </data>
-  <data name="cbconsecutive.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit3.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="cbconsecutive.Text" xml:space="preserve">
+  <data name="cbBit3.Text" xml:space="preserve">
     <value>consecutive</value>
   </data>
-  <data name="&gt;&gt;cbconsecutive.Name" xml:space="preserve">
-    <value>cbconsecutive</value>
+  <data name="&gt;&gt;cbBit3.Name" xml:space="preserve">
+    <value>cbBit3</value>
   </data>
-  <data name="&gt;&gt;cbconsecutive.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit3.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbconsecutive.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit3.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbconsecutive.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit3.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
-  <data name="cbimmediately.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbimmediately.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbimmediately.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit2.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 105</value>
   </data>
-  <data name="cbimmediately.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit2.Size" type="System.Drawing.Size, System.Drawing">
     <value>101, 21</value>
   </data>
-  <data name="cbimmediately.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
-  <data name="cbimmediately.Text" xml:space="preserve">
+  <data name="cbBit2.Text" xml:space="preserve">
     <value>immediately</value>
   </data>
-  <data name="&gt;&gt;cbimmediately.Name" xml:space="preserve">
-    <value>cbimmediately</value>
+  <data name="&gt;&gt;cbBit2.Name" xml:space="preserve">
+    <value>cbBit2</value>
   </data>
-  <data name="&gt;&gt;cbimmediately.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit2.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbimmediately.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit2.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbimmediately.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit2.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="cbjoinable.AutoSize" type="System.Boolean, mscorlib">
+  <data name="cbBit1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="cbjoinable.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="cbBit1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="cbjoinable.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="cbBit1.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 81</value>
   </data>
-  <data name="cbjoinable.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="cbBit1.Size" type="System.Drawing.Size, System.Drawing">
     <value>76, 21</value>
   </data>
-  <data name="cbjoinable.TabIndex" type="System.Int32, mscorlib">
+  <data name="cbBit1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="cbjoinable.Text" xml:space="preserve">
+  <data name="cbBit1.Text" xml:space="preserve">
     <value>joinable</value>
   </data>
-  <data name="&gt;&gt;cbjoinable.Name" xml:space="preserve">
-    <value>cbjoinable</value>
+  <data name="&gt;&gt;cbBit1.Name" xml:space="preserve">
+    <value>cbBit1</value>
   </data>
-  <data name="&gt;&gt;cbjoinable.Type" xml:space="preserve">
+  <data name="&gt;&gt;cbBit1.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cbjoinable.Parent" xml:space="preserve">
+  <data name="&gt;&gt;cbBit1.Parent" xml:space="preserve">
     <value>gbFlags</value>
   </data>
-  <data name="&gt;&gt;cbjoinable.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;cbBit1.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
   <data name="gbFlags.Location" type="System.Drawing.Point, System.Drawing">
@@ -2062,7 +2062,7 @@
     <value>timtuiHuman</value>
   </data>
   <data name="&gt;&gt;timtuiHuman.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2493.23787, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2493.38911, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;timtuiHuman.Parent" xml:space="preserve">
     <value>tpHumanMotives</value>
@@ -2113,7 +2113,7 @@
     <value>timtuiAnimal</value>
   </data>
   <data name="&gt;&gt;timtuiAnimal.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2493.23787, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=2.0.2493.38911, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;timtuiAnimal.Parent" xml:space="preserve">
     <value>tpAnimalMotives</value>
