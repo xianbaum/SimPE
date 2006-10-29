@@ -1,5 +1,41 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+29 October 2006 09:16 - Pets: TTAB changes: Functioning plus/minus on popup (sort of)
+  SimPe BHAV\
+    TtabAnimalMotiveWiz.cs 1.1.2.3
+    TtabAnimalMotiveWiz.resx 1.1.2.3
+
+28 October 2006 21:42 - Pets: TTAB changes: Non-functioning plus/minus on popup
+  SimPe BHAV\
+    TtabAnimalMotiveUI.cs 1.1.2.3
+    TtabAnimalMotiveUI.resx 1.1.2.3
+    TtabAnimalMotiveWiz.cs 1.1.2.2
+    TtabAnimalMotiveWiz.Designer.cs 1.1.2.2
+    TtabAnimalMotiveWiz.resx 1.1.2.2
+    TtabForm.cs 1.31.2.14.2.7
+    TtabForm.resx 1.15.8.5.2.6
+    TtabItemMotiveTableUI.cs 1.10.12.3.12.7
+    TtabItemMotiveTableUI.resx 1.5.22.1.22.3
+    TtabMotiveGroupUI.cs 1.3.26.3.12.6
+    TtabMotiveGroupUI.resx 1.4.52.4
+    TtabSingleMotiveUI.cs 1.5.26.1.12.6
+    TtabSingleMotiveUI.resx 1.10.12.3.12.4
+    TtabWrapper.cs 1.23.6.6.12.7
+
+28 October 2006 18:32 - Pets: TTAB changes: Popup for editing Pet Motives; fixes
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.19.2.2
+    TtabAnimalMotiveUI.cs 1.1.2.2
+    TtabAnimalMotiveWiz.cs 1.1.2.1
+    TtabAnimalMotiveWiz.Designer.cs 1.1.2.1
+    TtabAnimalMotiveWiz.resx 1.1.2.1
+    TtabForm.cs 1.31.2.14.2.6
+    TtabItemMotiveTableUI.cs 1.10.12.3.12.6
+    TtabMotiveGroupUI.cs 1.3.26.3.12.5
+    TtabSingleMotiveUI.cs 1.5.26.1.12.5
+    TtabSingleMotiveUI.resx 1.10.12.3.12.3
+    TtabWrapper.cs 1.23.6.6.12.6
+
 27 October 2006 19:14 - Pets: TTAB changes: Fully expand type 0x54 on read
   SimPe BHAV\
     TtabForm.cs 1.31.2.14.2.5
@@ -12,7 +48,7 @@
     TtabForm.cs 1.31.2.14.2.4
     TtabForm.resx 1.15.8.5.2.4
     TtabItemMotiveTableUI.cs 1.1.12.3.12.5
-    TtabSingleMotiveUI.resx 1.10.12.3.12.5
+    TtabSingleMotiveUI.resx 1.10.12.3.12.2
 
 24 October 2006 21:39 - Pets: TTAB changes - this one seems to work!
   SimPe BHAV\

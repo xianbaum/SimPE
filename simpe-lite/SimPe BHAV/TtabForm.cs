@@ -308,6 +308,11 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void populateCbStringIndex()
         {
+            bool prev = internalchg;
+            internalchg = true;
+
+            int cbStringIndexSelectedIndex = this.cbStringIndex.SelectedIndex;
+
             this.cbStringIndex.Items.Clear();
 
             uint c = getTTAsCount();
@@ -319,106 +324,97 @@ namespace SimPe.PackedFiles.UserInterface
                     ? "*!no default string!*"
                     : si.strItem.Title + (si.lidFallback ? " [LID=1]" : "") + (si.fallback.Count > 0 ? " [*]" :"")));
 			}
+
+            if (cbStringIndexSelectedIndex < this.cbStringIndex.Items.Count)
+                this.cbStringIndex.SelectedIndex = cbStringIndexSelectedIndex;
+            else
+                this.cbStringIndex.SelectedIndex = -1;
+
+            internalchg = prev;
         }
 
         private void populateLbttab()
         {
+            bool prev = internalchg;
+            internalchg = true;
+
+            int lbttabSelectedIndex = this.lbttab.SelectedIndex;
+
             lbttab.Items.Clear();
             for (int i = 0; i < wrapper.Count; i++) addItem(i);
+
+            if (lbttabSelectedIndex >= 0)
+            {
+                if (lbttabSelectedIndex < lbttab.Items.Count)
+                    this.lbttab.SelectedIndex = lbttabSelectedIndex;
+                else
+                    this.lbttab.SelectedIndex = lbttab.Items.Count - 1;
+            }
+
+            internalchg = false;
+            TtabSelect(null, null);
+
+            internalchg = prev;
         }
 
         private void setFormat()
         {
-            if (wrapper.Format == previousFormat) return;
-
             if (previousFormat >= 0x44 && wrapper.Format < 0x44)
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
                     pjse.Localization.GetString("ttabForm_Single"),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (!DialogResult.OK.Equals(dr))
-                {
                     wrapper.Format = previousFormat;
-                    return;
-                }
-                changeSize();
             }
             else if (previousFormat < 0x44 && wrapper.Format >= 0x44 && wrapper.Format < 0x54)
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
                     pjse.Localization.GetString("ttabForm_MultipleFixed"),
-                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (!DialogResult.OK.Equals(dr))
-                {
                     wrapper.Format = previousFormat;
-                    return;
-                }
-                changeSize();
             }
             else if (previousFormat < 0x54 && wrapper.Format >= 0x54)
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
                     pjse.Localization.GetString("ttabForm_MultipleVaries"),
-                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
+                    MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (!DialogResult.OK.Equals(dr))
-                {
                     wrapper.Format = previousFormat;
-                    return;
-                }
-                changeSize();
             }
+
             previousFormat = wrapper.Format;
+
 
             this.tbUIDispType.Enabled = this.tbFaceAnimID.Enabled =
                 this.tbModelTabID.Enabled = this.tbMemIterMult.Enabled = this.tbObjType.Enabled = false;
 
-            if (previousFormat >= 0x45)
+
+            this.tabControl1.TabPages.Remove(this.tpAnimalMotives);
+            this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[0];
+
+            if (wrapper.Format >= 0x45)
             {
                 this.tbUIDispType.Enabled = true;
-                if (previousFormat >= 0x46)
+                if (wrapper.Format >= 0x46)
                 {
                     this.tbModelTabID.Enabled = true;
-                    if (previousFormat >= 0x4a)
+                    if (wrapper.Format >= 0x4a)
                     {
                         this.tbFaceAnimID.Enabled = true;
-                        if (previousFormat >= 0x4c)
+                        if (wrapper.Format >= 0x4c)
                         {
                             this.tbMemIterMult.Enabled = this.tbObjType.Enabled = true;
+                            if (wrapper.Format >= 0x54)
+                            {
+                                this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[1];
+                                this.tabControl1.TabPages.Add(this.tpAnimalMotives);
+                            }
                         }
                     }
                 }
             }
-
-        }
-
-        private void changeSize()
-        {
-            this.ttabPanel.SuspendLayout();
-
-            this.tabControl1.Enabled = false;
-            this.tabControl1.TabPages.Clear();
-            this.tabControl1.TabPages.Add(this.tpSettings);
-
-            if (lbttab.SelectedIndex >= 0)
-            {
-                if (wrapper[lbttab.SelectedIndex].HumanMotives != null)
-                {
-                    timtuiHuman.MotiveTable = wrapper[lbttab.SelectedIndex].HumanMotives;
-                    this.tabControl1.TabPages.Add(this.tpHumanMotives);
-                }
-                if (wrapper[lbttab.SelectedIndex].AnimalMotives != null)
-                {
-                    this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[1];
-                    timtuiAnimal.MotiveTable = wrapper[lbttab.SelectedIndex].AnimalMotives;
-                    this.tabControl1.TabPages.Add(this.tpAnimalMotives);
-                }
-                else
-                    this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[0];
-
-                this.tabControl1.Enabled = true;
-            }
-
-            this.ttabPanel.ResumeLayout();
         }
 
         /// <summary>
@@ -482,19 +478,20 @@ namespace SimPe.PackedFiles.UserInterface
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (Ttab) wrp;
-			WrapperChanged(wrapper, null);
 
-			internalchg = true;
-
+            // We don't repopulate cbStringIndex on WrapperChanged
             this.cbStringIndex.SelectedIndex = -1;
-            GFT_FiletableRefresh(null, null);
+            populateCbStringIndex();
 
-			internalchg = false;
-
+            // Avoid warning popups from setFormat()!
             previousFormat = wrapper.Format;
+            // WrapperChanged() calls populateLbttab(), so set lbttab.SelectedIndex to -1
+            this.lbttab.SelectedIndex = -1;
+            WrapperChanged(wrapper, null);
 
-			if (lbttab.Items.Count>0) lbttab.SelectedIndex = 0;
-			else TtabSelect(null, null);
+            // Now call TtabSelect (one way or another)
+            if (this.lbttab.Items.Count > 0) this.lbttab.SelectedIndex = 0;
+            else TtabSelect(null, null);
 
 			if (!setHandler)
 			{
@@ -517,13 +514,21 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.btnCommit.Enabled = wrapper.Changed;
 
-			if (internalchg || sender != wrapper) return;
-			internalchg = true;
-			this.Text = tbFilename.Text = wrapper.FileName;
-			tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
-            changeSize();
+            if (internalchg) return;
+            internalchg = true;
+
+            if (sender == wrapper)
+            {
+                this.Text = tbFilename.Text = wrapper.FileName;
+                tbFormat.Text = "0x" + Helper.HexString(wrapper.Format);
+                setFormat();
+                populateLbttab();
+            }
+            else if (lbttab.SelectedIndex >= 0 && sender == wrapper[lbttab.SelectedIndex])
+                TtabSelect(null, null);
+
             internalchg = false;
-		}
+        }
 
 		#endregion
 
@@ -1178,6 +1183,7 @@ namespace SimPe.PackedFiles.UserInterface
             // TtabForm
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.ttabPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "TtabForm";
@@ -1199,22 +1205,117 @@ namespace SimPe.PackedFiles.UserInterface
 	
 		#endregion
 
-		private void TtabSelect(object sender, System.EventArgs e)
-		{
-			if (this.internalchg) return;
 
-			this.btnDelete.Enabled = false;
+        // -------------- form
+        //
+        // form
+        //
+        // --------------
+
+        private void btnRefreshFT_Click(object sender, EventArgs e)
+        {
+            pjse.FileTable.GFT.UIRefresh();
+        }
+
+        private void btnHelp_Click(object sender, System.EventArgs e)
+        {
+            pjse.HelpHelper.Help("Contents");
+        }
+
+
+        // -------------- wrapper
+        //
+        // wrapper
+        //
+        // --------------
+
+        private void btnCommit_Click(object sender, System.EventArgs e)
+        {
+            try
+            {
+                wrapper.SynchronizeUserData();
+                btnCommit.Enabled = wrapper.Changed;
+                //TtabSelect(null, null);
+            }
+            catch (Exception ex)
+            {
+                Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
+            }
+        }
+
+        private void tbFilename_TextChanged(object sender, System.EventArgs e)
+        {
+            internalchg = true;
+            wrapper.FileName = tbFilename.Text;
+            internalchg = false;
+        }
+
+        private void tbFilename_Validated(object sender, System.EventArgs e)
+        {
+            tbFilename.SelectAll();
+        }
+
+        // Format is a hex32 field, currently handled with ttabItem
+        private void doFormat() { }
+
+
+        // -------------- wrapper[]
+        //
+        // wrapper[]
+        //
+        // --------------
+
+        private void btnStrPrev_Click(object sender, EventArgs e)
+        {
+            lbttab.SelectedIndex--;
+        }
+
+        private void btnStrNext_Click(object sender, EventArgs e)
+        {
+            lbttab.SelectedIndex++;
+        }
+
+        private void btnAdd_Click(object sender, System.EventArgs e)
+        {
+            lbttab.SelectedIndex = wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
+        }
+
+        private void btnDelete_Click(object sender, System.EventArgs e)
+        {
+            wrapper.RemoveAt(lbttab.SelectedIndex);
+        }
+
+        private void btnAppend_Click(object sender, System.EventArgs e)
+        {
+            this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, ttabPanel));
+        }
+
+
+        // -------------- ttabItem
+        //
+        // ttabItem
+        //
+        // --------------
+
+        private void TtabSelect(object sender, System.EventArgs e)
+		{
+			if (internalchg) return;
+
+            internalchg = true;
+
+            this.ttabPanel.SuspendLayout();
+            this.ttabPanel.Cursor = Cursors.AppStarting;
+
+
             this.btnStrPrev.Enabled = (lbttab.SelectedIndex > 0);
             this.btnStrNext.Enabled = (lbttab.SelectedIndex < lbttab.Items.Count - 1);
 
-			if (lbttab.SelectedIndex >= 0)
+            if (lbttab.SelectedIndex >= 0)
 			{
-				currentItem = wrapper[lbttab.SelectedIndex];
+                tabControl1.Enabled = btnDelete.Enabled = true;
+
+                currentItem = wrapper[lbttab.SelectedIndex];
 				origItem = currentItem.Clone();
-
-				internalchg = true;
-
-				btnDelete.Enabled = true;
 
 				setStringIndex(currentItem.StringIndex, true, true);
 
@@ -1243,99 +1344,46 @@ namespace SimPe.PackedFiles.UserInterface
 
 				doFlags();
 
-                changeSize();
-
-				internalchg = false;
-			}
+                timtuiHuman.MotiveTable = wrapper[lbttab.SelectedIndex].HumanMotives;
+                timtuiAnimal.MotiveTable = wrapper[lbttab.SelectedIndex].AnimalMotives;
+            }
 			else
 			{
-				internalchg = true;
+                tabControl1.Enabled = this.btnDelete.Enabled = false;
+
 				cbAttenuationCode.SelectedIndex = -1;
 				tbGuardian.Text = tbAction.Text = lbguard.Text = lbaction.Text = tbFlags.Text = tbFlags2.Text =
 					tbStringIndex.Text = tbAttenuationValue.Text = tbAutonomy.Text = tbJoinIndex.Text =
 					tbUIDispType.Text = tbFaceAnimID.Text = tbMemIterMult.Text = tbObjType.Text = tbModelTabID.Text = 
 					"";
 				for (int i = 0; i < alFlags.Count; i++) ((CheckBox)alFlags[i]).Checked = false;
-                changeSize();
-				internalchg = false;
 			}
-		}		
 
+            this.ttabPanel.ResumeLayout();
+            this.ttabPanel.Cursor = Cursors.Default;
 
-		private void llBhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-			pjse.FileTable.Entry item = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, (sender == llAction) ? currentItem.Action : currentItem.Guardian);
-			Bhav b = new Bhav();
-			b.ProcessData(item.PFD, item.Package);
+            internalchg = false;
+        }		
 
-			BhavForm ui = (BhavForm)b.UIHandler;
-			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = pjse.Localization.GetString("viewbhav")
-                + ": " + b.FileName + " [" + b.Package.SaveFileName + "]";
-			b.RefreshUI();
-			ui.Show();
-		}
+        /*
+         * By way of reminder:
+         * action           - ushort - 4 hex digits (BHAV number)
+         * guard            - ushort - 4 hex digits (BHAV number)
+         * flags            - ushort - 4 hex digits
+         * flags2           - ushort - 4 hex digits
+         * strindex         - uint   - 8 hex digits
+         * attenuationcode  - uint   - 8 hex digits
+         * attenuationvalue - uint   - 8 hex digits
+         * autonomy         - uint   - 8 hex digits
+         * joinindex        - uint   - 8 hex digits
+         * uidisplaytype    - ushort - 4 hex digits
+         * facialanimation  - uint   - 8 hex digits
+         * memoryitermult   - float  - decimal digits and "."
+         * objecttype       - uint   - 8 hex digits
+         * modeltableid     - uint   - 8 hex digits
+         */
 
-		private void btnCommit_Click(object sender, System.EventArgs e)
-		{
-			try 
-			{
-				wrapper.SynchronizeUserData();
-				btnCommit.Enabled = wrapper.Changed;
-				TtabSelect(null, null);
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
-			}			
-		}
-
-		private void btnHelp_Click(object sender, System.EventArgs e)
-		{
-            pjse.HelpHelper.Help("Contents");
-		}
-
-
-		private void btnAdd_Click(object sender, System.EventArgs e)
-		{
-			int i = wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
-			if (i < 0) return;
-
-            addItem(i);
-            lbttab.SelectedIndex = i;
-		}
-
-		private void btnDelete_Click(object sender, System.EventArgs e)
-		{
-			if (lbttab.SelectedIndex < 0) return;
-
-			int i = lbttab.SelectedIndex;
-
-			lbttab.Items.RemoveAt(i);
-			wrapper.RemoveAt(i);
-
-			if (i >= lbttab.Items.Count)
-				i = lbttab.Items.Count - 1;
-			lbttab.SelectedIndex = -1;
-			lbttab.SelectedIndex = i;
-		}
-
-		private void btnAppend_Click(object sender, System.EventArgs e)
-		{
-			this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, ttabPanel));
-		}
-
-		private void btnNoFlags_Click(object sender, System.EventArgs e)
-		{
-			internalchg = true;
-			currentItem.Flags.Value = (ushort)0x0070;
-			this.tbFlags.Text = "0x"+Helper.HexString(currentItem.Flags.Value);
-			doFlags();
-			internalchg = false;
-		}
-
-
-		private void GetTTABGuard(object sender, System.EventArgs e)
+        private void GetTTABGuard(object sender, System.EventArgs e)
 		{
 			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, ttabPanel.Parent);
 			if (item != null)
@@ -1349,19 +1397,66 @@ namespace SimPe.PackedFiles.UserInterface
 				setBHAV(0, (ushort)item.Instance, false);
 		}
 
+        private void llBhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        {
+            pjse.FileTable.Entry item = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, (sender == llAction) ? currentItem.Action : currentItem.Guardian);
+            Bhav b = new Bhav();
+            b.ProcessData(item.PFD, item.Package);
 
-		private void tbFilename_TextChanged(object sender, System.EventArgs e)
-		{
-			wrapper.FileName = tbFilename.Text;
-		}
-
-		private void tbFilename_Validated(object sender, System.EventArgs e)
-		{
-			tbFilename.SelectAll();
-		}
+            BhavForm ui = (BhavForm)b.UIHandler;
+            ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+            ui.Text = pjse.Localization.GetString("viewbhav")
+                + ": " + b.FileName + " [" + b.Package.SaveFileName + "]";
+            b.RefreshUI();
+            ui.Show();
+        }
 
 
-		private void cbHex32_Enter(object sender, System.EventArgs e)
+        private void btnNoFlags_Click(object sender, System.EventArgs e)
+        {
+            internalchg = true;
+            currentItem.Flags.Value = (ushort)0x0070;
+            this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags.Value);
+            doFlags();
+            internalchg = false;
+        }
+
+        private void checkbox_CheckedChanged(object sender, System.EventArgs e)
+        {
+            if (internalchg) return;
+
+            if (!(sender is CheckBox)) return;
+            bool val = ((CheckBox)sender).Checked;
+
+            int i = alFlags.IndexOf(sender);
+            switch (i)
+            {
+                case 0: currentItem.Flags.ByVisitors = val; break;
+                case 1: currentItem.Flags.Joinable = val; break;
+                case 2: currentItem.Flags.RunImmediately = val; break;
+                case 3: currentItem.Flags.AvailConsecutive = val; break;
+                case 4: currentItem.Flags.ByChildren = val; break;
+                case 5: currentItem.Flags.ByDemoChild = val; break;
+                case 6: currentItem.Flags.ByAdults = val; break;
+                case 7: currentItem.Flags.DebugMenu = val; break;
+                case 8: currentItem.Flags.AutoFirstSelect = val; break;
+                case 9: currentItem.Flags.ByToddlers = val; break;
+                case 10: currentItem.Flags.ByElders = val; break;
+                case 11: currentItem.Flags.ByTeens = val; break;
+                case 12: currentItem.Flags.Unknown1 = val; break;
+                case 13: currentItem.Flags.Unknown2 = val; break;
+                case 14: currentItem.Flags.Unknown3 = val; break;
+                case 15: currentItem.Flags.Unknown4 = val; break;
+                default:
+                    throw new Exception("checkbox_CheckedChanged not applicable to control " + sender.ToString());
+            }
+            internalchg = true;
+            this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags.Value);
+            internalchg = false;
+        }
+
+
+        private void cbHex32_Enter(object sender, System.EventArgs e)
 		{
 			((ComboBox)sender).SelectAll();
 		}
@@ -1487,26 +1582,6 @@ namespace SimPe.PackedFiles.UserInterface
 
 			((ComboBox)sender).SelectAll();
 		}
-
-
-		/*
-		 * By way of reminder:
-		 * action           - ushort - 4 hex digits (BHAV number)
-		 * guard            - ushort - 4 hex digits (BHAV number)
-		 * flags            - ushort - 4 hex digits
-		 * flags2           - ushort - 4 hex digits
-		 * strindex         - uint   - 8 hex digits
-		 * attenuationcode  - uint   - 8 hex digits
-		 * attenuationvalue - uint   - 8 hex digits
-		 * autonomy         - uint   - 8 hex digits
-		 * joinindex        - uint   - 8 hex digits
-		 * uidisplaytype    - ushort - 4 hex digits
-		 * facialanimation  - uint   - 8 hex digits
-		 * memoryitermult   - float  - decimal digits and "."
-		 * objecttype       - uint   - 8 hex digits
-		 * modeltableid     - uint   - 8 hex digits
-		 */
-
 
 
 		private void hex16_TextChanged(object sender, System.EventArgs ev)
@@ -1683,56 +1758,6 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
-
-
-		private void checkbox_CheckedChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-
-			if (!(sender is CheckBox)) return;
-			bool val = ((CheckBox)sender).Checked;
-
-			int i = alFlags.IndexOf(sender);
-			switch(i)
-			{
-				case  0: currentItem.Flags.ByVisitors = val; break;
-				case  1: currentItem.Flags.Joinable = val; break;
-				case  2: currentItem.Flags.RunImmediately = val; break;
-				case  3: currentItem.Flags.AvailConsecutive = val; break;
-				case  4: currentItem.Flags.ByChildren = val; break;
-				case  5: currentItem.Flags.ByDemoChild = val; break;
-				case  6: currentItem.Flags.ByAdults = val; break;
-				case  7: currentItem.Flags.DebugMenu = val; break;
-				case  8: currentItem.Flags.AutoFirstSelect = val; break;
-				case  9: currentItem.Flags.ByToddlers = val; break;
-				case 10: currentItem.Flags.ByElders = val; break;
-				case 11: currentItem.Flags.ByTeens = val; break;
-				case 12: currentItem.Flags.Unknown1 = val; break;
-				case 13: currentItem.Flags.Unknown2 = val; break;
-				case 14: currentItem.Flags.Unknown3 = val; break;
-				case 15: currentItem.Flags.Unknown4 = val; break;
-				default:
-					throw new Exception("checkbox_CheckedChanged not applicable to control " + sender.ToString());
-			}
-			internalchg = true;
-			this.tbFlags.Text = "0x"+Helper.HexString(currentItem.Flags.Value);
-			internalchg = false;
-		}
-
-        private void btnRefreshFT_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.GFT.UIRefresh();
-        }
-
-        private void btnStrPrev_Click(object sender, EventArgs e)
-        {
-            lbttab.SelectedIndex--;
-        }
-
-        private void btnStrNext_Click(object sender, EventArgs e)
-        {
-            lbttab.SelectedIndex++;
-        }
 
 	}
 }

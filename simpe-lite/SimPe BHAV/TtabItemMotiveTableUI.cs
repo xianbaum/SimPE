@@ -99,48 +99,6 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 
 			// TODO: Add any initialization after the InitializeComponent call
-            pnAllGroups.Visible = false;
-
-            int muiW, muiH, nextTop;
-            {
-                TtabSingleMotiveUI c = new TtabSingleMotiveUI();
-                muiW = c.Width;
-                muiH = c.Height;
-                nextTop = 35;
-            }
-
-            Button[] b = {
-							 btnCpyM0  ,btnCpyM1  ,btnCpyM2  ,btnCpyM3  ,btnCpyM4  ,btnCpyM5  ,btnCpyM6  ,btnCpyM7
-							,btnCpyM8  ,btnCpyM9  ,btnCpyM10 ,btnCpyM11 ,btnCpyM12 ,btnCpyM13 ,btnCpyM14 ,btnCpyM15
-							};
-            aButtons = b;
-
-            Label[] lbCBM = {
-                lbCBM0, lbCBM1, lbCBM2, lbCBM3, lbCBM4, lbCBM5, lbCBM6, lbCBM7
-                ,lbCBM8, lbCBM9, lbCBM10, lbCBM11, lbCBM12, lbCBM13, lbCBM14, lbCBM15
-            };
-
-            Label[] aMotiveLabels = {
-							lbMotive0 ,lbMotive1 ,lbMotive2  ,lbMotive3  ,lbMotive4  ,lbMotive5  ,lbMotive6  ,lbMotive7
-							,lbMotive8 ,lbMotive9 ,lbMotive10 ,lbMotive11 ,lbMotive12 ,lbMotive13 ,lbMotive14 ,lbMotive15
-						};
-            maxWidth = this.cbShowAll.Width;
-            for (ushort m = 0; m < aMotiveLabels.Length; m++)
-            {
-                aMotiveLabels[m].Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Motives, m);
-                maxWidth = aMotiveLabels[m].Width > maxWidth ? aMotiveLabels[m].Width : maxWidth;
-            }
-            for (ushort m = 0; m < aMotiveLabels.Length; m++)
-            {
-                aMotiveLabels[m].Location = new Point(maxWidth - aMotiveLabels[m].Width, nextTop + 2);
-                aButtons[m].Top = nextTop + 1;
-                lbCBM[m].Location = new Point(aButtons[m].Right + 1, nextTop + 2);
-                nextTop += muiH + 2;
-            }
-            this.btnCopyAll.Top = nextTop;
-            this.pnCopyButtons.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom;
-            this.pnCopyButtons.Size = new Size(lbCBM0.Right + 4, this.Height);
-
             pnCopyButtons.Visible = pnAllGroups.Visible = false;
 		}
 
@@ -158,6 +116,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			base.Dispose( disposing );
 		}
+
 
 
 		#region TtabItemMotiveTableUI
@@ -195,29 +154,17 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbNrGroups.Text = (this.lbNrGroups.Text.Split(':')[0]) + ": " + item.Count.ToString();
 
             cbShowAll.Enabled = false;
-
-            foreach (Control c in this.Controls)
-                if (c is TtabMotiveGroupUI)
-                    this.Controls.Remove(c);
             this.pnAllGroups.Controls.Clear();
 
             if (item != null && item.Count > 0)
             {
                 TtabMotiveGroupUI c = new TtabMotiveGroupUI();
-                this.Controls.Add(c);
                 c.MotiveGroup = item[0];
                 if (item.Type == TtabItemMotiveTableType.Human)
                     c.MGName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Ages, 0);
                 else
                     c.MGName = "[0]";
-                c.Location = new Point(maxWidth + 2, 0);
-
-                this.Height = c.Height + 24;
-
-                this.pnAllGroups.Anchor = AnchorStyles.None;
-                this.pnCopyButtons.Location = this.pnAllGroups.Location = new Point(c.Right + 2, 0);
-                this.pnAllGroups.Size = new Size(this.Width - this.pnAllGroups.Left, c.Bottom + 24);
-                this.pnAllGroups.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+                setLocations(c);
 
                 if (item.Count > 1)
                 {
@@ -237,17 +184,77 @@ namespace SimPe.PackedFiles.UserInterface
                     }
                 }
             }
-            this.lbNrGroups.Top = this.Height - 24 - this.lbNrGroups.Height;
 
             cbShowAll_CheckedChanged(null, null);
         }
 
+        private void setLocations(TtabMotiveGroupUI c)
+        {
+            Button[] b = {
+							 btnCpyM0  ,btnCpyM1  ,btnCpyM2  ,btnCpyM3  ,btnCpyM4  ,btnCpyM5  ,btnCpyM6  ,btnCpyM7
+							,btnCpyM8  ,btnCpyM9  ,btnCpyM10 ,btnCpyM11 ,btnCpyM12 ,btnCpyM13 ,btnCpyM14 ,btnCpyM15
+							};
+            aButtons = b;
 
-		private void doCopyMotive(int m)
-		{
+            Label[] lbCBM = {
+                lbCBM0, lbCBM1, lbCBM2, lbCBM3, lbCBM4, lbCBM5, lbCBM6, lbCBM7
+                ,lbCBM8, lbCBM9, lbCBM10, lbCBM11, lbCBM12, lbCBM13, lbCBM14, lbCBM15
+            };
+
+            Label[] aMotiveLabels = {
+				lbMotive0 ,lbMotive1 ,lbMotive2  ,lbMotive3  ,lbMotive4  ,lbMotive5  ,lbMotive6  ,lbMotive7
+				,lbMotive8 ,lbMotive9 ,lbMotive10 ,lbMotive11 ,lbMotive12 ,lbMotive13 ,lbMotive14 ,lbMotive15
+			};
+
+
+            this.Controls.Clear();
+            this.Controls.Add(this.cbShowAll);
+            this.Controls.Add(this.lbNrGroups);
+            this.Controls.Add(this.pnAllGroups);
+            this.Controls.Add(this.pnCopyButtons);
+            this.Controls.Add(c);
+
+            maxWidth = this.lbNrGroups.Width;
+
+            int cbW = 0;
+            for (ushort m = 0; m < aMotiveLabels.Length; m++)
+            {
+                this.Controls.Add(aMotiveLabels[m]);
+                aMotiveLabels[m].Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Motives, m);
+                if (aMotiveLabels[m].Width > maxWidth) maxWidth = aMotiveLabels[m].Width;
+                cbW = b[m].Width;
+            }
+
+            for (ushort m = 0; m < aMotiveLabels.Length; m++)
+            {
+                aMotiveLabels[m].Location = new Point(maxWidth - aMotiveLabels[m].Width, c.Tops[m] + 2);
+                aButtons[m].Location = new Point(0, c.Tops[m] + 1);
+                lbCBM[m].Location = new Point(cbW + 2, c.Tops[m] + 2);
+            }
+
+            c.Location = new Point(maxWidth + 2, 0);
+            this.Height = c.Height + 24;
+
+            this.btnCopyAll.Location = new Point(0, c.Tops[15] + c.Tops[1] - c.Tops[0]);
+            this.lbNrGroups.Location = new Point(4, this.btnCopyAll.Top + 2);
+
+            this.pnCopyButtons.Anchor = AnchorStyles.None;
+            this.pnCopyButtons.Location = new Point(c.Right + 2, 0);
+            this.pnCopyButtons.Size = new Size(lbCBM0.Right + 4, this.Height);
+            this.pnCopyButtons.Anchor = AnchorStyles.Left | AnchorStyles.Top | AnchorStyles.Bottom;
+
+            this.pnAllGroups.Anchor = AnchorStyles.None;
+            this.pnAllGroups.Location = new Point(c.Right + 2, 0);
+            this.pnAllGroups.Size = new Size(this.Width - this.pnAllGroups.Left, c.Bottom + 24);
+            this.pnAllGroups.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom;
+        }
+
+
+        private void doCopyMotive(int m)
+        {
             for (int i = 1; i < item.Count; i++)
-                item[i][m] = item[0][m].Clone();
-		}
+                item[0][m].CopyTo(item[i][m]);
+        }
 
 
 		#endregion
@@ -666,6 +673,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // TtabItemMotiveTableUI
             // 
+            resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lbNrGroups);
             this.Controls.Add(this.pnCopyButtons);
             this.Controls.Add(this.cbShowAll);
@@ -687,7 +696,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.Controls.Add(this.lbMotive13);
             this.Controls.Add(this.lbMotive12);
             this.Name = "TtabItemMotiveTableUI";
-            resources.ApplyResources(this, "$this");
             this.pnCopyButtons.ResumeLayout(false);
             this.pnCopyButtons.PerformLayout();
             this.ResumeLayout(false);
@@ -705,7 +713,7 @@ namespace SimPe.PackedFiles.UserInterface
 			else
                 for (int i = 0; i < aButtons.Length; i++)
 					doCopyMotive(i);
-		}
+        }
 
 		private void cbShowAll_CheckedChanged(object sender, System.EventArgs e)
 		{

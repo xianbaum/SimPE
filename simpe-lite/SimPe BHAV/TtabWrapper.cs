@@ -90,6 +90,15 @@ namespace SimPe.PackedFiles.Wrapper
 		public Ttab() : base() { }
 
 
+        private void CopyTo(Ttab target)
+        {
+            filename.CopyTo(target.filename, 0);
+            header.CopyTo(target.header, 0);
+            target.items = items == null ? null : items.Clone(target);
+            footer.CopyTo(footer, 0);
+        }
+
+
 		#region AbstractWrapper Member
 		public override bool CheckVersion(uint version) 
 		{
@@ -152,10 +161,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <param name="reader">The Stream that contains the FileData</param>
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
-			// in case we give up...
-			items = null;
-			footer = new byte[0];
-
 			filename = reader.ReadBytes(0x40);
 
 			header = new uint[3];
@@ -169,9 +174,8 @@ namespace SimPe.PackedFiles.Wrapper
 
 			ushort itemCount = reader.ReadUInt16();
 
-			TtabItem[] ti = new TtabItem[itemCount];
-			items = new TtabItemArrayList(ti);
-			for (int i = 0; i < itemCount; i++)
+			items = new TtabItemArrayList(new TtabItem[itemCount]);
+            for (int i = 0; i < items.Count; i++)
 				items[i] = new TtabItem(this, reader);
 
 			footer = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
@@ -217,14 +221,14 @@ namespace SimPe.PackedFiles.Wrapper
 
 			item.Parent = this;
 			int result = items.Add(item);
-			if (result >= 0) OnWrapperChanged(items, new EventArgs());
+			if (result >= 0) OnWrapperChanged(this, new EventArgs());
 			return result;
 		}
 
 		public void Clear()
 		{
 			items.Clear();
-			OnWrapperChanged(items, new EventArgs());
+            OnWrapperChanged(this, new EventArgs());
 		}
 
 		public void Remove(TtabItem item) { this.RemoveAt(items.IndexOf(item)); }
@@ -234,7 +238,7 @@ namespace SimPe.PackedFiles.Wrapper
 			if (index < 0 || index >= items.Count) return;
 
 			items.RemoveAt(index);
-			OnWrapperChanged(items, new EventArgs());
+            OnWrapperChanged(this, new EventArgs());
 		}
 
 		public TtabItem this[int index]
@@ -249,7 +253,7 @@ namespace SimPe.PackedFiles.Wrapper
 				{
 					value.Parent = this;
 					items[index] = value;
-					OnWrapperChanged(items, new EventArgs());
+                    OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -287,6 +291,15 @@ namespace SimPe.PackedFiles.Wrapper
 				set { base[index] = value; }
 			}
 
+            public TtabItemArrayList Clone(Ttab parent)
+            {
+                TtabItemArrayList clone = new TtabItemArrayList();
+                foreach (TtabItem item in this)
+                    clone.Add(item.Clone(parent));
+                return clone;
+            }
+
+            public override object Clone() { return Clone(null); }
 		}
 
 		#endregion
@@ -301,7 +314,8 @@ namespace SimPe.PackedFiles.Wrapper
 		#region Attributes
 		private ushort action = 0;
 		private ushort guard = 0;
-		private TtabFlags flags = null;
+        private int[] counts = null;
+        private TtabFlags flags = null;
 		private ushort flags2 = 0;
 		private uint strindex = 0;
 		private uint attenuationcode = 0;
@@ -327,7 +341,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (action != value)
 				{
 					action = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -340,7 +354,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (guard != value)
 				{
 					guard = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}		
@@ -353,7 +367,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (flags != value)
 				{
 					flags = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -366,7 +380,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (flags2 != value)
 				{
 					flags2 = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -379,7 +393,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (strindex != value)
 				{
 					strindex = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -392,7 +406,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (attenuationcode != value)
 				{
 					attenuationcode = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -405,7 +419,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (attenuationvalue != value)
 				{
 					attenuationvalue = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}		
@@ -418,7 +432,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (autonomy != value)
 				{
 					autonomy = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -431,7 +445,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (joinindex != value)
 				{
 					joinindex = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -444,7 +458,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (uidisplaytype != value)
 				{
 					uidisplaytype = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -457,7 +471,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (facialanimation != value)
 				{
 					facialanimation = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -470,7 +484,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (!memoryitermult.Equals(value))
 				{
 					memoryitermult = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -483,7 +497,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (objecttype != value)
 				{
 					objecttype = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -496,7 +510,7 @@ namespace SimPe.PackedFiles.Wrapper
 				if (modeltableid != value)
 				{
 					modeltableid = value;
-					parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
 		}
@@ -509,7 +523,7 @@ namespace SimPe.PackedFiles.Wrapper
                 if (humanGroups != value)
                 {
                     humanGroups = value;
-                    parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
                 }
             }
         }
@@ -522,7 +536,7 @@ namespace SimPe.PackedFiles.Wrapper
                 if (animalGroups != value)
                 {
                     animalGroups = value;
-                    parent.OnWrapperChanged(this, new EventArgs());
+                    if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
                 }
             }
         }
@@ -537,42 +551,50 @@ namespace SimPe.PackedFiles.Wrapper
 		public TtabItem(Ttab parent)
 		{
 			this.parent = parent;
-			flags = new TtabFlags(parent, 0);
 
-            humanGroups = new TtabItemMotiveTable(this, null, TtabItemMotiveTableType.Human);
+            if (parent.Format < 0x44) counts = new int[] { 0x10 };
+            else if (parent.Format < 0x54) counts = new int[] { 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, };
+
+            flags = new TtabFlags(parent, 0);
+
+            humanGroups = new TtabItemMotiveTable(this, counts, TtabItemMotiveTableType.Human);
             if (parent.Format >= 0x54)
                 animalGroups = new TtabItemMotiveTable(this, null, TtabItemMotiveTableType.Animal);
 		}
 
-		public TtabItem(Ttab parent, System.IO.BinaryReader reader)
-		{
-			this.parent = parent;
-			Unserialize(reader);
-		}
+		public TtabItem(Ttab parent, System.IO.BinaryReader reader) : this(parent) { Unserialize(reader); }
 
 
-		public TtabItem Clone()
+        private void CopyTo(TtabItem target)
+        {
+            target.action = this.action;
+            target.guard = this.guard;
+            target.flags = this.flags == null ? null : this.flags.Clone();
+            target.flags2 = this.flags2;
+            target.strindex = this.strindex;
+            target.attenuationcode = this.attenuationcode;
+            target.attenuationvalue = this.attenuationvalue;
+            target.autonomy = this.autonomy;
+            target.joinindex = this.joinindex;
+            target.uidisplaytype = this.uidisplaytype;
+            target.facialanimation = this.facialanimation;
+            target.memoryitermult = this.memoryitermult;
+            target.objecttype = this.objecttype;
+            target.modeltableid = this.modeltableid;
+            target.humanGroups = this.humanGroups == null ? null : this.humanGroups.Clone(target);
+            target.animalGroups = this.animalGroups == null ? null : this.animalGroups.Clone(target);
+        }
+
+        public TtabItem Clone(Ttab parent)
 		{
 			TtabItem clone = new TtabItem(this.parent);
-			clone.action = this.action;
-			clone.guard = this.guard;
-			clone.flags = this.flags.Clone();
-			clone.flags2 = this.flags2;
-			clone.strindex = this.strindex;
-			clone.attenuationcode = this.attenuationcode;
-			clone.attenuationvalue = this.attenuationvalue;
-			clone.autonomy = this.autonomy;
-			clone.joinindex = this.joinindex;
-			clone.uidisplaytype = this.uidisplaytype;
-			clone.facialanimation = this.facialanimation;
-			clone.memoryitermult = this.memoryitermult;
-			clone.objecttype = this.objecttype;
-			clone.modeltableid = this.modeltableid;
-            clone.humanGroups = this.humanGroups == null ? null : this.humanGroups.Clone();
-            clone.animalGroups = this.animalGroups == null ? null : this.animalGroups.Clone();
-
+            clone.parent = parent;
+            this.CopyTo(clone);
 			return clone;
 		}
+
+        public TtabItem Clone() { return Clone(parent); }
+
 
 		/// <summary>
 		/// Reads Data from the Stream
@@ -582,10 +604,6 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			action = reader.ReadUInt16();
 			guard = reader.ReadUInt16();
-
-            int[] counts = null;
-            if (parent.Format < 0x44) counts = new int[1];
-            else if (parent.Format < 0x54) counts = new int[7];
 
             if (counts != null)
                 for (int i = 0; i < counts.Length; i++)
@@ -683,7 +701,7 @@ namespace SimPe.PackedFiles.Wrapper
         #endregion
 
         #region Accessor Methods
-        public Ttab Wrapper { get { return parent.Parent; } }
+        public Ttab Wrapper { get { return parent == null ? null : parent.Parent; } }
         public TtabItem Parent
         {
             get { return parent; }
@@ -697,7 +715,7 @@ namespace SimPe.PackedFiles.Wrapper
                 if (type != value)
                 {
                     type = value;
-                    Wrapper.OnWrapperChanged(this, new EventArgs());
+                    if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
                 }
             }
         }
@@ -711,17 +729,33 @@ namespace SimPe.PackedFiles.Wrapper
             this.type = type;
 
             int nrGroups = 0;
-            if (Wrapper.Format < 0x44) nrGroups = 1;
-            else if (Wrapper.Format < 0x54) nrGroups = 7;
+            if (counts != null) nrGroups = counts.Length;
             else nrGroups = type == TtabItemMotiveTableType.Human ? 5 : 8;
 
             items = new TtabItemMotiveGroupArrayList(new TtabItemMotiveGroup[nrGroups]);
             for (int i = 0; i < nrGroups; i++)
-                items[i] = new TtabItemMotiveGroup(this, counts != null ? counts[i] : 0, type);
+                items[i] = new TtabItemMotiveGroup(this, counts != null ? counts[i] : -1, type);
         }
 
         public TtabItemMotiveTable(TtabItem parent, int[] counts, TtabItemMotiveTableType type, System.IO.BinaryReader reader)
             : this(parent, counts, type) { Unserialize(reader); }
+
+
+
+        private void CopyTo(TtabItemMotiveTable target)
+        {
+            target.items = items == null ? null : items.Clone(target);
+        }
+
+        public TtabItemMotiveTable Clone(TtabItem parent)
+        {
+            TtabItemMotiveTable clone = new TtabItemMotiveTable(parent, counts, type);
+            this.CopyTo(clone);
+            return clone;
+        }
+
+        public TtabItemMotiveTable Clone() { return Clone(parent); }
+
 
         private void Unserialize(System.IO.BinaryReader reader)
         {
@@ -739,14 +773,6 @@ namespace SimPe.PackedFiles.Wrapper
                 items[i].Serialize(writer);
         }
 
-        public TtabItemMotiveTable Clone()
-        {
-            TtabItemMotiveTable clone = new TtabItemMotiveTable(parent, counts, type);
-            clone.items = items == null ? null : items.Clone();
-            return clone;
-        }
-
-
         #region TtabItemMotiveGroupArrayList
         private class TtabItemMotiveGroupArrayList : ArrayList
         {
@@ -762,13 +788,15 @@ namespace SimPe.PackedFiles.Wrapper
 				set { base[index] = value; }
 			}
 
-            public new TtabItemMotiveGroupArrayList Clone()
+            public TtabItemMotiveGroupArrayList Clone(TtabItemMotiveTable parent)
             {
                 TtabItemMotiveGroupArrayList clone = new TtabItemMotiveGroupArrayList();
                 foreach (TtabItemMotiveGroup item in this)
-                    clone.Add(item);
+                    clone.Add(item.Clone(parent));
                 return clone;
             }
+
+            public override object Clone() { return Clone(null); }
 
         }
         #endregion
@@ -781,14 +809,14 @@ namespace SimPe.PackedFiles.Wrapper
 
             item.Parent = this;
             int result = items.Add(item);
-            if (result >= 0) Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (result >= 0 && Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
             return result;
         }
 
         public void Clear()
         {
             items.Clear();
-            Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
         }
 
         public void Remove(TtabItemMotiveGroup item) { this.RemoveAt(items.IndexOf(item)); }
@@ -798,7 +826,7 @@ namespace SimPe.PackedFiles.Wrapper
             if (index < 0 || index >= items.Count) return;
 
             items.RemoveAt(index);
-            Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
         }
 
         public TtabItemMotiveGroup this[int index]
@@ -814,7 +842,7 @@ namespace SimPe.PackedFiles.Wrapper
                     items[index] = value;
                     if (items[index] != null)
                         items[index].Parent = this;
-                    Wrapper.OnWrapperChanged(items, new EventArgs());
+                    if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
                 }
             }
         }
@@ -849,7 +877,7 @@ namespace SimPe.PackedFiles.Wrapper
         #endregion
 
         #region Accessor Methods
-        public Ttab Wrapper { get { return parent.Wrapper; } }
+        public Ttab Wrapper { get { return parent == null ? null : parent.Wrapper; } }
         public TtabItemMotiveTable Parent
         {
             get { return parent; }
@@ -863,7 +891,7 @@ namespace SimPe.PackedFiles.Wrapper
             this.count = count;
             this.type = type;
 
-            int nrItems = Wrapper.Format < 0x54 ? count : 16;
+            int nrItems = count != -1 ? count : 16;
 
             items = new TtabItemMotiveItemArrayList(new TtabItemMotiveItem[nrItems < 16 ? 16 : nrItems]);
             if (type == TtabItemMotiveTableType.Human)
@@ -876,6 +904,22 @@ namespace SimPe.PackedFiles.Wrapper
 
         public TtabItemMotiveGroup(TtabItemMotiveTable parent, int count, TtabItemMotiveTableType type, System.IO.BinaryReader reader)
             : this(parent, count, type) { Unserialize(reader); }
+
+
+        private void CopyTo(TtabItemMotiveGroup target)
+        {
+            target.items = items == null ? null : items.Clone(target);
+        }
+
+        public TtabItemMotiveGroup Clone(TtabItemMotiveTable parent)
+        {
+            TtabItemMotiveGroup clone = new TtabItemMotiveGroup(parent, count, type);
+            this.CopyTo(clone);
+            return clone;
+        }
+
+        public TtabItemMotiveGroup Clone() { return Clone(parent); }
+
 
         private void Unserialize(System.IO.BinaryReader reader)
         {
@@ -924,21 +968,16 @@ namespace SimPe.PackedFiles.Wrapper
             /// <summary>
             /// Creates a deep copy of the TtabItemMotiveItemArrayList
             /// </summary>
-            public new TtabItemMotiveItemArrayList Clone()
+            public TtabItemMotiveItemArrayList Clone(TtabItemMotiveGroup parent)
             {
                 TtabItemMotiveItemArrayList clone = new TtabItemMotiveItemArrayList();
                 foreach (TtabItemMotiveItem item in this)
-                    clone.Add(item.Clone());
+                    clone.Add(item.Clone(parent));
                 return clone;
             }
 
-        }
+            public override object Clone() { return Clone(null); }
 
-        public TtabItemMotiveGroup Clone()
-        {
-            TtabItemMotiveGroup clone = new TtabItemMotiveGroup(parent, count, type);
-            clone.items = items == null ? null : items.Clone();
-            return clone;
         }
 
         #region ICollection Members
@@ -949,14 +988,14 @@ namespace SimPe.PackedFiles.Wrapper
 
             item.Parent = this;
             int result = items.Add(item);
-            if (result >= 0) Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (result >= 0 && Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
             return result;
         }
 
         public void Clear()
         {
             items.Clear();
-            Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
         }
 
         public void Remove(TtabItemMotiveItem item) { this.RemoveAt(items.IndexOf(item)); }
@@ -966,7 +1005,7 @@ namespace SimPe.PackedFiles.Wrapper
             if (index < 0 || index >= items.Count) return;
 
             items.RemoveAt(index);
-            Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
         }
 
         public TtabItemMotiveItem this[int index]
@@ -982,7 +1021,7 @@ namespace SimPe.PackedFiles.Wrapper
                     items[index] = value;
                     if (items[index] != null)
                         items[index].Parent = this;
-                    Wrapper.OnWrapperChanged(items, new EventArgs());
+                    if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
                 }
             }
         }
@@ -1013,7 +1052,7 @@ namespace SimPe.PackedFiles.Wrapper
         #endregion
 
         #region Accessor Methods
-        public Ttab Wrapper { get { return parent.Wrapper; } }
+        public Ttab Wrapper { get { return parent == null ? null : parent.Wrapper; } }
         public TtabItemMotiveGroup Parent
         {
             get { return parent; }
@@ -1026,9 +1065,14 @@ namespace SimPe.PackedFiles.Wrapper
         public TtabItemMotiveItem(TtabItemMotiveGroup parent, System.IO.BinaryReader reader)
             : this(parent) { Unserialize(reader); }
 
+        protected abstract void CopyTo(TtabItemMotiveItem target, bool doEvent);
+        public void CopyTo(TtabItemMotiveItem target) { CopyTo(target, true); }
+
+        public abstract TtabItemMotiveItem Clone(TtabItemMotiveGroup parent);
+        public TtabItemMotiveItem Clone() { return Clone(parent); }
+
         protected abstract void Unserialize(System.IO.BinaryReader reader);
         internal abstract void Serialize(System.IO.BinaryWriter writer);
-        public abstract TtabItemMotiveItem Clone();
     }
 
     public class TtabItemSingleMotiveItem : TtabItemMotiveItem
@@ -1058,6 +1102,23 @@ namespace SimPe.PackedFiles.Wrapper
         public TtabItemSingleMotiveItem(TtabItemMotiveGroup parent) : base(parent) { }
         public TtabItemSingleMotiveItem(TtabItemMotiveGroup parent, System.IO.BinaryReader reader) : base(parent, reader) { }
 
+
+        protected override void CopyTo(TtabItemMotiveItem target, bool doEvent)
+        {
+            if (!(target is TtabItemSingleMotiveItem))
+                throw new ArgumentException("Argument must be of same type", "target");
+            items.CopyTo(((TtabItemSingleMotiveItem)target).items, 0);
+            if (doEvent && target.Wrapper != null) target.Wrapper.OnWrapperChanged(target, new EventArgs());
+        }
+
+        public override TtabItemMotiveItem Clone(TtabItemMotiveGroup parent)
+        {
+            TtabItemSingleMotiveItem clone = new TtabItemSingleMotiveItem(parent);
+            this.CopyTo(clone, false);
+            return clone;
+        }
+
+
         protected override void Unserialize(System.IO.BinaryReader reader)
         {
             for (int i = 0; i < items.Length; i++)
@@ -1070,14 +1131,6 @@ namespace SimPe.PackedFiles.Wrapper
                 writer.Write(items[i]);
         }
 
-        public override TtabItemMotiveItem Clone()
-        {
-            TtabItemSingleMotiveItem clone = new TtabItemSingleMotiveItem(parent);
-            clone.items = new short[3];
-            items.CopyTo(clone.items, 0);
-            return clone;
-        }
-
         private short this[int index]
         {
             get { return items[index]; }
@@ -1086,7 +1139,7 @@ namespace SimPe.PackedFiles.Wrapper
                 if (items[index] != value)
                 {
                     items[index] = value;
-                    Wrapper.OnWrapperChanged(items, new EventArgs());
+                    if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
                 }
             }
         }
@@ -1104,6 +1157,23 @@ namespace SimPe.PackedFiles.Wrapper
 
         public TtabItemAnimalMotiveItem(TtabItemMotiveGroup parent) : base(parent) { }
         public TtabItemAnimalMotiveItem(TtabItemMotiveGroup parent, System.IO.BinaryReader reader) : base(parent, reader) { }
+
+
+        protected override void CopyTo(TtabItemMotiveItem target, bool doEvent)
+        {
+            if (!(target is TtabItemAnimalMotiveItem))
+                throw new ArgumentException("Argument must be of same type", "target");
+            ((TtabItemAnimalMotiveItem)target).items = items == null ? null : items.Clone((TtabItemAnimalMotiveItem)target);
+            if (doEvent && target.Wrapper != null) target.Wrapper.OnWrapperChanged(target, new EventArgs());
+        }
+
+        public override TtabItemMotiveItem Clone(TtabItemMotiveGroup parent)
+        {
+            TtabItemAnimalMotiveItem clone = new TtabItemAnimalMotiveItem(parent);
+            this.CopyTo(clone, false);
+            return clone;
+        }
+
 
         protected override void Unserialize(System.IO.BinaryReader reader)
         {
@@ -1137,21 +1207,16 @@ namespace SimPe.PackedFiles.Wrapper
             /// <summary>
             /// Creates a deep copy of the TtabItemMotiveItemArrayList
             /// </summary>
-            public new TtabItemSingleMotiveItemArrayList Clone()
+            public TtabItemSingleMotiveItemArrayList Clone(TtabItemAnimalMotiveItem parent)
             {
                 TtabItemSingleMotiveItemArrayList clone = new TtabItemSingleMotiveItemArrayList();
                 foreach (TtabItemSingleMotiveItem item in this)
-                    clone.Add(item.Clone());
+                    clone.Add(item.Clone(parent.parent));
                 return clone;
             }
 
-        }
+            public override object Clone() { return Clone(null); }
 
-        public override TtabItemMotiveItem Clone()
-        {
-            TtabItemAnimalMotiveItem clone = new TtabItemAnimalMotiveItem(parent);
-            clone.items = items == null ? null : items.Clone();
-            return clone;
         }
 
         #region ICollection Members
@@ -1159,14 +1224,14 @@ namespace SimPe.PackedFiles.Wrapper
         {
             item.Parent = this.parent;
             int result = items.Add(item);
-            if (result >= 0) Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (result >= 0 && Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
             return result;
         }
 
         public void Clear()
         {
             items.Clear();
-            Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
         }
 
         public void Remove(TtabItemSingleMotiveItem item) { this.RemoveAt(items.IndexOf(item)); }
@@ -1176,7 +1241,7 @@ namespace SimPe.PackedFiles.Wrapper
             if (index < 0 || index >= items.Count) return;
 
             items.RemoveAt(index);
-            Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
         }
 
         public TtabItemSingleMotiveItem this[int index]
@@ -1192,7 +1257,7 @@ namespace SimPe.PackedFiles.Wrapper
                     items[index] = value;
                     if (items[index] != null)
                         items[index].Parent = this.parent;
-                    Wrapper.OnWrapperChanged(items, new EventArgs());
+                    if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
                 }
             }
         }

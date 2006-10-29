@@ -129,7 +129,7 @@
     <value>4</value>
   </data>
   <data name="Min.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>49, 24</value>
   </data>
   <data name="Min.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -153,13 +153,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="Delta.Location" type="System.Drawing.Point, System.Drawing">
-    <value>48, 0</value>
+    <value>49, 0</value>
   </data>
   <data name="Delta.MaxLength" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="Delta.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>49, 24</value>
   </data>
   <data name="Delta.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -183,13 +183,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="Type.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 0</value>
+    <value>98, 0</value>
   </data>
   <data name="Type.MaxLength" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="Type.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>49, 24</value>
   </data>
   <data name="Type.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -213,7 +213,7 @@
     <value>True</value>
   </metadata>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 25</value>
+    <value>149, 24</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>TtabSingleMotiveUI</value>

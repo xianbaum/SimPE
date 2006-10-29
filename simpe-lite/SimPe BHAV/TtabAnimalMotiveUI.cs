@@ -106,6 +106,9 @@ namespace SimPe.PackedFiles.UserInterface
 
         public void Clear()
 		{
+            TtabItemAnimalMotiveItem newItem = new TtabItemAnimalMotiveItem(item.Parent);
+            newItem.CopyTo(item);
+            setText();
         }
 		#endregion
 
@@ -148,16 +151,13 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void btnPopup_Click(object sender, EventArgs e)
         {
-            String s = "0x" + Helper.HexString(item.Count);
-            for (int i = 0; i < item.Count; i++)
-            {
-                s += "\r\n" + Helper.HexString(item[i].Min)
-                + " " + Helper.HexString(item[i].Delta)
-                + " " + Helper.HexString(item[i].Type)
-                + ";"
-            ;
-            }
-            MessageBox.Show(s, "", MessageBoxButtons.OK, MessageBoxIcon.None);
+            pjse.TtabAnimalMotiveWiz amw = new pjse.TtabAnimalMotiveWiz();
+            TtabItemAnimalMotiveItem saved = (TtabItemAnimalMotiveItem)item.Clone(null);
+            amw.MotiveSet = saved;
+            if (amw.ShowDialog() == DialogResult.OK)
+                saved.CopyTo(item);
+            else
+                setText();
         }
 
 	}
