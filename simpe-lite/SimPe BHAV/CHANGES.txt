@@ -1,5 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+29 October 2006 21:57 - Pets: TTAB changes: Amend Flags handling for format 0x54
+  SimPe BHAV\
+    TtabForm.cs 1.31.2.14.2.9
+    TtabForm.resx 1.15.8.5.2.8
+    TtabWrapper.cs 1.23.6.6.12.8
+
 29 October 2006 13:54 - Pets: TTAB changes: sort out fonts
   SimPe BHAV\
     TtabAnimalMotiveUI.cs 1.1.2.5

@@ -315,8 +315,10 @@ namespace SimPe.PackedFiles.Wrapper
 		private ushort action = 0;
 		private ushort guard = 0;
         private int[] counts = null;
-        private TtabFlags flags = null;
-		private ushort flags2 = 0;
+        //private TtabFlags flags = null;
+        //private ushort flags2 = 0;
+        private ushort flags = 0;
+        private ushort flags2 = 0;
 		private uint strindex = 0;
 		private uint attenuationcode = 0;
 		private float attenuationvalue = 0f;
@@ -357,9 +359,9 @@ namespace SimPe.PackedFiles.Wrapper
                     if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
-		}		
+		}
 
-		public TtabFlags Flags
+        public ushort Flags
 		{
 			get { return flags; }
 			set
@@ -372,7 +374,7 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public ushort Flags2
+        public ushort Flags2
 		{
 			get { return flags2; }
 			set
@@ -555,8 +557,6 @@ namespace SimPe.PackedFiles.Wrapper
             if (parent.Format < 0x44) counts = new int[] { 0x10 };
             else if (parent.Format < 0x54) counts = new int[] { 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, };
 
-            flags = new TtabFlags(parent, 0);
-
             humanGroups = new TtabItemMotiveTable(this, counts, TtabItemMotiveTableType.Human);
             if (parent.Format >= 0x54)
                 animalGroups = new TtabItemMotiveTable(this, null, TtabItemMotiveTableType.Animal);
@@ -569,7 +569,7 @@ namespace SimPe.PackedFiles.Wrapper
         {
             target.action = this.action;
             target.guard = this.guard;
-            target.flags = this.flags == null ? null : this.flags.Clone();
+            target.flags = this.flags;
             target.flags2 = this.flags2;
             target.strindex = this.strindex;
             target.attenuationcode = this.attenuationcode;
@@ -609,7 +609,7 @@ namespace SimPe.PackedFiles.Wrapper
                 for (int i = 0; i < counts.Length; i++)
                     counts[i] = reader.ReadInt32();
 
-			flags = new TtabFlags(parent, reader.ReadUInt16());
+			flags = reader.ReadUInt16();
 			flags2 = reader.ReadUInt16();
 
 			strindex = reader.ReadUInt32();
@@ -660,7 +660,7 @@ namespace SimPe.PackedFiles.Wrapper
             else if (parent.Format < 0x54) nGroups = 7;
             for (int i = 0; i < nGroups; i++) writer.Write(i < humanGroups.Count ? humanGroups[i].Count : 0);
 
-			writer.Write(flags.Value);
+			writer.Write(flags);
 			writer.Write(flags2);
 			writer.Write(strindex);
 			writer.Write(attenuationcode);
@@ -1282,136 +1282,10 @@ namespace SimPe.PackedFiles.Wrapper
     }
 
 
-	#region Flags and Enums
-	public class TtabFlags : FlagBase
-	{
-        #region Attributes
-        private Ttab parent;
-        #endregion
-
-        #region Accessor Methods
-        public bool ByVisitors
-        {
-            get { return GetBit(0); }
-            set { SetBit(0, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool Joinable
-        {
-            get { return GetBit(1); }
-            set { SetBit(1, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool RunImmediately
-        {
-            get { return GetBit(2); }
-            set { SetBit(2, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool AvailConsecutive
-        {
-            get { return GetBit(3); }
-            set { SetBit(3, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool ByChildren
-        {
-            get { return !GetBit(4); }
-            set { SetBit(4, !value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool ByDemoChild
-        {
-            get { return !GetBit(5); }
-            set { SetBit(5, !value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool ByAdults
-        {
-            get { return !GetBit(6); }
-            set { SetBit(6, !value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool DebugMenu
-        {
-            get { return GetBit(7); }
-            set { SetBit(7, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool AutoFirstSelect
-        {
-            get { return GetBit(8); }
-            set { SetBit(8, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool ByToddlers
-        {
-            get { return GetBit(9); }
-            set { SetBit(9, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool ByElders
-        {
-            get { return GetBit(10); }
-            set { SetBit(10, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool ByTeens
-        {
-            get { return GetBit(11); }
-            set { SetBit(11, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool Unknown1
-        {
-            get { return GetBit(12); }
-            set { SetBit(12, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool Unknown2
-        {
-            get { return GetBit(13); }
-            set { SetBit(13, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool Unknown3
-        {
-            get { return GetBit(14); }
-            set { SetBit(14, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-
-        public bool Unknown4
-        {
-            get { return GetBit(15); }
-            set { SetBit(15, value); parent.OnWrapperChanged(this, new EventArgs()); }
-        }
-        #endregion
-
-        public TtabFlags(Ttab parent, ushort flags) : base(flags) { this.parent = parent; }
-
-		public new ushort Value
-		{
-			get { return base.Value; }
-			set
-			{
-				if (base.Value != value)
-				{
-					base.Value = value;
-					parent.OnWrapperChanged(this, new EventArgs());
-				}
-			}
-		}
-
-		public TtabFlags Clone()
-		{
-			return new TtabFlags(parent, Value);
-		}
-	}
-
+	#region Enums
     public enum TtabItemMotiveTableType : int
     {
         Human, Animal
     }
-
 	#endregion
 }
