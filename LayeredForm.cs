@@ -59,12 +59,24 @@ namespace Ambertation.Windows.Forms{
         {
             base.OnMouseUp(e);
         }
+
+        private void InitializeComponent()
+        {
+            this.SuspendLayout();
+            // 
+            // ManagedLayeredForm
+            // 
+            this.ClientSize = new System.Drawing.Size(1115, 759);
+            this.Name = "ManagedLayeredForm";
+            this.ResumeLayout(false);
+
+        }
     }
 
     public class LayeredForm:Form
     {
         protected LayeredForm() 
-            : this(null)
+            : this(Color.Blue, new Size(300, 400))
         {
             
         }
@@ -88,8 +100,8 @@ namespace Ambertation.Windows.Forms{
             if (bitmap != null)
             {
                 this.Size = bitmap.Size;
-                this.Show();	// Must be called before setting bitmap
-                this.SelectBitmap(bitmap);
+                /*this.Show();	// Must be called before setting bitmap
+                this.SelectBitmap(bitmap);*/
                 colored = false;
             } else colored = true;
         }
@@ -114,8 +126,7 @@ namespace Ambertation.Windows.Forms{
         }
 
         public LayeredForm(Color cl, Size sz)            
-        {
-            this.Visible = false;
+        {          
             Init(CreateBitmap(cl, sz));
             colored = true;
             this.cl = cl;
@@ -140,14 +151,19 @@ namespace Ambertation.Windows.Forms{
 
         protected override void OnVisibleChanged(EventArgs e)
         {
-            base.OnVisibleChanged(e);
-            if (dorefresh) RefreshBitmap();
+            try
+            {
+                base.OnVisibleChanged(e);            
+                if (dorefresh && Visible) RefreshBitmap();
+            }
+            catch { }
         }
 
         
 		// Sets the current bitmap
 		public void SelectBitmap(Bitmap bitmap) 
 		{
+            //if (DesignMode) return;
 			// Does this bitmap contain an alpha channel?
 			if (bitmap.PixelFormat != PixelFormat.Format32bppArgb)
 			{
