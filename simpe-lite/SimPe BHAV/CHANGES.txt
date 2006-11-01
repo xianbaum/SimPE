@@ -1,5 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+1 Novemeber 2006 18:10 - Pets: TTAB changes: Expand out Flags2 (plus more strings)
+  SimPe BHAV\
+    SystemClasses.cs 1.1.2.1.12.1
+    TtabForm.cs 1.31.2.14.2.10
+    TtabForm.resx 1.15.8.5.2.9
+  GlobalStrings.package 1.10.8.11.2.2
+
 29 October 2006 21:57 - Pets: TTAB changes: Amend Flags handling for format 0x54
   SimPe BHAV\
     TtabForm.cs 1.31.2.14.2.9

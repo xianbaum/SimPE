@@ -52,8 +52,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label label29;
 		private System.Windows.Forms.Label label30;
 		private System.Windows.Forms.Label label31;
-		private System.Windows.Forms.Label label32;
-		private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label32;
 		private System.Windows.Forms.TextBox tbGuardian;
 		private System.Windows.Forms.CheckBox cbBitE;
 		private System.Windows.Forms.CheckBox cbBitF;
@@ -73,8 +72,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TabPage tpHumanMotives;
 		private System.Windows.Forms.CheckBox cbBit0;
 		private System.Windows.Forms.Label label24;
-		private System.Windows.Forms.TextBox tbAction;
-		private System.Windows.Forms.TextBox tbFlags2;
+        private System.Windows.Forms.TextBox tbAction;
 		private System.Windows.Forms.TextBox tbStringIndex;
 		private System.Windows.Forms.GroupBox gbFlags;
 		private System.Windows.Forms.TextBox tbFlags;
@@ -112,6 +110,26 @@ namespace SimPe.PackedFiles.UserInterface
         private TabPage tpAnimalMotives;
         private TtabItemMotiveTableUI timtuiHuman;
         private TtabItemMotiveTableUI timtuiAnimal;
+        private GroupBox gbFlags2;
+        private TextBox tbFlags2;
+        private Button btnNoFlags2;
+        private Label label3;
+        private CheckBox cb2Bit0;
+        private CheckBox cb2BitE;
+        private CheckBox cb2BitF;
+        private CheckBox cb2BitC;
+        private CheckBox cb2BitD;
+        private CheckBox cb2BitB;
+        private CheckBox cb2BitA;
+        private CheckBox cb2Bit9;
+        private CheckBox cb2Bit8;
+        private CheckBox cb2Bit7;
+        private CheckBox cb2Bit6;
+        private CheckBox cb2Bit5;
+        private CheckBox cb2Bit4;
+        private CheckBox cb2Bit3;
+        private CheckBox cb2Bit2;
+        private CheckBox cb2Bit1;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -138,10 +156,10 @@ namespace SimPe.PackedFiles.UserInterface
 			alFloats = new ArrayList(tbfa);
 
 			CheckBox[] cba = {
-							    cbBit0 ,cbBit1 ,cbBit2 ,cbBit3
-							   ,cbBit4 ,cbBit5 ,cbBit6 ,cbBit7
-							   ,cbBit8 ,cbBit9 ,cbBitA ,cbBitB
-							   ,cbBitC ,cbBitD ,cbBitE ,cbBitF
+							    cbBit0 ,cbBit1 ,cbBit2 ,cbBit3 ,cbBit4 ,cbBit5 ,cbBit6 ,cbBit7
+							   ,cbBit8 ,cbBit9 ,cbBitA ,cbBitB ,cbBitC ,cbBitD ,cbBitE ,cbBitF
+							   ,cb2Bit0 ,cb2Bit1 ,cb2Bit2 ,cb2Bit3 ,cb2Bit4 ,cb2Bit5 ,cb2Bit6 ,cb2Bit7
+							   ,cb2Bit8 ,cb2Bit9 ,cb2BitA ,cb2BitB ,cb2BitC ,cb2BitD ,cb2BitE ,cb2BitF
 						   };
 			alFlags = new ArrayList(cba);
 
@@ -152,9 +170,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.llAction.Left = this.tbStringIndex.Left - this.llAction.Width - 6;
             this.llGuardian.Left = this.tbStringIndex.Left - this.llGuardian.Width - 6;
 
-            Label[] al = { label32, label31, label1, label35, label20, label30, label2, label29, label34, label33 };
-            foreach (Label l in al)
-                l.Left = cbAttenuationCode.Left - l.Width - 6;
+            Label[] al = { label32, label31, label1, label35, label30, label2, label29, label34, label33 };
+            //foreach (Label l in al)
+            //    l.Left = cbAttenuationCode.Left - l.Width - 6;
 
 
 #if !(INPROGRESS || DEBUG)
@@ -340,11 +358,20 @@ namespace SimPe.PackedFiles.UserInterface
         {
             internalchg = true;
             Boolset flags = new Boolset(currentItem.Flags);
-            for (int i = 0; i < alFlags.Count; i++)
+            for (int i = 0; i < flags.Length; i++)
             {
                 bool invert = wrapper.Format < 0x54 && (i == 4 || i == 5 || i == 6);
                 ((CheckBox)alFlags[i]).Checked = invert ? !flags[i] : flags[i];
             }
+            internalchg = false;
+        }
+
+        private void doFlags2()
+        {
+            internalchg = true;
+            Boolset flags = new Boolset(currentItem.Flags2);
+            for (int i = 0; i < flags.Length; i++)
+                ((CheckBox)alFlags[i + 16]).Checked = flags[i];
             internalchg = false;
         }
 
@@ -383,7 +410,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 
             this.tabControl1.TabPages.Remove(this.tpAnimalMotives);
-            this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[0];
+
+            int index = 0;
 
             if (wrapper.Format >= 0x45)
             {
@@ -399,23 +427,19 @@ namespace SimPe.PackedFiles.UserInterface
                             this.tbMemIterMult.Enabled = this.tbObjType.Enabled = true;
                             if (wrapper.Format >= 0x54)
                             {
-                                this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[1];
                                 this.tabControl1.TabPages.Add(this.tpAnimalMotives);
-                                this.cbBit1.Text = ((String)this.cbBit1.Tag).Split('/')[1];
-                                this.cbBit3.Text = ((String)this.cbBit3.Tag).Split('/')[1];
-                                this.cbBit5.Text = ((String)this.cbBit5.Tag).Split('/')[1];
-                                this.cbBit8.Text = ((String)this.cbBit8.Tag).Split('/')[1];
-                            }
-                            else
-                            {
-                                this.cbBit1.Text = ((String)this.cbBit1.Tag).Split('/')[0];
-                                this.cbBit3.Text = ((String)this.cbBit3.Tag).Split('/')[0];
-                                this.cbBit5.Text = ((String)this.cbBit5.Tag).Split('/')[0];
-                                this.cbBit8.Text = ((String)this.cbBit8.Tag).Split('/')[0];
+                                index = 1;
                             }
                         }
                     }
                 }
+            }
+            this.tpHumanMotives.Text = ((String)this.tpHumanMotives.Tag).Split('/')[index];
+            for (int i = 0; i < this.alFlags.Count; i++)
+            {
+                CheckBox lcb = (CheckBox)alFlags[i];
+                if (lcb.Tag != null && lcb.Tag.ToString().Length > 0)
+                    lcb.Text = ((String)lcb.Tag).Split('/')[index];
             }
         }
 
@@ -581,8 +605,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbAttenuationValue = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.tbFlags2 = new System.Windows.Forms.TextBox();
-            this.label20 = new System.Windows.Forms.Label();
             this.tbGuardian = new System.Windows.Forms.TextBox();
             this.gbFlags = new System.Windows.Forms.GroupBox();
             this.btnNoFlags = new System.Windows.Forms.Button();
@@ -614,6 +636,26 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
+            this.gbFlags2 = new System.Windows.Forms.GroupBox();
+            this.btnNoFlags2 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cb2Bit0 = new System.Windows.Forms.CheckBox();
+            this.cb2BitE = new System.Windows.Forms.CheckBox();
+            this.cb2BitF = new System.Windows.Forms.CheckBox();
+            this.cb2BitC = new System.Windows.Forms.CheckBox();
+            this.cb2BitD = new System.Windows.Forms.CheckBox();
+            this.cb2BitB = new System.Windows.Forms.CheckBox();
+            this.cb2BitA = new System.Windows.Forms.CheckBox();
+            this.cb2Bit9 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit8 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit7 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit6 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit5 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit4 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit3 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit2 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit1 = new System.Windows.Forms.CheckBox();
+            this.tbFlags2 = new System.Windows.Forms.TextBox();
             this.timtuiHuman = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.timtuiAnimal = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.ttabPanel.SuspendLayout();
@@ -623,6 +665,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpHumanMotives.SuspendLayout();
             this.tpAnimalMotives.SuspendLayout();
             this.panel5.SuspendLayout();
+            this.gbFlags2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ttabPanel
@@ -729,6 +772,7 @@ namespace SimPe.PackedFiles.UserInterface
             // tpSettings
             // 
             resources.ApplyResources(this.tpSettings, "tpSettings");
+            this.tpSettings.Controls.Add(this.gbFlags2);
             this.tpSettings.Controls.Add(this.llGuardian);
             this.tpSettings.Controls.Add(this.llAction);
             this.tpSettings.Controls.Add(this.cbStringIndex);
@@ -753,8 +797,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpSettings.Controls.Add(this.tbAttenuationValue);
             this.tpSettings.Controls.Add(this.label31);
             this.tpSettings.Controls.Add(this.label32);
-            this.tpSettings.Controls.Add(this.tbFlags2);
-            this.tpSettings.Controls.Add(this.label20);
             this.tpSettings.Controls.Add(this.tbGuardian);
             this.tpSettings.Controls.Add(this.gbFlags);
             this.tpSettings.Controls.Add(this.tbAction);
@@ -940,19 +982,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label32, "label32");
             this.label32.Name = "label32";
             // 
-            // tbFlags2
-            // 
-            resources.ApplyResources(this.tbFlags2, "tbFlags2");
-            this.tbFlags2.Name = "tbFlags2";
-            this.tbFlags2.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbFlags2.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbFlags2.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            // 
-            // label20
-            // 
-            resources.ApplyResources(this.label20, "label20");
-            this.label20.Name = "label20";
-            // 
             // tbGuardian
             // 
             resources.ApplyResources(this.tbGuardian, "tbGuardian");
@@ -982,7 +1011,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbFlags.Controls.Add(this.cbBit3);
             this.gbFlags.Controls.Add(this.cbBit2);
             this.gbFlags.Controls.Add(this.cbBit1);
-            this.gbFlags.FlatStyle = System.Windows.Forms.FlatStyle.System;
             resources.ApplyResources(this.gbFlags, "gbFlags");
             this.gbFlags.Name = "gbFlags";
             this.gbFlags.TabStop = false;
@@ -1029,12 +1057,14 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.cbBitC, "cbBitC");
             this.cbBitC.Name = "cbBitC";
+            this.cbBitC.Tag = "dogs/adult big dogs";
             this.cbBitC.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // cbBitD
             // 
             resources.ApplyResources(this.cbBitD, "cbBitD");
             this.cbBitD.Name = "cbBitD";
+            this.cbBitD.Tag = "cats/adult cats";
             this.cbBitD.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // cbBitB
@@ -1059,13 +1089,14 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.cbBit8, "cbBit8");
             this.cbBit8.Name = "cbBit8";
-            this.cbBit8.Tag = "auto first/unk";
+            this.cbBit8.Tag = "auto first/auto first?";
             this.cbBit8.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // cbBit7
             // 
             resources.ApplyResources(this.cbBit7, "cbBit7");
             this.cbBit7.Name = "cbBit7";
+            this.cbBit7.Tag = "debug menu/debug menu?";
             this.cbBit7.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // cbBit6
@@ -1079,7 +1110,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.cbBit5, "cbBit5");
             this.cbBit5.Name = "cbBit5";
-            this.cbBit5.Tag = "demo child/unk";
+            this.cbBit5.Tag = "demo child/2-way?";
             this.cbBit5.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // cbBit4
@@ -1092,7 +1123,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.cbBit3, "cbBit3");
             this.cbBit3.Name = "cbBit3";
-            this.cbBit3.Tag = "consecutive/unk";
+            this.cbBit3.Tag = "consecutive/consecutive?";
             this.cbBit3.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // cbBit2
@@ -1105,7 +1136,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.cbBit1, "cbBit1");
             this.cbBit1.Name = "cbBit1";
-            this.cbBit1.Tag = "joinable/unk";
+            this.cbBit1.Tag = "joinable/joinable?";
             this.cbBit1.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // tbAction
@@ -1176,6 +1207,159 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label25, "label25");
             this.label25.Name = "label25";
             // 
+            // gbFlags2
+            // 
+            this.gbFlags2.Controls.Add(this.tbFlags2);
+            this.gbFlags2.Controls.Add(this.btnNoFlags2);
+            this.gbFlags2.Controls.Add(this.label3);
+            this.gbFlags2.Controls.Add(this.cb2Bit0);
+            this.gbFlags2.Controls.Add(this.cb2BitE);
+            this.gbFlags2.Controls.Add(this.cb2BitF);
+            this.gbFlags2.Controls.Add(this.cb2BitC);
+            this.gbFlags2.Controls.Add(this.cb2BitD);
+            this.gbFlags2.Controls.Add(this.cb2BitB);
+            this.gbFlags2.Controls.Add(this.cb2BitA);
+            this.gbFlags2.Controls.Add(this.cb2Bit9);
+            this.gbFlags2.Controls.Add(this.cb2Bit8);
+            this.gbFlags2.Controls.Add(this.cb2Bit7);
+            this.gbFlags2.Controls.Add(this.cb2Bit6);
+            this.gbFlags2.Controls.Add(this.cb2Bit5);
+            this.gbFlags2.Controls.Add(this.cb2Bit4);
+            this.gbFlags2.Controls.Add(this.cb2Bit3);
+            this.gbFlags2.Controls.Add(this.cb2Bit2);
+            this.gbFlags2.Controls.Add(this.cb2Bit1);
+            resources.ApplyResources(this.gbFlags2, "gbFlags2");
+            this.gbFlags2.Name = "gbFlags2";
+            this.gbFlags2.TabStop = false;
+            // 
+            // btnNoFlags2
+            // 
+            resources.ApplyResources(this.btnNoFlags2, "btnNoFlags2");
+            this.btnNoFlags2.Name = "btnNoFlags2";
+            this.btnNoFlags2.Click += new System.EventHandler(this.btnNoFlags2_Click);
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // cb2Bit0
+            // 
+            resources.ApplyResources(this.cb2Bit0, "cb2Bit0");
+            this.cb2Bit0.Name = "cb2Bit0";
+            this.cb2Bit0.Tag = "";
+            this.cb2Bit0.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitE
+            // 
+            resources.ApplyResources(this.cb2BitE, "cb2BitE");
+            this.cb2BitE.Name = "cb2BitE";
+            this.cb2BitE.Tag = "";
+            this.cb2BitE.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitF
+            // 
+            resources.ApplyResources(this.cb2BitF, "cb2BitF");
+            this.cb2BitF.Name = "cb2BitF";
+            this.cb2BitF.Tag = "";
+            this.cb2BitF.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitC
+            // 
+            resources.ApplyResources(this.cb2BitC, "cb2BitC");
+            this.cb2BitC.Name = "cb2BitC";
+            this.cb2BitC.Tag = "?/adult small dogs";
+            this.cb2BitC.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitD
+            // 
+            resources.ApplyResources(this.cb2BitD, "cb2BitD");
+            this.cb2BitD.Name = "cb2BitD";
+            this.cb2BitD.Tag = "?/elder small dogs";
+            this.cb2BitD.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitB
+            // 
+            resources.ApplyResources(this.cb2BitB, "cb2BitB");
+            this.cb2BitB.Name = "cb2BitB";
+            this.cb2BitB.Tag = "?/elder cats";
+            this.cb2BitB.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitA
+            // 
+            resources.ApplyResources(this.cb2BitA, "cb2BitA");
+            this.cb2BitA.Name = "cb2BitA";
+            this.cb2BitA.Tag = "?/elder big dogs";
+            this.cb2BitA.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit9
+            // 
+            resources.ApplyResources(this.cb2Bit9, "cb2Bit9");
+            this.cb2Bit9.Name = "cb2Bit9";
+            this.cb2Bit9.Tag = "?/kittens";
+            this.cb2Bit9.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit8
+            // 
+            resources.ApplyResources(this.cb2Bit8, "cb2Bit8");
+            this.cb2Bit8.Name = "cb2Bit8";
+            this.cb2Bit8.Tag = "?/puppies";
+            this.cb2Bit8.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit7
+            // 
+            resources.ApplyResources(this.cb2Bit7, "cb2Bit7");
+            this.cb2Bit7.Name = "cb2Bit7";
+            this.cb2Bit7.Tag = "";
+            this.cb2Bit7.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit6
+            // 
+            resources.ApplyResources(this.cb2Bit6, "cb2Bit6");
+            this.cb2Bit6.Name = "cb2Bit6";
+            this.cb2Bit6.Tag = "";
+            this.cb2Bit6.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit5
+            // 
+            resources.ApplyResources(this.cb2Bit5, "cb2Bit5");
+            this.cb2Bit5.Name = "cb2Bit5";
+            this.cb2Bit5.Tag = "";
+            this.cb2Bit5.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit4
+            // 
+            resources.ApplyResources(this.cb2Bit4, "cb2Bit4");
+            this.cb2Bit4.Name = "cb2Bit4";
+            this.cb2Bit4.Tag = "";
+            this.cb2Bit4.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit3
+            // 
+            resources.ApplyResources(this.cb2Bit3, "cb2Bit3");
+            this.cb2Bit3.Name = "cb2Bit3";
+            this.cb2Bit3.Tag = "";
+            this.cb2Bit3.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit2
+            // 
+            resources.ApplyResources(this.cb2Bit2, "cb2Bit2");
+            this.cb2Bit2.Name = "cb2Bit2";
+            this.cb2Bit2.Tag = "";
+            this.cb2Bit2.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit1
+            // 
+            resources.ApplyResources(this.cb2Bit1, "cb2Bit1");
+            this.cb2Bit1.Name = "cb2Bit1";
+            this.cb2Bit1.Tag = "";
+            this.cb2Bit1.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // tbFlags2
+            // 
+            resources.ApplyResources(this.tbFlags2, "tbFlags2");
+            this.tbFlags2.Name = "tbFlags2";
+            // 
             // timtuiHuman
             // 
             resources.ApplyResources(this.timtuiHuman, "timtuiHuman");
@@ -1207,6 +1391,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpAnimalMotives.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
+            this.gbFlags2.ResumeLayout(false);
+            this.gbFlags2.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -1350,7 +1536,8 @@ namespace SimPe.PackedFiles.UserInterface
 				tbObjType.Text = "0x"+Helper.HexString(currentItem.ObjectType);
 				tbModelTabID.Text = "0x"+Helper.HexString(currentItem.ModelTableID);
 
-				doFlags();
+                doFlags();
+                doFlags2();
 
                 timtuiHuman.MotiveTable = wrapper[lbttab.SelectedIndex].HumanMotives;
                 timtuiAnimal.MotiveTable = wrapper[lbttab.SelectedIndex].AnimalMotives;
@@ -1429,24 +1616,43 @@ namespace SimPe.PackedFiles.UserInterface
             internalchg = false;
         }
 
+        private void btnNoFlags2_Click(object sender, EventArgs e)
+        {
+            internalchg = true;
+            currentItem.Flags2 = (ushort)0x0000;
+            this.tbFlags2.Text = "0x" + Helper.HexString(currentItem.Flags2);
+            doFlags2();
+            internalchg = false;
+        }
+
         private void checkbox_CheckedChanged(object sender, System.EventArgs e)
         {
             if (internalchg) return;
 
             if (!(sender is CheckBox)) return;
-            bool val = ((CheckBox)sender).Checked;
 
             int i = alFlags.IndexOf(sender);
             if (i < 0)
                 throw new Exception("checkbox_CheckedChanged not applicable to control " + sender.ToString());
 
             bool invert = wrapper.Format < 0x54 && (i == 4 || i == 5 || i == 6);
+            bool val = invert ? !((CheckBox)sender).Checked : ((CheckBox)sender).Checked;
 
             internalchg = true;
-            Boolset flags = new Boolset(currentItem.Flags);
-            flags[i] = invert ? !val : val;
-            currentItem.Flags = flags;
-            this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags);
+            if (i < 16)
+            {
+                Boolset flags = new Boolset(currentItem.Flags);
+                flags[i] = val;
+                currentItem.Flags = flags;
+                this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags);
+            }
+            else if (i < 32)
+            {
+                Boolset flags = new Boolset(currentItem.Flags2);
+                flags[i - 16] = val;
+                currentItem.Flags2 = flags;
+                this.tbFlags2.Text = "0x" + Helper.HexString(currentItem.Flags2);
+            }
             internalchg = false;
         }
 
@@ -1600,7 +1806,10 @@ namespace SimPe.PackedFiles.UserInterface
 					currentItem.Flags = val;
 					doFlags();
 					break;
-				case 3: currentItem.Flags2 = val; break;
+				case 3:
+                    currentItem.Flags2 = val;
+                    doFlags2();
+                    break;
 				case 4: currentItem.UIDisplayType = val; break;
 			}
 			internalchg = false;
