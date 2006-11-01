@@ -87,6 +87,8 @@ namespace System
 
 		}
 
+        public int Length { get { return bitset.Length; } }
+
 		public bool Matches(string mask)
 		{
 			// right-hand end of mask is low end of bitset
