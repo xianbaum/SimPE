@@ -62,6 +62,7 @@ namespace Ambertation.Windows.Forms
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
+            this.Size = new Size(0, 0);
             if (tf != null)
             {
                 tf.FormClosed -= new FormClosedEventHandler(tf_FormClosed);
@@ -214,7 +215,7 @@ namespace Ambertation.Windows.Forms
         
         Bitmap CreateBitmap()
         {
-            Bitmap bmp = new Bitmap(this.Width, this.Height);
+            Bitmap bmp = new Bitmap(Math.Max(1, this.Width), Math.Max(1, this.Height));
             Graphics g = Graphics.FromImage(bmp);
 
             OnCreateBitmap(g, bmp);
