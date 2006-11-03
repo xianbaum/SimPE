@@ -178,7 +178,7 @@ namespace Ambertation.Windows.Forms
         protected override void OnResize(EventArgs e)
         {
             if (tf != null && !DesignMode) tf.SetBounds(Left, Top, Width, Height);
-            UpdateBitmap();
+            UpdateBitmap(false);
             
             base.OnResize(e);
         }
@@ -207,9 +207,17 @@ namespace Ambertation.Windows.Forms
         }
 
         Bitmap bitmap;
-        protected void UpdateBitmap()
+        protected void UpdateBitmap(bool force)
         {
-            if (bitmap != null) bitmap.Dispose();
+            if (bitmap != null)
+            {
+                if (!force)
+                {
+                    if (bitmap.Width == Width && bitmap.Height == Height) return;
+                }
+                bitmap.Dispose();
+                bitmap = null;
+            }
             bitmap = CreateBitmap();
         }
         
