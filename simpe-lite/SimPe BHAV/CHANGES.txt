@@ -1,7 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+4 November 2006 14:00 - Pets: TTAB changes: Compress on Serialize
+  SimPe BHAV\
+    TtabWrapper.cs 1.23.6.10
+
 4 November 2006 11:07 - C#2005: Make forms rescale correctly (I hope)
-  SimPe BHAV
+  SimPe BHAV\
     BconForm.cs 1.15.2.11
     BconForm.resx 1.9.2.5
     BhavForm.cs 1.64.2.28
