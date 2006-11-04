@@ -92,8 +92,6 @@ namespace SimPe.PackedFiles.UserInterface
         #endregion
 
         #region TtabMotiveGroupUI
-        private bool internalchg;
-
 
         public TtabItemMotiveGroup MotiveGroup
 		{
@@ -114,7 +112,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void WrapperChanged(object sender, System.EventArgs e)
         {
-            if (internalchg || sender != item) return;
+            if (sender != item) return;
             setData();
         }
 
@@ -148,7 +146,6 @@ namespace SimPe.PackedFiles.UserInterface
                         nextTop += c.Height + 2;
                         width = c.Width;
                     }
-                    btnClear.Enabled = true;
                 }
                 else
                 {
@@ -163,7 +160,6 @@ namespace SimPe.PackedFiles.UserInterface
                         nextTop += c.Height + 2;
                         width = c.Width;
                     }
-                    btnClear.Enabled = false;
                 }
             }
 
@@ -239,13 +235,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnClear_Click(object sender, System.EventArgs e)
 		{
-            internalchg = true;
-            foreach (Control c in this.Controls)
-                if (c is TtabSingleMotiveUI)
-                    ((TtabSingleMotiveUI)c).Clear();
-                else if (c is TtabAnimalMotiveUI)
-                    ((TtabAnimalMotiveUI)c).Clear();
-            internalchg = false;
+            item.Clear();
         }
 
 	}

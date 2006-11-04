@@ -834,14 +834,14 @@ namespace SimPe.PackedFiles.Wrapper
 
             item.Parent = this;
             int result = items.Add(item);
-            if (result >= 0 && Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (result >= 0 && Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
             return result;
         }
 
         public void Clear()
         {
             items.Clear();
-            if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
         }
 
         public void Remove(TtabItemMotiveGroup item) { this.RemoveAt(items.IndexOf(item)); }
@@ -851,7 +851,7 @@ namespace SimPe.PackedFiles.Wrapper
             if (index < 0 || index >= items.Count) return;
 
             items.RemoveAt(index);
-            if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
         }
 
         public TtabItemMotiveGroup this[int index]
@@ -867,7 +867,7 @@ namespace SimPe.PackedFiles.Wrapper
                     items[index] = value;
                     if (items[index] != null)
                         items[index].Parent = this;
-                    if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
+                    if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
                 }
             }
         }
@@ -1034,14 +1034,17 @@ namespace SimPe.PackedFiles.Wrapper
 
             item.Parent = this;
             int result = items.Add(item);
-            if (result >= 0 && Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (result >= 0 && Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
             return result;
         }
 
         public void Clear()
         {
-            items.Clear();
-            if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
+            for (int i = 0; i < items.Count; i++)
+                items[i] = type == TtabItemMotiveTableType.Human
+                    ? (TtabItemMotiveItem)new TtabItemSingleMotiveItem(this)
+                    : (TtabItemMotiveItem)new TtabItemAnimalMotiveItem(this);
+            if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
         }
 
         public void Remove(TtabItemMotiveItem item) { this.RemoveAt(items.IndexOf(item)); }
@@ -1051,7 +1054,7 @@ namespace SimPe.PackedFiles.Wrapper
             if (index < 0 || index >= items.Count) return;
 
             items.RemoveAt(index);
-            if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
+            if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
         }
 
         public TtabItemMotiveItem this[int index]
@@ -1067,7 +1070,7 @@ namespace SimPe.PackedFiles.Wrapper
                     items[index] = value;
                     if (items[index] != null)
                         items[index].Parent = this;
-                    if (Wrapper != null) Wrapper.OnWrapperChanged(items, new EventArgs());
+                    if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
                 }
             }
         }
@@ -1227,7 +1230,8 @@ namespace SimPe.PackedFiles.Wrapper
 
         public void Clear()
         {
-            items.Clear();
+            for (int i = 0; i < items.Count; i++)
+                items[i] = new TtabItemSingleMotiveItem(parent);
             if (Wrapper != null) Wrapper.OnWrapperChanged(this, new EventArgs());
         }
 
