@@ -401,7 +401,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             // UI
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x001f);
             this.Name = "UI";
             this.pnWiz0x001f.ResumeLayout(false);

@@ -70,20 +70,20 @@ namespace pjse
             // 
             // btnOkay
             // 
-            this.btnOkay.DialogResult = System.Windows.Forms.DialogResult.OK;
             resources.ApplyResources(this.btnOkay, "btnOkay");
+            this.btnOkay.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOkay.Name = "btnOkay";
             // 
             // btnCancel
             // 
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.btnCancel, "btnCancel");
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Name = "btnCancel";
             // 
             // panel1
             // 
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel1.Name = "panel1";
             // 
             // label1
@@ -279,7 +279,7 @@ namespace pjse
             // TtabAnimalMotiveWiz
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.btnMinus);
             this.Controls.Add(this.btnPlus);
             this.Controls.Add(this.ttabSingleMotiveUI16);

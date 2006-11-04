@@ -222,7 +222,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // TtabMotiveGroupUI
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.gbMotiveGroup);
             this.Name = "TtabMotiveGroupUI";
             resources.ApplyResources(this, "$this");

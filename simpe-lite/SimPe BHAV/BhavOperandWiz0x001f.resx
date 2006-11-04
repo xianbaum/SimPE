@@ -453,135 +453,6 @@
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="&gt;&gt;cbAttrPicker.Name" xml:space="preserve">
-    <value>cbAttrPicker</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Name" xml:space="preserve">
-    <value>cbDecimal</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Name" xml:space="preserve">
-    <value>cbPicker1</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tbVal1.Name" xml:space="preserve">
-    <value>tbVal1</value>
-  </data>
-  <data name="&gt;&gt;tbVal1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbVal1.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;tbVal1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner1.Name" xml:space="preserve">
-    <value>cbDataOwner1</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner1.Parent" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner1.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="pnObject.Location" type="System.Drawing.Point, System.Drawing">
-    <value>35, 24</value>
-  </data>
-  <data name="pnObject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>461, 48</value>
-  </data>
-  <data name="pnObject.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;pnObject.Name" xml:space="preserve">
-    <value>pnObject</value>
-  </data>
-  <data name="&gt;&gt;pnObject.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnObject.Parent" xml:space="preserve">
-    <value>pnWiz0x001f</value>
-  </data>
-  <data name="&gt;&gt;pnObject.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="ckbStackObj.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbStackObj.Location" type="System.Drawing.Point, System.Drawing">
-    <value>35, 0</value>
-  </data>
-  <data name="ckbStackObj.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 21</value>
-  </data>
-  <data name="ckbStackObj.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="ckbStackObj.Text" xml:space="preserve">
-    <value>Stack Object</value>
-  </data>
-  <data name="&gt;&gt;ckbStackObj.Name" xml:space="preserve">
-    <value>ckbStackObj</value>
-  </data>
-  <data name="&gt;&gt;ckbStackObj.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbStackObj.Parent" xml:space="preserve">
-    <value>pnWiz0x001f</value>
-  </data>
-  <data name="&gt;&gt;ckbStackObj.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="pnWiz0x001f.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pnWiz0x001f.Size" type="System.Drawing.Size, System.Drawing">
-    <value>496, 168</value>
-  </data>
-  <data name="pnWiz0x001f.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnWiz0x001f.Name" xml:space="preserve">
-    <value>pnWiz0x001f</value>
-  </data>
-  <data name="&gt;&gt;pnWiz0x001f.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnWiz0x001f.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;pnWiz0x001f.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
   <data name="cbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -714,11 +585,80 @@
   <data name="&gt;&gt;cbDataOwner1.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="pnObject.Location" type="System.Drawing.Point, System.Drawing">
+    <value>35, 24</value>
+  </data>
+  <data name="pnObject.Size" type="System.Drawing.Size, System.Drawing">
+    <value>461, 48</value>
+  </data>
+  <data name="pnObject.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;pnObject.Name" xml:space="preserve">
+    <value>pnObject</value>
+  </data>
+  <data name="&gt;&gt;pnObject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnObject.Parent" xml:space="preserve">
+    <value>pnWiz0x001f</value>
+  </data>
+  <data name="&gt;&gt;pnObject.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="ckbStackObj.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ckbStackObj.Location" type="System.Drawing.Point, System.Drawing">
+    <value>35, 0</value>
+  </data>
+  <data name="ckbStackObj.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 21</value>
+  </data>
+  <data name="ckbStackObj.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="ckbStackObj.Text" xml:space="preserve">
+    <value>Stack Object</value>
+  </data>
+  <data name="&gt;&gt;ckbStackObj.Name" xml:space="preserve">
+    <value>ckbStackObj</value>
+  </data>
+  <data name="&gt;&gt;ckbStackObj.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbStackObj.Parent" xml:space="preserve">
+    <value>pnWiz0x001f</value>
+  </data>
+  <data name="&gt;&gt;ckbStackObj.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="pnWiz0x001f.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pnWiz0x001f.Size" type="System.Drawing.Size, System.Drawing">
+    <value>496, 168</value>
+  </data>
+  <data name="pnWiz0x001f.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pnWiz0x001f.Name" xml:space="preserve">
+    <value>pnWiz0x001f</value>
+  </data>
+  <data name="&gt;&gt;pnWiz0x001f.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnWiz0x001f.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pnWiz0x001f.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 16</value>
+    <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
     <value>796, 516</value>

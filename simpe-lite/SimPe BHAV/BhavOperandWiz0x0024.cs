@@ -617,6 +617,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             this.pnWiz0x0024 = new System.Windows.Forms.Panel();
+            this.btnDefTitle = new System.Windows.Forms.Button();
+            this.btnDefButton3 = new System.Windows.Forms.Button();
+            this.btnDefButton2 = new System.Windows.Forms.Button();
+            this.btnDefButton1 = new System.Windows.Forms.Button();
+            this.btnDefMessage = new System.Windows.Forms.Button();
+            this.btnStrTitle = new System.Windows.Forms.Button();
+            this.btnStrButton3 = new System.Windows.Forms.Button();
+            this.btnStrButton2 = new System.Windows.Forms.Button();
+            this.btnStrButton1 = new System.Windows.Forms.Button();
+            this.btnStrMessage = new System.Windows.Forms.Button();
             this.tbStrTitle = new System.Windows.Forms.TextBox();
             this.tbStrButton3 = new System.Windows.Forms.TextBox();
             this.tbStrButton2 = new System.Windows.Forms.TextBox();
@@ -629,13 +639,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             this.tbButton1 = new System.Windows.Forms.TextBox();
             this.cbBlockBHAV = new System.Windows.Forms.CheckBox();
             this.cbBlockSim = new System.Windows.Forms.CheckBox();
-            this.pnLocalVar = new System.Windows.Forms.Panel();
-            this.tbLocalVar = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.cbUTTitle = new System.Windows.Forms.CheckBox();
-            this.pnTempVar = new System.Windows.Forms.Panel();
-            this.cbTempVar = new System.Windows.Forms.ComboBox();
-            this.lbTempVar = new System.Windows.Forms.Label();
             this.cbUTButton3 = new System.Windows.Forms.CheckBox();
             this.lbIconType = new System.Windows.Forms.Label();
             this.cbUTButton2 = new System.Windows.Forms.CheckBox();
@@ -650,13 +654,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             this.cbTVButton3 = new System.Windows.Forms.ComboBox();
             this.cbTVButton2 = new System.Windows.Forms.ComboBox();
             this.cbTVButton1 = new System.Windows.Forms.ComboBox();
-            this.pnTNS = new System.Windows.Forms.Panel();
-            this.tbPriority = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbTimeout = new System.Windows.Forms.TextBox();
-            this.lbTnsStyle = new System.Windows.Forms.Label();
-            this.cbTnsStyle = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.cbUTMessage = new System.Windows.Forms.CheckBox();
             this.cbScope = new System.Windows.Forms.ComboBox();
@@ -668,18 +665,21 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             this.lbType = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.cbType = new System.Windows.Forms.ComboBox();
+            this.pnLocalVar = new System.Windows.Forms.Panel();
+            this.tbLocalVar = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.pnTempVar = new System.Windows.Forms.Panel();
+            this.cbTempVar = new System.Windows.Forms.ComboBox();
+            this.lbTempVar = new System.Windows.Forms.Label();
+            this.pnTNS = new System.Windows.Forms.Panel();
+            this.tbPriority = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tbTimeout = new System.Windows.Forms.TextBox();
+            this.lbTnsStyle = new System.Windows.Forms.Label();
+            this.cbTnsStyle = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.btnStrMessage = new System.Windows.Forms.Button();
-            this.btnStrTitle = new System.Windows.Forms.Button();
-            this.btnStrButton3 = new System.Windows.Forms.Button();
-            this.btnStrButton2 = new System.Windows.Forms.Button();
-            this.btnStrButton1 = new System.Windows.Forms.Button();
-            this.btnDefTitle = new System.Windows.Forms.Button();
-            this.btnDefButton3 = new System.Windows.Forms.Button();
-            this.btnDefButton2 = new System.Windows.Forms.Button();
-            this.btnDefButton1 = new System.Windows.Forms.Button();
-            this.btnDefMessage = new System.Windows.Forms.Button();
             this.pnWiz0x0024.SuspendLayout();
             this.pnLocalVar.SuspendLayout();
             this.pnTempVar.SuspendLayout();
@@ -741,6 +741,71 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             this.pnWiz0x0024.Controls.Add(this.pnTNS);
             resources.ApplyResources(this.pnWiz0x0024, "pnWiz0x0024");
             this.pnWiz0x0024.Name = "pnWiz0x0024";
+            // 
+            // btnDefTitle
+            // 
+            resources.ApplyResources(this.btnDefTitle, "btnDefTitle");
+            this.btnDefTitle.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnDefTitle.Name = "btnDefTitle";
+            this.btnDefTitle.Click += new System.EventHandler(this.btnDef_Click);
+            // 
+            // btnDefButton3
+            // 
+            resources.ApplyResources(this.btnDefButton3, "btnDefButton3");
+            this.btnDefButton3.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnDefButton3.Name = "btnDefButton3";
+            this.btnDefButton3.Click += new System.EventHandler(this.btnDef_Click);
+            // 
+            // btnDefButton2
+            // 
+            resources.ApplyResources(this.btnDefButton2, "btnDefButton2");
+            this.btnDefButton2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnDefButton2.Name = "btnDefButton2";
+            this.btnDefButton2.Click += new System.EventHandler(this.btnDef_Click);
+            // 
+            // btnDefButton1
+            // 
+            resources.ApplyResources(this.btnDefButton1, "btnDefButton1");
+            this.btnDefButton1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnDefButton1.Name = "btnDefButton1";
+            this.btnDefButton1.Click += new System.EventHandler(this.btnDef_Click);
+            // 
+            // btnDefMessage
+            // 
+            resources.ApplyResources(this.btnDefMessage, "btnDefMessage");
+            this.btnDefMessage.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnDefMessage.Name = "btnDefMessage";
+            this.btnDefMessage.Click += new System.EventHandler(this.btnDef_Click);
+            // 
+            // btnStrTitle
+            // 
+            resources.ApplyResources(this.btnStrTitle, "btnStrTitle");
+            this.btnStrTitle.Name = "btnStrTitle";
+            this.btnStrTitle.Click += new System.EventHandler(this.btnStr_Click);
+            // 
+            // btnStrButton3
+            // 
+            resources.ApplyResources(this.btnStrButton3, "btnStrButton3");
+            this.btnStrButton3.Name = "btnStrButton3";
+            this.btnStrButton3.Click += new System.EventHandler(this.btnStr_Click);
+            // 
+            // btnStrButton2
+            // 
+            resources.ApplyResources(this.btnStrButton2, "btnStrButton2");
+            this.btnStrButton2.Name = "btnStrButton2";
+            this.btnStrButton2.Click += new System.EventHandler(this.btnStr_Click);
+            // 
+            // btnStrButton1
+            // 
+            resources.ApplyResources(this.btnStrButton1, "btnStrButton1");
+            this.btnStrButton1.Name = "btnStrButton1";
+            this.btnStrButton1.Click += new System.EventHandler(this.btnStr_Click);
+            // 
+            // btnStrMessage
+            // 
+            resources.ApplyResources(this.btnStrMessage, "btnStrMessage");
+            this.btnStrMessage.Name = "btnStrMessage";
+            this.btnStrMessage.Click += new System.EventHandler(this.btnStr_Click);
             // 
             // tbStrTitle
             // 
@@ -840,60 +905,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             this.cbBlockSim.Name = "cbBlockSim";
             this.cbBlockSim.CheckedChanged += new System.EventHandler(this.cbBlockSim_CheckedChanged);
             // 
-            // pnLocalVar
-            // 
-            resources.ApplyResources(this.pnLocalVar, "pnLocalVar");
-            this.pnLocalVar.Controls.Add(this.tbLocalVar);
-            this.pnLocalVar.Controls.Add(this.label8);
-            this.pnLocalVar.Name = "pnLocalVar";
-            // 
-            // tbLocalVar
-            // 
-            resources.ApplyResources(this.tbLocalVar, "tbLocalVar");
-            this.tbLocalVar.Name = "tbLocalVar";
-            this.tbLocalVar.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbLocalVar.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbLocalVar.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            // 
-            // label8
-            // 
-            resources.ApplyResources(this.label8, "label8");
-            this.label8.Name = "label8";
-            // 
             // cbUTTitle
             // 
             resources.ApplyResources(this.cbUTTitle, "cbUTTitle");
             this.cbUTTitle.Name = "cbUTTitle";
             this.cbUTTitle.CheckedChanged += new System.EventHandler(this.cbUT_CheckedChanged);
-            // 
-            // pnTempVar
-            // 
-            resources.ApplyResources(this.pnTempVar, "pnTempVar");
-            this.pnTempVar.Controls.Add(this.cbTempVar);
-            this.pnTempVar.Controls.Add(this.lbTempVar);
-            this.pnTempVar.Name = "pnTempVar";
-            // 
-            // cbTempVar
-            // 
-            this.cbTempVar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTempVar.Items.AddRange(new object[] {
-            resources.GetString("cbTempVar.Items"),
-            resources.GetString("cbTempVar.Items1"),
-            resources.GetString("cbTempVar.Items2"),
-            resources.GetString("cbTempVar.Items3"),
-            resources.GetString("cbTempVar.Items4"),
-            resources.GetString("cbTempVar.Items5"),
-            resources.GetString("cbTempVar.Items6"),
-            resources.GetString("cbTempVar.Items7")});
-            resources.ApplyResources(this.cbTempVar, "cbTempVar");
-            this.cbTempVar.Name = "cbTempVar";
-            this.cbTempVar.Sorted = true;
-            this.cbTempVar.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
-            // 
-            // lbTempVar
-            // 
-            resources.ApplyResources(this.lbTempVar, "lbTempVar");
-            this.lbTempVar.Name = "lbTempVar";
             // 
             // cbUTButton3
             // 
@@ -1029,55 +1045,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             this.cbTVButton1.Sorted = true;
             this.cbTVButton1.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
             // 
-            // pnTNS
-            // 
-            resources.ApplyResources(this.pnTNS, "pnTNS");
-            this.pnTNS.Controls.Add(this.tbPriority);
-            this.pnTNS.Controls.Add(this.label6);
-            this.pnTNS.Controls.Add(this.label7);
-            this.pnTNS.Controls.Add(this.tbTimeout);
-            this.pnTNS.Controls.Add(this.lbTnsStyle);
-            this.pnTNS.Controls.Add(this.cbTnsStyle);
-            this.pnTNS.Name = "pnTNS";
-            // 
-            // tbPriority
-            // 
-            resources.ApplyResources(this.tbPriority, "tbPriority");
-            this.tbPriority.Name = "tbPriority";
-            this.tbPriority.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbPriority.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbPriority.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
-            // tbTimeout
-            // 
-            resources.ApplyResources(this.tbTimeout, "tbTimeout");
-            this.tbTimeout.Name = "tbTimeout";
-            this.tbTimeout.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbTimeout.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbTimeout.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            // 
-            // lbTnsStyle
-            // 
-            resources.ApplyResources(this.lbTnsStyle, "lbTnsStyle");
-            this.lbTnsStyle.Name = "lbTnsStyle";
-            // 
-            // cbTnsStyle
-            // 
-            resources.ApplyResources(this.cbTnsStyle, "cbTnsStyle");
-            this.cbTnsStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTnsStyle.Name = "cbTnsStyle";
-            this.cbTnsStyle.SelectedIndexChanged += new System.EventHandler(this.cbTnsStyle_SelectedIndexChanged);
-            // 
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
@@ -1143,6 +1110,104 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             this.cbType.Name = "cbType";
             this.cbType.SelectedIndexChanged += new System.EventHandler(this.cbType_SelectedIndexChanged);
             // 
+            // pnLocalVar
+            // 
+            resources.ApplyResources(this.pnLocalVar, "pnLocalVar");
+            this.pnLocalVar.Controls.Add(this.tbLocalVar);
+            this.pnLocalVar.Controls.Add(this.label8);
+            this.pnLocalVar.Name = "pnLocalVar";
+            // 
+            // tbLocalVar
+            // 
+            resources.ApplyResources(this.tbLocalVar, "tbLocalVar");
+            this.tbLocalVar.Name = "tbLocalVar";
+            this.tbLocalVar.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbLocalVar.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            this.tbLocalVar.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+            // 
+            // label8
+            // 
+            resources.ApplyResources(this.label8, "label8");
+            this.label8.Name = "label8";
+            // 
+            // pnTempVar
+            // 
+            resources.ApplyResources(this.pnTempVar, "pnTempVar");
+            this.pnTempVar.Controls.Add(this.cbTempVar);
+            this.pnTempVar.Controls.Add(this.lbTempVar);
+            this.pnTempVar.Name = "pnTempVar";
+            // 
+            // cbTempVar
+            // 
+            this.cbTempVar.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTempVar.Items.AddRange(new object[] {
+            resources.GetString("cbTempVar.Items"),
+            resources.GetString("cbTempVar.Items1"),
+            resources.GetString("cbTempVar.Items2"),
+            resources.GetString("cbTempVar.Items3"),
+            resources.GetString("cbTempVar.Items4"),
+            resources.GetString("cbTempVar.Items5"),
+            resources.GetString("cbTempVar.Items6"),
+            resources.GetString("cbTempVar.Items7")});
+            resources.ApplyResources(this.cbTempVar, "cbTempVar");
+            this.cbTempVar.Name = "cbTempVar";
+            this.cbTempVar.Sorted = true;
+            this.cbTempVar.SelectedIndexChanged += new System.EventHandler(this.cbTempVar_SelectedIndexChanged);
+            // 
+            // lbTempVar
+            // 
+            resources.ApplyResources(this.lbTempVar, "lbTempVar");
+            this.lbTempVar.Name = "lbTempVar";
+            // 
+            // pnTNS
+            // 
+            resources.ApplyResources(this.pnTNS, "pnTNS");
+            this.pnTNS.Controls.Add(this.tbPriority);
+            this.pnTNS.Controls.Add(this.label6);
+            this.pnTNS.Controls.Add(this.label7);
+            this.pnTNS.Controls.Add(this.tbTimeout);
+            this.pnTNS.Controls.Add(this.lbTnsStyle);
+            this.pnTNS.Controls.Add(this.cbTnsStyle);
+            this.pnTNS.Name = "pnTNS";
+            // 
+            // tbPriority
+            // 
+            resources.ApplyResources(this.tbPriority, "tbPriority");
+            this.tbPriority.Name = "tbPriority";
+            this.tbPriority.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbPriority.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            this.tbPriority.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+            // 
+            // label6
+            // 
+            resources.ApplyResources(this.label6, "label6");
+            this.label6.Name = "label6";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // tbTimeout
+            // 
+            resources.ApplyResources(this.tbTimeout, "tbTimeout");
+            this.tbTimeout.Name = "tbTimeout";
+            this.tbTimeout.Validated += new System.EventHandler(this.hex8_Validated);
+            this.tbTimeout.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
+            this.tbTimeout.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+            // 
+            // lbTnsStyle
+            // 
+            resources.ApplyResources(this.lbTnsStyle, "lbTnsStyle");
+            this.lbTnsStyle.Name = "lbTnsStyle";
+            // 
+            // cbTnsStyle
+            // 
+            resources.ApplyResources(this.cbTnsStyle, "cbTnsStyle");
+            this.cbTnsStyle.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTnsStyle.Name = "cbTnsStyle";
+            this.cbTnsStyle.SelectedIndexChanged += new System.EventHandler(this.cbTnsStyle_SelectedIndexChanged);
+            // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
@@ -1153,75 +1218,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
             resources.ApplyResources(this.button1, "button1");
             this.button1.Name = "button1";
             // 
-            // btnStrMessage
-            // 
-            resources.ApplyResources(this.btnStrMessage, "btnStrMessage");
-            this.btnStrMessage.Name = "btnStrMessage";
-            this.btnStrMessage.Click += new System.EventHandler(this.btnStr_Click);
-            // 
-            // btnStrTitle
-            // 
-            resources.ApplyResources(this.btnStrTitle, "btnStrTitle");
-            this.btnStrTitle.Name = "btnStrTitle";
-            this.btnStrTitle.Click += new System.EventHandler(this.btnStr_Click);
-            // 
-            // btnStrButton3
-            // 
-            resources.ApplyResources(this.btnStrButton3, "btnStrButton3");
-            this.btnStrButton3.Name = "btnStrButton3";
-            this.btnStrButton3.Click += new System.EventHandler(this.btnStr_Click);
-            // 
-            // btnStrButton2
-            // 
-            resources.ApplyResources(this.btnStrButton2, "btnStrButton2");
-            this.btnStrButton2.Name = "btnStrButton2";
-            this.btnStrButton2.Click += new System.EventHandler(this.btnStr_Click);
-            // 
-            // btnStrButton1
-            // 
-            resources.ApplyResources(this.btnStrButton1, "btnStrButton1");
-            this.btnStrButton1.Name = "btnStrButton1";
-            this.btnStrButton1.Click += new System.EventHandler(this.btnStr_Click);
-            // 
-            // btnDefTitle
-            // 
-            resources.ApplyResources(this.btnDefTitle, "btnDefTitle");
-            this.btnDefTitle.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnDefTitle.Name = "btnDefTitle";
-            this.btnDefTitle.Click += new System.EventHandler(this.btnDef_Click);
-            // 
-            // btnDefButton3
-            // 
-            resources.ApplyResources(this.btnDefButton3, "btnDefButton3");
-            this.btnDefButton3.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnDefButton3.Name = "btnDefButton3";
-            this.btnDefButton3.Click += new System.EventHandler(this.btnDef_Click);
-            // 
-            // btnDefButton2
-            // 
-            resources.ApplyResources(this.btnDefButton2, "btnDefButton2");
-            this.btnDefButton2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnDefButton2.Name = "btnDefButton2";
-            this.btnDefButton2.Click += new System.EventHandler(this.btnDef_Click);
-            // 
-            // btnDefButton1
-            // 
-            resources.ApplyResources(this.btnDefButton1, "btnDefButton1");
-            this.btnDefButton1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnDefButton1.Name = "btnDefButton1";
-            this.btnDefButton1.Click += new System.EventHandler(this.btnDef_Click);
-            // 
-            // btnDefMessage
-            // 
-            resources.ApplyResources(this.btnDefMessage, "btnDefMessage");
-            this.btnDefMessage.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnDefMessage.Name = "btnDefMessage";
-            this.btnDefMessage.Click += new System.EventHandler(this.btnDef_Click);
-            // 
             // UI
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.pnWiz0x0024);
