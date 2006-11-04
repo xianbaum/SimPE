@@ -374,9 +374,9 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             // 
             // cbPicker1
             // 
-            resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker1.DropDownWidth = 384;
+            resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
             // 
             // tbVal1
@@ -386,9 +386,9 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             // 
             // cbDataOwner1
             // 
-            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner1.DropDownWidth = 384;
+            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
             // 
             // ckbStackObj
@@ -401,6 +401,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             // UI
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnWiz0x001f);
             this.Name = "UI";
             this.pnWiz0x001f.ResumeLayout(false);

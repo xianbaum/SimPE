@@ -131,19 +131,6 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-			Control[] cs = {
-							   tbCacheFlags, lbCacheFlags,
-							   tbTreeVersion, lbTreeVersion,
-							   tbHeaderFlag, lbHeaderFlag,
-							   tbType, lbType,
-							   cbFormat, lbFormat
-						   };
-			int left = this.bhavPanel.Width - 4;
-			for (int i = 0; i < cs.Length; i++)
-				left = cs[i].Left = left - (cs[i].Width + 4);
-			this.lbFilename.Left = 4;
-			this.tbFilename.Left = this.lbFilename.Right + 4;
-			this.tbFilename.Width = this.lbFormat.Left - (this.tbFilename.Left + 4);
 			this.Tag = "Normal"; // Used by SetReadOnly
 
 #if DEC16
@@ -1415,6 +1402,7 @@ namespace SimPe.PackedFiles.UserInterface
             // BhavForm
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
             this.Controls.Add(this.bhavPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;

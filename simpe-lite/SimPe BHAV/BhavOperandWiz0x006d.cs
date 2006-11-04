@@ -386,16 +386,17 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             // 
             // panel1
             // 
+            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.pnNotAllOver);
             this.panel1.Controls.Add(this.ckbAllOver);
             this.panel1.Controls.Add(this.rb3Object);
             this.panel1.Controls.Add(this.rb3Me);
             this.panel1.Controls.Add(this.label2);
-            resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
             // pnNotAllOver
             // 
+            resources.ApplyResources(this.pnNotAllOver, "pnNotAllOver");
             this.pnNotAllOver.Controls.Add(this.tbMesh);
             this.pnNotAllOver.Controls.Add(this.btnMesh);
             this.pnNotAllOver.Controls.Add(this.tbVal5);
@@ -403,13 +404,12 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnNotAllOver.Controls.Add(this.ckbMeshTemp);
             this.pnNotAllOver.Controls.Add(this.cbMeshScope);
             this.pnNotAllOver.Controls.Add(this.label4);
-            resources.ApplyResources(this.pnNotAllOver, "pnNotAllOver");
             this.pnNotAllOver.Name = "pnNotAllOver";
             // 
             // tbMesh
             // 
-            this.tbMesh.BorderStyle = System.Windows.Forms.BorderStyle.None;
             resources.ApplyResources(this.tbMesh, "tbMesh");
+            this.tbMesh.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbMesh.Name = "tbMesh";
             this.tbMesh.ReadOnly = true;
             this.tbMesh.TabStop = false;
@@ -503,16 +503,17 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             // 
             // pnMaterial
             // 
+            resources.ApplyResources(this.pnMaterial, "pnMaterial");
             this.pnMaterial.Controls.Add(this.pnNotScrShot);
             this.pnMaterial.Controls.Add(this.rb1Object);
             this.pnMaterial.Controls.Add(this.rb1Me);
             this.pnMaterial.Controls.Add(this.rb1ScrShot);
             this.pnMaterial.Controls.Add(this.label3);
-            resources.ApplyResources(this.pnMaterial, "pnMaterial");
             this.pnMaterial.Name = "pnMaterial";
             // 
             // pnNotScrShot
             // 
+            resources.ApplyResources(this.pnNotScrShot, "pnNotScrShot");
             this.pnNotScrShot.Controls.Add(this.tbMaterial);
             this.pnNotScrShot.Controls.Add(this.btnMaterial);
             this.pnNotScrShot.Controls.Add(this.tbVal3);
@@ -523,13 +524,12 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnNotScrShot.Controls.Add(this.ckbMaterialTemp);
             this.pnNotScrShot.Controls.Add(this.rb2MovingTexture);
             this.pnNotScrShot.Controls.Add(this.rb2Material);
-            resources.ApplyResources(this.pnNotScrShot, "pnNotScrShot");
             this.pnNotScrShot.Name = "pnNotScrShot";
             // 
             // tbMaterial
             // 
-            this.tbMaterial.BorderStyle = System.Windows.Forms.BorderStyle.None;
             resources.ApplyResources(this.tbMaterial, "tbMaterial");
+            this.tbMaterial.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbMaterial.Name = "tbMaterial";
             this.tbMaterial.ReadOnly = true;
             this.tbMaterial.TabStop = false;
@@ -635,6 +635,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             // UI
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x006d);
             this.Name = "UI";
             this.pnWiz0x006d.ResumeLayout(false);

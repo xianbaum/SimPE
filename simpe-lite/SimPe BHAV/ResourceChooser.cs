@@ -226,12 +226,12 @@ namespace pjse
             // 
             // tcResources
             // 
+            resources.ApplyResources(this.tcResources, "tcResources");
             this.tcResources.Controls.Add(this.tpPackage);
             this.tcResources.Controls.Add(this.tpGlobalGroup);
             this.tcResources.Controls.Add(this.tpGroup);
             this.tcResources.Controls.Add(this.tpSemiGroup);
             this.tcResources.Controls.Add(this.tpBuiltIn);
-            resources.ApplyResources(this.tcResources, "tcResources");
             this.tcResources.Name = "tcResources";
             this.tcResources.SelectedIndex = 0;
             // 
@@ -302,25 +302,26 @@ namespace pjse
             // 
             // OK
             // 
-            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             resources.ApplyResources(this.OK, "OK");
+            this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OK.Name = "OK";
             // 
             // Cancel
             // 
-            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.Cancel, "Cancel");
+            this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Name = "Cancel";
             // 
             // ResourceChooser
             // 
             this.AcceptButton = this.OK;
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.Cancel;
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
             this.Controls.Add(this.tcResources);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "ResourceChooser";
             this.ShowInTaskbar = false;
             this.tcResources.ResumeLayout(false);

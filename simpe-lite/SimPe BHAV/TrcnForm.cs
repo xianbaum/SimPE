@@ -404,6 +404,7 @@ namespace SimPe.PackedFiles.UserInterface
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrcnForm));
             this.btnCommit = new System.Windows.Forms.Button();
             this.pnHeading = new System.Windows.Forms.Panel();
+            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.trcnPanel = new System.Windows.Forms.Panel();
@@ -438,7 +439,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbLabel = new System.Windows.Forms.Label();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.pnHeading.SuspendLayout();
             this.trcnPanel.SuspendLayout();
             this.SuspendLayout();
@@ -458,6 +458,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnHeading.Controls.Add(this.label1);
             this.pnHeading.ForeColor = System.Drawing.SystemColors.ControlText;
             this.pnHeading.Name = "pnHeading";
+            // 
+            // btnRefreshFT
+            // 
+            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
+            this.btnRefreshFT.Name = "btnRefreshFT";
+            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
             // 
             // btnHelp
             // 
@@ -701,15 +707,10 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrNext.TabStop = false;
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
             // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
-            // 
             // TrcnForm
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.trcnPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "TrcnForm";

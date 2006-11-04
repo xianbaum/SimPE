@@ -51,14 +51,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnStrDelete;
 		private System.Windows.Forms.Button btnStrAdd;
 		private System.Windows.Forms.Label lbFilename;
-		private System.Windows.Forms.GroupBox gbValue;
-		private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.GroupBox gbValue;
 		private System.Windows.Forms.CheckBox cbFlag;
 		private System.Windows.Forms.Button btnStrPrev;
 		private System.Windows.Forms.Button btnStrNext;
 		private System.Windows.Forms.Button btnHelp;
 		private System.Windows.Forms.Button btnTRCNMaker;
         private Button btnRefreshFT;
+        private Button btnCancel;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -369,6 +369,7 @@ namespace SimPe.PackedFiles.UserInterface
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BconForm));
             this.label1 = new System.Windows.Forms.Label();
             this.pnHeading = new System.Windows.Forms.Panel();
+            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.lbFilename = new System.Windows.Forms.Label();
             this.tbFilename = new System.Windows.Forms.TextBox();
@@ -381,7 +382,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
             this.cbFlag = new System.Windows.Forms.CheckBox();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.btnStrDelete = new System.Windows.Forms.Button();
             this.btnStrAdd = new System.Windows.Forms.Button();
             this.lvConstants = new System.Windows.Forms.ListView();
@@ -390,7 +390,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.chLabel = new System.Windows.Forms.ColumnHeader();
             this.btnCommit = new System.Windows.Forms.Button();
             this.btnTRCNMaker = new System.Windows.Forms.Button();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.pnHeading.SuspendLayout();
             this.gbValue.SuspendLayout();
             this.bconPanel.SuspendLayout();
@@ -410,6 +410,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnHeading.Controls.Add(this.label1);
             this.pnHeading.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.pnHeading.Name = "pnHeading";
+            // 
+            // btnRefreshFT
+            // 
+            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
+            this.btnRefreshFT.Name = "btnRefreshFT";
+            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
             // 
             // btnHelp
             // 
@@ -454,6 +460,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // gbValue
             // 
+            this.gbValue.Controls.Add(this.btnCancel);
             this.gbValue.Controls.Add(this.tbValueDec);
             this.gbValue.Controls.Add(this.tbValueHex);
             this.gbValue.Controls.Add(this.label5);
@@ -475,7 +482,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.bconPanel.Controls.Add(this.btnStrPrev);
             this.bconPanel.Controls.Add(this.btnStrNext);
             this.bconPanel.Controls.Add(this.cbFlag);
-            this.bconPanel.Controls.Add(this.btnCancel);
             this.bconPanel.Controls.Add(this.btnStrDelete);
             this.bconPanel.Controls.Add(this.btnStrAdd);
             this.bconPanel.Controls.Add(this.lvConstants);
@@ -506,12 +512,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.cbFlag, "cbFlag");
             this.cbFlag.Name = "cbFlag";
             this.cbFlag.CheckedChanged += new System.EventHandler(this.cbFlag_CheckedChanged);
-            // 
-            // btnCancel
-            // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // btnStrDelete
             // 
@@ -568,15 +568,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnTRCNMaker.Name = "btnTRCNMaker";
             this.btnTRCNMaker.Click += new System.EventHandler(this.btnTRCNMaker_Click);
             // 
-            // btnRefreshFT
+            // btnCancel
             // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
+            resources.ApplyResources(this.btnCancel, "btnCancel");
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // BconForm
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.bconPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "BconForm";
