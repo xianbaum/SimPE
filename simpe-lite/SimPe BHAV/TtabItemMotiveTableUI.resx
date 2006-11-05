@@ -660,423 +660,6 @@
   <data name="&gt;&gt;cbShowAll.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;btnCopyAll.Name" xml:space="preserve">
-    <value>btnCopyAll</value>
-  </data>
-  <data name="&gt;&gt;btnCopyAll.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCopyAll.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCopyAll.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lbCBM0.Name" xml:space="preserve">
-    <value>lbCBM0</value>
-  </data>
-  <data name="&gt;&gt;lbCBM0.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM0.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM0.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM0.Name" xml:space="preserve">
-    <value>btnCpyM0</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM0.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM0.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM0.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM1.Name" xml:space="preserve">
-    <value>btnCpyM1</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM1.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM1.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM2.Name" xml:space="preserve">
-    <value>btnCpyM2</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM2.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM2.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM3.Name" xml:space="preserve">
-    <value>btnCpyM3</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM3.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM3.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM4.Name" xml:space="preserve">
-    <value>btnCpyM4</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM4.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM4.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM5.Name" xml:space="preserve">
-    <value>btnCpyM5</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM5.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM5.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM7.Name" xml:space="preserve">
-    <value>btnCpyM7</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM7.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM7.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM6.Name" xml:space="preserve">
-    <value>btnCpyM6</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM6.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM6.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM9.Name" xml:space="preserve">
-    <value>btnCpyM9</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM9.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM9.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM12.Name" xml:space="preserve">
-    <value>btnCpyM12</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM12.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM12.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM12.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM11.Name" xml:space="preserve">
-    <value>btnCpyM11</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM11.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM11.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM10.Name" xml:space="preserve">
-    <value>btnCpyM10</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM10.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM10.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM15.Name" xml:space="preserve">
-    <value>btnCpyM15</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM15.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM15.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM14.Name" xml:space="preserve">
-    <value>btnCpyM14</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM14.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM14.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM14.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM13.Name" xml:space="preserve">
-    <value>btnCpyM13</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM13.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM13.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM8.Name" xml:space="preserve">
-    <value>btnCpyM8</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM8.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;btnCpyM8.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;lbCBM1.Name" xml:space="preserve">
-    <value>lbCBM1</value>
-  </data>
-  <data name="&gt;&gt;lbCBM1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM1.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM1.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;lbCBM2.Name" xml:space="preserve">
-    <value>lbCBM2</value>
-  </data>
-  <data name="&gt;&gt;lbCBM2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM2.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM2.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;lbCBM3.Name" xml:space="preserve">
-    <value>lbCBM3</value>
-  </data>
-  <data name="&gt;&gt;lbCBM3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM3.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM3.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="&gt;&gt;lbCBM4.Name" xml:space="preserve">
-    <value>lbCBM4</value>
-  </data>
-  <data name="&gt;&gt;lbCBM4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM4.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM4.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
-  <data name="&gt;&gt;lbCBM5.Name" xml:space="preserve">
-    <value>lbCBM5</value>
-  </data>
-  <data name="&gt;&gt;lbCBM5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM5.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM5.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="&gt;&gt;lbCBM6.Name" xml:space="preserve">
-    <value>lbCBM6</value>
-  </data>
-  <data name="&gt;&gt;lbCBM6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM6.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM6.ZOrder" xml:space="preserve">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;lbCBM7.Name" xml:space="preserve">
-    <value>lbCBM7</value>
-  </data>
-  <data name="&gt;&gt;lbCBM7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM7.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM7.ZOrder" xml:space="preserve">
-    <value>24</value>
-  </data>
-  <data name="&gt;&gt;lbCBM15.Name" xml:space="preserve">
-    <value>lbCBM15</value>
-  </data>
-  <data name="&gt;&gt;lbCBM15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM15.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM15.ZOrder" xml:space="preserve">
-    <value>25</value>
-  </data>
-  <data name="&gt;&gt;lbCBM11.Name" xml:space="preserve">
-    <value>lbCBM11</value>
-  </data>
-  <data name="&gt;&gt;lbCBM11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM11.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM11.ZOrder" xml:space="preserve">
-    <value>26</value>
-  </data>
-  <data name="&gt;&gt;lbCBM14.Name" xml:space="preserve">
-    <value>lbCBM14</value>
-  </data>
-  <data name="&gt;&gt;lbCBM14.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM14.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM14.ZOrder" xml:space="preserve">
-    <value>27</value>
-  </data>
-  <data name="&gt;&gt;lbCBM8.Name" xml:space="preserve">
-    <value>lbCBM8</value>
-  </data>
-  <data name="&gt;&gt;lbCBM8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM8.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM8.ZOrder" xml:space="preserve">
-    <value>28</value>
-  </data>
-  <data name="&gt;&gt;lbCBM9.Name" xml:space="preserve">
-    <value>lbCBM9</value>
-  </data>
-  <data name="&gt;&gt;lbCBM9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM9.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM9.ZOrder" xml:space="preserve">
-    <value>29</value>
-  </data>
-  <data name="&gt;&gt;lbCBM13.Name" xml:space="preserve">
-    <value>lbCBM13</value>
-  </data>
-  <data name="&gt;&gt;lbCBM13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM13.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM13.ZOrder" xml:space="preserve">
-    <value>30</value>
-  </data>
-  <data name="&gt;&gt;lbCBM10.Name" xml:space="preserve">
-    <value>lbCBM10</value>
-  </data>
-  <data name="&gt;&gt;lbCBM10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM10.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM10.ZOrder" xml:space="preserve">
-    <value>31</value>
-  </data>
-  <data name="&gt;&gt;lbCBM12.Name" xml:space="preserve">
-    <value>lbCBM12</value>
-  </data>
-  <data name="&gt;&gt;lbCBM12.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCBM12.Parent" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;lbCBM12.ZOrder" xml:space="preserve">
-    <value>32</value>
-  </data>
-  <data name="pnCopyButtons.Location" type="System.Drawing.Point, System.Drawing">
-    <value>325, 0</value>
-  </data>
-  <data name="pnCopyButtons.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 456</value>
-  </data>
-  <data name="pnCopyButtons.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;pnCopyButtons.Name" xml:space="preserve">
-    <value>pnCopyButtons</value>
-  </data>
-  <data name="&gt;&gt;pnCopyButtons.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnCopyButtons.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;pnCopyButtons.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
   <data name="btnCopyAll.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -1084,7 +667,7 @@
     <value>0, 401</value>
   </data>
   <data name="btnCopyAll.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 24</value>
+    <value>108, 24</value>
   </data>
   <data name="btnCopyAll.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -2016,6 +1599,27 @@
   <data name="&gt;&gt;lbCBM12.ZOrder" xml:space="preserve">
     <value>32</value>
   </data>
+  <data name="pnCopyButtons.Location" type="System.Drawing.Point, System.Drawing">
+    <value>325, 0</value>
+  </data>
+  <data name="pnCopyButtons.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 456</value>
+  </data>
+  <data name="pnCopyButtons.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;pnCopyButtons.Name" xml:space="preserve">
+    <value>pnCopyButtons</value>
+  </data>
+  <data name="&gt;&gt;pnCopyButtons.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnCopyButtons.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pnCopyButtons.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="lbNrGroups.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -2049,9 +1653,6 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>8, 16</value>
-  </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>478, 456</value>
   </data>

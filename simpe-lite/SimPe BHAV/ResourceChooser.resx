@@ -118,6 +118,9 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tcResources.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
   <data name="lbPackage.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
@@ -125,12 +128,15 @@
   <data name="lbPackage.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="lbPackage.ItemHeight" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lbPackage.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="lbPackage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>378, 175</value>
   </data>
   <data name="lbPackage.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -148,10 +154,10 @@
     <value>0</value>
   </data>
   <data name="tpPackage.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 25</value>
   </data>
   <data name="tpPackage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>378, 175</value>
   </data>
   <data name="tpPackage.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -177,11 +183,14 @@
   <data name="lbGlobalGroup.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="lbGlobalGroup.ItemHeight" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
   <data name="lbGlobalGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="lbGlobalGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>356, 464</value>
   </data>
   <data name="lbGlobalGroup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -199,10 +208,10 @@
     <value>0</value>
   </data>
   <data name="tpGlobalGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 26</value>
   </data>
   <data name="tpGlobalGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>356, 464</value>
   </data>
   <data name="tpGlobalGroup.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -231,11 +240,14 @@
   <data name="lbGroup.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="lbGroup.ItemHeight" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
   <data name="lbGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="lbGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>356, 464</value>
   </data>
   <data name="lbGroup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -253,10 +265,10 @@
     <value>0</value>
   </data>
   <data name="tpGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 26</value>
   </data>
   <data name="tpGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>356, 464</value>
   </data>
   <data name="tpGroup.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -285,11 +297,14 @@
   <data name="lbSemiGroup.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="lbSemiGroup.ItemHeight" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
   <data name="lbSemiGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="lbSemiGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>356, 464</value>
   </data>
   <data name="lbSemiGroup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -307,10 +322,10 @@
     <value>0</value>
   </data>
   <data name="tpSemiGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 26</value>
   </data>
   <data name="tpSemiGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>356, 464</value>
   </data>
   <data name="tpSemiGroup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -339,11 +354,14 @@
   <data name="lbBuiltIn.IntegralHeight" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
+  <data name="lbBuiltIn.ItemHeight" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
   <data name="lbBuiltIn.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="lbBuiltIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>356, 464</value>
   </data>
   <data name="lbBuiltIn.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -361,10 +379,10 @@
     <value>0</value>
   </data>
   <data name="tpBuiltIn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 22</value>
+    <value>4, 26</value>
   </data>
   <data name="tpBuiltIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>402, 406</value>
+    <value>356, 464</value>
   </data>
   <data name="tpBuiltIn.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -384,14 +402,11 @@
   <data name="&gt;&gt;tpBuiltIn.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="tcResources.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Top</value>
-  </data>
   <data name="tcResources.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="tcResources.Size" type="System.Drawing.Size, System.Drawing">
-    <value>410, 432</value>
+    <value>386, 204</value>
   </data>
   <data name="tcResources.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -408,11 +423,14 @@
   <data name="&gt;&gt;tcResources.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="OK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
   <data name="OK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>320, 440</value>
+    <value>311, 210</value>
   </data>
   <data name="OK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 24</value>
+    <value>61, 27</value>
   </data>
   <data name="OK.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -432,11 +450,14 @@
   <data name="&gt;&gt;OK.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="Cancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
   <data name="Cancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>240, 440</value>
+    <value>244, 210</value>
   </data>
   <data name="Cancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>61, 27</value>
   </data>
   <data name="Cancel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -459,14 +480,11 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>6, 14</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>410, 471</value>
-  </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
+    <value>384, 249</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>PJSE: Resource Chooser</value>

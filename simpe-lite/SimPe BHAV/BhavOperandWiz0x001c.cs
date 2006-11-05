@@ -235,6 +235,9 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.btnTreeName = new System.Windows.Forms.Button();
             this.tbTree = new System.Windows.Forms.TextBox();
             this.pnArgs = new System.Windows.Forms.Panel();
+            this.lbConst3 = new System.Windows.Forms.Label();
+            this.lbConst2 = new System.Windows.Forms.Label();
+            this.lbConst1 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -262,9 +265,6 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.lbConst1 = new System.Windows.Forms.Label();
-            this.lbConst2 = new System.Windows.Forms.Label();
-            this.lbConst3 = new System.Windows.Forms.Label();
             this.pnWiz0x001c.SuspendLayout();
             this.pnArgs.SuspendLayout();
             this.SuspendLayout();
@@ -325,6 +325,21 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.pnArgs.Controls.Add(this.cbDataOwner1);
             resources.ApplyResources(this.pnArgs, "pnArgs");
             this.pnArgs.Name = "pnArgs";
+            // 
+            // lbConst3
+            // 
+            resources.ApplyResources(this.lbConst3, "lbConst3");
+            this.lbConst3.Name = "lbConst3";
+            // 
+            // lbConst2
+            // 
+            resources.ApplyResources(this.lbConst2, "lbConst2");
+            this.lbConst2.Name = "lbConst2";
+            // 
+            // lbConst1
+            // 
+            resources.ApplyResources(this.lbConst1, "lbConst1");
+            this.lbConst1.Name = "lbConst1";
             // 
             // label7
             // 
@@ -494,24 +509,10 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
-            // lbConst1
-            // 
-            resources.ApplyResources(this.lbConst1, "lbConst1");
-            this.lbConst1.Name = "lbConst1";
-            // 
-            // lbConst2
-            // 
-            resources.ApplyResources(this.lbConst2, "lbConst2");
-            this.lbConst2.Name = "lbConst2";
-            // 
-            // lbConst3
-            // 
-            resources.ApplyResources(this.lbConst3, "lbConst3");
-            this.lbConst3.Name = "lbConst3";
-            // 
             // UI
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x001c);
             this.Name = "UI";
             this.pnWiz0x001c.ResumeLayout(false);

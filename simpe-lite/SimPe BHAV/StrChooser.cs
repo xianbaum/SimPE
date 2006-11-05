@@ -155,6 +155,7 @@ namespace pjse
             // 
             this.AcceptButton = this.OK;
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.Cancel;
             this.Controls.Add(this.lbItemList);
             this.Controls.Add(this.panel1);

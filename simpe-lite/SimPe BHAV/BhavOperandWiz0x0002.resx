@@ -127,10 +127,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lbConst2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 90</value>
+    <value>0, 103</value>
   </data>
   <data name="lbConst2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 13</value>
+    <value>100, 17</value>
   </data>
   <data name="lbConst2.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -154,10 +154,10 @@
     <value>True</value>
   </data>
   <data name="lbConst1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 24</value>
+    <value>0, 27</value>
   </data>
   <data name="lbConst1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 13</value>
+    <value>100, 17</value>
   </data>
   <data name="lbConst1.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -181,10 +181,10 @@
     <value>True</value>
   </data>
   <data name="cbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>247, 106</value>
+    <value>292, 121</value>
   </data>
   <data name="cbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>138, 17</value>
+    <value>148, 20</value>
   </data>
   <data name="cbAttrPicker.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -208,10 +208,10 @@
     <value>True</value>
   </data>
   <data name="cbDecimal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 106</value>
+    <value>88, 121</value>
   </data>
   <data name="cbDecimal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>167, 17</value>
+    <value>177, 20</value>
   </data>
   <data name="cbDecimal.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -232,10 +232,10 @@
     <value>3</value>
   </data>
   <data name="cbPicker2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>254, 66</value>
+    <value>301, 75</value>
   </data>
   <data name="cbPicker2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 21</value>
+    <value>155, 25</value>
   </data>
   <data name="cbPicker2.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -256,10 +256,10 @@
     <value>4</value>
   </data>
   <data name="cbPicker1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>254, 0</value>
+    <value>301, 0</value>
   </data>
   <data name="cbPicker1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 21</value>
+    <value>155, 25</value>
   </data>
   <data name="cbPicker1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -280,10 +280,10 @@
     <value>5</value>
   </data>
   <data name="cbOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 41</value>
+    <value>0, 47</value>
   </data>
   <data name="cbOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>385, 21</value>
+    <value>456, 25</value>
   </data>
   <data name="cbOperator.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -301,10 +301,10 @@
     <value>6</value>
   </data>
   <data name="tbval2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>254, 66</value>
+    <value>301, 75</value>
   </data>
   <data name="tbval2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 21</value>
+    <value>155, 24</value>
   </data>
   <data name="tbval2.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -322,10 +322,10 @@
     <value>7</value>
   </data>
   <data name="cbDataOwner2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 66</value>
+    <value>0, 75</value>
   </data>
   <data name="cbDataOwner2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 21</value>
+    <value>302, 25</value>
   </data>
   <data name="cbDataOwner2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -343,10 +343,10 @@
     <value>8</value>
   </data>
   <data name="tbval1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>254, 0</value>
+    <value>301, 0</value>
   </data>
   <data name="tbval1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>131, 21</value>
+    <value>155, 24</value>
   </data>
   <data name="tbval1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -367,7 +367,7 @@
     <value>0, 0</value>
   </data>
   <data name="cbDataOwner1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 21</value>
+    <value>302, 25</value>
   </data>
   <data name="cbDataOwner1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -391,7 +391,7 @@
     <value>0, 0</value>
   </data>
   <data name="pnWiz0x0002.Size" type="System.Drawing.Size, System.Drawing">
-    <value>388, 126</value>
+    <value>460, 144</value>
   </data>
   <data name="pnWiz0x0002.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -411,14 +411,11 @@
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>6, 14</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>410, 157</value>
-  </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
+    <value>463, 149</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>UI</value>

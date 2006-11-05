@@ -366,6 +366,7 @@ namespace SimPe.PackedFiles.UserInterface
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TPRPForm));
             this.btnCommit = new System.Windows.Forms.Button();
             this.pnHeading = new System.Windows.Forms.Panel();
+            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tprpPanel = new System.Windows.Forms.Panel();
@@ -391,7 +392,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbFilename = new System.Windows.Forms.TextBox();
             this.lbFilename = new System.Windows.Forms.Label();
             this.lbLabel = new System.Windows.Forms.Label();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.pnHeading.SuspendLayout();
             this.tprpPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -414,6 +414,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnHeading.Controls.Add(this.label1);
             this.pnHeading.ForeColor = System.Drawing.SystemColors.ControlText;
             this.pnHeading.Name = "pnHeading";
+            // 
+            // btnRefreshFT
+            // 
+            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
+            this.btnRefreshFT.Name = "btnRefreshFT";
+            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
             // 
             // btnHelp
             // 
@@ -502,6 +508,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvParams.GridLines = true;
             this.lvParams.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.lvParams.HideSelection = false;
+            this.lvParams.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvParams.Items")))});
             this.lvParams.MultiSelect = false;
             this.lvParams.Name = "lvParams";
             this.lvParams.UseCompatibleStateImageBehavior = false;
@@ -607,15 +615,10 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.lbLabel, "lbLabel");
             this.lbLabel.Name = "lbLabel";
             // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
-            // 
             // TPRPForm
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.btnCancel;
             this.Controls.Add(this.tprpPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;

@@ -675,8 +675,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // TtabItemMotiveTableUI
             // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.lbNrGroups);
             this.Controls.Add(this.pnCopyButtons);
             this.Controls.Add(this.cbShowAll);
@@ -698,6 +696,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.Controls.Add(this.lbMotive13);
             this.Controls.Add(this.lbMotive12);
             this.Name = "TtabItemMotiveTableUI";
+            resources.ApplyResources(this, "$this");
             this.pnCopyButtons.ResumeLayout(false);
             this.pnCopyButtons.PerformLayout();
             this.ResumeLayout(false);

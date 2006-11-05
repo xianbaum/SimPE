@@ -127,10 +127,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 4</value>
+    <value>0, 5</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>172, 16</value>
+    <value>194, 18</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -154,13 +154,10 @@
     <value>Top, Right</value>
   </data>
   <data name="tbInst_Longname.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left, Right</value>
-  </data>
-  <data name="tbInst_Longname.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="tbInst_Longname.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 136</value>
+    <value>10, 130</value>
   </data>
   <data name="tbInst_Longname.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -169,7 +166,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbInst_Longname.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 80</value>
+    <value>435, 102</value>
   </data>
   <data name="tbInst_Longname.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -189,9 +186,6 @@
   <data name="&gt;&gt;tbInst_Longname.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="btnOperandRaw.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
   <data name="btnOperandRaw.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 14.25pt</value>
   </data>
@@ -199,10 +193,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnOperandRaw.Location" type="System.Drawing.Point, System.Drawing">
-    <value>304, 80</value>
+    <value>340, 79</value>
   </data>
   <data name="btnOperandRaw.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>28, 24</value>
   </data>
   <data name="btnOperandRaw.TabIndex" type="System.Int32, mscorlib">
     <value>25</value>
@@ -225,20 +219,14 @@
   <data name="&gt;&gt;btnOperandRaw.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="btnCancel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>312, 104</value>
+    <value>378, 79</value>
   </data>
   <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 20</value>
+    <value>67, 24</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -258,9 +246,6 @@
   <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="btnOperandWiz.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
   <data name="btnOperandWiz.Font" type="System.Drawing.Font, System.Drawing">
     <value>Webdings, 12pt</value>
   </data>
@@ -268,10 +253,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnOperandWiz.Location" type="System.Drawing.Point, System.Drawing">
-    <value>280, 80</value>
+    <value>312, 79</value>
   </data>
   <data name="btnOperandWiz.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>28, 24</value>
   </data>
   <data name="btnOperandWiz.TabIndex" type="System.Int32, mscorlib">
     <value>24</value>
@@ -297,9 +282,6 @@
   <data name="llopenbhav.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="llopenbhav.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="llopenbhav.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -307,10 +289,10 @@
     <value>0, 11</value>
   </data>
   <data name="llopenbhav.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 13</value>
+    <value>186, 24</value>
   </data>
   <data name="llopenbhav.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 18</value>
+    <value>72, 20</value>
   </data>
   <data name="llopenbhav.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -330,11 +312,8 @@
   <data name="&gt;&gt;llopenbhav.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="tba2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tba2.ItemHeight" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>16</value>
   </data>
   <data name="tba2.Items" xml:space="preserve">
     <value>Error</value>
@@ -346,16 +325,16 @@
     <value>Return False</value>
   </data>
   <data name="tba2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 48</value>
+    <value>315, 49</value>
   </data>
   <data name="tba2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 21</value>
+    <value>104, 24</value>
   </data>
   <data name="tba2.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
   <data name="tba2.Text" xml:space="preserve">
-    <value>False</value>
+    <value>Return False</value>
   </data>
   <data name="&gt;&gt;tba2.Name" xml:space="preserve">
     <value>tba2</value>
@@ -369,11 +348,8 @@
   <data name="&gt;&gt;tba2.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="tba1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tba1.ItemHeight" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>16</value>
   </data>
   <data name="tba1.Items" xml:space="preserve">
     <value>Error</value>
@@ -385,16 +361,16 @@
     <value>Return False</value>
   </data>
   <data name="tba1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 48</value>
+    <value>104, 49</value>
   </data>
   <data name="tba1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 21</value>
+    <value>104, 24</value>
   </data>
   <data name="tba1.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="tba1.Text" xml:space="preserve">
-    <value>True</value>
+    <value>Return True</value>
   </data>
   <data name="&gt;&gt;tba1.Name" xml:space="preserve">
     <value>tba1</value>
@@ -408,23 +384,17 @@
   <data name="&gt;&gt;tba1.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="label13.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
   <data name="label13.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
-  </data>
-  <data name="label13.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
   </data>
   <data name="label13.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>19, 82</value>
+    <value>24, 82</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 13</value>
+    <value>75, 17</value>
   </data>
   <data name="label13.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -444,20 +414,14 @@
   <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="tbInst_Unk7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Unk7.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Unk7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 104</value>
+    <value>286, 102</value>
   </data>
   <data name="tbInst_Unk7.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Unk7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Unk7.TabIndex" type="System.Int32, mscorlib">
     <value>23</value>
@@ -477,20 +441,14 @@
   <data name="&gt;&gt;tbInst_Unk7.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
-  <data name="tbInst_Unk6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Unk6.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Unk6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>232, 104</value>
+    <value>260, 102</value>
   </data>
   <data name="tbInst_Unk6.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Unk6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Unk6.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -510,20 +468,14 @@
   <data name="&gt;&gt;tbInst_Unk6.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="tbInst_Unk5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Unk5.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Unk5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 104</value>
+    <value>234, 102</value>
   </data>
   <data name="tbInst_Unk5.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Unk5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Unk5.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -543,20 +495,14 @@
   <data name="&gt;&gt;tbInst_Unk5.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
-  <data name="tbInst_Unk4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Unk4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Unk4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 104</value>
+    <value>208, 102</value>
   </data>
   <data name="tbInst_Unk4.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Unk4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Unk4.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -576,20 +522,14 @@
   <data name="&gt;&gt;tbInst_Unk4.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="tbInst_Unk3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Unk3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Unk3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 104</value>
+    <value>182, 102</value>
   </data>
   <data name="tbInst_Unk3.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Unk3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Unk3.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -609,20 +549,14 @@
   <data name="&gt;&gt;tbInst_Unk3.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
-  <data name="tbInst_Unk2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Unk2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Unk2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>136, 104</value>
+    <value>156, 102</value>
   </data>
   <data name="tbInst_Unk2.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Unk2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Unk2.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -642,20 +576,14 @@
   <data name="&gt;&gt;tbInst_Unk2.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
-  <data name="tbInst_Unk1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Unk1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Unk1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 104</value>
+    <value>130, 102</value>
   </data>
   <data name="tbInst_Unk1.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Unk1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Unk1.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -675,20 +603,14 @@
   <data name="&gt;&gt;tbInst_Unk1.ZOrder" xml:space="preserve">
     <value>14</value>
   </data>
-  <data name="tbInst_Unk0.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Unk0.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Unk0.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 104</value>
+    <value>104, 102</value>
   </data>
   <data name="tbInst_Unk0.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Unk0.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Unk0.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -708,20 +630,14 @@
   <data name="&gt;&gt;tbInst_Unk0.ZOrder" xml:space="preserve">
     <value>15</value>
   </data>
-  <data name="tbInst_Op7.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Op7.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Op7.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 80</value>
+    <value>286, 79</value>
   </data>
   <data name="tbInst_Op7.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Op7.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Op7.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -741,20 +657,14 @@
   <data name="&gt;&gt;tbInst_Op7.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
-  <data name="tbInst_Op6.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Op6.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Op6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>232, 80</value>
+    <value>260, 79</value>
   </data>
   <data name="tbInst_Op6.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Op6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Op6.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -774,20 +684,14 @@
   <data name="&gt;&gt;tbInst_Op6.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="tbInst_Op5.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Op5.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Op5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 80</value>
+    <value>234, 79</value>
   </data>
   <data name="tbInst_Op5.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Op5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Op5.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -807,20 +711,14 @@
   <data name="&gt;&gt;tbInst_Op5.ZOrder" xml:space="preserve">
     <value>18</value>
   </data>
-  <data name="tbInst_Op4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Op4.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Op4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>184, 80</value>
+    <value>208, 79</value>
   </data>
   <data name="tbInst_Op4.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Op4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Op4.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -840,20 +738,14 @@
   <data name="&gt;&gt;tbInst_Op4.ZOrder" xml:space="preserve">
     <value>19</value>
   </data>
-  <data name="tbInst_Op3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Op3.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Op3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 80</value>
+    <value>182, 79</value>
   </data>
   <data name="tbInst_Op3.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Op3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Op3.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -873,20 +765,14 @@
   <data name="&gt;&gt;tbInst_Op3.ZOrder" xml:space="preserve">
     <value>20</value>
   </data>
-  <data name="tbInst_Op2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Op2.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Op2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>136, 80</value>
+    <value>156, 79</value>
   </data>
   <data name="tbInst_Op2.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Op2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Op2.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -906,20 +792,14 @@
   <data name="&gt;&gt;tbInst_Op2.ZOrder" xml:space="preserve">
     <value>21</value>
   </data>
-  <data name="tbInst_Op1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Op1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Op1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>112, 80</value>
+    <value>130, 79</value>
   </data>
   <data name="tbInst_Op1.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Op1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Op1.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -939,20 +819,14 @@
   <data name="&gt;&gt;tbInst_Op1.ZOrder" xml:space="preserve">
     <value>22</value>
   </data>
-  <data name="tbInst_Op0.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbInst_Op0.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_Op0.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 80</value>
+    <value>104, 79</value>
   </data>
   <data name="tbInst_Op0.MaxLength" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tbInst_Op0.Size" type="System.Drawing.Size, System.Drawing">
-    <value>24, 21</value>
+    <value>26, 22</value>
   </data>
   <data name="tbInst_Op0.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -972,17 +846,14 @@
   <data name="&gt;&gt;tbInst_Op0.ZOrder" xml:space="preserve">
     <value>23</value>
   </data>
-  <data name="tbInst_NodeVersion.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_NodeVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 24</value>
+    <value>380, 21</value>
   </data>
   <data name="tbInst_NodeVersion.MaxLength" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="tbInst_NodeVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 21</value>
+    <value>39, 22</value>
   </data>
   <data name="tbInst_NodeVersion.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1002,17 +873,14 @@
   <data name="&gt;&gt;tbInst_NodeVersion.ZOrder" xml:space="preserve">
     <value>24</value>
   </data>
-  <data name="tbInst_OpCode.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbInst_OpCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 24</value>
+    <value>104, 21</value>
   </data>
   <data name="tbInst_OpCode.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbInst_OpCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 21</value>
+    <value>59, 22</value>
   </data>
   <data name="tbInst_OpCode.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1035,17 +903,14 @@
   <data name="label10.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label10.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="label10.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>186, 27</value>
+    <value>276, 24</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 13</value>
+    <value>98, 17</value>
   </data>
   <data name="label10.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1068,17 +933,14 @@
   <data name="label9.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label9.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="label9.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>30, 27</value>
+    <value>34, 24</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 13</value>
+    <value>64, 17</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1101,17 +963,14 @@
   <data name="label12.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label12.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="label12.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>192, 51</value>
+    <value>217, 52</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 13</value>
+    <value>92, 17</value>
   </data>
   <data name="label12.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1134,17 +993,14 @@
   <data name="label11.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label11.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="label11.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 51</value>
+    <value>11, 52</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 13</value>
+    <value>88, 17</value>
   </data>
   <data name="label11.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1174,10 +1030,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnOpCode.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 26</value>
+    <value>163, 22</value>
   </data>
   <data name="btnOpCode.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 18</value>
+    <value>21, 20</value>
   </data>
   <data name="btnOpCode.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1197,14 +1053,11 @@
   <data name="&gt;&gt;btnOpCode.ZOrder" xml:space="preserve">
     <value>30</value>
   </data>
-  <data name="gbInstruction.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="gbInstruction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>528, 96</value>
+    <value>456, 100</value>
   </data>
   <data name="gbInstruction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>376, 224</value>
+    <value>453, 238</value>
   </data>
   <data name="gbInstruction.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1228,13 +1081,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="tbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 32</value>
+    <value>71, 32</value>
   </data>
   <data name="tbFilename.MaxLength" type="System.Int32, mscorlib">
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 21</value>
+    <value>82, 22</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1257,17 +1110,14 @@
   <data name="lbFilename.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbFilename.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbFilename.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 35</value>
+    <value>0, 35</value>
   </data>
   <data name="lbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 13</value>
+    <value>65, 17</value>
   </data>
   <data name="lbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1294,13 +1144,13 @@
     <value>Top, Right</value>
   </data>
   <data name="tbLocalC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>864, 64</value>
+    <value>870, 68</value>
   </data>
   <data name="tbLocalC.MaxLength" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="tbLocalC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 21</value>
+    <value>39, 22</value>
   </data>
   <data name="tbLocalC.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1324,13 +1174,13 @@
     <value>Top, Right</value>
   </data>
   <data name="tbArgC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>712, 64</value>
+    <value>707, 68</value>
   </data>
   <data name="tbArgC.MaxLength" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="tbArgC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 21</value>
+    <value>39, 22</value>
   </data>
   <data name="tbArgC.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1354,13 +1204,13 @@
     <value>Top, Right</value>
   </data>
   <data name="tbType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>440, 32</value>
+    <value>390, 32</value>
   </data>
   <data name="tbType.MaxLength" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="tbType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 21</value>
+    <value>39, 22</value>
   </data>
   <data name="tbType.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1386,17 +1236,14 @@
   <data name="lbTreeVersion.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbTreeVersion.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbTreeVersion.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbTreeVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>600, 35</value>
+    <value>578, 35</value>
   </data>
   <data name="lbTreeVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 13</value>
+    <value>90, 17</value>
   </data>
   <data name="lbTreeVersion.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1425,17 +1272,14 @@
   <data name="lbType.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbType.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbType.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>368, 35</value>
+    <value>310, 35</value>
   </data>
   <data name="lbType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 13</value>
+    <value>74, 17</value>
   </data>
   <data name="lbType.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1464,17 +1308,14 @@
   <data name="lbLocalC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbLocalC.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbLocalC.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbLocalC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>755, 67</value>
+    <value>755, 71</value>
   </data>
   <data name="lbLocalC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>108, 13</value>
+    <value>109, 17</value>
   </data>
   <data name="lbLocalC.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1503,17 +1344,14 @@
   <data name="lbArgC.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbArgC.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbArgC.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbArgC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>640, 67</value>
+    <value>630, 71</value>
   </data>
   <data name="lbArgC.Size" type="System.Drawing.Size, System.Drawing">
-    <value>71, 13</value>
+    <value>71, 17</value>
   </data>
   <data name="lbArgC.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1542,17 +1380,14 @@
   <data name="lbFormat.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbFormat.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbFormat.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>232, 35</value>
+    <value>162, 35</value>
   </data>
   <data name="lbFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
+    <value>52, 17</value>
   </data>
   <data name="lbFormat.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1578,23 +1413,80 @@
   <data name="pnHeading.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;btnFloat.Name" xml:space="preserve">
+    <value>btnFloat</value>
+  </data>
+  <data name="&gt;&gt;btnFloat.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnFloat.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;btnFloat.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.Name" xml:space="preserve">
+    <value>btnRefreshFT</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
+    <value>btnHelp</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9pt, style=Bold</value>
+  </data>
+  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
+    <value>911, 27</value>
+  </data>
+  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
+    <value>24</value>
+  </data>
   <data name="btnFloat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="btnFloat.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>System</value>
   </data>
-  <data name="btnFloat.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="btnFloat.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnFloat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>736, 0</value>
+    <value>702, 0</value>
   </data>
   <data name="btnFloat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 24</value>
+    <value>76, 27</value>
   </data>
   <data name="btnFloat.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1620,17 +1512,14 @@
   <data name="btnRefreshFT.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>System</value>
   </data>
-  <data name="btnRefreshFT.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="btnRefreshFT.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnRefreshFT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>815, 0</value>
+    <value>796, 0</value>
   </data>
   <data name="btnRefreshFT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>57, 27</value>
   </data>
   <data name="btnRefreshFT.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1656,17 +1545,14 @@
   <data name="btnHelp.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>System</value>
   </data>
-  <data name="btnHelp.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="btnHelp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>864, 0</value>
+    <value>854, 0</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>57, 27</value>
   </data>
   <data name="btnHelp.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1686,44 +1572,23 @@
   <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 9.75pt, style=Bold</value>
-  </data>
-  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>912, 24</value>
-  </data>
-  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
-    <value>24</value>
-  </data>
   <data name="bhavPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="cbSpecial.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
+  <data name="cbSpecial.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="cbSpecial.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="cbSpecial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>776, 360</value>
+    <value>777, 383</value>
   </data>
   <data name="cbSpecial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>128, 16</value>
+    <value>124, 21</value>
   </data>
   <data name="cbSpecial.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -1750,10 +1615,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>832, 496</value>
+    <value>820, 523</value>
   </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>89, 26</value>
   </data>
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -1780,13 +1645,13 @@
     <value>Top, Right</value>
   </data>
   <data name="tbHeaderFlag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>560, 32</value>
+    <value>530, 32</value>
   </data>
   <data name="tbHeaderFlag.MaxLength" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="tbHeaderFlag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 21</value>
+    <value>39, 22</value>
   </data>
   <data name="tbHeaderFlag.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
@@ -1812,17 +1677,14 @@
   <data name="lbHeaderFlag.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbHeaderFlag.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbHeaderFlag.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbHeaderFlag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>480, 35</value>
+    <value>438, 35</value>
   </data>
   <data name="lbHeaderFlag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>86, 13</value>
+    <value>86, 17</value>
   </data>
   <data name="lbHeaderFlag.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1849,13 +1711,13 @@
     <value>Top, Right</value>
   </data>
   <data name="tbCacheFlags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>864, 32</value>
+    <value>870, 32</value>
   </data>
   <data name="tbCacheFlags.MaxLength" type="System.Int32, mscorlib">
     <value>4</value>
   </data>
   <data name="tbCacheFlags.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 21</value>
+    <value>39, 22</value>
   </data>
   <data name="tbCacheFlags.TabIndex" type="System.Int32, mscorlib">
     <value>17</value>
@@ -1878,11 +1740,8 @@
   <data name="cbFormat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="cbFormat.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="cbFormat.ItemHeight" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>16</value>
   </data>
   <data name="cbFormat.Items" xml:space="preserve">
     <value>0x8000</value>
@@ -1915,10 +1774,10 @@
     <value>0x8009</value>
   </data>
   <data name="cbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>288, 32</value>
+    <value>220, 32</value>
   </data>
   <data name="cbFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 21</value>
+    <value>81, 24</value>
   </data>
   <data name="cbFormat.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1941,27 +1800,6 @@
   <data name="gbSpecial.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="btnAppend.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnAppend.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnAppend.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnAppend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 16</value>
-  </data>
-  <data name="btnAppend.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnAppend.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="btnAppend.Text" xml:space="preserve">
-    <value>Append BHAV</value>
-  </data>
   <data name="&gt;&gt;btnAppend.Name" xml:space="preserve">
     <value>btnAppend</value>
   </data>
@@ -1973,27 +1811,6 @@
   </data>
   <data name="&gt;&gt;btnAppend.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="btnInsTrue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnInsTrue.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnInsTrue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnInsTrue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 16</value>
-  </data>
-  <data name="btnInsTrue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnInsTrue.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="btnInsTrue.Text" xml:space="preserve">
-    <value>Insert via True</value>
   </data>
   <data name="&gt;&gt;btnInsTrue.Name" xml:space="preserve">
     <value>btnInsTrue</value>
@@ -2007,27 +1824,6 @@
   <data name="&gt;&gt;btnInsTrue.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="btnInsFalse.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnInsFalse.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnInsFalse.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnInsFalse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 40</value>
-  </data>
-  <data name="btnInsFalse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnInsFalse.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="btnInsFalse.Text" xml:space="preserve">
-    <value>Insert via False</value>
-  </data>
   <data name="&gt;&gt;btnInsFalse.Name" xml:space="preserve">
     <value>btnInsFalse</value>
   </data>
@@ -2039,27 +1835,6 @@
   </data>
   <data name="&gt;&gt;btnInsFalse.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="btnDelPescado.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnDelPescado.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnDelPescado.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnDelPescado.Location" type="System.Drawing.Point, System.Drawing">
-    <value>132, 16</value>
-  </data>
-  <data name="btnDelPescado.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnDelPescado.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="btnDelPescado.Text" xml:space="preserve">
-    <value>Pescado's Delete</value>
   </data>
   <data name="&gt;&gt;btnDelPescado.Name" xml:space="preserve">
     <value>btnDelPescado</value>
@@ -2073,27 +1848,6 @@
   <data name="&gt;&gt;btnDelPescado.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="btnLinkInge.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnLinkInge.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnLinkInge.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnLinkInge.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 64</value>
-  </data>
-  <data name="btnLinkInge.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnLinkInge.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="btnLinkInge.Text" xml:space="preserve">
-    <value>Inge's InitLinker</value>
-  </data>
   <data name="&gt;&gt;btnLinkInge.Name" xml:space="preserve">
     <value>btnLinkInge</value>
   </data>
@@ -2105,27 +1859,6 @@
   </data>
   <data name="&gt;&gt;btnLinkInge.ZOrder" xml:space="preserve">
     <value>4</value>
-  </data>
-  <data name="btnGUIDIndex.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnGUIDIndex.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnGUIDIndex.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnGUIDIndex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>132, 64</value>
-  </data>
-  <data name="btnGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnGUIDIndex.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="btnGUIDIndex.Text" xml:space="preserve">
-    <value>GUID Index</value>
   </data>
   <data name="&gt;&gt;btnGUIDIndex.Name" xml:space="preserve">
     <value>btnGUIDIndex</value>
@@ -2139,27 +1872,6 @@
   <data name="&gt;&gt;btnGUIDIndex.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="btnDelMerola.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnDelMerola.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnDelMerola.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnDelMerola.Location" type="System.Drawing.Point, System.Drawing">
-    <value>132, 40</value>
-  </data>
-  <data name="btnDelMerola.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnDelMerola.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="btnDelMerola.Text" xml:space="preserve">
-    <value>Delete to end</value>
-  </data>
   <data name="&gt;&gt;btnDelMerola.Name" xml:space="preserve">
     <value>btnDelMerola</value>
   </data>
@@ -2172,27 +1884,6 @@
   <data name="&gt;&gt;btnDelMerola.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="btnListing.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnListing.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnListing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnListing.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 40</value>
-  </data>
-  <data name="btnListing.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnListing.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="btnListing.Text" xml:space="preserve">
-    <value>Copy Listing</value>
-  </data>
   <data name="&gt;&gt;btnListing.Name" xml:space="preserve">
     <value>btnListing</value>
   </data>
@@ -2204,27 +1895,6 @@
   </data>
   <data name="&gt;&gt;btnListing.ZOrder" xml:space="preserve">
     <value>7</value>
-  </data>
-  <data name="btnTPRPMaker.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnTPRPMaker.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="btnTPRPMaker.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnTPRPMaker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 64</value>
-  </data>
-  <data name="btnTPRPMaker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>112, 20</value>
-  </data>
-  <data name="btnTPRPMaker.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="btnTPRPMaker.Text" xml:space="preserve">
-    <value>Make Labels</value>
   </data>
   <data name="&gt;&gt;btnTPRPMaker.Name" xml:space="preserve">
     <value>btnTPRPMaker</value>
@@ -2239,13 +1909,13 @@
     <value>8</value>
   </data>
   <data name="gbSpecial.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
+    <value>Microsoft Sans Serif, 7.8pt, style=Bold</value>
   </data>
   <data name="gbSpecial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>528, 392</value>
+    <value>456, 414</value>
   </data>
   <data name="gbSpecial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>376, 90</value>
+    <value>453, 103</value>
   </data>
   <data name="gbSpecial.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -2275,10 +1945,10 @@
     <value>True</value>
   </data>
   <data name="pnflowcontainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 72</value>
+    <value>0, 68</value>
   </data>
   <data name="pnflowcontainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>512, 447</value>
+    <value>450, 482</value>
   </data>
   <data name="pnflowcontainer.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2287,7 +1957,7 @@
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=2.0.2408.23338, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=2.0.2499.26365, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2302,10 +1972,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnDel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>712, 360</value>
+    <value>674, 380</value>
   </data>
   <data name="btnDel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 20</value>
+    <value>62, 23</value>
   </data>
   <data name="btnDel.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -2328,24 +1998,6 @@
   <data name="gbMove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="btnUp.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Wingdings, 8.25pt</value>
-  </data>
-  <data name="btnUp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnUp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 14</value>
-  </data>
-  <data name="btnUp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 18</value>
-  </data>
-  <data name="btnUp.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="btnUp.Text" xml:space="preserve">
-    <value>á         &amp;Up</value>
-  </data>
   <data name="&gt;&gt;btnUp.Name" xml:space="preserve">
     <value>btnUp</value>
   </data>
@@ -2357,24 +2009,6 @@
   </data>
   <data name="&gt;&gt;btnUp.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="btnDown.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Wingdings, 8.25pt</value>
-  </data>
-  <data name="btnDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 32</value>
-  </data>
-  <data name="btnDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 18</value>
-  </data>
-  <data name="btnDown.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="btnDown.Text" xml:space="preserve">
-    <value>â         &amp;Down</value>
   </data>
   <data name="&gt;&gt;btnDown.Name" xml:space="preserve">
     <value>btnDown</value>
@@ -2388,33 +2022,6 @@
   <data name="&gt;&gt;btnDown.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="lbUpDown.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="lbUpDown.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lbUpDown.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="lbUpDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lbUpDown.Location" type="System.Drawing.Point, System.Drawing">
-    <value>85, 25</value>
-  </data>
-  <data name="lbUpDown.Size" type="System.Drawing.Size, System.Drawing">
-    <value>33, 13</value>
-  </data>
-  <data name="lbUpDown.TabIndex" type="System.Int32, mscorlib">
-    <value>30</value>
-  </data>
-  <data name="lbUpDown.Text" xml:space="preserve">
-    <value>lines</value>
-  </data>
-  <data name="lbUpDown.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>BottomLeft</value>
-  </data>
   <data name="&gt;&gt;lbUpDown.Name" xml:space="preserve">
     <value>lbUpDown</value>
   </data>
@@ -2426,27 +2033,6 @@
   </data>
   <data name="&gt;&gt;lbUpDown.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="tbLines.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Bottom, Left</value>
-  </data>
-  <data name="tbLines.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="tbLines.Location" type="System.Drawing.Point, System.Drawing">
-    <value>28, 22</value>
-  </data>
-  <data name="tbLines.MaxLength" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="tbLines.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
-  </data>
-  <data name="tbLines.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tbLines.Text" xml:space="preserve">
-    <value>0xDDDD</value>
   </data>
   <data name="&gt;&gt;tbLines.Name" xml:space="preserve">
     <value>tbLines</value>
@@ -2461,10 +2047,10 @@
     <value>3</value>
   </data>
   <data name="gbMove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>584, 328</value>
+    <value>522, 344</value>
   </data>
   <data name="gbMove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 56</value>
+    <value>142, 64</value>
   </data>
   <data name="gbMove.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -2491,10 +2077,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnSort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>536, 344</value>
+    <value>469, 368</value>
   </data>
   <data name="btnSort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>40, 24</value>
+    <value>47, 27</value>
   </data>
   <data name="btnSort.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -2517,17 +2103,14 @@
   <data name="btnCommit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="btnCommit.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
-  </data>
   <data name="btnCommit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>528, 64</value>
+    <value>456, 68</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>104, 24</value>
+    <value>124, 27</value>
   </data>
   <data name="btnCommit.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -2551,13 +2134,13 @@
     <value>Top, Right</value>
   </data>
   <data name="tbTreeVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>688, 32</value>
+    <value>674, 32</value>
   </data>
   <data name="tbTreeVersion.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbTreeVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 21</value>
+    <value>99, 22</value>
   </data>
   <data name="tbTreeVersion.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -2584,10 +2167,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>712, 336</value>
+    <value>674, 353</value>
   </data>
   <data name="btnAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>52, 20</value>
+    <value>62, 23</value>
   </data>
   <data name="btnAdd.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -2613,17 +2196,14 @@
   <data name="lbCacheFlags.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbCacheFlags.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbCacheFlags.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbCacheFlags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>784, 35</value>
+    <value>782, 35</value>
   </data>
   <data name="lbCacheFlags.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 13</value>
+    <value>82, 17</value>
   </data>
   <data name="lbCacheFlags.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -2653,7 +2233,7 @@
     <value>0, 0</value>
   </data>
   <data name="bhavPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>912, 527</value>
+    <value>909, 550</value>
   </data>
   <data name="bhavPanel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2670,59 +2250,401 @@
   <data name="&gt;&gt;bhavPanel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="btnAppend.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnAppend.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnAppend.Location" type="System.Drawing.Point, System.Drawing">
+    <value>307, 18</value>
+  </data>
+  <data name="btnAppend.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 24</value>
+  </data>
+  <data name="btnAppend.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="btnAppend.Text" xml:space="preserve">
+    <value>Append BHAV</value>
+  </data>
+  <data name="&gt;&gt;btnAppend.Name" xml:space="preserve">
+    <value>btnAppend</value>
+  </data>
+  <data name="&gt;&gt;btnAppend.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnAppend.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnAppend.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnInsTrue.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnInsTrue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnInsTrue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 18</value>
+  </data>
+  <data name="btnInsTrue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 24</value>
+  </data>
+  <data name="btnInsTrue.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="btnInsTrue.Text" xml:space="preserve">
+    <value>Insert via True</value>
+  </data>
+  <data name="&gt;&gt;btnInsTrue.Name" xml:space="preserve">
+    <value>btnInsTrue</value>
+  </data>
+  <data name="&gt;&gt;btnInsTrue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnInsTrue.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnInsTrue.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btnInsFalse.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnInsFalse.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnInsFalse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 46</value>
+  </data>
+  <data name="btnInsFalse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 23</value>
+  </data>
+  <data name="btnInsFalse.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="btnInsFalse.Text" xml:space="preserve">
+    <value>Insert via False</value>
+  </data>
+  <data name="&gt;&gt;btnInsFalse.Name" xml:space="preserve">
+    <value>btnInsFalse</value>
+  </data>
+  <data name="&gt;&gt;btnInsFalse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnInsFalse.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnInsFalse.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnDelPescado.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnDelPescado.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnDelPescado.Location" type="System.Drawing.Point, System.Drawing">
+    <value>160, 18</value>
+  </data>
+  <data name="btnDelPescado.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 24</value>
+  </data>
+  <data name="btnDelPescado.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="btnDelPescado.Text" xml:space="preserve">
+    <value>Pescado's Delete</value>
+  </data>
+  <data name="&gt;&gt;btnDelPescado.Name" xml:space="preserve">
+    <value>btnDelPescado</value>
+  </data>
+  <data name="&gt;&gt;btnDelPescado.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDelPescado.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnDelPescado.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="btnLinkInge.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnLinkInge.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnLinkInge.Location" type="System.Drawing.Point, System.Drawing">
+    <value>14, 73</value>
+  </data>
+  <data name="btnLinkInge.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 23</value>
+  </data>
+  <data name="btnLinkInge.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btnLinkInge.Text" xml:space="preserve">
+    <value>Inge's InitLinker</value>
+  </data>
+  <data name="&gt;&gt;btnLinkInge.Name" xml:space="preserve">
+    <value>btnLinkInge</value>
+  </data>
+  <data name="&gt;&gt;btnLinkInge.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnLinkInge.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnLinkInge.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="btnGUIDIndex.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnGUIDIndex.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnGUIDIndex.Location" type="System.Drawing.Point, System.Drawing">
+    <value>160, 73</value>
+  </data>
+  <data name="btnGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 23</value>
+  </data>
+  <data name="btnGUIDIndex.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="btnGUIDIndex.Text" xml:space="preserve">
+    <value>GUID Index</value>
+  </data>
+  <data name="&gt;&gt;btnGUIDIndex.Name" xml:space="preserve">
+    <value>btnGUIDIndex</value>
+  </data>
+  <data name="&gt;&gt;btnGUIDIndex.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnGUIDIndex.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnGUIDIndex.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="btnDelMerola.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnDelMerola.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnDelMerola.Location" type="System.Drawing.Point, System.Drawing">
+    <value>160, 46</value>
+  </data>
+  <data name="btnDelMerola.Size" type="System.Drawing.Size, System.Drawing">
+    <value>132, 23</value>
+  </data>
+  <data name="btnDelMerola.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="btnDelMerola.Text" xml:space="preserve">
+    <value>Delete to end</value>
+  </data>
+  <data name="&gt;&gt;btnDelMerola.Name" xml:space="preserve">
+    <value>btnDelMerola</value>
+  </data>
+  <data name="&gt;&gt;btnDelMerola.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDelMerola.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnDelMerola.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="btnListing.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnListing.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnListing.Location" type="System.Drawing.Point, System.Drawing">
+    <value>307, 46</value>
+  </data>
+  <data name="btnListing.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 23</value>
+  </data>
+  <data name="btnListing.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="btnListing.Text" xml:space="preserve">
+    <value>Copy Listing</value>
+  </data>
+  <data name="&gt;&gt;btnListing.Name" xml:space="preserve">
+    <value>btnListing</value>
+  </data>
+  <data name="&gt;&gt;btnListing.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnListing.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnListing.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="btnTPRPMaker.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 7.8pt</value>
+  </data>
+  <data name="btnTPRPMaker.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnTPRPMaker.Location" type="System.Drawing.Point, System.Drawing">
+    <value>307, 73</value>
+  </data>
+  <data name="btnTPRPMaker.Size" type="System.Drawing.Size, System.Drawing">
+    <value>133, 23</value>
+  </data>
+  <data name="btnTPRPMaker.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="btnTPRPMaker.Text" xml:space="preserve">
+    <value>Make Labels</value>
+  </data>
+  <data name="&gt;&gt;btnTPRPMaker.Name" xml:space="preserve">
+    <value>btnTPRPMaker</value>
+  </data>
+  <data name="&gt;&gt;btnTPRPMaker.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnTPRPMaker.Parent" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;btnTPRPMaker.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="btnUp.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Wingdings, 8.25pt</value>
+  </data>
+  <data name="btnUp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnUp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 16</value>
+  </data>
+  <data name="btnUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>21, 21</value>
+  </data>
+  <data name="btnUp.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="btnUp.Text" xml:space="preserve">
+    <value>á         &amp;Up</value>
+  </data>
+  <data name="&gt;&gt;btnUp.Name" xml:space="preserve">
+    <value>btnUp</value>
+  </data>
+  <data name="&gt;&gt;btnUp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnUp.Parent" xml:space="preserve">
+    <value>gbMove</value>
+  </data>
+  <data name="&gt;&gt;btnUp.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnDown.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Wingdings, 8.25pt</value>
+  </data>
+  <data name="btnDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>10, 37</value>
+  </data>
+  <data name="btnDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>21, 21</value>
+  </data>
+  <data name="btnDown.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btnDown.Text" xml:space="preserve">
+    <value>â         &amp;Down</value>
+  </data>
+  <data name="&gt;&gt;btnDown.Name" xml:space="preserve">
+    <value>btnDown</value>
+  </data>
+  <data name="&gt;&gt;btnDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDown.Parent" xml:space="preserve">
+    <value>gbMove</value>
+  </data>
+  <data name="&gt;&gt;btnDown.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lbUpDown.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbUpDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbUpDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>100, 28</value>
+  </data>
+  <data name="lbUpDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>37, 17</value>
+  </data>
+  <data name="lbUpDown.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="lbUpDown.Text" xml:space="preserve">
+    <value>lines</value>
+  </data>
+  <data name="lbUpDown.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomLeft</value>
+  </data>
+  <data name="&gt;&gt;lbUpDown.Name" xml:space="preserve">
+    <value>lbUpDown</value>
+  </data>
+  <data name="&gt;&gt;lbUpDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbUpDown.Parent" xml:space="preserve">
+    <value>gbMove</value>
+  </data>
+  <data name="&gt;&gt;lbUpDown.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tbLines.Location" type="System.Drawing.Point, System.Drawing">
+    <value>33, 25</value>
+  </data>
+  <data name="tbLines.MaxLength" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="tbLines.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 22</value>
+  </data>
+  <data name="tbLines.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="tbLines.Text" xml:space="preserve">
+    <value>0xDDDD</value>
+  </data>
+  <data name="&gt;&gt;tbLines.Name" xml:space="preserve">
+    <value>tbLines</value>
+  </data>
+  <data name="&gt;&gt;tbLines.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbLines.Parent" xml:space="preserve">
+    <value>gbMove</value>
+  </data>
+  <data name="&gt;&gt;tbLines.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
   <metadata name="cmenuGUIDIndex.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="createAllPackagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 22</value>
-  </data>
-  <data name="createAllPackagesToolStripMenuItem.Text" xml:space="preserve">
-    <value>Create - all packages</value>
-  </data>
-  <data name="createCurrentPackageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 22</value>
-  </data>
-  <data name="createCurrentPackageToolStripMenuItem.Text" xml:space="preserve">
-    <value>Create - current package</value>
-  </data>
-  <data name="defaultFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
-  </data>
-  <data name="defaultFileToolStripMenuItem.Text" xml:space="preserve">
-    <value>Default file</value>
-  </data>
-  <data name="fromFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
-  </data>
-  <data name="fromFileToolStripMenuItem.Text" xml:space="preserve">
-    <value>From file...</value>
-  </data>
-  <data name="loadIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 22</value>
-  </data>
-  <data name="loadIndexToolStripMenuItem.Text" xml:space="preserve">
-    <value>Load index...</value>
-  </data>
-  <data name="defaultFileToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
-  </data>
-  <data name="defaultFileToolStripMenuItem1.Text" xml:space="preserve">
-    <value>Default file</value>
-  </data>
-  <data name="toFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>144, 22</value>
-  </data>
-  <data name="toFileToolStripMenuItem.Text" xml:space="preserve">
-    <value>To file...</value>
-  </data>
-  <data name="saveIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>223, 22</value>
-  </data>
-  <data name="saveIndexToolStripMenuItem.Text" xml:space="preserve">
-    <value>Save index...</value>
-  </data>
   <data name="cmenuGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>224, 92</value>
+    <value>255, 92</value>
   </data>
   <data name="&gt;&gt;cmenuGUIDIndex.Name" xml:space="preserve">
     <value>cmenuGUIDIndex</value>
@@ -2730,20 +2652,62 @@
   <data name="&gt;&gt;cmenuGUIDIndex.Type" xml:space="preserve">
     <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="createAllPackagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 22</value>
+  </data>
+  <data name="createAllPackagesToolStripMenuItem.Text" xml:space="preserve">
+    <value>Create - all packages</value>
+  </data>
+  <data name="createCurrentPackageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 22</value>
+  </data>
+  <data name="createCurrentPackageToolStripMenuItem.Text" xml:space="preserve">
+    <value>Create - current package</value>
+  </data>
+  <data name="loadIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 22</value>
+  </data>
+  <data name="loadIndexToolStripMenuItem.Text" xml:space="preserve">
+    <value>Load index...</value>
+  </data>
+  <data name="defaultFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>162, 22</value>
+  </data>
+  <data name="defaultFileToolStripMenuItem.Text" xml:space="preserve">
+    <value>Default file</value>
+  </data>
+  <data name="fromFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>162, 22</value>
+  </data>
+  <data name="fromFileToolStripMenuItem.Text" xml:space="preserve">
+    <value>From file...</value>
+  </data>
+  <data name="saveIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 22</value>
+  </data>
+  <data name="saveIndexToolStripMenuItem.Text" xml:space="preserve">
+    <value>Save index...</value>
+  </data>
+  <data name="defaultFileToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 22</value>
+  </data>
+  <data name="defaultFileToolStripMenuItem1.Text" xml:space="preserve">
+    <value>Default file</value>
+  </data>
+  <data name="toFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 22</value>
+  </data>
+  <data name="toFileToolStripMenuItem.Text" xml:space="preserve">
+    <value>To file...</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>6, 14</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>912, 527</value>
-  </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+    <value>909, 550</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BhavForm</value>

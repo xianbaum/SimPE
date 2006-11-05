@@ -125,6 +125,7 @@ namespace pjse.BhavOperandWizards.WizRaw
             // UI
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWizRaw);
             this.Name = "UI";
             this.pnWizRaw.ResumeLayout(false);

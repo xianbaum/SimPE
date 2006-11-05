@@ -733,14 +733,15 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrDelete = new System.Windows.Forms.Button();
             this.btnStrAdd = new System.Windows.Forms.Button();
             this.btnReplace = new System.Windows.Forms.Button();
-            this.btnStrDefault = new System.Windows.Forms.Button();
             this.btnStrCopy = new System.Windows.Forms.Button();
+            this.btnStrDefault = new System.Windows.Forms.Button();
             this.strPanel.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.SuspendLayout();
             // 
             // strPanel
             // 
+            resources.ApplyResources(this.strPanel, "strPanel");
             this.strPanel.Controls.Add(this.ckbDescription);
             this.strPanel.Controls.Add(this.btnLngFirst);
             this.strPanel.Controls.Add(this.pnHeading);
@@ -775,7 +776,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.strPanel.Controls.Add(this.btnReplace);
             this.strPanel.Controls.Add(this.btnStrCopy);
             this.strPanel.Controls.Add(this.btnStrDefault);
-            resources.ApplyResources(this.strPanel, "strPanel");
             this.strPanel.Name = "strPanel";
             this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
             // 
@@ -942,6 +942,7 @@ namespace SimPe.PackedFiles.UserInterface
             // cbLngSelect
             // 
             this.cbLngSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbLngSelect.DropDownWidth = 200;
             resources.ApplyResources(this.cbLngSelect, "cbLngSelect");
             this.cbLngSelect.Name = "cbLngSelect";
             this.cbLngSelect.SelectedIndexChanged += new System.EventHandler(this.cbLngSelect_SelectedIndexChanged);
@@ -1029,21 +1030,22 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Click += new System.EventHandler(this.btnImport_Click);
             // 
-            // btnStrDefault
-            // 
-            resources.ApplyResources(this.btnStrDefault, "btnStrDefault");
-            this.btnStrDefault.Name = "btnStrDefault";
-            this.btnStrDefault.Click += new System.EventHandler(this.btnStrDefault_Click);
-            // 
             // btnStrCopy
             // 
             resources.ApplyResources(this.btnStrCopy, "btnStrCopy");
             this.btnStrCopy.Name = "btnStrCopy";
             this.btnStrCopy.Click += new System.EventHandler(this.btnStrCopy_Click);
             // 
+            // btnStrDefault
+            // 
+            resources.ApplyResources(this.btnStrDefault, "btnStrDefault");
+            this.btnStrDefault.Name = "btnStrDefault";
+            this.btnStrDefault.Click += new System.EventHandler(this.btnStrDefault_Click);
+            // 
             // StrForm
             // 
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.strPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "StrForm";

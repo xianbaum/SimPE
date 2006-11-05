@@ -129,10 +129,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>744, 32</value>
+    <value>788, 33</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 23</value>
+    <value>98, 27</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="btnCommit.TabIndex" type="System.Int32, mscorlib">
@@ -156,6 +156,66 @@
   <data name="pnHeading.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;btnRefreshFT.Name" xml:space="preserve">
+    <value>btnRefreshFT</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
+    <value>btnHelp</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9.75pt, style=Bold</value>
+  </data>
+  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
+    <value>900, 27</value>
+  </data>
+  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
+    <value>trcnPanel</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
   <data name="btnRefreshFT.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -169,10 +229,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnRefreshFT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>752, 0</value>
+    <value>786, 0</value>
   </data>
   <data name="btnRefreshFT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>57, 27</value>
   </data>
   <data name="btnRefreshFT.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -205,10 +265,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>800, 0</value>
+    <value>843, 0</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>57, 27</value>
   </data>
   <data name="btnHelp.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -235,10 +295,10 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 4</value>
+    <value>0, 5</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>207, 16</value>
+    <value>273, 20</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -258,47 +318,20 @@
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 9.75pt, style=Bold</value>
-  </data>
-  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>848, 24</value>
-  </data>
-  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
-    <value>trcnPanel</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
   <data name="trcnPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="label5.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label5.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Italic</value>
-  </data>
   <data name="label5.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 184</value>
+    <value>0, 175</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>213, 13</value>
+    <value>234, 17</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>21</value>
@@ -319,10 +352,10 @@
     <value>0</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 172</value>
+    <value>0, 171</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>248, 1</value>
+    <value>276, 1</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -340,13 +373,13 @@
     <value>1</value>
   </data>
   <data name="tbID.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 208</value>
+    <value>75, 197</value>
   </data>
   <data name="tbID.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 21</value>
+    <value>99, 22</value>
   </data>
   <data name="tbID.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -370,10 +403,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 133</value>
+    <value>71, 124</value>
   </data>
   <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>98, 27</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -393,20 +426,20 @@
   <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="cbUsed.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
   <data name="cbUsed.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
-  </data>
-  <data name="cbUsed.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
   </data>
   <data name="cbUsed.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="cbUsed.Location" type="System.Drawing.Point, System.Drawing">
-    <value>38, 232</value>
+    <value>30, 225</value>
   </data>
   <data name="cbUsed.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 24</value>
+    <value>60, 21</value>
   </data>
   <data name="cbUsed.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -427,13 +460,13 @@
     <value>4</value>
   </data>
   <data name="tbLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 96</value>
+    <value>71, 96</value>
   </data>
   <data name="tbLabel.MaxLength" type="System.Int32, mscorlib">
     <value>64</value>
   </data>
   <data name="tbLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 21</value>
+    <value>202, 22</value>
   </data>
   <data name="tbLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -456,17 +489,14 @@
   <data name="lbID.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbID.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbID.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbID.Location" type="System.Drawing.Point, System.Drawing">
-    <value>55, 211</value>
+    <value>48, 200</value>
   </data>
   <data name="lbID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>22, 13</value>
+    <value>21, 17</value>
   </data>
   <data name="lbID.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -490,10 +520,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>152, 65</value>
+    <value>175, 63</value>
   </data>
   <data name="btnStrDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 24</value>
+    <value>98, 27</value>
   </data>
   <data name="btnStrDelete.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -517,10 +547,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>61, 65</value>
+    <value>71, 63</value>
   </data>
   <data name="btnStrAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 24</value>
+    <value>98, 27</value>
   </data>
   <data name="btnStrAdd.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -546,17 +576,14 @@
   <data name="lbFormat.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbFormat.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbFormat.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>585, 35</value>
+    <value>621, 38</value>
   </data>
   <data name="lbFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 13</value>
+    <value>52, 17</value>
   </data>
   <data name="lbFormat.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -579,17 +606,14 @@
   <data name="tbFormat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="tbFormat.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>640, 32</value>
+    <value>679, 35</value>
   </data>
   <data name="tbFormat.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
   <data name="tbFormat.Size" type="System.Drawing.Size, System.Drawing">
-    <value>96, 21</value>
+    <value>100, 22</value>
   </data>
   <data name="tbFormat.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -611,54 +635,6 @@
   </data>
   <data name="lvTrcnItem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="chLine.Text" xml:space="preserve">
-    <value>Line</value>
-  </data>
-  <data name="chLine.Width" type="System.Int32, mscorlib">
-    <value>44</value>
-  </data>
-  <data name="chValue.Text" xml:space="preserve">
-    <value>Value</value>
-  </data>
-  <data name="chValue.Width" type="System.Int32, mscorlib">
-    <value>67</value>
-  </data>
-  <data name="chConstName.Text" xml:space="preserve">
-    <value>Label</value>
-  </data>
-  <data name="chConstName.Width" type="System.Int32, mscorlib">
-    <value>110</value>
-  </data>
-  <data name="chConstId.Text" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="chConstId.Width" type="System.Int32, mscorlib">
-    <value>101</value>
-  </data>
-  <data name="chUsed.Text" xml:space="preserve">
-    <value>Used</value>
-  </data>
-  <data name="chUsed.Width" type="System.Int32, mscorlib">
-    <value>44</value>
-  </data>
-  <data name="chDefValue.Text" xml:space="preserve">
-    <value>DefValue</value>
-  </data>
-  <data name="chDefValue.Width" type="System.Int32, mscorlib">
-    <value>67</value>
-  </data>
-  <data name="chMinValue.Text" xml:space="preserve">
-    <value>MinValue</value>
-  </data>
-  <data name="chMinValue.Width" type="System.Int32, mscorlib">
-    <value>67</value>
-  </data>
-  <data name="chMaxValue.Text" xml:space="preserve">
-    <value>MaxValue</value>
-  </data>
-  <data name="chMaxValue.Width" type="System.Int32, mscorlib">
-    <value>67</value>
   </data>
   <data name="lvTrcnItem.Items" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
@@ -687,21 +663,21 @@
         AAUAAAAGEwAAAAQweERECgoKAQkAAAAFAAAABhQAAAAGMHhERERECgoKAQoAAAAFAAAABhUAAAAGMHhE
         RERECgoKAQsAAAAFAAAABhYAAAAGMHhERERECgoKBQ0AAAATU3lzdGVtLkRyYXdpbmcuRm9udAQAAAAE
         TmFtZQRTaXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUDAAAAG1N5c3Rl
-        bS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABhcAAAAHVmVyZGFuYQAABEEF6P///xhTeXN0ZW0u
-        RHJhd2luZy5Gb250U3R5bGUBAAAAB3ZhbHVlX18ACAMAAAAAAAAABef///8bU3lzdGVtLkRyYXdpbmcu
-        R3JhcGhpY3NVbml0AQAAAAd2YWx1ZV9fAAgDAAAAAwAAAAUSAAAAPlN5c3RlbS5XaW5kb3dzLkZvcm1z
-        Lkxpc3RWaWV3SXRlbStMaXN0Vmlld1N1Ykl0ZW0rU3ViSXRlbVN0eWxlAwAAAAliYWNrQ29sb3IJZm9y
-        ZUNvbG9yBGZvbnQEBAQUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAFFN5c3RlbS5EcmF3aW5nLkNvbG9y
-        AwAAABNTeXN0ZW0uRHJhd2luZy5Gb250AwAAAAIAAAAB5v////T///8KAAAAAAAAAAAYAAEAAeX////0
-        ////CgAAAAAAAAAAGgABAAkcAAAAARwAAAANAAAABh0AAAAHVmVyZGFuYQAABEEB4v///+j///8AAAAA
-        AeH////n////AwAAAAs=
+        bS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABhcAAAAUTWljcm9zb2Z0IFNhbnMgU2VyaWaamflA
+        Bej///8YU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAQAAAAd2YWx1ZV9fAAgDAAAAAAAAAAXn////G1N5
+        c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAEAAAAHdmFsdWVfXwAIAwAAAAMAAAAFEgAAAD5TeXN0ZW0u
+        V2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdTdWJJdGVtK1N1Ykl0ZW1TdHlsZQMAAAAJ
+        YmFja0NvbG9yCWZvcmVDb2xvcgRmb250BAQEFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAABRTeXN0ZW0u
+        RHJhd2luZy5Db2xvcgMAAAATU3lzdGVtLkRyYXdpbmcuRm9udAMAAAACAAAAAeb////0////CgAAAAAA
+        AAAAGAABAAHl////9P///woAAAAAAAAAABoAAQAJHAAAAAEcAAAADQAAAAYdAAAAB1ZlcmRhbmEAAARB
+        AeL////o////AAAAAAHh////5////wMAAAAL
 </value>
   </data>
   <data name="lvTrcnItem.Location" type="System.Drawing.Point, System.Drawing">
-    <value>256, 64</value>
+    <value>282, 66</value>
   </data>
   <data name="lvTrcnItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>592, 267</value>
+    <value>616, 268</value>
   </data>
   <data name="lvTrcnItem.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -722,13 +698,13 @@
     <value>Top, Left, Right</value>
   </data>
   <data name="tbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 32</value>
+    <value>71, 35</value>
   </data>
   <data name="tbFilename.MaxLength" type="System.Int32, mscorlib">
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>504, 21</value>
+    <value>541, 22</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -751,17 +727,14 @@
   <data name="lbFilename.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbFilename.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbFilename.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 35</value>
+    <value>0, 38</value>
   </data>
   <data name="lbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 13</value>
+    <value>65, 17</value>
   </data>
   <data name="lbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -784,17 +757,14 @@
   <data name="lbDefValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbDefValue.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbDefValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbDefValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>14, 259</value>
+    <value>3, 255</value>
   </data>
   <data name="lbDefValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 13</value>
+    <value>66, 17</value>
   </data>
   <data name="lbDefValue.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -814,17 +784,14 @@
   <data name="&gt;&gt;lbDefValue.ZOrder" xml:space="preserve">
     <value>16</value>
   </data>
-  <data name="tbDefValue.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbDefValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 256</value>
+    <value>75, 252</value>
   </data>
   <data name="tbDefValue.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbDefValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>60, 22</value>
   </data>
   <data name="tbDefValue.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -844,17 +811,14 @@
   <data name="&gt;&gt;tbDefValue.ZOrder" xml:space="preserve">
     <value>17</value>
   </data>
-  <data name="tbMinValue.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbMinValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 280</value>
+    <value>75, 280</value>
   </data>
   <data name="tbMinValue.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbMinValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>60, 22</value>
   </data>
   <data name="tbMinValue.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -877,17 +841,14 @@
   <data name="lbMinValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbMinValue.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbMinValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbMinValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>13, 283</value>
+    <value>3, 283</value>
   </data>
   <data name="lbMinValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 13</value>
+    <value>66, 17</value>
   </data>
   <data name="lbMinValue.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -907,17 +868,14 @@
   <data name="&gt;&gt;lbMinValue.ZOrder" xml:space="preserve">
     <value>19</value>
   </data>
-  <data name="tbMaxValue.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
-  </data>
   <data name="tbMaxValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 304</value>
+    <value>75, 308</value>
   </data>
   <data name="tbMaxValue.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbMaxValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>60, 22</value>
   </data>
   <data name="tbMaxValue.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -940,17 +898,14 @@
   <data name="lbMaxValue.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbMaxValue.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbMaxValue.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbMaxValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>10, 307</value>
+    <value>0, 311</value>
   </data>
   <data name="lbMaxValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 13</value>
+    <value>69, 17</value>
   </data>
   <data name="lbMaxValue.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -973,17 +928,14 @@
   <data name="lbLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbLabel.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
   <data name="lbLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="lbLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>38, 99</value>
+    <value>22, 99</value>
   </data>
   <data name="lbLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>42, 13</value>
+    <value>43, 17</value>
   </data>
   <data name="lbLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1010,10 +962,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrPrev.Location" type="System.Drawing.Point, System.Drawing">
-    <value>224, 123</value>
+    <value>252, 124</value>
   </data>
   <data name="btnStrPrev.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 18</value>
+    <value>21, 21</value>
   </data>
   <data name="btnStrPrev.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -1040,10 +992,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrNext.Location" type="System.Drawing.Point, System.Drawing">
-    <value>224, 147</value>
+    <value>252, 145</value>
   </data>
   <data name="btnStrNext.Size" type="System.Drawing.Size, System.Drawing">
-    <value>18, 18</value>
+    <value>21, 20</value>
   </data>
   <data name="btnStrNext.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -1070,7 +1022,7 @@
     <value>0, 0</value>
   </data>
   <data name="trcnPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>848, 338</value>
+    <value>898, 337</value>
   </data>
   <data name="trcnPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1087,17 +1039,62 @@
   <data name="&gt;&gt;trcnPanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="chLine.Text" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="chLine.Width" type="System.Int32, mscorlib">
+    <value>43</value>
+  </data>
+  <data name="chValue.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="chValue.Width" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="chConstName.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="chConstName.Width" type="System.Int32, mscorlib">
+    <value>120</value>
+  </data>
+  <data name="chConstId.Text" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="chConstId.Width" type="System.Int32, mscorlib">
+    <value>105</value>
+  </data>
+  <data name="chUsed.Text" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="chUsed.Width" type="System.Int32, mscorlib">
+    <value>45</value>
+  </data>
+  <data name="chDefValue.Text" xml:space="preserve">
+    <value>DefValue</value>
+  </data>
+  <data name="chDefValue.Width" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="chMinValue.Text" xml:space="preserve">
+    <value>MinValue</value>
+  </data>
+  <data name="chMinValue.Width" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="chMaxValue.Text" xml:space="preserve">
+    <value>MaxValue</value>
+  </data>
+  <data name="chMaxValue.Width" type="System.Int32, mscorlib">
+    <value>72</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>6, 14</value>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>848, 338</value>
-  </data>
-  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt</value>
+    <value>898, 337</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>TrcnForm</value>

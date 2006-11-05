@@ -581,6 +581,26 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbttab = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSettings = new System.Windows.Forms.TabPage();
+            this.gbFlags2 = new System.Windows.Forms.GroupBox();
+            this.tbFlags2 = new System.Windows.Forms.TextBox();
+            this.btnNoFlags2 = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cb2Bit0 = new System.Windows.Forms.CheckBox();
+            this.cb2BitE = new System.Windows.Forms.CheckBox();
+            this.cb2BitF = new System.Windows.Forms.CheckBox();
+            this.cb2BitC = new System.Windows.Forms.CheckBox();
+            this.cb2BitD = new System.Windows.Forms.CheckBox();
+            this.cb2BitB = new System.Windows.Forms.CheckBox();
+            this.cb2BitA = new System.Windows.Forms.CheckBox();
+            this.cb2Bit9 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit8 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit7 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit6 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit5 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit4 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit3 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit2 = new System.Windows.Forms.CheckBox();
+            this.cb2Bit1 = new System.Windows.Forms.CheckBox();
             this.llGuardian = new System.Windows.Forms.LinkLabel();
             this.llAction = new System.Windows.Forms.LinkLabel();
             this.cbStringIndex = new System.Windows.Forms.ComboBox();
@@ -636,36 +656,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
-            this.gbFlags2 = new System.Windows.Forms.GroupBox();
-            this.btnNoFlags2 = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.cb2Bit0 = new System.Windows.Forms.CheckBox();
-            this.cb2BitE = new System.Windows.Forms.CheckBox();
-            this.cb2BitF = new System.Windows.Forms.CheckBox();
-            this.cb2BitC = new System.Windows.Forms.CheckBox();
-            this.cb2BitD = new System.Windows.Forms.CheckBox();
-            this.cb2BitB = new System.Windows.Forms.CheckBox();
-            this.cb2BitA = new System.Windows.Forms.CheckBox();
-            this.cb2Bit9 = new System.Windows.Forms.CheckBox();
-            this.cb2Bit8 = new System.Windows.Forms.CheckBox();
-            this.cb2Bit7 = new System.Windows.Forms.CheckBox();
-            this.cb2Bit6 = new System.Windows.Forms.CheckBox();
-            this.cb2Bit5 = new System.Windows.Forms.CheckBox();
-            this.cb2Bit4 = new System.Windows.Forms.CheckBox();
-            this.cb2Bit3 = new System.Windows.Forms.CheckBox();
-            this.cb2Bit2 = new System.Windows.Forms.CheckBox();
-            this.cb2Bit1 = new System.Windows.Forms.CheckBox();
-            this.tbFlags2 = new System.Windows.Forms.TextBox();
             this.timtuiHuman = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.timtuiAnimal = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.ttabPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSettings.SuspendLayout();
+            this.gbFlags2.SuspendLayout();
             this.gbFlags.SuspendLayout();
             this.tpHumanMotives.SuspendLayout();
             this.tpAnimalMotives.SuspendLayout();
             this.panel5.SuspendLayout();
-            this.gbFlags2.SuspendLayout();
             this.SuspendLayout();
             // 
             // ttabPanel
@@ -805,6 +805,162 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpSettings.Controls.Add(this.label2);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.UseVisualStyleBackColor = true;
+            // 
+            // gbFlags2
+            // 
+            this.gbFlags2.Controls.Add(this.tbFlags2);
+            this.gbFlags2.Controls.Add(this.btnNoFlags2);
+            this.gbFlags2.Controls.Add(this.label3);
+            this.gbFlags2.Controls.Add(this.cb2Bit0);
+            this.gbFlags2.Controls.Add(this.cb2BitE);
+            this.gbFlags2.Controls.Add(this.cb2BitF);
+            this.gbFlags2.Controls.Add(this.cb2BitC);
+            this.gbFlags2.Controls.Add(this.cb2BitD);
+            this.gbFlags2.Controls.Add(this.cb2BitB);
+            this.gbFlags2.Controls.Add(this.cb2BitA);
+            this.gbFlags2.Controls.Add(this.cb2Bit9);
+            this.gbFlags2.Controls.Add(this.cb2Bit8);
+            this.gbFlags2.Controls.Add(this.cb2Bit7);
+            this.gbFlags2.Controls.Add(this.cb2Bit6);
+            this.gbFlags2.Controls.Add(this.cb2Bit5);
+            this.gbFlags2.Controls.Add(this.cb2Bit4);
+            this.gbFlags2.Controls.Add(this.cb2Bit3);
+            this.gbFlags2.Controls.Add(this.cb2Bit2);
+            this.gbFlags2.Controls.Add(this.cb2Bit1);
+            resources.ApplyResources(this.gbFlags2, "gbFlags2");
+            this.gbFlags2.Name = "gbFlags2";
+            this.gbFlags2.TabStop = false;
+            // 
+            // tbFlags2
+            // 
+            resources.ApplyResources(this.tbFlags2, "tbFlags2");
+            this.tbFlags2.Name = "tbFlags2";
+            this.tbFlags2.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbFlags2.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+            this.tbFlags2.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            // 
+            // btnNoFlags2
+            // 
+            resources.ApplyResources(this.btnNoFlags2, "btnNoFlags2");
+            this.btnNoFlags2.Name = "btnNoFlags2";
+            this.btnNoFlags2.Click += new System.EventHandler(this.btnNoFlags2_Click);
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // cb2Bit0
+            // 
+            resources.ApplyResources(this.cb2Bit0, "cb2Bit0");
+            this.cb2Bit0.Name = "cb2Bit0";
+            this.cb2Bit0.Tag = "";
+            this.cb2Bit0.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitE
+            // 
+            resources.ApplyResources(this.cb2BitE, "cb2BitE");
+            this.cb2BitE.Name = "cb2BitE";
+            this.cb2BitE.Tag = "";
+            this.cb2BitE.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitF
+            // 
+            resources.ApplyResources(this.cb2BitF, "cb2BitF");
+            this.cb2BitF.Name = "cb2BitF";
+            this.cb2BitF.Tag = "";
+            this.cb2BitF.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitC
+            // 
+            resources.ApplyResources(this.cb2BitC, "cb2BitC");
+            this.cb2BitC.Name = "cb2BitC";
+            this.cb2BitC.Tag = "?/adult small dogs";
+            this.cb2BitC.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitD
+            // 
+            resources.ApplyResources(this.cb2BitD, "cb2BitD");
+            this.cb2BitD.Name = "cb2BitD";
+            this.cb2BitD.Tag = "?/elder small dogs";
+            this.cb2BitD.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitB
+            // 
+            resources.ApplyResources(this.cb2BitB, "cb2BitB");
+            this.cb2BitB.Name = "cb2BitB";
+            this.cb2BitB.Tag = "?/elder cats";
+            this.cb2BitB.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2BitA
+            // 
+            resources.ApplyResources(this.cb2BitA, "cb2BitA");
+            this.cb2BitA.Name = "cb2BitA";
+            this.cb2BitA.Tag = "?/elder big dogs";
+            this.cb2BitA.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit9
+            // 
+            resources.ApplyResources(this.cb2Bit9, "cb2Bit9");
+            this.cb2Bit9.Name = "cb2Bit9";
+            this.cb2Bit9.Tag = "?/kittens";
+            this.cb2Bit9.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit8
+            // 
+            resources.ApplyResources(this.cb2Bit8, "cb2Bit8");
+            this.cb2Bit8.Name = "cb2Bit8";
+            this.cb2Bit8.Tag = "?/puppies";
+            this.cb2Bit8.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit7
+            // 
+            resources.ApplyResources(this.cb2Bit7, "cb2Bit7");
+            this.cb2Bit7.Name = "cb2Bit7";
+            this.cb2Bit7.Tag = "";
+            this.cb2Bit7.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit6
+            // 
+            resources.ApplyResources(this.cb2Bit6, "cb2Bit6");
+            this.cb2Bit6.Name = "cb2Bit6";
+            this.cb2Bit6.Tag = "";
+            this.cb2Bit6.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit5
+            // 
+            resources.ApplyResources(this.cb2Bit5, "cb2Bit5");
+            this.cb2Bit5.Name = "cb2Bit5";
+            this.cb2Bit5.Tag = "";
+            this.cb2Bit5.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit4
+            // 
+            resources.ApplyResources(this.cb2Bit4, "cb2Bit4");
+            this.cb2Bit4.Name = "cb2Bit4";
+            this.cb2Bit4.Tag = "";
+            this.cb2Bit4.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit3
+            // 
+            resources.ApplyResources(this.cb2Bit3, "cb2Bit3");
+            this.cb2Bit3.Name = "cb2Bit3";
+            this.cb2Bit3.Tag = "";
+            this.cb2Bit3.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit2
+            // 
+            resources.ApplyResources(this.cb2Bit2, "cb2Bit2");
+            this.cb2Bit2.Name = "cb2Bit2";
+            this.cb2Bit2.Tag = "";
+            this.cb2Bit2.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
+            // 
+            // cb2Bit1
+            // 
+            resources.ApplyResources(this.cb2Bit1, "cb2Bit1");
+            this.cb2Bit1.Name = "cb2Bit1";
+            this.cb2Bit1.Tag = "";
+            this.cb2Bit1.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
             // llGuardian
             // 
@@ -1207,159 +1363,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label25, "label25");
             this.label25.Name = "label25";
             // 
-            // gbFlags2
-            // 
-            this.gbFlags2.Controls.Add(this.tbFlags2);
-            this.gbFlags2.Controls.Add(this.btnNoFlags2);
-            this.gbFlags2.Controls.Add(this.label3);
-            this.gbFlags2.Controls.Add(this.cb2Bit0);
-            this.gbFlags2.Controls.Add(this.cb2BitE);
-            this.gbFlags2.Controls.Add(this.cb2BitF);
-            this.gbFlags2.Controls.Add(this.cb2BitC);
-            this.gbFlags2.Controls.Add(this.cb2BitD);
-            this.gbFlags2.Controls.Add(this.cb2BitB);
-            this.gbFlags2.Controls.Add(this.cb2BitA);
-            this.gbFlags2.Controls.Add(this.cb2Bit9);
-            this.gbFlags2.Controls.Add(this.cb2Bit8);
-            this.gbFlags2.Controls.Add(this.cb2Bit7);
-            this.gbFlags2.Controls.Add(this.cb2Bit6);
-            this.gbFlags2.Controls.Add(this.cb2Bit5);
-            this.gbFlags2.Controls.Add(this.cb2Bit4);
-            this.gbFlags2.Controls.Add(this.cb2Bit3);
-            this.gbFlags2.Controls.Add(this.cb2Bit2);
-            this.gbFlags2.Controls.Add(this.cb2Bit1);
-            resources.ApplyResources(this.gbFlags2, "gbFlags2");
-            this.gbFlags2.Name = "gbFlags2";
-            this.gbFlags2.TabStop = false;
-            // 
-            // btnNoFlags2
-            // 
-            resources.ApplyResources(this.btnNoFlags2, "btnNoFlags2");
-            this.btnNoFlags2.Name = "btnNoFlags2";
-            this.btnNoFlags2.Click += new System.EventHandler(this.btnNoFlags2_Click);
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // cb2Bit0
-            // 
-            resources.ApplyResources(this.cb2Bit0, "cb2Bit0");
-            this.cb2Bit0.Name = "cb2Bit0";
-            this.cb2Bit0.Tag = "";
-            this.cb2Bit0.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2BitE
-            // 
-            resources.ApplyResources(this.cb2BitE, "cb2BitE");
-            this.cb2BitE.Name = "cb2BitE";
-            this.cb2BitE.Tag = "";
-            this.cb2BitE.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2BitF
-            // 
-            resources.ApplyResources(this.cb2BitF, "cb2BitF");
-            this.cb2BitF.Name = "cb2BitF";
-            this.cb2BitF.Tag = "";
-            this.cb2BitF.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2BitC
-            // 
-            resources.ApplyResources(this.cb2BitC, "cb2BitC");
-            this.cb2BitC.Name = "cb2BitC";
-            this.cb2BitC.Tag = "?/adult small dogs";
-            this.cb2BitC.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2BitD
-            // 
-            resources.ApplyResources(this.cb2BitD, "cb2BitD");
-            this.cb2BitD.Name = "cb2BitD";
-            this.cb2BitD.Tag = "?/elder small dogs";
-            this.cb2BitD.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2BitB
-            // 
-            resources.ApplyResources(this.cb2BitB, "cb2BitB");
-            this.cb2BitB.Name = "cb2BitB";
-            this.cb2BitB.Tag = "?/elder cats";
-            this.cb2BitB.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2BitA
-            // 
-            resources.ApplyResources(this.cb2BitA, "cb2BitA");
-            this.cb2BitA.Name = "cb2BitA";
-            this.cb2BitA.Tag = "?/elder big dogs";
-            this.cb2BitA.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit9
-            // 
-            resources.ApplyResources(this.cb2Bit9, "cb2Bit9");
-            this.cb2Bit9.Name = "cb2Bit9";
-            this.cb2Bit9.Tag = "?/kittens";
-            this.cb2Bit9.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit8
-            // 
-            resources.ApplyResources(this.cb2Bit8, "cb2Bit8");
-            this.cb2Bit8.Name = "cb2Bit8";
-            this.cb2Bit8.Tag = "?/puppies";
-            this.cb2Bit8.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit7
-            // 
-            resources.ApplyResources(this.cb2Bit7, "cb2Bit7");
-            this.cb2Bit7.Name = "cb2Bit7";
-            this.cb2Bit7.Tag = "";
-            this.cb2Bit7.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit6
-            // 
-            resources.ApplyResources(this.cb2Bit6, "cb2Bit6");
-            this.cb2Bit6.Name = "cb2Bit6";
-            this.cb2Bit6.Tag = "";
-            this.cb2Bit6.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit5
-            // 
-            resources.ApplyResources(this.cb2Bit5, "cb2Bit5");
-            this.cb2Bit5.Name = "cb2Bit5";
-            this.cb2Bit5.Tag = "";
-            this.cb2Bit5.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit4
-            // 
-            resources.ApplyResources(this.cb2Bit4, "cb2Bit4");
-            this.cb2Bit4.Name = "cb2Bit4";
-            this.cb2Bit4.Tag = "";
-            this.cb2Bit4.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit3
-            // 
-            resources.ApplyResources(this.cb2Bit3, "cb2Bit3");
-            this.cb2Bit3.Name = "cb2Bit3";
-            this.cb2Bit3.Tag = "";
-            this.cb2Bit3.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit2
-            // 
-            resources.ApplyResources(this.cb2Bit2, "cb2Bit2");
-            this.cb2Bit2.Name = "cb2Bit2";
-            this.cb2Bit2.Tag = "";
-            this.cb2Bit2.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // cb2Bit1
-            // 
-            resources.ApplyResources(this.cb2Bit1, "cb2Bit1");
-            this.cb2Bit1.Name = "cb2Bit1";
-            this.cb2Bit1.Tag = "";
-            this.cb2Bit1.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
-            // tbFlags2
-            // 
-            resources.ApplyResources(this.tbFlags2, "tbFlags2");
-            this.tbFlags2.Name = "tbFlags2";
-            // 
             // timtuiHuman
             // 
             resources.ApplyResources(this.timtuiHuman, "timtuiHuman");
@@ -1375,7 +1378,7 @@ namespace SimPe.PackedFiles.UserInterface
             // TtabForm
             // 
             resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.ttabPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "TtabForm";
@@ -1385,14 +1388,14 @@ namespace SimPe.PackedFiles.UserInterface
             this.tabControl1.ResumeLayout(false);
             this.tpSettings.ResumeLayout(false);
             this.tpSettings.PerformLayout();
+            this.gbFlags2.ResumeLayout(false);
+            this.gbFlags2.PerformLayout();
             this.gbFlags.ResumeLayout(false);
             this.gbFlags.PerformLayout();
             this.tpHumanMotives.ResumeLayout(false);
             this.tpAnimalMotives.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
-            this.gbFlags2.ResumeLayout(false);
-            this.gbFlags2.PerformLayout();
             this.ResumeLayout(false);
 
 		}

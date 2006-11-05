@@ -167,7 +167,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // TtabSingleMotiveUI
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.Controls.Add(this.Min);
             this.Controls.Add(this.Delta);
             this.Controls.Add(this.Type);
