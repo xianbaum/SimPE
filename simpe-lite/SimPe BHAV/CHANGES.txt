@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+5 November 2006 19:49 - Generate an nsis install
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.22
+  mknsis.nsi 1.1.2.1
+  
 4 November 2006 15:24 - C#2005: Make forms rescale correctly (second try)
   SimPe BHAV\
     BhavForm.cs 1.64.2.29
