@@ -36,6 +36,11 @@ namespace SimPe.Plugin
 	/// </remarks>
     public class WrapperFactory : AbstractWrapperFactory, IHelpFactory, ISettingsFactory
 	{
+        static WrapperFactory()
+        {
+            if (pjse.AtomReader.AutoUpdate) { }
+        }
+
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
 		/// </summary>

@@ -1263,4 +1263,16 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
   <data name="ttabForm_MultipleVaries" xml:space="preserve">
     <value>Use separate human and animal adverts?</value>
   </data>
+  <data name="[Description:AutoUpdateURL]" xml:space="preserve">
+    <value>This is the URL that is checked to see whether a new version of PJSE has been released.  You should never need to change it.</value>
+  </data>
+  <data name="[Description:LastUpdateTS]" xml:space="preserve">
+    <value>This is the timestamp that is checked to see whether a new version of PJSE has been released.  You should never need to change it.</value>
+  </data>
+  <data name="[Property:AutoUpdateURL]" xml:space="preserve">
+    <value>PJSE Auto-update URL</value>
+  </data>
+  <data name="[Property:LastUpdateTS]" xml:space="preserve">
+    <value>PJSE Auto-update last updated timestamp</value>
+  </data>
 </root>
