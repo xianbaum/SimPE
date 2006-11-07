@@ -1613,7 +1613,7 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnNoFlags_Click(object sender, System.EventArgs e)
         {
             internalchg = true;
-            currentItem.Flags = (ushort)0x0070;
+            currentItem.Flags = (ushort)(wrapper.Format < 0x54 ? 0x0070 : 0x0000);
             this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags);
             doFlags();
             internalchg = false;
