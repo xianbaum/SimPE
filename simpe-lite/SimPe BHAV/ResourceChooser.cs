@@ -105,7 +105,7 @@ namespace pjse
 
 			if ((skip_pages & 0x04) == 0)
 			{
-				Glob g = pjse.BhavWiz.GlobByGroup(group);
+				SimPe.PackedFiles.Wrapper.Glob g = pjse.BhavWiz.GlobByGroup(group);
                 if (g != null)
                 {
                     FillGroup(resourceType, g.SemiGlobalGroup, this.lbSemiGroup, this.tpSemiGroup);
