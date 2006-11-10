@@ -34,7 +34,7 @@ namespace SimPe.Plugin
 	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-    public class WrapperFactory : AbstractWrapperFactory, IHelpFactory, ISettingsFactory
+    public class WrapperFactory : AbstractWrapperFactory, IHelpFactory, ISettingsFactory, SimPe.Updates.IUpdatablePlugin
 	{
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
@@ -106,6 +106,17 @@ namespace SimPe.Plugin
         }; } }
 
         #endregion
-    }
 
+        #region IUpdatablePlugin Members
+        public SimPe.Updates.UpdateInfo GetUpdateInformation()
+        {
+            System.Diagnostics.FileVersionInfo v = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.Location);
+            long build = ((long)v.FilePrivatePart & 0xFFFF)
+                + (((long)v.FileBuildPart & 0xFFFF) << 16)
+                + (((long)v.FileMinorPart & 0xFFFF) << 32)
+                + (((long)v.FileMajorPart & 0xFFFF) << 48);
+            return new SimPe.Updates.UpdateInfo(build, v.ProductName, v.FileDescription);
+        }
+        #endregion
+    }
 }
