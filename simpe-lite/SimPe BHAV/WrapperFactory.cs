@@ -36,11 +36,6 @@ namespace SimPe.Plugin
 	/// </remarks>
     public class WrapperFactory : AbstractWrapperFactory, IHelpFactory, ISettingsFactory
 	{
-        static WrapperFactory()
-        {
-            if (pjse.AtomReader.AutoUpdate) { }
-        }
-
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
 		/// </summary>
@@ -63,53 +58,93 @@ namespace SimPe.Plugin
 
 		#region IHelpFactory Members
 
-		class helpContents : IHelp
-		{
-			#region IHelp Members
+        class helpContents : IHelp
+        {
+            #region IHelp Members
+            public System.Drawing.Image Icon { get { return null; } }
+            public override string ToString() { return "PJSE\\" + pjse.Localization.GetString("helpPJSEContents"); }
+            public void ShowHelp(ShowHelpEventArgs e) { pjse.HelpHelper.Help("Contents"); }
+            #endregion
+        }
 
-			public void ShowHelp(ShowHelpEventArgs e)
-			{
-				pjse.HelpHelper.Help("Contents");
-			}
+        class helpUpdates : IHelp
+        {
+            #region IHelp Members
+            public System.Drawing.Image Icon { get { return null; } }
+            public override string ToString() { return "PJSE\\" + pjse.Localization.GetString("helpPJSEUpdate"); }
+            public void ShowHelp(SimPe.ShowHelpEventArgs e)
+            {
+                try
+                {
+                    if (!pjse.Updates.Checker.GetUpdate(this))
+                        System.Windows.Forms.MessageBox.Show(
+                            pjse.Localization.GetString("UHNoUpdate")
+                            , pjse.Localization.GetString("pjse_UpdateSettings")
+                        );
+                }
+                catch (ArgumentException) { }
+            }
+            #endregion
+        }
 
-			public override string ToString()
-			{
-				return "PJSE";
-			}
+        class helpAbout : IHelp
+        {
+            #region IHelp Members
+            public System.Drawing.Image Icon { get { return null; } }
+            public override string ToString() { return "PJSE\\" + pjse.Localization.GetString("helpPJSEAbout"); }
+            public void ShowHelp(ShowHelpEventArgs e)
+            {
+                System.Diagnostics.FileVersionInfo pjseVersion
+                    = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.Location);
+                System.Diagnostics.FileVersionInfo simpeVersion
+                    = System.Diagnostics.FileVersionInfo.GetVersionInfo(SimPe.PathProvider.Global.GetType().Assembly.Location);
 
-			public System.Drawing.Image Icon
-			{
-				get
-				{
-					return null;
-				}
-			}
+                System.Windows.Forms.MessageBox.Show(
+                    pjse.Localization.GetString("helpPJSEAboutPJSEVersion") + ": " + pjseVersion.FileVersion
+                    + "\r\n" + pjse.Localization.GetString("helpPJSEAboutSimPEVersion") + ": " + simpeVersion.FileVersion
+                    , pjse.Localization.GetString("helpPJSEAboutCaption")
+                );
+            }
+            #endregion
+        }
 
-			#endregion
-
-		}
-
-
-		public IHelp[] KnownHelpTopics
-		{
-			get
-			{
-				IHelp[] helpTopics = {
-									new helpContents()
-								};
-				return helpTopics;
-			}
-		}
+        public IHelp[] KnownHelpTopics
+        {
+            get
+            {
+                IHelp[] helpTopics = {
+					new helpContents()
+                    , new helpUpdates()
+                    , new helpAbout()
+				};
+                return helpTopics;
+            }
+        }
 
 
-		#endregion
+        #endregion
 
         #region ISettingsFactory Members
 
-        public ISettings[] KnownSettings { get { return new ISettings[] {
-            pjse.Settings.PJSE,
-        }; } }
+        public ISettings[] KnownSettings
+        {
+            get { return new ISettings[] { pjse.Settings.PJSE, pjse.Updates.Settings.US, }; }
+        }
 
+        #endregion
+
+        #region IUpdatablePlugin Members
+        public SimPe.Updates.UpdateInfo GetUpdateInformation()
+        {
+            pjse.Updates.Checker.RunningVersion = null; // purely to instantiate UpdateCheck early but not too early
+
+            System.Diagnostics.FileVersionInfo v = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.Location);
+            long build = ((long)v.FilePrivatePart & 0xFFFF)
+                + (((long)v.FileBuildPart & 0xFFFF) << 16)
+                + (((long)v.FileMinorPart & 0xFFFF) << 32)
+                + (((long)v.FileMajorPart & 0xFFFF) << 48);
+            return new SimPe.Updates.UpdateInfo(build, v.ProductName, v.FileDescription);
+        }
         #endregion
     }
 

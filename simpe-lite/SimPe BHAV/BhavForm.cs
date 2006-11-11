@@ -131,6 +131,8 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
+            pjse.Updates.Checker.Daily(this);
+
 			this.Tag = "Normal"; // Used by SetReadOnly
 
 #if DEC16

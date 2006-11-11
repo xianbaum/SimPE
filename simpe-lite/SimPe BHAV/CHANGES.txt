@@ -1,5 +1,20 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+10 November 2006 19:27 - SimPe 0.59v/w: use SimPe Glob; use IUpdatablePlugin; mark as 4.0
+  pjse filetable\
+    AssemblyInfo.cs 1.1.12.3
+  pjse GUID Tool\
+    AssemblyInfo.cs 1.1.14.3
+  pjse Localisation\Properties\
+    AssemblyInfo.cs 1.1.4.3
+  SimPe BHAV\
+    AssemblyInfo.cs 1.1.34.3
+    BhavWiz.cs 1.27.2.26
+    ExtendedWrapper.cs 1.1.4.6
+    pjse coder plugin.csproj 1.29.2.23
+    ResourceChooser.cs 1.6.2.7
+    WrapperFactory.cs 1.20.2.12
+
 7 November 2006 21:29 - Fixes: TtabForm "None"; qualify Glob type
   SimPe BHAV\
     ResourceChooser.cs 1.6.2.6

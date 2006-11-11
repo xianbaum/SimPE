@@ -157,12 +157,15 @@
       <Project>{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}</Project>
       <Name>pjse localisation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\pjse update tool\pjse update tool.csproj">
+      <Project>{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}</Project>
+      <Name>pjse update tool</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AtomReader.cs" />
     <Compile Include="BconForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,12 +230,6 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ExtendedWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GlobForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GlobWrapper.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="GUIDIndex.cs" />
@@ -365,10 +362,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TtabAnimalMotiveUI.resx">
       <DependentUpon>TtabAnimalMotiveUI.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GlobForm.resx">
-      <DependentUpon>GlobForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjfForm.resx">

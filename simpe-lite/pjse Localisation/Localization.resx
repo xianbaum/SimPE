@@ -1270,9 +1270,62 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>This is the timestamp that is checked to see whether a new version of PJSE has been released.  You should never need to change it.</value>
   </data>
   <data name="[Property:AutoUpdateURL]" xml:space="preserve">
-    <value>PJSE Auto-update URL</value>
+    <value>Update URL</value>
   </data>
   <data name="[Property:LastUpdateTS]" xml:space="preserve">
-    <value>PJSE Auto-update last updated timestamp</value>
+    <value>Last updated timestamp</value>
+  </data>
+  <data name="helpPJSEAbout" xml:space="preserve">
+    <value>About...</value>
+  </data>
+  <data name="helpPJSEAboutCaption" xml:space="preserve">
+    <value>About PJSE</value>
+  </data>
+  <data name="helpPJSEAboutPJSEVersion" xml:space="preserve">
+    <value>PJSE version</value>
+  </data>
+  <data name="helpPJSEAboutSimPEVersion" xml:space="preserve">
+    <value>SimPE version</value>
+  </data>
+  <data name="helpPJSEContents" xml:space="preserve">
+    <value>Contents...</value>
+  </data>
+  <data name="helpPJSEUpdate" xml:space="preserve">
+    <value>Check for updates...</value>
+  </data>
+  <data name="[Category:UpdateTool]" xml:space="preserve">
+    <value>General settings</value>
+  </data>
+  <data name="[Description:AutoUpdateChoice]" xml:space="preserve">
+    <value>Set to "AskMe" to prompt when SimPe runs.  Set to "Daily" to check once a day.  Set to "Manual" to only check when "Help, Topics, PJSE, Check for updates..." is performed.</value>
+  </data>
+  <data name="[Property:AutoUpdateChoice]" xml:space="preserve">
+    <value>Allow PJSE to check for updates</value>
+  </data>
+  <data name="pjse_UpdateSettings" xml:space="preserve">
+    <value>PJSE Update Tool</value>
+    <comment>abused for message box captions</comment>
+  </data>
+  <data name="UCAskMe" xml:space="preserve">
+    <value>Do you want PJSE to check daily for updates?
+
+If you choose "Yes", PJSE will check once each calendar day (that it's run) to see if there is any available update.
+
+If you choose "No", PJSE will not check automatically.  You can use "Help, Topics, PJSE, Check for updates..." to check manually.
+
+You can change this choice in SimPe's custom settings for PJSE Update Checker:
+"Extra, Preferences..., Custom, PJSE Update Tool, Allow PJSE to check for updates".</value>
+  </data>
+  <data name="UIMalformedContent" xml:space="preserve">
+    <value>Update feed contents are malformed.  Please report a bug!</value>
+  </data>
+  <data name="UIWebException" xml:space="preserve">
+    <value>Could not retrieve update information.  Please resolve the problem and try again.</value>
+  </data>
+  <data name="UHNoUpdate" xml:space="preserve">
+    <value>No update applicable to your version of SimPE was found.</value>
+  </data>
+  <data name="UCUpdatable" xml:space="preserve">
+    <value>An update to PJSE is available.  Would you like to launch the following URL?</value>
   </data>
 </root>

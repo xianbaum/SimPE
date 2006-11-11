@@ -21,6 +21,7 @@ using System;
 using System.Collections;
 using SimPe.PackedFiles.Wrapper;
 using pjse.BhavNameWizards;
+using SimPe.Plugin;
 
 namespace pjse
 {

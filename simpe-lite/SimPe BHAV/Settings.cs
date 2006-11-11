@@ -126,40 +126,6 @@ namespace pjse
             }
         }
 
-        [System.ComponentModel.Category("PJSE")]
-        public String AutoUpdateURL
-        {
-            get
-            {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                object o = rkf.GetValue("autoUpdateURL", "http://www.simlogical.com/PJSE/PJSEfeed.rss");
-                return Convert.ToString(o);
-            }
-
-            set
-            {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                rkf.SetValue("autoUpdateURL", value);
-            }
-        }
-
-        [System.ComponentModel.Category("PJSE")]
-        public String LastUpdateTS
-        {
-            get
-            {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                object o = rkf.GetValue("lastUpdateTS", "0000-00-00T00:00:00+00:00");
-                return Convert.ToString(o);
-            }
-
-            set
-            {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                rkf.SetValue("lastUpdateTS", value);
-            }
-        }
-
         [System.ComponentModel.Category("GI")]
         public bool LoadGUIDIndexAtStartup
         {
