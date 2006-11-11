@@ -1,5 +1,28 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+11 November 2006 21:27 - FeedReader branch: Auto-update for PJSE
+  pjse Localisation\
+    Localization.resx 1.1.4.18.2.2
+  pjse update tool\
+    .cvsignore 1.1.2.1
+    Checker.cs 1.1.2.1
+    pjse update tool.csproj 1.1.2.1
+    Settings.cs 1.1.2.1
+    UpdateInfo.cs 1.1.2.1
+  SimPe BHAV\
+    AtomReader.cs (deleted)
+    BconForm.cs 1.15.2.11.2.1
+    BhavForm.cs 1.64.2.29.2.1
+    ObjfForm.cs 1.13.2.10.2.1
+    pjse coder plugin.csproj 1.29.2.22.2.2
+    pjse coder plugins.sln 1.6.10.3.2.1
+    Settings.cs 1.1.4.3.10.2
+    StrForm.cs 1.28.2.21.2.1
+    TPRPForm.cs 1.6.2.11.2.1
+    TrcnForm.cs 1.11.2.12.2.1
+    TtabForm.cs 1.31.2.20.2.2
+    WrapperFactory.cs 1.20.2.11.8.2
+
 10 November 2006 19:27 - SimPe 0.59v/w: use SimPe Glob; use IUpdatablePlugin; mark as 4.0
   pjse filetable\
     AssemblyInfo.cs 1.1.12.3
@@ -11,6 +34,9 @@
     AssemblyInfo.cs 1.1.34.3
     BhavWiz.cs 1.27.2.26
     ExtendedWrapper.cs 1.1.4.6
+    GlobForm.cs (deleted)
+    GlobForm.resx (deleted)
+    GlobWrapper.cs (deleted)
     pjse coder plugin.csproj 1.29.2.23
     ResourceChooser.cs 1.6.2.7
     WrapperFactory.cs 1.20.2.12
