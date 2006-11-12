@@ -76,7 +76,7 @@ namespace SimPe.Plugin
             {
                 try
                 {
-                    if (!pjse.Updates.Checker.GetUpdate(this))
+                    if (!pjse.Updates.Checker.GetUpdate())
                         System.Windows.Forms.MessageBox.Show(
                             pjse.Localization.GetString("UHNoUpdate")
                             , pjse.Localization.GetString("pjse_UpdateSettings")
@@ -136,8 +136,6 @@ namespace SimPe.Plugin
         #region IUpdatablePlugin Members
         public SimPe.Updates.UpdateInfo GetUpdateInformation()
         {
-            pjse.Updates.Checker.RunningVersion = null; // purely to instantiate UpdateCheck early but not too early
-
             System.Diagnostics.FileVersionInfo v = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.Location);
             long build = ((long)v.FilePrivatePart & 0xFFFF)
                 + (((long)v.FileBuildPart & 0xFFFF) << 16)

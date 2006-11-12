@@ -1311,10 +1311,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
 
 If you choose "Yes", PJSE will check once each calendar day (that it's run) to see if there is any available update.
 
-If you choose "No", PJSE will not check automatically.  You can use "Help, Topics, PJSE, Check for updates..." to check manually.
-
-You can change this choice in SimPe's custom settings for PJSE Update Checker:
-"Extra, Preferences..., Custom, PJSE Update Tool, Allow PJSE to check for updates".</value>
+If you choose "No", PJSE will not check automatically.</value>
   </data>
   <data name="UIMalformedContent" xml:space="preserve">
     <value>Update feed contents are malformed.  Please report a bug!</value>
@@ -1327,5 +1324,11 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
   </data>
   <data name="UCUpdatable" xml:space="preserve">
     <value>An update to PJSE is available.  Would you like to launch the following URL?</value>
+  </data>
+  <data name="UCSaidNo" xml:space="preserve">
+    <value>You can use "Help, Topics, PJSE, Check for updates..." to check manually.
+
+You can change this choice in SimPe's custom settings for PJSE Update Checker:
+"Extra, Preferences..., Custom, PJSE Update Tool, Allow PJSE to check for updates".</value>
   </data>
 </root>

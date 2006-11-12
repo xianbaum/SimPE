@@ -47,6 +47,7 @@ namespace pjse.Updates
                 if (xr.MoveToContent() == XmlNodeType.Element)
                     bucket[xr.Name] = xr.ReadString();
             }
+            xr.Close();
 
             pjseVersion = (String)bucket["pjseVersion"];
             minSimPEVersion = (String)bucket["minSimPEVersion"];
@@ -61,7 +62,7 @@ namespace pjse.Updates
                     , MessageBoxIcon.Exclamation);
                 throw new ArgumentException();
             }
-            xr.Close();
+            pjseVersion = pjseVersion.Trim().Replace(' ', '0');
         }
 
         public String AvailableVersion { get { return pjseVersion; } }

@@ -1,5 +1,24 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+12 November 2006 10:42 - FeedReader branch: Use version.txt (build ts); some tweaks
+  pjse Localisation\
+    Localization.resx 1.1.4.18.2.3
+  pjse update tool\
+    Checker.cs 1.1.2.2
+    pjse update tool.csproj 1.1.2.2
+    UpdateInfo.cs 1.1.2.2
+    Version.cs 1.1.2.1
+  SimPe BHAV\
+    BconForm.cs 1.15.2.11.2.2
+    BhavForm.cs 1.64.2.29.2.2
+    ObjfForm.cs 1.13.2.10.16.2
+    pjse coder plugin.csproj 1.29.2.22.2.3
+    StrForm.cs 1.28.2.21.2.2
+    TPRPForm.cs 1.6.2.11.2.2
+    TrcnForm.cs 1.11.2.12.2.2
+    TtabForm.cs 1.31.2.20.2.3
+    WrapperFactory.cs 1.20.2.11.8.3
+
 11 November 2006 21:27 - FeedReader branch: Auto-update for PJSE
   pjse Localisation\
     Localization.resx 1.1.4.18.2.2
@@ -13,7 +32,7 @@
     AtomReader.cs (deleted)
     BconForm.cs 1.15.2.11.2.1
     BhavForm.cs 1.64.2.29.2.1
-    ObjfForm.cs 1.13.2.10.2.1
+    ObjfForm.cs 1.13.2.10.16.1
     pjse coder plugin.csproj 1.29.2.22.2.2
     pjse coder plugins.sln 1.6.10.3.2.1
     Settings.cs 1.1.4.3.10.2

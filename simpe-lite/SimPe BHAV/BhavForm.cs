@@ -131,7 +131,7 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-            pjse.Updates.Checker.Daily(this);
+            pjse.Updates.Checker.Daily();
 
 			this.Tag = "Normal"; // Used by SetReadOnly
 

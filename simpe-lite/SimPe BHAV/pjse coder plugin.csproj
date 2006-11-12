@@ -442,7 +442,10 @@ mkdir "Plugins\$(TargetName)"
 tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
 
 (cd ..
-tar c LICENSE.txt *.package) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+(echo %25base%25
+echo %25suffix%25) &gt; version.txt
+tar c version.txt LICENSE.txt *.package) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+del ..\version.txt
 tar c --exclude=CVS CHANGES.txt | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 
 tar c Plugins | (cd ..\..\SimPe

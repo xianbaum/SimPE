@@ -85,7 +85,7 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-            pjse.Updates.Checker.Daily(this);
+            pjse.Updates.Checker.Daily();
 
             TextBox[] t = { tbFilename, tbLabel, };
 			alText = new ArrayList(t);

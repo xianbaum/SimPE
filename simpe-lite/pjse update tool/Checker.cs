@@ -25,9 +25,6 @@ namespace pjse.Updates
 {
     public class Checker
     {
-        private static System.Diagnostics.FileVersionInfo pjseVersion = null;
-        public static System.Diagnostics.FileVersionInfo RunningVersion { set { pjseVersion = value; } }
-
         static Checker()
         {
             // Should only be set to AskMe the first time through (although it might have been reset by the user)
@@ -37,28 +34,32 @@ namespace pjse.Updates
                     pjse.Localization.GetString("UCAskMe")
                     , pjse.Localization.GetString("pjse_UpdateSettings")
                     , MessageBoxButtons.YesNo, MessageBoxIcon.Question
-                    );
+                );
                 if (dr.Equals(DialogResult.Yes))
                     Settings.US.AutoUpdateChoice = Settings.AutoUpdateChoiceValue.Daily;
                 else
+                {
                     Settings.US.AutoUpdateChoice = Settings.AutoUpdateChoiceValue.Manual;
+                    MessageBox.Show(pjse.Localization.GetString("UCSaidNo")
+                        , pjse.Localization.GetString("pjse_UpdateSettings")
+                    );
+                }
             }
         }
 
-        public static void Daily(object o)
+        public static void Daily()
         {
             if ((Settings.US.AutoUpdateChoice == Settings.AutoUpdateChoiceValue.Daily)
                 && (DateTime.UtcNow.Date != Settings.US.LastUpdateTS.Date))
             {
-                try { GetUpdate(o); }
+                try { GetUpdate(); }
                 catch (ArgumentException) { }
                 Settings.US.LastUpdateTS = DateTime.UtcNow; // Only the automated check updates this setting
             }
         }
 
-        public static bool GetUpdate(object o)
+        public static bool GetUpdate()
         {
-            pjseVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(o.GetType().Assembly.Location);
             UpdateInfo ui = null;
             try { ui = new UpdateInfo(); }
             catch (System.Net.WebException we)
@@ -89,13 +90,14 @@ namespace pjse.Updates
 
         private static bool UpdateApplicable(UpdateInfo ui)
         {
+            String ts = pjse.Version.BuildTS;
             SimPe.PathProvider simpe = SimPe.PathProvider.Global;
             System.Diagnostics.FileVersionInfo simpeVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(simpe.GetType().Assembly.Location);
 
 #if DEBUG
             MessageBox.Show(
                 "Update URL: " + Settings.US.AutoUpdateURL
-                + "\r\n" + pjse.Localization.GetString("helpPJSEAboutPJSEVersion") + ": " + pjseVersion.FileVersion
+                + "\r\n" + pjse.Localization.GetString("helpPJSEAboutPJSEVersion") + ": " + ts
                 + "\r\n" + "offered PJSE version: " + ui.AvailableVersion
                 + "\r\n"
                 + "\r\n" + pjse.Localization.GetString("helpPJSEAboutSimPEVersion") + ": " + simpeVersion.FileVersion
@@ -104,12 +106,8 @@ namespace pjse.Updates
                 , pjse.Localization.GetString("pjse_UpdateSettings")
                 );
 #endif
-            if (pjseVersion == null) return false;
 
-            ulong runningPV = toVersion(pjseVersion.FileVersion, false);
-            ulong offeredPV = toVersion(ui.AvailableVersion, true);
-
-            if (offeredPV <= runningPV)
+            if (ui.AvailableVersion.CompareTo(ts) < 0)
                 return false;
 
             ulong runningSV = toVersion(simpeVersion.FileVersion, false);

@@ -89,7 +89,7 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			InitializeComponent();
 
-            pjse.Updates.Checker.Daily(this);
+            pjse.Updates.Checker.Daily();
             
             Control[] af = { tbFormat };
 			alHex16 = new ArrayList(af);
