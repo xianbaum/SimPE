@@ -94,14 +94,16 @@ namespace SimPe.Plugin
             public override string ToString() { return "PJSE\\" + pjse.Localization.GetString("helpPJSEAbout"); }
             public void ShowHelp(ShowHelpEventArgs e)
             {
-                System.Diagnostics.FileVersionInfo pjseVersion
-                    = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.Location);
                 System.Diagnostics.FileVersionInfo simpeVersion
                     = System.Diagnostics.FileVersionInfo.GetVersionInfo(SimPe.PathProvider.Global.GetType().Assembly.Location);
 
                 System.Windows.Forms.MessageBox.Show(
-                    pjse.Localization.GetString("helpPJSEAboutPJSEVersion") + ": " + pjseVersion.FileVersion
+                    pjse.Localization.GetString("helpPJSEAboutPJSEVersion") + ": " + pjse.Version.BuildTS
                     + "\r\n" + pjse.Localization.GetString("helpPJSEAboutSimPEVersion") + ": " + simpeVersion.FileVersion
+                    + "\r\n"
+                    + "\r\n" + pjse.Localization.GetString("helpPJSEAboutPJSEUC") + ": " + pjse.Updates.Settings.US.AutoUpdateChoice.ToString()
+                    + "\r\n" + pjse.Localization.GetString("helpPJSEAboutPJSEUU") + ": " + pjse.Updates.Settings.US.AutoUpdateURL.ToString()
+                    + "\r\n" + pjse.Localization.GetString("helpPJSEAboutPJSELU") + ": " + pjse.Updates.Settings.US.LastUpdateTS.ToString()
                     , pjse.Localization.GetString("helpPJSEAboutCaption")
                 );
             }

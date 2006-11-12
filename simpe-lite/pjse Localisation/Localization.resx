@@ -1331,4 +1331,13 @@ If you choose "No", PJSE will not check automatically.</value>
 You can change this choice in SimPe's custom settings for PJSE Update Checker:
 "Extra, Preferences..., Custom, PJSE Update Tool, Allow PJSE to check for updates".</value>
   </data>
+  <data name="helpPJSEAboutPJSELU" xml:space="preserve">
+    <value>Last daily check</value>
+  </data>
+  <data name="helpPJSEAboutPJSEUC" xml:space="preserve">
+    <value>Upate checking</value>
+  </data>
+  <data name="helpPJSEAboutPJSEUU" xml:space="preserve">
+    <value>Upate URL</value>
+  </data>
 </root>

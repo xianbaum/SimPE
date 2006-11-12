@@ -107,7 +107,7 @@ namespace pjse.Updates
                 );
 #endif
 
-            if (ui.AvailableVersion.CompareTo(ts) < 0)
+            if (ui.AvailableVersion.CompareTo(ts) <= 0)
                 return false;
 
             ulong runningSV = toVersion(simpeVersion.FileVersion, false);

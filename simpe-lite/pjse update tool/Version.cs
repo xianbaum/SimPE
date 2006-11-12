@@ -24,7 +24,7 @@ using System.IO;
 
 namespace pjse
 {
-    class Version
+    public class Version
     {
         static String pluginName;
         static String configuration;
