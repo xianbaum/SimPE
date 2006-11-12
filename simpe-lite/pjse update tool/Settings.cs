@@ -42,7 +42,7 @@ namespace pjse.Updates
             get
             {
                 SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                object o = rkf.GetValue("autoUpdateURL", "http://www.simlogical.com/PJSE/PJSEfeed.rss");
+                object o = rkf.GetValue("autoUpdateURL", "http://www.simlogical.com/PJSE/pjseUpdate.xml");
                 return Convert.ToString(o);
             }
 
@@ -53,6 +53,9 @@ namespace pjse.Updates
             }
         }
 
+#if !DEBUG
+        [System.ComponentModel.Browsable(false)]
+#endif
         [System.ComponentModel.Category("UpdateTool")]
         public DateTime LastUpdateTS
         {
