@@ -290,7 +290,10 @@ namespace Ambertation.Windows.Forms
                     }
                     //Console.WriteLine("Start floating " + Text + ": " + e.Delta + ", " + e.MouseButtons + ", " + e.InitialResult);
 
-                    if (Math.Abs(e.ScreenPosition.X - startevent.ScreenPosition.X) < undockthreshold && Math.Abs(e.ScreenPosition.Y - startevent.ScreenPosition.Y) < undockthreshold) candrag = false;
+                    int cmp = Math.Min(Width/2, undockthreshold);
+                    if (startevent == null) candrag = false;
+                    else if (Math.Abs(e.ScreenPosition.X - startevent.ScreenPosition.X) < cmp && Math.Abs(e.ScreenPosition.Y - startevent.ScreenPosition.Y) < cmp) candrag = false;
+                    
                     if (candrag) StartDockModeFloat(e);
                 }
 
