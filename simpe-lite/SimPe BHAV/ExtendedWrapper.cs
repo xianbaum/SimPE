@@ -23,6 +23,7 @@ using System;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
+using SimPe.Plugin;
 
 namespace pjse
 {
