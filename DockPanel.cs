@@ -63,9 +63,18 @@ namespace Ambertation.Windows.Forms
             SetDefaultImage();
             text = Name;
             btext = "";
-            Visible = false;                    
+            Visible = false;
+
+            undockthreshold = 150;
         }
 
+        int undockthreshold;
+        public int UndockByCaptionThreshold
+        {
+            get { return undockthreshold; }
+            set { undockthreshold = value; }
+
+        }
         public DockPanel() : this(null) { }
 
         ~DockPanel()
@@ -280,6 +289,8 @@ namespace Ambertation.Windows.Forms
                         ManagerSingelton.Global.SetDragPanelOnMouseMove(this, e);
                     }
                     //Console.WriteLine("Start floating " + Text + ": " + e.Delta + ", " + e.MouseButtons + ", " + e.InitialResult);
+
+                    if (Math.Abs(e.ScreenPosition.X - startevent.ScreenPosition.X) < undockthreshold && Math.Abs(e.ScreenPosition.Y - startevent.ScreenPosition.Y) < undockthreshold) candrag = false;
                     if (candrag) StartDockModeFloat(e);
                 }
 
@@ -318,9 +329,11 @@ namespace Ambertation.Windows.Forms
             OnNcMouseDown(e);
         }
 
+        NCMouseEventArgs startevent;
         protected override void OnNcMouseDown(NCMouseEventArgs e)
         {
             base.OnNcMouseUp(e);
+            startevent = e;
 
             if (MouseOnSelector(e.ControlPosition) && e.MouseButtons.Left)
             {
