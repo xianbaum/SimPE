@@ -146,7 +146,9 @@ namespace SimPe.PackedFiles.UserInterface
 			//
 			// TODO: Add any constructor code after InitializeComponent call
 			//
-			TextBox[] tbua = { tbAction, tbGuardian, tbFlags, tbFlags2, tbUIDispType };
+            pjse.Updates.Checker.Daily();
+
+            TextBox[] tbua = { tbAction, tbGuardian, tbFlags, tbFlags2, tbUIDispType };
 			alHex16 = new ArrayList(tbua);
 
 			TextBox[] tbia = { tbFormat, tbStringIndex, tbAutonomy, tbFaceAnimID, tbObjType, tbModelTabID, tbJoinIndex };
