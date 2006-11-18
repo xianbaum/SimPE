@@ -404,7 +404,7 @@ namespace SimPe.PackedFiles.UserInterface
                         for (int i = 0; i < currentItem.HumanMotives.Count; i++)
                             currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[0].Clone();
                     else
-                        for (int i = 0; i < currentItem.HumanMotives.Count; i++)
+                        for (int i = 0; i < currentItem.HumanMotives.Count && i < timtuiHuman.MotiveTable.Count; i++)
                             currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[i].Clone();
                     timtuiHuman.MotiveTable = currentItem.HumanMotives;
                 }
@@ -423,7 +423,7 @@ namespace SimPe.PackedFiles.UserInterface
                         for (int i = 0; i < currentItem.HumanMotives.Count; i++)
                             currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[0].Clone();
                     else
-                        for (int i = 0; i < currentItem.HumanMotives.Count; i++)
+                        for (int i = 0; i < currentItem.HumanMotives.Count && i < timtuiHuman.MotiveTable.Count; i++)
                             currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[i].Clone();
                     timtuiHuman.MotiveTable = currentItem.HumanMotives;
                 }
