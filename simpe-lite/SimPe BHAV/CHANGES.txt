@@ -1,5 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+18 November 2006 15:21 - Use STR# 0x01e6 for language names (from Dizzy)
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.27
+    StrForm.cs 1.28.2.23
+  GlobalStrings.package 1.10.8.14
+
 18 November 2006 11:47 - TTAB: oops, obey array bounds
   SimPe BHAV\
     TtabForm.cs 1.31.2.24
