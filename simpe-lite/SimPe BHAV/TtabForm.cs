@@ -292,9 +292,6 @@ namespace SimPe.PackedFiles.UserInterface
             }
         }
 
-        private uint previousFormat;
-
-
         private uint getTTAsCount()
 		{
             Str w = StrRes;
@@ -360,11 +357,9 @@ namespace SimPe.PackedFiles.UserInterface
         {
             internalchg = true;
             Boolset flags = new Boolset(currentItem.Flags);
+            if (wrapper.Format < 0x54) flags.flip(new int[] { 4, 5, 6 });
             for (int i = 0; i < flags.Length; i++)
-            {
-                bool invert = wrapper.Format < 0x54 && (i == 4 || i == 5 || i == 6);
-                ((CheckBox)alFlags[i]).Checked = invert ? !flags[i] : flags[i];
-            }
+                ((CheckBox)alFlags[i]).Checked = flags[i];
             internalchg = false;
         }
 
@@ -377,31 +372,75 @@ namespace SimPe.PackedFiles.UserInterface
             internalchg = false;
         }
 
+        private uint previousFormat;
         private void setFormat()
         {
-            if (previousFormat >= 0x44 && wrapper.Format < 0x44)
+            if (wrapper.Format < 0x44 && previousFormat >= 0x44)
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
                     pjse.Localization.GetString("ttabForm_Single"),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
+                else
+                {
+                    currentItem.HumanMotives = new TtabItemMotiveTable(currentItem, new int[] { 0x10 }, TtabItemMotiveTableType.Human);
+                    currentItem.HumanMotives[0] = timtuiHuman.MotiveTable[0].Clone();
+                    timtuiHuman.MotiveTable = currentItem.HumanMotives;
+                }
             }
-            else if (previousFormat < 0x44 && wrapper.Format >= 0x44 && wrapper.Format < 0x54)
+            else if (wrapper.Format >= 0x44 && wrapper.Format < 0x54 && (previousFormat < 0x44 || previousFormat >= 0x54))
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
                     pjse.Localization.GetString("ttabForm_MultipleFixed"),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
+                else
+                {
+                    currentItem.HumanMotives = new TtabItemMotiveTable(currentItem,
+                        new int[] { 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, }, TtabItemMotiveTableType.Human);
+                    if (previousFormat < 0x44)
+                        for (int i = 0; i < currentItem.HumanMotives.Count; i++)
+                            currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[0].Clone();
+                    else
+                        for (int i = 0; i < currentItem.HumanMotives.Count; i++)
+                            currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[i].Clone();
+                    timtuiHuman.MotiveTable = currentItem.HumanMotives;
+                }
             }
-            else if (previousFormat < 0x54 && wrapper.Format >= 0x54)
+            else if (wrapper.Format >= 0x54 && previousFormat < 0x54)
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
                     pjse.Localization.GetString("ttabForm_MultipleVaries"),
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button2);
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
+                else
+                {
+                    currentItem.HumanMotives = new TtabItemMotiveTable(currentItem, null, TtabItemMotiveTableType.Human);
+                    if (previousFormat < 0x44)
+                        for (int i = 0; i < currentItem.HumanMotives.Count; i++)
+                            currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[0].Clone();
+                    else
+                        for (int i = 0; i < currentItem.HumanMotives.Count; i++)
+                            currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[i].Clone();
+                    timtuiHuman.MotiveTable = currentItem.HumanMotives;
+                }
+            }
+
+            // Flip those flags
+            if (previousFormat < 0x54 && wrapper.Format >= 0x54 || previousFormat >= 0x54 && wrapper.Format < 0x54)
+            {
+                bool saved = internalchg;
+                internalchg = true;
+
+                Boolset flags = new Boolset(currentItem.Flags);
+                flags.flip(new int[] { 4, 5, 6 });
+                currentItem.Flags = flags;
+                this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags);
+
+                internalchg = saved;
             }
 
             previousFormat = wrapper.Format;
@@ -1640,21 +1679,18 @@ namespace SimPe.PackedFiles.UserInterface
             if (i < 0)
                 throw new Exception("checkbox_CheckedChanged not applicable to control " + sender.ToString());
 
-            bool invert = wrapper.Format < 0x54 && (i == 4 || i == 5 || i == 6);
-            bool val = invert ? !((CheckBox)sender).Checked : ((CheckBox)sender).Checked;
-
             internalchg = true;
             if (i < 16)
             {
                 Boolset flags = new Boolset(currentItem.Flags);
-                flags[i] = val;
+                flags.flip(i);
                 currentItem.Flags = flags;
                 this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags);
             }
             else if (i < 32)
             {
                 Boolset flags = new Boolset(currentItem.Flags2);
-                flags[i - 16] = val;
+                flags.flip(i - 16);
                 currentItem.Flags2 = flags;
                 this.tbFlags2.Text = "0x" + Helper.HexString(currentItem.Flags2);
             }
