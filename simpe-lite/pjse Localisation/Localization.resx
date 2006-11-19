@@ -1285,7 +1285,7 @@ If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000
     <value>PJSE version</value>
   </data>
   <data name="helpPJSEAboutSimPEVersion" xml:space="preserve">
-    <value>SimPE version</value>
+    <value>Current SimPE version</value>
   </data>
   <data name="helpPJSEContents" xml:space="preserve">
     <value>Contents...</value>
@@ -1339,5 +1339,8 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
   </data>
   <data name="helpPJSEAboutPJSEUU" xml:space="preserve">
     <value>Upate URL</value>
+  </data>
+  <data name="helpPJSEAboutSimPEBuild" xml:space="preserve">
+    <value>Build SimPE version</value>
   </data>
 </root>
