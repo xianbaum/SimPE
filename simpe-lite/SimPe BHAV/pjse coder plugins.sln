@@ -2,6 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual C# Express 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse coder plugin", "pjse coder plugin.csproj", "{6AA664E9-B45F-4D61-9B9F-E68341C16473}"
 	ProjectSection(ProjectDependencies) = postProject
+		{087D3A76-250A-467A-9EA7-6C5358ACE940} = {087D3A76-250A-467A-9EA7-6C5358ACE940}
 		{DF925ACD-1B45-4B03-8832-54E00EE6C5D7} = {DF925ACD-1B45-4B03-8832-54E00EE6C5D7}
 	EndProjectSection
 EndProject
@@ -12,6 +13,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse localisation", "..\pjse Localisation\pjse localisation.csproj", "{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse update tool", "..\pjse update tool\pjse update tool.csproj", "{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse package tools", "..\pjse package tools\pjse package tools.csproj", "{087D3A76-250A-467A-9EA7-6C5358ACE940}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +53,12 @@ Global
 		{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}.InProgress|Any CPU.Build.0 = Release|Any CPU
 		{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{087D3A76-250A-467A-9EA7-6C5358ACE940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{087D3A76-250A-467A-9EA7-6C5358ACE940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{087D3A76-250A-467A-9EA7-6C5358ACE940}.InProgress|Any CPU.ActiveCfg = Release|Any CPU
+		{087D3A76-250A-467A-9EA7-6C5358ACE940}.InProgress|Any CPU.Build.0 = Release|Any CPU
+		{087D3A76-250A-467A-9EA7-6C5358ACE940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{087D3A76-250A-467A-9EA7-6C5358ACE940}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
