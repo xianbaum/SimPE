@@ -115,6 +115,7 @@ set m=%25mytime:~3,2%25
 set s=%25mytime:~6,2%25
 set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
 set tarv=
+set nsisv=/V3
 
 cd "$(ProjectDir)"
 
@@ -138,6 +139,10 @@ if not $(ConfigurationName)==Release goto skip
 
 tar cv Plugins | bzip2 &gt; "..\%25base%25-%25suffix%25.tar.bz2"
 7za a -t7z -mx9 -ms "..\%25base%25-%25suffix%25.7z" Plugins
+
+echo OutFile "%25base%25-%25suffix%25.exe" &gt; ..\outfile.txt
+"%25PROGRAMFILES%25\nsis\makensis" %25nsisv%25 ..\mknsis.nsi
+del ..\outfile.txt
 
 cd "$(ProjectDir).."
 if exist "%25src%25" rmdir /s/q "%25src%25"
