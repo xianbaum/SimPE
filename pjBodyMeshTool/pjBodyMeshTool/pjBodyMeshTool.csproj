@@ -115,6 +115,7 @@ set m=%25mytime:~3,2%25
 set s=%25mytime:~6,2%25
 set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
 set tarv=
+set helpdir=S:\PJSE_etc\pjBodyMeshTool
 set nsisv=/V3
 
 cd "$(ProjectDir)"
@@ -129,6 +130,11 @@ tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
 (cd ..
 tar c LICENSE.txt CHANGES.txt) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 
+if not $(ConfigurationName)==Release goto nohelp
+(cd /d %25helpdir%25
+tar c pjBodyMeshTool_Help ) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+
+:nohelp:
 tar c Plugins | (cd ..\..\SimPe
 tar xv)
 
