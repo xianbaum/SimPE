@@ -29,12 +29,14 @@ namespace pjse
         static String pluginName;
         static String configuration;
         static String timestamp;
+        static String simperelease;
         static Version()
         {
             String version_txt = Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\version.txt");
             System.IO.StreamReader sr = new StreamReader(version_txt);
             String line1 = sr.ReadLine();
             String line2 = sr.ReadLine();
+            String line3 = sr.ReadLine();
             sr.Close();
 
             String[] s = line1.Trim().Split('-');
@@ -42,10 +44,18 @@ namespace pjse
             configuration = s[1];
 
             timestamp = line2.Trim().Replace(' ', '0');
+
+            long srv = Convert.ToInt64(line3.Split('"')[1]);
+            simperelease = (srv >> 48).ToString()
+                + "." + ((srv >> 32) & 0xFFFF).ToString()
+                + "." + ((srv >> 16) & 0xFFFF).ToString()
+                + "." + (srv & 0xFFFF).ToString()
+                ;
         }
 
         public static String PluginName { get { return pluginName; } }
         public static String Configuration { get { return configuration; } }
         public static String BuildTS { get { return timestamp; } }
+        public static String SimPeVersion { get { return simperelease; } }
     }
 }
