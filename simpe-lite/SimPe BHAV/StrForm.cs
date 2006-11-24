@@ -129,7 +129,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private byte lid = 1;
 		private int index = -1;
 		private int count = 0;
-        private bool[] isEmpty = new bool[44];
+        private bool[] isEmpty = new bool[45];
+        private String langName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages, 1);
 
 		private bool hex16_IsValid(object sender)
 		{
@@ -156,8 +157,7 @@ namespace SimPe.PackedFiles.UserInterface
             for (int j = count - 1; j >= 0 && isEmpty[lid]; j--)
 				if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
                     isEmpty[lid] = false;
-            this.cbLngSelect.Items[lid - 1] = ((SimPe.Data.MetaData.Languages)lid).ToString()
-                + (isEmpty[lid] ? " (" + pjse.Localization.GetString("empty") + ")" : "");
+            this.cbLngSelect.Items[lid - 1] = langName + (isEmpty[lid] ? " (" + pjse.Localization.GetString("empty") + ")" : "");
 
             doButtons();
         }
@@ -197,14 +197,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbLngSelect.Items.Clear();
 
 			bool onlyDefault = true;
-            for (byte i = 1; i < 44; i++)
+            this.cbLngSelect.Items.AddRange(pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages).ToArray());
+            for (byte i = 1; i < this.cbLngSelect.Items.Count; i++)
             {
                 isEmpty[i] = wrapper[i].Length == 0;
-                this.cbLngSelect.Items.Add(((SimPe.Data.MetaData.Languages)i).ToString()
-                    + (isEmpty[i] ? " (" + pjse.Localization.GetString("empty") + ")" : ""));
+                this.cbLngSelect.Items[i] += isEmpty[i] ? " (" + pjse.Localization.GetString("empty") + ")" : "";
                 if (!isEmpty[i] && i > 1) onlyDefault = false;
             }
-			this.btnClearAll.Enabled = !onlyDefault;
+            this.cbLngSelect.Items.RemoveAt(0);
+            this.btnClearAll.Enabled = !onlyDefault;
 
 			count = 0;
 			for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Length);
@@ -230,6 +231,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (lid == l) return;
 			lid = l;
+            langName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages, lid);
 
 			internalchg = true;
 			if (lid > 0) this.cbLngSelect.SelectedIndex = l - 1;
@@ -237,7 +239,7 @@ namespace SimPe.PackedFiles.UserInterface
 			this.btnLngFirst.Enabled = this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
 			this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
-			this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + ((SimPe.Data.MetaData.Languages)lid).ToString();
+			this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + langName;
 
 			while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
 			this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
@@ -277,7 +279,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (s != null)
 			{
 				this.lbStringNum.Text = pjse.Localization.GetString("String") + " 0x"
-                    + Helper.HexString((ushort)index) + " (" + ((SimPe.Data.MetaData.Languages)lid).ToString() + ")";
+                    + Helper.HexString((ushort)index) + " (" + langName + ")";
 				this.rtbTitle.Text = s.Title;
 				this.rtbTitle.SelectAll();
 				this.btnBigString.Enabled = this.rtbTitle.Enabled = true;
@@ -509,7 +511,7 @@ namespace SimPe.PackedFiles.UserInterface
             for (int j = count - 1; j >= 0 && isEmpty[1]; j--)
 				if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
                     isEmpty[1] = false;
-			this.cbLngSelect.Items[0] = ((SimPe.Data.MetaData.Languages)1).ToString()
+			this.cbLngSelect.Items[0] = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages, 1)
                 + (isEmpty[1] ? " (" + pjse.Localization.GetString("empty") + ")" : "");
 		}
 
@@ -582,7 +584,7 @@ namespace SimPe.PackedFiles.UserInterface
             fd.CheckPathExists = true;
             fd.DefaultExt = "txt";
             fd.DereferenceLinks = true;
-            fd.FileName = ((SimPe.Data.MetaData.Languages)lid).ToString() + ".txt";
+            fd.FileName = langName + ".txt";
             fd.Filter = pjse.Localization.GetString("strLangFilter");
             fd.FilterIndex = 1;
             fd.RestoreDirectory = false;

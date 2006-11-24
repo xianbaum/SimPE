@@ -1,5 +1,34 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+19 November 2006 11:31 - Record build version of SimPE for PJSE Help About
+  pjse Localisation\
+    Localization.resx 1.1.4.20
+  pjse update tool\
+    Version.cs 1.1.4.2
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.25
+    WrapperFactory.cs 1.20.2.14
+
+18 November 2006 22:45 - Stick with Dizzy's "Latin" over "Latvian"
+  GlobalStrings.package 1.10.8.15
+
+18 November 2006 15:21 - Use STR# 0x01e6 for language names (from Dizzy)
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.27
+    StrForm.cs 1.28.2.23
+  GlobalStrings.package 1.10.8.14
+
+18 November 2006 11:47 - TTAB: oops, obey array bounds
+  SimPe BHAV\
+    TtabForm.cs 1.31.2.24
+
+18 November 2006 11:20 - TTAB: Handle changing Format far better
+  SimPe BHAV\
+    SystemClasses.cs 1.1.2.3
+    TtabForm.cs 1.31.2.23
+    TtabItemMotiveTableUI.cs 1.10.12.8
+    TtabWrapper.cs 1.23.6.12
+
 12 November 2006 13:18 - Updater: Additions to (PJSE) Help->About; (oops) fix version check
   pjse Localisation\
     Localization.resx 1.1.4.18.2.4

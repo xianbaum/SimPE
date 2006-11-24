@@ -143,9 +143,10 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
-            PetDecayIndices = 0x1e7,
-            SpeciesValues = 0x1e8, // for Data owners 0x12, 0x13 and 0x20
-            PetTraitFlags = 0x1e9, // for Data owners 0x12, 0x13 and 0x20
+            Languages = 0x1e6, // PJSE: string number stolen
+            PetDecayIndices = 0x1e7, // PJSE: string number stolen (unused)
+            SpeciesValues = 0x1e8, // PJSE: string number stolen for Data owners 0x12, 0x13 and 0x20 (unused)
+            PetTraitFlags = 0x1e9, // PJSE: string number stolen for Data owners 0x12, 0x13 and 0x20
             Ages = 0x1ea, // PJSE: string number stolen
             DebugType = 0x1eb, // PJSE: string number stolen
             EffectSSType = 0x1ec, // PJSE: string number stolen

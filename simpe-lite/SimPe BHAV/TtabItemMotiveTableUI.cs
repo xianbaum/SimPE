@@ -151,13 +151,13 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void setData()
         {
-            this.lbNrGroups.Text = (this.lbNrGroups.Text.Split(':')[0]) + ": " + item.Count.ToString();
-
             cbShowAll.Enabled = false;
             this.pnAllGroups.Controls.Clear();
 
             if (item != null && item.Count > 0)
             {
+                this.lbNrGroups.Text = (this.lbNrGroups.Text.Split(':')[0]) + ": " + item.Count.ToString();
+
                 TtabMotiveGroupUI c = new TtabMotiveGroupUI();
                 c.MotiveGroup = item[0];
                 if (item.Type == TtabItemMotiveTableType.Human)
@@ -184,6 +184,8 @@ namespace SimPe.PackedFiles.UserInterface
                     }
                 }
             }
+            else
+                this.lbNrGroups.Text = (this.lbNrGroups.Text.Split(':')[0]) + ": 0";
 
             cbShowAll_CheckedChanged(null, null);
         }

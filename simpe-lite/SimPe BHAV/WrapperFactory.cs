@@ -99,6 +99,7 @@ namespace SimPe.Plugin
 
                 System.Windows.Forms.MessageBox.Show(
                     pjse.Localization.GetString("helpPJSEAboutPJSEVersion") + ": " + pjse.Version.BuildTS
+                    + "\r\n" + pjse.Localization.GetString("helpPJSEAboutSimPEBuild") + ": " + pjse.Version.SimPeVersion
                     + "\r\n" + pjse.Localization.GetString("helpPJSEAboutSimPEVersion") + ": " + simpeVersion.FileVersion
                     + "\r\n"
                     + "\r\n" + pjse.Localization.GetString("helpPJSEAboutPJSEUC") + ": " + pjse.Updates.Settings.US.AutoUpdateChoice.ToString()

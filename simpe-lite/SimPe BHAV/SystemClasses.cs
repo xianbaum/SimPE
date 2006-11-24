@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 using System;
+using System.Collections.Generic;
 
 namespace System
 {
@@ -106,6 +107,16 @@ namespace System
 			}
 			return matched;
 		}
-	}
+
+        public void flip(int[] bits)
+        {
+            foreach (int bit in bits) flip(bit);
+        }
+
+        public void flip(int bit)
+        {
+            bitset[bit] = !bitset[bit];
+        }
+    }
 
 }

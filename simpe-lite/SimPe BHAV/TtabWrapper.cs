@@ -570,9 +570,8 @@ namespace SimPe.PackedFiles.Wrapper
             else if (parent.Format < 0x54) counts = new int[] { 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, };
 
             humanGroups = new TtabItemMotiveTable(this, counts, TtabItemMotiveTableType.Human);
-            if (parent.Format >= 0x54)
-                animalGroups = new TtabItemMotiveTable(this, null, TtabItemMotiveTableType.Animal);
-		}
+            animalGroups = new TtabItemMotiveTable(this, null, TtabItemMotiveTableType.Animal);
+        }
 
 		public TtabItem(Ttab parent, System.IO.BinaryReader reader) : this(parent) { Unserialize(reader); }
 
@@ -773,7 +772,11 @@ namespace SimPe.PackedFiles.Wrapper
 
         private void Unserialize(System.IO.BinaryReader reader)
         {
-            int nrGroups = Wrapper.Format < 0x54 ? items.Count : reader.ReadInt32();
+            int nrGroups = 0;
+            if (counts != null) nrGroups = counts.Length;
+            else nrGroups = reader.ReadInt32();
+            if (items.Capacity < nrGroups)
+                items = new TtabItemMotiveGroupArrayList(new TtabItemMotiveGroup[nrGroups]);
 
             for (int i = 0; i < nrGroups; i++)
                 items[i] = new TtabItemMotiveGroup(this, counts != null ? counts[i] : 0, type, reader);
