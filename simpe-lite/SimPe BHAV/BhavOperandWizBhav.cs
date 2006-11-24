@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   Copyright (C) 2006 by Peter L Jones                                   *
  *   peter@drealm.info                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,129 +18,111 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using System.Drawing;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.WizBhav
 {
-	/// <summary>
-	/// Zusammenfassung für BhavInstruction.
-	/// </summary>
-	internal class UI : System.Windows.Forms.Form
-	{
-		#region Form variables
+    internal partial class UI : Form
+    {
+        public UI()
+        {
+            InitializeComponent();
+        }
 
-		private System.Windows.Forms.TextBox tbval1;
-		private System.Windows.Forms.ComboBox cbPicker1;
-		private System.Windows.Forms.ComboBox cbDataOwner1;
-		private System.Windows.Forms.Label label1;
-		internal System.Windows.Forms.Panel pnWizBhav;
-		/// <summary>
-		/// Erforderliche Designervariable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+        #region UI
 
-		public UI()
-		{
-			//
-			// Erforderlich für die Windows Form-Designerunterstützung
-			//
-			InitializeComponent();
-		}
+        private bool internalchg = false;
+        private Instruction inst = null;
+        private int nodeVersion = 0;
+        private int nrArgs = 0;
+        private TPRP tprp = null;
+        private bool noOperands = false;
 
-		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        public void Execute(Instruction inst)
+        {
+            internalchg = true;
 
-		
-		#region UI
-		public void Execute(Instruction inst)
-		{
-			return;
-		}
+            this.inst = inst;
+            nodeVersion = inst.NodeVersion;
 
-		public Instruction Write(Instruction inst)
-		{
-			return null;
-		}
+            pjse.FileTable.Entry ftEntry = inst.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, inst.OpCode);
+            Bhav wrapper = new Bhav();
+            wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
+            nrArgs = wrapper.Header.ArgumentCount;
+            tprp = wrapper.TPRPResource;
 
-		#endregion
+            wrappedByteArray ops1 = inst.Operands;
+            wrappedByteArray ops2 = inst.Reserved1;
 
-		#region Vom Windows Form-Designer generierter Code
-		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
-		/// </summary>
-		private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
-            this.pnWizBhav = new System.Windows.Forms.Panel();
-            this.cbPicker1 = new System.Windows.Forms.ComboBox();
-            this.tbval1 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pnWizBhav.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // pnWizBhav
-            // 
-            this.pnWizBhav.Controls.Add(this.cbPicker1);
-            this.pnWizBhav.Controls.Add(this.tbval1);
-            this.pnWizBhav.Controls.Add(this.cbDataOwner1);
-            resources.ApplyResources(this.pnWizBhav, "pnWizBhav");
-            this.pnWizBhav.Name = "pnWizBhav";
-            // 
-            // cbPicker1
-            // 
-            resources.ApplyResources(this.cbPicker1, "cbPicker1");
-            this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker1.DropDownWidth = 352;
-            this.cbPicker1.Name = "cbPicker1";
-            // 
-            // tbval1
-            // 
-            resources.ApplyResources(this.tbval1, "tbval1");
-            this.tbval1.Name = "tbval1";
-            // 
-            // cbDataOwner1
-            // 
-            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
-            this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // UI
-            // 
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.pnWizBhav);
-            this.Name = "UI";
-            this.pnWizBhav.ResumeLayout(false);
-            this.pnWizBhav.PerformLayout();
-            this.ResumeLayout(false);
+			noOperands = true;
+			for (int i = 0; noOperands && i < 8; i++)
+				noOperands = ops1[i] == 0xFF;
 
-		}
-		#endregion
-	}
+            Boolset b12 = ops2[4];
+            if (!b12[0])
+            {
+            }
+            else
+            {
+            }
 
+            internalchg = false;
+
+            return;
+        }
+
+        public Instruction Write(Instruction inst)
+        {
+            return inst;
+        }
+
+        #endregion
+    }
 }
 
+namespace pjse.BhavOperandWizards
+{
+    public class BhavOperandWizBhav : pjse.ABhavOperandWiz
+    {
+        public BhavOperandWizBhav() : base() { }
+
+        public BhavOperandWizBhav(Instruction i) : base(i) { }
+
+
+        private WizBhav.UI myForm = null;
+        public override Panel bhavPrimWizPanel
+        {
+            get
+            {
+                if (myForm == null) myForm = new WizBhav.UI();
+                return myForm.pnWizBhav;
+            }
+        }
+
+        public override void Execute()
+        {
+            if (instruction != null) myForm.Execute(instruction);
+        }
+
+        public override Instruction Write()
+        {
+            return (instruction == null) ? null : myForm.Write(instruction);
+        }
+
+
+        #region IDisposable Members
+        public override void Dispose()
+        {
+            if (myForm != null) myForm = null;
+        }
+        #endregion
+
+    }
+
+}

@@ -1,5 +1,13 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+24 November 2006 14:04 - WizBhav: Create new Bhav Operand Wizard branch
+  SimPe BHAV\
+    BhavOperandWizBhav.cs 1.1.8.4
+    BhavOperandWiz.Designer.cs 1.1.2.1
+    BhavOperandWiz.resx 1.1.8.4
+    BhavWizBhav.cs 1.19.2.6
+    pjse coder plugin.csproj 1.29.2.26
+
 23 November 2006 09:35 - Add "includes" to pjse filetable; make r/c wider by default
   pjse filetable\
     FileTable.cs 1.11.2.19

@@ -31,14 +31,6 @@ namespace pjse.BhavNameWizards
 	/// </summary>
 	public class BhavWizBhav : BhavWiz, IDisposable
 	{
-		private pjse.FileTable.Entry ftEntry = null;
-        private Bhav wrapper = null;
-
-		/// <summary>
-		/// Which group to look in for the BHAV
-		/// </summary>
-		private uint group = 0;
-
 		public BhavWizBhav(Instruction i) : base (i)
 		{
 			if (i.OpCode < 0x0100)
@@ -71,59 +63,26 @@ namespace pjse.BhavNameWizards
 			return new BhavWizBhav(i);
 		}
 
-
-		#region IDisposable Members
-
-		public new void Dispose() { GFT_FiletableRefresh(null, null); }
-
-		#endregion
-
-        void GFT_FiletableRefresh(object sender, EventArgs e)
+        protected override string OpcodeName
         {
-            FileTable.GFT.FiletableRefresh -= new EventHandler(GFT_FiletableRefresh);
-            ftEntry = null;
-            wrapper = null;
-        }
-
-		private Bhav Wrapper
-		{
-			get
-			{
-                if (wrapper != null) return wrapper;
-
-                if (ftEntry == null)
-                {
-                    if (instruction == null || instruction.Parent == null)
-                        throw new Exception("Can't find wrapper for instruction with no parent");
-
-                    ftEntry = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instruction.OpCode);
-                    if (ftEntry == null) return null;
-                }
-
-				wrapper = new Bhav();
-				wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
-                FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
-				return wrapper;
-			}
-		}
-
-
-		protected override string OpcodeName
-		{
-			get
-			{
+            get
+            {
                 pjse.FileTable.Entry ftEntry = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instruction.OpCode);
                 return (ftEntry != null) ? ftEntry : pjse.Localization.GetString("bhavnotfound");
-			}
-		}
+            }
+        }
 
+        public override ABhavOperandWiz Wizard()
+        {
+            return Wrapper == null ? null : new pjse.BhavOperandWizards.BhavOperandWizBhav(instruction);
+        }
 
 		/// <summary>
 		/// Returns a description of the operands of the call to another BHAV
 		/// </summary>
 		/// <param name="lng">true to get long description</param>
 		/// <returns>description of the BHAV call operands</returns>
-		/// <remarks>See http://www5.modthesims2.com/showthread.php?goto=newpost&t=117411 for more info</remarks>
+        /// <remarks>See http://www.modthesims2.com/showthread.php?t=117411 for more info</remarks>
 		protected override string Operands(bool lng)
 		{
 			Bhav bhav = Wrapper;
@@ -199,6 +158,52 @@ namespace pjse.BhavNameWizards
 
 			return s;
 		}
+
+
+		private Bhav Wrapper
+		{
+			get
+			{
+                if (wrapper != null) return wrapper;
+
+                if (ftEntry == null)
+                {
+                    if (instruction == null || instruction.Parent == null)
+                        throw new Exception("Can't find wrapper for instruction with no parent");
+
+                    ftEntry = instruction.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, instruction.OpCode);
+                    if (ftEntry == null) return null;
+                }
+
+				wrapper = new Bhav();
+				wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
+                FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
+				return wrapper;
+			}
+		}
+
+		private pjse.FileTable.Entry ftEntry = null;
+        private Bhav wrapper = null;
+
+		/// <summary>
+		/// Which group to look in for the BHAV
+		/// </summary>
+		private uint group = 0;
+
+
+		#region IDisposable Members
+
+		public new void Dispose() { GFT_FiletableRefresh(null, null); }
+
+		#endregion
+
+        void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            FileTable.GFT.FiletableRefresh -= new EventHandler(GFT_FiletableRefresh);
+            ftEntry = null;
+            wrapper = null;
+        }
+
 
 
 		private string do4OI(int thisArgc, bool lng, TPRP tprp, byte[] o)
