@@ -81,13 +81,12 @@ namespace pjse
 			if (wiz == null) return null;
 
 			Panel pn = wiz.bhavPrimWizPanel;
-			pn.Parent = this;
-			pn.Top = 0;
-			pn.Left = 0;
-			pn.TabIndex = 1;
-			int footHeight = this.Height - this.panel1.Bottom + 8;
-			this.Width = pn.Width + 8;
-			this.Height = pn.Height + footHeight;
+            pn.Parent = this;
+            pn.Top = 0;
+            pn.Left = 0;
+            pn.TabIndex = 1;
+            pn_Resize(pn, null);
+            pn.Resize += new EventHandler(pn_Resize);
 			wiz.Execute();
 
 			DialogResult dr = ShowDialog();
@@ -101,6 +100,14 @@ namespace pjse
 					return null;
 			}
 		}
+
+        void pn_Resize(object sender, EventArgs e)
+        {
+            Panel pn = (Panel)sender;
+            int footHeight = this.Height - this.panel1.Bottom + 8;
+            this.Width = pn.Width + 8;
+            this.Height = pn.Height + footHeight;
+        }
 
 
 		#region Vom Windows Form-Designer generierter Code
