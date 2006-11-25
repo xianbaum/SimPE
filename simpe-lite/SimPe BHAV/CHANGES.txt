@@ -1,5 +1,14 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+25 November 2006 20:49 - WizBhav: UI changes; clean up dataowner handling
+  pjse Localisation\
+    Localization.resx 1.1.4.20.2.1
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.14.6.2
+    BhavOperandWizBhav.cs 1.1.8.3.22.5
+    BhavOperandWizBhav.Designer.cs 1.1.2.4
+    BhavOperandWizBhav.resx 1.1.8.3.22.4
+
 25 November 2006 14:33 - WizBhav: Don't make the Decimal/Attr checkboxes disappear
   SimPe BHAV\
     BhavOperandWizBhav.cs 1.1.8.3.22.4
@@ -12,7 +21,7 @@
 
 24 November 2006 23:12 - WizBhav: Wrote the Bhav Operand Wizard
   SimPe BHAV\
-    BhavOperandWiz.cs 1.7.14.14.2.1
+    BhavOperandWiz.cs 1.7.14.14.6.1
     BhavOperandWizBhav.cs 1.1.8.3.22.2
     BhavOperandWizBhav.Designer.cs 1.1.2.2
     BhavOperandWizBhav.resx 1.1.8.3.22.2

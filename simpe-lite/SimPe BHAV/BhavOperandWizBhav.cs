@@ -66,6 +66,10 @@ namespace pjse.BhavOperandWizards.WizBhav
                 lbConst4, lbConst5, lbConst6, lbConst7
             };
 
+            adoid = new DataOwnerControl[8];
+            for (int i = 0; i < adoid.Length; i++)
+                adoid[i] = new DataOwnerControl(null, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i], 0x07, 0);
+
             arbFormat = new List<RadioButton>(new RadioButton[] { rbNone, rbCallers, rbOld, rbNew });
         }
 
@@ -79,28 +83,12 @@ namespace pjse.BhavOperandWizards.WizBhav
         private Label[] albParams = null;
         private Panel[] apnParams = null;
         private dataFormat format = dataFormat.none;
-        private DataOwnerControl[] adoid = null;
         private ComboBox[] acbDO = null;
         private ComboBox[] acbP = null;
         private TextBox[] atbV = null;
         private Label[] albC = null;
+        private DataOwnerControl[] adoid = null;
         private List<RadioButton> arbFormat = null;
-
-        private bool NoOperands
-        {
-            get
-            {
-                if (nodeVersion > 0)
-                    return false;
-                else
-                {
-                    bool noOperands = true;
-                    for (int i = 0; noOperands && i < 8; i++)
-                        noOperands = operands[i] == 0xFF;
-                    return noOperands;
-                }
-            }
-        }
 
         private void doFormat()
         {
@@ -108,42 +96,73 @@ namespace pjse.BhavOperandWizards.WizBhav
             cbDecimal.Enabled = format != dataFormat.caller && format != dataFormat.none;
 
             byte[] o = operands; // lazy...
-            for (int i = 0; i < nrArgs && i < apnParams.Length; i++)
+            pnWizBhav.SuspendLayout();
+            for (int i = 0; i < apnParams.Length; i++)
             {
-                apnParams[i].Enabled = format != dataFormat.none && format != dataFormat.caller;
+                apnParams[i].Enabled = (format != dataFormat.none && format != dataFormat.caller)
+                    && !(format == dataFormat.newformat && i >= 4);
                 acbDO[i].Enabled = format != dataFormat.oldformat;
                 switch (format)
                 {
                     case dataFormat.none:
-                        adoid[i] = new DataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
                             , 0x07, 0);
                         break;
                     case dataFormat.caller:
-                        adoid[i] = new DataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
                             , 0x09, (ushort)i);
                         break;
                     case dataFormat.oldformat:
-                        adoid[i] = new DataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
                             , 0x07, BhavWiz.ToShort(o[i * 2], o[i * 2 + 1]));
                         break;
                     case dataFormat.newformat:
                         if (i < 4)
-                            adoid[i] = new DataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                            adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
                                 , o[i * 3], BhavWiz.ToShort(o[(i * 3) + 1], o[(i * 3) + 2]));
+                        else
+                            adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                                , 0x07, 0);
                         break;
                 }
             }
+            pnWizBhav.ResumeLayout();
         }
 
         private void setFormat(dataFormat newformat)
         {
             if (format == newformat) return;
+            updateOperands();
             format = newformat;
-            if (format == dataFormat.none) { for (int i = 0; i < 8; i++) operands[i] = 0xff; return; }
-            if (format == dataFormat.newformat) { operands[12] |= 0x01; return; }
-            operands[12] &= 0xfe;
-            if (format == dataFormat.caller) { operands[12] |= 0x02; return; }
-            if (nodeVersion > 0) operands[12] &= 0xfd;
+            if (format != dataFormat.newformat) operands[12] &= 0xfe;
+            if (format != dataFormat.caller && nodeVersion > 0) operands[12] &= 0xfd;
+        }
+
+        private void updateOperands()
+        {
+            switch (format)
+            {
+                case dataFormat.none: for (int i = 0; i < 8; i++) operands[i] = 0xff; break;
+                case dataFormat.caller: operands[12] &= 0xfe; operands[12] |= 0x02; break;
+                case dataFormat.oldformat:
+                    for (int i = 0; i < 8; i++)
+                    {
+                        operands[i * 2] = (byte)(adoid[i].Value & 0xff);
+                        operands[i * 2 + 1] = (byte)(adoid[i].Value >> 8 & 0xff);
+                    }
+                    operands[12] &= 0xfe;
+                    if (nodeVersion > 0) operands[12] &= 0xfd;
+                    break;
+                case dataFormat.newformat:
+                    for (int i = 0; i < 4; i++)
+                    {
+                        operands[i * 3] = adoid[i].DataOwner;
+                        operands[i * 3 + 1] = (byte)(adoid[i].Value & 0xff);
+                        operands[i * 3 + 2] = (byte)(adoid[i].Value >> 8 & 0xff);
+                    }
+                    operands[12] |= 0x01;
+                    break;
+            }
         }
 
         public void Execute(Instruction inst)
@@ -158,7 +177,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
             TPRP tprp = wrapper.TPRPResource;
             nrArgs = wrapper.Header.ArgumentCount;
-            adoid = new DataOwnerControl[nrArgs];
 
             this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": " + wrapper.FileName;
             this.lbArgC.Text = "0x" + SimPe.Helper.HexString(nrArgs);
@@ -170,21 +188,17 @@ namespace pjse.BhavOperandWizards.WizBhav
             for (int i = 0; i < nrArgs; i++)
                 if (tprp != null && i < tprp.Count) albParams[i].Text = tprp[false, i].Label;
             for (int i = nrArgs; i < albParams.Length; i++)
-            {
-                albParams[i].Visible = apnParams[i].Visible = false;
-                tlpHeader.Controls.Remove(albParams[i]);
-                tlpHeader.Controls.Remove(apnParams[i]);
-            }
-            if (nrArgs == 0)
-            {
-                tlpHeader.Controls.Remove(lbParams);
-                tlpHeader.Controls.Remove(pnFormat);
-            }
+                albParams[i].Text = pjse.Localization.GetString("bwb_unused");
 
-            if (NoOperands)
-            {
+            bool noOperands = true;
+            if (nodeVersion > 0)
+                noOperands = false;
+            else
+                for (int i = 0; noOperands && i < 8; i++)
+                    noOperands = operands[i] == 0xFF;
+
+            if (noOperands)
                 format = dataFormat.none;
-            }
             else
             {
                 Boolset b12 = operands[12];
@@ -210,26 +224,7 @@ namespace pjse.BhavOperandWizards.WizBhav
         {
             if (inst != null)
             {
-                switch (format)
-                {
-                    case dataFormat.none: break;
-                    case dataFormat.caller: break;
-                    case dataFormat.oldformat:
-                        for (int i = 0; i < nrArgs && i < 8; i++)
-                        {
-                            operands[i * 2] = (byte)(adoid[i].Value & 0xff);
-                            operands[i * 2 + 1] = (byte)(adoid[i].Value >> 8 & 0xff);
-                        }
-                        break;
-                    case dataFormat.newformat:
-                        for (int i = 0; i < nrArgs && i < 4; i++)
-                        {
-                            operands[i * 3] = adoid[i].DataOwner;
-                            operands[i * 3 + 1] = (byte)(adoid[i].Value & 0xff);
-                            operands[i * 3 + 2] = (byte)(adoid[i].Value >> 8 & 0xff);
-                        }
-                        break;
-                }
+                updateOperands();
                 for (int i = 0; i < 8; i++) inst.Operands[i] = operands[i];
                 for (int i = 0; i < 8; i++) inst.Reserved1[i] = operands[i + 8];
             }

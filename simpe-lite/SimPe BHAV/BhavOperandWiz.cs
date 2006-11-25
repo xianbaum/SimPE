@@ -289,6 +289,13 @@ namespace pjse.BhavOperandWizards
         public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
             CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, cbkDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance); 
+        }
+
+        public void SetDataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
+            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+        {
+            this.Dispose();
             this.inst = inst;
             this.cbDataOwner = cbDataOwner;
             this.cbPicker = cbPicker;
@@ -347,15 +354,20 @@ namespace pjse.BhavOperandWizards
 
 		public void Dispose()
 		{
-			this.inst = null;
-			this.cbDataOwner = null;
-			this.cbPicker = null;
-			this.tbValue = null;
-			this.flagsFor = null;
-			this.cbDataOwner.SelectedIndexChanged -= new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
-			this.cbPicker.SelectedIndexChanged -= new System.EventHandler(this.cbPicker_SelectedIndexChanged);
-			this.tbValue.TextChanged -= new System.EventHandler(this.tbValue_TextChanged);
-		}
+            if (this.cbDataOwner != null) this.cbDataOwner.SelectedIndexChanged -= new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
+            if (this.cbPicker != null) this.cbPicker.SelectedIndexChanged -= new System.EventHandler(this.cbPicker_SelectedIndexChanged);
+			if (this.tbValue != null) this.tbValue.TextChanged -= new System.EventHandler(this.tbValue_TextChanged);
+            if (this.ckbDecimal != null) this.ckbDecimal.CheckedChanged -= new EventHandler(this.ckbDecimal_CheckedChanged);
+            if (this.ckbUseAttrPicker != null) this.ckbUseAttrPicker.CheckedChanged -= new EventHandler(this.ckbUseAttrPicker_CheckedChanged);
+            this.inst = null;
+            this.cbDataOwner = null;
+            this.cbPicker = null;
+            this.tbValue = null;
+            this.ckbDecimal = null;
+            this.ckbUseAttrPicker = null;
+            this.lbConst = null;
+            this.flagsFor = null;
+        }
 
 		#endregion
 

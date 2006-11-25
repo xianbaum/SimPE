@@ -1343,4 +1343,8 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
   <data name="helpPJSEAboutSimPEBuild" xml:space="preserve">
     <value>Build SimPE version</value>
   </data>
+  <data name="bwb_unused" xml:space="preserve">
+    <value>Unused</value>
+    <comment>Label for unused parameters (based on called BHAV argc)</comment>
+  </data>
 </root>

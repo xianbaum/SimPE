@@ -32,6 +32,7 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.label1 = new System.Windows.Forms.Label();
             this.pnWizBhav = new System.Windows.Forms.Panel();
             this.tlpHeader = new System.Windows.Forms.TableLayoutPanel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.pnParam7 = new System.Windows.Forms.Panel();
             this.lbConst7 = new System.Windows.Forms.Label();
             this.cbPicker7 = new System.Windows.Forms.ComboBox();
@@ -121,30 +122,38 @@ namespace pjse.BhavOperandWizards.WizBhav
             // tlpHeader
             // 
             resources.ApplyResources(this.tlpHeader, "tlpHeader");
-            this.tlpHeader.Controls.Add(this.pnParam7, 1, 11);
-            this.tlpHeader.Controls.Add(this.pnParam6, 1, 10);
-            this.tlpHeader.Controls.Add(this.pnParam5, 1, 9);
-            this.tlpHeader.Controls.Add(this.pnParam4, 1, 8);
-            this.tlpHeader.Controls.Add(this.pnParam3, 1, 7);
-            this.tlpHeader.Controls.Add(this.pnParam2, 1, 6);
-            this.tlpHeader.Controls.Add(this.pnParam1, 1, 5);
-            this.tlpHeader.Controls.Add(this.lbParam7, 0, 11);
-            this.tlpHeader.Controls.Add(this.lbParam6, 0, 10);
-            this.tlpHeader.Controls.Add(this.lbParam5, 0, 9);
-            this.tlpHeader.Controls.Add(this.lbParam4, 0, 8);
-            this.tlpHeader.Controls.Add(this.lbParam3, 0, 7);
-            this.tlpHeader.Controls.Add(this.lbParam2, 0, 6);
-            this.tlpHeader.Controls.Add(this.lbParam1, 0, 5);
-            this.tlpHeader.Controls.Add(this.lbParam0, 0, 4);
+            this.tlpHeader.Controls.Add(this.panel3, 0, 2);
+            this.tlpHeader.Controls.Add(this.pnParam7, 1, 12);
+            this.tlpHeader.Controls.Add(this.pnParam6, 1, 11);
+            this.tlpHeader.Controls.Add(this.pnParam5, 1, 10);
+            this.tlpHeader.Controls.Add(this.pnParam4, 1, 9);
+            this.tlpHeader.Controls.Add(this.pnParam3, 1, 8);
+            this.tlpHeader.Controls.Add(this.pnParam2, 1, 7);
+            this.tlpHeader.Controls.Add(this.pnParam1, 1, 6);
+            this.tlpHeader.Controls.Add(this.lbParam7, 0, 12);
+            this.tlpHeader.Controls.Add(this.lbParam6, 0, 11);
+            this.tlpHeader.Controls.Add(this.lbParam5, 0, 10);
+            this.tlpHeader.Controls.Add(this.lbParam4, 0, 9);
+            this.tlpHeader.Controls.Add(this.lbParam3, 0, 8);
+            this.tlpHeader.Controls.Add(this.lbParam2, 0, 7);
+            this.tlpHeader.Controls.Add(this.lbParam1, 0, 6);
+            this.tlpHeader.Controls.Add(this.lbParam0, 0, 5);
             this.tlpHeader.Controls.Add(this.lbArgC, 1, 1);
             this.tlpHeader.Controls.Add(this.lbBhavName, 1, 0);
             this.tlpHeader.Controls.Add(this.label3, 0, 1);
             this.tlpHeader.Controls.Add(this.label2, 0, 0);
-            this.tlpHeader.Controls.Add(this.lbParams, 0, 2);
-            this.tlpHeader.Controls.Add(this.pnParam0, 1, 4);
-            this.tlpHeader.Controls.Add(this.pnFormat, 1, 2);
-            this.tlpHeader.Controls.Add(this.panel2, 1, 3);
+            this.tlpHeader.Controls.Add(this.lbParams, 0, 3);
+            this.tlpHeader.Controls.Add(this.pnParam0, 1, 5);
+            this.tlpHeader.Controls.Add(this.pnFormat, 1, 3);
+            this.tlpHeader.Controls.Add(this.panel2, 1, 4);
             this.tlpHeader.Name = "tlpHeader";
+            // 
+            // panel3
+            // 
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tlpHeader.SetColumnSpan(this.panel3, 2);
+            this.panel3.Name = "panel3";
             // 
             // pnParam7
             // 
@@ -635,5 +644,6 @@ namespace pjse.BhavOperandWizards.WizBhav
         private System.Windows.Forms.CheckBox cbAttrPicker;
         private System.Windows.Forms.CheckBox cbDecimal;
         private System.Windows.Forms.RadioButton rbNew;
+        private System.Windows.Forms.Panel panel3;
     }
 }
