@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+25 November 2006 14:33 - WizBhav: Don't make the Decimal/Attr checkboxes disappear
+  SimPe BHAV\
+    BhavOperandWizBhav.cs 1.1.8.3.22.4
+
 25 November 2006 14:00 - WizBhav: Remove node version field; use radio buttons for format
   SimPe BHAV\
     BhavOperandWizBhav.cs 1.1.8.3.22.3

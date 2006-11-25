@@ -104,7 +104,8 @@ namespace pjse.BhavOperandWizards.WizBhav
 
         private void doFormat()
         {
-            cbAttrPicker.Visible = cbDecimal.Visible = format == dataFormat.newformat;
+            cbAttrPicker.Enabled = format == dataFormat.newformat;
+            cbDecimal.Enabled = format != dataFormat.caller && format != dataFormat.none;
 
             byte[] o = operands; // lazy...
             for (int i = 0; i < nrArgs && i < apnParams.Length; i++)
