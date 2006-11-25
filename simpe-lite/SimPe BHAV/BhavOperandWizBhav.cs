@@ -65,6 +65,8 @@ namespace pjse.BhavOperandWizards.WizBhav
                 lbConst0, lbConst1, lbConst2, lbConst3,
                 lbConst4, lbConst5, lbConst6, lbConst7
             };
+
+            arbFormat = new List<RadioButton>(new RadioButton[] { rbNone, rbCallers, rbOld, rbNew });
         }
 
         #region UI
@@ -82,15 +84,7 @@ namespace pjse.BhavOperandWizards.WizBhav
         private ComboBox[] acbP = null;
         private TextBox[] atbV = null;
         private Label[] albC = null;
-
-        private bool hex8_IsValid(object sender)
-        {
-            if (!sender.Equals(this.tbNodeVersion))
-                throw new Exception("hex8_IsValid not applicable to control " + sender.ToString());
-            try { Convert.ToByte(((TextBox)sender).Text, 16); }
-            catch (Exception) { return false; }
-            return true;
-        }
+        private List<RadioButton> arbFormat = null;
 
         private bool NoOperands
         {
@@ -110,7 +104,6 @@ namespace pjse.BhavOperandWizards.WizBhav
 
         private void doFormat()
         {
-            this.cbParams.SelectedIndex = (int)format;
             cbAttrPicker.Visible = cbDecimal.Visible = format == dataFormat.newformat;
 
             byte[] o = operands; // lazy...
@@ -141,21 +134,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             }
         }
 
-        private void doNodeVersion()
-        {
-            if (NoOperands)
-                format = dataFormat.none;
-            else
-            {
-                Boolset b12 = operands[12];
-
-                format = b12[0]
-                    ? dataFormat.newformat
-                    : (nodeVersion == 0 || !b12[1] ? dataFormat.oldformat : dataFormat.caller);
-            }
-            doFormat();
-        }
-
         private void setFormat(dataFormat newformat)
         {
             if (format == newformat) return;
@@ -183,7 +161,6 @@ namespace pjse.BhavOperandWizards.WizBhav
 
             this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": " + wrapper.FileName;
             this.lbArgC.Text = "0x" + SimPe.Helper.HexString(nrArgs);
-            this.tbNodeVersion.Text = "0x" + SimPe.Helper.HexString(nodeVersion);
 
             operands = new byte[16];
             ((byte[])inst.Operands).CopyTo(operands, 0);
@@ -197,7 +174,31 @@ namespace pjse.BhavOperandWizards.WizBhav
                 tlpHeader.Controls.Remove(albParams[i]);
                 tlpHeader.Controls.Remove(apnParams[i]);
             }
-            doNodeVersion();
+            if (nrArgs == 0)
+            {
+                tlpHeader.Controls.Remove(lbParams);
+                tlpHeader.Controls.Remove(pnFormat);
+            }
+
+            if (NoOperands)
+            {
+                format = dataFormat.none;
+            }
+            else
+            {
+                Boolset b12 = operands[12];
+                format = b12[0]
+                    ? dataFormat.newformat
+                    : (nodeVersion == 0 || !b12[1] ? dataFormat.oldformat : dataFormat.caller);
+            }
+            rbNone.Enabled = nodeVersion == 0;
+            rbCallers.Enabled = nodeVersion > 0;
+            rbCallers.Checked = format == dataFormat.caller;
+            rbNew.Checked = format == dataFormat.newformat;
+            rbNone.Checked = format == dataFormat.none;
+            rbOld.Checked = format == dataFormat.oldformat;
+
+            doFormat();
 
             internalchg = false;
 
@@ -236,50 +237,14 @@ namespace pjse.BhavOperandWizards.WizBhav
 
         #endregion
 
-        private void cbParams_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (nodeVersion == 0 && cbParams.SelectedIndex == (int)dataFormat.caller
-                || nodeVersion > 0 && cbParams.SelectedIndex == (int)dataFormat.none)
-                cbParams.SelectedIndex = (int)dataFormat.oldformat;
-
-            setFormat((dataFormat)Enum.Parse(format.GetType(), cbParams.SelectedIndex.ToString()));
-
-            doFormat();
-        }
-
-        private void hex8_TextChanged(object sender, System.EventArgs ev)
+        private void rb_CheckedChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            if (!hex8_IsValid(sender)) return;
 
-            internalchg = true;
-
-            nodeVersion = Convert.ToByte(((TextBox)sender).Text, 16);
-            doNodeVersion();
-
-            internalchg = false;
-        }
-
-        private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (hex8_IsValid(sender)) return;
-
-            e.Cancel = true;
-
-            nodeVersion = inst.NodeVersion;
-            doNodeVersion();
-
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(inst.NodeVersion);
-            ((TextBox)sender).SelectAll();
-        }
-
-        private void hex8_Validated(object sender, System.EventArgs e)
-        {
-            bool origstate = internalchg;
-            internalchg = true;
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
-            ((TextBox)sender).SelectAll();
-            internalchg = origstate;
+            int i = arbFormat.IndexOf((RadioButton)sender);
+            if (!arbFormat[i].Checked) return;
+            setFormat((dataFormat)Enum.Parse(format.GetType(), i.ToString()));
+            doFormat();
         }
     }
 }

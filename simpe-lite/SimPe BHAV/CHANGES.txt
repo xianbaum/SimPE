@@ -1,5 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+25 November 2006 14:00 - WizBhav: Remove node version field; use radio buttons for format
+  SimPe BHAV\
+    BhavOperandWizBhav.cs 1.1.8.3.22.3
+    BhavOperandWizBhav.Designer.cs 1.1.2.3
+    BhavOperandWizBhav.resx 1.1.8.3.22.3
+
 24 November 2006 23:12 - WizBhav: Wrote the Bhav Operand Wizard
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.14.2.1

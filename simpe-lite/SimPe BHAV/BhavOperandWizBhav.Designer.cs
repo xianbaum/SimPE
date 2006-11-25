@@ -76,19 +76,21 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.lbParam1 = new System.Windows.Forms.Label();
             this.lbParam0 = new System.Windows.Forms.Label();
             this.lbArgC = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.lbBhavName = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.tbNodeVersion = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lbParams = new System.Windows.Forms.Label();
             this.pnParam0 = new System.Windows.Forms.Panel();
             this.lbConst0 = new System.Windows.Forms.Label();
             this.cbPicker0 = new System.Windows.Forms.ComboBox();
             this.tbVal0 = new System.Windows.Forms.TextBox();
             this.cbDataOwner0 = new System.Windows.Forms.ComboBox();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.cbParams = new System.Windows.Forms.ComboBox();
+            this.pnFormat = new System.Windows.Forms.Panel();
+            this.rbNew = new System.Windows.Forms.RadioButton();
+            this.rbOld = new System.Windows.Forms.RadioButton();
+            this.rbCallers = new System.Windows.Forms.RadioButton();
+            this.rbNone = new System.Windows.Forms.RadioButton();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.cbAttrPicker = new System.Windows.Forms.CheckBox();
             this.cbDecimal = new System.Windows.Forms.CheckBox();
             this.pnWizBhav.SuspendLayout();
@@ -101,7 +103,8 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.pnParam2.SuspendLayout();
             this.pnParam1.SuspendLayout();
             this.pnParam0.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.pnFormat.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -134,14 +137,13 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.tlpHeader.Controls.Add(this.lbParam1, 0, 5);
             this.tlpHeader.Controls.Add(this.lbParam0, 0, 4);
             this.tlpHeader.Controls.Add(this.lbArgC, 1, 1);
-            this.tlpHeader.Controls.Add(this.label4, 0, 2);
             this.tlpHeader.Controls.Add(this.lbBhavName, 1, 0);
             this.tlpHeader.Controls.Add(this.label3, 0, 1);
             this.tlpHeader.Controls.Add(this.label2, 0, 0);
-            this.tlpHeader.Controls.Add(this.tbNodeVersion, 1, 2);
-            this.tlpHeader.Controls.Add(this.label5, 0, 3);
+            this.tlpHeader.Controls.Add(this.lbParams, 0, 2);
             this.tlpHeader.Controls.Add(this.pnParam0, 1, 4);
-            this.tlpHeader.Controls.Add(this.panel1, 1, 3);
+            this.tlpHeader.Controls.Add(this.pnFormat, 1, 2);
+            this.tlpHeader.Controls.Add(this.panel2, 1, 3);
             this.tlpHeader.Name = "tlpHeader";
             // 
             // pnParam7
@@ -420,11 +422,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.lbArgC, "lbArgC");
             this.lbArgC.Name = "lbArgC";
             // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
-            // 
             // lbBhavName
             // 
             resources.ApplyResources(this.lbBhavName, "lbBhavName");
@@ -440,18 +437,10 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
             // 
-            // tbNodeVersion
+            // lbParams
             // 
-            resources.ApplyResources(this.tbNodeVersion, "tbNodeVersion");
-            this.tbNodeVersion.Name = "tbNodeVersion";
-            this.tbNodeVersion.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbNodeVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbNodeVersion.TextChanged += new System.EventHandler(this.hex8_TextChanged);
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
+            resources.ApplyResources(this.lbParams, "lbParams");
+            this.lbParams.Name = "lbParams";
             // 
             // pnParam0
             // 
@@ -486,26 +475,53 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.cbDataOwner0, "cbDataOwner0");
             this.cbDataOwner0.Name = "cbDataOwner0";
             // 
-            // panel1
+            // pnFormat
             // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.cbParams);
-            this.panel1.Controls.Add(this.cbAttrPicker);
-            this.panel1.Controls.Add(this.cbDecimal);
-            this.panel1.Name = "panel1";
+            resources.ApplyResources(this.pnFormat, "pnFormat");
+            this.pnFormat.Controls.Add(this.rbNew);
+            this.pnFormat.Controls.Add(this.rbOld);
+            this.pnFormat.Controls.Add(this.rbCallers);
+            this.pnFormat.Controls.Add(this.rbNone);
+            this.pnFormat.Name = "pnFormat";
             // 
-            // cbParams
+            // rbNew
             // 
-            this.cbParams.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbParams.FormattingEnabled = true;
-            this.cbParams.Items.AddRange(new object[] {
-            resources.GetString("cbParams.Items"),
-            resources.GetString("cbParams.Items1"),
-            resources.GetString("cbParams.Items2"),
-            resources.GetString("cbParams.Items3")});
-            resources.ApplyResources(this.cbParams, "cbParams");
-            this.cbParams.Name = "cbParams";
-            this.cbParams.SelectedIndexChanged += new System.EventHandler(this.cbParams_SelectedIndexChanged);
+            resources.ApplyResources(this.rbNew, "rbNew");
+            this.rbNew.Name = "rbNew";
+            this.rbNew.TabStop = true;
+            this.rbNew.UseVisualStyleBackColor = true;
+            this.rbNew.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            // 
+            // rbOld
+            // 
+            resources.ApplyResources(this.rbOld, "rbOld");
+            this.rbOld.Name = "rbOld";
+            this.rbOld.TabStop = true;
+            this.rbOld.UseVisualStyleBackColor = true;
+            this.rbOld.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            // 
+            // rbCallers
+            // 
+            resources.ApplyResources(this.rbCallers, "rbCallers");
+            this.rbCallers.Name = "rbCallers";
+            this.rbCallers.TabStop = true;
+            this.rbCallers.UseVisualStyleBackColor = true;
+            this.rbCallers.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            // 
+            // rbNone
+            // 
+            resources.ApplyResources(this.rbNone, "rbNone");
+            this.rbNone.Name = "rbNone";
+            this.rbNone.TabStop = true;
+            this.rbNone.UseVisualStyleBackColor = true;
+            this.rbNone.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            // 
+            // panel2
+            // 
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Controls.Add(this.cbAttrPicker);
+            this.panel2.Controls.Add(this.cbDecimal);
+            this.panel2.Name = "panel2";
             // 
             // cbAttrPicker
             // 
@@ -544,8 +560,10 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.pnParam1.PerformLayout();
             this.pnParam0.ResumeLayout(false);
             this.pnParam0.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.pnFormat.ResumeLayout(false);
+            this.pnFormat.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -557,7 +575,6 @@ namespace pjse.BhavOperandWizards.WizBhav
         internal System.Windows.Forms.Panel pnWizBhav;
         private System.Windows.Forms.TableLayoutPanel tlpHeader;
         private System.Windows.Forms.Label lbArgC;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label lbBhavName;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
@@ -569,8 +586,7 @@ namespace pjse.BhavOperandWizards.WizBhav
         private System.Windows.Forms.Label lbParam2;
         private System.Windows.Forms.Label lbParam1;
         private System.Windows.Forms.Label lbParam0;
-        private System.Windows.Forms.TextBox tbNodeVersion;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lbParams;
         private System.Windows.Forms.Panel pnParam7;
         private System.Windows.Forms.Panel pnParam6;
         private System.Windows.Forms.Panel pnParam5;
@@ -579,10 +595,7 @@ namespace pjse.BhavOperandWizards.WizBhav
         private System.Windows.Forms.Panel pnParam2;
         private System.Windows.Forms.Panel pnParam1;
         private System.Windows.Forms.Panel pnParam0;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ComboBox cbParams;
-        private System.Windows.Forms.CheckBox cbAttrPicker;
-        private System.Windows.Forms.CheckBox cbDecimal;
+        private System.Windows.Forms.Panel pnFormat;
         private System.Windows.Forms.Label lbConst5;
         private System.Windows.Forms.ComboBox cbPicker5;
         private System.Windows.Forms.TextBox tbVal5;
@@ -615,5 +628,12 @@ namespace pjse.BhavOperandWizards.WizBhav
         private System.Windows.Forms.ComboBox cbPicker0;
         private System.Windows.Forms.TextBox tbVal0;
         private System.Windows.Forms.ComboBox cbDataOwner0;
+        private System.Windows.Forms.RadioButton rbOld;
+        private System.Windows.Forms.RadioButton rbCallers;
+        private System.Windows.Forms.RadioButton rbNone;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.CheckBox cbAttrPicker;
+        private System.Windows.Forms.CheckBox cbDecimal;
+        private System.Windows.Forms.RadioButton rbNew;
     }
 }
