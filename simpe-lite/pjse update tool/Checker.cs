@@ -52,13 +52,13 @@ namespace pjse.Updates
             if ((Settings.US.AutoUpdateChoice == Settings.AutoUpdateChoiceValue.Daily)
                 && (DateTime.UtcNow.Date != Settings.US.LastUpdateTS.Date))
             {
-                try { GetUpdate(); }
+                try { GetUpdate(true); }
                 catch (ArgumentException) { }
                 Settings.US.LastUpdateTS = DateTime.UtcNow; // Only the automated check updates this setting
             }
         }
 
-        public static bool GetUpdate()
+        public static bool GetUpdate(bool autoCheck)
         {
             UpdateInfo ui = null;
             try { ui = new UpdateInfo(); }
@@ -73,22 +73,23 @@ namespace pjse.Updates
                 throw new ArgumentException();
             }
 
-            if (UpdateApplicable(ui))
+            if (UpdateApplicable(ui, autoCheck))
             {
-                DialogResult dr = MessageBox.Show(
-                    pjse.Localization.GetString("UCUpdatable")
-                    + "\r\n\r\n" + ui.UpdateURL
-                    , pjse.Localization.GetString("pjse_UpdateSettings")
-                    , MessageBoxButtons.YesNo, MessageBoxIcon.Question
-                );
-                if (dr == DialogResult.Yes)
-                    SimPe.RemoteControl.ShowHelp(ui.UpdateURL);
+                SkipPrompt sp = new SkipPrompt();
+                sp.llURL.Text = ui.UpdateURL;
+                sp.StartPosition = FormStartPosition.CenterParent;
+                sp.btnIgnore.Visible = autoCheck;
+                switch (sp.ShowDialog())
+                {
+                    case DialogResult.Yes: SimPe.RemoteControl.ShowHelp(ui.UpdateURL); break;
+                    case DialogResult.Cancel: Settings.US.LastIgnoredTS = ui.AvailableVersion; break;
+                }
                 return true;
             }
             return false;
         }
 
-        private static bool UpdateApplicable(UpdateInfo ui)
+        private static bool UpdateApplicable(UpdateInfo ui, bool autoCheck)
         {
             String ts = pjse.Version.BuildTS;
             SimPe.PathProvider simpe = SimPe.PathProvider.Global;
@@ -99,6 +100,7 @@ namespace pjse.Updates
                 "Update URL: " + Settings.US.AutoUpdateURL
                 + "\r\n" + pjse.Localization.GetString("helpPJSEAboutPJSEVersion") + ": " + ts
                 + "\r\n" + "offered PJSE version: " + ui.AvailableVersion
+                + "\r\n" + "last ignored PJSE version: " + Settings.US.LastIgnoredTS
                 + "\r\n"
                 + "\r\n" + pjse.Localization.GetString("helpPJSEAboutSimPEVersion") + ": " + simpeVersion.FileVersion
                 + "\r\n" + "Required Min SimPE version: " + ui.MinSimPEVersion
@@ -106,6 +108,9 @@ namespace pjse.Updates
                 , pjse.Localization.GetString("pjse_UpdateSettings")
                 );
 #endif
+
+            if (autoCheck && ui.AvailableVersion.CompareTo(Settings.US.LastIgnoredTS) <= 0)
+                return false;
 
             if (ui.AvailableVersion.CompareTo(ts) <= 0)
                 return false;

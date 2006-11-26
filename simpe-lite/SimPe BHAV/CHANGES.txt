@@ -1,5 +1,18 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+26 November 2006 17:10 - Updater: Allow for skipping updates
+  pjse Localisation\
+    Localization.resx 1.1.4.22
+  pjse update tool\
+    Checker.cs 1.1.4.2
+    pjse update tool.csproj 1.1.4.2
+    Settings.cs 1.1.4.2
+    SkipPrompt.cs 1.1.2.1
+    SkipPrompt.Designer.cs 1.1.2.1
+    SkipPrompt.resx 1.1.2.1
+  SimPe BHAV\
+    WrapperFactory.cs 1.20.2.15
+
 26 November 2006 09:53 - WizBhav: Set textbox length initially
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.14.6.3

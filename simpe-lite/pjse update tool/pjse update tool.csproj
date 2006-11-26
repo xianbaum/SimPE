@@ -43,6 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SkipPrompt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SkipPrompt.Designer.cs">
+      <DependentUpon>SkipPrompt.cs</DependentUpon>
+    </Compile>
     <Compile Include="UpdateInfo.cs" />
     <Compile Include="Checker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +61,12 @@
       <Name>pjse localisation</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="SkipPrompt.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SkipPrompt.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

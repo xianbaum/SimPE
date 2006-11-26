@@ -1347,4 +1347,10 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
     <value>Unused</value>
     <comment>Label for unused parameters (based on called BHAV argc)</comment>
   </data>
+  <data name="[Description:LastIgnoredTS]" xml:space="preserve">
+    <value>This is the timestamp that is checked to see whether you ignored a new version of PJSE.  You should never need to change it here.</value>
+  </data>
+  <data name="[Property:LastIgnoredTS]" xml:space="preserve">
+    <value>Last ignored timestamp</value>
+  </data>
 </root>

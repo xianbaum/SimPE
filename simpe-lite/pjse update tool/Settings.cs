@@ -97,6 +97,27 @@ namespace pjse.Updates
         }
         public enum AutoUpdateChoiceValue : int { AskMe = 0, Daily = 1, Manual = 2 };
 
+
+#if !DEBUG
+        [System.ComponentModel.Browsable(false)]
+#endif
+        [System.ComponentModel.Category("UpdateTool")]
+        public String LastIgnoredTS
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("lastIgnoredTS", "");
+                return Convert.ToString(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("lastIgnoredTS", value);
+            }
+        }
+
         #region ISettings Members
 
         public object GetSettingsObject() { return this; }
