@@ -81,13 +81,12 @@ namespace pjse
 			if (wiz == null) return null;
 
 			Panel pn = wiz.bhavPrimWizPanel;
-			pn.Parent = this;
-			pn.Top = 0;
-			pn.Left = 0;
-			pn.TabIndex = 1;
-			int footHeight = this.Height - this.panel1.Bottom + 8;
-			this.Width = pn.Width + 8;
-			this.Height = pn.Height + footHeight;
+            pn.Parent = this;
+            pn.Top = 0;
+            pn.Left = 0;
+            pn.TabIndex = 1;
+            pn_Resize(pn, null);
+            pn.Resize += new EventHandler(pn_Resize);
 			wiz.Execute();
 
 			DialogResult dr = ShowDialog();
@@ -101,6 +100,14 @@ namespace pjse
 					return null;
 			}
 		}
+
+        void pn_Resize(object sender, EventArgs e)
+        {
+            Panel pn = (Panel)sender;
+            int footHeight = this.Height - this.panel1.Bottom + 8;
+            this.Width = pn.Width + 8;
+            this.Height = pn.Height + footHeight;
+        }
 
 
 		#region Vom Windows Form-Designer generierter Code
@@ -282,6 +289,13 @@ namespace pjse.BhavOperandWizards
         public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
             CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, cbkDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance); 
+        }
+
+        public void SetDataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
+            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+        {
+            this.Dispose();
             this.inst = inst;
             this.cbDataOwner = cbDataOwner;
             this.cbPicker = cbPicker;
@@ -332,6 +346,7 @@ namespace pjse.BhavOperandWizards
             else
                 UseAttrPicker = true;
 
+            setTextBoxLength();
             setConstLabel();
         }
 
@@ -340,15 +355,20 @@ namespace pjse.BhavOperandWizards
 
 		public void Dispose()
 		{
-			this.inst = null;
-			this.cbDataOwner = null;
-			this.cbPicker = null;
-			this.tbValue = null;
-			this.flagsFor = null;
-			this.cbDataOwner.SelectedIndexChanged -= new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
-			this.cbPicker.SelectedIndexChanged -= new System.EventHandler(this.cbPicker_SelectedIndexChanged);
-			this.tbValue.TextChanged -= new System.EventHandler(this.tbValue_TextChanged);
-		}
+            if (this.cbDataOwner != null) this.cbDataOwner.SelectedIndexChanged -= new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
+            if (this.cbPicker != null) this.cbPicker.SelectedIndexChanged -= new System.EventHandler(this.cbPicker_SelectedIndexChanged);
+			if (this.tbValue != null) this.tbValue.TextChanged -= new System.EventHandler(this.tbValue_TextChanged);
+            if (this.ckbDecimal != null) this.ckbDecimal.CheckedChanged -= new EventHandler(this.ckbDecimal_CheckedChanged);
+            if (this.ckbUseAttrPicker != null) this.ckbUseAttrPicker.CheckedChanged -= new EventHandler(this.ckbUseAttrPicker_CheckedChanged);
+            this.inst = null;
+            this.cbDataOwner = null;
+            this.cbPicker = null;
+            this.tbValue = null;
+            this.ckbDecimal = null;
+            this.ckbUseAttrPicker = null;
+            this.lbConst = null;
+            this.flagsFor = null;
+        }
 
 		#endregion
 
@@ -455,10 +475,11 @@ namespace pjse.BhavOperandWizards
         private static int[] decBitToDigits = new int[] { 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5 };
         private void setTextBoxLength()
         {
-            tbValue.MaxLength = Convert.ToInt32(
-                (this.dataOwner == 0x1a) ? 13 : (this.dataOwner == 0x2f) ? 15 :
-                isDecimal ? 1 + decBitToDigits[bitsInValue - 1] : (use0xPrefix ? 2 : 0) + ((bitsInValue - 1) / 4) + 1
-                );
+            if (this.tbValue != null)
+                tbValue.MaxLength = Convert.ToInt32(
+                    (this.dataOwner == 0x1a) ? 13 : (this.dataOwner == 0x2f) ? 15 :
+                    isDecimal ? 1 + decBitToDigits[bitsInValue - 1] : (use0xPrefix ? 2 : 0) + ((bitsInValue - 1) / 4) + 1
+                    );
         }
 
 		private void SetValue(ushort i)

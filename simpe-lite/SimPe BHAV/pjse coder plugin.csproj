@@ -196,6 +196,9 @@
     <Compile Include="BhavOperandWizBhav.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="BhavOperandWizBhav.Designer.cs">
+      <DependentUpon>BhavOperandWizBhav.cs</DependentUpon>
+    </Compile>
     <Compile Include="BhavOperandWizDefault.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -333,8 +336,8 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="BhavOperandWizBhav.resx">
-      <DependentUpon>BhavOperandWizBhav.cs</DependentUpon>
       <SubType>Designer</SubType>
+      <DependentUpon>BhavOperandWizBhav.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BhavOperandWizDefault.resx">
       <DependentUpon>BhavOperandWizDefault.cs</DependentUpon>
