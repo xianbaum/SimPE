@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+26 November 2006 09:53 - WizBhav: Set textbox length initially
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.14.6.3
+
 25 November 2006 20:49 - WizBhav: UI changes; clean up dataowner handling
   pjse Localisation\
     Localization.resx 1.1.4.20.2.1

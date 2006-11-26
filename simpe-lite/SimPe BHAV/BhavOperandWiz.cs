@@ -346,6 +346,7 @@ namespace pjse.BhavOperandWizards
             else
                 UseAttrPicker = true;
 
+            setTextBoxLength();
             setConstLabel();
         }
 
@@ -474,10 +475,11 @@ namespace pjse.BhavOperandWizards
         private static int[] decBitToDigits = new int[] { 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5 };
         private void setTextBoxLength()
         {
-            tbValue.MaxLength = Convert.ToInt32(
-                (this.dataOwner == 0x1a) ? 13 : (this.dataOwner == 0x2f) ? 15 :
-                isDecimal ? 1 + decBitToDigits[bitsInValue - 1] : (use0xPrefix ? 2 : 0) + ((bitsInValue - 1) / 4) + 1
-                );
+            if (this.tbValue != null)
+                tbValue.MaxLength = Convert.ToInt32(
+                    (this.dataOwner == 0x1a) ? 13 : (this.dataOwner == 0x2f) ? 15 :
+                    isDecimal ? 1 + decBitToDigits[bitsInValue - 1] : (use0xPrefix ? 2 : 0) + ((bitsInValue - 1) / 4) + 1
+                    );
         }
 
 		private void SetValue(ushort i)
