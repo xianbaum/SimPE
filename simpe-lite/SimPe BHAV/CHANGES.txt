@@ -1,5 +1,14 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+28 November 2006 18:30 - Updater: Tweak the prompt; make "Includes" uppercase
+  pjse filetable\
+    FileTable.cs 1.11.2.20
+  pjse update tool\
+    Checker.cs 1.1.4.3
+    SkipPrompt.cs 1.1.2.2
+    SkipPrompt.Designer.cs 1.1.2.2
+    SkipPrompt.resx 1.1.2.2
+
 26 November 2006 17:10 - Updater: Allow for skipping updates
   pjse Localisation\
     Localization.resx 1.1.4.22

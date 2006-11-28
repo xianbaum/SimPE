@@ -29,9 +29,27 @@ namespace pjse
 {
     public partial class SkipPrompt : Form
     {
-        public SkipPrompt()
+        public SkipPrompt(bool autoCheck, string release, string url)
         {
             InitializeComponent();
+
+            if (!autoCheck)
+            {
+                this.tableLayoutPanel1.SuspendLayout();
+                tableLayoutPanel1.Controls.Remove(btnIgnore);
+                tableLayoutPanel1.SetColumnSpan(label1, 2);
+                tableLayoutPanel1.SetColumnSpan(llURL, 2);
+                tableLayoutPanel1.ColumnCount = 2;
+                tableLayoutPanel1.ColumnStyles[0].SizeType = 
+                    tableLayoutPanel1.ColumnStyles[1].SizeType = SizeType.Percent;
+                tableLayoutPanel1.ColumnStyles[0].Width = 
+                    tableLayoutPanel1.ColumnStyles[1].Width = 50;
+                this.tableLayoutPanel1.ResumeLayout(false);
+                this.tableLayoutPanel1.PerformLayout();
+            }
+            label1.Text = label1.Text.Replace("{0}", release);
+            llURL.Text = url;
+            this.Width = tableLayoutPanel1.Width + 6;
         }
 
         private void llURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

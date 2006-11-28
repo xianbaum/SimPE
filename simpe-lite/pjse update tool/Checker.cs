@@ -75,10 +75,7 @@ namespace pjse.Updates
 
             if (UpdateApplicable(ui, autoCheck))
             {
-                SkipPrompt sp = new SkipPrompt();
-                sp.llURL.Text = ui.UpdateURL;
-                sp.StartPosition = FormStartPosition.CenterParent;
-                sp.btnIgnore.Visible = autoCheck;
+                SkipPrompt sp = new SkipPrompt(autoCheck, ui.AvailableVersion, ui.UpdateURL);
                 switch (sp.ShowDialog())
                 {
                     case DialogResult.Yes: SimPe.RemoteControl.ShowHelp(ui.UpdateURL); break;
