@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   Copyright (C) 2006 by Peter L Jones                                   *
  *   peter@drealm.info                                                     *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -18,129 +18,270 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using System.Drawing;
-using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.WizBhav
 {
-	/// <summary>
-	/// Zusammenfassung für BhavInstruction.
-	/// </summary>
-	internal class UI : System.Windows.Forms.Form
-	{
-		#region Form variables
+    internal partial class UI : Form
+    {
+        enum dataFormat : int
+        {
+            none, caller, oldformat, newformat
+        }
 
-		private System.Windows.Forms.TextBox tbval1;
-		private System.Windows.Forms.ComboBox cbPicker1;
-		private System.Windows.Forms.ComboBox cbDataOwner1;
-		private System.Windows.Forms.Label label1;
-		internal System.Windows.Forms.Panel pnWizBhav;
-		/// <summary>
-		/// Erforderliche Designervariable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+        public UI()
+        {
+            InitializeComponent();
 
-		public UI()
-		{
-			//
-			// Erforderlich für die Windows Form-Designerunterstützung
-			//
-			InitializeComponent();
-		}
+            albParams = new Label[] {
+                lbParam0, lbParam1, lbParam2, lbParam3,
+                lbParam4, lbParam5, lbParam6, lbParam7,
+            };
 
-		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+            apnParams = new Panel[] {
+                pnParam0, pnParam1, pnParam2, pnParam3,
+                pnParam4, pnParam5, pnParam6, pnParam7,
+            };
 
-		
-		#region UI
-		public void Execute(Instruction inst)
-		{
-			return;
-		}
+            acbDO = new ComboBox[] {
+                cbDataOwner0, cbDataOwner1, cbDataOwner2, cbDataOwner3,
+                cbDataOwner4, cbDataOwner5, cbDataOwner6, cbDataOwner7
+            };
 
-		public Instruction Write(Instruction inst)
-		{
-			return null;
-		}
+            acbP = new ComboBox[] {
+                cbPicker0, cbPicker1, cbPicker2, cbPicker3,
+                cbPicker4, cbPicker5, cbPicker6, cbPicker7
+            };
 
-		#endregion
+            atbV = new TextBox[] { tbVal0, tbVal1, tbVal2, tbVal3, tbVal4, tbVal5, tbVal6, tbVal7 };
 
-		#region Vom Windows Form-Designer generierter Code
-		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
-		/// </summary>
-		private void InitializeComponent()
-		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
-            this.pnWizBhav = new System.Windows.Forms.Panel();
-            this.cbPicker1 = new System.Windows.Forms.ComboBox();
-            this.tbval1 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pnWizBhav.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // pnWizBhav
-            // 
-            this.pnWizBhav.Controls.Add(this.cbPicker1);
-            this.pnWizBhav.Controls.Add(this.tbval1);
-            this.pnWizBhav.Controls.Add(this.cbDataOwner1);
-            resources.ApplyResources(this.pnWizBhav, "pnWizBhav");
-            this.pnWizBhav.Name = "pnWizBhav";
-            // 
-            // cbPicker1
-            // 
-            resources.ApplyResources(this.cbPicker1, "cbPicker1");
-            this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker1.DropDownWidth = 352;
-            this.cbPicker1.Name = "cbPicker1";
-            // 
-            // tbval1
-            // 
-            resources.ApplyResources(this.tbval1, "tbval1");
-            this.tbval1.Name = "tbval1";
-            // 
-            // cbDataOwner1
-            // 
-            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
-            this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // UI
-            // 
-            resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.pnWizBhav);
-            this.Name = "UI";
-            this.pnWizBhav.ResumeLayout(false);
-            this.pnWizBhav.PerformLayout();
-            this.ResumeLayout(false);
+            albC = new Label[] {
+                lbConst0, lbConst1, lbConst2, lbConst3,
+                lbConst4, lbConst5, lbConst6, lbConst7
+            };
 
-		}
-		#endregion
-	}
+            adoid = new DataOwnerControl[8];
+            for (int i = 0; i < adoid.Length; i++)
+                adoid[i] = new DataOwnerControl(null, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i], 0x07, 0);
 
+            arbFormat = new List<RadioButton>(new RadioButton[] { rbNone, rbCallers, rbOld, rbNew });
+        }
+
+        #region UI
+
+        private bool internalchg = false;
+        private byte[] operands = null;
+        private Instruction inst = null;
+        private byte nodeVersion = 0;
+        private byte nrArgs = 0;
+        private Label[] albParams = null;
+        private Panel[] apnParams = null;
+        private dataFormat format = dataFormat.none;
+        private ComboBox[] acbDO = null;
+        private ComboBox[] acbP = null;
+        private TextBox[] atbV = null;
+        private Label[] albC = null;
+        private DataOwnerControl[] adoid = null;
+        private List<RadioButton> arbFormat = null;
+
+        private void doFormat()
+        {
+            cbAttrPicker.Enabled = format == dataFormat.newformat;
+            cbDecimal.Enabled = format != dataFormat.caller && format != dataFormat.none;
+
+            byte[] o = operands; // lazy...
+            pnWizBhav.SuspendLayout();
+            for (int i = 0; i < apnParams.Length; i++)
+            {
+                apnParams[i].Enabled = (format != dataFormat.none && format != dataFormat.caller)
+                    && !(format == dataFormat.newformat && i >= 4);
+                acbDO[i].Enabled = format != dataFormat.oldformat;
+                switch (format)
+                {
+                    case dataFormat.none:
+                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                            , 0x07, 0);
+                        break;
+                    case dataFormat.caller:
+                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                            , 0x09, (ushort)i);
+                        break;
+                    case dataFormat.oldformat:
+                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                            , 0x07, BhavWiz.ToShort(o[i * 2], o[i * 2 + 1]));
+                        break;
+                    case dataFormat.newformat:
+                        if (i < 4)
+                            adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                                , o[i * 3], BhavWiz.ToShort(o[(i * 3) + 1], o[(i * 3) + 2]));
+                        else
+                            adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
+                                , 0x07, 0);
+                        break;
+                }
+            }
+            pnWizBhav.ResumeLayout();
+        }
+
+        private void setFormat(dataFormat newformat)
+        {
+            if (format == newformat) return;
+            updateOperands();
+            format = newformat;
+            if (format != dataFormat.newformat) operands[12] &= 0xfe;
+            if (format != dataFormat.caller && nodeVersion > 0) operands[12] &= 0xfd;
+        }
+
+        private void updateOperands()
+        {
+            switch (format)
+            {
+                case dataFormat.none: for (int i = 0; i < 8; i++) operands[i] = 0xff; break;
+                case dataFormat.caller: operands[12] &= 0xfe; operands[12] |= 0x02; break;
+                case dataFormat.oldformat:
+                    for (int i = 0; i < 8; i++)
+                    {
+                        operands[i * 2] = (byte)(adoid[i].Value & 0xff);
+                        operands[i * 2 + 1] = (byte)(adoid[i].Value >> 8 & 0xff);
+                    }
+                    operands[12] &= 0xfe;
+                    if (nodeVersion > 0) operands[12] &= 0xfd;
+                    break;
+                case dataFormat.newformat:
+                    for (int i = 0; i < 4; i++)
+                    {
+                        operands[i * 3] = adoid[i].DataOwner;
+                        operands[i * 3 + 1] = (byte)(adoid[i].Value & 0xff);
+                        operands[i * 3 + 2] = (byte)(adoid[i].Value >> 8 & 0xff);
+                    }
+                    operands[12] |= 0x01;
+                    break;
+            }
+        }
+
+        public void Execute(Instruction inst)
+        {
+            internalchg = true;
+
+            this.inst = inst;
+            nodeVersion = inst.NodeVersion;
+
+            pjse.FileTable.Entry ftEntry = inst.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, inst.OpCode);
+            Bhav wrapper = new Bhav();
+            wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
+            TPRP tprp = wrapper.TPRPResource;
+            nrArgs = wrapper.Header.ArgumentCount;
+
+            this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": " + wrapper.FileName;
+            this.lbArgC.Text = "0x" + SimPe.Helper.HexString(nrArgs);
+
+            operands = new byte[16];
+            ((byte[])inst.Operands).CopyTo(operands, 0);
+            ((byte[])inst.Reserved1).CopyTo(operands, 8);
+
+            for (int i = 0; i < nrArgs; i++)
+                if (tprp != null && i < tprp.Count) albParams[i].Text = tprp[false, i].Label;
+            for (int i = nrArgs; i < albParams.Length; i++)
+                albParams[i].Text = pjse.Localization.GetString("bwb_unused");
+
+            bool noOperands = true;
+            if (nodeVersion > 0)
+                noOperands = false;
+            else
+                for (int i = 0; noOperands && i < 8; i++)
+                    noOperands = operands[i] == 0xFF;
+
+            if (noOperands)
+                format = dataFormat.none;
+            else
+            {
+                Boolset b12 = operands[12];
+                format = b12[0]
+                    ? dataFormat.newformat
+                    : (nodeVersion == 0 || !b12[1] ? dataFormat.oldformat : dataFormat.caller);
+            }
+            rbNone.Enabled = nodeVersion == 0;
+            rbCallers.Enabled = nodeVersion > 0;
+            rbCallers.Checked = format == dataFormat.caller;
+            rbNew.Checked = format == dataFormat.newformat;
+            rbNone.Checked = format == dataFormat.none;
+            rbOld.Checked = format == dataFormat.oldformat;
+
+            doFormat();
+
+            internalchg = false;
+
+            return;
+        }
+
+        public Instruction Write(Instruction inst)
+        {
+            if (inst != null)
+            {
+                updateOperands();
+                for (int i = 0; i < 8; i++) inst.Operands[i] = operands[i];
+                for (int i = 0; i < 8; i++) inst.Reserved1[i] = operands[i + 8];
+            }
+            return inst;
+        }
+
+        #endregion
+
+        private void rb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+
+            int i = arbFormat.IndexOf((RadioButton)sender);
+            if (!arbFormat[i].Checked) return;
+            setFormat((dataFormat)Enum.Parse(format.GetType(), i.ToString()));
+            doFormat();
+        }
+    }
 }
 
+namespace pjse.BhavOperandWizards
+{
+    public class BhavOperandWizBhav : pjse.ABhavOperandWiz
+    {
+        public BhavOperandWizBhav() : base() { }
+
+        public BhavOperandWizBhav(Instruction i) : base(i) { }
+
+
+        private WizBhav.UI myForm = null;
+        public override Panel bhavPrimWizPanel
+        {
+            get
+            {
+                if (myForm == null) myForm = new WizBhav.UI();
+                return myForm.pnWizBhav;
+            }
+        }
+
+        public override void Execute()
+        {
+            if (instruction != null) myForm.Execute(instruction);
+        }
+
+        public override Instruction Write()
+        {
+            return (instruction == null) ? null : myForm.Write(instruction);
+        }
+
+
+        #region IDisposable Members
+        public override void Dispose()
+        {
+            if (myForm != null) myForm = null;
+        }
+        #endregion
+
+    }
+
+}

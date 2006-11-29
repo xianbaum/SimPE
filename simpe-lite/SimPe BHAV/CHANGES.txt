@@ -1,5 +1,71 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+28 November 2006 18:30 - Updater: Tweak the prompt; make "Includes" uppercase
+  pjse filetable\
+    FileTable.cs 1.11.2.20
+  pjse update tool\
+    Checker.cs 1.1.4.3
+    SkipPrompt.cs 1.1.2.2
+    SkipPrompt.Designer.cs 1.1.2.2
+    SkipPrompt.resx 1.1.2.2
+
+26 November 2006 17:10 - Updater: Allow for skipping updates
+  pjse Localisation\
+    Localization.resx 1.1.4.22
+  pjse update tool\
+    Checker.cs 1.1.4.2
+    pjse update tool.csproj 1.1.4.2
+    Settings.cs 1.1.4.2
+    SkipPrompt.cs 1.1.2.1
+    SkipPrompt.Designer.cs 1.1.2.1
+    SkipPrompt.resx 1.1.2.1
+  SimPe BHAV\
+    WrapperFactory.cs 1.20.2.15
+
+26 November 2006 09:53 - WizBhav: Set textbox length initially
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.14.6.3
+
+25 November 2006 20:49 - WizBhav: UI changes; clean up dataowner handling
+  pjse Localisation\
+    Localization.resx 1.1.4.20.2.1
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.14.6.2
+    BhavOperandWizBhav.cs 1.1.8.3.22.5
+    BhavOperandWizBhav.Designer.cs 1.1.2.4
+    BhavOperandWizBhav.resx 1.1.8.3.22.4
+
+25 November 2006 14:33 - WizBhav: Don't make the Decimal/Attr checkboxes disappear
+  SimPe BHAV\
+    BhavOperandWizBhav.cs 1.1.8.3.22.4
+
+25 November 2006 14:00 - WizBhav: Remove node version field; use radio buttons for format
+  SimPe BHAV\
+    BhavOperandWizBhav.cs 1.1.8.3.22.3
+    BhavOperandWizBhav.Designer.cs 1.1.2.3
+    BhavOperandWizBhav.resx 1.1.8.3.22.3
+
+24 November 2006 23:12 - WizBhav: Wrote the Bhav Operand Wizard
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.14.6.1
+    BhavOperandWizBhav.cs 1.1.8.3.22.2
+    BhavOperandWizBhav.Designer.cs 1.1.2.2
+    BhavOperandWizBhav.resx 1.1.8.3.22.2
+
+24 November 2006 14:04 - WizBhav: Create new Bhav Operand Wizard branch
+  SimPe BHAV\
+    BhavOperandWizBhav.cs 1.1.8.4
+    BhavOperandWiz.Designer.cs 1.1.2.1
+    BhavOperandWiz.resx 1.1.8.4
+    BhavWizBhav.cs 1.19.2.6
+    pjse coder plugin.csproj 1.29.2.26
+
+23 November 2006 09:35 - Add "includes" to pjse filetable; make r/c wider by default
+  pjse filetable\
+    FileTable.cs 1.11.2.19
+  SimPe BHAV\
+    ResourceChooser.resx 1.1.12.4
+
 19 November 2006 11:31 - Record build version of SimPE for PJSE Help About
   pjse Localisation\
     Localization.resx 1.1.4.20

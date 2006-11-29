@@ -136,7 +136,7 @@
     <value>0, 0</value>
   </data>
   <data name="lbPackage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+    <value>519, 175</value>
   </data>
   <data name="lbPackage.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -157,7 +157,7 @@
     <value>4, 25</value>
   </data>
   <data name="tpPackage.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+    <value>519, 175</value>
   </data>
   <data name="tpPackage.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -190,7 +190,7 @@
     <value>0, 0</value>
   </data>
   <data name="lbGlobalGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 464</value>
+    <value>378, 175</value>
   </data>
   <data name="lbGlobalGroup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -208,10 +208,10 @@
     <value>0</value>
   </data>
   <data name="tpGlobalGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 26</value>
+    <value>4, 25</value>
   </data>
   <data name="tpGlobalGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 464</value>
+    <value>378, 175</value>
   </data>
   <data name="tpGlobalGroup.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -247,7 +247,7 @@
     <value>0, 0</value>
   </data>
   <data name="lbGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 464</value>
+    <value>378, 175</value>
   </data>
   <data name="lbGroup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -265,10 +265,10 @@
     <value>0</value>
   </data>
   <data name="tpGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 26</value>
+    <value>4, 25</value>
   </data>
   <data name="tpGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 464</value>
+    <value>378, 175</value>
   </data>
   <data name="tpGroup.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -304,7 +304,7 @@
     <value>0, 0</value>
   </data>
   <data name="lbSemiGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 464</value>
+    <value>378, 175</value>
   </data>
   <data name="lbSemiGroup.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -322,10 +322,10 @@
     <value>0</value>
   </data>
   <data name="tpSemiGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 26</value>
+    <value>4, 25</value>
   </data>
   <data name="tpSemiGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 464</value>
+    <value>378, 175</value>
   </data>
   <data name="tpSemiGroup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -361,7 +361,7 @@
     <value>0, 0</value>
   </data>
   <data name="lbBuiltIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 464</value>
+    <value>378, 175</value>
   </data>
   <data name="lbBuiltIn.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -379,10 +379,10 @@
     <value>0</value>
   </data>
   <data name="tpBuiltIn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 26</value>
+    <value>4, 25</value>
   </data>
   <data name="tpBuiltIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>356, 464</value>
+    <value>378, 175</value>
   </data>
   <data name="tpBuiltIn.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -406,7 +406,7 @@
     <value>0, 0</value>
   </data>
   <data name="tcResources.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 204</value>
+    <value>527, 204</value>
   </data>
   <data name="tcResources.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -427,7 +427,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="OK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>311, 210</value>
+    <value>452, 210</value>
   </data>
   <data name="OK.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 27</value>
@@ -454,7 +454,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="Cancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>244, 210</value>
+    <value>385, 210</value>
   </data>
   <data name="Cancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 27</value>
@@ -484,7 +484,7 @@
     <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>384, 249</value>
+    <value>525, 249</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>PJSE: Resource Chooser</value>

@@ -76,7 +76,7 @@ namespace SimPe.Plugin
             {
                 try
                 {
-                    if (!pjse.Updates.Checker.GetUpdate())
+                    if (!pjse.Updates.Checker.GetUpdate(false))
                         System.Windows.Forms.MessageBox.Show(
                             pjse.Localization.GetString("UHNoUpdate")
                             , pjse.Localization.GetString("pjse_UpdateSettings")
