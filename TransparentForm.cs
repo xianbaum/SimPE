@@ -134,7 +134,7 @@ namespace Ambertation.Windows.Forms
                 g.Dispose();*/
 
                 // Update the window
-                APIHelp.UpdateLayeredWindow(Handle, screenDc, ref newLocation, ref newSize,
+                APIHelp.CallUpdateLayeredWindow(Handle, screenDc, ref newLocation, ref newSize,
                     memDc, ref sourceLocation, 0, ref blend, APIHelp.ULW_ALPHA);
 
                 

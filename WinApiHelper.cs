@@ -385,11 +385,115 @@ namespace Ambertation.Windows.Forms
             public ushort wCreatorVersion;
         }
 
+        #region Windows Version
+        
+
+       
+
+        public enum WindowsVersion
+        {
+            Unknown, Windows95, Windows98, Windows98SE, WindowsME, WindowsCE, WindowsNT35, WindowsNT4, Windows2000, WindowsServer2003, WindowsXP, Vista,
+        }
+        public static WindowsVersion GetVersionEx()
+        {
+            
+
+            OperatingSystem osInfo = Environment.OSVersion;
+            switch (osInfo.Platform)
+            {
+                case PlatformID.Win32Windows:
+                    {
+                        switch (osInfo.Version.Minor)
+                        {
+                            case 0:
+                                return WindowsVersion.Windows95;
+
+                            case 10:
+                                {
+                                    if (osInfo.Version.Revision.ToString() == "2222A")
+                                        return WindowsVersion.Windows98SE;
+
+                                    return WindowsVersion.Windows98;
+                                }
+
+                            case 90:
+                                return WindowsVersion.WindowsME;
+
+                        }
+                        break;
+                    }
+
+                case PlatformID.Win32NT:
+                    {
+                        switch (osInfo.Version.Major)
+                        {
+                            case 5:
+                                {
+                                    if (osInfo.Version.Minor == 0)
+                                        return WindowsVersion.Windows2000;
+                                    else if (osInfo.Version.Minor == 1)
+                                        return WindowsVersion.WindowsXP;
+
+                                    else if (osInfo.Version.Minor == 2)
+                                        return WindowsVersion.WindowsServer2003;
+
+                                    break;
+                                }
+                            case 3:
+                                {
+                                    return WindowsVersion.WindowsNT35;
+                                }
+
+                            case 4:
+                                {
+                                    return WindowsVersion.WindowsNT4;
+                                }
+                            case 6:
+
+                                return WindowsVersion.Vista;
+
+                            
+
+                            
+                        }
+                        break;
+                    }
+            }
+            return WindowsVersion.Unknown;
+        }
+
+        public static bool CanUseLayerdWindows
+        {
+            get
+            {
+                
+                WindowsVersion ver = GetVersionEx();
+                //Console.WriteLine(ver);
+
+                if (ver == WindowsVersion.Vista) return true;
+                if (ver == WindowsVersion.WindowsXP) return true;
+                if (ver == WindowsVersion.Windows2000) return true;
+                if (ver == WindowsVersion.WindowsServer2003) return true;
+                return false;
+            }
+        }        
+        #endregion
+
+        
+
         [DllImport("user32.dll")]
         public static extern bool GetWindowInfo(IntPtr hwnd, ref WINDOWINFO pwi);
 
+
+        public static Bool CallUpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pprSrc, Int32 crKey, ref BLENDFUNCTION pblend, Int32 dwFlags){
+            if (CanUseLayerdWindows)
+                return UpdateLayeredWindow(hwnd, hdcDst, ref pptDst, ref psize, hdcSrc, ref pprSrc, crKey, ref pblend, dwFlags);
+
+            return Bool.True;
+        }
+
         [DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
-        public static extern Bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pprSrc, Int32 crKey, ref BLENDFUNCTION pblend, Int32 dwFlags);
+        protected static extern Bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pprSrc, Int32 crKey, ref BLENDFUNCTION pblend, Int32 dwFlags);
 
         [DllImport("gdi32.dll", ExactSpelling = true, SetLastError = true)]
         public static extern IntPtr CreateCompatibleDC(IntPtr hDC);

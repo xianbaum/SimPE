@@ -193,7 +193,7 @@ namespace Ambertation.Windows.Forms{
 				blend.AlphaFormat         = APIHelp.AC_SRC_ALPHA;						// Only works when the bitmap contains an alpha channel
 
 				// Update the window
-				APIHelp.UpdateLayeredWindow(Handle, screenDc, ref newLocation, ref newSize,
+				APIHelp.CallUpdateLayeredWindow(Handle, screenDc, ref newLocation, ref newSize,
 					memDc, ref sourceLocation, 0, ref blend, APIHelp.ULW_ALPHA);
 			}
 			finally 
