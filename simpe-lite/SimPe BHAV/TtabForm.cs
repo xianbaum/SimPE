@@ -178,7 +178,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 
 #if !(INPROGRESS || DEBUG)
-			this.btnAppend.Visible = false;
+//			this.btnAppend.Visible = false;
 #endif
 		}
 
