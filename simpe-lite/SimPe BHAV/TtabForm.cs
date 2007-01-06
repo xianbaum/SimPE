@@ -263,9 +263,9 @@ namespace SimPe.PackedFiles.UserInterface
 			if (e == null || !(e.Wrapper is Ttab)) return;
 
             uint offset = getTTAsCount();
-            uint maxtti = getMaxTtabItemStringIndex();
-            if (offset != maxtti) offset = getUserChoice((ushort)(wrapper.Count & 0x7fff),
-                (ushort)(offset & 0x7fff), (ushort)(maxtti + 1 & 0x7fff));
+            uint maxtti = getMaxTtabItemStringIndex() + 1;
+            //if (maxtti != wrapper.Count)
+            offset = getUserChoice(offset, maxtti, (uint)wrapper.Count);
             if (offset >= 0x8000) return;
 
             bool savedstate = internalchg;
@@ -315,14 +315,14 @@ namespace SimPe.PackedFiles.UserInterface
             return m;
         }
 
-        private uint getUserChoice(ushort nr, ushort offset, ushort maxtti)
+        private uint getUserChoice(uint offset, uint maxtti, uint nr)
         {
-            PickANumber pan = new PickANumber(new ushort[] { nr, offset, maxtti, 0 },
-                    new String[] {
-                        "Number of TTAB entries",
-                        "Number of TTAs entries",
-                        "Highest String Index in TTAB plus 1",
-                        "Some other value" });
+            PickANumber pan = new PickANumber(
+                    new ushort[] { (ushort)(maxtti & 0x7fff) },
+                    new String[] { "Increase new Pie String IDs by" }
+                );
+            pan.Title = "\"Pie String ID\" increment";
+            pan.Prompt = "";
             DialogResult dr = pan.ShowDialog();
             if (dr == DialogResult.OK)
                 return pan.Value;
@@ -462,9 +462,15 @@ namespace SimPe.PackedFiles.UserInterface
                 bool saved = internalchg;
                 internalchg = true;
 
-                Boolset flags = new Boolset(currentItem.Flags);
-                flags.flip(new int[] { 4, 5, 6 });
-                currentItem.Flags = flags;
+                //Boolset flags = new Boolset(currentItem.Flags);
+                Boolset flags;
+                foreach (TtabItem ti in wrapper)
+                {
+                    flags = new Boolset(ti.Flags);
+                    flags.flip(new int[] { 4, 5, 6 });
+                    ti.Flags = flags;
+                }
+                //currentItem.Flags = flags;
                 this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags);
 
                 internalchg = saved;
@@ -517,10 +523,15 @@ namespace SimPe.PackedFiles.UserInterface
         /// <param name="i">index of TtabItem to add</param>
         private void addItem(int i)
         {
+            lbttab.Items.Add(lbttabItem(i));
+        }
+
+        private String lbttabItem(int i)
+        {
             if (wrapper[i] != null && wrapper[i].StringIndex < cbStringIndex.Items.Count)
-                lbttab.Items.Add(cbStringIndex.Items[(int)wrapper[i].StringIndex]);
+                return (String)cbStringIndex.Items[(int)wrapper[i].StringIndex];
             else
-                lbttab.Items.Add("0x" + i.ToString("X") + ": " + pjse.Localization.GetString("unk"));
+                return "[0x" + i.ToString("X") + ": " + pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(wrapper[i].StringIndex) + "]";
         }
 
 		private void setBHAV(int which, ushort target, bool notxt)
@@ -1936,10 +1947,7 @@ namespace SimPe.PackedFiles.UserInterface
 				case 1:
 					currentItem.StringIndex = val;
 					setStringIndex(val, false, true);
-                    if (val < cbStringIndex.Items.Count)
-                        lbttab.Items[lbttab.SelectedIndex] = cbStringIndex.Items[(int)val];
-                    else
-                        lbttab.Items[lbttab.SelectedIndex] = "0x" + val.ToString("X") + ": " + pjse.Localization.GetString("UNK");
+                    lbttab.Items[lbttab.SelectedIndex] = lbttabItem(lbttab.SelectedIndex);
                     break;
 				case 2: currentItem.Autonomy = val; break;
 				case 3: currentItem.FacialAnimationID = val; break;

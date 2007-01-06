@@ -1,7 +1,16 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
-6 January 2006 14:22 - TTAB: Add PickANumber wizard for choosing append offset
+6 January 2006 17:50 - TTAB: Simplify the append offset prompt
+  * PickANumber: Allow dialog title and prompt to be set
+  * TtabForm bug: TtabItem Flags not set when changing to/from Format 0x54
+  * TtabForm bug: UNK lbttab entries displaying inconsistently
   SimPe BHAV\
+    PickANumber.cs 1.1.2.2
+    PickANumber.Designer.cs 1.1.2.2
+    PickANumber.resx.cs 1.1.2.2
+    TtabForm.cs 1.31.2.27
+
+6 January 2006 14:22 - TTAB: Add PickANumber wizard for choosing append offset
     BhavOperandWiz.cs 1.7.14.16
     PickANumber.cs 1.1.2.1
     PickANumber.Designer.cs 1.1.2.1

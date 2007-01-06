@@ -51,6 +51,10 @@ namespace pjse
             this.tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             this.tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
 
+            this.tableLayoutPanel1.RowCount++;
+            this.tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+
             for (int i = 0; i < values.Length; i++)
             {
                 this.tableLayoutPanel1.RowCount++;
@@ -80,9 +84,12 @@ namespace pjse
             ltb[ltb.Count - 1].Enter += new System.EventHandler(this.ltbLast_Enter);
             lrb[0].Checked = true;
 
-            btnCancel.Top = btnOK.Top = tableLayoutPanel1.Bottom + (btnOK.Height / 2);
-            btnOK.Left = tableLayoutPanel1.Left;
-            btnCancel.Left = tableLayoutPanel1.Right - btnCancel.Width;
+            this.tableLayoutPanel1.RowCount++;
+            int last = this.tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, (float)(btnOK.Height * 1.5)));
+            this.tableLayoutPanel1.Controls.Add(btnOK, 0, last);
+            this.tableLayoutPanel1.Controls.Add(btnCancel, 1, last);
+            this.AcceptButton = btnOK;
+            this.CancelButton = btnCancel;
         }
 
         public uint Value
@@ -91,6 +98,18 @@ namespace pjse
             {
                 return (selectedRB >= 0) ? ldoc[selectedRB].Value : (ushort)0xffff;
             }
+        }
+
+        public String Title
+        {
+            get { return this.Text; }
+            set { this.Text = value; }
+        }
+
+        public String Prompt
+        {
+            get { return this.label1.Text; }
+            set { this.label1.Text = value; }
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
