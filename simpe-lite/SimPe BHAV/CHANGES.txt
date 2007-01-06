@@ -1,9 +1,17 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+6 January 2006 14:22 - TTAB: Add PickANumber wizard for choosing append offset
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.16
+    PickANumber.cs 1.1.2.1
+    PickANumber.Designer.cs 1.1.2.1
+    PickANumber.resx.cs 1.1.2.1
+    pjse coder plugin.csproj 1.29.2.27
+    TtabForm.cs 1.31.2.26
+
 6 January 2006 10:51 - TTAB: keep append button visible in release
   SimPe BHAV\
     TtabForm.cs 1.31.2.25
-
 
 28 November 2006 18:30 - Updater: Tweak the prompt; make "Includes" uppercase
   pjse filetable\

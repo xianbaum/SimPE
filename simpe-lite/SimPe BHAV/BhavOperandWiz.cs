@@ -336,7 +336,7 @@ namespace pjse.BhavOperandWizards
                 this.ckbDecimal.CheckedChanged += new System.EventHandler(this.ckbDecimal_CheckedChanged);
             }
             else
-                Decimal = true;
+                Decimal = pjse.Settings.PJSE.DecimalDOValue;
 
             if (this.ckbUseAttrPicker != null)
             {
@@ -344,7 +344,7 @@ namespace pjse.BhavOperandWizards
                 this.ckbUseAttrPicker.CheckedChanged += new System.EventHandler(this.ckbUseAttrPicker_CheckedChanged);
             }
             else
-                UseAttrPicker = true;
+                UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText;
 
             setTextBoxLength();
             setConstLabel();

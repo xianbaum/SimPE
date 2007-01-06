@@ -262,19 +262,25 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (e == null || !(e.Wrapper is Ttab)) return;
 
-			bool savedstate = internalchg;
+            uint offset = getTTAsCount();
+            uint maxtti = getMaxTtabItemStringIndex();
+            if (offset != maxtti) offset = getUserChoice((ushort)(wrapper.Count & 0x7fff),
+                (ushort)(offset & 0x7fff), (ushort)(maxtti + 1 & 0x7fff));
+            if (offset >= 0x8000) return;
+
+            bool savedstate = internalchg;
 			internalchg = true;
 
 			ttabPanel.Parent.Cursor = Cursors.WaitCursor;
 
 			Ttab b = (Ttab)e.Wrapper;
-			uint offset = getTTAsCount();
+
 			for (int bi = 0; bi < b.Count; bi++)
 			{
 				int i = wrapper.Add(b[bi]);
 				if (i < 0) break;
 				wrapper[i].StringIndex += offset;
-				lbttab.Items.Add(wrapper[i]);
+                addItem(i);
 			}
 			ttabPanel.Parent.Cursor = Cursors.Default;
 
@@ -300,6 +306,27 @@ namespace SimPe.PackedFiles.UserInterface
             uint max = 0;
             for (byte lid = 1; lid < 44; lid++) max = (uint)Math.Max(max, w[lid].Length);
             return max;
+        }
+
+        private uint getMaxTtabItemStringIndex()
+        {
+            uint m = 0;
+            foreach(TtabItem ti in wrapper) if (ti.StringIndex > m) m = ti.StringIndex;
+            return m;
+        }
+
+        private uint getUserChoice(ushort nr, ushort offset, ushort maxtti)
+        {
+            PickANumber pan = new PickANumber(new ushort[] { nr, offset, maxtti, 0 },
+                    new String[] {
+                        "Number of TTAB entries",
+                        "Number of TTAs entries",
+                        "Highest String Index in TTAB plus 1",
+                        "Some other value" });
+            DialogResult dr = pan.ShowDialog();
+            if (dr == DialogResult.OK)
+                return pan.Value;
+            return 0xffffffff;
         }
 
         private void populateCbStringIndex()
