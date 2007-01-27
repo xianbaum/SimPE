@@ -287,20 +287,20 @@ namespace pjse.BhavOperandWizards
 		#endregion
 
         public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
-            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, cbkDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance); 
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance); 
         }
 
         public void SetDataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
             this.Dispose();
             this.inst = inst;
             this.cbDataOwner = cbDataOwner;
             this.cbPicker = cbPicker;
             this.tbValue = tbValue;
-            this.ckbDecimal = cbkDecimal;
+            this.ckbDecimal = ckbDecimal;
             this.ckbUseAttrPicker = ckbUseAttrPicker;
             this.lbConst = lbConst;
             this.dataOwner = dataOwner;
