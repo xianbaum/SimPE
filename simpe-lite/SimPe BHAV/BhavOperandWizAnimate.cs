@@ -42,7 +42,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
         private Label label4;
         private TextBox tbValAnimType;
         private ComboBox cbAnimType;
-        private TextBox tbAnimTypeName;
+        private TextBox tbAnimType;
         private FlowLayoutPanel flpnAnim;
         private Label lbParam;
         private TextBox tbValAnim;
@@ -74,11 +74,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
         private CheckBox ckbSync;
         private CheckBox ckbAlignBlend;
         private CheckBox ckbControllerIsSource;
-        private CheckBox ckbNotHurryable;        /// <summary>
-        /// Erforderliche Designervariable.
-        /// </summary>
-        private System.ComponentModel.Container components = null;
-        #endregion
+        private CheckBox ckbNotHurryable;
         private Panel pnDoidOptions;
         private CheckBox ckbAttrPicker;
         private CheckBox ckbDecimal;
@@ -89,11 +85,27 @@ namespace pjse.BhavOperandWizards.WizAnimate
         private Label label3;
         private GroupBox gbPriority;
         private ComboBox cbPriority;
+        /// <summary>
+        /// Erforderliche Designervariable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
+        #endregion
 
 
+        /// <summary>
+        /// Initialise the Wizard user interface
+        /// </summary>
+        /// <param name="mode">Specify whether the wizard is for Animate Object, Sim or Overlay</param>
+        public UI(String mode)
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
-        #region AnimNames
-        static String[] AnimNames = {
+            #region AnimNames
+            cbAnimType.Items.Clear();
+            cbAnimType.Items.AddRange(new  String[] {
                 "AdultAnims",
                 "ChildAnims",
                 "SocialAnims",
@@ -112,31 +124,20 @@ namespace pjse.BhavOperandWizards.WizAnimate
                 "ElderLargeDogAnims",
                 "ElderSmallDogAnims",
                 "ElderCatAnims",
-                "ObjectElderAnims",
-                "ObjectTeenAnims",
-                "ObjectChildAnims",
-                "ObjectToddlerAnims",
-                "ObjectLargeDogAnims",
-                "ObjectCatAnims",
-                "ObjectPuppyAnims",
-                "ObjectKittenAnims",
-                "ObjectSmallDogAnims",
-            };
-        #endregion
-
-        /// <summary>
-        /// Initialise the Wizard user interface
-        /// </summary>
-        /// <param name="mode">Specify whether the wizard is for Animate Object, Sim or Overlay</param>
-        public UI(String mode)
-        {
-            //
-            // Required for Windows Form Designer support
-            //
-            InitializeComponent();
-
-            cbAnimType.Items.Clear();
-            cbAnimType.Items.AddRange(AnimNames);
+            });
+            // Two-byte values
+            //cbAnimType.Items.AddRange(new String[] {
+            //            "ObjectElderAnims",
+            //            "ObjectTeenAnims",
+            //            "ObjectChildAnims",
+            //            "ObjectToddlerAnims",
+            //            "ObjectLargeDogAnims",
+            //            "ObjectCatAnims",
+            //            "ObjectPuppyAnims",
+            //            "ObjectKittenAnims",
+            //            "ObjectSmallDogAnims",
+            //        });
+            #endregion
 
             this.mode = mode;
             switch (mode)
@@ -160,7 +161,6 @@ namespace pjse.BhavOperandWizards.WizAnimate
                         ckbFlipTemp3, ckbSync, null, null, ckbSync, ckbControllerIsSource, ckbNotHurryable
                     });
                     this.flpnMain.Controls.Remove(pnObject);
-                    this.flpnMain.Controls.Remove(flpnEventScope);
                     break;
                 case "bwp_Overlay":
                     lckbOptions1 = new List<CheckBox>(new CheckBox[] {
@@ -170,7 +170,6 @@ namespace pjse.BhavOperandWizards.WizAnimate
                         ckbFlipTemp3, null, null, null, ckbSync, ckbAlignBlend
                     });
                     this.flpnMain.Controls.Remove(pnIKObject);
-                    this.flpnMain.Controls.Remove(flpnEventScope);
                     break;
                 default:
                     throw new ArgumentException("Argument must match bwp_{Object,Sim,Overlay}", "mode");
@@ -180,6 +179,8 @@ namespace pjse.BhavOperandWizards.WizAnimate
                 ckbTransToIdle, ckbBlendOut, ckbBlendIn, ckbFlipTemp3,
                 ckbSync, ckbAlignBlend, ckbControllerIsSource, ckbNotHurryable
             });
+
+            pnWizAnimate.Height = flpnOptions.Bottom;
         }
 
         /// <summary>
@@ -221,14 +222,13 @@ namespace pjse.BhavOperandWizards.WizAnimate
             if (ckbParam.Checked)
             {
                 lbParam.Text = ((String)lbParam.Tag).Split('|')[0];
-                tbAnim.Text = "";
             }
             else
             {
                 lbParam.Text = ((String)lbParam.Tag).Split('|')[1];
-                tbAnim.Text = ((BhavWiz)inst).readStr(GS.GlobalStr.ObjectAnims, doidAnim.Value, -1, Detail.ErrorNames);
+                doStrValue(doidAnim.Value, tbAnim);
             }
-            btnAnim.Enabled = !ckbParam.Checked;
+            btnAnim.Visible = tbAnim.Visible = !ckbParam.Checked;
         }
 
         private void doStrChooser(TextBox tbVal, TextBox strText)
@@ -264,11 +264,11 @@ namespace pjse.BhavOperandWizards.WizAnimate
             return false;
         }
         private bool IsAnim(GS.GlobalStr g) { return IsAnim(g.ToString()); }
-        private bool IsAnim(String s) { return s.EndsWith("Anim"); }
+        private bool IsAnim(String s) { return s.EndsWith("Anims"); }
 
         private Scope AnimScope()
         {
-            if (mode.Equals("bwp_Object")) return Scope.Global;
+            if (mode.Equals("bwp_Object")) return Scope.Private;
             return (this.doidAnimType.Value == 0x80) ? Scope.Global : Scope.Private;
         }
 
@@ -286,16 +286,15 @@ namespace pjse.BhavOperandWizards.WizAnimate
             strText.Text = ((BhavWiz)inst).readStr(AnimScope(), AnimInstance(), strno, -1, pjse.Detail.ErrorNames);
         }
 
+
         public void Execute(Instruction inst)
         {
             this.inst = inst;
 
             wrappedByteArray ops1 = inst.Operands;
             wrappedByteArray ops2 = inst.Reserved1;
-            Boolset options1 = ops1[2];
+            Boolset options1 = null;
             Boolset options2 = null;
-            byte animType = 0;
-
             int scope = 0;
             int priority = -1;
 
@@ -303,42 +302,52 @@ namespace pjse.BhavOperandWizards.WizAnimate
 
             foreach (CheckBox c in lckb) c.Visible = false;
 
+            doidAnim = new DataOwnerControl(inst, null, null, tbValAnim,
+                ckbDecimal, ckbAttrPicker, null, 0x07, BhavWiz.ToShort(ops1[0], ops1[1]));
+            doidAnim.DataOwnerControlChanged += new EventHandler(doidAnim_DataOwnerControlChanged);
+
+            options1 = ops1[2];
+
+            doidEvent = new DataOwnerControl(inst, null, null, tbValEventTree,
+                ckbDecimal, ckbAttrPicker, null, 0x07, BhavWiz.ToShort(ops1[4], ops1[5]));
+            doidEvent.DataOwnerControlChanged += new EventHandler(doidEvent_DataOwnerControlChanged);
+
             switch (mode)
             {
                 case "bwp_Object":
-                    options2 = ops2[2];
-
                     doidObject = new DataOwnerControl(inst, cbdoObject, cbPickerObject, tbValObject,
                         ckbDecimal, ckbAttrPicker, null, ops1[6], BhavWiz.ToShort(ops1[7], ops2[0]));
-
                     scope = ops2[1];
+                    options2 = ops2[2];
                     break;
-                case "bwp_Sim":
-                    options2 = ops2[0];
-                    animType = ops1[6];
 
+                case "bwp_Sim":
+                    doidAnimType = new DataOwnerControl(inst, null, null, tbValAnimType,
+                        ckbDecimal, ckbAttrPicker, null, 0x07, (byte)ops1[6]);
+                    doidAnimType.DataOwnerControlChanged += new EventHandler(doidAnimType_DataOwnerControlChanged);
+                    scope = ops1[7];
+                    options2 = ops2[0];
                     doidIK = new DataOwnerControl(inst, cbdoIK, cbPickerIK, tbValIK,
                         ckbDecimal, ckbAttrPicker, null, ops2[1], BhavWiz.ToShort(ops2[2], ops2[3]));
-
-                    scope = ops1[7];
-                    priority = ops2[7];
+                    priority = ops2[4];
                     break;
-                case "bwp_Overlay":
-                    options2 = ops2[7];
 
+                case "bwp_Overlay":
                     doidObject = new DataOwnerControl(inst, cbdoObject, cbPickerObject, tbValObject,
                         ckbDecimal, ckbAttrPicker, null, ops1[6], BhavWiz.ToShort(ops1[7], ops2[0]));
-
-                    animType = ops2[1];
-                    scope = ops2[6];
+                    doidAnimType = new DataOwnerControl(inst, null, null, tbValAnimType,
+                        ckbDecimal, ckbAttrPicker, null, 0x07, (byte)ops2[1]);
+                    doidAnimType.DataOwnerControlChanged += new EventHandler(doidAnimType_DataOwnerControlChanged);
                     if (inst.NodeVersion != 0)
                     {
-                        priority = ops2[6];
+                        priority = ops2[3];
                         ckbNotHurryable.Checked = (ops2[4] & 0x01) != 0;
                         ckbNotHurryable.Visible = true;
                     }
                     else
-                        priority = ops2[7];
+                        priority = ops2[4];
+                    scope = ops2[6];
+                    options2 = ops2[7];
                     break;
             }
 
@@ -356,17 +365,6 @@ namespace pjse.BhavOperandWizards.WizAnimate
                     lckbOptions2[i].Checked = options2[i];
                 }
 
-            if (!mode.Equals("bwp_Object"))
-            {
-                doidAnimType = new DataOwnerControl(inst, null, null, tbValAnimType,
-                    ckbDecimal, ckbAttrPicker, null, 0x07, animType);
-                doidAnimType.DataOwnerControlChanged += new EventHandler(doidAnimType_DataOwnerControlChanged);
-            }
-
-            doidAnim = new DataOwnerControl(inst, null, null, tbValAnim,
-                ckbDecimal, ckbAttrPicker, null, 0x07, BhavWiz.ToShort(ops1[0], ops1[1]));
-            doidAnim.DataOwnerControlChanged += new EventHandler(doidAnim_DataOwnerControlChanged);
-
             switch (scope)
             {
                 case 0: cbEventScope.SelectedIndex = 0; break;
@@ -374,17 +372,12 @@ namespace pjse.BhavOperandWizards.WizAnimate
                 default: cbEventScope.SelectedIndex = 2; break;
             }
 
-            doidEvent = new DataOwnerControl(inst, null, null, tbValEventTree,
-                ckbDecimal, ckbAttrPicker, null, 0x07, BhavWiz.ToShort(ops1[4], ops1[5]));
-            doidEvent.DataOwnerControlChanged += new EventHandler(doidEvent_DataOwnerControlChanged);
-
             internalchg = false;
 
             if (!mode.Equals("bwp_Object"))
-            {
                 doidAnimType_DataOwnerControlChanged(null, null);
+            else
                 doidAnim_DataOwnerControlChanged(null, null);
-            }
             doidEvent_DataOwnerControlChanged(null, null);
             ckbParam_CheckedChanged(null, null);
             ckbFlipTemp3_CheckedChanged(null, null);
@@ -400,12 +393,12 @@ namespace pjse.BhavOperandWizards.WizAnimate
             try
             {
                 cbAnimType.SelectedIndex = cbAnimType.Items.IndexOf(((GS.GlobalStr)doidAnimType.Value).ToString());
-                tbAnimTypeName.Text = (cbAnimType.SelectedIndex >= 0) ? this.cbAnimType.SelectedItem.ToString() : "---";
+                tbAnimType.Text = (cbAnimType.SelectedIndex >= 0) ? this.cbAnimType.SelectedItem.ToString() : "---";
             }
             finally
             {
-                doStrValue(doidAnim.Value, tbAnim);
                 internalchg = false;
+                doStrValue(doidAnim.Value, tbAnim);
             }
         }
 
@@ -430,11 +423,73 @@ namespace pjse.BhavOperandWizards.WizAnimate
             {
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
-                Boolset options1 = ops1[2];
-                Boolset options2 = ops2[2];
 
+                ops1[0] = (byte)(doidAnim.Value & 0xff);
+                ops1[1] = (byte)((doidAnim.Value >> 8) & 0xff);
+                ops1[2] = getOptions(lckbOptions1, ops1[2]);
+
+                ops1[4] = (byte)(doidEvent.Value & 0xff);
+                ops1[5] = (byte)((doidEvent.Value >> 8) & 0xff);
+
+                switch (mode)
+                {
+                    case "bwp_Object":
+                        ops1[6] = doidObject.DataOwner;
+                        ops1[7] = (byte)(doidObject.Value & 0xff);
+                        ops2[0] = (byte)((doidObject.Value >> 8) & 0xff);
+                        ops2[1] = getScope(ops2[1]);
+                        ops2[2] = getOptions(lckbOptions2, ops2[2]);
+                        break;
+
+                    case "bwp_Sim":
+                        ops1[6] = (byte)(doidAnimType.Value & 0xff);
+                        ops1[7] = getScope(ops1[7]);
+                        ops2[0] = getOptions(lckbOptions2, ops2[0]);
+                        ops2[1] = doidIK.DataOwner;
+                        ops2[2] = (byte)(doidIK.Value & 0xff);
+                        ops2[3] = (byte)((doidIK.Value >> 8) & 0xff);
+                        ops2[4] = getPriority(ops2[4]);
+                        break;
+
+                    case "bwp_Overlay":
+                        ops1[6] = doidObject.DataOwner;
+                        ops1[7] = (byte)(doidObject.Value & 0xff);
+                        ops2[0] = (byte)((doidObject.Value >> 8) & 0xff);
+                        ops2[1] = (byte)(doidAnimType.Value & 0xff);
+
+                        if (inst.NodeVersion != 0)
+                        {
+                            ops2[3] = getPriority(ops2[3]);
+                            Boolset options3 = ops2[4];
+                            options3[0] = ckbNotHurryable.Checked;
+                            ops2[4] = options3;
+                        }
+                        else
+                            ops2[4] = getPriority(ops2[4]);
+
+                        ops2[6] = getScope(ops2[6]);
+                        ops2[7] = getOptions(lckbOptions2, ops2[7]);
+                        break;
+                }
             }
             return inst;
+        }
+
+        private byte getScope(byte scope)
+        {
+            return (byte)((cbEventScope.SelectedIndex >= 0) ? cbEventScope.SelectedIndex : scope);
+        }
+
+        private byte getPriority(byte priority)
+        {
+            return (byte)((cbPriority.SelectedIndex >= 0) ? cbPriority.SelectedIndex : priority);
+        }
+
+        private byte getOptions(List<CheckBox> lckbOptions, Boolset options)
+        {
+            for (int i = 0; i < lckbOptions.Count; i++)
+                if (lckbOptions[i] != null) options[i] = lckbOptions[i].Checked;
+            return options;
         }
 
         #endregion
@@ -466,7 +521,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
             this.label4 = new System.Windows.Forms.Label();
             this.tbValAnimType = new System.Windows.Forms.TextBox();
             this.cbAnimType = new System.Windows.Forms.ComboBox();
-            this.tbAnimTypeName = new System.Windows.Forms.TextBox();
+            this.tbAnimType = new System.Windows.Forms.TextBox();
             this.flpnAnim = new System.Windows.Forms.FlowLayoutPanel();
             this.lbParam = new System.Windows.Forms.Label();
             this.tbValAnim = new System.Windows.Forms.TextBox();
@@ -552,11 +607,13 @@ namespace pjse.BhavOperandWizards.WizAnimate
             this.cbPickerObject.DropDownWidth = 384;
             resources.ApplyResources(this.cbPickerObject, "cbPickerObject");
             this.cbPickerObject.Name = "cbPickerObject";
+            this.cbPickerObject.TabStop = false;
             // 
             // tbValObject
             // 
             resources.ApplyResources(this.tbValObject, "tbValObject");
             this.tbValObject.Name = "tbValObject";
+            this.tbValObject.TabStop = false;
             // 
             // cbdoObject
             // 
@@ -585,11 +642,13 @@ namespace pjse.BhavOperandWizards.WizAnimate
             this.cbPickerIK.DropDownWidth = 384;
             resources.ApplyResources(this.cbPickerIK, "cbPickerIK");
             this.cbPickerIK.Name = "cbPickerIK";
+            this.cbPickerIK.TabStop = false;
             // 
             // tbValIK
             // 
             resources.ApplyResources(this.tbValIK, "tbValIK");
             this.tbValIK.Name = "tbValIK";
+            this.tbValIK.TabStop = false;
             // 
             // cbdoIK
             // 
@@ -626,7 +685,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
             this.flpnAnimType.Controls.Add(this.label4);
             this.flpnAnimType.Controls.Add(this.tbValAnimType);
             this.flpnAnimType.Controls.Add(this.cbAnimType);
-            this.flpnAnimType.Controls.Add(this.tbAnimTypeName);
+            this.flpnAnimType.Controls.Add(this.tbAnimType);
             this.flpnAnimType.Name = "flpnAnimType";
             // 
             // label4
@@ -641,19 +700,21 @@ namespace pjse.BhavOperandWizards.WizAnimate
             // 
             // cbAnimType
             // 
+            this.cbAnimType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbAnimType.DropDownWidth = 200;
             this.cbAnimType.FormattingEnabled = true;
             resources.ApplyResources(this.cbAnimType, "cbAnimType");
             this.cbAnimType.Name = "cbAnimType";
+            this.cbAnimType.TabStop = false;
             this.cbAnimType.SelectedIndexChanged += new System.EventHandler(this.cbAnimType_SelectedIndexChanged);
             // 
-            // tbAnimTypeName
+            // tbAnimType
             // 
-            resources.ApplyResources(this.tbAnimTypeName, "tbAnimTypeName");
-            this.tbAnimTypeName.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tbAnimTypeName.Name = "tbAnimTypeName";
-            this.tbAnimTypeName.ReadOnly = true;
-            this.tbAnimTypeName.TabStop = false;
+            resources.ApplyResources(this.tbAnimType, "tbAnimType");
+            this.tbAnimType.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbAnimType.Name = "tbAnimType";
+            this.tbAnimType.ReadOnly = true;
+            this.tbAnimType.TabStop = false;
             // 
             // flpnAnim
             // 
@@ -890,6 +951,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
             // 
             // cbPriority
             // 
+            this.cbPriority.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPriority.FormattingEnabled = true;
             this.cbPriority.Items.AddRange(new object[] {
             resources.GetString("cbPriority.Items"),
@@ -987,14 +1049,15 @@ namespace pjse.BhavOperandWizards.WizAnimate
                 if (this.cbAnimType.SelectedIndex >= 0)
                 {
                     GS.GlobalStr gs = (GS.GlobalStr)Enum.Parse(typeof(GS.GlobalStr), this.cbAnimType.SelectedItem.ToString());
-                    tbValAnimType.Text = "0x" + SimPe.Helper.HexString((ushort)gs);
+                    tbValAnimType.Text = "0x" + ((ushort)gs).ToString("X");
                 }
             }
             finally
             {
-                tbAnimTypeName.Text = (this.cbAnimType.SelectedIndex >= 0) ? this.cbAnimType.SelectedItem.ToString() : "---";
+                tbAnimType.Text = (this.cbAnimType.SelectedIndex >= 0) ? this.cbAnimType.SelectedItem.ToString() : "---";
             }
             doStrValue(doidAnim.Value, tbAnim);
+            tbValAnimType.Focus();
 
             internalchg = false;
         }

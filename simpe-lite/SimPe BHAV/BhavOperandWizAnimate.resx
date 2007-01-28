@@ -121,13 +121,10 @@
   <data name="pnWizAnimate.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pnWizAnimate.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
   <data name="flpnMain.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="flpnMain.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
@@ -139,7 +136,7 @@
     <value>156, 24</value>
   </data>
   <data name="cbPickerObject.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+    <value>2</value>
   </data>
   <data name="cbPickerObject.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -163,7 +160,7 @@
     <value>134, 22</value>
   </data>
   <data name="tbValObject.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;tbValObject.Name" xml:space="preserve">
     <value>tbValObject</value>
@@ -184,7 +181,7 @@
     <value>302, 24</value>
   </data>
   <data name="cbdoObject.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;cbdoObject.Name" xml:space="preserve">
     <value>cbdoObject</value>
@@ -238,7 +235,7 @@
     <value>530, 30</value>
   </data>
   <data name="pnObject.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;pnObject.Name" xml:space="preserve">
     <value>pnObject</value>
@@ -259,7 +256,7 @@
     <value>156, 24</value>
   </data>
   <data name="cbPickerIK.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+    <value>2</value>
   </data>
   <data name="cbPickerIK.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -283,7 +280,7 @@
     <value>134, 22</value>
   </data>
   <data name="tbValIK.TabIndex" type="System.Int32, mscorlib">
-    <value>28</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;tbValIK.Name" xml:space="preserve">
     <value>tbValIK</value>
@@ -304,7 +301,7 @@
     <value>302, 24</value>
   </data>
   <data name="cbdoIK.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;cbdoIK.Name" xml:space="preserve">
     <value>cbdoIK</value>
@@ -358,7 +355,7 @@
     <value>530, 30</value>
   </data>
   <data name="pnIKObject.TabIndex" type="System.Int32, mscorlib">
-    <value>49</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;pnIKObject.Name" xml:space="preserve">
     <value>pnIKObject</value>
@@ -391,7 +388,7 @@
     <value>149, 21</value>
   </data>
   <data name="ckbAttrPicker.TabIndex" type="System.Int32, mscorlib">
-    <value>27</value>
+    <value>2</value>
   </data>
   <data name="ckbAttrPicker.Text" xml:space="preserve">
     <value>use Attribute picker</value>
@@ -427,7 +424,7 @@
     <value>179, 21</value>
   </data>
   <data name="ckbDecimal.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>1</value>
   </data>
   <data name="ckbDecimal.Text" xml:space="preserve">
     <value>Decimal (except Consts)</value>
@@ -451,7 +448,7 @@
     <value>524, 22</value>
   </data>
   <data name="pnDoidOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>48</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;pnDoidOptions.Name" xml:space="preserve">
     <value>pnDoidOptions</value>
@@ -514,7 +511,7 @@
     <value>60, 22</value>
   </data>
   <data name="tbValAnimType.TabIndex" type="System.Int32, mscorlib">
-    <value>44</value>
+    <value>1</value>
   </data>
   <data name="tbValAnimType.Text" xml:space="preserve">
     <value>0xDDDD</value>
@@ -544,7 +541,7 @@
     <value>24, 24</value>
   </data>
   <data name="cbAnimType.TabIndex" type="System.Int32, mscorlib">
-    <value>47</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;cbAnimType.Name" xml:space="preserve">
     <value>cbAnimType</value>
@@ -558,37 +555,37 @@
   <data name="&gt;&gt;cbAnimType.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="tbAnimTypeName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="tbAnimType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="tbAnimTypeName.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tbAnimType.Location" type="System.Drawing.Point, System.Drawing">
     <value>202, 6</value>
   </data>
-  <data name="tbAnimTypeName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="tbAnimType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>3, 6, 3, 3</value>
   </data>
-  <data name="tbAnimTypeName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>328, 15</value>
+  <data name="tbAnimType.Size" type="System.Drawing.Size, System.Drawing">
+    <value>325, 15</value>
   </data>
-  <data name="tbAnimTypeName.TabIndex" type="System.Int32, mscorlib">
-    <value>46</value>
+  <data name="tbAnimType.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
-  <data name="tbAnimTypeName.Text" xml:space="preserve">
+  <data name="tbAnimType.Text" xml:space="preserve">
     <value>Animation type</value>
   </data>
-  <data name="tbAnimTypeName.WordWrap" type="System.Boolean, mscorlib">
+  <data name="tbAnimType.WordWrap" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;tbAnimTypeName.Name" xml:space="preserve">
-    <value>tbAnimTypeName</value>
+  <data name="&gt;&gt;tbAnimType.Name" xml:space="preserve">
+    <value>tbAnimType</value>
   </data>
-  <data name="&gt;&gt;tbAnimTypeName.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbAnimType.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbAnimTypeName.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tbAnimType.Parent" xml:space="preserve">
     <value>flpnAnimType</value>
   </data>
-  <data name="&gt;&gt;tbAnimTypeName.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbAnimType.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="flpnAnimType.Location" type="System.Drawing.Point, System.Drawing">
@@ -598,10 +595,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="flpnAnimType.Size" type="System.Drawing.Size, System.Drawing">
-    <value>533, 30</value>
+    <value>530, 30</value>
   </data>
   <data name="flpnAnimType.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;flpnAnimType.Name" xml:space="preserve">
     <value>flpnAnimType</value>
@@ -637,7 +634,7 @@
     <value>111, 17</value>
   </data>
   <data name="lbParam.TabIndex" type="System.Int32, mscorlib">
-    <value>46</value>
+    <value>0</value>
   </data>
   <data name="lbParam.Text" xml:space="preserve">
     <value>Animation String</value>
@@ -664,7 +661,7 @@
     <value>60, 22</value>
   </data>
   <data name="tbValAnim.TabIndex" type="System.Int32, mscorlib">
-    <value>43</value>
+    <value>1</value>
   </data>
   <data name="tbValAnim.Text" xml:space="preserve">
     <value>0xDDDD</value>
@@ -700,7 +697,7 @@
     <value>24, 22</value>
   </data>
   <data name="btnAnim.TabIndex" type="System.Int32, mscorlib">
-    <value>44</value>
+    <value>2</value>
   </data>
   <data name="btnAnim.Text" xml:space="preserve">
     <value>8</value>
@@ -727,10 +724,10 @@
     <value>3, 6, 3, 3</value>
   </data>
   <data name="tbAnim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>326, 15</value>
+    <value>323, 15</value>
   </data>
   <data name="tbAnim.TabIndex" type="System.Int32, mscorlib">
-    <value>45</value>
+    <value>0</value>
   </data>
   <data name="tbAnim.Text" xml:space="preserve">
     <value>Animation name</value>
@@ -757,10 +754,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="flpnAnim.Size" type="System.Drawing.Size, System.Drawing">
-    <value>533, 28</value>
+    <value>530, 28</value>
   </data>
   <data name="flpnAnim.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;flpnAnim.Name" xml:space="preserve">
     <value>flpnAnim</value>
@@ -796,7 +793,7 @@
     <value>122, 17</value>
   </data>
   <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>46</value>
+    <value>0</value>
   </data>
   <data name="label2.Text" xml:space="preserve">
     <value>Event Tree Scope</value>
@@ -829,7 +826,7 @@
     <value>144, 24</value>
   </data>
   <data name="cbEventScope.TabIndex" type="System.Int32, mscorlib">
-    <value>48</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;cbEventScope.Name" xml:space="preserve">
     <value>cbEventScope</value>
@@ -853,7 +850,7 @@
     <value>278, 30</value>
   </data>
   <data name="flpnEventScope.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;flpnEventScope.Name" xml:space="preserve">
     <value>flpnEventScope</value>
@@ -892,7 +889,7 @@
     <value>70, 20</value>
   </data>
   <data name="llEvent.TabIndex" type="System.Int32, mscorlib">
-    <value>43</value>
+    <value>1</value>
   </data>
   <data name="llEvent.Text" xml:space="preserve">
     <value>Event Tree</value>
@@ -922,7 +919,7 @@
     <value>60, 22</value>
   </data>
   <data name="tbValEventTree.TabIndex" type="System.Int32, mscorlib">
-    <value>43</value>
+    <value>2</value>
   </data>
   <data name="tbValEventTree.Text" xml:space="preserve">
     <value>0xDDDD</value>
@@ -958,7 +955,7 @@
     <value>24, 22</value>
   </data>
   <data name="btnEventTree.TabIndex" type="System.Int32, mscorlib">
-    <value>44</value>
+    <value>3</value>
   </data>
   <data name="btnEventTree.Text" xml:space="preserve">
     <value>8</value>
@@ -985,10 +982,10 @@
     <value>3, 6, 3, 3</value>
   </data>
   <data name="tbEventTree.Size" type="System.Drawing.Size, System.Drawing">
-    <value>370, 15</value>
+    <value>367, 15</value>
   </data>
   <data name="tbEventTree.TabIndex" type="System.Int32, mscorlib">
-    <value>45</value>
+    <value>0</value>
   </data>
   <data name="tbEventTree.Text" xml:space="preserve">
     <value>Event tree</value>
@@ -1015,10 +1012,10 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="flpnEventTree.Size" type="System.Drawing.Size, System.Drawing">
-    <value>533, 29</value>
+    <value>530, 29</value>
   </data>
   <data name="flpnEventTree.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;flpnEventTree.Name" xml:space="preserve">
     <value>flpnEventTree</value>
@@ -1330,7 +1327,7 @@
     <value>201, 243</value>
   </data>
   <data name="flpnOptions1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;flpnOptions1.Name" xml:space="preserve">
     <value>flpnOptions1</value>
@@ -1354,7 +1351,7 @@
     <value>213, 285</value>
   </data>
   <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>1</value>
   </data>
   <data name="groupBox1.Text" xml:space="preserve">
     <value>Options 1</value>
@@ -1396,7 +1393,7 @@
     <value>139, 21</value>
   </data>
   <data name="ckbFlipTemp3.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>1</value>
   </data>
   <data name="ckbFlipTemp3.Text" xml:space="preserve">
     <value>Flip flag in Temp3</value>
@@ -1426,7 +1423,7 @@
     <value>171, 21</value>
   </data>
   <data name="ckbSync.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>2</value>
   </data>
   <data name="ckbSync.Text" xml:space="preserve">
     <value>Synchronise with caller</value>
@@ -1456,7 +1453,7 @@
     <value>191, 21</value>
   </data>
   <data name="ckbAlignBlend.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>3</value>
   </data>
   <data name="ckbAlignBlend.Text" xml:space="preserve">
     <value>Align Blend Out with caller</value>
@@ -1486,7 +1483,7 @@
     <value>149, 21</value>
   </data>
   <data name="ckbControllerIsSource.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>4</value>
   </data>
   <data name="ckbControllerIsSource.Text" xml:space="preserve">
     <value>Controller is source</value>
@@ -1516,7 +1513,7 @@
     <value>115, 21</value>
   </data>
   <data name="ckbNotHurryable.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>5</value>
   </data>
   <data name="ckbNotHurryable.Text" xml:space="preserve">
     <value>Not Hurryable</value>
@@ -1543,7 +1540,7 @@
     <value>197, 135</value>
   </data>
   <data name="flpnOptions2.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;flpnOptions2.Name" xml:space="preserve">
     <value>flpnOptions2</value>
@@ -1564,7 +1561,7 @@
     <value>209, 177</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
+    <value>2</value>
   </data>
   <data name="groupBox2.Text" xml:space="preserve">
     <value>Options 2</value>
@@ -1603,7 +1600,7 @@
     <value>72, 24</value>
   </data>
   <data name="cbPriority.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;cbPriority.Name" xml:space="preserve">
     <value>cbPriority</value>
@@ -1624,7 +1621,7 @@
     <value>84, 66</value>
   </data>
   <data name="gbPriority.TabIndex" type="System.Int32, mscorlib">
-    <value>52</value>
+    <value>3</value>
   </data>
   <data name="gbPriority.Text" xml:space="preserve">
     <value>Priority</value>
@@ -1648,7 +1645,7 @@
     <value>521, 291</value>
   </data>
   <data name="flpnOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>47</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;flpnOptions.Name" xml:space="preserve">
     <value>flpnOptions</value>
@@ -1669,7 +1666,7 @@
     <value>0, 0</value>
   </data>
   <data name="flpnMain.Size" type="System.Drawing.Size, System.Drawing">
-    <value>533, 502</value>
+    <value>530, 502</value>
   </data>
   <data name="flpnMain.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1690,7 +1687,7 @@
     <value>0, 0</value>
   </data>
   <data name="pnWizAnimate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>536, 505</value>
+    <value>533, 505</value>
   </data>
   <data name="pnWizAnimate.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1720,7 +1717,7 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>572, 600</value>
+    <value>548, 525</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>UI</value>

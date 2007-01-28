@@ -1,5 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+28 January 2006 13:58 - Wizardry: WizAnimate write (plus support bytes in DataOwnerControl)
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.16.2.2
+    BhavOperandWizAnimate.cs 1.1.2.2
+    BhavOperandWizAnimate.resx 1.1.2.2
+
 27 January 2006 21:01 - Wizardry: WizAnimate (plus font fixes for 0x02/0x08, typo in DataOwnerControl)
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.16.2.1
