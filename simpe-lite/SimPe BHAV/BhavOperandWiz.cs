@@ -22,6 +22,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
@@ -421,13 +422,13 @@ namespace pjse.BhavOperandWizards
             }
 
 			#region pickerNames
-			ArrayList pickerNames = null;
+            List<String> pickerNames = null;
 			if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
 			{
 				pickerNames = BhavWiz.flagNames(flagsFor.DataOwner, flagsFor.Value);
 				if (pickerNames != null)
 				{
-					pickerNames = (ArrayList)pickerNames.Clone();
+                    pickerNames = new List<string>(pickerNames);
 					pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
 				}
 			}

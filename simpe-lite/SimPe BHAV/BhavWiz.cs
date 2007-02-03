@@ -19,6 +19,7 @@
  ***************************************************************************/
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using SimPe.PackedFiles.Wrapper;
 using pjse.BhavNameWizards;
 using SimPe.Plugin;
@@ -143,6 +144,8 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            TokenOpsCounted = 0x1e4, // PJSE: string number stolen (opcode 0x33)
+            TokenOpsSingular = 0x1e5, // PJSE: string number stolen (opcode 0x33)
             Languages = 0x1e6, // PJSE: string number stolen
             PetDecayIndices = 0x1e7, // PJSE: string number stolen (unused)
             SpeciesValues = 0x1e8, // PJSE: string number stolen for Data owners 0x12, 0x13 and 0x20 (unused)
@@ -577,21 +580,21 @@ namespace pjse
 
 
         private static Hashtable gString = new Hashtable();
-        public static ArrayList readStr(GS.BhavStr instance)
+        public static List<String> readStr(GS.BhavStr instance)
         {
             if (gString[instance] == null)
             {
-                ArrayList list = new ArrayList();
+                List<String> list = new List<String>();
                 String s;
                 Str str = new Str(instance);
                 for (ushort i = 0; (s = readStr(str, i, -1, Detail.ValueOnly, false, false)) != null; i++) list.Add(s);
                 gString[instance] = list;
             }
-            return (ArrayList)gString[instance];
+            return (List<String>)gString[instance];
         }
 
 
-        public ArrayList GetAttrNames(Scope s)
+        public List<String> GetAttrNames(Scope s)
         {
             if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
                 throw new InvalidOperationException("Can't read STR# for instruction with no parent");
@@ -600,7 +603,7 @@ namespace pjse
                 || instruction.Parent.Context == Scope.SemiGlobal && s == Scope.Private)
                 return null;
 
-            ArrayList al = new ArrayList();
+            List<String> al = new List<String>();
             Str str = new Str(s, instruction.Parent, (uint)GS.GlobalStr.AttributeLabels);
             int n = (str == null) ? 0 : ((StrItem[])str[(byte)1]).Length;
             String st;
@@ -618,7 +621,7 @@ namespace pjse
 
 
         #region Flag parsing
-        public static ArrayList flagNames(byte flagOwner, ushort flagType)
+        public static List<String> flagNames(byte flagOwner, ushort flagType)
         {
             Hashtable flagTypes = (Hashtable)flagOwners[flagOwner];
             return (flagTypes == null || flagTypes[flagType] == null) ? null : BhavWiz.readStr((GS.BhavStr)flagTypes[flagType]);
@@ -719,7 +722,7 @@ namespace pjse
         /// </summary>
         /// <param name="local">True to retrieve Local labels, false for Params</param>
         /// <returns></returns>
-        public ArrayList GetTPRPnames(bool local)
+        public List<String> GetTPRPnames(bool local)
         {
             if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
                 throw new InvalidOperationException("Can't read TPRP for instruction with no parent");
@@ -731,7 +734,7 @@ namespace pjse
             if (items == null || items.Length == 0)
                 return null;
 
-            ArrayList TPRPnames = new ArrayList();
+            List<String> TPRPnames = new List<String>();
 
             TPRP tprp = new TPRP();
             tprp.ProcessData(items[0].PFD, items[0].Package);
