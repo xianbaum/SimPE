@@ -229,6 +229,12 @@
     <Compile Include="BhavOperandWiz0x006d.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="BhavOperandWiz0x0008.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWizAnimate.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="PickANumber.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -367,6 +373,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BhavOperandWiz0x006d.resx">
       <DependentUpon>BhavOperandWiz0x006d.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x0008.resx">
+      <DependentUpon>BhavOperandWiz0x0008.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWizAnimate.resx">
+      <DependentUpon>BhavOperandWizAnimate.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PickANumber.resx">

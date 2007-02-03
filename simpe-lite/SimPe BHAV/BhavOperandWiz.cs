@@ -255,7 +255,8 @@ namespace pjse.BhavOperandWizards
 		#endregion
 
 		#region Form validation
-		private bool tbValue_IsValid(TextBox tb)
+        private int bitsInValue = 16;
+        private bool tbValue_IsValid(TextBox tb)
 		{
 			try
 			{
@@ -273,7 +274,12 @@ namespace pjse.BhavOperandWizards
 			if      (dataOwner == 0x1a) return pjse.BhavWiz.ExpandBCONtoString(v, false);
 			else if (dataOwner == 0x2f) return pjse.BhavWiz.ExpandBCONtoString(v, true);
 			else if (isDecimal) return ((short)v).ToString();
-			else                return (use0xPrefix ? "0x" : "") + SimPe.Helper.HexString(v);
+
+            String s = SimPe.Helper.HexString(v);
+            int i = (bitsInValue + 3) / 4;
+            s = s.Substring(s.Length - i);
+
+			return (use0xPrefix ? "0x" : "") + s;
 		}
 
 		private ushort tbValueConverter(TextBox sender)
@@ -287,20 +293,28 @@ namespace pjse.BhavOperandWizards
 		#endregion
 
         public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
-            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, cbkDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance); 
+            bitsInValue = 16;
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance);
+        }
+
+        public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
+            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, byte instance)
+        {
+            bitsInValue = 8;
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance);
         }
 
         public void SetDataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
             this.Dispose();
             this.inst = inst;
             this.cbDataOwner = cbDataOwner;
             this.cbPicker = cbPicker;
             this.tbValue = tbValue;
-            this.ckbDecimal = cbkDecimal;
+            this.ckbDecimal = ckbDecimal;
             this.ckbUseAttrPicker = ckbUseAttrPicker;
             this.lbConst = lbConst;
             this.dataOwner = dataOwner;
@@ -439,12 +453,14 @@ namespace pjse.BhavOperandWizards
 			}
 			#endregion
 
+            tbValue.TabStop = (tbValue.Visible = false);
+
             if (cbPicker != null)
             {
-                cbPicker.Visible = false;
+                cbPicker.TabStop = (cbPicker.Visible = false);
                 if (pickerNames != null && pickerNames.Count > 0)
                 {
-                    cbPicker.Visible = true;
+                    cbPicker.TabStop = (cbPicker.Visible = true);
                     cbPicker.Items.Clear();
                     cbPicker.Items.AddRange(pickerNames.ToArray());
                     cbPicker.SelectedIndex = (cbPicker.Items.Count > instance) ? instance : -1;
@@ -454,7 +470,10 @@ namespace pjse.BhavOperandWizards
             setConstLabel();
 
             if (tbValue != null)
+            {
                 tbValue.Visible = (cbPicker == null) || !cbPicker.Visible;
+                tbValue.TabStop = tbValue.Visible;
+            }
 
 			internalchg = false;
 		}
@@ -497,9 +516,6 @@ namespace pjse.BhavOperandWizards
 
         private bool use0xPrefix = true;
         public bool Use0xPrefix { set { } }
-
-        private int bitsInValue = 16;
-        public bool BitsInValue { set { } }
 
         private bool isDecimal = false;
 		public bool Decimal

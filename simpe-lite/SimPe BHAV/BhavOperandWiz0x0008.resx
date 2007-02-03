@@ -117,17 +117,83 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lbConst2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lbConst2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 17</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Set:</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>pnWiz0x0008</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 76</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>220, 17</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>to a random number from zero to:</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>pnWiz0x0008</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lbConst2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="lbConst2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbConst2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="lbConst2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 103</value>
+    <value>27, 130</value>
   </data>
   <data name="lbConst2.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 17</value>
@@ -145,16 +211,19 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lbConst2.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;lbConst2.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
+  </data>
+  <data name="lbConst1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="lbConst1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="lbConst1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 27</value>
+    <value>27, 54</value>
   </data>
   <data name="lbConst1.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 17</value>
@@ -172,16 +241,19 @@
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;lbConst1.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;lbConst1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
+  </data>
+  <data name="cbAttrPicker.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="cbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="cbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>292, 121</value>
+    <value>319, 148</value>
   </data>
   <data name="cbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
     <value>149, 21</value>
@@ -199,16 +271,19 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbAttrPicker.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;cbAttrPicker.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
+  </data>
+  <data name="cbDecimal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="cbDecimal.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="cbDecimal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 121</value>
+    <value>115, 148</value>
   </data>
   <data name="cbDecimal.Size" type="System.Drawing.Size, System.Drawing">
     <value>179, 21</value>
@@ -226,13 +301,16 @@
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbDecimal.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;cbDecimal.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
+  </data>
+  <data name="cbPicker2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="cbPicker2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 75</value>
+    <value>328, 102</value>
   </data>
   <data name="cbPicker2.Size" type="System.Drawing.Size, System.Drawing">
     <value>155, 24</value>
@@ -250,13 +328,16 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbPicker2.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;cbPicker2.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
+  </data>
+  <data name="cbPicker1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="cbPicker1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 0</value>
+    <value>328, 27</value>
   </data>
   <data name="cbPicker1.Size" type="System.Drawing.Size, System.Drawing">
     <value>155, 24</value>
@@ -274,34 +355,16 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbPicker1.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;cbPicker1.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
-  <data name="cbOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 47</value>
-  </data>
-  <data name="cbOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>456, 24</value>
-  </data>
-  <data name="cbOperator.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;cbOperator.Name" xml:space="preserve">
-    <value>cbOperator</value>
-  </data>
-  <data name="&gt;&gt;cbOperator.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbOperator.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;cbOperator.ZOrder" xml:space="preserve">
-    <value>6</value>
+  <data name="tbval2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="tbval2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 75</value>
+    <value>328, 102</value>
   </data>
   <data name="tbval2.Size" type="System.Drawing.Size, System.Drawing">
     <value>155, 22</value>
@@ -316,13 +379,16 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbval2.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;tbval2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
+  </data>
+  <data name="cbDataOwner2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="cbDataOwner2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 75</value>
+    <value>27, 102</value>
   </data>
   <data name="cbDataOwner2.Size" type="System.Drawing.Size, System.Drawing">
     <value>302, 24</value>
@@ -337,13 +403,16 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbDataOwner2.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;cbDataOwner2.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
+  </data>
+  <data name="tbval1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="tbval1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 0</value>
+    <value>328, 27</value>
   </data>
   <data name="tbval1.Size" type="System.Drawing.Size, System.Drawing">
     <value>155, 22</value>
@@ -358,13 +427,16 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbval1.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;tbval1.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
+  </data>
+  <data name="cbDataOwner1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
   </data>
   <data name="cbDataOwner1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
+    <value>27, 27</value>
   </data>
   <data name="cbDataOwner1.Size" type="System.Drawing.Size, System.Drawing">
     <value>302, 24</value>
@@ -379,40 +451,40 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbDataOwner1.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>pnWiz0x0008</value>
   </data>
   <data name="&gt;&gt;cbDataOwner1.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
-  <data name="pnWiz0x0002.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="pnWiz0x0008.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="pnWiz0x0002.Size" type="System.Drawing.Size, System.Drawing">
-    <value>460, 144</value>
+  <data name="pnWiz0x0008.Size" type="System.Drawing.Size, System.Drawing">
+    <value>487, 171</value>
   </data>
-  <data name="pnWiz0x0002.TabIndex" type="System.Int32, mscorlib">
+  <data name="pnWiz0x0008.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;pnWiz0x0002.Name" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+  <data name="&gt;&gt;pnWiz0x0008.Name" xml:space="preserve">
+    <value>pnWiz0x0008</value>
   </data>
-  <data name="&gt;&gt;pnWiz0x0002.Type" xml:space="preserve">
+  <data name="&gt;&gt;pnWiz0x0008.Type" xml:space="preserve">
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;pnWiz0x0002.Parent" xml:space="preserve">
+  <data name="&gt;&gt;pnWiz0x0008.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;pnWiz0x0002.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;pnWiz0x0008.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>120, 120</value>
+    <value>8, 16</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>463, 149</value>
+    <value>514, 194</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>UI</value>
