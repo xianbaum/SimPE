@@ -1,5 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+04 February 2007 14:27 - Wiz0x0033: Write works (DataOwnerControl now writable, too)
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.17.2.2
+    BhavOperandWiz0x0033.cs 1.1.2.2
+    BhavOperandWiz0x0033.resx 1.1.2.2
+  GlobalStrings.package 1.10.8.15.8.2
+
 03 February 2007 21:23 - Wiz0x0033: Save compiling version
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.17.2.1

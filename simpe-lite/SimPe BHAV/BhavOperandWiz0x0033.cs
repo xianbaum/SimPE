@@ -32,9 +32,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         #region Form variables
 
         internal System.Windows.Forms.Panel pnWiz0x0033;
-        private FlowLayoutPanel flpnOperation;
-        private Label lbOperation;
-        private ComboBox cbOperation;
         private TableLayoutPanel tlpnGetSetValue;
         private Panel pnDoid1;
         private ComboBox cbPicker1;
@@ -52,14 +49,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         private TextBox tbVal3;
         private ComboBox cbDataOwner3;
         private Label lbGUID;
-        private CheckBox ckbReversed;
         private ComboBox cbInventory;
         private Label lbInventory;
         private FlowLayoutPanel flpnGUID;
         private TextBox tbGUID;
         private TextBox tbObjName;
         private GroupBox gbTokenTypes;
-        private CheckBox ckbTTAll;
         private TableLayoutPanel tableLayoutPanel1;
         private CheckBox ckbTTInvShopping;
         private CheckBox ckbTTShopping;
@@ -68,19 +63,24 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         private CheckBox ckbTTInvVisible;
         private CheckBox ckbTTVisible;
         private GroupBox gbInventoryType;
-        private ComboBox cbTargetInv;
         private FlowLayoutPanel flpnInventoryType;
         private RadioButton rb1Counted;
         private RadioButton rb1Singular;
         private Panel pnDoidOptions;
         private CheckBox ckbAttrPicker;
         private CheckBox ckbDecimal;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel flpnDoid0;
         private Label lbDoid0;
         private Panel pnDoid0;
         private ComboBox cbPicker0;
         private TextBox tbVal0;
         private ComboBox cbDataOwner0;
+        private Label lbOperation;
+        private FlowLayoutPanel flpnOperation;
+        private ComboBox cbOperation;
+        private CheckBox ckbReversed;
+        private ComboBox cbTargetInv;
+        private CheckBox ckbTTAll;
         /// <summary>
         /// Erforderliche Designervariable.
         /// </summary>
@@ -98,9 +98,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             // Required for Windows Form Designer support
             //
             InitializeComponent();
-
-            cbTargetInv.Items.AddRange(BhavWiz.readStr(GS.BhavStr.InventoryType).ToArray());
-            cbInventory.Items.AddRange(BhavWiz.readStr(GS.BhavStr.InventoryType).ToArray());
         }
 
         /// <summary>
@@ -124,6 +121,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         #region UI
 
         #region static data
+        static List<String> aInventoryType = BhavWiz.readStr(GS.BhavStr.InventoryType);
         static List<String> aTokenOpsCounted = BhavWiz.readStr(GS.BhavStr.TokenOpsCounted);
         static List<String> aTokenOpsSingular = BhavWiz.readStr(GS.BhavStr.TokenOpsSingular);
         static bool[][] aDoidsCounted = {
@@ -162,74 +160,77 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         private DataOwnerControl doid2 = null; // o[10], o[11], o[12]
         private DataOwnerControl doid3 = null; // o[13], o[14], o[15]
 
-        private void doTokenOps(List<String> tokenops)
+        private bool hex32_IsValid(object sender)
         {
-            int i = cbOperation.SelectedIndex;
-            cbOperation.Items.Clear();
-            cbOperation.Items.AddRange(tokenops.ToArray());
-            cbOperation.SelectedIndex = (i > cbOperation.Items.Count) ? -1 : i;
+            try { Convert.ToUInt32(((TextBox)sender).Text, 16); }
+            catch (Exception) { return false; }
+            return true;
         }
 
-        private void doTokenType(bool all, bool allowTypes)
+        private void setGUID(byte[] o, int sub) { setGUID(true, (UInt32)(o[sub] | o[sub + 1] << 8 | o[sub + 2] << 16 | o[sub + 3] << 24)); }
+        private void setGUID(bool setTB, UInt32 guid)
         {
-            ckbTTAll.Enabled = true;
-            ckbTTAll.Checked = all;
-            if (gbTokenTypes.Enabled = !ckbTTAll.Checked && allowTypes)
-            {
-                ckbTTInvShopping.Enabled = ckbTTInvMemory.Enabled = ckbTTInvVisible.Enabled = false;
-                if (ckbTTVisible.Checked = option2[2]) { ckbTTInvVisible.Enabled = true; ckbTTInvVisible.Checked = option1[4]; }
-                if (ckbTTMemory.Checked = option2[3]) { ckbTTInvMemory.Enabled = true; ckbTTInvMemory.Checked = option1[5]; }
-                if (ckbTTShopping.Checked = option2[5]) { ckbTTInvShopping.Enabled = true; ckbTTInvShopping.Checked = option2[0]; }
-            }
+            if (setTB) this.tbGUID.Text = "0x" + SimPe.Helper.HexString(guid);
+            this.tbObjName.Text = (guid == 0) ? BhavWiz.dnStkOb() : BhavWiz.FormatGUID(true, guid);
+        }
+
+        private void doTokenOps(List<String> tokenops)
+        {
+            cbOperation.Items.Clear();
+            cbOperation.Items.AddRange(tokenops.ToArray());
+            cbOperation.SelectedIndex = (operation < cbOperation.Items.Count) ? operation : -1;
+        }
+
+        private void doTokenType()
+        {
+            gbTokenTypes.Enabled = true;
+            ckbTTInvVisible.Enabled = !ckbTTVisible.Enabled || ckbTTVisible.Checked;
+            ckbTTInvMemory.Enabled = !ckbTTMemory.Enabled || ckbTTMemory.Checked;
+            ckbTTInvShopping.Enabled = ckbTTShopping.Checked;
+            ckbTTAll.Checked = !ckbTTVisible.Checked && !ckbTTMemory.Checked && !ckbTTShopping.Checked;
         }
 
         private void doFromInventory()
         {
             cbInventory.Enabled = true;
-            int i = (inst.Operands[6] & 0x07);
+            int i = (doid1.DataOwner & 0x07);
             cbInventory.SelectedIndex = (i < cbInventory.Items.Count) ? i : -1;
             pnDoid3.Enabled = (i >= 1 && i <= 3);
         }
 
         private void doByGUID()
         {
-            byte[] o1 = inst.Operands;
-            byte[] o2 = inst.Reserved1;
-
             flpnGUID.Enabled = true;
-            uint d1 = (uint)(o1[5] | (o1[6] << 8) | (o1[7] << 16) | (o2[0] << 24));
-            tbGUID.Text = "0x" + SimPe.Helper.HexString(d1);
-            tbObjName.Text = (d1 == 0 ? BhavWiz.dnStkOb() : BhavWiz.FormatGUID(true, d1));
+            setGUID(true, (uint)(operand5 | (doid1.DataOwner << 8) | (doid1.Value << 16)));
         }
 
         private void doCounted()
         {
             doTokenOps(aTokenOpsCounted);
-            pnDoid0.Enabled = pnDoid1.Enabled = pnDoid2.Enabled = pnDoid3.Enabled = false;
-            gbTokenTypes.Enabled = ckbTTAll.Enabled = ckbReversed.Enabled = false;
+
+            pnDoid1.Enabled = pnDoid2.Enabled = pnDoid3.Enabled = false;
+            gbTokenTypes.Enabled = ckbReversed.Enabled = false;
             cbInventory.Enabled = false;
-            flpnGUID.Enabled = false;
+            flpnGUID.Enabled = false; tbObjName.Text = tbGUID.Text = "";
 
-            byte op = inst.Operands[4];
-
-            if (op < aDoidsCounted[0].Length)
+            if (operation < aDoidsCounted[0].Length)
             {
-                pnDoid1.Enabled = aDoidsCounted[1][op];
-                pnDoid2.Enabled = aDoidsCounted[2][op];
-                pnDoid3.Enabled = aDoidsCounted[3][op];
+                pnDoid1.Enabled = aDoidsCounted[1][operation];
+                pnDoid2.Enabled = aDoidsCounted[2][operation];
+                pnDoid3.Enabled = aDoidsCounted[3][operation];
             }
-            if (op < aNamesCounted[0].Length)
+            if (operation < aNamesCounted[0].Length)
             {
-                lbDoid1.Text = aNamesCounted[1][op] > 0 ? pjse.Localization.GetString(names[aNamesCounted[1][op]]) : "";
-                lbDoid2.Text = aNamesCounted[2][op] > 0 ? pjse.Localization.GetString(names[aNamesCounted[2][op]]) : "";
-                lbDoid3.Text = aNamesCounted[3][op] > 0 ? pjse.Localization.GetString(names[aNamesCounted[3][op]]) : "";
+                lbDoid1.Text = aNamesCounted[1][operation] > 0 ? pjse.Localization.GetString(names[aNamesCounted[1][operation]]) : "";
+                lbDoid2.Text = aNamesCounted[2][operation] > 0 ? pjse.Localization.GetString(names[aNamesCounted[2][operation]]) : "";
+                lbDoid3.Text = aNamesCounted[3][operation] > 0 ? pjse.Localization.GetString(names[aNamesCounted[3][operation]]) : "";
             }
 
-            switch (op)
+            switch (operation)
             {
                 case 0x00: doByGUID(); break;
                 case 0x02: doByGUID(); break;
-                case 0x04: doTokenType(true, false); break;
+                //case 0x04: doTokenType(); break; // No - can't actually change which types
                 case 0x06: doByGUID(); break;
                 case 0x07: doByGUID(); break;
                 case 0x09: doByGUID(); break;
@@ -240,57 +241,107 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         private void doSingular()
         {
             doTokenOps(aTokenOpsSingular);
-            pnDoid0.Enabled = pnDoid1.Enabled = pnDoid2.Enabled = pnDoid3.Enabled = false;
-            gbTokenTypes.Enabled = ckbTTAll.Enabled = ckbReversed.Enabled = false;
+            pnDoid1.Enabled = pnDoid2.Enabled = pnDoid3.Enabled = false;
+            gbTokenTypes.Enabled = ckbReversed.Enabled = false;
             cbInventory.Enabled = false;
-            flpnGUID.Enabled = false;
+            flpnGUID.Enabled = false; tbObjName.Text = tbGUID.Text = "";
 
-            byte op = inst.Operands[4];
-
-            if (op < aDoidsSingular[0].Length)
+            if (operation < aDoidsSingular[0].Length)
             {
-                pnDoid1.Enabled = aDoidsSingular[1][op];
-                pnDoid2.Enabled = aDoidsSingular[2][op];
-                pnDoid3.Enabled = aDoidsSingular[3][op];
+                pnDoid1.Enabled = aDoidsSingular[1][operation];
+                pnDoid2.Enabled = aDoidsSingular[2][operation];
+                pnDoid3.Enabled = aDoidsSingular[3][operation];
             }
-            if (op < aNamesSingular[0].Length)
+            if (operation < aNamesSingular[0].Length)
             {
-                lbDoid1.Text = aNamesSingular[1][op] > 0 ? pjse.Localization.GetString(names[aNamesSingular[1][op]]) : "";
-                lbDoid2.Text = aNamesSingular[2][op] > 0 ? pjse.Localization.GetString(names[aNamesSingular[2][op]]) : "";
-                lbDoid3.Text = aNamesSingular[3][op] > 0 ? pjse.Localization.GetString(names[aNamesSingular[3][op]]) : "";
+                lbDoid1.Text = aNamesSingular[1][operation] > 0 ? pjse.Localization.GetString(names[aNamesSingular[1][operation]]) : "";
+                lbDoid2.Text = aNamesSingular[2][operation] > 0 ? pjse.Localization.GetString(names[aNamesSingular[2][operation]]) : "";
+                lbDoid3.Text = aNamesSingular[3][operation] > 0 ? pjse.Localization.GetString(names[aNamesSingular[3][operation]]) : "";
             }
 
-            switch (op)
+            switch (operation)
             {
                 case 0x00: doByGUID(); break;
-                case 0x02: doTokenType(true, true); break;
-                case 0x03: doTokenType(false, false); ckbReversed.Enabled = true; break;
+                case 0x02: doTokenType(); break;
+                case 0x03: doTokenType(); ckbReversed.Enabled = true; break;
                 case 0x06: doByGUID(); break;
-                case 0x0c: doTokenType(false, false); ckbReversed.Enabled = true; break;
-                case 0x0d: doTokenType(true, true); break;
+                case 0x0c: doTokenType(); ckbReversed.Enabled = true; break;
+                case 0x0d: doTokenType(); break;
                 case 0x12: doFromInventory(); break;
             }
         }
 
 
-        private Boolset option1 = 0;
-        private Boolset option2 = 0;
+        private byte operation = 0;
+        private byte operand5 = 0;
         public void Execute(Instruction inst)
         {
             this.inst = inst;
 
             wrappedByteArray ops1 = inst.Operands;
             wrappedByteArray ops2 = inst.Reserved1;
+
             internalchg = true;
 
-            option1 = (inst.NodeVersion >= 1) ? ops1[0] : (byte)(((ops1[0] & 0x3C) << 1) | (ops1[0] & 0x83));
-            option2 = (inst.NodeVersion >= 2) ? ops2[1] : (byte)0x0c;
+            Boolset option1 = ops1[0];
+            if (inst.NodeVersion < 1)
+            {
+                // In the parser we have something like this...
+                //option1 = (inst.NodeVersion >= 1) ? ops1[0] : (byte)(((ops1[0] & 0x3C) << 1) | (ops1[0] & 0x83));
+                // 8765 4321
+                // 0065 4300 <<1 =
+                // 0654 3000 |
+                // 8000 0021 =
+                // 8654 3021
+
+                List<String> aS = new List<string>(aInventoryType.ToArray());
+                aS.RemoveRange(4, aS.Count - 4);
+                cbTargetInv.Items.Clear();
+                cbTargetInv.Items.AddRange(aS.ToArray());
+                cbInventory.Items.Clear();
+                cbInventory.Items.AddRange(aS.ToArray());
+                cbTargetInv.SelectedIndex = ((option1 & 0x03) < cbTargetInv.Items.Count) ? option1 & 0x03 : -1;
+
+                rb1Counted.Checked = option1[2];
+                ckbTTInvVisible.Checked = !option1[3];
+                ckbTTInvMemory.Checked = !option1[4];
+            }
+            else
+            {
+                cbTargetInv.Items.Clear();
+                cbTargetInv.Items.AddRange(aInventoryType.ToArray());
+                cbInventory.Items.Clear();
+                cbInventory.Items.AddRange(aInventoryType.ToArray());
+                cbTargetInv.SelectedIndex = ((option1 & 0x07) < cbTargetInv.Items.Count) ? option1 & 0x07 : -1;
+
+                rb1Counted.Checked = option1[3];
+                ckbTTInvVisible.Checked = !option1[4];
+                ckbTTInvMemory.Checked = !option1[5];
+            }
+            ckbReversed.Checked = option1[7];
+
+            pnDoid0.Enabled = (cbTargetInv.SelectedIndex >= 1 && cbTargetInv.SelectedIndex <= 3);
+            lbDoid0.Text = pnDoid0.Enabled ? cbTargetInv.SelectedItem.ToString() : "";
+            rb1Singular.Checked = !rb1Counted.Checked;
 
             doid0 = new DataOwnerControl(inst, cbDataOwner0, cbPicker0, tbVal0,
                 ckbDecimal, ckbAttrPicker, null, ops1[1], BhavWiz.ToShort(ops1[2], ops1[3]));
 
+            operation = ops1[4];
+            operand5 = ops1[5];
+
             doid1 = new DataOwnerControl(inst, cbDataOwner1, cbPicker1, tbVal1,
                 ckbDecimal, ckbAttrPicker, null, ops1[6], BhavWiz.ToShort(ops1[7], ops2[0]));
+
+            ckbTTVisible.Enabled = ckbTTMemory.Enabled = ckbTTShopping.Enabled = (inst.NodeVersion >= 2);
+            if (inst.NodeVersion >= 2)
+            {
+                Boolset option2 = ops2[1];
+                ckbTTInvShopping.Checked = !option2[0];
+                ckbTTVisible.Checked = option2[2];
+                ckbTTMemory.Checked = option2[3];
+                ckbTTShopping.Checked = option2[5];
+            }
 
             doid2 = new DataOwnerControl(inst, cbDataOwner2, cbPicker2, tbVal2,
                 ckbDecimal, ckbAttrPicker, null, ops2[2], BhavWiz.ToShort(ops2[3], ops2[4]));
@@ -298,24 +349,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             doid3 = new DataOwnerControl(inst, cbDataOwner3, cbPicker3, tbVal3,
                 ckbDecimal, ckbAttrPicker, null, ops2[5], BhavWiz.ToShort(ops2[6], ops2[7]));
 
-            if (option1[3])
-            {
-                rb1Counted.Checked = true;
-                doCounted();
-            }
-            else
-            {
-                rb1Counted.Checked = false;
-                doSingular();
-            }
-            if (ops1[4] < cbOperation.Items.Count)
-                cbOperation.SelectedIndex = ops1[4];
-            ckbReversed.Checked = option1[7];
-            rb1Singular.Checked = !rb1Counted.Checked;
 
-            cbTargetInv.SelectedIndex = ((option1 & 0x07) < cbTargetInv.Items.Count) ? option1 & 0x07 : -1;
-            pnDoid0.Enabled = ((option1 & 0x07) >= 1 && (option1 & 0x07) <= 3);
-            lbDoid0.Text = pnDoid0.Enabled ? pjse.Localization.GetString(names[1]) : "";
+            if (rb1Counted.Checked)
+                doCounted();
+            else
+                doSingular();
+
+            cbOperation.SelectedIndex = (operation < cbOperation.Items.Count) ? operation : -1;
 
             internalchg = false;
         }
@@ -327,6 +367,57 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             {
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
+
+                Boolset option1 = ops1[0];
+                if (inst.NodeVersion < 1)
+                {
+                    if (cbTargetInv.SelectedIndex >= 0)
+                        option1 = (byte)((option1 & 0xfc) | (cbTargetInv.SelectedIndex & 0x03));
+
+                    option1[2] = rb1Counted.Checked;
+                    option1[3] = !ckbTTInvVisible.Checked;
+                    option1[4] = !ckbTTInvMemory.Checked;
+                }
+                else
+                {
+                    if (cbTargetInv.SelectedIndex >= 0)
+                        option1 = (byte)((option1 & 0xf8) | (cbTargetInv.SelectedIndex & 0x07));
+
+                    option1[3] = rb1Counted.Checked;
+                    option1[4] = !ckbTTInvVisible.Checked;
+                    option1[5] = !ckbTTInvMemory.Checked;
+                }
+                option1[7] = ckbReversed.Checked;
+                ops1[0] = option1;
+
+                ops1[1] = doid0.DataOwner;
+                ops1[2] = (byte)(doid0.Value & 0xff);
+                ops1[3] = (byte)(doid0.Value >> 8);
+
+                ops1[4] = operation;
+                ops1[5] = operand5;
+
+                ops1[6] = doid1.DataOwner;
+                ops1[7] = (byte)(doid1.Value & 0xff);
+                ops2[0] = (byte)(doid1.Value >> 8);
+
+                if (inst.NodeVersion >= 2)
+                {
+                    Boolset option2 = ops2[1];
+                    option2[0] = !ckbTTInvShopping.Checked;
+                    option2[2] = ckbTTVisible.Checked;
+                    option2[3] = ckbTTMemory.Checked;
+                    option2[5] = ckbTTShopping.Checked;
+                    ops2[1] = option2;
+                }
+
+                ops2[2] = doid2.DataOwner;
+                ops2[3] = (byte)(doid2.Value & 0xff);
+                ops2[4] = (byte)(doid2.Value >> 8);
+
+                ops2[5] = doid3.DataOwner;
+                ops2[6] = (byte)(doid3.Value & 0xff);
+                ops2[7] = (byte)(doid3.Value >> 8);
             }
             return inst;
         }
@@ -342,11 +433,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             this.pnWiz0x0033 = new System.Windows.Forms.Panel();
-            this.ckbReversed = new System.Windows.Forms.CheckBox();
             this.tlpnGetSetValue = new System.Windows.Forms.TableLayoutPanel();
+            this.lbOperation = new System.Windows.Forms.Label();
+            this.flpnOperation = new System.Windows.Forms.FlowLayoutPanel();
+            this.cbOperation = new System.Windows.Forms.ComboBox();
+            this.ckbReversed = new System.Windows.Forms.CheckBox();
             this.gbTokenTypes = new System.Windows.Forms.GroupBox();
-            this.ckbTTAll = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.ckbTTAll = new System.Windows.Forms.CheckBox();
             this.ckbTTInvShopping = new System.Windows.Forms.CheckBox();
             this.ckbTTShopping = new System.Windows.Forms.CheckBox();
             this.ckbTTInvMemory = new System.Windows.Forms.CheckBox();
@@ -354,16 +448,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.ckbTTInvVisible = new System.Windows.Forms.CheckBox();
             this.ckbTTVisible = new System.Windows.Forms.CheckBox();
             this.gbInventoryType = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpnDoid0 = new System.Windows.Forms.FlowLayoutPanel();
             this.lbDoid0 = new System.Windows.Forms.Label();
             this.pnDoid0 = new System.Windows.Forms.Panel();
             this.cbPicker0 = new System.Windows.Forms.ComboBox();
             this.tbVal0 = new System.Windows.Forms.TextBox();
             this.cbDataOwner0 = new System.Windows.Forms.ComboBox();
-            this.cbTargetInv = new System.Windows.Forms.ComboBox();
             this.flpnInventoryType = new System.Windows.Forms.FlowLayoutPanel();
             this.rb1Counted = new System.Windows.Forms.RadioButton();
             this.rb1Singular = new System.Windows.Forms.RadioButton();
+            this.cbTargetInv = new System.Windows.Forms.ComboBox();
             this.lbDoid1 = new System.Windows.Forms.Label();
             this.pnDoid1 = new System.Windows.Forms.Panel();
             this.cbPicker1 = new System.Windows.Forms.ComboBox();
@@ -378,9 +472,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.tbVal2 = new System.Windows.Forms.TextBox();
             this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
             this.lbInventory = new System.Windows.Forms.Label();
-            this.lbGUID = new System.Windows.Forms.Label();
             this.lbDoid3 = new System.Windows.Forms.Label();
-            this.lbDoid2 = new System.Windows.Forms.Label();
             this.cbInventory = new System.Windows.Forms.ComboBox();
             this.flpnGUID = new System.Windows.Forms.FlowLayoutPanel();
             this.tbGUID = new System.Windows.Forms.TextBox();
@@ -388,15 +480,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.pnDoidOptions = new System.Windows.Forms.Panel();
             this.ckbAttrPicker = new System.Windows.Forms.CheckBox();
             this.ckbDecimal = new System.Windows.Forms.CheckBox();
-            this.flpnOperation = new System.Windows.Forms.FlowLayoutPanel();
-            this.lbOperation = new System.Windows.Forms.Label();
-            this.cbOperation = new System.Windows.Forms.ComboBox();
+            this.lbDoid2 = new System.Windows.Forms.Label();
+            this.lbGUID = new System.Windows.Forms.Label();
             this.pnWiz0x0033.SuspendLayout();
             this.tlpnGetSetValue.SuspendLayout();
+            this.flpnOperation.SuspendLayout();
             this.gbTokenTypes.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.gbInventoryType.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.flpnDoid0.SuspendLayout();
             this.pnDoid0.SuspendLayout();
             this.flpnInventoryType.SuspendLayout();
             this.pnDoid1.SuspendLayout();
@@ -404,16 +496,54 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.pnDoid2.SuspendLayout();
             this.flpnGUID.SuspendLayout();
             this.pnDoidOptions.SuspendLayout();
-            this.flpnOperation.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnWiz0x0033
             // 
             resources.ApplyResources(this.pnWiz0x0033, "pnWiz0x0033");
-            this.pnWiz0x0033.Controls.Add(this.ckbReversed);
             this.pnWiz0x0033.Controls.Add(this.tlpnGetSetValue);
-            this.pnWiz0x0033.Controls.Add(this.flpnOperation);
             this.pnWiz0x0033.Name = "pnWiz0x0033";
+            // 
+            // tlpnGetSetValue
+            // 
+            resources.ApplyResources(this.tlpnGetSetValue, "tlpnGetSetValue");
+            this.tlpnGetSetValue.Controls.Add(this.lbOperation, 0, 0);
+            this.tlpnGetSetValue.Controls.Add(this.flpnOperation, 1, 0);
+            this.tlpnGetSetValue.Controls.Add(this.gbTokenTypes, 0, 6);
+            this.tlpnGetSetValue.Controls.Add(this.gbInventoryType, 0, 6);
+            this.tlpnGetSetValue.Controls.Add(this.lbDoid1, 0, 1);
+            this.tlpnGetSetValue.Controls.Add(this.pnDoid1, 1, 1);
+            this.tlpnGetSetValue.Controls.Add(this.pnDoid3, 1, 5);
+            this.tlpnGetSetValue.Controls.Add(this.pnDoid2, 1, 4);
+            this.tlpnGetSetValue.Controls.Add(this.lbInventory, 0, 2);
+            this.tlpnGetSetValue.Controls.Add(this.lbDoid3, 0, 5);
+            this.tlpnGetSetValue.Controls.Add(this.cbInventory, 1, 2);
+            this.tlpnGetSetValue.Controls.Add(this.flpnGUID, 1, 3);
+            this.tlpnGetSetValue.Controls.Add(this.pnDoidOptions, 1, 7);
+            this.tlpnGetSetValue.Controls.Add(this.lbDoid2, 0, 4);
+            this.tlpnGetSetValue.Controls.Add(this.lbGUID, 0, 3);
+            this.tlpnGetSetValue.Name = "tlpnGetSetValue";
+            // 
+            // lbOperation
+            // 
+            resources.ApplyResources(this.lbOperation, "lbOperation");
+            this.lbOperation.Name = "lbOperation";
+            // 
+            // flpnOperation
+            // 
+            resources.ApplyResources(this.flpnOperation, "flpnOperation");
+            this.flpnOperation.Controls.Add(this.cbOperation);
+            this.flpnOperation.Controls.Add(this.ckbReversed);
+            this.flpnOperation.Name = "flpnOperation";
+            // 
+            // cbOperation
+            // 
+            this.cbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOperation.DropDownWidth = 480;
+            this.cbOperation.FormattingEnabled = true;
+            resources.ApplyResources(this.cbOperation, "cbOperation");
+            this.cbOperation.Name = "cbOperation";
+            this.cbOperation.SelectedIndexChanged += new System.EventHandler(this.cbOperation_SelectedIndexChanged);
             // 
             // ckbReversed
             // 
@@ -421,41 +551,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.ckbReversed.Name = "ckbReversed";
             this.ckbReversed.UseVisualStyleBackColor = true;
             // 
-            // tlpnGetSetValue
-            // 
-            resources.ApplyResources(this.tlpnGetSetValue, "tlpnGetSetValue");
-            this.tlpnGetSetValue.Controls.Add(this.gbTokenTypes, 0, 6);
-            this.tlpnGetSetValue.Controls.Add(this.gbInventoryType, 0, 6);
-            this.tlpnGetSetValue.Controls.Add(this.lbDoid1, 0, 0);
-            this.tlpnGetSetValue.Controls.Add(this.pnDoid1, 1, 0);
-            this.tlpnGetSetValue.Controls.Add(this.pnDoid3, 1, 4);
-            this.tlpnGetSetValue.Controls.Add(this.pnDoid2, 1, 3);
-            this.tlpnGetSetValue.Controls.Add(this.lbInventory, 0, 1);
-            this.tlpnGetSetValue.Controls.Add(this.lbGUID, 0, 2);
-            this.tlpnGetSetValue.Controls.Add(this.lbDoid3, 0, 4);
-            this.tlpnGetSetValue.Controls.Add(this.lbDoid2, 0, 3);
-            this.tlpnGetSetValue.Controls.Add(this.cbInventory, 1, 1);
-            this.tlpnGetSetValue.Controls.Add(this.flpnGUID, 1, 2);
-            this.tlpnGetSetValue.Controls.Add(this.pnDoidOptions, 1, 5);
-            this.tlpnGetSetValue.Name = "tlpnGetSetValue";
-            // 
             // gbTokenTypes
             // 
             resources.ApplyResources(this.gbTokenTypes, "gbTokenTypes");
-            this.gbTokenTypes.Controls.Add(this.ckbTTAll);
             this.gbTokenTypes.Controls.Add(this.tableLayoutPanel1);
             this.gbTokenTypes.Name = "gbTokenTypes";
             this.gbTokenTypes.TabStop = false;
             // 
-            // ckbTTAll
-            // 
-            resources.ApplyResources(this.ckbTTAll, "ckbTTAll");
-            this.ckbTTAll.Name = "ckbTTAll";
-            this.ckbTTAll.UseVisualStyleBackColor = true;
-            // 
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.ckbTTAll, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.ckbTTInvShopping, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.ckbTTShopping, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.ckbTTInvMemory, 1, 1);
@@ -463,6 +569,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.tableLayoutPanel1.Controls.Add(this.ckbTTInvVisible, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbTTVisible, 0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // ckbTTAll
+            // 
+            resources.ApplyResources(this.ckbTTAll, "ckbTTAll");
+            this.ckbTTAll.Checked = true;
+            this.ckbTTAll.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbTTAll.Name = "ckbTTAll";
+            this.ckbTTAll.UseVisualStyleBackColor = true;
             // 
             // ckbTTInvShopping
             // 
@@ -475,6 +589,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             resources.ApplyResources(this.ckbTTShopping, "ckbTTShopping");
             this.ckbTTShopping.Name = "ckbTTShopping";
             this.ckbTTShopping.UseVisualStyleBackColor = true;
+            this.ckbTTShopping.CheckedChanged += new System.EventHandler(this.ckbTT_CheckedChanged);
             // 
             // ckbTTInvMemory
             // 
@@ -487,6 +602,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             resources.ApplyResources(this.ckbTTMemory, "ckbTTMemory");
             this.ckbTTMemory.Name = "ckbTTMemory";
             this.ckbTTMemory.UseVisualStyleBackColor = true;
+            this.ckbTTMemory.CheckedChanged += new System.EventHandler(this.ckbTT_CheckedChanged);
             // 
             // ckbTTInvVisible
             // 
@@ -499,22 +615,22 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             resources.ApplyResources(this.ckbTTVisible, "ckbTTVisible");
             this.ckbTTVisible.Name = "ckbTTVisible";
             this.ckbTTVisible.UseVisualStyleBackColor = true;
+            this.ckbTTVisible.CheckedChanged += new System.EventHandler(this.ckbTT_CheckedChanged);
             // 
             // gbInventoryType
             // 
             resources.ApplyResources(this.gbInventoryType, "gbInventoryType");
-            this.gbInventoryType.Controls.Add(this.flowLayoutPanel1);
-            this.gbInventoryType.Controls.Add(this.cbTargetInv);
+            this.gbInventoryType.Controls.Add(this.flpnDoid0);
             this.gbInventoryType.Controls.Add(this.flpnInventoryType);
             this.gbInventoryType.Name = "gbInventoryType";
             this.gbInventoryType.TabStop = false;
             // 
-            // flowLayoutPanel1
+            // flpnDoid0
             // 
-            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
-            this.flowLayoutPanel1.Controls.Add(this.lbDoid0);
-            this.flowLayoutPanel1.Controls.Add(this.pnDoid0);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            resources.ApplyResources(this.flpnDoid0, "flpnDoid0");
+            this.flpnDoid0.Controls.Add(this.lbDoid0);
+            this.flpnDoid0.Controls.Add(this.pnDoid0);
+            this.flpnDoid0.Name = "flpnDoid0";
             // 
             // lbDoid0
             // 
@@ -551,17 +667,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             resources.ApplyResources(this.cbDataOwner0, "cbDataOwner0");
             this.cbDataOwner0.Name = "cbDataOwner0";
             // 
-            // cbTargetInv
-            // 
-            this.cbTargetInv.FormattingEnabled = true;
-            resources.ApplyResources(this.cbTargetInv, "cbTargetInv");
-            this.cbTargetInv.Name = "cbTargetInv";
-            // 
             // flpnInventoryType
             // 
             resources.ApplyResources(this.flpnInventoryType, "flpnInventoryType");
             this.flpnInventoryType.Controls.Add(this.rb1Counted);
             this.flpnInventoryType.Controls.Add(this.rb1Singular);
+            this.flpnInventoryType.Controls.Add(this.cbTargetInv);
             this.flpnInventoryType.Name = "flpnInventoryType";
             // 
             // rb1Counted
@@ -570,6 +681,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.rb1Counted.Name = "rb1Counted";
             this.rb1Counted.TabStop = true;
             this.rb1Counted.UseVisualStyleBackColor = true;
+            this.rb1Counted.CheckedChanged += new System.EventHandler(this.rb1_CheckedChanged);
             // 
             // rb1Singular
             // 
@@ -577,6 +689,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.rb1Singular.Name = "rb1Singular";
             this.rb1Singular.TabStop = true;
             this.rb1Singular.UseVisualStyleBackColor = true;
+            this.rb1Singular.CheckedChanged += new System.EventHandler(this.rb1_CheckedChanged);
+            // 
+            // cbTargetInv
+            // 
+            this.cbTargetInv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTargetInv.FormattingEnabled = true;
+            resources.ApplyResources(this.cbTargetInv, "cbTargetInv");
+            this.cbTargetInv.Name = "cbTargetInv";
+            this.cbTargetInv.SelectedIndexChanged += new System.EventHandler(this.cbTargetInv_SelectedIndexChanged);
             // 
             // lbDoid1
             // 
@@ -676,23 +797,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.lbInventory.Name = "lbInventory";
             this.lbInventory.Tag = "";
             // 
-            // lbGUID
-            // 
-            resources.ApplyResources(this.lbGUID, "lbGUID");
-            this.lbGUID.Name = "lbGUID";
-            this.lbGUID.Tag = "";
-            // 
             // lbDoid3
             // 
             resources.ApplyResources(this.lbDoid3, "lbDoid3");
             this.lbDoid3.Name = "lbDoid3";
             this.lbDoid3.Tag = "";
-            // 
-            // lbDoid2
-            // 
-            resources.ApplyResources(this.lbDoid2, "lbDoid2");
-            this.lbDoid2.Name = "lbDoid2";
-            this.lbDoid2.Tag = "";
             // 
             // cbInventory
             // 
@@ -712,6 +821,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             // 
             resources.ApplyResources(this.tbGUID, "tbGUID");
             this.tbGUID.Name = "tbGUID";
+            this.tbGUID.Validated += new System.EventHandler(this.hex32_Validated);
+            this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+            this.tbGUID.TextChanged += new System.EventHandler(this.tbGUID_TextChanged);
             // 
             // tbObjName
             // 
@@ -736,24 +848,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             resources.ApplyResources(this.ckbDecimal, "ckbDecimal");
             this.ckbDecimal.Name = "ckbDecimal";
             // 
-            // flpnOperation
+            // lbDoid2
             // 
-            resources.ApplyResources(this.flpnOperation, "flpnOperation");
-            this.flpnOperation.Controls.Add(this.lbOperation);
-            this.flpnOperation.Controls.Add(this.cbOperation);
-            this.flpnOperation.Name = "flpnOperation";
+            resources.ApplyResources(this.lbDoid2, "lbDoid2");
+            this.lbDoid2.Name = "lbDoid2";
+            this.lbDoid2.Tag = "";
             // 
-            // lbOperation
+            // lbGUID
             // 
-            resources.ApplyResources(this.lbOperation, "lbOperation");
-            this.lbOperation.Name = "lbOperation";
-            // 
-            // cbOperation
-            // 
-            this.cbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbOperation.FormattingEnabled = true;
-            resources.ApplyResources(this.cbOperation, "cbOperation");
-            this.cbOperation.Name = "cbOperation";
+            resources.ApplyResources(this.lbGUID, "lbGUID");
+            this.lbGUID.Name = "lbGUID";
+            this.lbGUID.Tag = "";
             // 
             // UI
             // 
@@ -765,14 +870,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.pnWiz0x0033.PerformLayout();
             this.tlpnGetSetValue.ResumeLayout(false);
             this.tlpnGetSetValue.PerformLayout();
+            this.flpnOperation.ResumeLayout(false);
+            this.flpnOperation.PerformLayout();
             this.gbTokenTypes.ResumeLayout(false);
             this.gbTokenTypes.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.gbInventoryType.ResumeLayout(false);
             this.gbInventoryType.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
+            this.flpnDoid0.ResumeLayout(false);
+            this.flpnDoid0.PerformLayout();
             this.pnDoid0.ResumeLayout(false);
             this.pnDoid0.PerformLayout();
             this.flpnInventoryType.ResumeLayout(false);
@@ -787,8 +894,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.flpnGUID.PerformLayout();
             this.pnDoidOptions.ResumeLayout(false);
             this.pnDoidOptions.PerformLayout();
-            this.flpnOperation.ResumeLayout(false);
-            this.flpnOperation.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -800,10 +905,65 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             if (internalchg) return;
             internalchg = true;
 
-            if (rb1Counted.Checked) doCounted();
-            else doSingular();
+            if (rb1Counted.Checked) doCounted(); else doSingular();
 
             internalchg = false;
+        }
+
+        private void cbOperation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            operation = (byte)cbOperation.SelectedIndex;
+            rb1_CheckedChanged(sender, e);
+        }
+
+        private void tbGUID_TextChanged(object sender, EventArgs e)
+        {
+            if (!hex32_IsValid(sender)) return;
+            setGUID(false, Convert.ToUInt32(((TextBox)sender).Text, 16));
+        }
+
+        private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (hex32_IsValid(sender)) return;
+
+            e.Cancel = true;
+
+            bool origstate = internalchg;
+            internalchg = true;
+            byte[] o = { inst.Operands[0x05], inst.Operands[0x06], inst.Operands[0x07], inst.Reserved1[0] };
+            setGUID(o, 0);
+            ((TextBox)sender).SelectAll();
+            internalchg = origstate;
+        }
+
+        private void hex32_Validated(object sender, System.EventArgs e)
+        {
+            bool origstate = internalchg;
+            internalchg = true;
+            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToUInt32(((TextBox)sender).Text, 16));
+            ((TextBox)sender).SelectAll();
+
+            UInt32 i = Convert.ToUInt32(((TextBox)sender).Text, 16);
+            operand5 = (byte)(i & 0xff);
+            doid1.DataOwner = (byte)((i >> 8) & 0xff);
+            doid1.Value = (ushort)(i >> 16);
+
+            internalchg = origstate;
+        }
+
+        private void ckbTT_CheckedChanged(object sender, EventArgs e)
+        {
+            List<CheckBox> tt = new List<CheckBox>(new CheckBox[] { ckbTTVisible, ckbTTMemory, ckbTTShopping });
+            List<CheckBox> tti = new List<CheckBox>(new CheckBox[] { ckbTTInvVisible, ckbTTInvMemory, ckbTTInvShopping });
+            int i = tt.IndexOf((CheckBox)sender);
+            tti[i].Enabled = tt[i].Checked;
+            ckbTTAll.Checked = !ckbTTVisible.Checked && !ckbTTMemory.Checked && !ckbTTShopping.Checked;
+        }
+
+        private void cbTargetInv_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            pnDoid0.Enabled = (cbTargetInv.SelectedIndex >= 1 && cbTargetInv.SelectedIndex <= 3);
+            lbDoid0.Text = pnDoid0.Enabled ? cbTargetInv.SelectedItem.ToString() : "";
         }
     }
 
