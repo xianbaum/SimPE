@@ -509,7 +509,7 @@ if exist "%25src%25" rmdir /s/q "%25src%25"
 del "%25src%25*"
 mkdir "%25src%25"
 
-tar c --exclude="%25src%25" --exclude=CVS --exclude=*.7z --exclude=*.zip --exclude=*.tar.bz2 --exclude=.project --exclude=.metadata --exclude=bin --exclude=obj --exclude=Plugins --exclude=*.suo --exclude=*.csproj.user --exclude=*.bak --exclude=.#* . | tar x%25tarv%25 -C "%25src%25"
+tar c --exclude="%25src%25" --exclude=CVS --exclude=*.7z --exclude=*.zip --exclude=*.exe --exclude=*.tar.bz2 --exclude=.project --exclude=.metadata --exclude=bin --exclude=obj --exclude=Plugins --exclude=*.suo --exclude=*.csproj.user --exclude=*.bak --exclude=.#* . | tar x%25tarv%25 -C "%25src%25"
 7za a -tzip -r -mx9 "%25src%25-%25suffix%25.zip" "%25src%25"
 if exist "%25src%25" rmdir /s/q "%25src%25"
 
