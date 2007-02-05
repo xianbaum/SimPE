@@ -115,8 +115,8 @@ set m=%25mytime:~3,2%25
 set s=%25mytime:~6,2%25
 set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
 set tarv=
-set helpdir=S:\PJSE_etc\pjBodyMeshTool
 set nsisv=/V3
+set helpdir=S:\PJSE_etc\pjBodyMeshTool
 
 cd "$(ProjectDir)"
 
@@ -128,24 +128,31 @@ mkdir "Plugins\$(TargetName)"
 tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
 
 (cd ..
-tar c LICENSE.txt CHANGES.txt) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+(echo %25base%25
+echo %25suffix%25) &gt; version.txt
+(pushd ..\SimPe\Data
+grep "simperelease version" release.nfo
+popd) &gt;&gt; version.txt
+
+tar c version.txt LICENSE.txt CHANGES.txt) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
+del ..\version.txt
+rem already did CHANGES.txt
+
+tar c Plugins | (cd ..\..\SimPe
+tar xv)
 
 if not $(ConfigurationName)==Release goto nohelp
 (cd /d %25helpdir%25
 tar c pjBodyMeshTool_Help ) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 
 :nohelp:
-tar c Plugins | (cd ..\..\SimPe
-tar xv)
-
-del ..\"%25base%25-*"
+del ..\"%25base%25*"
 7za a -tzip -r -mx9 "..\%25base%25-%25suffix%25.zip" Plugins
 
 if not $(ConfigurationName)==Release goto skip
 
 tar cv Plugins | bzip2 &gt; "..\%25base%25-%25suffix%25.tar.bz2"
 7za a -t7z -mx9 -ms "..\%25base%25-%25suffix%25.7z" Plugins
-
 echo OutFile "%25base%25-%25suffix%25.exe" &gt; ..\outfile.txt
 "%25PROGRAMFILES%25\nsis\makensis" %25nsisv%25 ..\mknsis.nsi
 del ..\outfile.txt
@@ -155,7 +162,7 @@ if exist "%25src%25" rmdir /s/q "%25src%25"
 del "%25src%25*"
 mkdir "%25src%25"
 
-tar c --exclude="%25src%25" --exclude=CVS --exclude=*.7z --exclude=*.zip --exclude=*.tar.bz2 --exclude=.project --exclude=.metadata --exclude=bin --exclude=obj --exclude=Plugins --exclude=*.suo --exclude=*.csproj.user --exclude=*.bak --exclude=.#* . | tar x%25tarv%25 -C "%25src%25"
+tar c --exclude="%25src%25" --exclude=CVS --exclude=*.7z --exclude=*.zip --exclude=*.exe --exclude=*.tar.bz2 --exclude=.project --exclude=.metadata --exclude=bin --exclude=obj --exclude=Plugins --exclude=*.suo --exclude=*.csproj.user --exclude=*.bak --exclude=.#* . | tar x%25tarv%25 -C "%25src%25"
 7za a -tzip -r -mx9 "%25src%25-%25suffix%25.zip" "%25src%25"
 if exist "%25src%25" rmdir /s/q "%25src%25"
 
