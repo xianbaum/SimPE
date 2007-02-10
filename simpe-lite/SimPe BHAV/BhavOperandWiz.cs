@@ -22,6 +22,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
@@ -390,9 +391,27 @@ namespace pjse.BhavOperandWizards
 
 		private byte dataOwner = 0;
 		private ushort instance = 0;
-		public byte DataOwner { get { return dataOwner; } }
+		public byte DataOwner
+        {
+            get { return dataOwner; }
+            set
+            {
+                if (value == dataOwner) return;
+                dataOwner = value;
+                SetDataOwner();
+            }
+        }
 
-		public ushort Value { get { return instance; } }
+		public ushort Value
+        {
+            get { return instance; }
+            set
+            {
+                if (value == instance) return;
+                instance = value;
+                SetDataOwner();
+            }
+        }
 
         public event EventHandler DataOwnerControlChanged;
         internal virtual void OnDataOwnerControlChanged(object sender, EventArgs e)
@@ -421,13 +440,13 @@ namespace pjse.BhavOperandWizards
             }
 
 			#region pickerNames
-			ArrayList pickerNames = null;
+            List<String> pickerNames = null;
 			if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
 			{
 				pickerNames = BhavWiz.flagNames(flagsFor.DataOwner, flagsFor.Value);
 				if (pickerNames != null)
 				{
-					pickerNames = (ArrayList)pickerNames.Clone();
+                    pickerNames = new List<string>(pickerNames);
 					pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
 				}
 			}

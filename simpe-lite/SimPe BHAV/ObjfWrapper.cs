@@ -21,6 +21,7 @@
  ***************************************************************************/
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using SimPe.Interfaces.Plugin;
 
 namespace SimPe.PackedFiles.Wrapper
@@ -72,7 +73,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-        private static ArrayList al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
+        private static List<String> al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
         /// <summary>
 		/// Constructor
 		/// </summary>

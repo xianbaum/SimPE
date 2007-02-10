@@ -2833,7 +2833,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0033(Instruction i) : base(i) { }
 
-		private string tokenType(int i, int j, bool all)
+        public override ABhavOperandWiz Wizard()
+        {
+            return new pjse.BhavOperandWizards.BhavOperandWiz0x0033(instruction);
+        }
+
+        private string tokenType(int i, int j, bool all)
 		{
             //string[] tokType = { "any", "all", "non-visible", "visible", "non-memory", "memory", "non-shopping", "shopping", };
 
@@ -2856,64 +2861,64 @@ namespace pjse.BhavNameWizards
 			byte c1 = (instruction.NodeVersion >= 1) ? o[0] : (byte)(((o[0] & 0x3C) << 1) | (o[0] & 0x83));
 			byte c2 = (instruction.NodeVersion >= 2) ? o[9] : (byte)0x0c;
 
-            bool index, count, val, frominv, token, reversed;
-            index = count = val = frominv = reversed = token = false;
+            bool index, count, prop, frominv, byGUID, reversed;
+            index = count = prop = frominv = byGUID = reversed = false;
             int toktype = 0;
 
             if ((c1 & 0x08) != 0) // Counted
+            {
+                s += readStr(GS.BhavStr.TokenOpsCounted, o[4]);
                 switch (o[4])
                 {
-                    case 0x00: s += pjse.Localization.GetString("bwp33_addToken"); count = token = true; break;
-                    case 0x01: s += pjse.Localization.GetString("bwp33_addToToken"); index = count = true; break;
-                    case 0x02: s += pjse.Localization.GetString("bwp33_removeFromToken"); count = token = true; break;
-                    case 0x03: s += pjse.Localization.GetString("bwp33_removeFromToken"); index = count = true; break;
-                    case 0x04: s += pjse.Localization.GetString("bwp33_removeTokens"); toktype = 1; c1 = c2 = 0; break;
-                    case 0x05: s += pjse.Localization.GetString("bwp33_removeToken"); index = true; break;
-                    case 0x06: s += pjse.Localization.GetString("bwp33_findToken"); count = token = true; break;
-                    case 0x07: s += pjse.Localization.GetString("bwp33_loadTemp"); token = true; break;
-                    case 0x08: s += pjse.Localization.GetString("bwp33_loadTemp"); index = true; break;
-                    case 0x09: s += pjse.Localization.GetString("bwp33_setToNext"); index = true; token = true; break;
-                    case 0x0a: s += pjse.Localization.GetString("bwp33_storeCount"); count = true; break;
-                    case 0x0b: s += pjse.Localization.GetString("bwp33_copyToken"); frominv = lng; index = true; break;
-                    default: s += pjse.Localization.GetString("bwp33_unknown") + ": 0x" + SimPe.Helper.HexString(o[4]); break;
+                    case 0x00: count = byGUID = true; break;
+                    case 0x01: index = count = true; break;
+                    case 0x02: count = byGUID = true; break;
+                    case 0x03: index = count = true; break;
+                    case 0x04: toktype = 1; c1 = c2 = 0; break;
+                    case 0x05: index = true; break;
+                    case 0x06: count = byGUID = true; break;
+                    case 0x07: byGUID = true; break;
+                    case 0x08: index = true; break;
+                    case 0x09: index = true; byGUID = true; break;
+                    case 0x0a: count = true; break;
+                    case 0x0b: index = true; frominv = lng; break;
                 }
+            }
             else // Singular
+            {
+                s += readStr(GS.BhavStr.TokenOpsSingular, o[4]);
                 switch (o[4])
                 {
-                    case 0x00: s += pjse.Localization.GetString("bwp33_addToken"); token = true; break;
-                    case 0x01: s += pjse.Localization.GetString("bwp33_removeToken"); index = true; break;
-                    case 0x02: s += pjse.Localization.GetString("bwp33_removeTokens"); toktype = 1; break;
-                    case 0x03: s += pjse.Localization.GetString("bwp33_setToNext"); toktype = 2; reversed = index = true; break;
-                    case 0x04: s += pjse.Localization.GetString("bwp33_push"); index = val = true; break;
-                    case 0x05: s += pjse.Localization.GetString("bwp33_pop"); index = val = true; break;
-                    case 0x06: s += pjse.Localization.GetString("bwp33_loadTemp"); index = true; token = true; break;//token = true; ??
-                    case 0x07: s += pjse.Localization.GetString("bwp33_get"); index = val = true; break;
+                    case 0x00: byGUID = true; break;
+                    case 0x01: index = true; break;
+                    case 0x02: toktype = 1; break;
+                    case 0x03: toktype = 2; index = reversed = true; break;
+                    case 0x04: index = prop = true; break;
+                    case 0x05: index = prop = true; break;
+                    case 0x06: index = true; byGUID = true; break;//token = true; ??
+                    case 0x07: index = prop = true; break;
                     //case 0x08: break;
-                    case 0x09: s += pjse.Localization.GetString("bwp33_saveTemp"); break;
-                    case 0x0a: s += pjse.Localization.GetString("bwp33_storeCount"); count = true; break;
+                    case 0x09: break;
+                    case 0x0a: count = true; break;
                     //case 0x0b: break;
-                    case 0x0c: s += pjse.Localization.GetString("bwp33_setToNext"); toktype = 2; reversed = index = true; break; // same as 0x03
-                    case 0x0d: s += pjse.Localization.GetString("bwp33_storeCount"); toktype = 1; count = true; break;
+                    case 0x0c: toktype = 2; index = reversed = true; break; // same as 0x03
+                    case 0x0d: toktype = 1; count = true; break;
                     case 0x0e:
-                        s += dataOwner(lng, o[13], o[14], o[15])
+                        s = dataOwner(lng, o[13], o[14], o[15])
                             + " := " + pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[6], o[7], o[8])
                             + " [" + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[10], o[11], o[12]) + "]";
                         break;
                     case 0x0f:
-                        s += pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
+                        s = pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[6], ToShort(o[7], o[8]))
                             + " [" + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[10], o[11], o[12]) + "]"
                             + " := " + dataOwner(lng, o[13], o[14], o[15]);
                         break;
-                    case 0x10: s += pjse.Localization.GetString("bwp33_addInfo")
-                            + (lng ? ", " + pjse.Localization.GetString("bwp33_exclContained") + ": " + false.ToString() : "");
-                        break;
-                    case 0x11: s += pjse.Localization.GetString("bwp33_createObj"); break;
-                    case 0x12: s += pjse.Localization.GetString("bwp33_copyToken"); frominv = lng; index = true; break;
-                    case 0x13: s += pjse.Localization.GetString("bwp33_addInfo")
-                            + ", " + pjse.Localization.GetString("bwp33_exclContained") + ": " + true.ToString();
-                        break;
-                    default: s += pjse.Localization.GetString("bwp33_unknown") + ": 0x" + SimPe.Helper.HexString(o[4]); break;
+                    case 0x10: break;
+                    case 0x11: break;
+                    case 0x12: frominv = lng; index = true; break;
+                    case 0x13: break;
                 }
+            }
 
             if (toktype != 0)
                 s += (lng ? ", " + pjse.Localization.GetString("bwp33_category") : "") + ": "
@@ -2924,10 +2929,10 @@ namespace pjse.BhavNameWizards
             if (frominv)
             {
                 s += ", " + pjse.Localization.GetString("bwp33_fromInventory") + ": " + readStr(GS.BhavStr.InventoryType, (ushort)(o[6] & 0x07));
-                if ((o[6] & 0x07) >= 1 && (o[7] & 0x07) <= 3)
+                if ((o[6] & 0x07) >= 1 && (o[6] & 0x07) <= 3)
                     s += /*", " + "ID" +*/ ": " + dataOwner(lng, o[13], o[14], o[15]);
             }
-            if (lng && token)
+            if (lng && byGUID)
             {
                 uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
                 s += ", " + pjse.Localization.GetString("bwp33_token") + ": "
@@ -2935,7 +2940,7 @@ namespace pjse.BhavNameWizards
             }
             if (index)
                 s += ", " + pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[10], o[11], o[12]);
-            if (val)
+            if (prop)
                 s += " [" + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[13], o[14], o[15]) + "]";
             if (count)
                 s += ", " + pjse.Localization.GetString("bwp33_count") + ": " + dataOwner(lng, o[13], o[14], o[15]);
