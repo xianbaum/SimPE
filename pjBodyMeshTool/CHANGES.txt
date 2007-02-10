@@ -1,4 +1,21 @@
 
+2007-02-03 21:21 Bug fix: allow paths not to exist
+  pjBodyMeshTool/
+		BodyMeshExtractor.cs 1.1.2.7
+
+2006-11-23 09:44 Include the Help in Release builds
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.10
+
+2006-11-22 17:59 Add Installer
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.9
+  mknsis.nsi 1.1.2.1
+
+2006-10-15 13:26 Amend to use SimPe.PathProvider
+	pjBodyMeshTool/
+		BodyMeshExtractor.cs 1.1.2.6
+		
 2006-09-17 14:54 Oops, fix up NET1 help folder
 	pjBodyMeshTool/
 		BodyMeshHelp.cs 1.1.2.3

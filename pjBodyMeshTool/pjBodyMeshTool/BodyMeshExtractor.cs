@@ -67,6 +67,7 @@ namespace pj
                     continue;
                 paths.Add(path);
 
+                if (!Directory.Exists(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"))) continue;
                 string[] va = Directory.GetFiles(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), "*.package");
                 foreach (String pkg in va)
                 {
