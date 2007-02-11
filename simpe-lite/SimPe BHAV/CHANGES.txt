@@ -1,5 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+11 February 2007 11:04 - Wiz0x0033: Fix for operands 5-8; readonly DOC again
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.19
+    BhavOperandWiz0x0033.cs 1.1.4.2
+    BhavOperandWiz0x0033.resx 1.1.4.2
+
 04 February 2007 14:27 - Wiz0x0033: Write works (DataOwnerControl now writable, too)
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.17.2.2

@@ -391,27 +391,9 @@ namespace pjse.BhavOperandWizards
 
 		private byte dataOwner = 0;
 		private ushort instance = 0;
-		public byte DataOwner
-        {
-            get { return dataOwner; }
-            set
-            {
-                if (value == dataOwner) return;
-                dataOwner = value;
-                SetDataOwner();
-            }
-        }
+		public byte DataOwner { get { return dataOwner; } }
 
-		public ushort Value
-        {
-            get { return instance; }
-            set
-            {
-                if (value == instance) return;
-                instance = value;
-                SetDataOwner();
-            }
-        }
+		public ushort Value { get { return instance; } }
 
         public event EventHandler DataOwnerControlChanged;
         internal virtual void OnDataOwnerControlChanged(object sender, EventArgs e)
@@ -441,58 +423,59 @@ namespace pjse.BhavOperandWizards
 
 			#region pickerNames
             List<String> pickerNames = null;
-			if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
-			{
-				pickerNames = BhavWiz.flagNames(flagsFor.DataOwner, flagsFor.Value);
-				if (pickerNames != null)
-				{
-                    pickerNames = new List<string>(pickerNames);
-					pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
-				}
-			}
-			else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
-			{
-				pickerNames = inst.GetAttrNames(Scope.Private);
-			}
-			else if (useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
-			{
-				pickerNames = inst.GetAttrNames(Scope.SemiGlobal);
-			}
-			else if (dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
-			{
-				pickerNames = inst.GetTPRPnames(false);
-			}
-			else if (dataOwner == 0x19) // Local
-			{
-				pickerNames = inst.GetTPRPnames(true);
-			}
-			else if (BhavWiz.doidGStr[dataOwner] != null)
-			{
-				pickerNames = BhavWiz.readStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
-			}
+            if (useAttrPicker && cbPicker != null)
+            {
+                if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
+                {
+                    pickerNames = BhavWiz.flagNames(flagsFor.DataOwner, flagsFor.Value);
+                    if (pickerNames != null)
+                    {
+                        pickerNames = new List<string>(pickerNames);
+                        pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
+                    }
+                }
+                else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
+                {
+                    pickerNames = inst.GetAttrNames(Scope.Private);
+                }
+                else if (useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
+                {
+                    pickerNames = inst.GetAttrNames(Scope.SemiGlobal);
+                }
+                else if (dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
+                {
+                    pickerNames = inst.GetTPRPnames(false);
+                }
+                else if (dataOwner == 0x19) // Local
+                {
+                    pickerNames = inst.GetTPRPnames(true);
+                }
+                else if (BhavWiz.doidGStr[dataOwner] != null)
+                {
+                    pickerNames = BhavWiz.readStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
+                }
+            }
 			#endregion
 
-            tbValue.TabStop = (tbValue.Visible = false);
 
-            if (cbPicker != null)
+            if (pickerNames != null && pickerNames.Count > 0)
             {
-                cbPicker.TabStop = (cbPicker.Visible = false);
-                if (pickerNames != null && pickerNames.Count > 0)
-                {
-                    cbPicker.TabStop = (cbPicker.Visible = true);
-                    cbPicker.Items.Clear();
-                    cbPicker.Items.AddRange(pickerNames.ToArray());
-                    cbPicker.SelectedIndex = (cbPicker.Items.Count > instance) ? instance : -1;
-                }
+                if (tbValue != null)
+                    tbValue.TabStop = tbValue.Visible = false;
+                cbPicker.TabStop = cbPicker.Visible = true;
+                cbPicker.Items.Clear();
+                cbPicker.Items.AddRange(pickerNames.ToArray());
+                cbPicker.SelectedIndex = (cbPicker.Items.Count > instance) ? instance : -1;
+            }
+            else
+            {
+                if (cbPicker != null)
+                    cbPicker.TabStop = cbPicker.Visible = false;
+                if (tbValue != null)
+                    tbValue.TabStop = tbValue.Visible = true;
             }
 
             setConstLabel();
-
-            if (tbValue != null)
-            {
-                tbValue.Visible = (cbPicker == null) || !cbPicker.Visible;
-                tbValue.TabStop = tbValue.Visible;
-            }
 
 			internalchg = false;
 		}

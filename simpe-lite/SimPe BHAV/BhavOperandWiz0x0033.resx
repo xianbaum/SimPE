@@ -134,6 +134,100 @@
   <data name="tlpnGetSetValue.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
+  <data name="flowLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flowLayoutPanel1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="ckbDecimal.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="ckbDecimal.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="ckbDecimal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ckbDecimal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="ckbDecimal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>224, 21</value>
+  </data>
+  <data name="ckbDecimal.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="ckbDecimal.Text" xml:space="preserve">
+    <value>Decimal (except Consts/GUIDs)</value>
+  </data>
+  <data name="&gt;&gt;ckbDecimal.Name" xml:space="preserve">
+    <value>ckbDecimal</value>
+  </data>
+  <data name="&gt;&gt;ckbDecimal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbDecimal.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;ckbDecimal.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ckbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ckbAttrPicker.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="ckbAttrPicker.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ckbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
+    <value>233, 3</value>
+  </data>
+  <data name="ckbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
+    <value>149, 21</value>
+  </data>
+  <data name="ckbAttrPicker.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="ckbAttrPicker.Text" xml:space="preserve">
+    <value>use Attribute picker</value>
+  </data>
+  <data name="&gt;&gt;ckbAttrPicker.Name" xml:space="preserve">
+    <value>ckbAttrPicker</value>
+  </data>
+  <data name="&gt;&gt;ckbAttrPicker.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbAttrPicker.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;ckbAttrPicker.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>199, 317</value>
+  </data>
+  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>385, 27</value>
+  </data>
+  <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Name" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Parent" xml:space="preserve">
+    <value>tlpnGetSetValue</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="lbOperation.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -143,7 +237,6 @@
   <data name="lbOperation.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lbOperation.Location" type="System.Drawing.Point, System.Drawing">
     <value>122, 3</value>
   </data>
@@ -154,7 +247,7 @@
     <value>71, 17</value>
   </data>
   <data name="lbOperation.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>0</value>
   </data>
   <data name="lbOperation.Text" xml:space="preserve">
     <value>Operation</value>
@@ -169,7 +262,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;lbOperation.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="flpnOperation.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -217,7 +310,7 @@
     <value>88, 21</value>
   </data>
   <data name="ckbReversed.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>2</value>
   </data>
   <data name="ckbReversed.Text" xml:space="preserve">
     <value>Reversed</value>
@@ -244,7 +337,7 @@
     <value>528, 27</value>
   </data>
   <data name="flpnOperation.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;flpnOperation.Name" xml:space="preserve">
     <value>flpnOperation</value>
@@ -256,7 +349,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;flpnOperation.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="gbTokenTypes.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -295,7 +388,7 @@
     <value>42, 21</value>
   </data>
   <data name="ckbTTAll.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>0</value>
   </data>
   <data name="ckbTTAll.Text" xml:space="preserve">
     <value>All</value>
@@ -325,7 +418,7 @@
     <value>76, 21</value>
   </data>
   <data name="ckbTTInvShopping.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="ckbTTInvShopping.Text" xml:space="preserve">
     <value>Exclude</value>
@@ -361,7 +454,7 @@
     <value>87, 21</value>
   </data>
   <data name="ckbTTShopping.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="ckbTTShopping.Text" xml:space="preserve">
     <value>Shopping</value>
@@ -391,7 +484,7 @@
     <value>76, 21</value>
   </data>
   <data name="ckbTTInvMemory.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="ckbTTInvMemory.Text" xml:space="preserve">
     <value>Exclude</value>
@@ -427,7 +520,7 @@
     <value>77, 21</value>
   </data>
   <data name="ckbTTMemory.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="ckbTTMemory.Text" xml:space="preserve">
     <value>Memory</value>
@@ -457,7 +550,7 @@
     <value>76, 21</value>
   </data>
   <data name="ckbTTInvVisible.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="ckbTTInvVisible.Text" xml:space="preserve">
     <value>Exclude</value>
@@ -493,7 +586,7 @@
     <value>68, 21</value>
   </data>
   <data name="ckbTTVisible.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="ckbTTVisible.Text" xml:space="preserve">
     <value>Visible</value>
@@ -547,7 +640,7 @@
     <value>187, 153</value>
   </data>
   <data name="gbTokenTypes.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+    <value>7</value>
   </data>
   <data name="gbTokenTypes.Text" xml:space="preserve">
     <value>Category</value>
@@ -562,7 +655,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;gbTokenTypes.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="gbInventoryType.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -595,7 +688,7 @@
     <value>45, 17</value>
   </data>
   <data name="lbDoid0.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>0</value>
   </data>
   <data name="lbDoid0.Text" xml:space="preserve">
     <value>Doid0</value>
@@ -715,7 +808,7 @@
     <value>510, 27</value>
   </data>
   <data name="flpnDoid0.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;flpnDoid0.Name" xml:space="preserve">
     <value>flpnDoid0</value>
@@ -748,7 +841,7 @@
     <value>79, 21</value>
   </data>
   <data name="rb1Counted.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="rb1Counted.Text" xml:space="preserve">
     <value>Counted</value>
@@ -778,7 +871,7 @@
     <value>78, 21</value>
   </data>
   <data name="rb1Singular.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="rb1Singular.Text" xml:space="preserve">
     <value>Singular</value>
@@ -805,7 +898,7 @@
     <value>169, 24</value>
   </data>
   <data name="cbTargetInv.TabIndex" type="System.Int32, mscorlib">
-    <value>26</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;cbTargetInv.Name" xml:space="preserve">
     <value>cbTargetInv</value>
@@ -829,7 +922,7 @@
     <value>338, 27</value>
   </data>
   <data name="flpnInventoryType.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;flpnInventoryType.Name" xml:space="preserve">
     <value>flpnInventoryType</value>
@@ -853,7 +946,7 @@
     <value>522, 96</value>
   </data>
   <data name="gbInventoryType.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>8</value>
   </data>
   <data name="gbInventoryType.Text" xml:space="preserve">
     <value>Target inventory</value>
@@ -868,7 +961,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;gbInventoryType.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="lbDoid1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -889,7 +982,7 @@
     <value>45, 17</value>
   </data>
   <data name="lbDoid1.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>0</value>
   </data>
   <data name="lbDoid1.Text" xml:space="preserve">
     <value>Doid1</value>
@@ -904,7 +997,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;lbDoid1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="pnDoid1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -988,7 +1081,7 @@
     <value>459, 27</value>
   </data>
   <data name="pnDoid1.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;pnDoid1.Name" xml:space="preserve">
     <value>pnDoid1</value>
@@ -1000,7 +1093,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;pnDoid1.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="pnDoid3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1084,7 +1177,7 @@
     <value>459, 27</value>
   </data>
   <data name="pnDoid3.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;pnDoid3.Name" xml:space="preserve">
     <value>pnDoid3</value>
@@ -1096,7 +1189,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;pnDoid3.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="pnDoid2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1180,7 +1273,7 @@
     <value>459, 27</value>
   </data>
   <data name="pnDoid2.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;pnDoid2.Name" xml:space="preserve">
     <value>pnDoid2</value>
@@ -1192,7 +1285,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;pnDoid2.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="lbInventory.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1213,7 +1306,7 @@
     <value>102, 17</value>
   </data>
   <data name="lbInventory.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>0</value>
   </data>
   <data name="lbInventory.Text" xml:space="preserve">
     <value>From inventory</value>
@@ -1228,7 +1321,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;lbInventory.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="lbDoid3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1249,7 +1342,7 @@
     <value>45, 17</value>
   </data>
   <data name="lbDoid3.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+    <value>0</value>
   </data>
   <data name="lbDoid3.Text" xml:space="preserve">
     <value>Doid3</value>
@@ -1264,7 +1357,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;lbDoid3.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="cbInventory.Location" type="System.Drawing.Point, System.Drawing">
     <value>196, 54</value>
@@ -1276,7 +1369,7 @@
     <value>126, 24</value>
   </data>
   <data name="cbInventory.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;cbInventory.Name" xml:space="preserve">
     <value>cbInventory</value>
@@ -1288,7 +1381,7 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;cbInventory.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="flpnGUID.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1306,7 +1399,7 @@
     <value>103, 22</value>
   </data>
   <data name="tbGUID.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+    <value>1</value>
   </data>
   <data name="tbGUID.Text" xml:space="preserve">
     <value>0xDDDDDDDD</value>
@@ -1333,7 +1426,7 @@
     <value>353, 22</value>
   </data>
   <data name="tbObjName.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;tbObjName.Name" xml:space="preserve">
     <value>tbObjName</value>
@@ -1357,7 +1450,7 @@
     <value>456, 22</value>
   </data>
   <data name="flpnGUID.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;flpnGUID.Name" xml:space="preserve">
     <value>flpnGUID</value>
@@ -1369,102 +1462,6 @@
     <value>tlpnGetSetValue</value>
   </data>
   <data name="&gt;&gt;flpnGUID.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="pnDoidOptions.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnDoidOptions.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="ckbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbAttrPicker.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="ckbAttrPicker.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>233, 0</value>
-  </data>
-  <data name="ckbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 21</value>
-  </data>
-  <data name="ckbAttrPicker.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="ckbAttrPicker.Text" xml:space="preserve">
-    <value>use Attribute picker</value>
-  </data>
-  <data name="&gt;&gt;ckbAttrPicker.Name" xml:space="preserve">
-    <value>ckbAttrPicker</value>
-  </data>
-  <data name="&gt;&gt;ckbAttrPicker.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbAttrPicker.Parent" xml:space="preserve">
-    <value>pnDoidOptions</value>
-  </data>
-  <data name="&gt;&gt;ckbAttrPicker.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="ckbDecimal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbDecimal.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>MiddleRight</value>
-  </data>
-  <data name="ckbDecimal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbDecimal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="ckbDecimal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>224, 21</value>
-  </data>
-  <data name="ckbDecimal.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="ckbDecimal.Text" xml:space="preserve">
-    <value>Decimal (except Consts/GUIDs)</value>
-  </data>
-  <data name="&gt;&gt;ckbDecimal.Name" xml:space="preserve">
-    <value>ckbDecimal</value>
-  </data>
-  <data name="&gt;&gt;ckbDecimal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbDecimal.Parent" xml:space="preserve">
-    <value>pnDoidOptions</value>
-  </data>
-  <data name="&gt;&gt;ckbDecimal.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="pnDoidOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>196, 314</value>
-  </data>
-  <data name="pnDoidOptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="pnDoidOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>385, 20</value>
-  </data>
-  <data name="pnDoidOptions.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="&gt;&gt;pnDoidOptions.Name" xml:space="preserve">
-    <value>pnDoidOptions</value>
-  </data>
-  <data name="&gt;&gt;pnDoidOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnDoidOptions.Parent" xml:space="preserve">
-    <value>tlpnGetSetValue</value>
-  </data>
-  <data name="&gt;&gt;pnDoidOptions.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
   <data name="lbDoid2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1486,7 +1483,7 @@
     <value>45, 17</value>
   </data>
   <data name="lbDoid2.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>0</value>
   </data>
   <data name="lbDoid2.Text" xml:space="preserve">
     <value>Doid2</value>
@@ -1522,7 +1519,7 @@
     <value>86, 17</value>
   </data>
   <data name="lbGUID.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
+    <value>0</value>
   </data>
   <data name="lbGUID.Text" xml:space="preserve">
     <value>Token GUID</value>
@@ -1543,13 +1540,13 @@
     <value>0, 0</value>
   </data>
   <data name="tlpnGetSetValue.RowCount" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="tlpnGetSetValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>724, 334</value>
+    <value>724, 367</value>
   </data>
   <data name="tlpnGetSetValue.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;tlpnGetSetValue.Name" xml:space="preserve">
     <value>tlpnGetSetValue</value>
@@ -1564,13 +1561,13 @@
     <value>0</value>
   </data>
   <data name="tlpnGetSetValue.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lbOperation" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="flpnOperation" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="gbTokenTypes" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="gbInventoryType" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lbDoid1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="pnDoid1" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnDoid3" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnDoid2" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbInventory" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lbDoid3" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbInventory" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="flpnGUID" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnDoidOptions" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbDoid2" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lbGUID" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="flowLayoutPanel1" Row="7" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbOperation" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="flpnOperation" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="gbTokenTypes" Row="6" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="gbInventoryType" Row="6" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbDoid1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="pnDoid1" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnDoid3" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="pnDoid2" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbInventory" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lbDoid3" Row="5" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="cbInventory" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="flpnGUID" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbDoid2" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="lbGUID" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="pnWiz0x0033.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
   <data name="pnWiz0x0033.Size" type="System.Drawing.Size, System.Drawing">
-    <value>727, 337</value>
+    <value>727, 370</value>
   </data>
   <data name="pnWiz0x0033.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
