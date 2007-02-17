@@ -1,5 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+17 February 2007 18:20 - OpC 0x33: Parser and Wiz changes
+  SimPe BHAV\
+    BhavOperandWiz0x0033.cs 1.1.4.3
+    BhavWizPrim.cs 1.34.2.25
+  GlobalStrings.package 1.10.8.17
+  pjseTestData.package 1.17.2.15
+
 11 February 2007 11:04 - Wiz0x0033: Fix for operands 5-8; readonly DOC again
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.19
