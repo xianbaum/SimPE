@@ -2861,8 +2861,8 @@ namespace pjse.BhavNameWizards
 			byte c1 = (instruction.NodeVersion >= 1) ? o[0] : (byte)(((o[0] & 0x3C) << 1) | (o[0] & 0x83));
 			byte c2 = (instruction.NodeVersion >= 2) ? o[9] : (byte)0x0c;
 
-            bool byGUID, index, index2, count, val, prop, prop2, frominv, reversed, ignoreinv;
-            byGUID = index = index2 = count = val = prop = prop2 = frominv = reversed = ignoreinv = false;
+            bool byGUID, index2, index, count, frominv, reversed, propno, propval, ignoreinv;
+            byGUID = index2 = index = count = frominv = reversed = propno = propval = ignoreinv = false;
             int toktype = 0;
 
             if ((c1 & 0x08) != 0) // Counted
@@ -2870,20 +2870,20 @@ namespace pjse.BhavNameWizards
                 s += readStr(GS.BhavStr.TokenOpsCounted, o[4]);
                 switch (o[4])
                 {
-                    case 0x00: byGUID = count = true; break;
+                    case 0x00: byGUID = count = true; toktype = 2; break;
                     case 0x01: index = count = true; break;
-                    case 0x02: byGUID = count = true; break;
+                    case 0x02: byGUID = count = true; toktype = 2; break;
                     case 0x03: index = count = true; break;
 
-                    case 0x04: byGUID = true; break;
+                    case 0x04: byGUID = true; toktype = 2; break;
                     case 0x05: index = true; break;
-                    case 0x06: byGUID = count = true; break;
-                    case 0x07: byGUID = true; break;
+                    case 0x06: byGUID = index = true; toktype = 2; break;
+                    case 0x07: byGUID = true; toktype = 2; break;
 
                     case 0x08: index = true; break;
-                    case 0x09: byGUID = index = true; break;
-                    case 0x0a: index = count = true; break;
-                    case 0x0b: index = true; frominv = lng; break;
+                    case 0x09: index = true; toktype = 1; break;
+                    case 0x0a: byGUID = count = true; toktype = 2; break;
+                    case 0x0b: index = true; frominv = lng; toktype = 2; break;
                 }
             }
             else // Singular
@@ -2893,27 +2893,27 @@ namespace pjse.BhavNameWizards
                 {
                     case 0x00: byGUID = true; toktype = 2; break;
                     case 0x01: index = true; break;
-                    case 0x02: toktype = 1; break;
-                    case 0x03: byGUID = true; index = reversed = true; break;
+                    case 0x02: byGUID = true; toktype = 2; break;
+                    case 0x03: byGUID = true; toktype = 2; index = reversed = true; break;
 
-                    case 0x04: index = prop = true; break;
-                    case 0x05: index = prop = true; break;
+                    case 0x04: index = propval = true; break;
+                    case 0x05: index = propval = true; break;
                     case 0x06: index = true; break;
-                    case 0x07: val = prop2 = ignoreinv = true; break;
+                    case 0x07: propno = propval = ignoreinv = true; break;
 
-                    case 0x08: val = prop2 = ignoreinv = true; break;
+                    case 0x08: propno = propval = ignoreinv = true; break;
                     case 0x09: ignoreinv = true; break;
                     case 0x0a: count = true; break;
-                    case 0x0b: ignoreinv = true; break;
+                    case 0x0b: toktype = 2; break;
 
-                    case 0x0c: byGUID = true; toktype = 2; index = reversed = true; break;
+                    case 0x0c: toktype = 2; index = reversed = true; break;
                     case 0x0d: toktype = 1; count = true; break;
-                    case 0x0e: val = prop2 = index2 = true; break;
-                    case 0x0f: val = prop2 = index2 = true; break;
+                    case 0x0e: index2 = propno = propval = true; break;
+                    case 0x0f: index2 = propno = propval = true; break;
 
                     case 0x10: toktype = 2; break;
                     case 0x11: index = true; break;
-                    case 0x12: frominv = lng; index = true; break;
+                    case 0x12: toktype = 2; frominv = lng; index = true; break;
                     case 0x13: toktype = 2; break;
                 }
             }
@@ -2921,7 +2921,7 @@ namespace pjse.BhavNameWizards
             if (byGUID)
             {
                 uint d1 = (uint)(o[5] | (o[6] << 8) | (o[7] << 16) | (o[8] << 24));
-                s += ", " + pjse.Localization.GetString("bwp33_token") + ": "
+                s += (lng ? ", " + pjse.Localization.GetString("bwp33_token") + ":" : "") + " "
                     + (d1 == 0 ? dnStkOb() : BhavWiz.FormatGUID(lng, d1));
             }
 
@@ -2935,18 +2935,6 @@ namespace pjse.BhavNameWizards
                 if (reversed)
                     s += ", " + pjse.Localization.GetString("bwp33_reversed") + ": " + ((c1 & 0x80) != 0).ToString();
 
-                if (prop)
-                    s += ", " + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[13], o[14], o[15]);
-                if (prop2)
-                    s += ", " + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[10], o[11], o[12]);
-
-                if (frominv)
-                {
-                    s += ", " + pjse.Localization.GetString("bwp33_fromInventory") + ": " + readStr(GS.BhavStr.InventoryType, (ushort)(o[6] & 0x07));
-                    if ((o[6] & 0x07) >= 1 && (o[6] & 0x07) <= 3)
-                        s += /*", " + "ID" +*/ ": " + dataOwner(lng, o[13], o[14], o[15]);
-                }
-
                 if (!ignoreinv)
                 {
                     s += ", " + pjse.Localization.GetString("bwp33_Inventory");
@@ -2957,16 +2945,27 @@ namespace pjse.BhavNameWizards
                     s += ": " + readStr(GS.BhavStr.InventoryType, (ushort)(c1 & 0x07));
                     if ((c1 & 0x07) >= 1 && (c1 & 0x07) <= 3)
                         s += /*", " + "ID" +*/ ": " + dataOwner(o[1], o[2], o[3]);
+
+                    if (frominv)
+                    {
+                        s += ", " + pjse.Localization.GetString("bwp33_fromInventory") + ": " + readStr(GS.BhavStr.InventoryType, (ushort)(o[6] & 0x07));
+                        if ((o[6] & 0x07) >= 1 && (o[6] & 0x07) <= 3)
+                            s += /*", " + "ID" +*/ ": " + dataOwner(lng, o[13], o[14], o[15]);
+                    }
+
                     if (index)
                         s += ", " + pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[10], o[11], o[12]);
                     if (index2)
                         s += ", " + pjse.Localization.GetString("bwp33_index") + ": " + dataOwner(lng, o[6], o[7], o[8]);
                 }
 
+                if (propno)
+                    s += ", " + pjse.Localization.GetString("bwp33_property") + ": " + dataOwner(lng, o[10], o[11], o[12]);
+                if (propval)
+                    s += ", " + pjse.Localization.GetString("Value") + ": " + dataOwner(lng, o[13], o[14], o[15]);
+
                 if (count)
                     s += ", " + pjse.Localization.GetString("bwp33_count") + ": " + dataOwner(lng, o[13], o[14], o[15]);
-                if (val)
-                    s += ", " + pjse.Localization.GetString("Value") + ": " + dataOwner(lng, o[13], o[14], o[15]);
             }
 
             return s;

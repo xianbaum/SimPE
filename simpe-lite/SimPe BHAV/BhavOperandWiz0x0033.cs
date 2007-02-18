@@ -124,31 +124,27 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         static List<String> aInventoryType = BhavWiz.readStr(GS.BhavStr.InventoryType);
         static List<String> aTokenOpsCounted = BhavWiz.readStr(GS.BhavStr.TokenOpsCounted);
         static List<String> aTokenOpsSingular = BhavWiz.readStr(GS.BhavStr.TokenOpsSingular);
-        static bool[][] aDoidsCounted = {
-                new bool[] { false, false, false, false,  false, false, false, false,  false, false, false, false, }, // Doid0
-                new bool[] { false, false, false, false,  false, false, false, false,  false, false, false, false, }, // Doid1
-                new bool[] { false, true , false, true ,  false, true , false, false,  true , true , true , true , }, // Doid2
-                new bool[] { true , true , true , true ,  false, false, true , false,  false, false, true , false, }, // Doid3
-            };
-        static bool[][] aDoidsSingular = {
-                new bool[] { false, false, false, false,  false, false, false, false,  false, false, false, false,  false, false, false, false,  false, false, false, false, }, // Doid0
-                new bool[] { false, false, false, false,  false, false, false, false,  false, false, false, false,  false, false, true , true ,  false, false, false, false, }, // Doid1
-                new bool[] { false, true , false, true ,  true , true , true , true ,  true , false, false, false,  true , false, true , true ,  false, true , true , false, }, // Doid2
-                new bool[] { false, false, false, false,  true , true , false, true ,  true , false, true , false,  false, true , true , true ,  false, false, false, false, }, // Doid3
-            };
         static String[] names = { "", "Object", "bwp33_index", "bwp33_property", "bwp33_count", "Value" };
         static int[][] aNamesCounted = {
             new int[] { 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0, }, // Doid0
             new int[] { 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0, }, // Doid1
-            new int[] { 0, 2, 0, 2,  0, 2, 0, 0,  2, 2, 2, 2, }, // Doid2
-            new int[] { 4, 4, 4, 4,  0, 0, 4, 0,  0, 0, 4, 0, }, // Doid3
+            new int[] { 0, 2, 0, 2,  0, 2, 2, 0,  2, 2, 0, 2, }, // Doid2
+            new int[] { 4, 4, 4, 4,  0, 0, 0, 0,  0, 0, 4, 0, }, // Doid3
         };
         static int[][] aNamesSingular = {
             new int[] { 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0, }, // Doid0
             new int[] { 0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 2, 2,  0, 0, 0, 0, }, // Doid1
             new int[] { 0, 2, 0, 2,  2, 2, 2, 3,  3, 0, 0, 0,  2, 0, 3, 3,  0, 2, 2, 0, }, // Doid2
-            new int[] { 0, 0, 0, 0,  3, 3, 0, 5,  5, 0, 4, 0,  0, 4, 5, 5,  0, 0, 0, 0, }, // Doid3
+            new int[] { 0, 0, 0, 0,  5, 5, 0, 5,  5, 0, 4, 0,  0, 4, 5, 5,  0, 0, 0, 0, }, // Doid3
         };
+        static bool[] aByGUIDCounted = 
+            new bool[] { true , false, true , false,  true , false, true , true ,  false, false, true , false, };
+        static bool[] aByGUIDSingular =
+            new bool[] { true , false, true , true ,  false, false, false, false,  false, false, false, false,  false, false, false, false,  false, false, false, false, };
+        static bool[] aCategoryCounted =
+            new bool[] { true , false, true , false,  true , false, true , true ,  false, true , true , true , };
+        static bool[] aCategorySingular =
+            new bool[] { true , false, true , true ,  false, false, false, false,  false, false, false, true ,  true , true , false, false,  true , false, true , true , };
         #endregion
 
         private bool internalchg = false;
@@ -197,7 +193,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
                 cbInventory.Enabled = true;
             int i = (o5678[1] & 0x07);
             cbInventory.SelectedIndex = (i < cbInventory.Items.Count) ? i : -1;
-            pnDoid3.Enabled = (i >= 1 && i <= 3);
+            lbDoid3.Text = (pnDoid3.Enabled = (i >= 1 && i <= 3)) ? cbInventory.SelectedItem.ToString() : "";
         }
 
         private void doByGUID()
@@ -212,86 +208,57 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             cbDataOwner1.SelectedIndex = (cbDataOwner1.Items.Count > o5678[1]) ? o5678[1] : -1;
         }
 
-        private void doBoth()
+        private void doBoth(List<String> aTokenOps, int[][] aNames, bool[] aByGUID, bool[] aCategory)
         {
+            doTokenOps(aTokenOps);
+
             pnDoid1.Enabled = pnDoid2.Enabled = pnDoid3.Enabled = false;
             gbTokenTypes.Enabled = ckbReversed.Enabled = false;
             cbInventory.Enabled = false;
             flpnGUID.Enabled = false; tbObjName.Text = tbGUID.Text = "";
             gbInventoryType.Enabled = true;
+
+            if (operation < aByGUID.Length && aByGUID[operation])
+                doByGUID();
+
+            if (operation < aCategory.Length && aCategory[operation])
+                doTokenType();
+
+            bool doid1Enabled = pnDoid1.Enabled;
+
+            if (operation < aNames[0].Length)
+            {
+                lbDoid1.Text = (pnDoid1.Enabled = (aNames[1][operation] > 0)) ? pjse.Localization.GetString(names[aNames[1][operation]]) : "";
+                lbDoid2.Text = (pnDoid2.Enabled = (aNames[2][operation] > 0)) ? pjse.Localization.GetString(names[aNames[2][operation]]) : "";
+                lbDoid3.Text = (pnDoid3.Enabled = (aNames[3][operation] > 0)) ? pjse.Localization.GetString(names[aNames[3][operation]]) : "";
+            }
+
+            if (!doid1Enabled && pnDoid1.Enabled) refreshDoid1();
         }
 
         private void doCounted()
         {
-            doTokenOps(aTokenOpsCounted);
-            doBoth();
-
-            bool doid1Enabled = pnDoid1.Enabled;
-
-            if (operation < aDoidsCounted[0].Length)
-            {
-                pnDoid1.Enabled = aDoidsCounted[1][operation];
-                pnDoid2.Enabled = aDoidsCounted[2][operation];
-                pnDoid3.Enabled = aDoidsCounted[3][operation];
-            }
-            if (operation < aNamesCounted[0].Length)
-            {
-                lbDoid1.Text = aNamesCounted[1][operation] > 0 ? pjse.Localization.GetString(names[aNamesCounted[1][operation]]) : "";
-                lbDoid2.Text = aNamesCounted[2][operation] > 0 ? pjse.Localization.GetString(names[aNamesCounted[2][operation]]) : "";
-                lbDoid3.Text = aNamesCounted[3][operation] > 0 ? pjse.Localization.GetString(names[aNamesCounted[3][operation]]) : "";
-            }
+            doBoth(aTokenOpsCounted, aNamesCounted, aByGUIDCounted, aCategoryCounted);
 
             switch (operation)
             {
-                case 0x00: doByGUID(); break;
-                case 0x02: doByGUID(); break;
-                case 0x04: doByGUID(); break;
-                case 0x06: doByGUID(); break;
-                case 0x07: doByGUID(); break;
-                case 0x09: doByGUID(); break;
                 case 0x0b: doFromInventory(true); break;
             }
-
-            if (!doid1Enabled && pnDoid1.Enabled) refreshDoid1();
         }
 
         private void doSingular()
         {
-            doTokenOps(aTokenOpsSingular);
-            doBoth();
-
-            bool doid1Enabled = pnDoid1.Enabled;
-
-            if (operation < aDoidsSingular[0].Length)
-            {
-                pnDoid1.Enabled = aDoidsSingular[1][operation];
-                pnDoid2.Enabled = aDoidsSingular[2][operation];
-                pnDoid3.Enabled = aDoidsSingular[3][operation];
-            }
-            if (operation < aNamesSingular[0].Length)
-            {
-                lbDoid1.Text = aNamesSingular[1][operation] > 0 ? pjse.Localization.GetString(names[aNamesSingular[1][operation]]) : "";
-                lbDoid2.Text = aNamesSingular[2][operation] > 0 ? pjse.Localization.GetString(names[aNamesSingular[2][operation]]) : "";
-                lbDoid3.Text = aNamesSingular[3][operation] > 0 ? pjse.Localization.GetString(names[aNamesSingular[3][operation]]) : "";
-            }
+            doBoth(aTokenOpsSingular, aNamesSingular, aByGUIDSingular, aCategorySingular);
 
             switch (operation)
             {
-                case 0x00: doByGUID(); doTokenType(); break;
-                case 0x02: doTokenType(); break;
-                case 0x03: doByGUID(); ckbReversed.Enabled = true; break;
+                case 0x03: ckbReversed.Enabled = true; break;
                 case 0x07: gbInventoryType.Enabled = false; break;
                 case 0x08: gbInventoryType.Enabled = false; break;
                 case 0x09: gbInventoryType.Enabled = false; break;
-                case 0x0b: gbInventoryType.Enabled = false; break;
-                case 0x0c: doByGUID(); doTokenType(); ckbReversed.Enabled = true; break;
-                case 0x0d: doTokenType(); break;
-                case 0x10: doTokenType(); break;
+                case 0x0c: ckbReversed.Enabled = true; break;
                 case 0x12: doFromInventory(true); break;
-                case 0x13: doTokenType(); break;
             }
-
-            if (!doid1Enabled && pnDoid1.Enabled) refreshDoid1();
         }
 
 
@@ -1019,6 +986,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             if (cbInventory.SelectedIndex >= 0 && cbInventory.SelectedIndex <= 7)
                 o5678[1] = (byte)((o5678[1] & 0xf8) + cbInventory.SelectedIndex);
             refreshDoid1();
+
+            pnDoid3.Enabled = (cbInventory.SelectedIndex >= 1 && cbInventory.SelectedIndex <= 3);
+            lbDoid3.Text = pnDoid3.Enabled ? cbInventory.SelectedItem.ToString() : "";
 
             internalchg = origstate;
         }
