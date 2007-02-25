@@ -22,6 +22,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
@@ -255,7 +256,8 @@ namespace pjse.BhavOperandWizards
 		#endregion
 
 		#region Form validation
-		private bool tbValue_IsValid(TextBox tb)
+        private int bitsInValue = 16;
+        private bool tbValue_IsValid(TextBox tb)
 		{
 			try
 			{
@@ -273,7 +275,12 @@ namespace pjse.BhavOperandWizards
 			if      (dataOwner == 0x1a) return pjse.BhavWiz.ExpandBCONtoString(v, false);
 			else if (dataOwner == 0x2f) return pjse.BhavWiz.ExpandBCONtoString(v, true);
 			else if (isDecimal) return ((short)v).ToString();
-			else                return (use0xPrefix ? "0x" : "") + SimPe.Helper.HexString(v);
+
+            String s = SimPe.Helper.HexString(v);
+            int i = (bitsInValue + 3) / 4;
+            s = s.Substring(s.Length - i);
+
+			return (use0xPrefix ? "0x" : "") + s;
 		}
 
 		private ushort tbValueConverter(TextBox sender)
@@ -287,20 +294,28 @@ namespace pjse.BhavOperandWizards
 		#endregion
 
         public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
-            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, cbkDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance); 
+            bitsInValue = 16;
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance);
+        }
+
+        public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
+            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, byte instance)
+        {
+            bitsInValue = 8;
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance);
         }
 
         public void SetDataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox cbkDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
         {
             this.Dispose();
             this.inst = inst;
             this.cbDataOwner = cbDataOwner;
             this.cbPicker = cbPicker;
             this.tbValue = tbValue;
-            this.ckbDecimal = cbkDecimal;
+            this.ckbDecimal = ckbDecimal;
             this.ckbUseAttrPicker = ckbUseAttrPicker;
             this.lbConst = lbConst;
             this.dataOwner = dataOwner;
@@ -336,7 +351,7 @@ namespace pjse.BhavOperandWizards
                 this.ckbDecimal.CheckedChanged += new System.EventHandler(this.ckbDecimal_CheckedChanged);
             }
             else
-                Decimal = true;
+                Decimal = pjse.Settings.PJSE.DecimalDOValue;
 
             if (this.ckbUseAttrPicker != null)
             {
@@ -344,7 +359,7 @@ namespace pjse.BhavOperandWizards
                 this.ckbUseAttrPicker.CheckedChanged += new System.EventHandler(this.ckbUseAttrPicker_CheckedChanged);
             }
             else
-                UseAttrPicker = true;
+                UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText;
 
             setTextBoxLength();
             setConstLabel();
@@ -407,54 +422,60 @@ namespace pjse.BhavOperandWizards
             }
 
 			#region pickerNames
-			ArrayList pickerNames = null;
-			if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
-			{
-				pickerNames = BhavWiz.flagNames(flagsFor.DataOwner, flagsFor.Value);
-				if (pickerNames != null)
-				{
-					pickerNames = (ArrayList)pickerNames.Clone();
-					pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
-				}
-			}
-			else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
-			{
-				pickerNames = inst.GetAttrNames(Scope.Private);
-			}
-			else if (useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
-			{
-				pickerNames = inst.GetAttrNames(Scope.SemiGlobal);
-			}
-			else if (dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
-			{
-				pickerNames = inst.GetTPRPnames(false);
-			}
-			else if (dataOwner == 0x19) // Local
-			{
-				pickerNames = inst.GetTPRPnames(true);
-			}
-			else if (BhavWiz.doidGStr[dataOwner] != null)
-			{
-				pickerNames = BhavWiz.readStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
-			}
+            List<String> pickerNames = null;
+            if (useAttrPicker && cbPicker != null)
+            {
+                if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
+                {
+                    pickerNames = BhavWiz.flagNames(flagsFor.DataOwner, flagsFor.Value);
+                    if (pickerNames != null)
+                    {
+                        pickerNames = new List<string>(pickerNames);
+                        pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
+                    }
+                }
+                else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
+                {
+                    pickerNames = inst.GetAttrNames(Scope.Private);
+                }
+                else if (useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
+                {
+                    pickerNames = inst.GetAttrNames(Scope.SemiGlobal);
+                }
+                else if (dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
+                {
+                    pickerNames = inst.GetTPRPnames(false);
+                }
+                else if (dataOwner == 0x19) // Local
+                {
+                    pickerNames = inst.GetTPRPnames(true);
+                }
+                else if (BhavWiz.doidGStr[dataOwner] != null)
+                {
+                    pickerNames = BhavWiz.readStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
+                }
+            }
 			#endregion
 
-            if (cbPicker != null)
+
+            if (pickerNames != null && pickerNames.Count > 0)
             {
-                cbPicker.Visible = false;
-                if (pickerNames != null && pickerNames.Count > 0)
-                {
-                    cbPicker.Visible = true;
-                    cbPicker.Items.Clear();
-                    cbPicker.Items.AddRange(pickerNames.ToArray());
-                    cbPicker.SelectedIndex = (cbPicker.Items.Count > instance) ? instance : -1;
-                }
+                if (tbValue != null)
+                    tbValue.TabStop = tbValue.Visible = false;
+                cbPicker.TabStop = cbPicker.Visible = true;
+                cbPicker.Items.Clear();
+                cbPicker.Items.AddRange(pickerNames.ToArray());
+                cbPicker.SelectedIndex = (cbPicker.Items.Count > instance) ? instance : -1;
+            }
+            else
+            {
+                if (cbPicker != null)
+                    cbPicker.TabStop = cbPicker.Visible = false;
+                if (tbValue != null)
+                    tbValue.TabStop = tbValue.Visible = true;
             }
 
             setConstLabel();
-
-            if (tbValue != null)
-                tbValue.Visible = (cbPicker == null) || !cbPicker.Visible;
 
 			internalchg = false;
 		}
@@ -497,9 +518,6 @@ namespace pjse.BhavOperandWizards
 
         private bool use0xPrefix = true;
         public bool Use0xPrefix { set { } }
-
-        private int bitsInValue = 16;
-        public bool BitsInValue { set { } }
 
         private bool isDecimal = false;
 		public bool Decimal

@@ -20,6 +20,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
@@ -118,7 +119,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			cbType.Items.AddRange(BhavWiz.readStr(GS.BhavStr.Dialog).ToArray());
 
 			if (typeDescriptions == null)
-				typeDescriptions = (string[])(BhavWiz.readStr(GS.BhavStr.DialogDesc).ToArray(typeof(string)));
+				typeDescriptions = BhavWiz.readStr(GS.BhavStr.DialogDesc);
 
 			cbTnsStyle.Items.Clear();
 			cbTnsStyle.Items.AddRange(BhavWiz.readStr(GS.BhavStr.TnsStyle).ToArray());
@@ -168,7 +169,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 
 
 		#region UI
-		private static string[] typeDescriptions = null;
+		private static List<String> typeDescriptions = null;
 
 		private Instruction inst = null;
 		private ArrayList alStrBtn = null;
@@ -224,7 +225,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 			if (dialog != cbType.SelectedIndex)
 				cbType.SelectedIndex = (cbType.Items.Count > dialog) ? dialog : -1;
 
-			this.lbType.Text = typeDescriptions.Length > dialog ? typeDescriptions[dialog] : "";
+			this.lbType.Text = typeDescriptions.Count > dialog ? typeDescriptions[dialog] : "";
 
 			bool tvState = false;
 			bool tnsState = false;
