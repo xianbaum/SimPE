@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+9 March 2007 17:47 - Seasons: GlobalStrings.package update (and fix for DataOwnerControl)
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.7.14.19.2.1
+  GlobalStrings.package 1.10.8.18.2.1
+
 18 February 2007 13:41 - OpC 0x33: Further Parser and Wiz changes
   SimPe BHAV\
     BhavOperandWiz0x0033.cs 1.1.4.4
