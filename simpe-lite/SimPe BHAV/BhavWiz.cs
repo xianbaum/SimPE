@@ -144,6 +144,7 @@ namespace pjse
             WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
             //Str0x00fe unused
             //Str0x00ff..01f3 - there are no Str0x00ff..01f3
+            PersonFlags1 = 0x1e3, // PJSE: string number stolen for Data owners 0x12, 0x13 and 0x20
             TokenOpsCounted = 0x1e4, // PJSE: string number stolen (opcode 0x33)
             TokenOpsSingular = 0x1e5, // PJSE: string number stolen (opcode 0x33)
             Languages = 0x1e6, // PJSE: string number stolen
@@ -655,6 +656,7 @@ namespace pjse
             o.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
             o.Add((ushort)0x44, GS.BhavStr.GhostFlags);
             o.Add((ushort)0x51, GS.BhavStr.BodyFlags);
+            o.Add((ushort)0x54, GS.BhavStr.PersonFlags1);
             o.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
             o.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
             o.Add((ushort)0xc7, GS.BhavStr.PetTraitFlags);
