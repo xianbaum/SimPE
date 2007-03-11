@@ -207,8 +207,11 @@ namespace pjse.BhavOperandWizards
 		private void cbPicker_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
-			if (cbPicker.SelectedIndex != -1)
-				SetValue((ushort)cbPicker.SelectedIndex);
+            if (cbPicker.SelectedIndex != -1)
+            {
+                SetValue((ushort)cbPicker.SelectedIndex);
+                tbValue.Text = tbValueConverter(instance);
+            }
 		}
 
 
