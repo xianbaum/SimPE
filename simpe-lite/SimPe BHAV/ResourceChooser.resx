@@ -121,36 +121,63 @@
   <data name="tcResources.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="lbPackage.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="chValue.Text" xml:space="preserve">
+    <value>Val</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lbPackage.IntegralHeight" type="System.Boolean, mscorlib">
+  <data name="chValue.Width" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="chName.Text" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="chName.Width" type="System.Int32, mscorlib">
+    <value>417</value>
+  </data>
+  <data name="lvPackage.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lvPackage.Items" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
+        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
+        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
+        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
+        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
+        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAAlsdlBhY2thZ2X/////
+        Bfv///8UU3lzdGVtLkRyYXdpbmcuQ29sb3IEAAAABG5hbWUFdmFsdWUKa25vd25Db2xvcgVzdGF0ZQEA
+        AAAJBwcDAAAACgAAAAAAAAAAGAABAAAJBgAAAAH5////+////woAAAAAAAAAABoAAQABBQYAAAATU3lz
+        dGVtLkRyYXdpbmcuRm9udAQAAAAETmFtZQRTaXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2lu
+        Zy5Gb250U3R5bGUDAAAAG1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABggAAAAUTWlj
+        cm9zb2Z0IFNhbnMgU2VyaWaamflABff///8YU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAQAAAAd2YWx1
+        ZV9fAAgDAAAAAAAAAAX2////G1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAEAAAAHdmFsdWVfXwAI
+        AwAAAAMAAAAL
+</value>
+  </data>
+  <data name="lvPackage.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="lbPackage.ItemHeight" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lbPackage.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lvPackage.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lbPackage.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="lvPackage.Size" type="System.Drawing.Size, System.Drawing">
     <value>519, 175</value>
   </data>
-  <data name="lbPackage.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="lvPackage.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;lbPackage.Name" xml:space="preserve">
-    <value>lbPackage</value>
+  <data name="&gt;&gt;lvPackage.Name" xml:space="preserve">
+    <value>lvPackage</value>
   </data>
-  <data name="&gt;&gt;lbPackage.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lvPackage.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lbPackage.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lvPackage.Parent" xml:space="preserve">
     <value>tpPackage</value>
   </data>
-  <data name="&gt;&gt;lbPackage.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lvPackage.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tpPackage.Location" type="System.Drawing.Point, System.Drawing">
@@ -177,41 +204,68 @@
   <data name="&gt;&gt;tpPackage.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="lbGlobalGroup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="columnHeader1.Text" xml:space="preserve">
+    <value>Val</value>
+  </data>
+  <data name="columnHeader1.Width" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="columnHeader2.Text" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="columnHeader2.Width" type="System.Int32, mscorlib">
+    <value>417</value>
+  </data>
+  <data name="lvGlobal.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="lbGlobalGroup.IntegralHeight" type="System.Boolean, mscorlib">
+  <data name="lvGlobal.Items" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
+        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
+        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
+        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
+        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
+        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAAhsdkdsb2JhbP////8F
+        +////xRTeXN0ZW0uRHJhd2luZy5Db2xvcgQAAAAEbmFtZQV2YWx1ZQprbm93bkNvbG9yBXN0YXRlAQAA
+        AAkHBwMAAAAKAAAAAAAAAAAYAAEAAAkGAAAAAfn////7////CgAAAAAAAAAAGgABAAEFBgAAABNTeXN0
+        ZW0uRHJhd2luZy5Gb250BAAAAAROYW1lBFNpemUFU3R5bGUEVW5pdAEABAQLGFN5c3RlbS5EcmF3aW5n
+        LkZvbnRTdHlsZQMAAAAbU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AwAAAAMAAAAGCAAAABRNaWNy
+        b3NvZnQgU2FucyBTZXJpZpqZ+UAF9////xhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUBAAAAB3ZhbHVl
+        X18ACAMAAAAAAAAABfb///8bU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AQAAAAd2YWx1ZV9fAAgD
+        AAAAAwAAAAs=
+</value>
+  </data>
+  <data name="lvGlobal.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="lbGlobalGroup.ItemHeight" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="lbGlobalGroup.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lvGlobal.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lbGlobalGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+  <data name="lvGlobal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>519, 175</value>
   </data>
-  <data name="lbGlobalGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="lvGlobal.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;lbGlobalGroup.Name" xml:space="preserve">
-    <value>lbGlobalGroup</value>
+  <data name="&gt;&gt;lvGlobal.Name" xml:space="preserve">
+    <value>lvGlobal</value>
   </data>
-  <data name="&gt;&gt;lbGlobalGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lvGlobal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lbGlobalGroup.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lvGlobal.Parent" xml:space="preserve">
     <value>tpGlobalGroup</value>
   </data>
-  <data name="&gt;&gt;lbGlobalGroup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lvGlobal.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tpGlobalGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
   </data>
   <data name="tpGlobalGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+    <value>519, 175</value>
   </data>
   <data name="tpGlobalGroup.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -234,41 +288,68 @@
   <data name="&gt;&gt;tpGlobalGroup.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="lbGroup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="columnHeader3.Text" xml:space="preserve">
+    <value>Val</value>
+  </data>
+  <data name="columnHeader3.Width" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="columnHeader4.Text" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="columnHeader4.Width" type="System.Int32, mscorlib">
+    <value>417</value>
+  </data>
+  <data name="lvGroup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="lbGroup.IntegralHeight" type="System.Boolean, mscorlib">
+  <data name="lvGroup.Items" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
+        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
+        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
+        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
+        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
+        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAAdsdkdyb3Vw/////wX7
+        ////FFN5c3RlbS5EcmF3aW5nLkNvbG9yBAAAAARuYW1lBXZhbHVlCmtub3duQ29sb3IFc3RhdGUBAAAA
+        CQcHAwAAAAoAAAAAAAAAABgAAQAACQYAAAAB+f////v///8KAAAAAAAAAAAaAAEAAQUGAAAAE1N5c3Rl
+        bS5EcmF3aW5nLkZvbnQEAAAABE5hbWUEU2l6ZQVTdHlsZQRVbml0AQAEBAsYU3lzdGVtLkRyYXdpbmcu
+        Rm9udFN0eWxlAwAAABtTeXN0ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQDAAAAAwAAAAYIAAAAFE1pY3Jv
+        c29mdCBTYW5zIFNlcmlmmpn5QAX3////GFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQEAAAAHdmFsdWVf
+        XwAIAwAAAAAAAAAF9v///xtTeXN0ZW0uRHJhd2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMA
+        AAADAAAACw==
+</value>
+  </data>
+  <data name="lvGroup.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="lbGroup.ItemHeight" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="lbGroup.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lvGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lbGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+  <data name="lvGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>519, 175</value>
   </data>
-  <data name="lbGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="lvGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;lbGroup.Name" xml:space="preserve">
-    <value>lbGroup</value>
+  <data name="&gt;&gt;lvGroup.Name" xml:space="preserve">
+    <value>lvGroup</value>
   </data>
-  <data name="&gt;&gt;lbGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lvGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lbGroup.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lvGroup.Parent" xml:space="preserve">
     <value>tpGroup</value>
   </data>
-  <data name="&gt;&gt;lbGroup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lvGroup.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tpGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
   </data>
   <data name="tpGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+    <value>519, 175</value>
   </data>
   <data name="tpGroup.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -291,41 +372,68 @@
   <data name="&gt;&gt;tpGroup.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="lbSemiGroup.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="columnHeader5.Text" xml:space="preserve">
+    <value>Val</value>
+  </data>
+  <data name="columnHeader5.Width" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="columnHeader6.Text" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="columnHeader6.Width" type="System.Int32, mscorlib">
+    <value>417</value>
+  </data>
+  <data name="lvSemi.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="lbSemiGroup.IntegralHeight" type="System.Boolean, mscorlib">
+  <data name="lvSemi.Items" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
+        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
+        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
+        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
+        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
+        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAAZsdlNlbWn/////Bfv/
+        //8UU3lzdGVtLkRyYXdpbmcuQ29sb3IEAAAABG5hbWUFdmFsdWUKa25vd25Db2xvcgVzdGF0ZQEAAAAJ
+        BwcDAAAACgAAAAAAAAAAGAABAAAJBgAAAAH5////+////woAAAAAAAAAABoAAQABBQYAAAATU3lzdGVt
+        LkRyYXdpbmcuRm9udAQAAAAETmFtZQRTaXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2luZy5G
+        b250U3R5bGUDAAAAG1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABggAAAAUTWljcm9z
+        b2Z0IFNhbnMgU2VyaWaamflABff///8YU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAQAAAAd2YWx1ZV9f
+        AAgDAAAAAAAAAAX2////G1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAEAAAAHdmFsdWVfXwAIAwAA
+        AAMAAAAL
+</value>
+  </data>
+  <data name="lvSemi.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="lbSemiGroup.ItemHeight" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="lbSemiGroup.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lvSemi.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lbSemiGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+  <data name="lvSemi.Size" type="System.Drawing.Size, System.Drawing">
+    <value>519, 175</value>
   </data>
-  <data name="lbSemiGroup.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="lvSemi.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;lbSemiGroup.Name" xml:space="preserve">
-    <value>lbSemiGroup</value>
+  <data name="&gt;&gt;lvSemi.Name" xml:space="preserve">
+    <value>lvSemi</value>
   </data>
-  <data name="&gt;&gt;lbSemiGroup.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lvSemi.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lbSemiGroup.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lvSemi.Parent" xml:space="preserve">
     <value>tpSemiGroup</value>
   </data>
-  <data name="&gt;&gt;lbSemiGroup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lvSemi.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tpSemiGroup.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
   </data>
   <data name="tpSemiGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+    <value>519, 175</value>
   </data>
   <data name="tpSemiGroup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -348,41 +456,68 @@
   <data name="&gt;&gt;tpSemiGroup.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
-  <data name="lbBuiltIn.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="columnHeader7.Text" xml:space="preserve">
+    <value>Val</value>
+  </data>
+  <data name="columnHeader7.Width" type="System.Int32, mscorlib">
+    <value>73</value>
+  </data>
+  <data name="columnHeader8.Text" xml:space="preserve">
+    <value>Resource Name</value>
+  </data>
+  <data name="columnHeader8.Width" type="System.Int32, mscorlib">
+    <value>417</value>
+  </data>
+  <data name="lvPrim.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="lbBuiltIn.IntegralHeight" type="System.Boolean, mscorlib">
+  <data name="lvPrim.Items" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
+        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
+        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
+        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
+        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
+        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAAZsdlByaW3/////Bfv/
+        //8UU3lzdGVtLkRyYXdpbmcuQ29sb3IEAAAABG5hbWUFdmFsdWUKa25vd25Db2xvcgVzdGF0ZQEAAAAJ
+        BwcDAAAACgAAAAAAAAAAGAABAAAJBgAAAAH5////+////woAAAAAAAAAABoAAQABBQYAAAATU3lzdGVt
+        LkRyYXdpbmcuRm9udAQAAAAETmFtZQRTaXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2luZy5G
+        b250U3R5bGUDAAAAG1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABggAAAAUTWljcm9z
+        b2Z0IFNhbnMgU2VyaWaamflABff///8YU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAQAAAAd2YWx1ZV9f
+        AAgDAAAAAAAAAAX2////G1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAEAAAAHdmFsdWVfXwAIAwAA
+        AAMAAAAL
+</value>
+  </data>
+  <data name="lvPrim.LabelWrap" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="lbBuiltIn.ItemHeight" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="lbBuiltIn.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="lvPrim.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
-  <data name="lbBuiltIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+  <data name="lvPrim.Size" type="System.Drawing.Size, System.Drawing">
+    <value>519, 175</value>
   </data>
-  <data name="lbBuiltIn.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+  <data name="lvPrim.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;lbBuiltIn.Name" xml:space="preserve">
-    <value>lbBuiltIn</value>
+  <data name="&gt;&gt;lvPrim.Name" xml:space="preserve">
+    <value>lvPrim</value>
   </data>
-  <data name="&gt;&gt;lbBuiltIn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;lvPrim.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;lbBuiltIn.Parent" xml:space="preserve">
+  <data name="&gt;&gt;lvPrim.Parent" xml:space="preserve">
     <value>tpBuiltIn</value>
   </data>
-  <data name="&gt;&gt;lbBuiltIn.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;lvPrim.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="tpBuiltIn.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 25</value>
   </data>
   <data name="tpBuiltIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>378, 175</value>
+    <value>519, 175</value>
   </data>
   <data name="tpBuiltIn.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -488,6 +623,66 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>PJSE: Resource Chooser</value>
+  </data>
+  <data name="&gt;&gt;chValue.Name" xml:space="preserve">
+    <value>chValue</value>
+  </data>
+  <data name="&gt;&gt;chValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;chName.Name" xml:space="preserve">
+    <value>chName</value>
+  </data>
+  <data name="&gt;&gt;chName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader1.Name" xml:space="preserve">
+    <value>columnHeader1</value>
+  </data>
+  <data name="&gt;&gt;columnHeader1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader2.Name" xml:space="preserve">
+    <value>columnHeader2</value>
+  </data>
+  <data name="&gt;&gt;columnHeader2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader3.Name" xml:space="preserve">
+    <value>columnHeader3</value>
+  </data>
+  <data name="&gt;&gt;columnHeader3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader4.Name" xml:space="preserve">
+    <value>columnHeader4</value>
+  </data>
+  <data name="&gt;&gt;columnHeader4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader5.Name" xml:space="preserve">
+    <value>columnHeader5</value>
+  </data>
+  <data name="&gt;&gt;columnHeader5.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader6.Name" xml:space="preserve">
+    <value>columnHeader6</value>
+  </data>
+  <data name="&gt;&gt;columnHeader6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader7.Name" xml:space="preserve">
+    <value>columnHeader7</value>
+  </data>
+  <data name="&gt;&gt;columnHeader7.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;columnHeader8.Name" xml:space="preserve">
+    <value>columnHeader8</value>
+  </data>
+  <data name="&gt;&gt;columnHeader8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ColumnHeader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ResourceChooser</value>

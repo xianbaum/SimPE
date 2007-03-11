@@ -126,6 +126,30 @@ namespace pjse
             }
         }
 
+        public enum ChooserOrderBy
+        {
+            ByID = 0,
+            ByName = 1,
+        }
+
+        [System.ComponentModel.Category("PJSE")]
+        public ChooserOrderBy ChooserOrder
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("chooserOrder", ChooserOrderBy.ByID);
+                return (Enum.IsDefined(ChooserOrderBy.ByID.GetType(), o))
+                    ? (ChooserOrderBy)Enum.Parse(ChooserOrderBy.ByID.GetType(), o.ToString()) : ChooserOrderBy.ByID;
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("chooserOrder", value);
+            }
+        }
+
         [System.ComponentModel.Category("GI")]
         public bool LoadGUIDIndexAtStartup
         {

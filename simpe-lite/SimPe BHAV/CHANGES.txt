@@ -1,6 +1,14 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
-10 Marchi 2007 16:05 - Seasons: GlobalStrings.package update (and add PersonData Flags1 parsing)
+11 March 2007 19:59 - Make ResourceChooser sortable on ID or Name (and fix wiz btn)
+  SimPe BHAV\
+    BhavForm.resx 1.30.2.15
+    pjse coder plugin.csproj 1.20.2.30
+    ResourceChooser.cs 1.6.2.8
+    ResourceChooser.resx 1.1.12.5
+    Settings.cs 1.1.4.4
+
+10 March 2007 16:05 - Seasons: GlobalStrings.package update (and add PersonData Flags1 parsing)
   SimPe BHAV\
     BhavWiz.cs 1.37.2.28.2.1
   GlobalStrings.package 1.10.8.18.2.2

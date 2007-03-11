@@ -163,15 +163,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BconForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BconWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="BconWrapper.cs" />
     <Compile Include="BhavForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -190,7 +186,28 @@
     <Compile Include="BhavOperandWiz0x0002.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="BhavOperandWiz0x0008.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz0x001c.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz0x001f.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="BhavOperandWiz0x0024.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz0x0032.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz0x0033.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWiz0x006d.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BhavOperandWizAnimate.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="BhavOperandWizBhav.cs">
@@ -205,68 +222,28 @@
     <Compile Include="BhavOperandWizRaw.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BhavWiz.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BhavWizBhav.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BhavWizPrim.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BhavWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="BhavOperandWiz0x001c.cs">
+    <Compile Include="BhavWiz.cs" />
+    <Compile Include="BhavWizBhav.cs" />
+    <Compile Include="BhavWizPrim.cs" />
+    <Compile Include="BhavWrapper.cs" />
+    <Compile Include="ExtendedWrapper.cs" />
+    <Compile Include="GUIDIndex.cs" />
+    <Compile Include="HelpHelper.cs" />
+    <Compile Include="ObjfForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BhavOperandWiz0x0032.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BhavOperandWiz0x001f.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BhavOperandWiz0x006d.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BhavOperandWiz0x0008.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BhavOperandWizAnimate.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BhavOperandWiz0x0033.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ObjfWrapper.cs" />
     <Compile Include="PickANumber.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="PickANumber.Designer.cs">
       <DependentUpon>PickANumber.cs</DependentUpon>
     </Compile>
-    <Compile Include="TtabAnimalMotiveUI.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ExtendedWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="GUIDIndex.cs" />
-    <Compile Include="HelpHelper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ObjfForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ObjfWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="ResourceChooser.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Settings.cs" />
-    <Compile Include="Str.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Str.cs" />
     <Compile Include="StrBig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -276,23 +253,18 @@
     <Compile Include="StrForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="StrWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="SystemClasses.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="StrWrapper.cs" />
+    <Compile Include="SystemClasses.cs" />
     <Compile Include="TPRPForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TPRPWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="TPRPWrapper.cs" />
     <Compile Include="TrcnForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TrcnWrapper.cs">
-      <SubType>Code</SubType>
+    <Compile Include="TrcnWrapper.cs" />
+    <Compile Include="TtabAnimalMotiveUI.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="TtabAnimalMotiveWiz.cs">
       <SubType>Form</SubType>
@@ -312,12 +284,10 @@
     <Compile Include="TtabSingleMotiveUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TtabWrapper.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="WrapperFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="TtabWrapper.cs" />
+    <Compile Include="WrapperFactory.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="BconForm.resx">
       <DependentUpon>BconForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -346,13 +316,41 @@
       <DependentUpon>BhavOperandWiz0x0002.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x0008.resx">
+      <DependentUpon>BhavOperandWiz0x0008.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x001c.resx">
+      <DependentUpon>BhavOperandWiz0x001c.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x001f.resx">
+      <DependentUpon>BhavOperandWiz0x001f.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="BhavOperandWiz0x0024.resx">
       <DependentUpon>BhavOperandWiz0x0024.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="BhavOperandWizBhav.resx">
+    <EmbeddedResource Include="BhavOperandWiz0x0032.resx">
+      <DependentUpon>BhavOperandWiz0x0032.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x0033.resx">
+      <DependentUpon>BhavOperandWiz0x0033.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWiz0x006d.resx">
+      <DependentUpon>BhavOperandWiz0x006d.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWizAnimate.resx">
+      <DependentUpon>BhavOperandWizAnimate.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BhavOperandWizBhav.resx">
       <DependentUpon>BhavOperandWizBhav.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="BhavOperandWizDefault.resx">
       <DependentUpon>BhavOperandWizDefault.cs</DependentUpon>
@@ -362,44 +360,12 @@
       <DependentUpon>BhavOperandWizRaw.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="BhavOperandWiz0x001c.resx">
-      <DependentUpon>BhavOperandWiz0x001c.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BhavOperandWiz0x0032.resx">
-      <DependentUpon>BhavOperandWiz0x0032.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BhavOperandWiz0x001f.resx">
-      <DependentUpon>BhavOperandWiz0x001f.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BhavOperandWiz0x006d.resx">
-      <DependentUpon>BhavOperandWiz0x006d.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BhavOperandWiz0x0008.resx">
-      <DependentUpon>BhavOperandWiz0x0008.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BhavOperandWizAnimate.resx">
-      <DependentUpon>BhavOperandWizAnimate.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BhavOperandWiz0x0033.resx">
-      <DependentUpon>BhavOperandWiz0x0033.cs</DependentUpon>
+    <EmbeddedResource Include="ObjfForm.resx">
+      <DependentUpon>ObjfForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="PickANumber.resx">
-      <SubType>Designer</SubType>
       <DependentUpon>PickANumber.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="TtabAnimalMotiveUI.resx">
-      <DependentUpon>TtabAnimalMotiveUI.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ObjfForm.resx">
-      <DependentUpon>ObjfForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ResourceChooser.resx">
@@ -426,9 +392,13 @@
       <DependentUpon>TrcnForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="TtabAnimalMotiveWiz.resx">
+    <EmbeddedResource Include="TtabAnimalMotiveUI.resx">
+      <DependentUpon>TtabAnimalMotiveUI.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TtabAnimalMotiveWiz.resx">
       <DependentUpon>TtabAnimalMotiveWiz.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="TtabForm.resx">
       <DependentUpon>TtabForm.cs</DependentUpon>
