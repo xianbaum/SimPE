@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+12 March 2007 14:55 - Import viewed BHAV to current package button
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.31
+    BhavForm.resx 1.30.2.16
+
 11 March 2007 19:59 - Make ResourceChooser sortable on ID or Name (and fix wiz btn)
   SimPe BHAV\
     BhavForm.resx 1.30.2.15
