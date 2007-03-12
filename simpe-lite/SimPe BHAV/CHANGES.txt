@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+12 March 2007 15:45 - Change to post-build script: better control of distros built
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.20.2.31
+
 12 March 2007 14:55 - Import viewed BHAV to current package button
   SimPe BHAV\
     BhavForm.cs 1.64.2.31

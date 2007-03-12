@@ -1,7 +1,15 @@
 
+2007-03-12 15:31 Change to post-build script: better control of distros built
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.12
+
+2007-03-05 15:35 Change to post-build script: don't include installer .exe in src
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.11
+
 2007-02-03 21:21 Bug fix: allow paths not to exist
   pjBodyMeshTool/
-		BodyMeshExtractor.cs 1.1.2.7
+    BodyMeshExtractor.cs 1.1.2.7
 
 2006-11-23 09:44 Include the Help in Release builds
   pjBodyMeshTool/
