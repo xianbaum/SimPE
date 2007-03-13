@@ -24,7 +24,10 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using SimPe.Interfaces;
+using SimPe.Interfaces.Files;
 using SimPe.Interfaces.Plugin;
+using SimPe.Interfaces.Scenegraph;
 using SimPe.PackedFiles.Wrapper;
 using pjse;
 
@@ -121,6 +124,7 @@ namespace SimPe.PackedFiles.UserInterface
         private ToolStripMenuItem defaultFileToolStripMenuItem1;
         private ToolStripMenuItem toFileToolStripMenuItem;
         private Button btnFloat;
+        private Button btnCopyBHAV;
         private IContainer components;
         #endregion
        
@@ -211,23 +215,19 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alDec8;
 		private ArrayList alHex16cb;
 
+        private static IPackageFile currentPackage = null;
+        private void TakeACopy()
+        {
+            IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
+            npfd.UserData = wrapper.Package.Read(wrapper.FileDescriptor).UncompressedData;
+            currentPackage.Add(npfd, true);
+        }
+
 		private void SetReadOnly(bool state) 
 		{
-			if (((string)this.Tag).Equals("Popup"))
-			{
-				// make it very clear it's read only
-				tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =
-					tbHeaderFlag.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
-					tbArgC.Enabled = tbLocalC.Enabled =
-					/*btnSort.Visible =*/ btnCommit.Visible = gbMove.Visible = 
-					btnDel.Visible = btnAdd.Visible = 
-					btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/
-					gbSpecial.Visible = cbSpecial.Visible =
-					btnCancel.Visible = btnFloat.Visible = false;
-				btnClose.Visible = state = true;
-			}
+            if (((string)this.Tag).Equals("Popup")) state = true;
 
-			this.tbInst_OpCode.ReadOnly = state;
+            this.tbInst_OpCode.ReadOnly = state;
 			this.btnOpCode.Enabled = !state;
 			this.tbInst_NodeVersion.ReadOnly = state || wrapper.Header.Format < 0x8005;
 			this.tba1.Enabled = !state;
@@ -578,7 +578,24 @@ namespace SimPe.PackedFiles.UserInterface
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
 				setHandler = true;
 			}
-		}
+
+            if (((string)this.Tag).Equals("Popup"))
+            {
+                // make it very clear it's read only
+                tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =
+                    tbHeaderFlag.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
+                    tbArgC.Enabled = tbLocalC.Enabled =
+                    /*btnSort.Visible =*/ btnCommit.Visible = gbMove.Visible =
+                    btnDel.Visible = btnAdd.Visible =
+                    btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/
+                    gbSpecial.Visible = cbSpecial.Visible =
+                    btnCancel.Visible = btnFloat.Visible = false;
+                btnCopyBHAV.Visible = btnClose.Visible = true;
+                btnCopyBHAV.Enabled = currentPackage != null;
+            }
+            else
+                currentPackage = wrapper.Package;
+        }
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
@@ -719,6 +736,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnCopyBHAV = new System.Windows.Forms.Button();
             this.gbInstruction.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
@@ -1108,6 +1126,7 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.bhavPanel, "bhavPanel");
             this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
             this.bhavPanel.Controls.Add(this.cbSpecial);
+            this.bhavPanel.Controls.Add(this.btnCopyBHAV);
             this.bhavPanel.Controls.Add(this.btnClose);
             this.bhavPanel.Controls.Add(this.tbHeaderFlag);
             this.bhavPanel.Controls.Add(this.lbHeaderFlag);
@@ -1401,6 +1420,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
+            // btnCopyBHAV
+            // 
+            resources.ApplyResources(this.btnCopyBHAV, "btnCopyBHAV");
+            this.btnCopyBHAV.Name = "btnCopyBHAV";
+            this.btnCopyBHAV.Click += new System.EventHandler(this.btnCopyBHAV_Click);
+            // 
             // BhavForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1554,6 +1579,13 @@ namespace SimPe.PackedFiles.UserInterface
             if (((string)this.Tag).Equals("Popup"))
                 Close();
 		}
+
+        private void btnCopyBHAV_Click(object sender, EventArgs e)
+        {
+            btnCopyBHAV.Enabled = false;
+            TakeACopy();
+            btnCopyBHAV.Text = pjse.Localization.GetString("ml_done");
+        }
 
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
