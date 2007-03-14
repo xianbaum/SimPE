@@ -1,0 +1,194 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{82C75C30-D56A-4CC4-87FC-F6C04F58A991}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TrapKATEditor</RootNamespace>
+    <AssemblyName>TrapKATEditor</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AllMemory.cs" />
+    <Compile Include="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.cs">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Global.cs" />
+    <Compile Include="Kit.cs" />
+    <Compile Include="Pad.cs" />
+    <Compile Include="TrapKATEditor.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="SysexDump.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>set base=$(TargetName)-$(ConfigurationName)
+set src=$(TargetName)-Source
+set mydate=%25date%25
+set dd=%25mydate:~0,2%25
+set mm=%25mydate:~3,2%25
+set yy=%25mydate:~6,4%25
+set mytime=%25time%25
+set h=%25mytime:~0,2%25
+set m=%25mytime:~3,2%25
+set s=%25mytime:~6,2%25
+set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
+
+set helpdir=$(ProjectDir)
+set help=TrapKATEditor_Help
+
+set tarv=
+set nsisv=/V3
+
+
+rem ConfigurationNames: Release Debug InProgress
+rem targets: help zip tarbz2 7z(7z) nsis src
+
+set helpDebug=no
+set helpInProgress=no
+
+set zipDebug=no
+set zipInProgress=no
+
+set tarbz2Release=no
+set tarbz2Debug=no
+set tarbz2InProgress=no
+
+set z7Release=no
+set z7Debug=no
+set z7InProgress=no
+
+set nsisProgress=no
+
+set srcDebug=no
+set srcInProgress=no
+
+
+cd "$(ProjectDir)"
+
+
+rem -------------------------------------
+rem -------------------------------------
+rem  Create and populate the ProgramFiles dir
+rem -------------------------------------
+if exist "Program Files" rmdir /s/q "Program Files"
+mkdir "Program Files"
+mkdir "Program Files\$(TargetName)"
+
+(cd "$(TargetDir)"
+tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
+
+(cd ..
+(echo %25base%25
+echo %25suffix%25) &gt; version.txt
+tar c version.txt LICENSE.txt CHANGES.txt) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
+del ..\version.txt
+
+rem -----------------------------------
+rem  Copy over help for Release builds
+rem -----------------------------------
+if x%25help$(ConfigurationName)%25==xno goto nohelp
+(cd /d %25helpdir%25
+tar c %25help%25) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
+:nohelp:
+
+
+del ..\"%25base%25*"
+
+
+rem -------------------------------------
+rem -------------------------------------
+rem  Create distributions
+rem -------------------------------------
+
+if x%25zip$(ConfigurationName)%25==xno goto nozip
+7za a -tzip -r -mx9 "..\%25base%25-%25suffix%25.zip" "Program Files"
+:nozip:
+
+if x%25tarbz2$(ConfigurationName)%25==xno goto notarbz2
+tar cv "Program Files"| bzip2 &gt; "..\%25base%25-%25suffix%25.tar.bz2"
+:notarbz2:
+
+if x%25z7$(ConfigurationName)%25==xno goto no7z
+7za a -t7z -mx9 -ms "..\%25base%25-%25suffix%25.7z" "Program Files"
+:no7z:
+
+if x%25nsis$(ConfigurationName)%25==xno goto nonsis
+echo OutFile "%25base%25-%25suffix%25.exe" &gt; ..\outfile.txt
+"%25PROGRAMFILES%25\nsis\makensis" %25nsisv%25 ..\mknsis.nsi
+del ..\outfile.txt
+:nonsis:
+
+if x%25src$(ConfigurationName)%25==xno goto nosrc
+cd "$(ProjectDir).."
+if exist "%25src%25" rmdir /s/q "%25src%25"
+del "%25src%25*"
+mkdir "%25src%25"
+
+tar c --exclude="%25src%25" --exclude=CVS --exclude=*.7z --exclude=*.zip --exclude=*.exe --exclude=*.tar.bz2 --exclude=.project --exclude=.metadata --exclude=bin --exclude=obj --exclude=Plugins --exclude=*.suo --exclude=*.csproj.user --exclude=*.bak --exclude=.#* . | tar x%25tarv%25 -C "%25src%25"
+7za a -tzip -r -mx9 "%25src%25-%25suffix%25.zip" "%25src%25"
+if exist "%25src%25" rmdir /s/q "%25src%25"
+:nosrc:
+</PostBuildEvent>
+  </PropertyGroup>
+</Project>
