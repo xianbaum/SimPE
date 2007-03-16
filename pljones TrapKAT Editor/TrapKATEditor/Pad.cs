@@ -23,58 +23,129 @@ using System.Text;
 
 namespace TrapKATEditor.Data
 {
-    public class Pad
+    public class Pad : DataItem
     {
         #region Attributes
-        byte note1;
-        byte note2;
         byte curve;
-        byte gate;
-        byte channel;
-        byte minVelocity;
-        byte maxVelocity;
-        byte note3;
-        byte note4;
-        byte note5;
-        byte note6;
+        Gate gate = null;
+        byte channel = 9;
+        byte minVelocity = 1;
+        byte maxVelocity = 127;
         byte flags; // bit7: HiHat pad; bit6: motif pad
+
+        private List<byte> notes = new List<byte>(new byte[] { 0, 0, 0, 0, 0, 0, });
         #endregion
 
-        public Pad() { }
-        public Pad(System.IO.BinaryReader r)
+        public Pad() : base()
         {
-            Unserialize(r);
+            gate = new Gate();
+            gate.DataChanged += new EventHandler(gate_DataChanged);
         }
 
-        protected void Unserialize(System.IO.BinaryReader r)
+        public Pad(System.IO.BinaryReader r) : base(r) { }
+
+        void gate_DataChanged(object sender, EventArgs e)
         {
-            note1 = r.ReadByte();
-            note2 = r.ReadByte();
+            SetChanged();
+            OnDataChanged(this, e);
+        }
+
+        protected override void Unserialize(System.IO.BinaryReader r)
+        {
+            notes[0] = r.ReadByte();
+            notes[1] = r.ReadByte();
             curve = r.ReadByte();
-            gate = r.ReadByte();
+            gate = new Gate(r);
+            gate.DataChanged += new EventHandler(gate_DataChanged);
             channel = r.ReadByte();
             minVelocity = r.ReadByte();
             maxVelocity = r.ReadByte();
-            note3 = r.ReadByte();
-            note4 = r.ReadByte();
-            note5 = r.ReadByte();
-            note6 = r.ReadByte();
+            notes[2] = r.ReadByte();
+            notes[3] = r.ReadByte();
+            notes[4] = r.ReadByte();
+            notes[5] = r.ReadByte();
             flags = r.ReadByte();
         }
         public void Serialize(System.IO.BinaryWriter w)
         {
-            w.Write(note1);
-            w.Write(note2);
+            w.Write(notes[0]);
+            w.Write(notes[1]);
             w.Write(curve);
-            w.Write(gate);
+            gate.Serialize(w);
             w.Write(channel);
             w.Write(minVelocity);
             w.Write(maxVelocity);
-            w.Write(note3);
-            w.Write(note4);
-            w.Write(note5);
-            w.Write(note6);
+            w.Write(notes[2]);
+            w.Write(notes[3]);
+            w.Write(notes[4]);
+            w.Write(notes[5]);
             w.Write(flags);
+        }
+
+        public byte this[int index]
+        {
+            get { return notes[index]; }
+            set
+            {
+                if (notes[index] == value) return;
+                notes[index] = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte Curve
+        {
+            get { return curve; }
+            set
+            {
+                if (curve == value) return;
+                curve = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public String Gate
+        {
+            get { return gate.Value; }
+            set { gate.Value = value; }
+        }
+        public byte Channel
+        {
+            get { return channel; }
+            set
+            {
+                if (channel == value) return;
+                channel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte MinVelocity
+        {
+            get { return minVelocity; }
+            set
+            {
+                if (minVelocity == value) return;
+                minVelocity = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte MaxVelocity
+        {
+            get { return maxVelocity; }
+            set
+            {
+                if (maxVelocity == value) return;
+                maxVelocity = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte Flags
+        {
+            get { return flags; }
+            set
+            {
+                if (flags == value) return;
+                flags = value;
+                OnDataChanged(this, new EventArgs());
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace TrapKATEditor
 {
-    static class TrapKATEditor
+    static class MainProgram
     {
         /// <summary>
         /// The main entry point for the application.
@@ -14,20 +14,63 @@ namespace TrapKATEditor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new UI.Form1());
+            Application.Run(new UI.MainForm());
         }
 
-        private static Data.AllMemory allMemory = new Data.AllMemory();
+        public static event EventHandler KitChanged;
+        private static void OnKitChanged(object sender, EventArgs e)
+        {
+            if (KitChanged != null)
+                KitChanged(sender, e);
+        }
         private static int currentKit = -1;
+        public static int CurrentKit
+        {
+            get { return currentKit; }
+            set
+            {
+                if (currentKit == value) return;
+                currentKit = value;
+                OnKitChanged(currentKit, new EventArgs());
+            }
+        }
+
+        public static event EventHandler AllMemoryChanged;
+        private static void OnAllMemoryChanged(object sender, EventArgs e)
+        {
+            if (AllMemoryChanged != null)
+                AllMemoryChanged(sender, e);
+        }
+        private static Data.AllMemory allMemory = new Data.AllMemory();
         public static Data.AllMemory CurrentAllMemory
         {
             get { return allMemory; }
-            set { allMemory = value; }
+            set
+            {
+                if (allMemory == value) return;
+                allMemory = value;
+                currentKit = -1;
+                OnAllMemoryChanged(allMemory, new EventArgs());
+            }
+        }
+
+        public static event EventHandler GlobalChanged;
+        private static void OnGlobalChanged(object sender, EventArgs e)
+        {
+            if (GlobalChanged != null)
+                GlobalChanged(sender, e);
         }
         public static Data.Global CurrentGlobal
         {
             get { return allMemory == null ? null : allMemory.Global; }
+            set
+            {
+                if (allMemory == null || allMemory.Global == value) return;
+                allMemory.Global = value;
+                OnGlobalChanged(allMemory.Global, new EventArgs());
+            }
         }
+
         public static Data.Kit[] CurrentKits
         {
             get { return allMemory == null ? null : allMemory.Kits; }
@@ -35,7 +78,7 @@ namespace TrapKATEditor
 
         public static void Reinit()
         {
-            allMemory = new Data.AllMemory();
+            CurrentAllMemory = new Data.AllMemory();
         }
 
         private static String currentFilename = "";
@@ -44,7 +87,7 @@ namespace TrapKATEditor
         {
             Dump.SysexDump dump = (new Dump.SysexDump()).Open(filename);
             if (dump is Dump.AllMemoryDump)
-                allMemory = ((Dump.AllMemoryDump)dump).AllMemory;
+                CurrentAllMemory = ((Dump.AllMemoryDump)dump).AllMemory;
             else if (dump is Dump.GlobalDump)
                 allMemory.Global = ((Dump.GlobalDump)dump).Global;
             else if (dump is Dump.KitDump)
@@ -59,6 +102,7 @@ namespace TrapKATEditor
         }
 
         public static void SaveFile() { SaveFile(currentFilename, currentType); }
+        public static void SaveFile(Dump.DumpType type) { SaveFile(currentFilename, type); }
         public static void SaveFile(String filename) { SaveFile(filename, currentType); }
         public static void SaveFile(String filename, Dump.DumpType type)
         {

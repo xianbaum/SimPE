@@ -23,7 +23,7 @@ using System.Text;
 
 namespace TrapKATEditor.Data
 {
-    public class Kit
+    public class Kit : DataItem
     {
         #region Attributes
         Pad[] pads = new Pad[28];
@@ -50,16 +50,29 @@ namespace TrapKATEditor.Data
         byte[] kitName = new byte[12];
         #endregion
 
-        public Kit()
+        public Kit() : base()
         {
-            for (int i = 0; i < pads.Length; i++) pads[i] = new Pad();
+            for (int i = 0; i < pads.Length; i++)
+            {
+                pads[i] = new Pad();
+                pads[i].DataChanged += new EventHandler(Pad_DataChanged);
+            }
         }
         public Kit(System.IO.BinaryReader r, bool withName) { Unserialize(r, withName); }
+
+        void Pad_DataChanged(object sender, EventArgs e)
+        {
+            SetChanged();
+            OnDataChanged(this, e);
+        }
 
         protected void Unserialize(System.IO.BinaryReader r, bool withName)
         {
             for (int i = 0; i < pads.Length; i++)
+            {
                 pads[i] = new Pad(r);
+                pads[i].DataChanged += new EventHandler(Pad_DataChanged);
+            }
 
             curve = r.ReadByte();
             gate = r.ReadByte();
@@ -110,6 +123,9 @@ namespace TrapKATEditor.Data
             w.Write(unused);
             if (withName) w.Write(kitName);
         }
+
+        public Pad this[int index] { get { return pads[index]; } }
+
 
         public String KitName
         {
