@@ -26,7 +26,7 @@ namespace TrapKATEditor.Data
     public class Pad : DataItem
     {
         #region Attributes
-        byte curve;
+        Curve curve;
         Gate gate = null;
         byte channel = 9;
         byte minVelocity = 1;
@@ -38,13 +38,15 @@ namespace TrapKATEditor.Data
 
         public Pad() : base()
         {
+            curve = new Curve();
+            curve.DataChanged += new EventHandler(dataChanged);
             gate = new Gate();
-            gate.DataChanged += new EventHandler(gate_DataChanged);
+            gate.DataChanged += new EventHandler(dataChanged);
         }
 
         public Pad(System.IO.BinaryReader r) : base(r) { }
 
-        void gate_DataChanged(object sender, EventArgs e)
+        void dataChanged(object sender, EventArgs e)
         {
             SetChanged();
             OnDataChanged(this, e);
@@ -54,9 +56,10 @@ namespace TrapKATEditor.Data
         {
             notes[0] = r.ReadByte();
             notes[1] = r.ReadByte();
-            curve = r.ReadByte();
+            curve = new Curve(r);
+            curve.DataChanged += new EventHandler(dataChanged);
             gate = new Gate(r);
-            gate.DataChanged += new EventHandler(gate_DataChanged);
+            gate.DataChanged += new EventHandler(dataChanged);
             channel = r.ReadByte();
             minVelocity = r.ReadByte();
             maxVelocity = r.ReadByte();
@@ -70,7 +73,7 @@ namespace TrapKATEditor.Data
         {
             w.Write(notes[0]);
             w.Write(notes[1]);
-            w.Write(curve);
+            curve.Serialize(w);
             gate.Serialize(w);
             w.Write(channel);
             w.Write(minVelocity);
@@ -92,15 +95,10 @@ namespace TrapKATEditor.Data
                 OnDataChanged(this, new EventArgs());
             }
         }
-        public byte Curve
+        public String Curve
         {
-            get { return curve; }
-            set
-            {
-                if (curve == value) return;
-                curve = value;
-                OnDataChanged(this, new EventArgs());
-            }
+            get { return curve.Value; }
+            set { curve.Value = value; }
         }
         public String Gate
         {

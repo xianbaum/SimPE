@@ -29,28 +29,38 @@ namespace TrapKATEditor.UI
 {
     public partial class MainForm : Form
     {
+        #region Main form and initialisation
         List<ToolStripMenuItem> tsmiSave = null;
         List<ToolStripMenuItem> tsmiSaveAs = null;
         List<ComboBox> cbNotes = null;
         List<CheckBox> ckbFlags = null;
         List<NumericUpDown> nudVel = null;
-        Data.Pad currentPad = null;
-        Data.Kit currentKit = null;
 
         public MainForm()
         {
             InitializeComponent();
-            cbGate.Items.Clear();
-            cbGate.Items.AddRange(Data.Gate.Modes.ToArray());
+            cbPadCurve.Items.Clear();
+            cbPadCurve.Items.AddRange(Data.Curve.Modes.ToArray());
+            cbPadGate.Items.Clear();
+            cbPadGate.Items.AddRange(Data.Gate.Modes.ToArray());
             tsmiSave = new List<ToolStripMenuItem>(new ToolStripMenuItem[] { tsmiFileSaveAllMemory, tsmiFileSaveGlobalMemory, tsmiFileSaveCurrentKit });
             tsmiSaveAs = new List<ToolStripMenuItem>(new ToolStripMenuItem[] { tsmiFileSaveAllMemoryAs, tsmiFileSaveGlobalMemoryAs, tsmiFileSaveCurrentKitAs });
             cbNotes = new List<ComboBox>(new ComboBox[] { cbNote1, cbNote2, cbNote3, cbNote4, cbNote5, cbNote6 });
             ckbFlags = new List<CheckBox>(new CheckBox[] { ckbF0, ckbF1, ckbF2, ckbF3, ckbF4, ckbF5, ckbF6, ckbF7, });
-            nudVel = new List<NumericUpDown>(new NumericUpDown[] { nudMinVel, nudMaxVel, });
+            nudVel = new List<NumericUpDown>(new NumericUpDown[] { nudPadMinVel, nudPadMaxVel, nudKitMinVel, nudKitMaxVel, });
         }
 
-        private bool internalchg = false;
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            MainProgram.AllMemoryChanged += new EventHandler(MainProgram_AllMemoryChanged);
+            MainProgram.GlobalChanged += new EventHandler(MainProgram_GlobalChanged);
+            MainProgram.KitChanged += new EventHandler(MainProgram_KitChanged);
+            MainProgram_AllMemoryChanged(null, null);
+        }
+        #endregion
 
+
+        #region File Menu
         private void doExit()
         {
             // check no uncomitted changes
@@ -63,114 +73,11 @@ namespace TrapKATEditor.UI
             MainProgram.Reinit();
         }
 
-        #region Pad
-        private void doPad(int pad)
+        private void tsmiFileNew_Click(object sender, EventArgs e)
         {
-            if (currentPad != null)
-                currentPad.DataChanged -= new EventHandler(currentPad_DataChanged);
-            currentPad = currentKit[pad];
-            currentPad.DataChanged += new EventHandler(currentPad_DataChanged);
-            currentPad_DataChanged(null, null);
+            doNew();
 
-            internalchg = true;
-            for (int i = 0; i < cbNotes.Count; i++) doNote(i);
-
-            if (currentPad.Curve < cbPadCurve.Items.Count)
-                cbPadCurve.SelectedIndex = currentPad.Curve;
-            else
-            {
-                cbPadCurve.SelectedIndex = -1;
-                cbPadCurve.Text = currentPad.Curve.ToString();
-            }
-
-            doGate();
-
-            nudChannel.Value = currentPad.Channel + 1;
-            nudMinVel.Value = currentPad.MinVelocity;
-            nudMaxVel.Value = currentPad.MaxVelocity;
-            for (int i = 0; i < ckbFlags.Count; i++)
-                ckbFlags[i].Checked = (currentPad.Flags & (1 << i)) != 0;
-            internalchg = false;
-        }
-
-        void currentPad_DataChanged(object sender, EventArgs e)
-        {
-            lbPadDataChanged.Visible = currentPad.Changed;
-        }
-
-        private void cbPad_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            doPad(cbPad.SelectedIndex);
-        }
-        #endregion
-
-
-        #region Kit
-        void MainProgram_KitChanged(object sender, EventArgs e)
-        {
-            if (currentKit != null)
-                currentKit.DataChanged -= new EventHandler(currentKit_DataChanged);
-            currentKit = MainProgram.CurrentKits[MainProgram.CurrentKit];
-            currentKit.DataChanged += new EventHandler(currentKit_DataChanged);
-            currentKit_DataChanged(null, null);
-            
-            internalchg = true;
-            cbPad.SelectedIndex = -1;
-
-            tbKitName.Text = currentKit.KitName;
-
-            internalchg = false;
-            cbPad.SelectedIndex = 0;
-        }
-
-        void currentKit_DataChanged(object sender, EventArgs e)
-        {
-            lbKitDataChanged.Visible = currentKit.Changed;
-        }
-
-        private void cbCurrentKit_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            MainProgram.CurrentKit = cbCurrentKit.SelectedIndex;
-        }
-        #endregion
-
-        void MainProgram_AllMemoryChanged(object sender, EventArgs e)
-        {
-            foreach (ToolStripMenuItem tsmi in tsmiSave)
-                tsmi.Enabled = false;
-
-            internalchg = true;
-            cbCurrentKit.SelectedIndex = -1;
-
-            MainProgram_GlobalChanged(null, null);
-            cbCurrentKit.Items.Clear();
-            for (int i = 0; i < MainProgram.CurrentKits.Length; i++)
-            {
-                cbCurrentKit.Items.Add((i + 1).ToString() + ": " + MainProgram.CurrentKits[i].KitName);
-            }
-
-            internalchg = false;
-            cbCurrentKit.SelectedIndex = 0;
-        }
-
-        void MainProgram_GlobalChanged(object sender, EventArgs e)
-        {
-            //throw new Exception("The method or operation is not implemented.");
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            MainProgram.AllMemoryChanged += new EventHandler(MainProgram_AllMemoryChanged);
-            MainProgram.GlobalChanged += new EventHandler(MainProgram_GlobalChanged);
-            MainProgram.KitChanged += new EventHandler(MainProgram_KitChanged);
-            MainProgram_AllMemoryChanged(null, null);
-        }
-
-        private void tsmiFileExitQuit_Click(object sender, EventArgs e)
-        {
-            doExit();
+            this.Text = "Editing: " + (MainProgram.CurrentFilename.Length > 0 ? MainProgram.CurrentFilename : "New file");
         }
 
         private void tsmiFileOpen_Click(object sender, EventArgs e)
@@ -189,12 +96,8 @@ namespace TrapKATEditor.UI
                         + ex.Type.ToString() + " at 0x" + Convert.ToString(ex.Offset, 16)
                         + "", "Invalid SysEx File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                catch (ArgumentOutOfRangeException)
-                {
-                    System.Windows.Forms.MessageBox.Show(
-                        "Please select a Kit before loading a Kit Dump."
-                        + "", "Select a Kit first", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                }
+
+            this.Text = "Editing: " + (MainProgram.CurrentFilename.Length > 0 ? MainProgram.CurrentFilename : "New file");
         }
 
         private void tsmiFileSave_Click(object sender, EventArgs e)
@@ -205,16 +108,27 @@ namespace TrapKATEditor.UI
 
         private void tsmiFileSaveAs_Click(object sender, EventArgs e)
         {
+            Dump.DumpType[] t = { Dump.DumpType.AllMemory, Dump.DumpType.Global, Dump.DumpType.Kit, };
             int i = tsmiSaveAs.IndexOf((ToolStripMenuItem)sender);
+            switch (i)
+            {
+                case 0: sfdSaveSysEx.FileName = "AllMemory.syx"; break;
+                case 1: sfdSaveSysEx.FileName = "Global.syx"; break;
+                case 2: sfdSaveSysEx.FileName = (currentKit!=null ? currentKit.KitName : "CurrentKit") + ".syx"; break;
+            }
             DialogResult dr = sfdSaveSysEx.ShowDialog();
             if (DialogResult.OK.Equals(dr))
-                MainProgram.SaveFile(sfdSaveSysEx.FileName, (Dump.DumpType)i);
+                MainProgram.SaveFile(sfdSaveSysEx.FileName, t[i]);
         }
 
-        private void tsmiFileNew_Click(object sender, EventArgs e)
+        private void tsmiFileExitQuit_Click(object sender, EventArgs e)
         {
-            doNew();
+            doExit();
         }
+        #endregion
+
+
+        private bool internalchg = false;
 
 
         #region Note
@@ -349,20 +263,149 @@ namespace TrapKATEditor.UI
         }
         #endregion
 
-        private void cbPadCurve_SelectedIndexChanged(object sender, EventArgs e)
+
+        #region Pad
+        Data.Pad currentPad = null;
+        private void doPad(int pad)
         {
-            currentPad.Curve = (byte)((ComboBox)sender).SelectedIndex;
+            if (currentPad != null)
+                currentPad.DataChanged -= new EventHandler(currentPad_DataChanged);
+            currentPad = currentKit[pad];
+            currentPad.DataChanged += new EventHandler(currentPad_DataChanged);
+            currentPad_DataChanged(null, null);
+
+            internalchg = true;
+            for (int i = 0; i < cbNotes.Count; i++) doNote(i);
+
+            setComboBox(cbPadCurve, currentPad.Curve);
+            setComboBox(cbPadGate, currentPad.Gate);
+
+            nudPadChannel.Value = currentPad.Channel + 1;
+            nudPadMinVel.Value = currentPad.MinVelocity;
+            nudPadMaxVel.Value = currentPad.MaxVelocity;
+            for (int i = 0; i < ckbFlags.Count; i++)
+                ckbFlags[i].Checked = (currentPad.Flags & (1 << i)) != 0;
+            internalchg = false;
         }
+
+        void currentPad_DataChanged(object sender, EventArgs e)
+        {
+            lbPadDataChanged.Visible = currentPad.Changed;
+        }
+
+        private void cbPad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            doPad(cbPad.SelectedIndex);
+        }
+        #endregion
+
+
+        #region Kit
+        Data.Kit currentKit = null;
+        void MainProgram_KitChanged(object sender, EventArgs e)
+        {
+            if (currentKit != null)
+                currentKit.DataChanged -= new EventHandler(currentKit_DataChanged);
+            currentKit = MainProgram.CurrentAllMemory[MainProgram.CurrentKit];
+            currentKit.DataChanged += new EventHandler(currentKit_DataChanged);
+            currentKit_DataChanged(null, null);
+
+            bool savedchg = internalchg;
+            internalchg = true;
+
+            ckbVarCurve.Checked = currentKit.Curve.Equals("Various");
+            setComboBox(cbKitCurve, currentKit.Curve);
+            ckbVarGate.Checked = currentKit.Gate.Equals("Various");
+            setComboBox(cbKitGate, currentKit.Gate);
+
+            ckbVarMaxVel.Checked = ckbVarMinVel.Checked = ckbVarChannel.Checked = false;
+            for (int i = 0; i < cbPad.Items.Count; i++)
+            {
+                if (!ckbVarChannel.Checked) ckbVarChannel.Checked = !currentKit[i].Channel.Equals(currentKit.Channel);
+                if (!ckbVarMinVel.Checked) ckbVarMinVel.Checked = !currentKit[i].MinVelocity.Equals(currentKit.MinVelocity);
+                if (!ckbVarMaxVel.Checked) ckbVarMaxVel.Checked = !currentKit[i].MaxVelocity.Equals(currentKit.MaxVelocity);
+            }
+            nudKitChannel.Value = currentKit.Channel + 1;
+            nudKitMinVel.Value = currentKit.MinVelocity;
+            nudKitMaxVel.Value = currentKit.MaxVelocity;
+
+            cbFCFunction.SelectedIndex = currentKit.FcFunction;
+            //cbFCCurve.SelectedIndex = currentKit.FcCurve;
+
+            // You may call this obfuscated...
+            nudFCChannel.Value = (
+                (ckbAsChick.Checked = (currentKit.FcChannel >= 16))
+                    ? currentKit[25].Channel
+                    : currentKit.FcChannel
+                ) + 1;
+
+            tbKitName.Text = currentKit.KitName;
+
+            cbPad.SelectedIndex = 0;
+
+            internalchg = savedchg;
+            ckbVarCurve_CheckedChanged(ckbVarCurve, null);
+            ckbVarGate_CheckedChanged(ckbVarGate, null);
+            ckbVarChannel_CheckedChanged(ckbVarChannel, null);
+            ckbVarMinVel_CheckedChanged(ckbVarMinVel, null);
+            ckbVarMaxVel_CheckedChanged(ckbVarMaxVel, null);
+            ckbAsChick_CheckedChanged(ckbAsChick, null);
+
+            doPad(0);
+        }
+
+        void currentKit_DataChanged(object sender, EventArgs e)
+        {
+            lbKitDataChanged.Visible = currentKit.Changed;
+            tsmiFileSaveCurrentKit.Enabled =
+                currentKit.Changed
+                && (MainProgram.CurrentType == Dump.DumpType.Kit)
+                && (MainProgram.CurrentFilename.Length > 0);
+            tsmiFileSaveCurrentKitAs.Enabled = currentKit.Changed;
+        }
+
+        private void cbCurrentKit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            MainProgram.CurrentKit = cbCurrentKit.SelectedIndex;
+        }
+
+        private void tbKitName_TextChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            currentKit.KitName = tbKitName.Text;
+        }
+        #endregion
+
+
+        // Common to Pad and Kit
+
+        private void setComboBox(ComboBox cb, String value)
+        {
+            bool savedchg = internalchg;
+            internalchg = true;
+
+            cb.SelectedIndex = Data.Curve.Modes.IndexOf(value);
+            if (cb.SelectedIndex == -1) cb.Text = value;
+
+            internalchg = savedchg;
+        }
+
+        #region Curve
+        private void cbCurve_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+
+            ComboBox cb = (ComboBox)sender;
+
+            if (cb == cbPadCurve) { currentPad.Curve = Data.Curve.Modes[cb.SelectedIndex]; return; }
+            if (cb == cbKitCurve) { currentKit.Curve = Data.Curve.Modes[cb.SelectedIndex]; return; }
+        }
+        #endregion
 
 
         #region Gate
-        private void doGate()
-        {
-            string s = currentPad.Gate;
-            cbGate.SelectedIndex = cbGate.Items.IndexOf(s);
-            if (cbGate.SelectedIndex == -1) cbGate.Text = s;
-        }
-
         private bool cbGate_IsValid(ComboBox cb)
         {
             // Can't be blank
@@ -388,9 +431,10 @@ namespace TrapKATEditor.UI
             ComboBox cb = (ComboBox)sender;
 
             if (!cbGate_IsValid(cb)) return;
-
             if (cb.Items.IndexOf(cb.Text) != -1) return; // handled by SelectedIndexChanged
-            currentPad.Gate = cb.Text;
+
+            if (cb.Equals(cbPadGate)) { currentPad.Gate = cb.Text; return; }
+            if (cb.Equals(cbKitGate)) { currentKit.Gate = cb.Text; return; }
         }
 
         private void cbGate_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -402,7 +446,8 @@ namespace TrapKATEditor.UI
 
             bool origstate = internalchg;
             internalchg = true;
-            doGate();
+            if (cb.Equals(cbPadGate)) { setComboBox(cb, currentPad.Gate); }
+            if (cb.Equals(cbKitGate)) { setComboBox(cb, currentKit.Gate); }
             internalchg = origstate;
             cb.SelectAll();
         }
@@ -414,7 +459,8 @@ namespace TrapKATEditor.UI
 
             bool origstate = internalchg;
             internalchg = true;
-            doGate();
+            if (cb.Equals(cbPadGate)) { setComboBox(cb, currentPad.Gate); }
+            if (cb.Equals(cbKitGate)) { setComboBox(cb, currentKit.Gate); }
             internalchg = origstate;
             cb.Select(0, 0);
         }
@@ -426,20 +472,127 @@ namespace TrapKATEditor.UI
             ComboBox cb = (ComboBox)sender;
             if (cb.SelectedIndex == -1) return;
 
-            currentPad.Gate = Data.Gate.Modes[cb.SelectedIndex];
+            if (cb == cbPadGate) currentPad.Gate = Data.Gate.Modes[cb.SelectedIndex];
 
             cb.SelectAll();
         }
         #endregion
 
+        private void nudChannel_ValueChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            byte value = (byte)(((NumericUpDown)sender).Value - 1);
+            if (sender.Equals(nudPadChannel)) { currentPad.Channel = value; return; }
+            if (sender.Equals(nudKitChannel)) { currentKit.Channel = value; return; }
+            if (sender.Equals(nudFCChannel)) { currentKit.FcChannel = value; return; }
+        }
+
         private void nudVel_ValueChanged(object sender, EventArgs e)
         {
-            NumericUpDown nud = (NumericUpDown)sender;
-            switch (nudVel.IndexOf(nud))
+            byte value = (byte)((NumericUpDown)sender).Value;
+            switch (nudVel.IndexOf((NumericUpDown)sender))
             {
-                case 0: currentPad.MinVelocity = (byte)nud.Value; break;
-                case 1: currentPad.MaxVelocity = (byte)nud.Value; break;
+                case 0: currentPad.MinVelocity = value; break;
+                case 1: currentPad.MaxVelocity = value; break;
+                case 2: currentKit.MinVelocity = value; break;
+                case 3: currentKit.MaxVelocity = value; break;
             }
+        }
+
+        // --
+
+
+        #region Global
+        Data.Global currentGlobal = null;
+        void MainProgram_GlobalChanged(object sender, EventArgs e)
+        {
+            //throw new Exception("The method or operation is not implemented.");
+        }
+        #endregion
+
+
+        #region AllMemory
+        void MainProgram_AllMemoryChanged(object sender, EventArgs e)
+        {
+            foreach (ToolStripMenuItem tsmi in tsmiSave)
+                tsmi.Enabled = false;
+            /*foreach (ToolStripMenuItem tsmi in tsmiSaveAs)
+                tsmi.Enabled = false;*/
+
+            MainProgram_GlobalChanged(null, null);
+
+            bool savedchg = internalchg;
+            internalchg = true;
+            cbCurrentKit.Items.Clear();
+            for (int i = 0; i < MainProgram.CurrentAllMemory.Length; i++)
+                cbCurrentKit.Items.Add((i + 1).ToString() + ": " + MainProgram.CurrentAllMemory[i].KitName);
+            cbCurrentKit.SelectedIndex = MainProgram.CurrentKit;
+            internalchg = savedchg;
+
+            MainProgram_KitChanged(null, null);
+        }
+        #endregion
+
+
+        private void ckbVarCurve_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            cbKitCurve.Enabled = !ckb.Checked;
+            cbPadCurve.Enabled = ckb.Checked;
+        }
+
+        private void ckbVarGate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            cbKitGate.Enabled = !ckb.Checked;
+            cbPadGate.Enabled = ckb.Checked;
+        }
+
+        private void ckbVarChannel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudKitChannel.Enabled = !ckb.Checked;
+            nudPadChannel.Enabled = ckb.Checked;
+        }
+
+        private void ckbVarMinVel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudKitMinVel.Enabled = !ckb.Checked;
+            nudPadMinVel.Enabled = ckb.Checked;
+        }
+
+        private void ckbVarMaxVel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudKitMaxVel.Enabled = !ckb.Checked;
+            nudPadMaxVel.Enabled = ckb.Checked;
+        }
+
+        private void ckbAsChick_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting As Chick, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudFCChannel.Enabled = !ckb.Checked;
+        }
+
+        private void ckbNoPrgChg_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Off, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudPrgChg.Enabled = !ckb.Checked;
         }
     }
 }

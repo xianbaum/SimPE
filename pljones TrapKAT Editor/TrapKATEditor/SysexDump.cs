@@ -43,8 +43,8 @@ namespace TrapKATEditor.Dump
         static byte Version = 0x40;
         static byte SysExEnd = 0xf7;
 
-        protected DumpType dumpType;
-        protected byte instrumentID;
+        protected DumpType dumpType = DumpType.NotSet;
+        protected byte instrumentID = 0;
         protected byte auxType;
 
         public static implicit operator SysexDump(Global global) { return new GlobalDump(global); }
@@ -160,6 +160,12 @@ namespace TrapKATEditor.Dump
             bw.Write(SysExEnd);
         }
         protected virtual void WriteSysEx(SysExWriter w) { }
+
+        public byte InstrumentID
+        {
+            get { return instrumentID; }
+            set { instrumentID = value; }
+        }
     }
 
     public class GlobalDump : SysexDump
@@ -167,8 +173,8 @@ namespace TrapKATEditor.Dump
         private Global global;
         public Global Global { get { return global; } }
 
-        public GlobalDump(Global global) { this.global = global; }
-        public GlobalDump(SysExReader r) { ReadSysEx(r); }
+        public GlobalDump(Global global) : base(DumpType.Global, global.InstrumentID, 0) { this.global = global; }
+        public GlobalDump(SysExReader r) : base(DumpType.Global, 0, 0) { ReadSysEx(r); instrumentID = global.InstrumentID; }
         protected override void ReadSysEx(SysExReader r) { global = new Global(r); }
         protected override void WriteSysEx(SysExWriter w) { global.Serialize(w); }
     }
@@ -178,8 +184,8 @@ namespace TrapKATEditor.Dump
         AllMemory allMemory = null;
         public AllMemory AllMemory { get { return allMemory; } }
 
-        public AllMemoryDump(AllMemory allMemory) { this.allMemory = allMemory; }
-        public AllMemoryDump(SysExReader r) { ReadSysEx(r); instrumentID = allMemory.Global.InstrumentID; }
+        public AllMemoryDump(AllMemory allMemory) : base(DumpType.AllMemory, allMemory.Global.InstrumentID, 0) { this.allMemory = allMemory; }
+        public AllMemoryDump(SysExReader r) : base(DumpType.AllMemory, 0, 0) { ReadSysEx(r); instrumentID = allMemory.Global.InstrumentID; }
         protected override void ReadSysEx(SysExReader r) { allMemory = new AllMemory(r); }
         protected override void WriteSysEx(SysExWriter w) { allMemory.Serialize(w); }
     }
@@ -189,8 +195,8 @@ namespace TrapKATEditor.Dump
         private Kit kit = null;
         public Kit Kit { get { return kit; } }
 
-        public KitDump(Kit kit) { this.kit = kit; }
-        public KitDump(SysExReader r) { ReadSysEx(r); }
+        public KitDump(Kit kit) : base(DumpType.Kit, 0, (byte)MainProgram.CurrentKit) { this.kit = kit; }
+        public KitDump(SysExReader r) : base(DumpType.Kit, 0, (byte)MainProgram.CurrentKit) { ReadSysEx(r); }
         protected override void ReadSysEx(SysExReader r) { kit = new Kit(r, true); }
         protected override void WriteSysEx(SysExWriter w) { kit.Serialize(w, true); }
     }

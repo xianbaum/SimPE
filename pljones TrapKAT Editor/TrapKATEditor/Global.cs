@@ -23,29 +23,8 @@ using System.Text;
 
 namespace TrapKATEditor.Data
 {
-    public class Global
+    public class Global : DataItem
     {
-        public class PadDynamics
-        {
-            #region Attributes
-            byte lowLevel;
-            byte highLevel;
-            #endregion
-
-            public PadDynamics() { }
-            public PadDynamics(System.IO.BinaryReader r) { Unserialize(r); }
-            protected void Unserialize(System.IO.BinaryReader r)
-            {
-                lowLevel = r.ReadByte();
-                highLevel = r.ReadByte();
-            }
-            public void Serialize(System.IO.BinaryWriter w)
-            {
-                w.Write(lowLevel);
-                w.Write(highLevel);
-            }
-        }
-
         #region Attributes
         byte[] currentDefaults = new byte[128];
         byte[] userDefaults = new byte[128];
@@ -108,12 +87,22 @@ namespace TrapKATEditor.Data
 
         public byte InstrumentID { get { return instrumentID; } }
 
-        public Global()
+        public Global() : base()
         {
-            for (int i = 0; i < padLevels.Length; i++) padLevels[i] = new PadDynamics();
+            for (int i = 0; i < padLevels.Length; i++)
+            {
+                padLevels[i] = new PadDynamics();
+                padLevels[i].DataChanged += new EventHandler(dataChanged);
+
+            }
         }
-        public Global(System.IO.BinaryReader r) { Unserialize(r); }
-        protected void Unserialize(System.IO.BinaryReader r)
+
+        void dataChanged(object sender, EventArgs e)
+        {
+            OnDataChanged(this, new EventArgs());
+        }
+        public Global(System.IO.BinaryReader r) : base(r) { }
+        protected override void Unserialize(System.IO.BinaryReader r)
         {
             currentDefaults = r.ReadBytes(currentDefaults.Length);
             userDefaults = r.ReadBytes(userDefaults.Length);
@@ -225,6 +214,27 @@ namespace TrapKATEditor.Data
             w.Write(thresholdManual);
             w.Write(unused4);
             w.Write(thresholdActual);
+        }
+    }
+
+    public class PadDynamics : DataItem
+    {
+        #region Attributes
+        byte lowLevel;
+        byte highLevel;
+        #endregion
+
+        public PadDynamics() : base() { }
+        public PadDynamics(System.IO.BinaryReader r) : base(r) { }
+        protected override void Unserialize(System.IO.BinaryReader r)
+        {
+            lowLevel = r.ReadByte();
+            highLevel = r.ReadByte();
+        }
+        public void Serialize(System.IO.BinaryWriter w)
+        {
+            w.Write(lowLevel);
+            w.Write(highLevel);
         }
     }
 }

@@ -23,7 +23,7 @@ using System.Text;
 
 namespace TrapKATEditor.Data
 {
-    public class AllMemory
+    public class AllMemory : DataItem
     {
         #region Attributes
         Kit[] kits = new Kit[24];
@@ -31,21 +31,37 @@ namespace TrapKATEditor.Data
         Global global = null;
         #endregion
 
-        public AllMemory()
+        public AllMemory() : base()
         {
-            for (int i = 0; i < kits.Length; i++) kits[i] = new Kit();
+            for (int i = 0; i < kits.Length; i++)
+            {
+                kits[i] = new Kit();
+                kits[i].DataChanged += new EventHandler(dataChanged);
+            }
             global = new Global();
+            global.DataChanged += new EventHandler(dataChanged);
         }
-        public AllMemory(System.IO.BinaryReader r) { Unserialize(r); }
+        public AllMemory(System.IO.BinaryReader r) : base(r) { }
+
+        void dataChanged(object sender, EventArgs e)
+        {
+            OnDataChanged(this, new EventArgs());
+        }
 
         public Global Global
         {
             get { return global; }
-            set { global = value; }
+            set { global = value; dataChanged(this, new EventArgs()); }
         }
-        public Kit[] Kits { get { return kits; } }
 
-        protected void Unserialize(System.IO.BinaryReader r)
+        public Kit this[int index]
+        {
+            get { return kits[index]; }
+            set { kits[index] = value; dataChanged(this, new EventArgs()); }
+        }
+        public int Length { get { return kits.Length; } }
+
+        protected override void Unserialize(System.IO.BinaryReader r)
         {
             for (int i = 0; i < kits.Length; i++)
                 kits[i] = new Kit(r, false);

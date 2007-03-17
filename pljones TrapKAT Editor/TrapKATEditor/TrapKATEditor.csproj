@@ -37,8 +37,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AllMemory.cs" />
+    <Compile Include="Curve.cs" />
     <Compile Include="DataItem.cs" />
     <Compile Include="Gate.cs" />
+    <Compile Include="HHPadList.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -47,6 +49,7 @@
     </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Kit.cs" />
+    <Compile Include="Note.cs" />
     <Compile Include="Pad.cs" />
     <Compile Include="MainProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

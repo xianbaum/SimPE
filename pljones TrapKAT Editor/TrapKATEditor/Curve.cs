@@ -23,23 +23,28 @@ using System.Text;
 
 namespace TrapKATEditor.Data
 {
-
-    public class Gate : DataItem
+    class Curve : DataItem
     {
-        private byte gate;
-        public Gate() : base() { }
-        public Gate(System.IO.BinaryReader r) : base(r) { }
+        private byte curve;
+        public Curve() : base() { }
+        public Curve(System.IO.BinaryReader r) : base(r) { }
 
-        protected override void Unserialize(System.IO.BinaryReader r) { gate = r.ReadByte(); }
-        public void Serialize(System.IO.BinaryWriter w) { w.Write(gate); }
+        protected override void Unserialize(System.IO.BinaryReader r) { curve = r.ReadByte(); }
+        public void Serialize(System.IO.BinaryWriter w) { w.Write(curve); }
 
-        static List<String> mode = new List<string>(new string[] { "Latch Mode", "Infinite", "Roll Mode", });
+        static List<String> mode = new List<string>(new string[] {
+            "Curve 1", "Curve 2", "Curve 3", "Curve 4", "Curve 5", "Curve 6", "Curve 7", "Curve 8",
+            "2nd Note @ Hardest", "2nd Note @ Hard", "2nd Note @ Medium", "2nd Note @ Soft",
+            "2 Note Layer", "Xfade @ Middle", "Xswitch @ Middle", "1@Medium;3@Hardest",
+            "2@Medium;3@Hard", "2Double 1;3Medium", "3 Note Layer", "4 Note VelShift",
+            "4 Note Layer", "Alternate 1,2", "Alternate 1,2,3", "Alternate 1,2,3,4",
+        });
         public static List<String> Modes { get { return mode; } }
 
         private void SetGate(byte value)
         {
-            if (gate == value) return;
-            gate = value;
+            if (curve == value) return;
+            curve = value;
             OnDataChanged(this, new EventArgs());
         }
 
@@ -47,28 +52,13 @@ namespace TrapKATEditor.Data
         {
             get
             {
-                if (gate <= 79) { return (0.005 + (gate * 0.005)).ToString(); }
-                else if (gate <= 231) { return (0.4 + (gate - 79) * 0.025).ToString(); }
-                else if (gate < 253) { return (4.2 + (gate - 231) * 0.100).ToString(); }
-                else if (gate - 253 < mode.Count) return mode[gate - 253];
-                else return "[UNK: " + gate.ToString() + "]";
+                if (curve < mode.Count) return mode[curve];
+                else return "[UNK: " + curve.ToString() + "]";
             }
             set
             {
-                if (mode.Contains(value)) { SetGate((byte)(253 + mode.IndexOf(value))); return; }
-
-                Decimal f;
-                try { f = Convert.ToDecimal(value); }
-                catch (Exception) { throw new ArgumentException(value + " is not a valid gate time"); }
-
-                if (f < 0.005m)
-                    throw new ArgumentException(value + " is not a valid gate time");
-
-                if (f < 0.4m) { SetGate((byte)((f - 0.005m) / 0.005m)); return; }// 0.005..0.395 -> 0..78
-                if (f < 4.2m) { SetGate((byte)(79 + ((f - 0.4m) / 0.025m))); return; } // 0.400..4.175 -> 79..230
-                if (f < 6.4m) { SetGate((byte)(231 + ((f - 4.2m) / 0.1m))); return; } // 4.200..6.300 -> 231..252
-
-                throw new ArgumentException(value + " is not a valid gate time");
+                if (mode.Contains(value)) { SetGate((byte)mode.IndexOf(value)); return; }
+                throw new ArgumentException(value + " is not a valid curve");
             }
         }
     }

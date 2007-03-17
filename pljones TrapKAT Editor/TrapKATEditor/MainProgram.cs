@@ -23,7 +23,7 @@ namespace TrapKATEditor
             if (KitChanged != null)
                 KitChanged(sender, e);
         }
-        private static int currentKit = -1;
+        private static int currentKit = 0;
         public static int CurrentKit
         {
             get { return currentKit; }
@@ -49,7 +49,6 @@ namespace TrapKATEditor
             {
                 if (allMemory == value) return;
                 allMemory = value;
-                currentKit = -1;
                 OnAllMemoryChanged(allMemory, new EventArgs());
             }
         }
@@ -71,34 +70,40 @@ namespace TrapKATEditor
             }
         }
 
-        public static Data.Kit[] CurrentKits
-        {
-            get { return allMemory == null ? null : allMemory.Kits; }
-        }
-
         public static void Reinit()
         {
             CurrentAllMemory = new Data.AllMemory();
         }
 
         private static String currentFilename = "";
-        private static Dump.DumpType currentType = Dump.DumpType.AllMemory;
+        public static String CurrentFilename { get { return currentFilename; } }
+        private static Dump.DumpType currentType = Dump.DumpType.NotSet;
+        public static Dump.DumpType CurrentType { get { return currentType; } }
         public static void OpenFile(String filename)
         {
             Dump.SysexDump dump = (new Dump.SysexDump()).Open(filename);
+            currentFilename = filename;
+
             if (dump is Dump.AllMemoryDump)
+            {
+                currentType = Dump.DumpType.AllMemory;
                 CurrentAllMemory = ((Dump.AllMemoryDump)dump).AllMemory;
+            }
             else if (dump is Dump.GlobalDump)
-                allMemory.Global = ((Dump.GlobalDump)dump).Global;
+            {
+                currentType = Dump.DumpType.Global;
+                CurrentGlobal = ((Dump.GlobalDump)dump).Global;
+            }
             else if (dump is Dump.KitDump)
             {
-                if (currentKit < 0 || currentKit >= allMemory.Kits.Length)
+                if (currentKit < 0 || currentKit >= allMemory.Length)
                     throw new ArgumentOutOfRangeException("Can't load a kit with no kit selected");
-                allMemory.Kits[currentKit] = ((Dump.KitDump)dump).Kit;
+                currentType = Dump.DumpType.Kit;
+                allMemory[currentKit] = ((Dump.KitDump)dump).Kit;
+                OnKitChanged(allMemory[currentKit], new EventArgs());
             }
             else
                 throw new ArgumentException("Invalid dump loaded");
-            currentFilename = filename;
         }
 
         public static void SaveFile() { SaveFile(currentFilename, currentType); }
@@ -111,9 +116,9 @@ namespace TrapKATEditor
                 case Dump.DumpType.AllMemory: ((Dump.SysexDump)allMemory).Save(filename); break;
                 case Dump.DumpType.Global: ((Dump.SysexDump)allMemory.Global).Save(filename); break;
                 case Dump.DumpType.Kit:
-                    if (currentKit < 0 || currentKit >= allMemory.Kits.Length)
+                    if (currentKit < 0 || currentKit >= allMemory.Length)
                         throw new ArgumentOutOfRangeException("Can't save a kit with no kit selected");
-                    ((Dump.SysexDump)allMemory.Kits[currentKit]).Save(filename);
+                    ((Dump.SysexDump)allMemory[currentKit]).Save(filename);
                     break;
             }
         }

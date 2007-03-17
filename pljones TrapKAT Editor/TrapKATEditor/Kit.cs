@@ -27,26 +27,27 @@ namespace TrapKATEditor.Data
     {
         #region Attributes
         Pad[] pads = new Pad[28];
-        byte curve;
-        byte gate;
-        byte channel;
-        byte minVelocity;
-        byte maxVelocity;
+        Curve curve;
+        Gate gate;
+        byte channel = 9;
+        byte minVelocity = 1;
+        byte maxVelocity = 127;
+
         byte fcFunction;
         byte bcFunction;
         byte prgChg;
         byte prgChgTxmChn;
-        byte volume;
-        byte hhPad1;
-        byte hhPad2;
-        byte hhPad3;
-        byte hhPad4;
+        byte volume = 127;
+
+        HHPadList hhPads = null;
+
         byte bank;
         byte fcChannel;
         byte fcCurve;
         byte bankMSB;
         byte bankLSB;
         byte unused;
+
         byte[] kitName = new byte[12];
         #endregion
 
@@ -55,12 +56,18 @@ namespace TrapKATEditor.Data
             for (int i = 0; i < pads.Length; i++)
             {
                 pads[i] = new Pad();
-                pads[i].DataChanged += new EventHandler(Pad_DataChanged);
+                pads[i].DataChanged += new EventHandler(dataChanged);
             }
+            curve = new Curve();
+            curve.DataChanged += new EventHandler(dataChanged);
+            gate = new Gate();
+            gate.DataChanged += new EventHandler(dataChanged);
+            hhPads = new HHPadList();
+            hhPads.DataChanged += new EventHandler(dataChanged);
         }
         public Kit(System.IO.BinaryReader r, bool withName) { Unserialize(r, withName); }
 
-        void Pad_DataChanged(object sender, EventArgs e)
+        void dataChanged(object sender, EventArgs e)
         {
             SetChanged();
             OnDataChanged(this, e);
@@ -71,11 +78,14 @@ namespace TrapKATEditor.Data
             for (int i = 0; i < pads.Length; i++)
             {
                 pads[i] = new Pad(r);
-                pads[i].DataChanged += new EventHandler(Pad_DataChanged);
+                pads[i].DataChanged += new EventHandler(dataChanged);
             }
 
-            curve = r.ReadByte();
-            gate = r.ReadByte();
+            curve = new Curve(r);
+            curve.DataChanged += new EventHandler(dataChanged);
+            gate = new Gate(r);
+            gate.DataChanged += new EventHandler(dataChanged);
+
             channel = r.ReadByte();
             minVelocity = r.ReadByte();
             maxVelocity = r.ReadByte();
@@ -84,10 +94,10 @@ namespace TrapKATEditor.Data
             prgChg = r.ReadByte();
             prgChgTxmChn = r.ReadByte();
             volume = r.ReadByte();
-            hhPad1 = r.ReadByte();
-            hhPad2 = r.ReadByte();
-            hhPad3 = r.ReadByte();
-            hhPad4 = r.ReadByte();
+
+            hhPads = new HHPadList(r);
+            hhPads.DataChanged += new EventHandler(dataChanged);
+
             bank = r.ReadByte();
             fcChannel = r.ReadByte();
             fcCurve = r.ReadByte();
@@ -101,8 +111,9 @@ namespace TrapKATEditor.Data
             for (int i = 0; i < pads.Length; i++)
                 pads[i].Serialize(w);
 
-            w.Write(curve);
-            w.Write(gate);
+            curve.Serialize(w);
+            gate.Serialize(w);
+
             w.Write(channel);
             w.Write(minVelocity);
             w.Write(maxVelocity);
@@ -111,10 +122,9 @@ namespace TrapKATEditor.Data
             w.Write(prgChg);
             w.Write(prgChgTxmChn);
             w.Write(volume);
-            w.Write(hhPad1);
-            w.Write(hhPad2);
-            w.Write(hhPad3);
-            w.Write(hhPad4);
+
+            hhPads.Serialize(w);
+
             w.Write(bank);
             w.Write(fcChannel);
             w.Write(fcCurve);
@@ -126,6 +136,193 @@ namespace TrapKATEditor.Data
 
         public Pad this[int index] { get { return pads[index]; } }
 
+        public String Curve
+        {
+            get {
+                foreach (Pad pad in pads)
+                    if (pad.Curve != curve.Value) return "Various";
+                return curve.Value;
+            }
+            set { curve.Value = value; }
+        }
+        public String Gate
+        {
+            get
+            {
+                foreach (Pad pad in pads)
+                    if (pad.Gate != gate.Value) return "Various";
+                return gate.Value;
+            }
+            set { gate.Value = value; }
+        }
+        public byte Channel
+        {
+            get { return channel; }
+            set
+            {
+                if (channel == value) return;
+                /*if (value > 15)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Channel value");*/
+                channel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte MinVelocity
+        {
+            get { return minVelocity; }
+            set
+            {
+                if (minVelocity == value) return;
+                /*if (value > 127)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Velocity value");*/
+                minVelocity = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte MaxVelocity
+        {
+            get { return maxVelocity; }
+            set
+            {
+                if (maxVelocity == value) return;
+                /*if (value > 127)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Velocity value");*/
+                maxVelocity = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+
+        public byte FcFunction
+        {
+            get { return fcFunction; }
+            set
+            {
+                if (fcFunction == value) return;
+                /*if (value > ???)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Foot Controller function");*/
+                fcFunction = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte BcFunction
+        {
+            get { return bcFunction; }
+            set
+            {
+                if (bcFunction == value) return;
+                /*if (value > ???)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Breath Controller function");*/
+                bcFunction = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte PrgChg
+        {
+            get { return prgChg; }
+            set
+            {
+                if (prgChg == value) return;
+                /*if (value > 127)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Program Change value");*/
+                prgChg = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte PrgChgTxmChn
+        {
+            get { return prgChgTxmChn; }
+            set
+            {
+                if (prgChgTxmChn == value) return;
+                /*if (value > 15)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Channel value");*/
+                prgChgTxmChn = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte Volume
+        {
+            get { return volume; }
+            set
+            {
+                if (volume == value) return;
+                /*if (value > 127)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Volume value");*/
+                volume = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+
+        public HHPadList HHPads { get { return hhPads; } }
+
+        public byte Bank
+        {
+            get { return bank; }
+            set
+            {
+                if (bank == value) return;
+                bank = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FcChannel
+        {
+            get { return fcChannel; }
+            set
+            {
+                if (fcChannel == value) return;
+                /*if (value > 15)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Channel value");*/
+                fcChannel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FcCurve
+        {
+            get { return fcCurve; }
+            set
+            {
+                if (fcCurve == value) return;
+                /*if (value > ???)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Foot Controller curve value");*/
+                fcCurve = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte BankMSB
+        {
+            get { return bankMSB; }
+            set
+            {
+                if (bankMSB == value) return;
+                /*if (value > 127)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Bank LSB value");*/
+                bankMSB = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte BankLSB
+        {
+            get { return bankLSB; }
+            set
+            {
+                if (bankLSB == value) return;
+                /*if (value > 127)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Bank LSB value");*/
+                bankLSB = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte Unused
+        {
+            get { return unused; }
+            set
+            {
+                if (unused == value) return;
+                unused = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
 
         public String KitName
         {
@@ -138,13 +335,20 @@ namespace TrapKATEditor.Data
             }
             set
             {
+                if (KitName == value) return;
                 if (value.Length > 12)
                     throw new ArgumentException("KitName must be 12 characters or fewer");
                 int i = 0;
+                char[] c = value.ToCharArray();
+                byte[] k = new byte[12];
                 while (i < value.Length)
-                    kitName[i] = (byte)(value.ToCharArray()[i]);
-                while (i < kitName.Length)
-                    kitName[i] = (byte)' ';
+                {
+                    if (c[i] >= 32 && c[i] <= 126) k[i] = (byte)c[i];
+                    i++;
+                }
+                while (i < k.Length) { k[i++] = (byte)' '; }
+                kitName = k;
+                OnDataChanged(this, new EventArgs());
             }
         }
         public void UnserializeKitName(System.IO.BinaryReader r) { kitName = r.ReadBytes(12); }
