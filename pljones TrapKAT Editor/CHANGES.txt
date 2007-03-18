@@ -1,3 +1,6 @@
+2007-03-18 21:03 And yet another day's work
+	Hey, no new files, it's stabilising..!
+
 2007-03-17 22:49 And another day's work
 	You'll know it's getting serious when I branch for testing...
 

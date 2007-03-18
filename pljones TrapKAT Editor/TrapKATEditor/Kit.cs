@@ -36,14 +36,14 @@ namespace TrapKATEditor.Data
         byte fcFunction;
         byte bcFunction;
         byte prgChg;
-        byte prgChgTxmChn;
+        byte prgChgTxmChn = 9;
         byte volume = 127;
 
         HHPadList hhPads = null;
 
         byte bank;
         byte fcChannel;
-        byte fcCurve;
+        Curve fcCurve;
         byte bankMSB;
         byte bankLSB;
         byte unused;
@@ -64,6 +64,8 @@ namespace TrapKATEditor.Data
             gate.DataChanged += new EventHandler(dataChanged);
             hhPads = new HHPadList();
             hhPads.DataChanged += new EventHandler(dataChanged);
+            fcCurve = new Curve();
+            fcCurve.DataChanged += new EventHandler(dataChanged);
         }
         public Kit(System.IO.BinaryReader r, bool withName) { Unserialize(r, withName); }
 
@@ -100,7 +102,10 @@ namespace TrapKATEditor.Data
 
             bank = r.ReadByte();
             fcChannel = r.ReadByte();
-            fcCurve = r.ReadByte();
+
+            fcCurve = new Curve(r);
+            fcCurve.DataChanged += new EventHandler(dataChanged);
+
             bankMSB = r.ReadByte();
             bankLSB = r.ReadByte();
             unused = r.ReadByte();
@@ -127,7 +132,9 @@ namespace TrapKATEditor.Data
 
             w.Write(bank);
             w.Write(fcChannel);
-            w.Write(fcCurve);
+
+            fcCurve.Serialize(w);
+
             w.Write(bankMSB);
             w.Write(bankLSB);
             w.Write(unused);
@@ -155,6 +162,7 @@ namespace TrapKATEditor.Data
             }
             set { gate.Value = value; }
         }
+
         public byte Channel
         {
             get { return channel; }
@@ -277,18 +285,13 @@ namespace TrapKATEditor.Data
                 OnDataChanged(this, new EventArgs());
             }
         }
-        public byte FcCurve
+
+        public String FcCurve
         {
-            get { return fcCurve; }
-            set
-            {
-                if (fcCurve == value) return;
-                /*if (value > ???)
-                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Foot Controller curve value");*/
-                fcCurve = value;
-                OnDataChanged(this, new EventArgs());
-            }
+            get { return curve.Value; }
+            set { curve.Value = value; }
         }
+
         public byte BankMSB
         {
             get { return bankMSB; }

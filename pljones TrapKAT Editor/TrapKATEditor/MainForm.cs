@@ -34,20 +34,70 @@ namespace TrapKATEditor.UI
         List<ToolStripMenuItem> tsmiSaveAs = null;
         List<ComboBox> cbNotes = null;
         List<CheckBox> ckbFlags = null;
-        List<NumericUpDown> nudVel = null;
+        List<NumericUpDown> nudChannel = null;
+        List<NumericUpDown> nudMIDI = null;
+        List<NumericUpDown> nudByte = null;
+        List<ComboBox> cbHHPads = null;
 
         public MainForm()
         {
             InitializeComponent();
+            cbKitCurve.Items.Clear();
+            cbKitCurve.Items.AddRange(Data.Curve.Modes.ToArray());
+            cbFCCurve.Items.Clear();
+            cbFCCurve.Items.AddRange(Data.Curve.Modes.ToArray());
             cbPadCurve.Items.Clear();
             cbPadCurve.Items.AddRange(Data.Curve.Modes.ToArray());
+            cbKitGate.Items.Clear();
+            cbKitGate.Items.AddRange(Data.Gate.Modes.ToArray());
             cbPadGate.Items.Clear();
             cbPadGate.Items.AddRange(Data.Gate.Modes.ToArray());
             tsmiSave = new List<ToolStripMenuItem>(new ToolStripMenuItem[] { tsmiFileSaveAllMemory, tsmiFileSaveGlobalMemory, tsmiFileSaveCurrentKit });
             tsmiSaveAs = new List<ToolStripMenuItem>(new ToolStripMenuItem[] { tsmiFileSaveAllMemoryAs, tsmiFileSaveGlobalMemoryAs, tsmiFileSaveCurrentKitAs });
             cbNotes = new List<ComboBox>(new ComboBox[] { cbNote1, cbNote2, cbNote3, cbNote4, cbNote5, cbNote6 });
             ckbFlags = new List<CheckBox>(new CheckBox[] { ckbF0, ckbF1, ckbF2, ckbF3, ckbF4, ckbF5, ckbF6, ckbF7, });
-            nudVel = new List<NumericUpDown>(new NumericUpDown[] { nudPadMinVel, nudPadMaxVel, nudKitMinVel, nudKitMaxVel, });
+            nudChannel = new List<NumericUpDown>(new NumericUpDown[] {
+                nudFCChannel, 
+                nudKitChannel, 
+                nudPadChannel, 
+                nudPrgChgTxmChn, 
+                nudPrgChgRcvChn, 
+            });
+            nudMIDI = new List<NumericUpDown>(new NumericUpDown[] {
+                nudPadMinVel, nudPadMaxVel,
+                nudKitMinVel, nudKitMaxVel, nudVolume, nudPrgChg, nudBankLSB, nudBankMSB, nudBank, 
+                nudGrooveVol, nudInstrumentID, 
+                nudDynLowLevel, nudDynHighLevel, 
+            });
+            nudByte = new List<NumericUpDown>(new NumericUpDown[] {
+                nudMotifNumber, 
+                nudMotifNumberMel, 
+                nudMotifNumberPerc, 
+                nudKitNumber, 
+                nudKitNumberDemo, 
+                nudKitNumberUser, 
+                nudKitNumberKAT, 
+                nudGrooveStatus, 
+                nudBeeperStatus, 
+                nudChokeFunction, 
+                nudMidiMergeStatus, 
+                nudDisplayAngle, 
+                nudPlayMode, 
+                nudNoteNamesStatus, 
+                nudTTMeter, 
+                nudHearSoundStatus, 
+                nudBcFunction, 
+                nudBcPolarity, 
+                nudTrigGain, 
+                nudFcOpenRegion, 
+                nudFcClosedRegion, 
+                nudFcPolarity, 
+                nudFcSplashEase, 
+                nudFcVelocityLevel, 
+                nudFcWaitModeLevel, 
+                nudHatNoteGate, 
+            });
+            cbHHPads = new List<ComboBox>(new ComboBox[] { cbHHPad1, cbHHPad2, cbHHPad3, cbHHPad4, });
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -277,8 +327,8 @@ namespace TrapKATEditor.UI
             internalchg = true;
             for (int i = 0; i < cbNotes.Count; i++) doNote(i);
 
-            setComboBox(cbPadCurve, currentPad.Curve);
-            setComboBox(cbPadGate, currentPad.Gate);
+            setCurveComboBox(cbPadCurve, currentPad.Curve);
+            setCurveComboBox(cbPadGate, currentPad.Gate);
 
             nudPadChannel.Value = currentPad.Channel + 1;
             nudPadMinVel.Value = currentPad.MinVelocity;
@@ -296,7 +346,7 @@ namespace TrapKATEditor.UI
         private void cbPad_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
-            doPad(cbPad.SelectedIndex);
+            doPad(((ComboBox)sender).SelectedIndex);
         }
         #endregion
 
@@ -314,10 +364,30 @@ namespace TrapKATEditor.UI
             bool savedchg = internalchg;
             internalchg = true;
 
+            tbKitName.Text = currentKit.KitName;
+
             ckbVarCurve.Checked = currentKit.Curve.Equals("Various");
-            setComboBox(cbKitCurve, currentKit.Curve);
+            setCurveComboBox(cbKitCurve, currentKit.Curve);
             ckbVarGate.Checked = currentKit.Gate.Equals("Various");
-            setComboBox(cbKitGate, currentKit.Gate);
+            cbKitGate.SelectedIndex = Data.Gate.Modes.IndexOf(currentKit.Gate);
+            if (cbKitGate.SelectedIndex == -1) cbKitGate.Text = currentKit.Gate;
+
+            cbFCFunction.SelectedIndex = currentKit.FcFunction;
+            setCurveComboBox(cbFCCurve, currentKit.FcCurve);
+
+            // You may call this obfuscated...
+            nudFCChannel.Value = (
+                (ckbAsChick.Checked = (currentKit.FcChannel >= 16))
+                    ? currentKit[25].Channel
+                    : currentKit.FcChannel
+                ) + 1;
+
+
+            for (int i = 0; i < cbHHPads.Count; i++)
+            {
+                int j = currentKit.HHPads[i];
+                cbHHPads[i].SelectedIndex = (j < cbHHPads[i].Items.Count) ? j : cbHHPads[i].Items.Count - 1;
+            }
 
             ckbVarMaxVel.Checked = ckbVarMinVel.Checked = ckbVarChannel.Checked = false;
             for (int i = 0; i < cbPad.Items.Count; i++)
@@ -330,17 +400,31 @@ namespace TrapKATEditor.UI
             nudKitMinVel.Value = currentKit.MinVelocity;
             nudKitMaxVel.Value = currentKit.MaxVelocity;
 
-            cbFCFunction.SelectedIndex = currentKit.FcFunction;
-            //cbFCCurve.SelectedIndex = currentKit.FcCurve;
+            nudVolume.Value = (
+                (ckbNoVolume.Checked = (currentKit.Volume >= 128))
+                    ? (byte)127
+                    : currentKit.Volume
+                );
 
-            // You may call this obfuscated...
-            nudFCChannel.Value = (
-                (ckbAsChick.Checked = (currentKit.FcChannel >= 16))
-                    ? currentKit[25].Channel
-                    : currentKit.FcChannel
+            nudPrgChg.Value = (
+                (ckbNoPrgChg.Checked = (currentKit.PrgChg >= 128))
+                    ? (byte)0
+                    : currentKit.PrgChg
                 ) + 1;
 
-            tbKitName.Text = currentKit.KitName;
+            nudPrgChgTxmChn.Value = currentKit.PrgChgTxmChn + 1;
+            nudBank.Value = currentKit.Bank;
+            nudBankLSB.Value = currentKit.BankLSB;
+            nudBankMSB.Value = currentKit.BankMSB > 127 ? (byte)127 : currentKit.BankMSB; // TrapKAT bug...
+
+
+            /*--Global--
+            if (currentKit.BcFunction <cbBCFunction.Items.Count)
+                cbBCFunction.SelectedIndex = currentKit.BcFunction;
+            else
+                cbBCFunction.Text = currentKit.BcFunction.ToString();
+            nudBCFunction.Value = currentKit.BcFunction;
+             --Global--*/
 
             cbPad.SelectedIndex = 0;
 
@@ -376,12 +460,107 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             currentKit.KitName = tbKitName.Text;
         }
+
+        private void doHHPad(int pad, byte value)
+        {
+            byte oldpad = currentKit.HHPads[pad];
+            currentKit[oldpad].Flags &= 0x7f;
+            currentKit[pad].Flags |= 0x80;
+            currentKit.HHPads[pad] = value;
+        }
+
+        private void ckbVarCurve_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            cbKitCurve.Enabled = !ckb.Checked;
+            cbPadCurve.Enabled = ckb.Checked;
+        }
+
+        private void ckbVarGate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            cbKitGate.Enabled = !ckb.Checked;
+            cbPadGate.Enabled = ckb.Checked;
+        }
+
+        private void ckbVarChannel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudKitChannel.Enabled = !ckb.Checked;
+            nudPadChannel.Enabled = ckb.Checked;
+        }
+
+        private void ckbVarMinVel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudKitMinVel.Enabled = !ckb.Checked;
+            nudPadMinVel.Enabled = ckb.Checked;
+        }
+
+        private void ckbVarMaxVel_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Kit override, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudKitMaxVel.Enabled = !ckb.Checked;
+            nudPadMaxVel.Enabled = ckb.Checked;
+        }
+
+        private void ckbAsChick_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting As Chick, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudFCChannel.Enabled = !ckb.Checked;
+        }
+
+        private void ckbNoPrgChg_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Off, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudPrgChg.Enabled = !ckb.Checked;
+        }
+
+        private void cbHHPad_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            ComboBox cb = (ComboBox)sender;
+            int pad = cbHHPads.IndexOf(cb);
+            /*if (cb.SelectedIndex != 0) // Off is always okay
+            {
+                byte thisHH = currentKit.HHPads[pad];
+                List<int> indices = new List<int>(new int[] { 0, 1, 2, 3, });
+                indices.Remove(pad);
+                foreach (int index in indices)
+                {
+                    byte otherHH = currentKit.HHPads[index];
+                    if (otherHH == 0) continue; // Off is always okay
+                    if (cb.SelectedIndex == otherHH)
+                    {
+                        internalchg = true;
+                        cb.SelectedIndex = thisHH;
+                        internalchg = false;
+                        return;
+                    }
+                }
+            }*/
+            doHHPad(pad, (byte)cb.SelectedIndex);
+        }
         #endregion
 
 
         // Common to Pad and Kit
 
-        private void setComboBox(ComboBox cb, String value)
+        private void setCurveComboBox(ComboBox cb, String value)
         {
             bool savedchg = internalchg;
             internalchg = true;
@@ -446,8 +625,8 @@ namespace TrapKATEditor.UI
 
             bool origstate = internalchg;
             internalchg = true;
-            if (cb.Equals(cbPadGate)) { setComboBox(cb, currentPad.Gate); }
-            if (cb.Equals(cbKitGate)) { setComboBox(cb, currentKit.Gate); }
+            if (cb.Equals(cbPadGate)) { setCurveComboBox(cb, currentPad.Gate); }
+            if (cb.Equals(cbKitGate)) { setCurveComboBox(cb, currentKit.Gate); }
             internalchg = origstate;
             cb.SelectAll();
         }
@@ -459,8 +638,8 @@ namespace TrapKATEditor.UI
 
             bool origstate = internalchg;
             internalchg = true;
-            if (cb.Equals(cbPadGate)) { setComboBox(cb, currentPad.Gate); }
-            if (cb.Equals(cbKitGate)) { setComboBox(cb, currentKit.Gate); }
+            if (cb.Equals(cbPadGate)) { setCurveComboBox(cb, currentPad.Gate); }
+            if (cb.Equals(cbKitGate)) { setCurveComboBox(cb, currentKit.Gate); }
             internalchg = origstate;
             cb.Select(0, 0);
         }
@@ -485,17 +664,23 @@ namespace TrapKATEditor.UI
             if (sender.Equals(nudPadChannel)) { currentPad.Channel = value; return; }
             if (sender.Equals(nudKitChannel)) { currentKit.Channel = value; return; }
             if (sender.Equals(nudFCChannel)) { currentKit.FcChannel = value; return; }
+            if (sender.Equals(nudPrgChgTxmChn)) { currentKit.PrgChgTxmChn = value; return; }
         }
 
-        private void nudVel_ValueChanged(object sender, EventArgs e)
+        private void nud_ValueChanged(object sender, EventArgs e)
         {
             byte value = (byte)((NumericUpDown)sender).Value;
-            switch (nudVel.IndexOf((NumericUpDown)sender))
+            switch (nudMIDI.IndexOf((NumericUpDown)sender))
             {
                 case 0: currentPad.MinVelocity = value; break;
                 case 1: currentPad.MaxVelocity = value; break;
                 case 2: currentKit.MinVelocity = value; break;
                 case 3: currentKit.MaxVelocity = value; break;
+                case 4: currentKit.Volume = value; break;
+                case 5: currentKit.PrgChg = value; break;
+                case 6: currentKit.Bank = value; break;
+                case 7: currentKit.BankLSB = value; break;
+                case 8: currentKit.BankMSB = value; break;
             }
         }
 
@@ -534,65 +719,5 @@ namespace TrapKATEditor.UI
         #endregion
 
 
-        private void ckbVarCurve_CheckedChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            // If setting Kit override, ask first
-            CheckBox ckb = (CheckBox)sender;
-            cbKitCurve.Enabled = !ckb.Checked;
-            cbPadCurve.Enabled = ckb.Checked;
-        }
-
-        private void ckbVarGate_CheckedChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            // If setting Kit override, ask first
-            CheckBox ckb = (CheckBox)sender;
-            cbKitGate.Enabled = !ckb.Checked;
-            cbPadGate.Enabled = ckb.Checked;
-        }
-
-        private void ckbVarChannel_CheckedChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            // If setting Kit override, ask first
-            CheckBox ckb = (CheckBox)sender;
-            nudKitChannel.Enabled = !ckb.Checked;
-            nudPadChannel.Enabled = ckb.Checked;
-        }
-
-        private void ckbVarMinVel_CheckedChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            // If setting Kit override, ask first
-            CheckBox ckb = (CheckBox)sender;
-            nudKitMinVel.Enabled = !ckb.Checked;
-            nudPadMinVel.Enabled = ckb.Checked;
-        }
-
-        private void ckbVarMaxVel_CheckedChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            // If setting Kit override, ask first
-            CheckBox ckb = (CheckBox)sender;
-            nudKitMaxVel.Enabled = !ckb.Checked;
-            nudPadMaxVel.Enabled = ckb.Checked;
-        }
-
-        private void ckbAsChick_CheckedChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            // If setting As Chick, ask first
-            CheckBox ckb = (CheckBox)sender;
-            nudFCChannel.Enabled = !ckb.Checked;
-        }
-
-        private void ckbNoPrgChg_CheckedChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            // If setting Off, ask first
-            CheckBox ckb = (CheckBox)sender;
-            nudPrgChg.Enabled = !ckb.Checked;
-        }
     }
 }

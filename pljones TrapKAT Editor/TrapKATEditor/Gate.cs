@@ -26,7 +26,7 @@ namespace TrapKATEditor.Data
 
     public class Gate : DataItem
     {
-        private byte gate;
+        private byte gate = 22;
         public Gate() : base() { }
         public Gate(System.IO.BinaryReader r) : base(r) { }
 

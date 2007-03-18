@@ -215,6 +215,9 @@ namespace TrapKATEditor.Data
             w.Write(unused4);
             w.Write(thresholdActual);
         }
+
+        public List<String> Modes = new List<string>(new String[] { "Off",
+            "Pitchbend Up", "Pitchbend Down", "Expression", "Sustain",});
     }
 
     public class PadDynamics : DataItem
@@ -235,6 +238,26 @@ namespace TrapKATEditor.Data
         {
             w.Write(lowLevel);
             w.Write(highLevel);
+        }
+        public byte Low
+        {
+            get { return lowLevel; }
+            set
+            {
+                if (lowLevel == value) return;
+                lowLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte High
+        {
+            get { return highLevel; }
+            set
+            {
+                if (highLevel == value) return;
+                highLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
         }
     }
 }
