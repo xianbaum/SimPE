@@ -1,3 +1,21 @@
+2007-03-19 17:42 A hard day's work and an release, I think..!
+	Make DataItem abstract and add Serialize method, remove unused code
+		AllMemory.cs 1.3
+		Curve.cs 1.2
+		DataItem.cs 1.2
+		Gate.cs 1.4
+		HHPadList.cs 1.2
+		Kit.cs 1.5
+		Note.cs 1.1 (removed)
+		Pad.cs 1.4
+	Add Global accessor methods, rewrite PadDynamics
+		Global.cs 1.4
+		MainForm.cs 1.4
+		MainForm.Designer.cs 1.4
+		MainForm.resx 1.3
+	Start work on Localisation and Update Tool
+	Installer does Add/Remove Programs stuff
+
 2007-03-18 21:03 And yet another day's work
 	Hey, no new files, it's stabilising..!
 

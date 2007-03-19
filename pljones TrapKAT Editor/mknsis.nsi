@@ -19,20 +19,32 @@ Section
   Call CheckExists
   IfErrors 0 +2
   Abort "Cannot continue to install with TrapKATEditor running."
-  WriteRegStr HKLM Software\pljones\TrapKATEditor InstallDir $INSTDIR
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TrapKATEditor" \
+                 "InstallLocation" "$INSTDIR"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TrapKATEditor" \
+                 "DisplayName" "pljones TrapKATEditor"
+  WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\TrapKATEditor" \
+                 "UninstallString" "$INSTDIR\uninstall.exe"
   File /r "TrapKATEditor\Program Files\TrapKATEditor\*.*"
   WriteUninstaller uninstall.exe
 SectionEnd
 
 Section "Uninstall"
+  Delete $INSTDIR\TrapKATEditor.exe
+  Delete $INSTDIR\TrapKATEditorLocalisation.dll
+  Delete $INSTDIR\TrapKATEditorUpdateTool.dll
+  Delete $INSTDIR\TrapKATEditorUpdateTool.dll.config
+  Delete $INSTDIR\TrapKATEditor.pdb
+  Delete $INSTDIR\TrapKATEditorLocalisation.pdb
+  Delete $INSTDIR\TrapKATEditorUpdateTool.pdb
+  Delete $INSTDIR\uninstall.exe
   Delete $INSTDIR\CHANGES.txt
   Delete $INSTDIR\LICENSE.txt
-  Delete $INSTDIR\TrapKATEditor.exe
-  Delete $INSTDIR\uninstall.exe
   Delete $INSTDIR\version.txt
   RMDir $INSTDIR
   DeleteRegKey HKCU Software\pljones\TrapKATEditor
   DeleteRegKey HKLM Software\pljones\TrapKATEditor
+  DeleteRegKey HKLM Software\Microsoft\Windows\CurrentVersion\Uninstall\TrapKATEditor
 SectionEnd
 
 Function .onInstSuccess

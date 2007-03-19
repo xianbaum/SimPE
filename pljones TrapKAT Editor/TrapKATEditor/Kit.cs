@@ -69,12 +69,9 @@ namespace TrapKATEditor.Data
         }
         public Kit(System.IO.BinaryReader r, bool withName) { Unserialize(r, withName); }
 
-        void dataChanged(object sender, EventArgs e)
-        {
-            SetChanged();
-            OnDataChanged(this, e);
-        }
+        void dataChanged(object sender, EventArgs e) { OnDataChanged(this, e); }
 
+        protected override void Unserialize(System.IO.BinaryReader r) { this.Unserialize(r, true); }
         protected void Unserialize(System.IO.BinaryReader r, bool withName)
         {
             for (int i = 0; i < pads.Length; i++)
@@ -111,6 +108,7 @@ namespace TrapKATEditor.Data
             unused = r.ReadByte();
             kitName = withName ? r.ReadBytes(kitName.Length) : null;
         }
+        public override void Serialize(System.IO.BinaryWriter w) { this.Serialize(w, true); }
         public void Serialize(System.IO.BinaryWriter w, bool withName)
         {
             for (int i = 0; i < pads.Length; i++)
@@ -139,9 +137,12 @@ namespace TrapKATEditor.Data
             w.Write(bankLSB);
             w.Write(unused);
             if (withName) w.Write(kitName);
+
+//            Changed = false;
         }
 
         public Pad this[int index] { get { return pads[index]; } }
+        public int Length { get { return pads.Length; } }
 
         public String Curve
         {

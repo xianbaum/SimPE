@@ -1,3 +1,22 @@
+/***************************************************************************
+ *   Copyright (C) 2007 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -17,13 +36,24 @@ namespace TrapKATEditor
             Application.Run(new UI.MainForm());
         }
 
-        public static event EventHandler KitChanged;
-        private static void OnKitChanged(object sender, EventArgs e)
+
+        #region AllMemory
+        private static Data.AllMemory allMemory = new Data.AllMemory();
+        public static Data.AllMemory CurrentAllMemory { get { return allMemory; } }
+        public static event EventHandler AllMemoryChanged;
+        private static void OnAllMemoryChanged(object sender, EventArgs e)
         {
-            if (KitChanged != null)
-                KitChanged(sender, e);
+            if (AllMemoryChanged != null) AllMemoryChanged(sender, e);
         }
+        #endregion
+
+        public static event EventHandler GlobalChanged;
+        private static void OnGlobalChanged(object sender, EventArgs e) { if (GlobalChanged != null) GlobalChanged(sender, e); }
+
+        #region CurrentKit
         private static int currentKit = 0;
+        public static event EventHandler KitChanged;
+        private static void OnKitChanged(object sender, EventArgs e) { if (KitChanged != null) KitChanged(sender, e); }
         public static int CurrentKit
         {
             get { return currentKit; }
@@ -34,51 +64,20 @@ namespace TrapKATEditor
                 OnKitChanged(currentKit, new EventArgs());
             }
         }
-
-        public static event EventHandler AllMemoryChanged;
-        private static void OnAllMemoryChanged(object sender, EventArgs e)
-        {
-            if (AllMemoryChanged != null)
-                AllMemoryChanged(sender, e);
-        }
-        private static Data.AllMemory allMemory = new Data.AllMemory();
-        public static Data.AllMemory CurrentAllMemory
-        {
-            get { return allMemory; }
-            set
-            {
-                if (allMemory == value) return;
-                allMemory = value;
-                OnAllMemoryChanged(allMemory, new EventArgs());
-            }
-        }
-
-        public static event EventHandler GlobalChanged;
-        private static void OnGlobalChanged(object sender, EventArgs e)
-        {
-            if (GlobalChanged != null)
-                GlobalChanged(sender, e);
-        }
-        public static Data.Global CurrentGlobal
-        {
-            get { return allMemory == null ? null : allMemory.Global; }
-            set
-            {
-                if (allMemory == null || allMemory.Global == value) return;
-                allMemory.Global = value;
-                OnGlobalChanged(allMemory.Global, new EventArgs());
-            }
-        }
+        #endregion
 
         public static void Reinit()
         {
-            CurrentAllMemory = new Data.AllMemory();
+            allMemory = new Data.AllMemory();
+            OnAllMemoryChanged(allMemory, new EventArgs());
         }
 
         private static String currentFilename = "";
-        public static String CurrentFilename { get { return currentFilename; } }
         private static Dump.DumpType currentType = Dump.DumpType.NotSet;
+
+        public static String CurrentFilename { get { return currentFilename; } }
         public static Dump.DumpType CurrentType { get { return currentType; } }
+
         public static void OpenFile(String filename)
         {
             Dump.SysexDump dump = (new Dump.SysexDump()).Open(filename);
@@ -87,12 +86,14 @@ namespace TrapKATEditor
             if (dump is Dump.AllMemoryDump)
             {
                 currentType = Dump.DumpType.AllMemory;
-                CurrentAllMemory = ((Dump.AllMemoryDump)dump).AllMemory;
+                allMemory = ((Dump.AllMemoryDump)dump).AllMemory;
+                OnAllMemoryChanged(allMemory, new EventArgs());
             }
             else if (dump is Dump.GlobalDump)
             {
                 currentType = Dump.DumpType.Global;
-                CurrentGlobal = ((Dump.GlobalDump)dump).Global;
+                allMemory.Global = ((Dump.GlobalDump)dump).Global;
+                OnGlobalChanged(allMemory.Global, new EventArgs());
             }
             else if (dump is Dump.KitDump)
             {

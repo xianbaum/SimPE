@@ -20,46 +20,33 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
-namespace TrapKATEditor.Data
+namespace TrapKATEditor
 {
-    class Curve : DataItem
+    public class Version
     {
-        private byte curve;
-        public Curve() : base() { }
-        public Curve(System.IO.BinaryReader r) : base(r) { }
-
-        protected override void Unserialize(System.IO.BinaryReader r) { curve = r.ReadByte(); }
-        public override void Serialize(System.IO.BinaryWriter w) { w.Write(curve); }
-
-        static List<String> mode = new List<string>(new string[] {
-            "Curve 1", "Curve 2", "Curve 3", "Curve 4", "Curve 5", "Curve 6", "Curve 7", "Curve 8",
-            "2nd Note @ Hardest", "2nd Note @ Hard", "2nd Note @ Medium", "2nd Note @ Soft",
-            "2 Note Layer", "Xfade @ Middle", "Xswitch @ Middle", "1@Medium;3@Hardest",
-            "2@Medium;3@Hard", "2Double 1;3Medium", "3 Note Layer", "4 Note VelShift",
-            "4 Note Layer", "Alternate 1,2", "Alternate 1,2,3", "Alternate 1,2,3,4",
-        });
-        public static List<String> Modes { get { return mode; } }
-
-        private void SetGate(byte value)
+        static String pluginName;
+        static String timestamp;
+        static String configuration;
+        static Version()
         {
-            if (curve == value) return;
-            curve = value;
-            OnDataChanged(this, new EventArgs());
+            //+ "Assembly location: " + this.GetType().Assembly.Location
+            String version_txt = "version.txt";
+            System.IO.StreamReader sr = new StreamReader(version_txt);
+            String line1 = sr.ReadLine();
+            String line2 = sr.ReadLine();
+            sr.Close();
+
+            String[] s = line1.Trim().Split('-');
+            pluginName = s[0];
+            configuration = s[1];
+
+            timestamp = line2.Trim().Replace(' ', '0');
         }
 
-        public String Value
-        {
-            get
-            {
-                if (curve < mode.Count) return mode[curve];
-                else return "[UNK: " + curve.ToString() + "]";
-            }
-            set
-            {
-                if (mode.Contains(value)) { SetGate((byte)mode.IndexOf(value)); return; }
-                throw new ArgumentException(value + " is not a valid curve");
-            }
-        }
+        public static String PluginName { get { return pluginName; } }
+        public static String Configuration { get { return configuration; } }
+        public static String BuildTS { get { return timestamp; } }
     }
 }

@@ -52,11 +52,9 @@ namespace TrapKATEditor.Data
         byte midiMergeStatus;
         byte fcOpenRegion;
 
-        private PadDynamics[] padLevels = new PadDynamics[24];
+        byte[] padLevels = new byte[50];
 
         // 10 bytes
-        byte trigLowLevel;
-        byte trigHighLevel;
         byte trigGain; // (0 - 3)
         byte prgChgRcvChn; // Program change receive channel
         byte displayAngle;
@@ -66,7 +64,7 @@ namespace TrapKATEditor.Data
         byte fcSplashEase;
         byte noteNamesStatus;
 
-        byte[] ttPadData = new byte[12];    // 12
+        byte[] ttPadData = new byte[12];
 
         // 5 bytes
         byte hatNoteGate; // HAT NOTE gate time index
@@ -83,17 +81,16 @@ namespace TrapKATEditor.Data
         byte[] thresholdManual = new byte[25];
         byte[] unused4 = new byte[231];
         byte[] thresholdActual = new byte[25];
-        #endregion
 
-        public byte InstrumentID { get { return instrumentID; } }
+        private PadDynamics[] padDynamics = new PadDynamics[25];
+        #endregion
 
         public Global() : base()
         {
-            for (int i = 0; i < padLevels.Length; i++)
+            for (int i = 0; i < padDynamics.Length; i++)
             {
-                padLevels[i] = new PadDynamics();
-                padLevels[i].DataChanged += new EventHandler(dataChanged);
-
+                padDynamics[i] = new PadDynamics();
+                padDynamics[i].DataChanged += new EventHandler(dataChanged);
             }
         }
 
@@ -128,11 +125,8 @@ namespace TrapKATEditor.Data
             midiMergeStatus = r.ReadByte();
             fcOpenRegion = r.ReadByte();
 
-            for (int i = 0; i < padLevels.Length; i++)
-                padLevels[i] = new PadDynamics(r);
+            padLevels = r.ReadBytes(padLevels.Length);
 
-            trigLowLevel = r.ReadByte();
-            trigHighLevel = r.ReadByte();
             trigGain = r.ReadByte();
             prgChgRcvChn = r.ReadByte();
             displayAngle = r.ReadByte();
@@ -158,8 +152,15 @@ namespace TrapKATEditor.Data
             thresholdManual = r.ReadBytes(thresholdManual.Length);
             unused4 = r.ReadBytes(unused4.Length);
             thresholdActual = r.ReadBytes(thresholdActual.Length);
+
+            for (int i = 0; i < padDynamics.Length; i++)
+            {
+                padDynamics[i] = new PadDynamics(padLevels[i * 2], padLevels[i * 2 + 1], userMargin[i],
+                    internalMargin[i], thresholdManual[i], thresholdActual[i]);
+                padDynamics[i].DataChanged += new EventHandler(dataChanged);
+            }
         }
-        public void Serialize(System.IO.BinaryWriter w)
+        public override void Serialize(System.IO.BinaryWriter w)
         {
             w.Write(currentDefaults);
             w.Write(userDefaults);
@@ -185,10 +186,8 @@ namespace TrapKATEditor.Data
             w.Write(midiMergeStatus);
             w.Write(fcOpenRegion);
 
-            foreach (PadDynamics pl in padLevels) pl.Serialize(w);
+            w.Write(padLevels);
 
-            w.Write(trigLowLevel);
-            w.Write(trigHighLevel);
             w.Write(trigGain);
             w.Write(prgChgRcvChn);
             w.Write(displayAngle);
@@ -216,8 +215,353 @@ namespace TrapKATEditor.Data
             w.Write(thresholdActual);
         }
 
-        public List<String> Modes = new List<string>(new String[] { "Off",
-            "Pitchbend Up", "Pitchbend Down", "Expression", "Sustain",});
+        public byte BeeperStatus
+        {
+            get { return beeperStatus; }
+            set
+            {
+                if (beeperStatus == value) return;
+                beeperStatus = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte BCFunction
+        {
+            get { return bcFunction; }
+            set
+            {
+                if (bcFunction == value) return;
+                bcFunction = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte ChokeFunction
+        {
+            get { return chokeFunction; }
+            set
+            {
+                if (chokeFunction == value) return;
+                chokeFunction = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FCClosedRegion
+        {
+            get { return fcClosedRegion; }
+            set
+            {
+                if (fcClosedRegion == value) return;
+                fcClosedRegion = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FCPolarity
+        {
+            get { return fcPolarity; }
+            set
+            {
+                if (fcPolarity == value) return;
+                fcPolarity = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte BCPolarity
+        {
+            get { return bcPolarity; }
+            set
+            {
+                if (bcPolarity == value) return;
+                bcPolarity = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte BCLowLevel
+        {
+            get { return bcLowLevel; }
+            set
+            {
+                if (bcLowLevel == value) return;
+                bcLowLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte BCHighLevel
+        {
+            get { return bcHighLevel; }
+            set
+            {
+                if (bcHighLevel == value) return;
+                bcHighLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FCLowLevel
+        {
+            get { return fcLowLevel; }
+            set
+            {
+                if (fcLowLevel == value) return;
+                fcLowLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FCHighLevel
+        {
+            get { return fcHighLevel; }
+            set
+            {
+                if (fcHighLevel == value) return;
+                fcHighLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FCVelocityLevel
+        {
+            get { return fcVelocityLevel; }
+            set
+            {
+                if (fcVelocityLevel == value) return;
+                fcVelocityLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FCWaitModeLevel
+        {
+            get { return fcWaitModeLevel; }
+            set
+            {
+                if (fcWaitModeLevel == value) return;
+                fcWaitModeLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte InstrumentID
+        {
+            get { return instrumentID; }
+            set
+            {
+                if (instrumentID == value) return;
+                instrumentID = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte KitNumber
+        {
+            get { return kitNumber; }
+            set
+            {
+                if (kitNumber == value) return;
+                kitNumber = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte KitNumberUser
+        {
+            get { return kitNumberUser; }
+            set
+            {
+                if (kitNumberUser == value) return;
+                kitNumberUser = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte KitNumberDemo
+        {
+            get { return kitNumberDemo; }
+            set
+            {
+                if (kitNumberDemo == value) return;
+                kitNumberDemo = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte MotifNumber
+        {
+            get { return motifNumber; }
+            set
+            {
+                if (motifNumber == value) return;
+                motifNumber = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte MotifNumberPerc
+        {
+            get { return motifNumberPerc; }
+            set
+            {
+                if (motifNumberPerc == value) return;
+                motifNumberPerc = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte MotifNumberMel
+        {
+            get { return motifNumberMel; }
+            set
+            {
+                if (motifNumberMel == value) return;
+                motifNumberMel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte MidiMergeStatus
+        {
+            get { return midiMergeStatus; }
+            set
+            {
+                if (midiMergeStatus == value) return;
+                midiMergeStatus = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FCOpenRegion
+        {
+            get { return fcOpenRegion; }
+            set
+            {
+                if (fcOpenRegion == value) return;
+                fcOpenRegion = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+
+        public byte TrigGain
+        {
+            get { return trigGain; }
+            set
+            {
+                if (trigGain == value) return;
+                trigGain = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte PrgChgRcvChn
+        {
+            get { return prgChgRcvChn; }
+            set
+            {
+                if (prgChgRcvChn == value) return;
+                prgChgRcvChn = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte DisplayAngle
+        {
+            get { return displayAngle; }
+            set
+            {
+                if (displayAngle == value) return;
+                displayAngle = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte PlayMode
+        {
+            get { return playMode; }
+            set
+            {
+                if (playMode == value) return;
+                playMode = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte GrooveVol
+        {
+            get { return grooveVol; }
+            set
+            {
+                if (grooveVol == value) return;
+                grooveVol = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte GrooveStatus
+        {
+            get { return grooveStatus; }
+            set
+            {
+                if (grooveStatus == value) return;
+                grooveStatus = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte FCSplashEase
+        {
+            get { return fcSplashEase; }
+            set
+            {
+                if (fcSplashEase == value) return;
+                fcSplashEase = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte NoteNamesStatus
+        {
+            get { return noteNamesStatus; }
+            set
+            {
+                if (noteNamesStatus == value) return;
+                noteNamesStatus = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte HatNoteGate
+        {
+            get { return hatNoteGate; }
+            set
+            {
+                if (hatNoteGate == value) return;
+                hatNoteGate = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte GrooveAutoOff
+        {
+            get { return grooveAutoOff; }
+            set
+            {
+                if (grooveAutoOff == value) return;
+                grooveAutoOff = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte KitNumberKAT
+        {
+            get { return kitNumberKAT; }
+            set
+            {
+                if (kitNumberKAT == value) return;
+                kitNumberKAT = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte TTMeter
+        {
+            get { return ttMeter; }
+            set
+            {
+                if (ttMeter == value) return;
+                ttMeter = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte HearSoundStatus
+        {
+            get { return hearSoundStatus; }
+            set
+            {
+                if (hearSoundStatus == value) return;
+                hearSoundStatus = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+
+        public PadDynamics this[int index] { get { return padDynamics[index]; } }
+
+        public readonly List<String> PBModes = new List<string>(new String[] {
+            "Off", "Pitchbend Up", "Pitchbend Down", "Expression", "Sustain",
+        });
     }
 
     public class PadDynamics : DataItem
@@ -225,21 +569,26 @@ namespace TrapKATEditor.Data
         #region Attributes
         byte lowLevel;
         byte highLevel;
+        byte userMargin;
+        byte internalMargin;
+        byte thresholdManual;
+        byte thresholdActual;
         #endregion
 
         public PadDynamics() : base() { }
+        public PadDynamics(byte lowLevel, byte highLevel, byte userMargin, byte internalMargin, byte thresholdManual, byte thresholdActual)
+        {
+            this.lowLevel = lowLevel;
+            this.highLevel = highLevel;
+            this.userMargin = userMargin;
+            this.internalMargin = internalMargin;
+            this.thresholdManual = thresholdManual;
+            this.thresholdActual = thresholdActual;
+        }
         public PadDynamics(System.IO.BinaryReader r) : base(r) { }
-        protected override void Unserialize(System.IO.BinaryReader r)
-        {
-            lowLevel = r.ReadByte();
-            highLevel = r.ReadByte();
-        }
-        public void Serialize(System.IO.BinaryWriter w)
-        {
-            w.Write(lowLevel);
-            w.Write(highLevel);
-        }
-        public byte Low
+        protected override void Unserialize(System.IO.BinaryReader r) { throw new Exception("This should never happen"); }
+        public override void Serialize(System.IO.BinaryWriter w) { throw new Exception("This should never happen"); }
+        public byte LowLevel
         {
             get { return lowLevel; }
             set
@@ -249,13 +598,53 @@ namespace TrapKATEditor.Data
                 OnDataChanged(this, new EventArgs());
             }
         }
-        public byte High
+        public byte HighLevel
         {
             get { return highLevel; }
             set
             {
                 if (highLevel == value) return;
                 highLevel = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte UserMargin
+        {
+            get { return userMargin; }
+            set
+            {
+                if (userMargin == value) return;
+                userMargin = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte InternalMargin
+        {
+            get { return internalMargin; }
+            set
+            {
+                if (internalMargin == value) return;
+                internalMargin = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte ThresholdManual
+        {
+            get { return thresholdManual; }
+            set
+            {
+                if (thresholdManual == value) return;
+                thresholdManual = value;
+                OnDataChanged(this, new EventArgs());
+            }
+        }
+        public byte ThresholdActual
+        {
+            get { return thresholdActual; }
+            set
+            {
+                if (thresholdActual == value) return;
+                thresholdActual = value;
                 OnDataChanged(this, new EventArgs());
             }
         }

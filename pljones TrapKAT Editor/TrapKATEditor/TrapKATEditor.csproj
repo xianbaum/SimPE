@@ -49,7 +49,6 @@
     </Compile>
     <Compile Include="Global.cs" />
     <Compile Include="Kit.cs" />
-    <Compile Include="Note.cs" />
     <Compile Include="Pad.cs" />
     <Compile Include="MainProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +76,18 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="SysexDump.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TrapKATEditorLocalisation\TrapKATEditorLocalisation.csproj">
+      <Project>{94530587-E514-4335-9D59-3F80EA3FACFC}</Project>
+      <Name>TrapKATEditorLocalisation</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\TrapKATEditorUpdateTool\TrapKATEditorUpdateTool.csproj">
+      <Project>{8E7D7AC1-F3F6-4B7E-BC07-B118E8BE7476}</Project>
+      <Name>TrapKATEditorUpdateTool</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
@@ -109,6 +120,7 @@ set nsisv=/V3
 rem ConfigurationNames: Release Debug InProgress
 rem targets: help zip tarbz2 7z(7z) nsis src
 
+set helpRelease=no
 set helpDebug=no
 set helpInProgress=no
 
@@ -141,12 +153,12 @@ mkdir "Program Files"
 mkdir "Program Files\$(TargetName)"
 
 (cd "$(TargetDir)"
-tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
+tar c --exclude "*.bat" --exclude "*.vshost.exe" --exclude "*.pdb" . ) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
 
 (cd ..
 (echo %25base%25
 echo %25suffix%25) &gt; version.txt
-tar c version.txt LICENSE.txt CHANGES.txt) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
+tar c version.txt LICENSE.txt CHANGES.txt TKReInit.syx) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
 del ..\version.txt
 
 rem -----------------------------------

@@ -46,11 +46,7 @@ namespace TrapKATEditor.Data
 
         public Pad(System.IO.BinaryReader r) : base(r) { }
 
-        void dataChanged(object sender, EventArgs e)
-        {
-            SetChanged();
-            OnDataChanged(this, e);
-        }
+        void dataChanged(object sender, EventArgs e) { OnDataChanged(this, e); }
 
         protected override void Unserialize(System.IO.BinaryReader r)
         {
@@ -69,7 +65,7 @@ namespace TrapKATEditor.Data
             notes[5] = r.ReadByte();
             flags = r.ReadByte();
         }
-        public void Serialize(System.IO.BinaryWriter w)
+        public override void Serialize(System.IO.BinaryWriter w)
         {
             w.Write(notes[0]);
             w.Write(notes[1]);

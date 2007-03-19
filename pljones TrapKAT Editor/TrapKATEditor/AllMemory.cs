@@ -71,7 +71,7 @@ namespace TrapKATEditor.Data
             global = new Global(r);
         }
 
-        public void Serialize(System.IO.BinaryWriter w)
+        public override void Serialize(System.IO.BinaryWriter w)
         {
             for (int i = 0; i < kits.Length; i++)
                 kits[i].Serialize(w, false);

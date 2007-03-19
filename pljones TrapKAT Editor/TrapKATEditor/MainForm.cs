@@ -37,11 +37,14 @@ namespace TrapKATEditor.UI
         List<NumericUpDown> nudChannel = null;
         List<NumericUpDown> nudMIDI = null;
         List<NumericUpDown> nudByte = null;
+        List<NumericUpDown> nudPadByte = null;
         List<ComboBox> cbHHPads = null;
 
         public MainForm()
         {
             InitializeComponent();
+            tsmiEdit.Visible = false;
+            tsmiTools.Visible = false;
             cbKitCurve.Items.Clear();
             cbKitCurve.Items.AddRange(Data.Curve.Modes.ToArray());
             cbFCCurve.Items.Clear();
@@ -57,45 +60,29 @@ namespace TrapKATEditor.UI
             cbNotes = new List<ComboBox>(new ComboBox[] { cbNote1, cbNote2, cbNote3, cbNote4, cbNote5, cbNote6 });
             ckbFlags = new List<CheckBox>(new CheckBox[] { ckbF0, ckbF1, ckbF2, ckbF3, ckbF4, ckbF5, ckbF6, ckbF7, });
             nudChannel = new List<NumericUpDown>(new NumericUpDown[] {
-                nudFCChannel, 
-                nudKitChannel, 
-                nudPadChannel, 
+                nudFCChannel, nudKitChannel, nudPadChannel, 
                 nudPrgChgTxmChn, 
-                nudPrgChgRcvChn, 
             });
             nudMIDI = new List<NumericUpDown>(new NumericUpDown[] {
                 nudPadMinVel, nudPadMaxVel,
                 nudKitMinVel, nudKitMaxVel, nudVolume, nudPrgChg, nudBankLSB, nudBankMSB, nudBank, 
                 nudGrooveVol, nudInstrumentID, 
-                nudDynLowLevel, nudDynHighLevel, 
             });
             nudByte = new List<NumericUpDown>(new NumericUpDown[] {
-                nudMotifNumber, 
-                nudMotifNumberMel, 
-                nudMotifNumberPerc, 
-                nudKitNumber, 
-                nudKitNumberDemo, 
-                nudKitNumberUser, 
-                nudKitNumberKAT, 
-                nudGrooveStatus, 
-                nudBeeperStatus, 
-                nudChokeFunction, 
-                nudMidiMergeStatus, 
-                nudDisplayAngle, 
-                nudPlayMode, 
-                nudNoteNamesStatus, 
-                nudTTMeter, 
-                nudHearSoundStatus, 
-                nudBcFunction, 
-                nudBcPolarity, 
+                nudMotifNumber, nudMotifNumberMel, nudMotifNumberPerc, 
+                nudKitNumber, nudKitNumberDemo, nudKitNumberUser, nudKitNumberKAT, 
+                nudGrooveStatus, nudBeeperStatus, nudChokeFunction, nudMidiMergeStatus, 
+                nudDisplayAngle, nudPlayMode, nudNoteNamesStatus, nudTTMeter, nudHearSoundStatus, 
+                nudBcFunction, nudBcPolarity, nudBcLowLevel, nudBcHighLevel, 
+                nudFcOpenRegion,  nudFcClosedRegion, nudFcPolarity,
+                nudFcVelocityLevel, nudFcLowLevel, nudFcHighLevel, 
+                nudFcSplashEase, nudFcWaitModeLevel, nudHatNoteGate, 
                 nudTrigGain, 
-                nudFcOpenRegion, 
-                nudFcClosedRegion, 
-                nudFcPolarity, 
-                nudFcSplashEase, 
-                nudFcVelocityLevel, 
-                nudFcWaitModeLevel, 
-                nudHatNoteGate, 
+            });
+            nudPadByte = new List<NumericUpDown>(new NumericUpDown[] {
+                nudLowLevel, nudHighLevel,
+                nudThresholdManual, nudThresholdActual, 
+                nudUserMargin, nudInternalMargin, 
             });
             cbHHPads = new List<ComboBox>(new ComboBox[] { cbHHPad1, cbHHPad2, cbHHPad3, cbHHPad4, });
         }
@@ -103,7 +90,6 @@ namespace TrapKATEditor.UI
         private void MainForm_Load(object sender, EventArgs e)
         {
             MainProgram.AllMemoryChanged += new EventHandler(MainProgram_AllMemoryChanged);
-            MainProgram.GlobalChanged += new EventHandler(MainProgram_GlobalChanged);
             MainProgram.KitChanged += new EventHandler(MainProgram_KitChanged);
             MainProgram_AllMemoryChanged(null, null);
         }
@@ -111,32 +97,39 @@ namespace TrapKATEditor.UI
 
 
         #region File Menu
-        private void doExit()
+        private bool okayToSplat()
         {
-            // check no uncomitted changes
-            this.Close();
-        }
+            if (!MainProgram.CurrentAllMemory.Changed) return true;
 
-        private void doNew()
-        {
-            // check no uncomitted changes
-            MainProgram.Reinit();
+            return DialogResult.OK.Equals(System.Windows.Forms.MessageBox.Show(
+                "You have unsaved changes."
+                + "\r\n"
+                + "OK to continue?"
+                + "", Application.ProductName,
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Hand, MessageBoxDefaultButton.Button2)
+            );
         }
 
         private void tsmiFileNew_Click(object sender, EventArgs e)
         {
-            doNew();
+            if (!okayToSplat()) return;
+            MainProgram.Reinit();
 
-            this.Text = "Editing: " + (MainProgram.CurrentFilename.Length > 0 ? MainProgram.CurrentFilename : "New file");
+            this.Text = Application.ProductName + " - Editing: "
+                + (MainProgram.CurrentFilename.Length > 0 ? MainProgram.CurrentFilename : "New file");
         }
 
         private void tsmiFileOpen_Click(object sender, EventArgs e)
         {
+            if (!okayToSplat()) return;
+
             DialogResult dr = ofdOpenSysEx.ShowDialog();
             if (DialogResult.OK.Equals(dr))
                 try
                 {
                     MainProgram.OpenFile(ofdOpenSysEx.FileName);
+                    this.Text = Application.ProductName + " - Editing: "
+                        + (MainProgram.CurrentFilename.Length > 0 ? MainProgram.CurrentFilename : "New file");
                 }
                 catch (Dump.SysexDump.OpenException ex)
                 {
@@ -146,8 +139,6 @@ namespace TrapKATEditor.UI
                         + ex.Type.ToString() + " at 0x" + Convert.ToString(ex.Offset, 16)
                         + "", "Invalid SysEx File", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-            this.Text = "Editing: " + (MainProgram.CurrentFilename.Length > 0 ? MainProgram.CurrentFilename : "New file");
         }
 
         private void tsmiFileSave_Click(object sender, EventArgs e)
@@ -159,21 +150,22 @@ namespace TrapKATEditor.UI
         private void tsmiFileSaveAs_Click(object sender, EventArgs e)
         {
             Dump.DumpType[] t = { Dump.DumpType.AllMemory, Dump.DumpType.Global, Dump.DumpType.Kit, };
+            String[] s = { "AllMemory", "Global",
+                (currentKit != null && currentKit.KitName.Length > 0) ? currentKit.KitName : "CurrentKit" };
             int i = tsmiSaveAs.IndexOf((ToolStripMenuItem)sender);
-            switch (i)
-            {
-                case 0: sfdSaveSysEx.FileName = "AllMemory.syx"; break;
-                case 1: sfdSaveSysEx.FileName = "Global.syx"; break;
-                case 2: sfdSaveSysEx.FileName = (currentKit!=null ? currentKit.KitName : "CurrentKit") + ".syx"; break;
-            }
-            DialogResult dr = sfdSaveSysEx.ShowDialog();
-            if (DialogResult.OK.Equals(dr))
+
+            sfdSaveSysEx.FileName = (MainProgram.CurrentType == t[i] && MainProgram.CurrentFilename.Length > 0)
+                ? MainProgram.CurrentFilename
+                : (s[i] + ".syx");
+
+            if (DialogResult.OK.Equals(sfdSaveSysEx.ShowDialog()))
                 MainProgram.SaveFile(sfdSaveSysEx.FileName, t[i]);
         }
 
         private void tsmiFileExitQuit_Click(object sender, EventArgs e)
         {
-            doExit();
+            if (!okayToSplat()) return;
+            this.Close();
         }
         #endregion
 
@@ -348,20 +340,33 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             doPad(((ComboBox)sender).SelectedIndex);
         }
+
+        private void ckbFlag_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox ckb = (CheckBox)sender;
+            int i = ckbFlags.IndexOf(ckb);
+            currentPad.Flags = (byte)((currentPad.Flags & (1 << i))
+                | ((ckb.Checked ? 1 : 0) << i));
+        }
         #endregion
 
 
         #region Kit
         Data.Kit currentKit = null;
+        private void cbCurrentKit_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            MainProgram.CurrentKit = cbCurrentKit.SelectedIndex;
+        }
+
         void MainProgram_KitChanged(object sender, EventArgs e)
         {
             if (currentKit != null)
                 currentKit.DataChanged -= new EventHandler(currentKit_DataChanged);
-            currentKit = MainProgram.CurrentAllMemory[MainProgram.CurrentKit];
-            currentKit.DataChanged += new EventHandler(currentKit_DataChanged);
+            currentKit = MainProgram.CurrentAllMemory[cbCurrentKit.SelectedIndex];
+            currentKit.DataChanged += new EventHandler(currentGlobal_DataChanged);
             currentKit_DataChanged(null, null);
 
-            bool savedchg = internalchg;
             internalchg = true;
 
             tbKitName.Text = currentKit.KitName;
@@ -417,18 +422,9 @@ namespace TrapKATEditor.UI
             nudBankLSB.Value = currentKit.BankLSB;
             nudBankMSB.Value = currentKit.BankMSB > 127 ? (byte)127 : currentKit.BankMSB; // TrapKAT bug...
 
-
-            /*--Global--
-            if (currentKit.BcFunction <cbBCFunction.Items.Count)
-                cbBCFunction.SelectedIndex = currentKit.BcFunction;
-            else
-                cbBCFunction.Text = currentKit.BcFunction.ToString();
-            nudBCFunction.Value = currentKit.BcFunction;
-             --Global--*/
-
             cbPad.SelectedIndex = 0;
 
-            internalchg = savedchg;
+            internalchg = false;
             ckbVarCurve_CheckedChanged(ckbVarCurve, null);
             ckbVarGate_CheckedChanged(ckbVarGate, null);
             ckbVarChannel_CheckedChanged(ckbVarChannel, null);
@@ -436,23 +432,20 @@ namespace TrapKATEditor.UI
             ckbVarMaxVel_CheckedChanged(ckbVarMaxVel, null);
             ckbAsChick_CheckedChanged(ckbAsChick, null);
 
+            internalchg = false;
+
             doPad(0);
         }
 
-        void currentKit_DataChanged(object sender, EventArgs e)
+        private void currentKit_DataChanged(object sender, EventArgs e)
         {
-            lbKitDataChanged.Visible = currentKit.Changed;
             tsmiFileSaveCurrentKit.Enabled =
                 currentKit.Changed
                 && (MainProgram.CurrentType == Dump.DumpType.Kit)
                 && (MainProgram.CurrentFilename.Length > 0);
-            tsmiFileSaveCurrentKitAs.Enabled = currentKit.Changed;
-        }
+            tsmiFileSaveCurrentKit.ShortcutKeys = tsmiFileSaveCurrentKit.Enabled ? Keys.Control | Keys.S : Keys.None;
 
-        private void cbCurrentKit_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            MainProgram.CurrentKit = cbCurrentKit.SelectedIndex;
+            lbKitDataChanged.Visible = currentKit.Changed;
         }
 
         private void tbKitName_TextChanged(object sender, EventArgs e)
@@ -657,30 +650,77 @@ namespace TrapKATEditor.UI
         }
         #endregion
 
-        private void nudChannel_ValueChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            byte value = (byte)(((NumericUpDown)sender).Value - 1);
-            if (sender.Equals(nudPadChannel)) { currentPad.Channel = value; return; }
-            if (sender.Equals(nudKitChannel)) { currentKit.Channel = value; return; }
-            if (sender.Equals(nudFCChannel)) { currentKit.FcChannel = value; return; }
-            if (sender.Equals(nudPrgChgTxmChn)) { currentKit.PrgChgTxmChn = value; return; }
-        }
 
         private void nud_ValueChanged(object sender, EventArgs e)
         {
+            if (internalchg) return;
             byte value = (byte)((NumericUpDown)sender).Value;
+
+            switch (nudChannel.IndexOf((NumericUpDown)sender))
+            {
+                case 0: currentKit.FcChannel = --value; return;
+                case 1: currentKit.Channel = --value; return;
+                case 2: currentPad.Channel = --value; return;
+                case 3: currentKit.PrgChgTxmChn = --value; return;
+           }
+
             switch (nudMIDI.IndexOf((NumericUpDown)sender))
             {
-                case 0: currentPad.MinVelocity = value; break;
-                case 1: currentPad.MaxVelocity = value; break;
-                case 2: currentKit.MinVelocity = value; break;
-                case 3: currentKit.MaxVelocity = value; break;
-                case 4: currentKit.Volume = value; break;
-                case 5: currentKit.PrgChg = value; break;
-                case 6: currentKit.Bank = value; break;
-                case 7: currentKit.BankLSB = value; break;
-                case 8: currentKit.BankMSB = value; break;
+                case 0: currentPad.MinVelocity = value; return;
+                case 1: currentPad.MaxVelocity = value; return;
+                case 2: currentKit.MinVelocity = value; return;
+                case 3: currentKit.MaxVelocity = value; return;
+                case 4: currentKit.Volume = value; return;
+                case 5: currentKit.PrgChg = value; return;
+                case 6: currentKit.Bank = value; return;
+                case 7: currentKit.BankLSB = value; return;
+                case 8: currentKit.BankMSB = value; return;
+                case 9: currentGlobal.GrooveVol = value; return;
+                case 10: currentGlobal.InstrumentID = value; return;
+            }
+            switch (nudByte.IndexOf((NumericUpDown)sender))
+            {
+                case 0: currentGlobal.MotifNumber = value; return;
+                case 1: currentGlobal.MotifNumberMel = value; return;
+                case 2: currentGlobal.MotifNumberPerc = value; return;
+                case 3: currentGlobal.KitNumber = value; return;
+                case 4: currentGlobal.KitNumberDemo = value; return;
+                case 5: currentGlobal.KitNumberUser = value; return;
+                case 6: currentGlobal.KitNumberKAT = value; return;
+                case 7: currentGlobal.GrooveStatus = value; return;
+                case 8: currentGlobal.BeeperStatus = value; return;
+                case 9: currentGlobal.ChokeFunction = value; return;
+                case 10: currentGlobal.MidiMergeStatus = value; return;
+                case 11: currentGlobal.DisplayAngle = value; return;
+                case 12: currentGlobal.PlayMode = value; return;
+                case 13: currentGlobal.NoteNamesStatus = value; return;
+                case 14: currentGlobal.TTMeter = value; return;
+                case 15: currentGlobal.HearSoundStatus = value; return;
+                case 16: currentGlobal.BCFunction = value; return;
+                case 17: currentGlobal.BCPolarity = value; return;
+                case 18: currentGlobal.BCLowLevel = value; return;
+                case 19: currentGlobal.BCHighLevel = value; return;
+                case 20: currentGlobal.FCOpenRegion = value; return;
+                case 21: currentGlobal.FCClosedRegion = value; return;
+                case 22: currentGlobal.FCPolarity = value; return;
+                case 23: currentGlobal.FCVelocityLevel = value; return;
+                case 24: currentGlobal.FCLowLevel = value; return;
+                case 25: currentGlobal.FCHighLevel = value; return;
+                case 26: currentGlobal.FCSplashEase = value; return;
+                case 27: currentGlobal.FCWaitModeLevel = value; return;
+                case 28: currentGlobal.HatNoteGate = value; return;
+                case 29: currentGlobal.TrigGain = value; return;
+            }
+
+            int i = cbPadDynamics.SelectedIndex;
+            switch (nudPadByte.IndexOf((NumericUpDown)sender))
+            {
+                case 0: currentGlobal[i].LowLevel = value; return;
+                case 1: currentGlobal[i].HighLevel = value; return;
+                case 2: currentGlobal[i].ThresholdManual = value; return;
+                case 3: currentGlobal[i].ThresholdActual = value; return;
+                case 4: currentGlobal[i].UserMargin = value; return;
+                case 5: currentGlobal[i].InternalMargin = value; return;
             }
         }
 
@@ -691,18 +731,105 @@ namespace TrapKATEditor.UI
         Data.Global currentGlobal = null;
         void MainProgram_GlobalChanged(object sender, EventArgs e)
         {
-            //throw new Exception("The method or operation is not implemented.");
+            if (currentGlobal != null)
+                currentGlobal.DataChanged -= new EventHandler(currentGlobal_DataChanged);
+            currentGlobal = MainProgram.CurrentAllMemory.Global;
+            currentGlobal.DataChanged += new EventHandler(currentGlobal_DataChanged);
+            currentGlobal_DataChanged(null, null);
+
+            bool savedchg = internalchg;
+            internalchg = true;
+
+            cbPrgChgRcvChn.SelectedIndex = currentGlobal.PrgChgRcvChn;
+            nudGrooveVol.Value = currentGlobal.GrooveVol;
+            nudInstrumentID.Value = currentGlobal.InstrumentID;
+            nudMotifNumber.Value = currentGlobal.MotifNumber;
+            nudMotifNumberMel.Value = currentGlobal.MotifNumberMel;
+            nudMotifNumberPerc.Value = currentGlobal.MotifNumberPerc;
+            nudKitNumber.Value = currentGlobal.KitNumber;
+            nudKitNumberDemo.Value = currentGlobal.KitNumberDemo;
+            nudKitNumberUser.Value = currentGlobal.KitNumberUser;
+            nudKitNumberKAT.Value = currentGlobal.KitNumberKAT;
+            nudGrooveStatus.Value = currentGlobal.GrooveStatus;
+            nudBeeperStatus.Value = currentGlobal.BeeperStatus;
+            nudChokeFunction.Value = currentGlobal.ChokeFunction;
+            nudMidiMergeStatus.Value = currentGlobal.MidiMergeStatus;
+            nudDisplayAngle.Value = currentGlobal.DisplayAngle;
+            nudPlayMode.Value = currentGlobal.PlayMode;
+            nudNoteNamesStatus.Value = currentGlobal.NoteNamesStatus;
+            nudTTMeter.Value = currentGlobal.TTMeter;
+            nudHearSoundStatus.Value = currentGlobal.HearSoundStatus;
+            nudBcFunction.Value = currentGlobal.BCFunction;
+            nudBcPolarity.Value = currentGlobal.BCPolarity;
+            nudBcLowLevel.Value = currentGlobal.BCLowLevel;
+            nudBcHighLevel.Value = currentGlobal.BCHighLevel;
+            nudFcOpenRegion.Value = currentGlobal.FCOpenRegion;
+            nudFcClosedRegion.Value = currentGlobal.FCClosedRegion;
+            nudFcPolarity.Value = currentGlobal.FCPolarity;
+            nudFcVelocityLevel.Value = currentGlobal.FCVelocityLevel;
+            nudFcLowLevel.Value = currentGlobal.FCLowLevel;
+            nudFcHighLevel.Value = currentGlobal.FCHighLevel;
+            nudFcSplashEase.Value = currentGlobal.FCSplashEase;
+            nudFcWaitModeLevel.Value = currentGlobal.FCWaitModeLevel;
+            nudHatNoteGate.Value = currentGlobal.HatNoteGate;
+            nudTrigGain.Value = currentGlobal.TrigGain;
+
+            cbPadDynamics.SelectedIndex = 0;
+
+            internalchg = savedchg;
+            cbPadDynamics_SelectedIndexChanged(null, null);
+
+
+            /*--Global--
+            if (currentKit.BcFunction <cbBCFunction.Items.Count)
+                cbBCFunction.SelectedIndex = currentKit.BcFunction;
+            else
+                cbBCFunction.Text = currentKit.BcFunction.ToString();
+            nudBCFunction.Value = currentKit.BcFunction;
+             --Global--*/
+        }
+
+        void currentGlobal_DataChanged(object sender, EventArgs e)
+        {
+            lbGlobalDataChanged.Visible = currentGlobal.Changed;
+            tsmiFileSaveGlobalMemory.Enabled =
+                currentGlobal.Changed
+                && (MainProgram.CurrentType == Dump.DumpType.Global)
+                && (MainProgram.CurrentFilename.Length > 0);
+            tsmiFileSaveGlobalMemory.ShortcutKeys = tsmiFileSaveGlobalMemory.Enabled ? Keys.Control | Keys.S : Keys.None;
+
+            lbGlobalDataChanged.Visible = currentGlobal.Changed;
+        }
+
+        private void cbPrgChgRcvChn_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            currentGlobal.PrgChgRcvChn = (byte)cbPrgChgRcvChn.SelectedIndex;
+        }
+
+        private void cbPadDynamics_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            nudLowLevel.Value = currentGlobal[cbPadDynamics.SelectedIndex].LowLevel;
+            nudHighLevel.Value = currentGlobal[cbPadDynamics.SelectedIndex].HighLevel;
+            nudThresholdManual.Value = currentGlobal[cbPadDynamics.SelectedIndex].ThresholdManual;
+            nudThresholdActual.Value = currentGlobal[cbPadDynamics.SelectedIndex].ThresholdActual;
+            nudUserMargin.Value = currentGlobal[cbPadDynamics.SelectedIndex].UserMargin;
+            nudInternalMargin.Value = currentGlobal[cbPadDynamics.SelectedIndex].InternalMargin;
         }
         #endregion
 
 
         #region AllMemory
+        Data.AllMemory currentAllMemory = null;
         void MainProgram_AllMemoryChanged(object sender, EventArgs e)
         {
-            foreach (ToolStripMenuItem tsmi in tsmiSave)
-                tsmi.Enabled = false;
-            /*foreach (ToolStripMenuItem tsmi in tsmiSaveAs)
-                tsmi.Enabled = false;*/
+            if (currentAllMemory != null)
+                currentAllMemory.DataChanged -= new EventHandler(currentAllMemory_DataChanged);
+            currentAllMemory = MainProgram.CurrentAllMemory;
+            currentAllMemory.DataChanged += new EventHandler(currentAllMemory_DataChanged);
+            currentAllMemory_DataChanged(null, null);
+
 
             MainProgram_GlobalChanged(null, null);
 
@@ -716,8 +843,26 @@ namespace TrapKATEditor.UI
 
             MainProgram_KitChanged(null, null);
         }
+
+        void currentAllMemory_DataChanged(object sender, EventArgs e)
+        {
+            tsmiFileSaveAllMemory.Enabled =
+                (MainProgram.CurrentType == Dump.DumpType.AllMemory)
+                && (MainProgram.CurrentFilename.Length > 0);
+            tsmiFileSaveAllMemory.ShortcutKeys = tsmiFileSaveAllMemory.Enabled ? Keys.Control | Keys.S : Keys.None;
+        }
         #endregion
 
-
+        private void tsmiHelpAbout_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.MessageBox.Show(
+                L.G("helpAboutVersion") + ": " + Version.BuildTS
+                + "\r\n"
+                + "\r\n" + L.G("helpAboutUC") + ": " + TrapKATEditorUpdateTool.PublicSettings.AutoUpdateChoice
+                + "\r\n" + L.G("helpAboutUU") + ": " + TrapKATEditorUpdateTool.PublicSettings.AutoUpdateURL
+                + "\r\n" + L.G("helpAboutLU") + ": " + TrapKATEditorUpdateTool.PublicSettings.LastUpdateTS
+                , L.G("helpPJSEAboutCaption")
+            );
+        }
     }
 }

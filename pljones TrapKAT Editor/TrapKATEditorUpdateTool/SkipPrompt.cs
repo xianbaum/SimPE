@@ -19,47 +19,42 @@
  ***************************************************************************/
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 
-namespace TrapKATEditor.Data
+namespace TrapKATEditor
 {
-    class Curve : DataItem
+    public partial class SkipPrompt : Form
     {
-        private byte curve;
-        public Curve() : base() { }
-        public Curve(System.IO.BinaryReader r) : base(r) { }
-
-        protected override void Unserialize(System.IO.BinaryReader r) { curve = r.ReadByte(); }
-        public override void Serialize(System.IO.BinaryWriter w) { w.Write(curve); }
-
-        static List<String> mode = new List<string>(new string[] {
-            "Curve 1", "Curve 2", "Curve 3", "Curve 4", "Curve 5", "Curve 6", "Curve 7", "Curve 8",
-            "2nd Note @ Hardest", "2nd Note @ Hard", "2nd Note @ Medium", "2nd Note @ Soft",
-            "2 Note Layer", "Xfade @ Middle", "Xswitch @ Middle", "1@Medium;3@Hardest",
-            "2@Medium;3@Hard", "2Double 1;3Medium", "3 Note Layer", "4 Note VelShift",
-            "4 Note Layer", "Alternate 1,2", "Alternate 1,2,3", "Alternate 1,2,3,4",
-        });
-        public static List<String> Modes { get { return mode; } }
-
-        private void SetGate(byte value)
+        public SkipPrompt(bool autoCheck, string release, string url)
         {
-            if (curve == value) return;
-            curve = value;
-            OnDataChanged(this, new EventArgs());
+            InitializeComponent();
+
+            if (!autoCheck)
+            {
+                this.tableLayoutPanel1.SuspendLayout();
+                tableLayoutPanel1.Controls.Remove(btnIgnore);
+                tableLayoutPanel1.SetColumnSpan(label1, 2);
+                tableLayoutPanel1.SetColumnSpan(llURL, 2);
+                tableLayoutPanel1.ColumnCount = 2;
+                tableLayoutPanel1.ColumnStyles[0].SizeType = 
+                    tableLayoutPanel1.ColumnStyles[1].SizeType = SizeType.Percent;
+                tableLayoutPanel1.ColumnStyles[0].Width = 
+                    tableLayoutPanel1.ColumnStyles[1].Width = 50;
+                this.tableLayoutPanel1.ResumeLayout(false);
+                this.tableLayoutPanel1.PerformLayout();
+            }
+            label1.Text = label1.Text.Replace("{0}", release);
+            llURL.Text = url;
+            this.Width = tableLayoutPanel1.Width + 6;
         }
 
-        public String Value
+        private void llURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            get
-            {
-                if (curve < mode.Count) return mode[curve];
-                else return "[UNK: " + curve.ToString() + "]";
-            }
-            set
-            {
-                if (mode.Contains(value)) { SetGate((byte)mode.IndexOf(value)); return; }
-                throw new ArgumentException(value + " is not a valid curve");
-            }
+            this.DialogResult = DialogResult.OK;
         }
     }
 }

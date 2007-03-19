@@ -24,29 +24,20 @@ using System.Text;
 
 namespace TrapKATEditor.Data
 {
-    public class DataItem
+    public abstract class DataItem
     {
         public DataItem() { }
         public DataItem(System.IO.BinaryReader r) { Unserialize(r); }
-        protected virtual void Unserialize(System.IO.BinaryReader r) { }
+        protected abstract void Unserialize(System.IO.BinaryReader r);
+        public abstract void Serialize(System.IO.BinaryWriter w);
 
         private bool changed;
         public bool Changed { get { return changed; } }
-        protected void SetChanged() { changed = true; }
-
-        private bool internalchg;
-        protected bool InternalChg
-        {
-            get { return internalchg; }
-            set { internalchg = value; }
-        }
 
         public event EventHandler DataChanged;
         protected virtual void OnDataChanged(object sender, EventArgs e)
         {
             changed = true;
-            if (internalchg) return;
-
             if (DataChanged != null)
                 DataChanged(sender, e);
         }

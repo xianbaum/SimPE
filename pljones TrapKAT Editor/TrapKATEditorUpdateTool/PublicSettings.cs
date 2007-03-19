@@ -20,26 +20,19 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TrapKATEditor;
 
-namespace TrapKATEditor.Data
+namespace TrapKATEditorUpdateTool
 {
-    public class HHPadList : DataItem
+    public class PublicSettings
     {
-        List<byte> hhPads = new List<byte>(new byte[4] { 1, 4, 0, 0, });
-        public HHPadList() : base() { }
-        public HHPadList(System.IO.BinaryReader r) : base(r) { }
-
-        protected override void Unserialize(System.IO.BinaryReader r) { hhPads = new List<byte>(r.ReadBytes(4)); }
-        public override void Serialize(System.IO.BinaryWriter w) { w.Write(hhPads.ToArray()); }
-        public byte this[int index]
-        {
-            get { return hhPads[index]; }
-            set
-            {
-                if (hhPads[index] == value) return;
-                hhPads[index] = value;
-                OnDataChanged(this, new EventArgs());
-            }
-        }
+        private static TrapKATEditorUpdateTool.Properties.Settings settings = TrapKATEditorUpdateTool.Properties.Settings.Default;
+        public static String AutoUpdateChoice
+        { get {
+            string[] s = { "UTAskMe", "UTDaily", "UTManual" };
+            return L.G(s[settings.AutoUpdateChoice]);
+        } }
+        public static String AutoUpdateURL { get { return settings.AutoUpdateURL; } }
+        public static String LastUpdateTS { get { return settings.LastUpdateTS.ToString(); } }
     }
 }

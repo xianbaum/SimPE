@@ -1,3 +1,22 @@
+/***************************************************************************
+ *   Copyright (C) 2007 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 namespace TrapKATEditor.UI
 {
     partial class MainForm
@@ -171,8 +190,8 @@ namespace TrapKATEditor.UI
             this.ckbF2 = new System.Windows.Forms.CheckBox();
             this.ckbF1 = new System.Windows.Forms.CheckBox();
             this.ckbF0 = new System.Windows.Forms.CheckBox();
-            this.label25 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lbGlobalDataChanged = new System.Windows.Forms.Label();
             this.flowLayoutPanel26 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel38 = new System.Windows.Forms.FlowLayoutPanel();
             this.label56 = new System.Windows.Forms.Label();
@@ -183,12 +202,18 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel22 = new System.Windows.Forms.FlowLayoutPanel();
             this.label41 = new System.Windows.Forms.Label();
             this.nudFcPolarity = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel47 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label65 = new System.Windows.Forms.Label();
-            this.nudFcSplashEase = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel28 = new System.Windows.Forms.FlowLayoutPanel();
             this.label39 = new System.Windows.Forms.Label();
             this.nudFcVelocityLevel = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel61 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label66 = new System.Windows.Forms.Label();
+            this.nudFcLowLevel = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel62 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label75 = new System.Windows.Forms.Label();
+            this.nudFcHighLevel = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel47 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label65 = new System.Windows.Forms.Label();
+            this.nudFcSplashEase = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel29 = new System.Windows.Forms.FlowLayoutPanel();
             this.label44 = new System.Windows.Forms.Label();
             this.nudFcWaitModeLevel = new System.Windows.Forms.NumericUpDown();
@@ -201,10 +226,25 @@ namespace TrapKATEditor.UI
             this.cbPadDynamics = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel56 = new System.Windows.Forms.FlowLayoutPanel();
             this.label73 = new System.Windows.Forms.Label();
-            this.nudDynLowLevel = new System.Windows.Forms.NumericUpDown();
+            this.nudLowLevel = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel57 = new System.Windows.Forms.FlowLayoutPanel();
             this.label74 = new System.Windows.Forms.Label();
-            this.nudDynHighLevel = new System.Windows.Forms.NumericUpDown();
+            this.nudHighLevel = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel27 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label46 = new System.Windows.Forms.Label();
+            this.nudThresholdManual = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel39 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label47 = new System.Windows.Forms.Label();
+            this.nudThresholdActual = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel40 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label48 = new System.Windows.Forms.Label();
+            this.nudUserMargin = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel58 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label50 = new System.Windows.Forms.Label();
+            this.nudInternalMargin = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel41 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label61 = new System.Windows.Forms.Label();
+            this.nudTrigGain = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel10 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel18 = new System.Windows.Forms.FlowLayoutPanel();
             this.label38 = new System.Windows.Forms.Label();
@@ -212,9 +252,12 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel23 = new System.Windows.Forms.FlowLayoutPanel();
             this.label42 = new System.Windows.Forms.Label();
             this.nudBcPolarity = new System.Windows.Forms.NumericUpDown();
-            this.flowLayoutPanel41 = new System.Windows.Forms.FlowLayoutPanel();
-            this.label61 = new System.Windows.Forms.Label();
-            this.nudTrigGain = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel59 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label57 = new System.Windows.Forms.Label();
+            this.nudBcLowLevel = new System.Windows.Forms.NumericUpDown();
+            this.flowLayoutPanel60 = new System.Windows.Forms.FlowLayoutPanel();
+            this.label63 = new System.Windows.Forms.Label();
+            this.nudBcHighLevel = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel55 = new System.Windows.Forms.FlowLayoutPanel();
             this.flowLayoutPanel34 = new System.Windows.Forms.FlowLayoutPanel();
             this.label49 = new System.Windows.Forms.Label();
@@ -263,7 +306,7 @@ namespace TrapKATEditor.UI
             this.nudMidiMergeStatus = new System.Windows.Forms.NumericUpDown();
             this.flowLayoutPanel42 = new System.Windows.Forms.FlowLayoutPanel();
             this.label62 = new System.Windows.Forms.Label();
-            this.nudPrgChgRcvChn = new System.Windows.Forms.NumericUpDown();
+            this.cbPrgChgRcvChn = new System.Windows.Forms.ComboBox();
             this.flowLayoutPanel43 = new System.Windows.Forms.FlowLayoutPanel();
             this.label58 = new System.Windows.Forms.Label();
             this.nudDisplayAngle = new System.Windows.Forms.NumericUpDown();
@@ -279,6 +322,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel19 = new System.Windows.Forms.FlowLayoutPanel();
             this.label71 = new System.Windows.Forms.Label();
             this.nudHearSoundStatus = new System.Windows.Forms.NumericUpDown();
+            this.label25 = new System.Windows.Forms.Label();
             this.msMain.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -329,10 +373,14 @@ namespace TrapKATEditor.UI
             ((System.ComponentModel.ISupportInitialize)(this.nudFcClosedRegion)).BeginInit();
             this.flowLayoutPanel22.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFcPolarity)).BeginInit();
-            this.flowLayoutPanel47.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFcSplashEase)).BeginInit();
             this.flowLayoutPanel28.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFcVelocityLevel)).BeginInit();
+            this.flowLayoutPanel61.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFcLowLevel)).BeginInit();
+            this.flowLayoutPanel62.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFcHighLevel)).BeginInit();
+            this.flowLayoutPanel47.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFcSplashEase)).BeginInit();
             this.flowLayoutPanel29.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFcWaitModeLevel)).BeginInit();
             this.flowLayoutPanel49.SuspendLayout();
@@ -340,16 +388,28 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel25.SuspendLayout();
             this.flowLayoutPanel24.SuspendLayout();
             this.flowLayoutPanel56.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDynLowLevel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLowLevel)).BeginInit();
             this.flowLayoutPanel57.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDynHighLevel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHighLevel)).BeginInit();
+            this.flowLayoutPanel27.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudThresholdManual)).BeginInit();
+            this.flowLayoutPanel39.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudThresholdActual)).BeginInit();
+            this.flowLayoutPanel40.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudUserMargin)).BeginInit();
+            this.flowLayoutPanel58.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudInternalMargin)).BeginInit();
+            this.flowLayoutPanel41.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTrigGain)).BeginInit();
             this.flowLayoutPanel10.SuspendLayout();
             this.flowLayoutPanel18.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBcFunction)).BeginInit();
             this.flowLayoutPanel23.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBcPolarity)).BeginInit();
-            this.flowLayoutPanel41.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTrigGain)).BeginInit();
+            this.flowLayoutPanel59.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBcLowLevel)).BeginInit();
+            this.flowLayoutPanel60.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBcHighLevel)).BeginInit();
             this.flowLayoutPanel55.SuspendLayout();
             this.flowLayoutPanel34.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMotifNumber)).BeginInit();
@@ -383,7 +443,6 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel37.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudMidiMergeStatus)).BeginInit();
             this.flowLayoutPanel42.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPrgChgRcvChn)).BeginInit();
             this.flowLayoutPanel43.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDisplayAngle)).BeginInit();
             this.flowLayoutPanel44.SuspendLayout();
@@ -612,8 +671,9 @@ namespace TrapKATEditor.UI
             // tsmiHelpAbout
             // 
             this.tsmiHelpAbout.Name = "tsmiHelpAbout";
-            this.tsmiHelpAbout.Size = new System.Drawing.Size(144, 22);
+            this.tsmiHelpAbout.Size = new System.Drawing.Size(152, 22);
             this.tsmiHelpAbout.Text = "&About...";
+            this.tsmiHelpAbout.Click += new System.EventHandler(this.tsmiHelpAbout_Click);
             // 
             // sfdSaveSysEx
             // 
@@ -627,11 +687,11 @@ namespace TrapKATEditor.UI
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Top;
             this.tabControl1.Location = new System.Drawing.Point(0, 26);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(590, 689);
+            this.tabControl1.Size = new System.Drawing.Size(590, 677);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -640,7 +700,7 @@ namespace TrapKATEditor.UI
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(582, 660);
+            this.tabPage1.Size = new System.Drawing.Size(582, 648);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Kits & Pads";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -651,11 +711,10 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel9.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel9.Controls.Add(this.groupBox1);
             this.flowLayoutPanel9.Controls.Add(this.groupBox2);
-            this.flowLayoutPanel9.Controls.Add(this.label25);
             this.flowLayoutPanel9.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel9.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel9.Name = "flowLayoutPanel9";
-            this.flowLayoutPanel9.Size = new System.Drawing.Size(579, 655);
+            this.flowLayoutPanel9.Size = new System.Drawing.Size(579, 638);
             this.flowLayoutPanel9.TabIndex = 0;
             // 
             // groupBox1
@@ -823,7 +882,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
-            this.nudFCChannel.ValueChanged += new System.EventHandler(this.nudChannel_ValueChanged);
+            this.nudFCChannel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // ckbAsChick
             // 
@@ -920,7 +979,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
-            this.nudKitChannel.ValueChanged += new System.EventHandler(this.nudChannel_ValueChanged);
+            this.nudKitChannel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // ckbVarChannel
             // 
@@ -1330,21 +1389,26 @@ namespace TrapKATEditor.UI
             // nudPrgChgTxmChn
             // 
             this.nudPrgChgTxmChn.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.nudPrgChgTxmChn.Location = new System.Drawing.Point(65, 20);
+            this.nudPrgChgTxmChn.Location = new System.Drawing.Point(69, 20);
             this.nudPrgChgTxmChn.Maximum = new decimal(new int[] {
             16,
             0,
             0,
             0});
+            this.nudPrgChgTxmChn.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nudPrgChgTxmChn.Name = "nudPrgChgTxmChn";
-            this.nudPrgChgTxmChn.Size = new System.Drawing.Size(51, 22);
+            this.nudPrgChgTxmChn.Size = new System.Drawing.Size(42, 22);
             this.nudPrgChgTxmChn.TabIndex = 2;
             this.nudPrgChgTxmChn.Value = new decimal(new int[] {
             10,
             0,
             0,
             0});
-            this.nudPrgChgTxmChn.ValueChanged += new System.EventHandler(this.nudChannel_ValueChanged);
+            this.nudPrgChgTxmChn.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label35
             // 
@@ -1947,6 +2011,11 @@ namespace TrapKATEditor.UI
             this.cbNote5.Name = "cbNote5";
             this.cbNote5.Size = new System.Drawing.Size(163, 24);
             this.cbNote5.TabIndex = 5;
+            this.cbNote5.Validating += new System.ComponentModel.CancelEventHandler(this.cbNote_Validating);
+            this.cbNote5.Validated += new System.EventHandler(this.cbNote_Validated);
+            this.cbNote5.Enter += new System.EventHandler(this.cbNote_Enter);
+            this.cbNote5.SelectedIndexChanged += new System.EventHandler(this.cbNote_SelectedIndexChanged);
+            this.cbNote5.TextChanged += new System.EventHandler(this.cbNote_TextChanged);
             // 
             // cbNote4
             // 
@@ -1965,6 +2034,11 @@ namespace TrapKATEditor.UI
             this.cbNote4.Name = "cbNote4";
             this.cbNote4.Size = new System.Drawing.Size(163, 24);
             this.cbNote4.TabIndex = 4;
+            this.cbNote4.Validating += new System.ComponentModel.CancelEventHandler(this.cbNote_Validating);
+            this.cbNote4.Validated += new System.EventHandler(this.cbNote_Validated);
+            this.cbNote4.Enter += new System.EventHandler(this.cbNote_Enter);
+            this.cbNote4.SelectedIndexChanged += new System.EventHandler(this.cbNote_SelectedIndexChanged);
+            this.cbNote4.TextChanged += new System.EventHandler(this.cbNote_TextChanged);
             // 
             // cbNote3
             // 
@@ -1983,6 +2057,11 @@ namespace TrapKATEditor.UI
             this.cbNote3.Name = "cbNote3";
             this.cbNote3.Size = new System.Drawing.Size(163, 24);
             this.cbNote3.TabIndex = 3;
+            this.cbNote3.Validating += new System.ComponentModel.CancelEventHandler(this.cbNote_Validating);
+            this.cbNote3.Validated += new System.EventHandler(this.cbNote_Validated);
+            this.cbNote3.Enter += new System.EventHandler(this.cbNote_Enter);
+            this.cbNote3.SelectedIndexChanged += new System.EventHandler(this.cbNote_SelectedIndexChanged);
+            this.cbNote3.TextChanged += new System.EventHandler(this.cbNote_TextChanged);
             // 
             // cbNote2
             // 
@@ -2001,6 +2080,11 @@ namespace TrapKATEditor.UI
             this.cbNote2.Name = "cbNote2";
             this.cbNote2.Size = new System.Drawing.Size(163, 24);
             this.cbNote2.TabIndex = 2;
+            this.cbNote2.Validating += new System.ComponentModel.CancelEventHandler(this.cbNote_Validating);
+            this.cbNote2.Validated += new System.EventHandler(this.cbNote_Validated);
+            this.cbNote2.Enter += new System.EventHandler(this.cbNote_Enter);
+            this.cbNote2.SelectedIndexChanged += new System.EventHandler(this.cbNote_SelectedIndexChanged);
+            this.cbNote2.TextChanged += new System.EventHandler(this.cbNote_TextChanged);
             // 
             // cbNote1
             // 
@@ -2019,6 +2103,11 @@ namespace TrapKATEditor.UI
             this.cbNote1.Name = "cbNote1";
             this.cbNote1.Size = new System.Drawing.Size(163, 24);
             this.cbNote1.TabIndex = 1;
+            this.cbNote1.Validating += new System.ComponentModel.CancelEventHandler(this.cbNote_Validating);
+            this.cbNote1.Validated += new System.EventHandler(this.cbNote_Validated);
+            this.cbNote1.Enter += new System.EventHandler(this.cbNote_Enter);
+            this.cbNote1.SelectedIndexChanged += new System.EventHandler(this.cbNote_SelectedIndexChanged);
+            this.cbNote1.TextChanged += new System.EventHandler(this.cbNote_TextChanged);
             // 
             // cbNote6
             // 
@@ -2037,6 +2126,11 @@ namespace TrapKATEditor.UI
             this.cbNote6.Name = "cbNote6";
             this.cbNote6.Size = new System.Drawing.Size(163, 24);
             this.cbNote6.TabIndex = 6;
+            this.cbNote6.Validating += new System.ComponentModel.CancelEventHandler(this.cbNote_Validating);
+            this.cbNote6.Validated += new System.EventHandler(this.cbNote_Validated);
+            this.cbNote6.Enter += new System.EventHandler(this.cbNote_Enter);
+            this.cbNote6.SelectedIndexChanged += new System.EventHandler(this.cbNote_SelectedIndexChanged);
+            this.cbNote6.TextChanged += new System.EventHandler(this.cbNote_TextChanged);
             // 
             // flowLayoutPanel4
             // 
@@ -2116,6 +2210,10 @@ namespace TrapKATEditor.UI
             this.cbPadGate.Name = "cbPadGate";
             this.cbPadGate.Size = new System.Drawing.Size(107, 24);
             this.cbPadGate.TabIndex = 2;
+            this.cbPadGate.Validating += new System.ComponentModel.CancelEventHandler(this.cbGate_Validating);
+            this.cbPadGate.Validated += new System.EventHandler(this.cbGate_Validated);
+            this.cbPadGate.Enter += new System.EventHandler(this.cbGate_Enter);
+            this.cbPadGate.TextUpdate += new System.EventHandler(this.cbGate_TextChanged);
             // 
             // cbPadCurve
             // 
@@ -2128,6 +2226,7 @@ namespace TrapKATEditor.UI
             this.cbPadCurve.Name = "cbPadCurve";
             this.cbPadCurve.Size = new System.Drawing.Size(175, 24);
             this.cbPadCurve.TabIndex = 1;
+            this.cbPadCurve.SelectedIndexChanged += new System.EventHandler(this.cbCurve_SelectedIndexChanged);
             // 
             // nudPadChannel
             // 
@@ -2150,6 +2249,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudPadChannel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // tlpPadVelocity
             // 
@@ -2190,6 +2290,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudPadMinVel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // nudPadMaxVel
             // 
@@ -2208,6 +2309,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudPadMaxVel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label14
             // 
@@ -2299,6 +2401,7 @@ namespace TrapKATEditor.UI
             this.ckbF7.Text = "7";
             this.ckbF7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckbF7.UseVisualStyleBackColor = true;
+            this.ckbF7.CheckedChanged += new System.EventHandler(this.ckbFlag_CheckedChanged);
             // 
             // ckbF6
             // 
@@ -2313,6 +2416,7 @@ namespace TrapKATEditor.UI
             this.ckbF6.Text = "6";
             this.ckbF6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckbF6.UseVisualStyleBackColor = true;
+            this.ckbF6.CheckedChanged += new System.EventHandler(this.ckbFlag_CheckedChanged);
             // 
             // ckbF5
             // 
@@ -2327,6 +2431,7 @@ namespace TrapKATEditor.UI
             this.ckbF5.Text = "5";
             this.ckbF5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckbF5.UseVisualStyleBackColor = true;
+            this.ckbF5.CheckedChanged += new System.EventHandler(this.ckbFlag_CheckedChanged);
             // 
             // ckbF4
             // 
@@ -2341,6 +2446,7 @@ namespace TrapKATEditor.UI
             this.ckbF4.Text = "4";
             this.ckbF4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckbF4.UseVisualStyleBackColor = true;
+            this.ckbF4.CheckedChanged += new System.EventHandler(this.ckbFlag_CheckedChanged);
             // 
             // ckbF3
             // 
@@ -2355,6 +2461,7 @@ namespace TrapKATEditor.UI
             this.ckbF3.Text = "3";
             this.ckbF3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckbF3.UseVisualStyleBackColor = true;
+            this.ckbF3.CheckedChanged += new System.EventHandler(this.ckbFlag_CheckedChanged);
             // 
             // ckbF2
             // 
@@ -2369,6 +2476,7 @@ namespace TrapKATEditor.UI
             this.ckbF2.Text = "2";
             this.ckbF2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckbF2.UseVisualStyleBackColor = true;
+            this.ckbF2.CheckedChanged += new System.EventHandler(this.ckbFlag_CheckedChanged);
             // 
             // ckbF1
             // 
@@ -2383,6 +2491,7 @@ namespace TrapKATEditor.UI
             this.ckbF1.Text = "1";
             this.ckbF1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckbF1.UseVisualStyleBackColor = true;
+            this.ckbF1.CheckedChanged += new System.EventHandler(this.ckbFlag_CheckedChanged);
             // 
             // ckbF0
             // 
@@ -2397,20 +2506,11 @@ namespace TrapKATEditor.UI
             this.ckbF0.Text = "0";
             this.ckbF0.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ckbF0.UseVisualStyleBackColor = true;
-            // 
-            // label25
-            // 
-            this.label25.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(75, 638);
-            this.label25.Margin = new System.Windows.Forms.Padding(24, 0, 3, 0);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(449, 17);
-            this.label25.TabIndex = 0;
-            this.label25.Text = "MIDI OX SysEx Transmit: 32 bytes, 512 buffers, 16ms between buffers";
+            this.ckbF0.CheckedChanged += new System.EventHandler(this.ckbFlag_CheckedChanged);
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.lbGlobalDataChanged);
             this.tabPage2.Controls.Add(this.flowLayoutPanel26);
             this.tabPage2.Controls.Add(this.flowLayoutPanel25);
             this.tabPage2.Controls.Add(this.flowLayoutPanel10);
@@ -2421,24 +2521,37 @@ namespace TrapKATEditor.UI
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(582, 660);
+            this.tabPage2.Size = new System.Drawing.Size(582, 648);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Global";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // lbGlobalDataChanged
+            // 
+            this.lbGlobalDataChanged.AutoSize = true;
+            this.lbGlobalDataChanged.Location = new System.Drawing.Point(6, 6);
+            this.lbGlobalDataChanged.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.lbGlobalDataChanged.Name = "lbGlobalDataChanged";
+            this.lbGlobalDataChanged.Size = new System.Drawing.Size(48, 17);
+            this.lbGlobalDataChanged.TabIndex = 8;
+            this.lbGlobalDataChanged.Text = "Edited";
+            this.lbGlobalDataChanged.Visible = false;
             // 
             // flowLayoutPanel26
             // 
             this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel38);
             this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel21);
             this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel22);
-            this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel47);
             this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel28);
+            this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel61);
+            this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel62);
+            this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel47);
             this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel29);
             this.flowLayoutPanel26.Controls.Add(this.flowLayoutPanel49);
             this.flowLayoutPanel26.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel26.Location = new System.Drawing.Point(6, 338);
+            this.flowLayoutPanel26.Location = new System.Drawing.Point(6, 358);
             this.flowLayoutPanel26.Name = "flowLayoutPanel26";
-            this.flowLayoutPanel26.Size = new System.Drawing.Size(380, 145);
+            this.flowLayoutPanel26.Size = new System.Drawing.Size(567, 109);
             this.flowLayoutPanel26.TabIndex = 6;
             // 
             // flowLayoutPanel38
@@ -2469,13 +2582,14 @@ namespace TrapKATEditor.UI
             this.nudFcOpenRegion.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudFcOpenRegion.Location = new System.Drawing.Point(102, 3);
             this.nudFcOpenRegion.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudFcOpenRegion.Name = "nudFcOpenRegion";
             this.nudFcOpenRegion.Size = new System.Drawing.Size(51, 22);
             this.nudFcOpenRegion.TabIndex = 1;
+            this.nudFcOpenRegion.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel21
             // 
@@ -2505,13 +2619,14 @@ namespace TrapKATEditor.UI
             this.nudFcClosedRegion.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudFcClosedRegion.Location = new System.Drawing.Point(110, 3);
             this.nudFcClosedRegion.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudFcClosedRegion.Name = "nudFcClosedRegion";
             this.nudFcClosedRegion.Size = new System.Drawing.Size(51, 22);
             this.nudFcClosedRegion.TabIndex = 1;
+            this.nudFcClosedRegion.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel22
             // 
@@ -2541,49 +2656,14 @@ namespace TrapKATEditor.UI
             this.nudFcPolarity.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudFcPolarity.Location = new System.Drawing.Point(69, 3);
             this.nudFcPolarity.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudFcPolarity.Name = "nudFcPolarity";
             this.nudFcPolarity.Size = new System.Drawing.Size(51, 22);
             this.nudFcPolarity.TabIndex = 1;
-            // 
-            // flowLayoutPanel47
-            // 
-            this.flowLayoutPanel47.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel47.AutoSize = true;
-            this.flowLayoutPanel47.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel47.Controls.Add(this.label65);
-            this.flowLayoutPanel47.Controls.Add(this.nudFcSplashEase);
-            this.flowLayoutPanel47.Location = new System.Drawing.Point(16, 105);
-            this.flowLayoutPanel47.Name = "flowLayoutPanel47";
-            this.flowLayoutPanel47.Size = new System.Drawing.Size(151, 28);
-            this.flowLayoutPanel47.TabIndex = 4;
-            // 
-            // label65
-            // 
-            this.label65.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label65.AutoSize = true;
-            this.label65.Location = new System.Drawing.Point(0, 6);
-            this.label65.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.label65.Name = "label65";
-            this.label65.Size = new System.Drawing.Size(94, 17);
-            this.label65.TabIndex = 0;
-            this.label65.Text = "fcSplashEase";
-            // 
-            // nudFcSplashEase
-            // 
-            this.nudFcSplashEase.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.nudFcSplashEase.Location = new System.Drawing.Point(97, 3);
-            this.nudFcSplashEase.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.nudFcSplashEase.Name = "nudFcSplashEase";
-            this.nudFcSplashEase.Size = new System.Drawing.Size(51, 22);
-            this.nudFcSplashEase.TabIndex = 1;
+            this.nudFcPolarity.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel28
             // 
@@ -2592,10 +2672,10 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel28.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel28.Controls.Add(this.label39);
             this.flowLayoutPanel28.Controls.Add(this.nudFcVelocityLevel);
-            this.flowLayoutPanel28.Location = new System.Drawing.Point(187, 3);
+            this.flowLayoutPanel28.Location = new System.Drawing.Point(173, 3);
             this.flowLayoutPanel28.Name = "flowLayoutPanel28";
             this.flowLayoutPanel28.Size = new System.Drawing.Size(159, 28);
-            this.flowLayoutPanel28.TabIndex = 5;
+            this.flowLayoutPanel28.TabIndex = 4;
             // 
             // label39
             // 
@@ -2613,13 +2693,126 @@ namespace TrapKATEditor.UI
             this.nudFcVelocityLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudFcVelocityLevel.Location = new System.Drawing.Point(105, 3);
             this.nudFcVelocityLevel.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudFcVelocityLevel.Name = "nudFcVelocityLevel";
             this.nudFcVelocityLevel.Size = new System.Drawing.Size(51, 22);
             this.nudFcVelocityLevel.TabIndex = 1;
+            this.nudFcVelocityLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel61
+            // 
+            this.flowLayoutPanel61.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel61.AutoSize = true;
+            this.flowLayoutPanel61.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel61.Controls.Add(this.label66);
+            this.flowLayoutPanel61.Controls.Add(this.nudFcLowLevel);
+            this.flowLayoutPanel61.Location = new System.Drawing.Point(197, 37);
+            this.flowLayoutPanel61.Name = "flowLayoutPanel61";
+            this.flowLayoutPanel61.Size = new System.Drawing.Size(135, 28);
+            this.flowLayoutPanel61.TabIndex = 5;
+            // 
+            // label66
+            // 
+            this.label66.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label66.AutoSize = true;
+            this.label66.Location = new System.Drawing.Point(0, 6);
+            this.label66.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label66.Name = "label66";
+            this.label66.Size = new System.Drawing.Size(78, 17);
+            this.label66.TabIndex = 0;
+            this.label66.Text = "fcLowLevel";
+            // 
+            // nudFcLowLevel
+            // 
+            this.nudFcLowLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudFcLowLevel.Location = new System.Drawing.Point(81, 3);
+            this.nudFcLowLevel.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudFcLowLevel.Name = "nudFcLowLevel";
+            this.nudFcLowLevel.Size = new System.Drawing.Size(51, 22);
+            this.nudFcLowLevel.TabIndex = 1;
+            this.nudFcLowLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel62
+            // 
+            this.flowLayoutPanel62.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel62.AutoSize = true;
+            this.flowLayoutPanel62.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel62.Controls.Add(this.label75);
+            this.flowLayoutPanel62.Controls.Add(this.nudFcHighLevel);
+            this.flowLayoutPanel26.SetFlowBreak(this.flowLayoutPanel62, true);
+            this.flowLayoutPanel62.Location = new System.Drawing.Point(193, 71);
+            this.flowLayoutPanel62.Name = "flowLayoutPanel62";
+            this.flowLayoutPanel62.Size = new System.Drawing.Size(139, 28);
+            this.flowLayoutPanel62.TabIndex = 6;
+            // 
+            // label75
+            // 
+            this.label75.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label75.AutoSize = true;
+            this.label75.Location = new System.Drawing.Point(0, 6);
+            this.label75.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label75.Name = "label75";
+            this.label75.Size = new System.Drawing.Size(82, 17);
+            this.label75.TabIndex = 0;
+            this.label75.Text = "fcHighLevel";
+            // 
+            // nudFcHighLevel
+            // 
+            this.nudFcHighLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudFcHighLevel.Location = new System.Drawing.Point(85, 3);
+            this.nudFcHighLevel.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudFcHighLevel.Name = "nudFcHighLevel";
+            this.nudFcHighLevel.Size = new System.Drawing.Size(51, 22);
+            this.nudFcHighLevel.TabIndex = 1;
+            this.nudFcHighLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel47
+            // 
+            this.flowLayoutPanel47.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel47.AutoSize = true;
+            this.flowLayoutPanel47.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel47.Controls.Add(this.label65);
+            this.flowLayoutPanel47.Controls.Add(this.nudFcSplashEase);
+            this.flowLayoutPanel47.Location = new System.Drawing.Point(360, 3);
+            this.flowLayoutPanel47.Name = "flowLayoutPanel47";
+            this.flowLayoutPanel47.Size = new System.Drawing.Size(151, 28);
+            this.flowLayoutPanel47.TabIndex = 7;
+            // 
+            // label65
+            // 
+            this.label65.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label65.AutoSize = true;
+            this.label65.Location = new System.Drawing.Point(0, 6);
+            this.label65.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label65.Name = "label65";
+            this.label65.Size = new System.Drawing.Size(94, 17);
+            this.label65.TabIndex = 0;
+            this.label65.Text = "fcSplashEase";
+            // 
+            // nudFcSplashEase
+            // 
+            this.nudFcSplashEase.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudFcSplashEase.Location = new System.Drawing.Point(97, 3);
+            this.nudFcSplashEase.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudFcSplashEase.Name = "nudFcSplashEase";
+            this.nudFcSplashEase.Size = new System.Drawing.Size(51, 22);
+            this.nudFcSplashEase.TabIndex = 1;
+            this.nudFcSplashEase.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel29
             // 
@@ -2628,10 +2821,10 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel29.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel29.Controls.Add(this.label44);
             this.flowLayoutPanel29.Controls.Add(this.nudFcWaitModeLevel);
-            this.flowLayoutPanel29.Location = new System.Drawing.Point(173, 37);
+            this.flowLayoutPanel29.Location = new System.Drawing.Point(338, 37);
             this.flowLayoutPanel29.Name = "flowLayoutPanel29";
             this.flowLayoutPanel29.Size = new System.Drawing.Size(173, 28);
-            this.flowLayoutPanel29.TabIndex = 6;
+            this.flowLayoutPanel29.TabIndex = 8;
             // 
             // label44
             // 
@@ -2649,13 +2842,14 @@ namespace TrapKATEditor.UI
             this.nudFcWaitModeLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudFcWaitModeLevel.Location = new System.Drawing.Point(119, 3);
             this.nudFcWaitModeLevel.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudFcWaitModeLevel.Name = "nudFcWaitModeLevel";
             this.nudFcWaitModeLevel.Size = new System.Drawing.Size(51, 22);
             this.nudFcWaitModeLevel.TabIndex = 1;
+            this.nudFcWaitModeLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel49
             // 
@@ -2664,10 +2858,10 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel49.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel49.Controls.Add(this.label69);
             this.flowLayoutPanel49.Controls.Add(this.nudHatNoteGate);
-            this.flowLayoutPanel49.Location = new System.Drawing.Point(200, 71);
+            this.flowLayoutPanel49.Location = new System.Drawing.Point(365, 71);
             this.flowLayoutPanel49.Name = "flowLayoutPanel49";
             this.flowLayoutPanel49.Size = new System.Drawing.Size(146, 28);
-            this.flowLayoutPanel49.TabIndex = 7;
+            this.flowLayoutPanel49.TabIndex = 9;
             // 
             // label69
             // 
@@ -2685,23 +2879,29 @@ namespace TrapKATEditor.UI
             this.nudHatNoteGate.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudHatNoteGate.Location = new System.Drawing.Point(92, 3);
             this.nudHatNoteGate.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudHatNoteGate.Name = "nudHatNoteGate";
             this.nudHatNoteGate.Size = new System.Drawing.Size(51, 22);
             this.nudHatNoteGate.TabIndex = 1;
+            this.nudHatNoteGate.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel25
             // 
             this.flowLayoutPanel25.Controls.Add(this.flowLayoutPanel24);
             this.flowLayoutPanel25.Controls.Add(this.flowLayoutPanel56);
             this.flowLayoutPanel25.Controls.Add(this.flowLayoutPanel57);
+            this.flowLayoutPanel25.Controls.Add(this.flowLayoutPanel27);
+            this.flowLayoutPanel25.Controls.Add(this.flowLayoutPanel39);
+            this.flowLayoutPanel25.Controls.Add(this.flowLayoutPanel40);
+            this.flowLayoutPanel25.Controls.Add(this.flowLayoutPanel58);
+            this.flowLayoutPanel25.Controls.Add(this.flowLayoutPanel41);
             this.flowLayoutPanel25.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel25.Location = new System.Drawing.Point(394, 338);
+            this.flowLayoutPanel25.Location = new System.Drawing.Point(6, 473);
             this.flowLayoutPanel25.Name = "flowLayoutPanel25";
-            this.flowLayoutPanel25.Size = new System.Drawing.Size(180, 145);
+            this.flowLayoutPanel25.Size = new System.Drawing.Size(567, 112);
             this.flowLayoutPanel25.TabIndex = 7;
             // 
             // flowLayoutPanel24
@@ -2756,15 +2956,13 @@ namespace TrapKATEditor.UI
             "22",
             "23",
             "24",
-            "25 bass",
-            "26 chick",
-            "27",
-            "28"});
+            "25"});
             this.cbPadDynamics.Location = new System.Drawing.Point(101, 3);
             this.cbPadDynamics.MaxDropDownItems = 28;
             this.cbPadDynamics.Name = "cbPadDynamics";
             this.cbPadDynamics.Size = new System.Drawing.Size(55, 24);
             this.cbPadDynamics.TabIndex = 1;
+            this.cbPadDynamics.SelectedIndexChanged += new System.EventHandler(this.cbPadDynamics_SelectedIndexChanged);
             // 
             // flowLayoutPanel56
             // 
@@ -2772,7 +2970,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel56.AutoSize = true;
             this.flowLayoutPanel56.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel56.Controls.Add(this.label73);
-            this.flowLayoutPanel56.Controls.Add(this.nudDynLowLevel);
+            this.flowLayoutPanel56.Controls.Add(this.nudLowLevel);
             this.flowLayoutPanel56.Location = new System.Drawing.Point(43, 39);
             this.flowLayoutPanel56.Name = "flowLayoutPanel56";
             this.flowLayoutPanel56.Size = new System.Drawing.Size(119, 28);
@@ -2789,18 +2987,19 @@ namespace TrapKATEditor.UI
             this.label73.TabIndex = 0;
             this.label73.Text = "lowLevel";
             // 
-            // nudDynLowLevel
+            // nudLowLevel
             // 
-            this.nudDynLowLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.nudDynLowLevel.Location = new System.Drawing.Point(65, 3);
-            this.nudDynLowLevel.Maximum = new decimal(new int[] {
-            127,
+            this.nudLowLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudLowLevel.Location = new System.Drawing.Point(65, 3);
+            this.nudLowLevel.Maximum = new decimal(new int[] {
+            255,
             0,
             0,
             0});
-            this.nudDynLowLevel.Name = "nudDynLowLevel";
-            this.nudDynLowLevel.Size = new System.Drawing.Size(51, 22);
-            this.nudDynLowLevel.TabIndex = 1;
+            this.nudLowLevel.Name = "nudLowLevel";
+            this.nudLowLevel.Size = new System.Drawing.Size(51, 22);
+            this.nudLowLevel.TabIndex = 1;
+            this.nudLowLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel57
             // 
@@ -2808,7 +3007,8 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel57.AutoSize = true;
             this.flowLayoutPanel57.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel57.Controls.Add(this.label74);
-            this.flowLayoutPanel57.Controls.Add(this.nudDynHighLevel);
+            this.flowLayoutPanel57.Controls.Add(this.nudHighLevel);
+            this.flowLayoutPanel25.SetFlowBreak(this.flowLayoutPanel57, true);
             this.flowLayoutPanel57.Location = new System.Drawing.Point(36, 73);
             this.flowLayoutPanel57.Name = "flowLayoutPanel57";
             this.flowLayoutPanel57.Size = new System.Drawing.Size(126, 28);
@@ -2825,26 +3025,213 @@ namespace TrapKATEditor.UI
             this.label74.TabIndex = 0;
             this.label74.Text = "highLevel";
             // 
-            // nudDynHighLevel
+            // nudHighLevel
             // 
-            this.nudDynHighLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.nudDynHighLevel.Location = new System.Drawing.Point(72, 3);
-            this.nudDynHighLevel.Maximum = new decimal(new int[] {
-            127,
+            this.nudHighLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudHighLevel.Location = new System.Drawing.Point(72, 3);
+            this.nudHighLevel.Maximum = new decimal(new int[] {
+            255,
             0,
             0,
             0});
-            this.nudDynHighLevel.Name = "nudDynHighLevel";
-            this.nudDynHighLevel.Size = new System.Drawing.Size(51, 22);
-            this.nudDynHighLevel.TabIndex = 1;
+            this.nudHighLevel.Name = "nudHighLevel";
+            this.nudHighLevel.Size = new System.Drawing.Size(51, 22);
+            this.nudHighLevel.TabIndex = 1;
+            this.nudHighLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel27
+            // 
+            this.flowLayoutPanel27.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel27.AutoSize = true;
+            this.flowLayoutPanel27.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel27.Controls.Add(this.label46);
+            this.flowLayoutPanel27.Controls.Add(this.nudThresholdManual);
+            this.flowLayoutPanel27.Location = new System.Drawing.Point(168, 3);
+            this.flowLayoutPanel27.Name = "flowLayoutPanel27";
+            this.flowLayoutPanel27.Size = new System.Drawing.Size(170, 28);
+            this.flowLayoutPanel27.TabIndex = 4;
+            // 
+            // label46
+            // 
+            this.label46.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label46.AutoSize = true;
+            this.label46.Location = new System.Drawing.Point(0, 6);
+            this.label46.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label46.Name = "label46";
+            this.label46.Size = new System.Drawing.Size(113, 17);
+            this.label46.TabIndex = 0;
+            this.label46.Text = "thresholdManual";
+            // 
+            // nudThresholdManual
+            // 
+            this.nudThresholdManual.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudThresholdManual.Location = new System.Drawing.Point(116, 3);
+            this.nudThresholdManual.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudThresholdManual.Name = "nudThresholdManual";
+            this.nudThresholdManual.Size = new System.Drawing.Size(51, 22);
+            this.nudThresholdManual.TabIndex = 1;
+            this.nudThresholdManual.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel39
+            // 
+            this.flowLayoutPanel39.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel39.AutoSize = true;
+            this.flowLayoutPanel39.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel39.Controls.Add(this.label47);
+            this.flowLayoutPanel39.Controls.Add(this.nudThresholdActual);
+            this.flowLayoutPanel25.SetFlowBreak(this.flowLayoutPanel39, true);
+            this.flowLayoutPanel39.Location = new System.Drawing.Point(175, 37);
+            this.flowLayoutPanel39.Name = "flowLayoutPanel39";
+            this.flowLayoutPanel39.Size = new System.Drawing.Size(163, 28);
+            this.flowLayoutPanel39.TabIndex = 5;
+            // 
+            // label47
+            // 
+            this.label47.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label47.AutoSize = true;
+            this.label47.Location = new System.Drawing.Point(0, 6);
+            this.label47.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label47.Name = "label47";
+            this.label47.Size = new System.Drawing.Size(106, 17);
+            this.label47.TabIndex = 0;
+            this.label47.Text = "thresholdActual";
+            // 
+            // nudThresholdActual
+            // 
+            this.nudThresholdActual.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudThresholdActual.Location = new System.Drawing.Point(109, 3);
+            this.nudThresholdActual.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudThresholdActual.Name = "nudThresholdActual";
+            this.nudThresholdActual.Size = new System.Drawing.Size(51, 22);
+            this.nudThresholdActual.TabIndex = 1;
+            this.nudThresholdActual.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel40
+            // 
+            this.flowLayoutPanel40.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel40.AutoSize = true;
+            this.flowLayoutPanel40.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel40.Controls.Add(this.label48);
+            this.flowLayoutPanel40.Controls.Add(this.nudUserMargin);
+            this.flowLayoutPanel40.Location = new System.Drawing.Point(363, 3);
+            this.flowLayoutPanel40.Name = "flowLayoutPanel40";
+            this.flowLayoutPanel40.Size = new System.Drawing.Size(136, 28);
+            this.flowLayoutPanel40.TabIndex = 6;
+            // 
+            // label48
+            // 
+            this.label48.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label48.AutoSize = true;
+            this.label48.Location = new System.Drawing.Point(0, 6);
+            this.label48.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label48.Name = "label48";
+            this.label48.Size = new System.Drawing.Size(79, 17);
+            this.label48.TabIndex = 0;
+            this.label48.Text = "userMargin";
+            // 
+            // nudUserMargin
+            // 
+            this.nudUserMargin.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudUserMargin.Location = new System.Drawing.Point(82, 3);
+            this.nudUserMargin.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudUserMargin.Name = "nudUserMargin";
+            this.nudUserMargin.Size = new System.Drawing.Size(51, 22);
+            this.nudUserMargin.TabIndex = 1;
+            this.nudUserMargin.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel58
+            // 
+            this.flowLayoutPanel58.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel58.AutoSize = true;
+            this.flowLayoutPanel58.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel58.Controls.Add(this.label50);
+            this.flowLayoutPanel58.Controls.Add(this.nudInternalMargin);
+            this.flowLayoutPanel58.Location = new System.Drawing.Point(344, 37);
+            this.flowLayoutPanel58.Name = "flowLayoutPanel58";
+            this.flowLayoutPanel58.Size = new System.Drawing.Size(155, 28);
+            this.flowLayoutPanel58.TabIndex = 7;
+            // 
+            // label50
+            // 
+            this.label50.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(0, 6);
+            this.label50.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(98, 17);
+            this.label50.TabIndex = 0;
+            this.label50.Text = "internalMargin";
+            // 
+            // nudInternalMargin
+            // 
+            this.nudInternalMargin.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudInternalMargin.Location = new System.Drawing.Point(101, 3);
+            this.nudInternalMargin.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudInternalMargin.Name = "nudInternalMargin";
+            this.nudInternalMargin.Size = new System.Drawing.Size(51, 22);
+            this.nudInternalMargin.TabIndex = 1;
+            this.nudInternalMargin.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel41
+            // 
+            this.flowLayoutPanel41.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel41.AutoSize = true;
+            this.flowLayoutPanel41.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel41.Controls.Add(this.label61);
+            this.flowLayoutPanel41.Controls.Add(this.nudTrigGain);
+            this.flowLayoutPanel41.Location = new System.Drawing.Point(384, 71);
+            this.flowLayoutPanel41.Name = "flowLayoutPanel41";
+            this.flowLayoutPanel41.Size = new System.Drawing.Size(115, 28);
+            this.flowLayoutPanel41.TabIndex = 8;
+            // 
+            // label61
+            // 
+            this.label61.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(0, 6);
+            this.label61.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(58, 17);
+            this.label61.TabIndex = 0;
+            this.label61.Text = "trigGain";
+            // 
+            // nudTrigGain
+            // 
+            this.nudTrigGain.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudTrigGain.Location = new System.Drawing.Point(61, 3);
+            this.nudTrigGain.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudTrigGain.Name = "nudTrigGain";
+            this.nudTrigGain.Size = new System.Drawing.Size(51, 22);
+            this.nudTrigGain.TabIndex = 1;
             // 
             // flowLayoutPanel10
             // 
             this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel18);
             this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel23);
-            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel41);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel59);
+            this.flowLayoutPanel10.Controls.Add(this.flowLayoutPanel60);
             this.flowLayoutPanel10.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel10.Location = new System.Drawing.Point(394, 192);
+            this.flowLayoutPanel10.Location = new System.Drawing.Point(394, 212);
             this.flowLayoutPanel10.Name = "flowLayoutPanel10";
             this.flowLayoutPanel10.Size = new System.Drawing.Size(179, 140);
             this.flowLayoutPanel10.TabIndex = 5;
@@ -2856,7 +3243,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel18.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel18.Controls.Add(this.label38);
             this.flowLayoutPanel18.Controls.Add(this.nudBcFunction);
-            this.flowLayoutPanel18.Location = new System.Drawing.Point(3, 3);
+            this.flowLayoutPanel18.Location = new System.Drawing.Point(12, 3);
             this.flowLayoutPanel18.Name = "flowLayoutPanel18";
             this.flowLayoutPanel18.Size = new System.Drawing.Size(134, 28);
             this.flowLayoutPanel18.TabIndex = 1;
@@ -2877,13 +3264,14 @@ namespace TrapKATEditor.UI
             this.nudBcFunction.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudBcFunction.Location = new System.Drawing.Point(80, 3);
             this.nudBcFunction.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudBcFunction.Name = "nudBcFunction";
             this.nudBcFunction.Size = new System.Drawing.Size(51, 22);
             this.nudBcFunction.TabIndex = 1;
+            this.nudBcFunction.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel23
             // 
@@ -2892,7 +3280,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel23.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel23.Controls.Add(this.label42);
             this.flowLayoutPanel23.Controls.Add(this.nudBcPolarity);
-            this.flowLayoutPanel23.Location = new System.Drawing.Point(10, 37);
+            this.flowLayoutPanel23.Location = new System.Drawing.Point(19, 37);
             this.flowLayoutPanel23.Name = "flowLayoutPanel23";
             this.flowLayoutPanel23.Size = new System.Drawing.Size(127, 28);
             this.flowLayoutPanel23.TabIndex = 2;
@@ -2913,49 +3301,89 @@ namespace TrapKATEditor.UI
             this.nudBcPolarity.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudBcPolarity.Location = new System.Drawing.Point(73, 3);
             this.nudBcPolarity.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudBcPolarity.Name = "nudBcPolarity";
             this.nudBcPolarity.Size = new System.Drawing.Size(51, 22);
             this.nudBcPolarity.TabIndex = 1;
+            this.nudBcPolarity.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
-            // flowLayoutPanel41
+            // flowLayoutPanel59
             // 
-            this.flowLayoutPanel41.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.flowLayoutPanel41.AutoSize = true;
-            this.flowLayoutPanel41.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.flowLayoutPanel41.Controls.Add(this.label61);
-            this.flowLayoutPanel41.Controls.Add(this.nudTrigGain);
-            this.flowLayoutPanel41.Location = new System.Drawing.Point(22, 71);
-            this.flowLayoutPanel41.Name = "flowLayoutPanel41";
-            this.flowLayoutPanel41.Size = new System.Drawing.Size(115, 28);
-            this.flowLayoutPanel41.TabIndex = 3;
+            this.flowLayoutPanel59.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel59.AutoSize = true;
+            this.flowLayoutPanel59.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel59.Controls.Add(this.label57);
+            this.flowLayoutPanel59.Controls.Add(this.nudBcLowLevel);
+            this.flowLayoutPanel59.Location = new System.Drawing.Point(7, 71);
+            this.flowLayoutPanel59.Name = "flowLayoutPanel59";
+            this.flowLayoutPanel59.Size = new System.Drawing.Size(139, 28);
+            this.flowLayoutPanel59.TabIndex = 3;
             // 
-            // label61
+            // label57
             // 
-            this.label61.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label61.AutoSize = true;
-            this.label61.Location = new System.Drawing.Point(0, 6);
-            this.label61.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
-            this.label61.Name = "label61";
-            this.label61.Size = new System.Drawing.Size(58, 17);
-            this.label61.TabIndex = 0;
-            this.label61.Text = "trigGain";
+            this.label57.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(0, 6);
+            this.label57.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(82, 17);
+            this.label57.TabIndex = 0;
+            this.label57.Text = "bcLowLevel";
             // 
-            // nudTrigGain
+            // nudBcLowLevel
             // 
-            this.nudTrigGain.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.nudTrigGain.Location = new System.Drawing.Point(61, 3);
-            this.nudTrigGain.Maximum = new decimal(new int[] {
-            127,
+            this.nudBcLowLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudBcLowLevel.Location = new System.Drawing.Point(85, 3);
+            this.nudBcLowLevel.Maximum = new decimal(new int[] {
+            255,
             0,
             0,
             0});
-            this.nudTrigGain.Name = "nudTrigGain";
-            this.nudTrigGain.Size = new System.Drawing.Size(51, 22);
-            this.nudTrigGain.TabIndex = 1;
+            this.nudBcLowLevel.Name = "nudBcLowLevel";
+            this.nudBcLowLevel.Size = new System.Drawing.Size(51, 22);
+            this.nudBcLowLevel.TabIndex = 1;
+            this.nudBcLowLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // flowLayoutPanel60
+            // 
+            this.flowLayoutPanel60.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.flowLayoutPanel60.AutoSize = true;
+            this.flowLayoutPanel60.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flowLayoutPanel60.Controls.Add(this.label63);
+            this.flowLayoutPanel60.Controls.Add(this.nudBcHighLevel);
+            this.flowLayoutPanel10.SetFlowBreak(this.flowLayoutPanel60, true);
+            this.flowLayoutPanel60.Location = new System.Drawing.Point(3, 105);
+            this.flowLayoutPanel60.Name = "flowLayoutPanel60";
+            this.flowLayoutPanel60.Size = new System.Drawing.Size(143, 28);
+            this.flowLayoutPanel60.TabIndex = 4;
+            // 
+            // label63
+            // 
+            this.label63.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label63.AutoSize = true;
+            this.label63.Location = new System.Drawing.Point(0, 6);
+            this.label63.Margin = new System.Windows.Forms.Padding(0, 6, 0, 0);
+            this.label63.Name = "label63";
+            this.label63.Size = new System.Drawing.Size(86, 17);
+            this.label63.TabIndex = 0;
+            this.label63.Text = "bcHighLevel";
+            // 
+            // nudBcHighLevel
+            // 
+            this.nudBcHighLevel.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.nudBcHighLevel.Location = new System.Drawing.Point(89, 3);
+            this.nudBcHighLevel.Maximum = new decimal(new int[] {
+            255,
+            0,
+            0,
+            0});
+            this.nudBcHighLevel.Name = "nudBcHighLevel";
+            this.nudBcHighLevel.Size = new System.Drawing.Size(51, 22);
+            this.nudBcHighLevel.TabIndex = 1;
+            this.nudBcHighLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel55
             // 
@@ -2963,7 +3391,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel55.Controls.Add(this.flowLayoutPanel35);
             this.flowLayoutPanel55.Controls.Add(this.flowLayoutPanel36);
             this.flowLayoutPanel55.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel55.Location = new System.Drawing.Point(193, 191);
+            this.flowLayoutPanel55.Location = new System.Drawing.Point(193, 211);
             this.flowLayoutPanel55.Name = "flowLayoutPanel55";
             this.flowLayoutPanel55.Size = new System.Drawing.Size(193, 142);
             this.flowLayoutPanel55.TabIndex = 4;
@@ -2996,13 +3424,14 @@ namespace TrapKATEditor.UI
             this.nudMotifNumber.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudMotifNumber.Location = new System.Drawing.Point(91, 3);
             this.nudMotifNumber.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudMotifNumber.Name = "nudMotifNumber";
             this.nudMotifNumber.Size = new System.Drawing.Size(51, 22);
             this.nudMotifNumber.TabIndex = 1;
+            this.nudMotifNumber.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel35
             // 
@@ -3032,13 +3461,14 @@ namespace TrapKATEditor.UI
             this.nudMotifNumberPerc.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudMotifNumberPerc.Location = new System.Drawing.Point(120, 3);
             this.nudMotifNumberPerc.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudMotifNumberPerc.Name = "nudMotifNumberPerc";
             this.nudMotifNumberPerc.Size = new System.Drawing.Size(51, 22);
             this.nudMotifNumberPerc.TabIndex = 1;
+            this.nudMotifNumberPerc.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel36
             // 
@@ -3068,13 +3498,14 @@ namespace TrapKATEditor.UI
             this.nudMotifNumberMel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudMotifNumberMel.Location = new System.Drawing.Point(113, 3);
             this.nudMotifNumberMel.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudMotifNumberMel.Name = "nudMotifNumberMel";
             this.nudMotifNumberMel.Size = new System.Drawing.Size(51, 22);
             this.nudMotifNumberMel.TabIndex = 1;
+            this.nudMotifNumberMel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel54
             // 
@@ -3083,7 +3514,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel54.Controls.Add(this.flowLayoutPanel32);
             this.flowLayoutPanel54.Controls.Add(this.flowLayoutPanel51);
             this.flowLayoutPanel54.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel54.Location = new System.Drawing.Point(6, 191);
+            this.flowLayoutPanel54.Location = new System.Drawing.Point(6, 211);
             this.flowLayoutPanel54.Name = "flowLayoutPanel54";
             this.flowLayoutPanel54.Size = new System.Drawing.Size(181, 142);
             this.flowLayoutPanel54.TabIndex = 3;
@@ -3116,13 +3547,14 @@ namespace TrapKATEditor.UI
             this.nudKitNumber.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudKitNumber.Location = new System.Drawing.Point(75, 3);
             this.nudKitNumber.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudKitNumber.Name = "nudKitNumber";
             this.nudKitNumber.Size = new System.Drawing.Size(51, 22);
             this.nudKitNumber.TabIndex = 1;
+            this.nudKitNumber.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel33
             // 
@@ -3152,13 +3584,14 @@ namespace TrapKATEditor.UI
             this.nudKitNumberDemo.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudKitNumberDemo.Location = new System.Drawing.Point(112, 3);
             this.nudKitNumberDemo.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudKitNumberDemo.Name = "nudKitNumberDemo";
             this.nudKitNumberDemo.Size = new System.Drawing.Size(51, 22);
             this.nudKitNumberDemo.TabIndex = 1;
+            this.nudKitNumberDemo.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel32
             // 
@@ -3188,13 +3621,14 @@ namespace TrapKATEditor.UI
             this.nudKitNumberUser.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudKitNumberUser.Location = new System.Drawing.Point(105, 3);
             this.nudKitNumberUser.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudKitNumberUser.Name = "nudKitNumberUser";
             this.nudKitNumberUser.Size = new System.Drawing.Size(51, 22);
             this.nudKitNumberUser.TabIndex = 1;
+            this.nudKitNumberUser.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel51
             // 
@@ -3224,13 +3658,14 @@ namespace TrapKATEditor.UI
             this.nudKitNumberKAT.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudKitNumberKAT.Location = new System.Drawing.Point(102, 3);
             this.nudKitNumberKAT.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudKitNumberKAT.Name = "nudKitNumberKAT";
             this.nudKitNumberKAT.Size = new System.Drawing.Size(51, 22);
             this.nudKitNumberKAT.TabIndex = 1;
+            this.nudKitNumberKAT.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel53
             // 
@@ -3238,7 +3673,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel53.Controls.Add(this.flowLayoutPanel45);
             this.flowLayoutPanel53.Controls.Add(this.flowLayoutPanel50);
             this.flowLayoutPanel53.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel53.Location = new System.Drawing.Point(395, 6);
+            this.flowLayoutPanel53.Location = new System.Drawing.Point(395, 26);
             this.flowLayoutPanel53.Name = "flowLayoutPanel53";
             this.flowLayoutPanel53.Size = new System.Drawing.Size(179, 179);
             this.flowLayoutPanel53.TabIndex = 2;
@@ -3271,13 +3706,14 @@ namespace TrapKATEditor.UI
             this.nudGrooveStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudGrooveStatus.Location = new System.Drawing.Point(95, 3);
             this.nudGrooveStatus.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudGrooveStatus.Name = "nudGrooveStatus";
             this.nudGrooveStatus.Size = new System.Drawing.Size(51, 22);
             this.nudGrooveStatus.TabIndex = 1;
+            this.nudGrooveStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel45
             // 
@@ -3314,6 +3750,7 @@ namespace TrapKATEditor.UI
             this.nudGrooveVol.Name = "nudGrooveVol";
             this.nudGrooveVol.Size = new System.Drawing.Size(51, 22);
             this.nudGrooveVol.TabIndex = 1;
+            this.nudGrooveVol.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel50
             // 
@@ -3343,13 +3780,14 @@ namespace TrapKATEditor.UI
             this.grooveAutoOff.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.grooveAutoOff.Location = new System.Drawing.Point(103, 3);
             this.grooveAutoOff.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.grooveAutoOff.Name = "grooveAutoOff";
             this.grooveAutoOff.Size = new System.Drawing.Size(51, 22);
             this.grooveAutoOff.TabIndex = 1;
+            this.grooveAutoOff.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel52
             // 
@@ -3364,7 +3802,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel52.Controls.Add(this.flowLayoutPanel16);
             this.flowLayoutPanel52.Controls.Add(this.flowLayoutPanel19);
             this.flowLayoutPanel52.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel52.Location = new System.Drawing.Point(6, 6);
+            this.flowLayoutPanel52.Location = new System.Drawing.Point(6, 26);
             this.flowLayoutPanel52.Name = "flowLayoutPanel52";
             this.flowLayoutPanel52.Size = new System.Drawing.Size(380, 179);
             this.flowLayoutPanel52.TabIndex = 1;
@@ -3397,13 +3835,14 @@ namespace TrapKATEditor.UI
             this.nudBeeperStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudBeeperStatus.Location = new System.Drawing.Point(96, 3);
             this.nudBeeperStatus.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudBeeperStatus.Name = "nudBeeperStatus";
             this.nudBeeperStatus.Size = new System.Drawing.Size(51, 22);
             this.nudBeeperStatus.TabIndex = 1;
+            this.nudBeeperStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel20
             // 
@@ -3433,13 +3872,14 @@ namespace TrapKATEditor.UI
             this.nudChokeFunction.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudChokeFunction.Location = new System.Drawing.Point(103, 3);
             this.nudChokeFunction.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudChokeFunction.Name = "nudChokeFunction";
             this.nudChokeFunction.Size = new System.Drawing.Size(51, 22);
             this.nudChokeFunction.TabIndex = 1;
+            this.nudChokeFunction.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel30
             // 
@@ -3476,6 +3916,7 @@ namespace TrapKATEditor.UI
             this.nudInstrumentID.Name = "nudInstrumentID";
             this.nudInstrumentID.Size = new System.Drawing.Size(51, 22);
             this.nudInstrumentID.TabIndex = 1;
+            this.nudInstrumentID.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel37
             // 
@@ -3505,13 +3946,14 @@ namespace TrapKATEditor.UI
             this.nudMidiMergeStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudMidiMergeStatus.Location = new System.Drawing.Point(116, 3);
             this.nudMidiMergeStatus.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudMidiMergeStatus.Name = "nudMidiMergeStatus";
             this.nudMidiMergeStatus.Size = new System.Drawing.Size(51, 22);
             this.nudMidiMergeStatus.TabIndex = 1;
+            this.nudMidiMergeStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel42
             // 
@@ -3519,10 +3961,10 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel42.AutoSize = true;
             this.flowLayoutPanel42.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel42.Controls.Add(this.label62);
-            this.flowLayoutPanel42.Controls.Add(this.nudPrgChgRcvChn);
+            this.flowLayoutPanel42.Controls.Add(this.cbPrgChgRcvChn);
             this.flowLayoutPanel42.Location = new System.Drawing.Point(13, 139);
             this.flowLayoutPanel42.Name = "flowLayoutPanel42";
-            this.flowLayoutPanel42.Size = new System.Drawing.Size(160, 28);
+            this.flowLayoutPanel42.Size = new System.Drawing.Size(160, 30);
             this.flowLayoutPanel42.TabIndex = 5;
             // 
             // label62
@@ -3536,18 +3978,35 @@ namespace TrapKATEditor.UI
             this.label62.TabIndex = 0;
             this.label62.Text = "prgChgRcvChn";
             // 
-            // nudPrgChgRcvChn
+            // cbPrgChgRcvChn
             // 
-            this.nudPrgChgRcvChn.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.nudPrgChgRcvChn.Location = new System.Drawing.Point(106, 3);
-            this.nudPrgChgRcvChn.Maximum = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            this.nudPrgChgRcvChn.Name = "nudPrgChgRcvChn";
-            this.nudPrgChgRcvChn.Size = new System.Drawing.Size(51, 22);
-            this.nudPrgChgRcvChn.TabIndex = 1;
+            this.cbPrgChgRcvChn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPrgChgRcvChn.FormattingEnabled = true;
+            this.cbPrgChgRcvChn.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+            "16",
+            "All",
+            "Off"});
+            this.cbPrgChgRcvChn.Location = new System.Drawing.Point(106, 3);
+            this.cbPrgChgRcvChn.MaxDropDownItems = 18;
+            this.cbPrgChgRcvChn.Name = "cbPrgChgRcvChn";
+            this.cbPrgChgRcvChn.Size = new System.Drawing.Size(51, 24);
+            this.cbPrgChgRcvChn.TabIndex = 1;
+            this.cbPrgChgRcvChn.SelectedIndexChanged += new System.EventHandler(this.cbPrgChgRcvChn_SelectedIndexChanged);
             // 
             // flowLayoutPanel43
             // 
@@ -3577,13 +4036,14 @@ namespace TrapKATEditor.UI
             this.nudDisplayAngle.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudDisplayAngle.Location = new System.Drawing.Point(91, 3);
             this.nudDisplayAngle.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudDisplayAngle.Name = "nudDisplayAngle";
             this.nudDisplayAngle.Size = new System.Drawing.Size(51, 22);
             this.nudDisplayAngle.TabIndex = 1;
+            this.nudDisplayAngle.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel44
             // 
@@ -3613,13 +4073,14 @@ namespace TrapKATEditor.UI
             this.nudPlayMode.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudPlayMode.Location = new System.Drawing.Point(72, 3);
             this.nudPlayMode.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudPlayMode.Name = "nudPlayMode";
             this.nudPlayMode.Size = new System.Drawing.Size(51, 22);
             this.nudPlayMode.TabIndex = 1;
+            this.nudPlayMode.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel48
             // 
@@ -3649,13 +4110,14 @@ namespace TrapKATEditor.UI
             this.nudNoteNamesStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudNoteNamesStatus.Location = new System.Drawing.Point(123, 3);
             this.nudNoteNamesStatus.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudNoteNamesStatus.Name = "nudNoteNamesStatus";
             this.nudNoteNamesStatus.Size = new System.Drawing.Size(51, 22);
             this.nudNoteNamesStatus.TabIndex = 1;
+            this.nudNoteNamesStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel16
             // 
@@ -3685,13 +4147,14 @@ namespace TrapKATEditor.UI
             this.nudTTMeter.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudTTMeter.Location = new System.Drawing.Point(55, 3);
             this.nudTTMeter.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudTTMeter.Name = "nudTTMeter";
             this.nudTTMeter.Size = new System.Drawing.Size(51, 22);
             this.nudTTMeter.TabIndex = 1;
+            this.nudTTMeter.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel19
             // 
@@ -3721,20 +4184,33 @@ namespace TrapKATEditor.UI
             this.nudHearSoundStatus.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudHearSoundStatus.Location = new System.Drawing.Point(121, 3);
             this.nudHearSoundStatus.Maximum = new decimal(new int[] {
-            127,
+            255,
             0,
             0,
             0});
             this.nudHearSoundStatus.Name = "nudHearSoundStatus";
             this.nudHearSoundStatus.Size = new System.Drawing.Size(51, 22);
             this.nudHearSoundStatus.TabIndex = 1;
+            this.nudHearSoundStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
+            // 
+            // label25
+            // 
+            this.label25.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(80, 706);
+            this.label25.Margin = new System.Windows.Forms.Padding(24, 0, 3, 0);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(449, 17);
+            this.label25.TabIndex = 1;
+            this.label25.Text = "MIDI OX SysEx Transmit: 32 bytes, 512 buffers, 16ms between buffers";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(590, 715);
+            this.ClientSize = new System.Drawing.Size(590, 721);
+            this.Controls.Add(this.label25);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.msMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -3814,6 +4290,7 @@ namespace TrapKATEditor.UI
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
             this.flowLayoutPanel26.ResumeLayout(false);
             this.flowLayoutPanel26.PerformLayout();
             this.flowLayoutPanel38.ResumeLayout(false);
@@ -3825,12 +4302,18 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel22.ResumeLayout(false);
             this.flowLayoutPanel22.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFcPolarity)).EndInit();
-            this.flowLayoutPanel47.ResumeLayout(false);
-            this.flowLayoutPanel47.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFcSplashEase)).EndInit();
             this.flowLayoutPanel28.ResumeLayout(false);
             this.flowLayoutPanel28.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFcVelocityLevel)).EndInit();
+            this.flowLayoutPanel61.ResumeLayout(false);
+            this.flowLayoutPanel61.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFcLowLevel)).EndInit();
+            this.flowLayoutPanel62.ResumeLayout(false);
+            this.flowLayoutPanel62.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFcHighLevel)).EndInit();
+            this.flowLayoutPanel47.ResumeLayout(false);
+            this.flowLayoutPanel47.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudFcSplashEase)).EndInit();
             this.flowLayoutPanel29.ResumeLayout(false);
             this.flowLayoutPanel29.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudFcWaitModeLevel)).EndInit();
@@ -3843,10 +4326,25 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel24.PerformLayout();
             this.flowLayoutPanel56.ResumeLayout(false);
             this.flowLayoutPanel56.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDynLowLevel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudLowLevel)).EndInit();
             this.flowLayoutPanel57.ResumeLayout(false);
             this.flowLayoutPanel57.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudDynHighLevel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudHighLevel)).EndInit();
+            this.flowLayoutPanel27.ResumeLayout(false);
+            this.flowLayoutPanel27.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudThresholdManual)).EndInit();
+            this.flowLayoutPanel39.ResumeLayout(false);
+            this.flowLayoutPanel39.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudThresholdActual)).EndInit();
+            this.flowLayoutPanel40.ResumeLayout(false);
+            this.flowLayoutPanel40.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudUserMargin)).EndInit();
+            this.flowLayoutPanel58.ResumeLayout(false);
+            this.flowLayoutPanel58.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudInternalMargin)).EndInit();
+            this.flowLayoutPanel41.ResumeLayout(false);
+            this.flowLayoutPanel41.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudTrigGain)).EndInit();
             this.flowLayoutPanel10.ResumeLayout(false);
             this.flowLayoutPanel10.PerformLayout();
             this.flowLayoutPanel18.ResumeLayout(false);
@@ -3855,9 +4353,12 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel23.ResumeLayout(false);
             this.flowLayoutPanel23.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBcPolarity)).EndInit();
-            this.flowLayoutPanel41.ResumeLayout(false);
-            this.flowLayoutPanel41.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudTrigGain)).EndInit();
+            this.flowLayoutPanel59.ResumeLayout(false);
+            this.flowLayoutPanel59.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBcLowLevel)).EndInit();
+            this.flowLayoutPanel60.ResumeLayout(false);
+            this.flowLayoutPanel60.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudBcHighLevel)).EndInit();
             this.flowLayoutPanel55.ResumeLayout(false);
             this.flowLayoutPanel55.PerformLayout();
             this.flowLayoutPanel34.ResumeLayout(false);
@@ -3910,7 +4411,6 @@ namespace TrapKATEditor.UI
             ((System.ComponentModel.ISupportInitialize)(this.nudMidiMergeStatus)).EndInit();
             this.flowLayoutPanel42.ResumeLayout(false);
             this.flowLayoutPanel42.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudPrgChgRcvChn)).EndInit();
             this.flowLayoutPanel43.ResumeLayout(false);
             this.flowLayoutPanel43.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudDisplayAngle)).EndInit();
@@ -4070,7 +4570,6 @@ namespace TrapKATEditor.UI
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel12;
         private System.Windows.Forms.ComboBox cbCurrentKit;
         private System.Windows.Forms.Label lbKitDataChanged;
-        private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label36;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel15;
         private System.Windows.Forms.ComboBox cbHHPad1;
@@ -4126,7 +4625,6 @@ namespace TrapKATEditor.UI
         private System.Windows.Forms.NumericUpDown nudMidiMergeStatus;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel42;
         private System.Windows.Forms.Label label62;
-        private System.Windows.Forms.NumericUpDown nudPrgChgRcvChn;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel43;
         private System.Windows.Forms.Label label58;
         private System.Windows.Forms.NumericUpDown nudDisplayAngle;
@@ -4149,9 +4647,6 @@ namespace TrapKATEditor.UI
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel23;
         private System.Windows.Forms.Label label42;
         private System.Windows.Forms.NumericUpDown nudBcPolarity;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel41;
-        private System.Windows.Forms.Label label61;
-        private System.Windows.Forms.NumericUpDown nudTrigGain;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel26;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel38;
         private System.Windows.Forms.Label label56;
@@ -4162,28 +4657,58 @@ namespace TrapKATEditor.UI
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel22;
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.NumericUpDown nudFcPolarity;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel47;
-        private System.Windows.Forms.Label label65;
-        private System.Windows.Forms.NumericUpDown nudFcSplashEase;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel28;
-        private System.Windows.Forms.Label label39;
-        private System.Windows.Forms.NumericUpDown nudFcVelocityLevel;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel29;
-        private System.Windows.Forms.Label label44;
-        private System.Windows.Forms.NumericUpDown nudFcWaitModeLevel;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel49;
-        private System.Windows.Forms.Label label69;
-        private System.Windows.Forms.NumericUpDown nudHatNoteGate;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel25;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel24;
         private System.Windows.Forms.Label label34;
         private System.Windows.Forms.ComboBox cbPadDynamics;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel56;
         private System.Windows.Forms.Label label73;
-        private System.Windows.Forms.NumericUpDown nudDynLowLevel;
+        private System.Windows.Forms.NumericUpDown nudLowLevel;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel57;
         private System.Windows.Forms.Label label74;
-        private System.Windows.Forms.NumericUpDown nudDynHighLevel;
+        private System.Windows.Forms.NumericUpDown nudHighLevel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel27;
+        private System.Windows.Forms.Label label46;
+        private System.Windows.Forms.NumericUpDown nudThresholdManual;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel39;
+        private System.Windows.Forms.Label label47;
+        private System.Windows.Forms.NumericUpDown nudThresholdActual;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel40;
+        private System.Windows.Forms.Label label48;
+        private System.Windows.Forms.NumericUpDown nudUserMargin;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel58;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.NumericUpDown nudInternalMargin;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel28;
+        private System.Windows.Forms.Label label39;
+        private System.Windows.Forms.NumericUpDown nudFcVelocityLevel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel41;
+        private System.Windows.Forms.Label label61;
+        private System.Windows.Forms.NumericUpDown nudTrigGain;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel59;
+        private System.Windows.Forms.Label label57;
+        private System.Windows.Forms.NumericUpDown nudBcLowLevel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel60;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.NumericUpDown nudBcHighLevel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel61;
+        private System.Windows.Forms.Label label66;
+        private System.Windows.Forms.NumericUpDown nudFcLowLevel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel62;
+        private System.Windows.Forms.Label label75;
+        private System.Windows.Forms.NumericUpDown nudFcHighLevel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel47;
+        private System.Windows.Forms.Label label65;
+        private System.Windows.Forms.NumericUpDown nudFcSplashEase;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel29;
+        private System.Windows.Forms.Label label44;
+        private System.Windows.Forms.NumericUpDown nudFcWaitModeLevel;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel49;
+        private System.Windows.Forms.Label label69;
+        private System.Windows.Forms.NumericUpDown nudHatNoteGate;
+        private System.Windows.Forms.Label lbGlobalDataChanged;
+        private System.Windows.Forms.ComboBox cbPrgChgRcvChn;
+        private System.Windows.Forms.Label label25;
     }
 }
 

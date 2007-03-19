@@ -31,7 +31,7 @@ namespace TrapKATEditor.Data
         public Gate(System.IO.BinaryReader r) : base(r) { }
 
         protected override void Unserialize(System.IO.BinaryReader r) { gate = r.ReadByte(); }
-        public void Serialize(System.IO.BinaryWriter w) { w.Write(gate); }
+        public override void Serialize(System.IO.BinaryWriter w) { w.Write(gate); }
 
         static List<String> mode = new List<string>(new string[] { "Latch Mode", "Infinite", "Roll Mode", });
         public static List<String> Modes { get { return mode; } }
