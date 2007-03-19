@@ -42,7 +42,7 @@ namespace TrapKATEditor.Data
         HHPadList hhPads = null;
 
         byte bank;
-        byte fcChannel;
+        byte fcChannel = 16;
         Curve fcCurve;
         byte bankMSB;
         byte bankLSB;

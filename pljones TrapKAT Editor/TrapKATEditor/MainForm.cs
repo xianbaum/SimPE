@@ -364,7 +364,7 @@ namespace TrapKATEditor.UI
             if (currentKit != null)
                 currentKit.DataChanged -= new EventHandler(currentKit_DataChanged);
             currentKit = MainProgram.CurrentAllMemory[cbCurrentKit.SelectedIndex];
-            currentKit.DataChanged += new EventHandler(currentGlobal_DataChanged);
+            currentKit.DataChanged += new EventHandler(currentKit_DataChanged);
             currentKit_DataChanged(null, null);
 
             internalchg = true;
@@ -513,6 +513,33 @@ namespace TrapKATEditor.UI
             // If setting As Chick, ask first
             CheckBox ckb = (CheckBox)sender;
             nudFCChannel.Enabled = !ckb.Checked;
+            internalchg = true;
+            if (ckb.Checked)
+            {
+                currentKit.FcChannel = 16;
+                nudFCChannel.Value = currentKit[25].Channel + 1;
+            }
+            else
+                currentKit.FcChannel = (byte)(nudFCChannel.Value - 1);
+            internalchg = false;
+        }
+
+        private void ckbNoVolume_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            // If setting Off, ask first
+            CheckBox ckb = (CheckBox)sender;
+            nudVolume.Enabled = !ckb.Checked;
+
+            internalchg = true;
+            if (ckb.Checked)
+            {
+                currentKit.Volume = 128;
+                nudVolume.Value = 0;
+            }
+            else
+                currentKit.Volume = (byte)nudVolume.Value;
+            internalchg = false;
         }
 
         private void ckbNoPrgChg_CheckedChanged(object sender, EventArgs e)
@@ -521,6 +548,16 @@ namespace TrapKATEditor.UI
             // If setting Off, ask first
             CheckBox ckb = (CheckBox)sender;
             nudPrgChg.Enabled = !ckb.Checked;
+
+            internalchg = true;
+            if (ckb.Checked)
+            {
+                currentKit.PrgChg = 128;
+                nudPrgChg.Value = 0;
+            }
+            else
+                currentKit.PrgChg = (byte)nudPrgChg.Value;
+            internalchg = false;
         }
 
         private void cbHHPad_SelectedIndexChanged(object sender, EventArgs e)

@@ -671,7 +671,7 @@ namespace TrapKATEditor.UI
             // tsmiHelpAbout
             // 
             this.tsmiHelpAbout.Name = "tsmiHelpAbout";
-            this.tsmiHelpAbout.Size = new System.Drawing.Size(152, 22);
+            this.tsmiHelpAbout.Size = new System.Drawing.Size(144, 22);
             this.tsmiHelpAbout.Text = "&About...";
             this.tsmiHelpAbout.Click += new System.EventHandler(this.tsmiHelpAbout_Click);
             // 
@@ -1435,18 +1435,14 @@ namespace TrapKATEditor.UI
             this.ckbNoPrgChg.TabIndex = 3;
             this.ckbNoPrgChg.Text = "Off";
             this.ckbNoPrgChg.UseVisualStyleBackColor = true;
+            this.ckbNoPrgChg.CheckedChanged += new System.EventHandler(this.ckbNoPrgChg_CheckedChanged);
             // 
             // nudPrgChg
             // 
             this.nudPrgChg.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.nudPrgChg.Location = new System.Drawing.Point(4, 20);
             this.nudPrgChg.Maximum = new decimal(new int[] {
-            128,
-            0,
-            0,
-            0});
-            this.nudPrgChg.Minimum = new decimal(new int[] {
-            1,
+            127,
             0,
             0,
             0});
@@ -1618,6 +1614,7 @@ namespace TrapKATEditor.UI
             this.ckbVarMinVel.TabIndex = 2;
             this.ckbVarMinVel.Text = "Var.";
             this.ckbVarMinVel.UseVisualStyleBackColor = true;
+            this.ckbVarMinVel.CheckedChanged += new System.EventHandler(this.ckbVarMinVel_CheckedChanged);
             // 
             // ckbVarMaxVel
             // 
@@ -1630,6 +1627,7 @@ namespace TrapKATEditor.UI
             this.ckbVarMaxVel.TabIndex = 4;
             this.ckbVarMaxVel.Text = "Var.";
             this.ckbVarMaxVel.UseVisualStyleBackColor = true;
+            this.ckbVarMaxVel.CheckedChanged += new System.EventHandler(this.ckbVarMaxVel_CheckedChanged);
             // 
             // nudKitMinVel
             // 
@@ -1763,6 +1761,7 @@ namespace TrapKATEditor.UI
             this.ckbNoVolume.TabIndex = 5;
             this.ckbNoVolume.Text = "Off";
             this.ckbNoVolume.UseVisualStyleBackColor = true;
+            this.ckbNoVolume.CheckedChanged += new System.EventHandler(this.ckbNoVolume_CheckedChanged);
             // 
             // groupBox2
             // 

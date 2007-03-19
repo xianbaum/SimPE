@@ -1,3 +1,8 @@
+2007-03-19 22:46 A few oopses fixed
+	Mainly Kit.DataChanged was being handled by Global_DataChanged...
+	And some of the checkboxes weren't active.
+	(I've probably left plenty more bugs for later...)
+
 2007-03-19 17:42 A hard day's work and an release, I think..!
 	Make DataItem abstract and add Serialize method, remove unused code
 		AllMemory.cs 1.3
