@@ -30,6 +30,7 @@ Section
 SectionEnd
 
 Section "Uninstall"
+  RMDir /r $INSTDIR\TrapKATEditor_Help
   Delete $INSTDIR\TrapKATEditor.exe
   Delete $INSTDIR\TrapKATEditorLocalisation.dll
   Delete $INSTDIR\TrapKATEditorUpdateTool.dll
@@ -38,6 +39,7 @@ Section "Uninstall"
   Delete $INSTDIR\TrapKATEditorLocalisation.pdb
   Delete $INSTDIR\TrapKATEditorUpdateTool.pdb
   Delete $INSTDIR\uninstall.exe
+  Delete $INSTDIR\TKReInit.syx
   Delete $INSTDIR\CHANGES.txt
   Delete $INSTDIR\LICENSE.txt
   Delete $INSTDIR\version.txt

@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
@@ -89,6 +90,11 @@ namespace TrapKATEditor.UI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Updates.Checker.Daily();
+            internalchg = true;
+            tsmiHelpCheckState.Checked = Updates.Settings.UpdateAutomatically;
+            internalchg = false;
+
             MainProgram.AllMemoryChanged += new EventHandler(MainProgram_AllMemoryChanged);
             MainProgram.KitChanged += new EventHandler(MainProgram_KitChanged);
             MainProgram_AllMemoryChanged(null, null);
@@ -166,6 +172,48 @@ namespace TrapKATEditor.UI
         {
             if (!okayToSplat()) return;
             this.Close();
+        }
+        #endregion
+
+
+        #region Help Menu
+        private void tsmiHelpContents_Click(object sender, EventArgs e)
+        {
+            String s = System.IO.Path.GetDirectoryName(this.GetType().Assembly.Location);
+            s = System.IO.Path.Combine(s, "TrapKATEditor_Help\\index.html");
+            if (System.IO.File.Exists(s))
+                Process.Start(new ProcessStartInfo(s));
+            else
+                MessageBox.Show(L.G("helpNotFound"), L.G("helpPopupTitle"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
+        }
+
+        private void tsmiHelpCheck_Click(object sender, EventArgs e)
+        {
+            if (!Updates.Checker.GetUpdate(false))
+                System.Windows.Forms.MessageBox.Show(L.G("UHNoUpdate"), L.G("TrapKATEditor_UpdateSettings"));
+        }
+
+        private void tsmiHelpCheckState_Click(object sender, EventArgs e)
+        {
+            if (internalchg == true) return;
+            ToolStripMenuItem tsmi = (ToolStripMenuItem)sender;
+            if (Updates.Settings.UpdateAutomatically = tsmi.Checked) Updates.Checker.Daily(); // yum. beware code like this.
+        }
+
+        private void tsmiHelpAbout_Click(object sender, EventArgs e)
+        {
+            string[] s = { "UTAskMe", "UTDaily", "UTManual" };
+            System.Windows.Forms.MessageBox.Show(""
+                + L.G("helpAboutCaption")
+                + "\r\n"
+                + L.G("helpAboutVersion") + ": " + Version.BuildTS
+                + "\r\n"
+                + "\r\n" + L.G("helpAboutUC") + ": " + L.G(s[Updates.Settings.AutoUpdateChoice])
+                + "\r\n" + L.G("helpAboutUU") + ": " + Updates.Settings.AutoUpdateURL
+                + "\r\n" + L.G("helpAboutLU") + ": " + Updates.Settings.LastUpdateTS.ToString()
+                , L.G("helpAboutCaption")
+            );
         }
         #endregion
 
@@ -889,17 +937,5 @@ namespace TrapKATEditor.UI
             tsmiFileSaveAllMemory.ShortcutKeys = tsmiFileSaveAllMemory.Enabled ? Keys.Control | Keys.S : Keys.None;
         }
         #endregion
-
-        private void tsmiHelpAbout_Click(object sender, EventArgs e)
-        {
-            System.Windows.Forms.MessageBox.Show(
-                L.G("helpAboutVersion") + ": " + Version.BuildTS
-                + "\r\n"
-                + "\r\n" + L.G("helpAboutUC") + ": " + TrapKATEditorUpdateTool.PublicSettings.AutoUpdateChoice
-                + "\r\n" + L.G("helpAboutUU") + ": " + TrapKATEditorUpdateTool.PublicSettings.AutoUpdateURL
-                + "\r\n" + L.G("helpAboutLU") + ": " + TrapKATEditorUpdateTool.PublicSettings.LastUpdateTS
-                , L.G("helpPJSEAboutCaption")
-            );
-        }
     }
 }

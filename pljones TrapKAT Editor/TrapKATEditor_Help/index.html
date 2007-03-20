@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" >
+<head>
+<title>pljones TrapKAT Editor</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+<style type="text/css">
+.hilite { background-color: #fffff0; color: maroon; border: dotted 1pt yellow; line-height: 1.5}
+.u { text-decoration: underline; }
+</style>
+</head>
+
+<body>
+<h1>TrapKAT Editor: Contents</h1>
+<ol>
+<li><a href="#s0">Introduction</a></li>
+<li><a href="#s1">Loading files, editing files</a></li>
+<li><a href="#s2">Auto-updates</a></li>
+<li><a href="#s3">Getting data in and out of your TrapKAT</a></li>
+</ol>
+<h1><a id="s0">Introduction</a></h1>
+<p>The fact you&apos;re reading this introduction means you&apos;ve hopefully
+managed to download and install the TrapKAT editor successfully.</p>
+<p>This help page doesn&apos;t go into all the details of what all the settings on your
+TrapKAT mean - you still need the manual for that.</p>
+<p>If this page doesn&apos;t answer a question about the editor,
+please feel free to post a bug!  Use the Sourceforge Project Tracker, once it&apos;s available.</p>
+<p>The editor is just that.
+It can load and edit "data dumps" produced by your TrapKAT.
+It cannot receive dumps from or transmit dumps to it, though.
+For that, I recommend <a href="http://www.midiox.com/">MIDI-OX</a>.
+There&apos;s a brief summary of how to use it below.</p>
+<p>The software includes an auto-update system.
+This is mainly useful because of the immature nature of the program.
+I&apos;m expecting to be releasing bugfixes and updates on a very regular basis.
+More on this below, too.</p>
+<p>But first, the important bit..!</p>
+<h1><a id="s1">Loading files, editing files</a></h1>
+<p>When you first start the editor, you&apos;re presented with a set of values which
+may well end up looking like the factory defaults but are currently fairly random.
+You&apos;ll want to load something more useful.</p>
+<p>The <span class="hilite"><span class="u">F</span>ile</span> menu contains the usual options:</p>
+<ul>
+<li><span class="hilite"><span class="u">N</span>ew</span> to get back to this initial state</li>
+<li><span class="hilite"><span class="u">O</span>pen</span> to pick a data dump to edit</li>
+<li><span class="hilite"><span class="u">S</span>ave <em>type</em></span> to save an edited data dump</li>
+<li><span class="hilite">Save <span class="u">A</span>s <em>type</em></span> to save a data dump under a new name</li>
+<li><span class="hilite"><span class="u">C</span>lose</span> or <span class="hilite">E<span class="u">x</span>it</span> to quit the program</li>
+</ul>
+<p>The <em>type</em> represents one of</p>
+<ul>
+<li>All memory</li>
+<li>Global</li>
+<li>Kit</li>
+</ul>
+<p>reflecting the different data dumps that the TrapKAT can send.
+<span class="u">O</span>pen</span> understands the different types and remembers the
+filename, so if you just do <q>Ctrl-S</q> you will save the appropriate kind of dump.</p>
+<p>You can load a Kit dump into <em>any</em> kit location.  Saving a kit dump will give
+it the kit number of the location it is saved from.
+When you send the dump to the TrapKAT, it will load into that kit number.</p>
+<p>To get you going (and in case of emergency...), I include <q>TKReInit.syx</q>
+in the program folder.
+This is the state of my TrapKAT after doing a Reinitialise.
+Currently, it&apos;s a better starting point than you get with
+<span class="hilite"><span class="u">F</span>ile</span>-&gt;<span class="hilite"><span class="u">N</span>ew</span>,
+so load that up and have a look around the editing screens.</p>
+<p>There are two main screens:</p>
+<ol>
+<li><a href="#s2_1">Kits &amp; Pads</a></li>
+<li><a href="#s2_2">Global</a></li>
+</ol>
+<h2 id="s2_1">Kits &amp; Pads</h2>
+<p>Obviously, this splits into two parts:</p>
+<ol>
+<li><a href="#s2_1_1">Kit Editor</a></li>
+<li><a href="#s2_1_2">Pad Editor</a></li>
+</ol>
+<h3 id="s2_1_1">Kit Editor</h3>
+<p>Hopefully all this is pretty much self-explanatory.
+The <q>Select Kit:</q> drop down lets you select which of the 24 user kits you want to edit.
+The kit names are listed as a quick reminder, if you&apos;ve been naming them.</p>
+<p>The <q>Various</q> (and <q>Var.</q>) check boxes around the form indicate whether or not
+individual pad settings apply.
+You have to check the box to enable the equivalent Pad Editor input.</p>
+<p>Gate times can be entered freeform but will round down to the nearest available setting.
+The drop down list can be used to pick <q>Latch mode</q>, <q>Infinite</q> or <q>Roll Mode</q>.</p>
+<h3 id="s2_1_2">Pad Editor</h3>
+<p>The <q>Select Pad:</q> drop down lets you select which of the 24 main pads you want to edit.
+Pad 25 is the bass/kick pedal.  Pad 26 is the "chick" sound.
+I&apos;m not sure what 27 and 28 are.  Maybe Hat Note Mode stuff??</p>
+<p>Notes 1 to 6 are used with the advanced Curve settings.
+Note 2 is the <q>Open</q> sound on a Hihat pad (a pad with Flag 7 checked).
+You can enter notes as MIDI note numbers (0 to 127) or musical notes like C#4.
+C4 is MIDI note 60.
+(I might make a setting to allow C3 to be MIDI note 60 at some point..!)
+The drop down allows the non-note value settings to be chosen.
+</p>
+<p>As mentioned, Flag 7 indicates a pad is a Hihat pad.  It can be fiddled with independently
+from the <q>Hihat Pads:</q> for the kit... so take care!
+Flag 6 is documented as <q>Motif</q> - maybe other uses for those six notes..?</p>
+<h2 id="s2_2">Global</h2>
+<p>The Global editor is currently a little <q>rough&apos;n&apos;ready</q>.
+I&apos;ll be making it prettier shortly - i.e. putting meaningful dropdown boxes in appropriate
+locations.
+For the time being, just use it carefully...</p>
+<h1><a id="s2">Auto-updates</a></h1>
+<p>The editor has a built-in update facility.
+When you first run it (and after each update - might take that out...), you'll be asked
+whether you want the program to check for new versions automatically.
+It will check at <em>most</em> once per day.
+It can&apos;t check if you don&apos;t run it, either.</p>
+<p>If you say <q>No</q>, you can check manually using
+<span class="hilite"><span class="u">H</span>elp</span>-&gt;<span
+class="hilite"><span class="u">C</span>heck for update...</span>
+or switch to automatic checking with
+<span class="hilite"><span class="u">H</span>elp</span>-&gt;<span
+class="hilite"><span class="u">C</span>heck automatically</span>.
+That menu option will be checked to indicate it's selected.<p>
+<p><span class="hilite"><span class="u">H</span>elp</span>-&gt;<span
+class="hilite"><span class="u">A</span>bout</span>
+gives you details of your current version and what your update settings are.
+You&apos;ll notice the <q>Update URL:</q> field - that&apos;s where the software goes
+to find out if there is a new version.</p>
+<h1><a id="s3">Getting data in and out of your TrapKAT</a></h1>
+<p>As mentioned in the <a href="#s0">Introduction</a>, the editor provides no means
+for receiving data dumps from or sending data dumps to the TrapKAT.
+I recommend <a href="http://www.midiox.com/">MIDI-OX</a>.<p>
+<p>It can be a painless process.
+Receiving data is generally not a problem at all.
+However, sending data can take some gentle tuning to get it to work.
+The reason is that modern PCs send data much, much faster than some hardware
+was expecting to receive it at (even within the MIDI spec).
+With a MIDI data dump, the receiver is expected to handle 21,364 bytes arriving
+near enough at the same time.
+No problem for a PC, as I say.  But it helps to slow things down for the TrapKAT.</p>
+<p>At the bottom of the editor window I had put a line of text as a reminder of the
+settings in MIDI-OX that work for me.</p>
+<p>Right, I better explain MIDI-OX, then!</p>
+<h2>Basic set up</h2>
+<p>Get wired up simply.
+MIDI Out from the TrapKAT to MIDI In on your PC.
+MIDI Out from your PC to MIDI In on the TrapKAT.
+(You might want to have other devices on the way in either direction but it&apos;s
+safest to start with these out of the way.  Then, when you reconnect them, you can tell
+if they cause a problem.)</p>
+<p>Run MIDI OX and make sure you have it receiving normal data from your TrapKAT.
+In MIDI-OX, go to
+<span class="hilite"><span class="u">O</span>ptions</span>-&gt;<span
+class="hilite"><span class="u">M</span>IDI Devices...</span>.
+Make sure you have your MIDI In port selected under <q>MIDI Inputs:</q>.
+Make sure you have your MIDI Out port selected under <q>MIDI Outputs:</q>.
+Under <q>Port Mappings:</q>, expand the entry for your MIDI Out port and make sure
+there is an entry saying <q>MIDI-OX Events</q>.</p>
+<p>Click the <q>OK</q> button.
+Then select
+<span class="hilite"><span class="u">V</span>iew</span>-&gt;<span
+class="hilite"><span class="u">I</span>nput Monitor...</span>
+to bring up the display of input messages.
+The main output monitor should already be displayed.  If not,
+click the fifth icon on the toolbar, <q>Main Output Monitor</q>.
+<p>Turn your TrapKAT on and hit a pad once it&apos;s ready.
+You should see the MIDI message appear in MIDI-OX if you have everything set up right.
+If not, shout for help!</p>
+<p>All data dump handling is done using MIDI-OX&apos;s SysEx tool, so do
+<span class="hilite"><span class="u">V</span>iew</span>-&gt;<span
+class="hilite"><span class="u">S</span>ysEx...</span>
+to get there.</p>
+<h2>Receiving a MIDI Data Dump in MIDI-OX</h2>
+<p>Receiving a dump consists of two actions:</p>
+<ol>
+<li>Tell the receiver to listen.</li>
+<li>Tell the transmitter to send.</li>
+</ol>
+<p>It&apos;s important to do it in that order or you'll miss the begining of the message!</p>
+<p>In the MIDI-OX <q>SysEx View and Scratchpad</q>, do
+<span class="hilite"><span class="u">S</span>ysex</span>-&gt;<span
+class="hilite">Receive <span class="u">M</span>anual dump</span>
+to ready.
+Then on the TrapKAT, do Global footswitch, Pad 10, Pad 10 to do an All Memory dump.
+Once the TrapKAT completes, click the <q>Done</q> button on MIDI-OX.
+The <q>Display Window</q> will be full of numbers and letters representing the
+hexadecimal data that has been received.
+</p>
+<p>This needs to be saved to disk before it can be loaded into the editor.
+Do
+<span class="hilite"><span class="u">D</span>isplay Window</span>-&gt;<span
+class="hilite">Save <span class="u">A</span>s</span>
+and save the file somewhere you&apos;ll be able to find it later!</p>
+<h2>Transmitting a MIDI Data Dump in MIDI-OX</h2>
+<p>This is where life gets tricky.</p>
+<p>The very first thing I suggest you do is configure the MIDI-OX Sysex tool
+to match the settings I use - if they don&apos;t work, then experiment...</p>
+<p>Use
+<span class="hilite"><span class="u">S</span>ysex</span>-&gt;<span
+class="hilite"><span class="u">C</span>onfigure</span>
+to set the <q>Low Level Output Buffers</q> to:</p>
+<ul>
+<li>Size: 32 bytes</li>
+<li>Num: 512</li>
+</ul>
+<p>and set <q>Delay</q> to 16 milliseconds between buffers.
+Click <q>OK</q> to save the changes.</p>
+<p>It can be hard to tell if a dump has been successfully received if you haven&apos;t
+changed anything very obvious.  My advice is to start by toggling the beeper on or off.
+Set it to zero for off, one for on.  If you can reliably get this change to your TrapKAT,
+you should be able to rely on the timings.</p>
+<p>Sending the file is as follows.</p>
+<ol>
+<li>Use
+<span class="hilite"><span class="u">C</span>ommand Window</span>-&gt;<span
+class="hilite"><span class="u">L</span>oad File...</span>
+to choose the file you have edited (and saved!).
+The <q>Command Window</q> will be full of numbers and letters representing the
+hexadecimal data that has been loaded.</li>
+<li>Use
+<span class="hilite"><span class="u">C</span>ommand Window</span>-&gt;<span
+class="hilite">Se<span class="u">n</span>d Sysex</span>
+to transmit the data to the TrapKAT.</li>
+<li>Check the settings on the TrapKAT are as expected.</li>
+</ol>
+<p>If you had no luck, you may need to adjust the timings.</p>
+<hr/>
+<div class="w3c"><p>
+<!--a href="http://validator.w3.org/check?uri=referer"></a-->
+<a href="http://validator.w3.org/"><img src="http://www.w3.org/Icons/valid-xhtml11" alt="Valid XHTML 1.1!" height="31" width="88" /></a>
+<!--a href="http://jigsaw.w3.org/css-validator/check/referer"></a-->
+<a href="http://jigsaw.w3.org/css-validator/"><img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!" /></a>
+</p></div>
+</body>
+</html>

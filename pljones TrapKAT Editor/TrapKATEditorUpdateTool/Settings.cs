@@ -22,17 +22,28 @@ using System.Collections.Generic;
 using System.Text;
 using TrapKATEditor;
 
-namespace TrapKATEditorUpdateTool
+namespace TrapKATEditor.Updates
 {
-    public class PublicSettings
+    public class Settings
     {
-        private static TrapKATEditorUpdateTool.Properties.Settings settings = TrapKATEditorUpdateTool.Properties.Settings.Default;
-        public static String AutoUpdateChoice
-        { get {
-            string[] s = { "UTAskMe", "UTDaily", "UTManual" };
-            return L.G(s[settings.AutoUpdateChoice]);
-        } }
+        private static TrapKATEditorUpdateTool.Properties.Settings settings = new TrapKATEditorUpdateTool.Properties.Settings();
+
+        public static bool UpdateAutomatically
+        {
+            get { return settings.AutoUpdateChoice == 1; }
+            set { settings.AutoUpdateChoice = value ? 1 : 2; settings.Save(); }
+        }
+        public static int AutoUpdateChoice { get { return settings.AutoUpdateChoice; } }
         public static String AutoUpdateURL { get { return settings.AutoUpdateURL; } }
-        public static String LastUpdateTS { get { return settings.LastUpdateTS.ToString(); } }
+        public static DateTime LastUpdateTS
+        {
+            get { return settings.LastUpdateTS; }
+            set { settings.LastUpdateTS = value; settings.Save(); }
+        }
+        public static DateTime LastIgnoredTS
+        {
+            get { return settings.LastIgnoredTS; }
+            set { settings.LastIgnoredTS = value; settings.Save(); }
+        }
     }
 }

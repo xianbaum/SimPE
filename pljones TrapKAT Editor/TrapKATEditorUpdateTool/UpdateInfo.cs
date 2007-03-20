@@ -28,13 +28,12 @@ namespace TrapKATEditor.Updates
 {
     public class UpdateInfo
     {
-        private static TrapKATEditorUpdateTool.Properties.Settings settings = TrapKATEditorUpdateTool.Properties.Settings.Default;
         private String TrapKATEditorVersion = null;
         private String minSimPEVersion = null;
         private String maxSimPEVersion = null;
         private String updateURL = null;
 
-        public UpdateInfo() : this(settings.AutoUpdateURL) { }
+        public UpdateInfo() : this(Settings.AutoUpdateURL) { }
         public UpdateInfo(String url)
         {
             XmlReader xr = XmlReader.Create(url);

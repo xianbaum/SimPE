@@ -26,7 +26,7 @@ namespace TrapKATEditor
 {
     public class Version
     {
-        static String pluginName;
+        static String programName;
         static String timestamp;
         static String configuration;
         static Version()
@@ -39,13 +39,13 @@ namespace TrapKATEditor
             sr.Close();
 
             String[] s = line1.Trim().Split('-');
-            pluginName = s[0];
+            programName = s[0];
             configuration = s[1];
 
             timestamp = line2.Trim().Replace(' ', '0');
         }
 
-        public static String PluginName { get { return pluginName; } }
+        public static String ProgramName { get { return programName; } }
         public static String Configuration { get { return configuration; } }
         public static String BuildTS { get { return timestamp; } }
     }

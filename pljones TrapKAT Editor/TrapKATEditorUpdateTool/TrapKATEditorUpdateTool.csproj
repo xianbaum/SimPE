@@ -42,7 +42,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="PublicSettings.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="SkipPrompt.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="helpAboutCaption" xml:space="preserve">
+    <value>pljones TrapKAT Editor</value>
+  </data>
   <data name="helpAboutLU" xml:space="preserve">
     <value>Last Update Timestamp</value>
   </data>
@@ -129,6 +132,12 @@
   <data name="helpAboutVersion" xml:space="preserve">
     <value>Version</value>
   </data>
+  <data name="helpNotFound" xml:space="preserve">
+    <value>Help contents page not found.</value>
+  </data>
+  <data name="helpPopupTitle" xml:space="preserve">
+    <value>Help</value>
+  </data>
   <data name="TrapKATEditor_UpdateSettings" xml:space="preserve">
     <value>TrapKATEditor Update Tool</value>
   </data>
@@ -140,9 +149,11 @@ If you choose "Yes", PJSE will check once each calendar day (that it's run) to s
 If you choose "No", PJSE will not check automatically.</value>
   </data>
   <data name="UCSaidNo" xml:space="preserve">
-    <value>You can use "Help, Check for updates..." to check manually.
-
-You can change this choice in "Tools"-&gt;"Options...", "Check for updates".</value>
+    <value>You can use "Help"-&gt;"Check for updates..." to check manually
+or turn automatic checking on with "Help"-&gt;"Check automatically".</value>
+  </data>
+  <data name="UHNoUpdate" xml:space="preserve">
+    <value>No update applicable was found.</value>
   </data>
   <data name="UIMalformedContent" xml:space="preserve">
     <value>Update feed contents are malformed.  Please report a bug!</value>
@@ -152,9 +163,10 @@ You can change this choice in "Tools"-&gt;"Options...", "Check for updates".</va
   </data>
   <data name="UTAskMe" xml:space="preserve">
     <value>Ask me</value>
+    <comment>Should never be displayed</comment>
   </data>
   <data name="UTDaily" xml:space="preserve">
-    <value>Check daily</value>
+    <value>Check automatically</value>
   </data>
   <data name="UTManual" xml:space="preserve">
     <value>Check manually</value>

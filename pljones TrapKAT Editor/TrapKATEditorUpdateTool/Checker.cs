@@ -20,17 +20,17 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Diagnostics;
 using TrapKATEditor;
 
 namespace TrapKATEditor.Updates
 {
     public class Checker
     {
-        private static TrapKATEditorUpdateTool.Properties.Settings settings = TrapKATEditorUpdateTool.Properties.Settings.Default;
         static Checker()
         {
             // Should only be set to AskMe the first time through (although it might have been reset by the user)
-            if (settings.AutoUpdateChoice == 0)
+            if (Settings.AutoUpdateChoice == 0)
             {
                 DialogResult dr = MessageBox.Show(
                     L.G("UCAskMe")
@@ -38,10 +38,10 @@ namespace TrapKATEditor.Updates
                     , MessageBoxButtons.YesNo, MessageBoxIcon.Question
                 );
                 if (dr.Equals(DialogResult.Yes))
-                    settings.AutoUpdateChoice = 1; // Daily
+                    Settings.UpdateAutomatically = true; // Daily
                 else
                 {
-                    settings.AutoUpdateChoice = 2;
+                    Settings.UpdateAutomatically = false; // Manual
                     MessageBox.Show(L.G("UCSaidNo")
                         , L.G("TrapKATEditor_UpdateSettings")
                     );
@@ -51,12 +51,12 @@ namespace TrapKATEditor.Updates
 
         public static void Daily()
         {
-            if ((settings.AutoUpdateChoice == 1)
-                && (DateTime.UtcNow.Date != settings.LastUpdateTS.Date))
+            if ((Settings.AutoUpdateChoice == 1)
+                && (DateTime.UtcNow.Date != Settings.LastUpdateTS.Date))
             {
                 try { GetUpdate(true); }
                 catch (ArgumentException) { }
-                settings.LastUpdateTS = DateTime.UtcNow; // Only the automated check updates this setting
+                Settings.LastUpdateTS = DateTime.UtcNow; // Only the automated check updates this setting
             }
         }
 
@@ -80,17 +80,12 @@ namespace TrapKATEditor.Updates
                 SkipPrompt sp = new SkipPrompt(autoCheck, ui.AvailableVersion, ui.UpdateURL);
                 switch (sp.ShowDialog())
                 {
-                    case DialogResult.Yes: fail(ui.UpdateURL); break;
-                    case DialogResult.Cancel: settings.LastIgnoredTS = DateTime.Parse(ui.AvailableVersion); break;
+                    case DialogResult.Yes: Process.Start(new ProcessStartInfo(ui.UpdateURL)); break;
+                    case DialogResult.Cancel: Settings.LastIgnoredTS = DateTime.Parse(ui.AvailableVersion); break;
                 }
                 return true;
             }
             return false;
-        }
-
-        private static void fail(string s)
-        {
-            throw new Exception("Don't know how to naviate to web site " + s);
         }
 
         private static bool UpdateApplicable(UpdateInfo ui, bool autoCheck)
@@ -98,15 +93,15 @@ namespace TrapKATEditor.Updates
             String ts = TrapKATEditor.Version.BuildTS;
 #if DEBUG
             MessageBox.Show(
-                "Update URL: " + settings.AutoUpdateURL
+                "Update URL: " + Settings.AutoUpdateURL
                 + "\r\n" + L.G("helpAboutVersion") + ": " + ts
                 + "\r\n" + "offered version: " + ui.AvailableVersion
-                + "\r\n" + "last ignored version: " + settings.LastIgnoredTS
+                + "\r\n" + "last ignored version: " + Settings.LastIgnoredTS
                 , L.G("TrapKATEditor_UpdateSettings")
                 );
 #endif
 
-            if (autoCheck && ui.AvailableVersion.CompareTo(settings.LastIgnoredTS) <= 0)
+            if (autoCheck && ui.AvailableVersion.CompareTo(Settings.LastIgnoredTS) <= 0)
                 return false;
 
             if (ui.AvailableVersion.CompareTo(ts) <= 0)

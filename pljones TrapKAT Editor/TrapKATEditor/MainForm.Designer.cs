@@ -75,6 +75,11 @@ namespace TrapKATEditor.UI
             this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiHelpContents = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsmiHelpCheck = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiHelpCheckState = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.sfdSaveSysEx = new System.Windows.Forms.SaveFileDialog();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -663,15 +668,53 @@ namespace TrapKATEditor.UI
             // tsmiHelp
             // 
             this.tsmiHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiHelpContents,
+            this.toolStripSeparator6,
+            this.tsmiHelpCheck,
+            this.tsmiHelpCheckState,
+            this.toolStripSeparator7,
             this.tsmiHelpAbout});
             this.tsmiHelp.Name = "tsmiHelp";
             this.tsmiHelp.Size = new System.Drawing.Size(48, 22);
             this.tsmiHelp.Text = "&Help";
             // 
+            // tsmiHelpContents
+            // 
+            this.tsmiHelpContents.Name = "tsmiHelpContents";
+            this.tsmiHelpContents.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.tsmiHelpContents.Size = new System.Drawing.Size(219, 22);
+            this.tsmiHelpContents.Text = "Contents...";
+            this.tsmiHelpContents.Click += new System.EventHandler(this.tsmiHelpContents_Click);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(216, 6);
+            // 
+            // tsmiHelpCheck
+            // 
+            this.tsmiHelpCheck.Name = "tsmiHelpCheck";
+            this.tsmiHelpCheck.Size = new System.Drawing.Size(219, 22);
+            this.tsmiHelpCheck.Text = "&Check for update...";
+            this.tsmiHelpCheck.Click += new System.EventHandler(this.tsmiHelpCheck_Click);
+            // 
+            // tsmiHelpCheckState
+            // 
+            this.tsmiHelpCheckState.CheckOnClick = true;
+            this.tsmiHelpCheckState.Name = "tsmiHelpCheckState";
+            this.tsmiHelpCheckState.Size = new System.Drawing.Size(219, 22);
+            this.tsmiHelpCheckState.Text = "Check automatically";
+            this.tsmiHelpCheckState.Click += new System.EventHandler(this.tsmiHelpCheckState_Click);
+            // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(216, 6);
+            // 
             // tsmiHelpAbout
             // 
             this.tsmiHelpAbout.Name = "tsmiHelpAbout";
-            this.tsmiHelpAbout.Size = new System.Drawing.Size(144, 22);
+            this.tsmiHelpAbout.Size = new System.Drawing.Size(219, 22);
             this.tsmiHelpAbout.Text = "&About...";
             this.tsmiHelpAbout.Click += new System.EventHandler(this.tsmiHelpAbout_Click);
             // 
@@ -4708,6 +4751,11 @@ namespace TrapKATEditor.UI
         private System.Windows.Forms.Label lbGlobalDataChanged;
         private System.Windows.Forms.ComboBox cbPrgChgRcvChn;
         private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.ToolStripMenuItem tsmiHelpCheck;
+        private System.Windows.Forms.ToolStripMenuItem tsmiHelpCheckState;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripMenuItem tsmiHelpContents;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 

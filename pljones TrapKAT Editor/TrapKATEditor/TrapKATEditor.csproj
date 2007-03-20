@@ -110,7 +110,7 @@ set m=%25mytime:~3,2%25
 set s=%25mytime:~6,2%25
 set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
 
-set helpdir=$(ProjectDir)
+set helpdir=$(SolutionDir)
 set help=TrapKATEditor_Help
 
 set tarv=
@@ -120,7 +120,7 @@ set nsisv=/V3
 rem ConfigurationNames: Release Debug InProgress
 rem targets: help zip tarbz2 7z(7z) nsis src
 
-set helpRelease=no
+rem set helpRelease=no
 set helpDebug=no
 set helpInProgress=no
 
@@ -135,7 +135,8 @@ set z7Release=no
 set z7Debug=no
 set z7InProgress=no
 
-set nsisProgress=no
+set nsisDebug=no
+set nsisInProgress=no
 
 set srcDebug=no
 set srcInProgress=no
@@ -202,8 +203,9 @@ if exist "%25src%25" rmdir /s/q "%25src%25"
 del "%25src%25*"
 mkdir "%25src%25"
 
-tar c --exclude="%25src%25" --exclude=CVS --exclude=*.7z --exclude=*.zip --exclude=*.exe --exclude=*.tar.bz2 --exclude=.project --exclude=.metadata --exclude=bin --exclude=obj --exclude=Plugins --exclude=*.suo --exclude=*.csproj.user --exclude=*.bak --exclude=.#* . | tar x%25tarv%25 -C "%25src%25"
-7za a -tzip -r -mx9 "%25src%25-%25suffix%25.zip" "%25src%25"
+tar c --exclude="%25src%25" --exclude="Program Files" --exclude=CVS --exclude=*.7z --exclude=*.zip --exclude=*.exe --exclude=*.tar.bz2 --exclude=.project --exclude=.metadata --exclude=bin --exclude=obj --exclude=Plugins --exclude=*.suo --exclude=*.csproj.user --exclude=*.bak --exclude=.#* . | tar x%25tarv%25 -C "%25src%25"
+rem 7za a -tzip -r -mx9 "%25src%25-%25suffix%25.zip" "%25src%25"
+7za a -t7z -mx9 -ms "%25src%25-%25suffix%25.7z" "%25src%25"
 if exist "%25src%25" rmdir /s/q "%25src%25"
 :nosrc:
 </PostBuildEvent>
