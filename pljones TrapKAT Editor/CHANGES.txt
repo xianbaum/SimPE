@@ -1,3 +1,6 @@
+2007-03-20 15:25 Auto-updater and Help, redo Settings a bit
+	Oh, and use 7z for source distro
+
 2007-03-19 22:46 A few oopses fixed
 	Mainly Kit.DataChanged was being handled by Global_DataChanged...
 	And some of the checkboxes weren't active.
