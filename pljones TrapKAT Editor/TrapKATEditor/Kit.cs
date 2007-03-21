@@ -23,7 +23,7 @@ using System.Text;
 
 namespace TrapKATEditor.Data
 {
-    public class Kit : DataItem
+    public class Kit : DataItem, IEnumerable<Pad>
     {
         #region Attributes
         Pad[] pads = new Pad[28];
@@ -108,8 +108,10 @@ namespace TrapKATEditor.Data
             unused = r.ReadByte();
             kitName = withName ? r.ReadBytes(kitName.Length) : null;
         }
-        public override void Serialize(System.IO.BinaryWriter w) { this.Serialize(w, true); }
-        public void Serialize(System.IO.BinaryWriter w, bool withName)
+        public override void Serialize(System.IO.BinaryWriter w) { SerializeWithName(w); }
+        public void SerializeWithName(System.IO.BinaryWriter w) { this.doSerialize(w, true); }
+        public void SerializeWithoutName(System.IO.BinaryWriter w) { this.doSerialize(w, false); }
+        private void doSerialize(System.IO.BinaryWriter w, bool withName)
         {
             for (int i = 0; i < pads.Length; i++)
                 pads[i].Serialize(w);
@@ -151,7 +153,15 @@ namespace TrapKATEditor.Data
                     if (pad.Curve != curve.Value) return "Various";
                 return curve.Value;
             }
-            set { curve.Value = value; }
+            set
+            {
+                if (Curve.Equals(value)) return;
+                internalchg = true;
+                foreach (Pad pad in pads) pad.Curve = value;
+                internalchg = false;
+                curve.Value = value;
+                OnDataChanged(this, new EventArgs());
+            }
         }
         public String Gate
         {
@@ -161,7 +171,15 @@ namespace TrapKATEditor.Data
                     if (pad.Gate != gate.Value) return "Various";
                 return gate.Value;
             }
-            set { gate.Value = value; }
+            set
+            {
+                if (Gate.Equals(value)) return;
+                internalchg = true;
+                foreach (Pad pad in pads) pad.Gate = value;
+                internalchg = false;
+                gate.Value = value;
+                OnDataChanged(this, new EventArgs());
+            }
         }
 
         public byte Channel
@@ -172,6 +190,9 @@ namespace TrapKATEditor.Data
                 if (channel == value) return;
                 /*if (value > 15)
                     throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Channel value");*/
+                internalchg = true;
+                foreach (Pad pad in pads) pad.Channel = value;
+                internalchg = false;
                 channel = value;
                 OnDataChanged(this, new EventArgs());
             }
@@ -181,11 +202,24 @@ namespace TrapKATEditor.Data
             get { return minVelocity; }
             set
             {
-                if (minVelocity == value) return;
-                /*if (value > 127)
-                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Velocity value");*/
-                minVelocity = value;
-                OnDataChanged(this, new EventArgs());
+                if (value > 127)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Velocity value");
+                internalchg = true;
+                bool chg = false;
+                foreach (Pad pad in pads)
+                    if (pad.MinVelocity != value)
+                    {
+                        chg = true;
+                        pad.MinVelocity = value;
+                    }
+                internalchg = false;
+                if (minVelocity != value)
+                {
+                    chg = true;
+                    minVelocity = value;
+                }
+                if (chg)
+                    OnDataChanged(this, new EventArgs());
             }
         }
         public byte MaxVelocity
@@ -193,11 +227,24 @@ namespace TrapKATEditor.Data
             get { return maxVelocity; }
             set
             {
-                if (maxVelocity == value) return;
-                /*if (value > 127)
-                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Velocity value");*/
-                maxVelocity = value;
-                OnDataChanged(this, new EventArgs());
+                if (value > 127)
+                    throw new ArgumentOutOfRangeException(value.ToString() + " is not a valid Velocity value");
+                internalchg = true;
+                bool chg = false;
+                foreach (Pad pad in pads)
+                    if (pad.MaxVelocity != value)
+                    {
+                        chg = true;
+                        pad.MaxVelocity = value;
+                    }
+                internalchg = false;
+                if (maxVelocity != value)
+                {
+                    chg = true;
+                    maxVelocity = value;
+                }
+                if (chg)
+                    OnDataChanged(this, new EventArgs());
             }
         }
 
@@ -357,5 +404,23 @@ namespace TrapKATEditor.Data
         }
         public void UnserializeKitName(System.IO.BinaryReader r) { kitName = r.ReadBytes(12); }
         public void SerializeKitName(System.IO.BinaryWriter w) { w.Write(kitName); }
+
+        #region IEnumerable<Pad> Members
+
+        public IEnumerator<Pad> GetEnumerator()
+        {
+            return (new List<Pad>(pads)).GetEnumerator();
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return pads.GetEnumerator();
+        }
+
+        #endregion
     }
 }

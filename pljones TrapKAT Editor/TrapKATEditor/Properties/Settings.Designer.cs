@@ -22,5 +22,17 @@ namespace TrapKATEditor.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int TONotesAs {
+            get {
+                return ((int)(this["TONotesAs"]));
+            }
+            set {
+                this["TONotesAs"] = value;
+            }
+        }
     }
 }

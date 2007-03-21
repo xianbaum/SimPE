@@ -19,30 +19,18 @@
  ***************************************************************************/
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Text;
 
-namespace TrapKATEditor.Data
+namespace TrapKATEditor.UI
 {
-    public abstract class DataItem
+    public class Settings
     {
-        public DataItem() { }
-        public DataItem(System.IO.BinaryReader r) { Unserialize(r); }
-        protected abstract void Unserialize(System.IO.BinaryReader r);
-        public abstract void Serialize(System.IO.BinaryWriter w);
-        public virtual void Serialize(System.IO.BinaryWriter w, bool saving) { Serialize(w); if (saving) changed = false; }
+        private static Properties.Settings settings = new Properties.Settings();
 
-        private bool changed;
-        public bool Changed { get { return changed; } }
-
-        protected bool internalchg = false;
-        public event EventHandler DataChanged;
-        protected virtual void OnDataChanged(object sender, EventArgs e)
+        public static int TONotesAs
         {
-            changed = true;
-            if (internalchg) return;
-            if (DataChanged != null)
-                DataChanged(sender, e);
+            get { return settings.TONotesAs; }
+            set { settings.TONotesAs = value; settings.Save(); }
         }
     }
 }

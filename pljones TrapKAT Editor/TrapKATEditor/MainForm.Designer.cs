@@ -74,6 +74,10 @@ namespace TrapKATEditor.UI
             this.tsmiEditSwapPads = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiTools = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
+            this.mIDINotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiTONotesAsNumbers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiTONotesAsC3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiTONotesAsC4 = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiHelpContents = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
@@ -129,7 +133,7 @@ namespace TrapKATEditor.UI
             this.ckbNoPrgChg = new System.Windows.Forms.CheckBox();
             this.nudPrgChg = new System.Windows.Forms.NumericUpDown();
             this.label29 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tlpBank = new System.Windows.Forms.TableLayoutPanel();
             this.nudBankLSB = new System.Windows.Forms.NumericUpDown();
             this.label32 = new System.Windows.Forms.Label();
             this.nudBankMSB = new System.Windows.Forms.NumericUpDown();
@@ -348,7 +352,7 @@ namespace TrapKATEditor.UI
             this.tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPrgChgTxmChn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPrgChg)).BeginInit();
-            this.tableLayoutPanel4.SuspendLayout();
+            this.tlpBank.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBankLSB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBankMSB)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBank)).BeginInit();
@@ -604,6 +608,7 @@ namespace TrapKATEditor.UI
             this.tsmiEdit.Name = "tsmiEdit";
             this.tsmiEdit.Size = new System.Drawing.Size(43, 22);
             this.tsmiEdit.Text = "&Edit";
+            this.tsmiEdit.Visible = false;
             // 
             // tsmiEditUndo
             // 
@@ -661,9 +666,47 @@ namespace TrapKATEditor.UI
             // 
             // tsmiToolsOptions
             // 
+            this.tsmiToolsOptions.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mIDINotesToolStripMenuItem});
             this.tsmiToolsOptions.Name = "tsmiToolsOptions";
-            this.tsmiToolsOptions.Size = new System.Drawing.Size(155, 22);
-            this.tsmiToolsOptions.Text = "&Options...";
+            this.tsmiToolsOptions.Size = new System.Drawing.Size(140, 22);
+            this.tsmiToolsOptions.Text = "&Options";
+            // 
+            // mIDINotesToolStripMenuItem
+            // 
+            this.mIDINotesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiTONotesAsNumbers,
+            this.tsmiTONotesAsC3,
+            this.tsmiTONotesAsC4});
+            this.mIDINotesToolStripMenuItem.Name = "mIDINotesToolStripMenuItem";
+            this.mIDINotesToolStripMenuItem.Size = new System.Drawing.Size(218, 22);
+            this.mIDINotesToolStripMenuItem.Text = "Display MIDI Notes";
+            // 
+            // tsmiTONotesAsNumbers
+            // 
+            this.tsmiTONotesAsNumbers.Checked = true;
+            this.tsmiTONotesAsNumbers.CheckOnClick = true;
+            this.tsmiTONotesAsNumbers.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tsmiTONotesAsNumbers.Name = "tsmiTONotesAsNumbers";
+            this.tsmiTONotesAsNumbers.Size = new System.Drawing.Size(216, 22);
+            this.tsmiTONotesAsNumbers.Text = "as numbers";
+            this.tsmiTONotesAsNumbers.CheckedChanged += new System.EventHandler(this.tsmiTONotes_CheckedChanged);
+            // 
+            // tsmiTONotesAsC3
+            // 
+            this.tsmiTONotesAsC3.CheckOnClick = true;
+            this.tsmiTONotesAsC3.Name = "tsmiTONotesAsC3";
+            this.tsmiTONotesAsC3.Size = new System.Drawing.Size(216, 22);
+            this.tsmiTONotesAsC3.Text = "as names (C3=60)";
+            this.tsmiTONotesAsC3.CheckedChanged += new System.EventHandler(this.tsmiTONotes_CheckedChanged);
+            // 
+            // tsmiTONotesAsC4
+            // 
+            this.tsmiTONotesAsC4.CheckOnClick = true;
+            this.tsmiTONotesAsC4.Name = "tsmiTONotesAsC4";
+            this.tsmiTONotesAsC4.Size = new System.Drawing.Size(216, 22);
+            this.tsmiTONotesAsC4.Text = "as names (C4=60)";
+            this.tsmiTONotesAsC4.CheckedChanged += new System.EventHandler(this.tsmiTONotes_CheckedChanged);
             // 
             // tsmiHelp
             // 
@@ -925,6 +968,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudFCChannel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFCChannel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // ckbAsChick
@@ -1022,6 +1066,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudKitChannel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudKitChannel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // ckbVarChannel
@@ -1399,7 +1444,7 @@ namespace TrapKATEditor.UI
             this.flowLayoutPanel13.AutoSize = true;
             this.flowLayoutPanel13.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.flowLayoutPanel13.Controls.Add(this.tableLayoutPanel7);
-            this.flowLayoutPanel13.Controls.Add(this.tableLayoutPanel4);
+            this.flowLayoutPanel13.Controls.Add(this.tlpBank);
             this.flowLayoutPanel13.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel13.Location = new System.Drawing.Point(7, 119);
             this.flowLayoutPanel13.Margin = new System.Windows.Forms.Padding(3, 24, 3, 3);
@@ -1451,6 +1496,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudPrgChgTxmChn.Enter += new System.EventHandler(this.nud_Enter);
             this.nudPrgChgTxmChn.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label35
@@ -1497,6 +1543,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudPrgChg.Enter += new System.EventHandler(this.nud_Enter);
             this.nudPrgChg.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label29
@@ -1510,29 +1557,29 @@ namespace TrapKATEditor.UI
             this.label29.TabIndex = 0;
             this.label29.Text = "PrgChg:";
             // 
-            // tableLayoutPanel4
+            // tlpBank
             // 
-            this.tableLayoutPanel4.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.tableLayoutPanel4.AutoSize = true;
-            this.tableLayoutPanel4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel4.ColumnCount = 3;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.Controls.Add(this.nudBankLSB, 1, 1);
-            this.tableLayoutPanel4.Controls.Add(this.label32, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.nudBankMSB, 2, 1);
-            this.tableLayoutPanel4.Controls.Add(this.label31, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.nudBank, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.label30, 0, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 54);
-            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 2;
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(171, 45);
-            this.tableLayoutPanel4.TabIndex = 2;
+            this.tlpBank.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.tlpBank.AutoSize = true;
+            this.tlpBank.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tlpBank.ColumnCount = 3;
+            this.tlpBank.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpBank.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpBank.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tlpBank.Controls.Add(this.nudBankLSB, 1, 1);
+            this.tlpBank.Controls.Add(this.label32, 1, 0);
+            this.tlpBank.Controls.Add(this.nudBankMSB, 2, 1);
+            this.tlpBank.Controls.Add(this.label31, 2, 0);
+            this.tlpBank.Controls.Add(this.nudBank, 0, 1);
+            this.tlpBank.Controls.Add(this.label30, 0, 0);
+            this.tlpBank.Location = new System.Drawing.Point(3, 54);
+            this.tlpBank.Name = "tlpBank";
+            this.tlpBank.RowCount = 2;
+            this.tlpBank.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpBank.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tlpBank.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpBank.Size = new System.Drawing.Size(171, 45);
+            this.tlpBank.TabIndex = 2;
             // 
             // nudBankLSB
             // 
@@ -1546,6 +1593,7 @@ namespace TrapKATEditor.UI
             this.nudBankLSB.Name = "nudBankLSB";
             this.nudBankLSB.Size = new System.Drawing.Size(51, 22);
             this.nudBankLSB.TabIndex = 2;
+            this.nudBankLSB.Enter += new System.EventHandler(this.nud_Enter);
             this.nudBankLSB.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label32
@@ -1571,6 +1619,7 @@ namespace TrapKATEditor.UI
             this.nudBankMSB.Name = "nudBankMSB";
             this.nudBankMSB.Size = new System.Drawing.Size(51, 22);
             this.nudBankMSB.TabIndex = 3;
+            this.nudBankMSB.Enter += new System.EventHandler(this.nud_Enter);
             this.nudBankMSB.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label31
@@ -1596,6 +1645,7 @@ namespace TrapKATEditor.UI
             this.nudBank.Name = "nudBank";
             this.nudBank.Size = new System.Drawing.Size(51, 22);
             this.nudBank.TabIndex = 1;
+            this.nudBank.Enter += new System.EventHandler(this.nud_Enter);
             this.nudBank.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label30
@@ -1689,6 +1739,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudKitMinVel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudKitMinVel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // nudKitMaxVel
@@ -1708,6 +1759,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudKitMaxVel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudKitMaxVel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label21
@@ -1789,6 +1841,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudVolume.Enter += new System.EventHandler(this.nud_Enter);
             this.nudVolume.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // ckbNoVolume
@@ -2332,6 +2385,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudPadMinVel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudPadMinVel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // nudPadMaxVel
@@ -2351,6 +2405,7 @@ namespace TrapKATEditor.UI
             0,
             0,
             0});
+            this.nudPadMaxVel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudPadMaxVel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label14
@@ -2631,6 +2686,7 @@ namespace TrapKATEditor.UI
             this.nudFcOpenRegion.Name = "nudFcOpenRegion";
             this.nudFcOpenRegion.Size = new System.Drawing.Size(51, 22);
             this.nudFcOpenRegion.TabIndex = 1;
+            this.nudFcOpenRegion.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFcOpenRegion.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel21
@@ -2668,6 +2724,7 @@ namespace TrapKATEditor.UI
             this.nudFcClosedRegion.Name = "nudFcClosedRegion";
             this.nudFcClosedRegion.Size = new System.Drawing.Size(51, 22);
             this.nudFcClosedRegion.TabIndex = 1;
+            this.nudFcClosedRegion.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFcClosedRegion.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel22
@@ -2705,6 +2762,7 @@ namespace TrapKATEditor.UI
             this.nudFcPolarity.Name = "nudFcPolarity";
             this.nudFcPolarity.Size = new System.Drawing.Size(51, 22);
             this.nudFcPolarity.TabIndex = 1;
+            this.nudFcPolarity.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFcPolarity.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel28
@@ -2742,6 +2800,7 @@ namespace TrapKATEditor.UI
             this.nudFcVelocityLevel.Name = "nudFcVelocityLevel";
             this.nudFcVelocityLevel.Size = new System.Drawing.Size(51, 22);
             this.nudFcVelocityLevel.TabIndex = 1;
+            this.nudFcVelocityLevel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFcVelocityLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel61
@@ -2779,6 +2838,7 @@ namespace TrapKATEditor.UI
             this.nudFcLowLevel.Name = "nudFcLowLevel";
             this.nudFcLowLevel.Size = new System.Drawing.Size(51, 22);
             this.nudFcLowLevel.TabIndex = 1;
+            this.nudFcLowLevel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFcLowLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel62
@@ -2817,6 +2877,7 @@ namespace TrapKATEditor.UI
             this.nudFcHighLevel.Name = "nudFcHighLevel";
             this.nudFcHighLevel.Size = new System.Drawing.Size(51, 22);
             this.nudFcHighLevel.TabIndex = 1;
+            this.nudFcHighLevel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFcHighLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel47
@@ -2854,6 +2915,7 @@ namespace TrapKATEditor.UI
             this.nudFcSplashEase.Name = "nudFcSplashEase";
             this.nudFcSplashEase.Size = new System.Drawing.Size(51, 22);
             this.nudFcSplashEase.TabIndex = 1;
+            this.nudFcSplashEase.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFcSplashEase.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel29
@@ -2891,6 +2953,7 @@ namespace TrapKATEditor.UI
             this.nudFcWaitModeLevel.Name = "nudFcWaitModeLevel";
             this.nudFcWaitModeLevel.Size = new System.Drawing.Size(51, 22);
             this.nudFcWaitModeLevel.TabIndex = 1;
+            this.nudFcWaitModeLevel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudFcWaitModeLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel49
@@ -2928,6 +2991,7 @@ namespace TrapKATEditor.UI
             this.nudHatNoteGate.Name = "nudHatNoteGate";
             this.nudHatNoteGate.Size = new System.Drawing.Size(51, 22);
             this.nudHatNoteGate.TabIndex = 1;
+            this.nudHatNoteGate.Enter += new System.EventHandler(this.nud_Enter);
             this.nudHatNoteGate.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel25
@@ -3041,6 +3105,7 @@ namespace TrapKATEditor.UI
             this.nudLowLevel.Name = "nudLowLevel";
             this.nudLowLevel.Size = new System.Drawing.Size(51, 22);
             this.nudLowLevel.TabIndex = 1;
+            this.nudLowLevel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudLowLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel57
@@ -3079,6 +3144,7 @@ namespace TrapKATEditor.UI
             this.nudHighLevel.Name = "nudHighLevel";
             this.nudHighLevel.Size = new System.Drawing.Size(51, 22);
             this.nudHighLevel.TabIndex = 1;
+            this.nudHighLevel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudHighLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel27
@@ -3116,6 +3182,7 @@ namespace TrapKATEditor.UI
             this.nudThresholdManual.Name = "nudThresholdManual";
             this.nudThresholdManual.Size = new System.Drawing.Size(51, 22);
             this.nudThresholdManual.TabIndex = 1;
+            this.nudThresholdManual.Enter += new System.EventHandler(this.nud_Enter);
             this.nudThresholdManual.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel39
@@ -3154,6 +3221,7 @@ namespace TrapKATEditor.UI
             this.nudThresholdActual.Name = "nudThresholdActual";
             this.nudThresholdActual.Size = new System.Drawing.Size(51, 22);
             this.nudThresholdActual.TabIndex = 1;
+            this.nudThresholdActual.Enter += new System.EventHandler(this.nud_Enter);
             this.nudThresholdActual.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel40
@@ -3191,6 +3259,7 @@ namespace TrapKATEditor.UI
             this.nudUserMargin.Name = "nudUserMargin";
             this.nudUserMargin.Size = new System.Drawing.Size(51, 22);
             this.nudUserMargin.TabIndex = 1;
+            this.nudUserMargin.Enter += new System.EventHandler(this.nud_Enter);
             this.nudUserMargin.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel58
@@ -3228,6 +3297,7 @@ namespace TrapKATEditor.UI
             this.nudInternalMargin.Name = "nudInternalMargin";
             this.nudInternalMargin.Size = new System.Drawing.Size(51, 22);
             this.nudInternalMargin.TabIndex = 1;
+            this.nudInternalMargin.Enter += new System.EventHandler(this.nud_Enter);
             this.nudInternalMargin.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel41
@@ -3265,6 +3335,7 @@ namespace TrapKATEditor.UI
             this.nudTrigGain.Name = "nudTrigGain";
             this.nudTrigGain.Size = new System.Drawing.Size(51, 22);
             this.nudTrigGain.TabIndex = 1;
+            this.nudTrigGain.Enter += new System.EventHandler(this.nud_Enter);
             // 
             // flowLayoutPanel10
             // 
@@ -3313,6 +3384,7 @@ namespace TrapKATEditor.UI
             this.nudBcFunction.Name = "nudBcFunction";
             this.nudBcFunction.Size = new System.Drawing.Size(51, 22);
             this.nudBcFunction.TabIndex = 1;
+            this.nudBcFunction.Enter += new System.EventHandler(this.nud_Enter);
             this.nudBcFunction.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel23
@@ -3350,6 +3422,7 @@ namespace TrapKATEditor.UI
             this.nudBcPolarity.Name = "nudBcPolarity";
             this.nudBcPolarity.Size = new System.Drawing.Size(51, 22);
             this.nudBcPolarity.TabIndex = 1;
+            this.nudBcPolarity.Enter += new System.EventHandler(this.nud_Enter);
             this.nudBcPolarity.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel59
@@ -3387,6 +3460,7 @@ namespace TrapKATEditor.UI
             this.nudBcLowLevel.Name = "nudBcLowLevel";
             this.nudBcLowLevel.Size = new System.Drawing.Size(51, 22);
             this.nudBcLowLevel.TabIndex = 1;
+            this.nudBcLowLevel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudBcLowLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel60
@@ -3425,6 +3499,7 @@ namespace TrapKATEditor.UI
             this.nudBcHighLevel.Name = "nudBcHighLevel";
             this.nudBcHighLevel.Size = new System.Drawing.Size(51, 22);
             this.nudBcHighLevel.TabIndex = 1;
+            this.nudBcHighLevel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudBcHighLevel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel55
@@ -3473,6 +3548,7 @@ namespace TrapKATEditor.UI
             this.nudMotifNumber.Name = "nudMotifNumber";
             this.nudMotifNumber.Size = new System.Drawing.Size(51, 22);
             this.nudMotifNumber.TabIndex = 1;
+            this.nudMotifNumber.Enter += new System.EventHandler(this.nud_Enter);
             this.nudMotifNumber.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel35
@@ -3510,6 +3586,7 @@ namespace TrapKATEditor.UI
             this.nudMotifNumberPerc.Name = "nudMotifNumberPerc";
             this.nudMotifNumberPerc.Size = new System.Drawing.Size(51, 22);
             this.nudMotifNumberPerc.TabIndex = 1;
+            this.nudMotifNumberPerc.Enter += new System.EventHandler(this.nud_Enter);
             this.nudMotifNumberPerc.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel36
@@ -3547,6 +3624,7 @@ namespace TrapKATEditor.UI
             this.nudMotifNumberMel.Name = "nudMotifNumberMel";
             this.nudMotifNumberMel.Size = new System.Drawing.Size(51, 22);
             this.nudMotifNumberMel.TabIndex = 1;
+            this.nudMotifNumberMel.Enter += new System.EventHandler(this.nud_Enter);
             this.nudMotifNumberMel.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel54
@@ -3596,6 +3674,7 @@ namespace TrapKATEditor.UI
             this.nudKitNumber.Name = "nudKitNumber";
             this.nudKitNumber.Size = new System.Drawing.Size(51, 22);
             this.nudKitNumber.TabIndex = 1;
+            this.nudKitNumber.Enter += new System.EventHandler(this.nud_Enter);
             this.nudKitNumber.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel33
@@ -3633,6 +3712,7 @@ namespace TrapKATEditor.UI
             this.nudKitNumberDemo.Name = "nudKitNumberDemo";
             this.nudKitNumberDemo.Size = new System.Drawing.Size(51, 22);
             this.nudKitNumberDemo.TabIndex = 1;
+            this.nudKitNumberDemo.Enter += new System.EventHandler(this.nud_Enter);
             this.nudKitNumberDemo.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel32
@@ -3670,6 +3750,7 @@ namespace TrapKATEditor.UI
             this.nudKitNumberUser.Name = "nudKitNumberUser";
             this.nudKitNumberUser.Size = new System.Drawing.Size(51, 22);
             this.nudKitNumberUser.TabIndex = 1;
+            this.nudKitNumberUser.Enter += new System.EventHandler(this.nud_Enter);
             this.nudKitNumberUser.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel51
@@ -3707,6 +3788,7 @@ namespace TrapKATEditor.UI
             this.nudKitNumberKAT.Name = "nudKitNumberKAT";
             this.nudKitNumberKAT.Size = new System.Drawing.Size(51, 22);
             this.nudKitNumberKAT.TabIndex = 1;
+            this.nudKitNumberKAT.Enter += new System.EventHandler(this.nud_Enter);
             this.nudKitNumberKAT.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel53
@@ -3755,6 +3837,7 @@ namespace TrapKATEditor.UI
             this.nudGrooveStatus.Name = "nudGrooveStatus";
             this.nudGrooveStatus.Size = new System.Drawing.Size(51, 22);
             this.nudGrooveStatus.TabIndex = 1;
+            this.nudGrooveStatus.Enter += new System.EventHandler(this.nud_Enter);
             this.nudGrooveStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel45
@@ -3792,6 +3875,7 @@ namespace TrapKATEditor.UI
             this.nudGrooveVol.Name = "nudGrooveVol";
             this.nudGrooveVol.Size = new System.Drawing.Size(51, 22);
             this.nudGrooveVol.TabIndex = 1;
+            this.nudGrooveVol.Enter += new System.EventHandler(this.nud_Enter);
             this.nudGrooveVol.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel50
@@ -3829,6 +3913,7 @@ namespace TrapKATEditor.UI
             this.grooveAutoOff.Name = "grooveAutoOff";
             this.grooveAutoOff.Size = new System.Drawing.Size(51, 22);
             this.grooveAutoOff.TabIndex = 1;
+            this.grooveAutoOff.Enter += new System.EventHandler(this.nud_Enter);
             this.grooveAutoOff.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel52
@@ -3884,6 +3969,7 @@ namespace TrapKATEditor.UI
             this.nudBeeperStatus.Name = "nudBeeperStatus";
             this.nudBeeperStatus.Size = new System.Drawing.Size(51, 22);
             this.nudBeeperStatus.TabIndex = 1;
+            this.nudBeeperStatus.Enter += new System.EventHandler(this.nud_Enter);
             this.nudBeeperStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel20
@@ -3921,6 +4007,7 @@ namespace TrapKATEditor.UI
             this.nudChokeFunction.Name = "nudChokeFunction";
             this.nudChokeFunction.Size = new System.Drawing.Size(51, 22);
             this.nudChokeFunction.TabIndex = 1;
+            this.nudChokeFunction.Enter += new System.EventHandler(this.nud_Enter);
             this.nudChokeFunction.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel30
@@ -3958,6 +4045,7 @@ namespace TrapKATEditor.UI
             this.nudInstrumentID.Name = "nudInstrumentID";
             this.nudInstrumentID.Size = new System.Drawing.Size(51, 22);
             this.nudInstrumentID.TabIndex = 1;
+            this.nudInstrumentID.Enter += new System.EventHandler(this.nud_Enter);
             this.nudInstrumentID.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel37
@@ -3995,6 +4083,7 @@ namespace TrapKATEditor.UI
             this.nudMidiMergeStatus.Name = "nudMidiMergeStatus";
             this.nudMidiMergeStatus.Size = new System.Drawing.Size(51, 22);
             this.nudMidiMergeStatus.TabIndex = 1;
+            this.nudMidiMergeStatus.Enter += new System.EventHandler(this.nud_Enter);
             this.nudMidiMergeStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel42
@@ -4085,6 +4174,7 @@ namespace TrapKATEditor.UI
             this.nudDisplayAngle.Name = "nudDisplayAngle";
             this.nudDisplayAngle.Size = new System.Drawing.Size(51, 22);
             this.nudDisplayAngle.TabIndex = 1;
+            this.nudDisplayAngle.Enter += new System.EventHandler(this.nud_Enter);
             this.nudDisplayAngle.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel44
@@ -4122,6 +4212,7 @@ namespace TrapKATEditor.UI
             this.nudPlayMode.Name = "nudPlayMode";
             this.nudPlayMode.Size = new System.Drawing.Size(51, 22);
             this.nudPlayMode.TabIndex = 1;
+            this.nudPlayMode.Enter += new System.EventHandler(this.nud_Enter);
             this.nudPlayMode.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel48
@@ -4159,6 +4250,7 @@ namespace TrapKATEditor.UI
             this.nudNoteNamesStatus.Name = "nudNoteNamesStatus";
             this.nudNoteNamesStatus.Size = new System.Drawing.Size(51, 22);
             this.nudNoteNamesStatus.TabIndex = 1;
+            this.nudNoteNamesStatus.Enter += new System.EventHandler(this.nud_Enter);
             this.nudNoteNamesStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel16
@@ -4196,6 +4288,7 @@ namespace TrapKATEditor.UI
             this.nudTTMeter.Name = "nudTTMeter";
             this.nudTTMeter.Size = new System.Drawing.Size(51, 22);
             this.nudTTMeter.TabIndex = 1;
+            this.nudTTMeter.Enter += new System.EventHandler(this.nud_Enter);
             this.nudTTMeter.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // flowLayoutPanel19
@@ -4233,6 +4326,7 @@ namespace TrapKATEditor.UI
             this.nudHearSoundStatus.Name = "nudHearSoundStatus";
             this.nudHearSoundStatus.Size = new System.Drawing.Size(51, 22);
             this.nudHearSoundStatus.TabIndex = 1;
+            this.nudHearSoundStatus.Enter += new System.EventHandler(this.nud_Enter);
             this.nudHearSoundStatus.ValueChanged += new System.EventHandler(this.nud_ValueChanged);
             // 
             // label25
@@ -4261,6 +4355,7 @@ namespace TrapKATEditor.UI
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrapKAT SysEx Editor";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.msMain.ResumeLayout(false);
             this.msMain.PerformLayout();
@@ -4296,8 +4391,8 @@ namespace TrapKATEditor.UI
             this.tableLayoutPanel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPrgChgTxmChn)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudPrgChg)).EndInit();
-            this.tableLayoutPanel4.ResumeLayout(false);
-            this.tableLayoutPanel4.PerformLayout();
+            this.tlpBank.ResumeLayout(false);
+            this.tlpBank.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudBankLSB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBankMSB)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudBank)).EndInit();
@@ -4601,7 +4696,7 @@ namespace TrapKATEditor.UI
         private System.Windows.Forms.CheckBox ckbNoPrgChg;
         private System.Windows.Forms.NumericUpDown nudPrgChg;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+        private System.Windows.Forms.TableLayoutPanel tlpBank;
         private System.Windows.Forms.NumericUpDown nudBankLSB;
         private System.Windows.Forms.Label label32;
         private System.Windows.Forms.NumericUpDown nudBankMSB;
@@ -4756,6 +4851,10 @@ namespace TrapKATEditor.UI
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem tsmiHelpContents;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+        private System.Windows.Forms.ToolStripMenuItem mIDINotesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tsmiTONotesAsNumbers;
+        private System.Windows.Forms.ToolStripMenuItem tsmiTONotesAsC3;
+        private System.Windows.Forms.ToolStripMenuItem tsmiTONotesAsC4;
     }
 }
 

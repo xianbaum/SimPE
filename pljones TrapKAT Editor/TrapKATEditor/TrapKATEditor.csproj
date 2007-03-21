@@ -66,6 +66,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -75,6 +76,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Settings.cs" />
     <Compile Include="SysexDump.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -154,13 +156,12 @@ mkdir "Program Files"
 mkdir "Program Files\$(TargetName)"
 
 (cd "$(TargetDir)"
-tar c --exclude "*.bat" --exclude "*.vshost.exe" --exclude "*.pdb" . ) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
-
-(cd ..
 (echo %25base%25
 echo %25suffix%25) &gt; version.txt
-tar c version.txt LICENSE.txt CHANGES.txt TKReInit.syx) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
-del ..\version.txt
+tar c --exclude "*.bat" --exclude "*.vshost.exe" --exclude "*.pdb" . ) | tar x%25tarv%25 -C "Program Files\$(TargetName)"
+del "$(TargetDir)\version.txt"
+
+tar c -C .. LICENSE.txt CHANGES.txt TKReInit.syx | tar x%25tarv%25 -C "Program Files\$(TargetName)"
 
 rem -----------------------------------
 rem  Copy over help for Release builds

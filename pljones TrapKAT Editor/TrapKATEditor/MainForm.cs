@@ -33,19 +33,18 @@ namespace TrapKATEditor.UI
         #region Main form and initialisation
         List<ToolStripMenuItem> tsmiSave = null;
         List<ToolStripMenuItem> tsmiSaveAs = null;
+        List<ToolStripMenuItem> tsmiTONotes = null;
         List<ComboBox> cbNotes = null;
+        List<ComboBox> cbHHPads = null;
         List<CheckBox> ckbFlags = null;
         List<NumericUpDown> nudChannel = null;
         List<NumericUpDown> nudMIDI = null;
         List<NumericUpDown> nudByte = null;
         List<NumericUpDown> nudPadByte = null;
-        List<ComboBox> cbHHPads = null;
 
         public MainForm()
         {
             InitializeComponent();
-            tsmiEdit.Visible = false;
-            tsmiTools.Visible = false;
             cbKitCurve.Items.Clear();
             cbKitCurve.Items.AddRange(Data.Curve.Modes.ToArray());
             cbFCCurve.Items.Clear();
@@ -58,7 +57,9 @@ namespace TrapKATEditor.UI
             cbPadGate.Items.AddRange(Data.Gate.Modes.ToArray());
             tsmiSave = new List<ToolStripMenuItem>(new ToolStripMenuItem[] { tsmiFileSaveAllMemory, tsmiFileSaveGlobalMemory, tsmiFileSaveCurrentKit });
             tsmiSaveAs = new List<ToolStripMenuItem>(new ToolStripMenuItem[] { tsmiFileSaveAllMemoryAs, tsmiFileSaveGlobalMemoryAs, tsmiFileSaveCurrentKitAs });
+            tsmiTONotes = new List<ToolStripMenuItem>(new ToolStripMenuItem[] { tsmiTONotesAsNumbers, tsmiTONotesAsC3, tsmiTONotesAsC4, });
             cbNotes = new List<ComboBox>(new ComboBox[] { cbNote1, cbNote2, cbNote3, cbNote4, cbNote5, cbNote6 });
+            cbHHPads = new List<ComboBox>(new ComboBox[] { cbHHPad1, cbHHPad2, cbHHPad3, cbHHPad4, });
             ckbFlags = new List<CheckBox>(new CheckBox[] { ckbF0, ckbF1, ckbF2, ckbF3, ckbF4, ckbF5, ckbF6, ckbF7, });
             nudChannel = new List<NumericUpDown>(new NumericUpDown[] {
                 nudFCChannel, nudKitChannel, nudPadChannel, 
@@ -85,7 +86,6 @@ namespace TrapKATEditor.UI
                 nudThresholdManual, nudThresholdActual, 
                 nudUserMargin, nudInternalMargin, 
             });
-            cbHHPads = new List<ComboBox>(new ComboBox[] { cbHHPad1, cbHHPad2, cbHHPad3, cbHHPad4, });
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -98,6 +98,18 @@ namespace TrapKATEditor.UI
             MainProgram.AllMemoryChanged += new EventHandler(MainProgram_AllMemoryChanged);
             MainProgram.KitChanged += new EventHandler(MainProgram_KitChanged);
             MainProgram_AllMemoryChanged(null, null);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            switch (e.CloseReason)
+            {
+                case CloseReason.TaskManagerClosing:
+                    break;
+                default:
+                    e.Cancel = !okayToSplat();
+                    break;
+            }
         }
         #endregion
 
@@ -149,8 +161,9 @@ namespace TrapKATEditor.UI
 
         private void tsmiFileSave_Click(object sender, EventArgs e)
         {
-            int i = tsmiSave.IndexOf((ToolStripMenuItem)sender);
-            MainProgram.SaveFile((Dump.DumpType)i);
+            Dump.DumpType[] dt = { Dump.DumpType.AllMemory, Dump.DumpType.Global, Dump.DumpType.Kit, };
+            MainProgram.SaveFile(dt[tsmiSave.IndexOf((ToolStripMenuItem)sender)]);
+            MainProgram_AllMemoryChanged(null, null);
         }
 
         private void tsmiFileSaveAs_Click(object sender, EventArgs e)
@@ -165,15 +178,32 @@ namespace TrapKATEditor.UI
                 : (s[i] + ".syx");
 
             if (DialogResult.OK.Equals(sfdSaveSysEx.ShowDialog()))
+            {
                 MainProgram.SaveFile(sfdSaveSysEx.FileName, t[i]);
+                MainProgram_AllMemoryChanged(null, null);
+            }
         }
 
         private void tsmiFileExitQuit_Click(object sender, EventArgs e)
         {
-            if (!okayToSplat()) return;
             this.Close();
         }
         #endregion
+
+        private void tsmiTONotes_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            internalchg = true;
+
+            int i = tsmiTONotes.IndexOf((ToolStripMenuItem)sender);
+            List<int> indices = new List<int>(new int[] { 0, 1, 2 });
+            indices.Remove(i);
+            foreach (int index in indices) tsmiTONotes[index].Checked = false;
+            Settings.TONotesAs = i;
+            for (int j = 0; j < cbNotes.Count; j++) doNote(j);
+
+            internalchg = false;
+        }
 
 
         #region Help Menu
@@ -222,6 +252,20 @@ namespace TrapKATEditor.UI
 
 
         #region Note
+        private String ToNoteName(int num)
+        {
+            if (num < 0 || num > 127)
+                throw new ArgumentException(num.ToString() + " is not a MIDI Note");
+
+            if (Settings.TONotesAs == 0)
+                return num.ToString();
+
+            int octave = num / 12;
+            String note = (new String[] { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", })[num % 12];
+            octave = octave - (Settings.TONotesAs == 1 ? 2 : 1);
+            return note + octave.ToString();
+        }
+
         private void doNote(int noteN)
         {
             int j = currentPad[noteN];
@@ -229,14 +273,14 @@ namespace TrapKATEditor.UI
             if (j < 128)
             {
                 cbNotes[noteN].SelectedIndex = -1;
-                cbNotes[noteN].Text = j.ToString();
+                cbNotes[noteN].Text = ToNoteName(j);
             }
             else if (j - 128 < cbNotes[noteN].Items.Count)
                 cbNotes[noteN].SelectedIndex = j - 128;
             else
             {
                 cbNotes[noteN].SelectedIndex = -1;
-                cbNotes[noteN].Text = j.ToString();
+                cbNotes[noteN].Text = ToNoteName(j);
                 cbNotes[noteN].Enabled = false;
             }
         }
@@ -264,8 +308,7 @@ namespace TrapKATEditor.UI
             try { octave = Convert.ToInt16(text.Substring(i)); }
             catch (Exception) { throw new ArgumentException(text + " is not a MIDI Note"); }
 
-            // For now, middle C = C4 = MIDI note 60
-            notenum = notenum + ((octave + 1) * 12);
+            notenum = notenum + ((octave + (Settings.TONotesAs == 1 ? 2 : 1)) * 12);
 
             if ((notenum >= 0) && (notenum < 128)) return (byte)notenum;
             throw new ArgumentException(text + " is not a MIDI Note");
@@ -364,6 +407,7 @@ namespace TrapKATEditor.UI
             currentPad.DataChanged += new EventHandler(currentPad_DataChanged);
             currentPad_DataChanged(null, null);
 
+            bool savedchg = internalchg;
             internalchg = true;
             for (int i = 0; i < cbNotes.Count; i++) doNote(i);
 
@@ -375,7 +419,7 @@ namespace TrapKATEditor.UI
             nudPadMaxVel.Value = currentPad.MaxVelocity;
             for (int i = 0; i < ckbFlags.Count; i++)
                 ckbFlags[i].Checked = (currentPad.Flags & (1 << i)) != 0;
-            internalchg = false;
+            internalchg = savedchg;
         }
 
         void currentPad_DataChanged(object sender, EventArgs e)
@@ -425,7 +469,10 @@ namespace TrapKATEditor.UI
             cbKitGate.SelectedIndex = Data.Gate.Modes.IndexOf(currentKit.Gate);
             if (cbKitGate.SelectedIndex == -1) cbKitGate.Text = currentKit.Gate;
 
-            cbFCFunction.SelectedIndex = currentKit.FcFunction;
+            if (currentKit.FcFunction < cbFCFunction.Items.Count)
+                cbFCFunction.SelectedIndex = currentKit.FcFunction;
+            else
+                cbFCFunction.Text = currentKit.FcFunction.ToString();
             setCurveComboBox(cbFCCurve, currentKit.FcCurve);
 
             // You may call this obfuscated...
@@ -473,14 +520,15 @@ namespace TrapKATEditor.UI
             cbPad.SelectedIndex = 0;
 
             internalchg = false;
+
             ckbVarCurve_CheckedChanged(ckbVarCurve, null);
             ckbVarGate_CheckedChanged(ckbVarGate, null);
             ckbVarChannel_CheckedChanged(ckbVarChannel, null);
             ckbVarMinVel_CheckedChanged(ckbVarMinVel, null);
             ckbVarMaxVel_CheckedChanged(ckbVarMaxVel, null);
             ckbAsChick_CheckedChanged(ckbAsChick, null);
-
-            internalchg = false;
+            nudVolume.Enabled = !ckbNoVolume.Checked;
+            tlpBank.Enabled = nudPrgChgTxmChn.Enabled = nudPrgChg.Enabled = !ckbNoPrgChg.Checked;
 
             doPad(0);
         }
@@ -515,8 +563,15 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             // If setting Kit override, ask first
             CheckBox ckb = (CheckBox)sender;
-            cbKitCurve.Enabled = !ckb.Checked;
-            cbPadCurve.Enabled = ckb.Checked;
+
+            internalchg = true;
+            if (cbKitCurve.Enabled = !ckb.Checked)
+                cbKitCurve.SelectedIndex = Data.Curve.Modes.IndexOf(currentKit.Curve = (new Data.Curve()).Value);
+
+            if (cbPadCurve.Enabled = ckb.Checked)
+                cbPadCurve.Text = currentPad.Curve;
+
+            internalchg = false;
         }
 
         private void ckbVarGate_CheckedChanged(object sender, EventArgs e)
@@ -524,8 +579,15 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             // If setting Kit override, ask first
             CheckBox ckb = (CheckBox)sender;
-            cbKitGate.Enabled = !ckb.Checked;
-            cbPadGate.Enabled = ckb.Checked;
+
+            internalchg = true;
+            if (cbKitGate.Enabled = !ckb.Checked)
+                cbKitGate.Text = currentKit.Gate = (new Data.Gate()).Value;
+
+            if (cbPadGate.Enabled = ckb.Checked)
+                cbPadGate.Text = currentPad.Gate;
+
+            internalchg = false;
         }
 
         private void ckbVarChannel_CheckedChanged(object sender, EventArgs e)
@@ -533,8 +595,15 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             // If setting Kit override, ask first
             CheckBox ckb = (CheckBox)sender;
-            nudKitChannel.Enabled = !ckb.Checked;
-            nudPadChannel.Enabled = ckb.Checked;
+
+            internalchg = true;
+            if (nudKitChannel.Enabled = !ckb.Checked)
+                nudKitChannel.Value = (currentKit.Channel = (byte)nudKitChannel.Value);
+
+            if (nudPadChannel.Enabled = ckb.Checked)
+                nudPadChannel.Value = currentPad.Channel;
+
+            internalchg = false;
         }
 
         private void ckbVarMinVel_CheckedChanged(object sender, EventArgs e)
@@ -542,8 +611,15 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             // If setting Kit override, ask first
             CheckBox ckb = (CheckBox)sender;
-            nudKitMinVel.Enabled = !ckb.Checked;
-            nudPadMinVel.Enabled = ckb.Checked;
+
+            internalchg = true;
+            if (nudKitMinVel.Enabled = !ckb.Checked)
+                nudKitMinVel.Value = (currentKit.MinVelocity = (byte)nudKitMinVel.Value);
+
+            if (nudPadMinVel.Enabled = ckb.Checked)
+                nudPadMinVel.Value = currentPad.MinVelocity;
+
+            internalchg = false;
         }
 
         private void ckbVarMaxVel_CheckedChanged(object sender, EventArgs e)
@@ -551,8 +627,15 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             // If setting Kit override, ask first
             CheckBox ckb = (CheckBox)sender;
-            nudKitMaxVel.Enabled = !ckb.Checked;
-            nudPadMaxVel.Enabled = ckb.Checked;
+
+            internalchg = true;
+            if (nudKitMaxVel.Enabled = !ckb.Checked)
+                nudKitMaxVel.Value = (currentKit.MaxVelocity = (byte)nudKitMaxVel.Value);
+
+            if (nudPadMaxVel.Enabled = ckb.Checked)
+                nudPadMaxVel.Value = currentPad.MaxVelocity;
+
+            internalchg = false;
         }
 
         private void ckbAsChick_CheckedChanged(object sender, EventArgs e)
@@ -560,15 +643,17 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             // If setting As Chick, ask first
             CheckBox ckb = (CheckBox)sender;
-            nudFCChannel.Enabled = !ckb.Checked;
+
             internalchg = true;
-            if (ckb.Checked)
+            if (nudFCChannel.Enabled != ckb.Checked)
+                nudFCChannel.Value = (currentKit.FcChannel = currentKit[25].Channel) + 1;
+            else
             {
                 currentKit.FcChannel = 16;
                 nudFCChannel.Value = currentKit[25].Channel + 1;
             }
-            else
-                currentKit.FcChannel = (byte)(nudFCChannel.Value - 1);
+            
+
             internalchg = false;
         }
 
@@ -577,16 +662,16 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             // If setting Off, ask first
             CheckBox ckb = (CheckBox)sender;
-            nudVolume.Enabled = !ckb.Checked;
 
             internalchg = true;
-            if (ckb.Checked)
-            {
-                currentKit.Volume = 128;
-                nudVolume.Value = 0;
-            }
+            if (nudVolume.Enabled = !ckb.Checked)
+                currentKit.Volume = 127;
             else
-                currentKit.Volume = (byte)nudVolume.Value;
+            {
+                nudVolume.Value = 127;
+                currentKit.Volume = 128;
+            }
+
             internalchg = false;
         }
 
@@ -595,16 +680,18 @@ namespace TrapKATEditor.UI
             if (internalchg) return;
             // If setting Off, ask first
             CheckBox ckb = (CheckBox)sender;
-            nudPrgChg.Enabled = !ckb.Checked;
 
             internalchg = true;
+            tlpBank.Enabled = nudPrgChgTxmChn.Enabled = nudPrgChg.Enabled = !ckb.Checked;
+
             if (ckb.Checked)
             {
-                currentKit.PrgChg = 128;
                 nudPrgChg.Value = 0;
+                currentKit.PrgChg = 128;
             }
             else
-                currentKit.PrgChg = (byte)nudPrgChg.Value;
+                currentKit.PrgChg = 0;
+
             internalchg = false;
         }
 
@@ -638,6 +725,7 @@ namespace TrapKATEditor.UI
 
         // Common to Pad and Kit
 
+        #region Curve
         private void setCurveComboBox(ComboBox cb, String value)
         {
             bool savedchg = internalchg;
@@ -649,7 +737,6 @@ namespace TrapKATEditor.UI
             internalchg = savedchg;
         }
 
-        #region Curve
         private void cbCurve_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
@@ -703,8 +790,8 @@ namespace TrapKATEditor.UI
 
             bool origstate = internalchg;
             internalchg = true;
-            if (cb.Equals(cbPadGate)) { setCurveComboBox(cb, currentPad.Gate); }
-            if (cb.Equals(cbKitGate)) { setCurveComboBox(cb, currentKit.Gate); }
+            if (cb.Equals(cbPadGate)) { cb.Text = currentPad.Gate; }
+            else if (cb.Equals(cbKitGate)) { cb.Text = currentKit.Gate; }
             internalchg = origstate;
             cb.SelectAll();
         }
@@ -716,8 +803,8 @@ namespace TrapKATEditor.UI
 
             bool origstate = internalchg;
             internalchg = true;
-            if (cb.Equals(cbPadGate)) { setCurveComboBox(cb, currentPad.Gate); }
-            if (cb.Equals(cbKitGate)) { setCurveComboBox(cb, currentKit.Gate); }
+            if (cb.Equals(cbPadGate)) { cb.Text = currentPad.Gate; }
+            else if (cb.Equals(cbKitGate)) { cb.Text = currentKit.Gate; }
             internalchg = origstate;
             cb.Select(0, 0);
         }
@@ -730,6 +817,7 @@ namespace TrapKATEditor.UI
             if (cb.SelectedIndex == -1) return;
 
             if (cb == cbPadGate) currentPad.Gate = Data.Gate.Modes[cb.SelectedIndex];
+            else if (cb == cbKitGate) currentKit.Gate = Data.Gate.Modes[cb.SelectedIndex];
 
             cb.SelectAll();
         }
@@ -740,6 +828,7 @@ namespace TrapKATEditor.UI
         {
             if (internalchg) return;
             byte value = (byte)((NumericUpDown)sender).Value;
+            ((NumericUpDown)sender).Select(0, 3);
 
             switch (nudChannel.IndexOf((NumericUpDown)sender))
             {
@@ -807,6 +896,11 @@ namespace TrapKATEditor.UI
                 case 4: currentGlobal[i].UserMargin = value; return;
                 case 5: currentGlobal[i].InternalMargin = value; return;
             }
+        }
+
+        private void nud_Enter(object sender, EventArgs e)
+        {
+            ((NumericUpDown)sender).Select(0, 3);
         }
 
         // --

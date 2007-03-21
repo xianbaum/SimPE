@@ -1,3 +1,12 @@
+2007-03-21 20:56 Broke lots of stuff
+	DataItem: Added "save" processing to clear Changed flag
+	Kit: Setting kit values sets the pad values too
+	MainForm: Added Tools->Options->Display Notes As settings
+	MainForm: Catch application closing better
+	MainForm: Refresh after Save / Save As
+	MainForm: breakage...
+	SysexDump: Close the file where it should be closed and truncate properly
+
 2007-03-20 15:25 Auto-updater and Help, redo Settings a bit
 	Oh, and use 7z for source distro
 

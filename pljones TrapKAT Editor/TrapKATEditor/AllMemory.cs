@@ -74,7 +74,7 @@ namespace TrapKATEditor.Data
         public override void Serialize(System.IO.BinaryWriter w)
         {
             for (int i = 0; i < kits.Length; i++)
-                kits[i].Serialize(w, false);
+                kits[i].SerializeWithoutName(w);
             for (int i = 0; i < kits.Length; i++)
                 kits[i].SerializeKitName(w);
             w.Write(unused);

@@ -89,7 +89,7 @@ namespace TrapKATEditor.Dump
         /// <exception cref="OpenException">Throws various OpenExceptions</exception>
         public SysexDump Open(String filename)
         {
-            FileStream f = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.Read);
+            FileStream f = new FileStream(filename, FileMode.Open, FileAccess.Read, FileShare.None);
             BinaryReader br = new BinaryReader(f);
 
             byte aByte;
@@ -133,20 +133,22 @@ namespace TrapKATEditor.Dump
 
             f.Position = position;
 
+            SysexDump dump = null;
             switch (dumpType)
             {
-                case DumpType.Global: return new GlobalDump(new SysExReader(f));
-                case DumpType.AllMemory: return new AllMemoryDump(new SysExReader(f));
-                case DumpType.Kit: return new KitDump(new SysExReader(f));
+                case DumpType.Global: dump = new GlobalDump(new SysExReader(f)); break;
+                case DumpType.AllMemory: dump = new AllMemoryDump(new SysExReader(f)); break;
+                case DumpType.Kit: dump = new KitDump(new SysExReader(f)); break;
             }
 
-            return null;
+            br.Close();
+            return dump;
         }
         protected virtual void ReadSysEx(SysExReader r) { }
 
         public void Save(String filename)
         {
-            FileStream f = new FileStream(filename, FileMode.OpenOrCreate, FileAccess.Write, FileShare.None);
+            FileStream f = new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.None);
             BinaryWriter bw = new BinaryWriter(f);
 
             bw.Write(SysExStart);
@@ -158,6 +160,7 @@ namespace TrapKATEditor.Dump
             bw.Write(auxType);
             WriteSysEx(new SysExWriter(f));
             bw.Write(SysExEnd);
+            bw.Close();
         }
         protected virtual void WriteSysEx(SysExWriter w) { }
 
@@ -198,7 +201,7 @@ namespace TrapKATEditor.Dump
         public KitDump(Kit kit) : base(DumpType.Kit, 0, (byte)MainProgram.CurrentKit) { this.kit = kit; }
         public KitDump(SysExReader r) : base(DumpType.Kit, 0, (byte)MainProgram.CurrentKit) { ReadSysEx(r); }
         protected override void ReadSysEx(SysExReader r) { kit = new Kit(r, true); }
-        protected override void WriteSysEx(SysExWriter w) { kit.Serialize(w, true); }
+        protected override void WriteSysEx(SysExWriter w) { kit.SerializeWithName(w); }
     }
 
     public class SysExReader : BinaryReader
