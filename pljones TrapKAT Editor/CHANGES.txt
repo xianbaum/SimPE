@@ -1,3 +1,6 @@
+2007-03-21 22:37 Fixed some stuff
+	MainForm: Don't call ckb*CheckChanged when it hasn't
+
 2007-03-21 20:56 Broke lots of stuff
 	DataItem: Added "save" processing to clear Changed flag
 	Kit: Setting kit values sets the pad values too

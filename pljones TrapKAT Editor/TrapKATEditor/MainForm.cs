@@ -463,9 +463,10 @@ namespace TrapKATEditor.UI
 
             tbKitName.Text = currentKit.KitName;
 
-            ckbVarCurve.Checked = currentKit.Curve.Equals("Various");
+            cbKitCurve.Enabled = !(cbPadCurve.Enabled = ckbVarCurve.Checked = currentKit.Curve.Equals("Various"));
             setCurveComboBox(cbKitCurve, currentKit.Curve);
-            ckbVarGate.Checked = currentKit.Gate.Equals("Various");
+
+            cbKitGate.Enabled = !(cbPadGate.Enabled = ckbVarGate.Checked = currentKit.Gate.Equals("Various"));
             cbKitGate.SelectedIndex = Data.Gate.Modes.IndexOf(currentKit.Gate);
             if (cbKitGate.SelectedIndex == -1) cbKitGate.Text = currentKit.Gate;
 
@@ -496,6 +497,10 @@ namespace TrapKATEditor.UI
                 if (!ckbVarMinVel.Checked) ckbVarMinVel.Checked = !currentKit[i].MinVelocity.Equals(currentKit.MinVelocity);
                 if (!ckbVarMaxVel.Checked) ckbVarMaxVel.Checked = !currentKit[i].MaxVelocity.Equals(currentKit.MaxVelocity);
             }
+            nudKitChannel.Enabled = !(nudPadChannel.Enabled = ckbVarChannel.Checked);
+            nudKitMinVel.Enabled = !(nudPadMinVel.Enabled = ckbVarMinVel.Checked);
+            nudKitMaxVel.Enabled = !(nudPadMaxVel.Enabled = ckbVarMaxVel.Checked);
+            
             nudKitChannel.Value = currentKit.Channel + 1;
             nudKitMinVel.Value = currentKit.MinVelocity;
             nudKitMaxVel.Value = currentKit.MaxVelocity;
@@ -521,9 +526,6 @@ namespace TrapKATEditor.UI
 
             internalchg = false;
 
-            ckbVarCurve_CheckedChanged(ckbVarCurve, null);
-            ckbVarGate_CheckedChanged(ckbVarGate, null);
-            ckbVarChannel_CheckedChanged(ckbVarChannel, null);
             ckbVarMinVel_CheckedChanged(ckbVarMinVel, null);
             ckbVarMaxVel_CheckedChanged(ckbVarMaxVel, null);
             ckbAsChick_CheckedChanged(ckbAsChick, null);
@@ -565,11 +567,10 @@ namespace TrapKATEditor.UI
             CheckBox ckb = (CheckBox)sender;
 
             internalchg = true;
-            if (cbKitCurve.Enabled = !ckb.Checked)
-                cbKitCurve.SelectedIndex = Data.Curve.Modes.IndexOf(currentKit.Curve = (new Data.Curve()).Value);
-
-            if (cbPadCurve.Enabled = ckb.Checked)
-                cbPadCurve.Text = currentPad.Curve;
+            if (cbKitCurve.Enabled = !(cbPadCurve.Enabled = ckb.Checked))
+                currentKit.Curve = (new Data.Curve()).Value;
+            setCurveComboBox(cbKitCurve, currentKit.Curve);
+            setCurveComboBox(cbPadCurve, currentPad.Curve);
 
             internalchg = false;
         }
@@ -581,11 +582,14 @@ namespace TrapKATEditor.UI
             CheckBox ckb = (CheckBox)sender;
 
             internalchg = true;
-            if (cbKitGate.Enabled = !ckb.Checked)
-                cbKitGate.Text = currentKit.Gate = (new Data.Gate()).Value;
+            if (cbKitGate.Enabled = !(cbPadGate.Enabled = ckb.Checked))
+                currentKit.Gate = (new Data.Gate()).Value;
 
-            if (cbPadGate.Enabled = ckb.Checked)
-                cbPadGate.Text = currentPad.Gate;
+            cbKitGate.SelectedIndex = Data.Gate.Modes.IndexOf(currentKit.Gate);
+            if (cbKitGate.SelectedIndex == -1) cbKitGate.Text = currentKit.Gate;
+
+            cbPadGate.SelectedIndex = Data.Gate.Modes.IndexOf(currentPad.Gate);
+            if (cbPadGate.SelectedIndex == -1) cbPadGate.Text = currentPad.Gate;
 
             internalchg = false;
         }
@@ -597,11 +601,8 @@ namespace TrapKATEditor.UI
             CheckBox ckb = (CheckBox)sender;
 
             internalchg = true;
-            if (nudKitChannel.Enabled = !ckb.Checked)
-                nudKitChannel.Value = (currentKit.Channel = (byte)nudKitChannel.Value);
-
-            if (nudPadChannel.Enabled = ckb.Checked)
-                nudPadChannel.Value = currentPad.Channel;
+            if (nudKitChannel.Enabled = !(nudPadChannel.Enabled = ckb.Checked))
+                currentKit.Channel = (byte)nudKitChannel.Value;
 
             internalchg = false;
         }
