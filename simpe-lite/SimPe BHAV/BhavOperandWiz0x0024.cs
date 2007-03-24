@@ -265,6 +265,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 				case 0x16: case 0x19:
 					states[0] = states[4] = true; // message, title
 					break;
+                case 0x1c: // TNS Append
+                    tvState = states[0] = true; // message
+                    break;
 				default:
 					states[0] = states[1] = states[2] = states[4] = true; // message, button 1, button 2, title
 					break;
