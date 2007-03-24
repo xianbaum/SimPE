@@ -54,7 +54,7 @@ namespace pjse
 
         private void llURL_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
+            this.DialogResult = DialogResult.Yes;
         }
     }
 }
