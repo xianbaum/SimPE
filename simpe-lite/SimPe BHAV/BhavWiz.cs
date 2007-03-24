@@ -67,8 +67,8 @@ namespace pjse
             Primitives = 0x8b,
             //Str0x008c - there is no Str0x008c
             DataLabels = 0x8d, // Data labels +EP1 +EP2
-            Flags1 = 0x8e, // flags for flag field
-            BodyFlags = 0x8f,
+            Flags1 = 0x8e, // ObjectData 0x08 - flag field 1
+            BodyFlags = 0x8f, // PersonData 0x51 - Body Flags
             //Str0x0090..95 - there are no Str0x0090..95
             //Str0x0096 unused
             //Str0x0097..98 - there are no Str0x0097..98
@@ -91,22 +91,22 @@ namespace pjse
             //Str0x00af - there is no Str0x00af
             //Str0x00b0 0123
             //Str0x00b1 unused
-            CensorFlags = 0xb2,
+            CensorFlags = 0xb2, // PersonData 0x1e - censorship flags
             //Str0x00b3..c7 - there are no Str0x00b3..c7
             PersonData = 0xc8,
             FunctionTable = 0xc9,
-            PlacementFlags = 0xca, // Allowed Height Flags
-            MoveFlags = 0xcb,
+            PlacementFlags = 0xca, // ObjectData 0x2a - placement flags
+            MoveFlags = 0xcb, // ObjectData 0x2b - Movement Flags
             OBJDDescs = 0xcc, // Object Definitions
-            RoomSortFlags = 0xcd,
-            FunctionSortFlags = 0xce,
+            RoomSortFlags = 0xcd, // ObjectDefinition 0x27 - Room sort flags
+            FunctionSortFlags = 0xce, // ObjectDefinition 0x28 - Function sort flags
             SnapType = 0xcf, // How To Snap
-            WallAdjFlags = 0xd0,
+            WallAdjFlags = 0xd0, // ObjectData 0x05 - wall adjacency flags 24e
             //Str0x00d1 .. d2 unused
             UpdateWho = 0xd3,	// See Refresh prim
             UpdateWhat = 0xd4,	// See Refresh prim
             //Str0x00d5 unused
-            Flags2 = 0xd6, // Flags for Flag Field 2
+            Flags2 = 0xd6, // ObjectData 0x28 - Flag Field 2
             //Str0x00d7 Routing slot param types (Go To Routing slot - not used here)
             TurnBody = 0xd8,
             Dialog = 0xd9,
@@ -120,7 +120,7 @@ namespace pjse
             //Str0x00e1 times of day
             //Str0x00e2 tree categories
             //Str0x00e3 .. e4 unused
-            WallPlacementFlags = 0xe5,
+            WallRequirementFlags = 0xe5, // ObjectData 0x0d - Wall/Fence Requirement Flags
             //Str0x00e6 entry types
             //Str0x00e7 unused
             //Str0x00e8 personality ads
@@ -139,18 +139,21 @@ namespace pjse
             //Str0x00f7 .. f8 unused
             NeighborhoodData = 0xf9,	// for Data owner 0x22
             PersonOutfits = 0xfa,	// see Change Outfit prim
-            ExclPlacementFlags = 0xfb,	// for Data owners 0x03 and 0x04
+            ExclPlacementFlags = 0xfb,	// ObjectData 0x3f - exclusive placement flags
             InventoryDialog = 0xfc,	// for Data owners 0x27 and 0x28
-            WallCutoutFlags = 0xfd,	// for Data owners 0x03 and 0x04
+            WallCutoutFlags = 0xfd,	// ObjectData 0x45 - wall cutout flags
             //Str0x00fe unused
-            //Str0x00ff..01f3 - there are no Str0x00ff..01f3
-            PersonFlags1 = 0x1e3, // PJSE: string number stolen for Data owners 0x12, 0x13 and 0x20
+            SemesterInfoFlags = 0xff,   // PersonData 0xad - Semester Info Flags 24e
+            //Str0x0100..010d - there are no Str0x0100..010d
+            PlacementFlags2 = 0x10e,    // ObjectData 0x52 - placement flags 2 24e
+            //Str0x010f..01f3 - there are no Str0x010f..01f3
+            UnknownFlags = 0x1e3, // PJSE: string number stolen (for flag fields with unknown flag labels)
             TokenOpsCounted = 0x1e4, // PJSE: string number stolen (opcode 0x33)
             TokenOpsSingular = 0x1e5, // PJSE: string number stolen (opcode 0x33)
             Languages = 0x1e6, // PJSE: string number stolen
             PetDecayIndices = 0x1e7, // PJSE: string number stolen (unused)
-            SpeciesValues = 0x1e8, // PJSE: string number stolen for Data owners 0x12, 0x13 and 0x20 (unused)
-            PetTraitFlags = 0x1e9, // PJSE: string number stolen for Data owners 0x12, 0x13 and 0x20
+            SpeciesValues = 0x1e8, // PersonData 0xba - Species Values (PJSE) (unused)
+            PetTraitFlags = 0x1e9, // PersonData 0xc7 - Pet Trait Flags (PJSE)
             Ages = 0x1ea, // PJSE: string number stolen
             DebugType = 0x1eb, // PJSE: string number stolen
             EffectSSType = 0x1ec, // PJSE: string number stolen
@@ -164,11 +167,13 @@ namespace pjse
             //Str0x01f4 .. 1fd unused
             GosubAction = 0x1fe, // See Gosub Action prim
             //Str0x01ff Routing slot directions
-            HiddenFlags = 0x200,	// for Data owners 0x03 and 0x04
-            GhostFlags = 0x201,	// for Data owners 0x12, 0x13 and 0x20
-            SelectionFlags = 0x202,	// for Data owners 0x12, 0x13 and 0x20
+            HiddenFlags = 0x200,	// ObjectData 0x22 - Hidden Flags
+            GhostFlags = 0x201,	// PersonData 0x44 - Ghost Flags
+            SelectionFlags = 0x202,	// PersonData 0x9e - Sim Selectable Flags
             //Str0x0203 unused
-            PersonFlags = 0x204,	// for Data owners 0x12, 0x13 and 0x20
+            PersonFlags2 = 0x204,	// PersonData 0x9f - Person Flags
+            Flags3 = 0x205,    // ObjectData 0x62 - Flag Field 3
+            PersonFlags1 = 0x206,   // PersonData 0x54 - Person Flags 1
         }
 
         public enum GlobalStr : uint
@@ -640,32 +645,62 @@ namespace pjse
         private static Hashtable flagInitaliser()
         {
             Hashtable f = new Hashtable();
+
+            // ObjectData flags
             Hashtable o = new Hashtable();
+            o.Add((ushort)0x04, GS.BhavStr.UnknownFlags); // allowed height flags
             o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
             o.Add((ushort)0x08, GS.BhavStr.Flags1);
-            o.Add((ushort)0x0d, GS.BhavStr.WallPlacementFlags);
+            o.Add((ushort)0x0d, GS.BhavStr.WallRequirementFlags);
+            o.Add((ushort)0x16, GS.BhavStr.UnknownFlags); // Door route blocker flags
             o.Add((ushort)0x22, GS.BhavStr.HiddenFlags);
             o.Add((ushort)0x28, GS.BhavStr.Flags2);
             o.Add((ushort)0x2a, GS.BhavStr.PlacementFlags);
             o.Add((ushort)0x2b, GS.BhavStr.MoveFlags);
             o.Add((ushort)0x3f, GS.BhavStr.ExclPlacementFlags);
             o.Add((ushort)0x45, GS.BhavStr.WallCutoutFlags);
+            o.Add((ushort)0x47, GS.BhavStr.UnknownFlags); // Render Flags
+            o.Add((ushort)0x52, GS.BhavStr.PlacementFlags2);
+            o.Add((ushort)0x62, GS.BhavStr.Flags3);
+            o.Add((ushort)0x65, GS.BhavStr.UnknownFlags); // UI Icon Flags
+            o.Add((ushort)0x67, GS.BhavStr.UnknownFlags); // Invisible wall placement flags
+            o.Add((ushort)0x6a, GS.BhavStr.UnknownFlags); // For Sale Flags
             f.Add((byte)0x03, o); // 0x03 "My"
             f.Add((byte)0x04, o); // 0x04 "Stack Object's"
+
+            // PersonData flags
             o = new Hashtable();
+            o.Add((ushort)0x13, GS.BhavStr.UnknownFlags); // Group Talk State Flags
             o.Add((ushort)0x1e, GS.BhavStr.CensorFlags);
+            o.Add((ushort)0x34, GS.BhavStr.UnknownFlags); // Sim UI Icon Flags
             o.Add((ushort)0x44, GS.BhavStr.GhostFlags);
+            o.Add((ushort)0x4a, GS.BhavStr.UnknownFlags); // Render Display Flags
             o.Add((ushort)0x51, GS.BhavStr.BodyFlags);
             o.Add((ushort)0x54, GS.BhavStr.PersonFlags1);
             o.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
-            o.Add((ushort)0x9f, GS.BhavStr.PersonFlags);
+            o.Add((ushort)0x9f, GS.BhavStr.PersonFlags2);
+            o.Add((ushort)0xad, GS.BhavStr.SemesterInfoFlags);
             o.Add((ushort)0xc7, GS.BhavStr.PetTraitFlags);
             f.Add((byte)0x12, o); // 0x12 "My Person Data"
             f.Add((byte)0x13, o); // 0x13 "Stack Object's Person Data"
             f.Add((byte)0x20, o); // 0x20 "Neighbour's Person Data"
+
+            // ObjectDefinition flags
             o = new Hashtable();
+            o.Add((ushort)0x03, GS.BhavStr.WallAdjFlags); // Default Wall Adjacent Flags (guess same as WallAdjFlags)
+            o.Add((ushort)0x04, GS.BhavStr.PlacementFlags); // Default Placement Flags (guess same as PlacementFlags)
+            o.Add((ushort)0x05, GS.BhavStr.WallRequirementFlags); // Default Wall Placement Flags (guess same as WallPlacementFlags)
+            o.Add((ushort)0x06, GS.BhavStr.UnknownFlags); // Default Allowed Height Flags
+            o.Add((ushort)0x11, GS.BhavStr.UnknownFlags); // Catalog Use Flags
+            o.Add((ushort)0x19, GS.BhavStr.UnknownFlags); // Object ownership flags
+            o.Add((ushort)0x20, GS.BhavStr.UnknownFlags); // Aspiration Flags
             o.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
             o.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
+            o.Add((ushort)0x3c, GS.BhavStr.UnknownFlags); // For Sale Flags
+            o.Add((ushort)0x42, GS.BhavStr.UnknownFlags); // chair entry flags
+            o.Add((ushort)0x59, GS.BhavStr.UnknownFlags); // ratingSkillFlags
+            o.Add((ushort)0x5b, GS.BhavStr.UnknownFlags); // misc flags
+            o.Add((ushort)0xd2, GS.BhavStr.UnknownFlags); // Valid EP bit field
             f.Add((byte)0x15, o); // 0x15 "stack object's definition"
             f.Add((byte)0x26, o); // 0x26 "Neighbor's Object Definition"
             f.Add((byte)0x33, o); // 0x33 "Stack Object's Master Definition"

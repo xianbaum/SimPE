@@ -1,5 +1,14 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+24 March 2007 13:59 - Integrate Shy's disasim24e changes (and fix SkipPrompt link)
+  pjse update tool\
+    SkipPrompt.cs 1.1.2.3
+  SimPe BHAV\
+    BhavOperandWiz0x0024.cs 1.1.4.17
+    BhavWiz.cs 1.37.2.30
+    BhavWizPrim.cs 1.34.2.27
+  GlobalStrings.package 1.10.8.20
+
 12 March 2007 15:45 - Change to post-build script: better control of distros built
   SimPe BHAV\
     pjse coder plugin.csproj 1.20.2.31
