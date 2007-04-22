@@ -102,9 +102,9 @@ namespace pjse
         private void AddFixedMaxis()
         {
             defaultFolders = SimPe.FileTable.DefaultFolders; // in case they've been updated
-
             String SimsPath = SimPe.PathProvider.Global[0].InstallFolder;
-            bool addedOP = false;
+
+            AddFixed(Path.Combine(SimPe.PathProvider.Global.Latest.InstallFolder, "TSData\\Res\\Objects\\objects.package"));
 
             for (int i = SimPe.PathProvider.Global.Expansions.Count; --i >= 0; )
             {
@@ -112,23 +112,7 @@ namespace pjse
                 if (path.Length == 0 || (i != 0 && path.Equals(SimsPath)))
                     continue;
 
-                String o;
-                if (!addedOP)
-                {
-                    o = Path.Combine(path, "TSData\\Res\\Objects");
-                    if (!Directory.Exists(o) || isIgnored(o))
-                        continue;
-
-                    String pkg = Path.Combine(o, "objects.package");
-                    if (File.Exists(pkg))
-                    {
-                        AddFixed(pkg);
-                        addedOP = true;
-                    }
-                }
-
-
-                o = Path.Combine(path, "TSData\\Res\\Catalog\\Bins");
+                String o = Path.Combine(path, "TSData\\Res\\Catalog\\Bins");
                 if (!Directory.Exists(o) || isIgnored(o))
                     continue;
 
