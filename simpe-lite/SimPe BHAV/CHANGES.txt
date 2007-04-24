@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+22 April 2007 18:21 - Use only Global.Latest objects.package
+  pjse filetable\
+    FileTable.cs 1.11.2.21
+
 24 March 2007 13:59 - Integrate Shy's disasim24e changes (and fix SkipPrompt link)
   pjse update tool\
     SkipPrompt.cs 1.1.2.3
