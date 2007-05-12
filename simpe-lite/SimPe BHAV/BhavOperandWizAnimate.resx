@@ -1267,13 +1267,13 @@
     <value>3, 192</value>
   </data>
   <data name="ckbBlendOut.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 21</value>
+    <value>121, 21</value>
   </data>
   <data name="ckbBlendOut.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="ckbBlendOut.Text" xml:space="preserve">
-    <value>Blend Out</value>
+    <value>Blend Out OFF</value>
   </data>
   <data name="&gt;&gt;ckbBlendOut.Name" xml:space="preserve">
     <value>ckbBlendOut</value>
@@ -1297,13 +1297,13 @@
     <value>3, 219</value>
   </data>
   <data name="ckbBlendIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 21</value>
+    <value>109, 21</value>
   </data>
   <data name="ckbBlendIn.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
   <data name="ckbBlendIn.Text" xml:space="preserve">
-    <value>Blend In</value>
+    <value>Blend In OFF</value>
   </data>
   <data name="&gt;&gt;ckbBlendIn.Name" xml:space="preserve">
     <value>ckbBlendIn</value>
