@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+12 May 2007 09:51 - (Oops) Helps if you test a fix, really...
+  SimPe BHAV\
+    BhavOperandWiz0x006d.cs 1.1.4.6
+
 12 May 2007 09:14 - Bugfix: BlendIn/BlendOut inverted (off/on) in WizAnimate
   SimPe BHAV\
     BhavOperandWizAnimate.cs 1.1.4.2

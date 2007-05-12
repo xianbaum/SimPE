@@ -249,7 +249,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 ops1[0x00] = (byte)(doid3.Value & 0xff);
                 ops1[0x01] = (byte)(doid3.Value >> 8 & 0xff);
 
-                ops1[0x02] &= 0x20;
+                ops1[0x02] = 0x00;
                 ops1[0x02] |= (byte)(this.rb3Object.Checked ? 0x01 : 0x00);
                 switch (this.cbMatScope.SelectedIndex)
                 {
