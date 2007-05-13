@@ -199,6 +199,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.rb2Material.Checked = !this.rb2MovingTexture.Checked;
 
             this.ckbMaterialTemp.Checked = ((ops1[0x02] & 0x10) != 0);
+            this.ckbMeshTemp.Checked     = ((ops1[0x02] & 0x20) != 0);
 
             this.cbMeshScope.SelectedIndex = -1;
             switch (ops1[0x02] & 0xc0)
@@ -225,6 +226,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             internalchg = false;
 
             this.MaterialFrom();
+            this.MeshFrom();
         }
 
         void doid3_DataOwnerControlChanged(object sender, EventArgs e)
@@ -247,7 +249,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 ops1[0x00] = (byte)(doid3.Value & 0xff);
                 ops1[0x01] = (byte)(doid3.Value >> 8 & 0xff);
 
-                ops1[0x02] &= 0x20;
+                ops1[0x02] = 0x00;
                 ops1[0x02] |= (byte)(this.rb3Object.Checked ? 0x01 : 0x00);
                 switch (this.cbMatScope.SelectedIndex)
                 {
@@ -256,6 +258,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 }
                 ops1[0x02] |= (byte)(this.rb1Object.Checked ? 0x08 : 0x00);
                 ops1[0x02] |= (byte)(this.ckbMaterialTemp.Checked ? 0x10 : 0x00);
+                ops1[0x02] |= (byte)(this.ckbMeshTemp.Checked ? 0x20 : 0x00);
                 switch (this.cbMeshScope.SelectedIndex)
                 {
                     case 2: ops1[0x02] |= 0x40; break; // Global
