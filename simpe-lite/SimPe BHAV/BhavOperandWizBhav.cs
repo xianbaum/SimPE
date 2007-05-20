@@ -68,7 +68,7 @@ namespace pjse.BhavOperandWizards.WizBhav
 
             adoid = new DataOwnerControl[8];
             for (int i = 0; i < adoid.Length; i++)
-                adoid[i] = new DataOwnerControl(null, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i], 0x07, 0);
+                adoid[i] = new DataOwnerControl(null, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i], 0x07, (ushort)0);
 
             arbFormat = new List<RadioButton>(new RadioButton[] { rbNone, rbCallers, rbOld, rbNew });
         }
