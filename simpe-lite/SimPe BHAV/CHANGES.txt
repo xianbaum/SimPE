@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+20 May 2007 19:13 - Bugfix: get a better idea of currentPackage in Popup mode
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.32
+
 17 May 2007 19:26 - Bugfix: DataOwnerControl needs to be told (ushort) sometimes
   SimPe BHAV\
     BhavOperandWizBhav.cs 1.1.8.5
