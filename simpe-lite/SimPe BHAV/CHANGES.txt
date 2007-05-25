@@ -1,5 +1,17 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+25 May 2007 13:06 - Most Update checker
+  * GUIDTool.cs, BhavForm.cs, StrForm.cs: MONO-compliant
+  * update tool: stop copying referenced DLLs local
+  pjse GUID Tool\
+    GUIDTools.cs 1.10.2.4
+  pjse update tool\
+    Checker.cs 1.1.4.4
+    pjse update tool.csproj 1.1.4.3
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.33
+    BhavOperandWizBhav.cs 1.28.2.24
+
 20 May 2007 19:13 - Bugfix: get a better idea of currentPackage in Popup mode
   SimPe BHAV\
     BhavForm.cs 1.64.2.32

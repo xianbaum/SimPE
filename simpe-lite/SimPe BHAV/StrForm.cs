@@ -589,7 +589,7 @@ namespace SimPe.PackedFiles.UserInterface
             fd.FilterIndex = 1;
             fd.RestoreDirectory = false;
             fd.ShowHelp = false;
-            fd.SupportMultiDottedExtensions = false;
+            //fd.SupportMultiDottedExtensions = false; // Methods missing from Mono
             fd.Title = load
                 ? pjse.Localization.GetString("strLangLoad")
                 : pjse.Localization.GetString("strLangSave");

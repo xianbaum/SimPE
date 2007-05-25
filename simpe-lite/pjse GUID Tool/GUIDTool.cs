@@ -197,7 +197,7 @@ namespace pjse.guidtool
                 this.tbName.Text = this.tbName.Text.Trim().ToLower();
             }
             this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
-            this.rtbReport.UseWaitCursor = true;
+            // this.rtbReport.UseWaitCursor = true; // Methods missing from Mono
             this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
             this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = false;
             this.btnSearch.Text = pjse.Localization.GetString("gt_Stop");
@@ -231,7 +231,7 @@ namespace pjse.guidtool
                 searchThread.Join(10);
             searchThread = null;
             this.Cursor = this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
-            this.rtbReport.UseWaitCursor = false;
+            //this.rtbReport.UseWaitCursor = false; // Methods missing from Mono
             this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = this.btnSearch.Enabled = true;
             this.btnSearch.Text = oldText;
             this.progressBar1.Value = 0;
