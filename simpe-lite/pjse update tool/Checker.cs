@@ -74,7 +74,7 @@ namespace pjse.Updates
                     , pjse.Localization.GetString("pjse_UpdateSettings")
                     , MessageBoxButtons.OK
                     , MessageBoxIcon.Exclamation);
-                if (autoCheck) Settings.AutoUpdateChoiceValue = Settings.AutoUpdateChoiceValue.AskMe;
+                if (autoCheck) Settings.US.AutoUpdateChoice = Settings.AutoUpdateChoiceValue.AskMe;
                 throw new ArgumentException();
             }
 

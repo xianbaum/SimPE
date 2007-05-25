@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+25 May 2007 13:20 - Oops: try compiling it first...
+  pjse update tool\
+    Checker.cs 1.1.4.5
+
 25 May 2007 13:06 - Most Update checker
   * GUIDTool.cs, BhavForm.cs, StrForm.cs: MONO-compliant
   * update tool: stop copying referenced DLLs local
