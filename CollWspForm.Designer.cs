@@ -29,11 +29,11 @@ namespace SimPe.Plugin.CollWsp
     private void InitializeComponent()
     {
       this.components = new System.ComponentModel.Container();
-      System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem( new string[] {
+      System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem( new string[] {
             "Atest ch1",
             "Ctest",
             "Atest type"}, -1 );
-      System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem( new string[] {
+      System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem( new string[] {
             "Btest ch1",
             "Btest ch2",
             "Btest ch3"}, -1 );
@@ -65,6 +65,8 @@ namespace SimPe.Plugin.CollWsp
       this.label5 = new System.Windows.Forms.Label();
       this.iconFileDialog = new System.Windows.Forms.OpenFileDialog();
       this.saveButton = new System.Windows.Forms.Button();
+      this.includeMaxisCheckBox = new System.Windows.Forms.CheckBox();
+      this.button1 = new System.Windows.Forms.Button();
       ( (System.ComponentModel.ISupportInitialize)( this.collIconPictureBox ) ).BeginInit();
       this.SuspendLayout();
       // 
@@ -84,8 +86,8 @@ namespace SimPe.Plugin.CollWsp
             this.enabledColumnHeader,
             this.typeColumnHeader} );
       this.resListView.Items.AddRange( new System.Windows.Forms.ListViewItem[] {
-            listViewItem1,
-            listViewItem2} );
+            listViewItem3,
+            listViewItem4} );
       this.resListView.Location = new System.Drawing.Point( 25, 161 );
       this.resListView.Name = "resListView";
       this.resListView.Size = new System.Drawing.Size( 367, 423 );
@@ -306,11 +308,35 @@ namespace SimPe.Plugin.CollWsp
       this.saveButton.UseVisualStyleBackColor = true;
       this.saveButton.Click += new System.EventHandler( this.SaveCollection );
       // 
+      // includeMaxisCheckBox
+      // 
+      this.includeMaxisCheckBox.Checked = true;
+      this.includeMaxisCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+      this.includeMaxisCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
+      this.includeMaxisCheckBox.Location = new System.Drawing.Point( 25, 50 );
+      this.includeMaxisCheckBox.Name = "includeMaxisCheckBox";
+      this.includeMaxisCheckBox.Size = new System.Drawing.Size( 125, 24 );
+      this.includeMaxisCheckBox.TabIndex = 24;
+      this.includeMaxisCheckBox.Text = "Include Maxis Items";
+      this.toolTip1.SetToolTip( this.includeMaxisCheckBox, "Indicate scan to go into subdirectories" );
+      // 
+      // button1
+      // 
+      this.button1.Location = new System.Drawing.Point( 25, 92 );
+      this.button1.Name = "button1";
+      this.button1.Size = new System.Drawing.Size( 75, 23 );
+      this.button1.TabIndex = 25;
+      this.button1.Text = "button1";
+      this.button1.UseVisualStyleBackColor = true;
+      this.button1.Click += new System.EventHandler( this.button1_Click );
+      // 
       // CollWspForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
       this.ClientSize = new System.Drawing.Size( 901, 624 );
+      this.Controls.Add( this.button1 );
+      this.Controls.Add( this.includeMaxisCheckBox );
       this.Controls.Add( this.saveButton );
       this.Controls.Add( this.collIconButton );
       this.Controls.Add( this.collIconPictureBox );
@@ -368,5 +394,7 @@ namespace SimPe.Plugin.CollWsp
     private System.Windows.Forms.Button collIconButton;
     private System.Windows.Forms.OpenFileDialog iconFileDialog;
     private System.Windows.Forms.Button saveButton;
+    private System.Windows.Forms.CheckBox includeMaxisCheckBox;
+    private System.Windows.Forms.Button button1;
   }
 }

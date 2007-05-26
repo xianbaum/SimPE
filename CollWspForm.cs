@@ -13,12 +13,15 @@ namespace SimPe.Plugin.CollWsp
 {
   public partial class CollWspForm : Form
   {
-    SimPe.Cache.PackageCacheFile cachefile;
+    //SimPe.Cache.PackageCacheFile cachefile;
     string errorlog;
-    bool cachechg;
+    //bool cachechg;
 
     //stores only needed scanners
-    CollWspScannerCollection fscanners; 
+    //CollWspScannerCollection fscanners; 
+    CollWspItems resCollection;
+    CollWspItems collCollection;
+
     string flname;
     public string FileName
     {
@@ -32,11 +35,18 @@ namespace SimPe.Plugin.CollWsp
       InitializeComponent();
 
       this.cbfolder.SelectedIndex = 0;
+
+      resCollection = new CollWspItems();
+      collCollection = new CollWspItems();
       
+      sorter = new ColumnSorter();
+      resListView.ListViewItemSorter = sorter;
+    }   
       //load the Group Cache
-      SimPe.Plugin.ScenegraphWrapperFactory.LoadGroupCache();
+      //SimPe.Plugin.ScenegraphWrapperFactory.LoadGroupCache();
 
       //load cache if any
+/*
       cachefile = new SimPe.Cache.PackageCacheFile();
       try
       {
@@ -46,10 +56,9 @@ namespace SimPe.Plugin.CollWsp
       {
         Helper.ExceptionMessage( "Unable to reload the Cache File.", ex );
       }
-
-      sorter = new ColumnSorter();
-      resListView.ListViewItemSorter = sorter;
-
+*/
+      
+/*
       fscanners = new CollWspScannerCollection();
       //display the list of identifiers
 			foreach (IIdentifier id in CollWspScannerRegistry.Global.Identifiers)
@@ -69,7 +78,7 @@ namespace SimPe.Plugin.CollWsp
           fscanners.Add(i);
         }
       }
-    }
+ */
 
     ColumnSorter sorter;
     private void SortList( object sender, System.Windows.Forms.ColumnClickEventArgs e )
@@ -115,7 +124,6 @@ namespace SimPe.Plugin.CollWsp
           MessageBox.Show( "Error: Could not read icon image file from disk. Original error: " + ex.Message );
         }
       }
-
     }
 
     string folder;
@@ -142,13 +150,73 @@ namespace SimPe.Plugin.CollWsp
     private void Scan( object sender, EventArgs e )
     {
       errorlog = "";
-      cachechg = false;
+      //cachechg = false;
       resListView.Items.Clear();
       resListView.Columns.Clear();
+      resCollection.Clear();
       //ilist.Images.Clear();
 
-      resListView.BeginUpdate();
-      WaitingScreen.Wait();
+      //resListView.BeginUpdate();
+      //WaitingScreen.Wait();
+      resListView.Columns.Add( "Filename", 180 );
+      resListView.Columns.Add( "Age", 80 );
+
+      FileTable.FileIndex.AddIndexFromFolder( folder );
+      IScenegraphFileIndexItem[] items = FileTable.FileIndex.FindFile( Data.MetaData.GZPS, true );
+
+      //make sure it's cloth not skin
+      foreach ( IScenegraphFileIndexItem item in items )
+      {
+        SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
+        cpf.ProcessData( item );
+
+        if ( cpf.GetSaveItem( "type" ).StringValue.Trim().ToLower() == "skin" )
+        {
+          uint cat = cpf.GetSaveItem( "category" ).UIntegerValue;
+          if ( ( cat & (uint)Data.SkinCategories.Skin ) == 0 )
+          {
+            CollWspItem cwitem = new CollWspItem();
+            cwitem.Items = (SimPe.PackedFiles.Wrapper.CpfItem[])cpf.Items.Clone();
+            cwitem.PackedFileDescriptor = (SimPe.Packages.PackedFileDescriptor)cpf.FileDescriptor.Clone();
+
+            ListViewItem lvi = new ListViewItem( System.IO.Path.GetFileNameWithoutExtension(cpf.Package.FileName) );
+            //lvi.SubItems.Add(cpf.Package.FileName);
+
+            string age = "";
+            Data.Ages[] ages = (Data.Ages[])System.Enum.GetValues( typeof( Data.Ages ) );
+            uint a = cwitem.Age;
+            foreach ( Data.Ages ag in ages )
+            {
+              if ( ( a & (uint)ag ) != 0 )
+              {
+                if ( age != "" )
+                  age += ", ";
+                age += ag.ToString();
+              }
+            }
+            lvi.SubItems.Add( age );
+
+            cwitem.ListViewItem = lvi;
+            lvi.Tag = cwitem;
+            resCollection.Add( cwitem );
+            resListView.Items.Add( lvi );
+            
+          }
+        }
+      }
+      if ( errorlog.Trim() != "" )
+        Helper.ExceptionMessage( new Warning( "Unreadable Files were found", errorlog ) );
+      
+      // Setup collListView to have the same column as resListView
+      collListView.Columns.Clear();
+      foreach ( ColumnHeader ch in resListView.Columns )
+      {
+        ColumnHeader cl = new ColumnHeader();
+        cl.Text = ch.Text;
+        collListView.Columns.Add(cl);
+      }
+    }
+/*
       try
       {
         if ( Helper.WindowsRegistry.UseCache )
@@ -191,20 +259,10 @@ namespace SimPe.Plugin.CollWsp
         WaitingScreen.Stop();
         resListView.EndUpdate();
       }
+*/
 
-      if ( errorlog.Trim() != "" )
-        Helper.ExceptionMessage( new Warning( "Unreadable Files were found", errorlog ) );
       
-      // Setup collListView to have the same column as resListView
-      collListView.Columns.Clear();
-      foreach ( ColumnHeader ch in resListView.Columns )
-      {
-        ColumnHeader cl = new ColumnHeader();
-        cl.Text = ch.Text;
-        collListView.Columns.Add(cl);
-      }
-    }
-
+/*
     private void Scan( string folder, bool rec, CollWspScannerCollection usedscanners )
     {
 
@@ -229,8 +287,8 @@ namespace SimPe.Plugin.CollWsp
         foreach ( string dir in dirs )
           Scan( dir, true, usedscanners );
       }
-
-    }
+*/
+    
     /// <summary>
     /// Scan for all Files and display the Result
     /// </summary>
@@ -238,6 +296,7 @@ namespace SimPe.Plugin.CollWsp
     /// <param name="enabled"></param>
     /// <param name="pboffset"></param>
     /// <param name="count"></param>
+/*    
     void Scan( string[] files, bool enabled, int pboffset, int count, CollWspScannerCollection usedscanners )
     {
       int ct = pboffset;
@@ -306,18 +365,18 @@ namespace SimPe.Plugin.CollWsp
         }
         catch ( Exception ex )
         {
-          /*if (Helper.DebugMode) 
+          if (Helper.DebugMode) 
           {
             Helper.ExceptionMessage("", ex);
           } 
           else 
-          {*/
+          {
           errorlog += file + ": " + ex.Message + Helper.lbr + "----------------------------------------" + Helper.lbr;
           //}
         }
       } //foreach			
     }
-
+*/
     private void MoveToCollection( object sender, EventArgs e )
     {
       if ( resListView.SelectedItems.Count == 0 ) return;
@@ -407,9 +466,10 @@ namespace SimPe.Plugin.CollWsp
       if ( collpfd == null )
         return;
 
-      // SaveListViewItems( group, instance, package, collpfd );
+      SaveListViewItems( group, instance, package, collpfd );
       
       package.Save( filename );
+      MessageBox.Show( "Collection created" );
     }
 
     private void SaveListViewItems( uint group, uint instance, IPackageFile package, IPackedFileDescriptor collpfd )
@@ -418,15 +478,18 @@ namespace SimPe.Plugin.CollWsp
       foreach ( ListViewItem lvi in collListView.Items )
       {
         IPackedFileDescriptor pfd = package.NewDescriptor( Data.MetaData.REF_FILE, 0, group, instance+(uint)j+1 );
-        
+        ScannerItem si;
+        si = (ScannerItem)lvi.Tag;
+
         SimPe.Plugin.RefFile reffile = new SimPe.Plugin.RefFile();
         reffile.ProcessData( pfd, package );
 
         IPackedFileDescriptor[] pfds = new IPackedFileDescriptor[3];
+        //UI empty
         pfds[0] = package.NewDescriptor( 0, 0, 0, 0 );
+        //collection
         pfds[1] = collpfd;
-        ScannerItem si;
-        si = (ScannerItem)lvi.Tag;
+        //property set
         pfds[2] = si.Package.FindFiles( Data.MetaData.GZPS )[0];
 
         reffile.Items = pfds;
@@ -434,11 +497,13 @@ namespace SimPe.Plugin.CollWsp
 
         package.Add( pfd );
 
+        //BINX resource
         IPackedFileDescriptor binpfd = package.NewDescriptor( 0x0C560F39, 0, group, instance + (uint)j + 1 );
 
         SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
         cpf.ProcessData( binpfd, package );
 
+        //TODO: refactor to more ellegant array processing
         for ( int i = 0; i < 7; i++ )
         {
           SimPe.PackedFiles.Wrapper.CpfItem item = new SimPe.PackedFiles.Wrapper.CpfItem();
@@ -612,6 +677,17 @@ namespace SimPe.Plugin.CollWsp
         Helper.ExceptionMessage( "Error processing collection resource", ex );
         return null;
       }
+    }
+
+    private void button1_Click( object sender, EventArgs e )
+    {
+      //FileTable.FileIndex.Load();
+      ListViewItem lvi = new ListViewItem( "Test" );
+      lvi.SubItems.Add( "text1" );
+      lvi.SubItems.Add( "text2" );
+
+      resListView.Items.Add( lvi );
+
     }
   }
 }

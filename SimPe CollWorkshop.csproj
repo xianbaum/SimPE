@@ -129,6 +129,7 @@
     <Compile Include="CollWspForm.Designer.cs">
       <DependentUpon>CollWspForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CollWspItem.cs" />
     <Compile Include="CollWspScannerCollection.cs" />
     <Compile Include="CollWspScannerRegistry.cs" />
     <Compile Include="CollWspTool.cs" />
