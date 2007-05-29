@@ -52,9 +52,12 @@ namespace pjse.Updates
             if ((Settings.US.AutoUpdateChoice == Settings.AutoUpdateChoiceValue.Daily)
                 && (DateTime.UtcNow.Date != Settings.US.LastUpdateTS.Date))
             {
-                try { GetUpdate(true); }
+                try
+                {
+                    GetUpdate(true);
+                    Settings.US.LastUpdateTS = DateTime.UtcNow; // Only the automated check updates this setting
+                }
                 catch (ArgumentException) { }
-                Settings.US.LastUpdateTS = DateTime.UtcNow; // Only the automated check updates this setting
             }
         }
 
@@ -64,12 +67,14 @@ namespace pjse.Updates
             try { ui = new UpdateInfo(); }
             catch (System.Net.WebException we)
             {
-                MessageBox.Show("URL: " + we.Response.ResponseUri
-                    + "\r\n\r\n" + we.Message
+                MessageBox.Show(
+                    ((we != null && we.Response != null) ? "URL: " + we.Response.ResponseUri + "\r\n\r\n" : "")
+                    + we.Message
                     + "\r\n\r\n" + pjse.Localization.GetString("UIWebException")
                     , pjse.Localization.GetString("pjse_UpdateSettings")
                     , MessageBoxButtons.OK
                     , MessageBoxIcon.Exclamation);
+                if (autoCheck) Settings.US.AutoUpdateChoice = Settings.AutoUpdateChoiceValue.AskMe;
                 throw new ArgumentException();
             }
 

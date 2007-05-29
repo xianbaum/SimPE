@@ -215,7 +215,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alDec8;
 		private ArrayList alHex16cb;
 
-        private static IPackageFile currentPackage = null;
+        private IPackageFile currentPackage = null;
         private void TakeACopy()
         {
             IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
@@ -581,6 +581,7 @@ namespace SimPe.PackedFiles.UserInterface
 
             if (((string)this.Tag).Equals("Popup"))
             {
+                currentPackage = pjse.FileTable.GFT.CurrentPackage;
                 // make it very clear it's read only
                 tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =
                     tbHeaderFlag.Enabled = tbTreeVersion.Enabled = tbCacheFlags.Enabled =
@@ -2076,7 +2077,7 @@ namespace SimPe.PackedFiles.UserInterface
             fd.FilterIndex = 1;
             fd.RestoreDirectory = false;
             fd.ShowHelp = false;
-            fd.SupportMultiDottedExtensions = false;
+            // fd.SupportMultiDottedExtensions = false; // Methods missing from Mono
             fd.Title = load
                 ? pjse.Localization.GetString("guidLoadIndex")
                 : pjse.Localization.GetString("guidSaveIndex");

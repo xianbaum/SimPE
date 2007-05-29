@@ -31,10 +31,12 @@
     <Reference Include="simpe.helper, Version=0.59.22.36579, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\SimPe\simpe.helper.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="simpe.workspace, Version=1.0.2503.36581, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\SimPe\simpe.workspace.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
