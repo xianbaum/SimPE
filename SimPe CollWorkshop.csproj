@@ -123,17 +123,25 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BodyClothScanner.cs" />
     <Compile Include="CollWspForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CollWspForm.Designer.cs">
       <DependentUpon>CollWspForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="CollWspFormSave.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CollWspFormScan.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="CollWspItem.cs" />
     <Compile Include="CollWspScannerCollection.cs" />
     <Compile Include="CollWspScannerRegistry.cs" />
     <Compile Include="CollWspTool.cs" />
     <Compile Include="CollWspFactory.cs" />
+    <Compile Include="CollWspUtils.cs" />
     <Compile Include="PackageCacheFile.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -13,14 +13,35 @@ namespace SimPe.Plugin.CollWsp
 {
   public partial class CollWspForm : Form
   {
-    //SimPe.Cache.PackageCacheFile cachefile;
+    
     string errorlog;
-    //bool cachechg;
+    bool cachechg;
+    SimPe.Cache.PackageCacheFile cachefile;
 
     //stores only needed scanners
-    //CollWspScannerCollection fscanners; 
-    CollWspItems resCollection;
-    CollWspItems collCollection;
+    CollWspScannerCollection fscanners;
+
+    ClothCollWspItems resCollection;
+    ClothCollWspItems collCollection;
+    ListViewItem[] filteredCollection = { };
+    Type categories = typeof( Data.SkinCategories );
+    Type ages = typeof( Data.Ages );
+    Type genders = typeof( CollWsp.Genders );
+    ArrayList genderFilter;
+    string collType = "cloth";
+
+    private void InitFiltersLayout()
+    {
+      foreach ( string cat in System.Enum.GetNames( categories ) )
+      {
+        if ( !cat.Contains( "Casual" ) && !cat.Contains( "Skin" ) )
+          categoryFilterListView.Items.Add( cat );
+      }
+
+      foreach ( string age in System.Enum.GetNames( ages ) )
+        ageFilterListView.Items.Add( age );
+
+    }
 
     string flname;
     public string FileName
@@ -33,20 +54,22 @@ namespace SimPe.Plugin.CollWsp
     public CollWspForm()
     {
       InitializeComponent();
+      InitFiltersLayout();
+
+      //load the Group Cache
+      SimPe.Plugin.ScenegraphWrapperFactory.LoadGroupCache();
 
       this.cbfolder.SelectedIndex = 0;
 
-      resCollection = new CollWspItems();
-      collCollection = new CollWspItems();
-      
+      resCollection = new ClothCollWspItems();
+      collCollection = new ClothCollWspItems();
+      genderFilter = new ArrayList();
+      //filteredCollection = new ArrayList();
+            
       sorter = new ColumnSorter();
       resListView.ListViewItemSorter = sorter;
-    }   
-      //load the Group Cache
-      //SimPe.Plugin.ScenegraphWrapperFactory.LoadGroupCache();
 
-      //load cache if any
-/*
+      //resListView.SmallImageList = resListView.LargeImageList;
       cachefile = new SimPe.Cache.PackageCacheFile();
       try
       {
@@ -56,29 +79,17 @@ namespace SimPe.Plugin.CollWsp
       {
         Helper.ExceptionMessage( "Unable to reload the Cache File.", ex );
       }
-*/
-      
-/*
-      fscanners = new CollWspScannerCollection();
-      //display the list of identifiers
-			foreach (IIdentifier id in CollWspScannerRegistry.Global.Identifiers)
-			{
-				lbid.Items.Add(id.GetType().Name+" (version="+id.Version.ToString()+", index="+id.Index.ToString()+")");
-			}
 
-			//add the scanners to the Selection and show the Scanner Controls (if available)
-			//SimPe.Plugin.Scanner.AbstractScanner.UpdateList finishcallback = new SimPe.Plugin.Scanner.AbstractScanner.UpdateList(this.UpdateList);
-			//ArrayList uids = new ArrayList();
+      fscanners = new CollWspScannerCollection();
       foreach ( IScanner i in CollWspScannerRegistry.Global.Scanners )
       {
-        string name = i.GetType().Name + " (version=" + i.Version.ToString() + ", uid=0x" + Helper.HexString( i.Uid ) + ", index=" + i.Index.ToString() + ")";
-        if (name.ToLower().Contains("clothingscanner"))
-        {
-          this.lbscandebug.Items.Add( name );
-          fscanners.Add(i);
-        }
+         string name = i.GetType().Name + " (version=" + i.Version.ToString() + ", uid=0x" + Helper.HexString( i.Uid ) + ", index=" + i.Index.ToString() + ")";
+         if ( name.ToLower().Contains( "bodyclothscanner" ) )
+         {
+           fscanners.Add(i);
+         }
       }
- */
+    }   
 
     ColumnSorter sorter;
     private void SortList( object sender, System.Windows.Forms.ColumnClickEventArgs e )
@@ -86,6 +97,7 @@ namespace SimPe.Plugin.CollWsp
       if ( sorter.CurrentColumn == e.Column )
       {
         if ( resListView.Sorting == SortOrder.Ascending )
+
           resListView.Sorting = SortOrder.Descending;
         else
           resListView.Sorting = SortOrder.Ascending;
@@ -114,15 +126,19 @@ namespace SimPe.Plugin.CollWsp
         try
         {
           string iconFile = openFileDialog1.FileName;
-          //TODO:check the image size - no more 32x32 px
           
           iconData = System.IO.File.ReadAllBytes( iconFile );
-          collIconPictureBox.Image = Image.FromFile( iconFile );
+          Image tmpi = Image.FromFile( iconFile );
+          collIconPictureBox.Image = tmpi;
+
+          if ( (tmpi.Size.Height > 32) || (tmpi.Size.Width > 32) ) 
+            MessageBox.Show( "This icon is too big, although visible in the game might not look as you expect." );
         }
         catch ( Exception ex )
         {
           MessageBox.Show( "Error: Could not read icon image file from disk. Original error: " + ex.Message );
         }
+
       }
     }
 
@@ -142,281 +158,65 @@ namespace SimPe.Plugin.CollWsp
       }
     }
 
-    /// <summary>
-    /// Scan folders routine called on Scanbutton press
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void Scan( object sender, EventArgs e )
-    {
-      errorlog = "";
-      //cachechg = false;
-      resListView.Items.Clear();
-      resListView.Columns.Clear();
-      resCollection.Clear();
-      //ilist.Images.Clear();
-
-      //resListView.BeginUpdate();
-      //WaitingScreen.Wait();
-      resListView.Columns.Add( "Filename", 180 );
-      resListView.Columns.Add( "Age", 80 );
-
-      FileTable.FileIndex.AddIndexFromFolder( folder );
-      IScenegraphFileIndexItem[] items = FileTable.FileIndex.FindFile( Data.MetaData.GZPS, true );
-
-      //make sure it's cloth not skin
-      foreach ( IScenegraphFileIndexItem item in items )
-      {
-        SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
-        cpf.ProcessData( item );
-
-        if ( cpf.GetSaveItem( "type" ).StringValue.Trim().ToLower() == "skin" )
-        {
-          uint cat = cpf.GetSaveItem( "category" ).UIntegerValue;
-          if ( ( cat & (uint)Data.SkinCategories.Skin ) == 0 )
-          {
-            CollWspItem cwitem = new CollWspItem();
-            cwitem.Items = (SimPe.PackedFiles.Wrapper.CpfItem[])cpf.Items.Clone();
-            cwitem.PackedFileDescriptor = (SimPe.Packages.PackedFileDescriptor)cpf.FileDescriptor.Clone();
-
-            ListViewItem lvi = new ListViewItem( System.IO.Path.GetFileNameWithoutExtension(cpf.Package.FileName) );
-            //lvi.SubItems.Add(cpf.Package.FileName);
-
-            string age = "";
-            Data.Ages[] ages = (Data.Ages[])System.Enum.GetValues( typeof( Data.Ages ) );
-            uint a = cwitem.Age;
-            foreach ( Data.Ages ag in ages )
-            {
-              if ( ( a & (uint)ag ) != 0 )
-              {
-                if ( age != "" )
-                  age += ", ";
-                age += ag.ToString();
-              }
-            }
-            lvi.SubItems.Add( age );
-
-            cwitem.ListViewItem = lvi;
-            lvi.Tag = cwitem;
-            resCollection.Add( cwitem );
-            resListView.Items.Add( lvi );
-            
-          }
-        }
-      }
-      if ( errorlog.Trim() != "" )
-        Helper.ExceptionMessage( new Warning( "Unreadable Files were found", errorlog ) );
-      
-      // Setup collListView to have the same column as resListView
-      collListView.Columns.Clear();
-      foreach ( ColumnHeader ch in resListView.Columns )
-      {
-        ColumnHeader cl = new ColumnHeader();
-        cl.Text = ch.Text;
-        collListView.Columns.Add(cl);
-      }
-    }
-/*
-      try
-      {
-        if ( Helper.WindowsRegistry.UseCache )
-          cachefile.LoadFiles();
-
-        //Setup ListView
-        resListView.SmallImageList = null;
-        resListView.Refresh();
-        SimPe.Plugin.Scanner.AbstractScanner.AddColumn( resListView, "Filename", 180 );
-        SimPe.Plugin.Scanner.AbstractScanner.AddColumn( resListView, "Enabled", 60 );
-        SimPe.Plugin.Scanner.AbstractScanner.AddColumn( resListView, "Type", 80 );
-
-        SimPe.Plugin.Scanner.AbstractScanner.AssignFileTable();
-        //setup Scanners
-        foreach ( IScanner s in fscanners ) s.InitScan( this.resListView );
-
-        //scan all Files
-        Scan( folder, cbrec.Checked, fscanners );
-
-        //finish Scanners
-        foreach ( IScanner s in fscanners ) s.FinishScan();
-        SimPe.Plugin.Scanner.AbstractScanner.DeAssignFileTable();
-
-        try
-        {
-          if ( Helper.WindowsRegistry.UseCache && cachechg )
-            cachefile.Save();
-        }
-        catch ( Exception ex )
-        {
-          Helper.ExceptionMessage( "", ex );
-        }
-      }
-      catch ( Exception ex )
-      {
-        Helper.ExceptionMessage( ex );
-      }
-      finally
-      {
-        WaitingScreen.Stop();
-        resListView.EndUpdate();
-      }
-*/
-
-      
-/*
-    private void Scan( string folder, bool rec, CollWspScannerCollection usedscanners )
-    {
-
-      //scan all Files
-      //pb.Value = 0;
-      string[] files = System.IO.Directory.GetFiles( folder, "*.package" );
-      string[] dfiles = System.IO.Directory.GetFiles( folder, "*.simpedis" );
-      string[] dofiles = System.IO.Directory.GetFiles( folder, "*.packagedisabled" );
-      string[] tfiles = System.IO.Directory.GetFiles( folder, "*.Sims2Tmp" );
-
-      int ct = files.Length + dfiles.Length + dofiles.Length + tfiles.Length;
-      Scan( files, true, 0, ct, usedscanners );
-      Scan( dfiles, false, files.Length, ct, usedscanners );
-      Scan( dofiles, false, files.Length + dfiles.Length, ct, usedscanners );
-      Scan( tfiles, false, files.Length + dfiles.Length + dofiles.Length, ct, usedscanners );
-      //pb.Value = 0;
-
-      //issue a recursive Scan
-      if ( rec )
-      {
-        string[] dirs = System.IO.Directory.GetDirectories( folder, "*" );
-        foreach ( string dir in dirs )
-          Scan( dir, true, usedscanners );
-      }
-*/
-    
-    /// <summary>
-    /// Scan for all Files and display the Result
-    /// </summary>
-    /// <param name="files"></param>
-    /// <param name="enabled"></param>
-    /// <param name="pboffset"></param>
-    /// <param name="count"></param>
-/*    
-    void Scan( string[] files, bool enabled, int pboffset, int count, CollWspScannerCollection usedscanners )
-    {
-      int ct = pboffset;
-      foreach ( string file in files )
-      {
-        //pb.Value = Math.Max( Math.Min( ( ( ct++ ) * pb.Maximum ) / count, pb.Maximum ), pb.Minimum );
-        Application.DoEvents();
-        try
-        {
-          //Load the Item from the cache (if possible)
-          ScannerItem si = cachefile.LoadItem( file );
-          si.PackageCacheItem.Enabled = enabled;
-
-          if ( si.PackageCacheItem.Thumbnail != null )
-            WaitingScreen.Update( si.PackageCacheItem.Thumbnail, si.PackageCacheItem.Name );
-          else
-            WaitingScreen.UpdateMessage( si.PackageCacheItem.Name );
-
-          //determine Type
-          SimPe.Cache.PackageType pt = si.PackageCacheItem.Type;
-          foreach ( IIdentifier id in CollWspScannerRegistry.Global.Identifiers )
-          {
-            if ( ( si.PackageCacheItem.Type != SimPe.Cache.PackageType.Unknown ) && ( si.PackageCacheItem.Type != SimPe.Cache.PackageType.Undefined ) )
-              break;
-
-
-            if ( ( si.PackageCacheItem.Type == SimPe.Cache.PackageType.Unknown ) || ( si.PackageCacheItem.Type == SimPe.Cache.PackageType.Undefined ) )
-              si.PackageCacheItem.Type = id.GetType( si.Package );
-          }
-
-          if ( pt != si.PackageCacheItem.Type )
-            cachechg = true;
-          
-          // TODO: Change to depend on collection type
-          if ( si.PackageCacheItem.Type == SimPe.Cache.PackageType.Cloth )
-          {
-            //setup the ListView Item
-            ListViewItem lvi = new ListViewItem();
-            si.ListViewItem = lvi;
-            lvi.Text = System.IO.Path.GetFileNameWithoutExtension( si.FileName );
-            lvi.SubItems.Add( si.PackageCacheItem.Enabled.ToString() );
-            lvi.SubItems.Add( si.PackageCacheItem.Type.ToString() );
-            lvi.Tag = si;
-            if ( !si.PackageCacheItem.Enabled )
-              lvi.ForeColor = Color.Gray;
-
-            //run file through available scanners
-            foreach ( IScanner s in usedscanners )
-            {
-              SimPe.Cache.PackageState ps = si.PackageCacheItem.FindState( s.Uid, true );
-              if ( ps.State == SimPe.Cache.TriState.Null )
-              {
-                s.ScanPackage( si, ps, lvi );
-                if ( ps.State != SimPe.Cache.TriState.Null )
-                  cachechg = true;
-              }
-              else
-                s.UpdateState( si, ps, lvi );
-            }
-
-            resListView.Items.Add( lvi );
-          }
-
-
-          Application.DoEvents();
-        }
-        catch ( Exception ex )
-        {
-          if (Helper.DebugMode) 
-          {
-            Helper.ExceptionMessage("", ex);
-          } 
-          else 
-          {
-          errorlog += file + ": " + ex.Message + Helper.lbr + "----------------------------------------" + Helper.lbr;
-          //}
-        }
-      } //foreach			
-    }
-*/
     private void MoveToCollection( object sender, EventArgs e )
     {
       if ( resListView.SelectedItems.Count == 0 ) return;
 
       foreach ( ListViewItem lvi in resListView.SelectedItems )
-      {
         MoveToCollection( lvi );
-      }
     }
 
     private void MoveToCollection( ListViewItem lvi )
     {
-      if ( collListView.FindItemWithText( lvi.Text ) == null )
+      //Check if item exist in collection list already
+      foreach ( ListViewItem lvii in collListView.Items )
       {
-        ScannerItem si = (ScannerItem)lvi.Tag;
-        ListViewItem ni = (ListViewItem)lvi.Clone();
-        collListView.Items.Add( ni );
-        resListView.Items.Remove( lvi );
-        si.ListViewItem = ni;
+        if ( ( (IClothCollWspItem)lvi.Tag ).Equals( (IClothCollWspItem)lvii.Tag ) )
+          return;
       }
+      //not found, we can process request
+      IClothCollWspItem cwspi = (IClothCollWspItem)lvi.Tag;
+      ListViewItem ni = (ListViewItem)lvi.Clone();
+      
+      collListView.Items.Add( ni );
+      resListView.Items.Remove( lvi );
+      resCollection.Remove( cwspi );
+      cwspi.ListViewItem = ni;
+      collCollection.Add( cwspi );
+    
     }
 
     private void MoveAllToCollection( object sender, EventArgs e )
     {
       foreach ( ListViewItem lvi in resListView.Items )
-      {
         MoveToCollection( lvi );
-      }
     }
 
     private void RemoveFromCollection( ListViewItem lvi )
     {
-      if ( resListView.FindItemWithText( lvi.Text ) == null )
+      //Check if item exist in collection list already
+      bool found = false;
+      foreach ( ListViewItem lvii in resListView.Items )
       {
-        ScannerItem si = (ScannerItem)lvi.Tag;
-        ListViewItem ni = (ListViewItem)lvi.Clone();
-        resListView.Items.Add( ni );
-        si.ListViewItem = ni;
+        if ( ( (IClothCollWspItem)lvi.Tag ).Equals( (IClothCollWspItem)lvii.Tag ) )
+        {
+          found = true;
+          break;
+        }
       }
+      //progress if not found
+      if ( !found )
+      {
+        IClothCollWspItem cwspi = (IClothCollWspItem)lvi.Tag;
+        ListViewItem ni = (ListViewItem)lvi.Clone();
+
+        resListView.Items.Add( ni );
+        cwspi.ListViewItem = ni;
+        resCollection.Add( cwspi );
+      }
+      //remove anyhow but don't add to resources
       collListView.Items.Remove( lvi );
+      collCollection.Remove( (IClothCollWspItem)lvi.Tag );
     }
 
     private void RemoveFromCollection( object sender, EventArgs e )
@@ -438,256 +238,258 @@ namespace SimPe.Plugin.CollWsp
       }
     }
 
-    /// <summary>
-    /// Saves collection to a file
-    /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    private void SaveCollection( object sender, EventArgs e )
+
+    private void ClearResDetails()
     {
-      //TODO: replace with dialog
-      string filename = System.IO.Path.Combine( PathProvider.SimSavegameFolder, "Collections\\testCollection.package" );
-      IPackageFile package = (IPackageFile)SimPe.Packages.GeneratableFile.CreateNew();
-      //TODO: validate all data first
-      //create collection resource first
-      uint instance = Hashes.InstanceHash( filename );
-      uint group = Data.MetaData.LOCAL_GROUP;
-
-      IPackedFileDescriptor collpfd = new SimPe.Packages.PackedFileDescriptor();
-      IPackedFileDescriptor strpfd = new SimPe.Packages.PackedFileDescriptor();
-      IPackedFileDescriptor iconpfd = new SimPe.Packages.PackedFileDescriptor();
-      
-      iconpfd = SaveImageResource( group, 0x00000001, package );
-      if ( iconpfd == null ) return;
-      strpfd = SaveStrResource( group, 0x00000001, package );
-      if ( strpfd == null ) return;
-      SaveRefFileHeaderResource( group, instance, package, strpfd, iconpfd );
-      collpfd = SaveCollectionResource( group, instance, package );
-      if ( collpfd == null )
-        return;
-
-      SaveListViewItems( group, instance, package, collpfd );
-      
-      package.Save( filename );
-      MessageBox.Show( "Collection created" );
+      propertyListView.Items.Clear();
+      imagePictureBox.Image = null;
     }
 
-    private void SaveListViewItems( uint group, uint instance, IPackageFile package, IPackedFileDescriptor collpfd )
+    private void SelectItem( object sender, System.EventArgs e )
     {
-      int j = 0;
-      foreach ( ListViewItem lvi in collListView.Items )
+      if ( rightTabControl.SelectedTab.Name == "resTabPage" )
       {
-        IPackedFileDescriptor pfd = package.NewDescriptor( Data.MetaData.REF_FILE, 0, group, instance+(uint)j+1 );
-        ScannerItem si;
-        si = (ScannerItem)lvi.Tag;
+        if ( resListView.SelectedItems.Count == 0 )
+          return;
 
-        SimPe.Plugin.RefFile reffile = new SimPe.Plugin.RefFile();
-        reffile.ProcessData( pfd, package );
-
-        IPackedFileDescriptor[] pfds = new IPackedFileDescriptor[3];
-        //UI empty
-        pfds[0] = package.NewDescriptor( 0, 0, 0, 0 );
-        //collection
-        pfds[1] = collpfd;
-        //property set
-        pfds[2] = si.Package.FindFiles( Data.MetaData.GZPS )[0];
-
-        reffile.Items = pfds;
-        reffile.SynchronizeUserData();
-
-        package.Add( pfd );
-
-        //BINX resource
-        IPackedFileDescriptor binpfd = package.NewDescriptor( 0x0C560F39, 0, group, instance + (uint)j + 1 );
-
-        SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
-        cpf.ProcessData( binpfd, package );
-
-        //TODO: refactor to more ellegant array processing
-        for ( int i = 0; i < 7; i++ )
+        ClearResDetails();
+        ListViewItem lvi = resListView.SelectedItems[0];
+        
+        //TODO: add more details here
+        for ( int i = 0; i < resListView.Columns.Count; i++ )
         {
-          SimPe.PackedFiles.Wrapper.CpfItem item = new SimPe.PackedFiles.Wrapper.CpfItem();
-          switch ( i )
-          {
-            case 0:
-              item.Name = "iconidx";
-              item.UIntegerValue = 0x00000000;
-              break;
-            case 1:
-              item.Name = "stringsetidx";
-              item.UIntegerValue = 0x00000000;
-              break;
-            case 2:
-              item.Name = "binidx";
-              item.UIntegerValue = 0x00000001;
-              break;
-            case 3:
-              item.Name = "objectidx";
-              item.UIntegerValue = 0x00000002;
-              break;
-            case 4:
-              item.Name = "creatorid";
-              item.StringValue = "00000000-0000-0000-0000-000000000000";
-              break;
-            case 5:
-              item.Name = "sortindex";
-              item.IntegerValue = (int)j;
-              break;
-            case 6:
-              item.Name = "stringindex";
-              item.UIntegerValue = 0x00000000;
-              break;
-          }
-          cpf.AddItem( item );
-        }
-        cpf.SynchronizeUserData();
-        package.Add( binpfd );
-
-        j++;
-      } //foreach
-    }
-
-    private void SaveRefFileHeaderResource( uint group, uint instance, IPackageFile package, IPackedFileDescriptor strpfd, IPackedFileDescriptor iconpfd )
-    {
-      IPackedFileDescriptor pfd = package.NewDescriptor( Data.MetaData.REF_FILE, 0, group, instance );
-
-      SimPe.Plugin.RefFile reffile = new SimPe.Plugin.RefFile();
-      reffile.ProcessData( pfd, package );
-      
-      IPackedFileDescriptor[] pfds = new IPackedFileDescriptor[2];
-      pfds[0] = iconpfd;
-      pfds[1] = strpfd;
-
-      reffile.Items = pfds;
-      reffile.SynchronizeUserData();
-
-      package.Add( pfd );
-    }
-
-    /// <summary>
-    /// Saves str header to collection resource
-    /// </summary>
-    /// <param name="group"></param>
-    /// <param name="instance"></param>
-    /// <param name="package"></param>
-    private IPackedFileDescriptor SaveStrResource( uint group, uint instance, IPackageFile package )
-    {
-      try
-      {
-        IPackedFileDescriptor pfd = package.NewDescriptor( Data.MetaData.STRING_FILE, 0, group, instance );
-       
-        SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
-        str.ProcessData( pfd, package );
-
-        SimPe.PackedFiles.Wrapper.StrToken token = new SimPe.PackedFiles.Wrapper.StrToken( 0, (byte)Data.MetaData.Languages.English, collToolTipTextBox.Text, "" );
-        str.Add( token );
-        str.SynchronizeUserData();
-
-        package.Add( pfd );
-        return pfd;
-      }
-      catch ( Exception ex )
-      {
-        Helper.ExceptionMessage( "Error processing text resource", ex );
-        return null;
-      }
-    }
-
-    /// <summary>
-    /// Saves icon to collection header
-    /// </summary>
-    /// <param name="group"></param>
-    /// <param name="instance"></param>
-    /// <param name="package"></param>
-    private IPackedFileDescriptor SaveImageResource( uint group, uint instance, IPackageFile package )
-    {
-      try
-      {
-        IPackedFileDescriptor pfd = package.NewDescriptor( 0x856DDBAC, 0, group, instance );
-
-        pfd.SetUserData( iconData, false );
-        package.Add( pfd );
-        return pfd;
-
-      }
-      catch ( Exception ex )
-      {
-        Helper.ExceptionMessage( "Error processing icon resource", ex );
-        return null;
-      }
-    }
-    /// <summary>
-    /// Creates COLL resource in package with instance and group
-    /// </summary>
-    /// <param name="group"></param>
-    /// <param name="instance"></param>
-    /// <param name="package"></param>
-    private IPackedFileDescriptor SaveCollectionResource( uint group, uint instance, IPackageFile package )
-    {
-      try
-      {
-        IPackedFileDescriptor pfd = package.NewDescriptor( 0x6C4F359D, 0, group, instance );
-        package.Add( pfd );
-        SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
-        cpf.ProcessData( pfd, package );
-        uint stringsetidx = 0x00000001; //TODO: assign txt list instance    
-
-        for ( int i = 0; i < 7; i++ )
-        {
-          SimPe.PackedFiles.Wrapper.CpfItem item = new SimPe.PackedFiles.Wrapper.CpfItem();
-          switch ( i )
-          {
-            case 0:
-              item.Name = "type";
-              item.StringValue = "clothing";
-              break;
-            case 3:
-              item.Name = "creatorid";
-              item.StringValue = "00000000-0000-0000-0000-000000000000";
-              break;
-            case 1:
-              item.Name = "iconidx";
-              item.UIntegerValue = 0x00000000;
-              break;
-            case 2:
-              item.Name = "stringsetidx";
-              item.UIntegerValue = stringsetidx;
-              break;
-            case 5:
-              item.Name = "flags";
-              item.UIntegerValue = 0x00000012;
-              break;
-            case 6:
-              item.Name = "stringindex";
-              item.UIntegerValue = 0x00000000;
-              break;
-            case 4:
-              item.Name = "sortindex";
-              item.IntegerValue = 0x000000FA;
-              break;
-          }
-          cpf.AddItem( item );
+          ListViewItem lvii = new ListViewItem(resListView.Columns[i].Text);
+          lvii.SubItems.Add( lvi.SubItems[i].Text );
+          propertyListView.Items.Add( lvii );
         }
 
-        cpf.SynchronizeUserData();
-        return pfd;
-      }
-      catch ( Exception ex )
-      {
-        Helper.ExceptionMessage( "Error processing collection resource", ex );
-        return null;
+        if ( ( (IClothCollWspItem)lvi.Tag ).Thumb != null )
+          imagePictureBox.Image = ( (IClothCollWspItem)lvi.Tag ).Thumb;
+        else
+        {
+          try
+          {
+            WaitingScreen.Wait();
+            WaitingScreen.UpdateMessage( "Trying to load image" );
+            FileTable.FileIndex.StoreCurrentState();
+            FileTable.FileIndex.AddIndexFromPackage( ( (CustClothCollWspItem)lvi.Tag ).ScannerItem.Package );
+
+            SkinChain sc = new SkinChain( ( (IClothCollWspItem)lvi.Tag ).Cpf );
+            GenericRcol rcol = sc.TXTR;
+
+            if ( rcol != null )
+            {
+              ImageData id = (ImageData)rcol.Blocks[0];
+              MipMap mm = id.GetLargestTexture( imagePictureBox.Size );
+              if ( mm != null )
+              {
+                ( (CustClothCollWspItem)lvi.Tag ).Thumb = ImageLoader.Preview( mm.Texture, imagePictureBox.Size );
+                imagePictureBox.Image = ( (CustClothCollWspItem)lvi.Tag ).Thumb;
+
+                cachefile.Save();
+              }
+            }
+          }
+          catch ( Exception ex )
+          {
+          }
+          finally
+          {
+            FileTable.FileIndex.RestoreLastState();
+            WaitingScreen.Stop();
+          }
+        }
       }
     }
 
-    private void button1_Click( object sender, EventArgs e )
+    private void SetGenderFilterArray( object sender, EventArgs e )
     {
-      //FileTable.FileIndex.Load();
-      ListViewItem lvi = new ListViewItem( "Test" );
-      lvi.SubItems.Add( "text1" );
-      lvi.SubItems.Add( "text2" );
-
-      resListView.Items.Add( lvi );
-
+      if ( ( (CheckBox)sender ).Checked )
+        genderFilter.Add( ( (CheckBox)sender ).Text );
+      else
+        genderFilter.Remove( ( (CheckBox)sender ).Text );
     }
+
+    private void ApplyFilters( object sender, EventArgs e )
+    {
+      if (filteredCollection == null)
+        filteredCollection = new ListViewItem[0];
+      pb.Value = 0;
+      WaitingScreen.Wait();
+      int count = resListView.Items.Count;
+      int ct = 0;
+      foreach ( ListViewItem lvi in resListView.Items )
+      {
+        pb.Value = Math.Max( Math.Min( ( ( ct++ ) * pb.Maximum ) / count, pb.Maximum ), pb.Minimum );
+        if ( !ProcessAgeFilter(lvi) || !ProcessCategoryFilter(lvi) || !ProcessClothTypeFilter(lvi) || !ProcessGenderFilter( lvi ) )
+        {
+          resListView.Items.Remove( lvi );
+          filteredCollection = (ListViewItem[])(SimPe.Helper.Add(filteredCollection, lvi) );
+        }
+      }
+
+      if ( filteredCollection.Length > 0 )
+      {
+        resetFilterButton.Enabled = true;
+        if ( !resTabControl.SelectedTab.Text.Contains("*") )
+          resTabControl.SelectedTab.Text = "*" + resTabControl.SelectedTab.Text;
+      }
+
+      resTabControl.SelectTab( 0 );
+      pb.Value = 0;
+      WaitingScreen.Stop();
+    }
+
+    private void ResetFilters( object sender, EventArgs e )
+    {
+      ResetFilters(); 
+    }
+
+    private void ResetFilters()
+    {
+      resListView.BeginUpdate();
+      if ( filteredCollection != null )
+        resListView.Items.AddRange( filteredCollection );
+      filteredCollection = null;
+
+      if ( resTabPage.Text.Contains( "*" ) )
+        resTabPage.Text = resTabPage.Text.Substring( 1 );
+      //resTabControl.SelectedTab.Text = resTabControl.SelectedTab.Text.Substring( 1 );
+
+      genderFilter.Clear();
+      maleOnlyCheckBox.Checked = false;
+      femaleOnlyCheckBox.Checked = false;
+      bothCheckBox.Checked = false;
+
+      topCheckBox.Checked = false;
+      bottomCheckBox.Checked = false;
+      otherCheckBox.Checked = false;
+      bodyCheckBox.Checked = false;
+      maskCheckBox.Checked = false;
+      hatCheckBox.Checked = false;
+
+      foreach ( ListViewItem lvi in categoryFilterListView.CheckedItems )
+        lvi.Checked = false;
+      foreach ( ListViewItem lvi in ageFilterListView.CheckedItems )
+        lvi.Checked = false;
+
+      resetFilterButton.Enabled = false;
+
+      resListView.EndUpdate();
+    }
+
+    /// <summary>
+    /// Filters ListViewItem agains gender filter
+    /// </summary>
+    /// <param name="lvi">ListViewItem to be checked</param>
+    /// <returns>true if item shoud stay visible, false otherwise</returns>
+    private bool ProcessGenderFilter( ListViewItem lvi )
+    {
+      if ( femaleOnlyCheckBox.Checked ^ maleOnlyCheckBox.Checked ^ bothCheckBox.Checked )
+      {
+        uint g = ((IClothCollWspItem)lvi.Tag ).Gender;
+        
+        foreach ( string gnd in genderFilter )
+        { 
+          uint i = Convert.ToUInt32( (CollWsp.Genders)System.Enum.Parse( genders, gnd ) );
+          if ( ( i & g ) == i )
+            return true;
+        }
+        // if we're here then filter it out
+        return false;
+      }
+      else
+        return true;
+    }
+
+    private bool ProcessCategoryFilter( ListViewItem lvi )
+    {
+      if ( categoryFilterListView.CheckedItems.Count > 0 )
+      {
+        uint cat = ( (IClothCollWspItem)lvi.Tag ).Category;
+        foreach ( ListViewItem item in categoryFilterListView.CheckedItems )
+        {
+          uint i = Convert.ToUInt16( (Data.SkinCategories)System.Enum.Parse( categories, item.Text ) );
+          if ( (i&cat)==i )
+            return true;
+         
+        }
+        // if we're here then filter it out
+        return false;
+      }
+      else
+        // no categories checked
+        return true;
+    }
+
+    private bool ProcessAgeFilter( ListViewItem lvi )
+    {
+      if ( ageFilterListView.CheckedItems.Count > 0 )
+      {
+        uint age = ( (IClothCollWspItem)lvi.Tag ).Age;
+        foreach ( ListViewItem item in ageFilterListView.CheckedItems )
+        {
+          uint i = Convert.ToUInt16( (Data.Ages)System.Enum.Parse( ages, item.Text ) );
+          if ( ( i & age ) == i )
+            return true;
+
+        }
+        // if we're here then filter it out
+        return false;
+      }
+      else
+        //no ages checked
+        return true;
+    }
+
+    private bool ProcessClothTypeFilter( ListViewItem lvi )
+    {
+      if ( topCheckBox.Checked ^ bottomCheckBox.Checked ^
+        otherCheckBox.Checked ^ bodyCheckBox.Checked ^
+        hatCheckBox.Checked ^ maskCheckBox.Checked)
+      {
+        string s = ( (IClothCollWspItem)lvi.Tag ).GetSaveItem( "override0subset" ).StringValue;
+        switch ( s.ToLower().Trim() )
+        {
+          case "body":
+            if ( bodyCheckBox.Checked ) return true;
+            break;
+          case "top":
+            if ( topCheckBox.Checked ) return true;
+            break;
+          case "bottom":
+            if ( bottomCheckBox.Checked ) return true;
+            break;
+          case "hat":
+            if ( hatCheckBox.Checked ) return true;
+            break;
+          case "mask":
+            if ( maskCheckBox.Checked ) return true;
+            break;
+          default:
+            //we have some special case
+            return true;
+        }
+        //if we are here then filter it out
+        return false;
+      }
+      else
+        //no cloth type checked
+        return true;
+        
+    }
+
+    private void collTypeComboBox_SelectionChangeCommitted( object sender, EventArgs e )
+    {
+      if ( collTypeComboBox.SelectedIndex == 0 )
+      {
+        collType = "cloth";
+      }
+      else
+      {
+        collType = "lot";
+      }
+    }
+
   }
 }
