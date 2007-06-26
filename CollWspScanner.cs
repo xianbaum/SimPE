@@ -175,4 +175,125 @@ namespace SimPe.Plugin.Scanner
       return "Body Cloth Scanner";
     }
   }
+
+   internal class ObjectExtendedScanner : AbstractScanner, IScanner
+   {
+      public ObjectExtendedScanner() : base()
+      { }
+
+      #region IScannerBase Member
+      public uint Version
+      {
+         get
+         {
+            return 1;
+         }
+      }
+
+      public int Index
+      {
+         get
+         {
+            return 1300;
+         }
+      }
+      #endregion
+      
+      #region IScanner Member
+
+      protected override void DoInitScan()
+      {
+         AbstractScanner.AddColumn( ListView, "Object Type", 80 );
+         AbstractScanner.AddColumn( ListView, "Room", 80 );
+         AbstractScanner.AddColumn( ListView, "Function", 80 );
+         AbstractScanner.AddColumn( ListView, "Sub Function", 80 );
+      }
+
+
+      public void ScanPackage(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+      {
+         if ( si.PackageCacheItem.Type == SimPe.Cache.PackageType.Object )
+         {
+            ps.State = TriState.True;
+         }
+         else
+         {
+            ps.State = TriState.False;
+         }
+
+         UpdateState( si, ps, lvi );
+      }
+
+      public void UpdateState(ScannerItem si, SimPe.Cache.PackageState ps, System.Windows.Forms.ListViewItem lvi)
+      {
+         AbstractScanner.SetSubItem( lvi, this.StartColum + 1, "" );
+         
+         System.Drawing.Color cl = lvi.ForeColor;
+         if ( ps.State == TriState.True )
+         {
+            Interfaces.Files.IPackedFileDescriptor[] pfds = si.Package.FindFiles( Data.MetaData.OBJD_FILE );
+
+            string t = "";
+            uint inst = 0xFFFFFFFF;
+            uint subtype = 0;
+            SimPe.PackedFiles.Wrapper.ObjRoomSort r = null;
+            SimPe.PackedFiles.Wrapper.ObjFunctionSort f = null;
+            foreach ( Interfaces.Files.IPackedFileDescriptor pfd in pfds )
+            {
+               if ( pfd.Instance < inst )
+               {
+                  inst = pfd.Instance;
+                  subtype = pfd.SubType;
+               }
+               if ( pfd.Instance == 0x41A7 || pfd.Instance == 0x41AF )
+               {
+                  ExtObjd objd = new ExtObjd();
+                  objd.ProcessData( pfd, si.Package, false );
+                  r = objd.RoomSort;
+                  f = objd.FunctionSort;
+                  t = objd.Type.ToString();
+                  break;
+               }
+            }
+            if ( t == "" )
+            {
+               //try to process pfd with lowest instance number
+               Interfaces.Files.IPackedFileDescriptor[] pfdi = si.Package.FindFile( Data.MetaData.OBJD_FILE, subtype, inst );
+               ExtObjd objd = new ExtObjd();
+
+               objd.ProcessData( pfdi[0], si.Package, false );
+               r = objd.RoomSort;
+               f = objd.FunctionSort;
+               t = objd.Type.ToString();
+            }
+            AbstractScanner.SetSubItem( lvi, this.StartColum, t, cl );
+
+            //if ( a == 0 )
+            //   cl = System.Drawing.Color.Red;
+            AbstractScanner.SetSubItem( lvi, this.StartColum + 1, CollWsp.CollWspUtils.GetRoomString(r), cl );
+            
+            AbstractScanner.SetSubItem( lvi, this.StartColum + 2, CollWsp.CollWspUtils.GetFunctionString(f), cl );
+            AbstractScanner.SetSubItem( lvi, this.StartColum + 3, "", cl );
+         }
+      }
+
+      public void FinishScan()
+      {
+      }
+
+      public override bool IsActiveByDefault
+      {
+         get
+         {
+            return false;
+         }
+      }
+
+      #endregion
+
+      public override string ToString()
+      {
+         return "Extended Object Scanner";
+      }
+   }
 }

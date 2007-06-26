@@ -36,7 +36,7 @@ namespace SimPe.Plugin.CollWsp
         foreach ( string dir in dirs )
           Scan( dir, true, usedscanners );
       }
-
+       
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ namespace SimPe.Plugin.CollWsp
       resListView.Items.Clear();
       resListView.Columns.Clear();
       resCollection.Clear();
-      ResetFilters();
+      ResetClothFilters();
 
       resListView.BeginUpdate();
       WaitingScreen.Wait();
@@ -74,6 +74,12 @@ namespace SimPe.Plugin.CollWsp
         foreach ( IScanner s in fscanners )
           s.InitScan( this.resListView );
 
+       if ( scanMaxis )
+          if ( collType == "clothing" )
+             ScanMaxis();
+          else
+             ScanMaxisObjects();
+       else
         //scan all Files
         Scan( folder, cbrec.Checked, fscanners );
 
@@ -82,8 +88,7 @@ namespace SimPe.Plugin.CollWsp
           s.FinishScan();
         SimPe.Plugin.Scanner.AbstractScanner.DeAssignFileTable();
 
-        if ( includeMaxisCheckBox.Checked )
-          ScanMaxis();
+        
         try
         {
           if ( Helper.WindowsRegistry.UseCache && cachechg )
@@ -154,7 +159,7 @@ namespace SimPe.Plugin.CollWsp
               si.PackageCacheItem.Type = id.GetType( si.Package );
           }
 
-          if ( si.PackageCacheItem.Type != SimPe.Cache.PackageType.Cloth )
+          if ( si.PackageCacheItem.Type != (collType == "clothing" ? SimPe.Cache.PackageType.Cloth : SimPe.Cache.PackageType.Object) )
             continue;
           if ( pt != si.PackageCacheItem.Type )
             cachechg = true;
@@ -182,13 +187,27 @@ namespace SimPe.Plugin.CollWsp
               s.UpdateState( si, ps, lvi );
           }
 
-          //setup CustClothCollWspItem
-          SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
-          cpf.ProcessData( si.Package.FindFiles( Data.MetaData.GZPS )[0], si.Package );
-          CustClothCollWspItem cwspi = new CustClothCollWspItem( si, cpf, lvi );
-          lvi.Tag = cwspi;
-          resCollection.Add( cwspi );
-          resListView.Items.Add( lvi );
+          if ( collType == "clothing" )
+          {
+             //setup CustClothCollWspItem
+             SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
+             cpf.ProcessData( si.Package.FindFiles( Data.MetaData.GZPS )[0], si.Package );
+             CustClothCollWspItem cwspi = new CustClothCollWspItem( si, cpf, lvi );
+             lvi.Tag = cwspi;
+             resCollection.Add( cwspi );
+             resListView.Items.Add( lvi );
+          }
+          else
+          {
+             ObjCollWspItem cwspi = new ObjCollWspItem( si, lvi );
+             lvi.Tag = cwspi;
+             //TODO: add thumbnail search
+             FileTable.FileIndex.AddIndexFromPackage( si.Package );
+             SimPe.Cache.ObjectCacheItem oci = SimPe.Plugin.Tool.Dockable.ObjectLoader.ObjectCacheItemFromPackage(si.Package);
+             cwspi.Thumb = oci.Thumbnail;
+             resCollection.Add( cwspi );
+             resListView.Items.Add( lvi );
+          }
 
 
           Application.DoEvents();
@@ -272,6 +291,70 @@ namespace SimPe.Plugin.CollWsp
         pb.Value = 0;
       }
     }
+     
+     SimPe.Packages.File objects;
 
+     private void PrepareFileIndex(ArrayList folders)
+     {
+        //initialize the FileTable if needed
+        //if ( SimPe.FileTable.FileIndex == null )
+           SimPe.FileTable.FileIndex = new SimPe.Plugin.FileIndex(folders);
+        SimPe.FileTable.FileIndex.Load();
+     }
+
+     private void ScanMaxisObjects()
+     {
+        string sourcefile = System.IO.Path.Combine( PathProvider.Global[Expansions.BaseGame].InstallFolder, "TSData" + Helper.PATH_SEP + "Res" + Helper.PATH_SEP + "Objects" + Helper.PATH_SEP + "objects.package" );
+
+        if ( !System.IO.File.Exists( sourcefile ) )
+        {
+           MessageBox.Show( "The objects.package was not found.\n\nPlease set the Path to your Sims 2 installation in SimPE in the Extra->Options... Dialog." );
+           return;
+        }
+
+        //WaitingScreen.Wait();	
+        //WaitingScreen.UpdateMessage("Loading FileTable");
+        //initialize the FileTable if needed
+        
+        if ( SimPe.FileTable.FileIndex == null )
+           SimPe.FileTable.FileIndex = new SimPe.Plugin.FileIndex();
+        SimPe.FileTable.FileIndex.Load();
+        
+        //iObjects.Images.Clear();
+        objects = SimPe.Packages.File.LoadFromFile( sourcefile );
+        SimPe.Plugin.Tool.Dockable.ObjectLoader ol = new SimPe.Plugin.Tool.Dockable.ObjectLoader( null );
+        //ol.Finished += new EventHandler( ol_Finished );
+        ol.LoadedItem += new SimPe.Plugin.Tool.Dockable.ObjectLoader.LoadItemHandler( ol_LoadedItem );
+        ol.LoadData();	
+     }
+
+     private void ol_LoadedItem(SimPe.Cache.ObjectCacheItem oci, SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii, Data.Alias a)
+     {
+        //this.Invoke(new InvokeTargetLoad(invoke_LoadedItem), new object[] {oci, fii, a});
+        //invoke_LoadedItem( oci, fii, a );
+        SimPe.PackedFiles.Wrapper.ExtObjd objd = new SimPe.PackedFiles.Wrapper.ExtObjd( null );
+        objd.ProcessData( fii );
+        //return when no need to process
+        if ( (oci.ObjectType != SimPe.Data.ObjectTypes.Normal) || ( objd.FunctionSort.Value == 0 && objd.RoomSort.Value == 0 ) )
+           return;
+        Image img = oci.Thumbnail;
+        if ( img != null )
+        {
+           img = Ambertation.Drawing.GraphicRoutines.KnockoutImage( img, new Point( 0, 0 ), Color.Magenta );
+           img = Ambertation.Windows.Forms.Graph.ImagePanel.CreateThumbnail( img, this.imagePictureBox.Size, 8, Color.FromArgb( 90, Color.Black ), Color.FromArgb( 10, 10, 40 ), Color.White, Color.FromArgb( 80, Color.White ), true, 3, 3 );
+
+        }
+        //ListViewItem item = this.CreateItem( a.Tag[2].ToString(), img, objd, a.Name );
+        ListViewItem lvi = new ListViewItem( System.IO.Path.GetFileNameWithoutExtension( objd.Package.FileName ) );
+        lvi.SubItems.Add( "Object" );
+        lvi.SubItems.Add(oci.ObjectType.ToString());
+        lvi.SubItems.Add( CollWsp.CollWspUtils.GetRoomString(objd.RoomSort) );
+        lvi.SubItems.Add( CollWsp.CollWspUtils.GetFunctionString( objd.FunctionSort) );
+        lvi.SubItems.Add("");
+        ObjCollWspItem cwspi = new ObjCollWspItem(objd, lvi);
+        cwspi.Thumb = img;
+        lvi.Tag = cwspi;
+        resListView.Items.Add( lvi );
+     }
   }
 }

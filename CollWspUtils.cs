@@ -65,5 +65,44 @@ namespace SimPe.Plugin.CollWsp
       return "unknown";
     }
 
+     public static string GetRoomString(SimPe.PackedFiles.Wrapper.ObjRoomSort r)
+     {
+        string room = "";
+        Type MyTyper = r.GetType();
+
+        Data.ObjRoomSortBits[] rooms = (Data.ObjRoomSortBits[])System.Enum.GetValues( typeof( Data.ObjRoomSortBits ) );
+        foreach ( Data.ObjRoomSortBits rb in rooms )
+        {
+           string meth = "In" + rb.ToString();
+           System.Reflection.PropertyInfo mypropinfo = MyTyper.GetProperty( meth );
+           if ( (bool)mypropinfo.GetValue( r, null ) )
+           {
+              if ( room != "" )
+                 room += ", ";
+              room += rb.ToString();
+           }
+        }
+        return room;
+     }
+
+     public static string GetFunctionString(SimPe.PackedFiles.Wrapper.ObjFunctionSort f)
+     {
+        string function = "";
+        Type MyTypef = f.GetType();
+
+        Data.ObjFunctionSortBits[] funcs = (Data.ObjFunctionSortBits[])System.Enum.GetValues( typeof( Data.ObjFunctionSortBits ) );
+        foreach ( Data.ObjFunctionSortBits fb in funcs )
+        {
+           string meth = "In" + fb.ToString();
+           System.Reflection.PropertyInfo mypropinfo = MyTypef.GetProperty( meth );
+           if ( (bool)mypropinfo.GetValue( f, null ) )
+           {
+              if ( function != "" )
+                 function += ", ";
+              function += fb.ToString();
+           }
+        }
+        return function;
+     }
   }
 }

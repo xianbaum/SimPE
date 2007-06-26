@@ -102,7 +102,11 @@ namespace SimPe.Plugin.CollWsp
         //collection
         pfds[1] = collpfd;
         //property set
-        pfds[2] = ( (IClothCollWspItem)lvi.Tag ).PackedFileDescriptor;
+         if (collType =="clothing")
+            pfds[2] = ( (IClothCollWspItem)lvi.Tag ).PackedFileDescriptor;
+         else
+            pfds[2] = package.NewDescriptor(0x69DA3F9F,0,0,( (IObjCollWspItem)lvi.Tag ).Guid);
+
 
         reffile.Items = pfds;
         reffile.SynchronizeUserData();
@@ -260,7 +264,7 @@ namespace SimPe.Plugin.CollWsp
           {
             case 0:
               item.Name = "type";
-              item.StringValue = "clothing";
+              item.StringValue = collType;
               break;
             case 3:
               item.Name = "creatorid";
@@ -276,7 +280,10 @@ namespace SimPe.Plugin.CollWsp
               break;
             case 5:
               item.Name = "flags";
-              item.UIntegerValue = 0x00000012;
+              if (collType =="clothing" || collType =="lotcollection")
+                 item.UIntegerValue = 0x00000012;
+             else
+                 item.UIntegerValue = 0x00000002;
               break;
             case 6:
               item.Name = "stringindex";

@@ -52,6 +52,7 @@ namespace SimPe.Plugin.CollWsp
                 IToolPlugin[] tools = {
 #if WINDOW_PLUGIN
                     new CollWspTool(),
+                   new CollWspSortTool(),
 #endif
 #if DOCKED_PLUGIN
                     new MyDockPlugin(),

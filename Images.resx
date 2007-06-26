@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,42 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="ilist.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>296, 17</value>
-  </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>84, 17</value>
-  </metadata>
-  <metadata name="fbd.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="moveUpButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        Qk3mBAAAAAAAADYAAAAoAAAAFAAAABQAAAABABgAAAAAAAAAAAASCwAAEgsAAAAAAAAAAAAA/wD/9Grs
-        2d68vayJsJRztZp7tZp7tZp7tZp7tZp7tZp7tZp7tZp7tZp7tZp7sJRzvayJ2d689Grs/wD/9Grs3YvE
-        xLiWy72j1MSy2Mq52Mq518m418m418m418m418m418m42Mq52Mq51MSyy72jxLiW343H927x2d68xLiW
-        vKKH597U////////////////////////////////////////////////597UvKKHx7yb3uXFvayJzL2j
-        6N/U+fb0////////////////////////////////////////////////+fb06N/Vzb+lvq6LsJRz1MSx
-        ///////////////////////////////////////////////////////////////+0sKtsJNytZp718m5
-        /////////////////////////////////////////////////////////////f371MWytZp7tZp72Mm5
-        /////////////////////////v79/v79/v79/v79///////////////////////+18i3tZp7tZp72Mm5
-        ////////7OHc0bWr0bas6t7Z////////////////6t7Z0bas0bWr7OHc////////2Mq6tZp7tZp72Mm5
-        ////////1LuxlFI7iUEou5OD/fz8//7+//7+/fz8u5ODiUEolFI71Lux////////2Mm5tZp7tZp72Mm5
-        ////////8Obj07etl1hBi0UsupGB+vj2+vj2upGBi0Usl1hB07et8Obj////////2Mm5tZp7tZp72Mm5
-        ////////////////zrGmmVpFiUEozK2hzK2hiUEomVpFzrGm////////////////2Mm5tZp7tZp72Mm5
-        /////////v79/v/+/v392MC3lVU/lVQ9lVQ9lVU/2MC3/v39/v/+/v79////////2Mm5tZp7tZp72Mm5
-        /////////v79////////9/Lw17+3lVQ+lVU+2MC49/Lw/////v/+/v79////////2Mm5tZp7tZp72Mm5
-        /////////v7+////////////////xKGUxKGU///////////+/v79/v79////////2Mm6tZp7tZp718m5
-        ////////////////////////////+vf2+vf2/////////////////v7+////////2Mm6tZp7sJRz1MSy
-        ///////////////////////////////////////////////+/v7+////////////1MSzsJRzvayJzL2k
-        6N/U+PXz////////////////////////////////////////////////+Pbz6N/UzL2kvayJ2d68xLiW
-        vKKH5t7U////////////////////////////////////////////////5t7UvKKHxLiW2d689Grs3YvE
-        xLiWzL2j1MSy2Mq52Mq62Mq62Mq62Mq62Mq62Mq618m518q52Mq51MSyzL2jxLiW3YvE9Grs/wD/9Grs
-        2d68vayJsJRztZp7tZp7tZp7tZp7tZp7tZp7tZp7tZp7tZp7tZp7sJRzvayJ2d689Grs/wD/
-</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="MoveBottom" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\MoveBottom.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <metadata name="iconFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>176, 17</value>
-  </metadata>
+  <data name="MoveDown" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\MoveDown.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MoveTop" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\MoveTop.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="MoveUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>Resources\MoveUp.bmp;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

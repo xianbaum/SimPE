@@ -31,6 +31,16 @@ namespace SimPe.Plugin.CollWsp
     bool Equals( Object obj );
   }
 
+   public interface IObjCollWspItem : ICollWspItem
+   {
+      SimPe.PackedFiles.Wrapper.ObjRoomSort RoomSort
+      { get; }
+      SimPe.PackedFiles.Wrapper.ObjFunctionSort FunctionSort
+      { get; }
+      uint Guid
+      { get; }
+   }
+
   public interface IClothCollWspItem : ICollWspItem
   {
     SimPe.PackedFiles.Wrapper.CpfItem GetItem( string name );
@@ -55,11 +65,156 @@ namespace SimPe.Plugin.CollWsp
     }
 
   }
-  
+
+   public class ObjCollWspItem : IObjCollWspItem, ICollWspItem
+   {
+      protected SimPe.PackedFiles.Wrapper.ExtObjd objd;
+      protected ScannerItem si;
+      protected System.Windows.Forms.ListViewItem lvi;
+      protected uint guid;
+      protected Image thumb;
+
+      public ObjCollWspItem(SimPe.PackedFiles.Wrapper.ExtObjd objdarg, System.Windows.Forms.ListViewItem lvii)
+      {
+         objd = objdarg;
+         guid = objdarg.Guid;
+         lvi = lvii;
+      }
+      public ObjCollWspItem(ScannerItem siarg, System.Windows.Forms.ListViewItem lvii)
+      {
+         lvi = lvii;
+         si = siarg;
+         uint inst = 0xFFFFFFFF;
+         uint subtype = 0;
+         Interfaces.Files.IPackedFileDescriptor[] pfds = si.Package.FindFiles( Data.MetaData.OBJD_FILE );
+         foreach ( Interfaces.Files.IPackedFileDescriptor pfd in pfds )
+         {
+            if ( pfd.Instance < inst ) 
+            {
+               inst = pfd.Instance; subtype = pfd.SubType;
+            }
+            if ( pfd.Instance == 0x41A7 || pfd.Instance == 0x41AF )
+            {
+               SimPe.PackedFiles.Wrapper.ExtObjd objdi = new SimPe.PackedFiles.Wrapper.ExtObjd();
+               objdi.ProcessData( pfd, si.Package, false );
+               
+               guid = objdi.Guid;
+               objd = objdi;
+               break;
+            }
+         }
+         if ( objd == null )
+         { 
+            //try to process pfd with lowest instance number
+            Interfaces.Files.IPackedFileDescriptor[] pfdi = si.Package.FindFile( Data.MetaData.OBJD_FILE, subtype, inst );
+            SimPe.PackedFiles.Wrapper.ExtObjd objdi = new SimPe.PackedFiles.Wrapper.ExtObjd();
+            objdi.ProcessData( pfdi[0], si.Package, false );
+
+            guid = objdi.Guid;
+            objd = objdi;
+         }
+      }
+
+      public uint Guid
+      {
+         get { return guid; }
+         set { guid = value; }
+      }
+
+      public SimPe.PackedFiles.Wrapper.ExtObjd ExtObjd
+      {
+         get { return objd; }
+         set { objd = value; }
+      }
+      
+      public ScannerItem ScannerItem
+      { 
+         get { return si; } 
+      }
+
+      
+      public System.Windows.Forms.ListViewItem ListViewItem
+      {
+         get { return lvi; }
+         set { lvi = value; }
+      }
+
+
+
+      #region IObjCollWspItem Members
+
+      public SimPe.PackedFiles.Wrapper.ObjRoomSort RoomSort
+      {
+         get { return objd.RoomSort; }
+      }
+
+      public SimPe.PackedFiles.Wrapper.ObjFunctionSort FunctionSort
+      {
+         get { return objd.FunctionSort; }
+      }
+
+      #endregion
+
+      #region ICollWspItem Members
+
+      public Image Thumb
+      {
+         get
+         {
+            if ( thumb == null )
+               return si != null ? si.PackageCacheItem.Thumbnail : null;
+            else
+               return thumb;
+         }
+         set { thumb = value; }
+      }
+
+      public string File
+      {
+         get { return objd.FileName; }
+      }
+
+      public SimPe.Packages.PackedFileDescriptor PackedFileDescriptor
+      {
+         get
+         {
+            return (SimPe.Packages.PackedFileDescriptor)objd.FileDescriptor;
+         }
+      }
+
+      public string Name
+      {
+         get 
+         {
+            return objd.ResourceName;
+         }
+      }
+      // override object.Equals
+      public override bool Equals(object obj)
+      {
+         if ( obj == null || GetType() != obj.GetType() )
+         {
+            return false;
+         }
+
+         IObjCollWspItem cwspi = (IObjCollWspItem)obj;
+         return ( guid == cwspi.Guid);
+
+      }
+
+      // override object.GetHashCode
+      public override int GetHashCode()
+      {
+         // TODO: write your implementation of GetHashCode() here.
+         return base.GetHashCode();
+      }
+      #endregion
+   }
+
   /// <summary>
   /// Class to store basic collection workshop scan item
   /// </summary>
-  public class CustClothCollWspItem : ClothCollWspItem, IClothCollWspItem
+  public class CustClothCollWspItem : ClothCollWspItem, IClothCollWspItem, ICollWspItem
   {
     protected ScannerItem si;
     /// <summary>
@@ -82,6 +237,39 @@ namespace SimPe.Plugin.CollWsp
     {
       get
       {
+        if ( si.PackageCacheItem.Thumbnail != null)
+          return si.PackageCacheItem.Thumbnail;
+        try
+        {
+          WaitingScreen.Wait();
+          WaitingScreen.UpdateMessage( "Trying to load image" );
+          FileTable.FileIndex.StoreCurrentState();
+          FileTable.FileIndex.AddIndexFromPackage( si.Package );
+
+          SkinChain sc = new SkinChain( cpf );
+          GenericRcol rcol = sc.TXTR;
+          Size sz = new Size(96,96);
+
+          if ( rcol != null )
+          {
+            ImageData id = (ImageData)rcol.Blocks[0];
+            MipMap mm = id.GetLargestTexture( sz );
+            if ( mm != null )
+            {
+              Thumb = ImageLoader.Preview( mm.Texture, sz );
+              //imagePictureBox.Image = ( (CustClothCollWspItem)lvi.Tag ).Thumb;
+              
+            }
+          }
+        }
+        catch ( Exception ex )
+        {
+        }
+        finally
+        {
+          FileTable.FileIndex.RestoreLastState();
+          WaitingScreen.Stop();
+        }
         return si.PackageCacheItem.Thumbnail;
       }
       set
@@ -362,13 +550,13 @@ namespace SimPe.Plugin.CollWsp
   /// <summary>
   /// Typesave ArrayList for CollWspItem
   /// </summary>
-  public class ClothCollWspItems : ArrayList
+  public class CollWspItems : ArrayList
   {
-    public new IClothCollWspItem this[int index]
+    public new ICollWspItem this[int index]
     {
       get
       {
-        return ( (IClothCollWspItem)base[index] );
+        return ( (ICollWspItem)base[index] );
       }
       set
       {
@@ -376,11 +564,11 @@ namespace SimPe.Plugin.CollWsp
       }
     }
 
-    public IClothCollWspItem this[uint index]
+    public ICollWspItem this[uint index]
     {
       get
       {
-        return ( (IClothCollWspItem)base[(int)index] );
+        return ( (ICollWspItem)base[(int)index] );
       }
       set
       {
@@ -388,22 +576,22 @@ namespace SimPe.Plugin.CollWsp
       }
     }
 
-    public int Add( IClothCollWspItem item )
+    public int Add( ICollWspItem item )
     {
       return base.Add( item );
     }
 
-    public void Insert( int index, IClothCollWspItem item )
+    public void Insert( int index, ICollWspItem item )
     {
       base.Insert( index, item );
     }
 
-    public void Remove( IClothCollWspItem item )
+    public void Remove( ICollWspItem item )
     {
       base.Remove( item );
     }
 
-    public bool Contains( IClothCollWspItem item )
+    public bool Contains( ICollWspItem item )
     {
       return base.Contains( item );
     }
@@ -418,8 +606,8 @@ namespace SimPe.Plugin.CollWsp
 
     public override object Clone()
     {
-      ClothCollWspItems list = new ClothCollWspItems();
-      foreach ( IClothCollWspItem item in this )
+      CollWspItems list = new CollWspItems();
+      foreach ( ICollWspItem item in this )
         list.Add( item );
 
       return list;
