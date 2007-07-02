@@ -1368,6 +1368,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.saveIndexToolStripMenuItem});
             this.cmenuGUIDIndex.Name = "cmenuGUIDIndex";
             resources.ApplyResources(this.cmenuGUIDIndex, "cmenuGUIDIndex");
+            this.cmenuGUIDIndex.Opening += new System.ComponentModel.CancelEventHandler(this.cmenuGUIDIndex_Opening);
             // 
             // createAllPackagesToolStripMenuItem
             // 
@@ -2040,6 +2041,12 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnGUIDIndex_Click(object sender, EventArgs e)
         {
             this.cmenuGUIDIndex.Show((Control)sender, new Point(3 ,3));
+        }
+
+        private void cmenuGUIDIndex_Opening(object sender, CancelEventArgs e)
+        {
+            createCurrentPackageToolStripMenuItem.Enabled =
+                (pjse.FileTable.GFT.CurrentPackage != null);
         }
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)

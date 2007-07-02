@@ -1,5 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+2 July 2007 20:15 - Bugfix: Don't crash trying to build GUID index for objects.package
+  pjse filetable\
+    FileTable.cs 1.11.2.22
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.34
+    GUIDIndex.cs 1.1.4.4
+
 25 May 2007 13:20 - Oops: try compiling it first...
   pjse update tool\
     Checker.cs 1.1.4.5

@@ -399,6 +399,7 @@ namespace pjse
         {
             get
             {
+                if (package == null) return new Entry[0];
                 if (!hasLoaded) Refresh();
 
                 ArrayList result = new ArrayList();
