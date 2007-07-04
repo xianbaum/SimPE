@@ -16,8 +16,11 @@ namespace SimPe.Plugin.CollWsp
     Both = 0x03
   }
 
+  
+
   public static class CollWspUtils
   {
+
     public static string[] GetAllDirectories( string folder)
     {
       // Get the root of the search string.
@@ -103,6 +106,43 @@ namespace SimPe.Plugin.CollWsp
            }
         }
         return function;
+     }
+
+     public static bool IsCollection(SimPe.Interfaces.Files.IPackageFile pkg)
+     {
+        string[] colls = { "clothing", "collection", "lotcollection", "communitylotcollection" };
+        ArrayList arrcollections = new ArrayList( colls );
+
+        SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles( 0x6C4F359D );
+        if ( pfds.Length > 0 )
+        {
+           foreach ( SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds )
+           {
+              SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
+              cpf.ProcessData( pfd, pkg );
+              string type = cpf.GetSaveItem( "type" ).StringValue;
+              if (arrcollections.Contains(type.ToString()))
+              {
+                 SimPe.Interfaces.Files.IPackedFileDescriptor[] pfdsstr = pkg.FindFiles( Data.MetaData.STRING_FILE );
+                 if ( pfdsstr.Length > 0 )
+                 {
+                    SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
+                    SimPe.Data.MetaData.Languages deflang = Helper.WindowsRegistry.LanguageCode;
+                    str.ProcessData( pfdsstr[0], pkg );
+                    SimPe.PackedFiles.Wrapper.StrItemList items = str.LanguageItems( deflang );
+                    if ( items.Length > 0 )
+                       return true;
+                    else
+                    {
+                       items = str.LanguageItems( 1 );
+                       if ( items.Length > 0 )
+                          return true;
+                    }
+                 }
+              }
+           }
+        }
+        return false;
      }
   }
 }

@@ -51,6 +51,7 @@ namespace SimPe.Plugin.CollWsp
        this.moveTopButton = new System.Windows.Forms.Button();
        this.moveDownButton = new System.Windows.Forms.Button();
        this.moveBottomButton = new System.Windows.Forms.Button();
+       this.identifyButton = new System.Windows.Forms.Button();
        this.label4 = new System.Windows.Forms.Label();
        this.label5 = new System.Windows.Forms.Label();
        this.iconFileDialog = new System.Windows.Forms.OpenFileDialog();
@@ -93,6 +94,8 @@ namespace SimPe.Plugin.CollWsp
        this.pb = new System.Windows.Forms.ProgressBar();
        this.collTypeComboBox = new System.Windows.Forms.ComboBox();
        this.label2 = new System.Windows.Forms.Label();
+       this.saveAsButton = new System.Windows.Forms.Button();
+       this.NewButton = new System.Windows.Forms.Button();
        ( (System.ComponentModel.ISupportInitialize)( this.collIconPictureBox ) ).BeginInit();
        this.rightTabControl.SuspendLayout();
        this.collTabPage.SuspendLayout();
@@ -317,6 +320,17 @@ namespace SimPe.Plugin.CollWsp
        this.moveBottomButton.UseVisualStyleBackColor = true;
        this.moveBottomButton.Click += new System.EventHandler( this.MoveBottom );
        // 
+       // identifyButton
+       // 
+       this.identifyButton.Location = new System.Drawing.Point( 385, 388 );
+       this.identifyButton.Name = "identifyButton";
+       this.identifyButton.Size = new System.Drawing.Size( 35, 31 );
+       this.identifyButton.TabIndex = 15;
+       this.identifyButton.Text = "i";
+       this.toolTip1.SetToolTip( this.identifyButton, "Identify items" );
+       this.identifyButton.UseVisualStyleBackColor = true;
+       this.identifyButton.Click += new System.EventHandler( this.IdentifyItems );
+       // 
        // label4
        // 
        this.label4.AutoSize = true;
@@ -361,6 +375,7 @@ namespace SimPe.Plugin.CollWsp
        // 
        // collTabPage
        // 
+       this.collTabPage.Controls.Add( this.identifyButton );
        this.collTabPage.Controls.Add( this.moveDownButton );
        this.collTabPage.Controls.Add( this.moveBottomButton );
        this.collTabPage.Controls.Add( this.moveTopButton );
@@ -747,11 +762,33 @@ namespace SimPe.Plugin.CollWsp
        this.label2.TabIndex = 29;
        this.label2.Text = "Collection type:";
        // 
+       // saveAsButton
+       // 
+       this.saveAsButton.Location = new System.Drawing.Point( 797, 639 );
+       this.saveAsButton.Name = "saveAsButton";
+       this.saveAsButton.Size = new System.Drawing.Size( 75, 23 );
+       this.saveAsButton.TabIndex = 30;
+       this.saveAsButton.Text = "Save As";
+       this.saveAsButton.UseVisualStyleBackColor = true;
+       this.saveAsButton.Click += new System.EventHandler( this.SaveAsCollection );
+       // 
+       // NewButton
+       // 
+       this.NewButton.Location = new System.Drawing.Point( 531, 639 );
+       this.NewButton.Name = "NewButton";
+       this.NewButton.Size = new System.Drawing.Size( 75, 23 );
+       this.NewButton.TabIndex = 31;
+       this.NewButton.Text = "New";
+       this.NewButton.UseVisualStyleBackColor = true;
+       this.NewButton.Click += new System.EventHandler( this.NewCollection );
+       // 
        // CollWspForm
        // 
        this.AutoScaleDimensions = new System.Drawing.SizeF( 6F, 13F );
        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
        this.ClientSize = new System.Drawing.Size( 978, 685 );
+       this.Controls.Add( this.NewButton );
+       this.Controls.Add( this.saveAsButton );
        this.Controls.Add( this.label2 );
        this.Controls.Add( this.collTypeComboBox );
        this.Controls.Add( this.pb );
@@ -859,6 +896,9 @@ namespace SimPe.Plugin.CollWsp
      private System.Windows.Forms.ColumnHeader columnHeader3;
      private System.Windows.Forms.ListView roomFilterListView;
      private System.Windows.Forms.ColumnHeader columnHeader2;
+     private System.Windows.Forms.Button saveAsButton;
+     private System.Windows.Forms.Button NewButton;
+     private System.Windows.Forms.Button identifyButton;
   }
 
   

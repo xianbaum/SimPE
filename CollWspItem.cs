@@ -18,11 +18,28 @@ namespace SimPe.Plugin.CollWsp
     {
       get;
     }
+
+     bool Identified
+     {
+        get;
+        set;
+     }
+
+     SimPe.Plugin.RefFile ExistingRefFile
+     {
+        get;
+        set;
+     }
+
+     int Sortindex
+     { get; }
+
     System.Windows.Forms.ListViewItem ListViewItem
     {
       get;
       set;
     }
+
     string Name
     {
       get;
@@ -73,17 +90,45 @@ namespace SimPe.Plugin.CollWsp
       protected System.Windows.Forms.ListViewItem lvi;
       protected uint guid;
       protected Image thumb;
+      protected SimPe.Plugin.RefFile reffile;
+      protected int sortindex;
+      protected bool identified;
+
 
       public ObjCollWspItem(SimPe.PackedFiles.Wrapper.ExtObjd objdarg, System.Windows.Forms.ListViewItem lvii)
       {
          objd = objdarg;
          guid = objdarg.Guid;
          lvi = lvii;
+         identified = true;
       }
+      /// <summary>
+      /// constructor for edit collection with existing 3IDR
+      /// </summary>
+      /// <param name="currentpdf"></param>
+      /// <param name="lvii"></param>
+      public ObjCollWspItem(SimPe.Plugin.RefFile currentref, int sortidx, System.Windows.Forms.ListViewItem lvii)
+      {
+         reffile = currentref;
+         lvi = lvii;
+         sortindex = sortidx;
+         identified = false;
+
+         foreach ( SimPe.Interfaces.Files.IPackedFileDescriptor pfd in reffile.Items )
+         {
+            if ( pfd.Type == 0x69DA3F9F || pfd.Type == 0xE9DA450E )
+            {
+               guid = pfd.Instance;
+               break;
+            }
+         }
+      }
+
       public ObjCollWspItem(ScannerItem siarg, System.Windows.Forms.ListViewItem lvii)
       {
          lvi = lvii;
          si = siarg;
+         identified = true;
          uint inst = 0xFFFFFFFF;
          uint subtype = 0;
          Interfaces.Files.IPackedFileDescriptor[] pfds = si.Package.FindFiles( Data.MetaData.OBJD_FILE );
@@ -113,6 +158,11 @@ namespace SimPe.Plugin.CollWsp
             guid = objdi.Guid;
             objd = objdi;
          }
+      }
+
+      public int Sortindex
+      { 
+         get { return sortindex; } 
       }
 
       public uint Guid
@@ -169,6 +219,12 @@ namespace SimPe.Plugin.CollWsp
          set { thumb = value; }
       }
 
+      public bool Identified
+      {
+         get { return identified; }
+         set { identified = value; }
+      }
+
       public string File
       {
          get { return objd.FileName; }
@@ -180,6 +236,12 @@ namespace SimPe.Plugin.CollWsp
          {
             return (SimPe.Packages.PackedFileDescriptor)objd.FileDescriptor;
          }
+      }
+
+      public SimPe.Plugin.RefFile ExistingRefFile
+      {
+         get { return reffile; }
+         set { reffile = value; }
       }
 
       public string Name
@@ -212,11 +274,12 @@ namespace SimPe.Plugin.CollWsp
    }
 
   /// <summary>
-  /// Class to store basic collection workshop scan item
+  /// Class to store basic collection workshop scan custom item
   /// </summary>
   public class CustClothCollWspItem : ClothCollWspItem, IClothCollWspItem, ICollWspItem
   {
     protected ScannerItem si;
+     
     /// <summary>
     /// constructor to speed up
     /// </summary>
@@ -224,6 +287,10 @@ namespace SimPe.Plugin.CollWsp
     {
       si = siarg;
     }
+
+     public CustClothCollWspItem(SimPe.Plugin.RefFile currentref, int sortindx, System.Windows.Forms.ListViewItem lvii)
+        : base( currentref, sortindx, lvii )
+     { }
 
     public ScannerItem ScannerItem
     {
@@ -287,9 +354,9 @@ namespace SimPe.Plugin.CollWsp
       }
 
       IClothCollWspItem cwspi = (IClothCollWspItem)obj;
-      return ( cpf.FileDescriptor.Type == cwspi.PackedFileDescriptor.Type ) &&
-             ( cpf.FileDescriptor.Group == cwspi.PackedFileDescriptor.Group ) &&
-             ( cpf.FileDescriptor.Instance == cwspi.PackedFileDescriptor.Instance );
+      return ( ( pfd.Type == cwspi.PackedFileDescriptor.Type ) &&
+             ( pfd.Group == cwspi.PackedFileDescriptor.Group ) &&
+             ( pfd.Instance == cwspi.PackedFileDescriptor.Instance ) );
 
     }
 
@@ -306,10 +373,36 @@ namespace SimPe.Plugin.CollWsp
   public class ClothCollWspItem : IClothCollWspItem
   {
     protected SimPe.PackedFiles.Wrapper.Cpf cpf;
+    protected SimPe.Plugin.RefFile reffile;
+    protected System.Windows.Forms.ListViewItem lvi;
+    protected SimPe.Packages.PackedFileDescriptor pfd;
+    protected Image thumb;
+    protected int sortindex;
+     protected bool identified;
+
+     public ClothCollWspItem(SimPe.Plugin.RefFile currentref, int sortidx, System.Windows.Forms.ListViewItem lvii)
+     {
+        reffile = currentref;
+        lvi = lvii;
+        sortindex = sortidx;
+        identified = false;
+        
+        foreach(SimPe.Interfaces.Files.IPackedFileDescriptor item in reffile.Items)
+        {
+           if (item.Type != 0 && item.Type!=0x6C4F359D)
+           {
+              pfd = (SimPe.Packages.PackedFileDescriptor)item;
+              break;
+           }
+        }
+     }
+
     public ClothCollWspItem( SimPe.PackedFiles.Wrapper.Cpf cpfarg, System.Windows.Forms.ListViewItem lvii )
     {
       lvi = lvii;
       cpf = cpfarg;
+      identified = true;
+      pfd = (SimPe.Packages.PackedFileDescriptor)cpfarg.FileDescriptor;
     }
     /// <summary>
     /// returns the Item with the given Name or null if not found
@@ -321,6 +414,10 @@ namespace SimPe.Plugin.CollWsp
       return cpf.GetSaveItem( name );
     }
 
+     public int Sortindex
+     {
+        get { return sortindex; }
+     }
 
     public SimPe.PackedFiles.Wrapper.Cpf Cpf
     {
@@ -384,7 +481,12 @@ namespace SimPe.Plugin.CollWsp
       return ret;
     }
 
-      Image thumb;
+     public bool Identified
+     {
+        get { return identified; }
+        set { identified = value; }
+     }
+
       public Image Thumb
       {
         get
@@ -411,10 +513,7 @@ namespace SimPe.Plugin.CollWsp
 
     public SimPe.Packages.PackedFileDescriptor PackedFileDescriptor
     {
-      get
-      {
-        return (SimPe.Packages.PackedFileDescriptor)cpf.FileDescriptor;
-      }
+      get      {         return pfd;      }
     }
 
     //SimPe.PackedFiles.Wrapper.CpfItem[] items;
@@ -517,12 +616,17 @@ namespace SimPe.Plugin.CollWsp
       get      {        return cpf.Package.FileName;      }
     }
 
-    System.Windows.Forms.ListViewItem lvi;
     public System.Windows.Forms.ListViewItem ListViewItem
     {
       get      {        return lvi;      }
       set      {        lvi = value;      }
     }
+
+     public SimPe.Plugin.RefFile ExistingRefFile
+     {
+        get { return reffile; }
+        set { reffile = value; }
+     }
 
     // override object.Equals
     public override bool Equals (object obj)
@@ -533,10 +637,10 @@ namespace SimPe.Plugin.CollWsp
       }
 
       IClothCollWspItem cwspi = (IClothCollWspItem)obj;
-      return (cpf.FileDescriptor.Type==cwspi.PackedFileDescriptor.Type) &&
-             ( cpf.FileDescriptor.Group == cwspi.PackedFileDescriptor.Group ) &&
-             ( cpf.FileDescriptor.Instance == cwspi.PackedFileDescriptor.Instance );
- 
+      return ( ( pfd.Type == cwspi.PackedFileDescriptor.Type ) &&
+             ( pfd.Group == cwspi.PackedFileDescriptor.Group ) &&
+             ( pfd.Instance == cwspi.PackedFileDescriptor.Instance ) );
+
     }
     
     // override object.GetHashCode

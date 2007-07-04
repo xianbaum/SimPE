@@ -17,10 +17,13 @@ namespace SimPe.Plugin.CollWsp
     string errorlog;
     bool cachechg;
     bool scanMaxis;
+     bool identifying = false;
+    //indicate if collection is edited or new
+    bool newcoll;
     SimPe.Cache.PackageCacheFile cachefile;
 
     //stores only needed scanners
-    CollWspScannerCollection fscanners;
+    CollWspScannerCollection fscanners = new CollWspScannerCollection();
 
     CollWspItems resCollection;
     CollWspItems collCollection;
@@ -31,8 +34,15 @@ namespace SimPe.Plugin.CollWsp
     Type rooms = typeof(Data.ObjRoomSortBits);
     Type functions = typeof(Data.ObjFunctionSortBits);
     ArrayList genderFilter;
-    string collType = "clothing";
+    
+    //collection, icon, string filled when collection is saved or edited from simpe
+    SimPe.PackedFiles.Wrapper.Cpf collcpf = new SimPe.PackedFiles.Wrapper.Cpf();
+    IPackedFileDescriptor collpfd;
+    IPackedFileDescriptor strpfd;
+    IPackedFileDescriptor iconpfd;
+    bool iconChanged = false;
 
+    string collType;
 
     private void InitFiltersLayout()
     {
@@ -61,69 +71,297 @@ namespace SimPe.Plugin.CollWsp
         return flname;
       }
     }
-    public CollWspForm()
-    {
-      InitializeComponent();
-      InitFiltersLayout();
-      CheckForIllegalCrossThreadCalls = false;
-      scanMaxis = false;
-      //load the Group Cache
-      SimPe.Plugin.ScenegraphWrapperFactory.LoadGroupCache();
+     /// <summary>
+     /// Initiate class data
+     /// </summary>
+     private void InitClass()
+     {
+        InitializeComponent();
+        InitFiltersLayout();
+        CheckForIllegalCrossThreadCalls = false;
+        scanMaxis = false;
 
-      this.cbfolder.SelectedIndex = 0;
-      this.collTypeComboBox.SelectedIndex = 0;
-      this.resTabControl.Controls.Remove( this.objectFiltersTabPage );
+        //load the Group Cache
+        SimPe.Plugin.ScenegraphWrapperFactory.LoadGroupCache();
 
-      resCollection = new CollWspItems();
-      collCollection = new CollWspItems();
-      genderFilter = new ArrayList();
-      //filteredCollection = new ArrayList();
-            
-      sorter = new ColumnSorter();
-      resListView.ListViewItemSorter = sorter;
+        this.cbfolder.SelectedIndex = 0;
+        
+        this.resTabControl.Controls.Remove( this.objectFiltersTabPage );
 
-      cachefile = new SimPe.Cache.PackageCacheFile();
-      try
-      {
-        cachefile.Load( SimPe.Cache.PackageCacheFile.CacheFileName );
-      }
-      catch ( Exception ex )
-      {
-        Helper.ExceptionMessage( "Unable to reload the Cache File.", ex );
-      }
+        resCollection = new CollWspItems();
+        collCollection = new CollWspItems();
+        genderFilter = new ArrayList();
+        //filteredCollection = new ArrayList();
 
-      fscanners = new CollWspScannerCollection();
-      foreach ( IScanner i in CollWspScannerRegistry.Global.Scanners )
-      {
-         string name = i.GetType().Name + " (version=" + i.Version.ToString() + ", uid=0x" + Helper.HexString( i.Uid ) + ", index=" + i.Index.ToString() + ")";
-         if ( name.ToLower().Contains( "bodyclothscanner" ) )
-         {
-           fscanners.Add(i);
-         }
-      }
-    }   
-
-    ColumnSorter sorter;
-    private void SortList( object sender, System.Windows.Forms.ColumnClickEventArgs e )
-    {
-      if ( sorter.CurrentColumn == e.Column )
-      {
-        if ( resListView.Sorting == SortOrder.Ascending )
-
-          resListView.Sorting = SortOrder.Descending;
-        else
-          resListView.Sorting = SortOrder.Ascending;
-      }
-      else
-      {
-        sorter.CurrentColumn = e.Column;
+        sorter = new ColumnSorter();
         resListView.ListViewItemSorter = sorter;
-      }
-      sorter.Sorting = resListView.Sorting;
-      resListView.Sort();
+
+        cachefile = new SimPe.Cache.PackageCacheFile();
+        try
+        {
+           cachefile.Load( SimPe.Cache.PackageCacheFile.CacheFileName );
+        }
+        catch ( Exception ex )
+        {
+           Helper.ExceptionMessage( "Unable to reload the Cache File.", ex );
+        }
+
+        
+     }
+
+     ColumnSorter sorter;
+     private void SortList(object sender, System.Windows.Forms.ColumnClickEventArgs e)
+     {
+        if ( sorter.CurrentColumn == e.Column )
+        {
+           if ( resListView.Sorting == SortOrder.Ascending )
+
+              resListView.Sorting = SortOrder.Descending;
+           else
+              resListView.Sorting = SortOrder.Ascending;
+        }
+        else
+        {
+           sorter.CurrentColumn = e.Column;
+           resListView.ListViewItemSorter = sorter;
+        }
+        sorter.Sorting = resListView.Sorting;
+        resListView.Sort();
+     }
+
+     public CollWspForm(SimPe.Interfaces.Files.IPackageFile pkg)
+    {
+       InitClass();
+       if ( pkg == null )
+          InitNewColl();
+       else
+          InitEditColl(pkg);
+       ResetScanners();
     }
 
-    
+     private void InitEditColl(SimPe.Interfaces.Files.IPackageFile pkg)
+     {
+        //not a new collection
+        newcoll = false;
+        flname = pkg.FileName;
+
+        SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles( 0x6C4F359D );
+        if ( pfds.Length == 1 )
+        {
+           collpfd = pfds[0];
+           
+           SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
+           cpf.ProcessData( collpfd, pkg );
+           collType = cpf.GetSaveItem( "type" ).StringValue;
+           AdjustCollTypeComboBox();
+           PrepareCollColumns();
+
+           SimPe.Interfaces.Files.IPackedFileDescriptor[] pfdsstr = pkg.FindFiles( Data.MetaData.STRING_FILE );
+           if ( pfdsstr.Length > 0 )
+           {
+              strpfd = pfdsstr[0];
+              SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
+              SimPe.Data.MetaData.Languages deflang = Helper.WindowsRegistry.LanguageCode;
+              str.ProcessData( strpfd, pkg );
+              SimPe.PackedFiles.Wrapper.StrItemList items = str.LanguageItems( deflang );
+              if ( items.Length > 0 )
+                 collNameTextBox.Text = items[0].Title;
+              else
+              {
+                 items = str.LanguageItems( 1 );
+                 if ( items.Length > 0 )
+                    collNameTextBox.Text = items[0].Title;
+                 else
+                    collNameTextBox.Text = "";
+              }
+           }
+
+           SimPe.Interfaces.Files.IPackedFileDescriptor[] pfdsimg = pkg.FindFiles( 0x856DDBAC );
+           if ( pfdsimg.Length > 0 )
+           {
+              iconpfd = pfdsimg[0];
+              SimPe.PackedFiles.Wrapper.Picture pct = new SimPe.PackedFiles.Wrapper.Picture();
+              pct.ProcessData( iconpfd, pkg );
+              Image img = new Bitmap(pct.Image);
+              
+              collIconPictureBox.Image =img ;
+              System.IO.MemoryStream ms = new System.IO.MemoryStream();
+              collIconPictureBox.Image.Save( ms, System.Drawing.Imaging.ImageFormat.Bmp);
+              iconData = ms.ToArray();
+           }
+        
+           //now read items
+           SimPe.Interfaces.Files.IPackedFileDescriptor[] refpfds = pkg.FindFiles( Data.MetaData.REF_FILE );
+           foreach ( SimPe.Interfaces.Files.IPackedFileDescriptor refpfd in refpfds )
+           {
+              RefFile reffile = new RefFile();
+              reffile.ProcessData( refpfd, pkg );
+              if ( reffile.Items.Length>2 )
+              {
+                 foreach ( SimPe.Interfaces.Files.IPackedFileDescriptor item in reffile.Items )
+                 {
+                    if ( item.Type != 0 && item.Type != 0x6C4F359D )
+                    {
+                       int sortindex = 0;
+
+                       SimPe.Interfaces.Files.IPackedFileDescriptor binxpfd = pkg.FindExactFile( 0x0C560F39, 0, reffile.FileDescriptor.Group, reffile.FileDescriptor.Instance, 0 );
+                       if ( binxpfd != null )
+                       {
+                          SimPe.PackedFiles.Wrapper.Cpf cpfr = new SimPe.PackedFiles.Wrapper.Cpf();
+                          cpfr.ProcessData( binxpfd, pkg );
+                          sortindex = cpfr.GetSaveItem( "sortindex" ).IntegerValue;
+                       }
+                       if ( item.Type == 0x69DA3F9F || item.Type == 0xE9DA450E )
+                       {
+                          //object here
+                          ListViewItem lvi = new ListViewItem();
+                          if ( item.Type == 0x69DA3F9F )
+                             lvi.Text = "Object";
+                          else if ( item.Group == 1 )
+                             lvi.Text = "Floor";
+                          else
+                             lvi.Text = "Wall";
+
+                          ObjCollWspItem objitem = new ObjCollWspItem( reffile, sortindex, lvi );
+                          lvi.SubItems.Add( objitem.Guid.ToString() );
+                          lvi.Tag = objitem;
+                          collListView.Items.Add( lvi );
+                          collCollection.Add( objitem );
+                       }
+                       else
+                       { 
+                          //clothing here
+                          ListViewItem lvi = new ListViewItem();
+                          lvi.Text = "Cloth";
+                          ClothCollWspItem clitem = new ClothCollWspItem( reffile, sortindex, lvi );
+                          lvi.SubItems.Add( clitem.PackedFileDescriptor.Instance.ToString() );
+                          lvi.Tag = clitem;
+                          collListView.Items.Add( lvi );
+                          collCollection.Add( clitem );
+                       }
+                    }
+                 } 
+              }
+           }
+           //sort according to sortindex
+           int[] aKeys = new int[collListView.Items.Count];
+           ListViewItem[] aLvi = new ListViewItem[collListView.Items.Count];
+           int i = 0;
+           foreach ( ListViewItem lvi in collListView.Items )
+           {
+              aKeys[i] = ( (ICollWspItem)lvi.Tag ).Sortindex;
+              aLvi[i] = lvi;
+              i++;
+           }
+           Array.Sort( aKeys, aLvi );
+           collListView.Items.Clear();
+           collListView.Items.AddRange( aLvi );
+        }
+     }
+
+     private void invoke_Finished(object sender, EventArgs e)
+     {
+        UpdateItems();
+        identifying = false;
+     }
+
+     /// <summary>
+     /// Updates collection listview items when identifying items
+     /// </summary>
+     private void UpdateItems()
+     {
+        foreach ( ListViewItem lvi in collListView.Items )
+        {
+           if ( !( (ICollWspItem)lvi.Tag ).Identified )
+           {
+              foreach ( ListViewItem lvis in resListView.Items )
+              {
+                 if ( ( (ICollWspItem)lvi.Tag ).Equals( (ICollWspItem)lvis.Tag ) )
+                 {
+                    //identified
+                    ( (ICollWspItem)lvis.Tag ).ExistingRefFile = ( (ICollWspItem)lvi.Tag ).ExistingRefFile;
+
+                    lvi.Tag = lvis.Tag;
+                    lvi.SubItems.Clear();
+                    lvi.Text = lvis.Text;
+                    int i = 0;
+                    foreach ( ListViewItem.ListViewSubItem lvisb in lvis.SubItems )
+                       if ( i == 0 )
+                          i++;
+                       else
+                          lvi.SubItems.Add( lvisb );
+
+                    break;
+                 }
+              }
+           }
+        }
+     }
+
+     private void IdentifyItems(object sender, EventArgs e)
+     { 
+        //check first if we need identifying at all
+        if ( NeedsIdentify() )
+        {
+           identifying = true;
+           //scan custom items first
+           cbfolder.SelectedIndex = 0;
+           cbrec.Checked = true;
+           Scan( sender, e );
+
+           UpdateItems();
+        }
+        if ( NeedsIdentify() )
+        {
+           //scan maxis items then
+           cbfolder.SelectedIndex = 2;
+           cbrec.Checked = false;
+           scanMaxis = true;
+           Scan( sender, e );
+
+           UpdateItems();
+        }
+        else
+           identifying = false;
+     }
+
+     private bool NeedsIdentify()
+     {
+        foreach ( ListViewItem lvi in collListView.Items )
+        {
+           if ( !( (ICollWspItem)lvi.Tag ).Identified )
+              return true;
+        }
+        return false;
+     }
+
+     private void InitNewColl()
+     {
+        //init to clothing
+        collType = "clothing";
+        this.collTypeComboBox.SelectedIndex = 0;
+
+        //new collection
+        newcoll = true;
+     }
+
+     private void AdjustCollTypeComboBox()
+     {
+        string[] colls = { "clothing", "collection", "communitylotcollection", "lotcollection" };
+        ArrayList arrcollections = new ArrayList( colls );
+        collTypeComboBox.SelectedIndex = arrcollections.IndexOf( collType );
+     }
+
+     private void PrepareCollColumns()
+     {
+        collListView.Columns.Clear();
+        collListView.Columns.Add( "Type" );
+        if ( collType == "clothing" )
+           collListView.Columns.Add( "Instance" );
+        else
+           collListView.Columns.Add( "Guid" );
+     }
+
     byte[] iconData = null;
     private void SelectIcon(object sender, EventArgs e)
     {
@@ -142,6 +380,7 @@ namespace SimPe.Plugin.CollWsp
           iconData = System.IO.File.ReadAllBytes( iconFile );
           Image tmpi = Image.FromFile( iconFile );
           collIconPictureBox.Image = tmpi;
+          iconChanged = true;
 
           if ( (tmpi.Size.Height > 32) || (tmpi.Size.Width > 32) ) 
             MessageBox.Show( "This icon is too big, although visible in the game might not look as you expect." );
@@ -333,10 +572,14 @@ namespace SimPe.Plugin.CollWsp
 
      }
 
-    private void ResetFilters( object sender, EventArgs e )
+     private void ResetFilters()
+     {
+        ResetClothFilters();
+        ResetObjectFilters();
+     }
+     private void ResetFilters( object sender, EventArgs e )
     {
-      ResetClothFilters();
-      ResetObjectFilters();
+       ResetFilters();
    }
 
    #region object filters
@@ -534,50 +777,49 @@ namespace SimPe.Plugin.CollWsp
   }
    #endregion
 
-  private void collTypeComboBox_SelectionChangeCommitted( object sender, EventArgs e )
-    {
-       bool changed = false;
-       string prevtype = collType;
-       switch ( collTypeComboBox.SelectedIndex )
+     private void collTypeComboBox_SelectionChangeCommitted( object sender, EventArgs e )
        {
-          case 0:
+          bool changed = false; //indicates type of items change
+          string prevtype = collType;
+          switch ( collTypeComboBox.SelectedIndex )
           {
-             if ( collType != "clothing" )
-             { 
-                collType = "clothing";
-                changed = true;
+             case 0:
+             {
+                if ( collType != "clothing" )
+                { 
+                   collType = "clothing";
+                   changed = true;
+                }
+                break;
              }
-             break;
+             case 1:
+             {
+                if ( collType == "clothing" )
+                   changed = true;
+                collType = "collection";
+                break;
+             }
+            case 2:
+            {
+               if ( collType == "clothing" )
+                  changed = true;
+               collType = "communitylotcollection";
+               break;
+            }
+            case 3:
+            {
+               if ( collType == "clothing" )
+                  changed = true;
+               collType = "lotcollection";
+               break;
+            }
           }
-          case 1:
-          {
-             if ( collType == "clothing" )
-                changed = true;
-             collType = "collection";
-             break;
-          }
-         case 2:
-         {
-            if ( collType == "clothing" )
-               changed = true;
-            collType = "communitylotcollection";
-            break;
-         }
-         case 3:
-         {
-            if ( collType == "clothing" )
-               changed = true;
-            collType = "lotcollection";
-            break;
-         }
-       }
 
-       if ( changed )
-       {
-          if ( resCollection.Count > 0 )
+       
+          if (changed && ( resCollection.Count > 0 || collCollection.Count > 0))
           { 
              //check if user really wants to change collection type
-             if ( MessageBox.Show( "This will clear all your scanned resource items. Proceed?", "Collection Workshop Plugin", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+             if ( MessageBox.Show( "This will clear all your scanned resource and collection items. Proceed?", "Collection Workshop Plugin", MessageBoxButtons.YesNo ) == DialogResult.Yes )
              {
                 resCollection.Clear();
                 resListView.Clear();
@@ -613,42 +855,66 @@ namespace SimPe.Plugin.CollWsp
                 }
              }
           }
+          
+          ResetFilters();
+          ResetScanners();
        }
-       ResetClothFilters();
 
-      fscanners.Clear();
-      
-       if ( collType == "clothing" )
-       {
-          if ( !this.resTabControl.Controls.ContainsKey( this.clothFiltersTabPage.Name ) )
-            this.resTabControl.Controls.Add( this.clothFiltersTabPage );
-          this.resTabControl.Controls.Remove( this.objectFiltersTabPage );
+     private void NewCollection(Object sender, EventArgs e)
+     {
+        if ( MessageBox.Show( "This will clear all your scanned resource and collection items. Proceed?", "Collection Workshop Plugin", MessageBoxButtons.YesNo ) == DialogResult.Yes )
+        {
+           resCollection.Clear();
+           resListView.Clear();
+           collListView.Clear();
+           collCollection.Clear();
+           filteredCollection = null;
+           newcoll = true;
+           ResetFilters();
+           ResetScanners();
+           flname = null;
+           iconData = null;
+           collIconPictureBox.Image = null;
+           collNameTextBox.Text = "";
+        }
+     }
 
-          foreach ( IScanner i in CollWspScannerRegistry.Global.Scanners )
-          {
-             string name = i.GetType().Name + " (version=" + i.Version.ToString() + ", uid=0x" + Helper.HexString( i.Uid ) + ", index=" + i.Index.ToString() + ")";
-             if ( name.ToLower().Contains( "bodyclothscanner" ) )
-             {
-                fscanners.Add( i );
-             }
-          }
-       }
-      else
-       {
-          if ( !this.resTabControl.Controls.ContainsKey( this.objectFiltersTabPage.Name ) )
-            this.resTabControl.Controls.Add( this.objectFiltersTabPage );
-          this.resTabControl.Controls.Remove( this.clothFiltersTabPage );
+     private void ResetScanners()
+     {
+        fscanners.Clear();
 
-          foreach ( IScanner i in CollWspScannerRegistry.Global.Scanners )
-          {
-             string name = i.GetType().Name + " (version=" + i.Version.ToString() + ", uid=0x" + Helper.HexString( i.Uid ) + ", index=" + i.Index.ToString() + ")";
-             if ( name.ToLower().Contains( "objectextendedscanner" ) )
-             {
-                fscanners.Add( i );
-             }
-          }
-       }
-    }
+        if ( collType == "clothing" )
+        {
+           if ( !this.resTabControl.Controls.ContainsKey( this.clothFiltersTabPage.Name ) )
+              this.resTabControl.Controls.Add( this.clothFiltersTabPage );
+           this.resTabControl.Controls.Remove( this.objectFiltersTabPage );
+
+           foreach ( IScanner i in CollWspScannerRegistry.Global.Scanners )
+           {
+              string name = i.GetType().Name + " (version=" + i.Version.ToString() + ", uid=0x" + Helper.HexString( i.Uid ) + ", index=" + i.Index.ToString() + ")";
+              if ( name.ToLower().Contains( "bodyclothscanner" ) )
+              {
+                 fscanners.Add( i );
+              }
+           }
+        }
+        else
+        {
+           if ( !this.resTabControl.Controls.ContainsKey( this.objectFiltersTabPage.Name ) )
+              this.resTabControl.Controls.Add( this.objectFiltersTabPage );
+           this.resTabControl.Controls.Remove( this.clothFiltersTabPage );
+
+           foreach ( IScanner i in CollWspScannerRegistry.Global.Scanners )
+           {
+              string name = i.GetType().Name + " (version=" + i.Version.ToString() + ", uid=0x" + Helper.HexString( i.Uid ) + ", index=" + i.Index.ToString() + ")";
+              if ( name.ToLower().Contains( "objectextendedscanner" ) )
+              {
+                 fscanners.Add( i );
+              }
+           }
+        }
+     }
+
     #region sort collection items
     private void MoveUp(object sender, EventArgs e)
      {
@@ -711,5 +977,6 @@ namespace SimPe.Plugin.CollWsp
         }
      }
     #endregion
+
   }
 }

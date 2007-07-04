@@ -263,9 +263,14 @@ namespace SimPe.Plugin
                {
 
                   SimPe.PackedFiles.Wrapper.Cpf cpf = (SimPe.PackedFiles.Wrapper.Cpf)lvi.Tag;
-                  cpf.GetSaveItem( "sortindex" ).IntegerValue = i;
-                  cpf.Save( cpf.FileDescriptor );
-                  cpf.Package.Save();
+                  int ind = cpf.GetSaveItem( "sortindex" ).IntegerValue;
+                  if ( ind != i )
+                  {
+                     cpf.GetSaveItem( "sortindex" ).IntegerValue = i;
+                     cpf.SynchronizeUserData();
+                     //cpf.Save( cpf.FileDescriptor );
+                     cpf.Package.Save(); 
+                  }
                   i++;
                }
                MessageBox.Show( "Sorting saved", this.Text );

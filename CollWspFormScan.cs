@@ -18,7 +18,7 @@ namespace SimPe.Plugin.CollWsp
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void Scan( string folder, bool rec, CollWspScannerCollection usedscanners )
+     private void Scan(string folder, bool rec, CollWspScannerCollection usedscanners, CollWspItems coll, ListView lv)
     {
 
       //scan all Files
@@ -26,7 +26,7 @@ namespace SimPe.Plugin.CollWsp
       string[] files = System.IO.Directory.GetFiles( folder, "*.package" );
 
       int ct = files.Length;
-      Scan( files, true, 0, ct, usedscanners );
+      Scan( files, true, 0, ct, usedscanners, coll, lv );
       pb.Value = 0;
 
       //issue a recursive Scan
@@ -34,7 +34,7 @@ namespace SimPe.Plugin.CollWsp
       {
         string[] dirs = System.IO.Directory.GetDirectories( folder, "*" );
         foreach ( string dir in dirs )
-          Scan( dir, true, usedscanners );
+          Scan( dir, true, usedscanners, coll, lv );
       }
        
     }
@@ -52,7 +52,7 @@ namespace SimPe.Plugin.CollWsp
       resListView.Items.Clear();
       resListView.Columns.Clear();
       resCollection.Clear();
-      ResetClothFilters();
+      ResetFilters();
 
       resListView.BeginUpdate();
       WaitingScreen.Wait();
@@ -81,7 +81,7 @@ namespace SimPe.Plugin.CollWsp
              ScanMaxisObjects();
        else
         //scan all Files
-        Scan( folder, cbrec.Checked, fscanners );
+        Scan( folder, cbrec.Checked, fscanners, resCollection, resListView );
 
         //finish Scanners
         foreach ( IScanner s in fscanners )
@@ -129,7 +129,7 @@ namespace SimPe.Plugin.CollWsp
     /// <param name="enabled"></param>
     /// <param name="pboffset"></param>
     /// <param name="count"></param>
-    void Scan( string[] files, bool enabled, int pboffset, int count, CollWspScannerCollection usedscanners )
+    void Scan( string[] files, bool enabled, int pboffset, int count, CollWspScannerCollection usedscanners, CollWspItems coll, ListView lv )
     {
       int ct = pboffset;
       foreach ( string file in files )
@@ -194,8 +194,8 @@ namespace SimPe.Plugin.CollWsp
              cpf.ProcessData( si.Package.FindFiles( Data.MetaData.GZPS )[0], si.Package );
              CustClothCollWspItem cwspi = new CustClothCollWspItem( si, cpf, lvi );
              lvi.Tag = cwspi;
-             resCollection.Add( cwspi );
-             resListView.Items.Add( lvi );
+             coll.Add( cwspi );
+             lv.Items.Add( lvi );
           }
           else
           {
@@ -205,8 +205,8 @@ namespace SimPe.Plugin.CollWsp
              FileTable.FileIndex.AddIndexFromPackage( si.Package );
              SimPe.Cache.ObjectCacheItem oci = SimPe.Plugin.Tool.Dockable.ObjectLoader.ObjectCacheItemFromPackage(si.Package);
              cwspi.Thumb = oci.Thumbnail;
-             resCollection.Add( cwspi );
-             resListView.Items.Add( lvi );
+             coll.Add( cwspi );
+             lv.Items.Add( lvi );
           }
 
 
@@ -289,6 +289,7 @@ namespace SimPe.Plugin.CollWsp
       finally
       {
         pb.Value = 0;
+        identifying = false;
       }
     }
      
@@ -323,15 +324,14 @@ namespace SimPe.Plugin.CollWsp
         //iObjects.Images.Clear();
         objects = SimPe.Packages.File.LoadFromFile( sourcefile );
         SimPe.Plugin.Tool.Dockable.ObjectLoader ol = new SimPe.Plugin.Tool.Dockable.ObjectLoader( null );
-        //ol.Finished += new EventHandler( ol_Finished );
+        if (identifying)
+            ol.Finished += new EventHandler( invoke_Finished );
         ol.LoadedItem += new SimPe.Plugin.Tool.Dockable.ObjectLoader.LoadItemHandler( ol_LoadedItem );
         ol.LoadData();	
      }
 
      private void ol_LoadedItem(SimPe.Cache.ObjectCacheItem oci, SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii, Data.Alias a)
      {
-        //this.Invoke(new InvokeTargetLoad(invoke_LoadedItem), new object[] {oci, fii, a});
-        //invoke_LoadedItem( oci, fii, a );
         SimPe.PackedFiles.Wrapper.ExtObjd objd = new SimPe.PackedFiles.Wrapper.ExtObjd( null );
         objd.ProcessData( fii );
         //return when no need to process
@@ -344,7 +344,6 @@ namespace SimPe.Plugin.CollWsp
            img = Ambertation.Windows.Forms.Graph.ImagePanel.CreateThumbnail( img, this.imagePictureBox.Size, 8, Color.FromArgb( 90, Color.Black ), Color.FromArgb( 10, 10, 40 ), Color.White, Color.FromArgb( 80, Color.White ), true, 3, 3 );
 
         }
-        //ListViewItem item = this.CreateItem( a.Tag[2].ToString(), img, objd, a.Name );
         ListViewItem lvi = new ListViewItem( System.IO.Path.GetFileNameWithoutExtension( objd.Package.FileName ) );
         lvi.SubItems.Add( "Object" );
         lvi.SubItems.Add(oci.ObjectType.ToString());
