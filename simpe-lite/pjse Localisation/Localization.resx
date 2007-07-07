@@ -1353,4 +1353,8 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
   <data name="[Property:LastIgnoredTS]" xml:space="preserve">
     <value>Last ignored timestamp</value>
   </data>
+  <data name="Index" xml:space="preserve">
+    <value>Index</value>
+    <comment>bow76</comment>
+  </data>
 </root>

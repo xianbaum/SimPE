@@ -4846,7 +4846,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0076(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng)
+        public override ABhavOperandWiz Wizard()
+        {
+            return new pjse.BhavOperandWizards.BhavOperandWiz0x0076(instruction);
+        }
+
+        protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
@@ -4854,10 +4859,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-            s += (o[2] == 0
-                ? pjse.Localization.GetString("bwp_myArray")
-                : pjse.Localization.GetString("bwp_stackObjectArray")
-                ) + " " + ArrayName(lng, ToShort(o[3], o[4])) + ", ";
+            s += dataOwner(lng, (byte)(o[2] == 0 ? 0x29 : 0x2a), o[3], o[4]).Replace(" iterator index", ", ");
 
 			switch (o[1]) 
 			{
@@ -5519,10 +5521,7 @@ namespace pjse.BhavNameWizards
             if (lng)
             {
                 s += ", " + pjse.Localization.GetString("bwp_resultIn") + ": ";
-                s += (o[5] == 0
-                    ? pjse.Localization.GetString("bwp_myArray")
-                    : pjse.Localization.GetString("bwp_stackObjectArray")
-                    ) + " " + ArrayName(lng, ToShort(o[3], o[4]));
+                s += dataOwner(lng, (byte)(o[5] == 0 ? 0x29 : 0x2a), o[3], o[4]).Replace(" iterator index", "");
             }
 
 			return s;

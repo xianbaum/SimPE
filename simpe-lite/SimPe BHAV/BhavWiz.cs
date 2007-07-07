@@ -398,6 +398,15 @@ namespace pjse
                     if (temp.Length > 0)
                         s += " (" + temp + ")";
                     break;
+                case 0x29:
+                case 0x2a:
+                case 0x2b:
+                case 0x2c:
+                case 0x2d:
+                case 0x2e:
+                    doidName = doidName.Replace("[array]", ArrayName(true, instance));
+                    s = "";
+                    break;
                 case 0x2f:
                     doidName = dnConst();
                     bcon = ExpandBCON(instance, true);
@@ -455,6 +464,13 @@ namespace pjse
                 case 0x20:
                 case 0x26:
                     return dnNeigh() + " " + readStr((GS.BhavStr)doidGStr[doid], instance);
+                case 0x29:
+                case 0x2a:
+                case 0x2b:
+                case 0x2c:
+                case 0x2d:
+                case 0x2e:
+                    return DoidName(doid).Replace("[array]", "[0x" + SimPe.Helper.HexString(instance) + "]");
                 case 0x2f:
                     bcon = ExpandBCON(instance, true);
                     return dnConst()
@@ -600,7 +616,7 @@ namespace pjse
         }
 
 
-        public List<String> GetAttrNames(Scope s)
+        private List<String> readStr(Scope s, GS.GlobalStr instance)
         {
             if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
                 throw new InvalidOperationException("Can't read STR# for instruction with no parent");
@@ -610,13 +626,28 @@ namespace pjse
                 return null;
 
             List<String> al = new List<String>();
-            Str str = new Str(s, instruction.Parent, (uint)GS.GlobalStr.AttributeLabels);
+            Str str = new Str(s, instruction.Parent, (uint)instance);
             int n = (str == null) ? 0 : ((StrItem[])str[(byte)1]).Length;
             String st;
             for (ushort i = 0; i < n; i++) al.Add((st = readStr(str, i, -1, Detail.ValueOnly, false, false)) == null ? "" : st);
             return al;
         }
 
+        public List<String> GetAttrNames(Scope s) { return readStr(s, GS.GlobalStr.AttributeLabels); }
+
+        public List<String> GetArrayNames() { return readStr(Scope.Private, GS.GlobalStr.ArrayName); }
+
+        private string ArrayName(bool lng, ushort instance)
+        {
+            string s = "0x" + SimPe.Helper.HexString(instance);
+            if (lng)
+            {
+                string temp = readStr(GS.GlobalStr.ArrayName, instance, lng ? -1 : 60, Detail.ValueOnly);
+                if (temp != null && temp.Length > 0)
+                    s += " (" + temp + ")";
+            }
+            return s;
+        }
 
 
         private static string myLeft(string str, int len)
@@ -798,18 +829,6 @@ namespace pjse
                 default: f += pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(t); break;
             }
             return f + (t != 0 ? ": 0x" + SimPe.Helper.HexString(s) : "");
-        }
-
-        protected string ArrayName(bool lng, ushort instance)
-        {
-            string s = "0x" + SimPe.Helper.HexString(instance);
-            if (lng)
-            {
-                string temp = readStr(GS.GlobalStr.ArrayName, instance, lng ? -1 : 60, Detail.ValueOnly);
-                if (temp != null && temp.Length > 0)
-                    s += " (\"" + temp + "\")";
-            }
-            return s;
         }
 
 

@@ -1,0 +1,475 @@
+/***************************************************************************
+ *   Copyright (C) 2007 by Peter L Jones                                   *
+ *   peter@drealm.info                                                     *
+ *   Copyright (C) 2005 by Ambertation                                     *
+ *   quaxi@ambertation.de                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+using System;
+using System.Drawing;
+using System.Collections;
+using System.ComponentModel;
+using System.Windows.Forms;
+using SimPe.PackedFiles.Wrapper;
+
+namespace pjse.BhavOperandWizards.Wiz0x0076
+{
+	/// <summary>
+	/// Zusammenfassung für BhavInstruction.
+	/// </summary>
+    internal class UI : System.Windows.Forms.Form
+    {
+        #region Form variables
+
+        internal System.Windows.Forms.Panel pnWiz0x0076;
+        private RadioButton rb1StackObj;
+        private RadioButton rb1My;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Label lbOp2;
+        private Panel pnOp1;
+        private Label lbConst1;
+        private ComboBox cbPicker1;
+        private TextBox tbval1;
+        private ComboBox cbDataOwner1;
+        private Label lbOp1;
+        private Panel pnOp2;
+        private Label lbConst2;
+        private ComboBox cbPicker2;
+        private TextBox tbval2;
+        private ComboBox cbDataOwner2;
+        private Panel pnArray;
+        private ComboBox cbOperation;
+        private ComboBox cbObjectArray;
+        private TextBox tbObjectArray;
+        private Panel panel1;
+        private CheckBox ckbAttrPicker;
+        private CheckBox ckbDecimal;
+        private Panel panel2;
+        private Label label3;
+        private Label label1;
+        /// <summary>
+        /// Erforderliche Designervariable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
+        #endregion
+
+        public UI()
+        {
+            //
+            // Erforderlich für die Windows Form-Designerunterstützung
+            //
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Die verwendeten Ressourcen bereinigen.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+
+            inst = null;
+        }
+
+
+        #region UI
+        private Instruction inst = null;
+        private DataOwnerControl doidArray = null;
+        private DataOwnerControl doidValue = null;
+        private DataOwnerControl doidIndex = null;
+
+        static string sIndex = Localization.GetString("Index");
+        static string sValue = Localization.GetString("Value");
+
+        private bool[] d1enable = { false, true, true, true, true, true, true, false, false, false, true, true, false, false, };
+        private bool[] d1IndexValue = { false, false, false, false, false, false, false, false, false, false, false, true, false, false, };
+        private bool[] d2enable = { false, false, false, false, false, false, true, false, false, true, true, true, false, false, };
+        private bool[] d2IndexValue = { true, true, true, true, true, true, true, true, true, true, true, true, true, true, };
+
+        private void setOperation(int val)
+        {
+            cbOperation.SelectedIndex = (val < cbOperation.Items.Count) ? val : -1;
+
+            pnOp1.Enabled = (val < d1enable.Length && d1enable[val]);
+            lbOp1.Text = pnOp1.Enabled ? (d1IndexValue[val] ? sIndex : sValue) : "";
+
+            pnOp2.Enabled = (val < d2enable.Length && d2enable[val]);
+            lbOp2.Text = pnOp2.Enabled ? (d2IndexValue[val] ? sIndex : sValue) : "";
+        }
+
+        public void Execute(Instruction inst)
+        {
+            this.inst = inst;
+
+			byte[] o = new byte[16];
+            ((byte[])inst.Operands).CopyTo(o, 0);
+            ((byte[])inst.Reserved1).CopyTo(o, 8);
+
+            setOperation(BhavWiz.ToShort(o[0x00], o[0x01]));
+            rb1StackObj.Checked = !(rb1My.Checked = ((o[0x2] & 0x01) == 0));
+
+            doidArray = new DataOwnerControl(inst, null, this.cbObjectArray, this.tbObjectArray,
+                this.ckbDecimal, this.ckbAttrPicker, null,
+                0x29, BhavWiz.ToShort(o[0x03], o[0x04]));
+            doidValue = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbval1,
+                this.ckbDecimal, this.ckbAttrPicker, this.lbConst1,
+                o[0x05], BhavWiz.ToShort(o[0x06], o[0x07]));
+            doidIndex = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbval2,
+                this.ckbDecimal, this.ckbAttrPicker, this.lbConst2,
+                o[0x08], BhavWiz.ToShort(o[0x09], o[0x0a]));
+        }
+
+        public Instruction Write(Instruction inst)
+        {
+            if (inst != null)
+            {
+                wrappedByteArray ops1 = inst.Operands;
+                wrappedByteArray ops2 = inst.Reserved1;
+
+                if (cbOperation.SelectedIndex >= 0)
+                {
+                    ops1[0x00] = (byte)((cbOperation.SelectedIndex >> 8) & 0xff);
+                    ops1[0x01] = (byte)(cbOperation.SelectedIndex & 0xff);
+                }
+                ops1[0x02] = (byte)((ops1[0x02] & 0xfe) | (rb1My.Checked ? 0x00 : 0x01));
+
+                ops1[0x03] = (byte)((doidArray.Value >> 8) & 0xff);
+                ops1[0x04] = (byte)(doidArray.Value & 0xff);
+
+                ops1[0x05] = doidValue.DataOwner;
+                ops1[0x06] = (byte)((doidValue.Value >> 8) & 0xff);
+                ops1[0x07] = (byte)(doidValue.Value & 0xff);
+
+                ops2[0x00] = doidIndex.DataOwner;
+                ops2[0x01] = (byte)((doidIndex.Value >> 8) & 0xff);
+                ops2[0x02] = (byte)(doidIndex.Value & 0xff);
+            }
+            return inst;
+        }
+
+        #endregion
+
+        #region Vom Windows Form-Designer generierter Code
+        /// <summary>
+        /// Erforderliche Methode für die Designerunterstützung. 
+        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
+            this.pnWiz0x0076 = new System.Windows.Forms.Panel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.pnArray = new System.Windows.Forms.Panel();
+            this.cbOperation = new System.Windows.Forms.ComboBox();
+            this.cbObjectArray = new System.Windows.Forms.ComboBox();
+            this.tbObjectArray = new System.Windows.Forms.TextBox();
+            this.pnOp2 = new System.Windows.Forms.Panel();
+            this.lbConst2 = new System.Windows.Forms.Label();
+            this.cbPicker2 = new System.Windows.Forms.ComboBox();
+            this.tbval2 = new System.Windows.Forms.TextBox();
+            this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
+            this.lbOp2 = new System.Windows.Forms.Label();
+            this.pnOp1 = new System.Windows.Forms.Panel();
+            this.lbConst1 = new System.Windows.Forms.Label();
+            this.cbPicker1 = new System.Windows.Forms.ComboBox();
+            this.tbval1 = new System.Windows.Forms.TextBox();
+            this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
+            this.lbOp1 = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.ckbAttrPicker = new System.Windows.Forms.CheckBox();
+            this.ckbDecimal = new System.Windows.Forms.CheckBox();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.rb1StackObj = new System.Windows.Forms.RadioButton();
+            this.rb1My = new System.Windows.Forms.RadioButton();
+            this.pnWiz0x0076.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.pnArray.SuspendLayout();
+            this.pnOp2.SuspendLayout();
+            this.pnOp1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // pnWiz0x0076
+            // 
+            this.pnWiz0x0076.Controls.Add(this.tableLayoutPanel1);
+            this.pnWiz0x0076.Controls.Add(this.rb1StackObj);
+            this.pnWiz0x0076.Controls.Add(this.rb1My);
+            resources.ApplyResources(this.pnWiz0x0076, "pnWiz0x0076");
+            this.pnWiz0x0076.Name = "pnWiz0x0076";
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.pnArray, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pnOp2, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.lbOp2, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.pnOp1, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.lbOp1, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 4);
+            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // pnArray
+            // 
+            resources.ApplyResources(this.pnArray, "pnArray");
+            this.pnArray.Controls.Add(this.cbOperation);
+            this.pnArray.Controls.Add(this.cbObjectArray);
+            this.pnArray.Controls.Add(this.tbObjectArray);
+            this.pnArray.Name = "pnArray";
+            // 
+            // cbOperation
+            // 
+            this.cbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOperation.DropDownWidth = 462;
+            this.cbOperation.Items.AddRange(new object[] {
+            resources.GetString("cbOperation.Items"),
+            resources.GetString("cbOperation.Items1"),
+            resources.GetString("cbOperation.Items2"),
+            resources.GetString("cbOperation.Items3"),
+            resources.GetString("cbOperation.Items4"),
+            resources.GetString("cbOperation.Items5"),
+            resources.GetString("cbOperation.Items6"),
+            resources.GetString("cbOperation.Items7"),
+            resources.GetString("cbOperation.Items8"),
+            resources.GetString("cbOperation.Items9"),
+            resources.GetString("cbOperation.Items10"),
+            resources.GetString("cbOperation.Items11"),
+            resources.GetString("cbOperation.Items12"),
+            resources.GetString("cbOperation.Items13")});
+            resources.ApplyResources(this.cbOperation, "cbOperation");
+            this.cbOperation.Name = "cbOperation";
+            this.cbOperation.SelectedIndexChanged += new System.EventHandler(this.cbOperation_SelectedIndexChanged);
+            // 
+            // cbObjectArray
+            // 
+            this.cbObjectArray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbObjectArray.DropDownWidth = 384;
+            resources.ApplyResources(this.cbObjectArray, "cbObjectArray");
+            this.cbObjectArray.Name = "cbObjectArray";
+            // 
+            // tbObjectArray
+            // 
+            resources.ApplyResources(this.tbObjectArray, "tbObjectArray");
+            this.tbObjectArray.Name = "tbObjectArray";
+            // 
+            // pnOp2
+            // 
+            resources.ApplyResources(this.pnOp2, "pnOp2");
+            this.pnOp2.Controls.Add(this.lbConst2);
+            this.pnOp2.Controls.Add(this.cbPicker2);
+            this.pnOp2.Controls.Add(this.tbval2);
+            this.pnOp2.Controls.Add(this.cbDataOwner2);
+            this.pnOp2.Name = "pnOp2";
+            // 
+            // lbConst2
+            // 
+            resources.ApplyResources(this.lbConst2, "lbConst2");
+            this.lbConst2.Name = "lbConst2";
+            // 
+            // cbPicker2
+            // 
+            this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPicker2.DropDownWidth = 384;
+            resources.ApplyResources(this.cbPicker2, "cbPicker2");
+            this.cbPicker2.Name = "cbPicker2";
+            // 
+            // tbval2
+            // 
+            resources.ApplyResources(this.tbval2, "tbval2");
+            this.tbval2.Name = "tbval2";
+            // 
+            // cbDataOwner2
+            // 
+            this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataOwner2.DropDownWidth = 384;
+            resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
+            this.cbDataOwner2.Name = "cbDataOwner2";
+            // 
+            // lbOp2
+            // 
+            resources.ApplyResources(this.lbOp2, "lbOp2");
+            this.lbOp2.Name = "lbOp2";
+            // 
+            // pnOp1
+            // 
+            resources.ApplyResources(this.pnOp1, "pnOp1");
+            this.pnOp1.Controls.Add(this.lbConst1);
+            this.pnOp1.Controls.Add(this.cbPicker1);
+            this.pnOp1.Controls.Add(this.tbval1);
+            this.pnOp1.Controls.Add(this.cbDataOwner1);
+            this.pnOp1.Name = "pnOp1";
+            // 
+            // lbConst1
+            // 
+            resources.ApplyResources(this.lbConst1, "lbConst1");
+            this.lbConst1.Name = "lbConst1";
+            // 
+            // cbPicker1
+            // 
+            this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbPicker1.DropDownWidth = 384;
+            resources.ApplyResources(this.cbPicker1, "cbPicker1");
+            this.cbPicker1.Name = "cbPicker1";
+            // 
+            // tbval1
+            // 
+            resources.ApplyResources(this.tbval1, "tbval1");
+            this.tbval1.Name = "tbval1";
+            // 
+            // cbDataOwner1
+            // 
+            this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataOwner1.DropDownWidth = 384;
+            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
+            this.cbDataOwner1.Name = "cbDataOwner1";
+            // 
+            // lbOp1
+            // 
+            resources.ApplyResources(this.lbOp1, "lbOp1");
+            this.lbOp1.Name = "lbOp1";
+            // 
+            // panel1
+            // 
+            resources.ApplyResources(this.panel1, "panel1");
+            this.panel1.Controls.Add(this.ckbAttrPicker);
+            this.panel1.Controls.Add(this.ckbDecimal);
+            this.panel1.Name = "panel1";
+            // 
+            // ckbAttrPicker
+            // 
+            resources.ApplyResources(this.ckbAttrPicker, "ckbAttrPicker");
+            this.ckbAttrPicker.Name = "ckbAttrPicker";
+            // 
+            // ckbDecimal
+            // 
+            resources.ApplyResources(this.ckbDecimal, "ckbDecimal");
+            this.ckbDecimal.Name = "ckbDecimal";
+            // 
+            // panel2
+            // 
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Controls.Add(this.label1);
+            this.panel2.Controls.Add(this.label3);
+            this.panel2.Name = "panel2";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // rb1StackObj
+            // 
+            resources.ApplyResources(this.rb1StackObj, "rb1StackObj");
+            this.rb1StackObj.Name = "rb1StackObj";
+            this.rb1StackObj.TabStop = true;
+            this.rb1StackObj.UseVisualStyleBackColor = true;
+            // 
+            // rb1My
+            // 
+            resources.ApplyResources(this.rb1My, "rb1My");
+            this.rb1My.Name = "rb1My";
+            this.rb1My.TabStop = true;
+            this.rb1My.UseVisualStyleBackColor = true;
+            // 
+            // UI
+            // 
+            resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.pnWiz0x0076);
+            this.Name = "UI";
+            this.pnWiz0x0076.ResumeLayout(false);
+            this.pnWiz0x0076.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.pnArray.ResumeLayout(false);
+            this.pnArray.PerformLayout();
+            this.pnOp2.ResumeLayout(false);
+            this.pnOp2.PerformLayout();
+            this.pnOp1.ResumeLayout(false);
+            this.pnOp1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+        #endregion
+
+        private void cbOperation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            setOperation(cbOperation.SelectedIndex);
+        }
+
+    }
+}
+
+namespace pjse.BhavOperandWizards
+{
+	public class BhavOperandWiz0x0076 : pjse.ABhavOperandWiz
+	{
+		public BhavOperandWiz0x0076() : base() { }
+
+		public BhavOperandWiz0x0076(Instruction i) : base(i) { }
+
+
+		private Wiz0x0076.UI myForm = null;
+		public override Panel bhavPrimWizPanel
+		{
+			get
+			{
+				if (myForm == null) myForm = new Wiz0x0076.UI();
+				return myForm.pnWiz0x0076;
+			}
+		}
+
+		public override void Execute()
+		{
+			if (instruction != null) myForm.Execute(instruction);
+		}
+
+		public override Instruction Write()
+		{
+			return (instruction == null) ? null : myForm.Write(instruction);
+		}
+
+
+		#region IDisposable Members
+		public override void Dispose()
+		{
+			if (myForm != null) myForm = null;
+		}
+		#endregion
+
+	}
+
+}

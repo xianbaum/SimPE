@@ -326,13 +326,13 @@ namespace pjse.BhavOperandWizards
 
             this.flagsFor = null;
 
+            internalchg = true;
             if (this.cbDataOwner != null)
             {
                 this.cbDataOwner.Items.Clear();
                 this.cbDataOwner.Items.AddRange(BhavWiz.readStr(GS.BhavStr.DataOwners).ToArray());
                 if (cbDataOwner.Items.Count > dataOwner)
                     cbDataOwner.SelectedIndex = dataOwner;
-                SetDataOwner();
                 this.cbDataOwner.SelectedIndexChanged += new System.EventHandler(this.cbDataOwner_SelectedIndexChanged);
             }
 
@@ -363,6 +363,9 @@ namespace pjse.BhavOperandWizards
             }
             else
                 UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText;
+            internalchg = false;
+
+            SetDataOwner();
 
             setTextBoxLength();
             setConstLabel();
@@ -452,6 +455,10 @@ namespace pjse.BhavOperandWizards
                 else if (dataOwner == 0x19) // Local
                 {
                     pickerNames = inst.GetTPRPnames(true);
+                }
+                else if (useAttrPicker && (dataOwner >= 0x29 && dataOwner <= 0x2F))
+                {
+                    pickerNames = inst.GetArrayNames();
                 }
                 else if (BhavWiz.doidGStr[dataOwner] != null)
                 {
