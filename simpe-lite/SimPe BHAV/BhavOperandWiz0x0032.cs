@@ -250,10 +250,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
                         if (inst.NodeVersion < 2)
                             ops1[0x04] = (byte)(val & 0xff);
                         else
-                        {
-                            ops2[0x06] = (byte)(val & 0xff);
-                            ops2[0x07] = (byte)(val >> 8);
-                        }
+                            BhavWiz.FromShort(ref ops2, 6, val);
                     }
 
                     if (inst.NodeVersion != 0 && this.cbDisabled.SelectedIndex != -1)
@@ -293,8 +290,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
                     else
                     {
                         ops2[0x03] = doid1.DataOwner;
-                        ops2[0x04] = (byte)(doid1.Value & 0xff);
-                        ops2[0x05] = (byte)((doid1.Value >> 8) & 0xff);
+                        BhavWiz.FromShort(ref ops2, 4, doid1.Value);
                     }
                 }
             }

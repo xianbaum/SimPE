@@ -424,19 +424,20 @@ namespace pjse.BhavOperandWizards.WizAnimate
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
 
-                ops1[0] = (byte)(doidAnim.Value & 0xff);
-                ops1[1] = (byte)((doidAnim.Value >> 8) & 0xff);
+                BhavWiz.FromShort(ref ops1, 0, doidAnim.Value);
+
                 ops1[2] = getOptions(lckbOptions1, ops1[2]);
 
-                ops1[4] = (byte)(doidEvent.Value & 0xff);
-                ops1[5] = (byte)((doidEvent.Value >> 8) & 0xff);
+                BhavWiz.FromShort(ref ops1, 4, doidEvent.Value);
+                byte[] lohi = { 0, 0 };
 
                 switch (mode)
                 {
                     case "bwp_Object":
                         ops1[6] = doidObject.DataOwner;
-                        ops1[7] = (byte)(doidObject.Value & 0xff);
-                        ops2[0] = (byte)((doidObject.Value >> 8) & 0xff);
+                        BhavWiz.FromShort(ref lohi, 0, doidObject.Value);
+                        ops1[7] = lohi[0];
+                        ops2[0] = lohi[1];
                         ops2[1] = getScope(ops2[1]);
                         ops2[2] = getOptions(lckbOptions2, ops2[2]);
                         break;
@@ -446,15 +447,15 @@ namespace pjse.BhavOperandWizards.WizAnimate
                         ops1[7] = getScope(ops1[7]);
                         ops2[0] = getOptions(lckbOptions2, ops2[0]);
                         ops2[1] = doidIK.DataOwner;
-                        ops2[2] = (byte)(doidIK.Value & 0xff);
-                        ops2[3] = (byte)((doidIK.Value >> 8) & 0xff);
+                        BhavWiz.FromShort(ref ops2, 2, doidIK.Value);
                         ops2[4] = getPriority(ops2[4]);
                         break;
 
                     case "bwp_Overlay":
                         ops1[6] = doidObject.DataOwner;
-                        ops1[7] = (byte)(doidObject.Value & 0xff);
-                        ops2[0] = (byte)((doidObject.Value >> 8) & 0xff);
+                        BhavWiz.FromShort(ref lohi, 0, doidObject.Value);
+                        ops1[7] = lohi[0];
+                        ops2[0] = lohi[1];
                         ops2[1] = (byte)(doidAnimType.Value & 0xff);
 
                         if (inst.NodeVersion != 0)
@@ -474,6 +475,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
             }
             return inst;
         }
+
 
         private byte getScope(byte scope)
         {

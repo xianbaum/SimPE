@@ -59,8 +59,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
         private CheckBox ckbAttrPicker;
         private CheckBox ckbDecimal;
         private Panel panel2;
-        private Label label3;
         private Label label1;
+        private Label label3;
         /// <summary>
         /// Erforderliche Designervariable.
         /// </summary>
@@ -126,7 +126,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             ((byte[])inst.Operands).CopyTo(o, 0);
             ((byte[])inst.Reserved1).CopyTo(o, 8);
 
-            setOperation(BhavWiz.ToShort(o[0x00], o[0x01]));
+            setOperation(o[0x01]);
             rb1StackObj.Checked = !(rb1My.Checked = ((o[0x2] & 0x01) == 0));
 
             doidArray = new DataOwnerControl(inst, null, this.cbObjectArray, this.tbObjectArray,
@@ -148,22 +148,16 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
                 wrappedByteArray ops2 = inst.Reserved1;
 
                 if (cbOperation.SelectedIndex >= 0)
-                {
-                    ops1[0x00] = (byte)((cbOperation.SelectedIndex >> 8) & 0xff);
-                    ops1[0x01] = (byte)(cbOperation.SelectedIndex & 0xff);
-                }
+                    ops1[0x01] = (byte)cbOperation.SelectedIndex;
                 ops1[0x02] = (byte)((ops1[0x02] & 0xfe) | (rb1My.Checked ? 0x00 : 0x01));
 
-                ops1[0x03] = (byte)((doidArray.Value >> 8) & 0xff);
-                ops1[0x04] = (byte)(doidArray.Value & 0xff);
+                BhavWiz.FromShort(ref ops1, 3, doidArray.Value);
 
                 ops1[0x05] = doidValue.DataOwner;
-                ops1[0x06] = (byte)((doidValue.Value >> 8) & 0xff);
-                ops1[0x07] = (byte)(doidValue.Value & 0xff);
+                BhavWiz.FromShort(ref ops1, 6, doidValue.Value);
 
                 ops2[0x00] = doidIndex.DataOwner;
-                ops2[0x01] = (byte)((doidIndex.Value >> 8) & 0xff);
-                ops2[0x02] = (byte)(doidIndex.Value & 0xff);
+                BhavWiz.FromShort(ref ops2, 1, doidIndex.Value);
             }
             return inst;
         }
@@ -199,11 +193,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.panel1 = new System.Windows.Forms.Panel();
             this.ckbAttrPicker = new System.Windows.Forms.CheckBox();
             this.ckbDecimal = new System.Windows.Forms.CheckBox();
+            this.rb1StackObj = new System.Windows.Forms.RadioButton();
+            this.rb1My = new System.Windows.Forms.RadioButton();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.rb1StackObj = new System.Windows.Forms.RadioButton();
-            this.rb1My = new System.Windows.Forms.RadioButton();
             this.pnWiz0x0076.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.pnArray.SuspendLayout();
@@ -215,27 +209,27 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             // 
             // pnWiz0x0076
             // 
+            resources.ApplyResources(this.pnWiz0x0076, "pnWiz0x0076");
             this.pnWiz0x0076.Controls.Add(this.tableLayoutPanel1);
             this.pnWiz0x0076.Controls.Add(this.rb1StackObj);
             this.pnWiz0x0076.Controls.Add(this.rb1My);
-            resources.ApplyResources(this.pnWiz0x0076, "pnWiz0x0076");
             this.pnWiz0x0076.Name = "pnWiz0x0076";
             // 
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.pnArray, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.pnOp2, 1, 3);
-            this.tableLayoutPanel1.Controls.Add(this.lbOp2, 0, 3);
-            this.tableLayoutPanel1.Controls.Add(this.pnOp1, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.lbOp1, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.panel2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pnArray, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.pnOp2, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.lbOp2, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.pnOp1, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lbOp1, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // pnArray
             // 
             resources.ApplyResources(this.pnArray, "pnArray");
+            this.pnArray.Controls.Add(this.panel2);
             this.pnArray.Controls.Add(this.cbOperation);
             this.pnArray.Controls.Add(this.cbObjectArray);
             this.pnArray.Controls.Add(this.tbObjectArray);
@@ -369,6 +363,20 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             resources.ApplyResources(this.ckbDecimal, "ckbDecimal");
             this.ckbDecimal.Name = "ckbDecimal";
             // 
+            // rb1StackObj
+            // 
+            resources.ApplyResources(this.rb1StackObj, "rb1StackObj");
+            this.rb1StackObj.Name = "rb1StackObj";
+            this.rb1StackObj.TabStop = true;
+            this.rb1StackObj.UseVisualStyleBackColor = true;
+            // 
+            // rb1My
+            // 
+            resources.ApplyResources(this.rb1My, "rb1My");
+            this.rb1My.Name = "rb1My";
+            this.rb1My.TabStop = true;
+            this.rb1My.UseVisualStyleBackColor = true;
+            // 
             // panel2
             // 
             resources.ApplyResources(this.panel2, "panel2");
@@ -385,20 +393,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            // 
-            // rb1StackObj
-            // 
-            resources.ApplyResources(this.rb1StackObj, "rb1StackObj");
-            this.rb1StackObj.Name = "rb1StackObj";
-            this.rb1StackObj.TabStop = true;
-            this.rb1StackObj.UseVisualStyleBackColor = true;
-            // 
-            // rb1My
-            // 
-            resources.ApplyResources(this.rb1My, "rb1My");
-            this.rb1My.Name = "rb1My";
-            this.rb1My.TabStop = true;
-            this.rb1My.UseVisualStyleBackColor = true;
             // 
             // UI
             // 
@@ -421,6 +415,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
         #endregion

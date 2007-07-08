@@ -126,7 +126,7 @@
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="cbPicker2.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
+    <value>6</value>
   </data>
   <data name="cbPicker2.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -160,7 +160,7 @@
     <value>149, 21</value>
   </data>
   <data name="cbAttrPicker.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>8</value>
   </data>
   <data name="cbAttrPicker.Text" xml:space="preserve">
     <value>use Attribute picker</value>
@@ -193,7 +193,7 @@
     <value>179, 21</value>
   </data>
   <data name="cbDecimal.TabIndex" type="System.Int32, mscorlib">
-    <value>18</value>
+    <value>7</value>
   </data>
   <data name="cbDecimal.Text" xml:space="preserve">
     <value>Decimal (except Consts)</value>
@@ -217,7 +217,7 @@
     <value>134, 22</value>
   </data>
   <data name="tbVal2.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
+    <value>6</value>
   </data>
   <data name="&gt;&gt;tbVal2.Name" xml:space="preserve">
     <value>tbVal2</value>
@@ -238,7 +238,7 @@
     <value>302, 24</value>
   </data>
   <data name="cbDataOwner2.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;cbDataOwner2.Name" xml:space="preserve">
     <value>cbDataOwner2</value>
@@ -268,7 +268,7 @@
     <value>365, 15</value>
   </data>
   <data name="tbMesh.TabIndex" type="System.Int32, mscorlib">
-    <value>43</value>
+    <value>7</value>
   </data>
   <data name="tbMesh.Text" xml:space="preserve">
     <value>Mesh group name</value>
@@ -301,7 +301,7 @@
     <value>24, 22</value>
   </data>
   <data name="btnMesh.TabIndex" type="System.Int32, mscorlib">
-    <value>42</value>
+    <value>6</value>
   </data>
   <data name="btnMesh.Text" xml:space="preserve">
     <value>8</value>
@@ -325,7 +325,7 @@
     <value>60, 22</value>
   </data>
   <data name="tbVal5.TabIndex" type="System.Int32, mscorlib">
-    <value>41</value>
+    <value>5</value>
   </data>
   <data name="tbVal5.Text" xml:space="preserve">
     <value>0xDDDD</value>
@@ -355,7 +355,7 @@
     <value>41, 17</value>
   </data>
   <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>39</value>
+    <value>3</value>
   </data>
   <data name="label8.Text" xml:space="preserve">
     <value>Index</value>
@@ -385,7 +385,7 @@
     <value>90, 21</value>
   </data>
   <data name="ckbMeshTemp.TabIndex" type="System.Int32, mscorlib">
-    <value>40</value>
+    <value>4</value>
   </data>
   <data name="ckbMeshTemp.Text" xml:space="preserve">
     <value>In Temp 1</value>
@@ -418,7 +418,7 @@
     <value>144, 24</value>
   </data>
   <data name="cbMeshScope.TabIndex" type="System.Int32, mscorlib">
-    <value>38</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;cbMeshScope.Name" xml:space="preserve">
     <value>cbMeshScope</value>
@@ -445,7 +445,7 @@
     <value>48, 17</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>37</value>
+    <value>1</value>
   </data>
   <data name="label4.Text" xml:space="preserve">
     <value>Scope</value>
@@ -469,7 +469,7 @@
     <value>509, 72</value>
   </data>
   <data name="pnNotAllOver.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;pnNotAllOver.Name" xml:space="preserve">
     <value>pnNotAllOver</value>
@@ -493,7 +493,7 @@
     <value>116, 21</value>
   </data>
   <data name="ckbAllOver.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>4</value>
   </data>
   <data name="ckbAllOver.Text" xml:space="preserve">
     <value>All over object</value>
@@ -523,7 +523,7 @@
     <value>113, 21</value>
   </data>
   <data name="rb3Object.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="rb3Object.Text" xml:space="preserve">
     <value>Source object</value>
@@ -553,7 +553,7 @@
     <value>45, 21</value>
   </data>
   <data name="rb3Me.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="rb3Me.Text" xml:space="preserve">
     <value>Me</value>
@@ -607,7 +607,7 @@
     <value>557, 144</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>10</value>
   </data>
   <data name="&gt;&gt;panel1.Name" xml:space="preserve">
     <value>panel1</value>
@@ -628,7 +628,7 @@
     <value>156, 24</value>
   </data>
   <data name="cbPicker1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="cbPicker1.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -652,7 +652,7 @@
     <value>134, 22</value>
   </data>
   <data name="tbVal1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;tbVal1.Name" xml:space="preserve">
     <value>tbVal1</value>
@@ -673,7 +673,7 @@
     <value>302, 24</value>
   </data>
   <data name="cbDataOwner1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;cbDataOwner1.Name" xml:space="preserve">
     <value>cbDataOwner1</value>
@@ -703,7 +703,7 @@
     <value>365, 15</value>
   </data>
   <data name="tbMaterial.TabIndex" type="System.Int32, mscorlib">
-    <value>36</value>
+    <value>9</value>
   </data>
   <data name="tbMaterial.Text" xml:space="preserve">
     <value>Material name</value>
@@ -736,7 +736,7 @@
     <value>24, 22</value>
   </data>
   <data name="btnMaterial.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>8</value>
   </data>
   <data name="btnMaterial.Text" xml:space="preserve">
     <value>8</value>
@@ -760,7 +760,7 @@
     <value>60, 22</value>
   </data>
   <data name="tbVal3.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="tbVal3.Text" xml:space="preserve">
     <value>0xDDDD</value>
@@ -793,7 +793,7 @@
     <value>144, 24</value>
   </data>
   <data name="cbMatScope.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="&gt;&gt;cbMatScope.Name" xml:space="preserve">
     <value>cbMatScope</value>
@@ -820,7 +820,7 @@
     <value>41, 17</value>
   </data>
   <data name="label7.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>5</value>
   </data>
   <data name="label7.Text" xml:space="preserve">
     <value>Index</value>
@@ -850,7 +850,7 @@
     <value>48, 17</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
     <value>Scope</value>
@@ -880,7 +880,7 @@
     <value>88, 17</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label5.Text" xml:space="preserve">
     <value>Material is a:</value>
@@ -910,7 +910,7 @@
     <value>90, 21</value>
   </data>
   <data name="ckbMaterialTemp.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="ckbMaterialTemp.Text" xml:space="preserve">
     <value>In Temp 0</value>
@@ -940,7 +940,7 @@
     <value>123, 21</value>
   </data>
   <data name="rb2MovingTexture.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="rb2MovingTexture.Text" xml:space="preserve">
     <value>Moving Texture</value>
@@ -970,7 +970,7 @@
     <value>76, 21</value>
   </data>
   <data name="rb2Material.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="rb2Material.Text" xml:space="preserve">
     <value>Material</value>
@@ -994,7 +994,7 @@
     <value>509, 96</value>
   </data>
   <data name="pnNotScrShot.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="&gt;&gt;pnNotScrShot.Name" xml:space="preserve">
     <value>pnNotScrShot</value>
@@ -1021,7 +1021,7 @@
     <value>113, 21</value>
   </data>
   <data name="rb1Object.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="rb1Object.Text" xml:space="preserve">
     <value>Source object</value>
@@ -1051,7 +1051,7 @@
     <value>45, 21</value>
   </data>
   <data name="rb1Me.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="rb1Me.Text" xml:space="preserve">
     <value>Me</value>
@@ -1078,7 +1078,7 @@
     <value>102, 21</value>
   </data>
   <data name="rb1ScrShot.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="rb1ScrShot.Text" xml:space="preserve">
     <value>Screen shot</value>
@@ -1108,7 +1108,7 @@
     <value>90, 17</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>Material from</value>
@@ -1132,7 +1132,7 @@
     <value>557, 144</value>
   </data>
   <data name="pnMaterial.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>9</value>
   </data>
   <data name="&gt;&gt;pnMaterial.Name" xml:space="preserve">
     <value>pnMaterial</value>
@@ -1159,7 +1159,7 @@
     <value>95, 17</value>
   </data>
   <data name="label9.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>4</value>
   </data>
   <data name="label9.Text" xml:space="preserve">
     <value>Source object</value>
@@ -1186,7 +1186,7 @@
     <value>92, 17</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
     <value>Target object</value>
@@ -1210,7 +1210,7 @@
     <value>557, 360</value>
   </data>
   <data name="pnWiz0x006d.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;pnWiz0x006d.Name" xml:space="preserve">
     <value>pnWiz0x006d</value>

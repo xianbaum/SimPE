@@ -209,14 +209,14 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
                     ops1[0x05] = (byte)this.cbRTBNType.SelectedIndex;
 
                 ops1[0x06] = doid1.DataOwner;
-                ops1[0x07] = (byte)(doid1.Value & 0xff);
-                ops2[0x00] = (byte)((doid1.Value >> 8) & 0xff);
+                byte[] lohi = { 0, 0 };
+                BhavWiz.FromShort(ref lohi, 0, doid1.Value);
+                ops1[0x07] = lohi[0];
+                ops2[0x00] = lohi[1];
                 ops2[0x01] = doid2.DataOwner;
-                ops2[0x02] = (byte)(doid2.Value & 0xff);
-                ops2[0x03] = (byte)((doid2.Value >> 8) & 0xff);
+                BhavWiz.FromShort(ref ops2, 2, doid2.Value);
                 ops2[0x04] = doid3.DataOwner;
-                ops2[0x05] = (byte)(doid3.Value & 0xff);
-                ops2[0x06] = (byte)((doid3.Value >> 8) & 0xff);
+                BhavWiz.FromShort(ref ops2, 5, doid3.Value);
             }
 			return inst;
 		}

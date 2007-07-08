@@ -1046,6 +1046,18 @@ namespace pjse
 
         public static ushort ToShort(byte lower, byte higher) { return (ushort)((higher << 8) + lower); }
 
+        public static void FromShort(ref byte[] ary, int index, ushort value)
+        {
+            ary[index] = (byte)(value & 0xff);
+            ary[index + 1] = (byte)(value >> 8);
+        }
+
+        public static void FromShort(ref wrappedByteArray ary, int index, ushort value)
+        {
+            ary[index] = (byte)(value & 0xff);
+            ary[index + 1] = (byte)(value >> 8);
+        }
+
         #endregion
     }
 
