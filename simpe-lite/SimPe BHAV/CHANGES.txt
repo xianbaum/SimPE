@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+9 July 2007 20:13 - Wiz0x0076: Draw a line under Operation
+  SimPe BHAV\
+    BhavOperandWiz0x0076.cs 1.1.2.3
+    BhavOperandWiz0x0076.resx 1.1.2.3
+
 8 July 2007 22:10 - Attack of BhavWiz.FromShort()
   * Also fix tab order in Wiz0x6d
   * Also fix spacing in Wiz0x76

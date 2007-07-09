@@ -51,16 +51,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
         private ComboBox cbPicker2;
         private TextBox tbval2;
         private ComboBox cbDataOwner2;
-        private Panel pnArray;
-        private ComboBox cbOperation;
-        private ComboBox cbObjectArray;
-        private TextBox tbObjectArray;
         private Panel panel1;
         private CheckBox ckbAttrPicker;
         private CheckBox ckbDecimal;
+        private Panel pnArray;
         private Panel panel2;
         private Label label1;
         private Label label3;
+        private ComboBox cbOperation;
+        private ComboBox cbObjectArray;
+        private TextBox tbObjectArray;
+        private Panel panel3;
         /// <summary>
         /// Erforderliche Designervariable.
         /// </summary>
@@ -174,10 +175,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             this.pnWiz0x0076 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.pnArray = new System.Windows.Forms.Panel();
-            this.cbOperation = new System.Windows.Forms.ComboBox();
-            this.cbObjectArray = new System.Windows.Forms.ComboBox();
-            this.tbObjectArray = new System.Windows.Forms.TextBox();
             this.pnOp2 = new System.Windows.Forms.Panel();
             this.lbConst2 = new System.Windows.Forms.Label();
             this.cbPicker2 = new System.Windows.Forms.ComboBox();
@@ -195,16 +192,21 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.ckbDecimal = new System.Windows.Forms.CheckBox();
             this.rb1StackObj = new System.Windows.Forms.RadioButton();
             this.rb1My = new System.Windows.Forms.RadioButton();
+            this.tbObjectArray = new System.Windows.Forms.TextBox();
+            this.cbObjectArray = new System.Windows.Forms.ComboBox();
+            this.cbOperation = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.pnArray = new System.Windows.Forms.Panel();
             this.label3 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.pnWiz0x0076.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            this.pnArray.SuspendLayout();
             this.pnOp2.SuspendLayout();
             this.pnOp1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.pnArray.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnWiz0x0076
@@ -225,50 +227,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.tableLayoutPanel1.Controls.Add(this.lbOp1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
-            // pnArray
-            // 
-            resources.ApplyResources(this.pnArray, "pnArray");
-            this.pnArray.Controls.Add(this.panel2);
-            this.pnArray.Controls.Add(this.cbOperation);
-            this.pnArray.Controls.Add(this.cbObjectArray);
-            this.pnArray.Controls.Add(this.tbObjectArray);
-            this.pnArray.Name = "pnArray";
-            // 
-            // cbOperation
-            // 
-            this.cbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbOperation.DropDownWidth = 462;
-            this.cbOperation.Items.AddRange(new object[] {
-            resources.GetString("cbOperation.Items"),
-            resources.GetString("cbOperation.Items1"),
-            resources.GetString("cbOperation.Items2"),
-            resources.GetString("cbOperation.Items3"),
-            resources.GetString("cbOperation.Items4"),
-            resources.GetString("cbOperation.Items5"),
-            resources.GetString("cbOperation.Items6"),
-            resources.GetString("cbOperation.Items7"),
-            resources.GetString("cbOperation.Items8"),
-            resources.GetString("cbOperation.Items9"),
-            resources.GetString("cbOperation.Items10"),
-            resources.GetString("cbOperation.Items11"),
-            resources.GetString("cbOperation.Items12"),
-            resources.GetString("cbOperation.Items13")});
-            resources.ApplyResources(this.cbOperation, "cbOperation");
-            this.cbOperation.Name = "cbOperation";
-            this.cbOperation.SelectedIndexChanged += new System.EventHandler(this.cbOperation_SelectedIndexChanged);
-            // 
-            // cbObjectArray
-            // 
-            this.cbObjectArray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbObjectArray.DropDownWidth = 384;
-            resources.ApplyResources(this.cbObjectArray, "cbObjectArray");
-            this.cbObjectArray.Name = "cbObjectArray";
-            // 
-            // tbObjectArray
-            // 
-            resources.ApplyResources(this.tbObjectArray, "tbObjectArray");
-            this.tbObjectArray.Name = "tbObjectArray";
             // 
             // pnOp2
             // 
@@ -377,6 +335,41 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.rb1My.TabStop = true;
             this.rb1My.UseVisualStyleBackColor = true;
             // 
+            // tbObjectArray
+            // 
+            resources.ApplyResources(this.tbObjectArray, "tbObjectArray");
+            this.tbObjectArray.Name = "tbObjectArray";
+            // 
+            // cbObjectArray
+            // 
+            this.cbObjectArray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbObjectArray.DropDownWidth = 384;
+            resources.ApplyResources(this.cbObjectArray, "cbObjectArray");
+            this.cbObjectArray.Name = "cbObjectArray";
+            // 
+            // cbOperation
+            // 
+            this.cbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOperation.DropDownWidth = 462;
+            this.cbOperation.Items.AddRange(new object[] {
+            resources.GetString("cbOperation.Items"),
+            resources.GetString("cbOperation.Items1"),
+            resources.GetString("cbOperation.Items2"),
+            resources.GetString("cbOperation.Items3"),
+            resources.GetString("cbOperation.Items4"),
+            resources.GetString("cbOperation.Items5"),
+            resources.GetString("cbOperation.Items6"),
+            resources.GetString("cbOperation.Items7"),
+            resources.GetString("cbOperation.Items8"),
+            resources.GetString("cbOperation.Items9"),
+            resources.GetString("cbOperation.Items10"),
+            resources.GetString("cbOperation.Items11"),
+            resources.GetString("cbOperation.Items12"),
+            resources.GetString("cbOperation.Items13")});
+            resources.ApplyResources(this.cbOperation, "cbOperation");
+            this.cbOperation.Name = "cbOperation";
+            this.cbOperation.SelectedIndexChanged += new System.EventHandler(this.cbOperation_SelectedIndexChanged);
+            // 
             // panel2
             // 
             resources.ApplyResources(this.panel2, "panel2");
@@ -389,10 +382,26 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
+            // pnArray
+            // 
+            resources.ApplyResources(this.pnArray, "pnArray");
+            this.pnArray.Controls.Add(this.panel3);
+            this.pnArray.Controls.Add(this.panel2);
+            this.pnArray.Controls.Add(this.cbOperation);
+            this.pnArray.Controls.Add(this.cbObjectArray);
+            this.pnArray.Controls.Add(this.tbObjectArray);
+            this.pnArray.Name = "pnArray";
+            // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
+            // 
+            // panel3
+            // 
+            this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Name = "panel3";
             // 
             // UI
             // 
@@ -404,8 +413,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.pnWiz0x0076.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.pnArray.ResumeLayout(false);
-            this.pnArray.PerformLayout();
             this.pnOp2.ResumeLayout(false);
             this.pnOp2.PerformLayout();
             this.pnOp1.ResumeLayout(false);
@@ -414,6 +421,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
+            this.pnArray.ResumeLayout(false);
+            this.pnArray.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
