@@ -1,5 +1,13 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+11 July 2007 19:27 - Wiz0x0076: Record where discussion of Op02 flag took place
+  * Also tidy up Localisation
+  pjse Localisaton\
+    Localization.resx 1.1.4.25
+  SimPe BHAV\
+    BhavOperandWiz0x0076.cs 1.1.2.6
+    BhavWizPrim.cs 1.37.2.32
+
 11 July 2007 19:08 - Wiz0x0076: Op02 bit 2 is not the object flag really
   SimPe BHAV\
     BhavOperandWiz0x0076.cs 1.1.2.5

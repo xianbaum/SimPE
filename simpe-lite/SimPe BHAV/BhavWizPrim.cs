@@ -4859,7 +4859,9 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-            s += pjse.Localization.GetString(o[2] == 0 ? "MyObjectArray" : "SOObjectArray");
+            s += pjse.Localization.GetString(o[2] == 0 ? "bwp_myArray" : "bwp_stackObjectArray");
+            // See discussion around whether this is a bit vs boolean:
+            // http://simlogical.com/SMF/index.php?topic=917.msg6641#msg6641
             s = s.Replace("[array]", ArrayName(lng, ToShort(o[3], o[4])));
             s += ", ";
 
@@ -5523,7 +5525,7 @@ namespace pjse.BhavNameWizards
             if (lng)
             {
                 s += ", " + pjse.Localization.GetString("bwp_resultIn") + ": ";
-                s += pjse.Localization.GetString(o[5] == 0 ? "MyObjectArray" : "SOObjectArray");
+                s += pjse.Localization.GetString(o[5] == 0 ? "bwp_myArray" : "bwp_stackObjectArray");
                 s = s.Replace("[array]", ArrayName(lng, ToShort(o[3], o[4])));
             }
 

@@ -128,6 +128,8 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             ((byte[])inst.Reserved1).CopyTo(o, 8);
 
             setOperation(o[0x01]);
+            // See discussion around whether this is a bit vs boolean:
+            // http://simlogical.com/SMF/index.php?topic=917.msg6641#msg6641
             rb1StackObj.Checked = !(rb1My.Checked = (o[0x2] == 0));
 
             doidArray = new DataOwnerControl(inst, null, this.cbObjectArray, this.tbObjectArray,
