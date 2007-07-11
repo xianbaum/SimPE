@@ -130,12 +130,22 @@ namespace pj
                     pfd = p.Index[j];
             if (pfd == null)
                 return false;
+            if (isInPFDList(currentPackage.Index, pfd))
+                return true;
 
             IPackedFileDescriptor npfd = pfd.Clone();
             npfd.UserData = p.Read(pfd).UncompressedData;
             currentPackage.Add(npfd, true);
 
             return true;
+        }
+
+        private bool isInPFDList(IPackedFileDescriptor[] pfdList, IPackedFileDescriptor pfd)
+        {
+            foreach (IPackedFileDescriptor i in pfdList)
+                if (i.Filename.Equals(pfd.Filename))
+                    return true;
+            return false;
         }
 
         private void Main()

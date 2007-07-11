@@ -1,4 +1,8 @@
 
+2007-07-11 14:27 Suppress duplicates in extractor
+  pjBodyMeshTool/
+    BodyMeshExtractor.cs 1.1.2.8
+
 2007-03-12 15:31 Change to post-build script: better control of distros built
   pjBodyMeshTool/
     pjBodyMeshTool.csproj 1.1.2.12
