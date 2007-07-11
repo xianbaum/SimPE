@@ -637,7 +637,7 @@ namespace pjse
 
         public List<String> GetArrayNames() { return readStr(Scope.Private, GS.GlobalStr.ArrayName); }
 
-        private string ArrayName(bool lng, ushort instance)
+        public String ArrayName(bool lng, ushort instance)
         {
             string s = "0x" + SimPe.Helper.HexString(instance);
             if (lng)

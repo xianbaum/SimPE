@@ -4859,7 +4859,9 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-            s += dataOwner(lng, (byte)(o[2] == 0 ? 0x29 : 0x2a), o[3], o[4]).Replace(" iterator Index", ", ");
+            s += pjse.Localization.GetString((o[2] & 0x02) == 0 ? "MyObjectArray" : "SOObjectArray");
+            s = s.Replace("[array]", ArrayName(lng, ToShort(o[3], o[4])));
+            s += ", ";
 
 			switch (o[1]) 
 			{
@@ -5521,7 +5523,8 @@ namespace pjse.BhavNameWizards
             if (lng)
             {
                 s += ", " + pjse.Localization.GetString("bwp_resultIn") + ": ";
-                s += dataOwner(lng, (byte)(o[5] == 0 ? 0x29 : 0x2a), o[3], o[4]).Replace(" iterator Index", "");
+                s += pjse.Localization.GetString(o[5] == 0 ? "MyObjectArray" : "SOObjectArray");
+                s = s.Replace("[array]", ArrayName(lng, ToShort(o[3], o[4])));
             }
 
 			return s;

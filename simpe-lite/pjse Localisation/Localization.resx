@@ -1357,4 +1357,16 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
     <value>Index</value>
     <comment>bow76</comment>
   </data>
+  <data name="bwp7c_want" xml:space="preserve">
+    <value>Want</value>
+    <comment>0x7c</comment>
+  </data>
+  <data name="MyObjectArray" xml:space="preserve">
+    <value>My object array [array]</value>
+    <comment>0x76, 0x7d</comment>
+  </data>
+  <data name="SOObjectArray" xml:space="preserve">
+    <value>Stack Object's object array [array]</value>
+    <comment>0x76, 0x7d</comment>
+  </data>
 </root>
