@@ -128,7 +128,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             ((byte[])inst.Reserved1).CopyTo(o, 8);
 
             setOperation(o[0x01]);
-            rb1StackObj.Checked = !(rb1My.Checked = ((o[0x2] & 0x02) == 0));
+            rb1StackObj.Checked = !(rb1My.Checked = (o[0x2] == 0));
 
             doidArray = new DataOwnerControl(inst, null, this.cbObjectArray, this.tbObjectArray,
                 this.ckbDecimal, this.ckbAttrPicker, null,
@@ -150,7 +150,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
 
                 if (cbOperation.SelectedIndex >= 0)
                     ops1[0x01] = (byte)cbOperation.SelectedIndex;
-                ops1[0x02] = (byte)((ops1[0x02] & 0xfd) | (rb1My.Checked ? 0x00 : 0x02));
+                ops1[0x02] = (byte)(rb1My.Checked ? 0x00 : 0x02); // Not sure why "0x02" at the game treats as 0 / !0
 
                 BhavWiz.FromShort(ref ops1, 3, doidArray.Value);
 

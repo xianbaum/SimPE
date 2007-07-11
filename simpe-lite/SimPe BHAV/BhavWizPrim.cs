@@ -4859,7 +4859,7 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-            s += pjse.Localization.GetString((o[2] & 0x02) == 0 ? "MyObjectArray" : "SOObjectArray");
+            s += pjse.Localization.GetString(o[2] == 0 ? "MyObjectArray" : "SOObjectArray");
             s = s.Replace("[array]", ArrayName(lng, ToShort(o[3], o[4])));
             s += ", ";
 
