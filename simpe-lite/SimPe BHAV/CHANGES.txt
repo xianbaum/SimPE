@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+21 July 2007 13:39 - AllowedHeightFlags added
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.34
+  GlobalStrings.package 1.10.8.22 
+
 11 July 2007 19:27 - Wiz0x0076: Record where discussion of Op02 flag took place
   * Also tidy up Localisation
   pjse Localisaton\

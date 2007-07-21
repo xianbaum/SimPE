@@ -147,6 +147,7 @@ namespace pjse
             //Str0x0100..010d - there are no Str0x0100..010d
             PlacementFlags2 = 0x10e,    // ObjectData 0x52 - placement flags 2 24e
             //Str0x010f..01f3 - there are no Str0x010f..01f3
+            AllowedHeightFlags = 0x1e2, // PJSE: ObjectData 0x04 - allowed height flags
             UnknownFlags = 0x1e3, // PJSE: string number stolen (for flag fields with unknown flag labels)
             TokenOpsCounted = 0x1e4, // PJSE: string number stolen (opcode 0x33)
             TokenOpsSingular = 0x1e5, // PJSE: string number stolen (opcode 0x33)
@@ -679,7 +680,7 @@ namespace pjse
 
             // ObjectData flags
             Hashtable o = new Hashtable();
-            o.Add((ushort)0x04, GS.BhavStr.UnknownFlags); // allowed height flags
+            o.Add((ushort)0x04, GS.BhavStr.AllowedHeightFlags); // allowed height flags
             o.Add((ushort)0x05, GS.BhavStr.WallAdjFlags);
             o.Add((ushort)0x08, GS.BhavStr.Flags1);
             o.Add((ushort)0x0d, GS.BhavStr.WallRequirementFlags);
