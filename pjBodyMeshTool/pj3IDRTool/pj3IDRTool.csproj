@@ -4,13 +4,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0E0A4A2C-1BAE-4659-9511-5C089FA4E154}</ProjectGuid>
+    <ProjectGuid>{DA114369-0A54-42A9-A3B0-F48FC5EA4F7D}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <StartupObject>
-    </StartupObject>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>pj</RootNamespace>
-    <AssemblyName>pjBodyMeshTool.plugin</AssemblyName>
+    <AssemblyName>pj3IDRTool.plugin</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,7 +18,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,38 +28,50 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="simpe.3idr, Version=1.0.2370.36230, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.3idr, Version=1.0.2676.19323, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SimPe\simpe.3idr.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.commonhandler, Version=1.0.2302.1285, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="simpe.clst, Version=1.0.2676.19317, Culture=neutral, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.filehandler, Version=1.0.2302.1288, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.commonhandler, Version=1.0.2676.19317, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SimPe\simpe.commonhandler.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.helper, Version=0.59.10.36224, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.filehandler, Version=1.0.2676.19321, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SimPe\simpe.filehandler.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.helper, Version=0.62.1.100, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\SimPe\simpe.helper.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.interfaces, Version=1.0.2370.36224, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.interfaces, Version=1.0.2676.19317, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\SimPe\simpe.interfaces.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.package, Version=1.0.2302.1285, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.package, Version=1.0.2676.19318, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SimPe\simpe.package.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.scenegraph, Version=1.0.2437.22378, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="simpe.rcol, Version=1.0.2676.19320, Culture=neutral, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.workspace, Version=1.0.2302.1286, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="simpe.scenegraph, Version=1.0.2676.19325, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SimPe\simpe.scenegraph.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.workspace, Version=1.0.2676.19319, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\SimPe\simpe.workspace.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -72,21 +81,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BodyMeshExtractor.cs" />
-    <Compile Include="BodyMeshHelp.cs" />
-    <Compile Include="BodyMeshLinker.cs" />
-    <Compile Include="BodyMeshTool.cs" />
-    <Compile Include="GetMeshName.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="c3IDRTool.cs" />
+    <Compile Include="h3IDRHelp.cs" />
+    <Compile Include="t3IDRTool.cs" />
     <Compile Include="Localization.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="GetMeshName.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>GetMeshName.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Localization.resx">
@@ -116,7 +115,7 @@ set s=%25mytime:~6,2%25
 set suffix=%25yy%25%25mm%25%25dd%25-%25h%25%25m%25
 
 set helpdir=S:\PJSE_etc\pjBodyMeshTool
-set help=pjBodyMeshTool_Help
+set help=pj3IDRTool_Help
 
 set tarv=
 set nsisv=/V3

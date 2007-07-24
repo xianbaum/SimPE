@@ -1,3 +1,17 @@
+2007-07-24 16:33 Create 3IDR Tool
+  pj3IDRTool/
+    .cvsignore 1.1.2.1
+    c3IDRTool.cs 1.1.2.1
+    h3IDRHelp.cs 1.1.2.1
+    Localization.cs 1.1.2.1
+    Localization.resx 1.1.2.1
+    pj3IDRTool.csproj 1.1.2.1
+    t3IDRTool.cs 1.1.2.1
+  pj3IDRTool/Properties/
+    AssemblyInfo.cs 1.1.2.1
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.13
+  pjBodyMeshTool.sln 1.1.2.2
 
 2007-07-11 14:27 Suppress duplicates in extractor
   pjBodyMeshTool/
