@@ -45,6 +45,7 @@ namespace pj
         private static List<String> shpepkg = new List<string>();   // Objects06, Sims05, CarryForward.sgfiles
         private static List<String> crespkg = new List<string>();   // Objects05, Sims06, CarryForward.sgfiles
         private static List<String> txtrpkg = new List<string>();   // Objects07, Sims07, Textures, CarryForward.sgfiles
+        private static List<String> lifopkg = new List<string>();   // Objects07-09, Sims08/9/11-13, Textures, CarryForward.sgfiles
 
         // TSData\Res\Catalog:
         //private static List<String> objkeys = new List<string>();   // Skins\Skins
@@ -79,6 +80,10 @@ namespace pj
                 addPackages(ref shpepkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects06", "Sims05", "CarryForward.sgfiles" });
                 addPackages(ref crespkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects05", "Sims06", "CarryForward.sgfiles" });
                 addPackages(ref txtrpkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects07", "Sims07", "Textures", "CarryForward.sgfiles" });
+                addPackages(ref lifopkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] {
+                    "Objects07", "Objects08", "Objects09",
+                    "Sims08", "Sims09", "Sims11", "Sims12", "Sims13",
+                    "Textures", "CarryForward.sgfiles" });
 
                 //addPackages(ref objkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Skins"), new String[] { "Skins" });
                 addPackages(ref fragkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), new String[] { "globalcatbin.bundle" });
@@ -134,22 +139,6 @@ namespace pj
             return tgt;
         }
 
-        private List<AbstractWrapper[]> findBinKeys(List<AbstractWrapper[]> fragKeys)
-        {
-            List<AbstractWrapper[]> binKeys = new List<AbstractWrapper[]>();
-            SimPe.Wait.SubStart(fragkeys.Count);
-            foreach (AbstractWrapper[] fk in fragKeys)
-            {
-                AbstractWrapper[] tgt = getCpf3idrPair((SimPe.PackedFiles.Wrapper.Cpf)fk[0],
-                    (SimPe.Plugin.RefFile)fk[1], "binidx", binkeys);
-                if (tgt != null)
-                    binKeys.Add(tgt);
-                SimPe.Wait.Progress++;
-            }
-            SimPe.Wait.SubStop();
-            return binKeys;
-        }
-
         private SimPe.Plugin.GenericRcol getRcol(SimPe.PackedFiles.Wrapper.Cpf srcCpf,
             SimPe.Plugin.RefFile src3idr, String cpfItemKey, List<String> pkgs)
         {
@@ -193,65 +182,33 @@ namespace pj
             return tgt;
         }
 
-        private List<SimPe.Plugin.GenericRcol> findrcolChain()
+        private SimPe.Plugin.GenericRcol getRcol(String filename, List<String> pkgs)
         {
-            List<SimPe.Plugin.GenericRcol> rcolChain = new List<SimPe.Plugin.GenericRcol>();
-
-            SimPe.Plugin.GenericRcol tgt = null;
-
-            foreach (String s in new String[] { "shapekeyidx", "maskshapekeyidx" })
+            foreach (String pkg in pkgs)
             {
-                tgt = getRcol(objKeyCPF, objKey3IDR, s, shpepkg);
+                SimPe.Plugin.GenericRcol tgt = getRcolPkg(filename, pkg);
                 if (tgt != null)
-                {
-                    rcolChain.Add(tgt);
-                    foreach (IPackedFileDescriptor i in tgt.ReferencedFiles)
-                    {
-                        if (i.Type == SimPe.Data.MetaData.GMND)
-                        {
-                            SimPe.Plugin.GenericRcol gmnd = getRcol(i, gmndpkg);
-                            if (gmnd != null)
-                            {
-                                rcolChain.Add(gmnd);
-                                foreach (IPackedFileDescriptor j in gmnd.ReferencedFiles)
-                                {
-                                    if (j.Type == SimPe.Data.MetaData.GMDC)
-                                    {
-                                        SimPe.Plugin.GenericRcol gmdc = getRcol(i, gmdcpkg);
-                                        if (gmdc != null)
-                                            rcolChain.Add(gmdc);
-                                    }
-                                }
-                            }
-                        }
-                        else if (i.Type == SimPe.Data.MetaData.TXMT)
-                        {
-                            SimPe.Plugin.GenericRcol txmt = getRcol(i, txmtpkg);
-                            if (txmt != null)
-                                rcolChain.Add(txmt);
-                        }
-                    }
-                }
+                    return tgt;
             }
-
-            foreach (String s in new String[] { "resourcekeyidx", "maskresourcekeyidx" })
-            {
-                tgt = getRcol(objKeyCPF, objKey3IDR, s, crespkg);
-                if (tgt != null) rcolChain.Add(tgt);
-            }
-
-            uint numOverrides = 0;
-            SimPe.PackedFiles.Wrapper.CpfItem cpfItem = objKeyCPF.GetItem("numoverrides");
-            if (cpfItem.Datatype == SimPe.Data.MetaData.DataTypes.dtUInteger)
-                numOverrides = cpfItem.UIntegerValue;
-            for (int i = 0; i < numOverrides; i++)
-            {
-                tgt = getRcol(objKeyCPF, objKey3IDR, "override" + i.ToString() + "resourcekeyidx", txmtpkg);
-                if (tgt != null) rcolChain.Add(tgt);
-            }
-
-            return rcolChain;
+            return null;
         }
+
+        private SimPe.Plugin.GenericRcol getRcolPkg(String filename, String pkg)
+        {
+            IPackageFile p = SimPe.Packages.File.LoadFromFile(pkg);
+            if (p == null)
+                return null;
+
+            IPackedFileDescriptor[] apr = p.FindFile(filename);
+            if (apr == null || apr.Length != 1)
+                return null;
+
+            SimPe.Plugin.GenericRcol tgt = new SimPe.Plugin.GenericRcol();
+            tgt.ProcessData(apr[0], p);
+
+            return tgt;
+        }
+
 
         private List<AbstractWrapper[]> findFragKeys()
         {
@@ -301,6 +258,127 @@ namespace pj
             return fragKeys;
         }
 
+        private List<AbstractWrapper[]> findBinKeys(List<AbstractWrapper[]> fragKeys)
+        {
+            List<AbstractWrapper[]> binKeys = new List<AbstractWrapper[]>();
+            SimPe.Wait.SubStart(fragkeys.Count);
+            foreach (AbstractWrapper[] fk in fragKeys)
+            {
+                AbstractWrapper[] tgt = getCpf3idrPair((SimPe.PackedFiles.Wrapper.Cpf)fk[0],
+                    (SimPe.Plugin.RefFile)fk[1], "binidx", binkeys);
+                if (tgt != null)
+                    binKeys.Add(tgt);
+                SimPe.Wait.Progress++;
+            }
+            SimPe.Wait.SubStop();
+            return binKeys;
+        }
+
+        private List<SimPe.Plugin.GenericRcol> findrcolChain()
+        {
+            List<SimPe.Plugin.GenericRcol> rcolChain = new List<SimPe.Plugin.GenericRcol>();
+
+            SimPe.Plugin.GenericRcol tgt = null;
+
+            foreach (String s in new String[] { "shapekeyidx", "maskshapekeyidx" })
+            {
+                tgt = getRcol(objKeyCPF, objKey3IDR, s, shpepkg);
+                if (tgt != null)
+                {
+                    rcolChain.Add(tgt);
+                    foreach (IPackedFileDescriptor i in tgt.ReferencedFiles)
+                    {
+                        if (i.Type == SimPe.Data.MetaData.GMND)
+                        {
+                            SimPe.Plugin.GenericRcol gmnd = getRcol(i, gmndpkg);
+                            if (gmnd != null)
+                            {
+                                rcolChain.Add(gmnd);
+                                foreach (IPackedFileDescriptor j in gmnd.ReferencedFiles)
+                                {
+                                    if (j.Type == SimPe.Data.MetaData.GMDC)
+                                    {
+                                        SimPe.Plugin.GenericRcol gmdc = getRcol(j, gmdcpkg);
+                                        if (gmdc != null) rcolChain.Add(gmdc);
+                                    }
+                                }
+                            }
+                        }
+                        else if (i.Type == SimPe.Data.MetaData.TXMT)
+                        {
+                            SimPe.Plugin.GenericRcol txmt = getRcol(i, txmtpkg);
+                            if (txmt != null)
+                            {
+                                rcolChain.Add(txmt);
+                                findMaterials(ref rcolChain, txmt);
+                            }
+                        }
+                    }
+                }
+            }
+
+            foreach (String s in new String[] { "resourcekeyidx", "maskresourcekeyidx" })
+            {
+                tgt = getRcol(objKeyCPF, objKey3IDR, s, crespkg);
+                if (tgt != null) rcolChain.Add(tgt);
+            }
+
+            uint numOverrides = 0;
+            SimPe.PackedFiles.Wrapper.CpfItem cpfItem = objKeyCPF.GetItem("numoverrides");
+            if (cpfItem.Datatype == SimPe.Data.MetaData.DataTypes.dtUInteger)
+                numOverrides = cpfItem.UIntegerValue;
+            for (int i = 0; i < numOverrides; i++)
+            {
+                tgt = getRcol(objKeyCPF, objKey3IDR, "override" + i.ToString() + "resourcekeyidx", txmtpkg);
+                if (tgt != null)
+                {
+                    rcolChain.Add(tgt);
+                    findMaterials(ref rcolChain, tgt);
+                }
+            }
+
+            return rcolChain;
+        }
+
+        private void findMaterials(ref List<SimPe.Plugin.GenericRcol> rcolChain, SimPe.Plugin.GenericRcol txmt)
+        {
+            ArrayList txtrs = (ArrayList)txmt.ReferenceChains["stdMatBaseTextureName"];//["TXTR"];
+            if (txtrs != null && txtrs.Count > 0)
+            {
+                SimPe.Plugin.GenericRcol txtr = getRcol((IPackedFileDescriptor)txtrs[0], txtrpkg);
+                if (txtr != null)
+                {
+                    rcolChain.Add(txtr);
+                    foreach (SimPe.Plugin.ImageData id in txtr.Blocks)
+                        foreach (SimPe.Plugin.MipMapBlock mmb in id.MipMapBlocks)
+                            foreach (SimPe.Plugin.MipMap mm in mmb.MipMaps)
+                                if (mm.DataType == SimPe.Plugin.MipMapType.LifoReference && mm.LifoFile.Length > 0)
+                                {
+                                    SimPe.Plugin.GenericRcol lifo = getRcol(mm.LifoFile, lifopkg);
+                                    if (lifo != null) rcolChain.Add(lifo);
+                                }
+                }
+            }
+        }
+
+
+        private void addStr(SimPe.PackedFiles.Wrapper.Cpf srcCpf, SimPe.Plugin.RefFile src3idr)
+        {
+            SimPe.PackedFiles.Wrapper.CpfItem cpfItem = srcCpf.GetItem("stringsetidx");
+            if (cpfItem == null || cpfItem.Datatype != SimPe.Data.MetaData.DataTypes.dtUInteger)
+                return;
+
+            IPackedFileDescriptor ps = srcCpf.Package.FindFile(src3idr.Items[cpfItem.UIntegerValue]);
+            if (ps == null)
+                return;
+
+            SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
+            str.ProcessData(ps, srcCpf.Package);
+
+            addFile(str);
+        }
+
+
         private void addFile(AbstractWrapper file) { addFile(file.Package, file.FileDescriptor); }
 
         private void addFile(IPackageFile p, IPackedFileDescriptor pfd)
@@ -321,21 +399,6 @@ namespace pj
             return false;
         }
 
-        private void addStr(SimPe.PackedFiles.Wrapper.Cpf srcCpf, SimPe.Plugin.RefFile src3idr)
-        {
-            SimPe.PackedFiles.Wrapper.CpfItem cpfItem = srcCpf.GetItem("stringsetidx");
-            if (cpfItem == null || cpfItem.Datatype != SimPe.Data.MetaData.DataTypes.dtUInteger)
-                return;
-
-            IPackedFileDescriptor ps = srcCpf.Package.FindFile(src3idr.Items[cpfItem.UIntegerValue]);
-            if (ps == null)
-                return;
-
-            SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
-            str.ProcessData(ps, srcCpf.Package);
-
-            addFile(str);
-        }
 
         private void Main(IPackedFileDescriptor pfd, IPackageFile package)
         {
@@ -368,7 +431,11 @@ namespace pj
             SimPe.Wait.SubStop();
 
             SimPe.Wait.SubStart(rcolChain.Count);
-            foreach (SimPe.Plugin.GenericRcol p in rcolChain) { addFile(p); SimPe.Wait.Progress++; }
+            foreach (SimPe.Plugin.GenericRcol p in rcolChain)
+            {
+                addFile(p);
+                SimPe.Wait.Progress++;
+            }
             SimPe.Wait.SubStop();
 
             SimPe.Wait.Stop();
