@@ -1,5 +1,13 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+12 August 2007 15:03 - Add recursion for packages.txt using trailing "+"
+  pjse filetable\
+    FileTable.cs 1.11.2.22
+
+12 August 2007 15:00 - Stop ObjfWrapper loading filetable on SimPe startup
+  SimPe BHAV\
+    ObjfWrapper.cs 1.9.6.5
+
 28 July 2007 10:53 - Two more AllowedHeightFlags added
   GlobalStrings.package 1.10.8.24
 
