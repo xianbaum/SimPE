@@ -89,7 +89,7 @@ namespace pjse
             {
                 System.IO.StreamReader sr = new StreamReader(packages_txt);
                 for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
-                    this.AddFixed(line);
+                    this.AddFixed(line.TrimEnd('+'), line.EndsWith("+"));
                 sr.Close();
             }
 
@@ -204,13 +204,18 @@ namespace pjse
                 Add(SimPe.Packages.File.LoadFromFile(packageFile));
         }
 
-        private void AddFixed(string v)
+        private void AddFixed(string v) { AddFixed(v, false); }
+        private void AddFixed(string v, bool recurse)
         {
             if (System.IO.Directory.Exists(v))
             {
                 string[] va = System.IO.Directory.GetFiles(v, "*.package");
-                foreach (string i in va)
-                    AddFixed(i);
+                foreach (string i in va) AddFixed(i);
+                if (recurse)
+                {
+                    va = System.IO.Directory.GetDirectories(v);
+                    foreach (string i in va) AddFixed(i, true);
+                }
             }
             else if (File.Exists(v))
                 AddFixed(SimPe.Packages.File.LoadFromFile(v));
