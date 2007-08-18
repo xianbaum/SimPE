@@ -1,3 +1,12 @@
+2007-08-18 15:03 Rewrite post-build scripts
+  pj3IDRTool/
+    pj3IDRTool.csproj 1.1.2.3
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.15
+  .cvsignore 1.1.2.2
+  mknsis.nsi 1.1.2.2
+  pjBodyMeshTool.sln 1.1.2.3
+
 2007-08-18 13:25 No nsis for 3IDRTool yet, fix typo in post-build scripts
   pj3IDRTool/
     pj3IDRTool.csproj 1.1.2.2

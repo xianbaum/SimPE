@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual C# Express 2005
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjBodyMeshTool", "pjBodyMeshTool\pjBodyMeshTool.csproj", "{0E0A4A2C-1BAE-4659-9511-5C089FA4E154}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DA114369-0A54-42A9-A3B0-F48FC5EA4F7D} = {DA114369-0A54-42A9-A3B0-F48FC5EA4F7D}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pj3IDRTool", "pj3IDRTool\pj3IDRTool.csproj", "{DA114369-0A54-42A9-A3B0-F48FC5EA4F7D}"
 EndProject

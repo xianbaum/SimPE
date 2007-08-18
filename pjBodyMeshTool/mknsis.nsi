@@ -18,7 +18,7 @@ Section
   Call CheckExists
   IfErrors 0 +2
   Abort "Cannot continue to install with SimPe running."
-  File /r "pjBodyMeshTool\Plugins"
+  File /r "Plugins"
 SectionEnd
 
 Function .onVerifyInstDir
