@@ -138,7 +138,9 @@ set z7Release=no
 set z7Debug=no
 set z7InProgress=no
 
-set nsisProgress=no
+set nsisRelease=no
+set nsisDebug=no
+set nsisInProgress=no
 
 set srcDebug=no
 set srcInProgress=no
