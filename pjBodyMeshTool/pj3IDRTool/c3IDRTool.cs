@@ -31,11 +31,6 @@ namespace pj
 {
     public class c3IDRTool : ITool
     {
-        private SimPe.PackedFiles.Wrapper.Cpf objKeyCPF;
-        private SimPe.Plugin.RefFile objKey3IDR;
-        private IPackageFile currentPackage = null;
-        private IPackedFileDescriptor currentPfd = null;
-
         private static String SimsPath = SimPe.PathProvider.Global[0].InstallFolder;
 
         // TSData\Res\3D:
@@ -48,7 +43,7 @@ namespace pj
         private static List<String> lifopkg = new List<string>();   // Objects07-09, Sims08/9/11-13, Textures, CarryForward.sgfiles
 
         // TSData\Res\Catalog:
-        //private static List<String> objkeys = new List<string>();   // Skins\Skins
+        private static List<String> objkeys = new List<string>();   // Skins\Skins
         private static List<String> fragkeys = new List<string>();  // Bins\globalcatbin.bundle
         private static List<String> binkeys = new List<string>();   // Bins\globalcatbin.bundle
 
@@ -85,7 +80,7 @@ namespace pj
                     "Sims08", "Sims09", "Sims11", "Sims12", "Sims13",
                     "Textures", "CarryForward.sgfiles" });
 
-                //addPackages(ref objkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Skins"), new String[] { "Skins" });
+                addPackages(ref objkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Skins"), new String[] { "Skins" });
                 addPackages(ref fragkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), new String[] { "globalcatbin.bundle" });
                 addPackages(ref binkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), new String[] { "globalcatbin.bundle" });
 
@@ -100,6 +95,90 @@ namespace pj
                     }
                 }
             }
+        }
+
+        private bool has3idr(IPackedFileDescriptor pfd, IPackageFile package)
+        {
+            if (pfd == null || package == null) return false;
+            return findInPackagelist(objkeys, SimPe.Data.MetaData.REF_FILE, pfd) != null;
+        }
+
+        private bool hasCpf(IPackedFileDescriptor pfd, IPackageFile package)
+        {
+            if (pfd == null || package == null) return false;
+            foreach (uint t in new uint[] { 0x0C1FE246 /*XMOL*/, 0x2C1FD8A1 /*XTOL*/, SimPe.Data.MetaData.GZPS })
+                if (findInPackagelist(objkeys, t, pfd) != null)
+                    return true;
+            return false;
+        }
+
+        private void makeCpf3idrPair()
+        {
+            objKeyCPF = null;
+            objKey3IDR = null;
+            if (currentPfd == null || currentPackage == null) return;
+
+            if (currentPfd.Type == 0x0C1FE246 /*XMOL*/ || currentPfd.Type == 0x2C1FD8A1 /*XTOL*/ || currentPfd.Type == SimPe.Data.MetaData.GZPS)
+            {
+                AbstractWrapper p3 = findInPackagelist(objkeys, SimPe.Data.MetaData.REF_FILE, currentPfd);
+                if (p3 != null)
+                {
+                    objKeyCPF = new SimPe.PackedFiles.Wrapper.Cpf();
+                    objKeyCPF.ProcessData(currentPfd, currentPackage);
+                    addFile(p3);
+                    objKey3IDR = new SimPe.Plugin.RefFile();
+                    objKey3IDR.ProcessData(p3.FileDescriptor, p3.Package);
+                }
+            }
+            else if (currentPfd.Type == SimPe.Data.MetaData.REF_FILE /*3IDR*/)
+            {
+                foreach (uint t in new uint[] { 0x0C1FE246 /*XMOL*/ , 0x2C1FD8A1 /*XTOL*/, SimPe.Data.MetaData.GZPS })
+                {
+                    AbstractWrapper pc = (SimPe.PackedFiles.Wrapper.Cpf)findInPackagelist(objkeys, t, currentPfd);
+                    if (pc != null)
+                    {
+                        addFile(pc);
+                        objKeyCPF = new SimPe.PackedFiles.Wrapper.Cpf();
+                        objKeyCPF.ProcessData(pc.FileDescriptor, pc.Package);
+                        objKey3IDR = new SimPe.Plugin.RefFile();
+                        objKey3IDR.ProcessData(currentPfd, currentPackage);
+                        break;
+                    }
+                }
+            }
+        }
+
+        AbstractWrapper findInPackagelist(List<string> pkgs, uint Filetype, IPackedFileDescriptor pfd)
+        {
+            foreach (String pkg in pkgs)
+            {
+                AbstractWrapper tgt = findInPackage(pkg, Filetype, pfd);
+                if (tgt != null)
+                    return tgt;
+            }
+            return null;
+        }
+
+        AbstractWrapper findInPackage(String pkg, uint Filetype, IPackedFileDescriptor pfd)
+        {
+            IPackageFile p = SimPe.Packages.File.LoadFromFile(pkg);
+            if (p == null)
+                return null;
+
+            IPackedFileDescriptor pt = p.FindFile(Filetype, pfd.SubType, pfd.Group, pfd.Instance);
+            if (pt == null) return null;
+
+            AbstractWrapper tgt;
+            if (Filetype == SimPe.Data.MetaData.REF_FILE)
+            {
+                tgt = new SimPe.Plugin.RefFile();
+            }
+            else
+            {
+                tgt = new SimPe.PackedFiles.Wrapper.Cpf();
+            }
+            tgt.ProcessData(pt, p);
+            return tgt;
         }
 
         private AbstractWrapper[] getCpf3idrPair(SimPe.PackedFiles.Wrapper.Cpf srcCpf,
@@ -400,10 +479,22 @@ namespace pj
         }
 
 
+        private IPackedFileDescriptor currentPfd = null;
+        private IPackageFile currentPackage = null;
+        private SimPe.PackedFiles.Wrapper.Cpf objKeyCPF = null;
+        private SimPe.Plugin.RefFile objKey3IDR = null;
         private void Main(IPackedFileDescriptor pfd, IPackageFile package)
         {
             // objKey3IDR+objKeyCPF = ObjKey
             // currentPackage = package containing ObjKey
+            currentPfd = pfd;
+            currentPackage = package;
+            makeCpf3idrPair();
+            if (objKey3IDR == null || objKeyCPF == null)
+            {
+                System.Windows.Forms.MessageBox.Show("We have a problem");
+                return;
+            }
 
             SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
             SimPe.Wait.Start();
@@ -438,6 +529,11 @@ namespace pj
             }
             SimPe.Wait.SubStop();
 
+            if (pfd.Equals(objKey3IDR.FileDescriptor))
+                addFile(objKeyCPF);
+            else
+                addFile(objKey3IDR);
+
             SimPe.Wait.Stop();
             SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
         }
@@ -446,18 +542,12 @@ namespace pj
 
         public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
         {
-            // If nothing's changed, do nothing
-            if (pfd == currentPfd && package == currentPackage)
-                return (package != null && pfd != null);
-
-            currentPackage = package;
-            currentPfd = pfd;
-
-            objKey3IDR = null;
-            objKeyCPF = null;
-
-            if (package == null || pfd == null) return false;
-
+            if (pfd == null || package == null) return false;
+            if (pfd.Type == SimPe.Data.MetaData.REF_FILE) return hasCpf(pfd, package);
+            else if (pfd.Type == 0x0C1FE246 /*XMOL*/ || pfd.Type == 0x2C1FD8A1 /*XTOL*/ || pfd.Type == SimPe.Data.MetaData.GZPS)
+                return has3idr(pfd, package);
+            return false;
+#if UNDEF
             if (pfd.Type == 0x0C1FE246 /*XMOL*/ || pfd.Type == 0x2C1FD8A1 /*XTOL*/ || pfd.Type == SimPe.Data.MetaData.GZPS)
             {
                 // find the matching 3IDR
@@ -499,6 +589,7 @@ namespace pj
                 }
             }
             return false;
+#endif
         }
 
         public SimPe.Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
