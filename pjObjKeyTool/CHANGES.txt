@@ -1,0 +1,37 @@
+2007-08-20 20:20 Enable with half an objkey in the package
+  pj3IDRTool/
+    c3IDRTool.cs 1.1.2.3
+
+2007-08-18 15:03 Rewrite post-build scripts
+  pj3IDRTool/
+    pj3IDRTool.csproj 1.1.2.3
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.15
+  .cvsignore 1.1.2.2
+  mknsis.nsi 1.1.2.2
+  pjBodyMeshTool.sln 1.1.2.3
+
+2007-08-18 13:25 No nsis for 3IDRTool yet, fix typo in post-build scripts
+  pj3IDRTool/
+    pj3IDRTool.csproj 1.1.2.2
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.14
+
+2007-07-27 22:38 Import TXTR and LIFO files into package
+  pj3IDRTool/
+    c3IDRTool.cs 1.1.2.2
+
+2007-07-24 16:33 Create 3IDR Tool
+  pj3IDRTool/
+    .cvsignore 1.1.2.1
+    c3IDRTool.cs 1.1.2.1
+    h3IDRHelp.cs 1.1.2.1
+    Localization.cs 1.1.2.1
+    Localization.resx 1.1.2.1
+    pj3IDRTool.csproj 1.1.2.1
+    t3IDRTool.cs 1.1.2.1
+  pj3IDRTool/Properties/
+    AssemblyInfo.cs 1.1.2.1
+  pjBodyMeshTool/
+    pjBodyMeshTool.csproj 1.1.2.13
+  pjBodyMeshTool.sln 1.1.2.2
