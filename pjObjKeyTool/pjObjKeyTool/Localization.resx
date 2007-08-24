@@ -123,4 +123,10 @@
   <data name="pjCObjKeyTool" xml:space="preserve">
     <value>PJSE\ObjKey Tool</value>
   </data>
+  <data name="missing3IDR" xml:space="preserve">
+    <value>The 3IDR file for this CPF resource has disappeared!</value>
+  </data>
+  <data name="missingCPF" xml:space="preserve">
+    <value>The CPF resource for this 3IDR has disappeared!</value>
+  </data>
 </root>

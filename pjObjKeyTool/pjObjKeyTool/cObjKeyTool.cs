@@ -490,9 +490,16 @@ namespace pj
             currentPfd = pfd;
             currentPackage = package;
             makeCpf3idrPair();
-            if (objKey3IDR == null || objKeyCPF == null)
+            if (objKey3IDR == null)
             {
-                System.Windows.Forms.MessageBox.Show("We have a problem");
+                System.Windows.Forms.MessageBox.Show(L.Get("missing3IDR"), L.Get("pjObjKeyHelp"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+            if (objKeyCPF == null)
+            {
+                System.Windows.Forms.MessageBox.Show(L.Get("missingCPF"), L.Get("pjObjKeyHelp"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 

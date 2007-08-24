@@ -1,3 +1,8 @@
+2007-08-24 13:51 Localise error messages
+  pjObjKeyTool/
+    cObjKeyTool.cs 1.1.2.2
+    Localization.resx 1.1.2.2
+
 2007-08-22 22:28 Split ObjKey tool off from Mesh tool and rename
   * build script from mesh tool copied to objkey tool
   * "3IDR" replaced with "ObjKey" in appropriate places
