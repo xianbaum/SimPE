@@ -153,402 +153,6 @@
   <data name="gbInstruction.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
-  <data name="&gt;&gt;tbInst_Longname.Name" xml:space="preserve">
-    <value>tbInst_Longname</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Longname.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Longname.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Longname.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnOperandRaw.Name" xml:space="preserve">
-    <value>btnOperandRaw</value>
-  </data>
-  <data name="&gt;&gt;btnOperandRaw.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnOperandRaw.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;btnOperandRaw.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
-    <value>btnCancel</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;btnOperandWiz.Name" xml:space="preserve">
-    <value>btnOperandWiz</value>
-  </data>
-  <data name="&gt;&gt;btnOperandWiz.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnOperandWiz.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;btnOperandWiz.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;llopenbhav.Name" xml:space="preserve">
-    <value>llopenbhav</value>
-  </data>
-  <data name="&gt;&gt;llopenbhav.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;llopenbhav.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;llopenbhav.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;tba2.Name" xml:space="preserve">
-    <value>tba2</value>
-  </data>
-  <data name="&gt;&gt;tba2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tba2.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tba2.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;tba1.Name" xml:space="preserve">
-    <value>tba1</value>
-  </data>
-  <data name="&gt;&gt;tba1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tba1.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tba1.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;label13.Name" xml:space="preserve">
-    <value>label13</value>
-  </data>
-  <data name="&gt;&gt;label13.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label13.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;label13.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk7.Name" xml:space="preserve">
-    <value>tbInst_Unk7</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk7.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk7.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk6.Name" xml:space="preserve">
-    <value>tbInst_Unk6</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk6.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk6.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk5.Name" xml:space="preserve">
-    <value>tbInst_Unk5</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk5.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk5.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk4.Name" xml:space="preserve">
-    <value>tbInst_Unk4</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk4.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk4.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk3.Name" xml:space="preserve">
-    <value>tbInst_Unk3</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk3.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk3.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk2.Name" xml:space="preserve">
-    <value>tbInst_Unk2</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk2.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk2.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk1.Name" xml:space="preserve">
-    <value>tbInst_Unk1</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk1.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk1.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk0.Name" xml:space="preserve">
-    <value>tbInst_Unk0</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk0.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk0.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Unk0.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op7.Name" xml:space="preserve">
-    <value>tbInst_Op7</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op7.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op7.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op7.ZOrder" xml:space="preserve">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op6.Name" xml:space="preserve">
-    <value>tbInst_Op6</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op6.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op6.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op6.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op5.Name" xml:space="preserve">
-    <value>tbInst_Op5</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op5.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op5.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op5.ZOrder" xml:space="preserve">
-    <value>18</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op4.Name" xml:space="preserve">
-    <value>tbInst_Op4</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op4.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op4.ZOrder" xml:space="preserve">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op3.Name" xml:space="preserve">
-    <value>tbInst_Op3</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op3.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op3.ZOrder" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op2.Name" xml:space="preserve">
-    <value>tbInst_Op2</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op2.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op2.ZOrder" xml:space="preserve">
-    <value>21</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op1.Name" xml:space="preserve">
-    <value>tbInst_Op1</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op1.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op1.ZOrder" xml:space="preserve">
-    <value>22</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op0.Name" xml:space="preserve">
-    <value>tbInst_Op0</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op0.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op0.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_Op0.ZOrder" xml:space="preserve">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;tbInst_NodeVersion.Name" xml:space="preserve">
-    <value>tbInst_NodeVersion</value>
-  </data>
-  <data name="&gt;&gt;tbInst_NodeVersion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_NodeVersion.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_NodeVersion.ZOrder" xml:space="preserve">
-    <value>24</value>
-  </data>
-  <data name="&gt;&gt;tbInst_OpCode.Name" xml:space="preserve">
-    <value>tbInst_OpCode</value>
-  </data>
-  <data name="&gt;&gt;tbInst_OpCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbInst_OpCode.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;tbInst_OpCode.ZOrder" xml:space="preserve">
-    <value>25</value>
-  </data>
-  <data name="&gt;&gt;label10.Name" xml:space="preserve">
-    <value>label10</value>
-  </data>
-  <data name="&gt;&gt;label10.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label10.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;label10.ZOrder" xml:space="preserve">
-    <value>26</value>
-  </data>
-  <data name="&gt;&gt;label9.Name" xml:space="preserve">
-    <value>label9</value>
-  </data>
-  <data name="&gt;&gt;label9.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label9.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;label9.ZOrder" xml:space="preserve">
-    <value>27</value>
-  </data>
-  <data name="&gt;&gt;label12.Name" xml:space="preserve">
-    <value>label12</value>
-  </data>
-  <data name="&gt;&gt;label12.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label12.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;label12.ZOrder" xml:space="preserve">
-    <value>28</value>
-  </data>
-  <data name="&gt;&gt;label11.Name" xml:space="preserve">
-    <value>label11</value>
-  </data>
-  <data name="&gt;&gt;label11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label11.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;label11.ZOrder" xml:space="preserve">
-    <value>29</value>
-  </data>
-  <data name="&gt;&gt;btnOpCode.Name" xml:space="preserve">
-    <value>btnOpCode</value>
-  </data>
-  <data name="&gt;&gt;btnOpCode.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnOpCode.Parent" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;btnOpCode.ZOrder" xml:space="preserve">
-    <value>30</value>
-  </data>
-  <data name="gbInstruction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 100</value>
-  </data>
-  <data name="gbInstruction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 238</value>
-  </data>
-  <data name="gbInstruction.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="gbInstruction.Text" xml:space="preserve">
-    <value>&amp;Instruction Settings</value>
-  </data>
-  <data name="&gt;&gt;gbInstruction.Name" xml:space="preserve">
-    <value>gbInstruction</value>
-  </data>
-  <data name="&gt;&gt;gbInstruction.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbInstruction.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;gbInstruction.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
   <data name="tbInst_Longname.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -625,7 +229,7 @@
     <value>67, 24</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>24</value>
+    <value>7</value>
   </data>
   <data name="btnCancel.Text" xml:space="preserve">
     <value>&amp;Cancel</value>
@@ -688,7 +292,7 @@
     <value>72, 20</value>
   </data>
   <data name="llopenbhav.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="llopenbhav.Text" xml:space="preserve">
     <value>view BHAV</value>
@@ -1249,7 +853,7 @@
     <value>39, 22</value>
   </data>
   <data name="tbInst_NodeVersion.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="tbInst_NodeVersion.Text" xml:space="preserve">
     <value>0xDD</value>
@@ -1446,6 +1050,30 @@
   <data name="&gt;&gt;btnOpCode.ZOrder" xml:space="preserve">
     <value>30</value>
   </data>
+  <data name="gbInstruction.Location" type="System.Drawing.Point, System.Drawing">
+    <value>456, 100</value>
+  </data>
+  <data name="gbInstruction.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 238</value>
+  </data>
+  <data name="gbInstruction.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="gbInstruction.Text" xml:space="preserve">
+    <value>&amp;Instruction Settings</value>
+  </data>
+  <data name="&gt;&gt;gbInstruction.Name" xml:space="preserve">
+    <value>gbInstruction</value>
+  </data>
+  <data name="&gt;&gt;gbInstruction.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbInstruction.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;gbInstruction.ZOrder" xml:space="preserve">
+    <value>18</value>
+  </data>
   <data name="tbFilename.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -1474,7 +1102,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;tbFilename.ZOrder" xml:space="preserve">
-    <value>14</value>
+    <value>17</value>
   </data>
   <data name="lbFilename.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1507,7 +1135,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;lbFilename.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>16</value>
   </data>
   <data name="tbLocalC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1522,7 +1150,7 @@
     <value>39, 22</value>
   </data>
   <data name="tbLocalC.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="tbLocalC.Text" xml:space="preserve">
     <value>0xDD</value>
@@ -1537,7 +1165,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;tbLocalC.ZOrder" xml:space="preserve">
-    <value>16</value>
+    <value>19</value>
   </data>
   <data name="tbArgC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1552,7 +1180,7 @@
     <value>39, 22</value>
   </data>
   <data name="tbArgC.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="tbArgC.Text" xml:space="preserve">
     <value>0xDD</value>
@@ -1567,7 +1195,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;tbArgC.ZOrder" xml:space="preserve">
-    <value>18</value>
+    <value>21</value>
   </data>
   <data name="tbType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1597,7 +1225,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;tbType.ZOrder" xml:space="preserve">
-    <value>19</value>
+    <value>22</value>
   </data>
   <data name="lbTreeVersion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1633,7 +1261,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;lbTreeVersion.ZOrder" xml:space="preserve">
-    <value>20</value>
+    <value>23</value>
   </data>
   <data name="lbType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1669,7 +1297,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;lbType.ZOrder" xml:space="preserve">
-    <value>21</value>
+    <value>24</value>
   </data>
   <data name="lbLocalC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1705,7 +1333,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;lbLocalC.ZOrder" xml:space="preserve">
-    <value>22</value>
+    <value>25</value>
   </data>
   <data name="lbArgC.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1741,7 +1369,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;lbArgC.ZOrder" xml:space="preserve">
-    <value>23</value>
+    <value>26</value>
   </data>
   <data name="lbFormat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1777,70 +1405,10 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;lbFormat.ZOrder" xml:space="preserve">
-    <value>24</value>
+    <value>27</value>
   </data>
   <data name="pnHeading.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;btnFloat.Name" xml:space="preserve">
-    <value>btnFloat</value>
-  </data>
-  <data name="&gt;&gt;btnFloat.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnFloat.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnFloat.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Name" xml:space="preserve">
-    <value>btnRefreshFT</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
-    <value>btnHelp</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 9pt, style=Bold</value>
-  </data>
-  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>911, 27</value>
-  </data>
-  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
-    <value>25</value>
   </data>
   <data name="btnFloat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1941,8 +1509,131 @@
   <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9pt, style=Bold</value>
+  </data>
+  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
+    <value>911, 27</value>
+  </data>
+  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
+    <value>99</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
+    <value>28</value>
+  </data>
   <data name="bhavPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="lbHidesOP.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="lbHidesOP.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbHidesOP.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbHidesOP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>459, 520</value>
+  </data>
+  <data name="lbHidesOP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>421, 17</value>
+  </data>
+  <data name="lbHidesOP.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lbHidesOP.Text" xml:space="preserve">
+    <value>BHAV from objects.package overridden.  Displayed BHAV is from:</value>
+  </data>
+  <data name="&gt;&gt;lbHidesOP.Name" xml:space="preserve">
+    <value>lbHidesOP</value>
+  </data>
+  <data name="&gt;&gt;lbHidesOP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbHidesOP.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;lbHidesOP.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="llHidesOP.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="llHidesOP.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="llHidesOP.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="llHidesOP.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
+    <value>0, 18</value>
+  </data>
+  <data name="llHidesOP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>462, 595</value>
+  </data>
+  <data name="llHidesOP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>95, 20</value>
+  </data>
+  <data name="llHidesOP.TabIndex" type="System.Int32, mscorlib">
+    <value>19</value>
+  </data>
+  <data name="llHidesOP.Text" xml:space="preserve">
+    <value>View EA BHAV</value>
+  </data>
+  <data name="&gt;&gt;llHidesOP.Name" xml:space="preserve">
+    <value>llHidesOP</value>
+  </data>
+  <data name="&gt;&gt;llHidesOP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llHidesOP.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;llHidesOP.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tbHidesOP.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="tbHidesOP.Location" type="System.Drawing.Point, System.Drawing">
+    <value>462, 539</value>
+  </data>
+  <data name="tbHidesOP.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tbHidesOP.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+    <value>Vertical</value>
+  </data>
+  <data name="tbHidesOP.Size" type="System.Drawing.Size, System.Drawing">
+    <value>445, 42</value>
+  </data>
+  <data name="tbHidesOP.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="&gt;&gt;tbHidesOP.Name" xml:space="preserve">
+    <value>tbHidesOP</value>
+  </data>
+  <data name="&gt;&gt;tbHidesOP.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbHidesOP.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;tbHidesOP.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
   <data name="cbSpecial.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1960,7 +1651,7 @@
     <value>124, 21</value>
   </data>
   <data name="cbSpecial.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
+    <value>16</value>
   </data>
   <data name="cbSpecial.Text" xml:space="preserve">
     <value>Special buttons</value>
@@ -1975,7 +1666,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;cbSpecial.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>3</value>
   </data>
   <data name="btnCopyBHAV.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -1984,7 +1675,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnCopyBHAV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>674, 523</value>
+    <value>674, 590</value>
   </data>
   <data name="btnCopyBHAV.Size" type="System.Drawing.Size, System.Drawing">
     <value>140, 26</value>
@@ -2008,7 +1699,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;btnCopyBHAV.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>4</value>
   </data>
   <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2017,13 +1708,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>820, 523</value>
+    <value>820, 590</value>
   </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 26</value>
   </data>
   <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
+    <value>21</value>
   </data>
   <data name="btnClose.Text" xml:space="preserve">
     <value>Close</value>
@@ -2041,7 +1732,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>5</value>
   </data>
   <data name="tbHeaderFlag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2056,7 +1747,7 @@
     <value>39, 22</value>
   </data>
   <data name="tbHeaderFlag.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
+    <value>6</value>
   </data>
   <data name="tbHeaderFlag.Text" xml:space="preserve">
     <value>0xDD</value>
@@ -2071,7 +1762,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;tbHeaderFlag.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="lbHeaderFlag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2107,7 +1798,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;lbHeaderFlag.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="tbCacheFlags.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2122,7 +1813,7 @@
     <value>39, 22</value>
   </data>
   <data name="tbCacheFlags.TabIndex" type="System.Int32, mscorlib">
-    <value>17</value>
+    <value>8</value>
   </data>
   <data name="tbCacheFlags.Text" xml:space="preserve">
     <value>0xDD</value>
@@ -2137,7 +1828,7 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;tbCacheFlags.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>8</value>
   </data>
   <data name="cbFormat.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -2197,457 +1888,10 @@
     <value>bhavPanel</value>
   </data>
   <data name="&gt;&gt;cbFormat.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>9</value>
   </data>
   <data name="gbSpecial.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;btnAppend.Name" xml:space="preserve">
-    <value>btnAppend</value>
-  </data>
-  <data name="&gt;&gt;btnAppend.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnAppend.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnAppend.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnInsTrue.Name" xml:space="preserve">
-    <value>btnInsTrue</value>
-  </data>
-  <data name="&gt;&gt;btnInsTrue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnInsTrue.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnInsTrue.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;btnInsFalse.Name" xml:space="preserve">
-    <value>btnInsFalse</value>
-  </data>
-  <data name="&gt;&gt;btnInsFalse.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnInsFalse.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnInsFalse.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;btnDelPescado.Name" xml:space="preserve">
-    <value>btnDelPescado</value>
-  </data>
-  <data name="&gt;&gt;btnDelPescado.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDelPescado.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnDelPescado.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="&gt;&gt;btnLinkInge.Name" xml:space="preserve">
-    <value>btnLinkInge</value>
-  </data>
-  <data name="&gt;&gt;btnLinkInge.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnLinkInge.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnLinkInge.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;btnGUIDIndex.Name" xml:space="preserve">
-    <value>btnGUIDIndex</value>
-  </data>
-  <data name="&gt;&gt;btnGUIDIndex.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnGUIDIndex.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnGUIDIndex.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;btnDelMerola.Name" xml:space="preserve">
-    <value>btnDelMerola</value>
-  </data>
-  <data name="&gt;&gt;btnDelMerola.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDelMerola.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnDelMerola.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="&gt;&gt;btnListing.Name" xml:space="preserve">
-    <value>btnListing</value>
-  </data>
-  <data name="&gt;&gt;btnListing.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnListing.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnListing.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="&gt;&gt;btnTPRPMaker.Name" xml:space="preserve">
-    <value>btnTPRPMaker</value>
-  </data>
-  <data name="&gt;&gt;btnTPRPMaker.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnTPRPMaker.Parent" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;btnTPRPMaker.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="gbSpecial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 414</value>
-  </data>
-  <data name="gbSpecial.Size" type="System.Drawing.Size, System.Drawing">
-    <value>453, 103</value>
-  </data>
-  <data name="gbSpecial.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="gbSpecial.Text" xml:space="preserve">
-    <value>Special buttons</value>
-  </data>
-  <data name="gbSpecial.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;gbSpecial.Name" xml:space="preserve">
-    <value>gbSpecial</value>
-  </data>
-  <data name="&gt;&gt;gbSpecial.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbSpecial.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;gbSpecial.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="pnflowcontainer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="pnflowcontainer.AutoScroll" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="pnflowcontainer.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 68</value>
-  </data>
-  <data name="pnflowcontainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>450, 482</value>
-  </data>
-  <data name="pnflowcontainer.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;pnflowcontainer.Name" xml:space="preserve">
-    <value>pnflowcontainer</value>
-  </data>
-  <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.2626.36017, Culture=neutral, PublicKeyToken=null</value>
-  </data>
-  <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;pnflowcontainer.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="btnDel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnDel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnDel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>674, 380</value>
-  </data>
-  <data name="btnDel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 23</value>
-  </data>
-  <data name="btnDel.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="btnDel.Text" xml:space="preserve">
-    <value>De&amp;lete</value>
-  </data>
-  <data name="&gt;&gt;btnDel.Name" xml:space="preserve">
-    <value>btnDel</value>
-  </data>
-  <data name="&gt;&gt;btnDel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDel.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;btnDel.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="gbMove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="&gt;&gt;btnUp.Name" xml:space="preserve">
-    <value>btnUp</value>
-  </data>
-  <data name="&gt;&gt;btnUp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnUp.Parent" xml:space="preserve">
-    <value>gbMove</value>
-  </data>
-  <data name="&gt;&gt;btnUp.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnDown.Name" xml:space="preserve">
-    <value>btnDown</value>
-  </data>
-  <data name="&gt;&gt;btnDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnDown.Parent" xml:space="preserve">
-    <value>gbMove</value>
-  </data>
-  <data name="&gt;&gt;btnDown.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;lbUpDown.Name" xml:space="preserve">
-    <value>lbUpDown</value>
-  </data>
-  <data name="&gt;&gt;lbUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbUpDown.Parent" xml:space="preserve">
-    <value>gbMove</value>
-  </data>
-  <data name="&gt;&gt;lbUpDown.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tbLines.Name" xml:space="preserve">
-    <value>tbLines</value>
-  </data>
-  <data name="&gt;&gt;tbLines.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbLines.Parent" xml:space="preserve">
-    <value>gbMove</value>
-  </data>
-  <data name="&gt;&gt;tbLines.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="gbMove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>522, 344</value>
-  </data>
-  <data name="gbMove.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 64</value>
-  </data>
-  <data name="gbMove.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="gbMove.Text" xml:space="preserve">
-    <value>&amp;Move</value>
-  </data>
-  <data name="&gt;&gt;gbMove.Name" xml:space="preserve">
-    <value>gbMove</value>
-  </data>
-  <data name="&gt;&gt;gbMove.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbMove.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;gbMove.ZOrder" xml:space="preserve">
-    <value>10</value>
-  </data>
-  <data name="btnSort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnSort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnSort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>469, 368</value>
-  </data>
-  <data name="btnSort.Size" type="System.Drawing.Size, System.Drawing">
-    <value>47, 27</value>
-  </data>
-  <data name="btnSort.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="btnSort.Text" xml:space="preserve">
-    <value>&amp;Sort</value>
-  </data>
-  <data name="&gt;&gt;btnSort.Name" xml:space="preserve">
-    <value>btnSort</value>
-  </data>
-  <data name="&gt;&gt;btnSort.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSort.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;btnSort.ZOrder" xml:space="preserve">
-    <value>11</value>
-  </data>
-  <data name="btnCommit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnCommit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 68</value>
-  </data>
-  <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>124, 27</value>
-  </data>
-  <data name="btnCommit.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="btnCommit.Text" xml:space="preserve">
-    <value>Commit &amp;File</value>
-  </data>
-  <data name="&gt;&gt;btnCommit.Name" xml:space="preserve">
-    <value>btnCommit</value>
-  </data>
-  <data name="&gt;&gt;btnCommit.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnCommit.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;btnCommit.ZOrder" xml:space="preserve">
-    <value>12</value>
-  </data>
-  <data name="tbTreeVersion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="tbTreeVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>674, 32</value>
-  </data>
-  <data name="tbTreeVersion.MaxLength" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="tbTreeVersion.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 22</value>
-  </data>
-  <data name="tbTreeVersion.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="tbTreeVersion.Text" xml:space="preserve">
-    <value>0xDDDDDDDD</value>
-  </data>
-  <data name="&gt;&gt;tbTreeVersion.Name" xml:space="preserve">
-    <value>tbTreeVersion</value>
-  </data>
-  <data name="&gt;&gt;tbTreeVersion.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbTreeVersion.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;tbTreeVersion.ZOrder" xml:space="preserve">
-    <value>17</value>
-  </data>
-  <data name="btnAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>674, 353</value>
-  </data>
-  <data name="btnAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>62, 23</value>
-  </data>
-  <data name="btnAdd.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="btnAdd.Text" xml:space="preserve">
-    <value>&amp;Add</value>
-  </data>
-  <data name="&gt;&gt;btnAdd.Name" xml:space="preserve">
-    <value>btnAdd</value>
-  </data>
-  <data name="&gt;&gt;btnAdd.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnAdd.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;btnAdd.ZOrder" xml:space="preserve">
-    <value>26</value>
-  </data>
-  <data name="lbCacheFlags.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="lbCacheFlags.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lbCacheFlags.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="lbCacheFlags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>782, 35</value>
-  </data>
-  <data name="lbCacheFlags.Size" type="System.Drawing.Size, System.Drawing">
-    <value>82, 17</value>
-  </data>
-  <data name="lbCacheFlags.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="lbCacheFlags.Text" xml:space="preserve">
-    <value>Cache flags</value>
-  </data>
-  <data name="lbCacheFlags.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
-    <value>TopRight</value>
-  </data>
-  <data name="&gt;&gt;lbCacheFlags.Name" xml:space="preserve">
-    <value>lbCacheFlags</value>
-  </data>
-  <data name="&gt;&gt;lbCacheFlags.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbCacheFlags.Parent" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;lbCacheFlags.ZOrder" xml:space="preserve">
-    <value>27</value>
-  </data>
-  <data name="bhavPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="bhavPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="bhavPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>909, 550</value>
-  </data>
-  <data name="bhavPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;bhavPanel.Name" xml:space="preserve">
-    <value>bhavPanel</value>
-  </data>
-  <data name="&gt;&gt;bhavPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;bhavPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;bhavPanel.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="btnAppend.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -2892,6 +2136,93 @@
   <data name="&gt;&gt;btnTPRPMaker.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="gbSpecial.Location" type="System.Drawing.Point, System.Drawing">
+    <value>456, 414</value>
+  </data>
+  <data name="gbSpecial.Size" type="System.Drawing.Size, System.Drawing">
+    <value>453, 103</value>
+  </data>
+  <data name="gbSpecial.TabIndex" type="System.Int32, mscorlib">
+    <value>17</value>
+  </data>
+  <data name="gbSpecial.Text" xml:space="preserve">
+    <value>Special buttons</value>
+  </data>
+  <data name="gbSpecial.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;gbSpecial.Name" xml:space="preserve">
+    <value>gbSpecial</value>
+  </data>
+  <data name="&gt;&gt;gbSpecial.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbSpecial.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;gbSpecial.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="pnflowcontainer.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="pnflowcontainer.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="pnflowcontainer.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 68</value>
+  </data>
+  <data name="pnflowcontainer.Size" type="System.Drawing.Size, System.Drawing">
+    <value>450, 550</value>
+  </data>
+  <data name="pnflowcontainer.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;pnflowcontainer.Name" xml:space="preserve">
+    <value>pnflowcontainer</value>
+  </data>
+  <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.2801.16935, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;pnflowcontainer.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="btnDel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnDel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnDel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>674, 380</value>
+  </data>
+  <data name="btnDel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 23</value>
+  </data>
+  <data name="btnDel.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="btnDel.Text" xml:space="preserve">
+    <value>De&amp;lete</value>
+  </data>
+  <data name="&gt;&gt;btnDel.Name" xml:space="preserve">
+    <value>btnDel</value>
+  </data>
+  <data name="&gt;&gt;btnDel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnDel.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;btnDel.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="gbMove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
   <data name="btnUp.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
   </data>
@@ -3012,18 +2343,213 @@
   <data name="&gt;&gt;tbLines.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="gbMove.Location" type="System.Drawing.Point, System.Drawing">
+    <value>522, 344</value>
+  </data>
+  <data name="gbMove.Size" type="System.Drawing.Size, System.Drawing">
+    <value>142, 64</value>
+  </data>
+  <data name="gbMove.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="gbMove.Text" xml:space="preserve">
+    <value>&amp;Move</value>
+  </data>
+  <data name="&gt;&gt;gbMove.Name" xml:space="preserve">
+    <value>gbMove</value>
+  </data>
+  <data name="&gt;&gt;gbMove.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbMove.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;gbMove.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="btnSort.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnSort.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnSort.Location" type="System.Drawing.Point, System.Drawing">
+    <value>469, 368</value>
+  </data>
+  <data name="btnSort.Size" type="System.Drawing.Size, System.Drawing">
+    <value>47, 27</value>
+  </data>
+  <data name="btnSort.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="btnSort.Text" xml:space="preserve">
+    <value>&amp;Sort</value>
+  </data>
+  <data name="&gt;&gt;btnSort.Name" xml:space="preserve">
+    <value>btnSort</value>
+  </data>
+  <data name="&gt;&gt;btnSort.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSort.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;btnSort.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="btnCommit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnCommit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
+    <value>456, 68</value>
+  </data>
+  <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
+    <value>124, 27</value>
+  </data>
+  <data name="btnCommit.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="btnCommit.Text" xml:space="preserve">
+    <value>Commit &amp;File</value>
+  </data>
+  <data name="&gt;&gt;btnCommit.Name" xml:space="preserve">
+    <value>btnCommit</value>
+  </data>
+  <data name="&gt;&gt;btnCommit.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnCommit.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;btnCommit.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <data name="tbTreeVersion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="tbTreeVersion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>674, 32</value>
+  </data>
+  <data name="tbTreeVersion.MaxLength" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="tbTreeVersion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 22</value>
+  </data>
+  <data name="tbTreeVersion.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="tbTreeVersion.Text" xml:space="preserve">
+    <value>0xDDDDDDDD</value>
+  </data>
+  <data name="&gt;&gt;tbTreeVersion.Name" xml:space="preserve">
+    <value>tbTreeVersion</value>
+  </data>
+  <data name="&gt;&gt;tbTreeVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbTreeVersion.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;tbTreeVersion.ZOrder" xml:space="preserve">
+    <value>20</value>
+  </data>
+  <data name="btnAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
+    <value>674, 353</value>
+  </data>
+  <data name="btnAdd.Size" type="System.Drawing.Size, System.Drawing">
+    <value>62, 23</value>
+  </data>
+  <data name="btnAdd.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="btnAdd.Text" xml:space="preserve">
+    <value>&amp;Add</value>
+  </data>
+  <data name="&gt;&gt;btnAdd.Name" xml:space="preserve">
+    <value>btnAdd</value>
+  </data>
+  <data name="&gt;&gt;btnAdd.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnAdd.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;btnAdd.ZOrder" xml:space="preserve">
+    <value>29</value>
+  </data>
+  <data name="lbCacheFlags.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="lbCacheFlags.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbCacheFlags.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbCacheFlags.Location" type="System.Drawing.Point, System.Drawing">
+    <value>782, 35</value>
+  </data>
+  <data name="lbCacheFlags.Size" type="System.Drawing.Size, System.Drawing">
+    <value>82, 17</value>
+  </data>
+  <data name="lbCacheFlags.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="lbCacheFlags.Text" xml:space="preserve">
+    <value>Cache flags</value>
+  </data>
+  <data name="lbCacheFlags.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>TopRight</value>
+  </data>
+  <data name="&gt;&gt;lbCacheFlags.Name" xml:space="preserve">
+    <value>lbCacheFlags</value>
+  </data>
+  <data name="&gt;&gt;lbCacheFlags.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbCacheFlags.Parent" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;lbCacheFlags.ZOrder" xml:space="preserve">
+    <value>30</value>
+  </data>
+  <data name="bhavPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="bhavPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="bhavPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>909, 618</value>
+  </data>
+  <data name="bhavPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;bhavPanel.Name" xml:space="preserve">
+    <value>bhavPanel</value>
+  </data>
+  <data name="&gt;&gt;bhavPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;bhavPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;bhavPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <metadata name="cmenuGUIDIndex.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="cmenuGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>255, 92</value>
-  </data>
-  <data name="&gt;&gt;cmenuGUIDIndex.Name" xml:space="preserve">
-    <value>cmenuGUIDIndex</value>
-  </data>
-  <data name="&gt;&gt;cmenuGUIDIndex.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
   <data name="createAllPackagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>254, 22</value>
   </data>
@@ -3035,12 +2561,6 @@
   </data>
   <data name="createCurrentPackageToolStripMenuItem.Text" xml:space="preserve">
     <value>Create - current package</value>
-  </data>
-  <data name="loadIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 22</value>
-  </data>
-  <data name="loadIndexToolStripMenuItem.Text" xml:space="preserve">
-    <value>Load index...</value>
   </data>
   <data name="defaultFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>162, 22</value>
@@ -3054,11 +2574,11 @@
   <data name="fromFileToolStripMenuItem.Text" xml:space="preserve">
     <value>From file...</value>
   </data>
-  <data name="saveIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="loadIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>254, 22</value>
   </data>
-  <data name="saveIndexToolStripMenuItem.Text" xml:space="preserve">
-    <value>Save index...</value>
+  <data name="loadIndexToolStripMenuItem.Text" xml:space="preserve">
+    <value>Load index...</value>
   </data>
   <data name="defaultFileToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
     <value>159, 22</value>
@@ -3072,6 +2592,21 @@
   <data name="toFileToolStripMenuItem.Text" xml:space="preserve">
     <value>To file...</value>
   </data>
+  <data name="saveIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>254, 22</value>
+  </data>
+  <data name="saveIndexToolStripMenuItem.Text" xml:space="preserve">
+    <value>Save index...</value>
+  </data>
+  <data name="cmenuGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
+    <value>255, 92</value>
+  </data>
+  <data name="&gt;&gt;cmenuGUIDIndex.Name" xml:space="preserve">
+    <value>cmenuGUIDIndex</value>
+  </data>
+  <data name="&gt;&gt;cmenuGUIDIndex.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ContextMenuStrip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -3079,7 +2614,10 @@
     <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>909, 550</value>
+    <value>909, 618</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BhavForm</value>

@@ -1,5 +1,21 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+2 September 2007 10:38 - Allow display of overridden BHAVs when viewing
+  * Also update GlobalStrings.package with Morague's plantsim on/off prim0001 entry.
+  pjse filetable\
+    FileTable.cs 1.11.2.23
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.35
+    BhavForm.resx 1.30.2.17
+    ExtendedWrapper.cs 1.1.4.7
+    ResourceChooser.cs 1.6.2.9
+  GlobalStrings.package 1.10.8.25
+
+2 September 2007 10:34 - Once again, fix changing Ttab formats
+  SimPe BHAV\
+    TtabForm.cs 1.31.2.28
+    TtabWrapper.cs 1.23.6.13
+
 12 August 2007 15:03 - Add recursion for packages.txt using trailing "+"
   pjse filetable\
     FileTable.cs 1.11.2.22

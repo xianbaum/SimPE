@@ -125,6 +125,9 @@ namespace SimPe.PackedFiles.UserInterface
         private ToolStripMenuItem toFileToolStripMenuItem;
         private Button btnFloat;
         private Button btnCopyBHAV;
+        private TextBox tbHidesOP;
+        private LinkLabel llHidesOP;
+        private Label lbHidesOP;
         private IContainer components;
         #endregion
        
@@ -221,6 +224,18 @@ namespace SimPe.PackedFiles.UserInterface
             IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
             npfd.UserData = wrapper.Package.Read(wrapper.FileDescriptor).UncompressedData;
             currentPackage.Add(npfd, true);
+        }
+
+        private void common_LinkClicked(pjse.FileTable.Entry item)
+        {
+            if (item == null) return; // this should never happen
+            Bhav bhav = new Bhav();
+            bhav.ProcessData(item.PFD, item.Package);
+
+            BhavForm ui = (BhavForm)bhav.UIHandler;
+            ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+            bhav.RefreshUI();
+            ui.Show();
         }
 
 		private void SetReadOnly(bool state) 
@@ -579,6 +594,7 @@ namespace SimPe.PackedFiles.UserInterface
 				setHandler = true;
 			}
 
+            lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = false;
             if (((string)this.Tag).Equals("Popup"))
             {
                 currentPackage = pjse.FileTable.GFT.CurrentPackage;
@@ -593,6 +609,21 @@ namespace SimPe.PackedFiles.UserInterface
                     btnCancel.Visible = btnFloat.Visible = false;
                 btnCopyBHAV.Visible = btnClose.Visible = true;
                 btnCopyBHAV.Enabled = currentPackage != null;
+                pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
+                if (items.Length > 0 && !items[0].IsFixed)
+                {
+                    pjse.FileTable.Entry jtem = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, true);
+                    if (jtem != null && jtem.IsFixed)
+                    {
+                        lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = true;
+                        tbHidesOP.Text = wrapper.Package.FileName;
+                    }
+                    this.Text =
+                        pjse.Localization.GetString("viewbhav") + ": " + wrapper.FileName;
+                }
+                else
+                    this.Text =
+                        pjse.Localization.GetString("viewbhav") + ": " + wrapper.FileName + " [" + wrapper.Package.SaveFileName + "]";
             }
             else
                 currentPackage = wrapper.Package;
@@ -700,7 +731,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.bhavPanel = new System.Windows.Forms.Panel();
+            this.lbHidesOP = new System.Windows.Forms.Label();
+            this.llHidesOP = new System.Windows.Forms.LinkLabel();
+            this.tbHidesOP = new System.Windows.Forms.TextBox();
             this.cbSpecial = new System.Windows.Forms.CheckBox();
+            this.btnCopyBHAV = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.tbHeaderFlag = new System.Windows.Forms.TextBox();
             this.lbHeaderFlag = new System.Windows.Forms.Label();
@@ -716,7 +751,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnDelMerola = new System.Windows.Forms.Button();
             this.btnListing = new System.Windows.Forms.Button();
             this.btnTPRPMaker = new System.Windows.Forms.Button();
-            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.btnDel = new System.Windows.Forms.Button();
             this.gbMove = new System.Windows.Forms.GroupBox();
             this.btnUp = new System.Windows.Forms.Button();
@@ -737,7 +771,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnCopyBHAV = new System.Windows.Forms.Button();
+            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.gbInstruction.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
@@ -1126,6 +1160,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.bhavPanel, "bhavPanel");
             this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.bhavPanel.Controls.Add(this.lbHidesOP);
+            this.bhavPanel.Controls.Add(this.llHidesOP);
+            this.bhavPanel.Controls.Add(this.tbHidesOP);
             this.bhavPanel.Controls.Add(this.cbSpecial);
             this.bhavPanel.Controls.Add(this.btnCopyBHAV);
             this.bhavPanel.Controls.Add(this.btnClose);
@@ -1156,11 +1193,38 @@ namespace SimPe.PackedFiles.UserInterface
             this.bhavPanel.Controls.Add(this.lbCacheFlags);
             this.bhavPanel.Name = "bhavPanel";
             // 
+            // lbHidesOP
+            // 
+            resources.ApplyResources(this.lbHidesOP, "lbHidesOP");
+            this.lbHidesOP.Name = "lbHidesOP";
+            // 
+            // llHidesOP
+            // 
+            resources.ApplyResources(this.llHidesOP, "llHidesOP");
+            this.llHidesOP.Name = "llHidesOP";
+            this.llHidesOP.TabStop = true;
+            this.llHidesOP.UseCompatibleTextRendering = true;
+            this.llHidesOP.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llHidesOP_LinkClicked);
+            // 
+            // tbHidesOP
+            // 
+            resources.ApplyResources(this.tbHidesOP, "tbHidesOP");
+            this.tbHidesOP.BackColor = System.Drawing.SystemColors.Control;
+            this.tbHidesOP.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tbHidesOP.Name = "tbHidesOP";
+            this.tbHidesOP.ReadOnly = true;
+            // 
             // cbSpecial
             // 
             resources.ApplyResources(this.cbSpecial, "cbSpecial");
             this.cbSpecial.Name = "cbSpecial";
             this.cbSpecial.CheckStateChanged += new System.EventHandler(this.cbSpecial_CheckStateChanged);
+            // 
+            // btnCopyBHAV
+            // 
+            resources.ApplyResources(this.btnCopyBHAV, "btnCopyBHAV");
+            this.btnCopyBHAV.Name = "btnCopyBHAV";
+            this.btnCopyBHAV.Click += new System.EventHandler(this.btnCopyBHAV_Click);
             // 
             // btnClose
             // 
@@ -1279,13 +1343,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.btnTPRPMaker, "btnTPRPMaker");
             this.btnTPRPMaker.Name = "btnTPRPMaker";
             this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
-            // 
-            // pnflowcontainer
-            // 
-            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
-            this.pnflowcontainer.Name = "pnflowcontainer";
-            this.pnflowcontainer.SelectedIndex = -1;
-            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
             // 
             // btnDel
             // 
@@ -1422,11 +1479,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
-            // btnCopyBHAV
+            // pnflowcontainer
             // 
-            resources.ApplyResources(this.btnCopyBHAV, "btnCopyBHAV");
-            this.btnCopyBHAV.Name = "btnCopyBHAV";
-            this.btnCopyBHAV.Click += new System.EventHandler(this.btnCopyBHAV_Click);
+            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
+            this.pnflowcontainer.Name = "pnflowcontainer";
+            this.pnflowcontainer.SelectedIndex = -1;
+            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
             // 
             // BhavForm
             // 
@@ -1563,18 +1621,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
-            pjse.FileTable.Entry item = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode);
-            if (item == null) return; // this should never happen
-            Bhav bhav = new Bhav();
-            bhav.ProcessData(item.PFD, item.Package);
-
-            BhavForm ui = (BhavForm)bhav.UIHandler;
-			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = 
-                pjse.Localization.GetString("viewbhav") + ": " + currentInst.ShortName + " [" + bhav.Package.SaveFileName + "]";
-			bhav.RefreshUI();
-			ui.Show();
+            common_LinkClicked(wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode));
 		}
+
+        private void llHidesOP_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            common_LinkClicked(wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, true));
+        }
 
 		private void btnClose_Click(object sender, System.EventArgs e)
 		{

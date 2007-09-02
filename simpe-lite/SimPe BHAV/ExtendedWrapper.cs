@@ -131,8 +131,9 @@ namespace pjse
 		public uint GroupForContext { get { return GroupForScope(Context); } }
 
 
-		public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance)
-		{
+        public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance)  { return ResourceByInstance(type, instance, false); }
+        public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance, bool baseGame)
+        {
             uint group = PrivateGroup;
             if (type == SimPe.Data.MetaData.BHAV_FILE)
             {
@@ -140,9 +141,9 @@ namespace pjse
                 else if (instance >= 0x2000) group = SemiGroup;
             }
 
-			pjse.FileTable.Entry[] items = pjse.FileTable.GFT[type, group, instance];
-			return (items == null || items.Length == 0) ? null : items[0];
-		}
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[type, group, instance, baseGame];
+            return (items == null || items.Length == 0) ? null : items[0];
+        }
 
 	}
 
