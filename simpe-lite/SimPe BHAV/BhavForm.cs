@@ -595,6 +595,16 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 
             lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = false;
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
+            if (items.Length > 0 && !items[0].IsFixed)
+            {
+                pjse.FileTable.Entry jtem = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, true);
+                if (jtem != null && jtem.IsFixed)
+                {
+                    lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = true;
+                    tbHidesOP.Text = wrapper.Package.FileName;
+                }
+            }
             if (((string)this.Tag).Equals("Popup"))
             {
                 currentPackage = pjse.FileTable.GFT.CurrentPackage;
@@ -609,21 +619,9 @@ namespace SimPe.PackedFiles.UserInterface
                     btnCancel.Visible = btnFloat.Visible = false;
                 btnCopyBHAV.Visible = btnClose.Visible = true;
                 btnCopyBHAV.Enabled = currentPackage != null;
-                pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
-                if (items.Length > 0 && !items[0].IsFixed)
-                {
-                    pjse.FileTable.Entry jtem = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, true);
-                    if (jtem != null && jtem.IsFixed)
-                    {
-                        lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = true;
-                        tbHidesOP.Text = wrapper.Package.FileName;
-                    }
-                    this.Text =
-                        pjse.Localization.GetString("viewbhav") + ": " + wrapper.FileName;
-                }
-                else
-                    this.Text =
-                        pjse.Localization.GetString("viewbhav") + ": " + wrapper.FileName + " [" + wrapper.Package.SaveFileName + "]";
+                this.Text =
+                    pjse.Localization.GetString("viewbhav") + ": [0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance)
+                        + "] " + wrapper.FileName;
             }
             else
                 currentPackage = wrapper.Package;

@@ -472,24 +472,21 @@ namespace pjse
             ArrayList fixedpkg = new ArrayList();
             ArrayList nonfixed = new ArrayList();
 
+            ArrayList[] resultset =
+                localOnly ? new ArrayList[] { currpkg }
+                : fixedOnly ? new ArrayList[] { fixedpkg }
+                    : new ArrayList[] { currpkg, nonfixed, fixedpkg };
+
             foreach (Entry e in result.Keys)
                 if (!e.PFD.MarkForDelete)
                     ((ArrayList)(e.Package == currentPackage ? currpkg : e.IsFixed ? fixedpkg : nonfixed)).Add(e);
 
-            Entry[] es = new Entry[currpkg.Count + (localOnly ? 0 : fixedpkg.Count + (fixedOnly ? 0 : nonfixed.Count))];
-            currpkg.CopyTo(es, 0);
-            if (!localOnly)
-            {
-                int i = currpkg.Count;
-                if (!fixedOnly && nonfixed.Count > 0)
-                {
-                    nonfixed.CopyTo(es, i); i += nonfixed.Count;
-                }
-                if (fixedpkg.Count > 0)
-                {
-                    fixedpkg.CopyTo(es, i); i += fixedpkg.Count;
-                }
-            }
+            int i = 0;
+            foreach (ArrayList al in resultset) i += al.Count;
+
+            Entry[] es = new Entry[i];
+            i = 0;
+            foreach (ArrayList al in resultset) { al.CopyTo(es, i); i += al.Count; }
 
             return es;
         }

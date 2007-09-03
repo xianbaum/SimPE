@@ -1,5 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+3 September 2007 19:26 - Enhance identification of overiding BHAVs (current package)
+  pjse filetable\
+    FileTable.cs 1.11.2.25
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.36
+
 2 September 2007 10:38 - Allow display of overridden BHAVs when viewing
   * Also update GlobalStrings.package with Morague's plantsim on/off prim0001 entry.
   pjse filetable\
