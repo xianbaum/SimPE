@@ -595,18 +595,19 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 
             lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = false;
-            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
-            if (items.Length > 0 && !items[0].IsFixed)
-            {
-                pjse.FileTable.Entry jtem = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, true);
-                if (jtem != null && jtem.IsFixed)
-                {
-                    lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = true;
-                    tbHidesOP.Text = wrapper.Package.FileName;
-                }
-            }
             if (((string)this.Tag).Equals("Popup"))
             {
+                pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
+                if (items.Length > 0 && !items[0].IsFixed)
+                {
+                    pjse.FileTable.Entry jtem = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, true);
+                    if (jtem != null && jtem.IsFixed)
+                    {
+                        lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = true;
+                        tbHidesOP.Text = wrapper.Package.FileName;
+                    }
+                }
+
                 currentPackage = pjse.FileTable.GFT.CurrentPackage;
                 // make it very clear it's read only
                 tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =

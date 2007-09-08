@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+8 September 2007 20:44 - Only display override message when in popup mode
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.38
+
 8 September 2007 08:59 - Make path box for overriding BHAVs bigger (and tag title bar)
   SimPe BHAV\
     BhavForm.cs 1.64.2.37
