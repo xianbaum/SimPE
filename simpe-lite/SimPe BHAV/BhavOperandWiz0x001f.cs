@@ -200,14 +200,8 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
                 ops2[0x00] |= (byte)(this.ckbDisabled.Checked ? 0x01 : 0x00);
                 ops2[0x00] |= (byte)(this.ckbWhere.Checked ? 0x02 : 0x00);
                 if (this.cbWhere.SelectedIndex >= 0)
-                {
-                    ops2[0x01] = (byte)(this.cbWhere.SelectedIndex & 0xff);
-                    ops2[0x02] = (byte)(this.cbWhere.SelectedIndex >> 8 & 0xff);
-                }
-                val = Convert.ToUInt32(this.tbWhereVal.Text, 16);
-                ops2[0x03] = (byte)(val & 0xff);
-                ops2[0x04] = (byte)(val >> 8 & 0xff);
-
+                    BhavWiz.FromShort(ref ops2, 1, (ushort)this.cbWhere.SelectedIndex);
+                BhavWiz.FromShort(ref ops2, 3, (ushort)Convert.ToUInt32(this.tbWhereVal.Text, 16));
             }
 			return inst;
 		}

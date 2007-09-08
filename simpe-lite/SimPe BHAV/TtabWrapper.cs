@@ -592,8 +592,10 @@ namespace SimPe.PackedFiles.Wrapper
             target.memoryitermult = this.memoryitermult;
             target.objecttype = this.objecttype;
             target.modeltableid = this.modeltableid;
-            target.humanGroups = this.humanGroups == null ? null : this.humanGroups.Clone(target);
-            target.animalGroups = this.animalGroups == null ? null : this.animalGroups.Clone(target);
+            if (humanGroups != null)
+                this.humanGroups.CopyTo(target.humanGroups);
+            if (animalGroups != null)
+                this.animalGroups.CopyTo(target.animalGroups);
         }
 
         public TtabItem Clone(Ttab parent)
@@ -754,20 +756,23 @@ namespace SimPe.PackedFiles.Wrapper
             : this(parent, counts, type) { Unserialize(reader); }
 
 
-
-        private void CopyTo(TtabItemMotiveTable target)
+        public void CopyTo(TtabItemMotiveTable target)
         {
-            target.items = items == null ? null : items.Clone(target);
+            if (target == null) return;
+            for (int i = 0; i < target.items.Count && i < this.items.Count; i++)
+                target.items[i] = this.items[i].Clone();
+            for (int i = this.items.Count; i < target.items.Count; i++)
+                target.items[i] = this.items[0].Clone();
         }
 
-        public TtabItemMotiveTable Clone(TtabItem parent)
+        private TtabItemMotiveTable Clone(TtabItem parent)
         {
             TtabItemMotiveTable clone = new TtabItemMotiveTable(parent, counts, type);
             this.CopyTo(clone);
             return clone;
         }
 
-        public TtabItemMotiveTable Clone() { return Clone(parent); }
+        private TtabItemMotiveTable Clone() { return Clone(parent); }
 
 
         private void Unserialize(System.IO.BinaryReader reader)

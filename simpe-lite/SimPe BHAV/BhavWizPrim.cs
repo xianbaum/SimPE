@@ -4846,7 +4846,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x0076(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng)
+        public override ABhavOperandWiz Wizard()
+        {
+            return new pjse.BhavOperandWizards.BhavOperandWiz0x0076(instruction);
+        }
+
+        protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
@@ -4854,10 +4859,11 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
-            s += (o[2] == 0
-                ? pjse.Localization.GetString("bwp_myArray")
-                : pjse.Localization.GetString("bwp_stackObjectArray")
-                ) + " " + ArrayName(lng, ToShort(o[3], o[4])) + ", ";
+            s += pjse.Localization.GetString(o[2] == 0 ? "bwp_myArray" : "bwp_stackObjectArray");
+            // See discussion around whether this is a bit vs boolean:
+            // http://simlogical.com/SMF/index.php?topic=917.msg6641#msg6641
+            s = s.Replace("[array]", ArrayName(lng, ToShort(o[3], o[4])));
+            s += ", ";
 
 			switch (o[1]) 
 			{
@@ -5519,10 +5525,8 @@ namespace pjse.BhavNameWizards
             if (lng)
             {
                 s += ", " + pjse.Localization.GetString("bwp_resultIn") + ": ";
-                s += (o[5] == 0
-                    ? pjse.Localization.GetString("bwp_myArray")
-                    : pjse.Localization.GetString("bwp_stackObjectArray")
-                    ) + " " + ArrayName(lng, ToShort(o[3], o[4]));
+                s += pjse.Localization.GetString(o[5] == 0 ? "bwp_myArray" : "bwp_stackObjectArray");
+                s = s.Replace("[array]", ArrayName(lng, ToShort(o[3], o[4])));
             }
 
 			return s;

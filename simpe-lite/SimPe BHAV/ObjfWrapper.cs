@@ -71,17 +71,27 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+        private ObjfItemArrayList Items
+        {
+            get
+            {
+                if (items == null)
+                {
+                    List<String> al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
+                    while (items.Count < al.Count)
+                        items.Add(new ObjfItem(this));
+                }
+                return items;
+            }
+            set { items = value; }
+        }
+
 		#endregion
 
-        private static List<String> al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
         /// <summary>
 		/// Constructor
 		/// </summary>
-		public Objf() : base()
-		{
-			while (items.Count < al.Count)
-				items.Add(new ObjfItem(this));
-		}
+		public Objf() : base() { }
 
 
 		#region AbstractWrapper Member
@@ -199,62 +209,62 @@ namespace SimPe.PackedFiles.Wrapper
 		#region ICollection Members
 		public int Add(ObjfItem item)
 		{
-			if (items.Count >= 0x8000) // only allow 32K lines
+			if (Items.Count >= 0x8000) // only allow 32K lines
 				return -1;
 
 			item.Parent = this;
-			int result = items.Add(item);
-			if (result >= 0) OnWrapperChanged(items, new EventArgs());
+			int result = Items.Add(item);
+			if (result >= 0) OnWrapperChanged(Items, new EventArgs());
 			return result;
 		}
 
 		public void Clear()
 		{
-			items.Clear();
+			Items.Clear();
 			OnWrapperChanged(items, new EventArgs());
 		}
 
-		public void Remove(ObjfItem item) { this.RemoveAt(items.IndexOf(item)); }
+		public void Remove(ObjfItem item) { this.RemoveAt(Items.IndexOf(item)); }
 
 		public void RemoveAt(int index)
 		{
-			if (index < 0 || index >= items.Count) return;
+			if (index < 0 || index >= Items.Count) return;
 
-			items.RemoveAt(index);
-			OnWrapperChanged(items, new EventArgs());
+			Items.RemoveAt(index);
+			OnWrapperChanged(Items, new EventArgs());
 		}
 
 		public ObjfItem this[int index]
 		{
 			get
 			{
-				return items[index];
+				return Items[index];
 			}
 			set
 			{
-				if (items[index] == null || !items[index].Equals(value))
+				if (Items[index] == null || !Items[index].Equals(value))
 				{
 					value.Parent = this;
-					items[index] = value;
-					OnWrapperChanged(items, new EventArgs());
+					Items[index] = value;
+					OnWrapperChanged(Items, new EventArgs());
 				}
 			}
 		}
 
-		public bool Contains(ObjfItem item) { return items.Contains(item); }
+		public bool Contains(ObjfItem item) { return Items.Contains(item); }
 
-		public int IndexOf(object item) { return items.IndexOf(item); }
+		public int IndexOf(object item) { return Items.IndexOf(item); }
 
-		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+		public override void CopyTo(Array a, int i) { Items.CopyTo(a, i); }
 
-		public override int Count { get { return items.Count; } }
+		public override int Count { get { return Items.Count; } }
 
-		public override bool IsSynchronized { get { return items.IsSynchronized; } }
+		public override bool IsSynchronized { get { return Items.IsSynchronized; } }
 
-		public override object SyncRoot { get { return items.SyncRoot; } }
+		public override object SyncRoot { get { return Items.SyncRoot; } }
 
 		#region IEnumerable Members
-		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+		public override IEnumerator GetEnumerator() { return Items.GetEnumerator(); }
 
 		#endregion
 		#endregion

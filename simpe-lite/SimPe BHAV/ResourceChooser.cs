@@ -234,7 +234,7 @@ namespace pjse
 		{
 			IPackedFileDescriptor pfd = new SimPe.Packages.PackedFileDescriptor();
 			pfd.Instance = i;
-			return new pjse.FileTable.Entry(null, pfd);
+			return new pjse.FileTable.Entry(null, pfd, true);
 		}
 
 		#endregion

@@ -78,33 +78,33 @@ namespace pjse
             pfByTypeGroup = new Hashtable();
             pfByTypeGroupInstance = new Hashtable();
 
-            this.AddFixedMaxis();
+            this.AddMaxis();
 
-            this.AddFixed(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"));
+            this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, true);
 
-            this.AddFixed(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"));
+            this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, true);
 
             string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
             if (File.Exists(packages_txt))
             {
                 System.IO.StreamReader sr = new StreamReader(packages_txt);
                 for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
-                    this.AddFixed(line);
+                    this.Add(line.TrimEnd('+'), line.EndsWith("+"), false);
                 sr.Close();
             }
 
             if (currentPackage != null && !IsFixed(currentPackage))
-                Add(currentPackage);
+                Add(currentPackage, false);
 
             OnFiletableRefresh(this, new EventArgs());
         }
 
-        private void AddFixedMaxis()
+        private void AddMaxis()
         {
             defaultFolders = SimPe.FileTable.DefaultFolders; // in case they've been updated
             String SimsPath = SimPe.PathProvider.Global[0].InstallFolder;
 
-            AddFixed(Path.Combine(SimPe.PathProvider.Global.Latest.InstallFolder, "TSData\\Res\\Objects\\objects.package"));
+            Add(Path.Combine(SimPe.PathProvider.Global.Latest.InstallFolder, "TSData\\Res\\Objects\\objects.package"), false, true);
 
             for (int i = SimPe.PathProvider.Global.Expansions.Count; --i >= 0; )
             {
@@ -119,7 +119,7 @@ namespace pjse
                 string[] va = Directory.GetFiles(o, "*.package");
                 foreach (String pkg in va)
                     if (!pkg.ToLower().EndsWith("\\globalcatbin.bundle.package"))
-                        AddFixed(pkg);
+                        Add(pkg, false, true);
             }
         }
 
@@ -169,7 +169,7 @@ namespace pjse
                         currentPackage = IsFixed(value) ? null : value;
                         if (currentPackage != null)
                         {
-                            Add(currentPackage);
+                            Add(currentPackage, false);
                             currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
                         }
                         OnFiletableRefresh(this, new EventArgs());
@@ -182,7 +182,7 @@ namespace pjse
         {
             currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
             Remove(currentPackage);
-            Add(currentPackage);
+            Add(currentPackage, false);
             currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
             OnFiletableRefresh(this, new EventArgs());
         }
@@ -197,27 +197,23 @@ namespace pjse
         }
 
 
-
-        private void Add(string packageFile)
-        {
-            if (File.Exists(packageFile))
-                Add(SimPe.Packages.File.LoadFromFile(packageFile));
-        }
-
-        private void AddFixed(string v)
+        private void Add(string v, bool recurse, bool isFixed)
         {
             if (System.IO.Directory.Exists(v))
             {
                 string[] va = System.IO.Directory.GetFiles(v, "*.package");
-                foreach (string i in va)
-                    AddFixed(i);
+                foreach (string i in va) Add(i, false, isFixed);
+                if (recurse)
+                {
+                    va = System.IO.Directory.GetDirectories(v);
+                    foreach (string i in va) Add(i, true, isFixed);
+                }
             }
             else if (File.Exists(v))
-                AddFixed(SimPe.Packages.File.LoadFromFile(v));
+                Add(SimPe.Packages.File.LoadFromFile(v), isFixed);
         }
 
-        private void Add(IPackageFile package) { Add(package, false); }
-        private void AddFixed(IPackageFile package) { Add(package, true); }
+        
         private void Add(IPackageFile package, bool isFixed)
 		{
 			if (package == null) return;
@@ -230,7 +226,7 @@ namespace pjse
 				if (i.MarkForDelete) continue;
 
 				object val = true;
-				object key = new Entry(package, i);
+                object key = new Entry(package, i, isFixed);
 
 				if (packedFiles[key] != null)
                     throw new Exception("packedFiles[key] != null");
@@ -318,41 +314,45 @@ namespace pjse
 		{
 			private IPackageFile package;
 			private IPackedFileDescriptor pfd;
-			private uint type;
-			private uint group;
-			private uint instance;
+			//private uint type;
+			//private uint group;
+			//private uint instance;
+            private bool isFixed;
 
-			public Entry(IPackageFile package, IPackedFileDescriptor pfd)
+			public Entry(IPackageFile package, IPackedFileDescriptor pfd, bool isFixed)
 			{
 				this.package = package;
 				this.pfd = pfd;
-				this.type = pfd.Type;
-				this.group = pfd.Group;
-				this.instance = pfd.Instance;
+				//this.type = pfd.Type;
+				//this.group = pfd.Group;
+				//this.instance = pfd.Instance;
+                this.isFixed = isFixed;
 			}
 
 			public IPackageFile Package { get { return package; } }
 
 			public IPackedFileDescriptor PFD { get { return pfd; } }
 
-			public uint Type { get { return type; } }
+            public uint Type { get { return pfd.Type; } }
 
-			public uint Group { get { return group; } }
+            public uint Group { get { return pfd.Group; } }
 
-			public uint Instance { get { return instance; } }
+            public uint Instance { get { return pfd.Instance; } }
+
+            public bool IsFixed { get { return isFixed; } }
 
 			public AbstractWrapper Wrapper
 			{
 				get
 				{
-					AbstractWrapper wrapper = (AbstractWrapper)SimPe.FileTable.WrapperRegistry.FindHandler(type);
+					AbstractWrapper wrapper = (AbstractWrapper)SimPe.FileTable.WrapperRegistry.FindHandler(Type);
 					if (wrapper != null)
 						wrapper.ProcessData(pfd, package);
 					return wrapper;
 				}
 			}
 
-			public override string ToString() { return this + " (0x" + SimPe.Helper.HexString((ushort)instance) + ")"; }
+			public override string ToString() { return this + " (0x" + SimPe.Helper.HexString((ushort)Instance) + ")"; }
 
 			public static implicit operator string(Entry e)
 			{
@@ -385,20 +385,30 @@ namespace pjse
 					return -1;
 				Entry that = (Entry)obj;
 
-				if (this.type.CompareTo(that.type) != 0)
-					return this.type.CompareTo(that.type);
-				if (this.group.CompareTo(that.group) != 0)
-					return this.group.CompareTo(that.group);
-				return this.instance.CompareTo(that.instance);
+				if (this.Type.CompareTo(that.Type) != 0)
+					return this.Type.CompareTo(that.Type);
+				if (this.Group.CompareTo(that.Group) != 0)
+					return this.Group.CompareTo(that.Group);
+				return this.Instance.CompareTo(that.Instance);
 			}
 
 			#endregion
 		}
 
+        public Entry[] this[IPackageFile package, IPackedFileDescriptor pfd]
+        {
+            get
+            {
+                if (package == null || pfd == null) return new Entry[0];
+                return this[pfd.Type, pfd.Group, pfd.Instance, IsFixed(package)];
+            }
+        }
+
         public Entry[] this[IPackageFile package, uint packedFileType]
         {
             get
             {
+                if (package == null) return new Entry[0];
                 if (!hasLoaded) Refresh();
 
                 ArrayList result = new ArrayList();
@@ -419,7 +429,7 @@ namespace pjse
             {
                 if (!hasLoaded) Refresh();
 
-                return putLocalFirst((Hashtable)pfByType[packedFileType], false);
+                return putLocalFirst((Hashtable)pfByType[packedFileType], false, false);
             }
         }
 
@@ -431,11 +441,16 @@ namespace pjse
 
                 Hashtable tgt = (Hashtable)pfByTypeGroup[packedFileType];
                 if (tgt == null) return new Entry[0];
-                return putLocalFirst((Hashtable)tgt[group], group == 0xffffffff);
+                return putLocalFirst((Hashtable)tgt[group], group == 0xffffffff, false);
             }
         }
 
         public Entry[] this[uint packedFileType, uint group, uint instance]
+        {
+            get { return this[packedFileType, group, instance, false]; }
+        }
+
+        public Entry[] this[uint packedFileType, uint group, uint instance, bool fixedOnly]
         {
             get
             {
@@ -445,22 +460,33 @@ namespace pjse
                 if (tgit == null) return new Entry[0];
                 Hashtable tgitg = (Hashtable)tgit[group];
                 if (tgitg == null) return new Entry[0];
-                return putLocalFirst((Hashtable)tgitg[instance], group == 0xffffffff);
+                return putLocalFirst((Hashtable)tgitg[instance], group == 0xffffffff, fixedOnly);
             }
         }
 
-        private Entry[] putLocalFirst(Hashtable result, bool localOnly)
+        private Entry[] putLocalFirst(Hashtable result, bool localOnly, bool fixedOnly)
         {
             if (result == null) return new Entry[0];
 
-            ArrayList local = new ArrayList();
-            ArrayList nonlocal = new ArrayList();
-            foreach (Entry e in result.Keys)
-                if (!e.PFD.MarkForDelete) ((ArrayList)(e.Package == currentPackage ? local : nonlocal)).Add(e);
+            ArrayList currpkg = new ArrayList();
+            ArrayList fixedpkg = new ArrayList();
+            ArrayList nonfixed = new ArrayList();
 
-            Entry[] es = new Entry[local.Count + (localOnly ? 0 : nonlocal.Count)];
-            local.CopyTo(es, 0);
-            if (!localOnly) nonlocal.CopyTo(es, local.Count);
+            ArrayList[] resultset =
+                localOnly ? new ArrayList[] { currpkg }
+                : fixedOnly ? new ArrayList[] { fixedpkg }
+                    : new ArrayList[] { currpkg, nonfixed, fixedpkg };
+
+            foreach (Entry e in result.Keys)
+                if (!e.PFD.MarkForDelete)
+                    ((ArrayList)(e.Package == currentPackage ? currpkg : e.IsFixed ? fixedpkg : nonfixed)).Add(e);
+
+            int i = 0;
+            foreach (ArrayList al in resultset) i += al.Count;
+
+            Entry[] es = new Entry[i];
+            i = 0;
+            foreach (ArrayList al in resultset) { al.CopyTo(es, i); i += al.Count; }
 
             return es;
         }

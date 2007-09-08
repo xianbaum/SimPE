@@ -359,8 +359,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             if (internalchg) return;
             if (doid1.DataOwner >= 0)
                 o5678[1] = doid1.DataOwner;
-            o5678[2] = (byte)(doid1.Value & 0xff);
-            o5678[3] = (byte)(doid1.Value >> 8);
+            BhavWiz.FromShort(ref o5678, 2, doid1.Value);
         }
 
 
@@ -394,8 +393,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
                 ops1[0] = option1;
 
                 ops1[1] = doid0.DataOwner;
-                ops1[2] = (byte)(doid0.Value & 0xff);
-                ops1[3] = (byte)(doid0.Value >> 8);
+                BhavWiz.FromShort(ref ops1, 2, doid0.Value);
 
                 ops1[4] = operation;
 
@@ -415,12 +413,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
                 }
 
                 ops2[2] = doid2.DataOwner;
-                ops2[3] = (byte)(doid2.Value & 0xff);
-                ops2[4] = (byte)(doid2.Value >> 8);
+                BhavWiz.FromShort(ref ops2, 3, doid2.Value);
 
                 ops2[5] = doid3.DataOwner;
-                ops2[6] = (byte)(doid3.Value & 0xff);
-                ops2[7] = (byte)(doid3.Value >> 8);
+                BhavWiz.FromShort(ref ops2, 6, doid3.Value);
             }
             return inst;
         }

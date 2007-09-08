@@ -146,10 +146,7 @@ namespace pjse.BhavOperandWizards.WizBhav
                 case dataFormat.caller: operands[12] &= 0xfe; operands[12] |= 0x02; break;
                 case dataFormat.oldformat:
                     for (int i = 0; i < 8; i++)
-                    {
-                        operands[i * 2] = (byte)(adoid[i].Value & 0xff);
-                        operands[i * 2 + 1] = (byte)(adoid[i].Value >> 8 & 0xff);
-                    }
+                        BhavWiz.FromShort(ref operands, i * 2, adoid[i].Value);
                     operands[12] &= 0xfe;
                     if (nodeVersion > 0) operands[12] &= 0xfd;
                     break;
@@ -157,8 +154,7 @@ namespace pjse.BhavOperandWizards.WizBhav
                     for (int i = 0; i < 4; i++)
                     {
                         operands[i * 3] = adoid[i].DataOwner;
-                        operands[i * 3 + 1] = (byte)(adoid[i].Value & 0xff);
-                        operands[i * 3 + 2] = (byte)(adoid[i].Value >> 8 & 0xff);
+                        BhavWiz.FromShort(ref operands, i * 3 + 1, adoid[i].Value);
                     }
                     operands[12] |= 0x01;
                     break;

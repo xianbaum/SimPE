@@ -575,10 +575,11 @@ namespace pjse.BhavOperandWizards.Wiz0x0024
 				} 
 				else 
 				{
-					ops2[5] = (byte)(messages[0] & 0xff);	// message
-					ops1[6] = (byte)(messages[0] >> 8);		// message
-					ops1[0] = (byte)(messages[3] & 0xff);	// cancel
-					ops1[2] = (byte)(messages[3] >> 8);		// cancel
+                    BhavWiz.FromShort(ref ops2, 5, messages[0]);	// message
+                    byte[] lohi = { 0, 0 };
+                    BhavWiz.FromShort(ref lohi, 0, messages[3]);	// cancel
+                    ops1[0] = lohi[0];
+                    ops1[2] = lohi[1];
 				}
 				ops1[3] = (byte)messages[1]; // Yes
 				ops1[4] = (byte)messages[2]; // No

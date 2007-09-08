@@ -41,7 +41,7 @@ namespace pjse
         public void Create(bool fromCurrent)
         {
             guidIndex = new Hashtable();
-            pjse.FileTable.Entry[] items = fromCurrent
+            pjse.FileTable.Entry[] items = (fromCurrent && pjse.FileTable.GFT.CurrentPackage != null)
                 ? pjse.FileTable.GFT[pjse.FileTable.GFT.CurrentPackage, SimPe.Data.MetaData.OBJD_FILE]
                 : pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
 

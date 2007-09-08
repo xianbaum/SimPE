@@ -400,8 +400,38 @@ namespace SimPe.PackedFiles.UserInterface
         }
 
         private uint previousFormat;
+        private void resetFormat()
+        {
+            bool saved = internalchg;
+            internalchg = true;
+
+            currentItem = null;
+            lbttab.SelectedIndex = -1;
+
+            for (int i = 0; i < wrapper.Count; i++)
+                wrapper[i] = wrapper[i].Clone();
+
+
+            // Flip those flags
+            if (previousFormat < 0x54 && wrapper.Format >= 0x54 || previousFormat >= 0x54 && wrapper.Format < 0x54)
+            {
+                Boolset flags;
+                foreach (TtabItem ti in wrapper)
+                {
+                    flags = new Boolset(ti.Flags);
+                    flags.flip(new int[] { 4, 5, 6 });
+                    ti.Flags = flags;
+                }
+            }
+
+            previousFormat = wrapper.Format;
+
+            internalchg = saved;
+        }
         private void setFormat()
         {
+            int siWas = lbttab.SelectedIndex;
+
             if (wrapper.Format < 0x44 && previousFormat >= 0x44)
             {
                 DialogResult dr = MessageBox.Show(pjse.Localization.GetString("ttabForm_Sure"),
@@ -410,11 +440,7 @@ namespace SimPe.PackedFiles.UserInterface
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
                 else
-                {
-                    currentItem.HumanMotives = new TtabItemMotiveTable(currentItem, new int[] { 0x10 }, TtabItemMotiveTableType.Human);
-                    currentItem.HumanMotives[0] = timtuiHuman.MotiveTable[0].Clone();
-                    timtuiHuman.MotiveTable = currentItem.HumanMotives;
-                }
+                    resetFormat();
             }
             else if (wrapper.Format >= 0x44 && wrapper.Format < 0x54 && (previousFormat < 0x44 || previousFormat >= 0x54))
             {
@@ -424,17 +450,7 @@ namespace SimPe.PackedFiles.UserInterface
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
                 else
-                {
-                    currentItem.HumanMotives = new TtabItemMotiveTable(currentItem,
-                        new int[] { 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, 0x10, }, TtabItemMotiveTableType.Human);
-                    if (previousFormat < 0x44)
-                        for (int i = 0; i < currentItem.HumanMotives.Count; i++)
-                            currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[0].Clone();
-                    else
-                        for (int i = 0; i < currentItem.HumanMotives.Count && i < timtuiHuman.MotiveTable.Count; i++)
-                            currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[i].Clone();
-                    timtuiHuman.MotiveTable = currentItem.HumanMotives;
-                }
+                    resetFormat();
             }
             else if (wrapper.Format >= 0x54 && previousFormat < 0x54)
             {
@@ -444,39 +460,8 @@ namespace SimPe.PackedFiles.UserInterface
                 if (!DialogResult.OK.Equals(dr))
                     wrapper.Format = previousFormat;
                 else
-                {
-                    currentItem.HumanMotives = new TtabItemMotiveTable(currentItem, null, TtabItemMotiveTableType.Human);
-                    if (previousFormat < 0x44)
-                        for (int i = 0; i < currentItem.HumanMotives.Count; i++)
-                            currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[0].Clone();
-                    else
-                        for (int i = 0; i < currentItem.HumanMotives.Count && i < timtuiHuman.MotiveTable.Count; i++)
-                            currentItem.HumanMotives[i] = timtuiHuman.MotiveTable[i].Clone();
-                    timtuiHuman.MotiveTable = currentItem.HumanMotives;
-                }
+                    resetFormat();
             }
-
-            // Flip those flags
-            if (previousFormat < 0x54 && wrapper.Format >= 0x54 || previousFormat >= 0x54 && wrapper.Format < 0x54)
-            {
-                bool saved = internalchg;
-                internalchg = true;
-
-                //Boolset flags = new Boolset(currentItem.Flags);
-                Boolset flags;
-                foreach (TtabItem ti in wrapper)
-                {
-                    flags = new Boolset(ti.Flags);
-                    flags.flip(new int[] { 4, 5, 6 });
-                    ti.Flags = flags;
-                }
-                //currentItem.Flags = flags;
-                this.tbFlags.Text = "0x" + Helper.HexString(currentItem.Flags);
-
-                internalchg = saved;
-            }
-
-            previousFormat = wrapper.Format;
 
 
             this.tbUIDispType.Enabled = this.tbFaceAnimID.Enabled =
@@ -515,6 +500,9 @@ namespace SimPe.PackedFiles.UserInterface
                 if (lcb.Tag != null && lcb.Tag.ToString().Length > 0)
                     lcb.Text = ((String)lcb.Tag).Split('/')[index];
             }
+
+            if (wrapper.Count > 0 && lbttab.Items.Count > siWas && lbttab.SelectedIndex == -1)
+                lbttab.SelectedIndex = siWas;
         }
 
         /// <summary>

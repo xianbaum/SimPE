@@ -246,8 +246,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
 
-                ops1[0x00] = (byte)(doid3.Value & 0xff);
-                ops1[0x01] = (byte)(doid3.Value >> 8 & 0xff);
+                BhavWiz.FromShort(ref ops1, 0, doid3.Value);
 
                 ops1[0x02] = 0x00;
                 ops1[0x02] |= (byte)(this.rb3Object.Checked ? 0x01 : 0x00);
@@ -265,17 +264,14 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
                     case 1: ops1[0x02] |= 0x80; break; // SemiGlobal
                 }
 
-                ops1[0x03] = (byte)(doid5.Value & 0xff);
-                ops1[0x04] = (byte)(doid5.Value >> 8 & 0x7f);
+                BhavWiz.FromShort(ref ops1, 3, (ushort)(doid5.Value & 0x7fff));
                 ops1[0x04] |= (byte)(this.ckbAllOver.Checked ? 0x80 : 0x00);
 
                 ops1[0x05] = doid1.DataOwner;
-                ops1[0x06] = (byte)(doid1.Value & 0xff);
-                ops1[0x07] = (byte)(doid1.Value >> 8 & 0xff);
+                BhavWiz.FromShort(ref ops1, 6, doid1.Value);
 
                 ops2[0x00] = doid2.DataOwner;
-                ops2[0x01] = (byte)(doid2.Value & 0xff);
-                ops2[0x02] = (byte)(doid2.Value >> 8 & 0xff);
+                BhavWiz.FromShort(ref ops2, 1, doid2.Value);
 
                 ops2[0x05] &= 0xfc;
                 ops2[0x05] |= (byte)(this.rb2MovingTexture.Checked ? 0x01 : 0x00);
