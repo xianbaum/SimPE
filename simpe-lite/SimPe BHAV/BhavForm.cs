@@ -619,8 +619,11 @@ namespace SimPe.PackedFiles.UserInterface
                     btnCancel.Visible = btnFloat.Visible = false;
                 btnCopyBHAV.Visible = btnClose.Visible = true;
                 btnCopyBHAV.Enabled = currentPackage != null;
+                string[] pathparts = wrapper.Package.FileName.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
                 this.Text =
-                    pjse.Localization.GetString("viewbhav") + ": [0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance)
+                    pjse.Localization.GetString("viewbhav") +
+                    (items.Length > 0 && !items[0].IsFixed ? " (" + pathparts[pathparts.Length - 1] + ")" : "") +
+                    ": [0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance)
                         + "] " + wrapper.FileName;
             }
             else

@@ -1546,16 +1546,16 @@
     <value>NoControl</value>
   </data>
   <data name="lbHidesOP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>459, 520</value>
+    <value>456, 540</value>
   </data>
   <data name="lbHidesOP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>421, 17</value>
+    <value>161, 17</value>
   </data>
   <data name="lbHidesOP.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="lbHidesOP.Text" xml:space="preserve">
-    <value>BHAV from objects.package overridden.  Displayed BHAV is from:</value>
+    <value>Displayed BHAV is from:</value>
   </data>
   <data name="&gt;&gt;lbHidesOP.Name" xml:space="preserve">
     <value>lbHidesOP</value>
@@ -1579,19 +1579,19 @@
     <value>NoControl</value>
   </data>
   <data name="llHidesOP.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
-    <value>0, 18</value>
+    <value>39, 12</value>
   </data>
   <data name="llHidesOP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>462, 595</value>
+    <value>456, 520</value>
   </data>
   <data name="llHidesOP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 20</value>
+    <value>344, 20</value>
   </data>
   <data name="llHidesOP.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
   <data name="llHidesOP.Text" xml:space="preserve">
-    <value>View EA BHAV</value>
+    <value>BHAV from objects.package overridden.  View EA BHAV.</value>
   </data>
   <data name="&gt;&gt;llHidesOP.Name" xml:space="preserve">
     <value>llHidesOP</value>
@@ -1606,10 +1606,10 @@
     <value>1</value>
   </data>
   <data name="tbHidesOP.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Top, Bottom, Right</value>
   </data>
   <data name="tbHidesOP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>462, 539</value>
+    <value>459, 560</value>
   </data>
   <data name="tbHidesOP.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1618,7 +1618,7 @@
     <value>Vertical</value>
   </data>
   <data name="tbHidesOP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>445, 42</value>
+    <value>448, 43</value>
   </data>
   <data name="tbHidesOP.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -1669,13 +1669,13 @@
     <value>3</value>
   </data>
   <data name="btnCopyBHAV.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="btnCopyBHAV.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnCopyBHAV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>674, 590</value>
+    <value>652, 612</value>
   </data>
   <data name="btnCopyBHAV.Size" type="System.Drawing.Size, System.Drawing">
     <value>140, 26</value>
@@ -1702,13 +1702,13 @@
     <value>4</value>
   </data>
   <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+    <value>Bottom, Right</value>
   </data>
   <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>820, 590</value>
+    <value>798, 612</value>
   </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 26</value>
@@ -2173,7 +2173,7 @@
     <value>0, 68</value>
   </data>
   <data name="pnflowcontainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>450, 550</value>
+    <value>450, 583</value>
   </data>
   <data name="pnflowcontainer.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2182,7 +2182,7 @@
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.2801.16935, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.2807.13820, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2530,7 +2530,7 @@
     <value>0, 0</value>
   </data>
   <data name="bhavPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>909, 618</value>
+    <value>909, 651</value>
   </data>
   <data name="bhavPanel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2614,10 +2614,7 @@
     <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>909, 618</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+    <value>909, 651</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BhavForm</value>
