@@ -1596,10 +1596,10 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnFloat_Click(object sender, EventArgs e)
         {
             Control old = this.bhavPanel.Parent;
-
             Form f = new Form();
-            f.Text = "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + ": "
-                + wrapper.FileName + " [" + wrapper.Package.SaveFileName + "]";
+            string[] pathparts = wrapper.Package.SaveFileName.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
+            f.Text = "(" + pathparts[pathparts.Length - 1] + "): [0x"
+                + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + "] " + wrapper.FileName;
             f.WindowState = FormWindowState.Maximized;
             f.Controls.Add(this.bhavPanel);
             this.btnFloat.Text = pjse.Localization.GetString("bhavForm.Unfloat");
