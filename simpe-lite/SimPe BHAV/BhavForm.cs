@@ -618,7 +618,8 @@ namespace SimPe.PackedFiles.UserInterface
                     btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/
                     gbSpecial.Visible = cbSpecial.Visible =
                     btnCancel.Visible = btnFloat.Visible = false;
-                btnCopyBHAV.Visible = btnClose.Visible = true;
+                btnClose.Visible = true;
+                btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
                 btnCopyBHAV.Enabled = currentPackage != null;
                 string[] pathparts = wrapper.Package.FileName.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
                 this.Text =
@@ -1606,6 +1607,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnFloat.Click -= new System.EventHandler(this.btnFloat_Click);
             this.gbSpecial.Visible = true;
             this.cbSpecial.Enabled = false;
+            btnCopyBHAV.Visible = false;
             f.CancelButton = this.btnFloat;
             f.ShowDialog();
 

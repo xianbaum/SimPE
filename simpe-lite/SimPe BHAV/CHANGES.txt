@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+8 September 2007 21:07 - Don't display "import" if BHAV in same package
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.40
+
 8 September 2007 20:54 - ...and make Float title bar look like Popup title bar
   SimPe BHAV\
     BhavForm.cs 1.64.2.39
