@@ -469,6 +469,10 @@ set nsisProgress=no
 set srcDebug=no
 set srcInProgress=no
 
+set simpeDirRelease=SimPe
+set simpeDirDebug=fullsimpe-svn\__Release
+set simpeDirInProgress=SimPe
+
 
 cd "$(ProjectDir)"
 
@@ -487,14 +491,14 @@ tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
 (cd ..
 (echo %25base%25
 echo %25suffix%25) &gt; version.txt
-(pushd ..\SimPe\Data
+(pushd ..\%25simpeDir$(ConfigurationName)%25\Data
 grep "simperelease version" release.nfo
 popd) &gt;&gt; version.txt
 tar c version.txt LICENSE.txt *.package) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 del ..\version.txt
 tar c --exclude=CVS CHANGES.txt | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 
-tar c Plugins | (cd ..\..\SimPe
+tar c Plugins | (cd ..\..\%25simpeDir$(ConfigurationName)%25
 tar xv)
 
 rem -----------------------------------
