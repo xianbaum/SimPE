@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+15 September 2007 12:02 - Add SimulatorGlobal GameEditionFlags
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.35
+  GlobalsStrings.package 1.10.8.26
+
 8 September 2007 21:07 - Don't display "import" if BHAV in same package
   SimPe BHAV\
     BhavForm.cs 1.64.2.40

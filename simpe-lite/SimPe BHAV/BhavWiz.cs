@@ -54,7 +54,7 @@ namespace pjse
         public enum BhavStr : uint
         {
             //Str0x0080 = 0x80, // behavior strings
-            GlobalLabels = 0x81,
+            GlobalLabels = 0x81, // SimulatorGlobal
             RelativeLocations = 0x0082,
             RelativeDirections = 0x0083,
             DataOwners = 0x84,
@@ -147,6 +147,7 @@ namespace pjse
             //Str0x0100..010d - there are no Str0x0100..010d
             PlacementFlags2 = 0x10e,    // ObjectData 0x52 - placement flags 2 24e
             //Str0x010f..01f3 - there are no Str0x010f..01f3
+            GameEditionFlags = 0x1e1, // PJSE: SimulatorGlobals 0x14 - game edition flags
             AllowedHeightFlags = 0x1e2, // PJSE: ObjectData 0x04 - allowed height flags
             UnknownFlags = 0x1e3, // PJSE: string number stolen (for flag fields with unknown flag labels)
             TokenOpsCounted = 0x1e4, // PJSE: string number stolen (opcode 0x33)
@@ -736,6 +737,17 @@ namespace pjse
             f.Add((byte)0x15, o); // 0x15 "stack object's definition"
             f.Add((byte)0x26, o); // 0x26 "Neighbor's Object Definition"
             f.Add((byte)0x33, o); // 0x33 "Stack Object's Master Definition"
+
+            // SimulatorGlobal flags
+            o = new Hashtable();
+            o.Add((ushort)0x14, GS.BhavStr.GameEditionFlags); // Game edition flags
+            o.Add((ushort)0x19, GS.BhavStr.UnknownFlags); // Debug flags
+            o.Add((ushort)0x21, GS.BhavStr.UnknownFlags); // Demo flags
+            o.Add((ushort)0x25, GS.BhavStr.UnknownFlags); // Utility available flags
+            o.Add((ushort)0x33, GS.BhavStr.UnknownFlags); // Object error flags
+            o.Add((ushort)0x35, GS.BhavStr.UnknownFlags); // Instant write once flags
+            f.Add((byte)0x06, o); // 0x81 "Global"
+
             return f;
         }
         #endregion
