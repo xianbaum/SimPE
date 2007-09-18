@@ -45,24 +45,33 @@ namespace pjse
                 ? pjse.FileTable.GFT[pjse.FileTable.GFT.CurrentPackage, SimPe.Data.MetaData.OBJD_FILE]
                 : pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
 
-            foreach (pjse.FileTable.Entry item in items)
+            try
             {
-                if (item.Wrapper != null)
+                SimPe.Wait.Start(items.Length);
+                foreach (pjse.FileTable.Entry item in items)
                 {
-                    System.IO.BinaryReader reader = item.Wrapper.StoredData;
-                    if (reader.BaseStream.Length >= 0x40) // filename length
+                    if (item.Wrapper != null)
                     {
-                        String objdName = SimPe.Helper.ToString(reader.ReadBytes(0x40)).Trim();
-                        if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
+                        System.IO.BinaryReader reader = item.Wrapper.StoredData;
+                        if (reader.BaseStream.Length >= 0x40) // filename length
                         {
-                            reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
-                            UInt32 objdGUID = reader.ReadUInt32();
-                            guidIndex[objdGUID] = objdName;
+                            String objdName = SimPe.Helper.ToString(reader.ReadBytes(0x40)).Trim();
+                            if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
+                            {
+                                reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
+                                UInt32 objdGUID = reader.ReadUInt32();
+                                guidIndex[objdGUID] = objdName;
+                            }
                         }
                     }
+                    SimPe.Wait.Progress++;
                 }
+                pjse.FileTable.GFT.OnFiletableRefresh(this, new EventArgs());
             }
-            pjse.FileTable.GFT.OnFiletableRefresh(this, new EventArgs());
+            finally
+            {
+                SimPe.Wait.Stop();
+            }
         }
 
         public void Load() { Load(DefaultGUIDFile); }

@@ -716,16 +716,16 @@ namespace pjse
             o.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
             o.Add((ushort)0x9f, GS.BhavStr.PersonFlags2);
             o.Add((ushort)0xad, GS.BhavStr.SemesterInfoFlags);
-            o.Add((ushort)0xb4, GS.BhavStr.AttractionFlags1);
-            o.Add((ushort)0xb6, GS.BhavStr.AttractionFlags1);
-            o.Add((ushort)0xb8, GS.BhavStr.AttractionFlags1);
-            o.Add((ushort)0xb5, GS.BhavStr.AttractionFlags2);
-            o.Add((ushort)0xb7, GS.BhavStr.AttractionFlags2);
-            o.Add((ushort)0xb8, GS.BhavStr.AttractionFlags2);
-            o.Add((ushort)0xb9, GS.BhavStr.PetTraitFlags);
-            o.Add((ushort)0xc9, GS.BhavStr.AttractionFlags3);
-            o.Add((ushort)0xca, GS.BhavStr.AttractionFlags3);
-            o.Add((ushort)0xcb, GS.BhavStr.AttractionFlags3);
+            o.Add((ushort)0xb4, GS.BhavStr.AttractionFlags1); // Traits1
+            o.Add((ushort)0xb5, GS.BhavStr.AttractionFlags2); // Traits2
+            o.Add((ushort)0xb6, GS.BhavStr.AttractionFlags1); // TurnOns1
+            o.Add((ushort)0xb7, GS.BhavStr.AttractionFlags2); // TurnOns2
+            o.Add((ushort)0xb8, GS.BhavStr.AttractionFlags1); // TurnOffs1
+            o.Add((ushort)0xb9, GS.BhavStr.AttractionFlags2); // TurnOffs2
+            o.Add((ushort)0xc7, GS.BhavStr.PetTraitFlags);
+            o.Add((ushort)0xc9, GS.BhavStr.AttractionFlags3); // Traits3
+            o.Add((ushort)0xca, GS.BhavStr.AttractionFlags3); // TurnOns3
+            o.Add((ushort)0xcb, GS.BhavStr.AttractionFlags3); // TurnOffs3
             f.Add((byte)0x12, o); // 0x12 "My Person Data"
             f.Add((byte)0x13, o); // 0x13 "Stack Object's Person Data"
             f.Add((byte)0x20, o); // 0x20 "Neighbour's Person Data"
