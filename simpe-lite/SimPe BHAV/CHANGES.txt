@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+18 September 2007 11:41 - PersonData Attraction flags
+  SimPe BHAV\
+    BhavWiz.cs 1.37.2.36
+  GlobalsStrings.package 1.10.8.27
+
 15 September 2007 12:49 - Make target for SimPe/Plugins depend on ConfigurationName
   SimPe BHAV\
     pjse coder plugin.csproj 1.29.2.33

@@ -147,6 +147,9 @@ namespace pjse
             //Str0x0100..010d - there are no Str0x0100..010d
             PlacementFlags2 = 0x10e,    // ObjectData 0x52 - placement flags 2 24e
             //Str0x010f..01f3 - there are no Str0x010f..01f3
+            AttractionFlags3 = 0x1de, // PJSE: PersonData Attraction Flags3 - 0xc9, 0xca, 0xcb
+            AttractionFlags2 = 0x1df, // PJSE: PersonData Attraction Flags2 - 0xb5, 0xb7, 0xb9
+            AttractionFlags1 = 0x1e0, // PJSE: PersonData Attraction Flags1 - 0xb4, 0xb6, 0xb8
             GameEditionFlags = 0x1e1, // PJSE: SimulatorGlobals 0x14 - game edition flags
             AllowedHeightFlags = 0x1e2, // PJSE: ObjectData 0x04 - allowed height flags
             UnknownFlags = 0x1e3, // PJSE: string number stolen (for flag fields with unknown flag labels)
@@ -154,8 +157,8 @@ namespace pjse
             TokenOpsSingular = 0x1e5, // PJSE: string number stolen (opcode 0x33)
             Languages = 0x1e6, // PJSE: string number stolen
             PetDecayIndices = 0x1e7, // PJSE: string number stolen (unused)
-            SpeciesValues = 0x1e8, // PersonData 0xba - Species Values (PJSE) (unused)
-            PetTraitFlags = 0x1e9, // PersonData 0xc7 - Pet Trait Flags (PJSE)
+            SpeciesValues = 0x1e8, // PJSE: PersonData 0xba - Species Values (unused)
+            PetTraitFlags = 0x1e9, // PJSE: PersonData 0xc7 - Pet Trait Flags
             Ages = 0x1ea, // PJSE: string number stolen
             DebugType = 0x1eb, // PJSE: string number stolen
             EffectSSType = 0x1ec, // PJSE: string number stolen
@@ -713,7 +716,16 @@ namespace pjse
             o.Add((ushort)0x9e, GS.BhavStr.SelectionFlags);
             o.Add((ushort)0x9f, GS.BhavStr.PersonFlags2);
             o.Add((ushort)0xad, GS.BhavStr.SemesterInfoFlags);
-            o.Add((ushort)0xc7, GS.BhavStr.PetTraitFlags);
+            o.Add((ushort)0xb4, GS.BhavStr.AttractionFlags1);
+            o.Add((ushort)0xb6, GS.BhavStr.AttractionFlags1);
+            o.Add((ushort)0xb8, GS.BhavStr.AttractionFlags1);
+            o.Add((ushort)0xb5, GS.BhavStr.AttractionFlags2);
+            o.Add((ushort)0xb7, GS.BhavStr.AttractionFlags2);
+            o.Add((ushort)0xb8, GS.BhavStr.AttractionFlags2);
+            o.Add((ushort)0xb9, GS.BhavStr.PetTraitFlags);
+            o.Add((ushort)0xc9, GS.BhavStr.AttractionFlags3);
+            o.Add((ushort)0xca, GS.BhavStr.AttractionFlags3);
+            o.Add((ushort)0xcb, GS.BhavStr.AttractionFlags3);
             f.Add((byte)0x12, o); // 0x12 "My Person Data"
             f.Add((byte)0x13, o); // 0x13 "Stack Object's Person Data"
             f.Add((byte)0x20, o); // 0x20 "Neighbour's Person Data"
