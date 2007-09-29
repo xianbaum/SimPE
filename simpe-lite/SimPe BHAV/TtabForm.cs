@@ -1551,7 +1551,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void btnAppend_Click(object sender, System.EventArgs e)
         {
-            this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, ttabPanel));
+            this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, ttabPanel, true));
         }
 
 
@@ -1650,14 +1650,14 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void GetTTABGuard(object sender, System.EventArgs e)
 		{
-			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, ttabPanel.Parent);
+			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, ttabPanel.Parent, false);
 			if (item != null)
 				setBHAV(1, (ushort)item.Instance, false);
 		}
 
 		private void GetTTABAction(object sender, System.EventArgs e)
 		{
-			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, ttabPanel.Parent);
+			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, ttabPanel.Parent, false);
 			if (item != null)
 				setBHAV(0, (ushort)item.Instance, false);
 		}

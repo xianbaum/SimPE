@@ -71,5 +71,26 @@ namespace pjse
 
             return res;
         }
+
+        /// <summary>
+        /// Returns a translated String with parameter substitution
+        /// </summary>
+        /// <param name="name">string to translate</param>
+        /// <returns>translated string</returns>
+        /// <remarks>If there is no Translation, the passsed string will be returned</remarks>
+        public static string GetString(string name, params object[] args)
+        {
+            string res = pjse.Localization.Manager.GetString(name);
+            for (int i = 0; i < args.Length; i++)
+                res = res.Replace("{" + i.ToString() + "}", args[i].ToString());
+            //if (res == null) res = pjse.Localization.Manager.GetString(name.Trim().ToLower());
+#if DEBUG
+            if (res == null) res = "<<" + name + ">>";
+#else
+            if (res == null) res = name;
+#endif
+
+            return res;
+        }
     }
 }

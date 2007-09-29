@@ -109,7 +109,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnClose;
 		private System.Windows.Forms.CheckBox cbSpecial;
 		private System.Windows.Forms.TextBox tbInst_Longname;
-		private System.Windows.Forms.Button btnListing;
+		private System.Windows.Forms.Button btnCopyListing;
 		private System.Windows.Forms.Button btnHelp;
 		private System.Windows.Forms.Button btnTPRPMaker;
         private Button btnRefreshFT;
@@ -128,6 +128,7 @@ namespace SimPe.PackedFiles.UserInterface
         private TextBox tbHidesOP;
         private LinkLabel llHidesOP;
         private Label lbHidesOP;
+        private Button btnPasteListing;
         private IContainer components;
         #endregion
        
@@ -400,21 +401,61 @@ namespace SimPe.PackedFiles.UserInterface
 				BhavWiz w = inst;
 
 				string operands = "";
-				for(int j = 0; j < 7; j++) operands += SimPe.Helper.HexString(inst.Operands[j]);
-				for(int j = 0; j < 7; j++) operands += SimPe.Helper.HexString(inst.Reserved1[j]);
+				for(int j = 0; j < 8; j++) operands += SimPe.Helper.HexString(inst.Operands[j]);
+				for(int j = 0; j < 8; j++) operands += SimPe.Helper.HexString(inst.Reserved1[j]);
 
 				listing += ("     "
 					+ SimPe.Helper.HexString(i)
 					+ " : " + SimPe.Helper.HexString(inst.OpCode)
-					+ " : " + operands
-					+ " : " + SimPe.Helper.HexString(inst.NodeVersion)
-					+ " : " + SimPe.Helper.HexString(inst.Target1)
-					+ " : " + SimPe.Helper.HexString(inst.Target2)
-					+ "\r\n" + w.ShortName + "\r\n\r\n");
+                    + " : " + SimPe.Helper.HexString(inst.NodeVersion)
+                    + " : " + SimPe.Helper.HexString(inst.Target1)
+                    + " : " + SimPe.Helper.HexString(inst.Target2)
+                    + " : " + operands
+					+ "\r\n" + w.LongName + "\r\n\r\n");
 			}
 
 			Clipboard.SetDataObject(listing, true);
 		}
+
+        private void PasteListing()
+        {
+            int i = 0;
+            int origlen = wrapper.Count;
+
+            string listing = Clipboard.GetText(TextDataFormat.Text);
+            foreach (string line in listing.Split('\r', '\n'))
+            {
+                if (line.Length == 0) continue;
+                string[] args = line.Split(':');
+                if (args.Length != 6) continue;
+
+                try
+                {
+                    if (Convert.ToUInt32(args[0].Trim(), 16) != i)
+                        throw new Exception("Foo");
+
+                    Instruction inst = new Instruction(wrapper);
+
+                    inst.OpCode = Convert.ToUInt16(args[1].Trim(), 16);
+                    inst.NodeVersion = Convert.ToByte(args[2].Trim(), 16);
+                    inst.Target1 = Convert.ToUInt16(args[3].Trim(), 16);
+                    inst.Target2 = Convert.ToUInt16(args[4].Trim(), 16);
+                    for (int j = 0; j < 8; j++)
+                        inst.Operands[j] = Convert.ToByte(args[5].Trim().Substring(j * 2, 2), 16);
+                    for (int j = 0; j < 8; j++)
+                        inst.Reserved1[j] = Convert.ToByte(args[5].Trim().Substring(16 + j * 2, 2), 16);
+
+                    if (inst.Target1 < 0xfffc) inst.Target1 = (ushort)(inst.Target1 + origlen);
+                    if (inst.Target2 < 0xfffc) inst.Target2 = (ushort)(inst.Target2 + origlen);
+
+                    wrapper.Add(inst);
+                }
+                finally
+                {
+                    i++;
+                }
+            }
+        }
 
 		private void TPRPMaker()
 		{
@@ -745,6 +786,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbCacheFlags = new System.Windows.Forms.TextBox();
             this.cbFormat = new System.Windows.Forms.ComboBox();
             this.gbSpecial = new System.Windows.Forms.GroupBox();
+            this.btnPasteListing = new System.Windows.Forms.Button();
             this.btnAppend = new System.Windows.Forms.Button();
             this.btnInsTrue = new System.Windows.Forms.Button();
             this.btnInsFalse = new System.Windows.Forms.Button();
@@ -752,8 +794,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnLinkInge = new System.Windows.Forms.Button();
             this.btnGUIDIndex = new System.Windows.Forms.Button();
             this.btnDelMerola = new System.Windows.Forms.Button();
-            this.btnListing = new System.Windows.Forms.Button();
+            this.btnCopyListing = new System.Windows.Forms.Button();
             this.btnTPRPMaker = new System.Windows.Forms.Button();
+            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.btnDel = new System.Windows.Forms.Button();
             this.gbMove = new System.Windows.Forms.GroupBox();
             this.btnUp = new System.Windows.Forms.Button();
@@ -774,7 +817,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.gbInstruction.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
@@ -1281,6 +1323,7 @@ namespace SimPe.PackedFiles.UserInterface
             // gbSpecial
             // 
             resources.ApplyResources(this.gbSpecial, "gbSpecial");
+            this.gbSpecial.Controls.Add(this.btnPasteListing);
             this.gbSpecial.Controls.Add(this.btnAppend);
             this.gbSpecial.Controls.Add(this.btnInsTrue);
             this.gbSpecial.Controls.Add(this.btnInsFalse);
@@ -1288,10 +1331,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbSpecial.Controls.Add(this.btnLinkInge);
             this.gbSpecial.Controls.Add(this.btnGUIDIndex);
             this.gbSpecial.Controls.Add(this.btnDelMerola);
-            this.gbSpecial.Controls.Add(this.btnListing);
+            this.gbSpecial.Controls.Add(this.btnCopyListing);
             this.gbSpecial.Controls.Add(this.btnTPRPMaker);
             this.gbSpecial.Name = "gbSpecial";
             this.gbSpecial.TabStop = false;
+            // 
+            // btnPasteListing
+            // 
+            resources.ApplyResources(this.btnPasteListing, "btnPasteListing");
+            this.btnPasteListing.Name = "btnPasteListing";
+            this.btnPasteListing.Click += new System.EventHandler(this.btnPasteListing_Click);
             // 
             // btnAppend
             // 
@@ -1335,17 +1384,24 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnDelMerola.Name = "btnDelMerola";
             this.btnDelMerola.Click += new System.EventHandler(this.btnDelMerola_Click);
             // 
-            // btnListing
+            // btnCopyListing
             // 
-            resources.ApplyResources(this.btnListing, "btnListing");
-            this.btnListing.Name = "btnListing";
-            this.btnListing.Click += new System.EventHandler(this.btnListing_Click);
+            resources.ApplyResources(this.btnCopyListing, "btnCopyListing");
+            this.btnCopyListing.Name = "btnCopyListing";
+            this.btnCopyListing.Click += new System.EventHandler(this.btnCopyListing_Click);
             // 
             // btnTPRPMaker
             // 
             resources.ApplyResources(this.btnTPRPMaker, "btnTPRPMaker");
             this.btnTPRPMaker.Name = "btnTPRPMaker";
             this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
+            // 
+            // pnflowcontainer
+            // 
+            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
+            this.pnflowcontainer.Name = "pnflowcontainer";
+            this.pnflowcontainer.SelectedIndex = -1;
+            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
             // 
             // btnDel
             // 
@@ -1481,13 +1537,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.toFileToolStripMenuItem.Name = "toFileToolStripMenuItem";
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
-            // 
-            // pnflowcontainer
-            // 
-            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
-            this.pnflowcontainer.Name = "pnflowcontainer";
-            this.pnflowcontainer.SelectedIndex = -1;
-            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
             // 
             // BhavForm
             // 
@@ -1649,7 +1698,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
 		{
-			pjse.FileTable.Entry item = new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent);
+            pjse.FileTable.Entry item = new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent, false);
 
 			if (item != null && item.Instance != currentInst.Instruction.OpCode)
 				this.tbInst_OpCode.Text = "0x" + SimPe.Helper.HexString((ushort)item.Instance);
@@ -2077,7 +2126,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnAppend_Click(object sender, System.EventArgs e)
 		{
-			this.pnflowcontainer.Append(new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent));
+            this.pnflowcontainer.Append(new ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, bhavPanel.Parent, true, 0x10));
 		}
 
 		private void btnDelMerola_Click(object sender, System.EventArgs e)
@@ -2085,10 +2134,15 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflowcontainer.DeleteUnlinked();
 		}
 
-		private void btnListing_Click(object sender, System.EventArgs e)
+		private void btnCopyListing_Click(object sender, System.EventArgs e)
 		{
 			this.CopyListing();
 		}
+
+        private void btnPasteListing_Click(object sender, EventArgs e)
+        {
+            this.PasteListing();
+        }
 
 		private void btnTPRPMaker_Click(object sender, System.EventArgs e)
 		{

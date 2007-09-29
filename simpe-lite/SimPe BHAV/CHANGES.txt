@@ -1,5 +1,23 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+29 September 2007 11:14 - ResourceChooser enhanced to spot "override" resources
+  * Also add substitutable localisable strings
+  * Also add "paste listing" to BhavForm
+  * Also support Boolset <-> string conversions
+  pjse Localisation\
+    Localization.cs 1.1.4.4
+    Localization.resx 1.1.4.26
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.41
+    BhavForm.resx 1.30.2.19
+    BhavOperandWizAnimate.cs 1.1.4.3
+    ObjfForm.cs 1.13.2.12
+    ResourceChooser.cs 1.6.2.10
+    ResourceChooser.resx 1.1.12.6
+    StrForm.cs 1.28.2.25
+    SystemClasses.cs 1.1.2.4
+    TtabForm.cs 1.31.2.28
+
 18 September 2007 12:47 - Progress Bar when creating GUID index
   * Fix old typo for PetTraitFlags
   SimPe BHAV\

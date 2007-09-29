@@ -27,48 +27,48 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace SimPe.PackedFiles.UserInterface
 {
-	/// <summary>
-	/// Summary description for StrForm.
-	/// </summary>
-	public class StrForm : System.Windows.Forms.Form, IPackedFileUI
-	{
-		#region Form variables
-		private System.Windows.Forms.Panel strPanel;
-		private System.Windows.Forms.Button btnCommit;
-		private System.Windows.Forms.Label lbFilename;
-		private System.Windows.Forms.TextBox tbFilename;
-		private System.Windows.Forms.Label lbFormat;
-		private System.Windows.Forms.TextBox tbFormat;
-		private System.Windows.Forms.Label lbStringNum;
-		private System.Windows.Forms.Button btnStrDelete;
-		private System.Windows.Forms.Button btnStrAdd;
-		private System.Windows.Forms.Button btnClearAll;
-		private System.Windows.Forms.Label lbLngSelect;
-		private System.Windows.Forms.ComboBox cbLngSelect;
-		private System.Windows.Forms.Button btnLngNext;
-		private System.Windows.Forms.Button btnLngPrev;
-		private System.Windows.Forms.Button btnLngClear;
-		private System.Windows.Forms.RichTextBox rtbTitle;
-		private System.Windows.Forms.RichTextBox rtbDescription;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Button btnBigString;
-		private System.Windows.Forms.Button btnBigDesc;
-		private System.Windows.Forms.Button btnAppend;
-		private System.Windows.Forms.ColumnHeader chString;
-		private System.Windows.Forms.ColumnHeader chDefault;
-		private System.Windows.Forms.ColumnHeader chLang;
-		private System.Windows.Forms.ListView lvStrItems;
-		private System.Windows.Forms.Button btnStrClear;
-		private System.Windows.Forms.Label lbDesc;
-		private System.Windows.Forms.CheckBox ckbDefault;
-		private System.Windows.Forms.Button btnStrPrev;
-		private System.Windows.Forms.Button btnStrNext;
-		private System.Windows.Forms.Button btnReplace;
-		private System.Windows.Forms.Panel pnHeading;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Button btnHelp;
-		private System.Windows.Forms.Button btnLngFirst;
-		private System.Windows.Forms.Button btnStrDefault;
+    /// <summary>
+    /// Summary description for StrForm.
+    /// </summary>
+    public class StrForm : System.Windows.Forms.Form, IPackedFileUI
+    {
+        #region Form variables
+        private System.Windows.Forms.Panel strPanel;
+        private System.Windows.Forms.Button btnCommit;
+        private System.Windows.Forms.Label lbFilename;
+        private System.Windows.Forms.TextBox tbFilename;
+        private System.Windows.Forms.Label lbFormat;
+        private System.Windows.Forms.TextBox tbFormat;
+        private System.Windows.Forms.Label lbStringNum;
+        private System.Windows.Forms.Button btnStrDelete;
+        private System.Windows.Forms.Button btnStrAdd;
+        private System.Windows.Forms.Button btnClearAll;
+        private System.Windows.Forms.Label lbLngSelect;
+        private System.Windows.Forms.ComboBox cbLngSelect;
+        private System.Windows.Forms.Button btnLngNext;
+        private System.Windows.Forms.Button btnLngPrev;
+        private System.Windows.Forms.Button btnLngClear;
+        private System.Windows.Forms.RichTextBox rtbTitle;
+        private System.Windows.Forms.RichTextBox rtbDescription;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnBigString;
+        private System.Windows.Forms.Button btnBigDesc;
+        private System.Windows.Forms.Button btnAppend;
+        private System.Windows.Forms.ColumnHeader chString;
+        private System.Windows.Forms.ColumnHeader chDefault;
+        private System.Windows.Forms.ColumnHeader chLang;
+        private System.Windows.Forms.ListView lvStrItems;
+        private System.Windows.Forms.Button btnStrClear;
+        private System.Windows.Forms.Label lbDesc;
+        private System.Windows.Forms.CheckBox ckbDefault;
+        private System.Windows.Forms.Button btnStrPrev;
+        private System.Windows.Forms.Button btnStrNext;
+        private System.Windows.Forms.Button btnReplace;
+        private System.Windows.Forms.Panel pnHeading;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.Button btnLngFirst;
+        private System.Windows.Forms.Button btnStrDefault;
         private Button btnRefreshFT;
         private ColumnHeader chLangDesc;
         private ColumnHeader chDefaultDesc;
@@ -76,74 +76,74 @@ namespace SimPe.PackedFiles.UserInterface
         private Button btnImport;
         private Button btnExport;
         private Button btnStrCopy;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
+        #endregion
 
-		public StrForm()
-		{
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
+        public StrForm()
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
 
             pjse.Updates.Checker.Daily();
-            
+
             Control[] af = { tbFormat };
-			alHex16 = new ArrayList(af);
+            alHex16 = new ArrayList(af);
 
-			Control[] at = { tbFilename, rtbTitle, rtbDescription };
-			alTextBoxBase = new ArrayList(at);
+            Control[] at = { tbFilename, rtbTitle, rtbDescription };
+            alTextBoxBase = new ArrayList(at);
 
-			Control[] ab = { btnBigString, btnBigDesc };
-			alBigBtn = new ArrayList(ab);
-		}
+            Control[] ab = { btnBigString, btnBigDesc };
+            alBigBtn = new ArrayList(ab);
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
 
-		#region Controller
-		private StrWrapper wrapper = null;
-		private bool setHandler = false;
-		private bool internalchg = false;
+        #region Controller
+        private StrWrapper wrapper = null;
+        private bool setHandler = false;
+        private bool internalchg = false;
 
-		private ArrayList alHex16 = null;
-		private ArrayList alTextBoxBase = null;
-		private ArrayList alBigBtn = null;
+        private ArrayList alHex16 = null;
+        private ArrayList alTextBoxBase = null;
+        private ArrayList alBigBtn = null;
 
-		private byte lid = 1;
-		private int index = -1;
-		private int count = 0;
+        private byte lid = 1;
+        private int index = -1;
+        private int count = 0;
         private bool[] isEmpty = new bool[45];
         private String langName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages, 1);
 
-		private bool hex16_IsValid(object sender)
-		{
-			if (alHex16.IndexOf(sender) < 0)
-				throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
-			try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
-			catch (Exception) { return false; }
-			return true;
-		}
+        private bool hex16_IsValid(object sender)
+        {
+            if (alHex16.IndexOf(sender) < 0)
+                throw new Exception("hex16_IsValid not applicable to control " + sender.ToString());
+            try { Convert.ToUInt16(((TextBox)sender).Text, 16); }
+            catch (Exception) { return false; }
+            return true;
+        }
 
 
-		private void updateSelectedItem()
-		{
+        private void updateSelectedItem()
+        {
             if (lid == 1)
             {
                 this.lvStrItems.Items[index].SubItems[3].Text = wrapper[1, index].Title;
@@ -152,10 +152,10 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvStrItems.Items[index].SubItems[1].Text = wrapper[lid, index].Title;
             this.lvStrItems.Items[index].SubItems[2].Text = wrapper[lid, index].Description;
 
-			isEmpty[lid] = true;
-			StrItem[] sa = wrapper[lid];
+            isEmpty[lid] = true;
+            StrItem[] sa = wrapper[lid];
             for (int j = count - 1; j >= 0 && isEmpty[lid]; j--)
-				if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
+                if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
                     isEmpty[lid] = false;
             this.cbLngSelect.Items[lid - 1] = langName + (isEmpty[lid] ? " (" + pjse.Localization.GetString("empty") + ")" : "");
 
@@ -187,16 +187,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnReplace.Enabled = (lid == 1);
         }
 
-		private void updateLists()
-		{
-			wrapper.CleanUp();
+        private void updateLists()
+        {
+            wrapper.CleanUp();
 
-			lid = 0;
-			index = -1;
+            lid = 0;
+            index = -1;
 
-			this.cbLngSelect.Items.Clear();
+            this.cbLngSelect.Items.Clear();
 
-			bool onlyDefault = true;
+            bool onlyDefault = true;
             this.cbLngSelect.Items.AddRange(pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages).ToArray());
             for (byte i = 1; i < this.cbLngSelect.Items.Count; i++)
             {
@@ -207,204 +207,204 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbLngSelect.Items.RemoveAt(0);
             this.btnClearAll.Enabled = !onlyDefault;
 
-			count = 0;
-			for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Length);
-			while (count > 0 && wrapper[1, count-1] == null && wrapper.Add(1, "", "") >= 0);
+            count = 0;
+            for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Length);
+            while (count > 0 && wrapper[1, count - 1] == null && wrapper.Add(1, "", "") >= 0) ;
 
-			this.lvStrItems.Columns[1].Text = "";
-			this.lvStrItems.Items.Clear();
-			for (int i = 0; i < count; i++)
-			{
-				StrItem si = wrapper[1, i];
-				this.lvStrItems.Items.Add( new ListViewItem(
+            this.lvStrItems.Columns[1].Text = "";
+            this.lvStrItems.Items.Clear();
+            for (int i = 0; i < count; i++)
+            {
+                StrItem si = wrapper[1, i];
+                this.lvStrItems.Items.Add(new ListViewItem(
                     new string[] { "0x" + Helper.HexString((ushort)i), "", "", ((si == null) ? "" : si.Title), ((si == null) ? "" : si.Description) }
-					) );
-				this.lvStrItems.Items[i].UseItemStyleForSubItems = false;
+                    ));
+                this.lvStrItems.Items[i].UseItemStyleForSubItems = false;
                 this.lvStrItems.Items[i].SubItems[2].ForeColor = System.Drawing.SystemColors.ControlDark;
                 this.lvStrItems.Items[i].SubItems[3].ForeColor = System.Drawing.SystemColors.ControlDark;
                 this.lvStrItems.Items[i].SubItems[4].ForeColor = System.Drawing.SystemColors.ControlDark;
             }
-		}
+        }
 
 
-		private void setLid(byte l)
-		{
-			if (lid == l) return;
-			lid = l;
+        private void setLid(byte l)
+        {
+            if (lid == l) return;
+            lid = l;
             langName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages, lid);
 
-			internalchg = true;
-			if (lid > 0) this.cbLngSelect.SelectedIndex = l - 1;
-			internalchg = false;
-			this.btnLngFirst.Enabled = this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
-			this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
+            internalchg = true;
+            if (lid > 0) this.cbLngSelect.SelectedIndex = l - 1;
+            internalchg = false;
+            this.btnLngFirst.Enabled = this.btnLngPrev.Enabled = (this.cbLngSelect.SelectedIndex > 0);
+            this.btnLngNext.Enabled = (wrapper.Format != 0x0000) && (this.cbLngSelect.Items.Count > 0) && (this.cbLngSelect.SelectedIndex < this.cbLngSelect.Items.Count - 1);
 
-			this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + langName;
+            this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + langName;
 
-			while (count > 0 && wrapper[lid, count-1] == null && wrapper.Add(lid, "", "") >= 0);
-			this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
+            while (count > 0 && wrapper[lid, count - 1] == null && wrapper.Add(lid, "", "") >= 0) ;
+            this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
             for (int i = 0; i < count; i++)
             {
                 this.lvStrItems.Items[i].SubItems[1].Text = wrapper[lid, i].Title;
                 this.lvStrItems.Items[i].SubItems[2].Text = wrapper[lid, i].Description;
             }
 
-			displayStrItem();
-		}
+            displayStrItem();
+        }
 
-		private void setIndex(int i)
-		{
-			internalchg = true;
-			if (i >= 0) this.lvStrItems.Items[i].Selected = true;
-			else if (index >= 0) this.lvStrItems.Items[index].Selected = false;
-			internalchg = false;
+        private void setIndex(int i)
+        {
+            internalchg = true;
+            if (i >= 0) this.lvStrItems.Items[i].Selected = true;
+            else if (index >= 0) this.lvStrItems.Items[index].Selected = false;
+            internalchg = false;
 
-			if (this.lvStrItems.SelectedItems.Count > 0)
-			{
-				if (this.lvStrItems.Focused) this.lvStrItems.SelectedItems[0].Focused = true;
-				this.lvStrItems.SelectedItems[0].EnsureVisible();
-			}
+            if (this.lvStrItems.SelectedItems.Count > 0)
+            {
+                if (this.lvStrItems.Focused) this.lvStrItems.SelectedItems[0].Focused = true;
+                this.lvStrItems.SelectedItems[0].EnsureVisible();
+            }
 
-			if (index == i) return;
-			index = i;
-			displayStrItem();
-		}
+            if (index == i) return;
+            index = i;
+            displayStrItem();
+        }
 
 
-		private void displayStrItem()
-		{
-			StrItem s = (index < 0) ? null : wrapper[lid, index];
+        private void displayStrItem()
+        {
+            StrItem s = (index < 0) ? null : wrapper[lid, index];
 
-			internalchg = true;
-			if (s != null)
-			{
-				this.lbStringNum.Text = pjse.Localization.GetString("String") + " 0x"
+            internalchg = true;
+            if (s != null)
+            {
+                this.lbStringNum.Text = pjse.Localization.GetString("String") + " 0x"
                     + Helper.HexString((ushort)index) + " (" + langName + ")";
-				this.rtbTitle.Text = s.Title;
-				this.rtbTitle.SelectAll();
-				this.btnBigString.Enabled = this.rtbTitle.Enabled = true;
-				this.rtbDescription.Text = s.Description;
-				this.rtbDescription.SelectAll();
-				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = (wrapper.Format != 0x0000 && wrapper.Format != 0xFFFE);
-			}
-			else
-			{
-				this.lbStringNum.Text = "";
-				this.rtbDescription.Text = this.rtbTitle.Text = "";
-				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.btnBigString.Enabled = this.rtbTitle.Enabled = false;
-			}
-			internalchg = false;
+                this.rtbTitle.Text = s.Title;
+                this.rtbTitle.SelectAll();
+                this.btnBigString.Enabled = this.rtbTitle.Enabled = true;
+                this.rtbDescription.Text = s.Description;
+                this.rtbDescription.SelectAll();
+                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = (wrapper.Format != 0x0000 && wrapper.Format != 0xFFFE);
+            }
+            else
+            {
+                this.lbStringNum.Text = "";
+                this.rtbDescription.Text = this.rtbTitle.Text = "";
+                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.btnBigString.Enabled = this.rtbTitle.Enabled = false;
+            }
+            internalchg = false;
 
             doButtons();
         }
 
 
-		private void LngClear()
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
+        private void LngClear()
+        {
+            bool savedstate = internalchg;
+            internalchg = true;
 
-			foreach (StrItem s in wrapper)
-				if (s.LanguageID == lid)
-					s.Title = s.Description = "";
+            foreach (StrItem s in wrapper)
+                if (s.LanguageID == lid)
+                    s.Title = s.Description = "";
 
-			byte l = lid;
-			int i = index;
-			updateLists();
+            byte l = lid;
+            int i = index;
+            updateLists();
 
-			internalchg = savedstate;
+            internalchg = savedstate;
 
-			setLid(l);
-			setIndex((i >= count) ? count - 1 : i);
-		}
+            setLid(l);
+            setIndex((i >= count) ? count - 1 : i);
+        }
 
-		private void LngClearAll()
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
+        private void LngClearAll()
+        {
+            bool savedstate = internalchg;
+            internalchg = true;
 
-			foreach (StrItem s in wrapper)
-				if (s.LanguageID != 1)
-					s.Title = s.Description = "";
+            foreach (StrItem s in wrapper)
+                if (s.LanguageID != 1)
+                    s.Title = s.Description = "";
 
-			byte l = lid;
-			int i = index;
-			updateLists();
+            byte l = lid;
+            int i = index;
+            updateLists();
 
-			internalchg = savedstate;
+            internalchg = savedstate;
 
-			setLid(l);
-			setIndex((i >= count) ? count - 1 : i);
-		}
-
-
-		private void StrAdd()
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-
-			string title, desc;
-			if (index >= 0)
-			{
-				StrItem si = (StrItem)wrapper[1, index];
-				if (si != null)
-				{
-					title = si.Title;
-					desc = si.Description;
-				}
-				else
-					title = desc = "";
-			}
-			else
-				title = desc = "";
+            setLid(l);
+            setIndex((i >= count) ? count - 1 : i);
+        }
 
 
-			if (wrapper.Add(1, title, desc) >= 0)
-			{
-				count++;
+        private void StrAdd()
+        {
+            bool savedstate = internalchg;
+            internalchg = true;
+
+            string title, desc;
+            if (index >= 0)
+            {
+                StrItem si = (StrItem)wrapper[1, index];
+                if (si != null)
+                {
+                    title = si.Title;
+                    desc = si.Description;
+                }
+                else
+                    title = desc = "";
+            }
+            else
+                title = desc = "";
+
+
+            if (wrapper.Add(1, title, desc) >= 0)
+            {
+                count++;
                 this.lvStrItems.Items.Add(new ListViewItem(new string[] { "0x" + Helper.HexString((ushort)(count - 1)), title, desc, title, desc }));
-			}
+            }
 
-			internalchg = savedstate;
+            internalchg = savedstate;
 
-			//setLid(1);
-			setIndex(count - 1);
-		}
+            //setLid(1);
+            setIndex(count - 1);
+        }
 
-		private void StrDelete()
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
+        private void StrDelete()
+        {
+            bool savedstate = internalchg;
+            internalchg = true;
 
-			for (byte j = 1; j < 44; j++)
-			{
-				for (int ix = index; ix < count - 1; ix++)
-				{
-					StrItem s1 = wrapper[j, ix];
-					if (s1 != null)
-					{
-						StrItem s2 = wrapper[j, ix+1];
-						if (s2 != null)
-						{
-							s1.Title       = s2.Title;
-							s1.Description = s2.Description;
-						}
-						else
-							s1.Title = s1.Description = "";
-					}
-				}
-				wrapper.Remove(wrapper[j, count-1]);
-			}
+            for (byte j = 1; j < 44; j++)
+            {
+                for (int ix = index; ix < count - 1; ix++)
+                {
+                    StrItem s1 = wrapper[j, ix];
+                    if (s1 != null)
+                    {
+                        StrItem s2 = wrapper[j, ix + 1];
+                        if (s2 != null)
+                        {
+                            s1.Title = s2.Title;
+                            s1.Description = s2.Description;
+                        }
+                        else
+                            s1.Title = s1.Description = "";
+                    }
+                }
+                wrapper.Remove(wrapper[j, count - 1]);
+            }
 
-			byte l = lid;
-			int i = index;
-			updateLists();
+            byte l = lid;
+            int i = index;
+            updateLists();
 
-			internalchg = savedstate;
+            internalchg = savedstate;
 
-			setLid(l);
-			setIndex((i >= count) ? count - 1 : i);
-		}
+            setLid(l);
+            setIndex((i >= count) ? count - 1 : i);
+        }
 
         private void StrCopy()
         {
@@ -431,47 +431,47 @@ namespace SimPe.PackedFiles.UserInterface
         }
 
         private void StrReplace()
-		{
-			pjse.FileTable.Entry e = (new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel);
-			if (e == null || !(e.Wrapper is StrWrapper)) return;
+        {
+            pjse.FileTable.Entry e = (new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel, true);
+            if (e == null || !(e.Wrapper is StrWrapper)) return;
 
-			StrWrapper b = (StrWrapper)e.Wrapper;
-			int strnum = (new pjse.StrChooser()).Strnum(b);
-			if (strnum < 0) return;
+            StrWrapper b = (StrWrapper)e.Wrapper;
+            int strnum = (new pjse.StrChooser()).Strnum(b);
+            if (strnum < 0) return;
 
-			bool savedstate = internalchg;
-			internalchg = true;
+            bool savedstate = internalchg;
+            internalchg = true;
 
-			if (wrapper.Format == 0x0000)
-			{
-				wrapper[1, index].Title = b[1, strnum].Title;
-				 wrapper[1, index].Description = b[1, strnum].Description;
-			}
-			else
-				for (byte m = 1; m < 44; m++)
-				{
-					while (wrapper[m, index] == null && wrapper.Add(m, "", "") >= 0);
-					if (b[m, strnum] == null)
-					{
-						wrapper[m, index].Title = "";
-						wrapper[m, index].Description = "";
-					}
-					else
-					{
-						wrapper[m, index].Title = b[m, strnum].Title;
-						wrapper[m, index].Description = b[m, strnum].Description;
-					}
-				}
+            if (wrapper.Format == 0x0000)
+            {
+                wrapper[1, index].Title = b[1, strnum].Title;
+                wrapper[1, index].Description = b[1, strnum].Description;
+            }
+            else
+                for (byte m = 1; m < 44; m++)
+                {
+                    while (wrapper[m, index] == null && wrapper.Add(m, "", "") >= 0) ;
+                    if (b[m, strnum] == null)
+                    {
+                        wrapper[m, index].Title = "";
+                        wrapper[m, index].Description = "";
+                    }
+                    else
+                    {
+                        wrapper[m, index].Title = b[m, strnum].Title;
+                        wrapper[m, index].Description = b[m, strnum].Description;
+                    }
+                }
 
-			byte l = lid;
-			int i = index;
-			updateLists();
+            byte l = lid;
+            int i = index;
+            updateLists();
 
-			internalchg = savedstate;
+            internalchg = savedstate;
 
-			setLid(l);
-			setIndex((i >= count) ? count - 1 : i);
-		}
+            setLid(l);
+            setIndex((i >= count) ? count - 1 : i);
+        }
 
         private void StrClear()
         {
@@ -495,86 +495,86 @@ namespace SimPe.PackedFiles.UserInterface
         }
 
 
-		private void StrDefault()
-		{
-			StrItem di = wrapper[1, index];
-			StrItem si = wrapper[lid, index];
+        private void StrDefault()
+        {
+            StrItem di = wrapper[1, index];
+            StrItem si = wrapper[lid, index];
 
-			di.Title       = si.Title;
-			di.Description = si.Description;
+            di.Title = si.Title;
+            di.Description = si.Description;
 
             this.lvStrItems.Items[index].SubItems[3].Text = wrapper[1, index].Title;
             this.lvStrItems.Items[index].SubItems[4].Text = wrapper[1, index].Description;
 
             isEmpty[1] = true;
-			StrItem[] sa = wrapper[(byte)1];
+            StrItem[] sa = wrapper[(byte)1];
             for (int j = count - 1; j >= 0 && isEmpty[1]; j--)
-				if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
+                if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
                     isEmpty[1] = false;
-			this.cbLngSelect.Items[0] = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages, 1)
+            this.cbLngSelect.Items[0] = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages, 1)
                 + (isEmpty[1] ? " (" + pjse.Localization.GetString("empty") + ")" : "");
-		}
+        }
 
 
 
-		private void Append(pjse.FileTable.Entry e)
-		{
-			if (e == null) return;
+        private void Append(pjse.FileTable.Entry e)
+        {
+            if (e == null) return;
 
-			bool savedstate = internalchg;
-			internalchg = true;
+            bool savedstate = internalchg;
+            internalchg = true;
 
-			strPanel.Parent.Cursor = Cursors.WaitCursor;
+            strPanel.Parent.Cursor = Cursors.WaitCursor;
 
-			using(StrWrapper b = (StrWrapper)e.Wrapper)
-			{
-				if (wrapper.Format != 0x0000)
-					for (byte m = 1; m < 44; m++)
-						while (wrapper[m, count-1] == null && wrapper.Add(m, "", "") >= 0);
-				for (int bi = 0; bi < b.Count; bi++)
-				{
-					if (wrapper.Format == 0x0000 && b[bi].LanguageID != 1) continue;
-					if (wrapper.Add(b[bi]) < 0) break;
-				}
-			}
+            using (StrWrapper b = (StrWrapper)e.Wrapper)
+            {
+                if (wrapper.Format != 0x0000)
+                    for (byte m = 1; m < 44; m++)
+                        while (wrapper[m, count - 1] == null && wrapper.Add(m, "", "") >= 0) ;
+                for (int bi = 0; bi < b.Count; bi++)
+                {
+                    if (wrapper.Format == 0x0000 && b[bi].LanguageID != 1) continue;
+                    if (wrapper.Add(b[bi]) < 0) break;
+                }
+            }
 
-			strPanel.Parent.Cursor = Cursors.Default;
+            strPanel.Parent.Cursor = Cursors.Default;
 
-			byte l = lid;
-			int i = index;
-			updateLists();
+            byte l = lid;
+            int i = index;
+            updateLists();
 
-			internalchg = savedstate;
+            internalchg = savedstate;
 
-			setLid(l);
-			setIndex((i >= count) ? count - 1 : i);
-		}
+            setLid(l);
+            setIndex((i >= count) ? count - 1 : i);
+        }
 
-		private void Commit()
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
+        private void Commit()
+        {
+            bool savedstate = internalchg;
+            internalchg = true;
 
-			try 
-			{
-				wrapper.SynchronizeUserData();
-			} 
-			catch (Exception ex) 
-			{
-				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
-			}			
+            try
+            {
+                wrapper.SynchronizeUserData();
+            }
+            catch (Exception ex)
+            {
+                Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
+            }
 
-			btnCommit.Enabled = wrapper.Changed;
+            btnCommit.Enabled = wrapper.Changed;
 
-			byte l = lid;
-			int i = index;
-			updateLists();
+            byte l = lid;
+            int i = index;
+            updateLists();
 
-			internalchg = savedstate;
+            internalchg = savedstate;
 
-			setLid(l);
-			setIndex((i >= count) ? count - 1 : i);
-		}
+            setLid(l);
+            setIndex((i >= count) ? count - 1 : i);
+        }
 
         private void StringFile(bool load)
         {
@@ -620,81 +620,81 @@ namespace SimPe.PackedFiles.UserInterface
         }
 
 
-		#endregion
+        #endregion
 
-		#region IPackedFileUI Member
-		/// <summary>
-		/// Returns the Control that will be displayed within SimPe
-		/// </summary>
-		public Control GUIHandle
-		{
-			get
-			{
-				return strPanel;
-			}
-		}
+        #region IPackedFileUI Member
+        /// <summary>
+        /// Returns the Control that will be displayed within SimPe
+        /// </summary>
+        public Control GUIHandle
+        {
+            get
+            {
+                return strPanel;
+            }
+        }
 
-		/// <summary>
-		/// Called by the AbstractWrapper when the file should be displayed to the user.
-		/// </summary>
-		/// <param name="wrp">Reference to the wrapper to be displayed.</param>
-		public void UpdateGUI(IFileWrapper wrp)
-		{
-			wrapper = (StrWrapper) wrp;
-			this.WrapperChanged(wrapper, null);
+        /// <summary>
+        /// Called by the AbstractWrapper when the file should be displayed to the user.
+        /// </summary>
+        /// <param name="wrp">Reference to the wrapper to be displayed.</param>
+        public void UpdateGUI(IFileWrapper wrp)
+        {
+            wrapper = (StrWrapper)wrp;
+            this.WrapperChanged(wrapper, null);
 
-			internalchg = true;
-			updateLists();
+            internalchg = true;
+            updateLists();
             this.ckbDefault.Checked = pjse.Settings.PJSE.StrShowDefault;
             this.ckbDescription.Checked = pjse.Settings.PJSE.StrShowDesc;
             internalchg = false;
 
-			setLid(1);
-			setIndex(count > 0 ? 0 : -1);
+            setLid(1);
+            setIndex(count > 0 ? 0 : -1);
             ckb_CheckedChanged(null, null);
 
-			if (!setHandler)
-			{
-				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
-				setHandler = true;
-			}
-		}
+            if (!setHandler)
+            {
+                wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                setHandler = true;
+            }
+        }
 
-		private void WrapperChanged(object sender, System.EventArgs e)
-		{
-			this.btnCommit.Enabled = wrapper.Changed;
+        private void WrapperChanged(object sender, System.EventArgs e)
+        {
+            this.btnCommit.Enabled = wrapper.Changed;
 
-			if (internalchg) return;
-			internalchg = true;
-			this.Text = this.tbFilename.Text = wrapper.FileName;
-			this.tbFormat.Text = "0x"+Helper.HexString(wrapper.Format);
-			if (wrapper.Format == 0x0000)
-			{
-				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = false;
-			}
-			else if (wrapper.Format == 0xFFFE)
-			{
-				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = false;
-				this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
-			}
-			else
-			{
-				this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
-			}
-			internalchg = false;
+            if (internalchg) return;
+            internalchg = true;
+            this.Text = this.tbFilename.Text = wrapper.FileName;
+            this.tbFormat.Text = "0x" + Helper.HexString(wrapper.Format);
+            if (wrapper.Format == 0x0000)
+            {
+                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = false;
+            }
+            else if (wrapper.Format == 0xFFFE)
+            {
+                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = false;
+                this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
+            }
+            else
+            {
+                this.btnBigDesc.Enabled = this.rtbDescription.Enabled = this.ckbDefault.Enabled = this.cbLngSelect.Enabled = true;
+            }
+            internalchg = false;
 
-			this.ckbDefault.Enabled = this.cbLngSelect.Enabled = (wrapper.Format != 0x0000);
-		}
+            this.ckbDefault.Enabled = this.cbLngSelect.Enabled = (wrapper.Format != 0x0000);
+        }
 
-		#endregion
+        #endregion
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StrForm));
             this.strPanel = new System.Windows.Forms.Panel();
             this.ckbDescription = new System.Windows.Forms.CheckBox();
@@ -1059,97 +1059,97 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnHeading.PerformLayout();
             this.ResumeLayout(false);
 
-		}
-		#endregion
+        }
+        #endregion
 
-		private void strPanel_Resize(object sender, System.EventArgs e)
-		{
-			this.btnBigDesc.Left = this.btnCommit.Right - this.btnBigDesc.Width;
+        private void strPanel_Resize(object sender, System.EventArgs e)
+        {
+            this.btnBigDesc.Left = this.btnCommit.Right - this.btnBigDesc.Width;
 
-			int width = this.btnBigDesc.Left - this.rtbTitle.Left - this.lbDesc.Width - 8;
+            int width = this.btnBigDesc.Left - this.rtbTitle.Left - this.lbDesc.Width - 8;
 
-			this.rtbDescription.Width = this.rtbTitle.Width = width / 2;
-			this.btnBigString.Left = this.rtbTitle.Right;
-			this.lbDesc.Left = this.rtbTitle.Right + 4;
-			this.rtbDescription.Left = this.lbDesc.Right + 4;
-		}
-
-
-		private void textBoxBase_Enter(object sender, System.EventArgs e)
-		{
-			((TextBoxBase)sender).SelectAll();
-		}
-
-		private void textBoxBase_TextChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-
-			internalchg = true;
-			switch(alTextBoxBase.IndexOf(sender))
-			{
-				case 0: wrapper.FileName = ((TextBoxBase)sender).Text; break;
-				case 1: wrapper[lid, index].Title = ((TextBoxBase)sender).Text; updateSelectedItem(); break;
-				case 2: wrapper[lid, index].Description = ((TextBoxBase)sender).Text; updateSelectedItem(); break;
-			}
-			internalchg = false;
-		}
+            this.rtbDescription.Width = this.rtbTitle.Width = width / 2;
+            this.btnBigString.Left = this.rtbTitle.Right;
+            this.lbDesc.Left = this.rtbTitle.Right + 4;
+            this.rtbDescription.Left = this.lbDesc.Right + 4;
+        }
 
 
-		private void hex16_TextChanged(object sender, System.EventArgs ev)
-		{
-			if (internalchg) return;
-			if (!hex16_IsValid(sender)) return;
+        private void textBoxBase_Enter(object sender, System.EventArgs e)
+        {
+            ((TextBoxBase)sender).SelectAll();
+        }
 
-			ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
-			internalchg = true;
-			switch (alHex16.IndexOf(sender))
-			{
-				case 0: wrapper.Format = val; break;
-			}
-			internalchg = false;
-		}
+        private void textBoxBase_TextChanged(object sender, System.EventArgs e)
+        {
+            if (internalchg) return;
 
-		private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-		{
-			if (hex16_IsValid(sender)) return;
-			e.Cancel = true;
-			hex16_Validated(sender, null);
-		}
-
-		private void hex16_Validated(object sender, System.EventArgs e)
-		{
-			bool origstate = internalchg;
-			internalchg = true;
-			ushort val = 0;
-			switch (alHex16.IndexOf(sender))
-			{
-				case 0: val = wrapper.Format; break;
-			}
-
-			((TextBox)sender).Text = "0x" + Helper.HexString(val);
-			((TextBox)sender).SelectAll();
-			internalchg = origstate;
-		}
+            internalchg = true;
+            switch (alTextBoxBase.IndexOf(sender))
+            {
+                case 0: wrapper.FileName = ((TextBoxBase)sender).Text; break;
+                case 1: wrapper[lid, index].Title = ((TextBoxBase)sender).Text; updateSelectedItem(); break;
+                case 2: wrapper[lid, index].Description = ((TextBoxBase)sender).Text; updateSelectedItem(); break;
+            }
+            internalchg = false;
+        }
 
 
-		private void cbLngSelect_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-			if (this.cbLngSelect.SelectedIndex >= 0)
-				setLid((byte)(this.cbLngSelect.SelectedIndex + 1));
-		}
+        private void hex16_TextChanged(object sender, System.EventArgs ev)
+        {
+            if (internalchg) return;
+            if (!hex16_IsValid(sender)) return;
+
+            ushort val = Convert.ToUInt16(((TextBox)sender).Text, 16);
+            internalchg = true;
+            switch (alHex16.IndexOf(sender))
+            {
+                case 0: wrapper.Format = val; break;
+            }
+            internalchg = false;
+        }
+
+        private void hex16_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (hex16_IsValid(sender)) return;
+            e.Cancel = true;
+            hex16_Validated(sender, null);
+        }
+
+        private void hex16_Validated(object sender, System.EventArgs e)
+        {
+            bool origstate = internalchg;
+            internalchg = true;
+            ushort val = 0;
+            switch (alHex16.IndexOf(sender))
+            {
+                case 0: val = wrapper.Format; break;
+            }
+
+            ((TextBox)sender).Text = "0x" + Helper.HexString(val);
+            ((TextBox)sender).SelectAll();
+            internalchg = origstate;
+        }
 
 
-		private void lvStrItems_ItemActivate(object sender, System.EventArgs e)
-		{
-			this.rtbTitle.Focus();
-		}
+        private void cbLngSelect_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            if (internalchg) return;
+            if (this.cbLngSelect.SelectedIndex >= 0)
+                setLid((byte)(this.cbLngSelect.SelectedIndex + 1));
+        }
 
-		private void lvStrItems_SelectedIndexChanged(object sender, System.EventArgs e)
-		{
-			if (internalchg) return;
-			setIndex((this.lvStrItems.SelectedIndices.Count > 0) ? this.lvStrItems.SelectedIndices[0] : -1);
-		}
+
+        private void lvStrItems_ItemActivate(object sender, System.EventArgs e)
+        {
+            this.rtbTitle.Focus();
+        }
+
+        private void lvStrItems_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            if (internalchg) return;
+            setIndex((this.lvStrItems.SelectedIndices.Count > 0) ? this.lvStrItems.SelectedIndices[0] : -1);
+        }
 
 
         private void ckb_CheckedChanged(object sender, System.EventArgs e)
@@ -1176,88 +1176,88 @@ namespace SimPe.PackedFiles.UserInterface
             }
         }
 
-		private void btnHelp_Click(object sender, System.EventArgs e)
-		{
-			/*pjse.HelpHelper.PluginHelp((wrapper.FileDescriptor.Type == 0x54544173)
-				? "PieMenus"
-				: "Strings");*/
+        private void btnHelp_Click(object sender, System.EventArgs e)
+        {
+            /*pjse.HelpHelper.PluginHelp((wrapper.FileDescriptor.Type == 0x54544173)
+                ? "PieMenus"
+                : "Strings");*/
             pjse.HelpHelper.Help("Contents");
-		}
+        }
 
-		private void btnBigString_Click(object sender, System.EventArgs e)
-		{
-			int index = alBigBtn.IndexOf(sender);
-			if (index < 0)
-				throw new Exception("btnBigString_Click not applicable to control " + sender.ToString());
+        private void btnBigString_Click(object sender, System.EventArgs e)
+        {
+            int index = alBigBtn.IndexOf(sender);
+            if (index < 0)
+                throw new Exception("btnBigString_Click not applicable to control " + sender.ToString());
 
-			RichTextBox[] rtb = { rtbTitle, rtbDescription };
-			string result = (new pjse.StrBig()).doBig(rtb[index].Text);
-			if (result != null) rtb[index].Text = result;
-		}
-
-
-		private void btnStrPrev_Click(object sender, System.EventArgs e)
-		{
-			setIndex(index - 1);
-		}
-
-		private void btnStrNext_Click(object sender, System.EventArgs e)
-		{
-			setIndex(index + 1);
-		}
+            RichTextBox[] rtb = { rtbTitle, rtbDescription };
+            string result = (new pjse.StrBig()).doBig(rtb[index].Text);
+            if (result != null) rtb[index].Text = result;
+        }
 
 
-		private void btnLngFirst_Click(object sender, System.EventArgs e)
-		{
-			setLid(1);
-		}
+        private void btnStrPrev_Click(object sender, System.EventArgs e)
+        {
+            setIndex(index - 1);
+        }
 
-		private void btnLngPrev_Click(object sender, System.EventArgs e)
-		{
-			setLid((byte)(lid - 1));
-		}
-
-		private void btnLngNext_Click(object sender, System.EventArgs e)
-		{
-			setLid((byte)(lid + 1));
-		}
+        private void btnStrNext_Click(object sender, System.EventArgs e)
+        {
+            setIndex(index + 1);
+        }
 
 
-		private void btnLngClear_Click(object sender, System.EventArgs e)
-		{
-			this.LngClear();
-		}
+        private void btnLngFirst_Click(object sender, System.EventArgs e)
+        {
+            setLid(1);
+        }
 
-		private void btnClearAll_Click(object sender, System.EventArgs e)
-		{
-			this.LngClearAll();
-		}
+        private void btnLngPrev_Click(object sender, System.EventArgs e)
+        {
+            setLid((byte)(lid - 1));
+        }
 
-		private void btnStrAdd_Click(object sender, System.EventArgs e)
-		{
-			this.StrAdd();
-			this.rtbTitle.Focus();
-		}
+        private void btnLngNext_Click(object sender, System.EventArgs e)
+        {
+            setLid((byte)(lid + 1));
+        }
 
-		private void btnStrDelete_Click(object sender, System.EventArgs e)
-		{
-			this.StrDelete();
-		}
 
-		private void btnStrDefault_Click(object sender, System.EventArgs e)
-		{
-			StrDefault();
-		}
+        private void btnLngClear_Click(object sender, System.EventArgs e)
+        {
+            this.LngClear();
+        }
 
-		private void btnStrClear_Click(object sender, System.EventArgs e)
-		{
-			this.StrClear();
-		}
+        private void btnClearAll_Click(object sender, System.EventArgs e)
+        {
+            this.LngClearAll();
+        }
 
-		private void btnAppend_Click(object sender, System.EventArgs e)
-		{
-			this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel));
-		}
+        private void btnStrAdd_Click(object sender, System.EventArgs e)
+        {
+            this.StrAdd();
+            this.rtbTitle.Focus();
+        }
+
+        private void btnStrDelete_Click(object sender, System.EventArgs e)
+        {
+            this.StrDelete();
+        }
+
+        private void btnStrDefault_Click(object sender, System.EventArgs e)
+        {
+            StrDefault();
+        }
+
+        private void btnStrClear_Click(object sender, System.EventArgs e)
+        {
+            this.StrClear();
+        }
+
+        private void btnAppend_Click(object sender, System.EventArgs e)
+        {
+            this.Append((new pjse.ResourceChooser()).Execute(wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, strPanel, true));
+        }
 
         private void btnStrCopy_Click(object sender, EventArgs e)
         {
@@ -1265,14 +1265,14 @@ namespace SimPe.PackedFiles.UserInterface
         }
 
         private void btnImport_Click(object sender, System.EventArgs e)
-		{
-			this.StrReplace();
-		}
+        {
+            this.StrReplace();
+        }
 
-		private void btnCommit_Click(object sender, System.EventArgs e)
-		{
-			this.Commit();
-		}
+        private void btnCommit_Click(object sender, System.EventArgs e)
+        {
+            this.Commit();
+        }
 
         private void btnRefreshFT_Click(object sender, EventArgs e)
         {
@@ -1284,6 +1284,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.StringFile(sender.Equals(this.btnImport));
         }
 
-	}
+    }
 
 }

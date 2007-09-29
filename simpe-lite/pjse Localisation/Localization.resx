@@ -1361,4 +1361,18 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
     <value>Want</value>
     <comment>0x7c</comment>
   </data>
+  <data name="rc_override" xml:space="preserve">
+    <value>You have chosen a resource from {0}
+which overrides the equivalent resource from the current objects.packge.
+
+Do you want to use this resource?
+
+[Yes]: use this override.
+[No]: use the EA resource.
+[Cancel]: return to the Resource Chooser</value>
+    <comment>{0}: filename of package containing resource</comment>
+  </data>
+  <data name="rc_overridesEA" xml:space="preserve">
+    <value>Resource from objects.package overridden</value>
+  </data>
 </root>

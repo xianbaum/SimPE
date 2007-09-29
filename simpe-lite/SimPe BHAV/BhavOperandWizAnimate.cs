@@ -1019,7 +1019,7 @@ namespace pjse.BhavOperandWizards.WizAnimate
 
         private void btnEventTree_Click(object sender, EventArgs e)
         {
-            pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, inst.Parent.FileDescriptor.Group, this);
+            pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, inst.Parent.FileDescriptor.Group, this, false);
             if (item != null)
                 tbValEventTree.Text = "0x" + SimPe.Helper.HexString((ushort)item.Instance);
         }
