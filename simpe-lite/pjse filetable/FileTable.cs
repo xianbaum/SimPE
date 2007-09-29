@@ -423,13 +423,14 @@ namespace pjse
             }
         }
 
-        public Entry[] this[uint packedFileType]
+        public Entry[] this[uint packedFileType] { get { return this[packedFileType, false]; } }
+        public Entry[] this[uint packedFileType, bool fixedonly]
         {
             get
             {
                 if (!hasLoaded) Refresh();
 
-                return putLocalFirst((Hashtable)pfByType[packedFileType], false, false);
+                return putLocalFirst((Hashtable)pfByType[packedFileType], false, fixedonly);
             }
         }
 

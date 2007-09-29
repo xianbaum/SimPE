@@ -424,24 +424,26 @@ Check BHAV format and number of lines.</value>
     <value>Filetable &amp;Settings</value>
     <comment>Menu item</comment>
   </data>
-  <data name="gt_Group" xml:space="preserve">
-    <value>Group</value>
+  <data name="gt_reportOBJD" xml:space="preserve">
+    <value>Group {0}: [{1} guid: {2}] {3} ({4})</value>
     <comment>GUIDTool listing</comment>
   </data>
   <data name="gt_MatchesFound" xml:space="preserve">
     <value>Matches found</value>
     <comment>GUIDTool result ("Matches found: nnn")</comment>
   </data>
-  <data name="gt_ObjectFinder" xml:space="preserve">
-    <value>&amp;Object Finder</value>
+  <data name="gt_ResourceFinder" xml:space="preserve">
+    <value>&amp;Resource Finder</value>
     <comment>GUIDTool menu item</comment>
   </data>
-  <data name="gt_ObjectFinderHelp" xml:space="preserve">
-    <value>This tool searches OBJD files in your PJSE filetable path
-(which for now means currently open file + objects.package).
+  <data name="gt_ResourceFinderHelp" xml:space="preserve">
+    <value>This tool searches resource known to PJSE.
 
-If you enter a string to search, it is a case insensitive whole or sub string of the OBJD filename.
-If you enter a GUID, it is the main GUID of the OBJD (ie fields 0x000E and 0x000F together).</value>
+Use the check boxes to select what resources to search (and, for OBJD, whether to search for a GUID).  Enter the resource name (and GUID) and click "Search".
+
+GUID is matched against the main GUID of the OBJD (ie fields 0x000E and 0x000F together).
+
+Name is matched, case insensitively, as a substring of the resource "filename".</value>
     <comment>GUIDTool prompt</comment>
   </data>
   <data name="allZeros" xml:space="preserve">
@@ -1374,5 +1376,9 @@ Do you want to use this resource?
   </data>
   <data name="rc_overridesEA" xml:space="preserve">
     <value>Resource from objects.package overridden</value>
+  </data>
+  <data name="gt_report" xml:space="preserve">
+    <value>Group {0}: [{1}] {2} ({3})</value>
+    <comment>GUIDTool listing</comment>
   </data>
 </root>

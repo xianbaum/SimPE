@@ -1,5 +1,14 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+29 September 2007 23:34 - GUIDTool extended to search other resource names
+  pjse filetable\
+    FileTable.cs 1.11.2.26
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.2.5
+    GUIDTool.resx 1.4.12.3
+  pjse Localisation\
+    Localization.resx 1.1.4.27
+
 29 September 2007 11:14 - ResourceChooser enhanced to spot "override" resources
   * Also add substitutable localisable strings
   * Also add "paste listing" to BhavForm
