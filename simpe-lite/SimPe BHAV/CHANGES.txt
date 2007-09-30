@@ -1,5 +1,11 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+30 September 2007 10:53 - Add NREF to GUIDTool
+  * Also persist form size
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.2.6
+    GUIDTool.resx 1.4.12.4
+
 29 September 2007 23:34 - GUIDTool extended to search other resource names
   pjse filetable\
     FileTable.cs 1.11.2.26

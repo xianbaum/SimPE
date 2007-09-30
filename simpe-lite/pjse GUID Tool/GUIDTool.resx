@@ -129,7 +129,7 @@
     <value>3, 119</value>
   </data>
   <data name="rtbReport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>694, 102</value>
+    <value>794, 102</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="rtbReport.TabIndex" type="System.Int32, mscorlib">
@@ -157,7 +157,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>508, 39</value>
+    <value>611, 39</value>
   </data>
   <data name="btnSearch.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 27</value>
@@ -184,7 +184,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>604, 39</value>
+    <value>707, 39</value>
   </data>
   <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
     <value>90, 27</value>
@@ -214,7 +214,7 @@
     <value>0, 227</value>
   </data>
   <data name="progressBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>697, 27</value>
+    <value>797, 27</value>
   </data>
   <data name="progressBar1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -238,7 +238,7 @@
     <value>0, 230</value>
   </data>
   <data name="lbStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>697, 26</value>
+    <value>797, 26</value>
   </data>
   <data name="lbStatus.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -262,7 +262,7 @@
     <value>Top, Right</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>474, 39</value>
+    <value>577, 39</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
     <value>28, 27</value>
@@ -351,6 +351,36 @@
   <data name="&gt;&gt;ckbObjdName.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="ckbNrefName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ckbNrefName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ckbNrefName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>222, 3</value>
+  </data>
+  <data name="ckbNrefName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 21</value>
+  </data>
+  <data name="ckbNrefName.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="ckbNrefName.Text" xml:space="preserve">
+    <value>N&amp;REF Name</value>
+  </data>
+  <data name="&gt;&gt;ckbNrefName.Name" xml:space="preserve">
+    <value>ckbNrefName</value>
+  </data>
+  <data name="&gt;&gt;ckbNrefName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbNrefName.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;ckbNrefName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="ckbBhavName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -358,13 +388,13 @@
     <value>NoControl</value>
   </data>
   <data name="ckbBhavName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>222, 3</value>
+    <value>333, 3</value>
   </data>
   <data name="ckbBhavName.Size" type="System.Drawing.Size, System.Drawing">
     <value>105, 21</value>
   </data>
   <data name="ckbBhavName.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="ckbBhavName.Text" xml:space="preserve">
     <value>B&amp;HAV Name</value>
@@ -379,7 +409,7 @@
     <value>flowLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;ckbBhavName.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="ckbBconName.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -388,13 +418,13 @@
     <value>NoControl</value>
   </data>
   <data name="ckbBconName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>333, 3</value>
+    <value>444, 3</value>
   </data>
   <data name="ckbBconName.Size" type="System.Drawing.Size, System.Drawing">
     <value>107, 21</value>
   </data>
   <data name="ckbBconName.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="ckbBconName.Text" xml:space="preserve">
     <value>B&amp;CON Name</value>
@@ -409,13 +439,13 @@
     <value>flowLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;ckbBconName.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
     <value>6, 21</value>
   </data>
   <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>443, 27</value>
+    <value>554, 27</value>
   </data>
   <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -436,7 +466,7 @@
     <value>3, 0</value>
   </data>
   <data name="gbOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>464, 57</value>
+    <value>568, 57</value>
   </data>
   <data name="gbOptions.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -463,7 +493,7 @@
     <value>NoControl</value>
   </data>
   <data name="ckbFixedOnly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>473, 12</value>
+    <value>577, 12</value>
   </data>
   <data name="ckbFixedOnly.Size" type="System.Drawing.Size, System.Drawing">
     <value>175, 21</value>
@@ -493,7 +523,7 @@
     <value>60, 91</value>
   </data>
   <data name="tbName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>634, 22</value>
+    <value>737, 22</value>
   </data>
   <data name="tbName.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -610,7 +640,7 @@
     <value>6, 15</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>697, 254</value>
+    <value>797, 254</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>705, 283</value>

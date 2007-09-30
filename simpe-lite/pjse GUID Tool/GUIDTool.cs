@@ -47,13 +47,14 @@ namespace pjse.guidtool
         private FlowLayoutPanel flowLayoutPanel1;
         private CheckBox ckbObjdGUID;
         private CheckBox ckbObjdName;
-        private CheckBox ckbBhavName;
-        private CheckBox ckbBconName;
         private CheckBox ckbFixedOnly;
         private TextBox tbName;
         private Label lbName;
         private TextBox tbGUID;
         private Label lbGUID;
+        private CheckBox ckbNrefName;
+        private CheckBox ckbBhavName;
+        private CheckBox ckbBconName;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -68,7 +69,9 @@ namespace pjse.guidtool
 			//
 			InitializeComponent();
 
-            lCkbSearch = new List<CheckBox>(new CheckBox[] { ckbObjdGUID, ckbObjdName, ckbBhavName, ckbBconName });
+            this.Height = PersistantHeight;
+            this.Width = PersistantWidth;
+
             lHex32 = new List<TextBox>(new TextBox[] { tbGUID, });
 
             this.oldText = this.btnSearch.Text;
@@ -76,6 +79,41 @@ namespace pjse.guidtool
 
             SearchComplete += new EventHandler(Complete);
         }
+
+        private static string BASENAME = "PJSE\\Bhav\\GUIDTool";
+        private static SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
+        private int PersistantHeight
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("PersistentHeight", this.Height);
+                return Convert.ToInt32(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("PersistentHeight", value);
+            }
+        }
+
+        private int PersistantWidth
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("PersistentWidth", this.Width);
+                return Convert.ToInt32(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("PersistentWidth", value);
+            }
+        }
+
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -99,9 +137,11 @@ namespace pjse.guidtool
         private string prompt = null;
         private Thread searchThread = null;
 
-        private static int byGroupInstance(pjse.FileTable.Entry x, pjse.FileTable.Entry y)
+        private static int byGroupTypeInstance(pjse.FileTable.Entry x, pjse.FileTable.Entry y)
         {
             int result = x.Group.CompareTo(y.Group);
+            if (result == 0)
+                result = x.Type.CompareTo(y.Type);
             if (result == 0)
                 result = x.Instance.CompareTo(y.Instance);
             return result;
@@ -110,26 +150,28 @@ namespace pjse.guidtool
         private void Search(object o)
         {
             bool[] type = (bool[])((object[])o)[0];
-            uint searchGUID = (uint)((object[])o)[1];
-            string searchText = (string)((object[])o)[2];
+            bool isFixed = (bool)((object[])o)[1];
+            uint searchGUID = (uint)((object[])o)[2];
+            string searchText = (string)((object[])o)[3];
 
             SetProgressCallback setProgress = new SetProgressCallback(SetProgress);
             AddResultCallback addResult = new AddResultCallback(AddResult);
             StopSearchCallback stopSearch = new StopSearchCallback(StopSearch);
             EventHandler onSearchComplete = new EventHandler(OnSearchComplete);
 
-
             try
             {
                 List<pjse.FileTable.Entry> results = new List<FileTable.Entry>();
                 if (type[0] || type[1])
-                    results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, type[4]]);
+                    results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, isFixed]);
                 if (type[2])
-                    results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, type[4]]);
+                    results.AddRange(pjse.FileTable.GFT[0x4E524546, isFixed]); // NREF
                 if (type[3])
-                    results.AddRange(pjse.FileTable.GFT[0x42434F4E, type[4]]); // BCON
+                    results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, isFixed]);
+                if (type[4])
+                    results.AddRange(pjse.FileTable.GFT[0x42434F4E, isFixed]); // BCON
 
-                results.Sort(byGroupInstance);
+                results.Sort(byGroupTypeInstance);
 
                 Invoke(setProgress, new object[] { false, results.Count });
 
@@ -158,6 +200,7 @@ namespace pjse.guidtool
                         break;
                 }
             }
+            catch (ThreadInterruptedException) { }
             finally
             {
                 Thread.Sleep(0);
@@ -218,8 +261,7 @@ namespace pjse.guidtool
         private void Start()
         {
             bool[] type = new bool[] {
-                ckbObjdGUID.Checked, ckbObjdName.Checked, ckbBhavName.Checked, ckbBconName.Checked,
-                ckbFixedOnly.Checked
+                ckbObjdGUID.Checked, ckbObjdName.Checked, ckbNrefName.Checked, ckbBhavName.Checked, ckbBconName.Checked,
             };
             uint guid = 0;
             guid = Convert.ToUInt32(this.tbGUID.Text, 16);
@@ -243,7 +285,7 @@ namespace pjse.guidtool
             matches = 0;
 
             searchThread = new Thread(new ParameterizedThreadStart(Search));
-            searchThread.Start(new object[] { type, guid, this.tbName.Text });
+            searchThread.Start(new object[] { type, ckbFixedOnly.Checked, guid, this.tbName.Text });
         }
 
         private void Stop()
@@ -277,7 +319,6 @@ namespace pjse.guidtool
         }
 
 
-        List<CheckBox> lCkbSearch = null;
         List<TextBox> lHex32 = null;
         private bool hex32_IsValid(object sender)
 		{
@@ -338,6 +379,7 @@ namespace pjse.guidtool
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.ckbObjdGUID = new System.Windows.Forms.CheckBox();
             this.ckbObjdName = new System.Windows.Forms.CheckBox();
+            this.ckbNrefName = new System.Windows.Forms.CheckBox();
             this.ckbBhavName = new System.Windows.Forms.CheckBox();
             this.ckbBconName = new System.Windows.Forms.CheckBox();
             this.ckbFixedOnly = new System.Windows.Forms.CheckBox();
@@ -397,6 +439,7 @@ namespace pjse.guidtool
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Controls.Add(this.ckbObjdGUID);
             this.flowLayoutPanel1.Controls.Add(this.ckbObjdName);
+            this.flowLayoutPanel1.Controls.Add(this.ckbNrefName);
             this.flowLayoutPanel1.Controls.Add(this.ckbBhavName);
             this.flowLayoutPanel1.Controls.Add(this.ckbBconName);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -412,6 +455,12 @@ namespace pjse.guidtool
             resources.ApplyResources(this.ckbObjdName, "ckbObjdName");
             this.ckbObjdName.Name = "ckbObjdName";
             this.ckbObjdName.UseVisualStyleBackColor = true;
+            // 
+            // ckbNrefName
+            // 
+            resources.ApplyResources(this.ckbNrefName, "ckbNrefName");
+            this.ckbNrefName.Name = "ckbNrefName";
+            this.ckbNrefName.UseVisualStyleBackColor = true;
             // 
             // ckbBhavName
             // 
@@ -481,7 +530,15 @@ namespace pjse.guidtool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            Complete(null, null);
+            PersistantHeight = this.Height;
+            PersistantWidth = this.Width;
+            searching = false;
+            if (searchThread != null && searchThread.IsAlive)
+            {
+                searchThread.Interrupt();
+                searchThread.Join();
+                searchThread = null;
+            }
             base.OnClosing(e);
         }
 
