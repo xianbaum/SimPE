@@ -152,10 +152,12 @@
       <Name>pjse filetable</Name>
       <Project>{84085FAA-A947-492E-88BC-B941A4623811}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\pjse Localisation\pjse localisation.csproj">
       <Project>{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}</Project>
       <Name>pjse localisation</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\pjse System Classes\pjse System Classes.csproj">
       <Project>{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}</Project>
@@ -165,6 +167,7 @@
     <ProjectReference Include="..\pjse update tool\pjse update tool.csproj">
       <Project>{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}</Project>
       <Name>pjse update tool</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

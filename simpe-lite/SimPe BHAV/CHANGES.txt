@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+7 October 2007 12:17 - Fix up unneeded "copy locals"
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.35
+
 7 October 2007 11:43 - GUID Tool changes (allow "current package only")
   * Also created "pjse System Classes" project for common support classes
   * Also tidied up so all .dlls get written to main project bin folder
