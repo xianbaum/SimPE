@@ -39,28 +39,26 @@ namespace pjse.guidtool
 
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label lbStatus;
-        private FlowLayoutPanel flowLayoutPanel11;
-        private FlowLayoutPanel flpSearchFor;
-        private Label label1;
-        private CheckBox ckbObjdGUID;
-        private CheckBox ckbObjdName;
-        private CheckBox ckbNrefName;
-        private CheckBox ckbBhavName;
-        private CheckBox ckbBconName;
-        private Button btnHelp;
-        private Button btnSearch;
-        private Button btnClose;
-        private FlowLayoutPanel flpSearchIn;
-        private Label label2;
-        private RadioButton rb1default;
-        private RadioButton rb1OPOnly;
-        private RadioButton rb1CPOnly;
         private RichTextBox rtbReport;
         private TableLayoutPanel tableLayoutPanel1;
         private TextBox tbGUID;
         private Label lbName;
         private TextBox tbName;
         private Label lbGUID;
+        private Button btnSearch;
+        private Button btnClose;
+        private GroupBox groupBox1;
+        private FlowLayoutPanel flpSearchFor;
+        private CheckBox ckbObjdGUID;
+        private CheckBox ckbObjdName;
+        private CheckBox ckbNrefName;
+        private CheckBox ckbBhavName;
+        private CheckBox ckbBconName;
+        private GroupBox groupBox2;
+        private FlowLayoutPanel flpSearchIn;
+        private RadioButton rb1default;
+        private RadioButton rb1OPOnly;
+        private RadioButton rb1CPOnly;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -285,7 +283,7 @@ namespace pjse.guidtool
             // this.rtbReport.UseWaitCursor = true; // Methods missing from Mono
             this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
             this.flpSearchFor.Enabled = this.flpSearchIn.Enabled =
-                this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = false;
+                this.tbGUID.Enabled = this.tbName.Enabled = this.btnClose.Enabled = false;
             this.btnSearch.Text = pjse.Localization.GetString("gt_Stop");
             this.lbStatus.Visible = false;
             this.progressBar1.Value = 0;
@@ -325,7 +323,7 @@ namespace pjse.guidtool
             this.Cursor = this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
             //this.rtbReport.UseWaitCursor = false; // Methods missing from Mono
             this.flpSearchFor.Enabled = this.flpSearchIn.Enabled =
-                this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = this.btnSearch.Enabled = true;
+                this.tbGUID.Enabled = this.tbName.Enabled = this.btnClose.Enabled = this.btnSearch.Enabled = true;
             this.btnSearch.Text = oldText;
             this.progressBar1.Value = 0;
             this.progressBar1.Visible = false;
@@ -401,32 +399,31 @@ namespace pjse.guidtool
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUIDTool));
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lbStatus = new System.Windows.Forms.Label();
-            this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
+            this.rtbReport = new System.Windows.Forms.RichTextBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbGUID = new System.Windows.Forms.Label();
+            this.tbGUID = new System.Windows.Forms.TextBox();
+            this.lbName = new System.Windows.Forms.Label();
+            this.tbName = new System.Windows.Forms.TextBox();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flpSearchFor = new System.Windows.Forms.FlowLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
             this.ckbObjdGUID = new System.Windows.Forms.CheckBox();
             this.ckbObjdName = new System.Windows.Forms.CheckBox();
             this.ckbNrefName = new System.Windows.Forms.CheckBox();
             this.ckbBhavName = new System.Windows.Forms.CheckBox();
             this.ckbBconName = new System.Windows.Forms.CheckBox();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flpSearchIn = new System.Windows.Forms.FlowLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
             this.rb1default = new System.Windows.Forms.RadioButton();
             this.rb1OPOnly = new System.Windows.Forms.RadioButton();
             this.rb1CPOnly = new System.Windows.Forms.RadioButton();
-            this.rtbReport = new System.Windows.Forms.RichTextBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tbName = new System.Windows.Forms.TextBox();
-            this.lbName = new System.Windows.Forms.Label();
-            this.tbGUID = new System.Windows.Forms.TextBox();
-            this.lbGUID = new System.Windows.Forms.Label();
-            this.flowLayoutPanel11.SuspendLayout();
-            this.flpSearchFor.SuspendLayout();
-            this.flpSearchIn.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.flpSearchFor.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.flpSearchIn.SuspendLayout();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -438,122 +435,6 @@ namespace pjse.guidtool
             // 
             resources.ApplyResources(this.lbStatus, "lbStatus");
             this.lbStatus.Name = "lbStatus";
-            // 
-            // flowLayoutPanel11
-            // 
-            resources.ApplyResources(this.flowLayoutPanel11, "flowLayoutPanel11");
-            this.flowLayoutPanel11.Controls.Add(this.flpSearchFor);
-            this.flowLayoutPanel11.Controls.Add(this.btnHelp);
-            this.flowLayoutPanel11.Controls.Add(this.btnSearch);
-            this.flowLayoutPanel11.Controls.Add(this.btnClose);
-            this.flowLayoutPanel11.Controls.Add(this.flpSearchIn);
-            this.flowLayoutPanel11.MinimumSize = new System.Drawing.Size(811, 115);
-            this.flowLayoutPanel11.Name = "flowLayoutPanel11";
-            // 
-            // flpSearchFor
-            // 
-            resources.ApplyResources(this.flpSearchFor, "flpSearchFor");
-            this.flpSearchFor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flpSearchFor.Controls.Add(this.label1);
-            this.flpSearchFor.Controls.Add(this.ckbObjdGUID);
-            this.flpSearchFor.Controls.Add(this.ckbObjdName);
-            this.flpSearchFor.Controls.Add(this.ckbNrefName);
-            this.flpSearchFor.Controls.Add(this.ckbBhavName);
-            this.flpSearchFor.Controls.Add(this.ckbBconName);
-            this.flpSearchFor.Name = "flpSearchFor";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.flpSearchFor.SetFlowBreak(this.label1, true);
-            this.label1.Name = "label1";
-            // 
-            // ckbObjdGUID
-            // 
-            resources.ApplyResources(this.ckbObjdGUID, "ckbObjdGUID");
-            this.ckbObjdGUID.Name = "ckbObjdGUID";
-            this.ckbObjdGUID.UseVisualStyleBackColor = true;
-            // 
-            // ckbObjdName
-            // 
-            resources.ApplyResources(this.ckbObjdName, "ckbObjdName");
-            this.ckbObjdName.Name = "ckbObjdName";
-            this.ckbObjdName.UseVisualStyleBackColor = true;
-            // 
-            // ckbNrefName
-            // 
-            resources.ApplyResources(this.ckbNrefName, "ckbNrefName");
-            this.ckbNrefName.Name = "ckbNrefName";
-            this.ckbNrefName.UseVisualStyleBackColor = true;
-            // 
-            // ckbBhavName
-            // 
-            resources.ApplyResources(this.ckbBhavName, "ckbBhavName");
-            this.ckbBhavName.Name = "ckbBhavName";
-            this.ckbBhavName.UseVisualStyleBackColor = true;
-            // 
-            // ckbBconName
-            // 
-            resources.ApplyResources(this.ckbBconName, "ckbBconName");
-            this.ckbBconName.Name = "ckbBconName";
-            this.ckbBconName.UseVisualStyleBackColor = true;
-            // 
-            // btnHelp
-            // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // btnSearch
-            // 
-            resources.ApplyResources(this.btnSearch, "btnSearch");
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // btnClose
-            // 
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.flowLayoutPanel11.SetFlowBreak(this.btnClose, true);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // flpSearchIn
-            // 
-            resources.ApplyResources(this.flpSearchIn, "flpSearchIn");
-            this.flpSearchIn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.flpSearchIn.Controls.Add(this.label2);
-            this.flpSearchIn.Controls.Add(this.rb1default);
-            this.flpSearchIn.Controls.Add(this.rb1OPOnly);
-            this.flpSearchIn.Controls.Add(this.rb1CPOnly);
-            this.flowLayoutPanel11.SetFlowBreak(this.flpSearchIn, true);
-            this.flpSearchIn.Name = "flpSearchIn";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.flpSearchIn.SetFlowBreak(this.label2, true);
-            this.label2.Name = "label2";
-            // 
-            // rb1default
-            // 
-            resources.ApplyResources(this.rb1default, "rb1default");
-            this.rb1default.Checked = true;
-            this.rb1default.Name = "rb1default";
-            this.rb1default.TabStop = true;
-            this.rb1default.UseVisualStyleBackColor = true;
-            // 
-            // rb1OPOnly
-            // 
-            resources.ApplyResources(this.rb1OPOnly, "rb1OPOnly");
-            this.rb1OPOnly.Name = "rb1OPOnly";
-            this.rb1OPOnly.UseVisualStyleBackColor = true;
-            // 
-            // rb1CPOnly
-            // 
-            resources.ApplyResources(this.rb1CPOnly, "rb1CPOnly");
-            this.rb1CPOnly.Name = "rb1CPOnly";
-            this.rb1CPOnly.UseVisualStyleBackColor = true;
             // 
             // rtbReport
             // 
@@ -572,25 +453,112 @@ namespace pjse.guidtool
             this.tableLayoutPanel1.Controls.Add(this.tbName, 1, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
-            // tbName
+            // lbGUID
             // 
-            resources.ApplyResources(this.tbName, "tbName");
-            this.tbName.Name = "tbName";
-            // 
-            // lbName
-            // 
-            resources.ApplyResources(this.lbName, "lbName");
-            this.lbName.Name = "lbName";
+            resources.ApplyResources(this.lbGUID, "lbGUID");
+            this.lbGUID.Name = "lbGUID";
             // 
             // tbGUID
             // 
             resources.ApplyResources(this.tbGUID, "tbGUID");
             this.tbGUID.Name = "tbGUID";
             // 
-            // lbGUID
+            // lbName
             // 
-            resources.ApplyResources(this.lbGUID, "lbGUID");
-            this.lbGUID.Name = "lbGUID";
+            resources.ApplyResources(this.lbName, "lbName");
+            this.lbName.Name = "lbName";
+            // 
+            // tbName
+            // 
+            resources.ApplyResources(this.tbName, "tbName");
+            this.tbName.Name = "tbName";
+            // 
+            // btnSearch
+            // 
+            resources.ApplyResources(this.btnSearch, "btnSearch");
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // btnClose
+            // 
+            resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // groupBox1
+            // 
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Controls.Add(this.flpSearchFor);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.TabStop = false;
+            // 
+            // flpSearchFor
+            // 
+            resources.ApplyResources(this.flpSearchFor, "flpSearchFor");
+            this.flpSearchFor.Controls.Add(this.ckbObjdGUID);
+            this.flpSearchFor.Controls.Add(this.ckbObjdName);
+            this.flpSearchFor.Controls.Add(this.ckbNrefName);
+            this.flpSearchFor.Controls.Add(this.ckbBhavName);
+            this.flpSearchFor.Controls.Add(this.ckbBconName);
+            this.flpSearchFor.Name = "flpSearchFor";
+            // 
+            // ckbObjdGUID
+            // 
+            resources.ApplyResources(this.ckbObjdGUID, "ckbObjdGUID");
+            this.ckbObjdGUID.Name = "ckbObjdGUID";
+            // 
+            // ckbObjdName
+            // 
+            resources.ApplyResources(this.ckbObjdName, "ckbObjdName");
+            this.ckbObjdName.Name = "ckbObjdName";
+            // 
+            // ckbNrefName
+            // 
+            resources.ApplyResources(this.ckbNrefName, "ckbNrefName");
+            this.ckbNrefName.Name = "ckbNrefName";
+            // 
+            // ckbBhavName
+            // 
+            resources.ApplyResources(this.ckbBhavName, "ckbBhavName");
+            this.ckbBhavName.Name = "ckbBhavName";
+            // 
+            // ckbBconName
+            // 
+            resources.ApplyResources(this.ckbBconName, "ckbBconName");
+            this.ckbBconName.Name = "ckbBconName";
+            // 
+            // groupBox2
+            // 
+            resources.ApplyResources(this.groupBox2, "groupBox2");
+            this.groupBox2.Controls.Add(this.flpSearchIn);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.TabStop = false;
+            // 
+            // flpSearchIn
+            // 
+            resources.ApplyResources(this.flpSearchIn, "flpSearchIn");
+            this.flpSearchIn.Controls.Add(this.rb1default);
+            this.flpSearchIn.Controls.Add(this.rb1OPOnly);
+            this.flpSearchIn.Controls.Add(this.rb1CPOnly);
+            this.flpSearchIn.Name = "flpSearchIn";
+            // 
+            // rb1default
+            // 
+            resources.ApplyResources(this.rb1default, "rb1default");
+            this.rb1default.Checked = true;
+            this.rb1default.Name = "rb1default";
+            this.rb1default.TabStop = true;
+            // 
+            // rb1OPOnly
+            // 
+            resources.ApplyResources(this.rb1OPOnly, "rb1OPOnly");
+            this.rb1OPOnly.Name = "rb1OPOnly";
+            // 
+            // rb1CPOnly
+            // 
+            resources.ApplyResources(this.rb1CPOnly, "rb1CPOnly");
+            this.rb1CPOnly.Name = "rb1CPOnly";
             // 
             // GUIDTool
             // 
@@ -598,21 +566,27 @@ namespace pjse.guidtool
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.btnClose;
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnSearch);
+            this.Controls.Add(this.btnClose);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Controls.Add(this.flowLayoutPanel11);
             this.Controls.Add(this.lbStatus);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.rtbReport);
             this.Name = "GUIDTool";
-            this.flowLayoutPanel11.ResumeLayout(false);
-            this.flowLayoutPanel11.PerformLayout();
-            this.flpSearchFor.ResumeLayout(false);
-            this.flpSearchFor.PerformLayout();
-            this.flpSearchIn.ResumeLayout(false);
-            this.flpSearchIn.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.flpSearchFor.ResumeLayout(false);
+            this.flpSearchFor.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.flpSearchIn.ResumeLayout(false);
+            this.flpSearchIn.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion

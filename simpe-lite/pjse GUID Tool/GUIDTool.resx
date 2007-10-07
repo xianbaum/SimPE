@@ -123,10 +123,10 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="progressBar1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 315</value>
+    <value>0, 302</value>
   </data>
   <data name="progressBar1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>814, 27</value>
+    <value>907, 27</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="progressBar1.TabIndex" type="System.Int32, mscorlib">
@@ -142,16 +142,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;progressBar1.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>6</value>
   </data>
   <data name="lbStatus.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Left, Right</value>
   </data>
   <data name="lbStatus.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 318</value>
+    <value>0, 305</value>
   </data>
   <data name="lbStatus.Size" type="System.Drawing.Size, System.Drawing">
-    <value>814, 26</value>
+    <value>907, 26</value>
   </data>
   <data name="lbStatus.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -169,514 +169,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;lbStatus.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="flowLayoutPanel11.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="flowLayoutPanel11.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="flpSearchFor.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="flpSearchFor.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>145, 17</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Search resources for:</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>flpSearchFor</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="ckbObjdGUID.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbObjdGUID.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbObjdGUID.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 30</value>
-  </data>
-  <data name="ckbObjdGUID.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 21</value>
-  </data>
-  <data name="ckbObjdGUID.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="ckbObjdGUID.Text" xml:space="preserve">
-    <value>&amp;GUID</value>
-  </data>
-  <data name="&gt;&gt;ckbObjdGUID.Name" xml:space="preserve">
-    <value>ckbObjdGUID</value>
-  </data>
-  <data name="&gt;&gt;ckbObjdGUID.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbObjdGUID.Parent" xml:space="preserve">
-    <value>flpSearchFor</value>
-  </data>
-  <data name="&gt;&gt;ckbObjdGUID.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="ckbObjdName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbObjdName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbObjdName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>70, 30</value>
-  </data>
-  <data name="ckbObjdName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 21</value>
-  </data>
-  <data name="ckbObjdName.TabIndex" type="System.Int32, mscorlib">
-    <value>13</value>
-  </data>
-  <data name="ckbObjdName.Text" xml:space="preserve">
-    <value>OBJD &amp;Name</value>
-  </data>
-  <data name="&gt;&gt;ckbObjdName.Name" xml:space="preserve">
-    <value>ckbObjdName</value>
-  </data>
-  <data name="&gt;&gt;ckbObjdName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbObjdName.Parent" xml:space="preserve">
-    <value>flpSearchFor</value>
-  </data>
-  <data name="&gt;&gt;ckbObjdName.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="ckbNrefName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbNrefName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbNrefName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>181, 30</value>
-  </data>
-  <data name="ckbNrefName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 21</value>
-  </data>
-  <data name="ckbNrefName.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
-  </data>
-  <data name="ckbNrefName.Text" xml:space="preserve">
-    <value>N&amp;REF Name</value>
-  </data>
-  <data name="&gt;&gt;ckbNrefName.Name" xml:space="preserve">
-    <value>ckbNrefName</value>
-  </data>
-  <data name="&gt;&gt;ckbNrefName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbNrefName.Parent" xml:space="preserve">
-    <value>flpSearchFor</value>
-  </data>
-  <data name="&gt;&gt;ckbNrefName.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="ckbBhavName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbBhavName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbBhavName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>292, 30</value>
-  </data>
-  <data name="ckbBhavName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>105, 21</value>
-  </data>
-  <data name="ckbBhavName.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
-  </data>
-  <data name="ckbBhavName.Text" xml:space="preserve">
-    <value>B&amp;HAV Name</value>
-  </data>
-  <data name="&gt;&gt;ckbBhavName.Name" xml:space="preserve">
-    <value>ckbBhavName</value>
-  </data>
-  <data name="&gt;&gt;ckbBhavName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbBhavName.Parent" xml:space="preserve">
-    <value>flpSearchFor</value>
-  </data>
-  <data name="&gt;&gt;ckbBhavName.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="ckbBconName.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbBconName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbBconName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>403, 30</value>
-  </data>
-  <data name="ckbBconName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 21</value>
-  </data>
-  <data name="ckbBconName.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="ckbBconName.Text" xml:space="preserve">
-    <value>B&amp;CON Name</value>
-  </data>
-  <data name="&gt;&gt;ckbBconName.Name" xml:space="preserve">
-    <value>ckbBconName</value>
-  </data>
-  <data name="&gt;&gt;ckbBconName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbBconName.Parent" xml:space="preserve">
-    <value>flpSearchFor</value>
-  </data>
-  <data name="&gt;&gt;ckbBconName.ZOrder" xml:space="preserve">
     <value>5</value>
-  </data>
-  <data name="flpSearchFor.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="flpSearchFor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 3, 48, 3</value>
-  </data>
-  <data name="flpSearchFor.Size" type="System.Drawing.Size, System.Drawing">
-    <value>515, 56</value>
-  </data>
-  <data name="flpSearchFor.TabIndex" type="System.Int32, mscorlib">
-    <value>19</value>
-  </data>
-  <data name="&gt;&gt;flpSearchFor.Name" xml:space="preserve">
-    <value>flpSearchFor</value>
-  </data>
-  <data name="&gt;&gt;flpSearchFor.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flpSearchFor.Parent" xml:space="preserve">
-    <value>flowLayoutPanel11</value>
-  </data>
-  <data name="&gt;&gt;flpSearchFor.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="btnHelp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnHelp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>569, 12</value>
-  </data>
-  <data name="btnHelp.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 12, 12, 3</value>
-  </data>
-  <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 27</value>
-  </data>
-  <data name="btnHelp.TabIndex" type="System.Int32, mscorlib">
-    <value>20</value>
-  </data>
-  <data name="btnHelp.Text" xml:space="preserve">
-    <value>&amp;?</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
-    <value>btnHelp</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Parent" xml:space="preserve">
-    <value>flowLayoutPanel11</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="btnSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnSearch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnSearch.Location" type="System.Drawing.Point, System.Drawing">
-    <value>612, 12</value>
-  </data>
-  <data name="btnSearch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 12, 12, 3</value>
-  </data>
-  <data name="btnSearch.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 27</value>
-  </data>
-  <data name="btnSearch.TabIndex" type="System.Int32, mscorlib">
-    <value>21</value>
-  </data>
-  <data name="btnSearch.Text" xml:space="preserve">
-    <value>&amp;Search</value>
-  </data>
-  <data name="&gt;&gt;btnSearch.Name" xml:space="preserve">
-    <value>btnSearch</value>
-  </data>
-  <data name="&gt;&gt;btnSearch.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnSearch.Parent" xml:space="preserve">
-    <value>flowLayoutPanel11</value>
-  </data>
-  <data name="&gt;&gt;btnSearch.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>717, 12</value>
-  </data>
-  <data name="btnClose.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 12, 0, 3</value>
-  </data>
-  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 27</value>
-  </data>
-  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
-    <value>22</value>
-  </data>
-  <data name="btnClose.Text" xml:space="preserve">
-    <value>Close</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
-    <value>btnClose</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
-    <value>flowLayoutPanel11</value>
-  </data>
-  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="flpSearchIn.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="flpSearchIn.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>160, 17</value>
-  </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Search for resources in:</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>flpSearchIn</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="rb1default.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rb1default.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rb1default.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 21</value>
-  </data>
-  <data name="rb1default.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="rb1default.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 21</value>
-  </data>
-  <data name="rb1default.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="rb1default.Text" xml:space="preserve">
-    <value>entire PJSE filetable</value>
-  </data>
-  <data name="&gt;&gt;rb1default.Name" xml:space="preserve">
-    <value>rb1default</value>
-  </data>
-  <data name="&gt;&gt;rb1default.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rb1default.Parent" xml:space="preserve">
-    <value>flpSearchIn</value>
-  </data>
-  <data name="&gt;&gt;rb1default.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="rb1OPOnly.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rb1OPOnly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rb1OPOnly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>153, 21</value>
-  </data>
-  <data name="rb1OPOnly.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="rb1OPOnly.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>24, 0, 0, 0</value>
-  </data>
-  <data name="rb1OPOnly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 21</value>
-  </data>
-  <data name="rb1OPOnly.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="rb1OPOnly.Text" xml:space="preserve">
-    <value>objects.package only</value>
-  </data>
-  <data name="&gt;&gt;rb1OPOnly.Name" xml:space="preserve">
-    <value>rb1OPOnly</value>
-  </data>
-  <data name="&gt;&gt;rb1OPOnly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rb1OPOnly.Parent" xml:space="preserve">
-    <value>flpSearchIn</value>
-  </data>
-  <data name="&gt;&gt;rb1OPOnly.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="rb1CPOnly.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="rb1CPOnly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="rb1CPOnly.Location" type="System.Drawing.Point, System.Drawing">
-    <value>336, 21</value>
-  </data>
-  <data name="rb1CPOnly.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="rb1CPOnly.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>24, 0, 0, 0</value>
-  </data>
-  <data name="rb1CPOnly.Size" type="System.Drawing.Size, System.Drawing">
-    <value>183, 21</value>
-  </data>
-  <data name="rb1CPOnly.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="rb1CPOnly.Text" xml:space="preserve">
-    <value>current package only</value>
-  </data>
-  <data name="&gt;&gt;rb1CPOnly.Name" xml:space="preserve">
-    <value>rb1CPOnly</value>
-  </data>
-  <data name="&gt;&gt;rb1CPOnly.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rb1CPOnly.Parent" xml:space="preserve">
-    <value>flpSearchIn</value>
-  </data>
-  <data name="&gt;&gt;rb1CPOnly.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="flpSearchIn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 65</value>
-  </data>
-  <data name="flpSearchIn.Size" type="System.Drawing.Size, System.Drawing">
-    <value>521, 44</value>
-  </data>
-  <data name="flpSearchIn.TabIndex" type="System.Int32, mscorlib">
-    <value>23</value>
-  </data>
-  <data name="&gt;&gt;flpSearchIn.Name" xml:space="preserve">
-    <value>flpSearchIn</value>
-  </data>
-  <data name="&gt;&gt;flpSearchIn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flpSearchIn.Parent" xml:space="preserve">
-    <value>flowLayoutPanel11</value>
-  </data>
-  <data name="&gt;&gt;flpSearchIn.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="flowLayoutPanel11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
-  </data>
-  <data name="flowLayoutPanel11.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="flowLayoutPanel11.Size" type="System.Drawing.Size, System.Drawing">
-    <value>811, 115</value>
-  </data>
-  <data name="flowLayoutPanel11.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel11.Name" xml:space="preserve">
-    <value>flowLayoutPanel11</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel11.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel11.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel11.ZOrder" xml:space="preserve">
-    <value>1</value>
   </data>
   <data name="rtbReport.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -685,13 +178,13 @@
     <value>Lucida Console, 8.25pt</value>
   </data>
   <data name="rtbReport.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 182</value>
+    <value>3, 177</value>
   </data>
   <data name="rtbReport.Size" type="System.Drawing.Size, System.Drawing">
-    <value>811, 127</value>
+    <value>904, 119</value>
   </data>
   <data name="rtbReport.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>4</value>
   </data>
   <data name="rtbReport.Text" xml:space="preserve">
     <value />
@@ -709,7 +202,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;rtbReport.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>7</value>
   </data>
   <data name="tableLayoutPanel1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -826,7 +319,7 @@
     <value>48, 31</value>
   </data>
   <data name="tbName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>760, 22</value>
+    <value>856, 22</value>
   </data>
   <data name="tbName.TabIndex" type="System.Int32, mscorlib">
     <value>33</value>
@@ -844,16 +337,16 @@
     <value>3</value>
   </data>
   <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 121</value>
+    <value>0, 117</value>
   </data>
   <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>811, 56</value>
+    <value>907, 56</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>33</value>
+    <value>3</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
     <value>tableLayoutPanel1</value>
@@ -865,10 +358,466 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>4</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="lbGUID" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tbGUID" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbName" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tbName" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="btnSearch.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnSearch.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnSearch.Location" type="System.Drawing.Point, System.Drawing">
+    <value>817, 15</value>
+  </data>
+  <data name="btnSearch.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 12, 12, 3</value>
+  </data>
+  <data name="btnSearch.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 27</value>
+  </data>
+  <data name="btnSearch.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="btnSearch.Text" xml:space="preserve">
+    <value>&amp;Search</value>
+  </data>
+  <data name="&gt;&gt;btnSearch.Name" xml:space="preserve">
+    <value>btnSearch</value>
+  </data>
+  <data name="&gt;&gt;btnSearch.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnSearch.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnSearch.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>817, 69</value>
+  </data>
+  <data name="btnClose.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 12, 0, 3</value>
+  </data>
+  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 27</value>
+  </data>
+  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
+    <value>btnClose</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="groupBox1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="groupBox1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="flpSearchFor.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flpSearchFor.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="ckbObjdGUID.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ckbObjdGUID.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ckbObjdGUID.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="ckbObjdGUID.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ckbObjdGUID.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 21</value>
+  </data>
+  <data name="ckbObjdGUID.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="ckbObjdGUID.Text" xml:space="preserve">
+    <value>&amp;GUID</value>
+  </data>
+  <data name="&gt;&gt;ckbObjdGUID.Name" xml:space="preserve">
+    <value>ckbObjdGUID</value>
+  </data>
+  <data name="&gt;&gt;ckbObjdGUID.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbObjdGUID.Parent" xml:space="preserve">
+    <value>flpSearchFor</value>
+  </data>
+  <data name="&gt;&gt;ckbObjdGUID.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="ckbObjdName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ckbObjdName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ckbObjdName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>67, 0</value>
+  </data>
+  <data name="ckbObjdName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="ckbObjdName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 21</value>
+  </data>
+  <data name="ckbObjdName.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="ckbObjdName.Text" xml:space="preserve">
+    <value>OBJD &amp;Name</value>
+  </data>
+  <data name="&gt;&gt;ckbObjdName.Name" xml:space="preserve">
+    <value>ckbObjdName</value>
+  </data>
+  <data name="&gt;&gt;ckbObjdName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbObjdName.Parent" xml:space="preserve">
+    <value>flpSearchFor</value>
+  </data>
+  <data name="&gt;&gt;ckbObjdName.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="ckbNrefName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ckbNrefName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ckbNrefName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>178, 0</value>
+  </data>
+  <data name="ckbNrefName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="ckbNrefName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 21</value>
+  </data>
+  <data name="ckbNrefName.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="ckbNrefName.Text" xml:space="preserve">
+    <value>N&amp;REF Name</value>
+  </data>
+  <data name="&gt;&gt;ckbNrefName.Name" xml:space="preserve">
+    <value>ckbNrefName</value>
+  </data>
+  <data name="&gt;&gt;ckbNrefName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbNrefName.Parent" xml:space="preserve">
+    <value>flpSearchFor</value>
+  </data>
+  <data name="&gt;&gt;ckbNrefName.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ckbBhavName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ckbBhavName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ckbBhavName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>289, 0</value>
+  </data>
+  <data name="ckbBhavName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="ckbBhavName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>105, 21</value>
+  </data>
+  <data name="ckbBhavName.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="ckbBhavName.Text" xml:space="preserve">
+    <value>B&amp;HAV Name</value>
+  </data>
+  <data name="&gt;&gt;ckbBhavName.Name" xml:space="preserve">
+    <value>ckbBhavName</value>
+  </data>
+  <data name="&gt;&gt;ckbBhavName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbBhavName.Parent" xml:space="preserve">
+    <value>flpSearchFor</value>
+  </data>
+  <data name="&gt;&gt;ckbBhavName.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="ckbBconName.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="ckbBconName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ckbBconName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>400, 0</value>
+  </data>
+  <data name="ckbBconName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="ckbBconName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>107, 21</value>
+  </data>
+  <data name="ckbBconName.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="ckbBconName.Text" xml:space="preserve">
+    <value>B&amp;CON Name</value>
+  </data>
+  <data name="&gt;&gt;ckbBconName.Name" xml:space="preserve">
+    <value>ckbBconName</value>
+  </data>
+  <data name="&gt;&gt;ckbBconName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ckbBconName.Parent" xml:space="preserve">
+    <value>flpSearchFor</value>
+  </data>
+  <data name="&gt;&gt;ckbBconName.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="flpSearchFor.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 15</value>
+  </data>
+  <data name="flpSearchFor.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 3, 0</value>
+  </data>
+  <data name="flpSearchFor.Size" type="System.Drawing.Size, System.Drawing">
+    <value>507, 21</value>
+  </data>
+  <data name="flpSearchFor.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="&gt;&gt;flpSearchFor.Name" xml:space="preserve">
+    <value>flpSearchFor</value>
+  </data>
+  <data name="&gt;&gt;flpSearchFor.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flpSearchFor.Parent" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;flpSearchFor.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="groupBox1.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>513, 51</value>
+  </data>
+  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="groupBox1.Text" xml:space="preserve">
+    <value>Search resources for:</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
+    <value>groupBox1</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="groupBox2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="groupBox2.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="flpSearchIn.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flpSearchIn.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="rb1default.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rb1default.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="rb1default.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="rb1default.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="rb1default.Size" type="System.Drawing.Size, System.Drawing">
+    <value>153, 21</value>
+  </data>
+  <data name="rb1default.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="rb1default.Text" xml:space="preserve">
+    <value>entire PJSE filetable</value>
+  </data>
+  <data name="&gt;&gt;rb1default.Name" xml:space="preserve">
+    <value>rb1default</value>
+  </data>
+  <data name="&gt;&gt;rb1default.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rb1default.Parent" xml:space="preserve">
+    <value>flpSearchIn</value>
+  </data>
+  <data name="&gt;&gt;rb1default.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="rb1OPOnly.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rb1OPOnly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="rb1OPOnly.Location" type="System.Drawing.Point, System.Drawing">
+    <value>159, 0</value>
+  </data>
+  <data name="rb1OPOnly.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="rb1OPOnly.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 21</value>
+  </data>
+  <data name="rb1OPOnly.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="rb1OPOnly.Text" xml:space="preserve">
+    <value>objects.package only</value>
+  </data>
+  <data name="&gt;&gt;rb1OPOnly.Name" xml:space="preserve">
+    <value>rb1OPOnly</value>
+  </data>
+  <data name="&gt;&gt;rb1OPOnly.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rb1OPOnly.Parent" xml:space="preserve">
+    <value>flpSearchIn</value>
+  </data>
+  <data name="&gt;&gt;rb1OPOnly.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="rb1CPOnly.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="rb1CPOnly.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="rb1CPOnly.Location" type="System.Drawing.Point, System.Drawing">
+    <value>324, 0</value>
+  </data>
+  <data name="rb1CPOnly.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>6, 0, 0, 0</value>
+  </data>
+  <data name="rb1CPOnly.Size" type="System.Drawing.Size, System.Drawing">
+    <value>159, 21</value>
+  </data>
+  <data name="rb1CPOnly.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="rb1CPOnly.Text" xml:space="preserve">
+    <value>current package only</value>
+  </data>
+  <data name="&gt;&gt;rb1CPOnly.Name" xml:space="preserve">
+    <value>rb1CPOnly</value>
+  </data>
+  <data name="&gt;&gt;rb1CPOnly.Type" xml:space="preserve">
+    <value>System.Windows.Forms.RadioButton, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;rb1CPOnly.Parent" xml:space="preserve">
+    <value>flpSearchIn</value>
+  </data>
+  <data name="&gt;&gt;rb1CPOnly.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="flpSearchIn.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 15</value>
+  </data>
+  <data name="flpSearchIn.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 3, 0, 3</value>
+  </data>
+  <data name="flpSearchIn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>483, 21</value>
+  </data>
+  <data name="flpSearchIn.TabIndex" type="System.Int32, mscorlib">
+    <value>38</value>
+  </data>
+  <data name="&gt;&gt;flpSearchIn.Name" xml:space="preserve">
+    <value>flpSearchIn</value>
+  </data>
+  <data name="&gt;&gt;flpSearchIn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flpSearchIn.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;flpSearchIn.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 57</value>
+  </data>
+  <data name="groupBox2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>486, 54</value>
+  </data>
+  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Search for resources in:</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -877,10 +826,10 @@
     <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>814, 342</value>
+    <value>907, 329</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>822, 371</value>
+    <value>615, 358</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Resource Finder</value>
