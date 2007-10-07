@@ -564,7 +564,7 @@ namespace pjse
                 pjse.FileTable.Entry e = (pjse.FileTable.Entry)lv.SelectedItems[0].Tag;
 
                 if (CanDoEA && e.Group != 0xffffff && !e.IsFixed)
-                    foreach (pjse.FileTable.Entry f in pjse.FileTable.GFT[e.Type, e.Group, e.Instance, true])
+                    foreach (pjse.FileTable.Entry f in pjse.FileTable.GFT[e.Type, e.Group, e.Instance, FileTable.Source.Fixed])
                         if (f.IsFixed)
                         {
                             DialogResult dr = MessageBox.Show(

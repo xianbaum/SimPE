@@ -37,24 +37,30 @@ namespace pjse.guidtool
     {
         #region Form variables
 
-        private System.Windows.Forms.RichTextBox rtbReport;
-		private System.Windows.Forms.Button btnSearch;
-		private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.ProgressBar progressBar1;
-		private System.Windows.Forms.Label lbStatus;
-		private System.Windows.Forms.Button btnHelp;
-        private GroupBox gbOptions;
-        private FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Label lbStatus;
+        private FlowLayoutPanel flowLayoutPanel11;
+        private FlowLayoutPanel flpSearchFor;
+        private Label label1;
         private CheckBox ckbObjdGUID;
         private CheckBox ckbObjdName;
-        private CheckBox ckbFixedOnly;
-        private TextBox tbName;
-        private Label lbName;
-        private TextBox tbGUID;
-        private Label lbGUID;
         private CheckBox ckbNrefName;
         private CheckBox ckbBhavName;
         private CheckBox ckbBconName;
+        private Button btnHelp;
+        private Button btnSearch;
+        private Button btnClose;
+        private FlowLayoutPanel flpSearchIn;
+        private Label label2;
+        private RadioButton rb1default;
+        private RadioButton rb1OPOnly;
+        private RadioButton rb1CPOnly;
+        private RichTextBox rtbReport;
+        private TableLayoutPanel tableLayoutPanel1;
+        private TextBox tbGUID;
+        private Label lbName;
+        private TextBox tbName;
+        private Label lbGUID;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -73,6 +79,7 @@ namespace pjse.guidtool
             this.Width = PersistantWidth;
 
             lHex32 = new List<TextBox>(new TextBox[] { tbGUID, });
+            rbGroup = new List<RadioButton>(new RadioButton[] {rb1default, rb1OPOnly, rb1CPOnly });
 
             this.oldText = this.btnSearch.Text;
             this.prompt = this.lbStatus.Text;
@@ -137,6 +144,9 @@ namespace pjse.guidtool
         private string prompt = null;
         private Thread searchThread = null;
 
+        private List<RadioButton> rbGroup = null;
+        private static bool Selected(RadioButton rb) { return rb.Checked; }
+
         private static int byGroupTypeInstance(pjse.FileTable.Entry x, pjse.FileTable.Entry y)
         {
             int result = x.Group.CompareTo(y.Group);
@@ -150,7 +160,7 @@ namespace pjse.guidtool
         private void Search(object o)
         {
             bool[] type = (bool[])((object[])o)[0];
-            bool isFixed = (bool)((object[])o)[1];
+            FileTable.Source where = (FileTable.Source)((object[])o)[1];
             uint searchGUID = (uint)((object[])o)[2];
             string searchText = (string)((object[])o)[3];
 
@@ -163,13 +173,13 @@ namespace pjse.guidtool
             {
                 List<pjse.FileTable.Entry> results = new List<FileTable.Entry>();
                 if (type[0] || type[1])
-                    results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, isFixed]);
+                    results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, where]);
                 if (type[2])
-                    results.AddRange(pjse.FileTable.GFT[0x4E524546, isFixed]); // NREF
+                    results.AddRange(pjse.FileTable.GFT[0x4E524546, where]); // NREF
                 if (type[3])
-                    results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, isFixed]);
+                    results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, where]);
                 if (type[4])
-                    results.AddRange(pjse.FileTable.GFT[0x42434F4E, isFixed]); // BCON
+                    results.AddRange(pjse.FileTable.GFT[0x42434F4E, where]); // BCON
 
                 results.Sort(byGroupTypeInstance);
 
@@ -274,7 +284,8 @@ namespace pjse.guidtool
             this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             // this.rtbReport.UseWaitCursor = true; // Methods missing from Mono
             this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
-            this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = false;
+            this.flpSearchFor.Enabled = this.flpSearchIn.Enabled =
+                this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = false;
             this.btnSearch.Text = pjse.Localization.GetString("gt_Stop");
             this.lbStatus.Visible = false;
             this.progressBar1.Value = 0;
@@ -284,8 +295,14 @@ namespace pjse.guidtool
             searching = true;
             matches = 0;
 
+            FileTable.Source[] aS = new FileTable.Source[] { FileTable.Source.Any, FileTable.Source.Fixed, FileTable.Source.Local };
+            FileTable.Source s;
+            int rbS = rbGroup.FindIndex(Selected);
+
+            s = (rbS >= 0 && rbS < aS.Length) ? aS[rbGroup.FindIndex(Selected)] : FileTable.Source.Any;
+
             searchThread = new Thread(new ParameterizedThreadStart(Search));
-            searchThread.Start(new object[] { type, ckbFixedOnly.Checked, guid, this.tbName.Text });
+            searchThread.Start(new object[] { type, s, guid, this.tbName.Text });
         }
 
         private void Stop()
@@ -307,7 +324,8 @@ namespace pjse.guidtool
             searchThread = null;
             this.Cursor = this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
             //this.rtbReport.UseWaitCursor = false; // Methods missing from Mono
-            this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = this.btnSearch.Enabled = true;
+            this.flpSearchFor.Enabled = this.flpSearchIn.Enabled =
+                this.tbGUID.Enabled = this.tbName.Enabled = this.btnHelp.Enabled = this.btnClose.Enabled = this.btnSearch.Enabled = true;
             this.btnSearch.Text = oldText;
             this.progressBar1.Value = 0;
             this.progressBar1.Visible = false;
@@ -334,19 +352,31 @@ namespace pjse.guidtool
 
         public bool IsEnabled(SimPe.Interfaces.Files.IPackedFileDescriptor pfd, SimPe.Interfaces.Files.IPackageFile package)
         {
+            rb1CPOnly.Enabled = (package != null);
+            if (!rb1CPOnly.Enabled && rb1CPOnly.Checked)
+                rb1default.Checked = true;
+
             return true;
         }
 
         public SimPe.Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
         {
             Complete(null, null);
-            this.tbGUID.Text = "0x" + SimPe.Helper.HexString((uint)0);
-            this.rtbReport.Text = this.tbName.Text = "";
+            //this.tbGUID.Text = "0x" + SimPe.Helper.HexString((uint)0);
+            //this.rtbReport.Text = this.tbName.Text = "";
             this.progressBar1.Visible = false;
             this.lbStatus.Text = this.prompt;
             this.lbStatus.Visible = true;
 
-            this.ShowDialog(this.Parent);
+            rb1CPOnly.Enabled = (package != null);
+            if (!rb1CPOnly.Enabled && rb1CPOnly.Checked)
+                rb1default.Checked = true;
+
+            this.WindowState = FormWindowState.Normal;
+            this.TopMost = true;
+            this.Show();
+            this.TopMost = false;
+
             return new SimPe.Plugin.ToolResult(false, false);
         }
 
@@ -369,47 +399,35 @@ namespace pjse.guidtool
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUIDTool));
-            this.rtbReport = new System.Windows.Forms.RichTextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lbStatus = new System.Windows.Forms.Label();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.gbOptions = new System.Windows.Forms.GroupBox();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel11 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpSearchFor = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
             this.ckbObjdGUID = new System.Windows.Forms.CheckBox();
             this.ckbObjdName = new System.Windows.Forms.CheckBox();
             this.ckbNrefName = new System.Windows.Forms.CheckBox();
             this.ckbBhavName = new System.Windows.Forms.CheckBox();
             this.ckbBconName = new System.Windows.Forms.CheckBox();
-            this.ckbFixedOnly = new System.Windows.Forms.CheckBox();
+            this.btnHelp = new System.Windows.Forms.Button();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.flpSearchIn = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.rb1default = new System.Windows.Forms.RadioButton();
+            this.rb1OPOnly = new System.Windows.Forms.RadioButton();
+            this.rb1CPOnly = new System.Windows.Forms.RadioButton();
+            this.rtbReport = new System.Windows.Forms.RichTextBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tbName = new System.Windows.Forms.TextBox();
             this.lbName = new System.Windows.Forms.Label();
             this.tbGUID = new System.Windows.Forms.TextBox();
             this.lbGUID = new System.Windows.Forms.Label();
-            this.gbOptions.SuspendLayout();
-            this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel11.SuspendLayout();
+            this.flpSearchFor.SuspendLayout();
+            this.flpSearchIn.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // rtbReport
-            // 
-            resources.ApplyResources(this.rtbReport, "rtbReport");
-            this.rtbReport.DetectUrls = false;
-            this.rtbReport.Name = "rtbReport";
-            this.rtbReport.ReadOnly = true;
-            this.rtbReport.ShowSelectionMargin = true;
-            // 
-            // btnSearch
-            // 
-            resources.ApplyResources(this.btnSearch, "btnSearch");
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // btnClose
-            // 
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.btnClose.Name = "btnClose";
             // 
             // progressBar1
             // 
@@ -421,28 +439,34 @@ namespace pjse.guidtool
             resources.ApplyResources(this.lbStatus, "lbStatus");
             this.lbStatus.Name = "lbStatus";
             // 
-            // btnHelp
+            // flowLayoutPanel11
             // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            resources.ApplyResources(this.flowLayoutPanel11, "flowLayoutPanel11");
+            this.flowLayoutPanel11.Controls.Add(this.flpSearchFor);
+            this.flowLayoutPanel11.Controls.Add(this.btnHelp);
+            this.flowLayoutPanel11.Controls.Add(this.btnSearch);
+            this.flowLayoutPanel11.Controls.Add(this.btnClose);
+            this.flowLayoutPanel11.Controls.Add(this.flpSearchIn);
+            this.flowLayoutPanel11.MinimumSize = new System.Drawing.Size(811, 115);
+            this.flowLayoutPanel11.Name = "flowLayoutPanel11";
             // 
-            // gbOptions
+            // flpSearchFor
             // 
-            this.gbOptions.Controls.Add(this.flowLayoutPanel1);
-            resources.ApplyResources(this.gbOptions, "gbOptions");
-            this.gbOptions.Name = "gbOptions";
-            this.gbOptions.TabStop = false;
+            resources.ApplyResources(this.flpSearchFor, "flpSearchFor");
+            this.flpSearchFor.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flpSearchFor.Controls.Add(this.label1);
+            this.flpSearchFor.Controls.Add(this.ckbObjdGUID);
+            this.flpSearchFor.Controls.Add(this.ckbObjdName);
+            this.flpSearchFor.Controls.Add(this.ckbNrefName);
+            this.flpSearchFor.Controls.Add(this.ckbBhavName);
+            this.flpSearchFor.Controls.Add(this.ckbBconName);
+            this.flpSearchFor.Name = "flpSearchFor";
             // 
-            // flowLayoutPanel1
+            // label1
             // 
-            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
-            this.flowLayoutPanel1.Controls.Add(this.ckbObjdGUID);
-            this.flowLayoutPanel1.Controls.Add(this.ckbObjdName);
-            this.flowLayoutPanel1.Controls.Add(this.ckbNrefName);
-            this.flowLayoutPanel1.Controls.Add(this.ckbBhavName);
-            this.flowLayoutPanel1.Controls.Add(this.ckbBconName);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            resources.ApplyResources(this.label1, "label1");
+            this.flpSearchFor.SetFlowBreak(this.label1, true);
+            this.label1.Name = "label1";
             // 
             // ckbObjdGUID
             // 
@@ -474,11 +498,79 @@ namespace pjse.guidtool
             this.ckbBconName.Name = "ckbBconName";
             this.ckbBconName.UseVisualStyleBackColor = true;
             // 
-            // ckbFixedOnly
+            // btnHelp
             // 
-            resources.ApplyResources(this.ckbFixedOnly, "ckbFixedOnly");
-            this.ckbFixedOnly.Name = "ckbFixedOnly";
-            this.ckbFixedOnly.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.btnHelp, "btnHelp");
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
+            // btnSearch
+            // 
+            resources.ApplyResources(this.btnSearch, "btnSearch");
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // btnClose
+            // 
+            resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.flowLayoutPanel11.SetFlowBreak(this.btnClose, true);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // flpSearchIn
+            // 
+            resources.ApplyResources(this.flpSearchIn, "flpSearchIn");
+            this.flpSearchIn.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.flpSearchIn.Controls.Add(this.label2);
+            this.flpSearchIn.Controls.Add(this.rb1default);
+            this.flpSearchIn.Controls.Add(this.rb1OPOnly);
+            this.flpSearchIn.Controls.Add(this.rb1CPOnly);
+            this.flowLayoutPanel11.SetFlowBreak(this.flpSearchIn, true);
+            this.flpSearchIn.Name = "flpSearchIn";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.flpSearchIn.SetFlowBreak(this.label2, true);
+            this.label2.Name = "label2";
+            // 
+            // rb1default
+            // 
+            resources.ApplyResources(this.rb1default, "rb1default");
+            this.rb1default.Checked = true;
+            this.rb1default.Name = "rb1default";
+            this.rb1default.TabStop = true;
+            this.rb1default.UseVisualStyleBackColor = true;
+            // 
+            // rb1OPOnly
+            // 
+            resources.ApplyResources(this.rb1OPOnly, "rb1OPOnly");
+            this.rb1OPOnly.Name = "rb1OPOnly";
+            this.rb1OPOnly.UseVisualStyleBackColor = true;
+            // 
+            // rb1CPOnly
+            // 
+            resources.ApplyResources(this.rb1CPOnly, "rb1CPOnly");
+            this.rb1CPOnly.Name = "rb1CPOnly";
+            this.rb1CPOnly.UseVisualStyleBackColor = true;
+            // 
+            // rtbReport
+            // 
+            resources.ApplyResources(this.rtbReport, "rtbReport");
+            this.rtbReport.DetectUrls = false;
+            this.rtbReport.Name = "rtbReport";
+            this.rtbReport.ReadOnly = true;
+            this.rtbReport.ShowSelectionMargin = true;
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.lbGUID, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tbGUID, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lbName, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.tbName, 1, 1);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // tbName
             // 
@@ -504,26 +596,23 @@ namespace pjse.guidtool
             // 
             this.AcceptButton = this.btnSearch;
             resources.ApplyResources(this, "$this");
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.btnClose;
-            this.Controls.Add(this.lbGUID);
-            this.Controls.Add(this.tbGUID);
-            this.Controls.Add(this.lbName);
-            this.Controls.Add(this.tbName);
-            this.Controls.Add(this.ckbFixedOnly);
-            this.Controls.Add(this.gbOptions);
-            this.Controls.Add(this.btnHelp);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.Controls.Add(this.flowLayoutPanel11);
             this.Controls.Add(this.lbStatus);
             this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.rtbReport);
             this.Name = "GUIDTool";
-            this.gbOptions.ResumeLayout(false);
-            this.gbOptions.PerformLayout();
-            this.flowLayoutPanel1.ResumeLayout(false);
-            this.flowLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel11.ResumeLayout(false);
+            this.flowLayoutPanel11.PerformLayout();
+            this.flpSearchFor.ResumeLayout(false);
+            this.flpSearchFor.PerformLayout();
+            this.flpSearchIn.ResumeLayout(false);
+            this.flpSearchIn.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
 		}
 		#endregion
@@ -539,7 +628,8 @@ namespace pjse.guidtool
                 searchThread.Join();
                 searchThread = null;
             }
-            base.OnClosing(e);
+            e.Cancel = true;
+            Hide();
         }
 
 		private void hex32_Validating(object sender, System.ComponentModel.CancelEventArgs e)
@@ -568,9 +658,17 @@ namespace pjse.guidtool
 
 		private void btnHelp_Click(object sender, System.EventArgs e)
 		{
-			System.Windows.Forms.MessageBox.Show(
+            pjseMsgBox.Show(
                 pjse.Localization.GetString("gt_ResourceFinderHelp"),
-				this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Text);
+			//System.Windows.Forms.MessageBox.Show(
+            //    pjse.Localization.GetString("gt_ResourceFinderHelp"),
+			//	this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            Hide();
         }
 
 	}
@@ -579,6 +677,8 @@ namespace SimPe.Plugin
 {
 	public class WrapperFactory : AbstractWrapperFactory, IToolFactory
 	{
+        private static pjse.guidtool.GUIDTool theTool = new pjse.guidtool.GUIDTool();
+
 		#region IToolFactory Members
 
 		public SimPe.Interfaces.IToolPlugin[] KnownTools
@@ -586,7 +686,7 @@ namespace SimPe.Plugin
 			get
 			{
 				IToolPlugin[] tools = {
-										  new pjse.guidtool.GUIDTool()
+										  theTool
 									  };
 				return tools;
 			}

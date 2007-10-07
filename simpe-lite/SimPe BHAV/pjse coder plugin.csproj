@@ -157,6 +157,11 @@
       <Project>{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}</Project>
       <Name>pjse localisation</Name>
     </ProjectReference>
+    <ProjectReference Include="..\pjse System Classes\pjse System Classes.csproj">
+      <Project>{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}</Project>
+      <Name>pjse System Classes</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\pjse update tool\pjse update tool.csproj">
       <Project>{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}</Project>
       <Name>pjse update tool</Name>
@@ -257,7 +262,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StrWrapper.cs" />
-    <Compile Include="SystemClasses.cs" />
     <Compile Include="TPRPForm.cs">
       <SubType>Form</SubType>
     </Compile>

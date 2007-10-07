@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse localisation", "..\pjs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse update tool", "..\pjse update tool\pjse update tool.csproj", "{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pjse System Classes", "..\pjse System Classes\pjse System Classes.csproj", "{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,12 @@ Global
 		{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}.InProgress|Any CPU.Build.0 = Release|Any CPU
 		{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}.InProgress|Any CPU.ActiveCfg = Release|Any CPU
+		{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}.InProgress|Any CPU.Build.0 = Release|Any CPU
+		{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

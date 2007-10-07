@@ -1,5 +1,36 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+7 October 2007 11:43 - GUID Tool changes (allow "current package only")
+  * Also created "pjse System Classes" project for common support classes
+  * Also tidied up so all .dlls get written to main project bin folder
+  pjse filetable\
+    FileTable.cs 1.11.2.27
+    pjse filetable.csproj 1.3.10.7
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.2.7
+    GUIDTool.resx 1.4.12.5
+    pjse GUID Tool.csproj 1.6.10.7
+  pjse Localisation\
+    Localization.resx 1.1.4.27
+    pjse localisation.csproj 1.1.4.4
+  pjse System Classes\
+    .cvsignore 1.1.2.1
+    Boolset.cs 1.1.2.1 (was "SimPe BHAV\SystemClasses.cs" 1.1.2.4)
+    pjseMsgBox.cs 1.1.2.1
+    pjseMsgBox.Designer.cs 1.1.2.1
+    pjseMsgBox.resx 1.1.2.1
+    pjse System Classes.csproj 1.1.2.1
+  pjse System Classes\Properties\
+    AssemblyInfo.cs 1.1.2.1
+  pjse update tool\
+    pjse update tool.csproj 1.1.4.4
+  SimPe BHAV\
+    ExtendedWrapper.cs 1.1.4.8
+    pjse coder plugin.csproj 1.29.2.34
+    pjse coder plugins.sln 1.6.10.5
+    ResourceChooser.cs 1.6.2.11
+    SystemClasses.cs (deleted)
+
 30 September 2007 10:53 - Add NREF to GUIDTool
   * Also persist form size
   pjse GUID Tool\

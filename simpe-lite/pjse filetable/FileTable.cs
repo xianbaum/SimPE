@@ -309,7 +309,7 @@ namespace pjse
         }
 
 
-
+        public enum Source { Any, Fixed, Local };
 		public class Entry : IDisposable, IComparable
 		{
 			private IPackageFile package;
@@ -400,7 +400,8 @@ namespace pjse
             get
             {
                 if (package == null || pfd == null) return new Entry[0];
-                return this[pfd.Type, pfd.Group, pfd.Instance, IsFixed(package)];
+                return this[pfd.Type, pfd.Group, pfd.Instance,
+                    pfd.Group == 0xffffffff ? Source.Local : (IsFixed(package) ? Source.Fixed : Source.Any)];
             }
         }
 
@@ -408,8 +409,8 @@ namespace pjse
         {
             get
             {
-                if (package == null) return new Entry[0];
                 if (!hasLoaded) Refresh();
+                if (package == null || pfByPackage[package] == null) return new Entry[0];
 
                 ArrayList result = new ArrayList();
                 foreach (Entry e in ((Hashtable)pfByPackage[package]).Keys)
@@ -423,14 +424,14 @@ namespace pjse
             }
         }
 
-        public Entry[] this[uint packedFileType] { get { return this[packedFileType, false]; } }
-        public Entry[] this[uint packedFileType, bool fixedonly]
+        public Entry[] this[uint packedFileType] { get { return this[packedFileType, Source.Any]; } }
+        public Entry[] this[uint packedFileType, Source where]
         {
             get
             {
                 if (!hasLoaded) Refresh();
 
-                return putLocalFirst((Hashtable)pfByType[packedFileType], false, fixedonly);
+                return putLocalFirst((Hashtable)pfByType[packedFileType], where);
             }
         }
 
@@ -442,16 +443,16 @@ namespace pjse
 
                 Hashtable tgt = (Hashtable)pfByTypeGroup[packedFileType];
                 if (tgt == null) return new Entry[0];
-                return putLocalFirst((Hashtable)tgt[group], group == 0xffffffff, false);
+                return putLocalFirst((Hashtable)tgt[group], group == 0xffffffff ? Source.Local : Source.Any);
             }
         }
 
         public Entry[] this[uint packedFileType, uint group, uint instance]
         {
-            get { return this[packedFileType, group, instance, false]; }
+            get { return this[packedFileType, group, instance, Source.Any]; }
         }
 
-        public Entry[] this[uint packedFileType, uint group, uint instance, bool fixedOnly]
+        public Entry[] this[uint packedFileType, uint group, uint instance, Source where]
         {
             get
             {
@@ -461,11 +462,11 @@ namespace pjse
                 if (tgit == null) return new Entry[0];
                 Hashtable tgitg = (Hashtable)tgit[group];
                 if (tgitg == null) return new Entry[0];
-                return putLocalFirst((Hashtable)tgitg[instance], group == 0xffffffff, fixedOnly);
+                return putLocalFirst((Hashtable)tgitg[instance], where);
             }
         }
 
-        private Entry[] putLocalFirst(Hashtable result, bool localOnly, bool fixedOnly)
+        private Entry[] putLocalFirst(Hashtable result, Source where)
         {
             if (result == null) return new Entry[0];
 
@@ -474,8 +475,8 @@ namespace pjse
             ArrayList nonfixed = new ArrayList();
 
             ArrayList[] resultset =
-                localOnly ? new ArrayList[] { currpkg }
-                : fixedOnly ? new ArrayList[] { fixedpkg }
+                where == Source.Local ? new ArrayList[] { currpkg }
+                : where == Source.Fixed ? new ArrayList[] { fixedpkg }
                     : new ArrayList[] { currpkg, nonfixed, fixedpkg };
 
             foreach (Entry e in result.Keys)

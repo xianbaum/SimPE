@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 using System;
 using System.Collections.Generic;
 
@@ -46,8 +45,9 @@ namespace System
         public Boolset(string val)
         {
             bitset = new bool[val.Length];
-            for (int i = 0; i < val.Length; i++)
-                bitset[i] = val.Substring(i, 1).Equals("0");
+            int j = 0;
+            for (int i = val.Length - 1; i >= 0; i--)
+                bitset[j++] = !val.Substring(i, 1).Equals("0");
         }
 
 
