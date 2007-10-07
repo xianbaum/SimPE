@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+7 October 2007 16:10 - Fix up form layout
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.2.8
+    GUIDTool.resx 1.4.12.6
+
 7 October 2007 12:17 - Fix up unneeded "copy locals"
   SimPe BHAV\
     pjse coder plugin.csproj 1.29.2.35
