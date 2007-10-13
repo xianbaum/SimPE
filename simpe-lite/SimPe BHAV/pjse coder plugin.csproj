@@ -505,9 +505,6 @@ tar c version.txt LICENSE.txt *.package) | tar x%25tarv%25 -C "Plugins\$(TargetN
 del ..\version.txt
 tar c --exclude=CVS CHANGES.txt | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 
-tar c Plugins | (cd ..\..\%25simpeDir$(ConfigurationName)%25
-tar xv)
-
 rem -----------------------------------
 rem  Copy over help for Release builds
 rem -----------------------------------
@@ -515,6 +512,13 @@ if x%25help$(ConfigurationName)%25==xno goto nohelp
 (cd /d %25helpdir%25
 tar c %25help%25) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 :nohelp:
+
+
+rem -----------------------------------
+rem  Copy Plugins to SimPe
+rem -----------------------------------
+tar c Plugins | (cd ..\..\%25simpeDir$(ConfigurationName)%25
+tar xv)
 
 
 del ..\"%25base%25*"

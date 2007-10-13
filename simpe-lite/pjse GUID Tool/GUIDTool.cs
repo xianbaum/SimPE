@@ -59,6 +59,7 @@ namespace pjse.guidtool
         private RadioButton rb1default;
         private RadioButton rb1OPOnly;
         private RadioButton rb1CPOnly;
+        private Button btnHelp;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -419,6 +420,7 @@ namespace pjse.guidtool
             this.rb1default = new System.Windows.Forms.RadioButton();
             this.rb1OPOnly = new System.Windows.Forms.RadioButton();
             this.rb1CPOnly = new System.Windows.Forms.RadioButton();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.flpSearchFor.SuspendLayout();
@@ -560,6 +562,12 @@ namespace pjse.guidtool
             resources.ApplyResources(this.rb1CPOnly, "rb1CPOnly");
             this.rb1CPOnly.Name = "rb1CPOnly";
             // 
+            // btnHelp
+            // 
+            resources.ApplyResources(this.btnHelp, "btnHelp");
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
             // GUIDTool
             // 
             this.AcceptButton = this.btnSearch;
@@ -568,6 +576,7 @@ namespace pjse.guidtool
             this.CancelButton = this.btnClose;
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -630,14 +639,12 @@ namespace pjse.guidtool
                 Start();
         }
 
-		private void btnHelp_Click(object sender, System.EventArgs e)
-		{
-            pjseMsgBox.Show(
-                pjse.Localization.GetString("gt_ResourceFinderHelp"),
-                this.Text);
-			//System.Windows.Forms.MessageBox.Show(
-            //    pjse.Localization.GetString("gt_ResourceFinderHelp"),
-			//	this.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        private void btnHelp_Click(object sender, System.EventArgs e)
+        {
+            string protocol = "file://";
+            string relativePathToHelp = "pjse.coder.plugin/PJSE_Help";
+
+            SimPe.RemoteControl.ShowHelp(protocol + SimPe.Helper.SimPePluginPath + "/" + relativePathToHelp + "/Finder.htm");
         }
 
         private void btnClose_Click(object sender, EventArgs e)

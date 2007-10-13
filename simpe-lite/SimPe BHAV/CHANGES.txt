@@ -1,5 +1,13 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+13 October 2007 13:58 - GUID Tool: restore help button (and link to new helpfile)
+  * Also change post-build script to copy Plugins folder once fully populated
+  pjse GUID Tool\
+    GUIDTool.cs 1.10.2.8
+    GUIDTool.resx 1.4.12.7
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.36
+
 13 October 2007 09:13 - Oops: restore "local only" for group 0xffffffff
   pjse filetable\
     FileTable.cs 1.11.2.28
