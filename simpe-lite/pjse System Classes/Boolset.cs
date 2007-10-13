@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-
 using System;
 using System.Collections.Generic;
 
@@ -43,12 +42,22 @@ namespace System
 
 		public Boolset(byte val) : this(8, val) {}
 
+        public Boolset(string val)
+        {
+            bitset = new bool[val.Length];
+            int j = 0;
+            for (int i = val.Length - 1; i >= 0; i--)
+                bitset[j++] = !val.Substring(i, 1).Equals("0");
+        }
 
-		public static implicit operator Boolset(uint o) { return new Boolset(o); }
+
+        public static implicit operator Boolset(uint o) { return new Boolset(o); }
 
 		public static implicit operator Boolset(ushort o) { return new Boolset(o); }
 
-		public static implicit operator Boolset(byte o) { return new Boolset(o); }
+        public static implicit operator Boolset(byte o) { return new Boolset(o); }
+
+        public static implicit operator Boolset(string o) { return new Boolset(o); }
 
 
 		private static int doOperator(Boolset t, int l)
@@ -63,7 +72,15 @@ namespace System
 
 		public static implicit operator ushort(Boolset t) { return (ushort)doOperator(t, 16); }
 
-		public static implicit operator uint(Boolset t) { return (uint)doOperator(t, 32); }
+        public static implicit operator uint(Boolset t) { return (uint)doOperator(t, 32); }
+
+        public static implicit operator string(Boolset t)
+        {
+            string s = "";
+            for (int i = 0; i < t.bitset.Length; i++)
+                s += t.bitset[i] ? "1" : "0";
+            return s;
+        }
 
 
 		public bool this[int i]

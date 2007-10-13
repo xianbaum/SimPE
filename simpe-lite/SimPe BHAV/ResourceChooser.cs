@@ -30,20 +30,20 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace pjse
 {
-	/// <summary>
-	/// Summary description for ResourceChooser.
-	/// </summary>
-	public class ResourceChooser : System.Windows.Forms.Form
-	{
-		#region Form variables
+    /// <summary>
+    /// Summary description for ResourceChooser.
+    /// </summary>
+    public class ResourceChooser : System.Windows.Forms.Form
+    {
+        #region Form variables
 
-		private System.Windows.Forms.Button OK;
-		private System.Windows.Forms.Button Cancel;
+        private System.Windows.Forms.Button OK;
+        private System.Windows.Forms.Button Cancel;
         private System.Windows.Forms.TabControl tcResources;
-		private System.Windows.Forms.TabPage tpBuiltIn;
-		private System.Windows.Forms.TabPage tpGlobalGroup;
-		private System.Windows.Forms.TabPage tpSemiGroup;
-		private System.Windows.Forms.TabPage tpGroup;
+        private System.Windows.Forms.TabPage tpBuiltIn;
+        private System.Windows.Forms.TabPage tpGlobalGroup;
+        private System.Windows.Forms.TabPage tpSemiGroup;
+        private System.Windows.Forms.TabPage tpGroup;
         private System.Windows.Forms.TabPage tpPackage;
         private ListView lvPackage;
         private ColumnHeader chValue;
@@ -60,37 +60,38 @@ namespace pjse
         private ListView lvPrim;
         private ColumnHeader columnHeader7;
         private ColumnHeader columnHeader8;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
+        private Button btnViewBHAV;
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
+        #endregion
 
-		public ResourceChooser()
-		{
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
-		}
+        public ResourceChooser()
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
 
-		#region ResourceChooser
+        #region ResourceChooser
 
         private class ListViewItemComparer : IComparer
         {
@@ -109,83 +110,131 @@ namespace pjse
             }
         }
 
-		public pjse.FileTable.Entry Execute(uint resourceType, uint group, Control form)
-		{
-			return Execute(resourceType, group, form, 0);
-		}
+        private bool CanDoEA;
 
-		public pjse.FileTable.Entry Execute(uint resourceType, uint group, Control form, byte skip_pages)
-		{
-			form.Cursor = Cursors.WaitCursor;
-			this.Cursor = Cursors.WaitCursor;
+        private ListView getListView()
+        {
+            if (this.tcResources.SelectedTab == this.tpPackage && lvPackage.SelectedItems != null)
+                return lvPackage;
 
-			this.tcResources.TabPages.Clear();
+            if (this.tcResources.SelectedTab == this.tpGroup && lvGroup.SelectedItems != null)
+                return lvGroup;
 
-			// There doesn't appear to be a way to compare two paths and have the OS decide if they refer to the same object
-			if (((skip_pages & 0x01) == 0) 
-				&& pjse.FileTable.GFT.CurrentPackage != null 
-				&& pjse.FileTable.GFT.CurrentPackage.FileName != null 
-				&& !pjse.FileTable.GFT.CurrentPackage.FileName.EndsWith("objects.package"))
-				FillPackage(resourceType, this.lvPackage, this.tpPackage);
+            if (this.tcResources.SelectedTab == this.tpSemiGroup && lvSemi.SelectedItems != null)
+                return lvSemi;
 
-			if ((skip_pages & 0x02) == 0)
-				FillGroup(resourceType, group, this.lvGroup, this.tpGroup);
+            if (this.tcResources.SelectedTab == this.tpGlobalGroup && lvGlobal.SelectedItems != null)
+                return lvGlobal;
 
-			if ((skip_pages & 0x04) == 0)
-			{
-				Glob g = pjse.BhavWiz.GlobByGroup(group);
+            if (this.tcResources.SelectedTab == this.tpBuiltIn && lvPrim.SelectedItems != null)
+                return lvPrim;
+
+            return null;
+        }
+
+        /// <summary>
+        /// List available resources of a given type, allowing the user to select one.
+        /// </summary>
+        /// <param name="resourceType">Type of resource to list</param>
+        /// <param name="group">Group number of "this" group</param>
+        /// <param name="form">Parent form</param>
+        /// <param name="canDoEA">Whether to differentiate overriding resources</param>
+        /// <returns>The chosen resource entry</returns>
+        public pjse.FileTable.Entry Execute(uint resourceType, uint group, Control form, bool canDoEA)
+        {
+            return Execute(resourceType, group, form, canDoEA, 0);
+        }
+
+
+        /// <summary>
+        /// List available resources of a given type, allowing the user to select one.
+        /// </summary>
+        /// <param name="resourceType">Type of resource to list</param>
+        /// <param name="group">Group number of "this" group</param>
+        /// <param name="form">Parent form</param>
+        /// <param name="skip_pages">A flag per page (this package, private, semi, global, prim) to suppress pages</param>
+        /// <param name="canDoEA">Whether to differentiate overriding resources</param>
+        /// <returns>The chosen resource entry</returns>
+        public pjse.FileTable.Entry Execute(uint resourceType, uint group, Control form, bool canDoEA, Boolset skip_pages)
+        {
+            CanDoEA = canDoEA;
+
+            form.Cursor = Cursors.WaitCursor;
+            this.Cursor = Cursors.WaitCursor;
+
+            btnViewBHAV.Visible = resourceType == SimPe.Data.MetaData.BHAV_FILE;
+
+            this.tcResources.TabPages.Clear();
+
+            // There doesn't appear to be a way to compare two paths and have the OS decide if they refer to the same object
+            if (!skip_pages[0]
+                && pjse.FileTable.GFT.CurrentPackage != null
+                && pjse.FileTable.GFT.CurrentPackage.FileName != null
+                && !pjse.FileTable.GFT.CurrentPackage.FileName.EndsWith("objects.package"))
+                FillPackage(resourceType, this.lvPackage, this.tpPackage);
+
+            if (!skip_pages[1])
+                FillGroup(resourceType, group, this.lvGroup, this.tpGroup);
+
+            if (!skip_pages[2])
+            {
+                Glob g = pjse.BhavWiz.GlobByGroup(group);
                 if (g != null)
                 {
                     FillGroup(resourceType, g.SemiGlobalGroup, this.lvSemi, this.tpSemiGroup);
                     this.tpSemiGroup.Text = g.SemiGlobalName;
                 }
-			}
+            }
 
-			if ((skip_pages & 0x08) == 0 && group != (uint)Group.Global)
-				FillGroup(resourceType, (uint)Group.Global, this.lvGlobal, this.tpGlobalGroup);
+            if (!skip_pages[3] && group != (uint)Group.Global)
+                FillGroup(resourceType, (uint)Group.Global, this.lvGlobal, this.tpGlobalGroup);
 
-			if ((skip_pages & 0x10) == 0)
-				FillBuiltIn(resourceType, this.lvPrim, this.tpBuiltIn);
+            if (!skip_pages[4] && resourceType == SimPe.Data.MetaData.BHAV_FILE)
+                FillBuiltIn(resourceType, this.lvPrim, this.tpBuiltIn);
 
-			form.Cursor = Cursors.Default;
-			this.Cursor = Cursors.Default;
+            if (this.tcResources.TabCount > 0)
+                this.tcResources.SelectedIndex = 0;
 
-			DialogResult dr = ShowDialog();
-			Close();
+            form.Cursor = Cursors.Default;
+            this.Cursor = Cursors.Default;
 
-			if (dr == System.Windows.Forms.DialogResult.OK)
-			{
-                if (this.tcResources.SelectedTab == this.tpPackage && lvPackage.SelectedItems != null)
-					return returnBHAV(lvPackage);
+            DialogResult dr  = ShowDialog();
+            while (dr == DialogResult.Retry)
+                dr  = ShowDialog();
+            Close();
 
-                if (this.tcResources.SelectedTab == this.tpGroup && lvGroup.SelectedItems != null)
-                    return returnBHAV(lvGroup);
+            if (dr == System.Windows.Forms.DialogResult.OK)
+            {
+                ListView lv = getListView();
 
-                if (this.tcResources.SelectedTab == this.tpSemiGroup && lvSemi.SelectedItems != null)
-                    return returnBHAV(lvSemi);
+                if (lv != null)
+                {
+                    if (lv != lvPrim)
+                        return (pjse.FileTable.Entry)lv.SelectedItems[0].Tag;
+                    else
+                    {
+                        IPackedFileDescriptor pfd = new SimPe.Packages.PackedFileDescriptor();
+                        pfd.Instance = (uint)lvPrim.SelectedItems[0].Tag;
+                        return new pjse.FileTable.Entry(null, pfd, true);
+                    }
+                }
+            }
+            return null;
+        }
 
-                if (this.tcResources.SelectedTab == this.tpGlobalGroup && lvGlobal.SelectedItems != null)
-					return returnBHAV(lvGlobal);
-
-                if (this.tcResources.SelectedTab == this.tpBuiltIn && lvPrim.SelectedItems != null)
-                    return returnBuiltIn((uint)lvPrim.SelectedItems[0].Tag);
-			}
-			return null;
-		}
-
-		private void FillPackage(uint type, ListView list, TabPage tab)
-		{
-			Fill(pjse.FileTable.GFT[pjse.FileTable.GFT.CurrentPackage, type], list, tab);
-		}
+        private void FillPackage(uint type, ListView list, TabPage tab)
+        {
+            Fill(pjse.FileTable.GFT[pjse.FileTable.GFT.CurrentPackage, type], list, tab);
+        }
 
         private void FillGroup(uint type, uint group, ListView list, TabPage tab)
-		{
-			Fill(pjse.FileTable.GFT[type, group], list, tab);
-		}
+        {
+            Fill(pjse.FileTable.GFT[type, group], list, tab);
+        }
 
         private void Fill(pjse.FileTable.Entry[] items, ListView list, TabPage tab)
-		{
-			list.Items.Clear();
+        {
+            list.Items.Clear();
             ListViewItem lvi;
 
             foreach (pjse.FileTable.Entry item in items)
@@ -194,58 +243,44 @@ namespace pjse
                 lvi.Tag = item;
                 list.Items.Add(lvi);
             }
-			this.tcResources.TabPages.Add(tab);
+            this.tcResources.TabPages.Add(tab);
             list.ListViewItemSorter = new ListViewItemComparer();
             if (list.Items.Count > 0)
                 list.SelectedIndices.Add(0);
         }
 
         private void FillBuiltIn(uint type, ListView list, TabPage tab)
-		{
-			list.Items.Clear();
+        {
+            list.Items.Clear();
             ListViewItem lvi;
 
-			if (type == SimPe.Data.MetaData.BHAV_FILE)
-			{
-				uint i = 0;
-				foreach (string s in BhavWiz.readStr(pjse.GS.BhavStr.Primitives))
-				{
-                    if (!s.StartsWith("~"))
-                    {
-                        lvi = new ListViewItem(new string[] { "0x" + SimPe.Helper.HexString((ushort)i), s });
-                        lvi.Tag = i;
-                        list.Items.Add(lvi);
-                    }
-					i++;
-				}
-			}
-			this.tcResources.TabPages.Add(tab);
+            uint i = 0;
+            foreach (string s in BhavWiz.readStr(pjse.GS.BhavStr.Primitives))
+            {
+                if (!s.StartsWith("~"))
+                {
+                    lvi = new ListViewItem(new string[] { "0x" + SimPe.Helper.HexString((ushort)i), s });
+                    lvi.Tag = i;
+                    list.Items.Add(lvi);
+                }
+                i++;
+            }
+
+            this.tcResources.TabPages.Add(tab);
             list.ListViewItemSorter = new ListViewItemComparer();
             if (list.Items.Count > 0)
                 list.SelectedIndices.Add(0);
         }
 
-        private pjse.FileTable.Entry returnBHAV(ListView list)
+        #endregion
+
+        #region Vom Windows Form-Designer generierter Code
+        /// <summary>
+        /// Erforderliche Methode für die Designerunterstützung. 
+        /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+        /// </summary>
+        private void InitializeComponent()
         {
-            return (pjse.FileTable.Entry)list.SelectedItems[0].Tag;
-        }
-
-		private pjse.FileTable.Entry returnBuiltIn(uint i)
-		{
-			IPackedFileDescriptor pfd = new SimPe.Packages.PackedFileDescriptor();
-			pfd.Instance = i;
-			return new pjse.FileTable.Entry(null, pfd, true);
-		}
-
-		#endregion
-
-		#region Vom Windows Form-Designer generierter Code
-		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
-		/// </summary>
-		private void InitializeComponent()
-		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ResourceChooser));
             this.tcResources = new System.Windows.Forms.TabControl();
             this.tpPackage = new System.Windows.Forms.TabPage();
@@ -270,6 +305,7 @@ namespace pjse
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
             this.OK = new System.Windows.Forms.Button();
             this.Cancel = new System.Windows.Forms.Button();
+            this.btnViewBHAV = new System.Windows.Forms.Button();
             this.tcResources.SuspendLayout();
             this.tpPackage.SuspendLayout();
             this.tpGlobalGroup.SuspendLayout();
@@ -288,6 +324,7 @@ namespace pjse
             this.tcResources.Controls.Add(this.tpBuiltIn);
             this.tcResources.Name = "tcResources";
             this.tcResources.SelectedIndex = 0;
+            this.tcResources.SelectedIndexChanged += new System.EventHandler(this.tcResources_SelectedIndexChanged);
             // 
             // tpPackage
             // 
@@ -302,6 +339,7 @@ namespace pjse
             this.chName});
             resources.ApplyResources(this.lvPackage, "lvPackage");
             this.lvPackage.FullRowSelect = true;
+            this.lvPackage.HideSelection = false;
             this.lvPackage.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvPackage.Items")))});
             this.lvPackage.MultiSelect = false;
@@ -334,6 +372,7 @@ namespace pjse
             this.columnHeader2});
             resources.ApplyResources(this.lvGlobal, "lvGlobal");
             this.lvGlobal.FullRowSelect = true;
+            this.lvGlobal.HideSelection = false;
             this.lvGlobal.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvGlobal.Items")))});
             this.lvGlobal.MultiSelect = false;
@@ -366,6 +405,7 @@ namespace pjse
             this.columnHeader4});
             resources.ApplyResources(this.lvGroup, "lvGroup");
             this.lvGroup.FullRowSelect = true;
+            this.lvGroup.HideSelection = false;
             this.lvGroup.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvGroup.Items")))});
             this.lvGroup.MultiSelect = false;
@@ -398,6 +438,7 @@ namespace pjse
             this.columnHeader6});
             resources.ApplyResources(this.lvSemi, "lvSemi");
             this.lvSemi.FullRowSelect = true;
+            this.lvSemi.HideSelection = false;
             this.lvSemi.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvSemi.Items")))});
             this.lvSemi.MultiSelect = false;
@@ -430,6 +471,7 @@ namespace pjse
             this.columnHeader8});
             resources.ApplyResources(this.lvPrim, "lvPrim");
             this.lvPrim.FullRowSelect = true;
+            this.lvPrim.HideSelection = false;
             this.lvPrim.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             ((System.Windows.Forms.ListViewItem)(resources.GetObject("lvPrim.Items")))});
             this.lvPrim.MultiSelect = false;
@@ -453,6 +495,7 @@ namespace pjse
             resources.ApplyResources(this.OK, "OK");
             this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OK.Name = "OK";
+            this.OK.Click += new System.EventHandler(this.OK_Click);
             // 
             // Cancel
             // 
@@ -460,12 +503,19 @@ namespace pjse
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Name = "Cancel";
             // 
+            // btnViewBHAV
+            // 
+            resources.ApplyResources(this.btnViewBHAV, "btnViewBHAV");
+            this.btnViewBHAV.Name = "btnViewBHAV";
+            this.btnViewBHAV.Click += new System.EventHandler(this.btnViewBHAV_Click);
+            // 
             // ResourceChooser
             // 
             this.AcceptButton = this.OK;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.Cancel;
+            this.Controls.Add(this.btnViewBHAV);
             this.Controls.Add(this.Cancel);
             this.Controls.Add(this.OK);
             this.Controls.Add(this.tcResources);
@@ -480,14 +530,8 @@ namespace pjse
             this.tpBuiltIn.ResumeLayout(false);
             this.ResumeLayout(false);
 
-		}
-		#endregion
-
-		private void listView_DoubleClick(object sender, System.EventArgs e)
-		{
-			this.DialogResult = System.Windows.Forms.DialogResult.OK;
-			Close();
-		}
+        }
+        #endregion
 
         private void listView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
@@ -498,6 +542,63 @@ namespace pjse
                         ((ListView)c).ListViewItemSorter = new ListViewItemComparer(e.Column);
         }
 
-	}
+        private void tcResources_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (btnViewBHAV.Visible)
+                btnViewBHAV.Enabled = tcResources.SelectedTab != this.tpBuiltIn;
+        }
+
+        private void listView_DoubleClick(object sender, System.EventArgs e)
+        {
+            this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            OK_Click(sender, e);
+            Hide();
+        }
+
+        private void OK_Click(object sender, EventArgs ev)
+        {
+            ListView lv = getListView();
+
+            if (lv != null && lv != lvPrim)
+            {
+                pjse.FileTable.Entry e = (pjse.FileTable.Entry)lv.SelectedItems[0].Tag;
+
+                if (CanDoEA && e.Group != 0xffffff && !e.IsFixed)
+                    foreach (pjse.FileTable.Entry f in pjse.FileTable.GFT[e.Type, e.Group, e.Instance, FileTable.Source.Fixed])
+                        if (f.IsFixed)
+                        {
+                            DialogResult dr = MessageBox.Show(
+                                Localization.GetString("rc_override", e.Package.FileName),
+                                Localization.GetString("rc_overridesEA"),
+                                MessageBoxButtons.YesNoCancel,
+                                MessageBoxIcon.Question,
+                                MessageBoxDefaultButton.Button3
+                            );
+
+                            if (dr == DialogResult.Yes) { }
+                            else if (dr == DialogResult.No) { lv.SelectedItems[0].Tag = f; }
+                            else this.DialogResult = DialogResult.Retry;
+                            break;
+                        }
+            }
+        }
+
+        private void btnViewBHAV_Click(object sender, EventArgs e)
+        {
+            ListView lv = getListView();
+            if (lv == null) return;
+
+            pjse.FileTable.Entry item = (pjse.FileTable.Entry)lv.SelectedItems[0].Tag;
+            Bhav b = new Bhav();
+            b.ProcessData(item.PFD, item.Package);
+
+            SimPe.PackedFiles.UserInterface.BhavForm ui = (SimPe.PackedFiles.UserInterface.BhavForm)b.UIHandler;
+            ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+            ui.Text = pjse.Localization.GetString("viewbhav") + ": " + b.FileName + " [" + b.Package.SaveFileName + "]";
+            b.RefreshUI();
+            ui.Show();
+        }
+
+    }
 
 }

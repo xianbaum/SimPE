@@ -141,7 +141,8 @@ namespace pjse
                 else if (instance >= 0x2000) group = SemiGroup;
             }
 
-            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[type, group, instance, baseGame];
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[type, group, instance,
+                baseGame ? FileTable.Source.Fixed : FileTable.Source.Any];
             return (items == null || items.Length == 0) ? null : items[0];
         }
 

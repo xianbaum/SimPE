@@ -456,14 +456,14 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void GetObjfAction(object sender, System.EventArgs e)
 		{
-			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, objfPanel.Parent);
+			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, objfPanel.Parent, false);
 			if (item != null)
 				setBHAV(0, (ushort)item.Instance, false);
 		}
 
 		private void GetObjfGuard(object sender, System.EventArgs e)
 		{
-			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, objfPanel.Parent);
+			pjse.FileTable.Entry item = new pjse.ResourceChooser().Execute(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Group, objfPanel.Parent, false);
 			if (item != null)
 				setBHAV(1, (ushort)item.Instance, false);
 		}

@@ -152,14 +152,22 @@
       <Name>pjse filetable</Name>
       <Project>{84085FAA-A947-492E-88BC-B941A4623811}</Project>
       <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\pjse Localisation\pjse localisation.csproj">
       <Project>{F5C9F168-98B7-4AE8-8ED6-9DB9A23A4CCF}</Project>
       <Name>pjse localisation</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\pjse System Classes\pjse System Classes.csproj">
+      <Project>{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}</Project>
+      <Name>pjse System Classes</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\pjse update tool\pjse update tool.csproj">
       <Project>{AF7E4CA2-6B8F-4A54-8149-9B7BEAB23432}</Project>
       <Name>pjse update tool</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -257,7 +265,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="StrWrapper.cs" />
-    <Compile Include="SystemClasses.cs" />
     <Compile Include="TPRPForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -469,6 +476,10 @@ set nsisProgress=no
 set srcDebug=no
 set srcInProgress=no
 
+set simpeDirRelease=SimPe
+set simpeDirDebug=fullsimpe-svn\__Release
+set simpeDirInProgress=SimPe
+
 
 cd "$(ProjectDir)"
 
@@ -487,15 +498,12 @@ tar c --exclude "*.bat" . ) | tar x%25tarv%25 -C "Plugins"
 (cd ..
 (echo %25base%25
 echo %25suffix%25) &gt; version.txt
-(pushd ..\SimPe\Data
+(pushd ..\%25simpeDir$(ConfigurationName)%25\Data
 grep "simperelease version" release.nfo
 popd) &gt;&gt; version.txt
 tar c version.txt LICENSE.txt *.package) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 del ..\version.txt
 tar c --exclude=CVS CHANGES.txt | tar x%25tarv%25 -C "Plugins\$(TargetName)"
-
-tar c Plugins | (cd ..\..\SimPe
-tar xv)
 
 rem -----------------------------------
 rem  Copy over help for Release builds
@@ -504,6 +512,13 @@ if x%25help$(ConfigurationName)%25==xno goto nohelp
 (cd /d %25helpdir%25
 tar c %25help%25) | tar x%25tarv%25 -C "Plugins\$(TargetName)"
 :nohelp:
+
+
+rem -----------------------------------
+rem  Copy Plugins to SimPe
+rem -----------------------------------
+tar c Plugins | (cd ..\..\%25simpeDir$(ConfigurationName)%25
+tar xv)
 
 
 del ..\"%25base%25*"
