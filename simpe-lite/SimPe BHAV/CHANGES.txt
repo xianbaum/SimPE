@@ -1,5 +1,9 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+13 October 2007 09:13 - Oops: restore "local only" for group 0xffffffff
+  pjse filetable\
+    FileTable.cs 1.11.2.28
+
 7 October 2007 16:10 - Fix up form layout
   pjse GUID Tool\
     GUIDTool.cs 1.10.2.8

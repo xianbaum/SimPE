@@ -462,7 +462,7 @@ namespace pjse
                 if (tgit == null) return new Entry[0];
                 Hashtable tgitg = (Hashtable)tgit[group];
                 if (tgitg == null) return new Entry[0];
-                return putLocalFirst((Hashtable)tgitg[instance], where);
+                return putLocalFirst((Hashtable)tgitg[instance], group == 0xffffffff ? Source.Local : where);
             }
         }
 
