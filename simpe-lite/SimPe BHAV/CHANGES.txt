@@ -1,5 +1,10 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+27 October 2007 13:27 - Add [X] to clear operands and some tooltips
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.42
+    BhavForm.resx 1.30.2.20
+
 27 October 2007 13:05 - Refactor BhavOperandWiz code
   SimPe BHAV\
     BhavOperandWiz.cs 1.7.14.22

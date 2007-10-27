@@ -129,6 +129,8 @@ namespace SimPe.PackedFiles.UserInterface
         private LinkLabel llHidesOP;
         private Label lbHidesOP;
         private Button btnPasteListing;
+        private Button btnZero;
+        private ToolTip ttBhavForm;
         private IContainer components;
         #endregion
        
@@ -796,7 +798,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnDelMerola = new System.Windows.Forms.Button();
             this.btnCopyListing = new System.Windows.Forms.Button();
             this.btnTPRPMaker = new System.Windows.Forms.Button();
-            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.btnDel = new System.Windows.Forms.Button();
             this.gbMove = new System.Windows.Forms.GroupBox();
             this.btnUp = new System.Windows.Forms.Button();
@@ -817,6 +818,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnZero = new System.Windows.Forms.Button();
+            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
+            this.ttBhavForm = new System.Windows.Forms.ToolTip(this.components);
             this.gbInstruction.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
@@ -834,6 +838,7 @@ namespace SimPe.PackedFiles.UserInterface
             // gbInstruction
             // 
             resources.ApplyResources(this.gbInstruction, "gbInstruction");
+            this.gbInstruction.Controls.Add(this.btnZero);
             this.gbInstruction.Controls.Add(this.tbInst_Longname);
             this.gbInstruction.Controls.Add(this.btnOperandRaw);
             this.gbInstruction.Controls.Add(this.btnCancel);
@@ -874,11 +879,13 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbInst_Longname.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbInst_Longname.Name = "tbInst_Longname";
             this.tbInst_Longname.ReadOnly = true;
+            this.ttBhavForm.SetToolTip(this.tbInst_Longname, resources.GetString("tbInst_Longname.ToolTip"));
             // 
             // btnOperandRaw
             // 
             resources.ApplyResources(this.btnOperandRaw, "btnOperandRaw");
             this.btnOperandRaw.Name = "btnOperandRaw";
+            this.ttBhavForm.SetToolTip(this.btnOperandRaw, resources.GetString("btnOperandRaw.ToolTip"));
             this.btnOperandRaw.Click += new System.EventHandler(this.btnOperandRaw_Click);
             // 
             // btnCancel
@@ -891,6 +898,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.btnOperandWiz, "btnOperandWiz");
             this.btnOperandWiz.Name = "btnOperandWiz";
+            this.ttBhavForm.SetToolTip(this.btnOperandWiz, resources.GetString("btnOperandWiz.ToolTip"));
             this.btnOperandWiz.Click += new System.EventHandler(this.btnOperandWiz_Clicked);
             // 
             // llopenbhav
@@ -1128,6 +1136,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbLocalC, "tbLocalC");
             this.tbLocalC.Name = "tbLocalC";
+            this.ttBhavForm.SetToolTip(this.tbLocalC, resources.GetString("tbLocalC.ToolTip"));
             this.tbLocalC.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbLocalC.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
             this.tbLocalC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
@@ -1136,6 +1145,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbArgC, "tbArgC");
             this.tbArgC.Name = "tbArgC";
+            this.ttBhavForm.SetToolTip(this.tbArgC, resources.GetString("tbArgC.ToolTip"));
             this.tbArgC.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbArgC.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
             this.tbArgC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
@@ -1396,13 +1406,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnTPRPMaker.Name = "btnTPRPMaker";
             this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
             // 
-            // pnflowcontainer
-            // 
-            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
-            this.pnflowcontainer.Name = "pnflowcontainer";
-            this.pnflowcontainer.SelectedIndex = -1;
-            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
-            // 
             // btnDel
             // 
             resources.ApplyResources(this.btnDel, "btnDel");
@@ -1537,6 +1540,20 @@ namespace SimPe.PackedFiles.UserInterface
             this.toFileToolStripMenuItem.Name = "toFileToolStripMenuItem";
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            // 
+            // btnZero
+            // 
+            resources.ApplyResources(this.btnZero, "btnZero");
+            this.btnZero.Name = "btnZero";
+            this.ttBhavForm.SetToolTip(this.btnZero, resources.GetString("btnZero.ToolTip"));
+            this.btnZero.Click += new System.EventHandler(this.btnZero_Click);
+            // 
+            // pnflowcontainer
+            // 
+            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
+            this.pnflowcontainer.Name = "pnflowcontainer";
+            this.pnflowcontainer.SelectedIndex = -1;
+            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
             // 
             // BhavForm
             // 
@@ -1720,8 +1737,17 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 		}
 
+        private void btnZero_Click(object sender, EventArgs e)
+        {
+            internalchg = true;
+            for (int i = 0; i < 8; i++) currentInst.Instruction.Operands[i] = 0;
+            for (int i = 0; i < 8; i++) currentInst.Instruction.Reserved1[i] = 0;
+            UpdateInstPanel();
+            internalchg = false;
+        }
 
-		private void tbFilename_TextChanged(object sender, System.EventArgs e)
+
+        private void tbFilename_TextChanged(object sender, System.EventArgs e)
 		{
 			wrapper.FileName = tbFilename.Text;
 		}
