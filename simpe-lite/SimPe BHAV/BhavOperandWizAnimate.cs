@@ -27,7 +27,7 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.WizAnimate
 {
-    internal class UI : System.Windows.Forms.Form
+    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
     {
         #region Form variables
 
@@ -201,7 +201,6 @@ namespace pjse.BhavOperandWizards.WizAnimate
         }
 
 
-        #region UI
         private String mode = "";
         private Instruction inst = null;
 
@@ -286,6 +285,56 @@ namespace pjse.BhavOperandWizards.WizAnimate
             strText.Text = ((BhavWiz)inst).readStr(AnimScope(), AnimInstance(), strno, -1, pjse.Detail.ErrorNames);
         }
 
+        private void doidAnimType_DataOwnerControlChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            internalchg = true;
+
+            try
+            {
+                cbAnimType.SelectedIndex = cbAnimType.Items.IndexOf(((GS.GlobalStr)doidAnimType.Value).ToString());
+                tbAnimType.Text = (cbAnimType.SelectedIndex >= 0) ? this.cbAnimType.SelectedItem.ToString() : "---";
+            }
+            finally
+            {
+                internalchg = false;
+                doStrValue(doidAnim.Value, tbAnim);
+            }
+        }
+
+        private void doidAnim_DataOwnerControlChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            doStrValue(doidAnim.Value, tbAnim);
+        }
+
+        private void doidEvent_DataOwnerControlChanged(object sender, EventArgs e)
+        {
+            bool found = false;
+            tbEventTree.Text = pjse.BhavWiz.bhavName(inst.Parent, doidEvent.Value, ref found);
+            if (!found) tbEventTree.Text = "---";
+            llEvent.Enabled = found;
+        }
+
+        private byte getScope(byte scope)
+        {
+            return (byte)((cbEventScope.SelectedIndex >= 0) ? cbEventScope.SelectedIndex : scope);
+        }
+
+        private byte getPriority(byte priority)
+        {
+            return (byte)((cbPriority.SelectedIndex >= 0) ? cbPriority.SelectedIndex : priority);
+        }
+
+        private byte getOptions(List<CheckBox> lckbOptions, Boolset options)
+        {
+            for (int i = 0; i < lckbOptions.Count; i++)
+                if (lckbOptions[i] != null) options[i] = lckbOptions[i].Checked;
+            return options;
+        }
+
+        #region iBhavOperandWizForm
+        public Panel WizPanel { get { return this.pnWizAnimate; } }
 
         public void Execute(Instruction inst)
         {
@@ -385,38 +434,6 @@ namespace pjse.BhavOperandWizards.WizAnimate
                 cbPriority.SelectedIndex = priority;
         }
 
-        void doidAnimType_DataOwnerControlChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            internalchg = true;
-
-            try
-            {
-                cbAnimType.SelectedIndex = cbAnimType.Items.IndexOf(((GS.GlobalStr)doidAnimType.Value).ToString());
-                tbAnimType.Text = (cbAnimType.SelectedIndex >= 0) ? this.cbAnimType.SelectedItem.ToString() : "---";
-            }
-            finally
-            {
-                internalchg = false;
-                doStrValue(doidAnim.Value, tbAnim);
-            }
-        }
-
-        void doidAnim_DataOwnerControlChanged(object sender, EventArgs e)
-        {
-            if (internalchg) return;
-            doStrValue(doidAnim.Value, tbAnim);
-        }
-
-        void doidEvent_DataOwnerControlChanged(object sender, EventArgs e)
-        {
-            bool found = false;
-            tbEventTree.Text = pjse.BhavWiz.bhavName(inst.Parent, doidEvent.Value, ref found);
-            if (!found) tbEventTree.Text = "---";
-            llEvent.Enabled = found;
-        }
-
-
         public Instruction Write(Instruction inst)
         {
             if (inst != null)
@@ -474,24 +491,6 @@ namespace pjse.BhavOperandWizards.WizAnimate
                 }
             }
             return inst;
-        }
-
-
-        private byte getScope(byte scope)
-        {
-            return (byte)((cbEventScope.SelectedIndex >= 0) ? cbEventScope.SelectedIndex : scope);
-        }
-
-        private byte getPriority(byte priority)
-        {
-            return (byte)((cbPriority.SelectedIndex >= 0) ? cbPriority.SelectedIndex : priority);
-        }
-
-        private byte getOptions(List<CheckBox> lckbOptions, Boolset options)
-        {
-            for (int i = 0; i < lckbOptions.Count; i++)
-                if (lckbOptions[i] != null) options[i] = lckbOptions[i].Checked;
-            return options;
         }
 
         #endregion
@@ -1072,32 +1071,7 @@ namespace pjse.BhavOperandWizards
 {
 	public class BhavOperandWizAnimate : pjse.ABhavOperandWiz
 	{
-        private String mode = "";
-		public BhavOperandWizAnimate() : base() { }
-
-        public BhavOperandWizAnimate(Instruction i, String mode) : base(i) { this.mode = mode; }
-
-
-		private WizAnimate.UI myForm = null;
-		public override Panel bhavPrimWizPanel
-		{
-			get
-			{
-				if (myForm == null) myForm = new WizAnimate.UI(mode);
-				return myForm.pnWizAnimate;
-			}
-		}
-
-		public override void Execute()
-		{
-			if (instruction != null) myForm.Execute(instruction);
-		}
-
-		public override Instruction Write()
-		{
-			return (instruction == null) ? null : myForm.Write(instruction);
-		}
-
+        public BhavOperandWizAnimate(Instruction i, String mode) : base(i) { myForm = new WizAnimate.UI(mode); }
 
 		#region IDisposable Members
 		public override void Dispose()

@@ -28,7 +28,7 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.WizBhav
 {
-    internal partial class UI : Form
+    internal partial class UI : Form, iBhavOperandWizForm
     {
         enum dataFormat : int
         {
@@ -72,8 +72,6 @@ namespace pjse.BhavOperandWizards.WizBhav
 
             arbFormat = new List<RadioButton>(new RadioButton[] { rbNone, rbCallers, rbOld, rbNew });
         }
-
-        #region UI
 
         private bool internalchg = false;
         private byte[] operands = null;
@@ -161,6 +159,9 @@ namespace pjse.BhavOperandWizards.WizBhav
             }
         }
 
+        #region iBhavOperandWizForm
+        public Panel WizPanel { get { return this.pnWizBhav; } }
+
         public void Execute(Instruction inst)
         {
             internalchg = true;
@@ -245,31 +246,7 @@ namespace pjse.BhavOperandWizards
 {
     public class BhavOperandWizBhav : pjse.ABhavOperandWiz
     {
-        public BhavOperandWizBhav() : base() { }
-
-        public BhavOperandWizBhav(Instruction i) : base(i) { }
-
-
-        private WizBhav.UI myForm = null;
-        public override Panel bhavPrimWizPanel
-        {
-            get
-            {
-                if (myForm == null) myForm = new WizBhav.UI();
-                return myForm.pnWizBhav;
-            }
-        }
-
-        public override void Execute()
-        {
-            if (instruction != null) myForm.Execute(instruction);
-        }
-
-        public override Instruction Write()
-        {
-            return (instruction == null) ? null : myForm.Write(instruction);
-        }
-
+        public BhavOperandWizBhav(Instruction i) : base(i) { myForm = new WizBhav.UI(); }
 
         #region IDisposable Members
         public override void Dispose()

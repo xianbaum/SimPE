@@ -29,7 +29,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
     /// <summary>
     /// Summary description for StrBig.
     /// </summary>
-    internal class UI : System.Windows.Forms.Form
+    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
 	{
 		#region Form variables
 
@@ -99,11 +99,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
 			base.Dispose( disposing );
 
 			inst = null;
-		}
+        }
 
 
-		#region UI
-		private Instruction inst = null;
+        private Instruction inst = null;
 		private DataOwnerControl doid1 = null;
         private bool internalchg = false;
 
@@ -165,6 +164,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
         }
 
 
+
+        #region iBhavOperandWizForm
+        public Panel WizPanel { get { return this.pnWiz0x0032; } }
 
         public void Execute(Instruction inst)
         {
@@ -779,31 +781,7 @@ namespace pjse.BhavOperandWizards
 {
 	public class BhavOperandWiz0x0032 : pjse.ABhavOperandWiz
 	{
-		public BhavOperandWiz0x0032() : base() { }
-
-		public BhavOperandWiz0x0032(Instruction i) : base(i) { }
-
-
-		private Wiz0x0032.UI myForm = null;
-		public override Panel bhavPrimWizPanel
-		{
-			get
-			{
-				if (myForm == null) myForm = new Wiz0x0032.UI();
-				return myForm.pnWiz0x0032;
-			}
-		}
-
-		public override void Execute()
-		{
-			if (instruction != null) myForm.Execute(instruction);
-		}
-
-		public override Instruction Write()
-		{
-			return (instruction == null) ? null : myForm.Write(instruction);
-		}
-
+		public BhavOperandWiz0x0032(Instruction i) : base(i) { myForm = new Wiz0x0032.UI(); }
 
 		#region IDisposable Members
 		public override void Dispose()

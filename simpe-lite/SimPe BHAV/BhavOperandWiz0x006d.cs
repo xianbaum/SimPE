@@ -29,7 +29,7 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
     /// <summary>
     /// Summary description for StrBig.
     /// </summary>
-    internal class UI : System.Windows.Forms.Form
+    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
     {
         #region Form variables
 
@@ -107,8 +107,6 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             inst = null;
         }
 
-
-        #region UI
         private Instruction inst = null;
 
         private DataOwnerControl doid1 = null;
@@ -119,6 +117,16 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
         ArrayList rb1group = null;
         ArrayList rb3group = null;
         private bool internalchg = false;
+
+        void doid3_DataOwnerControlChanged(object sender, EventArgs e)
+        {
+            doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
+        }
+
+        void doid5_DataOwnerControlChanged(object sender, EventArgs e)
+        {
+            doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
+        }
 
         private void doStrChooser(ComboBox scope, pjse.GS.GlobalStr instance, TextBox tbVal, TextBox strText)
         {
@@ -167,6 +175,9 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.tbVal5.Enabled = !this.ckbMeshTemp.Checked;
             this.btnMesh.Enabled = this.tbMesh.Visible = !this.ckbAllOver.Checked && this.rb3Me.Checked && !this.ckbMeshTemp.Checked;
         }
+
+        #region iBhavOperandWizForm
+        public Panel WizPanel { get { return this.pnWiz0x006d; } }
 
         public void Execute(Instruction inst)
         {
@@ -227,16 +238,6 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
 
             this.MaterialFrom();
             this.MeshFrom();
-        }
-
-        void doid3_DataOwnerControlChanged(object sender, EventArgs e)
-        {
-            doStrValue(cbMatScope, GS.GlobalStr.MaterialName, doid3.Value, tbMaterial);
-        }
-
-        void doid5_DataOwnerControlChanged(object sender, EventArgs e)
-        {
-            doStrValue(cbMeshScope, GS.GlobalStr.MeshGroup, doid5.Value, tbMesh);
         }
 
         public Instruction Write(Instruction inst)
@@ -709,31 +710,7 @@ namespace pjse.BhavOperandWizards
 {
 	public class BhavOperandWiz0x006d : pjse.ABhavOperandWiz
 	{
-		public BhavOperandWiz0x006d() : base() { }
-
-        public BhavOperandWiz0x006d(Instruction i) : base(i) { }
-
-
-		private Wiz0x006d.UI myForm = null;
-		public override Panel bhavPrimWizPanel
-		{
-			get
-			{
-				if (myForm == null) myForm = new Wiz0x006d.UI();
-				return myForm.pnWiz0x006d;
-			}
-		}
-
-		public override void Execute()
-		{
-			if (instruction != null) myForm.Execute(instruction);
-		}
-
-		public override Instruction Write()
-		{
-			return (instruction == null) ? null : myForm.Write(instruction);
-		}
-
+        public BhavOperandWiz0x006d(Instruction i) : base(i) { myForm = new Wiz0x006d.UI(); }
 
 		#region IDisposable Members
 		public override void Dispose()

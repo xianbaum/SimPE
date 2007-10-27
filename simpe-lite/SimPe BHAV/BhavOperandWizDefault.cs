@@ -31,7 +31,7 @@ namespace pjse.BhavOperandWizards.WizDefault
 	/// <summary>
 	/// Summary description for BhavPrimWizDefault.
 	/// </summary>
-	internal class UI : System.Windows.Forms.Form
+    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
 	{
 		#region Form variables
 
@@ -99,13 +99,14 @@ namespace pjse.BhavOperandWizards.WizDefault
 			base.Dispose( disposing );
 		}
 
-
-		#region UI
 		private Instruction inst;
 		private ArrayList alHex8;
 		private ArrayList alDec16;
 
-		internal void Execute(Instruction inst)
+        #region iBhavOperandWizForm
+        public Panel WizPanel { get { return this.pnWizDefault; } }
+
+        public void Execute(Instruction inst)
 		{
 			this.inst = inst;
 
@@ -130,6 +131,8 @@ namespace pjse.BhavOperandWizards.WizDefault
 			this.tbInst_Unk6.Text = SimPe.Helper.HexString(inst.Reserved1[6]);
 			this.tbInst_Unk7.Text = SimPe.Helper.HexString(inst.Reserved1[7]);
 		}
+
+        public Instruction Write(Instruction inst) { return inst; }
 
 		#endregion
 
@@ -408,32 +411,7 @@ namespace pjse.BhavOperandWizards
 {
 	public class BhavOperandWizDefault : pjse.ABhavOperandWiz
 	{
-		public BhavOperandWizDefault() : base() { }
-
-		public BhavOperandWizDefault(Instruction i) : base(i) { }
-
-
-		private WizDefault.UI myForm = null;
-		public override Panel bhavPrimWizPanel
-		{
-			get
-			{
-				if (myForm == null) myForm = new WizDefault.UI();
-				return myForm.pnWizDefault;
-			}
-		}
-
-		public override void Execute()
-		{
-			if (myForm == null) myForm = new WizDefault.UI();
-			myForm.Execute(instruction);
-		}
-
-		public override Instruction Write()
-		{
-			return instruction;
-		}
-
+		public BhavOperandWizDefault(Instruction i) : base(i) { myForm = new WizDefault.UI(); }
 
 		#region IDisposable Members
 		public override void Dispose()
