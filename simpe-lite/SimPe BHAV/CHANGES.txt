@@ -1,5 +1,12 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+28 October 2007 10:50 - Wiz0x002d: Go to routing slot wizard
+  SimPe BHAV\
+    BhavOperandWiz0x002d.cs 1.1.2.1.2.1
+    BhavOperandWiz0x002d.resx 1.1.2.1.2.1
+    BhavWizPrim.cs 1.34.2.32.2.1
+    pjse coder plugin.csproj 1.29.2.36.2.1
+
 27 October 2007 13:27 - Add [X] to clear operands and some tooltips
   SimPe BHAV\
     BhavForm.cs 1.64.2.42
