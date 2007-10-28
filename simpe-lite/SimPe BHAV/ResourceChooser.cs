@@ -19,6 +19,7 @@
  ***************************************************************************/
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -112,6 +113,23 @@ namespace pjse
 
         private bool CanDoEA;
 
+        public int PersistentTab
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+                object o = rkf.GetValue("rcPersistentTab", false);
+                return Convert.ToInt16(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+                rkf.SetValue("rcPersistentTab", value);
+            }
+
+        }
+
         private ListView getListView()
         {
             if (this.tcResources.SelectedTab == this.tpPackage && lvPackage.SelectedItems != null)
@@ -162,6 +180,8 @@ namespace pjse
             form.Cursor = Cursors.WaitCursor;
             this.Cursor = Cursors.WaitCursor;
 
+            List<TabPage> ltp = new List<TabPage>(new TabPage[] { tpPackage, tpGroup, tpSemiGroup, tpGlobalGroup, tpBuiltIn });
+
             btnViewBHAV.Visible = resourceType == SimPe.Data.MetaData.BHAV_FILE;
 
             this.tcResources.TabPages.Clear();
@@ -193,7 +213,12 @@ namespace pjse
                 FillBuiltIn(resourceType, this.lvPrim, this.tpBuiltIn);
 
             if (this.tcResources.TabCount > 0)
-                this.tcResources.SelectedIndex = 0;
+            {
+                if (tcResources.Contains(ltp[PersistentTab]))
+                    tcResources.SelectTab(ltp[PersistentTab]);
+                else
+                    this.tcResources.SelectedIndex = 0;
+            }
 
             form.Cursor = Cursors.Default;
             this.Cursor = Cursors.Default;
@@ -201,6 +226,7 @@ namespace pjse
             DialogResult dr  = ShowDialog();
             while (dr == DialogResult.Retry)
                 dr  = ShowDialog();
+            PersistentTab = ltp.IndexOf(this.tcResources.SelectedTab);
             Close();
 
             if (dr == System.Windows.Forms.DialogResult.OK)
