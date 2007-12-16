@@ -1503,7 +1503,12 @@ namespace pjse.BhavNameWizards
 	{
 		public WizPrim0x001b(Instruction i) : base(i) { }
 
-		protected override string Operands(bool lng)
+        public override ABhavOperandWiz Wizard()
+        {
+            return new pjse.BhavOperandWizards.BhavOperandWiz0x001b(instruction);
+        }
+
+        protected override string Operands(bool lng)
 		{
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);

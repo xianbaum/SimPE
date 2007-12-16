@@ -34,12 +34,12 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
 		#region Form variables
 
         internal System.Windows.Forms.Panel pnWiz0x002d;
+        private FlowLayoutPanel flowLayoutPanel1;
         private GroupBox gbRoutingSlot;
         private Panel pnObject;
         private ComboBox cbSlotType;
         private CheckBox ckbDecimal;
         private TextBox tbVal1;
-        private FlowLayoutPanel flowLayoutPanel1;
         private CheckBox ckbNFailTrees;
         private CheckBox ckbIgnDstFootprint;
         private CheckBox ckbDiffAlts;
@@ -78,7 +78,7 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
 
 		private Instruction inst = null;
 		private DataOwnerControl doid1 = null;
-        private bool internalchg = false;
+        //private bool internalchg = false;
 
         #region iBhavOperandWizForm
         public Panel WizPanel { get { return this.pnWiz0x002d; } }
@@ -91,7 +91,7 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
             wrappedByteArray ops2 = inst.Reserved1;
             Boolset ops14 = ops1[4];
 
-            internalchg = true;
+            //internalchg = true;
 
             doid1 = new DataOwnerControl(inst, null, null, this.tbVal1, this.ckbDecimal, null, null,
                 0x07, BhavWiz.ToShort(ops1[0x00], ops1[0x01])); // Literal
@@ -104,7 +104,7 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
             ckbIgnDstFootprint.Checked = ops14[2];
             ckbDiffAlts.Checked = ops14[3];
 
-            internalchg = false;
+            //internalchg = false;
         }
 
 		public Instruction Write(Instruction inst)
@@ -146,14 +146,14 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             this.pnWiz0x002d = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.ckbNFailTrees = new System.Windows.Forms.CheckBox();
-            this.ckbIgnDstFootprint = new System.Windows.Forms.CheckBox();
-            this.ckbDiffAlts = new System.Windows.Forms.CheckBox();
             this.gbRoutingSlot = new System.Windows.Forms.GroupBox();
             this.pnObject = new System.Windows.Forms.Panel();
             this.cbSlotType = new System.Windows.Forms.ComboBox();
             this.ckbDecimal = new System.Windows.Forms.CheckBox();
             this.tbVal1 = new System.Windows.Forms.TextBox();
+            this.ckbNFailTrees = new System.Windows.Forms.CheckBox();
+            this.ckbIgnDstFootprint = new System.Windows.Forms.CheckBox();
+            this.ckbDiffAlts = new System.Windows.Forms.CheckBox();
             this.pnWiz0x002d.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.gbRoutingSlot.SuspendLayout();
@@ -164,34 +164,16 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
             // 
             resources.ApplyResources(this.pnWiz0x002d, "pnWiz0x002d");
             this.pnWiz0x002d.Controls.Add(this.flowLayoutPanel1);
-            this.pnWiz0x002d.Controls.Add(this.gbRoutingSlot);
             this.pnWiz0x002d.Name = "pnWiz0x002d";
             // 
             // flowLayoutPanel1
             // 
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+            this.flowLayoutPanel1.Controls.Add(this.gbRoutingSlot);
             this.flowLayoutPanel1.Controls.Add(this.ckbNFailTrees);
             this.flowLayoutPanel1.Controls.Add(this.ckbIgnDstFootprint);
             this.flowLayoutPanel1.Controls.Add(this.ckbDiffAlts);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
-            // ckbNFailTrees
-            // 
-            resources.ApplyResources(this.ckbNFailTrees, "ckbNFailTrees");
-            this.ckbNFailTrees.Name = "ckbNFailTrees";
-            this.ckbNFailTrees.UseVisualStyleBackColor = true;
-            // 
-            // ckbIgnDstFootprint
-            // 
-            resources.ApplyResources(this.ckbIgnDstFootprint, "ckbIgnDstFootprint");
-            this.ckbIgnDstFootprint.Name = "ckbIgnDstFootprint";
-            this.ckbIgnDstFootprint.UseVisualStyleBackColor = true;
-            // 
-            // ckbDiffAlts
-            // 
-            resources.ApplyResources(this.ckbDiffAlts, "ckbDiffAlts");
-            this.ckbDiffAlts.Name = "ckbDiffAlts";
-            this.ckbDiffAlts.UseVisualStyleBackColor = true;
             // 
             // gbRoutingSlot
             // 
@@ -230,6 +212,24 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
             // 
             resources.ApplyResources(this.tbVal1, "tbVal1");
             this.tbVal1.Name = "tbVal1";
+            // 
+            // ckbNFailTrees
+            // 
+            resources.ApplyResources(this.ckbNFailTrees, "ckbNFailTrees");
+            this.ckbNFailTrees.Name = "ckbNFailTrees";
+            this.ckbNFailTrees.UseVisualStyleBackColor = true;
+            // 
+            // ckbIgnDstFootprint
+            // 
+            resources.ApplyResources(this.ckbIgnDstFootprint, "ckbIgnDstFootprint");
+            this.ckbIgnDstFootprint.Name = "ckbIgnDstFootprint";
+            this.ckbIgnDstFootprint.UseVisualStyleBackColor = true;
+            // 
+            // ckbDiffAlts
+            // 
+            resources.ApplyResources(this.ckbDiffAlts, "ckbDiffAlts");
+            this.ckbDiffAlts.Name = "ckbDiffAlts";
+            this.ckbDiffAlts.UseVisualStyleBackColor = true;
             // 
             // UI
             // 
