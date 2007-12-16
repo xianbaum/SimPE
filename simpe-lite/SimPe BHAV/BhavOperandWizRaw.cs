@@ -31,7 +31,7 @@ namespace pjse.BhavOperandWizards.WizRaw
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
-	internal class UI : System.Windows.Forms.Form
+    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
 	{
 		#region Form variables
 		internal System.Windows.Forms.Panel pnWizRaw;
@@ -66,25 +66,8 @@ namespace pjse.BhavOperandWizards.WizRaw
 		}
 
 		
-		#region UI
-		public Instruction Write(Instruction inst)
-		{
-			try 
-			{
-				string s = tbRaw.Text + "00000000000000000000000000000000";
-				for (int i = 0; i < 8; i++)
-					inst.Operands[i] = Convert.ToByte(s.Substring(i * 2, 2), 16);
-				for (int i = 0; i < 8; i++)
-					inst.Reserved1[i] = Convert.ToByte(s.Substring((i+8) * 2, 2), 16);
-
-				return inst;
-			} 
-			catch (Exception ex) 
-			{
-				SimPe.Helper.ExceptionMessage(pjse.Localization.GetString("errconvert"), ex);
-				return null;
-			}
-		}
+        #region iBhavOperandWizForm
+        public Panel WizPanel { get { return this.pnWizRaw; } }
 
 		public void Execute(Instruction inst)
 		{
@@ -96,7 +79,26 @@ namespace pjse.BhavOperandWizards.WizRaw
 			tbRaw.Text = s;
 		}
 
-		#endregion
+        public Instruction Write(Instruction inst)
+        {
+            try
+            {
+                string s = tbRaw.Text + "00000000000000000000000000000000";
+                for (int i = 0; i < 8; i++)
+                    inst.Operands[i] = Convert.ToByte(s.Substring(i * 2, 2), 16);
+                for (int i = 0; i < 8; i++)
+                    inst.Reserved1[i] = Convert.ToByte(s.Substring((i + 8) * 2, 2), 16);
+
+                return inst;
+            }
+            catch (Exception ex)
+            {
+                SimPe.Helper.ExceptionMessage(pjse.Localization.GetString("errconvert"), ex);
+                return null;
+            }
+        }
+
+        #endregion
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
@@ -143,31 +145,7 @@ namespace pjse.BhavOperandWizards
 {
 	public class BhavOperandWizRaw : pjse.ABhavOperandWiz
 	{
-		public BhavOperandWizRaw() : base() { }
-
-		public BhavOperandWizRaw(Instruction i) : base(i) { }
-
-
-		private WizRaw.UI myForm = null;
-		public override Panel bhavPrimWizPanel
-		{
-			get
-			{
-				if (myForm == null) myForm = new WizRaw.UI();
-				return myForm.pnWizRaw;
-			}
-		}
-
-		public override void Execute()
-		{
-			if (instruction != null) myForm.Execute(instruction);
-		}
-
-		public override Instruction Write()
-		{
-			return (instruction == null) ? null : myForm.Write(instruction);
-		}
-
+		public BhavOperandWizRaw(Instruction i) : base(i) { myForm = new WizRaw.UI(); }
 
 		#region IDisposable Members
 		public override void Dispose()

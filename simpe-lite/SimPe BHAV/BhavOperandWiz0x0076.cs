@@ -31,7 +31,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
 	/// <summary>
 	/// Zusammenfassung für BhavInstruction.
 	/// </summary>
-    internal class UI : System.Windows.Forms.Form
+    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
     {
         #region Form variables
 
@@ -94,7 +94,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
         }
 
 
-        #region UI
         private Instruction inst = null;
         private DataOwnerControl doidArray = null;
         private DataOwnerControl doidValue = null;
@@ -118,6 +117,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             pnOp2.Enabled = (val < d2enable.Length && d2enable[val]);
             lbOp2.Text = pnOp2.Enabled ? (d2IndexValue[val] ? sIndex : sValue) : "";
         }
+
+        #region iBhavOperandWizForm
+        public Panel WizPanel { get { return this.pnWiz0x0076; } }
 
         public void Execute(Instruction inst)
         {
@@ -443,31 +445,7 @@ namespace pjse.BhavOperandWizards
 {
 	public class BhavOperandWiz0x0076 : pjse.ABhavOperandWiz
 	{
-		public BhavOperandWiz0x0076() : base() { }
-
-		public BhavOperandWiz0x0076(Instruction i) : base(i) { }
-
-
-		private Wiz0x0076.UI myForm = null;
-		public override Panel bhavPrimWizPanel
-		{
-			get
-			{
-				if (myForm == null) myForm = new Wiz0x0076.UI();
-				return myForm.pnWiz0x0076;
-			}
-		}
-
-		public override void Execute()
-		{
-			if (instruction != null) myForm.Execute(instruction);
-		}
-
-		public override Instruction Write()
-		{
-			return (instruction == null) ? null : myForm.Write(instruction);
-		}
-
+		public BhavOperandWiz0x0076(Instruction i) : base(i) { myForm = new Wiz0x0076.UI(); }
 
 		#region IDisposable Members
 		public override void Dispose()

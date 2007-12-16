@@ -27,7 +27,7 @@ using SimPe.PackedFiles.Wrapper;
 
 namespace pjse.BhavOperandWizards.Wiz0x0033
 {
-    internal class UI : System.Windows.Forms.Form
+    internal class UI : System.Windows.Forms.Form, iBhavOperandWizForm
     {
         #region Form variables
 
@@ -118,8 +118,6 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         }
 
 
-        #region UI
-
         #region static data
         static List<String> aInventoryType = BhavWiz.readStr(GS.BhavStr.InventoryType);
         static List<String> aTokenOpsCounted = BhavWiz.readStr(GS.BhavStr.TokenOpsCounted);
@@ -155,6 +153,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         private DataOwnerControl doid1 = null; // o[6], o[7], o[8]
         private DataOwnerControl doid2 = null; // o[10], o[11], o[12]
         private DataOwnerControl doid3 = null; // o[13], o[14], o[15]
+        private byte operation = 0;
         private byte[] o5678 = new byte[4];
 
         private bool hex32_IsValid(object sender)
@@ -262,7 +261,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
         }
 
 
-        private byte operation = 0;
+        #region iBhavOperandWizForm
+        public Panel WizPanel { get { return this.pnWiz0x0033; } }
+
         public void Execute(Instruction inst)
         {
             this.inst = inst;
@@ -996,31 +997,7 @@ namespace pjse.BhavOperandWizards
 {
     public class BhavOperandWiz0x0033 : pjse.ABhavOperandWiz
 	{
-		public BhavOperandWiz0x0033() : base() { }
-
-        public BhavOperandWiz0x0033(Instruction i) : base(i) { }
-
-
-        private Wiz0x0033.UI myForm = null;
-		public override Panel bhavPrimWizPanel
-		{
-			get
-			{
-                if (myForm == null) myForm = new Wiz0x0033.UI();
-				return myForm.pnWiz0x0033;
-			}
-		}
-
-		public override void Execute()
-		{
-			if (instruction != null) myForm.Execute(instruction);
-		}
-
-		public override Instruction Write()
-		{
-			return (instruction == null) ? null : myForm.Write(instruction);
-		}
-
+        public BhavOperandWiz0x0033(Instruction i) : base(i) { myForm = new Wiz0x0033.UI(); }
 
 		#region IDisposable Members
 		public override void Dispose()

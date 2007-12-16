@@ -160,6 +160,13 @@ namespace pjse
 
 	}
 
+    public interface iBhavOperandWizForm
+    {
+        Panel WizPanel { get; }
+        void Execute(Instruction inst);
+        Instruction Write(Instruction inst);
+    }
+
 	/// <summary>
 	/// Provides the operand wizard for a given Bhav Instruction.
 	/// </summary>
@@ -169,13 +176,17 @@ namespace pjse
 	public abstract class ABhavOperandWiz : IDisposable
 	{
 		protected Instruction instruction = null;
-		protected ABhavOperandWiz() {}
+        protected iBhavOperandWizForm myForm = null;
 		protected ABhavOperandWiz(Instruction instruction) { this.instruction = instruction; }
 
-
-		public abstract Panel bhavPrimWizPanel { get; }
-		public abstract void Execute();
-		public abstract Instruction Write();
+        public virtual Panel bhavPrimWizPanel { get { return myForm.WizPanel; } }
+        public virtual void Execute() { myForm.Execute(instruction); }
+        public virtual Instruction Write()
+        {
+            //for (int i = 0; i < 8; i++) instruction.Operands[i] = 0;
+            //for (int i = 0; i < 8; i++) instruction.Reserved1[i] = 0;
+            return myForm.Write(instruction);
+        }
 
 		#region IDisposable Members
 		public abstract void Dispose();
