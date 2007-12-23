@@ -147,6 +147,7 @@ namespace pjse
             //Str0x0100..010d - there are no Str0x0100..010d
             PlacementFlags2 = 0x10e,    // ObjectData 0x52 - placement flags 2 24e
             //Str0x010f..01f3 - there are no Str0x010f..01f3
+            PetTrickNames = 0x1dd, // PJSE: string number stolen for Pet Career Editor
             AttractionFlags3 = 0x1de, // PJSE: PersonData Attraction Flags3 - 0xc9, 0xca, 0xcb
             AttractionFlags2 = 0x1df, // PJSE: PersonData Attraction Flags2 - 0xb5, 0xb7, 0xb9
             AttractionFlags1 = 0x1e0, // PJSE: PersonData Attraction Flags1 - 0xb4, 0xb6, 0xb8
