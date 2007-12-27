@@ -1,5 +1,19 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+23 December 2007 13:58 - Don't build pdb files for Release
+  pjse filetable\
+    pjse filetable.csproj 1.3.10.7
+  pjse GUID Tool\
+    pjse GUID Tool.csproj 1.6.10.7
+  pjse Localisation\
+    pjse Localisation.csproj 1.1.4.4
+  pjse System Classes\
+    pjse System Classes.csproj 1.1.2.2
+  pjse update tool\
+    pjse update tool.csproj 1.1.4.5
+  SimPe BHAV\
+    pjse coder plugins.csproj 1.29.3.39
+
 28 October 2007 12:12 - Wiz0x001b: Go to location wizard
   * get rid of the box around [X] on BhavForm
   * fix tab order in Wix0x002d, suppress warnings, tidy up form slightly
