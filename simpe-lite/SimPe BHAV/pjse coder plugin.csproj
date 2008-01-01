@@ -474,6 +474,7 @@ rem targets: help zip tarbz2 7z(7z) nsis src
 set helpDebug=no
 set helpInProgress=no
 
+set zipRelease=no
 set zipDebug=no
 set zipInProgress=no
 
@@ -481,11 +482,11 @@ set tarbz2Release=no
 set tarbz2Debug=no
 set tarbz2InProgress=no
 
-set z7Release=no
-set z7Debug=no
 set z7InProgress=no
 
-set nsisProgress=no
+set nsisRelease=no
+set nsisDebug=no
+set nsisInProgress=no
 
 set srcDebug=no
 set srcInProgress=no
