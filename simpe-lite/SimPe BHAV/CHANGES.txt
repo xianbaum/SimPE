@@ -1,5 +1,45 @@
 !!! Made readStr() public -- need to review that decision (sticky)
 
+6 January 2008 11:55 - Synchronise with disaSim2 24f (thanks Shy!)
+  * Also fix what gets packaged in the post-build script
+  pjse Localisation\
+    Localization.resx 1.1.4.29
+  SimPe BHAV\
+    BhavOperandWiz0x0032.cs 1.1.4.12
+    BhavOperandWiz0x0032.resx 1.1.4.4
+    BhavWizPrim.cs 1.34.2.35
+    pjse coder plugin.csproj 1.29.2.41
+  GlobalStrings.package 1.10.8.30
+  pjseTestData.package 1.17.2.18
+
+1 January 2008 14:45 - Build 7z not nsis
+  SimPe BHAV\
+    pjse coder plugin.csproj 1.29.2.40
+
+1 January 2008 13:57 - Project files for working as part of SimPe Everything.sln
+  * Includes faking up the updater and redirecting help to the online version
+  pjse filetable\
+    SimPe pjse filetable.csproj 1.1.2.1
+  pjse GUID Tool\
+    SimPe pjse GUID Tool.csproj 1.1.2.1
+  pjse Localisation\
+    SimPe pjse localisation.csproj 1.1.2.1
+  pjse System Classes\
+    SimPe pjse System Classes.csproj 1.1.2.1
+  pjse update tool\
+    SimPe pjse update tool 1.1.2.1
+  SimPe BHAV\
+    SimPe pjse coder plugin.csproj 1.1.2.1
+
+23 December 2007 12:06 - Add Pet Trick string 
+  * don't build pdb files for Release
+  pjse System Classes\
+    pjse System Classes.csproj 1.1.2.2
+  pjse update tool\
+    pjse update tool.csproj 1.1.4.5
+  SimPe BHAV\
+    pjse coder plugins.csproj 1.29.3.39
+
 28 October 2007 12:12 - Wiz0x001b: Go to location wizard
   * get rid of the box around [X] on BhavForm
   * fix tab order in Wix0x002d, suppress warnings, tidy up form slightly

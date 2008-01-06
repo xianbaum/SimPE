@@ -70,6 +70,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
         private ComboBox cbDataOwner1;
         private CheckBox cbAttrPicker;
         private CheckBox cbDecimal;
+        private CheckBox tfSubQ;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -178,6 +179,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             internalchg = true;
 
             this.lbDisabled.Enabled = this.cbDisabled.Enabled = inst.NodeVersion != 0;
+            this.tfSubQ.Enabled = inst.NodeVersion > 2;
 
             this.cbScope.SelectedIndex = -1;
             switch (ops1[0x02] & 0x0c)
@@ -206,6 +208,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
                 case 0x01: this.cbDisabled.SelectedIndex = 0; break;
                 case 0x02: this.cbDisabled.SelectedIndex = 1; break;
             }
+            this.tfSubQ.Checked = (ops1[0x03] & 0x10) != 0;
 
             int val = inst.NodeVersion < 2 ? ops1[0x04] : BhavWiz.ToShort(ops2[0x06], ops2[0x07]);
             this.tbStrIndex.Text = "0x" + SimPe.Helper.HexString((ushort)val);
@@ -261,6 +264,13 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
                         if (this.cbDisabled.SelectedIndex == 0) ops1[0x03] |= 0x01;
                         else if (this.cbDisabled.SelectedIndex == 1) ops1[0x03] |= 0x02;
                     }
+                    if (inst.NodeVersion > 2)
+                    {
+                        ops1[0x03] &= 0xef;
+                        if (this.tfSubQ.Checked)
+                            ops1[0x03] |= 0x10;
+                    }
+
                 }
                 else
                 {
@@ -313,6 +323,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             this.rbModeIcon = new System.Windows.Forms.RadioButton();
             this.rbModeAction = new System.Windows.Forms.RadioButton();
             this.pnAction = new System.Windows.Forms.Panel();
+            this.tfSubQ = new System.Windows.Forms.CheckBox();
             this.pnStrIndex = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.btnActionString = new System.Windows.Forms.Button();
@@ -383,6 +394,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             // 
             // pnAction
             // 
+            this.pnAction.Controls.Add(this.tfSubQ);
             this.pnAction.Controls.Add(this.pnStrIndex);
             this.pnAction.Controls.Add(this.tfActionTemp);
             this.pnAction.Controls.Add(this.cbDisabled);
@@ -392,6 +404,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             this.pnAction.Controls.Add(this.label1);
             resources.ApplyResources(this.pnAction, "pnAction");
             this.pnAction.Name = "pnAction";
+            // 
+            // tfSubQ
+            // 
+            resources.ApplyResources(this.tfSubQ, "tfSubQ");
+            this.tfSubQ.Name = "tfSubQ";
+            this.tfSubQ.UseVisualStyleBackColor = true;
             // 
             // pnStrIndex
             // 
@@ -417,9 +435,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             // 
             resources.ApplyResources(this.tbStrIndex, "tbStrIndex");
             this.tbStrIndex.Name = "tbStrIndex";
+            this.tbStrIndex.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbStrIndex.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbStrIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbStrIndex.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // lbActionString
             // 
