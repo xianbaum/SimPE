@@ -474,7 +474,6 @@ rem targets: help zip tarbz2 7z(7z) nsis src
 set helpDebug=no
 set helpInProgress=no
 
-set zipRelease=no
 set zipDebug=no
 set zipInProgress=no
 
@@ -492,7 +491,7 @@ set srcDebug=no
 set srcInProgress=no
 
 set simpeDirRelease=SimPe
-set simpeDirDebug=fullsimpe-svn\__Debug
+set simpeDirDebug=fullsimpe-svn\__Release
 set simpeDirInProgress=SimPe
 
 

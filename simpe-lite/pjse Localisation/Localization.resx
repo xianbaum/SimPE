@@ -1379,4 +1379,10 @@ Do you want to use this resource?
     <value>Group {0}: [{1}] {2} ({3})</value>
     <comment>GUIDTool listing</comment>
   </data>
+  <data name="bwp03_locntemp1" xml:space="preserve">
+    <value>Use location of object in Temp 1</value>
+  </data>
+  <data name="bwp32_subqueue" xml:space="preserve">
+    <value>To Sub-queue</value>
+  </data>
 </root>

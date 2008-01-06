@@ -474,7 +474,9 @@ namespace pjse.BhavNameWizards
                     + ": " + ((o[3] & 0x08) != 0).ToString();
                 s += ", " + pjse.Localization.GetString("bwp03_oninteraction")
                     + ": " + ((o[3] & 0x10) != 0).ToString();
-			}
+                s += ", " + pjse.Localization.GetString("bwp03_locntemp1")
+                    + ": " + ((o[3] & 0x20) != 0).ToString();
+            }
 
 			return s;
 #if DISASIM
@@ -508,9 +510,11 @@ namespace pjse.BhavNameWizards
                             ht_fprintf(outFile,TYPE_NORMAL," and only on current Interaction object");
                         ht_fprintf(outFile,TYPE_NORMAL,".");
                     }
+                    if (w2 & 0x2000) 
+                        ht_fprintf(outFile,TYPE_NORMAL," Use location of object in Temp 1.");
                     break;
 #endif
-		}
+        }
 
 	}
 
@@ -2749,6 +2753,9 @@ namespace pjse.BhavNameWizards
                         else if ((o[3] & 0x02) != 0) s += pjse.Localization.GetString("bwp32_nonPropagating");
 						else                         s += false.ToString();
 					}
+                    if (instruction.NodeVersion > 2)
+                        s += ", " + pjse.Localization.GetString("bwp32_subqueue")
+                            + ": " + ((o[3] & 0x10) != 0);
                     s += ", ";
                 }
 
@@ -2789,6 +2796,8 @@ namespace pjse.BhavNameWizards
                         else
                             c1 = b[x+14] - 1;
                         ht_fprintf(outFile,TYPE_NORMAL,"Add / Change Interaction string Mode, ");
+                        if ((b[x+3] & 0x10) && (nodeVersion > 2))
+                            ht_fprintf(outFile,TYPE_NORMAL,"To Sub Queue, ");
                         if ((b[x+3] & 1) && nodeVersion)
                             ht_fprintf(outFile,TYPE_NORMAL,"Disabled (Propagating), ");
                         if (b[x+3] & 2)
@@ -2838,7 +2847,7 @@ namespace pjse.BhavNameWizards
                     }
                     break;
 #endif
-		}
+        }
 
 	}
 
