@@ -1,3 +1,8 @@
+2008-01-13 18:28 Build-with-SimPe changes - package plugin subdir
+  pjBodyMeshTool\
+    SimPe pjBodyMeshTool.csproj 1.1.2.2
+  Redirect_Content.htm 1.1.2.1
+
 2008-01-13 16:40 Build-with-SimPe changes
   * Also get rid of pdb files in Release builds
   pjBodyMeshTool\
