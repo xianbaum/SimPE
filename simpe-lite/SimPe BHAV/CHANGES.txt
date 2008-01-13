@@ -1,4 +1,11 @@
-!!! Made readStr() public -- need to review that decision (sticky)
+13 January 2008 16:30 - Build-with-SimPe changes
+  * Help redirect from a file (not echo statements)
+  * Set updater to manual by default (rather than prompt)
+  pjse update tool\
+    Settings.cs 1.1.4.3
+  SimPe BHAV\
+    SimPe pjse coder plugin.csproj 1.1.2.2
+  Redirect_Contents.htm 1.1.2.1
 
 6 January 2008 11:55 - Synchronise with disaSim2 24f (thanks Shy!)
   * Also fix what gets packaged in the post-build script
