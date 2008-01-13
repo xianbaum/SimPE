@@ -1,3 +1,9 @@
+2008-01-13 16:33 Build-with-SimPe changes
+  * Also get rid of pdb files in Release builds
+  pjObjKeyTool\
+    pjObjKeyTool.csproj 1.1.2.3
+    SimPe pjObjKeyTool.csproj 1.1.2.1
+
 2007-08-24 13:51 Localise error messages
   pjObjKeyTool/
     cObjKeyTool.cs 1.1.2.2

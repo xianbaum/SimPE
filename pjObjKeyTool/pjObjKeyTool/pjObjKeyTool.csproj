@@ -22,6 +22,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
     <Optimize>true</Optimize>
+    <DebugSymbols>false</DebugSymbols>
     <OutputPath>..\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
@@ -33,7 +34,7 @@
       <HintPath>..\..\SimPe\simpe.3idr.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.clst, Version=1.0.2676.19317, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="simpe.clst, Version=1.0.2922.20010, Culture=neutral, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
     <Reference Include="simpe.commonhandler, Version=1.0.2676.19317, Culture=neutral, processorArchitecture=x86">
@@ -61,7 +62,7 @@
       <HintPath>..\..\SimPe\simpe.package.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="simpe.rcol, Version=1.0.2676.19320, Culture=neutral, processorArchitecture=x86">
+    <Reference Include="simpe.rcol, Version=1.0.2922.20016, Culture=neutral, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
     <Reference Include="simpe.scenegraph, Version=1.0.2676.19325, Culture=neutral, processorArchitecture=x86">
