@@ -1,3 +1,7 @@
+2008-01-14 20:19 Build-with-SimPe changes - oops, rename help subdir
+  pjBodyMeshTool\
+    SimPe pjBodyMeshTool.csproj 1.1.2.3
+
 2008-01-13 18:28 Build-with-SimPe changes - package plugin subdir
   pjBodyMeshTool\
     SimPe pjBodyMeshTool.csproj 1.1.2.2

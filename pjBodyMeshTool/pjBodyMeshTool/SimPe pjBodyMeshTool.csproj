@@ -112,7 +112,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>if not exist "$(TargetDir)$(TargetName)\" mkdir "$(TargetDir)$(TargetName)"
+    <PostBuildEvent>set helpdir=\pjBodyMeshTool_Help
+if not exist "$(TargetDir)$(TargetName)\" mkdir "$(TargetDir)$(TargetName)"
 pushd $(ProjectDir)..\
 copy *.txt $(TargetDir)$(TargetName)\
 popd
@@ -123,8 +124,8 @@ echo yymmdd-hhmmss &gt;&gt; version.txt
 echo ___simperelease version="0"___ &gt;&gt; version.txt
 popd
 
-if not exist "$(TargetDir)$(TargetName)\$(ProjectName)_Help\" mkdir "$(TargetDir)$(TargetName)\$(ProjectName)_Help"
-pushd $(TargetDir)$(TargetName)\$(ProjectName)_Help\
+if not exist "$(TargetDir)$(TargetName)%25helpdir%25\" mkdir "$(TargetDir)$(TargetName)\%25helpdir%25"
+pushd $(TargetDir)$(TargetName)\%25helpdir%25\
 copy "$(ProjectDir)..\Redirect_Contents.htm" Contents.htm
 popd
 </PostBuildEvent>
