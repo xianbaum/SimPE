@@ -1,3 +1,6 @@
+19 January 2008 18:03 - Build-with-SimPe changes - Include the real help
+  Redirect_Contents.htm 1.1.2.2
+
 13 January 2008 16:30 - Build-with-SimPe changes
   * Help redirect from a file (not echo statements)
   * Set updater to manual by default (rather than prompt)

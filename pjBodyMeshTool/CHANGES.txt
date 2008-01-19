@@ -1,3 +1,6 @@
+2008-01-19 18:00 Build-with-SimPe changes - Include the real help
+  Redirect_Content.htm 1.1.2.2
+
 2008-01-14 20:19 Build-with-SimPe changes - oops, rename help subdir
   pjBodyMeshTool\
     SimPe pjBodyMeshTool.csproj 1.1.2.3
