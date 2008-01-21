@@ -465,6 +465,7 @@ popd
 if not exist $(TargetDir)$(TargetName)\PJSE_help mkdir $(TargetDir)$(TargetName)\PJSE_help
 pushd $(TargetDir)$(TargetName)\PJSE_help\
 copy "$(ProjectDir)..\Redirect_Contents.htm" Contents.htm
+copy "$(ProjectDir)..\Redirect_Contents.htm" Finder.htm
 popd
 </PostBuildEvent>
   </PropertyGroup>

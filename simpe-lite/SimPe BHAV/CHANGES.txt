@@ -1,3 +1,12 @@
+21 January 2008 20:10 - Rename PJSE Resource Finder to "Simantics..."
+  * Also populate dummy Finder.htm help file
+  pjse GUID Tool\
+    GUIDTool.resx 1.4.12.8
+  pjse Localisation\
+    Localization.resx 1.1.4.30
+  SimPe BHAV\
+    SimPe pjse coder plugin.csproj 1.1.2.3
+
 21 January 2008 19:41 - Add decimal after hex line numbers
   * Also run debug version with SimPe\__Debug
   SimPe BHAV\

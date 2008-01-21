@@ -433,7 +433,7 @@ Check BHAV format and number of lines.</value>
     <comment>GUIDTool result ("Matches found: nnn")</comment>
   </data>
   <data name="gt_ResourceFinder" xml:space="preserve">
-    <value>&amp;Resource Finder</value>
+    <value>Simantics &amp;Resource Finder...</value>
     <comment>GUIDTool menu item</comment>
   </data>
   <data name="gt_ResourceFinderHelp" xml:space="preserve">
