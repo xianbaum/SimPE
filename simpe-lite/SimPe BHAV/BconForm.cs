@@ -132,7 +132,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private ListViewItem lvItem(int i)
 		{
-			string cID = "0x" + i.ToString("X");
+			string cID = "0x" + i.ToString("X") + " (" + i + ")";
 			string cValue = "0x" + SimPe.Helper.HexString(wrapper[i]);
 			string cLabel = (wrapper.TrcnResource != null && i < wrapper.TrcnResource.Count) ? wrapper.TrcnResource[i].ConstName : "";
 			string[] v = { cID, cValue, cLabel };
@@ -378,6 +378,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbValueHex = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.gbValue = new System.Windows.Forms.GroupBox();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.bconPanel = new System.Windows.Forms.Panel();
             this.btnStrPrev = new System.Windows.Forms.Button();
@@ -391,7 +392,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.chLabel = new System.Windows.Forms.ColumnHeader();
             this.btnCommit = new System.Windows.Forms.Button();
             this.btnTRCNMaker = new System.Windows.Forms.Button();
-            this.btnCancel = new System.Windows.Forms.Button();
             this.pnHeading.SuspendLayout();
             this.gbValue.SuspendLayout();
             this.bconPanel.SuspendLayout();
@@ -433,26 +433,26 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
+            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
             // 
             // tbValueDec
             // 
             resources.ApplyResources(this.tbValueDec, "tbValueDec");
             this.tbValueDec.Name = "tbValueDec";
-            this.tbValueDec.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbValueDec.Validated += new System.EventHandler(this.dec16_Validated);
-            this.tbValueDec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
             this.tbValueDec.TextChanged += new System.EventHandler(this.dec16_TextChanged);
+            this.tbValueDec.Validated += new System.EventHandler(this.dec16_Validated);
+            this.tbValueDec.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbValueDec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
             // 
             // tbValueHex
             // 
             resources.ApplyResources(this.tbValueHex, "tbValueHex");
             this.tbValueHex.Name = "tbValueHex";
-            this.tbValueHex.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbValueHex.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbValueHex.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.tbValueHex.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbValueHex.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbValueHex.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbValueHex.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             // 
             // label5
             // 
@@ -470,6 +470,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.gbValue, "gbValue");
             this.gbValue.Name = "gbValue";
             this.gbValue.TabStop = false;
+            // 
+            // btnCancel
+            // 
+            resources.ApplyResources(this.btnCancel, "btnCancel");
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // label6
             // 
@@ -568,12 +574,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.btnTRCNMaker, "btnTRCNMaker");
             this.btnTRCNMaker.Name = "btnTRCNMaker";
             this.btnTRCNMaker.Click += new System.EventHandler(this.btnTRCNMaker_Click);
-            // 
-            // btnCancel
-            // 
-            resources.ApplyResources(this.btnCancel, "btnCancel");
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // BconForm
             // 

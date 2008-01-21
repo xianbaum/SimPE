@@ -217,8 +217,13 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 StrItem si = wrapper[1, i];
                 this.lvStrItems.Items.Add(new ListViewItem(
-                    new string[] { "0x" + Helper.HexString((ushort)i), "", "", ((si == null) ? "" : si.Title), ((si == null) ? "" : si.Description) }
-                    ));
+                    new string[] {
+                        "0x" + Helper.HexString((ushort)i) + " (" + i + ")",
+                        "",
+                        "",
+                        ((si == null) ? "" : si.Title),
+                        ((si == null) ? "" : si.Description)
+                    }));
                 this.lvStrItems.Items[i].UseItemStyleForSubItems = false;
                 this.lvStrItems.Items[i].SubItems[2].ForeColor = System.Drawing.SystemColors.ControlDark;
                 this.lvStrItems.Items[i].SubItems[3].ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -971,8 +976,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Enter += new System.EventHandler(this.textBoxBase_Enter);
             this.tbFilename.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
+            this.tbFilename.Enter += new System.EventHandler(this.textBoxBase_Enter);
             // 
             // lbFilename
             // 
@@ -994,9 +999,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFormat, "tbFormat");
             this.tbFormat.Name = "tbFormat";
+            this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // btnImport
             // 

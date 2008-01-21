@@ -169,7 +169,7 @@ namespace SimPe.PackedFiles.UserInterface
 			string tiValue = (bcon != null && i < bcon.Count) ? "0x" + SimPe.Helper.HexString(bcon[i]) : "?";
 
 			return new string[] {
-									"0x" + i.ToString("X")
+									"0x" + i.ToString("X") + " (" + i + ")"
 									, tiValue
 									, ti.ConstName
 									, "0x" + SimPe.Helper.HexString(ti.ConstId)
@@ -525,10 +525,10 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbID, "tbID");
             this.tbID.Name = "tbID";
-            this.tbID.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
-            this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             this.tbID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+            this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
+            this.tbID.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             // 
             // btnCancel
             // 
@@ -546,8 +546,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbLabel, "tbLabel");
             this.tbLabel.Name = "tbLabel";
-            this.tbLabel.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbLabel.TextChanged += new System.EventHandler(this.tbText_TextChanged);
+            this.tbLabel.Enter += new System.EventHandler(this.tbText_Enter);
             // 
             // lbID
             // 
@@ -575,10 +575,10 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFormat, "tbFormat");
             this.tbFormat.Name = "tbFormat";
-            this.tbFormat.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
-            this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             this.tbFormat.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+            this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
+            this.tbFormat.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             // 
             // lvTrcnItem
             // 
@@ -640,8 +640,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbFilename.TextChanged += new System.EventHandler(this.tbText_TextChanged);
+            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
             // 
             // lbFilename
             // 
@@ -657,19 +657,19 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbDefValue, "tbDefValue");
             this.tbDefValue.Name = "tbDefValue";
-            this.tbDefValue.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbDefValue.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbDefValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.tbDefValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbDefValue.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbDefValue.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbDefValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             // 
             // tbMinValue
             // 
             resources.ApplyResources(this.tbMinValue, "tbMinValue");
             this.tbMinValue.Name = "tbMinValue";
-            this.tbMinValue.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbMinValue.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbMinValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.tbMinValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbMinValue.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbMinValue.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbMinValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             // 
             // lbMinValue
             // 
@@ -680,10 +680,10 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbMaxValue, "tbMaxValue");
             this.tbMaxValue.Name = "tbMaxValue";
-            this.tbMaxValue.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbMaxValue.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbMaxValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.tbMaxValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbMaxValue.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbMaxValue.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbMaxValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             // 
             // lbMaxValue
             // 

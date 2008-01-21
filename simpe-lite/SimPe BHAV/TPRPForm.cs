@@ -149,7 +149,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void LVAdd(ListView lv, TPRPItem item)
 		{
 			string[] s = {
-							 "0x" + lv.Items.Count.ToString("X")
+							 "0x" + lv.Items.Count.ToString("X") + " (" + lv.Items.Count + ")"
 							 ,item.Label
 						 };
 			lv.Items.Add(new ListViewItem(s));
@@ -569,9 +569,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbLabel, "tbLabel");
             this.tbLabel.Name = "tbLabel";
-            this.tbLabel.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbLabel.Validated += new System.EventHandler(this.tbText_Enter);
             this.tbLabel.TextChanged += new System.EventHandler(this.tbText_TextChanged);
+            this.tbLabel.Validated += new System.EventHandler(this.tbText_Enter);
+            this.tbLabel.Enter += new System.EventHandler(this.tbText_Enter);
             // 
             // btnStrDelete
             // 
@@ -594,18 +594,18 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbVersion, "tbVersion");
             this.tbVersion.Name = "tbVersion";
-            this.tbVersion.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbVersion.Validated += new System.EventHandler(this.hex32_Validated);
-            this.tbVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             this.tbVersion.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+            this.tbVersion.Validated += new System.EventHandler(this.hex32_Validated);
+            this.tbVersion.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             // 
             // tbFilename
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbFilename.Validated += new System.EventHandler(this.tbText_Enter);
             this.tbFilename.TextChanged += new System.EventHandler(this.tbText_TextChanged);
+            this.tbFilename.Validated += new System.EventHandler(this.tbText_Enter);
+            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
             // 
             // lbFilename
             // 

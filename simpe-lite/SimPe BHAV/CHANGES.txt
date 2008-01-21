@@ -1,3 +1,17 @@
+21 January 2008 19:41 - Add decimal after hex line numbers
+  * Also run debug version with SimPe\__Debug
+  SimPe BHAV\
+    BconForm.cs 1.15.2.13
+    BconForm.resx 1.9.2.6
+    BhavInstListItemUI.cs 1.23.2.5
+    pjse coder plugin.csproj 1.29.2.42
+    StrForm.cs 1.28.2.26
+    StrForm.resx 1.18.14.14
+    TPRPForm.cs 1.6.2.13
+    TPRPForm.resx 1.5.2.5
+    TrcnForm.cs 1.11.2.14
+    TrcnForm.resx 1.7.2.6
+
 19 January 2008 18:03 - Build-with-SimPe changes - Include the real help
   Redirect_Contents.htm 1.1.2.2
 

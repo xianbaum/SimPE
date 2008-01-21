@@ -156,66 +156,6 @@
   <data name="pnHeading.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;btnRefreshFT.Name" xml:space="preserve">
-    <value>btnRefreshFT</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
-    <value>btnHelp</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 9.75pt, style=Bold</value>
-  </data>
-  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>900, 27</value>
-  </data>
-  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
-    <value>trcnPanel</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
-    <value>15</value>
-  </data>
   <data name="btnRefreshFT.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -317,6 +257,30 @@
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>2</value>
+  </data>
+  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9.75pt, style=Bold</value>
+  </data>
+  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
+    <value>900, 27</value>
+  </data>
+  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
+    <value>trcnPanel</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="trcnPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -636,6 +600,54 @@
   <data name="lvTrcnItem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
+  <data name="chLine.Text" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="chLine.Width" type="System.Int32, mscorlib">
+    <value>77</value>
+  </data>
+  <data name="chValue.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="chValue.Width" type="System.Int32, mscorlib">
+    <value>65</value>
+  </data>
+  <data name="chConstName.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="chConstName.Width" type="System.Int32, mscorlib">
+    <value>80</value>
+  </data>
+  <data name="chConstId.Text" xml:space="preserve">
+    <value>ID</value>
+  </data>
+  <data name="chConstId.Width" type="System.Int32, mscorlib">
+    <value>105</value>
+  </data>
+  <data name="chUsed.Text" xml:space="preserve">
+    <value>Used</value>
+  </data>
+  <data name="chUsed.Width" type="System.Int32, mscorlib">
+    <value>45</value>
+  </data>
+  <data name="chDefValue.Text" xml:space="preserve">
+    <value>DefValue</value>
+  </data>
+  <data name="chDefValue.Width" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="chMinValue.Text" xml:space="preserve">
+    <value>MinValue</value>
+  </data>
+  <data name="chMinValue.Width" type="System.Int32, mscorlib">
+    <value>69</value>
+  </data>
+  <data name="chMaxValue.Text" xml:space="preserve">
+    <value>MaxValue</value>
+  </data>
+  <data name="chMaxValue.Width" type="System.Int32, mscorlib">
+    <value>72</value>
+  </data>
   <data name="lvTrcnItem.Items" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
@@ -652,25 +664,25 @@
         dFZpZXdTdWJJdGVtAgAAADFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdT
         dWJJdGVtAgAAADFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdTdWJJdGVt
         AgAAABRTeXN0ZW0uRHJhd2luZy5Db2xvcgMAAAABE1N5c3RlbS5EcmF3aW5nLkZvbnQDAAAAFFN5c3Rl
-        bS5EcmF3aW5nLkNvbG9yAwAAAAECAAAABgQAAAAEMHhERP////8IAAAACQUAAAAJBgAAAAkHAAAACQgA
-        AAAJCQAAAAkKAAAACQsAAAAF9P///xRTeXN0ZW0uRHJhd2luZy5Db2xvcgQAAAAEbmFtZQV2YWx1ZQpr
-        bm93bkNvbG9yBXN0YXRlAQAAAAkHBwMAAAAKAAAAAAAAAAAYAAEAAAkNAAAAAfL////0////CgAAAAAA
-        AAAAGgABAAEFBQAAADFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdTdWJJ
-        dGVtBAAAAAR0ZXh0BG5hbWUFc3R5bGUIdXNlckRhdGEBAQQCPlN5c3RlbS5XaW5kb3dzLkZvcm1zLkxp
-        c3RWaWV3SXRlbStMaXN0Vmlld1N1Ykl0ZW0rU3ViSXRlbVN0eWxlAgAAAAIAAAAGDwAAAAYweEREREQK
-        CgoBBgAAAAUAAAAGEAAAAEBXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dX
-        V1dXV1dXV1dXV1dXV1dXV1dXV1dXCgoKAQcAAAAFAAAABhEAAAAKMHhERERERERERAoJEgAAAAoBCAAA
-        AAUAAAAGEwAAAAQweERECgoKAQkAAAAFAAAABhQAAAAGMHhERERECgoKAQoAAAAFAAAABhUAAAAGMHhE
-        RERECgoKAQsAAAAFAAAABhYAAAAGMHhERERECgoKBQ0AAAATU3lzdGVtLkRyYXdpbmcuRm9udAQAAAAE
-        TmFtZQRTaXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUDAAAAG1N5c3Rl
-        bS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABhcAAAAUTWljcm9zb2Z0IFNhbnMgU2VyaWaamflA
-        Bej///8YU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAQAAAAd2YWx1ZV9fAAgDAAAAAAAAAAXn////G1N5
-        c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAEAAAAHdmFsdWVfXwAIAwAAAAMAAAAFEgAAAD5TeXN0ZW0u
-        V2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdTdWJJdGVtK1N1Ykl0ZW1TdHlsZQMAAAAJ
-        YmFja0NvbG9yCWZvcmVDb2xvcgRmb250BAQEFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAABRTeXN0ZW0u
-        RHJhd2luZy5Db2xvcgMAAAATU3lzdGVtLkRyYXdpbmcuRm9udAMAAAACAAAAAeb////0////CgAAAAAA
-        AAAAGAABAAHl////9P///woAAAAAAAAAABoAAQAJHAAAAAEcAAAADQAAAAYdAAAAB1ZlcmRhbmEAAARB
-        AeL////o////AAAAAAHh////5////wMAAAAL
+        bS5EcmF3aW5nLkNvbG9yAwAAAAECAAAABgQAAAAKMHhERCAoMjIyKf////8IAAAACQUAAAAJBgAAAAkH
+        AAAACQgAAAAJCQAAAAkKAAAACQsAAAAF9P///xRTeXN0ZW0uRHJhd2luZy5Db2xvcgQAAAAEbmFtZQV2
+        YWx1ZQprbm93bkNvbG9yBXN0YXRlAQAAAAkHBwMAAAAKAAAAAAAAAAAYAAEAAAkNAAAAAfL////0////
+        CgAAAAAAAAAAGgABAAEFBQAAADFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZp
+        ZXdTdWJJdGVtBAAAAAR0ZXh0BG5hbWUFc3R5bGUIdXNlckRhdGEBAQQCPlN5c3RlbS5XaW5kb3dzLkZv
+        cm1zLkxpc3RWaWV3SXRlbStMaXN0Vmlld1N1Ykl0ZW0rU3ViSXRlbVN0eWxlAgAAAAIAAAAGDwAAAAYw
+        eEREREQKCgoBBgAAAAUAAAAGEAAAAEBXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dX
+        V1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXV1dXCgoKAQcAAAAFAAAABhEAAAAKMHhERERERERERAoJEgAA
+        AAoBCAAAAAUAAAAGEwAAAAQweERECgoKAQkAAAAFAAAABhQAAAAGMHhERERECgoKAQoAAAAFAAAABhUA
+        AAAGMHhERERECgoKAQsAAAAFAAAABhYAAAAGMHhERERECgoKBQ0AAAATU3lzdGVtLkRyYXdpbmcuRm9u
+        dAQAAAAETmFtZQRTaXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUDAAAA
+        G1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABhcAAAAUTWljcm9zb2Z0IFNhbnMgU2Vy
+        aWaamflABej///8YU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAQAAAAd2YWx1ZV9fAAgDAAAAAAAAAAXn
+        ////G1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAEAAAAHdmFsdWVfXwAIAwAAAAMAAAAFEgAAAD5T
+        eXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdTdWJJdGVtK1N1Ykl0ZW1TdHls
+        ZQMAAAAJYmFja0NvbG9yCWZvcmVDb2xvcgRmb250BAQEFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAABRT
+        eXN0ZW0uRHJhd2luZy5Db2xvcgMAAAATU3lzdGVtLkRyYXdpbmcuRm9udAMAAAACAAAAAeb////0////
+        CgAAAAAAAAAAGAABAAHl////9P///woAAAAAAAAAABoAAQAJHAAAAAEcAAAADQAAAAYdAAAAB1ZlcmRh
+        bmEAAARBAeL////o////AAAAAAHh////5////wMAAAAL
 </value>
   </data>
   <data name="lvTrcnItem.Location" type="System.Drawing.Point, System.Drawing">
@@ -1038,54 +1050,6 @@
   </data>
   <data name="&gt;&gt;trcnPanel.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="chLine.Text" xml:space="preserve">
-    <value>Line</value>
-  </data>
-  <data name="chLine.Width" type="System.Int32, mscorlib">
-    <value>43</value>
-  </data>
-  <data name="chValue.Text" xml:space="preserve">
-    <value>Value</value>
-  </data>
-  <data name="chValue.Width" type="System.Int32, mscorlib">
-    <value>65</value>
-  </data>
-  <data name="chConstName.Text" xml:space="preserve">
-    <value>Label</value>
-  </data>
-  <data name="chConstName.Width" type="System.Int32, mscorlib">
-    <value>120</value>
-  </data>
-  <data name="chConstId.Text" xml:space="preserve">
-    <value>ID</value>
-  </data>
-  <data name="chConstId.Width" type="System.Int32, mscorlib">
-    <value>105</value>
-  </data>
-  <data name="chUsed.Text" xml:space="preserve">
-    <value>Used</value>
-  </data>
-  <data name="chUsed.Width" type="System.Int32, mscorlib">
-    <value>45</value>
-  </data>
-  <data name="chDefValue.Text" xml:space="preserve">
-    <value>DefValue</value>
-  </data>
-  <data name="chDefValue.Width" type="System.Int32, mscorlib">
-    <value>69</value>
-  </data>
-  <data name="chMinValue.Text" xml:space="preserve">
-    <value>MinValue</value>
-  </data>
-  <data name="chMinValue.Width" type="System.Int32, mscorlib">
-    <value>69</value>
-  </data>
-  <data name="chMaxValue.Text" xml:space="preserve">
-    <value>MaxValue</value>
-  </data>
-  <data name="chMaxValue.Width" type="System.Int32, mscorlib">
-    <value>72</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
