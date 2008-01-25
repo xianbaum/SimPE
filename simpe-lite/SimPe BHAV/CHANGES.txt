@@ -1,3 +1,6 @@
+25 January 2008 20:51 - Updated GlobalStrings.package from Inge
+  GlobalStrings.package 1.10.8.31
+
 21 January 2008 20:10 - Rename PJSE Resource Finder to "Simantics..."
   * Also populate dummy Finder.htm help file
   pjse GUID Tool\
