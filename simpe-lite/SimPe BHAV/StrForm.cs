@@ -367,7 +367,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (wrapper.Add(1, title, desc) >= 0)
             {
                 count++;
-                this.lvStrItems.Items.Add(new ListViewItem(new string[] { "0x" + Helper.HexString((ushort)(count - 1)), title, desc, title, desc }));
+                this.lvStrItems.Items.Add(new ListViewItem(new string[] { "0x" + Helper.HexString((ushort)(count - 1)) + " (" + ((ushort)(count - 1)) + ")", title, desc, title, desc }));
             }
 
             internalchg = savedstate;
