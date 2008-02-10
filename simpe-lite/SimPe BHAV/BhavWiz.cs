@@ -632,7 +632,7 @@ namespace pjse
 
             List<String> al = new List<String>();
             Str str = new Str(s, instruction.Parent, (uint)instance);
-            int n = (str == null) ? 0 : ((StrItem[])str[(byte)1]).Length;
+            int n = (str == null) ? 0 : str[(byte)1].Count;
             String st;
             for (ushort i = 0; i < n; i++) al.Add((st = readStr(str, i, -1, Detail.ValueOnly, false, false)) == null ? "" : st);
             return al;

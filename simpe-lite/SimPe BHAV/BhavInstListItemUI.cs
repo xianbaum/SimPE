@@ -144,7 +144,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (wrapper == null || index == -1) return;
 
-			if (wrapper.IndexOf(sender) != index) return;
+			if (!(sender is Instruction) || wrapper.IndexOf((Instruction)sender) != index) return;
 			Instruction inst = (Instruction)sender;
 
 			bhavInstListItem.Text = "";

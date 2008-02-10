@@ -199,8 +199,12 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 			internalchg = true;
 
-			if (wrapper.Add(0) >= 0)
-				this.lvConstants.Items.Add(lvItem(wrapper.Count - 1));
+            try
+            {
+                wrapper.Add(0);
+                this.lvConstants.Items.Add(lvItem(wrapper.Count - 1));
+            }
+            catch { }
 
 			internalchg = savedstate;
 
@@ -292,7 +296,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			for(int arg = minArgc; arg < wrapper.Count; arg++)
 			{
-				int p = trcn.Add(new TrcnItem(trcn));
+                trcn.Add(new TrcnItem(trcn));
 				trcn[arg].ConstId = (uint)arg;
 				trcn[arg].ConstName = "Label " + arg.ToString();
 				trcn[arg].DefValue = trcn[arg].MaxValue = trcn[arg].MinValue = 0;

@@ -276,8 +276,12 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 			internalchg = true;
 
-			if (wrapper.Add(new TrcnItem(wrapper)) >= 0)
-				this.lvTrcnItem.Items.Add(new ListViewItem(trcnItemToStringArray(wrapper.Count - 1)));
+            try
+            {
+                wrapper.Add(new TrcnItem(wrapper));
+                this.lvTrcnItem.Items.Add(new ListViewItem(trcnItemToStringArray(wrapper.Count - 1)));
+            }
+            catch { }
 
 			internalchg = savedstate;
 

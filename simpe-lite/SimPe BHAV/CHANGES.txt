@@ -1,3 +1,25 @@
+10 February 2008 21:41 - Re-factor ExtendedWrapper to Generic, Str[lid] returns List<>
+  * Hits Career Editor in SimPe SVN
+  * Bcon items are no longer bare shorts
+  SimPe BHAV\
+    BconForm.cs 1.15.2.14
+    BconWrapper.cs 1.10.2.1
+    BhavInstListControl.cs 1.41.8.7
+    BhavInstListItemUI.cs 1.23.2.6
+    BhavWiz.cs 1.37.2.40
+    BhavWrapper.cs 1.47.2.2
+    ExtendedWrapper.cs 1.1.4.9
+    ObjfWrapper.cs 1.9.6.6
+    Str.cs 1.1.4.11
+    StrForm.cs 1.28.2.28
+    StrWrapper.cs 1.16.6.4
+    TPRPForm.cs 1.6.2.14
+    TPRPWrapper.cs 1.5.2.2
+    TrcnForm.cs 1.11.2.15
+    TrcnWrapper.cs 1.11.2.2
+    TtabForm.cs 1.31.2.31
+    TtabWrapper.cs 1.23.6.14
+
 26 January 2008 22:23 - Add decimal after hex TTAs line numbers in TTAB editor
   * Also add a text label near the drop down to make it easier to see what happens
   * And remember to add decimal after hex line numbers when adding new lines in STR# editor

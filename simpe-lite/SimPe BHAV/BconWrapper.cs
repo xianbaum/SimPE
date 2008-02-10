@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 
@@ -33,7 +34,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Bcon
-		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+        : pjse.ExtendedWrapper<BconItem, Bcon> //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
@@ -47,10 +48,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Just A Flag
 		/// </summary>
 		private bool flag = false;
-		/// <summary>
-		/// Contains all available Constants 
-		/// </summary>		
-		private ArrayList items = new ArrayList();
 
 		/// <summary>
 		/// Contains a valid TRCN Resource that describes these values
@@ -168,6 +165,7 @@ namespace SimPe.PackedFiles.Wrapper
 			foreach(short v in items)
 				writer.Write(v);
 		}
+
 		/// <summary>
 		/// Unserializes a BinaryStream into the Attributes of this Instance
 		/// </summary>
@@ -178,11 +176,10 @@ namespace SimPe.PackedFiles.Wrapper
 			ushort countflag = reader.ReadUInt16();
 			flag = (countflag & 0x8000) != 0;
 			int length = countflag & 0x7fff;
- 
-			short[] bi = new short[length];
-			items = new ArrayList(bi);
-			for (int i = 0; i < length; i++) 
-				items[i] = reader.ReadInt16();
+
+            items = new List<BconItem>();
+            while(items.Count < length)
+				items.Add(reader.ReadInt16());
 		}
 
 		#endregion
@@ -217,68 +214,42 @@ namespace SimPe.PackedFiles.Wrapper
 		//all covered by Serialize()
 		#endregion
 
-		#region ICollection Members
-		public int Add(short item)
-		{
-			if (items.Count >= 0x8000) // two bytes less top bit
-				return -1;
+        public new void Add(BconItem item) { Add(item, 0x8000); }
 
-			//item.Parent = this;
-			int result = items.Add(item);
-			if (result >= 0) OnWrapperChanged(items, new EventArgs());
-			return result;
-		}
+        public new void Insert(int index, BconItem item) { Insert(index, item, 0x8000); }
 
-		public void Clear()
-		{
-			items.Clear();
-			OnWrapperChanged(items, new EventArgs());
-		}
+    }
 
-		public void Remove(short item) { this.RemoveAt(items.IndexOf(item)); }
+    public class BconItem : pjse.ExtendedWrapperItem<Bcon, BconItem>
+        , IComparable<short>, IEquatable<short>, IComparable<BconItem>
+    {
+        private Int16 value;
+        public BconItem(Int16 value) { this.value = value; }
+        public static explicit operator byte(BconItem i) { return (byte)i.value; }
+        public static implicit operator short(BconItem i) { return i.value; }
+        public static explicit operator ushort(BconItem i) { return (ushort)i.value; }
+        public static implicit operator BconItem(short i) { return new BconItem(i); }
 
-		public void RemoveAt(int index)
-		{
-			if (index < 0 || index >= items.Count) return;
+        public override string ToString() { return value.ToString(); }
 
-			items.RemoveAt(index);
-			OnWrapperChanged(items, new EventArgs());
-		}
+        public override bool Equals(BconItem other) { return value.Equals(other.value); }
 
-		public short this[int index]
-		{
-			get
-			{
-				return (short)items[index];
-			}
-			set
-			{
-				if (items[index] == null || !items[index].Equals(value))
-				{
-					//value.Parent = this;
-					items[index] = value;
-					OnWrapperChanged(items[index], new EventArgs());
-				}
-			}
-		}
+        #region IComparable<short> Members
 
-		public bool Contains(short item) { return items.Contains(item); }
+        public int CompareTo(short other) { return value.CompareTo(other); }
 
-		public int IndexOf(object item) { return items.IndexOf(item); }
+        #endregion
 
-		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
+        #region IEquatable<short> Members
 
-		public override int Count { get { return items.Count; } }
+        public bool Equals(short other) { return value.Equals(other); }
 
-		public override bool IsSynchronized { get { return items.IsSynchronized; } }
+        #endregion
 
-		public override object SyncRoot { get { return items.SyncRoot; } }
+        #region IComparable<BconItem> Members
 
-		#region IEnumerable Members
-		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
+        public int CompareTo(BconItem other) { return value.CompareTo(other.value); }
 
-		#endregion
-		#endregion
-
-	}
+        #endregion
+    }
 }

@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 using SimPe.Interfaces.Files;
@@ -35,7 +36,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Bhav
-		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+        : pjse.ExtendedWrapper<Instruction, Bhav> //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
@@ -49,10 +50,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Stores the Header
 		/// </summary>
 		private BhavHeader header;
-		/// <summary>
-		/// Contains all available Instruction 
-		/// </summary>		
-		private BhavItemArrayList items = new BhavItemArrayList();
 
 		/// <summary>
 		/// Contains a valid TPRP Resource that describes the Params and Locals for this BHAV
@@ -105,12 +102,58 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 		#endregion
 
-		/// <summary>
-		/// Constructor
-		/// </summary>
-		public Bhav() : base()
+        public Bhav() : base() { header = new BhavHeader(this); }
+
+        // only allow 32K or 128 lines
+        public new void Add(Instruction item) { Add(item, this.Header.Format < 0x8007 ? 0x80 : 0x8000); }
+
+        // only allow 32K or 128 lines
+        public new void Insert(int index, Instruction item) { Insert(index, item, this.Header.Format < 0x8007 ? 0x80 : 0x8000); }
+
+		public new void Sort()
 		{
-			header = new BhavHeader(this);
+			int start = 0;		// where we got to on True pass
+			int startnext = 0;	// where we got to on False pass
+
+			bool savedstate = internalchg;
+			bool somethingchanged = false;
+			internalchg = true;
+			while (start < items.Count)
+			{
+				for (int i = start; i < items.Count; i++)
+				{
+					start = i+1;
+					if (items[i].Target1 <= i || items[i].Target1 >= items.Count)
+					{
+						if (items[i].Target2 <= i || items[i].Target2 >= items.Count)
+							break;
+
+						Move(items[i].Target2, start);
+						somethingchanged = true;
+
+						continue;
+					}
+					if (items[i].Target1 != start)
+					{
+						Move(items[i].Target1, start);
+						somethingchanged = true;
+					}
+				}
+				if (start >= items.Count)
+					break;
+
+				for (int i = startnext; i < start; i++)
+				{
+					startnext = i+1;
+					if (items[i].Target2 < start || items[i].Target2 >= items.Count)
+						continue;
+					Move(items[i].Target2, start);
+					somethingchanged = true;
+					break;
+				}
+			}
+			internalchg = savedstate;
+			if (somethingchanged) OnWrapperChanged(items, new EventArgs());
 		}
 
 
@@ -165,6 +208,7 @@ namespace SimPe.PackedFiles.Wrapper
 			foreach (Instruction i in items)
 				i.Serialize(writer);
 		}
+
 		/// <summary>
 		/// Unserializes a BinaryStream into the Attributes of this Instance
 		/// </summary>
@@ -173,9 +217,9 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			filename = reader.ReadBytes(0x40);
 			header.Unserialize(reader);
-			items = new BhavItemArrayList();
 
-			for (uint i=0; i < this.Header.InstructionCount; i++)
+            items = new List<Instruction>();
+            while(items.Count < this.Header.InstructionCount)
 				items.Add(new Instruction(this, reader));
 		}
 
@@ -211,210 +255,6 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#region IFileWrapperSaveExtension Member		
 		//all covered by AbstractWrapper
-		#endregion
-
-		#region ICollection Members
-		public int Add(Instruction item)
-		{
-			if (items.Count >= (this.Header.Format < 0x8007 ? 0x80 : 0x8000)) // only allow 32K or 128 lines
-				return -1;
-
-			item.Parent = this;
-			int result = items.Add(item);
-			if (result >= 0) OnWrapperChanged(items, new EventArgs());
-			return result;
-		}
-
-		public void Clear()
-		{
-			items.Clear();
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Remove(Instruction item)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-			items.RemoveAt(items.IndexOf(item));
-			internalchg = savedstate;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void RemoveAt(int i)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-			items.RemoveAt(i);
-			internalchg = savedstate;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public Instruction this[int index]
-		{
-			get
-			{
-				return items[index];
-			}
-			set
-			{
-				if (items[index] == null || !items[index].Equals(value))
-				{
-					value.Parent = this;
-					items[index] = value;
-					OnWrapperChanged(items, new EventArgs());
-				}
-			}
-		}
-
-		public bool Contains(Instruction item) { return items.Contains(item); }
-
-		public int IndexOf(object item) { return items.IndexOf(item); }
-
-		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
-
-		public override int Count { get { return items.Count; } }
-
-		public override bool IsSynchronized { get { return items.IsSynchronized; } }
-
-		public override object SyncRoot { get { return items.SyncRoot; } }
-
-		#region IEnumerable Members
-		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
-
-		#endregion
-
-		public void Insert(int index, Instruction item)
-		{
-			if (items.Count >= ((this.Header.Format == 0x8007) ? 0x8000 : 0x80)) // only allow 32K or 128 lines
-				throw(new NotSupportedException("Too many items"));
-
-			item.Parent = this;
-			bool savedstate = internalchg;
-			internalchg = true;
-			items.Move(items.Add(item), index);
-			internalchg = savedstate;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Move(int from, int to)
-		{
-			bool savedstate = internalchg;
-			internalchg = true;
-			items.Move(from, to);
-			internalchg = savedstate;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Sort()
-		{
-			int start = 0;		// where we got to on True pass
-			int startnext = 0;	// where we got to on False pass
-
-			bool savedstate = internalchg;
-			bool somethingchanged = false;
-			internalchg = true;
-			while (start < items.Count)
-			{
-				for (int i = start; i < items.Count; i++)
-				{
-					start = i+1;
-					if (items[i].Target1 <= i || items[i].Target1 >= items.Count)
-					{
-						if (items[i].Target2 <= i || items[i].Target2 >= items.Count)
-							break;
-
-						items.Move(items[i].Target2, start);
-						somethingchanged = true;
-
-						continue;
-					}
-					if (items[i].Target1 != start)
-					{
-						items.Move(items[i].Target1, start);
-						somethingchanged = true;
-					}
-				}
-				if (start >= items.Count)
-					break;
-
-				for (int i = startnext; i < start; i++)
-				{
-					startnext = i+1;
-					if (items[i].Target2 < start || items[i].Target2 >= items.Count)
-						continue;
-					items.Move(items[i].Target2, start);
-					somethingchanged = true;
-					break;
-				}
-			}
-			internalchg = savedstate;
-			if (somethingchanged) OnWrapperChanged(items, new EventArgs());
-		}
-
-		#endregion
-
-		#region BhavItemArrayList
-		private class BhavItemArrayList : ArrayList
-		{
-			public BhavItemArrayList() : base() { }
-
-			public BhavItemArrayList(Instruction[] c) : base(c) { }
-
-			public BhavItemArrayList(int capacity) : base(capacity) { }
-
-			public new Instruction this[int index]
-			{
-				get { return (Instruction)base[index]; }
-				set { base[index] = value; }
-			}
-
-
-			#region BhavItemArrayList
-			private void SortSwap(int a, int b) 
-			{
-				Instruction i = this[a];
-				this[a] = this[b];
-				this[b] = i;
-
-				foreach (Instruction item in this)
-				{
-					if (item.Target1 == a) item.Target1 = (ushort)b;
-					else if (item.Target1 == b) item.Target1 = (ushort)a;
-
-					if (item.Target2 == a) item.Target2 = (ushort)b;
-					else if (item.Target2 == b) item.Target2 = (ushort)a;
-				}
-			}
-
-			/// <summary>
-			/// Moves an instruction from position 'from' to position 'to', renumbering Targets as required
-			/// </summary>
-			/// <param name="from">starting position</param>
-			/// <param name="to">ending position</param>
-			public void Move(int from, int to)
-			{
-				if (from == to) return;
-				if (from < 0 || from >= Count) return;
-				if (to < 0 || to >= Count) return;
-
-				while (from < to) this.SortSwap(from, ++from);
-				while (from > to) this.SortSwap(from, --from);
-			}
-
-			public void Insert(int index, Instruction item)
-			{
-				this.Move(base.Add(item), index);
-			}
-
-			public override void RemoveAt(int index)
-			{
-				this.Move(index, this.Count - 1);
-				base.RemoveAt(this.Count - 1);
-			}
-
-			#endregion
-		}
-
 		#endregion
 	}
 
@@ -590,7 +430,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// <summary>
 	/// Class representing an Instruction
 	/// </summary>
-	public class Instruction
+    public class Instruction : pjse.ExtendedWrapperItem<Bhav, Instruction>
 	{
 		#region Attributes
 		private ushort opcode = 0;
@@ -599,7 +439,6 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte nodeversion = 0;
 		private wrappedByteArray operands = null;
 		private wrappedByteArray reserved_01 = null;
-		private Bhav parent;
 		private static byte[] nooperands = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, };
 		#endregion
 
@@ -659,20 +498,6 @@ namespace SimPe.PackedFiles.Wrapper
 		public wrappedByteArray Operands { get { return operands; } }
 
 		public wrappedByteArray Reserved1 { get { return reserved_01; } }
-
-		public Bhav Parent
-		{
-			get { return parent; }
-			set
-			{
-				if (parent != value)
-				{
-					parent = value;
-					parent.OnWrapperChanged(this, new EventArgs());
-				}
-			}
-		}
-
 		#endregion
 
 		/// <summary>
@@ -836,8 +661,7 @@ namespace SimPe.PackedFiles.Wrapper
 				reserved_01.Serialize(writer);
 			}
 		}
-
-	}
+    }
 
 
 

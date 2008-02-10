@@ -278,10 +278,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 			for (int bi = 0; bi < b.Count; bi++)
 			{
-				int i = wrapper.Add(b[bi]);
-				if (i < 0) break;
-				wrapper[i].StringIndex += offset;
-                addItem(i);
+                wrapper.Add(b[bi]);
+                wrapper[wrapper.Count - 1].StringIndex += offset;
+                addItem(wrapper.Count - 1);
 			}
 			ttabPanel.Parent.Cursor = Cursors.Default;
 
@@ -305,7 +304,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (w == null) return 0;
 
             uint max = 0;
-            for (byte lid = 1; lid < 44; lid++) max = (uint)Math.Max(max, w[lid].Length);
+            for (byte lid = 1; lid < 44; lid++) max = (uint)Math.Max(max, w[lid].Count);
             return max;
         }
 
@@ -1555,7 +1554,8 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void btnAdd_Click(object sender, System.EventArgs e)
         {
-            lbttab.SelectedIndex = wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
+            wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
+            lbttab.SelectedIndex = wrapper.Count - 1;
         }
 
         private void btnDelete_Click(object sender, System.EventArgs e)

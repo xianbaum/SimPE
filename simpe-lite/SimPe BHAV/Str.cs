@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using SimPe.PackedFiles.Wrapper;
 
@@ -230,7 +231,7 @@ namespace pjse
 		}
 
 
-        public StrItem[] this[byte lid]
+        public List<StrItem> this[byte lid]
         {
             get
             {
@@ -242,7 +243,7 @@ namespace pjse
                     if (w == null && GlobalStr != null)
                         w = GlobalStr.Wrapper;
                 }
-                return (w == null) ? new StrItem[0] : w[lid];
+                return (w == null) ? new List<StrItem>() : w[lid];
             }
         }
 

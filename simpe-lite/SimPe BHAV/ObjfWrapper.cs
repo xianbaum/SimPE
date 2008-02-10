@@ -20,8 +20,8 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections;
 using SimPe.Interfaces.Plugin;
 
 namespace SimPe.PackedFiles.Wrapper
@@ -34,7 +34,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Objf
-		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+        : pjse.ExtendedWrapper<ObjfItem, Objf> //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
@@ -48,10 +48,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Header of the File
 		/// </summary>
 		private uint[] header = { 0x00000000, 0x00000000, 0x4f424a66 }; // 'OBJf'
-		/// <summary>
-		/// Items stored in the File
-		/// </summary>
-		private ObjfItemArrayList items = new ObjfItemArrayList();
 		#endregion
 
 		#region Accessor methods
@@ -70,28 +66,16 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-
-        private ObjfItemArrayList Items
-        {
-            get
-            {
-                if (items == null)
-                {
-                    List<String> al = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs);
-                    while (items.Count < al.Count)
-                        items.Add(new ObjfItem(this));
-                }
-                return items;
-            }
-            set { items = value; }
-        }
-
 		#endregion
 
         /// <summary>
 		/// Constructor
 		/// </summary>
 		public Objf() : base() { }
+
+        public new void Add(ObjfItem item) { Add(item, 0x8000); }
+
+        public new void Insert(int index, ObjfItem item) { Insert(index, item, 0x8000); }
 
 
 		#region AbstractWrapper Member
@@ -168,10 +152,9 @@ namespace SimPe.PackedFiles.Wrapper
 
 			uint itemCount = reader.ReadUInt32();
 
-			ObjfItem[] ti = new ObjfItem[itemCount];
-			items = new ObjfItemArrayList(ti);
-			for (int i = 0; i < itemCount; i++)
-				items[i] = new ObjfItem(this, reader);
+            items = new List<ObjfItem>();
+            while(items.Count < itemCount)
+				items.Add(new ObjfItem(this, reader));
 		}
 
 		#endregion
@@ -205,100 +188,17 @@ namespace SimPe.PackedFiles.Wrapper
 		#region IFileWrapperSaveExtension Member		
 		//all covered by AbstractWrapper
 		#endregion
-
-		#region ICollection Members
-		public int Add(ObjfItem item)
-		{
-			if (Items.Count >= 0x8000) // only allow 32K lines
-				return -1;
-
-			item.Parent = this;
-			int result = Items.Add(item);
-			if (result >= 0) OnWrapperChanged(Items, new EventArgs());
-			return result;
-		}
-
-		public void Clear()
-		{
-			Items.Clear();
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Remove(ObjfItem item) { this.RemoveAt(Items.IndexOf(item)); }
-
-		public void RemoveAt(int index)
-		{
-			if (index < 0 || index >= Items.Count) return;
-
-			Items.RemoveAt(index);
-			OnWrapperChanged(Items, new EventArgs());
-		}
-
-		public ObjfItem this[int index]
-		{
-			get
-			{
-				return Items[index];
-			}
-			set
-			{
-				if (Items[index] == null || !Items[index].Equals(value))
-				{
-					value.Parent = this;
-					Items[index] = value;
-					OnWrapperChanged(Items, new EventArgs());
-				}
-			}
-		}
-
-		public bool Contains(ObjfItem item) { return Items.Contains(item); }
-
-		public int IndexOf(object item) { return Items.IndexOf(item); }
-
-		public override void CopyTo(Array a, int i) { Items.CopyTo(a, i); }
-
-		public override int Count { get { return Items.Count; } }
-
-		public override bool IsSynchronized { get { return Items.IsSynchronized; } }
-
-		public override object SyncRoot { get { return Items.SyncRoot; } }
-
-		#region IEnumerable Members
-		public override IEnumerator GetEnumerator() { return Items.GetEnumerator(); }
-
-		#endregion
-		#endregion
-
-		#region ObjfItemArrayList
-		private class ObjfItemArrayList : ArrayList
-		{
-			public ObjfItemArrayList() : base() { }
-
-			public ObjfItemArrayList(ObjfItem[] c) : base(c) { }
-
-			public ObjfItemArrayList(int capacity) : base(capacity) { }
-
-			public new ObjfItem this[int index]
-			{
-				get { return (ObjfItem)base[index]; }
-				set { base[index] = value; }
-			}
-
-		}
-
-		#endregion
 	}
 
 
 	/// <summary>
 	/// An Item stored in an OBJf
 	/// </summary>
-	public class ObjfItem
+    public class ObjfItem : pjse.ExtendedWrapperItem<Objf, ObjfItem>
 	{
 		#region Attributes
 		private ushort guard = 0;
 		private ushort action = 0;
-		private Objf parent = null;
 		#endregion
 
 		#region Accessor methods
@@ -327,12 +227,6 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}		
-
-		public Objf Parent
-		{
-			get { return parent; }
-			set { parent = value; } // parent not part of wrapper
-		}
 		#endregion
 
 		public ObjfItem(Objf parent)
@@ -374,7 +268,6 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			writer.Write(guard);
 			writer.Write(action);
-		}
-
-	}
+        }
+    }
 }

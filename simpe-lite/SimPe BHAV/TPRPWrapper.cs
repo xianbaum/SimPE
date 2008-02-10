@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 
@@ -33,7 +34,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class TPRP
-		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+		: pjse.ExtendedWrapper<TPRPItem, TPRP> //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
@@ -55,10 +56,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Count of Local labels
 		/// </summary>
 		private int localCount = 0;
-		/// <summary>
-		/// Items stored in the File
-		/// </summary>
-		private TPRPItemArrayList items = new TPRPItemArrayList();
 		/// <summary>
 		/// Unknown
 		/// </summary>
@@ -118,6 +115,60 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Constructor
 		/// </summary>
 		public TPRP() : base() { }
+
+        public void CleanUp()
+        {
+            internalchg = true;
+            while (paramCount > 0 && this[false, paramCount - 1].Label.Trim().Length == 0) Remove(this[false, paramCount - 1]);
+            while (localCount > 0 && this[true, localCount - 1].Label.Trim().Length == 0) Remove(this[true, localCount - 1]);
+            internalchg = false;
+        }
+
+        public TPRPItem this[bool local, int index]
+        {
+            get
+            {
+                if (local)
+                    index += paramCount;
+                else if (index > paramCount)
+                    throw new ArgumentOutOfRangeException();
+
+                return this[index];
+            }
+
+            set
+            {
+                if (local)
+                {
+                    if (value is TPRPParamLabel)
+                        throw new InvalidCastException();
+                    index += paramCount;
+                }
+                else
+                {
+                    if (value is TPRPLocalLabel)
+                        throw new InvalidCastException();
+                    if (index > paramCount)
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                this[index] = value;
+            }
+        }
+
+        public int Add(TPRPParamLabel item)
+        {
+            items.Insert(paramCount, item);
+            paramCount++;
+            return paramCount - 1;
+        }
+
+        public int Add(TPRPLocalLabel item)
+        {
+            items.Insert(localCount, item);
+            localCount++;
+            return localCount - 1;
+        }
 
 
 		#region AbstractWrapper Member
@@ -205,12 +256,11 @@ namespace SimPe.PackedFiles.Wrapper
 			paramCount = reader.ReadInt32();
 			localCount = reader.ReadInt32();
 
-			TPRPItem[] ti = new TPRPItem[paramCount + localCount];
-			items = new TPRPItemArrayList(ti);
+            items = new List<TPRPItem>();
 			for (int i = 0; i < paramCount; i++)
-				items[i] = new TPRPParamLabel(this, reader);
+				items.Add(new TPRPParamLabel(this, reader));
 			for (int i = 0; i < localCount; i++)
-				items[paramCount + i] = new TPRPLocalLabel(this, reader);
+				items.Add(new TPRPLocalLabel(this, reader));
 
 			reserved = reader.ReadUInt32();
 			foreach(TPRPItem item in items)
@@ -252,163 +302,18 @@ namespace SimPe.PackedFiles.Wrapper
 		#region IFileWrapperSaveExtension Member		
 		//all covered by AbstractWrapper
 		#endregion
-
-		#region ICollection Members
-		public int Add(TPRPItem item)
-		{
-			int result = (item is TPRPLocalLabel) ? localCount : paramCount;
-			this.Insert(result, item);
-			return result;
-		}
-
-		public void Insert(int index, TPRPItem item)
-		{
-			if (item is TPRPLocalLabel)
-				index += paramCount;
-			else if (index > paramCount)
-				throw new ArgumentOutOfRangeException();
-
-			item.Parent = this;
-			items.Insert(index, item);
-
-			if (item is TPRPLocalLabel)
-				localCount++;
-			else
-				paramCount++;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Clear()
-		{
-			items.Clear();
-			localCount = paramCount = 0;
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Remove(TPRPItem item) { this.RemoveAt(items.IndexOf(item)); }
-
-		protected void RemoveAt(int index)
-		{
-			if (index < 0 || index >= items.Count) return;
-
-			if (items[index] is TPRPParamLabel)
-				this.paramCount--;
-			else
-				this.localCount--;
-			items.RemoveAt(index);
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public TPRPItem this[bool local, int index]
-		{
-			get
-			{
-				if (local)
-					index += paramCount;
-				else if (index > paramCount)
-					throw new ArgumentOutOfRangeException();
-
-				return this[index];
-			}
-
-			set
-			{
-				if (local)
-				{
-					if (value is TPRPParamLabel)
-						throw new InvalidCastException();
-					index += paramCount;
-				}
-				else
-				{
-					if (value is TPRPLocalLabel)
-						throw new InvalidCastException();
-					if (index > paramCount)
-						throw new ArgumentOutOfRangeException();
-				}
-
-				this[index] = value;
-			}
-		}
-
-		protected TPRPItem this[int index]
-		{
-			get
-			{
-				return items[index];
-			}
-			set
-			{
-				if (items[index] == null || !items[index].Equals(value))
-				{
-					value.Parent = this;
-					items[index] = value;
-					OnWrapperChanged(items, new EventArgs());
-				}
-			}
-		}
-
-		public bool Contains(TPRPItem item) { return items.Contains(item); }
-
-		public int IndexOf(object item)
-		{
-			return items.IndexOf(item) - (item is TPRPLocalLabel ? paramCount : 0);
-		}
-
-		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
-
-		public override int Count { get { return items.Count; } }
-
-		public override bool IsSynchronized { get { return items.IsSynchronized; } }
-
-		public override object SyncRoot { get { return items.SyncRoot; } }
-
-		#region IEnumerable Members
-		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
-
-		#endregion
-		#endregion
-
-		#region TPRPItemArrayList
-		public void CleanUp()
-		{
-			internalchg = true;
-			while (paramCount > 0 && this[false, paramCount-1].Label.Trim().Length == 0) Remove(this[false, paramCount-1]);
-			while (localCount > 0 && this[true, localCount-1].Label.Trim().Length == 0) Remove(this[true, localCount-1]);
-			internalchg = false;
-		}
-
-
-		private class TPRPItemArrayList : ArrayList
-		{
-			public TPRPItemArrayList() : base() { }
-
-			public TPRPItemArrayList(TPRPItem[] c) : base(c) { }
-
-			public TPRPItemArrayList(int capacity) : base(capacity) { }
-
-			public new TPRPItem this[int index]
-			{
-				get { return (TPRPItem)base[index]; }
-				set { base[index] = value; }
-			}
-
-		}
-
-		#endregion
 	}
 
 
 	/// <summary>
 	/// An Item stored in a TPRP
 	/// </summary>
-	public abstract class TPRPItem
+    public abstract class TPRPItem : pjse.ExtendedWrapperItem<TPRP, TPRPItem>
 	{
 		#region Attributes
 		private string label = "";
 
 		private bool pORl = false;
-		private TPRP parent = null;
 		#endregion
 
 		#region Accessor methods
@@ -425,17 +330,9 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-
 		public bool IsParamLabel { get { return (pORl == false); } }
 
 		public bool IsLocalLabel { get { return (pORl == true); } }
-
-		public TPRP Parent
-		{
-			get { return parent; }
-			set { parent = value; } // parent not part of wrapper
-		}
-
 		#endregion
 
 		public TPRPItem(TPRP parent, bool pORl)
@@ -487,7 +384,6 @@ namespace SimPe.PackedFiles.Wrapper
 		public override string ToString() { return label; }
 
 		public static implicit operator string(TPRPItem i) { return i.label; }
-
 	}
 
 	public class TPRPParamLabel : TPRPItem

@@ -243,8 +243,12 @@ namespace SimPe.PackedFiles.UserInterface
 				: (TPRPItem)new TPRPParamLabel(wrapper)
 				;
 
-			if (wrapper.Add(newItem) >= 0)
-				LVAdd(lvCurrent, newItem);
+            try
+            {
+                wrapper.Add(newItem);
+                LVAdd(lvCurrent, newItem);
+            }
+            catch { }
 
 			internalchg = savedstate;
 
