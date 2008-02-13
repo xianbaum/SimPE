@@ -366,6 +366,10 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			wrapper = (Trcn)wrp;
 			WrapperChanged(wrapper, null);
+#if DEBUG
+            trcnPanel.Enabled = !wrapper.IsReadOnly;
+#endif
+
 
 			internalchg = true;
 			updateLists();

@@ -1,3 +1,8 @@
+13 February 2008 19:10 - TRCN debugging code
+  SimPe BHAV\
+    TrcnForm.cs 1.11.2.16
+    TrcnWrapper.cs 1.11.2.3
+
 10 February 2008 21:41 - Re-factor ExtendedWrapper to Generic, Str[lid] returns List<>
   * Hits Career Editor in SimPe SVN
   * Bcon items are no longer bare shorts

@@ -121,6 +121,10 @@ namespace SimPe.PackedFiles.Wrapper
                 items.RemoveAt(items.Count - 1);
         }
 
+#if DEBUG
+        private bool ro = false;
+        public bool IsReadOnly { get { return ro; } }
+#endif
 
         #region AbstractWrapper Member
         public override bool CheckVersion(uint version)
@@ -164,6 +168,9 @@ namespace SimPe.PackedFiles.Wrapper
         /// </remarks>
         protected override void Serialize(System.IO.BinaryWriter writer)
         {
+#if DEBUG
+            if (ro) return;
+#endif
             CleanUp();
 
             writer.Write(filename);
@@ -198,8 +205,16 @@ namespace SimPe.PackedFiles.Wrapper
             if (itemCount >= 0x8000)
                 throw new Exception("Item count out of range");
 
-            while (items.Count < itemCount)
-                items.Add(new TrcnItem(this, reader));
+#if DEBUG
+            try
+            {
+#endif
+                while (items.Count < itemCount)
+                    items.Add(new TrcnItem(this, reader));
+#if DEBUG
+            }
+            catch { ro = true; }
+#endif
         }
 
         #endregion
@@ -232,6 +247,17 @@ namespace SimPe.PackedFiles.Wrapper
 
         #region IFileWrapperSaveExtension Member
         //all covered by AbstractWrapper
+        #endregion
+
+        #region IPackedFileLoadExtension Members
+#if DEBUG
+        protected override string GetResourceName(Data.TypeAlias ta)
+        {
+            SimPe.Interfaces.Files.IPackedFile pf = Package.Read(FileDescriptor);
+            byte[] ab = pf.GetUncompressedData(0x48);
+            return "0x" + Helper.HexString(ab[0x44]) + ": " + Helper.ToString(pf.GetUncompressedData(0x40));
+        }
+#endif
         #endregion
 
         public new void Add(TrcnItem item) { Add(item, 0x8000); }
