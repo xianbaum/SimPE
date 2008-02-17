@@ -94,7 +94,7 @@ namespace pjse
 		{
 			get
 			{
-				if (this is Bhav && this.FileDescriptor != null)
+                if ((this is Bhav || this is TPRP || this is Bcon || this is Trcn) && this.FileDescriptor != null)
 				{
 					if (this.FileDescriptor.Instance < 0x1000)
 						return Scope.Global;

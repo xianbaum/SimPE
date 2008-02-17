@@ -105,7 +105,7 @@ namespace SimPe.PackedFiles.Wrapper
 					trcnres.ProcessData(items[0].PFD, items[0].Package);
 				}
 
-				return trcnres;
+                return trcnres.TextOnly ? null : trcnres;
 			}
 		}
 		#endregion

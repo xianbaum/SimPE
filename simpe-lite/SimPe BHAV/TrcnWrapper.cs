@@ -47,7 +47,7 @@ namespace SimPe.PackedFiles.Wrapper
         /// <summary>
         /// Header of the File
         /// </summary>
-        private uint[] header = { 0x5452434E, 0x00000056, 0x00000000 }; // 'TRCN', version, 0
+        private uint[] header = { 0x5452434E, 0x0000004E, 0x00000000 }; // 'TRCN', version, 0
 
         /// <summary>
         /// Contains a valid BCON Resource that these labels describe
@@ -88,6 +88,21 @@ namespace SimPe.PackedFiles.Wrapper
             }
         }
 
+        private bool duff = false;
+        public bool TextOnly
+        {
+            get
+            {
+                return (
+                    duff
+                    || header[1] < 0x3f
+                    || (Context != pjse.Scope.Private && (header[1] >= 0x41 && header[1] < 0x46))
+                    || header[0] != 0x5452434E
+                    || header[2] != 0x00000000
+                    );
+            }
+        }
+
 
         /// <summary>
         /// Returns the Constants described by these labels
@@ -120,11 +135,6 @@ namespace SimPe.PackedFiles.Wrapper
             while (items.Count > 0 && items[items.Count - 1].ConstName.Trim().Length == 0)
                 items.RemoveAt(items.Count - 1);
         }
-
-#if DEBUG
-        private bool ro = false;
-        public bool IsReadOnly { get { return ro; } }
-#endif
 
         #region AbstractWrapper Member
         public override bool CheckVersion(uint version)
@@ -168,15 +178,12 @@ namespace SimPe.PackedFiles.Wrapper
         /// </remarks>
         protected override void Serialize(System.IO.BinaryWriter writer)
         {
-#if DEBUG
-            if (ro) return;
-#endif
             CleanUp();
 
             writer.Write(filename);
-            writer.Write(header[1] == 0 ? 0 : 0x5452434E);
+            writer.Write(header[0]);
             writer.Write(header[1]);
-            writer.Write(header[1] == 0 ? 0x5452434E : 0);
+            writer.Write(header[2]);
 
             writer.Write((uint)items.Count);
 
@@ -198,23 +205,23 @@ namespace SimPe.PackedFiles.Wrapper
             header[0] = reader.ReadUInt32();
             header[1] = reader.ReadUInt32();
             header[2] = reader.ReadUInt32();
-            if (header[header[1] == 0 ? 2 : 0] != 0x5452434E)
-                throw new Exception("Unexpected header format");
+
+            if (TextOnly) return;
 
             uint itemCount = reader.ReadUInt32();
             if (itemCount >= 0x8000)
-                throw new Exception("Item count out of range");
+            {
+                duff = true;
+                //throw new Exception("Item count out of range");
+                return;
+            }
 
-#if DEBUG
             try
             {
-#endif
                 while (items.Count < itemCount)
                     items.Add(new TrcnItem(this, reader));
-#if DEBUG
             }
-            catch { ro = true; }
-#endif
+            catch (Exception e) { duff = true; }
         }
 
         #endregion
@@ -275,6 +282,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private uint used = 0x00000000;
         private uint constId = 0x00000000;
         private string constName = "";
+        private string constDesc = "";
         private ushort defValue = 0;
 		private ushort minValue = 0;
 		private ushort maxValue = 0;
@@ -319,6 +327,19 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
+
+        public string ConstDesc
+        {
+            get { return constDesc; }
+            set
+            {
+                if (constDesc != value)
+                {
+                    constDesc = value;
+                    parent.OnWrapperChanged(this, new EventArgs());
+                }
+            }
+        }
 
 		public ushort DefValue
 		{
@@ -377,8 +398,9 @@ namespace SimPe.PackedFiles.Wrapper
 			TrcnItem clone = new TrcnItem(this.parent);
 			clone.used = this.used;
 			clone.constId = this.constId;
-			clone.constName = this.constName;
-			clone.defValue = this.defValue;
+            clone.constName = this.constName;
+            clone.constDesc = this.constDesc;
+            clone.defValue = this.defValue;
 			clone.minValue = this.minValue;
 			clone.maxValue = this.maxValue;
 			return clone;
@@ -392,17 +414,18 @@ namespace SimPe.PackedFiles.Wrapper
 		protected void Unserialize(System.IO.BinaryReader reader)
 		{
             this.used = reader.ReadUInt32();
-            if (parent.Version < 0x46)
+            this.constId = reader.ReadUInt32();
+            this.constName = SimPe.Helper.ToString(reader.ReadBytes(reader.ReadByte()));
+            if (parent.Version > 0x53)
             {
-                this.constId = reader.ReadUInt16();
-                this.ConstName = UnserializeStringZero(reader);
+                this.constDesc = SimPe.Helper.ToString(reader.ReadBytes(reader.ReadByte()));
+                this.defValue = reader.ReadByte();
             }
             else
             {
-                this.constId = reader.ReadUInt32();
-                this.constName = SimPe.Helper.ToString(reader.ReadBytes(reader.ReadByte()));
+                this.constDesc = "";
+                this.defValue = reader.ReadUInt16();
             }
-            this.defValue = reader.ReadUInt16();
             this.minValue = reader.ReadUInt16();
             this.maxValue = reader.ReadUInt16();
         }
@@ -417,39 +440,25 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </remarks>
 		internal void Serialize(System.IO.BinaryWriter writer)
 		{
+            if (parent.Version != 0x4e)
+                throw new InvalidOperationException("Cannot serialize this format: " + Helper.HexString(parent.Version));
+
             writer.Write(this.used);
-            if (parent.Version < 0x46)
+            writer.Write(this.constId);
+            writer.Write((byte)this.constName.Length);
+            writer.Write(SimPe.Helper.ToBytes(this.constName, this.constName.Length));
+            if (parent.Version > 0x53)
             {
-                writer.Write((ushort)this.constId);
-                SerializeStringZero(writer, this.constName);
+                writer.Write((byte)this.constDesc.Length);
+                writer.Write(SimPe.Helper.ToBytes(this.constDesc, this.constDesc.Length));
+                writer.Write((byte)this.defValue);
             }
             else
             {
-                writer.Write(this.constId);
-                writer.Write((byte)this.constName.Length);
-                writer.Write(SimPe.Helper.ToBytes(this.constName, this.constName.Length));
+                writer.Write(this.defValue);
             }
-            writer.Write(this.defValue);
             writer.Write(this.minValue);
             writer.Write(this.maxValue);
-        }
-
-        private string UnserializeStringZero(System.IO.BinaryReader r)
-        {
-            string s = "";
-            while (r.BaseStream.Position < r.BaseStream.Length)
-            {
-                char b = r.ReadChar();
-                if (b == 0) break;
-                s += b;
-            }
-            return s;
-        }
-
-        private void SerializeStringZero(System.IO.BinaryWriter w, string s)
-        {
-            if (s != null) foreach (char c in s) w.Write(c);
-            w.Write((char)0);
         }
 
         public override string ToString() { return constName; }
