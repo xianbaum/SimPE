@@ -62,11 +62,16 @@ namespace SimPe.Plugin
         {
             #region IHelp Members
             public System.Drawing.Image Icon { get { return null; } }
+#if PJSE_STANDALONE
             public override string ToString() { return "PJSE\\" + pjse.Localization.GetString("helpPJSEContents"); }
+#else
+            public override string ToString() { return pjse.Localization.GetString("helpPJSE"); }
+#endif
             public void ShowHelp(ShowHelpEventArgs e) { pjse.HelpHelper.Help("Contents"); }
             #endregion
         }
 
+#if PJSE_STANDALONE
         class helpUpdates : IHelp
         {
             #region IHelp Members
@@ -110,15 +115,17 @@ namespace SimPe.Plugin
             }
             #endregion
         }
-
+#endif
         public IHelp[] KnownHelpTopics
         {
             get
             {
                 IHelp[] helpTopics = {
 					new helpContents()
-                    , new helpUpdates()
-                    , new helpAbout()
+#if PJSE_STANDALONE
+                  , new helpUpdates()
+                  , new helpAbout()
+#endif
 				};
                 return helpTopics;
             }

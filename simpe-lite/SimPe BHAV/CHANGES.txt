@@ -1,3 +1,10 @@
+23 February 2008 10:04 - Help menu changes 23/2
+  * Rename menu entry, remove About and Check for updates, go directly to help file
+  pjse Localisation\
+    Localization.resx 1.1.4.31
+  SimPe BHAV\
+    WrapperFactory.cs 1.20.2.16
+
 17 February 2008 11:14 - Live TRCN updates
   * TRCNs that don't read well aren't used for labelling and are dumped as text-only
   * TrcnForm list view label field now resizes neatly

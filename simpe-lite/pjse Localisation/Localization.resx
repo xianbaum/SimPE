@@ -1335,10 +1335,10 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
     <value>Last daily check</value>
   </data>
   <data name="helpPJSEAboutPJSEUC" xml:space="preserve">
-    <value>Upate checking</value>
+    <value>Update checking</value>
   </data>
   <data name="helpPJSEAboutPJSEUU" xml:space="preserve">
-    <value>Upate URL</value>
+    <value>Update URL</value>
   </data>
   <data name="helpPJSEAboutSimPEBuild" xml:space="preserve">
     <value>Build SimPE version</value>
@@ -1384,5 +1384,9 @@ Do you want to use this resource?
   </data>
   <data name="bwp32_subqueue" xml:space="preserve">
     <value>To Sub-queue</value>
+  </data>
+  <data name="helpPJSE" xml:space="preserve">
+    <value>Simantics Plugins</value>
+    <comment>Embedded Help Menu title for launching PJSE Help Contents</comment>
   </data>
 </root>
