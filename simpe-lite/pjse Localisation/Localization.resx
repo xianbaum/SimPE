@@ -1389,4 +1389,8 @@ Do you want to use this resource?
     <value>Simantics Plugins</value>
     <comment>Embedded Help Menu title for launching PJSE Help Contents</comment>
   </data>
+  <data name="trcnTextOnly" xml:space="preserve">
+    <value>File does not conform to known format.  Cannot be analysed into fields.</value>
+    <comment>Appears in TRCN editor when file is unparse-able</comment>
+  </data>
 </root>

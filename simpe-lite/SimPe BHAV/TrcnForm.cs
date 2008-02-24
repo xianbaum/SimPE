@@ -86,6 +86,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
+            this.lvTrcnItem.Items.Clear();
 
             pjse.Updates.Checker.Daily();
 
@@ -159,10 +160,15 @@ namespace SimPe.PackedFiles.UserInterface
             trcnPanel.Controls.Add(this.lbFormat);
             trcnPanel.Controls.Add(this.tbFormat);
 
+            Label lb = new Label();
+            lb.AutoSize = true;
+            lb.Location = new Point(0, tbFormat.Bottom + 6);
+            lb.Text = pjse.Localization.GetString("trcnTextOnly");
+
             TextBox tb = new TextBox();
             tb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tb.Multiline = true;
-            tb.Location = new Point(0, tbFormat.Bottom + 6);
+            tb.Location = new Point(0, lb.Bottom + 6);
             tb.ReadOnly = true;
             tb.ScrollBars = ScrollBars.Both;
             tb.Size = trcnPanel.Size;
@@ -170,6 +176,7 @@ namespace SimPe.PackedFiles.UserInterface
 
             tb.Text = getText(wrapper.StoredData);
 
+            trcnPanel.Controls.Add(lb);
             trcnPanel.Controls.Add(tb);
             trcnPanel.ResumeLayout(true);
         }

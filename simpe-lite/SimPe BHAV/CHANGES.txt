@@ -1,3 +1,9 @@
+24 February 2008 10:33 - TRCN editor - add helpful label for text scrape mode
+  pjse Localisation\
+    Localization.resx 1.1.4.32
+  SimPe BHAV\
+    TrcnForm.cs 1.11.2.18
+
 23 February 2008 10:04 - Help menu changes 23/2
   * Rename menu entry, remove About and Check for updates, go directly to help file
   pjse Localisation\
