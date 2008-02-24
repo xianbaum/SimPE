@@ -221,7 +221,7 @@ namespace SimPe.PackedFiles.Wrapper
                 while (items.Count < itemCount)
                     items.Add(new TrcnItem(this, reader));
             }
-            catch (Exception e) { duff = true; }
+            catch { duff = true; }
         }
 
         #endregion

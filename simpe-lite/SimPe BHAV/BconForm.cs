@@ -347,7 +347,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
 			this.btnCommit.Enabled = wrapper.Changed;
-			if (sender.Equals(currentItem))
+			if (sender.Equals(wrapper[index]))
 				this.btnCancel.Enabled = true;
 
 			if (internalchg) return;
@@ -359,7 +359,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.cbFlag.Checked = wrapper.Flag;
 				internalchg = false;
 			}
-			else if (!(sender is short))
+            else if (!sender.Equals(wrapper[index]))
 				updateLists();
 		}
 		#endregion

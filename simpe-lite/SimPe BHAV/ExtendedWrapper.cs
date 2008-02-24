@@ -175,8 +175,11 @@ namespace pjse
         public void Move(int from, int to)
         {
             T item = items[from];
-            items.RemoveAt(from);
-            items.Insert(to, item);
+            bool savedstate = internalchg;
+            internalchg = true;
+            this.RemoveAt(from);
+            this.Insert(to, item);
+            internalchg = savedstate;
             OnWrapperChanged(items, new EventArgs());
         }
 
@@ -194,7 +197,7 @@ namespace pjse
         #region ICollection<T> Members
 
         private static void setNullParent(T item) { item.Parent = default(U); }
-		public static implicit operator U(ExtendedWrapper<T, U>from) { return from; }
+        public static implicit operator U(ExtendedWrapper<T, U>from) { return (U)(ExtendedWrapper)from; }
 
         
         public virtual void Add(T item)
@@ -230,7 +233,7 @@ namespace pjse
             items.InsertRange(index, collection);
             OnWrapperChanged(items, new EventArgs());
         }
-        public virtual bool Remove(T item)
+        public bool Remove(T item)
         {
             if (items.Remove(item))
             {
@@ -386,11 +389,8 @@ namespace pjse
             get { return parent; }
             set
             {
-                if (value.Equals(parent))
-                {
+                if (parent != value)
                     parent = value;
-                    ((ExtendedWrapper)parent).OnWrapperChanged(this, new EventArgs());
-                }
             }
         }
 

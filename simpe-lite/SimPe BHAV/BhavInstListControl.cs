@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
@@ -93,7 +94,7 @@ namespace SimPe.PackedFiles.UserInterface
 			csel = -1;
 			internalchg = false;
 			this.AutoScrollPosition = new Point(0, 0);
-			this.WrapperChanged(new ArrayList(), null);
+            this.WrapperChanged(new List<Instruction>(), null);
 			if (flowitems != null && flowitems.Length > 0)
 			{
 				flowitems[0].MakeSelected(); // but don't focus!
@@ -114,7 +115,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			// Handler for instructions list
-			if (sender is ArrayList)
+			if (sender is List<Instruction>)
 			{
 				if (csel >= wrapper.Count) csel = wrapper.Count - 1;
 				myrepaint();

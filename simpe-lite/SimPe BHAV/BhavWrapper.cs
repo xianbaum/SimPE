@@ -104,11 +104,60 @@ namespace SimPe.PackedFiles.Wrapper
 
         public Bhav() : base() { header = new BhavHeader(this); }
 
+        private void SortSwap(int a, int b)
+        {
+            Instruction i = this[a];
+            this[a] = this[b];
+            this[b] = i;
+
+            foreach (Instruction item in this)
+            {
+                if (item.Target1 == a) item.Target1 = (ushort)b;
+                else if (item.Target1 == b) item.Target1 = (ushort)a;
+
+                if (item.Target2 == a) item.Target2 = (ushort)b;
+                else if (item.Target2 == b) item.Target2 = (ushort)a;
+            }
+        }
+
+        /// <summary>
+        /// Moves an instruction from position 'from' to position 'to', renumbering Targets as required
+        /// </summary>
+        /// <param name="from">starting position</param>
+        /// <param name="to">ending position</param>
+        public new void Move(int from, int to)
+        {
+            if (from == to) return;
+            if (from < 0 || from >= Count) return;
+            if (to < 0 || to >= Count) return;
+
+            while (from < to) this.SortSwap(from, ++from);
+            while (from > to) this.SortSwap(from, --from);
+            OnWrapperChanged(items, new EventArgs());
+        }
+
         // only allow 32K or 128 lines
         public new void Add(Instruction item) { Add(item, this.Header.Format < 0x8007 ? 0x80 : 0x8000); }
 
-        // only allow 32K or 128 lines
-        public new void Insert(int index, Instruction item) { Insert(index, item, this.Header.Format < 0x8007 ? 0x80 : 0x8000); }
+        public new void Insert(int index, Instruction item)
+        {
+            bool savedstate = internalchg;
+            internalchg = true;
+            this.Add(item);
+            internalchg = savedstate;
+            this.Move(this.Count - 1, index);
+        }
+
+        public new bool Remove(Instruction item)
+        {
+            this.Move(IndexOf(item), this.Count - 1);
+            return base.Remove(item);
+        }
+
+        public new void RemoveAt(int index)
+        {
+            this.Remove(this[index]);
+        }
 
 		public new void Sort()
 		{

@@ -1,3 +1,13 @@
+24 February 2008 14:59 - ExtendedWrapper Re-factor bugfixing
+  * Remove and "unused variable" warning from TrcnWrapper.cs
+  SimPe BHAV\
+    BconForm.cs 1.15.2.15
+    BhavInstListControl.cs 1.41.8.8
+    BhavWrapper.cs 1.47.2.3
+    ExtendedWrapper.cs 1.1.4.11
+    TrcnWrapper.cs 1.11.2.5
+    TtabForm.cs 1.31.2.32
+
 24 February 2008 10:33 - TRCN editor - add helpful label for text scrape mode
   pjse Localisation\
     Localization.resx 1.1.4.32

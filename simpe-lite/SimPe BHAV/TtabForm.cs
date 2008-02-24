@@ -22,6 +22,7 @@
 using System;
 using System.Drawing;
 using System.Data;
+using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -362,6 +363,7 @@ namespace SimPe.PackedFiles.UserInterface
         {
             bool prev = internalchg;
             internalchg = true;
+            this.ttabPanel.SuspendLayout();
 
             int lbttabSelectedIndex = this.lbttab.SelectedIndex;
 
@@ -376,6 +378,7 @@ namespace SimPe.PackedFiles.UserInterface
                     this.lbttab.SelectedIndex = lbttab.Items.Count - 1;
             }
 
+            this.ttabPanel.ResumeLayout();
             internalchg = false;
             TtabSelect(null, null);
 
@@ -587,6 +590,10 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbttab.SelectedIndex = -1;
             WrapperChanged(wrapper, null);
 
+            internalchg = true;
+            populateLbttab();
+            internalchg = false;
+
             // Now call TtabSelect (one way or another)
             if (this.lbttab.Items.Count > 0) this.lbttab.SelectedIndex = 0;
             else TtabSelect(null, null);
@@ -620,8 +627,9 @@ namespace SimPe.PackedFiles.UserInterface
                 this.Text = tbFilename.Text = wrapper.FileName;
                 tbFormat.Text = "0x" + Helper.HexString(wrapper.Format);
                 setFormat();
-                populateLbttab();
             }
+            else if (sender is List<TtabItem>)
+                populateLbttab();
             else if (lbttab.SelectedIndex >= 0 && sender == wrapper[lbttab.SelectedIndex])
                 TtabSelect(null, null);
 
@@ -1554,8 +1562,13 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void btnAdd_Click(object sender, System.EventArgs e)
         {
+            this.ttabPanel.SuspendLayout();
+            internalchg = true;
             wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
+            addItem(wrapper.Count - 1);
+            internalchg = false;
             lbttab.SelectedIndex = wrapper.Count - 1;
+            this.ttabPanel.ResumeLayout();
         }
 
         private void btnDelete_Click(object sender, System.EventArgs e)
