@@ -498,13 +498,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 			for(int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
 			{
-				int p = tprp.Add(new TPRPParamLabel(tprp));
-				tprp[false, p].Label = BhavWiz.dnParam() + " " + arg.ToString();
+				tprp.Add(new TPRPParamLabel(tprp));
+				tprp[false, tprp.ParamCount - 1].Label = BhavWiz.dnParam() + " " + arg.ToString();
 			}
 			for(int local = minLocalC; local < wrapper.Header.LocalVarCount; local++)
 			{
-				int l = tprp.Add(new TPRPLocalLabel(tprp));
-                tprp[true, l].Label = BhavWiz.dnLocal() + " " + local.ToString();
+				tprp.Add(new TPRPLocalLabel(tprp));
+                tprp[true, tprp.LocalCount - 1].Label = BhavWiz.dnLocal() + " " + local.ToString();
 			}
 			tprp.SynchronizeUserData();
 			wrapper.Package.EndUpdate();

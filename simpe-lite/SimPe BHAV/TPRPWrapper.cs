@@ -156,19 +156,40 @@ namespace SimPe.PackedFiles.Wrapper
             }
         }
 
-        public int Add(TPRPParamLabel item)
+        public override void Add(TPRPItem item)
         {
-            items.Insert(paramCount, item);
-            paramCount++;
-            return paramCount - 1;
+            if (item.IsParamLabel)
+            {
+                paramCount++;
+                base.Insert(paramCount - 1, item);
+            }
+            else
+            {
+                localCount++;
+                base.Insert(paramCount + localCount - 1, item);
+            }
         }
 
-        public int Add(TPRPLocalLabel item)
+        public new bool Remove(TPRPItem item)
         {
-            items.Insert(localCount, item);
-            localCount++;
-            return localCount - 1;
+            if (item.IsParamLabel)
+            {
+                paramCount--;
+                return base.Remove(item);
+            }
+            else
+            {
+                localCount--;
+                return base.Remove(item);
+            }
         }
+
+        public new void Clear()
+        {
+            paramCount = localCount = 0;
+            base.Clear();
+        }
+
 
 
 		#region AbstractWrapper Member

@@ -145,7 +145,7 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(header[2]);
 
             List<TtabItem> inUse = items.FindAll(isInuse);
-            writer.Write(inUse.Count);
+            writer.Write((ushort)inUse.Count);
             foreach (TtabItem item in inUse)
                 item.Serialize(writer);
 
