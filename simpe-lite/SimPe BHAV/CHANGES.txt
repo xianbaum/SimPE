@@ -1,3 +1,16 @@
+29 February 2008 19:58 - Show file format in resource listing
+  SimPe BHAV\
+    BhavWrapper.cs 1.47.2.4
+    StrWrapper.cs 1.16.6.5
+    TPRPWrapper.cs 1.5.2.4
+    TrcnWrapper.cs 1.11.2.6
+
+29 February 2008 19:57 - New GlobalStrings.package from Castaways plus OBJf descs
+  SimPe BHAV\
+    ObjfForm.cs 1.13.2.13
+    ObjfForm.resx 1.4.6.5
+  GlobalStrings.package 1.10.8.31
+
 28 February 2008 21:47 - More ExtendedWrapper Re-factor bugfixing
   SimPe BHAV\
     BconForm.cs 1.15.2.16

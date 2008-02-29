@@ -235,7 +235,15 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#region IFileWrapperSaveExtension Member		
 		//all covered by AbstractWrapper
-		#endregion
+#if DEBUG
+        protected override string GetResourceName(Data.TypeAlias ta)
+        {
+            SimPe.Interfaces.Files.IPackedFile pf = Package.Read(FileDescriptor);
+            byte[] ab = pf.GetUncompressedData(0x42);
+            return (ab.Length > 0x41 ? "0x" + Helper.HexString(ab[0x41]) + Helper.HexString(ab[0x40]) + ": " : "") + Helper.ToString(pf.GetUncompressedData(0x40));
+        }
+#endif
+        #endregion
 
         #region pjse.ExtendedWrapper<StrItem> Members
         public new void Add(StrItem item)
