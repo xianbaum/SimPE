@@ -1,3 +1,7 @@
+1 March 2008 11:43 - Don't crash on viewing a BHAV in an unsaved package
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.44
+
 1 March 2008 11:42 - Freetime strings (and some fixes to Castaways)
   GlobalStrings.package 1.10.8.33
   UnusedBehaviousStrings.package 1.1.2.3
