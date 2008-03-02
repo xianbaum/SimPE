@@ -79,7 +79,7 @@ namespace pjse.Updates
             get
             {
                 SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                object o = rkf.GetValue("autoUpdateChoice", AutoUpdateChoiceValue.AskMe);
+                object o = rkf.GetValue("autoUpdateChoice", AutoUpdateChoiceValue.Manual);
                 switch (Convert.ToInt32(o))
                 {
                     case 1: return AutoUpdateChoiceValue.Daily;
