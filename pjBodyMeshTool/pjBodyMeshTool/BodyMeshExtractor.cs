@@ -53,17 +53,16 @@ namespace pj
             return null;
         }
 
-        private static String SimsPath = SimPe.Helper.WindowsRegistry.GetExecutableFolder(0);
+        private static String SimsPath = SimPe.PathProvider.Global[0].InstallFolder;
         private static ArrayList paths = new ArrayList();
         private static ArrayList packs = new ArrayList();
-        private static int[] epOrder = { 0x00030000, 4, 0x00020000, 0x00010000, 3, 2, 1, 0 };
 
         static BodyMeshExtractor()
         {
-            for (int i = 0; i < epOrder.Length; i++)
+            for (int i = SimPe.PathProvider.Global.Expansions.Count; --i >= 0;)
             {
-                String path = SimPe.Helper.WindowsRegistry.GetExecutableFolder(epOrder[i]);
-                if (path.Length == 0 || (epOrder[i] != 0 && path.Equals(SimsPath)))
+                String path = SimPe.PathProvider.Global[i].InstallFolder;
+                if (path.Length == 0 || (i != 0 && path.Equals(SimsPath)))
                     continue;
                 paths.Add(path);
 
@@ -71,7 +70,7 @@ namespace pj
                 string[] va = Directory.GetFiles(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), "*.package");
                 foreach (String pkg in va)
                 {
-                    if (!pkg.ToLower().Equals("globalcatbin.bundle.package"))
+                    if (!pkg.ToLower().EndsWith("\\globalcatbin.bundle.package"))
                         packs.Insert(0, pkg);
                 }
             }
@@ -131,12 +130,22 @@ namespace pj
                     pfd = p.Index[j];
             if (pfd == null)
                 return false;
+            if (isInPFDList(currentPackage.Index, pfd))
+                return true;
 
             IPackedFileDescriptor npfd = pfd.Clone();
             npfd.UserData = p.Read(pfd).UncompressedData;
             currentPackage.Add(npfd, true);
 
             return true;
+        }
+
+        private bool isInPFDList(IPackedFileDescriptor[] pfdList, IPackedFileDescriptor pfd)
+        {
+            foreach (IPackedFileDescriptor i in pfdList)
+                if (i.Filename.Equals(pfd.Filename))
+                    return true;
+            return false;
         }
 
         private void Main()
