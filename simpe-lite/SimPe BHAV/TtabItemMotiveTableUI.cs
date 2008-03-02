@@ -132,7 +132,7 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 if (this.item != value)
                 {
-                    if (item != null)
+                    if (item != null && item.Wrapper != null)
                         item.Wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
                     this.item = value;
                     setData();

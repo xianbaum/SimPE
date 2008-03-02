@@ -144,11 +144,11 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			if (wrapper == null || index == -1) return;
 
-			if (wrapper.IndexOf(sender) != index) return;
+			if (!(sender is Instruction) || wrapper.IndexOf((Instruction)sender) != index) return;
 			Instruction inst = (Instruction)sender;
 
 			bhavInstListItem.Text = "";
-			instrText.Text = index.ToString("X") + ": " + cleanup(((pjse.BhavWiz)inst).ShortName);//LongName;
+			instrText.Text = "0x" + index.ToString("X") + " (" + index + "): " + cleanup(((pjse.BhavWiz)inst).ShortName);//LongName;
 
 			trueTarget.Text = strTrue + ": "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);

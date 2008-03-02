@@ -22,6 +22,7 @@
 using System;
 using System.Drawing;
 using System.Data;
+using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -130,6 +131,7 @@ namespace SimPe.PackedFiles.UserInterface
         private CheckBox cb2Bit3;
         private CheckBox cb2Bit2;
         private CheckBox cb2Bit1;
+        private Label lbPieString;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -277,10 +279,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 			for (int bi = 0; bi < b.Count; bi++)
 			{
-				int i = wrapper.Add(b[bi]);
-				if (i < 0) break;
-				wrapper[i].StringIndex += offset;
-                addItem(i);
+                wrapper.Add(b[bi]);
+                wrapper[wrapper.Count - 1].StringIndex += offset;
+                addItem(wrapper.Count - 1);
 			}
 			ttabPanel.Parent.Cursor = Cursors.Default;
 
@@ -304,7 +305,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (w == null) return 0;
 
             uint max = 0;
-            for (byte lid = 1; lid < 44; lid++) max = (uint)Math.Max(max, w[lid].Length);
+            for (byte lid = 1; lid < 44; lid++) max = (uint)Math.Max(max, w[lid].Count);
             return max;
         }
 
@@ -341,14 +342,16 @@ namespace SimPe.PackedFiles.UserInterface
             uint c = getTTAsCount();
             Str w = StrRes;
             for (int i = 0; i < c; i++)
-			{
+            {
                 FallbackStrItem si = w[1, i];
-				this.cbStringIndex.Items.Add("0x" + i.ToString("X") + ": " + ((si == null)
+                this.cbStringIndex.Items.Add("0x" + i.ToString("X") + " (" + i + "): "
+                    + ((si == null)
                     ? "*!no default string!*"
-                    : si.strItem.Title + (si.lidFallback ? " [LID=1]" : "") + (si.fallback.Count > 0 ? " [*]" :"")));
-			}
+                    : si.strItem.Title + (si.lidFallback ? " [LID=1]" : "") + (si.fallback.Count > 0 ? " [*]" : "")
+                    ));
+            }
 
-            if (cbStringIndexSelectedIndex < this.cbStringIndex.Items.Count)
+            if (cbStringIndexSelectedIndex >= 0 && cbStringIndexSelectedIndex < this.cbStringIndex.Items.Count)
                 this.cbStringIndex.SelectedIndex = cbStringIndexSelectedIndex;
             else
                 this.cbStringIndex.SelectedIndex = -1;
@@ -360,6 +363,7 @@ namespace SimPe.PackedFiles.UserInterface
         {
             bool prev = internalchg;
             internalchg = true;
+            this.ttabPanel.SuspendLayout();
 
             int lbttabSelectedIndex = this.lbttab.SelectedIndex;
 
@@ -374,6 +378,7 @@ namespace SimPe.PackedFiles.UserInterface
                     this.lbttab.SelectedIndex = lbttab.Items.Count - 1;
             }
 
+            this.ttabPanel.ResumeLayout();
             internalchg = false;
             TtabSelect(null, null);
 
@@ -519,7 +524,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (wrapper[i] != null && wrapper[i].StringIndex < cbStringIndex.Items.Count)
                 return (String)cbStringIndex.Items[(int)wrapper[i].StringIndex];
             else
-                return "[0x" + i.ToString("X") + ": " + pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(wrapper[i].StringIndex) + "]";
+                return "[0x" + i.ToString("X") + " (" + i + "): " + pjse.Localization.GetString("unk") + ": 0x" + SimPe.Helper.HexString(wrapper[i].StringIndex) + "]";
         }
 
 		private void setBHAV(int which, ushort target, bool notxt)
@@ -537,18 +542,21 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void setStringIndex(uint si, bool doText, bool doCB)
 		{
-			if (doText) tbStringIndex.Text = "0x"+Helper.HexString(si);
+            currentItem.StringIndex = si;
+            lbttab.Items[lbttab.SelectedIndex] = lbPieString.Text = lbttabItem(lbttab.SelectedIndex);
+
+            if (doText) tbStringIndex.Text = "0x" + Helper.HexString(si);
 			if (doCB)
 			{
-                if (si < cbStringIndex.Items.Count)
+                if (si >= 0 && si < cbStringIndex.Items.Count)
 					this.cbStringIndex.SelectedIndex = (int)si;
 				else
 				{
 					this.cbStringIndex.SelectedIndex = -1;
 					this.cbStringIndex.Text = tbStringIndex.Text;
 				}
-			}
-		}
+            }
+        }
 
 		#endregion
 
@@ -581,6 +589,10 @@ namespace SimPe.PackedFiles.UserInterface
             // WrapperChanged() calls populateLbttab(), so set lbttab.SelectedIndex to -1
             this.lbttab.SelectedIndex = -1;
             WrapperChanged(wrapper, null);
+
+            internalchg = true;
+            populateLbttab();
+            internalchg = false;
 
             // Now call TtabSelect (one way or another)
             if (this.lbttab.Items.Count > 0) this.lbttab.SelectedIndex = 0;
@@ -615,8 +627,9 @@ namespace SimPe.PackedFiles.UserInterface
                 this.Text = tbFilename.Text = wrapper.FileName;
                 tbFormat.Text = "0x" + Helper.HexString(wrapper.Format);
                 setFormat();
-                populateLbttab();
             }
+            else if (sender is List<TtabItem>)
+                populateLbttab();
             else if (lbttab.SelectedIndex >= 0 && sender == wrapper[lbttab.SelectedIndex])
                 TtabSelect(null, null);
 
@@ -723,6 +736,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label25 = new System.Windows.Forms.Label();
+            this.lbPieString = new System.Windows.Forms.Label();
             this.timtuiHuman = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.timtuiAnimal = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.ttabPanel.SuspendLayout();
@@ -782,16 +796,16 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
+            this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
             // 
             // tbFormat
             // 
             resources.ApplyResources(this.tbFormat, "tbFormat");
             this.tbFormat.Name = "tbFormat";
+            this.tbFormat.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            this.tbFormat.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             // 
             // label41
             // 
@@ -839,6 +853,7 @@ namespace SimPe.PackedFiles.UserInterface
             // tpSettings
             // 
             resources.ApplyResources(this.tpSettings, "tpSettings");
+            this.tpSettings.Controls.Add(this.lbPieString);
             this.tpSettings.Controls.Add(this.gbFlags2);
             this.tpSettings.Controls.Add(this.llGuardian);
             this.tpSettings.Controls.Add(this.llAction);
@@ -902,9 +917,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFlags2, "tbFlags2");
             this.tbFlags2.Name = "tbFlags2";
+            this.tbFlags2.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbFlags2.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbFlags2.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbFlags2.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // btnNoFlags2
             // 
@@ -1056,9 +1071,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbStringIndex.TabStop = false;
             this.cbStringIndex.ValueMember = "Value";
             this.cbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex32_Validating);
-            this.cbStringIndex.Validated += new System.EventHandler(this.cbHex32_Validated);
-            this.cbStringIndex.Enter += new System.EventHandler(this.cbHex32_Enter);
             this.cbStringIndex.SelectedIndexChanged += new System.EventHandler(this.cbHex32_SelectedIndexChanged);
+            this.cbStringIndex.Enter += new System.EventHandler(this.cbHex32_Enter);
+            this.cbStringIndex.Validated += new System.EventHandler(this.cbHex32_Validated);
             this.cbStringIndex.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
             // 
             // cbAttenuationCode
@@ -1072,9 +1087,9 @@ namespace SimPe.PackedFiles.UserInterface
             resources.GetString("cbAttenuationCode.Items4")});
             this.cbAttenuationCode.Name = "cbAttenuationCode";
             this.cbAttenuationCode.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex32_Validating);
-            this.cbAttenuationCode.Validated += new System.EventHandler(this.cbHex32_Validated);
-            this.cbAttenuationCode.Enter += new System.EventHandler(this.cbHex32_Enter);
             this.cbAttenuationCode.SelectedIndexChanged += new System.EventHandler(this.cbHex32_SelectedIndexChanged);
+            this.cbAttenuationCode.Enter += new System.EventHandler(this.cbHex32_Enter);
+            this.cbAttenuationCode.Validated += new System.EventHandler(this.cbHex32_Validated);
             this.cbAttenuationCode.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
             // 
             // btnAction
@@ -1105,9 +1120,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbStringIndex, "tbStringIndex");
             this.tbStringIndex.Name = "tbStringIndex";
+            this.tbStringIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbStringIndex.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            this.tbStringIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             // 
             // label40
             // 
@@ -1118,9 +1133,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbModelTabID, "tbModelTabID");
             this.tbModelTabID.Name = "tbModelTabID";
+            this.tbModelTabID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbModelTabID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbModelTabID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            this.tbModelTabID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             // 
             // label33
             // 
@@ -1131,9 +1146,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbObjType, "tbObjType");
             this.tbObjType.Name = "tbObjType";
+            this.tbObjType.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbObjType.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbObjType.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            this.tbObjType.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             // 
             // label34
             // 
@@ -1144,9 +1159,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbUIDispType, "tbUIDispType");
             this.tbUIDispType.Name = "tbUIDispType";
+            this.tbUIDispType.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbUIDispType.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbUIDispType.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbUIDispType.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // label35
             // 
@@ -1157,17 +1172,17 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbAutonomy, "tbAutonomy");
             this.tbAutonomy.Name = "tbAutonomy";
+            this.tbAutonomy.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbAutonomy.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbAutonomy.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            this.tbAutonomy.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             // 
             // tbMemIterMult
             // 
             resources.ApplyResources(this.tbMemIterMult, "tbMemIterMult");
             this.tbMemIterMult.Name = "tbMemIterMult";
+            this.tbMemIterMult.TextChanged += new System.EventHandler(this.float_TextChanged);
             this.tbMemIterMult.Validated += new System.EventHandler(this.float_Validated);
             this.tbMemIterMult.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            this.tbMemIterMult.TextChanged += new System.EventHandler(this.float_TextChanged);
             // 
             // label29
             // 
@@ -1178,9 +1193,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFaceAnimID, "tbFaceAnimID");
             this.tbFaceAnimID.Name = "tbFaceAnimID";
+            this.tbFaceAnimID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbFaceAnimID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbFaceAnimID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            this.tbFaceAnimID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             // 
             // label30
             // 
@@ -1191,9 +1206,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbAttenuationValue, "tbAttenuationValue");
             this.tbAttenuationValue.Name = "tbAttenuationValue";
+            this.tbAttenuationValue.TextChanged += new System.EventHandler(this.float_TextChanged);
             this.tbAttenuationValue.Validated += new System.EventHandler(this.float_Validated);
             this.tbAttenuationValue.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            this.tbAttenuationValue.TextChanged += new System.EventHandler(this.float_TextChanged);
             // 
             // label31
             // 
@@ -1209,9 +1224,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbGuardian, "tbGuardian");
             this.tbGuardian.Name = "tbGuardian";
+            this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbGuardian.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // gbFlags
             // 
@@ -1248,9 +1263,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFlags, "tbFlags");
             this.tbFlags.Name = "tbFlags";
+            this.tbFlags.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbFlags.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbFlags.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // label24
             // 
@@ -1366,9 +1381,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbAction, "tbAction");
             this.tbAction.Name = "tbAction";
+            this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbAction.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbAction.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // label1
             // 
@@ -1379,9 +1394,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbJoinIndex, "tbJoinIndex");
             this.tbJoinIndex.Name = "tbJoinIndex";
+            this.tbJoinIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbJoinIndex.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbJoinIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            this.tbJoinIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             // 
             // label2
             // 
@@ -1429,6 +1444,12 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.label25, "label25");
             this.label25.Name = "label25";
+            // 
+            // lbPieString
+            // 
+            resources.ApplyResources(this.lbPieString, "lbPieString");
+            this.lbPieString.Name = "lbPieString";
+            this.lbPieString.UseMnemonic = false;
             // 
             // timtuiHuman
             // 
@@ -1541,7 +1562,13 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void btnAdd_Click(object sender, System.EventArgs e)
         {
-            lbttab.SelectedIndex = wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
+            this.ttabPanel.SuspendLayout();
+            internalchg = true;
+            wrapper.Add((lbttab.SelectedIndex == -1) ? new TtabItem(wrapper) : wrapper[lbttab.SelectedIndex].Clone());
+            addItem(wrapper.Count - 1);
+            internalchg = false;
+            lbttab.SelectedIndex = wrapper.Count - 1;
+            this.ttabPanel.ResumeLayout();
         }
 
         private void btnDelete_Click(object sender, System.EventArgs e)
@@ -1834,12 +1861,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			if (i == 0)
 			{
-				currentItem.StringIndex = (uint)val;
-                setStringIndex(currentItem.StringIndex, true, false);
-                if (val < cbStringIndex.Items.Count)
-                    lbttab.Items[lbttab.SelectedIndex] = cbStringIndex.Items[val];
-                else
-                    lbttab.Items[lbttab.SelectedIndex] = "0x" + val.ToString("X") + ": " + pjse.Localization.GetString("UNK");
+                setStringIndex((uint)val, true, false);
                 tbStringIndex.Focus();
             }
 			else if (i == 1)
@@ -1933,9 +1955,7 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				case 0: wrapper.Format = val; break;
 				case 1:
-					currentItem.StringIndex = val;
-					setStringIndex(val, false, true);
-                    lbttab.Items[lbttab.SelectedIndex] = lbttabItem(lbttab.SelectedIndex);
+                    setStringIndex(val, false, true);
                     break;
 				case 2: currentItem.Autonomy = val; break;
 				case 3: currentItem.FacialAnimationID = val; break;

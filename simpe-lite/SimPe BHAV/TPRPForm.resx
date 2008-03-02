@@ -156,6 +156,66 @@
   <data name="pnHeading.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
+  <data name="&gt;&gt;btnRefreshFT.Name" xml:space="preserve">
+    <value>btnRefreshFT</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;btnRefreshFT.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
+    <value>btnHelp</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 9.75pt, style=Bold</value>
+  </data>
+  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
+    <value>926, 27</value>
+  </data>
+  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
+    <value>pnHeading</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
+    <value>tprpPanel</value>
+  </data>
+  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
   <data name="btnRefreshFT.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
@@ -257,30 +317,6 @@
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 9.75pt, style=Bold</value>
-  </data>
-  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>926, 27</value>
-  </data>
-  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
-    <value>tprpPanel</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
-    <value>14</value>
   </data>
   <data name="tprpPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -408,48 +444,6 @@
   <data name="tabControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="chPID.Text" xml:space="preserve">
-    <value>Param</value>
-  </data>
-  <data name="chPID.Width" type="System.Int32, mscorlib">
-    <value>62</value>
-  </data>
-  <data name="chPLabel.Text" xml:space="preserve">
-    <value>Label</value>
-  </data>
-  <data name="chPLabel.Width" type="System.Int32, mscorlib">
-    <value>754</value>
-  </data>
-  <data name="lvParams.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="lvParams.Items" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
-        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
-        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
-        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
-        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
-        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAAYweERERET/////Bfv/
-        //8UU3lzdGVtLkRyYXdpbmcuQ29sb3IEAAAABG5hbWUFdmFsdWUKa25vd25Db2xvcgVzdGF0ZQEAAAAJ
-        BwcDAAAACgAAAAAAAAAAGAABAAAJBgAAAAH5////+////woAAAAAAAAAABoAAQABBQYAAAATU3lzdGVt
-        LkRyYXdpbmcuRm9udAQAAAAETmFtZQRTaXplBVN0eWxlBFVuaXQBAAQECxhTeXN0ZW0uRHJhd2luZy5G
-        b250U3R5bGUDAAAAG1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAMAAAADAAAABggAAAAUTWljcm9z
-        b2Z0IFNhbnMgU2VyaWaamflABff///8YU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAQAAAAd2YWx1ZV9f
-        AAgDAAAAAAAAAAX2////G1N5c3RlbS5EcmF3aW5nLkdyYXBoaWNzVW5pdAEAAAAHdmFsdWVfXwAIAwAA
-        AAMAAAAL
-</value>
-  </data>
-  <data name="lvParams.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="lvParams.Size" type="System.Drawing.Size, System.Drawing">
-    <value>835, 159</value>
-  </data>
-  <data name="lvParams.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
   <data name="&gt;&gt;lvParams.Name" xml:space="preserve">
     <value>lvParams</value>
   </data>
@@ -490,13 +484,13 @@
     <value>Local</value>
   </data>
   <data name="chLID.Width" type="System.Int32, mscorlib">
-    <value>50</value>
+    <value>112</value>
   </data>
   <data name="chLLabel.Text" xml:space="preserve">
     <value>Label</value>
   </data>
   <data name="chLLabel.Width" type="System.Int32, mscorlib">
-    <value>672</value>
+    <value>683</value>
   </data>
   <data name="lvLocals.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -505,7 +499,7 @@
     <value>0, 0</value>
   </data>
   <data name="lvLocals.Size" type="System.Drawing.Size, System.Drawing">
-    <value>641, 143</value>
+    <value>835, 159</value>
   </data>
   <data name="lvLocals.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -526,7 +520,7 @@
     <value>4, 22</value>
   </data>
   <data name="tpLocals.Size" type="System.Drawing.Size, System.Drawing">
-    <value>641, 143</value>
+    <value>835, 159</value>
   </data>
   <data name="tpLocals.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -860,6 +854,60 @@
   </data>
   <data name="&gt;&gt;tprpPanel.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="lvParams.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lvParams.Items" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
+        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
+        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
+        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
+        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
+        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAA4weEREREQgKDIyMjIy
+        Kf////8F+////xRTeXN0ZW0uRHJhd2luZy5Db2xvcgQAAAAEbmFtZQV2YWx1ZQprbm93bkNvbG9yBXN0
+        YXRlAQAAAAkHBwMAAAAKAAAAAAAAAAAYAAEAAAkGAAAAAfn////7////CgAAAAAAAAAAGgABAAEFBgAA
+        ABNTeXN0ZW0uRHJhd2luZy5Gb250BAAAAAROYW1lBFNpemUFU3R5bGUEVW5pdAEABAQLGFN5c3RlbS5E
+        cmF3aW5nLkZvbnRTdHlsZQMAAAAbU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AwAAAAMAAAAGCAAA
+        ABRNaWNyb3NvZnQgU2FucyBTZXJpZpqZ+UAF9////xhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUBAAAA
+        B3ZhbHVlX18ACAMAAAAAAAAABfb///8bU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AQAAAAd2YWx1
+        ZV9fAAgDAAAAAwAAAAs=
+</value>
+  </data>
+  <data name="lvParams.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="lvParams.Size" type="System.Drawing.Size, System.Drawing">
+    <value>835, 159</value>
+  </data>
+  <data name="lvParams.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;lvParams.Name" xml:space="preserve">
+    <value>lvParams</value>
+  </data>
+  <data name="&gt;&gt;lvParams.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lvParams.Parent" xml:space="preserve">
+    <value>tpParams</value>
+  </data>
+  <data name="&gt;&gt;lvParams.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="chPID.Text" xml:space="preserve">
+    <value>Param</value>
+  </data>
+  <data name="chPID.Width" type="System.Int32, mscorlib">
+    <value>112</value>
+  </data>
+  <data name="chPLabel.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="chPLabel.Width" type="System.Int32, mscorlib">
+    <value>683</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

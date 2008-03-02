@@ -498,13 +498,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 			for(int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
 			{
-				int p = tprp.Add(new TPRPParamLabel(tprp));
-				tprp[false, p].Label = BhavWiz.dnParam() + " " + arg.ToString();
+				tprp.Add(new TPRPParamLabel(tprp));
+				tprp[false, tprp.ParamCount - 1].Label = BhavWiz.dnParam() + " " + arg.ToString();
 			}
 			for(int local = minLocalC; local < wrapper.Header.LocalVarCount; local++)
 			{
-				int l = tprp.Add(new TPRPLocalLabel(tprp));
-                tprp[true, l].Label = BhavWiz.dnLocal() + " " + local.ToString();
+				tprp.Add(new TPRPLocalLabel(tprp));
+                tprp[true, tprp.LocalCount - 1].Label = BhavWiz.dnLocal() + " " + local.ToString();
 			}
 			tprp.SynchronizeUserData();
 			wrapper.Package.EndUpdate();
@@ -664,12 +664,15 @@ namespace SimPe.PackedFiles.UserInterface
                 btnClose.Visible = true;
                 btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
                 btnCopyBHAV.Enabled = currentPackage != null;
-                string[] pathparts = wrapper.Package.FileName.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
-                this.Text =
-                    pjse.Localization.GetString("viewbhav") +
-                    (items.Length > 0 && !items[0].IsFixed ? " (" + pathparts[pathparts.Length - 1] + ")" : "") +
-                    ": [0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance)
-                        + "] " + wrapper.FileName;
+
+                this.Text = pjse.Localization.GetString("viewbhav");
+                if (wrapper.Package.FileName != null)
+                {
+                    string[] pathparts = wrapper.Package.FileName.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
+                    this.Text += (items.Length > 0 && !items[0].IsFixed ? " (" + pathparts[pathparts.Length - 1] + ")" : "");
+                }
+                this.Text += ": [0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance)
+                    + "] " + wrapper.FileName;
             }
             else
                 currentPackage = wrapper.Package;

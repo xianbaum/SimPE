@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 using System.IO;
@@ -34,7 +35,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class StrWrapper
-		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+        : pjse.ExtendedWrapper<StrItem, StrWrapper> //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
@@ -48,14 +49,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Format Code of the FIle
 		/// </summary>
 		private ushort format = (ushort)SimPe.Data.MetaData.FormatCode.normal;
-		/// <summary>
-		/// Somewhere to keep track of how many StrItems we have
-		/// </summary>
-		//private ushort count;
-		/// <summary>
-		/// Holds all the StrItems
-		/// </summary>
-		private StrItemArrayList items = new StrItemArrayList();
 		#endregion
 
 		#region Accessor methods
@@ -97,6 +90,24 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Constructor
 		/// </summary>
 		public StrWrapper() : base() { }
+
+        public void CleanUp()
+        {
+            Hashtable lngs = new Hashtable();
+            foreach (StrItem i in items)
+            {
+                if (lngs[i.LanguageID] == null)
+                    lngs[i.LanguageID] = new List<StrItem>();
+                ((List<StrItem>)lngs[i.LanguageID]).Add(i);
+            }
+            foreach (List<StrItem> l in lngs.Values)
+                for (int i = l.Count - 1; i >= 0; i--)
+                {
+                    if (l[i].Title.Trim().Equals("") && l[i].Description.Trim().Equals(""))
+                        items.Remove(l[i]);
+                    else break;
+                }
+        }
 
 
 		#region AbstractWrapper Member
@@ -182,10 +193,8 @@ namespace SimPe.PackedFiles.Wrapper
 				count = reader.ReadUInt16();
 			}
 
-
-			items = new StrItemArrayList(count);
-
-			for (int i = 0; i < count; i++)
+            items = new List<StrItem>();
+            while(items.Count < count)
 				items.Add(new StrItem(this, reader));
 
 			CleanUp();
@@ -226,13 +235,21 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#region IFileWrapperSaveExtension Member		
 		//all covered by AbstractWrapper
-		#endregion
+#if DEBUG
+        protected override string GetResourceName(Data.TypeAlias ta)
+        {
+            SimPe.Interfaces.Files.IPackedFile pf = Package.Read(FileDescriptor);
+            byte[] ab = pf.GetUncompressedData(0x42);
+            return (ab.Length > 0x41 ? "0x" + Helper.HexString(ab[0x41]) + Helper.HexString(ab[0x40]) + ": " : "") + Helper.ToString(pf.GetUncompressedData(0x40));
+        }
+#endif
+        #endregion
 
-		#region ICollection Members
-		public int Add(StrItem item)
+        #region pjse.ExtendedWrapper<StrItem> Members
+        public new void Add(StrItem item)
 		{
 			if ((this.format == 0x0000 || this.format == 0xFFFE) && items.Count >= 0xFF)
-				return -1;
+				return;
 
 			if (this.format == 0x0000)
 			{
@@ -241,22 +258,13 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 
 			item.Parent = this;
-			int result = items.Add(item);
-			if (result >= 0 && (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals(""))) OnWrapperChanged(items, new EventArgs());
-			return result;
+			items.Add(item);
+			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals("")) OnWrapperChanged(items, new EventArgs());
 		}
 
-		public int Add(byte lid, string title, string desc) { return this.Add(new StrItem(this, lid, title, desc)); }
+		public void Add(byte lid, string title, string desc) { Add(new StrItem(this, lid, title, desc)); }
 
-		public void Clear()
-		{
-			items.Clear();
-			OnWrapperChanged(items, new EventArgs());
-		}
-
-		public void Remove(StrItem item) { this.RemoveAt(items.IndexOf(item)); }
-
-		public void RemoveAt(int index)
+        public new void RemoveAt(int index)
 		{
 			if (index < 0 || index >= items.Count) return;
 
@@ -270,22 +278,6 @@ namespace SimPe.PackedFiles.Wrapper
 
 			items.RemoveAt(index);
 			if (changed) OnWrapperChanged(this, new EventArgs());
-		}
-
-		public StrItem this[int index]
-		{
-			get
-			{
-				return items[index];
-			}
-			set
-			{
-				if (items[index] == null || !items[index].Equals(value))
-				{
-					items[index] = value;
-					OnWrapperChanged(this, new EventArgs());
-				}
-			}
 		}
 
 		public StrItem this[byte lid, int index]
@@ -315,68 +307,23 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}*/
 
-		public StrItem[] this[byte lid]
+        private static byte isLidTarget;
+        private static bool isLid(StrItem item) { return item.LanguageID.Equals(isLidTarget); }
+        public List<StrItem> this[byte lid]
 		{
 			get
 			{
-				ArrayList s = new ArrayList();
+                isLidTarget = lid;
+                return items.FindAll(isLid);
+				/*ArrayList s = new ArrayList();
 				foreach (StrItem i in items)
 				{
 					if (i.LanguageID == lid)
 						s.Add(i);
 				}
-				return (StrItem[])s.ToArray(typeof(StrItem));
+				return (StrItem[])s.ToArray(typeof(StrItem));*/
 			}
 		}
-		public bool Contains(StrItem item) { return items.Contains(item); }
-
-		public int IndexOf(object item) { return items.IndexOf(item); }
-
-		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
-		public override int Count { get { return items.Count; } }
-		public override bool IsSynchronized { get { return items.IsSynchronized; } }
-		public override object SyncRoot { get { return items.SyncRoot; } }
-		#region IEnumerable Members
-		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
-		#endregion
-		#endregion
-
-		#region StrItemArrayList
-		public void CleanUp()
-		{
-			Hashtable lngs = new Hashtable();
-			foreach (StrItem i in items)
-			{
-				if (lngs[i.LanguageID] == null)
-					lngs[i.LanguageID] = new ArrayList();
-				((ArrayList)lngs[i.LanguageID]).Add(i);
-			}
-			foreach (ArrayList l in lngs.Values)
-				for (int i = l.Count - 1; i >= 0; i--)
-				{
-					if ( ((StrItem)l[i]).Title.Trim().Equals("") && ((StrItem)l[i]).Description.Trim().Equals("") )
-						items.Remove((StrItem)l[i]);
-					else break;
-				}
-		}
-
-
-		private class StrItemArrayList : ArrayList
-		{
-			public StrItemArrayList() : base() { }
-
-			public StrItemArrayList(StrItem[] c) : base(c) { }
-
-			public StrItemArrayList(int capacity) : base(capacity) { }
-
-			public new StrItem this[int index]
-			{
-				get { return (StrItem)base[index]; }
-				set { base[index] = value; }
-			}
-
-		}
-
 		#endregion
 
         public void ExportLanguage(byte lid, String path)
@@ -384,8 +331,8 @@ namespace SimPe.PackedFiles.Wrapper
             System.IO.StreamWriter sw = new StreamWriter(path, false);
             sw.WriteLine("<-Comment->");
             sw.WriteLine("PJSE String file - single language export");
-            StrItem[] items = this[lid];
-            if (items.Length == 0)
+            List<StrItem> items = this[lid];
+            if (items.Count == 0)
             {
                 sw.WriteLine("<-String->");
                 sw.WriteLine("<-Desc->");
@@ -433,10 +380,9 @@ namespace SimPe.PackedFiles.Wrapper
 	/// <summary>
 	/// An Item stored in a STR# File
 	/// </summary>
-	public class StrItem
+    public class StrItem : pjse.ExtendedWrapperItem<StrWrapper, StrItem>
 	{
 		#region Attributes
-		private StrWrapper parent = null;
 		private byte lid = 0;
 		private string title = null;
 		private string desc = null;
@@ -480,12 +426,6 @@ namespace SimPe.PackedFiles.Wrapper
 					if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
-		}
-
-		public StrWrapper Parent
-		{
-			get { return parent; }
-			set { parent = value; } // parent not part of wrapper
 		}
 		#endregion
 
@@ -571,8 +511,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			if (s != null) foreach (char c in s) w.Write(c);
 			w.Write((char)0);
-		}
-
-	}
+        }
+    }
 
 }

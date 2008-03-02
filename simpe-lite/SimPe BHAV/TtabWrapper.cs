@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 
@@ -33,7 +34,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Ttab
-		: pjse.ExtendedWrapper //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
+        : pjse.ExtendedWrapper<TtabItem, Ttab> //AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
@@ -41,7 +42,6 @@ namespace SimPe.PackedFiles.Wrapper
 		#region Attributes
 		private byte[] filename = new byte[64];
 		private uint[] header = { 0xffffffff, 0x00000054, 0x00000000 };
-		private TtabItemArrayList items = new TtabItemArrayList();
 		private byte[] footer = new byte[0];
 		#endregion
 
@@ -90,14 +90,9 @@ namespace SimPe.PackedFiles.Wrapper
 		public Ttab() : base() { }
 
 
-        private void CopyTo(Ttab target)
-        {
-            filename.CopyTo(target.filename, 0);
-            header.CopyTo(target.header, 0);
-            target.items = items == null ? null : items.Clone(target);
-            footer.CopyTo(footer, 0);
-        }
+        public new void Add(TtabItem item) { Add(item, 0x8000); }
 
+        public new void Insert(int index, TtabItem item) { Insert(index, item, 0x8000); }
 
 		#region AbstractWrapper Member
 		public override bool CheckVersion(uint version) 
@@ -133,6 +128,7 @@ namespace SimPe.PackedFiles.Wrapper
 				); 
 		}
 
+        private static bool isInuse(TtabItem item) { return item.InUse; }
 		/// <summary>
 		/// Serializes a the Attributes stored in this Instance to the BinaryStream
 		/// </summary>
@@ -148,19 +144,19 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(header[1]);
 			writer.Write(header[2]);
 
-            ushort entries = (ushort)items.EntriesInUse;
-            writer.Write(entries);
-
-            for (int i = 0; i < entries; i++)
-				if (items[i] != null) ((TtabItem)items[i]).Serialize(writer);
+            List<TtabItem> inUse = items.FindAll(isInuse);
+            writer.Write((ushort)inUse.Count);
+            foreach (TtabItem item in inUse)
+                item.Serialize(writer);
 
 			writer.Write(footer);
 		}
-		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
-		/// </summary>
-		/// <param name="reader">The Stream that contains the FileData</param>
-		protected override void Unserialize(System.IO.BinaryReader reader)
+
+        /// <summary>
+        /// Unserializes a BinaryStream into the Attributes of this Instance
+        /// </summary>
+        /// <param name="reader">The Stream that contains the FileData</param>
+        protected override void Unserialize(System.IO.BinaryReader reader)
 		{
 			filename = reader.ReadBytes(0x40);
 
@@ -174,10 +170,9 @@ namespace SimPe.PackedFiles.Wrapper
 			header[2] = reader.ReadUInt32();
 
 			ushort itemCount = reader.ReadUInt16();
-
-			items = new TtabItemArrayList(new TtabItem[itemCount]);
-            for (int i = 0; i < items.Count; i++)
-				items[i] = new TtabItem(this, reader);
+            items = new List<TtabItem>();
+            while (items.Count < itemCount)
+                items.Add(new TtabItem(this, reader));
 
 			footer = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 		}
@@ -212,116 +207,22 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#region IFileWrapperSaveExtension Member		
 		//all covered by AbstractWrapper
-		#endregion
-
-		#region ICollection Members
-		public int Add(TtabItem item)
-		{
-			if (items.Count >= 0x8000) // only allow 32K lines
-				return -1;
-
-			item.Parent = this;
-			int result = items.Add(item);
-			if (result >= 0) OnWrapperChanged(this, new EventArgs());
-			return result;
-		}
-
-		public void Clear()
-		{
-			items.Clear();
-            OnWrapperChanged(this, new EventArgs());
-		}
-
-		public void Remove(TtabItem item) { this.RemoveAt(items.IndexOf(item)); }
-
-		public void RemoveAt(int index)
-		{
-			if (index < 0 || index >= items.Count) return;
-
-			items.RemoveAt(index);
-            OnWrapperChanged(this, new EventArgs());
-		}
-
-		public TtabItem this[int index]
-		{
-			get
-			{
-				return items[index];
-			}
-			set
-			{
-				if (items[index] == null || !items[index].Equals(value))
-				{
-					value.Parent = this;
-					items[index] = value;
-                    OnWrapperChanged(this, new EventArgs());
-				}
-			}
-		}
-
-		public bool Contains(TtabItem item) { return items.Contains(item); }
-
-		public int IndexOf(object item) { return items.IndexOf(item); }
-
-		public override void CopyTo(Array a, int i) { items.CopyTo(a, i); }
-
-		public override int Count { get { return items.Count; } }
-
-		public override bool IsSynchronized { get { return items.IsSynchronized; } }
-
-		public override object SyncRoot { get { return items.SyncRoot; } }
-
-		#region IEnumerable Members
-		public override IEnumerator GetEnumerator() { return items.GetEnumerator(); }
-
-		#endregion
-		#endregion
-
-		#region TtabItemArrayList
-		private class TtabItemArrayList : ArrayList
-		{
-			public TtabItemArrayList() : base() { }
-
-			public TtabItemArrayList(TtabItem[] c) : base(c) { }
-
-			public TtabItemArrayList(int capacity) : base(capacity) { }
-
-			public new TtabItem this[int index]
-			{
-				get { return (TtabItem)base[index]; }
-				set { base[index] = value; }
-			}
-
-            public TtabItemArrayList Clone(Ttab parent)
-            {
-                TtabItemArrayList clone = new TtabItemArrayList();
-                foreach (TtabItem item in this)
-                    clone.Add(item.Clone(parent));
-                return clone;
-            }
-
-            public override object Clone() { return Clone(null); }
-
-            public int EntriesInUse
-            {
-                get
-                {
-                    for(int i = this.Count; i > 0; i--)
-                        if (this[i - 1].InUse)
-                            return i;
-                    return 0;
-                }
-            }
-		}
-
-		#endregion
+#if DEBUG
+        protected override string GetResourceName(Data.TypeAlias ta)
+        {
+            SimPe.Interfaces.Files.IPackedFile pf = Package.Read(FileDescriptor);
+            byte[] ab = pf.GetUncompressedData(0x48);
+            return (ab.Length > 0x44 ? "0x" + Helper.HexString(ab[0x44]) + ": " : "") + Helper.ToString(pf.GetUncompressedData(0x40));
+        }
+#endif
+        #endregion
     }
 
 
 	/// <summary>
 	/// An Item stored in an TTAB
 	/// </summary>
-	public class TtabItem
+    public class TtabItem : pjse.ExtendedWrapperItem<Ttab, TtabItem>
 	{
 		#region Attributes
 		private ushort action = 0;
@@ -343,8 +244,6 @@ namespace SimPe.PackedFiles.Wrapper
 		private uint modeltableid = 0;
         private TtabItemMotiveTable humanGroups = null;
         private TtabItemMotiveTable animalGroups = null;
-
-        private Ttab parent = null;
 		#endregion
 
 		#region Accessor Methods
@@ -554,12 +453,6 @@ namespace SimPe.PackedFiles.Wrapper
                 }
             }
         }
-
-		public Ttab Parent
-		{
-			get { return parent; }
-			set { parent = value; } // parent not part of wrapper
-		}
 		#endregion
 
 		public TtabItem(Ttab parent)

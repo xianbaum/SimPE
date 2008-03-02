@@ -441,13 +441,13 @@
     <value>#</value>
   </data>
   <data name="chString.Width" type="System.Int32, mscorlib">
-    <value>64</value>
+    <value>125</value>
   </data>
   <data name="chLang.Text" xml:space="preserve">
     <value>Language</value>
   </data>
   <data name="chLang.Width" type="System.Int32, mscorlib">
-    <value>194</value>
+    <value>176</value>
   </data>
   <data name="chLangDesc.Text" xml:space="preserve">
     <value>Description</value>
@@ -459,7 +459,7 @@
     <value>English (default)</value>
   </data>
   <data name="chDefault.Width" type="System.Int32, mscorlib">
-    <value>164</value>
+    <value>147</value>
   </data>
   <data name="chDefaultDesc.Text" xml:space="preserve">
     <value>Description</value>
@@ -480,22 +480,22 @@
         AgAAADFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdTdWJJdGVtAgAAADFT
         eXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZpZXdTdWJJdGVtAgAAABRTeXN0ZW0u
         RHJhd2luZy5Db2xvcgMAAAABE1N5c3RlbS5EcmF3aW5nLkZvbnQDAAAAFFN5c3RlbS5EcmF3aW5nLkNv
-        bG9yAwAAAAECAAAABgQAAAAGMHhERERE/////wUAAAAJBQAAAAkGAAAACQcAAAAJCAAAAAX3////FFN5
-        c3RlbS5EcmF3aW5nLkNvbG9yBAAAAARuYW1lBXZhbHVlCmtub3duQ29sb3IFc3RhdGUBAAAACQcHAwAA
-        AAoAAAAAAAAAABgAAQAACQoAAAAB9f////f///8KAAAAAAAAAAAaAAEAAQUFAAAAMVN5c3RlbS5XaW5k
-        b3dzLkZvcm1zLkxpc3RWaWV3SXRlbStMaXN0Vmlld1N1Ykl0ZW0EAAAABHRleHQEbmFtZQVzdHlsZQh1
-        c2VyRGF0YQEBBAI+U3lzdGVtLldpbmRvd3MuRm9ybXMuTGlzdFZpZXdJdGVtK0xpc3RWaWV3U3ViSXRl
-        bStTdWJJdGVtU3R5bGUCAAAAAgAAAAYMAAAADk90aGVyIGxhbmd1YWdlCgkNAAAACgEGAAAABQAAAAYO
-        AAAADFdXV1dXd2liYmJseQoKCgEHAAAABQAAAAYPAAAACEFtZXJpY2FuCgoKAQgAAAAFAAAABhAAAAAL
-        V1dXV1d3aWJibHkKCgoFCgAAABNTeXN0ZW0uRHJhd2luZy5Gb250BAAAAAROYW1lBFNpemUFU3R5bGUE
-        VW5pdAEABAQLGFN5c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQMAAAAbU3lzdGVtLkRyYXdpbmcuR3JhcGhp
-        Y3NVbml0AwAAAAMAAAAGEQAAABRNaWNyb3NvZnQgU2FucyBTZXJpZgAABEEF7v///xhTeXN0ZW0uRHJh
-        d2luZy5Gb250U3R5bGUBAAAAB3ZhbHVlX18ACAMAAAAAAAAABe3///8bU3lzdGVtLkRyYXdpbmcuR3Jh
-        cGhpY3NVbml0AQAAAAd2YWx1ZV9fAAgDAAAAAwAAAAUNAAAAPlN5c3RlbS5XaW5kb3dzLkZvcm1zLkxp
-        c3RWaWV3SXRlbStMaXN0Vmlld1N1Ykl0ZW0rU3ViSXRlbVN0eWxlAwAAAAliYWNrQ29sb3IJZm9yZUNv
-        bG9yBGZvbnQEBAQUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAA
-        ABNTeXN0ZW0uRHJhd2luZy5Gb250AwAAAAIAAAAB7P////f///8KAAAAAAAAAAAYAAEAAev////3////
-        CgAAAAAAAAAAAAAAAAoL
+        bG9yAwAAAAECAAAABgQAAAAOMHhEREREICgyMjIyMin/////BQAAAAkFAAAACQYAAAAJBwAAAAkIAAAA
+        Bff///8UU3lzdGVtLkRyYXdpbmcuQ29sb3IEAAAABG5hbWUFdmFsdWUKa25vd25Db2xvcgVzdGF0ZQEA
+        AAAJBwcDAAAACgAAAAAAAAAAGAABAAAJCgAAAAH1////9////woAAAAAAAAAABoAAQABBQUAAAAxU3lz
+        dGVtLldpbmRvd3MuRm9ybXMuTGlzdFZpZXdJdGVtK0xpc3RWaWV3U3ViSXRlbQQAAAAEdGV4dARuYW1l
+        BXN0eWxlCHVzZXJEYXRhAQEEAj5TeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0rTGlzdFZp
+        ZXdTdWJJdGVtK1N1Ykl0ZW1TdHlsZQIAAAACAAAABgwAAAAOT3RoZXIgbGFuZ3VhZ2UKCQ0AAAAKAQYA
+        AAAFAAAABg4AAAAMV1dXV1d3aWJiYmx5CgoKAQcAAAAFAAAABg8AAAAIQW1lcmljYW4KCgoBCAAAAAUA
+        AAAGEAAAAAtXV1dXV3dpYmJseQoKCgUKAAAAE1N5c3RlbS5EcmF3aW5nLkZvbnQEAAAABE5hbWUEU2l6
+        ZQVTdHlsZQRVbml0AQAEBAsYU3lzdGVtLkRyYXdpbmcuRm9udFN0eWxlAwAAABtTeXN0ZW0uRHJhd2lu
+        Zy5HcmFwaGljc1VuaXQDAAAAAwAAAAYRAAAAFE1pY3Jvc29mdCBTYW5zIFNlcmlmAAAEQQXu////GFN5
+        c3RlbS5EcmF3aW5nLkZvbnRTdHlsZQEAAAAHdmFsdWVfXwAIAwAAAAAAAAAF7f///xtTeXN0ZW0uRHJh
+        d2luZy5HcmFwaGljc1VuaXQBAAAAB3ZhbHVlX18ACAMAAAADAAAABQ0AAAA+U3lzdGVtLldpbmRvd3Mu
+        Rm9ybXMuTGlzdFZpZXdJdGVtK0xpc3RWaWV3U3ViSXRlbStTdWJJdGVtU3R5bGUDAAAACWJhY2tDb2xv
+        cglmb3JlQ29sb3IEZm9udAQEBBRTeXN0ZW0uRHJhd2luZy5Db2xvcgMAAAAUU3lzdGVtLkRyYXdpbmcu
+        Q29sb3IDAAAAE1N5c3RlbS5EcmF3aW5nLkZvbnQDAAAAAgAAAAHs////9////woAAAAAAAAAABgAAQAB
+        6/////f///8KAAAAAAAAAAAAAAAACgs=
 </value>
   </data>
   <data name="lvStrItems.LabelWrap" type="System.Boolean, mscorlib">

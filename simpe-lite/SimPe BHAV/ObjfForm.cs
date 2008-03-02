@@ -57,18 +57,20 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ColumnHeader chAction;
 		private System.Windows.Forms.Button btnHelp;
         private Button btnRefreshFT;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
-		#endregion
-       
+        private Label lbFunction;
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private IContainer components;
+        #endregion
+
 		public ObjfForm()
 		{
 			//
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
+            lbFunction.Text = "";
 
 			//
 			// TODO: Add any constructor code after InitializeComponent call
@@ -77,7 +79,6 @@ namespace SimPe.PackedFiles.UserInterface
 
             TextBox[] tbua = { tbAction, tbGuardian };
 			alHex16 = new ArrayList(tbua);
-
 		}
 
 		/// <summary>
@@ -106,6 +107,14 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alHex16;
 		private ObjfItem origItem;
 		private ObjfItem currentItem;
+
+        private static pjse.Str funcDescs = new pjse.Str(pjse.GS.BhavStr.OBJFDescs);
+        private void setLabel(int index)
+        {
+            if (funcDescs == null || index < 0) return;
+            StrItem s = ((pjse.FallbackStrItem)funcDescs[index]).strItem;
+            if (s != null) lbFunction.Text = s.Description;
+        }
 
 		private bool hex16_IsValid(object sender)
 		{
@@ -213,10 +222,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbFilename = new System.Windows.Forms.Label();
             this.tbFilename = new System.Windows.Forms.TextBox();
             this.pnHeading = new System.Windows.Forms.Panel();
+            this.btnRefreshFT = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
+            this.lbFunction = new System.Windows.Forms.Label();
             this.objfPanel.SuspendLayout();
             this.pnHeading.SuspendLayout();
             this.SuspendLayout();
@@ -225,6 +235,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.objfPanel, "objfPanel");
             this.objfPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.objfPanel.Controls.Add(this.lbFunction);
             this.objfPanel.Controls.Add(this.lvObjfItem);
             this.objfPanel.Controls.Add(this.btnCommit);
             this.objfPanel.Controls.Add(this.llGuardian);
@@ -318,17 +329,17 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbGuardian, "tbGuardian");
             this.tbGuardian.Name = "tbGuardian";
+            this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbGuardian.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // tbAction
             // 
             resources.ApplyResources(this.tbAction, "tbAction");
             this.tbAction.Name = "tbAction";
+            this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbAction.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbAction.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // lbFilename
             // 
@@ -339,8 +350,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
+            this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
             // 
             // pnHeading
             // 
@@ -351,6 +362,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnHeading.Controls.Add(this.label1);
             this.pnHeading.ForeColor = System.Drawing.SystemColors.ControlText;
             this.pnHeading.Name = "pnHeading";
+            // 
+            // btnRefreshFT
+            // 
+            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
+            this.btnRefreshFT.Name = "btnRefreshFT";
+            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
             // 
             // btnHelp
             // 
@@ -369,11 +386,11 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label19, "label19");
             this.label19.Name = "label19";
             // 
-            // btnRefreshFT
+            // lbFunction
             // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
+            resources.ApplyResources(this.lbFunction, "lbFunction");
+            this.lbFunction.AutoEllipsis = true;
+            this.lbFunction.Name = "lbFunction";
             // 
             // ObjfForm
             // 
@@ -399,6 +416,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (lvObjfItem.SelectedIndices.Count > 0 && lvObjfItem.SelectedIndices[0] >= 0)
 			{
 				currentItem = wrapper[lvObjfItem.SelectedIndices[0]];
+                setLabel(lvObjfItem.SelectedIndices[0]);
 				origItem = currentItem.Clone();
 
 				internalchg = true;

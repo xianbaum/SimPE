@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
@@ -93,7 +94,7 @@ namespace SimPe.PackedFiles.UserInterface
 			csel = -1;
 			internalchg = false;
 			this.AutoScrollPosition = new Point(0, 0);
-			this.WrapperChanged(new ArrayList(), null);
+            this.WrapperChanged(new List<Instruction>(), null);
 			if (flowitems != null && flowitems.Length > 0)
 			{
 				flowitems[0].MakeSelected(); // but don't focus!
@@ -114,7 +115,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (internalchg) return;
 
 			// Handler for instructions list
-			if (sender is ArrayList)
+			if (sender is List<Instruction>)
 			{
 				if (csel >= wrapper.Count) csel = wrapper.Count - 1;
 				myrepaint();
@@ -122,7 +123,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 
 			// if any instruction updated, redraw the connectors
-			if (wrapper.IndexOf(sender) >= 0)
+			if (sender is Instruction && wrapper.IndexOf((Instruction)sender) >= 0)
 			{
 				pnflow.Image = DrawConnectors();
 			}
@@ -161,28 +162,30 @@ namespace SimPe.PackedFiles.UserInterface
 
 			Instruction i = (csel >= 0) ? wrapper[csel].Clone() : new Instruction(wrapper);
 			int newLine = (type == BhavUIAddType.Default) ? wrapper.Count : csel + 1;
-			int index = wrapper.Add(i);
 
-			if (index >= 0)
-			{
-				if (index != newLine)
-					wrapper.Move(index, newLine);
-				if (csel >= 0)
-					switch (type)
-					{
-						case BhavUIAddType.Default: break;
-						case BhavUIAddType.ViaTrue: ((Instruction)wrapper[csel]).Target1 = (ushort)newLine; break;
-						case BhavUIAddType.ViaFalse: ((Instruction)wrapper[csel]).Target2 = (ushort)newLine; break;
-					}
-			}
-			else
-			{
-				MessageBox.Show(
+            try
+            {
+                wrapper.Add(i);
+
+                int index = wrapper.Count - 1;
+                if (index != newLine)
+                    wrapper.Move(index, newLine);
+                if (csel >= 0)
+                    switch (type)
+                    {
+                        case BhavUIAddType.Default: break;
+                        case BhavUIAddType.ViaTrue: ((Instruction)wrapper[csel]).Target1 = (ushort)newLine; break;
+                        case BhavUIAddType.ViaFalse: ((Instruction)wrapper[csel]).Target2 = (ushort)newLine; break;
+                    }
+            }
+            catch
+            {
+                MessageBox.Show(
                     pjse.Localization.GetString("toomanylines")
                     , "PJSE: Behaviour Editor"
                     , MessageBoxButtons.OK, MessageBoxIcon.Error);
-				newLine = csel;
-			}
+                newLine = csel;
+            }
 
 			internalchg = savedstate;
 
@@ -295,12 +298,16 @@ namespace SimPe.PackedFiles.UserInterface
 				ushort offset = (ushort)wrapper.Count;
 				foreach (Instruction bi in b)
 				{
-					int i = wrapper.Add(bi);
-					if (i < 0) break;
-					if (wrapper[i].Target1 < 0xFFFC)
-						wrapper[i].Target1 += offset;
-					if (wrapper[i].Target2 < 0xFFFC)
-						wrapper[i].Target2 += offset;
+                    try
+                    {
+                        wrapper.Add(bi);
+                        int i = wrapper.Count - 1;
+                        if (wrapper[i].Target1 < 0xFFFC)
+                            wrapper[i].Target1 += offset;
+                        if (wrapper[i].Target2 < 0xFFFC)
+                            wrapper[i].Target2 += offset;
+                    }
+                    catch { break; }
 				}
 			}
 			finally

@@ -1,4 +1,140 @@
-!!! Made readStr() public -- need to review that decision (sticky)
+2 March 2008 15:43 - Don't crash when duff TPRPs are met
+  pjse Localisation\
+    Localization.resx 1.1.4.33
+  SimPe BHAV\
+    TPRPForm.cs 1.6.2.15
+    TPRPWrapper.cs 1.5.2.5
+
+2 March 2008 10:58 - Don't crash in BhavOperandWizBhav when labelling params
+  SimPe BHAV\
+    BhavOperandWizBhav.cs 1.1.8.9
+
+1 March 2008 11:43 - Don't crash on viewing a BHAV in an unsaved package
+  SimPe BHAV\
+    BhavForm.cs 1.64.2.45
+
+1 March 2008 11:42 - Freetime strings (and some fixes to Castaways)
+  GlobalStrings.package 1.10.8.33
+  UnusedBehaviousStrings.package 1.1.2.3
+
+29 February 2008 19:58 - Show file format in resource listing
+  SimPe BHAV\
+    BhavWrapper.cs 1.47.2.4
+    StrWrapper.cs 1.16.6.5
+    TPRPWrapper.cs 1.5.2.4
+    TrcnWrapper.cs 1.11.2.6
+
+29 February 2008 19:57 - New GlobalStrings.package from Castaways plus OBJf descs
+  SimPe BHAV\
+    ObjfForm.cs 1.13.2.13
+    ObjfForm.resx 1.4.6.5
+  GlobalStrings.package 1.10.8.31
+
+28 February 2008 21:47 - More ExtendedWrapper Re-factor bugfixing
+  SimPe BHAV\
+    BconForm.cs 1.15.2.16
+    BhavForm.cs 1.64.2.43
+    TPRPWrapper.cs 1.5.2.3
+    TtabItemMotiveTableUI.cs 1.10.12.9
+    TtabWrapper.cs 1.23.6.15
+
+24 February 2008 10:33 - TRCN editor - add helpful label for text scrape mode
+  pjse Localisation\
+    Localization.resx 1.1.4.32
+  SimPe BHAV\
+    TrcnForm.cs 1.11.2.18
+
+23 February 2008 10:04 - Help menu changes 23/2
+  * Rename menu entry, remove About and Check for updates, go directly to help file
+  pjse Localisation\
+    Localization.resx 1.1.4.31
+  SimPe BHAV\
+    WrapperFactory.cs 1.20.2.16
+
+17 February 2008 11:14 - Live TRCN updates
+  * TRCNs that don't read well aren't used for labelling and are dumped as text-only
+  * TrcnForm list view label field now resizes neatly
+  * Debug code removed and TrcnItem format read as agreed
+  * ExtendedWrapper now knows the Context for BCON, TRCN and TPRP as well as BHAV
+  SimPe BHAV\
+    BconWrapper.cs 1.10.4.2
+    ExtendedWrapper.cs 1.1.4.10
+    TrcnForm.cs 1.11.2.17
+    TrcnForm.resx 1.7.2.7
+    TrcnWrapper.cs 1.11.2.4
+
+13 February 2008 19:10 - TRCN debugging code
+  SimPe BHAV\
+    TrcnForm.cs 1.11.2.16
+    TrcnWrapper.cs 1.11.2.3
+
+10 February 2008 21:41 - Re-factor ExtendedWrapper to Generic, Str[lid] returns List<>
+  * Hits Career Editor in SimPe SVN
+  * Bcon items are no longer bare shorts
+  SimPe BHAV\
+    BconForm.cs 1.15.2.14
+    BconWrapper.cs 1.10.2.1
+    BhavInstListControl.cs 1.41.8.7
+    BhavInstListItemUI.cs 1.23.2.6
+    BhavWiz.cs 1.37.2.40
+    BhavWrapper.cs 1.47.2.2
+    ExtendedWrapper.cs 1.1.4.9
+    ObjfWrapper.cs 1.9.6.6
+    Str.cs 1.1.4.11
+    StrForm.cs 1.28.2.28
+    StrWrapper.cs 1.16.6.4
+    TPRPForm.cs 1.6.2.14
+    TPRPWrapper.cs 1.5.2.2
+    TrcnForm.cs 1.11.2.15
+    TrcnWrapper.cs 1.11.2.2
+    TtabForm.cs 1.31.2.31
+    TtabWrapper.cs 1.23.6.14
+
+26 January 2008 22:23 - Add decimal after hex TTAs line numbers in TTAB editor
+  * Also add a text label near the drop down to make it easier to see what happens
+  * And remember to add decimal after hex line numbers when adding new lines in STR# editor
+  SimPe BHAV\
+    StrForm.cs 1.28.2.27
+    TtabForm.cs 1.31.2.30
+    TtabForm.resx 1.15.8.12
+
+25 January 2008 20:51 - Updated GlobalStrings.package from Inge
+  GlobalStrings.package 1.10.8.31
+
+21 January 2008 20:10 - Rename PJSE Resource Finder to "Simantics..."
+  * Also populate dummy Finder.htm help file
+  pjse GUID Tool\
+    GUIDTool.resx 1.4.12.8
+  pjse Localisation\
+    Localization.resx 1.1.4.30
+  SimPe BHAV\
+    SimPe pjse coder plugin.csproj 1.1.2.3
+
+21 January 2008 19:41 - Add decimal after hex line numbers
+  * Also run debug version with SimPe\__Debug
+  SimPe BHAV\
+    BconForm.cs 1.15.2.13
+    BconForm.resx 1.9.2.6
+    BhavInstListItemUI.cs 1.23.2.5
+    pjse coder plugin.csproj 1.29.2.42
+    StrForm.cs 1.28.2.26
+    StrForm.resx 1.18.14.14
+    TPRPForm.cs 1.6.2.13
+    TPRPForm.resx 1.5.2.5
+    TrcnForm.cs 1.11.2.14
+    TrcnForm.resx 1.7.2.6
+
+19 January 2008 18:03 - Build-with-SimPe changes - Include the real help
+  Redirect_Contents.htm 1.1.2.2
+
+13 January 2008 16:30 - Build-with-SimPe changes
+  * Help redirect from a file (not echo statements)
+  * Set updater to manual by default (rather than prompt)
+  pjse update tool\
+    Settings.cs 1.1.4.3
+  SimPe BHAV\
+    SimPe pjse coder plugin.csproj 1.1.2.2
+  Redirect_Contents.htm 1.1.2.1
 
 6 January 2008 11:55 - Synchronise with disaSim2 24f (thanks Shy!)
   * Also fix what gets packaged in the post-build script

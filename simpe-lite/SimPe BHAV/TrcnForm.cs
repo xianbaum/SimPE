@@ -72,6 +72,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnStrNext;
 		private System.Windows.Forms.Button btnHelp;
         private Button btnRefreshFT;
+        private TextBox tbDesc;
+        private Label lbDesc;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -84,6 +86,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
+            this.lvTrcnItem.Items.Clear();
 
             pjse.Updates.Checker.Daily();
 
@@ -144,6 +147,65 @@ namespace SimPe.PackedFiles.UserInterface
 			return true;
 		}
 
+        private void doTextOnly()
+        {
+            trcnPanel.SuspendLayout();
+            trcnPanel.Controls.Clear();
+            trcnPanel.Controls.Add(this.pnHeading);
+            trcnPanel.Controls.Add(this.lbFilename);
+            tbFilename.ReadOnly = true;
+            tbFilename.Text = wrapper.FileName;
+            tbFormat.Text = SimPe.Helper.HexString(wrapper.Version);
+            trcnPanel.Controls.Add(this.tbFilename);
+            trcnPanel.Controls.Add(this.lbFormat);
+            trcnPanel.Controls.Add(this.tbFormat);
+
+            Label lb = new Label();
+            lb.AutoSize = true;
+            lb.Location = new Point(0, tbFormat.Bottom + 6);
+            lb.Text = pjse.Localization.GetString("trcnTextOnly");
+
+            TextBox tb = new TextBox();
+            tb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tb.Multiline = true;
+            tb.Location = new Point(0, lb.Bottom + 6);
+            tb.ReadOnly = true;
+            tb.ScrollBars = ScrollBars.Both;
+            tb.Size = trcnPanel.Size;
+            tb.Height -= tb.Top;
+
+            tb.Text = getText(wrapper.StoredData);
+
+            trcnPanel.Controls.Add(lb);
+            trcnPanel.Controls.Add(tb);
+            trcnPanel.ResumeLayout(true);
+        }
+
+        private string getText(System.IO.BinaryReader br)
+        {
+            br.BaseStream.Seek(0x50, System.IO.SeekOrigin.Begin); // Skip filename, header and item count
+            string s = "";
+            bool hadNL = true;
+            while (br.BaseStream.Position < br.BaseStream.Length)
+            {
+                byte b = br.ReadByte();
+                if (b < 0x20 || b > 0x7e)
+                {
+                    if (!hadNL)
+                    {
+                        s += "\r\n";
+                        hadNL = true;
+                    }
+                }
+                else
+                {
+                    s += Convert.ToChar(b);
+                    hadNL = false;
+                }
+            }
+            return s;
+        }
+
 
 		private void updateSelectedItem()
 		{
@@ -169,12 +231,12 @@ namespace SimPe.PackedFiles.UserInterface
 			string tiValue = (bcon != null && i < bcon.Count) ? "0x" + SimPe.Helper.HexString(bcon[i]) : "?";
 
 			return new string[] {
-									"0x" + i.ToString("X")
+									"0x" + i.ToString("X") + " (" + i + ")"
 									, tiValue
 									, ti.ConstName
-									, "0x" + SimPe.Helper.HexString(ti.ConstId)
+									, "0x" + SimPe.Helper.HexString(ti.ConstId & (wrapper.Version == 0x3f ? 0x000f : 0xffffffff))
 									, "0x" + ti.Used.ToString("X")
-									, "0x" + SimPe.Helper.HexString(ti.DefValue)
+									, "0x" + (wrapper.Version > 0x53 ? SimPe.Helper.HexString((byte)ti.DefValue) : SimPe.Helper.HexString(ti.DefValue))
 									, "0x" + SimPe.Helper.HexString(ti.MinValue)
 									, "0x" + SimPe.Helper.HexString(ti.MaxValue)
 								};
@@ -212,6 +274,7 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbLabel.Text = "";
 				this.tbID.Text = "";
 				this.cbUsed.CheckState = System.Windows.Forms.CheckState.Indeterminate;
+                this.tbDesc.Text = "";
 				this.tbDefValue.Text = "";
 				this.tbMinValue.Text = "";
 				this.tbMaxValue.Text = "";
@@ -240,15 +303,18 @@ namespace SimPe.PackedFiles.UserInterface
 				this.cbUsed.CheckState = currentItem.Used != 0
 					? System.Windows.Forms.CheckState.Checked
 					: System.Windows.Forms.CheckState.Unchecked;
+                this.tbDesc.Text = currentItem.ConstDesc;
 				this.tbDefValue.Text = s[5];
 				this.tbMinValue.Text = s[6];
 				this.tbMaxValue.Text = s[7];
 
-				this.tbID.Enabled = this.tbLabel.Enabled = this.cbUsed.Enabled
-					= this.tbDefValue.Enabled = this.tbMinValue.Enabled = this.tbMaxValue.Enabled
-					= this.btnStrDelete.Enabled
-					= true;
-			}
+                this.tbID.Enabled = this.tbLabel.Enabled
+                    = this.tbDefValue.Enabled = this.tbMinValue.Enabled = this.tbMaxValue.Enabled
+                    = this.btnStrDelete.Enabled
+                    = true;
+                if (wrapper.Version == 0x4e)
+                    this.cbUsed.Enabled = true;
+            }
 			else
 			{
 				origItem = null;
@@ -276,8 +342,12 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 			internalchg = true;
 
-			if (wrapper.Add(new TrcnItem(wrapper)) >= 0)
-				this.lvTrcnItem.Items.Add(new ListViewItem(trcnItemToStringArray(wrapper.Count - 1)));
+            try
+            {
+                wrapper.Add(new TrcnItem(wrapper));
+                this.lvTrcnItem.Items.Add(new ListViewItem(trcnItemToStringArray(wrapper.Count - 1)));
+            }
+            catch { }
 
 			internalchg = savedstate;
 
@@ -378,7 +448,21 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			this.btnCommit.Enabled = wrapper.Changed;
+            if (wrapper.TextOnly)
+            {
+                doTextOnly();
+                return;
+            }
+            if (wrapper.Version != 0x4e)
+            {
+                btnStrAdd.Enabled = btnStrDelete.Enabled = cbUsed.Enabled = false;
+                tbFilename.ReadOnly = tbLabel.ReadOnly = tbID.ReadOnly =
+                    tbDefValue.ReadOnly = tbMinValue.ReadOnly = tbMaxValue.ReadOnly = true;
+
+            }
+            lbDefValue.Visible = tbDefValue.Visible = (wrapper.Version <= 0x53);
+            if (wrapper.Version > 0x53) lvTrcnItem.Columns[5].Width = 0;
+            this.btnCommit.Enabled = wrapper.Changed;
 			if (sender.Equals(currentItem))
 				this.btnCancel.Enabled = true;
 
@@ -410,6 +494,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnHelp = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.trcnPanel = new System.Windows.Forms.Panel();
+            this.tbDesc = new System.Windows.Forms.TextBox();
+            this.lbDesc = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tbID = new System.Windows.Forms.TextBox();
@@ -483,6 +569,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.trcnPanel, "trcnPanel");
             this.trcnPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.trcnPanel.Controls.Add(this.tbDesc);
+            this.trcnPanel.Controls.Add(this.lbDesc);
             this.trcnPanel.Controls.Add(this.label5);
             this.trcnPanel.Controls.Add(this.panel1);
             this.trcnPanel.Controls.Add(this.tbID);
@@ -510,6 +598,17 @@ namespace SimPe.PackedFiles.UserInterface
             this.trcnPanel.Controls.Add(this.btnStrNext);
             this.trcnPanel.Name = "trcnPanel";
             // 
+            // tbDesc
+            // 
+            resources.ApplyResources(this.tbDesc, "tbDesc");
+            this.tbDesc.Name = "tbDesc";
+            this.tbDesc.ReadOnly = true;
+            // 
+            // lbDesc
+            // 
+            resources.ApplyResources(this.lbDesc, "lbDesc");
+            this.lbDesc.Name = "lbDesc";
+            // 
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
@@ -525,10 +624,10 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbID, "tbID");
             this.tbID.Name = "tbID";
-            this.tbID.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
-            this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             this.tbID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+            this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
+            this.tbID.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             // 
             // btnCancel
             // 
@@ -546,8 +645,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbLabel, "tbLabel");
             this.tbLabel.Name = "tbLabel";
-            this.tbLabel.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbLabel.TextChanged += new System.EventHandler(this.tbText_TextChanged);
+            this.tbLabel.Enter += new System.EventHandler(this.tbText_Enter);
             // 
             // lbID
             // 
@@ -575,10 +674,11 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFormat, "tbFormat");
             this.tbFormat.Name = "tbFormat";
-            this.tbFormat.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
-            this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+            this.tbFormat.ReadOnly = true;
             this.tbFormat.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+            this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
+            this.tbFormat.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             // 
             // lvTrcnItem
             // 
@@ -602,6 +702,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvTrcnItem.Name = "lvTrcnItem";
             this.lvTrcnItem.UseCompatibleStateImageBehavior = false;
             this.lvTrcnItem.View = System.Windows.Forms.View.Details;
+            this.lvTrcnItem.Resize += new System.EventHandler(this.lvTrcnItem_Resize);
             this.lvTrcnItem.SelectedIndexChanged += new System.EventHandler(this.lvTrcnItem_SelectedIndexChanged);
             // 
             // chLine
@@ -640,8 +741,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbFilename.TextChanged += new System.EventHandler(this.tbText_TextChanged);
+            this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
             // 
             // lbFilename
             // 
@@ -657,19 +758,19 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbDefValue, "tbDefValue");
             this.tbDefValue.Name = "tbDefValue";
-            this.tbDefValue.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbDefValue.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbDefValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.tbDefValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbDefValue.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbDefValue.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbDefValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             // 
             // tbMinValue
             // 
             resources.ApplyResources(this.tbMinValue, "tbMinValue");
             this.tbMinValue.Name = "tbMinValue";
-            this.tbMinValue.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbMinValue.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbMinValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.tbMinValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbMinValue.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbMinValue.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbMinValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             // 
             // lbMinValue
             // 
@@ -680,10 +781,10 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbMaxValue, "tbMaxValue");
             this.tbMaxValue.Name = "tbMaxValue";
-            this.tbMaxValue.Enter += new System.EventHandler(this.tbText_Enter);
-            this.tbMaxValue.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbMaxValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.tbMaxValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbMaxValue.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbMaxValue.Enter += new System.EventHandler(this.tbText_Enter);
+            this.tbMaxValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             // 
             // lbMaxValue
             // 
@@ -727,7 +828,15 @@ namespace SimPe.PackedFiles.UserInterface
 
 		#endregion
 
-		private void lvTrcnItem_SelectedIndexChanged(object sender, System.EventArgs e)
+        private void lvTrcnItem_Resize(object sender, EventArgs e)
+        {
+            int before = lvTrcnItem.Columns[0].Width + lvTrcnItem.Columns[1].Width;
+            int after = 0;
+            for (int i = 3; i < lvTrcnItem.Columns.Count; i++) after += lvTrcnItem.Columns[i].Width;
+            lvTrcnItem.Columns[2].Width = lvTrcnItem.Width - (before + after + 36);
+        }
+
+        private void lvTrcnItem_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
 			if (internalchg) return;
 			setIndex((this.lvTrcnItem.SelectedIndices.Count > 0) ? this.lvTrcnItem.SelectedIndices[0] : -1);

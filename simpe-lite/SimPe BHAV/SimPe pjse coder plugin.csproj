@@ -464,11 +464,8 @@ popd
 
 if not exist $(TargetDir)$(TargetName)\PJSE_help mkdir $(TargetDir)$(TargetName)\PJSE_help
 pushd $(TargetDir)$(TargetName)\PJSE_help\
-(echo "&lt;html&gt;"
-echo "&lt;head&gt;&lt;meta http-equiv='Refresh' content='0; url=http://www.simlogical.com/PJSE/PJSE_Help/Contents.htm'&gt;&lt;/head&gt;"
-echo "&lt;body&gt;&lt;p&gt;&lt;a href='http://www.simlogical.com/PJSE/PJSE_Help/Contents.htm'&gt;Click here for help!&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;"
-echo "&lt;/html&gt;"
-) &gt; Contents.htm
+copy "$(ProjectDir)..\Redirect_Contents.htm" Contents.htm
+copy "$(ProjectDir)..\Redirect_Contents.htm" Finder.htm
 popd
 </PostBuildEvent>
   </PropertyGroup>

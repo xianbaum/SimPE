@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   Copyright (C) 2005,2008 by Peter L Jones                              *
  *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using SimPe.Interfaces.Plugin;
 using SimPe.PackedFiles.Wrapper;
@@ -29,7 +30,6 @@ namespace pjse
 {
 	public abstract class ExtendedWrapper : AbstractWrapper
 		, IMultiplePackedFileWrapper	//Allow Multiple Instances
-		, ICollection
 	{
 		/// <summary>
 		/// Indicates the data content of the wrapper (packed file) has changed
@@ -43,7 +43,7 @@ namespace pjse
 		public ExtendedWrapper() : base() { }
 
 
-		internal virtual void OnWrapperChanged(object sender, EventArgs e)
+        internal virtual void OnWrapperChanged(object sender, EventArgs e)
 		{
 			this.Changed = true;
 
@@ -54,19 +54,8 @@ namespace pjse
 			}
 		}
 
-
-		#region ICollection Members
-		public abstract void CopyTo(Array a, int i);
-		public abstract int Count { get ; }
-		public abstract bool IsSynchronized { get ; }
-		public abstract object SyncRoot { get ; }
-		#region IEnumerable Members
-		public abstract IEnumerator GetEnumerator();
-		#endregion
-		#endregion
-
-		
-		/// <summary>
+        
+        /// <summary>
 		/// This object's group
 		/// </summary>
 		public uint PrivateGroup
@@ -105,7 +94,7 @@ namespace pjse
 		{
 			get
 			{
-				if (this is Bhav && this.FileDescriptor != null)
+                if ((this is Bhav || this is TPRP || this is Bcon || this is Trcn) && this.FileDescriptor != null)
 				{
 					if (this.FileDescriptor.Instance < 0x1000)
 						return Scope.Global;
@@ -148,4 +137,265 @@ namespace pjse
 
 	}
 
+    public abstract class ExtendedWrapper<T, U> : ExtendedWrapper
+        , IList<T>, ICollection<T>, IEnumerable<T>, IList, ICollection, IEnumerable
+        where T: ExtendedWrapperItem<U, T>
+        where U: ExtendedWrapper
+    {
+
+        protected List<T> items = new List<T>();
+
+        public T this[int index]
+        {
+            get { return items[index]; }
+            set
+            {
+                if (!items[index].Equals(value))
+                {
+                    items[index] = value;
+                    OnWrapperChanged(items, new EventArgs());
+                }
+            }
+        }
+
+        protected void Add(T item, int limit)
+        {
+            if (items.Count >= limit)
+                throw new InvalidOperationException();
+            this.Add(item);
+        }
+
+        protected void Insert(int index, T item, int limit)
+        {
+            if (items.Count >= limit)
+                throw new InvalidOperationException();
+            items.Insert(index, item);
+        }
+
+        public void Move(int from, int to)
+        {
+            T item = items[from];
+            bool savedstate = internalchg;
+            internalchg = true;
+            this.RemoveAt(from);
+            this.Insert(to, item);
+            internalchg = savedstate;
+            OnWrapperChanged(items, new EventArgs());
+        }
+
+        #region ExtendedWrapper Members
+        protected abstract override void Unserialize(System.IO.BinaryReader reader);
+        protected abstract override IPackedFileUI CreateDefaultUIHandler();
+        #endregion
+
+        #region IList<T> Members
+
+        public int IndexOf(T item) { return items.IndexOf(item); }
+
+        #endregion
+
+        #region ICollection<T> Members
+
+        private static void setNullParent(T item) { item.Parent = default(U); }
+        public static implicit operator U(ExtendedWrapper<T, U>from) { return (U)(ExtendedWrapper)from; }
+
+        
+        public virtual void Add(T item)
+        {
+            item.Parent = this;
+            items.Add(item);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void AddRange(IEnumerable<T> collection)
+        {
+            items.AddRange(collection);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void Clear()
+        {
+            items.ForEach(setNullParent);
+            items.Clear();
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public bool Contains(T item) { return items.Contains(item); }
+        public void CopyTo(T[] array, int arrayIndex) { items.CopyTo(array, arrayIndex); }
+        public int Count { get { return items.Count; } }
+        public bool IsReadOnly { get { return false; } }
+        public void Insert(int index, T item)
+        {
+            item.Parent = this;
+            items.Insert(index, item);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void InsertRange(int index, IEnumerable<T> collection)
+        {
+            foreach (T item in collection) item.Parent = this;
+            items.InsertRange(index, collection);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public bool Remove(T item)
+        {
+            if (items.Remove(item))
+            {
+                setNullParent(item);
+                OnWrapperChanged(items, new EventArgs());
+                return true;
+            }
+            return false;
+        }
+        public int RemoveAll(Predicate<T> match)
+        {
+            foreach (T item in items) if (match(item)) setNullParent(item);
+            int i = items.RemoveAll(match);
+            if (i > 0)
+                OnWrapperChanged(items, new EventArgs());
+            return i;
+        }
+        public void RemoveAt(int index)
+        {
+            setNullParent(items[index]);
+            items.RemoveAt(index);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void RemoveRange(int index, int count)
+        {
+            for (int i = index; i < index + count; i++) setNullParent(items[i]);
+            items.RemoveRange(index, count);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void Reverse()
+        {
+            items.Reverse();
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void Reverse(int index, int count)
+        {
+            items.Reverse(index, count);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void Sort()
+        {
+            items.Sort();
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void Sort(Comparison<T> comparison)
+        {
+            items.Sort(comparison);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void Sort(IComparer<T> comparer)
+        {
+            items.Sort(comparer);
+            OnWrapperChanged(items, new EventArgs());
+        }
+        public void Sort(int index, int count, IComparer<T> comparer)
+        {
+            items.Sort(index, count, comparer);
+            OnWrapperChanged(items, new EventArgs());
+        }
+
+        #endregion
+
+        #region IEnumerable<T> Members
+
+        public virtual IEnumerator<T> GetEnumerator() { return items.GetEnumerator(); }
+
+        #endregion
+
+        #region IList Members
+
+        public int Add(object value)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public bool Contains(object value)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public int IndexOf(object value)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public void Insert(int index, object value)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public bool IsFixedSize
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public void Remove(object value)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        object IList.this[int index]
+        {
+            get
+            {
+                throw new Exception("The method or operation is not implemented.");
+            }
+            set
+            {
+                throw new Exception("The method or operation is not implemented.");
+            }
+        }
+
+        #endregion
+
+        #region ICollection Members
+
+        public void CopyTo(Array array, int index)
+        {
+            throw new Exception("The method or operation is not implemented.");
+        }
+
+        public bool IsSynchronized
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        public object SyncRoot
+        {
+            get { throw new Exception("The method or operation is not implemented."); }
+        }
+
+        #endregion
+
+        #region IEnumerable Members
+
+        IEnumerator IEnumerable.GetEnumerator() { return items.GetEnumerator(); }
+
+        #endregion
+
+        #region IEquatable<U> Members
+
+        public virtual bool Equals(U other) { return ((object)this).Equals(other); }
+
+        #endregion
+    }
+
+    public abstract class ExtendedWrapperItem<T, U> : IEquatable<U>
+        where T : ExtendedWrapper
+    {
+        protected T parent = default(T);
+        public T Parent
+        {
+            get { return parent; }
+            set
+            {
+                if (parent != value)
+                    parent = value;
+            }
+        }
+
+        #region IEquatable<U> Members
+        public virtual bool Equals(U other) { return ((object)this).Equals(other); }
+        #endregion
+    }
 }

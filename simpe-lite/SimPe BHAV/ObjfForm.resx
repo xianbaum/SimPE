@@ -122,33 +122,63 @@
     <value>True</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lbFunction.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="lbFunction.Location" type="System.Drawing.Point, System.Drawing">
+    <value>104, 70</value>
+  </data>
+  <data name="lbFunction.Size" type="System.Drawing.Size, System.Drawing">
+    <value>758, 40</value>
+  </data>
+  <data name="lbFunction.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="lbFunction.Text" xml:space="preserve">
+    <value>lllll</value>
+  </data>
+  <data name="lbFunction.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>BottomLeft</value>
+  </data>
+  <data name="&gt;&gt;lbFunction.Name" xml:space="preserve">
+    <value>lbFunction</value>
+  </data>
+  <data name="&gt;&gt;lbFunction.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbFunction.Parent" xml:space="preserve">
+    <value>objfPanel</value>
+  </data>
+  <data name="&gt;&gt;lbFunction.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
   <data name="lvObjfItem.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left</value>
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="chFunction.Text" xml:space="preserve">
     <value>Function</value>
   </data>
   <data name="chFunction.Width" type="System.Int32, mscorlib">
-    <value>186</value>
+    <value>278</value>
   </data>
   <data name="chAction.Text" xml:space="preserve">
     <value>Action</value>
   </data>
   <data name="chAction.Width" type="System.Int32, mscorlib">
-    <value>240</value>
+    <value>100</value>
   </data>
   <data name="chGuardian.Text" xml:space="preserve">
     <value>Guardian</value>
   </data>
   <data name="chGuardian.Width" type="System.Int32, mscorlib">
-    <value>240</value>
+    <value>100</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lvObjfItem.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 80</value>
+    <value>0, 113</value>
   </data>
   <data name="lvObjfItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>704, 216</value>
+    <value>513, 237</value>
   </data>
   <data name="lvObjfItem.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -163,7 +193,7 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;lvObjfItem.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnCommit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -175,10 +205,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>896, 32</value>
+    <value>740, 39</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 23</value>
+    <value>122, 28</value>
   </data>
   <data name="btnCommit.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -196,7 +226,10 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;btnCommit.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
+  </data>
+  <data name="llGuardian.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="llGuardian.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -208,10 +241,10 @@
     <value>0, 13</value>
   </data>
   <data name="llGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>712, 187</value>
+    <value>644, 227</value>
   </data>
   <data name="llGuardian.Size" type="System.Drawing.Size, System.Drawing">
-    <value>95, 13</value>
+    <value>116, 17</value>
   </data>
   <data name="llGuardian.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -229,7 +262,10 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;llGuardian.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
+  </data>
+  <data name="llAction.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="llAction.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -241,10 +277,10 @@
     <value>0, 11</value>
   </data>
   <data name="llAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>728, 107</value>
+    <value>666, 130</value>
   </data>
   <data name="llAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>78, 13</value>
+    <value>97, 17</value>
   </data>
   <data name="llAction.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -262,7 +298,10 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;llAction.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
+  </data>
+  <data name="btnAction.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="btnAction.Font" type="System.Drawing.Font, System.Drawing">
     <value>Webdings, 16pt</value>
@@ -271,10 +310,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>863, 105</value>
+    <value>846, 128</value>
   </data>
   <data name="btnAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>19, 19</value>
+    <value>25, 23</value>
   </data>
   <data name="btnAction.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -292,7 +331,10 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;btnAction.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
+  </data>
+  <data name="btnGuardian.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="btnGuardian.Font" type="System.Drawing.Font, System.Drawing">
     <value>Webdings, 16pt</value>
@@ -301,10 +343,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>863, 185</value>
+    <value>846, 225</value>
   </data>
   <data name="btnGuardian.Size" type="System.Drawing.Size, System.Drawing">
-    <value>19, 19</value>
+    <value>25, 23</value>
   </data>
   <data name="btnGuardian.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -322,7 +364,7 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;btnGuardian.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="lbAction.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -334,10 +376,10 @@
     <value>NoControl</value>
   </data>
   <data name="lbAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>712, 128</value>
+    <value>519, 155</value>
   </data>
   <data name="lbAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 40</value>
+    <value>349, 49</value>
   </data>
   <data name="lbAction.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -355,7 +397,7 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;lbAction.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="lbGuardian.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -367,10 +409,10 @@
     <value>NoControl</value>
   </data>
   <data name="lbGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>712, 216</value>
+    <value>522, 262</value>
   </data>
   <data name="lbGuardian.Size" type="System.Drawing.Size, System.Drawing">
-    <value>280, 40</value>
+    <value>346, 49</value>
   </data>
   <data name="lbGuardian.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -388,19 +430,22 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;lbGuardian.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
+  </data>
+  <data name="tbGuardian.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="tbGuardian.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>808, 184</value>
+    <value>772, 223</value>
   </data>
   <data name="tbGuardian.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbGuardian.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>75, 24</value>
   </data>
   <data name="tbGuardian.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -418,19 +463,22 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;tbGuardian.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
+  </data>
+  <data name="tbAction.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
   </data>
   <data name="tbAction.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>808, 104</value>
+    <value>772, 126</value>
   </data>
   <data name="tbAction.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tbAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>56, 21</value>
+    <value>75, 24</value>
   </data>
   <data name="tbAction.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -448,7 +496,7 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;tbAction.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="lbFilename.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -460,10 +508,10 @@
     <value>NoControl</value>
   </data>
   <data name="lbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 35</value>
+    <value>11, 43</value>
   </data>
   <data name="lbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 13</value>
+    <value>76, 17</value>
   </data>
   <data name="lbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -484,19 +532,19 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;lbFilename.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="tbFilename.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="tbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>80, 32</value>
+    <value>107, 39</value>
   </data>
   <data name="tbFilename.MaxLength" type="System.Int32, mscorlib">
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>800, 21</value>
+    <value>611, 24</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -514,7 +562,7 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;tbFilename.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="pnHeading.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -532,10 +580,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnRefreshFT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>903, 0</value>
+    <value>749, 0</value>
   </data>
   <data name="btnRefreshFT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>64, 29</value>
   </data>
   <data name="btnRefreshFT.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -568,10 +616,10 @@
     <value>NoControl</value>
   </data>
   <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>952, 0</value>
+    <value>814, 0</value>
   </data>
   <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>48, 24</value>
+    <value>64, 29</value>
   </data>
   <data name="btnHelp.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -598,10 +646,10 @@
     <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 4</value>
+    <value>0, 5</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 16</value>
+    <value>340, 20</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -628,7 +676,7 @@
     <value>0, 0</value>
   </data>
   <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 24</value>
+    <value>878, 29</value>
   </data>
   <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -643,7 +691,7 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="label19.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -655,10 +703,10 @@
     <value>NoControl</value>
   </data>
   <data name="label19.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 58</value>
+    <value>4, 92</value>
   </data>
   <data name="label19.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 13</value>
+    <value>83, 17</value>
   </data>
   <data name="label19.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -676,7 +724,7 @@
     <value>objfPanel</value>
   </data>
   <data name="&gt;&gt;label19.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>14</value>
   </data>
   <data name="objfPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -685,7 +733,7 @@
     <value>0, 0</value>
   </data>
   <data name="objfPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 303</value>
+    <value>878, 359</value>
   </data>
   <data name="objfPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -706,10 +754,10 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleBaseSize" type="System.Drawing.Size, System.Drawing">
-    <value>6, 14</value>
+    <value>8, 17</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>1000, 303</value>
+    <value>878, 359</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>

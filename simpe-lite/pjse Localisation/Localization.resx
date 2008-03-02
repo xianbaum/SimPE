@@ -433,7 +433,7 @@ Check BHAV format and number of lines.</value>
     <comment>GUIDTool result ("Matches found: nnn")</comment>
   </data>
   <data name="gt_ResourceFinder" xml:space="preserve">
-    <value>&amp;Resource Finder</value>
+    <value>Simantics &amp;Resource Finder...</value>
     <comment>GUIDTool menu item</comment>
   </data>
   <data name="gt_ResourceFinderHelp" xml:space="preserve">
@@ -1335,10 +1335,10 @@ You can change this choice in SimPe's custom settings for PJSE Update Checker:
     <value>Last daily check</value>
   </data>
   <data name="helpPJSEAboutPJSEUC" xml:space="preserve">
-    <value>Upate checking</value>
+    <value>Update checking</value>
   </data>
   <data name="helpPJSEAboutPJSEUU" xml:space="preserve">
-    <value>Upate URL</value>
+    <value>Update URL</value>
   </data>
   <data name="helpPJSEAboutSimPEBuild" xml:space="preserve">
     <value>Build SimPE version</value>
@@ -1384,5 +1384,17 @@ Do you want to use this resource?
   </data>
   <data name="bwp32_subqueue" xml:space="preserve">
     <value>To Sub-queue</value>
+  </data>
+  <data name="helpPJSE" xml:space="preserve">
+    <value>Simantics Plugins</value>
+    <comment>Embedded Help Menu title for launching PJSE Help Contents</comment>
+  </data>
+  <data name="trcnTextOnly" xml:space="preserve">
+    <value>File does not conform to known format.  Cannot be analysed into fields.</value>
+    <comment>Appears in TRCN editor when file is unparse-able</comment>
+  </data>
+  <data name="tprpTextOnly" xml:space="preserve">
+    <value>File does not conform to known format.  Cannot be analysed into fields.</value>
+    <comment>Appears in TPRP editor when file is unparse-able</comment>
   </data>
 </root>

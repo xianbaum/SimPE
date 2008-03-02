@@ -183,7 +183,8 @@ namespace pjse.BhavOperandWizards.WizBhav
             ((byte[])inst.Reserved1).CopyTo(operands, 8);
 
             for (int i = 0; i < nrArgs; i++)
-                if (tprp != null && i < tprp.Count) albParams[i].Text = tprp[false, i].Label;
+                if (tprp != null && i < tprp.ParamCount) albParams[i].Text = tprp[false, i].Label;
+                else albParams[i].Text = pjse.Localization.GetString("unk");
             for (int i = nrArgs; i < albParams.Length; i++)
                 albParams[i].Text = pjse.Localization.GetString("bwb_unused");
 

@@ -19,6 +19,7 @@
  ***************************************************************************/
 using System;
 using System.Drawing;
+using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
@@ -153,7 +154,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvStrItems.Items[index].SubItems[2].Text = wrapper[lid, index].Description;
 
             isEmpty[lid] = true;
-            StrItem[] sa = wrapper[lid];
+            List<StrItem> sa = wrapper[lid];
             for (int j = count - 1; j >= 0 && isEmpty[lid]; j--)
                 if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
                     isEmpty[lid] = false;
@@ -200,7 +201,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbLngSelect.Items.AddRange(pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages).ToArray());
             for (byte i = 1; i < this.cbLngSelect.Items.Count; i++)
             {
-                isEmpty[i] = wrapper[i].Length == 0;
+                isEmpty[i] = wrapper[i].Count == 0;
                 this.cbLngSelect.Items[i] += isEmpty[i] ? " (" + pjse.Localization.GetString("empty") + ")" : "";
                 if (!isEmpty[i] && i > 1) onlyDefault = false;
             }
@@ -208,8 +209,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnClearAll.Enabled = !onlyDefault;
 
             count = 0;
-            for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Length);
-            while (count > 0 && wrapper[1, count - 1] == null && wrapper.Add(1, "", "") >= 0) ;
+            for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Count);
+            while (count > 0 && wrapper[1, count - 1] == null) wrapper.Add(1, "", "");
 
             this.lvStrItems.Columns[1].Text = "";
             this.lvStrItems.Items.Clear();
@@ -217,8 +218,13 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 StrItem si = wrapper[1, i];
                 this.lvStrItems.Items.Add(new ListViewItem(
-                    new string[] { "0x" + Helper.HexString((ushort)i), "", "", ((si == null) ? "" : si.Title), ((si == null) ? "" : si.Description) }
-                    ));
+                    new string[] {
+                        "0x" + Helper.HexString((ushort)i) + " (" + i + ")",
+                        "",
+                        "",
+                        ((si == null) ? "" : si.Title),
+                        ((si == null) ? "" : si.Description)
+                    }));
                 this.lvStrItems.Items[i].UseItemStyleForSubItems = false;
                 this.lvStrItems.Items[i].SubItems[2].ForeColor = System.Drawing.SystemColors.ControlDark;
                 this.lvStrItems.Items[i].SubItems[3].ForeColor = System.Drawing.SystemColors.ControlDark;
@@ -241,7 +247,7 @@ namespace SimPe.PackedFiles.UserInterface
 
             this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + langName;
 
-            while (count > 0 && wrapper[lid, count - 1] == null && wrapper.Add(lid, "", "") >= 0) ;
+            while (count > 0 && wrapper[lid, count - 1] == null) wrapper.Add(lid, "", "");
             this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
             for (int i = 0; i < count; i++)
             {
@@ -359,11 +365,13 @@ namespace SimPe.PackedFiles.UserInterface
                 title = desc = "";
 
 
-            if (wrapper.Add(1, title, desc) >= 0)
+            try
             {
+                wrapper.Add(1, title, desc);
                 count++;
-                this.lvStrItems.Items.Add(new ListViewItem(new string[] { "0x" + Helper.HexString((ushort)(count - 1)), title, desc, title, desc }));
+                this.lvStrItems.Items.Add(new ListViewItem(new string[] { "0x" + Helper.HexString((ushort)(count - 1)) + " (" + ((ushort)(count - 1)) + ")", title, desc, title, desc }));
             }
+            catch { }
 
             internalchg = savedstate;
 
@@ -415,7 +423,7 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 if (m == lid) continue;
 
-                while (wrapper[m, index] == null && wrapper.Add(m, "", "") >= 0) ;
+                while (wrapper[m, index] == null) wrapper.Add(m, "", "");
                 wrapper[m, index].Title = wrapper[lid, index].Title;
                 wrapper[m, index].Description = wrapper[lid, index].Description;
             }
@@ -450,7 +458,7 @@ namespace SimPe.PackedFiles.UserInterface
             else
                 for (byte m = 1; m < 44; m++)
                 {
-                    while (wrapper[m, index] == null && wrapper.Add(m, "", "") >= 0) ;
+                    while (wrapper[m, index] == null) wrapper.Add(m, "", "");
                     if (b[m, strnum] == null)
                     {
                         wrapper[m, index].Title = "";
@@ -507,7 +515,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvStrItems.Items[index].SubItems[4].Text = wrapper[1, index].Description;
 
             isEmpty[1] = true;
-            StrItem[] sa = wrapper[(byte)1];
+            List<StrItem> sa = wrapper[(byte)1];
             for (int j = count - 1; j >= 0 && isEmpty[1]; j--)
                 if (sa[j] != null && (sa[j].Title.Trim().Length + sa[j].Description.Trim().Length > 0))
                     isEmpty[1] = false;
@@ -530,11 +538,12 @@ namespace SimPe.PackedFiles.UserInterface
             {
                 if (wrapper.Format != 0x0000)
                     for (byte m = 1; m < 44; m++)
-                        while (wrapper[m, count - 1] == null && wrapper.Add(m, "", "") >= 0) ;
+                        while (wrapper[m, count - 1] == null) wrapper.Add(m, "", "");
                 for (int bi = 0; bi < b.Count; bi++)
                 {
                     if (wrapper.Format == 0x0000 && b[bi].LanguageID != 1) continue;
-                    if (wrapper.Add(b[bi]) < 0) break;
+                    try { wrapper.Add(b[bi]); }
+                    catch { break; }
                 }
             }
 
@@ -971,8 +980,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Enter += new System.EventHandler(this.textBoxBase_Enter);
             this.tbFilename.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
+            this.tbFilename.Enter += new System.EventHandler(this.textBoxBase_Enter);
             // 
             // lbFilename
             // 
@@ -994,9 +1003,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFormat, "tbFormat");
             this.tbFormat.Name = "tbFormat";
+            this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // btnImport
             // 
