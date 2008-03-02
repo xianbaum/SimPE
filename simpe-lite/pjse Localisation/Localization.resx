@@ -1393,4 +1393,8 @@ Do you want to use this resource?
     <value>File does not conform to known format.  Cannot be analysed into fields.</value>
     <comment>Appears in TRCN editor when file is unparse-able</comment>
   </data>
+  <data name="tprpTextOnly" xml:space="preserve">
+    <value>File does not conform to known format.  Cannot be analysed into fields.</value>
+    <comment>Appears in TPRP editor when file is unparse-able</comment>
+  </data>
 </root>

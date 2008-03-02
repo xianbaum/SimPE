@@ -103,6 +103,17 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
+        private bool duff = false;
+        public bool TextOnly
+        {
+            get
+            {
+                return (
+                    duff
+                    );
+            }
+        }
+
 
 		public int ParamCount { get { return paramCount; } }
 
@@ -234,6 +245,9 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
+            if (duff)
+                throw new InvalidOperationException("Cannot serialize a duff TPRP");
+
 			CleanUp();
 
 			writer.Write(filename);
@@ -271,25 +285,32 @@ namespace SimPe.PackedFiles.Wrapper
 			header[0] = reader.ReadUInt32();
 			header[1] = reader.ReadUInt32();
 			header[2] = reader.ReadUInt32();
-			if (header[0] != 0x54505250)
-				return;
+            if (header[0] != 0x54505250)
+            {
+                duff = true;
+                return;
+            }
 
-			paramCount = reader.ReadInt32();
-			localCount = reader.ReadInt32();
+            try
+            {
+                paramCount = reader.ReadInt32();
+                localCount = reader.ReadInt32();
 
-            items = new List<TPRPItem>();
-			for (int i = 0; i < paramCount; i++)
-				items.Add(new TPRPParamLabel(this, reader));
-			for (int i = 0; i < localCount; i++)
-				items.Add(new TPRPLocalLabel(this, reader));
+                items = new List<TPRPItem>();
+                for (int i = 0; i < paramCount; i++)
+                    items.Add(new TPRPParamLabel(this, reader));
+                for (int i = 0; i < localCount; i++)
+                    items.Add(new TPRPLocalLabel(this, reader));
 
-			reserved = reader.ReadUInt32();
-			foreach(TPRPItem item in items)
-				if (item is TPRPParamLabel) ((TPRPParamLabel)item).ReadPData(reader);
+                reserved = reader.ReadUInt32();
+                foreach (TPRPItem item in items)
+                    if (item is TPRPParamLabel) ((TPRPParamLabel)item).ReadPData(reader);
 
-			trailer = new uint[2];
-			trailer[0] = reader.ReadUInt32();
-			trailer[1] = reader.ReadUInt32();
+                trailer = new uint[2];
+                trailer[0] = reader.ReadUInt32();
+                trailer[1] = reader.ReadUInt32();
+            }
+            catch { duff = true; }
 		}
 
 		#endregion

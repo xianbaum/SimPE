@@ -141,7 +141,64 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private ListView lvCurrent
+        private void doTextOnly()
+        {
+            tprpPanel.SuspendLayout();
+            tprpPanel.Controls.Clear();
+            tprpPanel.Controls.Add(this.pnHeading);
+            tprpPanel.Controls.Add(this.lbFilename);
+            tbFilename.ReadOnly = true;
+            tbFilename.Text = wrapper.FileName;
+            tprpPanel.Controls.Add(this.tbFilename);
+
+            Label lb = new Label();
+            lb.AutoSize = true;
+            lb.Location = new Point(0, tbFilename.Bottom + 6);
+            lb.Text = pjse.Localization.GetString("tprpTextOnly");
+
+            TextBox tb = new TextBox();
+            tb.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tb.Multiline = true;
+            tb.Location = new Point(0, lb.Bottom + 6);
+            tb.ReadOnly = true;
+            tb.ScrollBars = ScrollBars.Both;
+            tb.Size = tprpPanel.Size;
+            tb.Height -= tb.Top;
+
+            tb.Text = getText(wrapper.StoredData);
+
+            tprpPanel.Controls.Add(lb);
+            tprpPanel.Controls.Add(tb);
+            tprpPanel.ResumeLayout(true);
+        }
+
+        private string getText(System.IO.BinaryReader br)
+        {
+            br.BaseStream.Seek(0x50, System.IO.SeekOrigin.Begin); // Skip filename, header and item count
+            string s = "";
+            bool hadNL = true;
+            while (br.BaseStream.Position < br.BaseStream.Length)
+            {
+                byte b = br.ReadByte();
+                if (b < 0x20 || b > 0x7e)
+                {
+                    if (!hadNL)
+                    {
+                        s += "\r\n";
+                        hadNL = true;
+                    }
+                }
+                else
+                {
+                    s += Convert.ToChar(b);
+                    hadNL = false;
+                }
+            }
+            return s;
+        }
+
+
+        private ListView lvCurrent
 		{
 			get { return (ListView)((tabControl1.SelectedIndex != 0) ? lvLocals : lvParams); }
 		}
@@ -328,11 +385,14 @@ namespace SimPe.PackedFiles.UserInterface
 			wrapper = (TPRP)wrp;
 			WrapperChanged(wrapper, null);
 
-			internalchg = true;
-			updateLists();
-			internalchg = false;
+            if (!wrapper.TextOnly)
+            {
+                internalchg = true;
+                updateLists();
+                internalchg = false;
 
-			setTab(InitialTab);
+                setTab(InitialTab);
+            }
 
 			if (!setHandler)
 			{
@@ -343,7 +403,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			this.btnCommit.Enabled = wrapper.Changed;
+            if (wrapper.TextOnly)
+            {
+                doTextOnly();
+                return;
+            }
+            this.btnCommit.Enabled = wrapper.Changed;
 			if (sender.Equals(currentItem))
 				this.btnCancel.Enabled = true;
 
