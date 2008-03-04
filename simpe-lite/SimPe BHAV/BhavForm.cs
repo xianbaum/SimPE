@@ -478,7 +478,20 @@ namespace SimPe.PackedFiles.UserInterface
 					, MessageBoxIcon.Warning);
 				if (dr == DialogResult.Cancel)
 					return;
-				if (dr == DialogResult.Yes)
+
+                if (!tprp.Package.Equals(wrapper.Package))
+                {
+                    // Clone the original into this package
+                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd
+                        = wrapper.Package.Add(0x54505250, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
+                    tprp = new TPRP();
+                    tprp.ProcessData(npfd, wrapper.Package);
+                    tprp.FileName = wrapper.FileName;
+                    if (dr == DialogResult.Yes)
+                        foreach (TPRPItem item in wrapper.TPRPResource) tprp.Add(item);
+                }
+
+                if (dr == DialogResult.Yes)
 				{
 					minArgc = tprp.ParamCount;
 					minLocalC = tprp.LocalCount;
@@ -508,7 +521,8 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			tprp.SynchronizeUserData();
 			wrapper.Package.EndUpdate();
-			MessageBox.Show(
+            pjse.FileTable.GFT.Refresh();
+            MessageBox.Show(
                 pjse.Localization.GetString("ml_done")
                 , btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}

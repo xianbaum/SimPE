@@ -76,7 +76,8 @@ namespace SimPe.PackedFiles.UserInterface
 			// TODO: Add any constructor code after InitializeComponent call
 			//
             pjse.Updates.Checker.Daily();
-		}
+            pjse.FileTable.GFT.FiletableRefresh += new System.EventHandler(this.FiletableRefresh);
+        }
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -279,11 +280,24 @@ namespace SimPe.PackedFiles.UserInterface
 					, MessageBoxIcon.Warning);
 				if (dr == DialogResult.Cancel)
 					return;
-				if (dr == DialogResult.Yes)
-					minArgc = trcn.Count;
-				else
-					trcn.Clear();
-			}
+
+                if (!trcn.Package.Equals(wrapper.Package))
+                {
+                    // Clone the original into this package
+                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd
+                        = wrapper.Package.Add(0x5452434E, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
+                    trcn = new Trcn();
+                    trcn.ProcessData(npfd, wrapper.Package);
+                    trcn.FileName = wrapper.FileName;
+                    if (dr == DialogResult.Yes)
+                        foreach (TrcnItem item in wrapper.TrcnResource) trcn.Add(item);
+                }
+
+                if (dr == DialogResult.Yes)
+                    minArgc = trcn.Count;
+                else
+                    trcn.Clear();
+            }
 			else
 			{
 				// create a new Trcn file
@@ -303,12 +317,18 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			trcn.SynchronizeUserData();
 			wrapper.Package.EndUpdate();
+            pjse.FileTable.GFT.Refresh();
 			this.updateLists();
 			MessageBox.Show(
                 pjse.Localization.GetString("ml_done")
                 , btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
-		#endregion
+
+        private void FiletableRefresh(object sender, System.EventArgs e)
+        {
+            updateLists();
+        }
+        #endregion
 
 		#region IPackedFileUI Member
 		/// <summary>
