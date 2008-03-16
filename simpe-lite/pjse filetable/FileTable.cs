@@ -189,6 +189,7 @@ namespace pjse
 
         private bool IsFixed(IPackageFile package)
         {
+            if (!hasLoaded) Refresh();
             if (package == null || fixedPackages.Contains(package)) return true;
 
             // There doesn't appear to be a way to compare two paths and have the OS decide if they refer to the same object

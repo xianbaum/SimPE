@@ -1,3 +1,7 @@
+16 March 2008 10:285 - Fix to PJSE FileTable when objects.package was first package opened
+  pjse filetable\
+    FileTable.cs 1.24
+
 15 March 2008 14:45 - Update Set To Next 0x23 to reference Temp 1 (not 0)
   * also re-do CastAways changes to GlobalsStrings
   GlobalStrings.package
