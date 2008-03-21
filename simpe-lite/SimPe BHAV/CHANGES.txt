@@ -1,3 +1,8 @@
+21 March 2008 12:47 - Back out changes at 11:35 (CHANGES.txt 1.222)
+  SimPe BHAV\
+    BhavForm.cs 1.87
+    BhavForm.resx 1.47
+
 21 March 2008 11:35 - Stop pop-up BHAV windows being "too big"
   SimPe BHAV\
     BhavForm.cs 1.86
