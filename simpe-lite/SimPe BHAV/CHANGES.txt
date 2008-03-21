@@ -1,4 +1,9 @@
-16 March 2008 10:285 - Fix to PJSE FileTable when objects.package was first package opened
+21 March 2008 11:35 - Stop pop-up BHAV windows being "too big"
+  SimPe BHAV\
+    BhavForm.cs 1.86
+    BhavForm.resx 1.46
+
+16 March 2008 10:28 - Fix to PJSE FileTable when objects.package was first package opened
   pjse filetable\
     FileTable.cs 1.24
 
