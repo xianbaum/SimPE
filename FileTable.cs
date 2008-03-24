@@ -438,13 +438,17 @@ namespace pjse
 
         public Entry[] this[uint packedFileType, uint group]
         {
+            get { return this[packedFileType, group, group == 0xffffffff ? Source.Local : Source.Any]; }
+        }
+        public Entry[] this[uint packedFileType, uint group, Source where]
+        {
             get
             {
                 if (!hasLoaded) Refresh();
 
                 Hashtable tgt = (Hashtable)pfByTypeGroup[packedFileType];
                 if (tgt == null) return new Entry[0];
-                return putLocalFirst((Hashtable)tgt[group], group == 0xffffffff ? Source.Local : Source.Any);
+                return putLocalFirst((Hashtable)tgt[group], where);
             }
         }
 
@@ -452,7 +456,6 @@ namespace pjse
         {
             get { return this[packedFileType, group, instance, Source.Any]; }
         }
-
         public Entry[] this[uint packedFileType, uint group, uint instance, Source where]
         {
             get
