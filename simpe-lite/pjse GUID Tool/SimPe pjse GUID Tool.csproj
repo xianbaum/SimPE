@@ -152,6 +152,11 @@
       <Name>SimPe pjse System Classes</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\SimPe BHAV\SimPe pjse coder plugin.csproj">
+      <Project>{19BF4C91-3A16-41D2-A7F0-2DE5BD7E13CF}</Project>
+      <Name>SimPe pjse coder plugin</Name>
+      <Private>False</Private>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
