@@ -65,18 +65,15 @@ namespace SimPe.PackedFiles.UserInterface
         private System.Windows.Forms.Button btnStrPrev;
         private System.Windows.Forms.Button btnStrNext;
         private System.Windows.Forms.Button btnReplace;
-        private System.Windows.Forms.Panel pnHeading;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Button btnLngFirst;
         private System.Windows.Forms.Button btnStrDefault;
-        private Button btnRefreshFT;
         private ColumnHeader chLangDesc;
         private ColumnHeader chDefaultDesc;
         private CheckBox ckbDescription;
         private Button btnImport;
         private Button btnExport;
         private Button btnStrCopy;
+        private pjse.pjse_banner pjse_banner1;
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -706,12 +703,9 @@ namespace SimPe.PackedFiles.UserInterface
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StrForm));
             this.strPanel = new System.Windows.Forms.Panel();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.ckbDescription = new System.Windows.Forms.CheckBox();
             this.btnLngFirst = new System.Windows.Forms.Button();
-            this.pnHeading = new System.Windows.Forms.Panel();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
             this.ckbDefault = new System.Windows.Forms.CheckBox();
@@ -749,15 +743,14 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrCopy = new System.Windows.Forms.Button();
             this.btnStrDefault = new System.Windows.Forms.Button();
             this.strPanel.SuspendLayout();
-            this.pnHeading.SuspendLayout();
             this.SuspendLayout();
             // 
             // strPanel
             // 
             resources.ApplyResources(this.strPanel, "strPanel");
+            this.strPanel.Controls.Add(this.pjse_banner1);
             this.strPanel.Controls.Add(this.ckbDescription);
             this.strPanel.Controls.Add(this.btnLngFirst);
-            this.strPanel.Controls.Add(this.pnHeading);
             this.strPanel.Controls.Add(this.btnStrPrev);
             this.strPanel.Controls.Add(this.btnStrNext);
             this.strPanel.Controls.Add(this.ckbDefault);
@@ -792,6 +785,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.strPanel.Name = "strPanel";
             this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
             // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.Name = "pjse_banner1";
+            // 
             // ckbDescription
             // 
             resources.ApplyResources(this.ckbDescription, "ckbDescription");
@@ -803,33 +801,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.btnLngFirst, "btnLngFirst");
             this.btnLngFirst.Name = "btnLngFirst";
             this.btnLngFirst.Click += new System.EventHandler(this.btnLngFirst_Click);
-            // 
-            // pnHeading
-            // 
-            resources.ApplyResources(this.pnHeading, "pnHeading");
-            this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pnHeading.Controls.Add(this.btnRefreshFT);
-            this.pnHeading.Controls.Add(this.btnHelp);
-            this.pnHeading.Controls.Add(this.label2);
-            this.pnHeading.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pnHeading.Name = "pnHeading";
-            // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
-            // 
-            // btnHelp
-            // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
             // 
             // btnStrPrev
             // 
@@ -1064,8 +1035,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.Name = "StrForm";
             this.strPanel.ResumeLayout(false);
             this.strPanel.PerformLayout();
-            this.pnHeading.ResumeLayout(false);
-            this.pnHeading.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1185,14 +1154,6 @@ namespace SimPe.PackedFiles.UserInterface
             }
         }
 
-        private void btnHelp_Click(object sender, System.EventArgs e)
-        {
-            /*pjse.HelpHelper.PluginHelp((wrapper.FileDescriptor.Type == 0x54544173)
-                ? "PieMenus"
-                : "Strings");*/
-            pjse.HelpHelper.Help("Contents");
-        }
-
         private void btnBigString_Click(object sender, System.EventArgs e)
         {
             int index = alBigBtn.IndexOf(sender);
@@ -1281,11 +1242,6 @@ namespace SimPe.PackedFiles.UserInterface
         private void btnCommit_Click(object sender, System.EventArgs e)
         {
             this.Commit();
-        }
-
-        private void btnRefreshFT_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.GFT.UIRefresh();
         }
 
         private void btnStringFile_Click(object sender, EventArgs e)

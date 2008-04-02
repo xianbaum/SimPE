@@ -38,9 +38,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.TextBox tbFilename;
 		private System.Windows.Forms.Panel bconPanel;
 		private System.Windows.Forms.Button btnCommit;
-		private System.Windows.Forms.ListView lvConstants;
-		private System.Windows.Forms.Panel pnHeading;
-		private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ListView lvConstants;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label6;
 		private System.Windows.Forms.TextBox tbValueHex;
@@ -54,11 +52,10 @@ namespace SimPe.PackedFiles.UserInterface
         private System.Windows.Forms.GroupBox gbValue;
 		private System.Windows.Forms.CheckBox cbFlag;
 		private System.Windows.Forms.Button btnStrPrev;
-		private System.Windows.Forms.Button btnStrNext;
-		private System.Windows.Forms.Button btnHelp;
-		private System.Windows.Forms.Button btnTRCNMaker;
-        private Button btnRefreshFT;
+        private System.Windows.Forms.Button btnStrNext;
+        private System.Windows.Forms.Button btnTRCNMaker;
         private Button btnCancel;
+        private pjse.pjse_banner pjse_banner1;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -395,10 +392,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private void InitializeComponent()
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BconForm));
-            this.label1 = new System.Windows.Forms.Label();
-            this.pnHeading = new System.Windows.Forms.Panel();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
             this.lbFilename = new System.Windows.Forms.Label();
             this.tbFilename = new System.Windows.Forms.TextBox();
             this.tbValueDec = new System.Windows.Forms.TextBox();
@@ -408,6 +401,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.bconPanel = new System.Windows.Forms.Panel();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
             this.cbFlag = new System.Windows.Forms.CheckBox();
@@ -419,37 +413,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.chLabel = new System.Windows.Forms.ColumnHeader();
             this.btnCommit = new System.Windows.Forms.Button();
             this.btnTRCNMaker = new System.Windows.Forms.Button();
-            this.pnHeading.SuspendLayout();
             this.gbValue.SuspendLayout();
             this.bconPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // pnHeading
-            // 
-            resources.ApplyResources(this.pnHeading, "pnHeading");
-            this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pnHeading.Controls.Add(this.btnRefreshFT);
-            this.pnHeading.Controls.Add(this.btnHelp);
-            this.pnHeading.Controls.Add(this.label1);
-            this.pnHeading.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pnHeading.Name = "pnHeading";
-            // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
-            // 
-            // btnHelp
-            // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // lbFilename
             // 
@@ -513,6 +479,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.bconPanel, "bconPanel");
             this.bconPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.bconPanel.Controls.Add(this.pjse_banner1);
             this.bconPanel.Controls.Add(this.btnStrPrev);
             this.bconPanel.Controls.Add(this.btnStrNext);
             this.bconPanel.Controls.Add(this.cbFlag);
@@ -523,9 +490,14 @@ namespace SimPe.PackedFiles.UserInterface
             this.bconPanel.Controls.Add(this.lbFilename);
             this.bconPanel.Controls.Add(this.tbFilename);
             this.bconPanel.Controls.Add(this.gbValue);
-            this.bconPanel.Controls.Add(this.pnHeading);
             this.bconPanel.Controls.Add(this.btnTRCNMaker);
             this.bconPanel.Name = "bconPanel";
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // btnStrPrev
             // 
@@ -610,8 +582,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "BconForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.pnHeading.ResumeLayout(false);
-            this.pnHeading.PerformLayout();
             this.gbValue.ResumeLayout(false);
             this.gbValue.PerformLayout();
             this.bconPanel.ResumeLayout(false);
@@ -628,11 +598,6 @@ namespace SimPe.PackedFiles.UserInterface
 			setIndex((this.lvConstants.SelectedIndices.Count > 0) ? this.lvConstants.SelectedIndices[0] : -1);
 		}
 
-
-		private void btnHelp_Click(object sender, System.EventArgs e)
-		{
-			pjse.HelpHelper.Help("Contents");
-		}
 
 		private void btnCommit_Clicked(object sender, System.EventArgs e)
 		{
@@ -743,11 +708,6 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).Text = currentItem.ToString();
 			internalchg = origstate;
 		}
-
-        private void btnRefreshFT_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.GFT.UIRefresh();
-        }
 
 	}
 }

@@ -129,7 +129,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>816, 33</value>
+    <value>771, 33</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 27</value>
@@ -151,175 +151,40 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;btnCommit.ZOrder" xml:space="preserve">
-    <value>13</value>
-  </data>
-  <data name="pnHeading.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Name" xml:space="preserve">
-    <value>btnRefreshFT</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
-    <value>btnHelp</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="pnHeading.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 9.75pt, style=Bold</value>
-  </data>
-  <data name="pnHeading.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pnHeading.Size" type="System.Drawing.Size, System.Drawing">
-    <value>926, 27</value>
-  </data>
-  <data name="pnHeading.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Name" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.Parent" xml:space="preserve">
-    <value>tprpPanel</value>
-  </data>
-  <data name="&gt;&gt;pnHeading.ZOrder" xml:space="preserve">
     <value>14</value>
-  </data>
-  <data name="btnRefreshFT.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnRefreshFT.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
-  </data>
-  <data name="btnRefreshFT.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
-  <data name="btnRefreshFT.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnRefreshFT.Location" type="System.Drawing.Point, System.Drawing">
-    <value>810, 0</value>
-  </data>
-  <data name="btnRefreshFT.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 27</value>
-  </data>
-  <data name="btnRefreshFT.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
-  </data>
-  <data name="btnRefreshFT.Text" xml:space="preserve">
-    <value>RFT</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Name" xml:space="preserve">
-    <value>btnRefreshFT</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnRefreshFT.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="btnHelp.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
-  </data>
-  <data name="btnHelp.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
-    <value>System</value>
-  </data>
-  <data name="btnHelp.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
-  <data name="btnHelp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="btnHelp.Location" type="System.Drawing.Point, System.Drawing">
-    <value>869, 0</value>
-  </data>
-  <data name="btnHelp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>57, 27</value>
-  </data>
-  <data name="btnHelp.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="btnHelp.Text" xml:space="preserve">
-    <value>Help</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Name" xml:space="preserve">
-    <value>btnHelp</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;btnHelp.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 5</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>256, 20</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>PJSE: Param/Local Labels</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>pnHeading</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>2</value>
   </data>
   <data name="tprpPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="pjse_banner1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="pjse_banner1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 8.25pt, style=Bold</value>
+  </data>
+  <data name="pjse_banner1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="pjse_banner1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>881, 27</value>
+  </data>
+  <data name="pjse_banner1.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="pjse_banner1.TitleText" xml:space="preserve">
+    <value>Simantics Behaviour Labels</value>
+  </data>
+  <data name="&gt;&gt;pjse_banner1.Name" xml:space="preserve">
+    <value>pjse_banner1</value>
+  </data>
+  <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3014.21842, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
+    <value>tprpPanel</value>
+  </data>
+  <data name="&gt;&gt;pjse_banner1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="btnTabNext.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
@@ -349,7 +214,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;btnTabNext.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="btnTabPrev.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
@@ -379,7 +244,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;btnTabPrev.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="btnStrPrev.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
@@ -409,7 +274,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;btnStrPrev.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="btnStrNext.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
@@ -439,10 +304,52 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;btnStrNext.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="tabControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="chPID.Text" xml:space="preserve">
+    <value>Param</value>
+  </data>
+  <data name="chPID.Width" type="System.Int32, mscorlib">
+    <value>112</value>
+  </data>
+  <data name="chPLabel.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="chPLabel.Width" type="System.Int32, mscorlib">
+    <value>652</value>
+  </data>
+  <data name="lvParams.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lvParams.Items" mimetype="application/x-microsoft.net.object.binary.base64">
+    <value>
+        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
+        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
+        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
+        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
+        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
+        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
+        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAA4weEREREQgKDIyMjIy
+        Kf////8F+////xRTeXN0ZW0uRHJhd2luZy5Db2xvcgQAAAAEbmFtZQV2YWx1ZQprbm93bkNvbG9yBXN0
+        YXRlAQAAAAkHBwMAAAAKAAAAAAAAAAAYAAEAAAkGAAAAAfn////7////CgAAAAAAAAAAGgABAAEFBgAA
+        ABNTeXN0ZW0uRHJhd2luZy5Gb250BAAAAAROYW1lBFNpemUFU3R5bGUEVW5pdAEABAQLGFN5c3RlbS5E
+        cmF3aW5nLkZvbnRTdHlsZQMAAAAbU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AwAAAAMAAAAGCAAA
+        ABRNaWNyb3NvZnQgU2FucyBTZXJpZpqZ+UAF9////xhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUBAAAA
+        B3ZhbHVlX18ACAMAAAAAAAAABfb///8bU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AQAAAAd2YWx1
+        ZV9fAAgDAAAAAwAAAAs=
+</value>
+  </data>
+  <data name="lvParams.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="lvParams.Size" type="System.Drawing.Size, System.Drawing">
+    <value>790, 159</value>
+  </data>
+  <data name="lvParams.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
   </data>
   <data name="&gt;&gt;lvParams.Name" xml:space="preserve">
     <value>lvParams</value>
@@ -460,7 +367,7 @@
     <value>4, 22</value>
   </data>
   <data name="tpParams.Size" type="System.Drawing.Size, System.Drawing">
-    <value>835, 159</value>
+    <value>790, 159</value>
   </data>
   <data name="tpParams.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -547,7 +454,7 @@
     <value>73, 127</value>
   </data>
   <data name="tabControl1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>843, 185</value>
+    <value>798, 185</value>
   </data>
   <data name="tabControl1.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -562,7 +469,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -571,7 +478,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>816, 66</value>
+    <value>771, 66</value>
   </data>
   <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 27</value>
@@ -592,7 +499,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="tbLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -604,7 +511,7 @@
     <value>64</value>
   </data>
   <data name="tbLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>843, 22</value>
+    <value>798, 22</value>
   </data>
   <data name="tbLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -622,7 +529,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;tbLabel.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="btnStrDelete.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -649,7 +556,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;btnStrDelete.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="btnStrAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -676,7 +583,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;btnStrAdd.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="lbVersion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -688,7 +595,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>646, 38</value>
+    <value>601, 38</value>
   </data>
   <data name="lbVersion.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 17</value>
@@ -709,13 +616,13 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;lbVersion.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="tbVersion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
   </data>
   <data name="tbVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>708, 35</value>
+    <value>663, 35</value>
   </data>
   <data name="tbVersion.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
@@ -739,7 +646,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;tbVersion.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="tbFilename.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -751,7 +658,7 @@
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>566, 22</value>
+    <value>521, 22</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -769,7 +676,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;tbFilename.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="lbFilename.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -799,7 +706,7 @@
     <value>tprpPanel</value>
   </data>
   <data name="&gt;&gt;lbFilename.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="lbLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -838,7 +745,7 @@
     <value>0, 0</value>
   </data>
   <data name="tprpPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>926, 315</value>
+    <value>881, 315</value>
   </data>
   <data name="tprpPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -855,60 +762,6 @@
   <data name="&gt;&gt;tprpPanel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="lvParams.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="lvParams.Items" mimetype="application/x-microsoft.net.object.binary.base64">
-    <value>
-        AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
-        LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkMAwAAAFFTeXN0
-        ZW0uRHJhd2luZywgVmVyc2lvbj0yLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2Vu
-        PWIwM2Y1ZjdmMTFkNTBhM2EFAQAAACFTeXN0ZW0uV2luZG93cy5Gb3Jtcy5MaXN0Vmlld0l0ZW0HAAAA
-        BFRleHQKSW1hZ2VJbmRleAlCYWNrQ29sb3IHQ2hlY2tlZARGb250CUZvcmVDb2xvchdVc2VJdGVtU3R5
-        bGVGb3JTdWJJdGVtcwEABAAEBAAIFFN5c3RlbS5EcmF3aW5nLkNvbG9yAwAAAAETU3lzdGVtLkRyYXdp
-        bmcuRm9udAMAAAAUU3lzdGVtLkRyYXdpbmcuQ29sb3IDAAAAAQIAAAAGBAAAAA4weEREREQgKDIyMjIy
-        Kf////8F+////xRTeXN0ZW0uRHJhd2luZy5Db2xvcgQAAAAEbmFtZQV2YWx1ZQprbm93bkNvbG9yBXN0
-        YXRlAQAAAAkHBwMAAAAKAAAAAAAAAAAYAAEAAAkGAAAAAfn////7////CgAAAAAAAAAAGgABAAEFBgAA
-        ABNTeXN0ZW0uRHJhd2luZy5Gb250BAAAAAROYW1lBFNpemUFU3R5bGUEVW5pdAEABAQLGFN5c3RlbS5E
-        cmF3aW5nLkZvbnRTdHlsZQMAAAAbU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AwAAAAMAAAAGCAAA
-        ABRNaWNyb3NvZnQgU2FucyBTZXJpZpqZ+UAF9////xhTeXN0ZW0uRHJhd2luZy5Gb250U3R5bGUBAAAA
-        B3ZhbHVlX18ACAMAAAAAAAAABfb///8bU3lzdGVtLkRyYXdpbmcuR3JhcGhpY3NVbml0AQAAAAd2YWx1
-        ZV9fAAgDAAAAAwAAAAs=
-</value>
-  </data>
-  <data name="lvParams.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="lvParams.Size" type="System.Drawing.Size, System.Drawing">
-    <value>835, 159</value>
-  </data>
-  <data name="lvParams.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;lvParams.Name" xml:space="preserve">
-    <value>lvParams</value>
-  </data>
-  <data name="&gt;&gt;lvParams.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListView, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lvParams.Parent" xml:space="preserve">
-    <value>tpParams</value>
-  </data>
-  <data name="&gt;&gt;lvParams.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="chPID.Text" xml:space="preserve">
-    <value>Param</value>
-  </data>
-  <data name="chPID.Width" type="System.Int32, mscorlib">
-    <value>112</value>
-  </data>
-  <data name="chPLabel.Text" xml:space="preserve">
-    <value>Label</value>
-  </data>
-  <data name="chPLabel.Width" type="System.Int32, mscorlib">
-    <value>683</value>
-  </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -916,7 +769,7 @@
     <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>926, 315</value>
+    <value>881, 315</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>TrcnForm</value>

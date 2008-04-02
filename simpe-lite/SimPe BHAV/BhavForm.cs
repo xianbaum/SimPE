@@ -39,9 +39,8 @@ namespace SimPe.PackedFiles.UserInterface
 	public class BhavForm : System.Windows.Forms.Form, IPackedFileUI
 	{
 		#region Form variables
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Panel pnHeading;
-		private System.Windows.Forms.Label lbFilename;
+
+        private System.Windows.Forms.Label lbFilename;
 		private System.Windows.Forms.Label lbFormat;
 		private System.Windows.Forms.Label lbType;
 		private System.Windows.Forms.Label lbLocalC;
@@ -109,10 +108,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnClose;
 		private System.Windows.Forms.CheckBox cbSpecial;
 		private System.Windows.Forms.TextBox tbInst_Longname;
-		private System.Windows.Forms.Button btnCopyListing;
-		private System.Windows.Forms.Button btnHelp;
-		private System.Windows.Forms.Button btnTPRPMaker;
-        private Button btnRefreshFT;
+        private System.Windows.Forms.Button btnCopyListing;
+        private System.Windows.Forms.Button btnTPRPMaker;
         private Button btnGUIDIndex;
         private ContextMenuStrip cmenuGUIDIndex;
         private ToolStripMenuItem createAllPackagesToolStripMenuItem;
@@ -123,7 +120,6 @@ namespace SimPe.PackedFiles.UserInterface
         private ToolStripMenuItem saveIndexToolStripMenuItem;
         private ToolStripMenuItem defaultFileToolStripMenuItem1;
         private ToolStripMenuItem toFileToolStripMenuItem;
-        private Button btnFloat;
         private Button btnCopyBHAV;
         private TextBox tbHidesOP;
         private LinkLabel llHidesOP;
@@ -131,6 +127,7 @@ namespace SimPe.PackedFiles.UserInterface
         private Button btnPasteListing;
         private Button btnZero;
         private ToolTip ttBhavForm;
+        private pjse_banner pjse_banner1;
         private IContainer components;
         #endregion
        
@@ -674,7 +671,7 @@ namespace SimPe.PackedFiles.UserInterface
                     btnDel.Visible = btnAdd.Visible =
                     btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/
                     gbSpecial.Visible = cbSpecial.Visible =
-                    btnCancel.Visible = btnFloat.Visible = false;
+                    btnCancel.Visible = pjse_banner1.FloatVisible = false;
                 btnClose.Visible = true;
                 btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
                 btnCopyBHAV.Enabled = currentPackage != null;
@@ -746,8 +743,8 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BhavForm));
-            this.label1 = new System.Windows.Forms.Label();
             this.gbInstruction = new System.Windows.Forms.GroupBox();
+            this.btnZero = new System.Windows.Forms.Button();
             this.tbInst_Longname = new System.Windows.Forms.TextBox();
             this.btnOperandRaw = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -789,11 +786,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbLocalC = new System.Windows.Forms.Label();
             this.lbArgC = new System.Windows.Forms.Label();
             this.lbFormat = new System.Windows.Forms.Label();
-            this.pnHeading = new System.Windows.Forms.Panel();
-            this.btnFloat = new System.Windows.Forms.Button();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
             this.bhavPanel = new System.Windows.Forms.Panel();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.lbHidesOP = new System.Windows.Forms.Label();
             this.llHidesOP = new System.Windows.Forms.LinkLabel();
             this.tbHidesOP = new System.Windows.Forms.TextBox();
@@ -815,6 +809,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnDelMerola = new System.Windows.Forms.Button();
             this.btnCopyListing = new System.Windows.Forms.Button();
             this.btnTPRPMaker = new System.Windows.Forms.Button();
+            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.btnDel = new System.Windows.Forms.Button();
             this.gbMove = new System.Windows.Forms.GroupBox();
             this.btnUp = new System.Windows.Forms.Button();
@@ -835,22 +830,13 @@ namespace SimPe.PackedFiles.UserInterface
             this.saveIndexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnZero = new System.Windows.Forms.Button();
-            this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.ttBhavForm = new System.Windows.Forms.ToolTip(this.components);
             this.gbInstruction.SuspendLayout();
-            this.pnHeading.SuspendLayout();
             this.bhavPanel.SuspendLayout();
             this.gbSpecial.SuspendLayout();
             this.gbMove.SuspendLayout();
             this.cmenuGUIDIndex.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Name = "label1";
             // 
             // gbInstruction
             // 
@@ -889,6 +875,13 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbInstruction.Controls.Add(this.btnOpCode);
             this.gbInstruction.Name = "gbInstruction";
             this.gbInstruction.TabStop = false;
+            // 
+            // btnZero
+            // 
+            resources.ApplyResources(this.btnZero, "btnZero");
+            this.btnZero.Name = "btnZero";
+            this.ttBhavForm.SetToolTip(this.btnZero, resources.GetString("btnZero.ToolTip"));
+            this.btnZero.Click += new System.EventHandler(this.btnZero_Click);
             // 
             // tbInst_Longname
             // 
@@ -936,13 +929,13 @@ namespace SimPe.PackedFiles.UserInterface
             this.tba2.Name = "tba2";
             this.tba2.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
             this.tba2.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
-            this.tba2.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-            this.tba2.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-            this.tba2.Validated += new System.EventHandler(this.cbHex16_Validated);
-            this.tba2.Enter += new System.EventHandler(this.cbHex16_Enter);
-            this.tba2.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
-            this.tba2.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
             this.tba2.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
+            this.tba2.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
+            this.tba2.Enter += new System.EventHandler(this.cbHex16_Enter);
+            this.tba2.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
+            this.tba2.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
+            this.tba2.Validated += new System.EventHandler(this.cbHex16_Validated);
+            this.tba2.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
             // 
             // tba1
             // 
@@ -954,13 +947,13 @@ namespace SimPe.PackedFiles.UserInterface
             this.tba1.Name = "tba1";
             this.tba1.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this.ItemQueryContinueDragTarget);
             this.tba1.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
-            this.tba1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
-            this.tba1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
-            this.tba1.Validated += new System.EventHandler(this.cbHex16_Validated);
-            this.tba1.Enter += new System.EventHandler(this.cbHex16_Enter);
-            this.tba1.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
-            this.tba1.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
             this.tba1.DragOver += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
+            this.tba1.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
+            this.tba1.Enter += new System.EventHandler(this.cbHex16_Enter);
+            this.tba1.DragDrop += new System.Windows.Forms.DragEventHandler(this.ItemDrop);
+            this.tba1.DragEnter += new System.Windows.Forms.DragEventHandler(this.ItemDragEnter);
+            this.tba1.Validated += new System.EventHandler(this.cbHex16_Validated);
+            this.tba1.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
             // 
             // label13
             // 
@@ -971,145 +964,145 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbInst_Unk7, "tbInst_Unk7");
             this.tbInst_Unk7.Name = "tbInst_Unk7";
+            this.tbInst_Unk7.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Unk7.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Unk7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Unk7.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Unk6
             // 
             resources.ApplyResources(this.tbInst_Unk6, "tbInst_Unk6");
             this.tbInst_Unk6.Name = "tbInst_Unk6";
+            this.tbInst_Unk6.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Unk6.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Unk6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Unk6.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Unk5
             // 
             resources.ApplyResources(this.tbInst_Unk5, "tbInst_Unk5");
             this.tbInst_Unk5.Name = "tbInst_Unk5";
+            this.tbInst_Unk5.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Unk5.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Unk5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Unk5.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Unk4
             // 
             resources.ApplyResources(this.tbInst_Unk4, "tbInst_Unk4");
             this.tbInst_Unk4.Name = "tbInst_Unk4";
+            this.tbInst_Unk4.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Unk4.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Unk4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Unk4.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Unk3
             // 
             resources.ApplyResources(this.tbInst_Unk3, "tbInst_Unk3");
             this.tbInst_Unk3.Name = "tbInst_Unk3";
+            this.tbInst_Unk3.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Unk3.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Unk3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Unk3.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Unk2
             // 
             resources.ApplyResources(this.tbInst_Unk2, "tbInst_Unk2");
             this.tbInst_Unk2.Name = "tbInst_Unk2";
+            this.tbInst_Unk2.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Unk2.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Unk2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Unk2.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Unk1
             // 
             resources.ApplyResources(this.tbInst_Unk1, "tbInst_Unk1");
             this.tbInst_Unk1.Name = "tbInst_Unk1";
+            this.tbInst_Unk1.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Unk1.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Unk1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Unk1.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Unk0
             // 
             resources.ApplyResources(this.tbInst_Unk0, "tbInst_Unk0");
             this.tbInst_Unk0.Name = "tbInst_Unk0";
+            this.tbInst_Unk0.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Unk0.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Unk0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Unk0.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Op7
             // 
             resources.ApplyResources(this.tbInst_Op7, "tbInst_Op7");
             this.tbInst_Op7.Name = "tbInst_Op7";
+            this.tbInst_Op7.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Op7.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Op7.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Op7.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Op6
             // 
             resources.ApplyResources(this.tbInst_Op6, "tbInst_Op6");
             this.tbInst_Op6.Name = "tbInst_Op6";
+            this.tbInst_Op6.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Op6.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Op6.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Op6.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Op5
             // 
             resources.ApplyResources(this.tbInst_Op5, "tbInst_Op5");
             this.tbInst_Op5.Name = "tbInst_Op5";
+            this.tbInst_Op5.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Op5.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Op5.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Op5.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Op4
             // 
             resources.ApplyResources(this.tbInst_Op4, "tbInst_Op4");
             this.tbInst_Op4.Name = "tbInst_Op4";
+            this.tbInst_Op4.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Op4.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Op4.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Op4.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Op3
             // 
             resources.ApplyResources(this.tbInst_Op3, "tbInst_Op3");
             this.tbInst_Op3.Name = "tbInst_Op3";
+            this.tbInst_Op3.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Op3.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Op3.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Op3.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Op2
             // 
             resources.ApplyResources(this.tbInst_Op2, "tbInst_Op2");
             this.tbInst_Op2.Name = "tbInst_Op2";
+            this.tbInst_Op2.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Op2.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Op2.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Op2.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Op1
             // 
             resources.ApplyResources(this.tbInst_Op1, "tbInst_Op1");
             this.tbInst_Op1.Name = "tbInst_Op1";
+            this.tbInst_Op1.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Op1.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Op1.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Op1.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_Op0
             // 
             resources.ApplyResources(this.tbInst_Op0, "tbInst_Op0");
             this.tbInst_Op0.Name = "tbInst_Op0";
+            this.tbInst_Op0.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_Op0.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_Op0.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_Op0.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_NodeVersion
             // 
             resources.ApplyResources(this.tbInst_NodeVersion, "tbInst_NodeVersion");
             this.tbInst_NodeVersion.Name = "tbInst_NodeVersion";
+            this.tbInst_NodeVersion.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbInst_NodeVersion.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbInst_NodeVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbInst_NodeVersion.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbInst_OpCode
             // 
             resources.ApplyResources(this.tbInst_OpCode, "tbInst_OpCode");
             this.tbInst_OpCode.Name = "tbInst_OpCode";
+            this.tbInst_OpCode.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbInst_OpCode.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbInst_OpCode.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbInst_OpCode.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // label10
             // 
@@ -1141,8 +1134,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
-            this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
+            this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
             // 
             // lbFilename
             // 
@@ -1154,26 +1147,26 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.tbLocalC, "tbLocalC");
             this.tbLocalC.Name = "tbLocalC";
             this.ttBhavForm.SetToolTip(this.tbLocalC, resources.GetString("tbLocalC.ToolTip"));
+            this.tbLocalC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbLocalC.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbLocalC.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbLocalC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbArgC
             // 
             resources.ApplyResources(this.tbArgC, "tbArgC");
             this.tbArgC.Name = "tbArgC";
             this.ttBhavForm.SetToolTip(this.tbArgC, resources.GetString("tbArgC.ToolTip"));
+            this.tbArgC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbArgC.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbArgC.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbArgC.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // tbType
             // 
             resources.ApplyResources(this.tbType, "tbType");
             this.tbType.Name = "tbType";
+            this.tbType.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbType.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbType.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbType.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // lbTreeVersion
             // 
@@ -1200,38 +1193,11 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.lbFormat, "lbFormat");
             this.lbFormat.Name = "lbFormat";
             // 
-            // pnHeading
-            // 
-            resources.ApplyResources(this.pnHeading, "pnHeading");
-            this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pnHeading.Controls.Add(this.btnFloat);
-            this.pnHeading.Controls.Add(this.btnRefreshFT);
-            this.pnHeading.Controls.Add(this.btnHelp);
-            this.pnHeading.Controls.Add(this.label1);
-            this.pnHeading.Name = "pnHeading";
-            // 
-            // btnFloat
-            // 
-            resources.ApplyResources(this.btnFloat, "btnFloat");
-            this.btnFloat.Name = "btnFloat";
-            this.btnFloat.Click += new System.EventHandler(this.btnFloat_Click);
-            // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
-            // 
-            // btnHelp
-            // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
             // bhavPanel
             // 
             resources.ApplyResources(this.bhavPanel, "bhavPanel");
             this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.bhavPanel.Controls.Add(this.pjse_banner1);
             this.bhavPanel.Controls.Add(this.lbHidesOP);
             this.bhavPanel.Controls.Add(this.llHidesOP);
             this.bhavPanel.Controls.Add(this.tbHidesOP);
@@ -1260,10 +1226,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.bhavPanel.Controls.Add(this.lbLocalC);
             this.bhavPanel.Controls.Add(this.lbArgC);
             this.bhavPanel.Controls.Add(this.lbFormat);
-            this.bhavPanel.Controls.Add(this.pnHeading);
             this.bhavPanel.Controls.Add(this.btnAdd);
             this.bhavPanel.Controls.Add(this.lbCacheFlags);
             this.bhavPanel.Name = "bhavPanel";
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.FloatVisible = true;
+            this.pjse_banner1.Name = "pjse_banner1";
+            this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
             // 
             // lbHidesOP
             // 
@@ -1309,9 +1281,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbHeaderFlag, "tbHeaderFlag");
             this.tbHeaderFlag.Name = "tbHeaderFlag";
+            this.tbHeaderFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbHeaderFlag.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbHeaderFlag.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbHeaderFlag.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // lbHeaderFlag
             // 
@@ -1322,9 +1294,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbCacheFlags, "tbCacheFlags");
             this.tbCacheFlags.Name = "tbCacheFlags";
+            this.tbCacheFlags.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             this.tbCacheFlags.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbCacheFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbCacheFlags.TextChanged += new System.EventHandler(this.hex8_TextChanged);
             // 
             // cbFormat
             // 
@@ -1342,9 +1314,9 @@ namespace SimPe.PackedFiles.UserInterface
             resources.GetString("cbFormat.Items9")});
             this.cbFormat.Name = "cbFormat";
             this.cbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex16_Validating);
-            this.cbFormat.Validated += new System.EventHandler(this.cbHex16_Validated);
-            this.cbFormat.Enter += new System.EventHandler(this.cbHex16_Enter);
             this.cbFormat.SelectedIndexChanged += new System.EventHandler(this.cbHex16_SelectedIndexChanged);
+            this.cbFormat.Enter += new System.EventHandler(this.cbHex16_Enter);
+            this.cbFormat.Validated += new System.EventHandler(this.cbHex16_Validated);
             this.cbFormat.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
             // 
             // gbSpecial
@@ -1423,6 +1395,13 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnTPRPMaker.Name = "btnTPRPMaker";
             this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
             // 
+            // pnflowcontainer
+            // 
+            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
+            this.pnflowcontainer.Name = "pnflowcontainer";
+            this.pnflowcontainer.SelectedIndex = -1;
+            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
+            // 
             // btnDel
             // 
             resources.ApplyResources(this.btnDel, "btnDel");
@@ -1460,9 +1439,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbLines, "tbLines");
             this.tbLines.Name = "tbLines";
+            this.tbLines.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbLines.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbLines.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            this.tbLines.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             // 
             // btnSort
             // 
@@ -1480,9 +1459,9 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbTreeVersion, "tbTreeVersion");
             this.tbTreeVersion.Name = "tbTreeVersion";
+            this.tbTreeVersion.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbTreeVersion.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbTreeVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            this.tbTreeVersion.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             // 
             // btnAdd
             // 
@@ -1558,20 +1537,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
-            // btnZero
-            // 
-            resources.ApplyResources(this.btnZero, "btnZero");
-            this.btnZero.Name = "btnZero";
-            this.ttBhavForm.SetToolTip(this.btnZero, resources.GetString("btnZero.ToolTip"));
-            this.btnZero.Click += new System.EventHandler(this.btnZero_Click);
-            // 
-            // pnflowcontainer
-            // 
-            resources.ApplyResources(this.pnflowcontainer, "pnflowcontainer");
-            this.pnflowcontainer.Name = "pnflowcontainer";
-            this.pnflowcontainer.SelectedIndex = -1;
-            this.pnflowcontainer.SelectedInstChanged += new System.EventHandler(this.pnflowcontainer_SelectedInstChanged);
-            // 
             // BhavForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1583,8 +1548,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.gbInstruction.ResumeLayout(false);
             this.gbInstruction.PerformLayout();
-            this.pnHeading.ResumeLayout(false);
-            this.pnHeading.PerformLayout();
             this.bhavPanel.ResumeLayout(false);
             this.bhavPanel.PerformLayout();
             this.gbSpecial.ResumeLayout(false);
@@ -1665,38 +1628,27 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
-		private void btnHelp_Click(object sender, System.EventArgs e)
-		{
-            pjse.HelpHelper.Help("Contents");
-		}
-
-
-        private void btnRefreshFT_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.GFT.UIRefresh();
-        }
-
-
         private void btnFloat_Click(object sender, EventArgs e)
         {
             Control old = this.bhavPanel.Parent;
+            string oldFloatText = this.pjse_banner1.FloatText;
             Form f = new Form();
             string[] pathparts = wrapper.Package.SaveFileName.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
             f.Text = "(" + pathparts[pathparts.Length - 1] + "): [0x"
                 + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + "] " + wrapper.FileName;
             f.WindowState = FormWindowState.Maximized;
             f.Controls.Add(this.bhavPanel);
-            this.btnFloat.Text = pjse.Localization.GetString("bhavForm.Unfloat");
-            this.btnFloat.Click -= new System.EventHandler(this.btnFloat_Click);
+            this.pjse_banner1.FloatText = pjse.Localization.GetString("bhavForm.Unfloat");
+            this.pjse_banner1.FloatClick -= new System.EventHandler(this.btnFloat_Click);
             this.gbSpecial.Visible = true;
             this.cbSpecial.Enabled = false;
             btnCopyBHAV.Visible = false;
-            f.CancelButton = this.btnFloat;
+            pjse_banner1.SetFormCancelButton(f);
             f.ShowDialog();
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BhavForm));
-            this.btnFloat.Text = resources.GetString("btnFloat.Text");
-            this.btnFloat.Click += new System.EventHandler(this.btnFloat_Click);
+            this.pjse_banner1.FloatText = oldFloatText;
+            this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
             this.gbSpecial.Visible = this.cbSpecial.Checked;
             this.cbSpecial.Enabled = true;
             old.Controls.Add(this.bhavPanel);

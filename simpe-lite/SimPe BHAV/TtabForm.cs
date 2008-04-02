@@ -39,9 +39,7 @@ namespace SimPe.PackedFiles.UserInterface
 	{
 		#region Form variables
 
-		private System.Windows.Forms.Panel panel5;
-		private System.Windows.Forms.Label label25;
-		private System.Windows.Forms.Panel ttabPanel;
+        private System.Windows.Forms.Panel ttabPanel;
 		private System.Windows.Forms.TabControl tabControl1;
 		private System.Windows.Forms.TabPage tpSettings;
 		private System.Windows.Forms.Label lbaction;
@@ -103,9 +101,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.ComboBox cbStringIndex;
 		private System.Windows.Forms.LinkLabel llAction;
 		private System.Windows.Forms.LinkLabel llGuardian;
-		private System.Windows.Forms.Button btnNoFlags;
-		private System.Windows.Forms.Button btnHelp;
-        private Button btnRefreshFT;
+        private System.Windows.Forms.Button btnNoFlags;
         private Button btnStrPrev;
         private Button btnStrNext;
         private TabPage tpAnimalMotives;
@@ -132,6 +128,7 @@ namespace SimPe.PackedFiles.UserInterface
         private CheckBox cb2Bit2;
         private CheckBox cb2Bit1;
         private Label lbPieString;
+        private pjse_banner pjse_banner1;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -661,6 +658,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbttab = new System.Windows.Forms.ListBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSettings = new System.Windows.Forms.TabPage();
+            this.lbPieString = new System.Windows.Forms.Label();
             this.gbFlags2 = new System.Windows.Forms.GroupBox();
             this.tbFlags2 = new System.Windows.Forms.TextBox();
             this.btnNoFlags2 = new System.Windows.Forms.Button();
@@ -731,14 +729,10 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbJoinIndex = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tpHumanMotives = new System.Windows.Forms.TabPage();
-            this.tpAnimalMotives = new System.Windows.Forms.TabPage();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.label25 = new System.Windows.Forms.Label();
-            this.lbPieString = new System.Windows.Forms.Label();
             this.timtuiHuman = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
+            this.tpAnimalMotives = new System.Windows.Forms.TabPage();
             this.timtuiAnimal = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.ttabPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSettings.SuspendLayout();
@@ -746,13 +740,13 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbFlags.SuspendLayout();
             this.tpHumanMotives.SuspendLayout();
             this.tpAnimalMotives.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.SuspendLayout();
             // 
             // ttabPanel
             // 
             resources.ApplyResources(this.ttabPanel, "ttabPanel");
             this.ttabPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.ttabPanel.Controls.Add(this.pjse_banner1);
             this.ttabPanel.Controls.Add(this.btnStrPrev);
             this.ttabPanel.Controls.Add(this.btnStrNext);
             this.ttabPanel.Controls.Add(this.btnAppend);
@@ -766,7 +760,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.ttabPanel.Controls.Add(this.btnDelete);
             this.ttabPanel.Controls.Add(this.lbttab);
             this.ttabPanel.Controls.Add(this.tabControl1);
-            this.ttabPanel.Controls.Add(this.panel5);
             this.ttabPanel.Name = "ttabPanel";
             // 
             // btnStrPrev
@@ -887,6 +880,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpSettings.Controls.Add(this.label2);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.UseVisualStyleBackColor = true;
+            // 
+            // lbPieString
+            // 
+            resources.ApplyResources(this.lbPieString, "lbPieString");
+            this.lbPieString.Name = "lbPieString";
+            this.lbPieString.UseMnemonic = false;
             // 
             // gbFlags2
             // 
@@ -1411,6 +1410,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpHumanMotives.Tag = "Motives/Human Motives";
             this.tpHumanMotives.UseVisualStyleBackColor = true;
             // 
+            // timtuiHuman
+            // 
+            resources.ApplyResources(this.timtuiHuman, "timtuiHuman");
+            this.timtuiHuman.MotiveTable = null;
+            this.timtuiHuman.Name = "timtuiHuman";
+            // 
             // tpAnimalMotives
             // 
             resources.ApplyResources(this.tpAnimalMotives, "tpAnimalMotives");
@@ -1418,50 +1423,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpAnimalMotives.Name = "tpAnimalMotives";
             this.tpAnimalMotives.UseVisualStyleBackColor = true;
             // 
-            // panel5
-            // 
-            resources.ApplyResources(this.panel5, "panel5");
-            this.panel5.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.panel5.Controls.Add(this.btnRefreshFT);
-            this.panel5.Controls.Add(this.btnHelp);
-            this.panel5.Controls.Add(this.label25);
-            this.panel5.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.panel5.Name = "panel5";
-            // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
-            // 
-            // btnHelp
-            // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // label25
-            // 
-            resources.ApplyResources(this.label25, "label25");
-            this.label25.Name = "label25";
-            // 
-            // lbPieString
-            // 
-            resources.ApplyResources(this.lbPieString, "lbPieString");
-            this.lbPieString.Name = "lbPieString";
-            this.lbPieString.UseMnemonic = false;
-            // 
-            // timtuiHuman
-            // 
-            resources.ApplyResources(this.timtuiHuman, "timtuiHuman");
-            this.timtuiHuman.MotiveTable = null;
-            this.timtuiHuman.Name = "timtuiHuman";
-            // 
             // timtuiAnimal
             // 
             resources.ApplyResources(this.timtuiAnimal, "timtuiAnimal");
             this.timtuiAnimal.MotiveTable = null;
             this.timtuiAnimal.Name = "timtuiAnimal";
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // TtabForm
             // 
@@ -1482,30 +1453,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbFlags.PerformLayout();
             this.tpHumanMotives.ResumeLayout(false);
             this.tpAnimalMotives.ResumeLayout(false);
-            this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.ResumeLayout(false);
 
 		}
 	
 		#endregion
-
-
-        // -------------- form
-        //
-        // form
-        //
-        // --------------
-
-        private void btnRefreshFT_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.GFT.UIRefresh();
-        }
-
-        private void btnHelp_Click(object sender, System.EventArgs e)
-        {
-            pjse.HelpHelper.Help("Contents");
-        }
 
 
         // -------------- wrapper

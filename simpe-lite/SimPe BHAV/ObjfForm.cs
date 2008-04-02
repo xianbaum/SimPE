@@ -46,22 +46,19 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Button btnGuardian;
 		private System.Windows.Forms.TextBox tbGuardian;
 		private System.Windows.Forms.TextBox tbAction;
-		private System.Windows.Forms.Button btnCommit;
-		private System.Windows.Forms.Panel pnHeading;
-		private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btnCommit;
 		private System.Windows.Forms.Label lbAction;
 		private System.Windows.Forms.Label lbGuardian;
 		private System.Windows.Forms.ListView lvObjfItem;
 		private System.Windows.Forms.ColumnHeader chFunction;
 		private System.Windows.Forms.ColumnHeader chGuardian;
-		private System.Windows.Forms.ColumnHeader chAction;
-		private System.Windows.Forms.Button btnHelp;
-        private Button btnRefreshFT;
+        private System.Windows.Forms.ColumnHeader chAction;
         private Label lbFunction;
+        private pjse.pjse_banner pjse_banner1;
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private IContainer components;
+        private IContainer components = null;
         #endregion
 
 		public ObjfForm()
@@ -206,6 +203,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ObjfForm));
             this.objfPanel = new System.Windows.Forms.Panel();
+            this.lbFunction = new System.Windows.Forms.Label();
             this.lvObjfItem = new System.Windows.Forms.ListView();
             this.chFunction = new System.Windows.Forms.ColumnHeader();
             this.chAction = new System.Windows.Forms.ColumnHeader();
@@ -221,20 +219,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbAction = new System.Windows.Forms.TextBox();
             this.lbFilename = new System.Windows.Forms.Label();
             this.tbFilename = new System.Windows.Forms.TextBox();
-            this.pnHeading = new System.Windows.Forms.Panel();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
-            this.lbFunction = new System.Windows.Forms.Label();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.objfPanel.SuspendLayout();
-            this.pnHeading.SuspendLayout();
             this.SuspendLayout();
             // 
             // objfPanel
             // 
             resources.ApplyResources(this.objfPanel, "objfPanel");
             this.objfPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.objfPanel.Controls.Add(this.pjse_banner1);
             this.objfPanel.Controls.Add(this.lbFunction);
             this.objfPanel.Controls.Add(this.lvObjfItem);
             this.objfPanel.Controls.Add(this.btnCommit);
@@ -248,9 +242,14 @@ namespace SimPe.PackedFiles.UserInterface
             this.objfPanel.Controls.Add(this.tbAction);
             this.objfPanel.Controls.Add(this.lbFilename);
             this.objfPanel.Controls.Add(this.tbFilename);
-            this.objfPanel.Controls.Add(this.pnHeading);
             this.objfPanel.Controls.Add(this.label19);
             this.objfPanel.Name = "objfPanel";
+            // 
+            // lbFunction
+            // 
+            resources.ApplyResources(this.lbFunction, "lbFunction");
+            this.lbFunction.AutoEllipsis = true;
+            this.lbFunction.Name = "lbFunction";
             // 
             // lvObjfItem
             // 
@@ -353,44 +352,15 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
             this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
             // 
-            // pnHeading
-            // 
-            resources.ApplyResources(this.pnHeading, "pnHeading");
-            this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pnHeading.Controls.Add(this.btnRefreshFT);
-            this.pnHeading.Controls.Add(this.btnHelp);
-            this.pnHeading.Controls.Add(this.label1);
-            this.pnHeading.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.pnHeading.Name = "pnHeading";
-            // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
-            // 
-            // btnHelp
-            // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Name = "label1";
-            // 
             // label19
             // 
             resources.ApplyResources(this.label19, "label19");
             this.label19.Name = "label19";
             // 
-            // lbFunction
+            // pjse_banner1
             // 
-            resources.ApplyResources(this.lbFunction, "lbFunction");
-            this.lbFunction.AutoEllipsis = true;
-            this.lbFunction.Name = "lbFunction";
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // ObjfForm
             // 
@@ -401,8 +371,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.objfPanel.ResumeLayout(false);
             this.objfPanel.PerformLayout();
-            this.pnHeading.ResumeLayout(false);
-            this.pnHeading.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -464,11 +432,6 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}			
-		}
-
-		private void btnHelp_Click(object sender, System.EventArgs e)
-		{
-            pjse.HelpHelper.Help("Contents");
 		}
 
 
@@ -545,11 +508,5 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).SelectAll();
 			internalchg = origstate;
 		}
-
-        private void btnRefreshFT_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.GFT.UIRefresh();
-        }
-
 	}
 }

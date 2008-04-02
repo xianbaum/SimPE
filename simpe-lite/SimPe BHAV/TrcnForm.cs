@@ -35,9 +35,7 @@ namespace SimPe.PackedFiles.UserInterface
 	{
 		#region Form variables
 
-		private System.Windows.Forms.Panel trcnPanel;
-		private System.Windows.Forms.Panel pnHeading;
-		private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel trcnPanel;
 		private System.Windows.Forms.Label lbFilename;
 		private System.Windows.Forms.TextBox tbFilename;
 		private System.Windows.Forms.ListView lvTrcnItem;
@@ -69,11 +67,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Panel panel1;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Button btnStrPrev;
-		private System.Windows.Forms.Button btnStrNext;
-		private System.Windows.Forms.Button btnHelp;
-        private Button btnRefreshFT;
+        private System.Windows.Forms.Button btnStrNext;
         private TextBox tbDesc;
         private Label lbDesc;
+        private pjse.pjse_banner pjse_banner1;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -151,7 +148,7 @@ namespace SimPe.PackedFiles.UserInterface
         {
             trcnPanel.SuspendLayout();
             trcnPanel.Controls.Clear();
-            trcnPanel.Controls.Add(this.pnHeading);
+            trcnPanel.Controls.Add(this.pjse_banner1);
             trcnPanel.Controls.Add(this.lbFilename);
             tbFilename.ReadOnly = true;
             tbFilename.Text = wrapper.FileName;
@@ -489,10 +486,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrcnForm));
             this.btnCommit = new System.Windows.Forms.Button();
-            this.pnHeading = new System.Windows.Forms.Panel();
-            this.btnRefreshFT = new System.Windows.Forms.Button();
-            this.btnHelp = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.trcnPanel = new System.Windows.Forms.Panel();
             this.tbDesc = new System.Windows.Forms.TextBox();
             this.lbDesc = new System.Windows.Forms.Label();
@@ -527,7 +520,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbLabel = new System.Windows.Forms.Label();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
-            this.pnHeading.SuspendLayout();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.trcnPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -537,38 +530,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
             // 
-            // pnHeading
-            // 
-            resources.ApplyResources(this.pnHeading, "pnHeading");
-            this.pnHeading.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pnHeading.Controls.Add(this.btnRefreshFT);
-            this.pnHeading.Controls.Add(this.btnHelp);
-            this.pnHeading.Controls.Add(this.label1);
-            this.pnHeading.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.pnHeading.Name = "pnHeading";
-            // 
-            // btnRefreshFT
-            // 
-            resources.ApplyResources(this.btnRefreshFT, "btnRefreshFT");
-            this.btnRefreshFT.Name = "btnRefreshFT";
-            this.btnRefreshFT.Click += new System.EventHandler(this.btnRefreshFT_Click);
-            // 
-            // btnHelp
-            // 
-            resources.ApplyResources(this.btnHelp, "btnHelp");
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label1.Name = "label1";
-            // 
             // trcnPanel
             // 
             resources.ApplyResources(this.trcnPanel, "trcnPanel");
             this.trcnPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.trcnPanel.Controls.Add(this.pjse_banner1);
             this.trcnPanel.Controls.Add(this.tbDesc);
             this.trcnPanel.Controls.Add(this.lbDesc);
             this.trcnPanel.Controls.Add(this.label5);
@@ -586,7 +552,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.trcnPanel.Controls.Add(this.tbFilename);
             this.trcnPanel.Controls.Add(this.lbFilename);
             this.trcnPanel.Controls.Add(this.btnCommit);
-            this.trcnPanel.Controls.Add(this.pnHeading);
             this.trcnPanel.Controls.Add(this.lbDefValue);
             this.trcnPanel.Controls.Add(this.tbDefValue);
             this.trcnPanel.Controls.Add(this.tbMinValue);
@@ -810,6 +775,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrNext.TabStop = false;
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
             // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.Name = "pjse_banner1";
+            // 
             // TrcnForm
             // 
             resources.ApplyResources(this, "$this");
@@ -818,8 +788,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "TrcnForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.pnHeading.ResumeLayout(false);
-            this.pnHeading.PerformLayout();
             this.trcnPanel.ResumeLayout(false);
             this.trcnPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -876,11 +844,6 @@ namespace SimPe.PackedFiles.UserInterface
 		private void btnStrDelete_Click(object sender, System.EventArgs e)
 		{
 			this.TrcnItemDelete();
-		}
-
-		private void btnHelp_Click(object sender, System.EventArgs e)
-		{
-            pjse.HelpHelper.Help("Contents");
 		}
 
 
@@ -987,11 +950,5 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).Text = "0x" + Helper.HexString(val);
 			internalchg = origstate;
 		}
-
-        private void btnRefreshFT_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.GFT.UIRefresh();
-        }
-
 	}
 }

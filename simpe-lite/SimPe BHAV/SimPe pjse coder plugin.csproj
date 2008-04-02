@@ -264,6 +264,12 @@
     <Compile Include="PickANumber.Designer.cs">
       <DependentUpon>PickANumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="pjse banner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="pjse banner.Designer.cs">
+      <DependentUpon>pjse banner.cs</DependentUpon>
+    </Compile>
     <Compile Include="ResourceChooser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -411,6 +417,10 @@
     <EmbeddedResource Include="PickANumber.resx">
       <DependentUpon>PickANumber.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="pjse banner.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>pjse banner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ResourceChooser.resx">
       <DependentUpon>ResourceChooser.cs</DependentUpon>
