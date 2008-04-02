@@ -46,7 +46,10 @@ namespace pjse
 			//
 			// TODO: Add constructor logic here
 			//
+			SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
 		}
+        
+        private void FileIndex_FILoad(object sender, System.EventArgs e) { if (hasLoaded) UIRefresh(); }
 
         public void UIRefresh()
         {
@@ -54,7 +57,6 @@ namespace pjse
             this.Refresh();
             SimPe.Wait.Stop();
         }
-
 
         private ArrayList fixedPackages = new ArrayList();
         protected static Hashtable filenames = new Hashtable();
@@ -102,24 +104,29 @@ namespace pjse
         private void AddMaxis()
         {
             defaultFolders = SimPe.FileTable.DefaultFolders; // in case they've been updated
-            String SimsPath = SimPe.PathProvider.Global[0].InstallFolder;
-
-            Add(Path.Combine(SimPe.PathProvider.Global.Latest.InstallFolder, "TSData\\Res\\Objects\\objects.package"), false, true);
+            bool haveOP = false;
 
             for (int i = SimPe.PathProvider.Global.Expansions.Count; --i >= 0; )
             {
-                String path = SimPe.PathProvider.Global[i].InstallFolder;
-                if (path.Length == 0 || (i != 0 && path.Equals(SimsPath)))
-                    continue;
+                SimPe.ExpansionItem ei = SimPe.PathProvider.Global.Expansions[i];
+                if (!ei.Exists) continue;
 
-                String o = Path.Combine(path, "TSData\\Res\\Catalog\\Bins");
-                if (!Directory.Exists(o) || isIgnored(o))
-                    continue;
+                foreach (String s in ei.PreObjectFileTableFolders)
+                {
+                    String o = Path.Combine(ei.InstallFolder, s);
+                    if (!Directory.Exists(o) || isIgnored(o))
+                        continue;
 
-                string[] va = Directory.GetFiles(o, "*.package");
-                foreach (String pkg in va)
-                    if (!pkg.ToLower().EndsWith("\\globalcatbin.bundle.package"))
-                        Add(pkg, false, true);
+                    string[] va = Directory.GetFiles(o, "*.package");
+                    foreach (String pkg in va)
+                        if (!pkg.ToLower().EndsWith(SimPe.Helper.PATH_SEP + "globalcatbin.bundle.package"))
+                            Add(pkg, false, true);
+                }
+                if (!haveOP && !isIgnored(Path.Combine(ei.InstallFolder, ei.ObjectsSubFolder)))
+                {
+                    Add(Path.Combine(Path.Combine(ei.InstallFolder, ei.ObjectsSubFolder), "Objects.package"), false, true);
+                    haveOP = true;
+                }
             }
         }
 
@@ -128,8 +135,11 @@ namespace pjse
         {
             String o = path.Trim().ToLower();
             foreach (SimPe.FileTableItem folder in defaultFolders)
+            {
+                if (!folder.Exists) continue;
                 if (folder.Name.Trim().ToLower().Equals(o))
                     return folder.Ignore;
+            }
             return false;
         }
 
@@ -152,22 +162,23 @@ namespace pjse
         private IPackageFile currentPackage = null;
         public IPackageFile CurrentPackage
         {
-            get { return currentPackage; }
+            get { return IsFixed(currentPackage) ? null : currentPackage; }
 
             set
             {
                 if (currentPackage != value)
                 {
-                    if (currentPackage != null)
+                    if (!hasLoaded)
+                        currentPackage = value;
+                    else
                     {
-                        currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
-                        Remove(currentPackage);
-                    }
-                    if ((IsFixed(value) && currentPackage != null)
-                        || (!IsFixed(value) && currentPackage == null))
-                    {
-                        currentPackage = IsFixed(value) ? null : value;
-                        if (currentPackage != null)
+                        if (currentPackage != null && !IsFixed(currentPackage))
+                        {
+                            currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
+                            Remove(currentPackage);
+                        }
+                        currentPackage = value;
+                        if (currentPackage != null && !IsFixed(currentPackage))
                         {
                             Add(currentPackage, false);
                             currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
@@ -480,7 +491,7 @@ namespace pjse
 
             ArrayList[] resultset =
                 where == Source.Local ? new ArrayList[] { currpkg }
-                : where == Source.Fixed ? new ArrayList[] { fixedpkg }
+                : where == Source.Fixed ? IsFixed(currentPackage) ? new ArrayList[] { currpkg, fixedpkg } : new ArrayList[] { fixedpkg }
                     : new ArrayList[] { currpkg, nonfixed, fixedpkg };
 
             foreach (Entry e in result.Keys)
