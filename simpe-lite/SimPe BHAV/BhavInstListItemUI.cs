@@ -139,8 +139,24 @@ namespace SimPe.PackedFiles.UserInterface
 			this.BackColor = this.bhavInstListItem.BackColor = System.Drawing.Color.White;
 		}
 
+        private static string fmt = "0x{0} ({1}): {2}";
+        private static string Content(int index, pjse.BhavWiz inst)
+        {
+            return Format(fmt, index.ToString("X"), index.ToString(), cleanup(inst.ShortName));
+        }
+        private static string Format(string res, params string[] args)
+        {
+            for (int i = 0; i < args.Length; i++)
+                res = res.Replace("{" + i.ToString() + "}", args[i]);
+            return res;
+        }
+        private static string cleanup(string str)
+        {
+            for (char c = System.Convert.ToChar(1); c < ' '; c++) str = str.Replace(c, ' ');
+            return str;
+        }
 
-		private void WrapperChanged(object sender, System.EventArgs e)
+        private void WrapperChanged(object sender, System.EventArgs e)
 		{
 			if (wrapper == null || index == -1) return;
 
@@ -148,7 +164,7 @@ namespace SimPe.PackedFiles.UserInterface
 			Instruction inst = (Instruction)sender;
 
 			bhavInstListItem.Text = "";
-			instrText.Text = "0x" + index.ToString("X") + " (" + index + "): " + cleanup(((pjse.BhavWiz)inst).ShortName);//LongName;
+			instrText.Text = Content(index, inst);//LongName;
 
 			trueTarget.Text = strTrue + ": "+inst.Target1.ToString("X");
 			trueTarget.LinkArea = new LinkArea(0, 0);
@@ -164,15 +180,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private void FiletableRefresh(object sender, System.EventArgs e)
 		{
 			if (wrapper == null || index == -1) return;
-			instrText.Text = index.ToString("X") + ": " + cleanup(((pjse.BhavWiz)wrapper[index]).ShortName);//LongName;
-		}
-
-		private string cleanup(string str)
-		{
-			for(char c = System.Convert.ToChar(1); c < ' '; c++) str = str.Replace(c, ' ');
-			return str;
-		}
-
+            instrText.Text = Content(index, wrapper[index]);//LongName;
+        }
 		#endregion
 
 		#region Component Designer generated code
