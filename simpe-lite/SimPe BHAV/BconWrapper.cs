@@ -96,7 +96,9 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get 
 			{
-				if (trcnres == null && FileDescriptor != null)
+                if (FileDescriptor == null) return null;
+
+				if (trcnres == null)
 				{
 					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x5452434E, FileDescriptor.Group, FileDescriptor.Instance];
 					if (items == null || items.Length == 0) return null;
