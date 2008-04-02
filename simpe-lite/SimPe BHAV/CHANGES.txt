@@ -1,3 +1,39 @@
+2 April 2008 20:15 - Refresh on SimPE FT Reloads; also major rewrite
+  * "AddMaxis()" and "IsIgnored()" fixed
+  * "CurrentPackage" processing amended
+  * "putLocalFirst()" now works for "fixed" if current package is fixed
+  pjse filetable\
+    FileTable.cs 1.26
+
+2 April 2008 20:10 - Replace header on PJSE plugins with banner component, RFT reloads SimPE FT
+  SimPe BHAV\
+    BconForm.cs 1.25
+    BconForm.resx 1.15
+    BhavForm.cs 1.88
+    BhavForm.resx 1.48
+    ObjfForm.cs 1.24
+    ObjfForm.resx 1.9
+    pjse banner.cs 1.1
+    pjse banner.Designer.cs 1.1
+    pjse banner.resx 1.1
+    SimPe pjse coder plugin.csproj 1.6
+    StrForm.cs 1.43
+    StrForm.resx 1.27
+    TPRPForm.cs 1.14
+    TPRPForm.resx 1.10
+    TrcnForm.cs 1.20
+    TrcnForm.resx 1.13
+    TtabForm.cs 1.49
+    TtabForm.resx 1.23
+
+2 April 2008 20:03 - Oops: Don't lose decimal line numbers after RFT
+  SimPe BHAV\
+    BhavInstListItemUI.cs 1.26
+
+2 April 2008 20:02 - Oops: Don't get caught by null references
+  SimPe BHAV\
+    BconWrapper.cs 1.12
+
 24 March 2008 16:05 - Add OpCode finder to GUIDTool
   * Generally polish up the user interface while we're at it
   pjse filetable\
