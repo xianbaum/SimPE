@@ -1,3 +1,7 @@
+5 April 2008 17:40 - FileTable change to catch adds, removes and TGI changes more reliably
+  pjse filetable\
+    FileTable.cs 1.27
+
 2 April 2008 20:15 - Refresh on SimPE FT Reloads; also major rewrite
   * "AddMaxis()" and "IsIgnored()" fixed
   * "CurrentPackage" processing amended

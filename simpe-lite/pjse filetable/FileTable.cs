@@ -70,6 +70,9 @@ namespace pjse
         private bool hasLoaded = false;
         public void Refresh()
         {
+            IPackageFile cp = currentPackage;
+            CurrentPackage = null;
+
             hasLoaded = true;
             fixedPackages = new ArrayList();
             filenames = new Hashtable();
@@ -95,10 +98,7 @@ namespace pjse
                 sr.Close();
             }
 
-            if (currentPackage != null && !IsFixed(currentPackage))
-                Add(currentPackage, false);
-
-            OnFiletableRefresh(this, new EventArgs());
+            CurrentPackage = cp;
         }
 
         private void AddMaxis()
@@ -162,40 +162,36 @@ namespace pjse
         private IPackageFile currentPackage = null;
         public IPackageFile CurrentPackage
         {
-            get { return IsFixed(currentPackage) ? null : currentPackage; }
+            get { return currentPackage == null ? null : IsFixed(currentPackage) ? null : currentPackage; }
 
             set
             {
                 if (currentPackage != value)
                 {
-                    if (!hasLoaded)
-                        currentPackage = value;
-                    else
+                    if (currentPackage != null)
                     {
-                        if (currentPackage != null && !IsFixed(currentPackage))
-                        {
-                            currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
+                        currentPackage.IndexChanged -= new EventHandler(currentPackage_Changed);
+                        if (hasLoaded && !IsFixed(currentPackage))
                             Remove(currentPackage);
-                        }
-                        currentPackage = value;
-                        if (currentPackage != null && !IsFixed(currentPackage))
-                        {
-                            Add(currentPackage, false);
-                            currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
-                        }
-                        OnFiletableRefresh(this, new EventArgs());
                     }
+                    currentPackage = value;
+                    if (currentPackage != null)
+                    {
+                        if (hasLoaded && !IsFixed(currentPackage))
+                            Add(currentPackage, false);
+                        currentPackage.IndexChanged += new EventHandler(currentPackage_Changed);
+                    }
+                    if (hasLoaded)
+                        OnFiletableRefresh(this, new EventArgs());
                 }
             }
         }
 
-        private void currentPackage_IndexChanged(object sender, EventArgs e)
+        private void currentPackage_Changed(object sender, EventArgs e)
         {
-            currentPackage.IndexChanged -= new EventHandler(currentPackage_IndexChanged);
-            Remove(currentPackage);
-            Add(currentPackage, false);
-            currentPackage.IndexChanged += new EventHandler(currentPackage_IndexChanged);
-            OnFiletableRefresh(this, new EventArgs());
+            IPackageFile cp = currentPackage;
+            CurrentPackage = null;
+            CurrentPackage = cp;
         }
 
         private bool IsFixed(IPackageFile package)
@@ -229,55 +225,87 @@ namespace pjse
         private void Add(IPackageFile package, bool isFixed)
 		{
 			if (package == null) return;
-			if (pfByPackage[package] != null) return;
 
+			if (pfByPackage[package] != null) return;
 			Hashtable byPackage = (Hashtable)(pfByPackage[package] = new Hashtable());
 
-			foreach (IPackedFileDescriptor i in package.Index)
-			{
-				if (i.MarkForDelete) continue;
-
-				object val = true;
-                object key = new Entry(package, i, isFixed);
-
-				if (packedFiles[key] != null)
-                    throw new Exception("packedFiles[key] != null");
-				packedFiles[key] = val;
-
-				if (byPackage[key] != null)
+            foreach (IPackedFileDescriptor i in package.Index)
+            {
+                Entry key = new Entry(package, i, isFixed);
+                if (byPackage[key] != null)
                     throw new Exception("byPackage[key] != null");
-				byPackage[key] = val;
+                byPackage[key] = true;
 
-				Hashtable byType = (Hashtable)pfByType[i.Type];
-				if (byType == null) byType = (Hashtable)(pfByType[i.Type] = new Hashtable());
-				if (byType[key] != null)
-                    throw new Exception("byType[key] != null");
-				byType[key] = val;
+                Add(key);
+            }
 
-				Hashtable byGroup = (Hashtable)pfByGroup[i.Group];
-				if (byGroup == null) byGroup = (Hashtable)(pfByGroup[i.Group] = new Hashtable());
-				if (byGroup[key] != null)
-                    throw new Exception("byGroup[key] != null");
-				byGroup[key] = val;
-
-				Hashtable tgt = (Hashtable)pfByTypeGroup[i.Type];
-				if (tgt == null) tgt = (Hashtable)(pfByTypeGroup[i.Type] = new Hashtable());
-				Hashtable byTypeGroup = (Hashtable)((tgt[i.Group] == null) ? (tgt[i.Group] = new Hashtable()) : tgt[i.Group]);
-				if (byTypeGroup[key] != null)
-                    throw new Exception("byTypeGroup[key] != null");
-				byTypeGroup[key] = val;
-
-				Hashtable tgit = (Hashtable)pfByTypeGroupInstance[i.Type];
-				if (tgit == null) tgit = (Hashtable)(pfByTypeGroupInstance[i.Type] = new Hashtable());
-				Hashtable tgitg = (Hashtable)((tgit[i.Group] == null) ? (tgit[i.Group] = new Hashtable()) : tgit[i.Group]);
-				Hashtable byTypeGroupInstance = (Hashtable)((tgitg[i.Instance] == null) ? (tgitg[i.Instance] = new Hashtable()) : tgitg[i.Instance]);
-				if (byTypeGroupInstance[key] != null)
-                    throw new Exception("byTypeGroupInstance[key] != null");
-				byTypeGroupInstance[key] = val;
-			}
-			if (isFixed)
+            if (isFixed)
 				fixedPackages.Add(package);
 		}
+
+        private void Add(Entry key)
+        {
+            object val = true;
+            uint T = key.Type;
+            uint G = key.Group;
+            uint I = key.Instance;
+
+            if (packedFiles[key] != null)
+                throw new Exception("packedFiles[key] != null");
+            packedFiles[key] = val;
+
+            if (key.PFD.MarkForDelete) return;
+
+            Hashtable byType = (Hashtable)pfByType[T];
+            if (byType == null) byType = (Hashtable)(pfByType[T] = new Hashtable());
+            if (byType[key] != null)
+                throw new Exception("byType[key] != null");
+            byType[key] = val;
+
+            Hashtable byGroup = (Hashtable)pfByGroup[G];
+            if (byGroup == null) byGroup = (Hashtable)(pfByGroup[G] = new Hashtable());
+            if (byGroup[key] != null)
+                throw new Exception("byGroup[key] != null");
+            byGroup[key] = val;
+
+            Hashtable tgt = (Hashtable)pfByTypeGroup[T];
+            if (tgt == null) tgt = (Hashtable)(pfByTypeGroup[T] = new Hashtable());
+            Hashtable byTypeGroup = (Hashtable)((tgt[G] == null) ? (tgt[G] = new Hashtable()) : tgt[G]);
+            if (byTypeGroup[key] != null)
+                throw new Exception("byTypeGroup[key] != null");
+            byTypeGroup[key] = val;
+
+            Hashtable tgit = (Hashtable)pfByTypeGroupInstance[T];
+            if (tgit == null) tgit = (Hashtable)(pfByTypeGroupInstance[T] = new Hashtable());
+            Hashtable tgitg = (Hashtable)((tgit[G] == null) ? (tgit[G] = new Hashtable()) : tgit[G]);
+            Hashtable byTypeGroupInstance = (Hashtable)((tgitg[I] == null) ? (tgitg[I] = new Hashtable()) : tgitg[I]);
+            if (byTypeGroupInstance[key] != null)
+                throw new Exception("byTypeGroupInstance[key] != null");
+            byTypeGroupInstance[key] = val;
+
+            key.PFD.DescriptionChanged += new EventHandler(PFD_DescriptionChanged);
+        }
+
+        void PFD_DescriptionChanged(object sender, EventArgs e)
+        {
+            IPackedFileDescriptor pfd = (IPackedFileDescriptor)sender;
+
+            Entry key = null;
+            foreach (object i in packedFiles.Keys)
+                if (((Entry)i).PFD == pfd)
+                {
+                    key = (Entry)i;
+                    break;
+                }
+            if (key == null)
+            {
+                pfd.DescriptionChanged -= new EventHandler(PFD_DescriptionChanged);
+                return;
+            }
+
+            Remove(key);
+            Add(key);
+        }
 
         private void Remove(IPackageFile package)
         {
@@ -286,36 +314,41 @@ namespace pjse
             pfByPackage.Remove(package);
 
             foreach (object key in byPackage.Keys)
+                Remove((Entry)key);
+        }
+
+        private void Remove(Entry key)
+        {
+            uint T = key.Type;
+            uint G = key.Group;
+            uint I = key.Instance;
+
+            key.PFD.DescriptionChanged -= new EventHandler(PFD_DescriptionChanged);
+
+            packedFiles.Remove(key);
+            filenames.Remove(key);
+
+            Hashtable byType = (Hashtable)pfByType[T];
+            if (byType != null) byType.Remove(key);
+
+            Hashtable byGroup = (Hashtable)pfByGroup[G];
+            if (byGroup != null) byGroup.Remove(key);
+
+            Hashtable tgt = (Hashtable)pfByTypeGroup[T];
+            if (tgt != null)
             {
-                uint type = ((Entry)key).Type;
-                uint group = ((Entry)key).Group;
-                uint instance = ((Entry)key).Instance;
+                Hashtable byTypeGroup = (Hashtable)tgt[G];
+                if (byTypeGroup != null) byTypeGroup.Remove(key);
+            }
 
-                packedFiles.Remove(key);
-                filenames.Remove(key);
-
-                Hashtable byType = (Hashtable)pfByType[type];
-                if (byType != null) byType.Remove(key);
-
-                Hashtable byGroup = (Hashtable)pfByGroup[group];
-                if (byGroup != null) byGroup.Remove(key);
-
-                Hashtable tgt = (Hashtable)pfByTypeGroup[type];
-                if (tgt != null)
+            Hashtable tgit = (Hashtable)pfByTypeGroupInstance[T];
+            if (tgit != null)
+            {
+                Hashtable tgitg = (Hashtable)tgit[G];
+                if (tgitg != null)
                 {
-                    Hashtable byTypeGroup = (Hashtable)tgt[group];
-                    if (byTypeGroup != null) byTypeGroup.Remove(key);
-                }
-
-                Hashtable tgit = (Hashtable)pfByTypeGroupInstance[type];
-                if (tgit != null)
-                {
-                    Hashtable tgitg = (Hashtable)tgit[group];
-                    if (tgitg != null)
-                    {
-                        Hashtable byTypeGroupInstance = (Hashtable)tgitg[instance];
-                        if (byTypeGroupInstance != null) byTypeGroupInstance.Remove(key);
-                    }
+                    Hashtable byTypeGroupInstance = (Hashtable)tgitg[I];
+                    if (byTypeGroupInstance != null) byTypeGroupInstance.Remove(key);
                 }
             }
         }
