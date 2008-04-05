@@ -554,7 +554,7 @@ namespace pjse
 
         public IToolResult ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
         {
-            pjse.FileTable.GFT.UIRefresh();
+            SimPe.FileTable.Reload();
             return new SimPe.Plugin.ToolResult(false, false);
         }
 
