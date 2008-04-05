@@ -1,3 +1,7 @@
+5 April 2008 21:04 - Make PJSE-Tools-RFT do SimPe.FileTable.Reload()
+  pjse filetable\
+    FileTable.cs 1.28
+
 5 April 2008 17:40 - FileTable change to catch adds, removes and TGI changes more reliably
   pjse filetable\
     FileTable.cs 1.27
