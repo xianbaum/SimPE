@@ -150,11 +150,8 @@ namespace pjse
 		public event EventHandler FiletableRefresh;
 		public virtual void OnFiletableRefresh(object sender, EventArgs e)
 		{
-			if (FiletableRefresh != null) 
-			{
-				FiletableRefresh(sender, e);
-			}
-		}
+			if (FiletableRefresh != null) FiletableRefresh(sender, e);
+        }
 
 
 
@@ -225,19 +222,10 @@ namespace pjse
         private void Add(IPackageFile package, bool isFixed)
 		{
 			if (package == null) return;
-
 			if (pfByPackage[package] != null) return;
-			Hashtable byPackage = (Hashtable)(pfByPackage[package] = new Hashtable());
 
             foreach (IPackedFileDescriptor i in package.Index)
-            {
-                Entry key = new Entry(package, i, isFixed);
-                if (byPackage[key] != null)
-                    throw new Exception("byPackage[key] != null");
-                byPackage[key] = true;
-
-                Add(key);
-            }
+                Add(new Entry(package, i, isFixed));
 
             if (isFixed)
 				fixedPackages.Add(package);
@@ -249,6 +237,13 @@ namespace pjse
             uint T = key.Type;
             uint G = key.Group;
             uint I = key.Instance;
+            IPackageFile P = key.Package;
+
+            Hashtable byPackage = (Hashtable)pfByPackage[P];
+            if (byPackage == null) byPackage = (Hashtable)(pfByPackage[P] = new Hashtable());
+            if (byPackage[key] != null)
+                throw new Exception("byPackage[key] != null");
+            byPackage[key] = true;
 
             if (packedFiles[key] != null)
                 throw new Exception("packedFiles[key] != null");
@@ -304,17 +299,21 @@ namespace pjse
             }
 
             Remove(key);
+            key = new Entry(key.Package, pfd, key.IsFixed);
             Add(key);
+
+            OnFiletableRefresh(this, new EventArgs());
         }
 
         private void Remove(IPackageFile package)
         {
             Hashtable byPackage = (Hashtable)pfByPackage[package];
             if (byPackage == null) return;
-            pfByPackage.Remove(package);
 
             foreach (object key in byPackage.Keys)
                 Remove((Entry)key);
+
+            pfByPackage.Remove(package);
         }
 
         private void Remove(Entry key)
@@ -322,11 +321,15 @@ namespace pjse
             uint T = key.Type;
             uint G = key.Group;
             uint I = key.Instance;
+            IPackageFile P = key.Package;
 
             key.PFD.DescriptionChanged -= new EventHandler(PFD_DescriptionChanged);
 
             packedFiles.Remove(key);
             filenames.Remove(key);
+
+            Hashtable byPackage = (Hashtable)pfByPackage[P];
+            if (byPackage[key] != null) byPackage.Remove(key);
 
             Hashtable byType = (Hashtable)pfByType[T];
             if (byType != null) byType.Remove(key);
@@ -368,11 +371,17 @@ namespace pjse
 			{
 				this.package = package;
 				this.pfd = pfd;
-				//this.type = pfd.Type;
-				//this.group = pfd.Group;
-				//this.instance = pfd.Instance;
                 this.isFixed = isFixed;
+
+                this.pfd.ChangedData += new SimPe.Events.PackedFileChanged(pfd_ChangedData);
 			}
+
+            void pfd_ChangedData(IPackedFileDescriptor sender)
+            {
+                if (FileTable.filenames[this] != null)
+                    FileTable.filenames.Remove(this);
+                FileTable.GFT.OnFiletableRefresh(GFT, new EventArgs());
+            }
 
 			public IPackageFile Package { get { return package; } }
 
@@ -417,8 +426,10 @@ namespace pjse
 			public void Dispose()
 			{
 				this.package = null;
-				this.pfd = null;
-			}
+
+                this.pfd.ChangedData -= new SimPe.Events.PackedFileChanged(pfd_ChangedData);
+                this.pfd = null;
+            }
 
 			#endregion
 

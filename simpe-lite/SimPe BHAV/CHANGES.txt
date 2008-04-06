@@ -1,3 +1,7 @@
+6 April 2008 14:05 - Slightly hacky fix to get Entry filenames updating
+  pjse filetable\
+    FileTable.cs 1.29
+
 5 April 2008 21:04 - Make PJSE-Tools-RFT do SimPe.FileTable.Reload()
   pjse filetable\
     FileTable.cs 1.28
