@@ -310,8 +310,18 @@ namespace pjse
             Hashtable byPackage = (Hashtable)pfByPackage[package];
             if (byPackage == null) return;
 
-            foreach (object key in byPackage.Keys)
-                Remove((Entry)key);
+            Entry[] keys = new Entry[byPackage.Keys.Count];
+            byPackage.Keys.CopyTo(keys, 0);
+            try
+            {
+                foreach (object key in keys)
+                    Remove((Entry)key);
+            }
+            catch (Exception e)
+            {
+                SimPe.Helper.ExceptionMessage(e);
+                throw e;
+            }
 
             pfByPackage.Remove(package);
         }
@@ -559,7 +569,15 @@ namespace pjse
 
         public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
         {
-            pjse.FileTable.GFT.CurrentPackage = package;
+            try
+            {
+                pjse.FileTable.GFT.CurrentPackage = package;
+            }
+            catch (Exception e)
+            {
+                SimPe.Helper.ExceptionMessage(e);
+                throw e;
+            }
             return true;
         }
 

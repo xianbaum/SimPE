@@ -1,3 +1,7 @@
+6 April 2008 19:28 - Don't pull the rug out from under the FileTable in Remove()
+  pjse filetable\
+    FileTable.cs 1.30
+
 6 April 2008 14:05 - Slightly hacky fix to get Entry filenames updating
   pjse filetable\
     FileTable.cs 1.29
