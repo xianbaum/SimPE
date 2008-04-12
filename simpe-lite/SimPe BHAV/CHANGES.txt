@@ -1,4 +1,4 @@
-12 Apil 2008 11:02 - Fix Problem with Paste
+12 April 2008 11:02 - Fix Problem with Paste
   * Instruction(wrapper) fixed to clone static initialiser for Operands
   * Also made Instruction(wrapper) public (like Clone() is)
   * Also minor fixed layout and behaviour problem with Zero operands button
