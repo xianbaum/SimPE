@@ -496,7 +496,7 @@ namespace SimPe.PackedFiles.Wrapper
 		private byte nodeversion = 0;
 		private wrappedByteArray operands = null;
 		private wrappedByteArray reserved_01 = null;
-		private static byte[] nooperands = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, };
+		private static readonly byte[] nooperands = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, };
 		#endregion
 
 		#region Accessor methods
@@ -560,25 +560,22 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent)
+		public Instruction (Bhav parent)
 		{
 			this.parent = parent;
-			this.operands = new wrappedByteArray(this, nooperands);
+			this.operands = new wrappedByteArray(this, (byte[])nooperands.Clone());
 			this.reserved_01 = new wrappedByteArray(this, new byte[8]);
 		}
 
-		/// <summary>
+#if UNUSED
+        /// <summary>
 		/// Constructor
 		/// </summary>
-		internal Instruction (Bhav parent, ushort opcode)
-		{
-			this.parent = parent;
-			this.opcode = opcode;
-			this.operands = new wrappedByteArray(this, nooperands);
-			this.reserved_01 = new wrappedByteArray(this, new byte[8]);
-		}
+		internal Instruction (Bhav parent, ushort opcode) : this(parent) { this.opcode = opcode; }
+#endif
 
-		/// <summary>
+#if UNUSED
+        /// <summary>
 		/// Constructor
 		/// </summary>
 		internal Instruction (Bhav parent, ushort opcode, ushort addr1, ushort addr2, byte nodeversion, byte[] operands, byte[] reserved_01)
@@ -591,6 +588,7 @@ namespace SimPe.PackedFiles.Wrapper
 			this.operands = new wrappedByteArray(this, operands);
 			this.reserved_01 = new wrappedByteArray(this, reserved_01);
 		}
+#endif
 
 		/// <summary>
 		/// Constructor

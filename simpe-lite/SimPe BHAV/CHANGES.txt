@@ -1,3 +1,12 @@
+12 Apil 2008 11:02 - Fix Problem with Paste
+  * Instruction(wrapper) fixed to clone static initialiser for Operands
+  * Also made Instruction(wrapper) public (like Clone() is)
+  * Also minor fixed layout and behaviour problem with Zero operands button
+  SimPe BHAV\
+    BhavForm.cs 1.89
+    BhavForm.resx 1.49
+    BhavWrapper.cs 1.50
+
 6 April 2008 19:28 - Don't pull the rug out from under the FileTable in Remove()
   pjse filetable\
     FileTable.cs 1.30

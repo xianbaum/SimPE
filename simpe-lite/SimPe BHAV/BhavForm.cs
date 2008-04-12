@@ -262,6 +262,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.btnOperandWiz.Enabled = !state;
 			/*this.btnOperandRaw.Enabled = !state;*/
+            this.btnZero.Enabled = !state;
 			
 			this.tbInst_Unk0.ReadOnly = state || wrapper.Header.Format < 0x8003;
 			this.tbInst_Unk1.ReadOnly = state || wrapper.Header.Format < 0x8003;
@@ -669,7 +670,7 @@ namespace SimPe.PackedFiles.UserInterface
                     tbArgC.Enabled = tbLocalC.Enabled =
                     /*btnSort.Visible =*/ btnCommit.Visible = gbMove.Visible =
                     btnDel.Visible = btnAdd.Visible =
-                    btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/
+                    btnOpCode.Visible = btnOperandWiz.Visible = /*btnOperandRaw.Visible =*/ btnZero.Visible =
                     gbSpecial.Visible = cbSpecial.Visible =
                     btnCancel.Visible = pjse_banner1.FloatVisible = false;
                 btnClose.Visible = true;
@@ -1233,6 +1234,7 @@ namespace SimPe.PackedFiles.UserInterface
             // pjse_banner1
             // 
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pjse_banner1.FloatVisible = true;
             this.pjse_banner1.Name = "pjse_banner1";
             this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
