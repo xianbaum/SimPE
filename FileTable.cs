@@ -83,7 +83,8 @@ namespace pjse
             pfByTypeGroup = new Hashtable();
             pfByTypeGroupInstance = new Hashtable();
 
-            this.AddMaxis();
+            foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
+                if (fii.Use) Add(fii.Name, fii.IsRecursive, true);
 
             this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, true);
 
@@ -101,50 +102,8 @@ namespace pjse
             CurrentPackage = cp;
         }
 
-        private void AddMaxis()
-        {
-            defaultFolders = SimPe.FileTable.DefaultFolders; // in case they've been updated
-            bool haveOP = false;
 
-            for (int i = SimPe.PathProvider.Global.Expansions.Count; --i >= 0; )
-            {
-                SimPe.ExpansionItem ei = SimPe.PathProvider.Global.Expansions[i];
-                if (!ei.Exists) continue;
-
-                foreach (String s in ei.PreObjectFileTableFolders)
-                {
-                    String o = Path.Combine(ei.InstallFolder, s);
-                    if (!Directory.Exists(o) || isIgnored(o))
-                        continue;
-
-                    string[] va = Directory.GetFiles(o, "*.package");
-                    foreach (String pkg in va)
-                        if (!pkg.ToLower().EndsWith(SimPe.Helper.PATH_SEP + "globalcatbin.bundle.package"))
-                            Add(pkg, false, true);
-                }
-                if (!haveOP && !isIgnored(Path.Combine(ei.InstallFolder, ei.ObjectsSubFolder)))
-                {
-                    Add(Path.Combine(Path.Combine(ei.InstallFolder, ei.ObjectsSubFolder), "Objects.package"), false, true);
-                    haveOP = true;
-                }
-            }
-        }
-
-        private ArrayList defaultFolders = SimPe.FileTable.DefaultFolders;
-        private bool isIgnored(String path)
-        {
-            String o = path.Trim().ToLower();
-            foreach (SimPe.FileTableItem folder in defaultFolders)
-            {
-                if (!folder.Exists) continue;
-                if (folder.Name.Trim().ToLower().Equals(o))
-                    return folder.Ignore;
-            }
-            return false;
-        }
-
-
-		/// <summary>
+        /// <summary>
 		/// Indicates the Refresh() was called
 		/// </summary>
 		public event EventHandler FiletableRefresh;
@@ -204,17 +163,17 @@ namespace pjse
 
         private void Add(string v, bool recurse, bool isFixed)
         {
-            if (System.IO.Directory.Exists(v))
+            if (Directory.Exists(v))
             {
-                string[] va = System.IO.Directory.GetFiles(v, "*.package");
-                foreach (string i in va) Add(i, false, isFixed);
+                foreach (string i in Directory.GetFiles(v, "*.package"))
+                    Add(i, false, isFixed);
+
                 if (recurse)
-                {
-                    va = System.IO.Directory.GetDirectories(v);
-                    foreach (string i in va) Add(i, true, isFixed);
-                }
+                    foreach (string i in Directory.GetDirectories(v))
+                        Add(i, true, isFixed);
             }
-            else if (File.Exists(v))
+
+            else if (!v.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP+"globalcatbin.bundle.package") && File.Exists(v))
                 Add(SimPe.Packages.File.LoadFromFile(v), isFixed);
         }
 
