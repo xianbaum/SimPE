@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Collections.Generic;
 using System.Collections;
 using System.IO;
 using System.Windows.Forms;
@@ -29,6 +30,44 @@ namespace pj
 {
     public class BodyMeshExtractor : ITool
     {
+        private static List<string> packs = null;
+        private static void SetPacks()
+        {
+            packs.Clear();
+            foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
+            {
+                if (!fii.Use) continue;
+                if (fii.IsFile && fii.Name.ToLowerInvariant().EndsWith(".package"))
+                    packs.Insert(0, fii.Name);
+                else if (fii.Type.AsExpansions != SimPe.Expansions.Custom)
+                {
+                    if (fii.Name.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + "3d") ||
+                        fii.Name.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + "sims3d"))
+                        AddPack(fii.Name, fii.IsRecursive);
+                }
+                //else
+                    //AddPack(fii.Name, fii.IsRecursive);
+            }
+        }
+
+        static void FileIndex_FILoad(object sender, EventArgs e) { SetPacks(); }
+
+        private static void AddPack(string folder, bool rec)
+        {
+            foreach (string pkg in Directory.GetFiles(folder, "*.package"))
+                //if (!pkg.ToLowerInvariant().EndsWith("globalcatbin.bundle.package"))
+                if (pkg.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + "sims03.package")
+                    || pkg.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + "sims04.package")
+                    || pkg.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + "sims05.package")
+                    || pkg.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + "sims06.package"))
+                    packs.Add(pkg);
+
+            //if (rec)
+                //foreach (string subfolder in Directory.GetDirectories(folder))
+                    //AddPack(subfolder, true);
+        }
+
+
         private IPackageFile currentPackage;
         private String getFilename()
         {
@@ -53,55 +92,12 @@ namespace pj
             return null;
         }
 
-        private static String SimsPath = SimPe.PathProvider.Global[0].InstallFolder;
-        private static ArrayList paths = new ArrayList();
-        private static ArrayList packs = new ArrayList();
-
-        static BodyMeshExtractor()
-        {
-            for (int i = SimPe.PathProvider.Global.Expansions.Count; --i >= 0;)
-            {
-                String path = SimPe.PathProvider.Global[i].InstallFolder;
-                if (path.Length == 0 || (i != 0 && path.Equals(SimsPath)))
-                    continue;
-                paths.Add(path);
-
-                if (!Directory.Exists(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"))) continue;
-                string[] va = Directory.GetFiles(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), "*.package");
-                foreach (String pkg in va)
-                {
-                    if (!pkg.ToLower().EndsWith("\\globalcatbin.bundle.package"))
-                        packs.Insert(0, pkg);
-                }
-            }
-        }
-
         private bool findAndAdd(String name, uint type, String source)
         {
-            foreach (String path in paths)
-            {
-                if (path.Length == 0)
-                    continue;
-
-                String sims2loc = Path.Combine(path, "TSData\\Res\\3D");
-                if (!Directory.Exists(sims2loc))
-                    sims2loc = Path.Combine(path, "TSData\\Res\\Sims3D");
-                if (!Directory.Exists(sims2loc))
-                    continue;
-
-                if (!addFromPkg(name, type, Path.Combine(sims2loc, source)))
-                    continue;
-
-                return true;
-            }
-
-            foreach (String pack in packs)
-            {
-                if (!addFromPkg(name, type, pack))
-                    continue;
-
-                return true;
-            }
+            foreach (string pkg in packs)
+                if (pkg.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + source.ToLowerInvariant()))
+                    if (addFromPkg(name, type, pkg))
+                        return true;
 
             return false;
         }
@@ -250,6 +246,12 @@ namespace pj
 
         public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
         {
+            if (packs == null)
+            {
+                packs = new List<string>();
+                SetPacks();
+                SimPe.FileTable.FileIndex.FILoad += new EventHandler(FileIndex_FILoad);
+            }
             currentPackage = package;
             return package != null;
         }

@@ -31,71 +31,97 @@ namespace pj
 {
     public class cObjKeyTool : ITool
     {
-        private static String SimsPath = SimPe.PathProvider.Global[0].InstallFolder;
-
         // TSData\Res\3D:
-        private static List<String> txmtpkg = new List<string>();   // Objects02, Sims02, CarryForward.sgfiles
-        private static List<String> gmdcpkg = new List<string>();   // Objects03, Sims03, CarryForward.sgfiles
-        private static List<String> gmndpkg = new List<string>();   // Objects04, Sims04, CarryForward.sgfiles
-        private static List<String> shpepkg = new List<string>();   // Objects06, Sims05, CarryForward.sgfiles
-        private static List<String> crespkg = new List<string>();   // Objects05, Sims06, CarryForward.sgfiles
-        private static List<String> txtrpkg = new List<string>();   // Objects07, Sims07, Textures, CarryForward.sgfiles
-        private static List<String> lifopkg = new List<string>();   // Objects07-09, Sims08/9/11-13, Textures, CarryForward.sgfiles
+        private static List<String> txmtpkg;   // Objects02, Sims02, CarryForward.sgfiles
+        private static List<String> gmdcpkg;   // Objects03, Sims03, CarryForward.sgfiles
+        private static List<String> gmndpkg;   // Objects04, Sims04, CarryForward.sgfiles
+        private static List<String> shpepkg;   // Objects06, Sims05, CarryForward.sgfiles
+        private static List<String> crespkg;   // Objects05, Sims06, CarryForward.sgfiles
+        private static List<String> txtrpkg;   // Objects07, Sims07, Textures, CarryForward.sgfiles
+        private static List<String> lifopkg;   // Objects07-09, Sims08/9/11-13, Textures, CarryForward.sgfiles
 
         // TSData\Res\Catalog:
-        private static List<String> objkeys = new List<string>();   // Skins\Skins
-        private static List<String> fragkeys = new List<string>();  // Bins\globalcatbin.bundle
-        private static List<String> binkeys = new List<string>();   // Bins\globalcatbin.bundle
+        private static List<String> objkeys;   // Skins\Skins
+        private static List<String> fragkeys;  // Bins\globalcatbin.bundle
+        private static List<String> binkeys;   // Bins\globalcatbin.bundle
 
         private static void addPackages(ref List<String> packs, String path, String[] posspacks)
         {
-            if (Directory.Exists(path))
-            {
-                foreach (String p in posspacks)
-                    if (File.Exists(Path.Combine(path, p + ".package")))
-                        packs.Add(Path.Combine(path, p + ".package"));
-            }
-            else if (path.EndsWith("\\3D") && Directory.Exists(path.Replace("\\3D", "\\Sims3D")))
-                foreach (String p in posspacks)
-                    if (File.Exists(Path.Combine(path.Replace("\\3D", "\\Sims3D"), p + ".package")))
-                        packs.Add(Path.Combine(path.Replace("\\3D", "\\Sims3D"), p + ".package"));
+            foreach (String p in posspacks)
+                if (File.Exists(p))
+                    packs.Add(p);
+                else if (File.Exists(Path.Combine(path, p)))
+                    packs.Add(Path.Combine(path, p));
+                else if (File.Exists(Path.Combine(path, p + ".package")))
+                    packs.Add(Path.Combine(path, p + ".package"));
+        }
+
+        private static void addPackages(ref List<String> packs, String path, bool rec)
+        {
+            addPackages(ref packs, path, Directory.GetFiles(path, "*.package"));
+            if (rec)
+                foreach (String folder in Directory.GetDirectories(path))
+                    addPackages(ref packs, Path.Combine(path, folder), rec);
         }
         
-        static cObjKeyTool()
+        private static void SetPacks()
         {
-            for (int i = SimPe.PathProvider.Global.Expansions.Count; --i >= 0;)
+            txmtpkg = new List<String>();
+            gmdcpkg = new List<String>();
+            gmndpkg = new List<String>();
+            shpepkg = new List<String>();
+            crespkg = new List<String>();
+            txtrpkg = new List<String>();
+            lifopkg = new List<String>();
+            objkeys = new List<String>();
+            fragkeys = new List<String>();
+            binkeys = new List<String>();
+            List<String>[] lls = new List<String>[] { txmtpkg, gmdcpkg, gmndpkg, shpepkg, crespkg, txtrpkg, lifopkg, objkeys, fragkeys, binkeys, };
+
+            foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
             {
-                String path = SimPe.PathProvider.Global[i].InstallFolder;
-                if (path.Length == 0 || (i != 0 && path.Equals(SimsPath)))
-                    continue;
-
-                addPackages(ref txmtpkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects02", "Sims02", "CarryForward.sgfiles" });
-                addPackages(ref gmdcpkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects03", "Sims03", "CarryForward.sgfiles" });
-                addPackages(ref gmndpkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects04", "Sims04", "CarryForward.sgfiles" });
-                addPackages(ref shpepkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects06", "Sims05", "CarryForward.sgfiles" });
-                addPackages(ref crespkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects05", "Sims06", "CarryForward.sgfiles" });
-                addPackages(ref txtrpkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] { "Objects07", "Sims07", "Textures", "CarryForward.sgfiles" });
-                addPackages(ref lifopkg, Path.Combine(path, "TSData\\Res\\3D"), new String[] {
-                    "Objects07", "Objects08", "Objects09",
-                    "Sims08", "Sims09", "Sims11", "Sims12", "Sims13",
-                    "Textures", "CarryForward.sgfiles" });
-
-                addPackages(ref objkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Skins"), new String[] { "Skins" });
-                addPackages(ref fragkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), new String[] { "globalcatbin.bundle" });
-                addPackages(ref binkeys, Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), new String[] { "globalcatbin.bundle" });
-
-                if (!Directory.Exists(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"))) continue;
-                string[] va = Directory.GetFiles(Path.Combine(path, "TSData\\Res\\Catalog\\Bins"), "*.package");
-                foreach (String pkg in va)
+                if (!fii.Use) continue;
+                if (fii.IsFile)
+                    for (int i = 0; i < lls.Length; i++) addPackages(ref lls[i], "", new String[] { fii.Name });
+                else if (fii.Type.AsExpansions == SimPe.Expansions.Custom)
+                    for (int i = 0; i < lls.Length; i++) addPackages(ref lls[i], fii.Name, fii.IsRecursive);
+                else if (fii.Name.ToLowerInvariant().EndsWith("3d"))
                 {
-                    if (!pkg.ToLower().EndsWith("\\globalcatbin.bundle.package"))
+                    addPackages(ref txmtpkg, fii.Name, new String[] { "Objects02", "Sims02", "CarryForward.sgfiles" });
+                    addPackages(ref gmdcpkg, fii.Name, new String[] { "Objects03", "Sims03", "CarryForward.sgfiles" });
+                    addPackages(ref gmndpkg, fii.Name, new String[] { "Objects04", "Sims04", "CarryForward.sgfiles" });
+                    addPackages(ref shpepkg, fii.Name, new String[] { "Objects06", "Sims05", "CarryForward.sgfiles" });
+                    addPackages(ref crespkg, fii.Name, new String[] { "Objects05", "Sims06", "CarryForward.sgfiles" });
+                    addPackages(ref txtrpkg, fii.Name, new String[] { "Objects07", "Sims07", "Textures", "CarryForward.sgfiles" });
+                    addPackages(ref lifopkg, fii.Name, new String[] {
+                        "Objects07", "Objects08", "Objects09",
+                        "Sims08", "Sims09", "Sims11", "Sims12", "Sims13",
+                        "Textures", "CarryForward.sgfiles"
+                    });
+                }
+                else if (fii.Name.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + "skins"))
+                {
+                    addPackages(ref objkeys, fii.Name, new String[] { "Skins" });
+
+                    string name = fii.Name.Replace(SimPe.Helper.PATH_SEP + "Skins", SimPe.Helper.PATH_SEP + "Bins");
+                    if (Directory.Exists(name))
                     {
-                        fragkeys.Insert(0, pkg);
-                        binkeys.Insert(0, pkg);
+                        foreach (String pkg in Directory.GetFiles(name, "*.package"))
+                            if (!pkg.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP + "globalcatbin.bundle.package"))
+                            {
+                                fragkeys.Add(pkg);
+                                binkeys.Add(pkg);
+                            }
+
+                        addPackages(ref fragkeys, name, new String[] { "globalcatbin.bundle" });
+                        addPackages(ref binkeys, name, new String[] { "globalcatbin.bundle" });
                     }
                 }
             }
         }
+
+        static void FileIndex_FILoad(object sender, EventArgs e) { SetPacks(); }
+
 
         private bool has3idr(IPackedFileDescriptor pfd, IPackageFile package)
         {
@@ -549,6 +575,11 @@ namespace pj
 
         public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
         {
+            if (txmtpkg == null)
+            {
+                SetPacks();
+                SimPe.FileTable.FileIndex.FILoad += new EventHandler(FileIndex_FILoad);
+            }
             if (pfd == null || package == null) return false;
             if (pfd.Type == SimPe.Data.MetaData.REF_FILE) return hasCpf(pfd, package);
             else if (pfd.Type == 0x0C1FE246 /*XMOL*/ || pfd.Type == 0x2C1FD8A1 /*XTOL*/ || pfd.Type == SimPe.Data.MetaData.GZPS)
