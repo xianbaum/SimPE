@@ -133,7 +133,7 @@
     <value>0, 0</value>
   </data>
   <data name="pjse_banner1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>878, 27</value>
+    <value>880, 27</value>
   </data>
   <data name="pjse_banner1.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -145,7 +145,7 @@
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3014.21842, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3025.22059, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>objfPanel</value>
@@ -163,7 +163,7 @@
     <value>104, 70</value>
   </data>
   <data name="lbFunction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>758, 40</value>
+    <value>760, 40</value>
   </data>
   <data name="lbFunction.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -211,7 +211,7 @@
     <value>0, 113</value>
   </data>
   <data name="lvObjfItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>513, 237</value>
+    <value>515, 237</value>
   </data>
   <data name="lvObjfItem.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -238,7 +238,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>740, 39</value>
+    <value>742, 39</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
     <value>122, 28</value>
@@ -274,7 +274,7 @@
     <value>0, 13</value>
   </data>
   <data name="llGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>644, 227</value>
+    <value>646, 227</value>
   </data>
   <data name="llGuardian.Size" type="System.Drawing.Size, System.Drawing">
     <value>116, 17</value>
@@ -310,7 +310,7 @@
     <value>0, 11</value>
   </data>
   <data name="llAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>666, 130</value>
+    <value>668, 130</value>
   </data>
   <data name="llAction.Size" type="System.Drawing.Size, System.Drawing">
     <value>97, 17</value>
@@ -343,7 +343,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>846, 128</value>
+    <value>848, 128</value>
   </data>
   <data name="btnAction.Size" type="System.Drawing.Size, System.Drawing">
     <value>25, 23</value>
@@ -376,7 +376,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>846, 225</value>
+    <value>848, 225</value>
   </data>
   <data name="btnGuardian.Size" type="System.Drawing.Size, System.Drawing">
     <value>25, 23</value>
@@ -400,7 +400,7 @@
     <value>7</value>
   </data>
   <data name="lbAction.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Top, Right</value>
   </data>
   <data name="lbAction.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -412,7 +412,7 @@
     <value>519, 155</value>
   </data>
   <data name="lbAction.Size" type="System.Drawing.Size, System.Drawing">
-    <value>349, 49</value>
+    <value>351, 49</value>
   </data>
   <data name="lbAction.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -433,7 +433,7 @@
     <value>8</value>
   </data>
   <data name="lbGuardian.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Top, Right</value>
   </data>
   <data name="lbGuardian.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -445,7 +445,7 @@
     <value>522, 262</value>
   </data>
   <data name="lbGuardian.Size" type="System.Drawing.Size, System.Drawing">
-    <value>346, 49</value>
+    <value>348, 49</value>
   </data>
   <data name="lbGuardian.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -472,7 +472,7 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbGuardian.Location" type="System.Drawing.Point, System.Drawing">
-    <value>772, 223</value>
+    <value>774, 223</value>
   </data>
   <data name="tbGuardian.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
@@ -505,7 +505,7 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="tbAction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>772, 126</value>
+    <value>774, 126</value>
   </data>
   <data name="tbAction.MaxLength" type="System.Int32, mscorlib">
     <value>6</value>
@@ -577,7 +577,7 @@
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>611, 24</value>
+    <value>613, 24</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -637,7 +637,7 @@
     <value>0, 0</value>
   </data>
   <data name="objfPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>878, 359</value>
+    <value>880, 359</value>
   </data>
   <data name="objfPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -661,7 +661,7 @@
     <value>8, 17</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>878, 359</value>
+    <value>880, 359</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>

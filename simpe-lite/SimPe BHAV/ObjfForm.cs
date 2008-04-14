@@ -162,7 +162,16 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.lvObjfItem.Items.Clear();
 			bool parm = false;
-			for(ushort i = 0; i < wrapper.Count; i++)
+
+            // There appears to be no clean way to handle a "new" resource being created in the wrapper
+            // so this is in here.  Yuck.
+            if (wrapper.Count == 0)
+            {
+                int max = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs).Count;
+                for (int i = 0; i < max; i++) wrapper.Add(new ObjfItem(wrapper));
+            }
+
+            for (ushort i = 0; i < wrapper.Count; i++)
 				this.lvObjfItem.Items.Add( new ListViewItem(
 					new string[] {
 									 pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs, i)
@@ -203,6 +212,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ObjfForm));
             this.objfPanel = new System.Windows.Forms.Panel();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.lbFunction = new System.Windows.Forms.Label();
             this.lvObjfItem = new System.Windows.Forms.ListView();
             this.chFunction = new System.Windows.Forms.ColumnHeader();
@@ -220,7 +230,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbFilename = new System.Windows.Forms.Label();
             this.tbFilename = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
-            this.pjse_banner1 = new pjse.pjse_banner();
             this.objfPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -244,6 +253,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.objfPanel.Controls.Add(this.tbFilename);
             this.objfPanel.Controls.Add(this.label19);
             this.objfPanel.Name = "objfPanel";
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // lbFunction
             // 
@@ -356,11 +371,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.label19, "label19");
             this.label19.Name = "label19";
-            // 
-            // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // ObjfForm
             // 

@@ -1,3 +1,9 @@
+14 April 2008 20:15 - Handle zero entries in an Objf by fully populating it
+  * Also fix layout bug
+  SimPe BHAV\
+    ObjfForm.cs 1.25
+    ObjfForm.resx 1.10 
+
 13 April 2008 10:16 - Increase use of SimPe filetable
   pjse filetable\
     FileTable.cs
