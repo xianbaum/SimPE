@@ -71,6 +71,7 @@ namespace SimPe.PackedFiles.UserInterface
         private TextBox tbDesc;
         private Label lbDesc;
         private pjse.pjse_banner pjse_banner1;
+        private Button btnSetAs4E;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -450,15 +451,23 @@ namespace SimPe.PackedFiles.UserInterface
                 doTextOnly();
                 return;
             }
+
 #if !DEBUG
             if (wrapper.Version != 0x4e)
             {
                 btnStrAdd.Enabled = btnStrDelete.Enabled = cbUsed.Enabled = false;
                 tbFilename.ReadOnly = tbLabel.ReadOnly = tbID.ReadOnly =
                     tbDefValue.ReadOnly = tbMinValue.ReadOnly = tbMaxValue.ReadOnly = true;
-
+            }
+            else
+            {
+                btnStrAdd.Enabled = btnStrDelete.Enabled = cbUsed.Enabled = true;
+                tbFilename.ReadOnly = tbLabel.ReadOnly = tbID.ReadOnly =
+                    tbDefValue.ReadOnly = tbMinValue.ReadOnly = tbMaxValue.ReadOnly = false;
             }
 #endif
+            btnSetAs4E.Enabled = (wrapper.Version != 0x4e);
+
             lbDefValue.Visible = tbDefValue.Visible = (wrapper.Version <= 0x53);
             if (wrapper.Version > 0x53) lvTrcnItem.Columns[5].Width = 0;
             this.btnCommit.Enabled = wrapper.Changed;
@@ -489,6 +498,7 @@ namespace SimPe.PackedFiles.UserInterface
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrcnForm));
             this.btnCommit = new System.Windows.Forms.Button();
             this.trcnPanel = new System.Windows.Forms.Panel();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.tbDesc = new System.Windows.Forms.TextBox();
             this.lbDesc = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -522,7 +532,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbLabel = new System.Windows.Forms.Label();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
-            this.pjse_banner1 = new pjse.pjse_banner();
+            this.btnSetAs4E = new System.Windows.Forms.Button();
             this.trcnPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -536,6 +546,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.trcnPanel, "trcnPanel");
             this.trcnPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.trcnPanel.Controls.Add(this.btnSetAs4E);
             this.trcnPanel.Controls.Add(this.pjse_banner1);
             this.trcnPanel.Controls.Add(this.tbDesc);
             this.trcnPanel.Controls.Add(this.lbDesc);
@@ -564,6 +575,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.trcnPanel.Controls.Add(this.btnStrPrev);
             this.trcnPanel.Controls.Add(this.btnStrNext);
             this.trcnPanel.Name = "trcnPanel";
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // tbDesc
             // 
@@ -777,10 +794,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrNext.TabStop = false;
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
             // 
-            // pjse_banner1
+            // btnSetAs4E
             // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.Name = "pjse_banner1";
+            resources.ApplyResources(this.btnSetAs4E, "btnSetAs4E");
+            this.btnSetAs4E.Name = "btnSetAs4E";
+            this.btnSetAs4E.UseVisualStyleBackColor = true;
+            this.btnSetAs4E.Click += new System.EventHandler(this.btnSetAs4E_Click);
             // 
             // TrcnForm
             // 
@@ -824,6 +843,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLabel.SelectAll();
 			this.tbLabel.Focus();
 		}
+
+        private void btnSetAs4E_Click(object sender, EventArgs e)
+        {
+            wrapper.Version = 0x4e;
+        }
 
 
 		private void btnStrPrev_Click(object sender, System.EventArgs e)

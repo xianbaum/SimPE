@@ -1,3 +1,8 @@
+26 April 2008 17:36 - Allow any non-TextOnly TRCN to be turned into a type 0x4E for editing
+  SimPe BHAV\
+    TrcnForm.cs 1.22
+    TrcnForm.resx 1.14
+
 26 April 2008 13:52 - In DEBUG mode, allow editing of all non-dodgy TRCN files
   SimPe BHAV\
     TrcnForm.cs 1.21
