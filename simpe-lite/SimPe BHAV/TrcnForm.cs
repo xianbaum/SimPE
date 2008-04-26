@@ -450,6 +450,7 @@ namespace SimPe.PackedFiles.UserInterface
                 doTextOnly();
                 return;
             }
+#if !DEBUG
             if (wrapper.Version != 0x4e)
             {
                 btnStrAdd.Enabled = btnStrDelete.Enabled = cbUsed.Enabled = false;
@@ -457,6 +458,7 @@ namespace SimPe.PackedFiles.UserInterface
                     tbDefValue.ReadOnly = tbMinValue.ReadOnly = tbMaxValue.ReadOnly = true;
 
             }
+#endif
             lbDefValue.Visible = tbDefValue.Visible = (wrapper.Version <= 0x53);
             if (wrapper.Version > 0x53) lvTrcnItem.Columns[5].Width = 0;
             this.btnCommit.Enabled = wrapper.Changed;

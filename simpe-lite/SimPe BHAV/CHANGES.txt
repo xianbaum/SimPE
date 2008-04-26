@@ -1,3 +1,8 @@
+26 April 2008 13:52 - In DEBUG mode, allow editing of all non-dodgy TRCN files
+  SimPe BHAV\
+    TrcnForm.cs 1.21
+    TrcnWrapper.cs 1.14
+
 26 April 2008 13:28 - Move lines in a TTAB
   SimPe BHAV\
     TtabForm.cs 1.50
