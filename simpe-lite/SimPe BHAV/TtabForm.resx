@@ -122,10 +122,64 @@
     <value>True</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="btnMoveDown.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnMoveDown.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 162</value>
+  </data>
+  <data name="btnMoveDown.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 24</value>
+  </data>
+  <data name="btnMoveDown.TabIndex" type="System.Int32, mscorlib">
+    <value>122</value>
+  </data>
+  <data name="btnMoveDown.Text" xml:space="preserve">
+    <value>Move Down</value>
+  </data>
+  <data name="&gt;&gt;btnMoveDown.Name" xml:space="preserve">
+    <value>btnMoveDown</value>
+  </data>
+  <data name="&gt;&gt;btnMoveDown.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnMoveDown.Parent" xml:space="preserve">
+    <value>ttabPanel</value>
+  </data>
+  <data name="&gt;&gt;btnMoveDown.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btnMoveUp.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnMoveUp.Location" type="System.Drawing.Point, System.Drawing">
+    <value>29, 137</value>
+  </data>
+  <data name="btnMoveUp.Size" type="System.Drawing.Size, System.Drawing">
+    <value>94, 24</value>
+  </data>
+  <data name="btnMoveUp.TabIndex" type="System.Int32, mscorlib">
+    <value>122</value>
+  </data>
+  <data name="btnMoveUp.Text" xml:space="preserve">
+    <value>Move Up</value>
+  </data>
+  <data name="&gt;&gt;btnMoveUp.Name" xml:space="preserve">
+    <value>btnMoveUp</value>
+  </data>
+  <data name="&gt;&gt;btnMoveUp.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnMoveUp.Parent" xml:space="preserve">
+    <value>ttabPanel</value>
+  </data>
+  <data name="&gt;&gt;btnMoveUp.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
   <data name="pjse_banner1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="pjse_banner1.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt, style=Bold</value>
   </data>
@@ -142,13 +196,13 @@
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3014.21552, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3034.28125, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>2</value>
   </data>
   <data name="btnStrPrev.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
@@ -157,7 +211,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrPrev.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 137</value>
+    <value>7, 139</value>
   </data>
   <data name="btnStrPrev.Size" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
@@ -178,7 +232,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;btnStrPrev.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>3</value>
   </data>
   <data name="btnStrNext.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
@@ -187,7 +241,7 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrNext.Location" type="System.Drawing.Point, System.Drawing">
-    <value>35, 137</value>
+    <value>7, 164</value>
   </data>
   <data name="btnStrNext.Size" type="System.Drawing.Size, System.Drawing">
     <value>21, 21</value>
@@ -208,13 +262,13 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;btnStrNext.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>4</value>
   </data>
   <data name="btnAppend.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnAppend.Location" type="System.Drawing.Point, System.Drawing">
-    <value>178, 135</value>
+    <value>202, 137</value>
   </data>
   <data name="btnAppend.Size" type="System.Drawing.Size, System.Drawing">
     <value>74, 24</value>
@@ -235,7 +289,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;btnAppend.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>5</value>
   </data>
   <data name="lbFilename.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -268,7 +322,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;lbFilename.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>6</value>
   </data>
   <data name="tbFilename.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 55</value>
@@ -295,7 +349,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;tbFilename.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>7</value>
   </data>
   <data name="tbFormat.Location" type="System.Drawing.Point, System.Drawing">
     <value>57, 82</value>
@@ -322,7 +376,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;tbFormat.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>8</value>
   </data>
   <data name="label41.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -352,7 +406,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;label41.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>9</value>
   </data>
   <data name="btnCommit.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -379,13 +433,13 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;btnCommit.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>10</value>
   </data>
   <data name="btnAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>63, 135</value>
+    <value>129, 137</value>
   </data>
   <data name="btnAdd.Size" type="System.Drawing.Size, System.Drawing">
     <value>48, 24</value>
@@ -406,7 +460,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;btnAdd.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>11</value>
   </data>
   <data name="label26.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -439,13 +493,13 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;label26.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>12</value>
   </data>
   <data name="btnDelete.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>113, 135</value>
+    <value>129, 161</value>
   </data>
   <data name="btnDelete.Size" type="System.Drawing.Size, System.Drawing">
     <value>64, 24</value>
@@ -466,7 +520,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;btnDelete.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>13</value>
   </data>
   <data name="lbttab.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -481,10 +535,10 @@
     <value>16</value>
   </data>
   <data name="lbttab.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 165</value>
+    <value>0, 191</value>
   </data>
   <data name="lbttab.Size" type="System.Drawing.Size, System.Drawing">
-    <value>274, 416</value>
+    <value>274, 390</value>
   </data>
   <data name="lbttab.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -499,7 +553,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;lbttab.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>14</value>
   </data>
   <data name="tabControl1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -2635,7 +2689,7 @@
     <value>timtuiHuman</value>
   </data>
   <data name="&gt;&gt;timtuiHuman.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=4.0.3014.21552, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=4.0.3034.28125, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;timtuiHuman.Parent" xml:space="preserve">
     <value>tpHumanMotives</value>
@@ -2686,7 +2740,7 @@
     <value>timtuiAnimal</value>
   </data>
   <data name="&gt;&gt;timtuiAnimal.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=4.0.3014.21552, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI, pjse.coder.plugin, Version=4.0.3034.28125, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;timtuiAnimal.Parent" xml:space="preserve">
     <value>tpAnimalMotives</value>
@@ -2740,7 +2794,7 @@
     <value>ttabPanel</value>
   </data>
   <data name="&gt;&gt;tabControl1.ZOrder" xml:space="preserve">
-    <value>13</value>
+    <value>15</value>
   </data>
   <data name="ttabPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>

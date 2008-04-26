@@ -129,6 +129,8 @@ namespace SimPe.PackedFiles.UserInterface
         private CheckBox cb2Bit1;
         private Label lbPieString;
         private pjse_banner pjse_banner1;
+        private Button btnMoveDown;
+        private Button btnMoveUp;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -644,6 +646,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabForm));
             this.ttabPanel = new System.Windows.Forms.Panel();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
             this.btnAppend = new System.Windows.Forms.Button();
@@ -732,7 +735,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.timtuiHuman = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.tpAnimalMotives = new System.Windows.Forms.TabPage();
             this.timtuiAnimal = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
-            this.pjse_banner1 = new pjse.pjse_banner();
+            this.btnMoveUp = new System.Windows.Forms.Button();
+            this.btnMoveDown = new System.Windows.Forms.Button();
             this.ttabPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSettings.SuspendLayout();
@@ -746,6 +750,8 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.ttabPanel, "ttabPanel");
             this.ttabPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.ttabPanel.Controls.Add(this.btnMoveDown);
+            this.ttabPanel.Controls.Add(this.btnMoveUp);
             this.ttabPanel.Controls.Add(this.pjse_banner1);
             this.ttabPanel.Controls.Add(this.btnStrPrev);
             this.ttabPanel.Controls.Add(this.btnStrNext);
@@ -761,6 +767,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.ttabPanel.Controls.Add(this.lbttab);
             this.ttabPanel.Controls.Add(this.tabControl1);
             this.ttabPanel.Name = "ttabPanel";
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // btnStrPrev
             // 
@@ -1429,10 +1441,17 @@ namespace SimPe.PackedFiles.UserInterface
             this.timtuiAnimal.MotiveTable = null;
             this.timtuiAnimal.Name = "timtuiAnimal";
             // 
-            // pjse_banner1
+            // btnMoveUp
             // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.Name = "pjse_banner1";
+            resources.ApplyResources(this.btnMoveUp, "btnMoveUp");
+            this.btnMoveUp.Name = "btnMoveUp";
+            this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
+            // 
+            // btnMoveDown
+            // 
+            resources.ApplyResources(this.btnMoveDown, "btnMoveDown");
+            this.btnMoveDown.Name = "btnMoveDown";
+            this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             // 
             // TtabForm
             // 
@@ -1512,6 +1531,38 @@ namespace SimPe.PackedFiles.UserInterface
             lbttab.SelectedIndex++;
         }
 
+        private void btnMoveUp_Click(object sender, EventArgs e)
+        {
+            int i = lbttab.SelectedIndex;
+            object a, b;
+
+            internalchg = true;
+            a = lbttab.Items[i];
+            b = lbttab.Items[i - 1];
+            wrapper.Move(i, i - 1);
+            lbttab.Items[i] = b;
+            lbttab.Items[i - 1] = a;
+            internalchg = false;
+
+            lbttab.SelectedIndex--;
+        }
+
+        private void btnMoveDown_Click(object sender, EventArgs e)
+        {
+            int i = lbttab.SelectedIndex;
+            object a, b;
+
+            internalchg = true;
+            a = lbttab.Items[i];
+            b = lbttab.Items[i + 1];
+            wrapper.Move(i, i + 1);
+            lbttab.Items[i] = b;
+            lbttab.Items[i + 1] = a;
+            internalchg = false;
+
+            lbttab.SelectedIndex++;
+        }
+
         private void btnAdd_Click(object sender, System.EventArgs e)
         {
             this.ttabPanel.SuspendLayout();
@@ -1550,8 +1601,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.ttabPanel.Cursor = Cursors.AppStarting;
 
 
-            this.btnStrPrev.Enabled = (lbttab.SelectedIndex > 0);
-            this.btnStrNext.Enabled = (lbttab.SelectedIndex < lbttab.Items.Count - 1);
+            this.btnMoveUp.Enabled = this.btnStrPrev.Enabled = (lbttab.SelectedIndex > 0);
+            this.btnMoveDown.Enabled = this.btnStrNext.Enabled = (lbttab.SelectedIndex < lbttab.Items.Count - 1);
 
             if (lbttab.SelectedIndex >= 0)
 			{
