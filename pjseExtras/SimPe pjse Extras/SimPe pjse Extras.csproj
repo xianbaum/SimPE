@@ -42,7 +42,7 @@
     <PostBuildEvent>set out=$(SolutionDir)..\__$(ConfigurationName)
 
 pushd "$(ProjectDir)"
-xcopy /i /e /y /exclude:.cvsignore ..\Data "%25out%25\Data"
+rem xcopy /i /e /y /exclude:.cvsignore ..\Data "%25out%25\Data"
 xcopy /i /e /y /exclude:.cvsignore ..\Plugins "%25out%25\Plugins"
 popd
 </PostBuildEvent>
