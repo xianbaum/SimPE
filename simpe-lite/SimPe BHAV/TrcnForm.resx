@@ -129,7 +129,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>783, 33</value>
+    <value>786, 33</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
     <value>98, 27</value>
@@ -163,16 +163,16 @@
     <value>True</value>
   </data>
   <data name="btnSetAs4E.Location" type="System.Drawing.Point, System.Drawing">
-    <value>664, 33</value>
+    <value>663, 33</value>
   </data>
   <data name="btnSetAs4E.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 27</value>
+    <value>113, 27</value>
   </data>
   <data name="btnSetAs4E.TabIndex" type="System.Int32, mscorlib">
     <value>27</value>
   </data>
   <data name="btnSetAs4E.Text" xml:space="preserve">
-    <value>Make editable</value>
+    <value>Editable format</value>
   </data>
   <data name="&gt;&gt;btnSetAs4E.Name" xml:space="preserve">
     <value>btnSetAs4E</value>
@@ -196,7 +196,7 @@
     <value>0, 0</value>
   </data>
   <data name="pjse_banner1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>893, 27</value>
+    <value>896, 27</value>
   </data>
   <data name="pjse_banner1.TabIndex" type="System.Int32, mscorlib">
     <value>26</value>
@@ -208,7 +208,7 @@
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3038.22790, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3038.29726, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>trcnPanel</value>
@@ -532,7 +532,7 @@
     <value>NoControl</value>
   </data>
   <data name="lbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>500, 38</value>
+    <value>499, 38</value>
   </data>
   <data name="lbFormat.Size" type="System.Drawing.Size, System.Drawing">
     <value>52, 17</value>
@@ -559,7 +559,7 @@
     <value>Top, Right</value>
   </data>
   <data name="tbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>558, 35</value>
+    <value>557, 35</value>
   </data>
   <data name="tbFormat.MaxLength" type="System.Int32, mscorlib">
     <value>10</value>
@@ -677,7 +677,7 @@
     <value>282, 66</value>
   </data>
   <data name="lvTrcnItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>611, 314</value>
+    <value>614, 314</value>
   </data>
   <data name="lvTrcnItem.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -704,7 +704,7 @@
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>420, 22</value>
+    <value>419, 22</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -1022,7 +1022,7 @@
     <value>0, 0</value>
   </data>
   <data name="trcnPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>893, 383</value>
+    <value>896, 383</value>
   </data>
   <data name="trcnPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -1046,7 +1046,7 @@
     <value>120, 120</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>893, 383</value>
+    <value>896, 383</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>TrcnForm</value>

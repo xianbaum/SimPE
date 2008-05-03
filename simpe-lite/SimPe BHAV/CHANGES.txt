@@ -1,3 +1,9 @@
+3 May 2008 10:26 - Change button label and remove DEBUG mode stuff from TRCN form and wrapper
+  SimPe BHAV\
+    TrcnForm.cs 1.23
+    TrcnForm.resx 1.15
+    TrcnWrapper.cs 1.15
+
 26 April 2008 17:36 - Allow any non-TextOnly TRCN to be turned into a type 0x4E for editing
   SimPe BHAV\
     TrcnForm.cs 1.22
