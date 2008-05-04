@@ -43,9 +43,6 @@ namespace pjse
 
 		public FileTable()
 		{
-			//
-			// TODO: Add constructor logic here
-			//
 			SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
 		}
         
@@ -59,6 +56,7 @@ namespace pjse
         }
 
         private ArrayList fixedPackages = new ArrayList();
+        private ArrayList maxisPackages = new ArrayList();
         protected static Hashtable filenames = new Hashtable();
         private Hashtable packedFiles = new Hashtable();
         private Hashtable pfByPackage = new Hashtable();
@@ -75,6 +73,7 @@ namespace pjse
 
             hasLoaded = true;
             fixedPackages = new ArrayList();
+            maxisPackages = new ArrayList();
             filenames = new Hashtable();
             packedFiles = new Hashtable();
             pfByPackage = new Hashtable();
@@ -84,18 +83,18 @@ namespace pjse
             pfByTypeGroupInstance = new Hashtable();
 
             foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
-                if (fii.Use) Add(fii.Name, fii.IsRecursive, true);
+                if (fii.Use) Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions != SimPe.Expansions.Custom, true);
 
-            this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, true);
+            this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, false, true);
 
-            this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, true);
+            this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, false, true);
 
             string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
             if (File.Exists(packages_txt))
             {
                 System.IO.StreamReader sr = new StreamReader(packages_txt);
                 for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
-                    this.Add(line.TrimEnd('+'), line.EndsWith("+"), false);
+                    this.Add(line.TrimEnd('+'), line.EndsWith("+"), false, true);
                 sr.Close();
             }
 
@@ -127,14 +126,14 @@ namespace pjse
                     if (currentPackage != null)
                     {
                         currentPackage.IndexChanged -= new EventHandler(currentPackage_Changed);
-                        if (hasLoaded && !IsFixed(currentPackage))
+                        if (hasLoaded && !IsMaxis(currentPackage) && !IsFixed(currentPackage))
                             Remove(currentPackage);
                     }
                     currentPackage = value;
                     if (currentPackage != null)
                     {
-                        if (hasLoaded && !IsFixed(currentPackage))
-                            Add(currentPackage, false);
+                        if (hasLoaded && !IsMaxis(currentPackage) && !IsFixed(currentPackage))
+                            Add(currentPackage, false, false);
                         currentPackage.IndexChanged += new EventHandler(currentPackage_Changed);
                     }
                     if (hasLoaded)
@@ -150,45 +149,50 @@ namespace pjse
             CurrentPackage = cp;
         }
 
+        private bool IsMaxis(IPackageFile package)
+        {
+            if (!hasLoaded) Refresh();
+            return (package == null || maxisPackages.Contains(package));
+        }
+
         private bool IsFixed(IPackageFile package)
         {
             if (!hasLoaded) Refresh();
-            if (package == null || fixedPackages.Contains(package)) return true;
-
-            // There doesn't appear to be a way to compare two paths and have the OS decide if they refer to the same object
-
-            return false;
+            return (package == null || fixedPackages.Contains(package));
         }
 
 
-        private void Add(string v, bool recurse, bool isFixed)
+        private void Add(string v, bool recurse, bool isMaxis, bool isFixed)
         {
             if (Directory.Exists(v))
             {
                 foreach (string i in Directory.GetFiles(v, "*.package"))
-                    Add(i, false, isFixed);
+                    Add(i, false, isMaxis, isFixed);
 
                 if (recurse)
                     foreach (string i in Directory.GetDirectories(v))
-                        Add(i, true, isFixed);
+                        Add(i, true, isMaxis, isFixed);
             }
 
             else if (!v.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP+"globalcatbin.bundle.package") && File.Exists(v))
-                Add(SimPe.Packages.File.LoadFromFile(v), isFixed);
+                Add(SimPe.Packages.File.LoadFromFile(v), isMaxis, isFixed);
         }
 
         
-        private void Add(IPackageFile package, bool isFixed)
+        private void Add(IPackageFile package, bool isMaxis, bool isFixed)
 		{
 			if (package == null) return;
 			if (pfByPackage[package] != null) return;
 
             foreach (IPackedFileDescriptor i in package.Index)
-                Add(new Entry(package, i, isFixed));
+                Add(new Entry(package, i, isMaxis, isFixed));
+
+            if (isMaxis)
+                maxisPackages.Add(package);
 
             if (isFixed)
-				fixedPackages.Add(package);
-		}
+                fixedPackages.Add(package);
+        }
 
         private void Add(Entry key)
         {
@@ -258,7 +262,7 @@ namespace pjse
             }
 
             Remove(key);
-            key = new Entry(key.Package, pfd, key.IsFixed);
+            key = new Entry(key.Package, pfd, key.IsMaxis, key.IsFixed);
             Add(key);
 
             OnFiletableRefresh(this, new EventArgs());
@@ -326,20 +330,19 @@ namespace pjse
         }
 
 
-        public enum Source { Any, Fixed, Local };
+        public enum Source { Any, Maxis, Fixed, Local };
 		public class Entry : IDisposable, IComparable
 		{
 			private IPackageFile package;
 			private IPackedFileDescriptor pfd;
-			//private uint type;
-			//private uint group;
-			//private uint instance;
+            private bool isMaxis;
             private bool isFixed;
 
-			public Entry(IPackageFile package, IPackedFileDescriptor pfd, bool isFixed)
+            public Entry(IPackageFile package, IPackedFileDescriptor pfd, bool isMaxis, bool isFixed)
 			{
 				this.package = package;
 				this.pfd = pfd;
+                this.isMaxis = isMaxis;
                 this.isFixed = isFixed;
 
                 this.pfd.ChangedData += new SimPe.Events.PackedFileChanged(pfd_ChangedData);
@@ -361,6 +364,8 @@ namespace pjse
             public uint Group { get { return pfd.Group; } }
 
             public uint Instance { get { return pfd.Instance; } }
+
+            public bool IsMaxis { get { return isMaxis; } }
 
             public bool IsFixed { get { return isFixed; } }
 
@@ -426,7 +431,10 @@ namespace pjse
             {
                 if (package == null || pfd == null) return new Entry[0];
                 return this[pfd.Type, pfd.Group, pfd.Instance,
-                    pfd.Group == 0xffffffff ? Source.Local : (IsFixed(package) ? Source.Fixed : Source.Any)];
+                    pfd.Group == 0xffffffff ? Source.Local
+                    //: IsMaxis(package) ? Source.Maxis
+                    //: IsFixed(package) ? Source.Fixed
+                    : Source.Any];
             }
         }
 
@@ -499,17 +507,19 @@ namespace pjse
             if (result == null) return new Entry[0];
 
             ArrayList currpkg = new ArrayList();
+            ArrayList maxispkg = new ArrayList();
             ArrayList fixedpkg = new ArrayList();
             ArrayList nonfixed = new ArrayList();
 
             ArrayList[] resultset =
                 where == Source.Local ? new ArrayList[] { currpkg }
+                : where == Source.Maxis ? IsMaxis(currentPackage) ? new ArrayList[] { currpkg, maxispkg } : new ArrayList[] { maxispkg }
                 : where == Source.Fixed ? IsFixed(currentPackage) ? new ArrayList[] { currpkg, fixedpkg } : new ArrayList[] { fixedpkg }
-                    : new ArrayList[] { currpkg, nonfixed, fixedpkg };
+                : new ArrayList[] { currpkg, nonfixed, fixedpkg, maxispkg };
 
             foreach (Entry e in result.Keys)
                 if (!e.PFD.MarkForDelete)
-                    ((ArrayList)(e.Package == currentPackage ? currpkg : e.IsFixed ? fixedpkg : nonfixed)).Add(e);
+                    ((ArrayList)(e.Package == currentPackage ? currpkg : e.IsMaxis ? maxispkg : e.IsFixed ? fixedpkg : nonfixed)).Add(e);
 
             int i = 0;
             foreach (ArrayList al in resultset) i += al.Count;

@@ -1458,7 +1458,7 @@ to BHAV</value>
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3024.16858, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3045.23650, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -1509,19 +1509,19 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="llHidesOP.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
-    <value>39, 12</value>
+    <value>27, 13</value>
   </data>
   <data name="llHidesOP.Location" type="System.Drawing.Point, System.Drawing">
     <value>463, 520</value>
   </data>
   <data name="llHidesOP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>344, 20</value>
+    <value>249, 20</value>
   </data>
   <data name="llHidesOP.TabIndex" type="System.Int32, mscorlib">
     <value>19</value>
   </data>
   <data name="llHidesOP.Text" xml:space="preserve">
-    <value>BHAV from objects.package overridden.  View EA BHAV.</value>
+    <value>BHAV from {0} overridden.  View original.</value>
   </data>
   <data name="&gt;&gt;llHidesOP.Name" xml:space="preserve">
     <value>llHidesOP</value>
@@ -2139,7 +2139,7 @@ to BHAV</value>
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.3024.16858, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.3045.23650, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2508,55 +2508,55 @@ to BHAV</value>
     <value>17, 17</value>
   </metadata>
   <data name="createAllPackagesToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 22</value>
+    <value>243, 22</value>
   </data>
   <data name="createAllPackagesToolStripMenuItem.Text" xml:space="preserve">
     <value>Create - all packages</value>
   </data>
   <data name="createCurrentPackageToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 22</value>
+    <value>243, 22</value>
   </data>
   <data name="createCurrentPackageToolStripMenuItem.Text" xml:space="preserve">
     <value>Create - current package</value>
   </data>
   <data name="defaultFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="defaultFileToolStripMenuItem.Text" xml:space="preserve">
     <value>Default file</value>
   </data>
   <data name="fromFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>162, 22</value>
+    <value>150, 22</value>
   </data>
   <data name="fromFileToolStripMenuItem.Text" xml:space="preserve">
     <value>From file...</value>
   </data>
   <data name="loadIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 22</value>
+    <value>243, 22</value>
   </data>
   <data name="loadIndexToolStripMenuItem.Text" xml:space="preserve">
     <value>Load index...</value>
   </data>
   <data name="defaultFileToolStripMenuItem1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 22</value>
+    <value>148, 22</value>
   </data>
   <data name="defaultFileToolStripMenuItem1.Text" xml:space="preserve">
     <value>Default file</value>
   </data>
   <data name="toFileToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>159, 22</value>
+    <value>148, 22</value>
   </data>
   <data name="toFileToolStripMenuItem.Text" xml:space="preserve">
     <value>To file...</value>
   </data>
   <data name="saveIndexToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>254, 22</value>
+    <value>243, 22</value>
   </data>
   <data name="saveIndexToolStripMenuItem.Text" xml:space="preserve">
     <value>Save index...</value>
   </data>
   <data name="cmenuGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>255, 92</value>
+    <value>244, 92</value>
   </data>
   <data name="&gt;&gt;cmenuGUIDIndex.Name" xml:space="preserve">
     <value>cmenuGUIDIndex</value>

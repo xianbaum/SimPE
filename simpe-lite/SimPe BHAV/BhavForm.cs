@@ -137,6 +137,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
+            hidesFmt = llHidesOP.Text;
 
             pjse.Updates.Checker.Daily();
 
@@ -218,6 +219,8 @@ namespace SimPe.PackedFiles.UserInterface
 		private ArrayList alDec8;
 		private ArrayList alHex16cb;
 
+        private String hidesFmt = "{0}";
+
         private IPackageFile currentPackage = null;
         private void TakeACopy()
         {
@@ -238,7 +241,42 @@ namespace SimPe.PackedFiles.UserInterface
             ui.Show();
         }
 
-		private void SetReadOnly(bool state) 
+        private String lastPathEntry(String path)
+        {
+            string[] pathparts = path.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
+            return pathparts[pathparts.Length - 1];
+        }
+
+        private String formTitle(Bhav wrapper)
+        {
+            String s = "";
+            if (wrapper.Package.SaveFileName != null)
+                s += "(" + lastPathEntry(wrapper.Package.SaveFileName) + ")";
+            s += ": [0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + "] " + wrapper.FileName;
+            return s;
+        }
+
+        private void handleOverride()
+        {
+            lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = false;
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
+            
+            if (items.Length > 1) // currentpkg, other, fixed, maxis
+            {
+                pjse.FileTable.Entry item = items[items.Length - 1];
+                if (item.PFD == wrapper.FileDescriptor) return;
+                if (!item.IsMaxis && !item.IsFixed) return;
+
+                this.lbHidesOP.Visible = this.tbHidesOP.Visible = this.llHidesOP.Visible = true;
+                llHidesOP.Links[0].Start -= llHidesOP.Text.Length;
+                llHidesOP.Text = hidesFmt.Replace("{0}", lastPathEntry(item.Package.SaveFileName));
+                llHidesOP.Links[0].Start += llHidesOP.Text.Length;
+                this.tbHidesOP.Text = wrapper.Package.FileName;
+                llHidesOP.Tag = item.IsMaxis ? pjse.FileTable.Source.Maxis : pjse.FileTable.Source.Fixed;
+            }
+        }
+
+        private void SetReadOnly(bool state) 
 		{
             if (((string)this.Tag).Equals("Popup")) state = true;
 
@@ -649,20 +687,8 @@ namespace SimPe.PackedFiles.UserInterface
 				setHandler = true;
 			}
 
-            lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = false;
             if (((string)this.Tag).Equals("Popup"))
             {
-                pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
-                if (items.Length > 0 && !items[0].IsFixed)
-                {
-                    pjse.FileTable.Entry jtem = wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, true);
-                    if (jtem != null && jtem.IsFixed)
-                    {
-                        lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = true;
-                        tbHidesOP.Text = wrapper.Package.FileName;
-                    }
-                }
-
                 currentPackage = pjse.FileTable.GFT.CurrentPackage;
                 // make it very clear it's read only
                 tbFilename.Enabled = cbFormat.Enabled = tbType.Enabled =
@@ -677,17 +703,15 @@ namespace SimPe.PackedFiles.UserInterface
                 btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
                 btnCopyBHAV.Enabled = currentPackage != null;
 
-                this.Text = pjse.Localization.GetString("viewbhav");
-                if (wrapper.Package.FileName != null)
-                {
-                    string[] pathparts = wrapper.Package.FileName.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
-                    this.Text += (items.Length > 0 && !items[0].IsFixed ? " (" + pathparts[pathparts.Length - 1] + ")" : "");
-                }
-                this.Text += ": [0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance)
-                    + "] " + wrapper.FileName;
+                handleOverride();
+
+                this.Text = pjse.Localization.GetString("viewbhav") + " " + formTitle(wrapper);
             }
             else
+            {
+                this.lbHidesOP.Visible = this.tbHidesOP.Visible = this.llHidesOP.Visible = false;
                 currentPackage = wrapper.Package;
+            }
         }
 
 		private void WrapperChanged(object sender, System.EventArgs e)
@@ -1635,17 +1659,18 @@ namespace SimPe.PackedFiles.UserInterface
             Control old = this.bhavPanel.Parent;
             string oldFloatText = this.pjse_banner1.FloatText;
             Form f = new Form();
-            string[] pathparts = wrapper.Package.SaveFileName.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
-            f.Text = "(" + pathparts[pathparts.Length - 1] + "): [0x"
-                + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + "] " + wrapper.FileName;
+            f.Text = formTitle(wrapper);
             f.WindowState = FormWindowState.Maximized;
             f.Controls.Add(this.bhavPanel);
             this.pjse_banner1.FloatText = pjse.Localization.GetString("bhavForm.Unfloat");
             this.pjse_banner1.FloatClick -= new System.EventHandler(this.btnFloat_Click);
+            this.pjse_banner1.SetFormCancelButton(f);
+
             this.gbSpecial.Visible = true;
             this.cbSpecial.Enabled = false;
-            btnCopyBHAV.Visible = false;
-            pjse_banner1.SetFormCancelButton(f);
+            this.btnCopyBHAV.Visible = false;
+            handleOverride();
+
             f.ShowDialog();
 
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BhavForm));
@@ -1653,6 +1678,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
             this.gbSpecial.Visible = this.cbSpecial.Checked;
             this.cbSpecial.Enabled = true;
+            this.lbHidesOP.Visible = this.tbHidesOP.Visible = this.llHidesOP.Visible = false;
             old.Controls.Add(this.bhavPanel);
 
             f.Dispose();
@@ -1667,7 +1693,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void llHidesOP_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            common_LinkClicked(wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, true));
+            common_LinkClicked(wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, wrapper.FileDescriptor.Instance, (pjse.FileTable.Source)llHidesOP.Tag));
         }
 
 		private void btnClose_Click(object sender, System.EventArgs e)

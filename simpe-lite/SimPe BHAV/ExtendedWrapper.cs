@@ -120,18 +120,18 @@ namespace pjse
 		public uint GroupForContext { get { return GroupForScope(Context); } }
 
 
-        public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance)  { return ResourceByInstance(type, instance, false); }
-        public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance, bool baseGame)
+        public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance) { return ResourceByInstance(type, instance, FileTable.Source.Any); }
+        public pjse.FileTable.Entry ResourceByInstance(uint type, uint instance, FileTable.Source src)
         {
             uint group = PrivateGroup;
-            if (type == SimPe.Data.MetaData.BHAV_FILE)
+            if (type == SimPe.Data.MetaData.BHAV_FILE || type == 0x42434F4E /*BCON*/
+                || type == 0x54505250 /*TPRP*/ || type == 0x5452434E /*TRCN*/)
             {
                 if (instance < 0x1000) group = GlobalGroup;
                 else if (instance >= 0x2000) group = SemiGroup;
             }
 
-            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[type, group, instance,
-                baseGame ? FileTable.Source.Fixed : FileTable.Source.Any];
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[type, group, instance, src];
             return (items == null || items.Length == 0) ? null : items[0];
         }
 
