@@ -1,3 +1,8 @@
+5 May 2008 18:22 - Allow all non-text-only TRCNs to be edited
+  SimPe BHAV\
+    TrcnForm.cs 1.23.2.2
+    TrcnForm.resx 1.14.2.2
+
 4 May 2008 08:51 - Enhance handling of overrides 
   pjse filetable\
     FileTable.cs 1.31.4.1
@@ -9,9 +14,9 @@
 
 3 May 2008 10:26 - Change button label and remove DEBUG mode stuff from TRCN form and wrapper
   SimPe BHAV\
-    TrcnForm.cs 1.23
-    TrcnForm.resx 1.15
-    TrcnWrapper.cs 1.15
+    TrcnForm.cs 1.22.2.1
+    TrcnForm.resx 1.14.2.1
+    TrcnWrapper.cs 1.14.2.1
 
 26 April 2008 17:36 - Allow any non-TextOnly TRCN to be turned into a type 0x4E for editing
   SimPe BHAV\
