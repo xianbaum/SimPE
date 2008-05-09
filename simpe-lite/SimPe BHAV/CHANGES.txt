@@ -1,3 +1,8 @@
+9 May 2008 18:33 - Disable editing of TPRP Version
+  SimPe BHAV\
+    TPRPForm.cs 1.14.4.1
+    TPRPForm.resx 1.10.4.1
+
 5 May 2008 18:22 - Allow all non-text-only TRCNs to be edited
   SimPe BHAV\
     TrcnForm.cs 1.23.2.2
