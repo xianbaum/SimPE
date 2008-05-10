@@ -1,3 +1,8 @@
+10 May 2008 11:28 - Line up Action and Guardian input with their BHAV names
+  SimPe BHAV\
+    OjbfForm.cs 1.25.2.1
+    ObjfForm.cs 1.10.2.1
+
 10 May 2008 10:38 - Oops, remove prevention of saving non-4E TRCNs
   SimPe BHAV\
     TrcnWrapper.cs 1.14.2.2
