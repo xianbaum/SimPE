@@ -440,9 +440,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </remarks>
 		internal void Serialize(System.IO.BinaryWriter writer)
 		{
-            if (parent.Version != 0x4e)
-                throw new InvalidOperationException("Cannot serialize this format: " + Helper.HexString(parent.Version));
-
             writer.Write(this.used);
             writer.Write(this.constId);
             writer.Write((byte)this.constName.Length);

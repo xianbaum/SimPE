@@ -1,3 +1,7 @@
+10 May 2008 10:38 - Oops, remove prevention of saving non-4E TRCNs
+  SimPe BHAV\
+    TrcnWrapper.cs 1.14.2.2
+
 9 May 2008 18:33 - Disable editing of TPRP Version
   SimPe BHAV\
     TPRPForm.cs 1.14.4.1
