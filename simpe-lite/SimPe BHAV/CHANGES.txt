@@ -1,3 +1,7 @@
+17 May 2008 10:13 - Oops: fix from "enhance handling of overrides" - use "Maxis" in GUIDTool
+  pjse GUIT Tool\
+    GUIDTool.cs 1.15.4.1
+
 10 May 2008 11:28 - Line up Action and Guardian input with their BHAV names
   SimPe BHAV\
     OjbfForm.cs 1.25.2.1

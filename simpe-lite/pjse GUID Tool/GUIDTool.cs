@@ -351,7 +351,7 @@ namespace pjse.guidtool
             searching = true;
             matches = 0;
 
-            FileTable.Source[] aS = new FileTable.Source[] { FileTable.Source.Any, FileTable.Source.Fixed, FileTable.Source.Local };
+            FileTable.Source[] aS = new FileTable.Source[] { FileTable.Source.Any, FileTable.Source.Maxis, FileTable.Source.Local };
             FileTable.Source s;
             int rbS = rbGroup.FindIndex(Selected);
 
