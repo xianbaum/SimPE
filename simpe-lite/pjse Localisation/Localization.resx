@@ -1405,4 +1405,10 @@ Do you want to use this resource?
     <value>&amp;OpCode</value>
     <comment>GUIDTool number label</comment>
   </data>
+  <data name="guidAskMessage" xml:space="preserve">
+    <value>Do you want to save the GUID Index now?</value>
+  </data>
+  <data name="guidAskTitle" xml:space="preserve">
+    <value>Save GUID Index?</value>
+  </data>
 </root>

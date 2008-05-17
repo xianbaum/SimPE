@@ -2190,6 +2190,9 @@ namespace SimPe.PackedFiles.UserInterface
             pjse.GUIDIndex.TheGUIDIndex.Create(sender.Equals(this.createCurrentPackageToolStripMenuItem));
             SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
             SimPe.Wait.Stop();
+            DialogResult dr = MessageBox.Show(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dr == DialogResult.Yes) fileToolStripMenuItem_Click(this.toFileToolStripMenuItem, null);
         }
 
         private void defaultFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2202,9 +2205,9 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            bool load = sender.Equals(this.fromFileToolStripMenuItem);
             FileDialog fd;
-            bool load;
-            if (load = sender.Equals(this.fromFileToolStripMenuItem))
+            if (load)
                 fd = new OpenFileDialog();
             else
                 fd = new SaveFileDialog();
