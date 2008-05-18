@@ -1,3 +1,13 @@
+18 May 2008 11:47 - Re-engineer command line system for enabling options.
+  * "-localmode" and "-noplugins" replaced with "-enable localmode" and "-enable noplugins".
+  * Added "-enable fileformat" for PJSE wrappers to use to tag filenames with formats, where known
+  SimPe BHAV\
+    BhavWrapper.cs 1.50.4.1
+    StrWrapper.cs 1.19.6.1
+    TPRPWrapper.cs 1.7.6.1
+    TrcnWrapper.cs 1.14.2.3
+    TtabWrapper.cs 1.31.6.1
+
 17 May 2008 18:07 - Prompt to save GUID Index after creating it
   pjse Localisation\
     Localization.resx 1.17.2.1
