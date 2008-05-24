@@ -1,3 +1,10 @@
+24 May 2008 09:24 - Enhance (relax) handling of unknown BHAVs
+  pjse Localisation\
+    Localization.resx 1.17.4.2
+  SimPe BHAV\
+    BhavOperandWizBhav.cs 1.10.6.1
+    BhavWizBhav.cs 1.22.6.1
+
 18 May 2008 11:47 - Re-engineer command line system for enabling options.
   * "-localmode" and "-noplugins" replaced with "-enable localmode" and "-enable noplugins".
   * Added "-enable fileformat" for PJSE wrappers to use to tag filenames with formats, where known
@@ -10,7 +17,7 @@
 
 17 May 2008 18:07 - Prompt to save GUID Index after creating it
   pjse Localisation\
-    Localization.resx 1.17.2.1
+    Localization.resx 1.17.4.1
   SimPe BHAV\
     BhavForm.cs 1.89.4.2
 
