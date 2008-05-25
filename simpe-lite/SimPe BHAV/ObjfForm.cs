@@ -79,7 +79,44 @@ namespace SimPe.PackedFiles.UserInterface
 
             TextBox[] tbua = { tbAction, tbGuardian };
 			alHex16 = new ArrayList(tbua);
-		}
+
+            pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
+        }
+
+        void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            if (wrapper.FileDescriptor == null) return;
+
+            bool savedchg = internalchg;
+            internalchg = true;
+
+            bool parm = false;
+
+            funcDescs = new pjse.Str(pjse.GS.BhavStr.OBJFDescs);
+            if (wrapper.Count == 0)
+            {
+                int max = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs).Count;
+                for (int i = 0; i < max; i++) wrapper.Add(new ObjfItem(wrapper));
+                lvObjfItem.Items[0].Selected = true;
+            }
+            for (ushort i = 0; i < lvObjfItem.Items.Count; i++)
+            {
+                lvObjfItem.Items[i].SubItems[0].Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs, i);
+                lvObjfItem.Items[i].SubItems[1].Text = pjse.BhavWiz.bhavName(wrapper, wrapper[i].Action, ref parm);
+                lvObjfItem.Items[i].SubItems[2].Text = pjse.BhavWiz.bhavName(wrapper, wrapper[i].Guardian, ref parm);
+            }
+
+            if (lvObjfItem.SelectedIndices.Count > 0)
+                setLabel(lvObjfItem.SelectedIndices[0]);
+
+            if (currentItem != null)
+            {
+                setBHAV(0, currentItem.Action, false);
+                setBHAV(1, currentItem.Guardian, false);
+            }
+
+            internalchg = savedchg;
+        }
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -111,7 +148,8 @@ namespace SimPe.PackedFiles.UserInterface
         private static pjse.Str funcDescs = new pjse.Str(pjse.GS.BhavStr.OBJFDescs);
         private void setLabel(int index)
         {
-            if (funcDescs == null || index < 0) return;
+            lbFunction.Text = "";
+            if (funcDescs == null || index < 0 || ((pjse.FallbackStrItem)funcDescs[index]) == null) return;
             StrItem s = ((pjse.FallbackStrItem)funcDescs[index]).strItem;
             if (s != null) lbFunction.Text = s.Description;
         }

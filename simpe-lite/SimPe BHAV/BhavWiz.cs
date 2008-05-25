@@ -305,6 +305,16 @@ namespace pjse
 
         public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
 
+        static BhavWiz()
+        {
+            pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
+        }
+
+        static void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            gString = new Hashtable();
+        }
+
 
         #region IDisposable Members
         public void Dispose()

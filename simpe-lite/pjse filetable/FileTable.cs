@@ -45,13 +45,13 @@ namespace pjse
 		{
 			SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
 		}
-        
-        private void FileIndex_FILoad(object sender, System.EventArgs e) { if (hasLoaded) UIRefresh(); }
+
+        private void FileIndex_FILoad(object sender, System.EventArgs e) { if (hasLoaded || SimPe.Helper.LocalMode) UIRefresh(); }
 
         public void UIRefresh()
         {
             SimPe.Wait.Start();
-            this.Refresh();
+            this.Refresh(true);
             SimPe.Wait.Stop();
         }
 
@@ -66,8 +66,11 @@ namespace pjse
         private Hashtable pfByTypeGroupInstance = new Hashtable();
 
         private bool hasLoaded = false;
-        public void Refresh()
+        private void Refresh() { this.Refresh(false); }
+        private void Refresh(bool flag)
         {
+            if (!hasLoaded && !flag && SimPe.Helper.LocalMode) return;
+
             IPackageFile cp = currentPackage;
             CurrentPackage = null;
 
@@ -538,6 +541,9 @@ namespace pjse
 
         public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
         {
+#if DEBUG
+            pjse.FileTable.GFT.CurrentPackage = package;
+#else
             try
             {
                 pjse.FileTable.GFT.CurrentPackage = package;
@@ -547,6 +553,7 @@ namespace pjse
                 SimPe.Helper.ExceptionMessage(e);
                 throw e;
             }
+#endif
             return true;
         }
 
