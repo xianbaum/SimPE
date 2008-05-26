@@ -66,7 +66,7 @@ namespace pjse
         private Hashtable pfByTypeGroupInstance = new Hashtable();
 
         private bool hasLoaded = false;
-        private void Refresh() { this.Refresh(false); }
+        public void Refresh() { this.Refresh(false); }
         private void Refresh(bool flag)
         {
             if (!hasLoaded && !flag && SimPe.Helper.LocalMode) return;

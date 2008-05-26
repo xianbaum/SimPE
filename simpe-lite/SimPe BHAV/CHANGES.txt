@@ -1,3 +1,7 @@
+25 May 2008 18:53 - Support localmode in PJSE (oops, this version)
+  pjse filetable\
+    FileTable.cs 1.31.4.3
+
 25 May 2008 18:53 - Support localmode in PJSE
   pjse filetable\
     FileTable.cs 1.31.4.2
