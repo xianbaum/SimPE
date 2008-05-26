@@ -1,3 +1,9 @@
+25 May 2008 14:31 - Default to loading filetable and GUID index at start up (clean install)
+  pjse filetable\
+    FileTable.cs 1.31.4.4
+  SimPe BHAV\
+    Settings.cs 1.4.6.1
+
 25 May 2008 18:53 - Support localmode in PJSE (oops, this version)
   pjse filetable\
     FileTable.cs 1.31.4.3

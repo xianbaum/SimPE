@@ -156,7 +156,7 @@ namespace pjse
             get
             {
                 SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                object o = rkf.GetValue("loadGUIDIndexAtStartup", false);
+                object o = rkf.GetValue("loadGUIDIndexAtStartup", true);
                 return Convert.ToBoolean(o);
             }
 
