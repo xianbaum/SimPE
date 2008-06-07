@@ -178,7 +178,7 @@
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3014.21842, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3047.31353, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>tprpPanel</value>
@@ -406,7 +406,7 @@
     <value>0, 0</value>
   </data>
   <data name="lvLocals.Size" type="System.Drawing.Size, System.Drawing">
-    <value>835, 159</value>
+    <value>790, 159</value>
   </data>
   <data name="lvLocals.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -427,7 +427,7 @@
     <value>4, 22</value>
   </data>
   <data name="tpLocals.Size" type="System.Drawing.Size, System.Drawing">
-    <value>835, 159</value>
+    <value>790, 159</value>
   </data>
   <data name="tpLocals.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>

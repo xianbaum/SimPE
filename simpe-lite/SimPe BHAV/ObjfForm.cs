@@ -55,6 +55,9 @@ namespace SimPe.PackedFiles.UserInterface
         private System.Windows.Forms.ColumnHeader chAction;
         private Label lbFunction;
         private pjse.pjse_banner pjse_banner1;
+        private TableLayoutPanel tableLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel2;
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -76,7 +79,44 @@ namespace SimPe.PackedFiles.UserInterface
 
             TextBox[] tbua = { tbAction, tbGuardian };
 			alHex16 = new ArrayList(tbua);
-		}
+
+            pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
+        }
+
+        void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            if (wrapper.FileDescriptor == null) return;
+
+            bool savedchg = internalchg;
+            internalchg = true;
+
+            bool parm = false;
+
+            funcDescs = new pjse.Str(pjse.GS.BhavStr.OBJFDescs);
+            if (wrapper.Count == 0)
+            {
+                int max = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs).Count;
+                for (int i = 0; i < max; i++) wrapper.Add(new ObjfItem(wrapper));
+                lvObjfItem.Items[0].Selected = true;
+            }
+            for (ushort i = 0; i < lvObjfItem.Items.Count; i++)
+            {
+                lvObjfItem.Items[i].SubItems[0].Text = pjse.BhavWiz.readStr(pjse.GS.BhavStr.OBJFDescs, i);
+                lvObjfItem.Items[i].SubItems[1].Text = pjse.BhavWiz.bhavName(wrapper, wrapper[i].Action, ref parm);
+                lvObjfItem.Items[i].SubItems[2].Text = pjse.BhavWiz.bhavName(wrapper, wrapper[i].Guardian, ref parm);
+            }
+
+            if (lvObjfItem.SelectedIndices.Count > 0)
+                setLabel(lvObjfItem.SelectedIndices[0]);
+
+            if (currentItem != null)
+            {
+                setBHAV(0, currentItem.Action, false);
+                setBHAV(1, currentItem.Guardian, false);
+            }
+
+            internalchg = savedchg;
+        }
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -108,7 +148,8 @@ namespace SimPe.PackedFiles.UserInterface
         private static pjse.Str funcDescs = new pjse.Str(pjse.GS.BhavStr.OBJFDescs);
         private void setLabel(int index)
         {
-            if (funcDescs == null || index < 0) return;
+            lbFunction.Text = "";
+            if (funcDescs == null || index < 0 || ((pjse.FallbackStrItem)funcDescs[index]) == null) return;
             StrItem s = ((pjse.FallbackStrItem)funcDescs[index]).strItem;
             if (s != null) lbFunction.Text = s.Description;
         }
@@ -212,7 +253,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ObjfForm));
             this.objfPanel = new System.Windows.Forms.Panel();
-            this.pjse_banner1 = new pjse.pjse_banner();
             this.lbFunction = new System.Windows.Forms.Label();
             this.lvObjfItem = new System.Windows.Forms.ListView();
             this.chFunction = new System.Windows.Forms.ColumnHeader();
@@ -230,35 +270,29 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbFilename = new System.Windows.Forms.Label();
             this.tbFilename = new System.Windows.Forms.TextBox();
             this.label19 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.objfPanel.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // objfPanel
             // 
             resources.ApplyResources(this.objfPanel, "objfPanel");
             this.objfPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.objfPanel.Controls.Add(this.tableLayoutPanel1);
             this.objfPanel.Controls.Add(this.pjse_banner1);
             this.objfPanel.Controls.Add(this.lbFunction);
             this.objfPanel.Controls.Add(this.lvObjfItem);
             this.objfPanel.Controls.Add(this.btnCommit);
-            this.objfPanel.Controls.Add(this.llGuardian);
-            this.objfPanel.Controls.Add(this.llAction);
-            this.objfPanel.Controls.Add(this.btnAction);
-            this.objfPanel.Controls.Add(this.btnGuardian);
-            this.objfPanel.Controls.Add(this.lbAction);
-            this.objfPanel.Controls.Add(this.lbGuardian);
-            this.objfPanel.Controls.Add(this.tbGuardian);
-            this.objfPanel.Controls.Add(this.tbAction);
             this.objfPanel.Controls.Add(this.lbFilename);
             this.objfPanel.Controls.Add(this.tbFilename);
             this.objfPanel.Controls.Add(this.label19);
             this.objfPanel.Name = "objfPanel";
-            // 
-            // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // lbFunction
             // 
@@ -329,12 +363,14 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // lbAction
             // 
+            this.tableLayoutPanel1.SetColumnSpan(this.lbAction, 2);
             resources.ApplyResources(this.lbAction, "lbAction");
             this.lbAction.Name = "lbAction";
             this.lbAction.UseMnemonic = false;
             // 
             // lbGuardian
             // 
+            this.tableLayoutPanel1.SetColumnSpan(this.lbGuardian, 2);
             resources.ApplyResources(this.lbGuardian, "lbGuardian");
             this.lbGuardian.Name = "lbGuardian";
             this.lbGuardian.UseMnemonic = false;
@@ -372,6 +408,37 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.label19, "label19");
             this.label19.Name = "label19";
             // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.llAction, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.llGuardian, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.lbAction, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lbGuardian, 0, 4);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // flowLayoutPanel1
+            // 
+            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+            this.flowLayoutPanel1.Controls.Add(this.tbAction);
+            this.flowLayoutPanel1.Controls.Add(this.btnAction);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            // 
+            // flowLayoutPanel2
+            // 
+            resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
+            this.flowLayoutPanel2.Controls.Add(this.tbGuardian);
+            this.flowLayoutPanel2.Controls.Add(this.btnGuardian);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
+            // 
             // ObjfForm
             // 
             resources.ApplyResources(this, "$this");
@@ -381,6 +448,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.objfPanel.ResumeLayout(false);
             this.objfPanel.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
             this.ResumeLayout(false);
 
 		}

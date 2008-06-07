@@ -97,6 +97,25 @@ namespace SimPe.PackedFiles.UserInterface
 
             Control[] ab = { btnBigString, btnBigDesc };
             alBigBtn = new ArrayList(ab);
+
+            pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
+        }
+
+        void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            if (wrapper.FileDescriptor == null) return;
+
+            byte oldLid = lid;
+            int oldIndex = index;
+            bool savedchg = internalchg;
+            internalchg = true;
+
+            updateLists();
+
+            setLid(oldLid); // sets internalchg to false
+            setIndex(oldIndex);
+
+            internalchg = savedchg;
         }
 
         /// <summary>
@@ -191,24 +210,32 @@ namespace SimPe.PackedFiles.UserInterface
 
             lid = 0;
             index = -1;
-
-            this.cbLngSelect.Items.Clear();
+            count = 0;
 
             bool onlyDefault = true;
+
+            this.cbLngSelect.Items.Clear();
             this.cbLngSelect.Items.AddRange(pjse.BhavWiz.readStr(pjse.GS.BhavStr.Languages).ToArray());
-            for (byte i = 1; i < this.cbLngSelect.Items.Count; i++)
+
+            // I really wish there were a nicer way...
+            for (byte i = 0; i < 44; i++)
             {
-                isEmpty[i] = wrapper[i].Count == 0;
-                this.cbLngSelect.Items[i] += isEmpty[i] ? " (" + pjse.Localization.GetString("empty") + ")" : "";
+                isEmpty[i] = !wrapper.HasLanguage(i);
                 if (!isEmpty[i] && i > 1) onlyDefault = false;
+
+                while (i >= this.cbLngSelect.Items.Count)
+                    this.cbLngSelect.Items.Add("0x" + SimPe.Helper.HexString((byte)this.cbLngSelect.Items.Count) + " (" + pjse.Localization.GetString("unk") + ")");
+                this.cbLngSelect.Items[i] += isEmpty[i] ? " (" + pjse.Localization.GetString("empty") + ")" : "";
+
+                if (i > 0) count = Math.Max(count, wrapper.CountOf(i));
             }
-            this.cbLngSelect.Items.RemoveAt(0);
+
             this.btnClearAll.Enabled = !onlyDefault;
+            this.cbLngSelect.Items.RemoveAt(0);
+            while (wrapper.CountOf(1) < count) wrapper.Add(1, "", "");
 
-            count = 0;
-            for (byte i = 1; i < 44; i++) count = Math.Max(count, wrapper[i].Count);
-            while (count > 0 && wrapper[1, count - 1] == null) wrapper.Add(1, "", "");
-
+            this.lvStrItems.Columns.Clear();
+            this.lvStrItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] { this.chString, this.chLang, this.chLangDesc, this.chDefault, this.chDefaultDesc});
             this.lvStrItems.Columns[1].Text = "";
             this.lvStrItems.Items.Clear();
             for (int i = 0; i < count; i++)
@@ -244,7 +271,7 @@ namespace SimPe.PackedFiles.UserInterface
 
             this.btnLngClear.Text = pjse.Localization.GetString("Clear") + " " + langName;
 
-            while (count > 0 && wrapper[lid, count - 1] == null) wrapper.Add(lid, "", "");
+            while (wrapper.CountOf(lid) < count) wrapper.Add(lid, "", "");
             this.lvStrItems.Columns[1].Text = this.cbLngSelect.SelectedItem.ToString();
             for (int i = 0; i < count; i++)
             {

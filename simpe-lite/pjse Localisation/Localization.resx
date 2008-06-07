@@ -128,7 +128,7 @@
     <comment>Generally means a user-set value was not found</comment>
   </data>
   <data name="bhavnotfound" xml:space="preserve">
-    <value>[invalid BHAV]</value>
+    <value>[unknown BHAV]</value>
     <comment>BhavWiz, BhavWizBhav</comment>
   </data>
   <data name="ml_done" xml:space="preserve">
@@ -1404,5 +1404,11 @@ Do you want to use this resource?
   <data name="OpCode" xml:space="preserve">
     <value>&amp;OpCode</value>
     <comment>GUIDTool number label</comment>
+  </data>
+  <data name="guidAskMessage" xml:space="preserve">
+    <value>Do you want to save the GUID Index now?</value>
+  </data>
+  <data name="guidAskTitle" xml:space="preserve">
+    <value>Save GUID Index?</value>
   </data>
 </root>

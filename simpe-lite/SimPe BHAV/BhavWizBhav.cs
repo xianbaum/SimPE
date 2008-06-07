@@ -74,7 +74,7 @@ namespace pjse.BhavNameWizards
 
         public override ABhavOperandWiz Wizard()
         {
-            return Wrapper == null ? null : new pjse.BhavOperandWizards.BhavOperandWizBhav(instruction);
+            return /*Wrapper == null ? null :*/ new pjse.BhavOperandWizards.BhavOperandWizBhav(instruction);
         }
 
 		/// <summary>

@@ -434,6 +434,7 @@ namespace SimPe.PackedFiles.UserInterface
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TPRPForm));
             this.btnCommit = new System.Windows.Forms.Button();
             this.tprpPanel = new System.Windows.Forms.Panel();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.btnTabNext = new System.Windows.Forms.Button();
             this.btnTabPrev = new System.Windows.Forms.Button();
             this.btnStrPrev = new System.Windows.Forms.Button();
@@ -456,7 +457,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbFilename = new System.Windows.Forms.TextBox();
             this.lbFilename = new System.Windows.Forms.Label();
             this.lbLabel = new System.Windows.Forms.Label();
-            this.pjse_banner1 = new pjse.pjse_banner();
             this.tprpPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpParams.SuspendLayout();
@@ -490,6 +490,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.tprpPanel.Controls.Add(this.btnCommit);
             this.tprpPanel.Controls.Add(this.lbLabel);
             this.tprpPanel.Name = "tprpPanel";
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // btnTabNext
             // 
@@ -628,6 +634,7 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.tbVersion, "tbVersion");
             this.tbVersion.Name = "tbVersion";
+            this.tbVersion.ReadOnly = true;
             this.tbVersion.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbVersion.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbVersion.Enter += new System.EventHandler(this.tbText_Enter);
@@ -650,11 +657,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.lbLabel, "lbLabel");
             this.lbLabel.Name = "lbLabel";
-            // 
-            // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // TPRPForm
             // 

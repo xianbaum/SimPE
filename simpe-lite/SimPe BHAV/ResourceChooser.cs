@@ -241,7 +241,7 @@ namespace pjse
                     {
                         IPackedFileDescriptor pfd = new SimPe.Packages.PackedFileDescriptor();
                         pfd.Instance = (uint)lvPrim.SelectedItems[0].Tag;
-                        return new pjse.FileTable.Entry(null, pfd, true);
+                        return new pjse.FileTable.Entry(null, pfd, true, true);
                     }
                 }
             }

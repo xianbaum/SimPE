@@ -170,13 +170,22 @@ namespace pjse.BhavOperandWizards.WizBhav
             nodeVersion = inst.NodeVersion;
 
             pjse.FileTable.Entry ftEntry = inst.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, inst.OpCode);
-            Bhav wrapper = new Bhav();
-            wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
-            TPRP tprp = wrapper.TPRPResource;
-            nrArgs = wrapper.Header.ArgumentCount;
+            TPRP tprp = null;
+            if (ftEntry != null)
+            {
+                Bhav wrapper = new Bhav();
+                wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
+                tprp = wrapper.TPRPResource;
+                nrArgs = wrapper.Header.ArgumentCount;
 
-            this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": " + wrapper.FileName;
-            this.lbArgC.Text = "0x" + SimPe.Helper.HexString(nrArgs);
+                this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": " + wrapper.FileName;
+                this.lbArgC.Text = "0x" + SimPe.Helper.HexString(nrArgs);
+            }
+            else
+            {
+                this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": [" + pjse.Localization.GetString("bhavnotfound") + "]";
+                this.lbArgC.Text = "(???)";
+            }
 
             operands = new byte[16];
             ((byte[])inst.Operands).CopyTo(operands, 0);

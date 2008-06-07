@@ -257,14 +257,13 @@ namespace SimPe.PackedFiles.Wrapper
         #endregion
 
         #region IPackedFileLoadExtension Members
-#if DEBUG
         protected override string GetResourceName(Data.TypeAlias ta)
         {
+        	if (!SimPe.Helper.FileFormat) return base.GetResourceName(ta);
             SimPe.Interfaces.Files.IPackedFile pf = Package.Read(FileDescriptor);
             byte[] ab = pf.GetUncompressedData(0x48);
             return (ab.Length > 0x44 ? "0x" + Helper.HexString(ab[0x44]) + ": " : "") + Helper.ToString(pf.GetUncompressedData(0x40));
         }
-#endif
         #endregion
 
         public new void Add(TrcnItem item) { Add(item, 0x8000); }
@@ -440,11 +439,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </remarks>
 		internal void Serialize(System.IO.BinaryWriter writer)
 		{
-#if !DEBUG
-            if (parent.Version != 0x4e)
-                throw new InvalidOperationException("Cannot serialize this format: " + Helper.HexString(parent.Version));
-#endif
-
             writer.Write(this.used);
             writer.Write(this.constId);
             writer.Write((byte)this.constName.Length);
