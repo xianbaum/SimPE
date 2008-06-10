@@ -67,9 +67,12 @@ namespace pjse
 
         private bool hasLoaded = false;
         public void Refresh() { this.Refresh(false); }
-        private void Refresh(bool flag)
+        private void Refresh(bool loadEverything)
         {
-            if (!hasLoaded && !flag && SimPe.Helper.LocalMode) return;
+            //if (!hasLoaded && !loadEverything && SimPe.Helper.LocalMode) return;
+            // Not that easy
+            // If loadEverything is true, this is a user-initiated load, so load everything
+            // Else this is a system initiated load, so only load globalstrings and current package
 
             IPackageFile cp = currentPackage;
             CurrentPackage = null;
@@ -85,21 +88,24 @@ namespace pjse
             pfByTypeGroup = new Hashtable();
             pfByTypeGroupInstance = new Hashtable();
 
-            foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
-                if (fii.Use) Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions != SimPe.Expansions.Custom, true);
+            if (loadEverything)
+                foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
+                    if (fii.Use) Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions != SimPe.Expansions.Custom, true);
 
             this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, false, true);
 
-            this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, false, true);
+            if (loadEverything)
+                this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, false, true);
 
             string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
-            if (File.Exists(packages_txt))
-            {
-                System.IO.StreamReader sr = new StreamReader(packages_txt);
-                for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
-                    this.Add(line.TrimEnd('+'), line.EndsWith("+"), false, true);
-                sr.Close();
-            }
+            if (loadEverything)
+                if (File.Exists(packages_txt))
+                {
+                    System.IO.StreamReader sr = new StreamReader(packages_txt);
+                    for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
+                        this.Add(line.TrimEnd('+'), line.EndsWith("+"), false, true);
+                    sr.Close();
+                }
 
             CurrentPackage = cp;
         }

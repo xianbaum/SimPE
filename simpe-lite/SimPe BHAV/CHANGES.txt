@@ -1,3 +1,7 @@
+10 June 2008 12:00 - Local mode allows current package and globalstrings.package to load
+  pjse filetable\
+    FileTable.cs 1.31.4.5
+
 25 May 2008 14:31 - Default to loading filetable and GUID index at start up (clean install)
   pjse filetable\
     FileTable.cs 1.31.4.4
