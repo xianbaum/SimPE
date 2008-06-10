@@ -46,7 +46,7 @@ namespace pjse
 			SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
 		}
 
-        private void FileIndex_FILoad(object sender, System.EventArgs e) { if (hasLoaded || SimPe.Helper.LocalMode) UIRefresh(); }
+        private void FileIndex_FILoad(object sender, System.EventArgs e) { UIRefresh(); }
 
         public void UIRefresh()
         {
@@ -66,14 +66,9 @@ namespace pjse
         private Hashtable pfByTypeGroupInstance = new Hashtable();
 
         private bool hasLoaded = false;
-        public void Refresh() { this.Refresh(false); }
+        public void Refresh() { this.Refresh(!SimPe.Helper.LocalMode); }
         private void Refresh(bool loadEverything)
         {
-            //if (!hasLoaded && !loadEverything && SimPe.Helper.LocalMode) return;
-            // Not that easy
-            // If loadEverything is true, this is a user-initiated load, so load everything
-            // Else this is a system initiated load, so only load globalstrings and current package
-
             IPackageFile cp = currentPackage;
             CurrentPackage = null;
 
@@ -105,6 +100,8 @@ namespace pjse
                     for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
                         this.Add(line.TrimEnd('+'), line.EndsWith("+"), false, true);
                     sr.Close();
+                    sr.Dispose();
+                    sr = null;
                 }
 
             CurrentPackage = cp;

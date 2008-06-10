@@ -1,3 +1,7 @@
+10 June 2008 15:47 - Oops: Local mode allows current package and globalstrings.package to load v2
+  pjse filetable\
+    FileTable.cs 1.31.4.6
+
 10 June 2008 12:00 - Local mode allows current package and globalstrings.package to load
   pjse filetable\
     FileTable.cs 1.31.4.5
