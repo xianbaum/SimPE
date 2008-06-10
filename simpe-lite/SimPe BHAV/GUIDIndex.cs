@@ -94,6 +94,8 @@ namespace pjse
                     catch(System.FormatException) { continue; }
                 }
                 sr.Close();
+                sr.Dispose();
+                sr = null;
                 pjse.FileTable.GFT.OnFiletableRefresh(this, new EventArgs());
             }
         }
@@ -108,6 +110,8 @@ namespace pjse
             foreach(UInt32 guid in guidIndex.Keys)
                 sw.WriteLine("0x" + SimPe.Helper.HexString(guid) + "=" + guidIndex[guid]);
             sw.Close();
+            sw.Dispose();
+            sw = null;
         }
 
         public String this[UInt32 guid]
