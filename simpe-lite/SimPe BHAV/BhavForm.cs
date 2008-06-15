@@ -2190,9 +2190,18 @@ namespace SimPe.PackedFiles.UserInterface
             pjse.GUIDIndex.TheGUIDIndex.Create(sender.Equals(this.createCurrentPackageToolStripMenuItem));
             SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
             SimPe.Wait.Stop();
-            DialogResult dr = MessageBox.Show(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (dr == DialogResult.Yes) fileToolStripMenuItem_Click(this.toFileToolStripMenuItem, null);
+
+            DialogResult dr = pjseMsgBox.Show(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
+                new Boolset("111"), new Boolset("111"), new string[] {
+                    pjse.Localization.GetString("guidAskDefault"),
+                    pjse.Localization.GetString("guidAskSpecify"),
+                    pjse.Localization.GetString("guidAskNoSave"),
+                },
+                new DialogResult[] { DialogResult.OK, DialogResult.Retry, DialogResult.Cancel, });
+            //DialogResult dr = MessageBox.Show(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
+            //    MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+            if (dr == DialogResult.OK) defaultFileToolStripMenuItem_Click(this.defaultFileToolStripMenuItem1, null);
+            else if (dr == DialogResult.Retry) fileToolStripMenuItem_Click(this.toFileToolStripMenuItem, null);
         }
 
         private void defaultFileToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2216,7 +2225,7 @@ namespace SimPe.PackedFiles.UserInterface
             fd.CheckPathExists = true;
             fd.DefaultExt = "txt";
             fd.DereferenceLinks = true;
-            fd.FileName = "guidindex.txt";
+            fd.FileName = pjse.GUIDIndex.DefaultGUIDFile;
             fd.Filter = pjse.Localization.GetString("guidFilter");
             fd.FilterIndex = 1;
             fd.RestoreDirectory = false;

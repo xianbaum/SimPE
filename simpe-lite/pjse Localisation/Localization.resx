@@ -1406,9 +1406,22 @@ Do you want to use this resource?
     <comment>GUIDTool number label</comment>
   </data>
   <data name="guidAskMessage" xml:space="preserve">
-    <value>Do you want to save the GUID Index now?</value>
+    <value>Do you want to save the GUID Index now?
+
+[Default] - save in the default location
+[Specify...] - let me specify where to save
+[No] - don't save, just let me get back to SimPe</value>
   </data>
   <data name="guidAskTitle" xml:space="preserve">
     <value>Save GUID Index?</value>
+  </data>
+  <data name="guidAskDefault" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="guidAskNoSave" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="guidAskSpecify" xml:space="preserve">
+    <value>Specify...</value>
   </data>
 </root>
