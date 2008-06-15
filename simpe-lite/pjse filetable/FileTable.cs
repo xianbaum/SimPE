@@ -508,6 +508,14 @@ namespace pjse
             }
         }
 
+        public Entry[] FindGroup(uint group, Source where)
+        {
+            if (!hasLoaded) Refresh();
+
+            if (pfByGroup == null) return new Entry[0];
+            return putLocalFirst((Hashtable)pfByGroup[group], group == 0xffffffff ? Source.Local : where);
+        }
+
         private Entry[] putLocalFirst(Hashtable result, Source where)
         {
             if (result == null) return new Entry[0];
