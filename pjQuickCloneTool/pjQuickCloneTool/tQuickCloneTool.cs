@@ -20,21 +20,55 @@
 using System;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Plugin;
+using SimPe.Interfaces.Files;
 
 namespace pj
 {
-    class tQuickCloneTool : AbstractWrapperFactory, IToolFactory, IHelpFactory
+    class tQuickCloneTool : AbstractWrapperFactory, IToolFactory, IHelpFactory, ITool, IHelp
     {
+        #region IHelp Members
+
+        public void ShowHelp(SimPe.ShowHelpEventArgs e)
+        {
+            string relativePathToHelp = "pjQuickCloneTool.plugin/pjQuickCloneTool_Help";
+            SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.SimPePluginPath + "/" + relativePathToHelp + "/Contents.htm");
+        }
+
+        public override string ToString() { return L.Get("pjQuickCloneHelp"); }
+
+        public System.Drawing.Image Icon { get { return null; } }
+
+        #endregion
+
+        #region ITool Members
+
+        IToolResult ITool.ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
+        {
+            (new cQuickCloneTool()).Execute();
+            return new SimPe.Plugin.ToolResult(false, false);
+        }
+
+        bool ITool.IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
+        {
+            return true;
+        }
+
+        #endregion
+
+        #region IToolPlugin Members
+
+        string IToolPlugin.ToString()
+        {
+            return L.Get("pjCQuickCloneTool");
+        }
+
+        #endregion
+
         #region IToolFactory Members
 
         public IToolPlugin[] KnownTools
         {
-            get
-            {
-                return new IToolPlugin[] {
-                    new cQuickCloneTool()
-                };
-            }
+            get { return new IToolPlugin[] { new tQuickCloneTool() }; }
         }
 
         #endregion
@@ -43,9 +77,10 @@ namespace pj
 
         public IHelp[] KnownHelpTopics
         {
-            get { return new IHelp[] { new hQuickCloneHelp() }; }
+            get { return new IHelp[] { new tQuickCloneTool() }; }
         }
 
         #endregion
+
     }
 }

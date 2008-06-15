@@ -117,16 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="noItemsForGroup" xml:space="preserve">
-    <value>Group {1} has no resources to clone.</value>
-  </data>
-  <data name="noItemsForGUID" xml:space="preserve">
-    <value>GUID {1} (Group {2}) has no resources to clone.</value>
-  </data>
-  <data name="pjCQuickCloneTool" xml:space="preserve">
-    <value>PJSE\&amp;QuickClone</value>
-  </data>
-  <data name="pjQuickCloneHelp" xml:space="preserve">
-    <value>PJ QuickClone Tool</value>
-  </data>
 </root>
