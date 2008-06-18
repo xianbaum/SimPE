@@ -245,6 +245,12 @@
     <Compile Include="BhavOperandWiz0x0020.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="CompareButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CompareButton.Designer.cs">
+      <DependentUpon>CompareButton.cs</DependentUpon>
+    </Compile>
     <Compile Include="ExtendedWrapper.cs" />
     <Compile Include="GUIDChooser.cs">
       <SubType>UserControl</SubType>
@@ -405,6 +411,10 @@
     <EmbeddedResource Include="BhavOperandWiz0x0020.resx">
       <DependentUpon>BhavOperandWiz0x0020.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompareButton.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>CompareButton.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUIDChooser.resx">
       <DependentUpon>GUIDChooser.cs</DependentUpon>

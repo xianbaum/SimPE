@@ -127,10 +127,13 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 37</value>
+    <value>0, 35</value>
+  </data>
+  <data name="lbFilename.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
   </data>
   <data name="lbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>65, 17</value>
+    <value>49, 13</value>
   </data>
   <data name="lbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -148,19 +151,22 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;lbFilename.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>12</value>
   </data>
   <data name="tbFilename.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
   <data name="tbFilename.Location" type="System.Drawing.Point, System.Drawing">
-    <value>71, 34</value>
+    <value>57, 32</value>
+  </data>
+  <data name="tbFilename.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="tbFilename.MaxLength" type="System.Int32, mscorlib">
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>522, 22</value>
+    <value>520, 20</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -178,13 +184,16 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;tbFilename.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>13</value>
   </data>
   <data name="tbValueDec.Location" type="System.Drawing.Point, System.Drawing">
-    <value>45, 49</value>
+    <value>36, 39</value>
+  </data>
+  <data name="tbValueDec.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="tbValueDec.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 22</value>
+    <value>49, 20</value>
   </data>
   <data name="tbValueDec.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -208,10 +217,13 @@
     <value>1</value>
   </data>
   <data name="tbValueHex.Location" type="System.Drawing.Point, System.Drawing">
-    <value>45, 21</value>
+    <value>36, 17</value>
+  </data>
+  <data name="tbValueHex.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="tbValueHex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 22</value>
+    <value>49, 20</value>
   </data>
   <data name="tbValueHex.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -241,10 +253,13 @@
     <value>NoControl</value>
   </data>
   <data name="label5.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 24</value>
+    <value>5, 19</value>
+  </data>
+  <data name="label5.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
   </data>
   <data name="label5.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 17</value>
+    <value>26, 13</value>
   </data>
   <data name="label5.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -268,10 +283,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 77</value>
+    <value>5, 62</value>
+  </data>
+  <data name="btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="btnCancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 27</value>
+    <value>79, 22</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -298,10 +316,13 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>6, 52</value>
+    <value>5, 42</value>
+  </data>
+  <data name="label6.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>33, 17</value>
+    <value>27, 13</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -322,10 +343,16 @@
     <value>4</value>
   </data>
   <data name="gbValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 95</value>
+    <value>0, 81</value>
+  </data>
+  <data name="gbValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="gbValue.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="gbValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>111, 110</value>
+    <value>89, 88</value>
   </data>
   <data name="gbValue.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -343,10 +370,140 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;gbValue.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>14</value>
   </data>
   <data name="bconPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
+  </data>
+  <data name="btnClose.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="btnClose.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="btnClose.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 240</value>
+  </data>
+  <data name="btnClose.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="btnClose.Size" type="System.Drawing.Size, System.Drawing">
+    <value>87, 23</value>
+  </data>
+  <data name="btnClose.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="btnClose.Text" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Name" xml:space="preserve">
+    <value>btnClose</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnClose.Parent" xml:space="preserve">
+    <value>bconPanel</value>
+  </data>
+  <data name="&gt;&gt;btnClose.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="cmpBCON.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="cmpBCON.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 173</value>
+  </data>
+  <data name="cmpBCON.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 22</value>
+  </data>
+  <data name="cmpBCON.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="cmpBCON.Text" xml:space="preserve">
+    <value>Compare</value>
+  </data>
+  <data name="&gt;&gt;cmpBCON.Name" xml:space="preserve">
+    <value>cmpBCON</value>
+  </data>
+  <data name="&gt;&gt;cmpBCON.Type" xml:space="preserve">
+    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3091.24396, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;cmpBCON.Parent" xml:space="preserve">
+    <value>bconPanel</value>
+  </data>
+  <data name="&gt;&gt;cmpBCON.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="llIsOverride.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="llIsOverride.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="llIsOverride.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
+    <value>22, 14</value>
+  </data>
+  <data name="llIsOverride.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 197</value>
+  </data>
+  <data name="llIsOverride.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="llIsOverride.Size" type="System.Drawing.Size, System.Drawing">
+    <value>106, 30</value>
+  </data>
+  <data name="llIsOverride.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="llIsOverride.Text" xml:space="preserve">
+    <value>This is an override.
+View original.</value>
+  </data>
+  <data name="&gt;&gt;llIsOverride.Name" xml:space="preserve">
+    <value>llIsOverride</value>
+  </data>
+  <data name="&gt;&gt;llIsOverride.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;llIsOverride.Parent" xml:space="preserve">
+    <value>bconPanel</value>
+  </data>
+  <data name="&gt;&gt;llIsOverride.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btnUpdateBCON.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="btnUpdateBCON.Location" type="System.Drawing.Point, System.Drawing">
+    <value>93, 173</value>
+  </data>
+  <data name="btnUpdateBCON.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="btnUpdateBCON.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 22</value>
+  </data>
+  <data name="btnUpdateBCON.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="btnUpdateBCON.Text" xml:space="preserve">
+    <value>Update</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateBCON.Name" xml:space="preserve">
+    <value>btnUpdateBCON</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateBCON.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateBCON.Parent" xml:space="preserve">
+    <value>bconPanel</value>
+  </data>
+  <data name="&gt;&gt;btnUpdateBCON.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <data name="pjse_banner1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -357,8 +514,11 @@
   <data name="pjse_banner1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="pjse_banner1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
   <data name="pjse_banner1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>786, 27</value>
+    <value>731, 27</value>
   </data>
   <data name="pjse_banner1.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -370,13 +530,13 @@
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3014.22290, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3091.24396, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>4</value>
   </data>
   <data name="btnStrPrev.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
@@ -385,10 +545,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrPrev.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 119</value>
+    <value>94, 100</value>
+  </data>
+  <data name="btnStrPrev.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="btnStrPrev.Size" type="System.Drawing.Size, System.Drawing">
-    <value>21, 21</value>
+    <value>17, 17</value>
   </data>
   <data name="btnStrPrev.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -406,7 +569,7 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;btnStrPrev.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>5</value>
   </data>
   <data name="btnStrNext.Font" type="System.Drawing.Font, System.Drawing">
     <value>Wingdings, 8.25pt</value>
@@ -415,10 +578,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnStrNext.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 146</value>
+    <value>94, 122</value>
+  </data>
+  <data name="btnStrNext.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="btnStrNext.Size" type="System.Drawing.Size, System.Drawing">
-    <value>21, 21</value>
+    <value>17, 17</value>
   </data>
   <data name="btnStrNext.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -436,7 +602,7 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;btnStrNext.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>6</value>
   </data>
   <data name="cbFlag.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -451,10 +617,13 @@
     <value>NoControl</value>
   </data>
   <data name="cbFlag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>605, 36</value>
+    <value>583, 34</value>
+  </data>
+  <data name="cbFlag.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="cbFlag.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 21</value>
+    <value>46, 17</value>
   </data>
   <data name="cbFlag.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -475,16 +644,19 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;cbFlag.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="btnStrDelete.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnStrDelete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>116, 62</value>
+    <value>93, 55</value>
+  </data>
+  <data name="btnStrDelete.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="btnStrDelete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 27</value>
+    <value>79, 22</value>
   </data>
   <data name="btnStrDelete.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -502,16 +674,19 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;btnStrDelete.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>8</value>
   </data>
   <data name="btnStrAdd.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnStrAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 62</value>
+    <value>9, 55</value>
+  </data>
+  <data name="btnStrAdd.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="btnStrAdd.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 27</value>
+    <value>79, 22</value>
   </data>
   <data name="btnStrAdd.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -529,7 +704,7 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;btnStrAdd.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>9</value>
   </data>
   <data name="lvConstants.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -577,10 +752,13 @@
 </value>
   </data>
   <data name="lvConstants.Location" type="System.Drawing.Point, System.Drawing">
-    <value>221, 73</value>
+    <value>177, 63</value>
+  </data>
+  <data name="lvConstants.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="lvConstants.Size" type="System.Drawing.Size, System.Drawing">
-    <value>565, 130</value>
+    <value>552, 211</value>
   </data>
   <data name="lvConstants.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -595,7 +773,7 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;lvConstants.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>10</value>
   </data>
   <data name="btnCommit.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -607,10 +785,13 @@
     <value>NoControl</value>
   </data>
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>668, 32</value>
+    <value>636, 31</value>
+  </data>
+  <data name="btnCommit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="btnCommit.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 27</value>
+    <value>87, 23</value>
   </data>
   <data name="btnCommit.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -628,16 +809,19 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;btnCommit.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>11</value>
   </data>
   <data name="btnTRCNMaker.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
   <data name="btnTRCNMaker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>117, 173</value>
+    <value>94, 143</value>
+  </data>
+  <data name="btnTRCNMaker.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="btnTRCNMaker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 27</value>
+    <value>79, 22</value>
   </data>
   <data name="btnTRCNMaker.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -655,7 +839,7 @@
     <value>bconPanel</value>
   </data>
   <data name="&gt;&gt;btnTRCNMaker.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>15</value>
   </data>
   <data name="bconPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -663,8 +847,11 @@
   <data name="bconPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="bconPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
   <data name="bconPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>786, 210</value>
+    <value>731, 274</value>
   </data>
   <data name="bconPanel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -685,10 +872,13 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>120, 120</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>786, 210</value>
+    <value>731, 274</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BconForm</value>

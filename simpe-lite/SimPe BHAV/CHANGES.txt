@@ -1,3 +1,16 @@
+18 June 2008 14:59 - Compare feature generalised and added to BCON
+  pjse Localisation\
+    Localization.resx 1.17.4.5
+  SimPe BHAV\
+    BconForm.cs 1.25.4.1
+    BconForm.resx 1.15.4.1
+    BhavForm.cs 1.89.4.5
+    BhavForm.resx 1.49.4.3
+    CompareButton.cs 1.1.2.1
+    CompareButton.Designer.cs 1.1.2.1
+    CompareButton.resx 1.1.2.1
+    SimPe pjse coder plugin.csproj 1.6.4.1
+
 18 June 2008 10:50 - BHAV Compare feature (allows resource from other objects.package to be viewed)
   * Also prevent potential null exception in Localization.cs
   pjse Localisation\

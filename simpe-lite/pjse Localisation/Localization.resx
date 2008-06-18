@@ -1424,13 +1424,13 @@ Do you want to use this resource?
   <data name="guidAskSpecify" xml:space="preserve">
     <value>Specify...</value>
   </data>
-  <data name="bhavCmpNFCurrent" xml:space="preserve">
+  <data name="cmpNFCurrent" xml:space="preserve">
     <value>"{0}" not found in current objects.package</value>
-    <comment>{0}: current BHAV FileName</comment>
+    <comment>{0}: current resource FileName</comment>
   </data>
-  <data name="bhavCmpNFExp" xml:space="preserve">
+  <data name="cmpNFExp" xml:space="preserve">
     <value>"{0}" not found in {1} objects.package</value>
-    <comment>{0}: current BHAV FileName
+    <comment>{0}: current resource FileName
 {1}: expansion pack name</comment>
   </data>
 </root>

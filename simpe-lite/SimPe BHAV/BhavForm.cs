@@ -128,9 +128,7 @@ namespace SimPe.PackedFiles.UserInterface
         private Button btnZero;
         private ToolTip ttBhavForm;
         private pjse_banner pjse_banner1;
-        private Button btnCompareBHAV;
-        private ContextMenuStrip cmenuCompareBHAV;
-        private ToolStripMenuItem currentObjectspackageToolStripMenuItem;
+        private CompareButton cmpBHAV;
         private IContainer components;
         #endregion
        
@@ -232,6 +230,8 @@ namespace SimPe.PackedFiles.UserInterface
             currentPackage.Add(npfd, true);
         }
 
+
+        private void cmpBHAV_CompareWith(object sender, CompareButton.CompareWithEventArgs e) { common_LinkClicked(e.Item, true); }
         private void common_LinkClicked(pjse.FileTable.Entry item) { common_LinkClicked(item, false); }
         private void common_LinkClicked(pjse.FileTable.Entry item, bool noOverride)
         {
@@ -245,8 +245,8 @@ namespace SimPe.PackedFiles.UserInterface
             ui.Show();
         }
 
-        private bool isPopup { get { return ((string)(this.Tag)).StartsWith("Popup"); } }
-        private bool isNoOverride { get { return ((string)(this.Tag)).Contains(";noOverride"); } }
+        private bool isPopup { get { return this.Tag == null ? false : ((string)(this.Tag)).StartsWith("Popup"); } }
+        private bool isNoOverride { get { return this.Tag == null ? false : ((string)(this.Tag)).Contains(";noOverride"); } }
 
         private String lastPathEntry(String path)
         {
@@ -725,10 +725,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			if (((string)this.Tag).Equals("Popup"))
-			{
-				wrapper.Changed = false;
-			}
+			if (isPopup) wrapper.Changed = false;
 
 			this.btnCommit.Enabled = wrapper.Changed;
 
@@ -746,7 +743,8 @@ namespace SimPe.PackedFiles.UserInterface
 				tbTreeVersion.Text = "0x"+Helper.HexString(wrapper.Header.TreeVersion);
 				tbCacheFlags.Text = "0x"+Helper.HexString(wrapper.Header.CacheFlags);
 				tbCacheFlags.Enabled = (wrapper.Header.Format > 0x8008);
-                btnCompareBHAV.Enabled = wrapper.FileDescriptor.Group != 0xffffffff;
+                cmpBHAV.Wrapper = wrapper;
+                cmpBHAV.WrapperName = wrapper.FileName;
 				internalchg = false;
 			}
 
@@ -834,8 +832,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbCacheFlags = new System.Windows.Forms.TextBox();
             this.cbFormat = new System.Windows.Forms.ComboBox();
             this.gbSpecial = new System.Windows.Forms.GroupBox();
+            this.cmpBHAV = new pjse.CompareButton();
             this.btnPasteListing = new System.Windows.Forms.Button();
-            this.btnCompareBHAV = new System.Windows.Forms.Button();
             this.btnAppend = new System.Windows.Forms.Button();
             this.btnInsTrue = new System.Windows.Forms.Button();
             this.btnInsFalse = new System.Windows.Forms.Button();
@@ -867,14 +865,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ttBhavForm = new System.Windows.Forms.ToolTip(this.components);
-            this.cmenuCompareBHAV = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.currentObjectspackageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gbInstruction.SuspendLayout();
             this.bhavPanel.SuspendLayout();
             this.gbSpecial.SuspendLayout();
             this.gbMove.SuspendLayout();
             this.cmenuGUIDIndex.SuspendLayout();
-            this.cmenuCompareBHAV.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbInstruction
@@ -1362,8 +1357,8 @@ namespace SimPe.PackedFiles.UserInterface
             // gbSpecial
             // 
             resources.ApplyResources(this.gbSpecial, "gbSpecial");
+            this.gbSpecial.Controls.Add(this.cmpBHAV);
             this.gbSpecial.Controls.Add(this.btnPasteListing);
-            this.gbSpecial.Controls.Add(this.btnCompareBHAV);
             this.gbSpecial.Controls.Add(this.btnAppend);
             this.gbSpecial.Controls.Add(this.btnInsTrue);
             this.gbSpecial.Controls.Add(this.btnInsFalse);
@@ -1376,17 +1371,20 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbSpecial.Name = "gbSpecial";
             this.gbSpecial.TabStop = false;
             // 
+            // cmpBHAV
+            // 
+            resources.ApplyResources(this.cmpBHAV, "cmpBHAV");
+            this.cmpBHAV.Name = "cmpBHAV";
+            this.cmpBHAV.UseVisualStyleBackColor = true;
+            this.cmpBHAV.Wrapper = null;
+            this.cmpBHAV.WrapperName = null;
+            this.cmpBHAV.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBHAV_CompareWith);
+            // 
             // btnPasteListing
             // 
             resources.ApplyResources(this.btnPasteListing, "btnPasteListing");
             this.btnPasteListing.Name = "btnPasteListing";
             this.btnPasteListing.Click += new System.EventHandler(this.btnPasteListing_Click);
-            // 
-            // btnCompareBHAV
-            // 
-            resources.ApplyResources(this.btnCompareBHAV, "btnCompareBHAV");
-            this.btnCompareBHAV.Name = "btnCompareBHAV";
-            this.btnCompareBHAV.Click += new System.EventHandler(this.btnCompareBHAV_Click);
             // 
             // btnAppend
             // 
@@ -1584,20 +1582,6 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
-            // cmenuCompareBHAV
-            // 
-            this.cmenuCompareBHAV.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.currentObjectspackageToolStripMenuItem});
-            this.cmenuCompareBHAV.Name = "cmenuCompareBHAV";
-            resources.ApplyResources(this.cmenuCompareBHAV, "cmenuCompareBHAV");
-            this.cmenuCompareBHAV.Opening += new System.ComponentModel.CancelEventHandler(this.cmenuCompareBHAV_Opening);
-            // 
-            // currentObjectspackageToolStripMenuItem
-            // 
-            this.currentObjectspackageToolStripMenuItem.Name = "currentObjectspackageToolStripMenuItem";
-            resources.ApplyResources(this.currentObjectspackageToolStripMenuItem, "currentObjectspackageToolStripMenuItem");
-            this.currentObjectspackageToolStripMenuItem.Click += new System.EventHandler(this.tsmi_Click);
-            // 
             // BhavForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1615,7 +1599,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbMove.ResumeLayout(false);
             this.gbMove.PerformLayout();
             this.cmenuGUIDIndex.ResumeLayout(false);
-            this.cmenuCompareBHAV.ResumeLayout(false);
             this.ResumeLayout(false);
 
 		}
@@ -2207,66 +2190,6 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.TPRPMaker();
 		}
-
-
-        private void btnCompareBHAV_Click(object sender, EventArgs e)
-        {
-            this.cmenuCompareBHAV.Show((Control)sender, new Point(3, 3));
-        }
-
-        private void cmenuCompareBHAV_Opening(object sender, CancelEventArgs e)
-        {
-            while (cmenuCompareBHAV.Items.Count > 1)
-                cmenuCompareBHAV.Items.RemoveAt(1);
-            foreach (SimPe.ExpansionItem exp in SimPe.PathProvider.Global.Expansions)
-            {
-                if (exp.Exists && exp.Flag.FullObjectsPackage)
-                {
-                    ToolStripMenuItem tsmi = new ToolStripMenuItem();
-                    tsmi.Click += new EventHandler(tsmi_Click);
-                    tsmi.Tag = exp;
-                    tsmi.Text = exp.Name;
-                    cmenuCompareBHAV.Items.Add(tsmi);
-                }
-            }
-        }
-
-        private void tsmi_Click(object sender, EventArgs e)
-        {
-            pjse.FileTable.Entry fe;
-            int i = cmenuCompareBHAV.Items.IndexOf((ToolStripItem)sender);
-            if (i < 0)
-                throw new ArgumentOutOfRangeException("menuItem", "Unrecognised object triggered event");
-            else if (i == 0)
-            {
-                pjse.FileTable.Entry[] items =
-                    pjse.FileTable.GFT[wrapper.FileDescriptor.Type, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance, pjse.FileTable.Source.Maxis];
-                if (items == null || items.Length == 0)
-                {
-                    MessageBox.Show(pjse.Localization.GetString("bhavCmpNFCurrent", wrapper.FileName),
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    return;
-                }
-                fe = items[0];
-            }
-            else
-            {
-                SimPe.ExpansionItem exp = (SimPe.ExpansionItem)cmenuCompareBHAV.Items[i].Tag;
-                SimPe.Packages.GeneratableFile op = SimPe.Packages.GeneratableFile.LoadFromFile(
-                    System.IO.Path.Combine(System.IO.Path.Combine(exp.InstallFolder, exp.ObjectsSubFolder), "objects.package"));
-                if (op == null)
-                    throw new Exception("Could not read " + exp.Name + " objects.package");
-                IPackedFileDescriptor pfd = op.FindFile(wrapper.FileDescriptor);
-                if (pfd == null)
-                {
-                    MessageBox.Show(pjse.Localization.GetString("bhavCmpNFExp", wrapper.FileName, exp.Name),
-                        this.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    return;
-                }
-                fe = new pjse.FileTable.Entry(op, pfd, true, false);
-            }
-            common_LinkClicked(fe, true);
-        }
 
 
         private void btnGUIDIndex_Click(object sender, EventArgs e)

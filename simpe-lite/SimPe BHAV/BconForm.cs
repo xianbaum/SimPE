@@ -56,6 +56,10 @@ namespace SimPe.PackedFiles.UserInterface
         private System.Windows.Forms.Button btnTRCNMaker;
         private Button btnCancel;
         private pjse.pjse_banner pjse_banner1;
+        private Button btnUpdateBCON;
+        private LinkLabel llIsOverride;
+        private pjse.CompareButton cmpBCON;
+        private Button btnClose;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -190,6 +194,56 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.btnCancel.Enabled = false;
 		}
+
+
+
+        private bool isPopup { get { return this.Tag == null ? false : ((string)(this.Tag)).StartsWith("Popup"); } }
+        private bool isNoOverride { get { return this.Tag == null ? false : ((string)(this.Tag)).Contains(";noOverride"); } }
+
+        private bool isOverride
+        {
+            get
+            {
+                llIsOverride.Tag = null;
+                pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
+                if (items.Length <= 1) return false;
+
+                pjse.FileTable.Entry item = items[items.Length - 1]; // currentpkg, other, fixed, maxis
+                if (item.PFD == wrapper.FileDescriptor) return false;
+                if (!item.IsMaxis /*&& !item.IsFixed*/) return false; // only supporting objects.package really
+
+                llIsOverride.Tag = item;
+                return true;
+            }
+        }
+
+        private void common_Popup(pjse.FileTable.Entry item, bool noOverride)
+        {
+            if (item == null) return; // this should never happen
+            Bcon bcon = new Bcon();
+            bcon.ProcessData(item.PFD, item.Package);
+
+            BconForm ui = (BconForm)bcon.UIHandler;
+            ui.Tag = noOverride ? "Popup;noOverride" : "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+            bcon.RefreshUI();
+            ui.Show();
+        }
+
+
+
+        private void doUpdateBCON()
+        {
+            if (!isOverride) return; // this should never happen
+            pjse.FileTable.Entry item = (pjse.FileTable.Entry)llIsOverride.Tag;
+            Bcon bcon = new Bcon();
+            bcon.ProcessData(item.PFD, item.Package);
+            internalchg = true;
+            while (wrapper.Count < bcon.Count)
+                wrapper.Add(new BconItem(bcon[wrapper.Count]));
+            internalchg = false;
+            updateLists();
+        }
+
 
 
 		private void BconItemAdd()
@@ -354,6 +408,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 			setIndex(lvConstants.Items.Count > 0 ? 0 : -1);
 
+            tbFilename.Enabled = cbFlag.Enabled = tbValueHex.Enabled = tbValueDec.Enabled = !isPopup;
+            btnClose.Visible = isPopup;
+
 			if (!setHandler)
 			{
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
@@ -363,7 +420,9 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
-			this.btnCommit.Enabled = wrapper.Changed;
+            if (isPopup) wrapper.Changed = false;
+
+            this.btnCommit.Enabled = wrapper.Changed;
             if (index >= 0 && sender is BconItem && wrapper.IndexOf((BconItem)sender) == index)
             {
                 this.btnCancel.Enabled = true;
@@ -377,7 +436,10 @@ namespace SimPe.PackedFiles.UserInterface
 				internalchg = true;
 				this.Text = tbFilename.Text = wrapper.FileName;
 				this.cbFlag.Checked = wrapper.Flag;
-				internalchg = false;
+                this.llIsOverride.Visible = !isNoOverride && isOverride;
+                cmpBCON.Wrapper = wrapper;
+                cmpBCON.WrapperName = wrapper.FileName;
+                internalchg = false;
 			}
             else
 				updateLists();
@@ -401,7 +463,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.bconPanel = new System.Windows.Forms.Panel();
-            this.pjse_banner1 = new pjse.pjse_banner();
+            this.llIsOverride = new System.Windows.Forms.LinkLabel();
+            this.btnUpdateBCON = new System.Windows.Forms.Button();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
             this.cbFlag = new System.Windows.Forms.CheckBox();
@@ -413,6 +476,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.chLabel = new System.Windows.Forms.ColumnHeader();
             this.btnCommit = new System.Windows.Forms.Button();
             this.btnTRCNMaker = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.cmpBCON = new pjse.CompareButton();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.gbValue.SuspendLayout();
             this.bconPanel.SuspendLayout();
             this.SuspendLayout();
@@ -479,6 +545,10 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.bconPanel, "bconPanel");
             this.bconPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.bconPanel.Controls.Add(this.btnClose);
+            this.bconPanel.Controls.Add(this.cmpBCON);
+            this.bconPanel.Controls.Add(this.llIsOverride);
+            this.bconPanel.Controls.Add(this.btnUpdateBCON);
             this.bconPanel.Controls.Add(this.pjse_banner1);
             this.bconPanel.Controls.Add(this.btnStrPrev);
             this.bconPanel.Controls.Add(this.btnStrNext);
@@ -493,11 +563,19 @@ namespace SimPe.PackedFiles.UserInterface
             this.bconPanel.Controls.Add(this.btnTRCNMaker);
             this.bconPanel.Name = "bconPanel";
             // 
-            // pjse_banner1
+            // llIsOverride
             // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pjse_banner1.Name = "pjse_banner1";
+            resources.ApplyResources(this.llIsOverride, "llIsOverride");
+            this.llIsOverride.Name = "llIsOverride";
+            this.llIsOverride.TabStop = true;
+            this.llIsOverride.UseCompatibleTextRendering = true;
+            this.llIsOverride.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llIsOverride_LinkClicked);
+            // 
+            // btnUpdateBCON
+            // 
+            resources.ApplyResources(this.btnUpdateBCON, "btnUpdateBCON");
+            this.btnUpdateBCON.Name = "btnUpdateBCON";
+            this.btnUpdateBCON.Click += new System.EventHandler(this.btnUpdateBCON_Click);
             // 
             // btnStrPrev
             // 
@@ -574,10 +652,33 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnTRCNMaker.Name = "btnTRCNMaker";
             this.btnTRCNMaker.Click += new System.EventHandler(this.btnTRCNMaker_Click);
             // 
+            // btnClose
+            // 
+            resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // cmpBCON
+            // 
+            resources.ApplyResources(this.cmpBCON, "cmpBCON");
+            this.cmpBCON.Name = "cmpBCON";
+            this.cmpBCON.UseVisualStyleBackColor = true;
+            this.cmpBCON.Wrapper = null;
+            this.cmpBCON.WrapperName = null;
+            this.cmpBCON.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBCON_CompareWith);
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
+            // 
             // BconForm
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.CancelButton = this.btnClose;
             this.Controls.Add(this.bconPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Name = "BconForm";
@@ -638,6 +739,23 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.BconItemDelete();
 		}
+
+
+        private void cmpBCON_CompareWith(object sender, pjse.CompareButton.CompareWithEventArgs e)
+        {
+            common_Popup(e.Item, true);
+        }
+
+        private void llIsOverride_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            common_Popup((pjse.FileTable.Entry)((LinkLabel)sender).Tag, false);
+        }
+
+
+        private void btnUpdateBCON_Click(object sender, EventArgs e)
+        {
+            doUpdateBCON();
+        }
 
 
 		private void cbFlag_CheckedChanged(object sender, System.EventArgs e)
@@ -708,6 +826,12 @@ namespace SimPe.PackedFiles.UserInterface
 			((TextBox)sender).Text = currentItem.ToString();
 			internalchg = origstate;
 		}
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            if (this.isPopup)
+                Close();
+        }
 
 	}
 }
