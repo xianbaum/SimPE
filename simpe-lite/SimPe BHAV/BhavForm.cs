@@ -242,7 +242,7 @@ namespace SimPe.PackedFiles.UserInterface
             BhavForm ui = (BhavForm)bhav.UIHandler;
             string tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
             if (noOverride) tag += ";noOverride"; //
-            if (exp != null) tag += ";expName=+" + exp.Name + "+";
+            if (exp != null) tag += ";expName=+" + exp.NameShort + "+";
             ui.Tag = tag;
 
             bhav.RefreshUI();

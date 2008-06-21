@@ -1,3 +1,10 @@
+21 June 2008 14:05 - Change order of title bar and use exp.NameShort
+  pjse Localisation\
+    Localization.resx 1.17.4.7
+  SimPe BHAV\
+    BconForm.cs 1.25.4.3
+    BhavForm.cs 1.89.4.7
+
 21 June 2008 13:31 - Popup window titles for BHAV and BCON to contain more info
   * Also latest GlobalStrings.package from Inge
   pjse Localisation\
