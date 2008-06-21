@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
+ *   Copyright (C) 2008 by Peter L Jones                                   *
  *   peter@drealm.info                                                     *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
@@ -231,41 +231,65 @@ namespace SimPe.PackedFiles.UserInterface
         }
 
 
-        private void cmpBHAV_CompareWith(object sender, CompareButton.CompareWithEventArgs e) { common_LinkClicked(e.Item, true); }
-        private void common_LinkClicked(pjse.FileTable.Entry item) { common_LinkClicked(item, false); }
-        private void common_LinkClicked(pjse.FileTable.Entry item, bool noOverride)
+        private void cmpBHAV_CompareWith(object sender, CompareButton.CompareWithEventArgs e) { common_LinkClicked(e.Item, e.ExpansionItem, true); }
+        private void common_LinkClicked(pjse.FileTable.Entry item) { common_LinkClicked(item, null, false); }
+        private void common_LinkClicked(pjse.FileTable.Entry item, SimPe.ExpansionItem exp, bool noOverride)
         {
             if (item == null) return; // this should never happen
             Bhav bhav = new Bhav();
             bhav.ProcessData(item.PFD, item.Package);
 
             BhavForm ui = (BhavForm)bhav.UIHandler;
-            ui.Tag = noOverride ? "Popup;noOverride" : "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+            string tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+            if (noOverride) tag += ";noOverride"; //
+            if (exp != null) tag += ";expName=+" + exp.Name + "+";
+            ui.Tag = tag;
+
             bhav.RefreshUI();
             ui.Show();
         }
 
         private bool isPopup { get { return this.Tag == null ? false : ((string)(this.Tag)).StartsWith("Popup"); } }
         private bool isNoOverride { get { return this.Tag == null ? false : ((string)(this.Tag)).Contains(";noOverride"); } }
-
-        private String lastPathEntry(String path)
+        private string expName
         {
-            string[] pathparts = path.Split(new char[] { '/', '\\' }, StringSplitOptions.None);
-            return pathparts[pathparts.Length - 1];
+            get
+            {
+                if (this.Tag != null)
+                {
+                    string s = (string)this.Tag;
+                    int i = s.IndexOf(";expName=+");
+                    if (i >= 0) return s.Substring(i + 10).TrimEnd('+');
+                }
+                foreach(pjse.FileTable.Entry item in pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor])
+                    if (item.PFD == wrapper.FileDescriptor)
+                    {
+                        if (item.IsMaxis) return pjse.Localization.GetString("expCurrent");
+                        else break;
+                    }
+                return pjse.Localization.GetString("expCustom");
+            }
         }
 
-        private String formTitle(Bhav wrapper)
+        private String formTitle
         {
-            String s = "";
-            if (wrapper.Package.SaveFileName != null)
-                s += "(" + lastPathEntry(wrapper.Package.SaveFileName) + ")";
-            s += ": [0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) + "] " + wrapper.FileName;
-            return s;
+            get
+            {
+                return pjse.Localization.GetString("pjseWindowTitle"
+                    , expName // EP Name or Custom
+                    , System.IO.Path.GetFileName(wrapper.Package.SaveFileName) // package Filename without path
+                    , wrapper.FileDescriptor.TypeName.shortname // Type (short name)
+                    , "0x" + SimPe.Helper.HexString(wrapper.FileDescriptor.Group) // Group Number
+                    , "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) // Instance Number
+                    , wrapper.FileName
+                    );
+            }
         }
 
         private void handleOverride()
         {
             lbHidesOP.Visible = tbHidesOP.Visible = llHidesOP.Visible = false;
+            llHidesOP.Tag = null;
             if (this.isNoOverride) return;
 
             pjse.FileTable.Entry[] items = pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor];
@@ -278,7 +302,7 @@ namespace SimPe.PackedFiles.UserInterface
 
                 this.lbHidesOP.Visible = this.tbHidesOP.Visible = this.llHidesOP.Visible = true;
                 llHidesOP.Links[0].Start -= llHidesOP.Text.Length;
-                llHidesOP.Text = hidesFmt.Replace("{0}", lastPathEntry(item.Package.SaveFileName));
+                llHidesOP.Text = hidesFmt.Replace("{0}", System.IO.Path.GetFileName(item.Package.SaveFileName));
                 llHidesOP.Links[0].Start += llHidesOP.Text.Length;
                 this.tbHidesOP.Text = wrapper.Package.FileName;
                 llHidesOP.Tag = item.IsMaxis ? pjse.FileTable.Source.Maxis : pjse.FileTable.Source.Fixed;
@@ -714,7 +738,7 @@ namespace SimPe.PackedFiles.UserInterface
 
                 handleOverride();
 
-                this.Text = pjse.Localization.GetString("viewbhav") + " " + formTitle(wrapper);
+                this.Text = pjse.Localization.GetString("viewbhav") + " " + formTitle;
             }
             else
             {
@@ -1678,7 +1702,7 @@ namespace SimPe.PackedFiles.UserInterface
             Control old = this.bhavPanel.Parent;
             string oldFloatText = this.pjse_banner1.FloatText;
             Form f = new Form();
-            f.Text = formTitle(wrapper);
+            f.Text = formTitle;
             f.WindowState = FormWindowState.Maximized;
             f.Controls.Add(this.bhavPanel);
             this.pjse_banner1.FloatText = pjse.Localization.GetString("bhavForm.Unfloat");

@@ -53,8 +53,10 @@ namespace pjse
         public class CompareWithEventArgs : EventArgs
         {
             private pjse.FileTable.Entry item = null;
+            private SimPe.ExpansionItem exp = null;
             public pjse.FileTable.Entry Item { get { return item; } }
-            public CompareWithEventArgs(pjse.FileTable.Entry item) : base() { this.item = item; }
+            public SimPe.ExpansionItem ExpansionItem { get { return exp; } }
+            public CompareWithEventArgs(pjse.FileTable.Entry item, SimPe.ExpansionItem exp) : base() { this.item = item; this.exp = exp; }
         }
         public delegate void CompareWithEventHandler(object sender, CompareWithEventArgs e);
         [Category("Action")]
@@ -93,6 +95,7 @@ namespace pjse
         private void tsmi_Click(object sender, EventArgs e)
         {
             pjse.FileTable.Entry fe;
+            SimPe.ExpansionItem exp;
             int i = cmenuCompare.Items.IndexOf((ToolStripItem)sender);
             if (i < 0)
                 throw new ArgumentOutOfRangeException("menuItem", "Unrecognised object triggered event");
@@ -107,10 +110,11 @@ namespace pjse
                     return;
                 }
                 fe = items[0];
+                exp = null;
             }
             else
             {
-                SimPe.ExpansionItem exp = (SimPe.ExpansionItem)cmenuCompare.Items[i].Tag;
+                exp = (SimPe.ExpansionItem)cmenuCompare.Items[i].Tag;
                 SimPe.Packages.GeneratableFile op = SimPe.Packages.GeneratableFile.LoadFromFile(
                     System.IO.Path.Combine(System.IO.Path.Combine(exp.InstallFolder, exp.ObjectsSubFolder), "objects.package"));
                 if (op == null)
@@ -125,7 +129,7 @@ namespace pjse
                 fe = new pjse.FileTable.Entry(op, pfd, true, false);
             }
 
-            OnCompareWith(this, new CompareWithEventArgs(fe));
+            OnCompareWith(this, new CompareWithEventArgs(fe, exp));
         }
 
     }

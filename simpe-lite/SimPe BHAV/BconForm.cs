@@ -199,6 +199,25 @@ namespace SimPe.PackedFiles.UserInterface
 
         private bool isPopup { get { return this.Tag == null ? false : ((string)(this.Tag)).StartsWith("Popup"); } }
         private bool isNoOverride { get { return this.Tag == null ? false : ((string)(this.Tag)).Contains(";noOverride"); } }
+        private string expName
+        {
+            get
+            {
+                if (this.Tag != null)
+                {
+                    string s = (string)this.Tag;
+                    int i = s.IndexOf(";expName=+");
+                    if (i >= 0) return s.Substring(i + 10).TrimEnd('+');
+                }
+                foreach (pjse.FileTable.Entry item in pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor])
+                    if (item.PFD == wrapper.FileDescriptor)
+                    {
+                        if (item.IsMaxis) return pjse.Localization.GetString("expCurrent");
+                        else break;
+                    }
+                return pjse.Localization.GetString("expCustom");
+            }
+        }
 
         private bool isOverride
         {
@@ -217,18 +236,36 @@ namespace SimPe.PackedFiles.UserInterface
             }
         }
 
-        private void common_Popup(pjse.FileTable.Entry item, bool noOverride)
+        private void common_Popup(pjse.FileTable.Entry item, SimPe.ExpansionItem exp, bool noOverride)
         {
             if (item == null) return; // this should never happen
             Bcon bcon = new Bcon();
             bcon.ProcessData(item.PFD, item.Package);
 
             BconForm ui = (BconForm)bcon.UIHandler;
-            ui.Tag = noOverride ? "Popup;noOverride" : "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+            string tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
+            if (noOverride) tag += ";noOverride"; //
+            if (exp != null) tag += ";expName=+" + exp.Name + "+";
+            ui.Tag = tag;
+
             bcon.RefreshUI();
             ui.Show();
         }
 
+        private String formTitle
+        {
+            get
+            {
+                return pjse.Localization.GetString("pjseWindowTitle"
+                    , expName // EP Name or Custom
+                    , System.IO.Path.GetFileName(wrapper.Package.SaveFileName) // package Filename without path
+                    , wrapper.FileDescriptor.TypeName.shortname // Type (short name)
+                    , "0x" + SimPe.Helper.HexString(wrapper.FileDescriptor.Group) // Group Number
+                    , "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) // Instance Number
+                    , wrapper.FileName
+                    );
+            }
+        }
 
 
         private void doUpdateBCON()
@@ -431,12 +468,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 			if (internalchg) return;
 
-			if (sender.Equals(wrapper))
-			{
-				internalchg = true;
-				this.Text = tbFilename.Text = wrapper.FileName;
-				this.cbFlag.Checked = wrapper.Flag;
+            if (sender.Equals(wrapper))
+            {
+                internalchg = true;
+                this.Text = formTitle;
+                this.cbFlag.Checked = wrapper.Flag;
                 this.llIsOverride.Visible = !isNoOverride && isOverride;
+                tbFilename.Text = wrapper.FileName;
                 cmpBCON.Wrapper = wrapper;
                 cmpBCON.WrapperName = wrapper.FileName;
                 internalchg = false;
@@ -743,12 +781,12 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void cmpBCON_CompareWith(object sender, pjse.CompareButton.CompareWithEventArgs e)
         {
-            common_Popup(e.Item, true);
+            common_Popup(e.Item, e.ExpansionItem, true);
         }
 
         private void llIsOverride_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            common_Popup((pjse.FileTable.Entry)((LinkLabel)sender).Tag, false);
+            common_Popup((pjse.FileTable.Entry)((LinkLabel)sender).Tag, null, false);
         }
 
 

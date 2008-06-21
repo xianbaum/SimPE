@@ -1,3 +1,13 @@
+21 June 2008 13:31 - Popup window titles for BHAV and BCON to contain more info
+  * Also latest GlobalStrings.package from Inge
+  pjse Localisation\
+    Localization.resx 1.17.4.6
+  SimPe BHAV\
+    BconForm.cs 1.25.4.2
+    BhavForm.cs 1.89.4.6
+    CompareButton.cs 1.1.2.2
+  GlobalStrings.package 1.31.4.1
+
 18 June 2008 14:59 - Compare feature generalised and added to BCON
   pjse Localisation\
     Localization.resx 1.17.4.5

@@ -1433,4 +1433,21 @@ Do you want to use this resource?
     <comment>{0}: current resource FileName
 {1}: expansion pack name</comment>
   </data>
+  <data name="pjseWindowTitle" xml:space="preserve">
+    <value>[{2} {4}] {5} - (Group {3}) - ({0}) {1}</value>
+    <comment>{0}: EP Name or "Custom"
+{1}: Package filename without path
+{2}: Type (short name)
+{3}: Group Number
+{4}: Instance Number
+{5}: Instance Filename</comment>
+  </data>
+  <data name="expCurrent" xml:space="preserve">
+    <value>Current</value>
+    <comment>Used in place of the EP Name when the current EP isn't known</comment>
+  </data>
+  <data name="expCustom" xml:space="preserve">
+    <value>Custom</value>
+    <comment>Used to indicate Custom content</comment>
+  </data>
 </root>
