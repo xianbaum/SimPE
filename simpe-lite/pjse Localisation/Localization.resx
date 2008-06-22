@@ -163,10 +163,6 @@
     <value>Value</value>
     <comment>BhavWiz: BCON value prefix</comment>
   </data>
-  <data name="viewbhav" xml:space="preserve">
-    <value>View BHAV</value>
-    <comment>BhavForm (popup) title bar prefix</comment>
-  </data>
   <data name="Clear" xml:space="preserve">
     <value>Clear</value>
     <comment>StrForm button label</comment>
@@ -1434,13 +1430,14 @@ Do you want to use this resource?
 {1}: expansion pack name</comment>
   </data>
   <data name="pjseWindowTitle" xml:space="preserve">
-    <value>{0} [{2} {4}] {5} - Group: {3} - {1}</value>
-    <comment>{0}: EP Name or "Custom"
+    <value>{0} [{2} {4}] {5} - Group: {3} - {1} - {6}</value>
+    <comment>{0}: EP NameShort, "Current" or "Custom"
 {1}: Package filename without path
 {2}: Type (short name)
 {3}: Group Number
 {4}: Instance Number
-{5}: Instance Filename</comment>
+{5}: Instance Filename
+{6}: {pjseWindowTitleView} or {pjseWindowTitleEdit}</comment>
   </data>
   <data name="expCurrent" xml:space="preserve">
     <value>Current</value>
@@ -1449,5 +1446,13 @@ Do you want to use this resource?
   <data name="expCustom" xml:space="preserve">
     <value>Custom</value>
     <comment>Used to indicate Custom content</comment>
+  </data>
+  <data name="pjseWindowTitleEdit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>Indicates window is in Edit mode</comment>
+  </data>
+  <data name="pjseWindowTitleView" xml:space="preserve">
+    <value>View</value>
+    <comment>Indicates window is in View mode</comment>
   </data>
 </root>

@@ -1,3 +1,10 @@
+22 June 2008 12:02 - Indicate "View" vs "Edit" in common title bar string; allow uncommitted editing in View mode
+  pjse Localisation\
+    Localization.resx 1.17.4.8
+  SimPe BHAV\
+    BconForm.cs 1.25.4.4
+    BhavForm.cs 1.89.4.8
+
 21 June 2008 14:05 - Change order of title bar and use exp.NameShort
   pjse Localisation\
     Localization.resx 1.17.4.7

@@ -263,6 +263,7 @@ namespace SimPe.PackedFiles.UserInterface
                     , "0x" + SimPe.Helper.HexString(wrapper.FileDescriptor.Group) // Group Number
                     , "0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance) // Instance Number
                     , wrapper.FileName
+                    , pjse.Localization.GetString(isPopup ? "pjseWindowTitleView" : "pjseWindowTitleEdit")
                     );
             }
         }
@@ -445,7 +446,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			setIndex(lvConstants.Items.Count > 0 ? 0 : -1);
 
-            tbFilename.Enabled = cbFlag.Enabled = tbValueHex.Enabled = tbValueDec.Enabled = !isPopup;
+            //tbFilename.Enabled = cbFlag.Enabled = tbValueHex.Enabled = tbValueDec.Enabled = !isPopup;
             btnClose.Visible = isPopup;
 
 			if (!setHandler)
