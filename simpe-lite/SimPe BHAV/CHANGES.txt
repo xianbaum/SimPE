@@ -1,3 +1,10 @@
+22 June 2008 13:00 - Add "View" mode button to banner; enable it for BHAV editor
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.9
+    BhavForm.resx 1.49.4.4
+    pjse banner.cs 1.1.4.1
+    pjse banner.Designer.cs 1.1.4.1
+
 22 June 2008 12:02 - Indicate "View" vs "Edit" in common title bar string; allow uncommitted editing in View mode
   pjse Localisation\
     Localization.resx 1.17.4.8

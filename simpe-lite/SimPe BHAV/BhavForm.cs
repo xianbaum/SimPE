@@ -735,7 +735,7 @@ namespace SimPe.PackedFiles.UserInterface
                     cbSpecial.Visible =
                     btnCancel.Visible = false;
 #endif
-                pjse_banner1.FloatVisible = false;
+                pjse_banner1.ViewVisible = pjse_banner1.FloatVisible = false;
                 btnClose.Visible = true;
                 gbSpecial.Visible = true;
                 cbSpecial.Enabled = false;
@@ -1301,6 +1301,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pjse_banner1.FloatVisible = true;
             this.pjse_banner1.Name = "pjse_banner1";
+            this.pjse_banner1.ViewVisible = true;
+            this.pjse_banner1.ViewClick += new System.EventHandler(this.pjse_banner1_ViewClick);
             this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
             // 
             // lbHidesOP
@@ -1739,6 +1741,11 @@ namespace SimPe.PackedFiles.UserInterface
             f.Dispose();
 
             wrapper.RefreshUI();
+        }
+
+        private void pjse_banner1_ViewClick(object sender, EventArgs e)
+        {
+            common_LinkClicked(pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor][0]);
         }
 
 		private void llopenbhav_LinkClicked(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)

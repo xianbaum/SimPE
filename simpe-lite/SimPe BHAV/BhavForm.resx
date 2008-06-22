@@ -1593,7 +1593,7 @@ to BHAV</value>
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3091.24645, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3095.20648, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2007,7 +2007,7 @@ to BHAV</value>
     <value>cmpBHAV</value>
   </data>
   <data name="&gt;&gt;cmpBHAV.Type" xml:space="preserve">
-    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3091.24645, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3095.20648, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cmpBHAV.Parent" xml:space="preserve">
     <value>gbSpecial</value>
@@ -2370,7 +2370,7 @@ to BHAV</value>
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.3091.24645, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.3095.20648, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2826,7 +2826,7 @@ to BHAV</value>
     <value>Save index...</value>
   </data>
   <data name="cmenuGUIDIndex.Size" type="System.Drawing.Size, System.Drawing">
-    <value>196, 114</value>
+    <value>196, 92</value>
   </data>
   <data name="&gt;&gt;cmenuGUIDIndex.Name" xml:space="preserve">
     <value>cmenuGUIDIndex</value>

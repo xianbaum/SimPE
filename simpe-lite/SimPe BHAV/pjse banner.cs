@@ -67,6 +67,23 @@ namespace pjse
 
 
         [Category("Appearance")]
+        [DefaultValue("View")]
+        [Description("The label on the View button.")]
+        [Localizable(true)]
+        public string ViewText { get { return btnView.Text; } set { btnView.Text = value; } }
+
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [Description("True if the View button should be visible.")]
+        public bool ViewVisible { get { return btnView.Visible; } set { btnView.Visible = value; } }
+
+        [Category("Action")]
+        [Description("Raised when the View button is clicked.")]
+        public event EventHandler ViewClick;
+        public virtual void OnViewClick(object sender, EventArgs e) { if (ViewClick != null) { ViewClick(sender, e); } }
+
+
+        [Category("Appearance")]
         [DefaultValue("Float")]
         [Description("The label on the Float button.")]
         [Localizable(true)]
@@ -110,10 +127,12 @@ namespace pjse
 
 
 
-        private void btnFloat_Click(object sender, EventArgs e) { OnFloatClick(sender, e); }
+        private void btnFloat_Click(object sender, EventArgs e) { OnFloatClick(this, e); }
 
         private void btnRefreshFT_Click(object sender, EventArgs e) { SimPe.FileTable.Reload(); }
 
         private void btnHelp_Click(object sender, System.EventArgs e) { pjse.HelpHelper.Help(helpTarget); }
+
+        private void btnView_Click(object sender, EventArgs e) { OnViewClick(this, e); }
     }
 }
