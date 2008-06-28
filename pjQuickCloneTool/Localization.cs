@@ -28,7 +28,7 @@ namespace pj
 
         static L() { resource = new ResourceManager(typeof(L)); }
 
-        public static string Get(string name)
+        public static string Get(string name, params string[] args)
         {
             string res = resource.GetString(name);
 #if DEBUG
@@ -36,6 +36,16 @@ namespace pj
 #else
             if (res == null) res = name;
 #endif
+            for (int i = 1; (i - 1) < args.Length; i++)
+            {
+                if (res.Contains("{" + i + "}"))
+                    res = res.Replace("{" + i + "}", args[(i - 1)]);
+#if DEBUG
+                else
+                    res += ", {" + i + ": " + args[(i - 1)] + "}";
+#endif
+            }
+
             return res;
         }
     }
