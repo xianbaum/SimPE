@@ -46,7 +46,7 @@ namespace pjse
 			SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
 		}
 
-        private void FileIndex_FILoad(object sender, System.EventArgs e) { if (hasLoaded || SimPe.Helper.LocalMode) UIRefresh(); }
+        private void FileIndex_FILoad(object sender, System.EventArgs e) { UIRefresh(); }
 
         public void UIRefresh()
         {
@@ -66,11 +66,9 @@ namespace pjse
         private Hashtable pfByTypeGroupInstance = new Hashtable();
 
         private bool hasLoaded = false;
-        public void Refresh() { this.Refresh(false); }
-        private void Refresh(bool flag)
+        public void Refresh() { this.Refresh(!SimPe.Helper.LocalMode); }
+        private void Refresh(bool loadEverything)
         {
-            if (!hasLoaded && !flag && SimPe.Helper.LocalMode) return;
-
             IPackageFile cp = currentPackage;
             CurrentPackage = null;
 
@@ -85,21 +83,26 @@ namespace pjse
             pfByTypeGroup = new Hashtable();
             pfByTypeGroupInstance = new Hashtable();
 
-            foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
-                if (fii.Use) Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions != SimPe.Expansions.Custom, true);
+            if (loadEverything)
+                foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
+                    if (fii.Use) Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions != SimPe.Expansions.Custom, true);
 
             this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, false, true);
 
-            this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, false, true);
+            if (loadEverything)
+                this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, false, true);
 
             string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
-            if (File.Exists(packages_txt))
-            {
-                System.IO.StreamReader sr = new StreamReader(packages_txt);
-                for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
-                    this.Add(line.TrimEnd('+'), line.EndsWith("+"), false, true);
-                sr.Close();
-            }
+            if (loadEverything)
+                if (File.Exists(packages_txt))
+                {
+                    System.IO.StreamReader sr = new StreamReader(packages_txt);
+                    for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
+                        this.Add(line.TrimEnd('+'), line.EndsWith("+"), false, true);
+                    sr.Close();
+                    sr.Dispose();
+                    sr = null;
+                }
 
             CurrentPackage = cp;
         }
@@ -503,6 +506,14 @@ namespace pjse
                 if (tgitg == null) return new Entry[0];
                 return putLocalFirst((Hashtable)tgitg[instance], group == 0xffffffff ? Source.Local : where);
             }
+        }
+
+        public Entry[] FindGroup(uint group, Source where)
+        {
+            if (!hasLoaded) Refresh();
+
+            if (pfByGroup == null) return new Entry[0];
+            return putLocalFirst((Hashtable)pfByGroup[group], group == 0xffffffff ? Source.Local : where);
         }
 
         private Entry[] putLocalFirst(Hashtable result, Source where)
