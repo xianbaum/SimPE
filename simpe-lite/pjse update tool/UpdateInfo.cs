@@ -48,6 +48,7 @@ namespace pjse.Updates
                     bucket[xr.Name] = xr.ReadString();
             }
             xr.Close();
+            xr = null;
 
             pjseVersion = (String)bucket["pjseVersion"];
             minSimPEVersion = (String)bucket["minSimPEVersion"];

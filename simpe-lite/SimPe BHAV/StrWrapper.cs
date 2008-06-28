@@ -380,6 +380,8 @@ namespace SimPe.PackedFiles.Wrapper
                 }
             }
             sw.Close();
+            sw.Dispose();
+            sw = null;
         }
 
         public void ImportLanguage(byte lid, String path)
