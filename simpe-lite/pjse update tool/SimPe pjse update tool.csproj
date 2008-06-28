@@ -59,6 +59,11 @@
       <Name>SimPe Helper</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\fullsimpe-svn\SimPe Interfaces\SimPe Interfaces.csproj">
+      <Project>{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}</Project>
+      <Name>SimPe Interfaces</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\fullsimpe-svn\SimPe Workspace Helper\SimPe Workspace Helper.csproj">
       <Project>{45021667-BAD2-4ECA-8423-F4734F914CBB}</Project>
       <Name>SimPe Workspace Helper</Name>
