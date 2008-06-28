@@ -38,6 +38,8 @@ namespace pjse
             String line2 = sr.ReadLine();
             String line3 = sr.ReadLine();
             sr.Close();
+            sr.Dispose();
+            sr = null;
 
             String[] s = line1.Trim().Split('-');
             pluginName = s[0];
