@@ -26,32 +26,119 @@ using SimPe.Interfaces;
 using SimPe.Interfaces.Plugin;
 using SimPe.Interfaces.Scenegraph;
 using SimPe.Interfaces.Files;
+using SimPe.PackedFiles.Wrapper;
 
 namespace pj
 {
-    public class cQuickCloneTool : ITool
+    public class cQuickCloneTool
     {
-        #region ITool Members
-
-        IToolResult ITool.ShowDialog(ref IPackedFileDescriptor pfd, ref IPackageFile package)
+        public void Execute()
         {
-            throw new Exception("The method or operation is not implemented.");
+            CloneWhat frm = new CloneWhat();
+            frm.useGUID = true;
+            frm.Value = 0;
+            DialogResult dr = frm.ShowDialog();
+            if (dr != DialogResult.OK) return;
+            if (frm.Value == 0) return;
+
+            uint group = frm.useGUID ? getGroup(frm.Value) : frm.Value;
+
+
+            List<pjse.FileTable.Entry> opItems = new List<pjse.FileTable.Entry>(pjse.FileTable.GFT.FindGroup(group, pjse.FileTable.Source.Maxis));
+            if (opItems.Count == 0)
+            {
+                string m = "";
+                if (frm.useGUID)
+                    m = L.Get("noItemsForGUID", "0x" + SimPe.Helper.HexString(frm.Value), "0x" + SimPe.Helper.HexString(group));
+                else
+                    m = L.Get("noItemsForGroup", "0x" + SimPe.Helper.HexString(group));
+
+                MessageBox.Show(m, frm.Text, MessageBoxButtons.OK, MessageBoxIcon.Stop);
+
+                return;
+            }
+
+            foreach (pjse.FileTable.Entry item in opItems)
+            {
+                if (!(item.Wrapper is StrWrapper && item.Instance == 0x85)) continue;
+                StrWrapper sw = new StrWrapper();
+                sw.ProcessData(item.PFD, item.Package);
+                List<string> acnames = new List<string>();
+                for (int i = 1; i < sw.CountOf(1); i++)
+                    opItems.AddRange(getScenegraph(((StrItem)sw[1, i]).Title));
+                break;
+            }
+
+            MessageBox.Show("Group 0x" + SimPe.Helper.HexString(group) + "\r\nfiles: " + opItems.Count.ToString());
         }
 
-        bool ITool.IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
+        private uint getGroup(uint guid)
         {
-            throw new Exception("The method or operation is not implemented.");
+            SimPe.Wait.SubStart();
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
+            SimPe.Wait.SubStop();
+
+            try
+            {
+                SimPe.Wait.SubStart(items.Length);
+                foreach (pjse.FileTable.Entry item in items)
+                {
+                    System.IO.BinaryReader reader = item.Wrapper.StoredData;
+
+                    if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
+                    {
+                        reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
+                        if (reader.ReadUInt32() == guid)
+                            return item.Group;
+                    }
+
+                    SimPe.Wait.Progress++;
+                }
+            }
+            finally
+            {
+                SimPe.Wait.SubStop();
+            }
+            return 0;
         }
 
-        #endregion
-
-        #region IToolPlugin Members
-
-        string IToolPlugin.ToString()
+        private pjse.FileTable.Entry[] getScenegraph(string cresName)
         {
-            throw new Exception("The method or operation is not implemented.");
+            if (!cresName.ToLower().EndsWith("_cres")) cresName += "_cres";
+
+            List<pjse.FileTable.Entry> result = new List<pjse.FileTable.Entry>();
+
+            SimPe.Wait.SubStart();
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.CRES, pjse.FileTable.Source.Maxis];
+            SimPe.Wait.SubStop();
+
+            try
+            {
+                SimPe.Wait.SubStart(items.Length);
+                foreach (pjse.FileTable.Entry item in items)
+                {
+                    SimPe.Wait.Progress++;
+
+                    SimPe.Plugin.GenericRcol cres = new SimPe.Plugin.GenericRcol();
+                    cres.ProcessData(item.PFD, item.Package);
+                    if (cres.FileName != cresName) continue;
+
+                    result.Add(item);
+                    result.AddRange(getScenegraph(item));
+
+                    break;
+                }
+            }
+            finally
+            {
+                SimPe.Wait.SubStop();
+            }
+            return result.ToArray();
         }
 
-        #endregion
+        private pjse.FileTable.Entry[] getScenegraph(pjse.FileTable.Entry item)
+        {
+            return new pjse.FileTable.Entry[0];
+        }
     }
 }
