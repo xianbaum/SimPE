@@ -251,12 +251,7 @@ namespace pjse
                 OnWrapperChanged(items, new EventArgs());
             return i;
         }
-        public void RemoveAt(int index)
-        {
-            setNullParent(items[index]);
-            items.RemoveAt(index);
-            OnWrapperChanged(items, new EventArgs());
-        }
+        public void RemoveAt(int index) { Remove(items[index]); }
         public void RemoveRange(int index, int count)
         {
             for (int i = index; i < index + count; i++) setNullParent(items[i]);

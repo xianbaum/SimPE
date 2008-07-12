@@ -1,3 +1,8 @@
+12 July 2008 11:39 Stop String editor crashing when deleting strings
+  SimPe BHAV\
+    ExtendedWrapper.c 1.9.6.2
+    StrWrapper.cs 1.19.6.4
+
 28 June 2008 11:02 Add a setting for keeping package files open.
   * This meant moving ISettings*.cs from Workspace Helper to Interfaces to avoid circular dependencies.
   * (24 June 2008)
