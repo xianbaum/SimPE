@@ -53,7 +53,7 @@ namespace SimPe.PackedFiles.Wrapper
         /// <summary>
         /// Contains the LanguageIDs used in the wrapper
         /// </summary>
-        Dictionary<byte, int> languages = new Dictionary<byte, int>();
+        Dictionary<byte, List<StrItem>> languages = new Dictionary<byte, List<StrItem>>();
 		#endregion
 
 		#region Accessor methods
@@ -89,8 +89,8 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-        public bool HasLanguage(byte value) { return languages.ContainsKey(value) && languages[value] > 0; }
-        public int CountOf(byte value) { return languages.ContainsKey(value) ? languages[value] : 0; }
+        public bool HasLanguage(byte value) { return languages.ContainsKey(value) && languages[value].Count > 0; }
+        public int CountOf(byte value) { return languages.ContainsKey(value) ? languages[value].Count : 0; }
         public byte[] Languages
         {
             get
@@ -123,7 +123,7 @@ namespace SimPe.PackedFiles.Wrapper
                 {
                     if (l[i].Title.Trim().Equals("") && l[i].Description.Trim().Equals(""))
                     {
-                        languages[l[i].LanguageID]--;
+                        languages[l[i].LanguageID].Remove(l[i]);
                         items.Remove(l[i]);
                     }
                     else break;
@@ -215,14 +215,13 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 
             items = new List<StrItem>();
-            languages = new Dictionary<byte, int>();
+            languages = new Dictionary<byte, List<StrItem>>();
             while (items.Count < count)
             {
                 items.Add(new StrItem(this, reader));
-                if (languages.ContainsKey(items[items.Count - 1].LanguageID))
-                    languages[items[items.Count - 1].LanguageID]++;
-                else
-                    languages.Add(items[items.Count - 1].LanguageID, 1);
+                if (!languages.ContainsKey(items[items.Count - 1].LanguageID))
+                    languages.Add(items[items.Count - 1].LanguageID, new List<StrItem>());
+                languages[items[items.Count - 1].LanguageID].Add(items[items.Count - 1]);
             }
 
 			CleanUp();
@@ -285,50 +284,34 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 
 			item.Parent = this;
-            if (languages.ContainsKey(item.LanguageID))
-                languages[item.LanguageID]++;
-            else
-                languages.Add(item.LanguageID, 1);
+
+            if (!languages.ContainsKey(item.LanguageID)) languages.Add(item.LanguageID, new List<StrItem>());
+            if (!languages[item.LanguageID].Contains(item)) languages[item.LanguageID].Add(item);
+
             items.Add(item);
 			if (!item.Title.Trim().Equals("") || !item.Description.Trim().Equals("")) OnWrapperChanged(items, new EventArgs());
 		}
 
 		public void Add(byte lid, string title, string desc) { Add(new StrItem(this, lid, title, desc)); }
 
-        public new void RemoveAt(int index)
-		{
-			if (index < 0 || index >= items.Count) return;
-
-			bool changed = false;
-			for (int i = index; !changed && i < items.Count; i++)
-				changed = changed || (
-					(items[i].LanguageID == items[index].LanguageID)
-					&&
-					(!items[i].Title.Trim().Equals("") || !items[i].Description.Trim().Equals(""))
-					);
-
-            languages[items[index].LanguageID]--;
-            items.RemoveAt(index);
-			if (changed) OnWrapperChanged(this, new EventArgs());
-		}
+        public new bool Remove(StrItem item)
+        {
+            if (item != null && languages.ContainsKey(item.LanguageID)) languages[item.LanguageID].Remove(item);
+            return base.Remove(item);
+        }
 
 		public StrItem this[byte lid, int index]
 		{
 			get
 			{
-				int count = 0;
-				foreach (StrItem i in items)
-				{
-					if (i.LanguageID == lid)
-					{
-						if (count == index)
-							return i;
-						count++;
-					}
-				}
+                if (languages.ContainsKey(lid))
+                    if (languages[lid].Count > index)
+                        return languages[lid][index];
 				return null;
 			}
 		}
+
+        public List<StrItem> this[byte lid] { get { return languages[lid]; } }
 
 		/*public StrItem this[bool fallback, byte lid, int index]
 		{
@@ -338,24 +321,6 @@ namespace SimPe.PackedFiles.Wrapper
 				return (fallback && (i == null || i.Title.Trim().Equals(""))) ? this[0x01, index] : i;
 			}
 		}*/
-
-        private static byte isLidTarget;
-        private static bool isLid(StrItem item) { return item.LanguageID.Equals(isLidTarget); }
-        public List<StrItem> this[byte lid]
-		{
-			get
-			{
-                isLidTarget = lid;
-                return items.FindAll(isLid);
-				/*ArrayList s = new ArrayList();
-				foreach (StrItem i in items)
-				{
-					if (i.LanguageID == lid)
-						s.Add(i);
-				}
-				return (StrItem[])s.ToArray(typeof(StrItem));*/
-			}
-		}
 		#endregion
 
         public void ExportLanguage(byte lid, String path)
@@ -363,7 +328,7 @@ namespace SimPe.PackedFiles.Wrapper
             System.IO.StreamWriter sw = new StreamWriter(path, false);
             sw.WriteLine("<-Comment->");
             sw.WriteLine("PJSE String file - single language export");
-            if (languages[lid] == 0)
+            if (languages[lid].Count == 0)
             {
                 sw.WriteLine("<-String->");
                 sw.WriteLine("<-Desc->");
