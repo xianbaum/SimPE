@@ -1,3 +1,7 @@
+15 July 2008 22:02 Oops... Stop things crashing when counting strings but don't start String editor crashing
+  SimPe BHAV\
+    StrWrapper.cs 1.19.6.6
+
 15 July 2008 21:40 Stop things crashing when counting strings
   SimPe BHAV\
     StrWrapper.cs 1.19.6.5
