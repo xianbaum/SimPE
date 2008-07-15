@@ -300,18 +300,9 @@ namespace SimPe.PackedFiles.Wrapper
             return base.Remove(item);
         }
 
-		public StrItem this[byte lid, int index]
-		{
-			get
-			{
-                if (languages.ContainsKey(lid))
-                    if (languages[lid].Count > index)
-                        return languages[lid][index];
-				return null;
-			}
-		}
+		public StrItem this[byte lid, int index] { get { return (index >= 0 && index < this[lid].Count) ? this[lid][index] : null; } }
 
-        public List<StrItem> this[byte lid] { get { return languages[lid]; } }
+        public List<StrItem> this[byte lid] { get { return languages.ContainsKey(lid) ? languages[lid] : new List<StrItem>(); } }
 
 		/*public StrItem this[bool fallback, byte lid, int index]
 		{
