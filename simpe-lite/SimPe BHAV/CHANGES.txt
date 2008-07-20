@@ -1,3 +1,6 @@
+20 July 2008 09:26 New GlobalStrings.package from Inge
+  GlobalStrings.package 1.31.4.2
+
 15 July 2008 22:02 Oops... Stop things crashing when counting strings but don't start String editor crashing
   SimPe BHAV\
     StrWrapper.cs 1.19.6.6
