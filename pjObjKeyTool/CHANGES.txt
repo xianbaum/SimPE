@@ -1,3 +1,6 @@
+2008-07-26 14:06 Use correct plugin filename
+  mknsis.nsi 1.2.6.1
+
 2008-04-13 10:14 Increase use of SimPe filetable
   pjObjKeyTool\
     cObjKeyTool.cs 1.3

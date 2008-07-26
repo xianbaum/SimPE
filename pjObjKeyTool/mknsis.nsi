@@ -38,10 +38,10 @@ FunctionEnd
 Function CheckExists
   StrCpy $wasInUse 0
 
-  IfFileExists "$INSTDIR\Plugins\pjBodyMeshTool.plugin.dll" Exists
+  IfFileExists "$INSTDIR\Plugins\pjObjKeyTool.plugin.dll" Exists
   Return
 Exists:
-  FileOpen $0 "$INSTDIR\Plugins\pjBodyMeshTool.plugin.dll" a
+  FileOpen $0 "$INSTDIR\Plugins\pjObjKeyTool.plugin.dll" a
   IfErrors InUse
   FileClose $0
   Return
