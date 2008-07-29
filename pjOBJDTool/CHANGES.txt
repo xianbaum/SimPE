@@ -1,0 +1,22 @@
+2008-07-29 19:47 Object Definition Editor: Initial commit
+  .cvsignore 1.1
+  CHANGES.txt 1.1
+  LICENSE.txt 1.1
+  mknsis.nsi 1.1
+  pjOBJDTool/
+    .cvsignore 1.1
+    cOBJDChooser.cs 1.1
+    cOBJDChooser.Designer.cs 1.1
+    cOBJDChooser.resx 1.1
+    cOBJDTool.cs 1.1
+    cOBJDTool.Designer.cs 1.1
+    cOBJDTool.resx 1.1
+    hOBJDHelp.cs 1.1
+    Localization.cs 1.1
+    Localization.resx 1.1
+    pfOBJD.cs 1.1.2.1
+    SimPe pjOBJDTool.csproj 1.1
+    tOBJDTool.cs 1.1
+  pjOBJDTool/Properties/
+    AssemblyInfo.cs 1.1
+  Redirect_Contents.htm 1.1
