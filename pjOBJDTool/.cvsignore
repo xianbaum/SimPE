@@ -1,0 +1,6 @@
+*.7z
+*.zip
+*.tar.bz2
+.project
+*.suo
+Plugins
