@@ -1,3 +1,17 @@
+29 July 2008 19:36 Object Definition Editor: new System.Windows.Forms.LabelledBoolsetControl widget
+  * Make DataOwnerControl and ExtendedWrapper.OnWrapperChanged public
+  * Add new BhavStr entries (and also in GlobalStrings.package)
+  pjse System Classes\
+    LabelledBoolsetControl.cs 1.1.2.1
+    LabelledBoolsetControl.Designer.cs 1.1.2.1
+    LabelledBoolsetControl.resx 1.1.2.1
+    SimPe pjse System Classes.csproj 1.2.6.1
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.19.6.1
+    BhavWiz.cs 1.56.6.2
+    ExtendedWrapper.cs 1.9.6.3
+  GlobalStrings.package 1.31.4.3
+
 20 July 2008 09:26 New GlobalStrings.package from Inge
   GlobalStrings.package 1.31.4.2
 

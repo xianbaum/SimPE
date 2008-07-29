@@ -35,6 +35,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LabelledBoolsetControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LabelledBoolsetControl.Designer.cs">
+      <DependentUpon>LabelledBoolsetControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="pjseMsgBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -45,6 +51,10 @@
     <Compile Include="Boolset.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="LabelledBoolsetControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LabelledBoolsetControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="pjseMsgBox.resx">
       <SubType>Designer</SubType>
       <DependentUpon>pjseMsgBox.cs</DependentUpon>

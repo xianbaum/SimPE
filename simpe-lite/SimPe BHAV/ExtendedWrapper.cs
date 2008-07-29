@@ -43,7 +43,7 @@ namespace pjse
 		public ExtendedWrapper() : base() { }
 
 
-        internal virtual void OnWrapperChanged(object sender, EventArgs e)
+        public virtual void OnWrapperChanged(object sender, EventArgs e)
 		{
 			this.Changed = true;
 
