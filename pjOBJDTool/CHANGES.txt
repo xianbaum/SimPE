@@ -1,3 +1,7 @@
+2008-08-16 16:11 FIX: Don't check if OBDJs exist for enable and cache the ones found
+  pjOBJDTool\
+    cOBJDTool.cs 1.1.2.1
+
 2008-07-29 19:47 Object Definition Editor: Initial commit
   .cvsignore 1.1
   CHANGES.txt 1.1

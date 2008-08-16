@@ -333,17 +333,26 @@ namespace pjOBJDTool
             this.btnCommit.Enabled = wrapper.Changed;
         }
 
+        private List<pfOBJD> availableOBJDs = null;
         private List<pfOBJD> AvailableOBJDs
         {
             get
             {
+                if (availableOBJDs != null) return availableOBJDs;
+
                 List<pfOBJD> lpfo = new List<pfOBJD>();
-                foreach(pjse.FileTable.Entry item in pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, pjse.FileTable.Source.Local])
+                pjse.FileTable.Entry[] items = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, pjse.FileTable.Source.Local];
+                SimPe.Wait.Start(items.Length);
+                foreach(pjse.FileTable.Entry item in items)
                 {
                     pfOBJD pfo = new pfOBJD();
                     pfo.ProcessData(item.PFD, item.Package);
                     lpfo.Add(pfo);
+                    SimPe.Wait.Progress++;
                 }
+                SimPe.Wait.Stop();
+
+                availableOBJDs = lpfo;
                 return lpfo;
             }
         }
@@ -354,6 +363,7 @@ namespace pjOBJDTool
         IToolResult ITool.ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
         {
             if (!initialised) InitializeForm();
+            availableOBJDs = null;
 
             this.pfd = pfd;
             changed = false;
@@ -361,8 +371,8 @@ namespace pjOBJDTool
             List<pfOBJD> apfs = AvailableOBJDs;
             btnSelectOBJD.Enabled = apfs.Count > 1;
 
-            if (apfs.Count > 1) btnSelectOBJD_Click(null, null);
-            else CurrentOBJD = (apfs.Count > 0) ? apfs[0] : null;
+            if (apfs.Count > 1 || apfs.Count == 0) btnSelectOBJD_Click(null, null);
+            else CurrentOBJD = apfs[0];
 
             if (wrapper != null)
             {
@@ -375,7 +385,7 @@ namespace pjOBJDTool
 
         bool ITool.IsEnabled(SimPe.Interfaces.Files.IPackedFileDescriptor pfd, SimPe.Interfaces.Files.IPackageFile package)
         {
-            return AvailableOBJDs.Count > 0;
+            return true;//AvailableOBJDs.Count > 0;
         }
 
         #endregion
