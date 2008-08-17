@@ -43,15 +43,22 @@ namespace pjOBJDTool
         {
             initialised = true;
 
+            SimPe.Wait.Start(5);
             docCTSSInstance = new DataOwnerControl(null, null, null, tbCTSSInstance, null, null, null, 7, (ushort)0);
             docCTSSInstance.Decimal = false;
             docCTSSInstance.Use0xPrefix = true;
             docCTSSInstance.DataOwnerControlChanged += new EventHandler(docCTSSInstance_DataOwnerControlChanged);
+            SimPe.Wait.Progress++;
 
             InitializeValueMotive();
+            SimPe.Wait.Progress++;
             InitializeValue();
+            SimPe.Wait.Progress++;
             InitializeEPsRoomComm();
+            SimPe.Wait.Progress++;
             InitializeFuncBuild();
+            SimPe.Wait.Progress++;
+            SimPe.Wait.Stop();
         }
 
         DataOwnerControl docCTSSInstance = null;
@@ -362,6 +369,8 @@ namespace pjOBJDTool
 
         IToolResult ITool.ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
         {
+            Application.OpenForms[0].Cursor = System.Windows.Forms.Cursors.AppStarting;
+
             if (!initialised) InitializeForm();
             availableOBJDs = null;
 
@@ -370,6 +379,8 @@ namespace pjOBJDTool
 
             List<pfOBJD> apfs = AvailableOBJDs;
             btnSelectOBJD.Enabled = apfs.Count > 1;
+
+            Application.OpenForms[0].Cursor = System.Windows.Forms.Cursors.Default;
 
             if (apfs.Count > 1 || apfs.Count == 0) btnSelectOBJD_Click(null, null);
             else CurrentOBJD = apfs[0];
