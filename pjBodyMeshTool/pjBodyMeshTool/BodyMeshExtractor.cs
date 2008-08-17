@@ -246,18 +246,24 @@ namespace pj
 
         public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
         {
+            return true;
+        }
+
+        public SimPe.Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
+        {
+            currentPackage = package;
+            if (package == null)
+            {
+                System.Windows.Forms.MessageBox.Show(SimPe.Localization.GetString("This is not an appropriate context in which to use this tool"),
+                    L.Get("pjSME"));
+                return new SimPe.Plugin.ToolResult(false, false);
+            }
             if (packs == null)
             {
                 packs = new List<string>();
                 SetPacks();
                 SimPe.FileTable.FileIndex.FILoad += new EventHandler(FileIndex_FILoad);
             }
-            currentPackage = package;
-            return package != null;
-        }
-
-        public SimPe.Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
-        {
             Main();
             return new SimPe.Plugin.ToolResult(false, false);
         }
