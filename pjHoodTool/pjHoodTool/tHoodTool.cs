@@ -26,7 +26,7 @@ namespace pjHoodTool
     class tObjKeyTool : AbstractWrapperFactory, IToolFactory, IHelpFactory
     {
         #region IToolFactory Members
-        public IToolPlugin[] KnownTools { get { return new IToolPlugin[] { /*new cHoodTool()*/ }; } }
+        public IToolPlugin[] KnownTools { get { return new IToolPlugin[] { new cHoodTool() }; } }
         #endregion
 
         #region IHelpFactory Members

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("pjOBJDTool")]
+[assembly: AssemblyTitle("pjHoodTool")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Peter L Jones")]
-[assembly: AssemblyProduct("pjOBJDTool")]
+[assembly: AssemblyProduct("pjHoodTool")]
 [assembly: AssemblyCopyright("Released under the GNU GPL")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("3240d5fe-3ee4-40e2-87aa-92729589f0bd")]
+[assembly: Guid("dc0ca66f-df0f-47c0-bbc3-a03df299bea9")]
 
 // Version information for an assembly consists of the following four values:
 //

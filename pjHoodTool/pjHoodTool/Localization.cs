@@ -20,7 +20,7 @@
 using System;
 using System.Resources;
 
-namespace pjOBJDTool
+namespace pjHoodTool
 {
     public class L
     {
