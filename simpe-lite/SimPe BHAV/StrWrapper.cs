@@ -300,6 +300,19 @@ namespace SimPe.PackedFiles.Wrapper
             return base.Remove(item);
         }
 
+        public new bool Remove(byte lid)
+        {
+            foreach (StrItem si in items) if (si.LanguageID == lid) si.Title = si.Description = "";
+            CleanUp();
+            return true;
+        }
+
+        public void DefaultOnly()
+        {
+            foreach (StrItem si in items) if (si.LanguageID != 1) si.Title = si.Description = "";
+            CleanUp();
+        }
+
 		public StrItem this[byte lid, int index] { get { return (index >= 0 && index < this[lid].Count) ? this[lid][index] : null; } }
 
         public List<StrItem> this[byte lid] { get { return languages.ContainsKey(lid) ? languages[lid] : new List<StrItem>(); } }

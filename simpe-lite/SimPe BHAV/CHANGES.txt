@@ -1,3 +1,9 @@
+25 August 2008 13:58 Stop Career Editor crashing when deleting languages
+  * Take advantage of StrWrapper change in StrForm
+  SimPe BHAV\
+    StrForm.cs 1.43.4.2
+    StrWrapper.cs 1.19.6.7
+
 23 August 2008 20:14 Make ObjectPreview display EPs based on objd Required EP flags rather than anything else
   * EPFlags1 flag 0 name changed.
   GlobalStrings.package 1.31.4.3
