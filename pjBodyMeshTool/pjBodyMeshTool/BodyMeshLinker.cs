@@ -119,6 +119,11 @@ namespace pj
 
         public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
         {
+            return true;
+        }
+
+        private bool IsReallyEnabled(IPackedFileDescriptor pfd, IPackageFile package)
+        {
             currentPackage = package;
             if (pfd != null && pfd.Type == SimPe.Data.MetaData.REF_FILE)
                 refFilePFD = pfd;
@@ -129,6 +134,12 @@ namespace pj
 
         public SimPe.Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
         {
+            if (!IsReallyEnabled(pfd, package))
+            {
+                System.Windows.Forms.MessageBox.Show(SimPe.Localization.GetString("This is not an appropriate context in which to use this tool"),
+                    L.Get("pjSML"));
+                return new SimPe.Plugin.ToolResult(false, false);
+            }
             Main();
             return new SimPe.Plugin.ToolResult(false, false);
         }

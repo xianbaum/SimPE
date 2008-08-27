@@ -1,3 +1,8 @@
+2008-08-17 10:46 Load / IsEnabled speed increases
+  pjBodyMeshTool\
+    BodyMeshExtractor.cs 1.5.4.1
+    BodyMeshLinker.cs 1.2.6.1
+
 2008-04-13 10:12 Increase use of SimPe filetable
   pjBodyMeshTool\
     BodyMeshExtractor.cs 1.5

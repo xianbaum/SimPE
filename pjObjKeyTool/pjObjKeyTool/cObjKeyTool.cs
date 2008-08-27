@@ -575,63 +575,31 @@ namespace pj
 
         public bool IsEnabled(IPackedFileDescriptor pfd, IPackageFile package)
         {
+            return true;
+        }
+
+        private bool IsReallyEnabled(IPackedFileDescriptor pfd, IPackageFile package)
+        {
+            if (pfd == null || package == null) return false;
             if (txmtpkg == null)
             {
                 SetPacks();
                 SimPe.FileTable.FileIndex.FILoad += new EventHandler(FileIndex_FILoad);
             }
-            if (pfd == null || package == null) return false;
             if (pfd.Type == SimPe.Data.MetaData.REF_FILE) return hasCpf(pfd, package);
             else if (pfd.Type == 0x0C1FE246 /*XMOL*/ || pfd.Type == 0x2C1FD8A1 /*XTOL*/ || pfd.Type == SimPe.Data.MetaData.GZPS)
                 return has3idr(pfd, package);
             return false;
-#if UNDEF
-            if (pfd.Type == 0x0C1FE246 /*XMOL*/ || pfd.Type == 0x2C1FD8A1 /*XTOL*/ || pfd.Type == SimPe.Data.MetaData.GZPS)
-            {
-                // find the matching 3IDR
-                foreach (IPackedFileDescriptor p in package.FindFilesByGroup(pfd.Group))
-                {
-                    if (p.Type != SimPe.Data.MetaData.REF_FILE /*3IDR*/) continue;
-                    if (p.LongInstance != pfd.LongInstance) continue;
-
-                    objKeyCPF = new SimPe.PackedFiles.Wrapper.Cpf();
-                    objKeyCPF.ProcessData(pfd, currentPackage);
-                    objKey3IDR = new SimPe.Plugin.RefFile();
-                    objKey3IDR.ProcessData(p, currentPackage);
-
-                    SimPe.PackedFiles.Wrapper.CpfItem cpfItem = objKeyCPF.GetItem("resourcekeyidx");
-                    if (cpfItem == null || cpfItem.Datatype != SimPe.Data.MetaData.DataTypes.dtUInteger)
-                        return false;
-
-                    return true;
-                }
-            }
-            else if (pfd.Type == SimPe.Data.MetaData.REF_FILE /*3IDR*/)
-            {
-                // find the matching XMOL/XTOL/GZPS
-                foreach (IPackedFileDescriptor p in package.FindFilesByGroup(pfd.Group))
-                {
-                    if (p.Type != 0x0C1FE246 /*XMOL*/ && p.Type != 0x2C1FD8A1 /*XTOL*/ && p.Type != SimPe.Data.MetaData.GZPS) continue;
-                    if (p.LongInstance != pfd.LongInstance) continue;
-
-                    objKeyCPF = new SimPe.PackedFiles.Wrapper.Cpf();
-                    objKeyCPF.ProcessData(p, currentPackage);
-                    objKey3IDR = new SimPe.Plugin.RefFile();
-                    objKey3IDR.ProcessData(pfd, currentPackage);
-
-                    SimPe.PackedFiles.Wrapper.CpfItem cpfItem = objKeyCPF.GetItem("resourcekeyidx");
-                    if (cpfItem == null || cpfItem.Datatype != SimPe.Data.MetaData.DataTypes.dtUInteger)
-                        return false;
-
-                    return true;
-                }
-            }
-            return false;
-#endif
         }
 
         public SimPe.Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
         {
+            if (!IsReallyEnabled(pfd, package))
+            {
+                System.Windows.Forms.MessageBox.Show(SimPe.Localization.GetString("This is not an appropriate context in which to use this tool"),
+                    L.Get("pjObjKeyHelp"));
+                return new SimPe.Plugin.ToolResult(false, false);
+            }
             Main(pfd, package);
             return new SimPe.Plugin.ToolResult(false, false);
         }
