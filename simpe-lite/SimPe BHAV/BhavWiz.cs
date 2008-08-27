@@ -147,6 +147,40 @@ namespace pjse
             //Str0x0100..010d - there are no Str0x0100..010d
             PlacementFlags2 = 0x10e,    // ObjectData 0x52 - placement flags 2 24e
             //Str0x010f..01f3 - there are no Str0x010f..01f3
+            BuildModeType = 0x10f,  // PJSE: ObjectDefinition 0x45 - build mode type
+            FuncSort0Flags = 0x110, // PJSE: ObjectDefinition 0x5e - Function Sub-sort, ObjDef 0x28 bit 1 set
+            FuncSort1Flags = 0x111, // ..
+            FuncSort2Flags = 0x112, // ..
+            FuncSort3Flags = 0x113, // ..
+            FuncSort4Flags = 0x114, // ..
+            FuncSort5Flags = 0x115, // ..
+            FuncSort6Flags = 0x116, // ..
+            FuncSort7Flags = 0x117, // ..
+            FuncSort8Flags = 0x118, // ..
+            FuncSort9Flags = 0x119, // ..
+            FuncSortAFlags = 0x11a, // ..
+            FuncSortBFlags = 0x11b, // ..
+            FuncSortCFlags = 0x11c, // ..
+            FuncSortDFlags = 0x11d, // ..
+            FuncSortEFlags = 0x11e, // ..
+            FuncSortFFlags = 0x11f, // PJSE: ObjectDefinition 0x5e - Function Sub-sort, ObjDef 0x28 bit 16 set
+            BuildModeSort0Flags = 0x120, // PJSE: ObjectDefinition 0x4a - Build Mode Sub-sort, ObjDef 0x45 bit 1 set
+            BuildModeSort1Flags = 0x121, // ..
+            BuildModeSort2Flags = 0x122, // ..
+            BuildModeSort3Flags = 0x123, // ..
+            BuildModeSort4Flags = 0x124, // ..
+            BuildModeSort5Flags = 0x125, // ..
+            BuildModeSort6Flags = 0x126, // ..
+            BuildModeSort7Flags = 0x127, // ..
+            BuildModeSort8Flags = 0x128, // ..
+            BuildModeSort9Flags = 0x129, // ..
+            BuildModeSortAFlags = 0x12a, // ..
+            BuildModeSortBFlags = 0x12b, // ..
+            BuildModeSortCFlags = 0x12c, // ..
+            BuildModeSortDFlags = 0x12d, // ..
+            BuildModeSortEFlags = 0x12e, // ..
+            BuildModeSortFFlags = 0x12f, // PJSE: ObjectDefinition 0x4a - Build Mode Sub-sort, ObjDef 0x45 bit 16 set
+            CommunitySortFlags = 0x1dd, // PJSE: ObjectDefinition 0x64 - Community Lot Sort Flags
             AttractionFlags3 = 0x1de, // PJSE: PersonData Attraction Flags3 - 0xc9, 0xca, 0xcb
             AttractionFlags2 = 0x1df, // PJSE: PersonData Attraction Flags2 - 0xb5, 0xb7, 0xb9
             AttractionFlags1 = 0x1e0, // PJSE: PersonData Attraction Flags1 - 0xb4, 0xb6, 0xb8
@@ -752,10 +786,15 @@ namespace pjse
             o.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
             o.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
             o.Add((ushort)0x3c, GS.BhavStr.UnknownFlags); // For Sale Flags
+            o.Add((ushort)0x40, GS.BhavStr.UnknownFlags); // Valid EP bit field
+            o.Add((ushort)0x41, GS.BhavStr.UnknownFlags); // Valid EP bit field
             o.Add((ushort)0x42, GS.BhavStr.UnknownFlags); // chair entry flags
+            o.Add((ushort)0x45, GS.BhavStr.BuildModeType);
+            o.Add((ushort)0x4a, GS.BhavStr.UnknownFlags); // Build Sub-sort flags (depends on ObjDef 0x45)
             o.Add((ushort)0x59, GS.BhavStr.UnknownFlags); // ratingSkillFlags
-            o.Add((ushort)0x5b, GS.BhavStr.UnknownFlags); // misc flags
-            o.Add((ushort)0xd2, GS.BhavStr.UnknownFlags); // Valid EP bit field
+            o.Add((ushort)0x5b, GS.BhavStr.CommunitySortFlags);
+            o.Add((ushort)0x5e, GS.BhavStr.UnknownFlags); // Function Sub-sort flags (depends on ObjDef 0x28)
+            o.Add((ushort)0x64, GS.BhavStr.UnknownFlags); // misc flags
             f.Add((byte)0x15, o); // 0x15 "stack object's definition"
             f.Add((byte)0x26, o); // 0x26 "Neighbor's Object Definition"
             f.Add((byte)0x33, o); // 0x33 "Stack Object's Master Definition"

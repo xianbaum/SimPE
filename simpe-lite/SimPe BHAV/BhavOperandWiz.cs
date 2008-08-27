@@ -196,7 +196,7 @@ namespace pjse
 }
 namespace pjse.BhavOperandWizards
 {
-	class DataOwnerControl : IDisposable, IDataOwner
+	public class DataOwnerControl : IDisposable, IDataOwner
 	{
 		#region Form variables
 		private ComboBox cbDataOwner;

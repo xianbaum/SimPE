@@ -334,9 +334,7 @@ namespace SimPe.PackedFiles.UserInterface
             bool savedstate = internalchg;
             internalchg = true;
 
-            foreach (StrItem s in wrapper)
-                if (s.LanguageID == lid)
-                    s.Title = s.Description = "";
+            wrapper.Remove(lid);
 
             byte l = lid;
             int i = index;
@@ -353,9 +351,7 @@ namespace SimPe.PackedFiles.UserInterface
             bool savedstate = internalchg;
             internalchg = true;
 
-            foreach (StrItem s in wrapper)
-                if (s.LanguageID != 1)
-                    s.Title = s.Description = "";
+            wrapper.DefaultOnly();
 
             byte l = lid;
             int i = index;
