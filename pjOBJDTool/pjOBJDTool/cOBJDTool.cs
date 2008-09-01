@@ -43,11 +43,18 @@ namespace pjOBJDTool
         {
             initialised = true;
 
-            SimPe.Wait.Start(5);
+            SimPe.Wait.Start(6);
+
             docCTSSInstance = new DataOwnerControl(null, null, null, tbCTSSInstance, null, null, null, 7, (ushort)0);
             docCTSSInstance.Decimal = false;
             docCTSSInstance.Use0xPrefix = true;
             docCTSSInstance.DataOwnerControlChanged += new EventHandler(docCTSSInstance_DataOwnerControlChanged);
+            SimPe.Wait.Progress++;
+
+            docOBJDvsn = new DataOwnerControl(null, null, null, tbOBJDvsn, null, null, null, 7, (ushort)0);
+            docOBJDvsn.Decimal = false;
+            docOBJDvsn.Use0xPrefix = true;
+            docOBJDvsn.DataOwnerControlChanged += new EventHandler(docOBJDvsn_DataOwnerControlChanged);
             SimPe.Wait.Progress++;
 
             InitializeValueMotive();
@@ -58,7 +65,17 @@ namespace pjOBJDTool
             SimPe.Wait.Progress++;
             InitializeFuncBuild();
             SimPe.Wait.Progress++;
+            
             SimPe.Wait.Stop();
+        }
+
+        DataOwnerControl docOBJDvsn = null;
+        void docOBJDvsn_DataOwnerControlChanged(object sender, EventArgs e)
+        {
+            if (wrapper == null) return;
+
+            wrapper[0x00] = docOBJDvsn.Value;
+            gbValidEPs1.Enabled = gbValidEPs2.Enabled = (wrapper[0x00] > 0x8b);
         }
 
         DataOwnerControl docCTSSInstance = null;
@@ -141,8 +158,8 @@ namespace pjOBJDTool
         List<LabelledBoolsetControl> albcEPsRoomCommm = null;
         pjse.GS.BhavStr[] abhsRoomComm = new pjse.GS.BhavStr[]
         {
-            pjse.GS.BhavStr.GameEditionFlags,
-            pjse.GS.BhavStr.UnknownFlags,
+            pjse.GS.BhavStr.ValidEPFlags1,
+            pjse.GS.BhavStr.ValidEPFlags2,
             pjse.GS.BhavStr.RoomSortFlags,
             pjse.GS.BhavStr.CommunitySortFlags,
         };
@@ -282,33 +299,37 @@ namespace pjOBJDTool
         {
             if (wrapper == null)
             {
-                tbOBJDName.Text = tbOBJDGroup.Text = tbOBJDInstance.Text = tbCTSSGroup.Text = tbCTSSInstance.Text = "";
+                tbOBJDName.Text = tbOBJDGroup.Text = tbOBJDInstance.Text = tbOBJDvsn.Text =
+                    tbCTSSInstance.Text = tbCTSSName.Text = tbCTSSDesc.Text = "";
                 for (int i = 0; i < adocValueMotive.Count; i++) atbValueMotive[i].Text = "";
                 for (int i = 0; i < ackbValue.Count; i++) ackbValue[i].CheckState = CheckState.Indeterminate;
                 for (int i = 0; i < albcEPsRoomCommm.Count; i++) albcEPsRoomCommm[i].Value = 0;
                 for (int i = 0; i < acbFuncBuild.Count; i++) acbFuncBuild[i].SelectedIndex = -1;
                 for (int i = 0; i < albcFuncBuild.Count; i++) albcFuncBuild[i].Value = 0;
-                tbCTSSInstance.Enabled =
-                gbValue.Enabled = gbMotiveRs.Enabled =
-                gbValidEPs1.Enabled = gbValidEPs2.Enabled =
-                gbRoomSort.Enabled = gbCommSort.Enabled = gbFuncSort.Enabled= gbBuildSort.Enabled =
-                    false;
+                tbOBJDvsn.Enabled = tbCTSSInstance.Enabled =
+                    gbValue.Enabled = gbMotiveRs.Enabled =
+                    gbValidEPs1.Enabled = gbValidEPs2.Enabled =
+                    gbRoomSort.Enabled = gbCommSort.Enabled = gbFuncSort.Enabled = gbBuildSort.Enabled =
+                        false;
             }
             else
             {
                 wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
                 tbCTSSInstance.Enabled =
-                gbValue.Enabled = gbMotiveRs.Enabled =
-                gbValidEPs1.Enabled = gbValidEPs2.Enabled =
-                gbRoomSort.Enabled = gbCommSort.Enabled = gbFuncSort.Enabled = gbBuildSort.Enabled =
-                    true;
+                    gbValue.Enabled = gbMotiveRs.Enabled =
+                    gbRoomSort.Enabled = gbCommSort.Enabled = gbFuncSort.Enabled = gbBuildSort.Enabled =
+                        true;
 
                 tbOBJDName.Text = wrapper.Filename;
                 tbOBJDGroup.Text = "0x" + SimPe.Helper.HexString(wrapper.FileDescriptor.Group);
                 tbOBJDInstance.Text = "0x" + SimPe.Helper.HexString(wrapper.FileDescriptor.Instance);
 
+                tbOBJDvsn.Text = "0x" + SimPe.Helper.HexString(wrapper[0x00]);
+                docOBJDvsn_DataOwnerControlChanged(null, null);
+
                 //tbCTSSGroup.Text = "0x" + SimPe.Helper.HexString(wrapper.FileDescriptor.Group);
                 tbCTSSInstance.Text = "0x" + SimPe.Helper.HexString(wrapper[0x29]);
+                docCTSSInstance_DataOwnerControlChanged(null, null);
 
                 for (int i = 0; i < adocValueMotive.Count; i++)
                     atbValueMotive[i].Text = wrapper[asValueMotive[i]].ToString();
