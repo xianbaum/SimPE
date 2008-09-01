@@ -180,6 +180,8 @@ namespace pjse
             BuildModeSortDFlags = 0x12d, // ..
             BuildModeSortEFlags = 0x12e, // ..
             BuildModeSortFFlags = 0x12f, // PJSE: ObjectDefinition 0x4a - Build Mode Sub-sort, ObjDef 0x45 bit 16 set
+            ValidEPFlags1 = 0x130, // PJSE: ObjectDefinition 0x40 - valid EP flags 1 
+            ValidEPFlags2 = 0x131, // PJSE: ObjectDefinition 0x41 - valid EP flags 2 
             CommunitySortFlags = 0x1dd, // PJSE: ObjectDefinition 0x64 - Community Lot Sort Flags
             AttractionFlags3 = 0x1de, // PJSE: PersonData Attraction Flags3 - 0xc9, 0xca, 0xcb
             AttractionFlags2 = 0x1df, // PJSE: PersonData Attraction Flags2 - 0xb5, 0xb7, 0xb9
@@ -786,8 +788,8 @@ namespace pjse
             o.Add((ushort)0x27, GS.BhavStr.RoomSortFlags);
             o.Add((ushort)0x28, GS.BhavStr.FunctionSortFlags);
             o.Add((ushort)0x3c, GS.BhavStr.UnknownFlags); // For Sale Flags
-            o.Add((ushort)0x40, GS.BhavStr.UnknownFlags); // Valid EP bit field
-            o.Add((ushort)0x41, GS.BhavStr.UnknownFlags); // Valid EP bit field
+            o.Add((ushort)0x40, GS.BhavStr.ValidEPFlags1); // Valid EPs 1 bit field
+            o.Add((ushort)0x41, GS.BhavStr.ValidEPFlags2); // Valid EPs 2 bit field
             o.Add((ushort)0x42, GS.BhavStr.UnknownFlags); // chair entry flags
             o.Add((ushort)0x45, GS.BhavStr.BuildModeType);
             o.Add((ushort)0x4a, GS.BhavStr.UnknownFlags); // Build Sub-sort flags (depends on ObjDef 0x45)
