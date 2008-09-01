@@ -1,3 +1,12 @@
+1 September 2008 19:16 Add Valid EP Flags
+  SimPe BHAV\
+    BhavWiz.cs 1.59
+  GlobalStrings.package 1.35
+
+1 September 2008 19:14 Clean up filetable when resource index changes
+  pjse filetable\
+    FileTable.cs 1.34
+
 30 August 2008 11:23 Add GlobalStrings for Apartment Life
   GlobalStrings.package 1.34
   
