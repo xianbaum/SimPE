@@ -718,6 +718,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (!setHandler)
 			{
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
+                wrapper.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
 				setHandler = true;
 			}
 
@@ -745,13 +746,23 @@ namespace SimPe.PackedFiles.UserInterface
                 handleOverride();
 
                 this.Text = formTitle;
+                ttBhavForm.SetToolTip(tbFilename, null);
             }
             else
             {
                 this.lbHidesOP.Visible = this.tbHidesOP.Visible = this.llHidesOP.Visible = false;
                 this.llHidesOP.Tag = null;
                 currentPackage = wrapper.Package;
+                ttBhavForm.SetToolTip(tbFilename, expName + ": 0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance));
             }
+        }
+
+        void FileDescriptor_DescriptionChanged(object sender, EventArgs e)
+        {
+            if (isPopup)
+                this.Text = formTitle;
+            else
+                ttBhavForm.SetToolTip(tbFilename, expName + ": 0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance));
         }
 
 		private void WrapperChanged(object sender, System.EventArgs e)
@@ -1614,6 +1625,10 @@ namespace SimPe.PackedFiles.UserInterface
             this.toFileToolStripMenuItem.Name = "toFileToolStripMenuItem";
             resources.ApplyResources(this.toFileToolStripMenuItem, "toFileToolStripMenuItem");
             this.toFileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            // 
+            // ttBhavForm
+            // 
+            this.ttBhavForm.ShowAlways = true;
             // 
             // BhavForm
             // 

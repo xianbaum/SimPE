@@ -1,3 +1,7 @@
+7 September 2008 12:10 Add a tooltip to the BHAV Filename field to display the instance
+  SimPe BHAV\
+    BhavForm.cs 1.92
+
 1 September 2008 19:16 Add Valid EP Flags
   SimPe BHAV\
     BhavWiz.cs 1.59
