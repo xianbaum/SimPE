@@ -1,3 +1,8 @@
+7 September 2008 13:37 Move ResourceChooser settings out of Settings; remember form size
+  SimPe BHAV\
+    ResourceChooser.cs 1.16
+    Settings.cs 1.6
+
 7 September 2008 12:10 Add a tooltip to the BHAV Filename field to display the instance
   SimPe BHAV\
     BhavForm.cs 1.92
