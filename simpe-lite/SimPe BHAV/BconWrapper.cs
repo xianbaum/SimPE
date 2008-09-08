@@ -110,12 +110,22 @@ namespace SimPe.PackedFiles.Wrapper
                 return trcnres.TextOnly ? null : trcnres;
 			}
 		}
+
 		#endregion
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Bcon() : base() { }
+        public Bcon()
+            : base()
+        {
+            this.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
+        }
+
+        void FileDescriptor_DescriptionChanged(object sender, EventArgs e)
+        {
+            trcnres = null;
+        }
 
 
 		#region AbstractWrapper Member
