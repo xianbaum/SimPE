@@ -119,7 +119,8 @@ namespace SimPe.PackedFiles.Wrapper
         public Bcon()
             : base()
         {
-            this.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
+            if (this.FileDescriptor != null)
+                this.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
         }
 
         void FileDescriptor_DescriptionChanged(object sender, EventArgs e)
