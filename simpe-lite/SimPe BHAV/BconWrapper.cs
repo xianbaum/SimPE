@@ -105,7 +105,9 @@ namespace SimPe.PackedFiles.Wrapper
 
 					trcnres = new Trcn();
 					trcnres.ProcessData(items[0].PFD, items[0].Package);
-				}
+                    trcnres.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
+                    this.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
+                }
 
                 return trcnres.TextOnly ? null : trcnres;
 			}
@@ -116,15 +118,13 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Constructor
 		/// </summary>
-        public Bcon()
-            : base()
-        {
-            if (this.FileDescriptor != null)
-                this.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
-        }
+        public Bcon() : base() { }
 
         void FileDescriptor_DescriptionChanged(object sender, EventArgs e)
         {
+            this.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);
+            if (trcnres.FileDescriptor != null)
+                trcnres.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);
             trcnres = null;
         }
 
