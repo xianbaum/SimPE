@@ -181,7 +181,9 @@ namespace pjse
             BuildModeSortEFlags = 0x12e, // ..
             BuildModeSortFFlags = 0x12f, // PJSE: ObjectDefinition 0x4a - Build Mode Sub-sort, ObjDef 0x45 bit 16 set
             ValidEPFlags1 = 0x130, // PJSE: ObjectDefinition 0x40 - valid EP flags 1 
-            ValidEPFlags2 = 0x131, // PJSE: ObjectDefinition 0x41 - valid EP flags 2 
+            ValidEPFlags2 = 0x131, // PJSE: ObjectDefinition 0x41 - valid EP flags 2
+            GameEditionFlags2 = 0x132, // PJSE: SimulatorGlobals 0x3a - game edition flags 2
+            //Str0x0133..1dd unused
             CommunitySortFlags = 0x1dd, // PJSE: ObjectDefinition 0x64 - Community Lot Sort Flags
             AttractionFlags3 = 0x1de, // PJSE: PersonData Attraction Flags3 - 0xc9, 0xca, 0xcb
             AttractionFlags2 = 0x1df, // PJSE: PersonData Attraction Flags2 - 0xb5, 0xb7, 0xb9
@@ -809,6 +811,7 @@ namespace pjse
             o.Add((ushort)0x25, GS.BhavStr.UnknownFlags); // Utility available flags
             o.Add((ushort)0x33, GS.BhavStr.UnknownFlags); // Object error flags
             o.Add((ushort)0x35, GS.BhavStr.UnknownFlags); // Instant write once flags
+            o.Add((ushort)0x3a, GS.BhavStr.GameEditionFlags2); // Game edition flags 2
             f.Add((byte)0x06, o); // 0x81 "Global"
 
             return f;

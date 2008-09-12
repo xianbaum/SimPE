@@ -1,3 +1,8 @@
+12 September 2008 20:30 New SimulatorGlobal labels plus flag names for one of them
+  SimPe BHAV\
+    BhavWiz.cs 1.60
+  GlobalStrings.package 1.36
+
 9 September 2008 20:37 I've got to get this BCON/TRCN thing right eventually.  I even tested this one...
   SimPe BHAV\
     BconWrapper.cs 1.15
