@@ -23,6 +23,7 @@ using System.Resources;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using System.ComponentModel;
 
 namespace pjse
 {
@@ -38,7 +39,7 @@ namespace pjse
         SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
         public Settings() : base(rm) { }
 
-        [System.ComponentModel.Category("PJSE")]
+        [Category("PJSE")]
         public bool DecimalDOValue
         {
             get
@@ -56,7 +57,7 @@ namespace pjse
 
         }
 
-        [System.ComponentModel.Category("PJSE")]
+        [Category("PJSE")]
         public bool AttrPickerAsText
         {
             get
@@ -74,7 +75,7 @@ namespace pjse
 
         }
 
-        [System.ComponentModel.Category("PJSE")]
+        [Category("PJSE")]
         public bool ShowSpecialButtons
         {
             get
@@ -92,7 +93,7 @@ namespace pjse
 
         }
 
-        [System.ComponentModel.Category("PJSE")]
+        [Category("PJSE")]
         public bool StrShowDefault
         {
             get
@@ -109,7 +110,7 @@ namespace pjse
             }
         }
 
-        [System.ComponentModel.Category("PJSE")]
+        [Category("PJSE")]
         public bool StrShowDesc
         {
             get
@@ -126,31 +127,7 @@ namespace pjse
             }
         }
 
-        public enum ChooserOrderBy
-        {
-            ByID = 0,
-            ByName = 1,
-        }
-
-        [System.ComponentModel.Category("PJSE")]
-        public ChooserOrderBy ChooserOrder
-        {
-            get
-            {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                object o = rkf.GetValue("chooserOrder", ChooserOrderBy.ByID);
-                return (Enum.IsDefined(ChooserOrderBy.ByID.GetType(), o))
-                    ? (ChooserOrderBy)Enum.Parse(ChooserOrderBy.ByID.GetType(), o.ToString()) : ChooserOrderBy.ByID;
-            }
-
-            set
-            {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                rkf.SetValue("chooserOrder", value);
-            }
-        }
-
-        [System.ComponentModel.Category("GI")]
+        [Category("GI")]
         public bool LoadGUIDIndexAtStartup
         {
             get

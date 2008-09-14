@@ -94,37 +94,64 @@ namespace pjse
 
         #region ResourceChooser
 
-        private class ListViewItemComparer : IComparer
-        {
-            private int col;
-            public ListViewItemComparer()
-            {
-                col = (int)Settings.PJSE.ChooserOrder;
-            }
-            public ListViewItemComparer(int column)
-            {
-                col = column;
-            }
-            public int Compare(object x, object y)
-            {
-                return String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text);
-            }
-        }
-
-        private bool CanDoEA;
-
-        public int PersistentTab
+        const string BASENAME = "PJSE\\Bhav";
+        private static int ChooserOrder
         {
             get
             {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
-                object o = rkf.GetValue("rcPersistentTab", false);
-                return Convert.ToInt16(o);
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("chooserOrder", 0);
+                return (int)Math.Max(Convert.ToUInt32(o), 1);
             }
 
             set
             {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("PJSE\\Bhav");
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("chooserOrder", value);
+            }
+        }
+
+        private static Size ChooserSize
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                ResourceChooser rc = new ResourceChooser();
+                object w = rkf.GetValue("chooserSize.Width", rc.Size.Width);
+                object h = rkf.GetValue("chooserSize.Height", rc.Size.Height);
+                return new Size(Convert.ToInt32(w), Convert.ToInt32(h));
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                rkf.SetValue("chooserSize.Width", value.Width);
+                rkf.SetValue("chooserSize.Height", value.Height);
+            }
+        }
+
+        private class ListViewItemComparer : IComparer
+        {
+            private int col;
+            public ListViewItemComparer() { col = ChooserOrder; }
+            public ListViewItemComparer(int column) { col = column; }
+            public int Compare(object x, object y) { return String.Compare(((ListViewItem)x).SubItems[col].Text, ((ListViewItem)y).SubItems[col].Text); }
+        }
+
+        private bool CanDoEA;
+
+        public static int PersistentTab
+        {
+            get
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                object o = rkf.GetValue("rcPersistentTab", false);
+                return Convert.ToInt32(o);
+            }
+
+            set
+            {
+                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
                 rkf.SetValue("rcPersistentTab", value);
             }
 
@@ -222,10 +249,13 @@ namespace pjse
 
             form.Cursor = Cursors.Default;
             this.Cursor = Cursors.Default;
+            this.Size = ChooserSize;
 
             DialogResult dr  = ShowDialog();
             while (dr == DialogResult.Retry)
                 dr  = ShowDialog();
+
+            ChooserSize = this.Size;
             PersistentTab = ltp.IndexOf(this.tcResources.SelectedTab);
             Close();
 
@@ -561,7 +591,7 @@ namespace pjse
 
         private void listView_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            Settings.PJSE.ChooserOrder = (Settings.ChooserOrderBy)e.Column;
+            ChooserOrder = e.Column;
             foreach (TabPage tp in tcResources.TabPages)
                 foreach (Control c in tp.Controls)
                     if (c is ListView)
