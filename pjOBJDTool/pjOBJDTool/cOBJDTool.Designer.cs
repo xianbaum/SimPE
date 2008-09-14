@@ -38,7 +38,7 @@ namespace pjOBJDTool
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.tbCTSSGroup = new System.Windows.Forms.TextBox();
+            this.tbOBJDvsn = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.tbCTSSInstance = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -167,10 +167,10 @@ namespace pjOBJDTool
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
             // 
-            // tbCTSSGroup
+            // tbOBJDvsn
             // 
-            resources.ApplyResources(this.tbCTSSGroup, "tbCTSSGroup");
-            this.tbCTSSGroup.Name = "tbCTSSGroup";
+            resources.ApplyResources(this.tbOBJDvsn, "tbOBJDvsn");
+            this.tbOBJDvsn.Name = "tbOBJDvsn";
             // 
             // label21
             // 
@@ -556,7 +556,7 @@ namespace pjOBJDTool
             this.tlpOBJDCTSS.Controls.Add(this.label2, 2, 0);
             this.tlpOBJDCTSS.Controls.Add(this.tbOBJDName, 1, 0);
             this.tlpOBJDCTSS.Controls.Add(this.label1, 0, 0);
-            this.tlpOBJDCTSS.Controls.Add(this.tbCTSSGroup, 5, 1);
+            this.tlpOBJDCTSS.Controls.Add(this.tbOBJDvsn, 5, 1);
             this.tlpOBJDCTSS.Controls.Add(this.label6, 4, 1);
             this.tlpOBJDCTSS.Controls.Add(this.tbCTSSName, 1, 1);
             this.tlpOBJDCTSS.Controls.Add(this.tbCTSSDesc, 1, 2);
@@ -674,7 +674,7 @@ namespace pjOBJDTool
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox tbCTSSGroup;
+        private System.Windows.Forms.TextBox tbOBJDvsn;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox tbCTSSInstance;
         private System.Windows.Forms.LabelledBoolsetControl lbcEPFlags1;

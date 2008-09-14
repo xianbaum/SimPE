@@ -385,19 +385,16 @@
     <value>NoControl</value>
   </data>
   <data name="label6.Location" type="System.Drawing.Point, System.Drawing">
-    <value>495, 35</value>
+    <value>488, 35</value>
   </data>
   <data name="label6.Size" type="System.Drawing.Size, System.Drawing">
-    <value>68, 13</value>
+    <value>75, 13</value>
   </data>
   <data name="label6.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
   <data name="label6.Text" xml:space="preserve">
-    <value>CTSS group:</value>
-  </data>
-  <data name="label6.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+    <value>OBJD version:</value>
   </data>
   <data name="&gt;&gt;label6.Name" xml:space="preserve">
     <value>label6</value>
@@ -411,37 +408,34 @@
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="tbCTSSGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="tbOBJDvsn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
   </data>
-  <data name="tbCTSSGroup.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="tbOBJDvsn.Location" type="System.Drawing.Point, System.Drawing">
     <value>569, 32</value>
   </data>
-  <data name="tbCTSSGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>83, 20</value>
+  <data name="tbOBJDvsn.Size" type="System.Drawing.Size, System.Drawing">
+    <value>52, 20</value>
   </data>
-  <data name="tbCTSSGroup.TabIndex" type="System.Int32, mscorlib">
+  <data name="tbOBJDvsn.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="tbCTSSGroup.Text" xml:space="preserve">
-    <value>0xDDDDDDDD</value>
+  <data name="tbOBJDvsn.Text" xml:space="preserve">
+    <value>0xDDDD</value>
   </data>
-  <data name="tbCTSSGroup.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
+  <data name="tbOBJDvsn.TextAlign" type="System.Windows.Forms.HorizontalAlignment, System.Windows.Forms">
     <value>Right</value>
   </data>
-  <data name="tbCTSSGroup.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
+  <data name="&gt;&gt;tbOBJDvsn.Name" xml:space="preserve">
+    <value>tbOBJDvsn</value>
   </data>
-  <data name="&gt;&gt;tbCTSSGroup.Name" xml:space="preserve">
-    <value>tbCTSSGroup</value>
-  </data>
-  <data name="&gt;&gt;tbCTSSGroup.Type" xml:space="preserve">
+  <data name="&gt;&gt;tbOBJDvsn.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tbCTSSGroup.Parent" xml:space="preserve">
+  <data name="&gt;&gt;tbOBJDvsn.Parent" xml:space="preserve">
     <value>tlpOBJDCTSS</value>
   </data>
-  <data name="&gt;&gt;tbCTSSGroup.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;tbOBJDvsn.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
   <data name="label21.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -1748,7 +1742,7 @@
     <value>lbcEPFlags1</value>
   </data>
   <data name="&gt;&gt;lbcEPFlags1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3132.26121, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3164.41519, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbcEPFlags1.Parent" xml:space="preserve">
     <value>gbValidEPs1</value>
@@ -1809,7 +1803,7 @@
     <value>lbcEPFlags2</value>
   </data>
   <data name="&gt;&gt;lbcEPFlags2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3132.26121, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3164.41519, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbcEPFlags2.Parent" xml:space="preserve">
     <value>gbValidEPs2</value>
@@ -1930,7 +1924,7 @@
     <value>lbcRoom</value>
   </data>
   <data name="&gt;&gt;lbcRoom.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3132.26121, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3164.41519, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbcRoom.Parent" xml:space="preserve">
     <value>gbRoomSort</value>
@@ -1991,7 +1985,7 @@
     <value>lbcFunction</value>
   </data>
   <data name="&gt;&gt;lbcFunction.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3132.26121, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3164.41519, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbcFunction.Parent" xml:space="preserve">
     <value>gbFuncSort</value>
@@ -2073,7 +2067,7 @@
     <value>lbcBuild</value>
   </data>
   <data name="&gt;&gt;lbcBuild.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3132.26121, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3164.41519, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbcBuild.Parent" xml:space="preserve">
     <value>gbBuildSort</value>
@@ -2161,7 +2155,7 @@
     <value>lbcCommunity</value>
   </data>
   <data name="&gt;&gt;lbcCommunity.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3132.26121, Culture=neutral, PublicKeyToken=null</value>
+    <value>System.Windows.Forms.LabelledBoolsetControl, pjse.SystemClasses, Version=1.0.3164.41519, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;lbcCommunity.Parent" xml:space="preserve">
     <value>gbCommSort</value>
@@ -2413,7 +2407,7 @@
     <value>0</value>
   </data>
   <data name="tlpOBJDCTSS.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tbCTSSInstance" Row="2" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label21" Row="2" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tbOBJDInstance" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="tbOBJDGroup" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="tbOBJDName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tbCTSSGroup" Row="1" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="tbCTSSName" Row="1" RowSpan="1" Column="1" ColumnSpan="3" /&gt;&lt;Control Name="tbCTSSDesc" Row="2" RowSpan="1" Column="1" ColumnSpan="3" /&gt;&lt;Control Name="btnCommit" Row="2" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="btnSelectOBJD" Row="0" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tbCTSSInstance" Row="2" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label21" Row="2" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="label5" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label4" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tbOBJDInstance" Row="0" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label3" Row="0" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="tbOBJDGroup" Row="0" RowSpan="1" Column="3" ColumnSpan="1" /&gt;&lt;Control Name="label2" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;Control Name="tbOBJDName" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tbOBJDvsn" Row="1" RowSpan="1" Column="5" ColumnSpan="1" /&gt;&lt;Control Name="label6" Row="1" RowSpan="1" Column="4" ColumnSpan="1" /&gt;&lt;Control Name="tbCTSSName" Row="1" RowSpan="1" Column="1" ColumnSpan="3" /&gt;&lt;Control Name="tbCTSSDesc" Row="2" RowSpan="1" Column="1" ColumnSpan="3" /&gt;&lt;Control Name="btnCommit" Row="2" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;Control Name="btnSelectOBJD" Row="0" RowSpan="1" Column="6" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,AutoSize,0" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
