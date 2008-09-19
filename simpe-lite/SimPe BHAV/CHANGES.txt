@@ -1,3 +1,6 @@
+19 September 2008 19:23 TokenOpsSingular, 0x1e5, swap Get/Set Property at Index operations
+  GlobalStrings.package 1.37
+
 12 September 2008 20:30 New SimulatorGlobal labels plus flag names for one of them
   SimPe BHAV\
     BhavWiz.cs 1.60
