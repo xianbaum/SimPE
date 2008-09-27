@@ -1,3 +1,7 @@
+27 September 2008 13:36 Suppress warning (cut-n-paste error)
+  SimPe BHAV\
+    StrWrapper.cs 1.19.6.8
+
 19 September 2008 19:23 TokenOpsSingular, 0x1e5, swap Get/Set Property at Index operations
   GlobalStrings.package 1.37
 
