@@ -1311,9 +1311,11 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
             this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.ExtractVisible = true;
             this.pjse_banner1.FloatVisible = true;
             this.pjse_banner1.Name = "pjse_banner1";
             this.pjse_banner1.ViewVisible = true;
+            this.pjse_banner1.ExtractClick += new System.EventHandler(this.pjse_banner1_ExtractClick);
             this.pjse_banner1.ViewClick += new System.EventHandler(this.pjse_banner1_ViewClick);
             this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
             // 
@@ -1786,6 +1788,9 @@ namespace SimPe.PackedFiles.UserInterface
             TakeACopy();
             btnCopyBHAV.Text = pjse.Localization.GetString("ml_done");
         }
+
+
+        private void pjse_banner1_ExtractClick(object sender, EventArgs e) { pjse.ExtractCurrent.Execute(wrapper, pjse_banner1.TitleText); }
 
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)

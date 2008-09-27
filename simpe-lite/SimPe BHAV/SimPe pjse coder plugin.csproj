@@ -252,6 +252,7 @@
       <DependentUpon>CompareButton.cs</DependentUpon>
     </Compile>
     <Compile Include="ExtendedWrapper.cs" />
+    <Compile Include="ExtractCurrent.cs" />
     <Compile Include="GUIDChooser.cs">
       <SubType>UserControl</SubType>
     </Compile>

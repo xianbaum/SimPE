@@ -1,3 +1,11 @@
+27 September 2008 15:32 Extract button requested on View and Float windows
+  SimPe BHAV\
+  BhavForm.cs 1.89.4.11
+  ExtractCurrent.cs 1.1.2.1
+  pjse banner.cs 1.1.4.2
+  pjse banner.Designer.cs 1.1.4.2
+  SimPe pjse coder plugin.csproj 1.6.4.2
+
 27 September 2008 13:36 Suppress warning (cut-n-paste error)
   SimPe BHAV\
     StrWrapper.cs 1.19.6.8

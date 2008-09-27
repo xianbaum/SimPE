@@ -106,6 +106,17 @@ namespace pjse
         public void SetFormCancelButton(Form form) { form.CancelButton = btnFloat; }
 
 
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [Description("True if the Extract button should be visible.")]
+        public bool ExtractVisible { get { return btnExtract.Visible; } set { btnExtract.Visible = value; } }
+
+        [Category("Action")]
+        [Description("Raised when the Extract button is clicked.")]
+        public event EventHandler ExtractClick;
+        public virtual void OnExtractClick(object sender, EventArgs e) { if (ExtractClick != null) { ExtractClick(sender, e); } }
+
+
         [Category("Appearance")]
         [DefaultValue("RFT")]
         [Description("The label on the Refresh Filetable button.")]
@@ -127,12 +138,14 @@ namespace pjse
 
 
 
+        private void btnView_Click(object sender, EventArgs e) { OnViewClick(this, e); }
+
         private void btnFloat_Click(object sender, EventArgs e) { OnFloatClick(this, e); }
+
+        private void btnExtract_Click(object sender, EventArgs e) { OnExtractClick(this, e); }
 
         private void btnRefreshFT_Click(object sender, EventArgs e) { SimPe.FileTable.Reload(); }
 
         private void btnHelp_Click(object sender, System.EventArgs e) { pjse.HelpHelper.Help(helpTarget); }
-
-        private void btnView_Click(object sender, EventArgs e) { OnViewClick(this, e); }
     }
 }
