@@ -1,6 +1,13 @@
+2008-09-29 22:47 Sundry updates
+  * New ICommandline definition
+  * Vastly extended output
+  * Works nicely as either commandline or menu tool
+  pjHoodTool/
+    cHoodTool.cs 1.1.2.2
+
 2008-08-25 09:42 Park work for now as things stand - it's not working but I need to do other stuff
   pjHoodTool/
-    cHootTool.cs 1.1.2.1
+    cHoodTool.cs 1.1.2.1
     Localization.cs 1.1.2.1
     Localization.resx 1.1.2.1
     SimPe pjOBJDTool.csproj 1.1.2.1

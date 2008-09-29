@@ -33,10 +33,13 @@ namespace pjHoodTool
     {
         static string rufio = "-rufio";
 
+        delegate void Splash(string message);
+        Splash splash;
+
         void Rufio(List<string> largs)
         {
             string output = Path.Combine(Path.Combine(SimPe.PathProvider.SimSavegameFolder, "Rufio"), "ExportedSims.txt");
-            if (largs != null && largs.Count != 0 && largs[0].Length != 0)
+            if (largs != null && largs.Count != 0 && largs[0].Length != 0 && !Directory.Exists(largs[0]))
             {
                 output = largs[0];
                 largs.RemoveAt(0);
@@ -48,11 +51,19 @@ namespace pjHoodTool
             StreamWriter w = new StreamWriter(output);
             w.AutoFlush = true;
 
-            SimPe.WaitingScreen.Wait();
-            SimPe.WaitingScreen.UpdateMessage(L.Get("pjCHoodTool"));
+            splash(L.Get("pjCHoodTool"));
             try
             {
-                w.WriteLine("dir;Instance;SimId;SimName;FamilyInstance;SimFamilyName;LifeSection;AgeDuration");
+                w.WriteLine("hood;SimId;SimName;FamilyInstance;SimFamilyName;HouseholdName;AvailableCharacterData;Unlinked" +
+                    ";Ghost(Objects,Walls,People,Freely)" +
+                    ";BodyType"+
+                    ";AutonomyLevel;NPCType;MotivesStatic;VoiceType;SchoolType;Grade;CareerPerformance;Career;CareerLevel;ZodiacSign;Aspiration;Gender" +
+                    ";LifeSection;Age;PrevAgeDays;AgeDuration;BlizLifelinePoints;LifelinePoints;LifelineScore" +
+                    ";University(Effort,Grade,Time,Semester,Influence,Major)" +
+                    ";Species" +
+                    ";Salary" +
+                    ""
+                    );
 
                 ExpansionItem.NeighborhoodPaths paths = PathProvider.Global.GetNeighborhoodsForGroup();
                 foreach (ExpansionItem.NeighborhoodPath path in paths)
@@ -66,10 +77,19 @@ namespace pjHoodTool
             finally
             {
                 w.Close();
-                SimPe.WaitingScreen.Stop();
             }
         }
 
+
+        void SetProvider(SimPe.Interfaces.Files.IPackageFile pkg)
+        {
+            FileTable.ProviderRegistry.SimFamilynameProvider.BasePackage = pkg;
+            FileTable.ProviderRegistry.SimDescriptionProvider.BasePackage = pkg;
+            FileTable.ProviderRegistry.SimNameProvider.BaseFolder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(pkg.FileName), "Characters");
+            FileTable.ProviderRegistry.LotProvider.BaseFolder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(pkg.FileName), "Lots");
+        }
+
+        string previousSimFamilyName = "";
         void AddHood(string outPath, string dir, StreamWriter w)
         {
             string hood = Path.GetFileName(dir);
@@ -79,10 +99,13 @@ namespace pjHoodTool
             SimPe.Packages.File pkg = SimPe.Packages.File.LoadFromFile(hoodFile);
             if (pkg == null) return;
 
+            splash("Loading Neighborhood " + hood);
+            SetProvider(pkg);
+
+            previousSimFamilyName = "";
             IPackedFileDescriptor[] pfds = pkg.FindFiles(SimPe.Data.MetaData.SIM_DESCRIPTION_FILE);
             foreach (IPackedFileDescriptor spfd in pfds)
             {
-                WaitingScreen.Wait();
                 ExtSDesc sdsc = new ExtSDesc();
                 sdsc.ProcessData(spfd, pkg);
 
@@ -90,20 +113,73 @@ namespace pjHoodTool
             }
         }
 
+        enum bodyType : ushort { Unknown = 0, Fat = 1, PregnantFull = 2, PregnantHalf = 4, PregnantHidden = 8, };
         void AddSim(string outPath, string hood, StreamWriter w, ExtSDesc sdsc)
         {
+            string ghost = "N(,,,)";
+            if (sdsc.CharacterDescription.GhostFlag.IsGhost)
+            {
+                ghost = "Y(" + (sdsc.CharacterDescription.GhostFlag.CanPassThroughObjects ? "Y" : "N") +
+                    (sdsc.CharacterDescription.GhostFlag.CanPassThroughWalls ? "Y" : "N") +
+                    (sdsc.CharacterDescription.GhostFlag.CanPassThroughPeople ? "Y" : "N") +
+                    (sdsc.CharacterDescription.GhostFlag.IgnoreTraversalCosts ? "Y" : "N") +
+                    ")";
+            }
+
+            string university = "N(,,,,,)";
+            if (sdsc.University != null && sdsc.University.OnCampus == 0x1)
+            {
+                university = "Y(" + sdsc.University.Effort +
+                "," + sdsc.University.Grade +
+                "," + sdsc.University.Time +
+                "," + sdsc.University.Semester +
+                "," + sdsc.University.Influence +
+                "," + sdsc.University.Major +
+                ")";
+            }
+
+            if (sdsc.SimFamilyName != previousSimFamilyName)
+            {
+                splash("Saving " + sdsc.SimName + " " + sdsc.SimFamilyName);
+                previousSimFamilyName = sdsc.SimFamilyName;
+            }
             string csv = hood +
                 ";" + sdsc.Instance +
-                ";" + sdsc.SimId +
                 ";" + sdsc.SimName +
                 ";" + sdsc.FamilyInstance +
                 ";" + sdsc.SimFamilyName +
+                ";" + sdsc.HouseholdName +
+                ";" + (sdsc.AvailableCharacterData ? "Y" : "N") +
+                ";" + (sdsc.Unlinked != 0x00 ? "Y" : "N").ToString() +
+                ";" + ghost +
+                ";" + (bodyType)(ushort)sdsc.CharacterDescription.BodyFlag +
+                ";" + sdsc.CharacterDescription.AutonomyLevel +
+                ";" + sdsc.CharacterDescription.NPCType +
+                ";" + sdsc.CharacterDescription.MotivesStatic +
+                ";" + sdsc.CharacterDescription.VoiceType +
+                ";" + sdsc.CharacterDescription.SchoolType +
+                ";" + sdsc.CharacterDescription.Grade +
+                ";" + sdsc.CharacterDescription.CareerPerformance +
+                ";" + sdsc.CharacterDescription.Career +
+                ";" + sdsc.CharacterDescription.CareerLevel +
+                ";" + sdsc.CharacterDescription.ZodiacSign +
+                ";" + sdsc.CharacterDescription.Aspiration +
+                ";" + sdsc.CharacterDescription.Gender +
                 ";" + sdsc.CharacterDescription.LifeSection +
-                ";" + sdsc.CharacterDescription.AgeDuration
+                ";" + sdsc.CharacterDescription.Age +
+                ";" + sdsc.CharacterDescription.PrevAgeDays +
+                ";" + sdsc.CharacterDescription.AgeDuration +
+                ";" + sdsc.CharacterDescription.BlizLifelinePoints +
+                ";" + sdsc.CharacterDescription.LifelinePoints +
+                ";" + sdsc.CharacterDescription.LifelineScore +
+                ";" + university +
+                ";" + (sdsc.Nightlife == null ? "Human" : sdsc.Nightlife.Species.ToString()) +
+                ";" + (sdsc.Business == null ? "0" : sdsc.Business.Salary.ToString()) +
+                ""
             ;
             w.WriteLine(csv);
 
-            //AddImage(sdsc, Path.Combine(outPath, hood + "_" + sdsc.Instance + ".png"));
+            AddImage(sdsc, Path.Combine(outPath, hood + "_" + sdsc.Instance + ".png"));
         }
 
         void AddImage(ExtSDesc sdsc, string f)
@@ -150,17 +226,21 @@ namespace pjHoodTool
             }
         }
 
-        private bool realIsNPC(ExtSDesc sdsc) { return sdsc.FamilyInstance == 0x7fff; }
-        private bool realIsTownie(ExtSDesc sdsc) { return sdsc.FamilyInstance < 0x7fff && sdsc.FamilyInstance >= 0x7fe0; }
-        private bool realIsPlayable(ExtSDesc sdsc) { return sdsc.FamilyInstance < 0x7fe0 && sdsc.FamilyInstance > 0; }
-        private bool realIsUneditable(ExtSDesc sdsc) { return sdsc.FamilyInstance == 0; }
-
         #region ITool Members
 
         SimPe.Interfaces.Plugin.IToolResult ITool.ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
         {
-            Rufio(null);
-            return new SimPe.Plugin.ToolResult(false, false);
+            try
+            {
+                SimPe.WaitingScreen.Wait();
+                splash = delegate(string message) { SimPe.WaitingScreen.UpdateMessage(message); };
+                Rufio(null);
+                return new SimPe.Plugin.ToolResult(false, false);
+            }
+            finally
+            {
+                SimPe.WaitingScreen.Stop();
+            }
         }
 
         bool ITool.IsEnabled(SimPe.Interfaces.Files.IPackedFileDescriptor pfd, SimPe.Interfaces.Files.IPackageFile package)
@@ -181,13 +261,13 @@ namespace pjHoodTool
 
         #region ICommandLine Members
 
-        public bool Parse(ref string[] args)
+        public bool Parse(List<string> argv)
         {
-            if (args.Length != 1 || !args[0].Trim().ToLower().Equals(rufio)) return false;
-            List<string> largs = new List<string>(args);
+            if (!argv.Remove(rufio)) return false;
 
-            largs.RemoveAt(0);
-            Rufio(largs);
+            splash = delegate(string message) { SimPe.Splash.Screen.SetMessage(message); };
+            Rufio(argv);
+            splash("");
             return true;
         }
 
