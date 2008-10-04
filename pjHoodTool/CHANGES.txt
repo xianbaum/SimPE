@@ -1,3 +1,6 @@
+2008-10-04 09:18 Keep up with Splash changes
+  SimPe pjHoodTool.csproj 1.1.2.2
+
 2008-09-29 22:47 Sundry updates
   * New ICommandline definition
   * Vastly extended output
