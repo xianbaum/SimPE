@@ -51,7 +51,10 @@ namespace pjse
         public void UIRefresh()
         {
             SimPe.Wait.Start();
+            SimPe.WaitingScreen.Wait();
             this.Refresh(true);
+            SimPe.WaitingScreen.Stop();
+            SimPe.Splash.Screen.SetMessage("");
             SimPe.Wait.Stop();
         }
 
@@ -174,6 +177,9 @@ namespace pjse
 
         private void Add(string v, bool recurse, bool isMaxis, bool isFixed)
         {
+            SimPe.Splash.Screen.SetMessage("Loading " + System.IO.Path.GetFileName(v).Replace(".package", ""));
+            SimPe.WaitingScreen.UpdateMessage("Loading " + System.IO.Path.GetFileName(v).Replace(".package", ""));
+            System.Windows.Forms.Application.DoEvents();
             if (Directory.Exists(v))
             {
                 foreach (string i in Directory.GetFiles(v, "*.package"))
