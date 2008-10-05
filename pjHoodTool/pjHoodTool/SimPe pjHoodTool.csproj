@@ -63,6 +63,11 @@
       <Name>SimPe Helper</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\..\fullsimpe-svn\SimPe HGBH\SimPe HGBH.csproj">
+      <Project>{2A67C9C3-9577-4922-991F-291EAA6B4F2D}</Project>
+      <Name>SimPe HGBH</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\fullsimpe-svn\SimPe Interfaces\SimPe Interfaces.csproj">
       <Project>{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}</Project>
       <Name>SimPe Interfaces</Name>
@@ -91,6 +96,11 @@
     <ProjectReference Include="..\..\fullsimpe-svn\SimPe Workspace Helper\SimPe Workspace Helper.csproj">
       <Project>{45021667-BAD2-4ECA-8423-F4734F914CBB}</Project>
       <Name>SimPe Workspace Helper</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\pjseCoderPlugin-cvs\SimPe BHAV\SimPe pjse coder plugin.csproj">
+      <Project>{19BF4C91-3A16-41D2-A7F0-2DE5BD7E13CF}</Project>
+      <Name>SimPe pjse coder plugin</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

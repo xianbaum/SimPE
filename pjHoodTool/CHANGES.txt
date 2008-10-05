@@ -1,3 +1,14 @@
+2008-10-05 14:05 Sundry updates
+  * Time-based splash updates
+  * Don't generate dummies for missing images, don't overwrite missing images, etc
+  * Extract home ownership details
+  * Move images into subfolders
+  * Oh, and restore command line usage
+  pjHoodTool/
+    cHoodTool.cs 1.1.2.3
+    SimPe pjOBJDTool.csproj 1.1.2.3
+    tHoodTool.cs 1.1.2.2
+  
 2008-10-04 09:18 Keep up with Splash changes
   SimPe pjHoodTool.csproj 1.1.2.2
 
@@ -14,7 +25,7 @@
     Localization.cs 1.1.2.1
     Localization.resx 1.1.2.1
     SimPe pjOBJDTool.csproj 1.1.2.1
-    tHootTool.cs 1.1.2.1
+    tHoodTool.cs 1.1.2.1
   pjOBJDTool/Properties/
     AssemblyInfo.cs 1.1.2.1
   Redirect_Contents.htm 1.1.2.1

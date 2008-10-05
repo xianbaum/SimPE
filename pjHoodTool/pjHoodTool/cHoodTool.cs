@@ -26,6 +26,7 @@ using SimPe;
 using SimPe.Interfaces;
 using SimPe.Interfaces.Files;
 using SimPe.PackedFiles.Wrapper;
+using SimPe.Plugin;
 
 namespace pjHoodTool
 {
@@ -54,14 +55,19 @@ namespace pjHoodTool
             splash(L.Get("pjCHoodTool"));
             try
             {
-                w.WriteLine("hood;SimId;SimName;FamilyInstance;SimFamilyName;HouseholdName;AvailableCharacterData;Unlinked" +
+                w.WriteLine("hood" +
+                    ";HoodName" +
+                    ";SimId;SimName;FamilyInstance;SimFamilyName;HouseholdName" +
+                    ";HouseNumber;HouseName" +
+                    ";AvailableCharacterData;Unlinked" +
                     ";Ghost(Objects,Walls,People,Freely)" +
-                    ";BodyType"+
+                    ";BodyType" +
                     ";AutonomyLevel;NPCType;MotivesStatic;VoiceType;SchoolType;Grade;CareerPerformance;Career;CareerLevel;ZodiacSign;Aspiration;Gender" +
-                    ";LifeSection;Age;PrevAgeDays;AgeDuration;BlizLifelinePoints;LifelinePoints;LifelineScore" +
+                    ";LifeSection;AgeDaysLeft;PrevAgeDays;AgeDuration;BlizLifelinePoints;LifelinePoints;LifelineScore" +
                     ";University(Effort,Grade,Time,Semester,Influence,Major)" +
                     ";Species" +
                     ";Salary" +
+                    //";Reputation" +
                     ""
                     );
 
@@ -89,7 +95,8 @@ namespace pjHoodTool
             FileTable.ProviderRegistry.LotProvider.BaseFolder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(pkg.FileName), "Lots");
         }
 
-        string previousSimFamilyName = "";
+        DateTime dt = new DateTime(0);
+        bool wasUnk = true;
         void AddHood(string outPath, string dir, StreamWriter w)
         {
             string hood = Path.GetFileName(dir);
@@ -99,23 +106,51 @@ namespace pjHoodTool
             SimPe.Packages.File pkg = SimPe.Packages.File.LoadFromFile(hoodFile);
             if (pkg == null) return;
 
-            splash("Loading Neighborhood " + hood);
+            string hoodName = Localization.GetString("Unknown");
+            IPackedFileDescriptor[] pfds = pkg.FindFiles(SimPe.Data.MetaData.CTSS_FILE);
+            StrWrapper ctss = null;
+            if (pfds.Length == 1)
+            {
+                ctss = new StrWrapper();
+                ctss.ProcessData(pfds[0], pkg);
+                hoodName = ctss[1, 0];
+            }
+
+            if (!Directory.Exists(Path.Combine(outPath, "SimImage")))
+                Directory.CreateDirectory(Path.Combine(outPath, "SimImage"));
+
+            if (!Directory.Exists(Path.Combine(outPath, "LotImage")))
+                Directory.CreateDirectory(Path.Combine(outPath, "LotImage"));
+
+
+            splash("Loading Neighborhood " + hood + ": " + hoodName);
             SetProvider(pkg);
 
-            previousSimFamilyName = "";
-            IPackedFileDescriptor[] pfds = pkg.FindFiles(SimPe.Data.MetaData.SIM_DESCRIPTION_FILE);
+            dt = new DateTime(0);
+            wasUnk = true;
+            pfds = pkg.FindFiles(SimPe.Data.MetaData.SIM_DESCRIPTION_FILE);
             foreach (IPackedFileDescriptor spfd in pfds)
             {
                 ExtSDesc sdsc = new ExtSDesc();
                 sdsc.ProcessData(spfd, pkg);
 
-                AddSim(outPath, hood, w, sdsc);
+                AddSim(outPath, hood, hoodName, w, sdsc);
             }
         }
 
         enum bodyType : ushort { Unknown = 0, Fat = 1, PregnantFull = 2, PregnantHalf = 4, PregnantHidden = 8, };
-        void AddSim(string outPath, string hood, StreamWriter w, ExtSDesc sdsc)
+        void AddSim(string outPath, string hood, string hoodName, StreamWriter w, ExtSDesc sdsc)
         {
+            IPackedFileDescriptor pfd = sdsc.Package.FindFile(0x46414D49, 0x00000000, 0xffffffff, sdsc.FamilyInstance); // FAMI
+            Fami family = null;
+            SimPe.Interfaces.Providers.ILotItem ilot = null;
+            if (pfd != null)
+            {
+                family = new Fami(FileTable.ProviderRegistry.SimNameProvider);
+                family.ProcessData(pfd, sdsc.Package);
+                ilot = FileTable.ProviderRegistry.LotProvider.FindLot(family.LotInstance);
+            }
+
             string ghost = "N(,,,)";
             if (sdsc.CharacterDescription.GhostFlag.IsGhost)
             {
@@ -138,17 +173,25 @@ namespace pjHoodTool
                 ")";
             }
 
-            if (sdsc.SimFamilyName != previousSimFamilyName)
+            if (dt.Equals(new DateTime(0)) || wasUnk || dt.AddMilliseconds(200).CompareTo(DateTime.UtcNow) < 0)
             {
-                splash("Saving " + sdsc.SimName + " " + sdsc.SimFamilyName);
-                previousSimFamilyName = sdsc.SimFamilyName;
+                if (!((string)(sdsc.SimName + " " + sdsc.SimFamilyName)).Trim().ToLower().Equals("unknown"))
+                {
+                    dt = new DateTime(DateTime.UtcNow.Ticks);
+                    wasUnk = false;
+                    splash("Saving " + sdsc.SimName + " " + sdsc.SimFamilyName);
+                }
+                else
+                    wasUnk = true;
             }
             string csv = hood +
+                ";" + hoodName +
                 ";" + sdsc.Instance +
                 ";" + sdsc.SimName +
                 ";" + sdsc.FamilyInstance +
                 ";" + sdsc.SimFamilyName +
                 ";" + sdsc.HouseholdName +
+                ";" + (ilot != null ? ilot.Instance + ";" + ilot.LotName : ";") +
                 ";" + (sdsc.AvailableCharacterData ? "Y" : "N") +
                 ";" + (sdsc.Unlinked != 0x00 ? "Y" : "N").ToString() +
                 ";" + ghost +
@@ -175,56 +218,27 @@ namespace pjHoodTool
                 ";" + university +
                 ";" + (sdsc.Nightlife == null ? "Human" : sdsc.Nightlife.Species.ToString()) +
                 ";" + (sdsc.Business == null ? "0" : sdsc.Business.Salary.ToString()) +
+                //";Reputation" +
                 ""
             ;
             w.WriteLine(csv);
 
-            AddImage(sdsc, Path.Combine(outPath, hood + "_" + sdsc.Instance + ".png"));
+            AddImage(sdsc.Image, Path.Combine(Path.Combine(outPath, "SimImage"), hood + "_" + sdsc.Instance + ".png"));
+            if (ilot != null)
+                AddImage(ilot.Image, Path.Combine(Path.Combine(outPath, "LotImage"), hood + "_" + ilot.Instance + ".png"));
         }
 
-        void AddImage(ExtSDesc sdsc, string f)
+        void AddImage(Image img, string f)
         {
-            if (sdsc.Image != null)
+            if (img != null)
             {
-                if ((sdsc.Unlinked != 0x00) || (!sdsc.AvailableCharacterData) || sdsc.IsNPC)
-                {
-                    Image img = (Image)sdsc.Image.Clone();
-                    System.Drawing.Graphics g = Graphics.FromImage(img);
-                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                    g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-
-                    Pen pen = new Pen(SimPe.Data.MetaData.SpecialSimColor, 3);
-
-                    g.FillRectangle(pen.Brush, 0, 0, img.Width, img.Height);
-
-                    int pos = 2;
-                    if (sdsc.Unlinked != 0x00)
-                    {
-                        g.FillRectangle(new SolidBrush(SimPe.Data.MetaData.UnlinkedSim), pos, 2, 25, 25);
-                        pos += 28;
-                    }
-                    if (!sdsc.AvailableCharacterData)
-                    {
-                        g.FillRectangle(new SolidBrush(SimPe.Data.MetaData.InactiveSim), pos, 2, 25, 25);
-                        pos += 28;
-                    }
-                    if (sdsc.IsNPC)
-                    {
-                        g.FillRectangle(new SolidBrush(SimPe.Data.MetaData.NPCSim), pos, 2, 25, 25);
-                        pos += 28;
-                    }
+                if (img.Size.Width > 16 && img.Size.Height > 16)
                     img.Save(f);
-                }
                 else
-                {
-                    sdsc.Image.Save(f);
-                }
-            }
-            else
-            {
-                (new Bitmap((new SimPe.Plugin.PlasticSurgery(null, null, null, null, null)).GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Network.png"))).Save(f);
+                    System.Diagnostics.Trace.WriteLine("img too small: " + Path.GetFileNameWithoutExtension(f) + ";w=" + img.Width + ";h=" + img.Height);
             }
         }
+
 
         #region ITool Members
 

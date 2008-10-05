@@ -23,7 +23,7 @@ using SimPe.Interfaces.Plugin;
 
 namespace pjHoodTool
 {
-    class tObjKeyTool : AbstractWrapperFactory, IToolFactory, IHelpFactory
+    class tObjKeyTool : AbstractWrapperFactory, IToolFactory, IHelpFactory, ICommandLineFactory
     {
         #region IToolFactory Members
         public IToolPlugin[] KnownTools { get { return new IToolPlugin[] { new cHoodTool() }; } }
@@ -31,6 +31,15 @@ namespace pjHoodTool
 
         #region IHelpFactory Members
         public IHelp[] KnownHelpTopics { get { return new IHelp[] { new hHoodHelp() }; } }
+        #endregion
+
+        #region ICommandLineFactory Members
+
+        public ICommandLine[] KnownCommandLines
+        {
+            get { return new ICommandLine[] { new cHoodTool()}; }
+        }
+
         #endregion
     }
 }
