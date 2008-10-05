@@ -1,3 +1,7 @@
+5 October 2008 14:00 Filetable: Tiny cosmetic change to splash
+  pjse filetable\
+    FileTable.cs 1.31.4.11
+
 5 October 2008 12:40 Filetable: Refinements to splash handling
   pjse filetable\
     FileTable.cs 1.31.4.10
