@@ -1,7 +1,11 @@
+5 October 2008 12:40 Filetable: Refinements to splash handling
+  pjse filetable\
+    FileTable.cs 1.31.4.10
+
 4 October 2008 09:22 Filetable: Improved splash UI
   pjse filetable\
     FileTable.cs 1.31.4.9
-    SimPe pjse filetable.csproj 1.2.1.1
+    SimPe pjse filetable.csproj 1.2.6.1
 
 27 September 2008 15:32 Extract button requested on View and Float windows
   SimPe BHAV\
