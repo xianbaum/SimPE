@@ -53,9 +53,12 @@ namespace pjse
             SimPe.Wait.Start();
             bool wasRunning = SimPe.WaitingScreen.Running;
             SimPe.WaitingScreen.Wait();
-            this.Refresh(true);
-            if (!wasRunning) SimPe.WaitingScreen.Stop();
-            else SimPe.WaitingScreen.UpdateMessage("");
+            try { this.Refresh(true); }
+            finally
+            {
+                if (!wasRunning) SimPe.WaitingScreen.Stop();
+                else SimPe.WaitingScreen.UpdateMessage("");
+            }
             SimPe.Wait.Stop();
         }
 
