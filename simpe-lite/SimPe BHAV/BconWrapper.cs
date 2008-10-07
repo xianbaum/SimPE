@@ -48,11 +48,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Just A Flag
 		/// </summary>
 		private bool flag = false;
-
-		/// <summary>
-		/// Contains a valid TRCN Resource that describes these values
-		/// </summary>
-		private Trcn trcnres = null;
 		#endregion
 
 		#region Accessor methods
@@ -87,6 +82,12 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
+		#endregion
+
+		/// <summary>
+		/// Constructor
+		/// </summary>
+        public Bcon() : base() { }
 
 
 		/// <summary>
@@ -96,37 +97,10 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get 
 			{
-                if (FileDescriptor == null) return null;
-
-				if (trcnres == null)
-				{
-					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x5452434E, FileDescriptor.Group, FileDescriptor.Instance];
-					if (items == null || items.Length == 0) return null;
-
-					trcnres = new Trcn();
-					trcnres.ProcessData(items[0].PFD, items[0].Package);
-                    trcnres.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
-                    this.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
-                }
-
-                return trcnres.TextOnly ? null : trcnres;
-			}
+                Trcn trcnres = (Trcn)SiblingResource(0x5452434E);
+                return (trcnres == null || trcnres.TextOnly) ? null : trcnres;
+            }
 		}
-
-		#endregion
-
-		/// <summary>
-		/// Constructor
-		/// </summary>
-        public Bcon() : base() { }
-
-        void FileDescriptor_DescriptionChanged(object sender, EventArgs e)
-        {
-            this.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);
-            if (trcnres.FileDescriptor != null)
-                trcnres.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);
-            trcnres = null;
-        }
 
 
 		#region AbstractWrapper Member

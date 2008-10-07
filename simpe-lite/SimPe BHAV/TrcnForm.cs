@@ -83,9 +83,10 @@ namespace SimPe.PackedFiles.UserInterface
 			// Required for Windows Form Designer support
 			//
 			InitializeComponent();
-            this.lvTrcnItem.Items.Clear();
 
             pjse.Updates.Checker.Daily();
+
+            this.lvTrcnItem.Items.Clear();
 
             TextBox[] t = { tbFilename, tbLabel, };
 			alText = new ArrayList(t);
@@ -95,6 +96,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 			TextBox[] dw = { tbFormat ,tbID ,};
 			alHex32 = new ArrayList(dw);
+
+            pjse.FileTable.GFT.FiletableRefresh += new EventHandler(this.FiletableRefresh);
 		}
 
 		/// <summary>
@@ -110,11 +113,19 @@ namespace SimPe.PackedFiles.UserInterface
 				}
 			}
 			base.Dispose( disposing );
-		}
+            if (setHandler && wrapper != null)
+            {
+                wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
+                setHandler = false;
+            }
+            wrapper = null;
+            bconres = null;
+        }
 
 
 		#region Controller
 		private Trcn wrapper = null;
+        private Bcon bconres = null;
 		private bool setHandler = false;
 		private bool internalchg = false;
 
@@ -224,8 +235,7 @@ namespace SimPe.PackedFiles.UserInterface
 			if (i < 0 || i >= wrapper.Count) return new string[] { "", "", "", "", "", "", "", "" };
 
 			TrcnItem ti = wrapper[i];
-			Bcon bcon = wrapper.BconResource;
-			string tiValue = (bcon != null && i < bcon.Count) ? "0x" + SimPe.Helper.HexString(bcon[i]) : "?";
+            string tiValue = (bconres != null && i < bconres.Count) ? "0x" + SimPe.Helper.HexString(bconres[i]) : "?";
 
 			return new string[] {
 									"0x" + i.ToString("X") + " (" + i + ")"
@@ -242,12 +252,13 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void updateLists()
 		{
-			wrapper.CleanUp();
+            if (wrapper != null) wrapper.CleanUp();
 
 			index = -1;
+            bconres = wrapper == null ? null : wrapper.BconResource;
 
 			this.lvTrcnItem.Items.Clear();
-			int nItems = wrapper.Count;
+            int nItems = wrapper == null ? 0 : wrapper.Count;
 			for(int i = 0; i < nItems; i++)
 				this.lvTrcnItem.Items.Add(new ListViewItem(trcnItemToStringArray(i)));
 		}
@@ -407,7 +418,11 @@ namespace SimPe.PackedFiles.UserInterface
 			displayTrcnItem();
 		}
 
-		#endregion
+        void FiletableRefresh(object sender, EventArgs e)
+        {
+            updateLists();
+        }
+        #endregion
 
 		#region IPackedFileUI Member
 		/// <summary>

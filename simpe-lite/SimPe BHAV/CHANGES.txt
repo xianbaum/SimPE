@@ -1,3 +1,12 @@
+7 October 2008 14:23 Keep resource labels in step
+  SimPe BHAV\
+    BconForm.cs 1.25.4.5
+    BconWrapper.cs 1.12.4.2
+    BhavWrapper.cs 1.50.4.2
+    ExtendedWrapper.cs 1.9.6.4
+    TrcnForm.cs 1.22.2.3
+    TrcnWrapper.cs 1.14.2.4
+
 5 October 2008 14:00 Filetable: Tiny cosmetic change to splash
   pjse filetable\
     FileTable.cs 1.31.4.11
@@ -13,11 +22,11 @@
 
 27 September 2008 15:32 Extract button requested on View and Float windows
   SimPe BHAV\
-  BhavForm.cs 1.89.4.11
-  ExtractCurrent.cs 1.1.2.1
-  pjse banner.cs 1.1.4.2
-  pjse banner.Designer.cs 1.1.4.2
-  SimPe pjse coder plugin.csproj 1.6.4.2
+    BhavForm.cs 1.89.4.11
+    ExtractCurrent.cs 1.1.2.1
+    pjse banner.cs 1.1.4.2
+    pjse banner.Designer.cs 1.1.4.2
+    SimPe pjse coder plugin.csproj 1.6.4.2
 
 27 September 2008 13:36 Suppress warning (cut-n-paste error)
   SimPe BHAV\

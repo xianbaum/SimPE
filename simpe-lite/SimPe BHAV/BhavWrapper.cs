@@ -50,11 +50,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Stores the Header
 		/// </summary>
 		private BhavHeader header;
-
-		/// <summary>
-		/// Contains a valid TPRP Resource that describes the Params and Locals for this BHAV
-		/// </summary>
-		private TPRP tprpres = null;
 		#endregion
 
 		#region Accessor methods
@@ -78,7 +73,10 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Returns the Header
 		/// </summary>
 		public BhavHeader Header { get { return header; } }
+		#endregion
 
+
+        public Bhav() : base() { header = new BhavHeader(this); }
 
 
 		/// <summary>
@@ -86,23 +84,12 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public TPRP TPRPResource
 		{
-			get 
-			{
-				if (tprpres == null && FileDescriptor != null)
-				{
-					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, FileDescriptor.Group, FileDescriptor.Instance];
-					if (items == null || items.Length == 0) return null;
-
-					tprpres = new TPRP();
-					tprpres.ProcessData(items[0].PFD, items[0].Package);
-				}
-
-				return tprpres;
-			}
+            get
+            {
+                TPRP tprpres = (TPRP)SiblingResource(0x54505250);
+                return (tprpres == null || tprpres.TextOnly) ? null : tprpres;
+            }
 		}
-		#endregion
-
-        public Bhav() : base() { header = new BhavHeader(this); }
 
         private void SortSwap(int a, int b)
         {

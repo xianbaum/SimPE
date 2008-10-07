@@ -83,21 +83,29 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+            if (setHandler && wrapper != null)
+            {
+                wrapper.WrapperChanged -= new System.EventHandler(this.WrapperChanged);
+                setHandler = false;
+            }
+            wrapper = null;
+            trcnres = null;
+        }
 
 
 		#region Controller
 		private Bcon wrapper = null;
+        private Trcn trcnres = null;
 		private bool setHandler = false;
 		private bool internalchg = false;
 
@@ -136,7 +144,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			string cID = "0x" + i.ToString("X") + " (" + i + ")";
 			string cValue = "0x" + SimPe.Helper.HexString(wrapper[i]);
-			string cLabel = (wrapper.TrcnResource != null && i < wrapper.TrcnResource.Count) ? wrapper.TrcnResource[i].ConstName : "";
+            string cLabel = (trcnres != null && i < trcnres.Count) ? trcnres[i].ConstName : "";
 			string[] v = { cID, cValue, cLabel };
 			return new ListViewItem(v);
 		}
@@ -144,9 +152,10 @@ namespace SimPe.PackedFiles.UserInterface
 		private void updateLists()
 		{
 			index = -1;
+            trcnres = wrapper == null ? null : wrapper.TrcnResource;
 
 			this.lvConstants.Items.Clear();
-			int nItems = wrapper.Count;
+			int nItems = wrapper == null ? 0 : wrapper.Count;
 			for(int i = 0; i < nItems; i++)
 				this.lvConstants.Items.Add(lvItem(i));
 		}
