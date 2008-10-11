@@ -32,19 +32,16 @@ namespace pjHoodTool
 {
     class cHoodTool : ITool, ICommandLine
     {
-        static string rufio = "-rufio";
-
         delegate void Splash(string message);
         Splash splash;
 
-        void Rufio(List<string> largs)
+        void Rufio(string output, string hood)
         {
-            string output = Path.Combine(Path.Combine(SimPe.PathProvider.SimSavegameFolder, "Rufio"), "ExportedSims.txt");
-            if (largs != null && largs.Count != 0 && largs[0].Length != 0 && !Directory.Exists(largs[0]))
-            {
-                output = largs[0];
-                largs.RemoveAt(0);
-            }
+            if (output.Length == 0)
+                output = Path.Combine(Path.Combine(SimPe.PathProvider.SimSavegameFolder, "Rufio"), "ExportedSims.txt");
+            else
+                output = Path.Combine(Path.Combine(output, "Rufio"), "ExportedSims.txt");
+
             string outPath = Path.GetDirectoryName(output);
             if (!Directory.Exists(outPath))
                 Directory.CreateDirectory(outPath);
@@ -75,7 +72,7 @@ namespace pjHoodTool
                 foreach (ExpansionItem.NeighborhoodPath path in paths)
                 {
                     string sourcepath = path.Path;
-                    string[] dirs = System.IO.Directory.GetDirectories(sourcepath, "????");
+                    string[] dirs = System.IO.Directory.GetDirectories(sourcepath, hood.Length > 0 ? hood : "????");
                     foreach (string dir in dirs)
                         AddHood(outPath, dir, w);
                 }
@@ -244,11 +241,36 @@ namespace pjHoodTool
 
         SimPe.Interfaces.Plugin.IToolResult ITool.ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
         {
+            if (!System.IO.Directory.Exists(PathProvider.Global.NeighborhoodFolder))
+            {
+                System.Windows.Forms.MessageBox.Show("The Folder " + PathProvider.Global.NeighborhoodFolder + " was not found.\n" +
+                    "Please specify the correct SaveGame Folder in the Options Dialog.");
+                return new ToolResult(false, false);
+            }
+
+            System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+            fbd.Description = L.Get("ChooseFolder");
+            fbd.SelectedPath = SimPe.PathProvider.SimSavegameFolder;
+            fbd.ShowNewFolderButton = true;
+            System.Windows.Forms.DialogResult dr = fbd.ShowDialog();
+            if (dr != System.Windows.Forms.DialogResult.OK) return new ToolResult(false, false);
+
+
+            NeighborhoodForm nfm = new NeighborhoodForm();
+            nfm.LoadNgbh = false;
+            nfm.ShowBackupManager = false;
+            nfm.Text = L.Get("nfmTitle");
+            SimPe.Interfaces.Plugin.IToolResult ret = nfm.Execute(ref package, null);
+
+            string hood = "";
+            if (nfm.DialogResult == System.Windows.Forms.DialogResult.OK && nfm.SelectedNgbh != null)
+                hood = Path.GetFileName(Path.GetDirectoryName(nfm.SelectedNgbh));
+
             try
             {
                 SimPe.WaitingScreen.Wait();
                 splash = delegate(string message) { SimPe.WaitingScreen.UpdateMessage(message); };
-                Rufio(null);
+                Rufio(fbd.SelectedPath, hood);
                 return new SimPe.Plugin.ToolResult(false, false);
             }
             finally
@@ -277,17 +299,41 @@ namespace pjHoodTool
 
         public bool Parse(List<string> argv)
         {
-            if (!argv.Remove(rufio)) return false;
+            int i = ArgParser.Parse(argv, "-rufio");
+            if (i < 0) return false;
+
+            string outpath = "";
+            string hood = "";
+            while (argv.Count > i)
+            {
+                if (ArgParser.Parse(argv, i, "-out", ref outpath)) continue;
+                if (ArgParser.Parse(argv, i, "-hood", ref hood)) continue;
+                SimPe.Message.Show(Help()[0]);
+                return true;
+            }
+
+            if (outpath.Length > 0 && !Directory.Exists(outpath))
+            {
+                SimPe.Message.Show("Use -out specify an existing folder");
+                return true;
+            }
+
+            if (!Directory.Exists(PathProvider.Global.NeighborhoodFolder))
+            {
+                SimPe.Message.Show("The Folder " + PathProvider.Global.NeighborhoodFolder + " was not found.\n" +
+                    "Please specify the correct SaveGame Folder in the Options Dialog.");
+                return false;
+            }
 
             splash = delegate(string message) { SimPe.Splash.Screen.SetMessage(message); };
-            Rufio(argv);
+            Rufio(outpath, hood);
             splash("");
             return true;
         }
 
         public string[] Help()
         {
-            return new string[] { rufio, L.Get("pjCHoodHelp") };
+            return new string[] { "-rufio -out {outpath} {-hood hood}", L.Get("pjCHoodHelp") };
         }
 
         #endregion

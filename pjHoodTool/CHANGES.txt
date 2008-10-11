@@ -1,3 +1,8 @@
+2008-10-11 15:58 Command line and GUI control of output folder and hood to extract
+  pjHoodTool/
+    cHoodTool.cs 1.1.2.4
+    Localization.resx 1.1.2.2
+
 2008-10-05 14:05 Sundry updates
   * Time-based splash updates
   * Don't generate dummies for missing images, don't overwrite missing images, etc
