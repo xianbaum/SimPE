@@ -38,6 +38,7 @@
     <Compile Include="cHoodTool.cs" />
     <Compile Include="hHoodHelp.cs" />
     <Compile Include="Localization.cs" />
+    <Compile Include="pfSDSC.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="tHoodTool.cs" />
   </ItemGroup>

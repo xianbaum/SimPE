@@ -30,6 +30,25 @@ using SimPe.Plugin;
 
 namespace pjHoodTool
 {
+    /*
+        University = 0x2,//1
+        Nightlife = 0x4,//2
+        Business = 0x8,//3
+        (SP)FamilyFun = 0x10,//4
+        (SP)Glamour = 0x20,//5
+        Pets = 0x40,//6
+        Seasons = 0x80,//7
+        (SP)Celebrations = 0x100,//8
+        (SP)Fashion = 0x200,//9
+        Voyage = 0x400,//10
+        (SP)Teen = 0x800,//11
+        (SP)Store = 0x1000,//12
+        FreeTime = 0x2000,//13
+        (SP)Kitchens = 0x4000,//14
+        (SP)IKEA = 0x8000,//15
+        Apartments = 0x00010000,//16 --Flags2--
+        (SP)Mansions = 0x00020000,//17
+    */
     class cHoodTool : ITool, ICommandLine
     {
         delegate void Splash(string message);
@@ -54,17 +73,30 @@ namespace pjHoodTool
             {
                 w.WriteLine("hood" +
                     ";HoodName" +
-                    ";SimId;SimName;FamilyInstance;SimFamilyName;HouseholdName" +
+                    ";NID;SimName;FamilyInstance;SimFamilyName;HouseholdName" +
                     ";HouseNumber;HouseName" +
                     ";AvailableCharacterData;Unlinked" +
-                    ";Ghost(Objects,Walls,People,Freely)" +
+                    ";ParentA;ParentB;Spouse" +
+                    //";Ghost(Objects,Walls,People,Freely)" +
                     ";BodyType" +
-                    ";AutonomyLevel;NPCType;MotivesStatic;VoiceType;SchoolType;Grade;CareerPerformance;Career;CareerLevel;ZodiacSign;Aspiration;Gender" +
-                    ";LifeSection;AgeDaysLeft;PrevAgeDays;AgeDuration;BlizLifelinePoints;LifelinePoints;LifelineScore" +
-                    ";University(Effort,Grade,Time,Semester,Influence,Major)" +
-                    ";Species" +
-                    ";Salary" +
-                    //";Reputation" +
+                    //";AutonomyLevel"+
+                    ";NPCType" +
+                    //";MotivesStatic;VoiceType"+
+                    ";SchoolType;Grade;CareerPerformance;Career;CareerLevel;ZodiacSign;Aspiration;Gender" +
+                    ";LifeSection;AgeDaysLeft" +
+                    //";PrevAgeDays;AgeDuration"+
+                    ";BlizLifelinePoints;LifelinePoints;LifelineScore" +
+                    ";GenActive;GenNeat;GenNice;GenOutgoing;GenPlayful" + // GeneticCharacter
+                    ";Active;Neat;Nice;Outgoing;Playful" + // Character
+                    ";Animals;Crime;Culture;Entertainment;Environment;Fashion;FemalePreference;Food;Health" + //Interests
+                    ";MalePreference;Money;Paranormal;Politics;School;Scifi;Sports;Toys;Travel;Weather;Work" + //Interests
+                    ";Body;Charisma;Cleaning;Cooking;Creativity;Fatness;Logic;Mechanical;Romance" + //Skills
+
+                    ";IsAtUniversity;UniEffort;UniGrade;UniTime;UniSemester;UniInfluence;UniMajor" + // University
+                    ";Species" + // Nightlife
+                    ";Salary" + // Business
+                    ";PrimaryAspiration;SecondaryAspiration;HobbyPredistined;LifetimeWant" + // FreeTime
+                    //";Reputation" + // Aparments... not found it yet
                     ""
                     );
 
@@ -83,13 +115,17 @@ namespace pjHoodTool
             }
         }
 
-
+        ExtFamilyTies eft = null;
         void SetProvider(SimPe.Interfaces.Files.IPackageFile pkg)
         {
             FileTable.ProviderRegistry.SimFamilynameProvider.BasePackage = pkg;
             FileTable.ProviderRegistry.SimDescriptionProvider.BasePackage = pkg;
             FileTable.ProviderRegistry.SimNameProvider.BaseFolder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(pkg.FileName), "Characters");
             FileTable.ProviderRegistry.LotProvider.BaseFolder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(pkg.FileName), "Lots");
+            eft = new ExtFamilyTies();
+            IPackedFileDescriptor[] pfds = pkg.FindFiles(SimPe.Data.MetaData.FAMILY_TIES_FILE);
+            if (pfds != null && pfds.Length > 0)
+                eft.ProcessData(pfds[0], pkg);
         }
 
         DateTime dt = new DateTime(0);
@@ -120,6 +156,7 @@ namespace pjHoodTool
                 Directory.CreateDirectory(Path.Combine(outPath, "LotImage"));
 
 
+            System.Windows.Forms.Application.DoEvents();
             splash("Loading Neighborhood " + hood + ": " + hoodName);
             SetProvider(pkg);
 
@@ -148,7 +185,18 @@ namespace pjHoodTool
                 ilot = FileTable.ProviderRegistry.LotProvider.FindLot(family.LotInstance);
             }
 
-            string ghost = "N(,,,)";
+            string ties = ";;";
+            if (eft != null)
+            {
+                SDesc[] p = eft.ParentSims(sdsc);
+                SDesc[] s = eft.SpouseSims(sdsc);
+                ties = (p == null || p.Length < 2 ? ";" : p[0].Instance + ";" + p[1].Instance) +
+                    ";" + (s == null || s.Length < 1 ? "" : s[0].Instance + "") +
+                    ""
+                    ;
+            }
+
+            /*string ghost = "N(,,,)";
             if (sdsc.CharacterDescription.GhostFlag.IsGhost)
             {
                 ghost = "Y(" + (sdsc.CharacterDescription.GhostFlag.CanPassThroughObjects ? "Y" : "N") +
@@ -156,22 +204,89 @@ namespace pjHoodTool
                     (sdsc.CharacterDescription.GhostFlag.CanPassThroughPeople ? "Y" : "N") +
                     (sdsc.CharacterDescription.GhostFlag.IgnoreTraversalCosts ? "Y" : "N") +
                     ")";
-            }
+            }*/
 
-            string university = "N(,,,,,)";
+            string genetics = sdsc.GeneticCharacter.Active +
+                ";" + sdsc.GeneticCharacter.Neat +
+                ";" + sdsc.GeneticCharacter.Nice +
+                ";" + sdsc.GeneticCharacter.Outgoing +
+                ";" + sdsc.GeneticCharacter.Playful +
+                ""
+            ;
+
+            string character = sdsc.Character.Active +
+                ";" + sdsc.Character.Neat +
+                ";" + sdsc.Character.Nice +
+                ";" + sdsc.Character.Outgoing +
+                ";" + sdsc.Character.Playful +
+                ""
+            ;
+
+            string interests = sdsc.Interests.Animals +
+                ";" + sdsc.Interests.Crime +
+                ";" + sdsc.Interests.Culture +
+                ";" + sdsc.Interests.Entertainment +
+                ";" + sdsc.Interests.Environment +
+                ";" + sdsc.Interests.Fashion +
+                ";" + sdsc.Interests.FemalePreference +
+                ";" + sdsc.Interests.Food +
+                ";" + sdsc.Interests.Health +
+                ";" + sdsc.Interests.MalePreference +
+                ";" + sdsc.Interests.Money +
+                ";" + sdsc.Interests.Paranormal +
+                ";" + sdsc.Interests.Politics +
+                ";" + sdsc.Interests.School +
+                ";" + sdsc.Interests.Scifi +
+                ";" + sdsc.Interests.Sports +
+                ";" + sdsc.Interests.Toys +
+                ";" + sdsc.Interests.Travel +
+                ";" + sdsc.Interests.Weather +
+                ";" + sdsc.Interests.Work +
+                ""
+            ;
+
+            string skills = sdsc.Skills.Body +
+                ";" + sdsc.Skills.Charisma +
+                ";" + sdsc.Skills.Cleaning +
+                ";" + sdsc.Skills.Cooking +
+                ";" + sdsc.Skills.Creativity +
+                ";" + sdsc.Skills.Fatness +
+                ";" + sdsc.Skills.Logic +
+                ";" + sdsc.Skills.Mechanical +
+                ";" + sdsc.Skills.Romance +
+                ""
+            ;
+
+            string university = "N;;;;;";
             if (sdsc.University != null && sdsc.University.OnCampus == 0x1)
             {
-                university = "Y(" + sdsc.University.Effort +
-                "," + sdsc.University.Grade +
-                "," + sdsc.University.Time +
-                "," + sdsc.University.Semester +
-                "," + sdsc.University.Influence +
-                "," + sdsc.University.Major +
-                ")";
+                university = "Y" +
+                ";" + sdsc.University.Effort +
+                ";" + sdsc.University.Grade +
+                ";" + sdsc.University.Time +
+                ";" + sdsc.University.Semester +
+                ";" + sdsc.University.Influence +
+                ";" + sdsc.University.Major
+                ;
             }
+
+            string freetime = ";;;";
+            if (sdsc.Freetime != null)
+            {
+                freetime = sdsc.Freetime.PrimaryAspiration +
+                    ";" + sdsc.Freetime.SecondaryAspiration +
+                    ";" + sdsc.Freetime.HobbyPredistined +
+                    ";" + sdsc.Freetime.LongtermAspiration // LifetimeWant ?
+                ;
+                //sdsc.Freetime.BugCollection -- no...
+            }
+
+            //sdsc.Business.LotID
+
 
             if (dt.Equals(new DateTime(0)) || wasUnk || dt.AddMilliseconds(200).CompareTo(DateTime.UtcNow) < 0)
             {
+                System.Windows.Forms.Application.DoEvents();
                 if (!((string)(sdsc.SimName + " " + sdsc.SimFamilyName)).Trim().ToLower().Equals("unknown"))
                 {
                     dt = new DateTime(DateTime.UtcNow.Ticks);
@@ -191,12 +306,13 @@ namespace pjHoodTool
                 ";" + (ilot != null ? ilot.Instance + ";" + ilot.LotName : ";") +
                 ";" + (sdsc.AvailableCharacterData ? "Y" : "N") +
                 ";" + (sdsc.Unlinked != 0x00 ? "Y" : "N").ToString() +
-                ";" + ghost +
+                ";" + ties +
+                //";" + ghost +
                 ";" + (bodyType)(ushort)sdsc.CharacterDescription.BodyFlag +
-                ";" + sdsc.CharacterDescription.AutonomyLevel +
+                //";" + sdsc.CharacterDescription.AutonomyLevel +
                 ";" + sdsc.CharacterDescription.NPCType +
-                ";" + sdsc.CharacterDescription.MotivesStatic +
-                ";" + sdsc.CharacterDescription.VoiceType +
+                //";" + sdsc.CharacterDescription.MotivesStatic +
+                //";" + sdsc.CharacterDescription.VoiceType +
                 ";" + sdsc.CharacterDescription.SchoolType +
                 ";" + sdsc.CharacterDescription.Grade +
                 ";" + sdsc.CharacterDescription.CareerPerformance +
@@ -207,14 +323,19 @@ namespace pjHoodTool
                 ";" + sdsc.CharacterDescription.Gender +
                 ";" + sdsc.CharacterDescription.LifeSection +
                 ";" + sdsc.CharacterDescription.Age +
-                ";" + sdsc.CharacterDescription.PrevAgeDays +
-                ";" + sdsc.CharacterDescription.AgeDuration +
+                //";" + sdsc.CharacterDescription.PrevAgeDays +
+                //";" + sdsc.CharacterDescription.AgeDuration +
                 ";" + sdsc.CharacterDescription.BlizLifelinePoints +
                 ";" + sdsc.CharacterDescription.LifelinePoints +
                 ";" + sdsc.CharacterDescription.LifelineScore +
+                ";" + genetics +
+                ";" + character +
+                ";" + interests +
+                ";" + skills +
                 ";" + university +
                 ";" + (sdsc.Nightlife == null ? "Human" : sdsc.Nightlife.Species.ToString()) +
                 ";" + (sdsc.Business == null ? "0" : sdsc.Business.Salary.ToString()) +
+                ";" + freetime +
                 //";Reputation" +
                 ""
             ;

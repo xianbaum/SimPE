@@ -1,3 +1,9 @@
+2008-10-12 14:30 Update fields extracted (and start a simpler SDSC wrapper)
+  pjHoodTool/
+    cHoodTool.cs 1.1.2.5
+    pfSDSC.cs 1.1.2.1
+    SimPe pjHoodTool.csproj 1.1.2.4
+
 2008-10-11 15:58 Command line and GUI control of output folder and hood to extract
   pjHoodTool/
     cHoodTool.cs 1.1.2.4
@@ -15,7 +21,8 @@
     tHoodTool.cs 1.1.2.2
   
 2008-10-04 09:18 Keep up with Splash changes
-  SimPe pjHoodTool.csproj 1.1.2.2
+  pjHoodTool/
+    SimPe pjHoodTool.csproj 1.1.2.2
 
 2008-09-29 22:47 Sundry updates
   * New ICommandline definition
