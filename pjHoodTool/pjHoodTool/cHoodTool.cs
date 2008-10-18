@@ -54,7 +54,7 @@ namespace pjHoodTool
         delegate void Splash(string message);
         Splash splash;
 
-        void Rufio(string output, string hood)
+        void Rufio(string output, string hood, int group)
         {
             if (output.Length == 0)
                 output = Path.Combine(Path.Combine(SimPe.PathProvider.SimSavegameFolder, "Rufio"), "ExportedSims.txt");
@@ -64,6 +64,8 @@ namespace pjHoodTool
             string outPath = Path.GetDirectoryName(output);
             if (!Directory.Exists(outPath))
                 Directory.CreateDirectory(outPath);
+
+            if (group < 1) group = PathProvider.Global.CurrentGroup;
 
             StreamWriter w = new StreamWriter(output);
             w.AutoFlush = true;
@@ -100,7 +102,7 @@ namespace pjHoodTool
                     ""
                     );
 
-                ExpansionItem.NeighborhoodPaths paths = PathProvider.Global.GetNeighborhoodsForGroup();
+                ExpansionItem.NeighborhoodPaths paths = PathProvider.Global.GetNeighborhoodsForGroup(group);
                 foreach (ExpansionItem.NeighborhoodPath path in paths)
                 {
                     string sourcepath = path.Path;
@@ -391,7 +393,7 @@ namespace pjHoodTool
             {
                 SimPe.WaitingScreen.Wait();
                 splash = delegate(string message) { SimPe.WaitingScreen.UpdateMessage(message); };
-                Rufio(fbd.SelectedPath, hood);
+                Rufio(fbd.SelectedPath, hood, 0);
                 return new SimPe.Plugin.ToolResult(false, false);
             }
             finally
@@ -425,10 +427,13 @@ namespace pjHoodTool
 
             string outpath = "";
             string hood = "";
+            string group = "";
+            int groupno = 0;
             while (argv.Count > i)
             {
                 if (ArgParser.Parse(argv, i, "-out", ref outpath)) continue;
                 if (ArgParser.Parse(argv, i, "-hood", ref hood)) continue;
+                if (ArgParser.Parse(argv, i, "-group", ref group)) continue;
                 SimPe.Message.Show(Help()[0]);
                 return true;
             }
@@ -441,20 +446,30 @@ namespace pjHoodTool
 
             if (!Directory.Exists(PathProvider.Global.NeighborhoodFolder))
             {
-                SimPe.Message.Show("The Folder " + PathProvider.Global.NeighborhoodFolder + " was not found.\n" +
+                SimPe.Message.Show("The Folder " + PathProvider.Global.NeighborhoodFolder + " was not found.\r\n" +
                     "Please specify the correct SaveGame Folder in the Options Dialog.");
                 return false;
             }
 
+            if (group.Length > 0)
+            {
+                try { groupno = Convert.ToInt32(group); if (groupno < 1 || (groupno & PathProvider.Global.AvailableGroups) == 0) throw new FormatException(); }
+                catch (FormatException)
+                {
+                    SimPe.Message.Show("Invalid group.  Please specify a group from expansions.xreg.");
+                    return false;
+                }
+            }
+
             splash = delegate(string message) { SimPe.Splash.Screen.SetMessage(message); };
-            Rufio(outpath, hood);
+            Rufio(outpath, hood, groupno);
             splash("");
             return true;
         }
 
         public string[] Help()
         {
-            return new string[] { "-rufio -out {outpath} {-hood hood}", L.Get("pjCHoodHelp") };
+            return new string[] { "-rufio -out {outpath} {-hood hood} {-group group}", L.Get("pjCHoodHelp") };
         }
 
         #endregion
