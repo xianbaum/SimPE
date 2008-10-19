@@ -259,7 +259,7 @@ namespace pjHoodTool
                 ""
             ;
 
-            string university = "N;;;;;";
+            string university = "N;;;;;;";
             if (sdsc.University != null && sdsc.University.OnCampus == 0x1)
             {
                 university = "Y" +

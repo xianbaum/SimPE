@@ -1,3 +1,7 @@
+2008-10-19 10:22 Oops: missing separator in non-YA Uni extract
+  pjHoodTool/
+    cHoodTool.cs 1.1.2.7
+
 2008-10-18 11:55 Allow choosing between Sims2 and SimsStories hoods
   pjHoodTool/
     cHoodTool.cs 1.1.2.6
