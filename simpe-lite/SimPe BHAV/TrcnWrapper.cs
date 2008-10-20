@@ -105,11 +105,6 @@ namespace SimPe.PackedFiles.Wrapper
         public Trcn() : base() { }
 
 
-        /// <summary>
-        /// Returns the Constants described by these labels
-        /// </summary>
-        public Bcon BconResource { get { return (Bcon)SiblingResource(0x42434F4E); } }
-
         public void CleanUp()
         {
             while (items.Count > 0 && items[items.Count - 1].ConstName.Trim().Length == 0)
@@ -206,18 +201,12 @@ namespace SimPe.PackedFiles.Wrapper
 
         #endregion
 
+        public static readonly uint Trcntype = 0x5452434E;
         #region IFileWrapper Member
         /// <summary>
         /// Returns a list of File Type this Plugin can process
         /// </summary>
-        public uint[] AssignableTypes
-        {
-            get
-            {
-                uint[] types = { 0x5452434E }; //handles the TRCN File
-                return types;
-            }
-        }
+        public uint[] AssignableTypes { get { return new uint[] { Trcntype }; } }
 
         /// <summary>
         /// Returns the Signature that can be used to identify Files processable with this Plugin

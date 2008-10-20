@@ -1455,4 +1455,9 @@ Do you want to use this resource?
     <value>View</value>
     <comment>Indicates window is in View mode</comment>
   </data>
+  <data name="ml_overwriteduff" xml:space="preserve">
+    <value>The existing labels file cannot be read.
+Overwrite the existing file?</value>
+    <comment>Make Labels prompt</comment>
+  </data>
 </root>

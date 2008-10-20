@@ -534,51 +534,64 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			int minArgc = 0;
 			int minLocalC = 0;
-			TPRP tprp = wrapper.TPRPResource;
+            TPRP tprp = (TPRP)wrapper.SiblingResource(TPRP.TPRPtype); // find TPRP for this BHAV
 
 			wrapper.Package.BeginUpdate();
 
-			// find TPRP for this BHAV
-			if (tprp != null)
-			{
-				// if it exists ask if user wants to preserve content
-				DialogResult dr = MessageBox.Show(
+            if (tprp != null && tprp.TextOnly)
+            {
+                // if it exists but is unreadable, as if user wants to overwrite
+                DialogResult dr = MessageBox.Show(
+                    pjse.Localization.GetString("ml_overwriteduff")
+                    , btnTPRPMaker.Text
+                    , MessageBoxButtons.OKCancel
+                    , MessageBoxIcon.Warning);
+                if (dr != DialogResult.OK)
+                    return;
+                wrapper.Package.Remove(tprp.FileDescriptor);
+                tprp = null;
+            }
+            if (tprp != null)
+            {
+                // if it exists ask if user wants to preserve content
+                DialogResult dr = MessageBox.Show(
                     pjse.Localization.GetString("ml_keeplabels")
-					, btnTPRPMaker.Text
-					, MessageBoxButtons.YesNoCancel
-					, MessageBoxIcon.Warning);
-				if (dr == DialogResult.Cancel)
-					return;
+                    , btnTPRPMaker.Text
+                    , MessageBoxButtons.YesNoCancel
+                    , MessageBoxIcon.Warning);
+                if (dr == DialogResult.Cancel)
+                    return;
 
                 if (!tprp.Package.Equals(wrapper.Package))
                 {
                     // Clone the original into this package
-                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd
-                        = wrapper.Package.Add(0x54505250, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
-                    tprp = new TPRP();
-                    tprp.ProcessData(npfd, wrapper.Package);
-                    tprp.FileName = wrapper.FileName;
+                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd = tprp.FileDescriptor.Clone();
+                    TPRP ntprp = new TPRP();
+                    wrapper.Package.Add(npfd, true);
+                    ntprp.ProcessData(npfd, wrapper.Package);
                     if (dr == DialogResult.Yes)
-                        foreach (TPRPItem item in wrapper.TPRPResource) tprp.Add(item);
+                        foreach (TPRPItem item in tprp) ntprp.Add(item);
+                    tprp = ntprp;
                 }
 
                 if (dr == DialogResult.Yes)
-				{
-					minArgc = tprp.ParamCount;
-					minLocalC = tprp.LocalCount;
-				}
-				else
-					tprp.Clear();
-			}
-			else
-			{
-				// create a new TPRP file
-				SimPe.Interfaces.Files.IPackedFileDescriptor npfd
-					= wrapper.Package.Add(0x54505250, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
-				tprp = new TPRP();
-				tprp.ProcessData(npfd, wrapper.Package);
-				tprp.FileName = wrapper.FileName;
-			}
+                {
+                    minArgc = tprp.ParamCount;
+                    minLocalC = tprp.LocalCount;
+                }
+                else
+                    tprp.Clear();
+            }
+            else
+            {
+                // create a new TPRP file
+                SimPe.Interfaces.Files.IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
+                tprp = new TPRP();
+                npfd.Type = TPRP.TPRPtype;
+                wrapper.Package.Add(npfd);
+                tprp.ProcessData(npfd, wrapper.Package);
+            }
+            tprp.FileName = wrapper.FileName;
 
 			for(int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
 			{

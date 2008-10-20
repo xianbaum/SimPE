@@ -113,7 +113,7 @@ namespace pjse.BhavNameWizards
 
 			byte nv = instruction.NodeVersion;
 			Boolset b12 = o[12];
-			TPRP tprp = bhav.TPRPResource;
+            TPRP tprp = (TPRP)bhav.SiblingResource(TPRP.TPRPtype);
 
 
 			if (!b12[0]) // b12.Matches("xxxxxxx0")
@@ -211,7 +211,7 @@ namespace pjse.BhavNameWizards
 			string s = "";
 			for (int i = 0; thisArgc > 0 && i < 4; i++, thisArgc--)
 			{
-				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
+				string pn = (lng && tprp != null && !tprp.TextOnly && tprp.ParamCount > i) ? tprp[false, i] : "";
 				s += (i>0 ? ", " : "") +
 					((pn != null && pn != "") ? pn + "=" : "") +
 					dataOwner(lng, o[i*3], o[(i*3) + 1], o[(i*3) + 2]);
@@ -226,7 +226,7 @@ namespace pjse.BhavNameWizards
 			string s = "";
 			for (int i = 0; thisArgc > 0 && i < 8; i++, thisArgc--)
 			{
-				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
+				string pn = (lng && tprp != null && !tprp.TextOnly && tprp.ParamCount > i) ? tprp[false, i] : "";
 				s += (i>0 ? ", " : "") +
 					((pn != null && pn != "") ? pn + "=" : "") +
 					"0x" + SimPe.Helper.HexString(ToShort((z12 && i == 6) ? (byte)0 : o[(i*2)], o[(i*2) + 1]));
@@ -244,7 +244,7 @@ namespace pjse.BhavNameWizards
 			string s = "";
 			for (int i = 0; thisArgc > 0 && i < myArgc; i++, thisArgc--)
 			{
-				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
+				string pn = (lng && tprp != null && !tprp.TextOnly && tprp.ParamCount > i) ? tprp[false, i] : "";
 				s += (i>0 ? ", " : "") +
 					((pn != null && pn != "") ? pn + "=" : "") + dataOwner(9, (ushort)i);
 			}
@@ -266,7 +266,7 @@ namespace pjse.BhavNameWizards
 			string s = "";
 			for (int i = start; thisArgc > 0 && i < 8; i++, thisArgc--)
 			{
-				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
+				string pn = (lng && tprp != null && !tprp.TextOnly && tprp.ParamCount > i) ? tprp[false, i] : "";
 				s += (i>0 ? ", " : "") +
 					((pn != null && pn != "") ? pn + "=" : "") + "0x0000";
 			}
@@ -286,7 +286,7 @@ namespace pjse.BhavNameWizards
 			string s = "";
 			for (int i = start; thisArgc > 0; i++, thisArgc--)
 			{
-				string pn = (lng && tprp != null && tprp.ParamCount > i) ? tprp[false, i] : "";
+				string pn = (lng && tprp != null && !tprp.TextOnly && tprp.ParamCount > i) ? tprp[false, i] : "";
 				s += (i>0 ? ", " : "") +
 					((pn != null && pn != "") ? pn + "=" : "") + "????";
 			}

@@ -90,19 +90,6 @@ namespace SimPe.PackedFiles.Wrapper
         public Bcon() : base() { }
 
 
-		/// <summary>
-		/// Returns the Labels describing these constants
-		/// </summary>
-		public Trcn TrcnResource
-		{
-			get 
-			{
-                Trcn trcnres = (Trcn)SiblingResource(0x5452434E);
-                return (trcnres == null || trcnres.TextOnly) ? null : trcnres;
-            }
-		}
-
-
 		#region AbstractWrapper Member
 		public override bool CheckVersion(uint version) 
 		{
@@ -171,18 +158,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		#region IFileWrapper Member
-		/// <summary>
+        public static readonly uint Bcontype = 0x42434F4E;
+        #region IFileWrapper Member
+        /// <summary>
 		/// Returns a list of File Type this Plugin can process
 		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {0x42434F4E};	 // BCON
-				return types;
-			}
-		}
+		public uint[] AssignableTypes { get { return new uint[] { Bcontype }; } }
 
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin

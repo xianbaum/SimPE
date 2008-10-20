@@ -79,18 +79,6 @@ namespace SimPe.PackedFiles.Wrapper
         public Bhav() : base() { header = new BhavHeader(this); }
 
 
-		/// <summary>
-		/// Returns the Labels describing the Params and Locals for this BHAV
-		/// </summary>
-		public TPRP TPRPResource
-		{
-            get
-            {
-                TPRP tprpres = (TPRP)SiblingResource(0x54505250);
-                return (tprpres == null || tprpres.TextOnly) ? null : tprpres;
-            }
-		}
-
         private void SortSwap(int a, int b)
         {
             Instruction i = this[a];

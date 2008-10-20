@@ -855,8 +855,8 @@ namespace pjse
 
         private string readParamLocal(bool local, Bhav bhav, int sid, Detail detail)
         {
-            TPRP tprp = bhav.TPRPResource;
-            return (tprp != null && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] : ""
+            TPRP tprp = (TPRP)bhav.SiblingResource(TPRP.TPRPtype);
+            return (tprp != null && !tprp.TextOnly && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] : ""
                 /*(detail == Detail.ValueOnly ? ""
                 : "[No TPRP label for BHAV 0x" + SimPe.Helper.HexString((ushort)bhav.FileDescriptor.Instance)
                 + " " + (local ? "Local" : "Param") + " 0x" + SimPe.Helper.HexString((ushort)sid) + "]")*/
@@ -967,8 +967,8 @@ namespace pjse
             if (temp)
                 return ""; //"Filename: " + bcon.FileName;
 
-            Trcn trcn = bcon.TrcnResource;
-            string label = ((trcn != null && bid < trcn.Count) ? trcn[bid] : "").Trim();
+            Trcn trcn = (Trcn)bcon.SiblingResource(Trcn.Trcntype);
+            string label = ((trcn != null && !trcn.TextOnly && bid < trcn.Count) ? trcn[bid] : "").Trim();
             label = label.Length > 0 ? "\"" + label + "\" " : "";
 
             if (bid >= bcon.Count)

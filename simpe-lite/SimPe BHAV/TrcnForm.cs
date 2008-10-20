@@ -250,12 +250,12 @@ namespace SimPe.PackedFiles.UserInterface
 
 		}
 
-		private void updateLists()
+        private void updateLists()
 		{
             if (wrapper != null) wrapper.CleanUp();
 
 			index = -1;
-            bconres = wrapper == null ? null : wrapper.BconResource;
+            bconres = (Bcon)(wrapper == null ? null : wrapper.SiblingResource(Bcon.Bcontype));
 
 			this.lvTrcnItem.Items.Clear();
             int nItems = wrapper == null ? 0 : wrapper.Count;

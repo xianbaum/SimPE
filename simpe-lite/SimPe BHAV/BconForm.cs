@@ -144,7 +144,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			string cID = "0x" + i.ToString("X") + " (" + i + ")";
 			string cValue = "0x" + SimPe.Helper.HexString(wrapper[i]);
-            string cLabel = (trcnres != null && i < trcnres.Count) ? trcnres[i].ConstName : "";
+            string cLabel = (trcnres != null && !trcnres.TextOnly && i < trcnres.Count) ? trcnres[i].ConstName : "";
 			string[] v = { cID, cValue, cLabel };
 			return new ListViewItem(v);
 		}
@@ -152,7 +152,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private void updateLists()
 		{
 			index = -1;
-            trcnres = wrapper == null ? null : wrapper.TrcnResource;
+            trcnres = (Trcn)(wrapper == null ? null : wrapper.SiblingResource(Trcn.Trcntype));
 
 			this.lvConstants.Items.Clear();
 			int nItems = wrapper == null ? 0 : wrapper.Count;
@@ -363,12 +363,24 @@ namespace SimPe.PackedFiles.UserInterface
 		private void TRCNMaker()
 		{
 			int minArgc = 0;
-			Trcn trcn = wrapper.TrcnResource;
+            Trcn trcn = (Trcn)wrapper.SiblingResource(Trcn.Trcntype); // find Trcn for this Bcon
 
 			wrapper.Package.BeginUpdate();
 
-			// find Trcn for this Bcon
-			if (trcn != null)
+            if (trcn != null && trcn.TextOnly)
+            {
+                // if it exists but is unreadable, as if user wants to overwrite
+                DialogResult dr = MessageBox.Show(
+                    pjse.Localization.GetString("ml_overwriteduff")
+                    , btnTRCNMaker.Text
+                    , MessageBoxButtons.OKCancel
+                    , MessageBoxIcon.Warning);
+                if (dr != DialogResult.OK)
+                    return;
+                wrapper.Package.Remove(trcn.FileDescriptor);
+                trcn = null;
+            }
+            if (trcn != null)
 			{
 				// if it exists ask if user wants to preserve content
 				DialogResult dr = MessageBox.Show(
@@ -382,13 +394,13 @@ namespace SimPe.PackedFiles.UserInterface
                 if (!trcn.Package.Equals(wrapper.Package))
                 {
                     // Clone the original into this package
-                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd
-                        = wrapper.Package.Add(0x5452434E, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
-                    trcn = new Trcn();
-                    trcn.ProcessData(npfd, wrapper.Package);
-                    trcn.FileName = wrapper.FileName;
+                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd = trcn.FileDescriptor.Clone();
+                    Trcn ntrcn = new Trcn();
+                    wrapper.Package.Add(npfd);
+                    ntrcn.ProcessData(npfd, wrapper.Package);
                     if (dr == DialogResult.Yes)
-                        foreach (TrcnItem item in wrapper.TrcnResource) trcn.Add(item);
+                        foreach (TrcnItem item in trcn) ntrcn.Add(item);
+                    trcn = ntrcn;
                 }
 
                 if (dr == DialogResult.Yes)
@@ -403,8 +415,8 @@ namespace SimPe.PackedFiles.UserInterface
 					= wrapper.Package.Add(0x5452434E, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
 				trcn = new Trcn();
 				trcn.ProcessData(npfd, wrapper.Package);
-				trcn.FileName = wrapper.FileName;
 			}
+            trcn.FileName = wrapper.FileName;
 
 			for(int arg = minArgc; arg < wrapper.Count; arg++)
 			{
