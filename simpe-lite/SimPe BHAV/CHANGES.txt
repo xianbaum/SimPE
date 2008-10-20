@@ -7,8 +7,9 @@
     BhavForm.cs 1.89.4.12
     BhavOperandWizBhav.cs 1.10.6.2
     BhavWiz.cs 1.56.6.4
+    BhavWizBhav.cs 1.22.6.2
     BhavWrapper.cs 1.50.4.3
-    TPRPWrapper.cs 1.7.6.1
+    TPRPWrapper.cs 1.7.6.2
     TrcnForm.cs 1.22.2.4
     TrcnWrapper.cs 1.14.2.5
 
