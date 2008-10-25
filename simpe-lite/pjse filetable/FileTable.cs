@@ -44,22 +44,30 @@ namespace pjse
 		public FileTable()
 		{
 			SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
-		}
+        }
 
         private void FileIndex_FILoad(object sender, System.EventArgs e) { UIRefresh(); }
 
+        void wm(string message)
+        {
+            SimPe.Wait.Message = message;
+            SimPe.Wait.Progress++;
+            if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage(message);
+        }
+
         public void UIRefresh()
         {
-            SimPe.Wait.Start();
-            bool wasRunning = SimPe.WaitingScreen.Running;
-            SimPe.WaitingScreen.Wait();
+            SimPe.Wait.SubStart();
+            //bool wasRunning = SimPe.WaitingScreen.Running;
+            //SimPe.WaitingScreen.Wait();
+
             try { this.Refresh(true); }
             finally
             {
-                if (!wasRunning) SimPe.WaitingScreen.Stop();
-                else SimPe.WaitingScreen.UpdateMessage("");
+                SimPe.Wait.SubStop();
+                //if (!wasRunning) SimPe.WaitingScreen.Stop();
+                //else SimPe.WaitingScreen.UpdateMessage("");
             }
-            SimPe.Wait.Stop();
         }
 
         private ArrayList fixedPackages = new ArrayList();
@@ -181,8 +189,7 @@ namespace pjse
 
         private void Add(string v, bool recurse, bool isMaxis, bool isFixed)
         {
-            if (SimPe.WaitingScreen.Running) SimPe.WaitingScreen.UpdateMessage("Loading " + System.IO.Path.GetFileName(v).Replace(".package", ""));
-            else if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage("Loading " + System.IO.Path.GetFileName(v).Replace(".package", ""));
+            wm("Loading " + System.IO.Path.GetFileName(v).Replace(".package", ""));
             System.Windows.Forms.Application.DoEvents();
             if (Directory.Exists(v))
             {
@@ -204,8 +211,12 @@ namespace pjse
 			if (package == null) return;
 			if (pfByPackage[package] != null) return;
 
+            if (SimPe.Wait.Running) { SimPe.Wait.Progress = 0; SimPe.Wait.MaxProgress = package.Index.Length; }
             foreach (IPackedFileDescriptor i in package.Index)
+            {
                 Add(new Entry(package, i, isMaxis, isFixed));
+                if (SimPe.Wait.Running) SimPe.Wait.Progress++;
+            }
 
             if (isMaxis)
                 maxisPackages.Add(package);

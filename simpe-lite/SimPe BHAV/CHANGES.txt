@@ -1,3 +1,9 @@
+25 October 2008 09:25 Try to get CRES processing somewhat more stable.
+  * This change gets rid of an apparent UI lock in .Net2 code by not trying to instantiate a new WaitingScreen
+  * window whilst trying to refresh the content of a ListBox (a potential race condition, I guess).
+  pjse filetable\
+    FileTable.cs 1.31.4.13
+
 20 October 2008 17:45 Remove cross-wrapper dependencies
   pjse Localisation\
     Localization.resx 1.17.4.9
