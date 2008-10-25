@@ -270,7 +270,6 @@ namespace pjse.BhavOperandWizards
 		#endregion
 
 		#region Form validation
-        private int bitsInValue = 16;
         private bool tbValue_IsValid(TextBox tb)
 		{
 			try
@@ -299,10 +298,10 @@ namespace pjse.BhavOperandWizards
 
 		private ushort tbValueConverter(TextBox sender)
 		{
-			if      (dataOwner == 0x1a) return pjse.BhavWiz.StringtoExpandBCON(((TextBox)sender).Text, false);
-			else if (dataOwner == 0x2f) return pjse.BhavWiz.StringtoExpandBCON(((TextBox)sender).Text, true);
-			else if (isDecimal) return (ushort)Convert.ToInt16(((TextBox)sender).Text, 10);
-			else                return Convert.ToUInt16(((TextBox)sender).Text, 16);
+            if      (dataOwner == 0x1a) return pjse.BhavWiz.StringtoExpandBCON(sender.Text, false);
+            else if (dataOwner == 0x2f) return pjse.BhavWiz.StringtoExpandBCON(sender.Text, true);
+            else if (isDecimal)         return (ushort)Convert.ToInt16(sender.Text, 10);
+            else                        return Convert.ToUInt16(sender.Text, 16);
 		}
 
 		#endregion
@@ -451,23 +450,23 @@ namespace pjse.BhavOperandWizards
                         pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
                     }
                 }
-                else if (useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
+                else if (inst != null && useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
                 {
                     pickerNames = inst.GetAttrNames(Scope.Private);
                 }
-                else if (useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
+                else if (inst != null && useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
                 {
                     pickerNames = inst.GetAttrNames(Scope.SemiGlobal);
                 }
-                else if (dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
+                else if (inst != null && dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
                 {
                     pickerNames = inst.GetTPRPnames(false);
                 }
-                else if (dataOwner == 0x19) // Local
+                else if (inst != null && dataOwner == 0x19) // Local
                 {
                     pickerNames = inst.GetTPRPnames(true);
                 }
-                else if (useAttrPicker && (dataOwner >= 0x29 && dataOwner <= 0x2F))
+                else if (inst != null && useAttrPicker && (dataOwner >= 0x29 && dataOwner <= 0x2F))
                 {
                     pickerNames = inst.GetArrayNames();
                 }
@@ -524,6 +523,42 @@ namespace pjse.BhavOperandWizards
                     );
         }
 
+
+        public BhavWiz Instruction
+        {
+            get { return this.inst; }
+            set
+            {
+                if (this.inst != value)
+                {
+                    this.inst = value;
+                    SetDataOwner();
+                }
+            }
+        }
+
+
+        private int bitsInValue = 16;
+        public bool ValueIsByte
+        {
+            get { return bitsInValue == 8; }
+            set
+            {
+                if ((bitsInValue == 8) != value)
+                {
+                    bitsInValue = value ? 8 : 16;
+                    setTextBoxLength();
+                    //setConstLabel();
+                    internalchg = true;
+                    if (tbValue != null)
+                    {
+                        tbValue.Text = tbValueConverter(instance);
+                    }
+                    internalchg = false;
+                }
+            }
+        }
+
 		private void SetValue(ushort i)
 		{
 			if (instance != i)
@@ -538,7 +573,25 @@ namespace pjse.BhavOperandWizards
 		private BhavWiz inst;
 
         private bool use0xPrefix = true;
-        public bool Use0xPrefix { set { } }
+        public bool Use0xPrefix
+        {
+            get { return use0xPrefix; }
+            set
+            {
+                if (use0xPrefix != value)
+                {
+                    use0xPrefix = value;
+                    setTextBoxLength();
+                    //setConstLabel();
+                    internalchg = true;
+                    if (tbValue != null)
+                    {
+                        tbValue.Text = tbValueConverter(instance);
+                    }
+                    internalchg = false;
+                }
+            }
+        }
 
         private bool isDecimal = false;
 		public bool Decimal
@@ -551,7 +604,7 @@ namespace pjse.BhavOperandWizards
 				{
 					isDecimal = value;
                     setTextBoxLength();
-                    setConstLabel();
+                    //setConstLabel();
                     internalchg = true;
                     if (tbValue != null)
                     {
@@ -598,6 +651,7 @@ namespace pjse.BhavOperandWizards
 		private IDataOwner flagsFor = null;
 		public IDataOwner FlagsFor
 		{
+            get { return flagsFor; }
 			set
 			{
                 if (flagsFor != value)

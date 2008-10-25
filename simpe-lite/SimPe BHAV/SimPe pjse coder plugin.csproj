@@ -261,6 +261,12 @@
     </Compile>
     <Compile Include="GUIDIndex.cs" />
     <Compile Include="HelpHelper.cs" />
+    <Compile Include="LabelledDataOwner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LabelledDataOwner.Designer.cs">
+      <DependentUpon>LabelledDataOwner.cs</DependentUpon>
+    </Compile>
     <Compile Include="ObjfForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -420,6 +426,10 @@
     <EmbeddedResource Include="GUIDChooser.resx">
       <DependentUpon>GUIDChooser.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelledDataOwner.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LabelledDataOwner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ObjfForm.resx">
       <DependentUpon>ObjfForm.cs</DependentUpon>

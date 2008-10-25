@@ -34,16 +34,24 @@ namespace pjse
 	/// </summary>
 	public class FileTable
 	{
-		public static FileTable GFT = null;
-		static FileTable()
-		{
-			GFT = new FileTable();
-			if (FileTableSettings.FTS.LoadAtStartup) GFT.Refresh();
-		}
+        public static FileTable gft = null;
+        public static FileTable GFT
+        {
+            get
+            {
+                if (gft == null)
+                {
+                    if (SimPe.FileTable.FileIndex != null) gft = new FileTable();
+                    if (gft != null && FileTableSettings.FTS.LoadAtStartup) gft.Refresh();
+                }
+                return gft;
+            }
+        }
 
-		public FileTable()
+        public FileTable()
 		{
-			SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
+            if (SimPe.FileTable.FileIndex != null)
+                SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
         }
 
         private void FileIndex_FILoad(object sender, System.EventArgs e) { UIRefresh(); }

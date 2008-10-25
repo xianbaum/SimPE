@@ -20,6 +20,7 @@
 using System;
 using System.Drawing;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 using SimPe.PackedFiles.Wrapper;
@@ -37,44 +38,34 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
         private Label label1;
         private ComboBox cbScope;
         private Label label2;
-        private CheckBox tfPrivate;
-        private CheckBox tfGlobal;
-        private CheckBox tfSemiGlobal;
+        private CheckBox ckbPrivate;
+        private CheckBox ckbGlobal;
+        private CheckBox ckbSemiGlobal;
         private Label label3;
         private ComboBox cbRTBNType;
         private Label label4;
-        private CheckBox tfParams;
-        private CheckBox tfArgs;
-        private Panel pnArgs;
-        private CheckBox cbAttrPicker;
-        private CheckBox cbDecimal;
-        private ComboBox cbPicker1;
-        private TextBox tbVal1;
-        private ComboBox cbDataOwner1;
-        private Label label5;
-        private Label label7;
-        private Label label6;
-        private ComboBox cbPicker3;
-        private ComboBox cbPicker2;
-        private TextBox tbVal3;
-        private TextBox tbVal2;
-        private ComboBox cbDataOwner3;
-        private ComboBox cbDataOwner2;
         private Label label8;
         private TextBox tbTree;
         private Label lbTreeName;
         private Button btnTreeName;
-        private Label lbConst3;
-        private Label lbConst2;
-        private Label lbConst1;
+        private FlowLayoutPanel flpArgs;
+        private LabelledDataOwner ldocArg1;
+        private LabelledDataOwner ldocArg2;
+        private LabelledDataOwner ldocArg3;
+        private FlowLayoutPanel flpTree;
+        private FlowLayoutPanel flowLayoutPanel1;
+        private FlowLayoutPanel flpOptions;
+        private CheckBox ckbLargeTree;
+        private CheckBox ckbArguments;
+        private CheckBox ckbParameters;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		#endregion
 
-		public UI()
-		{
+        public UI()
+        {
             //
             // Required for Windows Form Designer support
             //
@@ -82,6 +73,12 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
             this.cbRTBNType.Items.Clear();
             this.cbRTBNType.Items.AddRange(BhavWiz.readStr(GS.BhavStr.RTBNType).ToArray());
+
+            lckb = new List<CheckBox>(new CheckBox[] {
+                this.ckbArguments,  // options bit 0
+                this.ckbParameters, // options bit 1
+                this.ckbLargeTree,  // options bit 2
+            });
         }
 
         /// <summary>
@@ -103,10 +100,9 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
 
         private Instruction inst = null;
-		private DataOwnerControl doid1 = null;
-        private DataOwnerControl doid2 = null;
-        private DataOwnerControl doid3 = null;
         private bool internalchg = false;
+        private DataOwnerControl tree = null;
+        private List<CheckBox> lckb = null;
 
         private Scope Scope
         {
@@ -144,11 +140,10 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             }
         }
 
-        private bool hex8_IsValid(object sender)
+        void tree_DataOwnerControlChanged(object sender, EventArgs e)
         {
-            try { Convert.ToByte(((TextBox)sender).Text, 16); }
-            catch (Exception) { return false; }
-            return true;
+            this.lbTreeName.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree,
+                (ushort)(tree.Value - 1), -1, pjse.Detail.ErrorNames);
         }
 
 
@@ -164,29 +159,38 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
             internalchg = true;
 
+            Boolset options = ops1[0x02];
+
             this.cbScope.SelectedIndex = 0; // Private
-            if ((ops1[0x02] & 0x01) != 0) this.cbScope.SelectedIndex = 2; // Global
-            else if ((ops1[0x02] & 0x02) != 0) this.cbScope.SelectedIndex = 1; // SemiGlobal
+            if      (options[0]) this.cbScope.SelectedIndex = 2; // Global
+            else if (options[1]) this.cbScope.SelectedIndex = 1; // SemiGlobal
 
-            this.tfGlobal.Checked = (ops1[0x02] & 0x04) == 0;
-            this.tfSemiGlobal.Checked = (ops1[0x02] & 0x08) == 0;
-
-            this.pnArgs.Enabled = this.tfArgs.Checked = (ops1[0x02] & 0x10) != 0;
-            this.tfParams.Checked = (ops1[0x02] & 0x20) != 0;
-
-            this.tbTree.Text = "0x" + SimPe.Helper.HexString(ops1[0x04]);
-            this.lbTreeName.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)(ops1[0x04] - 1), -1, pjse.Detail.ErrorNames);
+            this.ckbSemiGlobal.Checked = !options[3];
+            this.ckbGlobal.Checked     = !options[2];
 
             this.cbRTBNType.SelectedIndex = ops1[0x05] < this.cbRTBNType.Items.Count ? ops1[0x05] : -1;
 
-            doid1 = new DataOwnerControl(inst, this.cbDataOwner1, this.cbPicker1, this.tbVal1, this.cbDecimal, this.cbAttrPicker, this.lbConst1,
-                ops1[0x06], BhavWiz.ToShort(ops1[0x07], ops2[0x00]));
-            doid2 = new DataOwnerControl(inst, this.cbDataOwner2, this.cbPicker2, this.tbVal2, this.cbDecimal, this.cbAttrPicker, this.lbConst2,
-                ops2[0x01], BhavWiz.ToShort(ops2[0x02], ops2[0x03]));
-            doid3 = new DataOwnerControl(inst, this.cbDataOwner3, this.cbPicker3, this.tbVal3, this.cbDecimal, this.cbAttrPicker, this.lbConst3,
-                ops2[0x04], BhavWiz.ToShort(ops2[0x05], ops2[0x06]));
+            this.ckbArguments.Checked  =  options[4] && !options[5] && !options[6];
+            this.ckbParameters.Checked = !options[4] &&  options[5] && !options[6];
+            this.ckbLargeTree.Checked  = !options[4] && !options[5] &&  options[6];
+
+            if (tree != null)
+                tree.DataOwnerControlChanged -= new EventHandler(tree_DataOwnerControlChanged);
+            if (ckbLargeTree.Checked)
+                tree = new DataOwnerControl(null, null, null, this.tbTree, null, null, null, 7, BhavWiz.ToShort(ops1[0x04], ops1[0x07]));
+            else
+                tree = new DataOwnerControl(null, null, null, this.tbTree, null, null, null, 7, ops1[0x04]);
+            tree.DataOwnerControlChanged += new EventHandler(tree_DataOwnerControlChanged);
+            tree_DataOwnerControlChanged(null, null);
+
+            this.flpArgs.Enabled = this.ckbArguments.Checked;
+            ldocArg1.DataOwner = ops1[0x06]; ldocArg1.Value = BhavWiz.ToShort(ops1[0x07], ops2[0x00]);
+            ldocArg2.DataOwner = ops2[0x01]; ldocArg2.Value = BhavWiz.ToShort(ops2[0x02], ops2[0x03]);
+            ldocArg3.DataOwner = ops2[0x04]; ldocArg3.Value = BhavWiz.ToShort(ops2[0x05], ops2[0x06]);
+            ldocArg1.Instruction = ldocArg2.Instruction = ldocArg3.Instruction = inst;
 
             internalchg = false;
+
         }
 
 		public Instruction Write(Instruction inst)
@@ -196,28 +200,35 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
 
-                ops1[0x02] &= 0xc0;
+                Boolset options = ops1[0x02];
                 int scope = this.cbScope.SelectedIndex;
-                if (scope == 2) ops1[0x02] |= 0x01;
-                if (scope == 1) ops1[0x02] |= 0x02;
-                if (!this.tfGlobal.Checked) ops1[0x02] |= 0x04;
-                if (!this.tfSemiGlobal.Checked) ops1[0x02] |= 0x08;
-                if (this.tfArgs.Checked) ops1[0x02] |= 0x10;
-                if (this.tfParams.Checked) ops1[0x02] |= 0x20;
+                options[0] = (scope == 2);
+                options[1] = (scope == 1);
+                options[2] = !this.ckbGlobal.Checked;
+                options[3] = !this.ckbSemiGlobal.Checked;
+                options[4] = this.ckbArguments.Checked;
+                options[5] = this.ckbParameters.Checked;
+                options[6] = this.ckbLargeTree.Checked;
+                ops1[0x02] = options;
 
-                ops1[0x04] = Convert.ToByte(this.tbTree.Text, 16);
+                ops1[0x04] = (byte)(tree.Value & 0xFF);
                 if (this.cbRTBNType.SelectedIndex >= 0)
                     ops1[0x05] = (byte)this.cbRTBNType.SelectedIndex;
 
-                ops1[0x06] = doid1.DataOwner;
-                byte[] lohi = { 0, 0 };
-                BhavWiz.FromShort(ref lohi, 0, doid1.Value);
-                ops1[0x07] = lohi[0];
-                ops2[0x00] = lohi[1];
-                ops2[0x01] = doid2.DataOwner;
-                BhavWiz.FromShort(ref ops2, 2, doid2.Value);
-                ops2[0x04] = doid3.DataOwner;
-                BhavWiz.FromShort(ref ops2, 5, doid3.Value);
+                if (this.ckbArguments.Checked)
+                {
+                    ops1[0x06] = ldocArg1.DataOwner;
+                    byte[] lohi = { 0, 0 };
+                    BhavWiz.FromShort(ref lohi, 0, ldocArg1.Value);
+                    ops1[0x07] = lohi[0];
+                    ops2[0x00] = lohi[1];
+                    ops2[0x01] = ldocArg2.DataOwner;
+                    BhavWiz.FromShort(ref ops2, 2, ldocArg2.Value);
+                    ops2[0x04] = ldocArg3.DataOwner;
+                    BhavWiz.FromShort(ref ops2, 5, ldocArg3.Value);
+                }
+                else if (ckbLargeTree.Checked)
+                    ops1[0x07] = (byte)(tree.Value >> 8 & 0xFF);
             }
 			return inst;
 		}
@@ -233,282 +244,240 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             this.pnWiz0x001c = new System.Windows.Forms.Panel();
-            this.btnTreeName = new System.Windows.Forms.Button();
-            this.tbTree = new System.Windows.Forms.TextBox();
-            this.pnArgs = new System.Windows.Forms.Panel();
-            this.lbConst3 = new System.Windows.Forms.Label();
-            this.lbConst2 = new System.Windows.Forms.Label();
-            this.lbConst1 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.cbPicker3 = new System.Windows.Forms.ComboBox();
-            this.cbAttrPicker = new System.Windows.Forms.CheckBox();
-            this.cbPicker2 = new System.Windows.Forms.ComboBox();
-            this.tbVal3 = new System.Windows.Forms.TextBox();
-            this.cbDecimal = new System.Windows.Forms.CheckBox();
-            this.tbVal2 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner3 = new System.Windows.Forms.ComboBox();
-            this.cbPicker1 = new System.Windows.Forms.ComboBox();
-            this.cbDataOwner2 = new System.Windows.Forms.ComboBox();
-            this.tbVal1 = new System.Windows.Forms.TextBox();
-            this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
-            this.tfGlobal = new System.Windows.Forms.CheckBox();
-            this.tfParams = new System.Windows.Forms.CheckBox();
-            this.tfArgs = new System.Windows.Forms.CheckBox();
-            this.tfSemiGlobal = new System.Windows.Forms.CheckBox();
-            this.tfPrivate = new System.Windows.Forms.CheckBox();
-            this.cbRTBNType = new System.Windows.Forms.ComboBox();
-            this.cbScope = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.lbTreeName = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flpTree = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
+            this.cbScope = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tbTree = new System.Windows.Forms.TextBox();
+            this.btnTreeName = new System.Windows.Forms.Button();
+            this.lbTreeName = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.ckbPrivate = new System.Windows.Forms.CheckBox();
+            this.ckbSemiGlobal = new System.Windows.Forms.CheckBox();
+            this.ckbGlobal = new System.Windows.Forms.CheckBox();
+            this.flpOptions = new System.Windows.Forms.FlowLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.cbRTBNType = new System.Windows.Forms.ComboBox();
+            this.ckbLargeTree = new System.Windows.Forms.CheckBox();
+            this.ckbArguments = new System.Windows.Forms.CheckBox();
+            this.ckbParameters = new System.Windows.Forms.CheckBox();
+            this.flpArgs = new System.Windows.Forms.FlowLayoutPanel();
+            this.ldocArg1 = new pjse.LabelledDataOwner();
+            this.ldocArg2 = new pjse.LabelledDataOwner();
+            this.ldocArg3 = new pjse.LabelledDataOwner();
             this.pnWiz0x001c.SuspendLayout();
-            this.pnArgs.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
+            this.flpTree.SuspendLayout();
+            this.flpOptions.SuspendLayout();
+            this.flpArgs.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnWiz0x001c
             // 
-            this.pnWiz0x001c.Controls.Add(this.btnTreeName);
-            this.pnWiz0x001c.Controls.Add(this.tbTree);
-            this.pnWiz0x001c.Controls.Add(this.pnArgs);
-            this.pnWiz0x001c.Controls.Add(this.tfGlobal);
-            this.pnWiz0x001c.Controls.Add(this.tfParams);
-            this.pnWiz0x001c.Controls.Add(this.tfArgs);
-            this.pnWiz0x001c.Controls.Add(this.tfSemiGlobal);
-            this.pnWiz0x001c.Controls.Add(this.tfPrivate);
-            this.pnWiz0x001c.Controls.Add(this.cbRTBNType);
-            this.pnWiz0x001c.Controls.Add(this.cbScope);
-            this.pnWiz0x001c.Controls.Add(this.label3);
-            this.pnWiz0x001c.Controls.Add(this.lbTreeName);
-            this.pnWiz0x001c.Controls.Add(this.label2);
-            this.pnWiz0x001c.Controls.Add(this.label4);
-            this.pnWiz0x001c.Controls.Add(this.label8);
-            this.pnWiz0x001c.Controls.Add(this.label1);
             resources.ApplyResources(this.pnWiz0x001c, "pnWiz0x001c");
+            this.pnWiz0x001c.Controls.Add(this.flowLayoutPanel1);
             this.pnWiz0x001c.Name = "pnWiz0x001c";
             // 
-            // btnTreeName
+            // flowLayoutPanel1
             // 
-            resources.ApplyResources(this.btnTreeName, "btnTreeName");
-            this.btnTreeName.Name = "btnTreeName";
-            this.btnTreeName.Click += new System.EventHandler(this.btnTreeName_Click);
+            resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+            this.flowLayoutPanel1.Controls.Add(this.flpTree);
+            this.flowLayoutPanel1.Controls.Add(this.flpOptions);
+            this.flowLayoutPanel1.Controls.Add(this.flpArgs);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
-            // tbTree
+            // flpTree
             // 
-            resources.ApplyResources(this.tbTree, "tbTree");
-            this.tbTree.Name = "tbTree";
-            this.tbTree.Validated += new System.EventHandler(this.hex8_Validated);
-            this.tbTree.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            this.tbTree.TextChanged += new System.EventHandler(this.hex8_TextChanged);
+            resources.ApplyResources(this.flpTree, "flpTree");
+            this.flpTree.Controls.Add(this.label1);
+            this.flpTree.Controls.Add(this.cbScope);
+            this.flpTree.Controls.Add(this.label8);
+            this.flpTree.Controls.Add(this.label2);
+            this.flpTree.Controls.Add(this.tbTree);
+            this.flpTree.Controls.Add(this.btnTreeName);
+            this.flpTree.Controls.Add(this.lbTreeName);
+            this.flpTree.Controls.Add(this.label3);
+            this.flpTree.Controls.Add(this.ckbPrivate);
+            this.flpTree.Controls.Add(this.ckbSemiGlobal);
+            this.flpTree.Controls.Add(this.ckbGlobal);
+            this.flpTree.Name = "flpTree";
             // 
-            // pnArgs
+            // label1
             // 
-            this.pnArgs.Controls.Add(this.lbConst3);
-            this.pnArgs.Controls.Add(this.lbConst2);
-            this.pnArgs.Controls.Add(this.lbConst1);
-            this.pnArgs.Controls.Add(this.label7);
-            this.pnArgs.Controls.Add(this.label6);
-            this.pnArgs.Controls.Add(this.label5);
-            this.pnArgs.Controls.Add(this.cbPicker3);
-            this.pnArgs.Controls.Add(this.cbAttrPicker);
-            this.pnArgs.Controls.Add(this.cbPicker2);
-            this.pnArgs.Controls.Add(this.tbVal3);
-            this.pnArgs.Controls.Add(this.cbDecimal);
-            this.pnArgs.Controls.Add(this.tbVal2);
-            this.pnArgs.Controls.Add(this.cbDataOwner3);
-            this.pnArgs.Controls.Add(this.cbPicker1);
-            this.pnArgs.Controls.Add(this.cbDataOwner2);
-            this.pnArgs.Controls.Add(this.tbVal1);
-            this.pnArgs.Controls.Add(this.cbDataOwner1);
-            resources.ApplyResources(this.pnArgs, "pnArgs");
-            this.pnArgs.Name = "pnArgs";
-            // 
-            // lbConst3
-            // 
-            resources.ApplyResources(this.lbConst3, "lbConst3");
-            this.lbConst3.Name = "lbConst3";
-            // 
-            // lbConst2
-            // 
-            resources.ApplyResources(this.lbConst2, "lbConst2");
-            this.lbConst2.Name = "lbConst2";
-            // 
-            // lbConst1
-            // 
-            resources.ApplyResources(this.lbConst1, "lbConst1");
-            this.lbConst1.Name = "lbConst1";
-            // 
-            // label7
-            // 
-            resources.ApplyResources(this.label7, "label7");
-            this.label7.Name = "label7";
-            // 
-            // label6
-            // 
-            resources.ApplyResources(this.label6, "label6");
-            this.label6.Name = "label6";
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.Name = "label5";
-            // 
-            // cbPicker3
-            // 
-            this.cbPicker3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker3.DropDownWidth = 384;
-            resources.ApplyResources(this.cbPicker3, "cbPicker3");
-            this.cbPicker3.Name = "cbPicker3";
-            // 
-            // cbAttrPicker
-            // 
-            resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
-            this.cbAttrPicker.Name = "cbAttrPicker";
-            // 
-            // cbPicker2
-            // 
-            this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker2.DropDownWidth = 384;
-            resources.ApplyResources(this.cbPicker2, "cbPicker2");
-            this.cbPicker2.Name = "cbPicker2";
-            // 
-            // tbVal3
-            // 
-            resources.ApplyResources(this.tbVal3, "tbVal3");
-            this.tbVal3.Name = "tbVal3";
-            // 
-            // cbDecimal
-            // 
-            resources.ApplyResources(this.cbDecimal, "cbDecimal");
-            this.cbDecimal.Name = "cbDecimal";
-            // 
-            // tbVal2
-            // 
-            resources.ApplyResources(this.tbVal2, "tbVal2");
-            this.tbVal2.Name = "tbVal2";
-            // 
-            // cbDataOwner3
-            // 
-            this.cbDataOwner3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner3.DropDownWidth = 384;
-            resources.ApplyResources(this.cbDataOwner3, "cbDataOwner3");
-            this.cbDataOwner3.Name = "cbDataOwner3";
-            // 
-            // cbPicker1
-            // 
-            this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPicker1.DropDownWidth = 384;
-            resources.ApplyResources(this.cbPicker1, "cbPicker1");
-            this.cbPicker1.Name = "cbPicker1";
-            // 
-            // cbDataOwner2
-            // 
-            this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner2.DropDownWidth = 384;
-            resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
-            this.cbDataOwner2.Name = "cbDataOwner2";
-            // 
-            // tbVal1
-            // 
-            resources.ApplyResources(this.tbVal1, "tbVal1");
-            this.tbVal1.Name = "tbVal1";
-            // 
-            // cbDataOwner1
-            // 
-            this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDataOwner1.DropDownWidth = 384;
-            resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
-            this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
-            // tfGlobal
-            // 
-            resources.ApplyResources(this.tfGlobal, "tfGlobal");
-            this.tfGlobal.Name = "tfGlobal";
-            this.tfGlobal.UseVisualStyleBackColor = true;
-            // 
-            // tfParams
-            // 
-            resources.ApplyResources(this.tfParams, "tfParams");
-            this.tfParams.Name = "tfParams";
-            this.tfParams.UseVisualStyleBackColor = true;
-            // 
-            // tfArgs
-            // 
-            resources.ApplyResources(this.tfArgs, "tfArgs");
-            this.tfArgs.Name = "tfArgs";
-            this.tfArgs.UseVisualStyleBackColor = true;
-            this.tfArgs.CheckedChanged += new System.EventHandler(this.tfArgs_CheckedChanged);
-            // 
-            // tfSemiGlobal
-            // 
-            resources.ApplyResources(this.tfSemiGlobal, "tfSemiGlobal");
-            this.tfSemiGlobal.Name = "tfSemiGlobal";
-            this.tfSemiGlobal.UseVisualStyleBackColor = true;
-            // 
-            // tfPrivate
-            // 
-            resources.ApplyResources(this.tfPrivate, "tfPrivate");
-            this.tfPrivate.Checked = true;
-            this.tfPrivate.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tfPrivate.Name = "tfPrivate";
-            this.tfPrivate.UseVisualStyleBackColor = true;
-            // 
-            // cbRTBNType
-            // 
-            this.cbRTBNType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbRTBNType.FormattingEnabled = true;
-            this.cbRTBNType.Items.AddRange(new object[] {
-            resources.GetString("cbRTBNType.Items"),
-            resources.GetString("cbRTBNType.Items1"),
-            resources.GetString("cbRTBNType.Items2")});
-            resources.ApplyResources(this.cbRTBNType, "cbRTBNType");
-            this.cbRTBNType.Name = "cbRTBNType";
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // cbScope
             // 
+            resources.ApplyResources(this.cbScope, "cbScope");
             this.cbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbScope.FormattingEnabled = true;
             this.cbScope.Items.AddRange(new object[] {
             resources.GetString("cbScope.Items"),
             resources.GetString("cbScope.Items1"),
             resources.GetString("cbScope.Items2")});
-            resources.ApplyResources(this.cbScope, "cbScope");
             this.cbScope.Name = "cbScope";
             this.cbScope.SelectedIndexChanged += new System.EventHandler(this.cbScope_SelectedIndexChanged);
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // lbTreeName
-            // 
-            resources.ApplyResources(this.lbTreeName, "lbTreeName");
-            this.lbTreeName.Name = "lbTreeName";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // label4
-            // 
-            resources.ApplyResources(this.label4, "label4");
-            this.label4.Name = "label4";
             // 
             // label8
             // 
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
             // 
-            // label1
+            // label2
             // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // tbTree
+            // 
+            resources.ApplyResources(this.tbTree, "tbTree");
+            this.tbTree.Name = "tbTree";
+            // 
+            // btnTreeName
+            // 
+            resources.ApplyResources(this.btnTreeName, "btnTreeName");
+            this.flpTree.SetFlowBreak(this.btnTreeName, true);
+            this.btnTreeName.Name = "btnTreeName";
+            this.btnTreeName.Click += new System.EventHandler(this.btnTreeName_Click);
+            // 
+            // lbTreeName
+            // 
+            resources.ApplyResources(this.lbTreeName, "lbTreeName");
+            this.flpTree.SetFlowBreak(this.lbTreeName, true);
+            this.lbTreeName.Name = "lbTreeName";
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
+            // 
+            // ckbPrivate
+            // 
+            resources.ApplyResources(this.ckbPrivate, "ckbPrivate");
+            this.ckbPrivate.Checked = true;
+            this.ckbPrivate.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.ckbPrivate.Name = "ckbPrivate";
+            this.ckbPrivate.UseVisualStyleBackColor = true;
+            // 
+            // ckbSemiGlobal
+            // 
+            resources.ApplyResources(this.ckbSemiGlobal, "ckbSemiGlobal");
+            this.ckbSemiGlobal.Name = "ckbSemiGlobal";
+            this.ckbSemiGlobal.UseVisualStyleBackColor = true;
+            // 
+            // ckbGlobal
+            // 
+            resources.ApplyResources(this.ckbGlobal, "ckbGlobal");
+            this.ckbGlobal.Name = "ckbGlobal";
+            this.ckbGlobal.UseVisualStyleBackColor = true;
+            // 
+            // flpOptions
+            // 
+            resources.ApplyResources(this.flpOptions, "flpOptions");
+            this.flpOptions.Controls.Add(this.label4);
+            this.flpOptions.Controls.Add(this.cbRTBNType);
+            this.flpOptions.Controls.Add(this.ckbLargeTree);
+            this.flpOptions.Controls.Add(this.ckbArguments);
+            this.flpOptions.Controls.Add(this.ckbParameters);
+            this.flpOptions.Name = "flpOptions";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // cbRTBNType
+            // 
+            resources.ApplyResources(this.cbRTBNType, "cbRTBNType");
+            this.cbRTBNType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.flpOptions.SetFlowBreak(this.cbRTBNType, true);
+            this.cbRTBNType.FormattingEnabled = true;
+            this.cbRTBNType.Items.AddRange(new object[] {
+            resources.GetString("cbRTBNType.Items"),
+            resources.GetString("cbRTBNType.Items1"),
+            resources.GetString("cbRTBNType.Items2")});
+            this.cbRTBNType.Name = "cbRTBNType";
+            // 
+            // ckbLargeTree
+            // 
+            resources.ApplyResources(this.ckbLargeTree, "ckbLargeTree");
+            this.ckbLargeTree.Name = "ckbLargeTree";
+            this.ckbLargeTree.UseVisualStyleBackColor = true;
+            this.ckbLargeTree.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
+            this.ckbLargeTree.AppearanceChanged += new System.EventHandler(this.ckb_CheckedChanged);
+            // 
+            // ckbArguments
+            // 
+            resources.ApplyResources(this.ckbArguments, "ckbArguments");
+            this.ckbArguments.Name = "ckbArguments";
+            this.ckbArguments.UseVisualStyleBackColor = true;
+            this.ckbArguments.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
+            this.ckbArguments.AppearanceChanged += new System.EventHandler(this.ckb_CheckedChanged);
+            // 
+            // ckbParameters
+            // 
+            resources.ApplyResources(this.ckbParameters, "ckbParameters");
+            this.ckbParameters.Name = "ckbParameters";
+            this.ckbParameters.UseVisualStyleBackColor = true;
+            this.ckbParameters.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
+            this.ckbParameters.AppearanceChanged += new System.EventHandler(this.ckb_CheckedChanged);
+            // 
+            // flpArgs
+            // 
+            resources.ApplyResources(this.flpArgs, "flpArgs");
+            this.flpArgs.Controls.Add(this.ldocArg1);
+            this.flpArgs.Controls.Add(this.ldocArg2);
+            this.flpArgs.Controls.Add(this.ldocArg3);
+            this.flpArgs.Name = "flpArgs";
+            // 
+            // ldocArg1
+            // 
+            resources.ApplyResources(this.ldocArg1, "ldocArg1");
+            this.ldocArg1.DataOwner = ((byte)(255));
+            this.ldocArg1.Decimal = false;
+            this.ldocArg1.DecimalVisible = false;
+            this.ldocArg1.FlagsFor = null;
+            this.ldocArg1.Instruction = null;
+            this.ldocArg1.LabelAutoSize = false;
+            this.ldocArg1.LabelSize = new System.Drawing.Size(61, 13);
+            this.ldocArg1.Name = "ldocArg1";
+            this.ldocArg1.UseAttrPicker = true;
+            this.ldocArg1.UseAttrPickerVisible = false;
+            this.ldocArg1.UseFlagNames = false;
+            this.ldocArg1.Value = ((ushort)(0));
+            // 
+            // ldocArg2
+            // 
+            resources.ApplyResources(this.ldocArg2, "ldocArg2");
+            this.ldocArg2.DataOwner = ((byte)(255));
+            this.ldocArg2.Decimal = false;
+            this.ldocArg2.DecimalVisible = false;
+            this.ldocArg2.FlagsFor = null;
+            this.ldocArg2.Instruction = null;
+            this.ldocArg2.LabelAutoSize = false;
+            this.ldocArg2.LabelSize = new System.Drawing.Size(61, 13);
+            this.ldocArg2.Name = "ldocArg2";
+            this.ldocArg2.UseAttrPicker = true;
+            this.ldocArg2.UseAttrPickerVisible = false;
+            this.ldocArg2.UseFlagNames = false;
+            this.ldocArg2.Value = ((ushort)(0));
+            // 
+            // ldocArg3
+            // 
+            resources.ApplyResources(this.ldocArg3, "ldocArg3");
+            this.ldocArg3.DataOwner = ((byte)(255));
+            this.ldocArg3.Decimal = false;
+            this.ldocArg3.FlagsFor = null;
+            this.ldocArg3.Instruction = null;
+            this.ldocArg3.LabelAutoSize = false;
+            this.ldocArg3.LabelSize = new System.Drawing.Size(61, 13);
+            this.ldocArg3.Name = "ldocArg3";
+            this.ldocArg3.UseAttrPicker = true;
+            this.ldocArg3.UseFlagNames = false;
+            this.ldocArg3.Value = ((ushort)(0));
             // 
             // UI
             // 
@@ -518,9 +487,16 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.Name = "UI";
             this.pnWiz0x001c.ResumeLayout(false);
             this.pnWiz0x001c.PerformLayout();
-            this.pnArgs.ResumeLayout(false);
-            this.pnArgs.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
+            this.flowLayoutPanel1.PerformLayout();
+            this.flpTree.ResumeLayout(false);
+            this.flpTree.PerformLayout();
+            this.flpOptions.ResumeLayout(false);
+            this.flpOptions.PerformLayout();
+            this.flpArgs.ResumeLayout(false);
+            this.flpArgs.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
@@ -530,49 +506,31 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             doStrChooser();
         }
 
-        private void tfArgs_CheckedChanged(object sender, EventArgs e)
-        {
-            this.pnArgs.Enabled = this.tfArgs.Checked;
-        }
-
-
-        private void hex8_TextChanged(object sender, System.EventArgs ev)
-        {
-            if (internalchg) return;
-            if (!hex8_IsValid(sender)) return;
-
-            byte val = Convert.ToByte(((TextBox)sender).Text, 16);
-            this.lbTreeName.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
-        }
-
-        private void hex8_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (hex8_IsValid(sender)) return;
-
-            e.Cancel = true;
-
-            bool origstate = internalchg;
-            internalchg = true;
-            byte val = inst.Operands[0x04];
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(val);
-            ((TextBox)sender).SelectAll();
-            this.lbTreeName.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)(val - 1), -1, pjse.Detail.ErrorNames);
-            internalchg = origstate;
-        }
-
-        private void hex8_Validated(object sender, System.EventArgs e)
-        {
-            bool origstate = internalchg;
-            internalchg = true;
-            ((TextBox)sender).Text = "0x" + SimPe.Helper.HexString(Convert.ToByte(((TextBox)sender).Text, 16));
-            ((TextBox)sender).SelectAll();
-            internalchg = origstate;
-        }
-
         private void cbScope_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (internalchg) return;
             this.lbTreeName.Text = ((BhavWiz)inst).readStr(this.Scope, GS.GlobalStr.NamedTree, (ushort)(Convert.ToByte(this.tbTree.Text, 16) - 1), -1, pjse.Detail.ErrorNames);
+        }
+
+        private void ckb_CheckedChanged(object sender, EventArgs e)
+        {
+            if (internalchg) return;
+            internalchg = true;
+
+            CheckBox ckb = sender as CheckBox;
+            if (ckb == null || !lckb.Contains(ckb)) return;
+
+            switch (lckb.IndexOf(ckb))
+            {
+                case 0: if (ckbArguments.Checked)  ckbLargeTree.Checked  = ckbParameters.Checked = false; break;
+                case 1: if (ckbParameters.Checked) ckbLargeTree.Checked  = ckbArguments.Checked  = false; break;
+                case 2: if (ckbLargeTree.Checked)  ckbParameters.Checked = ckbArguments.Checked  = false; break;
+            }
+
+            tree.ValueIsByte = !ckbLargeTree.Checked;
+            flpArgs.Enabled = ckbArguments.Checked;
+
+            internalchg = false;
         }
 
 	}
