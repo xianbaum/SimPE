@@ -35,6 +35,7 @@ namespace pjse
             this.flpButtons = new System.Windows.Forms.FlowLayoutPanel();
             this.btnExtract = new System.Windows.Forms.Button();
             this.lbLabel = new System.Windows.Forms.Label();
+            this.btnSibling = new System.Windows.Forms.Button();
             this.flpButtons.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +44,7 @@ namespace pjse
             this.btnHelp.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnHelp.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnHelp.Location = new System.Drawing.Point(292, 0);
+            this.btnHelp.Location = new System.Drawing.Point(349, 0);
             this.btnHelp.Margin = new System.Windows.Forms.Padding(0);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(57, 27);
@@ -56,7 +57,7 @@ namespace pjse
             this.btnRefreshFT.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnRefreshFT.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnRefreshFT.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnRefreshFT.Location = new System.Drawing.Point(235, 0);
+            this.btnRefreshFT.Location = new System.Drawing.Point(292, 0);
             this.btnRefreshFT.Margin = new System.Windows.Forms.Padding(32, 0, 0, 0);
             this.btnRefreshFT.Name = "btnRefreshFT";
             this.btnRefreshFT.Size = new System.Drawing.Size(57, 27);
@@ -69,7 +70,7 @@ namespace pjse
             this.btnFloat.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnFloat.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnFloat.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnFloat.Location = new System.Drawing.Point(57, 0);
+            this.btnFloat.Location = new System.Drawing.Point(114, 0);
             this.btnFloat.Margin = new System.Windows.Forms.Padding(0);
             this.btnFloat.Name = "btnFloat";
             this.btnFloat.Size = new System.Drawing.Size(57, 27);
@@ -83,7 +84,7 @@ namespace pjse
             this.btnView.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnView.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnView.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnView.Location = new System.Drawing.Point(0, 0);
+            this.btnView.Location = new System.Drawing.Point(57, 0);
             this.btnView.Margin = new System.Windows.Forms.Padding(0);
             this.btnView.Name = "btnView";
             this.btnView.Size = new System.Drawing.Size(57, 27);
@@ -97,15 +98,16 @@ namespace pjse
             this.flpButtons.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.flpButtons.AutoSize = true;
             this.flpButtons.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.flpButtons.Controls.Add(this.btnSibling);
             this.flpButtons.Controls.Add(this.btnView);
             this.flpButtons.Controls.Add(this.btnFloat);
             this.flpButtons.Controls.Add(this.btnExtract);
             this.flpButtons.Controls.Add(this.btnRefreshFT);
             this.flpButtons.Controls.Add(this.btnHelp);
-            this.flpButtons.Location = new System.Drawing.Point(252, 0);
+            this.flpButtons.Location = new System.Drawing.Point(363, 0);
             this.flpButtons.Margin = new System.Windows.Forms.Padding(0);
             this.flpButtons.Name = "flpButtons";
-            this.flpButtons.Size = new System.Drawing.Size(349, 27);
+            this.flpButtons.Size = new System.Drawing.Size(406, 27);
             this.flpButtons.TabIndex = 6;
             // 
             // btnExtract
@@ -113,7 +115,7 @@ namespace pjse
             this.btnExtract.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnExtract.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.btnExtract.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.btnExtract.Location = new System.Drawing.Point(146, 0);
+            this.btnExtract.Location = new System.Drawing.Point(203, 0);
             this.btnExtract.Margin = new System.Windows.Forms.Padding(32, 0, 0, 0);
             this.btnExtract.Name = "btnExtract";
             this.btnExtract.Size = new System.Drawing.Size(57, 27);
@@ -136,6 +138,20 @@ namespace pjse
             this.lbLabel.TabIndex = 1;
             this.lbLabel.Text = "PJSE: file type Editor";
             // 
+            // btnSibling
+            // 
+            this.btnSibling.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.btnSibling.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btnSibling.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.btnSibling.Location = new System.Drawing.Point(0, 0);
+            this.btnSibling.Margin = new System.Windows.Forms.Padding(0);
+            this.btnSibling.Name = "btnSibling";
+            this.btnSibling.Size = new System.Drawing.Size(57, 27);
+            this.btnSibling.TabIndex = 5;
+            this.btnSibling.Text = "{Type}";
+            this.btnSibling.Visible = false;
+            this.btnSibling.Click += new System.EventHandler(this.btnSibling_Click);
+            // 
             // pjse_banner
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -144,7 +160,7 @@ namespace pjse
             this.Controls.Add(this.lbLabel);
             this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold);
             this.Name = "pjse_banner";
-            this.Size = new System.Drawing.Size(601, 27);
+            this.Size = new System.Drawing.Size(769, 27);
             this.flpButtons.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -160,5 +176,6 @@ namespace pjse
         private System.Windows.Forms.FlowLayoutPanel flpButtons;
         private System.Windows.Forms.Button btnExtract;
         private System.Windows.Forms.Label lbLabel;
+        private System.Windows.Forms.Button btnSibling;
     }
 }

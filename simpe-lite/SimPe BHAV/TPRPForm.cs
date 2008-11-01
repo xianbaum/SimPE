@@ -80,7 +80,14 @@ namespace SimPe.PackedFiles.UserInterface
 
 			TextBox[] dw = { tbVersion ,};
 			alHex32 = new ArrayList(dw);
-		}
+
+            pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
+        }
+
+        void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            pjse_banner1.SiblingEnabled = wrapper != null && wrapper.SiblingResource(Bhav.Bhavtype) != null;
+        }
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -380,7 +387,8 @@ namespace SimPe.PackedFiles.UserInterface
 		public void UpdateGUI(IFileWrapper wrp)
 		{
 			wrapper = (TPRP)wrp;
-			WrapperChanged(wrapper, null);
+            WrapperChanged(wrapper, null);
+            pjse_banner1.SiblingEnabled = wrapper.SiblingResource(Bhav.Bhavtype) != null;
 
             if (!wrapper.TextOnly)
             {
@@ -434,7 +442,6 @@ namespace SimPe.PackedFiles.UserInterface
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TPRPForm));
             this.btnCommit = new System.Windows.Forms.Button();
             this.tprpPanel = new System.Windows.Forms.Panel();
-            this.pjse_banner1 = new pjse.pjse_banner();
             this.btnTabNext = new System.Windows.Forms.Button();
             this.btnTabPrev = new System.Windows.Forms.Button();
             this.btnStrPrev = new System.Windows.Forms.Button();
@@ -457,6 +464,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbFilename = new System.Windows.Forms.TextBox();
             this.lbFilename = new System.Windows.Forms.Label();
             this.lbLabel = new System.Windows.Forms.Label();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.tprpPanel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpParams.SuspendLayout();
@@ -490,12 +498,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tprpPanel.Controls.Add(this.btnCommit);
             this.tprpPanel.Controls.Add(this.lbLabel);
             this.tprpPanel.Name = "tprpPanel";
-            // 
-            // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // btnTabNext
             // 
@@ -658,6 +660,14 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.lbLabel, "lbLabel");
             this.lbLabel.Name = "lbLabel";
             // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
+            this.pjse_banner1.SiblingVisible = true;
+            this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
+            // 
             // TPRPForm
             // 
             resources.ApplyResources(this, "$this");
@@ -707,6 +717,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLabel.SelectAll();
 			this.tbLabel.Focus();
 		}
+
+
+        private void pjse_banner1_SiblingClick(object sender, EventArgs e)
+        {
+            Bhav bhav = (Bhav)wrapper.SiblingResource(Bhav.Bhavtype);
+            if (bhav != null)
+                SimPe.RemoteControl.OpenPackedFile(bhav.FileDescriptor, bhav.Package);
+        }
 
 
 		private void btnStrPrev_Click(object sender, System.EventArgs e)

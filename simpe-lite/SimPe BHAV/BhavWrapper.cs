@@ -249,20 +249,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		#region IFileWrapper Member
+        public static readonly uint Bhavtype = 0x42484156;
+        #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process
 		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {
-								   0x42484156  // BHAV
-							   };
-				return types;
-			}
-		}
+        public uint[] AssignableTypes { get { return new uint[] { Bhavtype }; } }
 
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin

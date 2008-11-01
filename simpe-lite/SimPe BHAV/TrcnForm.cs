@@ -71,6 +71,8 @@ namespace SimPe.PackedFiles.UserInterface
         private TextBox tbDesc;
         private Label lbDesc;
         private pjse.pjse_banner pjse_banner1;
+        private TableLayoutPanel tlpUnused;
+        private Panel panel2;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -420,6 +422,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         void FiletableRefresh(object sender, EventArgs e)
         {
+            pjse_banner1.SiblingEnabled = wrapper != null && wrapper.SiblingResource(Bcon.Bcontype) != null;
             updateLists();
         }
         #endregion
@@ -444,6 +447,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			wrapper = (Trcn)wrp;
 			WrapperChanged(wrapper, null);
+            pjse_banner1.SiblingEnabled = wrapper.SiblingResource(Bcon.Bcontype) != null;
 
 			internalchg = true;
 			updateLists();
@@ -500,7 +504,6 @@ namespace SimPe.PackedFiles.UserInterface
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrcnForm));
             this.btnCommit = new System.Windows.Forms.Button();
             this.trcnPanel = new System.Windows.Forms.Panel();
-            this.pjse_banner1 = new pjse.pjse_banner();
             this.tbDesc = new System.Windows.Forms.TextBox();
             this.lbDesc = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -534,7 +537,12 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbLabel = new System.Windows.Forms.Label();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
+            this.pjse_banner1 = new pjse.pjse_banner();
+            this.tlpUnused = new System.Windows.Forms.TableLayoutPanel();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.trcnPanel.SuspendLayout();
+            this.tlpUnused.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnCommit
@@ -547,40 +555,16 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.trcnPanel, "trcnPanel");
             this.trcnPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.trcnPanel.Controls.Add(this.pjse_banner1);
-            this.trcnPanel.Controls.Add(this.tbDesc);
-            this.trcnPanel.Controls.Add(this.lbDesc);
-            this.trcnPanel.Controls.Add(this.label5);
-            this.trcnPanel.Controls.Add(this.panel1);
-            this.trcnPanel.Controls.Add(this.tbID);
-            this.trcnPanel.Controls.Add(this.btnCancel);
-            this.trcnPanel.Controls.Add(this.cbUsed);
-            this.trcnPanel.Controls.Add(this.tbLabel);
-            this.trcnPanel.Controls.Add(this.lbID);
-            this.trcnPanel.Controls.Add(this.btnStrDelete);
-            this.trcnPanel.Controls.Add(this.btnStrAdd);
-            this.trcnPanel.Controls.Add(this.lbFormat);
+            this.trcnPanel.Controls.Add(this.panel2);
+            this.trcnPanel.Controls.Add(this.tlpUnused);
+            this.trcnPanel.Controls.Add(this.btnCommit);
             this.trcnPanel.Controls.Add(this.tbFormat);
-            this.trcnPanel.Controls.Add(this.lvTrcnItem);
+            this.trcnPanel.Controls.Add(this.lbFormat);
             this.trcnPanel.Controls.Add(this.tbFilename);
             this.trcnPanel.Controls.Add(this.lbFilename);
-            this.trcnPanel.Controls.Add(this.btnCommit);
-            this.trcnPanel.Controls.Add(this.lbDefValue);
-            this.trcnPanel.Controls.Add(this.tbDefValue);
-            this.trcnPanel.Controls.Add(this.tbMinValue);
-            this.trcnPanel.Controls.Add(this.lbMinValue);
-            this.trcnPanel.Controls.Add(this.tbMaxValue);
-            this.trcnPanel.Controls.Add(this.lbMaxValue);
-            this.trcnPanel.Controls.Add(this.lbLabel);
-            this.trcnPanel.Controls.Add(this.btnStrPrev);
-            this.trcnPanel.Controls.Add(this.btnStrNext);
+            this.trcnPanel.Controls.Add(this.pjse_banner1);
+            this.trcnPanel.Controls.Add(this.lvTrcnItem);
             this.trcnPanel.Name = "trcnPanel";
-            // 
-            // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // tbDesc
             // 
@@ -596,11 +580,13 @@ namespace SimPe.PackedFiles.UserInterface
             // label5
             // 
             resources.ApplyResources(this.label5, "label5");
+            this.tlpUnused.SetColumnSpan(this.label5, 2);
             this.label5.Name = "label5";
             // 
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.tlpUnused.SetColumnSpan(this.panel1, 2);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
@@ -622,6 +608,7 @@ namespace SimPe.PackedFiles.UserInterface
             // cbUsed
             // 
             resources.ApplyResources(this.cbUsed, "cbUsed");
+            this.tlpUnused.SetColumnSpan(this.cbUsed, 2);
             this.cbUsed.Name = "cbUsed";
             this.cbUsed.CheckedChanged += new System.EventHandler(this.cbUsed_CheckedChanged);
             // 
@@ -794,6 +781,44 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrNext.TabStop = false;
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
             // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
+            this.pjse_banner1.SiblingVisible = true;
+            this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
+            // 
+            // tlpUnused
+            // 
+            resources.ApplyResources(this.tlpUnused, "tlpUnused");
+            this.tlpUnused.Controls.Add(this.label5, 0, 1);
+            this.tlpUnused.Controls.Add(this.lbID, 0, 2);
+            this.tlpUnused.Controls.Add(this.tbID, 1, 2);
+            this.tlpUnused.Controls.Add(this.lbDesc, 0, 4);
+            this.tlpUnused.Controls.Add(this.tbDesc, 1, 4);
+            this.tlpUnused.Controls.Add(this.lbDefValue, 0, 5);
+            this.tlpUnused.Controls.Add(this.tbDefValue, 1, 5);
+            this.tlpUnused.Controls.Add(this.panel1, 0, 0);
+            this.tlpUnused.Controls.Add(this.lbMinValue, 0, 6);
+            this.tlpUnused.Controls.Add(this.tbMinValue, 1, 6);
+            this.tlpUnused.Controls.Add(this.lbMaxValue, 0, 7);
+            this.tlpUnused.Controls.Add(this.tbMaxValue, 1, 7);
+            this.tlpUnused.Controls.Add(this.cbUsed, 0, 3);
+            this.tlpUnused.Name = "tlpUnused";
+            // 
+            // panel2
+            // 
+            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Controls.Add(this.btnStrAdd);
+            this.panel2.Controls.Add(this.lbLabel);
+            this.panel2.Controls.Add(this.btnStrDelete);
+            this.panel2.Controls.Add(this.tbLabel);
+            this.panel2.Controls.Add(this.btnCancel);
+            this.panel2.Controls.Add(this.btnStrPrev);
+            this.panel2.Controls.Add(this.btnStrNext);
+            this.panel2.Name = "panel2";
+            // 
             // TrcnForm
             // 
             resources.ApplyResources(this, "$this");
@@ -804,6 +829,10 @@ namespace SimPe.PackedFiles.UserInterface
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.trcnPanel.ResumeLayout(false);
             this.trcnPanel.PerformLayout();
+            this.tlpUnused.ResumeLayout(false);
+            this.tlpUnused.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
 		}
@@ -836,6 +865,14 @@ namespace SimPe.PackedFiles.UserInterface
 			this.tbLabel.SelectAll();
 			this.tbLabel.Focus();
 		}
+
+
+        private void pjse_banner1_SiblingClick(object sender, EventArgs e)
+        {
+            Bcon bcon = (Bcon)wrapper.SiblingResource(Bcon.Bcontype);
+            if (bcon != null)
+                SimPe.RemoteControl.OpenPackedFile(bcon.FileDescriptor, bcon.Package);
+        }
 
 
 		private void btnStrPrev_Click(object sender, System.EventArgs e)

@@ -1,3 +1,19 @@
+1 November 2008 15:25 Hourglass for Label Maker; switch between BCON/BHAV and TRCN/TPRP; "Insert Unlinked" special button
+  SimPe BHAV\
+    BconForm.cs 1.25.4.7
+    BconForm.resx 1.15.4.2
+    BhavForm.cs 1.89.4.13
+    BhavForm.resx 1.49.4.5
+    BhavInstListControl.cs 1.46.6.1
+    BhavWrapper.cs 1.50.4.4
+    pjse banner.cs 1.1.4.3
+    pjse banner.Designer.cs 1.1.4.3
+    pjse banner.resx 1.1.2.1
+    TPRPForm.cs 1.14.4.2
+    TPRPForm.resx 1.10.4.2
+    TrcnForm.cs 1.22.2.5
+    TrcnForm.resx 1.14.2.3
+
 25 October 2008 21:13 Mostly make RTBN handle op[2] bit 6
   * Also allow "early" start of Filetable (remove all static stuff, handle null in BhavWiz.readStr)
   * Also split Ages STR# between Age prim and TTAB

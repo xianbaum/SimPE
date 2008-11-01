@@ -360,82 +360,100 @@ namespace SimPe.PackedFiles.UserInterface
 			displayBconItem();
 		}
 
-		private void TRCNMaker()
-		{
-			int minArgc = 0;
-            Trcn trcn = (Trcn)wrapper.SiblingResource(Trcn.Trcntype); // find Trcn for this Bcon
-
-			wrapper.Package.BeginUpdate();
-
-            if (trcn != null && trcn.TextOnly)
+        private void TRCNMaker()
+        {
+            bconPanel.Cursor = Cursors.WaitCursor;
+            Application.UseWaitCursor = true;
+            try
             {
-                // if it exists but is unreadable, as if user wants to overwrite
-                DialogResult dr = MessageBox.Show(
-                    pjse.Localization.GetString("ml_overwriteduff")
-                    , btnTRCNMaker.Text
-                    , MessageBoxButtons.OKCancel
-                    , MessageBoxIcon.Warning);
-                if (dr != DialogResult.OK)
-                    return;
-                wrapper.Package.Remove(trcn.FileDescriptor);
-                trcn = null;
-            }
-            if (trcn != null)
-			{
-				// if it exists ask if user wants to preserve content
-				DialogResult dr = MessageBox.Show(
-                    pjse.Localization.GetString("ml_keeplabels")
-					, btnTRCNMaker.Text
-					, MessageBoxButtons.YesNoCancel
-					, MessageBoxIcon.Warning);
-				if (dr == DialogResult.Cancel)
-					return;
+                int minArgc = 0;
+                Trcn trcn = (Trcn)wrapper.SiblingResource(Trcn.Trcntype); // find Trcn for this Bcon
 
-                if (!trcn.Package.Equals(wrapper.Package))
+                wrapper.Package.BeginUpdate();
+
+                if (trcn != null && trcn.TextOnly)
                 {
-                    // Clone the original into this package
-                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd = trcn.FileDescriptor.Clone();
-                    Trcn ntrcn = new Trcn();
-                    wrapper.Package.Add(npfd);
-                    ntrcn.ProcessData(npfd, wrapper.Package);
+                    // if it exists but is unreadable, as if user wants to overwrite
+                    DialogResult dr = MessageBox.Show(
+                        pjse.Localization.GetString("ml_overwriteduff")
+                        , btnTRCNMaker.Text
+                        , MessageBoxButtons.OKCancel
+                        , MessageBoxIcon.Warning);
+                    if (dr != DialogResult.OK)
+                        return;
+                    wrapper.Package.Remove(trcn.FileDescriptor);
+                    trcn = null;
+                }
+                if (trcn != null)
+                {
+                    // if it exists ask if user wants to preserve content
+                    DialogResult dr = MessageBox.Show(
+                        pjse.Localization.GetString("ml_keeplabels")
+                        , btnTRCNMaker.Text
+                        , MessageBoxButtons.YesNoCancel
+                        , MessageBoxIcon.Warning);
+                    if (dr == DialogResult.Cancel)
+                        return;
+
+                    if (!trcn.Package.Equals(wrapper.Package))
+                    {
+                        // Clone the original into this package
+                        if (dr == DialogResult.Yes) Wait.MaxProgress = trcn.Count;
+                        SimPe.Interfaces.Files.IPackedFileDescriptor npfd = trcn.FileDescriptor.Clone();
+                        Trcn ntrcn = new Trcn();
+                        ntrcn.FileDescriptor = npfd;
+                        wrapper.Package.Add(npfd, true);
+                        ntrcn.ProcessData(npfd, wrapper.Package);
+                        if (dr == DialogResult.Yes) foreach (TrcnItem item in trcn) { ntrcn.Add(item); Wait.Progress++; }
+                        trcn = ntrcn;
+                        trcn.SynchronizeUserData();
+                        Wait.MaxProgress = 0;
+                    }
+
                     if (dr == DialogResult.Yes)
-                        foreach (TrcnItem item in trcn) ntrcn.Add(item);
-                    trcn = ntrcn;
+                        minArgc = trcn.Count;
+                    else
+                        trcn.Clear();
+                }
+                else
+                {
+                    // create a new Trcn file
+                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
+                    trcn = new Trcn();
+                    npfd.Type = Trcn.Trcntype;
+                    trcn.FileDescriptor = npfd;
+                    wrapper.Package.Add(npfd, true);
+                    trcn.SynchronizeUserData();
                 }
 
-                if (dr == DialogResult.Yes)
-                    minArgc = trcn.Count;
-                else
-                    trcn.Clear();
-            }
-			else
-			{
-				// create a new Trcn file
-				SimPe.Interfaces.Files.IPackedFileDescriptor npfd
-					= wrapper.Package.Add(0x5452434E, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
-				trcn = new Trcn();
-				trcn.ProcessData(npfd, wrapper.Package);
-			}
-            trcn.FileName = wrapper.FileName;
+                Wait.MaxProgress = wrapper.Count - minArgc;
+                trcn.FileName = wrapper.FileName;
 
-			for(int arg = minArgc; arg < wrapper.Count; arg++)
-			{
-                trcn.Add(new TrcnItem(trcn));
-				trcn[arg].ConstId = (uint)arg;
-				trcn[arg].ConstName = "Label " + arg.ToString();
-				trcn[arg].DefValue = trcn[arg].MaxValue = trcn[arg].MinValue = 0;
-			}
-			trcn.SynchronizeUserData();
-			wrapper.Package.EndUpdate();
-            pjse.FileTable.GFT.Refresh();
-			this.updateLists();
-			MessageBox.Show(
-                pjse.Localization.GetString("ml_done")
-                , btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
-		}
+                for (int arg = minArgc; arg < wrapper.Count; arg++)
+                {
+                    trcn.Add(new TrcnItem(trcn));
+                    trcn[arg].ConstId = (uint)arg;
+                    trcn[arg].ConstName = "Label " + arg.ToString();
+                    trcn[arg].DefValue = trcn[arg].MaxValue = trcn[arg].MinValue = 0;
+                    Wait.Progress++;
+                }
+                trcn.SynchronizeUserData();
+                wrapper.Package.EndUpdate();
+            }
+            finally
+            {
+                Wait.SubStop();
+                bconPanel.Cursor = Cursors.Default;
+                Application.UseWaitCursor = false;
+            }
+            MessageBox.Show(
+                    pjse.Localization.GetString("ml_done")
+                    , btnTRCNMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
 
         private void FiletableRefresh(object sender, System.EventArgs e)
         {
+            pjse_banner1.SiblingEnabled = wrapper != null && wrapper.SiblingResource(Trcn.Trcntype) != null;
             updateLists();
         }
         #endregion
@@ -460,6 +478,7 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			wrapper = (Bcon)wrp;
 			WrapperChanged(wrapper, null);
+            pjse_banner1.SiblingEnabled = wrapper.SiblingResource(Trcn.Trcntype) != null;
 
 			internalchg = true;
 			updateLists();
@@ -523,8 +542,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnCancel = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.bconPanel = new System.Windows.Forms.Panel();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.cmpBCON = new pjse.CompareButton();
             this.llIsOverride = new System.Windows.Forms.LinkLabel();
             this.btnUpdateBCON = new System.Windows.Forms.Button();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.btnStrPrev = new System.Windows.Forms.Button();
             this.btnStrNext = new System.Windows.Forms.Button();
             this.cbFlag = new System.Windows.Forms.CheckBox();
@@ -536,9 +558,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.chLabel = new System.Windows.Forms.ColumnHeader();
             this.btnCommit = new System.Windows.Forms.Button();
             this.btnTRCNMaker = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.cmpBCON = new pjse.CompareButton();
-            this.pjse_banner1 = new pjse.pjse_banner();
             this.gbValue.SuspendLayout();
             this.bconPanel.SuspendLayout();
             this.SuspendLayout();
@@ -623,6 +642,22 @@ namespace SimPe.PackedFiles.UserInterface
             this.bconPanel.Controls.Add(this.btnTRCNMaker);
             this.bconPanel.Name = "bconPanel";
             // 
+            // btnClose
+            // 
+            resources.ApplyResources(this.btnClose, "btnClose");
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            // 
+            // cmpBCON
+            // 
+            resources.ApplyResources(this.cmpBCON, "cmpBCON");
+            this.cmpBCON.Name = "cmpBCON";
+            this.cmpBCON.UseVisualStyleBackColor = true;
+            this.cmpBCON.Wrapper = null;
+            this.cmpBCON.WrapperName = null;
+            this.cmpBCON.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBCON_CompareWith);
+            // 
             // llIsOverride
             // 
             resources.ApplyResources(this.llIsOverride, "llIsOverride");
@@ -636,6 +671,14 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.btnUpdateBCON, "btnUpdateBCON");
             this.btnUpdateBCON.Name = "btnUpdateBCON";
             this.btnUpdateBCON.Click += new System.EventHandler(this.btnUpdateBCON_Click);
+            // 
+            // pjse_banner1
+            // 
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
+            this.pjse_banner1.SiblingVisible = true;
+            this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
             // 
             // btnStrPrev
             // 
@@ -712,28 +755,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnTRCNMaker.Name = "btnTRCNMaker";
             this.btnTRCNMaker.Click += new System.EventHandler(this.btnTRCNMaker_Click);
             // 
-            // btnClose
-            // 
-            resources.ApplyResources(this.btnClose, "btnClose");
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // cmpBCON
-            // 
-            resources.ApplyResources(this.cmpBCON, "cmpBCON");
-            this.cmpBCON.Name = "cmpBCON";
-            this.cmpBCON.UseVisualStyleBackColor = true;
-            this.cmpBCON.Wrapper = null;
-            this.cmpBCON.WrapperName = null;
-            this.cmpBCON.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBCON_CompareWith);
-            // 
-            // pjse_banner1
-            // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pjse_banner1.Name = "pjse_banner1";
-            // 
             // BconForm
             // 
             resources.ApplyResources(this, "$this");
@@ -776,6 +797,14 @@ namespace SimPe.PackedFiles.UserInterface
 		{
 			this.TRCNMaker();
 		}
+
+
+        private void pjse_banner1_SiblingClick(object sender, EventArgs e)
+        {
+            Trcn trcn = (Trcn)wrapper.SiblingResource(Trcn.Trcntype);
+            if (trcn != null)
+                SimPe.RemoteControl.OpenPackedFile(trcn.FileDescriptor, trcn.Package);
+        }
 
 
 		private void btnStrPrev_Click(object sender, System.EventArgs e)
@@ -892,6 +921,5 @@ namespace SimPe.PackedFiles.UserInterface
             if (this.isPopup)
                 Close();
         }
-
 	}
 }
