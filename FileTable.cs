@@ -34,25 +34,48 @@ namespace pjse
 	/// </summary>
 	public class FileTable
 	{
-		public static FileTable GFT = null;
-		static FileTable()
-		{
-			GFT = new FileTable();
-			if (FileTableSettings.FTS.LoadAtStartup) GFT.Refresh();
-		}
+        public static FileTable gft = null;
+        public static FileTable GFT
+        {
+            get
+            {
+                if (gft == null)
+                {
+                    if (SimPe.FileTable.FileIndex != null) gft = new FileTable();
+                    if (gft != null && FileTableSettings.FTS.LoadAtStartup) gft.Refresh();
+                }
+                return gft;
+            }
+        }
 
-		public FileTable()
+        public FileTable()
 		{
-			SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
-		}
+            if (SimPe.FileTable.FileIndex != null)
+                SimPe.FileTable.FileIndex.FILoad += new System.EventHandler(this.FileIndex_FILoad);
+        }
 
         private void FileIndex_FILoad(object sender, System.EventArgs e) { UIRefresh(); }
 
+        void wm(string message)
+        {
+            SimPe.Wait.Message = message;
+            SimPe.Wait.Progress++;
+            if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage(message);
+        }
+
         public void UIRefresh()
         {
-            SimPe.Wait.Start();
-            this.Refresh(true);
-            SimPe.Wait.Stop();
+            SimPe.Wait.SubStart();
+            //bool wasRunning = SimPe.WaitingScreen.Running;
+            //SimPe.WaitingScreen.Wait();
+
+            try { this.Refresh(true); }
+            finally
+            {
+                SimPe.Wait.SubStop();
+                //if (!wasRunning) SimPe.WaitingScreen.Stop();
+                //else SimPe.WaitingScreen.UpdateMessage("");
+            }
         }
 
         private ArrayList fixedPackages = new ArrayList();
@@ -84,13 +107,18 @@ namespace pjse
             pfByTypeGroupInstance = new Hashtable();
 
             if (loadEverything)
+            {
+                if (SimPe.Wait.Running) { SimPe.Wait.Progress = 0; SimPe.Wait.MaxProgress = SimPe.FileTable.DefaultFolders.Count; }
                 foreach (SimPe.FileTableItem fii in SimPe.FileTable.DefaultFolders)
-                    if (fii.Use) Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions != SimPe.Expansions.Custom, true);
+                    if (fii.Use)
+                        Add(fii.Name, fii.IsRecursive, fii.Type.AsExpansions, true);
+                if (SimPe.Wait.Running) SimPe.Wait.MaxProgress = 0;
+            }
 
-            this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, false, true);
+            this.Add(Path.Combine(SimPe.Helper.SimPePluginPath, "pjse.coder.plugin\\GlobalStrings.package"), false, SimPe.Expansions.Custom, true);
 
             if (loadEverything)
-                this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, false, true);
+                this.Add(Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), true, SimPe.Expansions.Custom, true);
 
             string packages_txt = Path.Combine(SimPe.Helper.SimPePluginDataPath, "pjse.coder.plugin\\packages.txt");
             if (loadEverything)
@@ -98,7 +126,7 @@ namespace pjse
                 {
                     System.IO.StreamReader sr = new StreamReader(packages_txt);
                     for (string line = sr.ReadLine(); line != null; line = sr.ReadLine())
-                        this.Add(line.TrimEnd('+'), line.EndsWith("+"), false, true);
+                        this.Add(line.TrimEnd('+'), line.EndsWith("+"), SimPe.Expansions.Custom, true);
                     sr.Close();
                     sr.Dispose();
                     sr = null;
@@ -172,20 +200,22 @@ namespace pjse
         }
 
 
-        private void Add(string v, bool recurse, bool isMaxis, bool isFixed)
+        private void Add(string v, bool recurse, SimPe.Expansions ep, bool isFixed)
         {
+            wm("Loading " + ep + " " + System.IO.Path.GetFileName(v).Replace(".package", ""));
+            System.Windows.Forms.Application.DoEvents();
             if (Directory.Exists(v))
             {
                 foreach (string i in Directory.GetFiles(v, "*.package"))
-                    Add(i, false, isMaxis, isFixed);
+                    Add(i, false, ep, isFixed);
 
                 if (recurse)
                     foreach (string i in Directory.GetDirectories(v))
-                        Add(i, true, isMaxis, isFixed);
+                        Add(i, true, ep, isFixed);
             }
 
             else if (!v.ToLowerInvariant().EndsWith(SimPe.Helper.PATH_SEP+"globalcatbin.bundle.package") && File.Exists(v))
-                Add(SimPe.Packages.File.LoadFromFile(v), isMaxis, isFixed);
+                Add(SimPe.Packages.File.LoadFromFile(v), ep != SimPe.Expansions.Custom, isFixed);
         }
 
         
