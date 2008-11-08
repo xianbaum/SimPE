@@ -1,0 +1,161 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Text;
+using System.Windows.Forms;
+
+namespace pjse
+{
+    public class LabelledDataOwnerByte : LabelledDataOwner
+    {
+        public LabelledDataOwnerByte() : base() { ValueIsByte = true; }
+        public LabelledDataOwnerByte(BhavWiz inst, byte downer, byte value) : base(inst, downer, value) { ValueIsByte = true; }
+    }
+
+    public class LabelledDataOwnerXX : LabelledDataOwner
+    {
+        public LabelledDataOwnerXX() : base() { ValueIsByte = true; Use0xPrefix = false; }
+        public LabelledDataOwnerXX(BhavWiz inst, byte downer, byte value) : base(inst, downer, value) { ValueIsByte = true; Use0xPrefix = false; }
+    }
+
+    public partial class LabelledDataOwner : UserControl, pjse.IDataOwner
+    {
+
+        protected pjse.BhavOperandWizards.DataOwnerControl doc;
+
+        public LabelledDataOwner() : this(null, 0, (ushort) 0) { }
+
+        public LabelledDataOwner(BhavWiz inst, byte downer, ushort value)
+        {
+            InitializeComponent();
+            doc = new pjse.BhavOperandWizards.DataOwnerControl(
+                inst
+                , cbDataOwner
+                , cbPicker
+                , tbVal
+                , ckbDecimal
+                , ckbUseAttrPicker
+                , lbConst
+                , downer, value);
+        }
+
+        [Category("Appearance")]
+        [Description("Text associated with the control.")]
+        [Localizable(true)]
+        [Browsable(true)]
+        [EditorBrowsable(0)]
+        public string Label { get { return lbLabel.Text; } set { lbLabel.Text = value; } }
+
+        [Category("Behavior")]
+        [DefaultValue(true)]
+        [Description("True if the Label text should be visible.")]
+        public bool LabelVisible { get { return lbLabel.Visible; } set { lbLabel.Visible = value; } }
+
+        [Category("Layout")]
+        [DefaultValue(true)]
+        [Description("True if the Label should resize automatically.")]
+        public bool LabelAutoSize { get { return lbLabel.AutoSize; } set { lbLabel.AutoSize = value; } }
+
+        [Category("Layout")]
+        //[DefaultValue(true)]
+        [Description("Size of the label in pixels.")]
+        public Size LabelSize { get { return lbLabel.Size; } set { lbLabel.Size = value; } }
+
+
+
+        [Category("Behavior")]
+        [DefaultValue(true)]
+        [Description("True if the Const text should be visible.")]
+        public bool ConstVisible { get { return lbConst.Visible; } set { lbConst.Visible = value; } }
+
+
+        [Category("Behavior")]
+        //[DefaultValue(false)]
+        [Description("True if values should be in Decimal (except Consts).")]
+        public bool Decimal { get { return ckbDecimal.Checked; } set { ckbDecimal.Checked = value; } }
+
+        [Category("Behavior")]
+        [DefaultValue(true)]
+        [Description("True if the Decimal Checkbox should be visible.")]
+        public bool DecimalVisible { get { return ckbDecimal.Visible; } set { ckbDecimal.Visible = value; } }
+
+
+        [Category("Behavior")]
+        //[DefaultValue(true)]
+        [Description("True if the Attribute Picker should be used (when appropriate).")]
+        public bool UseAttrPicker { get { return ckbUseAttrPicker.Checked; } set { ckbUseAttrPicker.Checked = value; } }
+
+        [Category("Behavior")]
+        [DefaultValue(true)]
+        [Description("True if the Attribute Picker Checkbox should be visible.")]
+        public bool UseAttrPickerVisible { get { return ckbUseAttrPicker.Visible; } set { ckbUseAttrPicker.Visible = value; } }
+
+
+        [Category("Behavior")]
+        [DefaultValue(true)]
+        [Description("True if Flag Names should be used (where appropriate).\nNote that \"FlagsFor\" must be set correctly.")]
+        public bool UseFlagNames { get { return doc.UseFlagNames; } set { doc.UseFlagNames = value; } }
+
+        /// <summary>
+        /// Specifies for which data owner this entry is specifying a flag number
+        /// </summary>
+        [Category("Data")]
+        [Description("Specifies for which data owner this entry is specifying a flag number.")]
+        public IDataOwner FlagsFor { get { return doc.FlagsFor; } set { doc.FlagsFor = value; } }
+
+        /// <summary>
+        /// Specifies to which Instruction this data owner applies.  Can be null.
+        /// </summary>
+        [Browsable(false)]
+        public BhavWiz Instruction { get { return doc.Instruction; } set { doc.Instruction = value; } }
+
+
+        [Category("Behavior")]
+        [DefaultValue(true)]
+        [Description("True if hex values should use \"0x\" prefix.")]
+        public bool Use0xPrefix { get { return doc.Use0xPrefix; } set { doc.Use0xPrefix = value; } }
+
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [Description("True if the value should be treated as a byte.")]
+        public bool ValueIsByte { get { return doc.ValueIsByte; } set { doc.ValueIsByte = value; } }
+
+
+        #region IDataOwner Members
+
+        [Category("Appearance")]
+        [Description("The Data Owner")]
+        [Browsable(true)]
+        [EditorBrowsable(0)]
+        [DefaultValue((byte)0)]
+        public byte DataOwner
+        {
+            get { return doc.DataOwner; }
+            set { if (value >= cbDataOwner.Items.Count) cbDataOwner.SelectedIndex = -1; else cbDataOwner.SelectedIndex = value; }
+        }
+
+        [Category("Appearance")]
+        [Description("The Data Owner Value")]
+        [Browsable(true)]
+        [EditorBrowsable(0)]
+        [DefaultValue((ushort)0)]
+        public ushort Value
+        {
+            get { return doc.Value; }
+            set { tbVal.Text = "0x" + value.ToString("X"); }
+        }
+
+        public event EventHandler DataOwnerControlChanged;
+        protected virtual void OnDataOwnerControlChanged(object sender, EventArgs e)
+        {
+            if (DataOwnerControlChanged != null)
+            {
+                DataOwnerControlChanged(sender, e);
+            }
+        }
+
+        #endregion
+    }
+}

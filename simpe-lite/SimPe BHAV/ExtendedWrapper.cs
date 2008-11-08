@@ -135,6 +135,18 @@ namespace pjse
             return (items == null || items.Length == 0) ? null : items[0];
         }
 
+        public SimPe.Interfaces.Plugin.Internal.IPackedFileWrapper SiblingResource(uint type)
+        {
+            if (FileDescriptor == null) return null;
+
+            pjse.FileTable.Entry[] items = pjse.FileTable.GFT[type, FileDescriptor.Group, FileDescriptor.Instance];
+            if (items == null || items.Length == 0) return null;
+
+            SimPe.Interfaces.Plugin.Internal.IPackedFileWrapper wrp = SimPe.FileTable.WrapperRegistry.FindHandler(type);
+            wrp.ProcessData(items[0].PFD, items[0].Package);
+
+            return wrp;
+        }
 	}
 
     public abstract class ExtendedWrapper<T, U> : ExtendedWrapper

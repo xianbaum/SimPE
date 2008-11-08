@@ -18,25 +18,44 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
-using System.Resources;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Windows.Forms;
+using SimPe.Interfaces.Files;
+using SimPe.Packages;
 
-namespace pjHoodTool
+namespace pjse
 {
-    public class L
+    class ExtractCurrent
     {
-        private static ResourceManager resource = null;
-
-        static L() { resource = new ResourceManager(typeof(L)); }
-
-        public static string Get(string name)
+        public static DialogResult Execute(SimPe.Interfaces.Plugin.AbstractWrapper wrapper, string title)
         {
-            string res = resource.GetString(name);
-#if DEBUG
-            if (res == null) res = "<<" + name + ">>";
-#else
-            if (res == null) res = name;
-#endif
-            return res;
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.FileName = wrapper.FileDescriptor.ExportFileName.Replace(" ", "").Replace(":", "_").Replace(@"\", "_");
+            sfd.Filter = SimPe.ExtensionProvider.BuildFilterString(
+                new SimPe.ExtensionType[] { SimPe.ExtensionType.ExtractedFile, SimPe.ExtensionType.AllFiles }
+            );
+            sfd.Title = title;
+
+            DialogResult dr = sfd.ShowDialog();
+            if (dr != DialogResult.OK) return dr;
+
+            string path = wrapper.FileDescriptor.Path;
+            string filename = wrapper.FileDescriptor.Filename;
+            try
+            {
+                SimPe.ToolLoaderItemExt.SavePackedFile(sfd.FileName, true, (PackedFileDescriptor)wrapper.FileDescriptor, (GeneratableFile)wrapper.Package);
+            }
+            finally
+            {
+                wrapper.FileDescriptor.Path = path;
+                wrapper.FileDescriptor.Filename = filename;
+            }
+
+            return dr;
         }
     }
 }

@@ -330,7 +330,8 @@ namespace pjse.guidtool
                 ckbCallsToBHAV.Checked,
             };
             uint number = 0;
-            number = Convert.ToUInt32(this.tbNumber.Text, 16);
+            try { number = Convert.ToUInt32(this.tbNumber.Text.Trim(), 16); }
+            catch(System.FormatException) { number = 0; }
             this.tbNumber.Text = "0x" + SimPe.Helper.HexString(number);
             if (number == 0) { type[0] = type[5] = false; } // don't search for 0 GUID...
 

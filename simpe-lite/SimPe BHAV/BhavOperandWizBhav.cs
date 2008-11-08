@@ -175,7 +175,7 @@ namespace pjse.BhavOperandWizards.WizBhav
             {
                 Bhav wrapper = new Bhav();
                 wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
-                tprp = wrapper.TPRPResource;
+                tprp = (TPRP)wrapper.SiblingResource(TPRP.TPRPtype);
                 nrArgs = wrapper.Header.ArgumentCount;
 
                 this.lbBhavName.Text = "0x" + SimPe.Helper.HexString(inst.OpCode) + ": " + wrapper.FileName;
@@ -192,7 +192,7 @@ namespace pjse.BhavOperandWizards.WizBhav
             ((byte[])inst.Reserved1).CopyTo(operands, 8);
 
             for (int i = 0; i < nrArgs; i++)
-                if (tprp != null && i < tprp.ParamCount) albParams[i].Text = tprp[false, i].Label;
+                if (tprp != null && !tprp.TextOnly && i < tprp.ParamCount) albParams[i].Text = tprp[false, i].Label;
                 else albParams[i].Text = pjse.Localization.GetString("unk");
             for (int i = nrArgs; i < albParams.Length; i++)
                 albParams[i].Text = pjse.Localization.GetString("bwb_unused");

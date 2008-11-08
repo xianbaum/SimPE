@@ -27,8 +27,8 @@
  * the C source of disaSim2, mostly using some quick global replaces.  I (plj)
  * cannot claim any intellectual property rights over that!  Of course, if you
  * find something that this code gets wrong - whether disaSim2 gets it right
- * or not - please let me know by posting on the PJSE forum at
- * http://simlogical.com
+ * or not - please let us know by posting here:
+ * http://forums.modthesims2.com/showthread.php?t=33537
  */
 
 using System;
@@ -1573,33 +1573,35 @@ namespace pjse.BhavNameWizards
 
 			string s = "";
 
+            Boolset options = o[2];
 			Scope scope = Scope.Private;
-			if      ((o[2] & 0x01) != 0) scope = Scope.Global;
-			else if ((o[2] & 0x02) != 0) scope = Scope.SemiGlobal;
+            if      (options[0]) scope = Scope.Global;
+            else if (options[1]) scope = Scope.SemiGlobal;
 
             if (lng)
                 s += pjse.Localization.GetString("bwp1c_treeName") + ": ";
 
-            s += readStr(scope, GS.GlobalStr.NamedTree, (ushort)(o[4] - 1), lng ? -1 : 60, lng ? Detail.Normal : Detail.ErrorNames);
+            s += readStr(scope, GS.GlobalStr.NamedTree, (ushort)(ToShort(o[4], options[6] ? (byte)0 : o[7]) - 1), lng ? -1 : 60, lng ? Detail.Normal : Detail.ErrorNames);
 
 			if (lng)
 			{
                 s += ", " + pjse.Localization.GetString("bwp1c_search") + ": ";
                 s += pjse.Localization.GetString("Private");
-                s += (o[2] & 0x08) == 0 ? " " + pjse.Localization.GetString("SemiGlobal") : "";
-                s += (o[2] & 0x04) == 0 ? " " + pjse.Localization.GetString("Global") : "";
+                s += !options[3] ? " " + pjse.Localization.GetString("SemiGlobal") : "";
+                s += !options[2] ? " " + pjse.Localization.GetString("Global") : "";
 
 				s += ", " + readStr(GS.BhavStr.RTBNType, o[5]);
 
-                if ((o[2] & 0x30) != 0) s += ", " + pjse.Localization.GetString("manyArgs") + ": ";
-                if ((o[2] & 0x10) != 0) // 16 byte format
-				{
-					for (int i = 0; i < 3; i++)
-						s += (i == 0 ? "" : ", ") + dataOwner(o[6 + i*3], o[6 + (i*3) + 1], o[6 + (i*3) + 2]);
-				}
-                if ((o[2] & 0x30) == 0x30) s += ", ";
-                if ((o[2] & 0x20) != 0)
-                    s += pjse.Localization.GetString("bw_callerparams");
+                if (!options[6])
+                {
+                    if ((o[2] & 0x30) != 0) s += ", " + pjse.Localization.GetString("manyArgs") + ": ";
+                    if (options[5])
+                        s += pjse.Localization.GetString("bw_callerparams");
+                    else if (options[4]) // Data Owner format
+                        for (int i = 0; i < 3; i++)
+                            s += (i == 0 ? "" : ", ") + dataOwner(o[6 + i * 3], o[6 + (i * 3) + 1], o[6 + (i * 3) + 2]);
+                    // if ((o[2] & 0x30) == 0x30) s += ", ";
+                }
 			}
 
 			return s;
@@ -4829,7 +4831,7 @@ namespace pjse.BhavNameWizards
 			if ((o[1] & 0x01) != 0)
 				s += dataOwner(0x08, 0);
 			else
-                s += readStr(pjse.GS.BhavStr.Ages, o[0]);
+                s += readStr(pjse.GS.BhavStr.AgePrimAges, o[0]);
 
 			return s;
 #if DISASIM

@@ -117,20 +117,4 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ChooseFolder" xml:space="preserve">
-    <value>Choose the folder for extracted Sim data</value>
-  </data>
-  <data name="nfmTitle" xml:space="preserve">
-    <value>Close window without selection to extract all</value>
-  </data>
-  <data name="pjCHoodHelp" xml:space="preserve">
-    <value>Extract Sim data</value>
-  </data>
-  <data name="pjCHoodTool" xml:space="preserve">
-    <value>Export Sims...</value>
-    <comment>Higher-level menu name is fixed</comment>
-  </data>
-  <data name="pjHoodHelp" xml:space="preserve">
-    <value>Export Sims</value>
-  </data>
 </root>

@@ -48,11 +48,6 @@ namespace SimPe.PackedFiles.Wrapper
         /// Header of the File
         /// </summary>
         private uint[] header = { 0x5452434E, 0x0000004E, 0x00000000 }; // 'TRCN', version, 0
-
-        /// <summary>
-        /// Contains a valid BCON Resource that these labels describe
-        /// </summary>
-        private Bcon bconres = null;
         #endregion
 
         #region Accessor methods
@@ -102,33 +97,13 @@ namespace SimPe.PackedFiles.Wrapper
                     );
             }
         }
-
-
-        /// <summary>
-        /// Returns the Constants described by these labels
-        /// </summary>
-        public Bcon BconResource
-        {
-            get
-            {
-                if (bconres == null && FileDescriptor != null)
-                {
-                    pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x42434F4E, FileDescriptor.Group, FileDescriptor.Instance];
-                    if (items == null || items.Length == 0) return null;
-
-                    bconres = new Bcon();
-                    bconres.ProcessData(items[0].PFD, items[0].Package);
-                }
-
-                return bconres;
-            }
-        }
         #endregion
 
         /// <summary>
         /// Constructor
         /// </summary>
         public Trcn() : base() { }
+
 
         public void CleanUp()
         {
@@ -226,18 +201,12 @@ namespace SimPe.PackedFiles.Wrapper
 
         #endregion
 
+        public static readonly uint Trcntype = 0x5452434E;
         #region IFileWrapper Member
         /// <summary>
         /// Returns a list of File Type this Plugin can process
         /// </summary>
-        public uint[] AssignableTypes
-        {
-            get
-            {
-                uint[] types = { 0x5452434E }; //handles the TRCN File
-                return types;
-            }
-        }
+        public uint[] AssignableTypes { get { return new uint[] { Trcntype }; } }
 
         /// <summary>
         /// Returns the Signature that can be used to identify Files processable with this Plugin

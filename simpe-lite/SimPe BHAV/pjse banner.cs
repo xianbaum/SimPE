@@ -67,6 +67,28 @@ namespace pjse
 
 
         [Category("Appearance")]
+        [DefaultValue("{Type}")]
+        [Description("The label on the View Sibling button.")]
+        [Localizable(true)]
+        public string SiblingText { get { return btnSibling.Text; } set { btnSibling.Text = value; } }
+
+        [Category("Behavior")]
+        [DefaultValue(true)]
+        [Description("True if the View Sibling button should be enabled.")]
+        public bool SiblingEnabled { get { return btnSibling.Enabled; } set { btnSibling.Enabled = value; } }
+
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [Description("True if the View Sibling button should be visible.")]
+        public bool SiblingVisible { get { return btnSibling.Visible; } set { btnSibling.Visible = value; } }
+
+        [Category("Action")]
+        [Description("Raised when the View Sibling button is clicked.")]
+        public event EventHandler SiblingClick;
+        public virtual void OnSiblingClick(object sender, EventArgs e) { if (SiblingClick != null) { SiblingClick(sender, e); } }
+
+
+        [Category("Appearance")]
         [DefaultValue("View")]
         [Description("The label on the View button.")]
         [Localizable(true)]
@@ -106,6 +128,17 @@ namespace pjse
         public void SetFormCancelButton(Form form) { form.CancelButton = btnFloat; }
 
 
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [Description("True if the Extract button should be visible.")]
+        public bool ExtractVisible { get { return btnExtract.Visible; } set { btnExtract.Visible = value; } }
+
+        [Category("Action")]
+        [Description("Raised when the Extract button is clicked.")]
+        public event EventHandler ExtractClick;
+        public virtual void OnExtractClick(object sender, EventArgs e) { if (ExtractClick != null) { ExtractClick(sender, e); } }
+
+
         [Category("Appearance")]
         [DefaultValue("RFT")]
         [Description("The label on the Refresh Filetable button.")]
@@ -127,12 +160,16 @@ namespace pjse
 
 
 
+        private void btnSibling_Click(object sender, EventArgs e) { OnSiblingClick(this, e); }
+
+        private void btnView_Click(object sender, EventArgs e) { OnViewClick(this, e); }
+
         private void btnFloat_Click(object sender, EventArgs e) { OnFloatClick(this, e); }
+
+        private void btnExtract_Click(object sender, EventArgs e) { OnExtractClick(this, e); }
 
         private void btnRefreshFT_Click(object sender, EventArgs e) { SimPe.FileTable.Reload(); }
 
         private void btnHelp_Click(object sender, System.EventArgs e) { pjse.HelpHelper.Help(helpTarget); }
-
-        private void btnView_Click(object sender, EventArgs e) { OnViewClick(this, e); }
     }
 }

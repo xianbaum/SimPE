@@ -115,9 +115,9 @@ namespace SimPe.PackedFiles.Wrapper
         }
 
 
-		public int ParamCount { get { return paramCount; } }
+		public int ParamCount { get { return duff ? 0 : paramCount; } }
 
-		public int LocalCount { get { return localCount; } }
+		public int LocalCount { get { return duff ? 0 : localCount; } }
 
 
 		#endregion
@@ -139,6 +139,9 @@ namespace SimPe.PackedFiles.Wrapper
         {
             get
             {
+                if (duff)
+                    throw new InvalidOperationException();
+
                 if (local)
                     index += paramCount;
                 else if (index > paramCount)
@@ -315,18 +318,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		#region IFileWrapper Member
+        public static readonly uint TPRPtype = 0x54505250;
+        #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process
 		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {0x54505250}; //handles the TPRP File
-				return types;
-			}
-		}
+		public uint[] AssignableTypes { get { return new uint[] { TPRPtype }; } }
 
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin

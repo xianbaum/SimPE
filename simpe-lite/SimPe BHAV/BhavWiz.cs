@@ -197,7 +197,7 @@ namespace pjse
             PetDecayIndices = 0x1e7, // PJSE: string number stolen (unused)
             SpeciesValues = 0x1e8, // PJSE: PersonData 0xba - Species Values (unused)
             PetTraitFlags = 0x1e9, // PJSE: PersonData 0xc7 - Pet Trait Flags
-            Ages = 0x1ea, // PJSE: string number stolen
+            TTABAges = 0x1ea, // PJSE: string number stolen
             DebugType = 0x1eb, // PJSE: string number stolen
             EffectSSType = 0x1ec, // PJSE: string number stolen
             StopAnimType = 0x1ed, // PJSE: string number stolen
@@ -207,7 +207,8 @@ namespace pjse
             FuncLocationFlags = 0x1f1, // PJSE: string number stolen
             GenericsDesc = 0x1f2, // PJSE: string number stolen
             TnsStyle = 0x1f3,	// PJSE: string number stolen
-            //Str0x01f4 .. 1fd unused
+            AgePrimAges = 0x1f4, // PJSE: string number stolen
+            //Str0x01f5 .. 1fd unused
             GosubAction = 0x1fe, // See Gosub Action prim
             //Str0x01ff Routing slot directions
             HiddenFlags = 0x200,	// ObjectData 0x22 - Hidden Flags
@@ -342,16 +343,6 @@ namespace pjse
         }
 
         public static implicit operator Instruction(BhavWiz b) { return b.instruction; }
-
-        static BhavWiz()
-        {
-            pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
-        }
-
-        static void GFT_FiletableRefresh(object sender, EventArgs e)
-        {
-            gString = new Hashtable();
-        }
 
 
         #region IDisposable Members
@@ -654,18 +645,37 @@ namespace pjse
         }
 
 
-        private static Hashtable gString = new Hashtable();
+        private static Dictionary<GS.BhavStr, List<String>> gString = null;
+        private static Dictionary<GS.BhavStr, List<String>> GString
+        {
+            get
+            {
+                if (gString == null && pjse.FileTable.GFT != null)
+                {
+                    pjse.FileTable.GFT.FiletableRefresh -= new EventHandler(GFT_FiletableRefresh);
+                    gString = new Dictionary<GS.BhavStr, List<String>>();
+                    pjse.FileTable.GFT.FiletableRefresh += new EventHandler(GFT_FiletableRefresh);
+                }
+                return gString;
+            }
+        }
+        static void GFT_FiletableRefresh(object sender, EventArgs e)
+        {
+            gString = new Dictionary<GS.BhavStr, List<String>>();
+        }
+
         public static List<String> readStr(GS.BhavStr instance)
         {
-            if (gString[instance] == null)
+            if (GString == null) return new List<String>();
+            if (!GString.ContainsKey(instance))
             {
                 List<String> list = new List<String>();
                 String s;
                 Str str = new Str(instance);
                 for (ushort i = 0; (s = readStr(str, i, -1, Detail.ValueOnly, false, false)) != null; i++) list.Add(s);
-                gString[instance] = list;
+                GString.Add(instance, list);
             }
-            return (List<String>)gString[instance];
+            return GString[instance];
         }
 
 
@@ -855,8 +865,8 @@ namespace pjse
 
         private string readParamLocal(bool local, Bhav bhav, int sid, Detail detail)
         {
-            TPRP tprp = bhav.TPRPResource;
-            return (tprp != null && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] : ""
+            TPRP tprp = (TPRP)bhav.SiblingResource(TPRP.TPRPtype);
+            return (tprp != null && !tprp.TextOnly && sid < (local ? tprp.LocalCount : tprp.ParamCount)) ? tprp[local, sid] : ""
                 /*(detail == Detail.ValueOnly ? ""
                 : "[No TPRP label for BHAV 0x" + SimPe.Helper.HexString((ushort)bhav.FileDescriptor.Instance)
                 + " " + (local ? "Local" : "Param") + " 0x" + SimPe.Helper.HexString((ushort)sid) + "]")*/
@@ -967,8 +977,8 @@ namespace pjse
             if (temp)
                 return ""; //"Filename: " + bcon.FileName;
 
-            Trcn trcn = bcon.TrcnResource;
-            string label = ((trcn != null && bid < trcn.Count) ? trcn[bid] : "").Trim();
+            Trcn trcn = (Trcn)bcon.SiblingResource(Trcn.Trcntype);
+            string label = ((trcn != null && !trcn.TextOnly && bid < trcn.Count) ? trcn[bid] : "").Trim();
             label = label.Length > 0 ? "\"" + label + "\" " : "";
 
             if (bid >= bcon.Count)

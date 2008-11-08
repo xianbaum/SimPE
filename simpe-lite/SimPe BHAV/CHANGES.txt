@@ -1,3 +1,105 @@
+8 November 2008 10:02 Fix "View" BHAV (make it fill form); change FileTable refresh messages again
+  pjse filetable\
+    FileTable.cs 1.31.4.15
+  SimPe BHAV\
+    BhavForm.resx 1.49.4.6
+
+1 November 2008 15:25 Hourglass for Label Maker; switch between BCON/BHAV and TRCN/TPRP; "Insert Unlinked" special button
+  SimPe BHAV\
+    BconForm.cs 1.25.4.7
+    BconForm.resx 1.15.4.2
+    BhavForm.cs 1.89.4.13
+    BhavForm.resx 1.49.4.5
+    BhavInstListControl.cs 1.46.6.1
+    BhavWrapper.cs 1.50.4.4
+    pjse banner.cs 1.1.4.3
+    pjse banner.Designer.cs 1.1.4.3
+    pjse banner.resx 1.1.2.1
+    TPRPForm.cs 1.14.4.2
+    TPRPForm.resx 1.10.4.2
+    TrcnForm.cs 1.22.2.5
+    TrcnForm.resx 1.14.2.3
+
+25 October 2008 21:13 Mostly make RTBN handle op[2] bit 6
+  * Also allow "early" start of Filetable (remove all static stuff, handle null in BhavWiz.readStr)
+  * Also split Ages STR# between Age prim and TTAB
+  * Also, finally give in and write a UI for a data owner
+  pjse filetable\
+    FileTable.cs 1.31.4.14
+  SimPe BHAV\
+   BhavOperandWiz.cs 1.19.6.2
+   BhavOperandWiz0x001c.cs 1.7.6.1
+   BhavOperandWiz0x001c.resx 1.4.6.1
+   BhavWiz.cs 1.56.6.5
+   BhavWizPrim.cs 1.51.4.1
+   LabelledDataOwner.cs 1.1.2.1
+   LabelledDataOwner.Designer.cs 1.1.2.1
+   LabelledDataOwner.resx 1.1.2.1
+   SimPe pjse coder plugin.csprog 1.6.4.3
+   TtabItemMotiveTableUI.cs 1.17.6.1
+ GlobalStrings.package 1.31.4.7
+
+25 October 2008 09:25 Try to get CRES processing somewhat more stable.
+  * This change gets rid of an apparent UI lock in .Net2 code by not trying to instantiate a new WaitingScreen
+  * window whilst trying to refresh the content of a ListBox (a potential race condition, I guess).
+  pjse filetable\
+    FileTable.cs 1.31.4.13
+
+20 October 2008 17:45 Remove cross-wrapper dependencies
+  pjse Localisation\
+    Localization.resx 1.17.4.9
+  SimPe BHAV\
+    BconForm.cs 1.25.4.6
+    BconWrapper.cs 1.12.4.3
+    BhavForm.cs 1.89.4.12
+    BhavOperandWizBhav.cs 1.10.6.2
+    BhavWiz.cs 1.56.6.4
+    BhavWizBhav.cs 1.22.6.2
+    BhavWrapper.cs 1.50.4.3
+    TPRPWrapper.cs 1.7.6.2
+    TrcnForm.cs 1.22.2.4
+    TrcnWrapper.cs 1.14.2.5
+
+11 October 2008 10:32 GUID Tool: more robust handling of expected hex
+  pjse GUID Tool\
+    GUIDTool.cs 1.15.4.2
+
+7 October 2008 15:46 Filetable: Ensure "Please wait..." gets removed, even if an error occurs
+  pjse filetable\
+    FileTable.cs 1.31.4.12
+
+7 October 2008 14:23 Keep resource labels in step
+  SimPe BHAV\
+    BconForm.cs 1.25.4.5
+    BconWrapper.cs 1.12.4.2
+    BhavWrapper.cs 1.50.4.2
+    ExtendedWrapper.cs 1.9.6.4
+    TrcnForm.cs 1.22.2.3
+    TrcnWrapper.cs 1.14.2.4
+
+5 October 2008 14:00 Filetable: Tiny cosmetic change to splash
+
+5 October 2008 12:40 Filetable: Refinements to splash handling
+  pjse filetable\
+    FileTable.cs 1.31.4.10
+
+4 October 2008 09:22 Filetable: Improved splash UI
+  pjse filetable\
+    FileTable.cs 1.31.4.9
+    SimPe pjse filetable.csproj 1.2.6.1
+
+27 September 2008 15:32 Extract button requested on View and Float windows
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.11
+    ExtractCurrent.cs 1.1.2.1
+    pjse banner.cs 1.1.4.2
+    pjse banner.Designer.cs 1.1.4.2
+    SimPe pjse coder plugin.csproj 1.6.4.2
+
+27 September 2008 13:36 Suppress warning (cut-n-paste error)
+  SimPe BHAV\
+    StrWrapper.cs 1.19.6.8
+
 19 September 2008 19:23 TokenOpsSingular, 0x1e5, swap Get/Set Property at Index operations
   GlobalStrings.package 1.37
 

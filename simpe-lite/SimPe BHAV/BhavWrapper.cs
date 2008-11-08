@@ -50,11 +50,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Stores the Header
 		/// </summary>
 		private BhavHeader header;
-
-		/// <summary>
-		/// Contains a valid TPRP Resource that describes the Params and Locals for this BHAV
-		/// </summary>
-		private TPRP tprpres = null;
 		#endregion
 
 		#region Accessor methods
@@ -78,31 +73,11 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Returns the Header
 		/// </summary>
 		public BhavHeader Header { get { return header; } }
-
-
-
-		/// <summary>
-		/// Returns the Labels describing the Params and Locals for this BHAV
-		/// </summary>
-		public TPRP TPRPResource
-		{
-			get 
-			{
-				if (tprpres == null && FileDescriptor != null)
-				{
-					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x54505250, FileDescriptor.Group, FileDescriptor.Instance];
-					if (items == null || items.Length == 0) return null;
-
-					tprpres = new TPRP();
-					tprpres.ProcessData(items[0].PFD, items[0].Package);
-				}
-
-				return tprpres;
-			}
-		}
 		#endregion
 
+
         public Bhav() : base() { header = new BhavHeader(this); }
+
 
         private void SortSwap(int a, int b)
         {
@@ -274,20 +249,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		#region IFileWrapper Member
+        public static readonly uint Bhavtype = 0x42484156;
+        #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process
 		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {
-								   0x42484156  // BHAV
-							   };
-				return types;
-			}
-		}
+        public uint[] AssignableTypes { get { return new uint[] { Bhavtype }; } }
 
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin

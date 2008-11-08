@@ -174,6 +174,7 @@ namespace SimPe.PackedFiles.UserInterface
                     switch (type)
                     {
                         case BhavUIAddType.Default: break;
+                        case BhavUIAddType.Unlinked: break;
                         case BhavUIAddType.ViaTrue: ((Instruction)wrapper[csel]).Target1 = (ushort)newLine; break;
                         case BhavUIAddType.ViaFalse: ((Instruction)wrapper[csel]).Target2 = (ushort)newLine; break;
                     }
@@ -769,6 +770,7 @@ namespace SimPe.PackedFiles.UserInterface
 		 Default = 0
 		,ViaTrue = 1
 		,ViaFalse = 2
+        ,Unlinked = 3
 	}
 
 	public enum BhavUIDeleteType : int

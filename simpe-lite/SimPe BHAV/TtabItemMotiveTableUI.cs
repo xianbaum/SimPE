@@ -161,7 +161,7 @@ namespace SimPe.PackedFiles.UserInterface
                 TtabMotiveGroupUI c = new TtabMotiveGroupUI();
                 c.MotiveGroup = item[0];
                 if (item.Type == TtabItemMotiveTableType.Human)
-                    c.MGName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Ages, 0);
+                    c.MGName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.TTABAges, 0);
                 else
                     c.MGName = "[0]";
                 setLocations(c);
@@ -176,7 +176,7 @@ namespace SimPe.PackedFiles.UserInterface
                         this.pnAllGroups.Controls.Add(c);
                         c.MotiveGroup = item[i];
                         if (item.Type == TtabItemMotiveTableType.Human)
-                            c.MGName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.Ages, (ushort)i);
+                            c.MGName = pjse.BhavWiz.readStr(pjse.GS.BhavStr.TTABAges, (ushort)i);
                         else
                             c.MGName = "[" + i.ToString() + "]";
                         c.Location = new Point(nextLeft, 0);

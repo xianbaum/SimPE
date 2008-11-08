@@ -279,6 +279,60 @@
   <data name="&gt;&gt;label5.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="&gt;&gt;btnCancel.Name" xml:space="preserve">
+    <value>btnCancel</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.Parent" xml:space="preserve">
+    <value>gbValue</value>
+  </data>
+  <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;label6.Name" xml:space="preserve">
+    <value>label6</value>
+  </data>
+  <data name="&gt;&gt;label6.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label6.Parent" xml:space="preserve">
+    <value>gbValue</value>
+  </data>
+  <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="gbValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 81</value>
+  </data>
+  <data name="gbValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="gbValue.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="gbValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 88</value>
+  </data>
+  <data name="gbValue.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="gbValue.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="&gt;&gt;gbValue.Name" xml:space="preserve">
+    <value>gbValue</value>
+  </data>
+  <data name="&gt;&gt;gbValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbValue.Parent" xml:space="preserve">
+    <value>bconPanel</value>
+  </data>
+  <data name="&gt;&gt;gbValue.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
   <data name="btnCancel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
@@ -342,36 +396,6 @@
   <data name="&gt;&gt;label6.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="gbValue.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 81</value>
-  </data>
-  <data name="gbValue.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="gbValue.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="gbValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>89, 88</value>
-  </data>
-  <data name="gbValue.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="gbValue.Text" xml:space="preserve">
-    <value>Value</value>
-  </data>
-  <data name="&gt;&gt;gbValue.Name" xml:space="preserve">
-    <value>gbValue</value>
-  </data>
-  <data name="&gt;&gt;gbValue.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbValue.Parent" xml:space="preserve">
-    <value>bconPanel</value>
-  </data>
-  <data name="&gt;&gt;gbValue.ZOrder" xml:space="preserve">
-    <value>14</value>
-  </data>
   <data name="bconPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -430,7 +454,7 @@
     <value>cmpBCON</value>
   </data>
   <data name="&gt;&gt;cmpBCON.Type" xml:space="preserve">
-    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3091.24396, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3227.23881, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cmpBCON.Parent" xml:space="preserve">
     <value>bconPanel</value>
@@ -517,6 +541,9 @@ View original.</value>
   <data name="pjse_banner1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
+  <data name="pjse_banner1.SiblingText" xml:space="preserve">
+    <value>TRCN</value>
+  </data>
   <data name="pjse_banner1.Size" type="System.Drawing.Size, System.Drawing">
     <value>731, 27</value>
   </data>
@@ -530,7 +557,7 @@ View original.</value>
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3091.24396, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3227.23881, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>bconPanel</value>
@@ -709,24 +736,6 @@ View original.</value>
   <data name="lvConstants.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="chID.Text" xml:space="preserve">
-    <value>Line</value>
-  </data>
-  <data name="chID.Width" type="System.Int32, mscorlib">
-    <value>89</value>
-  </data>
-  <data name="chValue.Text" xml:space="preserve">
-    <value>Value</value>
-  </data>
-  <data name="chValue.Width" type="System.Int32, mscorlib">
-    <value>66</value>
-  </data>
-  <data name="chLabel.Text" xml:space="preserve">
-    <value>Label</value>
-  </data>
-  <data name="chLabel.Width" type="System.Int32, mscorlib">
-    <value>374</value>
-  </data>
   <data name="lvConstants.Items" mimetype="application/x-microsoft.net.object.binary.base64">
     <value>
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj0yLjAuMC4w
@@ -867,6 +876,24 @@ View original.</value>
   </data>
   <data name="&gt;&gt;bconPanel.ZOrder" xml:space="preserve">
     <value>0</value>
+  </data>
+  <data name="chID.Text" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="chID.Width" type="System.Int32, mscorlib">
+    <value>89</value>
+  </data>
+  <data name="chValue.Text" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="chValue.Width" type="System.Int32, mscorlib">
+    <value>66</value>
+  </data>
+  <data name="chLabel.Text" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="chLabel.Width" type="System.Int32, mscorlib">
+    <value>374</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

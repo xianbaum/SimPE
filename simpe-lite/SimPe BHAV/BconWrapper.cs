@@ -48,11 +48,6 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Just A Flag
 		/// </summary>
 		private bool flag = false;
-
-		/// <summary>
-		/// Contains a valid TRCN Resource that describes these values
-		/// </summary>
-		private Trcn trcnres = null;
 		#endregion
 
 		#region Accessor methods
@@ -87,46 +82,12 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-
-
-		/// <summary>
-		/// Returns the Labels describing these constants
-		/// </summary>
-		public Trcn TrcnResource
-		{
-			get 
-			{
-                if (FileDescriptor == null) return null;
-
-				if (trcnres == null)
-				{
-					pjse.FileTable.Entry[] items = pjse.FileTable.GFT[0x5452434E, FileDescriptor.Group, FileDescriptor.Instance];
-					if (items == null || items.Length == 0) return null;
-
-					trcnres = new Trcn();
-					trcnres.ProcessData(items[0].PFD, items[0].Package);
-                    trcnres.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
-                    this.FileDescriptor.DescriptionChanged += new EventHandler(FileDescriptor_DescriptionChanged);
-                }
-
-                return trcnres.TextOnly ? null : trcnres;
-			}
-		}
-
 		#endregion
 
 		/// <summary>
 		/// Constructor
 		/// </summary>
         public Bcon() : base() { }
-
-        void FileDescriptor_DescriptionChanged(object sender, EventArgs e)
-        {
-            this.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);
-            if (trcnres.FileDescriptor != null)
-                trcnres.FileDescriptor.DescriptionChanged -= new EventHandler(FileDescriptor_DescriptionChanged);
-            trcnres = null;
-        }
 
 
 		#region AbstractWrapper Member
@@ -197,18 +158,12 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		#region IFileWrapper Member
-		/// <summary>
+        public static readonly uint Bcontype = 0x42434F4E;
+        #region IFileWrapper Member
+        /// <summary>
 		/// Returns a list of File Type this Plugin can process
 		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {0x42434F4E};	 // BCON
-				return types;
-			}
-		}
+		public uint[] AssignableTypes { get { return new uint[] { Bcontype }; } }
 
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin

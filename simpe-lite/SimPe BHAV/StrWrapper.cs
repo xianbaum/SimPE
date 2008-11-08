@@ -300,7 +300,7 @@ namespace SimPe.PackedFiles.Wrapper
             return base.Remove(item);
         }
 
-        public new bool Remove(byte lid)
+        public bool Remove(byte lid)
         {
             foreach (StrItem si in items) if (si.LanguageID == lid) si.Title = si.Description = "";
             CleanUp();

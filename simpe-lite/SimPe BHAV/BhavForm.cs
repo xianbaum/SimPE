@@ -129,6 +129,7 @@ namespace SimPe.PackedFiles.UserInterface
         private ToolTip ttBhavForm;
         private pjse_banner pjse_banner1;
         private CompareButton cmpBHAV;
+        private Button btnInsUnlinked;
         private IContainer components;
         #endregion
        
@@ -530,73 +531,103 @@ namespace SimPe.PackedFiles.UserInterface
             }
         }
 
-		private void TPRPMaker()
-		{
-			int minArgc = 0;
-			int minLocalC = 0;
-			TPRP tprp = wrapper.TPRPResource;
+        private void TPRPMaker()
+        {
+            bhavPanel.Cursor = Cursors.WaitCursor;
+            Application.UseWaitCursor = true;
+            try
+            {
+                int minArgc = 0;
+                int minLocalC = 0;
+                TPRP tprp = (TPRP)wrapper.SiblingResource(TPRP.TPRPtype); // find TPRP for this BHAV
 
-			wrapper.Package.BeginUpdate();
+                wrapper.Package.BeginUpdate();
 
-			// find TPRP for this BHAV
-			if (tprp != null)
-			{
-				// if it exists ask if user wants to preserve content
-				DialogResult dr = MessageBox.Show(
-                    pjse.Localization.GetString("ml_keeplabels")
-					, btnTPRPMaker.Text
-					, MessageBoxButtons.YesNoCancel
-					, MessageBoxIcon.Warning);
-				if (dr == DialogResult.Cancel)
-					return;
-
-                if (!tprp.Package.Equals(wrapper.Package))
+                if (tprp != null && tprp.TextOnly)
                 {
-                    // Clone the original into this package
-                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd
-                        = wrapper.Package.Add(0x54505250, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
-                    tprp = new TPRP();
-                    tprp.ProcessData(npfd, wrapper.Package);
-                    tprp.FileName = wrapper.FileName;
+                    // if it exists but is unreadable, as if user wants to overwrite
+                    DialogResult dr = MessageBox.Show(
+                        pjse.Localization.GetString("ml_overwriteduff")
+                        , btnTPRPMaker.Text
+                        , MessageBoxButtons.OKCancel
+                        , MessageBoxIcon.Warning);
+                    if (dr != DialogResult.OK)
+                        return;
+                    wrapper.Package.Remove(tprp.FileDescriptor);
+                    tprp = null;
+                }
+                if (tprp != null)
+                {
+                    // if it exists ask if user wants to preserve content
+                    DialogResult dr = MessageBox.Show(
+                        pjse.Localization.GetString("ml_keeplabels")
+                        , btnTPRPMaker.Text
+                        , MessageBoxButtons.YesNoCancel
+                        , MessageBoxIcon.Warning);
+                    if (dr == DialogResult.Cancel)
+                        return;
+
+                    if (!tprp.Package.Equals(wrapper.Package))
+                    {
+                        // Clone the original into this package
+                        if (dr == DialogResult.Yes) Wait.MaxProgress = tprp.Count;
+                        SimPe.Interfaces.Files.IPackedFileDescriptor npfd = tprp.FileDescriptor.Clone();
+                        TPRP ntprp = new TPRP();
+                        ntprp.FileDescriptor = npfd;
+                        wrapper.Package.Add(npfd, true);
+                        if (dr == DialogResult.Yes) foreach (TPRPItem item in tprp) { ntprp.Add(item.Clone()); Wait.Progress++; }
+                        tprp = ntprp;
+                        tprp.SynchronizeUserData();
+                        Wait.MaxProgress = 0;
+                    }
+
                     if (dr == DialogResult.Yes)
-                        foreach (TPRPItem item in wrapper.TPRPResource) tprp.Add(item);
+                    {
+                        minArgc = tprp.ParamCount;
+                        minLocalC = tprp.LocalCount;
+                    }
+                    else
+                        tprp.Clear();
+                }
+                else
+                {
+                    // create a new TPRP file
+                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
+                    tprp = new TPRP();
+                    npfd.Type = TPRP.TPRPtype;
+                    tprp.FileDescriptor = npfd;
+                    wrapper.Package.Add(npfd, true);
+                    tprp.SynchronizeUserData();
                 }
 
-                if (dr == DialogResult.Yes)
-				{
-					minArgc = tprp.ParamCount;
-					minLocalC = tprp.LocalCount;
-				}
-				else
-					tprp.Clear();
-			}
-			else
-			{
-				// create a new TPRP file
-				SimPe.Interfaces.Files.IPackedFileDescriptor npfd
-					= wrapper.Package.Add(0x54505250, 0, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.Instance);
-				tprp = new TPRP();
-				tprp.ProcessData(npfd, wrapper.Package);
-				tprp.FileName = wrapper.FileName;
-			}
+                Wait.MaxProgress = wrapper.Header.ArgumentCount - minArgc + wrapper.Header.LocalVarCount - minLocalC;
+                tprp.FileName = wrapper.FileName;
 
-			for(int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
-			{
-				tprp.Add(new TPRPParamLabel(tprp));
-				tprp[false, tprp.ParamCount - 1].Label = BhavWiz.dnParam() + " " + arg.ToString();
-			}
-			for(int local = minLocalC; local < wrapper.Header.LocalVarCount; local++)
-			{
-				tprp.Add(new TPRPLocalLabel(tprp));
-                tprp[true, tprp.LocalCount - 1].Label = BhavWiz.dnLocal() + " " + local.ToString();
-			}
-			tprp.SynchronizeUserData();
-			wrapper.Package.EndUpdate();
-            pjse.FileTable.GFT.Refresh();
+                for (int arg = minArgc; arg < wrapper.Header.ArgumentCount; arg++)
+                {
+                    tprp.Add(new TPRPParamLabel(tprp));
+                    tprp[false, tprp.ParamCount - 1].Label = BhavWiz.dnParam() + " " + arg.ToString();
+                    Wait.Progress++;
+                }
+                for (int local = minLocalC; local < wrapper.Header.LocalVarCount; local++)
+                {
+                    tprp.Add(new TPRPLocalLabel(tprp));
+                    tprp[true, tprp.LocalCount - 1].Label = BhavWiz.dnLocal() + " " + local.ToString();
+                    Wait.Progress++;
+                }
+                tprp.SynchronizeUserData();
+                wrapper.Package.EndUpdate();
+            }
+            finally
+            {
+                Wait.SubStop();
+                bhavPanel.Cursor = Cursors.Default;
+                Application.UseWaitCursor = false;
+            }
             MessageBox.Show(
                 pjse.Localization.GetString("ml_done")
                 , btnTPRPMaker.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
-		}
+        }
 
 
 		private short OpsToShort(byte lo, byte hi)
@@ -680,7 +711,8 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void FiletableRefresh(object sender, System.EventArgs e)
 		{
-			UpdateInstPanel();
+            pjse_banner1.SiblingEnabled = wrapper != null && wrapper.SiblingResource(TPRP.TPRPtype) != null;
+            UpdateInstPanel();
 		}
 
 		#endregion
@@ -710,6 +742,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = false;
 
 			this.WrapperChanged(wrapper, null);
+            pjse_banner1.SiblingEnabled = wrapper.SiblingResource(TPRP.TPRPtype) != null;
 
 			currentInst = null;
 			origInst = null;
@@ -760,6 +793,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         void FileDescriptor_DescriptionChanged(object sender, EventArgs e)
         {
+            pjse_banner1.SiblingEnabled = wrapper.SiblingResource(TPRP.TPRPtype) != null;
             if (isPopup)
                 this.Text = formTitle;
             else
@@ -865,15 +899,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.bhavPanel = new System.Windows.Forms.Panel();
             this.pjse_banner1 = new pjse.pjse_banner();
             this.lbHidesOP = new System.Windows.Forms.Label();
-            this.llHidesOP = new System.Windows.Forms.LinkLabel();
-            this.tbHidesOP = new System.Windows.Forms.TextBox();
-            this.cbSpecial = new System.Windows.Forms.CheckBox();
-            this.btnCopyBHAV = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.tbHeaderFlag = new System.Windows.Forms.TextBox();
-            this.lbHeaderFlag = new System.Windows.Forms.Label();
-            this.tbCacheFlags = new System.Windows.Forms.TextBox();
-            this.cbFormat = new System.Windows.Forms.ComboBox();
             this.gbSpecial = new System.Windows.Forms.GroupBox();
             this.cmpBHAV = new pjse.CompareButton();
             this.btnPasteListing = new System.Windows.Forms.Button();
@@ -883,9 +908,19 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnDelPescado = new System.Windows.Forms.Button();
             this.btnLinkInge = new System.Windows.Forms.Button();
             this.btnGUIDIndex = new System.Windows.Forms.Button();
+            this.btnInsUnlinked = new System.Windows.Forms.Button();
             this.btnDelMerola = new System.Windows.Forms.Button();
             this.btnCopyListing = new System.Windows.Forms.Button();
             this.btnTPRPMaker = new System.Windows.Forms.Button();
+            this.llHidesOP = new System.Windows.Forms.LinkLabel();
+            this.tbHidesOP = new System.Windows.Forms.TextBox();
+            this.cbSpecial = new System.Windows.Forms.CheckBox();
+            this.btnCopyBHAV = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.tbHeaderFlag = new System.Windows.Forms.TextBox();
+            this.lbHeaderFlag = new System.Windows.Forms.Label();
+            this.tbCacheFlags = new System.Windows.Forms.TextBox();
+            this.cbFormat = new System.Windows.Forms.ComboBox();
             this.pnflowcontainer = new SimPe.PackedFiles.UserInterface.BhavInstListControl();
             this.btnDel = new System.Windows.Forms.Button();
             this.gbMove = new System.Windows.Forms.GroupBox();
@@ -1276,6 +1311,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.bhavPanel.BackColor = System.Drawing.SystemColors.Control;
             this.bhavPanel.Controls.Add(this.pjse_banner1);
             this.bhavPanel.Controls.Add(this.lbHidesOP);
+            this.bhavPanel.Controls.Add(this.gbSpecial);
             this.bhavPanel.Controls.Add(this.llHidesOP);
             this.bhavPanel.Controls.Add(this.tbHidesOP);
             this.bhavPanel.Controls.Add(this.cbSpecial);
@@ -1285,7 +1321,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.bhavPanel.Controls.Add(this.lbHeaderFlag);
             this.bhavPanel.Controls.Add(this.tbCacheFlags);
             this.bhavPanel.Controls.Add(this.cbFormat);
-            this.bhavPanel.Controls.Add(this.gbSpecial);
             this.bhavPanel.Controls.Add(this.pnflowcontainer);
             this.bhavPanel.Controls.Add(this.btnDel);
             this.bhavPanel.Controls.Add(this.gbMove);
@@ -1311,9 +1346,13 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
             this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.ExtractVisible = true;
             this.pjse_banner1.FloatVisible = true;
             this.pjse_banner1.Name = "pjse_banner1";
+            this.pjse_banner1.SiblingVisible = true;
             this.pjse_banner1.ViewVisible = true;
+            this.pjse_banner1.ExtractClick += new System.EventHandler(this.pjse_banner1_ExtractClick);
+            this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
             this.pjse_banner1.ViewClick += new System.EventHandler(this.pjse_banner1_ViewClick);
             this.pjse_banner1.FloatClick += new System.EventHandler(this.btnFloat_Click);
             // 
@@ -1321,6 +1360,99 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.lbHidesOP, "lbHidesOP");
             this.lbHidesOP.Name = "lbHidesOP";
+            // 
+            // gbSpecial
+            // 
+            resources.ApplyResources(this.gbSpecial, "gbSpecial");
+            this.gbSpecial.Controls.Add(this.cmpBHAV);
+            this.gbSpecial.Controls.Add(this.btnPasteListing);
+            this.gbSpecial.Controls.Add(this.btnAppend);
+            this.gbSpecial.Controls.Add(this.btnInsTrue);
+            this.gbSpecial.Controls.Add(this.btnInsFalse);
+            this.gbSpecial.Controls.Add(this.btnDelPescado);
+            this.gbSpecial.Controls.Add(this.btnLinkInge);
+            this.gbSpecial.Controls.Add(this.btnGUIDIndex);
+            this.gbSpecial.Controls.Add(this.btnInsUnlinked);
+            this.gbSpecial.Controls.Add(this.btnDelMerola);
+            this.gbSpecial.Controls.Add(this.btnCopyListing);
+            this.gbSpecial.Controls.Add(this.btnTPRPMaker);
+            this.gbSpecial.Name = "gbSpecial";
+            this.gbSpecial.TabStop = false;
+            // 
+            // cmpBHAV
+            // 
+            resources.ApplyResources(this.cmpBHAV, "cmpBHAV");
+            this.cmpBHAV.Name = "cmpBHAV";
+            this.cmpBHAV.UseVisualStyleBackColor = true;
+            this.cmpBHAV.Wrapper = null;
+            this.cmpBHAV.WrapperName = null;
+            this.cmpBHAV.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBHAV_CompareWith);
+            // 
+            // btnPasteListing
+            // 
+            resources.ApplyResources(this.btnPasteListing, "btnPasteListing");
+            this.btnPasteListing.Name = "btnPasteListing";
+            this.btnPasteListing.Click += new System.EventHandler(this.btnPasteListing_Click);
+            // 
+            // btnAppend
+            // 
+            resources.ApplyResources(this.btnAppend, "btnAppend");
+            this.btnAppend.Name = "btnAppend";
+            this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
+            // 
+            // btnInsTrue
+            // 
+            resources.ApplyResources(this.btnInsTrue, "btnInsTrue");
+            this.btnInsTrue.Name = "btnInsTrue";
+            this.btnInsTrue.Click += new System.EventHandler(this.btnInsVia_Click);
+            // 
+            // btnInsFalse
+            // 
+            resources.ApplyResources(this.btnInsFalse, "btnInsFalse");
+            this.btnInsFalse.Name = "btnInsFalse";
+            this.btnInsFalse.Click += new System.EventHandler(this.btnInsVia_Click);
+            // 
+            // btnDelPescado
+            // 
+            resources.ApplyResources(this.btnDelPescado, "btnDelPescado");
+            this.btnDelPescado.Name = "btnDelPescado";
+            this.btnDelPescado.Click += new System.EventHandler(this.btnDelPescado_Click);
+            // 
+            // btnLinkInge
+            // 
+            resources.ApplyResources(this.btnLinkInge, "btnLinkInge");
+            this.btnLinkInge.Name = "btnLinkInge";
+            this.btnLinkInge.Click += new System.EventHandler(this.btnLinkInge_Click);
+            // 
+            // btnGUIDIndex
+            // 
+            resources.ApplyResources(this.btnGUIDIndex, "btnGUIDIndex");
+            this.btnGUIDIndex.Name = "btnGUIDIndex";
+            this.btnGUIDIndex.Click += new System.EventHandler(this.btnGUIDIndex_Click);
+            // 
+            // btnInsUnlinked
+            // 
+            resources.ApplyResources(this.btnInsUnlinked, "btnInsUnlinked");
+            this.btnInsUnlinked.Name = "btnInsUnlinked";
+            this.btnInsUnlinked.Click += new System.EventHandler(this.btnInsUnlinked_Click);
+            // 
+            // btnDelMerola
+            // 
+            resources.ApplyResources(this.btnDelMerola, "btnDelMerola");
+            this.btnDelMerola.Name = "btnDelMerola";
+            this.btnDelMerola.Click += new System.EventHandler(this.btnDelMerola_Click);
+            // 
+            // btnCopyListing
+            // 
+            resources.ApplyResources(this.btnCopyListing, "btnCopyListing");
+            this.btnCopyListing.Name = "btnCopyListing";
+            this.btnCopyListing.Click += new System.EventHandler(this.btnCopyListing_Click);
+            // 
+            // btnTPRPMaker
+            // 
+            resources.ApplyResources(this.btnTPRPMaker, "btnTPRPMaker");
+            this.btnTPRPMaker.Name = "btnTPRPMaker";
+            this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
             // 
             // llHidesOP
             // 
@@ -1398,92 +1530,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbFormat.Enter += new System.EventHandler(this.cbHex16_Enter);
             this.cbFormat.Validated += new System.EventHandler(this.cbHex16_Validated);
             this.cbFormat.TextChanged += new System.EventHandler(this.cbHex16_TextChanged);
-            // 
-            // gbSpecial
-            // 
-            resources.ApplyResources(this.gbSpecial, "gbSpecial");
-            this.gbSpecial.Controls.Add(this.cmpBHAV);
-            this.gbSpecial.Controls.Add(this.btnPasteListing);
-            this.gbSpecial.Controls.Add(this.btnAppend);
-            this.gbSpecial.Controls.Add(this.btnInsTrue);
-            this.gbSpecial.Controls.Add(this.btnInsFalse);
-            this.gbSpecial.Controls.Add(this.btnDelPescado);
-            this.gbSpecial.Controls.Add(this.btnLinkInge);
-            this.gbSpecial.Controls.Add(this.btnGUIDIndex);
-            this.gbSpecial.Controls.Add(this.btnDelMerola);
-            this.gbSpecial.Controls.Add(this.btnCopyListing);
-            this.gbSpecial.Controls.Add(this.btnTPRPMaker);
-            this.gbSpecial.Name = "gbSpecial";
-            this.gbSpecial.TabStop = false;
-            // 
-            // cmpBHAV
-            // 
-            resources.ApplyResources(this.cmpBHAV, "cmpBHAV");
-            this.cmpBHAV.Name = "cmpBHAV";
-            this.cmpBHAV.UseVisualStyleBackColor = true;
-            this.cmpBHAV.Wrapper = null;
-            this.cmpBHAV.WrapperName = null;
-            this.cmpBHAV.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBHAV_CompareWith);
-            // 
-            // btnPasteListing
-            // 
-            resources.ApplyResources(this.btnPasteListing, "btnPasteListing");
-            this.btnPasteListing.Name = "btnPasteListing";
-            this.btnPasteListing.Click += new System.EventHandler(this.btnPasteListing_Click);
-            // 
-            // btnAppend
-            // 
-            resources.ApplyResources(this.btnAppend, "btnAppend");
-            this.btnAppend.Name = "btnAppend";
-            this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
-            // 
-            // btnInsTrue
-            // 
-            resources.ApplyResources(this.btnInsTrue, "btnInsTrue");
-            this.btnInsTrue.Name = "btnInsTrue";
-            this.btnInsTrue.Click += new System.EventHandler(this.btnInsVia_Click);
-            // 
-            // btnInsFalse
-            // 
-            resources.ApplyResources(this.btnInsFalse, "btnInsFalse");
-            this.btnInsFalse.Name = "btnInsFalse";
-            this.btnInsFalse.Click += new System.EventHandler(this.btnInsVia_Click);
-            // 
-            // btnDelPescado
-            // 
-            resources.ApplyResources(this.btnDelPescado, "btnDelPescado");
-            this.btnDelPescado.Name = "btnDelPescado";
-            this.btnDelPescado.Click += new System.EventHandler(this.btnDelPescado_Click);
-            // 
-            // btnLinkInge
-            // 
-            resources.ApplyResources(this.btnLinkInge, "btnLinkInge");
-            this.btnLinkInge.Name = "btnLinkInge";
-            this.btnLinkInge.Click += new System.EventHandler(this.btnLinkInge_Click);
-            // 
-            // btnGUIDIndex
-            // 
-            resources.ApplyResources(this.btnGUIDIndex, "btnGUIDIndex");
-            this.btnGUIDIndex.Name = "btnGUIDIndex";
-            this.btnGUIDIndex.Click += new System.EventHandler(this.btnGUIDIndex_Click);
-            // 
-            // btnDelMerola
-            // 
-            resources.ApplyResources(this.btnDelMerola, "btnDelMerola");
-            this.btnDelMerola.Name = "btnDelMerola";
-            this.btnDelMerola.Click += new System.EventHandler(this.btnDelMerola_Click);
-            // 
-            // btnCopyListing
-            // 
-            resources.ApplyResources(this.btnCopyListing, "btnCopyListing");
-            this.btnCopyListing.Name = "btnCopyListing";
-            this.btnCopyListing.Click += new System.EventHandler(this.btnCopyListing_Click);
-            // 
-            // btnTPRPMaker
-            // 
-            resources.ApplyResources(this.btnTPRPMaker, "btnTPRPMaker");
-            this.btnTPRPMaker.Name = "btnTPRPMaker";
-            this.btnTPRPMaker.Click += new System.EventHandler(this.btnTPRPMaker_Click);
             // 
             // pnflowcontainer
             // 
@@ -1722,6 +1768,13 @@ namespace SimPe.PackedFiles.UserInterface
 		}
 
 
+        private void pjse_banner1_SiblingClick(object sender, EventArgs e)
+        {
+            TPRP tprp = (TPRP)wrapper.SiblingResource(TPRP.TPRPtype);
+            if (tprp != null)
+                SimPe.RemoteControl.OpenPackedFile(tprp.FileDescriptor, tprp.Package);
+        }
+
         private void btnFloat_Click(object sender, EventArgs e)
         {
             Control old = this.bhavPanel.Parent;
@@ -1786,6 +1839,9 @@ namespace SimPe.PackedFiles.UserInterface
             TakeACopy();
             btnCopyBHAV.Text = pjse.Localization.GetString("ml_done");
         }
+
+
+        private void pjse_banner1_ExtractClick(object sender, EventArgs e) { pjse.ExtractCurrent.Execute(wrapper, pjse_banner1.TitleText); }
 
 
 		private void btnOpCode_Clicked(object sender, System.EventArgs e)
@@ -2250,6 +2306,11 @@ namespace SimPe.PackedFiles.UserInterface
 			this.TPRPMaker();
 		}
 
+        private void btnInsUnlinked_Click(object sender, EventArgs e)
+        {
+            this.pnflowcontainer.Add(BhavUIAddType.Unlinked);
+        }
+
 
         private void btnGUIDIndex_Click(object sender, EventArgs e)
         {
@@ -2323,6 +2384,5 @@ namespace SimPe.PackedFiles.UserInterface
                     pjse.GUIDIndex.TheGUIDIndex.Save(fd.FileName);
             }
         }
-
 	}
 }
