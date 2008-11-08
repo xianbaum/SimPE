@@ -1,3 +1,9 @@
+8 November 2008 10:02 Fix "View" BHAV (make it fill form); change FileTable refresh messages again
+  pjse filetable\
+    FileTable.cs 1.31.4.15
+  SimPe BHAV\
+    BhavForm.resx 1.49.4.6
+
 1 November 2008 15:25 Hourglass for Label Maker; switch between BCON/BHAV and TRCN/TPRP; "Insert Unlinked" special button
   SimPe BHAV\
     BconForm.cs 1.25.4.7

@@ -1160,7 +1160,7 @@ text for copying</value>
     <value>31</value>
   </data>
   <data name="gbInstruction.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 86</value>
+    <value>395, 86</value>
   </data>
   <data name="gbInstruction.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1202,7 +1202,7 @@ text for copying</value>
     <value>64</value>
   </data>
   <data name="tbFilename.Size" type="System.Drawing.Size, System.Drawing">
-    <value>98, 20</value>
+    <value>97, 20</value>
   </data>
   <data name="tbFilename.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -1262,7 +1262,7 @@ text for copying</value>
     <value>Top, Right</value>
   </data>
   <data name="tbLocalC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>728, 60</value>
+    <value>727, 60</value>
   </data>
   <data name="tbLocalC.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1300,7 +1300,7 @@ in BHAV</value>
     <value>Top, Right</value>
   </data>
   <data name="tbArgC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>597, 60</value>
+    <value>596, 60</value>
   </data>
   <data name="tbArgC.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1338,7 +1338,7 @@ to BHAV</value>
     <value>Top, Right</value>
   </data>
   <data name="tbType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>344, 32</value>
+    <value>343, 32</value>
   </data>
   <data name="tbType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -1377,7 +1377,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="lbTreeVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>494, 34</value>
+    <value>493, 34</value>
   </data>
   <data name="lbTreeVersion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1416,7 +1416,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="lbType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>280, 34</value>
+    <value>279, 34</value>
   </data>
   <data name="lbType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1455,7 +1455,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="lbLocalC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>636, 63</value>
+    <value>635, 63</value>
   </data>
   <data name="lbLocalC.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1494,7 +1494,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="lbArgC.Location" type="System.Drawing.Point, System.Drawing">
-    <value>536, 63</value>
+    <value>535, 63</value>
   </data>
   <data name="lbArgC.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1533,7 +1533,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="lbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>161, 34</value>
+    <value>160, 34</value>
   </data>
   <data name="lbFormat.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1584,7 +1584,7 @@ to BHAV</value>
     <value>TPRP</value>
   </data>
   <data name="pjse_banner1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>759, 28</value>
+    <value>758, 28</value>
   </data>
   <data name="pjse_banner1.TabIndex" type="System.Int32, mscorlib">
     <value>22</value>
@@ -1596,7 +1596,7 @@ to BHAV</value>
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3227.23881, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3228.27747, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -1614,7 +1614,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="lbHidesOP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 444</value>
+    <value>395, 444</value>
   </data>
   <data name="lbHidesOP.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -1665,7 +1665,7 @@ to BHAV</value>
     <value>cmpBHAV</value>
   </data>
   <data name="&gt;&gt;cmpBHAV.Type" xml:space="preserve">
-    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3227.23881, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3228.27747, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cmpBHAV.Parent" xml:space="preserve">
     <value>gbSpecial</value>
@@ -2004,7 +2004,7 @@ to BHAV</value>
     <value>11</value>
   </data>
   <data name="gbSpecial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 336</value>
+    <value>395, 336</value>
   </data>
   <data name="gbSpecial.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2049,7 +2049,7 @@ to BHAV</value>
     <value>27, 13</value>
   </data>
   <data name="llHidesOP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 428</value>
+    <value>395, 428</value>
   </data>
   <data name="llHidesOP.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -2079,7 +2079,7 @@ to BHAV</value>
     <value>Top, Bottom, Right</value>
   </data>
   <data name="tbHidesOP.Location" type="System.Drawing.Point, System.Drawing">
-    <value>399, 465</value>
+    <value>398, 465</value>
   </data>
   <data name="tbHidesOP.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2091,7 +2091,7 @@ to BHAV</value>
     <value>Vertical</value>
   </data>
   <data name="tbHidesOP.Size" type="System.Drawing.Size, System.Drawing">
-    <value>358, 62</value>
+    <value>358, 60</value>
   </data>
   <data name="tbHidesOP.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -2118,7 +2118,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="cbSpecial.Location" type="System.Drawing.Point, System.Drawing">
-    <value>653, 312</value>
+    <value>652, 312</value>
   </data>
   <data name="cbSpecial.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2151,7 +2151,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="btnCopyBHAV.Location" type="System.Drawing.Point, System.Drawing">
-    <value>553, 535</value>
+    <value>552, 533</value>
   </data>
   <data name="btnCopyBHAV.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2187,7 +2187,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="btnClose.Location" type="System.Drawing.Point, System.Drawing">
-    <value>670, 535</value>
+    <value>669, 533</value>
   </data>
   <data name="btnClose.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2220,7 +2220,7 @@ to BHAV</value>
     <value>Top, Right</value>
   </data>
   <data name="tbHeaderFlag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 32</value>
+    <value>455, 32</value>
   </data>
   <data name="tbHeaderFlag.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2259,7 +2259,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="lbHeaderFlag.Location" type="System.Drawing.Point, System.Drawing">
-    <value>382, 34</value>
+    <value>381, 34</value>
   </data>
   <data name="lbHeaderFlag.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -2292,7 +2292,7 @@ to BHAV</value>
     <value>Top, Right</value>
   </data>
   <data name="tbCacheFlags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>728, 32</value>
+    <value>727, 32</value>
   </data>
   <data name="tbCacheFlags.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2358,7 +2358,7 @@ to BHAV</value>
     <value>0x8009</value>
   </data>
   <data name="cbFormat.Location" type="System.Drawing.Point, System.Drawing">
-    <value>208, 32</value>
+    <value>207, 32</value>
   </data>
   <data name="cbFormat.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2397,7 +2397,7 @@ to BHAV</value>
     <value>2, 2, 2, 2</value>
   </data>
   <data name="pnflowcontainer.Size" type="System.Drawing.Size, System.Drawing">
-    <value>392, 505</value>
+    <value>391, 503</value>
   </data>
   <data name="pnflowcontainer.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2406,7 +2406,7 @@ to BHAV</value>
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.3227.23881, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.3228.27747, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -2421,7 +2421,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="btnDel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>571, 310</value>
+    <value>570, 310</value>
   </data>
   <data name="btnDel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2583,7 +2583,7 @@ to BHAV</value>
     <value>3</value>
   </data>
   <data name="gbMove.Location" type="System.Drawing.Point, System.Drawing">
-    <value>449, 281</value>
+    <value>448, 281</value>
   </data>
   <data name="gbMove.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2619,7 +2619,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="btnSort.Location" type="System.Drawing.Point, System.Drawing">
-    <value>407, 300</value>
+    <value>406, 300</value>
   </data>
   <data name="btnSort.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2652,7 +2652,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="btnCommit.Location" type="System.Drawing.Point, System.Drawing">
-    <value>396, 60</value>
+    <value>395, 60</value>
   </data>
   <data name="btnCommit.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2682,7 +2682,7 @@ to BHAV</value>
     <value>Top, Right</value>
   </data>
   <data name="tbTreeVersion.Location" type="System.Drawing.Point, System.Drawing">
-    <value>571, 32</value>
+    <value>570, 32</value>
   </data>
   <data name="tbTreeVersion.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2718,7 +2718,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="btnAdd.Location" type="System.Drawing.Point, System.Drawing">
-    <value>571, 288</value>
+    <value>570, 288</value>
   </data>
   <data name="btnAdd.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
@@ -2754,7 +2754,7 @@ to BHAV</value>
     <value>NoControl</value>
   </data>
   <data name="lbCacheFlags.Location" type="System.Drawing.Point, System.Drawing">
-    <value>657, 34</value>
+    <value>656, 34</value>
   </data>
   <data name="lbCacheFlags.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 0, 2, 0</value>
@@ -2783,6 +2783,9 @@ to BHAV</value>
   <data name="&gt;&gt;lbCacheFlags.ZOrder" xml:space="preserve">
     <value>30</value>
   </data>
+  <data name="bhavPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
   <data name="bhavPanel.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -2790,7 +2793,7 @@ to BHAV</value>
     <value>2, 2, 2, 2</value>
   </data>
   <data name="bhavPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>759, 566</value>
+    <value>758, 564</value>
   </data>
   <data name="bhavPanel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -2874,7 +2877,7 @@ to BHAV</value>
     <value>96, 96</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>864, 573</value>
+    <value>758, 564</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
