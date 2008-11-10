@@ -1,4 +1,10 @@
-10 November 2008 15:32 Add Objftype and Ttabtype to appropriate wrappers
+10 November 2008 15:25 Search by SemiGlobal and from TTAB and OBJF calls to BHAVs 
+  pjse GUID Tool\
+    GUIDTool.cs 1.18
+    GUIDTool.resx 1.10
+    SimPe pjse GUID Tool.csproj 1.4
+
+10 November 2008 15:20 Add Objftype and Ttabtype to appropriate wrappers
   SimPe BHAV\
     ObjfWrapper.cs 1.15
     TtabWrapper.cs 1.33
