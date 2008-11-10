@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   Copyright (C) 2005-2008 by Peter L Jones                              *
+ *   peter@users.sf.net                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -65,6 +65,13 @@ namespace pjse.guidtool
         private FlowLayoutPanel flpFilter;
         private SimPe.Plugin.GUIDChooser gcGroup;
         private Button btnClearFilter;
+        private CheckBox ckbSGSearch;
+        private Label label1;
+        private CheckBox ckbFromBHAV;
+        private CheckBox ckbFromObjf;
+        private CheckBox ckbFromTtab;
+        private FlowLayoutPanel flpCallsFrom;
+        private FlowLayoutPanel flpNames;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -202,16 +209,35 @@ namespace pjse.guidtool
             try
             {
                 List<pjse.FileTable.Entry> results = new List<FileTable.Entry>();
-                if (group == 0)
+                if (type[6] && group != 0)
+                {
+                    List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
+                    foreach (pjse.FileTable.Entry fte in globs)
+                    {
+                        SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
+                        if (glob == null) continue;
+                        if (group != glob.SemiGlobalGroup) continue;
+                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, fte.Group, where]);
+                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, fte.Group, where]);
+                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, fte.Group, where]);
+                    }
+                }
+                else if (group == 0)
                 {
                     if (type[0] || type[1])
                         results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, where]);
                     if (type[2])
                         results.AddRange(pjse.FileTable.GFT[0x4E524546, where]); // NREF
-                    if (type[3] || type[5])
-                        results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, where]);
+                    if (type[3])
+                        results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
                     if (type[4])
-                        results.AddRange(pjse.FileTable.GFT[0x42434F4E, where]); // BCON
+                        results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, where]);
+                    if (type[5])
+                    {
+                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
+                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, where]);
+                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, where]);
+                    }
                 }
                 else
                 {
@@ -219,10 +245,16 @@ namespace pjse.guidtool
                         results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, group, where]);
                     if (type[2])
                         results.AddRange(pjse.FileTable.GFT[0x4E524546, group, where]); // NREF
-                    if (type[3] || type[5])
-                        results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.BHAV_FILE, group, where]);
+                    if (type[3])
+                        results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
                     if (type[4])
-                        results.AddRange(pjse.FileTable.GFT[0x42434F4E, group, where]); // BCON
+                        results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, group, where]);
+                    if (type[5])
+                    {
+                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
+                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, group, where]);
+                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, group, where]);
+                    }
                 }
 
                 results.Sort(byGroupTypeInstance);
@@ -248,16 +280,37 @@ namespace pjse.guidtool
                         ((type[1] || type[2] || type[3]) && item.ToString().ToLower().IndexOf(searchText) >= 0))
                         Invoke(addResult, new object[] { itemguid, item, });
 
-                    if (type[5] && item.Type.Equals(SimPe.Data.MetaData.BHAV_FILE))
-                    {
-                        Bhav bhav = (Bhav)item.Wrapper;
-                        foreach (Instruction i in bhav)
-                            if (i.OpCode == searchNumber)
-                            {
-                                Invoke(addResult, new object[] { itemguid, item, });
-                                break;
-                            }
-                    }
+                    if (type[5] || type[6])
+                        if (item.Type == Bhav.Bhavtype)
+                        {
+                            Bhav bhav = (Bhav)item.Wrapper;
+                            if (bhav != null) foreach (Instruction i in bhav)
+                                    if (i.OpCode == searchNumber)
+                                    {
+                                        Invoke(addResult, new object[] { itemguid, item, });
+                                        break;
+                                    }
+                        }
+                        else if (item.Type == Objf.Objftype)
+                        {
+                            Objf objf = (Objf)item.Wrapper;
+                            if (objf != null) foreach (ObjfItem i in objf)
+                                    if (i.Action == searchNumber || i.Guardian == searchNumber)
+                                    {
+                                        Invoke(addResult, new object[] { itemguid, item, });
+                                        break;
+                                    }
+                        }
+                        else if (item.Type == Ttab.Ttabtype)
+                        {
+                            Ttab ttab = (Ttab)item.Wrapper;
+                            if (ttab != null) foreach (TtabItem i in ttab)
+                                    if (i.Action == searchNumber || i.Guardian == searchNumber)
+                                    {
+                                        Invoke(addResult, new object[] { itemguid, item, });
+                                        break;
+                                    }
+                        }
 
                     Invoke(setProgress, new object[] { true, ++j });
                     Thread.Sleep(0);
@@ -327,13 +380,14 @@ namespace pjse.guidtool
         {
             bool[] type = new bool[] {
                 ckbObjdGUID.Checked, ckbObjdName.Checked, ckbNrefName.Checked, ckbBhavName.Checked, ckbBconName.Checked,
-                ckbCallsToBHAV.Checked,
+                ckbCallsToBHAV.Checked, ckbSGSearch.Checked, ckbFromBHAV.Checked, ckbFromObjf.Checked, ckbFromTtab.Checked,
             };
             uint number = 0;
             try { number = Convert.ToUInt32(this.tbNumber.Text.Trim(), 16); }
             catch(System.FormatException) { number = 0; }
             this.tbNumber.Text = "0x" + SimPe.Helper.HexString(number);
             if (number == 0) { type[0] = type[5] = false; } // don't search for 0 GUID...
+            if (number < 0x2000 || number > 0x2fff) { type[6] = false; } // don't do SG search except for SG BHAVs...
 
             this.tbName.Text = this.tbName.Text.Trim().ToLower();
             if (this.tbName.Text.Length == 0) { type[1] = type[2] = type[3] = type[4] = false; } // don't search for empty string
@@ -472,11 +526,18 @@ namespace pjse.guidtool
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.flpSearchFor = new System.Windows.Forms.FlowLayoutPanel();
             this.ckbObjdGUID = new System.Windows.Forms.CheckBox();
+            this.flpNames = new System.Windows.Forms.FlowLayoutPanel();
             this.ckbObjdName = new System.Windows.Forms.CheckBox();
             this.ckbNrefName = new System.Windows.Forms.CheckBox();
             this.ckbBhavName = new System.Windows.Forms.CheckBox();
             this.ckbBconName = new System.Windows.Forms.CheckBox();
             this.ckbCallsToBHAV = new System.Windows.Forms.CheckBox();
+            this.ckbSGSearch = new System.Windows.Forms.CheckBox();
+            this.flpCallsFrom = new System.Windows.Forms.FlowLayoutPanel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ckbFromBHAV = new System.Windows.Forms.CheckBox();
+            this.ckbFromObjf = new System.Windows.Forms.CheckBox();
+            this.ckbFromTtab = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.flpSearchIn = new System.Windows.Forms.FlowLayoutPanel();
             this.rb1default = new System.Windows.Forms.RadioButton();
@@ -487,6 +548,8 @@ namespace pjse.guidtool
             this.flpFilter.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.flpSearchFor.SuspendLayout();
+            this.flpNames.SuspendLayout();
+            this.flpCallsFrom.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.flpSearchIn.SuspendLayout();
             this.SuspendLayout();
@@ -553,7 +616,7 @@ namespace pjse.guidtool
             this.gcGroup.ComboBoxWidth = 240;
             this.gcGroup.DropDownHeight = 106;
             this.gcGroup.DropDownWidth = 240;
-            this.gcGroup.Label = "Filter by Group:";
+            this.gcGroup.Label = "Group Filter:";
             this.gcGroup.Name = "gcGroup";
             this.gcGroup.Value = ((uint)(0u));
             // 
@@ -588,11 +651,10 @@ namespace pjse.guidtool
             // 
             resources.ApplyResources(this.flpSearchFor, "flpSearchFor");
             this.flpSearchFor.Controls.Add(this.ckbObjdGUID);
-            this.flpSearchFor.Controls.Add(this.ckbObjdName);
-            this.flpSearchFor.Controls.Add(this.ckbNrefName);
-            this.flpSearchFor.Controls.Add(this.ckbBhavName);
-            this.flpSearchFor.Controls.Add(this.ckbBconName);
+            this.flpSearchFor.Controls.Add(this.flpNames);
             this.flpSearchFor.Controls.Add(this.ckbCallsToBHAV);
+            this.flpSearchFor.Controls.Add(this.ckbSGSearch);
+            this.flpSearchFor.Controls.Add(this.flpCallsFrom);
             this.flpSearchFor.Name = "flpSearchFor";
             // 
             // ckbObjdGUID
@@ -600,6 +662,16 @@ namespace pjse.guidtool
             resources.ApplyResources(this.ckbObjdGUID, "ckbObjdGUID");
             this.ckbObjdGUID.Name = "ckbObjdGUID";
             this.ckbObjdGUID.CheckedChanged += new System.EventHandler(this.ckbObjdGUID_CheckedChanged);
+            // 
+            // flpNames
+            // 
+            resources.ApplyResources(this.flpNames, "flpNames");
+            this.flpNames.Controls.Add(this.ckbObjdName);
+            this.flpNames.Controls.Add(this.ckbNrefName);
+            this.flpNames.Controls.Add(this.ckbBhavName);
+            this.flpNames.Controls.Add(this.ckbBconName);
+            this.flpSearchFor.SetFlowBreak(this.flpNames, true);
+            this.flpNames.Name = "flpNames";
             // 
             // ckbObjdName
             // 
@@ -631,6 +703,41 @@ namespace pjse.guidtool
             this.ckbCallsToBHAV.Name = "ckbCallsToBHAV";
             this.ckbCallsToBHAV.UseVisualStyleBackColor = true;
             this.ckbCallsToBHAV.CheckedChanged += new System.EventHandler(this.ckbCallsToBHAV_CheckedChanged);
+            // 
+            // ckbSGSearch
+            // 
+            resources.ApplyResources(this.ckbSGSearch, "ckbSGSearch");
+            this.ckbSGSearch.Name = "ckbSGSearch";
+            this.ckbSGSearch.UseVisualStyleBackColor = true;
+            // 
+            // flpCallsFrom
+            // 
+            resources.ApplyResources(this.flpCallsFrom, "flpCallsFrom");
+            this.flpCallsFrom.Controls.Add(this.label1);
+            this.flpCallsFrom.Controls.Add(this.ckbFromBHAV);
+            this.flpCallsFrom.Controls.Add(this.ckbFromObjf);
+            this.flpCallsFrom.Controls.Add(this.ckbFromTtab);
+            this.flpCallsFrom.Name = "flpCallsFrom";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // ckbFromBHAV
+            // 
+            resources.ApplyResources(this.ckbFromBHAV, "ckbFromBHAV");
+            this.ckbFromBHAV.Name = "ckbFromBHAV";
+            // 
+            // ckbFromObjf
+            // 
+            resources.ApplyResources(this.ckbFromObjf, "ckbFromObjf");
+            this.ckbFromObjf.Name = "ckbFromObjf";
+            // 
+            // ckbFromTtab
+            // 
+            resources.ApplyResources(this.ckbFromTtab, "ckbFromTtab");
+            this.ckbFromTtab.Name = "ckbFromTtab";
             // 
             // groupBox2
             // 
@@ -694,6 +801,10 @@ namespace pjse.guidtool
             this.groupBox1.PerformLayout();
             this.flpSearchFor.ResumeLayout(false);
             this.flpSearchFor.PerformLayout();
+            this.flpNames.ResumeLayout(false);
+            this.flpNames.PerformLayout();
+            this.flpCallsFrom.ResumeLayout(false);
+            this.flpCallsFrom.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.flpSearchIn.ResumeLayout(false);
@@ -769,16 +880,15 @@ namespace pjse.guidtool
         {
             List<CheckBox> lcb = new List<CheckBox>(new CheckBox[] { ckbObjdName, ckbNrefName, ckbBhavName, ckbBconName, });
             lbName.Enabled = tbName.Enabled = (lcb.Find(isChecked) != null);
+            ckbCallsToBHAV.Enabled = (lcb.Find(isChecked) == null);
+            ckbSGSearch.Enabled = (ckbCallsToBHAV.Enabled && ckbCallsToBHAV.Checked);
         }
 
         private void ckbCallsToBHAV_CheckedChanged(object sender, EventArgs e)
         {
-            if (ckbCallsToBHAV.Checked)
-                ckbObjdGUID.Checked = ckbObjdName.Checked = ckbNrefName.Checked = ckbBhavName.Checked = ckbBconName.Checked
-                    = false;
-            ckbObjdGUID.Enabled = ckbObjdName.Enabled = ckbNrefName.Enabled = ckbBhavName.Enabled = ckbBconName.Enabled =
-                !ckbCallsToBHAV.Checked;
-            tbNumber.Enabled = ckbCallsToBHAV.Checked;
+            if (ckbCallsToBHAV.Checked) ckbObjdGUID.Checked = false;
+            ckbObjdGUID.Enabled = flpNames.Enabled = !ckbCallsToBHAV.Checked;
+            tbNumber.Enabled = ckbSGSearch.Enabled = flpCallsFrom.Enabled = ckbCallsToBHAV.Checked;
             lbNumber.Text = ckbCallsToBHAV.Checked ? pjse.Localization.GetString("OpCode") : "";
         }
 
@@ -786,7 +896,6 @@ namespace pjse.guidtool
         {
             gcGroup.Value = 0;
         }
-
 	}
 }
 namespace SimPe.Plugin

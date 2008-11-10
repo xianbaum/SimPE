@@ -112,6 +112,11 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
+    <ProjectReference Include="..\..\fullsimpe-svn\SimPe FileHandler\SimPe FileHandlers.csproj">
+      <Project>{97551C0A-6295-4E32-8E15-A4FF456E65A6}</Project>
+      <Name>SimPe FileHandlers</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\..\fullsimpe-svn\SimPe HandlerCommon\SimPe HandlerCommon.csproj">
       <Project>{A4CC48FD-9574-4F0B-B721-9E8C1B1E6A8A}</Project>
       <Name>SimPe HandlerCommon</Name>
