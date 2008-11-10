@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   Copyright (C) 2005-2008 by Peter L Jones                              *
+ *   peter@users.sf.net                                                    *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -203,8 +203,8 @@ namespace pjse.BhavOperandWizards
 		private ComboBox cbPicker;
 		private TextBox tbValue;
         private CheckBox ckbDecimal;
-        private CheckBox ckbUseAttrPicker;
-        private Label lbConst;
+        private CheckBox ckbUseInstancePicker;
+        private Label lbInstance;
 		#endregion
 
 		#region Form event handlers
@@ -255,16 +255,12 @@ namespace pjse.BhavOperandWizards
 
         private void ckbDecimal_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (pjse.Settings.PJSE.DecimalDOValue != this.ckbDecimal.Checked)
-                pjse.Settings.PJSE.DecimalDOValue = this.ckbDecimal.Checked;
-            Decimal = this.ckbDecimal.Checked;
+            pjse.Settings.PJSE.DecimalDOValue = this.ckbDecimal.Checked;
         }
 
         private void ckbUseAttrPicker_CheckedChanged(object sender, System.EventArgs e)
         {
-            if (pjse.Settings.PJSE.AttrPickerAsText != this.ckbUseAttrPicker.Checked)
-                pjse.Settings.PJSE.AttrPickerAsText = this.ckbUseAttrPicker.Checked;
-            UseAttrPicker = this.ckbUseAttrPicker.Checked;
+            pjse.Settings.PJSE.InstancePickerAsText = this.ckbUseInstancePicker.Checked;
         }
 
 		#endregion
@@ -307,21 +303,21 @@ namespace pjse.BhavOperandWizards
 		#endregion
 
         public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+            CheckBox ckbDecimal, CheckBox ckbUseInstancePicker, Label lbInstance, byte dataOwner, ushort instance)
         {
             bitsInValue = 16;
-            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance);
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseInstancePicker, lbInstance, dataOwner, instance);
         }
 
         public DataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, byte instance)
+            CheckBox ckbDecimal, CheckBox ckbUseInstancePicker, Label lbInstance, byte dataOwner, byte instance)
         {
             bitsInValue = 8;
-            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseAttrPicker, lbConst, dataOwner, instance);
+            SetDataOwnerControl(inst, cbDataOwner, cbPicker, tbValue, ckbDecimal, ckbUseInstancePicker, lbInstance, dataOwner, instance);
         }
 
         public void SetDataOwnerControl(BhavWiz inst, ComboBox cbDataOwner, ComboBox cbPicker, TextBox tbValue,
-            CheckBox ckbDecimal, CheckBox ckbUseAttrPicker, Label lbConst, byte dataOwner, ushort instance)
+            CheckBox ckbDecimal, CheckBox ckbUseInstancePicker, Label lbInstance, byte dataOwner, ushort instance)
         {
             this.Dispose();
             this.inst = inst;
@@ -329,8 +325,8 @@ namespace pjse.BhavOperandWizards
             this.cbPicker = cbPicker;
             this.tbValue = tbValue;
             this.ckbDecimal = ckbDecimal;
-            this.ckbUseAttrPicker = ckbUseAttrPicker;
-            this.lbConst = lbConst;
+            this.ckbUseInstancePicker = ckbUseInstancePicker;
+            this.lbInstance = lbInstance;
             this.dataOwner = dataOwner;
             this.instance = instance;
 
@@ -358,27 +354,42 @@ namespace pjse.BhavOperandWizards
                 this.tbValue.Enter += new System.EventHandler(this.tbValue_Enter);
             }
 
+            pjse.Settings.PJSE.DecimalDOValueChanged += new EventHandler(PJSE_DecimalDOValueChanged);
+            Decimal = pjse.Settings.PJSE.DecimalDOValue;
             if (this.ckbDecimal != null)
             {
-                Decimal = this.ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
+                this.ckbDecimal.Checked = Decimal;
                 this.ckbDecimal.CheckedChanged += new System.EventHandler(this.ckbDecimal_CheckedChanged);
             }
-            else
-                Decimal = pjse.Settings.PJSE.DecimalDOValue;
 
-            if (this.ckbUseAttrPicker != null)
+            pjse.Settings.PJSE.InstancePickerAsTextChanged += new EventHandler(PJSE_InstancePickerAsTextChanged);
+            UseInstancePicker = pjse.Settings.PJSE.InstancePickerAsText;
+            if (this.ckbUseInstancePicker != null)
             {
-                UseAttrPicker = this.ckbUseAttrPicker.Checked = pjse.Settings.PJSE.AttrPickerAsText;
-                this.ckbUseAttrPicker.CheckedChanged += new System.EventHandler(this.ckbUseAttrPicker_CheckedChanged);
+                this.ckbUseInstancePicker.Checked = UseInstancePicker;
+                this.ckbUseInstancePicker.CheckedChanged += new System.EventHandler(this.ckbUseAttrPicker_CheckedChanged);
             }
-            else
-                UseAttrPicker = pjse.Settings.PJSE.AttrPickerAsText;
+
             internalchg = false;
 
             SetDataOwner();
 
             setTextBoxLength();
-            setConstLabel();
+            setInstanceLabel();
+        }
+
+        void PJSE_DecimalDOValueChanged(object sender, EventArgs e)
+        {
+            Decimal = pjse.Settings.PJSE.DecimalDOValue;
+            if (ckbDecimal != null)
+                this.ckbDecimal.Checked = Decimal;
+        }
+
+        void PJSE_InstancePickerAsTextChanged(object sender, EventArgs e)
+        {
+            UseInstancePicker = pjse.Settings.PJSE.InstancePickerAsText;
+            if (ckbUseInstancePicker != null)
+                this.ckbUseInstancePicker.Checked = UseInstancePicker;
         }
 
 
@@ -390,14 +401,14 @@ namespace pjse.BhavOperandWizards
             if (this.cbPicker != null) this.cbPicker.SelectedIndexChanged -= new System.EventHandler(this.cbPicker_SelectedIndexChanged);
 			if (this.tbValue != null) this.tbValue.TextChanged -= new System.EventHandler(this.tbValue_TextChanged);
             if (this.ckbDecimal != null) this.ckbDecimal.CheckedChanged -= new EventHandler(this.ckbDecimal_CheckedChanged);
-            if (this.ckbUseAttrPicker != null) this.ckbUseAttrPicker.CheckedChanged -= new EventHandler(this.ckbUseAttrPicker_CheckedChanged);
+            if (this.ckbUseInstancePicker != null) this.ckbUseInstancePicker.CheckedChanged -= new EventHandler(this.ckbUseAttrPicker_CheckedChanged);
             this.inst = null;
             this.cbDataOwner = null;
             this.cbPicker = null;
             this.tbValue = null;
             this.ckbDecimal = null;
-            this.ckbUseAttrPicker = null;
-            this.lbConst = null;
+            this.ckbUseInstancePicker = null;
+            this.lbInstance = null;
             this.flagsFor = null;
         }
 
@@ -439,7 +450,7 @@ namespace pjse.BhavOperandWizards
 
 			#region pickerNames
             List<String> pickerNames = null;
-            if (useAttrPicker && cbPicker != null)
+            if (useInstancePicker && cbPicker != null)
             {
                 if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
                 {
@@ -450,11 +461,11 @@ namespace pjse.BhavOperandWizards
                         pickerNames.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
                     }
                 }
-                else if (inst != null && useAttrPicker && (dataOwner == 0x00 || dataOwner == 0x01))
+                else if (inst != null && useInstancePicker && (dataOwner == 0x00 || dataOwner == 0x01))
                 {
                     pickerNames = inst.GetAttrNames(Scope.Private);
                 }
-                else if (inst != null && useAttrPicker && (dataOwner == 0x02 || dataOwner == 0x05))
+                else if (inst != null && useInstancePicker && (dataOwner == 0x02 || dataOwner == 0x05))
                 {
                     pickerNames = inst.GetAttrNames(Scope.SemiGlobal);
                 }
@@ -466,7 +477,7 @@ namespace pjse.BhavOperandWizards
                 {
                     pickerNames = inst.GetTPRPnames(true);
                 }
-                else if (inst != null && useAttrPicker && (dataOwner >= 0x29 && dataOwner <= 0x2F))
+                else if (inst != null && useInstancePicker && (dataOwner >= 0x29 && dataOwner <= 0x2F))
                 {
                     pickerNames = inst.GetArrayNames();
                 }
@@ -495,21 +506,64 @@ namespace pjse.BhavOperandWizards
                     tbValue.TabStop = tbValue.Visible = true;
             }
 
-            setConstLabel();
+            setInstanceLabel();
 
 			internalchg = false;
 		}
 
-        private void setConstLabel()
+        private void setInstanceLabel()
         {
-            if (lbConst != null)
+            if (lbInstance != null)
             {
-                if (dataOwner == 0x1a)
+                lbInstance.Text = "";
+                if (inst != null)
                 {
-                    ushort[] bcon = BhavWiz.ExpandBCON(instance, false);
-                    lbConst.Text = ((BhavWiz)inst).readBcon(bcon[0], bcon[1], false, true);
+                    List<string> labels = null;
+                    if (useFlagNames && dataOwner == 0x07 && flagsFor != null)
+                    {
+                        labels = BhavWiz.flagNames(flagsFor.DataOwner, flagsFor.Value);
+                        if (labels != null)
+                        {
+                            labels = new List<string>(labels);
+                            labels.Insert(0, "[0: " + pjse.Localization.GetString("invalid") + "]");
+                        }
+                    }
+                    else if (dataOwner == 0x00 || dataOwner == 0x01)
+                    {
+                        labels = inst.GetAttrNames(Scope.Private);
+                    }
+                    else if (dataOwner == 0x02 || dataOwner == 0x05)
+                    {
+                        labels = inst.GetAttrNames(Scope.SemiGlobal);
+                    }
+                    else if (dataOwner == 0x09 || dataOwner == 0x16 || dataOwner == 0x32) // Param
+                    {
+                        labels = inst.GetTPRPnames(false);
+                    }
+                    else if (dataOwner == 0x19) // Local
+                    {
+                        labels = inst.GetTPRPnames(true);
+                    }
+                    else if (dataOwner >= 0x29 && dataOwner <= 0x2F)
+                    {
+                        labels = inst.GetArrayNames();
+                    }
+                    else if (BhavWiz.doidGStr[dataOwner] != null)
+                    {
+                        labels = BhavWiz.readStr((GS.BhavStr)BhavWiz.doidGStr[dataOwner]);
+                    }
+
+                    if (labels != null)
+                    {
+                        if (instance < labels.Count)
+                            lbInstance.Text = cbDataOwner.Text + ": " + labels[instance];
+                    }
+                    else if (dataOwner == 0x1a)
+                    {
+                        ushort[] bcon = BhavWiz.ExpandBCON(instance, false);
+                        lbInstance.Text = ((BhavWiz)inst).readBcon(bcon[0], bcon[1], false, true);
+                    }
                 }
-                else lbConst.Text = "";
             }
         }
 
@@ -564,7 +618,7 @@ namespace pjse.BhavOperandWizards
 			if (instance != i)
 			{
 				instance = i;
-                setConstLabel();
+                setInstanceLabel();
                 OnDataOwnerControlChanged(this, new EventArgs());
 			}
 		}
@@ -616,16 +670,16 @@ namespace pjse.BhavOperandWizards
 
 		}
 
-		private bool useAttrPicker = true;
-		public bool UseAttrPicker
+		private bool useInstancePicker = true;
+		public bool UseInstancePicker
 		{
-			get { return this.useAttrPicker; }
+			get { return this.useInstancePicker; }
 
 			set
 			{
-				if (useAttrPicker != value)
+				if (useInstancePicker != value)
 				{
-					useAttrPicker = value;
+					useInstancePicker = value;
 					SetDataOwner();
 				}
 			}

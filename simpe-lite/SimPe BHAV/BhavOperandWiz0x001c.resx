@@ -117,191 +117,29 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pnWiz0x001c.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;flpArgs.Name" xml:space="preserve">
+    <value>flpArgs</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="pnWiz0x001c.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+  <data name="&gt;&gt;flpArgs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="flowLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;flpArgs.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
   </data>
-  <data name="flowLayoutPanel1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="flpTree.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="flpTree.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 4</value>
-  </data>
-  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>38, 13</value>
-  </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="label1.Text" xml:space="preserve">
-    <value>Scope</value>
-  </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
-  </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;flpArgs.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="cbScope.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
+  <data name="&gt;&gt;btnTreeName.Name" xml:space="preserve">
+    <value>btnTreeName</value>
   </data>
-  <data name="cbScope.Items" xml:space="preserve">
-    <value>Private</value>
+  <data name="&gt;&gt;btnTreeName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="cbScope.Items1" xml:space="preserve">
-    <value>SemiGlobal</value>
+  <data name="&gt;&gt;btnTreeName.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
   </data>
-  <data name="cbScope.Items2" xml:space="preserve">
-    <value>Global</value>
-  </data>
-  <data name="cbScope.Location" type="System.Drawing.Point, System.Drawing">
-    <value>38, 0</value>
-  </data>
-  <data name="cbScope.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="cbScope.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 21</value>
-  </data>
-  <data name="cbScope.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;cbScope.Name" xml:space="preserve">
-    <value>cbScope</value>
-  </data>
-  <data name="&gt;&gt;cbScope.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbScope.Parent" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;cbScope.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;btnTreeName.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="label8.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 4</value>
-  </data>
-  <data name="label8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 13</value>
-  </data>
-  <data name="label8.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="label8.Text" xml:space="preserve">
-    <value>(for tree name)</value>
-  </data>
-  <data name="&gt;&gt;label8.Name" xml:space="preserve">
-    <value>label8</value>
-  </data>
-  <data name="&gt;&gt;label8.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="label2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>240, 4</value>
-  </data>
-  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>29, 13</value>
-  </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Tree</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="tbTree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="tbTree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>269, 0</value>
-  </data>
-  <data name="tbTree.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="tbTree.MaxLength" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="tbTree.Size" type="System.Drawing.Size, System.Drawing">
-    <value>51, 20</value>
-  </data>
-  <data name="tbTree.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="tbTree.Text" xml:space="preserve">
-    <value>0xDDDD</value>
   </data>
   <data name="&gt;&gt;tbTree.Name" xml:space="preserve">
     <value>tbTree</value>
@@ -310,13 +148,193 @@
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;tbTree.Parent" xml:space="preserve">
-    <value>flpTree</value>
+    <value>pnWiz0x001c</value>
   </data>
   <data name="&gt;&gt;tbTree.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;tfGlobal.Name" xml:space="preserve">
+    <value>tfGlobal</value>
+  </data>
+  <data name="&gt;&gt;tfGlobal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tfGlobal.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tfGlobal.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;tfParams.Name" xml:space="preserve">
+    <value>tfParams</value>
+  </data>
+  <data name="&gt;&gt;tfParams.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tfParams.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tfParams.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
-  <data name="btnTreeName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
+  <data name="&gt;&gt;tfArgs.Name" xml:space="preserve">
+    <value>tfArgs</value>
+  </data>
+  <data name="&gt;&gt;tfArgs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tfArgs.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tfArgs.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;tfSemiGlobal.Name" xml:space="preserve">
+    <value>tfSemiGlobal</value>
+  </data>
+  <data name="&gt;&gt;tfSemiGlobal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tfSemiGlobal.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tfSemiGlobal.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;tfPrivate.Name" xml:space="preserve">
+    <value>tfPrivate</value>
+  </data>
+  <data name="&gt;&gt;tfPrivate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tfPrivate.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tfPrivate.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;cbRTBNType.Name" xml:space="preserve">
+    <value>cbRTBNType</value>
+  </data>
+  <data name="&gt;&gt;cbRTBNType.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbRTBNType.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;cbRTBNType.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;cbScope.Name" xml:space="preserve">
+    <value>cbScope</value>
+  </data>
+  <data name="&gt;&gt;cbScope.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbScope.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;cbScope.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
+  </data>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;lbTreeName.Name" xml:space="preserve">
+    <value>lbTreeName</value>
+  </data>
+  <data name="&gt;&gt;lbTreeName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbTreeName.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;lbTreeName.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>15</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="pnWiz0x001c.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pnWiz0x001c.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="pnWiz0x001c.Size" type="System.Drawing.Size, System.Drawing">
+    <value>440, 257</value>
+  </data>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="pnWiz0x001c.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;pnWiz0x001c.Name" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;pnWiz0x001c.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;pnWiz0x001c.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;pnWiz0x001c.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="btnTreeName.FlatStyle" type="System.Windows.Forms.FlatStyle, System.Windows.Forms">
     <value>System</value>
@@ -328,16 +346,16 @@
     <value>NoControl</value>
   </data>
   <data name="btnTreeName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>320, 1</value>
+    <value>92, 19</value>
   </data>
   <data name="btnTreeName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="btnTreeName.Size" type="System.Drawing.Size, System.Drawing">
     <value>18, 18</value>
   </data>
   <data name="btnTreeName.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
+    <value>3</value>
   </data>
   <data name="btnTreeName.Text" xml:space="preserve">
     <value>8</value>
@@ -349,265 +367,217 @@
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;btnTreeName.Parent" xml:space="preserve">
-    <value>flpTree</value>
+    <value>pnWiz0x001c</value>
   </data>
   <data name="&gt;&gt;btnTreeName.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>1</value>
   </data>
-  <data name="lbTreeName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
+  <data name="tbTree.Location" type="System.Drawing.Point, System.Drawing">
+    <value>43, 19</value>
   </data>
-  <data name="lbTreeName.AutoSize" type="System.Boolean, mscorlib">
+  <data name="tbTree.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tbTree.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 20</value>
+  </data>
+  <data name="tbTree.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tbTree.Text" xml:space="preserve">
+    <value>0xDDDD</value>
+  </data>
+  <data name="&gt;&gt;tbTree.Name" xml:space="preserve">
+    <value>tbTree</value>
+  </data>
+  <data name="&gt;&gt;tbTree.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tbTree.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tbTree.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tfGlobal.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="lbTreeName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="tfGlobal.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="tfGlobal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="lbTreeName.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 21</value>
+  <data name="tfGlobal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>261, 38</value>
   </data>
-  <data name="lbTreeName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="tfGlobal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
-  <data name="lbTreeName.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 0, 3</value>
-  </data>
-  <data name="lbTreeName.Size" type="System.Drawing.Size, System.Drawing">
-    <value>58, 19</value>
-  </data>
-  <data name="lbTreeName.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="lbTreeName.Text" xml:space="preserve">
-    <value>Tree name</value>
-  </data>
-  <data name="&gt;&gt;lbTreeName.Name" xml:space="preserve">
-    <value>lbTreeName</value>
-  </data>
-  <data name="&gt;&gt;lbTreeName.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbTreeName.Parent" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;lbTreeName.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="label3.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 42</value>
-  </data>
-  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 13</value>
-  </data>
-  <data name="label3.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="label3.Text" xml:space="preserve">
-    <value>Search which trees:</value>
-  </data>
-  <data name="&gt;&gt;label3.Name" xml:space="preserve">
-    <value>label3</value>
-  </data>
-  <data name="&gt;&gt;label3.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="ckbPrivate.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="ckbPrivate.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbPrivate.Enabled" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="ckbPrivate.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbPrivate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>101, 40</value>
-  </data>
-  <data name="ckbPrivate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="ckbPrivate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 17</value>
-  </data>
-  <data name="ckbPrivate.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
-  </data>
-  <data name="ckbPrivate.Text" xml:space="preserve">
-    <value>Private</value>
-  </data>
-  <data name="&gt;&gt;ckbPrivate.Name" xml:space="preserve">
-    <value>ckbPrivate</value>
-  </data>
-  <data name="&gt;&gt;ckbPrivate.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbPrivate.Parent" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;ckbPrivate.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="ckbSemiGlobal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="ckbSemiGlobal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbSemiGlobal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbSemiGlobal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 40</value>
-  </data>
-  <data name="ckbSemiGlobal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="ckbSemiGlobal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 17</value>
-  </data>
-  <data name="ckbSemiGlobal.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
-  </data>
-  <data name="ckbSemiGlobal.Text" xml:space="preserve">
-    <value>SemiGlobal</value>
-  </data>
-  <data name="&gt;&gt;ckbSemiGlobal.Name" xml:space="preserve">
-    <value>ckbSemiGlobal</value>
-  </data>
-  <data name="&gt;&gt;ckbSemiGlobal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbSemiGlobal.Parent" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;ckbSemiGlobal.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="ckbGlobal.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="ckbGlobal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbGlobal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbGlobal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>239, 40</value>
-  </data>
-  <data name="ckbGlobal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="ckbGlobal.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="tfGlobal.Size" type="System.Drawing.Size, System.Drawing">
     <value>56, 17</value>
   </data>
-  <data name="ckbGlobal.TabIndex" type="System.Int32, mscorlib">
-    <value>11</value>
+  <data name="tfGlobal.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="ckbGlobal.Text" xml:space="preserve">
+  <data name="tfGlobal.Text" xml:space="preserve">
     <value>Global</value>
   </data>
-  <data name="&gt;&gt;ckbGlobal.Name" xml:space="preserve">
-    <value>ckbGlobal</value>
+  <data name="&gt;&gt;tfGlobal.Name" xml:space="preserve">
+    <value>tfGlobal</value>
   </data>
-  <data name="&gt;&gt;ckbGlobal.Type" xml:space="preserve">
+  <data name="&gt;&gt;tfGlobal.Type" xml:space="preserve">
     <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;ckbGlobal.Parent" xml:space="preserve">
-    <value>flpTree</value>
+  <data name="&gt;&gt;tfGlobal.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
   </data>
-  <data name="&gt;&gt;ckbGlobal.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="&gt;&gt;tfGlobal.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
-  <data name="flpTree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="flpTree.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="flpTree.Size" type="System.Drawing.Size, System.Drawing">
-    <value>338, 57</value>
-  </data>
-  <data name="flpTree.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;flpTree.Name" xml:space="preserve">
-    <value>flpTree</value>
-  </data>
-  <data name="&gt;&gt;flpTree.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flpTree.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;flpTree.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="flpOptions.AutoSize" type="System.Boolean, mscorlib">
+  <data name="tfParams.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="flpOptions.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+  <data name="tfParams.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
   </data>
-  <data name="label4.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="tfParams.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 4</value>
+  <data name="tfParams.Location" type="System.Drawing.Point, System.Drawing">
+    <value>180, 77</value>
   </data>
-  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="tfParams.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
-  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>31, 13</value>
+  <data name="tfParams.Size" type="System.Drawing.Size, System.Drawing">
+    <value>221, 17</value>
   </data>
-  <data name="label4.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
+  <data name="tfParams.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
   </data>
-  <data name="label4.Text" xml:space="preserve">
-    <value>Type</value>
+  <data name="tfParams.Text" xml:space="preserve">
+    <value>Pass this BHAVs parameters as operands</value>
   </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
-    <value>label4</value>
+  <data name="&gt;&gt;tfParams.Name" xml:space="preserve">
+    <value>tfParams</value>
   </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;tfParams.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
-    <value>flpOptions</value>
+  <data name="&gt;&gt;tfParams.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
   </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;tfParams.ZOrder" xml:space="preserve">
+    <value>4</value>
   </data>
-  <data name="cbRTBNType.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
+  <data name="tfArgs.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tfArgs.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="tfArgs.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="tfArgs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 77</value>
+  </data>
+  <data name="tfArgs.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tfArgs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>162, 17</value>
+  </data>
+  <data name="tfArgs.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="tfArgs.Text" xml:space="preserve">
+    <value>Pass arguments as operands</value>
+  </data>
+  <data name="&gt;&gt;tfArgs.Name" xml:space="preserve">
+    <value>tfArgs</value>
+  </data>
+  <data name="&gt;&gt;tfArgs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tfArgs.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tfArgs.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="tfSemiGlobal.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tfSemiGlobal.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="tfSemiGlobal.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="tfSemiGlobal.Location" type="System.Drawing.Point, System.Drawing">
+    <value>174, 38</value>
+  </data>
+  <data name="tfSemiGlobal.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tfSemiGlobal.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 17</value>
+  </data>
+  <data name="tfSemiGlobal.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="tfSemiGlobal.Text" xml:space="preserve">
+    <value>SemiGlobal</value>
+  </data>
+  <data name="&gt;&gt;tfSemiGlobal.Name" xml:space="preserve">
+    <value>tfSemiGlobal</value>
+  </data>
+  <data name="&gt;&gt;tfSemiGlobal.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tfSemiGlobal.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tfSemiGlobal.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="tfPrivate.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="tfPrivate.CheckAlign" type="System.Drawing.ContentAlignment, System.Drawing">
+    <value>MiddleRight</value>
+  </data>
+  <data name="tfPrivate.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="tfPrivate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 38</value>
+  </data>
+  <data name="tfPrivate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="tfPrivate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 17</value>
+  </data>
+  <data name="tfPrivate.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="tfPrivate.Text" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="&gt;&gt;tfPrivate.Name" xml:space="preserve">
+    <value>tfPrivate</value>
+  </data>
+  <data name="&gt;&gt;tfPrivate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tfPrivate.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;tfPrivate.ZOrder" xml:space="preserve">
+    <value>7</value>
   </data>
   <data name="cbRTBNType.Items" xml:space="preserve">
     <value>Private</value>
@@ -619,16 +589,16 @@
     <value>Global</value>
   </data>
   <data name="cbRTBNType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>31, 0</value>
+    <value>43, 58</value>
   </data>
   <data name="cbRTBNType.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="cbRTBNType.Size" type="System.Drawing.Size, System.Drawing">
     <value>127, 21</value>
   </data>
   <data name="cbRTBNType.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>7</value>
   </data>
   <data name="&gt;&gt;cbRTBNType.Name" xml:space="preserve">
     <value>cbRTBNType</value>
@@ -637,145 +607,238 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbRTBNType.Parent" xml:space="preserve">
-    <value>flpOptions</value>
+    <value>pnWiz0x001c</value>
   </data>
   <data name="&gt;&gt;cbRTBNType.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="cbScope.Items" xml:space="preserve">
+    <value>Private</value>
+  </data>
+  <data name="cbScope.Items1" xml:space="preserve">
+    <value>SemiGlobal</value>
+  </data>
+  <data name="cbScope.Items2" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="cbScope.Location" type="System.Drawing.Point, System.Drawing">
+    <value>43, 0</value>
+  </data>
+  <data name="cbScope.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
+  <data name="cbScope.Size" type="System.Drawing.Size, System.Drawing">
+    <value>127, 21</value>
+  </data>
+  <data name="cbScope.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="ckbLargeTree.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
+  <data name="&gt;&gt;cbScope.Name" xml:space="preserve">
+    <value>cbScope</value>
   </data>
-  <data name="ckbLargeTree.AutoSize" type="System.Boolean, mscorlib">
+  <data name="&gt;&gt;cbScope.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;cbScope.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;cbScope.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="label3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="ckbLargeTree.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 21</value>
-  </data>
-  <data name="ckbLargeTree.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="ckbLargeTree.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 17</value>
-  </data>
-  <data name="ckbLargeTree.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="ckbLargeTree.Text" xml:space="preserve">
-    <value>Large Tree number</value>
-  </data>
-  <data name="&gt;&gt;ckbLargeTree.Name" xml:space="preserve">
-    <value>ckbLargeTree</value>
-  </data>
-  <data name="&gt;&gt;ckbLargeTree.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbLargeTree.Parent" xml:space="preserve">
-    <value>flpOptions</value>
-  </data>
-  <data name="&gt;&gt;ckbLargeTree.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="ckbArguments.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="ckbArguments.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbArguments.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="label3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="ckbArguments.Location" type="System.Drawing.Point, System.Drawing">
-    <value>116, 21</value>
+  <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 39</value>
   </data>
-  <data name="ckbArguments.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
   </data>
-  <data name="ckbArguments.Size" type="System.Drawing.Size, System.Drawing">
-    <value>101, 17</value>
+  <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 13</value>
   </data>
-  <data name="ckbArguments.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="ckbArguments.Text" xml:space="preserve">
-    <value>Pass arguments</value>
-  </data>
-  <data name="&gt;&gt;ckbArguments.Name" xml:space="preserve">
-    <value>ckbArguments</value>
-  </data>
-  <data name="&gt;&gt;ckbArguments.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbArguments.Parent" xml:space="preserve">
-    <value>flpOptions</value>
-  </data>
-  <data name="&gt;&gt;ckbArguments.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="ckbParameters.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="ckbParameters.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="ckbParameters.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="ckbParameters.Location" type="System.Drawing.Point, System.Drawing">
-    <value>217, 21</value>
-  </data>
-  <data name="ckbParameters.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="ckbParameters.Size" type="System.Drawing.Size, System.Drawing">
-    <value>175, 17</value>
-  </data>
-  <data name="ckbParameters.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="ckbParameters.Text" xml:space="preserve">
-    <value>Pass on this BHAVs parameters</value>
-  </data>
-  <data name="&gt;&gt;ckbParameters.Name" xml:space="preserve">
-    <value>ckbParameters</value>
-  </data>
-  <data name="&gt;&gt;ckbParameters.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ckbParameters.Parent" xml:space="preserve">
-    <value>flpOptions</value>
-  </data>
-  <data name="&gt;&gt;ckbParameters.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="flpOptions.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 57</value>
-  </data>
-  <data name="flpOptions.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="flpOptions.Size" type="System.Drawing.Size, System.Drawing">
-    <value>392, 38</value>
-  </data>
-  <data name="flpOptions.TabIndex" type="System.Int32, mscorlib">
+  <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;flpOptions.Name" xml:space="preserve">
-    <value>flpOptions</value>
+  <data name="label3.Text" xml:space="preserve">
+    <value>Search which trees:</value>
   </data>
-  <data name="&gt;&gt;flpOptions.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;label3.Name" xml:space="preserve">
+    <value>label3</value>
   </data>
-  <data name="&gt;&gt;flpOptions.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
+  <data name="&gt;&gt;label3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;flpOptions.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;label3.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
   </data>
-  <data name="flpArgs.AutoSize" type="System.Boolean, mscorlib">
+  <data name="&gt;&gt;label3.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="lbTreeName.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="lbTreeName.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="lbTreeName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>114, 22</value>
+  </data>
+  <data name="lbTreeName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="lbTreeName.Size" type="System.Drawing.Size, System.Drawing">
+    <value>326, 12</value>
+  </data>
+  <data name="lbTreeName.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="lbTreeName.Text" xml:space="preserve">
+    <value>Tree name</value>
+  </data>
+  <data name="&gt;&gt;lbTreeName.Name" xml:space="preserve">
+    <value>lbTreeName</value>
+  </data>
+  <data name="&gt;&gt;lbTreeName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbTreeName.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;lbTreeName.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="flpArgs.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 22</value>
+  </data>
+  <data name="label2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>29, 13</value>
+  </data>
+  <data name="label2.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label2.Text" xml:space="preserve">
+    <value>Tree</value>
+  </data>
+  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+    <value>label2</value>
+  </data>
+  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+    <value>12</value>
+  </data>
+  <data name="label4.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label4.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 60</value>
+  </data>
+  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
+    <value>31, 13</value>
+  </data>
+  <data name="label4.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+    <value>label4</value>
+  </data>
+  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+    <value>13</value>
+  </data>
+  <data name="label8.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label8.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label8.Location" type="System.Drawing.Point, System.Drawing">
+    <value>174, 2</value>
+  </data>
+  <data name="label8.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="label8.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 13</value>
+  </data>
+  <data name="label8.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label8.Text" xml:space="preserve">
+    <value>(for tree name)</value>
+  </data>
+  <data name="&gt;&gt;label8.Name" xml:space="preserve">
+    <value>label8</value>
+  </data>
+  <data name="&gt;&gt;label8.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label8.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label8.ZOrder" xml:space="preserve">
+    <value>14</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 2</value>
+  </data>
+  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>38, 13</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>pnWiz0x001c</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>15</value>
   </data>
   <data name="ldocArg1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -787,10 +850,7 @@
     <value>Argument 1</value>
   </data>
   <data name="ldocArg1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="ldocArg1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>3, 3</value>
   </data>
   <data name="ldocArg1.Size" type="System.Drawing.Size, System.Drawing">
     <value>428, 40</value>
@@ -802,7 +862,7 @@
     <value>ldocArg1</value>
   </data>
   <data name="&gt;&gt;ldocArg1.Type" xml:space="preserve">
-    <value>pjse.LabelledDataOwner, pjse.coder.plugin, Version=4.0.3220.35137, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.LabelledDataOwner, pjse.coder.plugin, Version=4.0.3235.35151, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ldocArg1.Parent" xml:space="preserve">
     <value>flpArgs</value>
@@ -820,22 +880,19 @@
     <value>Argument 2</value>
   </data>
   <data name="ldocArg2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 40</value>
-  </data>
-  <data name="ldocArg2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>3, 49</value>
   </data>
   <data name="ldocArg2.Size" type="System.Drawing.Size, System.Drawing">
     <value>428, 40</value>
   </data>
   <data name="ldocArg2.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;ldocArg2.Name" xml:space="preserve">
     <value>ldocArg2</value>
   </data>
   <data name="&gt;&gt;ldocArg2.Type" xml:space="preserve">
-    <value>pjse.LabelledDataOwner, pjse.coder.plugin, Version=4.0.3220.35137, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.LabelledDataOwner, pjse.coder.plugin, Version=4.0.3235.35151, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ldocArg2.Parent" xml:space="preserve">
     <value>flpArgs</value>
@@ -853,22 +910,19 @@
     <value>Argument 3</value>
   </data>
   <data name="ldocArg3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 80</value>
-  </data>
-  <data name="ldocArg3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>3, 95</value>
   </data>
   <data name="ldocArg3.Size" type="System.Drawing.Size, System.Drawing">
     <value>428, 57</value>
   </data>
   <data name="ldocArg3.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;ldocArg3.Name" xml:space="preserve">
     <value>ldocArg3</value>
   </data>
   <data name="&gt;&gt;ldocArg3.Type" xml:space="preserve">
-    <value>pjse.LabelledDataOwner, pjse.coder.plugin, Version=4.0.3220.35137, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.LabelledDataOwner, pjse.coder.plugin, Version=4.0.3235.35151, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;ldocArg3.Parent" xml:space="preserve">
     <value>flpArgs</value>
@@ -876,20 +930,23 @@
   <data name="&gt;&gt;ldocArg3.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="flpArgs.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flpArgs.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
   <data name="flpArgs.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
     <value>TopDown</value>
   </data>
   <data name="flpArgs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 95</value>
-  </data>
-  <data name="flpArgs.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
+    <value>0, 97</value>
   </data>
   <data name="flpArgs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>428, 137</value>
+    <value>434, 155</value>
   </data>
   <data name="flpArgs.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;flpArgs.Name" xml:space="preserve">
     <value>flpArgs</value>
@@ -898,60 +955,9 @@
     <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;flpArgs.Parent" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
+    <value>pnWiz0x001c</value>
   </data>
   <data name="&gt;&gt;flpArgs.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="flowLayoutPanel1.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
-    <value>TopDown</value>
-  </data>
-  <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="flowLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>428, 232</value>
-  </data>
-  <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Name" xml:space="preserve">
-    <value>flowLayoutPanel1</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.Parent" xml:space="preserve">
-    <value>pnWiz0x001c</value>
-  </data>
-  <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="pnWiz0x001c.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="pnWiz0x001c.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>2, 2, 2, 2</value>
-  </data>
-  <data name="pnWiz0x001c.Size" type="System.Drawing.Size, System.Drawing">
-    <value>428, 232</value>
-  </data>
-  <data name="pnWiz0x001c.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;pnWiz0x001c.Name" xml:space="preserve">
-    <value>pnWiz0x001c</value>
-  </data>
-  <data name="&gt;&gt;pnWiz0x001c.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;pnWiz0x001c.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;pnWiz0x001c.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -961,7 +967,7 @@
     <value>96, 96</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>606, 511</value>
+    <value>482, 297</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>

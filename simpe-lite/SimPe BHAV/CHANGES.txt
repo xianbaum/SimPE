@@ -1,3 +1,21 @@
+10 November 2008 10:32 Enhance labelling and fix RTBN
+  * Enhance instance labelling (not just Consts, rename "UseAttrPicker" to "UseInstancePicker" and associated changes)
+  * Better tracking of changes to Decimal and UseInstancePicker settings
+  * Redo RTBN parsing / Wiz based on Tuna's findings
+  pjse Localisation\
+    Localization.resx
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.22
+    BhavOperandwiz0x001c.cs 1.9
+    BhavOperandwiz0x001c.resx 1.6
+    BhavOperandWizBhav.cs 1.13
+    BhavOperandWizBhav.Designer.cs 1.3
+    BhavOperandWizBhav.resx 1.6
+    BhavWizPrim.cs 1.53
+    LabelledDataOwner.cs 1.3
+    LabelledDataOwner.Designer.cs 1.3
+    Settings.cs 1.7
+
 8 November 2008 10:02 Fix "View" BHAV (make it fill form); change FileTable refresh messages again
   pjse filetable\
     FileTable.cs 1.31.4.15

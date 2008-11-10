@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   Copyright (C) 2005-2008 by Peter L Jones                              *
+ *   peter@users.sf.net                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -39,6 +39,11 @@ namespace pjse
         SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
         public Settings() : base(rm) { }
 
+        public event EventHandler DecimalDOValueChanged;
+        public virtual void OnDecimalDOValueChanged(object sender, EventArgs e)
+		{
+            if (DecimalDOValueChanged != null) DecimalDOValueChanged(sender, e);
+        }
         [Category("PJSE")]
         public bool DecimalDOValue
         {
@@ -51,14 +56,23 @@ namespace pjse
 
             set
             {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                rkf.SetValue("decimalDOValue", value);
+                if (DecimalDOValue != value)
+                {
+                    SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                    rkf.SetValue("decimalDOValue", value);
+                    OnDecimalDOValueChanged(this, new EventArgs());
+                }
             }
 
         }
 
+        public event EventHandler InstancePickerAsTextChanged;
+        public virtual void OnInstancePickerAsTextChanged(object sender, EventArgs e)
+        {
+            if (InstancePickerAsTextChanged != null) InstancePickerAsTextChanged(sender, e);
+        }
         [Category("PJSE")]
-        public bool AttrPickerAsText
+        public bool InstancePickerAsText
         {
             get
             {
@@ -69,8 +83,12 @@ namespace pjse
 
             set
             {
-                SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
-                rkf.SetValue("attrPickerAsText", value);
+                if (InstancePickerAsText != value)
+                {
+                    SimPe.XmlRegistryKey rkf = SimPe.Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey(BASENAME);
+                    rkf.SetValue("attrPickerAsText", value);
+                    OnInstancePickerAsTextChanged(this, new EventArgs());
+                }
             }
 
         }

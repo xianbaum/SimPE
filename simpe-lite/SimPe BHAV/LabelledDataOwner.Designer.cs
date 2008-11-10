@@ -33,11 +33,11 @@ namespace pjse
             this.flpValue = new System.Windows.Forms.FlowLayoutPanel();
             this.cbPicker = new System.Windows.Forms.ComboBox();
             this.tbVal = new System.Windows.Forms.TextBox();
-            this.lbConst = new System.Windows.Forms.Label();
+            this.lbInstance = new System.Windows.Forms.Label();
             this.cbDataOwner = new System.Windows.Forms.ComboBox();
             this.flpCheckBoxes = new System.Windows.Forms.FlowLayoutPanel();
             this.ckbDecimal = new System.Windows.Forms.CheckBox();
-            this.ckbUseAttrPicker = new System.Windows.Forms.CheckBox();
+            this.ckbUseInstancePicker = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.flpValue.SuspendLayout();
             this.flpCheckBoxes.SuspendLayout();
@@ -53,7 +53,7 @@ namespace pjse
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.Controls.Add(this.lbLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.flpValue, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.lbConst, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.lbInstance, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.cbDataOwner, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.flpCheckBoxes, 1, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -112,14 +112,14 @@ namespace pjse
             // 
             // lbConst
             // 
-            this.lbConst.AutoSize = true;
-            this.lbConst.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lbConst.Location = new System.Drawing.Point(38, 24);
-            this.lbConst.Margin = new System.Windows.Forms.Padding(3);
-            this.lbConst.Name = "lbConst";
-            this.lbConst.Size = new System.Drawing.Size(63, 13);
-            this.lbConst.TabIndex = 14;
-            this.lbConst.Text = "Const value";
+            this.lbInstance.AutoSize = true;
+            this.lbInstance.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.lbInstance.Location = new System.Drawing.Point(38, 24);
+            this.lbInstance.Margin = new System.Windows.Forms.Padding(3);
+            this.lbInstance.Name = "lbConst";
+            this.lbInstance.Size = new System.Drawing.Size(63, 13);
+            this.lbInstance.TabIndex = 14;
+            this.lbInstance.Text = "Const value";
             // 
             // cbDataOwner
             // 
@@ -138,7 +138,7 @@ namespace pjse
             this.flpCheckBoxes.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel1.SetColumnSpan(this.flpCheckBoxes, 2);
             this.flpCheckBoxes.Controls.Add(this.ckbDecimal);
-            this.flpCheckBoxes.Controls.Add(this.ckbUseAttrPicker);
+            this.flpCheckBoxes.Controls.Add(this.ckbUseInstancePicker);
             this.flpCheckBoxes.Location = new System.Drawing.Point(270, 40);
             this.flpCheckBoxes.Margin = new System.Windows.Forms.Padding(0);
             this.flpCheckBoxes.Name = "flpCheckBoxes";
@@ -159,15 +159,15 @@ namespace pjse
             // 
             // ckbUseAttrPicker
             // 
-            this.ckbUseAttrPicker.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.ckbUseAttrPicker.AutoSize = true;
-            this.ckbUseAttrPicker.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.ckbUseAttrPicker.Location = new System.Drawing.Point(140, 0);
-            this.ckbUseAttrPicker.Margin = new System.Windows.Forms.Padding(0);
-            this.ckbUseAttrPicker.Name = "ckbUseAttrPicker";
-            this.ckbUseAttrPicker.Size = new System.Drawing.Size(117, 17);
-            this.ckbUseAttrPicker.TabIndex = 13;
-            this.ckbUseAttrPicker.Text = "use Attribute picker";
+            this.ckbUseInstancePicker.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.ckbUseInstancePicker.AutoSize = true;
+            this.ckbUseInstancePicker.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.ckbUseInstancePicker.Location = new System.Drawing.Point(140, 0);
+            this.ckbUseInstancePicker.Margin = new System.Windows.Forms.Padding(0);
+            this.ckbUseInstancePicker.Name = "ckbUseAttrPicker";
+            this.ckbUseInstancePicker.Size = new System.Drawing.Size(117, 17);
+            this.ckbUseInstancePicker.TabIndex = 13;
+            this.ckbUseInstancePicker.Text = "use Instance Picker";
             // 
             // LabelledDataOwner
             // 
@@ -193,12 +193,12 @@ namespace pjse
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label lbLabel;
-        private System.Windows.Forms.Label lbConst;
+        private System.Windows.Forms.Label lbInstance;
         private System.Windows.Forms.ComboBox cbPicker;
         private System.Windows.Forms.TextBox tbVal;
         private System.Windows.Forms.ComboBox cbDataOwner;
         private System.Windows.Forms.CheckBox ckbDecimal;
-        private System.Windows.Forms.CheckBox ckbUseAttrPicker;
+        private System.Windows.Forms.CheckBox ckbUseInstancePicker;
         private System.Windows.Forms.FlowLayoutPanel flpValue;
         private System.Windows.Forms.FlowLayoutPanel flpCheckBoxes;
     }

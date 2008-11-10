@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2006 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   Copyright (C) 2006-2008 by Peter L Jones                              *
+ *   peter@users.sf.net                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -39,38 +39,19 @@ namespace pjse.BhavOperandWizards.WizBhav
         {
             InitializeComponent();
 
-            albParams = new Label[] {
-                lbParam0, lbParam1, lbParam2, lbParam3,
-                lbParam4, lbParam5, lbParam6, lbParam7,
-            };
-
-            apnParams = new Panel[] {
-                pnParam0, pnParam1, pnParam2, pnParam3,
-                pnParam4, pnParam5, pnParam6, pnParam7,
-            };
-
-            acbDO = new ComboBox[] {
-                cbDataOwner0, cbDataOwner1, cbDataOwner2, cbDataOwner3,
-                cbDataOwner4, cbDataOwner5, cbDataOwner6, cbDataOwner7
-            };
-
-            acbP = new ComboBox[] {
-                cbPicker0, cbPicker1, cbPicker2, cbPicker3,
-                cbPicker4, cbPicker5, cbPicker6, cbPicker7
-            };
-
-            atbV = new TextBox[] { tbVal0, tbVal1, tbVal2, tbVal3, tbVal4, tbVal5, tbVal6, tbVal7 };
-
-            albC = new Label[] {
-                lbConst0, lbConst1, lbConst2, lbConst3,
-                lbConst4, lbConst5, lbConst6, lbConst7
-            };
-
-            adoid = new DataOwnerControl[8];
-            for (int i = 0; i < adoid.Length; i++)
-                adoid[i] = new DataOwnerControl(null, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i], 0x07, (ushort)0x00);
-
+            albArg = new Label[] { lbArg1, lbArg2, lbArg3, lbArg4, lbArg5, lbArg6, lbArg7, lbArg8, };
+            aldoc = new LabelledDataOwner[] { ldocArg1, ldocArg2, ldocArg3, ldocArg4, ldocArg5, ldocArg6, ldocArg7, ldocArg8, };
             arbFormat = new List<RadioButton>(new RadioButton[] { rbNone, rbCallers, rbOld, rbNew });
+        }
+
+        void PJSE_InstancePickerAsTextChanged(object sender, EventArgs e)
+        {
+            ckbUseInstancePicker.Checked = pjse.Settings.PJSE.DecimalDOValue;
+        }
+
+        void PJSE_DecimalDOValueChanged(object sender, EventArgs e)
+        {
+            ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
         }
 
         private bool internalchg = false;
@@ -78,49 +59,48 @@ namespace pjse.BhavOperandWizards.WizBhav
         private Instruction inst = null;
         private byte nodeVersion = 0;
         private byte nrArgs = 0;
-        private Label[] albParams = null;
-        private Panel[] apnParams = null;
         private dataFormat format = dataFormat.none;
-        private ComboBox[] acbDO = null;
-        private ComboBox[] acbP = null;
-        private TextBox[] atbV = null;
-        private Label[] albC = null;
-        private DataOwnerControl[] adoid = null;
+        private Label[] albArg = null;
+        private LabelledDataOwner[] aldoc = null;
         private List<RadioButton> arbFormat = null;
 
         private void doFormat()
         {
-            cbAttrPicker.Enabled = format == dataFormat.newformat;
-            cbDecimal.Enabled = format != dataFormat.caller && format != dataFormat.none;
-
             byte[] o = operands; // lazy...
             pnWizBhav.SuspendLayout();
-            for (int i = 0; i < apnParams.Length; i++)
+            ckbUseInstancePicker.Enabled = format == dataFormat.newformat;
+            ckbDecimal.Enabled = format != dataFormat.caller && format != dataFormat.none;
+
+            for (int i = 0; i < aldoc.Length; i++)
             {
-                apnParams[i].Enabled = (format != dataFormat.none && format != dataFormat.caller)
+                aldoc[i].Enabled = (format != dataFormat.none && format != dataFormat.caller)
                     && !(format == dataFormat.newformat && i >= 4);
-                acbDO[i].Enabled = format != dataFormat.oldformat;
+                aldoc[i].DataOwnerEnabled = format != dataFormat.oldformat;
                 switch (format)
                 {
                     case dataFormat.none:
-                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
-                            , 0x07, 0);
+                        aldoc[i].Value = 0;
+                        aldoc[i].DataOwner = 0x07;
                         break;
                     case dataFormat.caller:
-                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
-                            , 0x09, (ushort)i);
+                        aldoc[i].Value = (ushort)i;
+                        aldoc[i].DataOwner = 0x09;
                         break;
                     case dataFormat.oldformat:
-                        adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
-                            , 0x07, BhavWiz.ToShort(o[i * 2], o[i * 2 + 1]));
+                        aldoc[i].Value = BhavWiz.ToShort(o[i * 2], o[i * 2 + 1]);
+                        aldoc[i].DataOwner = 0x07;
                         break;
                     case dataFormat.newformat:
                         if (i < 4)
-                            adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
-                                , o[i * 3], BhavWiz.ToShort(o[(i * 3) + 1], o[(i * 3) + 2]));
+                        {
+                            aldoc[i].Value = BhavWiz.ToShort(o[(i * 3) + 1], o[(i * 3) + 2]);
+                            aldoc[i].DataOwner = o[i * 3];
+                        }
                         else
-                            adoid[i].SetDataOwnerControl(inst, acbDO[i], acbP[i], atbV[i], cbDecimal, cbAttrPicker, albC[i]
-                                , 0x07, 0);
+                        {
+                            aldoc[i].Value = 0;
+                            aldoc[i].DataOwner = 0x07;
+                        }
                         break;
                 }
             }
@@ -144,15 +124,15 @@ namespace pjse.BhavOperandWizards.WizBhav
                 case dataFormat.caller: operands[12] &= 0xfe; operands[12] |= 0x02; break;
                 case dataFormat.oldformat:
                     for (int i = 0; i < 8; i++)
-                        BhavWiz.FromShort(ref operands, i * 2, adoid[i].Value);
+                        BhavWiz.FromShort(ref operands, i * 2, aldoc[i].Value);
                     operands[12] &= 0xfe;
                     if (nodeVersion > 0) operands[12] &= 0xfd;
                     break;
                 case dataFormat.newformat:
                     for (int i = 0; i < 4; i++)
                     {
-                        operands[i * 3] = adoid[i].DataOwner;
-                        BhavWiz.FromShort(ref operands, i * 3 + 1, adoid[i].Value);
+                        operands[i * 3] = aldoc[i].DataOwner;
+                        BhavWiz.FromShort(ref operands, i * 3 + 1, aldoc[i].Value);
                     }
                     operands[12] |= 0x01;
                     break;
@@ -164,17 +144,21 @@ namespace pjse.BhavOperandWizards.WizBhav
 
         public void Execute(Instruction inst)
         {
+            ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
+            ckbUseInstancePicker.Checked = pjse.Settings.PJSE.DecimalDOValue;
+
             internalchg = true;
 
             this.inst = inst;
+            foreach (LabelledDataOwner ldoc in aldoc) ldoc.Instruction = inst;
+
             nodeVersion = inst.NodeVersion;
 
             pjse.FileTable.Entry ftEntry = inst.Parent.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, inst.OpCode);
             TPRP tprp = null;
             if (ftEntry != null)
             {
-                Bhav wrapper = new Bhav();
-                wrapper.ProcessData(ftEntry.PFD, ftEntry.Package);
+                Bhav wrapper = (Bhav)ftEntry.Wrapper;
                 tprp = (TPRP)wrapper.SiblingResource(TPRP.TPRPtype);
                 nrArgs = wrapper.Header.ArgumentCount;
 
@@ -192,10 +176,10 @@ namespace pjse.BhavOperandWizards.WizBhav
             ((byte[])inst.Reserved1).CopyTo(operands, 8);
 
             for (int i = 0; i < nrArgs; i++)
-                if (tprp != null && !tprp.TextOnly && i < tprp.ParamCount) albParams[i].Text = tprp[false, i].Label;
-                else albParams[i].Text = pjse.Localization.GetString("unk");
-            for (int i = nrArgs; i < albParams.Length; i++)
-                albParams[i].Text = pjse.Localization.GetString("bwb_unused");
+                if (tprp != null && !tprp.TextOnly && i < tprp.ParamCount) albArg[i].Text = tprp[false, i].Label;
+                else albArg[i].Text = pjse.Localization.GetString("unk");
+            for (int i = nrArgs; i < albArg.Length; i++)
+                albArg[i].Text = pjse.Localization.GetString("bwb_unused");
 
             bool noOperands = true;
             if (nodeVersion > 0)
@@ -248,6 +232,16 @@ namespace pjse.BhavOperandWizards.WizBhav
             if (!arbFormat[i].Checked) return;
             setFormat((dataFormat)Enum.Parse(format.GetType(), i.ToString()));
             doFormat();
+        }
+
+        private void ckbDecimal_CheckedChanged(object sender, EventArgs e)
+        {
+            pjse.Settings.PJSE.DecimalDOValue = ckbDecimal.Checked;
+        }
+
+        private void ckbUseInstancePicker_CheckedChanged(object sender, EventArgs e)
+        {
+            pjse.Settings.PJSE.DecimalDOValue = ckbUseInstancePicker.Checked;
         }
     }
 }
