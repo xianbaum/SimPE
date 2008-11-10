@@ -184,8 +184,8 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
                 options[1] = (scope == 1);
                 options[2] = !this.tfGlobal.Checked;
                 options[3] = !this.tfSemiGlobal.Checked;
-                options[4] = this.tfArguments.Checked;
-                options[5] = this.tfParameters.Checked;
+                options[4] = this.tfArgs.Checked;
+                options[5] = this.tfParams.Checked;
                 ops1[0x02] = options;
                 ops1[0x02] |= (byte)((doidTree.Value & 0x0300) >> 2);
 

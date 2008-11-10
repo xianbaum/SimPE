@@ -6,7 +6,7 @@
     Localization.resx
   SimPe BHAV\
     BhavOperandWiz.cs 1.22
-    BhavOperandwiz0x001c.cs 1.9
+    BhavOperandwiz0x001c.cs 1.10
     BhavOperandwiz0x001c.resx 1.6
     BhavOperandWizBhav.cs 1.13
     BhavOperandWizBhav.Designer.cs 1.3
