@@ -179,7 +179,8 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		#region IFileWrapper Member
+        public static readonly uint Ttabtype = 0x54544142;
+        #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process
 		/// </summary>
@@ -187,7 +188,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				uint[] types = {0x54544142}; //handles the TTAB File
+                uint[] types = { Ttabtype }; //handles the TTAB File
 				return types;
 			}
 		}

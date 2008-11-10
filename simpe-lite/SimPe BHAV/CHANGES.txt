@@ -1,3 +1,8 @@
+10 November 2008 15:32 Add Objftype and Ttabtype to appropriate wrappers
+  SimPe BHAV\
+    ObjfWrapper.cs 1.15
+    TtabWrapper.cs 1.33
+
 10 November 2008 10:32 Enhance labelling and fix RTBN
   * Enhance instance labelling (not just Consts, rename "UseAttrPicker" to "UseInstancePicker" and associated changes)
   * Better tracking of changes to Decimal and UseInstancePicker settings
