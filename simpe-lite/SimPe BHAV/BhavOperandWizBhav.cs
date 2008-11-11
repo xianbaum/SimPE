@@ -42,16 +42,21 @@ namespace pjse.BhavOperandWizards.WizBhav
             albArg = new Label[] { lbArg1, lbArg2, lbArg3, lbArg4, lbArg5, lbArg6, lbArg7, lbArg8, };
             aldoc = new LabelledDataOwner[] { ldocArg1, ldocArg2, ldocArg3, ldocArg4, ldocArg5, ldocArg6, ldocArg7, ldocArg8, };
             arbFormat = new List<RadioButton>(new RadioButton[] { rbNone, rbCallers, rbOld, rbNew });
-        }
 
-        void PJSE_InstancePickerAsTextChanged(object sender, EventArgs e)
-        {
-            ckbUseInstancePicker.Checked = pjse.Settings.PJSE.DecimalDOValue;
+            pjse.Settings.PJSE.DecimalDOValueChanged += new EventHandler(PJSE_DecimalDOValueChanged);
+            pjse.Settings.PJSE.InstancePickerAsTextChanged += new EventHandler(PJSE_InstancePickerAsTextChanged);
         }
 
         void PJSE_DecimalDOValueChanged(object sender, EventArgs e)
         {
-            ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
+            if (ckbDecimal.Checked != pjse.Settings.PJSE.DecimalDOValue)
+                ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
+        }
+
+        void PJSE_InstancePickerAsTextChanged(object sender, EventArgs e)
+        {
+            if (ckbUseInstancePicker.Checked != pjse.Settings.PJSE.InstancePickerAsText)
+                ckbUseInstancePicker.Checked = pjse.Settings.PJSE.InstancePickerAsText;
         }
 
         private bool internalchg = false;
@@ -145,7 +150,7 @@ namespace pjse.BhavOperandWizards.WizBhav
         public void Execute(Instruction inst)
         {
             ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
-            ckbUseInstancePicker.Checked = pjse.Settings.PJSE.DecimalDOValue;
+            ckbUseInstancePicker.Checked = pjse.Settings.PJSE.InstancePickerAsText;
 
             internalchg = true;
 
@@ -241,7 +246,7 @@ namespace pjse.BhavOperandWizards.WizBhav
 
         private void ckbUseInstancePicker_CheckedChanged(object sender, EventArgs e)
         {
-            pjse.Settings.PJSE.DecimalDOValue = ckbUseInstancePicker.Checked;
+            pjse.Settings.PJSE.InstancePickerAsText = ckbUseInstancePicker.Checked;
         }
     }
 }

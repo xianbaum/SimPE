@@ -168,7 +168,13 @@ namespace pjse
         public ushort Value
         {
             get { return doc.Value; }
-            set { tbVal.Text = "0x" + value.ToString("X"); }
+            set
+            {
+                if (doc.ValueIsByte)
+                    tbVal.Text = "0x" + SimPe.Helper.HexString((byte)value);
+                else
+                    tbVal.Text = "0x" + SimPe.Helper.HexString(value);
+            }
         }
 
         public event EventHandler DataOwnerControlChanged;

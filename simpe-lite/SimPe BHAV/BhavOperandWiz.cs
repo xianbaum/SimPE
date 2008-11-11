@@ -515,7 +515,7 @@ namespace pjse.BhavOperandWizards
         {
             if (lbInstance != null)
             {
-                lbInstance.Text = "";
+                string s = "";
                 if (inst != null)
                 {
                     List<string> labels = null;
@@ -556,14 +556,15 @@ namespace pjse.BhavOperandWizards
                     if (labels != null)
                     {
                         if (instance < labels.Count)
-                            lbInstance.Text = cbDataOwner.Text + ": " + labels[instance];
+                            s = cbDataOwner.Text + ": " + labels[instance];
                     }
                     else if (dataOwner == 0x1a)
                     {
                         ushort[] bcon = BhavWiz.ExpandBCON(instance, false);
-                        lbInstance.Text = ((BhavWiz)inst).readBcon(bcon[0], bcon[1], false, true);
+                        s = ((BhavWiz)inst).readBcon(bcon[0], bcon[1], false, true);
                     }
                 }
+                lbInstance.Text = s;
             }
         }
 
