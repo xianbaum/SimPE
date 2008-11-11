@@ -120,7 +120,7 @@ namespace pjse.guidtool
             gcGroup.KnownObjects = new object[] { sgNames, sgGroups, };
         }
 
-        private static string BASENAME = "PJSE\\Bhav\\GUIDTool";
+        private static string BASENAME = @"PJSE\Bhav\GUIDTool";
         private static SimPe.XmlRegistryKey xrk = SimPe.Helper.WindowsRegistry.PluginRegistryKey;
         private int PersistantHeight
         {
@@ -257,9 +257,9 @@ namespace pjse.guidtool
                     }
                 }
 
-                results.Sort(byGroupTypeInstance);
-
                 Invoke(setProgress, new object[] { false, results.Count });
+
+                results.Sort(byGroupTypeInstance);
 
                 int j = 0;
                 foreach (pjse.FileTable.Entry item in results)
@@ -330,7 +330,10 @@ namespace pjse.guidtool
         private void SetProgress(bool maxOrValue, int progress)
         {
             if (maxOrValue == false)
+            {
+                SimPe.WaitingScreen.Stop();
                 this.progressBar1.Maximum = progress;
+            }
             else
                 this.progressBar1.Value = progress;
         }
@@ -392,6 +395,7 @@ namespace pjse.guidtool
             this.tbName.Text = this.tbName.Text.Trim().ToLower();
             if (this.tbName.Text.Length == 0) { type[1] = type[2] = type[3] = type[4] = false; } // don't search for empty string
 
+            SimPe.WaitingScreen.Wait();
             this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
             // this.rtbReport.UseWaitCursor = true; // Methods missing from Mono
             this.btnSearch.Cursor = System.Windows.Forms.Cursors.Default;
