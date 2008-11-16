@@ -1,3 +1,10 @@
+16 November 2008 11:10 GUID Tool: remove "objects.package only" and move stuff around
+  pjse GUID Tool\
+    GUIDTool.cs 1.20
+    GUIDTool.resx 1.12
+  SimPe BHAV\
+    GUIDChooser.Designer.cs 1.2
+
 11 November 2008 17:22 Relabel "Focus"; add a Please Wait whilst finding initial result set
   pjse GUID Tool\
     GUIDTool.cs 1.19

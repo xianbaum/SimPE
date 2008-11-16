@@ -42,20 +42,20 @@ namespace SimPe.Plugin
             this.flpMain.Controls.Add(this.lbLabel);
             this.flpMain.Controls.Add(this.cbKnownObjects);
             this.flpMain.Controls.Add(this.tbGUID);
-            this.flpMain.Location = new System.Drawing.Point(3, 3);
-            this.flpMain.Margin = new System.Windows.Forms.Padding(0, 0, 1, 0);
+            this.flpMain.Location = new System.Drawing.Point(0, 0);
+            this.flpMain.Margin = new System.Windows.Forms.Padding(0);
             this.flpMain.Name = "flpMain";
-            this.flpMain.Size = new System.Drawing.Size(272, 24);
+            this.flpMain.Size = new System.Drawing.Size(207, 21);
             this.flpMain.TabIndex = 1;
             // 
             // lbLabel
             // 
             this.lbLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lbLabel.AutoSize = true;
-            this.lbLabel.Location = new System.Drawing.Point(0, 3);
+            this.lbLabel.Location = new System.Drawing.Point(0, 4);
             this.lbLabel.Margin = new System.Windows.Forms.Padding(0);
             this.lbLabel.Name = "lbLabel";
-            this.lbLabel.Size = new System.Drawing.Size(43, 17);
+            this.lbLabel.Size = new System.Drawing.Size(33, 13);
             this.lbLabel.TabIndex = 1;
             this.lbLabel.Text = "Label";
             // 
@@ -64,21 +64,21 @@ namespace SimPe.Plugin
             this.cbKnownObjects.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cbKnownObjects.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbKnownObjects.FormattingEnabled = true;
-            this.cbKnownObjects.Location = new System.Drawing.Point(43, 0);
+            this.cbKnownObjects.Location = new System.Drawing.Point(33, 0);
             this.cbKnownObjects.Margin = new System.Windows.Forms.Padding(0);
             this.cbKnownObjects.Name = "cbKnownObjects";
-            this.cbKnownObjects.Size = new System.Drawing.Size(121, 24);
+            this.cbKnownObjects.Size = new System.Drawing.Size(92, 21);
             this.cbKnownObjects.TabIndex = 2;
             this.cbKnownObjects.SelectedIndexChanged += new System.EventHandler(this.cbKnownObjects_SelectedIndexChanged);
             // 
             // tbGUID
             // 
             this.tbGUID.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.tbGUID.Location = new System.Drawing.Point(170, 1);
-            this.tbGUID.Margin = new System.Windows.Forms.Padding(6, 0, 0, 0);
+            this.tbGUID.Location = new System.Drawing.Point(129, 0);
+            this.tbGUID.Margin = new System.Windows.Forms.Padding(4, 0, 0, 0);
             this.tbGUID.MaxLength = 10;
             this.tbGUID.Name = "tbGUID";
-            this.tbGUID.Size = new System.Drawing.Size(102, 22);
+            this.tbGUID.Size = new System.Drawing.Size(78, 20);
             this.tbGUID.TabIndex = 3;
             this.tbGUID.Text = "0xDDDDDDDD";
             this.tbGUID.TextChanged += new System.EventHandler(this.tbGUID_TextChanged);
@@ -87,14 +87,14 @@ namespace SimPe.Plugin
             // 
             // GUIDChooser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.Controls.Add(this.flpMain);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "GUIDChooser";
-            this.Size = new System.Drawing.Size(276, 27);
+            this.Size = new System.Drawing.Size(207, 21);
             this.flpMain.ResumeLayout(false);
             this.flpMain.PerformLayout();
             this.ResumeLayout(false);
