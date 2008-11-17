@@ -1,3 +1,7 @@
+2008-11-17 13:45 Various change (headers, new fields)
+  pjHoodTool/
+    cHoodTool.cs 1.4
+
 2008-11-16 19:23 Rewrite as standard text/csv per RFC4180, split lots into separate file (and do all, not just occupied)
   pjHoodTool/
     cHoodTool.cs 1.3

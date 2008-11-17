@@ -86,7 +86,8 @@ namespace pjHoodTool
                 #region ExportedSims header
                 w1.WriteLine("hood" +
                     ",HoodName" +
-                    ",NID,SimName,FamilyInstance,SimFamilyName,HouseholdName" +
+                    ",NID,FirstName,LastName,SimDescription" +
+                    ",FamilyInstance,HouseholdName" +
                     ",HouseNumber" +
                     ",AvailableCharacterData,Unlinked" +
                     ",ParentA,ParentB,Spouse" +
@@ -96,8 +97,7 @@ namespace pjHoodTool
                     ",NPCType" +
                     //",MotivesStatic,VoiceType"+
                     ",SchoolType,Grade,CareerPerformance,Career,CareerLevel,ZodiacSign,Aspiration,Gender" +
-                    ",LifeSection,AgeDaysLeft" +
-                    //",PrevAgeDays,AgeDuration"+
+                    ",LifeSection,AgeDaysLeft,PrevAgeDays,AgeDuration"+
                     ",BlizLifelinePoints,LifelinePoints,LifelineScore" +
                     ",GenActive,GenNeat,GenNice,GenOutgoing,GenPlayful" + // GeneticCharacter
                     ",Active,Neat,Nice,Outgoing,Playful" + // Character
@@ -135,6 +135,7 @@ namespace pjHoodTool
             finally
             {
                 w1.Close();
+                w2.Close();
             }
         }
 
@@ -214,15 +215,49 @@ namespace pjHoodTool
         enum bodyType : ushort { Unknown = 0, Fat = 1, PregnantFull = 2, PregnantHalf = 4, PregnantHidden = 8, };
         void AddSim(string outPath, string hood, string hoodName, StreamWriter w, ExtSDesc sdsc)
         {
+            #region desc
+            string desc = ",,";
+            SimPe.Interfaces.Files.IPackageFile pkg = SimPe.Packages.File.LoadFromFile(sdsc.CharacterFileName);
+            if (pkg == null)
+            {
+                System.Diagnostics.Trace.WriteLine("Could not find character package:\n" + sdsc.CharacterFileName);
+                return;// severe problem...
+            }
+            IPackedFileDescriptor[] pfds = pkg.FindFiles(StrWrapper.CTSStype);
+            if (pfds == null || pfds.Length == 0)
+            {
+                System.Diagnostics.Trace.WriteLine("Could not find CTSS packed file for sim");
+                return;// severe problem...
+            }
+            try
+            {
+                StrWrapper ctss = new StrWrapper();
+                ctss.ProcessData(pfds[0], pkg);
+                desc = q(ctss[1, 0]) + // firstname
+                    "," + q(ctss[1, 2]) + // lastname
+                    "," + q(ctss[1, 1]) + // description
+                    ""
+                    ;
+            }
+            catch { }
+            #endregion
+
+            #region family
+            string family = ",,";
             IPackedFileDescriptor pfd = sdsc.Package.FindFile(0x46414D49, 0x00000000, 0xffffffff, sdsc.FamilyInstance); // FAMI
-            Fami family = null;
-            SimPe.Interfaces.Providers.ILotItem ilot = null;
             if (pfd != null)
             {
-                family = new Fami(FileTable.ProviderRegistry.SimNameProvider);
-                family.ProcessData(pfd, sdsc.Package);
-                ilot = FileTable.ProviderRegistry.LotProvider.FindLot(family.LotInstance);
+                Fami fami = null;
+                fami = new Fami(FileTable.ProviderRegistry.SimNameProvider);
+                fami.ProcessData(pfd, sdsc.Package);
+
+                family = sdsc.FamilyInstance +
+                    "," + q(sdsc.HouseholdName) +
+                    "," + fami.LotInstance +
+                    ""
+                    ;
             }
+            #endregion
 
             #region ties
             string ties = ",,";
@@ -354,11 +389,8 @@ namespace pjHoodTool
             string csv = hood +
                 "," + q(hoodName) +
                 "," + sdsc.Instance +
-                "," + q(sdsc.SimName) +
-                "," + sdsc.FamilyInstance +
-                "," + q(sdsc.SimFamilyName) +
-                "," + q(sdsc.HouseholdName) +
-                "," + (ilot != null ? ilot.Instance + "" : "") +
+                "," + desc +
+                "," + family +
                 "," + (sdsc.AvailableCharacterData ? "Y" : "N") +
                 "," + (sdsc.Unlinked != 0x00 ? "Y" : "N") +
                 "," + ties +
@@ -378,8 +410,8 @@ namespace pjHoodTool
                 "," + sdsc.CharacterDescription.Gender +
                 "," + sdsc.CharacterDescription.LifeSection +
                 "," + sdsc.CharacterDescription.Age +
-                //"," + sdsc.CharacterDescription.PrevAgeDays +
-                //"," + sdsc.CharacterDescription.AgeDuration +
+                "," + sdsc.CharacterDescription.PrevAgeDays +
+                "," + sdsc.CharacterDescription.AgeDuration +
                 "," + sdsc.CharacterDescription.BlizLifelinePoints +
                 "," + sdsc.CharacterDescription.LifelinePoints +
                 "," + sdsc.CharacterDescription.LifelineScore +
