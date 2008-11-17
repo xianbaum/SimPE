@@ -269,58 +269,49 @@ namespace pjse.guidtool
                 Invoke(setProgress, new object[] { false, results.Count });
 
                 int j = 0;
+                pjse.FileTable.Entry previtem = null;
                 foreach (pjse.FileTable.Entry item in results)
                 {
-                    uint itemguid = 0;
-
-                    System.IO.BinaryReader reader = item.Wrapper.StoredData;
-
-                    if (item.Type == SimPe.Data.MetaData.OBJD_FILE)
-                        if (reader.BaseStream.Length >= 0x40) // filename length
-                            if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
-                            {
-                                reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
-                                itemguid = reader.ReadUInt32();
-                            }
-
-                    if ((type[0] && itemguid == searchNumber) ||
-                        ((type[1] || type[2] || type[3]) && item.ToString().ToLower().IndexOf(searchText) >= 0))
-                        Invoke(addResult, new object[] { itemguid, item, });
-
-                    if (type[5]/* || type[6]*/)
+                    if (item != previtem)
                     {
-                        if (item.Type == Bhav.Bhavtype)
-                        {
-                            Bhav bhav = (Bhav)item.Wrapper;
-                            if (bhav != null) foreach (Instruction i in bhav)
-                                    if (i.OpCode == searchNumber)
-                                    {
-                                        Invoke(addResult, new object[] { itemguid, item, });
-                                        break;
-                                    }
-                        }
-                        else if (item.Type == Objf.Objftype)
-                        {
-                            Objf objf = (Objf)item.Wrapper;
-                            if (objf != null) foreach (ObjfItem i in objf)
-                                    if (i.Action == searchNumber || i.Guardian == searchNumber)
-                                    {
-                                        Invoke(addResult, new object[] { itemguid, item, });
-                                        break;
-                                    }
-                        }
-                        else if (item.Type == Ttab.Ttabtype)
-                        {
-                            Ttab ttab = (Ttab)item.Wrapper;
-                            if (ttab != null) foreach (TtabItem i in ttab)
-                                    if (i.Action == searchNumber || i.Guardian == searchNumber)
-                                    {
-                                        Invoke(addResult, new object[] { itemguid, item, });
-                                        break;
-                                    }
-                        }
-                    }
+                        previtem = item;
 
+                        uint itemguid = 0;
+
+                        System.IO.BinaryReader reader = item.Wrapper.StoredData;
+
+                        if (item.Type == SimPe.Data.MetaData.OBJD_FILE)
+                            if (reader.BaseStream.Length >= 0x40) // filename length
+                                if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
+                                {
+                                    reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
+                                    itemguid = reader.ReadUInt32();
+                                }
+
+                        if ((type[0] && itemguid == searchNumber) ||
+                            ((type[1] || type[2] || type[3]) && item.ToString().ToLower().IndexOf(searchText) >= 0))
+                            Invoke(addResult, new object[] { itemguid, item, });
+
+                        else if (type[5]) switch (item.Type)
+                            {
+                                case Bhav.Bhavtype:
+                                    if (item.Wrapper != null) foreach (Instruction i in (Bhav)item.Wrapper)
+                                            if (i.OpCode == searchNumber)
+                                                Invoke(addResult, new object[] { itemguid, item, });
+                                    break;
+                                case Objf.Objftype:
+                                    if (item.Wrapper != null) foreach (ObjfItem i in (Objf)item.Wrapper)
+                                            if (i.Action == searchNumber || i.Guardian == searchNumber)
+                                                Invoke(addResult, new object[] { itemguid, item, });
+                                    break;
+                                case Ttab.Ttabtype:
+                                    if (item.Wrapper != null) foreach (TtabItem i in (Ttab)item.Wrapper)
+                                            if (i.Action == searchNumber || i.Guardian == searchNumber)
+                                                Invoke(addResult, new object[] { itemguid, item, });
+                                    break;
+                            }
+                    }
+                DealtWith:
                     Invoke(setProgress, new object[] { true, ++j });
                     Thread.Sleep(0);
                     if ((bool)Invoke(stopSearch))

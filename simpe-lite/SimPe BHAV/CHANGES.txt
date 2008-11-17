@@ -1,3 +1,7 @@
+17 November 2008 13:44 GUID Tool: update to use consts
+  pjse GUID Tool\
+    GUIDTool.cs 1.21
+
 17 November 2008 13:42 Change "static readonly" to "const" to make wrapper types more accessible
   SimPe BHAV\
     BconWrapper.cs 1.17
