@@ -229,23 +229,14 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-		#region IFileWrapper Member
+        public const uint Strtype = 0x53545223;
+        public const uint TTAstype = 0x54544173;
+        public const uint CTSStype = 0x43545353;
+        #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Types this Plugin can process
 		/// </summary>
-		public uint[] AssignableTypes
-		{
-			get
-			{
-				uint[] types = {
-									 0x53545223  // STR#
-									,0x54544173  // TTAs
-									,0x43545353  // CTSS
-							   };
-			
-				return types;
-			}
-		}
+		public uint[] AssignableTypes { get { return new uint[] { Strtype, TTAstype, CTSStype, }; } }
 
 		/// <summary>
 		/// Returns the Signature that can be used to identify Files processable with this Plugin

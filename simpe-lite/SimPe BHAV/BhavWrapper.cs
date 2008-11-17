@@ -249,7 +249,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-        public static readonly uint Bhavtype = 0x42484156;
+        public const uint Bhavtype = 0x42484156;
         #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process

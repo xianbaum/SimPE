@@ -159,7 +159,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-        public static readonly uint Objftype = 0x4F424A66;
+        public const uint Objftype = 0x4F424A66;
         #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process

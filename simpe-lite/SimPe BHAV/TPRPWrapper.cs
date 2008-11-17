@@ -318,7 +318,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-        public static readonly uint TPRPtype = 0x54505250;
+        public const uint TPRPtype = 0x54505250;
         #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process

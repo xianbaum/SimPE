@@ -179,7 +179,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-        public static readonly uint Ttabtype = 0x54544142;
+        public const uint Ttabtype = 0x54544142;
         #region IFileWrapper Member
 		/// <summary>
 		/// Returns a list of File Type this Plugin can process
