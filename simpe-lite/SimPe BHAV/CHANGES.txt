@@ -1,3 +1,8 @@
+18 November 2008 13:25 TTAB Form: add splitter and line number
+  SimPe BHAV\
+    TtabForm.cs 1.51
+    TtabForm.resx 1.25
+
 17 November 2008 13:44 GUID Tool: update to use consts
   pjse GUID Tool\
     GUIDTool.cs 1.21

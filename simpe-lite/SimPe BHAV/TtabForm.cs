@@ -131,6 +131,15 @@ namespace SimPe.PackedFiles.UserInterface
         private pjse_banner pjse_banner1;
         private Button btnMoveDown;
         private Button btnMoveUp;
+        private SplitContainer splitContainer1;
+        private TableLayoutPanel tlpSettingsHead;
+        private Label label4;
+        private Label lbTTABEntry;
+        private FlowLayoutPanel flpPieStringID;
+        private FlowLayoutPanel flpAction;
+        private FlowLayoutPanel flpGuard;
+        private FlowLayoutPanel flpFileCtrl;
+        private TableLayoutPanel tableLayoutPanel1;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -646,22 +655,43 @@ namespace SimPe.PackedFiles.UserInterface
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TtabForm));
             this.ttabPanel = new System.Windows.Forms.Panel();
-            this.pjse_banner1 = new pjse.pjse_banner();
-            this.btnStrPrev = new System.Windows.Forms.Button();
-            this.btnStrNext = new System.Windows.Forms.Button();
-            this.btnAppend = new System.Windows.Forms.Button();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.lbttab = new System.Windows.Forms.ListBox();
+            this.flpFileCtrl = new System.Windows.Forms.FlowLayoutPanel();
             this.lbFilename = new System.Windows.Forms.Label();
             this.tbFilename = new System.Windows.Forms.TextBox();
-            this.tbFormat = new System.Windows.Forms.TextBox();
             this.label41 = new System.Windows.Forms.Label();
+            this.tbFormat = new System.Windows.Forms.TextBox();
             this.btnCommit = new System.Windows.Forms.Button();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.label26 = new System.Windows.Forms.Label();
+            this.btnStrPrev = new System.Windows.Forms.Button();
+            this.btnMoveUp = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnStrNext = new System.Windows.Forms.Button();
+            this.btnMoveDown = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.lbttab = new System.Windows.Forms.ListBox();
+            this.btnAppend = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpSettings = new System.Windows.Forms.TabPage();
+            this.tlpSettingsHead = new System.Windows.Forms.TableLayoutPanel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.lbTTABEntry = new System.Windows.Forms.Label();
+            this.llGuardian = new System.Windows.Forms.LinkLabel();
+            this.label40 = new System.Windows.Forms.Label();
+            this.llAction = new System.Windows.Forms.LinkLabel();
+            this.flpPieStringID = new System.Windows.Forms.FlowLayoutPanel();
+            this.tbStringIndex = new System.Windows.Forms.TextBox();
+            this.cbStringIndex = new System.Windows.Forms.ComboBox();
             this.lbPieString = new System.Windows.Forms.Label();
+            this.flpAction = new System.Windows.Forms.FlowLayoutPanel();
+            this.tbAction = new System.Windows.Forms.TextBox();
+            this.btnAction = new System.Windows.Forms.Button();
+            this.lbaction = new System.Windows.Forms.Label();
+            this.flpGuard = new System.Windows.Forms.FlowLayoutPanel();
+            this.tbGuardian = new System.Windows.Forms.TextBox();
+            this.btnGuardian = new System.Windows.Forms.Button();
+            this.lbguard = new System.Windows.Forms.Label();
             this.gbFlags2 = new System.Windows.Forms.GroupBox();
             this.tbFlags2 = new System.Windows.Forms.TextBox();
             this.btnNoFlags2 = new System.Windows.Forms.Button();
@@ -682,16 +712,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.cb2Bit3 = new System.Windows.Forms.CheckBox();
             this.cb2Bit2 = new System.Windows.Forms.CheckBox();
             this.cb2Bit1 = new System.Windows.Forms.CheckBox();
-            this.llGuardian = new System.Windows.Forms.LinkLabel();
-            this.llAction = new System.Windows.Forms.LinkLabel();
-            this.cbStringIndex = new System.Windows.Forms.ComboBox();
             this.cbAttenuationCode = new System.Windows.Forms.ComboBox();
-            this.btnAction = new System.Windows.Forms.Button();
-            this.btnGuardian = new System.Windows.Forms.Button();
-            this.lbaction = new System.Windows.Forms.Label();
-            this.lbguard = new System.Windows.Forms.Label();
-            this.tbStringIndex = new System.Windows.Forms.TextBox();
-            this.label40 = new System.Windows.Forms.Label();
             this.tbModelTabID = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
             this.tbObjType = new System.Windows.Forms.TextBox();
@@ -706,7 +727,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbAttenuationValue = new System.Windows.Forms.TextBox();
             this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.tbGuardian = new System.Windows.Forms.TextBox();
             this.gbFlags = new System.Windows.Forms.GroupBox();
             this.btnNoFlags = new System.Windows.Forms.Button();
             this.tbFlags = new System.Windows.Forms.TextBox();
@@ -727,7 +747,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbBit3 = new System.Windows.Forms.CheckBox();
             this.cbBit2 = new System.Windows.Forms.CheckBox();
             this.cbBit1 = new System.Windows.Forms.CheckBox();
-            this.tbAction = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tbJoinIndex = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -735,11 +754,19 @@ namespace SimPe.PackedFiles.UserInterface
             this.timtuiHuman = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
             this.tpAnimalMotives = new System.Windows.Forms.TabPage();
             this.timtuiAnimal = new SimPe.PackedFiles.UserInterface.TtabItemMotiveTableUI();
-            this.btnMoveUp = new System.Windows.Forms.Button();
-            this.btnMoveDown = new System.Windows.Forms.Button();
+            this.pjse_banner1 = new pjse.pjse_banner();
             this.ttabPanel.SuspendLayout();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flpFileCtrl.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tpSettings.SuspendLayout();
+            this.tlpSettingsHead.SuspendLayout();
+            this.flpPieStringID.SuspendLayout();
+            this.flpAction.SuspendLayout();
+            this.flpGuard.SuspendLayout();
             this.gbFlags2.SuspendLayout();
             this.gbFlags.SuspendLayout();
             this.tpHumanMotives.SuspendLayout();
@@ -750,59 +777,73 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.ttabPanel, "ttabPanel");
             this.ttabPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.ttabPanel.Controls.Add(this.btnMoveDown);
-            this.ttabPanel.Controls.Add(this.btnMoveUp);
+            this.ttabPanel.Controls.Add(this.splitContainer1);
             this.ttabPanel.Controls.Add(this.pjse_banner1);
-            this.ttabPanel.Controls.Add(this.btnStrPrev);
-            this.ttabPanel.Controls.Add(this.btnStrNext);
-            this.ttabPanel.Controls.Add(this.btnAppend);
-            this.ttabPanel.Controls.Add(this.lbFilename);
-            this.ttabPanel.Controls.Add(this.tbFilename);
-            this.ttabPanel.Controls.Add(this.tbFormat);
-            this.ttabPanel.Controls.Add(this.label41);
-            this.ttabPanel.Controls.Add(this.btnCommit);
-            this.ttabPanel.Controls.Add(this.btnAdd);
-            this.ttabPanel.Controls.Add(this.label26);
-            this.ttabPanel.Controls.Add(this.btnDelete);
-            this.ttabPanel.Controls.Add(this.lbttab);
-            this.ttabPanel.Controls.Add(this.tabControl1);
             this.ttabPanel.Name = "ttabPanel";
             // 
-            // pjse_banner1
+            // splitContainer1
             // 
-            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
-            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
-            this.pjse_banner1.Name = "pjse_banner1";
+            resources.ApplyResources(this.splitContainer1, "splitContainer1");
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Name = "splitContainer1";
             // 
-            // btnStrPrev
+            // splitContainer1.Panel1
             // 
-            resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
-            this.btnStrPrev.Name = "btnStrPrev";
-            this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
+            this.splitContainer1.Panel1.Controls.Add(this.tableLayoutPanel1);
             // 
-            // btnStrNext
+            // splitContainer1.Panel2
             // 
-            resources.ApplyResources(this.btnStrNext, "btnStrNext");
-            this.btnStrNext.Name = "btnStrNext";
-            this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
+            this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
             // 
-            // btnAppend
+            // tableLayoutPanel1
             // 
-            resources.ApplyResources(this.btnAppend, "btnAppend");
-            this.btnAppend.Name = "btnAppend";
-            this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.lbttab, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.flpFileCtrl, 0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // lbttab
+            // 
+            resources.ApplyResources(this.lbttab, "lbttab");
+            this.lbttab.Name = "lbttab";
+            this.lbttab.SelectedIndexChanged += new System.EventHandler(this.TtabSelect);
+            // 
+            // flpFileCtrl
+            // 
+            resources.ApplyResources(this.flpFileCtrl, "flpFileCtrl");
+            this.flpFileCtrl.Controls.Add(this.lbFilename);
+            this.flpFileCtrl.Controls.Add(this.tbFilename);
+            this.flpFileCtrl.Controls.Add(this.label41);
+            this.flpFileCtrl.Controls.Add(this.tbFormat);
+            this.flpFileCtrl.Controls.Add(this.btnCommit);
+            this.flpFileCtrl.Controls.Add(this.label26);
+            this.flpFileCtrl.Controls.Add(this.btnStrPrev);
+            this.flpFileCtrl.Controls.Add(this.btnMoveUp);
+            this.flpFileCtrl.Controls.Add(this.btnAdd);
+            this.flpFileCtrl.Controls.Add(this.btnStrNext);
+            this.flpFileCtrl.Controls.Add(this.btnMoveDown);
+            this.flpFileCtrl.Controls.Add(this.btnDelete);
+            this.flpFileCtrl.Controls.Add(this.btnAppend);
+            this.flpFileCtrl.Name = "flpFileCtrl";
             // 
             // lbFilename
             // 
             resources.ApplyResources(this.lbFilename, "lbFilename");
+            this.flpFileCtrl.SetFlowBreak(this.lbFilename, true);
             this.lbFilename.Name = "lbFilename";
             // 
             // tbFilename
             // 
             resources.ApplyResources(this.tbFilename, "tbFilename");
+            this.flpFileCtrl.SetFlowBreak(this.tbFilename, true);
             this.tbFilename.Name = "tbFilename";
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
             this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
+            // 
+            // label41
+            // 
+            resources.ApplyResources(this.label41, "label41");
+            this.label41.Name = "label41";
             // 
             // tbFormat
             // 
@@ -812,27 +853,49 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             // 
-            // label41
-            // 
-            resources.ApplyResources(this.label41, "label41");
-            this.label41.Name = "label41";
-            // 
             // btnCommit
             // 
             resources.ApplyResources(this.btnCommit, "btnCommit");
+            this.flpFileCtrl.SetFlowBreak(this.btnCommit, true);
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
-            // 
-            // btnAdd
-            // 
-            resources.ApplyResources(this.btnAdd, "btnAdd");
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // label26
             // 
             resources.ApplyResources(this.label26, "label26");
+            this.flpFileCtrl.SetFlowBreak(this.label26, true);
             this.label26.Name = "label26";
+            // 
+            // btnStrPrev
+            // 
+            resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
+            this.btnStrPrev.Name = "btnStrPrev";
+            this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
+            // 
+            // btnMoveUp
+            // 
+            resources.ApplyResources(this.btnMoveUp, "btnMoveUp");
+            this.btnMoveUp.Name = "btnMoveUp";
+            this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
+            // 
+            // btnAdd
+            // 
+            resources.ApplyResources(this.btnAdd, "btnAdd");
+            this.flpFileCtrl.SetFlowBreak(this.btnAdd, true);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnStrNext
+            // 
+            resources.ApplyResources(this.btnStrNext, "btnStrNext");
+            this.btnStrNext.Name = "btnStrNext";
+            this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
+            // 
+            // btnMoveDown
+            // 
+            resources.ApplyResources(this.btnMoveDown, "btnMoveDown");
+            this.btnMoveDown.Name = "btnMoveDown";
+            this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
             // 
             // btnDelete
             // 
@@ -840,11 +903,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
-            // lbttab
+            // btnAppend
             // 
-            resources.ApplyResources(this.lbttab, "lbttab");
-            this.lbttab.Name = "lbttab";
-            this.lbttab.SelectedIndexChanged += new System.EventHandler(this.TtabSelect);
+            resources.ApplyResources(this.btnAppend, "btnAppend");
+            this.btnAppend.Name = "btnAppend";
+            this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
             // 
             // tabControl1
             // 
@@ -858,18 +921,9 @@ namespace SimPe.PackedFiles.UserInterface
             // tpSettings
             // 
             resources.ApplyResources(this.tpSettings, "tpSettings");
-            this.tpSettings.Controls.Add(this.lbPieString);
+            this.tpSettings.Controls.Add(this.tlpSettingsHead);
             this.tpSettings.Controls.Add(this.gbFlags2);
-            this.tpSettings.Controls.Add(this.llGuardian);
-            this.tpSettings.Controls.Add(this.llAction);
-            this.tpSettings.Controls.Add(this.cbStringIndex);
             this.tpSettings.Controls.Add(this.cbAttenuationCode);
-            this.tpSettings.Controls.Add(this.btnAction);
-            this.tpSettings.Controls.Add(this.btnGuardian);
-            this.tpSettings.Controls.Add(this.lbaction);
-            this.tpSettings.Controls.Add(this.lbguard);
-            this.tpSettings.Controls.Add(this.tbStringIndex);
-            this.tpSettings.Controls.Add(this.label40);
             this.tpSettings.Controls.Add(this.tbModelTabID);
             this.tpSettings.Controls.Add(this.label33);
             this.tpSettings.Controls.Add(this.tbObjType);
@@ -884,20 +938,150 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpSettings.Controls.Add(this.tbAttenuationValue);
             this.tpSettings.Controls.Add(this.label31);
             this.tpSettings.Controls.Add(this.label32);
-            this.tpSettings.Controls.Add(this.tbGuardian);
             this.tpSettings.Controls.Add(this.gbFlags);
-            this.tpSettings.Controls.Add(this.tbAction);
             this.tpSettings.Controls.Add(this.label1);
             this.tpSettings.Controls.Add(this.tbJoinIndex);
             this.tpSettings.Controls.Add(this.label2);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.UseVisualStyleBackColor = true;
             // 
+            // tlpSettingsHead
+            // 
+            resources.ApplyResources(this.tlpSettingsHead, "tlpSettingsHead");
+            this.tlpSettingsHead.Controls.Add(this.label4, 0, 0);
+            this.tlpSettingsHead.Controls.Add(this.lbTTABEntry, 1, 0);
+            this.tlpSettingsHead.Controls.Add(this.llGuardian, 0, 3);
+            this.tlpSettingsHead.Controls.Add(this.label40, 0, 1);
+            this.tlpSettingsHead.Controls.Add(this.llAction, 0, 2);
+            this.tlpSettingsHead.Controls.Add(this.flpPieStringID, 1, 1);
+            this.tlpSettingsHead.Controls.Add(this.flpAction, 1, 2);
+            this.tlpSettingsHead.Controls.Add(this.flpGuard, 1, 3);
+            this.tlpSettingsHead.Name = "tlpSettingsHead";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // lbTTABEntry
+            // 
+            resources.ApplyResources(this.lbTTABEntry, "lbTTABEntry");
+            this.lbTTABEntry.Name = "lbTTABEntry";
+            // 
+            // llGuardian
+            // 
+            resources.ApplyResources(this.llGuardian, "llGuardian");
+            this.llGuardian.Name = "llGuardian";
+            this.llGuardian.TabStop = true;
+            this.llGuardian.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
+            // 
+            // label40
+            // 
+            resources.ApplyResources(this.label40, "label40");
+            this.label40.Name = "label40";
+            // 
+            // llAction
+            // 
+            resources.ApplyResources(this.llAction, "llAction");
+            this.llAction.Name = "llAction";
+            this.llAction.TabStop = true;
+            this.llAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
+            // 
+            // flpPieStringID
+            // 
+            resources.ApplyResources(this.flpPieStringID, "flpPieStringID");
+            this.flpPieStringID.Controls.Add(this.tbStringIndex);
+            this.flpPieStringID.Controls.Add(this.cbStringIndex);
+            this.flpPieStringID.Controls.Add(this.lbPieString);
+            this.flpPieStringID.Name = "flpPieStringID";
+            // 
+            // tbStringIndex
+            // 
+            resources.ApplyResources(this.tbStringIndex, "tbStringIndex");
+            this.tbStringIndex.Name = "tbStringIndex";
+            this.tbStringIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
+            this.tbStringIndex.Validated += new System.EventHandler(this.hex32_Validated);
+            this.tbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
+            // 
+            // cbStringIndex
+            // 
+            resources.ApplyResources(this.cbStringIndex, "cbStringIndex");
+            this.cbStringIndex.DisplayMember = "Display";
+            this.cbStringIndex.DropDownWidth = 240;
+            this.cbStringIndex.Items.AddRange(new object[] {
+            resources.GetString("cbStringIndex.Items"),
+            resources.GetString("cbStringIndex.Items1"),
+            resources.GetString("cbStringIndex.Items2")});
+            this.cbStringIndex.Name = "cbStringIndex";
+            this.cbStringIndex.TabStop = false;
+            this.cbStringIndex.ValueMember = "Value";
+            this.cbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex32_Validating);
+            this.cbStringIndex.SelectedIndexChanged += new System.EventHandler(this.cbHex32_SelectedIndexChanged);
+            this.cbStringIndex.Enter += new System.EventHandler(this.cbHex32_Enter);
+            this.cbStringIndex.Validated += new System.EventHandler(this.cbHex32_Validated);
+            this.cbStringIndex.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
+            // 
             // lbPieString
             // 
             resources.ApplyResources(this.lbPieString, "lbPieString");
             this.lbPieString.Name = "lbPieString";
             this.lbPieString.UseMnemonic = false;
+            // 
+            // flpAction
+            // 
+            resources.ApplyResources(this.flpAction, "flpAction");
+            this.flpAction.Controls.Add(this.tbAction);
+            this.flpAction.Controls.Add(this.btnAction);
+            this.flpAction.Controls.Add(this.lbaction);
+            this.flpAction.Name = "flpAction";
+            // 
+            // tbAction
+            // 
+            resources.ApplyResources(this.tbAction, "tbAction");
+            this.tbAction.Name = "tbAction";
+            this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbAction.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbAction.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+            // 
+            // btnAction
+            // 
+            resources.ApplyResources(this.btnAction, "btnAction");
+            this.btnAction.Name = "btnAction";
+            this.btnAction.Click += new System.EventHandler(this.GetTTABAction);
+            // 
+            // lbaction
+            // 
+            resources.ApplyResources(this.lbaction, "lbaction");
+            this.lbaction.Name = "lbaction";
+            this.lbaction.UseMnemonic = false;
+            // 
+            // flpGuard
+            // 
+            resources.ApplyResources(this.flpGuard, "flpGuard");
+            this.flpGuard.Controls.Add(this.tbGuardian);
+            this.flpGuard.Controls.Add(this.btnGuardian);
+            this.flpGuard.Controls.Add(this.lbguard);
+            this.flpGuard.Name = "flpGuard";
+            // 
+            // tbGuardian
+            // 
+            resources.ApplyResources(this.tbGuardian, "tbGuardian");
+            this.tbGuardian.Name = "tbGuardian";
+            this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
+            this.tbGuardian.Validated += new System.EventHandler(this.hex16_Validated);
+            this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
+            // 
+            // btnGuardian
+            // 
+            resources.ApplyResources(this.btnGuardian, "btnGuardian");
+            this.btnGuardian.Name = "btnGuardian";
+            this.btnGuardian.Click += new System.EventHandler(this.GetTTABGuard);
+            // 
+            // lbguard
+            // 
+            resources.ApplyResources(this.lbguard, "lbguard");
+            this.lbguard.Name = "lbguard";
+            this.lbguard.UseMnemonic = false;
             // 
             // gbFlags2
             // 
@@ -1055,38 +1239,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.cb2Bit1.Tag = "";
             this.cb2Bit1.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
-            // llGuardian
-            // 
-            resources.ApplyResources(this.llGuardian, "llGuardian");
-            this.llGuardian.Name = "llGuardian";
-            this.llGuardian.TabStop = true;
-            this.llGuardian.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
-            // 
-            // llAction
-            // 
-            resources.ApplyResources(this.llAction, "llAction");
-            this.llAction.Name = "llAction";
-            this.llAction.TabStop = true;
-            this.llAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
-            // 
-            // cbStringIndex
-            // 
-            this.cbStringIndex.DisplayMember = "Display";
-            this.cbStringIndex.DropDownWidth = 240;
-            resources.ApplyResources(this.cbStringIndex, "cbStringIndex");
-            this.cbStringIndex.Items.AddRange(new object[] {
-            resources.GetString("cbStringIndex.Items"),
-            resources.GetString("cbStringIndex.Items1"),
-            resources.GetString("cbStringIndex.Items2")});
-            this.cbStringIndex.Name = "cbStringIndex";
-            this.cbStringIndex.TabStop = false;
-            this.cbStringIndex.ValueMember = "Value";
-            this.cbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.cbHex32_Validating);
-            this.cbStringIndex.SelectedIndexChanged += new System.EventHandler(this.cbHex32_SelectedIndexChanged);
-            this.cbStringIndex.Enter += new System.EventHandler(this.cbHex32_Enter);
-            this.cbStringIndex.Validated += new System.EventHandler(this.cbHex32_Validated);
-            this.cbStringIndex.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
-            // 
             // cbAttenuationCode
             // 
             resources.ApplyResources(this.cbAttenuationCode, "cbAttenuationCode");
@@ -1102,43 +1254,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbAttenuationCode.Enter += new System.EventHandler(this.cbHex32_Enter);
             this.cbAttenuationCode.Validated += new System.EventHandler(this.cbHex32_Validated);
             this.cbAttenuationCode.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
-            // 
-            // btnAction
-            // 
-            resources.ApplyResources(this.btnAction, "btnAction");
-            this.btnAction.Name = "btnAction";
-            this.btnAction.Click += new System.EventHandler(this.GetTTABAction);
-            // 
-            // btnGuardian
-            // 
-            resources.ApplyResources(this.btnGuardian, "btnGuardian");
-            this.btnGuardian.Name = "btnGuardian";
-            this.btnGuardian.Click += new System.EventHandler(this.GetTTABGuard);
-            // 
-            // lbaction
-            // 
-            resources.ApplyResources(this.lbaction, "lbaction");
-            this.lbaction.Name = "lbaction";
-            this.lbaction.UseMnemonic = false;
-            // 
-            // lbguard
-            // 
-            resources.ApplyResources(this.lbguard, "lbguard");
-            this.lbguard.Name = "lbguard";
-            this.lbguard.UseMnemonic = false;
-            // 
-            // tbStringIndex
-            // 
-            resources.ApplyResources(this.tbStringIndex, "tbStringIndex");
-            this.tbStringIndex.Name = "tbStringIndex";
-            this.tbStringIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
-            this.tbStringIndex.Validated += new System.EventHandler(this.hex32_Validated);
-            this.tbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
-            // label40
-            // 
-            resources.ApplyResources(this.label40, "label40");
-            this.label40.Name = "label40";
             // 
             // tbModelTabID
             // 
@@ -1230,14 +1345,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             resources.ApplyResources(this.label32, "label32");
             this.label32.Name = "label32";
-            // 
-            // tbGuardian
-            // 
-            resources.ApplyResources(this.tbGuardian, "tbGuardian");
-            this.tbGuardian.Name = "tbGuardian";
-            this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbGuardian.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             // 
             // gbFlags
             // 
@@ -1388,14 +1495,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbBit1.Tag = "joinable/joinable?";
             this.cbBit1.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
             // 
-            // tbAction
-            // 
-            resources.ApplyResources(this.tbAction, "tbAction");
-            this.tbAction.Name = "tbAction";
-            this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            this.tbAction.Validated += new System.EventHandler(this.hex16_Validated);
-            this.tbAction.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
@@ -1441,17 +1540,11 @@ namespace SimPe.PackedFiles.UserInterface
             this.timtuiAnimal.MotiveTable = null;
             this.timtuiAnimal.Name = "timtuiAnimal";
             // 
-            // btnMoveUp
+            // pjse_banner1
             // 
-            resources.ApplyResources(this.btnMoveUp, "btnMoveUp");
-            this.btnMoveUp.Name = "btnMoveUp";
-            this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
-            // 
-            // btnMoveDown
-            // 
-            resources.ApplyResources(this.btnMoveDown, "btnMoveDown");
-            this.btnMoveDown.Name = "btnMoveDown";
-            this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
+            resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
+            this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.pjse_banner1.Name = "pjse_banner1";
             // 
             // TtabForm
             // 
@@ -1462,10 +1555,24 @@ namespace SimPe.PackedFiles.UserInterface
             this.Name = "TtabForm";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ttabPanel.ResumeLayout(false);
-            this.ttabPanel.PerformLayout();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.ResumeLayout(false);
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.flpFileCtrl.ResumeLayout(false);
+            this.flpFileCtrl.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tpSettings.ResumeLayout(false);
             this.tpSettings.PerformLayout();
+            this.tlpSettingsHead.ResumeLayout(false);
+            this.tlpSettingsHead.PerformLayout();
+            this.flpPieStringID.ResumeLayout(false);
+            this.flpPieStringID.PerformLayout();
+            this.flpAction.ResumeLayout(false);
+            this.flpAction.PerformLayout();
+            this.flpGuard.ResumeLayout(false);
+            this.flpGuard.PerformLayout();
             this.gbFlags2.ResumeLayout(false);
             this.gbFlags2.PerformLayout();
             this.gbFlags.ResumeLayout(false);
@@ -1606,6 +1713,8 @@ namespace SimPe.PackedFiles.UserInterface
 
             if (lbttab.SelectedIndex >= 0)
 			{
+                lbTTABEntry.Text = "0x" + lbttab.SelectedIndex.ToString("X");
+
                 tabControl1.Enabled = btnDelete.Enabled = true;
 
                 currentItem = wrapper[lbttab.SelectedIndex];
@@ -1644,6 +1753,8 @@ namespace SimPe.PackedFiles.UserInterface
             }
 			else
 			{
+                lbTTABEntry.Text = "---";
+
                 tabControl1.Enabled = this.btnDelete.Enabled = false;
 
 				cbAttenuationCode.SelectedIndex = -1;
