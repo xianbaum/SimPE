@@ -71,6 +71,8 @@ namespace pjse.guidtool
         private FlowLayoutPanel flpCallsFrom;
         private FlowLayoutPanel flpNames;
         private TableLayoutPanel tlpName;
+        private CheckBox ckbGLOB;
+        private TableLayoutPanel tableLayoutPanel1;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -229,6 +231,19 @@ namespace pjse.guidtool
                         if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, fte.Group, where]);
                     }
                 }
+                else if (type[10] && group != 0)
+                {
+                    List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
+                    foreach (pjse.FileTable.Entry fte in globs)
+                    {
+                        SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
+                        if (glob == null) continue;
+                        if (group != glob.SemiGlobalGroup) continue;
+                        pjse.FileTable.Entry[] objds = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, fte.Group, where];
+                        if (objds.Length > 0) results.Add(objds[0]);
+                        else results.Add(fte);
+                    }
+                }
                 else if (group == 0)
                 {
                     if (type[0] || type[1])
@@ -289,7 +304,8 @@ namespace pjse.guidtool
                                 }
 
                         if ((type[0] && itemguid == searchNumber) ||
-                            ((type[1] || type[2] || type[3]) && item.ToString().ToLower().IndexOf(searchText) >= 0))
+                            ((type[1] || type[2] || type[3]) && item.ToString().ToLower().IndexOf(searchText) >= 0) ||
+                            type[10])
                             Invoke(addResult, new object[] { itemguid, item, });
 
                         else if (type[5]) switch (item.Type)
@@ -311,7 +327,7 @@ namespace pjse.guidtool
                                     break;
                             }
                     }
-                DealtWith:
+                //DealtWith:
                     Invoke(setProgress, new object[] { true, ++j });
                     Thread.Sleep(0);
                     if ((bool)Invoke(stopSearch))
@@ -384,6 +400,7 @@ namespace pjse.guidtool
             bool[] type = new bool[] {
                 ckbObjdGUID.Checked, ckbObjdName.Checked, ckbNrefName.Checked, ckbBhavName.Checked, ckbBconName.Checked,
                 ckbCallsToBHAV.Checked, ckbSGSearch.Checked, ckbFromBHAV.Checked, ckbFromObjf.Checked, ckbFromTtab.Checked,
+                ckbGLOB.Checked,
             };
             uint number = 0;
             try { number = Convert.ToUInt32(this.tbNumber.Text.Trim(), 16); }
@@ -391,6 +408,8 @@ namespace pjse.guidtool
             this.tbNumber.Text = "0x" + SimPe.Helper.HexString(number);
             if (number == 0) { type[0] = type[5] = false; } // don't search for 0 GUID...
             if (number < 0x2000 || number > 0x2fff) { type[6] = false; } // don't do SG search except for SG BHAVs...
+
+            if (gcGroup.Value == 0) { type[6] = type[10] = false; } // don't search with no Group filter
 
             this.tbName.Text = this.tbName.Text.Trim().ToLower();
             if (this.tbName.Text.Length == 0) { type[1] = type[2] = type[3] = type[4] = false; } // don't search for empty string
@@ -528,6 +547,7 @@ namespace pjse.guidtool
             this.btnSearch = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.flpSearchFor = new System.Windows.Forms.FlowLayoutPanel();
             this.ckbObjdGUID = new System.Windows.Forms.CheckBox();
             this.ckbCallsToBHAV = new System.Windows.Forms.CheckBox();
@@ -536,6 +556,7 @@ namespace pjse.guidtool
             this.ckbFromBHAV = new System.Windows.Forms.CheckBox();
             this.ckbFromObjf = new System.Windows.Forms.CheckBox();
             this.ckbFromTtab = new System.Windows.Forms.CheckBox();
+            this.ckbGLOB = new System.Windows.Forms.CheckBox();
             this.flpNames = new System.Windows.Forms.FlowLayoutPanel();
             this.ckbObjdName = new System.Windows.Forms.CheckBox();
             this.ckbNrefName = new System.Windows.Forms.CheckBox();
@@ -549,6 +570,7 @@ namespace pjse.guidtool
             this.tlpName = new System.Windows.Forms.TableLayoutPanel();
             this.flpFilter.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.flpSearchFor.SuspendLayout();
             this.flpCallsFrom.SuspendLayout();
             this.flpNames.SuspendLayout();
@@ -642,9 +664,17 @@ namespace pjse.guidtool
             // groupBox1
             // 
             resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Controls.Add(this.flpSearchFor);
+            this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
+            // 
+            // tableLayoutPanel1
+            // 
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.flpSearchFor, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.ckbGLOB, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.flpNames, 0, 1);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
             // flpSearchFor
             // 
@@ -652,7 +682,6 @@ namespace pjse.guidtool
             this.flpSearchFor.Controls.Add(this.ckbObjdGUID);
             this.flpSearchFor.Controls.Add(this.ckbCallsToBHAV);
             this.flpSearchFor.Controls.Add(this.flpCallsFrom);
-            this.flpSearchFor.Controls.Add(this.flpNames);
             this.flpSearchFor.Name = "flpSearchFor";
             // 
             // ckbObjdGUID
@@ -699,6 +728,12 @@ namespace pjse.guidtool
             resources.ApplyResources(this.ckbFromTtab, "ckbFromTtab");
             this.ckbFromTtab.Name = "ckbFromTtab";
             // 
+            // ckbGLOB
+            // 
+            resources.ApplyResources(this.ckbGLOB, "ckbGLOB");
+            this.ckbGLOB.Name = "ckbGLOB";
+            this.ckbGLOB.CheckedChanged += new System.EventHandler(this.ckbGLOB_CheckedChanged);
+            // 
             // flpNames
             // 
             resources.ApplyResources(this.flpNames, "flpNames");
@@ -706,7 +741,6 @@ namespace pjse.guidtool
             this.flpNames.Controls.Add(this.ckbNrefName);
             this.flpNames.Controls.Add(this.ckbBhavName);
             this.flpNames.Controls.Add(this.ckbBconName);
-            this.flpSearchFor.SetFlowBreak(this.flpNames, true);
             this.flpNames.Name = "flpNames";
             // 
             // ckbObjdName
@@ -795,6 +829,8 @@ namespace pjse.guidtool
             this.flpFilter.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
             this.flpSearchFor.ResumeLayout(false);
             this.flpSearchFor.PerformLayout();
             this.flpCallsFrom.ResumeLayout(false);
@@ -865,29 +901,60 @@ namespace pjse.guidtool
             Hide();
         }
 
+        private bool isCkbObjdGUIDEnabled { get { return !ckbCallsToBHAV.Checked && !ckbGLOB.Checked; } }
+        private bool isCkbCallsToBHAVEnabled { get { return !ckbObjdGUID.Checked && !ckbGLOB.Checked && !isCkbSomeNameChecked; } }
+        private bool isCkbGLOBEnabled { get { return !ckbObjdGUID.Checked && !ckbCallsToBHAV.Checked && !isCkbSomeNameChecked; } }
+        private bool isFlpNamesEnabled { get { return !ckbCallsToBHAV.Checked && !ckbGLOB.Checked; } }
+        private static bool isChecked(CheckBox cb) { return cb.Checked; }
+        private bool isCkbSomeNameChecked
+        {
+            get
+            {
+                List<CheckBox> lcb = new List<CheckBox>(new CheckBox[] { ckbObjdName, ckbNrefName, ckbBhavName, ckbBconName, });
+                return (lcb.Find(isChecked) != null);
+            }
+        }
+
         private void ckbObjdGUID_CheckedChanged(object sender, EventArgs e)
         {
-            if (ckbObjdGUID.Checked) ckbCallsToBHAV.Checked = false;
-            ckbCallsToBHAV.Enabled = !ckbObjdGUID.Checked;
+            ckbCallsToBHAV.Enabled = isCkbCallsToBHAVEnabled;
+            ckbGLOB.Enabled = isCkbGLOBEnabled;
+            flpNames.Enabled = isFlpNamesEnabled;
+
+            if (ckbObjdGUID.Checked) ckbCallsToBHAV.Checked = ckbGLOB.Checked = false;
+
             tbNumber.Enabled = ckbObjdGUID.Checked;
             lbNumber.Text = ckbObjdGUID.Checked ? pjse.Localization.GetString("GUID") : "";
         }
 
-        private static bool isChecked(CheckBox cb) { return cb.Checked; }
-        private void ckbSomeName_CheckedChanged(object sender, EventArgs e)
-        {
-            List<CheckBox> lcb = new List<CheckBox>(new CheckBox[] { ckbObjdName, ckbNrefName, ckbBhavName, ckbBconName, });
-            lbName.Enabled = tbName.Enabled = (lcb.Find(isChecked) != null);
-            ckbCallsToBHAV.Enabled = (lcb.Find(isChecked) == null);
-            ckbSGSearch.Enabled = (ckbCallsToBHAV.Enabled && ckbCallsToBHAV.Checked);
-        }
-
         private void ckbCallsToBHAV_CheckedChanged(object sender, EventArgs e)
         {
-            if (ckbCallsToBHAV.Checked) ckbObjdGUID.Checked = false;
-            ckbObjdGUID.Enabled = flpNames.Enabled = !ckbCallsToBHAV.Checked;
+            ckbGLOB.Enabled = isCkbGLOBEnabled;
+            ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
+            flpNames.Enabled = isFlpNamesEnabled;
+
+            if (ckbCallsToBHAV.Checked) ckbObjdGUID.Checked = ckbGLOB.Checked = false;
+
             tbNumber.Enabled = ckbSGSearch.Enabled = flpCallsFrom.Enabled = ckbCallsToBHAV.Checked;
             lbNumber.Text = ckbCallsToBHAV.Checked ? pjse.Localization.GetString("OpCode") : "";
+        }
+
+        private void ckbGLOB_CheckedChanged(object sender, EventArgs e)
+        {
+            ckbCallsToBHAV.Enabled = isCkbObjdGUIDEnabled;
+            ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
+            flpNames.Enabled = isFlpNamesEnabled;
+
+            if (ckbGLOB.Checked) ckbObjdGUID.Checked = ckbCallsToBHAV.Checked = false;
+        }
+
+        private void ckbSomeName_CheckedChanged(object sender, EventArgs e)
+        {
+            ckbCallsToBHAV.Enabled = isCkbCallsToBHAVEnabled;
+            ckbGLOB.Enabled = isCkbGLOBEnabled;
+            ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
+
+            lbName.Enabled = tbName.Enabled = isCkbSomeNameChecked;
         }
 
         private void btnClearFilter_Click(object sender, EventArgs e)
