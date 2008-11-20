@@ -121,8 +121,19 @@ namespace pjse
         /// Specifies for which data owner this entry is specifying a flag number
         /// </summary>
         [Category("Data")]
+        [DefaultValue(null)]
         [Description("Specifies for which data owner this entry is specifying a flag number.")]
-        public IDataOwner FlagsFor { get { return doc.FlagsFor; } set { doc.FlagsFor = value; } }
+        public IDataOwner FlagsFor
+        {
+            get { return doc.FlagsFor; }
+            set
+            {
+                if (value as LabelledDataOwner != null)
+                    doc.FlagsFor = ((LabelledDataOwner)value).doc;
+                else
+                    doc.FlagsFor = value;
+            }
+        }
 
         /// <summary>
         /// Specifies to which Instruction this data owner applies.  Can be null.

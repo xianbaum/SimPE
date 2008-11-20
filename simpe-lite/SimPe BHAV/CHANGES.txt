@@ -1,3 +1,12 @@
+20 November 2008 08:29 RTBN fixes; use LDOC in Wiz0x0002; improve LDOC checkbox responsiveness; make LDOC FlagsFor work
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.24
+    BhavOperandWiz0x0002.cs 1.16
+    BhavOperandWiz0x0002.resx 1.8
+    BhavOperandWiz0x001c.cs 1.11
+    BhavOperandWiz0x0002.resx 1.7
+    LabelledDataOwner.cs 1.5
+
 18 November 2008 13:25 TTAB Form: add splitter and line number
   SimPe BHAV\
     TtabForm.cs 1.51

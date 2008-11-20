@@ -381,14 +381,14 @@ namespace pjse.BhavOperandWizards
         void PJSE_DecimalDOValueChanged(object sender, EventArgs e)
         {
             Decimal = pjse.Settings.PJSE.DecimalDOValue;
-            if (ckbDecimal != null)
+            if (ckbDecimal != null && this.ckbDecimal.Checked != Decimal)
                 this.ckbDecimal.Checked = Decimal;
         }
 
         void PJSE_InstancePickerAsTextChanged(object sender, EventArgs e)
         {
             UseInstancePicker = pjse.Settings.PJSE.InstancePickerAsText;
-            if (ckbUseInstancePicker != null)
+            if (ckbUseInstancePicker != null && this.ckbUseInstancePicker.Checked != UseInstancePicker)
                 this.ckbUseInstancePicker.Checked = UseInstancePicker;
         }
 

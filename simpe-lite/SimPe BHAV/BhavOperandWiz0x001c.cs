@@ -53,6 +53,11 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
         private LabelledDataOwner ldocArg2;
         private LabelledDataOwner ldocArg3;
         private FlowLayoutPanel flpArgs;
+        private FlowLayoutPanel flowLayoutPanel2;
+        private TableLayoutPanel tableLayoutPanel1;
+        private FlowLayoutPanel flowLayoutPanel4;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private FlowLayoutPanel flowLayoutPanel6;
 		/// <summary>
 		/// Erforderliche Designervariable.
 		/// </summary>
@@ -157,14 +162,14 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
             this.cbRTBNType.SelectedIndex = ops1[0x05] < this.cbRTBNType.Items.Count ? ops1[0x05] : -1;
 
-            this.flpArgs.Enabled = this.tfArgs.Checked = options[5];
-            this.tfParams.Checked = options[6];
+            this.flpArgs.Enabled = this.tfArgs.Checked = options[4];
+            this.tfParams.Checked = options[5];
 
-            doidTree = new DataOwnerControl(null, null, null, this.tbTree, null, null, null, 0x07, BhavWiz.ToShort(ops1[0x04], (byte)((ops1[0x02] & 0xc0) >> 6)));
+            doidTree = new DataOwnerControl(null, null, null, this.tbTree, null, null, null, 0x07, BhavWiz.ToShort(ops1[0x04], (byte)(ops1[0x02] >> 6)));
             doidTree.DataOwnerControlChanged += new EventHandler(doidTree_DataOwnerControlChanged);
             doidTree_DataOwnerControlChanged(null, null);
 
-            ldocArg1.Value = BhavWiz.ToShort(ops1[0x07], ops2[0x01]); ldocArg1.DataOwner = ops1[0x06];
+            ldocArg1.Value = BhavWiz.ToShort(ops1[0x07], ops2[0x00]); ldocArg1.DataOwner = ops1[0x06];
             ldocArg2.Value = BhavWiz.ToShort(ops2[0x02], ops2[0x03]); ldocArg2.DataOwner = ops2[0x01];
             ldocArg3.Value = BhavWiz.ToShort(ops2[0x05], ops2[0x06]); ldocArg3.DataOwner = ops2[0x04];
 
@@ -194,15 +199,10 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
                 if (this.cbRTBNType.SelectedIndex >= 0)
                     ops1[0x05] = (byte)this.cbRTBNType.SelectedIndex;
 
-                ops1[0x06] = ldocArg1.DataOwner;
                 byte[] lohi = { 0, 0 };
-                BhavWiz.FromShort(ref lohi, 0, ldocArg1.Value);
-                ops1[0x07] = lohi[0];
-                ops2[0x00] = lohi[1];
-                ops2[0x01] = ldocArg2.DataOwner;
-                BhavWiz.FromShort(ref ops2, 2, ldocArg2.Value);
-                ops2[0x04] = ldocArg3.DataOwner;
-                BhavWiz.FromShort(ref ops2, 5, ldocArg3.Value);
+                ops1[0x06] = ldocArg1.DataOwner; BhavWiz.FromShort(ref lohi, 0, ldocArg1.Value); ops1[0x07] = lohi[0]; ops2[0x00] = lohi[1];
+                ops2[0x01] = ldocArg2.DataOwner; BhavWiz.FromShort(ref ops2, 2, ldocArg2.Value);
+                ops2[0x04] = ldocArg3.DataOwner; BhavWiz.FromShort(ref ops2, 5, ldocArg3.Value);
             }
 			return inst;
 		}
@@ -218,6 +218,10 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 		{
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI));
             this.pnWiz0x001c = new System.Windows.Forms.Panel();
+            this.flpArgs = new System.Windows.Forms.FlowLayoutPanel();
+            this.ldocArg1 = new pjse.LabelledDataOwner();
+            this.ldocArg2 = new pjse.LabelledDataOwner();
+            this.ldocArg3 = new pjse.LabelledDataOwner();
             this.btnTreeName = new System.Windows.Forms.Button();
             this.tbTree = new System.Windows.Forms.TextBox();
             this.tfGlobal = new System.Windows.Forms.CheckBox();
@@ -233,34 +237,77 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.label4 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.ldocArg1 = new pjse.LabelledDataOwner();
-            this.ldocArg2 = new pjse.LabelledDataOwner();
-            this.ldocArg3 = new pjse.LabelledDataOwner();
-            this.flpArgs = new System.Windows.Forms.FlowLayoutPanel();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel3 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel4 = new System.Windows.Forms.FlowLayoutPanel();
+            this.flowLayoutPanel6 = new System.Windows.Forms.FlowLayoutPanel();
             this.pnWiz0x001c.SuspendLayout();
             this.flpArgs.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.flowLayoutPanel2.SuspendLayout();
+            this.flowLayoutPanel3.SuspendLayout();
+            this.flowLayoutPanel4.SuspendLayout();
+            this.flowLayoutPanel6.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnWiz0x001c
             // 
-            this.pnWiz0x001c.Controls.Add(this.flpArgs);
-            this.pnWiz0x001c.Controls.Add(this.btnTreeName);
-            this.pnWiz0x001c.Controls.Add(this.tbTree);
-            this.pnWiz0x001c.Controls.Add(this.tfGlobal);
-            this.pnWiz0x001c.Controls.Add(this.tfParams);
-            this.pnWiz0x001c.Controls.Add(this.tfArgs);
-            this.pnWiz0x001c.Controls.Add(this.tfSemiGlobal);
-            this.pnWiz0x001c.Controls.Add(this.tfPrivate);
-            this.pnWiz0x001c.Controls.Add(this.cbRTBNType);
-            this.pnWiz0x001c.Controls.Add(this.cbScope);
-            this.pnWiz0x001c.Controls.Add(this.label3);
-            this.pnWiz0x001c.Controls.Add(this.lbTreeName);
-            this.pnWiz0x001c.Controls.Add(this.label2);
-            this.pnWiz0x001c.Controls.Add(this.label4);
-            this.pnWiz0x001c.Controls.Add(this.label8);
-            this.pnWiz0x001c.Controls.Add(this.label1);
             resources.ApplyResources(this.pnWiz0x001c, "pnWiz0x001c");
+            this.pnWiz0x001c.Controls.Add(this.tableLayoutPanel1);
             this.pnWiz0x001c.Name = "pnWiz0x001c";
+            // 
+            // flpArgs
+            // 
+            resources.ApplyResources(this.flpArgs, "flpArgs");
+            this.tableLayoutPanel1.SetColumnSpan(this.flpArgs, 2);
+            this.flpArgs.Controls.Add(this.ldocArg1);
+            this.flpArgs.Controls.Add(this.ldocArg2);
+            this.flpArgs.Controls.Add(this.ldocArg3);
+            this.flpArgs.Name = "flpArgs";
+            // 
+            // ldocArg1
+            // 
+            resources.ApplyResources(this.ldocArg1, "ldocArg1");
+            this.ldocArg1.DataOwner = ((byte)(255));
+            this.ldocArg1.DataOwnerEnabled = true;
+            this.ldocArg1.Decimal = false;
+            this.ldocArg1.DecimalVisible = false;
+            this.ldocArg1.Instruction = null;
+            this.ldocArg1.LabelSize = new System.Drawing.Size(61, 13);
+            this.ldocArg1.Name = "ldocArg1";
+            this.ldocArg1.UseFlagNames = false;
+            this.ldocArg1.UseInstancePicker = true;
+            this.ldocArg1.UseInstancePickerVisible = false;
+            this.ldocArg1.Value = ((ushort)(0));
+            // 
+            // ldocArg2
+            // 
+            resources.ApplyResources(this.ldocArg2, "ldocArg2");
+            this.ldocArg2.DataOwner = ((byte)(255));
+            this.ldocArg2.DataOwnerEnabled = true;
+            this.ldocArg2.Decimal = false;
+            this.ldocArg2.DecimalVisible = false;
+            this.ldocArg2.Instruction = null;
+            this.ldocArg2.LabelSize = new System.Drawing.Size(61, 13);
+            this.ldocArg2.Name = "ldocArg2";
+            this.ldocArg2.UseFlagNames = false;
+            this.ldocArg2.UseInstancePicker = true;
+            this.ldocArg2.UseInstancePickerVisible = false;
+            this.ldocArg2.Value = ((ushort)(0));
+            // 
+            // ldocArg3
+            // 
+            resources.ApplyResources(this.ldocArg3, "ldocArg3");
+            this.ldocArg3.DataOwner = ((byte)(255));
+            this.ldocArg3.DataOwnerEnabled = true;
+            this.ldocArg3.Decimal = false;
+            this.ldocArg3.Instruction = null;
+            this.ldocArg3.LabelSize = new System.Drawing.Size(61, 13);
+            this.ldocArg3.Name = "ldocArg3";
+            this.ldocArg3.UseFlagNames = false;
+            this.ldocArg3.UseInstancePicker = true;
+            this.ldocArg3.Value = ((ushort)(0));
             // 
             // btnTreeName
             // 
@@ -319,13 +366,13 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             // 
             // cbScope
             // 
+            resources.ApplyResources(this.cbScope, "cbScope");
             this.cbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbScope.FormattingEnabled = true;
             this.cbScope.Items.AddRange(new object[] {
             resources.GetString("cbScope.Items"),
             resources.GetString("cbScope.Items1"),
             resources.GetString("cbScope.Items2")});
-            resources.ApplyResources(this.cbScope, "cbScope");
             this.cbScope.Name = "cbScope";
             this.cbScope.SelectedIndexChanged += new System.EventHandler(this.cbScope_SelectedIndexChanged);
             // 
@@ -359,59 +406,52 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
-            // ldocArg1
+            // tableLayoutPanel1
             // 
-            resources.ApplyResources(this.ldocArg1, "ldocArg1");
-            this.ldocArg1.DataOwner = ((byte)(255));
-            this.ldocArg1.DataOwnerEnabled = true;
-            this.ldocArg1.Decimal = false;
-            this.ldocArg1.DecimalVisible = false;
-            this.ldocArg1.FlagsFor = null;
-            this.ldocArg1.Instruction = null;
-            this.ldocArg1.LabelSize = new System.Drawing.Size(61, 13);
-            this.ldocArg1.Name = "ldocArg1";
-            this.ldocArg1.UseFlagNames = false;
-            this.ldocArg1.UseInstancePicker = true;
-            this.ldocArg1.UseInstancePickerVisible = false;
-            this.ldocArg1.Value = ((ushort)(0));
+            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.flpArgs, 0, 5);
+            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel2, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.label2, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cbRTBNType, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel4, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label4, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel3, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel6, 0, 4);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             // 
-            // ldocArg2
+            // flowLayoutPanel2
             // 
-            resources.ApplyResources(this.ldocArg2, "ldocArg2");
-            this.ldocArg2.DataOwner = ((byte)(255));
-            this.ldocArg2.DataOwnerEnabled = true;
-            this.ldocArg2.Decimal = false;
-            this.ldocArg2.DecimalVisible = false;
-            this.ldocArg2.FlagsFor = null;
-            this.ldocArg2.Instruction = null;
-            this.ldocArg2.LabelSize = new System.Drawing.Size(61, 13);
-            this.ldocArg2.Name = "ldocArg2";
-            this.ldocArg2.UseFlagNames = false;
-            this.ldocArg2.UseInstancePicker = true;
-            this.ldocArg2.UseInstancePickerVisible = false;
-            this.ldocArg2.Value = ((ushort)(0));
+            resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
+            this.flowLayoutPanel2.Controls.Add(this.cbScope);
+            this.flowLayoutPanel2.Controls.Add(this.label8);
+            this.flowLayoutPanel2.Name = "flowLayoutPanel2";
             // 
-            // ldocArg3
+            // flowLayoutPanel3
             // 
-            resources.ApplyResources(this.ldocArg3, "ldocArg3");
-            this.ldocArg3.DataOwner = ((byte)(255));
-            this.ldocArg3.DataOwnerEnabled = true;
-            this.ldocArg3.Decimal = false;
-            this.ldocArg3.FlagsFor = null;
-            this.ldocArg3.Instruction = null;
-            this.ldocArg3.LabelSize = new System.Drawing.Size(61, 13);
-            this.ldocArg3.Name = "ldocArg3";
-            this.ldocArg3.UseFlagNames = false;
-            this.ldocArg3.UseInstancePicker = true;
-            this.ldocArg3.Value = ((ushort)(0));
+            resources.ApplyResources(this.flowLayoutPanel3, "flowLayoutPanel3");
+            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel3, 2);
+            this.flowLayoutPanel3.Controls.Add(this.label3);
+            this.flowLayoutPanel3.Controls.Add(this.tfPrivate);
+            this.flowLayoutPanel3.Controls.Add(this.tfSemiGlobal);
+            this.flowLayoutPanel3.Controls.Add(this.tfGlobal);
+            this.flowLayoutPanel3.Name = "flowLayoutPanel3";
             // 
-            // flpArgs
+            // flowLayoutPanel4
             // 
-            resources.ApplyResources(this.flpArgs, "flpArgs");
-            this.flpArgs.Controls.Add(this.ldocArg1);
-            this.flpArgs.Controls.Add(this.ldocArg2);
-            this.flpArgs.Controls.Add(this.ldocArg3);
-            this.flpArgs.Name = "flpArgs";
+            resources.ApplyResources(this.flowLayoutPanel4, "flowLayoutPanel4");
+            this.flowLayoutPanel4.Controls.Add(this.tbTree);
+            this.flowLayoutPanel4.Controls.Add(this.btnTreeName);
+            this.flowLayoutPanel4.Controls.Add(this.lbTreeName);
+            this.flowLayoutPanel4.Name = "flowLayoutPanel4";
+            // 
+            // flowLayoutPanel6
+            // 
+            resources.ApplyResources(this.flowLayoutPanel6, "flowLayoutPanel6");
+            this.tableLayoutPanel1.SetColumnSpan(this.flowLayoutPanel6, 2);
+            this.flowLayoutPanel6.Controls.Add(this.tfArgs);
+            this.flowLayoutPanel6.Controls.Add(this.tfParams);
+            this.flowLayoutPanel6.Name = "flowLayoutPanel6";
             // 
             // UI
             // 
@@ -423,7 +463,18 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.pnWiz0x001c.PerformLayout();
             this.flpArgs.ResumeLayout(false);
             this.flpArgs.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel1.PerformLayout();
+            this.flowLayoutPanel2.ResumeLayout(false);
+            this.flowLayoutPanel2.PerformLayout();
+            this.flowLayoutPanel3.ResumeLayout(false);
+            this.flowLayoutPanel3.PerformLayout();
+            this.flowLayoutPanel4.ResumeLayout(false);
+            this.flowLayoutPanel4.PerformLayout();
+            this.flowLayoutPanel6.ResumeLayout(false);
+            this.flowLayoutPanel6.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 		#endregion
