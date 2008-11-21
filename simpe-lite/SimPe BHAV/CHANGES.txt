@@ -1,6 +1,6 @@
-21 November 2008 08:59 Oops: clear top two bits in op[2] for RTBN before OR-ing in upper nybble of tree
+21 November 2008 09:19 Oops: clear top two bits in op[2] for RTBN before OR-ing in upper nybble of tree
   SimPe BHAV\
-    BhavOperandWiz0x001c.cs 1.12
+    BhavOperandWiz0x001c.cs 1.13
 
 20 November 2008 14:36 GUID Tool: Tuna's GLOB reference searcher
   pjse GUID Tool\

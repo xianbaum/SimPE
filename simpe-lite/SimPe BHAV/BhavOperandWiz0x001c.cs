@@ -183,7 +183,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
 
-                Boolset options = ops1[0x02] & 0x3f;
+                Boolset options = (Boolset)(ops1[0x02] & 0x3f);
                 int scope = this.cbScope.SelectedIndex;
                 options[0] = (scope == 2);
                 options[1] = (scope == 1);
