@@ -1,3 +1,7 @@
+21 November 2008 10:22 Wiz0x001c: Only use one bit for tree top byte
+  SimPe BHAV\
+    BhavOperandWiz0x001c.cs 1.14
+
 21 November 2008 09:19 Oops: clear top two bits in op[2] for RTBN before OR-ing in upper nybble of tree
   SimPe BHAV\
     BhavOperandWiz0x001c.cs 1.13

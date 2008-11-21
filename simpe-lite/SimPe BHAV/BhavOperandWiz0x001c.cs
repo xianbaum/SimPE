@@ -165,7 +165,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             this.flpArgs.Enabled = this.tfArgs.Checked = options[4];
             this.tfParams.Checked = options[5];
 
-            doidTree = new DataOwnerControl(null, null, null, this.tbTree, null, null, null, 0x07, BhavWiz.ToShort(ops1[0x04], (byte)(ops1[0x02] >> 6)));
+            doidTree = new DataOwnerControl(null, null, null, this.tbTree, null, null, null, 0x07, BhavWiz.ToShort(ops1[0x04], (byte)((ops1[0x02] >> 6) & 0x01)));
             doidTree.DataOwnerControlChanged += new EventHandler(doidTree_DataOwnerControlChanged);
             doidTree_DataOwnerControlChanged(null, null);
 
@@ -183,7 +183,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
                 wrappedByteArray ops1 = inst.Operands;
                 wrappedByteArray ops2 = inst.Reserved1;
 
-                Boolset options = (Boolset)(ops1[0x02] & 0x3f);
+                Boolset options = (Boolset)(ops1[0x02] & 0xbf);
                 int scope = this.cbScope.SelectedIndex;
                 options[0] = (scope == 2);
                 options[1] = (scope == 1);
@@ -192,7 +192,7 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
                 options[4] = this.tfArgs.Checked;
                 options[5] = this.tfParams.Checked;
                 ops1[0x02] = options;
-                ops1[0x02] |= (byte)((doidTree.Value & 0x0300) >> 2);
+                ops1[0x02] |= (byte)((doidTree.Value >> 2) & 0x40);
 
                 ops1[0x04] = (byte)(doidTree.Value & 0xff);
 
