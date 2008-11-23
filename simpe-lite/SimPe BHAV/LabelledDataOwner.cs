@@ -1,3 +1,22 @@
+/***************************************************************************
+ *   Copyright (C) 2008 by Peter L Jones                                   *
+ *   peter@users.sf.net                                                    *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,8 +55,8 @@ namespace pjse
                 , cbPicker
                 , tbVal
                 , ckbDecimal
-                , ckbUseAttrPicker
-                , lbConst
+                , ckbUseInstancePicker
+                , lbInstance
                 , downer, value);
         }
 
@@ -67,8 +86,8 @@ namespace pjse
 
         [Category("Behavior")]
         [DefaultValue(true)]
-        [Description("True if the Const text should be visible.")]
-        public bool ConstVisible { get { return lbConst.Visible; } set { lbConst.Visible = value; } }
+        [Description("True if the Instance Label text should be visible.")]
+        public bool InstanceLabelVisible { get { return lbInstance.Visible; } set { lbInstance.Visible = value; } }
 
 
         [Category("Behavior")]
@@ -84,13 +103,13 @@ namespace pjse
 
         [Category("Behavior")]
         //[DefaultValue(true)]
-        [Description("True if the Attribute Picker should be used (when appropriate).")]
-        public bool UseAttrPicker { get { return ckbUseAttrPicker.Checked; } set { ckbUseAttrPicker.Checked = value; } }
+        [Description("True if the Instance Picker should be used (when appropriate) (also Param / Local name).")]
+        public bool UseInstancePicker { get { return ckbUseInstancePicker.Checked; } set { ckbUseInstancePicker.Checked = value; } }
 
         [Category("Behavior")]
         [DefaultValue(true)]
-        [Description("True if the Attribute Picker Checkbox should be visible.")]
-        public bool UseAttrPickerVisible { get { return ckbUseAttrPicker.Visible; } set { ckbUseAttrPicker.Visible = value; } }
+        [Description("True if the Instance Picker Checkbox should be visible.")]
+        public bool UseInstancePickerVisible { get { return ckbUseInstancePicker.Visible; } set { ckbUseInstancePicker.Visible = value; } }
 
 
         [Category("Behavior")]
@@ -102,8 +121,19 @@ namespace pjse
         /// Specifies for which data owner this entry is specifying a flag number
         /// </summary>
         [Category("Data")]
+        [DefaultValue(null)]
         [Description("Specifies for which data owner this entry is specifying a flag number.")]
-        public IDataOwner FlagsFor { get { return doc.FlagsFor; } set { doc.FlagsFor = value; } }
+        public IDataOwner FlagsFor
+        {
+            get { return doc.FlagsFor; }
+            set
+            {
+                if (value as LabelledDataOwner != null)
+                    doc.FlagsFor = ((LabelledDataOwner)value).doc;
+                else
+                    doc.FlagsFor = value;
+            }
+        }
 
         /// <summary>
         /// Specifies to which Instruction this data owner applies.  Can be null.
@@ -111,6 +141,11 @@ namespace pjse
         [Browsable(false)]
         public BhavWiz Instruction { get { return doc.Instruction; } set { doc.Instruction = value; } }
 
+
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [Description("Indicates whether the Data Owner combo box can be changed.")]
+        public bool DataOwnerEnabled { get { return cbDataOwner.Enabled; } set { cbDataOwner.Enabled = value; } }
 
         [Category("Behavior")]
         [DefaultValue(true)]
@@ -144,7 +179,13 @@ namespace pjse
         public ushort Value
         {
             get { return doc.Value; }
-            set { tbVal.Text = "0x" + value.ToString("X"); }
+            set
+            {
+                if (doc.ValueIsByte)
+                    tbVal.Text = "0x" + SimPe.Helper.HexString((byte)value);
+                else
+                    tbVal.Text = "0x" + SimPe.Helper.HexString(value);
+            }
         }
 
         public event EventHandler DataOwnerControlChanged;

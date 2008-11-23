@@ -51,6 +51,14 @@ namespace pjHoodTool
     */
     class cHoodTool : ITool, ICommandLine
     {
+        string q(string u)
+        {
+            if (u == null) return u;
+            //if (!u.Contains(" ") && !u.Contains(",") && !u.Contains("\r") && !u.Contains("\n") && !u.Contains("\"")) return u;
+            return "\"" + u.Replace("\"", "\"\"") + "\"";
+        }
+
+
         delegate void Splash(string message);
         Splash splash;
 
@@ -67,40 +75,53 @@ namespace pjHoodTool
 
             if (group < 1) group = PathProvider.Global.CurrentGroup;
 
-            StreamWriter w = new StreamWriter(output);
-            w.AutoFlush = true;
-
+            StreamWriter w1 = new StreamWriter(output);
+            w1.AutoFlush = true;
+            StreamWriter w2 = new StreamWriter(Path.Combine(outPath,"ExportedLots.txt"));
+            w2.AutoFlush = true;
+            
             splash(L.Get("pjCHoodTool"));
             try
             {
-                w.WriteLine("hood" +
-                    ";HoodName" +
-                    ";NID;SimName;FamilyInstance;SimFamilyName;HouseholdName" +
-                    ";HouseNumber;HouseName" +
-                    ";AvailableCharacterData;Unlinked" +
-                    ";ParentA;ParentB;Spouse" +
-                    //";Ghost(Objects,Walls,People,Freely)" +
-                    ";BodyType" +
-                    //";AutonomyLevel"+
-                    ";NPCType" +
-                    //";MotivesStatic;VoiceType"+
-                    ";SchoolType;Grade;CareerPerformance;Career;CareerLevel;ZodiacSign;Aspiration;Gender" +
-                    ";LifeSection;AgeDaysLeft" +
-                    //";PrevAgeDays;AgeDuration"+
-                    ";BlizLifelinePoints;LifelinePoints;LifelineScore" +
-                    ";GenActive;GenNeat;GenNice;GenOutgoing;GenPlayful" + // GeneticCharacter
-                    ";Active;Neat;Nice;Outgoing;Playful" + // Character
-                    ";Animals;Crime;Culture;Entertainment;Environment;Fashion;FemalePreference;Food;Health" + //Interests
-                    ";MalePreference;Money;Paranormal;Politics;School;Scifi;Sports;Toys;Travel;Weather;Work" + //Interests
-                    ";Body;Charisma;Cleaning;Cooking;Creativity;Fatness;Logic;Mechanical;Romance" + //Skills
+                #region ExportedSims header
+                w1.WriteLine("hood" +
+                    ",HoodName" +
+                    ",NID,FirstName,LastName,SimDescription" +
+                    ",FamilyInstance,HouseholdName" +
+                    ",HouseNumber" +
+                    ",AvailableCharacterData,Unlinked" +
+                    ",ParentA,ParentB,Spouse" +
+                    //",Ghost(Objects,Walls,People,Freely)" +
+                    ",BodyType" +
+                    //",AutonomyLevel"+
+                    ",NPCType" +
+                    //",MotivesStatic,VoiceType"+
+                    ",SchoolType,Grade,CareerPerformance,Career,CareerLevel,ZodiacSign,Aspiration,Gender" +
+                    ",LifeSection,AgeDaysLeft,PrevAgeDays,AgeDuration"+
+                    ",BlizLifelinePoints,LifelinePoints,LifelineScore" +
+                    ",GenActive,GenNeat,GenNice,GenOutgoing,GenPlayful" + // GeneticCharacter
+                    ",Active,Neat,Nice,Outgoing,Playful" + // Character
+                    ",Animals,Crime,Culture,Entertainment,Environment,Fashion,FemalePreference,Food,Health" + //Interests
+                    ",MalePreference,Money,Paranormal,Politics,School,Scifi,Sports,Toys,Travel,Weather,Work" + //Interests
+                    ",Body,Charisma,Cleaning,Cooking,Creativity,Fatness,Logic,Mechanical,Romance" + //Skills
 
-                    ";IsAtUniversity;UniEffort;UniGrade;UniTime;UniSemester;UniInfluence;UniMajor" + // University
-                    ";Species" + // Nightlife
-                    ";Salary" + // Business
-                    ";PrimaryAspiration;SecondaryAspiration;HobbyPredistined;LifetimeWant" + // FreeTime
-                    //";Reputation" + // Aparments... not found it yet
+                    ",IsAtUniversity,UniEffort,UniGrade,UniTime,UniSemester,UniInfluence,UniMajor" + // University
+                    ",Species" + // Nightlife
+                    ",Salary" + // Business
+                    ",PrimaryAspiration,SecondaryAspiration,HobbyPredestined,LifetimeWant" + // FreeTime
+                    //",Reputation" + // Aparments... not found it yet
                     ""
                     );
+                #endregion
+
+                #region ExportedLots header
+                w2.WriteLine("hood" +
+                    ",HoodName" +
+                    ",LotInstance" +
+                    ",HouseNumber,HouseName" +
+                    ""
+                    );
+                #endregion
 
                 ExpansionItem.NeighborhoodPaths paths = PathProvider.Global.GetNeighborhoodsForGroup(group);
                 foreach (ExpansionItem.NeighborhoodPath path in paths)
@@ -108,12 +129,13 @@ namespace pjHoodTool
                     string sourcepath = path.Path;
                     string[] dirs = System.IO.Directory.GetDirectories(sourcepath, hood.Length > 0 ? hood : "????");
                     foreach (string dir in dirs)
-                        AddHood(outPath, dir, w);
+                        AddHood(outPath, dir, w1, w2);
                 }
             }
             finally
             {
-                w.Close();
+                w1.Close();
+                w2.Close();
             }
         }
 
@@ -132,7 +154,7 @@ namespace pjHoodTool
 
         DateTime dt = new DateTime(0);
         bool wasUnk = true;
-        void AddHood(string outPath, string dir, StreamWriter w)
+        void AddHood(string outPath, string dir, StreamWriter w1, StreamWriter w2)
         {
             string hood = Path.GetFileName(dir);
             string hoodFile = Path.Combine(dir, hood + "_Neighborhood.package");
@@ -151,12 +173,9 @@ namespace pjHoodTool
                 hoodName = ctss[1, 0];
             }
 
+
             if (!Directory.Exists(Path.Combine(outPath, "SimImage")))
                 Directory.CreateDirectory(Path.Combine(outPath, "SimImage"));
-
-            if (!Directory.Exists(Path.Combine(outPath, "LotImage")))
-                Directory.CreateDirectory(Path.Combine(outPath, "LotImage"));
-
 
             System.Windows.Forms.Application.DoEvents();
             splash("Loading Neighborhood " + hood + ": " + hoodName);
@@ -170,34 +189,90 @@ namespace pjHoodTool
                 ExtSDesc sdsc = new ExtSDesc();
                 sdsc.ProcessData(spfd, pkg);
 
-                AddSim(outPath, hood, hoodName, w, sdsc);
+                AddSim(outPath, hood, hoodName, w1, sdsc);
+            }
+
+
+            if (!Directory.Exists(Path.Combine(outPath, "LotImage")))
+                Directory.CreateDirectory(Path.Combine(outPath, "LotImage"));
+
+            System.Windows.Forms.Application.DoEvents();
+            splash("Loading Neighborhood " + hood + ": " + hoodName);
+            SetProvider(pkg);
+
+            dt = new DateTime(0);
+            wasUnk = true;
+            pfds = pkg.FindFiles(SimPe.Plugin.Ltxt.Ltxttype);
+            foreach (IPackedFileDescriptor spfd in pfds)
+            {
+                Ltxt ltxt = new Ltxt();
+                ltxt.ProcessData(spfd, pkg);
+
+                AddLot(outPath, hood, hoodName, w2, ltxt);
             }
         }
 
         enum bodyType : ushort { Unknown = 0, Fat = 1, PregnantFull = 2, PregnantHalf = 4, PregnantHidden = 8, };
         void AddSim(string outPath, string hood, string hoodName, StreamWriter w, ExtSDesc sdsc)
         {
+            #region desc
+            string desc = ",,";
+            SimPe.Interfaces.Files.IPackageFile pkg = SimPe.Packages.File.LoadFromFile(sdsc.CharacterFileName);
+            if (pkg == null)
+            {
+                System.Diagnostics.Trace.WriteLine("Could not find character package:\n" + sdsc.CharacterFileName);
+                return;// severe problem...
+            }
+            IPackedFileDescriptor[] pfds = pkg.FindFiles(StrWrapper.CTSStype);
+            if (pfds == null || pfds.Length == 0)
+            {
+                System.Diagnostics.Trace.WriteLine("Could not find CTSS packed file for sim");
+                return;// severe problem...
+            }
+            try
+            {
+                StrWrapper ctss = new StrWrapper();
+                ctss.ProcessData(pfds[0], pkg);
+                desc = q(ctss[1, 0]) + // firstname
+                    "," + q(ctss[1, 2]) + // lastname
+                    "," + q(ctss[1, 1]) + // description
+                    ""
+                    ;
+            }
+            catch { }
+            #endregion
+
+            #region family
+            string family = ",,";
             IPackedFileDescriptor pfd = sdsc.Package.FindFile(0x46414D49, 0x00000000, 0xffffffff, sdsc.FamilyInstance); // FAMI
-            Fami family = null;
-            SimPe.Interfaces.Providers.ILotItem ilot = null;
             if (pfd != null)
             {
-                family = new Fami(FileTable.ProviderRegistry.SimNameProvider);
-                family.ProcessData(pfd, sdsc.Package);
-                ilot = FileTable.ProviderRegistry.LotProvider.FindLot(family.LotInstance);
-            }
+                Fami fami = null;
+                fami = new Fami(FileTable.ProviderRegistry.SimNameProvider);
+                fami.ProcessData(pfd, sdsc.Package);
 
-            string ties = ";;";
+                family = sdsc.FamilyInstance +
+                    "," + q(sdsc.HouseholdName) +
+                    "," + fami.LotInstance +
+                    ""
+                    ;
+            }
+            #endregion
+
+            #region ties
+            string ties = ",,";
             if (eft != null)
             {
                 SDesc[] p = eft.ParentSims(sdsc);
                 SDesc[] s = eft.SpouseSims(sdsc);
-                ties = (p == null || p.Length < 2 ? ";" : p[0].Instance + ";" + p[1].Instance) +
-                    ";" + (s == null || s.Length < 1 ? "" : s[0].Instance + "") +
+                ties = (p == null || p.Length < 2 ? "," : p[0].Instance + "," + p[1].Instance) +
+                    "," + (s == null || s.Length < 1 ? "" : s[0].Instance + "") +
                     ""
                     ;
             }
+            #endregion
 
+            #region ghost
             /*string ghost = "N(,,,)";
             if (sdsc.CharacterDescription.GhostFlag.IsGhost)
             {
@@ -207,81 +282,94 @@ namespace pjHoodTool
                     (sdsc.CharacterDescription.GhostFlag.IgnoreTraversalCosts ? "Y" : "N") +
                     ")";
             }*/
+            #endregion
 
+            #region genetics
             string genetics = sdsc.GeneticCharacter.Active +
-                ";" + sdsc.GeneticCharacter.Neat +
-                ";" + sdsc.GeneticCharacter.Nice +
-                ";" + sdsc.GeneticCharacter.Outgoing +
-                ";" + sdsc.GeneticCharacter.Playful +
+                "," + sdsc.GeneticCharacter.Neat +
+                "," + sdsc.GeneticCharacter.Nice +
+                "," + sdsc.GeneticCharacter.Outgoing +
+                "," + sdsc.GeneticCharacter.Playful +
                 ""
             ;
+            #endregion
 
+            #region character
             string character = sdsc.Character.Active +
-                ";" + sdsc.Character.Neat +
-                ";" + sdsc.Character.Nice +
-                ";" + sdsc.Character.Outgoing +
-                ";" + sdsc.Character.Playful +
+                "," + sdsc.Character.Neat +
+                "," + sdsc.Character.Nice +
+                "," + sdsc.Character.Outgoing +
+                "," + sdsc.Character.Playful +
                 ""
             ;
+            #endregion
 
+            #region interests
             string interests = sdsc.Interests.Animals +
-                ";" + sdsc.Interests.Crime +
-                ";" + sdsc.Interests.Culture +
-                ";" + sdsc.Interests.Entertainment +
-                ";" + sdsc.Interests.Environment +
-                ";" + sdsc.Interests.Fashion +
-                ";" + sdsc.Interests.FemalePreference +
-                ";" + sdsc.Interests.Food +
-                ";" + sdsc.Interests.Health +
-                ";" + sdsc.Interests.MalePreference +
-                ";" + sdsc.Interests.Money +
-                ";" + sdsc.Interests.Paranormal +
-                ";" + sdsc.Interests.Politics +
-                ";" + sdsc.Interests.School +
-                ";" + sdsc.Interests.Scifi +
-                ";" + sdsc.Interests.Sports +
-                ";" + sdsc.Interests.Toys +
-                ";" + sdsc.Interests.Travel +
-                ";" + sdsc.Interests.Weather +
-                ";" + sdsc.Interests.Work +
+                "," + sdsc.Interests.Crime +
+                "," + sdsc.Interests.Culture +
+                "," + sdsc.Interests.Entertainment +
+                "," + sdsc.Interests.Environment +
+                "," + sdsc.Interests.Fashion +
+                "," + sdsc.Interests.FemalePreference +
+                "," + sdsc.Interests.Food +
+                "," + sdsc.Interests.Health +
+                "," + sdsc.Interests.MalePreference +
+                "," + sdsc.Interests.Money +
+                "," + sdsc.Interests.Paranormal +
+                "," + sdsc.Interests.Politics +
+                "," + sdsc.Interests.School +
+                "," + sdsc.Interests.Scifi +
+                "," + sdsc.Interests.Sports +
+                "," + sdsc.Interests.Toys +
+                "," + sdsc.Interests.Travel +
+                "," + sdsc.Interests.Weather +
+                "," + sdsc.Interests.Work +
                 ""
             ;
+            #endregion
 
+            #region skills
             string skills = sdsc.Skills.Body +
-                ";" + sdsc.Skills.Charisma +
-                ";" + sdsc.Skills.Cleaning +
-                ";" + sdsc.Skills.Cooking +
-                ";" + sdsc.Skills.Creativity +
-                ";" + sdsc.Skills.Fatness +
-                ";" + sdsc.Skills.Logic +
-                ";" + sdsc.Skills.Mechanical +
-                ";" + sdsc.Skills.Romance +
+                "," + sdsc.Skills.Charisma +
+                "," + sdsc.Skills.Cleaning +
+                "," + sdsc.Skills.Cooking +
+                "," + sdsc.Skills.Creativity +
+                "," + sdsc.Skills.Fatness +
+                "," + sdsc.Skills.Logic +
+                "," + sdsc.Skills.Mechanical +
+                "," + sdsc.Skills.Romance +
                 ""
             ;
+            #endregion
 
-            string university = "N;;;;;;";
+            #region university
+            string university = "N,,,,,,";
             if (sdsc.University != null && sdsc.University.OnCampus == 0x1)
             {
                 university = "Y" +
-                ";" + sdsc.University.Effort +
-                ";" + sdsc.University.Grade +
-                ";" + sdsc.University.Time +
-                ";" + sdsc.University.Semester +
-                ";" + sdsc.University.Influence +
-                ";" + sdsc.University.Major
+                "," + sdsc.University.Effort +
+                "," + sdsc.University.Grade +
+                "," + sdsc.University.Time +
+                "," + sdsc.University.Semester +
+                "," + sdsc.University.Influence +
+                "," + sdsc.University.Major
                 ;
             }
+            #endregion
 
-            string freetime = ";;;";
+            #region freetime
+            string freetime = ",,,";
             if (sdsc.Freetime != null)
             {
                 freetime = sdsc.Freetime.PrimaryAspiration +
-                    ";" + sdsc.Freetime.SecondaryAspiration +
-                    ";" + sdsc.Freetime.HobbyPredistined +
-                    ";" + sdsc.Freetime.LongtermAspiration // LifetimeWant ?
+                    "," + sdsc.Freetime.SecondaryAspiration +
+                    "," + sdsc.Freetime.HobbyPredistined +
+                    "," + sdsc.Freetime.LongtermAspiration // LifetimeWant ?
                 ;
                 //sdsc.Freetime.BugCollection -- no...
             }
+            #endregion
 
             //sdsc.Business.LotID
 
@@ -299,54 +387,69 @@ namespace pjHoodTool
                     wasUnk = true;
             }
             string csv = hood +
-                ";" + hoodName +
-                ";" + sdsc.Instance +
-                ";" + sdsc.SimName +
-                ";" + sdsc.FamilyInstance +
-                ";" + sdsc.SimFamilyName +
-                ";" + sdsc.HouseholdName +
-                ";" + (ilot != null ? ilot.Instance + ";" + ilot.LotName : ";") +
-                ";" + (sdsc.AvailableCharacterData ? "Y" : "N") +
-                ";" + (sdsc.Unlinked != 0x00 ? "Y" : "N").ToString() +
-                ";" + ties +
-                //";" + ghost +
-                ";" + (bodyType)(ushort)sdsc.CharacterDescription.BodyFlag +
-                //";" + sdsc.CharacterDescription.AutonomyLevel +
-                ";" + sdsc.CharacterDescription.NPCType +
-                //";" + sdsc.CharacterDescription.MotivesStatic +
-                //";" + sdsc.CharacterDescription.VoiceType +
-                ";" + sdsc.CharacterDescription.SchoolType +
-                ";" + sdsc.CharacterDescription.Grade +
-                ";" + sdsc.CharacterDescription.CareerPerformance +
-                ";" + sdsc.CharacterDescription.Career +
-                ";" + sdsc.CharacterDescription.CareerLevel +
-                ";" + sdsc.CharacterDescription.ZodiacSign +
-                ";" + sdsc.CharacterDescription.Aspiration +
-                ";" + sdsc.CharacterDescription.Gender +
-                ";" + sdsc.CharacterDescription.LifeSection +
-                ";" + sdsc.CharacterDescription.Age +
-                //";" + sdsc.CharacterDescription.PrevAgeDays +
-                //";" + sdsc.CharacterDescription.AgeDuration +
-                ";" + sdsc.CharacterDescription.BlizLifelinePoints +
-                ";" + sdsc.CharacterDescription.LifelinePoints +
-                ";" + sdsc.CharacterDescription.LifelineScore +
-                ";" + genetics +
-                ";" + character +
-                ";" + interests +
-                ";" + skills +
-                ";" + university +
-                ";" + (sdsc.Nightlife == null ? "Human" : sdsc.Nightlife.Species.ToString()) +
-                ";" + (sdsc.Business == null ? "0" : sdsc.Business.Salary.ToString()) +
-                ";" + freetime +
+                "," + q(hoodName) +
+                "," + sdsc.Instance +
+                "," + desc +
+                "," + family +
+                "," + (sdsc.AvailableCharacterData ? "Y" : "N") +
+                "," + (sdsc.Unlinked != 0x00 ? "Y" : "N") +
+                "," + ties +
+                //"," + ghost +
+                "," + (bodyType)(ushort)sdsc.CharacterDescription.BodyFlag +
+                //"," + sdsc.CharacterDescription.AutonomyLevel +
+                "," + sdsc.CharacterDescription.NPCType +
+                //"," + sdsc.CharacterDescription.MotivesStatic +
+                //"," + sdsc.CharacterDescription.VoiceType +
+                "," + sdsc.CharacterDescription.SchoolType +
+                "," + sdsc.CharacterDescription.Grade +
+                "," + sdsc.CharacterDescription.CareerPerformance +
+                "," + sdsc.CharacterDescription.Career +
+                "," + sdsc.CharacterDescription.CareerLevel +
+                "," + sdsc.CharacterDescription.ZodiacSign +
+                "," + sdsc.CharacterDescription.Aspiration +
+                "," + sdsc.CharacterDescription.Gender +
+                "," + sdsc.CharacterDescription.LifeSection +
+                "," + sdsc.CharacterDescription.Age +
+                "," + sdsc.CharacterDescription.PrevAgeDays +
+                "," + sdsc.CharacterDescription.AgeDuration +
+                "," + sdsc.CharacterDescription.BlizLifelinePoints +
+                "," + sdsc.CharacterDescription.LifelinePoints +
+                "," + sdsc.CharacterDescription.LifelineScore +
+                "," + genetics +
+                "," + character +
+                "," + interests +
+                "," + skills +
+                "," + university +
+                "," + (sdsc.Nightlife == null ? "Human" : sdsc.Nightlife.Species.ToString()) +
+                "," + (sdsc.Business == null ? (ushort)0 : sdsc.Business.Salary) +
+                "," + freetime +
                 //";Reputation" +
                 ""
             ;
             w.WriteLine(csv);
 
             AddImage(sdsc.Image, Path.Combine(Path.Combine(outPath, "SimImage"), hood + "_" + sdsc.Instance + ".png"));
-            if (ilot != null)
-                AddImage(ilot.Image, Path.Combine(Path.Combine(outPath, "LotImage"), hood + "_" + ilot.Instance + ".png"));
         }
+
+        void AddLot(string outPath, string hood, string hoodName, StreamWriter w, Ltxt ltxt)
+        {
+            if (dt.Equals(new DateTime(0)) || wasUnk || dt.AddMilliseconds(200).CompareTo(DateTime.UtcNow) < 0)
+            {
+                dt = new DateTime(DateTime.UtcNow.Ticks);
+                wasUnk = false;
+                splash("Saving " + ltxt.LotName.Trim());
+            }
+            w.WriteLine(hood +
+                "," + q(hoodName) +
+                "," + ltxt.FileDescriptor.Instance +
+                "," + (ltxt.LotDescription == null ? "," : ltxt.LotDescription.Instance + "," + q(ltxt.LotDescription.LotName)) +
+                ""
+                );
+
+            if (ltxt.LotDescription != null)
+                AddImage(ltxt.LotDescription.Image, Path.Combine(Path.Combine(outPath, "LotImage"), hood + "_" + ltxt.FileDescriptor.Instance + ".png"));
+        }
+
 
         void AddImage(Image img, string f)
         {

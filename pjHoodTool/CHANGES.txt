@@ -1,3 +1,11 @@
+2008-11-17 13:45 Various change (headers, new fields)
+  pjHoodTool/
+    cHoodTool.cs 1.4
+
+2008-11-16 19:23 Rewrite as standard text/csv per RFC4180, split lots into separate file (and do all, not just occupied)
+  pjHoodTool/
+    cHoodTool.cs 1.3
+
 2008-10-19 10:22 Oops: missing separator in non-YA Uni extract
   pjHoodTool/
     cHoodTool.cs 1.1.2.7

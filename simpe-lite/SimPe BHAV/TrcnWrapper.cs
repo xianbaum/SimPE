@@ -201,7 +201,7 @@ namespace SimPe.PackedFiles.Wrapper
 
         #endregion
 
-        public static readonly uint Trcntype = 0x5452434E;
+        public const uint Trcntype = 0x5452434E;
         #region IFileWrapper Member
         /// <summary>
         /// Returns a list of File Type this Plugin can process

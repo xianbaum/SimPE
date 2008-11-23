@@ -158,7 +158,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 		#endregion
 
-        public static readonly uint Bcontype = 0x42434F4E;
+        public const uint Bcontype = 0x42434F4E;
         #region IFileWrapper Member
         /// <summary>
 		/// Returns a list of File Type this Plugin can process

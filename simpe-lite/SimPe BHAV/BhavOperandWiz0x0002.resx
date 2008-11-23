@@ -118,175 +118,64 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lbConst2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="pnWiz0x0002.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="lbConst2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+  <data name="pnWiz0x0002.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="flowLayoutPanel1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="flowLayoutPanel1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="labelledDataOwner1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="labelledDataOwner1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="labelledDataOwner1.Label" xml:space="preserve">
+    <value>label1</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="lbConst2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 103</value>
+  <data name="labelledDataOwner1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
   </data>
-  <data name="lbConst2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 17</value>
+  <data name="labelledDataOwner1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
-  <data name="lbConst2.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+  <data name="labelledDataOwner1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>367, 40</value>
   </data>
-  <data name="lbConst2.Text" xml:space="preserve">
-    <value>Const2 value</value>
-  </data>
-  <data name="&gt;&gt;lbConst2.Name" xml:space="preserve">
-    <value>lbConst2</value>
-  </data>
-  <data name="&gt;&gt;lbConst2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbConst2.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;lbConst2.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="lbConst1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="lbConst1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 27</value>
-  </data>
-  <data name="lbConst1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 17</value>
-  </data>
-  <data name="lbConst1.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="lbConst1.Text" xml:space="preserve">
-    <value>Const1 value</value>
-  </data>
-  <data name="&gt;&gt;lbConst1.Name" xml:space="preserve">
-    <value>lbConst1</value>
-  </data>
-  <data name="&gt;&gt;lbConst1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;lbConst1.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;lbConst1.ZOrder" xml:space="preserve">
+  <data name="labelledDataOwner1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="cbAttrPicker.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="&gt;&gt;labelledDataOwner1.Name" xml:space="preserve">
+    <value>labelledDataOwner1</value>
   </data>
-  <data name="cbAttrPicker.Location" type="System.Drawing.Point, System.Drawing">
-    <value>292, 121</value>
+  <data name="&gt;&gt;labelledDataOwner1.Type" xml:space="preserve">
+    <value>pjse.LabelledDataOwner, pjse.coder.plugin, Version=4.0.3245.34235, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="cbAttrPicker.Size" type="System.Drawing.Size, System.Drawing">
-    <value>149, 21</value>
+  <data name="&gt;&gt;labelledDataOwner1.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
   </data>
-  <data name="cbAttrPicker.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="cbAttrPicker.Text" xml:space="preserve">
-    <value>use Attribute picker</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.Name" xml:space="preserve">
-    <value>cbAttrPicker</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;cbAttrPicker.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="cbDecimal.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="cbDecimal.Location" type="System.Drawing.Point, System.Drawing">
-    <value>88, 121</value>
-  </data>
-  <data name="cbDecimal.Size" type="System.Drawing.Size, System.Drawing">
-    <value>179, 21</value>
-  </data>
-  <data name="cbDecimal.TabIndex" type="System.Int32, mscorlib">
-    <value>6</value>
-  </data>
-  <data name="cbDecimal.Text" xml:space="preserve">
-    <value>Decimal (except Consts)</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Name" xml:space="preserve">
-    <value>cbDecimal</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;cbDecimal.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="cbPicker2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 75</value>
-  </data>
-  <data name="cbPicker2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 24</value>
-  </data>
-  <data name="cbPicker2.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="cbPicker2.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;cbPicker2.Name" xml:space="preserve">
-    <value>cbPicker2</value>
-  </data>
-  <data name="&gt;&gt;cbPicker2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbPicker2.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;cbPicker2.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="cbPicker1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 0</value>
-  </data>
-  <data name="cbPicker1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 24</value>
-  </data>
-  <data name="cbPicker1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="cbPicker1.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Name" xml:space="preserve">
-    <value>cbPicker1</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;cbPicker1.ZOrder" xml:space="preserve">
-    <value>5</value>
+  <data name="&gt;&gt;labelledDataOwner1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="cbOperator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 47</value>
+    <value>0, 40</value>
+  </data>
+  <data name="cbOperator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="cbOperator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>456, 24</value>
+    <value>367, 21</value>
   </data>
   <data name="cbOperator.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="&gt;&gt;cbOperator.Name" xml:space="preserve">
     <value>cbOperator</value>
@@ -295,100 +184,76 @@
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cbOperator.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
+    <value>flowLayoutPanel1</value>
   </data>
   <data name="&gt;&gt;cbOperator.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="tbval2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 75</value>
-  </data>
-  <data name="tbval2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 22</value>
-  </data>
-  <data name="tbval2.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
-  </data>
-  <data name="&gt;&gt;tbval2.Name" xml:space="preserve">
-    <value>tbval2</value>
-  </data>
-  <data name="&gt;&gt;tbval2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbval2.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;tbval2.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="cbDataOwner2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 75</value>
-  </data>
-  <data name="cbDataOwner2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 24</value>
-  </data>
-  <data name="cbDataOwner2.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner2.Name" xml:space="preserve">
-    <value>cbDataOwner2</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner2.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;cbDataOwner2.ZOrder" xml:space="preserve">
-    <value>8</value>
-  </data>
-  <data name="tbval1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>301, 0</value>
-  </data>
-  <data name="tbval1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>155, 22</value>
-  </data>
-  <data name="tbval1.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;tbval1.Name" xml:space="preserve">
-    <value>tbval1</value>
-  </data>
-  <data name="&gt;&gt;tbval1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tbval1.Parent" xml:space="preserve">
-    <value>pnWiz0x0002</value>
-  </data>
-  <data name="&gt;&gt;tbval1.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
-  <data name="cbDataOwner1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="cbDataOwner1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>302, 24</value>
-  </data>
-  <data name="cbDataOwner1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;cbDataOwner1.Name" xml:space="preserve">
-    <value>cbDataOwner1</value>
+  <data name="labelledDataOwner2.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
-  <data name="&gt;&gt;cbDataOwner1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="labelledDataOwner2.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
   </data>
-  <data name="&gt;&gt;cbDataOwner1.Parent" xml:space="preserve">
+  <data name="labelledDataOwner2.Label" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="labelledDataOwner2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 61</value>
+  </data>
+  <data name="labelledDataOwner2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="labelledDataOwner2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>367, 57</value>
+  </data>
+  <data name="labelledDataOwner2.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;labelledDataOwner2.Name" xml:space="preserve">
+    <value>labelledDataOwner2</value>
+  </data>
+  <data name="&gt;&gt;labelledDataOwner2.Type" xml:space="preserve">
+    <value>pjse.LabelledDataOwner, pjse.coder.plugin, Version=4.0.3245.34235, Culture=neutral, PublicKeyToken=null</value>
+  </data>
+  <data name="&gt;&gt;labelledDataOwner2.Parent" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;labelledDataOwner2.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="flowLayoutPanel1.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
+    <value>TopDown</value>
+  </data>
+  <data name="flowLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="flowLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>367, 118</value>
+  </data>
+  <data name="flowLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Name" xml:space="preserve">
+    <value>flowLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;flowLayoutPanel1.Parent" xml:space="preserve">
     <value>pnWiz0x0002</value>
   </data>
-  <data name="&gt;&gt;cbDataOwner1.ZOrder" xml:space="preserve">
-    <value>10</value>
+  <data name="&gt;&gt;flowLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="pnWiz0x0002.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
+  <data name="pnWiz0x0002.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
+  </data>
   <data name="pnWiz0x0002.Size" type="System.Drawing.Size, System.Drawing">
-    <value>460, 144</value>
+    <value>370, 121</value>
   </data>
   <data name="pnWiz0x0002.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -409,10 +274,13 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>120, 120</value>
+    <value>96, 96</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>463, 149</value>
+    <value>375, 128</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 2, 2, 2</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>UI</value>

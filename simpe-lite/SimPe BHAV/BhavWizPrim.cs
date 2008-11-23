@@ -1570,10 +1570,10 @@ namespace pjse.BhavNameWizards
 			byte[] o = new byte[16];
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
+            Boolset options = (byte)(o[2] & 0x3f);
 
 			string s = "";
 
-            Boolset options = o[2];
 			Scope scope = Scope.Private;
             if      (options[0]) scope = Scope.Global;
             else if (options[1]) scope = Scope.SemiGlobal;
@@ -1581,28 +1581,25 @@ namespace pjse.BhavNameWizards
             if (lng)
                 s += pjse.Localization.GetString("bwp1c_treeName") + ": ";
 
-            s += readStr(scope, GS.GlobalStr.NamedTree, (ushort)(ToShort(o[4], options[6] ? (byte)0 : o[7]) - 1), lng ? -1 : 60, lng ? Detail.Normal : Detail.ErrorNames);
+            s += readStr(scope, GS.GlobalStr.NamedTree, (ushort)(ToShort(o[4], (byte)(o[2] >> 6)) - 1), lng ? -1 : 60, lng ? Detail.Normal : Detail.ErrorNames);
 
-			if (lng)
-			{
+            if (lng)
+            {
                 s += ", " + pjse.Localization.GetString("bwp1c_search") + ": ";
                 s += pjse.Localization.GetString("Private");
                 s += !options[3] ? " " + pjse.Localization.GetString("SemiGlobal") : "";
                 s += !options[2] ? " " + pjse.Localization.GetString("Global") : "";
 
-				s += ", " + readStr(GS.BhavStr.RTBNType, o[5]);
+                s += ", " + readStr(GS.BhavStr.RTBNType, o[5]);
 
-                if (!options[6])
-                {
-                    if ((o[2] & 0x30) != 0) s += ", " + pjse.Localization.GetString("manyArgs") + ": ";
-                    if (options[5])
-                        s += pjse.Localization.GetString("bw_callerparams");
-                    else if (options[4]) // Data Owner format
-                        for (int i = 0; i < 3; i++)
-                            s += (i == 0 ? "" : ", ") + dataOwner(o[6 + i * 3], o[6 + (i * 3) + 1], o[6 + (i * 3) + 2]);
-                    // if ((o[2] & 0x30) == 0x30) s += ", ";
-                }
-			}
+                if ((o[2] & 0x30) != 0) s += ", " + pjse.Localization.GetString("manyArgs") + ": ";
+                if (options[5])
+                    s += pjse.Localization.GetString("bw_callerparams");
+                if ((o[2] & 0x30) == 0x30) s += ", ";
+                if (options[4]) // Data Owner format
+                    for (int i = 0; i < 3; i++)
+                        s += (i == 0 ? "" : ", ") + dataOwner(o[6 + i * 3], o[6 + (i * 3) + 1], o[6 + (i * 3) + 2]);
+            }
 
 			return s;
 #if DISASIM
