@@ -218,64 +218,96 @@ namespace pjse.guidtool
             try
             {
                 List<pjse.FileTable.Entry> results = new List<FileTable.Entry>();
-                if (type[6] && group != 0)
+                if (group != 0)
                 {
-                    List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
-                    foreach (pjse.FileTable.Entry fte in globs)
+                    if (type[6])
                     {
-                        SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
-                        if (glob == null) continue;
-                        if (group != glob.SemiGlobalGroup) continue;
-                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, fte.Group, where]);
-                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, fte.Group, where]);
-                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, fte.Group, where]);
+                        List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
+                        foreach (pjse.FileTable.Entry fte in globs)
+                        {
+                            SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
+                            if (glob == null) continue;
+                            if (group != glob.SemiGlobalGroup) continue;
+
+                            List<pjse.FileTable.Entry> temp = new List<FileTable.Entry>();
+                            if (type[7]) temp.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, fte.Group, where]);
+                            if (type[8]) temp.AddRange(pjse.FileTable.GFT[Objf.Objftype, fte.Group, where]);
+                            if (type[9]) temp.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, fte.Group, where]);
+
+                            if (fte.Group == 0xffffffff)
+                            {
+                                foreach (pjse.FileTable.Entry entry in temp)
+                                    if (entry.Package == fte.Package) results.Add(entry);
+                            }
+                            else results.AddRange(temp);
+                        }
+                    }
+                    else if (type[10])
+                    {
+                        List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
+                        foreach (pjse.FileTable.Entry fte in globs)
+                        {
+                            SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
+                            if (glob == null) continue;
+                            if (group != glob.SemiGlobalGroup) continue;
+
+                            pjse.FileTable.Entry[] objds = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, fte.Group, where];
+
+                            if (objds.Length == 0)
+                                results.Add(fte);
+                            else
+                            {
+                                if (fte.Group == 0xffffffff)
+                                {
+                                    foreach(pjse.FileTable.Entry entry in objds)
+                                        if (entry.Package == fte.Package)
+                                        {
+                                            results.Add(entry);
+                                            break;
+                                        }
+                                }
+                                else
+                                    results.Add(objds[0]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (type[0] || type[1])
+                            results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, group, where]);
+                        if (type[2])
+                            results.AddRange(pjse.FileTable.GFT[0x4E524546, group, where]); // NREF
+                        if (type[3])
+                            results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
+                        if (type[4])
+                            results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, group, where]);
+                        if (type[5])
+                        {
+                            if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
+                            if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, group, where]);
+                            if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, group, where]);
+                        }
                     }
                 }
-                else if (type[10] && group != 0)
+                else // group == 0
                 {
-                    List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
-                    foreach (pjse.FileTable.Entry fte in globs)
+                    if (type[6] || type[10]) { } // no results for group == 0
+                    else
                     {
-                        SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
-                        if (glob == null) continue;
-                        if (group != glob.SemiGlobalGroup) continue;
-                        pjse.FileTable.Entry[] objds = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, fte.Group, where];
-                        if (objds.Length > 0) results.Add(objds[0]);
-                        else results.Add(fte);
-                    }
-                }
-                else if (group == 0)
-                {
-                    if (type[0] || type[1])
-                        results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, where]);
-                    if (type[2])
-                        results.AddRange(pjse.FileTable.GFT[0x4E524546, where]); // NREF
-                    if (type[3])
-                        results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
-                    if (type[4])
-                        results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, where]);
-                    if (type[5])
-                    {
-                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
-                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, where]);
-                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, where]);
-                    }
-                }
-                else
-                {
-                    if (type[0] || type[1])
-                        results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, group, where]);
-                    if (type[2])
-                        results.AddRange(pjse.FileTable.GFT[0x4E524546, group, where]); // NREF
-                    if (type[3])
-                        results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
-                    if (type[4])
-                        results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, group, where]);
-                    if (type[5])
-                    {
-                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
-                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, group, where]);
-                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, group, where]);
+                        if (type[0] || type[1])
+                            results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, where]);
+                        if (type[2])
+                            results.AddRange(pjse.FileTable.GFT[0x4E524546, where]); // NREF
+                        if (type[3])
+                            results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
+                        if (type[4])
+                            results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, where]);
+                        if (type[5])
+                        {
+                            if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
+                            if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, where]);
+                            if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, where]);
+                        }
                     }
                 }
 
