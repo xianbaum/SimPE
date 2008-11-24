@@ -1460,4 +1460,8 @@ Do you want to use this resource?
 Overwrite the existing file?</value>
     <comment>Make Labels prompt</comment>
   </data>
+  <data name="bwb_useTemps" xml:space="preserve">
+    <value>using Temps</value>
+    <comment>BhavWizBhav params</comment>
+  </data>
 </root>

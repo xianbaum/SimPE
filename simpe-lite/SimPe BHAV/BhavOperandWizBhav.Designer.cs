@@ -42,7 +42,7 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg1 = new pjse.LabelledDataOwner();
             this.lbArg1 = new System.Windows.Forms.Label();
             this.flpFormat = new System.Windows.Forms.FlowLayoutPanel();
-            this.rbNone = new System.Windows.Forms.RadioButton();
+            this.rbTemps = new System.Windows.Forms.RadioButton();
             this.rbCallers = new System.Windows.Forms.RadioButton();
             this.rbOld = new System.Windows.Forms.RadioButton();
             this.rbNew = new System.Windows.Forms.RadioButton();
@@ -113,7 +113,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg8.DataOwnerEnabled = true;
             this.ldocArg8.Decimal = false;
             this.ldocArg8.DecimalVisible = false;
-            this.ldocArg8.FlagsFor = null;
             this.ldocArg8.Instruction = null;
             this.ldocArg8.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg8.LabelVisible = false;
@@ -130,7 +129,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg7.DataOwnerEnabled = true;
             this.ldocArg7.Decimal = false;
             this.ldocArg7.DecimalVisible = false;
-            this.ldocArg7.FlagsFor = null;
             this.ldocArg7.Instruction = null;
             this.ldocArg7.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg7.LabelVisible = false;
@@ -147,7 +145,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg6.DataOwnerEnabled = true;
             this.ldocArg6.Decimal = false;
             this.ldocArg6.DecimalVisible = false;
-            this.ldocArg6.FlagsFor = null;
             this.ldocArg6.Instruction = null;
             this.ldocArg6.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg6.LabelVisible = false;
@@ -164,7 +161,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg5.DataOwnerEnabled = true;
             this.ldocArg5.Decimal = false;
             this.ldocArg5.DecimalVisible = false;
-            this.ldocArg5.FlagsFor = null;
             this.ldocArg5.Instruction = null;
             this.ldocArg5.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg5.LabelVisible = false;
@@ -181,7 +177,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg4.DataOwnerEnabled = true;
             this.ldocArg4.Decimal = false;
             this.ldocArg4.DecimalVisible = false;
-            this.ldocArg4.FlagsFor = null;
             this.ldocArg4.Instruction = null;
             this.ldocArg4.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg4.LabelVisible = false;
@@ -198,7 +193,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg3.DataOwnerEnabled = true;
             this.ldocArg3.Decimal = false;
             this.ldocArg3.DecimalVisible = false;
-            this.ldocArg3.FlagsFor = null;
             this.ldocArg3.Instruction = null;
             this.ldocArg3.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg3.LabelVisible = false;
@@ -215,7 +209,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg2.DataOwnerEnabled = true;
             this.ldocArg2.Decimal = false;
             this.ldocArg2.DecimalVisible = false;
-            this.ldocArg2.FlagsFor = null;
             this.ldocArg2.Instruction = null;
             this.ldocArg2.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg2.LabelVisible = false;
@@ -232,7 +225,6 @@ namespace pjse.BhavOperandWizards.WizBhav
             this.ldocArg1.DataOwnerEnabled = true;
             this.ldocArg1.Decimal = false;
             this.ldocArg1.DecimalVisible = false;
-            this.ldocArg1.FlagsFor = null;
             this.ldocArg1.Instruction = null;
             this.ldocArg1.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg1.LabelVisible = false;
@@ -250,19 +242,19 @@ namespace pjse.BhavOperandWizards.WizBhav
             // flpFormat
             // 
             resources.ApplyResources(this.flpFormat, "flpFormat");
-            this.flpFormat.Controls.Add(this.rbNone);
-            this.flpFormat.Controls.Add(this.rbCallers);
+            this.flpFormat.Controls.Add(this.rbTemps);
             this.flpFormat.Controls.Add(this.rbOld);
             this.flpFormat.Controls.Add(this.rbNew);
+            this.flpFormat.Controls.Add(this.rbCallers);
             this.flpFormat.Name = "flpFormat";
             // 
-            // rbNone
+            // rbTemps
             // 
-            resources.ApplyResources(this.rbNone, "rbNone");
-            this.rbNone.Name = "rbNone";
-            this.rbNone.TabStop = true;
-            this.rbNone.UseVisualStyleBackColor = true;
-            this.rbNone.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
+            resources.ApplyResources(this.rbTemps, "rbTemps");
+            this.rbTemps.Name = "rbTemps";
+            this.rbTemps.TabStop = true;
+            this.rbTemps.UseVisualStyleBackColor = true;
+            this.rbTemps.CheckedChanged += new System.EventHandler(this.rb_CheckedChanged);
             // 
             // rbCallers
             // 
@@ -409,7 +401,7 @@ namespace pjse.BhavOperandWizards.WizBhav
         private System.Windows.Forms.RadioButton rbNew;
         private System.Windows.Forms.RadioButton rbOld;
         private System.Windows.Forms.RadioButton rbCallers;
-        private System.Windows.Forms.RadioButton rbNone;
+        private System.Windows.Forms.RadioButton rbTemps;
         private System.Windows.Forms.FlowLayoutPanel flpFormat;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lbArg1;

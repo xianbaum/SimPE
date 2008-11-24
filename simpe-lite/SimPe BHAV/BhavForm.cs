@@ -800,47 +800,48 @@ namespace SimPe.PackedFiles.UserInterface
                 ttBhavForm.SetToolTip(tbFilename, expName + ": 0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance));
         }
 
-		private void WrapperChanged(object sender, System.EventArgs e)
-		{
-			if (isPopup) wrapper.Changed = false;
+        private void WrapperChanged(object sender, System.EventArgs e)
+        {
+            if (isPopup) wrapper.Changed = false;
 
-			this.btnCommit.Enabled = wrapper.Changed;
+            this.btnCommit.Enabled = wrapper.Changed;
 
-			// Handler for header
-			if (sender == wrapper)
-			{
-				if (internalchg) return;
-				internalchg = true;
-				/*this.Text = */tbFilename.Text = wrapper.FileName;
-				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
-				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
-				tbArgC.Text = "0x"+Helper.HexString(wrapper.Header.ArgumentCount);
-				tbLocalC.Text = "0x"+Helper.HexString(wrapper.Header.LocalVarCount);
-				tbHeaderFlag.Text = "0x"+Helper.HexString(wrapper.Header.HeaderFlag);
-				tbTreeVersion.Text = "0x"+Helper.HexString(wrapper.Header.TreeVersion);
-				tbCacheFlags.Text = "0x"+Helper.HexString(wrapper.Header.CacheFlags);
-				tbCacheFlags.Enabled = (wrapper.Header.Format > 0x8008);
+            // Handler for header
+            if (sender == wrapper && !internalchg)
+            {
+                internalchg = true;
+                /*this.Text = */
+                tbFilename.Text = wrapper.FileName;
+                cbFormat.Text = "0x" + Helper.HexString(wrapper.Header.Format);
+                tbType.Text = "0x" + Helper.HexString(wrapper.Header.Type);
+                tbArgC.Text = "0x" + Helper.HexString(wrapper.Header.ArgumentCount);
+                tbLocalC.Text = "0x" + Helper.HexString(wrapper.Header.LocalVarCount);
+                tbHeaderFlag.Text = "0x" + Helper.HexString(wrapper.Header.HeaderFlag);
+                tbTreeVersion.Text = "0x" + Helper.HexString(wrapper.Header.TreeVersion);
+                tbCacheFlags.Text = "0x" + Helper.HexString(wrapper.Header.CacheFlags);
+                tbCacheFlags.Enabled = (wrapper.Header.Format > 0x8008);
                 cmpBHAV.Wrapper = wrapper;
                 cmpBHAV.WrapperName = wrapper.FileName;
-				internalchg = false;
-			}
+                internalchg = false;
+            }
 
-				// Handler for current instruction
-			if (currentInst != null && sender == currentInst.Instruction)
-			{
-				if (internalchg)
-				{
-					this.btnCancel.Enabled = true;
+            // Handler for current instruction
+            if (currentInst != null && sender == currentInst.Instruction)
+            {
+                if (internalchg)
+                {
+                    this.btnCancel.Enabled = true;
 
-					this.currentInst = currentInst.Instruction;
+                    this.currentInst = currentInst.Instruction;
                     this.llopenbhav.Enabled = instIsBhav();
-					this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
-					Longname = currentInst.LongName;
-				}
-				else
-					pnflowcontainer_SelectedInstChanged(null, null);
-			}
-		}
+                    this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
+                }
+                else
+                    pnflowcontainer_SelectedInstChanged(null, null);
+            }
+
+            Longname = (currentInst != null) ? currentInst.LongName : "";
+        }
 
 		#endregion
 
