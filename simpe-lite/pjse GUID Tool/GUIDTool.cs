@@ -241,6 +241,9 @@ namespace pjse.guidtool
                             }
                             else results.AddRange(temp);
                         }
+                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
+                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, group, where]);
+                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, group, where]);
                     }
                     else if (type[10])
                     {

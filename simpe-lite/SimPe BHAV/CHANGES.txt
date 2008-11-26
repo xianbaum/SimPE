@@ -1,3 +1,7 @@
+26 November 2008 17:45 GUID Tool: GLOB reference search should include references within the group
+  pjse GUID Tool\
+    GUIDTool.cs 1.15.4.5
+
 26 November 2008 10:10 Boolset: string format should lead with most significant bit not least!
   * Also Boolset.ToString() should return the bitstring
   pjse System Classes
