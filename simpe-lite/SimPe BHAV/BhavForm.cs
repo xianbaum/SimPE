@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   peter@users.sf.net                                                    *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -359,9 +359,32 @@ namespace SimPe.PackedFiles.UserInterface
             return wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode) != null;
         }
 
-		private void UpdateInstPanel()
+        private void OperandWiz(int type)
+        {
+            internalchg = true;
+            bool changed = false;
+            Instruction inst = currentInst.Instruction;
+            currentInst = null;
+            try
+            {
+                changed = ((new BhavOperandWiz()).Execute(btnCommit.Visible ? inst : inst.Clone(), type) != null);
+            }
+            finally
+            {
+                currentInst = inst;
+                if (btnCommit.Visible)
+                {
+                    if (changed) UpdateInstPanel();
+                    this.btnCancel.Enabled = true;
+                }
+                internalchg = false;
+            }
+        }
+
+        private void UpdateInstPanel()
 		{
 			internalchg = true;
+            Application.UseWaitCursor = true;
 			if (currentInst == null || wrapper.IndexOf(currentInst.Instruction) < 0)
 			{
 				SetReadOnly(true);
@@ -388,8 +411,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk5.Text = "";
 				this.tbInst_Unk6.Text = "";
 				this.tbInst_Unk7.Text = "";
-
-				Longname = "";
 			}
 			else
 			{
@@ -444,24 +465,43 @@ namespace SimPe.PackedFiles.UserInterface
 
                 this.llopenbhav.Enabled = instIsBhav();
 				this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
-				Longname = currentInst.LongName;
 			}
-			internalchg = false;
+            setLongname();
+            Application.UseWaitCursor = false;
+            internalchg = false;
 		}
 
+        private void OpcodeChanged(ushort value)
+        {
+            currentInst.Instruction.OpCode = value; 
+            this.currentInst = currentInst.Instruction;
+            this.llopenbhav.Enabled = instIsBhav();
+            this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
+            setLongname();
+        }
+
+        private void ChangeLongname(byte oldval, byte newval) { if (oldval != newval) setLongname(); }
 
         private static string onearg = pjse.Localization.GetString("oneArg");
         private static string manyargs = pjse.Localization.GetString("manyArgs");
-        private string Longname
-		{
-			set
-			{
-				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ")
-                    .Replace(onearg + ": ", onearg  +":\r\n  ")
+        private void setLongname()
+        {
+            if (currentInst == null || wrapper.IndexOf(currentInst.Instruction) < 0)
+                this.tbInst_Longname.Text = "";
+            else
+            {
+                bool state = Application.UseWaitCursor;
+                Application.UseWaitCursor = true;
+                try
+                {
+                    this.tbInst_Longname.Text = currentInst.LongName.Replace(", ", ",\r\n  ")
+                    .Replace(onearg + ": ", onearg + ":\r\n  ")
                     .Replace(manyargs + ": ", manyargs + ":\r\n  ")
                     ;
-			}
-		}
+                }
+                finally { Application.UseWaitCursor = state; }
+            }
+        }
 
 
 		private void CopyListing()
@@ -829,18 +869,10 @@ namespace SimPe.PackedFiles.UserInterface
             if (currentInst != null && sender == currentInst.Instruction)
             {
                 if (internalchg)
-                {
                     this.btnCancel.Enabled = true;
-
-                    this.currentInst = currentInst.Instruction;
-                    this.llopenbhav.Enabled = instIsBhav();
-                    this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
-                }
                 else
                     pnflowcontainer_SelectedInstChanged(null, null);
             }
-
-            Longname = (currentInst != null) ? currentInst.LongName : "";
         }
 
 		#endregion
@@ -1853,29 +1885,27 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_OpCode.Text = "0x" + SimPe.Helper.HexString((ushort)item.Instance);
 		}
 
-		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
-		{
-			internalchg = true;
-			if ((new BhavOperandWiz()).Execute(currentInst, 1) != null)
-				UpdateInstPanel();
-			internalchg = false;
-		}
+        private void btnOperandWiz_Clicked(object sender, System.EventArgs e) { OperandWiz(1); }
 		
-		private void btnOperandRaw_Click(object sender, System.EventArgs e)
-		{
-			internalchg = true;
-			if ((new BhavOperandWiz()).Execute(btnCommit.Visible ? currentInst : (BhavWiz)(currentInst.Instruction.Clone()), 0) != null)
-				UpdateInstPanel();
-			internalchg = false;
-		}
+		private void btnOperandRaw_Click(object sender, System.EventArgs e) { OperandWiz(0); }
 
         private void btnZero_Click(object sender, EventArgs e)
         {
             internalchg = true;
-            for (int i = 0; i < 8; i++) currentInst.Instruction.Operands[i] = 0;
-            for (int i = 0; i < 8; i++) currentInst.Instruction.Reserved1[i] = 0;
-            UpdateInstPanel();
-            internalchg = false;
+            Instruction inst = currentInst.Instruction;
+            currentInst = null;
+            try
+            {
+                for (int i = 0; i < 8; i++) inst.Operands[i] = 0;
+                for (int i = 0; i < 8; i++) inst.Reserved1[i] = 0;
+            }
+            finally
+            {
+                currentInst = inst;
+                UpdateInstPanel();
+                this.btnCancel.Enabled = true;
+                internalchg = false;
+            }
         }
 
 
@@ -2094,17 +2124,19 @@ namespace SimPe.PackedFiles.UserInterface
 
 			internalchg = true;
 
-			if (i < 8) currentInst.Instruction.Operands[i] = val;
-			else if (i < 16) currentInst.Instruction.Reserved1[i-8] = val;
-			else switch(i)
-				 {
-					 case 16: currentInst.Instruction.NodeVersion = val; break;
-					 case 17: wrapper.Header.HeaderFlag = val; break;
-					 case 18: wrapper.Header.Type = val; break;
-					 case 19: wrapper.Header.CacheFlags = val; break;
-					 case 20: wrapper.Header.ArgumentCount = val; break;
-					 case 21: wrapper.Header.LocalVarCount = val; break;
-				 }
+            byte oldval = val;
+            if (i < 8) { oldval = currentInst.Instruction.Operands[i]; currentInst.Instruction.Operands[i] = val; ChangeLongname(oldval, val); }
+            else if (i < 16) { oldval = currentInst.Instruction.Reserved1[i - 8]; currentInst.Instruction.Reserved1[i - 8] = val; ChangeLongname(oldval, val); }
+            else
+                switch (i)
+                {
+                    case 16: oldval = currentInst.Instruction.NodeVersion; currentInst.Instruction.NodeVersion = val; ChangeLongname(oldval, val); break;
+                    case 17: wrapper.Header.HeaderFlag = val; break;
+                    case 18: wrapper.Header.Type = val; break;
+                    case 19: wrapper.Header.CacheFlags = val; break;
+                    case 20: oldval = wrapper.Header.ArgumentCount; wrapper.Header.ArgumentCount = val; ChangeLongname(oldval, val); break;
+                    case 21: wrapper.Header.LocalVarCount = val; break;
+                }
 
 			internalchg = false;
 		}
@@ -2153,7 +2185,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: currentInst.Instruction.OpCode = val; break;
+                case 0: OpcodeChanged(val); break;
 			}
 			internalchg = false;
 		}
