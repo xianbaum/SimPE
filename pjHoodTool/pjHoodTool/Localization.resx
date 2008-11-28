@@ -124,13 +124,13 @@
     <value>Close window without selection to extract all</value>
   </data>
   <data name="pjCHoodHelp" xml:space="preserve">
-    <value>Extract Sim data</value>
+    <value>Export Neighborhood data</value>
   </data>
   <data name="pjCHoodTool" xml:space="preserve">
-    <value>Export Sims...</value>
+    <value>Export Neighborhoods...</value>
     <comment>Higher-level menu name is fixed</comment>
   </data>
   <data name="pjHoodHelp" xml:space="preserve">
-    <value>Export Sims</value>
+    <value>Export Neighborhoods</value>
   </data>
 </root>

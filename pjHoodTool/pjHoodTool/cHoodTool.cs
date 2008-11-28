@@ -86,7 +86,7 @@ namespace pjHoodTool
                 #region ExportedSims header
                 w1.WriteLine("hood" +
                     ",HoodName" +
-                    ",NID,FirstName,LastName,SimDescription" +
+                    ",NID,CharFileNum,FirstName,LastName,SimDescription" +
                     ",FamilyInstance,HouseholdName" +
                     ",HouseNumber" +
                     ",AvailableCharacterData,Unlinked" +
@@ -106,8 +106,9 @@ namespace pjHoodTool
                     ",Body,Charisma,Cleaning,Cooking,Creativity,Fatness,Logic,Mechanical,Romance" + //Skills
 
                     ",IsAtUniversity,UniEffort,UniGrade,UniTime,UniSemester,UniInfluence,UniMajor" + // University
-                    ",Species" + // Nightlife
+                    ",Species,Traits1,Traits2,Traits3,TurnOffs1,TurnOffs2,TurnOffs3,TurnOns1,TurnOns2,TurnOns3" + // Nightlife
                     ",Salary" + // Business
+                    //",PetTraits" + // Pets -- not requested
                     ",PrimaryAspiration,SecondaryAspiration,HobbyPredestined,LifetimeWant" + // FreeTime
                     //",Reputation" + // Aparments... not found it yet
                     ""
@@ -196,27 +197,39 @@ namespace pjHoodTool
             if (!Directory.Exists(Path.Combine(outPath, "LotImage")))
                 Directory.CreateDirectory(Path.Combine(outPath, "LotImage"));
 
-            System.Windows.Forms.Application.DoEvents();
-            splash("Loading Neighborhood " + hood + ": " + hoodName);
-            SetProvider(pkg);
 
             dt = new DateTime(0);
             wasUnk = true;
-            pfds = pkg.FindFiles(SimPe.Plugin.Ltxt.Ltxttype);
-            foreach (IPackedFileDescriptor spfd in pfds)
-            {
-                Ltxt ltxt = new Ltxt();
-                ltxt.ProcessData(spfd, pkg);
 
-                AddLot(outPath, hood, hoodName, w2, ltxt);
+            System.Windows.Forms.Application.DoEvents();
+            splash("Loading Neighborhood " + hood + ": " + hoodName);
+            foreach (string s in System.IO.Directory.GetFiles(FileTable.ProviderRegistry.LotProvider.BaseFolder, hood + "_Lot*.package"))
+            {
+                uint inst = Convert.ToUInt32(System.IO.Path.GetFileNameWithoutExtension(s).Substring(8));
+                SimPe.Interfaces.Providers.ILotItem ilot = SimPe.FileTable.ProviderRegistry.LotProvider.FindLot(inst);
+                AddLot(outPath, hood, hoodName, w2, ilot, inst);
             }
         }
 
         enum bodyType : ushort { Unknown = 0, Fat = 1, PregnantFull = 2, PregnantHalf = 4, PregnantHidden = 8, };
         void AddSim(string outPath, string hood, string hoodName, StreamWriter w, ExtSDesc sdsc)
         {
+            if (dt.Equals(new DateTime(0)) || wasUnk || dt.AddMilliseconds(200).CompareTo(DateTime.UtcNow) < 0)
+            {
+                System.Windows.Forms.Application.DoEvents();
+                if (!((string)(sdsc.SimName + " " + sdsc.SimFamilyName)).Trim().ToLower().Equals("unknown"))
+                {
+                    dt = new DateTime(DateTime.UtcNow.Ticks);
+                    wasUnk = false;
+                    splash("Saving " + sdsc.SimName + " " + sdsc.SimFamilyName);
+                }
+                else
+                    wasUnk = true;
+            }
+
+
             #region desc
-            string desc = ",,";
+            string desc = ",,,";
             SimPe.Interfaces.Files.IPackageFile pkg = SimPe.Packages.File.LoadFromFile(sdsc.CharacterFileName);
             if (pkg == null)
             {
@@ -233,7 +246,8 @@ namespace pjHoodTool
             {
                 StrWrapper ctss = new StrWrapper();
                 ctss.ProcessData(pfds[0], pkg);
-                desc = q(ctss[1, 0]) + // firstname
+                desc = q(System.IO.Path.GetFileNameWithoutExtension(sdsc.CharacterFileName).Substring(9)) + 
+                    "," + q(ctss[1, 0]) + // firstname
                     "," + q(ctss[1, 2]) + // lastname
                     "," + q(ctss[1, 1]) + // description
                     ""
@@ -343,6 +357,7 @@ namespace pjHoodTool
             ;
             #endregion
 
+
             #region university
             string university = "N,,,,,,";
             if (sdsc.University != null && sdsc.University.OnCampus == 0x1)
@@ -354,6 +369,46 @@ namespace pjHoodTool
                 "," + sdsc.University.Semester +
                 "," + sdsc.University.Influence +
                 "," + sdsc.University.Major
+                ;
+            }
+            #endregion
+
+            #region nightlife
+            string nightlife = "Human,,,";
+            if (sdsc.Nightlife != null)
+            {
+                nightlife = sdsc.Nightlife.Species.ToString() +
+                    "," + sdsc.Nightlife.AttractionTraits1 +
+                    "," + sdsc.Nightlife.AttractionTraits2 +
+                    "," + sdsc.Nightlife.AttractionTraits3 +
+                    "," + sdsc.Nightlife.AttractionTurnOffs1 +
+                    "," + sdsc.Nightlife.AttractionTurnOffs2 +
+                    "," + sdsc.Nightlife.AttractionTurnOffs3 +
+                    "," + sdsc.Nightlife.AttractionTurnOns1 +
+                    "," + sdsc.Nightlife.AttractionTurnOns2 +
+                    "," + sdsc.Nightlife.AttractionTurnOns3 +
+                    ""
+                ;
+            }
+            #endregion
+
+            #region business
+            string business = "0";
+            if (sdsc.Business != null)
+            {
+                business = sdsc.Business.Salary.ToString() +
+                    ""
+                ;
+                //sdsc.Business.LotID
+            }
+            #endregion
+
+            #region pets
+            string pets = "";
+            if (sdsc.Pets != null)
+            {
+                pets = sdsc.Pets.PetTraits.Value.ToString() +
+                    ""
                 ;
             }
             #endregion
@@ -371,21 +426,7 @@ namespace pjHoodTool
             }
             #endregion
 
-            //sdsc.Business.LotID
 
-
-            if (dt.Equals(new DateTime(0)) || wasUnk || dt.AddMilliseconds(200).CompareTo(DateTime.UtcNow) < 0)
-            {
-                System.Windows.Forms.Application.DoEvents();
-                if (!((string)(sdsc.SimName + " " + sdsc.SimFamilyName)).Trim().ToLower().Equals("unknown"))
-                {
-                    dt = new DateTime(DateTime.UtcNow.Ticks);
-                    wasUnk = false;
-                    splash("Saving " + sdsc.SimName + " " + sdsc.SimFamilyName);
-                }
-                else
-                    wasUnk = true;
-            }
             string csv = hood +
                 "," + q(hoodName) +
                 "," + sdsc.Instance +
@@ -420,8 +461,9 @@ namespace pjHoodTool
                 "," + interests +
                 "," + skills +
                 "," + university +
-                "," + (sdsc.Nightlife == null ? "Human" : sdsc.Nightlife.Species.ToString()) +
-                "," + (sdsc.Business == null ? (ushort)0 : sdsc.Business.Salary) +
+                "," + nightlife +
+                //"," + pets +
+                "," + business +
                 "," + freetime +
                 //";Reputation" +
                 ""
@@ -431,23 +473,23 @@ namespace pjHoodTool
             AddImage(sdsc.Image, Path.Combine(Path.Combine(outPath, "SimImage"), hood + "_" + sdsc.Instance + ".png"));
         }
 
-        void AddLot(string outPath, string hood, string hoodName, StreamWriter w, Ltxt ltxt)
+        void AddLot(string outPath, string hood, string hoodName, StreamWriter w, SimPe.Interfaces.Providers.ILotItem ilot, uint inst)
         {
             if (dt.Equals(new DateTime(0)) || wasUnk || dt.AddMilliseconds(200).CompareTo(DateTime.UtcNow) < 0)
             {
                 dt = new DateTime(DateTime.UtcNow.Ticks);
                 wasUnk = false;
-                splash("Saving " + ltxt.LotName.Trim());
+                splash("Saving " + ilot.LotName.Trim());
             }
+
             w.WriteLine(hood +
                 "," + q(hoodName) +
-                "," + ltxt.FileDescriptor.Instance +
-                "," + (ltxt.LotDescription == null ? "," : ltxt.LotDescription.Instance + "," + q(ltxt.LotDescription.LotName)) +
+                "," + inst + "," + q(ilot.LotName) +
                 ""
                 );
 
-            if (ltxt.LotDescription != null)
-                AddImage(ltxt.LotDescription.Image, Path.Combine(Path.Combine(outPath, "LotImage"), hood + "_" + ltxt.FileDescriptor.Instance + ".png"));
+            if (ilot != null)
+                AddImage(ilot.Image, Path.Combine(Path.Combine(outPath, "LotImage"), hood + "_" + inst + ".png"));
         }
 
 

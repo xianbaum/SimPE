@@ -1,3 +1,7 @@
+2008-11-28 13:01 Add traits etc; add char pkg filename number; process lots from lots folder; "Neighborhood" not "Sims"
+  pjHoodTool/
+    cHoodTool.cs 1.1.2.9
+
 2008-11-17 13:45 Various change (headers, new fields)
   pjHoodTool/
     cHoodTool.cs 1.4
