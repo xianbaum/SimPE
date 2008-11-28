@@ -61,20 +61,21 @@ namespace pjse
             SimPe.Wait.Message = message;
             SimPe.Wait.Progress++;
             if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage(message);
+            if (SimPe.WaitingScreen.Running) SimPe.WaitingScreen.Message = message;
         }
 
         public void UIRefresh()
         {
+            string SplashScreenSetMessage = "";//can't get old message
+            string SimPeWaitingScreenMessage = (SimPe.WaitingScreen.Running) ? SimPe.WaitingScreen.Message : "";
             SimPe.Wait.SubStart();
-            //bool wasRunning = SimPe.WaitingScreen.Running;
-            //SimPe.WaitingScreen.Wait();
 
             try { this.Refresh(true); }
             finally
             {
                 SimPe.Wait.SubStop();
-                //if (!wasRunning) SimPe.WaitingScreen.Stop();
-                //else SimPe.WaitingScreen.UpdateMessage("");
+                if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage(SplashScreenSetMessage);
+                if (SimPe.WaitingScreen.Running) SimPe.WaitingScreen.Message = SimPeWaitingScreenMessage;
             }
         }
 

@@ -1,3 +1,12 @@
+28 November 2008 13:13 Add GLOB finder and string search to GUID Tool
+  pjse filetable\
+    FileTable.cs 1.31.4.16
+  pjse GUID Tool\
+    GUIDTool.cs 1.15.4.6
+    GUIDTool.resx 1.9.4.2
+  pjse Localisation\
+    Localization.resx 1.17.4.11
+
 27 November 2008 15:34 Make changes to nodes faster
   SimPe BHAV\
     BhavForm.cs 1.89.4.15
