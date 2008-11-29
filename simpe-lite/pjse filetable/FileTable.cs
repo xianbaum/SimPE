@@ -376,12 +376,13 @@ namespace pjse
 
 
         public enum Source { Any, Maxis, Fixed, Local };
-		public class Entry : IDisposable, IComparable
+        public class Entry : IDisposable, IComparable, SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem
 		{
 			private IPackageFile package;
 			private IPackedFileDescriptor pfd;
             private bool isMaxis;
             private bool isFixed;
+            SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii;
 
             public Entry(IPackageFile package, IPackedFileDescriptor pfd, bool isMaxis, bool isFixed)
 			{
@@ -389,6 +390,9 @@ namespace pjse
 				this.pfd = pfd;
                 this.isMaxis = isMaxis;
                 this.isFixed = isFixed;
+
+                SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] fiis = SimPe.FileTable.FileIndex.FindFile(pfd, package);
+                this.fii = (fiis.Length==1) ? fiis[0] : null;
 
                 this.pfd.ChangedData += new SimPe.Events.PackedFileChanged(pfd_ChangedData);
 			}
@@ -468,7 +472,21 @@ namespace pjse
 			}
 
 			#endregion
-		}
+
+            #region IScenegraphFileIndexItem Members
+
+            public IPackedFileDescriptor FileDescriptor
+            {
+                get { return PFD; }
+                set { throw new Exception("The method or operation is not implemented."); }
+            }
+
+            public IPackedFileDescriptor GetLocalFileDescriptor() { return fii.GetLocalFileDescriptor(); }
+
+            public uint LocalGroup { get { return fii.LocalGroup; } }
+
+            #endregion
+        }
 
         public Entry[] this[IPackageFile package, IPackedFileDescriptor pfd]
         {
