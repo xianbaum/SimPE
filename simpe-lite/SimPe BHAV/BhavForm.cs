@@ -130,6 +130,7 @@ namespace SimPe.PackedFiles.UserInterface
         private pjse_banner pjse_banner1;
         private CompareButton cmpBHAV;
         private Button btnInsUnlinked;
+        private Button btnImportSemi;
         private IContainer components;
         #endregion
        
@@ -230,6 +231,83 @@ namespace SimPe.PackedFiles.UserInterface
             IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
             npfd.UserData = wrapper.Package.Read(wrapper.FileDescriptor).UncompressedData;
             currentPackage.Add(npfd, true);
+        }
+
+        private void ImportSemi()
+        {
+            WaitingScreen.Wait();
+            WaitingScreen.Message = "Finding available BHAV number...";
+            pjse.FileTable.Entry[] ai = pjse.FileTable.GFT[Bhav.Bhavtype, pjse.FileTable.Source.Local];
+            ushort newInst = 0x0fff;
+            foreach (pjse.FileTable.Entry i in ai) if (i.Instance >= 0x1000 && i.Instance < 0x2000 && i.Instance > newInst) newInst = (ushort)i.Instance;
+            newInst++;
+
+            currentPackage.BeginUpdate();
+
+            WaitingScreen.Message = "Cloning BHAV...";
+            IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
+            npfd.Group = 0xffffffff;
+            npfd.Instance = newInst;
+            npfd.UserData = wrapper.Package.Read(wrapper.FileDescriptor).UncompressedData;
+            currentPackage.Add(npfd, true);
+
+            WaitingScreen.Message = "Updating current package - BHAVs...";
+            foreach (pjse.FileTable.Entry i in ai)
+            {
+                if (i.Group != npfd.Group || i.Instance < 0x1000 || i.Instance >= 0x2000) continue;
+                Bhav bhav = (Bhav)i.Wrapper;
+                foreach(Instruction inst in bhav)
+                    if (inst.OpCode == wrapper.FileDescriptor.Instance) inst.OpCode = newInst;
+                if (bhav.Changed)
+                {
+                    bhav.SynchronizeUserData();
+                    ResourceLoader.Refresh(i);
+                }
+            }
+
+            WaitingScreen.Message = "Updating current package - OBJFs...";
+            ai = pjse.FileTable.GFT[Objf.Objftype, pjse.FileTable.Source.Local];
+            foreach (pjse.FileTable.Entry i in ai)
+            {
+                if (i.Group != npfd.Group) continue;
+                Objf objf = (Objf)i.Wrapper;
+                foreach (ObjfItem item in objf)
+                {
+                    if (item.Action == wrapper.FileDescriptor.Instance) item.Action = newInst;
+                    if (item.Guardian == wrapper.FileDescriptor.Instance) item.Guardian = newInst;
+                }
+                if (objf.Changed)
+                {
+                    objf.SynchronizeUserData();
+                    ResourceLoader.Refresh(i);
+                }
+            }
+
+            WaitingScreen.Message = "Updating current package - TTABs...";
+            ai = pjse.FileTable.GFT[Ttab.Ttabtype, pjse.FileTable.Source.Local];
+            foreach (pjse.FileTable.Entry i in ai)
+            {
+                if (i.Group != npfd.Group) continue;
+                Ttab ttab = (Ttab)i.Wrapper;
+                foreach (TtabItem item in ttab)
+                {
+                    if (item.Action == wrapper.FileDescriptor.Instance) item.Action = newInst;
+                    if (item.Guardian == wrapper.FileDescriptor.Instance) item.Guardian = newInst;
+                }
+                if (ttab.Changed)
+                {
+                    ttab.SynchronizeUserData();
+                    ResourceLoader.Refresh(i);
+                }
+            }
+
+            currentPackage.EndUpdate();
+
+            WaitingScreen.Message = "";
+            WaitingScreen.Stop();
+            MessageBox.Show(
+                pjse.Localization.GetString("ml_done")
+                , btnImportSemi.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
 
@@ -814,8 +892,9 @@ namespace SimPe.PackedFiles.UserInterface
                 btnClose.Visible = true;
                 gbSpecial.Visible = true;
                 cbSpecial.Enabled = false;
-                btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
+                btnImportSemi.Visible = btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
                 btnCopyBHAV.Enabled = currentPackage != null;
+                btnImportSemi.Enabled = (currentPackage != null) && wrapper.FileDescriptor.Instance >= 0x2000 && wrapper.FileDescriptor.Instance < 0x3000;
 
                 handleOverride();
 
@@ -976,6 +1055,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ttBhavForm = new System.Windows.Forms.ToolTip(this.components);
+            this.btnImportSemi = new System.Windows.Forms.Button();
             this.gbInstruction.SuspendLayout();
             this.bhavPanel.SuspendLayout();
             this.gbSpecial.SuspendLayout();
@@ -1348,6 +1428,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.bhavPanel.Controls.Add(this.llHidesOP);
             this.bhavPanel.Controls.Add(this.tbHidesOP);
             this.bhavPanel.Controls.Add(this.cbSpecial);
+            this.bhavPanel.Controls.Add(this.btnImportSemi);
             this.bhavPanel.Controls.Add(this.btnCopyBHAV);
             this.bhavPanel.Controls.Add(this.btnClose);
             this.bhavPanel.Controls.Add(this.tbHeaderFlag);
@@ -1710,6 +1791,12 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             this.ttBhavForm.ShowAlways = true;
             // 
+            // btnImportSemi
+            // 
+            resources.ApplyResources(this.btnImportSemi, "btnImportSemi");
+            this.btnImportSemi.Name = "btnImportSemi";
+            this.btnImportSemi.Click += new System.EventHandler(this.btnImportSemi_Click);
+            // 
             // BhavForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1871,6 +1958,13 @@ namespace SimPe.PackedFiles.UserInterface
             btnCopyBHAV.Enabled = false;
             TakeACopy();
             btnCopyBHAV.Text = pjse.Localization.GetString("ml_done");
+        }
+
+        private void btnImportSemi_Click(object sender, EventArgs e)
+        {
+            btnImportSemi.Enabled = false;
+            ImportSemi();
+            btnImportSemi.Text = pjse.Localization.GetString("ml_done");
         }
 
 
