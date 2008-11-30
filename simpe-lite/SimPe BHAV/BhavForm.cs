@@ -130,7 +130,7 @@ namespace SimPe.PackedFiles.UserInterface
         private pjse_banner pjse_banner1;
         private CompareButton cmpBHAV;
         private Button btnInsUnlinked;
-        private Button btnImportSemi;
+        private Button btnImportBHAV;
         private IContainer components;
         #endregion
        
@@ -225,81 +225,141 @@ namespace SimPe.PackedFiles.UserInterface
 
         private String hidesFmt = "{0}";
 
+        // These should be on the ExtendedWrapper class or BhavWiz or, indeed, PackedFileDescriptor
+        private static IPackedFileDescriptor newPFD(IPackedFileDescriptor oldPFD) { return newPFD(oldPFD.Type, oldPFD.Group, oldPFD.SubType, oldPFD.Instance); }
+        private static IPackedFileDescriptor newPFD(uint type, uint group, uint instance) { return newPFD(type, group, 0x00000000, instance); }
+        private static IPackedFileDescriptor newPFD(uint type, uint group, uint subtype, uint instance)
+        {
+            IPackedFileDescriptor npfd = new SimPe.Packages.PackedFileDescriptor();
+            npfd.Type = type;
+            npfd.Group = group;
+            npfd.SubType = subtype;
+            npfd.Instance = instance;
+            return npfd;
+        }
+
         private IPackageFile currentPackage = null;
         private void TakeACopy()
         {
-            IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
+            IPackedFileDescriptor npfd = newPFD(wrapper.FileDescriptor);
             npfd.UserData = wrapper.Package.Read(wrapper.FileDescriptor).UncompressedData;
             currentPackage.Add(npfd, true);
         }
 
-        private void ImportSemi()
+        private delegate bool ignoreEntry(pjse.FileTable.Entry i, IPackedFileDescriptor npfd);
+        private delegate bool matchItem(object o, uint inst);
+        private delegate void setter(object o, ushort inst);
+
+        private void doUpdate(string typeName
+            , uint oldInst
+            , IPackedFileDescriptor npfd
+            , pjse.FileTable.Entry[] entries
+            , ignoreEntry ieDelegate
+            , matchItem[] matchDelegates
+            , setter[] setDelegates
+            )
+        {
+            if (npfd == null) return;
+            if (entries == null || entries.Length == 0) return;
+            if (matchDelegates == null || matchDelegates.Length == 0) return;
+            if (setDelegates == null || setDelegates.Length != matchDelegates.Length) return;
+
+            WaitingScreen.Message = "Updating current package - " + typeName + "s...";
+            foreach (pjse.FileTable.Entry i in entries)
+            {
+                ResourceLoader.Refresh(i); // make sure it's been saved before we search it
+                Application.DoEvents();
+
+                AbstractWrapper wrapper = i.Wrapper;
+                if (wrapper as IEnumerable == null) break;
+
+                if (ieDelegate != null && ieDelegate(i, npfd)) continue;
+
+                foreach (object o in (IEnumerable)wrapper)
+                {
+                    for (int j = 0; j < matchDelegates.Length; j++)
+                    {
+                        matchItem md = matchDelegates[j];
+                        setter sd = setDelegates[j];
+                        if (md != null && sd != null && md(o, oldInst))
+                        {
+                            sd(o, (ushort)npfd.Instance);
+                        }
+                    }
+                }
+                if (wrapper.Changed)
+                {
+                    wrapper.SynchronizeUserData();
+                    ResourceLoader.Refresh(i);
+                }
+            }
+        }
+        private void ImportBHAV()
         {
             WaitingScreen.Wait();
+
+            #region Finding available BHAV number
             WaitingScreen.Message = "Finding available BHAV number...";
             pjse.FileTable.Entry[] ai = pjse.FileTable.GFT[Bhav.Bhavtype, pjse.FileTable.Source.Local];
             ushort newInst = 0x0fff;
             foreach (pjse.FileTable.Entry i in ai) if (i.Instance >= 0x1000 && i.Instance < 0x2000 && i.Instance > newInst) newInst = (ushort)i.Instance;
             newInst++;
+            #endregion
 
             currentPackage.BeginUpdate();
 
+            #region Cloning BHAV
             WaitingScreen.Message = "Cloning BHAV...";
-            IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
-            npfd.Group = 0xffffffff;
-            npfd.Instance = newInst;
+            IPackedFileDescriptor npfd = newPFD(Bhav.Bhavtype, 0xffffffff, newInst);
             npfd.UserData = wrapper.Package.Read(wrapper.FileDescriptor).UncompressedData;
             currentPackage.Add(npfd, true);
+            #endregion
 
-            WaitingScreen.Message = "Updating current package - BHAVs...";
-            foreach (pjse.FileTable.Entry i in ai)
-            {
-                if (i.Group != npfd.Group || i.Instance < 0x1000 || i.Instance >= 0x2000) continue;
-                Bhav bhav = (Bhav)i.Wrapper;
-                foreach(Instruction inst in bhav)
-                    if (inst.OpCode == wrapper.FileDescriptor.Instance) inst.OpCode = newInst;
-                if (bhav.Changed)
-                {
-                    bhav.SynchronizeUserData();
-                    ResourceLoader.Refresh(i);
-                }
-            }
+            #region Updating current package - BHAVs
+            doUpdate("BHAV"
+                , wrapper.FileDescriptor.Instance
+                , npfd
+                , ai
+                , delegate(pjse.FileTable.Entry i, IPackedFileDescriptor pfd) { return (i.Group != pfd.Group || i.Instance < 0x1000 || i.Instance >= 0x2000); }
+                , new matchItem[] { delegate(object o, uint value) {
+                    return ((Instruction)o).OpCode == value; } }
+                , new setter[] { delegate(object o, ushort value) { ((Instruction)o).OpCode = value; } }
+                );
+            #endregion
 
-            WaitingScreen.Message = "Updating current package - OBJFs...";
-            ai = pjse.FileTable.GFT[Objf.Objftype, pjse.FileTable.Source.Local];
-            foreach (pjse.FileTable.Entry i in ai)
-            {
-                if (i.Group != npfd.Group) continue;
-                Objf objf = (Objf)i.Wrapper;
-                foreach (ObjfItem item in objf)
-                {
-                    if (item.Action == wrapper.FileDescriptor.Instance) item.Action = newInst;
-                    if (item.Guardian == wrapper.FileDescriptor.Instance) item.Guardian = newInst;
+            #region Updating current package - OBJFs
+            doUpdate("OBJF"
+                , wrapper.FileDescriptor.Instance
+                , npfd
+                , pjse.FileTable.GFT[Objf.Objftype, pjse.FileTable.Source.Local]
+                , null
+                , new matchItem[] {
+                    delegate(object o, uint value) { return ((ObjfItem)o).Action == value; },
+                    delegate(object o, uint value) { return ((ObjfItem)o).Guardian == value; },
                 }
-                if (objf.Changed)
-                {
-                    objf.SynchronizeUserData();
-                    ResourceLoader.Refresh(i);
+                , new setter[] {
+                    delegate(object o, ushort value) { ((ObjfItem)o).Action = value; },
+                    delegate(object o, ushort value) { ((ObjfItem)o).Guardian = value; },
                 }
-            }
+                );
+            #endregion
 
-            WaitingScreen.Message = "Updating current package - TTABs...";
-            ai = pjse.FileTable.GFT[Ttab.Ttabtype, pjse.FileTable.Source.Local];
-            foreach (pjse.FileTable.Entry i in ai)
-            {
-                if (i.Group != npfd.Group) continue;
-                Ttab ttab = (Ttab)i.Wrapper;
-                foreach (TtabItem item in ttab)
-                {
-                    if (item.Action == wrapper.FileDescriptor.Instance) item.Action = newInst;
-                    if (item.Guardian == wrapper.FileDescriptor.Instance) item.Guardian = newInst;
+            #region Updating current package - TTABs
+            doUpdate("TTAB"
+                , wrapper.FileDescriptor.Instance
+                , npfd
+                , pjse.FileTable.GFT[Ttab.Ttabtype, pjse.FileTable.Source.Local]
+                , null
+                , new matchItem[] {
+                    delegate(object o, uint value) { return ((TtabItem)o).Action == value; },
+                    delegate(object o, uint value) { return ((TtabItem)o).Guardian == value; },
                 }
-                if (ttab.Changed)
-                {
-                    ttab.SynchronizeUserData();
-                    ResourceLoader.Refresh(i);
+                , new setter[] {
+                    delegate(object o, ushort value) { ((TtabItem)o).Action = value; },
+                    delegate(object o, ushort value) { ((TtabItem)o).Guardian = value; },
                 }
-            }
+                );
+            #endregion
 
             currentPackage.EndUpdate();
 
@@ -307,7 +367,7 @@ namespace SimPe.PackedFiles.UserInterface
             WaitingScreen.Stop();
             MessageBox.Show(
                 pjse.Localization.GetString("ml_done")
-                , btnImportSemi.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                , btnImportBHAV.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
 
@@ -321,7 +381,8 @@ namespace SimPe.PackedFiles.UserInterface
 
             BhavForm ui = (BhavForm)bhav.UIHandler;
             string tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-            if (noOverride) tag += ";noOverride"; //
+            if (noOverride) tag += ";noOverride"; // prevents handleOverride displaying anything
+            tag += ";callerID=+" + wrapper.FileDescriptor.ExportFileName +"+";
             if (exp != null) tag += ";expName=+" + exp.NameShort + "+";
             ui.Tag = tag;
 
@@ -329,18 +390,29 @@ namespace SimPe.PackedFiles.UserInterface
             ui.Show();
         }
 
-        private bool isPopup { get { return this.Tag == null ? false : ((string)(this.Tag)).StartsWith("Popup"); } }
-        private bool isNoOverride { get { return this.Tag == null ? false : ((string)(this.Tag)).Contains(";noOverride"); } }
+        private string getValueFromTag(string key)
+        {
+            string s = this.Tag as string;
+            if (s == null) return null;
+
+            key = ";" + key + "=+";
+            int i = s.IndexOf(key);
+            if (i < 0) return null;
+
+            s = s.Substring(i + key.Length);
+            i = s.IndexOf("+");
+            return (i >= 0) ? s.Substring(0, i) : null;
+        }
+        private bool isPopup { get { return (this.Tag == null || this.Tag as string == null) ? false : ((string)(this.Tag)).StartsWith("Popup"); } }
+        private bool isNoOverride { get { return (this.Tag == null || this.Tag as string == null) ? false : ((string)(this.Tag)).Contains(";noOverride"); } }
+        private string callerID { get { return getValueFromTag("callerID"); } }
         private string expName
         {
             get
             {
-                if (this.Tag != null)
-                {
-                    string s = (string)this.Tag;
-                    int i = s.IndexOf(";expName=+");
-                    if (i >= 0) return s.Substring(i + 10).TrimEnd('+');
-                }
+                string s = getValueFromTag("expName");
+                if (s != null) return s;
+
                 foreach(pjse.FileTable.Entry item in pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor])
                     if (item.PFD == wrapper.FileDescriptor)
                     {
@@ -689,7 +761,7 @@ namespace SimPe.PackedFiles.UserInterface
                     {
                         // Clone the original into this package
                         if (dr == DialogResult.Yes) Wait.MaxProgress = tprp.Count;
-                        SimPe.Interfaces.Files.IPackedFileDescriptor npfd = tprp.FileDescriptor.Clone();
+                        SimPe.Interfaces.Files.IPackedFileDescriptor npfd = newPFD(tprp.FileDescriptor);
                         TPRP ntprp = new TPRP();
                         ntprp.FileDescriptor = npfd;
                         wrapper.Package.Add(npfd, true);
@@ -710,11 +782,10 @@ namespace SimPe.PackedFiles.UserInterface
                 else
                 {
                     // create a new TPRP file
-                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
                     tprp = new TPRP();
-                    npfd.Type = TPRP.TPRPtype;
-                    tprp.FileDescriptor = npfd;
-                    wrapper.Package.Add(npfd, true);
+                    tprp.FileDescriptor =
+                        newPFD(TPRP.TPRPtype, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.SubType, wrapper.FileDescriptor.Instance);
+                    wrapper.Package.Add(tprp.FileDescriptor, true);
                     tprp.SynchronizeUserData();
                 }
 
@@ -892,9 +963,13 @@ namespace SimPe.PackedFiles.UserInterface
                 btnClose.Visible = true;
                 gbSpecial.Visible = true;
                 cbSpecial.Enabled = false;
-                btnImportSemi.Visible = btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
+                btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
+                btnImportBHAV.Visible = (currentPackage != wrapper.Package)
+                    && (callerID != null && callerID.IndexOf("-FFFFFFFF-") == 17); //42484156-00000000-FFFFFFFF-00001003
                 btnCopyBHAV.Enabled = currentPackage != null;
-                btnImportSemi.Enabled = (currentPackage != null) && wrapper.FileDescriptor.Instance >= 0x2000 && wrapper.FileDescriptor.Instance < 0x3000;
+                btnImportBHAV.Enabled = (currentPackage != null) &&
+                    ((wrapper.FileDescriptor.Instance >= 0x100 && wrapper.FileDescriptor.Instance < 0x1000)
+                    || (wrapper.FileDescriptor.Instance >= 0x2000 && wrapper.FileDescriptor.Instance < 0x3000));
 
                 handleOverride();
 
@@ -1027,6 +1102,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.llHidesOP = new System.Windows.Forms.LinkLabel();
             this.tbHidesOP = new System.Windows.Forms.TextBox();
             this.cbSpecial = new System.Windows.Forms.CheckBox();
+            this.btnImportBHAV = new System.Windows.Forms.Button();
             this.btnCopyBHAV = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.tbHeaderFlag = new System.Windows.Forms.TextBox();
@@ -1055,7 +1131,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.defaultFileToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ttBhavForm = new System.Windows.Forms.ToolTip(this.components);
-            this.btnImportSemi = new System.Windows.Forms.Button();
             this.gbInstruction.SuspendLayout();
             this.bhavPanel.SuspendLayout();
             this.gbSpecial.SuspendLayout();
@@ -1428,7 +1503,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.bhavPanel.Controls.Add(this.llHidesOP);
             this.bhavPanel.Controls.Add(this.tbHidesOP);
             this.bhavPanel.Controls.Add(this.cbSpecial);
-            this.bhavPanel.Controls.Add(this.btnImportSemi);
+            this.bhavPanel.Controls.Add(this.btnImportBHAV);
             this.bhavPanel.Controls.Add(this.btnCopyBHAV);
             this.bhavPanel.Controls.Add(this.btnClose);
             this.bhavPanel.Controls.Add(this.tbHeaderFlag);
@@ -1589,6 +1664,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.cbSpecial, "cbSpecial");
             this.cbSpecial.Name = "cbSpecial";
             this.cbSpecial.CheckStateChanged += new System.EventHandler(this.cbSpecial_CheckStateChanged);
+            // 
+            // btnImportBHAV
+            // 
+            resources.ApplyResources(this.btnImportBHAV, "btnImportBHAV");
+            this.btnImportBHAV.Name = "btnImportBHAV";
+            this.btnImportBHAV.Click += new System.EventHandler(this.btnImportBHAV_Click);
             // 
             // btnCopyBHAV
             // 
@@ -1791,12 +1872,6 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             this.ttBhavForm.ShowAlways = true;
             // 
-            // btnImportSemi
-            // 
-            resources.ApplyResources(this.btnImportSemi, "btnImportSemi");
-            this.btnImportSemi.Name = "btnImportSemi";
-            this.btnImportSemi.Click += new System.EventHandler(this.btnImportSemi_Click);
-            // 
             // BhavForm
             // 
             resources.ApplyResources(this, "$this");
@@ -1960,11 +2035,11 @@ namespace SimPe.PackedFiles.UserInterface
             btnCopyBHAV.Text = pjse.Localization.GetString("ml_done");
         }
 
-        private void btnImportSemi_Click(object sender, EventArgs e)
+        private void btnImportBHAV_Click(object sender, EventArgs e)
         {
-            btnImportSemi.Enabled = false;
-            ImportSemi();
-            btnImportSemi.Text = pjse.Localization.GetString("ml_done");
+            btnImportBHAV.Enabled = false;
+            ImportBHAV();
+            btnImportBHAV.Text = pjse.Localization.GetString("ml_done");
         }
 
 

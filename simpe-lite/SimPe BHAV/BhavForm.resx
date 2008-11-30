@@ -1596,7 +1596,7 @@ to BHAV</value>
     <value>pjse_banner1</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Type" xml:space="preserve">
-    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3254.23913, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.pjse_banner, pjse.coder.plugin, Version=4.0.3255.26095, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pjse_banner1.Parent" xml:space="preserve">
     <value>bhavPanel</value>
@@ -1665,7 +1665,7 @@ to BHAV</value>
     <value>cmpBHAV</value>
   </data>
   <data name="&gt;&gt;cmpBHAV.Type" xml:space="preserve">
-    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3254.23913, Culture=neutral, PublicKeyToken=null</value>
+    <value>pjse.CompareButton, pjse.coder.plugin, Version=4.0.3255.26095, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;cmpBHAV.Parent" xml:space="preserve">
     <value>gbSpecial</value>
@@ -2144,40 +2144,40 @@ to BHAV</value>
   <data name="&gt;&gt;cbSpecial.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
-  <data name="btnImportSemi.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="btnImportBHAV.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
-  <data name="btnImportSemi.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+  <data name="btnImportBHAV.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
   </data>
-  <data name="btnImportSemi.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="btnImportBHAV.Location" type="System.Drawing.Point, System.Drawing">
     <value>436, 533</value>
   </data>
-  <data name="btnImportSemi.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="btnImportBHAV.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>2, 2, 2, 2</value>
   </data>
-  <data name="btnImportSemi.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="btnImportBHAV.Size" type="System.Drawing.Size, System.Drawing">
     <value>112, 21</value>
   </data>
-  <data name="btnImportSemi.TabIndex" type="System.Int32, mscorlib">
+  <data name="btnImportBHAV.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
   </data>
-  <data name="btnImportSemi.Text" xml:space="preserve">
-    <value>Import SemiGlobal</value>
+  <data name="btnImportBHAV.Text" xml:space="preserve">
+    <value>Import as Private</value>
   </data>
-  <data name="btnImportSemi.Visible" type="System.Boolean, mscorlib">
+  <data name="btnImportBHAV.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
   </data>
-  <data name="&gt;&gt;btnImportSemi.Name" xml:space="preserve">
-    <value>btnImportSemi</value>
+  <data name="&gt;&gt;btnImportBHAV.Name" xml:space="preserve">
+    <value>btnImportBHAV</value>
   </data>
-  <data name="&gt;&gt;btnImportSemi.Type" xml:space="preserve">
+  <data name="&gt;&gt;btnImportBHAV.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btnImportSemi.Parent" xml:space="preserve">
+  <data name="&gt;&gt;btnImportBHAV.Parent" xml:space="preserve">
     <value>bhavPanel</value>
   </data>
-  <data name="&gt;&gt;btnImportSemi.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;btnImportBHAV.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="btnCopyBHAV.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -2199,7 +2199,7 @@ to BHAV</value>
     <value>20</value>
   </data>
   <data name="btnCopyBHAV.Text" xml:space="preserve">
-    <value>Import to package</value>
+    <value>Import unchanged</value>
   </data>
   <data name="btnCopyBHAV.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -2442,7 +2442,7 @@ to BHAV</value>
     <value>pnflowcontainer</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.3254.23913, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.UserInterface.BhavInstListControl, pjse.coder.plugin, Version=4.0.3255.26095, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;pnflowcontainer.Parent" xml:space="preserve">
     <value>bhavPanel</value>
