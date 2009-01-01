@@ -1,3 +1,7 @@
+1 January 2009 21:21 Rewrite of GUIDIndex (to make it more useful)
+  SimPe BHAV\
+    GUIDIndex.cs 1.4.6.2
+
 13 December 2008 20:59 Update GlobalStrings.package for pjOBJDTool changes
   GlobalStrings.package 1.31.4.9
 
