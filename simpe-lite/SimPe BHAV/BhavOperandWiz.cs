@@ -255,12 +255,14 @@ namespace pjse.BhavOperandWizards
 
         private void ckbDecimal_CheckedChanged(object sender, System.EventArgs e)
         {
-            pjse.Settings.PJSE.DecimalDOValue = this.ckbDecimal.Checked;
+            if (this.ckbDecimal.Visible)
+                pjse.Settings.PJSE.DecimalDOValue = this.ckbDecimal.Checked;
         }
 
         private void ckbUseAttrPicker_CheckedChanged(object sender, System.EventArgs e)
         {
-            pjse.Settings.PJSE.InstancePickerAsText = this.ckbUseInstancePicker.Checked;
+            if (this.ckbUseInstancePicker.Visible)
+                pjse.Settings.PJSE.InstancePickerAsText = this.ckbUseInstancePicker.Checked;
         }
 
 		#endregion

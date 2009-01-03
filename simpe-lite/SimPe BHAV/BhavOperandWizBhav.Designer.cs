@@ -7,19 +7,6 @@ namespace pjse.BhavOperandWizards.WizBhav
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Windows Form Designer generated code
 
         /// <summary>
@@ -111,14 +98,12 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.ldocArg8, "ldocArg8");
             this.ldocArg8.DataOwner = ((byte)(255));
             this.ldocArg8.DataOwnerEnabled = true;
-            this.ldocArg8.Decimal = false;
             this.ldocArg8.DecimalVisible = false;
             this.ldocArg8.Instruction = null;
             this.ldocArg8.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg8.LabelVisible = false;
             this.ldocArg8.Name = "ldocArg8";
             this.ldocArg8.UseFlagNames = false;
-            this.ldocArg8.UseInstancePicker = true;
             this.ldocArg8.UseInstancePickerVisible = false;
             this.ldocArg8.Value = ((ushort)(0));
             // 
@@ -127,14 +112,12 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.ldocArg7, "ldocArg7");
             this.ldocArg7.DataOwner = ((byte)(255));
             this.ldocArg7.DataOwnerEnabled = true;
-            this.ldocArg7.Decimal = false;
             this.ldocArg7.DecimalVisible = false;
             this.ldocArg7.Instruction = null;
             this.ldocArg7.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg7.LabelVisible = false;
             this.ldocArg7.Name = "ldocArg7";
             this.ldocArg7.UseFlagNames = false;
-            this.ldocArg7.UseInstancePicker = true;
             this.ldocArg7.UseInstancePickerVisible = false;
             this.ldocArg7.Value = ((ushort)(0));
             // 
@@ -143,14 +126,12 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.ldocArg6, "ldocArg6");
             this.ldocArg6.DataOwner = ((byte)(255));
             this.ldocArg6.DataOwnerEnabled = true;
-            this.ldocArg6.Decimal = false;
             this.ldocArg6.DecimalVisible = false;
             this.ldocArg6.Instruction = null;
             this.ldocArg6.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg6.LabelVisible = false;
             this.ldocArg6.Name = "ldocArg6";
             this.ldocArg6.UseFlagNames = false;
-            this.ldocArg6.UseInstancePicker = true;
             this.ldocArg6.UseInstancePickerVisible = false;
             this.ldocArg6.Value = ((ushort)(0));
             // 
@@ -159,14 +140,12 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.ldocArg5, "ldocArg5");
             this.ldocArg5.DataOwner = ((byte)(255));
             this.ldocArg5.DataOwnerEnabled = true;
-            this.ldocArg5.Decimal = false;
             this.ldocArg5.DecimalVisible = false;
             this.ldocArg5.Instruction = null;
             this.ldocArg5.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg5.LabelVisible = false;
             this.ldocArg5.Name = "ldocArg5";
             this.ldocArg5.UseFlagNames = false;
-            this.ldocArg5.UseInstancePicker = true;
             this.ldocArg5.UseInstancePickerVisible = false;
             this.ldocArg5.Value = ((ushort)(0));
             // 
@@ -175,14 +154,12 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.ldocArg4, "ldocArg4");
             this.ldocArg4.DataOwner = ((byte)(255));
             this.ldocArg4.DataOwnerEnabled = true;
-            this.ldocArg4.Decimal = false;
             this.ldocArg4.DecimalVisible = false;
             this.ldocArg4.Instruction = null;
             this.ldocArg4.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg4.LabelVisible = false;
             this.ldocArg4.Name = "ldocArg4";
             this.ldocArg4.UseFlagNames = false;
-            this.ldocArg4.UseInstancePicker = true;
             this.ldocArg4.UseInstancePickerVisible = false;
             this.ldocArg4.Value = ((ushort)(0));
             // 
@@ -191,14 +168,12 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.ldocArg3, "ldocArg3");
             this.ldocArg3.DataOwner = ((byte)(255));
             this.ldocArg3.DataOwnerEnabled = true;
-            this.ldocArg3.Decimal = false;
             this.ldocArg3.DecimalVisible = false;
             this.ldocArg3.Instruction = null;
             this.ldocArg3.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg3.LabelVisible = false;
             this.ldocArg3.Name = "ldocArg3";
             this.ldocArg3.UseFlagNames = false;
-            this.ldocArg3.UseInstancePicker = true;
             this.ldocArg3.UseInstancePickerVisible = false;
             this.ldocArg3.Value = ((ushort)(0));
             // 
@@ -207,14 +182,12 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.ldocArg2, "ldocArg2");
             this.ldocArg2.DataOwner = ((byte)(255));
             this.ldocArg2.DataOwnerEnabled = true;
-            this.ldocArg2.Decimal = false;
             this.ldocArg2.DecimalVisible = false;
             this.ldocArg2.Instruction = null;
             this.ldocArg2.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg2.LabelVisible = false;
             this.ldocArg2.Name = "ldocArg2";
             this.ldocArg2.UseFlagNames = false;
-            this.ldocArg2.UseInstancePicker = true;
             this.ldocArg2.UseInstancePickerVisible = false;
             this.ldocArg2.Value = ((ushort)(0));
             // 
@@ -223,14 +196,12 @@ namespace pjse.BhavOperandWizards.WizBhav
             resources.ApplyResources(this.ldocArg1, "ldocArg1");
             this.ldocArg1.DataOwner = ((byte)(255));
             this.ldocArg1.DataOwnerEnabled = true;
-            this.ldocArg1.Decimal = false;
             this.ldocArg1.DecimalVisible = false;
             this.ldocArg1.Instruction = null;
             this.ldocArg1.LabelSize = new System.Drawing.Size(35, 13);
             this.ldocArg1.LabelVisible = false;
             this.ldocArg1.Name = "ldocArg1";
             this.ldocArg1.UseFlagNames = false;
-            this.ldocArg1.UseInstancePicker = true;
             this.ldocArg1.UseInstancePickerVisible = false;
             this.ldocArg1.Value = ((ushort)(0));
             // 

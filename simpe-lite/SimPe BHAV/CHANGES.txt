@@ -1,3 +1,11 @@
+3 January 2009 15:23 Fix checkbox nightmare in BhavOperandWizBhav
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.19.6.4
+    BhavOperandWizBhav.cs 1.10.6.5
+    BhavOperandWizBhav.Designer.cs 1.2.6.3
+    LabelledDataOwner.cs 1.1.2.3
+    LabelledDataOwner.Designer.cs 1.1.2.3
+
 1 January 2009 21:21 Rewrite of GUIDIndex (to make it more useful)
   SimPe BHAV\
     GUIDIndex.cs 1.4.6.2

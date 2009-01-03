@@ -60,6 +60,21 @@ namespace pjse
                 , downer, value);
         }
 
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                if (doc != null)
+                    doc = null;
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         [Category("Appearance")]
         [Description("Text associated with the control.")]
         [Localizable(true)]
@@ -92,6 +107,7 @@ namespace pjse
 
         [Category("Behavior")]
         //[DefaultValue(false)]
+        [Browsable(false)]
         [Description("True if values should be in Decimal (except Consts).")]
         public bool Decimal { get { return ckbDecimal.Checked; } set { ckbDecimal.Checked = value; } }
 
@@ -103,6 +119,7 @@ namespace pjse
 
         [Category("Behavior")]
         //[DefaultValue(true)]
+        [Browsable(false)]
         [Description("True if the Instance Picker should be used (when appropriate) (also Param / Local name).")]
         public bool UseInstancePicker { get { return ckbUseInstancePicker.Checked; } set { ckbUseInstancePicker.Checked = value; } }
 

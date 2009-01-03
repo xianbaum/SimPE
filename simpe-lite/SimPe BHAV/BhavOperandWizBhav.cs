@@ -39,20 +39,58 @@ namespace pjse.BhavOperandWizards.WizBhav
             aldoc = new LabelledDataOwner[] { ldocArg1, ldocArg2, ldocArg3, ldocArg4, ldocArg5, ldocArg6, ldocArg7, ldocArg8, };
             arbFormat = new List<RadioButton>(new RadioButton[] { rbTemps, rbOld, rbNew, rbCallers });
 
+            internalchg = true;
+            try
+            {
+                foreach (LabelledDataOwner ldoc in aldoc)
+                {
+                    ldoc.Decimal = pjse.Settings.PJSE.DecimalDOValue;
+                    ldoc.UseInstancePicker = pjse.Settings.PJSE.InstancePickerAsText;
+                }
+            }
+            finally { internalchg = false; }
+
             pjse.Settings.PJSE.DecimalDOValueChanged += new EventHandler(PJSE_DecimalDOValueChanged);
             pjse.Settings.PJSE.InstancePickerAsTextChanged += new EventHandler(PJSE_InstancePickerAsTextChanged);
         }
 
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+            pjse.Settings.PJSE.DecimalDOValueChanged -= new EventHandler(PJSE_DecimalDOValueChanged);
+            pjse.Settings.PJSE.InstancePickerAsTextChanged -= new EventHandler(PJSE_InstancePickerAsTextChanged);
+        }
+
         void PJSE_DecimalDOValueChanged(object sender, EventArgs e)
         {
-            if (ckbDecimal.Checked != pjse.Settings.PJSE.DecimalDOValue)
+            if (internalchg) return;
+            if (ckbDecimal.Checked == pjse.Settings.PJSE.DecimalDOValue) return;
+            internalchg = true;
+            try
+            {
                 ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
+            }
+            finally { internalchg = false; }
         }
 
         void PJSE_InstancePickerAsTextChanged(object sender, EventArgs e)
         {
-            if (ckbUseInstancePicker.Checked != pjse.Settings.PJSE.InstancePickerAsText)
+            if (internalchg) return;
+            if (ckbUseInstancePicker.Checked == pjse.Settings.PJSE.InstancePickerAsText) return;
+            internalchg = true;
+            try
+            {
                 ckbUseInstancePicker.Checked = pjse.Settings.PJSE.InstancePickerAsText;
+            }
+            finally { internalchg = false; }
         }
 
         private bool internalchg = false;
@@ -170,10 +208,10 @@ NV  X72 X1 X0  Kill  P_out    Method
 
         public void Execute(Instruction inst)
         {
+            internalchg = true;
+
             ckbDecimal.Checked = pjse.Settings.PJSE.DecimalDOValue;
             ckbUseInstancePicker.Checked = pjse.Settings.PJSE.InstancePickerAsText;
-
-            internalchg = true;
 
             this.inst = inst;
             foreach (LabelledDataOwner ldoc in aldoc) ldoc.Instruction = inst;
@@ -248,12 +286,24 @@ NV  X72 X1 X0  Kill  P_out    Method
 
         private void ckbDecimal_CheckedChanged(object sender, EventArgs e)
         {
-            pjse.Settings.PJSE.DecimalDOValue = ckbDecimal.Checked;
+            if (internalchg) return;
+            internalchg = true;
+            try
+            {
+                pjse.Settings.PJSE.DecimalDOValue = ckbDecimal.Checked;
+            }
+            finally { internalchg = false; }
         }
 
         private void ckbUseInstancePicker_CheckedChanged(object sender, EventArgs e)
         {
-            pjse.Settings.PJSE.InstancePickerAsText = ckbUseInstancePicker.Checked;
+            if (internalchg) return;
+            internalchg = true;
+            try
+            {
+                pjse.Settings.PJSE.InstancePickerAsText = ckbUseInstancePicker.Checked;
+            }
+            finally { internalchg = false; }
         }
     }
 }
