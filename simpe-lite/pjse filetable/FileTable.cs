@@ -62,6 +62,7 @@ namespace pjse
             SimPe.Wait.Progress++;
             if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage(message);
             if (SimPe.WaitingScreen.Running) SimPe.WaitingScreen.Message = message;
+            System.Windows.Forms.Application.DoEvents();
         }
 
         public void UIRefresh()
@@ -152,7 +153,7 @@ namespace pjse
         private IPackageFile currentPackage = null;
         public IPackageFile CurrentPackage
         {
-            get { return currentPackage == null ? null : IsFixed(currentPackage) ? null : currentPackage; }
+            get { return currentPackage; }
 
             set
             {
@@ -191,20 +192,19 @@ namespace pjse
         private bool IsMaxis(IPackageFile package)
         {
             if (!hasLoaded) Refresh();
-            return (package == null || maxisPackages.Contains(package));
+            return (package != null && maxisPackages.Contains(package));
         }
 
         private bool IsFixed(IPackageFile package)
         {
             if (!hasLoaded) Refresh();
-            return (package == null || fixedPackages.Contains(package));
+            return (package != null && fixedPackages.Contains(package));
         }
 
 
         private void Add(string v, bool recurse, SimPe.Expansions ep, bool isFixed)
         {
             wm("Loading " + ep + " " + System.IO.Path.GetFileName(v).Replace(".package", ""));
-            System.Windows.Forms.Application.DoEvents();
             if (Directory.Exists(v))
             {
                 foreach (string i in Directory.GetFiles(v, "*.package"))

@@ -198,10 +198,10 @@ namespace pjse
             get { return doc.Value; }
             set
             {
-                if (doc.ValueIsByte)
-                    tbVal.Text = "0x" + SimPe.Helper.HexString((byte)value);
+                if (doc.Decimal)
+                    tbVal.Text = doc.ValueIsByte ? ((byte)value).ToString() : value.ToString();
                 else
-                    tbVal.Text = "0x" + SimPe.Helper.HexString(value);
+                    tbVal.Text = "0x" + (doc.ValueIsByte ? SimPe.Helper.HexString((byte)value) : SimPe.Helper.HexString(value));
             }
         }
 

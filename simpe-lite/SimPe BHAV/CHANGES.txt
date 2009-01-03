@@ -1,3 +1,11 @@
+3 January 2009 21:43 Yet another attempt at keeping the GUIDTool working; oops in LDOC when setting value
+  pjse filetable\
+    FileTable.cs 1.31.4.18
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.18
+    LabelledDataOwner.cs 1.1.2.4
+    ResourceChooser.cs 1.14.6.2
+
 3 January 2009 15:23 Fix checkbox nightmare in BhavOperandWizBhav
   SimPe BHAV\
     BhavOperandWiz.cs 1.19.6.4

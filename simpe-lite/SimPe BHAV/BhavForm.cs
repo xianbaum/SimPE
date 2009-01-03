@@ -2522,7 +2522,9 @@ namespace SimPe.PackedFiles.UserInterface
         private void cmenuGUIDIndex_Opening(object sender, CancelEventArgs e)
         {
             createCurrentPackageToolStripMenuItem.Enabled =
-                (pjse.FileTable.GFT.CurrentPackage != null);
+                (pjse.FileTable.GFT.CurrentPackage != null
+                && pjse.FileTable.GFT.CurrentPackage.FileName != null
+                && !pjse.FileTable.GFT.CurrentPackage.FileName.ToLower().EndsWith("objects.package"));
         }
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
