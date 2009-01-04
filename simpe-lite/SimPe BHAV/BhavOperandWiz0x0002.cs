@@ -55,6 +55,10 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
             cbOperator.Items.Clear();
             cbOperator.Items.AddRange(BhavWiz.readStr(GS.BhavStr.Operators).ToArray());
+
+            labelledDataOwner2.Decimal = labelledDataOwner1.Decimal = pjse.Settings.PJSE.DecimalDOValue;
+            labelledDataOwner2.UseInstancePicker = labelledDataOwner1.UseInstancePicker = pjse.Settings.PJSE.InstancePickerAsText;
+
         }
 
         /// <summary>
@@ -142,14 +146,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
             resources.ApplyResources(this.labelledDataOwner2, "labelledDataOwner2");
             this.labelledDataOwner2.DataOwner = ((byte)(255));
             this.labelledDataOwner2.DataOwnerEnabled = true;
-            this.labelledDataOwner2.Decimal = false;
             this.labelledDataOwner2.FlagsFor = this.labelledDataOwner1;
             this.labelledDataOwner2.Instruction = null;
             this.labelledDataOwner2.LabelSize = new System.Drawing.Size(35, 13);
             this.labelledDataOwner2.LabelVisible = false;
             this.labelledDataOwner2.Name = "labelledDataOwner2";
             this.labelledDataOwner2.UseFlagNames = false;
-            this.labelledDataOwner2.UseInstancePicker = true;
             this.labelledDataOwner2.Value = ((ushort)(0));
             // 
             // labelledDataOwner1
@@ -157,14 +159,12 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
             resources.ApplyResources(this.labelledDataOwner1, "labelledDataOwner1");
             this.labelledDataOwner1.DataOwner = ((byte)(255));
             this.labelledDataOwner1.DataOwnerEnabled = true;
-            this.labelledDataOwner1.Decimal = false;
             this.labelledDataOwner1.DecimalVisible = false;
             this.labelledDataOwner1.Instruction = null;
             this.labelledDataOwner1.LabelSize = new System.Drawing.Size(35, 13);
             this.labelledDataOwner1.LabelVisible = false;
             this.labelledDataOwner1.Name = "labelledDataOwner1";
             this.labelledDataOwner1.UseFlagNames = false;
-            this.labelledDataOwner1.UseInstancePicker = true;
             this.labelledDataOwner1.UseInstancePickerVisible = false;
             this.labelledDataOwner1.Value = ((ushort)(0));
             // 

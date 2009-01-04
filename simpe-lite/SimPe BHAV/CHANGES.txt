@@ -1,3 +1,9 @@
+4 January 2009 12:56 Yet another oops in LDOC when setting value; fix Wiz0x02 and Wiz0x1c, too
+  SimPe BHAV\
+    BhavOperandWiz0x0002.cs 1.15.6.2
+    BhavOperandWiz0x001c.cs 1.7.6.3
+    LabelledDataOwner.cs 1.1.2.5
+
 3 January 2009 21:43 Yet another attempt at keeping the GUIDTool working; oops in LDOC when setting value
   pjse filetable\
     FileTable.cs 1.31.4.18

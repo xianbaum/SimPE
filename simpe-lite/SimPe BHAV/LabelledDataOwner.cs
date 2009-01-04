@@ -105,10 +105,12 @@ namespace pjse
         public bool InstanceLabelVisible { get { return lbInstance.Visible; } set { lbInstance.Visible = value; } }
 
 
-        [Category("Behavior")]
-        //[DefaultValue(false)]
+        /// <summary>
+        /// True if values should be in Decimal (except Consts).
+        /// Bound to pjse.Settings.PJSE.DecimalDOValue
+        /// </summary>
         [Browsable(false)]
-        [Description("True if values should be in Decimal (except Consts).")]
+        [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
         public bool Decimal { get { return ckbDecimal.Checked; } set { ckbDecimal.Checked = value; } }
 
         [Category("Behavior")]
@@ -117,10 +119,12 @@ namespace pjse
         public bool DecimalVisible { get { return ckbDecimal.Visible; } set { ckbDecimal.Visible = value; } }
 
 
-        [Category("Behavior")]
-        //[DefaultValue(true)]
+        /// <summary>
+        /// True if the Instance Picker should be used (when appropriate) (also Param / Local name).
+        /// Bound to pjse.Settings.PJSE.InstancePickerAsText
+        /// </summary>
         [Browsable(false)]
-        [Description("True if the Instance Picker should be used (when appropriate) (also Param / Local name).")]
+        [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
         public bool UseInstancePicker { get { return ckbUseInstancePicker.Checked; } set { ckbUseInstancePicker.Checked = value; } }
 
         [Category("Behavior")]
@@ -199,7 +203,7 @@ namespace pjse
             set
             {
                 if (doc.Decimal)
-                    tbVal.Text = doc.ValueIsByte ? ((byte)value).ToString() : value.ToString();
+                    tbVal.Text = doc.ValueIsByte ? ((byte)value).ToString() : ((short)value).ToString();
                 else
                     tbVal.Text = "0x" + (doc.ValueIsByte ? SimPe.Helper.HexString((byte)value) : SimPe.Helper.HexString(value));
             }

@@ -73,6 +73,10 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
 
             this.cbRTBNType.Items.Clear();
             this.cbRTBNType.Items.AddRange(BhavWiz.readStr(GS.BhavStr.RTBNType).ToArray());
+
+            ldocArg3.Decimal = ldocArg2.Decimal = ldocArg1.Decimal = pjse.Settings.PJSE.DecimalDOValue;
+            ldocArg3.UseInstancePicker = ldocArg2.UseInstancePicker = ldocArg1.UseInstancePicker = pjse.Settings.PJSE.InstancePickerAsText;
+
         }
 
         /// <summary>
@@ -271,13 +275,11 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             resources.ApplyResources(this.ldocArg1, "ldocArg1");
             this.ldocArg1.DataOwner = ((byte)(255));
             this.ldocArg1.DataOwnerEnabled = true;
-            this.ldocArg1.Decimal = false;
             this.ldocArg1.DecimalVisible = false;
             this.ldocArg1.Instruction = null;
             this.ldocArg1.LabelSize = new System.Drawing.Size(61, 13);
             this.ldocArg1.Name = "ldocArg1";
             this.ldocArg1.UseFlagNames = false;
-            this.ldocArg1.UseInstancePicker = true;
             this.ldocArg1.UseInstancePickerVisible = false;
             this.ldocArg1.Value = ((ushort)(0));
             // 
@@ -286,13 +288,11 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             resources.ApplyResources(this.ldocArg2, "ldocArg2");
             this.ldocArg2.DataOwner = ((byte)(255));
             this.ldocArg2.DataOwnerEnabled = true;
-            this.ldocArg2.Decimal = false;
             this.ldocArg2.DecimalVisible = false;
             this.ldocArg2.Instruction = null;
             this.ldocArg2.LabelSize = new System.Drawing.Size(61, 13);
             this.ldocArg2.Name = "ldocArg2";
             this.ldocArg2.UseFlagNames = false;
-            this.ldocArg2.UseInstancePicker = true;
             this.ldocArg2.UseInstancePickerVisible = false;
             this.ldocArg2.Value = ((ushort)(0));
             // 
@@ -301,12 +301,10 @@ namespace pjse.BhavOperandWizards.Wiz0x001c
             resources.ApplyResources(this.ldocArg3, "ldocArg3");
             this.ldocArg3.DataOwner = ((byte)(255));
             this.ldocArg3.DataOwnerEnabled = true;
-            this.ldocArg3.Decimal = false;
             this.ldocArg3.Instruction = null;
             this.ldocArg3.LabelSize = new System.Drawing.Size(61, 13);
             this.ldocArg3.Name = "ldocArg3";
             this.ldocArg3.UseFlagNames = false;
-            this.ldocArg3.UseInstancePicker = true;
             this.ldocArg3.Value = ((ushort)(0));
             // 
             // btnTreeName
