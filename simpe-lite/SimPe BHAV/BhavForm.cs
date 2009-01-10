@@ -2529,13 +2529,13 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SimPe.Wait.Start();
-            SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
+            Application.UseWaitCursor = true;
+            Application.DoEvents();
             pjse.GUIDIndex.TheGUIDIndex.Create(sender.Equals(this.createCurrentPackageToolStripMenuItem));
-            SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
-            SimPe.Wait.Stop();
+            Application.UseWaitCursor = false;
+            Application.DoEvents();
 
-            DialogResult dr = pjseMsgBox.Show(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
+            DialogResult dr = pjseMsgBox.Show(RemoteControl.ApplicationForm, pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
                 new Boolset("111"), new Boolset("111"), new string[] {
                     pjse.Localization.GetString("guidAskDefault"),
                     pjse.Localization.GetString("guidAskSpecify"),

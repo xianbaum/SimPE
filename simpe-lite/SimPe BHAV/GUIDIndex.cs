@@ -53,14 +53,17 @@ namespace pjse
                 ? pjse.FileTable.GFT[pjse.FileTable.GFT.CurrentPackage, SimPe.Data.MetaData.OBJD_FILE]
                 : pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE];
 
+            SimPe.Wait.Start(items.Length);
             try
             {
-                SimPe.Wait.Start(items.Length);
                 foreach (pjse.FileTable.Entry item in items)
                 {
-                    SimPe.Interfaces.Plugin.AbstractWrapper wrapper = item.Wrapper;
-                    if (wrapper != null)
+                    System.Windows.Forms.Application.DoEvents();
+                    try
                     {
+                        SimPe.Interfaces.Plugin.AbstractWrapper wrapper = item.Wrapper;
+                        if (wrapper == null) continue;
+
                         IndexItem ii = new IndexItem();
 
                         pjse.FileTable.Entry[] globs = pjse.FileTable.GFT[0x474C4F42, item.Group];
@@ -84,7 +87,7 @@ namespace pjse
                             }
                         }
                     }
-                    SimPe.Wait.Progress++;
+                    finally { SimPe.Wait.Progress++; }
                 }
                 pjse.FileTable.GFT.OnFiletableRefresh(this, new EventArgs());
             }
