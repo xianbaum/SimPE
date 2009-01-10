@@ -802,8 +802,13 @@ namespace SimPe.PackedFiles.UserInterface
         private void pjse_banner1_SiblingClick(object sender, EventArgs e)
         {
             Trcn trcn = (Trcn)wrapper.SiblingResource(Trcn.Trcntype);
-            if (trcn != null)
-                SimPe.RemoteControl.OpenPackedFile(trcn.FileDescriptor, trcn.Package);
+            if (trcn == null) return;
+            if (trcn.Package != wrapper.Package)
+            {
+                DialogResult dr = MessageBox.Show(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
+                if (dr != DialogResult.Yes) return;
+            }
+            SimPe.RemoteControl.OpenPackedFile(trcn.FileDescriptor, trcn.Package);
         }
 
 

@@ -1466,4 +1466,11 @@ Overwrite the existing file?</value>
     <value>using Temps</value>
     <comment>BhavWizBhav params</comment>
   </data>
+  <data name="OpenOtherPkg" xml:space="preserve">
+    <value>The resource resides in a different package.  Opening it will close the current package
+and open the package containing the target resource.
+
+Do you want to continue?</value>
+    <comment>Used before opening a sibling resource in a different package</comment>
+  </data>
 </root>

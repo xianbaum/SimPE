@@ -1966,8 +1966,13 @@ namespace SimPe.PackedFiles.UserInterface
         private void pjse_banner1_SiblingClick(object sender, EventArgs e)
         {
             TPRP tprp = (TPRP)wrapper.SiblingResource(TPRP.TPRPtype);
-            if (tprp != null)
-                SimPe.RemoteControl.OpenPackedFile(tprp.FileDescriptor, tprp.Package);
+            if (tprp == null) return;
+            if (tprp.Package != wrapper.Package)
+            {
+                DialogResult dr = MessageBox.Show(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
+                if (dr != DialogResult.Yes) return;
+            }
+            SimPe.RemoteControl.OpenPackedFile(tprp.FileDescriptor, tprp.Package);
         }
 
         private void btnFloat_Click(object sender, EventArgs e)
