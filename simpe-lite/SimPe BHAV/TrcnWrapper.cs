@@ -172,6 +172,7 @@ namespace SimPe.PackedFiles.Wrapper
         /// <param name="reader">The Stream that contains the FileData</param>
         protected override void Unserialize(System.IO.BinaryReader reader)
         {
+            duff = false;
             items = new List<TrcnItem>();
 
             filename = reader.ReadBytes(64);
