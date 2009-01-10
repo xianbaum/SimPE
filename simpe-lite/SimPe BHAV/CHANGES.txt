@@ -1,3 +1,14 @@
+10 January 2009 15:26 Try to make creating the GUID Index get the dialog in the right place at the end
+  * and tidy up the waiting bits
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.19
+    GUIDIndex.cs 1.4.6.3
+
+10 January 2009 15:24 Try to stop one duff TPRP/Trcn making them all look duff
+  SimPe BHAV\
+    TPRPWrapper.cs 1.7.6.4
+    TrcnWrapper.cs 1.14.2.7
+
 4 January 2009 12:56 Yet another oops in LDOC when setting value; fix Wiz0x02 and Wiz0x1c, too
   SimPe BHAV\
     BhavOperandWiz0x0002.cs 1.15.6.2
