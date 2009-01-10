@@ -1,3 +1,12 @@
+10 January 2009 15:58 Prompt before opening non-local package using banner button
+  pjse Localisation\
+    Localization.cs 1.17.4.12
+  SimPe BHAV\
+    BconForm.cs 1.25.4.8
+    BhavForm.cs 1.89.4.20
+    TPRPForm.cs 1.14.4.3
+    TrcnForm.cs 1.22.2.6
+
 10 January 2009 15:26 Try to make creating the GUID Index get the dialog in the right place at the end
   * and tidy up the waiting bits
   SimPe BHAV\
