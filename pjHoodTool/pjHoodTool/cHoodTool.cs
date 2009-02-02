@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (C) 2008 by Peter L Jones                                   *
+ *   Copyright (C) 2008, 2009 by Peter L Jones                             *
  *   peter@users.sf.net                                                    *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -77,9 +77,9 @@ namespace pjHoodTool
 
             StreamWriter w1 = new StreamWriter(output);
             w1.AutoFlush = true;
-            StreamWriter w2 = new StreamWriter(Path.Combine(outPath,"ExportedLots.txt"));
+            StreamWriter w2 = new StreamWriter(Path.Combine(outPath, "ExportedLots.txt"));
             w2.AutoFlush = true;
-            
+
             splash(L.Get("pjCHoodTool"));
             try
             {
@@ -97,7 +97,7 @@ namespace pjHoodTool
                     ",NPCType" +
                     //",MotivesStatic,VoiceType"+
                     ",SchoolType,Grade,CareerPerformance,Career,CareerLevel,ZodiacSign,Aspiration,Gender" +
-                    ",LifeSection,AgeDaysLeft,PrevAgeDays,AgeDuration"+
+                    ",LifeSection,AgeDaysLeft,PrevAgeDays,AgeDuration" +
                     ",BlizLifelinePoints,LifelinePoints,LifelineScore" +
                     ",GenActive,GenNeat,GenNice,GenOutgoing,GenPlayful" + // GeneticCharacter
                     ",Active,Neat,Nice,Outgoing,Playful" + // Character
@@ -246,7 +246,7 @@ namespace pjHoodTool
             {
                 StrWrapper ctss = new StrWrapper();
                 ctss.ProcessData(pfds[0], pkg);
-                desc = q(System.IO.Path.GetFileNameWithoutExtension(sdsc.CharacterFileName).Substring(9)) + 
+                desc = q(System.IO.Path.GetFileNameWithoutExtension(sdsc.CharacterFileName).Substring(9)) +
                     "," + q(ctss[1, 0]) + // firstname
                     "," + q(ctss[1, 2]) + // lastname
                     "," + q(ctss[1, 1]) + // description
@@ -470,7 +470,8 @@ namespace pjHoodTool
             ;
             w.WriteLine(csv);
 
-            AddImage(sdsc.Image, Path.Combine(Path.Combine(outPath, "SimImage"), hood + "_" + sdsc.Instance + ".png"));
+            if (sdsc.Image != null)
+                AddImage(sdsc.Image, Path.Combine(Path.Combine(outPath, "SimImage"), hood + "_" + sdsc.Instance + "." + Extn(sdsc.Image.RawFormat)));
         }
 
         void AddLot(string outPath, string hood, string hoodName, StreamWriter w, SimPe.Interfaces.Providers.ILotItem ilot, uint inst)
@@ -488,20 +489,37 @@ namespace pjHoodTool
                 ""
                 );
 
-            if (ilot != null)
-                AddImage(ilot.Image, Path.Combine(Path.Combine(outPath, "LotImage"), hood + "_" + inst + ".png"));
+            if (ilot != null && ilot.Image != null)
+                AddImage(ilot.Image, Path.Combine(Path.Combine(outPath, "LotImage"), hood + "_" + inst + "." + Extn(ilot.Image.RawFormat)));
         }
 
 
+        static List<System.Drawing.Imaging.ImageFormat> fmtList = null;
+        static List<string> fmtName = null;
+        static string Extn(System.Drawing.Imaging.ImageFormat fmt) { return fmtName[fmtList.IndexOf(fmt)]; }
+        static cHoodTool()
+        {
+            fmtList = new List<System.Drawing.Imaging.ImageFormat>(new System.Drawing.Imaging.ImageFormat[] {
+                System.Drawing.Imaging.ImageFormat.Bmp
+                ,System.Drawing.Imaging.ImageFormat.Emf
+                ,System.Drawing.Imaging.ImageFormat.Exif
+                ,System.Drawing.Imaging.ImageFormat.Gif
+                ,System.Drawing.Imaging.ImageFormat.Icon
+                ,System.Drawing.Imaging.ImageFormat.Jpeg
+                ,System.Drawing.Imaging.ImageFormat.MemoryBmp
+                ,System.Drawing.Imaging.ImageFormat.Png
+                ,System.Drawing.Imaging.ImageFormat.Tiff
+                ,System.Drawing.Imaging.ImageFormat.Wmf
+            });
+            fmtName = new List<string>(new string[] { "bmp", "emf", "exif", "gif", "ico", "jpg", "bmp", "png", "tiff", "wmf" });
+        }
+
         void AddImage(Image img, string f)
         {
-            if (img != null)
-            {
-                if (img.Size.Width > 16 && img.Size.Height > 16)
-                    img.Save(f);
-                else
-                    System.Diagnostics.Trace.WriteLine("img too small: " + Path.GetFileNameWithoutExtension(f) + ";w=" + img.Width + ";h=" + img.Height);
-            }
+            if (img.Size.Width > 16 && img.Size.Height > 16)
+                img.Save(f);
+            else
+                System.Diagnostics.Trace.WriteLine("img too small: " + Path.GetFileNameWithoutExtension(f) + ";w=" + img.Width + ";h=" + img.Height);
         }
 
 

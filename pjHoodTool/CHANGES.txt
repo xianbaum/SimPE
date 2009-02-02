@@ -1,3 +1,7 @@
+2009-02-02 09:18 Use the right file extension for the image format
+  pjHoodTool/
+    cHoodTool.cs 1.1.2.10
+
 2008-11-28 13:01 Add traits etc; add char pkg filename number; process lots from lots folder; "Neighborhood" not "Sims"
   pjHoodTool/
     cHoodTool.cs 1.1.2.9
