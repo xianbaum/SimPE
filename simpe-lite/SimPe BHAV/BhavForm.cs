@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   peter@users.sf.net                                                    *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -130,6 +130,7 @@ namespace SimPe.PackedFiles.UserInterface
         private pjse_banner pjse_banner1;
         private CompareButton cmpBHAV;
         private Button btnInsUnlinked;
+        private Button btnImportBHAV;
         private IContainer components;
         #endregion
        
@@ -224,12 +225,149 @@ namespace SimPe.PackedFiles.UserInterface
 
         private String hidesFmt = "{0}";
 
+        // These should be on the ExtendedWrapper class or BhavWiz or, indeed, PackedFileDescriptor
+        private static IPackedFileDescriptor newPFD(IPackedFileDescriptor oldPFD) { return newPFD(oldPFD.Type, oldPFD.Group, oldPFD.SubType, oldPFD.Instance); }
+        private static IPackedFileDescriptor newPFD(uint type, uint group, uint instance) { return newPFD(type, group, 0x00000000, instance); }
+        private static IPackedFileDescriptor newPFD(uint type, uint group, uint subtype, uint instance)
+        {
+            IPackedFileDescriptor npfd = new SimPe.Packages.PackedFileDescriptor();
+            npfd.Type = type;
+            npfd.Group = group;
+            npfd.SubType = subtype;
+            npfd.Instance = instance;
+            return npfd;
+        }
+
         private IPackageFile currentPackage = null;
         private void TakeACopy()
         {
-            IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
+            IPackedFileDescriptor npfd = newPFD(wrapper.FileDescriptor);
             npfd.UserData = wrapper.Package.Read(wrapper.FileDescriptor).UncompressedData;
             currentPackage.Add(npfd, true);
+        }
+
+        private delegate bool ignoreEntry(pjse.FileTable.Entry i, IPackedFileDescriptor npfd);
+        private delegate bool matchItem(object o, uint inst);
+        private delegate void setter(object o, ushort inst);
+
+        private void doUpdate(string typeName
+            , uint oldInst
+            , IPackedFileDescriptor npfd
+            , pjse.FileTable.Entry[] entries
+            , ignoreEntry ieDelegate
+            , matchItem[] matchDelegates
+            , setter[] setDelegates
+            )
+        {
+            if (npfd == null) return;
+            if (entries == null || entries.Length == 0) return;
+            if (matchDelegates == null || matchDelegates.Length == 0) return;
+            if (setDelegates == null || setDelegates.Length != matchDelegates.Length) return;
+
+            WaitingScreen.Message = "Updating current package - " + typeName + "s...";
+            foreach (pjse.FileTable.Entry i in entries)
+            {
+                ResourceLoader.Refresh(i); // make sure it's been saved before we search it
+                Application.DoEvents();
+
+                AbstractWrapper wrapper = i.Wrapper;
+                if (wrapper as IEnumerable == null) break;
+
+                if (ieDelegate != null && ieDelegate(i, npfd)) continue;
+
+                foreach (object o in (IEnumerable)wrapper)
+                {
+                    for (int j = 0; j < matchDelegates.Length; j++)
+                    {
+                        matchItem md = matchDelegates[j];
+                        setter sd = setDelegates[j];
+                        if (md != null && sd != null && md(o, oldInst))
+                        {
+                            sd(o, (ushort)npfd.Instance);
+                        }
+                    }
+                }
+                if (wrapper.Changed)
+                {
+                    wrapper.SynchronizeUserData();
+                    ResourceLoader.Refresh(i);
+                }
+            }
+        }
+        private void ImportBHAV()
+        {
+            WaitingScreen.Wait();
+
+            #region Finding available BHAV number
+            WaitingScreen.Message = "Finding available BHAV number...";
+            pjse.FileTable.Entry[] ai = pjse.FileTable.GFT[Bhav.Bhavtype, pjse.FileTable.Source.Local];
+            ushort newInst = 0x0fff;
+            foreach (pjse.FileTable.Entry i in ai) if (i.Instance >= 0x1000 && i.Instance < 0x2000 && i.Instance > newInst) newInst = (ushort)i.Instance;
+            newInst++;
+            #endregion
+
+            currentPackage.BeginUpdate();
+
+            #region Cloning BHAV
+            WaitingScreen.Message = "Cloning BHAV...";
+            IPackedFileDescriptor npfd = newPFD(Bhav.Bhavtype, 0xffffffff, newInst);
+            npfd.UserData = wrapper.Package.Read(wrapper.FileDescriptor).UncompressedData;
+            currentPackage.Add(npfd, true);
+            #endregion
+
+            #region Updating current package - BHAVs
+            doUpdate("BHAV"
+                , wrapper.FileDescriptor.Instance
+                , npfd
+                , ai
+                , delegate(pjse.FileTable.Entry i, IPackedFileDescriptor pfd) { return (i.Group != pfd.Group || i.Instance < 0x1000 || i.Instance >= 0x2000); }
+                , new matchItem[] { delegate(object o, uint value) {
+                    return ((Instruction)o).OpCode == value; } }
+                , new setter[] { delegate(object o, ushort value) { ((Instruction)o).OpCode = value; } }
+                );
+            #endregion
+
+            #region Updating current package - OBJFs
+            doUpdate("OBJF"
+                , wrapper.FileDescriptor.Instance
+                , npfd
+                , pjse.FileTable.GFT[Objf.Objftype, pjse.FileTable.Source.Local]
+                , null
+                , new matchItem[] {
+                    delegate(object o, uint value) { return ((ObjfItem)o).Action == value; },
+                    delegate(object o, uint value) { return ((ObjfItem)o).Guardian == value; },
+                }
+                , new setter[] {
+                    delegate(object o, ushort value) { ((ObjfItem)o).Action = value; },
+                    delegate(object o, ushort value) { ((ObjfItem)o).Guardian = value; },
+                }
+                );
+            #endregion
+
+            #region Updating current package - TTABs
+            doUpdate("TTAB"
+                , wrapper.FileDescriptor.Instance
+                , npfd
+                , pjse.FileTable.GFT[Ttab.Ttabtype, pjse.FileTable.Source.Local]
+                , null
+                , new matchItem[] {
+                    delegate(object o, uint value) { return ((TtabItem)o).Action == value; },
+                    delegate(object o, uint value) { return ((TtabItem)o).Guardian == value; },
+                }
+                , new setter[] {
+                    delegate(object o, ushort value) { ((TtabItem)o).Action = value; },
+                    delegate(object o, ushort value) { ((TtabItem)o).Guardian = value; },
+                }
+                );
+            #endregion
+
+            currentPackage.EndUpdate();
+
+            WaitingScreen.Message = "";
+            WaitingScreen.Stop();
+            MessageBox.Show(
+                pjse.Localization.GetString("ml_done")
+                , btnImportBHAV.Text, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
 
@@ -243,7 +381,8 @@ namespace SimPe.PackedFiles.UserInterface
 
             BhavForm ui = (BhavForm)bhav.UIHandler;
             string tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-            if (noOverride) tag += ";noOverride"; //
+            if (noOverride) tag += ";noOverride"; // prevents handleOverride displaying anything
+            tag += ";callerID=+" + wrapper.FileDescriptor.ExportFileName +"+";
             if (exp != null) tag += ";expName=+" + exp.NameShort + "+";
             ui.Tag = tag;
 
@@ -251,18 +390,29 @@ namespace SimPe.PackedFiles.UserInterface
             ui.Show();
         }
 
-        private bool isPopup { get { return this.Tag == null ? false : ((string)(this.Tag)).StartsWith("Popup"); } }
-        private bool isNoOverride { get { return this.Tag == null ? false : ((string)(this.Tag)).Contains(";noOverride"); } }
+        private string getValueFromTag(string key)
+        {
+            string s = this.Tag as string;
+            if (s == null) return null;
+
+            key = ";" + key + "=+";
+            int i = s.IndexOf(key);
+            if (i < 0) return null;
+
+            s = s.Substring(i + key.Length);
+            i = s.IndexOf("+");
+            return (i >= 0) ? s.Substring(0, i) : null;
+        }
+        private bool isPopup { get { return (this.Tag == null || this.Tag as string == null) ? false : ((string)(this.Tag)).StartsWith("Popup"); } }
+        private bool isNoOverride { get { return (this.Tag == null || this.Tag as string == null) ? false : ((string)(this.Tag)).Contains(";noOverride"); } }
+        private string callerID { get { return getValueFromTag("callerID"); } }
         private string expName
         {
             get
             {
-                if (this.Tag != null)
-                {
-                    string s = (string)this.Tag;
-                    int i = s.IndexOf(";expName=+");
-                    if (i >= 0) return s.Substring(i + 10).TrimEnd('+');
-                }
+                string s = getValueFromTag("expName");
+                if (s != null) return s;
+
                 foreach(pjse.FileTable.Entry item in pjse.FileTable.GFT[wrapper.Package, wrapper.FileDescriptor])
                     if (item.PFD == wrapper.FileDescriptor)
                     {
@@ -359,9 +509,32 @@ namespace SimPe.PackedFiles.UserInterface
             return wrapper.ResourceByInstance(SimPe.Data.MetaData.BHAV_FILE, currentInst.Instruction.OpCode) != null;
         }
 
-		private void UpdateInstPanel()
+        private void OperandWiz(int type)
+        {
+            internalchg = true;
+            bool changed = false;
+            Instruction inst = currentInst.Instruction;
+            currentInst = null;
+            try
+            {
+                changed = ((new BhavOperandWiz()).Execute(btnCommit.Visible ? inst : inst.Clone(), type) != null);
+            }
+            finally
+            {
+                currentInst = inst;
+                if (btnCommit.Visible)
+                {
+                    if (changed) UpdateInstPanel();
+                    this.btnCancel.Enabled = true;
+                }
+                internalchg = false;
+            }
+        }
+
+        private void UpdateInstPanel()
 		{
 			internalchg = true;
+            Application.UseWaitCursor = true;
 			if (currentInst == null || wrapper.IndexOf(currentInst.Instruction) < 0)
 			{
 				SetReadOnly(true);
@@ -388,8 +561,6 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_Unk5.Text = "";
 				this.tbInst_Unk6.Text = "";
 				this.tbInst_Unk7.Text = "";
-
-				Longname = "";
 			}
 			else
 			{
@@ -444,24 +615,43 @@ namespace SimPe.PackedFiles.UserInterface
 
                 this.llopenbhav.Enabled = instIsBhav();
 				this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
-				Longname = currentInst.LongName;
 			}
-			internalchg = false;
+            setLongname();
+            Application.UseWaitCursor = false;
+            internalchg = false;
 		}
 
+        private void OpcodeChanged(ushort value)
+        {
+            currentInst.Instruction.OpCode = value; 
+            this.currentInst = currentInst.Instruction;
+            this.llopenbhav.Enabled = instIsBhav();
+            this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
+            setLongname();
+        }
+
+        private void ChangeLongname(byte oldval, byte newval) { if (oldval != newval) setLongname(); }
 
         private static string onearg = pjse.Localization.GetString("oneArg");
         private static string manyargs = pjse.Localization.GetString("manyArgs");
-        private string Longname
-		{
-			set
-			{
-				this.tbInst_Longname.Text = value.Replace(", ", ",\r\n  ")
-                    .Replace(onearg + ": ", onearg  +":\r\n  ")
+        private void setLongname()
+        {
+            if (currentInst == null || wrapper.IndexOf(currentInst.Instruction) < 0)
+                this.tbInst_Longname.Text = "";
+            else
+            {
+                bool state = Application.UseWaitCursor;
+                Application.UseWaitCursor = true;
+                try
+                {
+                    this.tbInst_Longname.Text = currentInst.LongName.Replace(", ", ",\r\n  ")
+                    .Replace(onearg + ": ", onearg + ":\r\n  ")
                     .Replace(manyargs + ": ", manyargs + ":\r\n  ")
                     ;
-			}
-		}
+                }
+                finally { Application.UseWaitCursor = state; }
+            }
+        }
 
 
 		private void CopyListing()
@@ -571,7 +761,7 @@ namespace SimPe.PackedFiles.UserInterface
                     {
                         // Clone the original into this package
                         if (dr == DialogResult.Yes) Wait.MaxProgress = tprp.Count;
-                        SimPe.Interfaces.Files.IPackedFileDescriptor npfd = tprp.FileDescriptor.Clone();
+                        SimPe.Interfaces.Files.IPackedFileDescriptor npfd = newPFD(tprp.FileDescriptor);
                         TPRP ntprp = new TPRP();
                         ntprp.FileDescriptor = npfd;
                         wrapper.Package.Add(npfd, true);
@@ -592,11 +782,10 @@ namespace SimPe.PackedFiles.UserInterface
                 else
                 {
                     // create a new TPRP file
-                    SimPe.Interfaces.Files.IPackedFileDescriptor npfd = wrapper.FileDescriptor.Clone();
                     tprp = new TPRP();
-                    npfd.Type = TPRP.TPRPtype;
-                    tprp.FileDescriptor = npfd;
-                    wrapper.Package.Add(npfd, true);
+                    tprp.FileDescriptor =
+                        newPFD(TPRP.TPRPtype, wrapper.FileDescriptor.Group, wrapper.FileDescriptor.SubType, wrapper.FileDescriptor.Instance);
+                    wrapper.Package.Add(tprp.FileDescriptor, true);
                     tprp.SynchronizeUserData();
                 }
 
@@ -775,7 +964,12 @@ namespace SimPe.PackedFiles.UserInterface
                 gbSpecial.Visible = true;
                 cbSpecial.Enabled = false;
                 btnCopyBHAV.Visible = (currentPackage != wrapper.Package);
+                btnImportBHAV.Visible = (currentPackage != wrapper.Package)
+                    && (callerID != null && callerID.IndexOf("-FFFFFFFF-") == 17); //42484156-00000000-FFFFFFFF-00001003
                 btnCopyBHAV.Enabled = currentPackage != null;
+                btnImportBHAV.Enabled = (currentPackage != null) &&
+                    ((wrapper.FileDescriptor.Instance >= 0x100 && wrapper.FileDescriptor.Instance < 0x1000)
+                    || (wrapper.FileDescriptor.Instance >= 0x2000 && wrapper.FileDescriptor.Instance < 0x3000));
 
                 handleOverride();
 
@@ -800,47 +994,40 @@ namespace SimPe.PackedFiles.UserInterface
                 ttBhavForm.SetToolTip(tbFilename, expName + ": 0x" + SimPe.Helper.HexString((ushort)wrapper.FileDescriptor.Instance));
         }
 
-		private void WrapperChanged(object sender, System.EventArgs e)
-		{
-			if (isPopup) wrapper.Changed = false;
+        private void WrapperChanged(object sender, System.EventArgs e)
+        {
+            if (isPopup) wrapper.Changed = false;
 
-			this.btnCommit.Enabled = wrapper.Changed;
+            this.btnCommit.Enabled = wrapper.Changed;
 
-			// Handler for header
-			if (sender == wrapper)
-			{
-				if (internalchg) return;
-				internalchg = true;
-				/*this.Text = */tbFilename.Text = wrapper.FileName;
-				cbFormat.Text = "0x"+Helper.HexString(wrapper.Header.Format);
-				tbType.Text = "0x"+Helper.HexString(wrapper.Header.Type);
-				tbArgC.Text = "0x"+Helper.HexString(wrapper.Header.ArgumentCount);
-				tbLocalC.Text = "0x"+Helper.HexString(wrapper.Header.LocalVarCount);
-				tbHeaderFlag.Text = "0x"+Helper.HexString(wrapper.Header.HeaderFlag);
-				tbTreeVersion.Text = "0x"+Helper.HexString(wrapper.Header.TreeVersion);
-				tbCacheFlags.Text = "0x"+Helper.HexString(wrapper.Header.CacheFlags);
-				tbCacheFlags.Enabled = (wrapper.Header.Format > 0x8008);
+            // Handler for header
+            if (sender == wrapper && !internalchg)
+            {
+                internalchg = true;
+                /*this.Text = */
+                tbFilename.Text = wrapper.FileName;
+                cbFormat.Text = "0x" + Helper.HexString(wrapper.Header.Format);
+                tbType.Text = "0x" + Helper.HexString(wrapper.Header.Type);
+                tbArgC.Text = "0x" + Helper.HexString(wrapper.Header.ArgumentCount);
+                tbLocalC.Text = "0x" + Helper.HexString(wrapper.Header.LocalVarCount);
+                tbHeaderFlag.Text = "0x" + Helper.HexString(wrapper.Header.HeaderFlag);
+                tbTreeVersion.Text = "0x" + Helper.HexString(wrapper.Header.TreeVersion);
+                tbCacheFlags.Text = "0x" + Helper.HexString(wrapper.Header.CacheFlags);
+                tbCacheFlags.Enabled = (wrapper.Header.Format > 0x8008);
                 cmpBHAV.Wrapper = wrapper;
                 cmpBHAV.WrapperName = wrapper.FileName;
-				internalchg = false;
-			}
+                internalchg = false;
+            }
 
-				// Handler for current instruction
-			if (currentInst != null && sender == currentInst.Instruction)
-			{
-				if (internalchg)
-				{
-					this.btnCancel.Enabled = true;
-
-					this.currentInst = currentInst.Instruction;
-                    this.llopenbhav.Enabled = instIsBhav();
-					this.btnOperandWiz.Enabled = currentInst.Wizard() != null;
-					Longname = currentInst.LongName;
-				}
-				else
-					pnflowcontainer_SelectedInstChanged(null, null);
-			}
-		}
+            // Handler for current instruction
+            if (currentInst != null && sender == currentInst.Instruction)
+            {
+                if (internalchg)
+                    this.btnCancel.Enabled = true;
+                else
+                    pnflowcontainer_SelectedInstChanged(null, null);
+            }
+        }
 
 		#endregion
 
@@ -915,6 +1102,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.llHidesOP = new System.Windows.Forms.LinkLabel();
             this.tbHidesOP = new System.Windows.Forms.TextBox();
             this.cbSpecial = new System.Windows.Forms.CheckBox();
+            this.btnImportBHAV = new System.Windows.Forms.Button();
             this.btnCopyBHAV = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.tbHeaderFlag = new System.Windows.Forms.TextBox();
@@ -1315,6 +1503,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.bhavPanel.Controls.Add(this.llHidesOP);
             this.bhavPanel.Controls.Add(this.tbHidesOP);
             this.bhavPanel.Controls.Add(this.cbSpecial);
+            this.bhavPanel.Controls.Add(this.btnImportBHAV);
             this.bhavPanel.Controls.Add(this.btnCopyBHAV);
             this.bhavPanel.Controls.Add(this.btnClose);
             this.bhavPanel.Controls.Add(this.tbHeaderFlag);
@@ -1475,6 +1664,12 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.cbSpecial, "cbSpecial");
             this.cbSpecial.Name = "cbSpecial";
             this.cbSpecial.CheckStateChanged += new System.EventHandler(this.cbSpecial_CheckStateChanged);
+            // 
+            // btnImportBHAV
+            // 
+            resources.ApplyResources(this.btnImportBHAV, "btnImportBHAV");
+            this.btnImportBHAV.Name = "btnImportBHAV";
+            this.btnImportBHAV.Click += new System.EventHandler(this.btnImportBHAV_Click);
             // 
             // btnCopyBHAV
             // 
@@ -1771,8 +1966,13 @@ namespace SimPe.PackedFiles.UserInterface
         private void pjse_banner1_SiblingClick(object sender, EventArgs e)
         {
             TPRP tprp = (TPRP)wrapper.SiblingResource(TPRP.TPRPtype);
-            if (tprp != null)
-                SimPe.RemoteControl.OpenPackedFile(tprp.FileDescriptor, tprp.Package);
+            if (tprp == null) return;
+            if (tprp.Package != wrapper.Package)
+            {
+                DialogResult dr = MessageBox.Show(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
+                if (dr != DialogResult.Yes) return;
+            }
+            SimPe.RemoteControl.OpenPackedFile(tprp.FileDescriptor, tprp.Package);
         }
 
         private void btnFloat_Click(object sender, EventArgs e)
@@ -1840,6 +2040,13 @@ namespace SimPe.PackedFiles.UserInterface
             btnCopyBHAV.Text = pjse.Localization.GetString("ml_done");
         }
 
+        private void btnImportBHAV_Click(object sender, EventArgs e)
+        {
+            btnImportBHAV.Enabled = false;
+            ImportBHAV();
+            btnImportBHAV.Text = pjse.Localization.GetString("ml_done");
+        }
+
 
         private void pjse_banner1_ExtractClick(object sender, EventArgs e) { pjse.ExtractCurrent.Execute(wrapper, pjse_banner1.TitleText); }
 
@@ -1852,29 +2059,27 @@ namespace SimPe.PackedFiles.UserInterface
 				this.tbInst_OpCode.Text = "0x" + SimPe.Helper.HexString((ushort)item.Instance);
 		}
 
-		private void btnOperandWiz_Clicked(object sender, System.EventArgs e)
-		{
-			internalchg = true;
-			if ((new BhavOperandWiz()).Execute(currentInst, 1) != null)
-				UpdateInstPanel();
-			internalchg = false;
-		}
+        private void btnOperandWiz_Clicked(object sender, System.EventArgs e) { OperandWiz(1); }
 		
-		private void btnOperandRaw_Click(object sender, System.EventArgs e)
-		{
-			internalchg = true;
-			if ((new BhavOperandWiz()).Execute(btnCommit.Visible ? currentInst : (BhavWiz)(currentInst.Instruction.Clone()), 0) != null)
-				UpdateInstPanel();
-			internalchg = false;
-		}
+		private void btnOperandRaw_Click(object sender, System.EventArgs e) { OperandWiz(0); }
 
         private void btnZero_Click(object sender, EventArgs e)
         {
             internalchg = true;
-            for (int i = 0; i < 8; i++) currentInst.Instruction.Operands[i] = 0;
-            for (int i = 0; i < 8; i++) currentInst.Instruction.Reserved1[i] = 0;
-            UpdateInstPanel();
-            internalchg = false;
+            Instruction inst = currentInst.Instruction;
+            currentInst = null;
+            try
+            {
+                for (int i = 0; i < 8; i++) inst.Operands[i] = 0;
+                for (int i = 0; i < 8; i++) inst.Reserved1[i] = 0;
+            }
+            finally
+            {
+                currentInst = inst;
+                UpdateInstPanel();
+                this.btnCancel.Enabled = true;
+                internalchg = false;
+            }
         }
 
 
@@ -2093,17 +2298,19 @@ namespace SimPe.PackedFiles.UserInterface
 
 			internalchg = true;
 
-			if (i < 8) currentInst.Instruction.Operands[i] = val;
-			else if (i < 16) currentInst.Instruction.Reserved1[i-8] = val;
-			else switch(i)
-				 {
-					 case 16: currentInst.Instruction.NodeVersion = val; break;
-					 case 17: wrapper.Header.HeaderFlag = val; break;
-					 case 18: wrapper.Header.Type = val; break;
-					 case 19: wrapper.Header.CacheFlags = val; break;
-					 case 20: wrapper.Header.ArgumentCount = val; break;
-					 case 21: wrapper.Header.LocalVarCount = val; break;
-				 }
+            byte oldval = val;
+            if (i < 8) { oldval = currentInst.Instruction.Operands[i]; currentInst.Instruction.Operands[i] = val; ChangeLongname(oldval, val); }
+            else if (i < 16) { oldval = currentInst.Instruction.Reserved1[i - 8]; currentInst.Instruction.Reserved1[i - 8] = val; ChangeLongname(oldval, val); }
+            else
+                switch (i)
+                {
+                    case 16: oldval = currentInst.Instruction.NodeVersion; currentInst.Instruction.NodeVersion = val; ChangeLongname(oldval, val); break;
+                    case 17: wrapper.Header.HeaderFlag = val; break;
+                    case 18: wrapper.Header.Type = val; break;
+                    case 19: wrapper.Header.CacheFlags = val; break;
+                    case 20: oldval = wrapper.Header.ArgumentCount; wrapper.Header.ArgumentCount = val; ChangeLongname(oldval, val); break;
+                    case 21: wrapper.Header.LocalVarCount = val; break;
+                }
 
 			internalchg = false;
 		}
@@ -2152,7 +2359,7 @@ namespace SimPe.PackedFiles.UserInterface
 			internalchg = true;
 			switch (alHex16.IndexOf(sender))
 			{
-				case 0: currentInst.Instruction.OpCode = val; break;
+                case 0: OpcodeChanged(val); break;
 			}
 			internalchg = false;
 		}
@@ -2320,18 +2527,20 @@ namespace SimPe.PackedFiles.UserInterface
         private void cmenuGUIDIndex_Opening(object sender, CancelEventArgs e)
         {
             createCurrentPackageToolStripMenuItem.Enabled =
-                (pjse.FileTable.GFT.CurrentPackage != null);
+                (pjse.FileTable.GFT.CurrentPackage != null
+                && pjse.FileTable.GFT.CurrentPackage.FileName != null
+                && !pjse.FileTable.GFT.CurrentPackage.FileName.ToLower().EndsWith("objects.package"));
         }
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SimPe.Wait.Start();
-            SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.WaitCursor;
+            Application.UseWaitCursor = true;
+            Application.DoEvents();
             pjse.GUIDIndex.TheGUIDIndex.Create(sender.Equals(this.createCurrentPackageToolStripMenuItem));
-            SimPe.RemoteControl.ApplicationForm.Cursor = Cursors.Default;
-            SimPe.Wait.Stop();
+            Application.UseWaitCursor = false;
+            Application.DoEvents();
 
-            DialogResult dr = pjseMsgBox.Show(pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
+            DialogResult dr = pjseMsgBox.Show(RemoteControl.ApplicationForm, pjse.Localization.GetString("guidAskMessage"), pjse.Localization.GetString("guidAskTitle"),
                 new Boolset("111"), new Boolset("111"), new string[] {
                     pjse.Localization.GetString("guidAskDefault"),
                     pjse.Localization.GetString("guidAskSpecify"),

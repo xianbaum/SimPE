@@ -722,8 +722,13 @@ namespace SimPe.PackedFiles.UserInterface
         private void pjse_banner1_SiblingClick(object sender, EventArgs e)
         {
             Bhav bhav = (Bhav)wrapper.SiblingResource(Bhav.Bhavtype);
-            if (bhav != null)
-                SimPe.RemoteControl.OpenPackedFile(bhav.FileDescriptor, bhav.Package);
+            if (bhav == null) return;
+            if (bhav.Package != wrapper.Package)
+            {
+                DialogResult dr = MessageBox.Show(Localization.GetString("OpenOtherPkg"), pjse_banner1.TitleText, MessageBoxButtons.YesNo);
+                if (dr != DialogResult.Yes) return;
+            }
+            SimPe.RemoteControl.OpenPackedFile(bhav.FileDescriptor, bhav.Package);
         }
 
 

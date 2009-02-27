@@ -1,3 +1,9 @@
+2008-12-13 21:00 Version is a dropdown; EP Flags are radio buttons and Version-dependent; OBJD gets "fixed"
+  pjOBJDTool\
+    cOBJDTool.cs 1.1.2.4
+    cOBJDTool.Designer.cs 1.1.2.2
+    cOBJDTool.resx 1.1.2.2
+
 2008-09-01 19:32 Allow OBJD version to be edited; Valid EP Flags updated (and only editable if not base game version)
   pjOBJDTool\
     cOBJDTool.cs 1.3

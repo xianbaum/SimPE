@@ -77,6 +77,16 @@ namespace pjse.BhavNameWizards
             return /*Wrapper == null ? null :*/ new pjse.BhavOperandWizards.BhavOperandWizBhav(instruction);
         }
 
+
+        internal enum dataFormat { useTemps, oldFormat, newFormat, useParams, }
+        internal static dataFormat opFormat(byte nodeVersion, byte[] operands)
+        {
+            if (nodeVersion > 0 && (operands[12] & 0x03) == 0x02) return dataFormat.useParams;
+            if ((operands[12] & 0x01) == 0x01 && !(nodeVersion > 0 && operands[12] == 0xff)) return dataFormat.newFormat;
+            for (int i = 0; i < 8; i++) if (operands[i] != 0xFF) return dataFormat.oldFormat;
+            return dataFormat.useTemps;
+        }
+
 		/// <summary>
 		/// Returns a description of the operands of the call to another BHAV
 		/// </summary>
@@ -107,54 +117,30 @@ namespace pjse.BhavNameWizards
 			((byte[])instruction.Operands).CopyTo(o, 0);
 			((byte[])instruction.Reserved1).CopyTo(o, 8);
 
-			bool noOperands = true;
-			for (int i = 0; noOperands && i < 8; i++)
-				noOperands = o[i] == 0xFF;
-
-			byte nv = instruction.NodeVersion;
-			Boolset b12 = o[12];
             TPRP tprp = (TPRP)bhav.SiblingResource(TPRP.TPRPtype);
 
 
-			if (!b12[0]) // b12.Matches("xxxxxxx0")
-			{
-				if (!noOperands)
-				{
-					if (nv == 0 || !b12[1]) // b12.Matches("xxxxxx00")
-						s += this.do8Cx(thisArgc, lng, tprp, o, nv == 0);
-					else // nv == 1 && b12.Matches("xxxxxx10")
-					{
+            switch (opFormat(instruction.NodeVersion, o))
+            {
+                case dataFormat.useTemps:
+                    s += this.doTemps(thisArgc, lng, tprp);
+                    break;
+                case dataFormat.oldFormat:
+					s += this.do8Cx(thisArgc, lng, tprp, o, instruction.NodeVersion == 0);
+                    break;
+                case dataFormat.newFormat:
 						if (thisArgc < 9)
-							s += this.doParams(thisArgc, myArgc, lng, tprp);
+                            s += this.do4OI(thisArgc, lng, tprp, o);
 						else
-							s += this.doZero(thisArgc, lng, tprp);
-					}
-				}
-				else // noOperands
-				{
-					if (nv == 0 || !b12[1]) // b12.Matches("xxxxxx00")
-						s += this.doUnknown(thisArgc, lng, tprp);
-					else // nv == 1 && b12.Matches("xxxxxx10")
-						s += this.doZero(thisArgc, lng, tprp);
-				}
-			}
-			else // b12.Matches("xxxxxxx1")
-			{
-				if (nv == 0 || o[12] != 0xff)
-				{
-					if (!noOperands && thisArgc < 9)
-						s += this.do4OI(thisArgc, lng, tprp, o);
-					else
-						s += this.doZero(thisArgc, lng, tprp);
-				}
-				else // nv == 1 && o12 = 0xff
-				{
-					if (!noOperands)
-						s += this.do8Cx(thisArgc, lng, tprp, o, false);
-					else
-						s += this.doUnknown(thisArgc, lng, tprp);
-				}
-			}
+                            s += this.doZero(thisArgc, lng, tprp);
+                    break;
+                case dataFormat.useParams:
+						if (thisArgc < 9)
+                            s += this.doParams(thisArgc, myArgc, lng, tprp);
+						else
+                            s += this.doZero(thisArgc, lng, tprp);
+                    break;
+            }
 
 			return s;
 		}
@@ -253,6 +239,23 @@ namespace pjse.BhavNameWizards
 			return s;
 		}
 
+        private string doTemps(int thisArgc, bool lng, TPRP tprp)
+        {
+            if (!lng)
+                return pjse.Localization.GetString("bwb_useTemps");
+
+            string s = "";
+            for (int i = 0; thisArgc > 0 && i < 8; i++, thisArgc--)
+            {
+                string pn = (lng && tprp != null && !tprp.TextOnly && tprp.ParamCount > i) ? tprp[false, i] : "";
+                s += (i > 0 ? ", " : "") +
+                    ((pn != null && pn != "") ? pn + "=" : "") + dataOwner(8, (ushort)i);
+            }
+            if (thisArgc > 0)
+                s += doZero(thisArgc, lng, tprp, 8);
+            return s;
+        }
+
 		private string doZero(int thisArgc, bool lng, TPRP tprp) { return this.doZero(thisArgc, lng, tprp, 0); }
 
 		private string doZero(int thisArgc, bool lng, TPRP tprp, int start)
@@ -268,7 +271,7 @@ namespace pjse.BhavNameWizards
 			{
 				string pn = (lng && tprp != null && !tprp.TextOnly && tprp.ParamCount > i) ? tprp[false, i] : "";
 				s += (i>0 ? ", " : "") +
-					((pn != null && pn != "") ? pn + "=" : "") + "0x0000";
+                    ((pn != null && pn != "") ? pn + "=" : "") + dataOwner(7, 0);
 			}
 			if (thisArgc > 0)
 				s += doUnknown(thisArgc, lng, tprp, 8);

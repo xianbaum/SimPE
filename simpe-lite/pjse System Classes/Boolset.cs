@@ -78,9 +78,12 @@ namespace System
         {
             string s = "";
             for (int i = 0; i < t.bitset.Length; i++)
-                s += t.bitset[i] ? "1" : "0";
+                s = (t.bitset[i] ? "1" : "0") + s;
             return s;
         }
+
+
+        public override string ToString() { return this; }
 
 
 		public bool this[int i]

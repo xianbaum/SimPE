@@ -435,9 +435,11 @@ Check BHAV format and number of lines.</value>
   <data name="gt_ResourceFinderHelp" xml:space="preserve">
     <value>This tool searches resources within the PJSE-specific filetable.  It will either search for OBJDs by GUID, if you have ticked GUID, and/or return resources whose filenames contain the string you specify.  If you search by both GUID and resource name, the tool will perform an "OR" search.
 
-Use the checkboxes to select which types of resources to search.  If searching filenames, enter a substring without wildcards.  This is not case-sensitive.  If searching by GUID, enter the whole GUID in hex, either with or without the "0x" prefix.
+Use the checkboxes to select which types of resources to search.  If searching filenames or string files, enter a substring without wildcards.  This is not case-sensitive.  If searching by GUID or OpCode, enter the whole GUID in hex, either with or without the "0x" prefix.
 
-By default, the tool searches all files known to the PJSE filetable, which may be slow if you have edited your packages.txt configuration to include Downloads.  Using the radio buttons, you can limit the scope of the search to "objects.package only" - and that means your latest EP's objects.package, or to "current package only", which is mainly useful if you have opened an earlier objects.package for any reason.</value>
+By default, the tool searches all files known to the PJSE filetable, which may be slow if you have edited your packages.txt configuration to include Downloads.  Using the radio buttons, you can limit the scope of the search to "current package only", which is mainly useful if you have opened an earlier objects.package for any reason.
+
+The Group Filter can also be used to restrict the search to references within the selected group.  If search for an OpCode, it can also be used instead to constrain the search to calls into the selected group (the "Focus" checkbox).</value>
     <comment>GUIDTool prompt</comment>
   </data>
   <data name="allZeros" xml:space="preserve">
@@ -1394,11 +1396,11 @@ Do you want to use this resource?
     <comment>Appears in TPRP editor when file is unparse-able</comment>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>&amp;GUID</value>
+    <value>GUID</value>
     <comment>GUIDTool number label</comment>
   </data>
   <data name="OpCode" xml:space="preserve">
-    <value>&amp;OpCode</value>
+    <value>OpCode</value>
     <comment>GUIDTool number label</comment>
   </data>
   <data name="guidAskMessage" xml:space="preserve">
@@ -1459,5 +1461,16 @@ Do you want to use this resource?
     <value>The existing labels file cannot be read.
 Overwrite the existing file?</value>
     <comment>Make Labels prompt</comment>
+  </data>
+  <data name="bwb_useTemps" xml:space="preserve">
+    <value>using Temps</value>
+    <comment>BhavWizBhav params</comment>
+  </data>
+  <data name="OpenOtherPkg" xml:space="preserve">
+    <value>The resource resides in a different package.  Opening it will close the current package
+and open the package containing the target resource.
+
+Do you want to continue?</value>
+    <comment>Used before opening a sibling resource in a different package</comment>
   </data>
 </root>

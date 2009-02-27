@@ -217,7 +217,7 @@ namespace pjse
             if (!skip_pages[0]
                 && pjse.FileTable.GFT.CurrentPackage != null
                 && pjse.FileTable.GFT.CurrentPackage.FileName != null
-                && !pjse.FileTable.GFT.CurrentPackage.FileName.EndsWith("objects.package"))
+                && !pjse.FileTable.GFT.CurrentPackage.FileName.ToLower().EndsWith("objects.package"))
                 FillPackage(resourceType, this.lvPackage, this.tpPackage);
 
             if (!skip_pages[1])

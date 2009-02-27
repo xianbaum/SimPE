@@ -497,9 +497,10 @@ namespace SimPe.PackedFiles.UserInterface
 			b.ProcessData(item.PFD, item.Package);
 
 			BhavForm ui = (BhavForm)b.UIHandler;
-			ui.Tag = "Popup"; // tells the SetReadOnly function it's in a popup - so everything locked down
-			ui.Text = pjse.Localization.GetString("viewbhav") + ": " + b.FileName + " [" + b.Package.SaveFileName + "]";
-			b.RefreshUI();
+            ui.Tag = "Popup" // tells the SetReadOnly function it's in a popup - so everything locked down
+                + ";callerID=+" + wrapper.FileDescriptor.ExportFileName + "+";
+            ui.Text = pjse.Localization.GetString("viewbhav") + ": " + b.FileName + " [" + b.Package.SaveFileName + "]";
+            b.RefreshUI();
 			ui.Show();
 		}
 

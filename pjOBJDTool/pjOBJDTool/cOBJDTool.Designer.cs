@@ -38,7 +38,6 @@ namespace pjOBJDTool
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.tbOBJDvsn = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.tbCTSSInstance = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -81,9 +80,13 @@ namespace pjOBJDTool
             this.tbMotive9 = new System.Windows.Forms.TextBox();
             this.tbMotiveA = new System.Windows.Forms.TextBox();
             this.gbValidEPs1 = new System.Windows.Forms.GroupBox();
-            this.lbcEPFlags1 = new System.Windows.Forms.LabelledBoolsetControl();
+            this.flpValidEPs1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radioButton16 = new System.Windows.Forms.RadioButton();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.gbValidEPs2 = new System.Windows.Forms.GroupBox();
-            this.lbcEPFlags2 = new System.Windows.Forms.LabelledBoolsetControl();
+            this.flpValidEPs2 = new System.Windows.Forms.FlowLayoutPanel();
+            this.radioButton32 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.flpTabPage2 = new System.Windows.Forms.FlowLayoutPanel();
             this.gbRoomSort = new System.Windows.Forms.GroupBox();
@@ -101,6 +104,7 @@ namespace pjOBJDTool
             this.tbCTSSDesc = new System.Windows.Forms.TextBox();
             this.btnCommit = new System.Windows.Forms.Button();
             this.btnSelectOBJD = new System.Windows.Forms.Button();
+            this.cbOBJDvsn = new System.Windows.Forms.ComboBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.flpTabPage1.SuspendLayout();
@@ -109,7 +113,9 @@ namespace pjOBJDTool
             this.gbMotiveRs.SuspendLayout();
             this.tlpMotiveRs.SuspendLayout();
             this.gbValidEPs1.SuspendLayout();
+            this.flpValidEPs1.SuspendLayout();
             this.gbValidEPs2.SuspendLayout();
+            this.flpValidEPs2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.flpTabPage2.SuspendLayout();
             this.gbRoomSort.SuspendLayout();
@@ -166,11 +172,6 @@ namespace pjOBJDTool
             // 
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
-            // 
-            // tbOBJDvsn
-            // 
-            resources.ApplyResources(this.tbOBJDvsn, "tbOBJDvsn");
-            this.tbOBJDvsn.Name = "tbOBJDvsn";
             // 
             // label21
             // 
@@ -426,32 +427,60 @@ namespace pjOBJDTool
             // gbValidEPs1
             // 
             resources.ApplyResources(this.gbValidEPs1, "gbValidEPs1");
-            this.gbValidEPs1.Controls.Add(this.lbcEPFlags1);
+            this.gbValidEPs1.Controls.Add(this.flpValidEPs1);
             this.gbValidEPs1.Name = "gbValidEPs1";
             this.gbValidEPs1.TabStop = false;
             // 
-            // lbcEPFlags1
+            // flpValidEPs1
             // 
-            this.lbcEPFlags1.ButtonsVisible = false;
-            this.lbcEPFlags1.Labels = ((System.Collections.Generic.List<string>)(resources.GetObject("lbcEPFlags1.Labels")));
-            resources.ApplyResources(this.lbcEPFlags1, "lbcEPFlags1");
-            this.lbcEPFlags1.Name = "lbcEPFlags1";
-            this.lbcEPFlags1.Value = ((ushort)(0));
+            resources.ApplyResources(this.flpValidEPs1, "flpValidEPs1");
+            this.flpValidEPs1.Controls.Add(this.radioButton16);
+            this.flpValidEPs1.Controls.Add(this.radioButton1);
+            this.flpValidEPs1.Name = "flpValidEPs1";
+            // 
+            // radioButton16
+            // 
+            resources.ApplyResources(this.radioButton16, "radioButton16");
+            this.flpValidEPs1.SetFlowBreak(this.radioButton16, true);
+            this.radioButton16.Name = "radioButton16";
+            this.radioButton16.TabStop = true;
+            this.radioButton16.UseVisualStyleBackColor = true;
+            // 
+            // radioButton1
+            // 
+            resources.ApplyResources(this.radioButton1, "radioButton1");
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.TabStop = true;
+            this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // gbValidEPs2
             // 
             resources.ApplyResources(this.gbValidEPs2, "gbValidEPs2");
-            this.gbValidEPs2.Controls.Add(this.lbcEPFlags2);
+            this.gbValidEPs2.Controls.Add(this.flpValidEPs2);
             this.gbValidEPs2.Name = "gbValidEPs2";
             this.gbValidEPs2.TabStop = false;
             // 
-            // lbcEPFlags2
+            // flpValidEPs2
             // 
-            this.lbcEPFlags2.ButtonsVisible = false;
-            this.lbcEPFlags2.Labels = ((System.Collections.Generic.List<string>)(resources.GetObject("lbcEPFlags2.Labels")));
-            resources.ApplyResources(this.lbcEPFlags2, "lbcEPFlags2");
-            this.lbcEPFlags2.Name = "lbcEPFlags2";
-            this.lbcEPFlags2.Value = ((ushort)(0));
+            resources.ApplyResources(this.flpValidEPs2, "flpValidEPs2");
+            this.flpValidEPs2.Controls.Add(this.radioButton32);
+            this.flpValidEPs2.Controls.Add(this.radioButton2);
+            this.flpValidEPs2.Name = "flpValidEPs2";
+            // 
+            // radioButton32
+            // 
+            resources.ApplyResources(this.radioButton32, "radioButton32");
+            this.flpValidEPs2.SetFlowBreak(this.radioButton32, true);
+            this.radioButton32.Name = "radioButton32";
+            this.radioButton32.TabStop = true;
+            this.radioButton32.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            resources.ApplyResources(this.radioButton2, "radioButton2");
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.TabStop = true;
+            this.radioButton2.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
@@ -556,12 +585,12 @@ namespace pjOBJDTool
             this.tlpOBJDCTSS.Controls.Add(this.label2, 2, 0);
             this.tlpOBJDCTSS.Controls.Add(this.tbOBJDName, 1, 0);
             this.tlpOBJDCTSS.Controls.Add(this.label1, 0, 0);
-            this.tlpOBJDCTSS.Controls.Add(this.tbOBJDvsn, 5, 1);
             this.tlpOBJDCTSS.Controls.Add(this.label6, 4, 1);
             this.tlpOBJDCTSS.Controls.Add(this.tbCTSSName, 1, 1);
             this.tlpOBJDCTSS.Controls.Add(this.tbCTSSDesc, 1, 2);
             this.tlpOBJDCTSS.Controls.Add(this.btnCommit, 6, 2);
             this.tlpOBJDCTSS.Controls.Add(this.btnSelectOBJD, 6, 0);
+            this.tlpOBJDCTSS.Controls.Add(this.cbOBJDvsn, 5, 1);
             this.tlpOBJDCTSS.Name = "tlpOBJDCTSS";
             // 
             // tbCTSSName
@@ -592,6 +621,18 @@ namespace pjOBJDTool
             this.btnSelectOBJD.UseVisualStyleBackColor = true;
             this.btnSelectOBJD.Click += new System.EventHandler(this.btnSelectOBJD_Click);
             // 
+            // cbOBJDvsn
+            // 
+            this.cbOBJDvsn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbOBJDvsn.FormattingEnabled = true;
+            this.cbOBJDvsn.Items.AddRange(new object[] {
+            resources.GetString("cbOBJDvsn.Items"),
+            resources.GetString("cbOBJDvsn.Items1"),
+            resources.GetString("cbOBJDvsn.Items2")});
+            resources.ApplyResources(this.cbOBJDvsn, "cbOBJDvsn");
+            this.cbOBJDvsn.Name = "cbOBJDvsn";
+            this.cbOBJDvsn.SelectedIndexChanged += new System.EventHandler(this.cbOBJDvsn_SelectedIndexChanged);
+            // 
             // cOBJDTool
             // 
             resources.ApplyResources(this, "$this");
@@ -614,7 +655,13 @@ namespace pjOBJDTool
             this.tlpMotiveRs.ResumeLayout(false);
             this.tlpMotiveRs.PerformLayout();
             this.gbValidEPs1.ResumeLayout(false);
+            this.gbValidEPs1.PerformLayout();
+            this.flpValidEPs1.ResumeLayout(false);
+            this.flpValidEPs1.PerformLayout();
             this.gbValidEPs2.ResumeLayout(false);
+            this.gbValidEPs2.PerformLayout();
+            this.flpValidEPs2.ResumeLayout(false);
+            this.flpValidEPs2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.flpTabPage2.ResumeLayout(false);
@@ -674,11 +721,8 @@ namespace pjOBJDTool
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox tbOBJDvsn;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.TextBox tbCTSSInstance;
-        private System.Windows.Forms.LabelledBoolsetControl lbcEPFlags1;
-        private System.Windows.Forms.LabelledBoolsetControl lbcEPFlags2;
         private System.Windows.Forms.ComboBox cbFunction;
         private System.Windows.Forms.LabelledBoolsetControl lbcRoom;
         private System.Windows.Forms.LabelledBoolsetControl lbcFunction;
@@ -704,5 +748,12 @@ namespace pjOBJDTool
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox tbMotive9;
         private System.Windows.Forms.TextBox tbMotiveA;
+        private System.Windows.Forms.FlowLayoutPanel flpValidEPs1;
+        private System.Windows.Forms.RadioButton radioButton16;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.FlowLayoutPanel flpValidEPs2;
+        private System.Windows.Forms.RadioButton radioButton32;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.ComboBox cbOBJDvsn;
     }
 }
