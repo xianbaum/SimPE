@@ -61,20 +61,22 @@ namespace pjse
             SimPe.Wait.Message = message;
             SimPe.Wait.Progress++;
             if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage(message);
+            if (SimPe.WaitingScreen.Running) SimPe.WaitingScreen.Message = message;
+            System.Windows.Forms.Application.DoEvents();
         }
 
         public void UIRefresh()
         {
+            string SplashScreenSetMessage = "";//can't get old message
+            string SimPeWaitingScreenMessage = (SimPe.WaitingScreen.Running) ? SimPe.WaitingScreen.Message : "";
             SimPe.Wait.SubStart();
-            //bool wasRunning = SimPe.WaitingScreen.Running;
-            //SimPe.WaitingScreen.Wait();
 
             try { this.Refresh(true); }
             finally
             {
                 SimPe.Wait.SubStop();
-                //if (!wasRunning) SimPe.WaitingScreen.Stop();
-                //else SimPe.WaitingScreen.UpdateMessage("");
+                if (SimPe.Splash.Running) SimPe.Splash.Screen.SetMessage(SplashScreenSetMessage);
+                if (SimPe.WaitingScreen.Running) SimPe.WaitingScreen.Message = SimPeWaitingScreenMessage;
             }
         }
 
@@ -151,7 +153,7 @@ namespace pjse
         private IPackageFile currentPackage = null;
         public IPackageFile CurrentPackage
         {
-            get { return currentPackage == null ? null : IsFixed(currentPackage) ? null : currentPackage; }
+            get { return currentPackage; }
 
             set
             {
@@ -190,20 +192,19 @@ namespace pjse
         private bool IsMaxis(IPackageFile package)
         {
             if (!hasLoaded) Refresh();
-            return (package == null || maxisPackages.Contains(package));
+            return (package != null && maxisPackages.Contains(package));
         }
 
         private bool IsFixed(IPackageFile package)
         {
             if (!hasLoaded) Refresh();
-            return (package == null || fixedPackages.Contains(package));
+            return (package != null && fixedPackages.Contains(package));
         }
 
 
         private void Add(string v, bool recurse, SimPe.Expansions ep, bool isFixed)
         {
             wm("Loading " + ep + " " + System.IO.Path.GetFileName(v).Replace(".package", ""));
-            System.Windows.Forms.Application.DoEvents();
             if (Directory.Exists(v))
             {
                 foreach (string i in Directory.GetFiles(v, "*.package"))
@@ -375,12 +376,13 @@ namespace pjse
 
 
         public enum Source { Any, Maxis, Fixed, Local };
-		public class Entry : IDisposable, IComparable
+        public class Entry : IDisposable, IComparable, SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem
 		{
 			private IPackageFile package;
 			private IPackedFileDescriptor pfd;
             private bool isMaxis;
             private bool isFixed;
+            SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii;
 
             public Entry(IPackageFile package, IPackedFileDescriptor pfd, bool isMaxis, bool isFixed)
 			{
@@ -388,6 +390,9 @@ namespace pjse
 				this.pfd = pfd;
                 this.isMaxis = isMaxis;
                 this.isFixed = isFixed;
+
+                SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] fiis = SimPe.FileTable.FileIndex.FindFile(pfd, package);
+                this.fii = (fiis.Length==1) ? fiis[0] : null;
 
                 this.pfd.ChangedData += new SimPe.Events.PackedFileChanged(pfd_ChangedData);
 			}
@@ -467,7 +472,21 @@ namespace pjse
 			}
 
 			#endregion
-		}
+
+            #region IScenegraphFileIndexItem Members
+
+            public IPackedFileDescriptor FileDescriptor
+            {
+                get { return PFD; }
+                set { throw new Exception("The method or operation is not implemented."); }
+            }
+
+            public IPackedFileDescriptor GetLocalFileDescriptor() { return fii.GetLocalFileDescriptor(); }
+
+            public uint LocalGroup { get { return fii.LocalGroup; } }
+
+            #endregion
+        }
 
         public Entry[] this[IPackageFile package, IPackedFileDescriptor pfd]
         {
