@@ -1,3 +1,104 @@
+10 January 2009 15:58 Prompt before opening non-local package using banner button
+  pjse Localisation\
+    Localization.cs 1.17.4.12
+  SimPe BHAV\
+    BconForm.cs 1.25.4.8
+    BhavForm.cs 1.89.4.20
+    TPRPForm.cs 1.14.4.3
+    TrcnForm.cs 1.22.2.6
+
+10 January 2009 15:26 Try to make creating the GUID Index get the dialog in the right place at the end
+  * and tidy up the waiting bits
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.19
+    GUIDIndex.cs 1.4.6.3
+
+10 January 2009 15:24 Try to stop one duff TPRP/Trcn making them all look duff
+  SimPe BHAV\
+    TPRPWrapper.cs 1.7.6.4
+    TrcnWrapper.cs 1.14.2.7
+
+4 January 2009 12:56 Yet another oops in LDOC when setting value; fix Wiz0x02 and Wiz0x1c, too
+  SimPe BHAV\
+    BhavOperandWiz0x0002.cs 1.15.6.2
+    BhavOperandWiz0x001c.cs 1.7.6.3
+    LabelledDataOwner.cs 1.1.2.5
+
+3 January 2009 21:43 Yet another attempt at keeping the GUIDTool working; oops in LDOC when setting value
+  pjse filetable\
+    FileTable.cs 1.31.4.18
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.18
+    LabelledDataOwner.cs 1.1.2.4
+    ResourceChooser.cs 1.14.6.2
+
+3 January 2009 15:23 Fix checkbox nightmare in BhavOperandWizBhav
+  SimPe BHAV\
+    BhavOperandWiz.cs 1.19.6.4
+    BhavOperandWizBhav.cs 1.10.6.5
+    BhavOperandWizBhav.Designer.cs 1.2.6.3
+    LabelledDataOwner.cs 1.1.2.3
+    LabelledDataOwner.Designer.cs 1.1.2.3
+
+1 January 2009 21:21 Rewrite of GUIDIndex (to make it more useful)
+  SimPe BHAV\
+    GUIDIndex.cs 1.4.6.2
+
+13 December 2008 20:59 Update GlobalStrings.package for pjOBJDTool changes
+  GlobalStrings.package 1.31.4.9
+
+29 November 2008 22:04 Import as Private (renamed); check receiving group is private
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.17
+    BhavForm.resx 1.49.4.8
+    ObjfForm.cs 1.25.4.3
+    TtabForm.cs 1.50.2.2
+
+29 November 2008 14:26 Import SemiGlobal BHAV
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.16
+    BhavForm.resx 1.49.4.7
+
+29 November 2008 14:24 Make a pjse.FileTable.Entry be a SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem
+  pjse filetable\
+    FileTable.cs 1.31.4.17
+
+28 November 2008 13:13 Add GLOB finder and string search to GUID Tool
+  pjse filetable\
+    FileTable.cs 1.31.4.16
+  pjse GUID Tool\
+    GUIDTool.cs 1.15.4.6
+    GUIDTool.resx 1.9.4.2
+  pjse Localisation\
+    Localization.resx 1.17.4.11
+
+27 November 2008 15:34 Make changes to nodes faster
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.15
+
+26 November 2008 17:45 GUID Tool: GLOB reference search should include references within the group
+  pjse GUID Tool\
+    GUIDTool.cs 1.15.4.5
+
+26 November 2008 10:10 Boolset: string format should lead with most significant bit not least!
+  * Also Boolset.ToString() should return the bitstring
+  pjse System Classes
+    Boolset.cs 1.2.6.1
+
+24 November 2008 17:04 GUID Tool: Oops: group 0xFFFFFFFF needs special handling
+  pjse GUID Tool\
+    GUIDTool.cs 1.15.4.4
+
+24 November 2008 16:20 Calls to BHAVs: passing Temps, not unknowns
+  pjse Localisation\
+    Localization.resx 1.17.4.10
+  SimPe BHAV\
+    BhavForm.cs 1.89.4.14
+    BhavOperandWizBhav.cs 1.10.6.4
+    BhavOperandWizBhav.Designer.cs 1.2.6.2
+    BhavOperandWizBhav.resx 1.5.6.2
+    BhavOperandBhav.cs 1.22.6.3
+
 21 November 2008 21:05 M&G strings update
   GlobalStrings.package 1.39
 

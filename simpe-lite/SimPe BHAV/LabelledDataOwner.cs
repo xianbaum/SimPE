@@ -60,6 +60,21 @@ namespace pjse
                 , downer, value);
         }
 
+        /// <summary> 
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                if (doc != null)
+                    doc = null;
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         [Category("Appearance")]
         [Description("Text associated with the control.")]
         [Localizable(true)]
@@ -90,9 +105,12 @@ namespace pjse
         public bool InstanceLabelVisible { get { return lbInstance.Visible; } set { lbInstance.Visible = value; } }
 
 
-        [Category("Behavior")]
-        //[DefaultValue(false)]
-        [Description("True if values should be in Decimal (except Consts).")]
+        /// <summary>
+        /// True if values should be in Decimal (except Consts).
+        /// Bound to pjse.Settings.PJSE.DecimalDOValue
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
         public bool Decimal { get { return ckbDecimal.Checked; } set { ckbDecimal.Checked = value; } }
 
         [Category("Behavior")]
@@ -101,9 +119,12 @@ namespace pjse
         public bool DecimalVisible { get { return ckbDecimal.Visible; } set { ckbDecimal.Visible = value; } }
 
 
-        [Category("Behavior")]
-        //[DefaultValue(true)]
-        [Description("True if the Instance Picker should be used (when appropriate) (also Param / Local name).")]
+        /// <summary>
+        /// True if the Instance Picker should be used (when appropriate) (also Param / Local name).
+        /// Bound to pjse.Settings.PJSE.InstancePickerAsText
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibilityAttribute(DesignerSerializationVisibility.Hidden)]
         public bool UseInstancePicker { get { return ckbUseInstancePicker.Checked; } set { ckbUseInstancePicker.Checked = value; } }
 
         [Category("Behavior")]
@@ -181,10 +202,10 @@ namespace pjse
             get { return doc.Value; }
             set
             {
-                if (doc.ValueIsByte)
-                    tbVal.Text = "0x" + SimPe.Helper.HexString((byte)value);
+                if (doc.Decimal)
+                    tbVal.Text = doc.ValueIsByte ? ((byte)value).ToString() : ((short)value).ToString();
                 else
-                    tbVal.Text = "0x" + SimPe.Helper.HexString(value);
+                    tbVal.Text = "0x" + (doc.ValueIsByte ? SimPe.Helper.HexString((byte)value) : SimPe.Helper.HexString(value));
             }
         }
 

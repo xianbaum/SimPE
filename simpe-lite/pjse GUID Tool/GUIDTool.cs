@@ -73,6 +73,12 @@ namespace pjse.guidtool
         private TableLayoutPanel tlpName;
         private CheckBox ckbGLOB;
         private TableLayoutPanel tableLayoutPanel1;
+        private FlowLayoutPanel flpSTR;
+        private Label label2;
+        private CheckBox ckbSTR;
+        private CheckBox ckbCTSS;
+        private CheckBox ckbTTAs;
+        private CheckBox ckbDefLang;
 		/// <summary>
 		/// Required designer variable.
 		/// </summary>
@@ -201,7 +207,9 @@ namespace pjse.guidtool
          * 5: ckbCallsToBHAV.Checked,
          * 6: ckbSGSearch.Checked,
          * 7: ckbFromBHAV.Checked, 8: ckbFromObjf.Checked, 9: ckbFromTtab.Checked,
-        */
+         * 10: ckbGLOB.Checked,
+         * 11: ckbSTR.Checked, 12: ckbCTSS.Checked, 13: ckbTTAs.Checked, 14: ckbDefLang.Checked,
+         */
         private void Search(object o)
         {
             bool[] type = (bool[])((object[])o)[0];
@@ -218,65 +226,120 @@ namespace pjse.guidtool
             try
             {
                 List<pjse.FileTable.Entry> results = new List<FileTable.Entry>();
-                if (type[6] && group != 0)
+                if (group != 0)
                 {
-                    List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
-                    foreach (pjse.FileTable.Entry fte in globs)
+                    if (type[6])
+                    #region Focus on SemiGlobal group
                     {
-                        SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
-                        if (glob == null) continue;
-                        if (group != glob.SemiGlobalGroup) continue;
-                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, fte.Group, where]);
-                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, fte.Group, where]);
-                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, fte.Group, where]);
-                    }
-                }
-                else if (type[10] && group != 0)
-                {
-                    List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
-                    foreach (pjse.FileTable.Entry fte in globs)
-                    {
-                        SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
-                        if (glob == null) continue;
-                        if (group != glob.SemiGlobalGroup) continue;
-                        pjse.FileTable.Entry[] objds = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, fte.Group, where];
-                        if (objds.Length > 0) results.Add(objds[0]);
-                        else results.Add(fte);
-                    }
-                }
-                else if (group == 0)
-                {
-                    if (type[0] || type[1])
-                        results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, where]);
-                    if (type[2])
-                        results.AddRange(pjse.FileTable.GFT[0x4E524546, where]); // NREF
-                    if (type[3])
-                        results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
-                    if (type[4])
-                        results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, where]);
-                    if (type[5])
-                    {
-                        if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
-                        if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, where]);
-                        if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, where]);
-                    }
-                }
-                else
-                {
-                    if (type[0] || type[1])
-                        results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, group, where]);
-                    if (type[2])
-                        results.AddRange(pjse.FileTable.GFT[0x4E524546, group, where]); // NREF
-                    if (type[3])
-                        results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
-                    if (type[4])
-                        results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, group, where]);
-                    if (type[5])
-                    {
+                        List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
+                        foreach (pjse.FileTable.Entry fte in globs)
+                        {
+                            SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
+                            if (glob == null) continue;
+                            if (group != glob.SemiGlobalGroup) continue;
+
+                            List<pjse.FileTable.Entry> temp = new List<FileTable.Entry>();
+                            if (type[7]) temp.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, fte.Group, where]);
+                            if (type[8]) temp.AddRange(pjse.FileTable.GFT[Objf.Objftype, fte.Group, where]);
+                            if (type[9]) temp.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, fte.Group, where]);
+
+                            if (fte.Group == 0xffffffff)
+                            {
+                                foreach (pjse.FileTable.Entry entry in temp)
+                                    if (entry.Package == fte.Package) results.Add(entry);
+                            }
+                            else results.AddRange(temp);
+                        }
                         if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
                         if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, group, where]);
                         if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, group, where]);
                     }
+                    #endregion
+                    else if (type[10])
+                    #region References to GLOB
+                    {
+                        List<pjse.FileTable.Entry> globs = new List<FileTable.Entry>(pjse.FileTable.GFT[SimPe.Data.MetaData.GLOB_FILE, where]);
+                        foreach (pjse.FileTable.Entry fte in globs)
+                        {
+                            SimPe.Plugin.Glob glob = ((SimPe.Plugin.Glob)fte.Wrapper);
+                            if (glob == null) continue;
+                            if (group != glob.SemiGlobalGroup) continue;
+
+                            pjse.FileTable.Entry[] objds = pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, fte.Group, where];
+
+                            if (objds.Length == 0)
+                                results.Add(fte);
+                            else
+                            {
+                                if (fte.Group == 0xffffffff)
+                                {
+                                    foreach(pjse.FileTable.Entry entry in objds)
+                                        if (entry.Package == fte.Package)
+                                        {
+                                            results.Add(entry);
+                                            break;
+                                        }
+                                }
+                                else
+                                    results.Add(objds[0]);
+                            }
+                        }
+                    }
+                    #endregion
+                    else
+                    #region Search within group
+                    {
+                        if (type[0] || type[1])
+                            results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, group, where]);
+                        if (type[2])
+                            results.AddRange(pjse.FileTable.GFT[0x4E524546, group, where]); // NREF
+                        if (type[3])
+                            results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
+                        if (type[4])
+                            results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, group, where]);
+                        if (type[5])
+                        {
+                            if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, group, where]);
+                            if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, group, where]);
+                            if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, group, where]);
+                        }
+                        if (type[11])
+                            results.AddRange(pjse.FileTable.GFT[StrWrapper.Strtype, group, where]);
+                        if (type[12])
+                            results.AddRange(pjse.FileTable.GFT[StrWrapper.CTSStype, group, where]);
+                        if (type[13])
+                            results.AddRange(pjse.FileTable.GFT[StrWrapper.TTAstype, group, where]);
+                    }
+                    #endregion
+                }
+                else // group == 0
+                {
+                    if (type[6] || type[10]) { } // no results for group == 0
+                    else
+                    #region Search without group
+                    {
+                        if (type[0] || type[1])
+                            results.AddRange(pjse.FileTable.GFT[SimPe.Data.MetaData.OBJD_FILE, where]);
+                        if (type[2])
+                            results.AddRange(pjse.FileTable.GFT[0x4E524546, where]); // NREF
+                        if (type[3])
+                            results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
+                        if (type[4])
+                            results.AddRange(pjse.FileTable.GFT[Bcon.Bcontype, where]);
+                        if (type[5])
+                        {
+                            if (type[7]) results.AddRange(pjse.FileTable.GFT[Bhav.Bhavtype, where]);
+                            if (type[8]) results.AddRange(pjse.FileTable.GFT[Objf.Objftype, where]);
+                            if (type[9]) results.AddRange(pjse.FileTable.GFT[Ttab.Ttabtype, where]);
+                        }
+                        if (type[11])
+                            results.AddRange(pjse.FileTable.GFT[StrWrapper.Strtype, where]);
+                        if (type[12])
+                            results.AddRange(pjse.FileTable.GFT[StrWrapper.CTSStype, where]);
+                        if (type[13])
+                            results.AddRange(pjse.FileTable.GFT[StrWrapper.TTAstype, where]);
+                    }
+                    #endregion
                 }
 
                 results.Sort(byPackageGroupTypeInstance);
@@ -294,38 +357,60 @@ namespace pjse.guidtool
                         uint itemguid = 0;
 
                         System.IO.BinaryReader reader = item.Wrapper.StoredData;
-
                         if (item.Type == SimPe.Data.MetaData.OBJD_FILE)
-                            if (reader.BaseStream.Length >= 0x40) // filename length
-                                if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
-                                {
-                                    reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
-                                    itemguid = reader.ReadUInt32();
-                                }
+                            if (reader.BaseStream.Length > 0x5c + 4) // sizeof(uint)
+                            {
+                                reader.BaseStream.Seek(0x5c, System.IO.SeekOrigin.Begin);
+                                itemguid = reader.ReadUInt32();
+                            }
 
                         if ((type[0] && itemguid == searchNumber) ||
-                            ((type[1] || type[2] || type[3]) && item.ToString().ToLower().IndexOf(searchText) >= 0) ||
+                            ((type[1] || type[2] || type[3]) && item.ToString().ToLower().Contains(searchText)) ||
                             type[10])
                             Invoke(addResult, new object[] { itemguid, item, });
 
                         else if (type[5]) switch (item.Type)
                             {
                                 case Bhav.Bhavtype:
-                                    if (item.Wrapper != null) foreach (Instruction i in (Bhav)item.Wrapper)
-                                            if (i.OpCode == searchNumber)
-                                                Invoke(addResult, new object[] { itemguid, item, });
+                                    foreach (Instruction i in (Bhav)item.Wrapper)
+                                        if (i.OpCode == searchNumber)
+                                            Invoke(addResult, new object[] { itemguid, item, });
                                     break;
                                 case Objf.Objftype:
-                                    if (item.Wrapper != null) foreach (ObjfItem i in (Objf)item.Wrapper)
-                                            if (i.Action == searchNumber || i.Guardian == searchNumber)
-                                                Invoke(addResult, new object[] { itemguid, item, });
+                                    foreach (ObjfItem i in (Objf)item.Wrapper)
+                                        if (i.Action == searchNumber || i.Guardian == searchNumber)
+                                            Invoke(addResult, new object[] { itemguid, item, });
                                     break;
                                 case Ttab.Ttabtype:
-                                    if (item.Wrapper != null) foreach (TtabItem i in (Ttab)item.Wrapper)
-                                            if (i.Action == searchNumber || i.Guardian == searchNumber)
-                                                Invoke(addResult, new object[] { itemguid, item, });
+                                    foreach (TtabItem i in (Ttab)item.Wrapper)
+                                        if (i.Action == searchNumber || i.Guardian == searchNumber)
+                                            Invoke(addResult, new object[] { itemguid, item, });
                                     break;
                             }
+
+                        else if (((type[11] && item.Type == StrWrapper.Strtype) ||
+                          (type[12] && item.Type == StrWrapper.CTSStype) ||
+                          (type[13] && item.Type == StrWrapper.TTAstype)))
+                        {
+                            if (type[14])
+                                foreach (StrItem si in ((StrWrapper)item.Wrapper)[(byte)1])
+                                {
+                                    if (si.Title.ToString().ToLower().Contains(searchText))
+                                    {
+                                        Invoke(addResult, new object[] { itemguid, item, });
+                                        break;
+                                    }
+                                }
+                            else
+                                foreach (StrItem si in (StrWrapper)item.Wrapper)
+                                {
+                                    if (si.Title.ToString().ToLower().Contains(searchText))
+                                    {
+                                        Invoke(addResult, new object[] { itemguid, item, });
+                                        break;
+                                    }
+                                }
+                        }
                     }
                 //DealtWith:
                     Invoke(setProgress, new object[] { true, ++j });
@@ -398,9 +483,9 @@ namespace pjse.guidtool
         private void Start()
         {
             bool[] type = new bool[] {
-                ckbObjdGUID.Checked, ckbObjdName.Checked, ckbNrefName.Checked, ckbBhavName.Checked, ckbBconName.Checked,
-                ckbCallsToBHAV.Checked, ckbSGSearch.Checked, ckbFromBHAV.Checked, ckbFromObjf.Checked, ckbFromTtab.Checked,
-                ckbGLOB.Checked,
+                /*0*/ckbObjdGUID.Checked, ckbObjdName.Checked, ckbNrefName.Checked, ckbBhavName.Checked, ckbBconName.Checked,
+                /*5*/ckbCallsToBHAV.Checked, ckbSGSearch.Checked, ckbFromBHAV.Checked, ckbFromObjf.Checked, ckbFromTtab.Checked,
+                /*10*/ckbGLOB.Checked, ckbSTR.Checked, ckbCTSS.Checked, ckbTTAs.Checked, ckbDefLang.Checked,
             };
             uint number = 0;
             try { number = Convert.ToUInt32(this.tbNumber.Text.Trim(), 16); }
@@ -412,7 +497,7 @@ namespace pjse.guidtool
             if (gcGroup.Value == 0) { type[6] = type[10] = false; } // don't search with no Group filter
 
             this.tbName.Text = this.tbName.Text.Trim().ToLower();
-            if (this.tbName.Text.Length == 0) { type[1] = type[2] = type[3] = type[4] = false; } // don't search for empty string
+            if (this.tbName.Text.Length == 0) { type[1] = type[2] = type[3] = type[4] = type[11] = type[12] = type[13] = false; } // don't search for empty string
 
             SimPe.WaitingScreen.Wait();
             this.Cursor = System.Windows.Forms.Cursors.WaitCursor;
@@ -548,6 +633,12 @@ namespace pjse.guidtool
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.flpSTR = new System.Windows.Forms.FlowLayoutPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.ckbSTR = new System.Windows.Forms.CheckBox();
+            this.ckbCTSS = new System.Windows.Forms.CheckBox();
+            this.ckbTTAs = new System.Windows.Forms.CheckBox();
+            this.ckbDefLang = new System.Windows.Forms.CheckBox();
             this.flpSearchFor = new System.Windows.Forms.FlowLayoutPanel();
             this.ckbObjdGUID = new System.Windows.Forms.CheckBox();
             this.ckbCallsToBHAV = new System.Windows.Forms.CheckBox();
@@ -571,6 +662,7 @@ namespace pjse.guidtool
             this.flpFilter.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.flpSTR.SuspendLayout();
             this.flpSearchFor.SuspendLayout();
             this.flpCallsFrom.SuspendLayout();
             this.flpNames.SuspendLayout();
@@ -671,10 +763,53 @@ namespace pjse.guidtool
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.flpSTR, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.flpSearchFor, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.ckbGLOB, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.ckbGLOB, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.flpNames, 0, 1);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // flpSTR
+            // 
+            resources.ApplyResources(this.flpSTR, "flpSTR");
+            this.flpSTR.Controls.Add(this.label2);
+            this.flpSTR.Controls.Add(this.ckbSTR);
+            this.flpSTR.Controls.Add(this.ckbCTSS);
+            this.flpSTR.Controls.Add(this.ckbTTAs);
+            this.flpSTR.Controls.Add(this.ckbDefLang);
+            this.flpSTR.Name = "flpSTR";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // ckbSTR
+            // 
+            resources.ApplyResources(this.ckbSTR, "ckbSTR");
+            this.ckbSTR.Name = "ckbSTR";
+            this.ckbSTR.UseVisualStyleBackColor = true;
+            this.ckbSTR.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
+            // 
+            // ckbCTSS
+            // 
+            resources.ApplyResources(this.ckbCTSS, "ckbCTSS");
+            this.ckbCTSS.Name = "ckbCTSS";
+            this.ckbCTSS.UseVisualStyleBackColor = true;
+            this.ckbCTSS.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
+            // 
+            // ckbTTAs
+            // 
+            resources.ApplyResources(this.ckbTTAs, "ckbTTAs");
+            this.ckbTTAs.Name = "ckbTTAs";
+            this.ckbTTAs.UseVisualStyleBackColor = true;
+            this.ckbTTAs.CheckedChanged += new System.EventHandler(this.ckbSomeName_CheckedChanged);
+            // 
+            // ckbDefLang
+            // 
+            resources.ApplyResources(this.ckbDefLang, "ckbDefLang");
+            this.ckbDefLang.Name = "ckbDefLang";
+            this.ckbDefLang.UseVisualStyleBackColor = true;
             // 
             // flpSearchFor
             // 
@@ -803,9 +938,9 @@ namespace pjse.guidtool
             // 
             resources.ApplyResources(this.tlpName, "tlpName");
             this.tlpName.Controls.Add(this.lbNumber, 0, 0);
-            this.tlpName.Controls.Add(this.lbName, 0, 1);
             this.tlpName.Controls.Add(this.tbNumber, 1, 0);
             this.tlpName.Controls.Add(this.tbName, 1, 1);
+            this.tlpName.Controls.Add(this.lbName, 0, 1);
             this.tlpName.Name = "tlpName";
             // 
             // GUIDTool
@@ -831,6 +966,8 @@ namespace pjse.guidtool
             this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.flpSTR.ResumeLayout(false);
+            this.flpSTR.PerformLayout();
             this.flpSearchFor.ResumeLayout(false);
             this.flpSearchFor.PerformLayout();
             this.flpCallsFrom.ResumeLayout(false);
@@ -902,10 +1039,11 @@ namespace pjse.guidtool
         }
 
         private bool isCkbObjdGUIDEnabled { get { return !ckbCallsToBHAV.Checked && !ckbGLOB.Checked; } }
-        private bool isCkbCallsToBHAVEnabled { get { return !ckbObjdGUID.Checked && !ckbGLOB.Checked && !isCkbSomeNameChecked; } }
-        private bool isCkbGLOBEnabled { get { return !ckbObjdGUID.Checked && !ckbCallsToBHAV.Checked && !isCkbSomeNameChecked; } }
+        private bool isCkbCallsToBHAVEnabled { get { return !ckbObjdGUID.Checked && !ckbGLOB.Checked && !isCkbSomeTextChecked; } }
+        private bool isCkbGLOBEnabled { get { return !ckbObjdGUID.Checked && !ckbCallsToBHAV.Checked && !isCkbSomeTextChecked; } }
         private bool isFlpNamesEnabled { get { return !ckbCallsToBHAV.Checked && !ckbGLOB.Checked; } }
         private static bool isChecked(CheckBox cb) { return cb.Checked; }
+        private bool isCkbSomeTextChecked { get { return isCkbSomeNameChecked || isCkbSomeStringChecked; } }
         private bool isCkbSomeNameChecked
         {
             get
@@ -914,12 +1052,20 @@ namespace pjse.guidtool
                 return (lcb.Find(isChecked) != null);
             }
         }
+        private bool isCkbSomeStringChecked
+        {
+            get
+            {
+                List<CheckBox> lcb = new List<CheckBox>(new CheckBox[] { ckbSTR, ckbCTSS, ckbTTAs, });
+                return (lcb.Find(isChecked) != null);
+            }
+        }
 
         private void ckbObjdGUID_CheckedChanged(object sender, EventArgs e)
         {
             ckbCallsToBHAV.Enabled = isCkbCallsToBHAVEnabled;
             ckbGLOB.Enabled = isCkbGLOBEnabled;
-            flpNames.Enabled = isFlpNamesEnabled;
+            flpSTR.Enabled = flpNames.Enabled = isFlpNamesEnabled;
 
             if (ckbObjdGUID.Checked) ckbCallsToBHAV.Checked = ckbGLOB.Checked = false;
 
@@ -931,7 +1077,7 @@ namespace pjse.guidtool
         {
             ckbGLOB.Enabled = isCkbGLOBEnabled;
             ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
-            flpNames.Enabled = isFlpNamesEnabled;
+            flpSTR.Enabled = flpNames.Enabled = isFlpNamesEnabled;
 
             if (ckbCallsToBHAV.Checked) ckbObjdGUID.Checked = ckbGLOB.Checked = false;
 
@@ -943,7 +1089,7 @@ namespace pjse.guidtool
         {
             ckbCallsToBHAV.Enabled = isCkbObjdGUIDEnabled;
             ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
-            flpNames.Enabled = isFlpNamesEnabled;
+            flpSTR.Enabled = flpNames.Enabled = isFlpNamesEnabled;
 
             if (ckbGLOB.Checked) ckbObjdGUID.Checked = ckbCallsToBHAV.Checked = false;
         }
@@ -954,7 +1100,8 @@ namespace pjse.guidtool
             ckbGLOB.Enabled = isCkbGLOBEnabled;
             ckbObjdGUID.Enabled = isCkbObjdGUIDEnabled;
 
-            lbName.Enabled = tbName.Enabled = isCkbSomeNameChecked;
+            lbName.Enabled = tbName.Enabled = isCkbSomeTextChecked;
+            ckbDefLang.Enabled = isCkbSomeStringChecked;
         }
 
         private void btnClearFilter_Click(object sender, EventArgs e)
