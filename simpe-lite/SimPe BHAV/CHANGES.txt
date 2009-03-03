@@ -1,3 +1,7 @@
+3 March 2009 20:49 Oops: check for ContainsKey in guid index rather than throwing an error
+  SimPe BHAV\
+    GUIDIndex.cs 1.7
+
 10 January 2009 15:58 Prompt before opening non-local package using banner button
   pjse Localisation\
     Localization.cs 1.17.4.12

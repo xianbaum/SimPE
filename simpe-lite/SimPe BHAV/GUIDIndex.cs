@@ -179,7 +179,7 @@ namespace pjse
 
         public string this[uint key]
         {
-            get { string s; return (guidIndex == null || (s = (String)guidIndex[key].objdName) == null || s.Length == 0) ? null : s; }
+            get { string s; return (guidIndex == null || !guidIndex.ContainsKey(key) || (s = (String)guidIndex[key].objdName) == null || s.Length == 0) ? null : s; }
             set { throw new Exception("The method or operation is not implemented."); }
         }
 
