@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -219,7 +219,7 @@ namespace pjse
                 Add(SimPe.Packages.File.LoadFromFile(v), ep != SimPe.Expansions.Custom, isFixed);
         }
 
-        
+
         private void Add(IPackageFile package, bool isMaxis, bool isFixed)
 		{
 			if (package == null) return;
