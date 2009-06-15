@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -65,7 +65,7 @@ namespace pjse.BhavOperandWizards.WizRaw
 			base.Dispose( disposing );
 		}
 
-		
+
         #region iBhavOperandWizForm
         public Panel WizPanel { get { return this.pnWizRaw; } }
 
@@ -102,7 +102,7 @@ namespace pjse.BhavOperandWizards.WizRaw
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
+		/// Erforderliche Methode für die Designerunterstützung.
 		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
 		/// </summary>
 		private void InitializeComponent()
@@ -112,20 +112,20 @@ namespace pjse.BhavOperandWizards.WizRaw
             this.tbRaw = new System.Windows.Forms.TextBox();
             this.pnWizRaw.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWizRaw
-            // 
+            //
             this.pnWizRaw.Controls.Add(this.tbRaw);
             resources.ApplyResources(this.pnWizRaw, "pnWizRaw");
             this.pnWizRaw.Name = "pnWizRaw";
-            // 
+            //
             // tbRaw
-            // 
+            //
             resources.ApplyResources(this.tbRaw, "tbRaw");
             this.tbRaw.Name = "tbRaw";
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWizRaw);

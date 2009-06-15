@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -133,7 +133,7 @@ namespace SimPe.PackedFiles.UserInterface
 			base.Dispose( disposing );
 		}
 
-		
+
 		#region ObjfForm
 		/// <summary>
 		/// Stores the currently active Wrapper
@@ -279,9 +279,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // objfPanel
-            // 
+            //
             resources.ApplyResources(this.objfPanel, "objfPanel");
             this.objfPanel.BackColor = System.Drawing.SystemColors.Control;
             this.objfPanel.Controls.Add(this.tableLayoutPanel1);
@@ -293,15 +293,15 @@ namespace SimPe.PackedFiles.UserInterface
             this.objfPanel.Controls.Add(this.tbFilename);
             this.objfPanel.Controls.Add(this.label19);
             this.objfPanel.Name = "objfPanel";
-            // 
+            //
             // lbFunction
-            // 
+            //
             resources.ApplyResources(this.lbFunction, "lbFunction");
             this.lbFunction.AutoEllipsis = true;
             this.lbFunction.Name = "lbFunction";
-            // 
+            //
             // lvObjfItem
-            // 
+            //
             resources.ApplyResources(this.lvObjfItem, "lvObjfItem");
             this.lvObjfItem.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chFunction,
@@ -316,100 +316,100 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvObjfItem.UseCompatibleStateImageBehavior = false;
             this.lvObjfItem.View = System.Windows.Forms.View.Details;
             this.lvObjfItem.SelectedIndexChanged += new System.EventHandler(this.lvObjfItem_SelectedIndexChanged);
-            // 
+            //
             // chFunction
-            // 
+            //
             resources.ApplyResources(this.chFunction, "chFunction");
-            // 
+            //
             // chAction
-            // 
+            //
             resources.ApplyResources(this.chAction, "chAction");
-            // 
+            //
             // chGuardian
-            // 
+            //
             resources.ApplyResources(this.chGuardian, "chGuardian");
-            // 
+            //
             // btnCommit
-            // 
+            //
             resources.ApplyResources(this.btnCommit, "btnCommit");
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
-            // 
+            //
             // llGuardian
-            // 
+            //
             resources.ApplyResources(this.llGuardian, "llGuardian");
             this.llGuardian.Name = "llGuardian";
             this.llGuardian.TabStop = true;
             this.llGuardian.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
-            // 
+            //
             // llAction
-            // 
+            //
             resources.ApplyResources(this.llAction, "llAction");
             this.llAction.Name = "llAction";
             this.llAction.TabStop = true;
             this.llAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
-            // 
+            //
             // btnAction
-            // 
+            //
             resources.ApplyResources(this.btnAction, "btnAction");
             this.btnAction.Name = "btnAction";
             this.btnAction.Click += new System.EventHandler(this.GetObjfAction);
-            // 
+            //
             // btnGuardian
-            // 
+            //
             resources.ApplyResources(this.btnGuardian, "btnGuardian");
             this.btnGuardian.Name = "btnGuardian";
             this.btnGuardian.Click += new System.EventHandler(this.GetObjfGuard);
-            // 
+            //
             // lbAction
-            // 
+            //
             this.tableLayoutPanel1.SetColumnSpan(this.lbAction, 2);
             resources.ApplyResources(this.lbAction, "lbAction");
             this.lbAction.Name = "lbAction";
             this.lbAction.UseMnemonic = false;
-            // 
+            //
             // lbGuardian
-            // 
+            //
             this.tableLayoutPanel1.SetColumnSpan(this.lbGuardian, 2);
             resources.ApplyResources(this.lbGuardian, "lbGuardian");
             this.lbGuardian.Name = "lbGuardian";
             this.lbGuardian.UseMnemonic = false;
-            // 
+            //
             // tbGuardian
-            // 
+            //
             resources.ApplyResources(this.tbGuardian, "tbGuardian");
             this.tbGuardian.Name = "tbGuardian";
             this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbGuardian.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // tbAction
-            // 
+            //
             resources.ApplyResources(this.tbAction, "tbAction");
             this.tbAction.Name = "tbAction";
             this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbAction.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbAction.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // lbFilename
-            // 
+            //
             resources.ApplyResources(this.lbFilename, "lbFilename");
             this.lbFilename.Name = "lbFilename";
-            // 
+            //
             // tbFilename
-            // 
+            //
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
             this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
-            // 
+            //
             // label19
-            // 
+            //
             resources.ApplyResources(this.label19, "label19");
             this.label19.Name = "label19";
-            // 
+            //
             // tableLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
             this.tableLayoutPanel1.Controls.Add(this.llAction, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.llGuardian, 0, 3);
@@ -418,29 +418,29 @@ namespace SimPe.PackedFiles.UserInterface
             this.tableLayoutPanel1.Controls.Add(this.lbAction, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.lbGuardian, 0, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
+            //
             // flowLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Controls.Add(this.tbAction);
             this.flowLayoutPanel1.Controls.Add(this.btnAction);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
+            //
             // flowLayoutPanel2
-            // 
+            //
             resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
             this.flowLayoutPanel2.Controls.Add(this.tbGuardian);
             this.flowLayoutPanel2.Controls.Add(this.btnGuardian);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            // 
+            //
             // pjse_banner1
-            // 
+            //
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
             this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pjse_banner1.Name = "pjse_banner1";
-            // 
+            //
             // ObjfForm
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.Controls.Add(this.objfPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -506,16 +506,16 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void btnCommit_Click(object sender, System.EventArgs e)
 		{
-			try 
+			try
 			{
 				wrapper.SynchronizeUserData();
 				btnCommit.Enabled = wrapper.Changed;
 				lvObjfItem_SelectedIndexChanged(null, null);
-			} 
-			catch (Exception ex) 
+			}
+			catch (Exception ex)
 			{
 				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
-			}			
+			}
 		}
 
 

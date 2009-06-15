@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -87,7 +87,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbCBM12;
 		private System.Windows.Forms.Button btnCopyAll;
         private Label lbNrGroups;
-		/// <summary> 
+		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
@@ -102,7 +102,7 @@ namespace SimPe.PackedFiles.UserInterface
             pnCopyButtons.Visible = pnAllGroups.Visible = false;
 		}
 
-		/// <summary> 
+		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
@@ -264,8 +264,8 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
 		#region Component Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
+		/// <summary>
+		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
@@ -326,108 +326,108 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbNrGroups = new System.Windows.Forms.Label();
             this.pnCopyButtons.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // lbMotive0
-            // 
+            //
             resources.ApplyResources(this.lbMotive0, "lbMotive0");
             this.lbMotive0.Name = "lbMotive0";
-            // 
+            //
             // lbMotive1
-            // 
+            //
             resources.ApplyResources(this.lbMotive1, "lbMotive1");
             this.lbMotive1.BackColor = System.Drawing.SystemColors.Control;
             this.lbMotive1.Name = "lbMotive1";
-            // 
+            //
             // lbMotive2
-            // 
+            //
             resources.ApplyResources(this.lbMotive2, "lbMotive2");
             this.lbMotive2.Name = "lbMotive2";
-            // 
+            //
             // lbMotive3
-            // 
+            //
             resources.ApplyResources(this.lbMotive3, "lbMotive3");
             this.lbMotive3.BackColor = System.Drawing.SystemColors.Control;
             this.lbMotive3.Name = "lbMotive3";
-            // 
+            //
             // lbMotive4
-            // 
+            //
             resources.ApplyResources(this.lbMotive4, "lbMotive4");
             this.lbMotive4.Name = "lbMotive4";
-            // 
+            //
             // lbMotive5
-            // 
+            //
             resources.ApplyResources(this.lbMotive5, "lbMotive5");
             this.lbMotive5.BackColor = System.Drawing.SystemColors.Control;
             this.lbMotive5.Name = "lbMotive5";
-            // 
+            //
             // lbMotive6
-            // 
+            //
             resources.ApplyResources(this.lbMotive6, "lbMotive6");
             this.lbMotive6.Name = "lbMotive6";
-            // 
+            //
             // lbMotive7
-            // 
+            //
             resources.ApplyResources(this.lbMotive7, "lbMotive7");
             this.lbMotive7.BackColor = System.Drawing.SystemColors.Control;
             this.lbMotive7.Name = "lbMotive7";
-            // 
+            //
             // lbMotive9
-            // 
+            //
             resources.ApplyResources(this.lbMotive9, "lbMotive9");
             this.lbMotive9.BackColor = System.Drawing.SystemColors.Control;
             this.lbMotive9.Name = "lbMotive9";
-            // 
+            //
             // lbMotive11
-            // 
+            //
             resources.ApplyResources(this.lbMotive11, "lbMotive11");
             this.lbMotive11.BackColor = System.Drawing.SystemColors.Control;
             this.lbMotive11.Name = "lbMotive11";
-            // 
+            //
             // lbMotive8
-            // 
+            //
             resources.ApplyResources(this.lbMotive8, "lbMotive8");
             this.lbMotive8.Name = "lbMotive8";
-            // 
+            //
             // lbMotive10
-            // 
+            //
             resources.ApplyResources(this.lbMotive10, "lbMotive10");
             this.lbMotive10.Name = "lbMotive10";
-            // 
+            //
             // lbMotive14
-            // 
+            //
             resources.ApplyResources(this.lbMotive14, "lbMotive14");
             this.lbMotive14.Name = "lbMotive14";
-            // 
+            //
             // lbMotive15
-            // 
+            //
             resources.ApplyResources(this.lbMotive15, "lbMotive15");
             this.lbMotive15.BackColor = System.Drawing.SystemColors.Control;
             this.lbMotive15.Name = "lbMotive15";
-            // 
+            //
             // lbMotive13
-            // 
+            //
             resources.ApplyResources(this.lbMotive13, "lbMotive13");
             this.lbMotive13.BackColor = System.Drawing.SystemColors.Control;
             this.lbMotive13.Name = "lbMotive13";
-            // 
+            //
             // lbMotive12
-            // 
+            //
             resources.ApplyResources(this.lbMotive12, "lbMotive12");
             this.lbMotive12.Name = "lbMotive12";
-            // 
+            //
             // pnAllGroups
-            // 
+            //
             resources.ApplyResources(this.pnAllGroups, "pnAllGroups");
             this.pnAllGroups.Name = "pnAllGroups";
-            // 
+            //
             // cbShowAll
-            // 
+            //
             resources.ApplyResources(this.cbShowAll, "cbShowAll");
             this.cbShowAll.Name = "cbShowAll";
             this.cbShowAll.CheckedChanged += new System.EventHandler(this.cbShowAll_CheckedChanged);
-            // 
+            //
             // pnCopyButtons
-            // 
+            //
             this.pnCopyButtons.Controls.Add(this.btnCopyAll);
             this.pnCopyButtons.Controls.Add(this.lbCBM0);
             this.pnCopyButtons.Controls.Add(this.btnCpyM0);
@@ -463,220 +463,220 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnCopyButtons.Controls.Add(this.lbCBM12);
             resources.ApplyResources(this.pnCopyButtons, "pnCopyButtons");
             this.pnCopyButtons.Name = "pnCopyButtons";
-            // 
+            //
             // btnCopyAll
-            // 
+            //
             resources.ApplyResources(this.btnCopyAll, "btnCopyAll");
             this.btnCopyAll.Name = "btnCopyAll";
             this.btnCopyAll.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // lbCBM0
-            // 
+            //
             resources.ApplyResources(this.lbCBM0, "lbCBM0");
             this.lbCBM0.Name = "lbCBM0";
-            // 
+            //
             // btnCpyM0
-            // 
+            //
             resources.ApplyResources(this.btnCpyM0, "btnCpyM0");
             this.btnCpyM0.Name = "btnCpyM0";
             this.btnCpyM0.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM1
-            // 
+            //
             this.btnCpyM1.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnCpyM1, "btnCpyM1");
             this.btnCpyM1.Name = "btnCpyM1";
             this.btnCpyM1.UseVisualStyleBackColor = false;
             this.btnCpyM1.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM2
-            // 
+            //
             resources.ApplyResources(this.btnCpyM2, "btnCpyM2");
             this.btnCpyM2.Name = "btnCpyM2";
             this.btnCpyM2.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM3
-            // 
+            //
             this.btnCpyM3.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnCpyM3, "btnCpyM3");
             this.btnCpyM3.Name = "btnCpyM3";
             this.btnCpyM3.UseVisualStyleBackColor = false;
             this.btnCpyM3.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM4
-            // 
+            //
             resources.ApplyResources(this.btnCpyM4, "btnCpyM4");
             this.btnCpyM4.Name = "btnCpyM4";
             this.btnCpyM4.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM5
-            // 
+            //
             this.btnCpyM5.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnCpyM5, "btnCpyM5");
             this.btnCpyM5.Name = "btnCpyM5";
             this.btnCpyM5.UseVisualStyleBackColor = false;
             this.btnCpyM5.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM7
-            // 
+            //
             this.btnCpyM7.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnCpyM7, "btnCpyM7");
             this.btnCpyM7.Name = "btnCpyM7";
             this.btnCpyM7.UseVisualStyleBackColor = false;
             this.btnCpyM7.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM6
-            // 
+            //
             resources.ApplyResources(this.btnCpyM6, "btnCpyM6");
             this.btnCpyM6.Name = "btnCpyM6";
             this.btnCpyM6.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM9
-            // 
+            //
             this.btnCpyM9.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnCpyM9, "btnCpyM9");
             this.btnCpyM9.Name = "btnCpyM9";
             this.btnCpyM9.UseVisualStyleBackColor = false;
             this.btnCpyM9.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM12
-            // 
+            //
             resources.ApplyResources(this.btnCpyM12, "btnCpyM12");
             this.btnCpyM12.Name = "btnCpyM12";
             this.btnCpyM12.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM11
-            // 
+            //
             this.btnCpyM11.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnCpyM11, "btnCpyM11");
             this.btnCpyM11.Name = "btnCpyM11";
             this.btnCpyM11.UseVisualStyleBackColor = false;
             this.btnCpyM11.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM10
-            // 
+            //
             resources.ApplyResources(this.btnCpyM10, "btnCpyM10");
             this.btnCpyM10.Name = "btnCpyM10";
             this.btnCpyM10.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM15
-            // 
+            //
             this.btnCpyM15.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnCpyM15, "btnCpyM15");
             this.btnCpyM15.Name = "btnCpyM15";
             this.btnCpyM15.UseVisualStyleBackColor = false;
             this.btnCpyM15.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM14
-            // 
+            //
             resources.ApplyResources(this.btnCpyM14, "btnCpyM14");
             this.btnCpyM14.Name = "btnCpyM14";
             this.btnCpyM14.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM13
-            // 
+            //
             this.btnCpyM13.BackColor = System.Drawing.SystemColors.Control;
             resources.ApplyResources(this.btnCpyM13, "btnCpyM13");
             this.btnCpyM13.Name = "btnCpyM13";
             this.btnCpyM13.UseVisualStyleBackColor = false;
             this.btnCpyM13.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // btnCpyM8
-            // 
+            //
             resources.ApplyResources(this.btnCpyM8, "btnCpyM8");
             this.btnCpyM8.Name = "btnCpyM8";
             this.btnCpyM8.Click += new System.EventHandler(this.copy_Click);
-            // 
+            //
             // lbCBM1
-            // 
+            //
             resources.ApplyResources(this.lbCBM1, "lbCBM1");
             this.lbCBM1.BackColor = System.Drawing.SystemColors.Control;
             this.lbCBM1.Name = "lbCBM1";
-            // 
+            //
             // lbCBM2
-            // 
+            //
             resources.ApplyResources(this.lbCBM2, "lbCBM2");
             this.lbCBM2.Name = "lbCBM2";
-            // 
+            //
             // lbCBM3
-            // 
+            //
             resources.ApplyResources(this.lbCBM3, "lbCBM3");
             this.lbCBM3.BackColor = System.Drawing.SystemColors.Control;
             this.lbCBM3.Name = "lbCBM3";
-            // 
+            //
             // lbCBM4
-            // 
+            //
             resources.ApplyResources(this.lbCBM4, "lbCBM4");
             this.lbCBM4.Name = "lbCBM4";
-            // 
+            //
             // lbCBM5
-            // 
+            //
             resources.ApplyResources(this.lbCBM5, "lbCBM5");
             this.lbCBM5.BackColor = System.Drawing.SystemColors.Control;
             this.lbCBM5.Name = "lbCBM5";
-            // 
+            //
             // lbCBM6
-            // 
+            //
             resources.ApplyResources(this.lbCBM6, "lbCBM6");
             this.lbCBM6.Name = "lbCBM6";
-            // 
+            //
             // lbCBM7
-            // 
+            //
             resources.ApplyResources(this.lbCBM7, "lbCBM7");
             this.lbCBM7.BackColor = System.Drawing.SystemColors.Control;
             this.lbCBM7.Name = "lbCBM7";
-            // 
+            //
             // lbCBM15
-            // 
+            //
             resources.ApplyResources(this.lbCBM15, "lbCBM15");
             this.lbCBM15.BackColor = System.Drawing.SystemColors.Control;
             this.lbCBM15.Name = "lbCBM15";
-            // 
+            //
             // lbCBM11
-            // 
+            //
             resources.ApplyResources(this.lbCBM11, "lbCBM11");
             this.lbCBM11.BackColor = System.Drawing.SystemColors.Control;
             this.lbCBM11.Name = "lbCBM11";
-            // 
+            //
             // lbCBM14
-            // 
+            //
             resources.ApplyResources(this.lbCBM14, "lbCBM14");
             this.lbCBM14.Name = "lbCBM14";
-            // 
+            //
             // lbCBM8
-            // 
+            //
             resources.ApplyResources(this.lbCBM8, "lbCBM8");
             this.lbCBM8.Name = "lbCBM8";
-            // 
+            //
             // lbCBM9
-            // 
+            //
             resources.ApplyResources(this.lbCBM9, "lbCBM9");
             this.lbCBM9.BackColor = System.Drawing.SystemColors.Control;
             this.lbCBM9.Name = "lbCBM9";
-            // 
+            //
             // lbCBM13
-            // 
+            //
             resources.ApplyResources(this.lbCBM13, "lbCBM13");
             this.lbCBM13.BackColor = System.Drawing.SystemColors.Control;
             this.lbCBM13.Name = "lbCBM13";
-            // 
+            //
             // lbCBM10
-            // 
+            //
             resources.ApplyResources(this.lbCBM10, "lbCBM10");
             this.lbCBM10.Name = "lbCBM10";
-            // 
+            //
             // lbCBM12
-            // 
+            //
             resources.ApplyResources(this.lbCBM12, "lbCBM12");
             this.lbCBM12.Name = "lbCBM12";
-            // 
+            //
             // lbNrGroups
-            // 
+            //
             resources.ApplyResources(this.lbNrGroups, "lbNrGroups");
             this.lbNrGroups.Name = "lbNrGroups";
-            // 
+            //
             // TtabItemMotiveTableUI
-            // 
+            //
             this.Controls.Add(this.lbNrGroups);
             this.Controls.Add(this.pnCopyButtons);
             this.Controls.Add(this.cbShowAll);

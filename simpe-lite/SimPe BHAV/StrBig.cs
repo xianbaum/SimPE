@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -102,42 +102,42 @@ namespace pjse
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // panel1
-            // 
+            //
             this.panel1.Controls.Add(this.OK);
             this.panel1.Controls.Add(this.Cancel);
             this.panel1.Controls.Add(this.panel2);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            // 
+            //
             // OK
-            // 
+            //
             resources.ApplyResources(this.OK, "OK");
             this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OK.Name = "OK";
-            // 
+            //
             // Cancel
-            // 
+            //
             resources.ApplyResources(this.Cancel, "Cancel");
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Ignore;
             this.Cancel.Name = "Cancel";
-            // 
+            //
             // panel2
-            // 
+            //
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.panel2.Name = "panel2";
-            // 
+            //
             // richTextBox1
-            // 
+            //
             this.richTextBox1.AcceptsTab = true;
             this.richTextBox1.DetectUrls = false;
             resources.ApplyResources(this.richTextBox1, "richTextBox1");
             this.richTextBox1.Name = "richTextBox1";
-            // 
+            //
             // StrBig
-            // 
+            //
             this.AcceptButton = this.OK;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;

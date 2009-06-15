@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -244,9 +244,9 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             this.pnWhere.SuspendLayout();
             this.pnObject.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x001f
-            // 
+            //
             this.pnWiz0x001f.Controls.Add(this.cbToNext);
             this.pnWiz0x001f.Controls.Add(this.tbLocalVar);
             this.pnWiz0x001f.Controls.Add(this.tbGUID);
@@ -258,97 +258,97 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             this.pnWiz0x001f.Controls.Add(this.ckbStackObj);
             resources.ApplyResources(this.pnWiz0x001f, "pnWiz0x001f");
             this.pnWiz0x001f.Name = "pnWiz0x001f";
-            // 
+            //
             // cbToNext
-            // 
+            //
             this.cbToNext.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbToNext.DropDownWidth = 450;
             this.cbToNext.FormattingEnabled = true;
             resources.ApplyResources(this.cbToNext, "cbToNext");
             this.cbToNext.Name = "cbToNext";
             this.cbToNext.SelectedIndexChanged += new System.EventHandler(this.cbToNext_SelectedIndexChanged);
-            // 
+            //
             // tbLocalVar
-            // 
+            //
             resources.ApplyResources(this.tbLocalVar, "tbLocalVar");
             this.tbLocalVar.Name = "tbLocalVar";
             this.tbLocalVar.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbLocalVar.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //
             // tbGUID
-            // 
+            //
             resources.ApplyResources(this.tbGUID, "tbGUID");
             this.tbGUID.Name = "tbGUID";
             this.tbGUID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             this.tbGUID.TextChanged += new System.EventHandler(this.tbGUID_TextChanged);
-            // 
+            //
             // lbGUIDText
-            // 
+            //
             resources.ApplyResources(this.lbGUIDText, "lbGUIDText");
             this.lbGUIDText.Name = "lbGUIDText";
-            // 
+            //
             // label2
-            // 
+            //
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            // 
+            //
             // pnNodeVersion
-            // 
+            //
             this.pnNodeVersion.Controls.Add(this.pnWhere);
             this.pnNodeVersion.Controls.Add(this.ckbWhere);
             this.pnNodeVersion.Controls.Add(this.ckbDisabled);
             resources.ApplyResources(this.pnNodeVersion, "pnNodeVersion");
             this.pnNodeVersion.Name = "pnNodeVersion";
-            // 
+            //
             // pnWhere
-            // 
+            //
             this.pnWhere.Controls.Add(this.cbWhere);
             this.pnWhere.Controls.Add(this.tbWhereVal);
             this.pnWhere.Controls.Add(this.label4);
             resources.ApplyResources(this.pnWhere, "pnWhere");
             this.pnWhere.Name = "pnWhere";
-            // 
+            //
             // cbWhere
-            // 
+            //
             this.cbWhere.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbWhere.DropDownWidth = 280;
             this.cbWhere.FormattingEnabled = true;
             resources.ApplyResources(this.cbWhere, "cbWhere");
             this.cbWhere.Name = "cbWhere";
-            // 
+            //
             // tbWhereVal
-            // 
+            //
             resources.ApplyResources(this.tbWhereVal, "tbWhereVal");
             this.tbWhereVal.Name = "tbWhereVal";
             this.tbWhereVal.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbWhereVal.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // label4
-            // 
+            //
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
+            //
             // ckbWhere
-            // 
+            //
             resources.ApplyResources(this.ckbWhere, "ckbWhere");
             this.ckbWhere.Name = "ckbWhere";
             this.ckbWhere.UseVisualStyleBackColor = true;
             this.ckbWhere.CheckedChanged += new System.EventHandler(this.ckbWhere_CheckedChanged);
-            // 
+            //
             // ckbDisabled
-            // 
+            //
             resources.ApplyResources(this.ckbDisabled, "ckbDisabled");
             this.ckbDisabled.Name = "ckbDisabled";
             this.ckbDisabled.UseVisualStyleBackColor = true;
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // pnObject
-            // 
+            //
             this.pnObject.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnObject.Controls.Add(this.cbAttrPicker);
             this.pnObject.Controls.Add(this.cbDecimal);
@@ -357,45 +357,45 @@ namespace pjse.BhavOperandWizards.Wiz0x001f
             this.pnObject.Controls.Add(this.cbDataOwner1);
             resources.ApplyResources(this.pnObject, "pnObject");
             this.pnObject.Name = "pnObject";
-            // 
+            //
             // cbAttrPicker
-            // 
+            //
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            // 
+            //
             // cbDecimal
-            // 
+            //
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            // 
+            //
             // cbPicker1
-            // 
+            //
             this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker1.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
-            // 
+            //
             // tbVal1
-            // 
+            //
             resources.ApplyResources(this.tbVal1, "tbVal1");
             this.tbVal1.Name = "tbVal1";
-            // 
+            //
             // cbDataOwner1
-            // 
+            //
             this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner1.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
+            //
             // ckbStackObj
-            // 
+            //
             resources.ApplyResources(this.ckbStackObj, "ckbStackObj");
             this.ckbStackObj.Name = "ckbStackObj";
             this.ckbStackObj.UseVisualStyleBackColor = true;
             this.ckbStackObj.CheckedChanged += new System.EventHandler(this.ckbStackObj_CheckedChanged);
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x001f);

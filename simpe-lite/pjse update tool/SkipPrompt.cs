@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -40,9 +40,9 @@ namespace pjse
                 tableLayoutPanel1.SetColumnSpan(label1, 2);
                 tableLayoutPanel1.SetColumnSpan(llURL, 2);
                 tableLayoutPanel1.ColumnCount = 2;
-                tableLayoutPanel1.ColumnStyles[0].SizeType = 
+                tableLayoutPanel1.ColumnStyles[0].SizeType =
                     tableLayoutPanel1.ColumnStyles[1].SizeType = SizeType.Percent;
-                tableLayoutPanel1.ColumnStyles[0].Width = 
+                tableLayoutPanel1.ColumnStyles[0].Width =
                     tableLayoutPanel1.ColumnStyles[1].Width = 50;
                 this.tableLayoutPanel1.ResumeLayout(false);
                 this.tableLayoutPanel1.PerformLayout();

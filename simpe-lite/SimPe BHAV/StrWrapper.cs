@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -31,7 +31,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// This is the actual FileWrapper
 	/// </summary>
 	/// <remarks>
-	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
+	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class StrWrapper
@@ -60,7 +60,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns / Sets the Filename
 		/// </summary>
-		public string FileName 
+		public string FileName
 		{
 			get { return Helper.ToString(filename); }
 			set
@@ -78,8 +78,8 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		public ushort Format
 		{
-			get { return format; }			
-			set 
+			get { return format; }
+			set
 			{
 				if (format != value)
 				{
@@ -132,7 +132,7 @@ namespace SimPe.PackedFiles.Wrapper
 
 
 		#region AbstractWrapper Member
-		public override bool CheckVersion(uint version) 
+		public override bool CheckVersion(uint version)
 		{
 			return true;
 		}
@@ -153,7 +153,7 @@ namespace SimPe.PackedFiles.Wrapper
 				"Peter L Jones",
 				"String Editor",
 				1
-				);  
+				);
 		}
 
 		/// <summary>
@@ -161,11 +161,11 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="writer">The Stream the Data should be stored to</param>
 		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
+		/// Be sure that the Position of the stream is Proper on
 		/// return (i.e. must point to the first Byte after your actual File)
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
-		{			
+		{
 			CleanUp();
 
 			writer.Write(filename);
@@ -249,9 +249,9 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		#endregion		
+		#endregion
 
-		#region IFileWrapperSaveExtension Member		
+		#region IFileWrapperSaveExtension Member
 		//all covered by AbstractWrapper
         protected override string GetResourceName(Data.TypeAlias ta)
         {
@@ -388,7 +388,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public byte LanguageID
 		{
 			get { return lid; }
-			set 
+			set
 			{
 				if (lid != value)
 				{
@@ -398,10 +398,10 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public string Title 
+		public string Title
 		{
 			get { return title; }
-			set 
+			set
 			{
 				if (title != value)
 				{
@@ -411,10 +411,10 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public string Description 
+		public string Description
 		{
 			get { return desc; }
-			set 
+			set
 			{
 				if (desc != value)
 				{

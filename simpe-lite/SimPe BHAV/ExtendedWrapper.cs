@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005,2008 by Peter L Jones                              *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -48,13 +48,13 @@ namespace pjse
 			this.Changed = true;
 
 			if (internalchg) return;
-			if (WrapperChanged != null) 
+			if (WrapperChanged != null)
 			{
 				WrapperChanged(sender, e);
 			}
 		}
 
-        
+
         /// <summary>
 		/// This object's group
 		/// </summary>
@@ -211,7 +211,7 @@ namespace pjse
         private static void setNullParent(T item) { item.Parent = default(U); }
         public static implicit operator U(ExtendedWrapper<T, U>from) { return (U)(ExtendedWrapper)from; }
 
-        
+
         public virtual void Add(T item)
         {
             item.Parent = this;

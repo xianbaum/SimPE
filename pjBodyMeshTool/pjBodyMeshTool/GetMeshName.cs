@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -34,7 +34,7 @@ namespace pj
         private Button btnBrowse;
         private Button btnCancel;
         private Label label3;
- 
+
 		/// <summary>
         /// Required designer variable.
         /// </summary>
@@ -70,56 +70,56 @@ namespace pj
             this.btnCancel = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // tbMeshName
-            // 
+            //
             resources.ApplyResources(this.tbMeshName, "tbMeshName");
             this.tbMeshName.Name = "tbMeshName";
-            // 
+            //
             // label2
-            // 
+            //
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            // 
+            //
             // btnOK
-            // 
+            //
             resources.ApplyResources(this.btnOK, "btnOK");
             this.btnOK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnOK.Name = "btnOK";
 #if !NET1
             this.btnOK.UseVisualStyleBackColor = true;
 #endif
-            // 
+            //
             // btnBrowse
-            // 
+            //
             resources.ApplyResources(this.btnBrowse, "btnBrowse");
             this.btnBrowse.DialogResult = System.Windows.Forms.DialogResult.Retry;
             this.btnBrowse.Name = "btnBrowse";
 #if !NET1
             this.btnBrowse.UseVisualStyleBackColor = true;
 #endif
-            // 
+            //
             // btnCancel
-            // 
+            //
             resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Name = "btnCancel";
 #if !NET1
             this.btnCancel.UseVisualStyleBackColor = true;
 #endif
-            // 
+            //
             // label3
-            // 
+            //
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            // 
+            //
             // GetMeshName
-            // 
+            //
             this.AcceptButton = this.btnOK;
             resources.ApplyResources(this, "$this");
 #if !NET1

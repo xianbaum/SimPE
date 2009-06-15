@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -35,7 +35,7 @@ namespace SimPe.PackedFiles.UserInterface
         #region Form variables
         private System.Windows.Forms.TextBox tbValue;
         private Button btnPopup;
-		/// <summary> 
+		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
@@ -49,7 +49,7 @@ namespace SimPe.PackedFiles.UserInterface
 			// TODO: Add any initialization after the InitializeComponent call
 		}
 
-		/// <summary> 
+		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
@@ -93,7 +93,7 @@ namespace SimPe.PackedFiles.UserInterface
 
         private void setText()
         {
-            this.tbValue.Text = "0x" + 
+            this.tbValue.Text = "0x" +
                 ((item.Count<0x100) ? Helper.HexString((byte)item.Count)
                 : (item.Count<0x10000) ? Helper.HexString((ushort)item.Count)
                 : Helper.HexString(item.Count))
@@ -116,8 +116,8 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
 		#region Component Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
+		/// <summary>
+		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
@@ -126,22 +126,22 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbValue = new System.Windows.Forms.TextBox();
             this.btnPopup = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
+            //
             // tbValue
-            // 
+            //
             resources.ApplyResources(this.tbValue, "tbValue");
             this.tbValue.Name = "tbValue";
             this.tbValue.ReadOnly = true;
-            // 
+            //
             // btnPopup
-            // 
+            //
             resources.ApplyResources(this.btnPopup, "btnPopup");
             this.btnPopup.Name = "btnPopup";
             this.btnPopup.UseVisualStyleBackColor = true;
             this.btnPopup.Click += new System.EventHandler(this.btnPopup_Click);
-            // 
+            //
             // TtabAnimalMotiveUI
-            // 
+            //
             this.Controls.Add(this.btnPopup);
             this.Controls.Add(this.tbValue);
             this.Name = "TtabAnimalMotiveUI";

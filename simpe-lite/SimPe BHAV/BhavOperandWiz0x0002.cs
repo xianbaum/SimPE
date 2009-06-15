@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005-2008 by Peter L Jones                              *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -120,7 +120,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
 
         #region Vom Windows Form-Designer generierter Code
         /// <summary>
-        /// Erforderliche Methode für die Designerunterstützung. 
+        /// Erforderliche Methode für die Designerunterstützung.
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent()
@@ -134,15 +134,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
             this.pnWiz0x0002.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x0002
-            // 
+            //
             resources.ApplyResources(this.pnWiz0x0002, "pnWiz0x0002");
             this.pnWiz0x0002.Controls.Add(this.flowLayoutPanel1);
             this.pnWiz0x0002.Name = "pnWiz0x0002";
-            // 
+            //
             // labelledDataOwner2
-            // 
+            //
             resources.ApplyResources(this.labelledDataOwner2, "labelledDataOwner2");
             this.labelledDataOwner2.DataOwner = ((byte)(255));
             this.labelledDataOwner2.DataOwnerEnabled = true;
@@ -153,9 +153,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
             this.labelledDataOwner2.Name = "labelledDataOwner2";
             this.labelledDataOwner2.UseFlagNames = false;
             this.labelledDataOwner2.Value = ((ushort)(0));
-            // 
+            //
             // labelledDataOwner1
-            // 
+            //
             resources.ApplyResources(this.labelledDataOwner1, "labelledDataOwner1");
             this.labelledDataOwner1.DataOwner = ((byte)(255));
             this.labelledDataOwner1.DataOwnerEnabled = true;
@@ -167,24 +167,24 @@ namespace pjse.BhavOperandWizards.Wiz0x0002
             this.labelledDataOwner1.UseFlagNames = false;
             this.labelledDataOwner1.UseInstancePickerVisible = false;
             this.labelledDataOwner1.Value = ((ushort)(0));
-            // 
+            //
             // cbOperator
-            // 
+            //
             this.cbOperator.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             resources.ApplyResources(this.cbOperator, "cbOperator");
             this.cbOperator.Name = "cbOperator";
             this.cbOperator.SelectedIndexChanged += new System.EventHandler(this.cbOperator_SelectedIndexChanged);
-            // 
+            //
             // flowLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Controls.Add(this.labelledDataOwner1);
             this.flowLayoutPanel1.Controls.Add(this.cbOperator);
             this.flowLayoutPanel1.Controls.Add(this.labelledDataOwner2);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x0002);

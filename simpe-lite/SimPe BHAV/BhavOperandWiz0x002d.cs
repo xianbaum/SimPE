@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -159,39 +159,39 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
             this.gbRoutingSlot.SuspendLayout();
             this.pnObject.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x002d
-            // 
+            //
             resources.ApplyResources(this.pnWiz0x002d, "pnWiz0x002d");
             this.pnWiz0x002d.Controls.Add(this.flowLayoutPanel1);
             this.pnWiz0x002d.Name = "pnWiz0x002d";
-            // 
+            //
             // flowLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Controls.Add(this.gbRoutingSlot);
             this.flowLayoutPanel1.Controls.Add(this.ckbNFailTrees);
             this.flowLayoutPanel1.Controls.Add(this.ckbIgnDstFootprint);
             this.flowLayoutPanel1.Controls.Add(this.ckbDiffAlts);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
+            //
             // gbRoutingSlot
-            // 
+            //
             resources.ApplyResources(this.gbRoutingSlot, "gbRoutingSlot");
             this.gbRoutingSlot.Controls.Add(this.pnObject);
             this.gbRoutingSlot.Name = "gbRoutingSlot";
             this.gbRoutingSlot.TabStop = false;
-            // 
+            //
             // pnObject
-            // 
+            //
             resources.ApplyResources(this.pnObject, "pnObject");
             this.pnObject.Controls.Add(this.cbSlotType);
             this.pnObject.Controls.Add(this.ckbDecimal);
             this.pnObject.Controls.Add(this.tbVal1);
             this.pnObject.Name = "pnObject";
-            // 
+            //
             // cbSlotType
-            // 
+            //
             this.cbSlotType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbSlotType.FormattingEnabled = true;
             this.cbSlotType.Items.AddRange(new object[] {
@@ -202,37 +202,37 @@ namespace pjse.BhavOperandWizards.Wiz0x002d
             resources.GetString("cbSlotType.Items4")});
             resources.ApplyResources(this.cbSlotType, "cbSlotType");
             this.cbSlotType.Name = "cbSlotType";
-            // 
+            //
             // ckbDecimal
-            // 
+            //
             resources.ApplyResources(this.ckbDecimal, "ckbDecimal");
             this.ckbDecimal.Name = "ckbDecimal";
-            // 
+            //
             // tbVal1
-            // 
+            //
             resources.ApplyResources(this.tbVal1, "tbVal1");
             this.tbVal1.Name = "tbVal1";
-            // 
+            //
             // ckbNFailTrees
-            // 
+            //
             resources.ApplyResources(this.ckbNFailTrees, "ckbNFailTrees");
             this.ckbNFailTrees.Name = "ckbNFailTrees";
             this.ckbNFailTrees.UseVisualStyleBackColor = true;
-            // 
+            //
             // ckbIgnDstFootprint
-            // 
+            //
             resources.ApplyResources(this.ckbIgnDstFootprint, "ckbIgnDstFootprint");
             this.ckbIgnDstFootprint.Name = "ckbIgnDstFootprint";
             this.ckbIgnDstFootprint.UseVisualStyleBackColor = true;
-            // 
+            //
             // ckbDiffAlts
-            // 
+            //
             resources.ApplyResources(this.ckbDiffAlts, "ckbDiffAlts");
             this.ckbDiffAlts.Name = "ckbDiffAlts";
             this.ckbDiffAlts.UseVisualStyleBackColor = true;
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x002d);

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -30,7 +30,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// This is the actual FileWrapper
 	/// </summary>
 	/// <remarks>
-	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
+	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Objf
@@ -43,7 +43,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains the Filename
 		/// </summary>
-		private byte[] filename = new byte[64];	
+		private byte[] filename = new byte[64];
 		/// <summary>
 		/// Header of the File
 		/// </summary>
@@ -54,10 +54,10 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public string FileName 
+		public string FileName
 		{
 			get { return Helper.ToString(filename); }
-			set 
+			set
 			{
 				if (!Helper.ToString(filename).Equals(value))
 				{
@@ -79,11 +79,11 @@ namespace SimPe.PackedFiles.Wrapper
 
 
 		#region AbstractWrapper Member
-		public override bool CheckVersion(uint version) 
+		public override bool CheckVersion(uint version)
 		{
 			if ( (version==0012) //0.00
 				|| (version==0013) //0.10
-				) 
+				)
 			{
 				return true;
 			}
@@ -103,13 +103,13 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			///
 			/// TODO: Change the Description passed here
-			/// 
+			///
 			return new AbstractWrapperInfo(
 				"PJSE OBJf Wrapper",
 				"Peter L Jones",
 				"Object Function Table Editor",
 				1
-				); 
+				);
 		}
 
 		/// <summary>
@@ -117,7 +117,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="writer">The Stream the Data should be stored to</param>
 		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
+		/// Be sure that the Position of the stream is Proper on
 		/// return (i.e. must point to the first Byte after your actual File)
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
@@ -128,7 +128,7 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(header[2]);
 
 			writer.Write((uint)items.Count);
-						
+
 			for (int i = 0; i < items.Count; i++)
 				if (items[i] != null) ((ObjfItem)items[i]).Serialize(writer);
 		}
@@ -184,9 +184,9 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		#endregion		
+		#endregion
 
-		#region IFileWrapperSaveExtension Member		
+		#region IFileWrapperSaveExtension Member
 		//all covered by AbstractWrapper
 		#endregion
 	}
@@ -206,7 +206,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public ushort Action
 		{
 			get { return action; }
-			set 
+			set
 			{
 				if (action != value)
 				{
@@ -227,7 +227,7 @@ namespace SimPe.PackedFiles.Wrapper
 					parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
-		}		
+		}
 		#endregion
 
 		public ObjfItem(Objf parent)

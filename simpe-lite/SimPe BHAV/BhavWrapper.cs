@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -32,7 +32,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// More or less implements IList but is strongly typed
 	/// </summary>
 	/// <remarks>
-	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
+	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Bhav
@@ -56,10 +56,10 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public string FileName 
+		public string FileName
 		{
 			get { return Helper.ToString(filename); }
-			set 
+			set
 			{
 				if (!Helper.ToString(filename).Equals(value))
 				{
@@ -182,11 +182,11 @@ namespace SimPe.PackedFiles.Wrapper
 
 
 		#region AbstractWrapper Member
-		public override bool CheckVersion(uint version) 
+		public override bool CheckVersion(uint version)
 		{
 			if ( (version==0012) //0.00
 				|| (version==0013) //0.10
-				) 
+				)
 			{
 				return true;
 			}
@@ -207,13 +207,13 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			///
 			/// TODO: Change the Description passed here
-			/// 
+			///
 			return new AbstractWrapperInfo(
 				"PJSE BHAV Wrapper",
 				"Peter L Jones",
 				"Advanced SimAntics Editor",
 				3
-				); 
+				);
 		}
 
 		/// <summary>
@@ -221,7 +221,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="writer">The Stream the Data should be stored to</param>
 		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
+		/// Be sure that the Position of the stream is Proper on
 		/// return (i.e. must point to the first Byte after your actual File)
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
@@ -267,9 +267,9 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		#endregion		
+		#endregion
 
-		#region IFileWrapperSaveExtension Member		
+		#region IFileWrapperSaveExtension Member
 		//all covered by AbstractWrapper
         protected override string GetResourceName(Data.TypeAlias ta)
         {
@@ -300,10 +300,10 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region Accessor methods
-		public ushort Format 
+		public ushort Format
 		{
 			get { return format; }
-			set 
+			set
 			{
 				if (format != value)
 				{
@@ -316,7 +316,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public ushort InstructionCount
 		{
 			get { return count; }
-			set 
+			set
 			{
 				if (count != value)
 				{
@@ -326,10 +326,10 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public byte Type 
+		public byte Type
 		{
 			get { return type; }
-			set 
+			set
 			{
 				if (type != value)
 				{
@@ -339,10 +339,10 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public byte ArgumentCount 
+		public byte ArgumentCount
 		{
 			get { return argc; }
-			set 
+			set
 			{
 				if (argc != value)
 				{
@@ -352,10 +352,10 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public byte LocalVarCount 
+		public byte LocalVarCount
 		{
 			get { return locals; }
-			set 
+			set
 			{
 				if (locals != value)
 				{
@@ -365,10 +365,10 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public byte HeaderFlag 
+		public byte HeaderFlag
 		{
 			get { return headerflag; }
-			set 
+			set
 			{
 				if (headerflag != value)
 				{
@@ -378,10 +378,10 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public uint TreeVersion 
+		public uint TreeVersion
 		{
 			get { return treeversion; }
-			set 
+			set
 			{
 				if (treeversion != value)
 				{
@@ -391,10 +391,10 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		public byte CacheFlags 
+		public byte CacheFlags
 		{
 			get { return cacheflags; }
-			set 
+			set
 			{
 				if (cacheflags != value)
 				{
@@ -416,7 +416,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Reads the Data from a Stream
 		/// </summary>
 		/// <param name="reader"></param>
-		public void Unserialize(System.IO.BinaryReader reader) 
+		public void Unserialize(System.IO.BinaryReader reader)
 		{
 			format      = reader.ReadUInt16();			//0x0040 - format
 			count       = reader.ReadUInt16();	//0x0042 - # of opcodes
@@ -435,7 +435,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Writes the Data to a Stream
 		/// </summary>
 		/// <param name="writer"></param>
-		public void Serialize(System.IO.BinaryWriter writer) 
+		public void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(format);
 			writer.Write(count);
@@ -466,7 +466,7 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region Accessor methods
-		public ushort OpCode 
+		public ushort OpCode
 		{
 			get { return opcode; }
 			set
@@ -599,7 +599,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="format"></param>
 		/// <param name="reader"></param>
-		private void Unserialize(System.IO.BinaryReader reader) 
+		private void Unserialize(System.IO.BinaryReader reader)
 		{
 			opcode = reader.ReadUInt16();
 			if (((Bhav)parent).Header.Format < 0x8007)
@@ -652,7 +652,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="format"></param>
 		/// <param name="writer"></param>
-		internal void Serialize(System.IO.BinaryWriter writer) 
+		internal void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(opcode);
 			if (((Bhav)parent).Header.Format < 0x8007)

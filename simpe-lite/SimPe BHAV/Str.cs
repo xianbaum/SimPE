@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -41,7 +41,7 @@ namespace pjse
 		private uint group = 0;
 		private uint instance = 0;
         private uint type = 0;
-        
+
         public Scope Scope { get { return scope; } }
         public ExtendedWrapper Parent { get { return parent; } }
         public uint Group { get { return group; } }
@@ -79,7 +79,7 @@ namespace pjse
 
 		class myHT : Hashtable, IDisposable
 		{
-			public myHT() 
+			public myHT()
 			{
 				pjse.FileTable.GFT.FiletableRefresh += new EventHandler(this.GFT_FiletableRefresh);
 			}

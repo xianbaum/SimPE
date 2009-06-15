@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -329,11 +329,11 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 			internalchg = true;
 
-			try 
+			try
 			{
 				wrapper.SynchronizeUserData();
-			} 
-			catch (Exception ex) 
+			}
+			catch (Exception ex)
 			{
 				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}
@@ -494,7 +494,7 @@ namespace SimPe.PackedFiles.UserInterface
 				wrapper.WrapperChanged += new System.EventHandler(this.WrapperChanged);
 				setHandler = true;
 			}
-		}		
+		}
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
@@ -561,44 +561,44 @@ namespace SimPe.PackedFiles.UserInterface
             this.gbValue.SuspendLayout();
             this.bconPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // lbFilename
-            // 
+            //
             resources.ApplyResources(this.lbFilename, "lbFilename");
             this.lbFilename.Name = "lbFilename";
-            // 
+            //
             // tbFilename
-            // 
+            //
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
             this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
-            // 
+            //
             // tbValueDec
-            // 
+            //
             resources.ApplyResources(this.tbValueDec, "tbValueDec");
             this.tbValueDec.Name = "tbValueDec";
             this.tbValueDec.TextChanged += new System.EventHandler(this.dec16_TextChanged);
             this.tbValueDec.Validated += new System.EventHandler(this.dec16_Validated);
             this.tbValueDec.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbValueDec.Validating += new System.ComponentModel.CancelEventHandler(this.dec16_Validating);
-            // 
+            //
             // tbValueHex
-            // 
+            //
             resources.ApplyResources(this.tbValueHex, "tbValueHex");
             this.tbValueHex.Name = "tbValueHex";
             this.tbValueHex.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbValueHex.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbValueHex.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbValueHex.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // label5
-            // 
+            //
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
-            // 
+            //
             // gbValue
-            // 
+            //
             this.gbValue.Controls.Add(this.btnCancel);
             this.gbValue.Controls.Add(this.tbValueDec);
             this.gbValue.Controls.Add(this.tbValueHex);
@@ -608,20 +608,20 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.gbValue, "gbValue");
             this.gbValue.Name = "gbValue";
             this.gbValue.TabStop = false;
-            // 
+            //
             // btnCancel
-            // 
+            //
             resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
+            //
             // label6
-            // 
+            //
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
-            // 
+            //
             // bconPanel
-            // 
+            //
             resources.ApplyResources(this.bconPanel, "bconPanel");
             this.bconPanel.BackColor = System.Drawing.SystemColors.Control;
             this.bconPanel.Controls.Add(this.btnClose);
@@ -641,79 +641,79 @@ namespace SimPe.PackedFiles.UserInterface
             this.bconPanel.Controls.Add(this.gbValue);
             this.bconPanel.Controls.Add(this.btnTRCNMaker);
             this.bconPanel.Name = "bconPanel";
-            // 
+            //
             // btnClose
-            // 
+            //
             resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Name = "btnClose";
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
+            //
             // cmpBCON
-            // 
+            //
             resources.ApplyResources(this.cmpBCON, "cmpBCON");
             this.cmpBCON.Name = "cmpBCON";
             this.cmpBCON.UseVisualStyleBackColor = true;
             this.cmpBCON.Wrapper = null;
             this.cmpBCON.WrapperName = null;
             this.cmpBCON.CompareWith += new pjse.CompareButton.CompareWithEventHandler(this.cmpBCON_CompareWith);
-            // 
+            //
             // llIsOverride
-            // 
+            //
             resources.ApplyResources(this.llIsOverride, "llIsOverride");
             this.llIsOverride.Name = "llIsOverride";
             this.llIsOverride.TabStop = true;
             this.llIsOverride.UseCompatibleTextRendering = true;
             this.llIsOverride.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llIsOverride_LinkClicked);
-            // 
+            //
             // btnUpdateBCON
-            // 
+            //
             resources.ApplyResources(this.btnUpdateBCON, "btnUpdateBCON");
             this.btnUpdateBCON.Name = "btnUpdateBCON";
             this.btnUpdateBCON.Click += new System.EventHandler(this.btnUpdateBCON_Click);
-            // 
+            //
             // pjse_banner1
-            // 
+            //
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
             this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pjse_banner1.Name = "pjse_banner1";
             this.pjse_banner1.SiblingVisible = true;
             this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
-            // 
+            //
             // btnStrPrev
-            // 
+            //
             resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
             this.btnStrPrev.Name = "btnStrPrev";
             this.btnStrPrev.TabStop = false;
             this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
-            // 
+            //
             // btnStrNext
-            // 
+            //
             resources.ApplyResources(this.btnStrNext, "btnStrNext");
             this.btnStrNext.Name = "btnStrNext";
             this.btnStrNext.TabStop = false;
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
-            // 
+            //
             // cbFlag
-            // 
+            //
             resources.ApplyResources(this.cbFlag, "cbFlag");
             this.cbFlag.Name = "cbFlag";
             this.cbFlag.CheckedChanged += new System.EventHandler(this.cbFlag_CheckedChanged);
-            // 
+            //
             // btnStrDelete
-            // 
+            //
             resources.ApplyResources(this.btnStrDelete, "btnStrDelete");
             this.btnStrDelete.Name = "btnStrDelete";
             this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
-            // 
+            //
             // btnStrAdd
-            // 
+            //
             resources.ApplyResources(this.btnStrAdd, "btnStrAdd");
             this.btnStrAdd.Name = "btnStrAdd";
             this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
-            // 
+            //
             // lvConstants
-            // 
+            //
             resources.ApplyResources(this.lvConstants, "lvConstants");
             this.lvConstants.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chID,
@@ -730,33 +730,33 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvConstants.UseCompatibleStateImageBehavior = false;
             this.lvConstants.View = System.Windows.Forms.View.Details;
             this.lvConstants.SelectedIndexChanged += new System.EventHandler(this.lvConstants_SelectedIndexChanged);
-            // 
+            //
             // chID
-            // 
+            //
             resources.ApplyResources(this.chID, "chID");
-            // 
+            //
             // chValue
-            // 
+            //
             resources.ApplyResources(this.chValue, "chValue");
-            // 
+            //
             // chLabel
-            // 
+            //
             resources.ApplyResources(this.chLabel, "chLabel");
-            // 
+            //
             // btnCommit
-            // 
+            //
             resources.ApplyResources(this.btnCommit, "btnCommit");
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Click += new System.EventHandler(this.btnCommit_Clicked);
-            // 
+            //
             // btnTRCNMaker
-            // 
+            //
             resources.ApplyResources(this.btnTRCNMaker, "btnTRCNMaker");
             this.btnTRCNMaker.Name = "btnTRCNMaker";
             this.btnTRCNMaker.Click += new System.EventHandler(this.btnTRCNMaker_Click);
-            // 
+            //
             // BconForm
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.btnClose;

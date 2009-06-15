@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -337,9 +337,9 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnMaterial.SuspendLayout();
             this.pnNotScrShot.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x006d
-            // 
+            //
             this.pnWiz0x006d.Controls.Add(this.cbPicker2);
             this.pnWiz0x006d.Controls.Add(this.cbAttrPicker);
             this.pnWiz0x006d.Controls.Add(this.cbDecimal);
@@ -354,38 +354,38 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnWiz0x006d.Controls.Add(this.label1);
             resources.ApplyResources(this.pnWiz0x006d, "pnWiz0x006d");
             this.pnWiz0x006d.Name = "pnWiz0x006d";
-            // 
+            //
             // cbPicker2
-            // 
+            //
             this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker2.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker2, "cbPicker2");
             this.cbPicker2.Name = "cbPicker2";
-            // 
+            //
             // cbAttrPicker
-            // 
+            //
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            // 
+            //
             // cbDecimal
-            // 
+            //
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            // 
+            //
             // tbVal2
-            // 
+            //
             resources.ApplyResources(this.tbVal2, "tbVal2");
             this.tbVal2.Name = "tbVal2";
-            // 
+            //
             // cbDataOwner2
-            // 
+            //
             this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner2.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
             this.cbDataOwner2.Name = "cbDataOwner2";
-            // 
+            //
             // panel1
-            // 
+            //
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.pnNotAllOver);
             this.panel1.Controls.Add(this.ckbAllOver);
@@ -393,9 +393,9 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.panel1.Controls.Add(this.rb3Me);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Name = "panel1";
-            // 
+            //
             // pnNotAllOver
-            // 
+            //
             resources.ApplyResources(this.pnNotAllOver, "pnNotAllOver");
             this.pnNotAllOver.Controls.Add(this.tbMesh);
             this.pnNotAllOver.Controls.Add(this.btnMesh);
@@ -405,40 +405,40 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnNotAllOver.Controls.Add(this.cbMeshScope);
             this.pnNotAllOver.Controls.Add(this.label4);
             this.pnNotAllOver.Name = "pnNotAllOver";
-            // 
+            //
             // tbMesh
-            // 
+            //
             resources.ApplyResources(this.tbMesh, "tbMesh");
             this.tbMesh.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbMesh.Name = "tbMesh";
             this.tbMesh.ReadOnly = true;
             this.tbMesh.TabStop = false;
-            // 
+            //
             // btnMesh
-            // 
+            //
             resources.ApplyResources(this.btnMesh, "btnMesh");
             this.btnMesh.Name = "btnMesh";
             this.btnMesh.Click += new System.EventHandler(this.btnMesh_Click);
-            // 
+            //
             // tbVal5
-            // 
+            //
             resources.ApplyResources(this.tbVal5, "tbVal5");
             this.tbVal5.Name = "tbVal5";
-            // 
+            //
             // label8
-            // 
+            //
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
-            // 
+            //
             // ckbMeshTemp
-            // 
+            //
             resources.ApplyResources(this.ckbMeshTemp, "ckbMeshTemp");
             this.ckbMeshTemp.Name = "ckbMeshTemp";
             this.ckbMeshTemp.UseVisualStyleBackColor = true;
             this.ckbMeshTemp.CheckedChanged += new System.EventHandler(this.ckbMeshTemp_CheckedChanged);
-            // 
+            //
             // cbMeshScope
-            // 
+            //
             this.cbMeshScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMeshScope.FormattingEnabled = true;
             this.cbMeshScope.Items.AddRange(new object[] {
@@ -448,61 +448,61 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             resources.ApplyResources(this.cbMeshScope, "cbMeshScope");
             this.cbMeshScope.Name = "cbMeshScope";
             this.cbMeshScope.SelectedIndexChanged += new System.EventHandler(this.cbMatMeshScope_SelectedIndexChanged);
-            // 
+            //
             // label4
-            // 
+            //
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
+            //
             // ckbAllOver
-            // 
+            //
             resources.ApplyResources(this.ckbAllOver, "ckbAllOver");
             this.ckbAllOver.Name = "ckbAllOver";
             this.ckbAllOver.UseVisualStyleBackColor = true;
             this.ckbAllOver.CheckedChanged += new System.EventHandler(this.ckbAllOver_CheckedChanged);
-            // 
+            //
             // rb3Object
-            // 
+            //
             resources.ApplyResources(this.rb3Object, "rb3Object");
             this.rb3Object.Name = "rb3Object";
             this.rb3Object.TabStop = true;
             this.rb3Object.UseVisualStyleBackColor = true;
             this.rb3Object.CheckedChanged += new System.EventHandler(this.rb3group_CheckedChanged);
-            // 
+            //
             // rb3Me
-            // 
+            //
             resources.ApplyResources(this.rb3Me, "rb3Me");
             this.rb3Me.Name = "rb3Me";
             this.rb3Me.TabStop = true;
             this.rb3Me.UseVisualStyleBackColor = true;
             this.rb3Me.CheckedChanged += new System.EventHandler(this.rb3group_CheckedChanged);
-            // 
+            //
             // label2
-            // 
+            //
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            // 
+            //
             // cbPicker1
-            // 
+            //
             this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker1.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
-            // 
+            //
             // tbVal1
-            // 
+            //
             resources.ApplyResources(this.tbVal1, "tbVal1");
             this.tbVal1.Name = "tbVal1";
-            // 
+            //
             // cbDataOwner1
-            // 
+            //
             this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner1.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
+            //
             // pnMaterial
-            // 
+            //
             resources.ApplyResources(this.pnMaterial, "pnMaterial");
             this.pnMaterial.Controls.Add(this.pnNotScrShot);
             this.pnMaterial.Controls.Add(this.rb1Object);
@@ -510,9 +510,9 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnMaterial.Controls.Add(this.rb1ScrShot);
             this.pnMaterial.Controls.Add(this.label3);
             this.pnMaterial.Name = "pnMaterial";
-            // 
+            //
             // pnNotScrShot
-            // 
+            //
             resources.ApplyResources(this.pnNotScrShot, "pnNotScrShot");
             this.pnNotScrShot.Controls.Add(this.tbMaterial);
             this.pnNotScrShot.Controls.Add(this.btnMaterial);
@@ -525,28 +525,28 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             this.pnNotScrShot.Controls.Add(this.rb2MovingTexture);
             this.pnNotScrShot.Controls.Add(this.rb2Material);
             this.pnNotScrShot.Name = "pnNotScrShot";
-            // 
+            //
             // tbMaterial
-            // 
+            //
             resources.ApplyResources(this.tbMaterial, "tbMaterial");
             this.tbMaterial.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.tbMaterial.Name = "tbMaterial";
             this.tbMaterial.ReadOnly = true;
             this.tbMaterial.TabStop = false;
-            // 
+            //
             // btnMaterial
-            // 
+            //
             resources.ApplyResources(this.btnMaterial, "btnMaterial");
             this.btnMaterial.Name = "btnMaterial";
             this.btnMaterial.Click += new System.EventHandler(this.btnMaterial_Click);
-            // 
+            //
             // tbVal3
-            // 
+            //
             resources.ApplyResources(this.tbVal3, "tbVal3");
             this.tbVal3.Name = "tbVal3";
-            // 
+            //
             // cbMatScope
-            // 
+            //
             this.cbMatScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMatScope.FormattingEnabled = true;
             this.cbMatScope.Items.AddRange(new object[] {
@@ -556,84 +556,84 @@ namespace pjse.BhavOperandWizards.Wiz0x006d
             resources.ApplyResources(this.cbMatScope, "cbMatScope");
             this.cbMatScope.Name = "cbMatScope";
             this.cbMatScope.SelectedIndexChanged += new System.EventHandler(this.cbMatMeshScope_SelectedIndexChanged);
-            // 
+            //
             // label7
-            // 
+            //
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
-            // 
+            //
             // label6
-            // 
+            //
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
-            // 
+            //
             // label5
-            // 
+            //
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
-            // 
+            //
             // ckbMaterialTemp
-            // 
+            //
             resources.ApplyResources(this.ckbMaterialTemp, "ckbMaterialTemp");
             this.ckbMaterialTemp.Name = "ckbMaterialTemp";
             this.ckbMaterialTemp.UseVisualStyleBackColor = true;
             this.ckbMaterialTemp.CheckedChanged += new System.EventHandler(this.ckbMaterialTemp_CheckedChanged);
-            // 
+            //
             // rb2MovingTexture
-            // 
+            //
             resources.ApplyResources(this.rb2MovingTexture, "rb2MovingTexture");
             this.rb2MovingTexture.Name = "rb2MovingTexture";
             this.rb2MovingTexture.TabStop = true;
             this.rb2MovingTexture.UseVisualStyleBackColor = true;
-            // 
+            //
             // rb2Material
-            // 
+            //
             resources.ApplyResources(this.rb2Material, "rb2Material");
             this.rb2Material.Name = "rb2Material";
             this.rb2Material.TabStop = true;
             this.rb2Material.UseVisualStyleBackColor = true;
-            // 
+            //
             // rb1Object
-            // 
+            //
             resources.ApplyResources(this.rb1Object, "rb1Object");
             this.rb1Object.Name = "rb1Object";
             this.rb1Object.TabStop = true;
             this.rb1Object.UseVisualStyleBackColor = true;
             this.rb1Object.CheckedChanged += new System.EventHandler(this.rb1group_CheckedChanged);
-            // 
+            //
             // rb1Me
-            // 
+            //
             resources.ApplyResources(this.rb1Me, "rb1Me");
             this.rb1Me.Name = "rb1Me";
             this.rb1Me.TabStop = true;
             this.rb1Me.UseVisualStyleBackColor = true;
             this.rb1Me.CheckedChanged += new System.EventHandler(this.rb1group_CheckedChanged);
-            // 
+            //
             // rb1ScrShot
-            // 
+            //
             resources.ApplyResources(this.rb1ScrShot, "rb1ScrShot");
             this.rb1ScrShot.Name = "rb1ScrShot";
             this.rb1ScrShot.TabStop = true;
             this.rb1ScrShot.UseVisualStyleBackColor = true;
             this.rb1ScrShot.CheckedChanged += new System.EventHandler(this.rb1group_CheckedChanged);
-            // 
+            //
             // label3
-            // 
+            //
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            // 
+            //
             // label9
-            // 
+            //
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x006d);

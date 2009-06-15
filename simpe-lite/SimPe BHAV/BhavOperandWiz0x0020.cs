@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -182,15 +182,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0020
             this.pnObject.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x001f
-            // 
+            //
             this.pnWiz0x001f.Controls.Add(this.flowLayoutPanel1);
             resources.ApplyResources(this.pnWiz0x001f, "pnWiz0x001f");
             this.pnWiz0x001f.Name = "pnWiz0x001f";
-            // 
+            //
             // flowLayoutPanel1
-            // 
+            //
             this.flowLayoutPanel1.Controls.Add(this.label1);
             this.flowLayoutPanel1.Controls.Add(this.pnObject);
             this.flowLayoutPanel1.Controls.Add(this.ckbNID);
@@ -200,14 +200,14 @@ namespace pjse.BhavOperandWizards.Wiz0x0020
             this.flowLayoutPanel1.Controls.Add(this.ckbTemp01);
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // pnObject
-            // 
+            //
             this.pnObject.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnObject.Controls.Add(this.cbAttrPicker);
             this.pnObject.Controls.Add(this.cbDecimal);
@@ -216,82 +216,82 @@ namespace pjse.BhavOperandWizards.Wiz0x0020
             this.pnObject.Controls.Add(this.cbDataOwner1);
             resources.ApplyResources(this.pnObject, "pnObject");
             this.pnObject.Name = "pnObject";
-            // 
+            //
             // cbAttrPicker
-            // 
+            //
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            // 
+            //
             // cbDecimal
-            // 
+            //
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            // 
+            //
             // cbPicker1
-            // 
+            //
             this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker1.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
-            // 
+            //
             // tbVal1
-            // 
+            //
             resources.ApplyResources(this.tbVal1, "tbVal1");
             this.tbVal1.Name = "tbVal1";
-            // 
+            //
             // cbDataOwner1
-            // 
+            //
             this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner1.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
+            //
             // ckbNID
-            // 
+            //
             resources.ApplyResources(this.ckbNID, "ckbNID");
             this.ckbNID.Name = "ckbNID";
             this.ckbNID.UseVisualStyleBackColor = true;
-            // 
+            //
             // ckbOrigGUID
-            // 
+            //
             resources.ApplyResources(this.ckbOrigGUID, "ckbOrigGUID");
             this.flowLayoutPanel1.SetFlowBreak(this.ckbOrigGUID, true);
             this.ckbOrigGUID.Name = "ckbOrigGUID";
             this.ckbOrigGUID.UseVisualStyleBackColor = true;
-            // 
+            //
             // label2
-            // 
+            //
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            // 
+            //
             // flowLayoutPanel2
-            // 
+            //
             this.flowLayoutPanel2.Controls.Add(this.tbGUID);
             this.flowLayoutPanel2.Controls.Add(this.lbGUIDText);
             resources.ApplyResources(this.flowLayoutPanel2, "flowLayoutPanel2");
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            // 
+            //
             // tbGUID
-            // 
+            //
             resources.ApplyResources(this.tbGUID, "tbGUID");
             this.tbGUID.Name = "tbGUID";
             this.tbGUID.TextChanged += new System.EventHandler(this.tbGUID_TextChanged);
             this.tbGUID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // lbGUIDText
-            // 
+            //
             resources.ApplyResources(this.lbGUIDText, "lbGUIDText");
             this.lbGUIDText.Name = "lbGUIDText";
-            // 
+            //
             // ckbTemp01
-            // 
+            //
             resources.ApplyResources(this.ckbTemp01, "ckbTemp01");
             this.ckbTemp01.Name = "ckbTemp01";
             this.ckbTemp01.UseVisualStyleBackColor = true;
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x001f);

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2008 by Peter L Jones                                   *
- *   peter@users.sf.net                                                    *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *

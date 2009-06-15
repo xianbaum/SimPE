@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -171,7 +171,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
 
         #region Vom Windows Form-Designer generierter Code
         /// <summary>
-        /// Erforderliche Methode für die Designerunterstützung. 
+        /// Erforderliche Methode für die Designerunterstützung.
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent()
@@ -212,17 +212,17 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.panel2.SuspendLayout();
             this.pnArray.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x0076
-            // 
+            //
             resources.ApplyResources(this.pnWiz0x0076, "pnWiz0x0076");
             this.pnWiz0x0076.Controls.Add(this.tableLayoutPanel1);
             this.pnWiz0x0076.Controls.Add(this.rb1StackObj);
             this.pnWiz0x0076.Controls.Add(this.rb1My);
             this.pnWiz0x0076.Name = "pnWiz0x0076";
-            // 
+            //
             // tableLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
             this.tableLayoutPanel1.Controls.Add(this.pnArray, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.pnOp2, 1, 2);
@@ -231,128 +231,128 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.tableLayoutPanel1.Controls.Add(this.lbOp1, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
+            //
             // pnOp2
-            // 
+            //
             resources.ApplyResources(this.pnOp2, "pnOp2");
             this.pnOp2.Controls.Add(this.lbConst2);
             this.pnOp2.Controls.Add(this.cbPicker2);
             this.pnOp2.Controls.Add(this.tbval2);
             this.pnOp2.Controls.Add(this.cbDataOwner2);
             this.pnOp2.Name = "pnOp2";
-            // 
+            //
             // lbConst2
-            // 
+            //
             resources.ApplyResources(this.lbConst2, "lbConst2");
             this.lbConst2.Name = "lbConst2";
-            // 
+            //
             // cbPicker2
-            // 
+            //
             this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker2.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker2, "cbPicker2");
             this.cbPicker2.Name = "cbPicker2";
-            // 
+            //
             // tbval2
-            // 
+            //
             resources.ApplyResources(this.tbval2, "tbval2");
             this.tbval2.Name = "tbval2";
-            // 
+            //
             // cbDataOwner2
-            // 
+            //
             this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner2.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
             this.cbDataOwner2.Name = "cbDataOwner2";
-            // 
+            //
             // lbOp2
-            // 
+            //
             resources.ApplyResources(this.lbOp2, "lbOp2");
             this.lbOp2.Name = "lbOp2";
-            // 
+            //
             // pnOp1
-            // 
+            //
             resources.ApplyResources(this.pnOp1, "pnOp1");
             this.pnOp1.Controls.Add(this.lbConst1);
             this.pnOp1.Controls.Add(this.cbPicker1);
             this.pnOp1.Controls.Add(this.tbval1);
             this.pnOp1.Controls.Add(this.cbDataOwner1);
             this.pnOp1.Name = "pnOp1";
-            // 
+            //
             // lbConst1
-            // 
+            //
             resources.ApplyResources(this.lbConst1, "lbConst1");
             this.lbConst1.Name = "lbConst1";
-            // 
+            //
             // cbPicker1
-            // 
+            //
             this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker1.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
-            // 
+            //
             // tbval1
-            // 
+            //
             resources.ApplyResources(this.tbval1, "tbval1");
             this.tbval1.Name = "tbval1";
-            // 
+            //
             // cbDataOwner1
-            // 
+            //
             this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner1.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
+            //
             // lbOp1
-            // 
+            //
             resources.ApplyResources(this.lbOp1, "lbOp1");
             this.lbOp1.Name = "lbOp1";
-            // 
+            //
             // panel1
-            // 
+            //
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Controls.Add(this.ckbAttrPicker);
             this.panel1.Controls.Add(this.ckbDecimal);
             this.panel1.Name = "panel1";
-            // 
+            //
             // ckbAttrPicker
-            // 
+            //
             resources.ApplyResources(this.ckbAttrPicker, "ckbAttrPicker");
             this.ckbAttrPicker.Name = "ckbAttrPicker";
-            // 
+            //
             // ckbDecimal
-            // 
+            //
             resources.ApplyResources(this.ckbDecimal, "ckbDecimal");
             this.ckbDecimal.Name = "ckbDecimal";
-            // 
+            //
             // rb1StackObj
-            // 
+            //
             resources.ApplyResources(this.rb1StackObj, "rb1StackObj");
             this.rb1StackObj.Name = "rb1StackObj";
             this.rb1StackObj.TabStop = true;
             this.rb1StackObj.UseVisualStyleBackColor = true;
-            // 
+            //
             // rb1My
-            // 
+            //
             resources.ApplyResources(this.rb1My, "rb1My");
             this.rb1My.Name = "rb1My";
             this.rb1My.TabStop = true;
             this.rb1My.UseVisualStyleBackColor = true;
-            // 
+            //
             // tbObjectArray
-            // 
+            //
             resources.ApplyResources(this.tbObjectArray, "tbObjectArray");
             this.tbObjectArray.Name = "tbObjectArray";
-            // 
+            //
             // cbObjectArray
-            // 
+            //
             this.cbObjectArray.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbObjectArray.DropDownWidth = 384;
             resources.ApplyResources(this.cbObjectArray, "cbObjectArray");
             this.cbObjectArray.Name = "cbObjectArray";
-            // 
+            //
             // cbOperation
-            // 
+            //
             this.cbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbOperation.DropDownWidth = 462;
             this.cbOperation.Items.AddRange(new object[] {
@@ -373,21 +373,21 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             resources.ApplyResources(this.cbOperation, "cbOperation");
             this.cbOperation.Name = "cbOperation";
             this.cbOperation.SelectedIndexChanged += new System.EventHandler(this.cbOperation_SelectedIndexChanged);
-            // 
+            //
             // panel2
-            // 
+            //
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.label1);
             this.panel2.Controls.Add(this.label3);
             this.panel2.Name = "panel2";
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // pnArray
-            // 
+            //
             resources.ApplyResources(this.pnArray, "pnArray");
             this.pnArray.Controls.Add(this.panel3);
             this.pnArray.Controls.Add(this.panel2);
@@ -395,20 +395,20 @@ namespace pjse.BhavOperandWizards.Wiz0x0076
             this.pnArray.Controls.Add(this.cbObjectArray);
             this.pnArray.Controls.Add(this.tbObjectArray);
             this.pnArray.Name = "pnArray";
-            // 
+            //
             // label3
-            // 
+            //
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            // 
+            //
             // panel3
-            // 
+            //
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.panel3, "panel3");
             this.panel3.Name = "panel3";
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnWiz0x0076);

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -135,7 +135,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             new int[] { 0, 2, 0, 2,  2, 2, 2, 3,  3, 0, 0, 0,  2, 0, 3, 3,  0, 2, 2, 0, }, // Doid2
             new int[] { 0, 0, 0, 0,  5, 5, 0, 5,  5, 0, 4, 0,  0, 4, 5, 5,  0, 0, 0, 0, }, // Doid3
         };
-        static bool[] aByGUIDCounted = 
+        static bool[] aByGUIDCounted =
             new bool[] { true , false, true , false,  true , false, true , true ,  false, false, true , false, };
         static bool[] aByGUIDSingular =
             new bool[] { true , false, true , true ,  false, false, false, false,  false, false, false, false,  false, false, false, false,  false, false, false, false, };
@@ -497,15 +497,15 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.pnDoid2.SuspendLayout();
             this.flpnGUID.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x0033
-            // 
+            //
             resources.ApplyResources(this.pnWiz0x0033, "pnWiz0x0033");
             this.pnWiz0x0033.Controls.Add(this.tlpnGetSetValue);
             this.pnWiz0x0033.Name = "pnWiz0x0033";
-            // 
+            //
             // tlpnGetSetValue
-            // 
+            //
             resources.ApplyResources(this.tlpnGetSetValue, "tlpnGetSetValue");
             this.tlpnGetSetValue.Controls.Add(this.flowLayoutPanel1, 1, 7);
             this.tlpnGetSetValue.Controls.Add(this.lbOperation, 0, 0);
@@ -523,60 +523,60 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.tlpnGetSetValue.Controls.Add(this.lbDoid2, 0, 4);
             this.tlpnGetSetValue.Controls.Add(this.lbGUID, 0, 3);
             this.tlpnGetSetValue.Name = "tlpnGetSetValue";
-            // 
+            //
             // flowLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Controls.Add(this.ckbDecimal);
             this.flowLayoutPanel1.Controls.Add(this.ckbAttrPicker);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
+            //
             // ckbDecimal
-            // 
+            //
             resources.ApplyResources(this.ckbDecimal, "ckbDecimal");
             this.ckbDecimal.Name = "ckbDecimal";
-            // 
+            //
             // ckbAttrPicker
-            // 
+            //
             resources.ApplyResources(this.ckbAttrPicker, "ckbAttrPicker");
             this.ckbAttrPicker.Name = "ckbAttrPicker";
-            // 
+            //
             // lbOperation
-            // 
+            //
             resources.ApplyResources(this.lbOperation, "lbOperation");
             this.lbOperation.Name = "lbOperation";
-            // 
+            //
             // flpnOperation
-            // 
+            //
             resources.ApplyResources(this.flpnOperation, "flpnOperation");
             this.flpnOperation.Controls.Add(this.cbOperation);
             this.flpnOperation.Controls.Add(this.ckbReversed);
             this.flpnOperation.Name = "flpnOperation";
-            // 
+            //
             // cbOperation
-            // 
+            //
             this.cbOperation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbOperation.DropDownWidth = 480;
             this.cbOperation.FormattingEnabled = true;
             resources.ApplyResources(this.cbOperation, "cbOperation");
             this.cbOperation.Name = "cbOperation";
             this.cbOperation.SelectedIndexChanged += new System.EventHandler(this.cbOperation_SelectedIndexChanged);
-            // 
+            //
             // ckbReversed
-            // 
+            //
             resources.ApplyResources(this.ckbReversed, "ckbReversed");
             this.ckbReversed.Name = "ckbReversed";
             this.ckbReversed.UseVisualStyleBackColor = true;
-            // 
+            //
             // gbTokenTypes
-            // 
+            //
             resources.ApplyResources(this.gbTokenTypes, "gbTokenTypes");
             this.gbTokenTypes.Controls.Add(this.tableLayoutPanel1);
             this.gbTokenTypes.Name = "gbTokenTypes";
             this.gbTokenTypes.TabStop = false;
-            // 
+            //
             // tableLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
             this.tableLayoutPanel1.Controls.Add(this.ckbTTAll, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.ckbTTInvShopping, 1, 2);
@@ -586,285 +586,285 @@ namespace pjse.BhavOperandWizards.Wiz0x0033
             this.tableLayoutPanel1.Controls.Add(this.ckbTTInvVisible, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.ckbTTVisible, 0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
+            //
             // ckbTTAll
-            // 
+            //
             resources.ApplyResources(this.ckbTTAll, "ckbTTAll");
             this.ckbTTAll.Checked = true;
             this.ckbTTAll.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ckbTTAll.Name = "ckbTTAll";
             this.ckbTTAll.TabStop = false;
             this.ckbTTAll.UseVisualStyleBackColor = true;
-            // 
+            //
             // ckbTTInvShopping
-            // 
+            //
             resources.ApplyResources(this.ckbTTInvShopping, "ckbTTInvShopping");
             this.ckbTTInvShopping.Name = "ckbTTInvShopping";
             this.ckbTTInvShopping.UseVisualStyleBackColor = true;
-            // 
+            //
             // ckbTTShopping
-            // 
+            //
             resources.ApplyResources(this.ckbTTShopping, "ckbTTShopping");
             this.ckbTTShopping.Name = "ckbTTShopping";
             this.ckbTTShopping.UseVisualStyleBackColor = true;
             this.ckbTTShopping.CheckedChanged += new System.EventHandler(this.ckbTT_CheckedChanged);
-            // 
+            //
             // ckbTTInvMemory
-            // 
+            //
             resources.ApplyResources(this.ckbTTInvMemory, "ckbTTInvMemory");
             this.ckbTTInvMemory.Name = "ckbTTInvMemory";
             this.ckbTTInvMemory.UseVisualStyleBackColor = true;
-            // 
+            //
             // ckbTTMemory
-            // 
+            //
             resources.ApplyResources(this.ckbTTMemory, "ckbTTMemory");
             this.ckbTTMemory.Name = "ckbTTMemory";
             this.ckbTTMemory.UseVisualStyleBackColor = true;
             this.ckbTTMemory.CheckedChanged += new System.EventHandler(this.ckbTT_CheckedChanged);
-            // 
+            //
             // ckbTTInvVisible
-            // 
+            //
             resources.ApplyResources(this.ckbTTInvVisible, "ckbTTInvVisible");
             this.ckbTTInvVisible.Name = "ckbTTInvVisible";
             this.ckbTTInvVisible.UseVisualStyleBackColor = true;
-            // 
+            //
             // ckbTTVisible
-            // 
+            //
             resources.ApplyResources(this.ckbTTVisible, "ckbTTVisible");
             this.ckbTTVisible.Name = "ckbTTVisible";
             this.ckbTTVisible.UseVisualStyleBackColor = true;
             this.ckbTTVisible.CheckedChanged += new System.EventHandler(this.ckbTT_CheckedChanged);
-            // 
+            //
             // gbInventoryType
-            // 
+            //
             resources.ApplyResources(this.gbInventoryType, "gbInventoryType");
             this.gbInventoryType.Controls.Add(this.flpnDoid0);
             this.gbInventoryType.Controls.Add(this.flpnInventoryType);
             this.gbInventoryType.Name = "gbInventoryType";
             this.gbInventoryType.TabStop = false;
-            // 
+            //
             // flpnDoid0
-            // 
+            //
             resources.ApplyResources(this.flpnDoid0, "flpnDoid0");
             this.flpnDoid0.Controls.Add(this.lbDoid0);
             this.flpnDoid0.Controls.Add(this.pnDoid0);
             this.flpnDoid0.Name = "flpnDoid0";
-            // 
+            //
             // lbDoid0
-            // 
+            //
             resources.ApplyResources(this.lbDoid0, "lbDoid0");
             this.lbDoid0.Name = "lbDoid0";
             this.lbDoid0.Tag = "";
-            // 
+            //
             // pnDoid0
-            // 
+            //
             resources.ApplyResources(this.pnDoid0, "pnDoid0");
             this.pnDoid0.Controls.Add(this.cbPicker0);
             this.pnDoid0.Controls.Add(this.tbVal0);
             this.pnDoid0.Controls.Add(this.cbDataOwner0);
             this.pnDoid0.Name = "pnDoid0";
-            // 
+            //
             // cbPicker0
-            // 
+            //
             this.cbPicker0.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker0.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker0, "cbPicker0");
             this.cbPicker0.Name = "cbPicker0";
             this.cbPicker0.TabStop = false;
-            // 
+            //
             // tbVal0
-            // 
+            //
             resources.ApplyResources(this.tbVal0, "tbVal0");
             this.tbVal0.Name = "tbVal0";
             this.tbVal0.TabStop = false;
-            // 
+            //
             // cbDataOwner0
-            // 
+            //
             this.cbDataOwner0.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner0.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner0, "cbDataOwner0");
             this.cbDataOwner0.Name = "cbDataOwner0";
-            // 
+            //
             // flpnInventoryType
-            // 
+            //
             resources.ApplyResources(this.flpnInventoryType, "flpnInventoryType");
             this.flpnInventoryType.Controls.Add(this.rb1Counted);
             this.flpnInventoryType.Controls.Add(this.rb1Singular);
             this.flpnInventoryType.Controls.Add(this.cbTargetInv);
             this.flpnInventoryType.Name = "flpnInventoryType";
-            // 
+            //
             // rb1Counted
-            // 
+            //
             resources.ApplyResources(this.rb1Counted, "rb1Counted");
             this.rb1Counted.Name = "rb1Counted";
             this.rb1Counted.TabStop = true;
             this.rb1Counted.UseVisualStyleBackColor = true;
             this.rb1Counted.CheckedChanged += new System.EventHandler(this.rb1_CheckedChanged);
-            // 
+            //
             // rb1Singular
-            // 
+            //
             resources.ApplyResources(this.rb1Singular, "rb1Singular");
             this.rb1Singular.Name = "rb1Singular";
             this.rb1Singular.TabStop = true;
             this.rb1Singular.UseVisualStyleBackColor = true;
             this.rb1Singular.CheckedChanged += new System.EventHandler(this.rb1_CheckedChanged);
-            // 
+            //
             // cbTargetInv
-            // 
+            //
             this.cbTargetInv.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbTargetInv.FormattingEnabled = true;
             resources.ApplyResources(this.cbTargetInv, "cbTargetInv");
             this.cbTargetInv.Name = "cbTargetInv";
             this.cbTargetInv.SelectedIndexChanged += new System.EventHandler(this.cbTargetInv_SelectedIndexChanged);
-            // 
+            //
             // lbDoid1
-            // 
+            //
             resources.ApplyResources(this.lbDoid1, "lbDoid1");
             this.lbDoid1.Name = "lbDoid1";
-            // 
+            //
             // pnDoid1
-            // 
+            //
             resources.ApplyResources(this.pnDoid1, "pnDoid1");
             this.pnDoid1.Controls.Add(this.cbPicker1);
             this.pnDoid1.Controls.Add(this.tbVal1);
             this.pnDoid1.Controls.Add(this.cbDataOwner1);
             this.pnDoid1.Name = "pnDoid1";
-            // 
+            //
             // cbPicker1
-            // 
+            //
             this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker1.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
             this.cbPicker1.TabStop = false;
-            // 
+            //
             // tbVal1
-            // 
+            //
             resources.ApplyResources(this.tbVal1, "tbVal1");
             this.tbVal1.Name = "tbVal1";
             this.tbVal1.TabStop = false;
-            // 
+            //
             // cbDataOwner1
-            // 
+            //
             this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner1.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
+            //
             // pnDoid3
-            // 
+            //
             resources.ApplyResources(this.pnDoid3, "pnDoid3");
             this.pnDoid3.Controls.Add(this.cbPicker3);
             this.pnDoid3.Controls.Add(this.tbVal3);
             this.pnDoid3.Controls.Add(this.cbDataOwner3);
             this.pnDoid3.Name = "pnDoid3";
-            // 
+            //
             // cbPicker3
-            // 
+            //
             this.cbPicker3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker3.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker3, "cbPicker3");
             this.cbPicker3.Name = "cbPicker3";
             this.cbPicker3.TabStop = false;
-            // 
+            //
             // tbVal3
-            // 
+            //
             resources.ApplyResources(this.tbVal3, "tbVal3");
             this.tbVal3.Name = "tbVal3";
             this.tbVal3.TabStop = false;
-            // 
+            //
             // cbDataOwner3
-            // 
+            //
             this.cbDataOwner3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner3.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner3, "cbDataOwner3");
             this.cbDataOwner3.Name = "cbDataOwner3";
-            // 
+            //
             // pnDoid2
-            // 
+            //
             resources.ApplyResources(this.pnDoid2, "pnDoid2");
             this.pnDoid2.Controls.Add(this.cbPicker2);
             this.pnDoid2.Controls.Add(this.tbVal2);
             this.pnDoid2.Controls.Add(this.cbDataOwner2);
             this.pnDoid2.Name = "pnDoid2";
-            // 
+            //
             // cbPicker2
-            // 
+            //
             this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker2.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker2, "cbPicker2");
             this.cbPicker2.Name = "cbPicker2";
             this.cbPicker2.TabStop = false;
-            // 
+            //
             // tbVal2
-            // 
+            //
             resources.ApplyResources(this.tbVal2, "tbVal2");
             this.tbVal2.Name = "tbVal2";
             this.tbVal2.TabStop = false;
-            // 
+            //
             // cbDataOwner2
-            // 
+            //
             this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner2.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
             this.cbDataOwner2.Name = "cbDataOwner2";
-            // 
+            //
             // lbInventory
-            // 
+            //
             resources.ApplyResources(this.lbInventory, "lbInventory");
             this.lbInventory.Name = "lbInventory";
             this.lbInventory.Tag = "";
-            // 
+            //
             // lbDoid3
-            // 
+            //
             resources.ApplyResources(this.lbDoid3, "lbDoid3");
             this.lbDoid3.Name = "lbDoid3";
             this.lbDoid3.Tag = "";
-            // 
+            //
             // cbInventory
-            // 
+            //
             this.cbInventory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbInventory.DropDownWidth = 384;
             resources.ApplyResources(this.cbInventory, "cbInventory");
             this.cbInventory.Name = "cbInventory";
             this.cbInventory.SelectedIndexChanged += new System.EventHandler(this.cbInventory_SelectedIndexChanged);
-            // 
+            //
             // flpnGUID
-            // 
+            //
             resources.ApplyResources(this.flpnGUID, "flpnGUID");
             this.flpnGUID.Controls.Add(this.tbGUID);
             this.flpnGUID.Controls.Add(this.tbObjName);
             this.flpnGUID.Name = "flpnGUID";
-            // 
+            //
             // tbGUID
-            // 
+            //
             resources.ApplyResources(this.tbGUID, "tbGUID");
             this.tbGUID.Name = "tbGUID";
             this.tbGUID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
             this.tbGUID.TextChanged += new System.EventHandler(this.tbGUID_TextChanged);
-            // 
+            //
             // tbObjName
-            // 
+            //
             resources.ApplyResources(this.tbObjName, "tbObjName");
             this.tbObjName.Name = "tbObjName";
             this.tbObjName.ReadOnly = true;
             this.tbObjName.TabStop = false;
-            // 
+            //
             // lbDoid2
-            // 
+            //
             resources.ApplyResources(this.lbDoid2, "lbDoid2");
             this.lbDoid2.Name = "lbDoid2";
             this.lbDoid2.Tag = "";
-            // 
+            //
             // lbGUID
-            // 
+            //
             resources.ApplyResources(this.lbGUID, "lbGUID");
             this.lbGUID.Name = "lbGUID";
             this.lbGUID.Tag = "";
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnWiz0x0033);

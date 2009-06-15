@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -767,9 +767,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.btnStrDefault = new System.Windows.Forms.Button();
             this.strPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // strPanel
-            // 
+            //
             resources.ApplyResources(this.strPanel, "strPanel");
             this.strPanel.Controls.Add(this.pjse_banner1);
             this.strPanel.Controls.Add(this.ckbDescription);
@@ -807,50 +807,50 @@ namespace SimPe.PackedFiles.UserInterface
             this.strPanel.Controls.Add(this.btnStrDefault);
             this.strPanel.Name = "strPanel";
             this.strPanel.Resize += new System.EventHandler(this.strPanel_Resize);
-            // 
+            //
             // pjse_banner1
-            // 
+            //
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
             this.pjse_banner1.Name = "pjse_banner1";
-            // 
+            //
             // ckbDescription
-            // 
+            //
             resources.ApplyResources(this.ckbDescription, "ckbDescription");
             this.ckbDescription.Name = "ckbDescription";
             this.ckbDescription.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
-            // 
+            //
             // btnLngFirst
-            // 
+            //
             resources.ApplyResources(this.btnLngFirst, "btnLngFirst");
             this.btnLngFirst.Name = "btnLngFirst";
             this.btnLngFirst.Click += new System.EventHandler(this.btnLngFirst_Click);
-            // 
+            //
             // btnStrPrev
-            // 
+            //
             resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
             this.btnStrPrev.Name = "btnStrPrev";
             this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
-            // 
+            //
             // btnStrNext
-            // 
+            //
             resources.ApplyResources(this.btnStrNext, "btnStrNext");
             this.btnStrNext.Name = "btnStrNext";
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
-            // 
+            //
             // ckbDefault
-            // 
+            //
             resources.ApplyResources(this.ckbDefault, "ckbDefault");
             this.ckbDefault.Name = "ckbDefault";
             this.ckbDefault.CheckedChanged += new System.EventHandler(this.ckb_CheckedChanged);
-            // 
+            //
             // btnStrClear
-            // 
+            //
             resources.ApplyResources(this.btnStrClear, "btnStrClear");
             this.btnStrClear.Name = "btnStrClear";
             this.btnStrClear.Click += new System.EventHandler(this.btnStrClear_Click);
-            // 
+            //
             // lvStrItems
-            // 
+            //
             this.lvStrItems.Activation = System.Windows.Forms.ItemActivation.OneClick;
             resources.ApplyResources(this.lvStrItems, "lvStrItems");
             this.lvStrItems.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
@@ -871,186 +871,186 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvStrItems.View = System.Windows.Forms.View.Details;
             this.lvStrItems.ItemActivate += new System.EventHandler(this.lvStrItems_ItemActivate);
             this.lvStrItems.SelectedIndexChanged += new System.EventHandler(this.lvStrItems_SelectedIndexChanged);
-            // 
+            //
             // chString
-            // 
+            //
             resources.ApplyResources(this.chString, "chString");
-            // 
+            //
             // chLang
-            // 
+            //
             resources.ApplyResources(this.chLang, "chLang");
-            // 
+            //
             // chLangDesc
-            // 
+            //
             resources.ApplyResources(this.chLangDesc, "chLangDesc");
-            // 
+            //
             // chDefault
-            // 
+            //
             resources.ApplyResources(this.chDefault, "chDefault");
-            // 
+            //
             // chDefaultDesc
-            // 
+            //
             resources.ApplyResources(this.chDefaultDesc, "chDefaultDesc");
-            // 
+            //
             // btnBigDesc
-            // 
+            //
             resources.ApplyResources(this.btnBigDesc, "btnBigDesc");
             this.btnBigDesc.Name = "btnBigDesc";
             this.btnBigDesc.Click += new System.EventHandler(this.btnBigString_Click);
-            // 
+            //
             // btnBigString
-            // 
+            //
             resources.ApplyResources(this.btnBigString, "btnBigString");
             this.btnBigString.Name = "btnBigString";
             this.btnBigString.Click += new System.EventHandler(this.btnBigString_Click);
-            // 
+            //
             // lbDesc
-            // 
+            //
             resources.ApplyResources(this.lbDesc, "lbDesc");
             this.lbDesc.Name = "lbDesc";
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // rtbDescription
-            // 
+            //
             resources.ApplyResources(this.rtbDescription, "rtbDescription");
             this.rtbDescription.Name = "rtbDescription";
             this.rtbDescription.Enter += new System.EventHandler(this.textBoxBase_Enter);
             this.rtbDescription.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
-            // 
+            //
             // rtbTitle
-            // 
+            //
             resources.ApplyResources(this.rtbTitle, "rtbTitle");
             this.rtbTitle.Name = "rtbTitle";
             this.rtbTitle.Enter += new System.EventHandler(this.textBoxBase_Enter);
             this.rtbTitle.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
-            // 
+            //
             // btnLngNext
-            // 
+            //
             resources.ApplyResources(this.btnLngNext, "btnLngNext");
             this.btnLngNext.Name = "btnLngNext";
             this.btnLngNext.Click += new System.EventHandler(this.btnLngNext_Click);
-            // 
+            //
             // btnLngPrev
-            // 
+            //
             resources.ApplyResources(this.btnLngPrev, "btnLngPrev");
             this.btnLngPrev.Name = "btnLngPrev";
             this.btnLngPrev.Click += new System.EventHandler(this.btnLngPrev_Click);
-            // 
+            //
             // btnLngClear
-            // 
+            //
             resources.ApplyResources(this.btnLngClear, "btnLngClear");
             this.btnLngClear.Name = "btnLngClear";
             this.btnLngClear.Click += new System.EventHandler(this.btnLngClear_Click);
-            // 
+            //
             // cbLngSelect
-            // 
+            //
             this.cbLngSelect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLngSelect.DropDownWidth = 200;
             resources.ApplyResources(this.cbLngSelect, "cbLngSelect");
             this.cbLngSelect.Name = "cbLngSelect";
             this.cbLngSelect.SelectedIndexChanged += new System.EventHandler(this.cbLngSelect_SelectedIndexChanged);
-            // 
+            //
             // lbLngSelect
-            // 
+            //
             resources.ApplyResources(this.lbLngSelect, "lbLngSelect");
             this.lbLngSelect.Name = "lbLngSelect";
-            // 
+            //
             // btnClearAll
-            // 
+            //
             resources.ApplyResources(this.btnClearAll, "btnClearAll");
             this.btnClearAll.Name = "btnClearAll";
             this.btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
-            // 
+            //
             // lbStringNum
-            // 
+            //
             resources.ApplyResources(this.lbStringNum, "lbStringNum");
             this.lbStringNum.Name = "lbStringNum";
-            // 
+            //
             // tbFilename
-            // 
+            //
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
             this.tbFilename.TextChanged += new System.EventHandler(this.textBoxBase_TextChanged);
             this.tbFilename.Enter += new System.EventHandler(this.textBoxBase_Enter);
-            // 
+            //
             // lbFilename
-            // 
+            //
             resources.ApplyResources(this.lbFilename, "lbFilename");
             this.lbFilename.Name = "lbFilename";
-            // 
+            //
             // btnCommit
-            // 
+            //
             resources.ApplyResources(this.btnCommit, "btnCommit");
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
-            // 
+            //
             // lbFormat
-            // 
+            //
             resources.ApplyResources(this.lbFormat, "lbFormat");
             this.lbFormat.Name = "lbFormat";
-            // 
+            //
             // tbFormat
-            // 
+            //
             resources.ApplyResources(this.tbFormat, "tbFormat");
             this.tbFormat.Name = "tbFormat";
             this.tbFormat.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbFormat.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // btnImport
-            // 
+            //
             resources.ApplyResources(this.btnImport, "btnImport");
             this.btnImport.Name = "btnImport";
             this.btnImport.Click += new System.EventHandler(this.btnStringFile_Click);
-            // 
+            //
             // btnExport
-            // 
+            //
             resources.ApplyResources(this.btnExport, "btnExport");
             this.btnExport.Name = "btnExport";
             this.btnExport.Click += new System.EventHandler(this.btnStringFile_Click);
-            // 
+            //
             // btnAppend
-            // 
+            //
             resources.ApplyResources(this.btnAppend, "btnAppend");
             this.btnAppend.Name = "btnAppend";
             this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
-            // 
+            //
             // btnStrDelete
-            // 
+            //
             resources.ApplyResources(this.btnStrDelete, "btnStrDelete");
             this.btnStrDelete.Name = "btnStrDelete";
             this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
-            // 
+            //
             // btnStrAdd
-            // 
+            //
             resources.ApplyResources(this.btnStrAdd, "btnStrAdd");
             this.btnStrAdd.Name = "btnStrAdd";
             this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
-            // 
+            //
             // btnReplace
-            // 
+            //
             resources.ApplyResources(this.btnReplace, "btnReplace");
             this.btnReplace.Name = "btnReplace";
             this.btnReplace.Click += new System.EventHandler(this.btnImport_Click);
-            // 
+            //
             // btnStrCopy
-            // 
+            //
             resources.ApplyResources(this.btnStrCopy, "btnStrCopy");
             this.btnStrCopy.Name = "btnStrCopy";
             this.btnStrCopy.Click += new System.EventHandler(this.btnStrCopy_Click);
-            // 
+            //
             // btnStrDefault
-            // 
+            //
             resources.ApplyResources(this.btnStrDefault, "btnStrDefault");
             this.btnStrDefault.Name = "btnStrDefault";
             this.btnStrDefault.Click += new System.EventHandler(this.btnStrDefault_Click);
-            // 
+            //
             // StrForm
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.strPanel);

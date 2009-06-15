@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -30,7 +30,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// This is the actual FileWrapper
 	/// </summary>
 	/// <remarks>
-	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
+	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Bcon
@@ -43,7 +43,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Contains the Filename
 		/// </summary>
-		private byte[] filename = new byte[64];	
+		private byte[] filename = new byte[64];
 		/// <summary>
 		/// Just A Flag
 		/// </summary>
@@ -54,10 +54,10 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns the Filename
 		/// </summary>
-		public string FileName 
+		public string FileName
 		{
 			get { return Helper.ToString(filename); }
-			set 
+			set
 			{
 				if (!Helper.ToString(filename).Equals(value))
 				{
@@ -70,9 +70,9 @@ namespace SimPe.PackedFiles.Wrapper
 		/// <summary>
 		/// Returns /Sets the Flag
 		/// </summary>
-		public bool Flag 
+		public bool Flag
 		{
-			get { return flag;	}			
+			get { return flag;	}
 			set
 			{
 				if (flag != value)
@@ -91,11 +91,11 @@ namespace SimPe.PackedFiles.Wrapper
 
 
 		#region AbstractWrapper Member
-		public override bool CheckVersion(uint version) 
+		public override bool CheckVersion(uint version)
 		{
 			if ( (version==0012) //0.00
 				|| (version==0013) //0.10
-				) 
+				)
 			{
 				return true;
 			}
@@ -119,7 +119,7 @@ namespace SimPe.PackedFiles.Wrapper
 				"Peter L Jones",
 				"BCON Value Editor",
 				1
-				); 
+				);
 		}
 
 		/// <summary>
@@ -127,7 +127,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="writer">The Stream the Data should be stored to</param>
 		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
+		/// Be sure that the Position of the stream is Proper on
 		/// return (i.e. must point to the first Byte after your actual File)
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
@@ -176,9 +176,9 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		#endregion		
+		#endregion
 
-		#region IFileWrapperSaveExtension Member		
+		#region IFileWrapperSaveExtension Member
 		//all covered by Serialize()
 		#endregion
 

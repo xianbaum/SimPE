@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -335,11 +335,11 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 			internalchg = true;
 
-			try 
+			try
 			{
 				wrapper.SynchronizeUserData();
-			} 
-			catch (Exception ex) 
+			}
+			catch (Exception ex)
 			{
 				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}
@@ -470,15 +470,15 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpParams.SuspendLayout();
             this.tpLocals.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // btnCommit
-            // 
+            //
             resources.ApplyResources(this.btnCommit, "btnCommit");
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
-            // 
+            //
             // tprpPanel
-            // 
+            //
             resources.ApplyResources(this.tprpPanel, "tprpPanel");
             this.tprpPanel.BackColor = System.Drawing.SystemColors.Control;
             this.tprpPanel.Controls.Add(this.pjse_banner1);
@@ -498,52 +498,52 @@ namespace SimPe.PackedFiles.UserInterface
             this.tprpPanel.Controls.Add(this.btnCommit);
             this.tprpPanel.Controls.Add(this.lbLabel);
             this.tprpPanel.Name = "tprpPanel";
-            // 
+            //
             // btnTabNext
-            // 
+            //
             resources.ApplyResources(this.btnTabNext, "btnTabNext");
             this.btnTabNext.Name = "btnTabNext";
             this.btnTabNext.TabStop = false;
             this.btnTabNext.Click += new System.EventHandler(this.btnTabNext_Click);
-            // 
+            //
             // btnTabPrev
-            // 
+            //
             resources.ApplyResources(this.btnTabPrev, "btnTabPrev");
             this.btnTabPrev.Name = "btnTabPrev";
             this.btnTabPrev.TabStop = false;
             this.btnTabPrev.Click += new System.EventHandler(this.btnTabPrev_Click);
-            // 
+            //
             // btnStrPrev
-            // 
+            //
             resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
             this.btnStrPrev.Name = "btnStrPrev";
             this.btnStrPrev.TabStop = false;
             this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
-            // 
+            //
             // btnStrNext
-            // 
+            //
             resources.ApplyResources(this.btnStrNext, "btnStrNext");
             this.btnStrNext.Name = "btnStrNext";
             this.btnStrNext.TabStop = false;
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
-            // 
+            //
             // tabControl1
-            // 
+            //
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tpParams);
             this.tabControl1.Controls.Add(this.tpLocals);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
-            // 
+            //
             // tpParams
-            // 
+            //
             this.tpParams.Controls.Add(this.lvParams);
             resources.ApplyResources(this.tpParams, "tpParams");
             this.tpParams.Name = "tpParams";
-            // 
+            //
             // lvParams
-            // 
+            //
             this.lvParams.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chPID,
             this.chPLabel});
@@ -560,23 +560,23 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvParams.View = System.Windows.Forms.View.Details;
             this.lvParams.ItemActivate += new System.EventHandler(this.ListView_ItemActivate);
             this.lvParams.SelectedIndexChanged += new System.EventHandler(this.ListView_SelectedIndexChanged);
-            // 
+            //
             // chPID
-            // 
+            //
             resources.ApplyResources(this.chPID, "chPID");
-            // 
+            //
             // chPLabel
-            // 
+            //
             resources.ApplyResources(this.chPLabel, "chPLabel");
-            // 
+            //
             // tpLocals
-            // 
+            //
             this.tpLocals.Controls.Add(this.lvLocals);
             resources.ApplyResources(this.tpLocals, "tpLocals");
             this.tpLocals.Name = "tpLocals";
-            // 
+            //
             // lvLocals
-            // 
+            //
             this.lvLocals.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chLID,
             this.chLLabel});
@@ -591,49 +591,49 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvLocals.View = System.Windows.Forms.View.Details;
             this.lvLocals.ItemActivate += new System.EventHandler(this.ListView_ItemActivate);
             this.lvLocals.SelectedIndexChanged += new System.EventHandler(this.ListView_SelectedIndexChanged);
-            // 
+            //
             // chLID
-            // 
+            //
             resources.ApplyResources(this.chLID, "chLID");
-            // 
+            //
             // chLLabel
-            // 
+            //
             resources.ApplyResources(this.chLLabel, "chLLabel");
-            // 
+            //
             // btnCancel
-            // 
+            //
             resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
+            //
             // tbLabel
-            // 
+            //
             resources.ApplyResources(this.tbLabel, "tbLabel");
             this.tbLabel.Name = "tbLabel";
             this.tbLabel.TextChanged += new System.EventHandler(this.tbText_TextChanged);
             this.tbLabel.Validated += new System.EventHandler(this.tbText_Enter);
             this.tbLabel.Enter += new System.EventHandler(this.tbText_Enter);
-            // 
+            //
             // btnStrDelete
-            // 
+            //
             resources.ApplyResources(this.btnStrDelete, "btnStrDelete");
             this.btnStrDelete.Name = "btnStrDelete";
             this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
-            // 
+            //
             // btnStrAdd
-            // 
+            //
             resources.ApplyResources(this.btnStrAdd, "btnStrAdd");
             this.btnStrAdd.Name = "btnStrAdd";
             this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
-            // 
+            //
             // lbVersion
-            // 
+            //
             resources.ApplyResources(this.lbVersion, "lbVersion");
             this.lbVersion.Name = "lbVersion";
-            // 
+            //
             // tbVersion
-            // 
+            //
             resources.ApplyResources(this.tbVersion, "tbVersion");
             this.tbVersion.Name = "tbVersion";
             this.tbVersion.ReadOnly = true;
@@ -641,35 +641,35 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbVersion.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbVersion.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbVersion.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // tbFilename
-            // 
+            //
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
             this.tbFilename.TextChanged += new System.EventHandler(this.tbText_TextChanged);
             this.tbFilename.Validated += new System.EventHandler(this.tbText_Enter);
             this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
-            // 
+            //
             // lbFilename
-            // 
+            //
             resources.ApplyResources(this.lbFilename, "lbFilename");
             this.lbFilename.Name = "lbFilename";
-            // 
+            //
             // lbLabel
-            // 
+            //
             resources.ApplyResources(this.lbLabel, "lbLabel");
             this.lbLabel.Name = "lbLabel";
-            // 
+            //
             // pjse_banner1
-            // 
+            //
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
             this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pjse_banner1.Name = "pjse_banner1";
             this.pjse_banner1.SiblingVisible = true;
             this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
-            // 
+            //
             // TPRPForm
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.btnCancel;

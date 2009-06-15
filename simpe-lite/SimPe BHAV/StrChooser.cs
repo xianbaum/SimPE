@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -118,41 +118,41 @@ namespace pjse
             this.lbItemList = new System.Windows.Forms.ListBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // panel1
-            // 
+            //
             this.panel1.Controls.Add(this.OK);
             this.panel1.Controls.Add(this.Cancel);
             this.panel1.Controls.Add(this.panel2);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            // 
+            //
             // OK
-            // 
+            //
             resources.ApplyResources(this.OK, "OK");
             this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OK.Name = "OK";
-            // 
+            //
             // Cancel
-            // 
+            //
             resources.ApplyResources(this.Cancel, "Cancel");
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Name = "Cancel";
-            // 
+            //
             // panel2
-            // 
+            //
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
-            // 
+            //
             // lbItemList
-            // 
+            //
             resources.ApplyResources(this.lbItemList, "lbItemList");
             this.lbItemList.Name = "lbItemList";
             this.lbItemList.DoubleClick += new System.EventHandler(this.lbItemList_DoubleClick);
-            // 
+            //
             // StrChooser
-            // 
+            //
             this.AcceptButton = this.OK;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -366,34 +366,34 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             this.pnGUID.SuspendLayout();
             this.pnIconIndex.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x0032
-            // 
+            //
             this.pnWiz0x0032.Controls.Add(this.rbModeIcon);
             this.pnWiz0x0032.Controls.Add(this.rbModeAction);
             this.pnWiz0x0032.Controls.Add(this.pnAction);
             this.pnWiz0x0032.Controls.Add(this.pnIcon);
             resources.ApplyResources(this.pnWiz0x0032, "pnWiz0x0032");
             this.pnWiz0x0032.Name = "pnWiz0x0032";
-            // 
+            //
             // rbModeIcon
-            // 
+            //
             resources.ApplyResources(this.rbModeIcon, "rbModeIcon");
             this.rbModeIcon.Name = "rbModeIcon";
             this.rbModeIcon.TabStop = true;
             this.rbModeIcon.UseVisualStyleBackColor = true;
             this.rbModeIcon.CheckedChanged += new System.EventHandler(this.rbModeIcon_CheckedChanged);
-            // 
+            //
             // rbModeAction
-            // 
+            //
             resources.ApplyResources(this.rbModeAction, "rbModeAction");
             this.rbModeAction.Name = "rbModeAction";
             this.rbModeAction.TabStop = true;
             this.rbModeAction.UseVisualStyleBackColor = true;
             this.rbModeAction.CheckedChanged += new System.EventHandler(this.rbModeAction_CheckedChanged);
-            // 
+            //
             // pnAction
-            // 
+            //
             this.pnAction.Controls.Add(this.tfSubQ);
             this.pnAction.Controls.Add(this.pnStrIndex);
             this.pnAction.Controls.Add(this.tfActionTemp);
@@ -404,55 +404,55 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             this.pnAction.Controls.Add(this.label1);
             resources.ApplyResources(this.pnAction, "pnAction");
             this.pnAction.Name = "pnAction";
-            // 
+            //
             // tfSubQ
-            // 
+            //
             resources.ApplyResources(this.tfSubQ, "tfSubQ");
             this.tfSubQ.Name = "tfSubQ";
             this.tfSubQ.UseVisualStyleBackColor = true;
-            // 
+            //
             // pnStrIndex
-            // 
+            //
             resources.ApplyResources(this.pnStrIndex, "pnStrIndex");
             this.pnStrIndex.Controls.Add(this.label5);
             this.pnStrIndex.Controls.Add(this.btnActionString);
             this.pnStrIndex.Controls.Add(this.tbStrIndex);
             this.pnStrIndex.Controls.Add(this.lbActionString);
             this.pnStrIndex.Name = "pnStrIndex";
-            // 
+            //
             // label5
-            // 
+            //
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
-            // 
+            //
             // btnActionString
-            // 
+            //
             resources.ApplyResources(this.btnActionString, "btnActionString");
             this.btnActionString.Name = "btnActionString";
             this.btnActionString.Click += new System.EventHandler(this.btnActionString_Click);
-            // 
+            //
             // tbStrIndex
-            // 
+            //
             resources.ApplyResources(this.tbStrIndex, "tbStrIndex");
             this.tbStrIndex.Name = "tbStrIndex";
             this.tbStrIndex.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbStrIndex.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbStrIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // lbActionString
-            // 
+            //
             resources.ApplyResources(this.lbActionString, "lbActionString");
             this.lbActionString.Name = "lbActionString";
-            // 
+            //
             // tfActionTemp
-            // 
+            //
             resources.ApplyResources(this.tfActionTemp, "tfActionTemp");
             this.tfActionTemp.Name = "tfActionTemp";
             this.tfActionTemp.UseVisualStyleBackColor = true;
             this.tfActionTemp.CheckedChanged += new System.EventHandler(this.tfActionTemp_CheckedChanged);
-            // 
+            //
             // cbDisabled
-            // 
+            //
             this.cbDisabled.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDisabled.FormattingEnabled = true;
             this.cbDisabled.Items.AddRange(new object[] {
@@ -461,9 +461,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             resources.GetString("cbDisabled.Items2")});
             resources.ApplyResources(this.cbDisabled, "cbDisabled");
             this.cbDisabled.Name = "cbDisabled";
-            // 
+            //
             // cbScope
-            // 
+            //
             this.cbScope.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbScope.FormattingEnabled = true;
             this.cbScope.Items.AddRange(new object[] {
@@ -473,24 +473,24 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             resources.ApplyResources(this.cbScope, "cbScope");
             this.cbScope.Name = "cbScope";
             this.cbScope.SelectedIndexChanged += new System.EventHandler(this.cbScope_SelectedIndexChanged);
-            // 
+            //
             // label3
-            // 
+            //
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            // 
+            //
             // lbDisabled
-            // 
+            //
             resources.ApplyResources(this.lbDisabled, "lbDisabled");
             this.lbDisabled.Name = "lbDisabled";
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // pnIcon
-            // 
+            //
             this.pnIcon.Controls.Add(this.pnObject);
             this.pnIcon.Controls.Add(this.pnThumbnail);
             this.pnIcon.Controls.Add(this.rbIconSourceObj);
@@ -501,9 +501,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             this.pnIcon.Controls.Add(this.label4);
             resources.ApplyResources(this.pnIcon, "pnIcon");
             this.pnIcon.Name = "pnIcon";
-            // 
+            //
             // pnObject
-            // 
+            //
             this.pnObject.Controls.Add(this.cbAttrPicker);
             this.pnObject.Controls.Add(this.cbDecimal);
             this.pnObject.Controls.Add(this.cbPicker1);
@@ -512,134 +512,134 @@ namespace pjse.BhavOperandWizards.Wiz0x0032
             this.pnObject.Controls.Add(this.label9);
             resources.ApplyResources(this.pnObject, "pnObject");
             this.pnObject.Name = "pnObject";
-            // 
+            //
             // cbAttrPicker
-            // 
+            //
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            // 
+            //
             // cbDecimal
-            // 
+            //
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            // 
+            //
             // cbPicker1
-            // 
+            //
             this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker1.DropDownWidth = 384;
             resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.Name = "cbPicker1";
-            // 
+            //
             // tbVal1
-            // 
+            //
             resources.ApplyResources(this.tbVal1, "tbVal1");
             this.tbVal1.Name = "tbVal1";
-            // 
+            //
             // cbDataOwner1
-            // 
+            //
             this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner1.DropDownWidth = 384;
             resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
+            //
             // label9
-            // 
+            //
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
-            // 
+            //
             // pnThumbnail
-            // 
+            //
             this.pnThumbnail.Controls.Add(this.tfGUIDTemp);
             this.pnThumbnail.Controls.Add(this.pnGUID);
             this.pnThumbnail.Controls.Add(this.label7);
             resources.ApplyResources(this.pnThumbnail, "pnThumbnail");
             this.pnThumbnail.Name = "pnThumbnail";
-            // 
+            //
             // tfGUIDTemp
-            // 
+            //
             resources.ApplyResources(this.tfGUIDTemp, "tfGUIDTemp");
             this.tfGUIDTemp.Name = "tfGUIDTemp";
             this.tfGUIDTemp.UseVisualStyleBackColor = true;
             this.tfGUIDTemp.CheckedChanged += new System.EventHandler(this.tfGUIDTemp_CheckedChanged);
-            // 
+            //
             // pnGUID
-            // 
+            //
             this.pnGUID.Controls.Add(this.label8);
             this.pnGUID.Controls.Add(this.tbGUID);
             resources.ApplyResources(this.pnGUID, "pnGUID");
             this.pnGUID.Name = "pnGUID";
-            // 
+            //
             // label8
-            // 
+            //
             resources.ApplyResources(this.label8, "label8");
             this.label8.Name = "label8";
-            // 
+            //
             // tbGUID
-            // 
+            //
             resources.ApplyResources(this.tbGUID, "tbGUID");
             this.tbGUID.Name = "tbGUID";
             this.tbGUID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbGUID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // label7
-            // 
+            //
             resources.ApplyResources(this.label7, "label7");
             this.label7.Name = "label7";
-            // 
+            //
             // rbIconSourceObj
-            // 
+            //
             resources.ApplyResources(this.rbIconSourceObj, "rbIconSourceObj");
             this.rbIconSourceObj.Name = "rbIconSourceObj";
             this.rbIconSourceObj.TabStop = true;
             this.rbIconSourceObj.UseVisualStyleBackColor = true;
             this.rbIconSourceObj.CheckedChanged += new System.EventHandler(this.rbIconSourceObj_CheckedChanged);
-            // 
+            //
             // rbIconSourceTN
-            // 
+            //
             resources.ApplyResources(this.rbIconSourceTN, "rbIconSourceTN");
             this.rbIconSourceTN.Name = "rbIconSourceTN";
             this.rbIconSourceTN.TabStop = true;
             this.rbIconSourceTN.UseVisualStyleBackColor = true;
             this.rbIconSourceTN.CheckedChanged += new System.EventHandler(this.rbIconSourceTN_CheckedChanged);
-            // 
+            //
             // tfIconTemp
-            // 
+            //
             resources.ApplyResources(this.tfIconTemp, "tfIconTemp");
             this.tfIconTemp.Name = "tfIconTemp";
             this.tfIconTemp.UseVisualStyleBackColor = true;
             this.tfIconTemp.CheckedChanged += new System.EventHandler(this.tfIconTemp_CheckedChanged);
-            // 
+            //
             // pnIconIndex
-            // 
+            //
             this.pnIconIndex.Controls.Add(this.label6);
             this.pnIconIndex.Controls.Add(this.tbIconIndex);
             resources.ApplyResources(this.pnIconIndex, "pnIconIndex");
             this.pnIconIndex.Name = "pnIconIndex";
-            // 
+            //
             // label6
-            // 
+            //
             resources.ApplyResources(this.label6, "label6");
             this.label6.Name = "label6";
-            // 
+            //
             // tbIconIndex
-            // 
+            //
             resources.ApplyResources(this.tbIconIndex, "tbIconIndex");
             this.tbIconIndex.Name = "tbIconIndex";
             this.tbIconIndex.Validated += new System.EventHandler(this.hex8_Validated);
             this.tbIconIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex8_Validating);
-            // 
+            //
             // label10
-            // 
+            //
             resources.ApplyResources(this.label10, "label10");
             this.label10.Name = "label10";
-            // 
+            //
             // label4
-            // 
+            //
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x0032);

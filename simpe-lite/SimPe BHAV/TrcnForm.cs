@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -383,11 +383,11 @@ namespace SimPe.PackedFiles.UserInterface
 			bool savedstate = internalchg;
 			internalchg = true;
 
-			try 
+			try
 			{
 				wrapper.SynchronizeUserData();
-			} 
-			catch (Exception ex) 
+			}
+			catch (Exception ex)
 			{
 				Helper.ExceptionMessage(pjse.Localization.GetString("errwritingfile"), ex);
 			}
@@ -544,15 +544,15 @@ namespace SimPe.PackedFiles.UserInterface
             this.tlpUnused.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // btnCommit
-            // 
+            //
             resources.ApplyResources(this.btnCommit, "btnCommit");
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
-            // 
+            //
             // trcnPanel
-            // 
+            //
             resources.ApplyResources(this.trcnPanel, "trcnPanel");
             this.trcnPanel.BackColor = System.Drawing.SystemColors.Control;
             this.trcnPanel.Controls.Add(this.panel2);
@@ -565,84 +565,84 @@ namespace SimPe.PackedFiles.UserInterface
             this.trcnPanel.Controls.Add(this.pjse_banner1);
             this.trcnPanel.Controls.Add(this.lvTrcnItem);
             this.trcnPanel.Name = "trcnPanel";
-            // 
+            //
             // tbDesc
-            // 
+            //
             resources.ApplyResources(this.tbDesc, "tbDesc");
             this.tbDesc.Name = "tbDesc";
             this.tbDesc.ReadOnly = true;
-            // 
+            //
             // lbDesc
-            // 
+            //
             resources.ApplyResources(this.lbDesc, "lbDesc");
             this.lbDesc.Name = "lbDesc";
-            // 
+            //
             // label5
-            // 
+            //
             resources.ApplyResources(this.label5, "label5");
             this.tlpUnused.SetColumnSpan(this.label5, 2);
             this.label5.Name = "label5";
-            // 
+            //
             // panel1
-            // 
+            //
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tlpUnused.SetColumnSpan(this.panel1, 2);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
-            // 
+            //
             // tbID
-            // 
+            //
             resources.ApplyResources(this.tbID, "tbID");
             this.tbID.Name = "tbID";
             this.tbID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbID.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // btnCancel
-            // 
+            //
             resources.ApplyResources(this.btnCancel, "btnCancel");
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
+            //
             // cbUsed
-            // 
+            //
             resources.ApplyResources(this.cbUsed, "cbUsed");
             this.tlpUnused.SetColumnSpan(this.cbUsed, 2);
             this.cbUsed.Name = "cbUsed";
             this.cbUsed.CheckedChanged += new System.EventHandler(this.cbUsed_CheckedChanged);
-            // 
+            //
             // tbLabel
-            // 
+            //
             resources.ApplyResources(this.tbLabel, "tbLabel");
             this.tbLabel.Name = "tbLabel";
             this.tbLabel.TextChanged += new System.EventHandler(this.tbText_TextChanged);
             this.tbLabel.Enter += new System.EventHandler(this.tbText_Enter);
-            // 
+            //
             // lbID
-            // 
+            //
             resources.ApplyResources(this.lbID, "lbID");
             this.lbID.Name = "lbID";
-            // 
+            //
             // btnStrDelete
-            // 
+            //
             resources.ApplyResources(this.btnStrDelete, "btnStrDelete");
             this.btnStrDelete.Name = "btnStrDelete";
             this.btnStrDelete.Click += new System.EventHandler(this.btnStrDelete_Click);
-            // 
+            //
             // btnStrAdd
-            // 
+            //
             resources.ApplyResources(this.btnStrAdd, "btnStrAdd");
             this.btnStrAdd.Name = "btnStrAdd";
             this.btnStrAdd.Click += new System.EventHandler(this.btnStrAdd_Click);
-            // 
+            //
             // lbFormat
-            // 
+            //
             resources.ApplyResources(this.lbFormat, "lbFormat");
             this.lbFormat.Name = "lbFormat";
-            // 
+            //
             // tbFormat
-            // 
+            //
             resources.ApplyResources(this.tbFormat, "tbFormat");
             this.tbFormat.Name = "tbFormat";
             this.tbFormat.ReadOnly = true;
@@ -650,9 +650,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbFormat.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // lvTrcnItem
-            // 
+            //
             resources.ApplyResources(this.lvTrcnItem, "lvTrcnItem");
             this.lvTrcnItem.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chLine,
@@ -675,122 +675,122 @@ namespace SimPe.PackedFiles.UserInterface
             this.lvTrcnItem.View = System.Windows.Forms.View.Details;
             this.lvTrcnItem.Resize += new System.EventHandler(this.lvTrcnItem_Resize);
             this.lvTrcnItem.SelectedIndexChanged += new System.EventHandler(this.lvTrcnItem_SelectedIndexChanged);
-            // 
+            //
             // chLine
-            // 
+            //
             resources.ApplyResources(this.chLine, "chLine");
-            // 
+            //
             // chValue
-            // 
+            //
             resources.ApplyResources(this.chValue, "chValue");
-            // 
+            //
             // chConstName
-            // 
+            //
             resources.ApplyResources(this.chConstName, "chConstName");
-            // 
+            //
             // chConstId
-            // 
+            //
             resources.ApplyResources(this.chConstId, "chConstId");
-            // 
+            //
             // chUsed
-            // 
+            //
             resources.ApplyResources(this.chUsed, "chUsed");
-            // 
+            //
             // chDefValue
-            // 
+            //
             resources.ApplyResources(this.chDefValue, "chDefValue");
-            // 
+            //
             // chMinValue
-            // 
+            //
             resources.ApplyResources(this.chMinValue, "chMinValue");
-            // 
+            //
             // chMaxValue
-            // 
+            //
             resources.ApplyResources(this.chMaxValue, "chMaxValue");
-            // 
+            //
             // tbFilename
-            // 
+            //
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.tbFilename.Name = "tbFilename";
             this.tbFilename.TextChanged += new System.EventHandler(this.tbText_TextChanged);
             this.tbFilename.Enter += new System.EventHandler(this.tbText_Enter);
-            // 
+            //
             // lbFilename
-            // 
+            //
             resources.ApplyResources(this.lbFilename, "lbFilename");
             this.lbFilename.Name = "lbFilename";
-            // 
+            //
             // lbDefValue
-            // 
+            //
             resources.ApplyResources(this.lbDefValue, "lbDefValue");
             this.lbDefValue.Name = "lbDefValue";
-            // 
+            //
             // tbDefValue
-            // 
+            //
             resources.ApplyResources(this.tbDefValue, "tbDefValue");
             this.tbDefValue.Name = "tbDefValue";
             this.tbDefValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbDefValue.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbDefValue.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbDefValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // tbMinValue
-            // 
+            //
             resources.ApplyResources(this.tbMinValue, "tbMinValue");
             this.tbMinValue.Name = "tbMinValue";
             this.tbMinValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbMinValue.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbMinValue.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbMinValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // lbMinValue
-            // 
+            //
             resources.ApplyResources(this.lbMinValue, "lbMinValue");
             this.lbMinValue.Name = "lbMinValue";
-            // 
+            //
             // tbMaxValue
-            // 
+            //
             resources.ApplyResources(this.tbMaxValue, "tbMaxValue");
             this.tbMaxValue.Name = "tbMaxValue";
             this.tbMaxValue.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbMaxValue.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbMaxValue.Enter += new System.EventHandler(this.tbText_Enter);
             this.tbMaxValue.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // lbMaxValue
-            // 
+            //
             resources.ApplyResources(this.lbMaxValue, "lbMaxValue");
             this.lbMaxValue.Name = "lbMaxValue";
-            // 
+            //
             // lbLabel
-            // 
+            //
             resources.ApplyResources(this.lbLabel, "lbLabel");
             this.lbLabel.Name = "lbLabel";
-            // 
+            //
             // btnStrPrev
-            // 
+            //
             resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
             this.btnStrPrev.Name = "btnStrPrev";
             this.btnStrPrev.TabStop = false;
             this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
-            // 
+            //
             // btnStrNext
-            // 
+            //
             resources.ApplyResources(this.btnStrNext, "btnStrNext");
             this.btnStrNext.Name = "btnStrNext";
             this.btnStrNext.TabStop = false;
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
-            // 
+            //
             // pjse_banner1
-            // 
+            //
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
             this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pjse_banner1.Name = "pjse_banner1";
             this.pjse_banner1.SiblingVisible = true;
             this.pjse_banner1.SiblingClick += new System.EventHandler(this.pjse_banner1_SiblingClick);
-            // 
+            //
             // tlpUnused
-            // 
+            //
             resources.ApplyResources(this.tlpUnused, "tlpUnused");
             this.tlpUnused.Controls.Add(this.label5, 0, 1);
             this.tlpUnused.Controls.Add(this.lbID, 0, 2);
@@ -806,9 +806,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.tlpUnused.Controls.Add(this.tbMaxValue, 1, 7);
             this.tlpUnused.Controls.Add(this.cbUsed, 0, 3);
             this.tlpUnused.Name = "tlpUnused";
-            // 
+            //
             // panel2
-            // 
+            //
             resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.btnStrAdd);
             this.panel2.Controls.Add(this.lbLabel);
@@ -818,9 +818,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.panel2.Controls.Add(this.btnStrPrev);
             this.panel2.Controls.Add(this.btnStrNext);
             this.panel2.Name = "panel2";
-            // 
+            //
             // TrcnForm
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.trcnPanel);

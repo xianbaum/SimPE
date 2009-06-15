@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -79,7 +79,7 @@ namespace System.Windows.Forms
             }
         }
 
-        
+
         /// <summary>
         /// Displays a message box with the specified text.
         /// </summary>

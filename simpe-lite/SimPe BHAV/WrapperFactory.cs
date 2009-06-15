@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -31,7 +31,7 @@ namespace SimPe.Plugin
 	/// Lists all Plugins (=FileType Wrappers) available in this Package
 	/// </summary>
 	/// <remarks>
-	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
+	/// GetWrappers() has to return a list of all Plugins provided by this Library.
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
     public class WrapperFactory : AbstractWrapperFactory, IHelpFactory, ISettingsFactory, SimPe.Updates.IUpdatablePlugin
@@ -42,7 +42,7 @@ namespace SimPe.Plugin
 		/// <returns>A List of all provided Plugins (=FileType Wrappers)</returns>
 		public override SimPe.Interfaces.IWrapper[] KnownWrappers
 		{
-			get 
+			get
 			{
 				return new IWrapper[] {
 										   new Bcon()

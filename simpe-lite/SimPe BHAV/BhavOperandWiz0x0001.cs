@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -100,7 +100,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
 
 		#region Vom Windows Form-Designer generierter Code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
+		/// Erforderliche Methode für die Designerunterstützung.
 		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
 		/// </summary>
 		private void InitializeComponent()
@@ -111,29 +111,29 @@ namespace pjse.BhavOperandWizards.Wiz0x0001
             this.cbGenericSimsCall = new System.Windows.Forms.ComboBox();
             this.pnWiz0x0001.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x0001
-            // 
+            //
             this.pnWiz0x0001.Controls.Add(this.lbGenericSimsCallparms);
             this.pnWiz0x0001.Controls.Add(this.cbGenericSimsCall);
             resources.ApplyResources(this.pnWiz0x0001, "pnWiz0x0001");
             this.pnWiz0x0001.Name = "pnWiz0x0001";
-            // 
+            //
             // lbGenericSimsCallparms
-            // 
+            //
             resources.ApplyResources(this.lbGenericSimsCallparms, "lbGenericSimsCallparms");
             this.lbGenericSimsCallparms.Name = "lbGenericSimsCallparms";
-            // 
+            //
             // cbGenericSimsCall
-            // 
+            //
             this.cbGenericSimsCall.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbGenericSimsCall.DropDownWidth = 352;
             resources.ApplyResources(this.cbGenericSimsCall, "cbGenericSimsCall");
             this.cbGenericSimsCall.Name = "cbGenericSimsCall";
             this.cbGenericSimsCall.SelectedIndexChanged += new System.EventHandler(this.cbGenericSimsCall_Changed);
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x0001);

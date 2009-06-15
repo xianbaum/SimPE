@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -145,7 +145,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		#endregion
-       
+
 		public TtabForm()
 		{
 			//
@@ -213,7 +213,7 @@ namespace SimPe.PackedFiles.UserInterface
             }
 		}
 
-		
+
 		#region TtabForm
 		/// <summary>
 		/// Stores the currently active Wrapper
@@ -621,7 +621,7 @@ namespace SimPe.PackedFiles.UserInterface
 
             populateCbStringIndex();
             populateLbttab();
-        }		
+        }
 
 		private void WrapperChanged(object sender, System.EventArgs e)
 		{
@@ -772,44 +772,44 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpHumanMotives.SuspendLayout();
             this.tpAnimalMotives.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // ttabPanel
-            // 
+            //
             resources.ApplyResources(this.ttabPanel, "ttabPanel");
             this.ttabPanel.BackColor = System.Drawing.SystemColors.Control;
             this.ttabPanel.Controls.Add(this.splitContainer1);
             this.ttabPanel.Controls.Add(this.pjse_banner1);
             this.ttabPanel.Name = "ttabPanel";
-            // 
+            //
             // splitContainer1
-            // 
+            //
             resources.ApplyResources(this.splitContainer1, "splitContainer1");
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.Name = "splitContainer1";
-            // 
+            //
             // splitContainer1.Panel1
-            // 
+            //
             this.splitContainer1.Panel1.Controls.Add(this.tableLayoutPanel1);
-            // 
+            //
             // splitContainer1.Panel2
-            // 
+            //
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            // 
+            //
             // tableLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
             this.tableLayoutPanel1.Controls.Add(this.lbttab, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.flpFileCtrl, 0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            // 
+            //
             // lbttab
-            // 
+            //
             resources.ApplyResources(this.lbttab, "lbttab");
             this.lbttab.Name = "lbttab";
             this.lbttab.SelectedIndexChanged += new System.EventHandler(this.TtabSelect);
-            // 
+            //
             // flpFileCtrl
-            // 
+            //
             resources.ApplyResources(this.flpFileCtrl, "flpFileCtrl");
             this.flpFileCtrl.Controls.Add(this.lbFilename);
             this.flpFileCtrl.Controls.Add(this.tbFilename);
@@ -825,101 +825,101 @@ namespace SimPe.PackedFiles.UserInterface
             this.flpFileCtrl.Controls.Add(this.btnDelete);
             this.flpFileCtrl.Controls.Add(this.btnAppend);
             this.flpFileCtrl.Name = "flpFileCtrl";
-            // 
+            //
             // lbFilename
-            // 
+            //
             resources.ApplyResources(this.lbFilename, "lbFilename");
             this.flpFileCtrl.SetFlowBreak(this.lbFilename, true);
             this.lbFilename.Name = "lbFilename";
-            // 
+            //
             // tbFilename
-            // 
+            //
             resources.ApplyResources(this.tbFilename, "tbFilename");
             this.flpFileCtrl.SetFlowBreak(this.tbFilename, true);
             this.tbFilename.Name = "tbFilename";
             this.tbFilename.TextChanged += new System.EventHandler(this.tbFilename_TextChanged);
             this.tbFilename.Validated += new System.EventHandler(this.tbFilename_Validated);
-            // 
+            //
             // label41
-            // 
+            //
             resources.ApplyResources(this.label41, "label41");
             this.label41.Name = "label41";
-            // 
+            //
             // tbFormat
-            // 
+            //
             resources.ApplyResources(this.tbFormat, "tbFormat");
             this.tbFormat.Name = "tbFormat";
             this.tbFormat.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbFormat.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbFormat.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // btnCommit
-            // 
+            //
             resources.ApplyResources(this.btnCommit, "btnCommit");
             this.flpFileCtrl.SetFlowBreak(this.btnCommit, true);
             this.btnCommit.Name = "btnCommit";
             this.btnCommit.Click += new System.EventHandler(this.btnCommit_Click);
-            // 
+            //
             // label26
-            // 
+            //
             resources.ApplyResources(this.label26, "label26");
             this.flpFileCtrl.SetFlowBreak(this.label26, true);
             this.label26.Name = "label26";
-            // 
+            //
             // btnStrPrev
-            // 
+            //
             resources.ApplyResources(this.btnStrPrev, "btnStrPrev");
             this.btnStrPrev.Name = "btnStrPrev";
             this.btnStrPrev.Click += new System.EventHandler(this.btnStrPrev_Click);
-            // 
+            //
             // btnMoveUp
-            // 
+            //
             resources.ApplyResources(this.btnMoveUp, "btnMoveUp");
             this.btnMoveUp.Name = "btnMoveUp";
             this.btnMoveUp.Click += new System.EventHandler(this.btnMoveUp_Click);
-            // 
+            //
             // btnAdd
-            // 
+            //
             resources.ApplyResources(this.btnAdd, "btnAdd");
             this.flpFileCtrl.SetFlowBreak(this.btnAdd, true);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
-            // 
+            //
             // btnStrNext
-            // 
+            //
             resources.ApplyResources(this.btnStrNext, "btnStrNext");
             this.btnStrNext.Name = "btnStrNext";
             this.btnStrNext.Click += new System.EventHandler(this.btnStrNext_Click);
-            // 
+            //
             // btnMoveDown
-            // 
+            //
             resources.ApplyResources(this.btnMoveDown, "btnMoveDown");
             this.btnMoveDown.Name = "btnMoveDown";
             this.btnMoveDown.Click += new System.EventHandler(this.btnMoveDown_Click);
-            // 
+            //
             // btnDelete
-            // 
+            //
             resources.ApplyResources(this.btnDelete, "btnDelete");
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
-            // 
+            //
             // btnAppend
-            // 
+            //
             resources.ApplyResources(this.btnAppend, "btnAppend");
             this.btnAppend.Name = "btnAppend";
             this.btnAppend.Click += new System.EventHandler(this.btnAppend_Click);
-            // 
+            //
             // tabControl1
-            // 
+            //
             resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Controls.Add(this.tpSettings);
             this.tabControl1.Controls.Add(this.tpHumanMotives);
             this.tabControl1.Controls.Add(this.tpAnimalMotives);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            // 
+            //
             // tpSettings
-            // 
+            //
             resources.ApplyResources(this.tpSettings, "tpSettings");
             this.tpSettings.Controls.Add(this.tlpSettingsHead);
             this.tpSettings.Controls.Add(this.gbFlags2);
@@ -944,9 +944,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.tpSettings.Controls.Add(this.label2);
             this.tpSettings.Name = "tpSettings";
             this.tpSettings.UseVisualStyleBackColor = true;
-            // 
+            //
             // tlpSettingsHead
-            // 
+            //
             resources.ApplyResources(this.tlpSettingsHead, "tlpSettingsHead");
             this.tlpSettingsHead.Controls.Add(this.label4, 0, 0);
             this.tlpSettingsHead.Controls.Add(this.lbTTABEntry, 1, 0);
@@ -957,54 +957,54 @@ namespace SimPe.PackedFiles.UserInterface
             this.tlpSettingsHead.Controls.Add(this.flpAction, 1, 2);
             this.tlpSettingsHead.Controls.Add(this.flpGuard, 1, 3);
             this.tlpSettingsHead.Name = "tlpSettingsHead";
-            // 
+            //
             // label4
-            // 
+            //
             resources.ApplyResources(this.label4, "label4");
             this.label4.Name = "label4";
-            // 
+            //
             // lbTTABEntry
-            // 
+            //
             resources.ApplyResources(this.lbTTABEntry, "lbTTABEntry");
             this.lbTTABEntry.Name = "lbTTABEntry";
-            // 
+            //
             // llGuardian
-            // 
+            //
             resources.ApplyResources(this.llGuardian, "llGuardian");
             this.llGuardian.Name = "llGuardian";
             this.llGuardian.TabStop = true;
             this.llGuardian.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
-            // 
+            //
             // label40
-            // 
+            //
             resources.ApplyResources(this.label40, "label40");
             this.label40.Name = "label40";
-            // 
+            //
             // llAction
-            // 
+            //
             resources.ApplyResources(this.llAction, "llAction");
             this.llAction.Name = "llAction";
             this.llAction.TabStop = true;
             this.llAction.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llBhav_LinkClicked);
-            // 
+            //
             // flpPieStringID
-            // 
+            //
             resources.ApplyResources(this.flpPieStringID, "flpPieStringID");
             this.flpPieStringID.Controls.Add(this.tbStringIndex);
             this.flpPieStringID.Controls.Add(this.cbStringIndex);
             this.flpPieStringID.Controls.Add(this.lbPieString);
             this.flpPieStringID.Name = "flpPieStringID";
-            // 
+            //
             // tbStringIndex
-            // 
+            //
             resources.ApplyResources(this.tbStringIndex, "tbStringIndex");
             this.tbStringIndex.Name = "tbStringIndex";
             this.tbStringIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbStringIndex.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbStringIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // cbStringIndex
-            // 
+            //
             resources.ApplyResources(this.cbStringIndex, "cbStringIndex");
             this.cbStringIndex.DisplayMember = "Display";
             this.cbStringIndex.DropDownWidth = 240;
@@ -1020,71 +1020,71 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbStringIndex.Enter += new System.EventHandler(this.cbHex32_Enter);
             this.cbStringIndex.Validated += new System.EventHandler(this.cbHex32_Validated);
             this.cbStringIndex.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
-            // 
+            //
             // lbPieString
-            // 
+            //
             resources.ApplyResources(this.lbPieString, "lbPieString");
             this.lbPieString.Name = "lbPieString";
             this.lbPieString.UseMnemonic = false;
-            // 
+            //
             // flpAction
-            // 
+            //
             resources.ApplyResources(this.flpAction, "flpAction");
             this.flpAction.Controls.Add(this.tbAction);
             this.flpAction.Controls.Add(this.btnAction);
             this.flpAction.Controls.Add(this.lbaction);
             this.flpAction.Name = "flpAction";
-            // 
+            //
             // tbAction
-            // 
+            //
             resources.ApplyResources(this.tbAction, "tbAction");
             this.tbAction.Name = "tbAction";
             this.tbAction.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbAction.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbAction.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // btnAction
-            // 
+            //
             resources.ApplyResources(this.btnAction, "btnAction");
             this.btnAction.Name = "btnAction";
             this.btnAction.Click += new System.EventHandler(this.GetTTABAction);
-            // 
+            //
             // lbaction
-            // 
+            //
             resources.ApplyResources(this.lbaction, "lbaction");
             this.lbaction.Name = "lbaction";
             this.lbaction.UseMnemonic = false;
-            // 
+            //
             // flpGuard
-            // 
+            //
             resources.ApplyResources(this.flpGuard, "flpGuard");
             this.flpGuard.Controls.Add(this.tbGuardian);
             this.flpGuard.Controls.Add(this.btnGuardian);
             this.flpGuard.Controls.Add(this.lbguard);
             this.flpGuard.Name = "flpGuard";
-            // 
+            //
             // tbGuardian
-            // 
+            //
             resources.ApplyResources(this.tbGuardian, "tbGuardian");
             this.tbGuardian.Name = "tbGuardian";
             this.tbGuardian.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbGuardian.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbGuardian.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // btnGuardian
-            // 
+            //
             resources.ApplyResources(this.btnGuardian, "btnGuardian");
             this.btnGuardian.Name = "btnGuardian";
             this.btnGuardian.Click += new System.EventHandler(this.GetTTABGuard);
-            // 
+            //
             // lbguard
-            // 
+            //
             resources.ApplyResources(this.lbguard, "lbguard");
             this.lbguard.Name = "lbguard";
             this.lbguard.UseMnemonic = false;
-            // 
+            //
             // gbFlags2
-            // 
+            //
             this.gbFlags2.Controls.Add(this.tbFlags2);
             this.gbFlags2.Controls.Add(this.btnNoFlags2);
             this.gbFlags2.Controls.Add(this.label3);
@@ -1107,140 +1107,140 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.gbFlags2, "gbFlags2");
             this.gbFlags2.Name = "gbFlags2";
             this.gbFlags2.TabStop = false;
-            // 
+            //
             // tbFlags2
-            // 
+            //
             resources.ApplyResources(this.tbFlags2, "tbFlags2");
             this.tbFlags2.Name = "tbFlags2";
             this.tbFlags2.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbFlags2.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbFlags2.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // btnNoFlags2
-            // 
+            //
             resources.ApplyResources(this.btnNoFlags2, "btnNoFlags2");
             this.btnNoFlags2.Name = "btnNoFlags2";
             this.btnNoFlags2.Click += new System.EventHandler(this.btnNoFlags2_Click);
-            // 
+            //
             // label3
-            // 
+            //
             resources.ApplyResources(this.label3, "label3");
             this.label3.Name = "label3";
-            // 
+            //
             // cb2Bit0
-            // 
+            //
             resources.ApplyResources(this.cb2Bit0, "cb2Bit0");
             this.cb2Bit0.Name = "cb2Bit0";
             this.cb2Bit0.Tag = "";
             this.cb2Bit0.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2BitE
-            // 
+            //
             resources.ApplyResources(this.cb2BitE, "cb2BitE");
             this.cb2BitE.Name = "cb2BitE";
             this.cb2BitE.Tag = "";
             this.cb2BitE.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2BitF
-            // 
+            //
             resources.ApplyResources(this.cb2BitF, "cb2BitF");
             this.cb2BitF.Name = "cb2BitF";
             this.cb2BitF.Tag = "";
             this.cb2BitF.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2BitC
-            // 
+            //
             resources.ApplyResources(this.cb2BitC, "cb2BitC");
             this.cb2BitC.Name = "cb2BitC";
             this.cb2BitC.Tag = "?/adult small dogs";
             this.cb2BitC.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2BitD
-            // 
+            //
             resources.ApplyResources(this.cb2BitD, "cb2BitD");
             this.cb2BitD.Name = "cb2BitD";
             this.cb2BitD.Tag = "?/elder small dogs";
             this.cb2BitD.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2BitB
-            // 
+            //
             resources.ApplyResources(this.cb2BitB, "cb2BitB");
             this.cb2BitB.Name = "cb2BitB";
             this.cb2BitB.Tag = "?/elder cats";
             this.cb2BitB.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2BitA
-            // 
+            //
             resources.ApplyResources(this.cb2BitA, "cb2BitA");
             this.cb2BitA.Name = "cb2BitA";
             this.cb2BitA.Tag = "?/elder big dogs";
             this.cb2BitA.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit9
-            // 
+            //
             resources.ApplyResources(this.cb2Bit9, "cb2Bit9");
             this.cb2Bit9.Name = "cb2Bit9";
             this.cb2Bit9.Tag = "?/kittens";
             this.cb2Bit9.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit8
-            // 
+            //
             resources.ApplyResources(this.cb2Bit8, "cb2Bit8");
             this.cb2Bit8.Name = "cb2Bit8";
             this.cb2Bit8.Tag = "?/puppies";
             this.cb2Bit8.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit7
-            // 
+            //
             resources.ApplyResources(this.cb2Bit7, "cb2Bit7");
             this.cb2Bit7.Name = "cb2Bit7";
             this.cb2Bit7.Tag = "";
             this.cb2Bit7.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit6
-            // 
+            //
             resources.ApplyResources(this.cb2Bit6, "cb2Bit6");
             this.cb2Bit6.Name = "cb2Bit6";
             this.cb2Bit6.Tag = "";
             this.cb2Bit6.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit5
-            // 
+            //
             resources.ApplyResources(this.cb2Bit5, "cb2Bit5");
             this.cb2Bit5.Name = "cb2Bit5";
             this.cb2Bit5.Tag = "";
             this.cb2Bit5.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit4
-            // 
+            //
             resources.ApplyResources(this.cb2Bit4, "cb2Bit4");
             this.cb2Bit4.Name = "cb2Bit4";
             this.cb2Bit4.Tag = "";
             this.cb2Bit4.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit3
-            // 
+            //
             resources.ApplyResources(this.cb2Bit3, "cb2Bit3");
             this.cb2Bit3.Name = "cb2Bit3";
             this.cb2Bit3.Tag = "";
             this.cb2Bit3.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit2
-            // 
+            //
             resources.ApplyResources(this.cb2Bit2, "cb2Bit2");
             this.cb2Bit2.Name = "cb2Bit2";
             this.cb2Bit2.Tag = "";
             this.cb2Bit2.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cb2Bit1
-            // 
+            //
             resources.ApplyResources(this.cb2Bit1, "cb2Bit1");
             this.cb2Bit1.Name = "cb2Bit1";
             this.cb2Bit1.Tag = "";
             this.cb2Bit1.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbAttenuationCode
-            // 
+            //
             resources.ApplyResources(this.cbAttenuationCode, "cbAttenuationCode");
             this.cbAttenuationCode.Items.AddRange(new object[] {
             resources.GetString("cbAttenuationCode.Items"),
@@ -1254,100 +1254,100 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbAttenuationCode.Enter += new System.EventHandler(this.cbHex32_Enter);
             this.cbAttenuationCode.Validated += new System.EventHandler(this.cbHex32_Validated);
             this.cbAttenuationCode.TextChanged += new System.EventHandler(this.cbHex32_TextChanged);
-            // 
+            //
             // tbModelTabID
-            // 
+            //
             resources.ApplyResources(this.tbModelTabID, "tbModelTabID");
             this.tbModelTabID.Name = "tbModelTabID";
             this.tbModelTabID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbModelTabID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbModelTabID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // label33
-            // 
+            //
             resources.ApplyResources(this.label33, "label33");
             this.label33.Name = "label33";
-            // 
+            //
             // tbObjType
-            // 
+            //
             resources.ApplyResources(this.tbObjType, "tbObjType");
             this.tbObjType.Name = "tbObjType";
             this.tbObjType.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbObjType.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbObjType.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // label34
-            // 
+            //
             resources.ApplyResources(this.label34, "label34");
             this.label34.Name = "label34";
-            // 
+            //
             // tbUIDispType
-            // 
+            //
             resources.ApplyResources(this.tbUIDispType, "tbUIDispType");
             this.tbUIDispType.Name = "tbUIDispType";
             this.tbUIDispType.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbUIDispType.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbUIDispType.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // label35
-            // 
+            //
             resources.ApplyResources(this.label35, "label35");
             this.label35.Name = "label35";
-            // 
+            //
             // tbAutonomy
-            // 
+            //
             resources.ApplyResources(this.tbAutonomy, "tbAutonomy");
             this.tbAutonomy.Name = "tbAutonomy";
             this.tbAutonomy.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbAutonomy.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbAutonomy.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // tbMemIterMult
-            // 
+            //
             resources.ApplyResources(this.tbMemIterMult, "tbMemIterMult");
             this.tbMemIterMult.Name = "tbMemIterMult";
             this.tbMemIterMult.TextChanged += new System.EventHandler(this.float_TextChanged);
             this.tbMemIterMult.Validated += new System.EventHandler(this.float_Validated);
             this.tbMemIterMult.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            // 
+            //
             // label29
-            // 
+            //
             resources.ApplyResources(this.label29, "label29");
             this.label29.Name = "label29";
-            // 
+            //
             // tbFaceAnimID
-            // 
+            //
             resources.ApplyResources(this.tbFaceAnimID, "tbFaceAnimID");
             this.tbFaceAnimID.Name = "tbFaceAnimID";
             this.tbFaceAnimID.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbFaceAnimID.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbFaceAnimID.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // label30
-            // 
+            //
             resources.ApplyResources(this.label30, "label30");
             this.label30.Name = "label30";
-            // 
+            //
             // tbAttenuationValue
-            // 
+            //
             resources.ApplyResources(this.tbAttenuationValue, "tbAttenuationValue");
             this.tbAttenuationValue.Name = "tbAttenuationValue";
             this.tbAttenuationValue.TextChanged += new System.EventHandler(this.float_TextChanged);
             this.tbAttenuationValue.Validated += new System.EventHandler(this.float_Validated);
             this.tbAttenuationValue.Validating += new System.ComponentModel.CancelEventHandler(this.float_Validating);
-            // 
+            //
             // label31
-            // 
+            //
             resources.ApplyResources(this.label31, "label31");
             this.label31.Name = "label31";
-            // 
+            //
             // label32
-            // 
+            //
             resources.ApplyResources(this.label32, "label32");
             this.label32.Name = "label32";
-            // 
+            //
             // gbFlags
-            // 
+            //
             this.gbFlags.Controls.Add(this.btnNoFlags);
             this.gbFlags.Controls.Add(this.tbFlags);
             this.gbFlags.Controls.Add(this.label24);
@@ -1370,184 +1370,184 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.gbFlags, "gbFlags");
             this.gbFlags.Name = "gbFlags";
             this.gbFlags.TabStop = false;
-            // 
+            //
             // btnNoFlags
-            // 
+            //
             resources.ApplyResources(this.btnNoFlags, "btnNoFlags");
             this.btnNoFlags.Name = "btnNoFlags";
             this.btnNoFlags.Click += new System.EventHandler(this.btnNoFlags_Click);
-            // 
+            //
             // tbFlags
-            // 
+            //
             resources.ApplyResources(this.tbFlags, "tbFlags");
             this.tbFlags.Name = "tbFlags";
             this.tbFlags.TextChanged += new System.EventHandler(this.hex16_TextChanged);
             this.tbFlags.Validated += new System.EventHandler(this.hex16_Validated);
             this.tbFlags.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
-            // 
+            //
             // label24
-            // 
+            //
             resources.ApplyResources(this.label24, "label24");
             this.label24.Name = "label24";
-            // 
+            //
             // cbBit0
-            // 
+            //
             resources.ApplyResources(this.cbBit0, "cbBit0");
             this.cbBit0.Name = "cbBit0";
             this.cbBit0.Tag = "";
             this.cbBit0.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBitE
-            // 
+            //
             resources.ApplyResources(this.cbBitE, "cbBitE");
             this.cbBitE.Name = "cbBitE";
             this.cbBitE.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBitF
-            // 
+            //
             resources.ApplyResources(this.cbBitF, "cbBitF");
             this.cbBitF.Name = "cbBitF";
             this.cbBitF.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBitC
-            // 
+            //
             resources.ApplyResources(this.cbBitC, "cbBitC");
             this.cbBitC.Name = "cbBitC";
             this.cbBitC.Tag = "dogs/adult big dogs";
             this.cbBitC.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBitD
-            // 
+            //
             resources.ApplyResources(this.cbBitD, "cbBitD");
             this.cbBitD.Name = "cbBitD";
             this.cbBitD.Tag = "cats/adult cats";
             this.cbBitD.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBitB
-            // 
+            //
             resources.ApplyResources(this.cbBitB, "cbBitB");
             this.cbBitB.Name = "cbBitB";
             this.cbBitB.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBitA
-            // 
+            //
             resources.ApplyResources(this.cbBitA, "cbBitA");
             this.cbBitA.Name = "cbBitA";
             this.cbBitA.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit9
-            // 
+            //
             resources.ApplyResources(this.cbBit9, "cbBit9");
             this.cbBit9.Name = "cbBit9";
             this.cbBit9.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit8
-            // 
+            //
             resources.ApplyResources(this.cbBit8, "cbBit8");
             this.cbBit8.Name = "cbBit8";
             this.cbBit8.Tag = "auto first/auto first?";
             this.cbBit8.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit7
-            // 
+            //
             resources.ApplyResources(this.cbBit7, "cbBit7");
             this.cbBit7.Name = "cbBit7";
             this.cbBit7.Tag = "debug menu/debug menu?";
             this.cbBit7.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit6
-            // 
+            //
             resources.ApplyResources(this.cbBit6, "cbBit6");
             this.cbBit6.Name = "cbBit6";
             this.cbBit6.Tag = "";
             this.cbBit6.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit5
-            // 
+            //
             resources.ApplyResources(this.cbBit5, "cbBit5");
             this.cbBit5.Name = "cbBit5";
             this.cbBit5.Tag = "demo child/2-way?";
             this.cbBit5.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit4
-            // 
+            //
             resources.ApplyResources(this.cbBit4, "cbBit4");
             this.cbBit4.Name = "cbBit4";
             this.cbBit4.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit3
-            // 
+            //
             resources.ApplyResources(this.cbBit3, "cbBit3");
             this.cbBit3.Name = "cbBit3";
             this.cbBit3.Tag = "consecutive/consecutive?";
             this.cbBit3.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit2
-            // 
+            //
             resources.ApplyResources(this.cbBit2, "cbBit2");
             this.cbBit2.Name = "cbBit2";
             this.cbBit2.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // cbBit1
-            // 
+            //
             resources.ApplyResources(this.cbBit1, "cbBit1");
             this.cbBit1.Name = "cbBit1";
             this.cbBit1.Tag = "joinable/joinable?";
             this.cbBit1.CheckedChanged += new System.EventHandler(this.checkbox_CheckedChanged);
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // tbJoinIndex
-            // 
+            //
             resources.ApplyResources(this.tbJoinIndex, "tbJoinIndex");
             this.tbJoinIndex.Name = "tbJoinIndex";
             this.tbJoinIndex.TextChanged += new System.EventHandler(this.hex32_TextChanged);
             this.tbJoinIndex.Validated += new System.EventHandler(this.hex32_Validated);
             this.tbJoinIndex.Validating += new System.ComponentModel.CancelEventHandler(this.hex32_Validating);
-            // 
+            //
             // label2
-            // 
+            //
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            // 
+            //
             // tpHumanMotives
-            // 
+            //
             resources.ApplyResources(this.tpHumanMotives, "tpHumanMotives");
             this.tpHumanMotives.Controls.Add(this.timtuiHuman);
             this.tpHumanMotives.Name = "tpHumanMotives";
             this.tpHumanMotives.Tag = "Motives/Human Motives";
             this.tpHumanMotives.UseVisualStyleBackColor = true;
-            // 
+            //
             // timtuiHuman
-            // 
+            //
             resources.ApplyResources(this.timtuiHuman, "timtuiHuman");
             this.timtuiHuman.MotiveTable = null;
             this.timtuiHuman.Name = "timtuiHuman";
-            // 
+            //
             // tpAnimalMotives
-            // 
+            //
             resources.ApplyResources(this.tpAnimalMotives, "tpAnimalMotives");
             this.tpAnimalMotives.Controls.Add(this.timtuiAnimal);
             this.tpAnimalMotives.Name = "tpAnimalMotives";
             this.tpAnimalMotives.UseVisualStyleBackColor = true;
-            // 
+            //
             // timtuiAnimal
-            // 
+            //
             resources.ApplyResources(this.timtuiAnimal, "timtuiAnimal");
             this.timtuiAnimal.MotiveTable = null;
             this.timtuiAnimal.Name = "timtuiAnimal";
-            // 
+            //
             // pjse_banner1
-            // 
+            //
             resources.ApplyResources(this.pjse_banner1, "pjse_banner1");
             this.pjse_banner1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pjse_banner1.Name = "pjse_banner1";
-            // 
+            //
             // TtabForm
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.ttabPanel);
@@ -1582,7 +1582,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.ResumeLayout(false);
 
 		}
-	
+
 		#endregion
 
 
@@ -1760,7 +1760,7 @@ namespace SimPe.PackedFiles.UserInterface
 				cbAttenuationCode.SelectedIndex = -1;
 				tbGuardian.Text = tbAction.Text = lbguard.Text = lbaction.Text = tbFlags.Text = tbFlags2.Text =
 					tbStringIndex.Text = tbAttenuationValue.Text = tbAutonomy.Text = tbJoinIndex.Text =
-					tbUIDispType.Text = tbFaceAnimID.Text = tbMemIterMult.Text = tbObjType.Text = tbModelTabID.Text = 
+					tbUIDispType.Text = tbFaceAnimID.Text = tbMemIterMult.Text = tbObjType.Text = tbModelTabID.Text =
 					"";
 				for (int i = 0; i < alFlags.Count; i++) ((CheckBox)alFlags[i]).Checked = false;
 			}
@@ -1769,7 +1769,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.ttabPanel.Cursor = Cursors.Default;
 
             internalchg = false;
-        }		
+        }
 
         /*
          * By way of reminder:

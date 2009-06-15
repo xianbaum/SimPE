@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -38,7 +38,7 @@ namespace SimPe.PackedFiles.UserInterface
 	{
 		#region Form variables
 		private System.Windows.Forms.PictureBox pnflow;
-		/// <summary> 
+		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
@@ -50,7 +50,7 @@ namespace SimPe.PackedFiles.UserInterface
 			InitializeComponent();
 		}
 
-		/// <summary> 
+		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
@@ -136,7 +136,7 @@ namespace SimPe.PackedFiles.UserInterface
 		public int SelectedIndex
 		{
 			get { return csel; }
-			set 
+			set
 			{
 				if (value != -1 && (flowitems == null || value < -1 || value >= flowitems.Length))
 					throw new Exception("Internal failure: SelectedIndex out of range: " + value.ToString());
@@ -438,7 +438,7 @@ namespace SimPe.PackedFiles.UserInterface
 
 			int yUnit = BhavInstListItemUI.rowHeight / 8;
 
-			foreach (Connector c in Connector.Connectors(wrapper)) 
+			foreach (Connector c in Connector.Connectors(wrapper))
 			{
 				if (c==null) continue;
 				//if (c.start == c.stop) continue; // skip go to self
@@ -462,7 +462,7 @@ namespace SimPe.PackedFiles.UserInterface
 					gr.DrawLine( pen, xPosLeft,  yPosStart, xPosRight, yPosStart );
 					gr.DrawLine( pen, xPosRight, yPosStart, xPosRight, yPosStop );
 					gr.DrawLine( pen, xPosRight, yPosStop,  xPosLeft,  yPosStop );
-				
+
 					points = new Point[3];
 					points[0] = new Point(xPosLeft, yPosStop);
 					points[1] = new Point(points[0].X + 4, points[0].Y - 4);
@@ -490,7 +490,7 @@ namespace SimPe.PackedFiles.UserInterface
 			}
 			AddUnlinked(gr);
 			return img;
-		} 
+		}
 
 		private void AddUnlinked(Graphics gr)
 		{
@@ -505,7 +505,7 @@ namespace SimPe.PackedFiles.UserInterface
 				int yPos = (BhavInstListItemUI.rowHeight + 4) * ct + (BhavInstListItemUI.rowHeight / 4);
 
 				gr.DrawLine(
-					(ct == csel) ? penc : pen, 
+					(ct == csel) ? penc : pen,
 					xPosLeft, yPos,
 					xPosRight, yPos
 					);
@@ -528,8 +528,8 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
 		#region Component Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
+		/// <summary>
+		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
@@ -537,9 +537,9 @@ namespace SimPe.PackedFiles.UserInterface
 			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(BhavInstListControl));
 			this.pnflow = new System.Windows.Forms.PictureBox();
 			this.SuspendLayout();
-			// 
+			//
 			// pnflow
-			// 
+			//
 			this.pnflow.AccessibleDescription = resources.GetString("pnflow.AccessibleDescription");
 			this.pnflow.AccessibleName = resources.GetString("pnflow.AccessibleName");
 			this.pnflow.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("pnflow.Anchor")));
@@ -558,9 +558,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.pnflow.TabStop = false;
 			this.pnflow.Text = resources.GetString("pnflow.Text");
 			this.pnflow.Visible = ((bool)(resources.GetObject("pnflow.Visible")));
-			// 
+			//
 			// BhavInstListControl
-			// 
+			//
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
 			this.AccessibleName = resources.GetString("$this.AccessibleName");
 			this.AutoScroll = ((bool)(resources.GetObject("$this.AutoScroll")));
@@ -698,7 +698,7 @@ namespace SimPe.PackedFiles.UserInterface
 		/// <summary>
 		/// Which of 'start' and 'stop' is the earlier instruction
 		/// </summary>
-		private int Top 
+		private int Top
 		{
 			get { return Math.Min(start * 4 + OutOffset, stop * 4 + InOffset); }
 		}
@@ -715,11 +715,11 @@ namespace SimPe.PackedFiles.UserInterface
 		/// Resolves all lane Collisions
 		/// </summary>
 		/// <param name="connectors">List of connectors</param>
-		private static void ResolveCollisions(Connector[] connectors) 
+		private static void ResolveCollisions(Connector[] connectors)
 		{
 			ArrayList ac = new ArrayList(connectors);
 			ac.Sort();
-			foreach (Connector c1 in ac) 
+			foreach (Connector c1 in ac)
 			{
 				c1.lane = -1;
 				if (c1.stop * 2 > connectors.Length) continue; // off end, doesn't use a lane

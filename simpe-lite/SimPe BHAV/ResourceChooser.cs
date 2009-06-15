@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -332,7 +332,7 @@ namespace pjse
 
         #region Vom Windows Form-Designer generierter Code
         /// <summary>
-        /// Erforderliche Methode für die Designerunterstützung. 
+        /// Erforderliche Methode für die Designerunterstützung.
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent()
@@ -369,9 +369,9 @@ namespace pjse
             this.tpSemiGroup.SuspendLayout();
             this.tpBuiltIn.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // tcResources
-            // 
+            //
             resources.ApplyResources(this.tcResources, "tcResources");
             this.tcResources.Controls.Add(this.tpPackage);
             this.tcResources.Controls.Add(this.tpGlobalGroup);
@@ -381,15 +381,15 @@ namespace pjse
             this.tcResources.Name = "tcResources";
             this.tcResources.SelectedIndex = 0;
             this.tcResources.SelectedIndexChanged += new System.EventHandler(this.tcResources_SelectedIndexChanged);
-            // 
+            //
             // tpPackage
-            // 
+            //
             this.tpPackage.Controls.Add(this.lvPackage);
             resources.ApplyResources(this.tpPackage, "tpPackage");
             this.tpPackage.Name = "tpPackage";
-            // 
+            //
             // lvPackage
-            // 
+            //
             this.lvPackage.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.chValue,
             this.chName});
@@ -406,23 +406,23 @@ namespace pjse
             this.lvPackage.View = System.Windows.Forms.View.Details;
             this.lvPackage.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
             this.lvPackage.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
-            // 
+            //
             // chValue
-            // 
+            //
             resources.ApplyResources(this.chValue, "chValue");
-            // 
+            //
             // chName
-            // 
+            //
             resources.ApplyResources(this.chName, "chName");
-            // 
+            //
             // tpGlobalGroup
-            // 
+            //
             this.tpGlobalGroup.Controls.Add(this.lvGlobal);
             resources.ApplyResources(this.tpGlobalGroup, "tpGlobalGroup");
             this.tpGlobalGroup.Name = "tpGlobalGroup";
-            // 
+            //
             // lvGlobal
-            // 
+            //
             this.lvGlobal.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
@@ -439,23 +439,23 @@ namespace pjse
             this.lvGlobal.View = System.Windows.Forms.View.Details;
             this.lvGlobal.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
             this.lvGlobal.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
-            // 
+            //
             // columnHeader1
-            // 
+            //
             resources.ApplyResources(this.columnHeader1, "columnHeader1");
-            // 
+            //
             // columnHeader2
-            // 
+            //
             resources.ApplyResources(this.columnHeader2, "columnHeader2");
-            // 
+            //
             // tpGroup
-            // 
+            //
             this.tpGroup.Controls.Add(this.lvGroup);
             resources.ApplyResources(this.tpGroup, "tpGroup");
             this.tpGroup.Name = "tpGroup";
-            // 
+            //
             // lvGroup
-            // 
+            //
             this.lvGroup.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader3,
             this.columnHeader4});
@@ -472,23 +472,23 @@ namespace pjse
             this.lvGroup.View = System.Windows.Forms.View.Details;
             this.lvGroup.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
             this.lvGroup.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
-            // 
+            //
             // columnHeader3
-            // 
+            //
             resources.ApplyResources(this.columnHeader3, "columnHeader3");
-            // 
+            //
             // columnHeader4
-            // 
+            //
             resources.ApplyResources(this.columnHeader4, "columnHeader4");
-            // 
+            //
             // tpSemiGroup
-            // 
+            //
             this.tpSemiGroup.Controls.Add(this.lvSemi);
             resources.ApplyResources(this.tpSemiGroup, "tpSemiGroup");
             this.tpSemiGroup.Name = "tpSemiGroup";
-            // 
+            //
             // lvSemi
-            // 
+            //
             this.lvSemi.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader5,
             this.columnHeader6});
@@ -505,23 +505,23 @@ namespace pjse
             this.lvSemi.View = System.Windows.Forms.View.Details;
             this.lvSemi.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
             this.lvSemi.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
-            // 
+            //
             // columnHeader5
-            // 
+            //
             resources.ApplyResources(this.columnHeader5, "columnHeader5");
-            // 
+            //
             // columnHeader6
-            // 
+            //
             resources.ApplyResources(this.columnHeader6, "columnHeader6");
-            // 
+            //
             // tpBuiltIn
-            // 
+            //
             this.tpBuiltIn.Controls.Add(this.lvPrim);
             resources.ApplyResources(this.tpBuiltIn, "tpBuiltIn");
             this.tpBuiltIn.Name = "tpBuiltIn";
-            // 
+            //
             // lvPrim
-            // 
+            //
             this.lvPrim.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader7,
             this.columnHeader8});
@@ -537,36 +537,36 @@ namespace pjse
             this.lvPrim.View = System.Windows.Forms.View.Details;
             this.lvPrim.DoubleClick += new System.EventHandler(this.listView_DoubleClick);
             this.lvPrim.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView_ColumnClick);
-            // 
+            //
             // columnHeader7
-            // 
+            //
             resources.ApplyResources(this.columnHeader7, "columnHeader7");
-            // 
+            //
             // columnHeader8
-            // 
+            //
             resources.ApplyResources(this.columnHeader8, "columnHeader8");
-            // 
+            //
             // OK
-            // 
+            //
             resources.ApplyResources(this.OK, "OK");
             this.OK.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.OK.Name = "OK";
             this.OK.Click += new System.EventHandler(this.OK_Click);
-            // 
+            //
             // Cancel
-            // 
+            //
             resources.ApplyResources(this.Cancel, "Cancel");
             this.Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.Cancel.Name = "Cancel";
-            // 
+            //
             // btnViewBHAV
-            // 
+            //
             resources.ApplyResources(this.btnViewBHAV, "btnViewBHAV");
             this.btnViewBHAV.Name = "btnViewBHAV";
             this.btnViewBHAV.Click += new System.EventHandler(this.btnViewBHAV_Click);
-            // 
+            //
             // ResourceChooser
-            // 
+            //
             this.AcceptButton = this.OK;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;

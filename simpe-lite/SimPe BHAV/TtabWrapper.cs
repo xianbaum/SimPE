@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2006 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -30,7 +30,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// This is the actual FileWrapper
 	/// </summary>
 	/// <remarks>
-	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
+	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
 	public class Ttab
@@ -46,10 +46,10 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region Accessor methods
-		public string FileName 
+		public string FileName
 		{
 			get { return Helper.ToString(filename); }
-			set 
+			set
 			{
 				if (!Helper.ToString(filename).Equals(value))
 				{
@@ -58,7 +58,7 @@ namespace SimPe.PackedFiles.Wrapper
 				}
 			}
 		}
-		public uint Format 
+		public uint Format
 		{
 			get { return header[1]; }
 			set
@@ -95,11 +95,11 @@ namespace SimPe.PackedFiles.Wrapper
         public new void Insert(int index, TtabItem item) { Insert(index, item, 0x8000); }
 
 		#region AbstractWrapper Member
-		public override bool CheckVersion(uint version) 
+		public override bool CheckVersion(uint version)
 		{
 			if ( (version==0012) //0.00
 				|| (version==0013) //0.10
-				) 
+				)
 			{
 				return true;
 			}
@@ -119,13 +119,13 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			///
 			/// TODO: Change the Description passed here
-			/// 
+			///
 			return new AbstractWrapperInfo(
 				"PJSE TTAB Wrapper",
 				"Peter L Jones",
 				"Tree Table Editor",
 				1
-				); 
+				);
 		}
 
         private static bool isInuse(TtabItem item) { return item.InUse; }
@@ -134,7 +134,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="writer">The Stream the Data should be stored to</param>
 		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
+		/// Be sure that the Position of the stream is Proper on
 		/// return (i.e. must point to the first Byte after your actual File)
 		/// </remarks>
 		protected override void Serialize(System.IO.BinaryWriter writer)
@@ -204,9 +204,9 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-		#endregion		
+		#endregion
 
-		#region IFileWrapperSaveExtension Member		
+		#region IFileWrapperSaveExtension Member
 		//all covered by AbstractWrapper
         protected override string GetResourceName(Data.TypeAlias ta)
         {
@@ -335,7 +335,7 @@ namespace SimPe.PackedFiles.Wrapper
                     if (parent != null) parent.OnWrapperChanged(this, new EventArgs());
 				}
 			}
-		}		
+		}
 
 		public uint Autonomy
 		{
@@ -574,12 +574,12 @@ namespace SimPe.PackedFiles.Wrapper
 			writer.Write(autonomy);
 			writer.Write(joinindex);
 
-			if (parent.Format >0x44) 
+			if (parent.Format >0x44)
 			{
 				writer.Write(uidisplaytype);
 				if (parent.Format >= 0x46)
 				{
-					if (parent.Format >= 0x4a) 
+					if (parent.Format >= 0x4a)
 					{
 						writer.Write(facialanimation);
 						if (parent.Format >= 0x4c)

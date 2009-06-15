@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -143,64 +143,64 @@ namespace pjse.BhavOperandWizards.Wiz0x001b
             this.gbLocation.SuspendLayout();
             this.gbDirection.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x001b
-            // 
+            //
             resources.ApplyResources(this.pnWiz0x001b, "pnWiz0x001b");
             this.pnWiz0x001b.Controls.Add(this.flowLayoutPanel1);
             this.pnWiz0x001b.Name = "pnWiz0x001b";
-            // 
+            //
             // flowLayoutPanel1
-            // 
+            //
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
             this.flowLayoutPanel1.Controls.Add(this.gbLocation);
             this.flowLayoutPanel1.Controls.Add(this.gbDirection);
             this.flowLayoutPanel1.Controls.Add(this.ckbNoFailureTrees);
             this.flowLayoutPanel1.Controls.Add(this.ckbDifferentAltitudes);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
+            //
             // gbLocation
-            // 
+            //
             resources.ApplyResources(this.gbLocation, "gbLocation");
             this.gbLocation.Controls.Add(this.cbLocation);
             this.gbLocation.Name = "gbLocation";
             this.gbLocation.TabStop = false;
-            // 
+            //
             // cbLocation
-            // 
+            //
             this.cbLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbLocation.FormattingEnabled = true;
             resources.ApplyResources(this.cbLocation, "cbLocation");
             this.cbLocation.Name = "cbLocation";
-            // 
+            //
             // gbDirection
-            // 
+            //
             resources.ApplyResources(this.gbDirection, "gbDirection");
             this.gbDirection.Controls.Add(this.cbDirection);
             this.gbDirection.Name = "gbDirection";
             this.gbDirection.TabStop = false;
-            // 
+            //
             // cbDirection
-            // 
+            //
             this.cbDirection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDirection.FormattingEnabled = true;
             resources.ApplyResources(this.cbDirection, "cbDirection");
             this.cbDirection.Name = "cbDirection";
-            // 
+            //
             // ckbNoFailureTrees
-            // 
+            //
             resources.ApplyResources(this.ckbNoFailureTrees, "ckbNoFailureTrees");
             this.ckbNoFailureTrees.Name = "ckbNoFailureTrees";
             this.ckbNoFailureTrees.UseVisualStyleBackColor = true;
-            // 
+            //
             // ckbDifferentAltitudes
-            // 
+            //
             resources.ApplyResources(this.ckbDifferentAltitudes, "ckbDifferentAltitudes");
             this.ckbDifferentAltitudes.Name = "ckbDifferentAltitudes";
             this.ckbDifferentAltitudes.UseVisualStyleBackColor = true;
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this.pnWiz0x001b);

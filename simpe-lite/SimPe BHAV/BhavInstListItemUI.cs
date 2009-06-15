@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -37,7 +37,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.LinkLabel trueTarget;
 		private System.Windows.Forms.LinkLabel falseTarget;
 		private System.Windows.Forms.TextBox bhavInstListItem;
-		/// <summary> 
+		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
@@ -57,7 +57,7 @@ namespace SimPe.PackedFiles.UserInterface
             if (strFalse == null) strFalse = this.falseTarget.Text;
         }
 
-		/// <summary> 
+		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
@@ -185,8 +185,8 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
 		#region Component Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
+		/// <summary>
+		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
@@ -198,9 +198,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavInstListItem = new System.Windows.Forms.TextBox();
 			this.bhavInstListItem.SuspendLayout();
 			this.SuspendLayout();
-			// 
+			//
 			// instrText
-			// 
+			//
 			this.instrText.AccessibleDescription = resources.GetString("instrText.AccessibleDescription");
 			this.instrText.AccessibleName = resources.GetString("instrText.AccessibleName");
 			this.instrText.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("instrText.Anchor")));
@@ -223,9 +223,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.instrText.UseMnemonic = false;
 			this.instrText.Visible = ((bool)(resources.GetObject("instrText.Visible")));
 			this.instrText.Click += new System.EventHandler(this.Control_Click);
-			// 
+			//
 			// trueTarget
-			// 
+			//
 			this.trueTarget.AccessibleDescription = resources.GetString("trueTarget.AccessibleDescription");
 			this.trueTarget.AccessibleName = resources.GetString("trueTarget.AccessibleName");
 			this.trueTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("trueTarget.Anchor")));
@@ -248,9 +248,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.trueTarget.Visible = ((bool)(resources.GetObject("trueTarget.Visible")));
 			this.trueTarget.Click += new System.EventHandler(this.Control_Click);
 			this.trueTarget.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Target_LinkClicked);
-			// 
+			//
 			// falseTarget
-			// 
+			//
 			this.falseTarget.AccessibleDescription = resources.GetString("falseTarget.AccessibleDescription");
 			this.falseTarget.AccessibleName = resources.GetString("falseTarget.AccessibleName");
 			this.falseTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("falseTarget.Anchor")));
@@ -273,9 +273,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.falseTarget.Visible = ((bool)(resources.GetObject("falseTarget.Visible")));
 			this.falseTarget.Click += new System.EventHandler(this.Control_Click);
 			this.falseTarget.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Target_LinkClicked);
-			// 
+			//
 			// bhavInstListItem
-			// 
+			//
 			this.bhavInstListItem.AccessibleDescription = resources.GetString("bhavInstListItem.AccessibleDescription");
 			this.bhavInstListItem.AccessibleName = resources.GetString("bhavInstListItem.AccessibleName");
 			this.bhavInstListItem.Anchor = ((System.Windows.Forms.AnchorStyles)(resources.GetObject("bhavInstListItem.Anchor")));
@@ -305,9 +305,9 @@ namespace SimPe.PackedFiles.UserInterface
 			this.bhavInstListItem.Visible = ((bool)(resources.GetObject("bhavInstListItem.Visible")));
 			this.bhavInstListItem.WordWrap = ((bool)(resources.GetObject("bhavInstListItem.WordWrap")));
 			this.bhavInstListItem.KeyDown += new System.Windows.Forms.KeyEventHandler(this.bhavInstListItem_KeyDown);
-			// 
+			//
 			// BhavInstListItemUI
-			// 
+			//
 			this.AccessibleDescription = resources.GetString("$this.AccessibleDescription");
 			this.AccessibleName = resources.GetString("$this.AccessibleName");
 			this.AutoScroll = ((bool)(resources.GetObject("$this.AutoScroll")));

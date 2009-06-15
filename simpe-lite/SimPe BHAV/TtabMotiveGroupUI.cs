@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,7 +38,7 @@ namespace SimPe.PackedFiles.UserInterface
 		private System.Windows.Forms.Label lbDelta;
         private System.Windows.Forms.Label lbType;
         private System.Windows.Forms.Button btnClear;
-		/// <summary> 
+		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
@@ -63,7 +63,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbType.Left = (5 * muiW) / 6 - this.lbType.Width / 2;
         }
 
-		/// <summary> 
+		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
@@ -174,8 +174,8 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
 		#region Component Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
+		/// <summary>
+		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
@@ -188,9 +188,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.lbType = new System.Windows.Forms.Label();
             this.gbMotiveGroup.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // gbMotiveGroup
-            // 
+            //
             this.gbMotiveGroup.Controls.Add(this.btnClear);
             this.gbMotiveGroup.Controls.Add(this.lbMin);
             this.gbMotiveGroup.Controls.Add(this.lbDelta);
@@ -198,30 +198,30 @@ namespace SimPe.PackedFiles.UserInterface
             resources.ApplyResources(this.gbMotiveGroup, "gbMotiveGroup");
             this.gbMotiveGroup.Name = "gbMotiveGroup";
             this.gbMotiveGroup.TabStop = false;
-            // 
+            //
             // btnClear
-            // 
+            //
             resources.ApplyResources(this.btnClear, "btnClear");
             this.btnClear.Name = "btnClear";
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
+            //
             // lbMin
-            // 
+            //
             resources.ApplyResources(this.lbMin, "lbMin");
             this.lbMin.Name = "lbMin";
-            // 
+            //
             // lbDelta
-            // 
+            //
             resources.ApplyResources(this.lbDelta, "lbDelta");
             this.lbDelta.Name = "lbDelta";
-            // 
+            //
             // lbType
-            // 
+            //
             resources.ApplyResources(this.lbType, "lbType");
             this.lbType.Name = "lbType";
-            // 
+            //
             // TtabMotiveGroupUI
-            // 
+            //
             this.Controls.Add(this.gbMotiveGroup);
             this.Name = "TtabMotiveGroupUI";
             resources.ApplyResources(this, "$this");

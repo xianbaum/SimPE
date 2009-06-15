@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -180,7 +180,7 @@ namespace pjse
             BuildModeSortDFlags = 0x12d, // ..
             BuildModeSortEFlags = 0x12e, // ..
             BuildModeSortFFlags = 0x12f, // PJSE: ObjectDefinition 0x4a - Build Mode Sub-sort, ObjDef 0x45 bit 16 set
-            ValidEPFlags1 = 0x130, // PJSE: ObjectDefinition 0x40 - valid EP flags 1 
+            ValidEPFlags1 = 0x130, // PJSE: ObjectDefinition 0x40 - valid EP flags 1
             ValidEPFlags2 = 0x131, // PJSE: ObjectDefinition 0x41 - valid EP flags 2
             GameEditionFlags2 = 0x132, // PJSE: SimulatorGlobals 0x3a - game edition flags 2
             //Str0x0133..1dd unused
@@ -954,7 +954,7 @@ namespace pjse
         public string readBcon(uint instance, int bid, bool temp, bool useDecimal)
         {
             bool inDecimal = useDecimal ? pjse.Settings.PJSE.DecimalDOValue : false;
-           
+
             if (instruction == null || instruction.Parent == null || instruction.Parent.FileDescriptor == null)
                 throw new InvalidOperationException("Can't read BCON for instruction with no parent");
 

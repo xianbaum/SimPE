@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -30,7 +30,7 @@ namespace SimPe.PackedFiles.Wrapper
 	/// This is the actual FileWrapper
 	/// </summary>
 	/// <remarks>
-	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads 
+	/// The wrapper is used to (un)serialize the Data of a file into it's Attributes. So Basically it reads
 	/// a BinaryStream and translates the data into some userdefine Attributes.
 	/// </remarks>
     public class Trcn
@@ -148,7 +148,7 @@ namespace SimPe.PackedFiles.Wrapper
         /// </summary>
         /// <param name="writer">The Stream the Data should be stored to</param>
         /// <remarks>
-        /// Be sure that the Position of the stream is Proper on 
+        /// Be sure that the Position of the stream is Proper on
         /// return (i.e. must point to the first Byte after your actual File)
         /// </remarks>
         protected override void Serialize(System.IO.BinaryWriter writer)
@@ -261,7 +261,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public uint Used
 		{
 			get { return used; }
-			set 
+			set
 			{
 				if (used != value)
 				{
@@ -274,7 +274,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public uint ConstId
 		{
 			get { return constId; }
-			set 
+			set
 			{
 				if (constId != value)
 				{
@@ -287,7 +287,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public string ConstName
 		{
 			get { return constName; }
-			set 
+			set
 			{
 				if (constName != value)
 				{
@@ -313,7 +313,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public ushort DefValue
 		{
 			get { return defValue; }
-			set 
+			set
 			{
 				if (defValue != value)
 				{
@@ -326,7 +326,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public ushort MinValue
 		{
 			get { return minValue; }
-			set 
+			set
 			{
 				if (minValue != value)
 				{
@@ -339,7 +339,7 @@ namespace SimPe.PackedFiles.Wrapper
 		public ushort MaxValue
 		{
 			get { return maxValue; }
-			set 
+			set
 			{
 				if (maxValue != value)
 				{
@@ -404,7 +404,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="writer">The Stream the Data should be stored to</param>
 		/// <remarks>
-		/// Be sure that the Position of the stream is Proper on 
+		/// Be sure that the Position of the stream is Proper on
 		/// return (i.e. must point to the first Byte after your actual File)
 		/// </remarks>
 		internal void Serialize(System.IO.BinaryWriter writer)

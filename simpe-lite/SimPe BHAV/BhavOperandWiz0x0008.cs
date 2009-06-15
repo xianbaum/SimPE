@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2007 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *   Copyright (C) 2005 by Ambertation                                     *
  *   quaxi@ambertation.de                                                  *
  *                                                                         *
@@ -117,7 +117,7 @@ namespace pjse.BhavOperandWizards.Wiz0x0008
 
         #region Vom Windows Form-Designer generierter Code
         /// <summary>
-        /// Erforderliche Methode für die Designerunterstützung. 
+        /// Erforderliche Methode für die Designerunterstützung.
         /// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
         /// </summary>
         private void InitializeComponent()
@@ -138,9 +138,9 @@ namespace pjse.BhavOperandWizards.Wiz0x0008
             this.cbDataOwner1 = new System.Windows.Forms.ComboBox();
             this.pnWiz0x0008.SuspendLayout();
             this.SuspendLayout();
-            // 
+            //
             // pnWiz0x0008
-            // 
+            //
             this.pnWiz0x0008.Controls.Add(this.label2);
             this.pnWiz0x0008.Controls.Add(this.label1);
             this.pnWiz0x0008.Controls.Add(this.lbConst2);
@@ -155,77 +155,77 @@ namespace pjse.BhavOperandWizards.Wiz0x0008
             this.pnWiz0x0008.Controls.Add(this.cbDataOwner1);
             resources.ApplyResources(this.pnWiz0x0008, "pnWiz0x0008");
             this.pnWiz0x0008.Name = "pnWiz0x0008";
-            // 
+            //
             // label2
-            // 
+            //
             resources.ApplyResources(this.label2, "label2");
             this.label2.Name = "label2";
-            // 
+            //
             // label1
-            // 
+            //
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
-            // 
+            //
             // lbConst2
-            // 
+            //
             resources.ApplyResources(this.lbConst2, "lbConst2");
             this.lbConst2.Name = "lbConst2";
-            // 
+            //
             // lbConst1
-            // 
+            //
             resources.ApplyResources(this.lbConst1, "lbConst1");
             this.lbConst1.Name = "lbConst1";
-            // 
+            //
             // cbAttrPicker
-            // 
+            //
             resources.ApplyResources(this.cbAttrPicker, "cbAttrPicker");
             this.cbAttrPicker.Name = "cbAttrPicker";
-            // 
+            //
             // cbDecimal
-            // 
+            //
             resources.ApplyResources(this.cbDecimal, "cbDecimal");
             this.cbDecimal.Name = "cbDecimal";
-            // 
+            //
             // cbPicker2
-            // 
+            //
             resources.ApplyResources(this.cbPicker2, "cbPicker2");
             this.cbPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker2.DropDownWidth = 384;
             this.cbPicker2.Name = "cbPicker2";
-            // 
+            //
             // cbPicker1
-            // 
+            //
             resources.ApplyResources(this.cbPicker1, "cbPicker1");
             this.cbPicker1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbPicker1.DropDownWidth = 384;
             this.cbPicker1.Name = "cbPicker1";
-            // 
+            //
             // tbval2
-            // 
+            //
             resources.ApplyResources(this.tbval2, "tbval2");
             this.tbval2.Name = "tbval2";
-            // 
+            //
             // cbDataOwner2
-            // 
+            //
             resources.ApplyResources(this.cbDataOwner2, "cbDataOwner2");
             this.cbDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner2.DropDownWidth = 384;
             this.cbDataOwner2.Name = "cbDataOwner2";
-            // 
+            //
             // tbval1
-            // 
+            //
             resources.ApplyResources(this.tbval1, "tbval1");
             this.tbval1.Name = "tbval1";
-            // 
+            //
             // cbDataOwner1
-            // 
+            //
             resources.ApplyResources(this.cbDataOwner1, "cbDataOwner1");
             this.cbDataOwner1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbDataOwner1.DropDownWidth = 384;
             this.cbDataOwner1.Name = "cbDataOwner1";
-            // 
+            //
             // UI
-            // 
+            //
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pnWiz0x0008);

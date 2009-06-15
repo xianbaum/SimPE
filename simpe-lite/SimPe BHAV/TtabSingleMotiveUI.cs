@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (C) 2005 by Peter L Jones                                   *
- *   peter@drealm.info                                                     *
+ *   pljones@users.sf.net                                                  *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -36,7 +36,7 @@ namespace SimPe.PackedFiles.UserInterface
         private System.Windows.Forms.TextBox Min;
 		private System.Windows.Forms.TextBox Delta;
 		private System.Windows.Forms.TextBox Type;
-		/// <summary> 
+		/// <summary>
 		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
@@ -53,7 +53,7 @@ namespace SimPe.PackedFiles.UserInterface
             this.Enabled = false;
 		}
 
-		/// <summary> 
+		/// <summary>
 		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
@@ -129,8 +129,8 @@ namespace SimPe.PackedFiles.UserInterface
 		#endregion
 
 		#region Component Designer generated code
-		/// <summary> 
-		/// Required method for Designer support - do not modify 
+		/// <summary>
+		/// Required method for Designer support - do not modify
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
@@ -140,33 +140,33 @@ namespace SimPe.PackedFiles.UserInterface
             this.Delta = new System.Windows.Forms.TextBox();
             this.Type = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
-            // 
+            //
             // Min
-            // 
+            //
             resources.ApplyResources(this.Min, "Min");
             this.Min.Name = "Min";
             this.Min.Validated += new System.EventHandler(this.hex16_Validated);
             this.Min.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.Min.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            // 
+            //
             // Delta
-            // 
+            //
             resources.ApplyResources(this.Delta, "Delta");
             this.Delta.Name = "Delta";
             this.Delta.Validated += new System.EventHandler(this.hex16_Validated);
             this.Delta.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.Delta.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            // 
+            //
             // Type
-            // 
+            //
             resources.ApplyResources(this.Type, "Type");
             this.Type.Name = "Type";
             this.Type.Validated += new System.EventHandler(this.hex16_Validated);
             this.Type.Validating += new System.ComponentModel.CancelEventHandler(this.hex16_Validating);
             this.Type.TextChanged += new System.EventHandler(this.hex16_TextChanged);
-            // 
+            //
             // TtabSingleMotiveUI
-            // 
+            //
             this.Controls.Add(this.Min);
             this.Controls.Add(this.Delta);
             this.Controls.Add(this.Type);
