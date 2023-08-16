@@ -10,7 +10,7 @@
  *
  */
 
-namespace whse.PrimitiveWizards.Wiz0x0071
+namespace whse.PrimitiveWizards.Wiz0x0078
 {
     partial class UI
     {
@@ -42,7 +42,13 @@ namespace whse.PrimitiveWizards.Wiz0x0071
         {
             this.components = new System.ComponentModel.Container();
             this.panelMain = new System.Windows.Forms.Panel();
+            this.panelObjectSlot = new System.Windows.Forms.Panel();
+            this.textObjectSlot = new System.Windows.Forms.TextBox();
+            this.panelTargetSlot = new System.Windows.Forms.Panel();
+            this.textTagetSlot = new System.Windows.Forms.TextBox();
+            this.labelObjectSlot = new System.Windows.Forms.Label();
             this.comboDataPicker1 = new System.Windows.Forms.ComboBox();
+            this.comboObjectSlot = new System.Windows.Forms.ComboBox();
             this.comboDataPicker2 = new System.Windows.Forms.ComboBox();
             this.textDataValue1 = new System.Windows.Forms.TextBox();
             this.textDataValue2 = new System.Windows.Forms.TextBox();
@@ -53,24 +59,24 @@ namespace whse.PrimitiveWizards.Wiz0x0071
             this.checkAttrPicker = new System.Windows.Forms.CheckBox();
             this.lblTarget = new System.Windows.Forms.Label();
             this.lblObject = new System.Windows.Forms.Label();
-            this.lblSlot = new System.Windows.Forms.Label();
-            this.textSlot = new System.Windows.Forms.TextBox();
-            this.comboSlot = new System.Windows.Forms.ComboBox();
-            this.lblTestOnly = new System.Windows.Forms.Label();
-            this.checkTestOnly = new System.Windows.Forms.CheckBox();
-            this.lblRootBones = new System.Windows.Forms.Label();
-            this.checkRootBones = new System.Windows.Forms.CheckBox();
+            this.lblTargetSlot = new System.Windows.Forms.Label();
+            this.comboTargetSlot = new System.Windows.Forms.ComboBox();
+            this.lblWindows = new System.Windows.Forms.Label();
+            this.checkWindows = new System.Windows.Forms.CheckBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.panelSlot = new System.Windows.Forms.Panel();
             this.panelMain.SuspendLayout();
+            this.panelObjectSlot.SuspendLayout();
+            this.panelTargetSlot.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPnM)).BeginInit();
-            this.panelSlot.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelMain
             // 
-            this.panelMain.Controls.Add(this.panelSlot);
+            this.panelMain.Controls.Add(this.panelObjectSlot);
+            this.panelMain.Controls.Add(this.panelTargetSlot);
+            this.panelMain.Controls.Add(this.labelObjectSlot);
             this.panelMain.Controls.Add(this.comboDataPicker1);
+            this.panelMain.Controls.Add(this.comboObjectSlot);
             this.panelMain.Controls.Add(this.comboDataPicker2);
             this.panelMain.Controls.Add(this.textDataValue1);
             this.panelMain.Controls.Add(this.textDataValue2);
@@ -81,16 +87,53 @@ namespace whse.PrimitiveWizards.Wiz0x0071
             this.panelMain.Controls.Add(this.checkAttrPicker);
             this.panelMain.Controls.Add(this.lblTarget);
             this.panelMain.Controls.Add(this.lblObject);
-            this.panelMain.Controls.Add(this.lblSlot);
-            this.panelMain.Controls.Add(this.comboSlot);
-            this.panelMain.Controls.Add(this.lblTestOnly);
-            this.panelMain.Controls.Add(this.checkTestOnly);
-            this.panelMain.Controls.Add(this.lblRootBones);
-            this.panelMain.Controls.Add(this.checkRootBones);
+            this.panelMain.Controls.Add(this.lblTargetSlot);
+            this.panelMain.Controls.Add(this.comboTargetSlot);
+            this.panelMain.Controls.Add(this.lblWindows);
+            this.panelMain.Controls.Add(this.checkWindows);
             this.panelMain.Location = new System.Drawing.Point(0, 0);
             this.panelMain.Name = "panelMain";
             this.panelMain.Size = new System.Drawing.Size(440, 150);
             this.panelMain.TabIndex = 0;
+            // 
+            // panelObjectSlot
+            // 
+            this.panelObjectSlot.Controls.Add(this.textObjectSlot);
+            this.panelObjectSlot.Location = new System.Drawing.Point(235, 31);
+            this.panelObjectSlot.Name = "panelObjectSlot";
+            this.panelObjectSlot.Size = new System.Drawing.Size(205, 21);
+            this.panelObjectSlot.TabIndex = 53;
+            // 
+            // textObjectSlot
+            // 
+            this.textObjectSlot.Location = new System.Drawing.Point(0, 1);
+            this.textObjectSlot.Name = "textObjectSlot";
+            this.textObjectSlot.Size = new System.Drawing.Size(65, 20);
+            this.textObjectSlot.TabIndex = 7;
+            // 
+            // panelTargetSlot
+            // 
+            this.panelTargetSlot.Controls.Add(this.textTagetSlot);
+            this.panelTargetSlot.Location = new System.Drawing.Point(235, 85);
+            this.panelTargetSlot.Name = "panelTargetSlot";
+            this.panelTargetSlot.Size = new System.Drawing.Size(205, 21);
+            this.panelTargetSlot.TabIndex = 50;
+            // 
+            // textTagetSlot
+            // 
+            this.textTagetSlot.Location = new System.Drawing.Point(0, 1);
+            this.textTagetSlot.Name = "textTagetSlot";
+            this.textTagetSlot.Size = new System.Drawing.Size(65, 20);
+            this.textTagetSlot.TabIndex = 7;
+            // 
+            // labelObjectSlot
+            // 
+            this.labelObjectSlot.Location = new System.Drawing.Point(5, 34);
+            this.labelObjectSlot.Name = "labelObjectSlot";
+            this.labelObjectSlot.Size = new System.Drawing.Size(95, 13);
+            this.labelObjectSlot.TabIndex = 51;
+            this.labelObjectSlot.Text = "Object Point:";
+            this.labelObjectSlot.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // comboDataPicker1
             // 
@@ -101,11 +144,26 @@ namespace whse.PrimitiveWizards.Wiz0x0071
             this.comboDataPicker1.Size = new System.Drawing.Size(120, 21);
             this.comboDataPicker1.TabIndex = 1;
             // 
+            // comboObjectSlot
+            // 
+            this.comboObjectSlot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboObjectSlot.FormattingEnabled = true;
+            this.comboObjectSlot.Items.AddRange(new object[] {
+            "3/4 Height",
+            "Target Slot",
+            "Route Slot",
+            "Container Slot"});
+            this.comboObjectSlot.Location = new System.Drawing.Point(105, 31);
+            this.comboObjectSlot.Name = "comboObjectSlot";
+            this.comboObjectSlot.Size = new System.Drawing.Size(120, 21);
+            this.comboObjectSlot.TabIndex = 52;
+            this.comboObjectSlot.SelectedIndexChanged += new System.EventHandler(this.OnControlChanged);
+            // 
             // comboDataPicker2
             // 
             this.comboDataPicker2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboDataPicker2.FormattingEnabled = true;
-            this.comboDataPicker2.Location = new System.Drawing.Point(310, 31);
+            this.comboDataPicker2.Location = new System.Drawing.Point(310, 58);
             this.comboDataPicker2.Name = "comboDataPicker2";
             this.comboDataPicker2.Size = new System.Drawing.Size(120, 21);
             this.comboDataPicker2.TabIndex = 4;
@@ -119,7 +177,7 @@ namespace whse.PrimitiveWizards.Wiz0x0071
             // 
             // textDataValue2
             // 
-            this.textDataValue2.Location = new System.Drawing.Point(310, 31);
+            this.textDataValue2.Location = new System.Drawing.Point(310, 58);
             this.textDataValue2.Name = "textDataValue2";
             this.textDataValue2.Size = new System.Drawing.Size(120, 20);
             this.textDataValue2.TabIndex = 5;
@@ -137,7 +195,7 @@ namespace whse.PrimitiveWizards.Wiz0x0071
             // 
             this.comboDataOwner2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboDataOwner2.FormattingEnabled = true;
-            this.comboDataOwner2.Location = new System.Drawing.Point(105, 31);
+            this.comboDataOwner2.Location = new System.Drawing.Point(105, 58);
             this.comboDataOwner2.Name = "comboDataOwner2";
             this.comboDataOwner2.Size = new System.Drawing.Size(195, 21);
             this.comboDataOwner2.TabIndex = 3;
@@ -177,7 +235,7 @@ namespace whse.PrimitiveWizards.Wiz0x0071
             // 
             // lblTarget
             // 
-            this.lblTarget.Location = new System.Drawing.Point(5, 34);
+            this.lblTarget.Location = new System.Drawing.Point(5, 61);
             this.lblTarget.Name = "lblTarget";
             this.lblTarget.Size = new System.Drawing.Size(95, 13);
             this.lblTarget.TabIndex = 25;
@@ -193,78 +251,47 @@ namespace whse.PrimitiveWizards.Wiz0x0071
             this.lblObject.Text = "Object:";
             this.lblObject.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // lblSlot
+            // lblTargetSlot
             // 
-            this.lblSlot.Location = new System.Drawing.Point(5, 61);
-            this.lblSlot.Name = "lblSlot";
-            this.lblSlot.Size = new System.Drawing.Size(95, 13);
-            this.lblSlot.TabIndex = 5;
-            this.lblSlot.Text = "Slot:";
-            this.lblSlot.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.lblTargetSlot.Location = new System.Drawing.Point(5, 88);
+            this.lblTargetSlot.Name = "lblTargetSlot";
+            this.lblTargetSlot.Size = new System.Drawing.Size(95, 13);
+            this.lblTargetSlot.TabIndex = 5;
+            this.lblTargetSlot.Text = "Target Point:";
+            this.lblTargetSlot.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // textSlot
+            // comboTargetSlot
             // 
-            this.textSlot.Location = new System.Drawing.Point(0, 1);
-            this.textSlot.Name = "textSlot";
-            this.textSlot.Size = new System.Drawing.Size(60, 20);
-            this.textSlot.TabIndex = 7;
+            this.comboTargetSlot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboTargetSlot.FormattingEnabled = true;
+            this.comboTargetSlot.Items.AddRange(new object[] {
+            "3/4 Height",
+            "Target Slot",
+            "Route Slot",
+            "Container Slot"});
+            this.comboTargetSlot.Location = new System.Drawing.Point(105, 85);
+            this.comboTargetSlot.Name = "comboTargetSlot";
+            this.comboTargetSlot.Size = new System.Drawing.Size(120, 21);
+            this.comboTargetSlot.TabIndex = 6;
+            this.comboTargetSlot.SelectedIndexChanged += new System.EventHandler(this.OnControlChanged);
             // 
-            // comboSlot
+            // lblWindows
             // 
-            this.comboSlot.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboSlot.FormattingEnabled = true;
-            this.comboSlot.Items.AddRange(new object[] {
-            "Literal",
-            "Temp 0"});
-            this.comboSlot.Location = new System.Drawing.Point(105, 58);
-            this.comboSlot.Name = "comboSlot";
-            this.comboSlot.Size = new System.Drawing.Size(85, 21);
-            this.comboSlot.TabIndex = 6;
-            this.comboSlot.SelectedIndexChanged += new System.EventHandler(this.OnControlChanged);
+            this.lblWindows.Location = new System.Drawing.Point(5, 115);
+            this.lblWindows.Name = "lblWindows";
+            this.lblWindows.Size = new System.Drawing.Size(95, 13);
+            this.lblWindows.TabIndex = 15;
+            this.lblWindows.Text = "Ignore Windows:";
+            this.lblWindows.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // lblTestOnly
+            // checkWindows
             // 
-            this.lblTestOnly.Location = new System.Drawing.Point(5, 88);
-            this.lblTestOnly.Name = "lblTestOnly";
-            this.lblTestOnly.Size = new System.Drawing.Size(95, 13);
-            this.lblTestOnly.TabIndex = 15;
-            this.lblTestOnly.Text = "Test Only:";
-            this.lblTestOnly.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // checkTestOnly
-            // 
-            this.checkTestOnly.AutoSize = true;
-            this.checkTestOnly.Location = new System.Drawing.Point(105, 88);
-            this.checkTestOnly.Name = "checkTestOnly";
-            this.checkTestOnly.Size = new System.Drawing.Size(15, 14);
-            this.checkTestOnly.TabIndex = 8;
-            this.checkTestOnly.UseVisualStyleBackColor = true;
-            // 
-            // lblRootBones
-            // 
-            this.lblRootBones.Location = new System.Drawing.Point(3, 110);
-            this.lblRootBones.Name = "lblRootBones";
-            this.lblRootBones.Size = new System.Drawing.Size(97, 13);
-            this.lblRootBones.TabIndex = 16;
-            this.lblRootBones.Text = "Reset Root Bones:";
-            this.lblRootBones.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // checkRootBones
-            // 
-            this.checkRootBones.AutoSize = true;
-            this.checkRootBones.Location = new System.Drawing.Point(105, 110);
-            this.checkRootBones.Name = "checkRootBones";
-            this.checkRootBones.Size = new System.Drawing.Size(15, 14);
-            this.checkRootBones.TabIndex = 9;
-            this.checkRootBones.UseVisualStyleBackColor = true;
-            // 
-            // panelSlot
-            // 
-            this.panelSlot.Controls.Add(this.textSlot);
-            this.panelSlot.Location = new System.Drawing.Point(200, 58);
-            this.panelSlot.Name = "panelSlot";
-            this.panelSlot.Size = new System.Drawing.Size(240, 21);
-            this.panelSlot.TabIndex = 50;
+            this.checkWindows.AutoSize = true;
+            this.checkWindows.Location = new System.Drawing.Point(105, 115);
+            this.checkWindows.Name = "checkWindows";
+            this.checkWindows.Size = new System.Drawing.Size(15, 14);
+            this.checkWindows.TabIndex = 8;
+            this.checkWindows.UseVisualStyleBackColor = true;
             // 
             // UI
             // 
@@ -275,9 +302,11 @@ namespace whse.PrimitiveWizards.Wiz0x0071
             this.Size = new System.Drawing.Size(440, 150);
             this.panelMain.ResumeLayout(false);
             this.panelMain.PerformLayout();
+            this.panelObjectSlot.ResumeLayout(false);
+            this.panelObjectSlot.PerformLayout();
+            this.panelTargetSlot.ResumeLayout(false);
+            this.panelTargetSlot.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.iconPnM)).EndInit();
-            this.panelSlot.ResumeLayout(false);
-            this.panelSlot.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -285,15 +314,13 @@ namespace whse.PrimitiveWizards.Wiz0x0071
         #endregion
 
         private System.Windows.Forms.Panel panelMain;
-        private System.Windows.Forms.Label lblSlot;
-        private System.Windows.Forms.TextBox textSlot;
-        private System.Windows.Forms.ComboBox comboSlot;
-        private System.Windows.Forms.Label lblRootBones;
-        private System.Windows.Forms.Label lblTestOnly;
+        private System.Windows.Forms.Label lblTargetSlot;
+        private System.Windows.Forms.TextBox textTagetSlot;
+        private System.Windows.Forms.ComboBox comboTargetSlot;
+        private System.Windows.Forms.Label lblWindows;
         private System.Windows.Forms.Label lblTarget;
         private System.Windows.Forms.Label lblObject;
-        private System.Windows.Forms.CheckBox checkRootBones;
-        private System.Windows.Forms.CheckBox checkTestOnly;
+        private System.Windows.Forms.CheckBox checkWindows;
         private System.Windows.Forms.TextBox textDataValue1;
         private System.Windows.Forms.ComboBox comboDataPicker1;
         private System.Windows.Forms.ComboBox comboDataOwner1;
@@ -304,6 +331,10 @@ namespace whse.PrimitiveWizards.Wiz0x0071
         private System.Windows.Forms.CheckBox checkAttrPicker;
         private System.Windows.Forms.PictureBox iconPnM;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.Panel panelSlot;
+        private System.Windows.Forms.Panel panelTargetSlot;
+        private System.Windows.Forms.Panel panelObjectSlot;
+        private System.Windows.Forms.TextBox textObjectSlot;
+        private System.Windows.Forms.Label labelObjectSlot;
+        private System.Windows.Forms.ComboBox comboObjectSlot;
     }
 }
