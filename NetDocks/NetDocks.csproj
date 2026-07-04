@@ -1,0 +1,213 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F65B296C-6435-4AA9-A5DF-188BE363C43E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ambertation.Windows.Forms</RootNamespace>
+    <AssemblyName>NetDocks</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseControlRenderer.cs" />
+    <Compile Include="BaseDockManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseDockPanelRenderer.cs" />
+    <Compile Include="BaseFontTable.cs" />
+    <Compile Include="BaseRenderer.cs" />
+    <Compile Include="Classic Rendering\ClassicColorTable.cs" />
+    <Compile Include="Classic Rendering\ClassicFontTable.cs" />
+    <Compile Include="Classic Rendering\ClassicRenderDockHints.cs" />
+    <Compile Include="Classic Rendering\ClassicRenderDockPanel.cs" />
+    <Compile Include="Classic Rendering\ClassicRenderer.cs" />
+    <Compile Include="Classic Rendering\ClassicRenderTabs.cs" />
+    <Compile Include="Classic Rendering\ClassicTabRenderer.cs" />
+    <Compile Include="DockContainer.Compat.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockContainer.Resize.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockContainer.Serializer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockManager.Serializer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockManagerDesigner.cs">
+    </Compile>
+    <Compile Include="DockAnimationEventArgs.cs" />
+    <Compile Include="DockButtonBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockButtonBar.Designer.cs">
+      <DependentUpon>DockButtonBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockContainer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockHint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockManager.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockOverlay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DockPanel.Compat.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockPanel.Designer.cs">
+      <DependentUpon>DockPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DockPanel.Serializer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DockPanelButtonManager.cs" />
+    <Compile Include="DockPanelCaptionButton.cs" />
+    <Compile Include="DockPanelCloseButton.cs" />
+    <Compile Include="DockPanelCollapseButton.cs" />
+    <Compile Include="DockPanelDesigner.cs" />
+    <Compile Include="Glossy Rendering\GlossyColorTable.cs" />
+    <Compile Include="Glossy Rendering\GlossyFontTable.cs" />
+    <Compile Include="Glossy Rendering\GlossyRenderDockHints.cs" />
+    <Compile Include="Glossy Rendering\GlossyRenderDockPanel.cs" />
+    <Compile Include="Glossy Rendering\GlossyRenderer.cs" />
+    <Compile Include="Glossy Rendering\GlossyRenderTabs.cs" />
+    <Compile Include="Glossy Rendering\GlossyTabRenderer.cs" />
+    <Compile Include="IButtonContainer.cs" />
+    <Compile Include="IColorTable.cs" />
+    <Compile Include="IControlRenderer.cs" />
+    <Compile Include="IDockPanelRenderer.cs" />
+    <Compile Include="IDockTarget.cs" />
+    <Compile Include="IFontTable.cs" />
+    <Compile Include="IRenderDockHints.cs" />
+    <Compile Include="DockContainerDesigner.cs" />
+    <Compile Include="LayeredForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ManagerSingelton.cs" />
+    <Compile Include="NCHittestEventArgs.cs" />
+    <Compile Include="NCPaintEventArgs.cs" />
+    <Compile Include="NCResizeBorders.cs" />
+    <Compile Include="NCUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NCUserControl.Designer.cs">
+      <DependentUpon>NCUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RubberBandHelper.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="StructureTreeView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StructureTreeView.Designer.cs">
+      <DependentUpon>StructureTreeView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TabPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TransparentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TransparentForm.Designer.cs">
+      <DependentUpon>TransparentForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Whidbey Renderer\WhidbeyColorTable.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyFontTable.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyRenderDockHints.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyRenderDockPanel.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyRenderer.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyRenderTabs.cs" />
+    <Compile Include="Whidbey Renderer\WhidbeyTabRenderer.cs" />
+    <Compile Include="WinApiHelper.cs" />
+    <Service Include="{94E38DFF-614B-4cbd-B67C-F211BB35CE8B}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="bottom.png" />
+    <EmbeddedResource Include="closeX.png" />
+    <EmbeddedResource Include="closeX_f.png" />
+    <EmbeddedResource Include="dockhint.PNG" />
+    <EmbeddedResource Include="left.png" />
+    <EmbeddedResource Include="pinD.png" />
+    <EmbeddedResource Include="pinD_f.png" />
+    <EmbeddedResource Include="pinH.png" />
+    <EmbeddedResource Include="pinH_f.png" />
+    <EmbeddedResource Include="pinV.png" />
+    <EmbeddedResource Include="pinV_f.png" />
+    <EmbeddedResource Include="right.png" />
+    <EmbeddedResource Include="top.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DockContainer.resx">
+      <DependentUpon>DockContainer.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="dockimg.png" />
+    <EmbeddedResource Include="LayeredForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>LayeredForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="StructureTreeView.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>StructureTreeView.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>
