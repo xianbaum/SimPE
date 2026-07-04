@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>ambertation.3D.mdx.binding</AssemblyName>
+    <RootNamespace>Ambertation</RootNamespace>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Vortice.Direct3D9" Version="3.8.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ambertation.3D">
+      <HintPath>$(ReleaseDir)ambertation.3D.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ambertation.utilities">
+      <HintPath>$(ReleaseDir)ambertation.utilities.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

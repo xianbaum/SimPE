@@ -1,0 +1,24 @@
+# ---------------------------------------------------------------------------
+# .NET
+# ---------------------------------------------------------------------------
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userprefs
+*.cache
+*.pdb
+*.deps.json
+
+# ---------------------------------------------------------------------------
+# __Release/ contains some dll blobs
+# ---------------------------------------------------------------------------
+/__Release/*
+
+!/__Release/AdvancedForms.dll
+!/__Release/Eyefinder.dll
+!/__Release/GDF.dll
+!/__Release/NetDocks.dll
+!/__Release/SandDock.dll
+!/__Release/xsi.lib.dll

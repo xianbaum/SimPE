@@ -224,7 +224,7 @@ namespace Ambertation
 			AssemblyName myAsmName = new AssemblyName();
 			myAsmName.Name = "EmittedAssembly";
 
-			AssemblyBuilder myAsmBuilder = myDomain.DefineDynamicAssembly(myAsmName,
+			AssemblyBuilder myAsmBuilder = System.Reflection.Emit.AssemblyBuilder.DefineDynamicAssembly(myAsmName,
 				AssemblyBuilderAccess.Run);
 
 			ModuleBuilder myModBuilder = myAsmBuilder.DefineDynamicModule("EmittedModule");

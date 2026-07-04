@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>ambertation.3D</AssemblyName>
+    <RootNamespace>Ambertation</RootNamespace>
+    <!-- Fresh ILSpy decompilation of the SimPE 0.75f ambertation.3D.dll. -->
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ambertation.utilities">
+      <HintPath>$(ReleaseDir)ambertation.utilities.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>
