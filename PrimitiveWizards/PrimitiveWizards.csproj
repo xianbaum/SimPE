@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace>whse.PrimitiveWizards</RootNamespace>
+    <AssemblyName>whse.primitivewizards_0_77_69</AssemblyName>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);SIMPE_77_69</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="pjse.coder"><HintPath>$(ReleaseDir)pjse.coder.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="simpe.helper"><HintPath>$(ReleaseDir)simpe.helper.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="simpe.interfaces"><HintPath>$(ReleaseDir)simpe.interfaces.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="simpe.sims"><HintPath>$(ReleaseDir)simpe.sims.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="0x0007\BhavOperandWiz0x0007.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0007.UI.resources" />
+    <EmbeddedResource Include="0x000b\BhavOperandWiz0x000b.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x000b.UI.resources" />
+    <EmbeddedResource Include="0x000c\BhavOperandWiz0x000c.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x000c.UI.resources" />
+    <EmbeddedResource Include="0x000d\BhavOperandWiz0x000d.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x000d.UI.resources" />
+    <EmbeddedResource Include="0x000e\BhavOperandWiz0x000e.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x000e.UI.resources" />
+    <EmbeddedResource Include="0x0010\BhavOperandWiz0x0010.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0010.UI.resources" />
+    <EmbeddedResource Include="0x0011\BhavOperandWiz0x0011.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0011.UI.resources" />
+    <EmbeddedResource Include="0x0012\BhavOperandWiz0x0012.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0012.UI.resources" />
+    <EmbeddedResource Include="0x0014\BhavOperandWiz0x0014.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0014.UI.resources" />
+    <EmbeddedResource Include="0x0016\BhavOperandWiz0x0016.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0016.UI.resources" />
+    <EmbeddedResource Include="0x0017\BhavOperandWiz0x0017.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0017.UI.resources" />
+    <EmbeddedResource Include="0x001a\BhavOperandWiz0x001a.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x001a.UI.resources" />
+    <EmbeddedResource Include="0x001d\BhavOperandWiz0x001d.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x001d.UI.resources" />
+    <EmbeddedResource Include="0x0023\BhavOperandWiz0x0023.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0023.UI.resources" />
+    <EmbeddedResource Include="0x002a\BhavOperandWiz0x002a.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x002a.UI.resources" />
+    <EmbeddedResource Include="0x002e\BhavOperandWiz0x002e.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x002e.UI.resources" />
+    <EmbeddedResource Include="0x0030\BhavOperandWiz0x0030.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0030.UI.resources" />
+    <EmbeddedResource Include="0x006c\BhavOperandWiz0x006c.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x006c.UI.resources" />
+    <EmbeddedResource Include="0x006f\BhavOperandWiz0x006f.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x006f.UI.resources" />
+    <EmbeddedResource Include="0x0070\BhavOperandWiz0x0070.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0070.UI.resources" />
+    <EmbeddedResource Include="0x0071\BhavOperandWiz0x0071.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0071.UI.resources" />
+    <EmbeddedResource Include="0x0072\BhavOperandWiz0x0072.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0072.UI.resources" />
+    <EmbeddedResource Include="0x0074\BhavOperandWiz0x0074.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0074.UI.resources" />
+    <EmbeddedResource Include="0x0077\BhavOperandWiz0x0077.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0077.UI.resources" />
+    <EmbeddedResource Include="0x0078\BhavOperandWiz0x0078.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0078.UI.resources" />
+    <EmbeddedResource Include="0x0079\BhavOperandWiz0x0079.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x0079.UI.resources" />
+    <EmbeddedResource Include="0x007a\BhavOperandWiz0x007a.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x007a.UI.resources" />
+    <EmbeddedResource Include="0x007c\BhavOperandWiz0x007c.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x007c.UI.resources" />
+    <EmbeddedResource Include="0x007e\BhavOperandWiz0x007e.UI.resx" LogicalName="whse.PrimitiveWizards.Wiz0x007e.UI.resources" />
+    <EmbeddedResource Include="Properties\Resources.resx" LogicalName="whse.PrimitiveWizards.Properties.Resources.resources" />
+    <None Include="Resources\MinionWithNotebook.png" />
+  </ItemGroup>
+</Project>

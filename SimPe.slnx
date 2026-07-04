@@ -49,6 +49,7 @@
   <Folder Name="/__NonCore/WOSimPe - Recolor/">
     <Project Path="__NonCore/WOSimPe - Recolor/Plugin WOSimPe - Recolor.csproj" />
   </Folder>
+  <Project Path="PrimitiveWizards/PrimitiveWizards.csproj" />
   <Project Path="ColorBinningTool/ColorBinningTool.csproj" />
   <Project Path="GDF/GDF.csproj" />
   <Project Path="GraphControl/GraphControl.csproj" />
