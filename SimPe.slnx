@@ -49,10 +49,12 @@
   <Folder Name="/__NonCore/WOSimPe - Recolor/">
     <Project Path="__NonCore/WOSimPe - Recolor/Plugin WOSimPe - Recolor.csproj" />
   </Folder>
+  <Project Path="AdvancedForms/AdvancedForms.csproj" />
   <Project Path="PrimitiveWizards/PrimitiveWizards.csproj" />
   <Project Path="ColorBinningTool/ColorBinningTool.csproj" />
   <Project Path="GDF/GDF.csproj" />
   <Project Path="GraphControl/GraphControl.csproj" />
+  <Project Path="NetDocks/NetDocks.csproj" />
   <Project Path="SimPe 3IDR/SimPe 3IDR.csproj" />
   <Project Path="SimPe Cache/SimPe Cache.csproj" />
   <Project Path="SimPe Clst/SimPe Clst.csproj" />

@@ -5,15 +5,9 @@
     <RootNamespace>SimPe.Windows.Forms</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdvancedForms">
-      <HintPath>$(ReleaseDir)AdvancedForms.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../AdvancedForms/AdvancedForms.csproj" />
     <ProjectReference Include="../GDF/GDF.csproj" />
-    <Reference Include="NetDocks">
-      <HintPath>$(ReleaseDir)NetDocks.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../NetDocks/NetDocks.csproj" />
     <ProjectReference Include="../SimPe Helper/SimPe Helper.csproj" />
     <ProjectReference Include="../SimPe Interfaces/SimPe Interfaces.csproj" />
     <ProjectReference Include="../SimPe Packages/SimPe Packages.csproj" />

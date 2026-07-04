@@ -9,10 +9,7 @@
       <HintPath>$(ReleaseDir)GDF.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="NetDocks">
-      <HintPath>$(ReleaseDir)NetDocks.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../NetDocks/NetDocks.csproj" />
     <Reference Include="simpe.helper">
       <HintPath>$(ReleaseDir)simpe.helper.dll</HintPath>
       <Private>false</Private>

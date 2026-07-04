@@ -6,10 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../GDF/GDF.csproj" />
-    <Reference Include="NetDocks">
-      <HintPath>$(ReleaseDir)NetDocks.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../NetDocks/NetDocks.csproj" />
     <ProjectReference Include="../SimPe Cache/SimPe Cache.csproj" />
     <ProjectReference Include="../SimPe Clst/SimPe Clst.csproj" />
     <ProjectReference Include="../SimPe FileHandler/SimPe FileHandlers.csproj" />
