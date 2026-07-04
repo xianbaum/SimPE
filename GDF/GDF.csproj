@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <RootNamespace></RootNamespace>
+    <AssemblyName>GDF</AssemblyName>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="booby.Properties.Resources.resx" LogicalName="booby.Properties.Resources.resources" />
+    <EmbeddedResource Include="booby.trimbuttons.resx" LogicalName="booby.trimbuttons.resources" />
+    <EmbeddedResource Include="booby.pattern.gif" LogicalName="booby.pattern.gif" />
+    <EmbeddedResource Include="Resources\Aahh.wav" LogicalName="booby.audio.Aahh.wav" />
+    <EmbeddedResource Include="Resources\Cancel.wav" LogicalName="booby.audio.Cancel.wav" />
+    <EmbeddedResource Include="Resources\Hammer.wav" LogicalName="booby.audio.Hammer.wav" />
+    <EmbeddedResource Include="Resources\Newitem.wav" LogicalName="booby.audio.Newitem.wav" />
+    <EmbeddedResource Include="Resources\Ooh.wav" LogicalName="booby.audio.Ooh.wav" />
+  </ItemGroup>
+</Project>

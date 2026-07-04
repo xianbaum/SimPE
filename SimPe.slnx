@@ -1,0 +1,80 @@
+<Solution>
+  <Folder Name="/Bidou Career Editor/">
+    <Project Path="Bidou Career Editor/Plugin Career Editor.csproj" />
+  </Folder>
+  <Folder Name="/SimPe 3D/">
+    <Project Path="SimPe 3D/Plugin 3D.csproj" />
+  </Folder>
+  <Folder Name="/SimPe BHAV/">
+    <Project Path="SimPe BHAV/Plugin BHAV.csproj" />
+  </Folder>
+  <Folder Name="/SimPe Dockbox/">
+    <Project Path="SimPe Dockbox/Plugin Dockbox.csproj" />
+  </Folder>
+  <Folder Name="/SimPe Downloads/">
+    <Project Path="SimPe Downloads/Plugin Downloads.csproj" />
+  </Folder>
+  <Folder Name="/SimPe FileHandler/">
+    <Project Path="SimPe FileHandler/SimPe FileHandlers.csproj" />
+  </Folder>
+  <Folder Name="/SimPe GMDC Exporter/">
+    <Project Path="SimPe GMDC Exporter/Plugin GMDC Exporter.csproj" />
+  </Folder>
+  <Folder Name="/SimPe NGBH Scanner/">
+    <Project Path="SimPe NGBH Scanner/Plugin NGBH Scanner.csproj" />
+  </Folder>
+  <Folder Name="/SimPe Toolbox Scenegraph/">
+    <Project Path="SimPe Toolbox Scenegraph/Plugin Toolbox Scenegraph.csproj" />
+  </Folder>
+  <Folder Name="/_PJSE/" />
+  <Folder Name="/_PJSE/pjBodyMeshTool/">
+    <Project Path="_PJSE/pjBodyMeshTool/SimPe pjBodyMeshTool.csproj" />
+  </Folder>
+  <Folder Name="/_PJSE/pjHoodTool/">
+    <Project Path="_PJSE/pjHoodTool/SimPe pjHoodTool.csproj" />
+  </Folder>
+  <Folder Name="/_PJSE/pjOBJDTool/">
+    <Project Path="_PJSE/pjOBJDTool/SimPe pjOBJDTool.csproj" />
+  </Folder>
+  <Folder Name="/_PJSE/pjObjKeyTool/">
+    <Project Path="_PJSE/pjObjKeyTool/SimPe pjObjKeyTool.csproj" />
+  </Folder>
+  <Folder Name="/_PJSE/pjse Coder/">
+    <Project Path="_PJSE/pjse Coder/SimPe pjse coder.csproj" />
+  </Folder>
+  <Folder Name="/__NonCore/">
+    <Project Path="__NonCore/WOSimPe - BSOK/WOSimPe - BSOK.csproj" />
+    <Project Path="__NonCore/WOSimPe - Wardrobecleaner/WOSimPe - Wardrobecleaner.csproj" />
+  </Folder>
+  <Folder Name="/__NonCore/WOSimPe - Recolor/">
+    <Project Path="__NonCore/WOSimPe - Recolor/Plugin WOSimPe - Recolor.csproj" />
+  </Folder>
+  <Project Path="ColorBinningTool/ColorBinningTool.csproj" />
+  <Project Path="GDF/GDF.csproj" />
+  <Project Path="GraphControl/GraphControl.csproj" />
+  <Project Path="SimPe 3IDR/SimPe 3IDR.csproj" />
+  <Project Path="SimPe Cache/SimPe Cache.csproj" />
+  <Project Path="SimPe Clst/SimPe Clst.csproj" />
+  <Project Path="SimPe Commandline/SimPe Commandline.csproj" />
+  <Project Path="SimPe Copyright Plugin/SimPe Copyright Plugin.csproj" />
+  <Project Path="SimPe Geometry/SimPe Geometry.csproj" />
+  <Project Path="SimPe GMDC Exporter Base/SimPe GMDC Exporter Base.csproj" />
+  <Project Path="SimPe Helper/SimPe Helper.csproj" />
+  <Project Path="SimPe HGBH/SimPe HGBH.csproj" />
+  <Project Path="SimPe Interfaces/SimPe Interfaces.csproj" />
+  <Project Path="SimPe Main/SimPe Main.csproj" />
+  <Project Path="SimPe Name Provider/SimPe Name Provider.csproj" />
+  <Project Path="SimPe Packages/SimPe Packages.csproj" />
+  <Project Path="SimPe RCOL/SimPe RCOL.csproj" />
+  <Project Path="SimPe ResourceControls/SimPe ResourceControls.csproj" />
+  <Project Path="SimPe Scenegraph/SimPe Scenegraph.csproj" />
+  <Project Path="SimPe Sims/SimPe Sims.csproj" />
+  <Project Path="SimPe Splash/SimPe Splash.csproj" />
+  <Project Path="SimPE Toolbox Scanner/SimPE Toolbox Scanner.csproj" />
+  <Project Path="SimPe Toolbox Workshops/SimPe Toolbox Workshops.csproj" />
+  <Project Path="SimPe Toolbox/SimPe Toolbox.csproj" />
+  <Project Path="SimPe Wizardbase/SimPe Wizardbase.csproj" />
+  <Project Path="SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
+  <Project Path="Wizards of SimPe/Wizards of SimPe.csproj" />
+  <Project Path="WOSimPE - Interfaces/WOSimPE - Interfaces.csproj" />
+</Solution>

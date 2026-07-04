@@ -33,10 +33,21 @@ namespace SimPe
     {
         public static MainForm Global;
         /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
+        /// Der Haupteinstiegspunkt fï¿½r die Anwendung.
         /// </summary>
         [STAThread]
         static void Main(string[] args)
+        {
+            // Hack until files are moved from __Release
+            System.Runtime.Loader.AssemblyLoadContext.Default.Resolving += (ctx, name) =>
+            {
+                string probe = System.IO.Path.Combine(System.AppContext.BaseDirectory, name.Name + ".dll");
+                return System.IO.File.Exists(probe) ? ctx.LoadFromAssemblyPath(probe) : null;
+            };
+            MainImplementation(args);
+        }
+
+        static void MainImplementation(string[] args)
         {
             Application.EnableVisualStyles();
             if (System.Environment.Version.Major < 2)

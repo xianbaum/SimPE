@@ -1,163 +1,30 @@
-﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <ProjectType>Local</ProjectType>
-    <ProductVersion>8.0.50727</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{06D06A6A-C49E-44B8-8EE4-C0F107D3A50D}</ProjectGuid>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
-    <AssemblyKeyContainerName>
-    </AssemblyKeyContainerName>
-    <AssemblyName>simpe.copyright.plugin</AssemblyName>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
-    <DefaultClientScript>JScript</DefaultClientScript>
-    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
-    <DefaultTargetSchema>IE50</DefaultTargetSchema>
-    <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
+    <AssemblyName>simpe.copyright.plugin</AssemblyName>
     <RootNamespace>SimPe.Plugin</RootNamespace>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-    <StartupObject>
-    </StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <UpgradeBackupLocation>
-    </UpgradeBackupLocation>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>bin\Debug\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>DEBUG</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>true</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>false</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>full</DebugType>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\__Release\Plugins\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>
-    </DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>false</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
-    <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GDF, Version=0.69.20.22, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\__Release\GDF.dll</HintPath>
-    </Reference>
-    <Reference Include="simpe.filehandler">
-      <Name>simpe.filehandler</Name>
-      <HintPath>..\__Release\simpe.filehandler.dll</HintPath>
-    </Reference>
-    <Reference Include="simpe.gmdc.exporter.base">
-      <Name>simpe.gmdc.exporter.base</Name>
-      <HintPath>..\__Release\simpe.gmdc.exporter.base.dll</HintPath>
-    </Reference>
-    <Reference Include="simpe.helper">
-      <Name>simpe.helper</Name>
-      <HintPath>..\__Release\simpe.helper.dll</HintPath>
-    </Reference>
-    <Reference Include="simpe.interfaces">
-      <Name>simpe.interfaces</Name>
-      <HintPath>..\__Release\simpe.interfaces.dll</HintPath>
-    </Reference>
-    <Reference Include="simpe.rcol">
-      <Name>simpe.rcol</Name>
-      <HintPath>..\__Release\simpe.rcol.dll</HintPath>
-    </Reference>
-    <Reference Include="simpe.sims">
-      <Name>simpe.sims</Name>
-      <HintPath>..\__Release\simpe.sims.dll</HintPath>
-    </Reference>
-    <Reference Include="simpe.workspace">
-      <Name>simpe.workspace</Name>
-      <HintPath>..\__Release\simpe.workspace.dll</HintPath>
-    </Reference>
-    <Reference Include="System">
-      <Name>System</Name>
-    </Reference>
-    <Reference Include="System.Data">
-      <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Drawing">
-      <Name>System.Drawing</Name>
-    </Reference>
-    <Reference Include="System.Windows.Forms">
-      <Name>System.Windows.Forms</Name>
-    </Reference>
-    <Reference Include="System.Xml">
-      <Name>System.XML</Name>
-    </Reference>
+    <ProjectReference Include="../GDF/GDF.csproj" />
+    <ProjectReference Include="../SimPe FileHandler/SimPe FileHandlers.csproj" />
+    <ProjectReference Include="../SimPe GMDC Exporter Base/SimPe GMDC Exporter Base.csproj" />
+    <ProjectReference Include="../SimPe Helper/SimPe Helper.csproj" />
+    <ProjectReference Include="../SimPe Interfaces/SimPe Interfaces.csproj" />
+    <ProjectReference Include="../SimPe RCOL/SimPe RCOL.csproj" />
+    <ProjectReference Include="../SimPe Sims/SimPe Sims.csproj" />
+    <ProjectReference Include="../SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionAddCopyright.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="CopyrightToolFactory.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="StringsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="ActionAddCopyright.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="CopyrightToolFactory.cs" />
+    <Compile Include="Properties/Resources.Designer.cs" />
+    <Compile Include="StringsForm.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="StringsForm.resx">
       <DependentUpon>StringsForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Properties/Resources.resx" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <SubType>Designer</SubType>
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
 </Project>
