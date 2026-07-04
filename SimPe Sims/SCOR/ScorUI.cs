@@ -1,0 +1,302 @@
+/***************************************************************************
+ *   Copyright (C) 2005 by Ambertation                                     *
+ *   quaxi@ambertation.de                                                  *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
+ ***************************************************************************/
+using System;
+using System.Collections;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Windows.Forms;
+using SimPe.PackedFiles.Wrapper;
+
+namespace SimPe.PackedFiles.UserInterface
+{
+	/// <summary>
+	/// Summary description for ScorUI.
+	/// </summary>
+	public class ScorUI : 
+		//System.Windows.Forms.UserControl 
+		SimPe.Windows.Forms.WrapperBaseControl, SimPe.Interfaces.Plugin.IPackedFileUI
+	{
+		private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox tbunk1;
+		private System.Windows.Forms.ListBox lb;
+        private Panel pnContainer;
+        private Button btAdd;
+        private Button btRem;
+        private ComboBox cbType;
+		/// <summary> 
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.Container components = null;
+
+		public ScorUI()
+		{
+			// Required designer variable.
+			InitializeComponent();
+            btAdd.Enabled = false;
+            btRem.Enabled = false;
+            UpdateTypeSelector();
+
+			this.Text = "Sim Scores";
+			this.Commited += new EventHandler(ScorUI_Commited);
+			this.CanCommit = Helper.WindowsRegistry.Extended;
+            if (booby.ThemeManager.ThemedForms)
+                booby.ThemeManager.Global.AddControl(this.cbType);
+            if (Helper.WindowsRegistry.UseBigIcons)
+                this.lb.Font = new System.Drawing.Font(this.lb.Font.FontFamily, 12F);
+		}
+
+		/// <summary> 
+		/// Clean up any resources being used.
+		/// </summary>
+		protected override void Dispose( bool disposing )
+		{
+			if( disposing )
+			{
+				if(components != null)
+				{
+					components.Dispose();
+				}
+			}
+			base.Dispose( disposing );
+		}
+
+		#region Windows Form Designer generated code
+		/// <summary> 
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
+            this.label1 = new System.Windows.Forms.Label();
+            this.tbunk1 = new System.Windows.Forms.TextBox();
+            this.lb = new System.Windows.Forms.ListBox();
+            this.pnContainer = new System.Windows.Forms.Panel();
+            this.cbType = new System.Windows.Forms.ComboBox();
+            this.btAdd = new System.Windows.Forms.Button();
+            this.btRem = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(61, 38);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(174, 23);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Number of Item Types:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tbunk1
+            // 
+            this.tbunk1.Location = new System.Drawing.Point(241, 40);
+            this.tbunk1.Name = "tbunk1";
+            this.tbunk1.ReadOnly = true;
+            this.tbunk1.Size = new System.Drawing.Size(76, 21);
+            this.tbunk1.TabIndex = 1;
+            // 
+            // lb
+            // 
+            this.lb.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.lb.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lb.HorizontalScrollbar = true;
+            this.lb.IntegralHeight = false;
+            this.lb.Location = new System.Drawing.Point(8, 72);
+            this.lb.Name = "lb";
+            this.lb.Size = new System.Drawing.Size(309, 133);
+            this.lb.TabIndex = 4;
+            this.lb.SelectedIndexChanged += new System.EventHandler(this.lb_SelectedIndexChanged);
+            // 
+            // pnContainer
+            // 
+            this.pnContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnContainer.Location = new System.Drawing.Point(323, 40);
+            this.pnContainer.Name = "pnContainer";
+            this.pnContainer.Size = new System.Drawing.Size(351, 228);
+            this.pnContainer.TabIndex = 5;
+            // 
+            // cbType
+            // 
+            this.cbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Location = new System.Drawing.Point(61, 217);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(187, 21);
+            this.cbType.TabIndex = 6;
+            this.cbType.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // btAdd
+            // 
+            this.btAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btAdd.Location = new System.Drawing.Point(254, 216);
+            this.btAdd.Name = "btAdd";
+            this.btAdd.Size = new System.Drawing.Size(63, 23);
+            this.btAdd.TabIndex = 7;
+            this.btAdd.Text = "Add";
+            this.btAdd.UseVisualStyleBackColor = true;
+            this.btAdd.Click += new System.EventHandler(this.btAdd_Click);
+            // 
+            // btRem
+            // 
+            this.btRem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btRem.Location = new System.Drawing.Point(254, 245);
+            this.btRem.Name = "btRem";
+            this.btRem.Size = new System.Drawing.Size(63, 23);
+            this.btRem.TabIndex = 8;
+            this.btRem.Text = "Remove";
+            this.btRem.UseVisualStyleBackColor = true;
+            this.btRem.Click += new System.EventHandler(this.btRem_Click);
+            // 
+            // ScorUI
+            // 
+            this.ShowLogo = false;
+            this.Controls.Add(this.btRem);
+            this.Controls.Add(this.btAdd);
+            this.Controls.Add(this.cbType);
+            this.Controls.Add(this.lb);
+            this.Controls.Add(this.pnContainer);
+            this.Controls.Add(this.tbunk1);
+            this.Controls.Add(this.label1);
+            this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Name = "ScorUI";
+            this.Size = new System.Drawing.Size(678, 272);
+            this.Controls.SetChildIndex(this.label1, 0);
+            this.Controls.SetChildIndex(this.tbunk1, 0);
+            this.Controls.SetChildIndex(this.pnContainer, 0);
+            this.Controls.SetChildIndex(this.lb, 0);
+            this.Controls.SetChildIndex(this.cbType, 0);
+            this.Controls.SetChildIndex(this.btAdd, 0);
+            this.Controls.SetChildIndex(this.btRem, 0);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+		}
+		#endregion
+
+		#region IPackedFileUI Member
+
+        protected override void OnWrapperChanged(SimPe.Windows.Forms.WrapperBaseControl.WrapperChangedEventArgs e)
+        {
+            if (e.OldWrapper != null)
+            {
+                (e.OldWrapper as Scor).AddedItem -= new Scor.ChangedListHandler(ScorUI_AddedItem);
+                (e.OldWrapper as Scor).RemovedItem -= new Scor.ChangedListHandler(ScorUI_RemovedItem);
+            }
+            if (e.NewWrapper != null)
+            {
+                (e.NewWrapper as Scor).AddedItem += new Scor.ChangedListHandler(ScorUI_AddedItem);
+                (e.NewWrapper as Scor).RemovedItem += new Scor.ChangedListHandler(ScorUI_RemovedItem);
+            }
+        }
+
+        void ScorUI_RemovedItem(Scor sender, Scor.ChangedListEventArgs e)
+        {
+            int index = Math.Max(0, lb.SelectedIndex);
+            lb.Items.Remove(e.Item);
+            index = Math.Min(lb.Items.Count - 1, index);
+            if (lb.Items.Count > index) lb.SelectedIndex = index;
+        }
+
+        void ScorUI_AddedItem(Scor sender, Scor.ChangedListEventArgs e)
+        {
+           lb.Items.Add(e.Item);
+           lb.SelectedIndex = lb.Items.Count - 1;
+        }
+
+		public Wrapper.Scor Scor
+		{
+			get { return (SimPe.PackedFiles.Wrapper.Scor)Wrapper; }
+		}
+		
+
+		protected override void RefreshGUI()
+		{          
+            pnContainer.Controls.Clear();
+			this.tbunk1.Text = Convert.ToString(Scor.Unknown1);
+            btRem.Enabled = false;
+			lb.Items.Clear();
+			foreach (Wrapper.ScorItem si in Scor)
+				lb.Items.Add(si);
+
+            if (lb.Items.Count > 0) lb.SelectedIndex = 0;
+		}		
+
+		#endregion
+
+        void UpdateTypeSelector()
+        {
+            this.cbType.Items.Clear();
+            //if (Scor != null)
+            {
+                foreach (string s in ScorItem.GuiElements.Keys)
+                    cbType.Items.Add(s);
+
+                if (cbType.Items.Count > 0) cbType.SelectedIndex = 0;
+            }
+
+        }
+
+		private void ScorUI_Commited(object sender, EventArgs e)
+		{
+			Scor.SynchronizeUserData();			
+		}
+
+        private void lb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Wrapper.ScorItem si = lb.SelectedItem as Wrapper.ScorItem;
+            pnContainer.Controls.Clear();
+            if (si != null)
+            {
+                if (si.Gui != null)
+                {
+                    pnContainer.Controls.Add(si.Gui);
+                    si.Gui.Dock = DockStyle.Fill;
+                }
+            }
+            btRem.Enabled = lb.SelectedItem != null && Helper.WindowsRegistry.Extended;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btAdd.Enabled = cbType.SelectedItem != null && Helper.WindowsRegistry.Extended;
+        }
+
+        private void btAdd_Click(object sender, EventArgs e)
+        {
+            if (Scor != null)
+                if (cbType.SelectedItem != null)
+                {
+                    if ((string)cbType.SelectedItem == "Best Friend Forever List") return;
+                    Scor.Add(cbType.SelectedItem.ToString());
+                }
+        }
+
+        private void btRem_Click(object sender, EventArgs e)
+        {
+            if (Scor != null)
+                Scor.Remove(lb.SelectedItem as ScorItem);
+        }
+	}
+}
