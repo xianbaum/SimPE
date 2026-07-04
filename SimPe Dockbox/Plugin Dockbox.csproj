@@ -6,16 +6,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="AdvancedForms">
-      <HintPath>$(ReleaseDir)AdvancedForms.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../AdvancedForms/AdvancedForms.csproj" />
     <ProjectReference Include="../GDF/GDF.csproj" />
     <ProjectReference Include="../GraphControl/GraphControl.csproj" />
-    <Reference Include="NetDocks">
-      <HintPath>$(ReleaseDir)NetDocks.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../NetDocks/NetDocks.csproj" />
     <ProjectReference Include="../SimPe 3IDR/SimPe 3IDR.csproj" />
     <ProjectReference Include="../SimPe Clst/SimPe Clst.csproj" />
     <ProjectReference Include="../SimPe FileHandler/SimPe FileHandlers.csproj" />

@@ -5,10 +5,7 @@
     <RootNamespace>SimPe.Plugin</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdvancedForms">
-      <HintPath>$(ReleaseDir)AdvancedForms.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../AdvancedForms/AdvancedForms.csproj" />
     <Reference Include="ambertation.3D">
       <HintPath>$(ReleaseDir)ambertation.3D.dll</HintPath>
       <Private>false</Private>

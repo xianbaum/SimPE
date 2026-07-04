@@ -16,8 +16,6 @@
 # ---------------------------------------------------------------------------
 /__Release/*
 
-!/__Release/AdvancedForms.dll
 !/__Release/Eyefinder.dll
-!/__Release/NetDocks.dll
 !/__Release/SandDock.dll
 !/__Release/xsi.lib.dll

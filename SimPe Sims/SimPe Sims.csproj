@@ -6,10 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
-    <Reference Include="AdvancedForms">
-      <HintPath>$(ReleaseDir)AdvancedForms.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../AdvancedForms/AdvancedForms.csproj" />
     <Reference Include="GDF">
       <HintPath>$(ReleaseDir)GDF.dll</HintPath>
       <Private>false</Private>
