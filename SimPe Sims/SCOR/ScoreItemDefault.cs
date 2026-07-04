@@ -32,6 +32,13 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
         {
             InitializeComponent();
             data = new byte[0];
+            if (booby.ThemeManager.ThemedForms)
+            {
+                booby.ThemeManager.Global.AddControl(this.textBox1);
+                booby.ThemeManager.Global.AddControl(this.tb);
+            }
+            if (Helper.WindowsRegistry.UseBigIcons)
+                this.tb.Font = new System.Drawing.Font(this.tb.Font.FontFamily, 12F);
         }
 
         protected override void DoSetData(string name, System.IO.BinaryReader reader)

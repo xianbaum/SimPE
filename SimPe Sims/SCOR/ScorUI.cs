@@ -28,29 +28,27 @@ using SimPe.PackedFiles.Wrapper;
 namespace SimPe.PackedFiles.UserInterface
 {
 	/// <summary>
-	/// Zusammenfassung für ScorUI.
+	/// Summary description for ScorUI.
 	/// </summary>
 	public class ScorUI : 
 		//System.Windows.Forms.UserControl 
 		SimPe.Windows.Forms.WrapperBaseControl, SimPe.Interfaces.Plugin.IPackedFileUI
 	{
 		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.TextBox tbunk1;
-		private System.Windows.Forms.TextBox tbunk2;
-		private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox tbunk1;
 		private System.Windows.Forms.ListBox lb;
         private Panel pnContainer;
         private Button btAdd;
         private Button btRem;
         private ComboBox cbType;
 		/// <summary> 
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
 		public ScorUI()
 		{
-			// Dieser Aufruf ist für den Windows Form-Designer erforderlich.
+			// Required designer variable.
 			InitializeComponent();
             btAdd.Enabled = false;
             btRem.Enabled = false;
@@ -58,11 +56,15 @@ namespace SimPe.PackedFiles.UserInterface
 
 			this.Text = "Sim Scores";
 			this.Commited += new EventHandler(ScorUI_Commited);
-			this.CanCommit = Helper.WindowsRegistry.HiddenMode;
+			this.CanCommit = Helper.WindowsRegistry.Extended;
+            if (booby.ThemeManager.ThemedForms)
+                booby.ThemeManager.Global.AddControl(this.cbType);
+            if (Helper.WindowsRegistry.UseBigIcons)
+                this.lb.Font = new System.Drawing.Font(this.lb.Font.FontFamily, 12F);
 		}
 
 		/// <summary> 
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -76,17 +78,15 @@ namespace SimPe.PackedFiles.UserInterface
 			base.Dispose( disposing );
 		}
 
-		#region Vom Komponenten-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary> 
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
             this.label1 = new System.Windows.Forms.Label();
             this.tbunk1 = new System.Windows.Forms.TextBox();
-            this.tbunk2 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.lb = new System.Windows.Forms.ListBox();
             this.pnContainer = new System.Windows.Forms.Panel();
             this.cbType = new System.Windows.Forms.ComboBox();
@@ -98,39 +98,20 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(8, 40);
+            this.label1.Location = new System.Drawing.Point(61, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(80, 23);
+            this.label1.Size = new System.Drawing.Size(174, 23);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Unknown 1:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+            this.label1.Text = "Number of Item Types:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tbunk1
             // 
-            this.tbunk1.Location = new System.Drawing.Point(96, 40);
+            this.tbunk1.Location = new System.Drawing.Point(241, 40);
             this.tbunk1.Name = "tbunk1";
             this.tbunk1.ReadOnly = true;
-            this.tbunk1.Size = new System.Drawing.Size(141, 21);
+            this.tbunk1.Size = new System.Drawing.Size(76, 21);
             this.tbunk1.TabIndex = 1;
-            // 
-            // tbunk2
-            // 
-            this.tbunk2.Location = new System.Drawing.Point(96, 64);
-            this.tbunk2.Name = "tbunk2";
-            this.tbunk2.ReadOnly = true;
-            this.tbunk2.Size = new System.Drawing.Size(141, 21);
-            this.tbunk2.TabIndex = 3;
-            // 
-            // label2
-            // 
-            this.label2.BackColor = System.Drawing.Color.Transparent;
-            this.label2.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(8, 64);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(80, 23);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Unknown 2:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomRight;
             // 
             // lb
             // 
@@ -139,9 +120,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.lb.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lb.HorizontalScrollbar = true;
             this.lb.IntegralHeight = false;
-            this.lb.Location = new System.Drawing.Point(8, 96);
+            this.lb.Location = new System.Drawing.Point(8, 72);
             this.lb.Name = "lb";
-            this.lb.Size = new System.Drawing.Size(229, 104);
+            this.lb.Size = new System.Drawing.Size(309, 133);
             this.lb.TabIndex = 4;
             this.lb.SelectedIndexChanged += new System.EventHandler(this.lb_SelectedIndexChanged);
             // 
@@ -150,9 +131,9 @@ namespace SimPe.PackedFiles.UserInterface
             this.pnContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnContainer.Location = new System.Drawing.Point(243, 40);
+            this.pnContainer.Location = new System.Drawing.Point(323, 40);
             this.pnContainer.Name = "pnContainer";
-            this.pnContainer.Size = new System.Drawing.Size(431, 228);
+            this.pnContainer.Size = new System.Drawing.Size(351, 228);
             this.pnContainer.TabIndex = 5;
             // 
             // cbType
@@ -160,16 +141,16 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbType.FormattingEnabled = true;
-            this.cbType.Location = new System.Drawing.Point(11, 217);
+            this.cbType.Location = new System.Drawing.Point(61, 217);
             this.cbType.Name = "cbType";
-            this.cbType.Size = new System.Drawing.Size(157, 21);
+            this.cbType.Size = new System.Drawing.Size(187, 21);
             this.cbType.TabIndex = 6;
             this.cbType.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // btAdd
             // 
             this.btAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btAdd.Location = new System.Drawing.Point(174, 216);
+            this.btAdd.Location = new System.Drawing.Point(254, 216);
             this.btAdd.Name = "btAdd";
             this.btAdd.Size = new System.Drawing.Size(63, 23);
             this.btAdd.TabIndex = 7;
@@ -180,7 +161,7 @@ namespace SimPe.PackedFiles.UserInterface
             // btRem
             // 
             this.btRem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btRem.Location = new System.Drawing.Point(174, 245);
+            this.btRem.Location = new System.Drawing.Point(254, 245);
             this.btRem.Name = "btRem";
             this.btRem.Size = new System.Drawing.Size(63, 23);
             this.btRem.TabIndex = 8;
@@ -190,13 +171,12 @@ namespace SimPe.PackedFiles.UserInterface
             // 
             // ScorUI
             // 
+            this.ShowLogo = false;
             this.Controls.Add(this.btRem);
             this.Controls.Add(this.btAdd);
             this.Controls.Add(this.cbType);
             this.Controls.Add(this.lb);
             this.Controls.Add(this.pnContainer);
-            this.Controls.Add(this.tbunk2);
-            this.Controls.Add(this.label2);
             this.Controls.Add(this.tbunk1);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -204,8 +184,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.Size = new System.Drawing.Size(678, 272);
             this.Controls.SetChildIndex(this.label1, 0);
             this.Controls.SetChildIndex(this.tbunk1, 0);
-            this.Controls.SetChildIndex(this.label2, 0);
-            this.Controls.SetChildIndex(this.tbunk2, 0);
             this.Controls.SetChildIndex(this.pnContainer, 0);
             this.Controls.SetChildIndex(this.lb, 0);
             this.Controls.SetChildIndex(this.cbType, 0);
@@ -254,13 +232,9 @@ namespace SimPe.PackedFiles.UserInterface
 		
 
 		protected override void RefreshGUI()
-		{
-           
-
+		{          
             pnContainer.Controls.Clear();
-			this.tbunk1.Text = Helper.HexString(Scor.Unknown1);
-			this.tbunk2.Text = Helper.HexString(Scor.Unknown2);
-
+			this.tbunk1.Text = Convert.ToString(Scor.Unknown1);
             btRem.Enabled = false;
 			lb.Items.Clear();
 			foreach (Wrapper.ScorItem si in Scor)
@@ -301,19 +275,22 @@ namespace SimPe.PackedFiles.UserInterface
                     si.Gui.Dock = DockStyle.Fill;
                 }
             }
-            btRem.Enabled = lb.SelectedItem != null && Helper.WindowsRegistry.HiddenMode; ;
+            btRem.Enabled = lb.SelectedItem != null && Helper.WindowsRegistry.Extended;
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-             btAdd.Enabled = cbType.SelectedItem!=null && Helper.WindowsRegistry.HiddenMode;
+            btAdd.Enabled = cbType.SelectedItem != null && Helper.WindowsRegistry.Extended;
         }
 
         private void btAdd_Click(object sender, EventArgs e)
         {
-            if (Scor != null)            
-                if (cbType.SelectedItem!=null)
-                    Scor.Add(cbType.SelectedItem.ToString());                                            
+            if (Scor != null)
+                if (cbType.SelectedItem != null)
+                {
+                    if ((string)cbType.SelectedItem == "Best Friend Forever List") return;
+                    Scor.Add(cbType.SelectedItem.ToString());
+                }
         }
 
         private void btRem_Click(object sender, EventArgs e)

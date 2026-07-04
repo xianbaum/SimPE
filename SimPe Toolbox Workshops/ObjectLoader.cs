@@ -101,24 +101,14 @@ namespace SimPe.Plugin.Tool.Dockable
 				ct++;
 				Interfaces.Scenegraph.IScenegraphFileIndexItem nrefitem = lnrefitem;
 				if (ct%134==1) 				
-					Wait.Progress = ct;				
-				
-#if MAC
-				Console.WriteLine(ct.ToString()+len);
-#endif
-
+					Wait.Progress = ct;
 				//if (nrefitem.FileDescriptor.Instance != 0x41A7) continue;
 				if (nrefitem.LocalGroup == Data.MetaData.LOCAL_GROUP) continue;
 				if (pitems.Contains(nrefitem)) continue;
-				if (groups.Contains(nrefitem.FileDescriptor.Instance)) continue;		
-	
+				if (groups.Contains(nrefitem.FileDescriptor.Instance)) continue;
 
-				//try to find the best objd				
-				
-
-							
-
-				Interfaces.Scenegraph.IScenegraphFileIndexItem[] cacheitems = cachefile.FileIndex.FindFile(nrefitem.FileDescriptor, nrefitem.Package);
+				//try to find the best objd	
+                Interfaces.Scenegraph.IScenegraphFileIndexItem[] cacheitems = cachefile.FileIndex.FindFile(nrefitem.FileDescriptor, nrefitem.Package);
 
 				//find the correct File
 				int cindex = -1;
@@ -163,8 +153,7 @@ namespace SimPe.Plugin.Tool.Dockable
 		protected override void Produce()
 		{			
 			LoadCachIndex();	
-			changedcache = false;				
-
+			changedcache = false;
 			
 			ArrayList pitems = new ArrayList();
 			ArrayList groups = new ArrayList();
@@ -176,7 +165,8 @@ namespace SimPe.Plugin.Tool.Dockable
 
 			SimPe.Data.MetaData.Languages deflang = Helper.WindowsRegistry.LanguageCode;
 			Wait.Message = "Loading Objects";
-			Wait.MaxProgress = nrefitems.Length;
+            Wait.MaxProgress = nrefitems.Length;
+            Wait.Image = SimPe.GetIcon.CreatePackage;
 			foreach (Interfaces.Scenegraph.IScenegraphFileIndexItem lnrefitem in nrefitems)
 			{                
 				ct++;
@@ -186,8 +176,7 @@ namespace SimPe.Plugin.Tool.Dockable
 				//if (nrefitem.FileDescriptor.Instance != 0x41A7) continue;
 				if (nrefitem.LocalGroup == Data.MetaData.LOCAL_GROUP) continue;
 				if (pitems.Contains(nrefitem)) continue;
-				if (groups.Contains(nrefitem.LocalGroup)) continue;		
-	
+				if (groups.Contains(nrefitem.LocalGroup)) continue;	
 
 				//try to find the best objd				
 				Interfaces.Scenegraph.IScenegraphFileIndexItem[] oitems = FileTable.FileIndex.FindFile(nrefitem.FileDescriptor.Type, nrefitem.LocalGroup);
@@ -199,9 +188,7 @@ namespace SimPe.Plugin.Tool.Dockable
 							nrefitem = oitems[i];
 							break;
 						}
-				}
-
-							
+				}							
 
 				Interfaces.Scenegraph.IScenegraphFileIndexItem[] cacheitems = cachefile.FileIndex.FindFile(nrefitem.FileDescriptor, nrefitem.Package);
 
@@ -242,11 +229,11 @@ namespace SimPe.Plugin.Tool.Dockable
 					
 					this.AddToBuffer(oci);
 				}
-			}												
+			}
 
-			if (Helper.WindowsRegistry.HiddenMode) 
+            if (Helper.WindowsRegistry.OWincludewalls) 
 			{
-				//In the second pass we use ObjectXml Resources to load Objects like Walls
+                //In the second pass we use ObjectXml Resources to load Objects like Walls. What For?? who cares??
 				ProduceByXObj(Data.MetaData.XOBJ);
 				ProduceByXObj(Data.MetaData.XROF);
 				ProduceByXObj(Data.MetaData.XFLR);
@@ -260,13 +247,10 @@ namespace SimPe.Plugin.Tool.Dockable
 			base.OnFinish();
 			this.SaveCacheIndex();
 		}
-
 	}
  
 	internal class ObjectConsumer : ConsumerThread
 	{
-		
-
 		SimPe.Data.MetaData.Languages deflang;
 		ArrayList pict;
 		internal ObjectConsumer(ProducerThread pt) : base(pt)
@@ -304,12 +288,10 @@ namespace SimPe.Plugin.Tool.Dockable
 			oci.Useable = true; 
 			oci.Class = SimPe.Cache.ObjectClass.XObject;
 			
-
-			
 			Interfaces.Scenegraph.IScenegraphFileIndexItem[] ctssitems = FileTable.FileIndex.FindFile(cpf.GetSaveItem("stringsetrestypeid").UIntegerValue, cpf.GetSaveItem("stringsetgroupid").UIntegerValue, cpf.GetSaveItem("stringsetid").UIntegerValue, null); //Data.MetaData.STRING_FILE
 			if (ctssitems.Length>0) 
 			{
-				SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
+                SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
 				str.ProcessData(ctssitems[0]);
 				SimPe.PackedFiles.Wrapper.StrItemList items = str.LanguageItems(deflang);
 				if (items.Length>0) oci.Name = items[0].Title;
@@ -328,7 +310,7 @@ namespace SimPe.Plugin.Tool.Dockable
 			if (oci.Name=="") oci.Name = oci.ObjectFileName;
 
 			//now the ModeName File
-			if (cpf.GetItem("texturetname")!=null)			
+			if (cpf.GetItem("texturetname")!=null)
 				oci.ModelName = cpf.GetItem("texturetname").StringValue;
 			else if (cpf.GetItem("filename")!=null)
 				oci.ModelName = cpf.GetItem("filename").StringValue;
@@ -336,7 +318,6 @@ namespace SimPe.Plugin.Tool.Dockable
 				oci.ModelName = cpf.GetSaveItem("material").StringValue;
 			
 			//oci.Name = cpf.GetSaveItem("type").StringValue + " - "+ cpf.GetSaveItem("subsort").StringValue;
-
 
 			if (oci.Thumbnail==null) 
 				oci.Thumbnail = ObjectPreview.GetXThumbnail(cpf);
@@ -349,11 +330,9 @@ namespace SimPe.Plugin.Tool.Dockable
 		}
 
 		internal static bool DoConsume(Object o, ObjectLoader.LoadItemHandler LoadedItem, SimPe.Data.MetaData.Languages deflang)
-		{				
-			
+		{
 			SimPe.Cache.ObjectCacheItem oci = (SimPe.Cache.ObjectCacheItem)o;
 			Interfaces.Scenegraph.IScenegraphFileIndexItem nrefitem = (Interfaces.Scenegraph.IScenegraphFileIndexItem)oci.Tag;
-
 			
 			//this item is new to the cache, so load the Data
 			if ((!oci.Useable || oci.ObjectVersion!=SimPe.Cache.ObjectCacheItemVersions.DockableOW) && nrefitem.FileDescriptor.Type == Data.MetaData.OBJD_FILE)
@@ -365,7 +344,8 @@ namespace SimPe.Plugin.Tool.Dockable
 				oci.FileDescriptor = nrefitem.FileDescriptor;
 				oci.LocalGroup = nrefitem.LocalGroup;							
 				oci.ObjectType = objd.Type;
-				oci.ObjectFunctionSort = (uint)objd.FunctionSubSort;
+                oci.ObjectFunctionSort = (uint)objd.FunctionSubSort;
+                oci.ObjBuildType = (uint)objd.BuildType;
 				oci.ObjectFileName = objd.FileName;
 				oci.Useable = true;
 				oci.Class = SimPe.Cache.ObjectClass.Object;
@@ -423,7 +403,6 @@ namespace SimPe.Plugin.Tool.Dockable
 				
 				if (oci.Thumbnail!=null) 
 				{
-					Wait.Image =oci.Thumbnail;
 					ObjectReader.changedcache = true;
 				}
 			}
@@ -475,8 +454,7 @@ namespace SimPe.Plugin.Tool.Dockable
 		{
 			SimPe.Cache.ObjectCacheItem oci = new SimPe.Cache.ObjectCacheItem();
 			
-			oci.Class = SimPe.Cache.ObjectClass.Object;
-			
+			oci.Class = SimPe.Cache.ObjectClass.Object;			
 
 			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(Data.MetaData.OBJD_FILE);
 			bool first = true;
@@ -501,14 +479,13 @@ namespace SimPe.Plugin.Tool.Dockable
 		}
 
 		public void LoadData()
-		{
-			Wait.SubStart();
-			FileTable.FileIndex.Load();
+        {
+            FileTable.FileIndex.Load();
+            Wait.SubStart();
 			
 			ObjectReader erz = new ObjectReader();
 			ObjectConsumer ver1 = new ObjectConsumer(erz);
 			//ObjectConsumer ver2 = new ObjectConsumer(erz);
-
 			ver1.LoadedItem += new LoadItemHandler(ver1_LoadedItem);
 			//ver2.LoadedItem += new LoadItemHandler(ver1_LoadedItem);
 			erz.Finished += new EventHandler(erz_Finished);
@@ -527,13 +504,14 @@ namespace SimPe.Plugin.Tool.Dockable
 		}
 
 		private void erz_Finished(object sender, EventArgs e)
-		{
-			Wait.SubStop();
+        {
+            Wait.SubStop();
 			if (Finished!=null) Finished(this, new System.EventArgs());
 		}        
 
 		public static TreeNode GetParentNode(TreeNodeCollection nodes, string[] names, int id, SimPe.Cache.ObjectCacheItem oci, SimPe.Data.Alias a, ImageList ilist)
-		{	
+		{
+            string twine;
 			TreeNode ret = null;
 			if (id<names.Length) 
 			{	
@@ -570,7 +548,15 @@ namespace SimPe.Plugin.Tool.Dockable
 
 			if (id==0) 
 			{
-				TreeNode tn = new TreeNode(a.ToString());
+                twine = a.ToString();
+                if (Helper.WindowsRegistry.OWtrimnames)
+                {
+                    while (twine.StartsWith("\"") || twine.StartsWith("“") || twine.StartsWith("‘") || twine.StartsWith(" ") || twine.StartsWith("_") || twine.StartsWith("."))
+                    {
+                        twine = twine.Substring(1, twine.Length - 1);
+                    }
+                }
+                TreeNode tn = new TreeNode(twine);
 				tn.Tag = a;
 
 				SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem fii = (SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem)oci.Tag;

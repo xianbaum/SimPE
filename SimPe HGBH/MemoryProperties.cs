@@ -9,13 +9,13 @@ using SimPe.Cache;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für MemoryProperties.
+	/// Summary description for MemoryProperties.
 	/// </summary>
 	
 	public class MemoryProperties : System.Windows.Forms.UserControl
 	{
 		/// <summary> 
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
@@ -31,22 +31,23 @@ namespace SimPe.Plugin
 					ControlStyles.ResizeRedraw 
 					| ControlStyles.DoubleBuffer
 					,true);
-				// Dieser Aufruf ist für den Windows Form-Designer erforderlich.
+				// Required designer variable.
 				InitializeComponent();
 
-			
-				this.cbtype.Enum = typeof(SimMemoryType);
+                if (booby.ThemeManager.ThemedForms) booby.ThemeManager.Global.AddControl(this.pg);
+
+                this.cbtype.Enum = typeof(SimMemoryType);
 				this.cbtype.ResourceManager = SimPe.Localization.Manager;								
 
 				SetContent();
 				this.Enabled = false;
-				cbCtrl.Enabled = Helper.WindowsRegistry.HiddenMode;
+                cbCtrl.Enabled = Helper.WindowsRegistry.Extended;
 			}
 			catch {}
 		}
 
 		/// <summary> 
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -60,10 +61,10 @@ namespace SimPe.Plugin
 			base.Dispose( disposing );
 		}
 
-		#region Vom Komponenten-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary> 
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -71,6 +72,9 @@ namespace SimPe.Plugin
             this.pg = new System.Windows.Forms.PropertyGrid();
             this.tabControl2 = new TD.SandDock.TabControl();
             this.tabPage3 = new TD.SandDock.TabPage();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.tbUnk = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnObjectGuid = new System.Windows.Forms.Panel();
             this.cbSubjectObj = new SimPe.PackedFiles.Wrapper.ObjectComboBox();
@@ -110,16 +114,14 @@ namespace SimPe.Plugin
             this.cbCtrl = new System.Windows.Forms.CheckBox();
             this.tbFlag = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.tabPage4 = new TD.SandDock.TabPage();
             this.panel1 = new System.Windows.Forms.Panel();
             this.llSetRawLength = new System.Windows.Forms.LinkLabel();
             this.tbRawLength = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.tbUnk = new System.Windows.Forms.TextBox();
             this.tabControl2.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.panel3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.pnObjectGuid.SuspendLayout();
             this.pnSubject.SuspendLayout();
@@ -131,7 +133,6 @@ namespace SimPe.Plugin
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
             this.pnListing.SuspendLayout();
             this.pnFlags.SuspendLayout();
-            this.panel3.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -173,6 +174,24 @@ namespace SimPe.Plugin
             this.tabPage3.Guid = new System.Guid("4e851d66-304f-4d0f-9896-8d73154946f3");
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.VisibleChanged += new System.EventHandler(this.tabPage3_VisibleChanged);
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.tbUnk);
+            this.panel3.Controls.Add(this.label11);
+            resources.ApplyResources(this.panel3, "panel3");
+            this.panel3.Name = "panel3";
+            // 
+            // tbUnk
+            // 
+            resources.ApplyResources(this.tbUnk, "tbUnk");
+            this.tbUnk.Name = "tbUnk";
+            this.tbUnk.ReadOnly = true;
+            // 
+            // label11
+            // 
+            resources.ApplyResources(this.label11, "label11");
+            this.label11.Name = "label11";
             // 
             // panel2
             // 
@@ -468,13 +487,6 @@ namespace SimPe.Plugin
             resources.ApplyResources(this.label9, "label9");
             this.label9.Name = "label9";
             // 
-            // panel3
-            // 
-            this.panel3.Controls.Add(this.tbUnk);
-            this.panel3.Controls.Add(this.label11);
-            resources.ApplyResources(this.panel3, "panel3");
-            this.panel3.Name = "panel3";
-            // 
             // tabPage4
             // 
             this.tabPage4.BackColor = System.Drawing.SystemColors.ControlLight;
@@ -510,17 +522,6 @@ namespace SimPe.Plugin
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
-            // label11
-            // 
-            resources.ApplyResources(this.label11, "label11");
-            this.label11.Name = "label11";
-            // 
-            // tbUnk
-            // 
-            resources.ApplyResources(this.tbUnk, "tbUnk");
-            this.tbUnk.Name = "tbUnk";
-            this.tbUnk.ReadOnly = true;
-            // 
             // MemoryProperties
             // 
             this.Controls.Add(this.tabControl2);
@@ -528,6 +529,8 @@ namespace SimPe.Plugin
             this.Name = "MemoryProperties";
             this.tabControl2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel3.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.pnObjectGuid.ResumeLayout(false);
             this.pnSubject.ResumeLayout(false);
@@ -542,8 +545,6 @@ namespace SimPe.Plugin
             this.pnListing.ResumeLayout(false);
             this.pnFlags.ResumeLayout(false);
             this.pnFlags.PerformLayout();
-            this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -804,7 +805,7 @@ namespace SimPe.Plugin
 			this.pnValue.Visible = (smt==SimMemoryType.Skill || smt == SimMemoryType.Badge || smt==SimMemoryType.ValueToken);
 			this.pnFlags.Visible = true;
 
-			this.pnListing.Visible = Helper.WindowsRegistry.HiddenMode;
+			this.pnListing.Visible = Helper.WindowsRegistry.Extended;
 		}
 
 		void SetMe(SimPe.PackedFiles.Wrapper.SimComboBox cb)

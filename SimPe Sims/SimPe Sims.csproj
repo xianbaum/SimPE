@@ -58,7 +58,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -74,6 +75,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -86,7 +88,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
     <DebugType>
@@ -95,13 +98,69 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AdvancedForms, Version=1.0.2471.34995, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="GDF, Version=0.69.20.22, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdvancedForms.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\__Release\GDF.dll</HintPath>
+    </Reference>
+    <Reference Include="graphcontrol, Version=1.69.8412.24482, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\__Release\graphcontrol.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="Microsoft.VisualBasic">
       <Name>Microsoft.VisualBasic</Name>
+    </Reference>
+    <Reference Include="AdvancedForms, Version=1.0.2471.34995, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\AdvancedForms.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.3idr, Version=1.0.3349.37553, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.3idr.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.cache, Version=1.69.7181.26283, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.cache.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.clst, Version=1.0.3349.37528, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.clst.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.filehandler, Version=1.69.8783.24431, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.filehandler.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.geometry, Version=1.0.3349.37538, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.geometry.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.gmdc.exporter.base, Version=1.0.3349.37556, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.gmdc.exporter.base.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.helper, Version=0.75.69.1, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.helper.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.interfaces, Version=1.0.3349.37516, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.package, Version=1.69.7182.15371, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.package.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.rcol, Version=1.0.7178.23089, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.rcol.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.scenegraph, Version=1.0.3349.37561, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.scenegraph.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.workspace, Version=1.69.7182.14188, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.workspace.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -124,95 +183,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="XPCommonControls">
-      <Name>xpcommoncontrols</Name>
-      <HintPath>..\xpcommoncontrols.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <ProjectReference Include="..\..\pjseCoderPlugin-cvs\pjse System Classes\SimPe pjse System Classes.csproj">
-      <Project>{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}</Project>
-      <Name>SimPe pjse System Classes</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\EnumComboBox\EnumComboBox.csproj">
-      <Project>{5C663721-B4E3-43F7-A39F-9E6060FA5433}</Project>
-      <Name>EnumComboBox</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\GraphControl\GraphControl.csproj">
-      <Project>{7D2EE6ED-78C1-4738-9AE1-E3C165A81E3D}</Project>
-      <Name>GraphControl</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe 3IDR\SimPe 3IDR.csproj">
-      <Project>{37D97490-DC9F-4DB7-9215-998C6BC06078}</Project>
-      <Name>SimPe 3IDR</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Cache\SimPe Cache.csproj">
-      <Project>{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}</Project>
-      <Name>SimPe Cache</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Clst\SimPe Clst.csproj">
-      <Project>{5DD89FD7-1E89-49D4-B48D-CC605D767C3B}</Project>
-      <Name>SimPe Clst</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Extended Filehandlers\SimPe Extended Filehandlers.csproj">
-      <Project>{7EF7C30C-2968-46E8-AA74-79EDB0FE8F2A}</Project>
-      <Name>SimPe Extended Filehandlers</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe FileHandler\SimPe FileHandlers.csproj">
-      <Project>{97551C0A-6295-4E32-8E15-A4FF456E65A6}</Project>
-      <Name>SimPe FileHandlers</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Geometry\SimPe Geometry.csproj">
-      <Project>{60367A6D-8FF1-4289-B546-C68A2C395843}</Project>
-      <Name>SimPe Geometry</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe GMDC Exporter Base\SimPe GMDC Exporter Base.csproj">
-      <Project>{76D6A8B3-10DF-4948-9028-C63A416AB00E}</Project>
-      <Name>SimPe GMDC Exporter Base</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe HandlerCommon\SimPe HandlerCommon.csproj">
-      <Project>{A4CC48FD-9574-4F0B-B721-9E8C1B1E6A8A}</Project>
-      <Name>SimPe HandlerCommon</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Helper\SimPe Helper.csproj">
-      <Project>{59E3C353-1350-42D8-A045-CBBAD232F228}</Project>
-      <Name>SimPe Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Interfaces\SimPe Interfaces.csproj">
-      <Project>{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}</Project>
-      <Name>SimPe Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Packages\SimPe Packages.csproj">
-      <Project>{1C6C45BF-FE19-4C23-B327-01F45B0F269C}</Project>
-      <Name>SimPe Packages</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe RCOL\SimPe RCOL.csproj">
-      <Project>{74517907-2236-4C45-80ED-E188D5E5CE0E}</Project>
-      <Name>SimPe RCOL</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Scenegraph\SimPe Scenegraph.csproj">
-      <Project>{1151A88B-47AF-41DA-BCDF-DEFED0CC326E}</Project>
-      <Name>SimPe Scenegraph</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Workspace Helper\SimPe Workspace Helper.csproj">
-      <Project>{45021667-BAD2-4ECA-8423-F4734F914CBB}</Project>
-      <Name>SimPe Workspace Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">
@@ -272,6 +242,12 @@
     <Compile Include="SCOR\LearnedBahaviourComboBox.Designer.cs">
       <DependentUpon>LearnedBahaviourComboBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="SCOR\ScoreItemBffl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SCOR\ScoreItemBffl.designer.cs">
+      <DependentUpon>ScoreItemBffl.cs</DependentUpon>
+    </Compile>
     <Compile Include="SCOR\ScoreItemBusinessRewards.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -297,6 +273,7 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SCOR\ScorItem.cs" />
+    <Compile Include="SCOR\ScorItemTokenBffl.cs" />
     <Compile Include="SCOR\ScorItemTokenBusinessRewards.cs" />
     <Compile Include="SCOR\ScorItemTokenDefault.cs" />
     <Compile Include="SCOR\ScorUI.cs">
@@ -318,9 +295,16 @@
     <Compile Include="SimFactory.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="SimInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SimInfo.Designer.cs">
+      <DependentUpon>SimInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="SimListView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SimOriGuid.cs" />
     <Compile Include="SimPoolControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -380,7 +364,6 @@
       <DependentUpon>FamilyTiesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="noone.png" />
     <EmbeddedResource Include="sdsc.png" />
     <EmbeddedResource Include="SimBusinessList.resx">
       <DependentUpon>SimBusinessList.cs</DependentUpon>
@@ -471,6 +454,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="related.png" />
+    <EmbeddedResource Include="SCOR\ScoreItemBffl.resx">
+      <DependentUpon>ScoreItemBffl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="SCOR\ScoreItemBusinessRewards.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ScoreItemBusinessRewards.cs</DependentUpon>
@@ -483,15 +470,35 @@
       <SubType>Designer</SubType>
       <DependentUpon>ScoreItemLearnedBehaviour.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SCOR\ScoreItemLearnedBehaviour.fr.resx">
+      <DependentUpon>ScoreItemLearnedBehaviour.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SCOR\ScoreItemLearnedBehaviour.it.resx">
+      <DependentUpon>ScoreItemLearnedBehaviour.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="SCOR\ScoreItemLearnedBehaviour.resx">
       <SubType>Designer</SubType>
       <DependentUpon>ScoreItemLearnedBehaviour.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SCOR\ScoreItemLearnedBehaviour.ru.resx">
+      <DependentUpon>ScoreItemLearnedBehaviour.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="SCOR\ScorUI.resx">
       <DependentUpon>ScorUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="SimInfo.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>SimInfo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SimPoolControl.fr.resx">
+      <DependentUpon>SimPoolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimPoolControl.ru.resx">
       <DependentUpon>SimPoolControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -503,6 +510,125 @@
       <DependentUpon>SimRelationPoolControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="SimRelationPoolControl.it.resx">
+      <DependentUpon>SimRelationPoolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SimRelationPoolControl.ru.resx">
+      <DependentUpon>SimRelationPoolControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\01.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\02.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\03.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\04.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\05.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\06.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\07.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\08.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\09.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\10.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\11.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\12.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\13.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\14.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\15.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\17.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\18.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\19.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\20.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\21.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\22.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\23.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\25.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\26.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\27.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\28.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\30.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\31.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\33.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\34.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\35.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\36.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Pics\37.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

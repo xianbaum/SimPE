@@ -80,8 +80,7 @@ namespace SimPe.Cache
 		public void LoadOverrides()
 		{
 			fi = new FileIndex(new ArrayList());
-			fi.Duplicates = true;
-			
+			fi.Duplicates = true;		
 
 			foreach (CacheContainer cc in Containers) 
 			{

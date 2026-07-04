@@ -132,16 +132,16 @@
   <data name="cb.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
-  <data name="&gt;&gt;cb.Name" xml:space="preserve">
+  <data name="cb.Name" xml:space="preserve">
     <value>cb</value>
   </data>
-  <data name="&gt;&gt;cb.Type" xml:space="preserve">
+  <data name="cb.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;cb.Parent" xml:space="preserve">
+  <data name="cb.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cb.ZOrder" xml:space="preserve">
+  <data name="cb.ZOrder" xml:space="preserve">
     <value>12</value>
   </data>
   <data name="textBox1.Location" type="System.Drawing.Point, System.Drawing">
@@ -153,16 +153,16 @@
   <data name="textBox1.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;textBox1.Name" xml:space="preserve">
+  <data name="textBox1.Name" xml:space="preserve">
     <value>textBox1</value>
   </data>
-  <data name="&gt;&gt;textBox1.Type" xml:space="preserve">
+  <data name="textBox1.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox1.Parent" xml:space="preserve">
+  <data name="textBox1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;textBox1.ZOrder" xml:space="preserve">
+  <data name="textBox1.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
   <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
@@ -183,16 +183,16 @@
   <data name="label1.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+  <data name="label1.Name" xml:space="preserve">
     <value>label1</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+  <data name="label1.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+  <data name="label1.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+  <data name="label1.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
   <data name="label2.Font" type="System.Drawing.Font, System.Drawing">
@@ -213,16 +213,16 @@
   <data name="label2.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
+  <data name="label2.Name" xml:space="preserve">
     <value>label2</value>
   </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
+  <data name="label2.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
+  <data name="label2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
+  <data name="label2.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
   <data name="textBox2.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -237,16 +237,16 @@
   <data name="textBox2.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="&gt;&gt;textBox2.Name" xml:space="preserve">
+  <data name="textBox2.Name" xml:space="preserve">
     <value>textBox2</value>
   </data>
-  <data name="&gt;&gt;textBox2.Type" xml:space="preserve">
+  <data name="textBox2.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox2.Parent" xml:space="preserve">
+  <data name="textBox2.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;textBox2.ZOrder" xml:space="preserve">
+  <data name="textBox2.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
   <data name="textBox3.Location" type="System.Drawing.Point, System.Drawing">
@@ -258,16 +258,16 @@
   <data name="textBox3.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="&gt;&gt;textBox3.Name" xml:space="preserve">
+  <data name="textBox3.Name" xml:space="preserve">
     <value>textBox3</value>
   </data>
-  <data name="&gt;&gt;textBox3.Type" xml:space="preserve">
+  <data name="textBox3.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox3.Parent" xml:space="preserve">
+  <data name="textBox3.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;textBox3.ZOrder" xml:space="preserve">
+  <data name="textBox3.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
   <data name="label4.Font" type="System.Drawing.Font, System.Drawing">
@@ -288,16 +288,16 @@
   <data name="label4.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing">
     <value>MiddleRight</value>
   </data>
-  <data name="&gt;&gt;label4.Name" xml:space="preserve">
+  <data name="label4.Name" xml:space="preserve">
     <value>label4</value>
   </data>
-  <data name="&gt;&gt;label4.Type" xml:space="preserve">
+  <data name="label4.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label4.Parent" xml:space="preserve">
+  <data name="label4.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;label4.ZOrder" xml:space="preserve">
+  <data name="label4.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
   <data name="textBox4.Location" type="System.Drawing.Point, System.Drawing">
@@ -309,16 +309,16 @@
   <data name="textBox4.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
   </data>
-  <data name="&gt;&gt;textBox4.Name" xml:space="preserve">
+  <data name="textBox4.Name" xml:space="preserve">
     <value>textBox4</value>
   </data>
-  <data name="&gt;&gt;textBox4.Type" xml:space="preserve">
+  <data name="textBox4.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox4.Parent" xml:space="preserve">
+  <data name="textBox4.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;textBox4.ZOrder" xml:space="preserve">
+  <data name="textBox4.ZOrder" xml:space="preserve">
     <value>5</value>
   </data>
   <data name="textBox5.Location" type="System.Drawing.Point, System.Drawing">
@@ -330,16 +330,16 @@
   <data name="textBox5.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
   </data>
-  <data name="&gt;&gt;textBox5.Name" xml:space="preserve">
+  <data name="textBox5.Name" xml:space="preserve">
     <value>textBox5</value>
   </data>
-  <data name="&gt;&gt;textBox5.Type" xml:space="preserve">
+  <data name="textBox5.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;textBox5.Parent" xml:space="preserve">
+  <data name="textBox5.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;textBox5.ZOrder" xml:space="preserve">
+  <data name="textBox5.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
   <data name="pbVal.Font" type="System.Drawing.Font, System.Drawing">
@@ -366,16 +366,16 @@
   <data name="pbVal.TextboxWidth" type="System.Int32, mscorlib">
     <value>60</value>
   </data>
-  <data name="&gt;&gt;pbVal.Name" xml:space="preserve">
+  <data name="pbVal.Name" xml:space="preserve">
     <value>pbVal</value>
   </data>
-  <data name="&gt;&gt;pbVal.Type" xml:space="preserve">
-    <value>Ambertation.Windows.Forms.LabeledProgressBar, EnumComboBox, Version=1.0.2509.16637, Culture=neutral, PublicKeyToken=null</value>
+  <data name="pbVal.Type" xml:space="preserve">
+    <value>booby.LabeledProgressBar, GDF, Version=2.69.20.27, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;pbVal.Parent" xml:space="preserve">
+  <data name="pbVal.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;pbVal.ZOrder" xml:space="preserve">
+  <data name="pbVal.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
   <data name="cbGuid.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -390,16 +390,16 @@
   <data name="cbGuid.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
   </data>
-  <data name="&gt;&gt;cbGuid.Name" xml:space="preserve">
+  <data name="cbGuid.Name" xml:space="preserve">
     <value>cbGuid</value>
   </data>
-  <data name="&gt;&gt;cbGuid.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.Wrapper.SCOR.LearnedBahaviourComboBox, simpe.sims, Version=1.0.2528.23231, Culture=neutral, PublicKeyToken=null</value>
+  <data name="cbGuid.Type" xml:space="preserve">
+    <value>SimPe.PackedFiles.Wrapper.SCOR.LearnedBahaviourComboBox, simpe.sims, Version=0.77.69.21, Culture=neutral, PublicKeyToken=null</value>
   </data>
-  <data name="&gt;&gt;cbGuid.Parent" xml:space="preserve">
+  <data name="cbGuid.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;cbGuid.ZOrder" xml:space="preserve">
+  <data name="cbGuid.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
   <data name="llAdd.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -423,16 +423,16 @@
   <data name="llAdd.Text" xml:space="preserve">
     <value>Create New</value>
   </data>
-  <data name="&gt;&gt;llAdd.Name" xml:space="preserve">
+  <data name="llAdd.Name" xml:space="preserve">
     <value>llAdd</value>
   </data>
-  <data name="&gt;&gt;llAdd.Type" xml:space="preserve">
+  <data name="llAdd.Type" xml:space="preserve">
     <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;llAdd.Parent" xml:space="preserve">
+  <data name="llAdd.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;llAdd.ZOrder" xml:space="preserve">
+  <data name="llAdd.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
   <data name="llRemove.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
@@ -456,16 +456,16 @@
   <data name="llRemove.Text" xml:space="preserve">
     <value>Remove</value>
   </data>
-  <data name="&gt;&gt;llRemove.Name" xml:space="preserve">
+  <data name="llRemove.Name" xml:space="preserve">
     <value>llRemove</value>
   </data>
-  <data name="&gt;&gt;llRemove.Type" xml:space="preserve">
+  <data name="llRemove.Type" xml:space="preserve">
     <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;llRemove.Parent" xml:space="preserve">
+  <data name="llRemove.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;llRemove.ZOrder" xml:space="preserve">
+  <data name="llRemove.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -477,10 +477,10 @@
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
     <value>506, 204</value>
   </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+  <data name="$this.Name" xml:space="preserve">
     <value>ScoreItemLearnedBehaviour</value>
   </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.Wrapper.SCOR.AScorItem, simpe.sims, Version=1.0.2528.23231, Culture=neutral, PublicKeyToken=null</value>
+  <data name="$this.Type" xml:space="preserve">
+    <value>SimPe.PackedFiles.Wrapper.SCOR.AScorItem, simpe.sims, Version=0.77.69.21, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

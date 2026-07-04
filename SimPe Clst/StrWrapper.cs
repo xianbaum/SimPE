@@ -323,7 +323,7 @@ namespace SimPe.PackedFiles.Wrapper
 			return new AbstractWrapperInfo(
 				"Text List Wrapper",
 				"Quaxi",
-				"This File contains Text Resources in various Languages.",
+                "This Wrapper is overridden by 'PJSE STR#/TTAs/CTSS Wrapper' if it's enabled",
 				9,
 				System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.PackedFiles.Wrapper.txt.png"))
 				);
@@ -412,7 +412,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			get
 			{
-				uint[] types = {
+                uint[] types = {
 								   0x53545223,  //STR#
 								   0x54544173,  //Pie String (TTAB)
 								   0x43545353   //CTSS

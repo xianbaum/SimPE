@@ -4,7 +4,7 @@ using SimPe.Geometry;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für NhtrLocation.
+	/// Summary description for NhtrLocation.
 	/// </summary>
 	[System.ComponentModel.TypeConverter(typeof(System.ComponentModel.ExpandableObjectConverter))]
 	public class NhtrLocation
@@ -57,7 +57,7 @@ namespace SimPe.Plugin
 
 		public override string ToString()
 		{
-			return pos.ToString()+" ["+o1.ToString()+", "+o1.ToString()+"]";
+			return pos.ToString()+" ["+o1.ToString()+", "+o2.ToString()+"]";
 		}
 
 	}

@@ -73,8 +73,15 @@ namespace SimPe.Interfaces.Scenegraph
 		/// Add all Files stored in the passed package
 		/// </summary>
 		/// <param name="file">Name of the package File</param>
-		/// <remarks>Updates the WaitingScreen Message</remarks>
-		void AddIndexFromPackage(string file);
+        /// <remarks>eaves the WaitingScreen Message Alone</remarks>
+        void AddIndexFromString(string file);
+
+        /// <summary>
+        /// Add all Files stored in the passed package
+        /// </summary>
+        /// <param name="file">Name of the package File</param>
+        /// <remarks>Updates the WaitingScreen Message</remarks>
+        void AddIndexFromPackage(string file);
 
 		/// <summary>
 		/// Add all Files stored in the passed package
@@ -284,7 +291,15 @@ namespace SimPe.Interfaces.Scenegraph
 		bool Loaded
 		{
 			get;
-		}
+        }
+
+        /// <summary>
+        /// prevent PJSE FileTable from auto loading with SimPe FileTable
+        /// </summary>
+        bool AllowEvent
+        {
+            get; set;
+        }
 
 		#region FileTable Childs
 		/// <summary>

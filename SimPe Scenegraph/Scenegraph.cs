@@ -163,9 +163,7 @@ namespace SimPe.Plugin
 			}
 
 			return cres;
-		}
-
-		
+		}		
 		
 		/// <summary>
 		/// Load all File referenced by the passed rcol File
@@ -366,12 +364,12 @@ namespace SimPe.Plugin
 			if (cachefile!=null) return;
 			
 			cachefile = new SimPe.Cache.MMATCacheFile();
-			if (Helper.WindowsRegistry.UseCache) cachefile.Load(Helper.SimPeCache);
+            if (Helper.WindowsRegistry.UseCache) cachefile.Load(Helper.SimPeLanguageCache);
 		}
 
 		static void SaveCache() 
 		{
-			if (Helper.WindowsRegistry.UseCache) cachefile.Save(Helper.SimPeCache);
+            if (Helper.WindowsRegistry.UseCache) cachefile.Save(Helper.SimPeLanguageCache);
 		}
 		#endregion
 
@@ -941,13 +939,14 @@ namespace SimPe.Plugin
 					{
 						try 
 						{
+                            // if (item.FileDescriptor.Type == Data.MetaData.STRING_FILE)
 							SimPe.Plugin.GenericRcol sub = new GenericRcol(null, false);	
 							sub.ProcessData(item);
 							LoadReferenced(this.modelnames, this.exclude, files, itemlist, sub, item, true, setup);
 						} 
 						catch (Exception ex)
 						{
-							if (Helper.DebugMode) 
+                            if (Helper.WindowsRegistry.HiddenMode) 
 								Helper.ExceptionMessage("", ex);
 						}
 					}
@@ -1007,9 +1006,7 @@ namespace SimPe.Plugin
 					null
 				);
 				AddFromXml(items);
-			}
-
-			
+			}			
 		}
 
 		/// <summary>
@@ -1018,7 +1015,8 @@ namespace SimPe.Plugin
 		protected void AddFromXml(SimPe.PackedFiles.Wrapper.CpfItem item, string prefix, uint type)
 		{
 			if (item==null) return;
-			AddFromXml(item.StringValue+prefix, type);
+            if (item.StringValue.EndsWith(prefix)) AddFromXml(item.StringValue, type);
+			else AddFromXml(item.StringValue+prefix, type);
 		}
 
 		/// <summary>
@@ -1043,25 +1041,28 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Add Resources referenced from XML Files
 		/// </summary>
-		protected void AddFromXml(SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] items)
-		{			
-			foreach (SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem item in items) 
-			{
-				try 
-				{
-					SimPe.Plugin.GenericRcol sub = new GenericRcol(null, false);	
-					sub.ProcessData(item);
-					LoadReferenced(this.modelnames, this.exclude, files, itemlist, sub, item, true, setup);
-				} 
-				catch (Exception ex)
-				{
-					if (Helper.DebugMode) 
-						Helper.ExceptionMessage("", ex);
-				}
-			}
-			
-							
-		}
+        protected void AddFromXml(SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] items)
+        {
+            foreach (SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem item in items)
+            {
+                try
+                {
+                    if (item.FileDescriptor.Type == Data.MetaData.STRING_FILE)
+                    {
+                        SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
+                        str.ProcessData(item);
+                    }
+                    SimPe.Plugin.GenericRcol sub = new GenericRcol(null, false);
+                    sub.ProcessData(item);
+                    LoadReferenced(this.modelnames, this.exclude, files, itemlist, sub, item, true, setup);
+                }
+                catch (Exception ex)
+                {
+                    if (Helper.WindowsRegistry.HiddenMode)
+                        Helper.ExceptionMessage("", ex);
+                }
+            }
+        }
 		#endregion
 	}
 }

@@ -23,15 +23,11 @@ using SimPe.Interfaces;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für ImportSemiTool.
+	/// Summary description for ImportSemiTool.
 	/// </summary>
 	public class FixUidTool : Interfaces.ITool
-	{
-		
-		internal FixUidTool() 
-		{
-		
-		}
+	{		
+		internal FixUidTool() { }
 
 		#region ITool Member
 
@@ -41,21 +37,20 @@ namespace SimPe.Plugin
 		}
 
 		public Interfaces.Plugin.IToolResult ShowDialog(ref SimPe.Interfaces.Files.IPackedFileDescriptor pfd, ref SimPe.Interfaces.Files.IPackageFile package)
-		{		
-			System.Windows.Forms.DialogResult dr = 
-				System.Windows.Forms.MessageBox.Show("Using this Tool can serioulsy mess up all of your Neighborhoods. However if some of your Neighborhoods are missing in the Neighborhood Selection of the Game, this Tool might help fixing it.\n\nMake sure you have a Backup of ALL your Neighborhoods befor starting this Tool!\n\nDo you want to start this Tool?", "Confirmation", System.Windows.Forms.MessageBoxButtons.YesNo);
-
-
-			if (dr == System.Windows.Forms.DialogResult.Yes) 
-			{
-                Wait.SubStop();
-				try 
-				{
-                    System.Collections.Hashtable ht = Idno.FindUids(PathProvider.SimSavegameFolder, true);
-					foreach (string file in ht.Keys) 
+		{
+			System.Windows.Forms.DialogResult dr =
+                Message.Show("Using this Tool can serioulsy mess up all of your Neighbourhoods and Neighbourhood Stories, it can acheive nothing useful.\n\nMake sure you have a Backup of ALL your Neighbourhoods before starting this Tool!\n\nDo you want to start this Tool?", "Confirmation", System.Windows.Forms.MessageBoxButtons.YesNo);            
+			if (dr == System.Windows.Forms.DialogResult.Yes)
+            {
+				try
+                {
+                    int i = 0;
+                    System.Collections.Hashtable ht = Idno.FindUids();
+                    Wait.Start(ht.Count);
+                    string[] deb = new string[ht.Count];
+                    foreach (string ebu in ht.Keys) {deb[i] = ebu; i++;}
+                    foreach (string file in deb) 
 					{
-						Wait.Message = file;
-
 						SimPe.Packages.GeneratableFile fl = SimPe.Packages.GeneratableFile.LoadFromFile(file);
 						SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = fl.FindFiles(Data.MetaData.IDNO);
 						foreach (SimPe.Interfaces.Files.IPackedFileDescriptor spfd in pfds) 
@@ -63,28 +58,24 @@ namespace SimPe.Plugin
 							Idno idno = new Idno();
 							idno.ProcessData(spfd, fl);
 							idno.MakeUnique(ht);
-
 							idno.SynchronizeUserData();
 						}
-
-						fl.Save();
+                        fl.Save();
+                        Wait.Progress++;
 					}
 				}
 				catch (Exception ex) 
 				{
 					Helper.ExceptionMessage("", ex);
 				}
-				finally 
-				{
-                    Wait.SubStop();
-				}
+                finally { Wait.Stop(true); }
 			}
 			return new ToolResult(false, false);
 		}
 
 		public override string ToString()
 		{
-			return "Neighborhood\\Fix Neighborhood Uid's";
+			return "Neighbourhood\\Fix Neighbourhood Uid's";
 		}
 
 		#endregion

@@ -19,236 +19,318 @@
  ***************************************************************************/
 using System;
 using System.Collections;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace SimPe.Plugin.Tool.Action
 {
 	/// <summary>
-	/// The ReloadFileTable Action
+	/// The Delete Sims Action
 	/// </summary>
 	public class ActionDeleteSim : SimPe.Interfaces.IToolAction
-	{
-		
-		#region IToolAction Member
+    {
+        bool deleteInvalidDna = false;
 
+        #region IToolAction Member
         public virtual bool ChangeEnabledStateEventHandler(object sender, SimPe.Events.ResourceEventArgs es)
         {
-            return true;
+            if (es.Loaded && Helper.IsNeighborhoodFile(es.LoadedPackage.FileName))
+            {
+                if (es.Count > 0)
+                {
+                    int i = -1;
+                    while (++i < es.Count)
+                        if (es.Items[i].Resource.FileDescriptor.Type != Data.MetaData.SIM_DESCRIPTION_FILE) return false;
+                    return true;
+                }
+                else
+                    return booby.PrettyGirls.IsTitsInstalled();
+            }
+            return false;
         }
 
-		private bool RealChangeEnabledStateEventHandler(object sender, SimPe.Events.ResourceEventArgs es)
-		{
-			if (es.Loaded)
-				if (Helper.IsNeighborhoodFile(es.LoadedPackage.FileName))
-					if (es.Count==1)
-						if (es.Items[0].Resource.FileDescriptor.Type == Data.MetaData.SIM_DESCRIPTION_FILE) 
-							return true;
-
-			return false;
-		}
-		public void ExecuteEventHandler(object sender, SimPe.Events.ResourceEventArgs e)
-		{
-            if (!RealChangeEnabledStateEventHandler(null, e))
+        public void ExecuteEventHandler(object sender, SimPe.Events.ResourceEventArgs e)
+        {
+            if (!ChangeEnabledStateEventHandler(null, e))
             {
                 System.Windows.Forms.MessageBox.Show(SimPe.Localization.GetString("This is not an appropriate context in which to use this tool"),
                     this.ToString());
                 return;
             }
+            string messige = "All the Male ";
+            if (e.Items.Count > 0)
+                messige = "The selected ";
+            if (Message.Show(messige + "sims will be deleted from your Neighbourhood!\nYou MUST commit the changes to the neighbourhood after this procedure.\nYou can not undo this, so make sure you have created a Backup!\n\nDelete the Sims?", "Warning", System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
+                return;
+            deleteInvalidDna = (Message.Show("Delete all orphan DNA, Scores and Wants records as well?", "Clean Up", System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes);
+            int c = 0;
+            if (e.Items.Count > 0)
+            {
+                for (int i = 0; i < e.Items.Count; i++)
+                {
+                    SimPe.PackedFiles.Wrapper.ExtSDesc victim = new SimPe.PackedFiles.Wrapper.ExtSDesc();
+                    victim.ProcessData(e.Items[i].Resource);
 
-            SimPe.PackedFiles.Wrapper.ExtSDesc victim = new SimPe.PackedFiles.Wrapper.ExtSDesc();
-			victim.ProcessData(e.Items[0].Resource);
+                    c += DeleteSim(victim);
+                }
+            }
+            else
+            {
+                SimPe.PackedFiles.Wrapper.ExtSDesc victim = new SimPe.PackedFiles.Wrapper.ExtSDesc();
+                SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = e.LoadedPackage.Package.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
+                foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+                {
+                    victim.ProcessData(pfd, e.LoadedPackage.Package);
+                    if (victim.CharacterDescription.Gender == Data.MetaData.Gender.Male && !victim.IsNPC)
+                        c += DeleteSim(victim);
+                }
+            }
 
-			if (Message.Show("Are you sure you want to remove \""+victim.SimName+" "+victim.SimFamilyName+"\" from your Neighborhood? You can not undo this, so make sure you have created a Backup!\n\nDelete the Sim?", "Warning", System.Windows.Forms.MessageBoxButtons.YesNo)==System.Windows.Forms.DialogResult.No) return;
+            if (deleteInvalidDna)
+            {
+                DeleteOrphanDna(e.LoadedPackage.Package);
+            }
 
-			uint inst = victim.FileDescriptor.Instance;
-			uint guid = victim.SimId;
+            Message.Show(
+                string.Format("Done. {0} sim character file(s) deleted", c)
+                , "Notice"
+                , System.Windows.Forms.MessageBoxButtons.OK
+                );
 
-			DeleteSRels(inst, guid, victim.Package, victim);
-			DeleteRelations(inst, guid, victim.Package, victim);
-			DeleteRes(0xEBFEE33F, inst, guid, victim.Package, victim); //DNA
-			DeleteRes(0xCD95548E, inst, guid, victim.Package, victim); //want & fear
-			DeleteFamilyTies(inst, guid, victim.Package, victim);
-			DeleteMemories(inst, guid, victim.Package, victim);
-			DeleteFamMembers(inst, guid, victim.Package, victim);
+        }
+        #endregion
 
-			DeleteCharacterFile(inst, guid, victim.Package, victim);
+        int DeleteSim(SimPe.PackedFiles.Wrapper.ExtSDesc victim)
+        {
+            int ret = 0;
+            uint inst = victim.FileDescriptor.Instance;
+            uint guid = victim.SimId;
 
-			victim.FileDescriptor.MarkForDelete = true;
-		}
+            if (!victim.IsNPC)
+            {
+                DeleteSRels(inst, guid, victim.Package, victim);
+                DeleteRelations(inst, guid, victim.Package, victim);
+                DeleteFamilyTies(inst, guid, victim.Package, victim);
+                DeleteMemories(inst, guid, victim.Package, victim);
+                DeleteFamMembers(inst, guid, victim.Package, victim);
+                DeleteRes(0xCD95548E, inst, guid, victim.Package, victim); //want & fear
+                DeleteRes(0xEBFEE33F, inst, guid, victim.Package, victim); //DNA
+                DeleteRes(0x3053CF74, inst, guid, victim.Package, victim); //Scores
+                ret = DeleteCharacterFile(inst, guid, victim.Package, victim);
+                victim.FileDescriptor.MarkForDelete = true;
+            }
+            return ret;
+        }
 
-		#endregion	
+        int DeleteCharacterFile(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
+        {
+            int ret = 0;
+            //do not delete for NPCs
+            //if (victim.IsNPC) return;
 
-		void DeleteCharacterFile(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
-		{
-			//do not delete for NPCs
-			if (victim.IsNPC) return;
+            if (System.IO.File.Exists(victim.CharacterFileName))
+            {
+                try
+                {
+                    SimPe.Packages.StreamItem si = SimPe.Packages.StreamFactory.UseStream(victim.CharacterFileName, System.IO.FileAccess.Read);
+                    si.Close();
+                    System.IO.File.Delete(victim.CharacterFileName);
+                    ret++;
+                }
+                catch (Exception ex)
+                {
+                    Helper.ExceptionMessage(ex);
+                }
+            }
 
-			if (System.IO.File.Exists(victim.CharacterFileName)) 
-			{				
-				if (Message.Show("SimPE can now delete the Character File \""+victim.CharacterFileName+"\" from your System. \n\nShould SimPE delete this File?", "Question", System.Windows.Forms.MessageBoxButtons.YesNo)==System.Windows.Forms.DialogResult.No) return;
-				try 
-				{
-					SimPe.Packages.StreamItem si = SimPe.Packages.StreamFactory.UseStream(victim.CharacterFileName, System.IO.FileAccess.Read);
-					si.Close();
+            return ret;
+        }
 
-					System.IO.File.Delete(victim.CharacterFileName);
+        void DeleteSRels(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
+        {
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(Data.MetaData.RELATION_FILE);
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+            {
+                uint up = (pfd.Instance & 0xFFFF0000u) >> 16;
+                uint low = (pfd.Instance & 0x0000FFFFFu);
 
-					/*FileTable.ProviderRegistry.SimNameProvider.BaseFolder = null;
-					FileTable.ProviderRegistry.SimNameProvider.BaseFolder = System.IO.Path.GetDirectoryName(pkg.SaveFileName);*/
-				} 
-				catch (Exception ex)
-				{
-					Helper.ExceptionMessage(ex);
-				}
-			}
-		}
-	
-		void DeleteSRels(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
-		{
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(Data.MetaData.RELATION_FILE);
-			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
-			{
-				uint up = (pfd.Instance & 0xFFFF0000) >> 16;
-				uint low = (pfd.Instance & 0x0000FFFFF);
+                if (up == inst || low == inst) pfd.MarkForDelete = true;
+            }
+        }
 
-				if (up==inst || low==inst) pfd.MarkForDelete = true;
-			}
-		}
+        void DeleteRes(uint type, uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
+        {
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(type);
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+            {
+                if (pfd.Instance == inst) pfd.MarkForDelete = true;
+            }
+        }
 
-		void DeleteRes(uint type, uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
-		{
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(type);
-			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
-			{
-				if (pfd.Instance==inst) pfd.MarkForDelete = true;
-			}
-		}
+        void DeleteFamilyTies(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
+        {
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(0x8C870743);
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+            {
+                SimPe.PackedFiles.Wrapper.FamilyTies ft = new SimPe.PackedFiles.Wrapper.FamilyTies(null);
+                ft.ProcessData(pfd, pkg);
 
-		void DeleteFamilyTies(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
-		{
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(0x8C870743);
-			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
-			{
-				SimPe.PackedFiles.Wrapper.FamilyTies ft = new SimPe.PackedFiles.Wrapper.FamilyTies(null);
-				ft.ProcessData(pfd, pkg);
+                ArrayList sims = new ArrayList();
+                foreach (SimPe.PackedFiles.Wrapper.Supporting.FamilyTieSim fts in ft.Sims)
+                {
+                    if (fts.Instance != inst)
+                    {
+                        sims.Add(fts);
 
-				ArrayList sims = new ArrayList();
-				foreach (SimPe.PackedFiles.Wrapper.Supporting.FamilyTieSim fts in ft.Sims) 
-				{
-					if (fts.Instance!=inst) 
-					{
-						sims.Add(fts);
+                        ArrayList items = new ArrayList();
+                        foreach (SimPe.PackedFiles.Wrapper.Supporting.FamilyTieItem fti in fts.Ties)
+                        {
+                            if (fti.Instance != inst) items.Add(fti);
+                        }
 
-						ArrayList items = new ArrayList();
-						foreach (SimPe.PackedFiles.Wrapper.Supporting.FamilyTieItem fti in fts.Ties)
-						{
-							if (fti.Instance!=inst) items.Add(fti);
-						}
+                        fts.Ties = new SimPe.PackedFiles.Wrapper.Supporting.FamilyTieItem[items.Count];
+                        items.CopyTo(fts.Ties);
+                    }
+                }
 
-						fts.Ties = new SimPe.PackedFiles.Wrapper.Supporting.FamilyTieItem[items.Count];
-						items.CopyTo(fts.Ties);
-					}
-				}
+                SimPe.PackedFiles.Wrapper.Supporting.FamilyTieSim[] fsims = new SimPe.PackedFiles.Wrapper.Supporting.FamilyTieSim[sims.Count];
+                sims.CopyTo(fsims);
 
-				SimPe.PackedFiles.Wrapper.Supporting.FamilyTieSim[] fsims = new SimPe.PackedFiles.Wrapper.Supporting.FamilyTieSim[sims.Count];
-				sims.CopyTo(fsims);
-				
-				ft.Sims = fsims;
-				
+                ft.Sims = fsims;
 
-				ft.SynchronizeUserData();
-			}
-		}
+                ft.SynchronizeUserData();
+            }
+        }
 
-		void DeleteMemories(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
-		{
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(0x4E474248);
-			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
-			{
-				SimPe.Plugin.Ngbh n = new Ngbh(null);
-				n.ProcessData(pfd, pkg);
+        void DeleteMemories(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
+        {
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(0x4E474248);
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+            {
+                SimPe.Plugin.Ngbh n = new Ngbh(null);
+                n.ProcessData(pfd, pkg);
 
-				SimPe.Plugin.Collections.NgbhSlots slots = new SimPe.Plugin.Collections.NgbhSlots(n, Data.NeighborhoodSlots.Sims);
-				foreach (NgbhSlot s in n.Sims)
-				{
-					if (s.SlotID!=inst) 
-					{
-						slots.Add(s);
-						SimPe.Plugin.Collections.NgbhItems list = new SimPe.Plugin.Collections.NgbhItems(s);
-						foreach (NgbhItem i in s.ItemsA)
-						{
-							if (i.SimID != guid && i.SimInstance!=inst && i.OwnerInstance!=inst) list.Add(i);
-						}
-						s.ItemsA = list;
+                ArrayList slotsToRemove = new ArrayList();
 
-						list = new SimPe.Plugin.Collections.NgbhItems(s);
-						foreach (NgbhItem i in s.ItemsB)
-						{
-							if (i.SimID != guid && i.SimInstance!=inst && i.OwnerInstance!=inst) list.Add(i);
-						}
+                foreach (NgbhSlot s in n.Sims)
+                {
+                    if (s.SlotID == inst)
+                        slotsToRemove.Add(s); // remove all my memories and tokens ?!
+                    else
+                    {
+                        // process other sims memories and tokens
 
-						s.ItemsB = list;						
-					}
-				}	
-			
-				n.Sims = slots;
+                        ArrayList list = new ArrayList();
 
-				n.SynchronizeUserData();
-			}
-		}
+                        foreach (NgbhItem i in s.ItemsA)
+                            if (
+                                 i.SimID == guid
+                            || i.SimInstance == inst
+                            || i.OwnerInstance == inst
+                                )
+                                list.Add(i);
 
-		void DeleteFamMembers(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
-		{
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(0x46414D49);
-			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
-			{
-				SimPe.PackedFiles.Wrapper.Fami f = new SimPe.PackedFiles.Wrapper.Fami(null);
-				f.ProcessData(pfd, pkg);
+                        foreach (NgbhItem i in list)
+                            s.ItemsA.Remove(i);
 
-				
-				
-				ArrayList list = new ArrayList();
-				foreach (uint i in f.Members)
-				{
-					if (i!= guid ) list.Add(i);
-				}
 
-				f.Members= new uint[list.Count];
-				list.CopyTo(f.Members);
-						
+                        list.Clear();
 
-				f.SynchronizeUserData();
-			}
-		}
+                        foreach (NgbhItem i in s.ItemsB)
+                            if (
+                                 i.SimID == guid
+                            || i.SimInstance == inst
+                            || i.OwnerInstance == inst
+                                )
+                                list.Add(i);
 
-		void DeleteRelations(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
-		{
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
-			foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
-			{
-				if (pfd.Instance==inst) continue;
+                        foreach (NgbhItem i in list)
+                            s.ItemsB.Remove(i);
 
-				ArrayList list = new ArrayList();
-				SimPe.PackedFiles.Wrapper.ExtSDesc sdsc = new SimPe.PackedFiles.Wrapper.ExtSDesc();
-				sdsc.ProcessData(pfd, pkg);
+                    }
+                }
 
-				foreach (uint i in sdsc.Relations.SimInstances)
-					if (i!=inst) list.Add((ushort)i);
+                foreach (NgbhSlot s in slotsToRemove)
+                    n.Sims.Remove(s);
+                //n.Sims = slots;
 
-				if (list.Count<sdsc.Relations.SimInstances.Length) 
-				{
-					sdsc.Relations.SimInstances = new ushort[list.Count];
-					list.CopyTo(sdsc.Relations.SimInstances);
+                n.SynchronizeUserData();
+            }
+        }
 
-					sdsc.SynchronizeUserData();
-				}
-			}
-		}
+        void DeleteFamMembers(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
+        {
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(0x46414D49);
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+            {
+                SimPe.PackedFiles.Wrapper.Fami f = new SimPe.PackedFiles.Wrapper.Fami(null);
+                f.ProcessData(pfd, pkg);
 
+                ArrayList list = new ArrayList();
+                foreach (uint i in f.Members)
+                {
+                    if (i != guid) list.Add(i);
+                }
+
+                f.Members = new uint[list.Count];
+                list.CopyTo(f.Members);
+
+
+                f.SynchronizeUserData();
+            }
+        }
+
+        void DeleteRelations(uint inst, uint guid, SimPe.Interfaces.Files.IPackageFile pkg, SimPe.PackedFiles.Wrapper.ExtSDesc victim)
+        {
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+            {
+                if (pfd.Instance == inst) continue;
+
+                ArrayList list = new ArrayList();
+                SimPe.PackedFiles.Wrapper.ExtSDesc sdsc = new SimPe.PackedFiles.Wrapper.ExtSDesc();
+                sdsc.ProcessData(pfd, pkg);
+
+                foreach (uint i in sdsc.Relations.SimInstances)
+                    if (i != inst) list.Add((ushort)i);
+
+                if (list.Count < sdsc.Relations.SimInstances.Length)
+                {
+                    sdsc.Relations.SimInstances = new ushort[list.Count];
+                    list.CopyTo(sdsc.Relations.SimInstances);
+
+                    sdsc.SynchronizeUserData();
+                }
+            }
+        }
+
+        void DeleteOrphanDna(SimPe.Interfaces.Files.IPackageFile pkg)
+        {
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfdSim = pkg.FindFiles(0xAACE2EFBu); // get the existing SDSCs
+            ArrayList simInstances = new ArrayList();
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pSim in pfdSim)
+                simInstances.Add(pSim.Instance);
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfdDna = pkg.FindFiles(0xEBFEE33Fu); // get the existing SDNAs
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfdSco = pkg.FindFiles(0x3053CF74u); // get the existing Scores
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfdWaF = pkg.FindFiles(0xCD95548Eu); // get the wants & fears
+
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pDna in pfdDna)
+                if (!simInstances.Contains(pDna.Instance))
+                    pDna.MarkForDelete = true;
+
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pSco in pfdSco)
+                if (!simInstances.Contains(pSco.Instance))
+                    pSco.MarkForDelete = true;
+
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pWaF in pfdWaF)
+                if (!simInstances.Contains(pWaF.Instance))
+                    pWaF.MarkForDelete = true;
+        }
 		
 		#region IToolPlugin Member
 		public override string ToString()
 		{
-			return "Delete Sim";
+			return "Delete Sims";
 		}
 		#endregion
 
@@ -264,8 +346,8 @@ namespace SimPe.Plugin.Tool.Action
 		public System.Drawing.Image Icon
 		{
 			get
-			{
-				return null;
+            {
+                return SimPe.GetIcon.DeleteSim;
 			}
 		}
 

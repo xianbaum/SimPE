@@ -27,7 +27,7 @@ namespace SimPe.Plugin.Tool
 	/// <summary>
 	/// Zusammenfassung für ImportSemiTool.
 	/// </summary>
-	public class ObjectsTool : SimPe.Interfaces.IToolPlus	
+    public class ObjectsTool : SimPe.Interfaces.IToolPlus	
 	{
 		internal ObjectsTool() 
 		{
@@ -54,11 +54,8 @@ namespace SimPe.Plugin.Tool
 				}
 			}
 		}
-
-		
-
-
-		public override string ToString()
+        
+        public override string ToString()
 		{
 			return "Object Creation\\Object Workshop...";
 		}
@@ -66,6 +63,7 @@ namespace SimPe.Plugin.Tool
 		#endregion
 
 		#region IToolExt Member
+
 		public System.Windows.Forms.Shortcut Shortcut
 		{
 			get
@@ -78,7 +76,7 @@ namespace SimPe.Plugin.Tool
 		{
 			get
 			{
-				return System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.createpackage.png"));
+                return SimPe.GetIcon.CreatePackage;
 			}
 		}
 

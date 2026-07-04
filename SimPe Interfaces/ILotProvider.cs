@@ -44,10 +44,8 @@ namespace SimPe.Interfaces.Providers
 		{
 			get;
 		}
-			
-
-
-		object FindTag(Type t);
+        
+        object FindTag(Type t);
 		System.Collections.ArrayList Tags
 		{
 			get;

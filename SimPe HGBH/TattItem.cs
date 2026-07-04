@@ -32,15 +32,12 @@ namespace SimPe.Plugin
 	/// </remarks>
 	public class TattItem :System.IDisposable
 	{
-		
-
-		#region Attributes
+        #region Attributes
 		uint guid;
 		ushort[] items;
 		#endregion
-
-		
-		/// <summary>
+        
+        /// <summary>
 		/// Constructor
 		/// </summary>
 		public TattItem()
@@ -48,8 +45,10 @@ namespace SimPe.Plugin
 			items = new ushort[0];
 		}
 
-		
-		
+        public uint GuiD
+        {
+            get { return guid; }
+        }
 
 		/// <summary>
 		/// Unserializes a BinaryStream into the Attributes of this Instance
@@ -79,7 +78,6 @@ namespace SimPe.Plugin
 				writer.Write(items[i]);
 		}
 
-
 		#region IDisposable Member
 
 		public void Dispose()
@@ -91,11 +89,10 @@ namespace SimPe.Plugin
 
 		public override string ToString()
 		{
-			string s = "0x"+Helper.HexString(guid)+": ";
+            string s = "0x"+Helper.HexString(guid)+": ";
 			foreach (ushort u in items)
-				s += Helper.HexString(u)+" ";
+                s += Helper.HexString(u)+" ";
 			return s;
 		}
-
 	}
 }

@@ -189,7 +189,7 @@ namespace SimPe.Data
 		/// <summary>
 		/// Craetes a String from the Object
 		/// </summary>
-		/// <returns>Simply Returns the Name Attribute</returns>
+        /// <returns>Simply Returns the Name Attribute</returns>
 		public override string ToString()
 		{
 			string ret = template;
@@ -250,7 +250,7 @@ namespace SimPe.Data
 							list.Add((SimPe.Interfaces.IAlias)a);
 						}
 					}
-				} // for i			
+				} // for i
 
 				SimPe.Interfaces.IAlias[] ret = new SimPe.Interfaces.IAlias[list.Count];
 				list.CopyTo(ret);

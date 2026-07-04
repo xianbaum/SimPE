@@ -34,7 +34,7 @@ namespace SimPe.Wizards
 		{
 			get
 			{
-				return "Recolor the loaded texture Files";
+				return "Recolour the loaded texture Files";
 			}
 		}
 

@@ -49,7 +49,7 @@ namespace SimPe.Plugin.Identifiers
 
 
 	/// <summary>
-	/// Identifies a Recolor Package
+	/// Identifies a Cep Package
 	/// </summary>
 	internal class CepIdentifier : IIdentifier
 	{
@@ -81,6 +81,7 @@ namespace SimPe.Plugin.Identifiers
 				return SimPe.Cache.PackageType.CEP;
 			if (name == System.IO.Path.GetFileName(Data.MetaData.MMAT_PACKAGE).Trim().ToLower()) 
 				return SimPe.Cache.PackageType.CEP;
+            if (pkg.FileName.Contains("zCEP-EXTRA"))return SimPe.Cache.PackageType.CEP;
 			return SimPe.Cache.PackageType.Unknown;
 		}
 
@@ -88,7 +89,7 @@ namespace SimPe.Plugin.Identifiers
 	}
 
 	/// <summary>
-	/// Identifies a Recolor Package
+	/// Identifies a Sim Package
 	/// </summary>
 	internal class SimIdentifier : IIdentifier
 	{
@@ -102,7 +103,7 @@ namespace SimPe.Plugin.Identifiers
 
 		public int Index 
 		{
-			get { return 300; }
+			get { return 200; }
 		}
 
 		public ScannerPluginType PluginType 
@@ -115,8 +116,18 @@ namespace SimPe.Plugin.Identifiers
 
 		public SimPe.Cache.PackageType GetType(SimPe.Interfaces.Files.IPackageFile pkg)
 		{
-			if (pkg.FindFiles(0xCCCEF852).Length!=0) return SimPe.Cache.PackageType.Sim; //Facial Structure
-			if (pkg.FindFiles(0xAC598EAC).Length!=0) return SimPe.Cache.PackageType.Sim; //Age Data
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(Data.MetaData.OBJD_FILE);
+            if (pfds.Length > 0)
+            {
+                SimPe.PackedFiles.Wrapper.ExtObjd objd = new SimPe.PackedFiles.Wrapper.ExtObjd();
+                objd.ProcessData(pfds[0], pkg, false);
+                if (objd.Type == SimPe.Data.ObjectTypes.Person) return SimPe.Cache.PackageType.Sim;
+                if (objd.Type == SimPe.Data.ObjectTypes.UnlinkedSim) return SimPe.Cache.PackageType.Sim;
+            }
+            if (pkg.FindFiles(0xAC598EAC).Length > 0 && pkg.FindFiles(0xEBCF3E27).Length > 0) return SimPe.Cache.PackageType.Sim;//Age Data + Property Set - Sim
+            if (pkg.FindFiles(0xCDB8BDC4).Length > 0) return SimPe.Cache.PackageType.Family;//Single Sim Memory
+			//if (pkg.FindFiles(0xCCCEF852).Length!=0) return SimPe.Cache.PackageType.Sim; //Facial Structure - Pets don't have
+			//if (pkg.FindFiles(0xAC598EAC).Length!=0) return SimPe.Cache.PackageType.Sim; //Age Data - Outfits with GUID do have
 			return SimPe.Cache.PackageType.Unknown;
 		}
 
@@ -124,7 +135,7 @@ namespace SimPe.Plugin.Identifiers
 	}
 
 	/// <summary>
-	/// Identifies a Recolor Package
+	/// Identifies an Object Package
 	/// </summary>
 	internal class ObjectIdentifier : IIdentifier
 	{
@@ -153,9 +164,9 @@ namespace SimPe.Plugin.Identifiers
 		{
 			if (pkg.FindFiles(Data.MetaData.OBJD_FILE).Length==0) return SimPe.Cache.PackageType.Unknown;
 
-			if (pkg.FindFiles(0x484F5553).Length>0) return SimPe.Cache.PackageType.Lot; //HOUS Resources
-			if (pkg.FindFilesByGroup(Data.MetaData.CUSTOM_GROUP).Length>0) return SimPe.Cache.PackageType.Object;
-			else return SimPe.Cache.PackageType.MaxisObject;
+			if (pkg.FindFiles(0x484F5553).Length>0) return SimPe.Cache.PackageType.Lot; //HOUS Resources - Lots won't get here
+            if (pkg.FindFilesByGroup(Data.MetaData.CUSTOM_GROUP).Length > 0) return SimPe.Cache.PackageType.CustomObject;
+			else return SimPe.Cache.PackageType.Object;
 		}
 
 		#endregion
@@ -176,7 +187,7 @@ namespace SimPe.Plugin.Identifiers
 
 		public int Index 
 		{
-			get { return 400; }
+			get { return 300; }
 		}
 
 		public ScannerPluginType PluginType 
@@ -188,11 +199,11 @@ namespace SimPe.Plugin.Identifiers
 		#region IIdentifier Member
 
 		public SimPe.Cache.PackageType GetType(SimPe.Interfaces.Files.IPackageFile pkg)
-		{
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(Data.MetaData.GZPS);
+        {
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFiles(0x8C1580B5); //Hairtone XML first - hair do have GZPS which returns skin
+            if (pfds.Length==0) pfds = pkg.FindFiles(Data.MetaData.GZPS);
 			if (pfds.Length==0) pfds = pkg.FindFiles(Data.MetaData.XOBJ); //Object XML
 			if (pfds.Length==0) pfds = pkg.FindFiles(0x2C1FD8A1); //TextureOverlay XML
-			if (pfds.Length==0) pfds = pkg.FindFiles(0x8C1580B5); //Hairtone XML
 			if (pfds.Length==0) pfds = pkg.FindFiles(0x0C1FE246); //Mesh Overlay XML
 			if (pfds.Length==0) pfds = pkg.FindFiles(Data.MetaData.XROF); //Object XML
 			if (pfds.Length==0) pfds = pkg.FindFiles(Data.MetaData.XFLR); //Object XML
@@ -202,9 +213,7 @@ namespace SimPe.Plugin.Identifiers
 			{
 				SimPe.PackedFiles.Wrapper.Cpf cpf = new SimPe.PackedFiles.Wrapper.Cpf();
 				cpf.ProcessData(pfds[0], pkg, false);
-
 				string type = cpf.GetSaveItem("type").StringValue.Trim().ToLower();
-
 				switch (type) 
 				{
 					case "wall" : 
@@ -231,8 +240,8 @@ namespace SimPe.Plugin.Identifiers
 					{
 						uint cat = cpf.GetSaveItem("category").UIntegerValue;
 
-						if ((cat & (uint)Data.SkinCategories.Skin) != 0) return SimPe.Cache.PackageType.Skin;
-						else return SimPe.Cache.PackageType.Cloth;
+                        if ((cat & (uint)Data.OutfitCats.Skin) != 0) return SimPe.Cache.PackageType.Skin;
+                        else return SimPe.Cache.PackageType.Clothing;
 					}
 					case "meshoverlay":
 					case "textureoverlay":
@@ -277,7 +286,7 @@ namespace SimPe.Plugin.Identifiers
 
 		public int Index 
 		{
-			get { return 200; }
+			get { return 400; }
 		}
 
 		public ScannerPluginType PluginType 
@@ -307,7 +316,7 @@ namespace SimPe.Plugin.Identifiers
 				}
 			}
 
-			return SimPe.Cache.PackageType.Recolor;
+			return SimPe.Cache.PackageType.Recolour;
 		}
 
 		#endregion

@@ -8,15 +8,14 @@ namespace SimPe.Plugin
     class SimAspirationEditor : IAspirationEditor
     {
         public const uint SEC_ASP_TOKEN_GUID = 0x53D08989;
+        public const uint LTA_Super_GUID = 0x33E355C0;
         public SimPe.Data.MetaData.AspirationTypes[] LoadAspirations(SDesc sim)
         {
-            
             if (sim == null) return null;
             LoadMemoryResource(sim);
             ushort sval = GetSecondaryAspirationValue(sim);
             SimPe.Data.MetaData.AspirationTypes[] res = new SimPe.Data.MetaData.AspirationTypes[] { SimPe.Data.MetaData.AspirationTypes.Nothing, SimPe.Data.MetaData.AspirationTypes.Nothing };
             ushort a = (ushort)sim.CharacterDescription.Aspiration;
-
 
             if (sval != 0)
             {
@@ -26,8 +25,6 @@ namespace SimPe.Plugin
             else
             {
                 Array arr = Enum.GetValues(typeof(SimPe.Data.MetaData.AspirationTypes));
-            
-
                 foreach (ushort i in arr)
                 {
                     if ((a & i) == i)
@@ -75,6 +72,26 @@ namespace SimPe.Plugin
             }
         }
 
+        public ushort[] LoadSuperPowers(SDesc sim)
+        {
+            if (sim == null) return null;
+            LoadMemoryResource(sim);
+            return GetLTAsSetting(sim);
+        }
+
+        public void StoreSuperPowers(ushort[] wooh, SDesc sim)
+        {
+            if (sim == null || wooh == null) return;
+            if (wooh.Length < 8 || !SimPe.Helper.WindowsRegistry.AllowChangeOfSecondaryAspiration) return;
+            LoadMemoryResource(sim);
+            NgbhItem ni = GetLTASuperToken(sim, true);
+            if (ni == null) return;
+            for (int i = 0; i < 8; i++)
+                ni.SetValue(i, wooh[i]);
+
+            ngbh.SynchronizeUserData();
+        }
+
         Ngbh ngbh = null;
         SimPe.Interfaces.Files.IPackageFile pkg = null;
         protected void LoadMemoryResource(SDesc sim)
@@ -111,16 +128,13 @@ namespace SimPe.Plugin
             {
                 NgbhItem item = slot.FindItem(SEC_ASP_TOKEN_GUID);
                 if (create && item == null)
-                {                    
+                {
                     item = slot.ItemsB.AddNew(SimMemoryType.Token);
-
                     item.Guid = SEC_ASP_TOKEN_GUID;
                     item.Value = 0;
-
                 }
                 return item;
             }
-
             return null;
         }
 
@@ -130,6 +144,35 @@ namespace SimPe.Plugin
             NgbhItem ni = GetSecondaryAspirationToken(sim, false);
             if (ni == null) return 0;
             return ni.Value;
+        }
+
+        protected NgbhItem GetLTASuperToken(SDesc sim, bool create)
+        {
+            if (ngbh == null) return null;
+            NgbhSlot slot = ngbh.Sims.GetInstanceSlot(sim.Instance, false);
+            if (slot != null)
+            {
+                NgbhItem item = slot.FindItem(LTA_Super_GUID);
+                if (create && item == null)
+                {
+                    item = slot.ItemsB.AddNew(SimMemoryType.Token);
+                    item.Guid = LTA_Super_GUID;
+                    for (int i = 0; i < 8; i++)
+                        item.PutValue(i, 0);
+                }
+                return item;
+            }
+            return null;
+        }
+
+        protected ushort[] GetLTAsSetting(SDesc sim)
+        {
+            NgbhItem ni = GetLTASuperToken(sim, false);
+            ushort[] ret = new ushort[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
+            if (ni == null) return ret;
+            for (int i = 0; i < 8; i++)
+                ret[i] = ni.GetValue(i);
+            return ret;
         }
     }
 }

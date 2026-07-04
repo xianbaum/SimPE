@@ -127,7 +127,9 @@ namespace SimPe.Cache
 
 			try 
 			{
-				Interfaces.Scenegraph.IScenegraphFileIndexItem[] sitems = FileTable.FileIndex.FindFile(Data.MetaData.CTSS_FILE, objd.FileDescriptor.Group, objd.CTSSInstance, null);
+                Interfaces.Scenegraph.IScenegraphFileIndexItem[] sitems = FileTable.FileIndex.FindFile(Data.MetaData.CTSS_FILE, objd.FileDescriptor.Group, objd.CTSSInstance + (ulong)1, null);
+                if (sitems.Length == 0)
+                    sitems = FileTable.FileIndex.FindFile(Data.MetaData.CTSS_FILE, objd.FileDescriptor.Group, objd.CTSSInstance, null);
 				if (sitems.Length>0) 
 				{
 					SimPe.PackedFiles.Wrapper.Str str = new SimPe.PackedFiles.Wrapper.Str();
@@ -142,8 +144,7 @@ namespace SimPe.Cache
 						if (strs.Length>0) mci.Name = strs[0].Title;
 					}							
 				}
-
-			}
+            }
 			catch (Exception) {}
 
 			try 
@@ -159,21 +160,22 @@ namespace SimPe.Cache
 						res[i] = strs[i].Title;
 					mci.ValueNames = res;
 				}
-
-			}
+            }
 			catch (Exception) {}
 			
 			//still no name?
 			if (mci.Name == "") mci.Name = objd.FileName;
-					
-			//having an icon?
+            //having an icon?
 			SimPe.PackedFiles.Wrapper.Picture pic = new SimPe.PackedFiles.Wrapper.Picture();
-			Interfaces.Scenegraph.IScenegraphFileIndexItem[] iitems = FileTable.FileIndex.FindFile(Data.MetaData.SIM_IMAGE_FILE, objd.FileDescriptor.Group, 1, null);	
+            Interfaces.Scenegraph.IScenegraphFileIndexItem[] iitems;
+            if (mci.IsBadge)
+                iitems = FileTable.FileIndex.FindFile(Data.MetaData.SIM_IMAGE_FILE, objd.FileDescriptor.Group, 3, null);
+            else
+                iitems = FileTable.FileIndex.FindFile(Data.MetaData.SIM_IMAGE_FILE, objd.FileDescriptor.Group, 1, null);	
 			if (iitems.Length>0) 
 			{
 				pic.ProcessData(iitems[0]);
 				mci.Icon = pic.Image;
-				Wait.Image = mci.Icon;
 			}
 
 			Wait.Message = mci.Name;

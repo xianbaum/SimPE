@@ -53,16 +53,12 @@ namespace SimPe
 		/// <summary>
 		/// Characters allowd in a Filepath
 		/// </summary>
-		public const string PATH_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzﬂ0123456789.-_ ";
+        public const string PATH_CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzﬂ0123456789.-_ ô";
 
 		/// <summary>
 		/// Character used to Seperate Folders in a Path
 		/// </summary>
-#if MAC
-		public const string PATH_SEP = "/";
-#else
 		public const string PATH_SEP = "\\";
-#endif
 
 		/// <summary>
 		/// Contains a Link to the Registry Object
@@ -326,11 +322,11 @@ namespace SimPe
         }
 
 		/// <summary>
-		/// Removes all Characters that are not present in the allowd String
+        /// Removes all Characters that are not allowed in the String
 		/// </summary>
 		/// <param name="input">The String you want to change</param>
-		/// <param name="allowed">A string coinatining all Allowed Charactres</param>
-		/// <returns>the string without illegal Charactres</returns>
+        /// <param name="allowed">A string coinatining all Allowed Characters</param>
+        /// <returns>the string without illegal Characters</returns>
 		public static string RemoveUnlistedCharacters(string input, string allowed) 
 		{
 			string output = "";
@@ -342,8 +338,12 @@ namespace SimPe
 
 			return output;
 		}
-
-		/// <summary>
+        /*
+         * WTF is a Caharcter, that can't be displayed
+         * how could I convert a Caharcter if I don't know what that is?
+         * DisplayableCharactre? don't display a Charactre, they're ugly
+         * 
+        /// <summary>
 		/// Returns a Caharcter that can be displayed
 		/// </summary>
 		/// <param name="c">The Charcatre to convert</param>
@@ -353,6 +353,7 @@ namespace SimPe
 			if ((c>0x1F) && (c<0xff) && (c!=0xAD) && ((c<0x7F) || (c>0x9F)))  return c;
 			else return '.';
 		}
+        */
 
 		/// <summary>
 		/// Shows an Exception Message for the User
@@ -426,8 +427,9 @@ namespace SimPe
 		public static string SimPeTeleportPath 
 		{
 			get
-			{
-				string dir = Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "Teleport");
+            {
+                string dir = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SimPe"), "Teleport");
+                //string dir = Path.Combine(Path.GetDirectoryName(System.Windows.Forms.Application.ExecutablePath), "Teleport");
 				try 
 				{
 					if (!Directory.Exists(dir))
@@ -443,9 +445,12 @@ namespace SimPe
 		/// </summary>
 		/// <param name="prefix"></param>
 		/// <returns></returns>
-		public static string GetSimPeLanguageCache(string prefix) 
-		{
-			return Path.Combine(Helper.SimPeDataPath, prefix+Helper.HexString((byte)Helper.WindowsRegistry.LanguageCode)+".simpepkg");
+		public static string GetSimPeLanguageCache(string prefix)
+        {
+            if (Helper.WindowsRegistry.LoadOnlySimsStory > 0)
+                return Path.Combine(Helper.SimPeDataPath, prefix + Helper.HexString((byte)Helper.WindowsRegistry.LanguageCode) + Convert.ToString(Helper.WindowsRegistry.LoadOnlySimsStory) + ".simpepkg");
+            else
+                return Path.Combine(Helper.SimPeDataPath, prefix+Helper.HexString((byte)Helper.WindowsRegistry.LanguageCode)+".simpepkg");
 		}
 
 		/// <summary>
@@ -457,7 +462,8 @@ namespace SimPe
 		}
 
 		/// <summary>
-		/// Returns the Name of a Cache File with the passed Prefix
+        /// Outdated, use SimPeLanguageCache
+        /// Returns the Name of a Cache File with the passed Prefix
 		/// </summary>
 		/// <param name="prefix"></param>
 		/// <returns></returns>
@@ -466,7 +472,8 @@ namespace SimPe
 			return Path.Combine(Helper.SimPeDataPath, prefix+".simpepkg");
 		}
 
-		/// <summary>
+        /// <summary>
+        /// Outdated, use SimPeLanguageCache
 		/// Returns the Name of the Language independent Cache File
 		/// </summary>
 		public static string SimPeCache 
@@ -484,7 +491,8 @@ namespace SimPe
 		{
 			get
 			{
-				string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Data");
+                string path = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SimPe"), "Data");
+                //string path = Path.Combine(Path.GetDirectoryName(Application.ExecutablePath), "Data");
 				try 
 				{
 					if (!Directory.Exists(path))
@@ -509,6 +517,7 @@ namespace SimPe
                     catch { }
                     return path;
                 }
+                set{}
             }
 
             static string ProfilePath(string s) { return ProfilePath(s, false); }
@@ -517,16 +526,16 @@ namespace SimPe
                     string path = SimPeDataPath;
                     if (profile.Length > 0 && readOnly)
                         path = Path.Combine(Path.Combine(path, "Profiles"), profile);
-                    return Path.Combine(path, s);
+                        return Path.Combine(path, s);
             }
 
             /// <summary>
-            /// The path of the main SimPE settings file (write)
+            /// The path of the main SimPe settings file (write)
             /// </summary>
             public static string SimPeXREGW { get { return ProfilePath("simpe.xreg"); } }
 
             /// <summary>
-            /// The path of the main SimPE settings file (readonly)
+            /// The path of the main SimPe settings file (readonly)
             /// </summary>
             public static string SimPeXREG { get { return ProfilePath("simpe.xreg", true); } }
 
@@ -559,6 +568,19 @@ namespace SimPe
             /// The path of the filetable folders file (readonly)
             /// </summary>
             public static string FoldersXREG { get { return ProfilePath("folders.xreg", true); } }
+
+            /// <summary>
+            /// The path of the filetable folders file (write)
+            /// </summary>
+            public static string ExpansionsXREGW { get {
+                if (ECCorNewSEfound) return ProfilePath("expansions2.xreg");
+                else return ProfilePath("expansions.xreg"); } }
+            /// <summary>
+            /// The path of the filetable folders file (readonly)
+            /// </summary>
+            public static string ExpansionsXREG { get {
+                if (ECCorNewSEfound) return ProfilePath("expansions2.xreg", true);
+                else return ProfilePath("expansions.xreg", true); } }
 
             /// <summary>
             /// The path of the MRU registry file (write)
@@ -611,7 +633,7 @@ namespace SimPe
         /// <summary>
         /// Bit number identifying what's been "enabled" on the commandline
         /// </summary>
-        private enum RunModeFlags : int { localmode = 0, noplugins, fileformat, noerrors, anypackage, }; // bit number
+        private enum RunModeFlags : int { localmode = 0, noplugins, fileformat, noerrors, anypackage}; // bit number
         private static Boolset RunModeFlag = (int)0;
         /// <summary>
         /// "localmode": when true, do not load the file table
@@ -641,13 +663,14 @@ namespace SimPe
         /// <returns>true if okay to load, else false</returns>
         public static bool CanLoadPlugin(string flname)
         {
+            return (!NoPlugins); /*
             if (!NoPlugins) return true;
-            flname = flname.Trim().ToLower();
-            if (flname.Contains("\\pj")) return true;
-            if (flname.Contains("simpe.dockbox")) return true;
-            return false;
+            // flname = flname.Trim().ToLower();
+            // if (flname.Contains("\\pj")) return true;
+            // if (flname.Contains("systemclasses")) return true;
+            // if (flname.Contains("simpe.dockbox")) return true;
+            return false; */
         }
-
 
 		/// <summary>
 		/// Returns the Version Information for the started Executable
@@ -658,7 +681,34 @@ namespace SimPe
 			{
 				return System.Diagnostics.FileVersionInfo.GetVersionInfo(System.Windows.Forms.Application.ExecutablePath); 
 			}
-		}
+        }
+
+        /// <summary>
+        /// Returns the Internal Name for the Sims Executable (to identify Lagacy Collection)
+        /// </summary>
+        public static string GameName
+        {
+            get
+            {
+                if (!File.Exists(PathProvider.Global.SimsApplication)) return "The Sims 2";
+                System.Diagnostics.FileVersionInfo namer = System.Diagnostics.FileVersionInfo.GetVersionInfo(PathProvider.Global.SimsApplication);
+                return namer.FileDescription;
+            }
+        }
+
+        /// <summary>
+        /// Returns the Version Value for the Sims Executable
+        /// </summary>
+        public static string GameVersin
+        {
+            get
+            {
+                if (!File.Exists(PathProvider.Global.SimsApplication)) return "1.0.0.999";
+                System.Diagnostics.FileVersionInfo namer = System.Diagnostics.FileVersionInfo.GetVersionInfo(PathProvider.Global.SimsApplication);
+                return namer.FileVersion;
+            }
+        }
+
 		/// <summary>
 		/// Returns the the overall SimPe Version
 		/// </summary>
@@ -762,7 +812,30 @@ namespace SimPe
 			{
 				return ((SimPeVersion.ProductMinorPart % 2)==1);
 			}
-		}
+        }
+
+        /// <summary>
+        /// true if Extra Stuff or New Store Editon enabled
+        /// </summary>
+        public static bool ECCorNewSEfound
+        {
+            get
+            {
+                Microsoft.Win32.RegistryKey tk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\Sims2ECC.exe", false);
+                if (tk != null) return true;
+                tk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\Sims2SC.exe", false);
+                if (tk == null) return false;
+                object gr = tk.GetValue("Game Registry", "");
+                Microsoft.Win32.RegistryKey rk = Microsoft.Win32.Registry.LocalMachine.OpenSubKey((string)gr, false);
+                if (rk != null)
+                {
+                    object o = rk.GetValue("Suppression Exe", "");
+                    string s = o.ToString();
+                    if (s.Contains("Sims2EP8.exe")) return true;
+                }
+                return false;
+            }
+        }
 
 		/// <summary>
 		/// Returnst the Gui that was started
@@ -771,12 +844,55 @@ namespace SimPe
 		{
 			get
 			{
-				if (System.Windows.Forms.Application.ExecutablePath.Trim().ToLower().EndsWith("simpe.exe")) return Executable.Default;
-				else if (System.Windows.Forms.Application.ExecutablePath.Trim().ToLower().EndsWith("simpe classic.exe")) return Executable.Classic;
-				else if (System.Windows.Forms.Application.ExecutablePath.Trim().ToLower().EndsWith("wizards of simpe.exe")) return Executable.WizardsOfSimpe;
+                if (WindowsRegistry.Layout.IsClassicPreset == true) return Executable.Classic;
+                else if (System.Windows.Forms.Application.ExecutablePath.Trim().ToLower().EndsWith("wizards of simpe.exe")) return Executable.WizardsOfSimpe;
+				else if (System.Windows.Forms.Application.ExecutablePath.Trim().ToLower().EndsWith("simpe.exe")) return Executable.Default;
 				else return Executable.Other;
 			}
 		}
+        public static bool ChrisMode
+        {
+            get
+            {
+                try
+                {
+                    XmlRegistryKey rkf = Helper.WindowsRegistry.RegistryKey.CreateSubKey("Settings");
+                    bool boob = Convert.ToBoolean(rkf.GetValue("PervyMode", false));
+                    booby.PrettyGirls.PervyMode = boob;
+                    return boob;
+                }
+                catch { return false; }
+            }
+        }
+        public static bool AllowNPCpartner
+        {
+            get
+            {
+                XmlRegistryKey rkf = Helper.WindowsRegistry.RegistryKey.CreateSubKey("Settings");
+                object o = rkf.GetValue("allownpcpartner", false);
+                return Convert.ToBoolean(o);
+            }
+            set
+            {
+                XmlRegistryKey rkf = Helper.WindowsRegistry.RegistryKey.CreateSubKey("Settings");
+                rkf.SetValue("allownpcpartner", value);
+            }
+        }
+        public static bool SplashTrigger
+        {
+            get
+            {
+                XmlRegistryKey rkf = Helper.WindowsRegistry.RegistryKey.CreateSubKey("Settings");
+                object o = rkf.GetValue("splashtrigger", false);
+                if (Convert.ToBoolean(o) == true) rkf.DeleteSubKey("splashtrigger", false); //rkf.SetValue("splashtrigger", false);
+                return Convert.ToBoolean(o);                
+            }
+            set
+            {
+                XmlRegistryKey rkf = Helper.WindowsRegistry.RegistryKey.CreateSubKey("Settings");
+                rkf.SetValue("splashtrigger", value);
+            }
+        }
 
 		/// <summary>
 		/// Creates a String from a byte Array
@@ -862,35 +978,72 @@ namespace SimPe
 			files = Directory.GetFileSystemEntries (sourcePath);
 			foreach(string element in files)
 			{
-				if (recurse)
-				{
-					// copy sub directories (recursively)
-					if(Directory.Exists(element))
-						CopyDirectory(element,destinationPath+Path.GetFileName(element), recurse);
-						// copy files in directory
-					else
-						File.Copy(element,destinationPath+Path.GetFileName(element),true);
-				}
-				else
-				{
-					// only copy files in directory
-					if(!Directory.Exists(element))
-						File.Copy(element,destinationPath+Path.GetFileName(element),true);
-				}
+                // lets not back up or restore the useless extra backup files
+                if (!element.EndsWith(".bkp"))
+                {
+                    if (recurse)
+                    {
+                        // copy sub directories (recursively)
+                        if (Directory.Exists(element))
+                            CopyDirectory(element, destinationPath + Path.GetFileName(element), recurse);
+                        // copy files in directory
+                        else
+                            File.Copy(element, destinationPath + Path.GetFileName(element), true);
+                    }
+                    else
+                    {
+                        // only copy files in directory
+                        if (!Directory.Exists(element))
+                            File.Copy(element, destinationPath + Path.GetFileName(element), true);
+                    }
+                }
 			}
 		} 
 
 		/// <summary>
-		/// Returns the Language Code that matches the current Culture best
+        /// Returns the Language Code that matches the Sims2 Language first
+		/// if not then Returns the Language Code that matches the current Culture best
 		/// </summary>
 		/// <returns>The language Code</returns>
 		public static Data.MetaData.Languages GetMatchingLanguage()
-		{
-			Data.MetaData.Languages lng = Data.MetaData.Languages.English;
+        {
+            Data.MetaData.Languages lng = Data.MetaData.Languages.English;
+            string s = PathProvider.Global.InGameLang;
+            switch (s)
+            {
+                case "US English": return Data.MetaData.Languages.English;
+                case "French": return Data.MetaData.Languages.French;
+                case "German": return Data.MetaData.Languages.German;
+                case "Italian": return Data.MetaData.Languages.Italian;
+                case "Spanish": return Data.MetaData.Languages.Spanish;
+                case "Swedish": return Data.MetaData.Languages.Swedish;
+                case "Finnish": return Data.MetaData.Languages.Finnish;
+                case "Dutch": return Data.MetaData.Languages.Dutch;
+                case "Danish": return Data.MetaData.Languages.Danish;
+                case "Brazilian Portuguese": return Data.MetaData.Languages.Brazilian;
+                case "Czech": return Data.MetaData.Languages.Czech;
+                case "Japanese": return Data.MetaData.Languages.Japanese;
+                case "Korean": return Data.MetaData.Languages.Korean;
+                case "Russian": return Data.MetaData.Languages.Russian;
+                case "Simplified Chinese": return Data.MetaData.Languages.SimplifiedChinese;
+                case "Traditional Chinese": return Data.MetaData.Languages.TraditionalChinese;
+                case "English": return Data.MetaData.Languages.English_uk;
+                case "Polish": return Data.MetaData.Languages.Polish;
+                case "Thai": return Data.MetaData.Languages.Thai;
+                case "Norwegian": return Data.MetaData.Languages.Norwegian;
+                case "Portuguese": return Data.MetaData.Languages.Portuguese;
+                case "Hungarian": return Data.MetaData.Languages.Hungarian;
+            }
 
-			string s = System.Threading.Thread.CurrentThread.CurrentCulture.ThreeLetterISOLanguageName.ToUpper();
-			switch (s) 
-			{
+			s = System.Threading.Thread.CurrentThread.CurrentCulture.ThreeLetterISOLanguageName.ToUpper();
+			switch (s)
+            {
+                case "ENA": return Data.MetaData.Languages.English_uk;
+                case "ENG": return Data.MetaData.Languages.English_uk;
+                case "ENZ": return Data.MetaData.Languages.English_uk;
+                case "ENS": return Data.MetaData.Languages.English_uk;
+                case "ENC": return Data.MetaData.Languages.English_uk;
+                case "ENU": return Data.MetaData.Languages.English;
 				case "DEU": return Data.MetaData.Languages.German;
 				case "ESP": return Data.MetaData.Languages.Spanish;
 				case "FIN": return Data.MetaData.Languages.Finnish;
@@ -902,12 +1055,12 @@ namespace SimPe
 				case "DUT": return Data.MetaData.Languages.Dutch;
 				case "DAN": return Data.MetaData.Languages.Danish;
 				case "NOR": return Data.MetaData.Languages.Norwegian;
-				case "HEB": return Data.MetaData.Languages.Hebrew;
 				case "RUS": return Data.MetaData.Languages.Russian;
 				case "POR": return Data.MetaData.Languages.Portuguese;
 				case "POL": return Data.MetaData.Languages.Polish;
 				case "THA": return Data.MetaData.Languages.Thai;
-				case "KOR": return Data.MetaData.Languages.Korean;
+                case "KOR": return Data.MetaData.Languages.Korean;
+                case "HUN": return Data.MetaData.Languages.Hungarian;
 			}
 
 			return lng;
@@ -1128,16 +1281,12 @@ namespace SimPe
 		{
 			get 
 			{
-#if DEBUG
-				return true;
-#else
-				return false;
-#endif
+                return Helper.WindowsRegistry.HiddenMode;
 			}
 		}
 
 		/// <summary>
-		/// Returns filename of the Main Neighborhood
+		/// Returns filename of the Main Neighbourhood
 		/// </summary>
 		/// <param name="flname"></param>
 		/// <returns></returns>
@@ -1155,37 +1304,24 @@ namespace SimPe
             return Path.Combine(Path.GetDirectoryName(filename), parts[0] + neighborhood_package);
 		}
 
-        static string HoodsFile { get { return Path.Combine(Helper.SimPeDataPath, "hoods.xml"); ; } }
+        // static string HoodsFile { get { return Path.Combine(Helper.SimPeDataPath, "hoods.xml"); } }
         static System.Collections.Generic.List<string> knownHoods = null;
         static System.Collections.Generic.List<string> KnownHoods { get { if (knownHoods == null) LoadKnownHoods(); return knownHoods; } }
 
         static void LoadKnownHoods()
         {
             knownHoods = new System.Collections.Generic.List<string>();
-            System.Xml.XmlReaderSettings xrs = new XmlReaderSettings();
-            xrs.CloseInput = true;
-            xrs.IgnoreComments = true;
-            xrs.IgnoreProcessingInstructions = true;
-            xrs.IgnoreWhitespace = true;
-            System.Xml.XmlReader xr = System.Xml.XmlReader.Create(HoodsFile, xrs);
-            try
-            {
-                xr.ReadStartElement("hoods");
-                while (xr.IsStartElement())
-                {
-                    if (xr.Name != "hood") { xr.Skip(); continue; }
-                    while (xr.MoveToNextAttribute())
-                        if (xr.Name == "name") KnownHoods.Add(xr.Value);
-                    xr.MoveToElement();
-                    xr.Skip();
-                }
-                xr.ReadEndElement();
-            }
-            finally
-            {
-                xr.Close();
-                xr = null;
-            }
+            KnownHoods.Add("university");
+            KnownHoods.Add("downtown");
+            KnownHoods.Add("suburb");
+            KnownHoods.Add("vacation");
+            KnownHoods.Add("tutorial");
+            KnownHoods.Add("boobsland");
+            /*
+             * This is called every time a package is opened from IsNeighborhoodFile below.
+             * There is no handling for if hoods.xml is missing or corrupt
+             * Since no new hood types will exist we don't need to use an external file
+             */
         }
 		
 		/// <summary>
@@ -1195,13 +1331,33 @@ namespace SimPe
 		/// <returns></returns>
         public static bool IsNeighborhoodFile(string filename)
         {
-            if (filename == null) return false;
+            if (filename == null || filename == "") return false;
             filename = Path.GetFileName(filename);
             filename = filename.Trim().ToLower();
 
-            if (filename.IndexOf(neighborhood_package) == 4 && filename.Length == 4 + neighborhood_package.Length) return true;
-            foreach (string hood in KnownHoods) if (filename.IndexOf("_" + hood) == 4 && filename.IndexOf(".package") == 4 + 1 + hood.Length + 3) return true;
+            // if (filename.IndexOf(neighborhood_package) == 4 && filename.Length == 4 + neighborhood_package.Length) return true;
+            // foreach (string hood in KnownHoods) if (filename.IndexOf("_" + hood) == 4 && filename.IndexOf(".package") == 4 + 1 + hood.Length + 3) return true;
 
+            if (filename.Contains("_neighborhood.package")) return true;
+            foreach (string hood in KnownHoods) if (filename.Contains("_" + hood + "0") && filename.EndsWith(".package")) return true; // CJH - removes the 4 char limit
+
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if this file is in the Lot Catalogue
+        /// </summary>
+        /// <param name="flname"></param>
+        /// <returns></returns>
+        public static bool IsLotCatalogFile(string filename)
+        {
+            if (filename == null || filename == "") return false;
+            if (Path.GetDirectoryName(filename).EndsWith("LotCatalog"))
+            {
+                filename = Path.GetFileName(filename);
+                filename = filename.Trim().ToLower();
+                if (filename.StartsWith("cx_00")) return true;
+            }
             return false;
         }
 
@@ -1252,22 +1408,14 @@ namespace SimPe
 		/// <returns></returns>
 		public static bool EqualFileName(string fl1, string fl2)
 		{
-#if MAC
-			return fl1.Trim()==fl2.Trim();
-#else
 			return fl1.Trim().ToLower()==fl2.Trim().ToLower();
-#endif
 		}
 
         public static bool IsAbsolutePath(string path)
         {
             if (path == null) return false;
             path = path.Trim();
-#if MAC
-            if (path.IndexOf("/") == 0) return true;
-#else
 			if (path.IndexOf(":")==1) return true;
-#endif
             return false;
         }
 
@@ -1278,21 +1426,10 @@ namespace SimPe
 		/// <returns></returns>
 		public static string CompareableFileName(string fl)
 		{
-#if MAC
-			return fl.Trim().TrimEnd('/');
-#else
 			return fl.Trim().TrimEnd('\\').ToLower();
-#endif
 		}
 
 		#region Folders
-#if MAC
-		public static string ToLongPathName(string shortName)
-		{
-			return shortName;
-		}
-		
-#else
 		
 		[DllImport("kernel32.dll", SetLastError=true, CharSet=CharSet.Auto)]
 		static extern uint GetLongPathName(
@@ -1315,7 +1452,6 @@ namespace SimPe
 
 			return longNameBuffer.ToString();
 		}
-#endif
 
 		public static string ToLongFileName(string shortName)
 		{			
@@ -1357,7 +1493,7 @@ namespace SimPe
             if (SetKey(ref ret, ref name, "f9", System.Windows.Forms.Keys.F9)) return ret;
             if (SetKey(ref ret, ref name, "f10", System.Windows.Forms.Keys.F10)) return ret;
             if (SetKey(ref ret, ref name, "f11", System.Windows.Forms.Keys.F11)) return ret;
-            if (SetKey(ref ret, ref name, "f11", System.Windows.Forms.Keys.F12)) return ret;
+            if (SetKey(ref ret, ref name, "f12", System.Windows.Forms.Keys.F12)) return ret;
 
             if (SetKey(ref ret, ref name, "1", System.Windows.Forms.Keys.D1)) return ret;
             if (SetKey(ref ret, ref name, "2", System.Windows.Forms.Keys.D2)) return ret;
@@ -1406,12 +1542,9 @@ namespace SimPe
                 name = name.Replace(capt, "");
                 ret |= key;
 
-                //System.Diagnostics.Debug.WriteLine(name+": "+ret);
                 return true;
             }
-
             return false;
         }        
-        
 	}
 }

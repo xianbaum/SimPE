@@ -119,9 +119,7 @@ namespace Ambertation.Windows.Forms.Graph
 	/// </summary>
 	public class LinkGraphic : GraphPanelElement
 	{
-		
-		
-		public LinkGraphic()
+        public LinkGraphic()
 		{
 			this.sa = 0;
 			this.ea = 0;

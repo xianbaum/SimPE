@@ -153,8 +153,9 @@ namespace SimPe
             for (int i = 0; i < items.Count; i++)
             {
                 ToolStripMenuItem item = items[i];
+                if (item.Image == null) continue; // Keep the tools wiv no icon off my pretty toolbar
                 ToolStripButton bi = new MyButtonItem(item);
-                bool beggroup = (i == 0 && tb.Items.Count > 0) || starters.Contains(item); ;
+                bool beggroup = (i == 0 && tb.Items.Count > 0) || starters.Contains(item);
                 if (beggroup) groupindices.Add(i);
                 tb.Items.Add(bi);
             }

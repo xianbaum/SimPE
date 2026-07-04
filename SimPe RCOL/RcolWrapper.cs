@@ -84,8 +84,13 @@ namespace SimPe.Plugin
 
 		internal void ChildTabPageChanged(object sender, System.EventArgs e)
 		{
-			if (TabPageChanged!=null) TabPageChanged(sender, e);	
-		}
+			if (TabPageChanged!=null) TabPageChanged(sender, e);
+        }
+        internal bool islotpackage()
+        {
+            if (this.Package.FindFiles(0x484F5553).Length > 0) return true;
+            return false;
+        }
 		
 
 		static Hashtable tokens;
@@ -140,7 +145,7 @@ namespace SimPe.Plugin
 
 		static ArrayList assemblies;
 		/// <summary>
-		/// keeps a List of all <see cref="System.Reflection.Assembly"/>, SimPE should use to look for Tokens
+		/// keeps a List of all <see cref="System.Reflection.Assembly"/>, SimPe should use to look for Tokens
 		/// </summary>
 		public static ArrayList TokenAssemblies
 		{
@@ -269,7 +274,6 @@ namespace SimPe.Plugin
 
             try
             {
-
                 reffiles = new Interfaces.Files.IPackedFileDescriptor[count == 0xffff0001 ? reader.ReadUInt32() : count];
                 for (int i = 0; i < reffiles.Length; i++)
                 {
@@ -311,7 +315,6 @@ namespace SimPe.Plugin
                 //SimPe.Helper.ExceptionMessage(e);
             }
             finally { }
-
         }
 
 		/// <summary>

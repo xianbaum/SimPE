@@ -63,7 +63,7 @@ namespace SimPe.Plugin
 		}
 
 		/// <summary>
-		/// Get the Local Group alue used for this Package
+		/// Get the Local Group Value used for this Package
 		/// </summary>
 		public uint LocalGroup
 		{
@@ -433,12 +433,11 @@ namespace SimPe.Plugin
 		{
 			if (FileTable.GroupCache == null) ScenegraphWrapperFactory.LoadGroupCache();
 			if (localGroupMap==null) localGroupMap = new Hashtable();
-
 			
 			if (flname==null) flname="memoryfile";
 			flname = flname.Trim().ToLower();
 
-			SimPe.Interfaces.Wrapper.IGroupCacheItem gci = FileTable.GroupCache.GetItem(flname);			
+			SimPe.Interfaces.Wrapper.IGroupCacheItem gci = FileTable.GroupCache.GetItem(flname);
 			return gci.LocalGroup;
 		}
 
@@ -479,6 +478,13 @@ namespace SimPe.Plugin
 			StartThread();
 		}
 
+        bool allowevent;
+        public bool AllowEvent
+        {
+            get { return allowevent; }
+            set { allowevent = value; }
+        }
+
 		/// <summary>
 		/// This is used to start the Reload Thread
 		/// </summary>
@@ -500,7 +506,8 @@ namespace SimPe.Plugin
 			}
 
 			Wait.SubStop();
-			OnFILoad(this, new EventArgs());
+            if (allowevent) OnFILoad(this, new EventArgs()); // this triggers loading of PJSE filetable
+            else allowevent = true;
 		}
 
 
@@ -575,7 +582,26 @@ namespace SimPe.Plugin
 
 			FileTableItem fti = new FileTableItem(path);
 			AddIndexFromFolder(fti);
-		}
+        }
+
+        /// <summary>
+        /// Add all Files stored in the passed package
+        /// </summary>
+        /// <param name="file">Name of the package File</param>
+        /// <remarks>Leaves the WaitingScreen Message Alone</remarks>
+        public void AddIndexFromString(string file)
+        {
+            if (this.ignoredfl.Contains(file.Trim().ToLower())) return;
+            try
+            {
+                SimPe.Interfaces.Files.IPackageFile package = SimPe.Packages.File.LoadFromFile(file, false);
+                AddIndexFromPackage(package, false);
+            }
+            catch (Exception ex)
+            {
+                Helper.ExceptionMessage("", ex);
+            }
+        }
 
 		/// <summary>
 		/// Add all Files stored in the passed package
@@ -595,8 +621,9 @@ namespace SimPe.Plugin
 			catch (Exception ex) 
 			{
 				Helper.ExceptionMessage("", ex);
-			}			
-		}
+			}
+        }
+
 		/// <summary>
 		/// Add all Files stored in the passed package
 		/// </summary>

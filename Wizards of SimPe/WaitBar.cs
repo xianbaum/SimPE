@@ -24,7 +24,7 @@ using System.Windows.Forms;
 namespace SimPe.Wizards
 {
 	/// <summary>
-	/// This calass can be used to interface the StatusBar of the Main GUI, which will display 
+	/// This class can be used to interface the StatusBar of the Main GUI, which will display 
 	/// something like the WaitingScreen
 	/// </summary>
 	internal class WaitBarControl : IWaitingBarControl
@@ -62,8 +62,7 @@ namespace SimPe.Wizards
 		{
 			f.lbPmsg.Text = text.ToString();
 			//Application.DoEvents();
-		}
-		
+		}		
 
 		protected void SetProgress(object val)
 		{
@@ -71,21 +70,24 @@ namespace SimPe.Wizards
 			f.pbP.Value = i;			
 		}
 
-
-
 		protected void SetMaxProgress(object val)
 		{
 			int i = (int)val;
 			f.pbP.Maximum = i;
 		}
 
-		
-		#endregion
+        #endregion
 
         public bool ShowProgress
         {
-            get { return f.pbP.Visible;  }
+            get { return f.pbP.Visible; }
             set { DoShowProgress(value); }
+        }
+
+        public bool ShowAnimation
+        {
+            get { return ShowAnimation; }
+            set { ShowAnimation = value; }
         }
 
 		public bool Running
@@ -110,8 +112,7 @@ namespace SimPe.Wizards
 		{
 			get { return null; }
 			set 
-			{				
-			
+			{			
 			}
 		}
 

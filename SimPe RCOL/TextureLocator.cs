@@ -100,7 +100,7 @@ namespace SimPe.Plugin
 			Shape shp = (Shape)shpe.Blocks[0];			
 			foreach (ShapePart p in shp.Parts) 
 			{
-				string txmtflname = Hashes.StripHashFromName(p.FileName).Trim().ToLower()+"_txmt";
+                string txmtflname = Hashes.StripHashFromName(p.FileName).Trim().ToLower() + "_txmt";
 				string subset = p.Subset.Trim().ToLower();
 
 				Interfaces.Files.IPackedFileDescriptor[] pfds = lpackage.FindFile(txmtflname, 0x49596978);
@@ -114,9 +114,8 @@ namespace SimPe.Plugin
 						if (!ht.Contains(subset)) ht.Add(subset, rcol);
 					}
 				}
-			}			
-			
-			return ht;
+			}
+            return ht;
 		}
 
 		/// <summary>
@@ -138,8 +137,7 @@ namespace SimPe.Plugin
 				Rcol rcol = (Rcol)txmts[subset];
 				MaterialDefinition txmt = (MaterialDefinition)rcol.Blocks[0];
 				string txtrname = Hashes.StripHashFromName(txmt.GetProperty("stdMatBaseTextureName").Value)+"_txtr";
-				txtrname = txtrname.Trim().ToLower();
-				
+				txtrname = txtrname.Trim().ToLower();				
 				Interfaces.Files.IPackedFileDescriptor[] pfds = lpackage.FindFile(txtrname, 0x1C4A276C);
 				foreach (Interfaces.Files.IPackedFileDescriptor pfd in pfds)
 				{
@@ -152,10 +150,8 @@ namespace SimPe.Plugin
 					}
 				}
 			}
-			
-			
-			return ht;
-		}
+            return ht;
+        }
 
 		/// <summary>
 		/// Collec all Material

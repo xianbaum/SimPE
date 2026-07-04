@@ -22,7 +22,7 @@ using System;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für ToolResult.
+	/// Summary description for ToolResult.
 	/// </summary>
 	public class ToolResult : SimPe.Interfaces.Plugin.IToolResult
 	{

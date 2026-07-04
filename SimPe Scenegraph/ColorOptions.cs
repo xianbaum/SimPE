@@ -210,33 +210,17 @@ namespace SimPe.Plugin
 					{
 						string name = Hashes.StripHashFromName(mdp.Value).Trim();
 						if (!name.EndsWith("_txtr")) name+="_txtr";
-
-						//Console.Write("loading second txtr "+mdp.Name+" = "+mdp.Value);
 						IPackageFile pkg = txmt.Package;
 						SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = pkg.FindFile(name, Data.MetaData.TXTR);
 						if (pfds.Length>0) 
 						{
-							SimPe.Interfaces.Files.IPackedFileDescriptor pfd = pfds[0];
-							//Console.Write(" [found in local Package]");	
-	
+							SimPe.Interfaces.Files.IPackedFileDescriptor pfd = pfds[0];	
 							GenericRcol txtr = new GenericRcol();
 							txtr.ProcessData(pfd, pkg);
-
 							AddTxtr(newpkg, txtr, unique, txmt, md);							
-						} 
-						/*else  //we don't pull from the Filetable, as we expect, that all needed Files are already cloned!
-						{
-							SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem item = FileTable.FileIndex.FindFileByName(name, Data.MetaData.TXTR, Hashes.GetHashGroupFromName(mdp.Value, Data.MetaData.GLOBAL_GROUP), true);
-							if (item!=null) 
-							{
-								Console.Write(" [found in FileTable]");							
-							} 														
-						}*/
-
-
-						//Console.WriteLine();
+						}
 					}
-				}
+                }
 			}
 		}
 
@@ -376,7 +360,7 @@ namespace SimPe.Plugin
 			{
 				//this.newpkg = newpkg;
 
-				WaitingScreen.UpdateMessage("Loading available Color Options");
+				WaitingScreen.UpdateMessage("Loading available Colour Options");
 				Hashtable fullmap = Scenegraph.GetMMATMap(package);
 				Hashtable map = fullmap;
 				ArrayList allowedSubsets = Scenegraph.GetRecolorableSubsets(package);
@@ -423,7 +407,7 @@ namespace SimPe.Plugin
 			{
 				//this.newpkg = newpkg;
 
-				WaitingScreen.UpdateMessage("Loading available Color Options");
+				WaitingScreen.UpdateMessage("Loading available Colour Options");
 				Hashtable fullmap = Scenegraph.GetMMATMap(package);
 				Hashtable map = fullmap;
 				ArrayList allowedSubsets = Scenegraph.GetRecolorableSubsets(package);

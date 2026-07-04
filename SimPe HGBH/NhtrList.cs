@@ -10,7 +10,7 @@ namespace SimPe.Plugin
 		Decorations = 3,
 	}
 	/// <summary>
-	/// Zusammenfassung für TileItem.
+	/// Summary description for TileItem.
 	/// </summary>
 	public class NhtrList : System.Collections.IEnumerable
 	{
@@ -18,7 +18,7 @@ namespace SimPe.Plugin
 
 		ushort unknown;
 		Nhtr parent;
-		NhtrListType type;
+		public NhtrListType type;
 		ArrayList list ;
 		internal NhtrList(Nhtr parent, NhtrListType type)
 		{
@@ -51,7 +51,12 @@ namespace SimPe.Plugin
 		public void Remove(NhtrItem item)
 		{
 			list.Remove(item);
-		}
+        }
+
+        public void Insert(NhtrItem item)
+        {
+            list.Insert(0, item);
+        }
 
 		public void Clear()
 		{

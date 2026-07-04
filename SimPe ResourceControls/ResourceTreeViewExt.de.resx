@@ -117,39 +117,11 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tbInst.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAGZJREFUOE9jYBh0
-        4O/fv9P+4wAgOYIOBukFKsKKoXJ8eA1BdgHMIJiDzp49uxMoJkPQFUAFfMgugbJTgOLaIDliDGDAYoAl
-        URphikayAfiikf4JCT1Fk5SQoIkGFPfImPiERGyiAQAXacpVl4Zu4QAAAABJRU5ErkJggg==
-</value>
-  </data>
   <data name="tbInst.Text" xml:space="preserve">
     <value>nach Instanz</value>
   </data>
-  <data name="tbGroup.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAMFJREFUOE9jYBh0
-        4O/fv9P+4wEgeZyOhmkGKviPC4PMBsrxYRiCrhndETADoQZoYxgAlQDbDAJbt269AGSHArEluhxIjKAB
-        UM1gpyKHy969e08BhQi7AGQLrgD9+vXrHGJcgOJ05EDFGpDY/InsAuRAPHHixH4gXwbFFegG3L17dy1U
-        AR8Ww0GBixqVJEYjZiyAbAMFDrJt6IkJKXoxYwHmH5gh2FIzNArdsaZEtGgB+Q9kC8ipyBgkhpmMMeKU
-        BAEAeihM91lZY/QAAAAASUVORK5CYII=
-</value>
-  </data>
   <data name="tbGroup.Text" xml:space="preserve">
     <value>nach Gruppe</value>
-  </data>
-  <data name="tbType.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAJNJREFUOE9jYBg0
-        4O/fv9P+EwlAajEcDtILFCQKQ9XyoRiCbADMITADsfGBctqUGmCJYgByGOzdu/cUuovu3r27FuYSkDyG
-        C6CmgfwFcpo2ugFAMZCNcHkoG3ciwGEA8almYA2ABShyNIICkWj3Y0tUWBMPLhOxJesTJ07sB6qXIdoV
-        SFEGij4QBkUvavIlxTRcagFzaAH5UyvO8QAAAABJRU5ErkJggg==
-</value>
   </data>
   <data name="tbType.Text" xml:space="preserve">
     <value>nach Typ</value>

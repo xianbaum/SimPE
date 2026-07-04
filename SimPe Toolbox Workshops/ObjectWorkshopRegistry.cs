@@ -50,20 +50,22 @@ namespace SimPe.Plugin.Tool.Dockable
 
             dock.cbOrgGmdc.Checked = ReferenceOriginalMesh;
 			dock.cbOrgGmdc.CheckedChanged += new EventHandler(cbOrgGmdc_CheckedChanged);
+
+            dock.cbclean.Enabled = dock.cbRemTxt.Enabled = dock.cbfix.Checked;
 		}
 
         public void SetDefaults()
         {
-            dock.cbDesc.Checked = true;
-            dock.cbgid.Checked = true;
-            dock.cbfix.Checked = true;
-            dock.cbclean.Checked = true;
-            dock.cbRemTxt.Checked = true;
+            dock.cbDesc.Checked = false;
+            dock.cbgid.Checked = false;
+            dock.cbfix.Checked = false;
+            dock.cbclean.Checked = false;
+            dock.cbRemTxt.Checked = false;
             dock.cbparent.Checked = false;
             dock.cbdefault.Checked = true;
             dock.cbwallmask.Checked = true;
             dock.cbanim.Checked = false;
-            dock.cbstrlink.Checked = true;
+            dock.cbstrlink.Checked = false;
             dock.cbOrgGmdc.Checked = false;			
         }
 
@@ -293,7 +295,7 @@ namespace SimPe.Plugin.Tool.Dockable
 
 		private void cbTask_SelectedIndexChanged(object sender, EventArgs e)
 		{
-            Ambertation.Windows.Forms.FlatComboBox cb = sender as Ambertation.Windows.Forms.FlatComboBox;
+            System.Windows.Forms.ComboBox cb = sender as System.Windows.Forms.ComboBox;
 			LastOWAction = cb.SelectedIndex;
 		}
 

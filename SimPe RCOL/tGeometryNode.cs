@@ -26,7 +26,7 @@ using System.Windows.Forms;
 namespace SimPe.Plugin.TabPage
 {
 	/// <summary>
-	/// Zusammenfassung für fShapeRefNode.
+	/// Summary description for fShapeRefNode.
 	/// </summary>
 	public class GeometryNode : 
 		//System.Windows.Forms.UserControl
@@ -59,15 +59,19 @@ namespace SimPe.Plugin.TabPage
 				| ControlStyles.DoubleBuffer
 				,true);
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+            // Required designer variable.
 			//
             InitializeComponent();
 
-            this.UseVisualStyleBackColor = true;		
+            this.UseVisualStyleBackColor = true;
+            if (booby.ThemeManager.ThemedForms)
+            {
+                this.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+            }
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -82,10 +86,10 @@ namespace SimPe.Plugin.TabPage
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{

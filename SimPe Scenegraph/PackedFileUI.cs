@@ -73,16 +73,15 @@ namespace SimPe.Plugin
 
 			RefFile mywrapper = (RefFile) wrapper;
 
-			form.llcommit.Enabled = false;
-			form.lldelete.Enabled = false;
-			form.btup.Enabled = false;
-			form.btdown.Enabled = false;
-			form.miRem.Enabled = false;
+			form.lldelete.Enabled = form.btup.Enabled = form.btdown.Enabled = form.miRem.Enabled = false;
 			form.lblist.Items.Clear();
 			foreach (Interfaces.Files.IPackedFileDescriptor pfd in mywrapper.Items) 
 			{
 				form.lblist.Items.Add(pfd);
 			}
+            if (booby.PrettyGirls.PervyMode && Helper.StartedGui == Executable.Default) form.imge = booby.PrettyGirls.RandomLady;
+            else form.imge = null;
+            form.pb.Image = form.imge;
 		}		
 
 		#endregion

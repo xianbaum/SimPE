@@ -22,7 +22,7 @@ using System;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für cGeometryNode.
+	/// Summary description for cGeometryNode.
 	/// </summary>
 	public class ViewerRefNodeRecursive
 		: AbstractRcolBlock

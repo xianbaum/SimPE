@@ -38,15 +38,11 @@ namespace Ambertation.Drawing {
 	/// 	created on - 7/2/2003 11:44:33 PM
 	/// </remarks>
 	public abstract class AbstractFloodFiller : object {
-		
-
-		/*[DllImport("winmm.dll")]
+        /*[DllImport("winmm.dll")]
 		protected static extern int timeGetTime();*/
-
 		//private members with public accessors
-
 		protected Color m_fillcolorcolor=Color.Green;
-		protected byte[] m_Tolerance=new byte[]{11,11,11};
+        protected byte[] m_Tolerance = new byte[] { 11, 11, 11 };
 		protected int m_TimeBenchmark=0;
 		protected FloodFillStyle m_FillStyle=FloodFillStyle.Linear;
 		protected bool m_FillDiagonal=false;
@@ -55,15 +51,12 @@ namespace Ambertation.Drawing {
 		
 		//private members
 		protected bool[,] PixelsChecked;		
-		protected Queue CheckQueue=new Queue();
-		
+		protected Queue CheckQueue=new Queue();		
 		
 		/// <summary>
 		/// Default constructor - initializes all fields to default values
 		/// </summary>
-		public AbstractFloodFiller() {
-		}
-		
+		public AbstractFloodFiller() { }		
 		
 		public Color FillColor
 		{

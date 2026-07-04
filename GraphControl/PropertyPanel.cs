@@ -43,9 +43,7 @@ namespace Ambertation.Windows.Forms.Graph
 		{
 			this.properties = properties;	
 			txt = "";
-		}
-
-		
+		}		
 
 		#region public Properties
 		PropertyItems properties;		
@@ -86,22 +84,9 @@ namespace Ambertation.Windows.Forms.Graph
 
 		#endregion
 
-		#region Properties
-		
-		#endregion
-
-
-		
-
-		#region Event Override
-		#endregion
-
 		#region Basic Draw Methods
-		
-
-		
-
-		protected override void DrawText(Graphics gr)
+        
+        protected override void DrawText(Graphics gr)
 		{
 			if (this.properties==null) return;
 			LinkGraphic.SetGraphicsMode(gr, !Quality);
@@ -161,13 +146,9 @@ namespace Ambertation.Windows.Forms.Graph
 					Rectangle rect = new Rectangle(new Point((int)(indentx+12+sz.Width), top), new Size((int)(Width-(24+sz.Width+indentx)), top+16));					
 
 					top += (int)Math.Max(sz.Height, sz2.Height);
-					ft.Dispose();
-					
+					ft.Dispose();					
 				}
 			}
-
-			//LinkGraphic.SetGraphicsMode(gr, true);
-			//properties = ht;
 		}
 		
 		#endregion

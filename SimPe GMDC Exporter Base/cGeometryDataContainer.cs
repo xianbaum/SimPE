@@ -243,7 +243,7 @@ namespace SimPe.Plugin
 			form.ResetPreview();
 			form.tb_ver.Text = "0x"+Helper.HexString(this.version);
 
-			if (Helper.WindowsRegistry.HiddenMode) 
+            if (Helper.WindowsRegistry.CreatorMode || booby.PrettyGirls.PervyMode) 
 			{
 				form.label_elements.Text = "Elements: "+elements.Length.ToString();
 				form.list_elements.Items.Clear();
@@ -318,8 +318,6 @@ namespace SimPe.Plugin
 		/// <param name="tc">The TabPage will be added here.</param>
 		public override void ExtendTabControl(System.Windows.Forms.TabControl tc)
 		{
-			
-
 			form.tGeometryDataContainer.Tag = this;
 			tc.TabPages.Add(form.tGeometryDataContainer);
 
@@ -335,10 +333,10 @@ namespace SimPe.Plugin
 			form.tSubset.Tag = this;
 			tc.TabPages.Add(form.tSubset);
 
-			if (Helper.WindowsRegistry.HiddenMode) 
+            if (Helper.WindowsRegistry.CreatorMode || booby.PrettyGirls.PervyMode) 
 			{
-				form.tDebug.Tag = this;
-				tc.TabPages.Add(form.tDebug);
+				form.tAdvncd.Tag = this;
+				tc.TabPages.Add(form.tAdvncd);
 			}
 		}
 
@@ -585,16 +583,22 @@ namespace SimPe.Plugin
 		public  ResourceNode ParentResourceNode 
 		{
 			get {
+                if (islotpackage()) { tried = true; return null; }
                 if (!tried)
                 {
                     if (cres == null) cres = FindReferencingCRES();
-                    tried = true;                                        
+                    tried = true;
                 }
 
                 if (cres == null) return null;
 				return (ResourceNode) cres.Blocks[0]; 
 			}
 		}
+        private bool islotpackage()
+        {
+            if (this.Parent.Package.FindFiles(0x484F5553).Length > 0) return true;
+            return false;
+        }
 
 		/// <summary>
 		/// Returns the RCOL which lists this Resource in it's ReferencedFiles Attribute
@@ -688,6 +692,7 @@ namespace SimPe.Plugin
 			ResourceNode rn = this.ParentResourceNode;
 
 			System.Collections.Hashtable parentmap = new System.Collections.Hashtable();
+            if (islotpackage()) return parentmap;
             if (rn == null)
             {
                 Message.Show(SimPe.Localization.GetString("NO_CRES_FOUND"), SimPe.Localization.GetString("Information"), System.Windows.Forms.MessageBoxButtons.OK);
@@ -787,9 +792,7 @@ namespace SimPe.Plugin
 		{
 			get { return la; }
 			set { la = value; }
-		}
-
-		
+		}		
 
 		#region IDisposable Member
 

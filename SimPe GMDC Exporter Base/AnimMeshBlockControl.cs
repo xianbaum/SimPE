@@ -27,7 +27,7 @@ using System.Windows.Forms;
 namespace SimPe.Plugin.Anim
 {
 	/// <summary>
-	/// Zusammenfassung für AnimationMeshBlock.
+	/// Summary description for AnimationMeshBlock.
 	/// </summary>
 	public class AnimMeshBlockControl : System.Windows.Forms.UserControl
 	{
@@ -41,12 +41,12 @@ namespace SimPe.Plugin.Anim
 		private SimPe.Plugin.Anim.AnimFrameBlockControl pnFrames;
 		private System.Windows.Forms.LinkLabel llExport;
 		private System.Windows.Forms.LinkLabel llImport;
-		private Ambertation.Windows.Forms.TransparentCheckBox cbCorrect;
+        private System.Windows.Forms.CheckBox cbCorrect;
 		private System.Windows.Forms.MenuItem miAdd;
 		private System.Windows.Forms.MenuItem miRem;
 		private System.Windows.Forms.ContextMenu cmJoint;
 		/// <summary> 
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
@@ -61,7 +61,7 @@ namespace SimPe.Plugin.Anim
 				| ControlStyles.DoubleBuffer
 				,true);
 
-			// Dieser Aufruf ist für den Windows Form-Designer erforderlich.
+			// Required designer variable.
 			InitializeComponent();
 
 			this.pnFrames = new AnimFrameBlockControl();
@@ -81,7 +81,7 @@ namespace SimPe.Plugin.Anim
 		}
 
 		/// <summary> 
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -95,171 +95,171 @@ namespace SimPe.Plugin.Anim
 			base.Dispose( disposing );
 		}
 
-		#region Vom Komponenten-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary> 
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.cbCorrect = new Ambertation.Windows.Forms.TransparentCheckBox();
-			this.llExport = new System.Windows.Forms.LinkLabel();
-			this.llImport = new System.Windows.Forms.LinkLabel();
-			this.pnJoint = new System.Windows.Forms.Panel();
-			this.cbJoint = new System.Windows.Forms.ComboBox();
-			this.label1 = new System.Windows.Forms.Label();
-			this.pnSubMesh = new System.Windows.Forms.Panel();
-			this.cbSubMesh = new System.Windows.Forms.ComboBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.cmJoint = new System.Windows.Forms.ContextMenu();
-			this.miAdd = new System.Windows.Forms.MenuItem();
-			this.miRem = new System.Windows.Forms.MenuItem();
-			this.panel2.SuspendLayout();
-			this.pnJoint.SuspendLayout();
-			this.pnSubMesh.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// panel2
-			// 
-			this.panel2.Controls.Add(this.cbCorrect);
-			this.panel2.Controls.Add(this.llExport);
-			this.panel2.Controls.Add(this.llImport);
-			this.panel2.Controls.Add(this.pnJoint);
-			this.panel2.Controls.Add(this.pnSubMesh);
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel2.Location = new System.Drawing.Point(0, 0);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(776, 32);
-			this.panel2.TabIndex = 4;
-			// 
-			// cbCorrect
-			// 
-			this.cbCorrect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.cbCorrect.Location = new System.Drawing.Point(584, 0);
-			this.cbCorrect.Name = "cbCorrect";
-			this.cbCorrect.Size = new System.Drawing.Size(88, 32);
-			this.cbCorrect.TabIndex = 44;
-			this.cbCorrect.Text = "correct Joint Definition";
-			this.cbCorrect.CheckedChanged += new System.EventHandler(this.cbCorrect_CheckedChanged);
-			// 
-			// llExport
-			// 
-			this.llExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.llExport.Enabled = false;
-			this.llExport.Location = new System.Drawing.Point(672, 8);
-			this.llExport.Name = "llExport";
-			this.llExport.Size = new System.Drawing.Size(48, 16);
-			this.llExport.TabIndex = 42;
-			this.llExport.TabStop = true;
-			this.llExport.Text = "Export";
-			this.llExport.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.llExport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llExport_LinkClicked);
-			// 
-			// llImport
-			// 
-			this.llImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.llImport.Enabled = false;
-			this.llImport.Location = new System.Drawing.Point(728, 8);
-			this.llImport.Name = "llImport";
-			this.llImport.Size = new System.Drawing.Size(40, 16);
-			this.llImport.TabIndex = 43;
-			this.llImport.TabStop = true;
-			this.llImport.Text = "Import";
-			this.llImport.TextAlign = System.Drawing.ContentAlignment.TopRight;
-			this.llImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llImport_LinkClicked);
-			// 
-			// pnJoint
-			// 
-			this.pnJoint.Controls.Add(this.cbJoint);
-			this.pnJoint.Controls.Add(this.label1);
-			this.pnJoint.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnJoint.Location = new System.Drawing.Point(256, 0);
-			this.pnJoint.Name = "pnJoint";
-			this.pnJoint.Size = new System.Drawing.Size(248, 32);
-			this.pnJoint.TabIndex = 7;
-			// 
-			// cbJoint
-			// 
-			this.cbJoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbJoint.ContextMenu = this.cmJoint;
-			this.cbJoint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbJoint.Location = new System.Drawing.Point(34, 0);
-			this.cbJoint.Name = "cbJoint";
-			this.cbJoint.Size = new System.Drawing.Size(214, 21);
-			this.cbJoint.Sorted = true;
-			this.cbJoint.TabIndex = 3;
-			this.cbJoint.SelectedIndexChanged += new System.EventHandler(this.cbSubMesh_SelectedIndexChanged);
-			// 
-			// label1
-			// 
-			this.label1.Location = new System.Drawing.Point(0, 0);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(40, 23);
-			this.label1.TabIndex = 4;
-			this.label1.Text = "Joint:";
-			this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-			// 
-			// pnSubMesh
-			// 
-			this.pnSubMesh.Controls.Add(this.cbSubMesh);
-			this.pnSubMesh.Controls.Add(this.label2);
-			this.pnSubMesh.Dock = System.Windows.Forms.DockStyle.Left;
-			this.pnSubMesh.Location = new System.Drawing.Point(0, 0);
-			this.pnSubMesh.Name = "pnSubMesh";
-			this.pnSubMesh.Size = new System.Drawing.Size(256, 32);
-			this.pnSubMesh.TabIndex = 8;
-			// 
-			// cbSubMesh
-			// 
-			this.cbSubMesh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.cbSubMesh.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbSubMesh.Location = new System.Drawing.Point(56, 0);
-			this.cbSubMesh.Name = "cbSubMesh";
-			this.cbSubMesh.Size = new System.Drawing.Size(190, 21);
-			this.cbSubMesh.TabIndex = 5;
-			this.cbSubMesh.SelectedIndexChanged += new System.EventHandler(this.cbSubMesh_SelectedIndexChanged_1);
-			// 
-			// label2
-			// 
-			this.label2.Location = new System.Drawing.Point(0, 0);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(56, 23);
-			this.label2.TabIndex = 6;
-			this.label2.Text = "SubMesh:";
-			this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
-			// 
-			// cmJoint
-			// 
-			this.cmJoint.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																					this.miAdd,
-																					this.miRem});
-			// 
-			// miAdd
-			// 
-			this.miAdd.Enabled = false;
-			this.miAdd.Index = 0;
-			this.miAdd.Text = "&Create Joint";
-			this.miAdd.Click += new System.EventHandler(this.miAdd_Click);
-			// 
-			// miRem
-			// 
-			this.miRem.Enabled = false;
-			this.miRem.Index = 1;
-			this.miRem.Text = "&Remove Joint";
-			this.miRem.Click += new System.EventHandler(this.miRem_Click);
-			// 
-			// AnimMeshBlockControl
-			// 
-			this.Controls.Add(this.panel2);
-			this.Name = "AnimMeshBlockControl";
-			this.Size = new System.Drawing.Size(776, 400);
-			this.panel2.ResumeLayout(false);
-			this.pnJoint.ResumeLayout(false);
-			this.pnSubMesh.ResumeLayout(false);
-			this.ResumeLayout(false);
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.cbCorrect = new System.Windows.Forms.CheckBox();
+            this.llExport = new System.Windows.Forms.LinkLabel();
+            this.llImport = new System.Windows.Forms.LinkLabel();
+            this.pnJoint = new System.Windows.Forms.Panel();
+            this.cbJoint = new System.Windows.Forms.ComboBox();
+            this.cmJoint = new System.Windows.Forms.ContextMenu();
+            this.miAdd = new System.Windows.Forms.MenuItem();
+            this.miRem = new System.Windows.Forms.MenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pnSubMesh = new System.Windows.Forms.Panel();
+            this.cbSubMesh = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.panel2.SuspendLayout();
+            this.pnJoint.SuspendLayout();
+            this.pnSubMesh.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.cbCorrect);
+            this.panel2.Controls.Add(this.llExport);
+            this.panel2.Controls.Add(this.llImport);
+            this.panel2.Controls.Add(this.pnJoint);
+            this.panel2.Controls.Add(this.pnSubMesh);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(776, 32);
+            this.panel2.TabIndex = 4;
+            // 
+            // cbCorrect
+            // 
+            this.cbCorrect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbCorrect.Location = new System.Drawing.Point(584, 0);
+            this.cbCorrect.Name = "cbCorrect";
+            this.cbCorrect.Size = new System.Drawing.Size(88, 32);
+            this.cbCorrect.TabIndex = 44;
+            this.cbCorrect.Text = "correct Joint Definition";
+            this.cbCorrect.CheckedChanged += new System.EventHandler(this.cbCorrect_CheckedChanged);
+            // 
+            // llExport
+            // 
+            this.llExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.llExport.Enabled = false;
+            this.llExport.Location = new System.Drawing.Point(672, 8);
+            this.llExport.Name = "llExport";
+            this.llExport.Size = new System.Drawing.Size(48, 16);
+            this.llExport.TabIndex = 42;
+            this.llExport.TabStop = true;
+            this.llExport.Text = "Export";
+            this.llExport.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.llExport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llExport_LinkClicked);
+            // 
+            // llImport
+            // 
+            this.llImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.llImport.Enabled = false;
+            this.llImport.Location = new System.Drawing.Point(728, 8);
+            this.llImport.Name = "llImport";
+            this.llImport.Size = new System.Drawing.Size(40, 16);
+            this.llImport.TabIndex = 43;
+            this.llImport.TabStop = true;
+            this.llImport.Text = "Import";
+            this.llImport.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.llImport.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.llImport_LinkClicked);
+            // 
+            // pnJoint
+            // 
+            this.pnJoint.Controls.Add(this.cbJoint);
+            this.pnJoint.Controls.Add(this.label1);
+            this.pnJoint.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnJoint.Location = new System.Drawing.Point(256, 0);
+            this.pnJoint.Name = "pnJoint";
+            this.pnJoint.Size = new System.Drawing.Size(248, 32);
+            this.pnJoint.TabIndex = 7;
+            // 
+            // cbJoint
+            // 
+            this.cbJoint.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbJoint.ContextMenu = this.cmJoint;
+            this.cbJoint.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbJoint.Location = new System.Drawing.Point(34, 0);
+            this.cbJoint.Name = "cbJoint";
+            this.cbJoint.Size = new System.Drawing.Size(214, 21);
+            this.cbJoint.Sorted = true;
+            this.cbJoint.TabIndex = 3;
+            this.cbJoint.SelectedIndexChanged += new System.EventHandler(this.cbSubMesh_SelectedIndexChanged);
+            // 
+            // cmJoint
+            // 
+            this.cmJoint.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.miAdd,
+            this.miRem});
+            // 
+            // miAdd
+            // 
+            this.miAdd.Enabled = false;
+            this.miAdd.Index = 0;
+            this.miAdd.Text = "&Create Joint";
+            this.miAdd.Click += new System.EventHandler(this.miAdd_Click);
+            // 
+            // miRem
+            // 
+            this.miRem.Enabled = false;
+            this.miRem.Index = 1;
+            this.miRem.Text = "&Remove Joint";
+            this.miRem.Click += new System.EventHandler(this.miRem_Click);
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(0, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(40, 23);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Joint:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // pnSubMesh
+            // 
+            this.pnSubMesh.Controls.Add(this.cbSubMesh);
+            this.pnSubMesh.Controls.Add(this.label2);
+            this.pnSubMesh.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pnSubMesh.Location = new System.Drawing.Point(0, 0);
+            this.pnSubMesh.Name = "pnSubMesh";
+            this.pnSubMesh.Size = new System.Drawing.Size(256, 32);
+            this.pnSubMesh.TabIndex = 8;
+            // 
+            // cbSubMesh
+            // 
+            this.cbSubMesh.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbSubMesh.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSubMesh.Location = new System.Drawing.Point(56, 0);
+            this.cbSubMesh.Name = "cbSubMesh";
+            this.cbSubMesh.Size = new System.Drawing.Size(190, 21);
+            this.cbSubMesh.TabIndex = 5;
+            this.cbSubMesh.SelectedIndexChanged += new System.EventHandler(this.cbSubMesh_SelectedIndexChanged_1);
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(0, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 23);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "SubMesh:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            // 
+            // AnimMeshBlockControl
+            // 
+            this.Controls.Add(this.panel2);
+            this.Name = "AnimMeshBlockControl";
+            this.Size = new System.Drawing.Size(776, 400);
+            this.panel2.ResumeLayout(false);
+            this.pnJoint.ResumeLayout(false);
+            this.pnSubMesh.ResumeLayout(false);
+            this.ResumeLayout(false);
 
 		}
 		#endregion

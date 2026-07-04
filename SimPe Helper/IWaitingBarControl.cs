@@ -58,6 +58,12 @@ namespace SimPe
 			set;
 		}
 
+        bool ShowAnimation
+        {
+            get;
+            set;
+        }
+
 		void Wait();
 		void Wait(int max);
 		void Stop();

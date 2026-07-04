@@ -40,6 +40,7 @@ namespace SimPe.PackedFiles.Wrapper
         ushort unlocksspent;
         List<ushort> decays;
         uint bugcollection;
+        ushort[] supa;
 
         public List<ushort> HobbyEnthusiasm
         {
@@ -85,8 +86,6 @@ namespace SimPe.PackedFiles.Wrapper
             set { unlocksspent = value; }
         }
 
-
-
         public ushort HungerDecayModifier
         {
             get { return decays[0]; }
@@ -129,15 +128,17 @@ namespace SimPe.PackedFiles.Wrapper
             set { decays[6] = value; }
         }
 
-
-
         public uint BugCollection
         {
             get { return bugcollection; }
             set { bugcollection = value; }
         }
 
-
+        public ushort[] LTASuperPowers
+        {
+            get { return supa; }
+            set { supa = value; }
+        }
 
         internal void Unserialize(BinaryReader reader)
         {
@@ -184,20 +185,21 @@ namespace SimPe.PackedFiles.Wrapper
             writer.Write((uint)bugcollection);
 
             StoreAspirations();
+            StoreSuperPowers();
         }
-
-        
 
         SimPe.Data.MetaData.AspirationTypes pa, sa;
         protected void LoadAspirations()
         {
             pa = SimPe.Data.MetaData.AspirationTypes.Nothing;
             sa = SimPe.Data.MetaData.AspirationTypes.Nothing;
+            supa = new ushort[8] { 0, 0, 0, 0, 0, 0, 0, 0 };
             if (parent == null) return;
             pa = parent.CharacterDescription.Aspiration;
 
             if (aspeditor == null) return;
             SimPe.Data.MetaData.AspirationTypes[] asps = aspeditor.LoadAspirations(this.parent);
+            supa = aspeditor.LoadSuperPowers(this.parent);
 
             if (asps == null) return;
             if (asps.Length > 0) pa = asps[0];
@@ -208,8 +210,22 @@ namespace SimPe.PackedFiles.Wrapper
         {
             if (parent==null) return;
             if (aspeditor==null) return;
+            /*
+            if (pa == SimPe.Data.MetaData.AspirationTypes.Nothing)
+            {
+                pa = SimPe.Data.MetaData.AspirationTypes.Romance;
+                sa = SimPe.Data.MetaData.AspirationTypes.Nothing;
+            }
+            */
             SimPe.Data.MetaData.AspirationTypes[] asps = new SimPe.Data.MetaData.AspirationTypes[]{pa, sa};
             aspeditor.StoreAspirations(asps, parent);
+        }
+
+        protected void StoreSuperPowers()
+        {
+            if (parent == null) return;
+            if (aspeditor == null) return;;
+            aspeditor.StoreSuperPowers(supa, parent);
         }
 
 

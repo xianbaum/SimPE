@@ -18,6 +18,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.IO;
 using SimPe.Interfaces;
 
 namespace SimPe.Plugin
@@ -26,16 +27,16 @@ namespace SimPe.Plugin
 	/// Lists all Plugins (=FileType Wrappers) available in this Package
 	/// </summary>
 	/// <remarks>
-	/// GetWrappers() has to return a list of all Plugins provided by this Library. 
+    /// GetWrappers() has to return a list of all Plugins provided by this Library.
 	/// If a Plugin isn't returned, SimPe won't recognize it!
 	/// </remarks>
-	public class CopyrightToolFactory : SimPe.Interfaces.Plugin.AbstractWrapperFactory, SimPe.Interfaces.Plugin.IToolFactory
+    public class CopyrightToolFactory : SimPe.Interfaces.Plugin.AbstractWrapperFactory, SimPe.Interfaces.Plugin.IToolFactory, SimPe.Interfaces.Plugin.IHelpFactory
 	{
 		public CopyrightToolFactory()
 		{
 			
 		}
-
+        
 		#region AbstractWrapperFactory Member
 		/// <summary>
 		/// Returns a List of all available Plugins in this Package
@@ -62,21 +63,71 @@ namespace SimPe.Plugin
 			get
 			{
 				IToolPlugin[] tools = null;
-				if (Helper.WindowsRegistry.HiddenMode) 
+                if (Helper.StartedGui != Executable.Classic && Helper.WindowsRegistry.CreatorMode)
 				{
-					tools = new IToolPlugin[]{
-											  new SimPe.Plugin.Tool.Action.ActionAddCopyright()
-										  };
-				} 
+					tools = new IToolPlugin[]{ new SimPe.Plugin.Tool.Action.ActionAddCopyright() };
+				}
 				else 
 				{
-					tools =  new IToolPlugin[]{
-											  
-										  };
+					tools =  new IToolPlugin[]{ };
 				}
 				return tools;
 			}
 		}
 		#endregion
+
+        #region IHelpFactory Members
+
+        class easHelp : IHelp
+        {
+            public System.Drawing.Image Icon { get { return null; } }
+            public override string ToString() { return "EA Support"; }
+            public void ShowHelp(ShowHelpEventArgs e)
+            {
+                if (booby.PrettyGirls.IsTitsInstalled())
+                {
+                    if (File.Exists(SimPe.Helper.NewestGamePath + "/Support/index.htm"))
+                        SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.NewestGamePath + "/Support/index.htm");
+                    else
+                        if (File.Exists(SimPe.Helper.NewestGamePath + "/Support/T&A.htm"))
+                            SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.NewestGamePath + "/Support/T&A.htm");
+                        else
+                            SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.SimPePath + "/Doc/NoFile.htm");
+                }
+                else
+                {
+                    if (booby.PrettyGirls.IsAngelsInstalled())
+                    {
+                        if (File.Exists(SimPe.Helper.NewestGamePath + "/Support/A&N.htm"))
+                            SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.NewestGamePath + "/Support/A&N.htm");
+                        else
+                            SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.SimPePath + "/Doc/NoFile.htm");
+                    }
+                    else
+                        if (File.Exists(SimPe.Helper.NewestGamePath + "/Support/EA Help/Electronic_Arts_Technical_Support.htm"))
+                            SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.NewestGamePath + "/Support/EA Help/Electronic_Arts_Technical_Support.htm");
+                        else
+                            SimPe.RemoteControl.ShowHelp("file://" + SimPe.Helper.SimPePath + "/Doc/NoFile.htm");
+                }
+            }
+        }
+
+        public IHelp[] KnownHelpTopics
+        {
+            get
+            {
+                if (Helper.StartedGui == Executable.Classic || Helper.WindowsRegistry.HiddenMode)
+                {
+                    return new IHelp[0];
+                }
+                else
+                {
+                    IHelp[] helpTopics = { new easHelp() };
+                    return helpTopics;
+                }
+            }
+        }
+
+        #endregion
 	}
 }

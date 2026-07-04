@@ -17,7 +17,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
-#define QUAXI
 using System;
 using System.Drawing;
 using System.Collections;
@@ -32,6 +31,9 @@ namespace SimPe.Plugin
         public GlobCtrl()
         {
             InitializeComponent();
+            booby.ThemeManager.Global.AddControl(this.pritee);
+            if (booby.ThemeManager.savedTheme == 8) this.pritee.BackgroundImage = booby.PrettyGirls.HippyGirl;
+            else if (booby.PrettyGirls.PervyMode && Helper.StartedGui != Executable.Classic) this.pritee.BackgroundImage = booby.PrettyGirls.PrittyBabe;
         }
         /// <summary>
         /// Stores the currently active Wrapper
@@ -44,8 +46,9 @@ namespace SimPe.Plugin
             try
             {
                 Glob wrp = (Glob)wrapper;
-
                 wrp.SemiGlobalName = this.cbseminame.Text;
+                wrp.FileName = tbfilenm.Text;
+                lbBloat.Visible = lbBug.Visible = false;
                 wrapper.SynchronizeUserData();
                 MessageBox.Show(Localization.Manager.GetString("commited"));
             }
@@ -57,27 +60,10 @@ namespace SimPe.Plugin
 
         private void SemiGlobalChanged(object sender, System.EventArgs e)
         {
-            if (cbseminame.SelectedIndex < 0)
-            {
-                for (int i = 0; i < cbseminame.Items.Count; i++)
-                {
-                    Data.SemiGlobalAlias a = cbseminame.Items[i] as Data.SemiGlobalAlias;
-                    if (a.Name.ToLower() == cbseminame.Text.ToLower())
-                    {
-                        cbseminame.SelectedIndex = i;
-                        return;
-                    }
-                }
-                tbgroup.Text = "0x" + Helper.HexString(Hashes.GroupHash(cbseminame.Text));
-            }
-            else
-            {
-                Data.SemiGlobalAlias a = cbseminame.Items[cbseminame.SelectedIndex] as Data.SemiGlobalAlias;
-                tbgroup.Text = "0x" + Helper.HexString(a.Id);
-            }
-
             if (cbseminame.Tag == null)
             {
+                tbgroup.ForeColor = System.Drawing.SystemColors.WindowText;
+                tbgroup.Text = "0x" + Helper.HexString(Hashes.GroupHash(cbseminame.Text));
                 try
                 {
                     Glob wrp = (Glob)wrapper;
@@ -90,7 +76,21 @@ namespace SimPe.Plugin
                 }
             }
         }
-        #endregion
 
+        private void tbfilenm_TextChanged(object sender, EventArgs e)
+        {
+            if (cbseminame.Tag == null)
+            {
+                try
+                {
+                    Glob wrp = (Glob)wrapper;
+                    wrp.FileName = tbfilenm.Text;
+                    wrapper.Changed = true;
+                }
+                catch { }
+            }
+        }
+
+        #endregion
     }
 }

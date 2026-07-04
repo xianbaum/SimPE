@@ -27,14 +27,13 @@ using SimPe.Interfaces.Scenegraph;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für RcolForm.
+	/// Summary description for RcolForm.
 	/// </summary>
 	public class RcolForm : SimPe.Windows.Forms.WrapperBaseControl
-	{
-		
+	{		
 		private System.Windows.Forms.LinkLabel llfix;
 		private System.Windows.Forms.LinkLabel llhash;
-		private System.Windows.Forms.TextBox tbflname;
+        internal System.Windows.Forms.TextBox tbflname;
 		private System.Windows.Forms.Label label2;
 		internal System.Windows.Forms.ComboBox cbitem;
 		private System.Windows.Forms.TabPage tabPage1;
@@ -72,31 +71,55 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.TextBox tbfile;
 		private System.Windows.Forms.LinkLabel linkLabel1;
 		internal System.Windows.Forms.TabControl tbResource;		
-		private Ambertation.Windows.Forms.XPTaskBoxSimple xpTaskBoxSimple1;
-		private Ambertation.Windows.Forms.XPTaskBoxSimple xpTaskBoxSimple2;
+		private booby.TaskBox xpTaskBoxSimple1;
+        private booby.TaskBox xpTaskBoxSimple2;
+        private booby.gradientpanel gradientpanel1;
+        private booby.gradientpanel gradientpanel2;
+        private booby.gradientpanel gradientpanel3;
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		
 		public RcolForm() : base()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required designer variable.
 			//
 			InitializeComponent();
-									
-			ThemeManager.AddControl(this.xpTaskBoxSimple1);
-			ThemeManager.AddControl(this.xpTaskBoxSimple2);
+
+            booby.ThemeManager.Global.AddControl(this.xpTaskBoxSimple1);
+            booby.ThemeManager.Global.AddControl(this.xpTaskBoxSimple2);
+            if (SimPe.Helper.WindowsRegistry.UseBigIcons)
+            {
+                this.lbblocks.Font = new System.Drawing.Font(base.Font.FontFamily, 11F);
+                this.lbref.Font = new System.Drawing.Font(base.Font.FontFamily, 11F);
+                this.tv.Font = new System.Drawing.Font(base.Font.FontFamily, 11F);
+                this.tbflname.Font = new System.Drawing.Font(base.Font.FontFamily, 12F);
+            }
+            if (booby.ThemeManager.ThemedForms)
+            {
+                booby.ThemeManager.Global.AddControl(this.gradientpanel1);
+                booby.ThemeManager.Global.AddControl(this.gradientpanel2);
+                booby.ThemeManager.Global.AddControl(this.gradientpanel3);
+                booby.ThemeManager.Global.AddControl(this.btup);
+                booby.ThemeManager.Global.AddControl(this.btdel);
+                booby.ThemeManager.Global.AddControl(this.btadd);
+                booby.ThemeManager.Global.AddControl(this.btdown);
+                this.tabPage1.BackColor = booby.ThemeManager.Global.ThemeColorMild;
+                this.tabPage2.BackColor = booby.ThemeManager.Global.ThemeColorMild;
+                this.tabPage3.BackColor = booby.ThemeManager.Global.ThemeColorMild;
+                this.tpref.BackColor = booby.ThemeManager.Global.ThemeColorMild;
+                this.lbblocks.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+                this.lbref.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+                this.tv.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+            }
+            this.gradientpanel1.BackgroundImage = this.gradientpanel2.BackgroundImage = this.gradientpanel3.BackgroundImage = booby.PrettyGirls.RandomSheila;
 			foreach (Interfaces.IAlias alias in SimPe.Helper.TGILoader.FileTypes) cbtypes.Items.Add(alias);
-#if DEBUG
-#else
-			//this.btcommit.Enabled = false;
-#endif
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -112,10 +135,10 @@ namespace SimPe.Plugin
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -129,8 +152,9 @@ namespace SimPe.Plugin
             this.llfix = new System.Windows.Forms.LinkLabel();
             this.cbitem = new System.Windows.Forms.ComboBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.gradientpanel1 = new booby.gradientpanel();
             this.lbref = new System.Windows.Forms.ListBox();
-            this.xpTaskBoxSimple2 = new Ambertation.Windows.Forms.XPTaskBoxSimple();
+            this.xpTaskBoxSimple2 = new booby.TaskBox();
             this.pntypes = new System.Windows.Forms.Panel();
             this.lladd = new System.Windows.Forms.LinkLabel();
             this.lldelete = new System.Windows.Forms.LinkLabel();
@@ -145,14 +169,17 @@ namespace SimPe.Plugin
             this.cbtypes = new System.Windows.Forms.ComboBox();
             this.btref = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.btup = new System.Windows.Forms.Button();
+            this.gradientpanel3 = new booby.gradientpanel();
             this.lbblocks = new System.Windows.Forms.ListBox();
-            this.btdel = new System.Windows.Forms.Button();
+            this.btup = new System.Windows.Forms.Button();
             this.cbblocks = new System.Windows.Forms.ComboBox();
             this.btadd = new System.Windows.Forms.Button();
             this.btdown = new System.Windows.Forms.Button();
+            this.btdel = new System.Windows.Forms.Button();
             this.tpref = new System.Windows.Forms.TabPage();
-            this.xpTaskBoxSimple1 = new Ambertation.Windows.Forms.XPTaskBoxSimple();
+            this.gradientpanel2 = new booby.gradientpanel();
+            this.tv = new System.Windows.Forms.TreeView();
+            this.xpTaskBoxSimple1 = new booby.TaskBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tbfile = new System.Windows.Forms.TextBox();
@@ -160,15 +187,16 @@ namespace SimPe.Plugin
             this.label5 = new System.Windows.Forms.Label();
             this.tbrefinst = new System.Windows.Forms.TextBox();
             this.tbrefgroup = new System.Windows.Forms.TextBox();
-            this.tv = new System.Windows.Forms.TreeView();
-            
             this.tbResource.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
+            this.gradientpanel1.SuspendLayout();
             this.xpTaskBoxSimple2.SuspendLayout();
             this.pntypes.SuspendLayout();
             this.tabPage3.SuspendLayout();
+            this.gradientpanel3.SuspendLayout();
             this.tpref.SuspendLayout();
+            this.gradientpanel2.SuspendLayout();
             this.xpTaskBoxSimple1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -197,9 +225,9 @@ namespace SimPe.Plugin
             this.tabPage1.Controls.Add(this.llhash);
             this.tabPage1.Controls.Add(this.llfix);
             this.tabPage1.Controls.Add(this.cbitem);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(744, 235);
+            this.tabPage1.Size = new System.Drawing.Size(744, 233);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Content";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -221,7 +249,7 @@ namespace SimPe.Plugin
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.tbflname.Location = new System.Drawing.Point(72, 32);
             this.tbflname.Name = "tbflname";
-            this.tbflname.Size = new System.Drawing.Size(504, 21);
+            this.tbflname.Size = new System.Drawing.Size(510, 23);
             this.tbflname.TabIndex = 9;
             this.tbflname.TextChanged += new System.EventHandler(this.ChangeFileName);
             // 
@@ -230,11 +258,11 @@ namespace SimPe.Plugin
             this.childtc.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.childtc.Location = new System.Drawing.Point(8, 56);
+            this.childtc.Location = new System.Drawing.Point(8, 64);
             this.childtc.Multiline = true;
             this.childtc.Name = "childtc";
             this.childtc.SelectedIndex = 0;
-            this.childtc.Size = new System.Drawing.Size(728, 176);
+            this.childtc.Size = new System.Drawing.Size(728, 166);
             this.childtc.TabIndex = 20;
             this.childtc.SelectedIndexChanged += new System.EventHandler(this.ChildTabPageChanged);
             // 
@@ -242,7 +270,7 @@ namespace SimPe.Plugin
             // 
             this.label1.BackColor = System.Drawing.Color.Transparent;
             this.label1.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(8, 32);
+            this.label1.Location = new System.Drawing.Point(8, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 17);
             this.label1.TabIndex = 21;
@@ -285,20 +313,33 @@ namespace SimPe.Plugin
             this.cbitem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbitem.Location = new System.Drawing.Point(72, 8);
             this.cbitem.Name = "cbitem";
-            this.cbitem.Size = new System.Drawing.Size(664, 21);
+            this.cbitem.Size = new System.Drawing.Size(664, 23);
             this.cbitem.TabIndex = 7;
             this.cbitem.SelectedIndexChanged += new System.EventHandler(this.SelectRcolItem);
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.lbref);
-            this.tabPage2.Controls.Add(this.xpTaskBoxSimple2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Controls.Add(this.gradientpanel1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Size = new System.Drawing.Size(744, 235);
+            this.tabPage2.Size = new System.Drawing.Size(744, 233);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Reference";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // gradientpanel1
+            // 
+            this.gradientpanel1.BackgroundImageAnchor = booby.gradientpanel.ImageLayout.TopRight;
+            this.gradientpanel1.BackgroundImageLocation = new System.Drawing.Point(40, 160);
+            this.gradientpanel1.BackgroundImageZoomToFit = true;
+            this.gradientpanel1.Controls.Add(this.lbref);
+            this.gradientpanel1.Controls.Add(this.xpTaskBoxSimple2);
+            this.gradientpanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gradientpanel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gradientpanel1.Location = new System.Drawing.Point(0, 0);
+            this.gradientpanel1.Name = "gradientpanel1";
+            this.gradientpanel1.Size = new System.Drawing.Size(744, 233);
+            this.gradientpanel1.TabIndex = 44;
             // 
             // lbref
             // 
@@ -310,30 +351,23 @@ namespace SimPe.Plugin
             this.lbref.IntegralHeight = false;
             this.lbref.Location = new System.Drawing.Point(0, 0);
             this.lbref.Name = "lbref";
-            this.lbref.Size = new System.Drawing.Size(288, 235);
+            this.lbref.Size = new System.Drawing.Size(288, 233);
             this.lbref.TabIndex = 0;
-            this.lbref.DragEnter += new System.Windows.Forms.DragEventHandler(this.PackageItemDragEnter);
-            this.lbref.DragDrop += new System.Windows.Forms.DragEventHandler(this.PackageItemDrop);
             this.lbref.SelectedIndexChanged += new System.EventHandler(this.SelectReference);
+            this.lbref.DragDrop += new System.Windows.Forms.DragEventHandler(this.PackageItemDrop);
+            this.lbref.DragEnter += new System.Windows.Forms.DragEventHandler(this.PackageItemDragEnter);
             // 
             // xpTaskBoxSimple2
             // 
             this.xpTaskBoxSimple2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.xpTaskBoxSimple2.BackColor = System.Drawing.Color.Transparent;
-            this.xpTaskBoxSimple2.BodyColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.xpTaskBoxSimple2.BorderColor = System.Drawing.SystemColors.Window;
             this.xpTaskBoxSimple2.Controls.Add(this.pntypes);
             this.xpTaskBoxSimple2.Controls.Add(this.btref);
-            this.xpTaskBoxSimple2.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold);
             this.xpTaskBoxSimple2.HeaderText = "Settings";
-            this.xpTaskBoxSimple2.HeaderTextColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.xpTaskBoxSimple2.IconLocation = new System.Drawing.Point(4, 12);
             this.xpTaskBoxSimple2.IconSize = new System.Drawing.Size(32, 32);
-            this.xpTaskBoxSimple2.LeftHeaderColor = System.Drawing.SystemColors.InactiveCaption;
             this.xpTaskBoxSimple2.Location = new System.Drawing.Point(296, 0);
             this.xpTaskBoxSimple2.Name = "xpTaskBoxSimple2";
             this.xpTaskBoxSimple2.Padding = new System.Windows.Forms.Padding(4, 44, 4, 4);
-            this.xpTaskBoxSimple2.RightHeaderColor = System.Drawing.SystemColors.Highlight;
             this.xpTaskBoxSimple2.Size = new System.Drawing.Size(440, 152);
             this.xpTaskBoxSimple2.TabIndex = 43;
             // 
@@ -493,29 +527,31 @@ namespace SimPe.Plugin
             // 
             // tabPage3
             // 
-            this.tabPage3.Controls.Add(this.btup);
-            this.tabPage3.Controls.Add(this.lbblocks);
-            this.tabPage3.Controls.Add(this.btdel);
-            this.tabPage3.Controls.Add(this.cbblocks);
-            this.tabPage3.Controls.Add(this.btadd);
-            this.tabPage3.Controls.Add(this.btdown);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Controls.Add(this.gradientpanel3);
+            this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(744, 235);
+            this.tabPage3.Size = new System.Drawing.Size(744, 233);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Edit Blocks";
             this.tabPage3.UseVisualStyleBackColor = true;
-            this.tabPage3.Click += new System.EventHandler(this.tabPage3_Click);
             // 
-            // btup
+            // gradientpanel3
             // 
-            this.btup.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btup.Location = new System.Drawing.Point(384, 16);
-            this.btup.Name = "btup";
-            this.btup.Size = new System.Drawing.Size(48, 23);
-            this.btup.TabIndex = 1;
-            this.btup.Text = "Up";
-            this.btup.Click += new System.EventHandler(this.btup_Click);
+            this.gradientpanel3.BackgroundImageAnchor = booby.gradientpanel.ImageLayout.TopRight;
+            this.gradientpanel3.BackgroundImageLocation = new System.Drawing.Point(40, 160);
+            this.gradientpanel3.BackgroundImageZoomToFit = true;
+            this.gradientpanel3.Controls.Add(this.lbblocks);
+            this.gradientpanel3.Controls.Add(this.btup);
+            this.gradientpanel3.Controls.Add(this.cbblocks);
+            this.gradientpanel3.Controls.Add(this.btadd);
+            this.gradientpanel3.Controls.Add(this.btdown);
+            this.gradientpanel3.Controls.Add(this.btdel);
+            this.gradientpanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gradientpanel3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gradientpanel3.Location = new System.Drawing.Point(0, 0);
+            this.gradientpanel3.Name = "gradientpanel3";
+            this.gradientpanel3.Size = new System.Drawing.Size(744, 233);
+            this.gradientpanel3.TabIndex = 6;
             // 
             // lbblocks
             // 
@@ -525,35 +561,36 @@ namespace SimPe.Plugin
             this.lbblocks.IntegralHeight = false;
             this.lbblocks.Location = new System.Drawing.Point(0, 0);
             this.lbblocks.Name = "lbblocks";
-            this.lbblocks.Size = new System.Drawing.Size(376, 235);
+            this.lbblocks.Size = new System.Drawing.Size(549, 233);
             this.lbblocks.TabIndex = 0;
             this.lbblocks.SelectedIndexChanged += new System.EventHandler(this.lbblocks_SelectedIndexChanged);
             // 
-            // btdel
+            // btup
             // 
-            this.btdel.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btdel.Location = new System.Drawing.Point(384, 136);
-            this.btdel.Name = "btdel";
-            this.btdel.Size = new System.Drawing.Size(72, 23);
-            this.btdel.TabIndex = 4;
-            this.btdel.Text = "Delete";
-            this.btdel.Click += new System.EventHandler(this.btdel_Click);
+            this.btup.Enabled = false;
+            this.btup.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btup.Location = new System.Drawing.Point(555, 3);
+            this.btup.Name = "btup";
+            this.btup.Size = new System.Drawing.Size(48, 23);
+            this.btup.TabIndex = 1;
+            this.btup.Text = "Up";
+            this.btup.Click += new System.EventHandler(this.btup_Click);
             // 
             // cbblocks
             // 
             this.cbblocks.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.cbblocks.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbblocks.Location = new System.Drawing.Point(384, 88);
+            this.cbblocks.Location = new System.Drawing.Point(555, 127);
             this.cbblocks.Name = "cbblocks";
-            this.cbblocks.Size = new System.Drawing.Size(352, 21);
+            this.cbblocks.Size = new System.Drawing.Size(183, 21);
             this.cbblocks.Sorted = true;
             this.cbblocks.TabIndex = 5;
             // 
             // btadd
             // 
             this.btadd.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btadd.Location = new System.Drawing.Point(384, 112);
+            this.btadd.Location = new System.Drawing.Point(555, 96);
             this.btadd.Name = "btadd";
             this.btadd.Size = new System.Drawing.Size(72, 23);
             this.btadd.TabIndex = 3;
@@ -562,31 +599,66 @@ namespace SimPe.Plugin
             // 
             // btdown
             // 
+            this.btdown.Enabled = false;
             this.btdown.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.btdown.Location = new System.Drawing.Point(384, 40);
+            this.btdown.Location = new System.Drawing.Point(555, 34);
             this.btdown.Name = "btdown";
             this.btdown.Size = new System.Drawing.Size(48, 23);
             this.btdown.TabIndex = 2;
             this.btdown.Text = "Down";
             this.btdown.Click += new System.EventHandler(this.btdown_Click);
             // 
+            // btdel
+            // 
+            this.btdel.Enabled = false;
+            this.btdel.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btdel.Location = new System.Drawing.Point(555, 65);
+            this.btdel.Name = "btdel";
+            this.btdel.Size = new System.Drawing.Size(72, 23);
+            this.btdel.TabIndex = 4;
+            this.btdel.Text = "Delete";
+            this.btdel.Click += new System.EventHandler(this.btdel_Click);
+            // 
             // tpref
             // 
-            this.tpref.Controls.Add(this.xpTaskBoxSimple1);
-            this.tpref.Controls.Add(this.tv);
-            this.tpref.Location = new System.Drawing.Point(4, 22);
+            this.tpref.Controls.Add(this.gradientpanel2);
+            this.tpref.Location = new System.Drawing.Point(4, 24);
             this.tpref.Name = "tpref";
-            this.tpref.Size = new System.Drawing.Size(744, 235);
+            this.tpref.Size = new System.Drawing.Size(744, 233);
             this.tpref.TabIndex = 3;
             this.tpref.Text = "All References";
             this.tpref.UseVisualStyleBackColor = true;
             // 
+            // gradientpanel2
+            // 
+            this.gradientpanel2.BackgroundImageAnchor = booby.gradientpanel.ImageLayout.TopRight;
+            this.gradientpanel2.BackgroundImageLocation = new System.Drawing.Point(40, 160);
+            this.gradientpanel2.BackgroundImageZoomToFit = true;
+            this.gradientpanel2.Controls.Add(this.tv);
+            this.gradientpanel2.Controls.Add(this.xpTaskBoxSimple1);
+            this.gradientpanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gradientpanel2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gradientpanel2.Location = new System.Drawing.Point(0, 0);
+            this.gradientpanel2.Name = "gradientpanel2";
+            this.gradientpanel2.Size = new System.Drawing.Size(744, 233);
+            this.gradientpanel2.TabIndex = 3;
+            // 
+            // tv
+            // 
+            this.tv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tv.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.tv.HideSelection = false;
+            this.tv.Location = new System.Drawing.Point(0, 0);
+            this.tv.Name = "tv";
+            this.tv.Size = new System.Drawing.Size(288, 233);
+            this.tv.TabIndex = 0;
+            this.tv.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SelectRefItem);
+            // 
             // xpTaskBoxSimple1
             // 
             this.xpTaskBoxSimple1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.xpTaskBoxSimple1.BackColor = System.Drawing.Color.Transparent;
-            this.xpTaskBoxSimple1.BodyColor = System.Drawing.SystemColors.InactiveCaptionText;
-            this.xpTaskBoxSimple1.BorderColor = System.Drawing.SystemColors.Window;
             this.xpTaskBoxSimple1.Controls.Add(this.label4);
             this.xpTaskBoxSimple1.Controls.Add(this.label3);
             this.xpTaskBoxSimple1.Controls.Add(this.tbfile);
@@ -594,17 +666,13 @@ namespace SimPe.Plugin
             this.xpTaskBoxSimple1.Controls.Add(this.label5);
             this.xpTaskBoxSimple1.Controls.Add(this.tbrefinst);
             this.xpTaskBoxSimple1.Controls.Add(this.tbrefgroup);
-            this.xpTaskBoxSimple1.HeaderFont = new System.Drawing.Font("Microsoft Sans Serif", 10.25F, System.Drawing.FontStyle.Bold);
             this.xpTaskBoxSimple1.HeaderText = "Values";
-            this.xpTaskBoxSimple1.HeaderTextColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.xpTaskBoxSimple1.IconLocation = new System.Drawing.Point(4, 12);
             this.xpTaskBoxSimple1.IconSize = new System.Drawing.Size(32, 32);
-            this.xpTaskBoxSimple1.LeftHeaderColor = System.Drawing.SystemColors.InactiveCaption;
-            this.xpTaskBoxSimple1.Location = new System.Drawing.Point(544, 0);
+            this.xpTaskBoxSimple1.Location = new System.Drawing.Point(296, 0);
             this.xpTaskBoxSimple1.Name = "xpTaskBoxSimple1";
             this.xpTaskBoxSimple1.Padding = new System.Windows.Forms.Padding(4, 44, 4, 4);
-            this.xpTaskBoxSimple1.RightHeaderColor = System.Drawing.SystemColors.Highlight;
-            this.xpTaskBoxSimple1.Size = new System.Drawing.Size(192, 152);
+            this.xpTaskBoxSimple1.Size = new System.Drawing.Size(440, 152);
             this.xpTaskBoxSimple1.TabIndex = 2;
             // 
             // label4
@@ -629,11 +697,12 @@ namespace SimPe.Plugin
             // 
             // tbfile
             // 
-            this.tbfile.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbfile.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.tbfile.Font = new System.Drawing.Font("Tahoma", 9.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbfile.Location = new System.Drawing.Point(16, 120);
             this.tbfile.Name = "tbfile";
             this.tbfile.ReadOnly = true;
-            this.tbfile.Size = new System.Drawing.Size(168, 21);
+            this.tbfile.Size = new System.Drawing.Size(406, 22);
             this.tbfile.TabIndex = 4;
             // 
             // linkLabel1
@@ -641,7 +710,7 @@ namespace SimPe.Plugin
             this.linkLabel1.AutoSize = true;
             this.linkLabel1.Location = new System.Drawing.Point(40, 104);
             this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(37, 13);
+            this.linkLabel1.Size = new System.Drawing.Size(43, 13);
             this.linkLabel1.TabIndex = 6;
             this.linkLabel1.TabStop = true;
             this.linkLabel1.Text = "reload";
@@ -659,6 +728,7 @@ namespace SimPe.Plugin
             // 
             // tbrefinst
             // 
+            this.tbrefinst.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tbrefinst.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbrefinst.Location = new System.Drawing.Point(80, 80);
             this.tbrefinst.Name = "tbrefinst";
@@ -669,6 +739,7 @@ namespace SimPe.Plugin
             // 
             // tbrefgroup
             // 
+            this.tbrefgroup.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.tbrefgroup.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbrefgroup.Location = new System.Drawing.Point(80, 48);
             this.tbrefgroup.Name = "tbrefgroup";
@@ -676,20 +747,6 @@ namespace SimPe.Plugin
             this.tbrefgroup.Size = new System.Drawing.Size(88, 21);
             this.tbrefgroup.TabIndex = 2;
             this.tbrefgroup.Text = "0x00000000";
-            // 
-            // tv
-            // 
-            this.tv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.tv.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.tv.HideSelection = false;
-            this.tv.Location = new System.Drawing.Point(0, 0);
-            this.tv.Name = "tv";
-            this.tv.Size = new System.Drawing.Size(536, 235);
-            this.tv.TabIndex = 0;
-            this.tv.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SelectRefItem);
-            
             // 
             // RcolForm
             // 
@@ -704,11 +761,14 @@ namespace SimPe.Plugin
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
+            this.gradientpanel1.ResumeLayout(false);
             this.xpTaskBoxSimple2.ResumeLayout(false);
             this.pntypes.ResumeLayout(false);
             this.pntypes.PerformLayout();
             this.tabPage3.ResumeLayout(false);
+            this.gradientpanel3.ResumeLayout(false);
             this.tpref.ResumeLayout(false);
+            this.gradientpanel2.ResumeLayout(false);
             this.xpTaskBoxSimple1.ResumeLayout(false);
             this.xpTaskBoxSimple1.PerformLayout();
             this.ResumeLayout(false);
@@ -930,9 +990,7 @@ namespace SimPe.Plugin
 
 				wrapper.Changed = true;
 
-				btup.Enabled = false;
-				btdown.Enabled = false;
-				btdel.Enabled = false;
+				btup.Enabled = btdown.Enabled = btdel.Enabled = false;
 			}
 			catch (Exception ex) 
 			{
@@ -1088,11 +1146,9 @@ namespace SimPe.Plugin
 
 		private void lbblocks_SelectedIndexChanged(object sender, System.EventArgs e)
 		{
-			btup.Enabled = false;
-			btdown.Enabled = false;
+			btup.Enabled = btdown.Enabled = btdel.Enabled = false;
 			if (lbblocks.SelectedIndex<0) return;
-			btup.Enabled = true;
-			btdown.Enabled = true;
+			btup.Enabled = btdown.Enabled = btdel.Enabled = true;
 		}
 
 		private void btdel_Click(object sender, System.EventArgs e)
@@ -1193,10 +1249,5 @@ namespace SimPe.Plugin
 			if (this.Controls==null) return;
 			ClearControlTags(this);
 		}
-
-        private void tabPage3_Click(object sender, EventArgs e)
-        {
-
-        }
 	}
 }

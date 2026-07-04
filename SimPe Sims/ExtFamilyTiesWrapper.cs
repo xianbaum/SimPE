@@ -24,7 +24,7 @@ using System.Collections;
 namespace SimPe.PackedFiles.Wrapper
 {
 	/// <summary>
-	/// Zusammenfassung für ExtFamilyTiesWrapper.
+	/// Summary description for ExtFamilyTiesWrapper.
 	/// </summary>
 	public class ExtFamilyTies : FamilyTies
 	{
@@ -41,7 +41,7 @@ namespace SimPe.PackedFiles.Wrapper
 			return new AbstractWrapperInfo(
 				"Extended Family Ties Wrapper",
 				"Quaxi",
-				"Contains all Familyties that are stored in a Neighborhood.",
+				"Contains all Familyties that are stored in a Neighbourhood.",
 				2,
 				System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.PackedFiles.Wrapper.familyties.png"))
 				); 

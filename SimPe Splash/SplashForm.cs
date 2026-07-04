@@ -36,39 +36,45 @@ namespace SimPe.Windows.Forms
         const uint WM_CHANGE_MESSAGE = Ambertation.Windows.Forms.APIHelp.WM_APP + 0x0001;
         const uint WM_SHOW_HIDE = Ambertation.Windows.Forms.APIHelp.WM_APP + 0x0002;
         IntPtr myhandle;
+        string msg = "";
+        bool showtits = (Helper.WindowsRegistry.CreatorMode && booby.PrettyGirls.RandomGirl != null && !Helper.WindowsRegistry.Layout.IsClassicPreset);
 
         public SplashForm()
         {
-            msg = "";
             InitializeComponent();
-            this.MinimumSize = new Size(461, 212);
-            this.MaximumSize = new Size(461, 212);
-            myhandle = Handle;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.FormBorderStyle = FormBorderStyle.None;
+            if (showtits) this.Size = new System.Drawing.Size(Screen.PrimaryScreen.WorkingArea.Width-20, Screen.PrimaryScreen.WorkingArea.Height-20);
             lbtxt.Text = msg;
-            lbver.Text = Helper.VersionToString(Helper.SimPeVersion); //SimPe.Helper.SimPeVersion.FileMajorPart + "." + SimPe.Helper.SimPeVersion.FileMinorPart + "." + SimPe.Helper.SimPeVersion.FileBuildPart;
-
-            if (Helper.DebugMode && Helper.QARelease) lbver.Text += " [Debug, QA]";
-            else if (Helper.DebugMode) lbver.Text += " [Debug]";
-            else if (Helper.QARelease) lbver.Text += " [QA]";
-
+            myhandle = Handle;
+            if (showtits) lbver.Visible = label2.Visible = false;
+            else
+            {
+                lbver.Text = Helper.VersionToString(Helper.SimPeVersion);
+                if (Helper.WindowsRegistry.HiddenMode && Helper.QARelease) lbver.Text += " [Debug, QA]";
+                else if (Helper.WindowsRegistry.HiddenMode) lbver.Text += " [Debug]";
+                else if (Helper.QARelease) lbver.Text += " [QA]";
+            }
         }
 
         protected override void OnCreateBitmap(Graphics g, Bitmap b)
         {
-            //base.OnCreateBitmap(g, b);
-
             if (bg == null)
             {
-                bg = Image.FromStream(typeof(HelpForm).Assembly.GetManifestResourceStream("SimPe.Windows.Forms.img.splash.png"));
+                if (showtits) bg = booby.PrettyGirls.RandomGirl;
+                else if (booby.PrettyGirls.PervyMode) bg = Image.FromStream(typeof(HelpForm).Assembly.GetManifestResourceStream("SimPe.Windows.Forms.img.splashao.png"));
+                else bg = Image.FromStream(typeof(HelpForm).Assembly.GetManifestResourceStream("SimPe.Windows.Forms.img.splash.png"));
             }
-
-            g.DrawImage(bg, new Point(0, 0));
+            float mPicZoom;
+            if ((this.Height / bg.PhysicalDimension.Height) < (this.Width / bg.PhysicalDimension.Width)) mPicZoom = this.Height / bg.PhysicalDimension.Height;
+            else mPicZoom = this.Width / bg.PhysicalDimension.Width;
+            Int32 Widf = Convert.ToInt32(bg.Width * mPicZoom);
+            Int32 Hite = Convert.ToInt32(bg.Height * mPicZoom);
+            int pyintX = (this.Width - Widf) / 2;
+            int pyintY = (this.Height - Hite) / 2;
+            Rectangle picrect = new Rectangle(pyintX, pyintY, Widf, Hite);
+            g.DrawImage(bg, picrect);
             g.Dispose();
         }
 
-        string msg;
         public string Message
         {
             get { return msg; }
@@ -78,46 +84,35 @@ namespace SimPe.Windows.Forms
                 {
                     if (msg != value)
                     {
+                        if (value.IndexOf("Custom") > -1)
+                        {
+                            if (booby.PrettyGirls.IsTitsInstalled()) value = "Finding More Simulated Boobs";
+                            else if (booby.PrettyGirls.IsAngelsInstalled()) value = "Finding More Nurses";
+                        }
                         if (value == null) msg = "";
                         else msg = value;
-
                         SendMessageChangeSignal();
                     }
                 }
             }
         }
 
-        protected void SendMessageChangeSignal()
-        {
-            Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_CHANGE_MESSAGE, 0, 0);
-        }
-
+        protected void SendMessageChangeSignal() { Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_CHANGE_MESSAGE, 0, 0); }
         protected override void WndProc(ref Message m)
         {
             if (m.HWnd == Handle)
             {
-                if (m.Msg == WM_CHANGE_MESSAGE)
-                {
-                    this.lbtxt.Text = Message;
-                }
+                if (m.Msg == WM_CHANGE_MESSAGE) this.lbtxt.Text = Message;
                 else if (m.Msg == WM_SHOW_HIDE)
                 {
                     int i = m.WParam.ToInt32();
                     if (i == 1) { if (!this.Visible) this.ShowDialog(); else Application.DoEvents(); }
-                    else this.Close();
+                    else { bg = null; this.Close(); }
                 }
             }
             base.WndProc(ref m);
         }
-
-        public void StartSplash()
-        {
-            Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_SHOW_HIDE, 1, 0);
-        }
-
-        public void StopSplash()
-        {
-            Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_SHOW_HIDE, 0, 0);
-        }
+        public void StartSplash() { Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_SHOW_HIDE, 1, 0); }
+        public void StopSplash() { Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_SHOW_HIDE, 0, 0); }
     }
 }

@@ -34,7 +34,11 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
         public ScoreItemBusinessRewards(ScorItem si)
             : base(si)
         {
-            InitializeComponent();          
+            InitializeComponent();
+            if (Helper.WindowsRegistry.UseBigIcons)
+                this.lb.Font = new System.Drawing.Font(this.lb.Font.FontFamily, 12F);
+            if (booby.ThemeManager.ThemedForms)
+                booby.ThemeManager.Global.AddControl(this.lb);
         }
 
         internal void AddElement(ScoreItemBusinessRewards.Element e)

@@ -22,7 +22,7 @@ using System;
 namespace SimPe.Interfaces
 {
 	/// <summary>
-	/// Zusammenfassung für IToolRegistry.
+	/// Summary description for IToolRegistry.
 	/// </summary>
 	public interface IHelpRegistry
 	{		

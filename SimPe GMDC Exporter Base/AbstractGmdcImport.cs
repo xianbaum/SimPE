@@ -33,7 +33,7 @@ namespace SimPe.Plugin.Gmdc
 	/// reading of the vertice, normals... Data
 	/// </summary>
 	/// <remarks>
-	/// SimPE offers diffrent Importer Abstraction classes. The most common 
+	/// SimPe offers diffrent Importer Abstraction classes. The most common 
 	/// one is AbstractGmdcImporter. It is used whenever you just want to 
 	/// import/overwrite Mesh Groups (vertext data...) but want to leave the 
 	/// rest of the Gmdc File alone.
@@ -61,14 +61,24 @@ namespace SimPe.Plugin.Gmdc
 		}
 
 		/// <summary>
-		/// Good Objects should not have more than this number of Faces
+		/// Shit Objects will not have more than this number of Faces
 		/// </summary>
 		public const int CRITICAL_FACE_AMOUNT = 5000;
 
 		/// <summary>
-		/// Good Objects should not have more than this number of Vertices
+        /// Shit Objects will not have more than this number of Vertices
 		/// </summary>
-		public const int CRITICAL_VERTEX_AMOUNT = 2000;
+        public const int CRITICAL_VERTEX_AMOUNT = 2000;
+
+        /// <summary>
+        /// A good Female mesh will have more than this number of Faces
+        /// </summary>
+        public const int FEMBODY_FACE_AMOUNT = 36000;
+
+        /// <summary>
+        /// A good Female mesh will have more than this number of Vertices
+        /// </summary>
+        public const int FEMBODY_VERTEX_AMOUNT = 24000;
 
 		/// <summary>
 		/// Returns a Version Number for the used Interface
@@ -339,12 +349,7 @@ namespace SimPe.Plugin.Gmdc
 				else if (g.Action == GmdcImporterAction.Rename) RenameGroup(g);
 				else if (g.Action == GmdcImporterAction.Replace) ReplaceGroup(grps, g);
 				else if (g.Action == GmdcImporterAction.Update) UpdateGroup(g);
-
-				if (g.Action!=GmdcImporterAction.Nothing) 
-#if DEBUG
-					if (!Helper.WindowsRegistry.HiddenMode) 
-#endif
-						g.Link.Flatten();
+				if (g.Action!=GmdcImporterAction.Nothing) g.Link.Flatten();
 				
 				if (g.UseInBoundingMesh) clearbmesh=true;
 			}	
@@ -402,7 +407,7 @@ namespace SimPe.Plugin.Gmdc
 			if (this.Options.CleanBones) Gmdc.CleanupBones();
 			if (this.Options.UpdateCres) 
 			{
-				if (!IsLocalCres()) this.error += "\n\nThe referenced CRES and this GMDC are not in the same Package File. For security reasons, SimPE did not Update the Bone Hirarchy and locations!";
+				if (!IsLocalCres()) this.error += "\n\nThe referenced CRES and this GMDC are not in the same Package File. For security reasons, SimPe did not Update the Bone Hirarchy and locations!";
 				else gmdc.ParentResourceNode.Parent.SynchronizeUserData();
 			}
 		}

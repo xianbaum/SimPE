@@ -26,7 +26,7 @@ using System.Windows.Forms;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für Listing.
+	/// Summary description for Listing.
 	/// </summary>
 	public class Listing : System.Windows.Forms.Form
 	{
@@ -34,14 +34,14 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.LinkLabel linkLabel1;
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
 		public Listing()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required designer variable.
 			//
 			InitializeComponent();
 
@@ -51,7 +51,7 @@ namespace SimPe.Plugin
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -65,10 +65,10 @@ namespace SimPe.Plugin
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -100,7 +100,7 @@ namespace SimPe.Plugin
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(224, 32);
 			this.label1.TabIndex = 1;
-			this.label1.Text = "Select the SubSet you want to create a new Color Option for.";
+			this.label1.Text = "Select the SubSet you want to create a new Colour Option for.";
 			// 
 			// linkLabel1
 			// 

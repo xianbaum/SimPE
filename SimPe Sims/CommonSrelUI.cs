@@ -22,18 +22,18 @@ using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Windows.Forms;
 using SimPe.Interfaces.Plugin;
 using SimPe.Interfaces;
 using SimPe.PackedFiles.Wrapper.Supporting;
 using SimPe.Data;
-using Ambertation.Windows.Forms;
+using SimPe;
+// using Ambertation.Windows.Forms;
 
 namespace SimPe.PackedFiles.UserInterface
 {
 	/// <summary>
-	/// Zusammenfassung für ExtSrelUI.
+	/// Summary description for ExtSrelUI.
 	/// </summary>
 	public class CommonSrel : System.Windows.Forms.UserControl
     {
@@ -43,30 +43,33 @@ namespace SimPe.PackedFiles.UserInterface
         private Label label91;
         private ComboBox cbfamtype;
         private TextBox tbRel;
-        private LabeledProgressBar pbDay;
-        private LabeledProgressBar pbLife;
+        private booby.LabeledProgressBar pbDay;
+        private booby.LabeledProgressBar pbLife;
         private TableLayoutPanel tableLayoutPanel1;
-        private TransparentCheckBox cblove;
-        private TransparentCheckBox cbcrush;
-        private TransparentCheckBox cbengaged;
-        private TransparentCheckBox cbmarried;
-        private TransparentCheckBox cbbuddie;
-        private TransparentCheckBox cbfriend;
-        private TransparentCheckBox cbsteady;
-        private TransparentCheckBox cbenemy;
-        private TransparentCheckBox cbfamily;
-        private TransparentCheckBox cbbest;
-        private TransparentCheckBox cbBFF;
+        private CheckBox cblove;
+        private CheckBox cbcrush;
+        private CheckBox cbengaged;
+        private CheckBox cbmarried;
+        private CheckBox cbbuddie;
+        private CheckBox cbfriend;
+        private CheckBox cbsteady;
+        private CheckBox cbenemy;
+        private CheckBox cbfamily;
+        private CheckBox cbbest;
+        private CheckBox cbBFF;
+        private CheckBox cbsecret;
+        private CheckBox cbplatonic;
 
         /// <summary> 
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
         #endregion
 
+
         public CommonSrel()
 		{
-			// Dieser Aufruf ist für den Windows Form-Designer erforderlich.
+			// Required designer variable.
 			InitializeComponent();
 
 			SetStyle(
@@ -80,17 +83,16 @@ namespace SimPe.PackedFiles.UserInterface
 
 			InitComboBox();
 
-			tbRel.Visible = Helper.WindowsRegistry.HiddenMode;
-            ltcb = new List<TransparentCheckBox>(new TransparentCheckBox[] {
+            ltcb = new List<CheckBox>(new CheckBox[] {
                 cbcrush, cblove, cbengaged, cbmarried, cbfriend, cbbuddie, cbsteady, cbenemy,
                 null, null, null, null, null, null, cbfamily, cbbest,
-                cbBFF, null, null, null, null, null, null, null,
+                cbBFF, null, cbplatonic, cbsecret, null, null, null, null,
                 null, null, null, null, null, null, null, null,
             });
         }
 
 		/// <summary> 
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -104,10 +106,10 @@ namespace SimPe.PackedFiles.UserInterface
 			base.Dispose( disposing );
 		}
 
-		#region Vom Komponenten-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary> 
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -116,21 +118,23 @@ namespace SimPe.PackedFiles.UserInterface
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label91 = new System.Windows.Forms.Label();
             this.cbfamtype = new System.Windows.Forms.ComboBox();
-            this.tbRel = new System.Windows.Forms.TextBox();
-            this.pbDay = new Ambertation.Windows.Forms.LabeledProgressBar();
-            this.pbLife = new Ambertation.Windows.Forms.LabeledProgressBar();
+            this.pbDay = new booby.LabeledProgressBar();
+            this.pbLife = new booby.LabeledProgressBar();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbcrush = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbfamily = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cblove = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbengaged = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbmarried = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbfriend = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbbuddie = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbsteady = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbbest = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbenemy = new Ambertation.Windows.Forms.TransparentCheckBox();
-            this.cbBFF = new Ambertation.Windows.Forms.TransparentCheckBox();
+            this.cbsecret = new System.Windows.Forms.CheckBox();
+            this.cbcrush = new System.Windows.Forms.CheckBox();
+            this.cbfriend = new System.Windows.Forms.CheckBox();
+            this.cbsteady = new System.Windows.Forms.CheckBox();
+            this.cblove = new System.Windows.Forms.CheckBox();
+            this.cbbuddie = new System.Windows.Forms.CheckBox();
+            this.cbfamily = new System.Windows.Forms.CheckBox();
+            this.cbengaged = new System.Windows.Forms.CheckBox();
+            this.cbbest = new System.Windows.Forms.CheckBox();
+            this.cbenemy = new System.Windows.Forms.CheckBox();
+            this.cbmarried = new System.Windows.Forms.CheckBox();
+            this.cbBFF = new System.Windows.Forms.CheckBox();
+            this.tbRel = new System.Windows.Forms.TextBox();
+            this.cbplatonic = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -164,63 +168,65 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbfamtype.Name = "cbfamtype";
             this.cbfamtype.SelectedIndexChanged += new System.EventHandler(this.ChangedRelation);
             // 
-            // tbRel
-            // 
-            this.tbRel.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            resources.ApplyResources(this.tbRel, "tbRel");
-            this.tbRel.Name = "tbRel";
-            this.tbRel.TextChanged += new System.EventHandler(this.ChangedRelationText);
-            // 
             // pbDay
             // 
             resources.ApplyResources(this.pbDay, "pbDay");
-            this.pbDay.BackColor = System.Drawing.Color.Transparent;
             this.pbDay.DisplayOffset = 0;
+            this.pbDay.LabelAlignment = System.Windows.Forms.DockStyle.Right;
+            this.pbDay.LabelFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.pbDay.Maximum = 200;
             this.pbDay.Name = "pbDay";
             this.pbDay.NumberFormat = "N0";
             this.pbDay.NumberOffset = -100;
             this.pbDay.NumberScale = 1;
-            this.pbDay.SelectedColor = System.Drawing.Color.YellowGreen;
-            this.pbDay.Style = Ambertation.Windows.Forms.ProgresBarStyle.Simple;
+            this.pbDay.Style = booby.ProgresBarStyle.Simple;
+            this.pbDay.TextboxWidth = 40;
             this.pbDay.TokenCount = 30;
-            this.pbDay.UnselectedColor = System.Drawing.Color.Black;
-            this.pbDay.Value = 100;
+            this.pbDay.Value = 90;
             this.pbDay.ChangedValue += new System.EventHandler(this.ChangedDay);
             // 
             // pbLife
             // 
             resources.ApplyResources(this.pbLife, "pbLife");
-            this.pbLife.BackColor = System.Drawing.Color.Transparent;
             this.pbLife.DisplayOffset = 0;
+            this.pbLife.LabelAlignment = System.Windows.Forms.DockStyle.Right;
+            this.pbLife.LabelFont = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Bold);
             this.pbLife.Maximum = 200;
             this.pbLife.Name = "pbLife";
             this.pbLife.NumberFormat = "N0";
             this.pbLife.NumberOffset = -100;
             this.pbLife.NumberScale = 1;
-            this.pbLife.SelectedColor = System.Drawing.Color.YellowGreen;
-            this.pbLife.Style = Ambertation.Windows.Forms.ProgresBarStyle.Simple;
+            this.pbLife.Style = booby.ProgresBarStyle.Simple;
+            this.pbLife.TextboxWidth = 40;
             this.pbLife.TokenCount = 30;
-            this.pbLife.UnselectedColor = System.Drawing.Color.Black;
-            this.pbLife.Value = 100;
+            this.pbLife.Value = 90;
             this.pbLife.ChangedValue += new System.EventHandler(this.ChangedLife);
             // 
             // tableLayoutPanel1
             // 
             resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
+            this.tableLayoutPanel1.Controls.Add(this.cbsecret, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.cbcrush, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cbfamily, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.tbRel, 3, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cblove, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cbengaged, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cbmarried, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbfriend, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.cbbuddie, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.cbsteady, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.cblove, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.cbbuddie, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cbfamily, 1, 2);
+            this.tableLayoutPanel1.Controls.Add(this.cbengaged, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbbest, 2, 1);
             this.tableLayoutPanel1.Controls.Add(this.cbenemy, 2, 2);
+            this.tableLayoutPanel1.Controls.Add(this.cbmarried, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.cbBFF, 3, 1);
+            this.tableLayoutPanel1.Controls.Add(this.cbplatonic, 3, 2);
+            this.tableLayoutPanel1.Controls.Add(this.tbRel, 3, 3);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            // 
+            // cbsecret
+            // 
+            resources.ApplyResources(this.cbsecret, "cbsecret");
+            this.cbsecret.Name = "cbsecret";
+            this.cbsecret.UseVisualStyleBackColor = false;
+            this.cbsecret.CheckedChanged += new System.EventHandler(this.ChangedState);
             // 
             // cbcrush
             // 
@@ -229,12 +235,19 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbcrush.UseVisualStyleBackColor = false;
             this.cbcrush.CheckedChanged += new System.EventHandler(this.ChangedState);
             // 
-            // cbfamily
+            // cbfriend
             // 
-            resources.ApplyResources(this.cbfamily, "cbfamily");
-            this.cbfamily.Name = "cbfamily";
-            this.cbfamily.UseVisualStyleBackColor = false;
-            this.cbfamily.CheckedChanged += new System.EventHandler(this.ChangedState);
+            resources.ApplyResources(this.cbfriend, "cbfriend");
+            this.cbfriend.Name = "cbfriend";
+            this.cbfriend.UseVisualStyleBackColor = false;
+            this.cbfriend.CheckedChanged += new System.EventHandler(this.ChangedState);
+            // 
+            // cbsteady
+            // 
+            resources.ApplyResources(this.cbsteady, "cbsteady");
+            this.cbsteady.Name = "cbsteady";
+            this.cbsteady.UseVisualStyleBackColor = false;
+            this.cbsteady.CheckedChanged += new System.EventHandler(this.ChangedState);
             // 
             // cblove
             // 
@@ -243,27 +256,6 @@ namespace SimPe.PackedFiles.UserInterface
             this.cblove.UseVisualStyleBackColor = false;
             this.cblove.CheckedChanged += new System.EventHandler(this.ChangedState);
             // 
-            // cbengaged
-            // 
-            resources.ApplyResources(this.cbengaged, "cbengaged");
-            this.cbengaged.Name = "cbengaged";
-            this.cbengaged.UseVisualStyleBackColor = false;
-            this.cbengaged.CheckedChanged += new System.EventHandler(this.ChangedState);
-            // 
-            // cbmarried
-            // 
-            resources.ApplyResources(this.cbmarried, "cbmarried");
-            this.cbmarried.Name = "cbmarried";
-            this.cbmarried.UseVisualStyleBackColor = false;
-            this.cbmarried.CheckedChanged += new System.EventHandler(this.ChangedState);
-            // 
-            // cbfriend
-            // 
-            resources.ApplyResources(this.cbfriend, "cbfriend");
-            this.cbfriend.Name = "cbfriend";
-            this.cbfriend.UseVisualStyleBackColor = false;
-            this.cbfriend.CheckedChanged += new System.EventHandler(this.ChangedState);
-            // 
             // cbbuddie
             // 
             resources.ApplyResources(this.cbbuddie, "cbbuddie");
@@ -271,12 +263,19 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbbuddie.UseVisualStyleBackColor = false;
             this.cbbuddie.CheckedChanged += new System.EventHandler(this.ChangedState);
             // 
-            // cbsteady
+            // cbfamily
             // 
-            resources.ApplyResources(this.cbsteady, "cbsteady");
-            this.cbsteady.Name = "cbsteady";
-            this.cbsteady.UseVisualStyleBackColor = false;
-            this.cbsteady.CheckedChanged += new System.EventHandler(this.ChangedState);
+            resources.ApplyResources(this.cbfamily, "cbfamily");
+            this.cbfamily.Name = "cbfamily";
+            this.cbfamily.UseVisualStyleBackColor = false;
+            this.cbfamily.CheckedChanged += new System.EventHandler(this.ChangedState);
+            // 
+            // cbengaged
+            // 
+            resources.ApplyResources(this.cbengaged, "cbengaged");
+            this.cbengaged.Name = "cbengaged";
+            this.cbengaged.UseVisualStyleBackColor = false;
+            this.cbengaged.CheckedChanged += new System.EventHandler(this.ChangedState);
             // 
             // cbbest
             // 
@@ -292,12 +291,34 @@ namespace SimPe.PackedFiles.UserInterface
             this.cbenemy.UseVisualStyleBackColor = false;
             this.cbenemy.CheckedChanged += new System.EventHandler(this.ChangedState);
             // 
+            // cbmarried
+            // 
+            resources.ApplyResources(this.cbmarried, "cbmarried");
+            this.cbmarried.Name = "cbmarried";
+            this.cbmarried.UseVisualStyleBackColor = false;
+            this.cbmarried.CheckedChanged += new System.EventHandler(this.ChangedState);
+            // 
             // cbBFF
             // 
             resources.ApplyResources(this.cbBFF, "cbBFF");
             this.cbBFF.Name = "cbBFF";
             this.cbBFF.UseVisualStyleBackColor = false;
             this.cbBFF.CheckedChanged += new System.EventHandler(this.ChangedState);
+            // 
+            // cbplatonic
+            // 
+            resources.ApplyResources(this.cbplatonic, "cbplatonic");
+            this.cbplatonic.Name = "cbplatonic";
+            this.cbplatonic.UseVisualStyleBackColor = false;
+            this.cbplatonic.CheckedChanged += new System.EventHandler(this.ChangedState);
+            // 
+            // tbRel
+            // 
+            this.tbRel.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            resources.ApplyResources(this.tbRel, "tbRel");
+            this.tbRel.Name = "tbRel";
+            this.tbRel.Visible = false;
+            this.tbRel.TextChanged += new System.EventHandler(this.ChangedRelationText);
             // 
             // CommonSrel
             // 
@@ -313,10 +334,8 @@ namespace SimPe.PackedFiles.UserInterface
             this.tableLayoutPanel1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
 		}
 		#endregion
-
 
         SimPe.PackedFiles.Wrapper.ExtSrel srel;
 		public SimPe.PackedFiles.Wrapper.ExtSrel Srel
@@ -326,25 +345,6 @@ namespace SimPe.PackedFiles.UserInterface
 			{
 				srel = value;
 				UpdateContent();
-
-				/*if (value!=null) 
-				{
-					if (srel==null) 
-					{
-						srel = value;
-						UpdateContent();
-					} 
-					else if (srel.FileDescriptor==null) 
-					{
-						srel = value;
-						UpdateContent();
-					} 
-					else if (srel.FileDescriptor.Equals(value.FileDescriptor))
-					{
-						srel = value;
-						UpdateContent();
-					}
-				} */
 			}
 		}
 
@@ -362,19 +362,32 @@ namespace SimPe.PackedFiles.UserInterface
 			this.cbfamtype.Items.Add(new LocalizedRelationshipTypes(Data.MetaData.RelationshipTypes.Parent));
 			this.cbfamtype.Items.Add(new LocalizedRelationshipTypes(Data.MetaData.RelationshipTypes.Sibling));
 			this.cbfamtype.Items.Add(new LocalizedRelationshipTypes(Data.MetaData.RelationshipTypes.Spouses));
+            if (booby.PrettyGirls.IsAngelsInstalled() || booby.PrettyGirls.IsTitsInstalled())
+            {
+                this.cbfamtype.Items.Add(new LocalizedRelationshipTypes(Data.MetaData.RelationshipTypes.Child_Inlaw));
+                this.cbfamtype.Items.Add(new LocalizedRelationshipTypes(Data.MetaData.RelationshipTypes.Parent_Inlaw));
+                this.cbfamtype.Items.Add(new LocalizedRelationshipTypes(Data.MetaData.RelationshipTypes.Sibling_Inlaw));
+            }
 		}
 
 		bool intern;
-        List<TransparentCheckBox> ltcb;
+        List<CheckBox> ltcb;
 
         protected void UpdateContent()
-		{
-			this.Enabled = (Srel!=null);
-			if (Srel==null) return;
-			intern = true;
-			this.pbDay.Value = Srel.Shortterm;
-			this.pbLife.Value = Srel.Longterm;
-
+        {
+            if (Srel == null)
+            {
+                intern = true;
+                this.pbDay.Value = this.pbLife.Value = 0;
+                this.pbDay.SelectedColor = this.pbLife.SelectedColor = Color.YellowGreen;
+                this.cbfamtype.SelectedIndex = 0;
+                this.Enabled = false;
+                return;
+            }
+            this.Enabled = true;
+            intern = true;
+            this.pbDay.Value = Srel.Shortterm;
+            this.pbLife.Value = Srel.Longterm;
             Boolset bs = Srel.RelationState.Value;
             for (int i = 0; i < bs.Length; i++) if (ltcb[i] != null) ltcb[i].Checked = bs[i];
             if (Srel.RelationState2 != null)
@@ -389,38 +402,71 @@ namespace SimPe.PackedFiles.UserInterface
             else
                 for (int i = 0; i < bs.Length; i++) if (ltcb[i + 16] != null) ltcb[i + 16].Enabled = false;
 
-			this.cbfamtype.SelectedIndex = 0;
-			for (int i=1; i<this.cbfamtype.Items.Count; i++) 
-				if (this.cbfamtype.Items[i] == new Data.LocalizedRelationshipTypes(srel.FamilyRelation)) 
-				{
-					this.cbfamtype.SelectedIndex = i;
-					break;
-				}
+            if (booby.PrettyGirls.IsTitsInstalled() || booby.PrettyGirls.IsAngelsInstalled())
+            {
+                if (Srel.RelationState2 != null)
+                {
+                    this.cbsecret.Enabled = (!this.cbmarried.Checked && !this.cbengaged.Checked && !this.cbsteady.Checked);
+                    this.cbplatonic.Enabled = (!this.cbcrush.Checked && !this.cblove.Checked);
+                }
+            }
+            else
+            {
+                this.cbsecret.Visible = false;
+                this.cbplatonic.Visible = false;
+            }
 
-			this.tbRel.Text = "0x"+Helper.HexString((uint)srel.FamilyRelation);
-			intern = false;
+            this.cbfamtype.SelectedIndex = 0;
+            for (int i = 1; i < this.cbfamtype.Items.Count; i++)
+                if (this.cbfamtype.Items[i] == new Data.LocalizedRelationshipTypes(srel.FamilyRelation))
+                {
+                    this.cbfamtype.SelectedIndex = i;
+                    break;
+                }
 
-			if (ChangedContent!=null) ChangedContent(this, new EventArgs());
-		}
+            this.tbRel.Text = "0x" + Helper.HexString((uint)srel.FamilyRelation);
+
+            if (this.cblove.Checked)
+            {
+                if (pbLife.Value > 90)
+                    pbLife.SelectedColor = Color.HotPink;
+                if (pbDay.Value > 90)
+                    pbDay.SelectedColor = Color.HotPink;
+            }
+            else
+            {
+                if (pbLife.Value > 90)
+                    pbLife.SelectedColor = Color.YellowGreen;
+                if (pbDay.Value > 90)
+                    pbDay.SelectedColor = Color.YellowGreen;
+            }
+            intern = false;
+
+            if (ChangedContent != null) ChangedContent(this, new EventArgs());
+        }
 
 		private void ChangedLife(object sender, System.EventArgs e)
 		{
-			if (pbLife.Value<0) 
-			{
-				if (pbLife.SelectedColor!=Color.OrangeRed) 
-				{					
-					pbLife.SelectedColor = Color.OrangeRed;
-					pbLife.CompleteRedraw();
-				}
-			}
-			else 
-			{
-				if (pbLife.SelectedColor!=Color.Lime) 
-				{					
-					pbLife.SelectedColor = Color.Lime;
-					pbLife.CompleteRedraw();
-				}
-			}
+            if (pbLife.Value < 0)
+            {
+                if (pbLife.SelectedColor != Color.OrangeRed)
+                {
+                    pbLife.SelectedColor = Color.OrangeRed;
+                }
+            }
+            else
+            {
+                if (cblove.Checked && pbLife.Value > 90)
+                {
+                    if (pbLife.SelectedColor != Color.HotPink)
+                        pbLife.SelectedColor = Color.HotPink;
+                }
+                else
+                {
+                    if (pbLife.SelectedColor != Color.YellowGreen)
+                        pbLife.SelectedColor = Color.YellowGreen;
+                }
+            }
 
 			if (intern) return;
 			Srel.Longterm = pbLife.Value;
@@ -429,57 +475,90 @@ namespace SimPe.PackedFiles.UserInterface
 
 		private void ChangedDay(object sender, System.EventArgs e)
 		{
-			if (pbDay.Value<0) 
-			{
-				if (pbDay.SelectedColor!=Color.OrangeRed) 
-				{					
-					pbDay.SelectedColor = Color.OrangeRed;
-					pbDay.CompleteRedraw();
-				}
-			}
-			else 
-			{
-				if (pbDay.SelectedColor!=Color.Lime) 
-				{					
-					pbDay.SelectedColor = Color.Lime;
-					pbDay.CompleteRedraw();
-				}
-			}
+            if (pbDay.Value < 0)
+            {
+                if (pbDay.SelectedColor != Color.OrangeRed)
+                    pbDay.SelectedColor = Color.OrangeRed;
+            }
+            else
+            {
+                if (cblove.Checked && pbDay.Value > 90)
+                {
+                    if (pbDay.SelectedColor != Color.HotPink)
+                        pbDay.SelectedColor = Color.HotPink;
+                }
+                else
+                {
+                    if (pbDay.SelectedColor != Color.YellowGreen)
+                        pbDay.SelectedColor = Color.YellowGreen;
+                }
+            }
 
 			if (intern) return;
 			Srel.Shortterm = pbDay.Value;
 			Srel.Changed = true;
 		}
 
-		private void ChangedRelation(object sender, System.EventArgs e)
-		{
-			if (intern) return;
-			if (this.cbfamtype.SelectedIndex>=0) 			
-				this.tbRel.Text = "0x"+Helper.HexString((uint)((Data.MetaData.RelationshipTypes)((Data.LocalizedRelationshipTypes)cbfamtype.SelectedItem)));
-			
-		}
+        private void ChangedRelation(object sender, System.EventArgs e)
+        {
+            if (intern) return;
+            if (this.cbfamtype.SelectedIndex >= 0)
+                this.tbRel.Text = "0x" + Helper.HexString((uint)((Data.MetaData.RelationshipTypes)((Data.LocalizedRelationshipTypes)cbfamtype.SelectedItem)));
+        }
 
-		private void ChangedRelationText(object sender, System.EventArgs e)
+        private void ChangedRelationText(object sender, System.EventArgs e)
 		{
 			if (intern) return;
 			Srel.FamilyRelation = (Data.LocalizedRelationshipTypes)Helper.StringToUInt32(this.tbRel.Text, (uint)Srel.FamilyRelation, 16);
 			Srel.Changed = true;
 		}
 
-		private void ChangedState(object sender, System.EventArgs e)
-		{
-			if (intern) return;
+        private void ChangedState(object sender, System.EventArgs e)
+        {
+            if (intern) return;
 
-            int i = ltcb.IndexOf((TransparentCheckBox)sender);
+            int i = ltcb.IndexOf((CheckBox)sender);
             if (i >= 0)
             {
                 Boolset val = (i < 16) ? Srel.RelationState.Value : Srel.RelationState2.Value;
-                val[i & 0x0f] = ((TransparentCheckBox)sender).Checked;
+                val[i & 0x0f] = ((CheckBox)sender).Checked;
                 if (i < 16) Srel.RelationState.Value = val;
                 else Srel.RelationState2.Value = val;
                 Srel.Changed = true;
             }
-		}
+
+            if ((booby.PrettyGirls.IsTitsInstalled() || booby.PrettyGirls.IsAngelsInstalled()) && Srel.RelationState2 != null)
+            {
+                this.cbsecret.Enabled = (!this.cbmarried.Checked && !this.cbengaged.Checked && !this.cbsteady.Checked);
+                this.cbplatonic.Enabled = (!this.cbcrush.Checked && !this.cblove.Checked);
+            }
+            if (this.cblove.Checked)
+            {
+                if (pbLife.Value > 90)
+                {
+                    if (pbLife.SelectedColor != Color.HotPink)
+                        pbLife.SelectedColor = Color.HotPink;
+                }
+                if (pbDay.Value > 90)
+                {
+                    if (pbDay.SelectedColor != Color.HotPink)
+                        pbDay.SelectedColor = Color.HotPink;
+                }
+            }
+            else                
+            {
+                if (pbLife.Value > 90)
+                {
+                    if (pbLife.SelectedColor != Color.YellowGreen)
+                        pbLife.SelectedColor = Color.YellowGreen;
+                }
+                if (pbDay.Value > 90)
+                {
+                    if (pbDay.SelectedColor != Color.YellowGreen)
+                        pbDay.SelectedColor = Color.YellowGreen;
+                }
+            }
+        }
 
 		public SimPe.PackedFiles.Wrapper.ExtSDesc SourceSim
 		{

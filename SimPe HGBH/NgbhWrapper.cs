@@ -67,7 +67,7 @@ namespace SimPe.Plugin
 		NgbhSlotList[] preitems;
 		Collections.NgbhSlots slota;
 		Collections.NgbhSlots slotb;
-		Collections.NgbhSlots slotc;
+        Collections.NgbhSlots slotc;
 
 		/// <summary>
 		/// Returns / Sets a Slot
@@ -115,7 +115,16 @@ namespace SimPe.Plugin
 				slotc = value; 
 				Changed = true;
 			}
-		}
+        }
+
+        /// <summary>
+        /// Returns / Sets the neighbourhood zone for Road Textures
+        /// </summary>
+        public byte[] ZoneType
+        {
+            get { return zonename; }
+            set { zonename = value; }
+        }
 
 		#endregion
 
@@ -129,11 +138,8 @@ namespace SimPe.Plugin
 		/// Constructor
 		/// </summary>
 		public Ngbh(Interfaces.IProviderRegistry provider) : base()
-		{
-			
+		{			
 			this.provider = provider;
-
-
 			this.id = new byte [] 
 			{
 				(byte)'H',
@@ -141,9 +147,7 @@ namespace SimPe.Plugin
 				(byte)'G',
 				(byte)'N'				
 			};
-
 			this.Version = NgbhVersion.University;
-
 			this.header = new byte [] 
 			{				
 				0, 0, 0, 0,
@@ -153,11 +157,10 @@ namespace SimPe.Plugin
 			zonename = Helper.ToBytes("temperate", 9);
 			zero = new byte[0x10];
 			preitems = new NgbhSlotList[0x02];
-			for (int i=0; i<preitems.Length; i++) preitems[i] = new NgbhSlotList(this);
-			
+			for (int i=0; i<preitems.Length; i++) preitems[i] = new NgbhSlotList(this);			
 			slota = new Collections.NgbhSlots(this, Data.NeighborhoodSlots.Lots);
 			slotb = new Collections.NgbhSlots(this, Data.NeighborhoodSlots.Families);
-			slotc = new Collections.NgbhSlots(this, Data.NeighborhoodSlots.Sims);
+            slotc = new Collections.NgbhSlots(this, Data.NeighborhoodSlots.Sims);
 		}
 
 		public static SimMemoryType[] AllowedMemoryTypes(Data.NeighborhoodSlots type)
@@ -184,7 +187,23 @@ namespace SimPe.Plugin
 											   SimMemoryType.Token,
 											   SimMemoryType.ValueToken	
 										   };
-			}
+            }
+
+            if (type == Data.NeighborhoodSlots.Families)
+            {
+                return new SimMemoryType[] {
+											   SimMemoryType.Object,
+											   SimMemoryType.Inventory,
+											   SimMemoryType.Token
+										   };
+            }
+
+            if (type == Data.NeighborhoodSlots.Lots)
+            {
+                return new SimMemoryType[] {
+											   SimMemoryType.Token
+										   };
+            }
 
 			return new SimMemoryType[0]; 
 		}
@@ -209,9 +228,9 @@ namespace SimPe.Plugin
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"Neighborhood/Memory Wrapper",
+				"Neighbourhood/Memory Wrapper",
 				"Quaxi",
-				"This File contains the Memories and Inventories of all Sims and Lots that Live in this Neighborhood.",
+				"This File contains the Memories and Inventories of all Sims that Live in this Neighbourhood.",
 				12,
 				System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.ngbh.png"))
 				); 
@@ -223,7 +242,7 @@ namespace SimPe.Plugin
 				return Families;
 
 			if (id==Data.NeighborhoodSlots.Lots || id==Data.NeighborhoodSlots.LotsIntern)
-				return Lots;
+                return Lots;
 
 			return Sims;
 		}	
@@ -235,37 +254,46 @@ namespace SimPe.Plugin
 				slots = Families;
 
 			if (id==Data.NeighborhoodSlots.Lots || id==Data.NeighborhoodSlots.LotsIntern)
-				slots = Lots;
+                slots = Lots;
 
 			NgbhSlot slot = slots.GetInstanceSlot(inst);
 			if (slot!=null)
 				return slot.GetItems(id);
 
 			return null;
-		}	
+		}
 
+        /*
+         * from hoodvhecker
+            uint uBlockID = BR.ReadUInt32();        //id
+            uint uBlockVersion = BR.ReadUInt32();   //version
+            uint uDummy = BR.ReadUInt32();          //header 4 of 12 bytes
+            uDummy = BR.ReadUInt32();               //header 4 of 12 bytes
+            uDummy = BR.ReadUInt32();               //header 4 of 12 bytes -Castaway now gets needs another 32 bytes
+            // Terrain Type
+            int iStrLen = BR.ReadInt32();
+            byte[] bString = BR.ReadBytes(iStrLen);
+            bString = BR.ReadBytes(28);             //zero (20 or 24) - extra 4 bytes for < Nightlife
+            */
 
-		/// <summary>
+        /// <summary>
 		/// Unserializes a BinaryStream into the Attributes of this Instance
 		/// </summary>
 		/// <param name="reader">The Stream that contains the FileData</param>
 		protected override void Unserialize(System.IO.BinaryReader reader)
 		{
 			ArrayList list = new ArrayList();
-
-			id = reader.ReadBytes(id.Length);
+			id = reader.ReadBytes(id.Length); //4 bytes
 			version = reader.ReadUInt32();
             if (version == (uint)NgbhVersion.Castaway) header = new byte[12 + 32];
-			header = reader.ReadBytes(header.Length);
+            header = reader.ReadBytes(header.Length);//12 bytes long if not Castaway
             
 			int textlen = reader.ReadInt32();
-			zonename = reader.ReadBytes(textlen);			
-			if (version>=(uint)NgbhVersion.Nightlife) zero = reader.ReadBytes(0x14);
+			zonename = reader.ReadBytes(textlen);
+            if (version >= (uint)NgbhVersion.Nightlife) zero = reader.ReadBytes(0x14);//20 bytes Nightlife is version 0xbe
 			else zero = reader.ReadBytes(0x18);
 
-			//read preitems
-			for (int i=0; i<preitems.Length; i++) preitems[i].Unserialize(reader);
-			
+            for (int i = 0; i < preitems.Length; i++) preitems[i].Unserialize(reader);
 
 			int blocklen = reader.ReadInt32();
 			slota.Clear();
@@ -289,7 +317,7 @@ namespace SimPe.Plugin
 			{
 				NgbhSlot item = slotc.AddNew(0);
 				item.Unserialize(reader);
-			}
+            }
 
 			Changed = false;
 		}

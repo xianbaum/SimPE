@@ -31,7 +31,7 @@ using Ambertation.Threading;
 namespace SimPe.Providers
 {
 	/// <summary>
-	/// Zusammenfassung für LotProvider.
+	/// Summary description for LotProvider.
 	/// </summary>
 	public class LotProvider : StoppableThread, SimPe.Interfaces.Providers.ILotProvider
 	{
@@ -110,7 +110,6 @@ namespace SimPe.Providers
 			{
 				get {
 					if (LtxtFileIndexItem==null) return null;
-
 					
 					SimPe.Interfaces.Files.IPackedFileDescriptor pfd = LtxtFileIndexItem.Package.FindFile(0x104F6A6E, 0, Data.MetaData.LOCAL_GROUP, this.Instance);
 					if (pfd==null) return null;
@@ -124,7 +123,6 @@ namespace SimPe.Providers
 				get 
 				{
 					if (LtxtFileIndexItem==null) return null;
-
 					
 					SimPe.Interfaces.Files.IPackedFileDescriptor pfd = LtxtFileIndexItem.Package.FindFile(Data.MetaData.STRING_FILE, 0, Data.MetaData.LOCAL_GROUP, this.Instance | 0x8000);
 					if (pfd==null) return null;
@@ -150,8 +148,9 @@ namespace SimPe.Providers
 							return ret;
 						}
 						str.Dispose();
-					}					
-					
+					}
+                    else if (this.Instance == 0) return "Family Bin";
+
 					return Name;
 				}
 			}
@@ -190,18 +189,7 @@ namespace SimPe.Providers
 		{			
 			BaseFolder = folder;
 
-			ArrayList folders = new ArrayList();
-			/*if (Helper.WindowsRegistry.EPInstalled>=1) 
-			{
-				folders.Add(new SimPe.FileTableItem(System.IO.Path.Combine(Helper.WindowsRegistry.SimsEP1Path, @"TSData\Res\NeighborhoodTemplate\U001\Lots\")));
-				folders.Add(new SimPe.FileTableItem(System.IO.Path.Combine(Helper.WindowsRegistry.SimsEP1Path, @"TSData\Res\NeighborhoodTemplate\U002\Lots\")));
-				folders.Add(new SimPe.FileTableItem(System.IO.Path.Combine(Helper.WindowsRegistry.SimsEP1Path, @"TSData\Res\NeighborhoodTemplate\U003\Lots\")));
-			}
-			if (Helper.WindowsRegistry.EPInstalled>=2) 
-			{
-				folders.Add(new SimPe.FileTableItem(System.IO.Path.Combine(Helper.WindowsRegistry.SimsEP2Path, @"TSData\Res\NeighborhoodTemplate\D001\Lots\")));				
-			}*/
-			
+			ArrayList folders = new ArrayList();			
 			lotfi = new SimPe.Plugin.FileIndex(folders);
 			ngbhfi = lotfi.AddNewChild();
 		}
@@ -215,9 +203,9 @@ namespace SimPe.Providers
 
 
 		/// <summary>
-		/// Returns or sets the Folder where the Character Files are stored
+		/// Returns or sets the Folder where the Lot Files are stored
 		/// </summary>
-		/// <remarks>Sets the names List to null</remarks>
+        /// <remarks>Sets the content List to null</remarks>
 		public string BaseFolder
 		{
 			get 
@@ -226,10 +214,11 @@ namespace SimPe.Providers
 			}
 			set 
 			{
-				if (dir!=value) 
-				{
-					WaitForEnd();
-					content = null;		
+				if (dir!=value)
+                {
+                    WaitForEnd(); // wait for any other stoppable threads to end
+                    if (dir != value) // if other thread has set dir then it has also set content so lets not wipe it out
+                        content = null;		
 				}
 				dir = value;
                 string[] pe = dir.Split(new char[] {'/','\\'});
@@ -249,22 +238,20 @@ namespace SimPe.Providers
 		
 		public event SimPe.Interfaces.Providers.LoadLotData LoadingLot;
 		protected override void StartThread()
-		{			
-			lotfi.Load();
-			SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] items = lotfi.FindFile(0x856DDBAC, Data.MetaData.LOCAL_GROUP, 0x35CA0002, null);
+		{
+            lotfi.Load();
+            SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] items = lotfi.FindFile(0x856DDBAC, Data.MetaData.LOCAL_GROUP, 0x35CA0002, null);
 			bool run = Wait.Running;
 			if (!run) Wait.Start();
 			Wait.SubStart(items.Length);
 			try 
 			{
-								
-				int ct = 0;
+                int ct = 0;
 				int step = Math.Max(2, Wait.MaxProgress / 100);
 				foreach(SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem item in items) 
 				{
 					if (this.HaveToStop) 
-						break;					
-
+						break;
 					
 					SimPe.Interfaces.Files.IPackageFile pkg = item.Package;
 					
@@ -280,7 +267,7 @@ namespace SimPe.Providers
 					}
 
 					SimPe.PackedFiles.Wrapper.Picture pic = new SimPe.PackedFiles.Wrapper.Picture();
-					pic.ProcessData(item);
+                    pic.ProcessData(item);
 
 					uint inst = GetInstanceFromFilename(pkg.SaveFileName);
 
@@ -309,7 +296,7 @@ namespace SimPe.Providers
 			finally 
 			{
 				Wait.SubStop();
-				if (!run)Wait.Stop();
+				if (!run)Wait.Stop(true);
 			}
 				
 			ended.Set();
@@ -317,7 +304,7 @@ namespace SimPe.Providers
 		}
 
 		
-		object sync = new object();		
+		object sync = new object();
 
 		void AddHoodsToFileIndex()
 		{
@@ -346,8 +333,9 @@ namespace SimPe.Providers
 		/// </summary>
 		public void LoadLotsFromFolder() 
 		{
-			WaitForEnd();
-			content = new Hashtable();
+            WaitForEnd(); // wait for any other stoppable threads to end
+            if (content != null) return; // if content was set by other thread then lets not do it again
+            content = new Hashtable();
 			
 			if (Helper.StartedGui==Executable.Classic) return;
 			if (!Directory.Exists(dir)) return;
@@ -355,12 +343,11 @@ namespace SimPe.Providers
 			Wait.SubStart();
 			ngbhfi.Clear();
 
-			AddLotsToFileIndex();			
+			AddLotsToFileIndex();
 			AddHoodsToFileIndex();
 			Wait.SubStop();
-							
 			
-			this.ExecuteThread(ThreadPriority.AboveNormal, "Lot Provider", true, true);						
+			this.ExecuteThread(ThreadPriority.AboveNormal, "Lot Provider", true, true);
 		}
 
 		public SimPe.Interfaces.Providers.ILotItem FindLot(uint inst)

@@ -116,7 +116,7 @@ namespace SimPe
 				{
 					if( oAttrib.GetType().Equals(typeof(GlobalizedPropertyAttribute)) )
 					{
-						displayName = ((GlobalizedPropertyAttribute)oAttrib).Description;
+                        displayName = ((GlobalizedPropertyAttribute)oAttrib).Description;
 						tableName = ((GlobalizedPropertyAttribute)oAttrib).Table;
 					}
 				}
@@ -152,7 +152,7 @@ namespace SimPe
 				{
 					if( oAttrib.GetType().Equals(typeof(GlobalizedPropertyAttribute)) )
 					{
-						displayName = ((GlobalizedPropertyAttribute)oAttrib).Description;
+                        displayName = ((GlobalizedPropertyAttribute)oAttrib).Description;
 						tableName = ((GlobalizedPropertyAttribute)oAttrib).Table;
 					}
 				}
@@ -167,9 +167,9 @@ namespace SimPe
 				
 				
 				// Get the string from the resources. 
-				// If this fails, then use default empty string indictating 'no description' 
-				string s = resource.GetString("[Description:"+displayName+"]");
-				this.localizedDescription = (s!=null)? s : ""; 
+				// If this fails, then use default empty string indictating 'no description'
+                string s = resource.GetString("[Description:" + displayName + "]");
+                this.localizedDescription = (s != null) ? s : "";
 
 				return this.localizedDescription;
 			}

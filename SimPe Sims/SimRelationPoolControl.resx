@@ -119,13 +119,13 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="gp.Size" type="System.Drawing.Size, System.Drawing">
-    <value>325, 425</value>
+    <value>325, 422</value>
   </data>
   <data name="&gt;&gt;gp.Name" xml:space="preserve">
     <value>gp</value>
   </data>
   <data name="&gt;&gt;gp.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.Wrapper.SimListView, simpe.sims, Version=1.0.2352.24847, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.Wrapper.SimListView, simpe.sims, Version=0.77.69.25, Culture=neutral, PublicKeyToken=null</value>
   </data>
   <data name="&gt;&gt;gp.Parent" xml:space="preserve">
     <value>$this</value>
@@ -253,7 +253,7 @@
     <value>Top</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 22</value>
+    <value>1, 25</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>325, 48</value>
@@ -289,6 +289,6 @@
     <value>SimRelationPoolControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>SimPe.PackedFiles.Wrapper.SimPoolControl, simpe.sims, Version=1.0.2352.24847, Culture=neutral, PublicKeyToken=null</value>
+    <value>SimPe.PackedFiles.Wrapper.SimPoolControl, simpe.sims, Version=0.77.69.25, Culture=neutral, PublicKeyToken=null</value>
   </data>
 </root>

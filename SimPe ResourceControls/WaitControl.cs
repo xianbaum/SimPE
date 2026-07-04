@@ -29,16 +29,13 @@ namespace SimPe
             MaxProgress = 0;
             Waiting = false;            
             ShowProgress = false;
-            ShowAnimation = true;
+            ShowAnimation = false;
             ShowText = true;
             nowp = -1;
 
-            System.Reflection.Assembly a = this.GetType().Assembly;
-            for (int i = 1; i <= 8; i++)
+            if (booby.ThemeManager.ThemedForms && Helper.WindowsRegistry.ShowWaitBarPermanent)
             {
-                System.IO.Stream s = a.GetManifestResourceStream("SimPe." + i.ToString() + ".png");
-                if (s != null)
-                    this.tbWait.Images.Add(Image.FromStream(s));
+                booby.ThemeManager.Global.AddControl(this.statusStrip1);
             }
         }
 
@@ -132,23 +129,17 @@ namespace SimPe
         {
             val = Math.Min(pb.Maximum, value);
             this.pb.Value = val;
-
-            //float perc = (((float)val / (float)pb.Maximum) * 100);
-
             int perc = (val * 100) / pb.Maximum;
             int diff = Math.Abs(nowp - perc);
             if (diff > 0)
             {
                 tbPercent.Text = perc.ToString("N0") + "%";
             }
-
             if (diff >= 10)
-            {            
-    
+            {    
                 this.statusStrip1.Refresh();
                 nowp = perc;
-            }
-            
+            }            
         }
 
         bool wait;        
@@ -169,15 +160,14 @@ namespace SimPe
             if (wait)
             {
                 this.Visible = true;
-                this.tbWait.Start();
             }
             else
             {
                 if (!this.DesignMode && !Helper.WindowsRegistry.ShowWaitBarPermanent) this.Visible = false;
                 this.Message = "";
                 this.Progress = 0;
+                this.Image = null;
                 this.ShowProgress = false;
-                this.tbWait.Stop();
             }
         }
 
@@ -196,7 +186,9 @@ namespace SimPe
         void DoShowProgress(bool value)
         {
             spb = value;
-            pb.Visible = spb;
+            //pb.Visible = spb;
+            this.pb2.Visible = (sanim && spb);
+            this.pb.Visible = (!sanim && spb);
             tbPercent.Visible = spb;
             if (spb)
                 tbInfo.BorderSides = ToolStripStatusLabelBorderSides.Left;
@@ -210,17 +202,14 @@ namespace SimPe
             get { return sanim; }
             set
             {
-                int val = 0;
-                if (value) val = 1;
-                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_SHOW_HIDE_ANIMATION, val, 0);
-
+                sanim = value;
+                Ambertation.Windows.Forms.APIHelp.SendMessage(myhandle, WM_USER_SHOW_HIDE_ANIMATION, 0, 0);
             }
         }
 
         private void DoShowAnimation(bool value)
         {
-            sanim = value;
-            tbWait.Visible = sanim;
+            if (Waiting) DoShowProgress(spb);
         }
 
         bool stxt;
@@ -252,13 +241,13 @@ namespace SimPe
         {
             get
             {
-                return null;
+                return this.tbInfo.Image; // null;
             }
             set
             {
-                
+                this.tbInfo.Image = value;
             }
-        }       
+        }
 
         public void Wait()
         {
@@ -280,6 +269,7 @@ namespace SimPe
         {
             ShowProgress = false;
             Waiting = false;
+            sanim = false;
         }
 
         #endregion

@@ -8,14 +8,14 @@ using System.Windows.Forms;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für NgbhSlotListView.
+	/// Summary description for NgbhSlotListView.
 	/// </summary>
 	[System.ComponentModel.DefaultEvent("SelectedSlotChanged")]
 	public class NgbhSlotListView : System.Windows.Forms.UserControl
 	{
 		private System.Windows.Forms.ListView lv;
 		/// <summary> 
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
@@ -29,14 +29,14 @@ namespace SimPe.Plugin
 				ControlStyles.ResizeRedraw 
 				| ControlStyles.DoubleBuffer
 				,true);
-			// Dieser Aufruf ist für den Windows Form-Designer erforderlich.
+			// Required designer variable.
 			InitializeComponent();
 
 			SetContent();
 		}
 
 		/// <summary> 
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -50,10 +50,10 @@ namespace SimPe.Plugin
 			base.Dispose( disposing );
 		}
 
-		#region Vom Komponenten-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary> 
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{

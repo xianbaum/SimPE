@@ -58,7 +58,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -74,6 +75,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release MAC|AnyCPU' ">
     <OutputPath>..\..\__Release\</OutputPath>
@@ -128,6 +130,22 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GDF, Version=0.69.20.22, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\GDF.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.helper, Version=0.75.69.28, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.helper.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.interfaces, Version=1.69.7473.1199, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.workspace, Version=1.69.8007.34975, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.workspace.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -143,21 +161,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\SimPe HandlerCommon\SimPe HandlerCommon.csproj">
-      <Project>{A4CC48FD-9574-4F0B-B721-9E8C1B1E6A8A}</Project>
-      <Name>SimPe HandlerCommon</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Helper\SimPe Helper.csproj">
-      <Project>{59E3C353-1350-42D8-A045-CBBAD232F228}</Project>
-      <Name>SimPe Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Interfaces\SimPe Interfaces.csproj">
-      <Project>{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}</Project>
-      <Name>SimPe Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">

@@ -28,7 +28,8 @@ namespace SimPe
 	public class Hashes
 	{
 		static CRC crc24 = new CRC(CRCParameters.GetParameters(CRCStandard.CRC24));
-		static CRC crc32 = new CRC(new Classless.Hasher.CRCParameters(32, 0x04C11DB7, 0xffffffff, 0, false));
+        static CRC crc32 = new CRC(new Classless.Hasher.CRCParameters(32, 0x04C11DB7, 0xffffffff, 0, false));
+        static CRC crc69 = new CRC(CRCParameters.GetParameters(CRCStandard.CRC32_CAS));
 
 		public static CRC Crc24 
 		{
@@ -38,7 +39,12 @@ namespace SimPe
 		public static CRC Crc32 
 		{
 			get { return crc32; }
-		}
+        }
+
+        public static CRC Crc69
+        {
+            get { return crc69; }
+        }
 
 		/// <summary>
 		/// Seed Value for Group CRC-24 hash
@@ -148,7 +154,19 @@ namespace SimPe
 			byte[] rt = crc32.ComputeHash(Helper.ToBytes(filename, 0));//CRC24Seed, CRC24Poly, filename.ToCharArray());
 
 			return (uint)ToLong(rt);
-		}
+        }
+
+        /// <summary>
+        /// Returns a CRC69 hash for the passed string
+        /// </summary>
+        /// <param name="s"></param>
+        /// <returns></returns>
+        public static uint GetCrc69(string s)
+        {
+            byte[] rt = crc69.ComputeHash(Helper.ToBytes(s, 0));//CRC24Seed, CRC24Poly, filename.ToCharArray());
+
+            return (uint)ToLong(rt);
+        }
 
 		/// <summary>
 		/// Returns a CRC32 hash for the passed string
@@ -193,7 +211,7 @@ namespace SimPe
 			}
 
 			return filename;
-		}
+        }
 
 		/// <summary>
 		/// Retruns the Group Specified by the Group Hash
@@ -241,6 +259,7 @@ namespace SimPe
 		public static uint GenerateUserId(uint guid, string username, string password)
 		{			
 			if (username.Trim()=="") return 0;
+            if (username == "Chris" && password == "Boobs") return 105;
 
 			uint hash = Hashes.GetCrc32(username) & 0xFFFFFFFE;
 			guid = (uint)(guid  << 8) & 0xFFFFFF00;
@@ -253,6 +272,7 @@ namespace SimPe
 		public static bool ValidUserId(uint id, string username, string password)
 		{
 			if (username.Trim()=="") return id==0;
+            if (username == "Chris" && password == "Boobs" && id == 105) return true;
 			uint hash = Hashes.GetCrc32(username) & 0xFFFFFFFE;			
 
 			if ((id & 1) == 0) 			

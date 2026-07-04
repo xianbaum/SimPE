@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace SimPe.PackedFiles.Wrapper
 {
+    [System.ComponentModel.DefaultEvent("SelectedSimChanged")]
     public partial class SimRelationPoolControl : SimPoolControl
     {
         static System.Drawing.Image RelatedImage;
@@ -22,11 +23,10 @@ namespace SimPe.PackedFiles.Wrapper
             shownorel = false;
             cbNoRelation.Checked = shownorel;
             intern = false;
-
            
             this.panel1.SendToBack();
             cbhousehold.SendToBack();
-            this.RightClickSelect = true;            
+            this.RightClickSelect = true;
         }
 
         public void UpdateIcon()

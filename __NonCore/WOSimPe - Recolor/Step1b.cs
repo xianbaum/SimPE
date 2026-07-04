@@ -25,8 +25,11 @@ namespace SimPe.Wizards
 		}
 
 		protected override bool Init()
-		{
-			SimPe.Plugin.SubsetSelectForm.ImageSize = new System.Drawing.Size(60, 60);
+        {
+            if (Helper.WindowsRegistry.UseBigIcons)
+            SimPe.Plugin.SubsetSelectForm.ImageSize = new System.Drawing.Size(120, 120);
+            else
+            SimPe.Plugin.SubsetSelectForm.ImageSize = new System.Drawing.Size(60, 60);
 			return Step1.Form.Recolor();
 		}
 
@@ -34,7 +37,7 @@ namespace SimPe.Wizards
 		{
 			get
 			{
-				return "Select the Subsets you want to Recolor and the Basetexture for each Subset";
+				return "Select the Subsets you want to Recolour and the Basetexture for each Subset";
 			}
 		}
 

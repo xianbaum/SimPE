@@ -28,7 +28,7 @@
     </UpgradeBackupLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\__Debug\</OutputPath>
+    <OutputPath>\Debug\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -58,7 +58,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -74,34 +75,12 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Mac|AnyCPU' ">
-    <OutputPath>..\__Release\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
-    <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE MAC</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>false</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
-    <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
-    <ErrorReport>prompt</ErrorReport>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>false</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <DebugType>full</DebugType>
     <PlatformTarget>x86</PlatformTarget>
@@ -109,17 +88,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <BaseAddress>285212672</BaseAddress>
-    <Optimize>true</Optimize>
-    <DebugType>
-    </DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release Mac|x86' ">
-    <OutputPath>bin\x86\Release Mac\</OutputPath>
-    <DefineConstants>TRACE MAC</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
     <DebugType>
@@ -128,18 +98,21 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ambertation.utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="GDF, Version=0.69.20.22, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ambertation.utilities.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\__Release\GDF.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic">
       <Name>Microsoft.VisualBasic</Name>
     </Reference>
     <Reference Include="NetDocks, Version=1.0.2529.20888, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\NetDocks.dll</HintPath>
+      <HintPath>..\__Release\NetDocks.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="simpe.splash, Version=1.69.9345.38834, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.splash.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -162,11 +135,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="XPCommonControls">
-      <Name>xpcommoncontrols</Name>
-      <HintPath>..\xpcommoncontrols.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alias.cs">
@@ -179,6 +147,7 @@
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Boolset.cs" />
     <Compile Include="CaseInvariantArrayList.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -207,7 +176,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="IniRegistry.cs" />
-    <Compile Include="IUpdatablePlugin.cs" />
+    <Compile Include="LabelledBoolsetControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LabelledBoolsetControl.Designer.cs">
+      <DependentUpon>LabelledBoolsetControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="PathProvider.cs" />
     <Compile Include="ExpansionItem.cs" />
     <Compile Include="FlagBase.cs">
@@ -273,6 +247,17 @@
     <Compile Include="PathSettings.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="pjseMsgBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="pjseMsgBox.Designer.cs">
+      <DependentUpon>pjseMsgBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="PropertyObjectBuilder.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -311,12 +296,6 @@
     <Compile Include="TypeAlias.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UpdateInfo.cs" />
-    <Compile Include="UpdateInfoList.cs" />
-    <Compile Include="UpdateState.cs" />
-    <Compile Include="VisualStyleLinkLabel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="WaitingBar.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -327,9 +306,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="WarningException.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="WebUpdate.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="XmlRegistry.cs">
@@ -365,14 +341,6 @@
       <DependentUpon>SelectSimFolder.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="WaitingForm.de.resx">
-      <DependentUpon>WaitingForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WaitingForm.es.resx">
-      <DependentUpon>WaitingForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="WaitingForm.pl.resx">
       <DependentUpon>WaitingForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -396,6 +364,14 @@
       <DependentUpon>ExceptionForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="LabelledBoolsetControl.resx">
+      <DependentUpon>LabelledBoolsetControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization.en-US.resx">
+      <DependentUpon>Localization.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localization.fr.resx">
       <DependentUpon>Localization.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -407,6 +383,15 @@
     <EmbeddedResource Include="Localization.ru.resx">
       <DependentUpon>Localization.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="pjseMsgBox.resx">
+      <DependentUpon>pjseMsgBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="quaxi_pets_censor_v1.package" />
     <EmbeddedResource Include="WaitingForm.fr.resx">
@@ -421,12 +406,6 @@
       <DependentUpon>WaitingForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\pjseCoderPlugin-cvs\pjse System Classes\SimPe pjse System Classes.csproj">
-      <Project>{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}</Project>
-      <Name>SimPe pjse System Classes</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

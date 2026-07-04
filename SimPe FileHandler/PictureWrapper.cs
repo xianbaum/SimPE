@@ -78,28 +78,24 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		protected bool DoLoad(System.IO.BinaryReader reader, bool errmsg)
-		{			
+		{
 			try 
 			{
-				image = System.Drawing.Image.FromStream(reader.BaseStream); 
-				
+				image = System.Drawing.Image.FromStream(reader.BaseStream);
 				return true;
 			} 
 			catch (Exception)
 			{
-				try 
-				{
-					image = Ambertation.Viewer.LoadTGAClass.LoadTGA(reader.BaseStream);	
-					//image = System.Drawing.Bitmap.FromStream(reader.BaseStream, true);
-
+				try
+                {
+                    image = booby.LoadTGAClass.LoadTGA(reader.BaseStream);
 					return true;
 				}
 				catch (Exception ex) 
 				{
-					if (errmsg) Helper.ExceptionMessage(Localization.Manager.GetString("errunsupportedimage"), ex);
+                    if (errmsg && !Helper.WindowsRegistry.Silent) Helper.ExceptionMessage(Localization.Manager.GetString("errunsupportedimage"), ex);
 				}
 			}
-
 			return false;
 		}
 
@@ -122,7 +118,6 @@ namespace SimPe.PackedFiles.Wrapper
 				bw.Write(reader.ReadBytes((int)(reader.BaseStream.Length-0x40)));
 				DoLoad(br, true);
 			}
-
 		}
 		#endregion
 
@@ -133,12 +128,12 @@ namespace SimPe.PackedFiles.Wrapper
 			get 
 			{
 				uint[] Types = {
-								   0x0C7E9A76, //jpeg
-								   0x856DDBAC, //jpeg
-								   0x424D505F, //bitmap
-								   0x856DDBAC, //png
-								   0x856DDBAC,  //tga
-								   0xAC2950C1, //thumbnail
+					0x0C7E9A76, //jpeg
+					0x856DDBAC, //jpeg
+					0x424D505F, //bitmap
+					0x856DDBAC, //png
+					0x856DDBAC,  //tga
+					0xAC2950C1, //thumbnail
 					0x4D533EDD,
 					0xAC2950C1,
 					0x2C30E040,
@@ -151,7 +146,8 @@ namespace SimPe.PackedFiles.Wrapper
 					0xCC489E46,
 					0xCC48C51F,
 					0x8C3CE95A,
-					0xEC3126C4
+					0xEC3126C4,
+                    0xF03D464C
 							   };
 				return Types;
 			}
@@ -168,15 +164,12 @@ namespace SimPe.PackedFiles.Wrapper
 		#endregion
 
 		#region IDisposable Member
-
 		public override void Dispose()
 		{
 			if (this.image!=null) this.image.Dispose();
 			image = null;
-
 			base.Dispose();
 		}
-
 		#endregion
 	}
 }

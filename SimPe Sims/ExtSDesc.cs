@@ -27,7 +27,7 @@ using System.Collections;
 namespace SimPe.PackedFiles.Wrapper
 {
 	/// <summary>
-	/// Zusammenfassung für ExtSDesc.
+    /// Summary description for ExtSDesc.
 	/// </summary>
 	public class ExtSDesc : SDesc/*, SimPe.Interfaces.Plugin.IMultiplePackedFileWrapper*/
 	{
@@ -44,7 +44,7 @@ namespace SimPe.PackedFiles.Wrapper
 				"Extended Sim Description Wrapper",
 				"Quaxi",
 				"This File contains Settings (like interests, friendships, money, age, gender...) for one Sim.",
-				7,
+				8,
 				System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.PackedFiles.Wrapper.sdsc.png"))				
 				); 
 		}
@@ -85,7 +85,7 @@ namespace SimPe.PackedFiles.Wrapper
 			{
 				return (((this.FamilyInstance & 0x7f00) == 0x7f00) || this.FamilyInstance==0) && !IsNPC;
 			}
-		}
+        }
 		
 		public override string CharacterFileName
 		{
@@ -103,7 +103,6 @@ namespace SimPe.PackedFiles.Wrapper
 				return base.CharacterFileName;
 			}
 		}
-
 
 		bool chgname;
 		string sname, sfname;
@@ -137,33 +136,26 @@ namespace SimPe.PackedFiles.Wrapper
 
 		bool locked;
 		protected override void Unserialize(System.IO.BinaryReader reader)
-		{
-            
+        {
             //lock (SimPe.Helper.WindowsRegistry)
             {
                 if (locked) { return; }
                 base.Unserialize(reader);
                 chgname = false;
                 crmap.Clear();
-                }
-            
-		}
-
+            }
+        }
 
 		protected override void Serialize(System.IO.BinaryWriter writer)
 		{
-
             //lock (SimPe.Helper.WindowsRegistry)
             {
                 if (locked) { return; }
                 base.Serialize(writer);
                 if (chgname) ChangeName();
                 SaveRelations();
-            }
-            
-		}
-
-		
+            }            
+		}		
 
 		protected virtual void ChangeName()
 		{
@@ -181,8 +173,8 @@ namespace SimPe.PackedFiles.Wrapper
 		public bool HasRelationWith(ExtSDesc sdsc)
 		{
 			
-			foreach (uint inst in this.Relations.SimInstances) 
-				if (sdsc.FileDescriptor.Instance==inst) 
+			foreach (uint inst in this.Relations.SimInstances)
+                if (sdsc.FileDescriptor.Instance == inst)
 					return true;
 			return false;
 		}
@@ -358,9 +350,7 @@ namespace SimPe.PackedFiles.Wrapper
 				return (s.SimId==SimId);
 			}
 			return base.Equals (obj);
-		}
-
-		
+		}		
 
 		public override string DescriptionHeader
 		{
@@ -390,7 +380,6 @@ namespace SimPe.PackedFiles.Wrapper
 				return Serializer.ConcatHeader(Serializer.ConvertArrayList(list));
 			}
 		}
-
 
 		public override string Description
 		{

@@ -1,68 +1,27 @@
-/***************************************************************************
- *   Copyright (C) 2005 by Ambertation                                     *
- *   quaxi@ambertation.de                                                  *
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
- ***************************************************************************/
+/**********************************************************************
+ *   Copyright (C) 2005 by Ambertation                                *
+ *   quaxi@ambertation.de                                             *
+ *                                                                    *
+ *   This has been almost wiped out                                   *
+ *   it handles passing HexViewControl and  WrapperBaseControl to     *
+ *   GDF.dll so GDF doesn't require any part of SimPe                 *
+ **********************************************************************/
 using System;
 using System.Drawing;
 
-namespace SimPe.Events 
-{
-	/// <summary>
-	/// This Event is called, when the Theme should be changed
-	/// </summary>
-	public delegate void ChangedThemeEvent(GuiTheme gt);
-}
-
 namespace SimPe
 {
-	/// <summary>
-	/// Available Themes
-	/// </summary>
-	public enum GuiTheme : byte 
-	{
-		/// <summary>
-		/// Classic Flat Win2K/Office 2002 Look
-		/// </summary>
-		Everett = 0,
-		/// <summary>
-		/// New Office 2003 Look
-		/// </summary>
-		Office2003 = 1,
-		/// <summary>
-		/// New look introduced by VS 2005
-		/// </summary>
-		Whidbey = 2,
-        /// <summary>
-        /// Glossy looking controls
-        /// </summary>
-        Glossy = 3
-	}
-
 	/// <summary>
 	/// Classes used to manage the Theme of our GUI
 	/// </summary>
 	public class ThemeManager : System.IDisposable
 	{
 		#region Fields, Properties, Constructors
-		GuiTheme ctheme;
+
+        booby.GuiTheme ctheme;
 		System.Collections.ArrayList ctrls;
 
-		public GuiTheme CurrentTheme
+        public booby.GuiTheme CurrentTheme
 		{
 			get { return ctheme; }
 			set { 
@@ -75,41 +34,11 @@ namespace SimPe
 			}
 		}
 
-		Color clight, c, cdark;
-        System.Windows.Forms.ToolStripRenderer whidbey;
-        System.Windows.Forms.ToolStripRenderer whidbeysquare;
-        System.Windows.Forms.ToolStripRenderer square;
-        MediaPlayerRenderer mediaplayer;
-        MediaPlayerRenderer mediaplayerwhidbey;
-        ToolStripColorTable colortable;
-        MediaPlayerToolStripColorTable mpcolortable;
-
-        Ambertation.Renderer.GlossyRenderer glossy;
-        Ambertation.Renderer.GlossyRenderer glossysquare;
-		public ThemeManager(GuiTheme t) 
+        public ThemeManager(booby.GuiTheme t)
 		{
-            colortable = new ToolStripColorTable();
-            mpcolortable = new MediaPlayerToolStripColorTable();
-
-            mediaplayer = new MediaPlayerRenderer();
-            mediaplayerwhidbey = new MediaPlayerRenderer(mpcolortable);
-            whidbey = new Ambertation.Renderer.AdvancedToolStripProfessionalRenderer(colortable);
-            whidbeysquare = new ToolStripProfessionalSquareRenderer(colortable);
-            square = new ToolStripProfessionalSquareRenderer();
-
-            glossysquare = new Ambertation.Renderer.GlossyRenderer();
-            glossy = new Ambertation.Renderer.GlossyRenderer();
-            glossy.RenderRoundedEdges = true;
-
 			ctheme = t;
 			parent = null;
 			ctrls = new System.Collections.ArrayList();
-
-            Ambertation.Windows.Forms.WhidbeyColorTable rend = new Ambertation.Windows.Forms.WhidbeyColorTable();
-            
-			clight = rend.DockButtonHighlightBackgroundBottom;
-            c = Ambertation.Drawing.GraphicRoutines.InterpolateColors(rend.DockButtonBackgroundBottom, rend.DockBorderColor, 0.5f); ;
-            cdark = rend.DockBorderColor;
 		}
 
 		~ThemeManager()
@@ -134,179 +63,48 @@ namespace SimPe
 		#endregion
 
 		#region Apply Themes
-        void SetTheme(System.Windows.Forms.ToolStrip sdm)
+
+        void SetTheme(Ambertation.Windows.Forms.HexViewControl sdm)
         {
-            if (sdm.Parent is System.Windows.Forms.ToolStripContainer)
+            sdm.GridColor = booby.ThemeManager.Global.ThemeColorLight;
+            sdm.HeadColor = booby.ThemeManager.Global.ThemeColorDark;
+            sdm.HeadForeColor = booby.ThemeManager.Global.ThemeColorLighter;
+            sdm.HighlightColor = booby.ThemeManager.Global.ThemeColorMild;
+            sdm.HighlightForeColor = booby.ThemeManager.Global.ThemeColourXdark;
+            sdm.SelectionColor = booby.ThemeManager.Global.ThemeColor;
+            sdm.ZeroCellColor = booby.ThemeManager.Global.ThemeColorLight;
+            sdm.BackGroundColour = booby.ThemeManager.Global.ThemeColor;
+        }
+
+        void SetTheme(SimPe.Windows.Forms.WrapperBaseControl gp)
+		{
+            gp.HeadBackColor = booby.ThemeManager.Global.ThemeColorDark; // CJH
+
+            if (booby.ThemeManager.ThemedForms)
             {
-                if (ctheme == GuiTheme.Everett) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-                else if (ctheme == GuiTheme.Office2003) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-                else if (ctheme == GuiTheme.Glossy) sdm.Renderer = glossy;
-                else sdm.Renderer = whidbey;
+                gp.HeadEndColor = booby.ThemeManager.Global.ThemeColorMild;
+                if (booby.ThemeManager.Global.CurrentTheme == booby.GuiTheme.Psychodelic) gp.BackColor = Color.FromArgb(255, 240, 0);
+                else gp.BackColor = booby.ThemeManager.Global.ThemeColorLighter;
+                if (booby.ThemeManager.Global.CurrentTheme == booby.GuiTheme.SoftLilac || booby.ThemeManager.Global.CurrentTheme == booby.GuiTheme.SoftPink) gp.MiddleColor = booby.ThemeManager.Global.ThemeColor;
+                else gp.MiddleColor = booby.ThemeManager.Global.ThemeColorMild;
+                if (booby.ThemeManager.Global.CurrentTheme == booby.GuiTheme.Psychodelic) gp.GradientColor = booby.ThemeManager.Global.ThemeColorDark;
+                else gp.GradientColor = booby.ThemeManager.Global.ThemeColorLight;
+                if (booby.ThemeManager.Global.CurrentTheme == booby.GuiTheme.SoftLilac || booby.ThemeManager.Global.CurrentTheme == booby.GuiTheme.SoftPink) gp.Font = new Font("Comic Sans MS", gp.Font.Size, gp.Font.Style, gp.Font.Unit);
             }
             else
             {
-                if (sdm.Renderer is MediaPlayerRenderer)
-                {
-                    if (ctheme == GuiTheme.Everett) sdm.Renderer = mediaplayerwhidbey;
-                    else if (ctheme == GuiTheme.Office2003) sdm.Renderer = mediaplayer;
-                    else if (ctheme == GuiTheme.Glossy) sdm.Renderer = glossy;
-                    else sdm.Renderer = mediaplayerwhidbey;
-                }
-                else if (ctheme == GuiTheme.Everett) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-                else if (ctheme == GuiTheme.Office2003) sdm.Renderer = square;
-                else if (ctheme == GuiTheme.Glossy) sdm.Renderer = glossysquare;
-                else sdm.Renderer = whidbeysquare;
+                gp.HeadEndColor = booby.ThemeManager.Global.ThemeColorDark;
+                gp.GradCentre = 0.5F;
+                gp.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+                gp.MiddleColor = booby.ThemeManager.Global.ThemeColorMild;
+                gp.GradientColor = booby.ThemeManager.Global.ThemeColor;
             }
-        }
-
-        void SetTheme(Ambertation.Windows.Forms.DockManager mng)
-        {
-            if (ctheme == GuiTheme.Everett) mng.Renderer = new Ambertation.Windows.Forms.ClassicRenderer();
-            else if (ctheme == GuiTheme.Glossy) mng.Renderer = new Ambertation.Windows.Forms.GlossyRenderer();
-            else mng.Renderer = new Ambertation.Windows.Forms.WhidbeyRenderer();
-        }
-
-        void SetTheme(System.Windows.Forms.ToolStripContainer sdm)
-        {
-            SetTheme(sdm.TopToolStripPanel);
-            SetTheme(sdm.RightToolStripPanel);
-            SetTheme(sdm.BottomToolStripPanel);
-            SetTheme(sdm.LeftToolStripPanel);
-        }
-
-        void SetTheme(System.Windows.Forms.ToolStripPanel sdm)
-        {
-            if (sdm.Parent is System.Windows.Forms.ToolStripContainer)
-            {
-                if (ctheme == GuiTheme.Everett) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-                else if (ctheme == GuiTheme.Office2003) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-                else if (ctheme == GuiTheme.Glossy) sdm.Renderer = glossy;
-                else sdm.Renderer = whidbey;
-            }
-            else
-            {
-                if (sdm.Renderer is MediaPlayerRenderer)
-                {
-                    if (ctheme == GuiTheme.Everett) sdm.Renderer = mediaplayerwhidbey;
-                    else if (ctheme == GuiTheme.Office2003) sdm.Renderer = mediaplayer;
-                    else if (ctheme == GuiTheme.Glossy) sdm.Renderer = glossy;
-                    else sdm.Renderer = mediaplayerwhidbey;
-                }
-                else if (ctheme == GuiTheme.Everett) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-                else if (ctheme == GuiTheme.Office2003) sdm.Renderer = square;
-                else if (ctheme == GuiTheme.Glossy) sdm.Renderer = glossysquare;
-                else sdm.Renderer = whidbeysquare;
-            }
-        }
-
-        void SetTheme(System.Windows.Forms.MenuStrip sdm)
-        {
-            if (ctheme == GuiTheme.Everett) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            else if (ctheme == GuiTheme.Office2003) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            else if (ctheme == GuiTheme.Glossy) sdm.Renderer = glossy;
-            else sdm.Renderer = whidbey;            
-        }
-
-        void SetTheme(System.Windows.Forms.ContextMenuStrip sdm)
-        {
-            if (ctheme == GuiTheme.Everett) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.System;
-            else if (ctheme == GuiTheme.Office2003) sdm.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            else if (ctheme == GuiTheme.Glossy) sdm.Renderer = glossy;
-            else sdm.Renderer = whidbey;
-        }
-
-		void SetTheme(TD.SandDock.SandDockManager sdm) 
-		{
-			if (ctheme == GuiTheme.Everett) sdm.Renderer = new TD.SandDock.Rendering.EverettRenderer();
-			else if (ctheme == GuiTheme.Office2003) sdm.Renderer = new TD.SandDock.Rendering.Office2003Renderer();            
-			else sdm.Renderer = new TD.SandDock.Rendering.WhidbeyRenderer();
 		}
 
-		void SetTheme(Ambertation.Windows.Forms.XPTaskBoxSimple sdm) 
-		{
-			sdm.LeftHeaderColor = this.ThemeColor;
-			sdm.RightHeaderColor = this.ThemeColorDark;
-			sdm.BodyColor = this.ThemeColorLight;
-		}
-
-		
-
-		
-
-		void SetTheme(System.Windows.Forms.Splitter tb) 
-		{			
-			tb.BackColor = ThemeColorDark;
-		}
-
-		void SetTheme(System.Windows.Forms.Control c) 
-		{
-			c.BackColor = ThemeColorLight;
-		}
-
-		void SetTheme(SteepValley.Windows.Forms.XPGradientPanel gp) 
-		{
-			gp.StartColor = ThemeColorLight;
-			gp.EndColor = ThemeColor;
-		}
-
-		void SetTheme(SimPe.Windows.Forms.WrapperBaseControl gp) 
-		{
-			gp.BackColor = ThemeColorLight;
-			gp.GradientColor = ThemeColor;
-		}
-
-		/// <summary>
-		/// Apply a Theme to the passed object
-		/// </summary>
-		/// <param name="o"></param>
 		public void Theme(object o) 
 		{
-            if (o is TD.SandDock.SandDockManager) SetTheme((TD.SandDock.SandDockManager)o);
-            else if (o is Ambertation.Windows.Forms.DockManager) SetTheme((Ambertation.Windows.Forms.DockManager)o);
-            else if (o is SteepValley.Windows.Forms.XPGradientPanel) SetTheme((SteepValley.Windows.Forms.XPGradientPanel)o);
-            else if (o is SimPe.Windows.Forms.WrapperBaseControl) SetTheme((SimPe.Windows.Forms.WrapperBaseControl)o);
-            else if (o is System.Windows.Forms.Splitter) SetTheme((System.Windows.Forms.Splitter)o);
-            else if (o is Ambertation.Windows.Forms.XPTaskBoxSimple) SetTheme((Ambertation.Windows.Forms.XPTaskBoxSimple)o);
-            else if (o is System.Windows.Forms.ContextMenuStrip) SetTheme((System.Windows.Forms.ContextMenuStrip)o);
-            else if (o is System.Windows.Forms.MenuStrip) SetTheme((System.Windows.Forms.MenuStrip)o);
-            else if (o is System.Windows.Forms.ToolStrip) SetTheme((System.Windows.Forms.ToolStrip)o);
-            else if (o is System.Windows.Forms.ToolStripContainer) SetTheme((System.Windows.Forms.ToolStripContainer)o);
-            else if (o is System.Windows.Forms.Control) SetTheme((System.Windows.Forms.Control)o);			
-		}
-		#endregion
-
-		#region Default Colors
-		public Color ThemeColor
-		{
-			get 
-			{
-				if (ctheme == GuiTheme.Office2003) return SystemColors.InactiveCaption;
-				else if (ctheme == GuiTheme.Everett) return SystemColors.ControlDark;
-                else if (ctheme == GuiTheme.Glossy) return Color.FromArgb(0xAD, 0xBC, 0xCE);
-				else return c;
-			}
-		}
-
-		public Color ThemeColorLight
-		{
-			get 
-			{
-                if (ctheme == GuiTheme.Office2003) return SystemColors.InactiveCaptionText;
-                else if (ctheme == GuiTheme.Everett) return SystemColors.ControlLight;
-                else if (ctheme == GuiTheme.Glossy) return Color.FromArgb(0xDB, 0xE4, 0xEE);
-                else return clight;
-			}
-		}
-
-		public Color ThemeColorDark
-		{
-			get 
-			{
-				if (ctheme == GuiTheme.Office2003) return SystemColors.Highlight;
-				else if (ctheme == GuiTheme.Everett) return SystemColors.ControlDarkDark;
-                else if (ctheme == GuiTheme.Glossy) return Color.FromArgb(0x75, 0x84, 0x97);
-				else return cdark;
-			}
+            if (o is SimPe.Windows.Forms.WrapperBaseControl) SetTheme((SimPe.Windows.Forms.WrapperBaseControl)o);
+            else if (o is Ambertation.Windows.Forms.HexViewControl) SetTheme((Ambertation.Windows.Forms.HexViewControl)o);
 		}
 		#endregion
 
@@ -338,15 +136,16 @@ namespace SimPe
 		#endregion
 
 		#region Events
-		protected event SimPe.Events.ChangedThemeEvent ChangedTheme;
+        protected event booby.Events.ChangedThemeEvent ChangedTheme;
 
 		/// <summary>
 		/// Called when the Theme in the parent was changed
 		/// </summary>
 		/// <param name="t"></param>
-		void ThemeWasChanged(GuiTheme t) 
+        void ThemeWasChanged(booby.GuiTheme t) 
 		{
 			this.CurrentTheme = t;
+            SetTheme();
 		}
 
 		ThemeManager parent;
@@ -358,13 +157,11 @@ namespace SimPe
 			get { return parent; }
 			set 
 			{
-				if (parent!=null) parent.ChangedTheme -= new SimPe.Events.ChangedThemeEvent(ThemeWasChanged);
+                if (parent != null) parent.ChangedTheme -= new booby.Events.ChangedThemeEvent(ThemeWasChanged);
 				parent = value;
-				if (parent!=null) parent.ChangedTheme += new SimPe.Events.ChangedThemeEvent(ThemeWasChanged);
+                if (parent != null) parent.ChangedTheme += new booby.Events.ChangedThemeEvent(ThemeWasChanged);
 			}
-		}
-
-		
+		}		
 		#endregion
 
 		static ThemeManager tm;
@@ -374,8 +171,8 @@ namespace SimPe
 		public static ThemeManager Global 
 		{
 			get 
-			{ 
-				if (tm==null) tm = new ThemeManager((GuiTheme)Helper.WindowsRegistry.Layout.SelectedTheme);
+			{
+                if (tm == null) tm = new ThemeManager((booby.GuiTheme)Helper.WindowsRegistry.Layout.SelectedTheme);
 				return tm;
 			}
 		}

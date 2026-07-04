@@ -109,15 +109,15 @@ namespace SimPe.Plugin
 	
 		public Collections.NgbhItems GetItems(Data.NeighborhoodSlots id)
 		{
-			if (id==Data.NeighborhoodSlots.Families || id==Data.NeighborhoodSlots.Lots || id==Data.NeighborhoodSlots.Sims)
-				return ItemsB;			
+            if (id == Data.NeighborhoodSlots.Families || id == Data.NeighborhoodSlots.Lots || id == Data.NeighborhoodSlots.Sims)
+				return ItemsB;
 
 			return ItemsA;
 		}	
 		
 
 		/// <summary>
-		/// Unserializes a BinaryStream into the Attributes of this Instance
+		/// Unserializes a BinaryStream into the Attributes of this Instance boob
 		/// </summary>
 		/// <param name="reader">The Stream that contains the FileData</param>
 		internal virtual void Unserialize(System.IO.BinaryReader reader)
@@ -130,9 +130,7 @@ namespace SimPe.Plugin
 			{
 				NgbhItem item = itemsa.AddNew();
 				item.Unserialize(reader);				
-			}
-
-			
+			}			
 
 			ct = reader.ReadUInt32();
 			itemsb.Clear();
@@ -174,7 +172,14 @@ namespace SimPe.Plugin
 			NgbhItem res = itemsa.FindItemByGuid(guid);
 			if (res==null) res = itemsb.FindItemByGuid(guid);
 			return res;
-		}
+        }
+
+        public int CountItem(uint guid)
+        {
+            int wooh = itemsa.CountItemsByGuid(guid);
+            if (wooh == 0) wooh = itemsb.CountItemsByGuid(guid);
+            return wooh;
+        }
 	}
 
 	/// <summary>
@@ -200,11 +205,9 @@ namespace SimPe.Plugin
 		/// <param name="reader">The Stream that contains the FileData</param>
 		internal override void Unserialize(System.IO.BinaryReader reader)
 		{
-			this.SlotID = reader.ReadUInt32();
-			
-
-			base.Unserialize(reader);
-		}
+            this.SlotID = reader.ReadUInt32();
+            base.Unserialize(reader);
+        }
 
 		/// <summary>
 		/// Serializes a the Attributes stored in this Instance to the BinaryStream
@@ -217,7 +220,6 @@ namespace SimPe.Plugin
 		internal override void Serialize(System.IO.BinaryWriter writer)
 		{
 			writer.Write(this.SlotID);
-
 			base.Serialize(writer);
 		}
 
@@ -272,7 +274,6 @@ namespace SimPe.Plugin
 		{
 			this.ItemsA.Clear();
 			this.ItemsB.Clear();
-
 		}
 		#endregion
 	}

@@ -70,11 +70,20 @@ namespace SimPe.Plugin
 			GreekHouse = 0x03,
 			SecretSociety = 0x04,
             Hotel = 0x05,
-            VacationHidden = 0x06,
-            HobbyHidden = 0x07,
+            SecretHoliday = 0x06,
+            Hobby = 0x07,
             ApartmentBase = 0x08,
             ApartmentSublot = 0x09,
-            WitchesHidden = 0x0a,
+            Witches = 0x0a,
+            Hospital = 0x0b,
+            Heaven = 0x0c,
+            Hell = 0x0d,
+            PublicSchool = 0x0e,
+            PrivateSchool = 0x0f,
+            Childcare = 0x10,
+            BattleField = 0x11,
+            SpaceHotel = 0x12,
+            SpaceTour = 0x13,
             Unknown = 0xff
 		}
         public enum Rotation { toLeft = 0x00, toTop, toRight, toBottom, };
@@ -107,7 +116,7 @@ namespace SimPe.Plugin
 		ushort subver;
 		Size sz;
 		LotType type;
-        Boolset roads = (byte)0x00; //noRoads = 0x00, atLeft = 0x01, atTop = 0x02, atRight = 0x04, atBottom = 0x08
+        byte roads = (byte)0x00; //noRoads = 0x00, atLeft = 0x01, atTop = 0x02, atRight = 0x04, atBottom = 0x08
         Rotation rotation;
         uint unknown_0;
         // DWORD length
@@ -118,7 +127,11 @@ namespace SimPe.Plugin
         List<float> unknown_1;
         Single unknown_3;   //If subver >= Voyage 
         uint unknown_4;     //If subver >= Freetime 
-        byte[] unknown_5;   //if subver >= Apartment Life
+        uint clarse;
+        byte clset;
+        byte bNumberOfApts;
+        int iPrice1;
+        int iPrice2;
         Point loc;
 		float elevation;
 		uint lotInstance; // "DWORD unk"
@@ -134,6 +147,7 @@ namespace SimPe.Plugin
         // DWORD count      //if subver >= Apartment Life
         List<uint> unknown_7;   //if subver >= Apartment Life
         byte[] followup;
+
 		#endregion
 
         #region Accessor methods
@@ -141,23 +155,19 @@ namespace SimPe.Plugin
         internal LtxtSubVersion SubVersion { get { return (LtxtSubVersion)subver; } set { subver = (ushort)value; } }
         public Size LotSize { get { return sz; } set { sz = value; } }
         public LotType Type { get { return type; } set { type = value; } }
-        public Boolset LotRoads { get { return roads; } set { roads = value; } }
+        public byte LotRoads { get { return roads; } set { roads = value; } }
         public byte LotRotation { get { return (byte)rotation; } set { rotation = (Rotation)value; } }
-        internal uint Unknown0 { get { return unknown_0; } set { unknown_0 = value; } }
+        public uint Unknown0 { get { return unknown_0; } set { unknown_0 = value; } } // Lot Flags, Use as Boolset
         public string LotName { get { return lotname; } set { lotname = value; } }
         public string LotDesc { get { return description; } set { description = value; } }
         internal List<float> Unknown1 { get { return unknown_1; } }
         internal Single Unknown3 { get { return unknown_3; } set { unknown_3 = value; } }
-        internal uint Unknown4 { get { return unknown_4; } set { unknown_4 = value; } }
-        internal byte[] Unknown5
-        {
-            get { return unknown_5; }
-            set
-            {
-                unknown_5 = new byte[14];
-                for (int i = 0; i < value.Length && i < unknown_5.Length; i++) unknown_5[i] = value[i];
-            }
-        }
+        public uint Unknown4 { get { return unknown_4; } set { unknown_4 = value; } } // Lot Hobby Flags, Use as Boolset
+        public uint LotClass { get { return clarse; } set { clarse = value; } }
+        internal byte Clset { get { return clset; } set { clset = value; } }
+        public byte NumberOfApts { get { return bNumberOfApts; } set { bNumberOfApts = value; } }
+        public int Price1 { get { return iPrice1; } set { iPrice1 = value; } }
+        public int Price2 { get { return iPrice2; } set { iPrice2 = value; } }
         public Point LotPosition { get { return loc; } set { loc = value; } }
         public float LotElevation { get { return elevation; } set { elevation = value; } }
         public uint LotInstance { get { return lotInstance; } set { lotInstance = value; } }
@@ -178,6 +188,34 @@ namespace SimPe.Plugin
         public List<SubLot> SubLots { get { return subLots; } }
         public List<uint> Unknown7 { get { return unknown_7; } }
         internal byte[] Followup { get { return followup; } set { followup = value; } }
+        internal string appendage
+        {
+            get
+            {
+                if (Type == LotType.ApartmentBase) return null;
+                Idno idno = Idno.FromPackage(Package);
+                if (idno == null) return "-load:\"Tutorial;" + lotname + "\"";
+                //if (idno == null) return null;
+                if (idno.Type != SimPe.Plugin.NeighborhoodType.Normal) return null;
+
+                string appen = "-load:\"";
+                string[] parts = System.IO.Path.GetFileName(Package.FileName).Split(new char[] { '_' }, 2);
+                appen += parts[0] + ";" + lotname + "\"";
+                return appen;
+            }
+        }
+
+        public string lotfile
+        {
+            get
+            {
+                string retn = System.IO.Path.GetDirectoryName(Package.FileName) + "\\Lots\\";
+                string[] parts = System.IO.Path.GetFileName(Package.FileName).Split(new char[] { '_' }, 2);
+                retn += parts[0] + "_Lot" + this.FileDescriptor.Instance.ToString() + ".package";
+                return retn;
+            }
+        }
+
         #endregion
 
         public SimPe.Interfaces.Providers.ILotItem LotDescription
@@ -232,7 +270,7 @@ namespace SimPe.Plugin
 				"Lot Description Wrapper",
 				"Quaxi",
 				"This File contains the Description for a Lot.",
-				7,
+				9,
 				System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.ltxt.png"))
 				); 
 		}
@@ -251,26 +289,33 @@ namespace SimPe.Plugin
 			type = (LotType)reader.ReadByte();
 
 			roads = reader.ReadByte();
-			rotation = (Rotation)reader.ReadByte();			
-			unknown_0 = reader.ReadUInt32();
+			rotation = (Rotation)reader.ReadByte();
+            unknown_0 = reader.ReadUInt32(); // Lot Flags, Use as Boolset
 
 			lotname = StreamHelper.ReadString(reader);			
 			description = StreamHelper.ReadString(reader);
 
             unknown_1 = new List<float>();
 			int len = reader.ReadInt32();
-            for (int i = 0; i < len; i++) this.unknown_1.Add(reader.ReadSingle());
+            for (int i = 0; i < len; i++) this.unknown_1.Add(reader.ReadSingle());//fTerrain = new float[len];// Is this the relative elevations from NHTG for this lot?
 
             if (subver >= (UInt16)LtxtSubVersion.Voyage) unknown_3 = reader.ReadSingle(); else unknown_3 = 0;
-            if (subver >= (UInt16)LtxtSubVersion.Freetime) unknown_4 = reader.ReadUInt32(); else unknown_4 = 0;
+            if (subver >= (UInt16)LtxtSubVersion.Freetime) unknown_4 = reader.ReadUInt32(); else unknown_4 = 0; // Lot Hobby Flags, Use as Boolset
 
             if (ver >= (UInt16)LtxtVersion.Apartment || subver >= (UInt16)LtxtSubVersion.Apartment)
             {
-                unknown_5 = reader.ReadBytes(14);
+                bNumberOfApts = reader.ReadByte();
+                iPrice1 = reader.ReadInt32();
+                iPrice2 = reader.ReadInt32();
+                clarse = reader.ReadUInt32();
+                clset = reader.ReadByte();
             }
             else
             {
-                unknown_5 = new byte[0];
+                bNumberOfApts = 0;
+                iPrice1 = iPrice2 = 0;
+                clarse = 0;
+                clset = 0;
             }
 
 			int y = reader.ReadInt32();
@@ -285,7 +330,7 @@ namespace SimPe.Plugin
 
 			unknown_2 = reader.ReadByte();
 
-            if (ver>=(int)LtxtVersion.Business) owner = reader.ReadUInt32();
+            if (ver >= (int)LtxtVersion.Business) owner = reader.ReadUInt32();// Sim info instance number
 			else owner = 0;
 
             if (ver >= (UInt16)LtxtVersion.Apartment || subver >= (UInt16)LtxtSubVersion.Apartment)
@@ -344,13 +389,15 @@ namespace SimPe.Plugin
             if (subver >= (UInt16)LtxtSubVersion.Freetime) writer.Write(unknown_4);
             if (ver >= (UInt16)LtxtVersion.Apartment || subver >= (UInt16)LtxtSubVersion.Apartment)
             {
-                writer.Write(unknown_5);
+                writer.Write(bNumberOfApts);
+                writer.Write(iPrice1);
+                writer.Write(iPrice2);
+                writer.Write(clarse);
+                writer.Write(clset);
             }
-
 
             writer.Write((int)loc.Y);
             writer.Write((int)loc.X);
-
             writer.Write(elevation);
             writer.Write(lotInstance);
             writer.Write((byte)orient);

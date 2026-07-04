@@ -54,10 +54,10 @@ namespace SimPe.PackedFiles.UserInterface
 			form.wrapper = famt;
 
             form.cbLock.Checked = false;
-			form.pool.SelectedElement = null;
-			form.pool.Package = null;
-			form.pool_SelectedSimChanged(null, null, null);				
-			form.pool.Package = wrapper.Package;
+            form.pool.SelectedElement = null;
+            form.pool.Package = wrapper.Package;
+			form.pool_SelectedSimChanged(null, null, null);
+			//form.pool.Package = wrapper.Package;
 		}
 
 		

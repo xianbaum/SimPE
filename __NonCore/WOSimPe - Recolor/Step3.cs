@@ -15,7 +15,7 @@ namespace SimPe.Wizards
 		public void Finit()
 		{
 			Step1.Form.SaveRecolor();
-			System.Windows.Forms.MessageBox.Show("The Recolor was saved.");
+			System.Windows.Forms.MessageBox.Show("The Recolour was saved.");
 		}
 		#endregion
 
@@ -39,7 +39,7 @@ namespace SimPe.Wizards
 		{
 			get
 			{
-				return "Specify the Name of your Recolor";
+				return "Specify the Name of your Recolour";
 			}
 		}
 

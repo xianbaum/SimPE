@@ -23,7 +23,7 @@ using System.ComponentModel;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für cBoundedNode.
+	/// Summary description for cBoundedNode.
 	/// </summary>
 	public class LightRefNode
 		: AbstractCresChildren

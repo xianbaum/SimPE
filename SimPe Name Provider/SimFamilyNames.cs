@@ -47,10 +47,7 @@ namespace SimPe.Providers
 		/// <summary>
 		/// Creates the List for the specific Folder
 		/// </summary>
-		public SimFamilyNames() : base(null) {}
-
-
-		
+		public SimFamilyNames() : base(null) {}		
 
 		/// <summary>
 		/// Loads all package Files in the directory and scans them for Name Informations
@@ -61,30 +58,32 @@ namespace SimPe.Providers
 			if (BasePackage==null) return;
 
 			SimPe.PackedFiles.Wrapper.Fami fami = new SimPe.PackedFiles.Wrapper.Fami(null);
-			Hashtable al = new Hashtable();
+            Hashtable al = new Hashtable();
 			foreach (uint type in fami.AssignableTypes) 
 			{
 				IPackedFileDescriptor[] list = BasePackage.FindFiles(type);
 
-				foreach(IPackedFileDescriptor pfd in list )
+				foreach(IPackedFileDescriptor pfd in list)
 				{
 					fami.ProcessData(pfd, BasePackage);
-					al[(ushort)pfd.Instance] = fami.Name;
+                    al[(ushort)pfd.Instance] = fami.Name;
+                    object[] tag = new object[1];
+                    tag[0] = fami.LotInstance;
 					
-					foreach(uint simid in fami.Members) 
-					{
-						Alias a = new Alias(simid, fami.Name);
+					foreach(uint simid in fami.Members)
+                    {
+                        Alias a = new Alias(simid, fami.Name, tag);
 						if (!names.Contains(simid))	
 						{
 							names.Add(simid, a); 
 						}
 					}
-				}								
+				}
 			}//foreach
 
 			///add unlisted Sims
 			foreach (SimPe.PackedFiles.Wrapper.SDesc sdesc in FileTable.ProviderRegistry.SimDescriptionProvider.SimInstance.Values)
-			{
+            {
 				//load extern Fami Name
 				if (!names.Contains(sdesc.SimId))	
 				{
@@ -96,18 +95,22 @@ namespace SimPe.Providers
 							SimPe.Interfaces.Files.IPackedFileDescriptor pfd = pkg.FindFile(fami.AssignableTypes[0], 0, Data.MetaData.LOCAL_GROUP, sdesc.FamilyInstance);
 							if (pfd!=null)
 							{
-								fami.ProcessData(pfd, pkg);
-								Alias a = new Alias(sdesc.SimId, fami.Name);
+                                fami.ProcessData(pfd, pkg);
+                                object[] tag = new object[1];
+                                tag[0] = fami.LotInstance;
+                                Alias a = new Alias(sdesc.SimId, fami.Name, tag);
 								names.Add(sdesc.SimId, a);
 							}
 						}
-					} 
-					else 
-					{					
+					}
+					else
+					{
 						object o = al[sdesc.FamilyInstance];
-						if (o!=null) 
-						{
-							Alias a = new Alias(sdesc.SimId, o.ToString());
+						if (o!=null)
+                        {
+                            object[] tag = new object[1];
+                            tag[0] = 0;
+                            Alias a = new Alias(sdesc.SimId, o.ToString(), tag);
 							names.Add(sdesc.SimId, a);
 						}
 					}
@@ -127,10 +130,10 @@ namespace SimPe.Providers
 		public SimPe.Interfaces.IAlias FindName(uint id) 
 		{
 			if (names==null) LoadSimsFromFolder();
-			
-			object o = names[id];
+
+            object o = names[id];
 			if (o!=null) return (IAlias)o;
-			else return new Alias(id, "Unknown");			
+            else return new Alias(id, SimPe.Localization.GetString("Unknown"));
 		}		
 
 		/// <summary>
@@ -140,18 +143,8 @@ namespace SimPe.Providers
 		public ArrayList GetAllSimIDs() 
 		{
 			if (BasePackage==null) new ArrayList();
-
 			//load a list of all avail SimID's
 			ArrayList simids = new ArrayList();
-			/*IPackedFileDescriptor[] pfds = BasePackage.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
-
-			SimPe.PackedFiles.Wrapper.SDesc sdesc = new SimPe.PackedFiles.Wrapper.SDesc(null, null, null);
-			foreach(IPackedFileDescriptor pfd in pfds) 
-			{
-				sdesc.ProcessData(pfd, BasePackage);
-				simids.Add(sdesc.SimId);
-			}*/
-
 			foreach (SimPe.PackedFiles.Wrapper.SDesc sdesc in FileTable.ProviderRegistry.SimDescriptionProvider.SimInstance.Values)
 			{
 				simids.Add(new object[] {sdesc.SimId, sdesc.FamilyInstance});

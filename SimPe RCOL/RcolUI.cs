@@ -69,48 +69,46 @@ namespace SimPe.Plugin
 		/// passed Wrapper.
 		/// </summary>
 		/// <param name="wrapper">The Attributes of this Wrapper have to be displayed</param>
-		public void UpdateGUI(IFileWrapper wrapper)
-		{			
-			Rcol wrp = (Rcol) wrapper;
-			form.wrapper = wrp;
+        public void UpdateGUI(IFileWrapper wrapper)
+        {
+            Rcol wrp = (Rcol)wrapper;
+            form.wrapper = wrp;
 
-			form.cbitem.Items.Clear();
-			foreach (IRcolBlock rb in wrp.Blocks) SimPe.CountedListItem.AddHex(form.cbitem, rb);
-			if (form.cbitem.Items.Count>0) form.cbitem.SelectedIndex = 0;
-			else form.BuildChildTabControl(null);
+            form.cbitem.Items.Clear();
+            foreach (IRcolBlock rb in wrp.Blocks) SimPe.CountedListItem.AddHex(form.cbitem, rb);
+            if (form.cbitem.Items.Count > 0) form.cbitem.SelectedIndex = 0;
+            else form.BuildChildTabControl(null);
 
-			form.lbref.Items.Clear();
-			foreach (Interfaces.Files.IPackedFileDescriptor pfd in wrp.ReferencedFiles) form.lbref.Items.Add(pfd);
-			if (form.lbref.Items.Count>0) form.lbref.SelectedIndex = 0;
+            form.lbref.Items.Clear();
+            foreach (Interfaces.Files.IPackedFileDescriptor pfd in wrp.ReferencedFiles) form.lbref.Items.Add(pfd);
+            if (form.lbref.Items.Count > 0) form.lbref.SelectedIndex = 0;
 
-			form.tbResource.TabPages.Remove(form.tpref);
-			form.tv.Nodes.Clear();
-			if (typeof(IScenegraphItem)==wrp.GetType().GetInterface("IScenegraphItem")) 
-			{
-				form.tbResource.TabPages.Add(form.tpref);
-				System.Collections.Hashtable refmap = ((IScenegraphItem)wrp).ReferenceChains;
-				foreach (string k in refmap.Keys) 
-				{
-					System.Collections.ArrayList l = (System.Collections.ArrayList)refmap[k];
-					TreeNode node = new TreeNode(k);
+            form.tbResource.TabPages.Remove(form.tpref);
+            form.tv.Nodes.Clear();
+            if (typeof(IScenegraphItem) == wrp.GetType().GetInterface("IScenegraphItem"))
+            {
+                form.tbResource.TabPages.Add(form.tpref);
+                System.Collections.Hashtable refmap = ((IScenegraphItem)wrp).ReferenceChains;
 
-					foreach (Interfaces.Files.IPackedFileDescriptor pfd in l) 
-					{
-						TreeNode child = new TreeNode(pfd.Filename+": "+pfd.ToString());
-						child.Tag = pfd;
-						node.Nodes.Add(child);
-					}
+                foreach (string k in refmap.Keys)
+                {
+                    System.Collections.ArrayList l = (System.Collections.ArrayList)refmap[k];
+                    TreeNode node = new TreeNode(k);
 
-					form.tv.Nodes.Add(node);
-				}
-			} 
-			form.tbResource.SelectedIndex = 0;
-
-			if (wrp.Blocks.Length>0) ((AbstractRcolBlock)wrp.Blocks[0]).AddToResourceTabControl(form.tbResource, form.cbitem);
+                    foreach (Interfaces.Files.IPackedFileDescriptor pfd in l)
+                    {
+                        TreeNode child = new TreeNode(pfd.Filename + ": " + pfd.ToString());
+                        child.Tag = pfd;
+                        node.Nodes.Add(child);
+                    }
+                    form.tv.Nodes.Add(node);
+                }
+            }
+            form.tbResource.SelectedIndex = 0;
+            if (wrp.Blocks.Length > 0 && !wrp.islotpackage()) ((AbstractRcolBlock)wrp.Blocks[0]).AddToResourceTabControl(form.tbResource, form.cbitem);
 
             form.Enabled = !wrp.Duff;
-			
-		}		
+        }
 
 		#endregion
 		

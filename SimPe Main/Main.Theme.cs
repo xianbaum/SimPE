@@ -34,19 +34,22 @@ namespace SimPe
             this.dcResourceList.Visible = true;
             this.dcResource.Visible = true;
             //setup the Theme Manager
-            
-            ThemeManager.Global.AddControl(this.manager);
-            ThemeManager.Global.AddControl(this.xpGradientPanel1);
-            ThemeManager.Global.AddControl(this.xpGradientPanel2);
-            ThemeManager.Global.AddControl(this.xpGradientPanel3);
-            ThemeManager.Global.AddControl(this.menuBar1);
-            ThemeManager.Global.AddControl(this.miAction);
 
-            ThemeManager.Global.AddControl(tbAction);
-            ThemeManager.Global.AddControl(tbTools);
-            ThemeManager.Global.AddControl(tbWindow);
-            ThemeManager.Global.AddControl(toolBar1);
-            ThemeManager.Global.AddControl(tbContainer);
+            this.manager.Renderer = new Ambertation.Windows.Forms.GlossyRenderer();
+            booby.ThemeManager.Global.AddControl(this.GradientPanel1);
+            booby.ThemeManager.Global.AddControl(this.GradientPanel2);
+            booby.ThemeManager.Global.AddControl(this.menuBar1);
+            booby.ThemeManager.Global.AddControl(this.miAction);
+
+            booby.ThemeManager.Global.AddControl(this.tbDefaultAction);
+            booby.ThemeManager.Global.AddControl(this.tbPlugAction);
+            booby.ThemeManager.Global.AddControl(this.tbExtAction);
+
+            booby.ThemeManager.Global.AddControl(tbAction);
+            booby.ThemeManager.Global.AddControl(tbTools);
+            booby.ThemeManager.Global.AddControl(tbWindow);
+            booby.ThemeManager.Global.AddControl(toolBar1);
+            booby.ThemeManager.Global.AddControl(tbContainer);
         }
 
         private void StoreLayout()
@@ -55,19 +58,16 @@ namespace SimPe
             
             MyButtonItem.SetLayoutInformations(this);
 
-            Helper.WindowsRegistry.Layout.PluginActionBoxExpanded = this.tbPlugAction.IsExpanded;
-            Helper.WindowsRegistry.Layout.DefaultActionBoxExpanded = this.tbDefaultAction.IsExpanded;
-            Helper.WindowsRegistry.Layout.ToolActionBoxExpanded = this.tbExtAction.IsExpanded;
-
             resourceViewManager1.StoreLayout();
         }
 
 
-        void ChangedTheme(GuiTheme gt)
+        void ChangedTheme(booby.GuiTheme gt)
         {
-            ThemeManager.Global.CurrentTheme = gt;
+            booby.ThemeManager.Global.CurrentTheme = gt;
+            SimPe.ThemeManager.Global.CurrentTheme = gt;
         }
-        
+
         System.IO.Stream defaultlayout;
         /// <summary>
         /// Wrapper needed to call the Layout Change through an Event
@@ -75,41 +75,51 @@ namespace SimPe
         /// <param name="sender"></param>
         /// <param name="e"></param>
         void ResetLayout(object sender, EventArgs e)
-        {            
+        {
             if (defaultlayout != null)
             {
                 Ambertation.Windows.Forms.Serializer.Global.FromStream(defaultlayout);
                 Ambertation.Windows.Forms.Serializer.Global.ToFile(Helper.DataFolder.SimPeLayoutW);
             }
-            
+            if (Screen.PrimaryScreen.WorkingArea.Height >= 768)
+            {
+                if (!Helper.WindowsRegistry.UseBigIcons) // if the tools were little, force 'em big
+                {
+                    toolBar1.ImageScalingSize = new System.Drawing.Size(32, 32);
+                    tbWindow.ImageScalingSize = new System.Drawing.Size(32, 32);
+                    tbTools.ImageScalingSize = new System.Drawing.Size(32, 32);
+                    tbAction.ImageScalingSize = new System.Drawing.Size(32, 32);
+                }
+            }
+            else
+            {
+                if (Helper.WindowsRegistry.UseBigIcons) // if the tools were bigger, force 'em little
+                {
+                    toolBar1.ImageScalingSize = new System.Drawing.Size(16, 16);
+                    tbWindow.ImageScalingSize = new System.Drawing.Size(16, 16);
+                    tbTools.ImageScalingSize = new System.Drawing.Size(16, 16);
+                    tbAction.ImageScalingSize = new System.Drawing.Size(16, 16);
+                }
+            }
 
-            Helper.WindowsRegistry.Layout.PluginActionBoxExpanded = false;
-            Helper.WindowsRegistry.Layout.DefaultActionBoxExpanded = true;
-            Helper.WindowsRegistry.Layout.ToolActionBoxExpanded = false;
+            Commandline.ForceDefaultLayout();
+            ChangedTheme(booby.GuiTheme.Office2003);
+            waitControl1.Visible = true;
+            // End Force Default Layout
 
-            Helper.WindowsRegistry.Layout.TypeColumnWidth = 204;
-            Helper.WindowsRegistry.Layout.GroupColumnWidth = 100;
-            Helper.WindowsRegistry.Layout.InstanceHighColumnWidth = 100;
-            Helper.WindowsRegistry.Layout.InstanceColumnWidth = 100;
-            Helper.WindowsRegistry.Layout.OffsetColumnWidth = 100;
-            Helper.WindowsRegistry.Layout.SizeColumnWidth = 100;
             FixVisibleState(tbTools);
             FixVisibleState(tbAction);
             FixVisibleState(toolBar1);
 
             ReloadLayout();
 
-            tbTools.Visible = true;
+            // tbTools.Visible = true;
+            tbTools.Visible = !Helper.NoPlugins;
             tbAction.Visible = true;
             toolBar1.Visible = true;
-
-           
-            
-            
             tbWindow.Visible = false;
             this.dcResourceList.Visible = true;
         }
-
 
         /// <summary>
         /// Reload the Layout from the Registry
@@ -130,14 +140,14 @@ namespace SimPe
                 Helper.ExceptionMessage(ex);
             }
 
-            resourceViewManager1.RestoreLayout();
-            
+            resourceViewManager1.RestoreLayout();            
 
             UpdateDockMenus();
             MyButtonItem.GetLayoutInformations(this);
 
             FixCheckedState(tbTools);
-            FixCheckedState(toolBar1);            
+            FixCheckedState((tbAction));
+            FixCheckedState(toolBar1);
 
             foreach (ToolStripItem tsi in miWindow.DropDownItems)
             {
@@ -169,7 +179,7 @@ namespace SimPe
             {
                 System.Windows.Forms.ToolStripButton tsb = tsi as System.Windows.Forms.ToolStripButton;
                 if (tsb == null) continue;
-                if (tsb.Image!=null && tsb!=biUpdate) tsb.Visible = true;
+                if (tsb.Image!=null) tsb.Visible = true;
             }
         }
     }

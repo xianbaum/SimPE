@@ -9,6 +9,8 @@ namespace SimPe.Windows.Forms
     {
         static System.Drawing.Font regular = null;
         static System.Drawing.Font strike = null;
+        static System.Drawing.Font compress = null;
+        static System.Drawing.Font changeed = null;
 
         bool vis;
         NamedPackedFileDescriptor pfd;
@@ -19,13 +21,44 @@ namespace SimPe.Windows.Forms
             this.vis = visible;
             if (regular == null)
             {
-                regular = new System.Drawing.Font(Font.FontFamily, Font.Size, System.Drawing.FontStyle.Regular, Font.Unit);
-                strike = new System.Drawing.Font(Font.FontFamily, Font.Size, System.Drawing.FontStyle.Strikeout, Font.Unit);
+                if (Helper.WindowsRegistry.UseBigIcons)
+                {
+                    if (booby.ThemeManager.ThemedForms && (booby.ThemeManager.savedTheme == 4 || booby.ThemeManager.savedTheme == 7))
+                    {
+                        regular = new System.Drawing.Font("Comic Sans MS", Font.Size + 5F, System.Drawing.FontStyle.Regular, Font.Unit);
+                        strike = new System.Drawing.Font("Comic Sans MS", Font.Size + 5F, System.Drawing.FontStyle.Strikeout, Font.Unit);
+                        compress = new System.Drawing.Font("Comic Sans MS", Font.Size + 5F, Font.Style | System.Drawing.FontStyle.Bold, Font.Unit);
+                        changeed = new System.Drawing.Font("Comic Sans MS", Font.Size + 5F, Font.Style | System.Drawing.FontStyle.Italic, Font.Unit); // was 4F
+                    }
+                    else
+                    {
+                        regular = new System.Drawing.Font(Font.FontFamily, Font.Size + 5F, System.Drawing.FontStyle.Regular, Font.Unit);
+                        strike = new System.Drawing.Font(Font.FontFamily, Font.Size + 5F, System.Drawing.FontStyle.Strikeout, Font.Unit);
+                        compress = new System.Drawing.Font(Font.FontFamily, Font.Size + 5F, Font.Style | System.Drawing.FontStyle.Bold, Font.Unit);
+                        changeed = new System.Drawing.Font(Font.FontFamily, Font.Size + 5F, Font.Style | System.Drawing.FontStyle.Italic, Font.Unit); // was 3F
+                    }
+                }
+                else
+                {
+                    if (booby.ThemeManager.ThemedForms && (booby.ThemeManager.savedTheme == 4 || booby.ThemeManager.savedTheme == 7))
+                    {
+                        regular = new System.Drawing.Font("Comic Sans MS", Font.Size, System.Drawing.FontStyle.Regular, Font.Unit);
+                        strike = new System.Drawing.Font("Comic Sans MS", Font.Size, System.Drawing.FontStyle.Strikeout, Font.Unit);
+                        compress = new System.Drawing.Font("Comic Sans MS", Font.Size, Font.Style | System.Drawing.FontStyle.Bold, Font.Unit);
+                        changeed = new System.Drawing.Font("Comic Sans MS", Font.Size, Font.Style | System.Drawing.FontStyle.Italic, Font.Unit);
+                    }
+                    else
+                    {
+                        regular = new System.Drawing.Font(Font.FontFamily, Font.Size, System.Drawing.FontStyle.Regular, Font.Unit);
+                        strike = new System.Drawing.Font(Font.FontFamily, Font.Size, System.Drawing.FontStyle.Strikeout, Font.Unit);
+                        compress = new System.Drawing.Font(Font.FontFamily, Font.Size, Font.Style | System.Drawing.FontStyle.Bold, Font.Unit);
+                        changeed = new System.Drawing.Font(Font.FontFamily, Font.Size, Font.Style | System.Drawing.FontStyle.Italic, Font.Unit);
+                    }
+                }
             }
 
             this.manager = manager;
             this.pfd = pfd;
-
 
             string[] subitems = new string[7];
             subitems[0] = visible ? pfd.GetRealName() : pfd.Descriptor.ToResListString(); // Name
@@ -151,10 +184,10 @@ namespace SimPe.Windows.Forms
             }
 
             if (pfd.Descriptor.MarkForReCompress)
-                font = new System.Drawing.Font(font.FontFamily, font.Size, font.Style | System.Drawing.FontStyle.Bold, font.Unit);
+                font = compress;
 
             if (pfd.Descriptor.Changed)
-                font = new System.Drawing.Font(font.FontFamily, font.Size, font.Style | System.Drawing.FontStyle.Italic, font.Unit);
+                font = changeed;
 
             this.Font = font;
             this.ForeColor = fg;

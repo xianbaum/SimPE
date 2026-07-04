@@ -55,14 +55,12 @@ namespace SimPe
                         mbi.Visible = list.Contains(mbi.Name);
                 }
             }
-
         }
 
         public static void SetLayoutInformations(Control b)
         {
             ArrayList list = new ArrayList();
             SetLayoutInformations(b, list);
-
             Helper.WindowsRegistry.Layout.VisibleToolbarButtons = list;
         }
 
@@ -82,7 +80,6 @@ namespace SimPe
                             list.Add(mbi.Name);
                 }
             }
-
         }
         #endregion
         static int namect = 0;
@@ -150,9 +147,6 @@ namespace SimPe
                 havedock = false;
                 this.name = name;
             }
-
-
-
         }
 
         void item_EnabledChanged(object sender, EventArgs e)

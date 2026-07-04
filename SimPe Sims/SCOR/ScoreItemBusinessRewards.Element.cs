@@ -50,12 +50,16 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
 
             public void LoadData(System.IO.BinaryReader reader)
             {
+                byte bit = reader.ReadByte();
                 name = StreamHelper.ReadString(reader);
-                data = ScorItem.UnserializeDefaultToken(reader);
+                data = reader.ReadBytes(5);
+                //data = ScorItem.UnserializeDefaultToken(reader);
             }
 
             public void SaveData(System.IO.BinaryWriter writer, bool last)
             {
+                byte bit = 4;
+                writer.Write(bit);
                 StreamHelper.WriteString(writer, name);
                 writer.Write(data);
                 ScorItem.SerializeDefaultToken(writer, last);

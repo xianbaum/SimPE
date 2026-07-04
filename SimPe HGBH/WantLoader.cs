@@ -89,7 +89,6 @@ namespace SimPe.Plugin
 				return name;
 			}
 		}
-
 	}
 
 	/// <summary>
@@ -132,10 +131,10 @@ namespace SimPe.Plugin
 		{
 			if (cachefile!=null) return;
 
-			cachefile = new WantCacheFile();
+            cachefile = new WantCacheFile();
+            if (!Helper.WindowsRegistry.UseCache) return;
             Wait.SubStart();
             Wait.Message = "Loading Cache";
-			if (!Helper.WindowsRegistry.UseCache) return;
 			try 
 			{
 				cachefile.Load(Helper.SimPeLanguageCache, true);
@@ -187,8 +186,8 @@ namespace SimPe.Plugin
 			{
 				WantInformation wf = new WantInformation(guid);
 				wantcache[guid] = wf;
-				cachefile.AddItem(wf);
-				return wf;
+                cachefile.AddItem(wf);
+                return wf;
 			}
 		}
 
@@ -237,8 +236,6 @@ namespace SimPe.Plugin
 		{
 			return prefix+Name;
 		}
-
-
 	}
 
 	/// <summary>
@@ -249,6 +246,7 @@ namespace SimPe.Plugin
 		static Hashtable wants = null;
 		static SimPe.Packages.File txtpkg = null;
 		static WantNameLoader wnl;
+        // static SimPe.Packages.File imgpkg = null; // Never used ??
 
 		/// <summary>
 		/// Returns a Hashtable of all available Wants
@@ -264,7 +262,7 @@ namespace SimPe.Plugin
 		}
 
 		/// <summary>
-		/// Returns a WantNameLoader ou can use to determin Names
+		/// Returns a WantNameLoader you can use to determine Names
 		/// </summary>
 		public static WantNameLoader WantNameLoader 
 		{
@@ -281,23 +279,20 @@ namespace SimPe.Plugin
 		static void LoadTextPackage()
 		{
             Wait.SubStart();
-			txtpkg = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(SimPe.PathProvider.Global[Expansions.BaseGame].InstallFolder, "TSData\\Res\\Text\\Wants.package"));
+            txtpkg = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(SimPe.PathProvider.Global.Latest.InstallFolder, "TSData\\Res\\Text\\Wants.package"));
 
-            foreach (ExpansionItem ei in PathProvider.Global.Expansions) {
-                if (ei.Exists && ei.Flag.LoadWantText)
+            string img = (System.IO.Path.Combine(SimPe.PathProvider.Global[Expansions.BaseGame].InstallFolder, "TSData\\Res\\UI\\ui.package"));
+            FileTable.FileIndex.AddIndexFromPackage(img);
+            foreach (ExpansionItem ei in PathProvider.Global.Expansions)
+            {
+                if (ei.Exists)
                 {
-                    SimPe.Packages.File txtpkg2 = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(ei.InstallFolder, "TSData\\Res\\Text\\Wants.package"));
-                    txtpkg2.Persistent = true;
-                    foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in txtpkg2.Index)
-                    {
-                        pfd.UserData = txtpkg2.Read(pfd).UncompressedData;
-                        txtpkg.Add(pfd);
-                    }
-                    txtpkg2.Persistent = false;	                    
+                    img = (System.IO.Path.Combine(ei.InstallFolder, "TSData\\Res\\UI\\ui.package"));
+                    FileTable.FileIndex.AddIndexFromPackage(img);
                 }
-        }
+            }
 
-        Wait.SubStop();
+            Wait.SubStop();
 		}
 
 		/// <summary>
@@ -309,7 +304,7 @@ namespace SimPe.Plugin
 			wants = new Hashtable();
 
 			FileTable.FileIndex.Load();
-			SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] wtss = FileTable.FileIndex.FindFile(Data.MetaData.XWNT, true);
+            SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] wtss = FileTable.FileIndex.FindFile(Data.MetaData.XWNT, true);
 
 			foreach (SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem wts in wtss)
 			{

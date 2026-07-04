@@ -18,11 +18,12 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.Media;
 
 namespace SimPe.Plugin.Tool.Action
 {
 	/// <summary>
-	/// The Intrigued Neighborhood Action
+	/// The Intrigued Neighbourhood Action
 	/// </summary>
 	public class ActionIntriguedNeighborhood : SimPe.Interfaces.IToolAction
 	{
@@ -31,7 +32,9 @@ namespace SimPe.Plugin.Tool.Action
 
 		public virtual bool ChangeEnabledStateEventHandler(object sender, SimPe.Events.ResourceEventArgs es)
 		{
-			return true;
+            if (es.Loaded && Helper.IsNeighborhoodFile(es.LoadedPackage.FileName)) return true;
+
+			return false;
 		}
 
         private bool RealChangeEnabledStateEventHandler(object sender, SimPe.Events.ResourceEventArgs es)
@@ -41,44 +44,192 @@ namespace SimPe.Plugin.Tool.Action
             return es.LoadedPackage.Package.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE).Length > 0;
         }
 
-		public void ExecuteEventHandler(object sender, SimPe.Events.ResourceEventArgs e)
-		{
+        public void ExecuteEventHandler(object sender, SimPe.Events.ResourceEventArgs e)
+        {
             if (!RealChangeEnabledStateEventHandler(null, e))
             {
                 System.Windows.Forms.MessageBox.Show(SimPe.Localization.GetString("This is not an appropriate context in which to use this tool"),
                     this.ToString());
                 return;
             }
+            SimPe.PackedFiles.Wrapper.SimDNA sdna;
 
-			SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = e.LoadedPackage.Package.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = e.LoadedPackage.Package.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
+            Wait.MaxProgress = pfds.Length;
+            Wait.Progress = 0;
+            Wait.Message = "Updating Sim Descriptios";
+            SimPe.PackedFiles.Wrapper.SDesc sdesc = new SimPe.PackedFiles.Wrapper.SDesc(null, null, null);
+            Random slt = new Random();
+            uint booty = 0;
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+            {
+                sdesc.ProcessData(pfd, e.LoadedPackage.Package);
+                Wait.Progress++;
+                if ((booby.PrettyGirls.IsTitsInstalled() || booby.PrettyGirls.IsAngelsInstalled()) && sdesc.CharacterDescription.Bodyshape != SimPe.Data.MetaData.Bodyshape.Default) continue;
+                if (sdesc.Nightlife.Species != 0 || ((int)sdesc.Version == (int)SimPe.PackedFiles.Wrapper.SDescVersions.Castaway && sdesc.Castaway.Subspecies > 0)) continue;
 
-			SimPe.PackedFiles.Wrapper.SDesc sdesc = new SimPe.PackedFiles.Wrapper.SDesc(null, null, null);
-			foreach(SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
-			{
-				sdesc.ProcessData(pfd, e.LoadedPackage.Package);
+                if (booby.PrettyGirls.IsTitsInstalled() || booby.PrettyGirls.IsAngelsInstalled())
+                {
+                    sdesc.Interests.Animals = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Crime = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Culture = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Entertainment = (ushort)slt.Next(700, 1000);
+                    sdesc.Interests.Environment = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Fashion = (ushort)slt.Next(800, 1000);
+                    sdesc.Interests.Food = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Health = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Money = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Paranormal = 10;
+                    sdesc.Interests.Politics = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.School = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Scifi = (ushort)slt.Next(100);
+                    sdesc.Interests.Sports = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Toys = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Travel = (ushort)slt.Next(700, 1000);
+                    sdesc.Interests.Weather = (ushort)slt.Next(400, 600);
+                    sdesc.Interests.Work = (ushort)slt.Next(400, 600);
+                    sdesc.Skills.Body = 800;
+                    sdesc.Skills.Charisma = 800;
+                    sdesc.Skills.Cooking = 800;
+                    sdesc.Skills.Cleaning = 800;
+                    sdesc.Skills.Creativity = 800;
+                    sdesc.Skills.Logic = 800;
+                    sdesc.Skills.Mechanical = 800;
+                    sdesc.Skills.Fatness = 0;
+                    sdesc.Skills.Romance = 1000;
+                    sdesc.Skills.Art = 800;
+                    sdesc.Skills.Music = 800;
+                    sdesc.Character.Neat = (ushort)slt.Next(400, 800);
+                    sdesc.Character.Outgoing = (ushort)slt.Next(100, 1000);
+                    sdesc.Character.Active = (ushort)slt.Next(400, 800);
+                    sdesc.Character.Playful = (ushort)slt.Next(800, 1000);
+                    sdesc.Character.Nice = (ushort)slt.Next(850, 1000);
+                    sdesc.GeneticCharacter.Neat = sdesc.Character.Neat;
+                    sdesc.GeneticCharacter.Outgoing = sdesc.Character.Outgoing;
+                    sdesc.GeneticCharacter.Active = sdesc.Character.Active;
+                    sdesc.GeneticCharacter.Playful = sdesc.Character.Playful;
+                    sdesc.GeneticCharacter.Nice = sdesc.Character.Nice;
+                    sdesc.CharacterDescription.BodyFlag.Fit = true;
+                    sdesc.CharacterDescription.BodyFlag.Fat = false;
+                    sdesc.CharacterDescription.PersonFlags1.IsWitch = false;
 
-				sdesc.Interests.Animals = 1000;
-				sdesc.Interests.Crime = 1000;
-				sdesc.Interests.Culture = 1000;
-				sdesc.Interests.Entertainment = 1000;
-				sdesc.Interests.Environment = 1000;
-				sdesc.Interests.Fashion = 1000;
-				sdesc.Interests.Food = 1000;
-				sdesc.Interests.Health = 1000;
-				sdesc.Interests.Money = 1000;
-				sdesc.Interests.Paranormal = 1000;
-				sdesc.Interests.Politics = 1000;
-				sdesc.Interests.School = 1000;
-				sdesc.Interests.Scifi = 1000;
-				sdesc.Interests.Sports = 1000;
-				sdesc.Interests.Toys = 1000;
-				sdesc.Interests.Travel = 1000;
-				sdesc.Interests.Weather = 1000;
-				sdesc.Interests.Work = 1000;
+                    SimPe.Interfaces.Files.IPackedFileDescriptor pfb = e.LoadedPackage.Package.FindFileAnyGroup(Data.MetaData.SDNA, 0, pfd.Instance);
+                    if (pfb != null)
+                    {
+                        sdna = new SimPe.PackedFiles.Wrapper.SimDNA();
+                        sdna.ProcessData(pfb, e.LoadedPackage.Package, true);
+                        booty = SimPe.Data.MetaData.GetBodyShapeid(sdna.Dominant.Skintone);
+                    }
+                    else booty = 0;
 
-				sdesc.SynchronizeUserData();
-			}
-		}
+                    if (sdesc.CharacterDescription.Gender == Data.MetaData.Gender.Female)
+                    {
+                        sdesc.Interests.FemalePreference = 1000;
+                        sdesc.Interests.MalePreference = 100;
+                        sdesc.CharacterDescription.LifelinePoints = 100;
+                        if (booty != 0) // Real NPCs don't have dna so this should save them
+                            sdesc.CharacterDescription.Bodyshape = (Data.MetaData.Bodyshape)booty;
+                        else if (sdesc.CharacterDescription.Bodyshape == Data.MetaData.Bodyshape.Default)
+                            sdesc.CharacterDescription.Bodyshape = Data.MetaData.Bodyshape.Maxis; // don't parse this one again
+                        if ((int)sdesc.Version >= (int)SimPe.PackedFiles.Wrapper.SDescVersions.Freetime)
+                        {
+                            if (sdesc.Freetime.LongtermAspiration < 29000) sdesc.Freetime.LongtermAspiration = 29000;
+                            if (sdesc.Freetime.LongtermAspirationUnlockPoints < 12) sdesc.Freetime.LongtermAspirationUnlockPoints = 12;
+                            if (sdesc.FamilyInstance != 0x7FE4)
+                                sdesc.Freetime.HobbyPredistined = SimPe.PackedFiles.Wrapper.Hobbies.Nature;
+                            if (sdesc.CharacterDescription.LifeSection > SimPe.Data.MetaData.LifeSections.Child && sdesc.Freetime.SecondaryAspiration != SimPe.Data.MetaData.AspirationTypes.Romance)
+                                sdesc.Freetime.PrimaryAspiration = SimPe.Data.MetaData.AspirationTypes.Romance;
+                        }
+                    }
+                    else
+                    {
+                        sdesc.Interests.FemalePreference = 1000;
+                        sdesc.Interests.MalePreference = -400;
+                        if (booty != 0)
+                        {
+                            if (booty != 0x13 && booty != 0x1e)
+                                sdesc.CharacterDescription.Bodyshape = Data.MetaData.Bodyshape.LeanBB;
+                            else
+                                sdesc.CharacterDescription.Bodyshape = (Data.MetaData.Bodyshape)booty;
+                        }
+                        else if (sdesc.CharacterDescription.Bodyshape == Data.MetaData.Bodyshape.Default)
+                            sdesc.CharacterDescription.Bodyshape = Data.MetaData.Bodyshape.Maxis;
+                    }
+                    if (booby.PrettyGirls.IsTitsInstalled())
+                    {
+                        sdesc.Nightlife.AttractionTurnOns1 = 30329;
+                        sdesc.Nightlife.AttractionTurnOns3 = 3853;
+                        sdesc.Nightlife.AttractionTurnOffs1 = 128;
+                        sdesc.Nightlife.AttractionTurnOffs2 = 0;
+                        sdesc.Nightlife.AttractionTurnOffs3 = 0;
+                        if (sdesc.CharacterDescription.Gender == Data.MetaData.Gender.Female)
+                            sdesc.Nightlife.AttractionTurnOns2 = 65503; // same as male except has well hung
+                        else
+                            sdesc.Nightlife.AttractionTurnOns2 = 32735;
+                    }
+                    else
+                    {
+                        sdesc.Nightlife.AttractionTurnOns1 = 30329;
+                        sdesc.Nightlife.AttractionTurnOns2 = 32735;
+                        sdesc.Nightlife.AttractionTurnOns3 = 3840;
+                        sdesc.Nightlife.AttractionTurnOffs1 = 128;
+                        sdesc.Nightlife.AttractionTurnOffs2 = 0;
+                        sdesc.Nightlife.AttractionTurnOffs3 = 0;
+                    }
+                    if (sdesc.FamilyInstance > 32512) sdesc.CharacterDescription.PersonFlags1.WantHistory = true;
+                }
+                else
+                {
+                    sdesc.Interests.Animals = 1000;
+                    sdesc.Interests.Crime = 1000;
+                    sdesc.Interests.Culture = 1000;
+                    sdesc.Interests.Entertainment = 1000;
+                    sdesc.Interests.Environment = 1000;
+                    sdesc.Interests.Fashion = 1000;
+                    sdesc.Interests.Food = 1000;
+                    sdesc.Interests.Health = 1000;
+                    sdesc.Interests.Money = 1000;
+                    sdesc.Interests.Paranormal = 1000;
+                    sdesc.Interests.Politics = 1000;
+                    sdesc.Interests.School = 1000;
+                    sdesc.Interests.Scifi = 1000;
+                    sdesc.Interests.Sports = 1000;
+                    sdesc.Interests.Toys = 1000;
+                    sdesc.Interests.Travel = 1000;
+                    sdesc.Interests.Weather = 1000;
+                    sdesc.Interests.Work = 1000;
+                    sdesc.Skills.Body = 1000;
+                    sdesc.Skills.Charisma = 1000;
+                    sdesc.Skills.Cooking = 1000;
+                    sdesc.Skills.Cleaning = 1000;
+                    sdesc.Skills.Creativity = 1000;
+                    sdesc.Skills.Logic = 1000;
+                    sdesc.Skills.Mechanical = 1000;
+                    sdesc.Skills.Fatness = 0;
+                    sdesc.Skills.Art = 1000;
+                    sdesc.Skills.Music = 1000;
+                    sdesc.CharacterDescription.BodyFlag.Fit = true;
+                    sdesc.CharacterDescription.BodyFlag.Fat = false;
+                    if (sdesc.CharacterDescription.Gender == Data.MetaData.Gender.Female)
+                    {
+                        sdesc.Interests.FemalePreference = 10;
+                        sdesc.Interests.MalePreference = 100;
+                    }
+                    else
+                    {
+                        sdesc.Interests.FemalePreference = 100;
+                        sdesc.Interests.MalePreference = -10;
+                    }
+                }
+                sdesc.SynchronizeUserData();
+            }
+            Wait.Stop(true);
+            if (booby.PrettyGirls.PervyMode)
+            {
+                SoundPlayer alldid = new SoundPlayer(booby.NoisyGirls.ooh);
+                alldid.Play();
+            }
+        }
 
 		#endregion		
 
@@ -86,7 +237,8 @@ namespace SimPe.Plugin.Tool.Action
 		#region IToolPlugin Member
 		public override string ToString()
 		{
-			return "Intrigued Neighborhood";
+            if ((booby.PrettyGirls.PervyMode && booby.PrettyGirls.IsAngelsInstalled()) || booby.PrettyGirls.IsTitsInstalled()) return "Lustomize Neighbourhood";
+            else return "Intrigued Neighbourhood";
 		}
 		#endregion
 

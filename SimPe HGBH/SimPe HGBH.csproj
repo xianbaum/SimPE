@@ -10,7 +10,7 @@
     </ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>simpe.ngbh.plugin</AssemblyName>
+    <AssemblyName>simpe.neighbourhood</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -28,7 +28,7 @@
     </UpgradeBackupLocation>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <OutputPath>..\__Debug\Plugins\</OutputPath>
+    <OutputPath>Debug\Plugins\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
@@ -51,13 +51,14 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>..\__Release\Plugins\</OutputPath>
+    <OutputPath>..\__Release\</OutputPath>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <BaseAddress>285212672</BaseAddress>
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -73,38 +74,87 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release MAC|AnyCPU' ">
-    <OutputPath>..\__Release\Plugins\</OutputPath>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\Plugins\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <BaseAddress>285212672</BaseAddress>
-    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
-    <ConfigurationOverrideFile>
-    </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
-    <DocumentationFile>
-    </DocumentationFile>
-    <DebugSymbols>false</DebugSymbols>
-    <FileAlignment>4096</FileAlignment>
-    <NoStdLib>false</NoStdLib>
-    <NoWarn>
-    </NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\Plugins\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <BaseAddress>285212672</BaseAddress>
     <Optimize>true</Optimize>
-    <RegisterForComInterop>false</RegisterForComInterop>
-    <RemoveIntegerChecks>false</RemoveIntegerChecks>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
-    <WarningLevel>4</WarningLevel>
-    <DebugType>none</DebugType>
+    <DebugType>
+    </DebugType>
+    <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GDF, Version=0.69.20.22, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\GDF.dll</HintPath>
+    </Reference>
+    <Reference Include="graphcontrol, Version=1.69.8412.24482, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\graphcontrol.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic">
       <Name>Microsoft.VisualBasic</Name>
     </Reference>
-    <Reference Include="SandDock, Version=2.0.2.1, Culture=neutral, PublicKeyToken=75b7ec17dd7c14c3">
+    <Reference Include="simpe.3idr, Version=1.69.9319.39704, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SandDock.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\__Release\simpe.3idr.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.cache, Version=1.69.7181.26283, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.cache.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.geometry, Version=1.0.3349.37538, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.geometry.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.gmdc.exporter.base, Version=1.0.3349.37556, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.gmdc.exporter.base.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.helper, Version=0.75.69.1, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.helper.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.interfaces, Version=1.0.3349.37516, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.names, Version=1.0.3349.37572, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.names.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.package, Version=1.69.7182.15371, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.package.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.rcol, Version=1.0.7178.23089, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.rcol.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.scenegraph, Version=1.0.3349.37561, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.scenegraph.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.sims, Version=1.69.7185.32885, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\__Release\simpe.sims.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="simpe.workspace, Version=1.69.7182.14188, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.workspace.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -127,108 +177,19 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <Reference Include="XPCommonControls">
-      <Name>xpcommoncontrols</Name>
-      <HintPath>..\xpcommoncontrols.dll</HintPath>
+    <Reference Include="SandDock">
+      <Name>sanddock</Name>
+      <HintPath>..\__Release\sanddock.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <ProjectReference Include="..\..\pjseCoderPlugin-cvs\pjse System Classes\SimPe pjse System Classes.csproj">
-      <Project>{0B9D2E1D-30F3-4718-B66B-791BFBAC3DB7}</Project>
-      <Name>SimPe pjse System Classes</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\EnumComboBox\EnumComboBox.csproj">
-      <Project>{5C663721-B4E3-43F7-A39F-9E6060FA5433}</Project>
-      <Name>EnumComboBox</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\GraphControl\GraphControl.csproj">
-      <Project>{7D2EE6ED-78C1-4738-9AE1-E3C165A81E3D}</Project>
-      <Name>GraphControl</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe 3IDR\SimPe 3IDR.csproj">
-      <Project>{37D97490-DC9F-4DB7-9215-998C6BC06078}</Project>
-      <Name>SimPe 3IDR</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Cache\SimPe Cache.csproj">
-      <Project>{C949FB46-0C06-4C5D-92AE-5DD7F6E53364}</Project>
-      <Name>SimPe Cache</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Clst\SimPe Clst.csproj">
-      <Project>{5DD89FD7-1E89-49D4-B48D-CC605D767C3B}</Project>
-      <Name>SimPe Clst</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Extended Filehandlers\SimPe Extended Filehandlers.csproj">
-      <Project>{7EF7C30C-2968-46E8-AA74-79EDB0FE8F2A}</Project>
-      <Name>SimPe Extended Filehandlers</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe FileHandler\SimPe FileHandlers.csproj">
-      <Project>{97551C0A-6295-4E32-8E15-A4FF456E65A6}</Project>
-      <Name>SimPe FileHandlers</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Geometry\SimPe Geometry.csproj">
-      <Project>{60367A6D-8FF1-4289-B546-C68A2C395843}</Project>
-      <Name>SimPe Geometry</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe GMDC Exporter Base\SimPe GMDC Exporter Base.csproj">
-      <Project>{76D6A8B3-10DF-4948-9028-C63A416AB00E}</Project>
-      <Name>SimPe GMDC Exporter Base</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe HandlerCommon\SimPe HandlerCommon.csproj">
-      <Project>{A4CC48FD-9574-4F0B-B721-9E8C1B1E6A8A}</Project>
-      <Name>SimPe HandlerCommon</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Helper\SimPe Helper.csproj">
-      <Project>{59E3C353-1350-42D8-A045-CBBAD232F228}</Project>
-      <Name>SimPe Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Interfaces\SimPe Interfaces.csproj">
-      <Project>{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}</Project>
-      <Name>SimPe Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Name Provider\SimPe Name Provider.csproj">
-      <Name>SimPe Name Provider</Name>
-      <Project>{38259F2B-9C90-48BE-A519-E4EEC62C242C}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Packages\SimPe Packages.csproj">
-      <Project>{1C6C45BF-FE19-4C23-B327-01F45B0F269C}</Project>
-      <Name>SimPe Packages</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe RCOL\SimPe RCOL.csproj">
-      <Project>{74517907-2236-4C45-80ED-E188D5E5CE0E}</Project>
-      <Name>SimPe RCOL</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Scenegraph\SimPe Scenegraph.csproj">
-      <Project>{1151A88B-47AF-41DA-BCDF-DEFED0CC326E}</Project>
-      <Name>SimPe Scenegraph</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Sims\SimPe Sims.csproj">
-      <Name>SimPe Sims</Name>
-      <Project>{9877B092-C8C0-4B84-B5A0-F9A68AA1C0E4}</Project>
-      <Package>{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</Package>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Workspace Helper\SimPe Workspace Helper.csproj">
-      <Project>{45021667-BAD2-4ECA-8423-F4734F914CBB}</Project>
-      <Name>SimPe Workspace Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <Reference Include="simpe.clst, Version=1.0.3349.37528, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.clst.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.filehandler, Version=1.0.3349.37548, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.filehandler.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActionDeleteSim.cs">
@@ -257,6 +218,12 @@
     </Compile>
     <Compile Include="BnfoWrapper.cs">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LoteUI.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="LoteUI.designer.cs">
+      <DependentUpon>LoteUI.cs</DependentUpon>
     </Compile>
     <Compile Include="LotWrapper.cs" />
     <Compile Include="ExtNgbh.cs">
@@ -291,6 +258,13 @@
     </Compile>
     <Compile Include="MemoryProperties.cs">
       <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Neighborhood.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="NeighborhoodTool.cs" />
+    <Compile Include="NgbBackup.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="NgbhForm.cs">
       <SubType>Form</SubType>
@@ -367,6 +341,11 @@
     <Compile Include="NhtrUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="RoadTextureControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -374,6 +353,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="SimAspirationEditor.cs" />
+    <Compile Include="SimNookyEditor.cs" />
+    <Compile Include="SimWillyEditor.cs" />
     <Compile Include="SlotUI.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -448,7 +429,6 @@
       <DependentUpon>BnfoUI.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="bookmark.png" />
     <EmbeddedResource Include="emoticon.png" />
     <EmbeddedResource Include="ExtNgbhUI.de.resx">
       <DependentUpon>ExtNgbhUI.cs</DependentUpon>
@@ -591,6 +571,81 @@
     <EmbeddedResource Include="WantsForm.resx">
       <DependentUpon>WantsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="LoteUI.en-US.resx">
+      <DependentUpon>LoteUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoteUI.resx">
+      <DependentUpon>LoteUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Neighborhood.de.resx">
+      <DependentUpon>Neighborhood.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Neighborhood.en-US.resx">
+      <DependentUpon>Neighborhood.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Neighborhood.fr.resx">
+      <DependentUpon>Neighborhood.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Neighborhood.it.resx">
+      <DependentUpon>Neighborhood.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Neighborhood.pl.resx">
+      <DependentUpon>Neighborhood.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Neighborhood.resx">
+      <DependentUpon>Neighborhood.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Neighborhood.ru.resx">
+      <DependentUpon>Neighborhood.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NgbBackup.de.resx">
+      <DependentUpon>NgbBackup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NgbBackup.es.resx">
+      <DependentUpon>NgbBackup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NgbBackup.fr.resx">
+      <DependentUpon>NgbBackup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NgbBackup.it.resx">
+      <DependentUpon>NgbBackup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NgbBackup.pl.resx">
+      <DependentUpon>NgbBackup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NgbBackup.resx">
+      <DependentUpon>NgbBackup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NgbBackup.ru.resx">
+      <DependentUpon>NgbBackup.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NhtrUI.en-US.resx">
+      <DependentUpon>NhtrUI.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

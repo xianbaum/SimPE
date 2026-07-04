@@ -4,7 +4,7 @@ using SimPe.Geometry;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für TileItem.
+	/// Summary description for TileItem.
 	/// </summary>
 	public class NhtrRoadItem : NhtrBaseItem
 	{		
@@ -12,7 +12,7 @@ namespace SimPe.Plugin
 		NhtrLocation topleft, topright, botright, botleft;
 		uint texture;
 		byte[] data;
-		internal NhtrRoadItem(NhtrList parent) : base(parent, 3)
+		public NhtrRoadItem(NhtrList parent) : base(parent, 3)
 		{		
 			topleft = new NhtrLocation();
 			topright = new NhtrLocation();
@@ -61,6 +61,7 @@ namespace SimPe.Plugin
 		public byte[] Data
 		{
 			get {return data;}
+            set { data = value; }
 		}
 
 		protected override void DoUnserialize(System.IO.BinaryReader reader)

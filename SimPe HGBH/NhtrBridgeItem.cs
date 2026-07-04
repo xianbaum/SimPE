@@ -4,21 +4,22 @@ using SimPe.Geometry;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für TileItem.
+	/// Summary description for TileItem.
 	/// </summary>
 	public class NhtrBridgeItem : NhtrRoadItem
 	{		
 		byte marker3;	
 		byte[] data2;
-		internal NhtrBridgeItem(NhtrList parent) : base(parent)
+		public NhtrBridgeItem(NhtrList parent) : base(parent)
 		{					
 			marker3 = 3;
 			data2 = new byte[40];
-		}					
+		}
 
 		public byte[] Data2
 		{
-			get {return data2;}
+            get { return data2; }
+            set { data2 = value; }
 		}
 
 		public byte Marker3

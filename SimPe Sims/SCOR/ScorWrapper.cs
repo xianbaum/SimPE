@@ -27,7 +27,7 @@ using System.Collections;
 namespace SimPe.PackedFiles.Wrapper
 {
 	/// <summary>
-	/// Zusammenfassung für ScorWrapper.
+	/// Summary description for ScorWrapper.
 	/// </summary>
 	public class Scor
 		: AbstractWrapper				//Implements some of the default Behaviur of a Handler, you can Implement yourself if you want more flexibility!
@@ -52,16 +52,11 @@ namespace SimPe.PackedFiles.Wrapper
 			get { return version; }
 		}		
 
-		uint unk1, unk2;
+		uint unk1;
 
 		public uint Unknown1
 		{
 			get {return unk1;}
-		}
-
-		public uint Unknown2
-		{
-			get {return unk2;}
 		}
 		#endregion
 				
@@ -83,7 +78,6 @@ namespace SimPe.PackedFiles.Wrapper
 
         protected override string GetResourceName(TypeAlias ta)
         {
-            //if (!SimPe.Custom.Settings.SimNames) return base.GetResourceName(ta);
             ExtSDesc sdsc = FileTable.ProviderRegistry.SimDescriptionProvider.FindSim((ushort)this.FileDescriptor.Instance) as ExtSDesc;
             if (sdsc == null)
                 return base.GetResourceName(ta);
@@ -117,17 +111,14 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </summary>
 		/// <param name="reader">The Stream that contains the FileData</param>
 		protected override void Unserialize(System.IO.BinaryReader reader)
-		{
+        {
+            items.Clear();
 			version = reader.ReadUInt32();
-			unk1 = reader.ReadUInt32();
-			unk2 = reader.ReadUInt32();
-
-			items.Clear();
+			unk1 = reader.ReadUInt32();//howmany 
 			while (reader.BaseStream.Position<reader.BaseStream.Length) 
 			{
 				ScorItem si = new ScorItem(this);
 				si.Unserialize(reader);
-
 				items.Add(si);
 			}
 
@@ -148,7 +139,6 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			writer.Write(version);
 			writer.Write(unk1);
-			writer.Write(unk2);
 
 			for (int i=0; i<items.Count; i++) 
 			{

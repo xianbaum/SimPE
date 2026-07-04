@@ -57,7 +57,7 @@ namespace SimPe.Plugin
 		}
 
 		/// <summary>
-		/// eturns the Base Package
+		/// returns the Base Package
 		/// </summary>
 		public Interfaces.Files.IPackageFile Package 
 		{
@@ -71,11 +71,11 @@ namespace SimPe.Plugin
 		{
 			get 
 			{
-				if (ctss==null) return package.FileName;
+                if (ctss == null) return System.IO.Path.GetFileName(package.FileName);
 				SimPe.PackedFiles.Wrapper.StrItemList items = ctss.FallbackedLanguageItems(Helper.WindowsRegistry.LanguageCode);
 				if (items.Length>0) return items[0].Title;
 
-				return package.FileName;
+                return System.IO.Path.GetFileName(package.FileName);
 			}
 		}
 

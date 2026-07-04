@@ -99,10 +99,9 @@ namespace SimPe.Plugin
 		/// <param name="tc">The TabControl you want to add the resourceTabPage to</param>
 		/// <param name="cb">The ComboBox that selects the SubBlocks</param>
 		/// <returns></returns>
-		internal virtual void AddToResourceTabControl(TabControl tc, ComboBox cb) 
+		internal virtual void AddToResourceTabControl(TabControl tc, ComboBox cb)
 		{		
 			tc.Tag = cb;
-
 			//remove all additional Pages
 			for (int i=tc.TabPages.Count-1; i>=0; i--) 
 				if (tc.TabPages[i].Tag!=null) tc.TabPages.RemoveAt(i);

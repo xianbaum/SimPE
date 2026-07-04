@@ -27,7 +27,7 @@ using System.Xml;
 namespace SimPe.Providers
 {
 	/// <summary>
-	/// Zusammenfassung für SimDescription.
+	/// Summary description for SimDescription.
 	/// </summary>
 	public class SimDescriptions : SimCommonPackage, ISimDescriptions	 
 	{
@@ -40,13 +40,13 @@ namespace SimPe.Providers
 		/// </summary>
 		public Hashtable SimGuidMap
 		{
-			get 
-			{
+			get
+            {
+                if (!packagcheck()) return new Hashtable(0);
 				if (bysimid==null) LoadDescriptions();
 				return bysimid;
 			}
 		}
-
 		/// <summary>
 		/// Holds all Descriptions by Instance
 		/// </summary>
@@ -56,8 +56,9 @@ namespace SimPe.Providers
 		/// </summary>
 		public Hashtable SimInstance
 		{
-			get 
-			{
+			get
+            {
+                if (!packagcheck()) return new Hashtable(0);
 				if (byinstance==null) LoadDescriptions();
 				return byinstance;
 			}
@@ -78,7 +79,7 @@ namespace SimPe.Providers
 		/// </summary>
 		/// <param name="folder">The Base Package</param>
 		/// <param name="names">null or a valid SimNames Provider</param>
-		/// <param name="famnames">nullr or a valid SimFamilyNames Provider</param>
+		/// <param name="famnames">null or a valid SimFamilyNames Provider</param>
 		public SimDescriptions(IPackageFile package, ISimNames names, ISimFamilyNames famnames) : base(package) 
 		{
 			this.names = names;
@@ -89,7 +90,7 @@ namespace SimPe.Providers
 		/// Constructor
 		/// </summary>
 		/// <param name="names">null or a valid SimNames Provider</param>
-		/// <param name="famnames">nullr or a valid SimFamilyNames Provider</param>
+		/// <param name="famnames">null or a valid SimFamilyNames Provider</param>
 		internal SimDescriptions(ISimNames names, ISimFamilyNames famnames) : base(null) 
 		{
 			this.names = names;
@@ -99,27 +100,33 @@ namespace SimPe.Providers
 		/// <summary>
 		/// Loads all Available Description Files in the Package
 		/// </summary>
-		protected void LoadDescriptions() 
-		{
+		protected void LoadDescriptions()
+        {
+            if (!packagcheck()) return;//don't assign anything to bysimid or byinstance unless a real package is loaded or this won't run again when a real package is loaded
 			bysimid = new Hashtable();
 			byinstance = new Hashtable();
             bool didwarndoubleguid = false;
-			if (BasePackage == null) return;
 
 			IPackedFileDescriptor[] files = BasePackage.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
 
 			foreach (IPackedFileDescriptor pfd in files) 
 			{
-				//SDesc sdesc = new SDesc(this.names, this.famnames, this);
 				LinkedSDesc sdesc = new LinkedSDesc();
 				sdesc.ProcessData(pfd, BasePackage);
 
-				if (bysimid.ContainsKey((uint)sdesc.SimId) || byinstance.ContainsKey((ushort)sdesc.Instance))
-                    if (!didwarndoubleguid)
+                if (!didwarndoubleguid || Helper.WindowsRegistry.HiddenMode)
+                {
+                    if (bysimid.ContainsKey((uint)sdesc.SimId))
                     {
-                        Helper.ExceptionMessage(new Warning("A Sim was found Twice!", "The Sim with GUID 0x" + Helper.HexString(sdesc.SimId) + " (inst=0x" + Helper.HexString(sdesc.Instance) + ") exists more than once. This could result in  Problems during the Gameplay!"));
+                        Helper.ExceptionMessage(new Warning("A Sim was found Twice!", "The Sim with GUID 0x" + Helper.HexString(sdesc.SimId) + " (instance=0x" + Helper.HexString(pfd.Instance) + ") exists more than once. This could result in Problems during the Gameplay!"));
                         didwarndoubleguid = true;
                     }
+                    if (byinstance.ContainsKey((ushort)sdesc.Instance))
+                    {
+                        Helper.ExceptionMessage(new Warning("A Sim was found Twice!", "The Sim with nid=0x" + Helper.HexString(sdesc.Instance) + " (instance=0x" + Helper.HexString(pfd.Instance) + ") exists more than once. This could result in Problems during the Gameplay!"));
+                        didwarndoubleguid = true;
+                    }
+                }
 				
 				bysimid[(uint)sdesc.SimId] = sdesc;
 				byinstance[(ushort)sdesc.Instance] = sdesc;
@@ -133,40 +140,69 @@ namespace SimPe.Providers
 
 		public ArrayList GetHouseholdNames(out string firstcustum)
 		{
-			Hashtable ht = SimPe.FileTable.ProviderRegistry.SimDescriptionProvider.SimInstance;
-			ArrayList list = new ArrayList();
-			firstcustum = null;
-			foreach (SimPe.PackedFiles.Wrapper.LinkedSDesc sdesc in ht.Values)
-			{
-				string n = sdesc.HouseholdName;
-				if (n==null) n=SimPe.Localization.GetString("Unknown");
-				if (!list.Contains(n)) 
-				{
-					list.Add(n);
-					if (firstcustum==null && !sdesc.IsNPC && !sdesc.IsTownie) firstcustum = n;
-				}				
-			}
+            firstcustum = null;
+            if (!packagcheck()) return new ArrayList(0);
+            ArrayList list = new ArrayList();
+            uint loest = 9999;
+            if (Helper.WindowsRegistry.HiddenMode)
+            {
+                // SimDescriptionProvider.SimInstance was not updating on package change - may well be fixed now
+                Hashtable ht = SimPe.FileTable.ProviderRegistry.SimDescriptionProvider.SimInstance;
+                foreach (SimPe.PackedFiles.Wrapper.LinkedSDesc sdesc in ht.Values)
+                {
+                    string n = sdesc.HouseholdName;
+                    if (n == null) n = SimPe.Localization.GetString("Unknown");
+                    if (!list.Contains(n))
+                    {
+                        list.Add(n);
+                        if (!sdesc.IsNPC && !sdesc.IsTownie)
+                        {
+                            if (firstcustum == null || sdesc.FamilyInstance < loest)
+                            { firstcustum = n; loest = sdesc.FamilyInstance; }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                SimPe.PackedFiles.Wrapper.Fami fami = new SimPe.PackedFiles.Wrapper.Fami(null);
+                foreach (uint type in fami.AssignableTypes)
+                {
+                    IPackedFileDescriptor[] lst = BasePackage.FindFiles(type);
+                    foreach (IPackedFileDescriptor pfd in lst)
+                    {
+                        fami.ProcessData(pfd, BasePackage);
+                        if (!list.Contains(fami.Name))
+                        {
+                            list.Add(fami.Name);
+                            if (pfd.Instance > 0 && pfd.Instance < loest)
+                            { firstcustum = fami.Name; loest = pfd.Instance; }
+                        }
+                    }
+                }
+            }
 
-			if (firstcustum==null) 
-			{
-				if (list.Count>0) firstcustum = (string)list[0];
-				else firstcustum = SimPe.Localization.GetString("Unknown");
-			}
-
-			list.Sort();
-			return list;
-		}
+            if (firstcustum == null)
+            {
+                if (list.Count > 0) firstcustum = (string)list[0];
+                else firstcustum = SimPe.Localization.GetString("Unknown");
+            }
+            list.Sort();
+            return list;
+        }
 		
 		#region ISimDescription Member
 
 		public SimPe.Interfaces.Wrapper.ISDesc FindSim(uint simid)
-		{
+        {
+            if (!packagcheck()) return null;
 			if (bysimid==null) LoadDescriptions();
 			return (SimPe.Interfaces.Wrapper.ISDesc)bysimid[simid];
 		}
 
 		SimPe.Interfaces.Wrapper.ISDesc SimPe.Interfaces.Providers.ISimDescriptions.FindSim(ushort instance)
-		{
+        {
+            if (!packagcheck()) return null;
 			if (byinstance==null) LoadDescriptions();
 			return (SimPe.Interfaces.Wrapper.ISDesc)byinstance[instance];
 		}
@@ -185,17 +221,34 @@ namespace SimPe.Providers
 			else return 0xffffffff;
 		}
 
+        IPackageFile pckg;//loaded BasePackage
+
+        /// <summary>
+        /// Tests if new BasePackage is loaded
+        /// </summary>
+        bool packagcheck()
+        {
+            if (BasePackage == null) return false;//no package loaded yet
+            if (pckg == BasePackage) return true;//no package change
+            pckg = BasePackage;//reset on new package
+            bysimid = null;
+            byinstance = null;
+            names = null;
+            famnames = null;
+            return true;
+        }
 		#endregion
 
-
 		#region Nightlife Turn On/Off Extension
+        int to1 = 13;
 		System.Collections.Generic.Dictionary<int, string> turnons;
 		void LoadTurnOns()
 		{
 			if (turnons!=null) return;
             turnons = new System.Collections.Generic.Dictionary<int, string>();
-
-            if (SimPe.PathProvider.Global.EPInstalled < 2) return;
+            if (SimPe.PathProvider.Global.EPInstalled < 2 && SimPe.PathProvider.Global.STInstalled < 28) return;
+            if ((booby.PrettyGirls.IsTitsInstalled() || (booby.PrettyGirls.IsAngelsInstalled() && booby.PrettyGirls.PervyMode)) && Helper.WindowsRegistry.LoadOnlySimsStory == 0) to1 = 14;
+            else if (Helper.WindowsRegistry.LoadOnlySimsStory > 0) to1 = 12;
 
             SimPe.Packages.File pkg = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(PathProvider.Global.Latest.InstallFolder, @"TSData\Res\Text\UIText.package"));
 			SimPe.PackedFiles.Wrapper.Str str = new Str();
@@ -205,9 +258,26 @@ namespace SimPe.Providers
 			{
 				str.ProcessData(pfd, pkg);
 				SimPe.PackedFiles.Wrapper.StrItemList strs = str.FallbackedLanguageItems(Helper.WindowsRegistry.LanguageCode);
-
-				for (int i=0; i<strs.Count; i++)
-					turnons[i] = strs[i].Title;
+                if (to1 == 14)
+                {
+                    int j = 0;
+                    for (int i = 0; i < strs.Count; i++)
+                    {
+                        if (i == to1) { turnons[j] = "Nudity (A&N)"; j++; }
+                        turnons[j] = strs[i].Title;
+                        j++;
+                    }
+                }
+                else if (to1 == 12)
+                {
+                    for (int i = 0; i < strs.Count; i++)
+                        if ( i != 13) turnons[i] = strs[i].Title;
+                }
+                else
+                {
+                    for (int i = 0; i < strs.Count; i++)
+                        turnons[i] = strs[i].Title;
+                }
 			}
 		}
 
@@ -217,11 +287,12 @@ namespace SimPe.Providers
             TraitAlias[] a = new TraitAlias[turnons.Count];
 
 			int ct = 0;
+            int j = 15 - to1;
 			foreach (int k in turnons.Keys)
 			{
 				string s = turnons[k];
 				int e = k;
-				if (e>0xD) e+=2; // only 14 bits in traits1 (etc)
+                if (e > to1) e += j; // Fuck - only 14 bits in traits 1. If A&N's Nudity were anabled this would need to be altered just for A&N
 				a[ct++] = new TraitAlias((ulong)Math.Pow(2, e), s);
             }
 
@@ -279,7 +350,7 @@ namespace SimPe.Providers
         {
             if (collectibles != null) return;
             collectibles = new System.Collections.Generic.Dictionary<int, CollectibleAlias>();
-            if (SimPe.PathProvider.Global.EPInstalled < 11) return;
+            if (SimPe.PathProvider.Global.EPInstalled < 10) return;
             
             SimPe.Packages.File pkg = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(PathProvider.Global.Latest.InstallFolder, @"TSData\Res\Text\UIText.package"));
             SimPe.PackedFiles.Wrapper.Str str = new Str();
@@ -287,9 +358,7 @@ namespace SimPe.Providers
             if (pfd != null)
             {
                 str.ProcessData(pfd, pkg);
-                SimPe.PackedFiles.Wrapper.StrItemList strs = str.FallbackedLanguageItems(Helper.WindowsRegistry.LanguageCode);
-
-                
+                SimPe.PackedFiles.Wrapper.StrItemList strs = str.FallbackedLanguageItems(Helper.WindowsRegistry.LanguageCode);                
                     
                 pkg = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(PathProvider.Global.Latest.InstallFolder, @"TSData\Res\UI\ui.package"));
                 pfd = pkg.FindFile(0, 0, 0xA99D8A11, 0xACDC6300);
@@ -300,10 +369,9 @@ namespace SimPe.Providers
                         SimPe.PackedFiles.Wrapper.Xml xml = new SimPe.PackedFiles.Wrapper.Xml();
                         xml.ProcessData(pfd, pkg);
 
-
                         string[] lines = xml.Text.Split(new char[] { '\r' });
                         SimPe.PackedFiles.Wrapper.Picture pic = new Picture();
-                        SimPe.FileTable.FileIndex.Load();
+                        // SimPe.FileTable.FileIndex.Load();
                         foreach (string fulline in lines)
                         {
                             string line = fulline.ToLower().Trim();
@@ -320,12 +388,11 @@ namespace SimPe.Providers
                                 }
                             }
                         }
-
                     }
                     catch (Exception e)
                     {
                         System.Diagnostics.Debug.WriteLine("ERROR during Voyage Collectible Image Parsing:\n" + e.ToString());
-                        if (Helper.DebugMode) Helper.ExceptionMessage(e);
+                        if (Helper.WindowsRegistry.HiddenMode) Helper.ExceptionMessage(e);
                     }
                 }
             }
@@ -350,7 +417,7 @@ namespace SimPe.Providers
             collectibles[nr] = new CollectibleAlias((ulong)Math.Pow(2, nr), nr, name, img);
             return index;
         }
-
+        /* This required he whole file table but since we know where to find the images that is obsolete.
         private static System.Drawing.Image LoadCollectibleIcon(SimPe.PackedFiles.Wrapper.Picture pic, UInt32 g, UInt32 i)
         {
             SimPe.Interfaces.Scenegraph.IScenegraphFileIndexItem[] items = SimPe.FileTable.FileIndex.FindFileByGroupAndInstance(g, i);
@@ -362,6 +429,25 @@ namespace SimPe.Providers
                 gr.DrawImage(pic.Image, new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.GraphicsUnit.Pixel);
                 gr.Dispose();
                 return bmp;
+            }
+            return null;
+        }
+        */
+        private static System.Drawing.Image LoadCollectibleIcon(SimPe.PackedFiles.Wrapper.Picture pic, UInt32 g, UInt32 i)
+        {
+            SimPe.Packages.File pkg = SimPe.Packages.File.LoadFromFile(System.IO.Path.Combine(PathProvider.Global.GetExpansion(10).InstallFolder, "TSData\\Res\\UI\\ui.package"));
+            if (pkg != null)
+            {
+                SimPe.Interfaces.Files.IPackedFileDescriptor pfd = pkg.FindFile(0x856DDBAC, 0, g, i);
+                if (pfd != null)
+                {
+                    pic.ProcessData(pfd, pkg);
+                    System.Drawing.Bitmap bmp = new System.Drawing.Bitmap(pic.Image.Width / 4, pic.Image.Height);
+                    System.Drawing.Graphics gr = System.Drawing.Graphics.FromImage(bmp);
+                    gr.DrawImage(pic.Image, new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.GraphicsUnit.Pixel);
+                    gr.Dispose();
+                    return bmp;
+                }
             }
             return null;
         }
@@ -399,10 +485,6 @@ namespace SimPe.Providers
             return tipres;
         }
 
-        
-
-
-
         public SimPe.Providers.CollectibleAlias[] GetAllCollectibles()
         {
             if (collectibles == null) LoadCollectibles();
@@ -433,7 +515,6 @@ namespace SimPe.Providers
             return ret;
         }
 
-
         public string GetCollectibleName(ushort val1, ushort val2, ushort val3, ushort val4)
         {
             if (collectibles == null) LoadCollectibles();
@@ -460,7 +541,7 @@ namespace SimPe.Providers
         #endregion
 
 		/// <summary>
-		/// Called if the BaseBackae was changed
+        /// Called if the BasePackage was closed
 		/// </summary>
 		protected override void OnChangedPackage() 
 		{

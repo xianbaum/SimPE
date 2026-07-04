@@ -26,7 +26,7 @@ using System.Windows.Forms;
 namespace SimPe.Plugin.TabPage
 {
 	/// <summary>
-	/// Zusammenfassung für ShpeForm.
+	/// Summary description for ShpeForm.
 	/// </summary>
 	public class ShpeParts : 
 		//System.Windows.Forms.UserControl
@@ -42,7 +42,7 @@ namespace SimPe.Plugin.TabPage
 		private System.Windows.Forms.LinkLabel linkLabel7;
 		private System.Windows.Forms.LinkLabel linkLabel8;
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
@@ -58,15 +58,24 @@ namespace SimPe.Plugin.TabPage
 				,true);
 
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required designer variable.
 			//
             InitializeComponent();
 
             this.UseVisualStyleBackColor = true;
+            if (SimPe.Helper.WindowsRegistry.UseBigIcons)
+            {
+                this.lbpart.Font = new System.Drawing.Font(base.Font.FontFamily, 11F);
+            }
+            if (booby.ThemeManager.ThemedForms)
+            {
+                this.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+                this.lbpart.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+            }
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -81,10 +90,10 @@ namespace SimPe.Plugin.TabPage
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{

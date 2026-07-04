@@ -188,6 +188,7 @@ namespace SimPe
                 if (pkg != null) this.SetupEvents(false);
 
                 pkg = SimPe.Packages.File.LoadFromFile(e.FileName, sync);
+
                 if (pkg.Index.Length < Helper.WindowsRegistry.BigPackageResourceCount)
                     pkg.LoadCompressedState();
 
@@ -235,7 +236,10 @@ namespace SimPe
 				Wait.SubStart();
 				Wait.Message = "Saving File";
 
-				string oname = this.FileName;
+                string oname = this.FileName;
+                if (Package.Header.Created == 0 && UserVerification.HaveValidUserId)
+                    Package.Header.Created = UserVerification.UserId;
+
 				this.Package.Save(e.FileName);
 
 				if (savetocopy) Package.FileName = oname;
@@ -298,24 +302,34 @@ namespace SimPe
 			if (Helper.IsNeighborhoodFile(FileName) && (Helper.WindowsRegistry.LoadMetaInfo))
 			{
 				SimPe.Interfaces.Files.IPackageFile pkg = Package;
-				try 
+				try
 				{
 					string mname = Helper.GetMainNeighborhoodFile(pkg.SaveFileName);
 					if (mname != pkg.SaveFileName)
 						pkg = SimPe.Packages.GeneratableFile.LoadFromFile(mname);
-				} 
+				}
 				catch {}
 				FileTable.ProviderRegistry.SimFamilynameProvider.BasePackage = pkg;
-				FileTable.ProviderRegistry.SimDescriptionProvider.BasePackage = pkg;				
+				FileTable.ProviderRegistry.SimDescriptionProvider.BasePackage = pkg;
 				FileTable.ProviderRegistry.SimNameProvider.BaseFolder = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(FileName), "Characters");
-				FileTable.ProviderRegistry.LotProvider.BaseFolder  = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(FileName), "Lots");				
-			} 
-			else 
-			{
-				FileTable.ProviderRegistry.SimNameProvider.BaseFolder = "";
-				FileTable.ProviderRegistry.SimFamilynameProvider.BasePackage = null;
-				FileTable.ProviderRegistry.SimDescriptionProvider.BasePackage = null;
-				FileTable.ProviderRegistry.LotProvider.BaseFolder = "";
+				FileTable.ProviderRegistry.LotProvider.BaseFolder  = System.IO.Path.Combine(System.IO.Path.GetDirectoryName(FileName), "Lots");			
+			}
+			else
+            {
+                if (Helper.IsLotCatalogFile(FileName) && (Helper.WindowsRegistry.LoadMetaInfo))
+                {
+                    FileTable.ProviderRegistry.SimFamilynameProvider.BasePackage = pkg;
+                    FileTable.ProviderRegistry.SimDescriptionProvider.BasePackage = pkg;
+                    FileTable.ProviderRegistry.SimNameProvider.BaseFolder = System.IO.Path.GetDirectoryName(FileName);
+                    FileTable.ProviderRegistry.LotProvider.BaseFolder = System.IO.Path.GetDirectoryName(FileName);
+                }
+                else
+                {
+                    FileTable.ProviderRegistry.SimNameProvider.BaseFolder = "";
+                    FileTable.ProviderRegistry.SimFamilynameProvider.BasePackage = null;
+                    FileTable.ProviderRegistry.SimDescriptionProvider.BasePackage = null;
+                    FileTable.ProviderRegistry.LotProvider.BaseFolder = "";
+                }
 			}
 		}
 
@@ -443,9 +457,14 @@ namespace SimPe
 		/// </summary>
 		/// <param name="names">list of FileNames</param>
 		/// <param name="create">true, if you want to create a new Package if none was loaded</param>
-		public void LoadOrImportFiles(string[] names, bool create) 
-		{			
-			if (names.Length==0) return;
+        public void LoadOrImportFiles(string[] names, bool create)
+		{
+            if (names.Length == 0) return; // Tashiketh
+            if (names.Length == 2 && names[0] == "-load")
+            {
+                if (System.IO.File.Exists(names[1])) this.LoadFromFile(names[1]);
+                return;
+            }
 			if (!Loaded && !create) return;
 
 			if (!Loaded && create) this.LoadFromPackage(SimPe.Packages.GeneratableFile.CreateNew());
@@ -466,8 +485,7 @@ namespace SimPe
 						{
 							PackedFileDescriptors pfds = LoadDescriptorsFromDisk(names[i]);
                             
-							foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) this.Package.Add(pfd);
-                            
+							foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) this.Package.Add(pfd);                            
 						}				
 				} 
 				finally 

@@ -120,8 +120,8 @@ namespace SimPe.PackedFiles.Wrapper
 		}
 
 		protected override IPackedFileUI CreateDefaultUIHandler()
-		{
-			return new UserInterface.SimDNAUI();
+        {
+            return new UserInterface.SimDNAUI();
 		}
 
 		/// <summary>
@@ -150,8 +150,8 @@ namespace SimPe.PackedFiles.Wrapper
 		public override uint[] AssignableTypes
 		{
 			get
-			{
-				return new uint[]  { Data.MetaData.SDNA };
+            {
+                return new uint[] { Data.MetaData.SDNA };
 			}
 		}
 
@@ -168,7 +168,6 @@ namespace SimPe.PackedFiles.Wrapper
 			}
 		}
 
-
 		public override string Description
 		{
 			get
@@ -179,8 +178,15 @@ namespace SimPe.PackedFiles.Wrapper
 
 				return Serializer.Concat(Serializer.ConvertArrayList(list));
 			}
-		}
+        }
 
-
+        protected override string GetResourceName(SimPe.Data.TypeAlias ta)
+        {
+            ExtSDesc sdsc = FileTable.ProviderRegistry.SimDescriptionProvider.FindSim((ushort)this.FileDescriptor.Instance) as ExtSDesc;
+            if (sdsc == null)
+                return base.GetResourceName(ta);
+            else
+                return sdsc.SimName + " " + sdsc.SimFamilyName + " (DNA)";
+        }
 	}
 }

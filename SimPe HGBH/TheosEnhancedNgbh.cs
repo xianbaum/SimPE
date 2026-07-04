@@ -24,8 +24,7 @@ using SimPe.PackedFiles.Wrapper;
 using SimPe.Interfaces;
 
 namespace SimPe.Plugin
-{
-	
+{	
 	/// <summary>
 	/// Extends the basic Neighborhood Plugin by some usefull Features
 	/// </summary>
@@ -45,9 +44,9 @@ namespace SimPe.Plugin
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"Extended Neighborhood/Memory Wrapper",
+				"Extended Neighbourhood/Memory Wrapper",
 				"Quaxi (with extensions developed by Theo)",
-				"This File contains the Memories and Inventories of all Sims and Lots that Live in this Neighborhood.",
+				"This File contains the Memories and Inventories of all Sims and Lots that Live in this Neighbourhood.",
 				2,
 				System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.ngbh.png"))
 				); 
@@ -114,10 +113,7 @@ namespace SimPe.Plugin
 				}
 				return ret;
 			}
-
 		}
-
-
 
 		public void FixNeighborhoodMemories()
 		{
@@ -125,91 +121,85 @@ namespace SimPe.Plugin
 			int fixedCount = 0;
 
 			ExceptionBuilder trace = new ExceptionBuilder();
-			trace.Append("Invalid memories found:"+Helper.lbr);
-			
-			Collections.NgbhSlots slots = this.GetSlots(Data.NeighborhoodSlots.Sims);			
+            trace.Append("Invalid memories found:" + Helper.lbr);
 
-			foreach (NgbhSlot slot in slots)
-			{
-				SDesc simDesc = FileTable.ProviderRegistry.SimDescriptionProvider.SimInstance[slot.SlotID] as SDesc;
-				Collections.NgbhItems simMemories = slot.ItemsB;
+            Collections.NgbhSlots slots = this.GetSlots(Data.NeighborhoodSlots.Sims);
 
-				ArrayList memoryToRemove = new ArrayList();
-				ArrayList memoryToFix = new ArrayList();
+            foreach (NgbhSlot slot in slots)
+            {
+                SDesc simDesc = FileTable.ProviderRegistry.SimDescriptionProvider.SimInstance[slot.SlotID] as SDesc;
+                // SDesc always returns null 
+                Collections.NgbhItems simMemories = slot.ItemsB;
 
+                ArrayList memoryToRemove = new ArrayList();
+                ArrayList memoryToFix = new ArrayList();
 
-				NgbhItem lastSpamMemory = null;
+                NgbhItem lastSpamMemory = null;
 
-				for (int j = 0; j < simMemories.Length; j++)
-				{
-					NgbhItem simMemory = simMemories[j];
+                for (int j = 0; j < simMemories.Length; j++)
+                {
+                    NgbhItem simMemory = simMemories[j];
 
-					// skip tokens...
-					if (simMemory.IsMemory)
-					{
-						// ...and the lame "Met Unknown" memories
-						if (simMemory.SimInstance != 0)
-						{
-							// fix invalid sim instances
-							ushort inst = FileTable.ProviderRegistry.SimDescriptionProvider.GetInstance(simMemory.SimID);
-							if (simMemory.SimInstance != inst)
-							{
-								simMemory.SimInstance = inst;
-								memoryToFix.Add(simMemory);
-							}
-							
+                    // skip tokens...
+                    if (simMemory.IsMemory)
+                    {
+                        // ...and the lame "Met Unknown" memories
+                        if (simMemory.SimInstance != 0)
+                        {
+                            // fix invalid sim instances, fixes things that aren't broken
+                            ushort inst = FileTable.ProviderRegistry.SimDescriptionProvider.GetInstance(simMemory.SimID);
+                            if (simMemory.SimInstance != inst)
+                            {
+                                simMemory.SimInstance = inst;
+                                memoryToFix.Add(simMemory);
+                            }
+                            /*
+                            if (simDesc == null) // SDesc always returns null, so this wipes every memery
+                            {
+                                memoryToRemove.Add(simMemory);
+                            }*/
+                        }
 
-							if (simDesc==null)
-							{
-								memoryToRemove.Add(simMemory);
-							}
-							
-						}
+                        // it could be spam...
+                        // collapse duplicate items
+                        if (simMemory.IsSpam)
+                        {
+                            if (
+                                lastSpamMemory != null &&
+                                lastSpamMemory.Guid == simMemory.Guid &&
+                                lastSpamMemory.SimInstance == simMemory.SimInstance
+                                )
+                                memoryToRemove.Add(simMemory);
 
-						// it could be spam...
-						// collapse duplicate items
-						if (simMemory.IsSpam)
-						{
-							if (
-								lastSpamMemory != null &&
-								lastSpamMemory.Guid == simMemory.Guid &&
-								lastSpamMemory.SimInstance == simMemory.SimInstance
-								)
-								memoryToRemove.Add(simMemory);
-
-							lastSpamMemory = simMemory;
-						}
-						else
-						{
-							lastSpamMemory = null;
-						}
-						
-
-					}
-
-				} // for simMemories
+                            lastSpamMemory = simMemory;
+                        }
+                        else
+                        {
+                            lastSpamMemory = null;
+                        }
+                    }
+                } // for simMemories
 
 
-				if (memoryToRemove.Count > 0 || memoryToFix.Count > 0)
-				{
-					deletedCount += memoryToRemove.Count;
-					fixedCount += memoryToFix.Count;
+                if (memoryToRemove.Count > 0 || memoryToFix.Count > 0)
+                {
+                    deletedCount += memoryToRemove.Count;
+                    fixedCount += memoryToFix.Count;
 
-					trace.AppendFormat("{0} {1}: {2} \r\n", simDesc.SimName, simDesc.SimFamilyName, memoryToRemove.Count + memoryToFix.Count);
+                    if (simDesc != null) // SDesc always returns null so this won't be used as it always throwa an ERROR
+                        trace.AppendFormat("{0} {1}: {2} \r\n", simDesc.SimName, simDesc.SimFamilyName, memoryToRemove.Count + memoryToFix.Count);
 
-					foreach (NgbhItem item in memoryToFix)
-						trace.AppendFormat("[FIX]- {0}\r\n", item.ToString());
+                    foreach (NgbhItem item in memoryToFix)
+                        trace.AppendFormat("[FIX]- {0}\r\n", item.ToString());
 
-					NgbhItem[] itemsToRemove = (NgbhItem[])memoryToRemove.ToArray(typeof(NgbhItem));
-					foreach (NgbhItem item in itemsToRemove)
-						trace.AppendFormat("[DEL]- {0}\r\n", item.ToString());
+                    NgbhItem[] itemsToRemove = (NgbhItem[])memoryToRemove.ToArray(typeof(NgbhItem));
+                    foreach (NgbhItem item in itemsToRemove)
+                        trace.AppendFormat("[DEL]- {0}\r\n", item.ToString());
 
-					trace.Append("\t\r\n\r\n");					
-					slot.ItemsB.Remove(itemsToRemove);
-				}
-
-
-			}
+                    trace.Append("\t\r\n\r\n");
+                    slot.ItemsB.Remove(itemsToRemove);
+                }
+            }
 
 			if (deletedCount > 0 || fixedCount > 0)
 			{
@@ -307,7 +297,6 @@ namespace SimPe.Plugin
 
 				// reached top of $career
 				ret[0x2323232] = Career;
-
 				// learned how to make $food
 				ret[0x3248932] = Food;
 				// burned $food
@@ -319,24 +308,21 @@ namespace SimPe.Plugin
 			{
 				ArrayList ret = new ArrayList();
 
-				// Had family reunion
-				ret.Add(0x2DD3B15Fu);
-
-				// got A+ 
-				ret.Add(0x4CAB11D3u);
-
-				// subject got A+
-				ret.Add(0x8DB6545Du);
-
-				// got D
-				ret.Add(0xEDB65A89u);
-
-				// subject got D
-				ret.Add(0X6DB654ACu);
-
-				// subject got abducted
-				ret.Add(0xEDD35A61u);
-
+                if (!booby.PrettyGirls.IsTitsInstalled() && !booby.PrettyGirls.IsAngelsInstalled())
+                {
+                    // Had family reunion
+                    ret.Add(0x2DD3B15Fu);
+                    // got A+ 
+                    ret.Add(0x4CAB11D3u);
+                    // subject got A+
+                    ret.Add(0x8DB6545Du);
+                    // got D
+                    ret.Add(0xEDB65A89u);
+                    // subject got D
+                    ret.Add(0X6DB654ACu);
+                    // subject got abducted
+                    ret.Add(0xEDD35A61u);
+                }
 				// vermin!
 				ret.Add(0x6CAB0E82u);
 
@@ -370,8 +356,6 @@ namespace SimPe.Plugin
 
 		}
 
-
-
 		internal enum FoodType : uint
 		{
 			Unknown = 0x0000,
@@ -381,7 +365,6 @@ namespace SimPe.Plugin
 			Cereal,
 			Pancake,
 			Omelette,
-
 
 			// lunch
 			TVDinner,
@@ -399,10 +382,8 @@ namespace SimPe.Plugin
 			Salmon,
 			Turkey,
 
-
 			// dessert
 			Gelatin
-
 		}
 	}
 }

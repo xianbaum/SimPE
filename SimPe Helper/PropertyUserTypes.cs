@@ -311,7 +311,7 @@ namespace Ambertation
 		/// </summary>
 		public short Value 
 		{
-			get { return (short)(val & 0xffff); ; }
+			get { return (short)(val & 0xffff); }
 			set { val = (short)(value & 0xffff); }
 		}
 

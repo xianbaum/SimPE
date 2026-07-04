@@ -33,7 +33,8 @@ namespace SimPe.Cache
 		Want = 0x03,
 		Memory = 0x04,
 		Package = 0x05,
-		Rcol = 0x06
+        Rcol = 0x06,
+        Goal = 0x07
 	};
 
 	/// <summary>
@@ -122,7 +123,8 @@ namespace SimPe.Cache
 
 		public ContainerValid ValidState 
 		{
-			get {return valid; }
+            get { return valid; }
+            set { valid = value; }
 		}
 
 		/// <summary>
@@ -140,7 +142,7 @@ namespace SimPe.Cache
 		/// <param name="reader">the Stream Reader</param>
 		internal void Load(System.IO.BinaryReader reader) 
 		{
-			valid = ContainerValid.FileNotFound;
+            valid = ContainerValid.FileNotFound;
 			items.Clear();
 			int offset = reader.ReadInt32();
 			version = reader.ReadByte();
@@ -160,10 +162,10 @@ namespace SimPe.Cache
 					{
 						DateTime mod = System.IO.File.GetLastWriteTime(filename);
 						if (mod<=added) valid = ContainerValid.Yes;
-						else valid = ContainerValid.Modified;
+                        else valid = ContainerValid.Modified;
 					}
 
-					if (valid == ContainerValid.Yes) 
+					if (valid == ContainerValid.Yes || System.Windows.Forms.Application.ExecutablePath.Trim().ToLower().EndsWith("settingmanager.exe")) 
 					{
 						switch (type) 
 						{
@@ -199,7 +201,7 @@ namespace SimPe.Cache
 								}
 							
 								break;
-							}								
+							}
 							case ContainerType.Want:
 							{														
 								for (int i=0; i<count; i++) 
@@ -210,7 +212,18 @@ namespace SimPe.Cache
 								}
 							
 								break;
-							}	
+                            }
+                            case ContainerType.Goal:
+                            {
+                                for (int i = 0; i < count; i++)
+                                {
+                                    GoalCacheItem oci = new GoalCacheItem();
+                                    oci.Load(reader);
+                                    items.Add(oci);
+                                }
+
+                                break;
+                            }
 							case ContainerType.Memory:
 							{								
 								for (int i=0; i<count; i++) 

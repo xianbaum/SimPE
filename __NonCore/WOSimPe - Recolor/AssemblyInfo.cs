@@ -6,8 +6,8 @@ using System.Runtime.CompilerServices;
 // gesteuert. Ändern Sie diese Attributswerte, um die Informationen zu modifizieren,
 // die mit einer Assembly verknüpft sind.
 //
-[assembly: AssemblyTitle("Wizards of SimPE - Demo Wizard")]
-[assembly: AssemblyDescription("This is just a Demo Wizard")]
+[assembly: AssemblyTitle("Wizards of SimPe - Recolour Wizard")]
+[assembly: AssemblyDescription("This is just a Recolour Wizard")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Ambertation")]
 #if DEBUG
@@ -30,7 +30,7 @@ using System.Runtime.CompilerServices;
 // Sie können alle Werte oder die standardmäßige Revision und Buildnummer 
 // mit '*' angeben:
 
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.69.*")]
 
 //
 // Um die Assembly zu signieren, müssen Sie einen Schlüssel angeben. Weitere Informationen 

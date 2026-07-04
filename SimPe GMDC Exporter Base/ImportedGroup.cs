@@ -224,8 +224,16 @@ namespace SimPe.Plugin.Gmdc
 			get 
 			{
 				if (Action==GmdcImporterAction.Nothing) return System.Drawing.Color.Silver;
-				if (VertexCount>AbstractGmdcImporter.CRITICAL_VERTEX_AMOUNT) return System.Drawing.Color.Red;
-				if (FaceCount>AbstractGmdcImporter.CRITICAL_FACE_AMOUNT) return System.Drawing.Color.Red;
+                if (!Helper.WindowsRegistry.HiddenMode)
+                {
+                    if (VertexCount > AbstractGmdcImporter.FEMBODY_VERTEX_AMOUNT) return System.Drawing.Color.Red;
+                    if (FaceCount > AbstractGmdcImporter.FEMBODY_FACE_AMOUNT) return System.Drawing.Color.Red;
+                }
+                else
+                {
+                    if (VertexCount > AbstractGmdcImporter.CRITICAL_VERTEX_AMOUNT) return System.Drawing.Color.Red;
+                    if (FaceCount > AbstractGmdcImporter.CRITICAL_FACE_AMOUNT) return System.Drawing.Color.Red;
+                }
 				return System.Drawing.SystemColors.WindowText;
 			}
 		}

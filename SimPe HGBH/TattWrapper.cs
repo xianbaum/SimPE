@@ -37,8 +37,6 @@ namespace SimPe.Plugin
 		, SimPe.Interfaces.Plugin.IMultiplePackedFileWrapper
 		, System.Collections.IEnumerable
 	{
-		
-
 		#region Attributes
 		string flname;
 		/// <summary>
@@ -72,7 +70,6 @@ namespace SimPe.Plugin
 		}
 		ArrayList items;
 		#endregion
-
 		
 		/// <summary>
 		/// Constructor
@@ -113,12 +110,12 @@ namespace SimPe.Plugin
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"Tatt Wrapper",
+				"Ttat Wrapper",
 				"Quaxi",
 				"Content of this File is unknown.",
-				1,
+				2,
 				null
-				); 
+				);
 		}
 
 		/// <summary>
@@ -200,7 +197,6 @@ namespace SimPe.Plugin
 		#endregion		
 
 		#region IMultiplePackedFileWrapper Member
-
 
 		#endregion
 

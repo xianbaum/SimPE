@@ -27,14 +27,14 @@ using SimPe.Interfaces.Plugin;
 namespace SimPe.Plugin.TabPage
 {
 	/// <summary>
-	/// Zusammenfassung für MatdForm.
+	/// Summary description for MatdForm.
 	/// </summary>
 	public class MaterialDefinition : 
 		System.Windows.Forms.TabPage
 		//System.Windows.Forms.UserControl
 	{
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
@@ -49,15 +49,23 @@ namespace SimPe.Plugin.TabPage
 				| ControlStyles.DoubleBuffer
 				,true);
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required designer variable.
 			//
             InitializeComponent();
 
             this.UseVisualStyleBackColor = true;
+            if (booby.ThemeManager.ThemedForms) this.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+            if (SimPe.Helper.WindowsRegistry.UseBigIcons)
+            {
+                this.tbtype.Font = new System.Drawing.Font("Verdana", 12F);
+                this.tbdsc.Font = new System.Drawing.Font("Verdana", 12F);
+                this.tb_ver.Font = new System.Drawing.Font("Verdana", 12F);
+                this.tb_ver.Size = new System.Drawing.Size(108, 27);
+            }
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -72,10 +80,10 @@ namespace SimPe.Plugin.TabPage
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -93,7 +101,7 @@ namespace SimPe.Plugin.TabPage
 			// 
 			this.label5.AutoSize = true;
 			this.label5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label5.Location = new System.Drawing.Point(48, 72);
+			this.label5.Location = new System.Drawing.Point(48, 88);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(37, 17);
 			this.label5.TabIndex = 16;
@@ -103,7 +111,7 @@ namespace SimPe.Plugin.TabPage
 			// 
 			this.label4.AutoSize = true;
 			this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label4.Location = new System.Drawing.Point(12, 48);
+			this.label4.Location = new System.Drawing.Point(12, 56);
 			this.label4.Name = "label4";
 			this.label4.Size = new System.Drawing.Size(73, 17);
 			this.label4.TabIndex = 15;
@@ -114,7 +122,7 @@ namespace SimPe.Plugin.TabPage
 			this.tbtype.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.tbtype.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tbtype.Location = new System.Drawing.Point(88, 72);
+            this.tbtype.Location = new System.Drawing.Point(88, 88);
 			this.tbtype.Name = "tbtype";
 			this.tbtype.Size = new System.Drawing.Size(624, 21);
 			this.tbtype.TabIndex = 14;
@@ -126,7 +134,7 @@ namespace SimPe.Plugin.TabPage
 			this.tbdsc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 				| System.Windows.Forms.AnchorStyles.Right)));
 			this.tbdsc.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.tbdsc.Location = new System.Drawing.Point(88, 48);
+            this.tbdsc.Location = new System.Drawing.Point(88, 56);
 			this.tbdsc.Name = "tbdsc";
 			this.tbdsc.Size = new System.Drawing.Size(624, 21);
 			this.tbdsc.TabIndex = 13;
@@ -157,7 +165,7 @@ namespace SimPe.Plugin.TabPage
 			this.groupBox10.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
 			this.groupBox10.Location = new System.Drawing.Point(8, 8);
 			this.groupBox10.Name = "groupBox10";
-			this.groupBox10.Size = new System.Drawing.Size(720, 104);
+			this.groupBox10.Size = new System.Drawing.Size(720, 128);
 			this.groupBox10.TabIndex = 17;
 			this.groupBox10.TabStop = false;
 			this.groupBox10.Text = "Settings";

@@ -96,6 +96,26 @@ namespace SimPe.Plugin.Tool.Dockable
         {
             get { return Helper.StringToInt16(this.lbPrice.Text.Replace(" $", ""), 0, 10); }
         }
+
+        bool limitt = false;
+        [Category("Appearance")]
+        [DefaultValue(typeof(bool), "false")]
+        [Description("true = Allow Description Field to go full width")]
+        [Localizable(false)]
+        [Browsable(true)]
+        public bool Unlimit
+        {
+            get { return limitt; }
+            set
+            {
+                limitt = value;
+                if (limitt)
+                    this.lbAbout.MaximumSize = new System.Drawing.Size(0, 0);
+                else
+                    this.lbAbout.MaximumSize = new System.Drawing.Size(600, 0);
+            }
+        }
+
         #endregion
 
         #region Thumbnails
@@ -193,6 +213,8 @@ namespace SimPe.Plugin.Tool.Dockable
             {
                 //0x6C2A22C3
                 Interfaces.Files.IPackedFileDescriptor[] pfds = thumbs.FindFile(type, group, inst);
+                if (type == 0xEC3126C4)//Terrain
+                    pfds = thumbs.FindFileAnySub(type, group, inst);
                 if (pfds.Length == 0) pfds = thumbs.FindFile(type, 0, inst);
                 if (pfds.Length > 0)
                 {
@@ -221,13 +243,22 @@ namespace SimPe.Plugin.Tool.Dockable
                 foreach (string cat in cats)
                 {
                     if (res != "") res += " / ";
+                    else lbCat.Text = cat;
                     res += cat.Trim();
                 }
-
                 if (res != "") this.cbCat.Items.Add(res);
             }
-
             cbCat.SelectedIndex = cbCat.Items.Count - 1;
+            if (cbCat.Items.Count == 1)
+            {
+                cbCat.Visible = false;
+                lbCat.Visible = true;
+            }
+            else
+            {
+                cbCat.Visible = true;
+                lbCat.Visible = false;
+            }
         }
 
         public static Image GenerateImage(Size sz, Image img, bool knockout)
@@ -240,7 +271,7 @@ namespace SimPe.Plugin.Tool.Dockable
             }
             else
             {
-                return Ambertation.Windows.Forms.Graph.ImagePanel.CreateThumbnail(img, sz, 8, Color.FromArgb(90, Color.Black), SimPe.ThemeManager.Global.ThemeColorDark, Color.White, Color.FromArgb(80, Color.White), true, 3, 3);
+                return Ambertation.Windows.Forms.Graph.ImagePanel.CreateThumbnail(img, sz, 8, Color.FromArgb(90, Color.Black), booby.ThemeManager.Global.ThemeColorDark, Color.White, Color.FromArgb(80, Color.White), true, 3, 3);
             }
         }
 
@@ -301,10 +332,9 @@ namespace SimPe.Plugin.Tool.Dockable
 
                 rcol.Dispose();
             }
-            lbVert.Text = vct.ToString() + " (" + fct.ToString() + " Faces)";
-
-
             UpdateScreen();
+            if (fct > 0) lbVert.Text = vct.ToString() + " (" + fct.ToString() + " Faces)";
+            else lbVert.Text = "---";
         }
 
         protected void ClearScreen()
@@ -315,10 +345,9 @@ namespace SimPe.Plugin.Tool.Dockable
             this.lbName.Text = "";
             this.lbPrice.Text = "";
             this.lbVert.Text = "";
+            this.lbCat.Text = "";
             this.cbCat.Items.Clear();
         }
-
-
 
         public void UpdateScreen()
         {
@@ -345,20 +374,22 @@ namespace SimPe.Plugin.Tool.Dockable
             }
             else this.lbName.Text = objd.FileName;
 
-            this.lbPrice.Text = objd.Price.ToString() + " $";
+            this.lbPrice.Text = "$" + objd.Price.ToString();
 
             Boolset bs = (ushort)objd.Data[0x40]; // EPFlags1
-            List<string> epNames = pjse.BhavWiz.readStr(pjse.GS.BhavStr.GameEditionFlags);
             this.lbEPList.Text = "";
             for (int i = 0; i < bs.Length; i++)
                 if (bs[i])
-                    this.lbEPList.Text += (this.lbEPList.Text.Length == 0 ? "" : "; ") + epNames[i];
-
+                    this.lbEPList.Text += (this.lbEPList.Text.Length == 0 ? "" : "; ") + (new Data.LocalizedNeighbourhoodEP((Data.MetaData.NeighbourhoodEP)i));
             bs = (ushort)objd.Data[0x41]; // EPFlags2
-            epNames = pjse.BhavWiz.readStr(pjse.GS.BhavStr.UnknownFlags);
             for (int i = 0; i < bs.Length; i++)
                 if (bs[i])
-                    this.lbEPList.Text += (this.lbEPList.Text.Length == 0 ? "" : "; ") + epNames[i];
+                {
+                    if (i > 2 && i < 15)
+                        this.lbEPList.Text += (this.lbEPList.Text.Length == 0 ? "" : "; ") + Localization.Manager.GetString("unknown");
+                    else
+                        this.lbEPList.Text += (this.lbEPList.Text.Length == 0 ? "" : "; ") + (new Data.LocalizedNeighbourhoodEP((Data.MetaData.NeighbourhoodEP)i + 16));
+                }
         }
 
         protected string[] GetModelnames()
@@ -411,7 +442,7 @@ namespace SimPe.Plugin.Tool.Dockable
         protected Image defimg;
         protected void BuildDefaultImage()
         {
-            defimg = Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Tool.Dockable.demo.png"));
+            defimg = SimPe.GetImage.Demo;
         }
     }
 }

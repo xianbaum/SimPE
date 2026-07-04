@@ -72,8 +72,7 @@ namespace SimPe
 			
 			foreach (PropertyInfo p in ps)
 			{
-				if (!p.CanRead) continue;
-				
+				if (!p.CanRead) continue;				
 
 				try 
 				{
@@ -95,11 +94,9 @@ namespace SimPe
 					Helper.ExceptionMessage(ex);
 				}
 				finally 
-				{
-					
+				{					
 				}
 			}
-
 			return s;
 		}
 
@@ -108,8 +105,7 @@ namespace SimPe
 			string s = "";
 			foreach (PropertyInfo p in ps)
 			{
-				if (!p.CanRead) continue;
-				
+				if (!p.CanRead) continue;				
 
 				try 
 				{
@@ -132,8 +128,7 @@ namespace SimPe
 					Helper.ExceptionMessage(ex);
 				}
 				finally 
-				{
-					
+				{					
 				}
 			}
 

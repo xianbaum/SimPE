@@ -27,14 +27,14 @@ using SimPe.Interfaces.Plugin;
 namespace SimPe.Plugin.TabPage
 {
 	/// <summary>
-	/// Zusammenfassung für MatdForm.
+	/// Summary description for MatdForm.
 	/// </summary>
 	public class MaterialDefinitionFiles : 
 		System.Windows.Forms.TabPage
 		//System.Windows.Forms.UserControl
 	{
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 		
@@ -51,15 +51,25 @@ namespace SimPe.Plugin.TabPage
 				,true);
 
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required designer variable.
 			//
             InitializeComponent();
 
+            if (SimPe.Helper.WindowsRegistry.UseBigIcons)
+            {
+                this.lbfl.Font = new System.Drawing.Font(base.Font.FontFamily, 11F);
+                this.tblistfile.Font = new System.Drawing.Font(base.Font.FontFamily, 12F);
+            }
             this.UseVisualStyleBackColor = true;
+            if (booby.ThemeManager.ThemedForms)
+            {
+                this.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+                this.lbfl.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+            }
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -74,10 +84,10 @@ namespace SimPe.Plugin.TabPage
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -85,7 +95,7 @@ namespace SimPe.Plugin.TabPage
 			this.linkLabel3 = new System.Windows.Forms.LinkLabel();
 			this.tblistfile = new System.Windows.Forms.TextBox();
 			this.label6 = new System.Windows.Forms.Label();
-			this.lbfl = new System.Windows.Forms.ListBox();			
+			this.lbfl = new System.Windows.Forms.ListBox();
 			this.SuspendLayout();
 			// 
 			// tMaterialDefinitionFiles
@@ -107,7 +117,7 @@ namespace SimPe.Plugin.TabPage
 			this.linkLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.linkLabel4.AutoSize = true;
 			this.linkLabel4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel4.Location = new System.Drawing.Point(656, 48);
+			this.linkLabel4.Location = new System.Drawing.Point(656, 56);
 			this.linkLabel4.Name = "linkLabel4";
 			this.linkLabel4.Size = new System.Drawing.Size(28, 17);
 			this.linkLabel4.TabIndex = 8;
@@ -120,7 +130,7 @@ namespace SimPe.Plugin.TabPage
 			this.linkLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.linkLabel3.AutoSize = true;
 			this.linkLabel3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel3.Location = new System.Drawing.Point(692, 48);
+			this.linkLabel3.Location = new System.Drawing.Point(692, 56);
 			this.linkLabel3.Name = "linkLabel3";
 			this.linkLabel3.Size = new System.Drawing.Size(44, 17);
 			this.linkLabel3.TabIndex = 7;
@@ -165,7 +175,6 @@ namespace SimPe.Plugin.TabPage
 			// MatdForm
 			// 			
 			this.ResumeLayout(false);
-
 		}
 		#endregion
 

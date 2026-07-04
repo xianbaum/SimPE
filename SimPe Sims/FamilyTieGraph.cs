@@ -40,7 +40,7 @@ namespace SimPe.PackedFiles.Wrapper
 			this.LockItems = false;
 
 			ImagePanel eip = new ImagePanel();
-			isz = new Size(120, eip.BestSize(48, 48).Height);
+            isz = new Size(120, eip.BestSize(64, 64).Height);
 			eip.Dispose();
 		}
 
@@ -58,8 +58,8 @@ namespace SimPe.PackedFiles.Wrapper
 			this.BeginUpdate();
 			if (Parent!=null) 
 			{
-				this.Width = Parent.ClientRectangle.Width;
-				this.Height = Parent.ClientRectangle.Height;
+				this.Width = this.Parent.Width;
+                this.Height = this.Parent.Height - 24;
 			}
 			bool run = WaitingScreen.Running;
 			WaitingScreen.Wait();
@@ -92,10 +92,9 @@ namespace SimPe.PackedFiles.Wrapper
 
                 double r = GraphPanel.GetPinCircleRadius(this.ItemSize, this.ItemSize, maxct);
                 Point center = new Point(
-                    Math.Max(Width / 2, (int)r + 16 + ItemSize.Width / 2),
-                    Math.Max(Height / 2, (int)r + ItemSize.Height / 2)
+                    Math.Max(this.Width / 2, (int)r + 16 + ItemSize.Width / 2),
+                    Math.Max(this.Height / 2, (int)r + ItemSize.Height / 2)
                     );
-
                 baseip = CreateItem(sdsc, 0, 0);
                 baseip.Location = GraphPanel.GetCenterLocationOnPinCircle(center, r, ItemSize);
                 baseip.Parent = this;
@@ -162,7 +161,6 @@ namespace SimPe.PackedFiles.Wrapper
 			int maxw = Math.Max(Math.Max(prect.Width, srect.Width), crect.Width);
 			int top = prect.Height + (srect.Height-ItemSize.Height) /2;
 			int left = (maxw - ItemSize.Width)/2+32;
-			
 
 			baseip = CreateItem(sdsc, left, top);
 			baseip.Parent = this;
@@ -174,7 +172,7 @@ namespace SimPe.PackedFiles.Wrapper
 			if (tie!=null) 
 			{
 				left = (maxw -prect.Width)/2+16;
-				top = 0;
+                top = 0;
 				foreach (SDesc s in parents) 
 				{
 					ImagePanel ip = AddTieToGraph(s, left, top, tie.FindTie(s).Type, true);
@@ -193,7 +191,7 @@ namespace SimPe.PackedFiles.Wrapper
 					if (ct==siblings.Length/2 || siblings.Length==1) 
 					{
 						left += 70;
-						baseip.SetBounds(left, top+24, baseip.Width, baseip.Height);
+                        baseip.SetBounds(left, top + 24, baseip.Width, baseip.Height);
 						left += ip.Width+94;				
 					}
 					else if (ct>siblings.Length/2) top -= 4;
@@ -242,7 +240,7 @@ namespace SimPe.PackedFiles.Wrapper
 		{
 			ImagePanel eip = new ImagePanel();
 			eip.BeginUpdate();
-			eip.SetBounds(left, top, this.ItemSize.Width, this.ItemSize.Height);
+            eip.SetBounds(left, top + 24, this.ItemSize.Width, this.ItemSize.Height); // add 24 to the top for the panelheader
 			SimPoolControl.CreateItem(eip, sdesc);
 
 			eip.GotFocus += new EventHandler(eip_GotFocus);

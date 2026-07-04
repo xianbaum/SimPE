@@ -24,7 +24,7 @@ using SimPe.Interfaces.Plugin;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Available Neighborhood Types
+	/// Available Neighbourhood Types
 	/// </summary>
 	public enum NeighborhoodType:uint 
 	{
@@ -35,11 +35,56 @@ namespace SimPe.Plugin
 		Suburb = 0x04,
         Village = 0x05,
         Lakes = 0x06,
-        Island = 0x07
-	}
+        Island = 0x07,
+        Custom = 0x08
+    }
+
+    /// <summary>
+    /// Extended Neighbourhood Types
+    /// </summary>
+    public enum NeighbourhoodTipe : uint
+    {
+        Tutorial = 0x00,
+        Normal = 0x01,
+        University = 0x02,
+        Downtown = 0x03,
+        Suburb = 0x04,
+        Village = 0x05,
+        Lakes = 0x06,
+        Island = 0x07,
+        Custom = 0x08,
+        Hidden_Suburb = 0x09,
+        Perverted_Suburb = 0x0a
+    }
 
 	/// <summary>
-	/// Known Neighborhhod Versions
+	/// Available EPs
+	/// </summary>
+	public enum NeighbourhoodEP:uint 
+	{
+		None = 0x00,
+		University = 0x01,
+		Nightlife = 0x02,
+		Business = 0x03,
+		FamilyFun = 0x04,
+		GlamourLife = 0x05,
+		Pets = 0x06,
+		Seasons = 0x07,
+		Celebration = 0x08,
+		Fashion = 0x09,
+		BonVoyage = 0x0a,
+		TeenStyle = 0x0b,
+        StoreEdition_old = 0x0c,
+		Freetime = 0x0d,
+		KitchenBath = 0x0e,
+		IkeaHome = 0x0f,
+		ApartmentLife = 0x10,
+		MansionGarden = 0x11,
+        StoreEdition = 0x1f
+    }
+
+	/// <summary>
+	/// Known Neighbourhhod Versions
 	/// </summary>
 	public enum NeighborhoodVersion:uint
 	{
@@ -50,7 +95,18 @@ namespace SimPe.Plugin
 		Sims2_Business = 0x08,
         Sims2_Pets = 0x09,
         Sims2_Seasons = 0x0A
-	}
+    }
+
+    /// <summary>
+    /// Available Seasons
+    /// </summary>
+    public enum NhSeasons : byte
+    {
+        Spring = 0,
+        Summer = 1,
+        Autumn = 2,
+        Winter = 3
+    }
 
 	/// <summary>
 	/// This is the actual FileWrapper
@@ -64,7 +120,7 @@ namespace SimPe.Plugin
 		, IFileWrapper					//This Interface is used when loading a File
 		, IFileWrapperSaveExtension		//This Interface (if available) will be used to store a File
 		//,IPackedFileProperties		//This Interface can be used by thirdparties to retrive the FIleproperties, however you don't have to implement it!
-	{		
+	{
 
 		#region Attributes
 		uint version;
@@ -78,17 +134,86 @@ namespace SimPe.Plugin
 
 		NeighborhoodType type;
 		/// <summary>
-		/// Returns the Type of this Neighborhood
+		/// Returns the Type of this Neighbourhood
 		/// </summary>
 		public NeighborhoodType Type 
 		{
 			get { return type; }
 			set { type = value; }
-		}
+        }
+
+        NeighbourhoodTipe tipe;
+        /// <summary>
+        /// Returns the Extended Type of this Neighbourhood
+        /// </summary>
+        public NeighbourhoodTipe Tipe
+        {
+            get { return tipe; }
+        }
+
+        Data.MetaData.NeighbourhoodEP reqep;
+        /// <summary>
+        /// Returns the required EP of this Neighbourhood
+        /// </summary>
+        public Data.MetaData.NeighbourhoodEP Reqep
+        {
+            get { return reqep; }
+            set { reqep = value; }
+        }
+
+        Data.MetaData.NeighbourhoodEP subep;
+        /// <summary>
+        /// Returns the affiliated EP of this Neighbourhood
+        /// </summary>
+        public Data.MetaData.NeighbourhoodEP Subep
+        {
+            get { return subep; }
+            set { subep = value; }
+        }
+
+        NhSeasons quada;
+        /// <summary>
+        /// Returns the 1st season qaudrant of this Neighbourhood
+        /// </summary>
+        public NhSeasons Quada
+        {
+            get { return quada; }
+            set { quada = value; }
+        }
+
+        NhSeasons quadb;
+        /// <summary>
+        /// Returns the 2nd season qaudrant of this Neighbourhood
+        /// </summary>
+        public NhSeasons Quadb
+        {
+            get { return quadb; }
+            set { quadb = value; }
+        }
+
+        NhSeasons quadc;
+        /// <summary>
+        /// Returns the 3rd season qaudrant of this Neighbourhood
+        /// </summary>
+        public NhSeasons Quadc
+        {
+            get { return quadc; }
+            set { quadc = value; }
+        }
+
+        NhSeasons quadd;
+        /// <summary>
+        /// Returns the 4th season qaudrant of this Neighbourhood
+        /// </summary>
+        public NhSeasons Quadd
+        {
+            get { return quadd; }
+            set { quadd = value; }
+        }
 
 		string name;
 		/// <summary>
-		/// Returns the nametag of this Neighborhood
+		/// Returns the nametag of this Neighbourhood
 		/// </summary>
 		public string OwnerName
 		{
@@ -98,17 +223,37 @@ namespace SimPe.Plugin
 
 		uint uid;
 		/// <summary>
-		/// Returns the nametag of this owning Neighborhood
+		/// Returns the UID of this owning Neighbourhood
 		/// </summary>
 		public uint Uid
 		{
 			get { return uid; }
 			set { uid = value; }
-		}
+        }
+
+        uint idflags;
+        /// <summary>
+        /// Returns the flag settings of this Neighbourhood
+        /// </summary>
+        public uint Idflags
+        {
+            get { return idflags; }
+            set { idflags = value; }
+        }
+
+        uint subtype;
+        /// <summary>
+        /// Returns the subtype of this Neighbourhood
+        /// </summary>
+        public uint Subtype
+        {
+            get { return subtype; }
+            set { subtype = value; }
+        }
 
 		string subname;
 		/// <summary>
-		/// Returns the nametag of this Neighborhood
+		/// Returns the nametag of this Neighbourhood
 		/// </summary>
 		public string SubName
 		{
@@ -133,84 +278,99 @@ namespace SimPe.Plugin
 			{
 				SimPe.Plugin.Idno wrp = new Idno();
 				wrp.ProcessData(idno, pkg);
-
 				return wrp;
 			}
-
 			return null;
 		}
-
+        /* OBSOLETE ** I can't find anythings that calls this method
 		/// <summary>
 		/// Assigns a unique uid to the idno
 		/// </summary>
 		/// <param name="idno">the idno object</param>
 		/// <param name="filename">the Filename</param>
-		/// <param name="scanall">
-		///   true, if you want to scan all package Files in the Folder 
-		///   (otherwise only Neighborhood Files are scanned!)
-		///  </param>
+		/// <param name="scanall">NOT USED</param>
 		/// <remarks>
 		/// </remarks>
-		public static void MakeUnique(Idno idno, string filename, bool scanall) 
+		public static void MakeUnique(Idno idno, string filename, bool scanall)
 		{
             MakeUnique(idno, filename, PathProvider.SimSavegameFolder, scanall);
 		}
-
+        */
+        /*
+         *  OBSOLETE ** I can't find anythings that calls this method
 		/// <summary>
-		/// Assigns a unique uid to the idno
+		/// Assigns a unique uid to the idno and breaks neighbourhood story
 		/// </summary>
 		/// <param name="idno">the idno object</param>
 		/// <param name="filename">the Filename</param>
-		/// <param name="folder">The folder you want to scan (recursive)</param>
-		/// <param name="scanall">
-		///   true, if you want to scan all package Files in the Folder 
-		///   (otherwise only Neighborhood Files are scanned!)
-		///  </param>
+		/// <param name="folder">WAS NEVER USED</param>
+		/// <param name="scanall">NOT USED</param>
 		/// <remarks>
 		/// </remarks>
-		public static void MakeUnique(Idno idno, string filename, string folder, bool scanall) 
+        public static void MakeUnique(Idno idno, string filename, string folder, bool scanall)
 		{
-            Hashtable ids = FindUids(PathProvider.SimSavegameFolder, scanall);
+            Hashtable ids = FindUids();
 			MakeUnique(idno, filename, ids);
 		}
+        */
 
-		/// <summary>
-		/// Assigns a unique uid to the idno
+        public void Fixemsims(uint olduid, uint noouid)
+        {
+            if (!Helper.IsNeighborhoodFile(this.package.FileName)) return;
+            if (this.Type != NeighborhoodType.Normal) return;
+            if (!booby.PrettyGirls.IsAngelsInstalled() && !booby.PrettyGirls.IsTitsInstalled()) return;
+
+            SimPe.Interfaces.Files.IPackedFileDescriptor[] files = this.package.FindFiles(SimPe.Data.MetaData.SIM_DESCRIPTION_FILE);
+            foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in files)
+            {
+                SimPe.PackedFiles.Wrapper.SDesc sdesc = new SimPe.PackedFiles.Wrapper.SDesc(null, null, null);
+                sdesc.ProcessData(pfd, this.package);
+                if (sdesc.CharacterDescription.AllocatedSuburb == (ushort)olduid) { sdesc.CharacterDescription.AllocatedSuburb = (ushort)noouid; sdesc.SynchronizeUserData(); }
+            }
+
+        }
+
+        /// <summary>
+        /// Assigns a unique uid to the idno and breaks neighbourhood story
 		/// </summary>
 		/// <param name="idno">the idno object</param>
 		/// <param name="filename">the Filename</param>
 		/// <param name="ids">a Map of all available Group Ids (can be obtained by calling Idno::FindUids())</param>		
 		/// <remarks>
 		/// </remarks>
-		public static void MakeUnique(Idno idno, string filename, Hashtable ids) 
-		{
-			if (idno==null) return;
-			if (filename==null) return;
+        public static void MakeUnique(Idno idno, string filename, Hashtable ids)
+        {
+            if (idno == null) return;
+            if (filename == null) return;
+            filename = filename.Trim().ToLower();
+            if (ids.ContainsKey(filename)) ids[filename] = 0;//remove this id from ids so this id is avialable still
+            else idno.Uid = 1;
+            /*
+            uint max = 0;
+            foreach (string flname in ids.Keys)
+            {
+                uint id = (uint)ids[flname];
+                if (id>max)	max=id;
+                if (flname == filename) continue;
+                if (idno.Uid==id) idno.Uid = max+1;
+            }
+            */
+            uint i = 1;
+            while (ids.ContainsValue(i)) i++;
+            idno.Uid = i; // assign first available instead of always a higher value than has ever been used
+            ids[filename] = i; // add the new id to ids so it won't be available to another idno via FixUidTool
+        }
 
-			filename = filename.Trim().ToLower();			
-
-
-			if (ids.ContainsKey(filename)) idno.Uid = (uint)ids[filename];
-			else idno.Uid = 1;
-			
-			uint max = 0;
-			foreach (string flname in ids.Keys) 
-			{
-				uint id = (uint)ids[flname];
-				if (id>max)	max=id;
-
-				if (flname==filename) continue;				
-				if (idno.Uid==id) idno.Uid = max+1;
-			}			
-		}
-
-
+        /*
+         * OBSOLETE ** I can't find anythings that calls this method but if
+         * something did it wold fail as this crap became obsolete as of OFB
+         * 
 		/// <summary>
 		/// Returns a Idno Object based on the Informations gathered from a FileName
 		/// </summary>
-		/// <param name="filename">The name of the Neighborhood File</param>
+		/// <param name="filename">The name of the Neighbourhood File</param>
 		/// <returns>
-		/// null if the filename was not a valid Neighborhood name or an instance of the Idno Class
+		/// null if the filename was not a valid Neighbourhood name or an instance of the Idno Class
 		/// </returns>
 		/// <remarks>
 		/// This Method will not assign a uid to the Idno. You can assign a unique uid 
@@ -219,15 +379,11 @@ namespace SimPe.Plugin
 		public static Idno FromName(string filename)
 		{
 			Idno idno = new Idno();
-
 			filename = System.IO.Path.GetFileNameWithoutExtension(filename.Trim());
 			string[] parts = filename.Split("_".ToCharArray(), 2);
-
 			if (parts.Length!=2) return null;
 			if (!parts[0].StartsWith("N")) return null;
-
 			idno.OwnerName = parts[0];
-
 			parts[1] = parts[1].ToLower();
 			if (parts[1].StartsWith("university")) 
 			{
@@ -237,102 +393,90 @@ namespace SimPe.Plugin
 			}			
 			return idno;
 		}
+        */
 
 		/// <summary>
-		/// Scan the passed Folder for Neighborhood Files and collect the assigned IDs
+        /// Scan the Neighbourhood Folder for Neighbourhood Files and collect the assigned IDs
 		/// </summary>
-		/// <param name="folder">The Folder to scan (recursive)</param>
-		/// <param name="scanall">
-		///   true, if you want to scan all package Files in the Folder 
-		///   (otherwise only Neighborhood Files are scanned!)
-		///  </param>
 		/// <returns>A Map for ids (key=filename, value=id)</returns>	
-		public static Hashtable FindUids(string folder, bool scanall)
+		public static Hashtable FindUids()
 		{
 			Hashtable ids = new Hashtable();
-			FindUids(folder, ids, scanall);
+			FindUids(ids);
 			return ids;
 		}		
 
 		/// <summary>
-		/// Scan the passed Folder for Neighborhood Files and collect the assigned IDs
+        /// Scan theNeighbourhood Folder for Neighbourhood Files and collect the assigned IDs
 		/// </summary>
-		/// <param name="folder">The Folder to scan (recursive)</param>
 		/// <param name="ids">A Map for ids (key=filename, value=id)</param>
-		/// <param name="scanall">
-		///   true, if you want to scan all package Files in the Folder 
-		///   (otherwise only Neighborhood Files are scanned!)
-		///  </param>
-		static void FindUids(string folder, Hashtable ids, bool scanall)
-		{
-			Wait.Message = (folder);
-
-			ArrayList names = new ArrayList();
-			if (!scanall) 
-			{
-				string[] a = System.IO.Directory.GetFiles(folder, "N???_Neighborhood.package");			
-				foreach (string s in a) names.Add(s);
-
-				a = System.IO.Directory.GetFiles(folder, "N???_University???.package");
-				foreach (string s in a) names.Add(s);
-			} 
-			else 
-			{
-				string[] a = System.IO.Directory.GetFiles(folder, "*.package");			
-				foreach (string s in a) names.Add(s);
-			}
-
-			foreach (string name in names) 
-			{
-				SimPe.Packages.File fl = SimPe.Packages.File.LoadFromFile(name);
-				SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = fl.FindFiles(Data.MetaData.IDNO);
-				foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds) 
-				{
-					Idno idno = new Idno();
-					idno.ProcessData(pfd, fl);
-
-					ids[name.Trim().ToLower()] = idno.Uid;
-				}
-			}
-
-			string[] d = System.IO.Directory.GetDirectories(folder, "*");
-			foreach (string dir in d) FindUids(dir, ids, scanall);
-		}
+        static void FindUids(Hashtable ids)
+        {
+            ArrayList names = new ArrayList();
+            ExpansionItem.NeighborhoodPaths paths = PathProvider.Global.GetNeighborhoodsForGroup(PathProvider.Global.CurrentGroup);
+            foreach (ExpansionItem.NeighborhoodPath path in paths)
+            {
+                string sourcepath = path.Path;
+                string[] dirs = System.IO.Directory.GetDirectories(sourcepath, "*");
+                foreach (string dir in dirs)
+                {
+                    if (dir.Contains("Tutorial")) continue;
+                    string[] a = System.IO.Directory.GetFiles(dir, "*.package", System.IO.SearchOption.TopDirectoryOnly);
+                    foreach (string s in a) names.Add(s);
+                }
+            }
+            foreach (string name in names)
+            {
+                SimPe.Packages.File fl = SimPe.Packages.File.LoadFromFile(name);
+                SimPe.Interfaces.Files.IPackedFileDescriptor[] pfds = fl.FindFiles(Data.MetaData.IDNO);
+                foreach (SimPe.Interfaces.Files.IPackedFileDescriptor pfd in pfds)
+                {
+                    Idno idno = new Idno();
+                    idno.ProcessData(pfd, fl);
+                    ids[name.Trim().ToLower()] = idno.Uid;
+                }
+            }
+            if (Helper.WindowsRegistry.HiddenMode)
+            {
+                string bugga = "";
+                foreach (string flname in ids.Keys)
+                {
+                    uint id = (uint)ids[flname];
+                    bugga += "," + Convert.ToString(id);
+                }
+                Message.Show("UIDs Found -\r\n" + bugga, "Debug Info", System.Windows.Forms.MessageBoxButtons.OK);
+            }
+        }
 		#endregion		
 
 		/// <summary>
-		/// Make sure this contains a Unique ID!
+		/// Make sure this Idno contains a Unique ID!
 		/// </summary>
-		public void MakeUnique() 
-		{
-
-            Wait.SubStart();
-			Idno.MakeUnique(this, this.Package.FileName, true);
-            Wait.SubStop();
+		public void MakeUnique()
+        {
+            Hashtable ids = FindUids();
+            MakeUnique(this, this.Package.FileName, ids);
 		}
 
 		/// <summary>
-		/// Make sure this contains a Unique ID!
+        /// Make sure each Idno contains a Unique ID!
 		/// </summary>
-		/// <param name="ids">a Map of all available Group Ids (can be obtained by calling Idno::FindUids())</param>
-		public void MakeUnique(Hashtable ids) 
+		/// <param name="ids">a Map of all available Neighbourhood Ids (can be obtained by calling Idno::FindUids())</param>
+		public void MakeUnique(Hashtable ids)
 		{
-            Wait.SubStart();
 			Idno.MakeUnique(this, this.Package.FileName, ids);
-            Wait.SubStop();
 		}
 		
 		/// <summary>
 		/// Constructor
 		/// </summary>
 		public Idno() : base()
-		{
-            if (SimPe.PathProvider.Global.EPInstalled >= 1) this.version = (uint)NeighborhoodVersion.Sims2_University;
+        {
+            if (SimPe.PathProvider.Global.EPInstalled >= 7) this.version = (uint)NeighborhoodVersion.Sims2_Seasons;
+            else if (SimPe.PathProvider.Global.EPInstalled >= 1) this.version = (uint)NeighborhoodVersion.Sims2_University;
 			else this.version = (uint)NeighborhoodVersion.Sims2;
-
 			this.type = NeighborhoodType.Normal;
 			over = new byte[0];
-
 			uid = 0;
 			name = "Nxxx";
 			subname = "";
@@ -354,14 +498,14 @@ namespace SimPe.Plugin
 		/// <summary>
 		/// Returns a Human Readable Description of this Wrapper
 		/// </summary>
-		/// <returns>Human Readable Description</returns>
+		/// <returns>Human Readable Description for humans that can read</returns>
 		protected override IWrapperInfo CreateWrapperInfo()
 		{
 			return new AbstractWrapperInfo(
-				"Neighborhood ID Wrapper",
+				"Neighbourhood ID Wrapper",
 				"Quaxi",
-				"Contains the ID for this Neighborhood. The Neighborhood ID must be Unique for all packages the Game is loading.",
-				3,
+				"Contains the ID for this Neighbourhood. The Neighbourhood ID will be made Unique for all packages when the Game loads.",
+				4,
 				System.Drawing.Image.FromStream(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.idno.png"))
 				); 
 		}
@@ -380,15 +524,36 @@ namespace SimPe.Plugin
 			if (version>=(int)NeighborhoodVersion.Sims2_University) 
 			{
 				type = (NeighborhoodType)reader.ReadUInt32();
-				if ((int)type>=(int)NeighborhoodType.University) 
-				{
-					ct = reader.ReadInt32();
-					subname = Helper.ToString(reader.ReadBytes(ct));				
-				}
-			} 
+                    subtype = reader.ReadUInt32();
+                    if (subtype > 0) subname = Helper.ToString(reader.ReadBytes((int)subtype)); // CJH - was ReadBytes(ct) -ct is parent name length -EndOfStream error when ct is longer than 4 chars
+                    if (version>=(int)NeighborhoodVersion.Sims2_Seasons)
+                    {
+                        ct = reader.ReadInt32();
+                        reqep = (Data.MetaData.NeighbourhoodEP)reader.ReadUInt32();
+                        subep = (Data.MetaData.NeighbourhoodEP)reader.ReadUInt32();
+                        idflags = reader.ReadUInt32();
+                        quada = (NhSeasons)reader.ReadByte();
+                        quadb = (NhSeasons)reader.ReadByte();
+                        quadc = (NhSeasons)reader.ReadByte();
+                        quadd = (NhSeasons)reader.ReadByte();
+                    }
+                    if (type == NeighborhoodType.Unknown) tipe = NeighbourhoodTipe.Tutorial;
+                    else if (type == NeighborhoodType.Normal) tipe = NeighbourhoodTipe.Normal;
+                    else if (type == NeighborhoodType.University) tipe = NeighbourhoodTipe.University;
+                    else if (type == NeighborhoodType.Downtown) tipe = NeighbourhoodTipe.Downtown;
+                    else if (type == NeighborhoodType.Village) tipe = NeighbourhoodTipe.Village;
+                    else if (type == NeighborhoodType.Lakes) tipe = NeighbourhoodTipe.Lakes;
+                    else if (type == NeighborhoodType.Island) tipe = NeighbourhoodTipe.Island;
+                    else if (type == NeighborhoodType.Lakes) tipe = NeighbourhoodTipe.Lakes;
+                    else if (type == NeighborhoodType.Custom) tipe = NeighbourhoodTipe.Custom;
+                    else if (subep == Data.MetaData.NeighbourhoodEP.MansionGarden  && booby.PrettyGirls.PervyMode) tipe = NeighbourhoodTipe.Perverted_Suburb;
+                    else if (subep != Data.MetaData.NeighbourhoodEP.Business) tipe = NeighbourhoodTipe.Hidden_Suburb;
+                    else tipe = NeighbourhoodTipe.Suburb;
+			}
 			else 
 			{
-				type = NeighborhoodType.Normal;
+                type = NeighborhoodType.Normal;
+                tipe = NeighbourhoodTipe.Normal;
 			}
 			over = reader.ReadBytes((int)(reader.BaseStream.Length - reader.BaseStream.Position));
 		}
@@ -412,15 +577,28 @@ namespace SimPe.Plugin
 
 			if (version>=(int)NeighborhoodVersion.Sims2_University) 
 			{
-				writer.Write((uint)type);
-				if ((int)type>=(int)NeighborhoodType.University) 
+                writer.Write((uint)type);
+                if (subtype > 0)
 				{
 					b = Helper.ToBytes(subname, 0);
 					writer.Write((int)b.Length);
 					writer.Write(b);
-				}
+                }
+                else writer.Write((int)subtype);
+                if (version >= (int)NeighborhoodVersion.Sims2_Seasons)
+                {
+                    writer.Write((int)0);
+                    writer.Write((int)reqep);
+                    writer.Write((int)subep);
+                    writer.Write((int)idflags);
+                    writer.Write((byte)quada);
+                    writer.Write((byte)quadb);
+                    writer.Write((byte)quadc);
+                    writer.Write((byte)quadd);
+                }
+
 			}
-			writer.Write(over);
+            writer.Write(over);
 		}
 		#endregion
 

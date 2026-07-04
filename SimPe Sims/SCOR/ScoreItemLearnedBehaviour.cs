@@ -32,9 +32,7 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
             InitializeComponent();
             llRemove.Enabled = false;
 
-        }
-
-        
+        }        
 
         protected override void DoSetData(string name, System.IO.BinaryReader reader)
         {

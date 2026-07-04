@@ -67,7 +67,7 @@ namespace SimPe
         /// <summary>
         /// Stop the WaitingScreen
         /// </summary>
-        public static void Stop() { if (Running) Screen.doStop(); }
+        public static void Stop() { if (Running) Screen.doStop(); else Application.UseWaitCursor = false; }
         /// <summary>
         /// True if the WaitingScreen is displayed
         /// </summary>
@@ -76,7 +76,6 @@ namespace SimPe
         /// Returns the Size of the Dispalyed Image
         /// </summary>
         public static System.Drawing.Size ImageSize { get { return new System.Drawing.Size(64, 64); } }
-
 
         static WaitingScreen scr;
         static object lockFrm = new object();
@@ -96,8 +95,6 @@ namespace SimPe
             }
         }
 
-
-
         System.Drawing.Image prevImage = null;
         string prevMessage = "";
         SimPe.WaitingForm frm;
@@ -109,9 +106,9 @@ namespace SimPe
         void doWait() { doWait(Form.ActiveForm); }
         void doWait(Form form)
         {
-            System.Diagnostics.Trace.WriteLine("SimPe.WaitingScreen.doWait(...): " + ++count);
+            System.Diagnostics.Trace.WriteLine("SimPe.WaitingScreen.doWait(...): "); ++count;
             if (count > 1) return;
-
+            if (!Helper.WindowsRegistry.WaitingScreen) return;
             Application.UseWaitCursor = true;
             lock (lockFrm)
             {
@@ -126,10 +123,16 @@ namespace SimPe
             }
         }
 
-        void doStop() { System.Diagnostics.Trace.WriteLine("SimPe.WaitingScreen.doStop(): " + count--); if (parent != null && count == 0) parent.Activate(); Application.UseWaitCursor = false; lock (lockFrm) { if (frm != null) frm.StopSplash(); } }
+        void doStop()
+        {
+            System.Diagnostics.Trace.WriteLine("SimPe.WaitingScreen.doStop(): ");
+            count--;
+            if (parent != null && count == 0) parent.Activate();
+            Application.UseWaitCursor = false;
+            lock (lockFrm) { if (frm != null) frm.StopSplash(); }
+        }
 
         void parent_Activated(object sender, EventArgs e) { if (frm != null && count > 0) { frm.StartSplash(); } }
-
 
         private WaitingScreen()
         {
@@ -145,8 +148,6 @@ namespace SimPe
                     prevMessage = frm.Message;
                     doUpdate(prevImage, prevMessage);
                     System.Diagnostics.Trace.WriteLine("SimPe.WaitingScreen..ctor() - set frm.Image and frm.Message");
-                    //frm.StartSplash();
-                    //System.Diagnostics.Trace.WriteLine("SimPe.WaitingScreen..ctor() - returned from frm.StartSplash()");
                 }
             }
         }

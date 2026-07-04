@@ -1,0 +1,19 @@
+using System.Reflection;
+using System.Runtime.CompilerServices;
+
+[assembly: AssemblyTitle("SimPe Dockable Tool Plugin Library")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("Ambertation")]
+#if DEBUG
+[assembly: AssemblyProduct("[DEBUG]")]
+#else
+[assembly: AssemblyProduct("Release")]
+#endif
+[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+[assembly: AssemblyVersion("0.77.69.27")]
+[assembly: AssemblyDelaySign(false)]
+[assembly: AssemblyKeyFile("")]
+[assembly: AssemblyKeyName("")]

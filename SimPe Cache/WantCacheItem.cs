@@ -130,8 +130,7 @@ namespace SimPe.Cache
 			influence = reader.ReadInt32();
 			score = reader.ReadInt32();
 			guid = reader.ReadUInt32();
-			folder = reader.ReadString();
-			
+			folder = reader.ReadString();			
 
 			int size = reader.ReadInt32();
 			if (size==0) 

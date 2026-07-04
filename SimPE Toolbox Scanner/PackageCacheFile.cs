@@ -104,7 +104,7 @@ namespace SimPe.Cache
 					{
 						ScannerItem si = new ScannerItem(item, cc);
 						si.FileName = cc.FileName;
-						map[si.FileName.Trim().ToLower()] = item;
+                        map[si.FileName.Trim().ToLower()] = item;
 					}
 				}
 			}//foreach

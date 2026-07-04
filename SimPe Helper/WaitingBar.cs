@@ -33,8 +33,7 @@ namespace SimPe
 	{
 		static IWaitingBarControl bar;
         static Stack<SessionData> mystack = new Stack<SessionData>();		
-		public const int TIMEOUT = 10000; 
-
+		public const int TIMEOUT = 10000;
 
 		public static IWaitingBarControl Bar
 		{
@@ -52,7 +51,6 @@ namespace SimPe
 				return false;
 			}
 		}
-
 	
         public static string Message
 		{
@@ -61,9 +59,15 @@ namespace SimPe
                 if (bar != null) return bar.Message;
                 return "";				
 			} 
-			set 
-			{
-                if (bar != null) bar.Message = value;								
+			set
+            {
+                if (value.IndexOf("Custom") > -1)
+                {
+                    if (booby.PrettyGirls.IsTitsInstalled()) value = "Finding More Simulated Boobs";
+                    else
+                        if (booby.PrettyGirls.IsAngelsInstalled()) value = "Finding More Nurses";
+                }
+                if (bar != null) bar.Message = value;
                 Application.DoEvents();
 			}
 		}
@@ -77,13 +81,11 @@ namespace SimPe
 			} 
 			set 
 			{
-				//lock (sync) 
 				{
-					//if (bar!=null) bar.Image = value;
+					if (bar!=null) bar.Image = value;
 				}
 			}
 		}
-
 		
         public static int Progress
 		{
@@ -97,7 +99,7 @@ namespace SimPe
 			} 
 			set 
 			{
-                if (bar!=null) bar.Progress = value;								
+                if (bar!=null) bar.Progress = value;
                 Application.DoEvents();
 			}
 		}
@@ -113,9 +115,20 @@ namespace SimPe
 			{
                 if (bar!=null) bar.MaxProgress = value;		
 			}
-		}
+        }
 
-        
+        public static bool ShowAnimation
+        {
+            get
+            {
+                if (bar != null) return bar.ShowAnimation;
+                return false;
+            }
+            set
+            {
+                if (bar != null) bar.ShowAnimation = value;
+            }
+        }
 
         public static void SubStart()
         {
@@ -135,7 +148,6 @@ namespace SimPe
         {
             Stop();
         }
-
 		
 		public static void Start()
 		{
@@ -145,21 +157,19 @@ namespace SimPe
                 bar.ShowProgress = false;
                 if (!bar.Running) bar.Wait();
 				
-			}
-			
+			}			
 		}		
 
 		public static void Start(int max)
-		{
-			
+		{			
 			if (bar!=null) 
 			{
                 CommonStart();
                 if (!bar.Running) bar.Wait(max);
                 else bar.MaxProgress = max;
-			}
-			
+			}			
 		}
+
         public static void Stop()
         {
             Stop(false);
@@ -176,15 +186,10 @@ namespace SimPe
                     return;
                 }
 
-
-
                 sd = mystack.Pop();
 
-
                 if (mystack.Count == 0)
-                    if (bar != null) bar.Stop();
-
-                
+                    if (bar != null) bar.Stop();                
             }
 
             if (force)
@@ -195,14 +200,14 @@ namespace SimPe
             {
                 if (!bar.Running) bar.ShowProgress = false;
             }
-		}
+        }
 
         static void CommonStart()
         {
-            //bar.Message = SimPe.Localization.GetString("Please wait");
             lock (mystack) { mystack.Push(BuildSessionData()); }
             Message = "";
             MaxProgress = Progress = 0;
+            Image = null;
         }
 
         class SessionData
@@ -233,10 +238,7 @@ namespace SimPe
                     Progress = sd.Progress;
                 }
             }
-            catch (Exception ex)
-            {
-                if (Helper.DebugMode) Console.WriteLine(ex);
-            }
+            catch { }
         }
 	}
 }

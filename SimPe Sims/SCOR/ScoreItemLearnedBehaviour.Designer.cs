@@ -18,7 +18,7 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
             this.label4 = new System.Windows.Forms.Label();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
-            this.pbVal = new Ambertation.Windows.Forms.LabeledProgressBar();
+            this.pbVal = new booby.LabeledProgressBar();
             this.cbGuid = new SimPe.PackedFiles.Wrapper.SCOR.LearnedBahaviourComboBox();
             this.llAdd = new System.Windows.Forms.LinkLabel();
             this.llRemove = new System.Windows.Forms.LinkLabel();
@@ -91,7 +91,7 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
             this.pbVal.NumberOffset = 0;
             this.pbVal.NumberScale = 1;
             this.pbVal.SelectedColor = System.Drawing.Color.YellowGreen;
-            this.pbVal.Style = Ambertation.Windows.Forms.ProgresBarStyle.Increase;
+            this.pbVal.Style = booby.ProgresBarStyle.Increase;
             this.pbVal.TokenCount = 10;
             this.pbVal.UnselectedColor = System.Drawing.Color.Black;
             this.pbVal.Value = 0;
@@ -155,6 +155,6 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
         private LearnedBahaviourComboBox cbGuid;
         private System.Windows.Forms.LinkLabel llAdd;
         private System.Windows.Forms.LinkLabel llRemove;
-        Ambertation.Windows.Forms.LabeledProgressBar pbVal;
+        booby.LabeledProgressBar pbVal;
     }
 }

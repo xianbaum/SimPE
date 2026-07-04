@@ -58,7 +58,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -128,6 +129,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="simpe.helper, Version=0.75.69.1, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.helper.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -152,6 +157,9 @@
     <Compile Include="Events.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="IAbstractFactory.cs" />
+    <Compile Include="IAbstractHandler.cs" />
+    <Compile Include="IAbstractWrapperInfo.cs" />
     <Compile Include="ICommandLine.cs" />
     <Compile Include="ICommandLineFactory.cs" />
     <Compile Include="ICommonPackageProvider.cs">
@@ -250,13 +258,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="TraitAlias.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SimPe Helper\SimPe Helper.csproj">
-      <Project>{59E3C353-1350-42D8-A045-CBBAD232F228}</Project>
-      <Name>SimPe Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

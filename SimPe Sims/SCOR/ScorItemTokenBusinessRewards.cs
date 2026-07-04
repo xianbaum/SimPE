@@ -33,9 +33,17 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
         }
         public byte[] UnserializeToken(ScorItem si, System.IO.BinaryReader reader)
         {
-            byte[] data = ScorItem.UnserializeDefaultToken(reader);       
-            int ct = BitConverter.ToInt16(data, 0);
+            //byte[] data = ScorItem.UnserializeDefaultToken(reader);//crap, will read to end
+            //int ct = BitConverter.ToInt16(data, 0);
 
+            long ps = reader.BaseStream.Position;
+            int a = reader.ReadInt32();
+            a *= 23; a += 4;
+            reader.BaseStream.Position = ps;
+            byte[] data = reader.ReadBytes(a);
+            reader.BaseStream.Position = ps;
+
+            int ct = reader.ReadInt32();
             gui = new ScoreItemBusinessRewards(si);
             for (int i = 0; i < ct; i++)
             {

@@ -22,12 +22,12 @@ using System;
 namespace SimPe
 {
 	/// <summary>
-	/// Zusammenfassung für LoadActionTool.
+    /// Summary description for ActionToolDescriptor.
 	/// </summary>
 	internal class ActionToolDescriptor
 	{
 		SimPe.Interfaces.IToolAction tool;
-		SteepValley.Windows.Forms.XPLinkedLabelIcon ll;
+        booby.linkyicon ll;
 		LoadedPackage lp;
 
 		SimPe.Events.ResourceEventArgs lasteventarg;
@@ -35,7 +35,7 @@ namespace SimPe
 		/// <summary>
 		/// Returns the generated LinkLabel
 		/// </summary>
-		public SteepValley.Windows.Forms.XPLinkedLabelIcon LinkLabel 
+		public booby.linkyicon LinkLabel 
 		{
 			get {return ll; }
 		}
@@ -67,20 +67,26 @@ namespace SimPe
 			//this.lp = lp;
 			this.tool = tool;
 
-			ll = new SteepValley.Windows.Forms.XPLinkedLabelIcon();
+            ll = new booby.linkyicon();
 			ll.Name = tool.ToString();
+            if (Helper.WindowsRegistry.UseBigIcons)
+            {
+                ll.Font = new System.Drawing.Font("Verdana", 12, System.Drawing.FontStyle.Bold);
+                ll.Height = 24;
+            }
+            else
+            {
+                ll.Font = new System.Drawing.Font("Verdana", ll.Font.Size, System.Drawing.FontStyle.Bold);
+                ll.Height = 16;
+            }
 			if (tool.Icon!=null)
 				if (tool.Icon is System.Drawing.Bitmap)
-					ll.Icon = System.Drawing.Icon.FromHandle(((System.Drawing.Bitmap)tool.Icon).GetHicon());
-			ll.Text = SimPe.Localization.GetString(tool.ToString());
-			ll.LinkArea = new System.Windows.Forms.LinkArea(0, ll.Text.Length);
-			ll.Font = new System.Drawing.Font("Verdana", ll.Font.Size, System.Drawing.FontStyle.Bold);
-			ll.Height = 16;
-			ll.AutoSize = true;
+					ll.Icon = (System.Drawing.Bitmap)tool.Icon;
+			ll.Label = SimPe.Localization.GetString(tool.ToString());
+            ll.LinkClicked += new booby.linkyicon.EventHandler(LinkClicked);
+            booby.ThemeManager.Global.Theme(ll);
 
-			ll.LinkClicked += new EventHandler(LinkClicked);
-
-			mi = new System.Windows.Forms.ToolStripMenuItem(ll.Text);
+            mi = new System.Windows.Forms.ToolStripMenuItem(ll.Label);
 			mi.Click += new EventHandler(LinkClicked);
 			mi.Image = tool.Icon;
             LoadFileWrappersExt.SetShurtcutKey(mi, tool.Shortcut);
@@ -91,10 +97,8 @@ namespace SimPe
 			{
 				bi = new MyButtonItem("action."+tool.GetType().Namespace+"."+tool.GetType().Name);
 				bi.Text = "";
-				bi.ToolTipText = ll.Text;
+                bi.ToolTipText = ll.Label;
 				bi.Image = tool.Icon;
-				//bi.BuddyMenu = mi;
-
                 bi.Checked = mi.Checked;
                 bi.Enabled = mi.Enabled;
 				bi.Click += new EventHandler(LinkClicked);
@@ -102,9 +106,7 @@ namespace SimPe
 
 			//Make Sure the Action is disabled on StartUp
 			ChangeEnabledStateEventHandler(null, new SimPe.Events.ResourceEventArgs(lp));
-		}
-
-        
+		}        
 
         void mi_CheckedChanged(object sender, EventArgs e)
         {
@@ -122,9 +124,8 @@ namespace SimPe
 		public void ChangeEnabledStateEventHandler(object sender, SimPe.Events.ResourceEventArgs e) 
 		{
 			lp = e.LoadedPackage;
-			ll.Enabled = tool.ChangeEnabledStateEventHandler(sender, e);
-			//if (bi!=null) 
-			mi.Enabled = ll.Enabled;
+			ll.Links[0].Enabled = tool.ChangeEnabledStateEventHandler(sender, e);
+            mi.Enabled = tool.ChangeEnabledStateEventHandler(sender, e);
 
 			lasteventarg = e;
 		}

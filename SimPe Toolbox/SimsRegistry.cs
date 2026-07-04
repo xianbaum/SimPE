@@ -27,7 +27,14 @@ namespace SimPe.Plugin
             form.ckbUnEditable.CheckedChanged += new EventHandler(ckbUnEditable_CheckedChanged);
 
             form.cbdetail.Checked = this.ShowDetails;
-			form.cbdetail.CheckedChanged += new EventHandler(cbdetail_CheckedChanged);
+            form.cbdetail.CheckedChanged += new EventHandler(cbdetail_CheckedChanged);
+
+            form.cbgals.Checked = this.JustGals;
+            form.cbgals.CheckedChanged += new EventHandler(cbgals_CheckedChanged);
+            form.cbmens.Enabled = !form.cbgals.Checked;
+
+            form.cbadults.Checked = this.AdultsOnly;
+            form.cbadults.CheckedChanged += new EventHandler(cbadults_CheckedChanged);
 
 			form.sorter.CurrentColumn = this.SortedColumn;
 			form.sorter.Sorting = this.SortOrder;
@@ -108,7 +115,37 @@ namespace SimPe.Plugin
 				XmlRegistryKey rkf = xrk.CreateSubKey("SimBrowser");
 				rkf.SetValue("ShowDetails", value);
 			}
-		}
+        }
+
+        public bool JustGals
+        {
+            get
+            {
+                XmlRegistryKey rkf = xrk.CreateSubKey("SimBrowser");
+                object o = rkf.GetValue("JustGals", false);
+                return Convert.ToBoolean(o);
+            }
+            set
+            {
+                XmlRegistryKey rkf = xrk.CreateSubKey("SimBrowser");
+                rkf.SetValue("JustGals", value);
+            }
+        }
+
+        public bool AdultsOnly
+        {
+            get
+            {
+                XmlRegistryKey rkf = xrk.CreateSubKey("SimBrowser");
+                object o = rkf.GetValue("AdultsOnly", false);
+                return Convert.ToBoolean(o);
+            }
+            set
+            {
+                XmlRegistryKey rkf = xrk.CreateSubKey("SimBrowser");
+                rkf.SetValue("AdultsOnly", value);
+            }
+        }
 
 		public int SortedColumn
 		{
@@ -183,7 +220,19 @@ namespace SimPe.Plugin
 		{
 			System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
 			this.ShowDetails = cb.Checked;
-		}
+        }
+
+        private void cbgals_CheckedChanged(object sender, EventArgs e)
+        {
+            System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
+            this.JustGals = cb.Checked;
+        }
+
+        private void cbadults_CheckedChanged(object sender, EventArgs e)
+        {
+            System.Windows.Forms.CheckBox cb = sender as System.Windows.Forms.CheckBox;
+            this.AdultsOnly = cb.Checked;
+        }
 
 		private void sorter_Changed(object sender, EventArgs e)
 		{

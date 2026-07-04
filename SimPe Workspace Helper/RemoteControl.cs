@@ -23,7 +23,7 @@ using SimPe.Interfaces;
 namespace SimPe
 {
 	/// <summary>
-	/// This calss can be used to control SimPE from a Plugin.
+	/// This calss can be used to control SimPe from a Plugin.
 	/// </summary>
 	public class RemoteControl
 	{
@@ -241,7 +241,7 @@ namespace SimPe
 		}
 
 		/// <summary>
-		/// Open a Package in the main SimPE Gui
+		/// Open a Package in the main SimPe Gui
 		/// </summary>
 		/// <param name="filename">The Filename of the package</param>
 		/// <returns>true, if the package was opened</returns>
@@ -255,7 +255,7 @@ namespace SimPe
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage("Unable to open a Package in the SimPE GUI. (file="+filename+")", ex);
+				Helper.ExceptionMessage("Unable to open a Package in the SimPe GUI. (file="+filename+")", ex);
 			}
 			return false;
 		}
@@ -271,7 +271,7 @@ namespace SimPe
 		}
 
 		/// <summary>
-		/// Open a Package in the main SimPE Gui
+		/// Open a Package in the main SimPe Gui
 		/// </summary>
 		/// <param name="filename">The Filename of the package</param>
 		/// <returns>true, if the package was opened</returns>
@@ -285,13 +285,13 @@ namespace SimPe
 			} 
 			catch (Exception ex) 
 			{
-				Helper.ExceptionMessage("Unable to open a Package in the SimPE GUI. (package="+pkg.ToString()+")", ex);
+				Helper.ExceptionMessage("Unable to open a Package in the SimPe GUI. (package="+pkg.ToString()+")", ex);
 			}
 			return false;
 		}
 
 		/// <summary>
-		/// Open a Package in the main SimPE Gui
+		/// Open a Package in the main SimPe Gui
 		/// </summary>
 		/// <param name="pfd">The FileDescriptor</param>
 		/// <param name="pkg">The package the descriptor is in</param>
@@ -303,7 +303,7 @@ namespace SimPe
 
 
 		/// <summary>
-		/// Open a Package in the main SimPE Gui
+		/// Open a Package in the main SimPe Gui
 		/// </summary>
 		/// <param name="pfd">The FileDescriptor</param>
 		/// <returns>true, if the package was opened</returns>
@@ -317,7 +317,7 @@ namespace SimPe
 			} 
 			catch (Exception ex) 
 			{                
-				Helper.ExceptionMessage("Unable to open a resource in the SimPE GUI. ("+fii.ToString()+")", ex);
+				Helper.ExceptionMessage("Unable to open a resource in the SimPe GUI. ("+fii.ToString()+")", ex);
 			}
 			return false;
 		}
@@ -327,8 +327,12 @@ namespace SimPe
 		/// </summary>
 		/// <param name="url">Url (can be a local File) of the Help Document</param>
 		public static void ShowHelp(string url)
-		{
-			System.Windows.Forms.Help.ShowHelp(ApplicationForm, url);
+        {
+            try
+            {
+                System.Windows.Forms.Help.ShowHelp(ApplicationForm, url);
+            }
+            catch { }
 		}
 
 		/// <summary>
@@ -339,7 +343,11 @@ namespace SimPe
 		/// <remarks>Produces an URL like "url#topic"</remarks>
 		public static void ShowHelp(string url, string topic)
 		{
-			System.Windows.Forms.Help.ShowHelp(ApplicationForm, url, topic);
+            try
+            {
+                System.Windows.Forms.Help.ShowHelp(ApplicationForm, url, topic);
+            }
+            catch { }
 		}
 
 		/// <summary>
@@ -350,8 +358,8 @@ namespace SimPe
 		{
 			System.Windows.Forms.Form f = new System.Windows.Forms.Form();
 			f.Text = settings.ToString();
-			f.Width = 400;
-			f.Height = 300;
+			f.Width = 600;
+			f.Height = 450;
 			f.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
 			f.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 
@@ -359,7 +367,7 @@ namespace SimPe
 			f.Controls.Add(pg);
 			pg.Dock = System.Windows.Forms.DockStyle.Fill;
 			pg.SelectedObject = settings.GetSettingsObject();
-
+            if (booby.ThemeManager.ThemedForms) booby.ThemeManager.Global.AddControl(pg);
 			RemoteControl.ShowSubForm(f);
 			f.Dispose();
 		}

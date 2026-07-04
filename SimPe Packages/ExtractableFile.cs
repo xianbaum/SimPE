@@ -56,9 +56,9 @@ namespace SimPe.Packages
 		/// <param name="pfd">The PackedFileDescriptor</param>
 		/// <returns>The MemoryStream representing the PackedFile</returns>
 		public System.IO.MemoryStream Extract(PackedFileDescriptor pfd) 
-		{			
+		{
 			IPackedFile pf = base.Read(pfd);
-			return new MemoryStream(pf.UncompressedData);			
+			return new MemoryStream(pf.UncompressedData);
 		}
 
 		/// <summary>

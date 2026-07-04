@@ -91,22 +91,12 @@ namespace SimPe.PackedFiles
 		/// </summary>
 		System.Windows.Forms.ImageList il;
 
-        /// <summary>
-        /// Updateable plugins
-        /// </summary>
-        List<SimPe.Updates.IUpdatablePlugin> uplugins;
-        public List<SimPe.Updates.IUpdatablePlugin> UpdatablePlugins
-        {
-            get { return uplugins; }
-        }
-
 		/// <summary>
 		/// Constructor of the class
 		/// </summary>
 		public TypeRegistry()
-		{            
-            uplugins = new List<SimPe.Updates.IUpdatablePlugin>();
-			reg = Helper.WindowsRegistry;
+		{
+            reg = Helper.WindowsRegistry;
 			handlers = new ArrayList();		
 			opcodeprovider = new SimPe.Providers.Opcodes();
 			simfamilynames = new SimPe.Providers.SimFamilyNames();
@@ -146,7 +136,6 @@ namespace SimPe.PackedFiles
                     {
                         if (wrapper.WrapperDescription.Icon != null)
                         {
-
                             ((AbstractWrapperInfo)wrapper.WrapperDescription).IconIndex = il.Images.Count;
                             il.Images.Add(wrapper.WrapperDescription.Icon);
                         }
@@ -181,33 +170,21 @@ namespace SimPe.PackedFiles
 		/// </summary>
 		/// <param name="factory">The Factory Elements you want to register</param>
 		/// <remarks>The wrapper must only be added if the Registry doesnt already contain it</remarks>
-		public void Register(IWrapperFactory factory) 
-		{
-			factory.LinkedRegistry = this;
-			factory.LinkedProvider = this;
-			Register(factory.KnownWrappers, factory.KnownWrappers);
+        public void Register(IWrapperFactory factory)
+        {
+            factory.LinkedRegistry = this;
+            factory.LinkedProvider = this;
+            Register(factory.KnownWrappers, factory.KnownWrappers);
 
-			if (factory.GetType().GetInterface("SimPe.Interfaces.Plugin.IHelpFactory", false) == typeof(SimPe.Interfaces.Plugin.IHelpFactory))			
-				Register((factory as SimPe.Interfaces.Plugin.IHelpFactory));
+            if (factory.GetType().GetInterface("SimPe.Interfaces.Plugin.IHelpFactory", false) == typeof(SimPe.Interfaces.Plugin.IHelpFactory))
+                Register((factory as SimPe.Interfaces.Plugin.IHelpFactory));
 
             if (factory.GetType().GetInterface("SimPe.Interfaces.Plugin.ISettingsFactory", false) == typeof(SimPe.Interfaces.Plugin.ISettingsFactory))
                 Register((factory as SimPe.Interfaces.Plugin.ISettingsFactory));
 
             if (factory.GetType().GetInterface("SimPe.Interfaces.Plugin.ICommandLineFactory", false) == typeof(SimPe.Interfaces.Plugin.ICommandLineFactory))
                 Register((factory as SimPe.Interfaces.Plugin.ICommandLineFactory));
-
-            AddUpdatablePlugin(factory);
-		}
-
-        private void AddUpdatablePlugin(object factory)
-        {
-            if (factory == null) return;
-            SimPe.Updates.IUpdatablePlugin iup = factory as SimPe.Updates.IUpdatablePlugin;
-            if (iup != null)
-                if (!uplugins.Contains(iup))
-                    uplugins.Add(iup);
         }
-
 		
 
 		public IWrapper[] Wrappers
@@ -311,8 +288,7 @@ namespace SimPe.PackedFiles
 
 				if (check==true) return h;
 			}
-
-			return null;
+            return null;
 		}
 
 		#region IProviderRegistry Member
@@ -389,7 +365,6 @@ namespace SimPe.PackedFiles
 		#region IToolRegistry Member
 		public void Register(IToolPlugin tool)
 		{
-
             if (tool != null)
             {
                 if (tool.GetType().GetInterface("SimPe.Interfaces.IDockableTool", true) == typeof(SimPe.Interfaces.IDockableTool))
@@ -418,9 +393,7 @@ namespace SimPe.PackedFiles
                         tools.Add((SimPe.Interfaces.ITool)tool);
                 }
             }
-					
-			
-		}		
+		}
 
 		public void Register(IToolPlugin[] tools)
 		{
@@ -443,11 +416,9 @@ namespace SimPe.PackedFiles
 #if !DEBUG
 			catch (Exception ex)
 			{
-				Helper.ExceptionMessage("Unable to load Tool \""+s+"\". You Probaly have a Plugin/Tool installed, that is not compatible with the current SimPE Release.", ex);
+				Helper.ExceptionMessage("Unable to load Tool \""+s+"\". You Probaly have a Plugin/Tool installed, that is not compatible with the current SimPe Release.", ex);
 			}
 #endif
-
-            AddUpdatablePlugin(factory);
 		}
 
 		public SimPe.Collections.Listeners Listeners
@@ -541,8 +512,6 @@ namespace SimPe.PackedFiles
 		{
 			if (factory==null) return;
 			RegisterSettings(factory.KnownSettings);
-
-            AddUpdatablePlugin(factory);
 		}
 
 		public ISettings[] Settings
@@ -577,8 +546,6 @@ namespace SimPe.PackedFiles
         {
             if (factory == null) return;
             RegisterCommandLines(factory.KnownCommandLines);
-
-            AddUpdatablePlugin(factory);
         }
 
         public void RegisterCommandLines(ICommandLine[] CommandLines)
@@ -608,7 +575,7 @@ namespace SimPe.PackedFiles
         #endregion
 
         /// <summary>
-        /// This will perform some basic tasks, to bring the SimPE API into an useable state
+        /// This will perform some basic tasks, to bring the SimPe API into an useable state
         /// </summary>
         /* unused ?? ?? ?? -> see SimPe Main\PluginManager.cs LoadStaticWrappers()
         public static void InitDefaultFileTable()

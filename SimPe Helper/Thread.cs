@@ -42,11 +42,11 @@ namespace Ambertation.Threading
 			int ct=0;
             while (worker.IsAlive && (ct <= timeout || timeout<0)) 
 			{
-				ct++;
+                ct++;
 				stop.Set();
 				System.Windows.Forms.Application.DoEvents();
-                Thread.Sleep(100);                
-			}            
+                Thread.Sleep(100);
+			}
             
 			ended.Set();
             return !worker.IsAlive;

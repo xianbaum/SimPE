@@ -66,13 +66,13 @@ namespace SimPe.PackedFiles.Wrapper
         static void LoadGuielements(){
             guis = new Dictionary<string, Type>();
             readers = new Dictionary<string, IScorItemToken>();
-
             deftoken = new SCOR.ScorItemTokenDefault();
-
             guis.Add("Learned Behaviors", typeof(SCOR.ScoreItemLearnedBehaviour));
+            //guis.Add("Most Recent Learned Behavior", typeof(SCOR.ScoreItemLearnedBehaviour));
             guis.Add("Business Rewards", typeof(SCOR.ScoreItemBusinessRewards));
-
             readers.Add("Business Rewards", new SCOR.ScorItemTokenBusinessRewards());
+            guis.Add("Best Friend Forever List", typeof(SCOR.ScorItemTokenBffl));
+            readers.Add("Best Friend Forever List", new SCOR.ScorItemTokenBffl());
         }
 
         internal void LoadGuiElement(string name)            
@@ -114,13 +114,11 @@ namespace SimPe.PackedFiles.Wrapper
             }
         }
 
-
         Scor parent;
         public Scor Parent
         {
             get { return parent; }
-        }
-		
+        }		
 		
 		/// <summary>
 		/// Constructor
@@ -146,48 +144,89 @@ namespace SimPe.PackedFiles.Wrapper
             //if (gui != null) gui.Dispose();
             gui = GetGuiElement(name, data);
         }
+
+        internal static string nayme;
+        internal static uint tipe;
 						
 		/// <summary>
 		/// Unserializes a BinaryStream into the Attributes of this Instance
 		/// </summary>
 		/// <param name="reader">The Stream that contains the FileData</param>
 		internal void Unserialize(System.IO.BinaryReader reader)
-		{
-			string name = StreamHelper.ReadString(reader);
-
-            SCOR.IScorItemToken tp = GetTokenParser(name);
+        {
+            tipe = reader.ReadUInt32();//type
+            nayme = StreamHelper.ReadString(reader);
+            SCOR.IScorItemToken tp = GetTokenParser(nayme);
 
             lock (tp)
             {
                 byte[] data = tp.UnserializeToken(this, reader);
 
-                if (tp.ActivatedGUI == null) SetGui(name, data);
+                if (tp.ActivatedGUI == null)
+                    SetGui(nayme, data);
                 else
                 {
                     gui = tp.ActivatedGUI;
-                    gui.SetData(name, null);
+                    gui.SetData(nayme, null);
                 }
             }
 		}
 
         internal static byte[] UnserializeDefaultToken(System.IO.BinaryReader reader)
         {
+            //1=Sales Info or Business Rewards, 3=Learned Behaviours, 5=Best Friends Forever List, 6=Pet Ownership, 
+            //7=Most Recent Learned Behaviour or Witch Names, 8=Apartment Wall Adjacencies, 9=Apartment Object Adjacencies, 
             if (reader.BaseStream.Position > reader.BaseStream.Length - 1) return new byte[0];
             System.Collections.ArrayList bytes = new ArrayList();
-
-            byte test = reader.ReadByte();
-            byte last = test;
-            while (last != 0x00 || test != 0x04)
+            if (nayme == "Business Rewards")//23 bytes per this crap will come back here again and chuck a fruiy
             {
-                bytes.Add(test);
-                if (reader.BaseStream.Position > reader.BaseStream.Length - 1) break;
-                last = test;
-                test = reader.ReadByte();
+                long ct = reader.BaseStream.Position;
+                int a = reader.ReadInt32();
+                a *= 23; a += 4;
+                reader.BaseStream.Position = ct;
+                for (int i = 0; i < a; i++)
+                {
+                    bytes.Add(reader.ReadByte());
+                }
             }
+            else if (tipe == 1 || tipe == 3 || tipe == 7)// learned behaviours, Most Recent Learned Behaviour, sales info and WitchNames have 10 bytes per
+            {
+                long ct = reader.BaseStream.Position;
+                int a = reader.ReadInt32();// new pos is ct + 4 (for a) + a x 10
+                a *= 10; a += 4;
+                reader.BaseStream.Position = ct;
+                for (int i = 0; i < a; i++)
+                {
+                    bytes.Add(reader.ReadByte());
+                }
+            }
+            else if (tipe == 5)// Best Friends Forever List 30bytes each
+            {
+                long ct = reader.BaseStream.Position;
+                int a = reader.ReadInt32();
+                a *= 30; a += 4;
+                reader.BaseStream.Position = ct;
+                for (int i = 0; i < a; i++)
+                {
+                    bytes.Add(reader.ReadByte());
+                }
+            }
+            else
+            {
+                byte test = reader.ReadByte();
+                byte last = test;
+                while (last != 0x00 || test != 0x04)
+                {
+                    bytes.Add(test);
+                    if (reader.BaseStream.Position > reader.BaseStream.Length - 1) break;
+                    last = test;
+                    test = reader.ReadByte();
+                }
 
-            if (reader.BaseStream.Position <= reader.BaseStream.Length - 1)
-                if (bytes.Count > 0)
-                    bytes.RemoveAt(bytes.Count - 1);
+                if (reader.BaseStream.Position <= reader.BaseStream.Length - 1)
+                    if (bytes.Count > 0)
+                        bytes.RemoveAt(bytes.Count - 1);
+            }
 
             byte[] data = new byte[bytes.Count];
             bytes.CopyTo(data);
@@ -205,6 +244,7 @@ namespace SimPe.PackedFiles.Wrapper
 		/// </remarks>
 		internal  void Serialize(System.IO.BinaryWriter writer, bool last)
 		{
+            writer.Write(tipe);
             Gui.Serialize(writer, last);
             SerializeDefaultToken(writer, last);			
 		}
@@ -222,8 +262,7 @@ namespace SimPe.PackedFiles.Wrapper
 	}
 
 	public class ScorItems : 
-        System.Collections.Generic.IEnumerable<ScorItem>
-        , System.IDisposable
+        System.Collections.Generic.IEnumerable<ScorItem> , System.IDisposable
 	{
 		System.Collections.Generic.List<ScorItem> list;
 		public ScorItems()

@@ -29,10 +29,8 @@ namespace SimPe.PackedFiles.UserInterface
 	/// handles Packed XmlFiles
 	/// </summary>
 	public class Xml : UIBase, IPackedFileUI
-	{
-		
+	{		
 		#region IPackedFileHandler Member
-
 		public Control GUIHandle
 		{
 			get 
@@ -46,9 +44,8 @@ namespace SimPe.PackedFiles.UserInterface
 			Wrapper.Xml xml = (Wrapper.Xml)wrapper;	
 			form.wrapper = xml;
 			form.rtb.Text = xml.Text;
-		}
-
-		
+            form.panel3.CanCommit = xml.Text != "Movie File - SimPe Can't Read This";
+		}		
 		#endregion		
 	}
 }

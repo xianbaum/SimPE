@@ -26,13 +26,12 @@ using System.Windows.Forms;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für WantsForm.
+	/// Summary description for WantsForm.
 	/// </summary>
 	public class WantsForm : System.Windows.Forms.Form
 	{
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Label label27;
-		internal System.Windows.Forms.Panel wantsPanel;
+        private booby.panelheader panel2;
+		internal booby.gradientpanel wantsPanel;
 		internal System.Windows.Forms.TabControl tabControl1;
 		internal System.Windows.Forms.TabPage tblife;
 		private System.Windows.Forms.TabPage tbwant;
@@ -70,8 +69,7 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.GroupBox gbprop;
 		private System.Windows.Forms.PictureBox pb;
 		private System.Windows.Forms.TreeView tv;
-		internal System.Windows.Forms.ImageList itv;
-		private System.Windows.Forms.LinkLabel linkLabel1;
+        internal System.Windows.Forms.ImageList itv;
 		private System.Windows.Forms.CheckBox cblock;
         private System.Windows.Forms.ComboBox cbsel;
 		private System.ComponentModel.IContainer components;
@@ -79,15 +77,26 @@ namespace SimPe.Plugin
 		public WantsForm()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required designer variable.
 			//
-			InitializeComponent();
+            InitializeComponent();
+            if (booby.ThemeManager.ThemedForms)
+            {
+                booby.ThemeManager tm = booby.ThemeManager.Global.CreateChild();
+                tm.AddControl(this.wantsPanel);
+                tm.AddControl(this.lvwant);
+                tm.AddControl(this.lvfear);
+                tm.AddControl(this.lvlife);
+                this.tvhist.BackColor = booby.ThemeManager.Global.ThemeColorLighter;
+                this.tv.BackColor = booby.ThemeManager.Global.ThemeColorLighter;
+            }
 
 			wrapper = null;
+
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -101,16 +110,15 @@ namespace SimPe.Plugin
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
             this.components = new System.ComponentModel.Container();
-            this.wantsPanel = new System.Windows.Forms.Panel();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.wantsPanel = new booby.gradientpanel();
             this.gbprop = new System.Windows.Forms.GroupBox();
             this.cbsel = new System.Windows.Forms.ComboBox();
             this.cblock = new System.Windows.Forms.CheckBox();
@@ -150,9 +158,8 @@ namespace SimPe.Plugin
             this.tblife = new System.Windows.Forms.TabPage();
             this.lvlife = new System.Windows.Forms.ListView();
             this.ilife = new System.Windows.Forms.ImageList(this.components);
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel2 = new booby.panelheader();
             this.lbsimname = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
             this.wantsPanel.SuspendLayout();
             this.gbprop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
@@ -167,33 +174,21 @@ namespace SimPe.Plugin
             // wantsPanel
             // 
             this.wantsPanel.AutoScroll = true;
-            this.wantsPanel.Controls.Add(this.linkLabel1);
             this.wantsPanel.Controls.Add(this.gbprop);
             this.wantsPanel.Controls.Add(this.tabControl1);
             this.wantsPanel.Controls.Add(this.panel2);
+            this.wantsPanel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.wantsPanel.Location = new System.Drawing.Point(16, 8);
             this.wantsPanel.Name = "wantsPanel";
             this.wantsPanel.Size = new System.Drawing.Size(768, 344);
             this.wantsPanel.TabIndex = 20;
-            // 
-            // linkLabel1
-            // 
-            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel1.Location = new System.Drawing.Point(707, 319);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(56, 13);
-            this.linkLabel1.TabIndex = 3;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Commit";
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Commit);
             // 
             // gbprop
             // 
             this.gbprop.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
                         | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
+            this.gbprop.BackColor = System.Drawing.Color.Transparent;
             this.gbprop.Controls.Add(this.cbsel);
             this.gbprop.Controls.Add(this.cblock);
             this.gbprop.Controls.Add(this.tv);
@@ -219,7 +214,6 @@ namespace SimPe.Plugin
             this.gbprop.Controls.Add(this.pb);
             this.gbprop.Controls.Add(this.label5);
             this.gbprop.Enabled = false;
-            this.gbprop.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.gbprop.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbprop.Location = new System.Drawing.Point(336, 32);
             this.gbprop.Name = "gbprop";
@@ -641,38 +635,29 @@ namespace SimPe.Plugin
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.panel2.CanCommit = true;
             this.panel2.Controls.Add(this.lbsimname);
-            this.panel2.Controls.Add(this.label27);
-            this.panel2.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-            this.panel2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.panel2.HeaderText = "Wants and Fears Viewer for";
             this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(768, 24);
             this.panel2.TabIndex = 0;
+            this.panel2.OnCommit += new booby.panelheader.EventHandler(this.Commit);
             // 
             // lbsimname
             // 
             this.lbsimname.AutoSize = true;
+            this.lbsimname.BackColor = System.Drawing.Color.Transparent;
             this.lbsimname.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lbsimname.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbsimname.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.lbsimname.Location = new System.Drawing.Point(216, 4);
+            this.lbsimname.Location = new System.Drawing.Point(260, 4);
             this.lbsimname.Name = "lbsimname";
             this.lbsimname.Size = new System.Drawing.Size(29, 16);
             this.lbsimname.TabIndex = 1;
             this.lbsimname.Text = "---";
             this.lbsimname.Click += new System.EventHandler(this.lbsimname_Click);
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-            this.label27.Location = new System.Drawing.Point(0, 4);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(208, 16);
-            this.label27.TabIndex = 0;
-            this.label27.Text = "Wants and Fears Viewer for";
             // 
             // WantsForm
             // 
@@ -683,7 +668,6 @@ namespace SimPe.Plugin
             this.Name = "WantsForm";
             this.Text = "WantsForm";
             this.wantsPanel.ResumeLayout(false);
-            this.wantsPanel.PerformLayout();
             this.gbprop.ResumeLayout(false);
             this.gbprop.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
@@ -881,7 +865,7 @@ namespace SimPe.Plugin
 			}
 		}
 
-		private void Commit(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
+        private void Commit(object sender, System.EventArgs e)
 		{
 			wrapper.SynchronizeUserData();
 		}
@@ -975,8 +959,6 @@ namespace SimPe.Plugin
                     Wait.Image = wi.Icon;
                     Wait.Progress = ct;
                 }
-
-				//if ((Helper.DebugMode) && (ct>200)) break;
 			}
 
 			foreach (string k in ht.Keys) 

@@ -23,7 +23,6 @@ using System.Collections;
 using SimPe;
 using SimPe.Plugin;
 
-
 namespace SimPe.Cache
 {
 	/// <summary>
@@ -40,13 +39,13 @@ namespace SimPe.Cache
 		}		
 
 		/// <summary>
-		/// Add a MaterialOverride to the Cache
+		/// Add a Want Item to the Cache
 		/// </summary>
 		/// <param name="want">The Want File</param>
-		public void AddItem(WantInformation want) 
+		public void AddItem(WantInformation want)
 		{
-			CacheContainer mycc = this.UseConatiner(ContainerType.Want, want.XWant.Package.FileName);
-			
+            if (want.XWant == null) return;
+			CacheContainer mycc = this.UseConatiner(ContainerType.Want, want.XWant.Package.FileName);			
 			WantCacheItem wci = new WantCacheItem();	
 			wci.FileDescriptor = want.XWant.FileDescriptor;
 			wci.Folder = want.XWant.Folder;
@@ -55,8 +54,7 @@ namespace SimPe.Cache
 			wci.Influence = want.XWant.Influence;
 			wci.Name = want.Name;
 			wci.ObjectType = want.XWant.ObjectType;
-			wci.Score = want.XWant.Score;			
-
+            wci.Score = want.XWant.Score;
 			mycc.Items.Add(wci);
 		}
 
@@ -66,24 +64,16 @@ namespace SimPe.Cache
 		/// </summary>
 		public Hashtable Map 
 		{
-			get { 
+			get
+            { 
 				if (map==null) LoadWants();
 				return map; 
 			}
 		}
 
-		/// <summary>
-		/// Creates a FileIndex with all available MMAT Files
-		/// </summary>
-		/// <returns>the FileIndex</returns>
-		/// <remarks>
-		/// The Tags of the FileDescriptions contain the MMATCachItem Object, 
-		/// the FileNames of the FileDescriptions contain the Name of the package File
-		/// </remarks>
 		public void LoadWants()
 		{
-			map = new Hashtable();
-			
+			map = new Hashtable();			
 
 			foreach (CacheContainer cc in Containers) 
 			{
@@ -94,7 +84,7 @@ namespace SimPe.Cache
 						map[wci.Guid] = wci;
 					}
 				}
-			}//foreach
-		}		
+			}
+		}
 	}
 }

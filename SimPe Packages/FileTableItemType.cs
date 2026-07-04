@@ -35,6 +35,20 @@ namespace SimPe
         {
             val = i;
         }
+        /*
+        // Old - just here fer compatiblity
+        public static uint Absolute = 0;
+        public static uint GameFolder = 1;
+        public static uint EP1GameFolder = 2;
+        public static uint SaveGameFolder = 3;
+		public static uint SimPEFolder = 4;
+		public static uint SimPEDataFolder = 5;
+        public static uint SimPEPluginFolder = 6;
+        public static uint EP2GameFolder = 7;
+        public static uint EP3GameFolder = 8;
+        public static uint SP1GameFolder = 9;
+        public static uint SP2GameFolder = 10;
+        */
 
         public static implicit operator FileTableItemType(Expansions e)
         {

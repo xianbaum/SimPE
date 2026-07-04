@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace SimPe
 {
 	/// <summary>
-	/// Zusammenfassung für ExceptionForm.
+	/// Summary description for ExceptionForm.
 	/// </summary>
 	public class ExceptionForm : System.Windows.Forms.Form
 	{
@@ -24,14 +24,14 @@ namespace SimPe
 		private System.Windows.Forms.LinkLabel linkLabel2;
 		private System.Windows.Forms.TextBox tbsup;
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
 		public ExceptionForm()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required designer variable.
 			//
 			InitializeComponent();
 
@@ -41,7 +41,7 @@ namespace SimPe
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -55,10 +55,10 @@ namespace SimPe
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -102,7 +102,7 @@ namespace SimPe
             resources.ApplyResources(this.rtb, "rtb");
             this.rtb.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.rtb.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.rtb.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.rtb.ForeColor = System.Drawing.Color.FromArgb(64, 64, 64);
             this.rtb.Name = "rtb";
             this.rtb.ReadOnly = true;
             // 
@@ -211,23 +211,25 @@ namespace SimPe
 
         [STAThread]
 		private void CopyToClipboard(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
-		{
-#if MAC
-#else            
-			Clipboard.SetDataObject(rtb.Text, true);            
-#endif
+		{     
+            string text = "";
+            foreach (string clit in rtb.Lines) text += clit + "\r\n"; // RichTextBox converts line breaks to seperate arrays, we need to put the line breaks back (CJH)
+            Clipboard.SetDataObject(text, true);
+            // Clipboard.SetDataObject(rtb.Text, true);
 		}
 
 		private void button1_Click(object sender, System.EventArgs e)
-		{
-			Close();
+        {
+            Close();
 		}
 
 		private void ShowDetail(object sender, System.Windows.Forms.LinkLabelLinkClickedEventArgs e)
 		{
 			lldetail.Visible = false;
-			gbdetail.Visible = true;
-			Height += gbdetail.Height;
+            gbdetail.Visible = true;
+            this.Location = new System.Drawing.Point(this.Location.X - 168, this.Location.Y - 186);
+            this.Size = new System.Drawing.Size(800, 600);
+            this.Refresh();
 		}
 
 		/// <summary>
@@ -239,12 +241,15 @@ namespace SimPe
 		{
             if (Helper.NoErrors) return;
 
+            if (WaitingScreen.Running) WaitingScreen.Stop();
+            if (Splash.Running) Splash.Screen.Stop();
+
 			if (message==null) message = "";
 			if (message.Trim()=="") message = ex.Message;
 
             if (message.Contains("Microsoft.DirectX"))
             {
-                ex = new Warning("You need to installe MANAGED DirectX", "In order to perfrom some Operations, you need to install Managed DirectX (which is an additional set of libraries for the DirectX you installed with The Sims 2).\n\nPlease read http://ambertation.de/simpeforum/sims2/I-have-an-Error-mentioning-Direct3D,-what-should-I-do for more Details.", ex);
+                ex = new Warning("You need to install MANAGED DirectX", "In order to perfrom some Operations, you need to install Managed DirectX (which is an additional set of libraries for the DirectX you installed with The Sims 2).\n\nPlease read http://www.modthesims2.com/index.php? for more Details.", ex);
                 message = ex.Message;
             }
 
@@ -255,10 +260,6 @@ namespace SimPe
 				extrace += myex.ToString()/*+": "+myex.Message*/+Helper.lbr;
 				myex = myex.InnerException;
 			}
-#if MAC
-			MessageBox.Show(message+"\n\n"+extrace+"\n\n"+myex);
-			return;
-#endif
 
 			ExceptionForm frm = new ExceptionForm();
 
@@ -288,7 +289,7 @@ namespace SimPe
 				try 
 				{
 					text += @"\pard\par";
-					text += @"\b SimPE Version:\par";
+					text += @"\b SimPe Version:\par";
 					text += @"\pard\li284\b0 "+Helper.StartedGui.ToString()+" ("+Helper.SimPeVersion.ProductMajorPart.ToString()+"."+Helper.SimPeVersion.ProductMinorPart.ToString()+"."+Helper.SimPeVersion.ProductBuildPart.ToString()+"."+Helper.SimPeVersion.ProductPrivatePart.ToString()+")."+@"\par";
 				} 
 				catch {}
@@ -327,19 +328,14 @@ namespace SimPe
                 text += @"\b .NET Version:\par";
                 text += @"\pard\li284\b0 " + System.Environment.Version.ToString().Replace("\\", "\\\\").Replace("\n", @"\par\pard\li284") + @"\par";
             }
-            catch { }
-
-           
+            catch { }           
 
 			text += @"}";
 
 			text = text.Replace("\n", @"\par\pard");
-#if MAC
-#else
 			frm.rtb.Rtf = text;
-#endif
 
-			if ((Helper.WindowsRegistry.HiddenMode) || (Helper.DebugMode))
+			if (Helper.WindowsRegistry.HiddenMode)
 			{
 				frm.lldetail.Visible = false;
 			} 
@@ -349,8 +345,7 @@ namespace SimPe
 				frm.Height -= frm.gbdetail.Height;
 			}
 
-			
 			frm.ShowDialog();
-		}
+        }
 	}
 }

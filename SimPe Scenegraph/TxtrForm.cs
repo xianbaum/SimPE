@@ -28,31 +28,43 @@ using SimPe.Interfaces.Scenegraph;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für TxtrForm.
+	/// Summary description for TxtrForm.
 	/// </summary>
 	public class TxtrForm : System.Windows.Forms.Form
 	{
 		/// <summary>
-		/// Erforderliche Designervariable.
+		/// Required designer variable.
 		/// </summary>
 		private System.ComponentModel.Container components = null;
 
 		public TxtrForm()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+            // Required designer variable.
 			//
-			InitializeComponent();
-
-#if DEBUG
-#else
+            InitializeComponent();
+            if (Helper.WindowsRegistry.UseBigIcons)
+            {
+                this.lbimg.Font = new System.Drawing.Font("Verdana", 11F);
+                this.tblifo.Font = new System.Drawing.Font("Verdana", 12F);
+                this.tbflname.Font = new System.Drawing.Font("Verdana", 12F);
+                this.tbflname.Location = new System.Drawing.Point(11, 56);
+                this.tbflname.Size = new System.Drawing.Size(413, 27);
+            }
+            if (booby.ThemeManager.ThemedForms)
+            {
+                booby.ThemeManager tm = booby.ThemeManager.Global.CreateChild();
+                tm.AddControl(this.lbimg);
+                tm.AddControl(this.txtrPanel);
+                tm.AddControl(this.btim);
+                tm.AddControl(this.btex);
+            }
 			tbwidth.ReadOnly = true;
 			tbheight.ReadOnly = true;
-#endif
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -66,512 +78,503 @@ namespace SimPe.Plugin
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Resources.ResourceManager resources = new System.Resources.ResourceManager(typeof(TxtrForm));
-			this.txtrPanel = new System.Windows.Forms.Panel();
-			this.linkLabel4 = new System.Windows.Forms.LinkLabel();
-			this.linkLabel3 = new System.Windows.Forms.LinkLabel();
-			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
-			this.tblevel = new System.Windows.Forms.TextBox();
-			this.label8 = new System.Windows.Forms.Label();
-			this.linkLabel2 = new System.Windows.Forms.LinkLabel();
-			this.lldel = new System.Windows.Forms.LinkLabel();
-			this.tblifo = new System.Windows.Forms.TextBox();
-			this.label6 = new System.Windows.Forms.Label();
-			this.label5 = new System.Windows.Forms.Label();
-			this.tbheight = new System.Windows.Forms.TextBox();
-			this.tbwidth = new System.Windows.Forms.TextBox();
-			this.label4 = new System.Windows.Forms.Label();
-			this.label3 = new System.Windows.Forms.Label();
-			this.cbformats = new System.Windows.Forms.ComboBox();
-			this.tbflname = new System.Windows.Forms.TextBox();
-			this.label2 = new System.Windows.Forms.Label();
-			this.cbitem = new System.Windows.Forms.ComboBox();
-			this.cbmipmaps = new System.Windows.Forms.ComboBox();
-			this.panel1 = new System.Windows.Forms.Panel();
-			this.label7 = new System.Windows.Forms.Label();
-			this.pb = new System.Windows.Forms.PictureBox();
-			this.contextMenu1 = new System.Windows.Forms.ContextMenu();
-			this.menuItem1 = new System.Windows.Forms.MenuItem();
-			this.milifo = new System.Windows.Forms.MenuItem();
-			this.menuItem4 = new System.Windows.Forms.MenuItem();
-			this.menuItem6 = new System.Windows.Forms.MenuItem();
-			this.menuItem7 = new System.Windows.Forms.MenuItem();
-			this.mibuild = new System.Windows.Forms.MenuItem();
-			this.menuItem3 = new System.Windows.Forms.MenuItem();
-			this.menuItem2 = new System.Windows.Forms.MenuItem();
-			this.menuItem5 = new System.Windows.Forms.MenuItem();
-			this.lbimg = new System.Windows.Forms.ListBox();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.btex = new System.Windows.Forms.Button();
-			this.btim = new System.Windows.Forms.Button();
-			this.label27 = new System.Windows.Forms.Label();
-			this.btcommit = new System.Windows.Forms.Button();
-			this.label1 = new System.Windows.Forms.Label();
-			this.sfd = new System.Windows.Forms.SaveFileDialog();
-			this.ofd = new System.Windows.Forms.OpenFileDialog();
-			this.txtrPanel.SuspendLayout();
-			this.panel1.SuspendLayout();
-			this.panel2.SuspendLayout();
-			this.SuspendLayout();
-			// 
-			// txtrPanel
-			// 
-			this.txtrPanel.Controls.Add(this.linkLabel4);
-			this.txtrPanel.Controls.Add(this.linkLabel3);
-			this.txtrPanel.Controls.Add(this.linkLabel1);
-			this.txtrPanel.Controls.Add(this.tblevel);
-			this.txtrPanel.Controls.Add(this.label8);
-			this.txtrPanel.Controls.Add(this.linkLabel2);
-			this.txtrPanel.Controls.Add(this.lldel);
-			this.txtrPanel.Controls.Add(this.tblifo);
-			this.txtrPanel.Controls.Add(this.label6);
-			this.txtrPanel.Controls.Add(this.label5);
-			this.txtrPanel.Controls.Add(this.tbheight);
-			this.txtrPanel.Controls.Add(this.tbwidth);
-			this.txtrPanel.Controls.Add(this.label4);
-			this.txtrPanel.Controls.Add(this.label3);
-			this.txtrPanel.Controls.Add(this.cbformats);
-			this.txtrPanel.Controls.Add(this.tbflname);
-			this.txtrPanel.Controls.Add(this.label2);
-			this.txtrPanel.Controls.Add(this.cbitem);
-			this.txtrPanel.Controls.Add(this.cbmipmaps);
-			this.txtrPanel.Controls.Add(this.panel1);
-			this.txtrPanel.Controls.Add(this.lbimg);
-			this.txtrPanel.Controls.Add(this.panel2);
-			this.txtrPanel.Controls.Add(this.label1);
-			this.txtrPanel.Location = new System.Drawing.Point(8, 8);
-			this.txtrPanel.Name = "txtrPanel";
-			this.txtrPanel.Size = new System.Drawing.Size(768, 288);
-			this.txtrPanel.TabIndex = 19;
-			// 
-			// linkLabel4
-			// 
-			this.linkLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.linkLabel4.AutoSize = true;
-			this.linkLabel4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel4.LinkArea = new System.Windows.Forms.LinkArea(0, 5);
-			this.linkLabel4.Location = new System.Drawing.Point(200, 264);
-			this.linkLabel4.Name = "linkLabel4";
-			this.linkLabel4.Size = new System.Drawing.Size(137, 17);
-			this.linkLabel4.TabIndex = 24;
-			this.linkLabel4.TabStop = true;
-			this.linkLabel4.Text = "build default MipMap";
-			this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.BuildMipMap);
-			// 
-			// linkLabel3
-			// 
-			this.linkLabel3.AutoSize = true;
-			this.linkLabel3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel3.Location = new System.Drawing.Point(288, 80);
-			this.linkLabel3.Name = "linkLabel3";
-			this.linkLabel3.Size = new System.Drawing.Size(47, 17);
-			this.linkLabel3.TabIndex = 23;
-			this.linkLabel3.TabStop = true;
-			this.linkLabel3.Text = "fix TGI";
-			this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.FixTGI);
-			// 
-			// linkLabel1
-			// 
-			this.linkLabel1.AutoSize = true;
-			this.linkLabel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel1.Location = new System.Drawing.Point(344, 80);
-			this.linkLabel1.Name = "linkLabel1";
-			this.linkLabel1.Size = new System.Drawing.Size(81, 17);
-			this.linkLabel1.TabIndex = 22;
-			this.linkLabel1.TabStop = true;
-			this.linkLabel1.Text = "assign Hash";
-			this.linkLabel1.Visible = false;
-			this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.BuildFilename);
-			// 
-			// tblevel
-			// 
-			this.tblevel.Location = new System.Drawing.Point(336, 128);
-			this.tblevel.Name = "tblevel";
-			this.tblevel.Size = new System.Drawing.Size(88, 21);
-			this.tblevel.TabIndex = 21;
-			this.tblevel.Text = "";
-			this.tblevel.TextChanged += new System.EventHandler(this.Changedlevel);
-			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label8.Location = new System.Drawing.Point(240, 136);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(95, 17);
-			this.label8.TabIndex = 20;
-			this.label8.Text = "MipMap Level:";
-			// 
-			// linkLabel2
-			// 
-			this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.linkLabel2.AutoSize = true;
-			this.linkLabel2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.linkLabel2.Location = new System.Drawing.Point(344, 264);
-			this.linkLabel2.Name = "linkLabel2";
-			this.linkLabel2.Size = new System.Drawing.Size(28, 17);
-			this.linkLabel2.TabIndex = 19;
-			this.linkLabel2.TabStop = true;
-			this.linkLabel2.Text = "add";
-			this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Add);
-			// 
-			// lldel
-			// 
-			this.lldel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.lldel.AutoSize = true;
-			this.lldel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.lldel.Location = new System.Drawing.Point(380, 264);
-			this.lldel.Name = "lldel";
-			this.lldel.Size = new System.Drawing.Size(44, 17);
-			this.lldel.TabIndex = 18;
-			this.lldel.TabStop = true;
-			this.lldel.Text = "delete";
-			this.lldel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Delete);
-			// 
-			// tblifo
-			// 
-			this.tblifo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.tblifo.Location = new System.Drawing.Point(440, 256);
-			this.tblifo.Name = "tblifo";
-			this.tblifo.Size = new System.Drawing.Size(320, 21);
-			this.tblifo.TabIndex = 16;
-			this.tblifo.Text = "";
-			this.tblifo.TextChanged += new System.EventHandler(this.SetLifo);
-			// 
-			// label6
-			// 
-			this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label6.AutoSize = true;
-			this.label6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label6.Location = new System.Drawing.Point(432, 240);
-			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(107, 17);
-			this.label6.TabIndex = 17;
-			this.label6.Text = "LIFO Reference:";
-			// 
-			// label5
-			// 
-			this.label5.AutoSize = true;
-			this.label5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label5.Location = new System.Drawing.Point(141, 136);
-			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(12, 17);
-			this.label5.TabIndex = 15;
-			this.label5.Text = "x";
-			// 
-			// tbheight
-			// 
-			this.tbheight.Location = new System.Drawing.Point(160, 128);
-			this.tbheight.Name = "tbheight";
-			this.tbheight.Size = new System.Drawing.Size(56, 21);
-			this.tbheight.TabIndex = 14;
-			this.tbheight.Text = "";
-			this.tbheight.TextChanged += new System.EventHandler(this.ChangedSize);
-			// 
-			// tbwidth
-			// 
-			this.tbwidth.Location = new System.Drawing.Point(80, 128);
-			this.tbwidth.Name = "tbwidth";
-			this.tbwidth.Size = new System.Drawing.Size(56, 21);
-			this.tbwidth.TabIndex = 13;
-			this.tbwidth.Text = "";
-			this.tbwidth.TextChanged += new System.EventHandler(this.ChangedSize);
-			// 
-			// label4
-			// 
-			this.label4.AutoSize = true;
-			this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label4.Location = new System.Drawing.Point(43, 136);
-			this.label4.Name = "label4";
-			this.label4.Size = new System.Drawing.Size(35, 17);
-			this.label4.TabIndex = 12;
-			this.label4.Text = "Size:";
-			// 
-			// label3
-			// 
-			this.label3.AutoSize = true;
-			this.label3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label3.Location = new System.Drawing.Point(24, 112);
-			this.label3.Name = "label3";
-			this.label3.Size = new System.Drawing.Size(54, 17);
-			this.label3.TabIndex = 11;
-			this.label3.Text = "Format:";
-			// 
-			// cbformats
-			// 
-			this.cbformats.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbformats.Location = new System.Drawing.Point(80, 104);
-			this.cbformats.Name = "cbformats";
-			this.cbformats.Size = new System.Drawing.Size(344, 21);
-			this.cbformats.TabIndex = 10;
-			this.cbformats.SelectedIndexChanged += new System.EventHandler(this.ChangeFormat);
-			// 
-			// tbflname
-			// 
-			this.tbflname.Location = new System.Drawing.Point(80, 56);
-			this.tbflname.Name = "tbflname";
-			this.tbflname.Size = new System.Drawing.Size(344, 21);
-			this.tbflname.TabIndex = 9;
-			this.tbflname.Text = "";
-			this.tbflname.TextChanged += new System.EventHandler(this.FileNameChanged);
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label2.Location = new System.Drawing.Point(11, 40);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(67, 17);
-			this.label2.TabIndex = 8;
-			this.label2.Text = "Filename:";
-			// 
-			// cbitem
-			// 
-			this.cbitem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbitem.Location = new System.Drawing.Point(80, 32);
-			this.cbitem.Name = "cbitem";
-			this.cbitem.Size = new System.Drawing.Size(344, 21);
-			this.cbitem.TabIndex = 7;
-			this.cbitem.SelectedIndexChanged += new System.EventHandler(this.SelectItem);
-			// 
-			// cbmipmaps
-			// 
-			this.cbmipmaps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cbmipmaps.Location = new System.Drawing.Point(80, 160);
-			this.cbmipmaps.Name = "cbmipmaps";
-			this.cbmipmaps.Size = new System.Drawing.Size(344, 21);
-			this.cbmipmaps.TabIndex = 5;
-			this.cbmipmaps.SelectedIndexChanged += new System.EventHandler(this.SelectMipMapBlock);
-			// 
-			// panel1
-			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.AutoScroll = true;
-			this.panel1.AutoScrollMinSize = new System.Drawing.Size(24, 24);
-			this.panel1.Controls.Add(this.label7);
-			this.panel1.Controls.Add(this.pb);
-			this.panel1.Location = new System.Drawing.Point(432, 32);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(328, 200);
-			this.panel1.TabIndex = 4;
-			// 
-			// label7
-			// 
-			this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.label7.AutoSize = true;
-			this.label7.Font = new System.Drawing.Font("Verdana", 8.25F);
-			this.label7.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.label7.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label7.Location = new System.Drawing.Point(8, 176);
-			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(291, 17);
-			this.label7.TabIndex = 6;
-			this.label7.Text = "Right click on the Image to get more Interactions.";
-			// 
-			// pb
-			// 
-			this.pb.BackColor = System.Drawing.SystemColors.Control;
-			this.pb.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pb.BackgroundImage")));
-			this.pb.ContextMenu = this.contextMenu1;
-			this.pb.Location = new System.Drawing.Point(0, 0);
-			this.pb.Name = "pb";
-			this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-			this.pb.TabIndex = 5;
-			this.pb.TabStop = false;
-			// 
-			// contextMenu1
-			// 
-			this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
-																						 this.menuItem1,
-																						 this.milifo,
-																						 this.menuItem4,
-																						 this.menuItem6,
-																						 this.menuItem7,
-																						 this.mibuild,
-																						 this.menuItem3,
-																						 this.menuItem2,
-																						 this.menuItem5});
-			this.contextMenu1.Popup += new System.EventHandler(this.ContextPopUp);
-			// 
-			// menuItem1
-			// 
-			this.menuItem1.Index = 0;
-			this.menuItem1.Text = "&Import...";
-			this.menuItem1.Click += new System.EventHandler(this.btim_Click);
-			// 
-			// milifo
-			// 
-			this.milifo.Enabled = false;
-			this.milifo.Index = 1;
-			this.milifo.Text = "Import local  LIFO";
-			this.milifo.Click += new System.EventHandler(this.ImportLifo);
-			// 
-			// menuItem4
-			// 
-			this.menuItem4.Index = 2;
-			this.menuItem4.Text = "Import &Alpha Channel...";
-			this.menuItem4.Click += new System.EventHandler(this.ImportAlpha);
-			// 
-			// menuItem6
-			// 
-			this.menuItem6.Index = 3;
-			this.menuItem6.Text = "&Update all Sizes";
-			this.menuItem6.Click += new System.EventHandler(this.UpdateAllSizes);
-			// 
-			// menuItem7
-			// 
-			this.menuItem7.Index = 4;
-			this.menuItem7.Text = "Import &DDS...";
-			this.menuItem7.Click += new System.EventHandler(this.ImportDDS);
-			// 
-			// mibuild
-			// 
-			this.mibuild.Index = 5;
-			this.mibuild.Text = "Build DXT...";
-			this.mibuild.Click += new System.EventHandler(this.BuildDXT);
-			// 
-			// menuItem3
-			// 
-			this.menuItem3.Index = 6;
-			this.menuItem3.Text = "-";
-			// 
-			// menuItem2
-			// 
-			this.menuItem2.Index = 7;
-			this.menuItem2.Text = "&Export...";
-			this.menuItem2.Click += new System.EventHandler(this.btex_Click);
-			// 
-			// menuItem5
-			// 
-			this.menuItem5.Index = 8;
-			this.menuItem5.Text = "Export Alpha &Channel...";
-			this.menuItem5.Click += new System.EventHandler(this.ExportAlpha);
-			// 
-			// lbimg
-			// 
-			this.lbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-				| System.Windows.Forms.AnchorStyles.Left)));
-			this.lbimg.IntegralHeight = false;
-			this.lbimg.Location = new System.Drawing.Point(8, 184);
-			this.lbimg.Name = "lbimg";
-			this.lbimg.Size = new System.Drawing.Size(416, 80);
-			this.lbimg.TabIndex = 3;
-			this.lbimg.SelectedIndexChanged += new System.EventHandler(this.PictureSelect);
-			// 
-			// panel2
-			// 
-			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-				| System.Windows.Forms.AnchorStyles.Right)));
-			this.panel2.BackColor = System.Drawing.SystemColors.AppWorkspace;
-			this.panel2.Controls.Add(this.btex);
-			this.panel2.Controls.Add(this.btim);
-			this.panel2.Controls.Add(this.label27);
-			this.panel2.Controls.Add(this.btcommit);
-			this.panel2.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Bold);
-			this.panel2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.panel2.Location = new System.Drawing.Point(0, 0);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(768, 24);
-			this.panel2.TabIndex = 0;
-			// 
-			// btex
-			// 
-			this.btex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btex.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btex.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btex.Location = new System.Drawing.Point(584, 0);
-			this.btex.Name = "btex";
-			this.btex.Size = new System.Drawing.Size(80, 23);
-			this.btex.TabIndex = 8;
-			this.btex.Text = "Export...";
-			this.btex.Click += new System.EventHandler(this.btex_Click);
-			// 
-			// btim
-			// 
-			this.btim.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btim.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btim.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btim.Location = new System.Drawing.Point(504, 0);
-			this.btim.Name = "btim";
-			this.btim.TabIndex = 7;
-			this.btim.Text = "Import...";
-			this.btim.Click += new System.EventHandler(this.btim_Click);
-			// 
-			// label27
-			// 
-			this.label27.AutoSize = true;
-			this.label27.ImeMode = System.Windows.Forms.ImeMode.NoControl;
-			this.label27.Location = new System.Drawing.Point(0, 4);
-			this.label27.Name = "label27";
-			this.label27.Size = new System.Drawing.Size(93, 19);
-			this.label27.TabIndex = 0;
-			this.label27.Text = "TXTR Editor";
-			// 
-			// btcommit
-			// 
-			this.btcommit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btcommit.FlatStyle = System.Windows.Forms.FlatStyle.System;
-			this.btcommit.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.btcommit.Location = new System.Drawing.Point(688, 0);
-			this.btcommit.Name = "btcommit";
-			this.btcommit.TabIndex = 6;
-			this.btcommit.Text = "Commit";
-			this.btcommit.Click += new System.EventHandler(this.btcommit_Click);
-			// 
-			// label1
-			// 
-			this.label1.AutoSize = true;
-			this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.label1.Location = new System.Drawing.Point(28, 168);
-			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(50, 17);
-			this.label1.TabIndex = 6;
-			this.label1.Text = "Blocks:";
-			// 
-			// sfd
-			// 
-			this.sfd.Filter = "Png (*.png)|*.png|Bitmap (*.bmp)|*.bmp|Gif (*.gif)|*.gif|Tiff image (*.tiff;*.tif" +
-				")|*.tiff;*.tif|Windows Meta File (*.wmf)|*.wmf|Enhanced Meta File (*.emf)|*.emf|" +
-				"JPEG File (*.jpg;*.jpeg)|*.jpg;*.jpeg|All Files (*.*)|*.*";
-			this.sfd.Title = "Export Image";
-			// 
-			// ofd
-			// 
-			this.ofd.FilterIndex = 4;
-			// 
-			// TxtrForm
-			// 
-			this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-			this.ClientSize = new System.Drawing.Size(792, 310);
-			this.Controls.Add(this.txtrPanel);
-			this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Name = "TxtrForm";
-			this.Text = "TxtrForm";
-			this.txtrPanel.ResumeLayout(false);
-			this.panel1.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			this.ResumeLayout(false);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TxtrForm));
+            this.txtrPanel = new booby.gradientpanel();
+            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.tblevel = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.lldel = new System.Windows.Forms.LinkLabel();
+            this.tblifo = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tbheight = new System.Windows.Forms.TextBox();
+            this.tbwidth = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.cbformats = new System.Windows.Forms.ComboBox();
+            this.tbflname = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cbitem = new System.Windows.Forms.ComboBox();
+            this.cbmipmaps = new System.Windows.Forms.ComboBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.pb = new System.Windows.Forms.PictureBox();
+            this.contextMenu1 = new System.Windows.Forms.ContextMenu();
+            this.menuItem1 = new System.Windows.Forms.MenuItem();
+            this.milifo = new System.Windows.Forms.MenuItem();
+            this.menuItem4 = new System.Windows.Forms.MenuItem();
+            this.menuItem6 = new System.Windows.Forms.MenuItem();
+            this.menuItem7 = new System.Windows.Forms.MenuItem();
+            this.mibuild = new System.Windows.Forms.MenuItem();
+            this.menuItem3 = new System.Windows.Forms.MenuItem();
+            this.menuItem2 = new System.Windows.Forms.MenuItem();
+            this.menuItem5 = new System.Windows.Forms.MenuItem();
+            this.lbimg = new System.Windows.Forms.ListBox();
+            this.panel2 = new booby.panelheader();
+            this.btex = new System.Windows.Forms.Button();
+            this.btim = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.sfd = new System.Windows.Forms.SaveFileDialog();
+            this.ofd = new System.Windows.Forms.OpenFileDialog();
+            this.txtrPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb)).BeginInit();
+            this.panel2.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // txtrPanel
+            // 
+            this.txtrPanel.Controls.Add(this.linkLabel4);
+            this.txtrPanel.Controls.Add(this.linkLabel3);
+            this.txtrPanel.Controls.Add(this.linkLabel1);
+            this.txtrPanel.Controls.Add(this.tblevel);
+            this.txtrPanel.Controls.Add(this.label8);
+            this.txtrPanel.Controls.Add(this.linkLabel2);
+            this.txtrPanel.Controls.Add(this.lldel);
+            this.txtrPanel.Controls.Add(this.tblifo);
+            this.txtrPanel.Controls.Add(this.label6);
+            this.txtrPanel.Controls.Add(this.label5);
+            this.txtrPanel.Controls.Add(this.tbheight);
+            this.txtrPanel.Controls.Add(this.tbwidth);
+            this.txtrPanel.Controls.Add(this.label4);
+            this.txtrPanel.Controls.Add(this.label3);
+            this.txtrPanel.Controls.Add(this.cbformats);
+            this.txtrPanel.Controls.Add(this.tbflname);
+            this.txtrPanel.Controls.Add(this.label2);
+            this.txtrPanel.Controls.Add(this.cbitem);
+            this.txtrPanel.Controls.Add(this.cbmipmaps);
+            this.txtrPanel.Controls.Add(this.panel1);
+            this.txtrPanel.Controls.Add(this.lbimg);
+            this.txtrPanel.Controls.Add(this.panel2);
+            this.txtrPanel.Controls.Add(this.label1);
+            this.txtrPanel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtrPanel.Location = new System.Drawing.Point(8, 8);
+            this.txtrPanel.Name = "txtrPanel";
+            this.txtrPanel.Size = new System.Drawing.Size(768, 288);
+            this.txtrPanel.TabIndex = 19;
+            // 
+            // linkLabel4
+            // 
+            this.linkLabel4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkLabel4.AutoSize = true;
+            this.linkLabel4.BackColor = System.Drawing.Color.Transparent;
+            this.linkLabel4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel4.LinkArea = new System.Windows.Forms.LinkArea(0, 5);
+            this.linkLabel4.Location = new System.Drawing.Point(200, 264);
+            this.linkLabel4.Name = "linkLabel4";
+            this.linkLabel4.Size = new System.Drawing.Size(137, 18);
+            this.linkLabel4.TabIndex = 24;
+            this.linkLabel4.TabStop = true;
+            this.linkLabel4.Text = "build default MipMap";
+            this.linkLabel4.UseCompatibleTextRendering = true;
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.BuildMipMap);
+            // 
+            // linkLabel3
+            // 
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.linkLabel3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel3.Location = new System.Drawing.Point(288, 88);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(51, 13);
+            this.linkLabel3.TabIndex = 23;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "fix TGI";
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.FixTGI);
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.linkLabel1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel1.Location = new System.Drawing.Point(344, 88);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(85, 13);
+            this.linkLabel1.TabIndex = 22;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "assign Hash";
+            this.linkLabel1.Visible = false;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.BuildFilename);
+            // 
+            // tblevel
+            // 
+            this.tblevel.Location = new System.Drawing.Point(336, 134);
+            this.tblevel.Name = "tblevel";
+            this.tblevel.Size = new System.Drawing.Size(88, 21);
+            this.tblevel.TabIndex = 21;
+            this.tblevel.TextChanged += new System.EventHandler(this.Changedlevel);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.BackColor = System.Drawing.Color.Transparent;
+            this.label8.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(240, 136);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(98, 13);
+            this.label8.TabIndex = 20;
+            this.label8.Text = "MipMap Level:";
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.BackColor = System.Drawing.Color.Transparent;
+            this.linkLabel2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel2.Location = new System.Drawing.Point(344, 264);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(31, 13);
+            this.linkLabel2.TabIndex = 19;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "add";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Add);
+            // 
+            // lldel
+            // 
+            this.lldel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lldel.AutoSize = true;
+            this.lldel.BackColor = System.Drawing.Color.Transparent;
+            this.lldel.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lldel.Location = new System.Drawing.Point(380, 264);
+            this.lldel.Name = "lldel";
+            this.lldel.Size = new System.Drawing.Size(48, 13);
+            this.lldel.TabIndex = 18;
+            this.lldel.TabStop = true;
+            this.lldel.Text = "delete";
+            this.lldel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Delete);
+            // 
+            // tblifo
+            // 
+            this.tblifo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.tblifo.Location = new System.Drawing.Point(440, 252);
+            this.tblifo.Name = "tblifo";
+            this.tblifo.Size = new System.Drawing.Size(320, 21);
+            this.tblifo.TabIndex = 16;
+            this.tblifo.TextChanged += new System.EventHandler(this.SetLifo);
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.Transparent;
+            this.label6.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(432, 236);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(111, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "LIFO Reference:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Transparent;
+            this.label5.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(141, 136);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(15, 13);
+            this.label5.TabIndex = 15;
+            this.label5.Text = "x";
+            // 
+            // tbheight
+            // 
+            this.tbheight.Location = new System.Drawing.Point(160, 134);
+            this.tbheight.Name = "tbheight";
+            this.tbheight.Size = new System.Drawing.Size(56, 21);
+            this.tbheight.TabIndex = 14;
+            this.tbheight.TextChanged += new System.EventHandler(this.ChangedSize);
+            // 
+            // tbwidth
+            // 
+            this.tbwidth.Location = new System.Drawing.Point(80, 134);
+            this.tbwidth.Name = "tbwidth";
+            this.tbwidth.Size = new System.Drawing.Size(56, 21);
+            this.tbwidth.TabIndex = 13;
+            this.tbwidth.TextChanged += new System.EventHandler(this.ChangedSize);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(43, 136);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(38, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Size:";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Transparent;
+            this.label3.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(24, 112);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(58, 13);
+            this.label3.TabIndex = 11;
+            this.label3.Text = "Format:";
+            // 
+            // cbformats
+            // 
+            this.cbformats.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbformats.Location = new System.Drawing.Point(80, 108);
+            this.cbformats.Name = "cbformats";
+            this.cbformats.Size = new System.Drawing.Size(344, 21);
+            this.cbformats.TabIndex = 10;
+            this.cbformats.SelectedIndexChanged += new System.EventHandler(this.ChangeFormat);
+            // 
+            // tbflname
+            // 
+            this.tbflname.Location = new System.Drawing.Point(80, 56);
+            this.tbflname.Name = "tbflname";
+            this.tbflname.Size = new System.Drawing.Size(344, 21);
+            this.tbflname.TabIndex = 9;
+            this.tbflname.TextChanged += new System.EventHandler(this.FileNameChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.Color.Transparent;
+            this.label2.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(8, 36);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 13);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Filename:";
+            // 
+            // cbitem
+            // 
+            this.cbitem.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbitem.Location = new System.Drawing.Point(80, 32);
+            this.cbitem.Name = "cbitem";
+            this.cbitem.Size = new System.Drawing.Size(344, 21);
+            this.cbitem.TabIndex = 7;
+            this.cbitem.SelectedIndexChanged += new System.EventHandler(this.SelectItem);
+            // 
+            // cbmipmaps
+            // 
+            this.cbmipmaps.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbmipmaps.Location = new System.Drawing.Point(80, 160);
+            this.cbmipmaps.Name = "cbmipmaps";
+            this.cbmipmaps.Size = new System.Drawing.Size(344, 21);
+            this.cbmipmaps.TabIndex = 5;
+            this.cbmipmaps.SelectedIndexChanged += new System.EventHandler(this.SelectMipMapBlock);
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.AutoScroll = true;
+            this.panel1.AutoScrollMinSize = new System.Drawing.Size(24, 24);
+            this.panel1.BackColor = System.Drawing.Color.Transparent;
+            this.panel1.Controls.Add(this.label7);
+            this.panel1.Controls.Add(this.pb);
+            this.panel1.Location = new System.Drawing.Point(432, 32);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(328, 200);
+            this.panel1.TabIndex = 4;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.label7.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label7.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.label7.Location = new System.Drawing.Point(8, 176);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(293, 13);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Right click on the Image to get more Interactions.";
+            // 
+            // pb
+            // 
+            this.pb.BackColor = System.Drawing.SystemColors.Control;
+            this.pb.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pb.BackgroundImage")));
+            this.pb.ContextMenu = this.contextMenu1;
+            this.pb.Location = new System.Drawing.Point(0, 0);
+            this.pb.Name = "pb";
+            this.pb.Size = new System.Drawing.Size(100, 50);
+            this.pb.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pb.TabIndex = 5;
+            this.pb.TabStop = false;
+            // 
+            // contextMenu1
+            // 
+            this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
+            this.menuItem1,
+            this.milifo,
+            this.menuItem4,
+            this.menuItem6,
+            this.menuItem7,
+            this.mibuild,
+            this.menuItem3,
+            this.menuItem2,
+            this.menuItem5});
+            this.contextMenu1.Popup += new System.EventHandler(this.ContextPopUp);
+            // 
+            // menuItem1
+            // 
+            this.menuItem1.Index = 0;
+            this.menuItem1.Text = "&Import...";
+            this.menuItem1.Click += new System.EventHandler(this.btim_Click);
+            // 
+            // milifo
+            // 
+            this.milifo.Enabled = false;
+            this.milifo.Index = 1;
+            this.milifo.Text = "Import local  LIFO";
+            this.milifo.Click += new System.EventHandler(this.ImportLifo);
+            // 
+            // menuItem4
+            // 
+            this.menuItem4.Index = 2;
+            this.menuItem4.Text = "Import &Alpha Channel...";
+            this.menuItem4.Click += new System.EventHandler(this.ImportAlpha);
+            // 
+            // menuItem6
+            // 
+            this.menuItem6.Index = 3;
+            this.menuItem6.Text = "&Update all Sizes";
+            this.menuItem6.Click += new System.EventHandler(this.UpdateAllSizes);
+            // 
+            // menuItem7
+            // 
+            this.menuItem7.Index = 4;
+            this.menuItem7.Text = "Import &DDS...";
+            this.menuItem7.Click += new System.EventHandler(this.ImportDDS);
+            // 
+            // mibuild
+            // 
+            this.mibuild.Index = 5;
+            this.mibuild.Text = "Build DXT...";
+            this.mibuild.Click += new System.EventHandler(this.BuildDXT);
+            // 
+            // menuItem3
+            // 
+            this.menuItem3.Index = 6;
+            this.menuItem3.Text = "-";
+            // 
+            // menuItem2
+            // 
+            this.menuItem2.Index = 7;
+            this.menuItem2.Text = "&Export...";
+            this.menuItem2.Click += new System.EventHandler(this.btex_Click);
+            // 
+            // menuItem5
+            // 
+            this.menuItem5.Index = 8;
+            this.menuItem5.Text = "Export Alpha &Channel...";
+            this.menuItem5.Click += new System.EventHandler(this.ExportAlpha);
+            // 
+            // lbimg
+            // 
+            this.lbimg.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.lbimg.IntegralHeight = false;
+            this.lbimg.Location = new System.Drawing.Point(8, 184);
+            this.lbimg.Name = "lbimg";
+            this.lbimg.Size = new System.Drawing.Size(416, 80);
+            this.lbimg.TabIndex = 3;
+            this.lbimg.SelectedIndexChanged += new System.EventHandler(this.PictureSelect);
+            // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.CanCommit = true;
+            this.panel2.Controls.Add(this.btex);
+            this.panel2.Controls.Add(this.btim);
+            this.panel2.HeaderText = "TXTR Editor";
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(768, 24);
+            this.panel2.TabIndex = 0;
+            this.panel2.OnCommit += new booby.panelheader.EventHandler(this.btcommit_Click);
+            // 
+            // btex
+            // 
+            this.btex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btex.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btex.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btex.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btex.Location = new System.Drawing.Point(584, 0);
+            this.btex.Name = "btex";
+            this.btex.Size = new System.Drawing.Size(80, 23);
+            this.btex.TabIndex = 8;
+            this.btex.Text = "Export...";
+            this.btex.Click += new System.EventHandler(this.btex_Click);
+            // 
+            // btim
+            // 
+            this.btim.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btim.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.btim.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btim.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btim.Location = new System.Drawing.Point(504, 0);
+            this.btim.Name = "btim";
+            this.btim.Size = new System.Drawing.Size(75, 23);
+            this.btim.TabIndex = 7;
+            this.btim.Text = "Import...";
+            this.btim.Click += new System.EventHandler(this.btim_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Transparent;
+            this.label1.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(28, 168);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(53, 13);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Blocks:";
+            // 
+            // sfd
+            // 
+            this.sfd.Filter = resources.GetString("sfd.Filter");
+            this.sfd.Title = "Export Image";
+            // 
+            // ofd
+            // 
+            this.ofd.FilterIndex = 4;
+            // 
+            // TxtrForm
+            // 
+            this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
+            this.ClientSize = new System.Drawing.Size(792, 310);
+            this.Controls.Add(this.txtrPanel);
+            this.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Name = "TxtrForm";
+            this.Text = "TxtrForm";
+            this.txtrPanel.ResumeLayout(false);
+            this.txtrPanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pb)).EndInit();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.ResumeLayout(false);
 
 		}
 		#endregion
 
-		internal System.Windows.Forms.Panel txtrPanel;
+        internal booby.gradientpanel txtrPanel;
 		internal System.Windows.Forms.ListBox lbimg;
-		private System.Windows.Forms.Panel panel2;
-		private System.Windows.Forms.Label label27;
+        private booby.panelheader panel2;
 		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.PictureBox pb;
-		private System.Windows.Forms.Button btcommit;
+        private System.Windows.Forms.PictureBox pb;
 		private System.Windows.Forms.Button btim;
 		internal System.Windows.Forms.Button btex;
 		private System.Windows.Forms.SaveFileDialog sfd;
@@ -671,7 +674,7 @@ namespace SimPe.Plugin
 		{
 			if (lbimg.SelectedIndex<0) return;
 
-			ofd.Filter = "Alle Image Files (*.jpg;*.jpeg;*.tif.*.tiff;*.wmf;*.emf;*.bmp;*.gif;*.png)|*.jpg;*.jpeg;*.tif.*.tiff;*.wmf;*.emf;*.bmp;*.gif;*.png|Png (*.png)|*.png|Bitmap (*.bmp)|*.bmp|Gif (*.gif)|*.gif|Tiff image (*.tiff;*.tif)|*.tiff;*.tif|Windows Meta File (*.wmf)|*.wmf|Enhanced Meta File (*.emf)|*.emf|JPEG File (*.jpg;*.jpeg)|*.jpg;*.jpeg|All Files (*.*)|*.*";
+			ofd.Filter = "All Image Files (*.jpg;*.jpeg;*.tif.*.tiff;*.wmf;*.emf;*.bmp;*.gif;*.png)|*.jpg;*.jpeg;*.tif.*.tiff;*.wmf;*.emf;*.bmp;*.gif;*.png|Png (*.png)|*.png|Bitmap (*.bmp)|*.bmp|Gif (*.gif)|*.gif|Tiff image (*.tiff;*.tif)|*.tiff;*.tif|Windows Meta File (*.wmf)|*.wmf|Enhanced Meta File (*.emf)|*.emf|JPEG File (*.jpg;*.jpeg)|*.jpg;*.jpeg|All Files (*.*)|*.*";
 			ofd.FilterIndex = 2;
 			if (ofd.ShowDialog() == DialogResult.OK) 
 			{
@@ -1086,7 +1089,7 @@ namespace SimPe.Plugin
 		{
 			if (lbimg.SelectedIndex<0) return;
 
-			ofd.Filter = "Alle Image Files (*.jpg;*.bmp;*.gif;*.png)|*.jpg;*.bmp;*.gif;*.png|Png (*.png)|*.png|Bitmap (*.bmp)|*.bmp|Gif (*.gif)|*.gif|JPEG File (*.jpg)|*.jpg|All Files (*.*)|*.*";
+			ofd.Filter = "All Image Files (*.jpg;*.bmp;*.gif;*.png)|*.jpg;*.bmp;*.gif;*.png|Png (*.png)|*.png|Bitmap (*.bmp)|*.bmp|Gif (*.gif)|*.gif|JPEG File (*.jpg)|*.jpg|All Files (*.*)|*.*";
 			ofd.FilterIndex = 2;
 			if (ofd.ShowDialog() == DialogResult.OK) 
 			{

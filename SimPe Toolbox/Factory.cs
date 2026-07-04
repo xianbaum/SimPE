@@ -44,15 +44,20 @@ namespace SimPe.Plugin
 		/// </summary>
 		/// <returns>A List of all provided Plugins (=FileType Wrappers)</returns>
 		public override SimPe.Interfaces.IWrapper[] KnownWrappers
-		{
-			get 
-			{
-				// TODO:  You can add more Wrappers here
-				IWrapper[] wrappers = {
-										  
-									  };
-				return wrappers;
-			}
+        {
+            get
+            {
+                if (Helper.StartedGui == Executable.Classic)
+                {
+                    return new IWrapper[0];
+                }
+                else
+                {
+                    return new IWrapper[] {
+                    new SimPe.Wants.SWAFWrapper(),
+                    new SimPe.Wants.XWNTWrapper()};
+                }
+            }
 		}
 
 		#endregion
@@ -64,21 +69,35 @@ namespace SimPe.Plugin
 			get
 			{
 				reg = this.LinkedRegistry;
-
-				IToolPlugin[] tools = {
-									new NeighborhoodTool(this.LinkedRegistry, this.LinkedProvider),
+                if (Helper.StartedGui == Executable.Classic)
+                {
+                    IToolPlugin[] tools = {
 									new SimsTool(this.LinkedRegistry, this.LinkedProvider),
 									new SurgeryTool(this.LinkedRegistry, this.LinkedProvider),
-									//new DownloadScanTool(this.LinkedRegistry, this.LinkedProvider),									
+									new DownloadScanTool(this.LinkedRegistry, this.LinkedProvider),
 									new HashTool(this.LinkedRegistry, this.LinkedProvider),
 									new FixTool(this.LinkedRegistry, this.LinkedProvider),
-									new WorkshopTool(this.LinkedRegistry, this.LinkedProvider),
 									new SkinWorkshopTool(),
 									new PhotoStudioTool(this.LinkedRegistry, this.LinkedProvider),
 									new SimPe.Plugin.Tool.Action.ActionGlobalFixTGI(),
 									new SimPe.Plugin.Tool.Action.ActionBuildNameMap()
 								};
-				return tools;
+                    return tools;
+                }
+                else
+                {
+                    IToolPlugin[] tools = {
+									new SimsTool(this.LinkedRegistry, this.LinkedProvider),
+									new SurgeryTool(this.LinkedRegistry, this.LinkedProvider),
+									new HashTool(this.LinkedRegistry, this.LinkedProvider),
+									new FixTool(this.LinkedRegistry, this.LinkedProvider),
+									new SkinWorkshopTool(),
+									new PhotoStudioTool(this.LinkedRegistry, this.LinkedProvider),
+									new SimPe.Plugin.Tool.Action.ActionGlobalFixTGI(),
+									new SimPe.Plugin.Tool.Action.ActionBuildNameMap()
+								};
+                    return tools;
+                }
 			}
 		}
 		#endregion

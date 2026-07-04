@@ -52,17 +52,14 @@ namespace SimPe.Plugin
 		/// </summary>
 		public NgbhUI()
 		{
-			
-
-			//form = WrapperFactory.form;
+            //form = WrapperFactory.form;
 			if (form==null) 
 			{
 				form = new NgbhForm();
 				form.cbguid.Items.Clear();
 				form.cbguid.Sorted = false;
 
-				form.cbguid.Items.Add(new Data.Alias(0, "-: "+Localization.Manager.GetString("Unknown"), "{name}"));
-							
+				form.cbguid.Items.Add(new Data.Alias(0, "-: "+Localization.Manager.GetString("Unknown"), "{name}"));							
 
 				Wait.Message = ("Load Memories from Cache");
 				foreach (MemoryCacheItem mci in ObjectCache.List) 
@@ -131,99 +128,50 @@ namespace SimPe.Plugin
 			foreach(Interfaces.Files.IPackedFileDescriptor spfd in pfds) 
 			{
 				PackedFiles.Wrapper.SDesc sdesc = new SimPe.PackedFiles.Wrapper.SDesc(wrp.Provider.SimNameProvider, wrp.Provider.SimFamilynameProvider, null);
-
-                Wait.SubStart();
-				
-				
-				sdesc.ProcessData(spfd, wrp.Package);
-				
+                Wait.SubStart();				
+				sdesc.ProcessData(spfd, wrp.Package);				
 				ListViewItem lvi = new ListViewItem();
-				lvi.Text = sdesc.SimName + " " + sdesc.SimFamilyName;
-
-#if DEBUG
-				Data.Alias a = new Data.Alias(sdesc.SimId, lvi.Text);
-				lvi.Text += " (0x"+Helper.HexString(sdesc.Instance)+")";
-#else
-				Data.Alias a = new Data.Alias(sdesc.SimId, lvi.Text, "{name}");
-#endif
-
+                lvi.Text = sdesc.SimName + " " + sdesc.SimFamilyName;
+                Data.Alias a = new Data.Alias(sdesc.SimId, lvi.Text, "{name}");
+                if (Helper.WindowsRegistry.HiddenMode)
+                    lvi.Text += " (0x" + Helper.HexString(sdesc.Instance) + ")";
 				lvi.Tag = sdesc;
-
 				a.Tag = new object[1];
 				a.Tag[0] = sdesc.Instance;
 				form.cbsub.Items.Add(a);
 				form.cbown.Items.Add(a);
 
+                Image img = null;
+                if (sdesc.Image != null)
+                    if (sdesc.Image.Width > 5)
+                        img = Ambertation.Drawing.GraphicRoutines.KnockoutImage(sdesc.Image, new Point(0, 0), Color.Magenta);
 
-				if (sdesc.HasImage) 
-				{				
-					/*if (sdesc.Unlinked!=0x00) 
-					{
-						Image img = (Image)sdesc.Image.Clone();
-						System.Drawing.Graphics g = Graphics.FromImage(img);
-						g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-						g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                if (img == null)
+                {
+                    if (sdesc.CharacterDescription.IsWoman && sdesc.Nightlife.Species == 0)
+                        img = SimPe.GetImage.BabyDoll;
+                    else if (sdesc.CharacterDescription.Gender == SimPe.Data.MetaData.Gender.Female)
+                        img = SimPe.GetImage.SheOne;
+                    else
+                        img = SimPe.GetImage.NoOne;
+                }
 
-						Pen pen = new Pen(Color.FromArgb(0xD0, Color.DarkGreen), 3);
+                img = Ambertation.Windows.Forms.Graph.ImagePanel.CreateThumbnail(img, form.ilist.ImageSize, 12, Color.FromArgb(90, Color.Black), SimPe.PackedFiles.Wrapper.SimPoolControl.GetImagePanelColor(sdesc), Color.White, Color.FromArgb(80, Color.White), true, 4, 0);
 
-						g.FillRectangle(pen.Brush, 0, 0, img.Width, img.Height);
-
-						form.ilist.Images.Add(img);
-					} */
-					if ((sdesc.Unlinked!=0x00) || (!sdesc.AvailableCharacterData))
-					{
-						Image img = (Image)sdesc.Image.Clone();
-						System.Drawing.Graphics g = Graphics.FromImage(img);
-						g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-						g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-
-						Pen pen = new Pen(Data.MetaData.SpecialSimColor, 3);
-
-						g.FillRectangle(pen.Brush, 0, 0, img.Width, img.Height);
-
-						int pos = 2;
-						if (sdesc.Unlinked!=0x00) 
-						{
-							g.FillRectangle(new Pen(Data.MetaData.UnlinkedSim, 1).Brush, pos, 2, 25, 25);
-							pos += 28;
-						}
-						if (!sdesc.AvailableCharacterData) 
-						{
-							g.FillRectangle(new Pen(Data.MetaData.InactiveSim, 1).Brush, pos, 2, 25, 25);
-							pos += 28;
-						}
-
-						form.ilist.Images.Add(img);
-					} 
-					else 
-					{
-						form.ilist.Images.Add( sdesc.Image);
-					}
-					
-					lvi.ImageIndex = form.ilist.Images.Count-1;
-				}
-
+                form.ilist.Images.Add(img);
+                lvi.ImageIndex = form.ilist.Images.Count - 1;
 				form.lv.Items.Add(lvi);
-
 			}
 			form.cbsub.Sorted = true;
 			form.cbown.Sorted = true;
 			form.lv.Sort();
-
-			
-
 			form.lv.EndUpdate();
-
             Wait.SubStop();
-		}		
-
+		}
 		#endregion
 		
 		#region IDisposable Member
-		public virtual void Dispose()
-		{
-			
-		}
+		public virtual void Dispose() { }
 		#endregion
 	}
 }

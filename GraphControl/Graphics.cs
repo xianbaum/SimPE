@@ -26,155 +26,157 @@ using System.Runtime.InteropServices;
 
 namespace Ambertation.Drawing
 {
-	/// <summary>
-	/// Fills a bitmap using a non-recursive flood-fill.
-	/// </summary>
-	public class MapFill
-	{
-		public MapFill()
-		{
-		}
+    /* I see nowhere in SimPe that MapFill is used
+    /// <summary>
+    /// Fills a bitmap using a non-recursive flood-fill.
+    /// </summary>
+    public class MapFill
+    {
+        public MapFill()
+        {
+        }
 
-		static Stack stack=new Stack();
+        static Stack stack=new Stack();
 
-		/// <summary>
-		/// Checks to make sure a pixel is in an image.
-		/// </summary>
-		/// <param name="pos">The position to check</param>
-		/// <param name="bmd">The BitmapData from which the bounds are
-		///determined</param>
-		/// <returns>True if the point is in the image</returns>
-		private static bool CheckPixel(Point pos, BitmapData bmd)
-		{
-			return (pos.X>-1) && (pos.Y>-1) && (pos.X<bmd.Width) &&
-				(pos.Y<bmd.Height);
-		}
+        /// <summary>
+        /// Checks to make sure a pixel is in an image.
+        /// </summary>
+        /// <param name="pos">The position to check</param>
+        /// <param name="bmd">The BitmapData from which the bounds are
+        ///determined</param>
+        /// <returns>True if the point is in the image</returns>
+        private static bool CheckPixel(Point pos, BitmapData bmd)
+        {
+            return (pos.X>-1) && (pos.Y>-1) && (pos.X<bmd.Width) &&
+                (pos.Y<bmd.Height);
+        }
 
-		/// <summary>
-		/// Returns the color at a specific pixel
-		/// </summary>
-		/// <param name="pos">The position of the pixel</param>
-		/// <param name="bmd">The locked bitmap data</param>
-		/// <returns>The color of the pixel under the nominated point</returns>
-		private static Color GetPixel(Point pos, BitmapData bmd)
-		{
-			if (CheckPixel(pos, bmd))
-			{
-				//always assumes 32 bit per pixels
-				int offset=pos.Y*bmd.Stride+(4*pos.X);
-				return Color.FromArgb(
-					Marshal.ReadByte(bmd.Scan0,offset+2),
-					Marshal.ReadByte(bmd.Scan0,offset+1),
-					Marshal.ReadByte(bmd.Scan0,offset));
-			}
-			else
-				return Color.FromArgb(0,0,0,0);
-		}
+        /// <summary>
+        /// Returns the color at a specific pixel
+        /// </summary>
+        /// <param name="pos">The position of the pixel</param>
+        /// <param name="bmd">The locked bitmap data</param>
+        /// <returns>The color of the pixel under the nominated point</returns>
+        private static Color GetPixel(Point pos, BitmapData bmd)
+        {
+            if (CheckPixel(pos, bmd))
+            {
+                //always assumes 32 bit per pixels
+                int offset=pos.Y*bmd.Stride+(4*pos.X);
+                return Color.FromArgb(
+                    Marshal.ReadByte(bmd.Scan0,offset+2),
+                    Marshal.ReadByte(bmd.Scan0,offset+1),
+                    Marshal.ReadByte(bmd.Scan0,offset));
+            }
+            else
+                return Color.FromArgb(0,0,0,0);
+        }
 
-		/// <summary>
-		/// Sets a pixel at a nominated point to a specified color
-		/// </summary>
-		/// <param name="pos">The coordinate of the pixel to set</param>
-		/// <param name="bmd">The locked bitmap data</param>
-		/// <param name="c">The color to set</param>
-		private static void SetPixel(Point pos, BitmapData bmd, Color c)
-		{
-			if (CheckPixel(pos,bmd))
-			{
-				//always assumes 32 bit per pixels
-				int offset=pos.Y*bmd.Stride+(4*pos.X);
-				Marshal.WriteByte(bmd.Scan0,offset+2,c.R);
-				Marshal.WriteByte(bmd.Scan0,offset+1,c.G);
-				Marshal.WriteByte(bmd.Scan0,offset,c.B);
-				Marshal.WriteByte(bmd.Scan0,offset+3,255);
-			}
-		}
+        /// <summary>
+        /// Sets a pixel at a nominated point to a specified color
+        /// </summary>
+        /// <param name="pos">The coordinate of the pixel to set</param>
+        /// <param name="bmd">The locked bitmap data</param>
+        /// <param name="c">The color to set</param>
+        private static void SetPixel(Point pos, BitmapData bmd, Color c)
+        {
+            if (CheckPixel(pos,bmd))
+            {
+                //always assumes 32 bit per pixels
+                int offset=pos.Y*bmd.Stride+(4*pos.X);
+                Marshal.WriteByte(bmd.Scan0,offset+2,c.R);
+                Marshal.WriteByte(bmd.Scan0,offset+1,c.G);
+                Marshal.WriteByte(bmd.Scan0,offset,c.B);
+                Marshal.WriteByte(bmd.Scan0,offset+3,255);
+            }
+        }
 
-		static bool Compare(Point pos, BitmapData bmd, Color c2, int toler)
-		{						
-			if (!CheckPixel(pos, bmd))  return false;
-			Color c1 = GetPixel(pos, bmd);
-			if (c1==c2) return true;
-			if (Math.Abs(c1.R-c2.R)<toler && Math.Abs(c1.G-c2.G)<toler && Math.Abs(c1.R-c2.R)<toler) return true;
-			return false;
-		}
+        static bool Compare(Point pos, BitmapData bmd, Color c2, int toler)
+        {						
+            if (!CheckPixel(pos, bmd))  return false;
+            Color c1 = GetPixel(pos, bmd);
+            if (c1==c2) return true;
+            if (Math.Abs(c1.R-c2.R)<toler && Math.Abs(c1.G-c2.G)<toler && Math.Abs(c1.R-c2.R)<toler) return true;
+            return false;
+        }
 
-		/// <summary>
-		/// Fills a pixel and its un-filled neigbors with a specified color
-		/// </summary>
-		/// <param name="pos">The position at which to begin</param>
-		/// <param name="bmd">The locked bitmap data</param>
-		/// <param name="c">The color with which to fill the area</param>
-		/// <param name="org">The original colour of the point. Filling stops when
-		///all connected pixels of this color are exhausted</param>
-		private static void FillPixel(Point pos, BitmapData bmd, Color c, Color
-			org)
-		{			
-			stack.Push(pos);
-			Point currpos=new Point(0,0);
-			stack.Push(pos);
-			int toler = (int)Math.Floor(0xff*0.05f);
-			ArrayList ran = new ArrayList();
-			do
-			{
-				currpos=(Point)stack.Pop();
-				if (ran.Contains(currpos)) 
-					continue;
-				ran.Add(currpos);
-				SetPixel(currpos,bmd,c);
-				if (Compare(new Point(currpos.X+1,currpos.Y), bmd, org, toler))
-					stack.Push(new Point(currpos.X+1,currpos.Y));
-				if (Compare(new Point(currpos.X,currpos.Y-1), bmd, org, toler))
-					stack.Push(new Point(currpos.X,currpos.Y-1));
-				if (Compare(new Point(currpos.X-1,currpos.Y), bmd, org, toler))
-					stack.Push(new Point(currpos.X-1,currpos.Y));
-				if (Compare(new Point(currpos.X,currpos.Y+1), bmd, org, toler))
-					stack.Push(new Point(currpos.X,currpos.Y+1));
-			} while (stack.Count>0);		
-		}
+        /// <summary>
+        /// Fills a pixel and its un-filled neigbors with a specified color
+        /// </summary>
+        /// <param name="pos">The position at which to begin</param>
+        /// <param name="bmd">The locked bitmap data</param>
+        /// <param name="c">The color with which to fill the area</param>
+        /// <param name="org">The original colour of the point. Filling stops when
+        ///all connected pixels of this color are exhausted</param>
+        private static void FillPixel(Point pos, BitmapData bmd, Color c, Color
+            org)
+        {			
+            stack.Push(pos);
+            Point currpos=new Point(0,0);
+            stack.Push(pos);
+            int toler = (int)Math.Floor(0xff*0.05f);
+            ArrayList ran = new ArrayList();
+            do
+            {
+                currpos=(Point)stack.Pop();
+                if (ran.Contains(currpos)) 
+                    continue;
+                ran.Add(currpos);
+                SetPixel(currpos,bmd,c);
+                if (Compare(new Point(currpos.X+1,currpos.Y), bmd, org, toler))
+                    stack.Push(new Point(currpos.X+1,currpos.Y));
+                if (Compare(new Point(currpos.X,currpos.Y-1), bmd, org, toler))
+                    stack.Push(new Point(currpos.X,currpos.Y-1));
+                if (Compare(new Point(currpos.X-1,currpos.Y), bmd, org, toler))
+                    stack.Push(new Point(currpos.X-1,currpos.Y));
+                if (Compare(new Point(currpos.X,currpos.Y+1), bmd, org, toler))
+                    stack.Push(new Point(currpos.X,currpos.Y+1));
+            } while (stack.Count>0);		
+        }
 
-		/// <summary>
-		/// Fills a bitmap with color.
-		/// </summary>
-		/// <remarks>If a non 32-bit image is passed to this routine and only 32
-		/// bit image will be created, the original image will be copied to the new
-		/// image and filling will take place on the new image which will be handed back
-		///when complete. </remarks>
-		/// <param name="img">The image to fill</param>
-		/// <param name="pos">The position to begin filling at</param>
-		/// <param name="color">The color to fill</param>
-		/// <returns>A Bitmap object with the filled area.</returns>
-		public static Bitmap Fill(Image img, Point pos, Color color)
-		{
-			//Ensure the bitmap is in the right format
-			Bitmap bm=(Bitmap)img;
-			if (img.PixelFormat!=PixelFormat.Format32bppArgb)
-			{
-				//if it isn't, convert it.
-				bm=new Bitmap(img.Width,img.Height,PixelFormat.Format32bppArgb);
-				Graphics g=Graphics.FromImage(bm);
-				g.InterpolationMode=InterpolationMode.NearestNeighbor;
-				g.DrawImage(img,new
-					Rectangle(0,0,bm.Width,bm.Height),0,0,img.Width,img.Height,GraphicsUnit.Pixel);
-				g.Dispose();
-			}
+        /// <summary>
+        /// Fills a bitmap with color.
+        /// </summary>
+        /// <remarks>If a non 32-bit image is passed to this routine and only 32
+        /// bit image will be created, the original image will be copied to the new
+        /// image and filling will take place on the new image which will be handed back
+        ///when complete. </remarks>
+        /// <param name="img">The image to fill</param>
+        /// <param name="pos">The position to begin filling at</param>
+        /// <param name="color">The color to fill</param>
+        /// <returns>A Bitmap object with the filled area.</returns>
+        public static Bitmap Fill(Image img, Point pos, Color color)
+        {
+            //Ensure the bitmap is in the right format
+            Bitmap bm=(Bitmap)img;
+            if (img.PixelFormat!=PixelFormat.Format32bppArgb)
+            {
+                //if it isn't, convert it.
+                bm=new Bitmap(img.Width,img.Height,PixelFormat.Format32bppArgb);
+                Graphics g=Graphics.FromImage(bm);
+                g.InterpolationMode=InterpolationMode.NearestNeighbor;
+                g.DrawImage(img,new
+                    Rectangle(0,0,bm.Width,bm.Height),0,0,img.Width,img.Height,GraphicsUnit.Pixel);
+                g.Dispose();
+            }
 
-			//Lock the bitmap data
-			BitmapData bmd=bm.LockBits(new
-				Rectangle(0,0,bm.Width,bm.Height),ImageLockMode.ReadWrite,bm.PixelFormat);
+            //Lock the bitmap data
+            BitmapData bmd=bm.LockBits(new
+                Rectangle(0,0,bm.Width,bm.Height),ImageLockMode.ReadWrite,bm.PixelFormat);
 
-			//get the color under the point. This is the original.
-			Color org=GetPixel(pos,bmd);
+            //get the color under the point. This is the original.
+            Color org=GetPixel(pos,bmd);
 
-			//Fill the first pixel and recursively fill all it's neighbors
-			FillPixel(pos,bmd,color,org);
+            //Fill the first pixel and recursively fill all it's neighbors
+            FillPixel(pos,bmd,color,org);
 
-			//unlock the bitmap
-			bm.UnlockBits(bmd);
+            //unlock the bitmap
+            bm.UnlockBits(bmd);
 
-			return bm;
-		}
-	}
+            return bm;
+        }
+    }
+    */
 	/// <summary>
 	/// Thgis extends the basic Graohics class with usefull Methods
 	/// </summary>
@@ -256,8 +258,7 @@ namespace Ambertation.Drawing
 						c.NewColor = target;
 						c.OldColor = Color.FromArgb(r, g, b);
 						cmap.Add(c);
-					}
-			
+					}			
 
 			ColorMap[] res = new ColorMap[cmap.Count];
 			cmap.CopyTo(res);
@@ -284,8 +285,7 @@ namespace Ambertation.Drawing
 					for (int b=minb; b<maxb; b++) 
 					{
 						cmap.Add(Color.FromArgb(r, g, b));
-					}
-			
+					}			
 
 			return cmap;
 		}
@@ -314,10 +314,6 @@ namespace Ambertation.Drawing
 
 			return bm;
 		}
-
-#if MAC
-
-#else
 		[DllImport("gdi32")] 
 		public static extern int ExtFloodFill(IntPtr hDC, int x, int y, int crColor, int wFillType);
 		
@@ -346,7 +342,7 @@ namespace Ambertation.Drawing
 			DeleteObject(hb);
 			g.ReleaseHdc(p);
 		}
-#endif	
+
 		public static Image KnockoutImage(Image img, Point pos, Color fillcl)
 		{
 			return KnockoutImage(img, pos, fillcl, true);
@@ -354,9 +350,7 @@ namespace Ambertation.Drawing
 
 		public static Image KnockoutImage(Image img, Point pos, Color fillcl, bool save)
 		{
-			
-
-			Bitmap bm = null;
+            Bitmap bm = null;
 			if (!save) 
 				bm = new Bitmap(img.Width, img.Height);
 			else 			
@@ -368,8 +362,6 @@ namespace Ambertation.Drawing
 				g.FillRectangle(new SolidBrush(((Bitmap)img).GetPixel(pos.X, pos.Y)), 0, 0, bm.Width, bm.Height);
 				g.DrawImage(img, new Rectangle(1, 1, img.Width, img.Height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
 			} else g.DrawImageUnscaled(img, 0, 0);
-
-			//Ambertation.Windows.Forms.Graph.GraphPanelElement.SetGraphicsMode(g, !quality);
 			
 			g.Dispose();
 
@@ -396,7 +388,6 @@ namespace Ambertation.Drawing
 			Ambertation.Windows.Forms.Graph.GraphPanelElement.SetGraphicsMode(g, !quality);
 			g.DrawImage(img, new Rectangle(0, 0, width, height), new Rectangle(0, 0, img.Width, img.Height), GraphicsUnit.Pixel);
 			g.Dispose();
-
 			
 			return bm;
 		}		
@@ -414,6 +405,5 @@ namespace Ambertation.Drawing
 			byte b = Convert.ToByte((float) (b1 + ((b2 - b1) * percentage)));
 			return Color.FromArgb(r, g, b);
 		}
-
 	}
 }

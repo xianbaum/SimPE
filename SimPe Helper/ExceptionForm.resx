@@ -132,7 +132,7 @@
     <value>72, 0</value>
   </data>
   <data name="lberr.Size" type="System.Drawing.Size, System.Drawing">
-    <value>288, 80</value>
+    <value>360, 80</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lberr.TabIndex" type="System.Int32, mscorlib">
@@ -156,57 +156,6 @@
   <data name="gbdetail.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="&gt;&gt;rtb.Name" xml:space="preserve">
-    <value>rtb</value>
-  </data>
-  <data name="&gt;&gt;rtb.Type" xml:space="preserve">
-    <value>System.Windows.Forms.RichTextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;rtb.Parent" xml:space="preserve">
-    <value>gbdetail</value>
-  </data>
-  <data name="&gt;&gt;rtb.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;linkLabel1.Name" xml:space="preserve">
-    <value>linkLabel1</value>
-  </data>
-  <data name="&gt;&gt;linkLabel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;linkLabel1.Parent" xml:space="preserve">
-    <value>gbdetail</value>
-  </data>
-  <data name="&gt;&gt;linkLabel1.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="gbdetail.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Verdana, 8.25pt, style=Bold</value>
-  </data>
-  <data name="gbdetail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 96</value>
-  </data>
-  <data name="gbdetail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 160</value>
-  </data>
-  <data name="gbdetail.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="gbdetail.Text" xml:space="preserve">
-    <value>Details</value>
-  </data>
-  <data name="&gt;&gt;gbdetail.Name" xml:space="preserve">
-    <value>gbdetail</value>
-  </data>
-  <data name="&gt;&gt;gbdetail.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;gbdetail.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;gbdetail.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
   <data name="rtb.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
@@ -214,13 +163,13 @@
     <value>Verdana, 8.25pt</value>
   </data>
   <data name="rtb.Location" type="System.Drawing.Point, System.Drawing">
-    <value>16, 24</value>
+    <value>11, 24</value>
   </data>
   <data name="rtb.ScrollBars" type="System.Windows.Forms.RichTextBoxScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
   <data name="rtb.Size" type="System.Drawing.Size, System.Drawing">
-    <value>336, 112</value>
+    <value>413, 112</value>
   </data>
   <data name="rtb.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -253,7 +202,7 @@
     <value>0, 17</value>
   </data>
   <data name="linkLabel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 140</value>
+    <value>272, 140</value>
   </data>
   <data name="linkLabel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>152, 16</value>
@@ -279,32 +228,57 @@
   <data name="&gt;&gt;linkLabel1.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="gbdetail.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Verdana, 8.25pt, style=Bold</value>
+  </data>
+  <data name="gbdetail.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 96</value>
+  </data>
+  <data name="gbdetail.Size" type="System.Drawing.Size, System.Drawing">
+    <value>432, 160</value>
+  </data>
+  <data name="gbdetail.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="gbdetail.Text" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="&gt;&gt;gbdetail.Name" xml:space="preserve">
+    <value>gbdetail</value>
+  </data>
+  <data name="&gt;&gt;gbdetail.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;gbdetail.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;gbdetail.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
   <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        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
-        H1PfAFMpwL9sHM+EplFLXQAAAABJRU5ErkJggg==
+        iVBORw0KGgoAAAANSUhEUgAAAEAAAAAYCAYAAABKtPtEAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAEpElEQVRYR9XYX2jWVRzH8a3CmluS9gep
+        oOj//5QoLLR/WAaGohHD9V9q4J2LmbuQLiJYCV2E3YjdFAR1UUHQlbnNghAaGcxtoS3MpKI/ktq0wnr6
+        vB/OZ3yf09la0z3lxYtnv+855/l9v+f3+53ze9ZQqVSmbOWqh4ue7d6IOdItSzmm/5Y33kSTbJOnOfZ3
+        vd/TV8Px6VYMTlZWeIv/ThOwRiryfWEC+mVdYQIWSuvJNgEUPiiHZRmxNAFzZZO0ZRNQw9+VJmCprIkT
+        0D8wWMPxE6UYnCyKlSulkjxPLE1AjdL4KE3AGMdPhglAu3TLuRyX+k5VKvyR//sE1Cj1nSoXPm0TcPeS
+        +/6tfqmkz9kpdkINdzXYKdIiM4NmOVOIz5DYH6dJPobjWUlNWzGBCSwWijeOS/2OixKzq2WP7JORhOMh
+        2S9fyjbpkDOEMffIV7JX4pjBhL+/EeLvFhOYwCVyQCiez+m+AyjqdvlcKslWuVFWCJPg+OvSKNwdy+RH
+        cdsWuT5ZIG8J8feKCfwDJoErz2ep/bgpsdyr4mKeSzG0pxiOycXitu3itodSzJrkB9lUTOC/FhK1XnEx
+        q1MM96eY3SDEuXO+SDHcIR5jr8i6eGJuZ66s+Ti/zW8S94nx8dp8TFvs6zsJNXdTlujpEou5S9zWlmI4
+        KHOF+IXyixA/KpeKx9wpC+UcmeOTrhcvbFvD33AxeRyl8UbM64XxHRS7OcSM/tXvS4kaxRwSivlNLhO3
+        vSSegJ4UA8+5418LO4fbWDQf8DEnbE8JkKyvEp9OnnYX+mCKmeNgovKCXxDGeOsEfUDBfHccUz2/k0tu
+        kVgM2xfxs9Ox2+4Vj2lNMXycYnhMfpfLHSNxX1mSjAV5YsauTBLvhBjP2+LEUZjjFBwfq3j3VM/l5BKu
+        lovZKWfJbbIjxf6QToljusRjeDQ+lF3p+Dthp6j2zZPOi+XYj4BNdgLyNsfpE+N8v9tKE/CMuBieZ/Z4
+        HoWf5G2Ja4LFXYMtb7k8JRT/mbBdVvuSgK+0cYV4RvPCrd4TsFlczGtys1wrsyXvax+IxzyeYtggrAFj
+        fZ0Ez6qTiEg23wXqPQG8+LiYJ1NsIrwe7xaPWSxu4wVpY/qbrbIpJsLqTAJxwSolXM8J4L1+WFzMEont
+        JWyFPwv9WfCuErdRtJ9/7qb5JEBC1RMHJBVX59hWzwk4Tw4IxfCmd43E9pL54gnjmWfRzPtwJ7CGzHJi
+        +coMknFiMV7PCeDHEKu8i/EPnonEt0NW/ryddwJ+RLGLVNeAmFicBBfDgugY4iOS/x4Yr43vdTzfbuO7
+        BWuRE+XKxRedw0Jx403CqXKRsDN4DO/7i+R8uUB4QXpHaHtZaiYAv8q3cjAd87lTSHpIRiX2x14ptR0T
+        2sD3xjaOGcO56BfbRlctXzTwSecMnl8XMqazdd4e9SGfGhvarhsZ6mr8szQmxXmEYpxtsToBvTIgI7I/
+        IMF4EiZidwFjJ2pDqY0xnONvbatXLhj8qGPm0b6O5iN9a5tHx+j4iRW3DqpPzKvqxUev2KcxR3rWtoz2
+        Bts1RvFDu9Y38j8E3gF4mfpU5g13NTT8BQ6bZXYHxbLdAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="pictureBox1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
@@ -380,7 +354,7 @@
     <value>8, 8</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 84</value>
+    <value>432, 84</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -443,7 +417,7 @@
     <value>0, 0</value>
   </data>
   <data name="panel3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 1</value>
+    <value>432, 1</value>
   </data>
   <data name="panel3.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -470,7 +444,7 @@
     <value>NoControl</value>
   </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>280, 8</value>
+    <value>352, 8</value>
   </data>
   <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -506,7 +480,7 @@
     <value>5</value>
   </data>
   <data name="tbsup.Text" xml:space="preserve">
-    <value>http://simpeforum.ambertation.de/forum/viewforum/1</value>
+    <value>http://www.modthesims2.com/index.php?</value>
   </data>
   <data name="tbsup.Visible" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -530,7 +504,7 @@
     <value>8, 260</value>
   </data>
   <data name="panel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>360, 32</value>
+    <value>432, 32</value>
   </data>
   <data name="panel2.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -554,7 +528,7 @@
     <value>6, 14</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>376, 300</value>
+    <value>448, 300</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Verdana, 8.25pt</value>
@@ -1123,6 +1097,9 @@
   </data>
   <data name="$this.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>8, 8, 8, 8</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>Error</value>

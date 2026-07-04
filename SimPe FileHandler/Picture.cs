@@ -29,8 +29,7 @@ namespace SimPe.PackedFiles.UserInterface
 	/// handles Packed Jpeg Files
 	/// </summary>
 	public class Picture : UIBase, IPackedFileUI
-	{
-		
+	{		
 		#region IPackedFileUI Member
 		public Control GUIHandle
 		{
@@ -45,10 +44,9 @@ namespace SimPe.PackedFiles.UserInterface
 			form.picwrapper = wrapper;
 			PictureBox pb = form.pb;
 			Image img = ((SimPe.PackedFiles.Wrapper.Picture)wrapper).Image;
-			pb.Image = img;
-		}
-
-		
+            pb.Image = img;
+            form.btDoubler.Visible = (img != null && form.pb.Width * 2 <= form.JpegPanel.Width);
+		}		
 
 		#endregion
 	}

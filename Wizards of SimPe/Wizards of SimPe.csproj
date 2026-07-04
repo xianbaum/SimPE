@@ -6,10 +6,10 @@
     <ProjectGuid>{9C10B224-7ABC-46D1-9ADC-58A817D6AF59}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>simpenew.ico</ApplicationIcon>
+    <ApplicationIcon>Simpe2.ico</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>Wizards of SimPE</AssemblyName>
+    <AssemblyName>Wizards of SimPe</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -56,7 +56,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -72,6 +73,7 @@
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
     <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release MAC|AnyCPU' ">
     <OutputPath>..\__Release\</OutputPath>
@@ -99,13 +101,41 @@
   <ItemGroup>
     <Reference Include="AdvancedForms, Version=1.0.2478.23375, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\AdvancedForms.dll</HintPath>
+      <HintPath>..\__Release\AdvancedForms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ambertation.utilities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\ambertation.utilities.dll</HintPath>
+      <HintPath>..\__Release\ambertation.utilities.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="GDF, Version=0.69.20.22, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="simpe.commandline, Version=2.69.20.25, Culture=neutral, processorArchitecture=x86" />
+    <Reference Include="simpe.helper, Version=0.75.68.8, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.helper.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.interfaces, Version=1.0.3349.37516, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.package, Version=1.69.7237.36899, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.package.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.rcol, Version=1.69.7186.42885, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.rcol.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.scenegraph, Version=1.69.7186.40150, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.scenegraph.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.workspace, Version=1.69.7186.37669, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.workspace.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -122,60 +152,13 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\EnumComboBox\EnumComboBox.csproj">
-      <Project>{5C663721-B4E3-43F7-A39F-9E6060FA5433}</Project>
-      <Name>EnumComboBox</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\GraphControl\GraphControl.csproj">
-      <Project>{7D2EE6ED-78C1-4738-9AE1-E3C165A81E3D}</Project>
-      <Name>GraphControl</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe HandlerCommon\SimPe HandlerCommon.csproj">
-      <Project>{A4CC48FD-9574-4F0B-B721-9E8C1B1E6A8A}</Project>
-      <Name>SimPe HandlerCommon</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Helper\SimPe Helper.csproj">
-      <Project>{59E3C353-1350-42D8-A045-CBBAD232F228}</Project>
-      <Name>SimPe Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Interfaces\SimPe Interfaces.csproj">
-      <Project>{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}</Project>
-      <Name>SimPe Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Packages\SimPe Packages.csproj">
-      <Project>{1C6C45BF-FE19-4C23-B327-01F45B0F269C}</Project>
-      <Name>SimPe Packages</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe RCOL\SimPe RCOL.csproj">
-      <Project>{74517907-2236-4C45-80ED-E188D5E5CE0E}</Project>
-      <Name>SimPe RCOL</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Scenegraph\SimPe Scenegraph.csproj">
-      <Project>{1151A88B-47AF-41DA-BCDF-DEFED0CC326E}</Project>
-      <Name>SimPe Scenegraph</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Workspace Helper\SimPe Workspace Helper.csproj">
-      <Project>{45021667-BAD2-4ECA-8423-F4734F914CBB}</Project>
-      <Name>SimPe Workspace Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\WOSimPE - Interfaces\WOSimPE - Interfaces.csproj">
-      <Project>{833C3B98-5A2D-476B-8B4B-C9548C1C99B6}</Project>
-      <Name>WOSimPE - Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
+    <Reference Include="wosimpe.interfaces, Version=1.0.3349.37595, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\wosimpe.interfaces.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App.ico" />
-    <Content Include="simpenew.ico" />
+    <Content Include="Simpe2.ico" />
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -190,6 +173,11 @@
     </Compile>
     <Compile Include="Option.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Stack.cs">
       <SubType>Code</SubType>
@@ -215,6 +203,11 @@
     <EmbeddedResource Include="Option.resx">
       <DependentUpon>Option.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

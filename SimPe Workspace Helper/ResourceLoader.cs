@@ -97,7 +97,8 @@ namespace SimPe
 			{
 				SimPe.Interfaces.Files.IPackedFile pf = pkg.Package.Read(fii.FileDescriptor);
 				wrapper = FileTable.WrapperRegistry.FindHandler(pf.GetUncompressedData(0x40));
-			}
+            }
+            if (wrapper == null) wrapper = FileTable.WrapperRegistry.FindHandler(new byte[] { 1, 0, 5, 6, 9 });//Causes null plugin for every un-readable
 
 			return wrapper;
 		}
@@ -319,8 +320,7 @@ namespace SimPe
 				if (doc.Parent is TD.SandDock.TabControl)
 					((TD.SandDock.TabControl)doc.Parent).SelectedPage = (TD.SandDock.TabPage)doc;
 				else 
-					doc.LayoutSystem.SelectedControl = doc;
-				
+					doc.LayoutSystem.SelectedControl = doc;				
 
 				return true;
 			}

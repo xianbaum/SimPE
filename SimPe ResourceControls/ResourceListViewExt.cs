@@ -8,21 +8,16 @@ using System.Windows.Forms;
 
 namespace SimPe.Windows.Forms
 {
-    
-
     public partial class ResourceListViewExt : UserControl
     {
         const uint WM_USER_SORTED_RESOURCES = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0001;
-        const uint WM_USER_FIRE_SELECTION = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0002;
-
-        
+        const uint WM_USER_FIRE_SELECTION = Ambertation.Windows.Forms.APIHelp.WM_APP | 0x0002;        
         
         ResourceViewManager.ResourceNameList names;
         ResourceViewManager manager;
         IntPtr myhandle;
         SimPe.Windows.Forms.IResourceViewFilter curfilter;
         ResourceViewManager.ResourceNameList lastresources;
-
         
         public ResourceListViewExt()
         {
@@ -36,17 +31,20 @@ namespace SimPe.Windows.Forms
             sc = ResourceViewManager.SortColumn.Offset;
             asc = true;
             InitializeComponent();
+            if (Helper.WindowsRegistry.UseBigIcons) lv.Font = new System.Drawing.Font("Tahoma", this.Font.Size + 3F); // was 1F
+
             names = new ResourceViewManager.ResourceNameList();
             myhandle = Handle;
-            
-            if (!Helper.WindowsRegistry.ResourceListShowExtensions) lv.Columns.Remove(clTName);
-            if (!Helper.WindowsRegistry.HiddenMode)
+
+            if (!Helper.WindowsRegistry.ResourceListShowExtensions) lv.Columns.Remove(clType);
+            if (!Helper.WindowsRegistry.Extended)
             {
                 lv.Columns.Remove(clSize);
                 lv.Columns.Remove(clOffset);
             }
+            if (Helper.StartedGui == Executable.Classic) clInstHi.Text = "Sub Tyoe";
 
-            colHeads = new List<ColumnHeader>(new ColumnHeader[] { clType, clTName, clGroup, clInstHi, clInst, clOffset, clSize });
+            colHeads = new List<ColumnHeader>(new ColumnHeader[] { clTName, clType, clGroup, clInstHi, clInst, clOffset, clSize });
         }
         static ResourceListViewExt()
         {
@@ -64,8 +62,7 @@ namespace SimPe.Windows.Forms
         public void EndUpdate()
         {
             EndUpdate(true);
-        }
-        
+        }        
 
         public void EndUpdate(bool fireevents)
         {            
@@ -109,7 +106,6 @@ namespace SimPe.Windows.Forms
                 nn .Add(new NamedPackedFileDescriptor(pfd, pkg));
 
             SetResources(nn);
-
         }
 
         protected void ReplaySetResources()
@@ -126,7 +122,6 @@ namespace SimPe.Windows.Forms
             this.CancelThreads();
             lock (names)
             {
-
                 foreach (NamedPackedFileDescriptor pfd in names)
                 {
                     pfd.Descriptor.ChangedUserData -= new SimPe.Events.PackedFileChanged(Descriptor_ChangedUserData);
@@ -164,11 +159,8 @@ namespace SimPe.Windows.Forms
                     }
                     catch //this hack is required because whidbey (.NET 2) has a bug
                     {
-                        System.Diagnostics.Debug.WriteLine("Suppressed VirtualListSize exception.");
+                        //System.Diagnostics.Debug.WriteLine("Suppressed VirtualListSize exception.");
                     }
-
-
-
 
                     SortResources();
                     foreach (NamedPackedFileDescriptor q in rnl)
@@ -194,7 +186,7 @@ namespace SimPe.Windows.Forms
 
         void Descriptor_ChangedData(SimPe.Interfaces.Files.IPackedFileDescriptor sender)
         {
-            System.Diagnostics.Debug.WriteLine("ChangedData: " + sender.ToString());
+            //System.Diagnostics.Debug.WriteLine("ChangedData: " + sender.ToString());
             UpdateResourceItem(sender);
             this.Refresh();
             
@@ -202,15 +194,13 @@ namespace SimPe.Windows.Forms
 
         void Descriptor_ChangedUserData(SimPe.Interfaces.Files.IPackedFileDescriptor sender)
         {
-            System.Diagnostics.Debug.WriteLine("ChangedUserData: " + sender.ToString());
+            //System.Diagnostics.Debug.WriteLine("ChangedUserData: " + sender.ToString());
             UpdateResourceItem(sender);
             this.Refresh();
         }
 
         void Descriptor_DescriptionChanged(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine("DescriptionChanged: " + sender.ToString());
-            
             if (UpdateResourceItem(sender))
             {
                 if (manager != null && Helper.WindowsRegistry.UpdateResourceListWhenTGIChanges)                
@@ -223,7 +213,6 @@ namespace SimPe.Windows.Forms
         {
             if (manager != null)
             {
-
                 foreach (NamedPackedFileDescriptor pfd in manager.Everything)
                 {
                     //if (pfd.Descriptor.Equals(sender))
@@ -252,8 +241,7 @@ namespace SimPe.Windows.Forms
                         Refresh();
 
                         if (Helper.WindowsRegistry.AsynchronSort )
-                            Wait.SubStop();
-                    
+                            Wait.SubStop();                    
                     }
                 }
                 else if (m.Msg == WM_USER_FIRE_SELECTION)
@@ -264,10 +252,6 @@ namespace SimPe.Windows.Forms
 
             base.WndProc(ref m);
         }
-
-        
-
-        
 
         internal void SetManager(ResourceViewManager manager)
         {
@@ -294,34 +278,27 @@ namespace SimPe.Windows.Forms
             }
             catch  //this hack is required because whidbey (.NET 2) has a bug
             {
-                System.Diagnostics.Debug.WriteLine("Suppressed VirtualListSize exception.");
+                //System.Diagnostics.Debug.WriteLine("Suppressed VirtualListSize exception.");
             }                    
         }
 
-       
-
         void PrintStats(string name)
         {
+            /*
             System.Diagnostics.Debug.WriteLine(name + "----------------------");
             System.Diagnostics.Debug.Write("    Selection: ");
             foreach (int i in lv.SelectedIndices)
                 System.Diagnostics.Debug.Write(i + " ");
 
-            System.Diagnostics.Debug.WriteLine("");            
+            System.Diagnostics.Debug.WriteLine("");
+             */
         }
-
-        
 
         CacheVirtualItemsEventArgs lastcache;
         Dictionary<int, ResourceListItemExt> cache;
         private void lv_CacheVirtualItems(object sender, CacheVirtualItemsEventArgs e)
         {            
             lastcache = e;
-            /*for (int i = e.StartIndex; i <= e.EndIndex; i++)            
-                CreateItem(i);*/
-            
-            /*PrintStats("CacheVirtualItems");
-            System.Diagnostics.Debug.WriteLine("    "+e.StartIndex + " - " + e.EndIndex);*/
         }
 
         private void lv_RetrieveVirtualItem(object sender, RetrieveVirtualItemEventArgs e)
@@ -371,9 +348,6 @@ namespace SimPe.Windows.Forms
             set { lv.ContextMenuStrip = value; }
         }
 
-
-
-
         static List<string> colNames = null;
         private List<ColumnHeader> colHeads = null;
 
@@ -417,19 +391,19 @@ namespace SimPe.Windows.Forms
 
         public void StoreLayout()
         {
+            Helper.WindowsRegistry.Layout.NameColumnWidth = clTName.Width;
             Helper.WindowsRegistry.Layout.TypeColumnWidth = clType.Width;
             Helper.WindowsRegistry.Layout.GroupColumnWidth = clGroup.Width;
             Helper.WindowsRegistry.Layout.InstanceHighColumnWidth = clInstHi.Width;
             Helper.WindowsRegistry.Layout.InstanceColumnWidth = clInst.Width;
-
             Helper.WindowsRegistry.Layout.OffsetColumnWidth = clOffset.Width;
             Helper.WindowsRegistry.Layout.SizeColumnWidth = clSize.Width;
-
             Helper.WindowsRegistry.Layout.ColumnOrder = Columns;
         }
 
         public void RestoreLayout()
         {
+            clTName.Width = Helper.WindowsRegistry.Layout.NameColumnWidth;
             clType.Width = Helper.WindowsRegistry.Layout.TypeColumnWidth;
             clGroup.Width = Helper.WindowsRegistry.Layout.GroupColumnWidth;
             clInstHi.Width = Helper.WindowsRegistry.Layout.InstanceHighColumnWidth;
@@ -445,8 +419,8 @@ namespace SimPe.Windows.Forms
                 if (colHeads[i].DisplayIndex != order.IndexOf(colNames[i]))
                     colHeads[i].DisplayIndex = order.IndexOf(colNames[i]);
 
-            if (!Helper.WindowsRegistry.ResourceListShowExtensions) lv.Columns.Remove(clTName);
-            if (!Helper.WindowsRegistry.HiddenMode)
+            if (!Helper.WindowsRegistry.ResourceListShowExtensions) lv.Columns.Remove(clType);
+            if (!Helper.WindowsRegistry.Extended)
             {
                 lv.Columns.Remove(clSize);
                 lv.Columns.Remove(clOffset);

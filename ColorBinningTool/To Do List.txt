@@ -1,0 +1,24 @@
+ BACKIT UP
+
+I need to replace the outdated menu bar wiv a toolbar
+that can give me the standard file menu inc. Save and Save As
+  ** That is done and working (sort of) Still a big mess **
+will try to clean up a bit more before adding more into main form
+
+that changes the setings required so do that first
+
+next fix the settings to standard plugin settings
+
+next clean up
+maybe since the OutputPreferences are a tab page move all to Main form
+ then all references to Preferences can be removed
+
+No, move all to Main form failed
+
+
+            if (this.box.Settings is SkintoneSettings) ((SkintoneSettings)this.box.Settings).GeneticWeight = 0;
+\
+
+                    this.tpClothing.Type = this.box.Settings.PackageType;
+
+WrapperFactory.Settings.ForceTableLoad

@@ -22,22 +22,19 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 using System.Windows.Forms;
+using System.Media;
 
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für Sims.
+	/// Summary description for Sims.
 	/// </summary>
 	public class Sims : System.Windows.Forms.Form
 	{
 		private System.Windows.Forms.ImageList ilist;
 		private System.Windows.Forms.ListView lv;
 		private System.Windows.Forms.Button button1;
-		private System.Windows.Forms.ToolTip toolTip1;
-		private System.Windows.Forms.Panel panel1;
-		private System.Windows.Forms.Label label1;
-		private System.Windows.Forms.Label label2;
-		private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.ImageList iListSmall;
 		private System.Windows.Forms.ColumnHeader columnHeader1;
 		private System.Windows.Forms.ColumnHeader columnHeader2;
@@ -48,8 +45,12 @@ namespace SimPe.Plugin
 		private System.Windows.Forms.ColumnHeader columnHeader7;
 		private System.Windows.Forms.ColumnHeader columnHeader8;
 		private System.Windows.Forms.ColumnHeader columnHeader9;
-		private System.Windows.Forms.Label lbUbi;
-		private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lbUbi;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel panel3;
 		private System.Windows.Forms.ColumnHeader chKind;
 		private System.Windows.Forms.ColumnHeader columnHeader10;
@@ -60,21 +61,44 @@ namespace SimPe.Plugin
         internal CheckBox ckbPlayable;
         internal CheckBox cbdetail;
         internal CheckBox ckbUnEditable;
-
+        internal CheckBox cbgals;
+        internal CheckBox cbmens;
+        internal CheckBox cbadults;
+        private ColumnHeader columnHeader11;
+        private Label lbnpctipe;
+        private ComboBox cbservice;
+        private Button btsearch;
+        private SoundPlayer weee = new SoundPlayer(booby.NoisyGirls.DoMeBabe);
+        private SoundPlayer ahh = new SoundPlayer(booby.NoisyGirls.Aah);
+        internal CheckBox cbkeeper;
+        public bool isnorm = true;
 		SimsRegistry reg;
 		public Sims()
 		{
 			//
-			// Erforderlich für die Windows Form-Designerunterstützung
+			// Required designer variable.
 			//
 			InitializeComponent();
 			sorter = new ColumnSorter();
 
 			reg = new SimsRegistry(this);
+            if (booby.ThemeManager.ThemedForms)
+            {
+                this.BackColor = booby.ThemeManager.Global.ThemeColorMild;
+                this.cbservice.BackColor = this.lv.BackColor = this.lbUbi.BackColor = booby.ThemeManager.Global.ThemeColorLight;
+                booby.ThemeManager.Global.AddControl(this.button1);
+                booby.ThemeManager.Global.AddControl(this.btsearch);
+            }
+            if (UseBigIcons) this.ilist.ImageSize = new System.Drawing.Size(96, 96);
+            if (booby.PrettyGirls.IsTitsInstalled() || booby.PrettyGirls.IsAngelsInstalled())
+            {
+                this.panel1.Visible = this.panel2.Visible = this.panel3.Visible = false;
+                this.label1.Visible = this.label2.Visible = this.label3.Visible = false;
+            }
 		}
 
 		/// <summary>
-		/// Die verwendeten Ressourcen bereinigen.
+		/// Clean up any resources being used.
 		/// </summary>
 		protected override void Dispose( bool disposing )
 		{
@@ -90,10 +114,10 @@ namespace SimPe.Plugin
 			base.Dispose( disposing );
 		}
 
-		#region Vom Windows Form-Designer generierter Code
+		#region Windows Form Designer generated code
 		/// <summary>
-		/// Erforderliche Methode für die Designerunterstützung. 
-		/// Der Inhalt der Methode darf nicht mit dem Code-Editor geändert werden.
+		/// Required method for Designer support - do not modify 
+		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
 		{
@@ -105,29 +129,37 @@ namespace SimPe.Plugin
             this.columnHeader2 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader3 = new System.Windows.Forms.ColumnHeader();
             this.chKind = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader4 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader5 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader6 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader9 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader7 = new System.Windows.Forms.ColumnHeader();
             this.columnHeader8 = new System.Windows.Forms.ColumnHeader();
-            this.columnHeader10 = new System.Windows.Forms.ColumnHeader();
+            this.columnHeader11 = new System.Windows.Forms.ColumnHeader();
             this.iListSmall = new System.Windows.Forms.ImageList(this.components);
             this.button1 = new System.Windows.Forms.Button();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.cbservice = new System.Windows.Forms.ComboBox();
+            this.btsearch = new System.Windows.Forms.Button();
+            this.lbUbi = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.lbUbi = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.cbNpc = new System.Windows.Forms.CheckBox();
-            this.cbTownie = new System.Windows.Forms.CheckBox();
             this.ckbPlayable = new System.Windows.Forms.CheckBox();
-            this.cbdetail = new System.Windows.Forms.CheckBox();
+            this.cbTownie = new System.Windows.Forms.CheckBox();
+            this.cbNpc = new System.Windows.Forms.CheckBox();
             this.ckbUnEditable = new System.Windows.Forms.CheckBox();
+            this.cbgals = new System.Windows.Forms.CheckBox();
+            this.cbmens = new System.Windows.Forms.CheckBox();
+            this.cbadults = new System.Windows.Forms.CheckBox();
+            this.cbdetail = new System.Windows.Forms.CheckBox();
+            this.lbnpctipe = new System.Windows.Forms.Label();
+            this.cbkeeper = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -145,13 +177,14 @@ namespace SimPe.Plugin
             this.columnHeader2,
             this.columnHeader3,
             this.chKind,
+            this.columnHeader10,
             this.columnHeader4,
             this.columnHeader5,
             this.columnHeader6,
             this.columnHeader9,
             this.columnHeader7,
             this.columnHeader8,
-            this.columnHeader10});
+            this.columnHeader11});
             this.lv.FullRowSelect = true;
             this.lv.HideSelection = false;
             this.lv.LargeImageList = this.ilist;
@@ -159,7 +192,6 @@ namespace SimPe.Plugin
             this.lv.Name = "lv";
             this.lv.SmallImageList = this.iListSmall;
             this.lv.StateImageList = this.iListSmall;
-            this.toolTip1.SetToolTip(this.lv, resources.GetString("lv.ToolTip"));
             this.lv.UseCompatibleStateImageBehavior = false;
             this.lv.View = System.Windows.Forms.View.Details;
             this.lv.DoubleClick += new System.EventHandler(this.Open);
@@ -180,6 +212,10 @@ namespace SimPe.Plugin
             // chKind
             // 
             resources.ApplyResources(this.chKind, "chKind");
+            // 
+            // columnHeader10
+            // 
+            resources.ApplyResources(this.columnHeader10, "columnHeader10");
             // 
             // columnHeader4
             // 
@@ -205,9 +241,9 @@ namespace SimPe.Plugin
             // 
             resources.ApplyResources(this.columnHeader8, "columnHeader8");
             // 
-            // columnHeader10
+            // columnHeader11
             // 
-            resources.ApplyResources(this.columnHeader10, "columnHeader10");
+            resources.ApplyResources(this.columnHeader11, "columnHeader11");
             // 
             // iListSmall
             // 
@@ -220,6 +256,29 @@ namespace SimPe.Plugin
             resources.ApplyResources(this.button1, "button1");
             this.button1.Name = "button1";
             this.button1.Click += new System.EventHandler(this.Open);
+            // 
+            // cbservice
+            // 
+            resources.ApplyResources(this.cbservice, "cbservice");
+            this.cbservice.FormattingEnabled = true;
+            this.cbservice.Name = "cbservice";
+            this.toolTip1.SetToolTip(this.cbservice, resources.GetString("cbservice.ToolTip"));
+            this.cbservice.SelectedIndexChanged += new System.EventHandler(this.cbservice_SelectedIndexChanged);
+            // 
+            // btsearch
+            // 
+            resources.ApplyResources(this.btsearch, "btsearch");
+            this.btsearch.Name = "btsearch";
+            this.toolTip1.SetToolTip(this.btsearch, resources.GetString("btsearch.ToolTip"));
+            this.btsearch.UseVisualStyleBackColor = true;
+            this.btsearch.Click += new System.EventHandler(this.btsearch_Click);
+            // 
+            // lbUbi
+            // 
+            this.lbUbi.BackColor = System.Drawing.SystemColors.Window;
+            resources.ApplyResources(this.lbUbi, "lbUbi");
+            this.lbUbi.ForeColor = System.Drawing.Color.Brown;
+            this.lbUbi.Name = "lbUbi";
             // 
             // panel1
             // 
@@ -243,13 +302,6 @@ namespace SimPe.Plugin
             this.panel2.BackColor = System.Drawing.Color.LightCoral;
             this.panel2.Name = "panel2";
             // 
-            // lbUbi
-            // 
-            this.lbUbi.BackColor = System.Drawing.SystemColors.Window;
-            resources.ApplyResources(this.lbUbi, "lbUbi");
-            this.lbUbi.ForeColor = System.Drawing.Color.Brown;
-            this.lbUbi.Name = "lbUbi";
-            // 
             // label3
             // 
             resources.ApplyResources(this.label3, "label3");
@@ -268,19 +320,10 @@ namespace SimPe.Plugin
             this.flowLayoutPanel1.Controls.Add(this.cbTownie);
             this.flowLayoutPanel1.Controls.Add(this.cbNpc);
             this.flowLayoutPanel1.Controls.Add(this.ckbUnEditable);
+            this.flowLayoutPanel1.Controls.Add(this.cbgals);
+            this.flowLayoutPanel1.Controls.Add(this.cbmens);
+            this.flowLayoutPanel1.Controls.Add(this.cbadults);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            // 
-            // cbNpc
-            // 
-            resources.ApplyResources(this.cbNpc, "cbNpc");
-            this.cbNpc.Name = "cbNpc";
-            this.cbNpc.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
-            // 
-            // cbTownie
-            // 
-            resources.ApplyResources(this.cbTownie, "cbTownie");
-            this.cbTownie.Name = "cbTownie";
-            this.cbTownie.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
             // 
             // ckbPlayable
             // 
@@ -291,13 +334,17 @@ namespace SimPe.Plugin
             this.ckbPlayable.UseVisualStyleBackColor = true;
             this.ckbPlayable.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
             // 
-            // cbdetail
+            // cbTownie
             // 
-            resources.ApplyResources(this.cbdetail, "cbdetail");
-            this.cbdetail.Checked = true;
-            this.cbdetail.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbdetail.Name = "cbdetail";
-            this.cbdetail.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            resources.ApplyResources(this.cbTownie, "cbTownie");
+            this.cbTownie.Name = "cbTownie";
+            this.cbTownie.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
+            // 
+            // cbNpc
+            // 
+            resources.ApplyResources(this.cbNpc, "cbNpc");
+            this.cbNpc.Name = "cbNpc";
+            this.cbNpc.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
             // 
             // ckbUnEditable
             // 
@@ -306,18 +353,61 @@ namespace SimPe.Plugin
             this.ckbUnEditable.UseVisualStyleBackColor = true;
             this.ckbUnEditable.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
             // 
+            // cbgals
+            // 
+            resources.ApplyResources(this.cbgals, "cbgals");
+            this.cbgals.Name = "cbgals";
+            this.cbgals.UseVisualStyleBackColor = true;
+            this.cbgals.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
+            // 
+            // cbmens
+            // 
+            resources.ApplyResources(this.cbmens, "cbmens");
+            this.cbmens.Name = "cbmens";
+            this.cbmens.UseVisualStyleBackColor = true;
+            this.cbmens.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
+            // 
+            // cbadults
+            // 
+            resources.ApplyResources(this.cbadults, "cbadults");
+            this.cbadults.Name = "cbadults";
+            this.cbadults.UseVisualStyleBackColor = true;
+            this.cbadults.CheckedChanged += new System.EventHandler(this.ckbFilter_CheckedChanged);
+            // 
+            // cbdetail
+            // 
+            resources.ApplyResources(this.cbdetail, "cbdetail");
+            this.cbdetail.Checked = true;
+            this.cbdetail.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbdetail.Name = "cbdetail";
+            this.cbdetail.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // lbnpctipe
+            // 
+            resources.ApplyResources(this.lbnpctipe, "lbnpctipe");
+            this.lbnpctipe.Name = "lbnpctipe";
+            // 
+            // cbkeeper
+            // 
+            resources.ApplyResources(this.cbkeeper, "cbkeeper");
+            this.cbkeeper.Name = "cbkeeper";
+            // 
             // Sims
             // 
             resources.ApplyResources(this, "$this");
+            this.Controls.Add(this.cbkeeper);
+            this.Controls.Add(this.lbnpctipe);
+            this.Controls.Add(this.cbservice);
+            this.Controls.Add(this.btsearch);
             this.Controls.Add(this.cbdetail);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.panel3);
-            this.Controls.Add(this.lbUbi);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lbUbi);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lv);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
@@ -330,89 +420,121 @@ namespace SimPe.Plugin
 		}
 		#endregion
 
-		protected void AddImage(SimPe.PackedFiles.Wrapper.ExtSDesc sdesc) 
-		{
-			if (sdesc.Image!=null) 
-			{
-				if ((sdesc.Unlinked!=0x00) || (!sdesc.AvailableCharacterData) || sdesc.IsNPC)
-				{
-					Image img = (Image)sdesc.Image.Clone();
-					System.Drawing.Graphics g = Graphics.FromImage(img);
-					g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-					g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+		protected void AddImage(SimPe.PackedFiles.Wrapper.ExtSDesc sdesc)
+        {
+            Image img = null;
+            if (booby.PrettyGirls.IsTitsInstalled() || booby.PrettyGirls.IsAngelsInstalled())
+            {
+                if (sdesc.HasImage)
+                    img = Ambertation.Drawing.GraphicRoutines.KnockoutImage(sdesc.Image, new Point(0, 0), Color.Magenta);
+                else
+                {
+                    if (sdesc.CharacterDescription.IsWoman && sdesc.Nightlife.Species == 0)
+                        img = SimPe.GetImage.BabyDoll;
+                    else if (sdesc.CharacterDescription.Gender == SimPe.Data.MetaData.Gender.Female)
+                        img = SimPe.GetImage.SheOne;
+                    else
+                        img = SimPe.GetImage.NoOne;
+                }
 
-					Pen pen = new Pen(Data.MetaData.SpecialSimColor, 3);
-
-					g.FillRectangle(pen.Brush, 0, 0, img.Width, img.Height);
-
-					int pos = 2;
-					if (sdesc.Unlinked!=0x00) 
-					{
-						g.FillRectangle(new SolidBrush(Data.MetaData.UnlinkedSim), pos, 2, 25, 25);
-						pos += 28;
-					}
-					if (!sdesc.AvailableCharacterData) 
-					{
-						g.FillRectangle(new SolidBrush(Data.MetaData.InactiveSim), pos, 2, 25, 25);
-						pos += 28;
-					}
-					if (sdesc.IsNPC) 
-					{
-						g.FillRectangle(new SolidBrush(Data.MetaData.NPCSim), pos, 2, 25, 25);
-						pos += 28;
-					}
-
-					this.ilist.Images.Add(img);
-					this.iListSmall.Images.Add(ImageLoader.Preview(img, iListSmall.ImageSize));
-				} 				
-				else 
-				{
-					this.ilist.Images.Add(sdesc.Image);
-					this.iListSmall.Images.Add(ImageLoader.Preview(sdesc.Image, iListSmall.ImageSize));
-				}
-			} 
-			else 
-			{
-				//this.ilist.Images.Add(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Network.png")));
-				//this.iListSmall.Images.Add(ImageLoader.Preview(new Bitmap(this.GetType().Assembly.GetManifestResourceStream("SimPe.Plugin.Network.png")), iListSmall.ImageSize));
-                this.ilist.Images.Add(new Bitmap(sdesc.GetType().Assembly.GetManifestResourceStream("SimPe.PackedFiles.Wrapper.noone.png")));
-                this.iListSmall.Images.Add(ImageLoader.Preview(new Bitmap(sdesc.GetType().Assembly.GetManifestResourceStream("SimPe.PackedFiles.Wrapper.noone.png")), iListSmall.ImageSize));
+                img = Ambertation.Windows.Forms.Graph.ImagePanel.CreateThumbnail(img, this.ilist.ImageSize, 12, Color.FromArgb(90, Color.Black), SimPe.PackedFiles.Wrapper.SimPoolControl.GetImagePanelColor(sdesc), Color.White, Color.FromArgb(80, Color.White), true, 4, 0);
+                this.ilist.Images.Add(img);
+                this.iListSmall.Images.Add(ImageLoader.Preview(img, iListSmall.ImageSize));
+            }
+            else
+            {
+                if (sdesc.Unlinked != 0x00 || !sdesc.AvailableCharacterData || sdesc.IsNPC)
+                {
+                    if (sdesc.HasImage)
+                        img = ImageLoader.Preview(sdesc.Image, this.ilist.ImageSize);
+                    else if (sdesc.CharacterDescription.Gender == SimPe.Data.MetaData.Gender.Female)
+                        img = ImageLoader.Preview(SimPe.GetImage.SheOne, this.ilist.ImageSize);
+                    else
+                        img = ImageLoader.Preview(SimPe.GetImage.NoOne, this.ilist.ImageSize);
+                    System.Drawing.Graphics g = Graphics.FromImage(img);
+                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    g.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                    //Pen pen = new Pen(Data.MetaData.SpecialSimColor, 3);
+                    //g.FillRectangle(pen.Brush, 0, 0, img.Width, img.Height); // what for??  makes these dark
+                    int pos = 2;
+                    if (sdesc.Unlinked != 0x00)
+                    {
+                        g.FillRectangle(new SolidBrush(Data.MetaData.UnlinkedSim), pos, 2, 20, 20);
+                        pos += 22;
+                    }
+                    if (!sdesc.AvailableCharacterData)
+                    {
+                        g.FillRectangle(new SolidBrush(Data.MetaData.InactiveSim), pos, 2, 20, 20);
+                        pos += 22;
+                    }
+                    if (sdesc.IsNPC)
+                    {
+                        g.FillRectangle(new SolidBrush(Data.MetaData.NPCSim), pos, 2, 20, 20);
+                        pos += 22;
+                    }
+                    this.ilist.Images.Add(img);
+                    this.iListSmall.Images.Add(ImageLoader.Preview(img, iListSmall.ImageSize));
+                }
+                else if (sdesc.HasImage) // if (sdesc.Image != null) -Chris H
+                {
+                    this.ilist.Images.Add(sdesc.Image);
+                    this.iListSmall.Images.Add(ImageLoader.Preview(sdesc.Image, iListSmall.ImageSize));
+                }
+                else
+                {
+                    if (sdesc.CharacterDescription.Gender == SimPe.Data.MetaData.Gender.Female)
+                    {
+                        this.ilist.Images.Add(new Bitmap(SimPe.GetImage.SheOne));
+                        this.iListSmall.Images.Add(ImageLoader.Preview(new Bitmap(SimPe.GetImage.SheOne), iListSmall.ImageSize));
+                    }
+                    else
+                    {
+                        this.ilist.Images.Add(new Bitmap(SimPe.GetImage.NoOne));
+                        this.iListSmall.Images.Add(ImageLoader.Preview(new Bitmap(SimPe.GetImage.NoOne), iListSmall.ImageSize));
+                    }
+                }
             }
 		}
 
 		protected void AddSim(SimPe.PackedFiles.Wrapper.ExtSDesc sdesc) 
 		{
-			//if (!sdesc.HasImage) return;
-
 			AddImage(sdesc);
 			ListViewItem lvi = new ListViewItem();
 			lvi.Text = sdesc.SimName +" "+sdesc.SimFamilyName;
 			lvi.ImageIndex = ilist.Images.Count -1;
 			lvi.Tag = sdesc;
 
-			lvi.SubItems.Add(sdesc.HouseholdName);
+            if (sdesc.FamilyInstance == 0) lvi.SubItems.Add("None");
+            else lvi.SubItems.Add(sdesc.HouseholdName);
             if (sdesc.University.OnCampus == 0x1)
                 lvi.SubItems.Add(Localization.Manager.GetString("YoungAdult"));
             else
                 lvi.SubItems.Add(new Data.LocalizedLifeSections(sdesc.CharacterDescription.LifeSection).ToString());
 
 			string kind = "";
-            if (realIsNPC(sdesc)) kind = "NPC";
+            if (System.IO.Path.GetFileNameWithoutExtension(sdesc.CharacterFileName) == "objects") kind = "NPC Unique";
+            else if (realIsNPC(sdesc)) kind = "Service Sim";
             else if (realIsTownie(sdesc)) kind = "Townie";
             else if (realIsPlayable(sdesc)) kind = "Playable";
-            else if (realIsUneditable(sdesc)) kind = "Uneditable";
+            else if (realIsUneditable(sdesc)) kind = "No Family";
             lvi.SubItems.Add(kind);
+
+            if (sdesc.CharacterDescription.Gender == Data.MetaData.Gender.Female) lvi.SubItems.Add("Female"); else lvi.SubItems.Add("Male");
 
 			if (sdesc.University.OnCampus==0x1) lvi.SubItems.Add(Localization.Manager.GetString("yes")); else lvi.SubItems.Add(Localization.Manager.GetString("no"));
 			lvi.SubItems.Add("0x"+Helper.HexString(sdesc.FileDescriptor.Instance));
 
 			string avl = "";
-			if (!sdesc.AvailableCharacterData) avl += "no Character File";
+            if (!sdesc.AvailableCharacterData)
+            {
+                if (System.IO.File.Exists(sdesc.CharacterFileName)) avl += "no Character Data"; else avl += "no Character File";
+            }
 			if (sdesc.Unlinked!=0x00) 
 			{
 				if (avl!="") avl+=", ";
 				avl += "Unlinked";
 			}
+            if (sdesc.CharacterDescription.GhostFlag.IsGhost && avl == "") avl = "Deceased";
 			if (avl=="") avl="OK";
 			lvi.SubItems.Add(avl);
 			lvi.SubItems.Add("0x"+Helper.HexString(sdesc.SimId));
@@ -431,10 +553,22 @@ namespace SimPe.Plugin
 			{
 				lvi.SubItems.Add("---");
 				lvi.SubItems.Add("---");
-			}
-		
-			
-			//toolTip1.SetToolTip(lvi, sdesc.CharacterFileName);
+            }
+            if (sdesc.Nightlife.Species == SimPe.PackedFiles.Wrapper.SdscNightlife.SpeciesType.Human) lvi.SubItems.Add("Human");
+            else
+                if (sdesc.Version == SimPe.PackedFiles.Wrapper.SDescVersions.Castaway && sdesc.Castaway.Subspecies == 2) lvi.SubItems.Add("Orang-utan");
+                else
+                    if (sdesc.Version == SimPe.PackedFiles.Wrapper.SDescVersions.Castaway && sdesc.Castaway.Subspecies > 0 && (int)sdesc.Nightlife.Species == 3) lvi.SubItems.Add("Leopard");
+                    else
+                        if (sdesc.Version == SimPe.PackedFiles.Wrapper.SDescVersions.Castaway && sdesc.Castaway.Subspecies == 1 && (int)sdesc.Nightlife.Species < 3) lvi.SubItems.Add("Wild Dog");
+                        else
+                            if (sdesc.Nightlife.Species == SimPe.PackedFiles.Wrapper.SdscNightlife.SpeciesType.LargeDog) lvi.SubItems.Add("Large Dog");
+                            else                    
+                                if (sdesc.Nightlife.Species == SimPe.PackedFiles.Wrapper.SdscNightlife.SpeciesType.SmallDog) lvi.SubItems.Add("Small Dog");                    
+                                else                       
+                                    if (sdesc.Nightlife.Species == SimPe.PackedFiles.Wrapper.SdscNightlife.SpeciesType.Cat) lvi.SubItems.Add("Cat");                        
+                                    else lvi.SubItems.Add("Unknown");
+
 			lv.Items.Add(lvi);
 		}
 
@@ -460,14 +594,15 @@ namespace SimPe.Plugin
                     doAdd |= (this.cbTownie.Checked && realIsTownie(sdesc));
                     doAdd |= (this.ckbPlayable.Checked && realIsPlayable(sdesc));
                     doAdd |= (this.ckbUnEditable.Checked && realIsUneditable(sdesc));
+                    doAdd &= (!this.cbmens.Checked || !realIsWoman(sdesc));
+                    doAdd &= (!this.cbgals.Checked || realIsWoman(sdesc));
+                    doAdd &= (!this.cbadults.Checked || realIsAdult(sdesc));
 
-                    //WaitingScreen.UpdateImage(ImageLoader.Preview(sdesc.Image, new Size(64, 64)));
                     if (doAdd) AddSim(sdesc);
                 }
 
                 sorter.Sorting = lv.Sorting;
                 lv.Sort();
-
             }
             finally
             {
@@ -475,32 +610,40 @@ namespace SimPe.Plugin
                 WaitingScreen.Stop(this);
                 this.Cursor = Cursors.Default;
             }
+            if (booby.PrettyGirls.PervyMode)
+            {
+                if (lv.Items.Count < 1 && this.cbgals.Checked) ahh.Play();
+            }
         }
 
         private bool realIsNPC(PackedFiles.Wrapper.ExtSDesc sdesc)
         {
             return sdesc.FamilyInstance == 0x7fff;
-            /*if (sdesc.IsNPC) return true;
-            if (sdesc.CharacterDescription.NPCType == 0) return false;
-            if (sdesc.FamilyInstance != 0x7fff) return false;
-            return true;*/
         }
 
         private bool realIsTownie(PackedFiles.Wrapper.ExtSDesc sdesc)
         {
             return sdesc.FamilyInstance < 0x7fff && sdesc.FamilyInstance >= 0x7f00;
-            /*return sdesc.IsTownie;*/
         }
 
         private bool realIsPlayable(PackedFiles.Wrapper.ExtSDesc sdesc)
         {
             return sdesc.FamilyInstance < 0x7f00 && sdesc.FamilyInstance > 0;
-            /*return !realIsNPC(sdesc) && !realIsTownie(sdesc);*/
         }
 
         private bool realIsUneditable(PackedFiles.Wrapper.ExtSDesc sdesc)
         {
             return sdesc.FamilyInstance == 0 || sdesc.FamilyInstance > 0x7fff;
+        }
+
+        private bool realIsWoman(PackedFiles.Wrapper.ExtSDesc sdesc)
+        {
+            return sdesc.CharacterDescription.Gender == Data.MetaData.Gender.Female;
+        }
+
+        private bool realIsAdult(PackedFiles.Wrapper.ExtSDesc sdesc)
+        {
+            return sdesc.CharacterDescription.LifeSection == Data.MetaData.LifeSections.Adult;
         }
 
 		SimPe.Interfaces.Files.IPackedFileDescriptor pfd;
@@ -511,15 +654,14 @@ namespace SimPe.Plugin
 			
 			lv.ListViewItemSorter = sorter;
 			this.Cursor = Cursors.WaitCursor;
-			
+            this.cbkeeper.Visible = isnorm;			
 			SimPe.Plugin.Idno idno = SimPe.Plugin.Idno.FromPackage(package);
-			if (idno!=null) this.lbUbi.Visible = (idno.Type != NeighborhoodType.Normal );
-			this.pfd = null;
-			
+			if (idno!=null) this.lbUbi.Visible = (idno.Type != NeighborhoodType.Normal);
+			this.pfd = null;			
 			
 			lv.Sorting = SortOrder.Ascending;
 			sorter.CurrentColumn = 3;
-
+            InitDropDowns();
 			FillList();
 			
 			this.Cursor = Cursors.Default;
@@ -537,13 +679,18 @@ namespace SimPe.Plugin
 			if (lv.SelectedItems.Count<1) return;
 			
 			pfd = (SimPe.Interfaces.Files.IPackedFileDescriptor)((PackedFiles.Wrapper.SDesc)lv.SelectedItems[0].Tag).FileDescriptor;
-			Close();
-		}
+            if (this.cbkeeper.Checked)
+                SimPe.RemoteControl.OpenPackedFile(pfd, package);
+            else
+                Close();
+        }
 
 		private void checkBox1_CheckedChanged(object sender, System.EventArgs e)
 		{
-			if (cbdetail.Checked) lv.View = View.Details;
-			else lv.View = View.LargeIcon;
+            if (cbdetail.Checked)
+                lv.View = View.Details;
+            else
+                lv.View = View.LargeIcon;
 		}
 
 		internal ColumnSorter sorter;
@@ -565,8 +712,178 @@ namespace SimPe.Plugin
 
         private void ckbFilter_CheckedChanged(object sender, System.EventArgs e)
         {
+            this.cbgals.Enabled = !this.cbmens.Checked;
+            this.cbmens.Enabled = !this.cbgals.Checked;
             if (package != null)
                 this.FillList();
+        }
+
+        private bool UseBigIcons
+        {
+            get
+            {
+                XmlRegistryKey rkf = Helper.WindowsRegistry.PluginRegistryKey.CreateSubKey("SimBrowser");
+                object o = rkf.GetValue("UseBiggerIcons", false);
+                return Convert.ToBoolean(o);
+            }
+        }
+
+        private void btsearch_Click(object sender, EventArgs e)
+        {
+            if (this.cbservice.SelectedIndex < 0) { FillList(); return; }
+            this.Cursor = Cursors.WaitCursor;
+            WaitingScreen.Wait();
+            ilist.Images.Clear();
+            this.iListSmall.Images.Clear();
+            lv.BeginUpdate();
+            lv.Items.Clear();
+            Interfaces.Files.IPackedFileDescriptor[] pfds = package.FindFiles(Data.MetaData.SIM_DESCRIPTION_FILE);
+            try
+            {
+                foreach (Interfaces.Files.IPackedFileDescriptor spfd in pfds)
+                {
+                    Application.DoEvents();
+                    PackedFiles.Wrapper.ExtSDesc sdesc = new SimPe.PackedFiles.Wrapper.ExtSDesc();
+                    sdesc.ProcessData(spfd, package);
+                    if (sdesc.CharacterDescription.NPCType == (ushort)(Data.LocalizedServiceTypes)this.cbservice.SelectedItem)
+                    {
+                        AddSim(sdesc);
+                    }
+                }
+
+                sorter.Sorting = lv.Sorting;
+                lv.Sort();
+            }
+            finally
+            {
+                lv.EndUpdate();
+                WaitingScreen.Stop(this);
+                this.Cursor = Cursors.Default;
+            }
+            if (booby.PrettyGirls.PervyMode)
+            {
+                if ((ushort)(SimPe.Data.LocalizedServiceTypes)this.cbservice.SelectedItem == 6 && lv.Items.Count > 0) weee.Play();
+                else if (lv.Items.Count < 1) ahh.Play();
+            }
+            this.cbservice.SelectedItem = null;
+            this.btsearch.Text = "Refresh Original List";
+        }
+
+        private void cbservice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.btsearch.Enabled = true;
+            this.btsearch.Text = "List Service Sims";
+        }
+
+        void InitDropDowns()
+        {
+            this.cbservice.Items.Clear();
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Normal));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Bartenderb));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Bartenderp));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Boss));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Burglar));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Driver));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Streaker));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Coach));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.LunchLady));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Cop));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Delivery));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Exterminator));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.FireFighter));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Gardener));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Barista));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Grim));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Handy));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Headmistress));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Matchmaker));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Maid));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.MailCarrier));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Nanny));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Paper));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Pizza));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Professor));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.EvilMascot));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Repo));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.CheerLeader));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Mascot));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.SocialBunny));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.SocialWorker));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Register));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Therapist));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Chinese));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Podium));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Waitress));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Chef));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.DJ));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Crumplebottom));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Vampyre));
+            if (PathProvider.Global.GetExpansion(SimPe.Expansions.Business).Exists || SimPe.PathProvider.Global.STInstalled >= 28)
+            {
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Servo));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Reporter));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Salon));
+            }
+            if (PathProvider.Global.GetExpansion(SimPe.Expansions.Pets).Exists || SimPe.PathProvider.Global.STInstalled >= 28)
+            {
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Wolf));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.WolfLOTP));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Skunk));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.AnimalControl));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Obedience));
+            }
+            if (PathProvider.Global.GetExpansion(SimPe.Expansions.Voyage).Exists || PathProvider.Global.GetExpansion(SimPe.Expansions.IslandStories).Exists || PathProvider.Global.GetExpansion(SimPe.Expansions.PetStories).Exists)
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Masseuse));
+            if (PathProvider.Global.GetExpansion(SimPe.Expansions.Voyage).Exists || PathProvider.Global.GetExpansion(SimPe.Expansions.IslandStories).Exists)
+            {
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Bellhop));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Villain));
+            }
+            if (PathProvider.Global.GetExpansion(SimPe.Expansions.Voyage).Exists)
+            {
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.TourGuide));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Hermit));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Ninja));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.BigFoot));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Housekeeper));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.FoodStandChef));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.FireDancer));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.WitchDoctor));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.GhostCaptain));
+            }
+            if (PathProvider.Global.GetExpansion(SimPe.Expansions.FreeTime).Exists)
+            {
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.FoodJudge));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Genie));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.exDJ));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.exGypsy));
+            }
+            if (PathProvider.Global.GetExpansion(SimPe.Expansions.Apartments).Exists)
+            {
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Witch1));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Breakdancer));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.SpectralCat));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Statue));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Landlord));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Butler));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.hotdogchef));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.assistant));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.exWitch2));
+            }
+            if ((booby.PrettyGirls.IsAngelsInstalled() || booby.PrettyGirls.IsTitsInstalled()) && Helper.WindowsRegistry.LoadOnlySimsStory == 0)
+            {
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Mermaid));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.MeterMaid));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Servant));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Teacher));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.God));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Preacher));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.TinySim));
+                this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Nurse));
+            }
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.icontrol));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.Pandora));
+            this.cbservice.Items.Add(new SimPe.Data.LocalizedServiceTypes(SimPe.Data.MetaData.ServiceTypes.DMASim));
         }
 	}
 }

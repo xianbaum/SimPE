@@ -6,8 +6,6 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
 {
     partial class ScoreItemDefault
     {
-        private System.Windows.Forms.TextBox textBox1;
-
         private void InitializeComponent()
         {
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -30,6 +28,7 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
             this.tb.Multiline = true;
             this.tb.Name = "tb";
             this.tb.ReadOnly = true;
+            this.tb.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tb.Size = new System.Drawing.Size(261, 130);
             this.tb.TabIndex = 1;
             // 
@@ -42,9 +41,9 @@ namespace SimPe.PackedFiles.Wrapper.SCOR
             this.Size = new System.Drawing.Size(261, 150);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
+        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox tb;   
 
     }

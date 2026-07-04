@@ -58,7 +58,8 @@
     <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
     <ConfigurationOverrideFile>
     </ConfigurationOverrideFile>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <DocumentationFile>
     </DocumentationFile>
     <DebugSymbols>false</DebugSymbols>
@@ -128,6 +129,49 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GDF, Version=0.69.20.23, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="simpe.3idr, Version=1.69.7186.40899, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.3idr.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.clst, Version=1.69.7208.23437, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.clst.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.filehandler, Version=1.69.7208.34436, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.filehandler.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.helper, Version=0.75.69.3, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.helper.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.interfaces, Version=1.0.3349.37516, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.package, Version=1.69.7187.30857, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.package.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.rcol, Version=1.69.7186.42885, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.rcol.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.scenegraph, Version=1.69.7186.40150, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.scenegraph.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.sims, Version=1.69.7208.40583, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.sims.dll</HintPath>
+    </Reference>
+    <Reference Include="simpe.workspace, Version=1.69.7186.37669, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\__Release\simpe.workspace.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -143,66 +187,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\SimPe 3IDR\SimPe 3IDR.csproj">
-      <Project>{37D97490-DC9F-4DB7-9215-998C6BC06078}</Project>
-      <Name>SimPe 3IDR</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Clst\SimPe Clst.csproj">
-      <Project>{5DD89FD7-1E89-49D4-B48D-CC605D767C3B}</Project>
-      <Name>SimPe Clst</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Extended Filehandlers\SimPe Extended Filehandlers.csproj">
-      <Project>{7EF7C30C-2968-46E8-AA74-79EDB0FE8F2A}</Project>
-      <Name>SimPe Extended Filehandlers</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe FileHandler\SimPe FileHandlers.csproj">
-      <Project>{97551C0A-6295-4E32-8E15-A4FF456E65A6}</Project>
-      <Name>SimPe FileHandlers</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe HandlerCommon\SimPe HandlerCommon.csproj">
-      <Project>{A4CC48FD-9574-4F0B-B721-9E8C1B1E6A8A}</Project>
-      <Name>SimPe HandlerCommon</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Helper\SimPe Helper.csproj">
-      <Project>{59E3C353-1350-42D8-A045-CBBAD232F228}</Project>
-      <Name>SimPe Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Interfaces\SimPe Interfaces.csproj">
-      <Project>{74FCBBEC-105A-4006-A1FC-8EF4F80FD2D7}</Project>
-      <Name>SimPe Interfaces</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Packages\SimPe Packages.csproj">
-      <Project>{1C6C45BF-FE19-4C23-B327-01F45B0F269C}</Project>
-      <Name>SimPe Packages</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe RCOL\SimPe RCOL.csproj">
-      <Project>{74517907-2236-4C45-80ED-E188D5E5CE0E}</Project>
-      <Name>SimPe RCOL</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Scenegraph\SimPe Scenegraph.csproj">
-      <Project>{1151A88B-47AF-41DA-BCDF-DEFED0CC326E}</Project>
-      <Name>SimPe Scenegraph</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Sims\SimPe Sims.csproj">
-      <Project>{9877B092-C8C0-4B84-B5A0-F9A68AA1C0E4}</Project>
-      <Name>SimPe Sims</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\SimPe Workspace Helper\SimPe Workspace Helper.csproj">
-      <Project>{45021667-BAD2-4ECA-8423-F4734F914CBB}</Project>
-      <Name>SimPe Workspace Helper</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs">

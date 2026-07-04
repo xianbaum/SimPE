@@ -30,7 +30,7 @@ namespace SimPe.PackedFiles.Wrapper
 	}
 
 	/// <summary>
-	/// Represents a PackedFile in SDsc Format
+    /// Represents a PackedFile in Objd Format
 	/// </summary>
 	public class Objd : AbstractWrapper, SimPe.Interfaces.Plugin.IFileWrapper, SimPe.Interfaces.Plugin.IFileWrapperSaveExtension
 	{
@@ -52,47 +52,14 @@ namespace SimPe.PackedFiles.Wrapper
 		/// Spaces of unknown Data
 		/// </summary>
 		private byte[] reserved_02;
-		
 
 		/// <summary>
-		/// Returns the Name of a Sim
-		/// </summary>
-		/*public string SimName
-		{
-			get 
-			{
-				string n = FileName;
-				int p = n.IndexOf(" - ");
-				if (p==-1) return "Unknown";
-				else 
-				{
-					p += 3;
-					return n.Substring(p, n.Length - p).Trim();
-				}
-				
-			}			
-		}*/
-
-
-		/// <summary>
-		/// Returns/Sets the Name of a Sim
+        /// Returns/Sets the FileName
 		/// </summary>
 		public string FileName
 		{
 			get 
 			{
-				/*string s = "";
-				System.IO.MemoryStream ms = new System.IO.MemoryStream(filename);
-				System.IO.BinaryReader br = new System.IO.BinaryReader(ms);
-				try 
-				{
-					while (br.BaseStream.Position < br.BaseStream.Length)
-					{
-						if (br.PeekChar()==0) break;
-						s += br.ReadChar();
-					}
-				} 
-				catch (Exception) {};*/
 				return Helper.ToString(filename);
 			}		
 			set 

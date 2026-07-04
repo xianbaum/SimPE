@@ -20,6 +20,7 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 using System;
+using System.IO;
 using System.Collections.Generic;
 using SimPe.Plugin;
 using SimPe.Interfaces;
@@ -27,12 +28,12 @@ using SimPe.Interfaces.Plugin;
 
 namespace SimPe
 {
-	/// <summary>
-	/// This class handles the Comandline Arguments of SimPE
-	/// </summary>
-	public class Commandline
-	{
-		#region Import Data
+    /// <summary>
+    /// This class handles the Comandline Arguments of SimPe
+    /// </summary>
+    public class Commandline
+    {
+        #region Import Data
         static void CheckXML(string file, string elementName)
         {
             if (System.IO.File.Exists(file))
@@ -51,7 +52,7 @@ namespace SimPe
             {
                 if (System.Windows.Forms.MessageBox.Show("The " + filename + " file was not valid XML.\n" +
                     file + "\n" +
-                    "SimPE can generate a new one (" +
+                    "SimPe can generate a new one (" +
                     msg + ").\n\nShould SimPe delete the " + filename + " File?"
                     , "Error",
                     System.Windows.Forms.MessageBoxButtons.YesNo, System.Windows.Forms.MessageBoxIcon.Error) == System.Windows.Forms.DialogResult.Yes)
@@ -59,141 +60,68 @@ namespace SimPe
             }
         }
 
-		public static void CheckFiles()
-		{
-			//check if the settings File is valid
+        public static void CheckFiles()
+        {
+            bool i = Helper.ChrisMode;
+            //check if installation for user is done
+            if ((!System.IO.File.Exists(Helper.DataFolder.ExpansionsXREG) || !System.IO.File.Exists(System.IO.Path.Combine(Helper.SimPeDataPath, "tgi.xml")) || Helper.WindowsRegistry.GetPreviousVersion() != Helper.SimPeVersionLong) && Helper.Profile.Length == 0)
+            {
+                if (!System.IO.File.Exists(Path.Combine(Helper.SimPeDataPath, "additional_careers.xml"))) CompleteSetup("additional_careers.xml");
+                if (!System.IO.File.Exists(Path.Combine(Helper.SimPeDataPath, "additional_majors.xml"))) CompleteSetup("additional_majors.xml");
+                if (!System.IO.File.Exists(Path.Combine(Helper.SimPeDataPath, "additional_schools.xml"))) CompleteSetup("additional_schools.xml");
+                if (System.IO.File.Exists(Path.Combine(Helper.SimPeDataPath, "vport.set"))) System.IO.File.Delete(Path.Combine(Helper.SimPeDataPath, "vport.set"));
+                CompleteSetup("beauty");
+                CompleteSetup("expansions.xreg");
+                CompleteSetup("expansions2.xreg");
+                CompleteSetup("objddefinition.xml");
+                CompleteSetup("release.nfo");
+                CompleteSetup("semiglobals.xml");
+                CompleteSetup("tgi.xml");
+                CompleteSetup("txmtdefinition.xml");
+                CompleteSetup("guidindex.txt");
+                CompleteSetup("GLOBALS-AO.package");
+                CompleteSetup("GLOBALS.package");
+                CompleteSetup("Private.package");
+                CompleteSetup("RelLabels.package");
+                CompleteSetup("SemiGlobals.package");
+                Helper.WindowsRegistry.HiddenMode = false;
+                Helper.WindowsRegistry.LoadMetaInfo = Helper.WindowsRegistry.DecodeFilenamesState = true;
+            }
+
+            //check if the settings File is valid
             CheckFile(Helper.DataFolder.SimPeXREG, "registry", "Settings", "your settings made in \"Extra->Preferences\" be reset");
 
             //check if the layout File is valid
             CheckFile(Helper.DataFolder.Layout2XREG, "registry", "Window Layout", "your window layout will be reset");
 
-            //check if the layout File is valid
+            //replace file table if needed
+            if (Helper.WindowsRegistry.UseExpansions2 != Helper.ECCorNewSEfound)
+            {
+                if (System.IO.File.Exists(Helper.DataFolder.FoldersXREGW) && Helper.Profile.Length == 0)
+                {
+                    System.IO.File.Delete(Helper.DataFolder.FoldersXREGW);
+                    if (Helper.ECCorNewSEfound) Message.Show("The Newest Stuff Packs have been found," + "\r\n" + "Your file table folder settings had to be reset!", "Warning", System.Windows.Forms.MessageBoxButtons.OK);
+                    else
+                        Message.Show("Newest Stuff Packs are gone!" + "\r\n" + "Your file table folder settings had to be reset!", "Warning", System.Windows.Forms.MessageBoxButtons.OK);
+                }
+                Helper.WindowsRegistry.UseExpansions2 = Helper.ECCorNewSEfound;
+                Helper.WindowsRegistry.Flush();
+            }
+            else
+            //check if the file table is valid
             CheckFile(Helper.DataFolder.FoldersXREG, "folders", "File table settings", "your file table folder settings will be reset");
         }
-
-#if ConvertData
-		static bool ConvertData()
-		{
-			if (!System.IO.File.Exists(Helper.DataFolder.Layout2XREG) || !System.IO.File.Exists(Helper.DataFolder.SimPeLayout))
-                ForceModernLayout();
-
-            if (Helper.WindowsRegistry.PreviousEpCount < 3) 
-				Helper.WindowsRegistry.BlurNudityUpdate();
-
-        #region folders.xreg
-            if (Helper.WindowsRegistry.PreviousVersion < 279174552515) 
-			{
-                string name = Helper.DataFolder.FoldersXREG;
-				if (System.IO.File.Exists(name)) 
-				{
-					if (Message.Show(SimPe.Localization.GetString("Reset Filetable").Replace("{flname}", name), "Update", System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-					{
-						try 
-						{						
-							System.IO.File.Delete(name);							
-						} 
-						catch (Exception ex)
-						{
-							Helper.ExceptionMessage(ex);
-						}
-					}
-				}
-			}
-            #endregion
-
-        #region simpelanguagecache
-            if (Helper.WindowsRegistry.PreviousVersion<236370882908) 
-			{
-				string name = Helper.SimPeLanguageCache;
-				if (System.IO.File.Exists(name)) 
-				{
-					if (Message.Show(SimPe.Localization.GetString("Reset Cache").Replace("{flname}", name), "Update", System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-					{
-						try 
-						{						
-							System.IO.File.Delete(name);
-							
-						} 
-						catch (Exception ex)
-						{
-							Helper.ExceptionMessage(ex);
-						}
-					}
-				}
-			}
-            #endregion
-
-            if (Helper.WindowsRegistry.FoundUnknownEP())
-            {
-                if (Message.Show(SimPe.Localization.GetString("Unknown EP found").Replace("{name}", SimPe.PathProvider.Global.GetExpansion(SimPe.PathProvider.Global.LastKnown).Name), SimPe.Localization.GetString("Warning"), System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.No)
-                    return false;
-            }
-
-			return true;
-        }
-#endif
-
-#if ImportOldData
-		public static bool ImportOldData()
-		{
-            try
-            {
-                if (!System.IO.Directory.Exists(Helper.SimPeDataPath))
-                    System.IO.Directory.CreateDirectory(Helper.SimPeDataPath);
-
-                if (!System.IO.File.Exists(Helper.DataFolder.SimPeXREG))
-                {
-                    if (System.IO.Directory.Exists(Helper.WindowsRegistry.PreviousDataFolder))
-                        if (Helper.WindowsRegistry.PreviousDataFolder.Trim().ToLower() != Helper.SimPeDataPath.Trim().ToLower())
-                            if (Helper.SimPeVersionLong > Helper.WindowsRegistry.PreviousVersion && Helper.WindowsRegistry.PreviousVersion > 0)
-                            {
-                                if (Message.Show("Should SimPE import old Settings from \"" + Helper.WindowsRegistry.PreviousDataFolder + "\"?", "Import Settings", System.Windows.Forms.MessageBoxButtons.YesNo) == System.Windows.Forms.DialogResult.Yes)
-                                {
-                                    WaitingScreen.Wait();
-                                    try
-                                    {
-                                        int ct = 0;
-                                        string[] files = System.IO.Directory.GetFiles(Helper.WindowsRegistry.PreviousDataFolder, "*.*");
-                                        foreach (string file in files)
-                                        {
-                                            string name = System.IO.Path.GetFileName(file).Trim().ToLower();
-                                            if (name == "tgi.xml") continue;
-
-                                            string newfile = file.Trim().ToLower().Replace(Helper.WindowsRegistry.PreviousDataFolder.Trim().ToLower(), Helper.SimPeDataPath.Trim());
-                                            WaitingScreen.UpdateMessage((ct++).ToString() + " / " + files.Length);
-                                            System.IO.File.Copy(file, newfile, true);
-                                        }
-
-                                        Helper.WindowsRegistry.Reload();
-                                        ThemeManager.Global.CurrentTheme = (SimPe.GuiTheme)Helper.WindowsRegistry.Layout.SelectedTheme;
-                                    }
-#if !DEBUG
-                                    catch (Exception ex) { Helper.ExceptionMessage(new Warning("Unable to import Settings.", ex.Message, ex)); }
-#endif
-                                    finally { WaitingScreen.Stop(); }
-                                }
-                            }
-                }
-
-                return ConvertData();
-            }
-            finally
-            {
-
-            }
-
-            //return true;
-        }
-#endif
         #endregion
 
         internal static ICommandLine[] preSplashCommands = new ICommandLine[] {
+            new Profile(),
             new Splash(),
             new NoSplash(),
             new EnableFlags(),
-            new Profile(),
             new MakeClassic(),
             new MakeModern(),
+            new MakeBoobs(),
+            new MakeGirly(),
         };
 
         public static bool PreSplash(List<string> argv)
@@ -203,20 +131,19 @@ namespace SimPe
             return false;
         }
 
-
         class Splash : ICommandLine
         {
             #region ICommandLine Members
-            public bool Parse(List<string> argv) { if (ArgParser.Parse(argv, "--splash") >= 0) Helper.WindowsRegistry.ShowStartupSplash = true; return false; }
-            public string[] Help() { return new string[] { "--splash", null }; }
+            public bool Parse(List<string> argv) { if (ArgParser.Parse(argv, "--splash") >= 0 || ArgParser.Parse(argv, "-splash") >= 0) Helper.WindowsRegistry.ShowStartupSplash = true; return false; }
+            public string[] Help() { return new string[] { "-splash", null }; }
             #endregion
         }
 
         class NoSplash : ICommandLine
         {
             #region ICommandLine Members
-            public bool Parse(List<string> argv) { if (ArgParser.Parse(argv, "--nosplash") >= 0) Helper.WindowsRegistry.ShowStartupSplash = false; return false; }
-            public string[] Help() { return new string[] { "--nosplash", null }; }
+            public bool Parse(List<string> argv) { if (ArgParser.Parse(argv, "--nosplash") >= 0 || ArgParser.Parse(argv, "-nosplash") >= 0) Helper.WindowsRegistry.ShowStartupSplash = false; return false; }
+            public string[] Help() { return new string[] { "-nosplash\r\n", null }; }
             #endregion
         }
 
@@ -258,8 +185,7 @@ namespace SimPe
                     }
                     if (!haveEnable && argv.Count <= i) break; // processed everything
                 }
-
-                if (Helper.LocalMode || Helper.NoPlugins || Helper.NoErrors)
+                if ((Helper.LocalMode || Helper.NoPlugins || Helper.NoErrors) && Helper.StartedGui != Executable.Other)
                 {
                     string s = "";
                     if (Helper.LocalMode) s += Localization.GetString("InLocalMode") + "\r\n";
@@ -267,11 +193,10 @@ namespace SimPe
                     if (Helper.NoErrors) s += "\r\n" + Localization.GetString("NoErrors");
                     Message.Show(s, "Notice", System.Windows.Forms.MessageBoxButtons.OK);
                 }
-
-                return false; // Don't exit SimPE!
+                return false; // Don't exit SimPe!
             }
 
-            public string[] Help() { return new string[] { "-enable localmode  -enable noplugins  -enable fileformat  -enable noerrors  -enable anypackage", null }; }
+            public string[] Help() { return new string[] { "-enable localmode  -enable noplugins  -enable fileformat\r\n  -enable noerrors  -enable anypackage\r\n", null }; }
 
             #endregion
         }
@@ -284,63 +209,135 @@ namespace SimPe
                 int index = ArgParser.Parse(argv, "-profile");
                 if (index < 0) return false;
                 if (index >= argv.Count || argv[index].Length == 0) { Message.Show(Help()[0]); return true; }
-                Helper.Profile = argv[index];
+                if (System.IO.Directory.Exists(System.IO.Path.Combine(System.IO.Path.Combine(Helper.SimPeDataPath, "Profiles"), argv[index])))
+                {
+                    Helper.Profile = argv[index];
+                    Helper.WindowsRegistry.Reload();
+                    Helper.WindowsRegistry.ReloadLayout();
+                    // if (!System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(Helper.DataFolder.SimPeXREG))) { Message.Show(Help()[0]); return true; }
+                    if (Helper.Profile == "Short") { Helper.LocalMode = true; Helper.NoPlugins = true; }
+                }
                 argv.RemoveAt(index);
-                if (!System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(Helper.DataFolder.SimPeXREG))) { Message.Show(Help()[0]); return true; }
                 return false;
             }
-            public string[] Help() { return new string[] { "-profile savedprofilename", null }; }
+            public string[] Help() { return new string[] { "-profile savedprofilename\r\n", null }; }
             #endregion
         }
 
         #region Theme Presets
-		public static void ForceModernLayout()
-		{
-			Overridelayout("modern_layout.xreg");
+        public static void ForceModernLayout()
+        {
+            Overridelayout("modern_layout.xreg");
 
-			Helper.WindowsRegistry.Layout.SelectedTheme = 3;
-			Helper.WindowsRegistry.AsynchronLoad = false;
-			Helper.WindowsRegistry.DecodeFilenamesState = true;
-			Helper.WindowsRegistry.DeepSimScan = true;
-			Helper.WindowsRegistry.DeepSimTemplateScan = false;
-
-			Helper.WindowsRegistry.SimpleResourceSelect = true;
-			Helper.WindowsRegistry.MultipleFiles = true;
-			Helper.WindowsRegistry.FirefoxTabbing = true;
-
-            Helper.WindowsRegistry.LockDocks = false;
+            Helper.WindowsRegistry.Layout.SelectedTheme = 2;
+            Helper.WindowsRegistry.Layout.AutoStoreLayout = true;
+            Helper.WindowsRegistry.ShowStartupSplash = true;
             Helper.WindowsRegistry.ShowWaitBarPermanent = true;
+            Helper.WindowsRegistry.ThemedForms = false;
+            Helper.WindowsRegistry.UseBigIcons = false;
+            CommonSetting();
+            setPriorities();
             Helper.WindowsRegistry.Flush();
         }
 
-		static void Overridelayout(string name)
-		{
-            
-			System.IO.Stream s = typeof(Commandline).Assembly.GetManifestResourceStream("SimPe."+name);
-			if (s!=null) 
-			{
-				try 
-				{
+        public static void ForceBoobsLayout()
+        {
+            Overridelayout("boobs_layout.xreg");
+
+            Helper.WindowsRegistry.Layout.SelectedTheme = 7;
+            Helper.WindowsRegistry.Layout.AutoStoreLayout = false;
+            Helper.WindowsRegistry.ShowStartupSplash = false;
+            Helper.WindowsRegistry.ShowWaitBarPermanent = true;
+            Helper.WindowsRegistry.ThemedForms = true;
+            Helper.WindowsRegistry.UseBigIcons = true;
+            Helper.WindowsRegistry.WaitingScreen = false;
+            CommonSetting();
+            setPriorities();
+            Helper.WindowsRegistry.Flush();
+        }
+
+        public static void ForceGirlyLayout()
+        {
+            Overridelayout("girly_layout.xreg");
+
+            Helper.WindowsRegistry.Layout.SelectedTheme = 4;
+            Helper.WindowsRegistry.Layout.AutoStoreLayout = false;
+            Helper.WindowsRegistry.ShowStartupSplash = false;
+            Helper.WindowsRegistry.ShowWaitBarPermanent = true;
+            Helper.WindowsRegistry.ThemedForms = true;
+            Helper.WindowsRegistry.UseBigIcons = true;
+            Helper.WindowsRegistry.WaitingScreen = false;
+            CommonSetting();
+            setPriorities();
+            Helper.WindowsRegistry.Flush();
+        }
+
+        public static void ForceDefaultLayout()
+        {
+            Overridelayout("original_layout.xreg");
+
+            Helper.WindowsRegistry.Layout.SelectedTheme = 1;
+            Helper.WindowsRegistry.Layout.AutoStoreLayout = true;
+            Helper.WindowsRegistry.ShowStartupSplash = true;
+            Helper.WindowsRegistry.ShowWaitBarPermanent = false;
+            Helper.WindowsRegistry.WaitingScreen = true;
+            Helper.WindowsRegistry.ThemedForms = false;
+            Helper.WindowsRegistry.UseBigIcons = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height >= 768;
+            CommonSetting();
+            setPriorities();
+            Helper.WindowsRegistry.Flush();
+        }
+
+        static void CommonSetting()
+        {
+            Helper.WindowsRegistry.Layout.IsClassicPreset = false;
+            Helper.WindowsRegistry.AllowChangeOfSecondaryAspiration = true;
+            Helper.WindowsRegistry.AsynchronSort = true;
+            Helper.WindowsRegistry.AsynchronLoad = false;
+            Helper.WindowsRegistry.DecodeFilenamesState = true;
+            Helper.WindowsRegistry.LoadMetaInfo = true;
+            Helper.WindowsRegistry.DeepSimScan = true;
+            Helper.WindowsRegistry.DeepSimTemplateScan = false;
+            Helper.WindowsRegistry.HiddenMode = false;
+            Helper.WindowsRegistry.Silent = true;
+            Helper.WindowsRegistry.LoadOWFast = false;
+            Helper.WindowsRegistry.SimpleResourceSelect = true;
+            Helper.WindowsRegistry.FileTableSimpleSelectUseGroups = true;
+            Helper.WindowsRegistry.MultipleFiles = true;
+            Helper.WindowsRegistry.FirefoxTabbing = true;
+            Helper.WindowsRegistry.LockDocks = false;
+            Helper.WindowsRegistry.LoadOnlySimsStory = 0;
+            Helper.WindowsRegistry.AllowLotZero = true;
+        }
+
+        static void Overridelayout(string name)
+        {
+
+            System.IO.Stream s = typeof(Commandline).Assembly.GetManifestResourceStream("SimPe." + name);
+            if (s != null)
+            {
+                try
+                {
                     System.IO.StreamWriter sw = System.IO.File.CreateText(Helper.DataFolder.Layout2XREGW);
                     sw.BaseStream.SetLength(0);
-					try 
-					{
-						System.IO.StreamReader sr = new System.IO.StreamReader(s);
-						sw.Write(sr.ReadToEnd());
-						sw.Flush();
-					} 
-					finally 
-					{
-						sw.Close();
-						sw.Dispose();
-						sw = null;
-					}
-				} 
-				catch (Exception ex) 
-				{
-					Helper.ExceptionMessage(ex);
-				}
-			}
+                    try
+                    {
+                        System.IO.StreamReader sr = new System.IO.StreamReader(s);
+                        sw.Write(sr.ReadToEnd());
+                        sw.Flush();
+                    }
+                    finally
+                    {
+                        sw.Close();
+                        sw.Dispose();
+                        sw = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.ExceptionMessage(ex);
+                }
+            }
 
             string name2 = name.Replace("_layout.xreg", ".layout");
             s = typeof(Commandline).Assembly.GetManifestResourceStream("SimPe." + name2);
@@ -353,7 +350,7 @@ namespace SimPe
                     sw.BaseStream.SetLength(0);
                     try
                     {
-                        System.IO.BinaryReader sr = new System.IO.BinaryReader(s);                        
+                        System.IO.BinaryReader sr = new System.IO.BinaryReader(s);
                         sw.Write(sr.ReadBytes((int)sr.BaseStream.Length));
                         sw.Flush();
                     }
@@ -375,9 +372,97 @@ namespace SimPe
                 {
                     Helper.ExceptionMessage(ex);
                 }
-            }	
-		}
-		#endregion
+            }
+        }
+
+        /// <summary>
+        /// Set Plugin Priorities, Do Flush Registry After
+        /// </summary>
+        static void setPriorities()
+        {
+            Helper.WindowsRegistry.SetWrapperPriority(0x312CC465, 1);
+            Helper.WindowsRegistry.SetWrapperPriority(0xC3E61807, 2);
+            Helper.WindowsRegistry.SetWrapperPriority(0xC8DD1F4A, 3);
+            Helper.WindowsRegistry.SetWrapperPriority(0xF1191DA5, 4);
+            Helper.WindowsRegistry.SetWrapperPriority(0x5E638485, 5);
+            Helper.WindowsRegistry.SetWrapperPriority(0xE87A2597, 6);
+            Helper.WindowsRegistry.SetWrapperPriority(0xE7382298, 7);
+            Helper.WindowsRegistry.SetWrapperPriority(0xB1711AC1, 8);
+            Helper.WindowsRegistry.SetWrapperPriority(0xDADB24F7, 9);
+            Helper.WindowsRegistry.SetWrapperPriority(0xCEE426FA, 10);
+            Helper.WindowsRegistry.SetWrapperPriority(0xCF50733B, 11);
+            Helper.WindowsRegistry.SetWrapperPriority(0xBD214F51, 12);
+            Helper.WindowsRegistry.SetWrapperPriority(0x6B8C1EDC, 13);
+            Helper.WindowsRegistry.SetWrapperPriority(0x7564331D, 14);
+            Helper.WindowsRegistry.SetWrapperPriority(0x499FF92D, 15);
+            Helper.WindowsRegistry.SetWrapperPriority(0x57E8E729, 16);
+            Helper.WindowsRegistry.SetWrapperPriority(0x7224180F, 17);
+            Helper.WindowsRegistry.SetWrapperPriority(0x0E1294B8, 18);
+            Helper.WindowsRegistry.SetWrapperPriority(0xFBA47A95, 19);
+            Helper.WindowsRegistry.SetWrapperPriority(0xDE3A472E, 20);
+            Helper.WindowsRegistry.SetWrapperPriority(0x9F1D0974, 21);
+            Helper.WindowsRegistry.SetWrapperPriority(0x73AF1C57, 22);
+            Helper.WindowsRegistry.SetWrapperPriority(0x670CD3F2, 23);
+            Helper.WindowsRegistry.SetWrapperPriority(0x548AD617, 24);
+            Helper.WindowsRegistry.SetWrapperPriority(0x164B6B22, 25);
+            Helper.WindowsRegistry.SetWrapperPriority(0xAC733345, 26);
+            Helper.WindowsRegistry.SetWrapperPriority(0xD6457F5E, 27);
+            Helper.WindowsRegistry.SetWrapperPriority(0xFB2FBBF2, 28);
+            Helper.WindowsRegistry.SetWrapperPriority(0x8B523883, 29);
+            Helper.WindowsRegistry.SetWrapperPriority(0xF3187898, 30);
+            Helper.WindowsRegistry.SetWrapperPriority(0x6885B59C, 31);
+            Helper.WindowsRegistry.SetWrapperPriority(0x7DC4F7C1, 32);
+            Helper.WindowsRegistry.SetWrapperPriority(0xDE96789D, 33);
+            Helper.WindowsRegistry.SetWrapperPriority(0x31A6C495, 34);
+            Helper.WindowsRegistry.SetWrapperPriority(0x3FC6F769, 35);
+            Helper.WindowsRegistry.SetWrapperPriority(0xA7754EBE, 36);
+            Helper.WindowsRegistry.SetWrapperPriority(0xF5A4B9AD, 37);
+            Helper.WindowsRegistry.SetWrapperPriority(0x1CBA75C7, 38);
+            Helper.WindowsRegistry.SetWrapperPriority(0x911C3B58, 39);
+            Helper.WindowsRegistry.SetWrapperPriority(0x99FC281A, 40);
+            Helper.WindowsRegistry.SetWrapperPriority(0xA32D2822, 41);
+            Helper.WindowsRegistry.SetWrapperPriority(0xD8FB3B3C, 42);
+            Helper.WindowsRegistry.SetWrapperPriority(0x7862184E, 43);
+            Helper.WindowsRegistry.SetWrapperPriority(0x1D637093, 44);
+            Helper.WindowsRegistry.SetWrapperPriority(0xF6539B12, 45);
+            Helper.WindowsRegistry.SetWrapperPriority(0xA26C6199, 46);
+            Helper.WindowsRegistry.SetWrapperPriority(0xA99F0143, 47);
+            Helper.WindowsRegistry.SetWrapperPriority(0x96A2FEC1, 48);
+            Helper.WindowsRegistry.SetWrapperPriority(0x4C0AA949, 49);
+            Helper.WindowsRegistry.SetWrapperPriority(0xD861C506, 50);
+            Helper.WindowsRegistry.SetWrapperPriority(0xC76628FB, 51);
+            Helper.WindowsRegistry.SetWrapperPriority(0xCFE3767E, 52);
+            Helper.WindowsRegistry.SetWrapperPriority(0x93BCFA6F, 53);
+            Helper.WindowsRegistry.SetWrapperPriority(0x2AB8ACDA, 54);
+            Helper.WindowsRegistry.SetWrapperPriority(0x627CD967, 55);
+            Helper.WindowsRegistry.SetWrapperPriority(0x2573AEB9, 56);
+            Helper.WindowsRegistry.SetWrapperPriority(0x3588A530, 57);
+            Helper.WindowsRegistry.SetWrapperPriority(0x5644D014, 58);
+            Helper.WindowsRegistry.SetWrapperPriority(0x27279F22, 59);
+            Helper.WindowsRegistry.SetWrapperPriority(0x81D1EDE2, 60);
+            Helper.WindowsRegistry.SetWrapperPriority(0x4149E8F9, 61);
+            Helper.WindowsRegistry.SetWrapperPriority(0x5A4DF031, 62);
+            Helper.WindowsRegistry.SetWrapperPriority(0x0F929F9F, 63);
+            Helper.WindowsRegistry.SetWrapperPriority(0x1489B24B, 64);
+            Helper.WindowsRegistry.SetWrapperPriority(0x38E683B3, 65);
+            Helper.WindowsRegistry.SetWrapperPriority(0xA4FE0E30, 66);
+            Helper.WindowsRegistry.SetWrapperPriority(0x05586E44, 67);
+            Helper.WindowsRegistry.SetWrapperPriority(0x18B9A561, 68);
+            Helper.WindowsRegistry.SetWrapperPriority(0xF755A796, 69);
+            Helper.WindowsRegistry.SetWrapperPriority(0x0C216215, 70);
+            Helper.WindowsRegistry.SetWrapperPriority(0x0545B36A, 71);
+            Helper.WindowsRegistry.SetWrapperPriority(0x9FF6E6BE, 72);
+            Helper.WindowsRegistry.SetWrapperPriority(0x1507A23B, 73);
+            Helper.WindowsRegistry.SetWrapperPriority(0x5811D1AC, 74);
+            Helper.WindowsRegistry.SetWrapperPriority(0x562896BD, 75);
+            Helper.WindowsRegistry.SetWrapperPriority(0x5C33ED67, 76);
+            Helper.WindowsRegistry.SetWrapperPriority(0x1638569F, 77);
+            Helper.WindowsRegistry.SetWrapperPriority(0x1E516A6A, 78);
+            Helper.WindowsRegistry.SetWrapperPriority(0x1126ADE6, 79);
+            Helper.WindowsRegistry.SetWrapperPriority(0xC5F36B5B, 80);
+        }
+
+        #endregion
 
         class MakeClassic : ICommandLine
         {
@@ -389,17 +474,23 @@ namespace SimPe
                 Overridelayout("classic_layout.xreg");
 
                 Helper.WindowsRegistry.Layout.SelectedTheme = 0;
+                Helper.WindowsRegistry.Layout.AutoStoreLayout = true;
                 Helper.WindowsRegistry.AsynchronLoad = false;
+                Helper.WindowsRegistry.HiddenMode = false;
                 Helper.WindowsRegistry.DecodeFilenamesState = false;
                 Helper.WindowsRegistry.DeepSimScan = false;
                 Helper.WindowsRegistry.DeepSimTemplateScan = false;
-
                 Helper.WindowsRegistry.SimpleResourceSelect = true;
                 Helper.WindowsRegistry.MultipleFiles = false;
                 Helper.WindowsRegistry.FirefoxTabbing = false;
                 Helper.WindowsRegistry.ShowWaitBarPermanent = false;
-
+                Helper.WindowsRegistry.Layout.IsClassicPreset = true;
+                Helper.WindowsRegistry.ShowStartupSplash = true;
+                Helper.WindowsRegistry.WaitingScreen = true;
                 Helper.WindowsRegistry.LockDocks = true;
+                Helper.WindowsRegistry.ThemedForms = false;
+                Helper.WindowsRegistry.UseBigIcons = false;
+                Helper.WindowsRegistry.LoadOnlySimsStory = 0;
                 Helper.WindowsRegistry.Flush();
 
                 System.Windows.Forms.DialogResult dr = Message.Show(SimPe.Localization.GetString("PresetChanged").Replace("{name}", SimPe.Localization.GetString("PresetClassic")),
@@ -429,8 +520,45 @@ namespace SimPe
         }
 
 
+        class MakeBoobs : ICommandLine
+        {
+            #region ICommandLine Members
+            public bool Parse(List<string> argv)
+            {
+                if (ArgParser.Parse(argv, "-simplepreset") < 0) return false;
+
+                ForceBoobsLayout();
+
+                System.Windows.Forms.DialogResult dr = Message.Show(SimPe.Localization.GetString("PresetChanged").Replace("{name}",
+                    SimPe.Localization.GetString("PresetBoobs")), SimPe.Localization.GetString("Information"),
+                    System.Windows.Forms.MessageBoxButtons.YesNo);
+                return dr != System.Windows.Forms.DialogResult.Yes;
+            }
+            public string[] Help() { return new string[] { "-simplepreset", null }; }
+            #endregion
+        }
+
+        class MakeGirly : ICommandLine
+        {
+            #region ICommandLine Members
+            public bool Parse(List<string> argv)
+            {
+                if (ArgParser.Parse(argv, "-girlypreset") < 0) return false;
+
+                ForceGirlyLayout();
+
+                System.Windows.Forms.DialogResult dr = Message.Show(SimPe.Localization.GetString("PresetChanged").Replace("{name}",
+                    SimPe.Localization.GetString("PresetGirly")), SimPe.Localization.GetString("Information"),
+                    System.Windows.Forms.MessageBoxButtons.YesNo);
+                return dr != System.Windows.Forms.DialogResult.Yes;
+            }
+            // public string[] Help() { return new string[] { "-girlypreset", null }; }
+            public string[] Help() { return new string[] { null, null }; }
+            #endregion
+        }
+
         /// <summary>
-        /// Loaded just befor the GUI is started
+        /// Loaded just before the GUI is started
         /// </summary>
         /// <param name="args"></param>
         /// <returns>true if the GUI should <b>NOT</b> show up</returns>
@@ -448,6 +576,59 @@ namespace SimPe
             finally
             {
                 SimPe.Splash.Screen.SetMessage(SimPe.Localization.GetString("Checked commandline parameters"));
+            }
+        }
+
+        public static void CompleteSetup(string namer)
+        {
+            try
+            {
+                if (!Directory.Exists(Path.Combine(Helper.SimPePluginDataPath, "pjse.coder.plugin")))
+                {
+                    Directory.CreateDirectory(Path.Combine(Helper.SimPePluginDataPath, "pjse.coder.plugin"));
+                    Directory.CreateDirectory(Path.Combine(Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"));
+                }
+            }
+            catch {}
+
+            string path;
+            System.IO.Stream s = typeof(Commandline).Assembly.GetManifestResourceStream("SimPe." + namer);
+            if (namer == "guidindex.txt")
+                path = Path.Combine(Helper.SimPePluginDataPath, "pjse.coder.plugin\\guidindex.txt");
+            else if (namer.Contains(".package"))
+                path = Path.Combine(Path.Combine(Helper.SimPePluginDataPath, "pjse.coder.plugin\\Includes"), namer);
+            else path = Path.Combine(Helper.SimPeDataPath, namer);            
+            if (s != null)
+            {
+                try
+                {
+                    System.IO.BinaryReader br = new BinaryReader(s);
+                    try
+                    {
+                        FileStream fs = System.IO.File.Create(path);
+                        System.IO.BinaryWriter bw = new BinaryWriter(fs);
+                        try
+                        {
+                            bw.Write(br.ReadBytes((int)br.BaseStream.Length));
+                        }
+                        finally
+                        {
+                            bw.Close();
+                            bw = null;
+                            fs.Close();
+                            fs.Dispose();
+                            fs = null;
+                        }
+                    }
+                    finally
+                    {
+                        br.Close();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Helper.ExceptionMessage(ex);
+                }
             }
         }
 
@@ -478,17 +659,19 @@ namespace SimPe
 
             SimPe.Splash.Screen.Stop();
 
-            System.Windows.Forms.MessageBox.Show(""
+            // System.Windows.Forms.MessageBox.Show(""
+                Message.Show(""
+                    + "  -load filename"
                     + pluginHelp
                     + "\r\n"
-                    , "SimPE Commandline Parameters"
+                    , "SimPe Commandline Parameters"
                     , System.Windows.Forms.MessageBoxButtons.OK
-                    , System.Windows.Forms.MessageBoxIcon.Information
+                    // , System.Windows.Forms.MessageBoxIcon.Information
                 );
 
             return true;
         }
-        public string[] Help() { return new string[] { "-help", null }; }
+        public string[] Help() { return new string[] { "\r\n  -help\r\n", null }; }
         #endregion
     }
 

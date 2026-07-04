@@ -4,13 +4,13 @@ using SimPe.Geometry;
 namespace SimPe.Plugin
 {
 	/// <summary>
-	/// Zusammenfassung für TileItem.
+	/// Summary description for TileItem.
 	/// </summary>
 	public class NhtrDecorationItem : NhtrBaseItem
 	{		
 		protected uint guid;
 		protected float rot;
-		internal NhtrDecorationItem(NhtrList parent) : base(parent, 8)
+		public NhtrDecorationItem(NhtrList parent) : base(parent, 8)
 		{								
 		}
 
