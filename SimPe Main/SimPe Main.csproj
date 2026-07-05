@@ -33,10 +33,7 @@
     <ProjectReference Include="../SimPe Sims/SimPe Sims.csproj" />
     <ProjectReference Include="../SimPe Splash/SimPe Splash.csproj" />
     <ProjectReference Include="../SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
-    <Reference Include="xsi.lib">
-      <HintPath>$(ReleaseDir)xsi.lib.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../xsi.lib/xsi.lib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="About.cs" />

@@ -60,6 +60,7 @@
   <Project Path="SimClothingEditor/SimClothingEditor.csproj" />
   <Project Path="SimSurgery/SimSurgery.csproj" />
   <Project Path="GDF/GDF.csproj" />
+  <Project Path="xsi.lib/xsi.lib.csproj" />
   <Project Path="GraphControl/GraphControl.csproj" />
   <Project Path="NetDocks/NetDocks.csproj" />
   <Project Path="SimPe 3IDR/SimPe 3IDR.csproj" />

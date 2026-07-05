@@ -18,10 +18,7 @@
     <ProjectReference Include="../SimPe Helper/SimPe Helper.csproj" />
     <ProjectReference Include="../SimPe Interfaces/SimPe Interfaces.csproj" />
     <ProjectReference Include="../SimPe RCOL/SimPe RCOL.csproj" />
-    <Reference Include="xsi.lib">
-      <HintPath>$(ReleaseDir)xsi.lib.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../xsi.lib/xsi.lib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />

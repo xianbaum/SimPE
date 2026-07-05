@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>xsi.lib</AssemblyName>
+    <RootNamespace>Ambertation</RootNamespace>
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ambertation.3D">
+      <HintPath>$(ReleaseDir)ambertation.3D.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="ambertation.utilities">
+      <HintPath>$(ReleaseDir)ambertation.utilities.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

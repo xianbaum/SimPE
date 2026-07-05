@@ -66,10 +66,7 @@
       <HintPath>$(ReleaseDir)simpe.workspace.dll</HintPath>
       <Private>false</Private>
     </Reference>
-    <Reference Include="xsi.lib">
-      <HintPath>$(ReleaseDir)xsi.lib.dll</HintPath>
-      <Private>false</Private>
-    </Reference>
+    <ProjectReference Include="../xsi.lib/xsi.lib.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
