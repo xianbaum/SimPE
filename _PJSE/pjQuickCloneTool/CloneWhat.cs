@@ -26,12 +26,14 @@ namespace pj
             return true;
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool useGUID
         {
             get { return rg1_ByGUID.Checked; }
             set { rg1_ByGUID.Checked = true; }
         }
 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public uint Value
         {
             get { return Convert.ToUInt32(tbValue.Text, 16); }

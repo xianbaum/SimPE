@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <AssemblyName>pjQuickCloneTool.plugin</AssemblyName>
+    <RootNamespace>pj</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../pjse Coder/SimPe pjse coder.csproj" />
+    <ProjectReference Include="../../SimPe Helper/SimPe Helper.csproj" />
+    <ProjectReference Include="../../SimPe Interfaces/SimPe Interfaces.csproj" />
+    <ProjectReference Include="../../SimPe RCOL/SimPe RCOL.csproj" />
+    <ProjectReference Include="../../SimPe Workspace Helper/SimPe Workspace Helper.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CloneWhat.cs" />
+    <Compile Include="CloneWhat.Designer.cs" />
+    <Compile Include="cQuickCloneTool.cs" />
+    <Compile Include="Localization.cs" />
+    <Compile Include="tQuickCloneTool.cs" />
+    <Compile Include="Properties/AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CloneWhat.resx">
+      <DependentUpon>CloneWhat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization.resx">
+      <DependentUpon>Localization.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
